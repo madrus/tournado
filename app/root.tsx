@@ -11,11 +11,11 @@ import {
 } from "@remix-run/react";
 
 import { getUser } from "~/session.server";
-import tailwindStyles from "~/styles/tailwind.css"
+import tailwindStyles from "~/styles/tailwind.css";
 
 export const links: LinksFunction = () => [
-  { rel: "tailwindStyles", href: tailwindStyles },
-  ...(cssBundleHref ? [{ rel: "tailwindStyles", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: tailwindStyles },
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

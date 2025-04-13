@@ -1,9 +1,10 @@
-import "@testing-library/cypress/add-commands";
-import { registerCommands } from "./commands";
+import '@testing-library/cypress/add-commands'
 
-registerCommands();
+import { registerCommands } from './commands'
 
-Cypress.on("uncaught:exception", (err) => {
+registerCommands()
+
+Cypress.on('uncaught:exception', err => {
   // Cypress and React Hydrating the document don't get along
   // for some unknown reason. Hopefully we figure out why eventually
   // so we can remove this.
@@ -12,6 +13,6 @@ Cypress.on("uncaught:exception", (err) => {
     /Minified React error #418/.test(err.message) ||
     /Minified React error #423/.test(err.message)
   ) {
-    return false;
+    return false
   }
-});
+})

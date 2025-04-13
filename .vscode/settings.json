@@ -1,16 +1,34 @@
 {
-  "workbench.colorCustomizations": {
-    "editorGroup.border": "#1796cf",
-    "panel.border": "#1796cf",
-    "sash.hoverBorder": "#1796cf",
-    "sideBar.border": "#1796cf",
-    "statusBar.background": "#1275a1",
-    "statusBar.border": "#1275a1",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#1796cf",
-    "statusBarItem.remoteBackground": "#1275a1",
-    "statusBarItem.remoteForeground": "#e7e7e7",
-    "tab.activeBorder": "#1796cf"
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "peacock.color": "#1275a1"
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
+  "prettier.requireConfig": true,
+  "workbench.colorCustomizations": {
+    "editorGroup.border": "#e204d5",
+    "panel.border": "#e204d5",
+    "sash.hoverBorder": "#e204d5",
+    "sideBar.border": "#e204d5",
+    "statusBar.background": "#b003a6",
+    "statusBar.border": "#b003a6",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#e204d5",
+    "statusBarItem.remoteBackground": "#b003a6",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "tab.activeBorder": "#e204d5"
+  },
+  "peacock.color": "#b003a6"
 }

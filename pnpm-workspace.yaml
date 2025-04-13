@@ -1,8 +1,6 @@
-ignoredBuiltDependencies:
-  - "@prisma/client"
-
 onlyBuiltDependencies:
-  - "@prisma/engines"
+  - '@prisma/client'
+  - '@prisma/engines'
   - cypress
   - esbuild
   - msw

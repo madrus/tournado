@@ -30,12 +30,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: false
 
       - name: Get pnpm store directory
@@ -70,12 +70,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: false
 
       - name: Get pnpm store directory
@@ -113,12 +113,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: false
 
       - name: Get pnpm store directory
@@ -156,12 +156,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: false
 
       - name: Get pnpm store directory
@@ -248,11 +248,17 @@ jobs:
       - name: 🚀 Deploy Staging
         if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
-          export FLY_API_TOKEN=${{ secrets.FLY_API_TOKEN }}
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging
+          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
+          # Destroy existing machines first
+          flyctl machines list --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" | grep -q "No machines" || flyctl machines destroy --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --yes
+          # Deploy new machine
+          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)"
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          export FLY_API_TOKEN=${{ secrets.FLY_API_TOKEN }}
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}
+          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
+          # Destroy existing machines first
+          flyctl machines list --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "No machines" || flyctl machines destroy --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --yes
+          # Deploy new machine
+          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)"

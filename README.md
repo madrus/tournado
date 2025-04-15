@@ -5,7 +5,7 @@
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```sh
-npx create-remix@latest --template remix-run/indie-stack
+pnpm dlx create-remix@latest --template remix-run/indie-stack
 ```
 
 ## What's in the stack
@@ -37,13 +37,13 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 - Initial setup:
 
   ```sh
-  npm run setup
+  pnpm setup
   ```
 
 - Start dev server:
 
   ```sh
-  npm run dev
+  pnpm dev
   ```
 
 This starts your app in development mode, rebuilding assets on file changes.
@@ -72,7 +72,9 @@ Prior to your first deployment, you'll need to do a few things:
 - Sign up and log in to Fly
 
   ```sh
-  fly auth signup
+  fly launch
+  # or  
+  #  fly auth signup
   ```
 
   > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
@@ -80,8 +82,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
-  fly apps create tournado-f536
-  fly apps create tournado-f536-staging
+  fly apps create tournado
+  fly apps create tournado-staging
   ```
 
   > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
@@ -103,17 +105,54 @@ Prior to your first deployment, you'll need to do a few things:
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado-f536
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado-f536-staging
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app tournado-staging
   ```
 
-  If you don't have openssl installed, you can also use [1Password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
+  You should see something like this:
+
+  ```
+  Secrets are staged for the first deployment
+  Secrets are staged for the first deployment
+  ```
+
+  > **Note:** If you don't have openssl installed, you can also use [1Password](https://1password.com/password-generator) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
 
 - Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
 
   ```sh
-  fly volumes create data --size 1 --app tournado-f536
-  fly volumes create data --size 1 --app tournado-f536-staging
+  fly volumes create data --size 1 --app tournado
+  fly volumes create data --size 1 --app tournado-staging
+  ```
+
+  You should see something like this:
+  ```
+  Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
+  ? Do you still want to use the volumes feature? Yes
+  ? Select region: Amsterdam, Netherlands (ams)
+                    ID: vol_vpzq5yo98zlo5jk4
+                  Name: data
+                  App: tournado
+                Region: ams
+                  Zone: ed57
+              Size GB: 1
+            Encrypted: true
+            Created at: 15 Apr 25 15:13 UTC
+    Snapshot retention: 5
+  Scheduled snapshots: true
+  Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
+  ? Do you still want to use the volumes feature? Yes
+  ? Select region: Amsterdam, Netherlands (ams)
+                    ID: vol_453yz9koxd0xeg9r
+                  Name: data
+                  App: tournado-staging
+                Region: ams
+                  Zone: ed57
+              Size GB: 1
+            Encrypted: true
+            Created at: 15 Apr 25 15:13 UTC
+    Snapshot retention: 5
+  Scheduled snapshots: true
   ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.

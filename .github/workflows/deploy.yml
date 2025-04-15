@@ -165,8 +165,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        id: cache-cypress
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            cypress-binary-${{ runner.os }}-
+
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
+
+      - name: Verify Cypress
+        run: npx cypress verify
 
       - name: 🛠 Setup Database
         run: pnpm exec prisma migrate reset --force
@@ -179,6 +191,7 @@ jobs:
         with:
           start: pnpm start:mocks
           wait-on: http://localhost:8811
+          install: false # We've already installed dependencies
         env:
           PORT: 8811
 

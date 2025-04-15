@@ -26,12 +26,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
       - name: ⎔ Setup pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 10
           run_install: false
 
       - name: Get pnpm store directory
@@ -88,6 +88,9 @@ jobs:
 
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
+
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
 
       - name: 🔎 Type check
         run: pnpm typecheck
@@ -176,6 +179,13 @@ jobs:
 
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
+
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
+
+      - name: Install Cypress
+        if: steps.cache-cypress.outputs.cache-hit != 'true'
+        run: npx cypress install
 
       - name: Verify Cypress
         run: npx cypress verify

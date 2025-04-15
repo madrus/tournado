@@ -1,7 +1,7 @@
+import type { Password, User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 import { prisma } from '@/db.server'
-import type { Password, User } from '@prisma/client'
 
 export type { User } from '@prisma/client'
 
@@ -50,7 +50,6 @@ export async function verifyLogin(email: User['email'], password: Password['hash
     return null
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password: _password, ...userWithoutPassword } = userWithPassword
 
   return userWithoutPassword

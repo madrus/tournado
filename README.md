@@ -73,7 +73,7 @@ Prior to your first deployment, you'll need to do a few things:
 
   ```sh
   fly launch
-  # or  
+  # or
   #  fly auth signup
   ```
 
@@ -126,6 +126,7 @@ Prior to your first deployment, you'll need to do a few things:
   ```
 
   You should see something like this:
+
   ```
   Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
   ? Do you still want to use the volumes feature? Yes

@@ -1,10 +1,10 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
+import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
-import tsconfigPaths from 'vite-tsconfig-paths'
 
-import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],

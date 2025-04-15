@@ -1,8 +1,9 @@
-import { vitePlugin as remix } from '@remix-run/dev'
 import path from 'path'
 
+import { vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+
 
 export default defineConfig({
   css: {

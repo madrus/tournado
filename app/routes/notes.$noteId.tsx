@@ -6,7 +6,6 @@ import {
   useLoaderData,
   useRouteError,
 } from '@remix-run/react'
-
 import invariant from 'tiny-invariant'
 
 import { deleteNote, getNote } from '@/models/note.server'

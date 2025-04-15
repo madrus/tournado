@@ -249,7 +249,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Destroy existing machines first
+          # List and destroy volumes
+          flyctl volumes list --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" | grep -q "No volumes" || flyctl volumes destroy --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --yes
+          # List and destroy machines
           flyctl machines list --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" | grep -q "No machines" || flyctl machines destroy --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --yes
           # Deploy new machine
           flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)"
@@ -258,7 +260,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Destroy existing machines first
+          # List and destroy volumes
+          flyctl volumes list --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "No volumes" || flyctl volumes destroy --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --yes
+          # List and destroy machines
           flyctl machines list --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "No machines" || flyctl machines destroy --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --yes
           # Deploy new machine
           flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)"

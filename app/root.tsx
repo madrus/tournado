@@ -1,6 +1,3 @@
-import { getUser } from '~/session.server'
-import tailwindStyles from '~/styles/tailwind.css'
-
 import { cssBundleHref } from '@remix-run/css-bundle'
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
@@ -12,6 +9,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+
+import tailwindStyles from '@/styles/tailwind.css'
+import { getUser } from '@/utils/session.server'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },

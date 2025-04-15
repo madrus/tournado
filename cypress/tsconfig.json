@@ -20,9 +20,8 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-
     "paths": {
-      "~/*": ["../app/*"]
+      "@/*": ["../app/*"]
     }
   }
 }

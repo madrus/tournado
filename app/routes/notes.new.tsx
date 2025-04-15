@@ -1,11 +1,11 @@
-import { createNote } from '~/models/note.server'
-import { requireUserId } from '~/session.server'
-
 import type { ActionFunctionArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
 import { useEffect, useRef } from 'react'
+
+import { createNote } from '@/models/note.server'
+import { requireUserId } from '@/utils/session.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request)

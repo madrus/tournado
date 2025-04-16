@@ -1,6 +1,3 @@
-import { getUser } from '~/session.server'
-import tailwindStyles from '~/styles/tailwind.css'
-
 import { cssBundleHref } from '@remix-run/css-bundle'
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
@@ -11,7 +8,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
 } from '@remix-run/react'
+
+import tailwindStyles from '@/styles/tailwind.css'
+import { getUser } from '@/utils/session.server'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -20,6 +22,29 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ user: await getUser(request) })
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+  console.error(error)
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <h1>Something went wrong</h1>
+      <p>We're working on fixing this issue. Please try again later.</p>
+    </div>
+  )
 }
 
 export default function App() {

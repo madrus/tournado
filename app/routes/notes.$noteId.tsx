@@ -1,7 +1,3 @@
-import invariant from 'tiny-invariant'
-import { deleteNote, getNote } from '~/models/note.server'
-import { requireUserId } from '~/session.server'
-
 import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import {
@@ -10,6 +6,10 @@ import {
   useLoaderData,
   useRouteError,
 } from '@remix-run/react'
+import invariant from 'tiny-invariant'
+
+import { deleteNote, getNote } from '@/models/note.server'
+import { requireUserId } from '@/utils/session.server'
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request)

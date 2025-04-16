@@ -1,7 +1,6 @@
-app = "tournado-f536"
+app = "tournado"
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = [ ]
 swap_size_mb = 512
 
 [experimental]

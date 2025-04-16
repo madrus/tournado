@@ -2,10 +2,10 @@
 // Simply call this with:
 // pnpm exec tsx ./cypress/support/delete-user.ts username@example.com,
 // and that user will get deleted
-import { prisma } from '~/db.server'
-
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { installGlobals } from '@remix-run/node'
+
+import { prisma } from '@/db.server'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 installGlobals()
 

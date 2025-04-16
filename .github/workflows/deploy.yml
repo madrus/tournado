@@ -258,8 +258,8 @@ jobs:
           fi
           # Wait a moment for machines to be fully destroyed
           sleep 10
-          # Deploy new machine
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)"
+          # Deploy new machine in the same region as the volume
+          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --region ams
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -274,5 +274,5 @@ jobs:
           fi
           # Wait a moment for machines to be fully destroyed
           sleep 10
-          # Deploy new machine
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)"
+          # Deploy new machine in the same region as the volume
+          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --region ams

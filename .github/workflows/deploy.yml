@@ -249,30 +249,12 @@ jobs:
         if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Get machine IDs and destroy them
-          MACHINE_IDS=$(flyctl machines list --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --json | jq -r '.[].id')
-          if [ -n "$MACHINE_IDS" ]; then
-            for id in $MACHINE_IDS; do
-              flyctl machines destroy $id --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --force
-            done
-          fi
-          # Wait a moment for machines to be fully destroyed
-          sleep 10
-          # Deploy new machine in the same region as the volume
+          # Deploy using Fly.io's standard deployment process
           flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --region ams
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Get machine IDs and destroy them
-          MACHINE_IDS=$(flyctl machines list --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --json | jq -r '.[].id')
-          if [ -n "$MACHINE_IDS" ]; then
-            for id in $MACHINE_IDS; do
-              flyctl machines destroy $id --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --force
-            done
-          fi
-          # Wait a moment for machines to be fully destroyed
-          sleep 10
-          # Deploy new machine in the same region as the volume
+          # Deploy using Fly.io's standard deployment process
           flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --region ams

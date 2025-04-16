@@ -249,12 +249,28 @@ jobs:
         if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Deploy using Fly.io's standard deployment process
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" --region ams
+          # Deploy using Fly.io's standard deployment process with rolling updates
+          flyctl deploy --remote-only \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --app ${{ steps.app_name.outputs.value }}-staging \
+            --access-token "$(cat /tmp/fly_token)" \
+            --strategy rolling \
+            --regions ams \
+            --max-unavailable 0.33 \
+            --wait-timeout 5m \
+            --yes
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
-          # Deploy using Fly.io's standard deployment process
-          flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" --region ams
+          # Deploy using Fly.io's standard deployment process with rolling updates
+          flyctl deploy --remote-only \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --app ${{ steps.app_name.outputs.value }} \
+            --access-token "$(cat /tmp/fly_token)" \
+            --strategy rolling \
+            --regions ams \
+            --max-unavailable 0.33 \
+            --wait-timeout 5m \
+            --yes

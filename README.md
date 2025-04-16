@@ -291,3 +291,22 @@ We use [Prettier](https://prettier.io/) for auto-formatting in this project. It'
   ```sh
   fly deploy --app tournado-staging
   ```
+
+- Another direct way to deploy to Staging:
+  ```sh
+  fly deploy --app tournado-staging --remote-only --strategy rolling --regions ams --max-unavailable 0.33 --wait-timeout 5m --yes
+  ```
+
+## Monitoring
+
+- We can monitor our machine in Staging at <https://fly.io/apps/tournado-staging/monitoring/>
+- We can list our machines in Staging:
+  ```sh
+  fly machines list --app tournado-staging
+  ```
+
+  Example output:
+  ```
+  1 machines have been retrieved from app tournado-staging.
+  View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
+  ```

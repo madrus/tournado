@@ -255,7 +255,6 @@ jobs:
             --app ${{ steps.app_name.outputs.value }}-staging \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
-            --regions ams \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
             --yes
@@ -270,7 +269,6 @@ jobs:
             --app ${{ steps.app_name.outputs.value }} \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
-            --regions ams \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
             --yes

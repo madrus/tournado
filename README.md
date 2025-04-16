@@ -294,7 +294,7 @@ We use [Prettier](https://prettier.io/) for auto-formatting in this project. It'
 
 - Another direct way to deploy to Staging:
   ```sh
-  fly deploy --app tournado-staging --remote-only --strategy rolling --regions ams --max-unavailable 0.33 --wait-timeout 5m --yes
+  fly deploy --app tournado-staging --remote-only --strategy rolling --max-unavailable 0.33 --wait-timeout 5m --yes
   ```
 
 ## Monitoring

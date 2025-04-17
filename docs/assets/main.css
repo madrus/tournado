@@ -1,0 +1,58 @@
+:root {
+  --base-color: #e0e0e0;
+  --base-font-size: 16px;
+  /* main area background color */
+  --base-background-color: hsl(200, 50%, 20%);
+  --code-font-size: 1em;
+  --content-max-width: 60vw;
+  --theme-color: rgb(3, 201, 137);
+  --link-color: var(--theme-color);
+  --link-color--hover: rgb(240, 100, 50);
+  --mono-hue: 200;
+  --mono-saturation: 50%;
+  /* sidebar background color */
+  --mono-shade1: hsl(var(--mono-hue), var(--mono-saturation), 18%);
+  --pagination-title-color: var(--base-color);
+  --sidebar-name-margin: 0;
+  --sidebar-name-padding: 0;
+  --strong-color: var(--base-color);
+}
+
+.sidebar > h1 {
+  margin-bottom: -0.75em;
+  margin-top: 0.75em;
+}
+
+/* Logo in the sidebar */
+.sidebar > h1 img {
+  height: 72px;
+  width: auto;
+  border-radius: 0;
+}
+
+/* Logo in the navbar */
+.app-name-link img {
+  height: 72px;
+  width: auto;
+}
+
+.markdown-section .table-wrapper {
+  border: 1px solid var(--mono-tint2);
+}
+
+.markdown-section .table-wrapper table {
+  margin: 0;
+}
+
+.markdown-section .table-wrapper table th,
+.markdown-section .table-wrapper table td {
+  border-right: 1px solid var(--mono-tint2);
+}
+
+.markdown-section a code {
+  color: var(--link-color);
+}
+
+.markdown-section a.anchor {
+  color: var(--base-color);
+}

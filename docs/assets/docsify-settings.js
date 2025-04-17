@@ -15,7 +15,7 @@ const getDocsifySettings = () => ({
     smartypants: true,
   },
   search: 'auto',
-  themeColor: '#3F51B5',
+  themeColor: 'rgb(3, 201, 137)',
   // Copy code button
   copyCode: {
     buttonText: 'Copy',

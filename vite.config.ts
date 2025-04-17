@@ -1,9 +1,8 @@
 import path from 'path'
-
-import { vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+import { vitePlugin as remix } from '@remix-run/dev'
 
 export default defineConfig({
   css: {
@@ -19,17 +18,32 @@ export default defineConfig({
         short_name: 'Tournado',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#16a34a',
+        background_color: '#1e293b',
+        theme_color: '#1e293b',
         icons: [
           {
-            src: '/icons/icon-192.png',
+            src: '/favicon/favicon-16x16.png',
+            sizes: '16x16',
+            type: 'image/png',
+          },
+          {
+            src: '/favicon/favicon-32x32.png',
+            sizes: '32x32',
+            type: 'image/png',
+          },
+          {
+            src: '/favicon/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512.png',
+            src: '/favicon/android-chrome-512x512.png',
             sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: '/favicon/apple-touch-icon.png',
+            sizes: '180x180',
             type: 'image/png',
           },
         ],

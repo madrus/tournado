@@ -2,13 +2,13 @@ import { cssBundleHref } from '@remix-run/css-bundle'
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import {
+  isRouteErrorResponse,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse,
   useRouteError,
 } from '@remix-run/react'
 
@@ -17,6 +17,31 @@ import { getUser } from '@/utils/session.server'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
+  // Favicon for most browsers
+  {
+    rel: 'icon',
+    type: 'image/png',
+    sizes: '32x32',
+    href: '/favicon/favicon-32x32.png',
+  },
+  {
+    rel: 'icon',
+    type: 'image/png',
+    sizes: '16x16',
+    href: '/favicon/favicon-16x16.png',
+  },
+  // Apple Touch Icon
+  {
+    rel: 'apple-touch-icon',
+    type: 'image/png',
+    sizes: '180x180',
+    href: '/favicon/apple-touch-icon.png',
+  },
+  // Web Manifest
+  {
+    rel: 'manifest',
+    href: '/favicon/site.webmanifest',
+  },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ]
 
@@ -53,6 +78,7 @@ export default function App() {
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <meta name='theme-color' content='#1e293b' />
         <Meta />
         <Links />
       </head>

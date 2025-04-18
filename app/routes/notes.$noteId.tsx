@@ -6,6 +6,7 @@ import {
   useLoaderData,
   useRouteError,
 } from '@remix-run/react'
+
 import invariant from 'tiny-invariant'
 
 import { deleteNote, getNote } from '@/models/note.server'
@@ -42,7 +43,7 @@ export default function NoteDetailsPage() {
       <Form method='post'>
         <button
           type='submit'
-          className='rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400'
+          className='rounded-full border border-slate-400 bg-emerald-50 px-6 py-2 font-semibold text-slate-400 hover:border-brand hover:bg-white hover:text-brand'
         >
           Delete
         </button>

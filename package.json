@@ -7,6 +7,7 @@
     "build": "remix build",
     "dev": "remix dev -c \"npm run dev:serve\"",
     "dev:serve": "NODE_OPTIONS=\"--import ./mocks/index.js\" remix-serve ./build/index.js",
+    "docs": "docsify serve docs -o -p 3030",
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
@@ -15,10 +16,10 @@
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"npx cypress open\"",
     "pretest:e2e:run": "npm run build",
+    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
     "typecheck": "tsc && tsc -p cypress",
-    "validate": "npm-run-all --parallel \"test -- --run\" lint typecheck test:e2e:run",
-    "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install"
+    "validate": "npm-run-all --parallel \"test -- --run\" lint typecheck test:e2e:run"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.1",
@@ -52,6 +53,7 @@
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
     "cypress": "^14.3.0",
+    "docsify-cli": "^4.4.4",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-import-resolver-typescript": "^4.3.2",

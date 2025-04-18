@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
+
 import { useEffect, useRef } from 'react'
 
 import { createNote } from '@/models/note.server'

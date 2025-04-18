@@ -24,11 +24,13 @@ app/
 ## Development Workflow
 
 1. Start the development server:
+
 ```sh
 pnpm dev
 ```
 
 2. Run tests:
+
 ```sh
 # Run all tests
 pnpm test
@@ -41,11 +43,13 @@ pnpm test:unit
 ```
 
 3. Format code:
+
 ```sh
 pnpm format
 ```
 
 4. Type checking:
+
 ```sh
 pnpm typecheck
 ```
@@ -56,4 +60,4 @@ pnpm typecheck
 - Follow ESLint rules
 - Write TypeScript with strict mode enabled
 - Use functional components with hooks
-- Follow the Remix conventions for routes and loaders 
+- Follow the Remix conventions for routes and loaders

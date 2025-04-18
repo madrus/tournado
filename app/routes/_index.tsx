@@ -8,7 +8,7 @@ export const meta: MetaFunction = () => [{ title: 'Tournado' }]
 export default function Index() {
   const user = useOptionalUser()
   return (
-    <main className='relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center'>
+    <main className='relative min-h-screen bg-emerald-50 sm:flex sm:items-center sm:justify-center'>
       <div className='relative sm:pb-16 sm:pt-8'>
         <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
           <div className='relative sm:overflow-hidden sm:rounded-2xl'>
@@ -16,23 +16,20 @@ export default function Index() {
               <h1 className='text-center text-6xl font-extrabold tracking-tight lg:text-9xl'>
                 <span className='block uppercase text-brand drop-shadow'>Tournado</span>
               </h1>
-              <p className='mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl'>
-                Check the README.md file for instructions on how to get this project
-                deployed.
-              </p>
               <div className='mx-auto mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 sm:max-w-none sm:flex-row sm:justify-center'>
                 {user ? (
                   <Link
                     to='/notes'
-                    className='flex w-1/2 min-w-[120px] items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8 lg:w-1/3'
+                    className='flex w-1/2 min-w-[200px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium text-brand shadow-sm hover:bg-white hover:text-red-600 lg:w-1/2'
                   >
-                    View Notes for {user.email}
+                    {'View notes for '}
+                    {user.email}
                   </Link>
                 ) : (
                   <div className='flex w-full flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5'>
                     <Link
                       to='/join'
-                      className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-gray-300 border-transparent bg-white px-6 py-2 text-base font-medium text-gray-700 shadow-sm hover:border-red-500 hover:bg-yellow-50 hover:text-red-600 sm:px-8 lg:w-1/3'
+                      className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-sm hover:bg-white lg:w-1/3'
                     >
                       Sign up
                     </Link>

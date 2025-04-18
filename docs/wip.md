@@ -17,15 +17,15 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
 2. Proposed Changes:
 
    1. [ ] Notes Page Layout:
-      - [ ] Convert the sidebar into a collapsible menu for mobile
-      - [ ] Implement a hamburger menu for mobile navigation
+      - [x] Convert the sidebar into a collapsible menu for mobile
+      - [x] Implement a hamburger menu for mobile navigation
       - [ ] Stack the note list and content vertically on mobile
-      - [ ] Add a floating action button for "New Note" on mobile
-      - [ ] Make the header responsive with proper spacing
-   2. [ ] Note Detail Page:
-      - [ ] Adjust padding and margins for mobile screens
-      - [ ] Make the delete button more touch-friendly
-      - [ ] Ensure text is readable on smaller screens
+      - [x] Add a floating action button for "New Note" on mobile
+      - [x] Make the header responsive with proper spacing
+   2. [x] Note Detail Page:
+      - [x] Adjust padding and margins for mobile screens
+      - [x] Make the delete button more touch-friendly
+      - [x] Ensure text is readable on smaller screens
    3. [ ] Authentication Pages (Login/Join):
       - [ ] These are already somewhat mobile-friendly but could use some improvements
       - [ ] Adjust form padding and input sizes for better touch interaction

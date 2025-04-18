@@ -5,4 +5,4 @@
 > A modern tournament management system
 
 [GitHub](https://github.com/madrus/tournado)
-[Get Started](README.md) 
+[Get Started](README.md)

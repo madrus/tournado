@@ -99,4 +99,4 @@ afterEach(() => {
 3. Use meaningful test descriptions
 4. Follow the testing pyramid principle
 5. Mock external dependencies
-6. Clean up after tests 
+6. Clean up after tests

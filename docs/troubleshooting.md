@@ -5,6 +5,7 @@
 ### Deployment Issues
 
 1. **Failed Deployments**
+
    - Check Fly.io logs: `fly logs --app tournado`
    - Verify secrets are set: `fly secrets list --app tournado`
    - Check machine status: `fly machines list --app tournado`
@@ -17,6 +18,7 @@
 ### Development Issues
 
 1. **Build Failures**
+
    - Clear node_modules: `rm -rf node_modules`
    - Clear pnpm cache: `pnpm store prune`
    - Reinstall dependencies: `pnpm install`
@@ -60,6 +62,7 @@ pnpm dev:logs
 ## Performance Issues
 
 1. **Slow Database Queries**
+
    - Check query execution plans
    - Add appropriate indexes
    - Optimize database schema
@@ -76,4 +79,4 @@ If you encounter issues that aren't covered in this guide:
 1. Check the [Fly.io documentation](https://fly.io/docs/)
 2. Visit the [Fly.io community](https://community.fly.io/)
 3. Review the [Remix documentation](https://remix.run/docs)
-4. Check GitHub issues for similar problems 
+4. Check GitHub issues for similar problems

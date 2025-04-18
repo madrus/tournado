@@ -6,7 +6,7 @@ import { singleton } from './singleton.server'
 const prisma = singleton('prisma', () => new PrismaClient())
 
 // Connect to the database with error handling
-prisma.$connect().catch((error) => {
+prisma.$connect().catch(error => {
   console.error('Failed to connect to database:', error)
   // Don't throw here, let the application continue
 })

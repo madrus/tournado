@@ -49,14 +49,16 @@ export default function NotesPage() {
           <Form action='/logout' method='post'>
             <button
               type='submit'
-              className='rounded bg-emerald-700 px-4 py-2 text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
+              className='rounded-lg bg-emerald-700 px-4 py-2 text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
             >
               Logout
             </button>
           </Form>
         </div>
       </header>
-      <div className='h-2 w-full bg-brand' />
+
+      <div className='h-1 w-full bg-brand md:h-2' />
+
       <main className='flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (

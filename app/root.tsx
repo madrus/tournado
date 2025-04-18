@@ -1,5 +1,5 @@
 import { cssBundleHref } from '@remix-run/css-bundle'
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import {
   isRouteErrorResponse,
@@ -45,6 +45,31 @@ export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ]
 
+/**
+ * Meta tags for the app
+ * - make sure there is no browser search bar on mobile
+ */
+export const meta: MetaFunction = () => [
+  { charSet: 'utf-8' },
+  {
+    name: 'viewport',
+    content:
+      'width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,minimal-ui,maximum-scale=1',
+  },
+  {
+    name: 'apple-mobile-web-app-capable',
+    content: 'yes',
+  },
+  {
+    name: 'apple-mobile-web-app-status-bar-style',
+    content: 'black-translucent',
+  },
+  {
+    name: 'theme-color',
+    content: '#047857',
+  },
+]
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ user: await getUser(request) })
 }
@@ -76,9 +101,6 @@ export default function App() {
   return (
     <html lang='en' className='h-full'>
       <head>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width,initial-scale=1' />
-        <meta name='theme-color' content='#1e293b' />
         <Meta />
         <Links />
       </head>

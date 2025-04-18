@@ -29,7 +29,7 @@ export default function Index() {
                   <div className='flex w-full flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5'>
                     <Link
                       to='/join'
-                      className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 border-transparent bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-sm hover:bg-white lg:w-1/3'
+                      className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-sm hover:bg-white lg:w-1/3'
                     >
                       Sign up
                     </Link>

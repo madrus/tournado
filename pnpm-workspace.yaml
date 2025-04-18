@@ -1,10 +1,10 @@
 packages:
-- '.'
+  - '.'
 
 onlyBuiltDependencies:
-- '@prisma/client'
-- '@prisma/engines'
-- cypress
-- esbuild
-- msw
-- prisma
+  - '@prisma/client'
+  - '@prisma/engines'
+  - cypress
+  - esbuild
+  - msw
+  - prisma

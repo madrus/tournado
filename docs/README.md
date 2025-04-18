@@ -101,8 +101,7 @@ Prior to your first deployment, you'll need to do a few things:
   ```
 
 - Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on [Fly.io](https://fly.io) and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
-  It is also possible to run `fly tokens create deploy` command. 
-
+  It is also possible to run `fly tokens create deploy` command.
 
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
@@ -226,18 +225,20 @@ We use [Prettier](https://prettier.io/) for auto-formatting in this project. It'
   fly logs --app tournado-staging
   ```
 - Check the status of your Fly.io machines and volumes:
+
   ```sh
   fly machines list --app tournado-staging
   ```
 
   Example output:
+
   ```
   1 machines have been retrieved from app tournado-staging.
   View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
 
   tournado-staging
-  ID            	NAME                     	STATE  	CHECKS	REGION	ROLE	IMAGE                                                 	IP ADDRESS                     	VOLUME              	CREATED             	LAST UPDATED        	PROCESS GROUP	SIZE                
-  7815677a50d578	sparkling-wildflower-9325	stopped	0/2   	iad   	    	tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X	fdaa:16:cce:a7b:2f7:a39b:1bad:2	vol_4qpmz25gyggywxwv	2025-04-15T21:06:25Z	2025-04-15T21:32:54Z	app          	shared-cpu-1x:256MB	
+  ID            	NAME                     	STATE  	CHECKS	REGION	ROLE	IMAGE                                                 	IP ADDRESS                     	VOLUME              	CREATED             	LAST UPDATED        	PROCESS GROUP	SIZE
+  7815677a50d578	sparkling-wildflower-9325	stopped	0/2   	iad   	    	tournado-staging:deployment-01JRXM5WCTP3S2C0J2JWW3JR6X	fdaa:16:cce:a7b:2f7:a39b:1bad:2	vol_4qpmz25gyggywxwv	2025-04-15T21:06:25Z	2025-04-15T21:32:54Z	app          	shared-cpu-1x:256MB
   ```
 
   The machine `7815677a50d578` is currently stopped but still has the volume vol_4qpmz25gyggywxwv attached to it. To delete the volume, we need to first destroy the machine that's using it.
@@ -245,4 +246,4 @@ We use [Prettier](https://prettier.io/) for auto-formatting in this project. It'
 - Let's destroy the machine:
   ```sh
   fly machines destroy 7815677a50d578 --app tournado-staging
-  ``` 
+  ```

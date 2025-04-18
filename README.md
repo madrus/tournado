@@ -16,11 +16,13 @@ pnpm dev
 The project documentation is available in the `docs` directory. To view it:
 
 1. Install docsify globally:
+
 ```sh
 pnpm add -g docsify-cli
 ```
 
 2. Start the documentation server:
+
 ```sh
 docsify serve docs
 ```

@@ -12,8 +12,16 @@ import {
   useRouteError,
 } from '@remix-run/react'
 
+import { AddToHomeScreen } from '@/components/AddToHomeScreen'
+import { UpdatePrompt } from '@/components/UpdatePrompt'
 import tailwindStyles from '@/styles/tailwind.css'
+import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
+
+// Only register service worker in the browser
+if (typeof window !== 'undefined') {
+  registerServiceWorker()
+}
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -48,6 +56,9 @@ export const links: LinksFunction = () => [
 /**
  * Meta tags for the app
  * - make sure there is no browser search bar on mobile
+ * - To hide Safari/Chrome UI on iOS, users must:
+ *   1. Add the app to home screen
+ *   2. Launch it from the home screen icon
  */
 export const meta: MetaFunction = () => [
   { charSet: 'utf-8' },
@@ -56,17 +67,40 @@ export const meta: MetaFunction = () => [
     content:
       'width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,minimal-ui,maximum-scale=1',
   },
+  // iOS full-screen web app configuration
   {
     name: 'apple-mobile-web-app-capable',
     content: 'yes',
   },
   {
+    name: 'apple-mobile-web-app-title',
+    content: 'Tournado',
+  },
+  {
     name: 'apple-mobile-web-app-status-bar-style',
     content: 'black-translucent',
+  },
+  // Chrome mobile configuration
+  {
+    name: 'mobile-web-app-capable',
+    content: 'yes',
   },
   {
     name: 'theme-color',
     content: '#047857',
+  },
+  {
+    name: 'application-name',
+    content: 'Tournado',
+  },
+  // Chrome for iOS specific
+  {
+    name: 'apple-mobile-web-app-orientations',
+    content: 'portrait',
+  },
+  {
+    name: 'apple-mobile-web-app-status-bar',
+    content: 'black-translucent',
   },
 ]
 
@@ -106,6 +140,8 @@ export default function App() {
       </head>
       <body className='h-full'>
         <Outlet />
+        <AddToHomeScreen />
+        <UpdatePrompt />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

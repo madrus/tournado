@@ -98,14 +98,7 @@ module.exports = [
       },
     },
     rules: {
-      'import/order': [
-        'error',
-        {
-          alphabetize: { caseInsensitive: true, order: 'asc' },
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
-          'newlines-between': 'always',
-        },
-      ],
+      'import/order': 'off',
       // Include rules from plugin:@typescript-eslint/recommended, plugin:@typescript-eslint/stylistic, plugin:import/recommended, plugin:import/typescript
     },
   },

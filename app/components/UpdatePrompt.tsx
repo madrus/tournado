@@ -1,3 +1,4 @@
+// @remix-run/client
 import { useEffect, useState } from 'react'
 
 import { updateServiceWorker } from '@/utils/serviceWorker'

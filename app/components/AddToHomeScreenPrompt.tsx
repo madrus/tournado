@@ -1,3 +1,4 @@
+// @remix-run/client
 import { useEffect, useState } from 'react'
 
 type Platform =
@@ -9,11 +10,10 @@ type Platform =
   | 'android-samsung'
   | 'other'
 
-// Move environment detection to useEffect
 export function AddToHomeScreenPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
   const [platform, setPlatform] = useState<Platform>('other')
-  const [storageKey, setStorageKey] = useState<string>('')
+  const [storageKey, setStorageKey] = useState('')
 
   useEffect(() => {
     // Get environment from the URL
@@ -66,15 +66,6 @@ export function AddToHomeScreenPrompt() {
     function shouldShowPrompt(): boolean {
       const lastDismissed = localStorage.getItem(storageKey)
 
-      // Debug info
-      console.debug('PWA Prompt Debug:', {
-        platform: detectPlatform(),
-        isStandalone: isInStandaloneMode(),
-        lastDismissed,
-        userAgent: navigator.userAgent,
-        hostname: window.location.hostname,
-      })
-
       if (!lastDismissed) return true
 
       try {
@@ -109,26 +100,19 @@ export function AddToHomeScreenPrompt() {
 
     setPlatform(detectedPlatform)
 
-    // Debug info on mount
-    console.debug('AddToHomeScreen mounted:', {
-      platform: detectedPlatform,
-      isStandalone: standalone,
-      userAgent: navigator.userAgent,
-    })
-
     // Only show prompt if:
     // 1. Device is mobile
     // 2. Not already in standalone mode
     // 3. Not already dismissed today
     if (detectedPlatform !== 'other' && !standalone && shouldShowPrompt()) {
       // Add slight delay to ensure proper initialization
-      setTimeout(() => setShowPrompt(true), 1000)
+      const timeoutId = setTimeout(() => setShowPrompt(true), 1000)
+      return () => clearTimeout(timeoutId)
     }
   }, [storageKey])
 
   const handleDismiss = () => {
     setShowPrompt(false)
-    // Store the current timestamp when dismissed
     localStorage.setItem(storageKey, new Date().toISOString())
   }
 

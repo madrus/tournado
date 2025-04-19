@@ -14,12 +14,12 @@ import {
 
 import { useEffect } from 'react'
 
-import { AddToHomeScreenPrompt } from '@/components/AddToHomeScreenPrompt'
-import { UpdatePrompt } from '@/components/UpdatePrompt'
 import safeAreaStyles from '@/styles/safe-areas.css'
 import tailwindStyles from '@/styles/tailwind.css'
-import { registerServiceWorker } from '@/utils/serviceWorker'
+// import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
+
+import { registerServiceWorker } from './utils/serviceWorker'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -137,17 +137,20 @@ export default function App() {
   }, [])
 
   return (
-    <html lang='en' className='h-full'>
+    <html lang='en'>
       <head>
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <meta name='theme-color' content='#1e293b' />
         <Meta />
         <Links />
       </head>
       <body className='h-full bg-emerald-50'>
         <Outlet />
-        <div id='pwa-prompts'>
+        {/* <div id='pwa-prompts'>
           <AddToHomeScreenPrompt />
           <UpdatePrompt />
-        </div>
+        </div> */}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

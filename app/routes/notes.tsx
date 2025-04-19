@@ -120,9 +120,9 @@ export default function NotesPage() {
         {/* Mobile Floating Action Button */}
         <Link
           to='new'
-          className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pb-1 text-white shadow-lg md:hidden'
+          className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 shadow-lg md:hidden'
         >
-          <span className='text-2xl'>+</span>
+          <span className='text-3xl text-white'>+</span>
         </Link>
       </main>
     </div>

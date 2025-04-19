@@ -4,9 +4,17 @@ import { useEffect, useState } from 'react'
 import { updateServiceWorker } from '@/utils/serviceWorker'
 
 export function UpdatePrompt() {
+  const [isClient, setIsClient] = useState(false)
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false)
 
+  // Mark client-side rendering
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
     const handleUpdateFound = () => {
       setShowUpdatePrompt(true)
     }
@@ -16,7 +24,10 @@ export function UpdatePrompt() {
     return () => {
       window.removeEventListener('serviceWorkerUpdateReady', handleUpdateFound)
     }
-  }, [])
+  }, [isClient])
+
+  // Don't render anything during SSR
+  if (!isClient) return null
 
   if (!showUpdatePrompt) return null
 

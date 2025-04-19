@@ -11,11 +11,19 @@ type Platform =
   | 'other'
 
 export function AddToHomeScreenPrompt() {
+  const [isClient, setIsClient] = useState(false)
   const [showPrompt, setShowPrompt] = useState(false)
   const [platform, setPlatform] = useState<Platform>('other')
   const [storageKey, setStorageKey] = useState('')
 
+  // Mark client-side rendering
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
     // Get environment from the URL
     function getEnvironment(): 'staging' | 'production' {
       return window.location.hostname.includes('staging') ? 'staging' : 'production'
@@ -30,7 +38,6 @@ export function AddToHomeScreenPrompt() {
         : `${baseKey}-pwa-prompt-dismissed`
     }
 
-    // Set the storage key
     setStorageKey(getStorageKey())
 
     function detectPlatform(): Platform {
@@ -109,14 +116,22 @@ export function AddToHomeScreenPrompt() {
       const timeoutId = setTimeout(() => setShowPrompt(true), 1000)
       return () => clearTimeout(timeoutId)
     }
-  }, [storageKey])
+  }, [isClient, storageKey])
 
   const handleDismiss = () => {
     setShowPrompt(false)
     localStorage.setItem(storageKey, new Date().toISOString())
   }
 
-  if (!showPrompt) return null
+  // Don't render anything during SSR
+  if (!isClient) return null
+
+  console.log(
+    '[AddToHomeScreenPrompt] Rendering, showPrompt:',
+    showPrompt,
+    'platform:',
+    platform
+  )
 
   const promptText = {
     'ios-safari': {

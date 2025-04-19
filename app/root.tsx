@@ -12,9 +12,13 @@ import {
   useRouteError,
 } from '@remix-run/react'
 
-import { PWAElements } from '@/components/PWAElements'
+import { useEffect } from 'react'
+
+import { AddToHomeScreenPrompt } from '@/components/AddToHomeScreenPrompt'
+import { UpdatePrompt } from '@/components/UpdatePrompt'
 import safeAreaStyles from '@/styles/safe-areas.css'
 import tailwindStyles from '@/styles/tailwind.css'
+import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
 
 export const links: LinksFunction = () => [
@@ -127,15 +131,23 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+  // Register service worker
+  useEffect(() => {
+    registerServiceWorker()
+  }, [])
+
   return (
     <html lang='en' className='h-full'>
       <head>
         <Meta />
         <Links />
       </head>
-      <body className='h-full bg-emerald-50' suppressHydrationWarning>
+      <body className='h-full bg-emerald-50'>
         <Outlet />
-        <PWAElements />
+        <div id='pwa-prompts'>
+          <AddToHomeScreenPrompt />
+          <UpdatePrompt />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -21,7 +21,7 @@ export default function NotesPage() {
 
   return (
     <div className='flex h-full min-h-screen flex-col'>
-      <header className='flex items-center justify-between bg-emerald-800 p-4 text-white'>
+      <header className='safe-top flex items-center justify-between bg-emerald-800 p-4 text-white'>
         <button
           className='rounded p-2 hover:bg-slate-700 md:hidden'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -70,11 +70,11 @@ export default function NotesPage() {
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
+          className={`safe-top fixed inset-y-0 left-0 z-50 w-80 transform bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <div className='relative flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white'>
+          <div className='relative flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white pt-[env(safe-area-inset-top)]'>
             <div className='p-4'>
               <Link
                 to='new'
@@ -86,7 +86,7 @@ export default function NotesPage() {
 
             <hr className='border-gray-300' />
 
-            <div className='flex-1 overflow-y-auto'>
+            <div className='pb-safe flex-1 overflow-y-auto'>
               {data.noteListItems.length === 0 ? (
                 <p className='p-4 text-center text-gray-500'>No notes yet</p>
               ) : (
@@ -120,7 +120,7 @@ export default function NotesPage() {
         {/* Mobile Floating Action Button */}
         <Link
           to='new'
-          className='fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pb-1 text-white shadow-lg md:hidden'
+          className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pb-1 text-white shadow-lg md:hidden'
         >
           <span className='text-2xl'>+</span>
         </Link>

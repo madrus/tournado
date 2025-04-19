@@ -12,19 +12,19 @@ import {
   useRouteError,
 } from '@remix-run/react'
 
-import { AddToHomeScreen } from '@/components/AddToHomeScreen'
+import { useEffect } from 'react'
+
+import { AddToHomeScreenPrompt } from '@/components/AddToHomeScreenPrompt'
 import { UpdatePrompt } from '@/components/UpdatePrompt'
+import safeAreaStyles from '@/styles/safe-areas.css'
 import tailwindStyles from '@/styles/tailwind.css'
+import { ClientOnly } from '@/utils/clientOnly'
 import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
 
-// Only register service worker in the browser
-if (typeof window !== 'undefined') {
-  registerServiceWorker()
-}
-
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
+  { rel: 'stylesheet', href: safeAreaStyles },
   // Favicon for most browsers
   {
     rel: 'icon',
@@ -132,42 +132,25 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+  // Register service worker
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      registerServiceWorker()
+    }
+  }, [])
+
   return (
     <html lang='en' className='h-full'>
       <head>
         <Meta />
         <Links />
-        <style>{`
-          :root {
-            --sat: env(safe-area-inset-top);
-            --sar: env(safe-area-inset-right);
-            --sab: env(safe-area-inset-bottom);
-            --sal: env(safe-area-inset-left);
-          }
-          body {
-            padding: var(--sat) var(--sar) var(--sab) var(--sal);
-          }
-          /* Ensure content doesn't go under status bar */
-          .safe-top {
-            padding-top: max(env(safe-area-inset-top), 16px);
-          }
-          /* Ensure content doesn't go under home indicator */
-          .safe-bottom {
-            padding-bottom: max(env(safe-area-inset-bottom), 16px);
-          }
-          /* For fixed position elements */
-          .fixed-safe-top {
-            top: env(safe-area-inset-top);
-          }
-          .fixed-safe-bottom {
-            bottom: env(safe-area-inset-bottom);
-          }
-        `}</style>
       </head>
       <body className='h-full'>
         <Outlet />
-        <AddToHomeScreen />
-        <UpdatePrompt />
+        <ClientOnly>
+          <AddToHomeScreenPrompt />
+          <UpdatePrompt />
+        </ClientOnly>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

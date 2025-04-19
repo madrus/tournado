@@ -10,7 +10,7 @@ type Platform =
   | 'other'
 
 // Move environment detection to useEffect
-export function AddToHomeScreen() {
+export function AddToHomeScreenPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
   const [platform, setPlatform] = useState<Platform>('other')
   const [storageKey, setStorageKey] = useState<string>('')
@@ -142,12 +142,12 @@ export function AddToHomeScreen() {
     },
     'ios-chrome': {
       title: 'Install this app on your iPhone',
-      instruction: 'Tap the menu (...) then "Share" and "Add to Home Screen"',
+      instruction: 'Tap the share button and then "Add to Home Screen"',
       icon: '⋮',
     },
     'ios-firefox': {
       title: 'Install this app on your iPhone',
-      instruction: 'Tap the menu (...) then "Share Page" and "Add to Home Screen"',
+      instruction: 'Tap the hamburger menu then "Share" and "Add to Home Screen"',
       icon: '⋮',
     },
     'android-chrome': {

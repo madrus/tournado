@@ -1,52 +1,47 @@
-// @remix-run/client
+export function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    // Register the service worker
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(registration => {
+          console.log('ServiceWorker registered:', registration)
 
-export async function registerServiceWorker() {
-  if (
-    typeof window === 'undefined' ||
-    !('serviceWorker' in navigator) ||
-    process.env.NODE_ENV !== 'production'
-  ) {
-    return
-  }
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing
+            if (!newWorker) return
 
-  try {
-    const registration = await navigator.serviceWorker.register('/sw.js')
+            newWorker.addEventListener('statechange', () => {
+              // When the new service worker is installed and waiting
+              if (
+                newWorker.state === 'installed' &&
+                navigator.serviceWorker.controller
+              ) {
+                // Notify the user about the update
+                const event = new CustomEvent('serviceWorkerUpdateReady')
+                window.dispatchEvent(event)
+              }
+            })
+          })
+        })
+        .catch(error => {
+          console.error('ServiceWorker registration failed:', error)
+        })
 
-    // Check for updates immediately
-    registration.update()
-
-    // Check for updates periodically
-    setInterval(
-      () => {
-        registration.update()
-      },
-      60 * 60 * 1000
-    ) // Check every hour
-
-    registration.addEventListener('updatefound', () => {
-      const newWorker = registration.installing
-      if (!newWorker) return
-
-      newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // New content is available, trigger update event
-          window.dispatchEvent(new Event('serviceWorkerUpdateReady'))
-        }
+      // Handle updates from existing service workers
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        // Reload the page when the new service worker takes control
+        window.location.reload()
       })
     })
-  } catch (error) {
-    console.error('Service worker registration failed:', error)
   }
 }
 
-export async function updateServiceWorker() {
-  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
-    return
+export function updateServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then(registration => {
+      registration.waiting?.postMessage('skipWaiting')
+    })
   }
-
-  const registration = await navigator.serviceWorker.getRegistration()
-  if (!registration) return
-
-  await registration.update()
-  window.location.reload()
 }

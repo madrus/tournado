@@ -21,14 +21,14 @@ export default function NotesPage() {
 
   return (
     <div className='flex h-full min-h-screen flex-col'>
-      <header className='safe-top flex items-center justify-between bg-emerald-800 p-4 text-white'>
+      <header className='safe-top relative h-[56px] bg-emerald-800 px-4 text-white'>
         <button
-          className='rounded p-2 hover:bg-slate-700 md:hidden'
+          className='absolute left-4 top-1/2 -translate-y-1/2 rounded p-1 md:hidden'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label='Toggle menu'
         >
           <svg
-            className='h-6 w-6'
+            className='h-7 w-7'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -41,15 +41,15 @@ export default function NotesPage() {
             />
           </svg>
         </button>
-        <h1 className='text-3xl font-bold'>
+        <h1 className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
           <Link to='.'>Notes</Link>
         </h1>
-        <div className='flex items-center gap-4'>
-          <p className='hidden md:block'>{user.email}</p>
+        <div className='absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+          <p className='hidden text-sm md:block'>{user.email}</p>
           <Form action='/logout' method='post'>
             <button
               type='submit'
-              className='rounded-lg bg-emerald-700 px-4 py-2 text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
+              className='rounded-lg bg-emerald-700 px-4 py-1.5 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
             >
               Logout
             </button>
@@ -57,24 +57,26 @@ export default function NotesPage() {
         </div>
       </header>
 
-      <div className='h-1 w-full bg-brand md:h-2' />
+      <div className='h-0.5 w-full bg-red-500' />
 
-      <main className='flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
+      <main className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (
           <div
-            className='fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden'
+            className='fixed inset-0 top-[58px] z-40 bg-black bg-opacity-50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
 
         {/* Sidebar */}
         <div
-          className={`safe-top fixed inset-y-0 left-0 z-50 w-80 transform bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
+            isSidebarOpen
+              ? 'fixed top-[58px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
+              : '-translate-x-full'
           }`}
         >
-          <div className='relative flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white pt-[env(safe-area-inset-top)]'>
+          <div className='relative flex h-full flex-col'>
             <div className='p-4'>
               <Link
                 to='new'
@@ -113,7 +115,7 @@ export default function NotesPage() {
         </div>
 
         {/* Main Content */}
-        <div className='flex-1 p-4 md:p-6'>
+        <div className='flex flex-1 flex-col p-4 md:p-6'>
           <Outlet />
         </div>
 

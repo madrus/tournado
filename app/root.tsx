@@ -19,6 +19,8 @@ import tailwindStyles from '@/styles/tailwind.css'
 // import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
 
+import { AddToHomeScreenPrompt } from './components/AddToHomeScreenPrompt'
+import { UpdatePrompt } from './components/UpdatePrompt'
 import { registerServiceWorker } from './utils/serviceWorker'
 
 export const links: LinksFunction = () => [
@@ -137,7 +139,7 @@ export default function App() {
   }, [])
 
   return (
-    <html lang='en'>
+    <html lang='en' className='h-full'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
@@ -145,12 +147,14 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className='h-full bg-emerald-50'>
-        <Outlet />
-        {/* <div id='pwa-prompts'>
-          <AddToHomeScreenPrompt />
-          <UpdatePrompt />
-        </div> */}
+      <body className='h-full bg-gradient-to-b from-emerald-50 to-emerald-100'>
+        <div className='min-h-full'>
+          <Outlet />
+          <div id='pwa-prompts'>
+            <AddToHomeScreenPrompt />
+            <UpdatePrompt />
+          </div>
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

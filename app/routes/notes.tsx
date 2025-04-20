@@ -1,6 +1,13 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Form, Link, NavLink, Outlet, useLoaderData } from '@remix-run/react'
+import {
+  Form,
+  Link,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useLocation,
+} from '@remix-run/react'
 
 import { useState } from 'react'
 
@@ -19,6 +26,8 @@ export default function NotesPage() {
   const data = useLoaderData<typeof loader>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const location = useLocation()
+  const isNewNotePage = location.pathname === '/notes/new'
 
   return (
     <div className='flex h-full min-h-screen flex-col'>
@@ -52,7 +61,7 @@ export default function NotesPage() {
           <Form action='/logout' method='post'>
             <button
               type='submit'
-              className='rounded-lg bg-emerald-700 px-4 py-1.5 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
+              className='rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
             >
               Logout
             </button>
@@ -60,7 +69,7 @@ export default function NotesPage() {
         </div>
       </header>
 
-      <div className='h-1.5 w-full bg-red-500 md:h-2' />
+      <div className='h-1.5 w-full bg-red-500' />
 
       <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
@@ -83,7 +92,7 @@ export default function NotesPage() {
             <div className='p-4'>
               <Link
                 to='new'
-                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium text-red-600 shadow-sm hover:bg-white'
+                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-sm hover:bg-emerald-50'
               >
                 + New Note
               </Link>
@@ -122,13 +131,15 @@ export default function NotesPage() {
           <Outlet />
         </div>
 
-        {/* Mobile Floating Action Button */}
-        <Link
-          to='new'
-          className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 shadow-lg md:hidden'
-        >
-          <span className='text-3xl text-white'>+</span>
-        </Link>
+        {/* Mobile Floating Action Add Note Button */}
+        {!isNewNotePage && (
+          <Link
+            to='new'
+            className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
+          >
+            <span className='text-3xl text-white'>+</span>
+          </Link>
+        )}
       </main>
     </div>
   )

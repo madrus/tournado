@@ -15,13 +15,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export default function NotesPage() {
+  const HEADER_HEIGHT = 56
   const data = useLoaderData<typeof loader>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
     <div className='flex h-full min-h-screen flex-col'>
-      <header className='safe-top relative h-[56px] bg-emerald-800 px-4 text-white'>
+      <header
+        className={`safe-top relative h-[${HEADER_HEIGHT}px] bg-emerald-800 px-4 text-white`}
+      >
         <button
           className='absolute left-4 top-1/2 -translate-y-1/2 rounded p-1 md:hidden'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -57,22 +60,22 @@ export default function NotesPage() {
         </div>
       </header>
 
-      <div className='h-0.5 w-full bg-red-500' />
+      <div className='h-1.5 w-full bg-red-500 md:h-2' />
 
-      <main className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
+      <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (
           <div
-            className='fixed inset-0 top-[58px] z-40 bg-black bg-opacity-50 md:hidden'
+            className={`fixed inset-0 top-[${HEADER_HEIGHT + 6}px] z-40 bg-black bg-opacity-50 md:hidden`}
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
 
         {/* Sidebar */}
         <div
-          className={`z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
+          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
-              ? 'fixed top-[58px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
+              ? `fixed top-[${HEADER_HEIGHT + 6}px] h-[calc(100vh-${HEADER_HEIGHT + 2}px)] translate-x-0 shadow-lg`
               : '-translate-x-full'
           }`}
         >
@@ -115,7 +118,7 @@ export default function NotesPage() {
         </div>
 
         {/* Main Content */}
-        <div className='flex flex-1 flex-col p-4 md:p-6'>
+        <div className='flex-1 p-4 md:p-6'>
           <Outlet />
         </div>
 

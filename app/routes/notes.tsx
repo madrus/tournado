@@ -1,6 +1,13 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Form, Link, NavLink, Outlet, useLoaderData } from '@remix-run/react'
+import {
+  Form,
+  Link,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useLocation,
+} from '@remix-run/react'
 
 import { useState } from 'react'
 
@@ -18,17 +25,19 @@ export default function NotesPage() {
   const data = useLoaderData<typeof loader>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const location = useLocation()
+  const isNewNotePage = location.pathname === '/notes/new'
 
   return (
     <div className='flex h-full min-h-screen flex-col'>
-      <header className='flex items-center justify-between bg-emerald-800 p-4 text-white'>
+      <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
         <button
-          className='rounded p-2 hover:bg-slate-700 md:hidden'
+          className='absolute left-4 top-1/2 -translate-y-1/2 rounded p-1 md:hidden'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label='Toggle menu'
         >
           <svg
-            className='h-6 w-6'
+            className='h-7 w-7'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -41,42 +50,47 @@ export default function NotesPage() {
             />
           </svg>
         </button>
-        <h1 className='text-3xl font-bold'>
+        <h1 className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
           <Link to='.'>Notes</Link>
         </h1>
-        <div className='flex items-center gap-4'>
-          <p className='hidden md:block'>{user.email}</p>
+        <div className='absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+          <p className='hidden text-sm md:block'>{user.email}</p>
           <Form action='/logout' method='post'>
             <button
               type='submit'
-              className='rounded bg-emerald-700 px-4 py-2 text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
+              className='rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
             >
               Logout
             </button>
           </Form>
         </div>
       </header>
-      <div className='h-2 w-full bg-brand' />
-      <main className='flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
+
+      <div className='h-1.5 w-full bg-red-500' />
+
+      <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
+        {isSidebarOpen ? (
           <div
-            className='fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden'
+            className='fixed inset-0 top-[62px] z-40 bg-black bg-opacity-50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
-        )}
+        ) : null}
 
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0 lg:border-r lg:border-brand ${
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+            isSidebarOpen
+              ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
+              : '-translate-x-full'
           }`}
         >
-          <div className='relative flex h-full flex-col bg-emerald-50 bg-gradient-to-b from-emerald-50 via-white to-white'>
+          <div className='relative flex h-full flex-col'>
             <div className='p-4'>
               <Link
                 to='new'
-                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium text-red-600 shadow-sm hover:bg-white'
+                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-sm hover:bg-emerald-50'
+                aria-label='Sidebar button to add a new note'
               >
                 + New Note
               </Link>
@@ -84,7 +98,7 @@ export default function NotesPage() {
 
             <hr className='border-gray-300' />
 
-            <div className='flex-1 overflow-y-auto'>
+            <div className='pb-safe flex-1 overflow-y-auto'>
               {data.noteListItems.length === 0 ? (
                 <p className='p-4 text-center text-gray-500'>No notes yet</p>
               ) : (
@@ -115,13 +129,16 @@ export default function NotesPage() {
           <Outlet />
         </div>
 
-        {/* Mobile Floating Action Button */}
-        <Link
-          to='new'
-          className='fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pb-1 text-white shadow-lg md:hidden'
-        >
-          <span className='text-2xl'>+</span>
-        </Link>
+        {/* Mobile Floating Action Add Note Button */}
+        {!isNewNotePage ? (
+          <Link
+            to='new'
+            className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
+            aria-label='Icon to add a new note'
+          >
+            <span className='text-3xl text-white'>+</span>
+          </Link>
+        ) : null}
       </main>
     </div>
   )

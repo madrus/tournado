@@ -1,6 +1,10 @@
 import { faker } from '@faker-js/faker'
 
 describe('smoke tests', () => {
+  beforeEach(() => {
+    cy.viewport('iphone-x')
+  })
+
   afterEach(() => {
     cy.cleanupUser()
   })
@@ -38,7 +42,7 @@ describe('smoke tests', () => {
     cy.findByRole('link', { name: /notes/i }).click()
     cy.findByText('No notes yet')
 
-    cy.findByRole('link', { name: /\+ new note/i }).click()
+    cy.get('a[aria-label*="Icon to add"]').click()
 
     cy.findByRole('textbox', { name: /title/i }).type(testNote.title)
     cy.findByRole('textbox', { name: /body/i }).type(testNote.body)

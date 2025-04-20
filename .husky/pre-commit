@@ -1,0 +1,1 @@
+pretty-quick --staged && eslint --cache --cache-location ./node_modules/.cache/eslint --fix

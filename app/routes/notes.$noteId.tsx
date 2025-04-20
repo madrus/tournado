@@ -36,7 +36,7 @@ export default function NoteDetailsPage() {
   const data = useLoaderData<typeof loader>()
 
   return (
-    <div>
+    <>
       <h3 className='text-2xl font-bold'>{data.note.title}</h3>
       <p className='py-6'>{data.note.body}</p>
       <hr className='my-4' />
@@ -48,7 +48,7 @@ export default function NoteDetailsPage() {
           Delete
         </button>
       </Form>
-    </div>
+    </>
   )
 }
 

@@ -4,6 +4,10 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madrus/tournado.git"
+  },
   "scripts": {
     "build": "remix build",
     "commit": "git add . && npx git-cz",

@@ -1,3 +1,4 @@
+// @remix-run/client
 import { useEffect, useState } from 'react'
 
 type Platform =
@@ -9,13 +10,20 @@ type Platform =
   | 'android-samsung'
   | 'other'
 
-// Move environment detection to useEffect
-export function AddToHomeScreen() {
+export function AddToHomeScreenPrompt() {
+  const [isClient, setIsClient] = useState(false)
   const [showPrompt, setShowPrompt] = useState(false)
   const [platform, setPlatform] = useState<Platform>('other')
-  const [storageKey, setStorageKey] = useState<string>('')
+  const [storageKey, setStorageKey] = useState('')
+
+  // Mark client-side rendering
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
+    if (!isClient) return
+
     // Get environment from the URL
     function getEnvironment(): 'staging' | 'production' {
       return window.location.hostname.includes('staging') ? 'staging' : 'production'
@@ -30,7 +38,6 @@ export function AddToHomeScreen() {
         : `${baseKey}-pwa-prompt-dismissed`
     }
 
-    // Set the storage key
     setStorageKey(getStorageKey())
 
     function detectPlatform(): Platform {
@@ -66,15 +73,6 @@ export function AddToHomeScreen() {
     function shouldShowPrompt(): boolean {
       const lastDismissed = localStorage.getItem(storageKey)
 
-      // Debug info
-      console.debug('PWA Prompt Debug:', {
-        platform: detectPlatform(),
-        isStandalone: isInStandaloneMode(),
-        lastDismissed,
-        userAgent: navigator.userAgent,
-        hostname: window.location.hostname,
-      })
-
       if (!lastDismissed) return true
 
       try {
@@ -109,30 +107,24 @@ export function AddToHomeScreen() {
 
     setPlatform(detectedPlatform)
 
-    // Debug info on mount
-    console.debug('AddToHomeScreen mounted:', {
-      platform: detectedPlatform,
-      isStandalone: standalone,
-      userAgent: navigator.userAgent,
-    })
-
     // Only show prompt if:
     // 1. Device is mobile
     // 2. Not already in standalone mode
     // 3. Not already dismissed today
     if (detectedPlatform !== 'other' && !standalone && shouldShowPrompt()) {
       // Add slight delay to ensure proper initialization
-      setTimeout(() => setShowPrompt(true), 1000)
+      const timeoutId = setTimeout(() => setShowPrompt(true), 1000)
+      return () => clearTimeout(timeoutId)
     }
-  }, [storageKey])
+  }, [isClient, storageKey])
 
   const handleDismiss = () => {
     setShowPrompt(false)
-    // Store the current timestamp when dismissed
     localStorage.setItem(storageKey, new Date().toISOString())
   }
 
-  if (!showPrompt) return null
+  // Don't render anything during SSR
+  if (!isClient) return null
 
   const promptText = {
     'ios-safari': {
@@ -142,12 +134,12 @@ export function AddToHomeScreen() {
     },
     'ios-chrome': {
       title: 'Install this app on your iPhone',
-      instruction: 'Tap the menu (...) then "Share" and "Add to Home Screen"',
+      instruction: 'Tap the share button and then "Add to Home Screen"',
       icon: '⋮',
     },
     'ios-firefox': {
       title: 'Install this app on your iPhone',
-      instruction: 'Tap the menu (...) then "Share Page" and "Add to Home Screen"',
+      instruction: 'Tap the hamburger menu then "Share" and "Add to Home Screen"',
       icon: '⋮',
     },
     'android-chrome': {
@@ -173,7 +165,9 @@ export function AddToHomeScreen() {
   }
 
   const showTopArrow = platform === 'ios-safari'
-  const showMenuDots = platform !== 'ios-safari'
+  const showMenuDots = !showTopArrow
+
+  if (!showPrompt) return null
 
   return (
     <div className='safe-bottom fixed bottom-0 left-0 right-0 z-50 bg-emerald-50 p-4 shadow-lg'>
@@ -187,7 +181,7 @@ export function AddToHomeScreen() {
               {promptText[platform].instruction}
             </p>
             <div className='relative'>
-              {showTopArrow && (
+              {showTopArrow ? (
                 <>
                   <svg
                     className='h-6 w-6 animate-bounce text-emerald-600'
@@ -198,15 +192,15 @@ export function AddToHomeScreen() {
                   </svg>
                   <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-gradient-to-b from-emerald-600/20 to-transparent' />
                 </>
-              )}
-              {showMenuDots && (
+              ) : null}
+              {showMenuDots ? (
                 <div className='flex flex-col items-center'>
                   <span className='animate-pulse text-lg font-bold text-emerald-600'>
                     {promptText[platform].icon}
                   </span>
                   <div className='h-16 w-1 bg-gradient-to-t from-emerald-600/20 to-transparent' />
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

@@ -12,19 +12,20 @@ import {
   useRouteError,
 } from '@remix-run/react'
 
-import { AddToHomeScreen } from '@/components/AddToHomeScreen'
-import { UpdatePrompt } from '@/components/UpdatePrompt'
+import { useEffect } from 'react'
+
+import safeAreaStyles from '@/styles/safe-areas.css'
 import tailwindStyles from '@/styles/tailwind.css'
-import { registerServiceWorker } from '@/utils/serviceWorker'
+// import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
 
-// Only register service worker in the browser
-if (typeof window !== 'undefined') {
-  registerServiceWorker()
-}
+import { AddToHomeScreenPrompt } from './components/AddToHomeScreenPrompt'
+import { UpdatePrompt } from './components/UpdatePrompt'
+import { registerServiceWorker } from './utils/serviceWorker'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
+  { rel: 'stylesheet', href: safeAreaStyles },
   // Favicon for most browsers
   {
     rel: 'icon',
@@ -132,9 +133,17 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+  // Register service worker
+  useEffect(() => {
+    registerServiceWorker()
+  }, [])
+
   return (
     <html lang='en' className='h-full'>
       <head>
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <meta name='theme-color' content='#1e293b' />
         <Meta />
         <Links />
         <style>{`
@@ -164,10 +173,14 @@ export default function App() {
           }
         `}</style>
       </head>
-      <body className='h-full'>
-        <Outlet />
-        <AddToHomeScreen />
-        <UpdatePrompt />
+      <body className='h-full bg-gradient-to-b from-emerald-50 to-emerald-100'>
+        <div className='min-h-full'>
+          <Outlet />
+          <div id='pwa-prompts'>
+            <AddToHomeScreenPrompt />
+            <UpdatePrompt />
+          </div>
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

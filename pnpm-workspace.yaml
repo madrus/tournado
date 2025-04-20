@@ -1,10 +1,9 @@
-packages:
-  - '.'
-
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
   - cypress
+  - docsify
   - esbuild
   - msw
   - prisma
+  - unrs-resolver

@@ -126,13 +126,6 @@ export function AddToHomeScreenPrompt() {
   // Don't render anything during SSR
   if (!isClient) return null
 
-  console.log(
-    '[AddToHomeScreenPrompt] Rendering, showPrompt:',
-    showPrompt,
-    'platform:',
-    platform
-  )
-
   const promptText = {
     'ios-safari': {
       title: 'Install this app on your iPhone',
@@ -172,7 +165,9 @@ export function AddToHomeScreenPrompt() {
   }
 
   const showTopArrow = platform === 'ios-safari'
-  const showMenuDots = platform !== 'ios-safari'
+  const showMenuDots = !showTopArrow
+
+  if (!showPrompt) return null
 
   return (
     <div className='safe-bottom fixed bottom-0 left-0 right-0 z-50 bg-emerald-50 p-4 shadow-lg'>

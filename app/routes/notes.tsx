@@ -70,12 +70,12 @@ export default function NotesPage() {
 
       <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
+        {isSidebarOpen ? (
           <div
             className='fixed inset-0 top-[62px] z-40 bg-black bg-opacity-50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
-        )}
+        ) : null}
 
         {/* Sidebar */}
         <div
@@ -90,6 +90,7 @@ export default function NotesPage() {
               <Link
                 to='new'
                 className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-sm hover:bg-emerald-50'
+                aria-label='Sidebar button to add a new note'
               >
                 + New Note
               </Link>
@@ -129,14 +130,15 @@ export default function NotesPage() {
         </div>
 
         {/* Mobile Floating Action Add Note Button */}
-        {!isNewNotePage && (
+        {!isNewNotePage ? (
           <Link
             to='new'
             className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
+            aria-label='Icon to add a new note'
           >
             <span className='text-3xl text-white'>+</span>
           </Link>
-        )}
+        ) : null}
       </main>
     </div>
   )

@@ -181,7 +181,7 @@ export function AddToHomeScreenPrompt() {
               {promptText[platform].instruction}
             </p>
             <div className='relative'>
-              {showTopArrow && (
+              {showTopArrow ? (
                 <>
                   <svg
                     className='h-6 w-6 animate-bounce text-emerald-600'
@@ -192,15 +192,15 @@ export function AddToHomeScreenPrompt() {
                   </svg>
                   <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-gradient-to-b from-emerald-600/20 to-transparent' />
                 </>
-              )}
-              {showMenuDots && (
+              ) : null}
+              {showMenuDots ? (
                 <div className='flex flex-col items-center'>
                   <span className='animate-pulse text-lg font-bold text-emerald-600'>
                     {promptText[platform].icon}
                   </span>
                   <div className='h-16 w-1 bg-gradient-to-t from-emerald-600/20 to-transparent' />
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

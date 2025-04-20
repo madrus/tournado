@@ -15,10 +15,12 @@ export default defineConfig({
       on('task', {
         log: message => {
           console.log(message)
-
           return null
         },
       })
+
+      // Completely disable server management in Cypress
+      process.env.CYPRESS_INTERNAL_ENV = 'production'
 
       return { ...config, ...configOverrides }
     },

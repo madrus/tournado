@@ -173,7 +173,7 @@ export default function App() {
           }
         `}</style>
       </head>
-      <body className='h-full bg-gradient-to-b from-emerald-50 to-emerald-100'>
+      <body className='h-full bg-linear-to-b from-emerald-50 to-emerald-100'>
         <div className='min-h-full'>
           <Outlet />
           <div id='pwa-prompts'>

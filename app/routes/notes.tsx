@@ -32,7 +32,7 @@ export default function NotesPage() {
     <div className='flex h-full min-h-screen flex-col'>
       <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
         <button
-          className='absolute left-4 top-1/2 -translate-y-1/2 rounded p-1 md:hidden'
+          className='absolute top-1/2 left-4 -translate-y-1/2 rounded-sm p-1 md:hidden'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           aria-label='Toggle menu'
         >
@@ -50,10 +50,10 @@ export default function NotesPage() {
             />
           </svg>
         </button>
-        <h1 className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
+        <h1 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
           <Link to='.'>Notes</Link>
         </h1>
-        <div className='absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+        <div className='absolute top-1/2 right-4 flex -translate-y-1/2 items-center gap-4'>
           <p className='hidden text-sm md:block'>{user.email}</p>
           <Form action='/logout' method='post'>
             <button
@@ -68,18 +68,18 @@ export default function NotesPage() {
 
       <div className='h-1.5 w-full bg-red-500' />
 
-      <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
+      <main className='flex h-full min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
-            className='fixed inset-0 top-[62px] z-40 bg-black bg-opacity-50 md:hidden'
+            className='bg-opacity-50 fixed inset-0 top-[62px] z-40 bg-black md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         ) : null}
 
         {/* Sidebar */}
         <div
-          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute z-50 w-80 transform bg-linear-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
               ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
               : '-translate-x-full'
@@ -89,7 +89,7 @@ export default function NotesPage() {
             <div className='p-4'>
               <Link
                 to='new'
-                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-sm hover:bg-emerald-50'
+                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-xs hover:bg-emerald-50'
                 aria-label='Sidebar button to add a new note'
               >
                 + New Note
@@ -133,7 +133,7 @@ export default function NotesPage() {
         {!isNewNotePage ? (
           <Link
             to='new'
-            className='safe-bottom fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
+            className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
             aria-label='Icon to add a new note'
           >
             <span className='text-3xl text-white'>+</span>

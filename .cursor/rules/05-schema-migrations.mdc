@@ -1,0 +1,149 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Database Schema Migrations
+
+This guide covers the process of making database schema changes and managing migrations in the application.
+
+## Migration Workflow
+
+### 1. Development Changes
+1. Edit [prisma/schema.prisma](mdc:prisma/schema.prisma) with your changes
+2. Run development migration with a descriptive name:
+   ```bash
+   pnpm prisma migrate dev --name <action>_<target>_<details>
+   ```
+   
+   Migration naming convention:
+   - `<action>`: The type of change (create, add, remove, update, rename)
+   - `<target>`: The affected model or field
+   - `<details>`: Optional additional context
+   
+   Examples:
+   ```bash
+   # Adding a new field
+   pnpm prisma migrate dev --name add_user_role_field
+   
+   # Creating a new model
+   pnpm prisma migrate dev --name create_tournament_model
+   
+   # Adding a relation
+   pnpm prisma migrate dev --name add_tournament_player_relation
+   
+   # Updating field type
+   pnpm prisma migrate dev --name update_score_to_decimal
+   
+   # Multiple changes (keep it focused)
+   pnpm prisma migrate dev --name add_tournament_dates_and_status
+   ```
+
+   This will:
+   - Create a new migration file in `prisma/migrations/`
+   - Apply the migration to your database
+   - Regenerate Prisma Client
+   - Trigger seed data updates
+
+### 2. Testing Changes
+1. Verify migrations work with:
+   ```bash
+   pnpm prisma migrate reset
+   ```
+   This resets the database and runs all migrations
+2. Update [prisma/seed.ts](mdc:prisma/seed.ts) if needed
+3. Run the test suite: `pnpm run test`
+4. Test with mock data: `pnpm run start:mocks`
+
+### 3. Documentation Updates
+After confirming your changes work:
+1. Update [.cursor/rules/02-database-schema.mdc](mdc:.cursor/rules/02-database-schema.mdc)
+2. Update any affected model files in `app/models/`
+3. Update [app/db.server.ts](mdc:app/db.server.ts) if needed
+
+### 4. Production Deployment
+1. Never edit a migration that has been applied to production
+2. Deploy migrations with:
+   ```bash
+   pnpm prisma migrate deploy
+   ```
+3. Always backup production database before migrations
+
+## Migration Guidelines
+
+### Do's
+- Use clear, descriptive migration names that indicate the change
+- Follow the naming pattern: `<action>_<target>_<details>`
+- Keep migrations small and focused on related changes
+- Include relevant indexes for new fields
+- Update seed data to match new schema
+
+### Don'ts
+- Use vague names like "update_db" or "fix_stuff"
+- Edit existing migrations (create new ones instead)
+- Mix unrelated schema changes in one migration
+- Forget to update related TypeScript types
+- Skip testing the migration process
+
+## Common Migration Patterns
+
+### Field Changes
+```bash
+# Adding fields
+add_user_email_verification
+add_tournament_start_date
+
+# Removing fields
+remove_user_middle_name
+remove_deprecated_status_field
+
+# Updating fields
+update_price_to_decimal
+update_user_role_enum
+```
+
+### Relationship Changes
+```bash
+# Adding relations
+add_tournament_organizer_relation
+add_player_team_relation
+
+# Removing relations
+remove_post_category_relation
+```
+
+### Model Changes
+```bash
+# Creating models
+create_tournament_model
+create_team_model
+
+# Removing models
+remove_legacy_profile_model
+```
+
+## Troubleshooting
+
+If you encounter issues:
+1. Check migration history:
+   ```bash
+   pnpm prisma migrate status
+   ```
+2. For development, you can reset the database:
+   ```bash
+   pnpm prisma migrate reset
+   ```
+3. Review migration files in `prisma/migrations/`
+4. Check Prisma's shadow database for conflicts
+
+## Version Control
+
+- Always commit these files together:
+  1. Modified `schema.prisma`
+  2. New migration files
+  3. Updated seed data
+  4. Updated Cursor rules
+  5. Modified TypeScript types
+  6. Changed model files
+
+This ensures the codebase stays in sync with database changes.

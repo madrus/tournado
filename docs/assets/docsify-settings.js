@@ -8,14 +8,18 @@ const getDocsifySettings = () => ({
   },
   auto2top: true,
   basePath: '/',
-  coverpage: true,
   maxLevel: 4,
   subMaxLevel: 2,
+  sidebarDisplayLevel: 1,
   markdown: {
     smartypants: true,
   },
   search: 'auto',
   themeColor: 'rgb(3, 201, 137)',
+  // Sidebar Collapse Plugin Settings
+  collapse: {
+    multipleOpen: true,
+  },
   // Copy code button
   copyCode: {
     buttonText: 'Copy',

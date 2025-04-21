@@ -81,7 +81,7 @@ export default function LoginPage() {
   }, [actionData])
 
   return (
-    <div className='flex min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white'>
+    <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
       <div className='flex flex-1 flex-col'>
         <div className='mx-auto mt-24 w-full max-w-md rounded-lg bg-white/50 p-8'>
           <Form method='post' className='space-y-6'>

@@ -190,7 +190,7 @@ export function AddToHomeScreenPrompt() {
                   >
                     <path d='M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z' />
                   </svg>
-                  <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-linear-to-b from-emerald-600/20 to-transparent' />
+                  <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-gradient-to-b from-emerald-600/20 to-transparent' />
                 </>
               ) : null}
               {showMenuDots ? (
@@ -198,7 +198,7 @@ export function AddToHomeScreenPrompt() {
                   <span className='animate-pulse text-lg font-bold text-emerald-600'>
                     {promptText[platform].icon}
                   </span>
-                  <div className='h-16 w-1 bg-linear-to-t from-emerald-600/20 to-transparent' />
+                  <div className='h-16 w-1 bg-gradient-to-t from-emerald-600/20 to-transparent' />
                 </div>
               ) : null}
             </div>

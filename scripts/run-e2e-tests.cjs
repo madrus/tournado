@@ -1,3 +1,9 @@
+/**
+ * This script runs the Cypress tests against the mock server.
+ * It's used by Fly.io to run the tests in a production environment.
+ * The reason to create is that the package.json script runs
+ * with an error that the server is already stopped.
+ */
 const { execSync, spawn } = require('child_process')
 const waitOn = require('wait-on')
 

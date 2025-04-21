@@ -81,7 +81,7 @@ export default function LoginPage() {
   }, [actionData])
 
   return (
-    <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
+    <div className='flex min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white'>
       <div className='flex flex-1 flex-col'>
         <div className='mx-auto mt-24 w-full max-w-md rounded-lg bg-white/50 p-8'>
           <Form method='post' className='space-y-6'>
@@ -103,7 +103,7 @@ export default function LoginPage() {
                   autoComplete='email'
                   aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby='email-error'
-                  className='w-full rounded border border-gray-500 px-2 py-1 text-lg'
+                  className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
                 {actionData?.errors?.email ? (
                   <div className='pt-1 text-red-700' id='email-error'>
@@ -129,7 +129,7 @@ export default function LoginPage() {
                   autoComplete='current-password'
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby='password-error'
-                  className='w-full rounded border border-gray-500 px-2 py-1 text-lg'
+                  className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
                 {actionData?.errors?.password ? (
                   <div className='pt-1 text-red-700' id='password-error'>
@@ -142,7 +142,7 @@ export default function LoginPage() {
             <input type='hidden' name='redirectTo' value={redirectTo} />
             <button
               type='submit'
-              className='w-full rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
+              className='w-full rounded-sm bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
             >
               Log in
             </button>
@@ -152,7 +152,7 @@ export default function LoginPage() {
                   id='remember'
                   name='remember'
                   type='checkbox'
-                  className='h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500'
+                  className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 focus:ring-emerald-500'
                 />
                 <label htmlFor='remember' className='ml-2 block text-sm text-gray-900'>
                   Remember me

@@ -4127,6 +4127,13 @@ packages:
       }
     engines: { node: '>=8' }
 
+  camelcase-keys@6.2.2:
+    resolution:
+      {
+        integrity: sha512-YrwaA0vEKazPBkn0ipTiMpSajYDSe+KjQfrjhcBMxJt/znbvlHd8Pw/Vamaz5EB4Wfhs3SUR3Z9mwRu/P3s3Yg==,
+      }
+    engines: { node: '>=8' }
+
   camelcase@5.3.1:
     resolution:
       {
@@ -7493,6 +7500,13 @@ packages:
       {
         integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==,
       }
+
+  jiti@2.4.2:
+    resolution:
+      {
+        integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==,
+      }
+    hasBin: true
 
   jiti@2.4.2:
     resolution:
@@ -15513,6 +15527,12 @@ snapshots:
       map-obj: 4.3.0
       quick-lru: 4.0.1
 
+  camelcase-keys@6.2.2:
+    dependencies:
+      camelcase: 5.3.1
+      map-obj: 4.3.0
+      quick-lru: 4.0.1
+
   camelcase@5.3.1: {}
 
   caniuse-lite@1.0.30001715: {}
@@ -17851,6 +17871,9 @@ snapshots:
   javascript-stringify@2.1.0: {}
 
   jiti@2.4.2: {}
+
+  jiti@2.4.2:
+    optional: true
 
   joi@17.13.3:
     dependencies:

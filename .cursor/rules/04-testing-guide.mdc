@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Testing Guide
+
+The application uses multiple testing approaches defined in various configuration files:
+- [vitest.config.ts](mdc:vitest.config.ts) - Unit and integration tests
+- [cypress.config.ts](mdc:cypress.config.ts) - End-to-end tests
+
+## Test Types
+
+### Unit Tests
+- Located next to the files they test with `.test.ts` or `.test.tsx` extension
+- Use Vitest as the test runner
+- Testing utilities available in [app/utils.test.ts](mdc:app/utils.test.ts)
+
+### End-to-End Tests
+- Located in the `cypress/` directory
+- Use Cypress with Testing Library
+- Run against a live development or production build
+
+## Mocking
+- Mock service worker (MSW) configurations in `mocks/` directory
+- Can run the application with mocks using `pnpm run start:mocks`
+
+## CI/CD Testing
+- All tests are run as part of the validation script: `pnpm run validate`
+- Includes:
+  - Unit tests
+  - Type checking
+  - Linting
+  - E2E tests

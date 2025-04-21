@@ -12,5 +12,6 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: ['./test/setup-test-env.ts'],
+    watch: process.env.npm_lifecycle_event !== 'validate',
   },
 })

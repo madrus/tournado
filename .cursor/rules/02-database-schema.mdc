@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Database Schema
+
+The application uses Prisma with SQLite as the database provider. The schema is defined in [prisma/schema.prisma](mdc:prisma/schema.prisma).
+
+## Models
+
+### User
+The central model representing application users:
+- Has one optional Password record
+- Can have multiple Notes
+- Tracked with creation and update timestamps
+
+### Password
+Stores hashed user passwords:
+- One-to-one relationship with User
+- Cascade deletion with user
+
+### Note
+Represents user notes:
+- Belongs to a User
+- Contains title and body
+- Tracked with creation and update timestamps
+
+## Database Management
+- Database migrations are stored in `prisma/migrations/`
+- Seeding data can be found in [prisma/seed.ts](mdc:prisma/seed.ts)
+- Database operations are handled through [app/db.server.ts](mdc:app/db.server.ts)
+
+## Updating the Schema
+
+When making changes to the database schema:
+
+1. Edit [prisma/schema.prisma](mdc:prisma/schema.prisma)
+2. Run the following commands:
+   ```bash
+   pnpm prisma generate    # Update Prisma Client
+   pnpm prisma migrate dev # Create and apply migration
+   ```
+3. Update this rule file to reflect the new schema
+4. If the changes affect database operations, update [app/db.server.ts](mdc:app/db.server.ts)
+5. Update any affected tests
+6. Update the seed file [prisma/seed.ts](mdc:prisma/seed.ts) if necessary
+
+Remember to commit both the schema changes and the updated rules together to keep documentation in sync with the code.

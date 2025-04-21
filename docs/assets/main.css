@@ -57,7 +57,7 @@
   color: var(--base-color);
 }
 
-/* .app-name-link img {
-  height: 72px;
-  width: auto;
-} */
+/* Home icon for Overview link */
+.sidebar li ul li:first-child a[href='README.md']::before {
+  content: '🏠';
+}

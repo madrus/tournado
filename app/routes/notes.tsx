@@ -68,7 +68,7 @@ export default function NotesPage() {
 
       <div className='h-1.5 w-full bg-red-500' />
 
-      <main className='flex h-full min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white md:flex-row'>
+      <main className='flex h-full min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
@@ -79,7 +79,7 @@ export default function NotesPage() {
 
         {/* Sidebar */}
         <div
-          className={`absolute z-50 w-80 transform bg-linear-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
               ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
               : '-translate-x-full'

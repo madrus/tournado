@@ -7,6 +7,7 @@ import { json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
 
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { verifyLogin } from '@/models/user.server'
 import { safeRedirect, validateEmail } from '@/utils'
@@ -66,6 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const meta: MetaFunction = () => [{ title: 'Login' }]
 
 export default function LoginPage() {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/notes'
   const actionData = useActionData<typeof action>()
@@ -81,7 +83,7 @@ export default function LoginPage() {
   }, [actionData])
 
   return (
-    <div className='flex min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white'>
+    <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
       <div className='flex flex-1 flex-col'>
         <div className='mx-auto mt-24 w-full max-w-md rounded-lg bg-white/50 p-8'>
           <Form method='post' className='space-y-6'>
@@ -90,7 +92,7 @@ export default function LoginPage() {
                 htmlFor='email'
                 className='block text-sm font-medium text-gray-700'
               >
-                Email address
+                {t('auth.emailAddress')}
               </label>
               <div className='mt-1'>
                 <input
@@ -107,7 +109,7 @@ export default function LoginPage() {
                 />
                 {actionData?.errors?.email ? (
                   <div className='pt-1 text-red-700' id='email-error'>
-                    {actionData.errors.email}
+                    {t(`auth.errors.${actionData.errors.email}`)}
                   </div>
                 ) : null}
               </div>
@@ -118,7 +120,7 @@ export default function LoginPage() {
                 htmlFor='password'
                 className='block text-sm font-medium text-gray-700'
               >
-                Password
+                {t('auth.password')}
               </label>
               <div className='mt-1'>
                 <input
@@ -133,7 +135,7 @@ export default function LoginPage() {
                 />
                 {actionData?.errors?.password ? (
                   <div className='pt-1 text-red-700' id='password-error'>
-                    {actionData.errors.password}
+                    {t(`auth.errors.${actionData.errors.password}`)}
                   </div>
                 ) : null}
               </div>
@@ -144,7 +146,7 @@ export default function LoginPage() {
               type='submit'
               className='w-full rounded-sm bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
             >
-              Log in
+              {t('auth.login')}
             </button>
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>
@@ -155,11 +157,11 @@ export default function LoginPage() {
                   className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 focus:ring-emerald-500'
                 />
                 <label htmlFor='remember' className='ml-2 block text-sm text-gray-900'>
-                  Remember me
+                  {t('auth.rememberMe')}
                 </label>
               </div>
               <div className='text-center text-sm text-gray-500'>
-                Don&apos;t have an account?{' '}
+                {t('auth.dontHaveAccount')}{' '}
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'
                   to={{
@@ -167,7 +169,7 @@ export default function LoginPage() {
                     search: searchParams.toString(),
                   }}
                 >
-                  Sign up
+                  {t('auth.signup')}
                 </Link>
               </div>
             </div>

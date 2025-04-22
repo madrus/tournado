@@ -1,5 +1,6 @@
 // @remix-run/client
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type Platform =
   | 'ios-safari'
@@ -11,6 +12,7 @@ type Platform =
   | 'other'
 
 export function AddToHomeScreenPrompt() {
+  const { t } = useTranslation()
   const [isClient, setIsClient] = useState(false)
   const [showPrompt, setShowPrompt] = useState(false)
   const [platform, setPlatform] = useState<Platform>('other')
@@ -128,38 +130,38 @@ export function AddToHomeScreenPrompt() {
 
   const promptText = {
     'ios-safari': {
-      title: 'Install this app on your iPhone',
-      instruction: 'Tap the share button and then "Add to Home Screen"',
+      title: t('pwa.install.ios.title'),
+      instruction: t('pwa.install.ios.safari'),
       icon: '↑',
     },
     'ios-chrome': {
-      title: 'Install this app on your iPhone',
-      instruction: 'Tap the share button and then "Add to Home Screen"',
+      title: t('pwa.install.ios.title'),
+      instruction: t('pwa.install.ios.chrome'),
       icon: '⋮',
     },
     'ios-firefox': {
-      title: 'Install this app on your iPhone',
-      instruction: 'Tap the hamburger menu then "Share" and "Add to Home Screen"',
+      title: t('pwa.install.ios.title'),
+      instruction: t('pwa.install.ios.firefox'),
       icon: '⋮',
     },
     'android-chrome': {
-      title: 'Install this app on your device',
-      instruction: 'Tap the menu (⋮) and select "Install app"',
+      title: t('pwa.install.android.title'),
+      instruction: t('pwa.install.android.chrome'),
       icon: '⋮',
     },
     'android-firefox': {
-      title: 'Install this app on your device',
-      instruction: 'Tap the menu (⋮) and select "Install"',
+      title: t('pwa.install.android.title'),
+      instruction: t('pwa.install.android.firefox'),
       icon: '⋮',
     },
     'android-samsung': {
-      title: 'Install this app on your device',
-      instruction: 'Tap the menu (⋮) and select "Add page to" then "Home screen"',
+      title: t('pwa.install.android.title'),
+      instruction: t('pwa.install.android.samsung'),
       icon: '⋮',
     },
     other: {
-      title: 'Install this app on your device',
-      instruction: 'Open browser menu and select "Add to Home Screen"',
+      title: t('pwa.install.other.title'),
+      instruction: t('pwa.install.other.instruction'),
       icon: '⋮',
     },
   }
@@ -190,7 +192,7 @@ export function AddToHomeScreenPrompt() {
                   >
                     <path d='M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z' />
                   </svg>
-                  <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-linear-to-b from-emerald-600/20 to-transparent' />
+                  <div className='absolute -top-1 left-1/2 h-16 w-1 -translate-x-1/2 bg-gradient-to-b from-emerald-600/20 to-transparent' />
                 </>
               ) : null}
               {showMenuDots ? (
@@ -198,7 +200,7 @@ export function AddToHomeScreenPrompt() {
                   <span className='animate-pulse text-lg font-bold text-emerald-600'>
                     {promptText[platform].icon}
                   </span>
-                  <div className='h-16 w-1 bg-linear-to-t from-emerald-600/20 to-transparent' />
+                  <div className='h-16 w-1 bg-gradient-to-t from-emerald-600/20 to-transparent' />
                 </div>
               ) : null}
             </div>

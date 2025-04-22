@@ -55,9 +55,9 @@ export function PWAElements() {
 
   console.log('[PWAElements] Rendering PWA components')
   return (
-    <>
+    <div id='pwa-prompts'>
       <AddToHomeScreenPrompt />
       <UpdatePrompt />
-    </>
+    </div>
   )
 }

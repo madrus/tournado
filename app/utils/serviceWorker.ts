@@ -5,7 +5,7 @@ export function registerServiceWorker() {
     // Register the service worker
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/sw.js', { scope: '/' })
         .then(registration => {
           console.log('ServiceWorker registered:', registration)
 

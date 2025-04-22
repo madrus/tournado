@@ -1,11 +1,14 @@
 import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
 
+import { useTranslation } from 'react-i18next'
+
 import { useOptionalUser } from '@/utils'
 
 export const meta: MetaFunction = () => [{ title: 'Tournado' }]
 
 export default function Index() {
+  const { t } = useTranslation()
   const user = useOptionalUser()
   return (
     <main className='relative flex min-h-screen items-center justify-center bg-emerald-50'>
@@ -24,8 +27,7 @@ export default function Index() {
                     to='/notes'
                     className='text-brand flex w-1/2 min-w-[200px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium shadow-xs hover:bg-white hover:text-red-600 md:w-1/2'
                   >
-                    {'View notes for '}
-                    {user.email}
+                    {t('auth.viewNotesFor')} {user.email}
                   </Link>
                 ) : (
                   <div className='flex w-full flex-col items-center justify-center gap-4 md:flex-row md:gap-5'>
@@ -33,13 +35,13 @@ export default function Index() {
                       to='/join'
                       className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-xs hover:bg-white md:w-1/3'
                     >
-                      Sign up
+                      {t('auth.signup')}
                     </Link>
                     <Link
                       to='/login'
                       className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full bg-emerald-600 px-6 py-2 font-semibold text-white hover:bg-emerald-700 md:w-1/3'
                     >
-                      Log In
+                      {t('auth.login')}
                     </Link>
                   </div>
                 )}

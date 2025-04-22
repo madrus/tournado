@@ -1,0 +1,69 @@
+{
+  "common": {
+    "appName": "Tournado"
+  },
+  "auth": {
+    "login": "log in",
+    "signup": "sign up",
+    "logout": "logout",
+    "emailAddress": "email",
+    "password": "password",
+    "viewNotesFor": "view notes for",
+    "rememberMe": "remember me",
+    "dontHaveAccount": "no account?",
+    "alreadyHaveAccount": "have account?",
+    "createAccount": "create account",
+    "errors": {
+      "emailInvalid": "invalid email",
+      "passwordRequired": "password required",
+      "passwordTooShort": "password too short",
+      "invalidCredentials": "invalid credentials",
+      "emailExists": "email exists"
+    }
+  },
+  "notes": {
+    "title": "notes",
+    "newNote": "new note",
+    "noNotes": "no notes yet",
+    "noNoteSelected": "no note selected",
+    "createNewNote": "create note",
+    "delete": "delete",
+    "save": "save",
+    "form": {
+      "title": "title",
+      "body": "body",
+      "titleRequired": "title required",
+      "bodyRequired": "body required"
+    },
+    "errors": {
+      "notFound": "note not found",
+      "unknownError": "unknown error",
+      "unexpectedError": "unexpected error"
+    }
+  },
+  "pwa": {
+    "install": {
+      "ios": {
+        "title": "install app",
+        "safari": "add to home screen",
+        "chrome": "add to home screen",
+        "firefox": "add to home screen"
+      },
+      "android": {
+        "title": "install app",
+        "chrome": "install app",
+        "firefox": "install app",
+        "samsung": "add to home screen"
+      },
+      "other": {
+        "title": "install app",
+        "instruction": "add to home screen"
+      }
+    },
+    "update": {
+      "title": "update available",
+      "instruction": "refresh to update",
+      "button": "update"
+    }
+  }
+}

@@ -16,7 +16,9 @@ export default defineConfig({
       manifest: {
         name: 'Tournament App for any Group Sport',
         short_name: 'Tournado',
+        description: 'Tournament management made easy',
         start_url: '/',
+        scope: '/',
         display: 'standalone',
         background_color: '#1e293b',
         theme_color: '#1e293b',
@@ -35,11 +37,13 @@ export default defineConfig({
             src: '/favicon/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: '/favicon/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: '/favicon/apple-touch-icon.png',
@@ -47,6 +51,32 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/tournado-staging\.fly\.dev\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24, // 24 hours
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+        cleanupOutdatedCaches: true,
+        sourcemap: true,
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html',
       },
     }),
   ],

@@ -13,10 +13,12 @@ import {
 } from '@remix-run/react'
 
 import { useEffect } from 'react'
+import { I18nextProvider } from 'react-i18next'
 
+// import { registerServiceWorker } from '@/utils/serviceWorker'
+import i18n from '@/i18n/config'
 import safeAreaStyles from '@/styles/safe-areas.css'
 import tailwindStyles from '@/styles/tailwind.css'
-// import { registerServiceWorker } from '@/utils/serviceWorker'
 import { getUser } from '@/utils/session.server'
 
 import { AddToHomeScreenPrompt } from './components/AddToHomeScreenPrompt'
@@ -139,7 +141,7 @@ export default function App() {
   }, [])
 
   return (
-    <html lang='en' className='h-full'>
+    <html lang={i18n.language} className='h-full'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
@@ -175,11 +177,13 @@ export default function App() {
       </head>
       <body className='h-full bg-gradient-to-b from-emerald-50 to-emerald-100'>
         <div className='min-h-full'>
-          <Outlet />
-          <div id='pwa-prompts'>
-            <AddToHomeScreenPrompt />
-            <UpdatePrompt />
-          </div>
+          <I18nextProvider i18n={i18n}>
+            <Outlet />
+            <div id='pwa-prompts'>
+              <AddToHomeScreenPrompt />
+              <UpdatePrompt />
+            </div>
+          </I18nextProvider>
         </div>
         <ScrollRestoration />
         <Scripts />

@@ -7,6 +7,8 @@ import {
   useRouteError,
 } from '@remix-run/react'
 
+import { useTranslation } from 'react-i18next'
+
 import invariant from 'tiny-invariant'
 
 import { deleteNote, getNote } from '@/models/note.server'
@@ -33,6 +35,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 }
 
 export default function NoteDetailsPage() {
+  const { t } = useTranslation()
   const data = useLoaderData<typeof loader>()
 
   return (
@@ -45,7 +48,7 @@ export default function NoteDetailsPage() {
           type='submit'
           className='rounded-full border border-red-300 bg-white px-6 py-2 text-sm text-red-500 hover:border-red-400 hover:text-red-600'
         >
-          Delete
+          {t('notes.delete')}
         </button>
       </Form>
     </>
@@ -53,19 +56,28 @@ export default function NoteDetailsPage() {
 }
 
 export function ErrorBoundary() {
+  const { t } = useTranslation()
   const error = useRouteError()
 
   if (error instanceof Error) {
-    return <div>An unexpected error occurred: {error.message}</div>
+    return (
+      <div>
+        {t('notes.errors.unexpectedError')} {error.message}
+      </div>
+    )
   }
 
   if (!isRouteErrorResponse(error)) {
-    return <h1>Unknown Error</h1>
+    return <h1>{t('notes.errors.unknownError')}</h1>
   }
 
   if (error.status === 404) {
-    return <div>Note not found</div>
+    return <div>{t('notes.errors.notFound')}</div>
   }
 
-  return <div>An unexpected error occurred: {error.statusText}</div>
+  return (
+    <div>
+      {t('notes.errors.unexpectedError')} {error.statusText}
+    </div>
+  )
 }

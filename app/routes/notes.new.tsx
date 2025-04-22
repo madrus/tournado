@@ -3,6 +3,7 @@ import { json, redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { createNote } from '@/models/note.server'
 import { requireUserId } from '@/utils/session.server'
@@ -28,6 +29,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 }
 
 export default function NewNotePage() {
+  const { t } = useTranslation()
   const actionData = useActionData<typeof action>()
   const titleRef = useRef<HTMLInputElement>(null)
   const bodyRef = useRef<HTMLTextAreaElement>(null)
@@ -52,7 +54,7 @@ export default function NewNotePage() {
     >
       <div>
         <label className='flex w-full flex-col gap-1'>
-          <span>Title: </span>
+          <span>{t('notes.form.title')}</span>
           <input
             ref={titleRef}
             name='title'
@@ -63,14 +65,14 @@ export default function NewNotePage() {
         </label>
         {actionData?.errors?.title ? (
           <div className='pt-1 text-red-700' id='title-error'>
-            {actionData.errors.title}
+            {t('notes.form.titleRequired')}
           </div>
         ) : null}
       </div>
 
       <div>
         <label className='flex w-full flex-col gap-1'>
-          <span>Body: </span>
+          <span>{t('notes.form.body')}</span>
           <textarea
             ref={bodyRef}
             name='body'
@@ -82,7 +84,7 @@ export default function NewNotePage() {
         </label>
         {actionData?.errors?.body ? (
           <div className='pt-1 text-red-700' id='body-error'>
-            {actionData.errors.body}
+            {t('notes.form.bodyRequired')}
           </div>
         ) : null}
       </div>
@@ -92,7 +94,7 @@ export default function NewNotePage() {
           type='submit'
           className='rounded-lg bg-amber-500 px-4 py-2 text-white hover:bg-amber-600'
         >
-          Save
+          {t('notes.save')}
         </button>
       </div>
     </Form>

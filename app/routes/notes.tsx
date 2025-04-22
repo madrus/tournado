@@ -10,7 +10,9 @@ import {
 } from '@remix-run/react'
 
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { getNoteListItems } from '@/models/note.server'
 import { useUser } from '@/utils'
 import { requireUserId } from '@/utils/session.server'
@@ -22,6 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 }
 
 export default function NotesPage() {
+  const { t } = useTranslation()
   const data = useLoaderData<typeof loader>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -29,7 +32,7 @@ export default function NotesPage() {
   const isNewNotePage = location.pathname === '/notes/new'
 
   return (
-    <div className='flex h-full min-h-screen flex-col'>
+    <div className='flex h-screen flex-col overflow-hidden'>
       <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
         <button
           className='absolute top-1/2 left-4 -translate-y-1/2 rounded-sm p-1 md:hidden'
@@ -51,16 +54,17 @@ export default function NotesPage() {
           </svg>
         </button>
         <h1 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
-          <Link to='.'>Notes</Link>
+          <Link to='.'>{t('notes.title')}</Link>
         </h1>
         <div className='absolute top-1/2 right-4 flex -translate-y-1/2 items-center gap-4'>
           <p className='hidden text-sm md:block'>{user.email}</p>
+          <LanguageSwitcher />
           <Form action='/logout' method='post'>
             <button
               type='submit'
               className='rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
             >
-              Logout
+              {t('auth.logout')}
             </button>
           </Form>
         </div>
@@ -68,7 +72,7 @@ export default function NotesPage() {
 
       <div className='h-1.5 w-full bg-red-500' />
 
-      <main className='flex h-full min-h-screen flex-col bg-linear-to-b from-emerald-50 via-white to-white md:flex-row'>
+      <main className='flex flex-1 overflow-hidden bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
@@ -79,7 +83,7 @@ export default function NotesPage() {
 
         {/* Sidebar */}
         <div
-          className={`absolute z-50 w-80 transform bg-linear-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
               ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
               : '-translate-x-full'
@@ -92,7 +96,7 @@ export default function NotesPage() {
                 className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-xs hover:bg-emerald-50'
                 aria-label='Sidebar button to add a new note'
               >
-                + New Note
+                {t('notes.newNote')}
               </Link>
             </div>
 
@@ -100,7 +104,7 @@ export default function NotesPage() {
 
             <div className='pb-safe flex-1 overflow-y-auto'>
               {data.noteListItems.length === 0 ? (
-                <p className='p-4 text-center text-gray-500'>No notes yet</p>
+                <p className='p-4 text-center text-gray-500'>{t('notes.noNotes')}</p>
               ) : (
                 <ol>
                   {data.noteListItems.map(note => (
@@ -125,7 +129,7 @@ export default function NotesPage() {
         </div>
 
         {/* Main Content */}
-        <div className='flex-1 p-4 md:p-6'>
+        <div className='flex-1 overflow-y-auto p-4 md:p-6'>
           <Outlet />
         </div>
 

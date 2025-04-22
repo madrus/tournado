@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.2.7 (2025-04-22)
+
+### Features
+
+- 🎸 add translations ([095595e](https://github.com/madrus/tournado/commit/095595e3be3ac020cd262c419dbd4daff79f5c22))
+- deploy the app successfully ([#2](https://github.com/madrus/tournado/issues/2)) ([a592316](https://github.com/madrus/tournado/commit/a592316783d227ab5a2e10af86e2daa438b3bab9))
+- initial mobile first version ([#12](https://github.com/madrus/tournado/issues/12)) ([0fef941](https://github.com/madrus/tournado/commit/0fef94181e24e98c11dff675648bc55ae8c6ad3e)), closes [#9](https://github.com/madrus/tournado/issues/9) [#10](https://github.com/madrus/tournado/issues/10) [#11](https://github.com/madrus/tournado/issues/11)
+
+### Bug Fixes
+
+- add alias to vite.config.ts ([4765442](https://github.com/madrus/tournado/commit/4765442573ca255126b1c436e1a5e7724360a0fa))
+- default deployment region should be ams ([#3](https://github.com/madrus/tournado/issues/3)) ([3d39674](https://github.com/madrus/tournado/commit/3d39674079f23afda6651e9118b8652f03aaafec))
+- remove ?url ([39671b9](https://github.com/madrus/tournado/commit/39671b985e3179d69685ac4b949287d9f89de64c))
+- restore tw v3 as tw v4 not yet feasible ([34787b3](https://github.com/madrus/tournado/commit/34787b3be38af7aa4f703409a8f655e25c2432e9))
+
 ### [0.2.6](https://github.com/madrus/tournado/compare/v0.2.5...v0.2.6) (2025-04-21)
 
 ### Features

@@ -24,12 +24,14 @@ i18n
     resources,
     defaultNS,
     fallbackLng: 'nl',
+    lng: 'nl',
     interpolation: {
       escapeValue: false, // React already escapes values
     },
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
     },
   })
 

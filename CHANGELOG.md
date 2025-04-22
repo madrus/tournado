@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/madrus/tournado/compare/v0.3.0...v0.3.1) (2025-04-22)
+
+### Features
+
+- 🎸 add translations ([9112ed6](https://github.com/madrus/tournado/commit/9112ed634901d874df2cf415303aa289a741025c))
+
+### Bug Fixes
+
+- 🐛 new version prompt and initial language ([214daf0](https://github.com/madrus/tournado/commit/214daf0c2ee92210854744e15109729df8c6bc31))
+
+### [0.2.6](https://github.com/madrus/tournado/compare/v0.2.5...v0.2.6) (2025-04-21)
+
+### [0.2.5](https://github.com/madrus/tournado/compare/v0.2.4...v0.2.5) (2025-04-21)
+
+### [0.2.4](https://github.com/madrus/tournado/compare/v0.2.3...v0.2.4) (2025-04-21)
+
+### [0.2.3](https://github.com/madrus/tournado/compare/v0.2.2...v0.2.3) (2025-04-20)
+
+### [0.2.2](https://github.com/madrus/tournado/compare/v0.2.1...v0.2.2) (2025-04-20)
+
+### Bug Fixes
+
+- link repository ([eb5e364](https://github.com/madrus/tournado/commit/eb5e3640dc104fe5d10ee1965de23c8031653e4a))
+
+### [0.2.1](https://github.com/madrus/tournado/compare/3ee582485ab7d1f25d3679bbd38595246ba51dc6...v0.2.1) (2025-04-20)
+
+### Features
+
+- finish initial design ([#11](https://github.com/madrus/tournado/issues/11)) ([b2fd11e](https://github.com/madrus/tournado/commit/b2fd11ee9a9bf8692cd9676d9f360f87a5bcf2c1))
+
+### Bug Fixes
+
+- allow for notch area on iphones ([#10](https://github.com/madrus/tournado/issues/10)) ([3ee5824](https://github.com/madrus/tournado/commit/3ee582485ab7d1f25d3679bbd38595246ba51dc6))
+
 ## [0.3.0](https://github.com/madrus/tournado/compare/v0.2.7...v0.3.0) (2025-04-22)
 
 ### 0.2.7 (2025-04-22)

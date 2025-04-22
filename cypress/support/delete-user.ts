@@ -11,19 +11,36 @@ installGlobals()
 
 async function deleteUser(email: string) {
   if (!email) {
-    throw new Error('email required for login')
+    console.error('Email required for login')
+    process.exit(1)
   }
   if (!email.endsWith('@example.com')) {
-    throw new Error('All test emails must end in @example.com')
+    console.error('All test emails must end in @example.com')
+    process.exit(1)
   }
 
   try {
-    await prisma.user.delete({ where: { email } })
+    // First check if the user exists
+    const user = await prisma.user.findUnique({
+      where: { email },
+    })
+
+    if (!user) {
+      console.log('User not found, so no need to delete')
+      return
+    }
+
+    // If user exists, delete it
+    await prisma.user.delete({
+      where: { email },
+    })
+    console.log('User deleted successfully')
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025') {
       console.log('User not found, so no need to delete')
     } else {
-      throw error
+      console.error('Error deleting user:', error)
+      process.exit(1)
     }
   } finally {
     await prisma.$disconnect()

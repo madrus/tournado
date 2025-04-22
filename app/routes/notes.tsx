@@ -138,7 +138,8 @@ export default function NotesPage() {
           <Link
             to='new'
             className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
-            aria-label='Icon to add a new note'
+            role='link'
+            aria-label={t('notes.newNote')}
           >
             <span className='text-3xl text-white'>+</span>
           </Link>

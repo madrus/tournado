@@ -1,3 +1,5 @@
+import { PWA_UPDATE_INTERVAL } from '@/lib/lib.constants'
+
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     // Register the service worker
@@ -24,6 +26,14 @@ export function registerServiceWorker() {
               }
             })
           })
+
+          // Check for updates immediately
+          registration.update()
+
+          // Then check for updates every hour
+          setInterval(() => {
+            registration.update()
+          }, PWA_UPDATE_INTERVAL)
         })
         .catch(error => {
           console.error('ServiceWorker registration failed:', error)
@@ -41,7 +51,9 @@ export function registerServiceWorker() {
 export function updateServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
-      registration.waiting?.postMessage('skipWaiting')
+      if (registration.waiting) {
+        registration.waiting.postMessage('skipWaiting')
+      }
     })
   }
 }

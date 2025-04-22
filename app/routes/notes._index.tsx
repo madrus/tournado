@@ -11,7 +11,7 @@ export default function NoteIndexPage() {
       <Link
         to='new'
         className='text-blue-500 underline'
-        aria-label='Text link to create a new note'
+        aria-label={t('notes.createNewNote')}
       >
         {t('notes.createNewNote')}
       </Link>

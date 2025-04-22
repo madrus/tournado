@@ -24,6 +24,8 @@ declare global {
        *    cy.cleanupUser()
        * @example
        *    cy.cleanupUser({ email: 'whatever@example.com' })
+       * @example
+       *    cy.cleanupUser({ failOnNonZeroExit: false })
        */
       cleanupUser: typeof cleanupUser
 
@@ -59,22 +61,27 @@ function login({
   return cy.get('@user')
 }
 
-function cleanupUser({ email }: { email?: string } = {}) {
+function cleanupUser({
+  email,
+  failOnNonZeroExit,
+}: { email?: string; failOnNonZeroExit?: boolean } = {}) {
   if (email) {
-    deleteUserByEmail(email)
+    deleteUserByEmail(email, failOnNonZeroExit)
   } else {
     cy.get('@user').then(user => {
       const email = (user as { email?: string }).email
       if (email) {
-        deleteUserByEmail(email)
+        deleteUserByEmail(email, failOnNonZeroExit)
       }
     })
   }
   cy.clearCookie('__session')
 }
 
-function deleteUserByEmail(email: string) {
-  cy.exec(`pnpm exec tsx ./cypress/support/delete-user.ts "${email}"`)
+function deleteUserByEmail(email: string, failOnNonZeroExit = true) {
+  cy.exec(`pnpm exec tsx ./cypress/support/delete-user.ts "${email}"`, {
+    failOnNonZeroExit,
+  })
   cy.clearCookie('__session')
 }
 

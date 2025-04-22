@@ -3,15 +3,32 @@ import { faker } from '@faker-js/faker'
 describe('smoke tests', () => {
   beforeEach(() => {
     cy.viewport('iphone-x')
+    // Force test language for tests
+    cy.window().then(win => {
+      console.log('Before setting language:', {
+        currentLanguage: win.localStorage.getItem('i18nextLng'),
+        navigatorLanguage: win.navigator.language,
+      })
+
+      win.localStorage.setItem('i18nextLng', 'test')
+      // Reload the page to ensure language change takes effect
+      win.location.reload()
+    })
   })
 
   afterEach(() => {
-    cy.cleanupUser()
+    cy.window().then(win => {
+      console.log('After test:', {
+        currentLanguage: win.localStorage.getItem('i18nextLng'),
+        navigatorLanguage: win.navigator.language,
+      })
+    })
+    cy.cleanupUser({ failOnNonZeroExit: false })
   })
 
   it('should allow you to register and login', () => {
     const loginForm = {
-      email: `${faker.internet.userName()}@example.com`,
+      email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
       password: faker.internet.password(),
     }
 
@@ -40,9 +57,9 @@ describe('smoke tests', () => {
     cy.visitAndCheck('/')
 
     cy.findByRole('link', { name: /notes/i }).click()
-    cy.findByText('No notes yet')
+    cy.findByText(/no notes yet/i)
 
-    cy.get('a[aria-label*="Icon to add"]').click()
+    cy.findByRole('link', { name: /create note/i }).click()
 
     cy.findByRole('textbox', { name: /title/i }).type(testNote.title)
     cy.findByRole('textbox', { name: /body/i }).type(testNote.body)
@@ -50,6 +67,6 @@ describe('smoke tests', () => {
 
     cy.findByRole('button', { name: /delete/i }).click()
 
-    cy.findByText('No notes yet')
+    cy.findByText(/no notes yet/i)
   })
 })

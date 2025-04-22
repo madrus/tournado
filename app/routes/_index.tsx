@@ -26,6 +26,8 @@ export default function Index() {
                   <Link
                     to='/notes'
                     className='text-brand flex w-1/2 min-w-[200px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium shadow-xs hover:bg-white hover:text-red-600 md:w-1/2'
+                    role='link'
+                    aria-label={t('auth.viewNotesFor')}
                   >
                     {t('auth.viewNotesFor')} {user.email}
                   </Link>
@@ -34,12 +36,16 @@ export default function Index() {
                     <Link
                       to='/join'
                       className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-xs hover:bg-white md:w-1/3'
+                      role='link'
+                      aria-label={t('auth.signup')}
                     >
                       {t('auth.signup')}
                     </Link>
                     <Link
                       to='/login'
                       className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full bg-emerald-600 px-6 py-2 font-semibold text-white hover:bg-emerald-700 md:w-1/3'
+                      role='link'
+                      aria-label={t('auth.login')}
                     >
                       {t('auth.login')}
                     </Link>

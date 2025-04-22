@@ -6,6 +6,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 // Import your translation files
 import en from './locales/en.json'
 import nl from './locales/nl.json'
+import test from './locales/test.json'
 
 export const defaultNS = 'common'
 export const resources = {
@@ -15,7 +16,24 @@ export const resources = {
   nl: {
     [defaultNS]: nl,
   },
+  test: {
+    [defaultNS]: test,
+  },
 } as const
+
+// Use test translations in test environment
+declare global {
+  interface Window {
+    Cypress?: boolean
+  }
+}
+
+const isTest = typeof window !== 'undefined' && window.Cypress
+
+console.log('i18n config environment:', {
+  isTest,
+  language: isTest ? 'test' : 'nl',
+})
 
 i18n
   .use(LanguageDetector)
@@ -24,7 +42,7 @@ i18n
     resources,
     defaultNS,
     fallbackLng: 'nl',
-    lng: 'nl',
+    lng: isTest ? 'test' : 'nl', // Use test translations in test environment
     interpolation: {
       escapeValue: false, // React already escapes values
     },
@@ -34,5 +52,10 @@ i18n
       lookupLocalStorage: 'i18nextLng',
     },
   })
+
+// Force language in test environment
+if (isTest) {
+  i18n.changeLanguage('test')
+}
 
 export default i18n

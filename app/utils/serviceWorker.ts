@@ -2,48 +2,50 @@ import { PWA_UPDATE_INTERVAL } from '@/lib/lib.constants'
 
 export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
-    // Register the service worker
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/sw.js', { scope: '/' })
-        .then(registration => {
-          console.log('ServiceWorker registered:', registration)
+    // Check if we're in development
+    const isDev = window.location.hostname === 'localhost'
+    const swPath = isDev ? '/sw.js' : '/sw.js'
 
-          // Check for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing
-            if (!newWorker) return
+    navigator.serviceWorker
+      .register(swPath, { scope: '/' })
+      .then(registration => {
+        console.log('ServiceWorker registered:', registration)
 
-            newWorker.addEventListener('statechange', () => {
-              // When the new service worker is installed and waiting
-              if (
-                newWorker.state === 'installed' &&
-                navigator.serviceWorker.controller
-              ) {
-                // Notify the user about the update
-                const event = new CustomEvent('serviceWorkerUpdateReady')
-                window.dispatchEvent(event)
-              }
-            })
+        // Check for updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing
+          if (!newWorker) return
+
+          newWorker.addEventListener('statechange', () => {
+            // When the new service worker is installed and waiting
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // Notify the user about the update
+              const event = new CustomEvent('serviceWorkerUpdateReady')
+              window.dispatchEvent(event)
+            }
           })
+        })
 
-          // Check for updates immediately
+        // Check for updates immediately
+        registration.update()
+
+        // Then check for updates every hour
+        setInterval(() => {
           registration.update()
-
-          // Then check for updates every hour
-          setInterval(() => {
-            registration.update()
-          }, PWA_UPDATE_INTERVAL)
-        })
-        .catch(error => {
-          console.error('ServiceWorker registration failed:', error)
-        })
-
-      // Handle updates from existing service workers
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        // Reload the page when the new service worker takes control
-        window.location.reload()
+        }, PWA_UPDATE_INTERVAL)
       })
+      .catch(error => {
+        console.error('ServiceWorker registration failed:', error)
+        // Don't show error in development
+        if (!isDev) {
+          console.error('ServiceWorker registration failed:', error)
+        }
+      })
+
+    // Handle updates from existing service workers
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      // Reload the page when the new service worker takes control
+      window.location.reload()
     })
   }
 }

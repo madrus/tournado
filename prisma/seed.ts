@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs'
 
-import { PrismaClient } from '@prisma/client'
-
 import type { Team as AppTeam } from '../app/lib/lib.types'
+import { PrismaClient } from '.prisma/client'
 
 const prisma = new PrismaClient()
 

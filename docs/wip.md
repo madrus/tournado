@@ -10,19 +10,19 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
 
 1. Layout Structure Issues:
 
-   - The main layout in `notes.tsx` uses a fixed-width sidebar (`w-80`) which won't work well on mobile
+   - The main layout in `teams.tsx` uses a fixed-width sidebar (`w-80`) which won't work well on mobile
    - The header has a fixed layout that might overflow on smaller screens
-   - The note list and content area are side-by-side, which is not ideal for mobile
+   - The team list and content area are side-by-side, which is not ideal for mobile
 
 2. Proposed Changes:
 
    1. [ ] Notes Page Layout:
       - [x] Convert the sidebar into a collapsible menu for mobile
       - [x] Implement a hamburger menu for mobile navigation
-      - [ ] Stack the note list and content vertically on mobile
-      - [x] Add a floating action button for "New Note" on mobile
+      - [ ] Stack the team list and content vertically on mobile
+      - [x] Add a floating action button for "New Team" on mobile
       - [x] Make the header responsive with proper spacing
-   2. [x] Note Detail Page:
+   2. [x] Team Detail Page:
       - [x] Adjust padding and margins for mobile screens
       - [x] Make the delete button more touch-friendly
       - [x] Ensure text is readable on smaller screens
@@ -79,19 +79,19 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
    </div>
    ```
 
-   2. Note Detail Page:
+   2. Team Detail Page:
 
    ```tsx
    // Current:
    <div className='p-4'>
-        <h3 className='text-2xl font-bold'>{data.note.title}</h3>
-        <p className='py-6'>{data.note.body}</p>
+        <h3 className='text-2xl font-bold'>{data.team.title}</h3>
+        <p className='py-6'>{data.team.body}</p>
         // ...
    </div>
    // Proposed:
    <div className='p-2 md:p-4'>
-        <h3 className='text-xl md:text-2xl font-bold'>{data.note.title}</h3>
-        <p className='py-3 md:py-6'>{data.note.body}</p>
+        <h3 className='text-xl md:text-2xl font-bold'>{data.team.title}</h3>
+        <p className='py-3 md:py-6'>{data.team.body}</p>
         // ...
    </div>
    ```

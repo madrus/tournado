@@ -24,12 +24,12 @@ export default function Index() {
               <div className='mx-auto mt-10 flex w-full max-w-sm flex-col items-center justify-center gap-4 md:max-w-none md:flex-row'>
                 {user ? (
                   <Link
-                    to='/notes'
+                    to='/teams'
                     className='text-brand flex w-1/2 min-w-[200px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-center text-base font-medium shadow-xs hover:bg-white hover:text-red-600 md:w-1/2'
                     role='link'
-                    aria-label={t('auth.viewNotesFor')}
+                    aria-label={t('auth.viewTeamsFor')}
                   >
-                    {t('auth.viewNotesFor')} {user.email}
+                    {t('auth.viewTeamsFor')} {user.email}
                   </Link>
                 ) : (
                   <div className='flex w-full flex-col items-center justify-center gap-4 md:flex-row md:gap-5'>

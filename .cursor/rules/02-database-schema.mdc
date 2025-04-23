@@ -12,7 +12,7 @@ The application uses Prisma with SQLite as the database provider. The schema is 
 ### User
 The central model representing application users:
 - Has one optional Password record
-- Can have multiple Notes
+- Can have multiple Teams
 - Tracked with creation and update timestamps
 
 ### Password
@@ -20,10 +20,10 @@ Stores hashed user passwords:
 - One-to-one relationship with User
 - Cascade deletion with user
 
-### Note
-Represents user notes:
+### Team
+Represents user teams:
 - Belongs to a User
-- Contains title and body
+- Contains teamName and teamClass
 - Tracked with creation and update timestamps
 
 ## Database Management

@@ -12,7 +12,7 @@ When writing tests, follow this order of preference for selecting elements:
    cy.findByRole('button', { name: /save/i })
 
    // Links
-   cy.findByRole('link', { name: /notes/i })
+   cy.findByRole('link', { name: /teams/i })
    cy.findByRole('link', { name: /sign up/i })
 
    // Form inputs
@@ -38,7 +38,7 @@ When writing tests, follow this order of preference for selecting elements:
 
    ```typescript
    cy.findByText(/log in/i)
-   cy.findByText(/no notes yet/i)
+   cy.findByText(/no teams yet/i)
    ```
 
 5. **By Display Value**
@@ -86,7 +86,7 @@ cy.findByRole('button', { name: /log in/i }).click()
 
 ```typescript
 // Click navigation links
-cy.findByRole('link', { name: /notes/i }).click()
+cy.findByRole('link', { name: /teams/i }).click()
 cy.findByRole('link', { name: /sign up/i }).click()
 ```
 
@@ -135,6 +135,6 @@ it('should allow user to log in', () => {
   cy.findByRole('button', { name: /log in/i }).click()
 
   // Assert
-  cy.findByRole('link', { name: /notes/i }).should('be.visible')
+  cy.findByRole('link', { name: /teams/i }).should('be.visible')
 })
 ```

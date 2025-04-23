@@ -1,69 +1,69 @@
 {
+  "auth": {
+    "alreadyHaveAccount": "Heb je al een account?",
+    "createAccount": "Account aanmaken",
+    "dontHaveAccount": "Nog geen account?",
+    "emailAddress": "E-mailadres",
+    "errors": {
+      "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
+      "emailInvalid": "E-mail is ongeldig",
+      "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
+      "passwordRequired": "Wachtwoord is verplicht",
+      "passwordTooShort": "Wachtwoord is te kort"
+    },
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "password": "Wachtwoord",
+    "rememberMe": "Onthoud mij",
+    "signup": "Registreren",
+    "viewTeamsFor": "Bekijk teams voor"
+  },
   "common": {
     "appName": "Tournado"
   },
-  "auth": {
-    "login": "Inloggen",
-    "signup": "Registreren",
-    "logout": "Uitloggen",
-    "emailAddress": "E-mailadres",
-    "password": "Wachtwoord",
-    "viewNotesFor": "Bekijk notities voor",
-    "rememberMe": "Onthoud mij",
-    "dontHaveAccount": "Nog geen account?",
-    "alreadyHaveAccount": "Heb je al een account?",
-    "createAccount": "Account aanmaken",
-    "errors": {
-      "emailInvalid": "E-mailadres is ongeldig",
-      "passwordRequired": "Wachtwoord is verplicht",
-      "passwordTooShort": "Wachtwoord is te kort",
-      "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
-      "emailExists": "Er bestaat al een gebruiker met dit e-mailadres"
-    }
-  },
-  "notes": {
-    "title": "Notities",
-    "newNote": "+ Nieuwe notitie",
-    "noNotes": "Nog geen notities",
-    "noNoteSelected": "Geen notitie geselecteerd. Selecteer een notitie aan de linkerkant, of",
-    "createNewNote": "maak een nieuwe notitie.",
-    "delete": "Verwijderen",
-    "save": "Opslaan",
-    "form": {
-      "title": "Titel:",
-      "body": "Inhoud:",
-      "titleRequired": "Titel is verplicht",
-      "bodyRequired": "Inhoud is verplicht"
-    },
-    "errors": {
-      "notFound": "Notitie niet gevonden",
-      "unknownError": "Onbekende fout",
-      "unexpectedError": "Er is een onverwachte fout opgetreden:"
-    }
-  },
   "pwa": {
     "install": {
-      "ios": {
-        "title": "Installeer deze app op je iPhone",
-        "safari": "Tik op de deelknop en dan op \"Zet in beginscherm\"",
-        "chrome": "Tik op de deelknop en dan op \"Zet in beginscherm\"",
-        "firefox": "Tik op het hamburger-menu en dan op \"Delen\" en \"Zet in beginscherm\""
-      },
       "android": {
-        "title": "Installeer deze app op je apparaat",
         "chrome": "Tik op het menu (⋮) en selecteer \"App installeren\"",
         "firefox": "Tik op het menu (⋮) en selecteer \"Installeren\"",
-        "samsung": "Tik op het menu (⋮) en selecteer \"Pagina toevoegen aan\" en dan \"Beginscherm\""
+        "samsung": "Tik op het menu (⋮) en selecteer \"Pagina toevoegen aan\" en dan \"Beginscherm\"",
+        "title": "Installeer deze app op je apparaat"
+      },
+      "ios": {
+        "chrome": "Tik op de deel-knop en dan op \"Zet in beginscherm\"",
+        "firefox": "Tik op het hamburger-menu en dan op \"Delen\" en \"Zet in beginscherm\"",
+        "safari": "Tik op de deel-knop en dan op \"Zet in beginscherm\"",
+        "title": "Installeer deze app op je iPhone"
       },
       "other": {
-        "title": "Installeer deze app op je apparaat",
-        "instruction": "Open het browsermenu en selecteer \"Zet in beginscherm\""
+        "instruction": "Open het browsermenu en selecteer \"Toevoegen aan beginscherm\"",
+        "title": "Installeer deze app op je apparaat"
       }
     },
     "update": {
-      "title": "Er is een nieuwe versie beschikbaar",
+      "button": "Bijwerken",
       "instruction": "Ververs om de app bij te werken",
-      "button": "Bijwerken"
+      "title": "Er is een nieuwe versie beschikbaar"
     }
+  },
+  "teams": {
+    "createNewTeam": "maak een nieuw team aan.",
+    "delete": "Verwijderen",
+    "errors": {
+      "notFound": "Team niet gevonden",
+      "unexpectedError": "Er is een onverwachte fout opgetreden:",
+      "unknownError": "Onbekende fout"
+    },
+    "form": {
+      "teamClass": "Team Klasse:",
+      "teamClassRequired": "Team klasse is verplicht",
+      "teamName": "Team Naam:",
+      "teamNameRequired": "Team naam is verplicht"
+    },
+    "newTeam": "+ Nieuw Team",
+    "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
+    "noTeams": "Nog geen teams",
+    "save": "Opslaan",
+    "title": "Teams"
   }
 }

@@ -32,7 +32,7 @@ When writing tests, follow this order of preference for selecting elements:
    cy.findByRole('button', { name: /save/i })
 
    // Links
-   cy.findByRole('link', { name: /notes/i })
+   cy.findByRole('link', { name: /teams/i })
    cy.findByRole('link', { name: /sign up/i })
 
    // Form inputs
@@ -55,7 +55,7 @@ When writing tests, follow this order of preference for selecting elements:
 4. **By Text Content**
    ```typescript
    cy.findByText(/log in/i)
-   cy.findByText(/no notes yet/i)
+   cy.findByText(/no teams yet/i)
    ```
 
 5. **By Display Value**
@@ -98,7 +98,7 @@ cy.findByRole('button', { name: /log in/i }).click()
 #### Navigation Testing
 ```typescript
 // Click navigation links
-cy.findByRole('link', { name: /notes/i }).click()
+cy.findByRole('link', { name: /teams/i }).click()
 cy.findByRole('link', { name: /sign up/i }).click()
 ```
 

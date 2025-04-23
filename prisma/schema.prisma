@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../.prisma/client"
 }
 
 model User {
@@ -15,7 +16,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   password Password?
-  notes    Note[]
+  teams    Team[]
 }
 
 model Password {
@@ -25,10 +26,10 @@ model Password {
   userId String @unique
 }
 
-model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
+model Team {
+  id        String @id @default(cuid())
+  teamName  String
+  teamClass String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

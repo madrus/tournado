@@ -6,4 +6,4 @@
 # Learn more: https://community.fly.io/t/sqlite-not-getting-setup-properly/4386
 
 npx prisma migrate deploy
-PORT=8080 HOST=0.0.0.0 npm run start
+NODE_ENV=production PORT=8080 HOST=0.0.0.0 pnpm run start

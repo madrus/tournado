@@ -32,12 +32,16 @@ FROM base as build
 
 WORKDIR /myapp
 
+# Copy all files needed for the build
 COPY --from=deps /myapp/node_modules /myapp/node_modules
+COPY prisma ./prisma
+COPY package.json pnpm-lock.yaml ./
+COPY . .
 
-ADD prisma .
-RUN npx prisma generate
+# Generate Prisma client
+RUN pnpm prisma generate
 
-ADD . .
+# Build the application
 RUN pnpm run build
 
 # Finally, build the production image with minimal footprint
@@ -52,9 +56,9 @@ RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-c
 
 WORKDIR /myapp
 
+# Copy only the necessary files
 COPY --from=production-deps /myapp/node_modules /myapp/node_modules
 COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
-
 COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 COPY --from=build /myapp/package.json /myapp/package.json

@@ -26,6 +26,19 @@ export type Tournament = {
   date: Date
 }
 
+// rollen:
+// - admin
+// - toernooibeheerder
+// - scheidsrechter coordinator
+//   - kan scores voor alle wedstrijden invullen
+// - scheidsrechter
+//   - kan scores voor zijn eigen wedstrijden invullen
+// - overige = readonly
+//   - kan geen uitslagen invullen
+
+// JO7 = leeftijdscategorie
+// -1 = teamnummer in de leeftijdscategorie
+
 /**
  * Als gebruiker van de Tournado App wil ik een inschrijving doen van mijn club.
  * Ik wil meerdere teams kunnen inschrijven voor een toernooi.
@@ -35,7 +48,7 @@ export type Tournament = {
  * - Clubnaam (verplicht) (via API Club logo en basisgegevens ophalen).
  * - Teamnaam (verplicht).
  * - Teamklasse (verplicht).
- * - Naam teamleider (verplicht).
+ * - Naam teamleider (verplicht) = contactpersoon.
  * - Telefoon teamleider (verplicht).
  * - Email teamleider (verplicht).
  * - Knop om nog een team in te schrijven.

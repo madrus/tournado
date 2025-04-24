@@ -2,15 +2,20 @@
   - [Overview](README.md)
   - [Getting Started](getting_started.md)
 - Development
-  - [Overview](development.md)
+  - [Overview](development/overview.md)
   - [Cursor Rules](development/cursor_rules.md)
-- Deployment & Testing
-  - [Deployment](deployment.md)
-  - [Testing](testing.md)
-  - [Troubleshooting](troubleshooting.md)
+- Testing
+  - [Overview](testing/overview.md)
+  - [Testing Guide](testing/testing_guide.md)
+  - [Troubleshooting](testing/troubleshooting.md)
+- Deployment
+  - [Overview](deployment/overview.md)
+- Maintenance
+  - [Docker](maintenance/docker.md)
+  - [Fly.io](maintenance/fly.md)
 - Reference
   - [Fly.io vs Vercel](fly_vs_vercel.md)
   - [Markdown Tips](markdown_tips.md)
-  - [Remix Stack](remix-stack.md)
+  - [Remix Stack](remix_stack.md)
 - Work in Progress
   - [WIP Items](wip.md)

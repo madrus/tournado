@@ -47,23 +47,16 @@
     }
   },
   "teams": {
-    "createNewTeam": "create team",
-    "delete": "delete",
-    "errors": {
-      "notFound": "team not found",
-      "unexpectedError": "unexpected error",
-      "unknownError": "unknown error"
-    },
+    "title": "teams",
+    "newTeam": "new team",
+    "noTeams": "no teams yet",
     "form": {
       "teamName": "team name",
-      "teamNameRequired": "team name required",
+      "teamNameRequired": "team name is required",
       "teamClass": "team class",
-      "teamClassRequired": "team class required"
+      "teamClassRequired": "team class is required"
     },
-    "newTeam": "new team",
-    "noTeamSelected": "no team selected",
-    "noTeams": "no teams yet",
     "save": "save",
-    "title": "teams"
+    "delete": "delete"
   }
 }

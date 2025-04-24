@@ -4,10 +4,11 @@ export function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     // Check if we're in development
     const isDev = window.location.hostname === 'localhost'
-    const swPath = isDev ? '/sw.js' : '/sw.js'
 
     navigator.serviceWorker
-      .register(swPath, { scope: '/' })
+      .register('/sw.js', {
+        scope: '/',
+      })
       .then(registration => {
         console.log('ServiceWorker registered:', registration)
 
@@ -35,8 +36,7 @@ export function registerServiceWorker() {
         }, PWA_UPDATE_INTERVAL)
       })
       .catch(error => {
-        console.error('ServiceWorker registration failed:', error)
-        // Don't show error in development
+        // Only show error in production
         if (!isDev) {
           console.error('ServiceWorker registration failed:', error)
         }

@@ -47,26 +47,53 @@ describe('smoke tests', () => {
     cy.findByRole('link', { name: /log in/i })
   })
 
-  it('should allow you to make a team', () => {
-    const testTeam = {
-      teamName: faker.lorem.words(1),
-      teamClass: 'JO8-1',
-    }
-    cy.login()
+  describe('team creation', () => {
+    beforeEach(() => {
+      cy.login()
+      cy.visitAndCheck('/')
+      cy.findByRole('link', { name: /teams/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
 
-    cy.visitAndCheck('/')
+    it('should allow you to make a team on desktop', () => {
+      cy.viewport(1280, 720)
+      const testTeam = {
+        teamName: faker.lorem.words(1),
+        teamClass: 'JO8-1',
+      }
 
-    cy.findByRole('link', { name: /teams/i }).click()
-    cy.findByText(/no teams yet/i)
+      cy.findByRole('link', {
+        name: 'Sidebar button to add a new team',
+      }).click()
 
-    cy.findByRole('link', { name: /create team/i }).click()
+      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
+      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
+      cy.findByRole('button', { name: /save/i }).click()
 
-    cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
-    cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
-    cy.findByRole('button', { name: /save/i }).click()
+      cy.findByRole('button', { name: /delete/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
 
-    cy.findByRole('button', { name: /delete/i }).click()
+    it('should allow you to make a team on mobile', () => {
+      cy.viewport('iphone-x')
+      const testTeam = {
+        teamName: faker.lorem.words(1),
+        teamClass: 'JO8-1',
+      }
 
-    cy.findByText(/no teams yet/i)
+      cy.findByRole('link', {
+        name: 'Sidebar button to add a new team',
+      }).click()
+
+      // Close the sidebar to access the form
+      cy.findByRole('button', { name: 'Toggle menu' }).click()
+
+      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
+      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
+      cy.findByRole('button', { name: /save/i }).click()
+
+      cy.findByRole('button', { name: /delete/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
   })
 })

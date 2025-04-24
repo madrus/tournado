@@ -23,19 +23,19 @@ export function getTeam({ id, userId }: { id: string; userId: string }) {
   }) as Promise<Pick<TeamWithUser, 'id' | 'teamClass' | 'teamName'> | null>
 }
 
-export function getTeamListItems({ userId }: { userId: User['id'] }) {
-  return prisma.team?.findMany({
+export async function getTeamListItems({ userId }: { userId: User['id'] }) {
+  return prisma.team.findMany({
     where: { userId },
     select: { id: true, teamName: true },
     orderBy: { updatedAt: 'desc' },
   })
 }
 
-export function createTeam({
-  teamClass,
+export async function createTeam({
   teamName,
+  teamClass,
   userId,
-}: Pick<Team, 'teamClass' | 'teamName'> & {
+}: Pick<Team, 'teamName' | 'teamClass'> & {
   userId: User['id']
 }) {
   return prisma.team.create({

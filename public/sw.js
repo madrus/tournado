@@ -8,5 +8,14 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('fetch', event => {
+  // Skip session-related requests
+  if (
+    event.request.url.includes('_data=routes%2Flogin') ||
+    event.request.url.includes('login') ||
+    event.request.url.includes('logout')
+  ) {
+    return
+  }
+
   console.log('Service Worker fetching:', event.request.url)
 })

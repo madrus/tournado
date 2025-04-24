@@ -26,22 +26,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const redirectTo = safeRedirect(formData.get('redirectTo'), '/')
 
   if (!validateEmail(email)) {
-    return json(
-      { errors: { email: 'Email is invalid', password: null } },
-      { status: 400 }
-    )
+    return json({ errors: { email: 'emailInvalid', password: null } }, { status: 400 })
   }
 
   if (typeof password !== 'string' || password.length === 0) {
     return json(
-      { errors: { email: null, password: 'Password is required' } },
+      { errors: { email: null, password: 'passwordRequired' } },
       { status: 400 }
     )
   }
 
   if (password.length < 8) {
     return json(
-      { errors: { email: null, password: 'Password is too short' } },
+      { errors: { email: null, password: 'passwordTooShort' } },
       { status: 400 }
     )
   }
@@ -51,7 +48,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json(
       {
         errors: {
-          email: 'A user already exists with this email',
+          email: 'emailExists',
           password: null,
         },
       },

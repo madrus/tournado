@@ -10,14 +10,13 @@ import { requireUserId } from '@/utils/session.server'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request)
-
   const formData = await request.formData()
   const teamName = formData.get('teamName')
   const teamClass = formData.get('teamClass')
 
   if (typeof teamName !== 'string' || teamName.length === 0) {
     return json(
-      { errors: { teamClass: null, teamName: 'Team name is required' } },
+      { errors: { teamName: 'Team name is required', teamClass: null } },
       { status: 400 }
     )
   }
@@ -29,7 +28,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     )
   }
 
-  const team = await createTeam({ teamClass, teamName, userId })
+  const team = await createTeam({
+    teamName,
+    teamClass,
+    userId,
+  })
 
   return redirect(`/teams/${team.id}`)
 }

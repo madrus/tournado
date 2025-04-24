@@ -28,7 +28,7 @@ export default function TeamsPage() {
   const { t } = useTranslation()
   const data = useLoaderData<typeof loader>()
   const user = useUser()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()
   const isNewTeamPage = location.pathname === '/teams/new'
 
@@ -77,7 +77,7 @@ export default function TeamsPage() {
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
-            className='bg-opacity-50 fixed inset-0 top-[62px] z-40 bg-black md:hidden'
+            className='fixed inset-0 top-[62px] z-40 bg-black/50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         ) : null}
@@ -87,14 +87,14 @@ export default function TeamsPage() {
           className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
               ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
-              : '-translate-x-full'
-          }`}
+              : '-translate-x-full md:translate-x-0'
+          } border-r border-red-500`}
         >
           <div className='relative flex h-full flex-col'>
             <div className='p-4'>
               <Link
                 to='new'
-                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-emerald-600 bg-white px-6 py-2 text-center text-base font-semibold text-emerald-600 shadow-xs hover:bg-emerald-50'
+                className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-white px-6 py-2 text-center text-base font-semibold text-red-500 shadow-xs hover:bg-red-50'
                 aria-label='Sidebar button to add a new team'
               >
                 {t('teams.newTeam')}
@@ -138,7 +138,7 @@ export default function TeamsPage() {
         {!isNewTeamPage ? (
           <Link
             to='new'
-            className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 pt-3 text-white shadow-xl hover:bg-emerald-700 md:hidden'
+            className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
             role='link'
             aria-label={t('teams.newTeam')}
           >

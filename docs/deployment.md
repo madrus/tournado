@@ -91,3 +91,10 @@ Check application logs:
 fly logs --app tournado
 fly logs --app tournado-staging
 ```
+
+Connect to the staging environment:
+
+```sh
+fly ssh console -a tournado-staging
+fly ssh console --app tournado-staging
+```

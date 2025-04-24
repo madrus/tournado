@@ -6,8 +6,9 @@ ENV NODE_ENV=production
 ENV HUSKY=0
 
 # Install openssl for Prisma and pnpm
-RUN apt-get update && apt-get install -y openssl sqlite3 && \
-  npm install -g pnpm@10
+RUN apt-get update && apt-get install -y openssl sqlite3 python3-pip && \
+  npm install -g pnpm@10 && \
+  pip3 install litecli
 
 # Install all node_modules, including dev dependencies
 FROM base AS deps
@@ -52,8 +53,11 @@ FROM base
 ENV DATABASE_URL=file:/data/sqlite.db
 ENV PORT="8080"
 
+# Create data directory and set permissions
+RUN mkdir -p /data && chmod 777 /data
+
 # add shortcut for connecting to database CLI
-RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-cli && chmod +x /usr/local/bin/database-cli
+RUN echo '#!/bin/sh\nset -x\nlitecli "$(echo $DATABASE_URL | sed "s/file://")"' > /usr/local/bin/db-cli && chmod +x /usr/local/bin/db-cli
 
 WORKDIR /workdir
 

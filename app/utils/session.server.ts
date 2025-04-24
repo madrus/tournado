@@ -15,6 +15,7 @@ export const sessionStorage = createCookieSessionStorage({
     sameSite: 'lax',
     secrets: [process.env.SESSION_SECRET],
     secure: process.env.NODE_ENV === 'production',
+    maxAge: undefined, // Default to session cookie, will be overridden when remember is true
   },
 })
 
@@ -74,14 +75,16 @@ export async function createUserSession({
   redirectTo: string
 }) {
   const session = await getSession(request)
-  session.set(USER_SESSION_KEY, userId)
+  session.set('userId', userId)
+
+  const cookieOptions = {
+    maxAge: remember ? 60 * 60 * 24 * 7 : undefined, // 7 days if remember, otherwise session cookie
+  }
+
   return redirect(redirectTo, {
     headers: {
-      'Set-Cookie': await sessionStorage.commitSession(session, {
-        maxAge: remember
-          ? 60 * 60 * 24 * 7 // 7 days
-          : undefined,
-      }),
+      'Set-Cookie': await sessionStorage.commitSession(session, cookieOptions),
+      'Cache-Control': 'no-store',
     },
   })
 }

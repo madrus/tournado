@@ -61,3 +61,10 @@ pnpm typecheck
 - Write TypeScript with strict mode enabled
 - Use functional components with hooks
 - Follow the Remix conventions for routes and loaders
+
+5. Test the Dockerfile
+
+```sh
+docker build -t tournado:test .
+docker run -p 8080:8080 tournado:test
+```

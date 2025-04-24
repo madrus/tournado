@@ -2,18 +2,18 @@ import { Link } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
-export default function NoteIndexPage() {
+export default function TeamIndexPage() {
   const { t } = useTranslation()
 
   return (
     <p>
-      {t('notes.noNoteSelected')}{' '}
+      {t('teams.noTeamSelected')}{' '}
       <Link
         to='new'
         className='text-blue-500 underline'
-        aria-label={t('notes.createNewNote')}
+        aria-label={t('teams.createNewTeam')}
       >
-        {t('notes.createNewNote')}
+        {t('teams.createNewTeam')}
       </Link>
     </p>
   )

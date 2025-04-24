@@ -61,3 +61,19 @@ pnpm typecheck
 - Write TypeScript with strict mode enabled
 - Use functional components with hooks
 - Follow the Remix conventions for routes and loaders
+
+5. Test the Dockerfile
+
+```sh
+docker build -t tournado:test .
+docker run -p 8080:8080 tournado:test
+```
+
+6. Test migrations
+
+1. Check the current state of your local database: `npx prisma migrate status`. We can see our new migration
+1. Apply new migration: `npx prisma migrate dev`.
+1. Veryfy the state of the database: `sqlite3 prisma/data.db ".tables"`.
+1. Check the database: `npx prisma db pull`
+1. Check schema: `sqlite3 prisma/data.db ".schema"`
+1. If the database is not in the desired state, we can reset it: `npx prisma migrate reset --force`

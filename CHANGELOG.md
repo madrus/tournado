@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/madrus/tournado/compare/v0.3.6...v0.3.7) (2025-04-24)
+
+### Bug Fixes
+
+- 🐛 database migrations ([5861c9c](https://github.com/madrus/tournado/commit/5861c9c899a0232c53de53d422d373f5dce1689e))
+
+### [0.3.6](https://github.com/madrus/tournado/compare/v0.3.5...v0.3.6) (2025-04-24)
+
+### [0.3.5](https://github.com/madrus/tournado/compare/v0.3.4...v0.3.5) (2025-04-23)
+
+### [0.3.4](https://github.com/madrus/tournado/compare/v0.3.3...v0.3.4) (2025-04-23)
+
+### Bug Fixes
+
+- 🐛 sw registration ([d406c3d](https://github.com/madrus/tournado/commit/d406c3d3d744aaf478527a35d8865c9b158080a2))
+
 ### [0.3.3](https://github.com/madrus/tournado/compare/v0.3.2...v0.3.3) (2025-04-22)
 
 ### Bug Fixes

@@ -19,7 +19,7 @@ const cypressPlugin = require('eslint-plugin-cypress')
 module.exports = [
   // Global ignores
   {
-    ignores: ['node_modules/**', 'build/**', 'public/build/**'],
+    ignores: ['node_modules/**', 'build/**', 'public/build/**', '.prisma/**'],
   },
 
   // Base config

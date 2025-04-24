@@ -1,69 +1,69 @@
 {
+  "auth": {
+    "alreadyHaveAccount": "Already have an account?",
+    "createAccount": "Create Account",
+    "dontHaveAccount": "Don't have an account?",
+    "emailAddress": "Email address",
+    "errors": {
+      "emailExists": "A user already exists with this email",
+      "emailInvalid": "Email is invalid",
+      "invalidCredentials": "Invalid email or password",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password is too short"
+    },
+    "login": "Log in",
+    "logout": "Logout",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "signup": "Sign up",
+    "viewTeamsFor": "View teams for"
+  },
   "common": {
     "appName": "Tournado"
   },
-  "auth": {
-    "login": "Log in",
-    "signup": "Sign up",
-    "logout": "Logout",
-    "emailAddress": "Email address",
-    "password": "Password",
-    "viewNotesFor": "View notes for",
-    "rememberMe": "Remember me",
-    "dontHaveAccount": "Don't have an account?",
-    "alreadyHaveAccount": "Already have an account?",
-    "createAccount": "Create Account",
-    "errors": {
-      "emailInvalid": "Email is invalid",
-      "passwordRequired": "Password is required",
-      "passwordTooShort": "Password is too short",
-      "invalidCredentials": "Invalid email or password",
-      "emailExists": "A user already exists with this email"
-    }
-  },
-  "notes": {
-    "title": "Notes",
-    "newNote": "+ New Note",
-    "noNotes": "No notes yet",
-    "noNoteSelected": "No note selected. Select a note on the left, or",
-    "createNewNote": "create a new note.",
-    "delete": "Delete",
-    "save": "Save",
-    "form": {
-      "title": "Title:",
-      "body": "Body:",
-      "titleRequired": "Title is required",
-      "bodyRequired": "Body is required"
-    },
-    "errors": {
-      "notFound": "Note not found",
-      "unknownError": "Unknown Error",
-      "unexpectedError": "An unexpected error occurred:"
-    }
-  },
   "pwa": {
     "install": {
-      "ios": {
-        "title": "Install this app on your iPhone",
-        "safari": "Tap the share button and then \"Add to Home Screen\"",
-        "chrome": "Tap the share button and then \"Add to Home Screen\"",
-        "firefox": "Tap the hamburger menu then \"Share\" and \"Add to Home Screen\""
-      },
       "android": {
-        "title": "Install this app on your device",
         "chrome": "Tap the menu (⋮) and select \"Install app\"",
         "firefox": "Tap the menu (⋮) and select \"Install\"",
-        "samsung": "Tap the menu (⋮) and select \"Add page to\" then \"Home screen\""
+        "samsung": "Tap the menu (⋮) and select \"Add page to\" then \"Home screen\"",
+        "title": "Install this app on your device"
+      },
+      "ios": {
+        "chrome": "Tap the share button and then \"Add to Home Screen\"",
+        "firefox": "Tap the hamburger menu then \"Share\" and \"Add to Home Screen\"",
+        "safari": "Tap the share button and then \"Add to Home Screen\"",
+        "title": "Install this app on your iPhone"
       },
       "other": {
-        "title": "Install this app on your device",
-        "instruction": "Open browser menu and select \"Add to Home Screen\""
+        "instruction": "Open browser menu and select \"Add to Home Screen\"",
+        "title": "Install this app on your device"
       }
     },
     "update": {
-      "title": "A new version is available",
+      "button": "Update",
       "instruction": "Refresh to update the app",
-      "button": "Update"
+      "title": "A new version is available"
     }
+  },
+  "teams": {
+    "createNewTeam": "create a new team.",
+    "delete": "Delete",
+    "errors": {
+      "notFound": "Team not found",
+      "unexpectedError": "An unexpected error occurred:",
+      "unknownError": "Unknown Error"
+    },
+    "form": {
+      "teamClass": "Team Class:",
+      "teamClassRequired": "Team class is required",
+      "teamName": "Team Name:",
+      "teamNameRequired": "Team name is required"
+    },
+    "newTeam": "+ New Team",
+    "noTeamSelected": "No team selected. Select a team on the left, or",
+    "noTeams": "No teams yet",
+    "save": "Save",
+    "title": "Teams"
   }
 }

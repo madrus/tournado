@@ -27,22 +27,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {
-    return json(
-      { errors: { email: 'Email is invalid', password: null } },
-      { status: 400 }
-    )
+    return json({ errors: { email: 'emailInvalid', password: null } }, { status: 400 })
   }
 
   if (typeof password !== 'string' || password.length === 0) {
     return json(
-      { errors: { email: null, password: 'Password is required' } },
+      { errors: { email: null, password: 'passwordRequired' } },
       { status: 400 }
     )
   }
 
   if (password.length < 8) {
     return json(
-      { errors: { email: null, password: 'Password is too short' } },
+      { errors: { email: null, password: 'passwordTooShort' } },
       { status: 400 }
     )
   }
@@ -51,14 +48,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!user) {
     return json(
-      { errors: { email: 'Invalid email or password', password: null } },
+      { errors: { email: 'invalidCredentials', password: null } },
       { status: 400 }
     )
   }
 
   return createUserSession({
     redirectTo,
-    remember: remember === 'on' ? true : false,
+    remember: remember === 'on',
     request,
     userId: user.id,
   })
@@ -69,7 +66,7 @@ export const meta: MetaFunction = () => [{ title: 'Login' }]
 export default function LoginPage() {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') || '/notes'
+  const redirectTo = searchParams.get('redirectTo') || '/teams'
   const actionData = useActionData<typeof action>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)

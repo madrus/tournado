@@ -42,31 +42,58 @@ describe('smoke tests', () => {
     cy.findByLabelText(/password/i).type(loginForm.password)
     cy.findByRole('button', { name: /create account/i }).click()
 
-    cy.findByRole('link', { name: /notes/i }).click()
+    cy.findByRole('link', { name: /teams/i }).click()
     cy.findByRole('button', { name: /logout/i }).click()
     cy.findByRole('link', { name: /log in/i })
   })
 
-  it('should allow you to make a note', () => {
-    const testNote = {
-      title: faker.lorem.words(1),
-      body: faker.lorem.sentences(1),
-    }
-    cy.login()
+  describe('team creation', () => {
+    beforeEach(() => {
+      cy.login()
+      cy.visitAndCheck('/')
+      cy.findByRole('link', { name: /teams/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
 
-    cy.visitAndCheck('/')
+    it('should allow you to make a team on desktop', () => {
+      cy.viewport(1280, 720)
+      const testTeam = {
+        teamName: faker.lorem.words(1),
+        teamClass: 'JO8-1',
+      }
 
-    cy.findByRole('link', { name: /notes/i }).click()
-    cy.findByText(/no notes yet/i)
+      cy.findByRole('link', {
+        name: 'Sidebar button to add a new team',
+      }).click()
 
-    cy.findByRole('link', { name: /create note/i }).click()
+      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
+      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
+      cy.findByRole('button', { name: /save/i }).click()
 
-    cy.findByRole('textbox', { name: /title/i }).type(testNote.title)
-    cy.findByRole('textbox', { name: /body/i }).type(testNote.body)
-    cy.findByRole('button', { name: /save/i }).click()
+      cy.findByRole('button', { name: /delete/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
 
-    cy.findByRole('button', { name: /delete/i }).click()
+    it('should allow you to make a team on mobile', () => {
+      cy.viewport('iphone-x')
+      const testTeam = {
+        teamName: faker.lorem.words(1),
+        teamClass: 'JO8-1',
+      }
 
-    cy.findByText(/no notes yet/i)
+      cy.findByRole('link', {
+        name: 'Sidebar button to add a new team',
+      }).click()
+
+      // Close the sidebar to access the form
+      cy.findByRole('button', { name: 'Toggle menu' }).click()
+
+      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
+      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
+      cy.findByRole('button', { name: /save/i }).click()
+
+      cy.findByRole('button', { name: /delete/i }).click()
+      cy.findByText(/no teams yet/i)
+    })
   })
 })

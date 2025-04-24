@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs'
 
 import { PrismaClient } from '@prisma/client'
 
+import type { Team as AppTeam } from '../app/lib/lib.types'
+
 const prisma = new PrismaClient()
 
 async function seed() {
@@ -25,18 +27,30 @@ async function seed() {
     },
   })
 
-  await prisma.note.create({
+  const team1: AppTeam = {
+    id: 'cuid1', // Prisma will generate this
+    teamName: 'Ajax JO8-1',
+    teamClass: 'JO8-1',
+  }
+
+  const team2: AppTeam = {
+    id: 'cuid2', // Prisma will generate this
+    teamName: 'Ajax MO10-1',
+    teamClass: 'MO10-1',
+  }
+
+  await prisma.team.create({
     data: {
-      title: 'My first note',
-      body: 'Hello, world!',
+      teamName: team1.teamName,
+      teamClass: team1.teamClass,
       userId: user.id,
     },
   })
 
-  await prisma.note.create({
+  await prisma.team.create({
     data: {
-      title: 'My second note',
-      body: 'Hello, world!',
+      teamName: team2.teamName,
+      teamClass: team2.teamClass,
       userId: user.id,
     },
   })

@@ -9,10 +9,16 @@ import { parse } from 'cookie'
 
 import { createUser } from '@/models/user.server'
 import { createUserSession } from '@/utils/session.server'
+import { Role } from '@prisma/client'
 
 installGlobals()
 
-async function createAndLogin(email: string) {
+async function createAndLogin(
+  email: string,
+  firstName?: string,
+  lastName?: string,
+  role?: Role
+) {
   if (!email) {
     throw new Error('email required for login')
   }
@@ -20,7 +26,18 @@ async function createAndLogin(email: string) {
     throw new Error('All test emails must end in @example.com')
   }
 
-  const user = await createUser(email, 'myreallystrongpassword')
+  // Extract a name from the email for test purposes
+  const name = email.split('@')[0]
+  const defaultFirstName = name.charAt(0).toUpperCase() + name.slice(1)
+  const defaultLastName = 'TestUser'
+
+  const user = await createUser(
+    email,
+    'myreallystrongpassword',
+    firstName || defaultFirstName,
+    lastName || defaultLastName,
+    role || Role.PUBLIC // Default role for test users
+  )
 
   const response = await createUserSession({
     request: new Request('test://test'),
@@ -45,4 +62,9 @@ async function createAndLogin(email: string) {
   )
 }
 
-createAndLogin(process.argv[2])
+createAndLogin(
+  process.argv[2],
+  process.argv[3],
+  process.argv[4],
+  process.argv[5] as Role
+)

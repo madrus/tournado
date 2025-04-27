@@ -2,22 +2,19 @@
  * @fileoverview
  * This file contains the types for the library.
  */
+import type { Team as PrismaTeam } from '@prisma/client'
 
-export type TeamLeader = {
-  id: string
-  name: string
-  phone: string
-  email: string
-}
+// TeamName type should have the following format:
+// e.g. "JO8-1"
+// J = Jongens (boys), M = Meisjes (girls), JM = Jongens e Meisjes (boys and girls)
+// O = onder (age group)
+// 8 = age group
+// 1 = team class or number
+export type TeamName = `${'J' | 'M' | 'JM'}${'O'}${number}-${number}`
 
 // TeamClass type should have the following format:
-// e.g. "JO8-1"
-// J = Jongens (boys) or M = Meisjes (girls)
-// O = Over (age group)
-// 8 = age group
-// 1 = team number
-// how can I create a type for this?
-export type TeamClass = `${'J' | 'M'}${'O' | 'U'}${number}-${number}`
+// e.g. "1ste klasse", "2de klasse", "3de klasse"
+export type TeamClass = string
 
 export type Tournament = {
   id: string
@@ -27,17 +24,18 @@ export type Tournament = {
 }
 
 // rollen:
-// - admin
-// - toernooibeheerder
-// - scheidsrechter coordinator
+// - Admin
+// - Toernooibeheerder
+// - Scheidsrechter coordinator
 //   - kan scores voor alle wedstrijden invullen
-// - scheidsrechter
+// - Scheidsrechter
 //   - kan scores voor zijn eigen wedstrijden invullen
-// - overige = readonly
+// - Public = readonly
 //   - kan geen uitslagen invullen
 
-// JO7 = leeftijdscategorie
-// -1 = teamnummer in de leeftijdscategorie
+// JO7-1
+//   - JO7 = leeftijdscategorie
+//   - 1 = teamnummer in de leeftijdscategorie
 
 /**
  * Als gebruiker van de Tournado App wil ik een inschrijving doen van mijn club.
@@ -57,18 +55,18 @@ export type Tournament = {
  */
 
 // Complete Team type including all fields
-export type Team = {
-  id: string
-  // leaderId: string
-  teamName: string
-  teamClass: string
-  // createdAt: Date
-  // updatedAt: Date
-}
+export type Team = PrismaTeam
+
+// Email type matching basic e-mail pattern: local@domain.tld
+export type Email = `${string}@${string}.${string}`
 
 // Type for form input
 export type TeamFormData = {
-  clubName: string // via API Club logo en basisgegevens ophalen
-  teamName: string
+  clubName: string // via API Club -- logo en basisgegevens ophalen
+  teamName: TeamName
   teamClass: TeamClass
+  teamLeaderName: string
+  teamLeaderPhone: string
+  teamLeaderEmail: Email
+  privacyAgreement: boolean
 }

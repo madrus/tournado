@@ -13,31 +13,24 @@ import { renderToPipeableStream } from 'react-dom/server'
 
 const ABORT_DELAY = 5_000
 
-console.log('Environment variables:', {
-  NODE_ENV: process.env.NODE_ENV,
-  DATABASE_URL: process.env.DATABASE_URL,
-  SESSION_SECRET: process.env.SESSION_SECRET ? 'Set' : 'Not set',
-  // Add other variables you want to check
-})
-
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext
-) {
+): Promise<Response> {
   return isbot(request.headers.get('user-agent'))
     ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
     : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext)
 }
 
-function handleBotRequest(
+const handleBotRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext
-) {
-  return new Promise((resolve, reject) => {
+): Promise<Response> =>
+  new Promise((resolve, reject) => {
     const { abort, pipe } = renderToPipeableStream(
       <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
       {
@@ -60,6 +53,7 @@ function handleBotRequest(
         },
         onError(error: unknown) {
           responseStatusCode = 500
+          // eslint-disable-next-line no-console
           console.error(error)
         },
       }
@@ -67,15 +61,14 @@ function handleBotRequest(
 
     setTimeout(abort, ABORT_DELAY)
   })
-}
 
-function handleBrowserRequest(
+const handleBrowserRequest = (
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext
-) {
-  return new Promise((resolve, reject) => {
+): Promise<Response> =>
+  new Promise((resolve, reject) => {
     const { abort, pipe } = renderToPipeableStream(
       <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
       {
@@ -97,6 +90,7 @@ function handleBrowserRequest(
           reject(error)
         },
         onError(error: unknown) {
+          // eslint-disable-next-line no-console
           console.error(error)
           responseStatusCode = 500
         },
@@ -105,4 +99,3 @@ function handleBrowserRequest(
 
     setTimeout(abort, ABORT_DELAY)
   })
-}

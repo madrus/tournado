@@ -5,11 +5,13 @@ import { Form, useActionData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { prisma } from '@/db.server'
 import { createTeam } from '@/models/team.server'
+import { getDefaultTeamLeader } from '@/models/teamLeader.server'
 import { requireUserId } from '@/utils/session.server'
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request)
+export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
+  await requireUserId(request) // TODO: check auth status for now
   const formData = await request.formData()
   const teamName = formData.get('teamName')
   const teamClass = formData.get('teamClass')
@@ -28,16 +30,41 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     )
   }
 
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    return json(
+      {
+        errors: { teamLeader: 'No team leader found', teamName: null, teamClass: null },
+      },
+      { status: 404 }
+    )
+  }
+
+  // Get the default Tournament (for now)
+  const tournament = await prisma.tournament.findFirst({
+    orderBy: { createdAt: 'asc' },
+  })
+  if (!tournament) {
+    return json(
+      {
+        errors: { tournament: 'No tournament found', teamName: null, teamClass: null },
+      },
+      { status: 404 }
+    )
+  }
+
   const team = await createTeam({
     teamName,
     teamClass,
-    userId,
+    teamLeaderId: teamLeader.id,
+    tournamentId: tournament.id,
   })
 
   return redirect(`/teams/${team.id}`)
 }
 
-export default function NewTeamPage() {
+export default function NewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<typeof action>()
   const teamNameRef = useRef<HTMLInputElement>(null)

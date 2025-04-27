@@ -7,13 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  TOURNAMENT_MANAGER
+  REFEREE_COORDINATOR
+  REFEREE
+  PUBLIC
+}
+
+enum MatchStatus {
+  UPCOMING
+  PLAYED
+  CANCELLED
+  POSTPONED
+}
+
 model User {
   id        String    @id @default(cuid())
-  email     String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  firstName String
+  lastName  String
+  email     String    @unique
   password  Password?
-  teams     Team[]
+  role      Role
 }
 
 model Password {
@@ -22,12 +39,68 @@ model Password {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Team {
+model TeamLeader { // contact person
   id        String   @id @default(cuid())
-  teamName  String
-  teamClass String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String
+  teams     Team[]
+}
+
+model Team {
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  teamName      String
+  teamClass     String
+  teamLeaderId  String
+  teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
+  tournamentId  String
+  tournament    Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  // back-relations for Match
+  homeMatches   Match[]      @relation("Match_homeTeam")
+  awayMatches   Match[]      @relation("Match_awayTeam")
+}
+
+model Tournament {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  location  String      // city
+  startDate DateTime    // first day of tournament
+  endDate   DateTime?   // optional last day; if null, single-day event
+  teams     Team[]
+  matches   Match[]
+}
+
+model Match {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  date          DateTime // scheduled date of the match
+  time          DateTime // scheduled time of the match
+  location      String   // specific field/court
+  status        MatchStatus @default(UPCOMING)
+  tournamentId  String
+  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  homeTeamId    String
+  homeTeam      Team     @relation("Match_homeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
+  awayTeamId    String
+  awayTeam      Team     @relation("Match_awayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
+  // back-relation for MatchScore
+  scores        MatchScore[]
+}
+
+model MatchScore {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  matchId    String
+  match      Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  homeTeamScore Int
+  awayTeamScore Int
 }

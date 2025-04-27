@@ -1,4 +1,4 @@
-# Development
+# Overview
 
 ## Project Structure
 
@@ -6,7 +6,7 @@ The project follows a standard Remix application structure:
 
 ```
 app/
-  ├── components/     # Reusable UI components
+  ├── components/    # Reusable UI components
   ├── models/        # Database models and server-side logic
   ├── routes/        # Application routes
   ├── styles/        # Global styles
@@ -62,18 +62,18 @@ pnpm typecheck
 - Use functional components with hooks
 - Follow the Remix conventions for routes and loaders
 
-5. Test the Dockerfile
+## Docker Testing
 
 ```sh
 docker build -t tournado:test .
-docker run -p 8080:8080 tournado:test
+docker run -p 3000:8080 tournado:test
 ```
 
-6. Test migrations
+## Database Migrations
 
-1. Check the current state of your local database: `npx prisma migrate status`. We can see our new migration
-1. Apply new migration: `npx prisma migrate dev`.
-1. Veryfy the state of the database: `sqlite3 prisma/data.db ".tables"`.
-1. Check the database: `npx prisma db pull`
-1. Check schema: `sqlite3 prisma/data.db ".schema"`
-1. If the database is not in the desired state, we can reset it: `npx prisma migrate reset --force`
+1. Check the current state of your local database: `npx prisma migrate status`
+2. Apply new migration: `npx prisma migrate dev`
+3. Verify the state of the database: `sqlite3 prisma/data.db ".tables"`
+4. Check the database: `npx prisma db pull`
+5. Check schema: `sqlite3 prisma/data.db ".schema"`
+6. If the database is not in the desired state, we can reset it: `npx prisma migrate reset --force`

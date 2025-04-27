@@ -126,15 +126,15 @@ cy.findByText(/invalid email/i).should('be.visible')
 
 ```typescript
 it('should allow user to log in', () => {
-  // Arrange
-  cy.visit('/login')
+   // Arrange
+   cy.visit('/login')
 
-  // Act
-  cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
-  cy.findByLabelText(/password/i).type('password123')
-  cy.findByRole('button', { name: /log in/i }).click()
+   // Act
+   cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
+   cy.findByLabelText(/password/i).type('password123')
+   cy.findByRole('button', { name: /log in/i }).click()
 
-  // Assert
-  cy.findByRole('link', { name: /teams/i }).should('be.visible')
+   // Assert
+   cy.findByRole('link', { name: /teams/i }).should('be.visible')
 })
 ```

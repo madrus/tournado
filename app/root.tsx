@@ -13,7 +13,7 @@ import {
 import { I18nextProvider } from 'react-i18next'
 
 import { PWAElements } from './components/PWAElements'
-import i18n from './i18n/config'
+import { i18n } from './i18n'
 import './styles/layout.css'
 import './styles/safe-areas.css'
 import './styles/tailwind.css'
@@ -54,12 +54,14 @@ export const links: LinksFunction = () => [
   },
 ]
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<ReturnType<typeof json>> => {
   const user = await getUser(request)
   return json({ user })
 }
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <html lang={i18n.language}>
       <head>

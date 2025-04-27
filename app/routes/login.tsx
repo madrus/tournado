@@ -10,16 +10,16 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { verifyLogin } from '@/models/user.server'
-import { safeRedirect, validateEmail } from '@/utils'
 import { createUserSession, getUserId } from '@/utils/session.server'
+import { safeRedirect, validateEmail } from '@/utils/utils'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
   if (userId) return redirect('/')
   return json({})
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
@@ -63,7 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export const meta: MetaFunction = () => [{ title: 'Login' }]
 
-export default function LoginPage() {
+export default function LoginPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/teams'

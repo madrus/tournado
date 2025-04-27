@@ -11,7 +11,15 @@ type Platform =
   | 'android-samsung'
   | 'other'
 
-export function AddToHomeScreenPrompt() {
+type PromptText = {
+  [K in Platform]: {
+    title: string
+    instruction: string
+    icon: string
+  }
+}
+
+export function AddToHomeScreenPrompt(): JSX.Element | null {
   const { t } = useTranslation()
   const [isClient, setIsClient] = useState(false)
   const [showPrompt, setShowPrompt] = useState(false)
@@ -27,9 +35,8 @@ export function AddToHomeScreenPrompt() {
     if (!isClient) return
 
     // Get environment from the URL
-    function getEnvironment(): 'staging' | 'production' {
-      return window.location.hostname.includes('staging') ? 'staging' : 'production'
-    }
+    const getEnvironment = (): 'staging' | 'production' =>
+      window.location.hostname.includes('staging') ? 'staging' : 'production'
 
     // Create environment-specific storage key
     function getStorageKey(): string {
@@ -87,7 +94,7 @@ export function AddToHomeScreenPrompt() {
           lastDismissedDate.getMonth() !== today.getMonth() ||
           lastDismissedDate.getFullYear() !== today.getFullYear()
         )
-      } catch (error) {
+      } catch (_error) {
         // If there's any error parsing the date, clear the storage and show the prompt
         localStorage.removeItem(storageKey)
         return true
@@ -96,7 +103,7 @@ export function AddToHomeScreenPrompt() {
 
     // Check if the app is running in standalone mode
     function isInStandaloneMode(): boolean {
-      const nav = navigator as any // Type assertion for iOS Safari standalone property
+      const nav = navigator as Navigator & { standalone?: boolean }
       return (
         nav.standalone === true ||
         window.matchMedia('(display-mode: standalone)').matches
@@ -164,7 +171,7 @@ export function AddToHomeScreenPrompt() {
       instruction: t('pwa.install.other.instruction'),
       icon: '⋮',
     },
-  }
+  } as PromptText
 
   const showTopArrow = platform === 'ios-safari'
   const showMenuDots = !showTopArrow

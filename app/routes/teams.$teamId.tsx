@@ -12,36 +12,57 @@ import { useTranslation } from 'react-i18next'
 import invariant from 'tiny-invariant'
 
 import { deleteTeam, getTeam } from '@/models/team.server'
+import { getDefaultTeamLeader } from '@/models/teamLeader.server'
 import { requireUserId } from '@/utils/session.server'
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request)
+export const loader = async ({
+  params,
+  request,
+}: LoaderFunctionArgs): Promise<Response> => {
+  // Ensure user is logged in
+  await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
-  const team = await getTeam({ id: params.teamId, userId })
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  const team = await getTeam({ id: params.teamId, teamLeaderId: teamLeader.id })
   if (!team) {
     throw new Response('Not Found', { status: 404 })
   }
   return json({ team })
 }
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request)
+export const action = async ({
+  params,
+  request,
+}: ActionFunctionArgs): Promise<Response> => {
+  // Ensure user is logged in
+  await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
-  await deleteTeam({ id: params.teamId, userId })
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  await deleteTeam({ id: params.teamId, teamLeaderId: teamLeader.id })
 
   return redirect('/teams')
 }
 
-export default function TeamDetailsPage() {
+export default function TeamDetailsPage(): JSX.Element {
   const { t } = useTranslation()
-  const data = useLoaderData<typeof loader>()
+  const teamsData = useLoaderData<typeof loader>()
 
   return (
     <>
-      <h3 className='text-2xl font-bold'>{data.team.teamName}</h3>
-      <p className='py-6'>{data.team.teamClass}</p>
+      <h3 className='text-2xl font-bold'>{teamsData.team.teamName}</h3>
+      <p className='py-6'>{teamsData.team.teamClass}</p>
       <hr className='my-4' />
       <Form method='post'>
         <button
@@ -55,7 +76,7 @@ export default function TeamDetailsPage() {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary(): JSX.Element {
   const { t } = useTranslation()
   const error = useRouteError()
 

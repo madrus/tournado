@@ -1,41 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from '@/db.server'
-import type { Prisma, Team, User } from '@prisma/client'
+import type { Prisma, Team, TeamLeader } from '@prisma/client'
 
 export type { Team } from '@prisma/client'
 
-export type TeamWithUser = Team & {
-  user: Pick<User, 'id' | 'email'>
+export type TeamWithLeader = Team & {
+  teamLeader: Pick<TeamLeader, 'id' | 'email'>
 }
 
 // Define types using Prisma.Args utility
 type TeamPayload = Prisma.TeamGetPayload<{
-  include: { user: true }
+  include: { teamLeader: true }
 }>
 
-type UserPayload = Prisma.UserGetPayload<{
+type LeaderPayload = Prisma.TeamLeaderGetPayload<{
   select: { id: true; email: true }
 }>
 
 export const getTeam = ({
   id,
-  userId,
+  teamLeaderId,
 }: {
   id: string
-  userId: string
-}): Promise<Pick<TeamWithUser, 'id' | 'teamClass' | 'teamName'> | null> =>
-  prisma.team?.findFirst({
+  teamLeaderId: string
+}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> =>
+  prisma.team.findFirst({
     select: { id: true, teamClass: true, teamName: true },
-    where: { id, userId },
-  }) as Promise<Pick<TeamWithUser, 'id' | 'teamClass' | 'teamName'> | null>
+    where: { id, teamLeaderId },
+  }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
 
 export const getTeamListItems = async ({
-  userId,
+  teamLeaderId,
 }: {
-  userId: User['id']
+  teamLeaderId: TeamLeader['id']
 }): Promise<Array<Pick<Team, 'id' | 'teamName'>>> =>
   prisma.team.findMany({
-    where: { userId },
+    where: { teamLeaderId },
     select: { id: true, teamName: true },
     orderBy: { updatedAt: 'desc' },
   })
@@ -43,27 +43,28 @@ export const getTeamListItems = async ({
 export const createTeam = async ({
   teamName,
   teamClass,
-  userId,
+  teamLeaderId,
+  tournamentId,
 }: Pick<Team, 'teamName' | 'teamClass'> & {
-  userId: User['id']
+  teamLeaderId: TeamLeader['id']
+  tournamentId: string
 }): Promise<Team> =>
   prisma.team.create({
     // eslint-disable-next-line id-blacklist
     data: {
       teamName,
       teamClass,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
+      teamLeaderId,
+      tournamentId,
     },
   })
 
 export const deleteTeam = ({
   id,
-  userId,
-}: Pick<Team, 'id'> & { userId: User['id'] }): Promise<Prisma.BatchPayload> =>
+  teamLeaderId,
+}: Pick<Team, 'id'> & {
+  teamLeaderId: TeamLeader['id']
+}): Promise<Prisma.BatchPayload> =>
   prisma.team.deleteMany({
-    where: { id, userId },
+    where: { id, teamLeaderId },
   })

@@ -1,0 +1,88 @@
+name: 🗄️ Database Reset
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to reset"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  reset-database:
+    name: Reset Database
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: ⎔ Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
+      - name: 📥 Install deps
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
+
+      - name: 👀 Read app name
+        uses: SebRollen/toml-action@v1.2.0
+        id: app_name
+        with:
+          file: fly.toml
+          field: app
+
+      - name: 🎈 Setup Fly
+        uses: superfly/flyctl-actions/setup-flyctl@v1
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: 🗄️ Reset Staging Database
+        if: ${{ github.event.inputs.environment == 'staging' }}
+        run: |
+          # Generate a new SQLite database schema locally
+          pnpm exec prisma db push --schema=./prisma/schema.prisma
+
+          # Create a temporary migration SQL file
+          pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
+
+          # Copy the SQL file to the Fly.io instance
+          flyctl ssh sftp put reset.sql /tmp/reset.sql -a ${{ steps.app_name.outputs.value }}-staging
+
+          # Execute the SQL file on the Fly.io instance
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"
+
+          # Run the seed script on the Fly.io instance
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"
+
+      - name: 🗄️ Reset Production Database
+        if: ${{ github.event.inputs.environment == 'production' }}
+        run: |
+          # Generate a new SQLite database schema locally
+          pnpm exec prisma db push --schema=./prisma/schema.prisma
+
+          # Create a temporary migration SQL file
+          pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
+
+          # Copy the SQL file to the Fly.io instance
+          flyctl ssh sftp put reset.sql /tmp/reset.sql -a ${{ steps.app_name.outputs.value }}
+
+          # Execute the SQL file on the Fly.io instance
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"
+
+          # Run the seed script on the Fly.io instance
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"

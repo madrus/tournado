@@ -23,22 +23,76 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
+  const firstName = formData.get('firstName')
+  const lastName = formData.get('lastName')
   const redirectTo = safeRedirect(formData.get('redirectTo'), '/')
 
   if (!validateEmail(email)) {
-    return json({ errors: { email: 'emailInvalid', password: null } }, { status: 400 })
+    return json(
+      {
+        errors: {
+          email: 'emailInvalid',
+          password: null,
+          firstName: null,
+          lastName: null,
+        },
+      },
+      { status: 400 }
+    )
   }
 
   if (typeof password !== 'string' || password.length === 0) {
     return json(
-      { errors: { email: null, password: 'passwordRequired' } },
+      {
+        errors: {
+          email: null,
+          password: 'passwordRequired',
+          firstName: null,
+          lastName: null,
+        },
+      },
       { status: 400 }
     )
   }
 
   if (password.length < 8) {
     return json(
-      { errors: { email: null, password: 'passwordTooShort' } },
+      {
+        errors: {
+          email: null,
+          password: 'passwordTooShort',
+          firstName: null,
+          lastName: null,
+        },
+      },
+      { status: 400 }
+    )
+  }
+
+  if (typeof firstName !== 'string' || firstName.length === 0) {
+    return json(
+      {
+        errors: {
+          email: null,
+          password: null,
+          firstName: 'firstNameRequired',
+          lastName: null,
+        },
+      },
+      { status: 400 }
+    )
+  }
+
+  if (typeof lastName !== 'string' || lastName.length === 0) {
+    return json(
+      {
+        errors: {
+          email: null,
+          password: null,
+          firstName: null,
+          lastName: 'lastNameRequired',
+        },
+      },
       { status: 400 }
     )
   }
@@ -50,13 +104,15 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
         errors: {
           email: 'emailExists',
           password: null,
+          firstName: null,
+          lastName: null,
         },
       },
       { status: 400 }
     )
   }
 
-  const user = await createUser(email, password)
+  const user = await createUser(email, password, firstName, lastName, 'PUBLIC')
 
   return createUserSession({
     redirectTo,
@@ -75,12 +131,18 @@ export default function Join(): JSX.Element {
   const actionData = useActionData<typeof action>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const firstNameRef = useRef<HTMLInputElement>(null)
+  const lastNameRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (actionData?.errors?.email) {
       emailRef.current?.focus()
     } else if (actionData?.errors?.password) {
       passwordRef.current?.focus()
+    } else if (actionData?.errors?.firstName) {
+      firstNameRef.current?.focus()
+    } else if (actionData?.errors?.lastName) {
+      lastNameRef.current?.focus()
     }
   }, [actionData])
 
@@ -108,6 +170,60 @@ export default function Join(): JSX.Element {
               {actionData?.errors?.email ? (
                 <div className='pt-1 text-red-700' id='email-error'>
                   {t(`auth.errors.${actionData.errors.email}`)}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor='firstName'
+              className='block text-sm font-medium text-gray-700'
+            >
+              {t('auth.firstName')}
+            </label>
+            <div className='mt-1'>
+              <input
+                ref={firstNameRef}
+                id='firstName'
+                required
+                name='firstName'
+                type='text'
+                autoComplete='given-name'
+                aria-invalid={actionData?.errors?.firstName ? true : undefined}
+                aria-describedby='firstName-error'
+                className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
+              />
+              {actionData?.errors?.firstName ? (
+                <div className='pt-1 text-red-700' id='firstName-error'>
+                  {t(`auth.errors.${actionData.errors.firstName}`)}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor='lastName'
+              className='block text-sm font-medium text-gray-700'
+            >
+              {t('auth.lastName')}
+            </label>
+            <div className='mt-1'>
+              <input
+                ref={lastNameRef}
+                id='lastName'
+                required
+                name='lastName'
+                type='text'
+                autoComplete='family-name'
+                aria-invalid={actionData?.errors?.lastName ? true : undefined}
+                aria-describedby='lastName-error'
+                className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
+              />
+              {actionData?.errors?.lastName ? (
+                <div className='pt-1 text-red-700' id='lastName-error'>
+                  {t(`auth.errors.${actionData.errors.lastName}`)}
                 </div>
               ) : null}
             </div>

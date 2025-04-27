@@ -12,16 +12,24 @@ import { useTranslation } from 'react-i18next'
 import invariant from 'tiny-invariant'
 
 import { deleteTeam, getTeam } from '@/models/team.server'
+import { getDefaultTeamLeader } from '@/models/teamLeader.server'
 import { requireUserId } from '@/utils/session.server'
 
 export const loader = async ({
   params,
   request,
 }: LoaderFunctionArgs): Promise<Response> => {
-  const userId = await requireUserId(request)
+  // Ensure user is logged in
+  await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
-  const team = await getTeam({ id: params.teamId, userId })
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  const team = await getTeam({ id: params.teamId, teamLeaderId: teamLeader.id })
   if (!team) {
     throw new Response('Not Found', { status: 404 })
   }
@@ -32,10 +40,17 @@ export const action = async ({
   params,
   request,
 }: ActionFunctionArgs): Promise<Response> => {
-  const userId = await requireUserId(request)
+  // Ensure user is logged in
+  await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
-  await deleteTeam({ id: params.teamId, userId })
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  await deleteTeam({ id: params.teamId, teamLeaderId: teamLeader.id })
 
   return redirect('/teams')
 }

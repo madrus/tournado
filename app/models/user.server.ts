@@ -13,7 +13,10 @@ export const getUserByEmail = async (email: User['email']): Promise<User | null>
 
 export async function createUser(
   email: User['email'],
-  password: string
+  password: string,
+  firstName: User['firstName'],
+  lastName: User['lastName'],
+  role: User['role']
 ): Promise<User> {
   const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -21,6 +24,9 @@ export async function createUser(
     // eslint-disable-next-line id-blacklist
     data: {
       email,
+      firstName,
+      lastName,
+      role,
       password: {
         create: {
           hash: hashedPassword,

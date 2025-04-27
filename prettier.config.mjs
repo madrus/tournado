@@ -1,6 +1,14 @@
 /** @type {import('prettier').Config} */
 import prettierConfig from '@madrus/configs/prettier.config.mjs'
 
+prettierConfig.overrides = [
+  ...prettierConfig.overrides,
+  {
+    files: ['*.md', '*.mdx'],
+    options: { tabWidth: 3 },
+  },
+]
+
 // Add tailwindcss plugin to the existing plugins array
 const plugins = [
   ...(prettierConfig.plugins || []),

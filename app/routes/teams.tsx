@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { getTeamListItems } from '@/models/team.server'
+import { getDefaultTeamLeader, type TeamLeader } from '@/models/teamLeader.server'
 import { requireUserId } from '@/utils/session.server'
 import { useUser } from '@/utils/utils'
 import type { Team } from '@prisma/client'
@@ -22,19 +23,32 @@ import type { Team } from '@prisma/client'
 export type { Team } from '@prisma/client'
 
 // Only create additional types for specific use cases
-export type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
+export type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'teamLeaderId'>
 
 type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
-  const userId = await requireUserId(request)
-  const teamListItems: TeamListItem[] = await getTeamListItems({ userId })
-  return json({ teamListItems })
+  // Ensure user is logged in
+  await requireUserId(request)
+
+  // Get the default TeamLeader
+  const teamLeader = await getDefaultTeamLeader()
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  const teamListItems: TeamListItem[] = await getTeamListItems({
+    teamLeaderId: teamLeader.id,
+  })
+  return json({ teamListItems, teamLeader })
 }
 
 export default function TeamsPage(): JSX.Element {
   const { t } = useTranslation()
-  const teamsData = useLoaderData<{ teamListItems: TeamListItem[] }>()
+  const teamsData = useLoaderData<{
+    teamListItems: TeamListItem[]
+    teamLeader: TeamLeader
+  }>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()

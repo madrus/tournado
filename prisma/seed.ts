@@ -4,56 +4,114 @@ import bcrypt from 'bcryptjs'
 
 import { PrismaClient } from '@prisma/client'
 
-import type { Team as AppTeam } from '../app/lib/lib.types'
+import type { Email } from '../app/lib/lib.types'
 
 const prisma = new PrismaClient()
 
 async function seed() {
-  const email = 'rachel@remix.run'
+  const admins: Email[] = ['user@example.com', 'admin2@example.com']
 
   // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
-    // no worries if it doesn't exist yet
-  })
+  await Promise.all(
+    admins.map(email =>
+      prisma.user.delete({ where: { email } }).catch(() => {
+        // no worries if it doesn't exist yet
+      })
+    )
+  )
 
-  const hashedPassword = await bcrypt.hash('racheliscool', 10)
+  const hashedInitialPassword = await bcrypt.hash('Tournado@2025', 10)
 
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
+  let user
+  for (const email of admins) {
+    const createdUser = await prisma.user.create({
+      data: {
+        email,
+        firstName:
+          email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+        lastName: 'Admin',
+        role: 'ADMIN',
+        password: { create: { hash: hashedInitialPassword } },
       },
-    },
-  })
+    })
+    if (!user) user = createdUser // captures the first one
+  }
 
-  const team1: AppTeam = {
-    id: 'cuid1', // Prisma will generate this
+  const team1 = {
     teamName: 'JO8-1',
     teamClass: '1ste klasse',
   }
 
-  const team2: AppTeam = {
-    id: 'cuid2', // Prisma will generate this
+  const team2 = {
     teamName: 'MO10-2',
     teamClass: '2de klasse',
   }
 
-  await prisma.team.create({
+  // Find or create a default team leader
+  let teamLeader = await prisma.teamLeader.findFirst({
+    where: { email: 'user@example.com' },
+  })
+
+  if (!teamLeader) {
+    try {
+      teamLeader = await prisma.teamLeader.create({
+        data: {
+          firstName: 'Madrusnl',
+          lastName: 'Admin',
+          email: 'user@example.com',
+          phone: '000-000-0000',
+        },
+      })
+    } catch (error) {
+      // If creation fails due to unique constraint, try to find it again
+      teamLeader = await prisma.teamLeader.findFirst({
+        where: { email: 'user@example.com' },
+      })
+
+      if (!teamLeader) {
+        throw error // Re-throw if we still can't find it
+      }
+    }
+  }
+
+  // Minimal dummy tournament
+  const tournament1 = await prisma.tournament.create({
     data: {
-      teamName: team1.teamName,
-      teamClass: team1.teamClass,
-      userId: user.id,
+      name: 'Spring Cup',
+      location: 'Amsterdam',
+      startDate: new Date('2025-05-01'),
+      endDate: new Date('2025-05-02'),
     },
   })
 
-  await prisma.team.create({
+  const createdTeam1 = await prisma.team.create({
+    data: {
+      teamName: team1.teamName,
+      teamClass: team1.teamClass,
+      teamLeaderId: teamLeader.id,
+      tournamentId: tournament1.id,
+    },
+  })
+
+  const createdTeam2 = await prisma.team.create({
     data: {
       teamName: team2.teamName,
       teamClass: team2.teamClass,
-      userId: user.id,
+      teamLeaderId: teamLeader.id,
+      tournamentId: tournament1.id,
+    },
+  })
+
+  // Minimal dummy match
+  await prisma.match.create({
+    data: {
+      date: new Date('2025-06-01'),
+      time: new Date('2025-06-01T10:00:00Z'),
+      location: 'Main Field',
+      status: 'UPCOMING',
+      tournamentId: tournament1.id,
+      homeTeamId: createdTeam1.id,
+      awayTeamId: createdTeam2.id,
     },
   })
 

@@ -14,7 +14,7 @@ const languages: Language[] = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
 ]
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher(): JSX.Element {
   const { i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 

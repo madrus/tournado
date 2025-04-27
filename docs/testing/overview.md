@@ -53,13 +53,13 @@ Use Cypress for testing user flows and critical paths:
 
 ```ts
 describe('Authentication', () => {
-  it('should allow users to log in', () => {
-    cy.visit('/login')
-    cy.get('input[name="email"]').type('test@example.com')
-    cy.get('input[name="password"]').type('password')
-    cy.get('button[type="submit"]').click()
-    cy.url().should('include', '/dashboard')
-  })
+   it('should allow users to log in', () => {
+      cy.visit('/login')
+      cy.get('input[name="email"]').type('test@example.com')
+      cy.get('input[name="password"]').type('password')
+      cy.get('button[type="submit"]').click()
+      cy.url().should('include', '/dashboard')
+   })
 })
 ```
 
@@ -88,7 +88,7 @@ cy.login()
 
 // Clean up test user
 afterEach(() => {
-  cy.cleanupUser()
+   cy.cleanupUser()
 })
 ```
 

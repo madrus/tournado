@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { initReactI18next } from 'react-i18next'
 
+// Import only what we need
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
@@ -43,40 +45,39 @@ const getInitialLanguage = () => {
 
 const initialLanguage = getInitialLanguage()
 
-console.log('i18n config environment:', {
-  isTest,
-  language: initialLanguage,
-})
+// Create i18n instance
+// eslint-disable-next-line import/no-named-as-default-member
+const i18n = i18next.use(LanguageDetector).use(initReactI18next)
 
-const i18n = i18next
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    defaultNS,
-    fallbackLng: 'nl',
-    lng: initialLanguage,
-    interpolation: {
-      escapeValue: false, // React already escapes values
-    },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'i18nextLng',
-    },
-    missingKeyHandler: (lng, ns, key) => {
-      console.warn(`Missing translation key: ${key} in ${ns} for ${lng}`)
-      return key
-    },
-    missingInterpolationHandler: (str, match) => {
-      console.warn(`Missing interpolation: ${match[1]} in ${str}`)
-      return ''
-    },
-  })
+// Initialize synchronously
+i18n.init({
+  resources,
+  defaultNS,
+  fallbackLng: 'nl',
+  lng: initialLanguage,
+  interpolation: {
+    escapeValue: false, // React already escapes values
+  },
+  detection: {
+    order: ['localStorage', 'navigator'],
+    caches: ['localStorage'],
+    lookupLocalStorage: 'i18nextLng',
+  },
+  missingKeyHandler: (lng, ns, key) => {
+    console.warn(`Missing translation key: ${key} in ${ns} for ${lng}`)
+    return key
+  },
+  missingInterpolationHandler: (str, match) => {
+    console.warn(`Missing interpolation: ${match[1]} in ${str}`)
+    return ''
+  },
+  // Initialize synchronously
+  initImmediate: false,
+})
 
 // Force language in test environment
 if (isTest) {
-  i18next.changeLanguage('test')
+  i18n.changeLanguage('test')
 }
 
-export default i18next
+export default i18n

@@ -3,11 +3,11 @@ import { Link } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
-import { useOptionalUser } from '@/utils'
+import { useOptionalUser } from '@/utils/utils'
 
 export const meta: MetaFunction = () => [{ title: 'Tournado' }]
 
-export default function Index() {
+export default function Index(): JSX.Element {
   const { t } = useTranslation()
   const user = useOptionalUser()
   return (

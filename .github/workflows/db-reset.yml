@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     env:
-      DATABASE_URL: "file:./prisma/dev.db"
+      DATABASE_URL: "file:./prisma/sqlite.db"
 
     steps:
       - name: ⬇️ Checkout repo
@@ -56,7 +56,7 @@ jobs:
       - name: Reset Staging Database
         if: ${{ github.event.inputs.environment == 'staging' }}
         env:
-          DATABASE_URL: "file:./prisma/dev.db"
+          DATABASE_URL: "file:./prisma/sqlite.db"
 
         run: |
           # Generate a new SQLite database schema locally
@@ -66,7 +66,7 @@ jobs:
           pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
 
           # Copy the SQL file to the Fly.io instance
-          flyctl ssh sftp put reset.sql /tmp/reset.sql -a ${{ steps.app_name.outputs.value }}-staging
+          flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}-staging
 
           # Execute the SQL file on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"
@@ -77,7 +77,7 @@ jobs:
       - name: Reset Production Database
         if: ${{ github.event.inputs.environment == 'production' }}
         env:
-          DATABASE_URL: "file:./prisma/dev.db"
+          DATABASE_URL: "file:./prisma/sqlite.db"
 
         run: |
           # Generate a new SQLite database schema locally
@@ -87,7 +87,7 @@ jobs:
           pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
 
           # Copy the SQL file to the Fly.io instance
-          flyctl ssh sftp put reset.sql /tmp/reset.sql -a ${{ steps.app_name.outputs.value }}
+          flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}
 
           # Execute the SQL file on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"

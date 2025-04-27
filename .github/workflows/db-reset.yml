@@ -1,4 +1,4 @@
-name: 🗄️ Database Reset
+name: Database Reset
 
 on:
   workflow_dispatch:

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { updateServiceWorker } from '@/utils/serviceWorkerRegistration'
 
-export function UpdatePrompt() {
+export function UpdatePrompt(): JSX.Element | null {
   const { t } = useTranslation()
   const [isClient, setIsClient] = useState(false)
   const [showUpdatePrompt, setShowUpdatePrompt] = useState(false)

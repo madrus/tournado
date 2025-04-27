@@ -1,8 +1,5 @@
 /** @type {import('prettier').Config} */
-const madrusConfig = require('@madrus/configs')
-
-// Get the base prettier config
-const prettierConfig = madrusConfig.prettier
+import prettierConfig from '@madrus/configs/prettier.config.mjs'
 
 // Add tailwindcss plugin to the existing plugins array
 const plugins = [
@@ -11,7 +8,7 @@ const plugins = [
   'prettier-plugin-tailwindcss',
 ]
 
-module.exports = {
+export default {
   ...prettierConfig,
   importOrder: [
     '^(node|@conform-to)',

@@ -14,7 +14,10 @@ import invariant from 'tiny-invariant'
 import { deleteTeam, getTeam } from '@/models/team.server'
 import { requireUserId } from '@/utils/session.server'
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = async ({
+  params,
+  request,
+}: LoaderFunctionArgs): Promise<Response> => {
   const userId = await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
@@ -25,7 +28,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({ team })
 }
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
+export const action = async ({
+  params,
+  request,
+}: ActionFunctionArgs): Promise<Response> => {
   const userId = await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
@@ -34,14 +40,14 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   return redirect('/teams')
 }
 
-export default function TeamDetailsPage() {
+export default function TeamDetailsPage(): JSX.Element {
   const { t } = useTranslation()
-  const data = useLoaderData<typeof loader>()
+  const teamsData = useLoaderData<typeof loader>()
 
   return (
     <>
-      <h3 className='text-2xl font-bold'>{data.team.teamName}</h3>
-      <p className='py-6'>{data.team.teamClass}</p>
+      <h3 className='text-2xl font-bold'>{teamsData.team.teamName}</h3>
+      <p className='py-6'>{teamsData.team.teamClass}</p>
       <hr className='my-4' />
       <Form method='post'>
         <button
@@ -55,7 +61,7 @@ export default function TeamDetailsPage() {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary(): JSX.Element {
   const { t } = useTranslation()
   const error = useRouteError()
 

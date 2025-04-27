@@ -16,7 +16,7 @@ const DEFAULT_REDIRECT = '/'
 export function safeRedirect(
   to: FormDataEntryValue | string | null | undefined,
   defaultRedirect: string = DEFAULT_REDIRECT
-) {
+): string | null {
   if (!to || typeof to !== 'string') {
     return defaultRedirect
   }
@@ -37,27 +37,24 @@ export function safeRedirect(
 export function useMatchesData(id: string): Record<string, unknown> | undefined {
   const matchingRoutes = useMatches()
   const route = useMemo(
-    () => matchingRoutes.find(route => route.id === id),
+    () => matchingRoutes.find(r => r.id === id),
     [matchingRoutes, id]
   )
   return route?.data as Record<string, unknown>
 }
 
-function isUser(user: unknown): user is User {
-  return (
-    user != null &&
-    typeof user === 'object' &&
-    'email' in user &&
-    typeof user.email === 'string'
-  )
-}
+const isUser = (user: unknown): user is User =>
+  user != null &&
+  typeof user === 'object' &&
+  'email' in user &&
+  typeof user.email === 'string'
 
 export function useOptionalUser(): User | undefined {
-  const data = useMatchesData('root')
-  if (!data || !isUser(data.user)) {
+  const useData = useMatchesData('root')
+  if (!useData || !isUser(useData.user)) {
     return undefined
   }
-  return data.user
+  return useData.user
 }
 
 export function useUser(): User {
@@ -70,6 +67,5 @@ export function useUser(): User {
   return maybeUser
 }
 
-export function validateEmail(email: unknown): email is string {
-  return typeof email === 'string' && email.length > 3 && email.includes('@')
-}
+export const validateEmail = (email: unknown): email is string =>
+  typeof email === 'string' && email.length > 3 && email.includes('@')

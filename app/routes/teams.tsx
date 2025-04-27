@@ -15,18 +15,26 @@ import { useTranslation } from 'react-i18next'
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { getTeamListItems } from '@/models/team.server'
-import { useUser } from '@/utils'
 import { requireUserId } from '@/utils/session.server'
+import { useUser } from '@/utils/utils'
+import type { Team } from '@prisma/client'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export type { Team } from '@prisma/client'
+
+// Only create additional types for specific use cases
+export type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'userId'>
+
+type TeamListItem = Pick<Team, 'id' | 'teamName'>
+
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await requireUserId(request)
-  const teamListItems = await getTeamListItems({ userId })
+  const teamListItems: TeamListItem[] = await getTeamListItems({ userId })
   return json({ teamListItems })
 }
 
-export default function TeamsPage() {
+export default function TeamsPage(): JSX.Element {
   const { t } = useTranslation()
-  const data = useLoaderData<typeof loader>()
+  const teamsData = useLoaderData<{ teamListItems: TeamListItem[] }>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()
@@ -104,11 +112,11 @@ export default function TeamsPage() {
             <hr className='border-gray-300' />
 
             <div className='pb-safe flex-1 overflow-y-auto'>
-              {data.teamListItems?.length === 0 ? (
+              {teamsData.teamListItems?.length === 0 ? (
                 <p className='p-4 text-center text-gray-500'>{t('teams.noTeams')}</p>
               ) : (
                 <ol>
-                  {data.teamListItems?.map(team => (
+                  {teamsData.teamListItems?.map(team => (
                     <li key={team.id}>
                       <NavLink
                         className={({ isActive }) =>
@@ -150,8 +158,9 @@ export default function TeamsPage() {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary(): JSX.Element {
   const error = useRouteError()
+  // eslint-disable-next-line no-console
   console.error(error)
   return (
     <div>

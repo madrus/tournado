@@ -10,16 +10,16 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { createUser, getUserByEmail } from '@/models/user.server'
-import { safeRedirect, validateEmail } from '@/utils'
 import { createUserSession, getUserId } from '@/utils/session.server'
+import { safeRedirect, validateEmail } from '@/utils/utils'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
   if (userId) return redirect('/')
   return json({})
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
@@ -68,7 +68,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
 
-export default function Join() {
+export default function Join(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') ?? undefined

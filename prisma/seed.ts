@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable id-blacklist */
 import bcrypt from 'bcryptjs'
 
 import { PrismaClient } from '@prisma/client'
@@ -29,14 +31,14 @@ async function seed() {
 
   const team1: AppTeam = {
     id: 'cuid1', // Prisma will generate this
-    teamName: 'Ajax JO8-1',
-    teamClass: 'JO8-1',
+    teamName: 'JO8-1',
+    teamClass: '1ste klasse',
   }
 
   const team2: AppTeam = {
     id: 'cuid2', // Prisma will generate this
-    teamName: 'Ajax MO10-1',
-    teamClass: 'MO10-1',
+    teamName: 'MO10-2',
+    teamClass: '2de klasse',
   }
 
   await prisma.team.create({
@@ -59,8 +61,8 @@ async function seed() {
 }
 
 seed()
-  .catch(e => {
-    console.error(e)
+  .catch(error => {
+    console.error(error)
     process.exit(1)
   })
   .finally(async () => {

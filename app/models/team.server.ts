@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from '@/db.server'
 import type { Prisma, Team, User } from '@prisma/client'
 
@@ -16,29 +17,38 @@ type UserPayload = Prisma.UserGetPayload<{
   select: { id: true; email: true }
 }>
 
-export function getTeam({ id, userId }: { id: string; userId: string }) {
-  return prisma.team?.findFirst({
+export const getTeam = ({
+  id,
+  userId,
+}: {
+  id: string
+  userId: string
+}): Promise<Pick<TeamWithUser, 'id' | 'teamClass' | 'teamName'> | null> =>
+  prisma.team?.findFirst({
     select: { id: true, teamClass: true, teamName: true },
     where: { id, userId },
   }) as Promise<Pick<TeamWithUser, 'id' | 'teamClass' | 'teamName'> | null>
-}
 
-export async function getTeamListItems({ userId }: { userId: User['id'] }) {
-  return prisma.team.findMany({
+export const getTeamListItems = async ({
+  userId,
+}: {
+  userId: User['id']
+}): Promise<Array<Pick<Team, 'id' | 'teamName'>>> =>
+  prisma.team.findMany({
     where: { userId },
     select: { id: true, teamName: true },
     orderBy: { updatedAt: 'desc' },
   })
-}
 
-export async function createTeam({
+export const createTeam = async ({
   teamName,
   teamClass,
   userId,
 }: Pick<Team, 'teamName' | 'teamClass'> & {
   userId: User['id']
-}) {
-  return prisma.team.create({
+}): Promise<Team> =>
+  prisma.team.create({
+    // eslint-disable-next-line id-blacklist
     data: {
       teamName,
       teamClass,
@@ -49,10 +59,11 @@ export async function createTeam({
       },
     },
   })
-}
 
-export function deleteTeam({ id, userId }: Pick<Team, 'id'> & { userId: User['id'] }) {
-  return prisma.team.deleteMany({
+export const deleteTeam = ({
+  id,
+  userId,
+}: Pick<Team, 'id'> & { userId: User['id'] }): Promise<Prisma.BatchPayload> =>
+  prisma.team.deleteMany({
     where: { id, userId },
   })
-}

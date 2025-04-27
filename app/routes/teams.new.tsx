@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { createTeam } from '@/models/team.server'
 import { requireUserId } from '@/utils/session.server'
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   const userId = await requireUserId(request)
   const formData = await request.formData()
   const teamName = formData.get('teamName')
@@ -37,7 +37,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return redirect(`/teams/${team.id}`)
 }
 
-export default function NewTeamPage() {
+export default function NewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<typeof action>()
   const teamNameRef = useRef<HTMLInputElement>(null)

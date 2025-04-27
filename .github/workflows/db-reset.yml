@@ -52,8 +52,36 @@ jobs:
       - name: 🎈 Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@v1
 
-      - name: Reset Staging Database
+      - name: Check Staging App Status
         if: ${{ github.event.inputs.environment == 'staging' }}
+        id: check_staging
+        continue-on-error: true
+        run: |
+          echo "Checking if app ${{ steps.app_name.outputs.value }}-staging exists and is running..."
+          if flyctl status --app ${{ steps.app_name.outputs.value }}-staging; then
+            echo "App is running"
+            echo "app_running=true" >> $GITHUB_OUTPUT
+          else
+            echo "App is not running or doesn't exist"
+            echo "app_running=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check Production App Status
+        if: ${{ github.event.inputs.environment == 'production' }}
+        id: check_production
+        continue-on-error: true
+        run: |
+          echo "Checking if app ${{ steps.app_name.outputs.value }} exists and is running..."
+          if flyctl status --app ${{ steps.app_name.outputs.value }}; then
+            echo "App is running"
+            echo "app_running=true" >> $GITHUB_OUTPUT
+          else
+            echo "App is not running or doesn't exist"
+            echo "app_running=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Reset Staging Database
+        if: ${{ github.event.inputs.environment == 'staging' && steps.check_staging.outputs.app_running == 'true' }}
         env:
           DATABASE_URL: "file:./prisma/sqlite.db"
 
@@ -81,7 +109,7 @@ jobs:
           flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"
 
       - name: Reset Production Database
-        if: ${{ github.event.inputs.environment == 'production' }}
+        if: ${{ github.event.inputs.environment == 'production' && steps.check_production.outputs.app_running == 'true' }}
         env:
           DATABASE_URL: "file:./prisma/sqlite.db"
 
@@ -107,3 +135,10 @@ jobs:
 
           # Run the seed script on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"
+
+      - name: Warning - App Not Running
+        if: ${{ (github.event.inputs.environment == 'staging' && steps.check_staging.outputs.app_running == 'false') || (github.event.inputs.environment == 'production' && steps.check_production.outputs.app_running == 'false') }}
+        run: |
+          echo "::error::The app ${{ github.event.inputs.environment == 'staging' && format('{0}-staging', steps.app_name.outputs.value) || steps.app_name.outputs.value }} is not running or doesn't exist."
+          echo "Please deploy the app first using the deploy workflow."
+          exit 1

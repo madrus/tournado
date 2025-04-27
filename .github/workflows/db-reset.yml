@@ -19,6 +19,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     env:
       DATABASE_URL: "file:./prisma/sqlite.db"
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
     steps:
       - name: ⬇️ Checkout repo
@@ -50,8 +51,6 @@ jobs:
 
       - name: 🎈 Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@v1
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Reset Staging Database
         if: ${{ github.event.inputs.environment == 'staging' }}

@@ -75,7 +75,7 @@ jobs:
           flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}-staging
 
           # Execute the SQL file on the Fly.io instance
-          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /tmp && sqlite3 /data/sqlite.db < reset.sql"
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /tmp; sqlite3 /data/sqlite.db < reset.sql"
 
           # Run the seed script on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"
@@ -103,7 +103,7 @@ jobs:
           flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}
 
           # Execute the SQL file on the Fly.io instance
-          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /tmp && sqlite3 /data/sqlite.db < reset.sql"
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /tmp; sqlite3 /data/sqlite.db < reset.sql"
 
           # Run the seed script on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"

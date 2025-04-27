@@ -64,11 +64,18 @@ jobs:
           # Create a temporary migration SQL file
           pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
 
+          # Clean up the SQL file to remove any problematic characters
+          sed -i 's/<[^>]*>//g' reset.sql
+
+          # Print the SQL file content for debugging
+          echo "SQL file content:"
+          cat reset.sql
+
           # Copy the SQL file to the Fly.io instance
           flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}-staging
 
           # Execute the SQL file on the Fly.io instance
-          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /tmp && sqlite3 /data/sqlite.db < reset.sql"
 
           # Run the seed script on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }}-staging -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"
@@ -85,11 +92,18 @@ jobs:
           # Create a temporary migration SQL file
           pnpm exec prisma migrate diff --from-empty --to-schema-datamodel=./prisma/schema.prisma --script > reset.sql
 
+          # Clean up the SQL file to remove any problematic characters
+          sed -i 's/<[^>]*>//g' reset.sql
+
+          # Print the SQL file content for debugging
+          echo "SQL file content:"
+          cat reset.sql
+
           # Copy the SQL file to the Fly.io instance
           flyctl ssh sftp shell -c "put reset.sql /tmp/reset.sql" --app ${{ steps.app_name.outputs.value }}
 
           # Execute the SQL file on the Fly.io instance
-          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "sqlite3 /data/sqlite.db < /tmp/reset.sql"
+          flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /tmp && sqlite3 /data/sqlite.db < reset.sql"
 
           # Run the seed script on the Fly.io instance
           flyctl ssh console -a ${{ steps.app_name.outputs.value }} -C "cd /app && DATABASE_URL=file:/data/sqlite.db node prisma/seed.js"

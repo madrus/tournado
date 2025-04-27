@@ -8,19 +8,19 @@ Yes, Fly.io is an alternative to Vercel, though they have some key differences:
 
 - Fly.io:
 
-  - Focuses on running full-stack applications close to users
-  - Deploys your apps as lightweight VMs (using Docker containers)
-  - Provides global distribution with automatic regional failover
-  - Offers persistent storage options (like the SQLite volume you're using)
-  - Better suited for applications that need databases, background jobs, or other stateful services
-  - Your project uses Fly for both the app and database deployment
+   - Focuses on running full-stack applications close to users
+   - Deploys your apps as lightweight VMs (using Docker containers)
+   - Provides global distribution with automatic regional failover
+   - Offers persistent storage options (like the SQLite volume you're using)
+   - Better suited for applications that need databases, background jobs, or other stateful services
+   - Your project uses Fly for both the app and database deployment
 
 - Vercel:
-  - Primarily focused on frontend/JAMstack deployments
-  - Excels at static site hosting and serverless functions
-  - Has more built-in frontend optimizations
-  - Often requires separate database hosting (like Supabase, PlanetScale, etc.)
-  - Better integrated with frontend frameworks (Next.js is made by Vercel)
+   - Primarily focused on frontend/JAMstack deployments
+   - Excels at static site hosting and serverless functions
+   - Has more built-in frontend optimizations
+   - Often requires separate database hosting (like Supabase, PlanetScale, etc.)
+   - Better integrated with frontend frameworks (Next.js is made by Vercel)
 
 Your Remix project is configured for Fly.io deployment with:
 

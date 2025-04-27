@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
-export default function TeamIndexPage() {
+export default function TeamIndexPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (

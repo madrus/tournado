@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { PWA_UPDATE_INTERVAL } from '@/lib/lib.constants'
 
-export function registerServiceWorker() {
+export function registerServiceWorker(): void {
   if ('serviceWorker' in navigator) {
     // Check if we're in development
     const isDev = window.location.hostname === 'localhost'
@@ -50,7 +51,7 @@ export function registerServiceWorker() {
   }
 }
 
-export function updateServiceWorker() {
+export function updateServiceWorker(): void {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
       if (registration.waiting) {

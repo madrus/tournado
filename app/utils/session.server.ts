@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from '@remix-run/node'
+import { createCookieSessionStorage, redirect, type Session } from '@remix-run/node'
 
 import invariant from 'tiny-invariant'
 
@@ -21,7 +21,7 @@ export const sessionStorage = createCookieSessionStorage({
 
 const USER_SESSION_KEY = 'userId'
 
-export async function getSession(request: Request) {
+export async function getSession(request: Request): Promise<Session> {
   const cookie = request.headers.get('Cookie')
   return sessionStorage.getSession(cookie)
 }
@@ -32,7 +32,7 @@ export async function getUserId(request: Request): Promise<User['id'] | undefine
   return userId
 }
 
-export async function getUser(request: Request) {
+export async function getUser(request: Request): Promise<User | null> {
   const userId = await getUserId(request)
   if (userId === undefined) return null
 
@@ -45,7 +45,7 @@ export async function getUser(request: Request) {
 export async function requireUserId(
   request: Request,
   redirectTo: string = new URL(request.url).pathname
-) {
+): Promise<User['id']> {
   const userId = await getUserId(request)
   if (!userId) {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]])
@@ -54,7 +54,7 @@ export async function requireUserId(
   return userId
 }
 
-export async function requireUser(request: Request) {
+export async function requireUser(request: Request): Promise<User> {
   const userId = await requireUserId(request)
 
   const user = await getUserById(userId)
@@ -72,8 +72,8 @@ export async function createUserSession({
   request: Request
   userId: string
   remember: boolean
-  redirectTo: string
-}) {
+  redirectTo: string | null
+}): Promise<Response> {
   const session = await getSession(request)
   session.set('userId', userId)
 
@@ -81,7 +81,7 @@ export async function createUserSession({
     maxAge: remember ? 60 * 60 * 24 * 7 : undefined, // 7 days if remember, otherwise session cookie
   }
 
-  return redirect(redirectTo, {
+  return redirect(redirectTo || '/', {
     headers: {
       'Set-Cookie': await sessionStorage.commitSession(session, cookieOptions),
       'Cache-Control': 'no-store',
@@ -89,7 +89,7 @@ export async function createUserSession({
   })
 }
 
-export async function logout(request: Request) {
+export async function logout(request: Request): Promise<Response> {
   const session = await getSession(request)
   return redirect('/', {
     headers: {

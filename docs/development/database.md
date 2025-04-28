@@ -245,6 +245,7 @@ This approach gives you full control over the database reset process and allows 
    ```sh
    # Delete the database file
    rm -f /data/sqlite.db
+   rm -f /data/sqlite.db-journal
 
    # Verify it is gone
    ls -la /data/
@@ -255,11 +256,11 @@ This approach gives you full control over the database reset process and allows 
    # Initialize an empty database
    touch /data/sqlite.db
    # Push your schema to the empty database
-   DATABASE_URL=file:/data/sqlite.db npx prisma db push --schema=prisma/schema.prisma
+   npx prisma db push --schema=prisma/schema.prisma
    ```
 4. Seed the database with initial data
    ```sh
-   DATABASE_URL=file:/data/sqlite.db node prisma/seed.js
+   node prisma/seed.js
    ```
 5. Verify the database was created properly
 

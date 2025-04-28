@@ -124,94 +124,6 @@ Your project already has a GitHub Actions workflow that handles database migrati
 
 To perform a complete database reset in your staging and production environments:
 
-#### Option 1: Modify your deployment workflow
-
-Add a step to your existing deploy job in `.github/workflows/deploy.yml` before the deployment:
-
-```yaml
-# For staging (already using dev branch)
-- name: Reset Staging Database
-  if: ${{ github.ref == 'refs/heads/dev' }}
-  run: |
-     # Set DATABASE_URL for staging
-     export DATABASE_URL=${{ secrets.STAGING_DATABASE_URL }}
-     pnpm exec prisma db push
-     pnpm exec prisma db seed
-
-# For production (using main branch)
-- name: Reset Production Database
-  if: ${{ github.ref == 'refs/heads/main' }}
-  run: |
-     # Set DATABASE_URL for production
-     export DATABASE_URL=${{ secrets.PRODUCTION_DATABASE_URL }}
-     pnpm exec prisma db push
-     pnpm exec prisma db seed
-```
-
-#### Option 2: Create a one-time manual workflow
-
-For a one-time reset, create a new workflow file `.github/workflows/db-reset.yml`:
-
-```yaml
-name: 🗄️ Database Reset
-
-on:
-   workflow_dispatch:
-      inputs:
-         environment:
-            description: 'Environment to reset'
-            required: true
-            default: 'staging'
-            type: choice
-            options:
-               - staging
-               - production
-
-jobs:
-   reset-database:
-      name: Reset Database
-      runs-on: ubuntu-latest
-      environment: ${{ github.event.inputs.environment }}
-
-      steps:
-         - name: ⬇️ Checkout repo
-           uses: actions/checkout@v4
-
-         - name: ⎔ Setup node
-           uses: actions/setup-node@v4
-           with:
-              node-version: 22
-
-         - name: ⎔ Setup pnpm
-           uses: pnpm/action-setup@v3
-           with:
-              version: 10
-              run_install: false
-
-         - name: 📥 Install deps
-           run: pnpm install --no-frozen-lockfile
-
-         - name: 🛠 Generate Prisma Client
-           run: pnpm exec prisma generate
-
-         - name: 🗄️ Reset Database
-           run: |
-              # Set DATABASE_URL based on environment
-              if [ "${{ github.event.inputs.environment }}" = "production" ]; then
-                export DATABASE_URL=${{ secrets.PRODUCTION_DATABASE_URL }}
-              else
-                export DATABASE_URL=${{ secrets.STAGING_DATABASE_URL }}
-              fi
-
-              # Push schema directly (bypassing migrations)
-              pnpm exec prisma db push
-
-              # Seed the database
-              pnpm exec prisma db seed
-```
-
-This gives you a button in the GitHub Actions UI to reset either environment on demand, which is safer than automatically resetting on every deployment.
-
 #### Important Notes:
 
 1. Make sure your GitHub repository has the necessary secrets:
@@ -236,21 +148,11 @@ This gives you a button in the GitHub Actions UI to reset either environment on 
 
 ### Database URL Configuration
 
-Make sure your staging and production environments have the correct `DATABASE_URL` environment variable set. For example:
-
-```
-# .env.staging
-DATABASE_URL="postgresql://user:password@staging-db-host:5432/tournado"
-
-# .env.production
-DATABASE_URL="postgresql://user:password@production-db-host:5432/tournado"
-```
-
 ### Handling Schema Drift
 
 If your production database schema has drifted from your migrations (e.g., due to manual changes), you may need to use the `--force` flag with caution:
 
-```bash
+```sh
 # Use with extreme caution in production!
 pnpm prisma migrate deploy --force
 ```
@@ -261,52 +163,16 @@ Always backup your production database before applying migrations.
 
 ## Manual Database Reset
 
-If you prefer to handle the database reset manually, here's a straightforward approach:
+!> IMPORTANT: if the old data is important, back up your database first!
 
-For staging and production environments, you can follow these steps:
-[Manual Database Reset Process](#manual-database-reset)
-
-### For Staging Environment
-
-1. Connect to your staging server or use your local machine with the staging database URL:
-
-   ```bash
-   # Set the staging database URL (replace with your actual URL)
-   export DATABASE_URL="postgresql://user:password@staging-db-host:5432/tournado"
-
-   # Or use a .env.staging file
-   cp .env.staging .env
+1. Connect to your production server or use your local machine with the production database URL:
+   ```sh
+   # Set the production database URL
+   export DATABASE_URL="sqlite:./prisma/sqlite.db"
    ```
-
 2. Push the schema directly and seed the database:
 
-   ```bash
-   # Generate the Prisma client
-   pnpm prisma generate
-
-   # Push the schema directly (bypassing migrations)
-   pnpm prisma db push
-
-   # Seed the database
-   pnpm prisma db seed
-   ```
-
-### For Production Environment
-
-1. IMPORTANT: Back up your production database first!
-2. Connect to your production server or use your local machine with the production database URL:
-
-   ```bash
-   # Set the production database URL (replace with your actual URL)
-   export DATABASE_URL="postgresql://user:password@production-db-host:5432/tournado"
-
-   # Or use a .env.production file
-   cp .env.production .env
-   ```
-
-3. Push the schema directly and seed the database:
-
-   ```bash
+   ```sh
    # Generate the Prisma client
    pnpm prisma generate
 
@@ -317,15 +183,15 @@ For staging and production environments, you can follow these steps:
    pnpm prisma db seed
    ```
 
-4. Verify the database structure and data:
+3. Verify the database structure and data:
    ```bash
    # Open Prisma Studio to inspect the database
    pnpm prisma studio
    ```
 
-### Establishing a Clean Migration History
+## Establishing a Clean Migration History
 
-After manually resetting the database, you may want to establish a clean migration history:
+Next to manually resetting the database, you may want to establish a clean migration history:
 
 1. Delete existing migrations locally:
    ```bash
@@ -361,3 +227,50 @@ This approach gives you full control over the database reset process and allows 
    ```sh
    pnpm prisma db seed
    ```
+
+## Complete Database reset on Fly.io
+
+1. Connect to your Fly.io instance
+
+   ```sh
+   # For staging
+   flyctl ssh console --app tournado-staging
+
+   # For production
+   flyctl ssh console --app tournado
+   ```
+
+2. Delete the existing database file
+
+   ```sh
+   # Delete the database file
+   rm -f /data/sqlite.db
+
+   # Verify it is gone
+   ls -la /data/
+   ```
+
+3. Create a new empty database and push your schema
+   ```sh
+   # Initialize an empty database
+   touch /data/sqlite.db
+   # Push your schema to the empty database
+   DATABASE_URL=file:/data/sqlite.db npx prisma db push --schema=prisma/schema.prisma
+   ```
+4. Seed the database with initial data
+   ```sh
+   DATABASE_URL=file:/data/sqlite.db node prisma/seed.js
+   ```
+5. Verify the database was created properly
+
+   ```sh
+   # Check that tables were created
+   sqlite3 /data/sqlite.db ".tables"
+
+   # Run a simple query to check data
+   sqlite3 /data/sqlite.db "SELECT * FROM User LIMIT 5;"
+   ```
+
+This approach completely removes the database file and starts fresh, which is more thorough than just dropping tables. It ensures there are no leftover artifacts, indexes, or settings from the previous database.
+
+---

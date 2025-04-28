@@ -4,12 +4,13 @@ import bcrypt from 'bcryptjs'
 
 import { PrismaClient } from '@prisma/client'
 
-import type { Email } from '../app/lib/lib.types'
-
 const prisma = new PrismaClient()
 
+/**
+ * Keep this file as .js for manual seeding on remote
+ */
 async function seed() {
-  const admins: Email[] = ['user@example.com', 'admin2@example.com']
+  const admins = ['user@example.com', 'admin2@example.com']
 
   // cleanup the existing database
   await Promise.all(

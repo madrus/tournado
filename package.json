@@ -1,6 +1,6 @@
 {
   "name": "tournado",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -113,7 +113,7 @@
     "pnpm": ">=10"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "node prisma/seed.js"
   },
   "config": {
     "commitizen": {

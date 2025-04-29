@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { prisma } from '@/db.server'
 import type { Prisma, Team, TeamLeader } from '@prisma/client'
+
+import { prisma } from '@/db.server'
 
 export type { Team } from '@prisma/client'
 

@@ -4,8 +4,9 @@
 // and that user will get deleted
 import { installGlobals } from '@remix-run/node'
 
-import { prisma } from '@/db.server'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+
+import { prisma } from '@/db.server'
 
 installGlobals()
 

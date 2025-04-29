@@ -3,6 +3,10 @@
  * Extends base configuration from @madrus/configs
  */
 /** @type {import('eslint').Linter.Config[]} */
+import eslintConfig from '@madrus/configs/eslint.config.mjs'
+import typescriptPlugin from '@typescript-eslint/eslint-plugin'
+import typescriptParser from '@typescript-eslint/parser'
+
 import cypressPlugin from 'eslint-plugin-cypress'
 import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
@@ -12,10 +16,6 @@ import markdownPlugin from 'eslint-plugin-markdown'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import testingLibraryPlugin from 'eslint-plugin-testing-library'
-
-import eslintConfig from '@madrus/configs/eslint.config.mjs'
-import typescriptPlugin from '@typescript-eslint/eslint-plugin'
-import typescriptParser from '@typescript-eslint/parser'
 
 export default [
   // Base config from @madrus/configs

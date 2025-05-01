@@ -23,6 +23,7 @@ describe('smoke tests', () => {
         navigatorLanguage: win.navigator.language,
       })
     })
+
     cy.cleanupUser({ failOnNonZeroExit: false })
   })
 

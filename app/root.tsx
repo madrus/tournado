@@ -8,10 +8,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react'
 
 import { I18nextProvider } from 'react-i18next'
 
+import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
 import './styles/layout.css'
@@ -61,7 +63,28 @@ export const loader = async ({
   return json({ user })
 }
 
+const Document = ({ children }: { children: React.ReactNode }) => (
+  <html lang='en' className='h-full overflow-x-hidden'>
+    <head>
+      <Meta />
+      <meta charSet='utf-8' />
+      <meta name='viewport' content='width=device-width,initial-scale=1' />
+      <Links />
+    </head>
+    <body className='bg-background text-foreground flex h-full flex-col justify-between'>
+      {children}
+      <ScrollRestoration />
+      <Scripts />
+      {/* <EpicShop /> */}
+      <LiveReload />
+    </body>
+  </html>
+)
+
 export default function App(): JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, id-blacklist
+  const data = useLoaderData<typeof loader>()
+
   return (
     <html lang={i18n.language}>
       <head>
@@ -82,3 +105,11 @@ export default function App(): JSX.Element {
     </html>
   )
 }
+
+export const ErrorBoundary = (): JSX.Element => (
+  <Document>
+    <div className='flex-1'>
+      <GeneralErrorBoundary />
+    </div>
+  </Document>
+)

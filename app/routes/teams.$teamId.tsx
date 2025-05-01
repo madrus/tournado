@@ -11,9 +11,9 @@ import { useTranslation } from 'react-i18next'
 
 import invariant from 'tiny-invariant'
 
-import { deleteTeam, getTeam } from '@/models/team.server'
-import { getDefaultTeamLeader } from '@/models/teamLeader.server'
-import { requireUserId } from '@/utils/session.server'
+import { deleteTeam, getTeam } from '~/models/team.server'
+import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import { requireUserId } from '~/utils/session.server'
 
 export const loader = async ({
   params,

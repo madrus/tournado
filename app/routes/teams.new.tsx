@@ -5,10 +5,10 @@ import { Form, useActionData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { prisma } from '@/db.server'
-import { createTeam } from '@/models/team.server'
-import { getDefaultTeamLeader } from '@/models/teamLeader.server'
-import { requireUserId } from '@/utils/session.server'
+import { prisma } from '~/db.server'
+import { createTeam } from '~/models/team.server'
+import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import { requireUserId } from '~/utils/session.server'
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   await requireUserId(request) // TODO: check auth status for now

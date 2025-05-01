@@ -1,6 +1,6 @@
 import type { TeamLeader } from '@prisma/client'
 
-import { prisma } from '@/db.server'
+import { prisma } from '~/db.server'
 
 export type { TeamLeader } from '@prisma/client'
 

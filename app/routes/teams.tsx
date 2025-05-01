@@ -15,11 +15,11 @@ import { useTranslation } from 'react-i18next'
 
 import type { Team } from '@prisma/client'
 
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
-import { getTeamListItems } from '@/models/team.server'
-import { getDefaultTeamLeader, type TeamLeader } from '@/models/teamLeader.server'
-import { requireUserId } from '@/utils/session.server'
-import { useUser } from '@/utils/utils'
+import { LanguageSwitcher } from '~/components/LanguageSwitcher'
+import { getTeamListItems } from '~/models/team.server'
+import { getDefaultTeamLeader, type TeamLeader } from '~/models/teamLeader.server'
+import { requireUserId } from '~/utils/session.server'
+import { useUser } from '~/utils/utils'
 
 export type { Team } from '@prisma/client'
 

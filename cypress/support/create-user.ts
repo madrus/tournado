@@ -9,8 +9,8 @@ import { Role } from '@prisma/client'
 
 import { parse } from 'cookie'
 
-import { createUser } from '@/models/user.server'
-import { createUserSession } from '@/utils/session.server'
+import { createUser } from '~/models/user.server'
+import { createUserSession } from '~/utils/session.server'
 
 installGlobals()
 

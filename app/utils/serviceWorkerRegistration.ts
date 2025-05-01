@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PWA_UPDATE_INTERVAL } from '@/lib/lib.constants'
+import { PWA_UPDATE_INTERVAL } from '~/lib/lib.constants'
 
 export function registerServiceWorker(): void {
   if ('serviceWorker' in navigator) {

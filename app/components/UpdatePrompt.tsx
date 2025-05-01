@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { updateServiceWorker } from '@/utils/serviceWorkerRegistration'
+import { updateServiceWorker } from '~/utils/serviceWorkerRegistration'
 
 export function UpdatePrompt(): JSX.Element | null {
   const { t } = useTranslation()

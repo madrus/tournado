@@ -5,11 +5,12 @@
 // as that new user.
 import { installGlobals } from '@remix-run/node'
 
+import { Role } from '@prisma/client'
+
 import { parse } from 'cookie'
 
-import { createUser } from '@/models/user.server'
-import { createUserSession } from '@/utils/session.server'
-import { Role } from '@prisma/client'
+import { createUser } from '~/models/user.server'
+import { createUserSession } from '~/utils/session.server'
 
 installGlobals()
 

@@ -11,6 +11,8 @@ import { prisma } from '@/db.server'
 installGlobals()
 
 async function deleteUser(email: string) {
+  console.log(`Starting to delete user: ${email}`)
+
   if (!email) {
     console.error('Email required for login')
     process.exit(1)
@@ -21,22 +23,26 @@ async function deleteUser(email: string) {
   }
 
   try {
+    console.log('Connecting to database...')
     // First check if the user exists
     const user = await prisma.user.findUnique({
       where: { email },
     })
+    console.log('Database query completed.')
 
     if (!user) {
       console.log('User not found, so no need to delete')
       return
     }
 
+    console.log('Attempting to delete user...')
     // If user exists, delete it
     await prisma.user.delete({
       where: { email },
     })
     console.log('User deleted successfully')
   } catch (error) {
+    console.log('Error encountered:', error)
     if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025') {
       console.log('User not found, so no need to delete')
     } else {
@@ -44,7 +50,10 @@ async function deleteUser(email: string) {
       process.exit(1)
     }
   } finally {
+    console.log('Disconnecting from database...')
     await prisma.$disconnect()
+    console.log('Database disconnected.')
+    process.exit(0) // Force exit to ensure the script terminates
   }
 }
 

@@ -1,55 +1,23 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import {
-  Form,
-  Link,
-  NavLink,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useRouteError,
-} from '@remix-run/react'
+import { Form, Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
 
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import type { Team } from '@prisma/client'
-
 import { LanguageSwitcher } from '~/components/LanguageSwitcher'
-import { getTeamListItems } from '~/models/team.server'
-import { getDefaultTeamLeader, type TeamLeader } from '~/models/teamLeader.server'
 import { requireUserId } from '~/utils/session.server'
 import { useUser } from '~/utils/utils'
-
-export type { Team } from '@prisma/client'
-
-// Only create additional types for specific use cases
-export type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'teamLeaderId'>
-
-type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   // Ensure user is logged in
   await requireUserId(request)
 
-  // Get the default TeamLeader
-  const teamLeader = await getDefaultTeamLeader()
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  const teamListItems: TeamListItem[] = await getTeamListItems({
-    teamLeaderId: teamLeader.id,
-  })
-  return json({ teamListItems, teamLeader })
+  return json({})
 }
 
-export default function TeamsPage(): JSX.Element {
+export default function TeamsLayout(): JSX.Element {
   const { t } = useTranslation()
-  const teamsData = useLoaderData<{
-    teamListItems: TeamListItem[]
-    teamLeader: TeamLeader
-  }>()
   const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()
@@ -126,35 +94,16 @@ export default function TeamsPage(): JSX.Element {
 
             <hr className='border-gray-300' />
 
+            {/* Team List */}
             <div className='pb-safe flex-1 overflow-y-auto'>
-              {teamsData.teamListItems?.length === 0 ? (
-                <p className='p-4 text-center text-gray-500'>{t('teams.noTeams')}</p>
-              ) : (
-                <ol>
-                  {teamsData.teamListItems?.map(team => (
-                    <li key={team.id}>
-                      <NavLink
-                        className={({ isActive }) =>
-                          `block border-b p-4 text-xl ${
-                            isActive ? 'bg-white font-semibold' : 'hover:bg-gray-100'
-                          }`
-                        }
-                        to={team.id}
-                        onClick={() => setIsSidebarOpen(false)}
-                      >
-                        📝 {team.teamName}
-                      </NavLink>
-                    </li>
-                  ))}
-                </ol>
-              )}
+              <Outlet context={{ type: 'sidebar' }} />
             </div>
           </div>
         </div>
 
         {/* Main Content */}
         <div className='flex-1 overflow-y-auto p-4 md:p-6'>
-          <Outlet />
+          <Outlet context={{ type: 'main' }} />
         </div>
 
         {/* Mobile Floating Action Add Team Button */}
@@ -175,8 +124,6 @@ export default function TeamsPage(): JSX.Element {
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError()
-  // eslint-disable-next-line no-console
-  console.error(error)
   return (
     <div>
       An unexpected error occurred:{' '}

@@ -1,14 +1,43 @@
-import type { ActionFunctionArgs } from '@remix-run/node'
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
-import { Form, useActionData } from '@remix-run/react'
+import {
+  Form,
+  NavLink,
+  useActionData,
+  useLoaderData,
+  useOutletContext,
+} from '@remix-run/react'
 
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { prisma } from '~/db.server'
-import { createTeam } from '~/models/team.server'
+import { createTeam, getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
 import { requireUserId } from '~/utils/session.server'
+
+type ContextType = {
+  type: 'sidebar' | 'main'
+}
+
+type TeamListItem = {
+  id: string
+  teamName: string
+}
+
+export const loader = async ({
+  request: _request,
+}: LoaderFunctionArgs): Promise<Response> => {
+  const teamLeader = await getDefaultTeamLeader()
+
+  if (!teamLeader) {
+    throw new Response('No TeamLeader found', { status: 404 })
+  }
+
+  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+
+  return json({ teamListItems })
+}
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   await requireUserId(request) // TODO: check auth status for now
@@ -67,8 +96,10 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 export default function NewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<typeof action>()
+  const { teamListItems } = useLoaderData<typeof loader>()
+  const context = useOutletContext<ContextType>()
   const teamNameRef = useRef<HTMLInputElement>(null)
-  const teamClassRef = useRef<HTMLTextAreaElement>(null)
+  const teamClassRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (actionData?.errors?.teamName) {
@@ -78,6 +109,37 @@ export default function NewTeamPage(): JSX.Element {
     }
   }, [actionData])
 
+  // Render team list in sidebar
+  if (context.type === 'sidebar') {
+    if (teamListItems.length === 0) {
+      return (
+        <div className='flex flex-col gap-2 p-4'>
+          <p className='text-center text-gray-500'>{t('teams.noTeams')}</p>
+        </div>
+      )
+    }
+
+    return (
+      <div className='flex flex-col gap-2 p-4'>
+        {teamListItems.map((teamItem: TeamListItem) => (
+          <NavLink
+            key={teamItem.id}
+            to={`/teams/${teamItem.id}`}
+            className={({ isActive }: { isActive: boolean }) =>
+              `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
+                isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
+              }`
+            }
+            prefetch='intent'
+          >
+            {teamItem.teamName}
+          </NavLink>
+        ))}
+      </div>
+    )
+  }
+
+  // Render form in main content
   return (
     <Form
       method='post'
@@ -111,11 +173,10 @@ export default function NewTeamPage(): JSX.Element {
       <div>
         <label className='flex w-full flex-col gap-1'>
           <span>{t('teams.form.teamClass')}</span>
-          <textarea
+          <input
             ref={teamClassRef}
             name='teamClass'
-            rows={8}
-            className='w-full flex-1 rounded-md border-2 border-emerald-700/30 px-3 py-2 text-lg leading-6'
+            className='w-full flex-1 rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-loose'
             aria-invalid={actionData?.errors?.teamClass ? true : undefined}
             aria-errormessage={
               actionData?.errors?.teamClass ? 'teamClass-error' : undefined

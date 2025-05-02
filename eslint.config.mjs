@@ -86,17 +86,17 @@ export default [
         },
       },
     },
-    // rules: {
-    //   // Debug rule to help us understand what's happening
-    //   '@typescript-eslint/no-unused-vars': [
-    //     'error',
-    //     {
-    //       argsIgnorePattern: '^_',
-    //       varsIgnorePattern: '^_',
-    //       caughtErrorsIgnorePattern: '^_',
-    //     },
-    //   ],
-    // },
+    rules: {
+      // Debug rule to help us understand what's happening
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
 
   // Cypress specific configuration

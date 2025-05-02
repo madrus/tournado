@@ -80,9 +80,14 @@ describe('smoke tests', () => {
         name: 'Sidebar button to add a new team',
       }).click()
 
-      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
-      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
-      cy.findByRole('button', { name: /save/i }).click()
+      // Use findAllByRole and then get the first one to avoid ambiguity
+      cy.findAllByRole('textbox', { name: /team name/i })
+        .first()
+        .type(testTeam.teamName)
+      cy.findAllByRole('textbox', { name: /team class/i })
+        .first()
+        .type(testTeam.teamClass)
+      cy.findAllByRole('button', { name: /save/i }).first().click()
 
       cy.findByRole('button', { name: /delete/i }).click()
 
@@ -107,9 +112,14 @@ describe('smoke tests', () => {
       // Close the sidebar to access the form
       cy.findByRole('button', { name: 'Toggle menu' }).click()
 
-      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
-      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
-      cy.findByRole('button', { name: /save/i }).click()
+      // Use findAllByRole and then get the first one to avoid ambiguity
+      cy.findAllByRole('textbox', { name: /team name/i })
+        .first()
+        .type(testTeam.teamName)
+      cy.findAllByRole('textbox', { name: /team class/i })
+        .first()
+        .type(testTeam.teamClass)
+      cy.findAllByRole('button', { name: /save/i }).first().click()
 
       cy.findByRole('button', { name: /delete/i }).click()
 

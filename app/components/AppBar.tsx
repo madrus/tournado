@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
-import { Menu, MenuButton } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem } from '@headlessui/react'
 
 import logo from '~/assets/logo-192x192.png'
 
@@ -91,8 +91,7 @@ export function AppBar({
   // The actual mobile menu content
   const mobileMenuContent = (
     <div
-      className='fixed inset-0 flex items-start justify-center bg-black/60 pt-16 backdrop-blur-sm'
-      style={{ zIndex: 100 }}
+      className='fixed inset-0 z-100 flex items-start justify-center bg-black/60 pt-16 backdrop-blur-sm'
       onClick={() => setMobileMenuOpen(false)}
     >
       <div
@@ -301,9 +300,6 @@ function UserMenu({
         {({ open }) => (
           <>
             <MenuButton className='inline-flex content-start items-center text-white hover:text-emerald-100'>
-              <span className='material-symbols-outlined w-6 pl-0 text-left'>
-                person
-              </span>
               <span className='hidden md:block'>{username}</span>
               <span className='material-symbols-outlined'>expand_more</span>
             </MenuButton>
@@ -327,7 +323,7 @@ function UserMenu({
                         {menuItems
                           .filter(item => !(item.label === t('auth.signin')))
                           .map((item, index) => (
-                            <Menu.Item key={index}>
+                            <MenuItem key={index}>
                               {({ active }) => (
                                 <>
                                   {item.customIcon ? (
@@ -394,7 +390,7 @@ function UserMenu({
                                   )}
                                 </>
                               )}
-                            </Menu.Item>
+                            </MenuItem>
                           ))}
                       </div>
                     </div>

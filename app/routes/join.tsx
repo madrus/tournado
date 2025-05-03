@@ -268,11 +268,11 @@ export default function Join(): JSX.Element {
               <Link
                 className='text-blue-500 underline'
                 to={{
-                  pathname: '/login',
+                  pathname: '/signin',
                   search: searchParams.toString(),
                 }}
               >
-                {t('auth.login')}
+                {t('auth.signin')}
               </Link>
             </div>
           </div>

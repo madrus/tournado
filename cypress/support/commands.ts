@@ -6,14 +6,14 @@ declare global {
       /**
        * Logs in with a random user. Yields the user and adds an alias to the user
        *
-       * @returns {typeof login}
+       * @returns {typeof signin}
        * @memberof Chainable
        * @example
-       *    cy.login()
+       *    cy.signin()
        * @example
-       *    cy.login({ email: 'whatever@example.com' })
+       *    cy.signin({ email: 'whatever@example.com' })
        */
-      login: typeof login
+      signin: typeof signin
 
       /**
        * Deletes the current @user
@@ -44,7 +44,7 @@ declare global {
   }
 }
 
-function login({
+function signin({
   email = faker.internet.email({ provider: 'example.com' }),
 }: {
   email?: string
@@ -96,7 +96,7 @@ function visitAndCheck(url: string, waitTime = 1000) {
 }
 
 export const registerCommands = () => {
-  Cypress.Commands.add('login', login)
+  Cypress.Commands.add('signin', signin)
   Cypress.Commands.add('cleanupUser', cleanupUser)
   Cypress.Commands.add('visitAndCheck', visitAndCheck)
 }

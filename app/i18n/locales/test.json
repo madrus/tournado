@@ -11,8 +11,8 @@
       "passwordRequired": "password required",
       "passwordTooShort": "password too short"
     },
-    "login": "log in",
-    "logout": "logout",
+    "signin": "sign in",
+    "signout": "signout",
     "password": "password",
     "rememberMe": "remember me",
     "signup": "sign up",

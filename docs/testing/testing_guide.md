@@ -8,7 +8,7 @@ When writing tests, follow this order of preference for selecting elements:
 
    ```typescript
    // Buttons
-   cy.findByRole('button', { name: /log in/i })
+   cy.findByRole('button', { name: /sign in/i })
    cy.findByRole('button', { name: /save/i })
 
    // Links
@@ -37,7 +37,7 @@ When writing tests, follow this order of preference for selecting elements:
 4. **By Text Content**
 
    ```typescript
-   cy.findByText(/log in/i)
+   cy.findByText(/sign in/i)
    cy.findByText(/no teams yet/i)
    ```
 
@@ -61,7 +61,7 @@ When writing tests, follow this order of preference for selecting elements:
 
 8. **By Test ID** (last resort)
    ```typescript
-   cy.findByTestId('login-button')
+   cy.findByTestId('signin-button')
    ```
 
 ## Why This Order?
@@ -79,7 +79,7 @@ When writing tests, follow this order of preference for selecting elements:
 // Fill out a form
 cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
 cy.findByLabelText(/password/i).type('password123')
-cy.findByRole('button', { name: /log in/i }).click()
+cy.findByRole('button', { name: /sign in/i }).click()
 ```
 
 ### Navigation Testing
@@ -125,14 +125,14 @@ cy.findByText(/invalid email/i).should('be.visible')
 ## Example Test
 
 ```typescript
-it('should allow user to log in', () => {
+it('should allow user to sign in', () => {
    // Arrange
-   cy.visit('/login')
+   cy.visit('/signin')
 
    // Act
    cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
    cy.findByLabelText(/password/i).type('password123')
-   cy.findByRole('button', { name: /log in/i }).click()
+   cy.findByRole('button', { name: /sign in/i }).click()
 
    // Assert
    cy.findByRole('link', { name: /teams/i }).should('be.visible')

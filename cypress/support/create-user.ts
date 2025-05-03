@@ -1,4 +1,4 @@
-// Use this to create a new user and login with that user
+// Use this to create a new user and signin with that user
 // Simply call this with:
 // pnpm exec tsx ./cypress/support/create-user.ts username@example.com,
 // and it will log out the cookie value you can use to interact with the server
@@ -14,14 +14,14 @@ import { createUserSession } from '~/utils/session.server'
 
 installGlobals()
 
-async function createAndLogin(
+async function createAndSignin(
   email: string,
   firstName?: string,
   lastName?: string,
   role?: Role
 ) {
   if (!email) {
-    throw new Error('email required for login')
+    throw new Error('email required for signin')
   }
   if (!email.endsWith('@example.com')) {
     throw new Error('All test emails must end in @example.com')
@@ -63,7 +63,7 @@ async function createAndLogin(
   )
 }
 
-createAndLogin(
+createAndSignin(
   process.argv[2],
   process.argv[3],
   process.argv[4],

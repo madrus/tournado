@@ -15,12 +15,12 @@ The application is deployed using Fly.io with automatic deployments through GitH
 curl -L https://fly.io/install.sh | sh
 ```
 
-2. Sign up and log in to Fly:
+2. Sign up and sign in to Fly:
 
 ```sh
 fly auth signup
 # or
-fly auth login
+fly auth signin
 ```
 
 ## Initial Deployment Setup

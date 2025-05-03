@@ -39,7 +39,7 @@ export async function getUser(request: Request): Promise<User | null> {
   const user = await getUserById(userId)
   if (user) return user
 
-  throw await logout(request)
+  throw await signout(request)
 }
 
 export async function requireUserId(
@@ -49,7 +49,7 @@ export async function requireUserId(
   const userId = await getUserId(request)
   if (!userId) {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]])
-    throw redirect(`/login?${searchParams}`)
+    throw redirect(`/signin?${searchParams}`)
   }
   return userId
 }
@@ -60,7 +60,7 @@ export async function requireUser(request: Request): Promise<User> {
   const user = await getUserById(userId)
   if (user) return user
 
-  throw await logout(request)
+  throw await signout(request)
 }
 
 export async function createUserSession({
@@ -89,7 +89,7 @@ export async function createUserSession({
   })
 }
 
-export async function logout(request: Request): Promise<Response> {
+export async function signout(request: Request): Promise<Response> {
   const session = await getSession(request)
   return redirect('/', {
     headers: {

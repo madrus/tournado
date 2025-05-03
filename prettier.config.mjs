@@ -20,7 +20,7 @@ export default {
   ...prettierConfig,
   importOrder: [
     '^(node|@conform-to)',
-    '^@remix-run/(css-bundle|node|react)|^isbot|^react-dom/server',
+    '^@remix-run/.*|^isbot|^react-dom/server',
     '^(react|zod)',
     '^@(?!/)[^/].*',
     '^(zustand|vitest|cy)(.*)',

@@ -19,7 +19,6 @@ export function AppBar({
 }): JSX.Element {
   const { t, i18n } = useTranslation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
 
   // Current language logic
   const languages = [
@@ -81,115 +80,6 @@ export function AppBar({
     },
   ]
 
-  // The actual mobile menu content
-  const mobileMenuContent = (
-    <div
-      className='fixed inset-0 z-100 flex items-start justify-center bg-black/60 pt-16 backdrop-blur-sm'
-      onClick={() => setMobileMenuOpen(false)}
-    >
-      <div
-        className='w-[95%] max-w-md overflow-visible rounded-lg bg-white shadow-xl'
-        onClick={event => event.stopPropagation()}
-      >
-        <div className='border-b border-gray-200 px-3 py-3'>
-          <p className='text-gray-500'>{t('common.signedInAs')}</p>
-          <p className='truncate font-medium text-gray-900'>
-            {authenticated ? username : t('auth.notSignedIn')}
-          </p>
-        </div>
-        <div className='py-2'>
-          {menuItems
-            .filter(
-              item =>
-                authenticated ||
-                !(
-                  item.href === '/profile' ||
-                  item.href === '/settings' ||
-                  item.label === t('auth.signin')
-                )
-            )
-            .map((item, index) => (
-              <div key={index} className='block px-3 py-0'>
-                {item.customIcon ? (
-                  <div className='relative'>
-                    <button
-                      className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                      onClick={event => {
-                        event.stopPropagation()
-                        setActiveSubmenu(activeSubmenu === index ? null : index)
-                      }}
-                    >
-                      <span className='w-8 pl-0 text-left text-lg'>
-                        {item.customIcon}
-                      </span>
-                      <span>{item.label}</span>
-                    </button>
-
-                    {activeSubmenu === index && item.subMenu ? (
-                      <div className='ring-opacity-5 absolute top-full left-0 z-50 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
-                        {item.subMenu.map((subItem, subIndex) => (
-                          <button
-                            key={subIndex}
-                            className={`flex w-full content-start items-center px-3 py-1 text-sm ${
-                              subItem.active
-                                ? 'bg-gray-100 text-emerald-700'
-                                : 'text-gray-700 hover:bg-gray-50'
-                            }`}
-                            onClick={event => {
-                              event.stopPropagation()
-                              subItem.onClick()
-                              setActiveSubmenu(null)
-                            }}
-                          >
-                            <span className='w-8 pl-0 text-left text-lg'>
-                              {subItem.customIcon}
-                            </span>
-                            <span>{subItem.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                ) : item.action ? (
-                  item.action
-                ) : (
-                  <Link
-                    to={item.href || '#'}
-                    className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className='material-symbols-outlined w-8 pl-0 text-left'>
-                      {item.icon}
-                    </span>
-                    {item.label}
-                    {item.todo ? (
-                      <span className='ml-2 text-xs text-gray-500'>(TODO)</span>
-                    ) : null}
-                  </Link>
-                )}
-              </div>
-            ))}
-
-          {/* Add sign in link if not authenticated */}
-          {!authenticated ? (
-            <div className='block px-3 py-2'>
-              <Link
-                to='/signin'
-                className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className='material-symbols-outlined w-8 pl-0 text-left'>
-                  login
-                </span>
-                {t('auth.signin')}
-              </Link>
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </div>
-  )
-
   return (
     <>
       <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
@@ -234,7 +124,14 @@ export function AppBar({
       </header>
 
       {/* Mobile menu */}
-      {mobileMenuOpen ? mobileMenuContent : null}
+      <UserMenu
+        authenticated={authenticated}
+        username={username}
+        menuItems={menuItems}
+        isMobile={true}
+        isOpen={mobileMenuOpen}
+        onOpenChange={setMobileMenuOpen}
+      />
 
       <div className='h-1.5 w-full bg-red-500' />
     </>

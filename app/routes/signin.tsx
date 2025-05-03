@@ -9,7 +9,7 @@ import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { verifyLogin } from '~/models/user.server'
+import { verifySignin } from '~/models/user.server'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
@@ -44,7 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const user = await verifyLogin(email, password)
+  const user = await verifySignin(email, password)
 
   if (!user) {
     return json(
@@ -61,9 +61,9 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Login' }]
+export const meta: MetaFunction = () => [{ title: 'Sign in' }]
 
-export default function LoginPage(): JSX.Element {
+export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/teams'
@@ -143,7 +143,7 @@ export default function LoginPage(): JSX.Element {
               type='submit'
               className='w-full rounded-sm bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
             >
-              {t('auth.login')}
+              {t('auth.signin')}
             </button>
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>

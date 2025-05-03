@@ -25,9 +25,7 @@ type TeamListItem = {
   teamName: string
 }
 
-export const loader = async ({
-  request: _request,
-}: LoaderFunctionArgs): Promise<Response> => {
+export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> => {
   const teamLeader = await getDefaultTeamLeader()
 
   if (!teamLeader) {

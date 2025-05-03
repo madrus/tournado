@@ -27,39 +27,39 @@ describe('smoke tests', () => {
     cy.cleanupUser({ failOnNonZeroExit: false })
   })
 
-  it('should allow you to register and login', () => {
-    const loginForm = {
+  it('should allow you to register and signin', () => {
+    const signinForm = {
       email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       password: faker.internet.password(),
     }
 
-    cy.then(() => ({ email: loginForm.email })).as('user')
+    cy.then(() => ({ email: signinForm.email })).as('user')
 
     cy.visitAndCheck('/')
 
     cy.findByRole('link', { name: /sign up/i }).click()
 
-    cy.findByRole('textbox', { name: /email/i }).type(loginForm.email)
-    cy.findByRole('textbox', { name: 'auth.firstName' }).type(loginForm.firstName)
-    cy.findByRole('textbox', { name: 'auth.lastName' }).type(loginForm.lastName)
-    cy.findByLabelText(/password/i).type(loginForm.password)
+    cy.findByRole('textbox', { name: /email/i }).type(signinForm.email)
+    cy.findByRole('textbox', { name: 'auth.firstName' }).type(signinForm.firstName)
+    cy.findByRole('textbox', { name: 'auth.lastName' }).type(signinForm.lastName)
+    cy.findByLabelText(/password/i).type(signinForm.password)
     cy.findByRole('button', { name: /create account/i }).click()
 
     // After registration, we should see the view teams link
     // The link has aria-label="view teams for" and contains the email
     cy.findByRole('link', { name: 'view teams for' })
       .should('exist')
-      .and('contain.text', loginForm.email)
+      .and('contain.text', signinForm.email)
 
     // Complete the test by verifying we're logged in
-    // No need to navigate to login page or check for sign up link
+    // No need to navigate to signin page or check for sign up link
   })
 
   describe('team creation', () => {
     beforeEach(() => {
-      cy.login()
+      cy.signin()
       cy.visitAndCheck('/')
       cy.findByRole('link', { name: /teams/i }).click()
 

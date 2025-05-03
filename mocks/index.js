@@ -7,9 +7,9 @@ const miscHandlers = [
   // Pass through all session-related requests
   http.all('*', async ({ request }) => {
     if (
-      request.url.includes('login') ||
-      request.url.includes('logout') ||
-      request.url.includes('_data=routes%2Flogin')
+      request.url.includes('signin') ||
+      request.url.includes('signout') ||
+      request.url.includes('_data=routes%2Fsignin')
     ) {
       return passthrough()
     }

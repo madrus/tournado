@@ -14,7 +14,7 @@ async function deleteUser(email: string) {
   console.log(`Starting to delete user: ${email}`)
 
   if (!email) {
-    console.error('Email required for login')
+    console.error('Email required for signin')
     process.exit(1)
   }
   if (!email.endsWith('@example.com')) {

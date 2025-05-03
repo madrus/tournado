@@ -123,7 +123,7 @@ export default function TeamDetailsPage(): JSX.Element {
   )
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary(): JSX.Element {
   const error = useRouteError()
   const { t } = useTranslation()
 

@@ -1,69 +1,30 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Form, Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
+import { Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
 
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { LanguageSwitcher } from '~/components/LanguageSwitcher'
 import { requireUserId } from '~/utils/session.server'
-import { useUser } from '~/utils/utils'
+
+// import { useUser } from '~/utils/utils'
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   // Ensure user is logged in
   await requireUserId(request)
-
   return json({})
 }
 
 export default function TeamsLayout(): JSX.Element {
   const { t } = useTranslation()
-  const user = useUser()
+  // const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()
   const isNewTeamPage = location.pathname === '/teams/new'
 
   return (
     <div className='flex h-screen flex-col overflow-hidden'>
-      <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
-        <button
-          className='absolute top-1/2 left-4 -translate-y-1/2 rounded-sm p-1 md:hidden'
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          aria-label='Toggle menu'
-        >
-          <svg
-            className='h-7 w-7'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d={isSidebarOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-            />
-          </svg>
-        </button>
-        <h1 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
-          <Link to='.'>{t('teams.title')}</Link>
-        </h1>
-        <div className='absolute top-1/2 right-4 flex -translate-y-1/2 items-center gap-4'>
-          <p className='hidden text-sm md:block'>{user.email}</p>
-          <LanguageSwitcher />
-          <Form action='/logout' method='post'>
-            <button
-              type='submit'
-              className='rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-600 active:bg-emerald-600'
-            >
-              {t('auth.logout')}
-            </button>
-          </Form>
-        </div>
-      </header>
-
-      <div className='h-1.5 w-full bg-red-500' />
-
+      {/* Sidebar and Main Content */}
       <main className='flex flex-1 overflow-hidden bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (

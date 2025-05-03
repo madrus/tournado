@@ -97,6 +97,10 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       <Meta />
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width,initial-scale=1' />
+      <link
+        rel='stylesheet'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
+      />
       <Links />
     </head>
     <body className='bg-background text-foreground flex h-full flex-col justify-between'>
@@ -116,12 +120,14 @@ export default function App(): JSX.Element {
 
   return (
     <Document>
-      <AppBar
-        authenticated={appData.authenticated}
-        title={'Tournado'}
-        username={appData.username}
-      />
-      <div className='flex-1'>
+      <div className='relative' style={{ zIndex: 50 }}>
+        <AppBar
+          authenticated={appData.authenticated}
+          title={'Tournado'}
+          username={appData.username}
+        />
+      </div>
+      <div className='flex-1' style={{ position: 'relative', zIndex: 1 }}>
         <Outlet />
       </div>
       <div className='container mx-auto flex justify-between'>

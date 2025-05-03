@@ -11,6 +11,7 @@
       "passwordRequired": "Wachtwoord is verplicht",
       "passwordTooShort": "Wachtwoord is te kort"
     },
+    "notSignedIn": "Niet ingelogd",
     "signin": "Inloggen",
     "signout": "Uitloggen",
     "password": "Wachtwoord",
@@ -20,7 +21,11 @@
     "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
-    "appName": "Tournado"
+    "appName": "Tournado",
+    "language": "Taal",
+    "profile": "Profiel",
+    "settings": "Instellingen",
+    "signedInAs": "Ingelogd als"
   },
   "landing": {
     "hero": {

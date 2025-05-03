@@ -1,12 +1,11 @@
 import { Form, Link } from '@remix-run/react'
 
-import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Menu, MenuButton, MenuItem } from '@headlessui/react'
-
 import logo from '~/assets/logo-192x192.png'
+
+import { UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
 export function AppBar({
@@ -20,7 +19,6 @@ export function AppBar({
 }): JSX.Element {
   const { t, i18n } = useTranslation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
 
   // Current language logic
@@ -33,11 +31,6 @@ export function AppBar({
     languages.find(lang => lang.code === i18n.language) ||
     languages.find(lang => lang.code === i18n.options.fallbackLng) ||
     languages[0]
-
-  // Only render portals client-side
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const menuItems = [
     {
@@ -240,167 +233,10 @@ export function AppBar({
         </div>
       </header>
 
-      {/* Mobile menu with portal */}
-      {mounted && mobileMenuOpen
-        ? createPortal(mobileMenuContent, document.body)
-        : null}
+      {/* Mobile menu */}
+      {mobileMenuOpen ? mobileMenuContent : null}
 
       <div className='h-1.5 w-full bg-red-500' />
     </>
-  )
-}
-
-// User menu dropdown component
-function UserMenu({
-  authenticated,
-  username,
-  menuItems,
-}: {
-  authenticated: boolean
-  username?: string
-  menuItems: Array<{
-    label: string
-    icon: string
-    href?: string
-    todo?: boolean
-    action?: JSX.Element
-    customIcon?: string
-    subMenu?: Array<{
-      label: string
-      customIcon: string
-      onClick: () => void
-      active: boolean
-    }>
-  }>
-}) {
-  const { t } = useTranslation()
-  const [mounted, setMounted] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
-
-  // Only render portals client-side
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!authenticated) {
-    return (
-      <Link
-        to='/signin'
-        className='inline-flex content-start items-center text-white hover:text-emerald-100'
-      >
-        <span className='material-symbols-outlined w-6 pl-0 text-left'>person</span>
-        <span>{t('auth.notSignedIn')}</span>
-      </Link>
-    )
-  }
-
-  return (
-    <div className='relative inline-block text-left'>
-      <Menu>
-        {({ open }) => (
-          <>
-            <MenuButton className='inline-flex content-start items-center text-white hover:text-emerald-100'>
-              <span className='hidden md:block'>{username}</span>
-              <span className='material-symbols-outlined'>expand_more</span>
-            </MenuButton>
-
-            {/* User menu with portal */}
-            {mounted && open
-              ? createPortal(
-                  <div
-                    className='fixed inset-0 z-[9999] bg-black/30 backdrop-blur-sm'
-                    onClick={() => document.body.click()} // Hack to close the menu
-                  >
-                    <div
-                      className='ring-opacity-5 absolute top-[56px] right-4 w-56 divide-y divide-gray-100 overflow-visible rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-none'
-                      onClick={event => event.stopPropagation()}
-                    >
-                      <div className='px-4 py-3'>
-                        <p className='text-gray-500'>{t('common.signedInAs')}</p>
-                        <p className='truncate font-medium text-gray-900'>{username}</p>
-                      </div>
-                      <div className='py-1'>
-                        {menuItems
-                          .filter(item => !(item.label === t('auth.signin')))
-                          .map((item, index) => (
-                            <MenuItem key={index}>
-                              {({ active }) => (
-                                <>
-                                  {item.customIcon ? (
-                                    <div className='relative'>
-                                      <button
-                                        className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                                        onClick={event => {
-                                          event.stopPropagation()
-                                          setActiveSubmenu(
-                                            activeSubmenu === index ? null : index
-                                          )
-                                        }}
-                                      >
-                                        <span className='w-8 pl-0 text-left text-lg'>
-                                          {item.customIcon}
-                                        </span>
-                                        <span>{item.label}</span>
-                                      </button>
-
-                                      {activeSubmenu === index && item.subMenu ? (
-                                        <div className='ring-opacity-5 absolute top-full left-0 z-50 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
-                                          {item.subMenu.map((subItem, subIndex) => (
-                                            <button
-                                              key={subIndex}
-                                              className={`flex w-full content-start items-center px-3 py-1 text-sm ${
-                                                subItem.active
-                                                  ? 'bg-gray-100 text-emerald-700'
-                                                  : 'text-gray-700 hover:bg-gray-50'
-                                              }`}
-                                              onClick={event => {
-                                                event.stopPropagation()
-                                                subItem.onClick()
-                                                setActiveSubmenu(null)
-                                              }}
-                                            >
-                                              <span className='w-8 pl-0 text-left text-lg'>
-                                                {subItem.customIcon}
-                                              </span>
-                                              <span>{subItem.label}</span>
-                                            </button>
-                                          ))}
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  ) : item.action ? (
-                                    item.action
-                                  ) : (
-                                    <Link
-                                      to={item.href || '#'}
-                                      className={`flex w-full content-start items-center px-3 py-2 text-gray-700 ${
-                                        active ? 'bg-gray-100' : ''
-                                      }`}
-                                    >
-                                      <span className='material-symbols-outlined w-8 pl-0 text-left'>
-                                        {item.icon}
-                                      </span>
-                                      {item.label}
-                                      {item.todo ? (
-                                        <span className='ml-2 text-xs text-gray-500'>
-                                          (TODO)
-                                        </span>
-                                      ) : null}
-                                    </Link>
-                                  )}
-                                </>
-                              )}
-                            </MenuItem>
-                          ))}
-                      </div>
-                    </div>
-                  </div>,
-                  document.body
-                )
-              : null}
-          </>
-        )}
-      </Menu>
-    </div>
   )
 }

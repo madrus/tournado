@@ -11,6 +11,7 @@
       "passwordRequired": "Password is required",
       "passwordTooShort": "Password is too short"
     },
+    "notSignedIn": "Not signed in",
     "signin": "Sign in",
     "signout": "Sign out",
     "password": "Password",
@@ -20,7 +21,11 @@
     "viewTeamsFor": "View teams for"
   },
   "common": {
-    "appName": "Tournado"
+    "appName": "Tournado",
+    "language": "Language",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signedInAs": "Signed in as"
   },
   "landing": {
     "hero": {

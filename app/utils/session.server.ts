@@ -94,6 +94,7 @@ export async function signout(request: Request): Promise<Response> {
   return redirect('/', {
     headers: {
       'Set-Cookie': await sessionStorage.destroySession(session),
+      'Cache-Control': 'no-store, max-age=0',
     },
   })
 }

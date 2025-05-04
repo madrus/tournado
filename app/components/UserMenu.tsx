@@ -73,10 +73,12 @@ export function UserMenu({
           onClick={event => event.stopPropagation()}
         >
           <div className='border-b border-gray-200 px-3 py-3'>
-            <p className='text-gray-500'>{t('common.signedInAs')}</p>
-            <p className='truncate font-medium text-gray-900'>
-              {authenticated ? username : t('auth.notSignedIn')}
-            </p>
+            <div className='px-3'>
+              <p className='text-gray-500'>{t('common.signedInAs')}</p>
+              <p className='truncate font-medium text-gray-900'>
+                {authenticated ? username : t('auth.notSignedIn')}
+              </p>
+            </div>
           </div>
           <div className='py-2'>
             {menuItems
@@ -140,7 +142,7 @@ export function UserMenu({
                       <span className='material-symbols-outlined w-8 pl-0 text-left'>
                         {item.icon}
                       </span>
-                      {item.label}
+                      <span>{item.label}</span>
                       {item.todo ? (
                         <span className='ml-2 text-xs text-gray-500'>(TODO)</span>
                       ) : null}

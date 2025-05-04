@@ -1,4 +1,4 @@
-import { Form, Link } from '@remix-run/react'
+import { Link, useFetcher } from '@remix-run/react'
 
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +19,11 @@ export function AppBar({
 }): JSX.Element {
   const { t, i18n } = useTranslation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const signoutFetcher = useFetcher()
+
+  // Track optimistic authenticated state
+  const isAuthenticated =
+    signoutFetcher.formAction === '/signout' ? false : authenticated
 
   // Current language logic
   const languages = [
@@ -56,10 +61,10 @@ export function AppBar({
       })),
     },
     {
-      label: authenticated ? t('auth.signout') : t('auth.signin'),
-      icon: authenticated ? 'logout' : 'login',
-      action: authenticated ? (
-        <Form action='/signout' method='post' className='m-0 p-0'>
+      label: isAuthenticated ? t('auth.signout') : t('auth.signin'),
+      icon: isAuthenticated ? 'logout' : 'login',
+      action: isAuthenticated ? (
+        <signoutFetcher.Form action='/signout' method='post' className='m-0 p-0'>
           <button
             type='submit'
             className='flex w-full content-start items-center px-3 py-2 text-left text-gray-700 hover:bg-gray-100'
@@ -67,7 +72,7 @@ export function AppBar({
             <span className='material-symbols-outlined w-8 pl-0 text-left'>logout</span>
             {t('auth.signout')}
           </button>
-        </Form>
+        </signoutFetcher.Form>
       ) : (
         <Link
           to='/signin'
@@ -109,14 +114,19 @@ export function AppBar({
             className='inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-emerald-700'
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <span className='material-symbols-outlined'>menu</span>
+            <span
+              className='material-symbols-outlined text-[28px]'
+              style={{ fontSize: '32px' }}
+            >
+              menu
+            </span>
           </button>
         </div>
 
         {/* Desktop menu */}
         <div className='absolute top-1/2 right-4 hidden -translate-y-1/2 items-center gap-4 lg:flex'>
           <UserMenu
-            authenticated={authenticated}
+            authenticated={isAuthenticated}
             username={username}
             menuItems={menuItems}
           />
@@ -125,7 +135,7 @@ export function AppBar({
 
       {/* Mobile menu */}
       <UserMenu
-        authenticated={authenticated}
+        authenticated={isAuthenticated}
         username={username}
         menuItems={menuItems}
         isMobile={true}

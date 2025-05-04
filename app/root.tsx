@@ -84,11 +84,18 @@ export const loader = async ({
 > => {
   const user = await getUser(request)
   const prettyUsername = capitalize(os.userInfo().username)
-  return json({
-    authenticated: !!user,
-    username: user?.email ?? prettyUsername,
-    ENV: getEnv(),
-  })
+  return json(
+    {
+      authenticated: !!user,
+      username: user?.email ?? prettyUsername,
+      ENV: getEnv(),
+    },
+    {
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+      },
+    }
+  )
 }
 
 const Document = ({ children }: { children: React.ReactNode }) => (

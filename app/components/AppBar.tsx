@@ -28,7 +28,7 @@ export function AppBar({
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
-    // Don't prevent default, let the link navigate
+    // Just close the mobile menu
     setMobileMenuOpen(false)
   }, [setMobileMenuOpen])
 

@@ -5,6 +5,8 @@ import invariant from 'tiny-invariant'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
 
+import { isPublicRoute } from './route-utils.server'
+
 invariant(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')
 
 export const sessionStorage = createCookieSessionStorage({
@@ -89,14 +91,29 @@ export async function createUserSession({
   })
 }
 
-export async function signout(request: Request): Promise<Response> {
+export async function signout(request: Request, returnUrl?: string): Promise<Response> {
   const session = await getSession(request)
 
   // Force the cookie to be cleared
   const cookieValue = await sessionStorage.destroySession(session)
 
+  // Default to home page
+  let redirectPath = '/'
+
+  // If a returnUrl is provided, determine if it's a public route
+  if (returnUrl) {
+    // Extract just the path part (without query params)
+    const url = new URL(returnUrl, 'http://example.com')
+    const path = url.pathname
+
+    // Check if it's a public route using our utility
+    if (await isPublicRoute(path)) {
+      redirectPath = returnUrl
+    }
+  }
+
   // Additional headers to prevent caching
-  return redirect('/', {
+  return redirect(redirectPath, {
     headers: {
       'Set-Cookie': cookieValue,
       'Cache-Control': 'no-store, max-age=0',

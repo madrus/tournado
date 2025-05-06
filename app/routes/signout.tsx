@@ -12,10 +12,13 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       return json({ success: false, error: 'Method not allowed' }, { status: 405 })
     }
 
+    // Get the referrer URL if available
+    const referrer = request.headers.get('Referer') || '/'
+
     // Process the signout
     console.log('Processing signout request')
-    const response = await signout(request)
-    console.log('Signout successful, redirecting to /')
+    const response = await signout(request, referrer)
+    console.log(`Signout successful, redirecting to appropriate page`)
     return response
   } catch (error) {
     console.error('Error in signout action:', error)

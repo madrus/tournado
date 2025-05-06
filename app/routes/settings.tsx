@@ -25,7 +25,7 @@ export default function SettingsPage(): JSX.Element {
 
   return (
     <div>
-      <h1>{t('common.settings')}</h1>
+      <h1>{t('common.titles.settings')}</h1>
       <p>
         This is a protected route example that would redirect to login if not
         authenticated.

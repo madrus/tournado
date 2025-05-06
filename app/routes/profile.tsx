@@ -14,7 +14,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.profile',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   // This ensures only authenticated users can access this route
   const user = await requireUser(request)
   return json({ user })
@@ -25,7 +25,7 @@ export default function ProfilePage(): JSX.Element {
 
   return (
     <div>
-      <h1>{t('common.profile')}</h1>
+      <h1>{t('common.titles.profile')}</h1>
       <p>
         This is a protected route example that would redirect to login if not
         authenticated.

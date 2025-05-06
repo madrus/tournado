@@ -15,7 +15,6 @@ import invariant from 'tiny-invariant'
 
 import { deleteTeam, getTeam, getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
-import { requireUserId } from '~/utils/session.server'
 
 type ContextType = {
   type: 'sidebar' | 'main'
@@ -28,10 +27,8 @@ type TeamListItem = {
 
 export const loader = async ({
   params,
-  request,
+  request: _,
 }: LoaderFunctionArgs): Promise<Response> => {
-  // Ensure user is logged in
-  await requireUserId(request)
   invariant(params.teamId, 'teamId not found')
 
   // Get the default TeamLeader
@@ -53,10 +50,9 @@ export const loader = async ({
 
 export const action = async ({
   params,
-  request,
+  request: _,
 }: ActionFunctionArgs): Promise<Response> => {
-  // Ensure user is logged in
-  await requireUserId(request)
+  // No longer requiring authentication for team actions
   invariant(params.teamId, 'teamId not found')
 
   // Get the default TeamLeader

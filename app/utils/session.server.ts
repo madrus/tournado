@@ -91,10 +91,17 @@ export async function createUserSession({
 
 export async function signout(request: Request): Promise<Response> {
   const session = await getSession(request)
+
+  // Force the cookie to be cleared
+  const cookieValue = await sessionStorage.destroySession(session)
+
+  // Additional headers to prevent caching
   return redirect('/', {
     headers: {
-      'Set-Cookie': await sessionStorage.destroySession(session),
+      'Set-Cookie': cookieValue,
       'Cache-Control': 'no-store, max-age=0',
+      Pragma: 'no-cache',
+      Expires: new Date(0).toUTCString(),
     },
   })
 }

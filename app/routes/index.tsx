@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { json } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -15,7 +15,6 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response>
 
 export default function Index(): JSX.Element {
   const { t } = useTranslation()
-  const { user } = useLoaderData<typeof loader>()
 
   return (
     <main className='relative bg-emerald-50'>
@@ -36,14 +35,6 @@ export default function Index(): JSX.Element {
               >
                 {t('landing.hero.viewTeams')}
               </Link>
-              {!user ? (
-                <Link
-                  to='/join'
-                  className='text-sm leading-6 font-semibold text-gray-900'
-                >
-                  {t('landing.hero.signup')} <span aria-hidden='true'>→</span>
-                </Link>
-              ) : null}
             </div>
           </div>
         </div>

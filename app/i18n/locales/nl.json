@@ -11,11 +11,13 @@
       "passwordRequired": "Wachtwoord is verplicht",
       "passwordTooShort": "Wachtwoord is te kort"
     },
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
     "notSignedIn": "Niet ingelogd",
-    "signin": "Inloggen",
-    "signout": "Uitloggen",
     "password": "Wachtwoord",
     "rememberMe": "Onthoud mij",
+    "signin": "Inloggen",
+    "signout": "Uitloggen",
     "signup": "Registreren",
     "viewTeams": "Teams bekijken",
     "viewTeamsFor": "Teams bekijken voor"
@@ -25,18 +27,20 @@
     "language": "Taal",
     "profile": "Profiel",
     "settings": "Instellingen",
-    "signedInAs": "Ingelogd als"
+    "signedInAs": "Ingelogd als",
+    "teams": "Teams",
+    "welcome": "Welkom"
   },
   "landing": {
-    "hero": {
-      "description": "Beheer je sporttoernooien eenvoudig. Maak, organiseer en volg je teams en wedstrijden op één plek.",
-      "signup": "Gratis registreren",
-      "viewTeams": "Teams bekijken"
-    },
     "features": {
       "description": "Tournado biedt alle tools die je nodig hebt om je sporttoernooien efficiënt te beheren. Van teamregistratie tot wedstrijdplanning, we hebben alles voor je.",
       "subtitle": "Alles wat je nodig hebt om je toernooien te beheren",
       "title": "Toernooibeheer wordt eenvoudig"
+    },
+    "hero": {
+      "description": "Beheer je sporttoernooien eenvoudig. Maak, organiseer en volg je teams en wedstrijden op één plek.",
+      "signup": "Gratis registreren",
+      "viewTeams": "Teams bekijken"
     }
   },
   "pwa": {

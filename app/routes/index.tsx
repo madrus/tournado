@@ -12,6 +12,7 @@ export const meta: MetaFunction = () => [{ title: 'Tournado' }]
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
+  title: 'common.titles.welcome',
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {

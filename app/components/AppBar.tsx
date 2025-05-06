@@ -4,13 +4,13 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import logo from '~/assets/logo-192x192.png'
+import { usePageTitle } from '~/utils/route-utils'
 
 import { UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
 export function AppBar({
   authenticated,
-  title,
   username,
 }: {
   authenticated: boolean
@@ -21,6 +21,8 @@ export function AppBar({
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
+  // Get the current page title
+  const pageTitle = usePageTitle()
 
   // Track optimistic authenticated state
   const isAuthenticated =
@@ -115,8 +117,9 @@ export function AppBar({
   return (
     <>
       <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
-        <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-4 lg:left-4'>
-          <Link to='/'>
+        {/* Logo and Brand for all screen sizes */}
+        <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-1 lg:left-4 lg:gap-2'>
+          <Link to='/' className='flex items-center gap-1 lg:gap-2'>
             <img
               src={logo}
               alt='Tournado Logo'
@@ -125,13 +128,16 @@ export function AppBar({
               height={40}
               loading={'eager'}
             />
+            {/* Show Tournado text next to logo only on desktop */}
+            <span className='hidden text-xl font-bold text-white lg:inline-block'>
+              Tournado
+            </span>
           </Link>
         </div>
-        {/* Page title */}
-        <h2 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold'>
-          <Link to='/' className='text-white hover:text-emerald-100'>
-            {title ?? 'Tournado'}
-          </Link>
+
+        {/* Page title in center */}
+        <h2 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
+          {pageTitle}
         </h2>
 
         {/* Mobile menu button */}

@@ -30,7 +30,16 @@
     "settings": "Settings",
     "signedInAs": "Signed in as",
     "teams": "Teams",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "titles": {
+      "welcome": "welcome",
+      "teams": "teams",
+      "newTeam": "new team",
+      "profile": "profile",
+      "settings": "settings",
+      "signIn": "sign in",
+      "signUp": "sign up"
+    }
   },
   "pwa": {
     "install": {

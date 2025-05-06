@@ -128,11 +128,7 @@ export default function App(): JSX.Element {
   return (
     <Document>
       <div className='relative' style={{ zIndex: 50 }}>
-        <AppBar
-          authenticated={appData.authenticated}
-          title={'Tournado'}
-          username={appData.username}
-        />
+        <AppBar authenticated={appData.authenticated} username={appData.username} />
       </div>
       <div className='flex-1' style={{ position: 'relative', zIndex: 1 }}>
         <Outlet />

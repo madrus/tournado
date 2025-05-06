@@ -11,7 +11,7 @@ export const handle: RouteMetadata = {
   isPublic: false,
   // When roles are implemented:
   // roles: ['tournamentOrganiser', 'admin']
-  title: 'common.titles.profile',
+  title: 'common.titles.settings',
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -20,17 +20,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ user })
 }
 
-export default function ProfilePage(): JSX.Element {
+export default function SettingsPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
     <div>
-      <h1>{t('common.profile')}</h1>
+      <h1>{t('common.settings')}</h1>
       <p>
         This is a protected route example that would redirect to login if not
         authenticated.
       </p>
-      <p>In the future, it could also check for specific roles.</p>
+      <p>User settings will be implemented here.</p>
     </div>
   )
 }

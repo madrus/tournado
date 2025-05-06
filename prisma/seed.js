@@ -23,20 +23,21 @@ async function seed() {
 
   const hashedInitialPassword = await bcrypt.hash('Tournado@2025', 10)
 
-  let user
-  for (const email of admins) {
-    const createdUser = await prisma.user.create({
-      data: {
-        email,
-        firstName:
-          email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-        lastName: 'Admin',
-        role: 'ADMIN',
-        password: { create: { hash: hashedInitialPassword } },
-      },
-    })
-    if (!user) user = createdUser // captures the first one
-  }
+  // Create admin users
+  await Promise.all(
+    admins.map(async email =>
+      prisma.user.create({
+        data: {
+          email,
+          firstName:
+            email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+          lastName: 'Admin',
+          role: 'ADMIN',
+          password: { create: { hash: hashedInitialPassword } },
+        },
+      })
+    )
+  )
 
   const team1 = {
     teamName: 'JO8-1',

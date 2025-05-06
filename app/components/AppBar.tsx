@@ -1,6 +1,6 @@
 import { Link, useFetcher } from '@remix-run/react'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import logo from '~/assets/logo-192x192.png'
@@ -25,6 +25,16 @@ export function AppBar({
   const isAuthenticated =
     signoutFetcher.formAction === '/signout' ? false : authenticated
 
+  // Handle sign-out
+  const handleSignOut = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault()
+      event.stopPropagation()
+      signoutFetcher.submit({}, { method: 'post', action: '/signout' })
+    },
+    [signoutFetcher]
+  )
+
   // Current language logic
   const languages = [
     { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
@@ -38,16 +48,24 @@ export function AppBar({
 
   const menuItems = [
     {
+      label: t('common.teams'),
+      icon: 'group',
+      href: '/teams',
+      authenticated: false,
+    },
+    {
       label: t('common.profile'),
       icon: 'person',
       href: '/profile',
       todo: true,
+      authenticated: true,
     },
     {
       label: t('common.settings'),
       icon: 'settings',
       href: '/settings',
       todo: true,
+      authenticated: true,
     },
     {
       label: currentLanguage.name,
@@ -59,20 +77,19 @@ export function AppBar({
         onClick: () => i18n.changeLanguage(lang.code),
         active: lang.code === currentLanguage.code,
       })),
+      authenticated: false,
     },
     {
       label: isAuthenticated ? t('auth.signout') : t('auth.signin'),
       icon: isAuthenticated ? 'logout' : 'login',
       action: isAuthenticated ? (
-        <signoutFetcher.Form action='/signout' method='post' className='m-0 p-0'>
-          <button
-            type='submit'
-            className='flex w-full content-start items-center px-3 py-2 text-left text-gray-700 hover:bg-gray-100'
-          >
-            <span className='material-symbols-outlined w-8 pl-0 text-left'>logout</span>
-            {t('auth.signout')}
-          </button>
-        </signoutFetcher.Form>
+        <button
+          onClick={handleSignOut}
+          className='flex w-full content-start items-center px-3 py-2 text-left text-gray-700 hover:bg-gray-100'
+        >
+          <span className='material-symbols-outlined w-8 pl-0 text-left'>logout</span>
+          {t('auth.signout')}
+        </button>
       ) : (
         <Link
           to='/signin'
@@ -82,6 +99,7 @@ export function AppBar({
           {t('auth.signin')}
         </Link>
       ),
+      authenticated: false,
     },
   ]
 
@@ -128,7 +146,7 @@ export function AppBar({
           <UserMenu
             authenticated={isAuthenticated}
             username={username}
-            menuItems={menuItems}
+            menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
           />
         </div>
       </header>
@@ -137,7 +155,7 @@ export function AppBar({
       <UserMenu
         authenticated={isAuthenticated}
         username={username}
-        menuItems={menuItems}
+        menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
         isMobile={true}
         isOpen={mobileMenuOpen}
         onOpenChange={setMobileMenuOpen}

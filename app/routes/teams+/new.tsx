@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next'
 import { prisma } from '~/db.server'
 import { createTeam, getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
-import { requireUserId } from '~/utils/session.server'
 
 type ContextType = {
   type: 'sidebar' | 'main'
@@ -38,7 +37,7 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Respon
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
-  await requireUserId(request) // TODO: check auth status for now
+  // No longer requiring authentication for team creation
   const formData = await request.formData()
   const teamName = formData.get('teamName')
   const teamClass = formData.get('teamClass')
@@ -139,63 +138,65 @@ export default function NewTeamPage(): JSX.Element {
 
   // Render form in main content
   return (
-    <Form
-      method='post'
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-        width: '100%',
-      }}
-    >
-      <div>
-        <label className='flex w-full flex-col gap-1'>
-          <span>{t('teams.form.teamName')}</span>
-          <input
-            ref={teamNameRef}
-            name='teamName'
-            className='flex-1 rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-loose'
-            aria-invalid={actionData?.errors?.teamName ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.teamName ? 'teamName-error' : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.teamName ? (
-          <div className='pt-1 text-red-700' id='teamName-error'>
-            {t('teams.form.teamNameRequired')}
-          </div>
-        ) : null}
-      </div>
+    <>
+      <Form
+        method='post'
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+          width: '100%',
+        }}
+      >
+        <div>
+          <label className='flex w-full flex-col gap-1'>
+            <span>{t('teams.form.teamName')}</span>
+            <input
+              ref={teamNameRef}
+              name='teamName'
+              className='flex-1 rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-loose'
+              aria-invalid={actionData?.errors?.teamName ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.teamName ? 'teamName-error' : undefined
+              }
+            />
+          </label>
+          {actionData?.errors?.teamName ? (
+            <div className='pt-1 text-red-700' id='teamName-error'>
+              {t('teams.form.teamNameRequired')}
+            </div>
+          ) : null}
+        </div>
 
-      <div>
-        <label className='flex w-full flex-col gap-1'>
-          <span>{t('teams.form.teamClass')}</span>
-          <input
-            ref={teamClassRef}
-            name='teamClass'
-            className='w-full flex-1 rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-loose'
-            aria-invalid={actionData?.errors?.teamClass ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.teamClass ? 'teamClass-error' : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.teamClass ? (
-          <div className='pt-1 text-red-700' id='teamClass-error'>
-            {t('teams.form.teamClassRequired')}
-          </div>
-        ) : null}
-      </div>
+        <div>
+          <label className='flex w-full flex-col gap-1'>
+            <span>{t('teams.form.teamClass')}</span>
+            <input
+              ref={teamClassRef}
+              name='teamClass'
+              className='w-full flex-1 rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-loose'
+              aria-invalid={actionData?.errors?.teamClass ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.teamClass ? 'teamClass-error' : undefined
+              }
+            />
+          </label>
+          {actionData?.errors?.teamClass ? (
+            <div className='pt-1 text-red-700' id='teamClass-error'>
+              {t('teams.form.teamClassRequired')}
+            </div>
+          ) : null}
+        </div>
 
-      <div className='text-right'>
-        <button
-          type='submit'
-          className='rounded-lg bg-amber-500 px-4 py-2 text-white hover:bg-amber-600'
-        >
-          {t('teams.save')}
-        </button>
-      </div>
-    </Form>
+        <div className='text-right'>
+          <button
+            type='submit'
+            className='rounded-lg bg-amber-500 px-4 py-2 text-white hover:bg-amber-600'
+          >
+            {t('teams.save')}
+          </button>
+        </div>
+      </Form>
+    </>
   )
 }

@@ -5,15 +5,12 @@ import { Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { requireUserId } from '~/utils/session.server'
+// import { requireUserId } from '~/utils/session.server'
 
 // import { useUser } from '~/utils/utils'
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
-  // Ensure user is logged in
-  await requireUserId(request)
-  return json({})
-}
+export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> =>
+  json({})
 
 export default function TeamsLayout(): JSX.Element {
   const { t } = useTranslation()

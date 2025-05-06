@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/madrus/tournado/compare/v0.3.10...v0.3.11) (2025-05-06)
+
 ### [0.3.10](https://github.com/madrus/tournado/compare/v0.3.9...v0.3.10) (2025-05-01)
 
 ### [0.3.9](https://github.com/madrus/tournado/compare/v0.3.8...v0.3.9) (2025-04-28)

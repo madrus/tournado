@@ -38,4 +38,4 @@ The database seed script creates a default user with the following credentials:
 - Email: `rachel@remix.run`
 - Password: `racheliscool`
 
-You can use these credentials to log in and explore the application.
+You can use these credentials to sign in and explore the application.

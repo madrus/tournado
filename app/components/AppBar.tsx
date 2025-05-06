@@ -58,20 +58,20 @@ export function AppBar({
 
   const menuItems = [
     {
-      label: t('common.teams'),
+      label: t('common.titles.teams'),
       icon: 'group',
       href: '/teams',
       authenticated: false,
     },
     {
-      label: t('common.profile'),
+      label: t('common.titles.profile'),
       icon: 'person',
       href: '/profile',
       todo: true,
       authenticated: true,
     },
     {
-      label: t('common.settings'),
+      label: t('common.titles.settings'),
       icon: 'settings',
       href: '/settings',
       todo: true,

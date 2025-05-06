@@ -61,39 +61,66 @@ describe('smoke tests', () => {
     // Wait for navigation to signup page
     cy.url().should('include', '/signup')
 
-    // Fill out the registration form
-    cy.findByRole('textbox', { name: /email/i })
-      .should('be.visible')
-      .type(signinForm.email)
+    // Wait for page to settle before interacting with form
+    cy.wait(500)
+
+    // Fill out the registration form - using aliases and separate commands for stability
+    cy.findByRole('textbox', { name: /email/i }).should('be.visible').as('emailField')
+
+    cy.get('@emailField').clear().type(signinForm.email, { delay: 10 })
+
     cy.findByRole('textbox', { name: /first name/i })
       .should('be.visible')
-      .type(signinForm.firstName)
+      .as('firstNameField')
+
+    cy.get('@firstNameField').clear().type(signinForm.firstName, { delay: 10 })
+
     cy.findByRole('textbox', { name: /last name/i })
       .should('be.visible')
-      .type(signinForm.lastName)
+      .as('lastNameField')
+
+    cy.get('@lastNameField').clear().type(signinForm.lastName, { delay: 10 })
+
     cy.findByLabelText(/password/i)
       .should('be.visible')
-      .type(signinForm.password)
+      .as('passwordField')
+
+    cy.get('@passwordField').clear().type(signinForm.password, { delay: 10 })
+
+    // Submit the form
     cy.findByRole('button', { name: /create account/i })
       .should('be.visible')
+      .should('be.enabled')
       .click()
 
     // We should be redirected to the signin page with a success message
     cy.url().should('include', '/signin')
     cy.url().should('include', 'registered=true')
 
+    // Wait for page to load completely
+    cy.wait(500)
+
     // Check for success message
     cy.contains(/account created successfully/i).should('be.visible')
 
     // Email field should be pre-filled
-    cy.findByRole('textbox', { name: /email/i }).should('have.value', signinForm.email)
+    cy.findByRole('textbox', { name: /email/i })
+      .should('exist')
+      .should('be.visible')
+      .should('have.value', signinForm.email)
 
     // Enter password and submit
     cy.findByLabelText(/password/i)
+      .should('exist')
       .should('be.visible')
-      .type(signinForm.password)
+      .as('signinPasswordField')
+
+    cy.get('@signinPasswordField').clear().type(signinForm.password, { delay: 10 })
+
     cy.findByRole('button', { name: /sign in/i })
+      .should('exist')
       .should('be.visible')
+      .should('be.enabled')
       .click()
 
     // After successful login, we should be redirected to teams page due to our redirectTo parameter

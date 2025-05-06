@@ -5,6 +5,8 @@ import invariant from 'tiny-invariant'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
 
+import { isPublicRoute } from './route-utils.server'
+
 invariant(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')
 
 export const sessionStorage = createCookieSessionStorage({
@@ -39,7 +41,7 @@ export async function getUser(request: Request): Promise<User | null> {
   const user = await getUserById(userId)
   if (user) return user
 
-  throw await logout(request)
+  throw await signout(request)
 }
 
 export async function requireUserId(
@@ -49,7 +51,7 @@ export async function requireUserId(
   const userId = await getUserId(request)
   if (!userId) {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]])
-    throw redirect(`/login?${searchParams}`)
+    throw redirect(`/signin?${searchParams}`)
   }
   return userId
 }
@@ -60,7 +62,7 @@ export async function requireUser(request: Request): Promise<User> {
   const user = await getUserById(userId)
   if (user) return user
 
-  throw await logout(request)
+  throw await signout(request)
 }
 
 export async function createUserSession({
@@ -89,11 +91,34 @@ export async function createUserSession({
   })
 }
 
-export async function logout(request: Request): Promise<Response> {
+export async function signout(request: Request, returnUrl?: string): Promise<Response> {
   const session = await getSession(request)
-  return redirect('/', {
+
+  // Force the cookie to be cleared
+  const cookieValue = await sessionStorage.destroySession(session)
+
+  // Default to home page
+  let redirectPath = '/'
+
+  // If a returnUrl is provided, determine if it's a public route
+  if (returnUrl) {
+    // Extract just the path part (without query params)
+    const url = new URL(returnUrl, 'http://example.com')
+    const path = url.pathname
+
+    // Check if it's a public route using our utility
+    if (await isPublicRoute(path)) {
+      redirectPath = returnUrl
+    }
+  }
+
+  // Additional headers to prevent caching
+  return redirect(redirectPath, {
     headers: {
-      'Set-Cookie': await sessionStorage.destroySession(session),
+      'Set-Cookie': cookieValue,
+      'Cache-Control': 'no-store, max-age=0',
+      Pragma: 'no-cache',
+      Expires: new Date(0).toUTCString(),
     },
   })
 }

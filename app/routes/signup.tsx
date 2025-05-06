@@ -10,12 +10,19 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { createUser, getUserByEmail } from '~/models/user.server'
-import { createUserSession, getUserId } from '~/utils/session.server'
+import type { RouteMetadata } from '~/utils/route-types'
+import { getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.signUp',
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
-  if (userId) return redirect('/')
+  if (userId) return redirect('/teams')
   return json({})
 }
 
@@ -112,19 +119,21 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const user = await createUser(email, password, firstName, lastName, 'PUBLIC')
+  const _user = await createUser(email, password, firstName, lastName, 'PUBLIC')
 
-  return createUserSession({
-    redirectTo,
-    remember: false,
-    request,
-    userId: user.id,
-  })
+  const params = new URLSearchParams()
+  if (redirectTo) {
+    params.set('redirectTo', redirectTo)
+  }
+  params.set('registered', 'true')
+  params.set('email', email as string)
+
+  return redirect(`/signin?${params.toString()}`)
 }
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
 
-export default function Join(): JSX.Element {
+export default function SignUp(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') ?? undefined
@@ -268,11 +277,11 @@ export default function Join(): JSX.Element {
               <Link
                 className='text-blue-500 underline'
                 to={{
-                  pathname: '/login',
+                  pathname: '/signin',
                   search: searchParams.toString(),
                 }}
               >
-                {t('auth.login')}
+                {t('auth.signin')}
               </Link>
             </div>
           </div>

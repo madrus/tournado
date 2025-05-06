@@ -24,13 +24,13 @@ export type Tournament = {
 }
 
 // rollen:
-// - Admin
-// - Toernooibeheerder
-// - Scheidsrechter coordinator
+// - Admin = admin
+// - Toernooibeheerder = organiser
+// - Scheidsrechter coordinator = coordinator
 //   - kan scores voor alle wedstrijden invullen
-// - Scheidsrechter
+// - Scheidsrechter = referee
 //   - kan scores voor zijn eigen wedstrijden invullen
-// - Public = readonly
+// - Public = readonly <-- geen expliciete rol nodig
 //   - kan geen uitslagen invullen
 
 // JO7-1

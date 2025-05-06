@@ -26,7 +26,7 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
       - [x] Adjust padding and margins for mobile screens
       - [x] Make the delete button more touch-friendly
       - [x] Ensure text is readable on smaller screens
-   3. [ ] Authentication Pages (Login/Join):
+   3. [ ] Authentication Pages (Sign in/Join):
       - [ ] These are already somewhat mobile-friendly but could use some improvements
       - [ ] Adjust form padding and input sizes for better touch interaction
       - [ ] Ensure proper spacing between elements

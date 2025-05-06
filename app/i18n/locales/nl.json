@@ -25,10 +25,7 @@
   "common": {
     "appName": "Tournado",
     "language": "Taal",
-    "profile": "Profiel",
-    "settings": "Instellingen",
     "signedInAs": "Ingelogd als",
-    "teams": "Teams",
     "welcome": "Welkom",
     "titles": {
       "welcome": "Welkom",

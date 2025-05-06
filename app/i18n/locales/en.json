@@ -32,7 +32,16 @@
     "settings": "Settings",
     "signedInAs": "Signed in as",
     "teams": "Teams",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "titles": {
+      "welcome": "Welcome",
+      "teams": "Teams",
+      "newTeam": "New Team",
+      "profile": "Profile",
+      "settings": "Settings",
+      "signIn": "Sign In",
+      "signUp": "Sign Up"
+    }
   },
   "landing": {
     "features": {

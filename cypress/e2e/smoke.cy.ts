@@ -58,8 +58,8 @@ describe('smoke tests', () => {
       .should('be.visible')
       .click()
 
-    // Wait for navigation to join/signup page
-    cy.url().should('include', '/join')
+    // Wait for navigation to signup page
+    cy.url().should('include', '/signup')
 
     // Fill out the registration form
     cy.findByRole('textbox', { name: /email/i })

@@ -10,8 +10,15 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { createUser, getUserByEmail } from '~/models/user.server'
+import type { RouteMetadata } from '~/utils/route-types'
 import { getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.signUp',
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
@@ -126,7 +133,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
 
-export default function Join(): JSX.Element {
+export default function SignUp(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') ?? undefined

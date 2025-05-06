@@ -4,9 +4,16 @@ import { Link, useLoaderData } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
+import type { RouteMetadata } from '~/utils/route-types'
 import { getUser } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => [{ title: 'Tournado' }]
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.welcome',
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const user = await getUser(request)
@@ -41,7 +48,7 @@ export default function Index(): JSX.Element {
               ) : (
                 <div className='flex w-full flex-col items-center justify-center gap-4 md:flex-row md:gap-5'>
                   <Link
-                    to='/join'
+                    to='/signup'
                     className='flex w-1/2 min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-emerald-50 px-6 py-2 text-base font-medium text-red-600 shadow-xs hover:bg-white md:w-1/3'
                     role='link'
                     aria-label={t('auth.signup')}

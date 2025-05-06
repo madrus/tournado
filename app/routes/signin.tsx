@@ -10,8 +10,15 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { verifySignin } from '~/models/user.server'
+import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.signIn',
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
@@ -198,7 +205,7 @@ export default function SigninPage(): JSX.Element {
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'
                   to={{
-                    pathname: '/join',
+                    pathname: '/signup',
                     search: searchParams.toString(),
                   }}
                   aria-label={t('auth.signup')}

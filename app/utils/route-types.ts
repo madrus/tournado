@@ -11,4 +11,9 @@ export type RouteMetadata = {
    * Which roles can access this route (when implemented)
    */
   roles?: Array<'tournamentOrganiser' | 'admin' | 'referee'>
+
+  /**
+   * The page title to display in the app bar
+   */
+  title?: string
 }

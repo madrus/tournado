@@ -14,6 +14,13 @@ import { useTranslation } from 'react-i18next'
 import { prisma } from '~/db.server'
 import { createTeam, getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import type { RouteMetadata } from '~/utils/route-types'
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.newTeam',
+}
 
 type ContextType = {
   type: 'sidebar' | 'main'

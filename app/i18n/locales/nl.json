@@ -29,7 +29,16 @@
     "settings": "Instellingen",
     "signedInAs": "Ingelogd als",
     "teams": "Teams",
-    "welcome": "Welkom"
+    "welcome": "Welkom",
+    "titles": {
+      "welcome": "Welkom",
+      "teams": "Teams",
+      "newTeam": "Nieuw team",
+      "profile": "Profiel",
+      "settings": "Instellingen",
+      "signIn": "Inloggen",
+      "signUp": "Registreren"
+    }
   },
   "landing": {
     "features": {
@@ -77,12 +86,12 @@
       "unknownError": "Onbekende fout"
     },
     "form": {
-      "teamClass": "Team Klasse:",
+      "teamClass": "Teamklasse:",
       "teamClassRequired": "Team klasse is verplicht",
-      "teamName": "Team Naam:",
+      "teamName": "Teamnaam:",
       "teamNameRequired": "Team naam is verplicht"
     },
-    "newTeam": "+ Nieuw Team",
+    "newTeam": "+ Nieuw team",
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Nog geen teams",
     "save": "Opslaan",

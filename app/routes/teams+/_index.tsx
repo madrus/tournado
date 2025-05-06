@@ -8,6 +8,12 @@ import type { Team } from '@prisma/client'
 
 import { getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import type { RouteMetadata } from '~/utils/route-types'
+
+// Route metadata - this will inherit from the parent route
+export const handle: RouteMetadata = {
+  isPublic: true,
+}
 
 type ContextType = {
   type: 'sidebar' | 'main'

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
-type MenuItemType = {
+export type MenuItemType = {
   label: string
   icon: string
   href?: string

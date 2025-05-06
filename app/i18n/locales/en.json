@@ -15,6 +15,8 @@
     "lastName": "Last name",
     "notSignedIn": "Not signed in",
     "password": "Password",
+    "pleaseSignIn": "Please sign in with your new account",
+    "registrationSuccess": "Account created successfully",
     "rememberMe": "Remember me",
     "signInRequiredToCreateTeam": "You need to sign in to create a team.",
     "signin": "Sign in",

@@ -141,7 +141,7 @@ export function UserMenu({
         <DropdownMenu.Trigger asChild>
           <button className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'>
             <span className='hidden md:block'>{username}</span>
-            <span className='material-symbols-outlined'>expand_more</span>
+            <span className='material-symbols-outlined ml-1'>expand_more</span>
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content

@@ -4,9 +4,15 @@ import { Link } from '@remix-run/react'
 
 import { useTranslation } from 'react-i18next'
 
+import type { RouteMetadata } from '~/utils/route-types'
 import { getUser } from '~/utils/session.server'
 
 export const meta: MetaFunction = () => [{ title: 'Tournado' }]
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const user = await getUser(request)

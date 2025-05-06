@@ -5,9 +5,16 @@ import { Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import type { RouteMetadata } from '~/utils/route-types'
+
 // import { requireUserId } from '~/utils/session.server'
 
 // import { useUser } from '~/utils/utils'
+
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+}
 
 export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> =>
   json({})

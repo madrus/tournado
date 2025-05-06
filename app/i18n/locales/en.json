@@ -28,10 +28,7 @@
   "common": {
     "appName": "Tournado",
     "language": "Language",
-    "profile": "Profile",
-    "settings": "Settings",
     "signedInAs": "Signed in as",
-    "teams": "Teams",
     "welcome": "Welcome",
     "titles": {
       "welcome": "Welcome",

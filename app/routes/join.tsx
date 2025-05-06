@@ -10,12 +10,12 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { createUser, getUserByEmail } from '~/models/user.server'
-import { createUserSession, getUserId } from '~/utils/session.server'
+import { getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
-  if (userId) return redirect('/')
+  if (userId) return redirect('/teams')
   return json({})
 }
 
@@ -112,14 +112,16 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const user = await createUser(email, password, firstName, lastName, 'PUBLIC')
+  const _user = await createUser(email, password, firstName, lastName, 'PUBLIC')
 
-  return createUserSession({
-    redirectTo,
-    remember: false,
-    request,
-    userId: user.id,
-  })
+  const params = new URLSearchParams()
+  if (redirectTo) {
+    params.set('redirectTo', redirectTo)
+  }
+  params.set('registered', 'true')
+  params.set('email', email as string)
+
+  return redirect(`/signin?${params.toString()}`)
 }
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]

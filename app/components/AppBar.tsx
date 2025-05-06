@@ -1,4 +1,4 @@
-import { Link, useFetcher } from '@remix-run/react'
+import { Link, useFetcher, useLocation } from '@remix-run/react'
 
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ export function AppBar({
   username?: string
 }): JSX.Element {
   const { t, i18n } = useTranslation()
+  const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
 
@@ -25,14 +26,21 @@ export function AppBar({
   const isAuthenticated =
     signoutFetcher.formAction === '/signout' ? false : authenticated
 
+  // Handle sign-in
+  const handleSignIn = useCallback(() => {
+    // Don't prevent default, let the link navigate
+    setMobileMenuOpen(false)
+  }, [setMobileMenuOpen])
+
   // Handle sign-out
   const handleSignOut = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault()
       event.stopPropagation()
       signoutFetcher.submit({}, { method: 'post', action: '/signout' })
+      setMobileMenuOpen(false)
     },
-    [signoutFetcher]
+    [signoutFetcher, setMobileMenuOpen]
   )
 
   // Current language logic
@@ -92,8 +100,9 @@ export function AppBar({
         </button>
       ) : (
         <Link
-          to='/signin'
+          to={`/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
           className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+          onClick={handleSignIn}
         >
           <span className='material-symbols-outlined w-8 pl-0 text-left'>login</span>
           {t('auth.signin')}
@@ -129,6 +138,7 @@ export function AppBar({
         <div className='absolute top-1/2 right-2 flex -translate-y-1/2 items-center lg:hidden'>
           <button
             type='button'
+            aria-label='Toggle menu'
             className='inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-emerald-700'
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >

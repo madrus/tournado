@@ -88,30 +88,9 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
-      - name: 🛠 Generate Prisma Client
-        run: |
-          # Force clean any existing generated client
-          rm -rf node_modules/.prisma
-
-          # Show the current branch for debugging
-          echo "Current branch: $GITHUB_REF"
-
-          # Show the schema file for debugging
-          echo "Prisma schema content:"
-          cat prisma/schema.prisma
-
-          # Generate the client with explicit path
-          npx prisma generate
-
-          # Verify the generated client
-          ls -la node_modules/.prisma/client || echo "Client directory not found!"
-
-          # Check if index.d.ts contains the Team and TeamLeader types
-          echo "Checking for Team and TeamLeader types in generated client:"
-          grep -E "Team|TeamLeader" node_modules/.prisma/client/index.d.ts || echo "Types not found!"
-        env:
-          DATABASE_URL: "file:./prisma/data.db"
-          DEBUG: "prisma:*"
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data.db"
 
       - name: 🔎 Type check
         run: pnpm typecheck
@@ -205,30 +184,9 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
-      - name: 🛠 Generate Prisma Client
-        run: |
-          # Force clean any existing generated client
-          rm -rf node_modules/.prisma
-
-          # Show the current branch for debugging
-          echo "Current branch: $GITHUB_REF"
-
-          # Show the schema file for debugging
-          echo "Prisma schema content:"
-          cat prisma/schema.prisma
-
-          # Generate the client with explicit path
-          npx prisma generate
-
-          # Verify the generated client
-          ls -la node_modules/.prisma/client || echo "Client directory not found!"
-
-          # Check if index.d.ts contains the Team and TeamLeader types
-          echo "Checking for Team and TeamLeader types in generated client:"
-          grep -E "Team|TeamLeader" node_modules/.prisma/client/index.d.ts || echo "Types not found!"
-        env:
-          DATABASE_URL: "file:./prisma/data.db"
-          DEBUG: "prisma:*"
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data.db"
 
       - name: Install Cypress
         if: steps.cache-cypress.outputs.cache-hit != 'true'

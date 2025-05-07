@@ -95,8 +95,9 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
-      - name: 🛠 Generate Prisma Client
-        run: pnpm exec prisma generate
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data.db"
 
       - name: 🔎 Type check
         run: pnpm typecheck
@@ -190,8 +191,9 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
-      - name: 🛠 Generate Prisma Client
-        run: pnpm exec prisma generate
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data.db"
 
       - name: Install Cypress
         if: steps.cache-cypress.outputs.cache-hit != 'true'

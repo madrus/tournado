@@ -8,6 +8,12 @@ on:
     branches:
       - main
       - dev
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+      - dev
 
 # Ensure only one deployment workflow runs at a time per branch
 concurrency:
@@ -24,7 +30,9 @@ jobs:
   deploy:
     name: 🚀 Deploy
     # Only run if the CI workflow was successful
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: |
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || 
+      (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
@@ -38,7 +46,7 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_branch || github.event.pull_request.head.ref }}
 
       - name: 👀 Read app name
         uses: SebRollen/toml-action@v1.2.0
@@ -53,7 +61,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: 🚀 Deploy Staging
-        if: ${{ github.event.workflow_run.head_branch == 'dev' }}
+        if: ${{ github.event.workflow_run.head_branch == 'dev' || github.event.pull_request.head.ref == 'dev' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates
@@ -67,7 +75,7 @@ jobs:
             --yes
 
       - name: 🚀 Deploy Production
-        if: ${{ github.event.workflow_run.head_branch == 'main' }}
+        if: ${{ github.event.workflow_run.head_branch == 'main' || github.event.pull_request.head.ref == 'main' }}
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates

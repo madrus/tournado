@@ -37,7 +37,10 @@ export const getTeamListItems = async ({
 }): Promise<Array<Pick<Team, 'id' | 'teamName'>>> =>
   prisma.team.findMany({
     where: { teamLeaderId },
-    select: { id: true, teamName: true },
+    select: {
+      id: true,
+      teamName: true,
+    },
     orderBy: { updatedAt: 'desc' },
   })
 

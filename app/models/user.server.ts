@@ -40,7 +40,7 @@ export async function createUser(
 export const deleteUserByEmail = async (email: User['email']): Promise<User> =>
   prisma.user.delete({ where: { email } })
 
-export async function verifyLogin(
+export async function verifySignin(
   email: User['email'],
   password: string
 ): Promise<Omit<User & { password: { hash: string } }, 'password'> | null> {

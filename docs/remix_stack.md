@@ -69,7 +69,7 @@ Prior to your first deployment, you'll need to do a few things:
 
 - [Install Fly](https://fly.io/docs/getting-started/installing-flyctl/)
 
-- Sign up and log in to Fly
+- Sign up and sign in to Fly
 
    ```sh
    fly launch
@@ -181,10 +181,10 @@ We use [`@testing-library/cypress`](https://testing-library.com/cypress) for sel
 
 To run these tests in development, run `npm run test:e2e:dev` which will start the dev server for the app as well as the Cypress client. Make sure the database is running in docker as described above.
 
-We have a utility for testing authenticated features without having to go through the login flow:
+We have a utility for testing authenticated features without having to go through the signin flow:
 
 ```ts
-cy.login()
+cy.signin()
 // you are now logged in as a new user
 ```
 

@@ -9,13 +9,26 @@ import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { verifyLogin } from '~/models/user.server'
+import { verifySignin } from '~/models/user.server'
+import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
+// Route metadata
+export const handle: RouteMetadata = {
+  isPublic: true,
+  title: 'common.titles.signIn',
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const userId = await getUserId(request)
-  if (userId) return redirect('/')
+  if (userId) {
+    // Get the redirectTo parameter from the URL if present
+    const url = new URL(request.url)
+    const redirectTo = url.searchParams.get('redirectTo')
+    // Redirect to the intended destination or root page
+    return redirect(redirectTo || '/')
+  }
   return json({})
 }
 
@@ -44,7 +57,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const user = await verifyLogin(email, password)
+  const user = await verifySignin(email, password)
 
   if (!user) {
     return json(
@@ -61,12 +74,14 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Login' }]
+export const meta: MetaFunction = () => [{ title: 'Sign in' }]
 
-export default function LoginPage(): JSX.Element {
+export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') || '/teams'
+  const redirectTo = searchParams.get('redirectTo') || '/'
+  const registered = searchParams.get('registered') === 'true'
+  const emailFromRegistration = searchParams.get('email')
   const actionData = useActionData<typeof action>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -79,10 +94,38 @@ export default function LoginPage(): JSX.Element {
     }
   }, [actionData])
 
+  useEffect(() => {
+    // Pre-fill email if provided from registration
+    if (emailFromRegistration && emailRef.current) {
+      emailRef.current.value = emailFromRegistration
+      // Focus on password field if email is pre-filled
+      passwordRef.current?.focus()
+    }
+  }, [emailFromRegistration])
+
   return (
     <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
       <div className='flex flex-1 flex-col'>
         <div className='mx-auto mt-24 w-full max-w-md rounded-lg bg-white/50 p-8'>
+          {registered ? (
+            <div className='mb-4 rounded-md bg-green-50 p-4'>
+              <div className='flex'>
+                <div className='flex-shrink-0'>
+                  <span className='material-symbols-outlined text-green-400'>
+                    check_circle
+                  </span>
+                </div>
+                <div className='ml-3'>
+                  <h3 className='text-sm font-medium text-green-800'>
+                    {t('auth.registrationSuccess')}
+                  </h3>
+                  <div className='mt-2 text-sm text-green-700'>
+                    <p>{t('auth.pleaseSignIn')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
           <Form method='post' className='space-y-6'>
             <div>
               <label
@@ -143,7 +186,7 @@ export default function LoginPage(): JSX.Element {
               type='submit'
               className='w-full rounded-sm bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
             >
-              {t('auth.login')}
+              {t('auth.signin')}
             </button>
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>
@@ -162,9 +205,11 @@ export default function LoginPage(): JSX.Element {
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'
                   to={{
-                    pathname: '/join',
+                    pathname: '/signup',
                     search: searchParams.toString(),
                   }}
+                  aria-label={t('auth.signup')}
+                  role='link'
                 >
                   {t('auth.signup')}
                 </Link>

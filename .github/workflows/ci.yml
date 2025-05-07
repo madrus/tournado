@@ -90,6 +90,8 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: "file:./prisma/data.db"
 
       - name: 🔎 Type check
         run: pnpm typecheck

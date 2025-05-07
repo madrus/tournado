@@ -36,7 +36,7 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: 👀 Read app name
         uses: SebRollen/toml-action@v1.2.0
         id: app_name
@@ -55,7 +55,7 @@ jobs:
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates
           flyctl deploy --remote-only \
-            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
@@ -69,7 +69,7 @@ jobs:
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates
           flyctl deploy --remote-only \
-            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \

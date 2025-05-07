@@ -14,7 +14,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.settings',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   // This ensures only authenticated users can access this route
   const user = await requireUser(request)
   return json({ user })

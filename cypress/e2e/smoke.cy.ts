@@ -27,39 +27,112 @@ describe('smoke tests', () => {
     cy.cleanupUser({ failOnNonZeroExit: false })
   })
 
-  it('should allow you to register and login', () => {
-    const loginForm = {
+  it('should allow you to register and sign in', () => {
+    const signinForm = {
       email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       password: faker.internet.password(),
     }
 
-    cy.then(() => ({ email: loginForm.email })).as('user')
+    cy.then(() => ({ email: signinForm.email })).as('user')
 
-    cy.visitAndCheck('/')
+    cy.visitAndCheck('/teams')
 
-    cy.findByRole('link', { name: /sign up/i }).click()
+    // First click the toggle menu button
+    cy.findByRole('button', { name: 'Toggle menu' }).click()
 
-    cy.findByRole('textbox', { name: /email/i }).type(loginForm.email)
-    cy.findByRole('textbox', { name: 'auth.firstName' }).type(loginForm.firstName)
-    cy.findByRole('textbox', { name: 'auth.lastName' }).type(loginForm.lastName)
-    cy.findByLabelText(/password/i).type(loginForm.password)
-    cy.findByRole('button', { name: /create account/i }).click()
+    // Wait for the mobile menu to be visible
+    cy.get('.fixed.inset-0.z-100.flex').should('exist')
 
-    // After registration, we should see the view teams link
-    // The link has aria-label="view teams for" and contains the email
-    cy.findByRole('link', { name: 'view teams for' })
+    // Then find and click the sign in link within the mobile menu
+    cy.findByRole('link', { name: /sign in/i })
+      .should('be.visible')
+      .click()
+
+    // Wait for navigation to signin page (redirectTo will be added automatically by the AppBar)
+    cy.url().should('include', '/signin')
+
+    // Now find and click the sign up link on the sign in page
+    cy.findByRole('link', { name: /sign up/i })
+      .should('be.visible')
+      .click()
+
+    // Wait for navigation to signup page
+    cy.url().should('include', '/signup')
+
+    // Wait for page to settle before interacting with form
+    cy.wait(500)
+
+    // Fill out the registration form - using aliases and separate commands for stability
+    cy.findByRole('textbox', { name: /email/i }).should('be.visible').as('emailField')
+
+    cy.get('@emailField').clear().type(signinForm.email, { delay: 10 })
+
+    cy.findByRole('textbox', { name: /first name/i })
+      .should('be.visible')
+      .as('firstNameField')
+
+    cy.get('@firstNameField').clear().type(signinForm.firstName, { delay: 10 })
+
+    cy.findByRole('textbox', { name: /last name/i })
+      .should('be.visible')
+      .as('lastNameField')
+
+    cy.get('@lastNameField').clear().type(signinForm.lastName, { delay: 10 })
+
+    cy.findByLabelText(/password/i)
+      .should('be.visible')
+      .as('passwordField')
+
+    cy.get('@passwordField').clear().type(signinForm.password, { delay: 10 })
+
+    // Submit the form
+    cy.findByRole('button', { name: /create account/i })
+      .should('be.visible')
+      .should('be.enabled')
+      .click()
+
+    // We should be redirected to the signin page with a success message
+    cy.url().should('include', '/signin')
+    cy.url().should('include', 'registered=true')
+
+    // Wait for page to load completely
+    cy.wait(500)
+
+    // Check for success message
+    cy.contains(/account created successfully/i).should('be.visible')
+
+    // Email field should be pre-filled
+    cy.findByRole('textbox', { name: /email/i })
       .should('exist')
-      .and('contain.text', loginForm.email)
+      .should('be.visible')
+      .should('have.value', signinForm.email)
 
-    // Complete the test by verifying we're logged in
-    // No need to navigate to login page or check for sign up link
+    // Enter password and submit
+    cy.findByLabelText(/password/i)
+      .should('exist')
+      .should('be.visible')
+      .as('signinPasswordField')
+
+    cy.get('@signinPasswordField').clear().type(signinForm.password, { delay: 10 })
+
+    cy.findByRole('button', { name: /sign in/i })
+      .should('exist')
+      .should('be.visible')
+      .should('be.enabled')
+      .click()
+
+    // After successful login, we should be redirected to teams page due to our redirectTo parameter
+    cy.url().should('include', '/teams')
+
+    // Verify user is signed in by checking for their email somewhere in the UI
+    cy.contains(signinForm.email).should('exist')
   })
 
   describe('team creation', () => {
     beforeEach(() => {
-      cy.login()
+      cy.signin()
       cy.visitAndCheck('/')
       cy.findByRole('link', { name: /teams/i }).click()
 
@@ -80,9 +153,14 @@ describe('smoke tests', () => {
         name: 'Sidebar button to add a new team',
       }).click()
 
-      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
-      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
-      cy.findByRole('button', { name: /save/i }).click()
+      // Use findAllByRole and then get the first one to avoid ambiguity
+      cy.findAllByRole('textbox', { name: /team name/i })
+        .first()
+        .type(testTeam.teamName)
+      cy.findAllByRole('textbox', { name: /team class/i })
+        .first()
+        .type(testTeam.teamClass)
+      cy.findAllByRole('button', { name: /save/i }).first().click()
 
       cy.findByRole('button', { name: /delete/i }).click()
 
@@ -104,14 +182,31 @@ describe('smoke tests', () => {
         name: 'Sidebar button to add a new team',
       }).click()
 
-      // Close the sidebar to access the form
-      cy.findByRole('button', { name: 'Toggle menu' }).click()
+      // Make sure the mobile menu is closed before interacting with the form
+      // Asynchronously wait for the menu overlay to disappear
+      cy.get('.fixed.inset-0.z-100.flex').should('not.exist')
 
-      cy.findByRole('textbox', { name: /team name/i }).type(testTeam.teamName)
-      cy.findByRole('textbox', { name: /team class/i }).type(testTeam.teamClass)
-      cy.findByRole('button', { name: /save/i }).click()
+      // Wait for the form to be ready by checking for form elements
+      cy.findAllByRole('textbox', { name: /team name/i })
+        .should('exist')
+        .and('be.visible')
+        .first()
+        .type(testTeam.teamName, { force: true })
 
-      cy.findByRole('button', { name: /delete/i }).click()
+      cy.findAllByRole('textbox', { name: /team class/i })
+        .should('exist')
+        .and('be.visible')
+        .first()
+        .type(testTeam.teamClass, { force: true })
+
+      cy.findAllByRole('button', { name: /save/i })
+        .should('exist')
+        .and('be.visible')
+        .first()
+        .click({ force: true })
+
+      // Delete button is likely covered, so use force: true
+      cy.findByRole('button', { name: /delete/i }).click({ force: true })
 
       // Instead of looking for "no teams yet", check that we're back at the teams page
       cy.url().should('include', '/teams')

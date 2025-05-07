@@ -8,7 +8,7 @@ const DEFAULT_REDIRECT = '/'
 
 /**
  * This should be used any time the redirect path is user-provided
- * (Like the query string on our login/signup pages). This avoids
+ * (Like the query string on our signin/signup pages). This avoids
  * open-redirect vulnerabilities.
  * @param {string} to The redirect destination
  * @param {string} defaultRedirect The redirect to use if the to is unsafe.
@@ -69,3 +69,10 @@ export function useUser(): User {
 
 export const validateEmail = (email: unknown): email is string =>
   typeof email === 'string' && email.length > 3 && email.includes('@')
+
+export const capitalize = <T extends string>(str: T): Capitalize<Lowercase<T>> => {
+  if (!str) return '' as Capitalize<Lowercase<T>>
+  return (str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()) as Capitalize<
+    Lowercase<T>
+  >
+}

@@ -6,37 +6,65 @@
     "emailAddress": "E-mailadres",
     "errors": {
       "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
-      "emailInvalid": "E-mail is ongeldig",
+      "emailInvalid": "E-mailadres is ongeldig",
       "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
       "passwordRequired": "Wachtwoord is verplicht",
       "passwordTooShort": "Wachtwoord is te kort"
     },
-    "login": "Inloggen",
-    "logout": "Uitloggen",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "notSignedIn": "Niet ingelogd",
     "password": "Wachtwoord",
     "rememberMe": "Onthoud mij",
+    "signin": "Inloggen",
+    "signout": "Uitloggen",
     "signup": "Registreren",
-    "viewTeamsFor": "Bekijk teams voor"
+    "viewTeams": "Teams bekijken",
+    "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
-    "appName": "Tournado"
+    "appName": "Tournado",
+    "language": "Taal",
+    "signedInAs": "Ingelogd als",
+    "welcome": "Welkom",
+    "titles": {
+      "welcome": "Welkom",
+      "teams": "Teams",
+      "newTeam": "Nieuw team",
+      "profile": "Profiel",
+      "settings": "Instellingen",
+      "signIn": "Inloggen",
+      "signUp": "Registreren"
+    }
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado biedt alle tools die je nodig hebt om je sporttoernooien efficiënt te beheren. Van teamregistratie tot wedstrijdplanning, we hebben alles voor je.",
+      "subtitle": "Alles wat je nodig hebt om je toernooien te beheren",
+      "title": "Toernooibeheer wordt eenvoudig"
+    },
+    "hero": {
+      "description": "Beheer je sporttoernooien eenvoudig. Maak, organiseer en volg je teams en wedstrijden op één plek.",
+      "signup": "Gratis registreren",
+      "viewTeams": "Teams bekijken"
+    }
   },
   "pwa": {
     "install": {
       "android": {
         "chrome": "Tik op het menu (⋮) en selecteer \"App installeren\"",
         "firefox": "Tik op het menu (⋮) en selecteer \"Installeren\"",
-        "samsung": "Tik op het menu (⋮) en selecteer \"Pagina toevoegen aan\" en dan \"Beginscherm\"",
+        "samsung": "Tik op het menu (⋮) en selecteer \"Pagina toevoegen aan\" en dan \"Startscherm\"",
         "title": "Installeer deze app op je apparaat"
       },
       "ios": {
-        "chrome": "Tik op de deel-knop en dan op \"Zet in beginscherm\"",
-        "firefox": "Tik op het hamburger-menu en dan op \"Delen\" en \"Zet in beginscherm\"",
-        "safari": "Tik op de deel-knop en dan op \"Zet in beginscherm\"",
+        "chrome": "Tik op de deelknop en dan op \"Zet in beginscherm\"",
+        "firefox": "Tik op het hamburger-menu, dan op \"Delen\" en \"Zet in beginscherm\"",
+        "safari": "Tik op de deelknop en dan op \"Zet in beginscherm\"",
         "title": "Installeer deze app op je iPhone"
       },
       "other": {
-        "instruction": "Open het browsermenu en selecteer \"Toevoegen aan beginscherm\"",
+        "instruction": "Open het browsermenu en selecteer \"Zet in beginscherm\"",
         "title": "Installeer deze app op je apparaat"
       }
     },
@@ -55,12 +83,12 @@
       "unknownError": "Onbekende fout"
     },
     "form": {
-      "teamClass": "Team Klasse:",
+      "teamClass": "Teamklasse:",
       "teamClassRequired": "Team klasse is verplicht",
-      "teamName": "Team Naam:",
+      "teamName": "Teamnaam:",
       "teamNameRequired": "Team naam is verplicht"
     },
-    "newTeam": "+ Nieuw Team",
+    "newTeam": "+ Nieuw team",
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Nog geen teams",
     "save": "Opslaan",

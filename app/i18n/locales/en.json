@@ -11,15 +11,46 @@
       "passwordRequired": "Password is required",
       "passwordTooShort": "Password is too short"
     },
-    "login": "Log in",
-    "logout": "Logout",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "notSignedIn": "Not signed in",
     "password": "Password",
+    "pleaseSignIn": "Please sign in with your new account",
+    "registrationSuccess": "Account created successfully",
     "rememberMe": "Remember me",
+    "signInRequiredToCreateTeam": "You need to sign in to create a team.",
+    "signin": "Sign in",
+    "signout": "Sign out",
     "signup": "Sign up",
+    "viewTeams": "View Teams",
     "viewTeamsFor": "View teams for"
   },
   "common": {
-    "appName": "Tournado"
+    "appName": "Tournado",
+    "language": "Language",
+    "signedInAs": "Signed in as",
+    "welcome": "Welcome",
+    "titles": {
+      "welcome": "Welcome",
+      "teams": "Teams",
+      "newTeam": "New Team",
+      "profile": "Profile",
+      "settings": "Settings",
+      "signIn": "Sign In",
+      "signUp": "Sign Up"
+    }
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado provides all the tools you need to manage your sports tournaments efficiently. From team registration to match scheduling, we've got you covered.",
+      "subtitle": "Everything you need to manage your tournaments",
+      "title": "Tournament Management Made Easy"
+    },
+    "hero": {
+      "description": "Manage your sports tournaments with ease. Create, organize, and track your teams and matches in one place.",
+      "signup": "Sign up for free",
+      "viewTeams": "View Teams"
+    }
   },
   "pwa": {
     "install": {

@@ -11,15 +11,32 @@
       "passwordRequired": "password required",
       "passwordTooShort": "password too short"
     },
-    "login": "log in",
-    "logout": "logout",
+    "firstName": "first name",
+    "lastName": "last name",
+    "notSignedIn": "not signed in",
     "password": "password",
+    "pleaseSignIn": "please sign in with your new account",
+    "registrationSuccess": "account created successfully",
     "rememberMe": "remember me",
+    "signin": "sign in",
+    "signout": "signout",
     "signup": "sign up",
     "viewTeamsFor": "view teams for"
   },
   "common": {
-    "appName": "Tournado"
+    "appName": "Tournado",
+    "language": "Language",
+    "signedInAs": "Signed in as",
+    "welcome": "Welcome",
+    "titles": {
+      "welcome": "welcome",
+      "teams": "teams",
+      "newTeam": "new team",
+      "profile": "profile",
+      "settings": "settings",
+      "signIn": "sign in",
+      "signUp": "sign up"
+    }
   },
   "pwa": {
     "install": {
@@ -47,16 +64,16 @@
     }
   },
   "teams": {
-    "title": "teams",
+    "delete": "delete",
+    "form": {
+      "teamClass": "team class",
+      "teamClassRequired": "team class is required",
+      "teamName": "team name",
+      "teamNameRequired": "team name is required"
+    },
     "newTeam": "new team",
     "noTeams": "no teams yet",
-    "form": {
-      "teamName": "team name",
-      "teamNameRequired": "team name is required",
-      "teamClass": "team class",
-      "teamClassRequired": "team class is required"
-    },
     "save": "save",
-    "delete": "delete"
+    "title": "teams"
   }
 }

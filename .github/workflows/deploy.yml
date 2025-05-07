@@ -8,12 +8,6 @@ on:
     branches:
       - main
       - dev
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
-      - dev
 
 # Ensure only one deployment workflow runs at a time per branch
 concurrency:
@@ -21,18 +15,14 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  actions: write
   contents: read
   deployments: write
   id-token: write
 
 jobs:
   deploy:
-    name: 🚀 Deploy
     # Only run if the CI workflow was successful
-    if: |
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || 
-      (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
@@ -46,8 +36,7 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.event.pull_request.base.ref }}
-
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: 👀 Read app name
         uses: SebRollen/toml-action@v1.2.0
         id: app_name
@@ -61,7 +50,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: 🚀 Deploy Staging
-        if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev') || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'dev') }}
+        if: github.event.workflow_run.head_branch == 'dev'
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates
@@ -75,7 +64,7 @@ jobs:
             --yes
 
       - name: 🚀 Deploy Production
-        if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main') || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') }}
+        if: github.event.workflow_run.head_branch == 'main'
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy using Fly.io's standard deployment process with rolling updates

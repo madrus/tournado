@@ -1,10 +1,16 @@
-name: Deploy_Production
+name: Deploy main
 
 on:
   workflow_run:
     workflows: ["CI"]
     types:
       - completed
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 # Ensure only one deployment workflow runs at a time per branch
 concurrency:
@@ -66,7 +72,7 @@ jobs:
           # Deploy using Fly.io's standard deployment process with rolling updates
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
-            --app ${{ steps.app_name.outputs.value }}
+            --app ${{ steps.app_name.outputs.value }} \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
             --max-unavailable 0.33 \

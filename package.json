@@ -103,6 +103,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "pretty-quick": "^4.1.1",
     "prisma": "^6.7.0",
+    "react-router-devtools": "^5.0.5",
     "standard-version": "^9.5.0",
     "start-server-and-test": "^2.0.11",
     "tailwindcss": "^4.1.5",

@@ -5,7 +5,9 @@ import type { MetaFunction } from 'react-router'
 import { User } from '@prisma/client'
 
 import type { RouteMetadata } from '~/utils/route-types'
-import { getUser } from '~/utils/session.server'
+import { requireUser } from '~/utils/session.server'
+
+// Route metadata - this is a protected route
 
 type LoaderData = {
   user: User
@@ -27,10 +29,7 @@ export const handle: RouteMetadata = {
 }
 
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
-  const user = await getUser(request)
-  if (!user) {
-    throw new Response('Unauthorized', { status: 401 })
-  }
+  const user = await requireUser(request)
   return { user }
 }
 

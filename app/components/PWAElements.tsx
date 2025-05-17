@@ -1,4 +1,3 @@
-// @remix-run/client
 import { useEffect, useState } from 'react'
 
 import { registerServiceWorker } from '~/utils/serviceWorkerRegistration'

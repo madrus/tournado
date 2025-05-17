@@ -1,70 +1,59 @@
 import os from 'node:os'
 
-import { cssBundleHref } from '@remix-run/css-bundle'
-import type { LinksFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import React, { JSX } from 'react'
+import { I18nextProvider } from 'react-i18next'
 import {
   Link,
   Links,
-  LiveReload,
+  LinksFunction,
   Meta,
   type MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
-} from '@remix-run/react'
-
-import { I18nextProvider } from 'react-i18next'
+} from 'react-router'
 
 import { AppBar } from '~/components/AppBar'
 
+import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
-import layoutStylesheetUrl from './styles/layout.css'
-import safeAreasStylesheetUrl from './styles/safe-areas.css'
-import tailwindStylesheetUrl from './styles/tailwind.css'
 import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
 import { capitalize } from './utils/utils'
+
+// In Vite, ?url imports return a string URL
+const layoutStylesheetUrl = new URL('./styles/layout.css', import.meta.url).href
+const safeAreasStylesheetUrl = new URL('./styles/safe-areas.css', import.meta.url).href
+const tailwindStylesheetUrl = new URL('./styles/tailwind.css', import.meta.url).href
 
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
   { name: 'description', content: `Tournament management for everyone` },
 ]
 
-export const links: LinksFunction = (): { rel: string; href: string }[] =>
-  [
-    { rel: 'stylesheet', href: tailwindStylesheetUrl },
-    { rel: 'stylesheet', href: layoutStylesheetUrl },
-    { rel: 'stylesheet', href: safeAreasStylesheetUrl },
-    cssBundleHref ? { rel: 'stylesheet', href: cssBundleHref } : null,
-  ].filter(Boolean) as { rel: string; href: string }[]
+export const links: LinksFunction = (): { rel: string; href: string }[] => [
+  { rel: 'stylesheet', href: tailwindStylesheetUrl },
+  { rel: 'stylesheet', href: layoutStylesheetUrl },
+  { rel: 'stylesheet', href: safeAreasStylesheetUrl },
+]
 
-export const loader = async ({
-  request,
-}: LoaderFunctionArgs): Promise<
-  TypedResponse<{
-    authenticated: boolean
-    ENV: Record<string, string>
-    username: string
-  }>
-> => {
+interface LoaderData {
+  authenticated: boolean
+  ENV: Record<string, string>
+  username: string
+}
+
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
   const prettyUsername = capitalize(os.userInfo().username)
-  return json(
-    {
-      authenticated: !!user,
-      username: user?.email ?? prettyUsername,
-      ENV: getEnv(),
-    },
-    {
-      headers: {
-        'Cache-Control': 'no-store, max-age=0',
-      },
-    }
-  )
+
+  return {
+    authenticated: !!user,
+    username: user?.email ?? prettyUsername,
+    ENV: getEnv(),
+  }
 }
 
 const Document = ({ children }: { children: React.ReactNode }) => (
@@ -86,18 +75,17 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       </I18nextProvider>
       <ScrollRestoration />
       <Scripts />
-      <LiveReload />
     </body>
   </html>
 )
 
-export default function App(): JSX.Element {
-  const appData = useLoaderData<typeof loader>()
+export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
+  const { authenticated, username, ENV } = loaderData
 
   return (
     <Document>
       <div className='relative' style={{ zIndex: 50 }}>
-        <AppBar authenticated={appData.authenticated} username={appData.username} />
+        <AppBar authenticated={authenticated} username={username} />
       </div>
       <div className='flex-1' style={{ position: 'relative', zIndex: 1 }}>
         <Outlet />
@@ -111,7 +99,7 @@ export default function App(): JSX.Element {
       <div className='h-5' />
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.ENV = ${JSON.stringify(appData.ENV)}`,
+          __html: `window.ENV = ${JSON.stringify(ENV)}`,
         }}
       />
     </Document>

@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect, type Session } from '@remix-run/node'
+import { createCookieSessionStorage, redirect, type Session } from 'react-router'
 
 import invariant from 'tiny-invariant'
 

@@ -1,7 +1,6 @@
-import { Link, useFetcher, useLocation } from '@remix-run/react'
-
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useFetcher, useLocation } from 'react-router'
 
 import logo from '~/assets/logo-192x192.png'
 import { usePageTitle } from '~/utils/route-utils'

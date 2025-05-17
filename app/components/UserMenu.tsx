@@ -1,7 +1,6 @@
-import { Link } from '@remix-run/react'
-
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 

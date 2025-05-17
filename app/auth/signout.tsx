@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
-import type { ActionFunctionArgs } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { type ActionFunctionArgs, redirect } from 'react-router'
 
 import { signout } from '~/utils/session.server'
 
@@ -9,7 +8,10 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     // Ensure this is a POST request
     if (request.method.toLowerCase() !== 'post') {
       console.error('Received non-POST request to /signout')
-      return json({ success: false, error: 'Method not allowed' }, { status: 405 })
+      return Response.json(
+        { success: false, error: 'Method not allowed' },
+        { status: 405 }
+      )
     }
 
     // Get the referrer URL if available
@@ -22,7 +24,10 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     return response
   } catch (error) {
     console.error('Error in signout action:', error)
-    return json({ success: false, error: 'Internal server error' }, { status: 500 })
+    return Response.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }
 

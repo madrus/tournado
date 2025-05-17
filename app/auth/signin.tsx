@@ -1,13 +1,15 @@
-import type {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
-
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  type ActionFunctionArgs,
+  Form,
+  Link,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  redirect,
+  useActionData,
+  useSearchParams,
+} from 'react-router'
 
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
@@ -29,7 +31,7 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response>
     // Redirect to the intended destination or root page
     return redirect(redirectTo || '/')
   }
-  return json({})
+  return Response.json({})
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
@@ -40,18 +42,21 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {
-    return json({ errors: { email: 'emailInvalid', password: null } }, { status: 400 })
+    return Response.json(
+      { errors: { email: 'emailInvalid', password: null } },
+      { status: 400 }
+    )
   }
 
   if (typeof password !== 'string' || password.length === 0) {
-    return json(
+    return Response.json(
       { errors: { email: null, password: 'passwordRequired' } },
       { status: 400 }
     )
   }
 
   if (password.length < 8) {
-    return json(
+    return Response.json(
       { errors: { email: null, password: 'passwordTooShort' } },
       { status: 400 }
     )
@@ -60,7 +65,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const user = await verifySignin(email, password)
 
   if (!user) {
-    return json(
+    return Response.json(
       { errors: { email: 'invalidCredentials', password: null } },
       { status: 400 }
     )

@@ -7,3 +7,4 @@
 /prisma/data.db-journal
 /public/build
 node_modules
+.react-router

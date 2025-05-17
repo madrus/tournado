@@ -1,14 +1,20 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { Link, NavLink, useLoaderData, useOutletContext } from '@remix-run/react'
-
+import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, NavLink, useOutletContext } from 'react-router'
 
 import type { Team } from '@prisma/client'
 
 import { getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
 import type { RouteMetadata } from '~/utils/route-types'
+
+// import { Route } from './+types'
+
+interface LoaderArgs {
+  request: Request
+  params: Record<string, string | undefined>
+  context?: unknown
+}
 
 // Route metadata - this will inherit from the parent route
 export const handle: RouteMetadata = {
@@ -19,9 +25,13 @@ type ContextType = {
   type: 'sidebar' | 'main'
 }
 
+type LoaderData = {
+  teamListItems: TeamListItem[]
+}
+
 type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
-export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> => {
+export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
   const teamLeader = await getDefaultTeamLeader()
 
   if (!teamLeader) {
@@ -30,11 +40,10 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Respon
 
   const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
 
-  return json({ teamListItems })
+  return { teamListItems }
 }
 
-export default function TeamsIndexPage(): JSX.Element {
-  const { teamListItems } = useLoaderData<typeof loader>()
+export default function TeamsIndexPage({ teamListItems }: LoaderData): JSX.Element {
   const { t } = useTranslation()
   const context = useOutletContext<ContextType>()
 

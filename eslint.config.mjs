@@ -26,6 +26,7 @@ export default [
     ignores: [
       '.github/**',
       '.prisma/**',
+      '.react-router/**',
       '**/*.config.*',
       'build/**',
       'cypress/**',

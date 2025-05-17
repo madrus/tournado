@@ -1,20 +1,27 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Form,
   isRouteErrorResponse,
   NavLink,
-  useLoaderData,
+  redirect,
   useOutletContext,
   useRouteError,
-} from '@remix-run/react'
-
-import { useTranslation } from 'react-i18next'
+} from 'react-router'
 
 import invariant from 'tiny-invariant'
 
-import { deleteTeam, getTeam, getTeamListItems } from '~/models/team.server'
+import {
+  deleteTeam,
+  getTeam,
+  getTeamListItems,
+  type TeamWithLeader,
+} from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+
+// Temporary types until auto-generation is complete
+// These will let the app compile so React Router can generate the proper types
+import type { Route } from './+types/team'
 
 type ContextType = {
   type: 'sidebar' | 'main'
@@ -25,10 +32,23 @@ type TeamListItem = {
   teamName: string
 }
 
-export const loader = async ({
-  params,
-  request: _,
-}: LoaderFunctionArgs): Promise<Response> => {
+type LoaderData = {
+  team: Pick<TeamWithLeader, 'id' | 'teamName' | 'teamClass'>
+  teamListItems: Pick<
+    {
+      id: string
+      teamLeaderId: string
+      createdAt: Date
+      updatedAt: Date
+      teamName: string
+      teamClass: string
+      tournamentId: string
+    },
+    'id' | 'teamName'
+  >[]
+}
+
+export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> {
   invariant(params.teamId, 'teamId not found')
 
   // Get the default TeamLeader
@@ -45,13 +65,10 @@ export const loader = async ({
   if (!team) {
     throw new Response('Not Found', { status: 404 })
   }
-  return json({ team, teamListItems })
+  return { team, teamListItems }
 }
 
-export const action = async ({
-  params,
-  request: _,
-}: ActionFunctionArgs): Promise<Response> => {
+export async function action({ params }: Route.ActionArgs): Promise<Response> {
   // No longer requiring authentication for team actions
   invariant(params.teamId, 'teamId not found')
 
@@ -66,9 +83,13 @@ export const action = async ({
   return redirect('/teams')
 }
 
-export default function TeamDetailsPage(): JSX.Element {
+export default function TeamDetailsPage({
+  loaderData,
+}: {
+  loaderData: LoaderData
+}): JSX.Element {
   const { t } = useTranslation()
-  const { team, teamListItems } = useLoaderData<typeof loader>()
+  const { team, teamListItems } = loaderData
   const context = useOutletContext<ContextType>()
 
   // Render team list in sidebar

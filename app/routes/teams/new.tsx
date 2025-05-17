@@ -1,15 +1,15 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
+  type ActionFunctionArgs,
   Form,
+  type LoaderFunctionArgs,
   NavLink,
+  redirect,
   useActionData,
   useLoaderData,
   useOutletContext,
-} from '@remix-run/react'
-
-import { useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+} from 'react-router'
 
 import { prisma } from '~/db.server'
 import { createTeam, getTeamListItems } from '~/models/team.server'
@@ -40,7 +40,7 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Respon
 
   const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
 
-  return json({ teamListItems })
+  return Response.json({ teamListItems })
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
@@ -50,15 +50,12 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const teamClass = formData.get('teamClass')
 
   if (typeof teamName !== 'string' || teamName.length === 0) {
-    return json(
-      { errors: { teamName: 'Team name is required', teamClass: null } },
-      { status: 400 }
-    )
+    return Response.json({ errors: { teamName: 'teamNameRequired' } }, { status: 400 })
   }
 
   if (typeof teamClass !== 'string' || teamClass.length === 0) {
-    return json(
-      { errors: { teamClass: 'Team class is required', teamName: null } },
+    return Response.json(
+      { errors: { teamClass: 'teamClassRequired' } },
       { status: 400 }
     )
   }
@@ -66,10 +63,8 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   // Get the default TeamLeader
   const teamLeader = await getDefaultTeamLeader()
   if (!teamLeader) {
-    return json(
-      {
-        errors: { teamLeader: 'No team leader found', teamName: null, teamClass: null },
-      },
+    return Response.json(
+      { errors: { teamLeader: 'teamLeaderRequired' } },
       { status: 404 }
     )
   }
@@ -79,17 +74,15 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     orderBy: { createdAt: 'asc' },
   })
   if (!tournament) {
-    return json(
-      {
-        errors: { tournament: 'No tournament found', teamName: null, teamClass: null },
-      },
+    return Response.json(
+      { errors: { tournament: 'No tournament found' } },
       { status: 404 }
     )
   }
 
   const team = await createTeam({
-    teamName,
-    teamClass,
+    name: teamName,
+    class: teamClass,
     teamLeaderId: teamLeader.id,
     tournamentId: tournament.id,
   })

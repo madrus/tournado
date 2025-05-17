@@ -1,11 +1,12 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
-
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
+import { Link, Outlet, useLocation, useRouteError } from 'react-router'
 
 import type { RouteMetadata } from '~/utils/route-types'
+import { getUser } from '~/utils/session.server'
+
+export const meta: MetaFunction = () => [{ title: 'Teams' }]
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -13,8 +14,10 @@ export const handle: RouteMetadata = {
   title: 'common.titles.teams',
 }
 
-export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> =>
-  json({})
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+  const user = await getUser(request)
+  return Response.json({ user })
+}
 
 export default function TeamsLayout(): JSX.Element {
   const { t } = useTranslation()

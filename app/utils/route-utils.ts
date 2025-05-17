@@ -1,7 +1,6 @@
-import { useMatches } from '@remix-run/react'
-
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMatches } from 'react-router'
 
 import type { RouteMetadata } from './route-types'
 

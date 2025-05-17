@@ -1,5 +1,7 @@
 import { vitePlugin as remix } from '@remix-run/dev'
 
+import { reactRouterDevTools } from 'react-router-devtools'
+
 import path from 'path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -10,6 +12,7 @@ export default defineConfig({
   },
   plugins: [
     remix(),
+    reactRouterDevTools(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],

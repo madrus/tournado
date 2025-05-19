@@ -6,10 +6,10 @@
 export async function isPublicRoute(pathname: string): Promise<boolean> {
   // Always make these routes public regardless of metadata
   const alwaysPublicRoutes = [
-    '/signin',
-    '/signup',
-    '/forgot-password',
-    '/reset-password',
+    '/auth/signin',
+    '/auth/signup',
+    '/auth/forgot-password',
+    '/auth/reset-password',
   ]
 
   // Check if it's in our always-public list
@@ -22,7 +22,7 @@ export async function isPublicRoute(pathname: string): Promise<boolean> {
   }
 
   // Additional known public routes (based on existing route metadata)
-  const knownPublicRoutes = ['/', '/teams']
+  const knownPublicRoutes = ['/', '/teams', '/about']
 
   // Check known public routes
   if (

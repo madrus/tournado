@@ -24,11 +24,18 @@ export const getTeam = ({
 }: {
   id: string
   teamLeaderId: string
-}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> =>
-  prisma.team.findFirst({
-    select: { id: true, teamClass: true, teamName: true },
-    where: { id, teamLeaderId },
-  }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
+}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> => {
+  console.log('Looking up team with:', { id, teamLeaderId })
+  return prisma.team
+    .findFirst({
+      select: { id: true, teamClass: true, teamName: true },
+      where: { id, teamLeaderId },
+    })
+    .then(team => {
+      console.log('Found team:', team)
+      return team
+    }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
+}
 
 export const getTeamListItems = async ({
   teamLeaderId,

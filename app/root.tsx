@@ -23,11 +23,9 @@ import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
 import { capitalize } from './utils/utils'
 
-// In Vite, ?url imports return a string URL
-const layoutStylesheetUrl = new URL('./styles/layout.css', import.meta.url).href
-const safeAreasStylesheetUrl = new URL('./styles/safe-areas.css', import.meta.url).href
-const tailwindStylesheetUrl = new URL('./styles/tailwind.css', import.meta.url).href
-
+const layoutStylesheetUrl = '/app/styles/layout.css'
+const safeAreasStylesheetUrl = '/app/styles/safe-areas.css'
+const tailwindStylesheetUrl = '/app/styles/tailwind.css'
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
   { name: 'description', content: `Tournament management for everyone` },

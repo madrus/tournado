@@ -1,20 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { type JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  type ActionFunctionArgs,
-  Form,
-  Link,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-  redirect,
-  useActionData,
-  useSearchParams,
-} from 'react-router'
+import { Form, Link, type MetaFunction, redirect, useSearchParams } from 'react-router'
 
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
+
+interface LoaderArgs {
+  request: Request
+}
+
+interface ActionArgs {
+  request: Request
+}
+
+type ActionData = {
+  errors?: {
+    email: string | null
+    password: string | null
+  }
+}
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -22,7 +28,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.signIn',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+export const loader = async ({ request }: LoaderArgs): Promise<object> => {
   const userId = await getUserId(request)
   if (userId) {
     // Get the redirectTo parameter from the URL if present
@@ -31,10 +37,10 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response>
     // Redirect to the intended destination or root page
     return redirect(redirectTo || '/')
   }
-  return Response.json({})
+  return {}
 }
 
-export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
+export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
@@ -81,23 +87,22 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
 export const meta: MetaFunction = () => [{ title: 'Sign in' }]
 
-export default function SigninPage(): JSX.Element {
+export default function SigninPage({ errors }: ActionData): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/'
   const registered = searchParams.get('registered') === 'true'
   const emailFromRegistration = searchParams.get('email')
-  const actionData = useActionData<typeof action>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (actionData?.errors?.email) {
+    if (errors?.email) {
       emailRef.current?.focus()
-    } else if (actionData?.errors?.password) {
+    } else if (errors?.password) {
       passwordRef.current?.focus()
     }
-  }, [actionData])
+  }, [errors])
 
   useEffect(() => {
     // Pre-fill email if provided from registration
@@ -148,13 +153,13 @@ export default function SigninPage(): JSX.Element {
                   name='email'
                   type='email'
                   autoComplete='email'
-                  aria-invalid={actionData?.errors?.email ? true : undefined}
+                  aria-invalid={errors?.email ? true : undefined}
                   aria-describedby='email-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
-                {actionData?.errors?.email ? (
+                {errors?.email ? (
                   <div className='pt-1 text-red-700' id='email-error'>
-                    {t(`auth.errors.${actionData.errors.email}`)}
+                    {t(`auth.errors.${errors.email}`)}
                   </div>
                 ) : null}
               </div>
@@ -174,13 +179,13 @@ export default function SigninPage(): JSX.Element {
                   name='password'
                   type='password'
                   autoComplete='current-password'
-                  aria-invalid={actionData?.errors?.password ? true : undefined}
+                  aria-invalid={errors?.password ? true : undefined}
                   aria-describedby='password-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
-                {actionData?.errors?.password ? (
+                {errors?.password ? (
                   <div className='pt-1 text-red-700' id='password-error'>
-                    {t(`auth.errors.${actionData.errors.password}`)}
+                    {t(`auth.errors.${errors.password}`)}
                   </div>
                 ) : null}
               </div>

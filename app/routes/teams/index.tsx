@@ -1,6 +1,6 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, useOutletContext } from 'react-router'
+import { Link, NavLink, useLoaderData, useOutletContext } from 'react-router'
 
 import type { Team } from '@prisma/client'
 
@@ -32,6 +32,7 @@ type LoaderData = {
 type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
 export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
+  console.log('Index route loader called - should match /teams')
   const teamLeader = await getDefaultTeamLeader()
 
   if (!teamLeader) {
@@ -39,12 +40,14 @@ export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
   }
 
   const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+  console.log('Index route loader returning:', teamListItems)
 
   return { teamListItems }
 }
 
-export default function TeamsIndexPage({ teamListItems }: LoaderData): JSX.Element {
+export default function TeamsIndexPage(): JSX.Element {
   const { t } = useTranslation()
+  const { teamListItems } = useLoaderData<LoaderData>()
   const context = useOutletContext<ContextType>()
 
   // Render in sidebar
@@ -62,7 +65,7 @@ export default function TeamsIndexPage({ teamListItems }: LoaderData): JSX.Eleme
         {teamListItems.map((team: TeamListItem) => (
           <NavLink
             key={team.id}
-            to={team.id}
+            to={`/teams/${team.id}`}
             className={({ isActive }) =>
               `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
                 isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'

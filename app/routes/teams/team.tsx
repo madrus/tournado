@@ -5,6 +5,7 @@ import {
   isRouteErrorResponse,
   NavLink,
   redirect,
+  useLoaderData,
   useOutletContext,
   useRouteError,
 } from 'react-router'
@@ -21,7 +22,14 @@ import { getDefaultTeamLeader } from '~/models/teamLeader.server'
 
 // Temporary types until auto-generation is complete
 // These will let the app compile so React Router can generate the proper types
-import type { Route } from './+types/team'
+export type LoaderArgs = {
+  params: Record<string, string | undefined>
+  request: Request
+}
+export type ActionArgs = {
+  params: Record<string, string | undefined>
+  request: Request
+}
 
 type ContextType = {
   type: 'sidebar' | 'main'
@@ -48,11 +56,13 @@ type LoaderData = {
   >[]
 }
 
-export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
+  console.log('Team route loader called - should only match /teams/:teamId')
   invariant(params.teamId, 'teamId not found')
 
   // Get the default TeamLeader
   const teamLeader = await getDefaultTeamLeader()
+  console.log('Team leader:', teamLeader)
   if (!teamLeader) {
     throw new Response('No TeamLeader found', { status: 404 })
   }
@@ -68,7 +78,7 @@ export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> 
   return { team, teamListItems }
 }
 
-export async function action({ params }: Route.ActionArgs): Promise<Response> {
+export async function action({ params }: ActionArgs): Promise<Response> {
   // No longer requiring authentication for team actions
   invariant(params.teamId, 'teamId not found')
 
@@ -83,13 +93,9 @@ export async function action({ params }: Route.ActionArgs): Promise<Response> {
   return redirect('/teams')
 }
 
-export default function TeamDetailsPage({
-  loaderData,
-}: {
-  loaderData: LoaderData
-}): JSX.Element {
+export default function TeamDetailsPage(): JSX.Element {
   const { t } = useTranslation()
-  const { team, teamListItems } = loaderData
+  const { team, teamListItems } = useLoaderData<LoaderData>()
   const context = useOutletContext<ContextType>()
 
   // Render team list in sidebar
@@ -108,7 +114,7 @@ export default function TeamDetailsPage({
           <NavLink
             key={teamItem.id}
             to={`/teams/${teamItem.id}`}
-            className={({ isActive }: { isActive: boolean }) =>
+            className={({ isActive }) =>
               `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
                 isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
               }`

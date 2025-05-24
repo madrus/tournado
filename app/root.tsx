@@ -19,13 +19,13 @@ import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
+import layoutStylesheetUrl from './styles/layout.css?url'
+import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
+import tailwindStylesheetUrl from './styles/tailwind.css?url'
 import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
 import { capitalize } from './utils/utils'
 
-const layoutStylesheetUrl = '/app/styles/layout.css'
-const safeAreasStylesheetUrl = '/app/styles/safe-areas.css'
-const tailwindStylesheetUrl = '/app/styles/tailwind.css'
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
   { name: 'description', content: `Tournament management for everyone` },
@@ -61,8 +61,13 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width,initial-scale=1' />
       <link
+        rel='preload'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+        as='style'
+      />
+      <link
         rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
       />
       <Links />
     </head>

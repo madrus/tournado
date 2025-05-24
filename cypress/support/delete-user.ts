@@ -1,14 +1,13 @@
-// Use this to delete a user by their email
+// Use this to delete a user by their username
 // Simply call this with:
-// pnpm exec tsx ./cypress/support/delete-user.ts username@example.com,
-// and that user will get deleted
-import { installGlobals } from '@remix-run/node'
-
+// npx ts-node --require tsconfig-paths/register ./cypress/support/delete-user.ts username@example.com
+// import { installGlobals } from 'react-router'
+import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
-import { prisma } from '~/db.server'
+// installGlobals()
 
-installGlobals()
+const prisma = new PrismaClient()
 
 async function deleteUser(email: string) {
   console.log(`Starting to delete user: ${email}`)

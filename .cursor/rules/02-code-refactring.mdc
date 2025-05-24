@@ -1,0 +1,170 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Guidelines for code refactoring to maintain code history and documentation
+globs: ["**/*.{ts,tsx,js,jsx}"]
+alwaysApply: true
+---
+
+# Code Refactoring
+
+These rules ensure proper handling of code history and documentation during refactoring.
+
+## Core Principles
+
+1. Preserve code history
+2. Maintain documentation integrity
+3. Minimize unnecessary changes
+
+### 1. Code Preservation
+- Do not delete previously commented out code
+- Only delete code lines that are directly involved in the refactoring
+- Preserve code history for future reference
+
+### 2. Comment Management
+- Change comments to refactored code lines if applicable
+- Do not modify or delete comments unless they relate to:
+  - Code lines being changed
+  - Code lines being deleted
+- Maintain documentation context
+
+### 3. Change Scope
+- Limit changes to only the code being refactored
+- Avoid modifying unrelated code sections
+- Keep refactoring focused and intentional
+
+### 4. Mobile-First Layout Considerations
+- Always consider both mobile and desktop layouts when refactoring
+- Mobile layout should be the default/base implementation
+- Desktop layout should be added using the lg breakpoint
+- Breakpoints to use:
+  - Mobile: < 1024px (default)
+  - Desktop: > 1024px (lg)
+- Use Tailwind's responsive prefix:
+  - `lg:` for desktop (1024px+)
+- Test both layouts after refactoring
+
+## Final Verification Checklist
+
+Before completing any refactoring:
+
+- [ ] Verify no commented out code was deleted (Rule 1)
+- [ ] Verify no unrelated comments were modified (Rule 2)
+- [ ] Verify no unrelated code was deleted (Rule 3)
+- [ ] Restore any mistakenly deleted code if found
+
+#### Example of Mobile-First Approach
+```typescript
+// Good: Mobile-first approach
+<div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
+  <div className="w-full lg:w-1/2">Mobile full width, desktop half width</div>
+  <div className="w-full lg:w-1/2">Mobile full width, desktop half width</div>
+</div>
+
+// Bad: Desktop-first approach
+<div className="flex flex-row gap-4 flex-col">
+  <div className="w-1/2 w-full">Desktop half width, mobile full width</div>
+  <div className="w-1/2 w-full">Desktop half width, mobile full width</div>
+</div>
+```
+
+#### Layout Testing Checklist
+- [ ] Verify mobile layout (< 1024px)
+- [ ] Verify desktop layout (> 1024px)
+- [ ] Check for any layout breaking points
+- [ ] Ensure touch targets are appropriately sized for mobile
+- [ ] Verify navigation works on both layouts
+
+## Examples
+
+### Good Refactoring
+```typescript
+// Original implementation with comments preserved
+// function calculateTotal(items: Item[]) {
+//   let total = 0;
+//   for (const item of items) {
+//     total += item.price;
+//   }
+//   return total;
+// }
+
+// New implementation using reduce
+function calculateTotal(items: Item[]) {
+  return items.reduce((total, item) => total + item.price, 0);
+}
+```
+
+### Bad Refactoring
+```typescript
+// Original implementation - comments deleted (violates Rule 1)
+function calculateTotal(items: Item[]) {
+  return items.reduce((total, item) => total + item.price, 0);
+}
+
+// Unrelated comment deleted (violates Rule 2)
+// This function is used in the checkout process
+```
+
+### Good Refactoring with Comment Updates
+```typescript
+// Original implementation
+// function calculateTotal(items: Item[]) {
+//   let total = 0;
+//   for (const item of items) {
+//     total += item.price;
+//   }
+//   return total;
+// }
+
+// Updated to use reduce for better performance
+function calculateTotal(items: Item[]) {
+  return items.reduce((total, item) => total + item.price, 0);
+}
+```
+
+### Bad Refactoring with Unnecessary Changes
+```typescript
+// Original implementation
+// function calculateTotal(items: Item[]) {
+//   let total = 0;
+//   for (const item of items) {
+//     total += item.price;
+//   }
+//   return total;
+// }
+
+// New implementation
+function calculateTotal(items: Item[]) {
+  return items.reduce((total, item) => total + item.price, 0);
+}
+
+// Unrelated function modified (violates Rule 3)
+function formatPrice(price: number) {
+  return `$${price.toFixed(2)}`; // Changed from original implementation
+}
+```
+
+The key differences in these examples:
+
+1. **Good Refactoring**:
+   - Preserves original commented code
+   - Only changes the function being refactored
+   - Maintains relevant comments
+
+2. **Bad Refactoring**:
+   - Deletes original commented code
+   - Deletes unrelated comments
+   - Modifies unrelated functions
+
+3. **Good Refactoring with Comment Updates**:
+   - Preserves original code
+   - Updates comments to reflect the change
+   - Only modifies the target function
+
+4. **Bad Refactoring with Unnecessary Changes**:
+   - Modifies unrelated functions
+   - Changes code outside the refactoring scope
+   - Violates the principle of focused changes

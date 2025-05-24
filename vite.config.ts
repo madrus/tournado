@@ -1,15 +1,19 @@
-import { vitePlugin as remix } from '@remix-run/dev'
+import { reactRouter } from '@react-router/dev/vite'
+
+import { reactRouterDevTools } from 'react-router-devtools'
 
 import path from 'path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   css: {
-    transformer: 'lightningcss',
+    transformer: 'postcss',
   },
   plugins: [
-    remix(),
+    reactRouterDevTools(),
+    reactRouter(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],
@@ -79,7 +83,11 @@ export default defineConfig({
         navigateFallback: 'index.html',
       },
     }),
+    tsconfigPaths(),
   ],
+  server: {
+    hmr: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './app'),

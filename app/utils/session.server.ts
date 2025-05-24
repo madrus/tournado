@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect, type Session } from '@remix-run/node'
+import { createCookieSessionStorage, redirect, type Session } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
@@ -51,7 +51,7 @@ export async function requireUserId(
   const userId = await getUserId(request)
   if (!userId) {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]])
-    throw redirect(`/signin?${searchParams}`)
+    throw redirect(`/auth/signin?${searchParams}`)
   }
   return userId
 }

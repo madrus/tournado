@@ -1,12 +1,25 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
-
+import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { MetaFunction } from 'react-router'
+
+import type { User } from '@prisma/client'
 
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUser } from '~/utils/session.server'
 
 // Route metadata - this is a protected route
+
+type LoaderData = {
+  user: User
+}
+
+//! TODO: replace with generated type
+interface LoaderArgs {
+  request: Request
+}
+
+export const meta: MetaFunction = () => [{ title: 'Settings' }]
+
 export const handle: RouteMetadata = {
   isPublic: false,
   // When roles are implemented:
@@ -14,23 +27,23 @@ export const handle: RouteMetadata = {
   title: 'common.titles.profile',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
   // This ensures only authenticated users can access this route
   const user = await requireUser(request)
-  return json({ user })
+  return { user }
 }
 
-export default function ProfilePage(): JSX.Element {
+export default function SettingsPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div>
-      <h1>{t('common.titles.profile')}</h1>
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='mb-8 text-3xl font-bold'>{t('common.titles.profile')}</h1>
       <p>
         This is a protected route example that would redirect to login if not
         authenticated.
       </p>
-      <p>In the future, it could also check for specific roles.</p>
+      <p>User settings will be implemented here.</p>
     </div>
   )
 }

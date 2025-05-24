@@ -1,8 +1,14 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
+---
+description: Project overview rules
+globs:
+alwaysApply: true
+---
+
 # Project Overview
 
 This is a Remix.js application with TypeScript, Prisma for database management, and Vite for build tooling.
@@ -13,10 +19,15 @@ This is a Remix.js application with TypeScript, Prisma for database management, 
 - [app/entry.server.tsx](mdc:app/entry.server.tsx) - Server-side entry point
 
 ## Core Directories
-- `app/routes/` - Contains all route components
+- `app/assets/` - Static assets (images, icons) that are directly imported and used in the application code
 - `app/components/` - Reusable React components
+- `app/i18n` - Multi-language translation files
+- `app/lib` - Support constants and functions
 - `app/models/` - Data models and business logic
+- `app/routes/` - Contains all route components
+- `app/styles` - Shared CSS files
 - `app/utils/` - Utility functions and helpers
+- `cypress/` - Cypress tests
 - `prisma/` - Database schema and migrations
 
 ## Configuration Files

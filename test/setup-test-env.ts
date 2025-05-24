@@ -1,5 +1,4 @@
-import { installGlobals } from '@remix-run/node'
-
 import '@testing-library/jest-dom/vitest'
 
-installGlobals()
+// React Router 7 doesn't need installGlobals
+// The globals are automatically installed when using react-router

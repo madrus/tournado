@@ -43,7 +43,7 @@ describe('smoke tests', () => {
     cy.findByRole('button', { name: 'Toggle menu' }).click()
 
     // Wait for the mobile menu to be visible
-    cy.get('.fixed.inset-0.z-100.flex').should('exist')
+    cy.get('.fixed.inset-0.z-30.flex').should('exist')
 
     // Then find and click the sign in link within the mobile menu
     cy.findByRole('link', { name: /sign in/i })
@@ -93,41 +93,73 @@ describe('smoke tests', () => {
       .should('be.enabled')
       .click()
 
-    // We should be redirected to the signin page with a success message
-    cy.url().should('include', '/signin')
-    cy.url().should('include', 'registered=true')
-
-    // Wait for page to load completely
-    cy.wait(500)
-
-    // Check for success message
-    cy.contains(/account created successfully/i).should('be.visible')
-
-    // Email field should be pre-filled
-    cy.findByRole('textbox', { name: /email/i })
-      .should('exist')
-      .should('be.visible')
-      .should('have.value', signinForm.email)
-
-    // Enter password and submit
-    cy.findByLabelText(/password/i)
-      .should('exist')
-      .should('be.visible')
-      .as('signinPasswordField')
-
-    cy.get('@signinPasswordField').clear().type(signinForm.password, { delay: 10 })
-
-    cy.findByRole('button', { name: /sign in/i })
-      .should('exist')
-      .should('be.visible')
-      .should('be.enabled')
-      .click()
-
-    // After successful login, we should be redirected to teams page due to our redirectTo parameter
+    // After successful signup, we should be automatically signed in and redirected to teams
     cy.url().should('include', '/teams')
 
     // Verify user is signed in by checking for their email somewhere in the UI
     cy.contains(signinForm.email).should('exist')
+  })
+
+  it('should allow you to sign in with existing account', () => {
+    const signinForm = {
+      email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      password: faker.internet.password(),
+    }
+
+    cy.then(() => ({ email: signinForm.email })).as('user')
+
+    // First create a user account
+    cy.exec(
+      `pnpm exec tsx ./cypress/support/create-user.ts "${signinForm.email}"`
+    ).then(() => {
+      // Clear any existing session to test signin flow
+      cy.clearCookies()
+
+      cy.visitAndCheck('/teams')
+
+      // First click the toggle menu button
+      cy.findByRole('button', { name: 'Toggle menu' }).click()
+
+      // Wait for the mobile menu to be visible
+      cy.get('.fixed.inset-0.z-30.flex').should('exist')
+
+      // Then find and click the sign in link within the mobile menu
+      cy.findByRole('link', { name: /sign in/i })
+        .should('be.visible')
+        .click()
+
+      // Wait for navigation to signin page
+      cy.url().should('include', '/signin')
+
+      // Wait for page to settle before interacting with form
+      cy.wait(500)
+
+      // Fill out the signin form
+      cy.findByRole('textbox', { name: /email/i })
+        .should('be.visible')
+        .clear()
+        .type(signinForm.email, { delay: 10 })
+
+      cy.findByLabelText(/password/i)
+        .should('be.visible')
+        .clear()
+        .type('myreallystrongpassword', { delay: 10 }) // This is the default password from create-user.ts
+
+      // Submit the signin form
+      cy.findByRole('button', { name: /sign in/i })
+        .should('exist')
+        .should('be.visible')
+        .should('be.enabled')
+        .click()
+
+      // After successful signin, we should be redirected to teams page
+      cy.url().should('include', '/teams')
+
+      // Verify user is signed in by checking for their email somewhere in the UI
+      cy.contains(signinForm.email).should('exist')
+    })
   })
 
   describe('team creation', () => {
@@ -184,7 +216,7 @@ describe('smoke tests', () => {
 
       // Make sure the mobile menu is closed before interacting with the form
       // Asynchronously wait for the menu overlay to disappear
-      cy.get('.fixed.inset-0.z-100.flex').should('not.exist')
+      cy.get('.fixed.inset-0.z-30.flex').should('not.exist')
 
       // Wait for the form to be ready by checking for form elements
       cy.findAllByRole('textbox', { name: /team name/i })

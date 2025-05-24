@@ -25,7 +25,7 @@ export function AppBar({
 
   // Track optimistic authenticated state
   const isAuthenticated =
-    signoutFetcher.formAction === '/signout' ? false : authenticated
+    signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
@@ -34,15 +34,11 @@ export function AppBar({
   }, [setMobileMenuOpen])
 
   // Handle sign-out
-  const handleSignOut = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault()
-      event.stopPropagation()
-      signoutFetcher.submit({}, { method: 'post', action: '/signout' })
-      setMobileMenuOpen(false)
-    },
-    [signoutFetcher, setMobileMenuOpen]
-  )
+  const handleSignOut = useCallback(() => {
+    setMobileMenuOpen(false)
+    // Submit signout form
+    signoutFetcher.submit({}, { method: 'post', action: '/auth/signout' })
+  }, [signoutFetcher, setMobileMenuOpen])
 
   // Current language logic
   const languages = [

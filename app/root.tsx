@@ -66,7 +66,7 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       />
       <Links />
     </head>
-    <body className='bg-background text-foreground flex h-full flex-col justify-between'>
+    <body className='bg-background text-foreground flex h-full flex-col'>
       <I18nextProvider i18n={i18n}>
         {children}
         <PWAElements />
@@ -82,19 +82,23 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
   return (
     <Document>
-      <div className='relative' style={{ zIndex: 50 }}>
-        <AppBar authenticated={authenticated} username={username} />
+      <div className='flex h-full flex-col'>
+        <div className='relative' style={{ zIndex: 50 }}>
+          <AppBar authenticated={authenticated} username={username} />
+        </div>
+        <div
+          className='flex-1 overflow-hidden'
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <Outlet />
+        </div>
+        <div className='container mx-auto flex justify-between p-2'>
+          <Link to='/'>
+            <div className='font-light'>Tournado</div>
+          </Link>
+          <p>Built with ♥️ by Madrus</p>
+        </div>
       </div>
-      <div className='flex-1' style={{ position: 'relative', zIndex: 1 }}>
-        <Outlet />
-      </div>
-      <div className='container mx-auto flex justify-between'>
-        <Link to='/'>
-          <div className='font-light'>Tournado</div>
-        </Link>
-        <p>Built with ♥️ by Madrus</p>
-      </div>
-      <div className='h-5' />
       <script
         dangerouslySetInnerHTML={{
           __html: `window.ENV = ${JSON.stringify(ENV)}`,

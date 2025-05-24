@@ -41,18 +41,22 @@ export function UserMenu({
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
   const navigation = useNavigation()
 
-  // Close menu when navigation starts (Fix #1)
+  // Debug logging
+  if (!isMobile) {
+    // Debug logs removed - desktop menu working correctly
+  }
+
+  // Close menu when navigation starts (Fix #1) - but only for actual navigation
   useEffect(() => {
-    if (navigation.state === 'loading') {
+    if (navigation.state === 'loading' && navigation.location) {
       onOpenChange?.(false)
       setLanguageMenuOpen(false)
       setActiveSubmenu(null)
     }
-  }, [navigation.state, onOpenChange])
+  }, [navigation.state, navigation.location, onOpenChange])
 
   // Handler for clicking language menu toggle
   const handleLanguageToggle = (event: React.MouseEvent, index: number) => {
-    event.preventDefault()
     event.stopPropagation()
     setActiveSubmenu(activeSubmenu === index ? null : index)
     setLanguageMenuOpen(!languageMenuOpen)
@@ -142,7 +146,7 @@ export function UserMenu({
     )
   }
 
-  // Desktop view with Radix UI dropdown (no portal)
+  // Desktop view with Radix UI dropdown
   return (
     <div className='relative inline-block text-left'>
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
@@ -215,14 +219,7 @@ export function UserMenu({
               }
 
               return (
-                <DropdownMenu.Item
-                  key={index}
-                  asChild
-                  onSelect={_event => {
-                    // Don't prevent default - let Link handle navigation
-                    // Menu will close automatically via navigation state effect
-                  }}
-                >
+                <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
                     className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'

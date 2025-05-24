@@ -14,21 +14,21 @@ export default function TeamsLayout(): JSX.Element {
   const isNewTeamPage = location.pathname === '/teams/new'
 
   return (
-    <div className='flex h-screen flex-col overflow-hidden'>
+    <div className='flex h-full flex-col overflow-hidden'>
       <main className='flex flex-1 overflow-hidden bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
-            className='fixed inset-0 top-[62px] z-40 bg-black/50 md:hidden'
+            className='fixed inset-0 z-40 bg-black/50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         ) : null}
 
         {/* Sidebar */}
         <div
-          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute top-0 z-50 h-full w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
-              ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
+              ? 'fixed translate-x-0 shadow-lg'
               : '-translate-x-full md:translate-x-0'
           } border-r border-red-500`}
         >
@@ -53,7 +53,7 @@ export default function TeamsLayout(): JSX.Element {
         </div>
 
         {/* Main Content */}
-        <div className='flex-1 overflow-y-auto p-4 md:p-6'>
+        <div className='h-full flex-1 overflow-y-auto p-4 md:p-6'>
           <Outlet context={{ type: 'main' } as ContextType} />
         </div>
 

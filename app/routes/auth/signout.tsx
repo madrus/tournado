@@ -14,13 +14,10 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       )
     }
 
-    // Get the referrer URL if available
-    const referrer = request.headers.get('Referer') || '/'
-
-    // Process the signout
+    // Process the signout - always redirect to homepage
     console.log('Processing signout request')
-    const response = await signout(request, referrer)
-    console.log(`Signout successful, redirecting to appropriate page`)
+    const response = await signout(request, '/')
+    console.log(`Signout successful, redirecting to homepage`)
     return response
   } catch (error) {
     console.error('Error in signout action:', error)

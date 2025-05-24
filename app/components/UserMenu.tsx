@@ -1,6 +1,6 @@
-import { JSX, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { Link, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
@@ -39,6 +39,16 @@ export function UserMenu({
   const { t } = useTranslation()
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
+  const navigation = useNavigation()
+
+  // Close menu when navigation starts (Fix #1)
+  useEffect(() => {
+    if (navigation.state === 'loading') {
+      onOpenChange?.(false)
+      setLanguageMenuOpen(false)
+      setActiveSubmenu(null)
+    }
+  }, [navigation.state, onOpenChange])
 
   // Handler for clicking language menu toggle
   const handleLanguageToggle = (event: React.MouseEvent, index: number) => {
@@ -114,7 +124,6 @@ export function UserMenu({
                   <Link
                     to={item.href || '#'}
                     className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                    onClick={() => onOpenChange?.(false)}
                   >
                     <span className='material-symbols-outlined w-8 pl-0 text-left'>
                       {item.icon}
@@ -206,7 +215,14 @@ export function UserMenu({
               }
 
               return (
-                <DropdownMenu.Item key={index} asChild>
+                <DropdownMenu.Item
+                  key={index}
+                  asChild
+                  onSelect={_event => {
+                    // Don't prevent default - let Link handle navigation
+                    // Menu will close automatically via navigation state effect
+                  }}
+                >
                   <Link
                     to={item.href || '#'}
                     className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'

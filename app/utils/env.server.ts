@@ -33,14 +33,12 @@ export function init(): void {
  * be included in the client.
  * @returns all public ENV variables
  */
-export function getEnv(): PublicEnv {
-  return {
-    MODE: (process.env.NODE_ENV || 'development') as
-      | 'test'
-      | 'production'
-      | 'development',
-  }
-}
+export const getEnv = (): PublicEnv => ({
+  MODE: (process.env.NODE_ENV || 'development') as
+    | 'test'
+    | 'production'
+    | 'development',
+})
 
 type ENV = ReturnType<typeof getEnv>
 

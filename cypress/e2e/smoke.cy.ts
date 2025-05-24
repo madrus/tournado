@@ -43,7 +43,7 @@ describe('smoke tests', () => {
     cy.findByRole('button', { name: 'Toggle menu' }).click()
 
     // Wait for the mobile menu to be visible
-    cy.get('.fixed.inset-0.z-100.flex').should('exist')
+    cy.get('.fixed.inset-0.z-30.flex').should('exist')
 
     // Then find and click the sign in link within the mobile menu
     cy.findByRole('link', { name: /sign in/i })
@@ -184,7 +184,7 @@ describe('smoke tests', () => {
 
       // Make sure the mobile menu is closed before interacting with the form
       // Asynchronously wait for the menu overlay to disappear
-      cy.get('.fixed.inset-0.z-100.flex').should('not.exist')
+      cy.get('.fixed.inset-0.z-30.flex').should('not.exist')
 
       // Wait for the form to be ready by checking for form elements
       cy.findAllByRole('textbox', { name: /team name/i })

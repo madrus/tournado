@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
@@ -31,7 +31,22 @@ type TeamListItem = {
   teamName: string
 }
 
-export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> => {
+type ActionData = {
+  errors?: {
+    teamName?: string
+    teamClass?: string
+    teamLeader?: string
+    tournament?: string
+  }
+}
+
+type LoaderData = {
+  teamListItems: TeamListItem[]
+}
+
+export const loader = async ({
+  request: _,
+}: LoaderFunctionArgs): Promise<LoaderData> => {
   const teamLeader = await getDefaultTeamLeader()
 
   if (!teamLeader) {
@@ -40,7 +55,7 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Respon
 
   const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
 
-  return Response.json({ teamListItems })
+  return { teamListItems }
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
@@ -81,8 +96,8 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   const team = await createTeam({
-    name: teamName,
-    class: teamClass,
+    teamName,
+    teamClass,
     teamLeaderId: teamLeader.id,
     tournamentId: tournament.id,
   })
@@ -92,7 +107,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
 export default function NewTeamPage(): JSX.Element {
   const { t } = useTranslation()
-  const actionData = useActionData<typeof action>()
+  const actionData = useActionData<ActionData>()
   const { teamListItems } = useLoaderData<typeof loader>()
   const context = useOutletContext<ContextType>()
   const teamNameRef = useRef<HTMLInputElement>(null)

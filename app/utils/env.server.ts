@@ -20,7 +20,7 @@ export function init(): void {
       parsed.error.flatten().fieldErrors
     )
 
-    throw new Error('Invalid envirmonment variables')
+    throw new Error('Invalid environment variables')
   }
 }
 
@@ -33,9 +33,14 @@ export function init(): void {
  * be included in the client.
  * @returns all public ENV variables
  */
-export const getEnv = (): PublicEnv => ({
-  MODE: process.env.NODE_ENV,
-})
+export function getEnv(): PublicEnv {
+  return {
+    MODE: (process.env.NODE_ENV || 'development') as
+      | 'test'
+      | 'production'
+      | 'development',
+  }
+}
 
 type ENV = ReturnType<typeof getEnv>
 

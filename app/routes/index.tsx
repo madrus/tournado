@@ -1,3 +1,4 @@
+import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
 import { Link } from 'react-router'

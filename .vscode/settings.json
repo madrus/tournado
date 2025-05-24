@@ -12,6 +12,5 @@
     "statusBarItem.remoteForeground": "#e7e7e7",
     "tab.activeBorder": "#e204d5"
   },
-  "peacock.color": "#b003a6",
-  "i18n-ally.localesPaths": ["app/i18n/locales"]
+  "peacock.color": "#b003a6"
 }

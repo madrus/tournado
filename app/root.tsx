@@ -67,8 +67,8 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       <Links />
     </head>
     <body className='bg-background text-foreground flex h-full flex-col justify-between'>
-      {children}
       <I18nextProvider i18n={i18n}>
+        {children}
         <PWAElements />
       </I18nextProvider>
       <ScrollRestoration />

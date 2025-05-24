@@ -57,20 +57,17 @@ type LoaderData = {
 }
 
 export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
-  console.log('Team route loader called - should only match /teams/:teamId')
   invariant(params.teamId, 'teamId not found')
 
-  // Get the default TeamLeader
   const teamLeader = await getDefaultTeamLeader()
-  console.log('Team leader:', teamLeader)
+
   if (!teamLeader) {
     throw new Response('No TeamLeader found', { status: 404 })
   }
 
-  const [team, teamListItems] = await Promise.all([
-    getTeam({ id: params.teamId, teamLeaderId: teamLeader.id }),
-    getTeamListItems({ teamLeaderId: teamLeader.id }),
-  ])
+  const team = await getTeam({ id: params.teamId!, teamLeaderId: teamLeader.id })
+
+  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
 
   if (!team) {
     throw new Response('Not Found', { status: 404 })

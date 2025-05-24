@@ -32,7 +32,6 @@ type LoaderData = {
 type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
 export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
-  console.log('Index route loader called - should match /teams')
   const teamLeader = await getDefaultTeamLeader()
 
   if (!teamLeader) {
@@ -40,7 +39,6 @@ export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
   }
 
   const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
-  console.log('Index route loader returning:', teamListItems)
 
   return { teamListItems }
 }

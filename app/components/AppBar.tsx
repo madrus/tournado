@@ -19,6 +19,7 @@ export function AppBar({
   const { t, i18n } = useTranslation()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
   // Get the current page title
   const pageTitle = usePageTitle()
@@ -29,16 +30,18 @@ export function AppBar({
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
-    // Just close the mobile menu
+    // Close both mobile and desktop menus
     setMobileMenuOpen(false)
-  }, [setMobileMenuOpen])
+    setDesktopMenuOpen(false)
+  }, [setMobileMenuOpen, setDesktopMenuOpen])
 
   // Handle sign-out
   const handleSignOut = useCallback(() => {
     setMobileMenuOpen(false)
+    setDesktopMenuOpen(false)
     // Submit signout form
     signoutFetcher.submit({}, { method: 'post', action: '/auth/signout' })
-  }, [signoutFetcher, setMobileMenuOpen])
+  }, [signoutFetcher, setMobileMenuOpen, setDesktopMenuOpen])
 
   // Current language logic
   const languages = [
@@ -131,7 +134,7 @@ export function AppBar({
         </div>
 
         {/* Page title in center */}
-        <h2 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
+        <h2 className='pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
           {pageTitle}
         </h2>
 
@@ -158,6 +161,8 @@ export function AppBar({
             authenticated={isAuthenticated}
             username={username}
             menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
+            isOpen={desktopMenuOpen}
+            onOpenChange={setDesktopMenuOpen}
           />
         </div>
       </header>

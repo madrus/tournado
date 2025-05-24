@@ -1,7 +1,7 @@
 import { JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { Form, Link, redirect, useSearchParams } from 'react-router'
+import { Form, Link, redirect, useActionData, useSearchParams } from 'react-router'
 
 import { createUser, getUserByEmail } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
@@ -94,26 +94,27 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
 
-export default function SignUp({ errors }: ActionData): JSX.Element {
+export default function SignUp(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/'
+  const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const firstNameRef = useRef<HTMLInputElement>(null)
   const lastNameRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (errors?.email) {
+    if (actionData?.errors?.email) {
       emailRef.current?.focus()
-    } else if (errors?.password) {
+    } else if (actionData?.errors?.password) {
       passwordRef.current?.focus()
-    } else if (errors?.firstName) {
+    } else if (actionData?.errors?.firstName) {
       firstNameRef.current?.focus()
-    } else if (errors?.lastName) {
+    } else if (actionData?.errors?.lastName) {
       lastNameRef.current?.focus()
     }
-  }, [errors])
+  }, [actionData])
 
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -140,13 +141,13 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
                 name='firstName'
                 type='text'
                 autoComplete='given-name'
-                aria-invalid={errors?.firstName ? true : undefined}
+                aria-invalid={actionData?.errors?.firstName ? true : undefined}
                 aria-describedby='firstName-error'
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
-              {errors?.firstName ? (
+              {actionData?.errors?.firstName ? (
                 <div className='pt-1 text-red-700' id='firstName-error'>
-                  {t(`auth.errors.${errors.firstName}`)}
+                  {t(`auth.errors.${actionData.errors.firstName}`)}
                 </div>
               ) : null}
             </div>
@@ -167,13 +168,13 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
                 name='lastName'
                 type='text'
                 autoComplete='family-name'
-                aria-invalid={errors?.lastName ? true : undefined}
+                aria-invalid={actionData?.errors?.lastName ? true : undefined}
                 aria-describedby='lastName-error'
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
-              {errors?.lastName ? (
+              {actionData?.errors?.lastName ? (
                 <div className='pt-1 text-red-700' id='lastName-error'>
-                  {t(`auth.errors.${errors.lastName}`)}
+                  {t(`auth.errors.${actionData.errors.lastName}`)}
                 </div>
               ) : null}
             </div>
@@ -184,7 +185,7 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
               htmlFor='email'
               className='block text-sm leading-6 font-medium text-gray-900'
             >
-              {t('auth.email')}
+              {t('auth.emailAddress')}
             </label>
             <div className='mt-2'>
               <input
@@ -194,13 +195,13 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
                 name='email'
                 type='email'
                 autoComplete='email'
-                aria-invalid={errors?.email ? true : undefined}
+                aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby='email-error'
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
-              {errors?.email ? (
+              {actionData?.errors?.email ? (
                 <div className='pt-1 text-red-700' id='email-error'>
-                  {t(`auth.errors.${errors.email}`)}
+                  {t(`auth.errors.${actionData.errors.email}`)}
                 </div>
               ) : null}
             </div>
@@ -220,13 +221,13 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
                 name='password'
                 type='password'
                 autoComplete='new-password'
-                aria-invalid={errors?.password ? true : undefined}
+                aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby='password-error'
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
-              {errors?.password ? (
+              {actionData?.errors?.password ? (
                 <div className='pt-1 text-red-700' id='password-error'>
-                  {t(`auth.errors.${errors.password}`)}
+                  {t(`auth.errors.${actionData.errors.password}`)}
                 </div>
               ) : null}
             </div>
@@ -237,17 +238,17 @@ export default function SignUp({ errors }: ActionData): JSX.Element {
             type='submit'
             className='focus-visible:outline-offset flex w-full justify-center rounded-md bg-emerald-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-emerald-600'
           >
-            {t('auth.signUp')}
+            {t('auth.createAccount')}
           </button>
         </Form>
 
         <p className='mt-10 text-center text-sm text-gray-500'>
           {t('auth.alreadyHaveAccount')}{' '}
           <Link
-            to='/signin'
+            to='/auth/signin'
             className='leading-6 font-semibold text-emerald-600 hover:text-emerald-500'
           >
-            {t('auth.signIn')}
+            {t('auth.signin')}
           </Link>
         </p>
       </div>

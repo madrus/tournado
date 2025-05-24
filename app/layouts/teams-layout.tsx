@@ -19,20 +19,20 @@ export default function TeamsLayout(): JSX.Element {
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
-            className='fixed inset-0 z-40 bg-black/50 md:hidden'
+            className='fixed inset-0 z-20 bg-black/50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         ) : null}
 
         {/* Sidebar */}
         <div
-          className={`absolute top-0 z-50 h-full w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute top-0 z-30 h-full w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
               ? 'fixed translate-x-0 shadow-lg'
               : '-translate-x-full md:translate-x-0'
           } border-r border-red-500`}
         >
-          <div className='relative flex h-full flex-col'>
+          <div className='relative flex h-full flex-col pt-14'>
             <div className='p-4'>
               <Link
                 to='new'
@@ -61,7 +61,7 @@ export default function TeamsLayout(): JSX.Element {
         {!isNewTeamPage ? (
           <Link
             to='new'
-            className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
+            className='safe-bottom fixed right-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
             role='link'
             aria-label={t('teams.newTeam')}
           >

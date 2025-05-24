@@ -114,7 +114,7 @@ export function AppBar({
 
   return (
     <>
-      <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
+      <header className='safe-top relative z-20 h-14 bg-emerald-800 px-4 text-white'>
         {/* Logo and Brand for all screen sizes */}
         <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-1 lg:left-4 lg:gap-2'>
           <Link to='/' className='flex items-center gap-1 lg:gap-2'>

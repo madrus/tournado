@@ -66,7 +66,7 @@ export function UserMenu({
   if (isMobile) {
     return (
       <div
-        className={`fixed inset-0 z-100 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
+        className={`fixed inset-0 z-30 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
         onClick={() => onOpenChange?.(false)}
       >
         <div
@@ -97,7 +97,7 @@ export function UserMenu({
                     </button>
 
                     {activeSubmenu === index ? (
-                      <div className='ring-opacity-5 absolute top-full left-0 z-50 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
+                      <div className='ring-opacity-5 absolute top-full left-0 z-30 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
@@ -157,7 +157,7 @@ export function UserMenu({
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
-          className='ring-opacity-5 absolute right-0 z-[9999] mt-2 w-56 divide-y divide-gray-100 rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none'
+          className='ring-opacity-5 absolute right-0 z-40 mt-2 w-56 divide-y divide-gray-100 rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none'
           sideOffset={5}
         >
           <div className='px-4 py-3'>
@@ -183,7 +183,7 @@ export function UserMenu({
                     </button>
 
                     {languageMenuOpen ? (
-                      <div className='ring-opacity-5 absolute right-0 z-50 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black'>
+                      <div className='ring-opacity-5 absolute right-0 z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black'>
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}

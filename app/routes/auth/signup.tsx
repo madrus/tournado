@@ -5,7 +5,7 @@ import { Form, Link, redirect, useActionData, useSearchParams } from 'react-rout
 
 import { createUser, getUserByEmail } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { getUserId } from '~/utils/session.server'
+import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
 interface LoaderArgs {
@@ -88,8 +88,14 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     )
   }
 
-  await createUser(email, password, firstName, lastName, 'PUBLIC')
-  return redirect(redirectTo)
+  const user = await createUser(email, password, firstName, lastName, 'PUBLIC')
+
+  return createUserSession({
+    request,
+    userId: user.id,
+    remember: false,
+    redirectTo,
+  })
 }
 
 export const meta: MetaFunction = () => [{ title: 'Sign Up' }]

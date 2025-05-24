@@ -1,6 +1,13 @@
 import { type JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, Link, type MetaFunction, redirect, useSearchParams } from 'react-router'
+import {
+  Form,
+  Link,
+  type MetaFunction,
+  redirect,
+  useActionData,
+  useSearchParams,
+} from 'react-router'
 
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
@@ -87,22 +94,23 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
 
 export const meta: MetaFunction = () => [{ title: 'Sign in' }]
 
-export default function SigninPage({ errors }: ActionData): JSX.Element {
+export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/'
   const registered = searchParams.get('registered') === 'true'
   const emailFromRegistration = searchParams.get('email')
+  const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (errors?.email) {
+    if (actionData?.errors?.email) {
       emailRef.current?.focus()
-    } else if (errors?.password) {
+    } else if (actionData?.errors?.password) {
       passwordRef.current?.focus()
     }
-  }, [errors])
+  }, [actionData])
 
   useEffect(() => {
     // Pre-fill email if provided from registration
@@ -153,13 +161,13 @@ export default function SigninPage({ errors }: ActionData): JSX.Element {
                   name='email'
                   type='email'
                   autoComplete='email'
-                  aria-invalid={errors?.email ? true : undefined}
+                  aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby='email-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
-                {errors?.email ? (
+                {actionData?.errors?.email ? (
                   <div className='pt-1 text-red-700' id='email-error'>
-                    {t(`auth.errors.${errors.email}`)}
+                    {t(`auth.errors.${actionData.errors.email}`)}
                   </div>
                 ) : null}
               </div>
@@ -179,13 +187,13 @@ export default function SigninPage({ errors }: ActionData): JSX.Element {
                   name='password'
                   type='password'
                   autoComplete='current-password'
-                  aria-invalid={errors?.password ? true : undefined}
+                  aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby='password-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
                 />
-                {errors?.password ? (
+                {actionData?.errors?.password ? (
                   <div className='pt-1 text-red-700' id='password-error'>
-                    {t(`auth.errors.${errors.password}`)}
+                    {t(`auth.errors.${actionData.errors.password}`)}
                   </div>
                 ) : null}
               </div>
@@ -215,7 +223,7 @@ export default function SigninPage({ errors }: ActionData): JSX.Element {
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'
                   to={{
-                    pathname: '/signup',
+                    pathname: '/auth/signup',
                     search: searchParams.toString(),
                   }}
                   aria-label={t('auth.signup')}

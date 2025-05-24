@@ -1,5 +1,4 @@
-// @remix-run/client
-import { useEffect, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { updateServiceWorker } from '~/utils/serviceWorkerRegistration'
@@ -34,7 +33,7 @@ export function UpdatePrompt(): JSX.Element | null {
   if (!showUpdatePrompt) return null
 
   return (
-    <div className='safe-bottom fixed right-0 bottom-0 left-0 z-50 bg-blue-50 p-4 shadow-lg'>
+    <div className='safe-bottom fixed right-0 bottom-0 left-0 z-40 bg-blue-50 p-4 shadow-lg'>
       <div className='flex items-center justify-between gap-4'>
         <div className='flex-1'>
           <p className='text-sm font-medium text-blue-900'>{t('pwa.update.title')}</p>

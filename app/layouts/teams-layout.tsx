@@ -1,49 +1,38 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { Link, Outlet, useLocation, useRouteError } from '@remix-run/react'
-
-import { useState } from 'react'
+import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, Outlet, useLocation } from 'react-router'
 
-import type { RouteMetadata } from '~/utils/route-types'
-
-// Route metadata
-export const handle: RouteMetadata = {
-  isPublic: true,
-  title: 'common.titles.teams',
+// Add the context type that was in the original file
+type ContextType = {
+  type: 'sidebar' | 'main'
 }
-
-export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<Response> =>
-  json({})
 
 export default function TeamsLayout(): JSX.Element {
   const { t } = useTranslation()
-  // const user = useUser()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const location = useLocation()
   const isNewTeamPage = location.pathname === '/teams/new'
 
   return (
-    <div className='flex h-screen flex-col overflow-hidden'>
-      {/* Sidebar and Main Content */}
+    <div className='flex h-full flex-col overflow-hidden'>
       <main className='flex flex-1 overflow-hidden bg-gradient-to-b from-emerald-50 via-white to-white md:flex-row'>
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen ? (
           <div
-            className='fixed inset-0 top-[62px] z-40 bg-black/50 md:hidden'
+            className='fixed inset-0 z-20 bg-black/50 md:hidden'
             onClick={() => setIsSidebarOpen(false)}
           />
         ) : null}
 
         {/* Sidebar */}
         <div
-          className={`absolute z-50 w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+          className={`absolute top-0 z-30 h-full w-80 transform bg-gradient-to-b from-emerald-50 via-white to-white transition-transform duration-300 ease-in-out md:relative md:top-0 ${
             isSidebarOpen
-              ? 'fixed top-[62px] h-[calc(100vh-58px)] translate-x-0 shadow-lg'
+              ? 'fixed translate-x-0 shadow-lg'
               : '-translate-x-full md:translate-x-0'
           } border-r border-red-500`}
         >
-          <div className='relative flex h-full flex-col'>
+          <div className='relative flex h-full flex-col pt-14'>
             <div className='p-4'>
               <Link
                 to='new'
@@ -58,21 +47,21 @@ export default function TeamsLayout(): JSX.Element {
 
             {/* Team List */}
             <div className='pb-safe flex-1 overflow-y-auto'>
-              <Outlet context={{ type: 'sidebar' }} />
+              <Outlet context={{ type: 'sidebar' } as ContextType} />
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className='flex-1 overflow-y-auto p-4 md:p-6'>
-          <Outlet context={{ type: 'main' }} />
+        <div className='h-full flex-1 overflow-y-auto p-4 md:p-6'>
+          <Outlet context={{ type: 'main' } as ContextType} />
         </div>
 
         {/* Mobile Floating Action Add Team Button */}
         {!isNewTeamPage ? (
           <Link
             to='new'
-            className='safe-bottom fixed right-4 bottom-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
+            className='safe-bottom fixed right-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
             role='link'
             aria-label={t('teams.newTeam')}
           >
@@ -80,16 +69,6 @@ export default function TeamsLayout(): JSX.Element {
           </Link>
         ) : null}
       </main>
-    </div>
-  )
-}
-
-export function ErrorBoundary(): JSX.Element {
-  const error = useRouteError()
-  return (
-    <div>
-      An unexpected error occurred:{' '}
-      {error instanceof Error ? error.message : 'Unknown error'}
     </div>
   )
 }

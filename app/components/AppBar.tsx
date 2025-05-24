@@ -1,7 +1,6 @@
-import { Link, useFetcher, useLocation } from '@remix-run/react'
-
-import { useCallback, useState } from 'react'
+import { type JSX, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useFetcher, useLocation } from 'react-router'
 
 import logo from '~/assets/logo-192x192.png'
 import { usePageTitle } from '~/utils/route-utils'
@@ -20,30 +19,29 @@ export function AppBar({
   const { t, i18n } = useTranslation()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
   // Get the current page title
   const pageTitle = usePageTitle()
 
   // Track optimistic authenticated state
   const isAuthenticated =
-    signoutFetcher.formAction === '/signout' ? false : authenticated
+    signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
-    // Just close the mobile menu
+    // Close both mobile and desktop menus
     setMobileMenuOpen(false)
-  }, [setMobileMenuOpen])
+    setDesktopMenuOpen(false)
+  }, [setMobileMenuOpen, setDesktopMenuOpen])
 
   // Handle sign-out
-  const handleSignOut = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault()
-      event.stopPropagation()
-      signoutFetcher.submit({}, { method: 'post', action: '/signout' })
-      setMobileMenuOpen(false)
-    },
-    [signoutFetcher, setMobileMenuOpen]
-  )
+  const handleSignOut = useCallback(() => {
+    setMobileMenuOpen(false)
+    setDesktopMenuOpen(false)
+    // Submit signout form
+    signoutFetcher.submit({}, { method: 'post', action: '/auth/signout' })
+  }, [signoutFetcher, setMobileMenuOpen, setDesktopMenuOpen])
 
   // Current language logic
   const languages = [
@@ -102,7 +100,7 @@ export function AppBar({
         </button>
       ) : (
         <Link
-          to={`/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
+          to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
           className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
           onClick={handleSignIn}
         >
@@ -116,7 +114,7 @@ export function AppBar({
 
   return (
     <>
-      <header className='safe-top relative h-14 bg-emerald-800 px-4 text-white'>
+      <header className='safe-top relative z-20 h-14 bg-emerald-800 px-4 text-white'>
         {/* Logo and Brand for all screen sizes */}
         <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-1 lg:left-4 lg:gap-2'>
           <Link to='/' className='flex items-center gap-1 lg:gap-2'>
@@ -136,7 +134,7 @@ export function AppBar({
         </div>
 
         {/* Page title in center */}
-        <h2 className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
+        <h2 className='pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
           {pageTitle}
         </h2>
 
@@ -163,6 +161,8 @@ export function AppBar({
             authenticated={isAuthenticated}
             username={username}
             menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
+            isOpen={desktopMenuOpen}
+            onOpenChange={setDesktopMenuOpen}
           />
         </div>
       </header>

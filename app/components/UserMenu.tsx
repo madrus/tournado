@@ -1,7 +1,6 @@
-import { Link } from '@remix-run/react'
-
-import { useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
@@ -40,10 +39,24 @@ export function UserMenu({
   const { t } = useTranslation()
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
+  const navigation = useNavigation()
+
+  // Debug logging
+  if (!isMobile) {
+    // Debug logs removed - desktop menu working correctly
+  }
+
+  // Close menu when navigation starts (Fix #1) - but only for actual navigation
+  useEffect(() => {
+    if (navigation.state === 'loading' && navigation.location) {
+      onOpenChange?.(false)
+      setLanguageMenuOpen(false)
+      setActiveSubmenu(null)
+    }
+  }, [navigation.state, navigation.location, onOpenChange])
 
   // Handler for clicking language menu toggle
   const handleLanguageToggle = (event: React.MouseEvent, index: number) => {
-    event.preventDefault()
     event.stopPropagation()
     setActiveSubmenu(activeSubmenu === index ? null : index)
     setLanguageMenuOpen(!languageMenuOpen)
@@ -53,7 +66,7 @@ export function UserMenu({
   if (isMobile) {
     return (
       <div
-        className={`fixed inset-0 z-100 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
+        className={`fixed inset-0 z-30 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
         onClick={() => onOpenChange?.(false)}
       >
         <div
@@ -84,7 +97,7 @@ export function UserMenu({
                     </button>
 
                     {activeSubmenu === index ? (
-                      <div className='ring-opacity-5 absolute top-full left-0 z-50 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
+                      <div className='ring-opacity-5 absolute top-full left-0 z-30 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
@@ -115,7 +128,6 @@ export function UserMenu({
                   <Link
                     to={item.href || '#'}
                     className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
-                    onClick={() => onOpenChange?.(false)}
                   >
                     <span className='material-symbols-outlined w-8 pl-0 text-left'>
                       {item.icon}
@@ -134,7 +146,7 @@ export function UserMenu({
     )
   }
 
-  // Desktop view with Radix UI dropdown (no portal)
+  // Desktop view with Radix UI dropdown
   return (
     <div className='relative inline-block text-left'>
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
@@ -145,7 +157,7 @@ export function UserMenu({
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
-          className='ring-opacity-5 absolute right-0 z-[9999] mt-2 w-56 divide-y divide-gray-100 rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none'
+          className='ring-opacity-5 absolute right-0 z-40 mt-2 w-56 divide-y divide-gray-100 rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none'
           sideOffset={5}
         >
           <div className='px-4 py-3'>
@@ -171,7 +183,7 @@ export function UserMenu({
                     </button>
 
                     {languageMenuOpen ? (
-                      <div className='ring-opacity-5 absolute right-0 z-50 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black'>
+                      <div className='ring-opacity-5 absolute right-0 z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black'>
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}

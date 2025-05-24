@@ -1,8 +1,7 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { json } from '@remix-run/node'
-import { Link } from '@remix-run/react'
-
+import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
+import { Link } from 'react-router'
 
 import type { RouteMetadata } from '~/utils/route-types'
 import { getUser } from '~/utils/session.server'
@@ -17,7 +16,7 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
   const user = await getUser(request)
-  return json({ user })
+  return Response.json({ user })
 }
 
 export default function Index(): JSX.Element {

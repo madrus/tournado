@@ -4,7 +4,8 @@
 // 404 from the loader, we can force the error boundary to render which will
 // ensure the user gets the right status code and we can display a nicer error
 // message for them than the Remix and/or browser default.
-import { Link, useLocation } from '@remix-run/react'
+import { JSX } from 'react'
+import { Link, useLocation } from 'react-router'
 
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 

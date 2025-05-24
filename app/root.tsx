@@ -1,30 +1,27 @@
 import os from 'node:os'
 
-import { cssBundleHref } from '@remix-run/css-bundle'
-import type { LinksFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import React, { JSX } from 'react'
+import { I18nextProvider } from 'react-i18next'
 import {
   Link,
   Links,
-  LiveReload,
+  LinksFunction,
   Meta,
   type MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
-} from '@remix-run/react'
-
-import { I18nextProvider } from 'react-i18next'
+} from 'react-router'
 
 import { AppBar } from '~/components/AppBar'
 
+import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
-import layoutStylesheetUrl from './styles/layout.css'
-import safeAreasStylesheetUrl from './styles/safe-areas.css'
-import tailwindStylesheetUrl from './styles/tailwind.css'
+import layoutStylesheetUrl from './styles/layout.css?url'
+import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
+import tailwindStylesheetUrl from './styles/tailwind.css?url'
 import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
 import { capitalize } from './utils/utils'
@@ -34,68 +31,27 @@ export const meta: MetaFunction = () => [
   { name: 'description', content: `Tournament management for everyone` },
 ]
 
-export const links: LinksFunction = (): { rel: string; href: string }[] =>
-  [
-    { rel: 'stylesheet', href: tailwindStylesheetUrl },
-    { rel: 'stylesheet', href: layoutStylesheetUrl },
-    { rel: 'stylesheet', href: safeAreasStylesheetUrl },
-    {
-      rel: 'stylesheet',
-      href:
-        'data:text/css;base64,' +
-        btoa(`
-      :root {
-        --sat: env(safe-area-inset-top);
-        --sar: env(safe-area-inset-right);
-        --sab: env(safe-area-inset-bottom);
-        --sal: env(safe-area-inset-left);
-        }
-        body {
-          padding: var(--sat) var(--sar) var(--sab) var(--sal);
-        }
-        /* Ensure content doesn't go under status bar */
-        .safe-top {
-          padding-top: max(env(safe-area-inset-top), 16px);
-        }
-        /* Ensure content doesn't go under home indicator */
-        .safe-bottom {
-          padding-bottom: max(env(safe-area-inset-bottom), 16px);
-        }
-        /* For fixed position elements */
-        .fixed-safe-top {
-          top: env(safe-area-inset-top);
-        }
-        .fixed-safe-bottom {
-          bottom: env(safe-area-inset-bottom);
-        }
-      `),
-    },
-    cssBundleHref ? { rel: 'stylesheet', href: cssBundleHref } : null,
-  ].filter(Boolean) as { rel: string; href: string }[]
+export const links: LinksFunction = (): { rel: string; href: string }[] => [
+  { rel: 'stylesheet', href: tailwindStylesheetUrl },
+  { rel: 'stylesheet', href: layoutStylesheetUrl },
+  { rel: 'stylesheet', href: safeAreasStylesheetUrl },
+]
 
-export const loader = async ({
-  request,
-}: LoaderFunctionArgs): Promise<
-  TypedResponse<{
-    authenticated: boolean
-    ENV: Record<string, string>
-    username: string
-  }>
-> => {
+interface LoaderData {
+  authenticated: boolean
+  ENV: Record<string, string>
+  username: string
+}
+
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
   const prettyUsername = capitalize(os.userInfo().username)
-  return json(
-    {
-      authenticated: !!user,
-      username: user?.email ?? prettyUsername,
-      ENV: getEnv(),
-    },
-    {
-      headers: {
-        'Cache-Control': 'no-store, max-age=0',
-      },
-    }
-  )
+
+  return {
+    authenticated: !!user,
+    username: user?.email ?? prettyUsername,
+    ENV: getEnv(),
+  }
 }
 
 const Document = ({ children }: { children: React.ReactNode }) => (
@@ -105,44 +61,52 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width,initial-scale=1' />
       <link
+        rel='preload'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+        as='style'
+      />
+      <link
         rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
       />
       <Links />
     </head>
-    <body className='bg-background text-foreground flex h-full flex-col justify-between'>
-      {children}
+    <body className='bg-background text-foreground flex h-full flex-col'>
       <I18nextProvider i18n={i18n}>
+        {children}
         <PWAElements />
       </I18nextProvider>
       <ScrollRestoration />
       <Scripts />
-      <LiveReload />
     </body>
   </html>
 )
 
-export default function App(): JSX.Element {
-  const appData = useLoaderData<typeof loader>()
+export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
+  const { authenticated, username, ENV } = loaderData
 
   return (
     <Document>
-      <div className='relative' style={{ zIndex: 50 }}>
-        <AppBar authenticated={appData.authenticated} username={appData.username} />
+      <div className='flex h-full flex-col'>
+        <div className='relative' style={{ zIndex: 50 }}>
+          <AppBar authenticated={authenticated} username={username} />
+        </div>
+        <div
+          className='flex-1 overflow-hidden'
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <Outlet />
+        </div>
+        <div className='container mx-auto flex justify-between p-2'>
+          <Link to='/'>
+            <div className='font-light'>Tournado</div>
+          </Link>
+          <p>Built with ♥️ by Madrus</p>
+        </div>
       </div>
-      <div className='flex-1' style={{ position: 'relative', zIndex: 1 }}>
-        <Outlet />
-      </div>
-      <div className='container mx-auto flex justify-between'>
-        <Link to='/'>
-          <div className='font-light'>Tournado</div>
-        </Link>
-        <p>Built with ♥️ by Madrus</p>
-      </div>
-      <div className='h-5' />
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.ENV = ${JSON.stringify(appData.ENV)}`,
+          __html: `window.ENV = ${JSON.stringify(ENV)}`,
         }}
       />
     </Document>

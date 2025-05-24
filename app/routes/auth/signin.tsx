@@ -1,18 +1,33 @@
-import type {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
-
-import { useEffect, useRef } from 'react'
+import { type JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  Form,
+  Link,
+  type MetaFunction,
+  redirect,
+  useActionData,
+  useSearchParams,
+} from 'react-router'
 
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
+
+interface LoaderArgs {
+  request: Request
+}
+
+interface ActionArgs {
+  request: Request
+}
+
+type ActionData = {
+  errors?: {
+    email: string | null
+    password: string | null
+  }
+}
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -20,7 +35,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.signIn',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+export const loader = async ({ request }: LoaderArgs): Promise<object> => {
   const userId = await getUserId(request)
   if (userId) {
     // Get the redirectTo parameter from the URL if present
@@ -29,10 +44,10 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response>
     // Redirect to the intended destination or root page
     return redirect(redirectTo || '/')
   }
-  return json({})
+  return {}
 }
 
-export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
+export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
@@ -40,18 +55,21 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {
-    return json({ errors: { email: 'emailInvalid', password: null } }, { status: 400 })
+    return Response.json(
+      { errors: { email: 'emailInvalid', password: null } },
+      { status: 400 }
+    )
   }
 
   if (typeof password !== 'string' || password.length === 0) {
-    return json(
+    return Response.json(
       { errors: { email: null, password: 'passwordRequired' } },
       { status: 400 }
     )
   }
 
   if (password.length < 8) {
-    return json(
+    return Response.json(
       { errors: { email: null, password: 'passwordTooShort' } },
       { status: 400 }
     )
@@ -60,7 +78,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const user = await verifySignin(email, password)
 
   if (!user) {
-    return json(
+    return Response.json(
       { errors: { email: 'invalidCredentials', password: null } },
       { status: 400 }
     )
@@ -82,7 +100,7 @@ export default function SigninPage(): JSX.Element {
   const redirectTo = searchParams.get('redirectTo') || '/'
   const registered = searchParams.get('registered') === 'true'
   const emailFromRegistration = searchParams.get('email')
-  const actionData = useActionData<typeof action>()
+  const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
@@ -205,7 +223,7 @@ export default function SigninPage(): JSX.Element {
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'
                   to={{
-                    pathname: '/signup',
+                    pathname: '/auth/signup',
                     search: searchParams.toString(),
                   }}
                   aria-label={t('auth.signup')}

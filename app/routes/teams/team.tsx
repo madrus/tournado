@@ -1,20 +1,35 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
-import { json, redirect } from '@remix-run/node'
+import { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Form,
   isRouteErrorResponse,
   NavLink,
+  redirect,
   useLoaderData,
   useOutletContext,
   useRouteError,
-} from '@remix-run/react'
-
-import { useTranslation } from 'react-i18next'
+} from 'react-router'
 
 import invariant from 'tiny-invariant'
 
-import { deleteTeam, getTeam, getTeamListItems } from '~/models/team.server'
+import {
+  deleteTeam,
+  getTeam,
+  getTeamListItems,
+  type TeamWithLeader,
+} from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+
+// Temporary types until auto-generation is complete
+// These will let the app compile so React Router can generate the proper types
+export type LoaderArgs = {
+  params: Record<string, string | undefined>
+  request: Request
+}
+export type ActionArgs = {
+  params: Record<string, string | undefined>
+  request: Request
+}
 
 type ContextType = {
   type: 'sidebar' | 'main'
@@ -25,33 +40,42 @@ type TeamListItem = {
   teamName: string
 }
 
-export const loader = async ({
-  params,
-  request: _,
-}: LoaderFunctionArgs): Promise<Response> => {
+type LoaderData = {
+  team: Pick<TeamWithLeader, 'id' | 'teamName' | 'teamClass'>
+  teamListItems: Pick<
+    {
+      id: string
+      teamLeaderId: string
+      createdAt: Date
+      updatedAt: Date
+      teamName: string
+      teamClass: string
+      tournamentId: string
+    },
+    'id' | 'teamName'
+  >[]
+}
+
+export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
   invariant(params.teamId, 'teamId not found')
 
-  // Get the default TeamLeader
   const teamLeader = await getDefaultTeamLeader()
+
   if (!teamLeader) {
     throw new Response('No TeamLeader found', { status: 404 })
   }
 
-  const [team, teamListItems] = await Promise.all([
-    getTeam({ id: params.teamId, teamLeaderId: teamLeader.id }),
-    getTeamListItems({ teamLeaderId: teamLeader.id }),
-  ])
+  const team = await getTeam({ id: params.teamId!, teamLeaderId: teamLeader.id })
+
+  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
 
   if (!team) {
     throw new Response('Not Found', { status: 404 })
   }
-  return json({ team, teamListItems })
+  return { team, teamListItems }
 }
 
-export const action = async ({
-  params,
-  request: _,
-}: ActionFunctionArgs): Promise<Response> => {
+export async function action({ params }: ActionArgs): Promise<Response> {
   // No longer requiring authentication for team actions
   invariant(params.teamId, 'teamId not found')
 
@@ -68,7 +92,7 @@ export const action = async ({
 
 export default function TeamDetailsPage(): JSX.Element {
   const { t } = useTranslation()
-  const { team, teamListItems } = useLoaderData<typeof loader>()
+  const { team, teamListItems } = useLoaderData<LoaderData>()
   const context = useOutletContext<ContextType>()
 
   // Render team list in sidebar
@@ -87,7 +111,7 @@ export default function TeamDetailsPage(): JSX.Element {
           <NavLink
             key={teamItem.id}
             to={`/teams/${teamItem.id}`}
-            className={({ isActive }: { isActive: boolean }) =>
+            className={({ isActive }) =>
               `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
                 isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
               }`

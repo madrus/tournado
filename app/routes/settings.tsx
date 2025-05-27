@@ -4,6 +4,7 @@ import type { MetaFunction } from 'react-router'
 
 import { User } from '@prisma/client'
 
+import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUser } from '~/utils/session.server'
 
@@ -47,3 +48,5 @@ export default function SettingsPage(): JSX.Element {
     </div>
   )
 }
+
+export { AuthErrorBoundary as ErrorBoundary }

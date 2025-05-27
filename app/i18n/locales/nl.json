@@ -7,9 +7,17 @@
     "errors": {
       "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
       "emailInvalid": "E-mailadres is ongeldig",
+      "emailRequired": "E-mailadres is verplicht",
       "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
+      "notFound": "Sorry, de pagina die u zoekt bestaat niet of is verplaatst. Controleer de URL of navigeer met behulp van de onderstaande link.",
       "passwordRequired": "Wachtwoord is verplicht",
-      "passwordTooShort": "Wachtwoord is te kort"
+      "passwordTooShort": "Wachtwoord is te kort",
+      "serverError": "Serverfout, probeer het later opnieuw",
+      "title": "Authenticatiefout",
+      "unauthorized": "Je moet inloggen om deze pagina te bekijken",
+      "forbidden": "Je hebt geen toegang tot deze pagina",
+      "unexpectedError": "Er is een onverwachte fout opgetreden",
+      "unknownError": "Onbekende fout"
     },
     "firstName": "Voornaam",
     "lastName": "Achternaam",
@@ -24,7 +32,9 @@
   },
   "common": {
     "appName": "Tournado",
+    "backToHome": "Terug naar home",
     "language": "Taal",
+    "loading": "Laden...",
     "signedInAs": "Ingelogd als",
     "welcome": "Welkom",
     "titles": {
@@ -48,6 +58,10 @@
       "signup": "Gratis registreren",
       "viewTeams": "Teams bekijken"
     }
+  },
+  "errors": {
+    "errorTitle": "Applicatiefout",
+    "notFoundTitle": "Pagina Niet Gevonden"
   },
   "pwa": {
     "install": {

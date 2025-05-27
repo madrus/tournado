@@ -7,9 +7,17 @@
     "errors": {
       "emailExists": "A user already exists with this email",
       "emailInvalid": "Email is invalid",
+      "emailRequired": "Email is required",
       "invalidCredentials": "Invalid email or password",
+      "notFound": "Sorry, the page you're looking for doesn't exist or has been moved. Please check the URL or navigate using the link below.",
       "passwordRequired": "Password is required",
-      "passwordTooShort": "Password is too short"
+      "passwordTooShort": "Password is too short",
+      "serverError": "Server error, please try again later",
+      "title": "Authentication Error",
+      "unauthorized": "You need to sign in to access this page",
+      "forbidden": "You don't have permission to access this page",
+      "unexpectedError": "An unexpected error occurred",
+      "unknownError": "Unknown error"
     },
     "firstName": "First name",
     "lastName": "Last name",
@@ -27,7 +35,9 @@
   },
   "common": {
     "appName": "Tournado",
+    "backToHome": "Back to home",
     "language": "Language",
+    "loading": "Loading...",
     "signedInAs": "Signed in as",
     "welcome": "Welcome",
     "titles": {
@@ -51,6 +61,10 @@
       "signup": "Sign up for free",
       "viewTeams": "View Teams"
     }
+  },
+  "errors": {
+    "errorTitle": "Application Error",
+    "notFoundTitle": "Page Not Found"
   },
   "pwa": {
     "install": {

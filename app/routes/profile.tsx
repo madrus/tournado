@@ -4,6 +4,7 @@ import type { MetaFunction } from 'react-router'
 
 import type { User } from '@prisma/client'
 
+import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUser } from '~/utils/session.server'
 
@@ -28,12 +29,18 @@ export const handle: RouteMetadata = {
 }
 
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+  // Temporarily add this to test 403 errors
+  throw Response.json(
+    { message: 'Forbidden' },
+    { status: 403, statusText: 'Forbidden' }
+  )
+
   // This ensures only authenticated users can access this route
   const user = await requireUser(request)
   return { user }
 }
 
-export default function SettingsPage(): JSX.Element {
+export default function ProfilePage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
@@ -47,3 +54,5 @@ export default function SettingsPage(): JSX.Element {
     </div>
   )
 }
+
+export { AuthErrorBoundary as ErrorBoundary }

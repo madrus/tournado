@@ -29,12 +29,6 @@ export const handle: RouteMetadata = {
 }
 
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
-  // Temporarily add this to test 403 errors
-  throw Response.json(
-    { message: 'Forbidden' },
-    { status: 403, statusText: 'Forbidden' }
-  )
-
   // This ensures only authenticated users can access this route
   const user = await requireUser(request)
   return { user }

@@ -18,6 +18,7 @@ app/
 
 - **Authentication**: Email/password authentication with cookie-based sessions
 - **Database**: SQLite with Prisma ORM
+- **UI Components**: Role-based context menus and responsive navigation
 - **Styling**: Tailwind CSS for modern UI
 - **Testing**: Cypress for E2E tests and Vitest for unit tests
 - **Type Safety**: Full TypeScript support
@@ -35,6 +36,17 @@ The application uses React Router v7 (evolution of Remix) with:
 - Intelligent prefetching strategies for optimal performance
 
 For detailed routing information, see [Routing Documentation](routing.md).
+
+### UI Components & Role-Based Access Control
+
+The application implements a comprehensive role-based access control system through UI components:
+
+- **Context Menu**: Adaptive navigation menu that changes based on user roles
+- **AppBar Component**: Main navigation header with authentication-aware menu items
+- **Responsive Design**: Mobile and desktop optimized interfaces
+- **Language Support**: Multi-language interface with persistent language selection
+
+For detailed UI component information, see [UI Components Documentation](ui-components.md).
 
 ## Development Workflow
 

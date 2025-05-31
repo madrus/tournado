@@ -5,12 +5,19 @@
  * The reason to create is that the package.json script runs
  * with an error that the server is already stopped.
  */
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { execSync, spawn } from 'child_process'
 import waitOn from 'wait-on'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const projectRoot = resolve(__dirname, '..')
 
 // Set environment variables
 process.env.PORT = '8811'
 process.env.CYPRESS_INTERNAL_ENV = 'production'
+process.env.DATABASE_URL = `file:${resolve(projectRoot, 'prisma/data.db')}?connection_limit=1`
 
 // Start the mock server
 console.log('Starting mock server...')

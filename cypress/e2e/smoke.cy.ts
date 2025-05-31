@@ -112,7 +112,7 @@ describe('smoke tests', () => {
 
     // First create a user account
     cy.exec(
-      `pnpm exec tsx ./cypress/support/create-user.ts "${signinForm.email}"`
+      `pnpm exec tsx ./cypress/support/create-user-test.ts "${signinForm.email}"`
     ).then(() => {
       // Clear any existing session to test signin flow
       cy.clearCookies()

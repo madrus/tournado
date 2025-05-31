@@ -1,23 +1,17 @@
-// Use this to create a new user and signin with that user
-// Simply call this with:
-// pnpm exec tsx ./cypress/support/create-user.ts username@example.com,
-// and it will log out the cookie value you can use to interact with the server
-// as that new user.
+#!/usr/bin/env tsx
+// Test-specific wrapper for create-user that forces the test database
 import { PrismaClient, Role } from '@prisma/client'
 
 import bcrypt from 'bcryptjs'
 import { parse } from 'cookie'
+import { resolve } from 'path'
 
 import { createUserSession } from '~/utils/session.server'
 
-// Create a new Prisma client that respects the current DATABASE_URL
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
-})
+// Force the test database URL via environment variable
+process.env.DATABASE_URL = `file:${resolve(process.cwd(), 'prisma/data-test.db')}?connection_limit=1`
+
+const prisma = new PrismaClient()
 
 async function createUser(
   email: string,

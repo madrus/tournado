@@ -50,7 +50,7 @@ function signin({
   email?: string
 } = {}) {
   cy.then(() => ({ email })).as('user')
-  cy.exec(`pnpm exec tsx ./cypress/support/create-user.ts "${email}"`).then(
+  cy.exec(`pnpm exec tsx ./cypress/support/create-user-test.ts "${email}"`).then(
     ({ stdout }) => {
       const cookieValue = stdout
         .replace(/.*<cookie>(?<cookieValue>.*)<\/cookie>.*/s, '$<cookieValue>')
@@ -79,7 +79,7 @@ function cleanupUser({
 }
 
 function deleteUserByEmail(email: string, failOnNonZeroExit = true) {
-  cy.exec(`pnpm exec tsx ./cypress/support/delete-user.ts "${email}"`, {
+  cy.exec(`pnpm exec tsx ./cypress/support/delete-user-test.ts "${email}"`, {
     failOnNonZeroExit,
   })
   cy.clearCookie('__session')

@@ -17,7 +17,39 @@ const projectRoot = resolve(__dirname, '..')
 // Set environment variables
 process.env.PORT = '8811'
 process.env.CYPRESS_INTERNAL_ENV = 'production'
-process.env.DATABASE_URL = `file:${resolve(projectRoot, 'prisma/data.db')}?connection_limit=1`
+process.env.DATABASE_URL = `file:${resolve(projectRoot, 'prisma/data-test.db')}?connection_limit=1`
+
+// Setup test database
+console.log('Setting up test database...')
+try {
+  // Remove existing test database
+  try {
+    execSync(`rm -f ${resolve(projectRoot, 'prisma/data-test.db')}`, {
+      stdio: 'inherit',
+    })
+  } catch (error) {
+    // File doesn't exist, that's fine
+  }
+
+  // Deploy migrations to create the test database
+  execSync('pnpm prisma migrate deploy', {
+    stdio: 'inherit',
+    env: { ...process.env },
+    cwd: projectRoot,
+  })
+
+  // Seed the test database
+  execSync('pnpm prisma db seed', {
+    stdio: 'inherit',
+    env: { ...process.env },
+    cwd: projectRoot,
+  })
+
+  console.log('Test database setup complete')
+} catch (error) {
+  console.error('Failed to setup test database:', error.message)
+  process.exit(1)
+}
 
 // Start the mock server
 console.log('Starting mock server...')

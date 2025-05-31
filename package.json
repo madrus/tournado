@@ -13,6 +13,7 @@
     "commit": "git add . && pnpm git-cz",
     "release": "standard-version",
     "push": "git push --follow-tags",
+    "sync": "git fetch madrus main && git merge madrus/main",
     "dev": "react-router dev",
     "dev:mocks": "react-router dev -c \"pnpm dev:serve\"",
     "dev:serve": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",

@@ -36,6 +36,26 @@ pnpm test:unit
 pnpm test:unit:watch
 ```
 
+## Database Isolation
+
+### Separate Test Database
+
+E2E tests use a completely separate SQLite database to ensure isolation from development data:
+
+- **Development database**: `prisma/data.db`
+- **Test database**: `prisma/data-test.db` (automatically managed)
+
+### Automatic Test Database Setup
+
+When running E2E tests via `pnpm test:e2e` or `pnpm test:e2e:dev`, the system automatically:
+
+1. Removes any existing test database
+2. Creates a fresh test database using `prisma migrate deploy`
+3. Seeds the test database with initial data
+4. Sets `DATABASE_URL` environment variable to point to the test database
+
+This ensures every test run starts with a clean, predictable database state without affecting your development data.
+
 ## Test Structure
 
 ```
@@ -43,6 +63,9 @@ cypress/
   ├── e2e/           # End-to-end tests
   ├── fixtures/      # Test fixtures
   └── support/       # Cypress support files
+      ├── commands.ts           # Custom Cypress commands
+      ├── create-user-test.ts   # Test user creation (uses test DB)
+      └── delete-user-test.ts   # Test user cleanup (uses test DB)
 ```
 
 ## Writing Tests

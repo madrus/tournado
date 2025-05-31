@@ -7,6 +7,7 @@ The project follows a standard Remix application structure:
 ```
 app/
   ├── components/    # Reusable UI components
+  ├── layouts/       # Layout components for nested routes
   ├── models/        # Database models and server-side logic
   ├── routes/        # Application routes
   ├── styles/        # Global styles
@@ -20,6 +21,20 @@ app/
 - **Styling**: Tailwind CSS for modern UI
 - **Testing**: Cypress for E2E tests and Vitest for unit tests
 - **Type Safety**: Full TypeScript support
+- **Routing**: React Router v7 with advanced prefetching and route protection
+
+## Architecture
+
+### Routing System
+
+The application uses React Router v7 (evolution of Remix) with:
+
+- File-based routing with explicit configuration in `app/routes.ts`
+- Nested layouts for shared UI components
+- Advanced route protection and role-based access control
+- Intelligent prefetching strategies for optimal performance
+
+For detailed routing information, see [Routing Documentation](routing.md).
 
 ## Development Workflow
 

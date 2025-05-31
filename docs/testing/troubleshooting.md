@@ -28,6 +28,76 @@
    - Verify test environment variables
    - Ensure test database is clean
 
+### Test Database Issues
+
+1. **E2E Test Database Connection Problems**
+
+   **Symptoms**: Tests fail with database connection errors
+
+   **Solutions**:
+
+   ```sh
+   # Verify test database exists and is accessible
+   ls -la prisma/data-test.db
+
+   # Check test database can be opened
+   sqlite3 prisma/data-test.db ".tables"
+
+   # Run E2E tests through the proper script (auto-manages test DB)
+   pnpm test:e2e:run
+   ```
+
+2. **Development vs Test Database Confusion**
+
+   **Problem**: Accidentally working with the wrong database
+
+   **Identification**:
+
+   - Development database: `prisma/data.db`
+   - Test database: `prisma/data-test.db` (auto-managed by E2E tests)
+
+   **Solutions**:
+
+   ```sh
+   # Check which database Prisma Studio is using
+   echo $DATABASE_URL
+
+   # Force development database connection
+   unset DATABASE_URL
+   pnpm prisma studio
+
+   # Force test database connection
+   DATABASE_URL="file:./prisma/data-test.db?connection_limit=1" pnpm prisma studio
+   ```
+
+3. **Test Database Not Auto-Created**
+
+   **Symptoms**: E2E tests fail because test database doesn't exist
+
+   **Solutions**:
+
+   ```sh
+   # Always run E2E tests via the proper commands
+   pnpm test:e2e:run    # Headless mode
+   pnpm test:e2e:dev    # Interactive mode
+
+   # Avoid running Cypress directly (bypasses database setup)
+   # ❌ Don't do: npx cypress run
+   # ✅ Do: pnpm test:e2e:run
+   ```
+
+4. **Stale Test Data Issues**
+
+   **Problem**: Tests fail due to unexpected data state
+
+   **Solution**: Test database is automatically recreated fresh for each test run. If issues persist:
+
+   ```sh
+   # Manually remove test database and let it be recreated
+   rm -f prisma/data-test.db
+   pnpm test:e2e:run
+   ```
+
 ## Debugging Tools
 
 ### Fly.io Debugging

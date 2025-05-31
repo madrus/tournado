@@ -4,6 +4,7 @@ import type { MetaFunction } from 'react-router'
 
 import { User } from '@prisma/client'
 
+import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUser } from '~/utils/session.server'
 
@@ -18,7 +19,19 @@ interface LoaderArgs {
   request: Request
 }
 
-export const meta: MetaFunction = () => [{ title: 'Settings' }]
+export const meta: MetaFunction = () => [
+  { title: 'Settings | Tournado' },
+  {
+    name: 'description',
+    content: 'Configure your tournament settings, preferences, and account options.',
+  },
+  { property: 'og:title', content: 'Settings | Tournado' },
+  {
+    property: 'og:description',
+    content: 'Configure your tournament settings, preferences, and account options.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 // Route metadata - this is a protected route
 export const handle: RouteMetadata = {
@@ -47,3 +60,5 @@ export default function SettingsPage(): JSX.Element {
     </div>
   )
 }
+
+export { AuthErrorBoundary as ErrorBoundary }

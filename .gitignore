@@ -1,5 +1,7 @@
+.DS_Store
 .env
 .prisma
+.react-router
 /build
 /cypress/screenshots
 /cypress/videos
@@ -7,4 +9,3 @@
 /prisma/data.db-journal
 /public/build
 node_modules
-.react-router

@@ -138,16 +138,16 @@ function checkUserRoles(
  * Get user roles from user object
  * TODO: Implement based on your actual User model structure
  */
-const getUserRoles = (
-  _user: User
-): string[] => // Placeholder implementation - adjust based on your User model
-  // Examples:
-  // return user.roles.map(role => role.name)
-  // return [user.role]
-  // return user.permissions || []
+const getUserRoles = (user: User): string[] => {
+  // Convert the database role (uppercase) to lowercase for matching route requirements
+  // Database: 'ADMIN' -> Route expects: 'admin'
+  if (user.role) {
+    return [user.role.toLowerCase()]
+  }
 
-  // For now, return a default role for authenticated users
-  ['participant']
+  // Fallback for users without a role
+  return ['participant']
+}
 
 /**
  * Utility to require authentication and return user

@@ -1,6 +1,6 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
-import React, { JSX } from 'react'
+import React, { JSX, useEffect } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import {
   Link,
@@ -12,6 +12,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router'
+
+import type { User } from '@prisma/client'
 
 import { AppBar } from '~/components/AppBar'
 
@@ -41,6 +43,7 @@ interface LoaderData {
   authenticated: boolean
   ENV: Record<string, string>
   username: string
+  user: User | null
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
@@ -49,6 +52,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   return {
     authenticated: !!user,
     username: user?.email ?? '',
+    user,
     ENV: getEnv(),
   }
 }
@@ -84,16 +88,18 @@ const Document = ({ children }: { children: React.ReactNode }) => (
 // Auth state is now managed by the Zustand store in app/stores/authStore.ts
 
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-  const { authenticated, username, ENV } = loaderData
+  const { authenticated, username, user, ENV } = loaderData
 
-  // Update auth store whenever App renders with new data
-  useAuthStore.getState().setAuth(authenticated, username)
+  // Update auth store only on client-side after hydration
+  useEffect(() => {
+    useAuthStore.getState().setAuth(authenticated, username)
+  }, [authenticated, username])
 
   return (
     <Document>
       <div className='flex h-full flex-col'>
         <div className='relative' style={{ zIndex: 50 }}>
-          <AppBar authenticated={authenticated} username={username} />
+          <AppBar authenticated={authenticated} username={username} user={user} />
         </div>
         <div
           className='flex-1 overflow-hidden'

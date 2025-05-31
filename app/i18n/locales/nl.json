@@ -47,7 +47,9 @@
       "profile": "Profiel",
       "settings": "Instellingen",
       "signIn": "Inloggen",
-      "signUp": "Registreren"
+      "signUp": "Registreren",
+      "about": "Over ons",
+      "adminPanel": "Beheerpaneel"
     }
   },
   "landing": {

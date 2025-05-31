@@ -2,6 +2,8 @@ import { type JSX, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useLocation } from 'react-router'
 
+import type { User } from '@prisma/client'
+
 import logo from '~/assets/logo-192x192.png'
 import { usePageTitle } from '~/utils/route-utils'
 
@@ -12,10 +14,12 @@ import { UserMenu } from './UserMenu'
 export function AppBar({
   authenticated,
   username,
+  user,
 }: {
   authenticated: boolean
   title?: string
   username?: string
+  user?: User | null
 }): JSX.Element {
   const { t, i18n } = useTranslation()
   const location = useLocation()
@@ -28,6 +32,9 @@ export function AppBar({
   // Track optimistic authenticated state
   const isAuthenticated =
     signoutFetcher.formAction === '/auth/signout' ? false : authenticated
+
+  // Check if user is admin
+  const isAdmin = user?.role === 'ADMIN'
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
@@ -62,6 +69,24 @@ export function AppBar({
       href: '/teams',
       authenticated: false,
     },
+    // Divider after Teams
+    {
+      label: '',
+      icon: '',
+      divider: true,
+      authenticated: false,
+    },
+    // Admin Panel - only show for admin users, right after Teams
+    ...(isAdmin
+      ? [
+          {
+            label: t('common.titles.adminPanel'),
+            icon: 'admin_panel_settings',
+            href: '/admin',
+            authenticated: true,
+          },
+        ]
+      : []),
     {
       label: t('common.titles.profile'),
       icon: 'person',
@@ -75,6 +100,12 @@ export function AppBar({
       href: '/settings',
       todo: true,
       authenticated: true,
+    },
+    {
+      label: t('common.titles.about'),
+      icon: 'info',
+      href: '/about',
+      authenticated: false,
     },
     {
       label: currentLanguage.name,

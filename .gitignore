@@ -7,5 +7,6 @@
 /cypress/videos
 /prisma/data.db
 /prisma/data.db-journal
+/prisma/prisma
 /public/build
 node_modules

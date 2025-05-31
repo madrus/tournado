@@ -50,7 +50,9 @@
       "profile": "Profile",
       "settings": "Settings",
       "signIn": "Sign In",
-      "signUp": "Sign Up"
+      "signUp": "Sign Up",
+      "about": "About",
+      "adminPanel": "Admin Panel"
     }
   },
   "landing": {

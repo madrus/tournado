@@ -17,6 +17,20 @@ const initialStoreState: StoreState = {
   username: '',
 }
 
+// Check if we're in a browser environment
+const isBrowser = typeof window !== 'undefined'
+
+// Server-side storage mock for when sessionStorage is not available
+const createServerSideStorage = () => ({
+  getItem: () => null,
+  setItem: () => {
+    // Server-side no-op
+  },
+  removeItem: () => {
+    // Server-side no-op
+  },
+})
+
 export const useAuthStore = create<StoreState & Actions>()(
   devtools(
     persist(
@@ -26,7 +40,14 @@ export const useAuthStore = create<StoreState & Actions>()(
       }),
       {
         name: 'auth-store-storage',
-        storage: createJSONStorage(() => sessionStorage),
+        // Only use sessionStorage if we're in the browser
+        storage: isBrowser
+          ? createJSONStorage(() => sessionStorage)
+          : createJSONStorage(createServerSideStorage),
+        // Skip persistence completely on server-side
+        skipHydration: !isBrowser,
+        // Only persist when we're in the browser
+        partialize: state => (isBrowser ? state : {}),
       }
     ),
     {
@@ -34,3 +55,8 @@ export const useAuthStore = create<StoreState & Actions>()(
     }
   )
 )
+
+// Hydrate the store on the client side
+if (isBrowser) {
+  useAuthStore.persist.rehydrate()
+}

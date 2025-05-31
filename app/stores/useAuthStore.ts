@@ -17,6 +17,19 @@ const initialStoreState: StoreState = {
   username: '',
 }
 
+// Client-side only storage to prevent SSR issues
+const getStorage = () => {
+  if (typeof window !== 'undefined') {
+    return sessionStorage
+  }
+  // Return a mock storage for SSR
+  return {
+    getItem: () => null,
+    setItem: () => void 0,
+    removeItem: () => void 0,
+  }
+}
+
 export const useAuthStore = create<StoreState & Actions>()(
   devtools(
     persist(
@@ -26,7 +39,9 @@ export const useAuthStore = create<StoreState & Actions>()(
       }),
       {
         name: 'auth-store-storage',
-        storage: createJSONStorage(() => sessionStorage),
+        storage: createJSONStorage(() => getStorage()),
+        // Skip hydration on server side
+        skipHydration: typeof window === 'undefined',
       }
     ),
     {

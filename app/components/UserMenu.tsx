@@ -12,6 +12,7 @@ export type MenuItemType = {
   action?: JSX.Element
   customIcon?: string
   authenticated?: boolean
+  divider?: boolean
   subMenu?: Array<{
     label: string
     customIcon: string
@@ -79,15 +80,17 @@ export function UserMenu({
           <div className='border-b border-gray-200 px-3 py-3'>
             <div className='px-3'>
               <p className='text-gray-500'>
-                {authenticated ? t('common.signedInAs') : t('common.welcome')}
+                {authenticated ? t('common.signedInAs') : t('common.welcome')},{' '}
+                <span className='truncate text-gray-500'>{displayName}</span>!
               </p>
-              <p className='truncate font-medium text-gray-900'>{displayName}</p>
             </div>
           </div>
           <div className='py-2'>
             {menuItems.map((item, index) => (
               <div key={index} className='block px-3 py-0'>
-                {item.customIcon && item.subMenu ? (
+                {item.divider ? (
+                  <hr className='mx-0 my-2 border-gray-200' />
+                ) : item.customIcon && item.subMenu ? (
                   <div className='relative'>
                     <button
                       className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
@@ -113,7 +116,6 @@ export function UserMenu({
                               event.stopPropagation()
                               subItem.onClick()
                               setActiveSubmenu(null)
-                              onOpenChange?.(false)
                             }}
                           >
                             <span className='w-8 pl-0 text-left text-lg'>
@@ -165,12 +167,21 @@ export function UserMenu({
         >
           <div className='px-4 py-3'>
             <p className='text-gray-500'>
-              {authenticated ? t('common.signedInAs') : t('common.welcome')}
+              {authenticated ? t('common.signedInAs') : t('common.welcome')},{' '}
+              <span className='truncate text-gray-500'>{displayName}</span>!
             </p>
-            <p className='truncate font-medium text-gray-900'>{displayName}</p>
           </div>
           <div className='py-1'>
             {menuItems.map((item, index) => {
+              if (item.divider) {
+                return (
+                  <DropdownMenu.Separator
+                    key={index}
+                    className='mx-1 my-1 h-px bg-gray-200'
+                  />
+                )
+              }
+
               if (item.customIcon && item.subMenu) {
                 // This is the language menu
                 return (

@@ -1,4 +1,3 @@
-import React from 'react'
 import { isRouteErrorResponse, MemoryRouter, useRouteError } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
@@ -58,11 +57,13 @@ describe('GeneralErrorBoundary', () => {
 
   it('should render route error with default status handler for other status', () => {
     // Setup
-    // Make sure we include both statusText and data for the component to display properly
+    // Make sure we include both statusText and errorMessage for the component to display properly
+    const errorData = 'Internal Server Error'
+    const dataProperty = 'data'
     const mockError = {
       status: 500,
       statusText: 'Server Error',
-      data: 'Internal Server Error',
+      [dataProperty]: errorData,
     }
 
     vi.mocked(useRouteError).mockReturnValue(mockError)

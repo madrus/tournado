@@ -1,5 +1,5 @@
-import os from 'node:os'
-
+// Remove the OS import since we're no longer using it
+// import os from 'node:os'
 import React, { JSX } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import {
@@ -25,7 +25,6 @@ import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
 import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
-import { capitalize } from './utils/utils'
 
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
@@ -46,11 +45,10 @@ interface LoaderData {
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
-  const prettyUsername = capitalize(os.userInfo().username)
 
   return {
     authenticated: !!user,
-    username: user?.email ?? prettyUsername,
+    username: user?.email ?? '',
     ENV: getEnv(),
   }
 }

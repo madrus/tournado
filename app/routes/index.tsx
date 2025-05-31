@@ -1,12 +1,26 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
-import { Link } from 'react-router'
 
+import { ActionLink } from '~/components/PrefetchLink'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getUser } from '~/utils/session.server'
 
-export const meta: MetaFunction = () => [{ title: 'Tournado' }]
+export const meta: MetaFunction = () => [
+  { title: 'Tournado - Tournament Management Made Easy' },
+  {
+    name: 'description',
+    content:
+      'Manage your sports tournaments with ease. Create, organize, and track your teams and matches in one place.',
+  },
+  { property: 'og:title', content: 'Tournado - Tournament Management Made Easy' },
+  {
+    property: 'og:description',
+    content:
+      'Manage your sports tournaments with ease. Create, organize, and track your teams and matches in one place.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -19,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response>
   return Response.json({ user })
 }
 
-export default function Index(): JSX.Element {
+export default function IndexPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
@@ -35,12 +49,12 @@ export default function Index(): JSX.Element {
               {t('landing.hero.description')}
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
-              <Link
+              <ActionLink
                 to='/teams'
                 className='rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
               >
                 {t('landing.hero.viewTeams')}
-              </Link>
+              </ActionLink>
             </div>
           </div>
         </div>

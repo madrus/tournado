@@ -49,7 +49,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('errors.notFoundTitle')).toBeInTheDocument()
     expect(screen.getByText('auth.errors.notFound')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
@@ -73,7 +73,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('auth.errors.unauthorizedTitle')).toBeInTheDocument()
     expect(screen.getByText('auth.errors.unauthorized')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
@@ -97,7 +97,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('auth.errors.forbiddenTitle')).toBeInTheDocument()
     expect(screen.getByText('auth.errors.forbidden')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
@@ -121,7 +121,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
     expect(screen.getByText('auth.errors.unexpectedError')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
@@ -141,7 +141,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
     const errorParagraph = screen.getByRole('paragraph')
@@ -166,7 +166,7 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.title')).toBeInTheDocument()
+    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
     const errorParagraph = screen.getByRole('paragraph')

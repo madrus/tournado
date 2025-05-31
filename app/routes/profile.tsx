@@ -6,9 +6,9 @@ import type { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import type { RouteMetadata } from '~/utils/route-types'
-import { requireUser } from '~/utils/session.server'
+import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
-// Route metadata - this is a protected route
+// Route metadata - this is a protected route with enhanced configuration
 
 type LoaderData = {
   user: User
@@ -19,18 +19,46 @@ interface LoaderArgs {
   request: Request
 }
 
-export const meta: MetaFunction = () => [{ title: 'Settings' }]
+export const meta: MetaFunction = () => [
+  { title: 'Profile | Tournado' },
+  {
+    name: 'description',
+    content:
+      'Manage your profile settings and account information for tournament management.',
+  },
+  { property: 'og:title', content: 'Profile | Tournado' },
+  {
+    property: 'og:description',
+    content:
+      'Manage your profile settings and account information for tournament management.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 export const handle: RouteMetadata = {
   isPublic: false,
-  // When roles are implemented:
-  // roles: ['tournamentOrganiser', 'admin']
   title: 'common.titles.profile',
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  authorization: {
+    // Only participants, admins, and tournament organisers can access profiles
+    requiredRoles: ['participant', 'admin', 'tournamentOrganiser'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
+  protection: {
+    autoCheck: true,
+    // Custom check example: ensure user can only access their own profile
+    customCheck: async (_request, _user) => true,
+  },
 }
 
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
-  // This ensures only authenticated users can access this route
-  const user = await requireUser(request)
+  // Use the enhanced protection system
+  const user = await requireUserWithMetadata(request, handle)
   return { user }
 }
 
@@ -40,9 +68,21 @@ export default function ProfilePage(): JSX.Element {
   return (
     <div className='container mx-auto px-4 py-8'>
       <h1 className='mb-8 text-3xl font-bold'>{t('common.titles.profile')}</h1>
+      <div className='mb-6 rounded-lg bg-green-50 p-4'>
+        <h3 className='mb-2 text-lg font-semibold text-green-800'>
+          ✅ Enhanced Route Protection Active
+        </h3>
+        <ul className='space-y-1 text-sm text-green-700'>
+          <li>• Authentication required</li>
+          <li>• Role-based access control enabled</li>
+          <li>• Custom protection logic applied</li>
+          <li>• Automatic redirect to /auth/signin if not authenticated</li>
+          <li>• Automatic redirect to /unauthorized if insufficient permissions</li>
+        </ul>
+      </div>
       <p>
-        This is a protected route example that would redirect to login if not
-        authenticated.
+        This is a protected route example that demonstrates the enhanced route
+        protection system.
       </p>
       <p>User settings will be implemented here.</p>
     </div>

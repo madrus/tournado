@@ -41,6 +41,9 @@ export function UserMenu({
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
   const navigation = useNavigation()
 
+  // Use translated guest name when user is not authenticated or username is empty
+  const displayName = authenticated && username ? username : t('common.guest')
+
   // Debug logging
   if (!isMobile) {
     // Debug logs removed - desktop menu working correctly
@@ -78,7 +81,7 @@ export function UserMenu({
               <p className='text-gray-500'>
                 {authenticated ? t('common.signedInAs') : t('common.welcome')}
               </p>
-              <p className='truncate font-medium text-gray-900'>{username}</p>
+              <p className='truncate font-medium text-gray-900'>{displayName}</p>
             </div>
           </div>
           <div className='py-2'>
@@ -152,8 +155,8 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'>
-            <span className='hidden md:block'>{username}</span>
-            <span className='material-symbols-outlined ml-1'>expand_more</span>
+            {/* Show subtle three-dot menu - unobtrusive for public users */}
+            <span className='material-symbols-outlined hidden md:block'>more_vert</span>
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
@@ -164,7 +167,7 @@ export function UserMenu({
             <p className='text-gray-500'>
               {authenticated ? t('common.signedInAs') : t('common.welcome')}
             </p>
-            <p className='truncate font-medium text-gray-900'>{username}</p>
+            <p className='truncate font-medium text-gray-900'>{displayName}</p>
           </div>
           <div className='py-1'>
             {menuItems.map((item, index) => {

@@ -93,7 +93,19 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Sign in' }]
+export const meta: MetaFunction = () => [
+  { title: 'Sign In | Tournado' },
+  {
+    name: 'description',
+    content: 'Sign in to your Tournado account to manage your tournaments and teams.',
+  },
+  { property: 'og:title', content: 'Sign In | Tournado' },
+  {
+    property: 'og:description',
+    content: 'Sign in to your Tournado account to manage your tournaments and teams.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()

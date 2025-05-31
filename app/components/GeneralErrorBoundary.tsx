@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next'
 import {
   type ErrorResponse,
   isRouteErrorResponse,
-  Link,
   useParams,
   useRouteError,
 } from 'react-router'
 
 import { getErrorMessage } from '~/utils/misc'
+
+import { ErrorRecoveryLink } from './PrefetchLink'
 
 type StatusHandler = (info: {
   error: ErrorResponse
@@ -28,9 +29,9 @@ export function GeneralErrorBoundary({
             ? t('auth.errors.notFound')
             : `${error.status} ${error.data}`}
         </p>
-        <Link to='/' className='text-body-md underline'>
+        <ErrorRecoveryLink to='/' className='text-body-md underline'>
           {t('common.backToHome')}
-        </Link>
+        </ErrorRecoveryLink>
       </div>
     )
   },
@@ -41,9 +42,9 @@ export function GeneralErrorBoundary({
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className='text-2xl font-bold'>{t('errors.errorTitle')}</h1>
         <p className='text-gray-500'>{getErrorMessage(error)}</p>
-        <Link to='/' className='text-body-md underline'>
+        <ErrorRecoveryLink to='/' className='text-body-md underline'>
           {t('common.backToHome')}
-        </Link>
+        </ErrorRecoveryLink>
       </div>
     )
   },

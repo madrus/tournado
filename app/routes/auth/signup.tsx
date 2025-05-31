@@ -106,9 +106,23 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
+export const meta: MetaFunction = () => [
+  { title: 'Sign Up | Tournado' },
+  {
+    name: 'description',
+    content:
+      'Create your free Tournado account to start organizing and managing tournaments.',
+  },
+  { property: 'og:title', content: 'Sign Up | Tournado' },
+  {
+    property: 'og:description',
+    content:
+      'Create your free Tournado account to start organizing and managing tournaments.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
-export default function SignUp(): JSX.Element {
+export default function SignupPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()

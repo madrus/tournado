@@ -4,6 +4,8 @@
 - Development
    - [Overview](development/overview.md)
    - [Routing](development/routing.md)
+   - [UI Components](development/ui-components.md)
+   - [Database](development/database.md)
    - [Cursor Rules](development/cursor_rules.md)
 - Testing
    - [Overview](testing/overview.md)

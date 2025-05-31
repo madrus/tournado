@@ -1,5 +1,78 @@
 # Working with Prisma and SQLite
 
+## Database Structure
+
+This project uses a dual database setup to ensure separation between development and testing environments:
+
+### Main Database
+
+- **Location**: `prisma/data.db`
+- **Purpose**: Primary database for running the application in development and production
+- **Usage**: Used when starting the application with `pnpm dev` or in production
+
+### E2E Test Database
+
+- **Location**: `prisma/prisma/data.db`
+- **Purpose**: Dedicated database for end-to-end (e2e) tests using Cypress
+- **Usage**: Used automatically when running e2e tests with `pnpm test:e2e`
+
+### Critical Requirement for E2E Tests
+
+⚠️ **IMPORTANT**: For e2e tests to run without Prisma connection issues, it is essential that the main database (`prisma/data.db`) is 100% in order. The e2e test setup depends on the main database being properly configured and migrated.
+
+**Before running e2e tests, ensure:**
+
+- The main database exists and is properly migrated
+- No schema drift exists in the main database
+- All migrations have been applied successfully
+- The database is not corrupted or in an inconsistent state
+
+If you encounter Prisma connection issues during e2e tests, first verify and fix the main database using the commands in the [Manual Database Reset](#manual-database-reset) section below.
+
+---
+
+## Testing Database Connectivity
+
+The project includes a dedicated script to test Prisma database connectivity:
+
+### Prisma Test Script
+
+- **Location**: `test/prisma-test.ts`
+- **Purpose**: Verifies that the Prisma client can successfully connect to and query the database
+- **Usage**: Run with `pnpm prisma:test`
+
+This script performs a basic connectivity test by:
+
+- Connecting to the main database using Prisma Client
+- Fetching all users from the database
+- Displaying the results or any connection errors
+- Properly disconnecting from the database
+
+**When to use:**
+
+- After setting up the database for the first time
+- When troubleshooting Prisma connection issues
+- Before running e2e tests to ensure database connectivity
+- After making schema changes or migrations
+
+**Example output:**
+
+```bash
+$ pnpm prisma:test
+Users: [
+  { id: 1, email: 'user@example.com', ... },
+  { id: 2, email: 'admin@example.com', ... }
+]
+```
+
+If the script fails with connection errors, check that:
+
+- The main database (`prisma/data.db`) exists
+- All migrations have been applied
+- The database schema is up to date
+
+---
+
 For local development, we use SQLite with Prisma. Prisma provides a database client and a migration system. We can connect to the database by running:
 
 ```sh

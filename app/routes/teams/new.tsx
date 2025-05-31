@@ -4,17 +4,34 @@ import {
   type ActionFunctionArgs,
   Form,
   type LoaderFunctionArgs,
-  NavLink,
+  type MetaFunction,
   redirect,
   useActionData,
   useLoaderData,
   useOutletContext,
 } from 'react-router'
 
+import { ListItemNavLink } from '~/components/PrefetchLink'
 import { prisma } from '~/db.server'
 import { createTeam, getTeamListItems } from '~/models/team.server'
 import { getDefaultTeamLeader } from '~/models/teamLeader.server'
 import type { RouteMetadata } from '~/utils/route-types'
+
+export const meta: MetaFunction = () => [
+  { title: 'New Team | Tournado' },
+  {
+    name: 'description',
+    content:
+      'Create a new team for your tournament. Add team details, assign classes, and get ready to compete.',
+  },
+  { property: 'og:title', content: 'New Team | Tournado' },
+  {
+    property: 'og:description',
+    content:
+      'Create a new team for your tournament. Add team details, assign classes, and get ready to compete.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -134,7 +151,7 @@ export default function NewTeamPage(): JSX.Element {
     return (
       <div className='flex flex-col gap-2 p-4'>
         {teamListItems.map((teamItem: TeamListItem) => (
-          <NavLink
+          <ListItemNavLink
             key={teamItem.id}
             to={`/teams/${teamItem.id}`}
             className={({ isActive }: { isActive: boolean }) =>
@@ -142,10 +159,9 @@ export default function NewTeamPage(): JSX.Element {
                 isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
               }`
             }
-            prefetch='intent'
           >
             {teamItem.teamName}
-          </NavLink>
+          </ListItemNavLink>
         ))}
       </div>
     )

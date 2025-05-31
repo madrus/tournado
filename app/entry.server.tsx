@@ -7,6 +7,17 @@ import { renderToPipeableStream } from 'react-dom/server'
 import type { EntryContext } from 'react-router'
 import { ServerRouter } from 'react-router'
 
+import 'dotenv/config'
+
+// Ensure DATABASE_URL is set for local dev if not already present
+if (!process.env.DATABASE_URL) {
+  if (process.env.NODE_ENV !== 'production') {
+    process.env.DATABASE_URL = 'file:./prisma/data.db?connection_limit=1'
+  } else {
+    throw new Error('DATABASE_URL must be set in production environment!')
+  }
+}
+
 const ABORT_DELAY = 5_000
 
 export default function handleRequest(

@@ -5,15 +5,33 @@
 // ensure the user gets the right status code and we can display a nicer error
 // message for them than the Remix and/or browser default.
 import { JSX } from 'react'
-import { Link, useLocation } from 'react-router'
+import type { MetaFunction } from 'react-router'
+import { useLocation } from 'react-router'
 
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
+import { ErrorRecoveryLink } from '~/components/PrefetchLink'
+
+export const meta: MetaFunction = () => [
+  { title: 'Page Not Found | Tournado' },
+  {
+    name: 'description',
+    content:
+      'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
+  },
+  { property: 'og:title', content: 'Page Not Found | Tournado' },
+  {
+    property: 'og:description',
+    content:
+      'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 export async function loader(): Promise<void> {
   throw new Response('Not found', { status: 404 })
 }
 
-export default function NotFound(): JSX.Element {
+export default function NotFoundPage(): JSX.Element {
   // due to the loader, this component will never be rendered, but we'll return
   // the error boundary just in case.
   return <ErrorBoundary />
@@ -32,9 +50,9 @@ export function ErrorBoundary(): JSX.Element {
                 {location.pathname}
               </pre>
             </div>
-            <Link to='/' className='text-body-md underline'>
+            <ErrorRecoveryLink to='/' className='text-body-md underline'>
               Back to home
-            </Link>
+            </ErrorRecoveryLink>
           </div>
         ),
       }}

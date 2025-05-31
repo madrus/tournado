@@ -1,9 +1,9 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { MetaFunction } from 'react-router'
 import {
   Form,
   isRouteErrorResponse,
-  NavLink,
   redirect,
   useLoaderData,
   useOutletContext,
@@ -12,6 +12,7 @@ import {
 
 import invariant from 'tiny-invariant'
 
+import { ListItemNavLink } from '~/components/PrefetchLink'
 import {
   deleteTeam,
   getTeam,
@@ -54,6 +55,32 @@ type LoaderData = {
     },
     'id' | 'teamName'
   >[]
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
+  if (!loaderData?.team) {
+    return [
+      { title: 'Team Not Found | Tournado' },
+      {
+        name: 'description',
+        content: 'The team you are looking for could not be found.',
+      },
+    ]
+  }
+
+  return [
+    { title: `${loaderData.team.teamName} | Tournado` },
+    {
+      name: 'description',
+      content: `View details for ${loaderData.team.teamName} in the ${loaderData.team.teamClass} class. Manage team information and tournament participation.`,
+    },
+    { property: 'og:title', content: `${loaderData.team.teamName} | Tournado` },
+    {
+      property: 'og:description',
+      content: `View details for ${loaderData.team.teamName} in the ${loaderData.team.teamClass} class. Manage team information and tournament participation.`,
+    },
+    { property: 'og:type', content: 'website' },
+  ]
 }
 
 export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
@@ -108,18 +135,17 @@ export default function TeamDetailsPage(): JSX.Element {
     return (
       <div className='flex flex-col gap-2 p-4'>
         {teamListItems.map((teamItem: TeamListItem) => (
-          <NavLink
+          <ListItemNavLink
             key={teamItem.id}
             to={`/teams/${teamItem.id}`}
-            className={({ isActive }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
                 isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
               }`
             }
-            prefetch='intent'
           >
             {teamItem.teamName}
-          </NavLink>
+          </ListItemNavLink>
         ))}
       </div>
     )

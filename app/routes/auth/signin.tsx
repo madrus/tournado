@@ -6,6 +6,7 @@ import {
   type MetaFunction,
   redirect,
   useActionData,
+  useNavigation,
   useSearchParams,
 } from 'react-router'
 
@@ -92,11 +93,25 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Sign in' }]
+export const meta: MetaFunction = () => [
+  { title: 'Sign In | Tournado' },
+  {
+    name: 'description',
+    content: 'Sign in to your Tournado account to manage your tournaments and teams.',
+  },
+  { property: 'og:title', content: 'Sign In | Tournado' },
+  {
+    property: 'og:description',
+    content: 'Sign in to your Tournado account to manage your tournaments and teams.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
 export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state === 'submitting'
   const redirectTo = searchParams.get('redirectTo') || '/'
   const registered = searchParams.get('registered') === 'true'
   const emailFromRegistration = searchParams.get('email')
@@ -202,9 +217,17 @@ export default function SigninPage(): JSX.Element {
             <input type='hidden' name='redirectTo' value={redirectTo} />
             <button
               type='submit'
-              className='w-full rounded-sm bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700 focus:bg-emerald-500'
+              disabled={isSubmitting}
+              className='w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300'
             >
-              {t('auth.signin')}
+              {isSubmitting ? (
+                <>
+                  <span className='mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                  {t('common.loading')}
+                </>
+              ) : (
+                t('auth.signin')
+              )}
             </button>
             <div className='flex items-center justify-between'>
               <div className='flex items-center'>

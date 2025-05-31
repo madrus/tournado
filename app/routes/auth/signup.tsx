@@ -1,8 +1,16 @@
 import { JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { Form, Link, redirect, useActionData, useSearchParams } from 'react-router'
+import {
+  Form,
+  Link,
+  redirect,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from 'react-router'
 
+import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { createUser, getUserByEmail } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
@@ -98,11 +106,27 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   })
 }
 
-export const meta: MetaFunction = () => [{ title: 'Sign Up' }]
+export const meta: MetaFunction = () => [
+  { title: 'Sign Up | Tournado' },
+  {
+    name: 'description',
+    content:
+      'Create your free Tournado account to start organizing and managing tournaments.',
+  },
+  { property: 'og:title', content: 'Sign Up | Tournado' },
+  {
+    property: 'og:description',
+    content:
+      'Create your free Tournado account to start organizing and managing tournaments.',
+  },
+  { property: 'og:type', content: 'website' },
+]
 
-export default function SignUp(): JSX.Element {
+export default function SignupPage(): JSX.Element {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state === 'submitting'
   const redirectTo = searchParams.get('redirectTo') || '/'
   const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
@@ -242,9 +266,17 @@ export default function SignUp(): JSX.Element {
           <input type='hidden' name='redirectTo' value={redirectTo} />
           <button
             type='submit'
-            className='focus-visible:outline-offset flex w-full justify-center rounded-md bg-emerald-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-emerald-600'
+            disabled={isSubmitting}
+            className='focus-visible:outline-offset flex w-full justify-center rounded-md bg-emerald-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-emerald-600 disabled:bg-emerald-300'
           >
-            {t('auth.createAccount')}
+            {isSubmitting ? (
+              <>
+                <span className='mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                {t('common.loading')}
+              </>
+            ) : (
+              t('auth.createAccount')
+            )}
           </button>
         </Form>
 
@@ -261,3 +293,5 @@ export default function SignUp(): JSX.Element {
     </div>
   )
 }
+
+export { AuthErrorBoundary as ErrorBoundary }

@@ -1,10 +1,11 @@
 import { type JSX, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useFetcher, useLocation } from 'react-router'
+import { useFetcher, useLocation } from 'react-router'
 
 import logo from '~/assets/logo-192x192.png'
 import { usePageTitle } from '~/utils/route-utils'
 
+import { PrimaryNavLink } from './PrefetchLink'
 import { UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
@@ -99,14 +100,14 @@ export function AppBar({
           {t('auth.signout')}
         </button>
       ) : (
-        <Link
+        <PrimaryNavLink
           to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
           className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
           onClick={handleSignIn}
         >
           <span className='material-symbols-outlined w-8 pl-0 text-left'>login</span>
           {t('auth.signin')}
-        </Link>
+        </PrimaryNavLink>
       ),
       authenticated: false,
     },
@@ -117,7 +118,7 @@ export function AppBar({
       <header className='safe-top relative z-20 h-14 bg-emerald-800 px-4 text-white'>
         {/* Logo and Brand for all screen sizes */}
         <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-1 lg:left-4 lg:gap-2'>
-          <Link to='/' className='flex items-center gap-1 lg:gap-2'>
+          <PrimaryNavLink to='/' className='flex items-center gap-1 lg:gap-2'>
             <img
               src={logo}
               alt='Tournado Logo'
@@ -130,7 +131,7 @@ export function AppBar({
             <span className='hidden text-xl font-bold text-white lg:inline-block'>
               Tournado
             </span>
-          </Link>
+          </PrimaryNavLink>
         </div>
 
         {/* Page title in center */}

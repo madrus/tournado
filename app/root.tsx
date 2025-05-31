@@ -1,5 +1,5 @@
-import os from 'node:os'
-
+// Remove the OS import since we're no longer using it
+// import os from 'node:os'
 import React, { JSX } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import {
@@ -7,7 +7,7 @@ import {
   Links,
   LinksFunction,
   Meta,
-  type MetaFunction,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -19,12 +19,12 @@ import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
+import { useAuthStore } from './stores/useAuthStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
 import { getEnv } from './utils/env.server'
 import { getUser } from './utils/session.server'
-import { capitalize } from './utils/utils'
 
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
@@ -45,11 +45,10 @@ interface LoaderData {
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
-  const prettyUsername = capitalize(os.userInfo().username)
 
   return {
     authenticated: !!user,
-    username: user?.email ?? prettyUsername,
+    username: user?.email ?? '',
     ENV: getEnv(),
   }
 }
@@ -82,8 +81,13 @@ const Document = ({ children }: { children: React.ReactNode }) => (
   </html>
 )
 
+// Auth state is now managed by the Zustand store in app/stores/authStore.ts
+
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   const { authenticated, username, ENV } = loaderData
+
+  // Update auth store whenever App renders with new data
+  useAuthStore.getState().setAuth(authenticated, username)
 
   return (
     <Document>
@@ -115,8 +119,27 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 export const ErrorBoundary = (): JSX.Element => (
   <Document>
-    <div className='flex-1'>
-      <GeneralErrorBoundary />
-    </div>
+    <I18nextProvider i18n={i18n}>
+      <div className='flex h-full flex-col'>
+        <div className='relative' style={{ zIndex: 50 }}>
+          <AppBar
+            authenticated={useAuthStore.getState().authenticated}
+            username={useAuthStore.getState().username}
+          />
+        </div>
+        <div
+          className='flex-1 overflow-hidden'
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <GeneralErrorBoundary />
+        </div>
+        <div className='container mx-auto flex justify-between p-2'>
+          <Link to='/'>
+            <div className='font-light'>Tournado</div>
+          </Link>
+          <p>Built with ♥️ by Madrus</p>
+        </div>
+      </div>
+    </I18nextProvider>
   </Document>
 )

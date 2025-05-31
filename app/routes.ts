@@ -4,6 +4,7 @@ export default [
   // Public routes
   index('routes/index.tsx'),
   route('about', 'routes/about.tsx'),
+  route('unauthorized', 'routes/unauthorized.tsx'),
   route('resources/healthcheck', 'routes/resources/healthcheck.tsx'),
   route('teams', 'layouts/teams-layout.tsx', [
     index('routes/teams/index.tsx'),
@@ -21,4 +22,7 @@ export default [
   // Protected routes
   route('profile', 'routes/profile.tsx'),
   route('settings', 'routes/settings.tsx'),
+
+  // Admin routes (role-protected)
+  route('admin', 'routes/admin.tsx'),
 ] satisfies RouteConfig

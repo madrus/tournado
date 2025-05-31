@@ -3,6 +3,7 @@
    - [Getting Started](getting_started.md)
 - Development
    - [Overview](development/overview.md)
+   - [Routing](development/routing.md)
    - [Cursor Rules](development/cursor_rules.md)
 - Testing
    - [Overview](testing/overview.md)
@@ -17,5 +18,6 @@
    - [Fly.io vs Vercel](fly_vs_vercel.md)
    - [Markdown Tips](markdown_tips.md)
    - [Remix Stack](remix_stack.md)
+   - [Prefetching Strategy](PREFETCHING_STRATEGY.md)
 - Work in Progress
    - [WIP Items](wip.md)

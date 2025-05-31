@@ -2,6 +2,8 @@
 
 This document outlines the comprehensive route prefetching strategy implemented for optimal performance and user experience.
 
+> **Note**: For information about the overall routing architecture and route structure, see [Routing Documentation](development/routing.md).
+
 ## Overview
 
 Our prefetching strategy uses React Router v7's built-in prefetching capabilities with intelligent, context-aware configurations that adapt to user behavior and network conditions.

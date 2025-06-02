@@ -46,7 +46,7 @@
     "titles": {
       "welcome": "Welkom",
       "teams": "Teams",
-      "newTeam": "Nieuw team",
+      "addTeam": "Team toevoegen",
       "profile": "Profiel",
       "settings": "Instellingen",
       "signIn": "Inloggen",
@@ -126,7 +126,7 @@
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
       "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid"
     },
-    "newTeam": "+ Nieuw team",
+    "addTeam": "+ Team toevoegen",
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Nog geen teams",
     "save": "Opslaan",

@@ -32,7 +32,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           type={type}
           readOnly={readOnly}
           required={required}
-          className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
+          className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
         />

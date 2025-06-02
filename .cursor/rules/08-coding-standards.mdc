@@ -1,0 +1,146 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Coding Standards
+
+These rules ensure consistent coding style and standards across the project.
+
+## TypeScript Conventions
+
+### 1. Use Types Instead of Interfaces
+
+**Rule:** Always use `type` declarations instead of `interface` declarations.
+
+#### ✅ Correct
+```typescript
+type UserProps = {
+  id: string
+  name: string
+  email: string
+}
+
+type ComponentProps = {
+  children: React.ReactNode
+  className?: string
+}
+```
+
+#### ❌ Incorrect
+```typescript
+interface UserProps {
+  id: string
+  name: string
+  email: string
+}
+
+interface ComponentProps {
+  children: React.ReactNode
+  className?: string
+}
+```
+
+#### Why This Rule?
+- **Consistency** - One way to define object shapes
+- **Flexibility** - Types support union types, computed properties, and other advanced features
+- **Simplicity** - Less cognitive overhead deciding between type vs interface
+
+## Internationalization (i18n) Standards
+
+### 2. Dutch Language Capitalization
+
+**Rule:** In Dutch translations, only capitalize the first word of titles and labels (sentence case), not every word.
+
+#### ✅ Correct Dutch Capitalization
+```json
+{
+  "teams": {
+    "form": {
+      "teamInfo": "Team informatie",
+      "teamLeaderInfo": "Teamleider informatie",
+      "clubName": "Clubnaam",
+      "tournamentRequired": "Toernooi selectie is verplicht"
+    }
+  }
+}
+```
+
+#### ❌ Incorrect Dutch Capitalization
+```json
+{
+  "teams": {
+    "form": {
+      "teamInfo": "Team Informatie",
+      "teamLeaderInfo": "Teamleider Informatie", 
+      "clubName": "Club Naam",
+      "tournamentRequired": "Toernooi Selectie Is Verplicht"
+    }
+  }
+}
+```
+
+#### Why This Rule?
+- **Dutch Grammar** - Dutch uses sentence case for titles, not title case like English
+- **Consistency** - Follows Dutch language conventions
+- **User Experience** - Feels natural to Dutch speakers
+
+## Implementation Guidelines
+
+### When Adding TypeScript Definitions
+1. Always use `type` keyword
+2. Use PascalCase for type names
+3. Use object literal syntax `{ }` instead of interface syntax
+
+### When Adding Dutch Translations  
+1. Only capitalize the first letter of the first word
+2. Keep all other words lowercase unless they are proper nouns
+3. Follow Dutch sentence structure and grammar rules
+
+### Examples in Practice
+
+#### Component Props
+```typescript
+// Good
+type InputFieldProps = {
+  name: string
+  label: string
+  type?: 'text' | 'email' | 'tel'
+  readOnly?: boolean
+  error?: string
+  required?: boolean
+  className?: string
+}
+
+// Bad
+interface InputFieldProps {
+  name: string
+  label: string
+  // ...
+}
+```
+
+#### Translation Keys
+```json
+// Good - Dutch
+{
+  "auth": {
+    "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken"
+  }
+}
+
+// Bad - Dutch  
+{
+  "auth": {
+    "signInRequiredToCreateTeam": "Je Moet Inloggen Om Een Team Aan Te Maken"
+  }
+}
+```
+
+## Enforcement
+
+These rules should be:
+- ✅ **Followed in all new code**
+- ✅ **Applied when refactoring existing code**
+- ✅ **Checked during code reviews**
+- ✅ **Remembered by AI assistants working on this project**

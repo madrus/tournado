@@ -21,6 +21,15 @@ async function seed() {
     )
   )
 
+  // Cleanup existing tournaments (this will cascade delete teams and matches)
+  await prisma.tournament.deleteMany({
+    where: {
+      name: {
+        in: ['Spring Cup', 'Summer Cup'],
+      },
+    },
+  })
+
   const hashedInitialPassword = await bcrypt.hash('Tournado@2025', 10)
 
   // Create admin users
@@ -76,7 +85,7 @@ async function seed() {
     }
   }
 
-  // Minimal dummy tournament
+  // Minimal two dummy tournaments
   const tournament1 = await prisma.tournament.create({
     data: {
       name: 'Spring Cup',
@@ -86,6 +95,16 @@ async function seed() {
     },
   })
 
+  const tournament2 = await prisma.tournament.create({
+    data: {
+      name: 'Summer Cup',
+      location: 'Aalsmeer',
+      startDate: new Date('2025-06-01'),
+      endDate: new Date('2025-06-02'),
+    },
+  })
+
+  // minimal two dummy teams playing in the 1st tournament
   const createdTeam1 = await prisma.team.create({
     data: {
       teamName: team1.teamName,
@@ -104,16 +123,47 @@ async function seed() {
     },
   })
 
-  // Minimal dummy match
+  // minimal two dummy teams playing in the 2nd tournament
+  const createdTeam3 = await prisma.team.create({
+    data: {
+      teamName: team1.teamName,
+      teamClass: team1.teamClass,
+      teamLeaderId: teamLeader.id,
+      tournamentId: tournament2.id,
+    },
+  })
+
+  const createdTeam4 = await prisma.team.create({
+    data: {
+      teamName: team2.teamName,
+      teamClass: team2.teamClass,
+      teamLeaderId: teamLeader.id,
+      tournamentId: tournament2.id,
+    },
+  })
+
+  // Minimal two dummy matches
   await prisma.match.create({
     data: {
-      date: new Date('2025-06-01'),
+      date: new Date('2025-05-01'),
       time: new Date('2025-06-01T10:00:00Z'),
-      location: 'Main Field',
+      location: 'Green Field',
       status: 'UPCOMING',
       tournamentId: tournament1.id,
       homeTeamId: createdTeam1.id,
       awayTeamId: createdTeam2.id,
+    },
+  })
+
+  await prisma.match.create({
+    data: {
+      date: new Date('2025-06-01'),
+      time: new Date('2025-06-01T10:00:00Z'),
+      location: 'Red Field',
+      status: 'UPCOMING',
+      tournamentId: tournament2.id,
+      homeTeamId: createdTeam4.id,
+      awayTeamId: createdTeam3.id,
     },
   })
 

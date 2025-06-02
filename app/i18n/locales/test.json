@@ -46,7 +46,7 @@
     "titles": {
       "welcome": "welcome",
       "teams": "teams",
-      "newTeam": "new team",
+      "addTeam": "add team",
       "profile": "profile",
       "settings": "settings",
       "signIn": "sign in",
@@ -128,7 +128,7 @@
       "privacyAgreement": "i agree to the privacy policy and terms of service",
       "privacyAgreementRequired": "you must agree to the privacy policy"
     },
-    "newTeam": "new team",
+    "addTeam": "add team",
     "noTeamSelected": "no team selected",
     "noTeams": "no teams yet",
     "save": "save",

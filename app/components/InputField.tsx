@@ -1,0 +1,49 @@
+import { forwardRef } from 'react'
+
+type InputFieldProps = {
+  name: string
+  label: string
+  type?: 'text' | 'email' | 'tel'
+  readOnly?: boolean
+  error?: string
+  required?: boolean
+  className?: string
+}
+
+export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+  (
+    {
+      name,
+      label,
+      type = 'text',
+      readOnly = true,
+      error,
+      required = false,
+      className = '',
+    },
+    ref
+  ) => (
+    <div className={className}>
+      <label className='flex w-full flex-col gap-1'>
+        <span className='font-medium'>{label}</span>
+        <input
+          ref={ref}
+          name={name}
+          type={type}
+          readOnly={readOnly}
+          required={required}
+          className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
+          aria-invalid={error ? true : undefined}
+          aria-errormessage={error ? `${name}-error` : undefined}
+        />
+      </label>
+      {error ? (
+        <div className='pt-1 text-red-700' id={`${name}-error`}>
+          {error}
+        </div>
+      ) : null}
+    </div>
+  )
+)
+
+InputField.displayName = 'InputField'

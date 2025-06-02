@@ -62,6 +62,7 @@ export type Email = `${string}@${string}.${string}`
 
 // Type for form input
 export type TeamFormData = {
+  tournamentId: string // which tournament the team is registering for
   clubName: string // via API Club -- logo en basisgegevens ophalen
   teamName: TeamName
   teamClass: TeamClass

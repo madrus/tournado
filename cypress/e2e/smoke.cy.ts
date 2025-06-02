@@ -179,69 +179,152 @@ describe('smoke tests', () => {
       const testTeam = {
         teamName: faker.lorem.words(1),
         teamClass: 'JO8-1',
+        clubName: faker.company.name(),
+        teamLeaderName: faker.person.fullName(),
+        teamLeaderPhone: faker.phone.number(),
+        teamLeaderEmail: faker.internet.email(),
       }
 
       cy.findByRole('link', {
         name: 'Sidebar button to add a new team',
       }).click()
 
-      // Use findAllByRole and then get the first one to avoid ambiguity
+      // Select a tournament (first available option)
+      cy.findByRole('combobox', { name: /tournament/i }).select(1) // Select the first tournament option (index 0 is the placeholder)
+
+      // Fill out team information
+      cy.findAllByRole('textbox', { name: /club name/i })
+        .first()
+        .type(testTeam.clubName)
+
       cy.findAllByRole('textbox', { name: /team name/i })
         .first()
         .type(testTeam.teamName)
+
       cy.findAllByRole('textbox', { name: /team class/i })
         .first()
         .type(testTeam.teamClass)
+
+      // Fill out team leader information
+      cy.findAllByRole('textbox', { name: /team leader name/i })
+        .first()
+        .type(testTeam.teamLeaderName)
+
+      cy.findAllByRole('textbox', { name: /team leader phone/i })
+        .first()
+        .type(testTeam.teamLeaderPhone)
+
+      cy.findAllByRole('textbox', { name: /team leader email/i })
+        .first()
+        .type(testTeam.teamLeaderEmail)
+
+      // Accept privacy agreement
+      cy.findByRole('checkbox', { name: /privacy policy/i }).check()
+
+      // Submit the form
       cy.findAllByRole('button', { name: /save/i }).first().click()
 
+      // After saving, we should be redirected to the team detail page
+      cy.url().should('include', `/teams/`)
+      cy.url().should('not.include', '/teams/new')
+
+      // Now we can find the delete button on the team detail page
       cy.findByRole('button', { name: /delete/i }).click()
 
-      // Instead of looking for "no teams yet", check that we're back at the teams page
+      // After deletion, we should be back at the teams page
       cy.url().should('include', '/teams')
+      cy.url().should('not.include', `/teams/`)
       cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
         'exist'
       )
     })
 
     it('should allow you to make a team on mobile', () => {
-      cy.viewport('iphone-x')
+      // Use a more realistic mobile viewport with sufficient height
+      cy.viewport(375, 812) // iPhone X dimensions
       const testTeam = {
         teamName: faker.lorem.words(1),
         teamClass: 'JO8-1',
+        clubName: faker.company.name(),
+        teamLeaderName: faker.person.fullName(),
+        teamLeaderPhone: faker.phone.number(),
+        teamLeaderEmail: faker.internet.email(),
       }
 
       cy.findByRole('link', {
         name: 'Sidebar button to add a new team',
       }).click()
 
-      // Make sure the mobile menu is closed before interacting with the form
-      // Asynchronously wait for the menu overlay to disappear
-      cy.get('.fixed.inset-0.z-30.flex').should('not.exist')
+      // Wait for navigation to complete
+      cy.url().should('include', '/teams/new')
 
-      // Wait for the form to be ready by checking for form elements
+      // Close the mobile sidebar by clicking on the overlay
+      // Note: Using force: true due to Cypress layering issue that doesn't exist in real mobile usage
+      cy.get('.fixed.inset-0.z-20').click({ force: true })
+
+      // Wait a moment for the sidebar to close
+      cy.wait(500)
+
+      // Select a tournament (first available option)
+      cy.findByRole('combobox', { name: /tournament/i })
+        .should('be.visible')
+        .select(1) // Select the first tournament option (index 0 is the placeholder)
+
+      // Fill out team information
+      cy.findAllByRole('textbox', { name: /club name/i })
+        .should('exist')
+        .first()
+        .type(testTeam.clubName)
+
       cy.findAllByRole('textbox', { name: /team name/i })
         .should('exist')
-        .and('be.visible')
         .first()
-        .type(testTeam.teamName, { force: true })
+        .type(testTeam.teamName)
 
       cy.findAllByRole('textbox', { name: /team class/i })
         .should('exist')
-        .and('be.visible')
         .first()
-        .type(testTeam.teamClass, { force: true })
+        .type(testTeam.teamClass)
 
+      // Fill out team leader information
+      cy.findAllByRole('textbox', { name: /team leader name/i })
+        .should('exist')
+        .first()
+        .type(testTeam.teamLeaderName)
+
+      cy.findAllByRole('textbox', { name: /team leader phone/i })
+        .should('exist')
+        .first()
+        .type(testTeam.teamLeaderPhone)
+
+      cy.findAllByRole('textbox', { name: /team leader email/i })
+        .should('exist')
+        .first()
+        .type(testTeam.teamLeaderEmail)
+
+      // Accept privacy agreement
+      cy.findByRole('checkbox', { name: /privacy policy/i })
+        .should('exist')
+        .check()
+
+      // Scroll to ensure the save button is visible and submit the form
       cy.findAllByRole('button', { name: /save/i })
         .should('exist')
-        .and('be.visible')
         .first()
-        .click({ force: true })
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
 
-      // Delete button is likely covered, so use force: true
-      cy.findByRole('button', { name: /delete/i }).click({ force: true })
+      // After saving, we should be redirected to the team detail page
+      cy.url().should('include', `/teams/`)
+      cy.url().should('not.include', '/teams/new')
 
-      // Instead of looking for "no teams yet", check that we're back at the teams page
+      // Now we can find the delete button on the team detail page
+      cy.findByRole('button', { name: /delete/i }).click()
+
+      // After deletion, we should be back at the teams page
       cy.url().should('include', '/teams')
+      cy.url().should('not.include', `/teams/`)
       cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
         'exist'
       )

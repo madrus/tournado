@@ -250,173 +250,176 @@ export default function NewTeamPage(): JSX.Element {
 
   // Render form in main content
   return (
-    <Form method='post' className='max-w-6xl space-y-6'>
-      {/* Responsive Panels Container */}
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-        {/* Team Information Panel */}
-        <div className='rounded-lg bg-gray-50 p-4'>
-          <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-            {t('teams.form.teamInfo')}
-          </h3>
+    <div className='min-h-full'>
+      <Form method='post' className='pb-safe max-w-6xl space-y-6 pb-8'>
+        {/* Responsive Panels Container */}
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+          {/* Team Information Panel */}
+          <div className='rounded-lg bg-gray-50 p-4'>
+            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+              {t('teams.form.teamInfo')}
+            </h3>
 
-          {/* Tournament Selection */}
-          <div className='mb-4'>
-            <label className='flex w-full flex-col gap-1'>
-              <span className='font-medium'>{t('teams.form.tournament')}</span>
-              <select
-                name='tournamentId'
-                className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-                aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
-                aria-errormessage={
-                  actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
-                }
-              >
-                <option value=''>{t('teams.form.selectTournament')}</option>
-                {tournaments.map(tournament => (
-                  <option key={tournament.id} value={tournament.id}>
-                    {tournament.name} - {tournament.location} (
-                    {new Date(tournament.startDate).toLocaleDateString()})
-                  </option>
-                ))}
-              </select>
-            </label>
-            {actionData?.errors?.tournamentId ? (
-              <div className='pt-1 text-red-700' id='tournamentId-error'>
-                {t('teams.form.tournamentRequired')}
-              </div>
-            ) : null}
+            {/* Tournament Selection */}
+            <div className='mb-4'>
+              <label className='flex w-full flex-col gap-1'>
+                <span className='font-medium'>{t('teams.form.tournament')}</span>
+                <select
+                  name='tournamentId'
+                  className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
+                  aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
+                  aria-errormessage={
+                    actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
+                  }
+                >
+                  <option value=''>{t('teams.form.selectTournament')}</option>
+                  {tournaments.map(tournament => (
+                    <option key={tournament.id} value={tournament.id}>
+                      {tournament.name} - {tournament.location} (
+                      {new Date(tournament.startDate).toLocaleDateString()})
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {actionData?.errors?.tournamentId ? (
+                <div className='pt-1 text-red-700' id='tournamentId-error'>
+                  {t('teams.form.tournamentRequired')}
+                </div>
+              ) : null}
+            </div>
+
+            {/* Club Name */}
+            <InputField
+              name='clubName'
+              label={t('teams.form.clubName')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.clubName
+                  ? t('teams.form.clubNameRequired')
+                  : undefined
+              }
+              className='mb-4'
+            />
+
+            {/* Team Name */}
+            <InputField
+              ref={teamNameRef}
+              name='teamName'
+              label={t('teams.form.teamName')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.teamName
+                  ? t('teams.form.teamNameRequired')
+                  : undefined
+              }
+              className='mb-4'
+            />
+
+            {/* Team Class */}
+            <InputField
+              ref={teamClassRef}
+              name='teamClass'
+              label={t('teams.form.teamClass')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.teamClass
+                  ? t('teams.form.teamClassRequired')
+                  : undefined
+              }
+            />
           </div>
 
-          {/* Club Name */}
-          <InputField
-            name='clubName'
-            label={t('teams.form.clubName')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.clubName
-                ? t('teams.form.clubNameRequired')
-                : undefined
-            }
-            className='mb-4'
-          />
+          {/* Team Leader Information Panel */}
+          <div className='rounded-lg bg-gray-50 p-4'>
+            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+              {t('teams.form.teamLeaderInfo')}
+            </h3>
 
-          {/* Team Name */}
-          <InputField
-            ref={teamNameRef}
-            name='teamName'
-            label={t('teams.form.teamName')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.teamName
-                ? t('teams.form.teamNameRequired')
-                : undefined
-            }
-            className='mb-4'
-          />
+            {/* Team Leader Name */}
+            <InputField
+              name='teamLeaderName'
+              label={t('teams.form.teamLeaderName')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.teamLeaderName
+                  ? t('teams.form.teamLeaderNameRequired')
+                  : undefined
+              }
+              className='mb-4'
+            />
 
-          {/* Team Class */}
-          <InputField
-            ref={teamClassRef}
-            name='teamClass'
-            label={t('teams.form.teamClass')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.teamClass
-                ? t('teams.form.teamClassRequired')
-                : undefined
-            }
-          />
-        </div>
+            {/* Team Leader Phone */}
+            <InputField
+              name='teamLeaderPhone'
+              type='tel'
+              label={t('teams.form.teamLeaderPhone')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.teamLeaderPhone
+                  ? t('teams.form.teamLeaderPhoneRequired')
+                  : undefined
+              }
+              className='mb-4'
+            />
 
-        {/* Team Leader Information Panel */}
-        <div className='rounded-lg bg-gray-50 p-4'>
-          <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-            {t('teams.form.teamLeaderInfo')}
-          </h3>
-
-          {/* Team Leader Name */}
-          <InputField
-            name='teamLeaderName'
-            label={t('teams.form.teamLeaderName')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.teamLeaderName
-                ? t('teams.form.teamLeaderNameRequired')
-                : undefined
-            }
-            className='mb-4'
-          />
-
-          {/* Team Leader Phone */}
-          <InputField
-            name='teamLeaderPhone'
-            type='tel'
-            label={t('teams.form.teamLeaderPhone')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.teamLeaderPhone
-                ? t('teams.form.teamLeaderPhoneRequired')
-                : undefined
-            }
-            className='mb-4'
-          />
-
-          {/* Team Leader Email */}
-          <InputField
-            name='teamLeaderEmail'
-            type='email'
-            label={t('teams.form.teamLeaderEmail')}
-            readOnly={false}
-            required
-            error={
-              actionData?.errors?.teamLeaderEmail
-                ? t(
-                    actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
-                      ? 'teams.form.teamLeaderEmailInvalid'
-                      : 'teams.form.teamLeaderEmailRequired'
-                  )
-                : undefined
-            }
-          />
-        </div>
-      </div>
-
-      {/* Privacy Agreement */}
-      <div className='pl-4'>
-        <label className='flex items-start gap-3'>
-          <input
-            name='privacyAgreement'
-            type='checkbox'
-            className='mt-1 h-4 w-4 rounded border-emerald-700/30'
-            aria-invalid={actionData?.errors?.privacyAgreement ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.privacyAgreement
-                ? 'privacyAgreement-error'
-                : undefined
-            }
-          />
-          <span className='text-sm'>{t('teams.form.privacyAgreement')}</span>
-        </label>
-        {actionData?.errors?.privacyAgreement ? (
-          <div className='pt-1 text-red-700' id='privacyAgreement-error'>
-            {t('teams.form.privacyAgreementRequired')}
+            {/* Team Leader Email */}
+            <InputField
+              name='teamLeaderEmail'
+              type='email'
+              label={t('teams.form.teamLeaderEmail')}
+              readOnly={false}
+              required
+              error={
+                actionData?.errors?.teamLeaderEmail
+                  ? t(
+                      actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
+                        ? 'teams.form.teamLeaderEmailInvalid'
+                        : 'teams.form.teamLeaderEmailRequired'
+                    )
+                  : undefined
+              }
+            />
           </div>
-        ) : null}
-      </div>
+        </div>
 
-      <div className='pl-4'>
-        <button
-          type='submit'
-          className='rounded-lg bg-amber-500 px-6 py-3 font-medium text-white hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none'
-        >
-          {t('teams.save')}
-        </button>
-      </div>
-    </Form>
+        {/* Privacy Agreement */}
+        <div className='pl-4'>
+          <label className='flex items-start gap-3'>
+            <input
+              name='privacyAgreement'
+              type='checkbox'
+              className='mt-1 h-4 w-4 rounded border-emerald-700/30'
+              aria-invalid={actionData?.errors?.privacyAgreement ? true : undefined}
+              aria-errormessage={
+                actionData?.errors?.privacyAgreement
+                  ? 'privacyAgreement-error'
+                  : undefined
+              }
+            />
+            <span className='text-sm'>{t('teams.form.privacyAgreement')}</span>
+          </label>
+          {actionData?.errors?.privacyAgreement ? (
+            <div className='pt-1 text-red-700' id='privacyAgreement-error'>
+              {t('teams.form.privacyAgreementRequired')}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Submit Button with Mobile-Friendly Layout */}
+        <div className='pb-8 pl-4'>
+          <button
+            type='submit'
+            className='w-full rounded-lg bg-amber-500 px-6 py-3 font-medium text-white hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none md:w-auto'
+          >
+            {t('teams.save')}
+          </button>
+        </div>
+      </Form>
+    </div>
   )
 }

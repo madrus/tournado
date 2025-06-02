@@ -59,6 +59,28 @@ Explains:
 - Best practices
 - Troubleshooting
 
+### 6. Testing Guide
+
+Location: `.cursor/rules/06-testing-guide.mdc`
+
+Details:
+
+- Test types and locations
+- Testing utilities
+- E2E testing
+- Element selection best practices
+
+### 7. Coding Standards
+
+Location: `.cursor/rules/08-coding-standards.mdc`
+
+Covers:
+
+- TypeScript conventions (types vs interfaces)
+- Dutch language capitalization rules
+- Implementation guidelines
+- Enforcement practices
+
 ## Using Cursor Rules
 
 1. **During Development**

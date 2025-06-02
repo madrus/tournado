@@ -97,7 +97,7 @@
     }
   },
   "teams": {
-    "createNewTeam": "create a new team.",
+    "createNewTeam": "Create a new team",
     "delete": "Delete",
     "errors": {
       "notFound": "Team not found",
@@ -105,10 +105,26 @@
       "unknownError": "Unknown Error"
     },
     "form": {
+      "teamInfo": "Team",
+      "tournament": "Tournament:",
+      "selectTournament": "Select a tournament",
+      "tournamentRequired": "Tournament selection is required",
+      "clubName": "Club Name:",
+      "clubNameRequired": "Club name is required",
       "teamClass": "Team Class:",
       "teamClassRequired": "Team class is required",
       "teamName": "Team Name:",
-      "teamNameRequired": "Team name is required"
+      "teamNameRequired": "Team name is required",
+      "teamLeaderInfo": "Team Leader",
+      "teamLeaderName": "Team Leader Name:",
+      "teamLeaderNameRequired": "Team leader name is required",
+      "teamLeaderPhone": "Team Leader Phone:",
+      "teamLeaderPhoneRequired": "Team leader phone is required",
+      "teamLeaderEmail": "Team Leader Email:",
+      "teamLeaderEmailRequired": "Team leader email is required",
+      "teamLeaderEmailInvalid": "Team leader email is invalid",
+      "privacyAgreement": "I agree to the privacy policy and terms of service",
+      "privacyAgreementRequired": "You must agree to the privacy policy"
     },
     "newTeam": "+ New Team",
     "noTeamSelected": "No team selected. Select a team on the left, or",

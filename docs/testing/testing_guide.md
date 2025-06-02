@@ -64,6 +64,76 @@ When writing tests, follow this order of preference for selecting elements:
    cy.findByTestId('signin-button')
    ```
 
+## UI Component Testing
+
+### Role-Based Access Control
+
+The application includes comprehensive unit tests for role-based UI components, particularly the context menu functionality. These tests ensure that users only see menu items appropriate for their role.
+
+#### Context Menu Testing Example
+
+```typescript
+// Test for public users
+it('should show correct menu items for public user', () => {
+  render(
+    <MemoryRouter>
+      <AppBar authenticated={false} username="" user={null} />
+    </MemoryRouter>
+  )
+
+  const menuItems = getDesktopMenuItems()
+  const menuLabels = Array.from(menuItems).map(item => item.textContent)
+
+  // Should see public items only
+  expect(menuLabels).toContain('common.titles.teams')
+  expect(menuLabels).toContain('common.titles.about')
+  expect(menuLabels).toContain('auth.signin')
+
+  // Should NOT see admin or authenticated-only items
+  expect(menuLabels).not.toContain('common.titles.adminPanel')
+  expect(menuLabels).not.toContain('common.titles.profile')
+})
+```
+
+#### Testing Different User Roles
+
+```typescript
+// Test admin-specific functionality
+const adminUser: User = {
+  id: 'admin-1',
+  role: 'ADMIN',
+  // ... other properties
+}
+
+it('should show Admin Panel for admin users', () => {
+  render(<AppBar authenticated={true} user={adminUser} />)
+
+  const menuLabels = getMenuLabels()
+  expect(menuLabels).toContain('common.titles.adminPanel')
+})
+
+// Test non-admin authenticated users
+const regularUser: User = {
+  role: 'PUBLIC', // or 'TOURNAMENT_MANAGER', 'REFEREE', etc.
+  // ... other properties
+}
+
+it('should hide Admin Panel for non-admin users', () => {
+  render(<AppBar authenticated={true} user={regularUser} />)
+
+  const menuLabels = getMenuLabels()
+  expect(menuLabels).not.toContain('common.titles.adminPanel')
+})
+```
+
+#### Key Testing Patterns for Role-Based Components
+
+1. **Test All Role Scenarios**: Public, authenticated non-admin, and admin
+2. **Verify Visibility**: Check both what should and shouldn't be visible
+3. **Use Meaningful Data**: Create user objects with realistic role values
+4. **Mock Authentication State**: Test both authenticated and unauthenticated states
+5. **Test Responsive Design**: Verify both mobile and desktop menu versions
+
 ## Why This Order?
 
 1. **Accessibility**: Using roles and labels ensures your app is accessible

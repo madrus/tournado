@@ -7,9 +7,19 @@
     "errors": {
       "emailExists": "email exists",
       "emailInvalid": "invalid email",
+      "emailRequired": "email required",
+      "forbiddenTitle": "access denied",
       "invalidCredentials": "invalid credentials",
+      "notFound": "page not found",
       "passwordRequired": "password required",
-      "passwordTooShort": "password too short"
+      "passwordTooShort": "password too short",
+      "serverError": "server error",
+      "title": "auth error",
+      "unauthorizedTitle": "sign in required",
+      "unauthorized": "sign in required",
+      "forbidden": "access denied",
+      "unexpectedError": "unexpected error",
+      "unknownError": "unknown error"
     },
     "firstName": "first name",
     "lastName": "last name",
@@ -18,14 +28,19 @@
     "pleaseSignIn": "please sign in with your new account",
     "registrationSuccess": "account created successfully",
     "rememberMe": "remember me",
+    "signInRequiredToCreateTeam": "sign in required to create team",
     "signin": "sign in",
     "signout": "signout",
     "signup": "sign up",
+    "viewTeams": "view teams",
     "viewTeamsFor": "view teams for"
   },
   "common": {
     "appName": "Tournado",
+    "backToHome": "back to home",
+    "guest": "guest",
     "language": "Language",
+    "loading": "loading",
     "signedInAs": "Signed in as",
     "welcome": "Welcome",
     "titles": {
@@ -35,8 +50,26 @@
       "profile": "profile",
       "settings": "settings",
       "signIn": "sign in",
-      "signUp": "sign up"
+      "signUp": "sign up",
+      "about": "about",
+      "adminPanel": "admin panel"
     }
+  },
+  "landing": {
+    "features": {
+      "description": "tournament management tools",
+      "subtitle": "everything you need",
+      "title": "tournament management"
+    },
+    "hero": {
+      "description": "manage tournaments easily",
+      "signup": "sign up",
+      "viewTeams": "view teams"
+    }
+  },
+  "errors": {
+    "errorTitle": "error",
+    "notFoundTitle": "not found"
   },
   "pwa": {
     "install": {
@@ -64,14 +97,39 @@
     }
   },
   "teams": {
+    "createNewTeam": "create new team",
     "delete": "delete",
+    "errors": {
+      "notFound": "team not found",
+      "unexpectedError": "unexpected error",
+      "unknownError": "unknown error"
+    },
     "form": {
+      "registrationInfo": "team registration",
+      "registrationDescription": "register your team for a tournament. please fill out all required fields below.",
+      "teamInfo": "team information",
+      "tournament": "tournament",
+      "selectTournament": "select a tournament",
+      "tournamentRequired": "tournament selection is required",
+      "clubName": "club name",
+      "clubNameRequired": "club name is required",
       "teamClass": "team class",
       "teamClassRequired": "team class is required",
       "teamName": "team name",
-      "teamNameRequired": "team name is required"
+      "teamNameRequired": "team name is required",
+      "teamLeaderInfo": "team leader information",
+      "teamLeaderName": "team leader name",
+      "teamLeaderNameRequired": "team leader name is required",
+      "teamLeaderPhone": "team leader phone",
+      "teamLeaderPhoneRequired": "team leader phone is required",
+      "teamLeaderEmail": "team leader email",
+      "teamLeaderEmailRequired": "team leader email is required",
+      "teamLeaderEmailInvalid": "team leader email is invalid",
+      "privacyAgreement": "i agree to the privacy policy and terms of service",
+      "privacyAgreementRequired": "you must agree to the privacy policy"
     },
     "newTeam": "new team",
+    "noTeamSelected": "no team selected",
     "noTeams": "no teams yet",
     "save": "save",
     "title": "teams"

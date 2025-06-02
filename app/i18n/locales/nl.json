@@ -25,7 +25,10 @@
     "lastName": "Achternaam",
     "notSignedIn": "Niet ingelogd",
     "password": "Wachtwoord",
+    "pleaseSignIn": "Log in met uw nieuwe account",
+    "registrationSuccess": "Account succesvol aangemaakt",
     "rememberMe": "Onthoud mij",
+    "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
     "signin": "Inloggen",
     "signout": "Uitloggen",
     "signup": "Registreren",
@@ -66,7 +69,7 @@
   },
   "errors": {
     "errorTitle": "Applicatiefout",
-    "notFoundTitle": "Pagina Niet Gevonden"
+    "notFoundTitle": "Pagina niet gevonden"
   },
   "pwa": {
     "install": {
@@ -94,7 +97,7 @@
     }
   },
   "teams": {
-    "createNewTeam": "maak een nieuw team aan.",
+    "createNewTeam": "Maak een nieuw team aan",
     "delete": "Verwijderen",
     "errors": {
       "notFound": "Team niet gevonden",
@@ -102,10 +105,26 @@
       "unknownError": "Onbekende fout"
     },
     "form": {
+      "teamInfo": "Team",
+      "tournament": "Toernooi:",
+      "selectTournament": "Selecteer een toernooi",
+      "tournamentRequired": "Toernooi selectie is verplicht",
+      "clubName": "Clubnaam:",
+      "clubNameRequired": "Clubnaam is verplicht",
       "teamClass": "Teamklasse:",
       "teamClassRequired": "Team klasse is verplicht",
       "teamName": "Teamnaam:",
-      "teamNameRequired": "Team naam is verplicht"
+      "teamNameRequired": "Team naam is verplicht",
+      "teamLeaderInfo": "Teamleider",
+      "teamLeaderName": "Naam teamleider:",
+      "teamLeaderNameRequired": "Naam teamleider is verplicht",
+      "teamLeaderPhone": "Telefoon teamleider:",
+      "teamLeaderPhoneRequired": "Telefoon teamleider is verplicht",
+      "teamLeaderEmail": "Email teamleider:",
+      "teamLeaderEmailRequired": "Email teamleider is verplicht",
+      "teamLeaderEmailInvalid": "Email teamleider is ongeldig",
+      "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
+      "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid"
     },
     "newTeam": "+ Nieuw team",
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",

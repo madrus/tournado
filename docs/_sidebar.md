@@ -20,6 +20,6 @@
    - [Fly.io vs Vercel](fly_vs_vercel.md)
    - [Markdown Tips](markdown_tips.md)
    - [Remix Stack](remix_stack.md)
-   - [Prefetching Strategy](PREFETCHING_STRATEGY.md)
+   - [Prefetching Strategy](prefetching_strategy.md)
 - Work in Progress
    - [WIP Items](wip.md)

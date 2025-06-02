@@ -25,7 +25,10 @@
     "lastName": "Achternaam",
     "notSignedIn": "Niet ingelogd",
     "password": "Wachtwoord",
+    "pleaseSignIn": "Log in met uw nieuwe account",
+    "registrationSuccess": "Account succesvol aangemaakt",
     "rememberMe": "Onthoud mij",
+    "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
     "signin": "Inloggen",
     "signout": "Uitloggen",
     "signup": "Registreren",
@@ -66,7 +69,7 @@
   },
   "errors": {
     "errorTitle": "Applicatiefout",
-    "notFoundTitle": "Pagina Niet Gevonden"
+    "notFoundTitle": "Pagina niet gevonden"
   },
   "pwa": {
     "install": {
@@ -94,7 +97,7 @@
     }
   },
   "teams": {
-    "createNewTeam": "maak een nieuw team aan.",
+    "createNewTeam": "Maak een nieuw team aan",
     "delete": "Verwijderen",
     "errors": {
       "notFound": "Team niet gevonden",
@@ -102,9 +105,7 @@
       "unknownError": "Onbekende fout"
     },
     "form": {
-      "registrationInfo": "Team Inschrijving",
-      "registrationDescription": "Schrijf je team in voor een toernooi. Vul alle verplichte velden hieronder in.",
-      "teamInfo": "Team Informatie",
+      "teamInfo": "Team",
       "tournament": "Toernooi:",
       "selectTournament": "Selecteer een toernooi",
       "tournamentRequired": "Toernooi selectie is verplicht",
@@ -114,12 +115,12 @@
       "teamClassRequired": "Team klasse is verplicht",
       "teamName": "Teamnaam:",
       "teamNameRequired": "Team naam is verplicht",
-      "teamLeaderInfo": "Teamleider Informatie",
-      "teamLeaderName": "Naam Teamleider:",
+      "teamLeaderInfo": "Teamleider",
+      "teamLeaderName": "Naam teamleider:",
       "teamLeaderNameRequired": "Naam teamleider is verplicht",
-      "teamLeaderPhone": "Telefoon Teamleider:",
+      "teamLeaderPhone": "Telefoon teamleider:",
       "teamLeaderPhoneRequired": "Telefoon teamleider is verplicht",
-      "teamLeaderEmail": "Email Teamleider:",
+      "teamLeaderEmail": "Email teamleider:",
       "teamLeaderEmailRequired": "Email teamleider is verplicht",
       "teamLeaderEmailInvalid": "Email teamleider is ongeldig",
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",

@@ -11,6 +11,7 @@ import {
   useOutletContext,
 } from 'react-router'
 
+import { InputField } from '~/components/InputField'
 import { ListItemNavLink } from '~/components/PrefetchLink'
 import { prisma } from '~/db.server'
 import { createTeam, getTeamListItems } from '~/models/team.server'
@@ -249,183 +250,144 @@ export default function NewTeamPage(): JSX.Element {
 
   // Render form in main content
   return (
-    <Form method='post' className='max-w-2xl space-y-6'>
-      {/* Team Information Panel */}
-      <div className='rounded-lg bg-gray-50 p-4'>
-        <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-          {t('teams.form.teamInfo')}
-        </h3>
+    <Form method='post' className='max-w-6xl space-y-6'>
+      {/* Responsive Panels Container */}
+      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        {/* Team Information Panel */}
+        <div className='rounded-lg bg-gray-50 p-4'>
+          <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+            {t('teams.form.teamInfo')}
+          </h3>
 
-        {/* Tournament Selection */}
-        <div className='mb-4'>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.tournament')}</span>
-            <select
-              name='tournamentId'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
-              }
-            >
-              <option value=''>{t('teams.form.selectTournament')}</option>
-              {tournaments.map(tournament => (
-                <option key={tournament.id} value={tournament.id}>
-                  {tournament.name} - {tournament.location} (
-                  {new Date(tournament.startDate).toLocaleDateString()})
-                </option>
-              ))}
-            </select>
-          </label>
-          {actionData?.errors?.tournamentId ? (
-            <div className='pt-1 text-red-700' id='tournamentId-error'>
-              {t('teams.form.tournamentRequired')}
-            </div>
-          ) : null}
+          {/* Tournament Selection */}
+          <div className='mb-4'>
+            <label className='flex w-full flex-col gap-1'>
+              <span className='font-medium'>{t('teams.form.tournament')}</span>
+              <select
+                name='tournamentId'
+                className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
+                aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
+                aria-errormessage={
+                  actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
+                }
+              >
+                <option value=''>{t('teams.form.selectTournament')}</option>
+                {tournaments.map(tournament => (
+                  <option key={tournament.id} value={tournament.id}>
+                    {tournament.name} - {tournament.location} (
+                    {new Date(tournament.startDate).toLocaleDateString()})
+                  </option>
+                ))}
+              </select>
+            </label>
+            {actionData?.errors?.tournamentId ? (
+              <div className='pt-1 text-red-700' id='tournamentId-error'>
+                {t('teams.form.tournamentRequired')}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Club Name */}
+          <InputField
+            name='clubName'
+            label={t('teams.form.clubName')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.clubName
+                ? t('teams.form.clubNameRequired')
+                : undefined
+            }
+            className='mb-4'
+          />
+
+          {/* Team Name */}
+          <InputField
+            ref={teamNameRef}
+            name='teamName'
+            label={t('teams.form.teamName')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.teamName
+                ? t('teams.form.teamNameRequired')
+                : undefined
+            }
+            className='mb-4'
+          />
+
+          {/* Team Class */}
+          <InputField
+            ref={teamClassRef}
+            name='teamClass'
+            label={t('teams.form.teamClass')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.teamClass
+                ? t('teams.form.teamClassRequired')
+                : undefined
+            }
+          />
         </div>
 
-        {/* Club Name */}
-        <div className='mb-4'>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.clubName')}</span>
-            <input
-              name='clubName'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.clubName ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.clubName ? 'clubName-error' : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.clubName ? (
-            <div className='pt-1 text-red-700' id='clubName-error'>
-              {t('teams.form.clubNameRequired')}
-            </div>
-          ) : null}
-        </div>
+        {/* Team Leader Information Panel */}
+        <div className='rounded-lg bg-gray-50 p-4'>
+          <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+            {t('teams.form.teamLeaderInfo')}
+          </h3>
 
-        {/* Team Name */}
-        <div className='mb-4'>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.teamName')}</span>
-            <input
-              ref={teamNameRef}
-              name='teamName'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.teamName ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.teamName ? 'teamName-error' : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.teamName ? (
-            <div className='pt-1 text-red-700' id='teamName-error'>
-              {t('teams.form.teamNameRequired')}
-            </div>
-          ) : null}
-        </div>
+          {/* Team Leader Name */}
+          <InputField
+            name='teamLeaderName'
+            label={t('teams.form.teamLeaderName')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.teamLeaderName
+                ? t('teams.form.teamLeaderNameRequired')
+                : undefined
+            }
+            className='mb-4'
+          />
 
-        {/* Team Class */}
-        <div>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.teamClass')}</span>
-            <input
-              ref={teamClassRef}
-              name='teamClass'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.teamClass ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.teamClass ? 'teamClass-error' : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.teamClass ? (
-            <div className='pt-1 text-red-700' id='teamClass-error'>
-              {t('teams.form.teamClassRequired')}
-            </div>
-          ) : null}
-        </div>
-      </div>
+          {/* Team Leader Phone */}
+          <InputField
+            name='teamLeaderPhone'
+            type='tel'
+            label={t('teams.form.teamLeaderPhone')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.teamLeaderPhone
+                ? t('teams.form.teamLeaderPhoneRequired')
+                : undefined
+            }
+            className='mb-4'
+          />
 
-      {/* Team Leader Information Panel */}
-      <div className='rounded-lg bg-gray-50 p-4'>
-        <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-          {t('teams.form.teamLeaderInfo')}
-        </h3>
-
-        {/* Team Leader Name */}
-        <div className='mb-4'>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.teamLeaderName')}</span>
-            <input
-              name='teamLeaderName'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.teamLeaderName ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.teamLeaderName ? 'teamLeaderName-error' : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.teamLeaderName ? (
-            <div className='pt-1 text-red-700' id='teamLeaderName-error'>
-              {t('teams.form.teamLeaderNameRequired')}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Team Leader Phone */}
-        <div className='mb-4'>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.teamLeaderPhone')}</span>
-            <input
-              name='teamLeaderPhone'
-              type='tel'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.teamLeaderPhone ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.teamLeaderPhone
-                  ? 'teamLeaderPhone-error'
-                  : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.teamLeaderPhone ? (
-            <div className='pt-1 text-red-700' id='teamLeaderPhone-error'>
-              {t('teams.form.teamLeaderPhoneRequired')}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Team Leader Email */}
-        <div>
-          <label className='flex w-full flex-col gap-1'>
-            <span className='font-medium'>{t('teams.form.teamLeaderEmail')}</span>
-            <input
-              name='teamLeaderEmail'
-              type='email'
-              className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
-              aria-invalid={actionData?.errors?.teamLeaderEmail ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.teamLeaderEmail
-                  ? 'teamLeaderEmail-error'
-                  : undefined
-              }
-            />
-          </label>
-          {actionData?.errors?.teamLeaderEmail ? (
-            <div className='pt-1 text-red-700' id='teamLeaderEmail-error'>
-              {t(
-                actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
-                  ? 'teams.form.teamLeaderEmailInvalid'
-                  : 'teams.form.teamLeaderEmailRequired'
-              )}
-            </div>
-          ) : null}
+          {/* Team Leader Email */}
+          <InputField
+            name='teamLeaderEmail'
+            type='email'
+            label={t('teams.form.teamLeaderEmail')}
+            readOnly={false}
+            required
+            error={
+              actionData?.errors?.teamLeaderEmail
+                ? t(
+                    actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
+                      ? 'teams.form.teamLeaderEmailInvalid'
+                      : 'teams.form.teamLeaderEmailRequired'
+                  )
+                : undefined
+            }
+          />
         </div>
       </div>
 
       {/* Privacy Agreement */}
-      <div>
+      <div className='pl-4'>
         <label className='flex items-start gap-3'>
           <input
             name='privacyAgreement'
@@ -447,7 +409,7 @@ export default function NewTeamPage(): JSX.Element {
         ) : null}
       </div>
 
-      <div className='flex justify-between'>
+      <div className='pl-4'>
         <button
           type='submit'
           className='rounded-lg bg-amber-500 px-6 py-3 font-medium text-white hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none'

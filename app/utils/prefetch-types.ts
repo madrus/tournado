@@ -78,7 +78,7 @@ export const routePrefetchOverrides: Record<string, PrefetchStrategy> = {
   '/auth/signup': 'intent',
 
   // Admin routes only when needed
-  '/admin': 'intent',
+  '/a7k9m2x5p8w1n4q6': 'intent',
 
   // About page - lower priority
   '/about': 'intent',

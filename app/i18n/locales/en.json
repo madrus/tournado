@@ -8,6 +8,7 @@
       "emailExists": "A user already exists with this email",
       "emailInvalid": "Email is invalid",
       "emailRequired": "Email is required",
+      "forbidden": "You don't have permission to access this page",
       "forbiddenTitle": "Access Denied",
       "invalidCredentials": "Invalid email or password",
       "notFound": "Sorry, the page you're looking for doesn't exist or has been moved. Please check the URL or navigate using the link below.",
@@ -15,9 +16,8 @@
       "passwordTooShort": "Password is too short",
       "serverError": "Server error, please try again later",
       "title": "Authentication Error",
-      "unauthorizedTitle": "Sign In Required",
       "unauthorized": "You need to sign in to access this page",
-      "forbidden": "You don't have permission to access this page",
+      "unauthorizedTitle": "Sign In Required",
       "unexpectedError": "An unexpected error occurred",
       "unknownError": "Unknown error"
     },
@@ -42,18 +42,23 @@
     "language": "Language",
     "loading": "Loading...",
     "signedInAs": "Signed in as",
-    "welcome": "Welcome",
     "titles": {
-      "welcome": "Welcome",
-      "teams": "Teams",
+      "about": "About",
       "addTeam": "Add Team",
+      "adminPanel": "Admin Panel",
+      "more": "More",
       "profile": "Profile",
       "settings": "Settings",
       "signIn": "Sign In",
       "signUp": "Sign Up",
-      "about": "About",
-      "adminPanel": "Admin Panel"
-    }
+      "teams": "Teams",
+      "welcome": "Welcome"
+    },
+    "welcome": "Welcome"
+  },
+  "errors": {
+    "errorTitle": "Application Error",
+    "notFoundTitle": "Page Not Found"
   },
   "landing": {
     "features": {
@@ -66,10 +71,6 @@
       "signup": "Sign up for free",
       "viewTeams": "View Teams"
     }
-  },
-  "errors": {
-    "errorTitle": "Application Error",
-    "notFoundTitle": "Page Not Found"
   },
   "pwa": {
     "install": {
@@ -97,6 +98,7 @@
     }
   },
   "teams": {
+    "addTeam": "+ Add Team",
     "createNewTeam": "Create a new team",
     "delete": "Delete",
     "errors": {
@@ -105,28 +107,27 @@
       "unknownError": "Unknown Error"
     },
     "form": {
-      "teamInfo": "Team",
-      "tournament": "Tournament:",
-      "selectTournament": "Select a tournament",
-      "tournamentRequired": "Tournament selection is required",
       "clubName": "Club Name:",
       "clubNameRequired": "Club name is required",
+      "privacyAgreement": "I agree to the privacy policy and terms of service",
+      "privacyAgreementRequired": "You must agree to the privacy policy",
+      "selectTournament": "Select a tournament",
       "teamClass": "Team Class:",
       "teamClassRequired": "Team class is required",
-      "teamName": "Team Name:",
-      "teamNameRequired": "Team name is required",
+      "teamInfo": "Team",
+      "teamLeaderEmail": "Team Leader Email:",
+      "teamLeaderEmailInvalid": "Team leader email is invalid",
+      "teamLeaderEmailRequired": "Team leader email is required",
       "teamLeaderInfo": "Team Leader",
       "teamLeaderName": "Team Leader Name:",
       "teamLeaderNameRequired": "Team leader name is required",
       "teamLeaderPhone": "Team Leader Phone:",
       "teamLeaderPhoneRequired": "Team leader phone is required",
-      "teamLeaderEmail": "Team Leader Email:",
-      "teamLeaderEmailRequired": "Team leader email is required",
-      "teamLeaderEmailInvalid": "Team leader email is invalid",
-      "privacyAgreement": "I agree to the privacy policy and terms of service",
-      "privacyAgreementRequired": "You must agree to the privacy policy"
+      "teamName": "Team Name:",
+      "teamNameRequired": "Team name is required",
+      "tournament": "Tournament:",
+      "tournamentRequired": "Tournament selection is required"
     },
-    "addTeam": "+ Add Team",
     "noTeamSelected": "No team selected. Select a team on the left, or",
     "noTeams": "No teams yet",
     "save": "Save",

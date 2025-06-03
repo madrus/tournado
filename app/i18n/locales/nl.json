@@ -8,6 +8,7 @@
       "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
       "emailInvalid": "E-mailadres is ongeldig",
       "emailRequired": "E-mailadres is verplicht",
+      "forbidden": "Je hebt geen toegang tot deze pagina",
       "forbiddenTitle": "Toegang geweigerd",
       "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
       "notFound": "Sorry, de pagina die u zoekt bestaat niet of is verplaatst. Controleer de URL of navigeer met behulp van de onderstaande link.",
@@ -15,9 +16,8 @@
       "passwordTooShort": "Wachtwoord is te kort",
       "serverError": "Serverfout, probeer het later opnieuw",
       "title": "Authenticatiefout",
-      "unauthorizedTitle": "Inloggen vereist",
       "unauthorized": "Je moet inloggen om deze pagina te bekijken",
-      "forbidden": "Je hebt geen toegang tot deze pagina",
+      "unauthorizedTitle": "Inloggen vereist",
       "unexpectedError": "Er is een onverwachte fout opgetreden",
       "unknownError": "Onbekende fout"
     },
@@ -42,18 +42,23 @@
     "language": "Taal",
     "loading": "Laden...",
     "signedInAs": "Ingelogd als",
-    "welcome": "Welkom",
     "titles": {
-      "welcome": "Welkom",
-      "teams": "Teams",
+      "about": "Over ons",
       "addTeam": "Team toevoegen",
+      "adminPanel": "Beheerpaneel",
+      "more": "Meer",
       "profile": "Profiel",
       "settings": "Instellingen",
       "signIn": "Inloggen",
       "signUp": "Registreren",
-      "about": "Over ons",
-      "adminPanel": "Beheerpaneel"
-    }
+      "teams": "Teams",
+      "welcome": "Welkom"
+    },
+    "welcome": "Welkom"
+  },
+  "errors": {
+    "errorTitle": "Applicatiefout",
+    "notFoundTitle": "Pagina niet gevonden"
   },
   "landing": {
     "features": {
@@ -66,10 +71,6 @@
       "signup": "Gratis registreren",
       "viewTeams": "Teams bekijken"
     }
-  },
-  "errors": {
-    "errorTitle": "Applicatiefout",
-    "notFoundTitle": "Pagina niet gevonden"
   },
   "pwa": {
     "install": {
@@ -97,6 +98,7 @@
     }
   },
   "teams": {
+    "addTeam": "+ Team toevoegen",
     "createNewTeam": "Maak een nieuw team aan",
     "delete": "Verwijderen",
     "errors": {
@@ -105,28 +107,27 @@
       "unknownError": "Onbekende fout"
     },
     "form": {
-      "teamInfo": "Team",
-      "tournament": "Toernooi:",
-      "selectTournament": "Selecteer een toernooi",
-      "tournamentRequired": "Toernooi selectie is verplicht",
       "clubName": "Clubnaam:",
       "clubNameRequired": "Clubnaam is verplicht",
+      "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
+      "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
+      "selectTournament": "Selecteer een toernooi",
       "teamClass": "Teamklasse:",
       "teamClassRequired": "Team klasse is verplicht",
-      "teamName": "Teamnaam:",
-      "teamNameRequired": "Team naam is verplicht",
+      "teamInfo": "Team",
+      "teamLeaderEmail": "Email teamleider:",
+      "teamLeaderEmailInvalid": "Email teamleider is ongeldig",
+      "teamLeaderEmailRequired": "Email teamleider is verplicht",
       "teamLeaderInfo": "Teamleider",
       "teamLeaderName": "Naam teamleider:",
       "teamLeaderNameRequired": "Naam teamleider is verplicht",
       "teamLeaderPhone": "Telefoon teamleider:",
       "teamLeaderPhoneRequired": "Telefoon teamleider is verplicht",
-      "teamLeaderEmail": "Email teamleider:",
-      "teamLeaderEmailRequired": "Email teamleider is verplicht",
-      "teamLeaderEmailInvalid": "Email teamleider is ongeldig",
-      "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
-      "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid"
+      "teamName": "Teamnaam:",
+      "teamNameRequired": "Team naam is verplicht",
+      "tournament": "Toernooi:",
+      "tournamentRequired": "Toernooi selectie is verplicht"
     },
-    "addTeam": "+ Team toevoegen",
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Nog geen teams",
     "save": "Opslaan",

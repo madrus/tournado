@@ -12,10 +12,7 @@ function MobileNavigation(): JSX.Element {
   ]
 
   return (
-    <div
-      className='fixed right-0 bottom-0 left-0 flex justify-between bg-white p-3 shadow-lg md:hidden'
-      style={{ zIndex: 100 }}
-    >
+    <div className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-white p-3 shadow-lg md:hidden'>
       {/* Left section for initial navigation items */}
       <div className='ml-4 flex space-x-8'>
         {navigationItems.map(item => (

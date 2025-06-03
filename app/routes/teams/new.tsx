@@ -14,8 +14,7 @@ import {
 import { InputField } from '~/components/InputField'
 import { ListItemNavLink } from '~/components/PrefetchLink'
 import { prisma } from '~/db.server'
-import { createTeam, getTeamListItems } from '~/models/team.server'
-import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import { createTeam, getAllTeamListItems } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -78,13 +77,7 @@ type LoaderData = {
 export const loader = async ({
   request: _,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  const teamLeader = await getDefaultTeamLeader()
-
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+  const teamListItems = await getAllTeamListItems()
 
   // Fetch available tournaments
   const tournaments = await prisma.tournament.findMany({

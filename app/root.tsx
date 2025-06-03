@@ -3,7 +3,6 @@
 import React, { JSX, useEffect } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import {
-  Link,
   Links,
   LinksFunction,
   Meta,
@@ -16,6 +15,7 @@ import {
 import type { User } from '@prisma/client'
 
 import { AppBar } from '~/components/AppBar'
+import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
 
 import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
@@ -110,12 +110,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           <Outlet />
         </div>
         {/* Desktop Footer - hidden on mobile */}
-        <div className='container mx-auto hidden justify-between p-2 md:flex'>
-          <Link to='/'>
-            <div className='font-light'>Tournado</div>
-          </Link>
-          <p>Built with ♥️ by Madrus</p>
-        </div>
+        <DesktopFooter />
         {/* Mobile Navigation - visible only on mobile */}
         <MobileNavigation />
       </div>
@@ -128,32 +123,28 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   )
 }
 
-export const ErrorBoundary = (): JSX.Element => (
-  <Document>
-    <I18nextProvider i18n={i18n}>
-      <div className='flex h-full flex-col'>
-        <div className='relative' style={{ zIndex: 50 }}>
-          <AppBar
-            authenticated={useAuthStore.getState().authenticated}
-            username={useAuthStore.getState().username}
-          />
+export function ErrorBoundary(): JSX.Element {
+  const { authenticated, username } = useAuthStore()
+
+  return (
+    <Document>
+      <I18nextProvider i18n={i18n}>
+        <div className='flex h-full flex-col'>
+          <div className='relative' style={{ zIndex: 50 }}>
+            <AppBar authenticated={authenticated} username={username} />
+          </div>
+          <div
+            className='flex-1 overflow-hidden pb-16 md:pb-0'
+            style={{ position: 'relative', zIndex: 1 }}
+          >
+            <GeneralErrorBoundary />
+          </div>
+          {/* Desktop Footer - hidden on mobile */}
+          <DesktopFooter />
+          {/* Mobile Navigation - visible only on mobile */}
+          <MobileNavigation />
         </div>
-        <div
-          className='flex-1 overflow-hidden pb-16 md:pb-0'
-          style={{ position: 'relative', zIndex: 1 }}
-        >
-          <GeneralErrorBoundary />
-        </div>
-        {/* Desktop Footer - hidden on mobile */}
-        <div className='container mx-auto hidden justify-between p-2 md:flex'>
-          <Link to='/'>
-            <div className='font-light'>Tournado</div>
-          </Link>
-          <p>Built with ♥️ by Madrus</p>
-        </div>
-        {/* Mobile Navigation - visible only on mobile */}
-        <MobileNavigation />
-      </div>
-    </I18nextProvider>
-  </Document>
-)
+      </I18nextProvider>
+    </Document>
+  )
+}

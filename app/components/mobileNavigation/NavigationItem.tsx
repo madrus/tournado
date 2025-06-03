@@ -23,7 +23,7 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
         {icon}
       </span>
       <span
-        className={`mt-1 text-xs ${isActive ? 'text-red-500' : 'text-emerald-800'}`}
+        className={`mt-1 text-xs ${isActive ? 'font-bold text-red-500' : 'text-emerald-800'}`}
       >
         {label}
       </span>

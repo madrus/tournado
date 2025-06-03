@@ -19,7 +19,7 @@ import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
 
 import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
-import MobileNavigation from './components/mobileNavigation/MobileNavigation'
+import BottomNavigation from './components/mobileNavigation/BottomNavigation'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
 import { useAuthStore } from './stores/useAuthStore'
@@ -112,7 +112,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         {/* Desktop Footer - hidden on mobile */}
         <DesktopFooter />
         {/* Mobile Navigation - visible only on mobile */}
-        <MobileNavigation />
+        <BottomNavigation />
       </div>
       <script
         dangerouslySetInnerHTML={{
@@ -142,7 +142,7 @@ export function ErrorBoundary(): JSX.Element {
           {/* Desktop Footer - hidden on mobile */}
           <DesktopFooter />
           {/* Mobile Navigation - visible only on mobile */}
-          <MobileNavigation />
+          <BottomNavigation />
         </div>
       </I18nextProvider>
     </Document>

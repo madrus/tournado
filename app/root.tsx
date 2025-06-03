@@ -19,6 +19,7 @@ import { AppBar } from '~/components/AppBar'
 
 import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
+import MobileNavigation from './components/mobileNavigation/MobileNavigation'
 import { PWAElements } from './components/PWAElements'
 import { i18n } from './i18n'
 import { useAuthStore } from './stores/useAuthStore'
@@ -89,10 +90,11 @@ const Document = ({ children }: { children: React.ReactNode }) => (
 
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   const { authenticated, username, user, ENV } = loaderData
+  const { setAuth } = useAuthStore()
 
   // Update auth store only on client-side after hydration
   useEffect(() => {
-    useAuthStore.getState().setAuth(authenticated, username)
+    setAuth(authenticated, username)
   }, [authenticated, username])
 
   return (
@@ -102,17 +104,20 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           <AppBar authenticated={authenticated} username={username} user={user} />
         </div>
         <div
-          className='flex-1 overflow-hidden'
+          className='flex-1 overflow-hidden pb-16 md:pb-0'
           style={{ position: 'relative', zIndex: 1 }}
         >
           <Outlet />
         </div>
-        <div className='container mx-auto flex justify-between p-2'>
+        {/* Desktop Footer - hidden on mobile */}
+        <div className='container mx-auto hidden justify-between p-2 md:flex'>
           <Link to='/'>
             <div className='font-light'>Tournado</div>
           </Link>
           <p>Built with ♥️ by Madrus</p>
         </div>
+        {/* Mobile Navigation - visible only on mobile */}
+        <MobileNavigation />
       </div>
       <script
         dangerouslySetInnerHTML={{
@@ -134,17 +139,20 @@ export const ErrorBoundary = (): JSX.Element => (
           />
         </div>
         <div
-          className='flex-1 overflow-hidden'
+          className='flex-1 overflow-hidden pb-16 md:pb-0'
           style={{ position: 'relative', zIndex: 1 }}
         >
           <GeneralErrorBoundary />
         </div>
-        <div className='container mx-auto flex justify-between p-2'>
+        {/* Desktop Footer - hidden on mobile */}
+        <div className='container mx-auto hidden justify-between p-2 md:flex'>
           <Link to='/'>
             <div className='font-light'>Tournado</div>
           </Link>
           <p>Built with ♥️ by Madrus</p>
         </div>
+        {/* Mobile Navigation - visible only on mobile */}
+        <MobileNavigation />
       </div>
     </I18nextProvider>
   </Document>

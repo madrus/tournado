@@ -6,8 +6,7 @@ import { useLoaderData, useOutletContext } from 'react-router'
 import type { Team } from '@prisma/client'
 
 import { ActionLink, ListItemNavLink } from '~/components/PrefetchLink'
-import { getTeamListItems } from '~/models/team.server'
-import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import { getAllTeamListItems } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
 // import { Route } from './+types'
@@ -50,13 +49,7 @@ type LoaderData = {
 type TeamListItem = Pick<Team, 'id' | 'teamName'>
 
 export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
-  const teamLeader = await getDefaultTeamLeader()
-
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+  const teamListItems = await getAllTeamListItems()
 
   return { teamListItems }
 }

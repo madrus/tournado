@@ -30,6 +30,16 @@ export const getTeam = ({
     where: { id },
   }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
 
+export const getTeamById = ({
+  id,
+}: {
+  id: string
+}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> =>
+  prisma.team.findUnique({
+    select: { id: true, teamClass: true, teamName: true },
+    where: { id },
+  }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
+
 export const getTeamListItems = async ({
   teamLeaderId,
 }: {
@@ -37,6 +47,17 @@ export const getTeamListItems = async ({
 }): Promise<Array<Pick<Team, 'id' | 'teamName'>>> =>
   prisma.team.findMany({
     where: { teamLeaderId },
+    select: {
+      id: true,
+      teamName: true,
+    },
+    orderBy: { updatedAt: 'desc' },
+  })
+
+export const getAllTeamListItems = async (): Promise<
+  Array<Pick<Team, 'id' | 'teamName'>>
+> =>
+  prisma.team.findMany({
     select: {
       id: true,
       teamName: true,
@@ -71,4 +92,9 @@ export const deleteTeam = ({
 }): Promise<Prisma.BatchPayload> =>
   prisma.team.deleteMany({
     where: { id, teamLeaderId },
+  })
+
+export const deleteTeamById = ({ id }: Pick<Team, 'id'>): Promise<Team> =>
+  prisma.team.delete({
+    where: { id },
   })

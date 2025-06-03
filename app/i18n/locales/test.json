@@ -8,6 +8,7 @@
       "emailExists": "email exists",
       "emailInvalid": "invalid email",
       "emailRequired": "email required",
+      "forbidden": "access denied",
       "forbiddenTitle": "access denied",
       "invalidCredentials": "invalid credentials",
       "notFound": "page not found",
@@ -15,9 +16,8 @@
       "passwordTooShort": "password too short",
       "serverError": "server error",
       "title": "auth error",
-      "unauthorizedTitle": "sign in required",
       "unauthorized": "sign in required",
-      "forbidden": "access denied",
+      "unauthorizedTitle": "sign in required",
       "unexpectedError": "unexpected error",
       "unknownError": "unknown error"
     },
@@ -42,18 +42,23 @@
     "language": "Language",
     "loading": "loading",
     "signedInAs": "Signed in as",
-    "welcome": "Welcome",
     "titles": {
-      "welcome": "welcome",
-      "teams": "teams",
+      "about": "about",
       "addTeam": "add team",
+      "adminPanel": "admin panel",
+      "more": "more",
       "profile": "profile",
       "settings": "settings",
       "signIn": "sign in",
       "signUp": "sign up",
-      "about": "about",
-      "adminPanel": "admin panel"
-    }
+      "teams": "teams",
+      "welcome": "welcome"
+    },
+    "welcome": "Welcome"
+  },
+  "errors": {
+    "errorTitle": "error",
+    "notFoundTitle": "not found"
   },
   "landing": {
     "features": {
@@ -66,10 +71,6 @@
       "signup": "sign up",
       "viewTeams": "view teams"
     }
-  },
-  "errors": {
-    "errorTitle": "error",
-    "notFoundTitle": "not found"
   },
   "pwa": {
     "install": {
@@ -97,6 +98,7 @@
     }
   },
   "teams": {
+    "addTeam": "add team",
     "createNewTeam": "create new team",
     "delete": "delete",
     "errors": {
@@ -105,30 +107,29 @@
       "unknownError": "unknown error"
     },
     "form": {
-      "registrationInfo": "team registration",
-      "registrationDescription": "register your team for a tournament. please fill out all required fields below.",
-      "teamInfo": "team information",
-      "tournament": "tournament",
-      "selectTournament": "select a tournament",
-      "tournamentRequired": "tournament selection is required",
       "clubName": "club name",
       "clubNameRequired": "club name is required",
+      "privacyAgreement": "i agree to the privacy policy and terms of service",
+      "privacyAgreementRequired": "you must agree to the privacy policy",
+      "registrationDescription": "register your team for a tournament. please fill out all required fields below.",
+      "registrationInfo": "team registration",
+      "selectTournament": "select a tournament",
       "teamClass": "team class",
       "teamClassRequired": "team class is required",
-      "teamName": "team name",
-      "teamNameRequired": "team name is required",
+      "teamInfo": "team information",
+      "teamLeaderEmail": "team leader email",
+      "teamLeaderEmailInvalid": "team leader email is invalid",
+      "teamLeaderEmailRequired": "team leader email is required",
       "teamLeaderInfo": "team leader information",
       "teamLeaderName": "team leader name",
       "teamLeaderNameRequired": "team leader name is required",
       "teamLeaderPhone": "team leader phone",
       "teamLeaderPhoneRequired": "team leader phone is required",
-      "teamLeaderEmail": "team leader email",
-      "teamLeaderEmailRequired": "team leader email is required",
-      "teamLeaderEmailInvalid": "team leader email is invalid",
-      "privacyAgreement": "i agree to the privacy policy and terms of service",
-      "privacyAgreementRequired": "you must agree to the privacy policy"
+      "teamName": "team name",
+      "teamNameRequired": "team name is required",
+      "tournament": "tournament",
+      "tournamentRequired": "tournament selection is required"
     },
-    "addTeam": "add team",
     "noTeamSelected": "no team selected",
     "noTeams": "no teams yet",
     "save": "save",

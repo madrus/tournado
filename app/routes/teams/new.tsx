@@ -14,8 +14,7 @@ import {
 import { InputField } from '~/components/InputField'
 import { ListItemNavLink } from '~/components/PrefetchLink'
 import { prisma } from '~/db.server'
-import { createTeam, getTeamListItems } from '~/models/team.server'
-import { getDefaultTeamLeader } from '~/models/teamLeader.server'
+import { createTeam, getAllTeamListItems } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -37,7 +36,7 @@ export const meta: MetaFunction = () => [
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
-  title: 'common.titles.newTeam',
+  title: 'common.titles.addTeam',
 }
 
 type ContextType = {
@@ -78,13 +77,7 @@ type LoaderData = {
 export const loader = async ({
   request: _,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  const teamLeader = await getDefaultTeamLeader()
-
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+  const teamListItems = await getAllTeamListItems()
 
   // Fetch available tournaments
   const tournaments = await prisma.tournament.findMany({
@@ -266,7 +259,7 @@ export default function NewTeamPage(): JSX.Element {
                 <span className='font-medium'>{t('teams.form.tournament')}</span>
                 <select
                   name='tournamentId'
-                  className='h-12 w-full rounded-md border-2 border-emerald-700/30 px-3 text-lg leading-6'
+                  className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
                   aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
                   aria-errormessage={
                     actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
@@ -393,7 +386,7 @@ export default function NewTeamPage(): JSX.Element {
             <input
               name='privacyAgreement'
               type='checkbox'
-              className='mt-1 h-4 w-4 rounded border-emerald-700/30'
+              className='mt-1 h-4 w-4 rounded border-emerald-700/30 bg-white'
               aria-invalid={actionData?.errors?.privacyAgreement ? true : undefined}
               aria-errormessage={
                 actionData?.errors?.privacyAgreement

@@ -39,7 +39,7 @@ export default function TeamsLayout(): JSX.Element {
                 className='flex w-full min-w-[120px] items-center justify-center rounded-full border border-red-500 bg-white px-6 py-2 text-center text-base font-semibold text-red-500 shadow-xs hover:bg-red-50'
                 aria-label='Sidebar button to add a new team'
               >
-                {t('teams.newTeam')}
+                {t('teams.addTeam')}
               </Link>
             </div>
 
@@ -63,7 +63,7 @@ export default function TeamsLayout(): JSX.Element {
             to='new'
             className='safe-bottom fixed right-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-red-500 pt-3 text-white shadow-xl hover:bg-red-600 md:hidden'
             role='link'
-            aria-label={t('teams.newTeam')}
+            aria-label={t('teams.addTeam')}
           >
             <span className='text-3xl text-white'>+</span>
           </Link>

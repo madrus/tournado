@@ -14,12 +14,11 @@ import invariant from 'tiny-invariant'
 
 import { ListItemNavLink } from '~/components/PrefetchLink'
 import {
-  deleteTeam,
-  getTeam,
-  getTeamListItems,
+  deleteTeamById,
+  getAllTeamListItems,
+  getTeamById,
   type TeamWithLeader,
 } from '~/models/team.server'
-import { getDefaultTeamLeader } from '~/models/teamLeader.server'
 
 // Temporary types until auto-generation is complete
 // These will let the app compile so React Router can generate the proper types
@@ -86,15 +85,9 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
 export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
   invariant(params.teamId, 'teamId not found')
 
-  const teamLeader = await getDefaultTeamLeader()
+  const team = await getTeamById({ id: params.teamId! })
 
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  const team = await getTeam({ id: params.teamId!, teamLeaderId: teamLeader.id })
-
-  const teamListItems = await getTeamListItems({ teamLeaderId: teamLeader.id })
+  const teamListItems = await getAllTeamListItems()
 
   if (!team) {
     throw new Response('Not Found', { status: 404 })
@@ -103,16 +96,9 @@ export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
 }
 
 export async function action({ params }: ActionArgs): Promise<Response> {
-  // No longer requiring authentication for team actions
   invariant(params.teamId, 'teamId not found')
 
-  // Get the default TeamLeader
-  const teamLeader = await getDefaultTeamLeader()
-  if (!teamLeader) {
-    throw new Response('No TeamLeader found', { status: 404 })
-  }
-
-  await deleteTeam({ id: params.teamId, teamLeaderId: teamLeader.id })
+  await deleteTeamById({ id: params.teamId })
 
   return redirect('/teams')
 }

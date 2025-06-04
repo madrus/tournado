@@ -9,9 +9,9 @@ body {
   background: linear-gradient(to bottom, rgb(236 253 245) 0%, rgb(220 252 231) 100%);
 }
 
-/* Prevent Material Symbols text flash */
+/* Material Symbols setup with FOUT prevention */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Outlined', 'Material Icons', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -26,17 +26,29 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Prevent flash by ensuring consistent appearance */
+  min-width: 1em;
+  min-height: 1em;
+
+  /* Show a subtle loading state */
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
 }
 
-/* Hide icon text until font loads properly */
-@supports not (font-display: swap) {
+/* Enhanced appearance when font is confirmed loaded */
+.fonts-loaded .material-symbols-outlined {
+  opacity: 1;
+}
+
+/* Fallback: ensure full opacity after reasonable time */
+@media (min-width: 1px) {
   .material-symbols-outlined {
-    opacity: 0;
-    animation: fadeInIcon 0.1s ease-in-out 0.2s forwards;
+    animation: enhanceIcon 0.1s ease-in-out 0.8s forwards;
   }
 }
 
-@keyframes fadeInIcon {
+@keyframes enhanceIcon {
   to {
     opacity: 1;
   }

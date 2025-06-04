@@ -11,10 +11,19 @@ const prisma = new PrismaClient()
  */
 async function seed() {
   const admins = ['madrusnl@hotmail.com', 'otmanabdel@hotmail.com']
-
+  const users = ['madrus@gmail.com']
   // cleanup the existing database
   await Promise.all(
     admins.map(email =>
+      prisma.user.delete({ where: { email } }).catch(() => {
+        // no worries if it doesn't exist yet
+      })
+    )
+  )
+
+  // Cleanup users as well
+  await Promise.all(
+    users.map(email =>
       prisma.user.delete({ where: { email } }).catch(() => {
         // no worries if it doesn't exist yet
       })
@@ -42,6 +51,22 @@ async function seed() {
             email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
           lastName: 'Admin',
           role: 'ADMIN',
+          password: { create: { hash: hashedInitialPassword } },
+        },
+      })
+    )
+  )
+
+  // Create TOURNAMENT_MANAGER users
+  await Promise.all(
+    users.map(async email =>
+      prisma.user.create({
+        data: {
+          email,
+          firstName:
+            email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+          lastName: 'User',
+          role: 'TOURNAMENT_MANAGER',
           password: { create: { hash: hashedInitialPassword } },
         },
       })

@@ -12,7 +12,9 @@ export default defineConfig({
     transformer: 'postcss',
   },
   plugins: [
-    reactRouterDevTools(),
+    ...(process.env.ENABLE_REACT_ROUTER_DEVTOOLS === 'true'
+      ? [reactRouterDevTools()]
+      : []),
     reactRouter(),
     VitePWA({
       registerType: 'autoUpdate',

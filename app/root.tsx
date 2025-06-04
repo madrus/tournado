@@ -66,14 +66,100 @@ const Document = ({ children }: { children: React.ReactNode }) => (
       <meta name='viewport' content='width=device-width,initial-scale=1' />
       <link
         rel='preload'
-        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=optional'
         as='style'
       />
       <link
         rel='stylesheet'
-        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+        href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=optional'
       />
       <Links />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            // Detect when Material Symbols font has loaded
+            (function() {
+              function checkFontLoaded() {
+                try {
+                  if (document.fonts && document.fonts.check) {
+                    // Modern browsers with FontFaceSet API
+                    if (document.fonts.check('24px "Material Symbols Outlined"')) {
+                      document.documentElement.classList.add('fonts-loaded');
+                      return true;
+                    }
+                  }
+                  
+                  // Fallback: test if font is available by measuring text width
+                  // Only if body exists
+                  if (document.body) {
+                    const testSpan = document.createElement('span');
+                    testSpan.style.fontFamily = '"Material Symbols Outlined", monospace';
+                    testSpan.style.fontSize = '24px';
+                    testSpan.style.visibility = 'hidden';
+                    testSpan.style.position = 'absolute';
+                    testSpan.textContent = 'trophy';
+                    document.body.appendChild(testSpan);
+                    
+                    const materialWidth = testSpan.offsetWidth;
+                    
+                    testSpan.style.fontFamily = 'monospace';
+                    const fallbackWidth = testSpan.offsetWidth;
+                    
+                    document.body.removeChild(testSpan);
+                    
+                    // If widths are different, Material Symbols font has loaded
+                    if (materialWidth !== fallbackWidth) {
+                      document.documentElement.classList.add('fonts-loaded');
+                      return true;
+                    }
+                  }
+                } catch (e) {
+                  // If any error occurs, add class after timeout as fallback
+                  console.warn('Font loading detection failed:', e);
+                }
+                return false;
+              }
+              
+              function initFontDetection() {
+                // Check immediately if font is already cached
+                if (checkFontLoaded()) return;
+                
+                // Listen for font load events
+                if (document.fonts && document.fonts.addEventListener) {
+                  document.fonts.addEventListener('loadingdone', function() {
+                    if (checkFontLoaded()) return;
+                  });
+                }
+                
+                // Fallback timeout to ensure icons show eventually
+                setTimeout(function() {
+                  document.documentElement.classList.add('fonts-loaded');
+                }, 1000);
+                
+                // Check periodically until font loads (for slower connections)
+                let attempts = 0;
+                const maxAttempts = 20;
+                const checkInterval = setInterval(function() {
+                  attempts++;
+                  if (checkFontLoaded() || attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    if (attempts >= maxAttempts) {
+                      document.documentElement.classList.add('fonts-loaded');
+                    }
+                  }
+                }, 100);
+              }
+              
+              // Wait for DOM to be ready
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFontDetection);
+              } else {
+                initFontDetection();
+              }
+            })();
+          `,
+        }}
+      />
     </head>
     <body className='bg-background text-foreground flex h-full flex-col'>
       <I18nextProvider i18n={i18n}>

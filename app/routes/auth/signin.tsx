@@ -90,13 +90,8 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     )
   }
 
-  // Determine default redirect based on user role (only if no redirectTo specified)
-  let defaultRedirect: string
-  if (user.role === 'ADMIN') {
-    defaultRedirect = '/a7k9m2x5p8w1n4q6r3y8b5t1' // Admin panel for admin users
-  } else {
-    defaultRedirect = '/' // Homepage for regular users
-  }
+  // Use consistent default redirect for all users regardless of role
+  const defaultRedirect = '/'
 
   // Always respect redirectTo if provided, regardless of user role
   return createUserSession({

@@ -40,7 +40,7 @@ export const links: LinksFunction = (): { rel: string; href: string }[] => [
   { rel: 'stylesheet', href: safeAreasStylesheetUrl },
 ]
 
-interface LoaderData {
+type LoaderData = {
   authenticated: boolean
   ENV: Record<string, string>
   username: string

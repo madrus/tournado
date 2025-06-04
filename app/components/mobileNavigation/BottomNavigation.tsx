@@ -11,7 +11,12 @@ function BottomNavigation(): JSX.Element {
   ]
 
   return (
-    <div className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-white p-3 shadow-lg md:hidden'>
+    <nav
+      className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-white p-3 shadow-lg md:hidden'
+      aria-label='Bottom navigation'
+      role='navigation'
+      data-cy='bottom-navigation'
+    >
       {/* Navigation items spread across full width */}
       <div className='flex w-full justify-between px-3'>
         {navigationItems.map(item => (
@@ -23,7 +28,7 @@ function BottomNavigation(): JSX.Element {
           />
         ))}
       </div>
-    </div>
+    </nav>
   )
 }
 

@@ -19,10 +19,12 @@ export default [
     route('signout', 'routes/auth/signout.tsx'),
   ]),
 
-  // Admin routes (role-protected)
+  // Protected routes (all authenticated users)
+  route('profile', 'routes/profile.tsx'),
+  route('settings', 'routes/settings.tsx'),
+
+  // Admin routes (admin-only)
   route('a7k9m2x5p8w1n4q6r3y8b5t1', 'layouts/admin-layout.tsx', [
     index('routes/admin/index.tsx'),
-    route('profile', 'routes/admin/profile.tsx'),
-    route('settings', 'routes/admin/settings.tsx'),
   ]),
 ] satisfies RouteConfig

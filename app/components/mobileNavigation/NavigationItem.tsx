@@ -1,9 +1,11 @@
 import { JSX } from 'react'
 import { Link, useLocation } from 'react-router'
 
+import { IconName, renderIcon } from '~/utils/iconUtils'
+
 type NavigationItemProps = {
   to: string
-  icon: string
+  icon: IconName
   label: string
 }
 
@@ -18,16 +20,12 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
       aria-label={`Navigate to ${label}`}
       data-cy={`nav-${label.toLowerCase()}`}
     >
-      <span
-        className={`material-symbols-outlined ${isActive ? 'text-red-500' : 'text-emerald-800'}`}
-        style={{
-          fontSize: '36px',
-          fontVariationSettings: `'FILL' ${isActive ? 1 : 0}, 'wght' 400, 'GRAD' 0, 'opsz' 48`,
-        }}
-        aria-hidden='true'
-      >
-        {icon}
-      </span>
+      {renderIcon(icon, {
+        size: 36,
+        variant: isActive ? 'filled' : 'outlined',
+        weight: isActive ? 700 : 400,
+        className: isActive ? 'text-red-500' : 'text-emerald-800',
+      })}
       <span
         className={`mt-1 text-xs ${isActive ? 'font-bold text-red-500' : 'text-emerald-800'}`}
       >

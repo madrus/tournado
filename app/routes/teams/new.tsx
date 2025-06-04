@@ -165,6 +165,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     const lastName = lastNameParts.join(' ') || ''
 
     teamLeader = await prisma.teamLeader.create({
+      // eslint-disable-next-line id-blacklist
       data: {
         firstName,
         lastName,

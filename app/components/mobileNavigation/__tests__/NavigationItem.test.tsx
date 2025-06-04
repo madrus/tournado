@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
+import type { IconName } from '~/utils/iconUtils'
+
 import NavigationItem from '../NavigationItem'
 
 // Mock react-router hooks
@@ -18,7 +20,7 @@ vi.mock('react-router', async () => {
 const mockUseLocation = vi.mocked(await import('react-router')).useLocation
 
 describe('NavigationItem', () => {
-  const defaultProps = {
+  const defaultProps: { to: string; icon: IconName; label: string } = {
     to: '/teams',
     icon: 'apparel',
     label: 'Teams',
@@ -38,7 +40,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -49,9 +51,11 @@ describe('NavigationItem', () => {
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', '/teams')
 
-      // Check that the icon is rendered
-      const icon = screen.getByText('apparel')
+      // Check that the icon SVG is rendered
+      const icon = container.querySelector('svg')
       expect(icon).toBeInTheDocument()
+      expect(icon).toHaveAttribute('width', '36')
+      expect(icon).toHaveAttribute('height', '36')
 
       // Check that the label is rendered
       const label = screen.getByText('Teams')
@@ -67,7 +71,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -76,8 +80,9 @@ describe('NavigationItem', () => {
       const link = screen.getByRole('link')
       expect(link).toHaveAttribute('aria-label', 'Navigate to Teams')
 
-      const icon = screen.getByText('apparel')
-      expect(icon).toHaveAttribute('aria-hidden', 'true')
+      // Check the SVG element has correct classes
+      const svg = container.querySelector('svg')
+      expect(svg).toHaveClass('fill-current')
     })
 
     it('should have correct data-cy attribute', () => {
@@ -110,18 +115,18 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const icon = screen.getByText('apparel')
+      const iconDiv = container.querySelector('div[class*="text-emerald-800"]')
       const label = screen.getByText('Teams')
 
       // Check inactive styling
-      expect(icon).toHaveClass('text-emerald-800')
-      expect(icon).not.toHaveClass('text-red-500')
+      expect(iconDiv).toHaveClass('text-emerald-800')
+      expect(iconDiv).not.toHaveClass('text-red-500')
       expect(label).toHaveClass('text-emerald-800')
       expect(label).not.toHaveClass('text-red-500', 'font-bold')
     })
@@ -135,25 +140,29 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const icon = screen.getByText('apparel')
+      const iconDiv = container.querySelector('div[class*="text-red-500"]')
       const label = screen.getByText('Teams')
 
       // Check active styling
-      expect(icon).toHaveClass('text-red-500')
-      expect(icon).not.toHaveClass('text-emerald-800')
+      expect(iconDiv).toHaveClass('text-red-500')
+      expect(iconDiv).not.toHaveClass('text-emerald-800')
       expect(label).toHaveClass('text-red-500', 'font-bold')
       expect(label).not.toHaveClass('text-emerald-800')
     })
 
     it('should handle different routes correctly', () => {
       // Test home route
-      const homeProps = { to: '/', icon: 'trophy', label: 'Home' }
+      const homeProps: { to: string; icon: IconName; label: string } = {
+        to: '/',
+        icon: 'trophy',
+        label: 'Home',
+      }
 
       mockUseLocation.mockReturnValue({
         pathname: '/',
@@ -163,14 +172,14 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { rerender } = render(
+      const { rerender, container } = render(
         <MemoryRouter>
           <NavigationItem {...homeProps} />
         </MemoryRouter>
       )
 
-      let icon = screen.getByText('trophy')
-      expect(icon).toHaveClass('text-red-500') // Should be active
+      let iconDiv = container.querySelector('div[class*="text-red-500"]')
+      expect(iconDiv).toHaveClass('text-red-500') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({
@@ -187,13 +196,13 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      icon = screen.getByText('trophy')
-      expect(icon).toHaveClass('text-emerald-800') // Should be inactive
+      iconDiv = container.querySelector('div[class*="text-emerald-800"]')
+      expect(iconDiv).toHaveClass('text-emerald-800') // Should be inactive
     })
   })
 
-  describe('Icon Styling', () => {
-    it('should apply correct icon styles for inactive state', () => {
+  describe('Icon Properties', () => {
+    it('should render icon with correct size properties', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/',
         search: '',
@@ -202,20 +211,22 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const icon = screen.getByText('apparel')
-      expect(icon).toHaveStyle({
-        fontSize: '36px',
-        fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
+      const svg = container.querySelector('svg')
+      expect(svg).toHaveAttribute('width', '36')
+      expect(svg).toHaveAttribute('height', '36')
+      expect(svg).toHaveStyle({
+        width: '36px',
+        height: '36px',
       })
     })
 
-    it('should apply correct icon styles for active state', () => {
+    it('should render icon as inline SVG', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/teams',
         search: '',
@@ -224,23 +235,27 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const icon = screen.getByText('apparel')
-      expect(icon).toHaveStyle({
-        fontSize: '36px',
-        fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-      })
+      const svg = container.querySelector('svg')
+      // Inline SVG should have viewBox and fill-current class
+      expect(svg).toHaveAttribute('viewBox', '0 -960 960 960')
+      expect(svg).toHaveClass('fill-current')
     })
   })
 
   describe('Different Navigation Items', () => {
     it('should handle different labels and data-cy attributes', () => {
-      const testCases = [
+      const testCases: Array<{
+        to: string
+        icon: IconName
+        label: string
+        expectedDataCy: string
+      }> = [
         { to: '/', icon: 'trophy', label: 'Home', expectedDataCy: 'nav-home' },
         { to: '/teams', icon: 'apparel', label: 'Teams', expectedDataCy: 'nav-teams' },
         { to: '/about', icon: 'pending', label: 'More', expectedDataCy: 'nav-more' },
@@ -255,7 +270,7 @@ describe('NavigationItem', () => {
           key: 'default',
         })
 
-        const { unmount } = render(
+        const { unmount, container } = render(
           <MemoryRouter>
             <NavigationItem to={to} icon={icon} label={label} />
           </MemoryRouter>
@@ -264,7 +279,13 @@ describe('NavigationItem', () => {
         const link = screen.getByRole('link', { name: `Navigate to ${label}` })
         expect(link).toHaveAttribute('data-cy', expectedDataCy)
         expect(link).toHaveAttribute('href', to)
-        expect(screen.getByText(icon)).toBeInTheDocument()
+
+        // Check that SVG icon is rendered
+        const iconElement = container.querySelector('svg')
+        expect(iconElement).toBeInTheDocument()
+        expect(iconElement).toHaveClass('fill-current')
+
+        // Check that label is rendered
         expect(screen.getByText(label)).toBeInTheDocument()
 
         unmount()
@@ -282,7 +303,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      render(
+      const { container } = render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -291,8 +312,11 @@ describe('NavigationItem', () => {
       const link = screen.getByRole('link')
       expect(link).toHaveClass('flex', 'flex-col', 'items-center')
 
-      const icon = screen.getByText('apparel')
-      expect(icon).toHaveClass('material-symbols-outlined')
+      const iconDiv = container.querySelector('div[class*="text-emerald-800"]')
+      expect(iconDiv).toHaveClass('text-emerald-800') // Default inactive state
+
+      const svg = container.querySelector('svg')
+      expect(svg).toHaveClass('fill-current')
 
       const label = screen.getByText('Teams')
       expect(label).toHaveClass('mt-1', 'text-xs')

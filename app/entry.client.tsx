@@ -9,7 +9,9 @@ const useStrictMode = isDevelopment && !strictModeDisabled
 
 // Suppress hydration warnings for known browser extension attributes
 if (isDevelopment) {
+  // eslint-disable-next-line no-console
   const originalConsoleError = console.error
+  // eslint-disable-next-line no-console
   console.error = (...args) => {
     const message = args[0]
     if (

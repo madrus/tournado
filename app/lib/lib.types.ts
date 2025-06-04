@@ -60,6 +60,10 @@ export type Team = PrismaTeam
 // Email type matching basic e-mail pattern: local@domain.tld
 export type Email = `${string}@${string}.${string}`
 
+// Icon types (used by individual icon components)
+export type IconVariant = 'outlined' | 'filled'
+export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
+
 // Type for form input
 export type TeamFormData = {
   tournamentId: string // which tournament the team is registering for

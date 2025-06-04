@@ -1,10 +1,11 @@
-import { type JSX, useCallback, useState } from 'react'
+import { JSX, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useLocation } from 'react-router'
 
 import type { User } from '@prisma/client'
 
 import logo from '~/assets/logo-192x192.png'
+import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 
 import { PrimaryNavLink } from './PrefetchLink'
@@ -65,14 +66,14 @@ export function AppBar({
   const menuItems = [
     {
       label: t('common.titles.teams'),
-      icon: 'group',
+      icon: 'apparel' as IconName,
       href: '/teams',
       authenticated: false,
     },
     // Divider after Teams
     {
       label: '',
-      icon: '',
+      icon: '' as IconName,
       divider: true,
       authenticated: false,
     },
@@ -81,7 +82,7 @@ export function AppBar({
       ? [
           {
             label: t('common.titles.adminPanel'),
-            icon: 'admin_panel_settings',
+            icon: 'admin_panel_settings' as IconName,
             href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
             authenticated: true,
           },
@@ -90,25 +91,24 @@ export function AppBar({
     {
       label: t('common.titles.profile'),
       href: '/profile',
-      icon: 'person',
+      icon: 'person' as IconName,
       authenticated: true,
     },
     {
       label: t('common.titles.settings'),
       href: '/settings',
-      icon: 'settings',
+      icon: 'settings' as IconName,
       authenticated: true,
     },
     {
       label: t('common.titles.about'),
-      icon: 'info',
+      icon: 'info' as IconName,
       href: '/about',
       authenticated: false,
     },
     {
-      label: currentLanguage.name,
-      icon: '',
-      customIcon: currentLanguage.flag,
+      label: t('common.language'),
+      icon: 'language' as IconName,
       subMenu: languages.map(lang => ({
         label: lang.name,
         customIcon: lang.flag,
@@ -119,13 +119,15 @@ export function AppBar({
     },
     {
       label: isAuthenticated ? t('auth.signout') : t('auth.signin'),
-      icon: isAuthenticated ? 'logout' : 'login',
+      icon: (isAuthenticated ? 'logout' : 'login') as IconName,
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
           className='flex w-full content-start items-center px-3 py-2 text-left text-gray-700 hover:bg-gray-100'
         >
-          <span className='material-symbols-outlined w-8 pl-0 text-left'>logout</span>
+          <span className='flex w-8 items-center justify-start pl-0 text-left'>
+            {renderIcon('logout', { className: 'w-5 h-5' })}
+          </span>
           {t('auth.signout')}
         </button>
       ) : (
@@ -134,7 +136,9 @@ export function AppBar({
           className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
           onClick={handleSignIn}
         >
-          <span className='material-symbols-outlined w-8 pl-0 text-left'>login</span>
+          <span className='flex w-8 items-center justify-start pl-0 text-left'>
+            {renderIcon('login', { className: 'w-5 h-5' })}
+          </span>
           {t('auth.signin')}
         </PrimaryNavLink>
       ),
@@ -176,12 +180,7 @@ export function AppBar({
             className='inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-emerald-700'
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <span
-              className='material-symbols-outlined text-[28px]'
-              style={{ fontSize: '32px' }}
-            >
-              menu
-            </span>
+            {renderIcon('menu', { className: 'text-white', size: 32 })}
           </button>
         </div>
 

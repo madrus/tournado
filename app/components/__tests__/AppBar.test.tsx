@@ -111,7 +111,7 @@ describe('AppBar Context Menu', () => {
       // Should see: Teams, About, Language (English - actual language name), Sign In
       expect(menuLabels).toContain('common.titles.teams')
       expect(menuLabels).toContain('common.titles.about')
-      expect(menuLabels).toContain('English') // Actual language name, not translation key
+      expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
       expect(menuLabels).toContain('auth.signin')
 
       // Should NOT see admin or authenticated-only items (they get filtered out)
@@ -165,7 +165,7 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.titles.profile')
       expect(menuLabels).toContain('common.titles.settings')
       expect(menuLabels).toContain('common.titles.about')
-      expect(menuLabels).toContain('English') // Actual language name
+      expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
       expect(menuLabels).toContain('auth.signout')
 
       // Should NOT see admin items or sign in
@@ -215,7 +215,7 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.titles.profile')
       expect(menuLabels).toContain('common.titles.settings')
       expect(menuLabels).toContain('common.titles.about')
-      expect(menuLabels).toContain('English') // Actual language name
+      expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
       expect(menuLabels).toContain('auth.signout')
 
       // Should NOT see sign in
@@ -408,7 +408,7 @@ describe('AppBar Context Menu', () => {
 
       const aboutIndex = menuLabels.indexOf('common.titles.about')
       const signInIndex = menuLabels.indexOf('auth.signin')
-      const languageIndex = menuLabels.indexOf('English') // Actual language name
+      const languageIndex = menuLabels.indexOf('common.language') // Generic language menu, not individual language name
 
       // About should come before Sign In and Language
       expect(aboutIndex).toBeGreaterThan(-1)

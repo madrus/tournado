@@ -2,6 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 
+import { BlockIcon } from '~/components/icons'
 import { ErrorRecoveryLink, PrimaryNavLink } from '~/components/PrefetchLink'
 import type { RouteMetadata } from '~/utils/route-types'
 
@@ -35,7 +36,7 @@ export default function UnauthorizedPage(): JSX.Element {
         <div className='flex flex-col items-center gap-4'>
           {/* Icon */}
           <div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-100'>
-            <span className='material-symbols-outlined text-red-600'>block</span>
+            <BlockIcon className='text-red-600' size={24} />
           </div>
 
           {/* Title */}

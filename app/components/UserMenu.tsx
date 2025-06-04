@@ -4,9 +4,11 @@ import { Link, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
+import { IconName, renderIcon } from '~/utils/iconUtils'
+
 export type MenuItemType = {
   label: string
-  icon: string
+  icon?: IconName
   href?: string
   todo?: boolean
   action?: JSX.Element
@@ -94,14 +96,18 @@ export function UserMenu({
               <div key={index} className='block px-3 py-0'>
                 {item.divider ? (
                   <hr className='mx-0 my-2 border-gray-200' />
-                ) : item.customIcon && item.subMenu ? (
+                ) : (item.customIcon || item.icon) && item.subMenu ? (
                   <div className='relative'>
                     <button
                       className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
-                      <span className='w-8 pl-0 text-left text-lg'>
-                        {item.customIcon}
+                      <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                        {item.customIcon ? (
+                          <span className='text-lg'>{item.customIcon}</span>
+                        ) : item.icon ? (
+                          renderIcon(item.icon, { className: 'w-5 h-5' })
+                        ) : null}
                       </span>
                       <span>{item.label}</span>
                     </button>
@@ -138,8 +144,10 @@ export function UserMenu({
                     to={item.href || '#'}
                     className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
                   >
-                    <span className='material-symbols-outlined w-8 pl-0 text-left'>
-                      {item.icon}
+                    <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                      {item.icon
+                        ? renderIcon(item.icon, { className: 'w-5 h-5' })
+                        : null}
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (
@@ -162,7 +170,7 @@ export function UserMenu({
         <DropdownMenu.Trigger asChild>
           <button className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'>
             {/* Show subtle three-dot menu - unobtrusive for public users */}
-            <span className='material-symbols-outlined hidden md:block'>more_vert</span>
+            {renderIcon('more_vert', { className: 'hidden md:block' })}
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
@@ -186,7 +194,7 @@ export function UserMenu({
                 )
               }
 
-              if (item.customIcon && item.subMenu) {
+              if ((item.customIcon || item.icon) && item.subMenu) {
                 // This is the language menu
                 return (
                   <div key={index} className='relative'>
@@ -194,8 +202,12 @@ export function UserMenu({
                       className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
-                      <span className='w-8 pl-0 text-left text-lg'>
-                        {item.customIcon}
+                      <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                        {item.customIcon ? (
+                          <span className='text-lg'>{item.customIcon}</span>
+                        ) : item.icon ? (
+                          renderIcon(item.icon, { className: 'w-5 h-5' })
+                        ) : null}
                       </span>
                       <span>{item.label}</span>
                     </button>
@@ -240,10 +252,12 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+                    className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
                   >
-                    <span className='material-symbols-outlined w-8 pl-0 text-left'>
-                      {item.icon}
+                    <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                      {item.icon
+                        ? renderIcon(item.icon, { className: 'w-5 h-5' })
+                        : null}
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (

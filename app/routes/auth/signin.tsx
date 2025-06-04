@@ -10,6 +10,7 @@ import {
   useSearchParams,
 } from 'react-router'
 
+import { CheckCircleIcon } from '~/components/icons'
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
@@ -153,9 +154,7 @@ export default function SigninPage(): JSX.Element {
             <div className='mb-4 rounded-md bg-green-50 p-4'>
               <div className='flex'>
                 <div className='flex-shrink-0'>
-                  <span className='material-symbols-outlined text-green-400'>
-                    check_circle
-                  </span>
+                  <CheckCircleIcon className='text-green-400' size={20} />
                 </div>
                 <div className='ml-3'>
                   <h3 className='text-sm font-medium text-green-800'>

@@ -24,5 +24,5 @@ export default [
   route('settings', 'routes/settings.tsx'),
 
   // Admin routes (role-protected)
-  route('admin', 'routes/admin.tsx'),
+  route('a7k9m2x5p8w1n4q6', 'routes/admin.tsx'),
 ] satisfies RouteConfig

@@ -72,6 +72,10 @@ export function UserMenu({
       <div
         className={`fixed inset-0 z-30 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
         onClick={() => onOpenChange?.(false)}
+        data-cy='mobile-user-menu-overlay'
+        aria-label='Mobile user menu'
+        role='dialog'
+        aria-modal='true'
       >
         <div
           className='w-[95%] max-w-md overflow-visible rounded-lg bg-white shadow-xl'
@@ -80,8 +84,8 @@ export function UserMenu({
           <div className='border-b border-gray-200 px-3 py-3'>
             <div className='px-3'>
               <p className='text-gray-500'>
-                {authenticated ? t('common.signedInAs') : t('common.welcome')},{' '}
-                <span className='truncate text-gray-500'>{displayName}</span>!
+                {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
+                <span className='truncate text-gray-500'>{displayName}</span>
               </p>
             </div>
           </div>
@@ -167,8 +171,8 @@ export function UserMenu({
         >
           <div className='px-4 py-3'>
             <p className='text-gray-500'>
-              {authenticated ? t('common.signedInAs') : t('common.welcome')},{' '}
-              <span className='truncate text-gray-500'>{displayName}</span>!
+              {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
+              <span className='truncate text-gray-500'>{displayName}</span>
             </p>
           </div>
           <div className='py-1'>

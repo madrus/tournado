@@ -41,7 +41,7 @@ export const handle: RouteMetadata = {
 
 export async function loader({ request }: LoaderArgs): Promise<object> {
   const userId = await getUserId(request)
-  if (userId) return redirect('/teams')
+  if (userId) return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
   return {}
 }
 
@@ -49,7 +49,9 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo = safeRedirect(formData.get('redirectTo'), '/') ?? '/'
+  const redirectTo =
+    safeRedirect(formData.get('redirectTo'), '/a7k9m2x5p8w1n4q6r3y8b5t1') ??
+    '/a7k9m2x5p8w1n4q6r3y8b5t1'
   const firstName = formData.get('firstName')
   const lastName = formData.get('lastName')
 
@@ -127,7 +129,7 @@ export default function SignupPage(): JSX.Element {
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
-  const redirectTo = searchParams.get('redirectTo') || '/'
+  const redirectTo = searchParams.get('redirectTo') || '/a7k9m2x5p8w1n4q6r3y8b5t1'
   const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)

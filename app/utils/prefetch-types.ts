@@ -69,16 +69,16 @@ export const routePrefetchOverrides: Record<string, PrefetchStrategy> = {
   // Home page CTA should prefetch teams immediately
   '/teams': 'render',
 
-  // Profile and settings accessed frequently after login
-  '/profile': 'intent',
-  '/settings': 'intent',
+  // Admin routes accessed frequently after login
+  '/a7k9m2x5p8w1n4q6r3y8b5t1/profile': 'intent',
+  '/a7k9m2x5p8w1n4q6r3y8b5t1/settings': 'intent',
 
   // Auth routes for quick access
   '/auth/signin': 'intent',
   '/auth/signup': 'intent',
 
   // Admin routes only when needed
-  '/a7k9m2x5p8w1n4q6': 'intent',
+  '/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
 
   // About page - lower priority
   '/about': 'intent',

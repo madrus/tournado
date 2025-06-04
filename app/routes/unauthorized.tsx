@@ -61,7 +61,7 @@ export default function UnauthorizedPage(): JSX.Element {
             </ErrorRecoveryLink>
 
             <PrimaryNavLink
-              to='/profile'
+              to='/a7k9m2x5p8w1n4q6r3y8b5t1/profile'
               className='flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
             >
               {t('common.viewProfile', 'View Profile')}

@@ -85,9 +85,9 @@ export function UserMenu({
         >
           <div className='border-b border-gray-200 px-3 py-3'>
             <div className='px-3'>
-              <p className='text-gray-500'>
+              <p className='text-emerald-800'>
                 {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
-                <span className='truncate text-gray-500'>{displayName}</span>
+                <span className='truncate text-emerald-800'>{displayName}</span>
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export function UserMenu({
                 ) : (item.customIcon || item.icon) && item.subMenu ? (
                   <div className='relative'>
                     <button
-                      className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+                      className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
                       <span className='flex w-8 items-center justify-start pl-0 text-left'>
@@ -120,7 +120,7 @@ export function UserMenu({
                             className={`flex w-full content-start items-center px-3 py-1 text-sm ${
                               subItem.active
                                 ? 'bg-gray-100 text-emerald-700'
-                                : 'text-gray-700 hover:bg-gray-50'
+                                : 'text-emerald-800 hover:bg-gray-50'
                             }`}
                             onClick={event => {
                               event.stopPropagation()
@@ -142,7 +142,7 @@ export function UserMenu({
                 ) : (
                   <Link
                     to={item.href || '#'}
-                    className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+                    className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                   >
                     <span className='flex w-8 items-center justify-start pl-0 text-left'>
                       {item.icon
@@ -151,7 +151,7 @@ export function UserMenu({
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (
-                      <span className='ml-2 text-xs text-gray-500'>(TODO)</span>
+                      <span className='ml-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}
                   </Link>
                 )}
@@ -178,9 +178,9 @@ export function UserMenu({
           sideOffset={5}
         >
           <div className='px-4 py-3'>
-            <p className='text-gray-500'>
+            <p className='text-emerald-800'>
               {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
-              <span className='truncate text-gray-500'>{displayName}</span>
+              <span className='truncate text-emerald-800'>{displayName}</span>
             </p>
           </div>
           <div className='py-1'>
@@ -199,7 +199,7 @@ export function UserMenu({
                 return (
                   <div key={index} className='relative'>
                     <button
-                      className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none'
+                      className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 focus:outline-none'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
                       <span className='flex w-8 items-center justify-start pl-0 text-left'>
@@ -220,7 +220,7 @@ export function UserMenu({
                             className={`flex w-full content-start items-center px-3 py-1 text-sm ${
                               subItem.active
                                 ? 'bg-gray-100 text-emerald-700'
-                                : 'text-gray-700 hover:bg-gray-50'
+                                : 'text-emerald-800 hover:bg-gray-50'
                             } focus:outline-none`}
                             onClick={event => {
                               event.stopPropagation()
@@ -252,7 +252,7 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className='flex content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+                    className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                   >
                     <span className='flex w-8 items-center justify-start pl-0 text-left'>
                       {item.icon
@@ -261,7 +261,7 @@ export function UserMenu({
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (
-                      <span className='ml-2 text-xs text-gray-500'>(TODO)</span>
+                      <span className='ml-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}
                   </Link>
                 </DropdownMenu.Item>

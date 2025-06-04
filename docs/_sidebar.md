@@ -10,6 +10,7 @@
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)
+   - [Vitest MCP Server](testing/vitest_mcp.md)
    - [Troubleshooting](testing/troubleshooting.md)
 - Deployment
    - [Overview](deployment/overview.md)

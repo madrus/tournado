@@ -16,7 +16,7 @@ export function safeRedirect(
   to: FormDataEntryValue | string | null | undefined,
   defaultRedirect: string = DEFAULT_REDIRECT
 ): string | null {
-  if (!to || typeof to !== 'string') {
+  if (!to || typeof to !== 'string' || to.trim() === '') {
     return defaultRedirect
   }
 

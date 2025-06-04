@@ -82,20 +82,20 @@ export function AppBar({
           {
             label: t('common.titles.adminPanel'),
             icon: 'admin_panel_settings',
-            href: '/a7k9m2x5p8w1n4q6',
+            href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
             authenticated: true,
           },
         ]
       : []),
     {
       label: t('common.titles.profile'),
-      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/profile',
+      href: '/profile',
       icon: 'person',
       authenticated: true,
     },
     {
       label: t('common.titles.settings'),
-      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/settings',
+      href: '/settings',
       icon: 'settings',
       authenticated: true,
     },

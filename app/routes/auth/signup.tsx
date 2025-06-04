@@ -41,7 +41,11 @@ export const handle: RouteMetadata = {
 
 export async function loader({ request }: LoaderArgs): Promise<object> {
   const userId = await getUserId(request)
-  if (userId) return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
+  if (userId) {
+    // If user is already logged in, redirect them
+    // We can't determine their role here easily, so just redirect to teams
+    return redirect('/teams')
+  }
   return {}
 }
 
@@ -49,9 +53,7 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo =
-    safeRedirect(formData.get('redirectTo'), '/a7k9m2x5p8w1n4q6r3y8b5t1') ??
-    '/a7k9m2x5p8w1n4q6r3y8b5t1'
+  const redirectTo = safeRedirect(formData.get('redirectTo'), undefined)
   const firstName = formData.get('firstName')
   const lastName = formData.get('lastName')
 
@@ -76,35 +78,41 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     )
   }
 
-  if (typeof firstName !== 'string' || firstName.length === 0) {
-    return Response.json(
-      { errors: { firstName: 'firstNameRequired', email: null, password: null } },
-      { status: 400 }
-    )
-  }
-
-  if (typeof lastName !== 'string' || lastName.length === 0) {
-    return Response.json(
-      { errors: { lastName: 'lastNameRequired', email: null, password: null } },
-      { status: 400 }
-    )
-  }
-
   const existingUser = await getUserByEmail(email)
   if (existingUser) {
     return Response.json(
-      { errors: { email: 'emailAlreadyExists', password: null } },
+      {
+        errors: {
+          email: 'emailExists',
+          password: null,
+        },
+      },
       { status: 400 }
     )
   }
 
-  const user = await createUser(email, password, firstName, lastName, 'PUBLIC')
+  const user = await createUser(
+    email,
+    password,
+    typeof firstName === 'string' ? firstName : '',
+    typeof lastName === 'string' ? lastName : '',
+    'PUBLIC' // Default role for new users
+  )
 
+  // Determine default redirect based on user role (only if no redirectTo specified)
+  let defaultRedirect: string
+  if (user.role === 'ADMIN') {
+    defaultRedirect = '/a7k9m2x5p8w1n4q6r3y8b5t1' // Admin panel for admin users
+  } else {
+    defaultRedirect = '/' // Homepage for regular users
+  }
+
+  // Always respect redirectTo if provided, regardless of user role
   return createUserSession({
+    redirectTo: redirectTo || defaultRedirect,
+    remember: false,
     request,
     userId: user.id,
-    remember: false,
-    redirectTo,
   })
 }
 
@@ -129,7 +137,7 @@ export default function SignupPage(): JSX.Element {
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
-  const redirectTo = searchParams.get('redirectTo') || '/a7k9m2x5p8w1n4q6r3y8b5t1'
+  const redirectTo = searchParams.get('redirectTo') || '' // Empty string instead of hard-coded default
   const actionData = useActionData<ActionData>()
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)

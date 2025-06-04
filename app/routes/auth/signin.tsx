@@ -42,8 +42,8 @@ export const loader = async ({ request }: LoaderArgs): Promise<object> => {
     // Get the redirectTo parameter from the URL if present
     const url = new URL(request.url)
     const redirectTo = url.searchParams.get('redirectTo')
-    // Redirect to the intended destination or admin page
-    return redirect(redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Redirect to the intended destination or teams page
+    return redirect(redirectTo || '/teams')
   }
   return {}
 }
@@ -52,10 +52,7 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo = safeRedirect(
-    formData.get('redirectTo'),
-    '/a7k9m2x5p8w1n4q6r3y8b5t1'
-  )
+  const redirectTo = safeRedirect(formData.get('redirectTo'), undefined) // Default to undefined so we can handle it below
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {
@@ -83,14 +80,28 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
 
   if (!user) {
     return Response.json(
-      { errors: { email: 'invalidCredentials', password: null } },
+      {
+        errors: {
+          email: 'invalidCredentials',
+          password: 'invalidCredentials',
+        },
+      },
       { status: 400 }
     )
   }
 
+  // Determine default redirect based on user role (only if no redirectTo specified)
+  let defaultRedirect: string
+  if (user.role === 'ADMIN') {
+    defaultRedirect = '/a7k9m2x5p8w1n4q6r3y8b5t1' // Admin panel for admin users
+  } else {
+    defaultRedirect = '/' // Homepage for regular users
+  }
+
+  // Always respect redirectTo if provided, regardless of user role
   return createUserSession({
-    redirectTo,
-    remember: remember === 'on',
+    redirectTo: redirectTo || defaultRedirect,
+    remember: remember === 'on' ? true : false,
     request,
     userId: user.id,
   })
@@ -115,7 +126,7 @@ export default function SigninPage(): JSX.Element {
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
-  const redirectTo = searchParams.get('redirectTo') || '/a7k9m2x5p8w1n4q6r3y8b5t1'
+  const redirectTo = searchParams.get('redirectTo') || ''
   const registered = searchParams.get('registered') === 'true'
   const emailFromRegistration = searchParams.get('email')
   const actionData = useActionData<ActionData>()

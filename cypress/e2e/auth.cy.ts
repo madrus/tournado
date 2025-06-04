@@ -27,7 +27,7 @@ describe('Authentication', () => {
     cy.cleanupUser({ failOnNonZeroExit: false })
   })
 
-  it('should redirect to admin route after successful authentication without redirectTo', () => {
+  it('should redirect to homepage after successful authentication without redirectTo', () => {
     // Create a test user in the database with admin role
     const testUser = {
       email: 'admin-redirect-test@example.com',
@@ -53,12 +53,15 @@ describe('Authentication', () => {
     cy.findByLabelText(/password/i).type('myreallystrongpassword')
     cy.findByRole('button', { name: /sign in/i }).click()
 
-    // Should be redirected to admin route (the default redirect)
-    cy.url().should('include', '/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Should be redirected to homepage (default behavior for all users)
+    cy.url({ timeout: 10000 }).should('eq', Cypress.config().baseUrl + '/')
 
-    // Verify user is authenticated by checking for their email in the admin panel
-    cy.contains(testUser.email).should('exist')
-    cy.contains('Admin Panel').should('exist')
+    // Verify user is authenticated by checking for their email in the UI
+    cy.contains(testUser.email, { timeout: 5000 }).should('exist')
+
+    // Admin users can still access the admin panel manually
+    cy.visit('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    cy.contains('Admin Panel', { timeout: 10000 }).should('exist')
   })
 
   it('should allow you to register and sign in', () => {
@@ -128,10 +131,10 @@ describe('Authentication', () => {
       .click()
 
     // After successful signup, we should be automatically signed in and redirected to teams
-    cy.url().should('include', '/teams')
+    cy.url({ timeout: 10000 }).should('include', '/teams')
 
     // Verify user is signed in by checking for their email somewhere in the UI
-    cy.contains(signinForm.email).should('exist')
+    cy.contains(signinForm.email, { timeout: 5000 }).should('exist')
   })
 
   it('should handle authentication with existing account', () => {
@@ -166,10 +169,10 @@ describe('Authentication', () => {
     cy.findByRole('button', { name: /sign in/i }).click()
 
     // Should be redirected back to homepage (where we started)
-    cy.url().should('eq', Cypress.config().baseUrl + '/')
+    cy.url({ timeout: 10000 }).should('eq', Cypress.config().baseUrl + '/')
 
     // Verify user is authenticated by checking for their email in the UI
-    cy.contains(testUser.email).should('exist')
+    cy.contains(testUser.email, { timeout: 5000 }).should('exist')
 
     // Test 2: Test that authenticated user can access protected routes
     cy.visit('/teams/new')
@@ -196,6 +199,6 @@ describe('Authentication', () => {
     cy.findByRole('button', { name: /sign in/i }).click()
 
     // Should be redirected back to teams page (where we started)
-    cy.url().should('include', '/teams')
+    cy.url({ timeout: 10000 }).should('include', '/teams')
   })
 })

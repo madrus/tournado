@@ -89,16 +89,14 @@ export function AppBar({
       : []),
     {
       label: t('common.titles.profile'),
+      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/profile',
       icon: 'person',
-      href: '/profile',
-      todo: true,
       authenticated: true,
     },
     {
       label: t('common.titles.settings'),
+      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/settings',
       icon: 'settings',
-      href: '/settings',
-      todo: true,
       authenticated: true,
     },
     {

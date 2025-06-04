@@ -27,6 +27,40 @@ describe('Authentication', () => {
     cy.cleanupUser({ failOnNonZeroExit: false })
   })
 
+  it('should redirect to admin route after successful authentication without redirectTo', () => {
+    // Create a test user in the database with admin role
+    const testUser = {
+      email: 'admin-redirect-test@example.com',
+      firstName: 'Admin',
+      lastName: 'User',
+    }
+
+    cy.then(() => ({ email: testUser.email })).as('user')
+
+    // Create the user in the database with admin role
+    cy.exec(
+      `pnpm exec tsx ./cypress/support/create-user.ts "${testUser.email}" "${testUser.firstName}" "${testUser.lastName}" "ADMIN"`
+    )
+
+    // Navigate directly to signin page without redirectTo parameter
+    cy.visitAndCheck('/auth/signin')
+
+    // Verify no redirectTo parameter in URL
+    cy.url().should('not.include', 'redirectTo')
+
+    // Sign in
+    cy.findByRole('textbox', { name: /email/i }).type(testUser.email)
+    cy.findByLabelText(/password/i).type('myreallystrongpassword')
+    cy.findByRole('button', { name: /sign in/i }).click()
+
+    // Should be redirected to admin route (the default redirect)
+    cy.url().should('include', '/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+    // Verify user is authenticated by checking for their email in the admin panel
+    cy.contains(testUser.email).should('exist')
+    cy.contains('Admin Panel').should('exist')
+  })
+
   it('should allow you to register and sign in', () => {
     const signinForm = {
       email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,

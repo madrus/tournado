@@ -1,10 +1,12 @@
 import { JSX } from 'react'
 
+import type { IconName } from '~/utils/iconUtils'
+
 import NavigationItem from './NavigationItem'
 
 function BottomNavigation(): JSX.Element {
   // Define navigation items - can be expanded in the future
-  const navigationItems = [
+  const navigationItems: Array<{ to: string; icon: IconName; label: string }> = [
     { to: '/', icon: 'trophy', label: 'Home' },
     { to: '/teams', icon: 'apparel', label: 'Teams' },
     { to: '/about', icon: 'pending', label: 'More' },

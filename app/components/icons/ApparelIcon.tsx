@@ -7,6 +7,7 @@ interface ApparelIconProps {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  'data-testid'?: string
 }
 
 export function ApparelIcon({
@@ -14,6 +15,7 @@ export function ApparelIcon({
   size = 24,
   variant = 'outlined',
   weight = 400,
+  'data-testid': dataTestId,
 }: ApparelIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -51,6 +53,7 @@ export function ApparelIcon({
           height: `${size}px`,
           strokeWidth,
         }}
+        data-testid={dataTestId}
       >
         <path d={path} />
       </svg>

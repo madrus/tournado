@@ -25,6 +25,7 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
         variant: isActive ? 'filled' : 'outlined',
         weight: isActive ? 700 : 400,
         className: isActive ? 'text-red-500' : 'text-emerald-800',
+        'data-testid': 'nav-icon',
       })}
       <span
         className={`mt-1 text-xs ${isActive ? 'font-bold text-red-500' : 'text-emerald-800'}`}

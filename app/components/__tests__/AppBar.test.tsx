@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router'
 
 import type { User } from '@prisma/client'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -94,7 +94,7 @@ describe('AppBar Context Menu', () => {
   // Helper function to get desktop menu items (AppBar renders both mobile and desktop)
   const getDesktopMenuItems = () => {
     const desktopMenu = screen.getByTestId('user-menu-desktop')
-    return desktopMenu.querySelectorAll('[data-testid="menu-label"]')
+    return within(desktopMenu).getAllByTestId('menu-label')
   }
 
   describe('Public User (Not Authenticated)', () => {
@@ -129,11 +129,11 @@ describe('AppBar Context Menu', () => {
       )
 
       const desktopMenu = screen.getByTestId('user-menu-desktop')
-      const dividers = desktopMenu.querySelectorAll('[data-testid="divider"]')
+      const dividers = within(desktopMenu).getAllByTestId('divider')
       expect(dividers).toHaveLength(1)
 
       // Check that divider appears after Teams (should be the second item)
-      const menuItems = desktopMenu.querySelectorAll('[data-testid^="menu-item-"]')
+      const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
       const secondItem = menuItems[1]
       expect(secondItem.querySelector('[data-testid="divider"]')).toBeInTheDocument()
     })
@@ -181,9 +181,7 @@ describe('AppBar Context Menu', () => {
       )
 
       const desktopMenu = screen.getByTestId('user-menu-desktop')
-      const authStatus = desktopMenu.querySelector(
-        '[data-testid="authenticated-status"]'
-      )
+      const authStatus = within(desktopMenu).getByTestId('authenticated-status')
       expect(authStatus).toHaveTextContent('true')
     })
   })
@@ -455,11 +453,11 @@ describe('AppBar Context Menu', () => {
       const desktopMenu = screen.getByTestId('user-menu-desktop')
 
       const mobileLabels = Array.from(
-        mobileMenu.querySelectorAll('[data-testid="menu-label"]')
+        within(mobileMenu).getAllByTestId('menu-label')
       ).map(item => item.textContent)
 
       const desktopLabels = Array.from(
-        desktopMenu.querySelectorAll('[data-testid="menu-label"]')
+        within(desktopMenu).getAllByTestId('menu-label')
       ).map(item => item.textContent)
 
       // Both menus should have the same items

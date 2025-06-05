@@ -78,6 +78,7 @@ export interface IconProps {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  'data-testid'?: string
 }
 
 export function renderIcon(

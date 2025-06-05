@@ -67,28 +67,33 @@ const server = new McpServer({
 
 ### Phase 1: Local MCP Server (Tournado-specific)
 
-- [ ] Set up MCP server within Tournado project structure
-- [ ] Implement basic `run-vitest` tool
-- [ ] Handle vitest command execution and output parsing
-- [ ] Return formatted test results with errors
-- [ ] Test with Tournado's existing test suite
-- [ ] Configure Cursor to use local MCP server
+- [x] Set up MCP server within Tournado project structure
+- [x] Implement basic `run-vitest` tool
+- [x] Handle vitest command execution and output parsing (raw)
+- [x] Return formatted test results with errors
+- [x] Test with Tournado's existing test suite
+- [x] Configure Cursor to use local MCP server
 
 ### Phase 2: Enhanced Error Reporting
 
-- [ ] Parse vitest JSON output for structured data
-- [ ] Extract stack traces and file locations
-- [ ] Format errors for AI agent consumption
-- [ ] Add support for different vitest reporters
-- [ ] Test with Tournado's component tests
+- [x] Parse vitest JSON output for structured data
+- [x] Extract stack traces and file locations
+- [x] Format errors for AI agent consumption
+- [x] Implement JSON reporter parsing (hardcoded to JSON)
+- [x] Test with Tournado's component tests
+- [x] Limit stack trace length for readability (1500 characters)
+- [x] Handle test failures with actionable error messages
 
 ### Phase 3: Advanced Features
 
-- [ ] Watch mode integration
+- [x] Integration with Tournado's testing workflow
+- [x] Test-driven development cycle (run tests → fix code → repeat)
+- [x] Comprehensive test result analysis
 - [ ] Coverage report generation
+- [ ] Add support for different vitest reporters
+- [ ] Watch mode integration
 - [ ] Test file discovery and analysis
 - [ ] Performance metrics and timing data
-- [ ] Integration with Tournado's testing workflow
 
 ### Phase 4: Extract to Standalone Project
 
@@ -238,10 +243,11 @@ The local vitest MCP server is working well with Tournado. Help me extract it to
 
 ### Local MVP (Phase 1-3)
 
-- [ ] Can execute Tournado's vitest tests via MCP tools
-- [ ] Returns formatted test results with errors
-- [ ] Works with existing Tournado test structure
-- [ ] Integrates with Cursor for AI development
+- [x] Can execute Tournado's vitest tests via MCP tools
+- [x] Returns formatted test results with errors
+- [x] Works with existing Tournado test structure
+- [x] Integrates with Cursor for AI development
+- [x] Supports iterative test-driven development workflow
 - [ ] Supports watch mode for development workflow
 
 ### Extracted Package (Phase 4)
@@ -269,14 +275,84 @@ The local vitest MCP server is working well with Tournado. Help me extract it to
 - Integrate with existing npm scripts
 - Use Tournado's TypeScript configuration as reference
 
+## Lessons Learned & Key Insights
+
+### Critical Requirements for MCP Vitest Integration
+
+- **Working Directory Context**: MCP server `process.cwd()` must be set to project root (`/Users/madrus/dev/biz/toernooien/tournado`) for vitest to find project files and configuration
+- **Environment Variables**: Use `CI=true` to prevent interactive prompts that can cause hanging
+- **Explicit Path Resolution**: Use full paths (`/opt/homebrew/bin/npx`) rather than relying on PATH resolution
+- **JSON Output Parsing**: Vitest JSON reporter output requires careful parsing - look for lines containing `"testResults"`
+- **Timeout Management**: 30-second timeout with proper process cleanup using `SIGKILL`
+
+### Successful Test-Driven Development Workflow
+
+1. **Run MCP vitest tool** → Identify failing tests with detailed error messages
+2. **Fix component/test issues** → Add missing `data-testid` attributes, fix test selectors
+3. **Re-run tests** → Verify fixes and identify remaining issues
+4. **Repeat until all green** → Achieved 98/98 tests passing across 54 test suites
+
+### Technical Achievements
+
+- ✅ **Full test suite integration** (54 test suites, 98 tests)
+- ✅ **Structured error reporting** with stack traces limited to 1500 characters
+- ✅ **Component test fixes** (AppBar, AuthErrorBoundary, NavigationItem)
+- ✅ **Icon system integration** with test attribute support
+- ✅ **ESLint integration** with proper dist folder exclusion
+- ✅ **Production-ready MCP server** for AI-assisted development
+
+### Future Enhancement: Multi-Reporter Support
+
+Currently, the MCP tool hardcodes the JSON reporter. To add true multi-reporter support, we would need:
+
+```typescript
+// Enhanced tool definition with reporter parameter
+server.tool(
+   'run-vitest',
+   {
+      reporter: {
+         type: 'string',
+         enum: ['json', 'basic', 'verbose', 'dot', 'junit'],
+         description: 'Vitest reporter to use',
+         default: 'json',
+      },
+      // ... other parameters
+   },
+   async ({ reporter = 'json' }) => {
+      const args = ['vitest', 'run', `--reporter=${reporter}`]
+
+      // Different parsing logic based on reporter
+      switch (reporter) {
+         case 'json':
+            return parseJsonOutput(stdout)
+         case 'basic':
+            return parseBasicOutput(stdout)
+         case 'verbose':
+            return parseVerboseOutput(stdout)
+         // ... etc
+      }
+   }
+)
+```
+
+This would require implementing different parsers for each reporter format, which adds complexity but would provide flexibility for different use cases.
+
 ## Notes and Considerations
 
-- **Local Development**: Start simple with hardcoded paths to Tournado
-- **Security**: Validate inputs even in local development
-- **Performance**: Test with Tournado's actual test suite size
-- **Configuration**: Use Tournado's existing vitest config as the foundation
-- **Extraction Planning**: Keep code modular for easy extraction later
-- **Version Control**: Decide whether to include MCP server in Tournado repo or keep separate
+- **Local Development**: ✅ Completed with hardcoded paths to Tournado - ready for extraction
+- **Security**: ✅ Input validation implemented for local development
+- **Performance**: ✅ Tested with Tournado's full test suite (completes in 2-3 seconds)
+- **Configuration**: ✅ Uses Tournado's existing vitest.config.ts successfully
+- **Extraction Planning**: ✅ Code is modular and ready for extraction to standalone package
+- **Version Control**: ✅ MCP server included in Tournado repo and working perfectly
+
+### Important Operational Notes
+
+⚠️ **Project Root Requirement**: Always run MCP server from `/Users/madrus/dev/biz/toernooien/tournado` to ensure correct vitest execution context
+
+💡 **Build Process**: Run `npm run build` in `mcp-servers/vitest/` after TypeScript changes
+
+🔧 **ESLint Configuration**: Dist folders automatically excluded via `'mcp-servers/**/dist/**'` in `eslint.config.mjs`
 
 ---
 

@@ -4,7 +4,7 @@
 
 **Goal**: Create a Model Context Protocol (MCP) server that can run vitest tests and provide detailed feedback to AI agents, enabling iterative test-driven development workflows.
 
-**Current Project**: Remix.js application (Tournado) with TypeScript, Prisma, and Vite
+**Current Project**: React Router v7 application (Tournado) developed with TypeScript, Prisma, and Vite
 **Development Strategy**: Start as local MCP server within Tournado, then extract to reusable package later
 
 ## Conversation Summary
@@ -40,7 +40,7 @@
    - `parse-test-results` - Parse and format vitest JSON output
    - `get-test-coverage` - Retrieve coverage information
    - `list-test-files` - Discover test files in project
-   - `analyze-test-failures` - Extract actionable error information
+   - `report-test-failures` - Extract actionable error information
 
 3. **Configuration Management**
    - Support for project-specific vitest.config files
@@ -280,4 +280,4 @@ The local vitest MCP server is working well with Tournado. Help me extract it to
 
 ---
 
-_This document serves as the master plan for building a Vitest MCP server starting locally within Tournado, then extracting to a reusable package that enables AI agents to run tests, analyze failures, and iteratively improve code quality through test-driven development workflows._
+_This document serves as the master plan for building a Vitest MCP server starting locally within Tournado, then extracting to a reusable package that enables AI agents to run tests, analyze and report failures, and iteratively improve code quality through test-driven development workflows._

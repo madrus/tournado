@@ -148,5 +148,5 @@ If you encounter issues that aren't covered in this guide:
 
 1. Check the [Fly.io documentation](https://fly.io/docs/)
 2. Visit the [Fly.io community](https://community.fly.io/)
-3. Review the [Remix documentation](https://remix.run/docs)
+3. Review the [React Router v7 documentation](https://reactrouter.com/docs)
 4. Check GitHub issues for similar problems

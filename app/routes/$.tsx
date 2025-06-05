@@ -3,7 +3,7 @@
 // can know that the user is hitting a URL that doesn't exist. By throwing a
 // 404 from the loader, we can force the error boundary to render which will
 // ensure the user gets the right status code and we can display a nicer error
-// message for them than the Remix and/or browser default.
+// message for them than the React Router v7 and/or browser default.
 import { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
 import { useLocation } from 'react-router'

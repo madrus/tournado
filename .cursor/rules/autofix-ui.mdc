@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Use the playwright MCP to open the browser to the url I provide, check for any errors, also in the DevTools console, automatically fix those errors in my codebase by:
+
+1. **Browser Navigation**: Use Playwright MCP to navigate to the provided URL and take initial screenshots
+2. **Error Detection**: Systematically check for:
+   - JavaScript runtime errors in DevTools console
+   - Network request failures (404s, 500s, CORS issues)
+   - Visual layout problems or broken UI elements
+   - Accessibility issues and missing elements
+   - Performance warnings and resource loading issues
+3. **Root Cause Analysis**: Examine error messages, stack traces, and network logs to understand underlying issues
+4. **Fixing Issues**: Make necessary code changes to:
+   - Fix broken imports, missing dependencies, or incorrect paths
+   - Resolve component rendering errors and React/framework issues
+   - Update API endpoints, fix data fetching problems
+   - Correct CSS/styling issues causing layout problems
+   - Fix routing and navigation problems
+   - Resolve environment configuration issues
+5. **Iterating**: Continue testing in browser and fixing issues until the page loads correctly with no console errors
+6. **Validation**: Take final screenshots and verify:
+   - All functionality works as expected
+   - No console errors remain
+   - Page renders correctly across different screen sizes
+   - All interactive elements function properly
+
+Focus on understanding the user experience and making targeted fixes to ensure the application works flawlessly in the browser.

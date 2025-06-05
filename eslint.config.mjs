@@ -31,7 +31,7 @@ export default [
       'build/**',
       'cypress/**',
       'docs/**',
-      'mcp-servers/**/dist/**',
+      'mcp-servers/**',
       'mocks/**',
       'node_modules/**',
       'public/**',

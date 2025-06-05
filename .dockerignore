@@ -1,7 +1,8 @@
-/node_modules
-*.log
 .DS_Store
 .env
+*.log
 /.cache
-/public/build
 /build
+/mcp-servers
+/node_modules
+/public/build

@@ -2,228 +2,139 @@
 /* eslint-disable id-blacklist */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 
-import { spawn } from 'child_process'
+import { startVitest } from 'vitest/node'
 
 /**
  * Registers the run-vitest tool with the given MCP server.
  */
 export function registerRunVitestTool(server: McpServer): void {
-  server.tool(
-    'run-vitest',
-    {},
-    async () =>
-      new Promise(resolve => {
-        const TIMEOUT_MS = 30000 // 30 second timeout should be plenty
-        let isResolved = false
+  server.tool('run-vitest', {}, async () => {
+    try {
+      // Determine the correct project directory
+      const projectDir =
+        process.env.VITEST_PROJECT_DIR || '/Users/madrus/dev/biz/toernooien/tournado'
 
-        // Determine the correct project directory
-        const projectDir =
-          process.env.VITEST_PROJECT_DIR || '/Users/madrus/dev/biz/toernooien/tournado'
-
-        const debugInfo = {
-          started: new Date().toISOString(),
-          processCwd: process.cwd(),
-          projectDir,
-          command: '/opt/homebrew/bin/npx vitest run --reporter=json',
-        }
-
-        console.log('🚀 Starting vitest execution...', debugInfo)
-        console.log('📂 Process CWD:', process.cwd())
-        console.log('📁 Project Dir:', projectDir)
-
-        const args = ['vitest', 'run', '--reporter=json']
-        console.log('⚡ Command:', '/opt/homebrew/bin/npx', args.join(' '))
-
-        const proc = spawn('/opt/homebrew/bin/npx', args, {
-          cwd: projectDir,
-          shell: false,
-          stdio: ['pipe', 'pipe', 'pipe'],
-          env: {
-            ...process.env,
-            CI: 'true',
-            PATH: '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin',
+      // Start Vitest programmatically using the Node.js API
+      const vitest = await startVitest(
+        'test',
+        [],
+        {
+          // CLI options
+          watch: false,
+          run: true,
+          reporters: ['json'],
+          outputFile: undefined, // we'll read from state
+        },
+        {
+          // Vite config overrides
+          root: projectDir,
+          logLevel: 'silent', // Prevent logs from interfering with MCP protocol
+          // Explicitly set the test configuration
+          test: {
+            globals: true,
+            environment: 'happy-dom',
+            setupFiles: ['./test/setup-test-env.ts'],
           },
-        })
+        }
+      )
 
-        let stdout = ''
-        let stderr = ''
+      if (!vitest) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: 'Failed to start Vitest - no tests found or configuration issue',
+            },
+          ],
+        }
+      }
 
-        // Set up timeout with proper cleanup
-        const timeout = setTimeout(() => {
-          if (!isResolved) {
-            console.log('⏰ TIMEOUT: Killing vitest process after 30 seconds')
-            isResolved = true
-            proc.kill('SIGKILL')
-            resolve({
-              content: [
-                {
-                  type: 'text',
-                  text: 'TIMEOUT: Vitest execution timed out after 30 seconds.',
-                },
-                {
-                  type: 'text',
-                  text: `PARTIAL_STDOUT: ${stdout}`,
-                },
-                {
-                  type: 'text',
-                  text: `PARTIAL_STDERR: ${stderr}`,
-                },
-              ],
-            })
+      // Get test results from vitest state
+      const testFiles = vitest.state.getFiles()
+
+      // Helper function to determine if a file passed
+      const isFilePassed = (file: any) => {
+        // A file passes if all its tests pass (no failed tests)
+        const allTasks = file.tasks || []
+        if (allTasks.length === 0) return false
+        return allTasks.every((task: any) => task.result?.state === 'pass')
+      }
+
+      // Helper function to get all test tasks recursively (including nested suites)
+      const getAllTasks = (items: any[]): any[] => {
+        const tasks: any[] = []
+        for (const item of items) {
+          if (item.type === 'test') {
+            tasks.push(item)
+          } else if (item.type === 'suite' && item.tasks) {
+            tasks.push(...getAllTasks(item.tasks))
           }
-        }, TIMEOUT_MS)
+        }
+        return tasks
+      }
 
-        // Handle process spawn errors
-        proc.on('error', error => {
-          if (!isResolved) {
-            console.log('❌ Process spawn error:', error.message)
-            isResolved = true
-            clearTimeout(timeout)
-            resolve({
-              content: [
-                {
-                  type: 'text',
-                  text: `ERROR: Failed to spawn vitest: ${error.message}`,
-                },
-              ],
-            })
+      // Create a summary object similar to JSON reporter output
+      const results = {
+        numTotalTestSuites: testFiles.length,
+        numPassedTestSuites: testFiles.filter(isFilePassed).length,
+        numFailedTestSuites: testFiles.filter(f => !isFilePassed(f)).length,
+        numTotalTests: testFiles.reduce(
+          (sum, f) => sum + getAllTasks(f.tasks || []).length,
+          0
+        ),
+        numPassedTests: 0,
+        numFailedTests: 0,
+        testResults: testFiles.map(file => {
+          const allTasks = getAllTasks(file.tasks || [])
+          const passedTasks = allTasks.filter(t => t.result?.state === 'pass')
+          const failedTasks = allTasks.filter(t => t.result?.state === 'fail')
+
+          return {
+            name: file.filepath,
+            status: isFilePassed(file) ? 'passed' : 'failed',
+            duration: file.result?.duration || 0,
+            assertionResults: allTasks.map(task => ({
+              ancestorTitles: task.suite ? [task.suite.name] : [],
+              title: task.name,
+              status: task.result?.state === 'pass' ? 'passed' : 'failed',
+              duration: task.result?.duration || 0,
+              failureMessages: task.result?.errors?.map((e: any) => e.message) || [],
+            })),
           }
-        })
+        }),
+      }
 
-        // Collect stdout data
-        proc.stdout?.on('data', data => {
-          const chunk = data.toString()
-          console.log('📝 STDOUT chunk received:', chunk.length, 'chars')
-          stdout += chunk
-        })
+      // Count total passed/failed tests
+      results.numPassedTests = results.testResults.reduce(
+        (sum, r) => sum + r.assertionResults.filter(a => a.status === 'passed').length,
+        0
+      )
+      results.numFailedTests = results.testResults.reduce(
+        (sum, r) => sum + r.assertionResults.filter(a => a.status === 'failed').length,
+        0
+      )
 
-        // Collect stderr data
-        proc.stderr?.on('data', data => {
-          const chunk = data.toString()
-          console.log('⚠️ STDERR chunk received:', chunk.length, 'chars')
-          stderr += chunk
-        })
+      // Close vitest
+      await vitest.close()
 
-        // Handle process completion
-        proc.on('close', (code, signal) => {
-          if (!isResolved) {
-            console.log('🏁 Process closed with code:', code, 'signal:', signal)
-            console.log('📊 Total stdout length:', stdout.length)
-            console.log('📊 Total stderr length:', stderr.length)
-
-            isResolved = true
-            clearTimeout(timeout)
-
-            try {
-              // Try to parse the JSON output
-              let jsonResult = null
-              if (stdout.trim()) {
-                // The output might have multiple JSON objects, find the main test results
-                const lines = stdout.split('\n')
-                for (const line of lines) {
-                  const trimmed = line.trim()
-                  if (trimmed.startsWith('{') && trimmed.includes('"testResults"')) {
-                    try {
-                      jsonResult = JSON.parse(trimmed)
-                      break
-                    } catch (_err) {
-                      console.log('⚠️ Failed to parse line:', trimmed.substring(0, 100))
-                    }
-                  }
-                }
-              }
-
-              const content: Array<{ type: 'text'; text: string }> = []
-
-              // Debug info removed for cleaner output
-
-              if (jsonResult) {
-                console.log('✅ Successfully parsed vitest JSON results')
-
-                // Limit stack trace length for readability
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const limitStackTraces = (obj: any): any => {
-                  if (typeof obj !== 'object' || obj === null) return obj
-
-                  if (Array.isArray(obj)) {
-                    return obj.map(limitStackTraces)
-                  }
-
-                  const result = { ...obj }
-
-                  // Limit failureMessages (stack traces) to 1500 characters
-                  if (result.failureMessages && Array.isArray(result.failureMessages)) {
-                    result.failureMessages = result.failureMessages.map(
-                      (msg: string) => {
-                        if (typeof msg === 'string' && msg.length > 1500) {
-                          return (
-                            msg.substring(0, 1500) + '\n... (stack trace truncated)'
-                          )
-                        }
-                        return msg
-                      }
-                    )
-                  }
-
-                  // Recursively process nested objects
-                  for (const key in result) {
-                    if (typeof result[key] === 'object' && result[key] !== null) {
-                      result[key] = limitStackTraces(result[key])
-                    }
-                  }
-
-                  return result
-                }
-
-                const cleanedResults = limitStackTraces(jsonResult)
-
-                content.push({
-                  type: 'text',
-                  text: `SUCCESS: Vitest completed with exit code ${code}`,
-                })
-                content.push({
-                  type: 'text',
-                  text: `RESULTS: ${JSON.stringify(cleanedResults, null, 2)}`,
-                })
-              } else {
-                console.log('⚠️ No valid JSON found in output')
-                content.push({
-                  type: 'text',
-                  text: `COMPLETED: Vitest finished with exit code ${code}`,
-                })
-                if (stdout) {
-                  content.push({
-                    type: 'text',
-                    text: `STDOUT: ${stdout.substring(0, 2000)}${stdout.length > 2000 ? '... (truncated)' : ''}`,
-                  })
-                }
-              }
-
-              if (stderr) {
-                content.push({
-                  type: 'text',
-                  text: `STDERR: ${stderr.substring(0, 1000)}${stderr.length > 1000 ? '... (truncated)' : ''}`,
-                })
-              }
-
-              resolve({ content })
-            } catch (err) {
-              console.log('💥 Error in result processing:', err)
-              resolve({
-                content: [
-                  {
-                    type: 'text',
-                    text: `PARSE_ERROR: ${String(err)}`,
-                  },
-                  {
-                    type: 'text',
-                    text: `RAW_OUTPUT: ${stdout.substring(0, 1000)}`,
-                  },
-                ],
-              })
-            }
-          }
-        })
-      })
-  )
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(results, null, 2),
+          },
+        ],
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Error running vitest: ${errorMessage}`,
+          },
+        ],
+      }
+    }
+  })
 }

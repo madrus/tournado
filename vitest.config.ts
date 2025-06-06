@@ -13,5 +13,54 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['./test/setup-test-env.ts'],
     watch: process.env.npm_lifecycle_event !== 'validate',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'json-summary', 'html', 'lcov'],
+      exclude: [
+        // Dependencies
+        'node_modules/**',
+
+        // Test files
+        '**/__tests__/**',
+        '**/*.test.{ts,tsx,js,jsx}',
+        '**/*.spec.{ts,tsx,js,jsx}',
+        'test/**',
+        'tests/**',
+        'cypress/**',
+
+        // Configuration files
+        '*.config.{ts,js,mjs}',
+        '**/*.config.{ts,js,mjs}',
+        'eslint.config.mjs',
+
+        // Build and development files
+        'build/**',
+        'dist/**',
+        'coverage/**',
+        '.react-router/**',
+        'public/**',
+
+        // Project specific
+        'app/entry.{client,server}.tsx',
+        'app/root.tsx',
+        'mocks/**',
+        'scripts/**',
+        'docs/**',
+        'prisma/**',
+        'mcp-servers/**',
+
+        // Type definitions and declarations
+        '**/*.d.ts',
+      ],
+      include: ['app/**/*.{ts,tsx}'],
+      thresholds: {
+        global: {
+          branches: 70,
+          functions: 70,
+          lines: 70,
+          statements: 70,
+        },
+      },
+    },
   },
 })

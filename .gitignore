@@ -2,11 +2,13 @@
 .env
 .prisma
 .react-router
-/build
 /cypress/screenshots
 /cypress/videos
 /prisma/data.db
 /prisma/data.db-journal
 /prisma/prisma
-/public/build
+build
+coverage
+dist
+mcp-servers/vitest/dist
 node_modules

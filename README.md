@@ -1,6 +1,6 @@
 # Tournado
 
-A modern tournament management system built with Remix.
+A modern tournament management system built with React Router v7.
 
 ## Quick Start
 

@@ -10,6 +10,7 @@
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)
+   - [Vitest MCP Server](testing/vitest_mcp.md)
    - [Troubleshooting](testing/troubleshooting.md)
 - Deployment
    - [Overview](deployment/overview.md)
@@ -19,7 +20,7 @@
 - Reference
    - [Fly.io vs Vercel](fly_vs_vercel.md)
    - [Markdown Tips](markdown_tips.md)
-   - [Remix Stack](remix_stack.md)
+   - [React Router v7 Stack](remix_stack.md)
    - [Prefetching Strategy](prefetching_strategy.md)
 - Work in Progress
    - [WIP Items](wip.md)

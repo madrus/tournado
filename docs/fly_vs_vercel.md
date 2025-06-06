@@ -22,7 +22,7 @@ Yes, Fly.io is an alternative to Vercel, though they have some key differences:
    - Often requires separate database hosting (like Supabase, PlanetScale, etc.)
    - Better integrated with frontend frameworks (Next.js is made by Vercel)
 
-Your Remix project is configured for Fly.io deployment with:
+Your React Router v7 project is configured for Fly.io deployment with:
 
 - Docker containerization
 - GitHub Actions CI/CD pipeline for automatic deployments
@@ -30,26 +30,26 @@ Your Remix project is configured for Fly.io deployment with:
 - Health checks for reliability
 - Staging and production environments
 
-This setup leverages Fly's strengths for a full-stack Remix application with its own database, which would require more configuration work on Vercel.
+This setup leverages Fly's strengths for a full-stack React Router v7 application with its own database, which would require more configuration work on Vercel.
 
-## Which one is better for Remix?
+## Which one is better for React Router v7?
 
-### Remix Hosting Comparison: Fly.io vs Vercel
+### React Router v7 Hosting Comparison: Fly.io vs Vercel
 
-#### For Remix Apps
+#### For React Router v7 Apps
 
 ##### Fly.io advantages:
 
-- Better for full-stack Remix apps with databases (like your current setup)
+- Better for full-stack React Router v7 apps with databases (like your current setup)
 - Runs your app closer to where data is stored
 - Handles SQLite or other databases directly (as you're using)
-- Works well with Remix's server-side rendering model
+- Works well with React Router v7's server-side rendering model
 - More control over infrastructure
 
 ##### Vercel advantages:
 
 Simpler deployment process
-Excellent Edge Functions support for Remix
+Excellent Edge Functions support for React Router v7
 Better built-in analytics and monitoring
 Tighter integration with frontend workflows
 Zero configuration for many use cases
@@ -78,6 +78,6 @@ Zero configuration for many use cases
 
 ### Best for your project?
 
-Your current Remix app with SQLite database is well-suited for Fly.io. The setup you have (with volumes, Docker, etc.) leverages Fly.io's strengths. Switching to Vercel would require restructuring how your database works.
+Your current React Router v7 app with SQLite database is well-suited for Fly.io. The setup you have (with volumes, Docker, etc.) leverages Fly.io's strengths. Switching to Vercel would require restructuring how your database works.
 
 If cost is the primary concern, your current Fly.io setup is likely more economical than a comparable Vercel deployment requiring a separate database service.

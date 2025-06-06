@@ -2,7 +2,7 @@ import { isRouteErrorResponse, MemoryRouter, useRouteError } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AuthErrorBoundary } from '../AuthErrorBoundary'
 
@@ -144,7 +144,7 @@ describe('AuthErrorBoundary', () => {
     expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
-    const errorParagraph = screen.getByRole('paragraph')
+    const errorParagraph = screen.getByTestId('error-paragraph')
     expect(errorParagraph).toHaveTextContent('auth.errors.unexpectedError')
     expect(errorParagraph).toHaveTextContent('Test JavaScript error')
 
@@ -169,7 +169,7 @@ describe('AuthErrorBoundary', () => {
     expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
-    const errorParagraph = screen.getByRole('paragraph')
+    const errorParagraph = screen.getByTestId('error-paragraph')
     expect(errorParagraph).toHaveTextContent('auth.errors.unexpectedError')
     expect(errorParagraph).toHaveTextContent('auth.errors.unknownError')
 

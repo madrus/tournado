@@ -1,7 +1,7 @@
 import { JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
 
-interface RouteTransitionProps {
+type RouteTransitionProps = {
   duration?: number // in milliseconds
   className?: string
 }
@@ -50,7 +50,7 @@ export function ViewTransition({
     // Use the modern View Transition API if available
     if ('startViewTransition' in document) {
       const documentWithTransition = document as Document & {
-        startViewTransition: (callback: () => void) => void
+        startViewTransition: (updateCallback: () => void) => void
       }
       documentWithTransition.startViewTransition(() => {
         // The route change will happen automatically

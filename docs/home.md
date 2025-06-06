@@ -14,14 +14,14 @@ Welcome to the Tournado documentation! This guide will help you understand and w
 
 Tournado is a tournament management application built with:
 
-- [Remix](https://remix.run/) - Full stack web framework
+- [React Router v7](https://reactrouter.com/) - Full stack web framework
 - [Prisma](https://prisma.io) - Database ORM
 - [TypeScript](https://typescriptlang.org) - Type-safe JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 
 ## Project Structure
 
-The application follows the Remix project structure with some additional organization:
+The application follows the React Router v7 project structure with some additional organization:
 
 - `app/` - Application source code
 - `prisma/` - Database schema and migrations

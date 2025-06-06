@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-The project follows a standard Remix application structure:
+The project follows a standard React Router v7 application structure:
 
 ```
 app/
@@ -87,7 +87,7 @@ pnpm typecheck
 - Follow ESLint rules
 - Write TypeScript with strict mode enabled
 - Use functional components with hooks
-- Follow the Remix conventions for routes and loaders
+- Follow the React Router v7 conventions for routes and loaders
 
 ## Docker Testing
 

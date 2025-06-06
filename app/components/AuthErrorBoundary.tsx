@@ -46,7 +46,9 @@ export function AuthErrorBoundary(): JSX.Element {
       <div className='flex h-full items-center justify-center'>
         <div className='flex w-full max-w-md flex-col gap-6'>
           <h1 className='text-2xl font-bold'>{t(getErrorTitleKey(error))}</h1>
-          <p className='text-gray-500'>{t(getErrorMessageKey(error))}</p>
+          <p className='text-gray-500' data-testid='error-paragraph'>
+            {t(getErrorMessageKey(error))}
+          </p>
           {/* Show status and data for non-404 errors for debugging */}
           {error.status !== 404 ? (
             <p className='text-sm text-gray-500'>{`${error.status} ${error.data}`}</p>
@@ -63,7 +65,7 @@ export function AuthErrorBoundary(): JSX.Element {
     <div className='flex h-full items-center justify-center'>
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className='text-2xl font-bold'>{t('errors.errorTitle')}</h1>
-        <p className='text-gray-500'>
+        <p className='text-gray-500' data-testid='error-paragraph'>
           {t('auth.errors.unexpectedError')}{' '}
           {error instanceof Error ? error.message : t('auth.errors.unknownError')}
         </p>

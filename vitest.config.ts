@@ -14,6 +14,7 @@ export default defineConfig({
     setupFiles: ['./test/setup-test-env.ts'],
     watch: process.env.npm_lifecycle_event !== 'validate',
     coverage: {
+      all: true,
       provider: 'v8',
       reporter: ['text', 'json', 'json-summary', 'html', 'lcov'],
       exclude: [

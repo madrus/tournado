@@ -7,6 +7,8 @@ alwaysApply: false
 
 This rule ensures all commit messages follow the conventional commit format with proper prefixes and structure.
 
+**IMPORTANT: This rule MUST be applied whenever generating commit messages or when the user asks for commit-related assistance. Always use conventional commit format.**
+
 ## Format Structure
 
 ```

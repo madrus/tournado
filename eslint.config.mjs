@@ -29,6 +29,7 @@ export default [
       '.react-router/**',
       '**/*.config.*',
       'build/**',
+      'coverage/**',
       'cypress/**',
       'docs/**',
       'mcp-servers/**',

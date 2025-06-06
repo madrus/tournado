@@ -8,5 +8,7 @@
 /prisma/data.db-journal
 /prisma/prisma
 build
+coverage
 dist
+mcp-servers/vitest/dist
 node_modules

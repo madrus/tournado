@@ -1,0 +1,153 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Conventional Commit Message Generation
+
+This rule ensures all commit messages follow the conventional commit format with proper prefixes and structure.
+
+## Format Structure
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+## Required Commit Types
+
+### Primary Types (Use These Most Often)
+- `feat:` - A new feature for the user
+- `fix:` - A bug fix for the user
+- `refactor:` - Code change that neither fixes a bug nor adds a feature
+- `docs:` - Documentation only changes
+- `style:` - Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- `test:` - Adding missing tests or correcting existing tests
+- `chore:` - Changes to the build process or auxiliary tools and libraries
+
+### Secondary Types (Use When Applicable)
+- `ci:` - Changes to CI configuration files and scripts
+- `build:` - Changes that affect the build system or external dependencies
+- `perf:` - A code change that improves performance
+- `revert:` - Reverts a previous commit
+
+## Scope Guidelines
+
+The scope should be the area of the codebase affected:
+- `auth` - Authentication related changes
+- `ui` - User interface components
+- `api` - API routes and endpoints
+- `db` - Database related changes
+- `config` - Configuration changes
+- `deps` - Dependency updates
+- `types` - TypeScript type definitions
+- `i18n` - Internationalization
+- `routes` - React Router routes
+
+## Commit Message Rules
+
+### 1. Format Requirements
+- Use lowercase for type and scope
+- No period at the end of the description
+- Use imperative mood ("add" not "added" or "adds")
+- Keep description under 72 characters
+- Use present tense
+
+### 2. Breaking Changes
+- Add `!` after the type/scope: `feat!:` or `feat(api)!:`
+- Include `BREAKING CHANGE:` in the footer
+- Explain what changed and migration path
+
+### 3. Description Guidelines
+- Start with a verb (add, fix, update, remove, refactor, etc.)
+- Be specific and clear
+- Focus on what changed, not why (use body for why)
+
+## Examples
+
+### Good Commit Messages
+```
+feat(auth): add OAuth2 login functionality
+fix(ui): resolve button alignment on mobile devices
+refactor(api): simplify user validation logic
+docs(readme): update installation instructions
+style(components): format code according to prettier rules
+test(auth): add unit tests for login validation
+chore(deps): update React to version 18.2.0
+ci(github): add automated deployment workflow
+build(docker): optimize container build process
+perf(db): improve query performance with indexes
+```
+
+### Bad Commit Messages
+```
+❌ Updated some files
+❌ Fix bug
+❌ refactor: Fixed the issue with the authentication system that was causing problems
+❌ feat: adds new feature
+❌ WIP: working on authentication
+❌ Fixed authentication bug.
+❌ FEAT: ADD NEW COMPONENT
+```
+
+### Breaking Changes Example
+```
+feat(api)!: change user authentication endpoint
+
+BREAKING CHANGE: The /auth endpoint now requires a different request format.
+Migration: Update client code to use { email, password } instead of { username, password }
+```
+
+### Multi-line Example
+```
+feat(tournament): add bracket generation algorithm
+
+Implement Swiss tournament bracket generation with automatic pairing
+based on player ratings and previous match history. Supports up to
+64 players with configurable round robin options.
+
+Closes #123
+```
+
+## Auto-Generation Guidelines
+
+When generating commit messages automatically:
+
+1. **Analyze the changes** to determine the most appropriate type
+2. **Identify the scope** based on files changed
+3. **Summarize the change** in imperative mood
+4. **Keep it concise** but descriptive
+5. **Use consistent language** and terminology
+
+### Change Analysis Mapping
+- New files/features → `feat:`
+- Bug fixes → `fix:`
+- Code reorganization → `refactor:`
+- Documentation updates → `docs:`
+- Test additions → `test:`
+- Dependency changes → `chore(deps):`
+- Configuration changes → `chore(config):`
+- UI/styling changes → `style:` or `feat(ui):`
+
+## Verification Checklist
+
+Before finalizing any commit message:
+- [ ] Starts with conventional commit type
+- [ ] Uses lowercase for type and scope
+- [ ] Description is imperative mood
+- [ ] Description is under 72 characters
+- [ ] No period at end of description
+- [ ] Scope is relevant to changes made
+- [ ] Breaking changes are properly marked
+
+## Integration with Tools
+
+This rule works with:
+- Git hooks (via Husky)
+- Commitizen
+- Conventional Changelog
+- Semantic Release
+- GitHub/GitLab commit message validation

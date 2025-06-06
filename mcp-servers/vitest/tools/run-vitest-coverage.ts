@@ -7,6 +7,115 @@ import { startVitest } from 'vitest/node'
 import { existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 
+interface UncoveredLine {
+  line: number
+  column?: number
+}
+
+interface FileUncoveredLines {
+  [filePath: string]: UncoveredLine[]
+}
+
+/**
+ * Extract uncovered lines from coverage data
+ */
+function extractUncoveredLines(coverageData: any): FileUncoveredLines {
+  const uncoveredLines: FileUncoveredLines = {}
+
+  for (const [filePath, fileData] of Object.entries(coverageData)) {
+    if (!fileData || typeof fileData !== 'object') continue
+
+    const { statementMap, s: statementCounts } = fileData as any
+    if (!statementMap) continue
+
+    const uncovered: UncoveredLine[] = []
+
+    // If no statement counts exist, all statements are uncovered
+    if (!statementCounts) {
+      // Add all statements as uncovered
+      for (const [statementId, statement] of Object.entries(statementMap)) {
+        if (statement && typeof statement === 'object' && (statement as any).start) {
+          uncovered.push({
+            line: (statement as any).start.line,
+            column: (statement as any).start.column,
+          })
+        }
+      }
+    } else {
+      // Find statements that were not executed (count = 0)
+      for (const [statementId, count] of Object.entries(statementCounts)) {
+        if (count === 0 && statementMap[statementId]) {
+          const statement = statementMap[statementId]
+          uncovered.push({
+            line: statement.start.line,
+            column: statement.start.column,
+          })
+        }
+      }
+    }
+
+    // Sort by line number and remove duplicates
+    const uniqueLines = Array.from(new Set(uncovered.map(item => item.line))).sort(
+      (a, b) => a - b
+    )
+
+    if (uniqueLines.length > 0) {
+      uncoveredLines[filePath] = uniqueLines.map(line => ({ line }))
+    }
+  }
+
+  return uncoveredLines
+}
+
+/**
+ * Group consecutive line numbers into ranges
+ */
+function groupLinesIntoRanges(lines: number[]): string[] {
+  if (lines.length === 0) return []
+
+  const sorted = [...lines].sort((a, b) => a - b)
+  const ranges: string[] = []
+  let start = sorted[0]
+  let end = sorted[0]
+
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i] === end + 1) {
+      // Consecutive line, extend current range
+      end = sorted[i]
+    } else {
+      // Gap found, close current range and start new one
+      if (start === end) {
+        ranges.push(start.toString())
+      } else {
+        ranges.push(`${start}-${end}`)
+      }
+      start = sorted[i]
+      end = sorted[i]
+    }
+  }
+
+  // Add final range
+  if (start === end) {
+    ranges.push(start.toString())
+  } else {
+    ranges.push(`${start}-${end}`)
+  }
+
+  return ranges
+}
+
+/**
+ * Get uncovered lines for a specific file relative to project root
+ */
+function getUncoveredLinesForFile(
+  uncoveredLines: FileUncoveredLines,
+  projectDir: string,
+  relativeFilePath: string
+): UncoveredLine[] {
+  const fullPath = join(projectDir, relativeFilePath)
+  return uncoveredLines[fullPath] || []
+}
+
 /**
  * Registers the run-vitest-coverage tool with the given MCP server.
  */
@@ -214,6 +323,63 @@ export function registerRunVitestCoverageTool(server: McpServer): void {
         ).length
         const numFailedTests = numTotalTests - numPassedTests
 
+        // Extract uncovered lines if we have detailed coverage data
+        let uncoveredLines: FileUncoveredLines = {}
+        let detailedFileCoverage: any = {}
+        if (coverageData) {
+          uncoveredLines = extractUncoveredLines(coverageData)
+
+          // Create detailed file coverage report
+          const appFiles = Object.keys(coverageData)
+            .filter(path => path.includes('/app/'))
+            .sort()
+
+          detailedFileCoverage = appFiles.reduce((acc: any, fullPath: string) => {
+            const relativePath = fullPath.replace(projectDir + '/', '')
+
+            // Get uncovered lines directly from the fullPath key in uncoveredLines
+            const fileUncoveredLines = uncoveredLines[fullPath] || []
+
+            // Get summary data for this file
+            const fileSummary = coverageSummary[fullPath]
+
+            if (fileSummary) {
+              const lineNumbers = fileUncoveredLines.map(item => item.line)
+              const coveragePercent = fileSummary.lines?.pct || 0
+
+              let status = ''
+              let ranges: string[] = []
+
+              // Always process uncovered lines if they exist
+              if (lineNumbers.length > 0) {
+                ranges = groupLinesIntoRanges(lineNumbers)
+              }
+
+              let uncoveredLinesFormatted = ''
+
+              if (coveragePercent === 0) {
+                status = '❌ No coverage'
+                uncoveredLinesFormatted = 'all'
+              } else if (lineNumbers.length === 0) {
+                status = '✅ Perfect coverage'
+                uncoveredLinesFormatted = 'none'
+              } else {
+                status = `⚠️ ${lineNumbers.length} lines uncovered`
+                uncoveredLinesFormatted = ranges.join(', ')
+              }
+
+              acc[relativePath] = {
+                summary: fileSummary,
+                status,
+                uncoveredLines: uncoveredLinesFormatted,
+                totalUncoveredLines: lineNumbers.length,
+              }
+            }
+
+            return acc
+          }, {})
+        }
+
         // Close vitest
         await vitest.close()
 
@@ -235,17 +401,12 @@ export function registerRunVitestCoverageTool(server: McpServer): void {
                   numFailedTests,
                   testResults,
                   coverage: coverageSummary
-                    ? {
-                        summary: coverageSummary,
-                        message: 'Coverage data captured successfully',
-                        debug: debugInfo,
-                      }
+                    ? detailedFileCoverage
                     : {
                         message:
                           'Coverage files were created but cleaned up immediately by Vitest',
                         instruction:
                           'Coverage data is being generated but not persisted - this is normal behavior',
-                        debug: debugInfo,
                       },
                 },
                 null,

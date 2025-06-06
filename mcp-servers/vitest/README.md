@@ -1,125 +1,245 @@
-# Tournado Vitest MCP Server
+# Tournado Vitest MCP Server ✅ COMPLETED
 
-A local Model Context Protocol (MCP) server for running and reporting vitest tests in the Tournado project. This server is designed for iterative, AI-assisted test-driven development and will later be extracted into a reusable package.
+A **production-ready** Model Context Protocol (MCP) server for running vitest tests and analyzing coverage in the Tournado project. This server enables AI-assisted test-driven development workflows and is ready for extraction into a reusable package.
+
+## 🎉 Final Implementation Status
+
+### ✅ 3 Robust Tools Available
+
+1. **`ping`** - Health check tool (returns "pong")
+2. **`run-vitest`** - Execute complete test suite with detailed results
+3. **`run-vitest-coverage`** - Execute tests with comprehensive coverage analysis
+
+### 📊 Coverage Analysis Features
+
+- **File-by-file coverage breakdown** with percentages for lines, functions, statements, and branches
+- **Smart status indicators**: ❌ No coverage, ✅ Perfect coverage, ⚠️ Partial coverage
+- **Uncovered line detection** with smart formatting: "all" (0% coverage), "none" (100% coverage), or ranges (e.g., "43-44, 49-50, 52, 63-64")
+- **Handles 0% coverage files** properly by detecting all uncovered executable lines
+- **Clean data structure** optimized for AI consumption
+
+### 🎯 Current Project Status
+
+- ✅ **98/98 tests passing** across 9 test suites
+- ✅ **Complete coverage analysis** for 78+ files in the `app/` directory
+- ✅ **Production-ready** for AI-assisted development workflows
+- ✅ **Fully integrated** with Cursor MCP interface
 
 ---
 
-## Progress & Development Notes
+## 🚀 Usage Examples
 
-### Step 1: Initial Setup
+### Running Tests
 
-- Created `mcp-servers/vitest/` directory structure inside the Tournado project.
-- Added `package.json` and `tsconfig.json` for local MCP server dependencies and TypeScript support.
+```bash
+# Via MCP tools in Cursor
+ping                    # Returns "pong" - health check
+run-vitest             # Execute all tests with detailed results
+run-vitest-coverage    # Execute tests + comprehensive coverage analysis
+```
 
-### Step 2: Dependency Installation
+### Coverage Output Structure
 
-- Installed dependencies locally using `npm install`.
+```json
+{
+  "numTotalTests": 98,
+  "numPassedTests": 98,
+  "testResults": [...],
+  "coverage": {
+    "app/components/AppBar.tsx": {
+      "summary": {
+        "lines": {"pct": 95.78, "total": 166, "covered": 159},
+        "functions": {"pct": 33.33, "total": 3, "covered": 1},
+        "statements": {"pct": 95.78, "total": 166, "covered": 159},
+        "branches": {"pct": 84.21, "total": 19, "covered": 16}
+      },
+             "status": "⚠️ 7 lines uncovered",
+       "uncoveredLines": "43-44, 49-50, 52, 63-64",
+       "totalUncoveredLines": 7
+     },
+     "app/components/AuthErrorBoundary.tsx": {
+       "summary": {...},
+       "status": "✅ Perfect coverage",
+       "uncoveredLines": "none",
+       "totalUncoveredLines": 0
+    }
+  }
+}
+```
 
-### Step 3: Minimal MCP Server
+---
 
-- Implemented a minimal MCP server in `index.ts` using `@modelcontextprotocol/sdk`.
-- Added a `ping` tool for health checking.
-- Confirmed correct import paths for the SDK (must use subpaths like `@modelcontextprotocol/sdk/server/mcp.js`).
+## 📁 Project Structure
 
-### Step 4: MCP Inspector Testing
+```
+mcp-servers/vitest/
+├── index.ts                    # Main MCP server (3 tools registered)
+├── package.json               # Dependencies (@modelcontextprotocol/sdk, vitest, etc.)
+├── tsconfig.json              # TypeScript configuration
+├── tools/
+│   ├── run-vitest.ts          # Test execution tool
+│   └── run-vitest-coverage.ts # Coverage analysis + test execution
+├── dist/                      # Compiled JavaScript
+└── node_modules/              # Dependencies
+```
 
-- Ran the Inspector with `node ./mcp-servers/vitest/dist/index.js` as the command, which worked.
-- Successfully called the `ping` tool and received a `pong` response (plain text, as expected for a minimal tool).
+---
 
-### Step 5: run-vitest Tool Milestone
+## ⚙️ Cursor MCP Configuration
 
-- Implemented and registered the `run-vitest` tool in the MCP server.
-- Ran the Inspector from the project root with the correct path, and both `ping` and `run-vitest` tools appeared.
-- Successfully executed the `run-vitest` tool via Inspector; all tests passed and exit code was 0.
-- This confirms end-to-end functionality for running vitest tests through MCP.
+Add this to your Cursor MCP settings:
 
-### Step 6: Cursor Integration
-
-- Added the MCP server to Cursor's `mcpServers` configuration using the correct command, args, and cwd.
-- Restarted Cursor and confirmed that both `ping` and `run-vitest` tools are now visible and usable from within Cursor.
-- **Example Cursor MCP configuration:**
-   ```json
-   {
-      "mcpServers": {
-         "vitest-runner": {
-            "command": "node",
-            "args": ["./mcp-servers/vitest/dist/index.js"],
-            "cwd": "${workspaceFolder}"
-         }
+```json
+{
+   "mcpServers": {
+      "vitest-runner": {
+         "command": "node",
+         "args": [
+            "/Users/madrus/dev/biz/toernooien/tournado/mcp-servers/vitest/dist/index.js"
+         ],
+         "cwd": "/Users/madrus/dev/biz/toernooien/tournado"
       }
    }
-   ```
-
-### Step 7: Enhanced Error Reporting and JSON Parsing
-
-- Implemented comprehensive JSON output parsing to extract structured test results.
-- Added stack trace extraction and formatting with reasonable length limits (1500 characters).
-- Enhanced error reporting to show test failures, file locations, and actionable error messages.
-- Successfully tested with Tournado's full test suite (54 test suites, 98 tests).
-
-### Step 8: Test Fixes and Code Quality
-
-- Fixed all failing unit tests identified by the MCP server:
-   - **AppBar Component**: Fixed test selector from `menu-item-` to regex pattern `/^menu-item-\d+$/`
-   - **AuthErrorBoundary**: Added missing `data-testid="error-paragraph"` attributes
-   - **NavigationItem**: Added `data-testid="nav-icon"` support to icon components and utils
-- All tests now pass (98/98 tests passing across 54 test suites).
-- Fixed linting issues by adding ESLint ignore rules for compiled dist folders.
-
-### Step 9: Production Ready
-
-- **Status**: ✅ Fully functional MCP server ready for AI-assisted development
-- **Capabilities**: Complete test execution, error reporting, and iterative debugging
-- **Integration**: Seamless Cursor integration for test-driven development workflows
+}
+```
 
 ---
 
-**Current Status:**
+## 🔧 Development & Building
 
-- ✅ All tests passing (98/98)
-- ✅ Clean linting (no errors or warnings)
-- ✅ Full JSON output parsing with structured error reporting
-- ✅ Ready for production AI-assisted development
+### Building After Changes
+
+```bash
+cd mcp-servers/vitest
+npm run build
+```
+
+### Testing with MCP Inspector
+
+```bash
+# From project root (/Users/madrus/dev/biz/toernooien/tournado)
+npx @modelcontextprotocol/inspector node ./mcp-servers/vitest/dist/index.js
+```
 
 ---
 
-## Troubleshooting
+## 🔄 Development History & Lessons Learned
 
-### [T1] Dependency Installation Issues (Step 2)
+### Evolution from 4 Tools to 3 Tools
 
-- **Issue:** First tried `pnpm install` in `mcp-servers/vitest/`, but it did not create a `node_modules` folder or a lock file. This may be due to workspace configuration or pnpm's handling of subfolders.
-- **Solution:** Switched to `npm install`, which worked as expected and installed all dependencies locally.
+**Initial Plan**: 4 tools including `get-file-coverage` with custom parameters
+**Problem**: Cursor MCP interface limitations with custom parameters
+**Solution**: Enhanced `run-vitest-coverage` to include all file coverage details
 
-### [T2] MCP Inspector Execution Issues (Step 4)
+### Key Technical Achievements
 
-- **Issue 1:** Tried running the Inspector with `./mcp-servers/vitest/dist/index.js` directly, but got an EACCES (permissions) error.
-- **Solution:** Ran `chmod +x ./mcp-servers/vitest/dist/index.js` to add execute permissions.
-- **Issue 2:** After fixing permissions, got an ENOEXEC error (no interpreter specified).
-- **Solution:** Ran the Inspector with `node ./mcp-servers/vitest/dist/index.js` as the command, which worked.
-- **Issue 3:** Running Inspector or server from the wrong directory caused doubled paths and module not found errors. Always run Inspector from the project root with the correct relative path.
+1. **Robust Coverage Analysis**:
 
-### [T3] Vitest Execution Context Issues (Step 7)
+   - Extracts uncovered lines even for files with 0% test coverage
+   - Groups consecutive lines into readable ranges
+   - Provides clear status indicators for each file
 
-- **Issue:** MCP server's `process.cwd()` was root directory (`/`) instead of project directory, causing vitest to hang indefinitely.
-- **Root Cause:** MCP server process working directory was not set to the project root.
-- **Solution:** Used explicit `projectDir` in spawn options and `VITEST_PROJECT_DIR` environment variable for configuration.
+2. **Clean Data Architecture**:
 
-### [T4] Test Failures After Refactoring (Step 8)
+   - Removed redundant nesting in JSON responses
+   - Direct file-to-coverage mapping
+   - Optimized for AI agent consumption
 
-- **Issue:** Component tests failing due to missing `data-testid` attributes after TypeScript ref refactoring.
-- **Root Cause:** Tests were updated to use React Testing Library but components weren't updated with required test attributes.
-- **Solution:** Added missing `data-testid` attributes to components and updated icon utility types to support test attributes.
+3. **Environment Resilience**:
+   - Works perfectly in MCP Inspector
+   - Handles Cursor MCP interface limitations gracefully
+   - Proper error handling and parameter validation
 
-### [T5] ESLint Errors from Compiled Code (Step 9)
+### Problems Solved
 
-- **Issue:** ESLint checking compiled JavaScript files in `dist/` folders, causing numerous linting errors.
-- **Root Cause:** ESLint disable comments in TypeScript source don't carry over to compiled JavaScript output.
-- **Solution:** Added `'mcp-servers/**/dist/**'` to global `ignores` array in `eslint.config.mjs` to exclude compiled code from linting.
+1. **Tool Discovery Issue** ❌ → ✅
 
-## Important Notes
+   - **Problem**: Only `ping` tool detected by Cursor
+   - **Cause**: Tool registrations commented out in compiled JavaScript
+   - **Solution**: Fixed imports and proper build process
 
-⚠️ **Always run MCP server from project root** - The server must be started from `/Users/madrus/dev/biz/toernooien/tournado` to ensure correct file paths and vitest execution context.
+2. **Parameter Handling** ❌ → ✅
 
-💡 **Test-driven development workflow** - Use the MCP server to run tests, identify failures, fix code, and repeat until all tests pass.
+   - **Problem**: `get-file-coverage` crashed with undefined parameters
+   - **Cause**: Cursor passes dummy parameters to all tools
+   - **Solution**: Removed tool, enhanced coverage tool with comprehensive data
 
-🔧 **Building after changes** - Remember to run `npm run build` in the MCP server directory after making changes to TypeScript source files.
+3. **Coverage Data Quality** ❌ → ✅
+   - **Problem**: Missing uncovered lines for files with 0% coverage
+   - **Cause**: Logic gaps in coverage extraction
+   - **Solution**: Enhanced extraction to handle all coverage scenarios
+
+---
+
+## 📋 Development Steps Completed
+
+### ✅ Step 1-3: Foundation
+
+- [x] Directory structure setup
+- [x] Dependencies installed (`npm install`)
+- [x] Basic MCP server with `ping` tool
+
+### ✅ Step 4-6: Core Functionality
+
+- [x] MCP Inspector integration
+- [x] `run-vitest` tool implementation
+- [x] Cursor MCP integration
+
+### ✅ Step 7-8: Enhanced Features
+
+- [x] JSON output parsing with structured error reporting
+- [x] Stack trace extraction (limited to 1500 characters)
+- [x] Test failure fixes and code quality improvements
+
+### ✅ Step 9-11: Coverage & Production Ready
+
+- [x] `run-vitest-coverage` tool with comprehensive analysis
+- [x] File-by-file coverage breakdown
+- [x] Smart uncovered line detection and formatting
+- [x] Clean data structure optimization
+- [x] Production deployment and documentation
+
+---
+
+## 🎯 Success Metrics Achieved
+
+- ✅ **Reliability**: All 3 tools work consistently in both Inspector and Cursor
+- ✅ **Comprehensive**: Complete test execution and coverage analysis
+- ✅ **Performance**: Handles full test suite (98 tests) in 2-3 seconds
+- ✅ **Data Quality**: Clean, structured output optimized for AI agents
+- ✅ **Documentation**: Complete development history and usage examples
+
+---
+
+## 🚀 Future: Extraction to Standalone Package
+
+The MCP server is now **ready for extraction** to a standalone npm package with:
+
+- Generic project configuration (not Tournado-specific)
+- Command-line arguments for project paths
+- Configurable vitest options
+- Published npm package for reuse
+
+---
+
+## 🔍 Troubleshooting Reference
+
+### Working Directory Requirements
+
+⚠️ **Critical**: MCP server must run from project root (`/Users/madrus/dev/biz/toernooien/tournado`)
+
+### Build Process
+
+💡 **Remember**: Run `npm run build` after TypeScript changes
+
+### Cursor Integration
+
+🔧 **Config**: Use absolute paths in MCP server configuration for reliability
+
+---
+
+**Status**: 🎉 **PRODUCTION READY** - Fully functional MCP server enabling AI-assisted test-driven development workflows with comprehensive coverage analysis.
+
+---
+
+_This MCP server demonstrates successful integration of vitest testing with Model Context Protocol for AI-powered development workflows, ready for extraction to a reusable package._

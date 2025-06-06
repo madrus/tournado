@@ -198,7 +198,12 @@ jobs:
         run: npx cypress verify
 
       - name: 🛠 Setup Database
-        run: pnpm exec prisma migrate reset --force
+        run: |
+          # Ensure Prisma client is generated before migration
+          pnpm exec prisma generate
+          pnpm exec prisma migrate reset --force
+          # Wait a moment for the client to be fully ready
+          sleep 2
 
       - name: ⚙️ Build
         run: pnpm build

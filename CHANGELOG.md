@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.17](https://github.com/madrus/tournado/compare/v0.3.16...v0.3.17) (2025-06-06)
+
+### Bug Fixes
+
+- broken link ([a50a3c4](https://github.com/madrus/tournado/commit/a50a3c4885eb0343147372da6af81e9f112e4f7d))
+
 ### [0.3.16](https://github.com/madrus/tournado/compare/v0.3.15...v0.3.16) (2025-05-31)
 
 ### [0.3.15](https://github.com/madrus/tournado/compare/v0.3.14...v0.3.15) (2025-05-31)

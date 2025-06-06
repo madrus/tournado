@@ -4,7 +4,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:8811',
     supportFile: 'cypress/support/e2e.ts',
-    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    specPattern: 'cypress/e2e/**/*.spec.{js,jsx,ts,tsx}',
     env: {
       NODE_ENV: 'test',
       LANG: 'en',

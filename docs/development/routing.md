@@ -1,312 +1,366 @@
-# Routing Architecture
+# Routing
 
-## Overview
-
-Tournado uses **React Router v7** (the new evolution of Remix) with a file-based routing system that provides powerful features like nested routes, layouts, and advanced prefetching strategies.
-
-## Route Configuration
-
-All routes are defined in `app/routes.ts` using React Router v7's configuration format:
-
-```typescript
-import { index, route, type RouteConfig } from '@react-router/dev/routes'
-
-export default [
-   // Public routes
-   index('routes/index.tsx'),
-   route('about', 'routes/about.tsx'),
-   route('unauthorized', 'routes/unauthorized.tsx'),
-   route('resources/healthcheck', 'routes/resources/healthcheck.tsx'),
-   route('teams', 'layouts/teams-layout.tsx', [
-      index('routes/teams/index.tsx'),
-      route('new', 'routes/teams/new.tsx'),
-      route(':teamId', 'routes/teams/team.tsx'),
-   ]),
-
-   // Auth routes (public)
-   route('auth', 'layouts/auth-layout.tsx', [
-      route('signin', 'routes/auth/signin.tsx'),
-      route('signup', 'routes/auth/signup.tsx'),
-      route('signout', 'routes/auth/signout.tsx'),
-   ]),
-
-   // Protected routes
-   route('profile', 'routes/profile.tsx'),
-   route('settings', 'routes/settings.tsx'),
-
-   // Admin routes (role-protected)
-   route('admin', 'routes/admin.tsx'),
-] satisfies RouteConfig
-```
+This project uses **React Router v7 with custom flat routes discovery** for organized flat routes in subdirectories with proper nested routing.
 
 ## Route Structure
 
-### Public Routes
+Routes are **automatically discovered** from organized subdirectories with flat route naming and properly configured as nested parent-child relationships:
 
-| Route                    | File                               | Description                    |
-| ------------------------ | ---------------------------------- | ------------------------------ |
-| `/`                      | `routes/index.tsx`                 | Landing page with app overview |
-| `/about`                 | `routes/about.tsx`                 | About page                     |
-| `/unauthorized`          | `routes/unauthorized.tsx`          | Access denied page             |
-| `/resources/healthcheck` | `routes/resources/healthcheck.tsx` | Health check endpoint          |
+```
+app/routes/
+├── _index.tsx                                 →  /
+├── about.tsx                                  →  /about
+├── profile.tsx                                →  /profile
+├── settings.tsx                               →  /settings
+├── unauthorized.tsx                           →  /unauthorized
+├── $.tsx                                      →  /* (catch-all)
+├── favicon[.]ico.ts                           →  /favicon.ico
+│
+├── teams/                                     (Teams section)
+│   ├── teams.tsx                              →  /teams (layout)
+│   ├── teams._index.tsx                       →  /teams (index child)
+│   ├── teams.new.tsx                          →  /teams/new (child)
+│   └── teams.$teamId.tsx                      →  /teams/:teamId (child)
+│
+├── auth/                                      (Auth section)
+│   ├── auth.tsx                               →  /auth (layout)
+│   ├── auth.signin.tsx                        →  /auth/signin (child)
+│   ├── auth.signup.tsx                        →  /auth/signup (child)
+│   └── auth.signout.tsx                       →  /auth/signout (child)
+│
+├── a7k9m2x5p8w1n4q6r3y8b5t1/                  (Admin section)
+│   ├── a7k9m2x5p8w1n4q6r3y8b5t1.tsx          →  /a7k9m2x5p8w1n4q6r3y8b5t1 (layout)
+│   └── a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx   →  /a7k9m2x5p8w1n4q6r3y8b5t1 (index child)
+│
+└── resources/                                 (Resources section)
+    └── resources.healthcheck.tsx              →  /resources/healthcheck
+```
 
-### Teams Routes (Nested Layout)
+## Implementation Architecture
 
-| Route            | File                                                  | Description                 |
-| ---------------- | ----------------------------------------------------- | --------------------------- |
-| `/teams`         | `layouts/teams-layout.tsx` + `routes/teams/index.tsx` | Teams listing page          |
-| `/teams/new`     | `routes/teams/new.tsx`                                | Create new team form        |
-| `/teams/:teamId` | `routes/teams/team.tsx`                               | Individual team detail page |
+The routing system uses a clean two-step process:
 
-### Authentication Routes (Nested Layout)
+### 1. Route Discovery (`config/flat-routes.ts`)
 
-| Route           | File                      | Description     |
-| --------------- | ------------------------- | --------------- |
-| `/auth/signin`  | `routes/auth/signin.tsx`  | Sign in form    |
-| `/auth/signup`  | `routes/auth/signup.tsx`  | Sign up form    |
-| `/auth/signout` | `routes/auth/signout.tsx` | Sign out action |
-
-### Protected Routes
-
-| Route       | File                  | Description       | Protection Level    |
-| ----------- | --------------------- | ----------------- | ------------------- |
-| `/profile`  | `routes/profile.tsx`  | User profile page | Authenticated users |
-| `/settings` | `routes/settings.tsx` | User settings     | Authenticated users |
-| `/admin`    | `routes/admin.tsx`    | Admin panel       | Admin role required |
-
-## Route Metadata System
-
-Each route can export a `handle` object that defines metadata for the route:
+Automatically scans all route files and creates proper nested route configurations:
 
 ```typescript
-export const handle: RouteMetadata = {
-  isPublic: boolean,
-  title?: string,
-  auth?: {
-    required?: boolean,
-    redirectTo?: string,
-    preserveRedirect?: boolean,
-  },
-  authorization?: {
-    requiredRoles?: Array<'tournamentOrganiser' | 'admin' | 'referee' | 'participant'>,
-    roleMatchMode?: 'all' | 'any',
-    redirectTo?: string,
-  },
-  protection?: {
-    autoCheck?: boolean,
-    customCheck?: (request: Request, user?: User | null) => Promise<boolean | Response>,
-  },
+interface RouteEntry {
+   path: string
+   file: string
+   isLayout: boolean
+   children?: RouteEntry[]
+}
+
+export function createFlatRoutes(): RouteEntry[] {
+   const routesDir = path.join(process.cwd(), 'app/routes')
+
+   // Find all .tsx files in routes directory and subdirectories
+   const files = glob.sync('**/*.{ts,tsx}', {
+      cwd: routesDir,
+      ignore: ['**/*.test.*', '**/*.spec.*', '**/.*'],
+   })
+
+   const routeMap: RouteMap = {}
+
+   // First pass: Create route entries
+   files.forEach(file => {
+      const segments = file.replace(/\.(ts|tsx)$/, '').split('/')
+      const fileName = segments[segments.length - 1]
+      const dirName = segments.length > 1 ? segments[segments.length - 2] : null
+
+      let routePath: string
+      let isLayout = false
+
+      // Layout detection: teams/teams.tsx -> layout
+      if (dirName === fileName) {
+         routePath = '/' + fileName
+         isLayout = true
+      } else if (fileName === '_index') {
+         // Index routes: teams/teams._index.tsx -> /teams::_index
+         const parentPath = '/' + segments[0]
+         routePath = parentPath + '::_index'
+      } else if (segments.length === 1) {
+         // Root level routes: about.tsx -> /about
+         routePath = fileName === 'favicon[.]ico' ? '/favicon.ico' : '/' + fileName
+      } else {
+         // Child routes: teams/teams.new.tsx -> /teams::new
+         const baseSegment = segments[0]
+         const parentPath = '/' + baseSegment
+         const childPath = segments
+            .slice(1)
+            .join('/')
+            .replace(/\$([^/]+)/g, ':$1')
+         routePath = parentPath + '::' + childPath
+      }
+
+      routeMap[routePath] = { path: routePath, file: `routes/${file}`, isLayout }
+   })
+
+   // Second pass: Build nested structure
+   const routes: RouteEntry[] = []
+   const layoutMap = new Map<string, RouteEntry>()
+
+   // Create layout routes first
+   Object.values(routeMap).forEach(route => {
+      if (route.isLayout) {
+         const layoutRoute: RouteEntry = {
+            path: route.path,
+            file: route.file,
+            isLayout: true,
+            children: [],
+         }
+         routes.push(layoutRoute)
+         layoutMap.set(route.path, layoutRoute)
+      }
+   })
+
+   // Add child routes to their layouts
+   Object.values(routeMap).forEach(route => {
+      if (!route.isLayout && route.path.includes('::')) {
+         const [parentPath, childPath] = route.path.split('::')
+         const layout = layoutMap.get(parentPath)
+
+         if (layout && layout.children) {
+            if (childPath === '_index') {
+               layout.children.push({
+                  path: route.path,
+                  file: route.file,
+                  isLayout: false,
+                  index: true,
+               })
+            } else {
+               layout.children.push({
+                  path: childPath,
+                  file: route.file,
+                  isLayout: false,
+               })
+            }
+         }
+      } else if (!route.isLayout && !route.path.includes('::')) {
+         // Root level routes
+         routes.push({
+            path: route.path,
+            file: route.file,
+            isLayout: false,
+         })
+      }
+   })
+
+   return routes
 }
 ```
 
-### Example Route Metadata
+### 2. Route Configuration (`app/routes.ts`)
+
+Simple configuration that uses the flat routes scanner:
 
 ```typescript
-// Public route
-export const handle: RouteMetadata = {
-  isPublic: true,
-  title: 'common.titles.welcome',
-}
+import { type RouteConfig } from '@react-router/dev/routes'
 
-// Protected route
-export const handle: RouteMetadata = {
-  isPublic: false,
-  title: 'common.titles.profile',
-  auth: {
-    required: true,
-    redirectTo: '/auth/signin',
-    preserveRedirect: true,
-  },
-}
+import { createFlatRoutes } from '../config/flat-routes'
 
-// Admin-only route
-export const handle: RouteMetadata = {
-  isPublic: false,
-  title: 'Admin Panel',
-  auth: {
-    required: true,
-    redirectTo: '/auth/signin',
-    preserveRedirect: true,
-  },
-  authorization: {
-    requiredRoles: ['admin'],
-    roleMatchMode: 'any',
-    redirectTo: '/unauthorized',
-  },
-}
-```
+const flatRoutes = createFlatRoutes()
 
-## Layout System
-
-### Teams Layout (`app/layouts/teams-layout.tsx`)
-
-Provides a sidebar navigation for teams management with dual rendering contexts:
-
-- **Sidebar context**: Shows team list for navigation
-- **Main context**: Shows selected team or prompt to create/select
-
-### Auth Layout (`app/layouts/auth-layout.tsx`)
-
-Simple layout wrapper for authentication pages.
-
-## Route Protection
-
-### Authentication Levels
-
-1. **Public Routes**: Accessible to everyone
-
-   - Landing page (`/`)
-   - About page (`/about`)
-   - All auth routes (`/auth/*`)
-
-2. **Protected Routes**: Require authentication
-
-   - Profile (`/profile`)
-   - Settings (`/settings`)
-
-3. **Role-Based Routes**: Require specific roles
-   - Admin panel (`/admin`) - requires `admin` role
-
-### Server-Side Protection
-
-Route protection is handled server-side in loaders using utilities from `app/utils/route-utils.server.ts`:
-
-```typescript
-export async function loader({ request }: LoaderArgs) {
-   // Enhanced protection automatically handles authentication and authorization
-   const user = await requireUserWithMetadata(request, handle)
-   return { user }
-}
-```
-
-## Prefetching Strategy
-
-The application implements an intelligent prefetching strategy to optimize navigation performance. See [Prefetching Strategy](../PREFETCHING_STRATEGY.md) for detailed information.
-
-### Link Components
-
-```typescript
-// Primary navigation
-<PrimaryNavLink to="/teams">Teams</PrimaryNavLink>
-
-// Action buttons
-<ActionLink to="/teams/new">Create Team</ActionLink>
-
-// List items
-<ListItemNavLink to={`/teams/${team.id}`}>{team.name}</ListItemNavLink>
-
-// Error recovery
-<ErrorRecoveryLink to="/">Back to Home</ErrorRecoveryLink>
-```
-
-## Navigation Patterns
-
-### Programmatic Navigation
-
-```typescript
-import { useNavigate } from 'react-router'
-
-function Component() {
-   const navigate = useNavigate()
-
-   const handleSuccess = () => {
-      navigate('/teams', { replace: true })
+// Convert to React Router format
+const routeConfig: RouteConfig = flatRoutes.map(route => {
+   if (route.isLayout && route.children) {
+      return {
+         path: route.path,
+         file: route.file,
+         children: route.children.map(child => ({
+            ...(child.index ? { index: true } : { path: child.path }),
+            file: child.file,
+         })),
+      }
    }
+
+   return {
+      path: route.path,
+      file: route.file,
+   }
+})
+
+export default routeConfig
+```
+
+### 3. Vite Configuration (`vite.config.ts`)
+
+Simple configuration that uses the standard React Router approach:
+
+```typescript
+import { reactRouter } from '@react-router/dev/vite'
+
+export default defineConfig({
+   plugins: [
+      reactRouter(), // Uses app/routes.ts automatically
+   ],
+})
+```
+
+## File Naming Convention
+
+- **Folders**: Group related functionality (`teams/`, `auth/`, `a7k9m2x5p8w1n4q6r3y8b5t1/`)
+- **Flat naming**: Use dots for segments (`teams.new.tsx`, `auth.signin.tsx`)
+- **Parameters**: Use `$` prefix (`teams.$teamId.tsx` → `:teamId`)
+- **Index routes**: Use `_index` suffix (`teams._index.tsx`)
+- **Layouts**: Use the parent name (`teams.tsx`, `auth.tsx`)
+
+## Nested Route Behavior
+
+### Layout Routes
+
+Files like `teams/teams.tsx` become layout components that render:
+
+- Shared UI (sidebar, navigation, etc.)
+- `<Outlet />` for child routes
+
+### Child Routes
+
+Files like `teams/teams._index.tsx`, `teams/teams.new.tsx` render inside the layout's `<Outlet />`.
+
+### Context Sharing
+
+Layouts can pass context to children using `<Outlet context={...} />`:
+
+```typescript
+// In teams.tsx (layout)
+<Outlet context={{ type: 'main' }} />
+
+// In teams._index.tsx (child)
+const context = useOutletContext<{ type: string }>()
+```
+
+## Benefits
+
+✅ **Automatic Discovery**: No manual route configuration needed  
+✅ **Organized**: Related routes clustered in folders  
+✅ **Proper Nesting**: Parent-child route relationships work correctly  
+✅ **Type-safe**: Full TypeScript support with route parameters  
+✅ **Clean Logic**: Simple, maintainable route scanning  
+✅ **Consistent**: All route clusters follow the same pattern  
+✅ **Scalable**: Add new routes by just creating files
+
+## Adding New Routes
+
+### 1. Create the route file in the appropriate folder
+
+```typescript
+// app/routes/teams/teams.schedule.tsx
+export default function TeamSchedule() {
+  return <div>Team Schedule</div>;
 }
 ```
 
-### Protected Navigation
+### 2. That's it! Routes are automatically discovered
 
-```typescript
-import { redirect } from 'react-router'
+The route `/teams/schedule` will be automatically available as a child of the teams layout after:
 
-import { requireUser } from '~/utils/session.server'
-
-export async function loader({ request }) {
-   const user = await requireUser(request)
-   // Route is protected
-   return { user }
-}
+```bash
+pnpm typecheck  # Regenerates types
 ```
 
-## Error Handling
-
-### Error Boundaries
-
-Each route can export an `ErrorBoundary` component to handle errors:
+### 3. For new sections, create both layout and children
 
 ```typescript
-export function ErrorBoundary() {
+// app/routes/tournaments/tournaments.tsx (layout)
+export default function TournamentsLayout() {
   return (
     <div>
-      <h1>Something went wrong</h1>
-      <ErrorRecoveryLink to="/">Go home</ErrorRecoveryLink>
+      <h1>Tournaments</h1>
+      <Outlet />
+    </div>
+  );
+}
+
+// app/routes/tournaments/tournaments._index.tsx (index)
+export default function TournamentsIndex() {
+  return <div>Tournaments List</div>;
+}
+```
+
+No additional configuration needed - the scanner will automatically detect the new layout and children!
+
+## Creating a New Route Cluster
+
+To create a completely new route cluster (e.g., "games"), follow these steps:
+
+### Step 1: Create the File Structure
+
+```
+app/routes/games/
+├── games.tsx                    →  /games (layout)
+├── games._index.tsx             →  /games (index child)
+├── games.new.tsx                →  /games/new (child)
+├── games.$gameId.tsx            →  /games/:gameId (child)
+└── games.$gameId.edit.tsx       →  /games/:gameId/edit (child)
+```
+
+### Step 2: Create the Layout Component
+
+```typescript
+// app/routes/games/games.tsx
+import { Outlet } from 'react-router'
+
+export default function GamesLayout() {
+  return (
+    <div className="games-layout">
+      <h1>Games</h1>
+      <nav>
+        {/* Navigation for games section */}
+      </nav>
+      <Outlet context={{ type: 'main' }} />
     </div>
   )
 }
 ```
 
-### Catch-All Route
-
-The `app/routes/$.tsx` file handles 404 errors for unmatched routes.
-
-## SEO and Meta Tags
-
-Each route can export a `meta` function for SEO optimization:
+### Step 3: Create Child Components
 
 ```typescript
-export const meta: MetaFunction = () => [
-   { title: 'Teams | Tournado' },
-   { name: 'description', content: 'Manage your tournament teams' },
-   { property: 'og:title', content: 'Teams | Tournado' },
-   { property: 'og:description', content: 'Manage your tournament teams' },
-   { property: 'og:type', content: 'website' },
-]
-```
+// app/routes/games/games._index.tsx
+import { useOutletContext } from 'react-router'
 
-## Internationalization
+export default function GamesIndex() {
+  const context = useOutletContext<{ type: string }>()
+  return <div>Games List</div>
+}
 
-Routes support internationalization through the `usePageTitle()` hook:
+// app/routes/games/games.new.tsx
+export default function NewGame() {
+  return <div>Create New Game</div>
+}
 
-```typescript
-import { usePageTitle } from '~/utils/route-utils'
-
-function Component() {
-   const pageTitle = usePageTitle() // Gets translated title from route metadata
+// app/routes/games/games.$gameId.tsx
+export default function GameDetails() {
+  return <div>Game Details</div>
 }
 ```
 
-## Best Practices
+### Step 4: Run Type Generation
 
-### 1. Route Organization
+```bash
+pnpm typecheck  # Regenerates types and discovers new routes
+```
 
-- Group related routes in subdirectories
-- Use layouts for shared UI components
-- Keep route files focused and small
+### Result
 
-### 2. Route Protection
+Your new games cluster will be automatically available with the following routes:
 
-- Always define `isPublic` in route metadata
-- Use server-side protection in loaders
-- Implement proper error boundaries
+- `/games` - Games layout with index
+- `/games/new` - Create new game
+- `/games/:gameId` - Game details
+- `/games/:gameId/edit` - Edit game
 
-### 3. Performance
+**No manual configuration required!** The flat routes scanner automatically detects the layout pattern and creates proper nested routes.
 
-- Use appropriate prefetching strategies
-- Implement proper loading states
-- Optimize bundle sizes with code splitting
+## How It Works
 
-### 4. SEO
+1. **File Scanning**: `config/flat-routes.ts` recursively scans `app/routes/` subdirectories
+2. **Layout Detection**: Identifies layouts where `dirName === fileName` (e.g., `teams/teams.tsx`)
+3. **Route Mapping**: Creates route map with `::` separators for parent-child relationships
+4. **Nested Structure**: Two-pass system builds proper parent-child route hierarchy
+5. **Type Generation**: React Router generates full TypeScript support
+6. **Hot Reloading**: Vite automatically reloads when route files change
 
-- Export meta functions for all public routes
-- Use semantic HTML and proper headings
-- Implement proper Open Graph tags
-
-## Migration Notes
-
-This application has been migrated to React Router v7 from Remix. Key changes:
-
-- Route configuration moved to `app/routes.ts`
-- File-based routing still supported but using explicit configuration
-- Enhanced prefetching capabilities
-- Improved error handling and type safety
+This approach gives you **automatic route discovery** with organized folder structure, proper nested routing behavior, and zero configuration overhead for new routes. The clean, consistent logic makes it easy to understand and maintain.

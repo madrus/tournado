@@ -1,0 +1,31 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Always Apply Conventional Commits
+
+**CRITICAL: When generating commit messages, ALWAYS use conventional commit format.**
+
+## Required Format
+```
+<type>(<scope>): <description>
+```
+
+## Most Common Types
+- `feat:` - New feature
+- `fix:` - Bug fix  
+- `refactor:` - Code refactoring
+- `docs:` - Documentation
+- `style:` - Formatting/styling
+- `test:` - Tests
+- `chore:` - Maintenance
+- `ci:` - CI/CD changes
+
+## Example for Current Changes
+For Prisma Client and CI workflow changes:
+```
+fix(ci): enhance Prisma Client initialization and database reset
+```
+
+**This rule applies to ALL commit message generation requests.**

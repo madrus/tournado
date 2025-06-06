@@ -2,7 +2,7 @@ import { MemoryRouter } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { IconName } from '~/utils/iconUtils'
 
@@ -40,7 +40,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -52,7 +52,7 @@ describe('NavigationItem', () => {
       expect(link).toHaveAttribute('href', '/teams')
 
       // Check that the icon SVG is rendered
-      const icon = container.querySelector('svg')
+      const icon = screen.getByTestId('nav-icon')
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveAttribute('width', '36')
       expect(icon).toHaveAttribute('height', '36')
@@ -71,7 +71,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -81,7 +81,7 @@ describe('NavigationItem', () => {
       expect(link).toHaveAttribute('aria-label', 'Navigate to Teams')
 
       // Check the SVG element has correct classes
-      const svg = container.querySelector('svg')
+      const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveClass('fill-current')
     })
 
@@ -211,13 +211,13 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const svg = container.querySelector('svg')
+      const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveAttribute('width', '36')
       expect(svg).toHaveAttribute('height', '36')
       expect(svg).toHaveStyle({
@@ -235,13 +235,13 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const svg = container.querySelector('svg')
+      const svg = screen.getByTestId('nav-icon')
       // Inline SVG should have viewBox and fill-current class
       expect(svg).toHaveAttribute('viewBox', '0 -960 960 960')
       expect(svg).toHaveClass('fill-current')
@@ -315,7 +315,7 @@ describe('NavigationItem', () => {
       const iconDiv = container.querySelector('div[class*="text-emerald-800"]')
       expect(iconDiv).toHaveClass('text-emerald-800') // Default inactive state
 
-      const svg = container.querySelector('svg')
+      const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveClass('fill-current')
 
       const label = screen.getByText('Teams')

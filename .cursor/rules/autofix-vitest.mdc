@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Use the vitest-runner MCP to run all unit tests, analyze any failing tests and their error messages, automatically fix those test failures in my codebase by:
+
+1. **Running Tests**: Use `run-vitest` MCP tool to get current test status and failure details
+2. **Analyzing Failures**: Examine failed tests, error messages, and stack traces to understand root causes
+3. **Fixing Issues**: Make necessary code changes to:
+   - Fix broken imports or missing dependencies
+   - Update test configurations and setup files  
+   - Correct component/function implementations that cause test failures
+   - Fix test assertions that are incorrect or outdated
+   - Resolve environment/mocking issues
+4. **Iterating**: Continue running tests and fixing issues until all tests pass
+5. **Validation**: Ensure fixes don't break other tests or functionality
+
+Focus on understanding the intent of each test and making minimal, targeted fixes to make them pass while maintaining code quality and test validity.

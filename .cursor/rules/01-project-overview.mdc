@@ -11,7 +11,7 @@ alwaysApply: true
 
 # Project Overview
 
-This is a Remix.js application with TypeScript, Prisma for database management, and Vite for build tooling.
+This is a React Router v7 application with TypeScript, Prisma for database management, and Vite for build tooling.
 
 ## Main Entry Points
 - [app/root.tsx](mdc:app/root.tsx) - The root component of the application
@@ -31,7 +31,7 @@ This is a Remix.js application with TypeScript, Prisma for database management, 
 - `prisma/` - Database schema and migrations
 
 ## Configuration Files
-- [remix.config.js](mdc:remix.config.js) - Remix configuration
+- [react-router-config.js](mdc:react-router-config.js) - Remix configuration
 - [vite.config.ts](mdc:vite.config.ts) - Vite build configuration
 - [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
 - [prisma/schema.prisma](mdc:prisma/schema.prisma) - Database schema definition

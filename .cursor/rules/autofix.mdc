@@ -1,6 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: false
----
-Use the playwright MCP to open the browser to the url I provide, check for any errors, also in the DevTools console, automatically fix those errors in my codebase, then continue to iterate until all the errors are gone.

@@ -123,7 +123,7 @@ export function AppBar({
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
-          className='flex w-full content-start items-center px-3 py-2 text-left text-gray-700 hover:bg-gray-100'
+          className='flex w-full content-start items-center px-3 py-2 text-left text-emerald-800 hover:bg-gray-100'
         >
           <span className='flex w-8 items-center justify-start pl-0 text-left'>
             {renderIcon('logout', { className: 'w-5 h-5' })}
@@ -133,7 +133,7 @@ export function AppBar({
       ) : (
         <PrimaryNavLink
           to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-          className='flex w-full content-start items-center px-3 py-2 text-gray-700 hover:bg-gray-100'
+          className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
           onClick={handleSignIn}
         >
           <span className='flex w-8 items-center justify-start pl-0 text-left'>

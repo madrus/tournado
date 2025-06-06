@@ -3,6 +3,9 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
+import { registerRunVitestCoverageTool } from './tools/run-vitest-coverage.js'
+import { registerRunVitestTool } from './tools/run-vitest.js'
+
 async function main() {
   const server = new McpServer({
     name: 'vitest-mcp',
@@ -12,9 +15,9 @@ async function main() {
   server.tool('ping', {}, async () => ({
     content: [{ type: 'text', text: 'pong' }],
   }))
-  // Temporarily comment out custom tools for testing
-  // registerRunVitestTool(server)
-  // registerRunVitestCoverageTool(server)
+  // Register the vitest tools
+  registerRunVitestTool(server)
+  registerRunVitestCoverageTool(server)
   // Start the server using stdio transport
   const transport = new StdioServerTransport()
   await server.connect(transport)

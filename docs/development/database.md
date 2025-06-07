@@ -18,7 +18,7 @@ This project uses a dual database setup to ensure separation between development
 
 ### Critical Requirement for E2E Tests
 
-⚠️ **IMPORTANT**: For e2e tests to run without Prisma connection issues, it is essential that the main database (`prisma/data.db`) is 100% in order. The e2e test setup depends on the main database being properly configured and migrated.
+!> For e2e tests to run without Prisma connection issues, it is essential that the main database (`prisma/data.db`) is 100% in order. The e2e test setup depends on the main database being properly configured and migrated.
 
 **Before running e2e tests, ensure:**
 
@@ -184,7 +184,7 @@ The `db push` approach is useful when you want to start fresh without migration 
 pnpm prisma migrate dev --name initial_schema
 ```
 
-**Note:** Complete resets should generally only be done in development and staging environments. For production, consider using proper migrations once your application is live with real user data.
+!> Complete resets should generally only be done in development and staging environments. For production, consider using proper migrations once your application is live with real user data.
 
 ### Handling Database Resets in GitHub Actions
 
@@ -236,7 +236,7 @@ Always backup your production database before applying migrations.
 
 ## Manual Database Reset
 
-!> IMPORTANT: if the old data is important, back up your database first!
+!> If the old data is important, back up your database first!
 
 1. Connect to your production server or use your local machine with the production database URL:
    ```sh
@@ -301,50 +301,84 @@ This approach gives you full control over the database reset process and allows 
    pnpm prisma db seed
    ```
 
-## Complete Database reset on Fly.io
+## Complete Database Reset on Fly.io (Remote Shell Method)
 
-1. Connect to your Fly.io instance
+This method uses Fly.io's SSH console to directly reset the deployed database using Prisma's built-in reset command.
+
+!> Use it with care because it completely resets all existing data!
+
+### When to Use This Method
+
+- **Complete fresh start**: When you need to completely reset your deployed database
+- **Schema changes**: When local migrations don't match deployed state
+- **Clean deployment**: Starting with a fresh database state
+- **Troubleshooting**: When database corruption or inconsistencies occur
+
+### Prerequisites
+
+- Fly.io CLI installed and authenticated (`flyctl auth login`)
+- Access to your Fly.io app (staging or production)
+- **IMPORTANT**: Backup any important data first!
+
+### Simple Two-Step Process
+
+1. **Connect to your Fly.io instance and get sh prompt**
 
    ```sh
-   # For staging
+   # For staging environment
    flyctl ssh console --app tournado-staging
 
-   # For production
+   # For production environment
    flyctl ssh console --app tournado
    ```
 
-2. Delete the existing database file
+2. **Reset the database using Prisma**
 
    ```sh
-   # Delete the database file
-   rm -f /data/sqlite.db
-   rm -f /data/sqlite.db-journal
-
-   # Verify it is gone
-   ls -la /data/
+   # This command handles everything: drops DB, applies migrations, runs seed
+   npx prisma migrate reset --force
    ```
 
-3. Create a new empty database and push your schema
+3. **Exit the SSH session**
    ```sh
-   # Initialize an empty database
-   touch /data/sqlite.db
-   # Push your schema to the empty database
-   npx prisma db push --schema=prisma/schema.prisma
-   ```
-4. Seed the database with initial data
-   ```sh
-   node prisma/seed.js
-   ```
-5. Verify the database was created properly
-
-   ```sh
-   # Check that tables were created
-   sqlite3 /data/sqlite.db ".tables"
-
-   # Run a simple query to check data
-   sqlite3 /data/sqlite.db "SELECT * FROM User LIMIT 5;"
+   exit
    ```
 
-This approach completely removes the database file and starts fresh, which is more thorough than just dropping tables. It ensures there are no leftover artifacts, indexes, or settings from the previous database.
+### What `prisma migrate reset --force` Does
+
+- **Drops the database**: Completely removes all existing data and tables
+- **Applies all migrations**: Recreates the database schema from scratch using all migration files
+- **Runs the seed script**: Automatically populates the database with initial data
+- **Regenerates Prisma client**: Ensures the client matches the current schema
+
+### Why This Method Is Ideal
+
+- **Single Command**: Everything happens in one atomic operation
+- **Migration History Preserved**: Uses your actual migration files, maintaining consistency
+- **Automatic Seeding**: No need to manually run seed commands
+- **Error Safe**: Prisma handles the entire process, reducing chance of manual errors
+- **Clean State**: Guarantees a completely fresh database matching your current schema
+
+### Alternative: One-Command from Local Terminal
+
+Execute the reset without entering the SSH session:
+
+```sh
+# For staging
+flyctl ssh console --app tournado-staging -C "npx prisma migrate reset --force"
+
+# For production
+flyctl ssh console --app tournado -C "npx prisma migrate reset --force"
+```
+
+### Important Notes
+
+- **Data Loss**: This method completely removes all existing data
+- **Staging First**: Always test this process on staging before applying to production
+- **Downtime**: Consider scheduling maintenance windows for production resets
+- **Migration Consistency**: Ensures deployed database matches your migration files exactly
+- **Atomic Operation**: The entire reset happens as one transaction, reducing risk
+
+!> **Production Warning**: Only use this method on production if you're certain you want to lose all existing data. Always backup first and inform your team/users of the reset.
 
 ---

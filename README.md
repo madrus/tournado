@@ -15,18 +15,12 @@ pnpm dev
 
 The project documentation is available in the `docs` directory. To view it:
 
-1. Install docsify globally:
+Start the documentation server:
 
 ```sh
-pnpm add -g docsify-cli
+pnpm run docs
 ```
 
-2. Start the documentation server:
+The browser will open `http://localhost:3030`
 
-```sh
-docsify serve docs
-```
-
-3. Open your browser and navigate to `http://localhost:3000`
-
-For more detailed information about the project, please refer to the documentation.
+For more detailed information about the project, refer to the documentation.

@@ -10,18 +10,21 @@ const DEFAULT_REDIRECT = '/'
  * (Like the query string on our signin/signup pages). This avoids
  * open-redirect vulnerabilities.
  * @param {string} to The redirect destination
- * @param {string} defaultRedirect The redirect to use if the to is unsafe.
+ * @param {string | undefined} defaultRedirect The redirect to use if the `to`
+ *   value is unsafe. If omitted, `null` will be returned for unsafe values.
  */
 export function safeRedirect(
   to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect: string = DEFAULT_REDIRECT
+  defaultRedirect?: string
 ): string | null {
+  const fallback = defaultRedirect ?? null
+
   if (!to || typeof to !== 'string' || to.trim() === '') {
-    return defaultRedirect
+    return fallback
   }
 
   if (!to.startsWith('/') || to.startsWith('//')) {
-    return defaultRedirect
+    return fallback
   }
 
   return to

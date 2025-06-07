@@ -42,6 +42,7 @@ export function registerRunVitestTool(server: McpServer): void {
               globals: true,
               environment: 'happy-dom',
               setupFiles: ['./test/setup-test-env.ts'],
+              watch: false, // Explicitly disable watch mode to override config file
             },
           }
         )

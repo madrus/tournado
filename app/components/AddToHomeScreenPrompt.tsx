@@ -46,7 +46,8 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
         : `${baseKey}-pwa-prompt-dismissed`
     }
 
-    setStorageKey(getStorageKey())
+    const key = getStorageKey()
+    setStorageKey(key)
 
     function detectPlatform(): Platform {
       const ua = navigator.userAgent.toLowerCase()
@@ -79,7 +80,9 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
     }
 
     function shouldShowPrompt(): boolean {
-      const lastDismissed = localStorage.getItem(storageKey)
+      if (!key) return true
+
+      const lastDismissed = localStorage.getItem(key)
 
       if (!lastDismissed) return true
 
@@ -95,7 +98,7 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
         )
       } catch (_error) {
         // If there's any error parsing the date, clear the storage and show the prompt
-        localStorage.removeItem(storageKey)
+        if (key) localStorage.removeItem(key)
         return true
       }
     }
@@ -124,11 +127,13 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
       const timeoutId = setTimeout(() => setShowPrompt(true), 1000)
       return () => clearTimeout(timeoutId)
     }
-  }, [isClient, storageKey])
+  }, [isClient])
 
   const handleDismiss = () => {
     setShowPrompt(false)
-    localStorage.setItem(storageKey, new Date().toISOString())
+    if (storageKey) {
+      localStorage.setItem(storageKey, new Date().toISOString())
+    }
   }
 
   // Don't render anything during SSR

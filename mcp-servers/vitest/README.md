@@ -198,6 +198,251 @@ mcp-servers/vitest/
 
 ---
 
+## 🌟 Understanding MCP Resources: The Game Changer
+
+### What Are MCP Resources?
+
+MCP Resources are **live, queryable data endpoints** that expose information from your tools in a structured, accessible way. Think of them as "smart APIs" that other systems can discover and consume automatically.
+
+### Why Resources Are Revolutionary
+
+#### 1. Data Persistence & Reusability
+
+```typescript
+// Without resources: Tools run → results disappear
+run-vitest → JSON output → ❌ Gone after response
+
+// With resources: Tools run → data cached → ✅ Always available
+run-vitest → Updates vitest://test-results → Persistent access
+```
+
+#### 2. Cross-Tool Integration
+
+Resources allow different tools and systems to share data seamlessly:
+
+- **CI/CD systems** can query test results without re-running tests
+- **IDE extensions** can show coverage status in real-time
+- **Dashboards** can display live metrics from your test suite
+- **Other MCP tools** can build on your testing data
+
+#### 3. Discoverability & Self-Documentation
+
+Resources are **self-documenting** - clients can discover what data is available without knowing implementation details.
+
+### Real-World Resource Use Cases
+
+#### 1. `vitest://test-results` (JSON Data)
+
+```json
+{
+  "numTotalTests": 167,
+  "numPassedTests": 167,
+  "testResults": [...]
+}
+```
+
+**Practical Applications:**
+
+- **CI/CD Integration**: Automated systems check test status without re-execution
+- **IDE Plugins**: Show test results inline with code editor
+- **Team Dashboards**: Real-time test status across all projects
+- **Quality Gates**: Block deployments based on test results
+
+#### 2. `vitest://coverage-report` (Detailed Analysis)
+
+```json
+{
+   "coverage": {
+      "app/components/AppBar.tsx": {
+         "summary": { "lines": { "pct": 95.78 } },
+         "uncoveredLines": "43-44, 49-50"
+      }
+   }
+}
+```
+
+**Practical Applications:**
+
+- **Code Review Tools**: Highlight uncovered code in pull requests
+- **Quality Metrics**: Enforce coverage thresholds before merging
+- **Developer Tools**: Show coverage gaps directly in your editor
+- **Technical Debt Tracking**: Monitor coverage trends over time
+
+#### 3. `vitest://test-summary` (Human-Readable)
+
+```
+Test Summary
+=============
+Total Tests: 167
+Passed Tests: 167
+Success Rate: 100.0%
+```
+
+**Practical Applications:**
+
+- **Slack/Teams Bots**: Post readable summaries to team channels
+- **Email Reports**: Send digestible test status updates to stakeholders
+- **Documentation**: Embed current status badges in README files
+- **Manager Reports**: High-level metrics for non-technical stakeholders
+
+### Advanced Resource Workflows
+
+#### Continuous Integration Pipeline
+
+```bash
+# CI script leverages resources for efficiency
+echo "Checking test status without re-running..."
+TEST_STATUS=$(curl mcp://vitest-runner/vitest://test-summary)
+if [[ $TEST_STATUS == *"Success Rate: 100.0%"* ]]; then
+  echo "✅ Tests passing, proceeding with deployment"
+else
+  echo "❌ Tests failing, blocking deployment"
+  exit 1
+fi
+```
+
+#### Development Dashboard Integration
+
+```typescript
+// Live dashboard consuming multiple resources
+async function updateDashboard() {
+   const testStatus = await mcp.getResource('vitest://test-results')
+   const coverage = await mcp.getResource('vitest://coverage-report')
+
+   dashboard.updateTestMetrics(testStatus)
+   dashboard.updateCoverageHeatmap(coverage)
+   dashboard.setHealthStatus(testStatus.numFailedTests === 0)
+}
+
+// Auto-refresh every 30 seconds
+setInterval(updateDashboard, 30000)
+```
+
+#### IDE Extension Integration
+
+```typescript
+// VS Code extension showing live coverage
+class CoverageProvider {
+   async updateCoverage() {
+      const coverage = await mcp.getResource('vitest://coverage-report')
+
+      // Highlight uncovered lines in editor
+      coverage.files.forEach(file => {
+         if (file.uncoveredLines !== 'none') {
+            editor.decorateUncoveredLines(file.path, file.uncoveredLines)
+         }
+      })
+   }
+}
+```
+
+#### Automated Team Communication
+
+```typescript
+// Slack bot posting intelligent summaries
+async function postTestSummary() {
+   const summary = await mcp.getResource('vitest://test-summary')
+   const coverage = await mcp.getResource('vitest://coverage-report')
+
+   const message = `
+🧪 **Daily Test Report**
+${summary}
+
+📊 **Coverage Highlights**
+• Files with perfect coverage: ${coverage.perfectFiles.length}
+• Files needing attention: ${coverage.lowCoverageFiles.length}
+• Overall project health: ${coverage.overallHealth}
+  `
+
+   slack.postMessage('#engineering', message)
+}
+```
+
+### Resource Architecture Benefits
+
+#### 1. Zero-Overhead Access
+
+```typescript
+// Resources serve cached data - no re-computation
+const results = await mcp.getResource('vitest://test-results')
+// ⚡ Instant response - data already computed and cached
+```
+
+#### 2. Multiple Content Formats
+
+```typescript
+// Same data, different formats for different consumers
+vitest://test-results      // JSON for automation
+vitest://test-summary      // Text for humans
+vitest://coverage-report   // Structured analysis for tools
+```
+
+#### 3. Intelligent Error Handling
+
+```typescript
+// Resources guide users to proper workflow
+if (!latestTestResults) {
+   throw new Error("No test results available. Run 'run-vitest' tool first.")
+}
+// Clear, actionable error messages
+```
+
+### Future Resource Possibilities
+
+Your MCP server could be extended with additional resources:
+
+#### Performance Analytics
+
+```typescript
+// vitest://performance-metrics
+{
+  "slowestTests": ["AppBar.test.tsx: 2.4s", "Navigation.test.tsx: 1.8s"],
+  "averageTestTime": "45ms",
+  "performanceRegression": false,
+  "memoryUsage": "peak: 128MB, average: 92MB"
+}
+```
+
+#### Historical Trends
+
+```typescript
+// vitest://test-history
+{
+  "lastWeek": [100, 98, 100, 97, 100, 100, 100],
+  "trend": "stable",
+  "regressions": [],
+  "coverageTrend": "improving"
+}
+```
+
+#### Code Quality Insights
+
+```typescript
+// vitest://quality-metrics
+{
+  "testCoverage": 85.2,
+  "testQuality": "high",
+  "flakyTests": [],
+  "codeComplexity": "moderate",
+  "technicalDebt": "low"
+}
+```
+
+### The Transformation
+
+Resources transform your MCP vitest runner from a **simple test executor** into a **comprehensive testing platform** that enables:
+
+- ✅ **Integration with any system** via standard protocols
+- ✅ **Data persistence** beyond individual tool executions
+- ✅ **Workflow automation** through programmatic access
+- ✅ **Multiple consumer support** with different data formats
+- ✅ **Team collaboration** with discoverable, shared APIs
+- ✅ **Ecosystem building** where tools can build on each other
+
+**Resources are what make MCP truly revolutionary** - they turn isolated tools into **connected, intelligent systems** that can work together seamlessly across your entire development ecosystem! 🚀
+
+---
+
 ## ⚙️ MCP Client Configuration
 
 ### Cursor MCP Settings

@@ -1,6 +1,6 @@
 # Tournado
 
-A modern tournament management system built with React Router v7.
+A modern tournament management system built with React Router v7, featuring advanced AI-assisted testing workflows with comprehensive MCP integration.
 
 ## Quick Start
 

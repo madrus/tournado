@@ -5,8 +5,21 @@
 The project uses a comprehensive testing strategy with multiple testing tools:
 
 - **Cypress**: End-to-end testing
-- **Vitest**: Unit testing
+- **Vitest**: Unit testing with AI-powered MCP integration
 - **Testing Library**: Component testing utilities
+- **MCP Vitest Server**: Advanced AI-assisted testing workflows
+
+### 🚀 AI-Powered Testing with MCP
+
+The project includes a sophisticated **Model Context Protocol (MCP) server** that enables AI-assisted testing workflows:
+
+- **3 Core Tools**: Execute tests, analyze coverage, and health checks
+- **3 Intelligent Resources**: Persistent test data, coverage reports, and summaries
+- **167 tests** across 12 test suites with comprehensive coverage analysis
+- **Smart project detection** - works from any directory
+- **Real-time integration** with AI development tools like Cursor
+
+[📖 **Detailed MCP Documentation**](vitest_mcp.md) - Complete guide to AI-assisted testing capabilities
 
 ## Running Tests
 

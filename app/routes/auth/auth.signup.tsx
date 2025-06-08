@@ -53,7 +53,7 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo = safeRedirect(formData.get('redirectTo'), undefined)
+  const redirectTo = safeRedirect(formData.get('redirectTo'), null)
   const firstName = formData.get('firstName')
   const lastName = formData.get('lastName')
 

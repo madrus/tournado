@@ -53,7 +53,7 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo = safeRedirect(formData.get('redirectTo'), undefined) // Default to undefined so we can handle it below
+  const redirectTo = safeRedirect(formData.get('redirectTo'), null) // Pass null so unsafe values return null
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {

@@ -12,7 +12,7 @@ type LoaderData = {
 }
 
 //! TODO: replace with generated type
-interface LoaderArgs {
+type LoaderArgs = {
   request: Request
 }
 

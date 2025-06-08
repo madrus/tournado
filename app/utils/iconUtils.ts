@@ -73,7 +73,7 @@ export const iconMap = {
 }
 
 // IconProps that match what our icon components actually accept
-export interface IconProps {
+export type IconProps = {
   className?: string
   size?: number
   variant?: IconVariant

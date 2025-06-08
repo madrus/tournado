@@ -2,7 +2,7 @@ import { JSX } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
-interface TrophyIconProps {
+type TrophyIconProps = {
   className?: string
   size?: number
   variant?: IconVariant

@@ -45,7 +45,7 @@ The routing system uses a clean two-step process:
 Automatically scans all route files and creates proper nested route configurations:
 
 ```typescript
-interface RouteEntry {
+type RouteEntry = {
    path: string
    file: string
    isLayout: boolean

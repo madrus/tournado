@@ -11,7 +11,7 @@ These rules ensure consistent coding style and standards across the project.
 
 ### 1. Use Types Instead of Interfaces
 
-**Rule:** Always use `type` declarations instead of `interface` declarations.
+**Rule:** Always use `type` declarations instead of `interface` declarations unless it is not possible for a reason. In that later case, inform me about the case and the reason.
 
 #### ✅ Correct
 ```typescript

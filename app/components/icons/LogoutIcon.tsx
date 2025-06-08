@@ -2,7 +2,7 @@ import { JSX } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
-interface LogoutIconProps {
+type LogoutIconProps = {
   className?: string
   size?: number
   weight?: IconWeight

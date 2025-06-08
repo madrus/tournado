@@ -16,11 +16,12 @@ import type { RouteMetadata } from '~/utils/route-types'
 import { createUserSession, getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
-interface LoaderArgs {
+//! TODO: replace with generated type
+type LoaderArgs = {
   request: Request
 }
 
-interface ActionArgs {
+type ActionArgs = {
   request: Request
 }
 

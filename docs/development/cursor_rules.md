@@ -76,7 +76,7 @@ Location: `.cursor/rules/08-coding-standards.mdc`
 
 Covers:
 
-- TypeScript conventions (types vs interfaces)
+- TypeScript conventions (prefer types over interfaces)
 - Dutch language capitalization rules
 - Implementation guidelines
 - Enforcement practices

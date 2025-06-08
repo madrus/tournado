@@ -7,12 +7,12 @@ import { startVitest } from 'vitest/node'
 import { existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 
-interface UncoveredLine {
+type UncoveredLine = {
   line: number
   column?: number
 }
 
-interface FileUncoveredLines {
+type FileUncoveredLines = {
   [filePath: string]: UncoveredLine[]
 }
 

@@ -1,4 +1,4 @@
-interface ValidationFunctions {
+type ValidationFunctions = {
   validateEmail: (email: string) => boolean
   validatePassword: (password: string) => boolean
   validateRequired: (value: string) => boolean

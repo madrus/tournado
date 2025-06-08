@@ -1,7 +1,7 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface Language {
+type Language = {
   code: string
   name: string
   flag: string

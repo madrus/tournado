@@ -155,7 +155,7 @@ The `UserMenu` component is a reusable dropdown/overlay menu that powers the App
 - Keyboard navigation support
 - Auto-close on navigation
 
-### Props Interface
+### Props Type
 
 ```typescript
 type MenuItemType = {

@@ -11,10 +11,9 @@ import type { RouteMetadata } from '~/utils/route-types'
 
 // import { Route } from './+types'
 
-interface LoaderArgs {
+//! TODO: replace with generated type
+type LoaderArgs = {
   request: Request
-  params: Record<string, string | undefined>
-  context?: unknown
 }
 
 // Route metadata - this will inherit from the parent route

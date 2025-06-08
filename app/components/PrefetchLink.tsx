@@ -9,19 +9,19 @@ import {
 } from '~/utils/prefetch-types'
 
 // Type definition for Network Information API
-interface NetworkInformation {
+type NetworkInformation = {
   effectiveType?: '2g' | '3g' | '4g' | 'slow-2g'
   saveData?: boolean
 }
 
-interface NavigatorWithConnection extends Navigator {
+type NavigatorWithConnection = Navigator & {
   connection?: NetworkInformation
 }
 
 /**
  * Enhanced Link component with intelligent prefetching
  */
-interface PrefetchLinkProps extends Omit<LinkProps, 'prefetch'> {
+type PrefetchLinkProps = Omit<LinkProps, 'prefetch'> & {
   /**
    * Context for determining prefetch strategy
    */
@@ -70,7 +70,7 @@ export function PrefetchLink({
 /**
  * Enhanced NavLink component with intelligent prefetching
  */
-interface PrefetchNavLinkProps extends Omit<NavLinkProps, 'prefetch'> {
+type PrefetchNavLinkProps = Omit<NavLinkProps, 'prefetch'> & {
   /**
    * Context for determining prefetch strategy
    */

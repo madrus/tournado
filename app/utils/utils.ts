@@ -6,28 +6,53 @@ import type { User } from '~/models/user.server'
 const DEFAULT_REDIRECT = '/'
 
 /**
+ * Converts FormData values to strings for redirect purposes.
+ * FormData can contain File objects, but redirects should only be strings.
+ */
+function toRedirectString(
+  value: FormDataEntryValue | string | null | undefined
+): string | null {
+  if (value == null) return null
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    return trimmed === '' ? null : trimmed
+  }
+  // FormDataEntryValue can be File, but redirects should only be strings
+  return null
+}
+
+/**
+ * Checks if a redirect path is safe (prevents open-redirect vulnerabilities)
+ */
+const isValidRedirectPath = (path: string): boolean =>
+  path.startsWith('/') && !path.startsWith('//')
+
+/**
  * This should be used any time the redirect path is user-provided
  * (Like the query string on our signin/signup pages). This avoids
  * open-redirect vulnerabilities.
- * @param {string} to The redirect destination
- * @param {string | null} [defaultRedirect='/'] The redirect to use if the `to`
- *   value is unsafe. Pass `null` to receive `null` for unsafe values.
+ * TODO: the two overloads can be omited later if no usage expects
+ *       only string or only null
  */
+export function safeRedirect(
+  to: FormDataEntryValue | string | null | undefined,
+  defaultRedirect: null
+): string | null
+export function safeRedirect(
+  to: FormDataEntryValue | string | null | undefined,
+  defaultRedirect?: string
+): string
 export function safeRedirect(
   to: FormDataEntryValue | string | null | undefined,
   defaultRedirect: string | null = DEFAULT_REDIRECT
 ): string | null {
-  const fallback = defaultRedirect
+  const redirectPath = toRedirectString(to)
 
-  if (!to || typeof to !== 'string' || to.trim() === '') {
-    return fallback
+  if (!redirectPath || !isValidRedirectPath(redirectPath)) {
+    return defaultRedirect
   }
 
-  if (!to.startsWith('/') || to.startsWith('//')) {
-    return fallback
-  }
-
-  return to
+  return redirectPath
 }
 
 /**

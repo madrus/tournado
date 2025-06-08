@@ -7,7 +7,7 @@ export type PrefetchStrategy = 'none' | 'intent' | 'render' | 'viewport'
 /**
  * Prefetch configuration for different types of navigation
  */
-export interface PrefetchConfig {
+export type PrefetchConfig = {
   /**
    * Strategy for primary navigation links (main menu, etc.)
    */

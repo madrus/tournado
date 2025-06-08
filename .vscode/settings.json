@@ -1,4 +1,5 @@
 {
+  // Workspace color theme
   "workbench.colorCustomizations": {
     "editorGroup.border": "#e204d5",
     "panel.border": "#e204d5",
@@ -12,5 +13,13 @@
     "statusBarItem.remoteForeground": "#e7e7e7",
     "tab.activeBorder": "#e204d5"
   },
-  "peacock.color": "#b003a6"
+  "peacock.color": "#b003a6",
+  // Auto-formatting and whitespace management
+  "editor.formatOnSave": true,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true
+  // Note: Agent/MCP confirmation settings need to be found in Cursor UI
+  // The exact setting names are not documented yet
 }

@@ -2,7 +2,7 @@ import { JSX } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
-interface HomeIconProps {
+type HomeIconProps = {
   className?: string
   size?: number
   variant?: IconVariant

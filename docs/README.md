@@ -10,6 +10,17 @@ Welcome to the Tournado documentation! This guide will help you understand and w
 - [Testing](testing.md) - Testing practices and guidelines
 - [Deployment](deployment.md) - Deployment procedures and environments
 
+## 🚀 Featured: Vitest MCP Server
+
+This project features a **production-ready MCP server** for AI-assisted testing:
+
+- **NPM Package**: `@madrus/vitest-mcp-server` - Available globally
+- **Status**: v1.0.5 - All tools working reliably
+- **Integration**: Seamless Cursor & Claude Desktop support
+- **Coverage**: 167 tests across 72 test suites with comprehensive coverage analysis
+
+[Learn more about the Vitest MCP Server →](testing/vitest_mcp.md)
+
 ## About Tournado
 
 Tournado is a tournament management application built with:

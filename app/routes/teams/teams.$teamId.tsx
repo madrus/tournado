@@ -37,22 +37,24 @@ type ContextType = {
 
 type TeamListItem = {
   id: string
+  clubName: string
   teamName: string
 }
 
 type LoaderData = {
-  team: Pick<TeamWithLeader, 'id' | 'teamName' | 'teamClass'>
+  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'teamClass'>
   teamListItems: Pick<
     {
       id: string
       teamLeaderId: string
       createdAt: Date
       updatedAt: Date
+      clubName: string
       teamName: string
       teamClass: string
       tournamentId: string
     },
-    'id' | 'teamName'
+    'id' | 'clubName' | 'teamName'
   >[]
 }
 
@@ -130,7 +132,7 @@ export default function TeamDetailsPage(): JSX.Element {
               }`
             }
           >
-            {teamItem.teamName}
+            {`${teamItem.clubName} ${teamItem.teamName}`}
           </ListItemNavLink>
         ))}
       </div>
@@ -140,7 +142,7 @@ export default function TeamDetailsPage(): JSX.Element {
   // Render team details in main content
   return (
     <>
-      <h3 className='text-2xl font-bold'>{team.teamName}</h3>
+      <h3 className='text-2xl font-bold'>{`${team.clubName} ${team.teamName}`}</h3>
       <p className='py-6'>{team.teamClass}</p>
       <hr className='my-4' />
       <Form method='post'>

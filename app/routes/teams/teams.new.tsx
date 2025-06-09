@@ -45,6 +45,7 @@ type ContextType = {
 
 type TeamListItem = {
   id: string
+  clubName: string
   teamName: string
 }
 
@@ -188,6 +189,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   const team = await createTeam({
+    clubName: clubName!,
     teamName: teamName!,
     teamClass: teamClass!,
     teamLeaderId: teamLeader.id,
@@ -235,7 +237,7 @@ export default function NewTeamPage(): JSX.Element {
               }`
             }
           >
-            {teamItem.teamName}
+            {`${teamItem.clubName} ${teamItem.teamName}`}
           </ListItemNavLink>
         ))}
       </div>

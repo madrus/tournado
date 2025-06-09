@@ -45,7 +45,7 @@ type LoaderData = {
   teamListItems: TeamListItem[]
 }
 
-type TeamListItem = Pick<Team, 'id' | 'teamName'>
+type TeamListItem = Pick<Team, 'id' | 'clubName' | 'teamName'>
 
 export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
   const teamListItems = await getAllTeamListItems()
@@ -80,7 +80,7 @@ export default function TeamsIndexPage(): JSX.Element {
               }`
             }
           >
-            {team.teamName}
+            {`${team.clubName} ${team.teamName}`}
           </ListItemNavLink>
         ))}
       </div>

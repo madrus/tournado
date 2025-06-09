@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "react-router build",
+    "prebuild": "prisma generate",
     "commit": "git add . && pnpm git-cz",
     "release": "standard-version",
     "push": "git push --follow-tags",
@@ -22,6 +23,7 @@
     "format-ci": "pretty-quick --staged",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "react-router typegen && tsc && tsc -p cypress",
+    "pretypecheck": "prisma generate",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "react-router-serve ./build/server/index.js",
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",
@@ -35,7 +37,7 @@
     "mcp:inspect": "npx @modelcontextprotocol/inspector node mcp-servers/vitest/dist/index.js",
     "prepare": "husky",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
-    "postinstall": "husky",
+    "postinstall": "husky && prisma generate",
     "validate": "npm-run-all2 --parallel test:run lint typecheck test:e2e:run",
     "prisma:test": "tsx test/prisma-test.ts"
   },

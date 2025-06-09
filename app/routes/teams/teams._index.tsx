@@ -1,15 +1,13 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { useLoaderData, useOutletContext } from 'react-router'
+import { useLoaderData, useNavigate } from 'react-router'
 
 import type { Team } from '@prisma/client'
 
-import { ActionLink, ListItemNavLink } from '~/components/PrefetchLink'
+import { TeamList } from '~/components/TeamList'
 import { getAllTeamListItems } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
-
-// import { Route } from './+types'
 
 //! TODO: replace with generated type
 type LoaderArgs = {
@@ -26,20 +24,16 @@ export const meta: MetaFunction = () => [
   {
     name: 'description',
     content:
-      'View and manage all your tournament teams. Create new teams, edit existing ones, and organize your tournament participants.',
+      'View all tournament teams. Browse teams participating in various tournaments and create new teams to join competitions.',
   },
   { property: 'og:title', content: 'Teams | Tournado' },
   {
     property: 'og:description',
     content:
-      'View and manage all your tournament teams. Create new teams, edit existing ones, and organize your tournament participants.',
+      'View all tournament teams. Browse teams participating in various tournaments and create new teams to join competitions.',
   },
   { property: 'og:type', content: 'website' },
 ]
-
-type ContextType = {
-  type: 'sidebar' | 'main'
-}
 
 type LoaderData = {
   teamListItems: TeamListItem[]
@@ -53,53 +47,42 @@ export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
   return { teamListItems }
 }
 
-export default function TeamsIndexPage(): JSX.Element {
+export default function PublicTeamsIndexPage(): JSX.Element {
   const { t } = useTranslation()
   const { teamListItems } = useLoaderData<LoaderData>()
-  const context = useOutletContext<ContextType>()
+  const navigate = useNavigate()
 
-  // Render in sidebar
-  if (context.type === 'sidebar') {
-    if (teamListItems.length === 0) {
-      return (
-        <div className='flex flex-col gap-2 p-4'>
-          <p className='text-center text-gray-500'>{t('teams.noTeams')}</p>
-        </div>
-      )
-    }
-
-    return (
-      <div className='flex flex-col gap-2 p-4'>
-        {teamListItems.map((team: TeamListItem) => (
-          <ListItemNavLink
-            key={team.id}
-            to={`/teams/${team.id}`}
-            className={({ isActive }) =>
-              `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
-                isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
-              }`
-            }
-          >
-            {`${team.clubName} ${team.teamName}`}
-          </ListItemNavLink>
-        ))}
-      </div>
-    )
+  const handleTeamClick = (teamId: string) => {
+    navigate(`/teams/${teamId}`)
   }
 
-  // Render in main content
   return (
-    <div className='flex h-full items-center justify-center'>
-      <p className='text-center text-gray-500'>
-        {t('teams.noTeamSelected')}{' '}
-        <ActionLink
-          to='new'
-          className='text-blue-500 underline'
-          aria-label={t('teams.createNewTeam')}
-        >
-          {t('teams.createNewTeam')}
-        </ActionLink>
-      </p>
+    <div className='space-y-6'>
+      {/* Teams Count */}
+      {teamListItems.length > 0 ? (
+        <div className='text-sm text-gray-600'>
+          {t('teams.count', { count: teamListItems.length })}
+        </div>
+      ) : null}
+
+      {/* Teams Grid */}
+      <TeamList
+        teams={teamListItems}
+        context='public'
+        onTeamClick={handleTeamClick}
+        emptyMessage={t('teams.noTeamsPublic')}
+        className='min-h-[200px]'
+      />
+
+      {/* Info Section */}
+      {teamListItems.length === 0 ? (
+        <div className='mt-8 rounded-lg bg-blue-50 p-6'>
+          <h3 className='text-lg font-medium text-blue-900'>
+            {t('teams.getStarted.title')}
+          </h3>
+          <p className='mt-2 text-blue-700'>{t('teams.getStarted.description')}</p>
+        </div>
+      ) : null}
     </div>
   )
 }

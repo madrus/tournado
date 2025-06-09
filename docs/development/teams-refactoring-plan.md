@@ -266,8 +266,8 @@ interface TeamListProps {
 - [x] **Phase 1.2** - Run migration ✅ All existing teams now have clubName 'sv DIO'
 - [x] **Phase 1.3** - Update team model functions ✅ Updated createTeam, getAllTeamListItems, getTeamListItems
 - [x] **Phase 1.4** - Fix team creation action ✅ Now saves clubName to database
-- [ ] **Phase 2.1** - Create Team Chip Component
-- [ ] **Phase 2.2** - Create Team List Component
+- [x] **Phase 2.1** - Create Team Chip Component ✅ Reusable chip with admin actions
+- [x] **Phase 2.2** - Create Team List Component ✅ Responsive grid layout
 
 ## Next Steps
 

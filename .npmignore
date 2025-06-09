@@ -1,0 +1,27 @@
+# Development and debugging files
+debug-test.js
+
+# Source files (we only want dist/)
+src/
+tsconfig.json
+
+# Development dependencies
+.eslintrc.*
+.prettierrc
+.prettierignore
+
+# Git and CI
+.git/
+.github/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp

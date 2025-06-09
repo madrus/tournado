@@ -23,7 +23,7 @@
     "format-ci": "pretty-quick --staged",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "react-router typegen && tsc && tsc -p cypress",
-    "pretypecheck": "prisma generate",
+    "pretypecheck": "rm -rf node_modules/.prisma && prisma generate",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "react-router-serve ./build/server/index.js",
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",

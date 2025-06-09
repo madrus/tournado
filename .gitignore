@@ -2,6 +2,7 @@
 .env
 .prisma
 .react-router
+**/.DS_Store
 /cypress/screenshots
 /cypress/videos
 /prisma/data.db

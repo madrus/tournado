@@ -90,10 +90,6 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
-      - uses: ./.github/actions/prisma-generate
-        with:
-          database_url: "file:./prisma/data.db"
-
       - name: 🔎 Type check
         run: pnpm typecheck
 
@@ -133,6 +129,9 @@ jobs:
 
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
+
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
 
       - name: ⚡ Run vitest
         run: pnpm test:run -- --coverage
@@ -202,8 +201,10 @@ jobs:
           # Ensure Prisma client is generated before migration
           pnpm exec prisma generate
           pnpm exec prisma migrate reset --force
-          # Wait a moment for the client to be fully ready
-          sleep 2
+          # Generate client again after database reset to ensure it's fresh
+          pnpm exec prisma generate
+          # Wait for the client to be fully ready
+          sleep 3
 
       - name: ⚙️ Build
         run: pnpm build

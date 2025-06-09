@@ -8,13 +8,11 @@ import {
   redirect,
   useActionData,
   useLoaderData,
-  useOutletContext,
 } from 'react-router'
 
 import { InputField } from '~/components/InputField'
-import { ListItemNavLink } from '~/components/PrefetchLink'
 import { prisma } from '~/db.server'
-import { createTeam, getAllTeamListItems } from '~/models/team.server'
+import { createTeam } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -39,16 +37,6 @@ export const handle: RouteMetadata = {
   title: 'common.titles.addTeam',
 }
 
-type ContextType = {
-  type: 'sidebar' | 'main'
-}
-
-type TeamListItem = {
-  id: string
-  clubName: string
-  teamName: string
-}
-
 type ActionData = {
   errors?: {
     tournamentId?: string
@@ -65,7 +53,6 @@ type ActionData = {
 }
 
 type LoaderData = {
-  teamListItems: TeamListItem[]
   tournaments: Array<{
     id: string
     name: string
@@ -78,8 +65,6 @@ type LoaderData = {
 export const loader = async ({
   request: _,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  const teamListItems = await getAllTeamListItems()
-
   // Fetch available tournaments
   const tournaments = await prisma.tournament.findMany({
     select: {
@@ -93,7 +78,6 @@ export const loader = async ({
   })
 
   return {
-    teamListItems,
     tournaments: tournaments.map(t => ({
       ...t,
       startDate: t.startDate.toISOString(),
@@ -188,7 +172,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const team = await createTeam({
+  const _team = await createTeam({
     clubName: clubName!,
     teamName: teamName!,
     teamClass: teamClass!,
@@ -196,14 +180,13 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     tournamentId: tournamentId!,
   })
 
-  return redirect(`/teams/${team.id}`)
+  return redirect('/teams')
 }
 
 export default function NewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<ActionData>()
-  const { teamListItems, tournaments } = useLoaderData<typeof loader>()
-  const context = useOutletContext<ContextType>()
+  const { tournaments } = useLoaderData<typeof loader>()
   const teamNameRef = useRef<HTMLInputElement>(null)
   const teamClassRef = useRef<HTMLInputElement>(null)
 
@@ -215,44 +198,14 @@ export default function NewTeamPage(): JSX.Element {
     }
   }, [actionData])
 
-  // Render team list in sidebar
-  if (context.type === 'sidebar') {
-    if (teamListItems.length === 0) {
-      return (
-        <div className='flex flex-col gap-2 p-4'>
-          <p className='text-center text-gray-500'>{t('teams.noTeams')}</p>
-        </div>
-      )
-    }
-
-    return (
-      <div className='flex flex-col gap-2 p-4'>
-        {teamListItems.map((teamItem: TeamListItem) => (
-          <ListItemNavLink
-            key={teamItem.id}
-            to={`/teams/${teamItem.id}`}
-            className={({ isActive }: { isActive: boolean }) =>
-              `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
-                isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
-              }`
-            }
-          >
-            {`${teamItem.clubName} ${teamItem.teamName}`}
-          </ListItemNavLink>
-        ))}
-      </div>
-    )
-  }
-
-  // Render form in main content
   return (
-    <div className='min-h-full'>
-      <Form method='post' className='pb-safe max-w-6xl space-y-6 pb-8'>
+    <div className='max-w-4xl'>
+      <Form method='post' className='space-y-8'>
         {/* Responsive Panels Container */}
-        <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           {/* Team Information Panel */}
-          <div className='rounded-lg bg-gray-50 p-4'>
-            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <h3 className='mb-6 text-lg font-semibold text-gray-900'>
               {t('teams.form.teamInfo')}
             </h3>
 
@@ -325,12 +278,13 @@ export default function NewTeamPage(): JSX.Element {
                   ? t('teams.form.teamClassRequired')
                   : undefined
               }
+              className='mb-4'
             />
           </div>
 
           {/* Team Leader Information Panel */}
-          <div className='rounded-lg bg-gray-50 p-4'>
-            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <h3 className='mb-6 text-lg font-semibold text-gray-900'>
               {t('teams.form.teamLeaderInfo')}
             </h3>
 
@@ -351,8 +305,8 @@ export default function NewTeamPage(): JSX.Element {
             {/* Team Leader Phone */}
             <InputField
               name='teamLeaderPhone'
-              type='tel'
               label={t('teams.form.teamLeaderPhone')}
+              type='tel'
               readOnly={false}
               required
               error={
@@ -366,53 +320,53 @@ export default function NewTeamPage(): JSX.Element {
             {/* Team Leader Email */}
             <InputField
               name='teamLeaderEmail'
-              type='email'
               label={t('teams.form.teamLeaderEmail')}
+              type='email'
               readOnly={false}
               required
               error={
                 actionData?.errors?.teamLeaderEmail
-                  ? t(
-                      actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
-                        ? 'teams.form.teamLeaderEmailInvalid'
-                        : 'teams.form.teamLeaderEmailRequired'
-                    )
+                  ? actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
+                    ? t('teams.form.teamLeaderEmailInvalid')
+                    : t('teams.form.teamLeaderEmailRequired')
                   : undefined
               }
+              className='mb-4'
             />
           </div>
         </div>
 
         {/* Privacy Agreement */}
-        <div className='pl-4'>
-          <label className='flex items-start gap-3'>
+        <div className='rounded-lg bg-gray-50 p-6'>
+          <div className='flex items-start gap-3'>
             <input
-              name='privacyAgreement'
               type='checkbox'
-              className='mt-1 h-4 w-4 rounded border-emerald-700/30 bg-white'
+              name='privacyAgreement'
+              id='privacyAgreement'
+              className='mt-1 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500'
               aria-invalid={actionData?.errors?.privacyAgreement ? true : undefined}
               aria-errormessage={
-                actionData?.errors?.privacyAgreement
-                  ? 'privacyAgreement-error'
-                  : undefined
+                actionData?.errors?.privacyAgreement ? 'privacy-error' : undefined
               }
             />
-            <span className='text-sm'>{t('teams.form.privacyAgreement')}</span>
-          </label>
+            <label htmlFor='privacyAgreement' className='text-sm text-gray-700'>
+              {t('teams.form.privacyAgreement')}
+            </label>
+          </div>
           {actionData?.errors?.privacyAgreement ? (
-            <div className='pt-1 text-red-700' id='privacyAgreement-error'>
+            <div className='mt-2 text-red-700' id='privacy-error'>
               {t('teams.form.privacyAgreementRequired')}
             </div>
           ) : null}
         </div>
 
-        {/* Submit Button with Mobile-Friendly Layout */}
-        <div className='pb-8 pl-4'>
+        {/* Submit Button */}
+        <div className='flex justify-end'>
           <button
             type='submit'
-            className='w-full rounded-lg bg-amber-500 px-6 py-3 font-medium text-white hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none md:w-auto'
+            className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
           >
-            {t('teams.save')}
+            {t('teams.form.createTeam')}
           </button>
         </div>
       </Form>

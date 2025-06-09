@@ -12,6 +12,7 @@ type RouteMap = {
   [routePath: string]: {
     file: string
     isLayout?: boolean
+    parentPath?: string
   }
 }
 
@@ -38,6 +39,7 @@ export function scanFlatRoutes(): RouteEntry[] {
 
     let routePath = ''
     let isLayout = false
+    let parentPath: string | undefined
 
     // Handle root level files
     if (dirName === '.') {
@@ -58,19 +60,31 @@ export function scanFlatRoutes(): RouteEntry[] {
         routePath = '/' + fileName
       }
     } else {
-      // Handle files in subdirectories with flat naming
-      if (fileName.includes('.')) {
+      // Handle files in subdirectories
+      const dirSegments = dirName.split(path.sep)
+      const isLayoutFile = fileName === dirSegments[dirSegments.length - 1]
+
+      if (isLayoutFile) {
+        // This is a layout file: teams/teams.tsx -> /teams (layout)
+        // or a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx -> /a7k9m2x5p8w1n4q6r3y8b5t1/teams (layout)
+        routePath = '/' + dirSegments.join('/')
+        isLayout = true
+
+        // If this is nested (e.g., a7k9m2x5p8w1n4q6r3y8b5t1/teams), set parent
+        if (dirSegments.length > 1) {
+          parentPath = '/' + dirSegments.slice(0, -1).join('/')
+        }
+      } else if (fileName.includes('.')) {
+        // Handle flat route naming in subdirectories: teams.new.tsx -> teams/new
         const segments = fileName.split('.')
         const baseSegment = segments[0]
+        const parentDirPath = '/' + dirName.replace(/\//g, '/')
 
-        // Check if this is a layout file (e.g., teams.tsx where fileName="teams" has no dots)
-        // Layout files don't have additional dots beyond the base name
         if (fileName === baseSegment) {
-          routePath = '/' + baseSegment
-          isLayout = true
+          // This shouldn't happen with the layout check above, but just in case
+          routePath = parentDirPath + '/' + baseSegment
         } else {
           // This is a child route
-          const parentPath = '/' + baseSegment
           const childPath = segments
             .slice(1)
             .join('/')
@@ -78,27 +92,23 @@ export function scanFlatRoutes(): RouteEntry[] {
 
           // Special handling for _index
           if (childPath === '_index') {
-            routePath = parentPath + '::index' // Use special marker for index routes
+            routePath = parentDirPath + '::index' // Use special marker for index routes
+            parentPath = parentDirPath
           } else {
-            routePath = parentPath + '::' + childPath
+            routePath = parentDirPath + '::' + childPath
+            parentPath = parentDirPath
           }
         }
       } else {
-        // Files without dots in subdirectories
-        if (dirName === fileName) {
-          // This is a layout file: teams/teams.tsx -> /teams (layout)
-          routePath = '/' + fileName
-          isLayout = true
-        } else {
-          // Simple file in subdirectory: resources/somefile -> /resources/somefile
-          routePath = '/' + dirName + '/' + fileName
-        }
+        // Simple file in subdirectory: resources/somefile -> /resources/somefile
+        routePath = '/' + dirName + '/' + fileName
       }
     }
 
     routeMap[routePath] = {
       file: `routes/${file}`,
       isLayout,
+      parentPath,
     }
   })
 
@@ -113,13 +123,27 @@ function buildNestedRoutes(routeMap: RouteMap): RouteEntry[] {
   // First pass: create layout routes
   Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
     if (routeInfo.isLayout) {
+      // Calculate the relative path for nested layouts
+      let finalPath = routePath
+      if (routeInfo.parentPath) {
+        // Make the path relative to the parent
+        finalPath = routePath.replace(routeInfo.parentPath, '').replace(/^\//, '')
+      }
+
       const route: RouteEntry = {
-        path: routePath,
+        path: finalPath,
         file: routeInfo.file,
         children: [],
       }
       layoutRoutes[routePath] = route
-      routes.push(route)
+
+      // If this layout has a parent, add it as a child of the parent
+      if (routeInfo.parentPath && layoutRoutes[routeInfo.parentPath]) {
+        layoutRoutes[routeInfo.parentPath].children!.push(route)
+      } else if (!routeInfo.parentPath) {
+        // Top-level layout
+        routes.push(route)
+      }
     } else if (!routePath.includes('::')) {
       // Regular non-nested routes
       routes.push({
@@ -154,6 +178,21 @@ function buildNestedRoutes(routeMap: RouteMap): RouteEntry[] {
           path: fallbackParentPath + '/' + fallbackChildPath,
           file: routeInfo.file,
         })
+      }
+    }
+  })
+
+  // Third pass: handle orphaned layout routes (layouts that weren't added to parents)
+  Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
+    if (
+      routeInfo.isLayout &&
+      routeInfo.parentPath &&
+      !layoutRoutes[routeInfo.parentPath]
+    ) {
+      // Parent doesn't exist as a layout, add this as a top-level route
+      const existingRoute = layoutRoutes[routePath]
+      if (existingRoute && !routes.includes(existingRoute)) {
+        routes.push(existingRoute)
       }
     }
   })

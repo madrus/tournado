@@ -38,6 +38,8 @@
   "common": {
     "appName": "Tournado",
     "backToHome": "Back to home",
+    "cancel": "Cancel",
+    "error": "Error",
     "guest": "Guest",
     "language": "Language",
     "loading": "Loading...",
@@ -54,7 +56,27 @@
       "teams": "Teams",
       "welcome": "Welcome"
     },
+    "unknownError": "An unknown error occurred",
     "welcome": "Welcome"
+  },
+  "admin": {
+    "teams": {
+      "addTeam": "Add Team",
+      "allTeams": "All Teams",
+      "allTeamsDescription": "Manage all teams in the system. Click on a team to edit details or delete it.",
+      "confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
+      "createTeam": "Create Team",
+      "createTeamDescription": "Add a new team to the system with all necessary details.",
+      "deleteTeam": "Delete Team",
+      "description": "Manage all teams across all tournaments. View, edit, or delete team information.",
+      "editTeam": "Edit Team Details",
+      "noTeams": "No teams have been created yet. Start by adding a new team.",
+      "saveChanges": "Save Changes",
+      "teamNotFound": "Team Not Found",
+      "teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
+      "title": "Teams Management",
+      "totalTeams": "Total Teams"
+    }
   },
   "errors": {
     "errorTitle": "Application Error",

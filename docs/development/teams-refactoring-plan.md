@@ -268,6 +268,7 @@ interface TeamListProps {
 - [x] **Phase 1.4** - Fix team creation action ✅ Now saves clubName to database
 - [x] **Phase 2.1** - Create Team Chip Component ✅ Reusable chip with admin actions
 - [x] **Phase 2.2** - Create Team List Component ✅ Responsive grid layout
+- [x] **Phase 3.1** - Public Teams Route ✅ New layout and chip display created
 
 ## Next Steps
 

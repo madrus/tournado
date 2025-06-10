@@ -165,6 +165,7 @@ export async function action({ params, request }: ActionArgs): Promise<Response>
     // Update team
     await prisma.team.update({
       where: { id: params.teamId },
+      // eslint-disable-next-line id-blacklist
       data: {
         clubName: clubName!,
         teamName: teamName!,

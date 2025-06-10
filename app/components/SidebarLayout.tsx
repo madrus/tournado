@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { type JSX, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router'

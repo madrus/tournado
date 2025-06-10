@@ -75,3 +75,60 @@ export type TeamFormData = {
   teamLeaderEmail: Email
   privacyAgreement: boolean
 }
+
+// ============================================================================
+// Route Types - Shared across team routes
+// ============================================================================
+
+/**
+ * Tournament data structure used in loaders
+ */
+export type TournamentData = {
+  id: string
+  name: string
+  location: string
+  startDate: string
+  endDate: string | null
+}
+
+/**
+ * Loader data for team creation routes (both public and admin)
+ */
+export type TeamCreateLoaderData = {
+  tournaments: Array<TournamentData>
+}
+
+/**
+ * Action data for team creation routes (both public and admin)
+ */
+export type TeamCreateActionData = {
+  success?: boolean
+  team?: {
+    id: string
+    teamName: string
+    teamClass: string
+  }
+  errors?: {
+    tournamentId?: string
+    clubName?: string
+    teamName?: string
+    teamClass?: string
+    teamLeaderName?: string
+    teamLeaderPhone?: string
+    teamLeaderEmail?: string
+    privacyAgreement?: string
+    teamLeader?: string
+    tournament?: string
+  }
+}
+
+/**
+ * Action data for team edit routes (admin only)
+ */
+export type TeamEditActionData = {
+  errors?: {
+    clubName?: string
+    teamName?: string
+    teamClass?: string
+  }
+}

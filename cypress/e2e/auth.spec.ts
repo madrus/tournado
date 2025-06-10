@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 describe('Authentication', () => {
   beforeEach(() => {
     cy.viewport('iphone-x')
-    // Force test language for tests
+    // Set language without reload for better performance
     cy.window().then(win => {
       console.log('Before setting language:', {
         currentLanguage: win.localStorage.getItem('i18nextLng'),
@@ -11,8 +11,6 @@ describe('Authentication', () => {
       })
 
       win.localStorage.setItem('i18nextLng', 'test')
-      // Reload the page to ensure language change takes effect
-      win.location.reload()
     })
   })
 
@@ -24,7 +22,8 @@ describe('Authentication', () => {
       })
     })
 
-    cy.cleanupUser({ failOnNonZeroExit: false })
+    // Only clear session for better performance
+    cy.cleanupUser()
   })
 
   it('should redirect to homepage after successful authentication without redirectTo', () => {

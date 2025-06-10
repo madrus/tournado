@@ -3,15 +3,15 @@ import { faker } from '@faker-js/faker'
 describe('Navigation', () => {
   beforeEach(() => {
     cy.viewport('iphone-x')
-    // Force test language for tests
+    // Set language without reload for better performance
     cy.window().then(win => {
       win.localStorage.setItem('i18nextLng', 'test')
-      win.location.reload()
     })
   })
 
   afterEach(() => {
-    cy.cleanupUser({ failOnNonZeroExit: false })
+    // Only clear session for better performance
+    cy.cleanupUser()
   })
 
   describe('Bottom Navigation', () => {

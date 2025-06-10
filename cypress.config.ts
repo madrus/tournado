@@ -19,10 +19,12 @@ export default defineConfig({
       const port = process.env.PORT ?? (isDev ? '3000' : '8811')
       const configOverrides: Partial<Cypress.PluginConfigOptions> = {
         baseUrl: `http://localhost:${port}`,
-        screenshotOnRunFailure: !process.env.CI,
-        // Add longer timeout for CI environments
-        defaultCommandTimeout: process.env.CI ? 10000 : 4000,
-        pageLoadTimeout: process.env.CI ? 30000 : 15000,
+        // Reduce timeouts for faster local development
+        defaultCommandTimeout: process.env.CI ? 10000 : 3000,
+        pageLoadTimeout: process.env.CI ? 30000 : 10000,
+        // Add performance optimizations
+        video: false, // Disable video recording for faster tests
+        screenshotOnRunFailure: process.env.CI ? true : false, // Only enable screenshots in CI
       }
 
       // To use this:

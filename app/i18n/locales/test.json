@@ -101,6 +101,7 @@
     "addTeam": "add team",
     "createNewTeam": "create new team",
     "delete": "delete",
+    "description": "register your team(s) for one or more tournaments",
     "errors": {
       "notFound": "team not found",
       "unexpectedError": "unexpected error",
@@ -109,6 +110,8 @@
     "form": {
       "clubName": "club name",
       "clubNameRequired": "club name is required",
+      "createTeam": "save",
+      "createAnotherTeam": "create another team",
       "privacyAgreement": "i agree to the privacy policy and terms of service",
       "privacyAgreementRequired": "you must agree to the privacy policy",
       "registrationDescription": "register your team for a tournament. please fill out all required fields below.",

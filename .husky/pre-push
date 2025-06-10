@@ -1,2 +1,2 @@
-pnpm test:run
+pnpm test
 pnpm test:e2e:run

@@ -134,7 +134,7 @@ jobs:
         run: pnpm exec prisma generate
 
       - name: ⚡ Run vitest
-        run: pnpm test:run -- --coverage
+        run: pnpm test:coverage
 
   cypress:
     name: ⚫️ Cypress

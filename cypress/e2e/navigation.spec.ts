@@ -35,9 +35,7 @@ describe('Navigation', () => {
 
       // Should navigate to teams page
       cy.url().should('include', '/teams')
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
-        'exist'
-      )
+      cy.findByRole('link', { name: /add team/i }).should('exist')
 
       // Test navigation back to home using different strategies
       cy.findByRole('navigation', { name: /bottom navigation/i }).within(() => {
@@ -159,9 +157,7 @@ describe('Navigation', () => {
       cy.findByRole('link', { name: /view teams/i }).click()
 
       cy.url().should('include', '/teams')
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
-        'exist'
-      )
+      cy.findByRole('link', { name: /add team/i }).should('exist')
     })
   })
 

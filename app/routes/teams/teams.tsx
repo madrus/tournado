@@ -19,8 +19,7 @@ export default function PublicTeamsLayout(): JSX.Element {
         <div className='mb-8'>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <h1 className='text-3xl font-bold text-gray-900'>{t('teams.title')}</h1>
-              <p className='mt-2 text-gray-600'>{t('teams.description')}</p>
+              <p className='text-lg text-gray-600'>{t('teams.description')}</p>
             </div>
 
             {/* Add Team Button */}
@@ -50,22 +49,6 @@ export default function PublicTeamsLayout(): JSX.Element {
         {/* Main Content */}
         <Outlet />
       </div>
-
-      {/* Mobile Floating Action Button */}
-      <Link
-        to='new'
-        className='fixed right-4 bottom-4 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg hover:bg-red-700 sm:hidden'
-        aria-label={t('teams.addTeam')}
-      >
-        <svg className='h-6 w-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M12 6v6m0 0v6m0-6h6m-6 0H6'
-          />
-        </svg>
-      </Link>
     </div>
   )
 }

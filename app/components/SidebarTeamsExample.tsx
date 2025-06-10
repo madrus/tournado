@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

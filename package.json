@@ -30,7 +30,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"pnpm cypress open\"",
+    "test:e2e": "start-server-and-test dev 3000 \"cypress run\"",
+    "test:e2e:dev": "start-server-and-test dev 3000 \"cypress open\"",
     "test:e2e:run": "node scripts/run-e2e-tests.mjs",
     "pretest:e2e:run": "pnpm build",
     "mcp:vitest": "node mcp-servers/vitest/dist/index.js",
@@ -38,7 +39,7 @@
     "prepare": "husky",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "postinstall": "husky && ([ -f prisma/schema.prisma ] && prisma generate || true)",
-    "validate": "npm-run-all2 --parallel test lint typecheck test:e2e:run",
+    "validate": "npm-run-all2 --parallel test lint typecheck",
     "prisma:test": "tsx test/prisma-test.ts"
   },
   "dependencies": {

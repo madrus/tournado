@@ -3,15 +3,15 @@ import { faker } from '@faker-js/faker'
 describe('Teams Management', () => {
   beforeEach(() => {
     cy.viewport('iphone-x')
-    // Force test language for tests
+    // Set language without reload for better performance
     cy.window().then(win => {
       win.localStorage.setItem('i18nextLng', 'test')
-      win.location.reload()
     })
   })
 
   afterEach(() => {
-    cy.cleanupUser({ failOnNonZeroExit: false })
+    // Only clear session for better performance
+    cy.cleanupUser()
   })
 
   describe('Team Creation', () => {
@@ -93,9 +93,9 @@ describe('Teams Management', () => {
       cy.visit('/teams')
       cy.contains(testTeam.teamName).should('exist')
 
-      // Click on the team should show team details
-      cy.contains(testTeam.teamName).click()
-      cy.url().should('include', '/teams/')
+      // Click on the team link should show team details
+      cy.get('a').contains(testTeam.teamName).click()
+      cy.url().should('match', /\/teams\/[a-zA-Z0-9]+/)
       cy.contains(testTeam.teamClass).should('exist')
 
       // In the public area, teams are view-only (no delete button)
@@ -184,9 +184,9 @@ describe('Teams Management', () => {
       cy.visit('/teams')
       cy.contains(testTeam.teamName).should('exist')
 
-      // Click on the team should show team details
-      cy.contains(testTeam.teamName).click()
-      cy.url().should('include', '/teams/')
+      // Click on the team link should show team details
+      cy.get('a').contains(testTeam.teamName).click()
+      cy.url().should('match', /\/teams\/[a-zA-Z0-9]+/)
       cy.contains(testTeam.teamClass).should('exist')
 
       // In the public area, teams are view-only (no delete button)
@@ -343,9 +343,9 @@ describe('Teams Management', () => {
       // Should see the team in the grid
       cy.contains(testTeam.teamName).should('exist')
 
-      // Click on the team should show team details
-      cy.contains(testTeam.teamName).click()
-      cy.url().should('include', '/teams/')
+      // Click on the team link should show team details
+      cy.get('a').contains(testTeam.teamName).click()
+      cy.url().should('match', /\/teams\/[a-zA-Z0-9]+/)
       cy.contains(testTeam.teamClass).should('exist')
     })
   })

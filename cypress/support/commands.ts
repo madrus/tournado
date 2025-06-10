@@ -4,7 +4,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       /**
-       * Logs in with a random user. Yields the user and adds an alias to the user
+       * Logs in with a user. Creates user if needed for better test isolation
        *
        * @returns {typeof signin}
        * @memberof Chainable
@@ -16,16 +16,12 @@ declare global {
       signin: typeof signin
 
       /**
-       * Deletes the current @user
+       * Clears the current session
        *
        * @returns {typeof cleanupUser}
        * @memberof Chainable
        * @example
        *    cy.cleanupUser()
-       * @example
-       *    cy.cleanupUser({ email: 'whatever@example.com' })
-       * @example
-       *    cy.cleanupUser({ failOnNonZeroExit: false })
        */
       cleanupUser: typeof cleanupUser
 
@@ -97,36 +93,13 @@ function signin({
   return cy.get('@user')
 }
 
-function cleanupUser({
-  email,
-  failOnNonZeroExit,
-}: { email?: string; failOnNonZeroExit?: boolean } = {}) {
-  if (email) {
-    deleteUserByEmail(email, failOnNonZeroExit)
-  } else {
-    cy.get('@user').then(user => {
-      const email = (user as { email?: string }).email
-      if (email) {
-        deleteUserByEmail(email, failOnNonZeroExit)
-      }
-    })
-  }
+function cleanupUser() {
+  // Only clear the session for performance
   cy.clearCookie('__session')
 }
 
-function deleteUserByEmail(email: string, failOnNonZeroExit = true) {
-  cy.exec(`pnpm exec tsx ./cypress/support/delete-user.ts "${email}"`, {
-    failOnNonZeroExit,
-  })
-  cy.clearCookie('__session')
-}
-
-// We're waiting a second because of this issue happen randomly
-// https://github.com/cypress-io/cypress/issues/7306
-// Also added custom types to avoid getting detached
-// https://github.com/cypress-io/cypress/issues/7306#issuecomment-1152752612
-// ===========================================================
-function visitAndCheck(url: string, waitTime = 1000) {
+// Reduce default wait time for better performance
+function visitAndCheck(url: string, waitTime = 500) {
   cy.visit(url)
   cy.location('pathname').should('contain', url).wait(waitTime)
 }

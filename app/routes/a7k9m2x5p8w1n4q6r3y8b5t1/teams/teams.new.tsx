@@ -1,17 +1,19 @@
-import { JSX, useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import type { MetaFunction } from 'react-router'
-import { Form, redirect, useActionData } from 'react-router'
+import { JSX } from 'react'
+import {
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from 'react-router'
 
-import { InputField } from '~/components/InputField'
+import { TeamForm } from '~/components/TeamForm'
+import { prisma } from '~/db.server'
+import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { createTeam } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
-
-// Temporary types until auto-generation is complete
-export type ActionArgs = {
-  request: Request
-}
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {
@@ -44,23 +46,53 @@ export const meta: MetaFunction = () => [
   { property: 'og:type', content: 'website' },
 ]
 
-type ActionData = {
-  errors?: {
-    clubName?: string
-    teamName?: string
-    teamClass?: string
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<TeamCreateLoaderData> => {
+  await requireUserWithMetadata(request, handle)
+
+  // Fetch available tournaments
+  const tournaments = await prisma.tournament.findMany({
+    select: {
+      id: true,
+      name: true,
+      location: true,
+      startDate: true,
+      endDate: true,
+    },
+    orderBy: { startDate: 'asc' },
+  })
+
+  return {
+    tournaments: tournaments.map(t => ({
+      ...t,
+      startDate: t.startDate.toISOString(),
+      endDate: t.endDate?.toISOString() || null,
+    })),
   }
 }
 
-export async function action({ request }: ActionArgs): Promise<Response> {
-  const user = await requireUserWithMetadata(request, handle)
+export async function action({ request }: ActionFunctionArgs): Promise<Response> {
+  await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()
+
+  // Extract all form fields with proper typing
+  const tournamentId = formData.get('tournamentId') as string | null
   const clubName = formData.get('clubName') as string | null
   const teamName = formData.get('teamName') as string | null
   const teamClass = formData.get('teamClass') as string | null
+  const teamLeaderName = formData.get('teamLeaderName') as string | null
+  const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
+  const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
+  const privacyAgreement = formData.get('privacyAgreement') as string | null
 
-  const errors: ActionData['errors'] = {}
+  const errors: TeamCreateActionData['errors'] = {}
+
+  // Validate required fields
+  if (!tournamentId || tournamentId.length === 0) {
+    errors.tournamentId = 'tournamentRequired'
+  }
 
   if (!clubName || clubName.length === 0) {
     errors.clubName = 'clubNameRequired'
@@ -74,114 +106,86 @@ export async function action({ request }: ActionArgs): Promise<Response> {
     errors.teamClass = 'teamClassRequired'
   }
 
+  if (!teamLeaderName || teamLeaderName.length === 0) {
+    errors.teamLeaderName = 'teamLeaderNameRequired'
+  }
+
+  if (!teamLeaderPhone || teamLeaderPhone.length === 0) {
+    errors.teamLeaderPhone = 'teamLeaderPhoneRequired'
+  }
+
+  if (!teamLeaderEmail || teamLeaderEmail.length === 0) {
+    errors.teamLeaderEmail = 'teamLeaderEmailRequired'
+  } else if (!teamLeaderEmail.includes('@')) {
+    errors.teamLeaderEmail = 'teamLeaderEmailInvalid'
+  }
+
+  if (privacyAgreement !== 'on') {
+    errors.privacyAgreement = 'privacyAgreementRequired'
+  }
+
   if (Object.keys(errors).length > 0) {
     return Response.json({ errors }, { status: 400 })
   }
 
-  const _team = await createTeam({
+  // Find or create team leader
+  let teamLeader = await prisma.teamLeader.findUnique({
+    where: { email: teamLeaderEmail! },
+  })
+
+  if (!teamLeader) {
+    const [firstName, ...lastNameParts] = teamLeaderName!.split(' ')
+    const lastName = lastNameParts.join(' ') || ''
+
+    teamLeader = await prisma.teamLeader.create({
+      // eslint-disable-next-line id-blacklist
+      data: {
+        firstName,
+        lastName,
+        email: teamLeaderEmail!,
+        phone: teamLeaderPhone!,
+      },
+    })
+  }
+
+  // Verify tournament exists
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId! },
+  })
+
+  if (!tournament) {
+    return Response.json(
+      { errors: { tournament: 'tournamentNotFound' } },
+      { status: 404 }
+    )
+  }
+
+  const team = await createTeam({
     clubName: clubName!,
     teamName: teamName!,
     teamClass: teamClass!,
-    teamLeaderId: user.id,
-    tournamentId: 'clunhswla0000tfq0a07gg1jd', // Default tournament for now
+    teamLeaderId: teamLeader.id,
+    tournamentId: tournamentId!,
   })
 
-  return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams`)
+  return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)
 }
 
 export default function AdminNewTeamPage(): JSX.Element {
-  const { t } = useTranslation()
-  const actionData = useActionData<ActionData>()
-  const clubNameRef = useRef<HTMLInputElement>(null)
-  const teamNameRef = useRef<HTMLInputElement>(null)
-  const teamClassRef = useRef<HTMLInputElement>(null)
+  const actionData = useActionData<TeamCreateActionData>()
+  const { tournaments } = useLoaderData<typeof loader>()
 
-  useEffect(() => {
-    if (actionData?.errors?.clubName) {
-      clubNameRef.current?.focus()
-    } else if (actionData?.errors?.teamName) {
-      teamNameRef.current?.focus()
-    } else if (actionData?.errors?.teamClass) {
-      teamClassRef.current?.focus()
-    }
-  }, [actionData])
+  const handleCancel = () => {
+    window.history.back()
+  }
 
   return (
-    <div className='max-w-4xl space-y-8'>
-      {/* Header */}
-      <div className='border-b border-gray-200 pb-6'>
-        <h3 className='text-xl font-bold text-gray-900'>
-          {t('admin.teams.createTeam')}
-        </h3>
-        <p className='mt-1 text-gray-600'>{t('admin.teams.createTeamDescription')}</p>
-      </div>
-
-      {/* Form */}
-      <Form method='post' className='space-y-8'>
-        <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
-            {/* Club Name */}
-            <InputField
-              ref={clubNameRef}
-              name='clubName'
-              label={t('teams.form.clubName')}
-              defaultValue='sv DIO'
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.clubName
-                  ? t('teams.form.clubNameRequired')
-                  : undefined
-              }
-            />
-
-            {/* Team Name */}
-            <InputField
-              ref={teamNameRef}
-              name='teamName'
-              label={t('teams.form.teamName')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamName
-                  ? t('teams.form.teamNameRequired')
-                  : undefined
-              }
-            />
-
-            {/* Team Class */}
-            <InputField
-              ref={teamClassRef}
-              name='teamClass'
-              label={t('teams.form.teamClass')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamClass
-                  ? t('teams.form.teamClassRequired')
-                  : undefined
-              }
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className='mt-6 flex justify-end gap-3'>
-            <button
-              type='button'
-              onClick={() => window.history.back()}
-              className='inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
-            >
-              {t('common.cancel')}
-            </button>
-            <button
-              type='submit'
-              className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
-            >
-              {t('admin.teams.createTeam')}
-            </button>
-          </div>
-        </div>
-      </Form>
-    </div>
+    <TeamForm
+      mode='create'
+      variant='admin'
+      tournaments={tournaments}
+      errors={actionData?.errors || {}}
+      onCancel={handleCancel}
+    />
   )
 }

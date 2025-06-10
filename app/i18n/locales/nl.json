@@ -120,9 +120,10 @@
     }
   },
   "teams": {
-    "addTeam": "+ Team toevoegen",
+    "addTeam": "Team toevoegen",
     "createNewTeam": "Maak een nieuw team aan",
     "delete": "Verwijderen",
+    "description": "Registreer je team(s) voor een of meer toernooien",
     "errors": {
       "notFound": "Team niet gevonden",
       "unexpectedError": "Er is een onverwachte fout opgetreden:",
@@ -131,6 +132,8 @@
     "form": {
       "clubName": "Clubnaam:",
       "clubNameRequired": "Clubnaam is verplicht",
+      "createTeam": "Opslaan",
+      "createAnotherTeam": "Nog een team aanmaken",
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
       "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
       "selectTournament": "Selecteer een toernooi",

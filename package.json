@@ -27,8 +27,8 @@
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "react-router-serve ./build/server/index.js",
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e:dev": "start-server-and-test dev http://localhost:3000 \"pnpm cypress open\"",
     "test:e2e:run": "node scripts/run-e2e-tests.mjs",
@@ -38,7 +38,7 @@
     "prepare": "husky",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "postinstall": "husky && ([ -f prisma/schema.prisma ] && prisma generate || true)",
-    "validate": "npm-run-all2 --parallel test:run lint typecheck test:e2e:run",
+    "validate": "npm-run-all2 --parallel test lint typecheck test:e2e:run",
     "prisma:test": "tsx test/prisma-test.ts"
   },
   "dependencies": {

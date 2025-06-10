@@ -26,10 +26,8 @@ describe('Teams Management', () => {
       // Navigate to teams page using the homepage view teams button
       cy.findByRole('link', { name: /view teams/i }).click()
 
-      // Verify we're on teams page and the "new team" button exists
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
-        'exist'
-      )
+      // Verify we're on teams page and the "add team" button exists
+      cy.findByRole('link', { name: /add team/i }).should('exist')
     })
 
     it('should allow you to make a team on desktop', () => {
@@ -43,9 +41,7 @@ describe('Teams Management', () => {
         teamLeaderEmail: faker.internet.email(),
       }
 
-      cy.findByRole('link', {
-        name: 'Sidebar button to add a new team',
-      }).click()
+      cy.findByRole('link', { name: /add team/i }).click()
 
       // Select a tournament (first available option)
       cy.findByRole('combobox', { name: /tournament/i }).select(1) // Select the first tournament option (index 0 is the placeholder)
@@ -82,23 +78,28 @@ describe('Teams Management', () => {
       // Submit the form
       cy.findAllByRole('button', { name: /save/i }).first().click()
 
-      // After saving, we should be redirected to the team detail page
-      cy.url().should('include', `/teams/`)
-      cy.url().should('not.include', '/teams/new')
+      // After saving, we should stay on the form page and see success message
+      cy.url().should('include', '/teams/new')
 
-      // Verify team details are displayed
+      // Verify success message is displayed
+      cy.contains('created successfully').should('exist')
       cy.contains(testTeam.teamName).should('exist')
       cy.contains(testTeam.teamClass).should('exist')
 
-      // Now we can find the delete button on the team detail page
-      cy.findByRole('button', { name: /delete/i }).click()
+      // Verify button text changed to "create another team"
+      cy.findByRole('button', { name: /create another team/i }).should('exist')
 
-      // After deletion, we should be back at the teams page
-      cy.url().should('include', '/teams')
-      cy.url().should('not.include', `/teams/`)
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
-        'exist'
-      )
+      // Go to teams list to verify team was actually created
+      cy.visit('/teams')
+      cy.contains(testTeam.teamName).should('exist')
+
+      // Click on the team should show team details
+      cy.contains(testTeam.teamName).click()
+      cy.url().should('include', '/teams/')
+      cy.contains(testTeam.teamClass).should('exist')
+
+      // In the public area, teams are view-only (no delete button)
+      // Delete functionality is only available in the admin area
     })
 
     it('should allow you to make a team on mobile', () => {
@@ -113,20 +114,10 @@ describe('Teams Management', () => {
         teamLeaderEmail: faker.internet.email(),
       }
 
-      cy.findByRole('link', {
-        name: 'Sidebar button to add a new team',
-      }).click()
+      cy.findByRole('link', { name: /add team/i }).click()
 
       // Wait for navigation to complete
       cy.url().should('include', '/teams/new')
-
-      // Check if sidebar overlay exists (it might auto-close), if so, close it
-      cy.get('body').then($body => {
-        if ($body.find('[data-cy="mobile-sidebar-overlay"]').length > 0) {
-          cy.dataCy('mobile-sidebar-overlay').click({ force: true })
-          cy.wait(500) // Wait for sidebar to close
-        }
-      })
 
       // Select a tournament (first available option)
       cy.findByRole('combobox', { name: /tournament/i })
@@ -178,27 +169,32 @@ describe('Teams Management', () => {
         .should('be.visible')
         .click()
 
-      // After saving, we should be redirected to the team detail page
-      cy.url().should('include', `/teams/`)
-      cy.url().should('not.include', '/teams/new')
+      // After saving, we should stay on the form page and see success message
+      cy.url().should('include', '/teams/new')
 
-      // Verify team details are displayed
+      // Verify success message is displayed
+      cy.contains('created successfully').should('exist')
       cy.contains(testTeam.teamName).should('exist')
       cy.contains(testTeam.teamClass).should('exist')
 
-      // Now we can find the delete button on the team detail page
-      cy.findByRole('button', { name: /delete/i }).click()
+      // Verify button text changed to "create another team"
+      cy.findByRole('button', { name: /create another team/i }).should('exist')
 
-      // After deletion, we should be back at the teams page
-      cy.url().should('include', '/teams')
-      cy.url().should('not.include', `/teams/`)
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).should(
-        'exist'
-      )
+      // Go to teams list to verify team was actually created
+      cy.visit('/teams')
+      cy.contains(testTeam.teamName).should('exist')
+
+      // Click on the team should show team details
+      cy.contains(testTeam.teamName).click()
+      cy.url().should('include', '/teams/')
+      cy.contains(testTeam.teamClass).should('exist')
+
+      // In the public area, teams are view-only (no delete button)
+      // Delete functionality is only available in the admin area
     })
 
     it('should validate required fields', () => {
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).click()
+      cy.findByRole('link', { name: /add team/i }).click()
 
       // Wait for the form to load completely
       cy.get('form[method="post"]').should('be.visible')
@@ -237,7 +233,7 @@ describe('Teams Management', () => {
         teamLeaderEmail: 'invalid-email', // Invalid email to trigger validation
       }
 
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).click()
+      cy.findByRole('link', { name: /add team/i }).click()
 
       // Fill out form with invalid data
       cy.findByRole('combobox', { name: /tournament/i }).select(1)
@@ -286,26 +282,25 @@ describe('Teams Management', () => {
 
       cy.visitAndCheck('/teams')
 
-      // Wait for page to load and check for empty state messages
+      // Wait for page to load and check for teams layout
       cy.get('[data-cy="teams-layout"]', { timeout: 8000 }).should('be.visible')
 
-      // Should show "no teams yet" message in sidebar
-      // Use more flexible selectors since we're not sure of the exact layout
+      // Should show "no teams yet" message in main content area
       cy.get('body').then($body => {
         if ($body.text().includes('no teams yet')) {
           cy.contains(/no teams yet/i).should('exist')
         } else {
           // Fallback - just verify the teams page loaded and has the expected structure
-          cy.get('[role="main"], .min-h-full, main').should('exist')
+          cy.get('[data-cy="teams-layout"]').should('exist')
           cy.log('Empty state text may vary - teams page structure is correct')
         }
       })
 
-      // Should show create team link (this should always be present)
-      cy.findByRole('link', { name: /create new team/i }).should('exist')
+      // Should show add team button (this should always be present)
+      cy.findByRole('link', { name: /add team/i }).should('exist')
     })
 
-    it('should display team list in sidebar', () => {
+    it('should display team grid and allow team interaction', () => {
       // First create a team
       const testTeam = {
         teamName: faker.lorem.words(1),
@@ -317,7 +312,7 @@ describe('Teams Management', () => {
       }
 
       cy.visitAndCheck('/teams')
-      cy.findByRole('link', { name: 'Sidebar button to add a new team' }).click()
+      cy.findByRole('link', { name: /add team/i }).click()
 
       // Fill out and submit form quickly
       cy.findByRole('combobox', { name: /tournament/i }).select(1)
@@ -345,7 +340,7 @@ describe('Teams Management', () => {
       // Go back to teams list
       cy.visitAndCheck('/teams')
 
-      // Should see the team in the sidebar
+      // Should see the team in the grid
       cy.contains(testTeam.teamName).should('exist')
 
       // Click on the team should show team details

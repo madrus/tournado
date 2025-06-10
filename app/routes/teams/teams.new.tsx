@@ -5,7 +5,6 @@ import {
   Form,
   type LoaderFunctionArgs,
   type MetaFunction,
-  redirect,
   useActionData,
   useLoaderData,
 } from 'react-router'
@@ -38,6 +37,12 @@ export const handle: RouteMetadata = {
 }
 
 type ActionData = {
+  success?: boolean
+  team?: {
+    id: string
+    teamName: string
+    teamClass: string
+  }
   errors?: {
     tournamentId?: string
     clubName?: string
@@ -172,7 +177,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     )
   }
 
-  const _team = await createTeam({
+  const team = await createTeam({
     clubName: clubName!,
     teamName: teamName!,
     teamClass: teamClass!,
@@ -180,7 +185,17 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     tournamentId: tournamentId!,
   })
 
-  return redirect('/teams')
+  return Response.json(
+    {
+      success: true,
+      team: {
+        id: team.id,
+        teamName: team.teamName,
+        teamClass: team.teamClass,
+      },
+    },
+    { status: 200 }
+  )
 }
 
 export default function NewTeamPage(): JSX.Element {
@@ -189,18 +204,49 @@ export default function NewTeamPage(): JSX.Element {
   const { tournaments } = useLoaderData<typeof loader>()
   const teamNameRef = useRef<HTMLInputElement>(null)
   const teamClassRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
     if (actionData?.errors?.teamName) {
       teamNameRef.current?.focus()
     } else if (actionData?.errors?.teamClass) {
       teamClassRef.current?.focus()
+    } else if (actionData?.success) {
+      // Reset form on successful submission
+      formRef.current?.reset()
     }
   }, [actionData])
 
   return (
     <div className='max-w-4xl'>
-      <Form method='post' className='space-y-8'>
+      {/* Success Message */}
+      {actionData?.success ? (
+        <div className='mb-6 rounded-lg border border-green-200 bg-green-50 p-4'>
+          <div className='flex items-center'>
+            <svg
+              className='h-5 w-5 text-green-400'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M5 13l4 4L19 7'
+              />
+            </svg>
+            <div className='ml-3'>
+              <p className='text-sm font-medium text-green-800'>
+                Team "{actionData.team?.teamName}" ({actionData.team?.teamClass})
+                created successfully!
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <Form ref={formRef} method='post' className='space-y-8'>
         {/* Responsive Panels Container */}
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           {/* Team Information Panel */}
@@ -366,7 +412,9 @@ export default function NewTeamPage(): JSX.Element {
             type='submit'
             className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
           >
-            {t('teams.form.createTeam')}
+            {actionData?.success
+              ? t('teams.form.createAnotherTeam')
+              : t('teams.form.createTeam')}
           </button>
         </div>
       </Form>

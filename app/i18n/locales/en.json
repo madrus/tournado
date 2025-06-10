@@ -120,9 +120,10 @@
     }
   },
   "teams": {
-    "addTeam": "+ Add Team",
+    "addTeam": "Add Team",
     "createNewTeam": "Create a new team",
     "delete": "Delete",
+    "description": "Register your team(s) for one or more tournaments",
     "errors": {
       "notFound": "Team not found",
       "unexpectedError": "An unexpected error occurred:",
@@ -131,6 +132,8 @@
     "form": {
       "clubName": "Club Name:",
       "clubNameRequired": "Club name is required",
+      "createTeam": "Save",
+      "createAnotherTeam": "Create Another Team",
       "privacyAgreement": "I agree to the privacy policy and terms of service",
       "privacyAgreementRequired": "You must agree to the privacy policy",
       "selectTournament": "Select a tournament",

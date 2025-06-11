@@ -4,12 +4,12 @@ import { Form } from 'react-router'
 
 import { InputField } from '~/components/InputField'
 import type { TournamentData } from '~/lib/lib.types'
-import { divisionLabels } from '~/utils/division'
+import { getDivisionLabel } from '~/utils/division'
 
 export type TeamFormMode = 'create' | 'edit'
 export type TeamFormVariant = 'public' | 'admin'
 
-export interface TeamFormData {
+export type TeamFormData = {
   clubName: string
   teamName: string
   division: string
@@ -19,7 +19,7 @@ export interface TeamFormData {
   tournamentId?: string
 }
 
-export interface TeamFormProps {
+export type TeamFormProps = {
   mode: TeamFormMode
   variant: TeamFormVariant
   formData?: Partial<TeamFormData>
@@ -50,7 +50,7 @@ export function TeamForm({
   className = '',
   intent,
 }: TeamFormProps): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const teamNameRef = useRef<HTMLInputElement>(null)
   const teamClassRef = useRef<HTMLSelectElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -240,7 +240,7 @@ export function TeamForm({
                     <option value=''>{t('teams.form.selectDivision')}</option>
                     {availableDivisions.map(division => (
                       <option key={division} value={division}>
-                        {divisionLabels[division].nl} ({divisionLabels[division].en})
+                        {getDivisionLabel(division, i18n.language)}
                       </option>
                     ))}
                   </select>
@@ -342,7 +342,7 @@ export function TeamForm({
                 error={errors.teamName ? t('teams.form.teamNameRequired') : undefined}
               />
 
-              {/* Team Class */}
+              {/* Division | Team Class */}
               <div>
                 <label className='flex w-full flex-col gap-1'>
                   <span className='font-medium'>{t('teams.form.division')}</span>
@@ -360,7 +360,7 @@ export function TeamForm({
                     <option value=''>{t('teams.form.selectDivision')}</option>
                     {availableDivisions.map(division => (
                       <option key={division} value={division}>
-                        {divisionLabels[division].nl} ({divisionLabels[division].en})
+                        {getDivisionLabel(division, i18n.language)}
                       </option>
                     ))}
                   </select>

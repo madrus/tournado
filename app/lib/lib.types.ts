@@ -13,7 +13,7 @@ import type { Division, Team as PrismaTeam } from '@prisma/client'
 export type TeamName = `${'J' | 'M' | 'JM'}${'O'}${number}-${number}`
 
 // TeamClass type should have the following format:
-// e.g. "1ste klasse", "2de klasse", "3de klasse"
+// e.g. "Eerste klasse", "Tweede klasse", "Derde klasse"
 export type TeamClass = string
 
 export type Tournament = {

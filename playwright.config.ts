@@ -13,6 +13,7 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   globalSetup: './playwright/helpers/global-setup.ts', // Re-enabled for auth.json creation
+  globalTeardown: './playwright/helpers/global-teardown.ts', // Clean database after tests
   testDir: './playwright/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

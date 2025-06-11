@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { expect, test } from '@playwright/test'
 
-import { cleanupUser, createAdminUser } from '../helpers/database'
+import { createAdminUser } from '../helpers/database'
 
 // This test file runs without stored auth state to test actual authentication
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -20,7 +20,7 @@ test.describe('Authentication', () => {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
-      password: 'myreallystrongpassword',
+      password: 'MyReallyStr0ngPassw0rd!!!',
     }
 
     await page.goto('/auth/signup')
@@ -95,8 +95,6 @@ test.describe('Authentication', () => {
     })
 
     await expect(page.getByText(signinForm.email)).toBeVisible({ timeout: 5000 })
-
-    await cleanupUser(signinForm.email)
   })
 
   test('should handle authentication with existing account', async ({ page }) => {
@@ -123,7 +121,7 @@ test.describe('Authentication', () => {
 
     // Sign in with our fixture user
     await page.locator('#email').fill(testUser.email)
-    await page.locator('#password').fill('myreallystrongpassword')
+    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
 
     // Should be redirected back to homepage (where we started)
@@ -146,8 +144,5 @@ test.describe('Authentication', () => {
     })
     // User email should no longer be visible since they're signed out
     await expect(page.getByText(testUser.email)).not.toBeVisible()
-
-    // Cleanup
-    await cleanupUser(testUser.email)
   })
 })

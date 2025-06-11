@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { expect, test } from '@playwright/test'
 
-import { cleanupUser, createAdminUser } from '../helpers/database'
+import { createAdminUser } from '../helpers/database'
 
 // This test file runs without stored auth state to test actual authentication
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -20,7 +20,7 @@ test.describe('Authentication', () => {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
-      password: 'myreallystrongpassword',
+      password: 'MyReallyStr0ngPassw0rd!!!',
     }
 
     await page.goto('/auth/signup')
@@ -95,8 +95,6 @@ test.describe('Authentication', () => {
     })
 
     await expect(page.getByText(signinForm.email)).toBeVisible({ timeout: 5000 })
-
-    await cleanupUser(signinForm.email)
   })
 
   test('should handle authentication with existing account', async ({ page }) => {
@@ -119,7 +117,7 @@ test.describe('Authentication', () => {
 
     // Sign in with our fixture user
     await page.locator('#email').fill(testUser.email)
-    await page.locator('#password').fill('myreallystrongpassword')
+    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
 
     // Should be redirected back to homepage (where we started)
@@ -140,9 +138,6 @@ test.describe('Authentication', () => {
     await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible()
     // User email should no longer be visible since they're signed out
     await expect(page.getByText(testUser.email)).not.toBeVisible()
-
-    // Cleanup
-    await cleanupUser(testUser.email)
   })
 
   test('should redirect to teams page when accessing signin while already authenticated', async ({
@@ -153,7 +148,7 @@ test.describe('Authentication', () => {
 
     await page.goto('/auth/signin')
     await page.locator('#email').fill(user.email)
-    await page.locator('#password').fill('myreallystrongpassword')
+    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
     await expect(page).toHaveURL('/')
 
@@ -162,9 +157,6 @@ test.describe('Authentication', () => {
 
     // Should be redirected to homepage (default redirect)
     await expect(page).toHaveURL('/')
-
-    // Cleanup
-    await cleanupUser(user.email)
   })
 
   test('should redirect to homepage when signing out from teams page', async ({
@@ -175,7 +167,7 @@ test.describe('Authentication', () => {
 
     await page.goto('/auth/signin')
     await page.locator('#email').fill(user.email)
-    await page.locator('#password').fill('myreallystrongpassword')
+    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
     await expect(page).toHaveURL('/')
 
@@ -199,8 +191,5 @@ test.describe('Authentication', () => {
       timeout: 10000,
     })
     await expect(page.getByText(user.email)).not.toBeVisible()
-
-    // Cleanup
-    await cleanupUser(user.email)
   })
 })

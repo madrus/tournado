@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { chromium, FullConfig } from '@playwright/test'
 
-import { createAdminUser } from './database'
+import { cleanDatabase, createAdminUser } from './database'
 
 // Wait for server to be ready
 async function waitForServer(url: string, timeout = 60000): Promise<void> {
@@ -24,12 +24,16 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   // Set environment variables for server-side test detection
   process.env.PLAYWRIGHT = 'true'
   process.env.NODE_ENV = 'test'
+  process.env.PLAYWRIGHT_GLOBAL_SETUP = 'true'
 
   // Wait for server to be ready - use the configured baseURL
   const serverUrl = process.env.PORT
     ? `http://localhost:${process.env.PORT}`
     : 'http://localhost:5173'
   await waitForServer(serverUrl)
+
+  // Clean database before starting tests
+  await cleanDatabase()
 
   // Create a browser instance for authentication
   const browser = await chromium.launch()
@@ -55,7 +59,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
 
     // Fill out login form
     await page.locator('#email').fill(adminUser.email)
-    await page.locator('#password').fill('myreallystrongpassword')
+    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
 
     // Wait for and click the Sign In button
     const signInButton = page.locator('button[type="submit"]')

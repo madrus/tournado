@@ -1,13 +1,12 @@
 import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
-import { z } from 'zod'
 
 import { InputField } from '~/components/InputField'
+import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 
-// Create validation schema with translated error messages using local t function
 export function TeamForm({
   mode,
   variant,
@@ -28,183 +27,17 @@ export function TeamForm({
   const teamClassRef = useRef<HTMLSelectElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
-  // Create validation schema with translated error messages using local t function
-  const createTeamFormSchema = () =>
-    z.object({
-      // Tournament selection (required for create mode)
-      tournamentId: z.string().min(1, t('teams.form.errors.tournamentRequired')),
-
-      // Basic team information
-      clubName: z
-        .string()
-        .min(1, t('teams.form.errors.clubNameRequired'))
-        .max(100, t('teams.form.errors.clubNameTooLong')),
-      teamName: z
-        .string()
-        .min(1, t('teams.form.errors.teamNameRequired'))
-        .max(50, t('teams.form.errors.teamNameTooLong')),
-      division: z.string().min(1, t('teams.form.errors.divisionRequired')),
-
-      // Team leader information (required for create mode)
-      teamLeaderName: z
-        .string()
-        .min(1, t('teams.form.errors.teamLeaderNameRequired'))
-        .max(100, t('teams.form.errors.teamLeaderNameTooLong')),
-      teamLeaderPhone: z
-        .string()
-        .min(1, t('teams.form.errors.phoneNumberRequired'))
-        .refine(
-          val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val),
-          t('teams.form.errors.phoneNumberInvalid')
-        ),
-      teamLeaderEmail: z
-        .string()
-        .min(1, t('teams.form.errors.emailRequired'))
-        .refine(
-          val => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
-          t('teams.form.errors.emailInvalid')
-        ),
-
-      // Privacy agreement (required for public create mode)
-      privacyAgreement: z
-        .boolean()
-        .refine(val => val === true, t('teams.form.errors.privacyAgreementRequired')),
-    })
+  // Use the custom validation hook
+  const { displayErrors, handleSubmit, handleFieldBlur } = useTeamFormValidation({
+    mode,
+    formRef,
+    serverErrors: errors,
+  })
 
   // State for selected tournament (for division filtering)
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>(
     formData.tournamentId || ''
   )
-
-  // State for client-side validation errors
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
-
-  // State to track which fields have been touched (interacted with)
-  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({})
-
-  // State to track if form submission was attempted
-  const [submitAttempted, setSubmitAttempted] = useState<boolean>(false)
-
-  // Use appropriate schema based on mode
-  const getValidationSchema = () =>
-    mode === 'create'
-      ? createTeamFormSchema() // All fields including privacy
-      : createTeamFormSchema().omit({ privacyAgreement: true }) // Edit mode doesn't need privacy agreement
-
-  // Handle form submission with validation
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    // Always prevent the default to control the flow
-    event.preventDefault()
-
-    const form = event.currentTarget
-    const submissionData = new FormData(form)
-
-    // Mark that submission was attempted
-    setSubmitAttempted(true)
-
-    // Run client-side validation immediately
-    const isValid = validateForm(submissionData, true) // Pass forceShowErrors = true
-
-    if (!isValid) {
-      // Validation failed, errors have been set in state
-      return
-    }
-
-    // If validation passes, manually submit the form
-    form.submit()
-  }
-
-  // Validate entire form
-  const validateForm = (
-    submissionFormData: FormData,
-    forceShowErrors = false
-  ): boolean => {
-    const schema = getValidationSchema()
-    const validationValues: Record<string, string | boolean> = {}
-
-    // Extract all possible form fields - let the schema decide which ones to validate
-    validationValues.tournamentId =
-      (submissionFormData.get('tournamentId') as string) || ''
-    validationValues.clubName = (submissionFormData.get('clubName') as string) || ''
-    validationValues.teamName = (submissionFormData.get('teamName') as string) || ''
-    validationValues.division = (submissionFormData.get('division') as string) || ''
-    validationValues.teamLeaderName =
-      (submissionFormData.get('teamLeaderName') as string) || ''
-    validationValues.teamLeaderPhone =
-      (submissionFormData.get('teamLeaderPhone') as string) || ''
-    validationValues.teamLeaderEmail =
-      (submissionFormData.get('teamLeaderEmail') as string) || ''
-    validationValues.privacyAgreement =
-      submissionFormData.get('privacyAgreement') === 'on'
-
-    try {
-      schema.parse(validationValues)
-      setValidationErrors({})
-      return true
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {}
-        error.errors.forEach(err => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as string] = err.message
-          }
-        })
-        setValidationErrors(newErrors)
-
-        // If forceShowErrors is true (form submission), force show all errors immediately
-        if (forceShowErrors) {
-          setForceShowAllErrors(true)
-        }
-      }
-      return false
-    }
-  }
-
-  // Handle field validation on blur (when user leaves the field)
-  const handleFieldBlur = (name: string, value: string | boolean) => {
-    // Mark field as touched only when user leaves the field
-    setTouchedFields(prev => ({ ...prev, [name]: true }))
-
-    try {
-      // For simple field validation, we'll validate the whole form data
-      // since some fields depend on the mode/variant context
-      const currentFormData = new FormData(formRef.current || undefined)
-      currentFormData.set(name, value.toString())
-      validateForm(currentFormData)
-    } catch (_error) {
-      // Silently handle validation errors for better UX
-      // Error will be shown when user attempts to submit
-    }
-  }
-
-  // Determine whether to show error for a specific field
-  const shouldShowFieldError = (fieldName: string): boolean =>
-    submitAttempted || touchedFields[fieldName] || false
-
-  // State to track forced error display during form submission
-  const [forceShowAllErrors, setForceShowAllErrors] = useState<boolean>(false)
-
-  // Get filtered errors (only show errors for touched fields or after submit attempt)
-  const getDisplayErrors = (): Record<string, string> => {
-    const displayErrors: Record<string, string> = {}
-
-    // Always show server-side errors
-    Object.keys(errors).forEach(fieldName => {
-      displayErrors[fieldName] = errors[fieldName]
-    })
-
-    // Show client-side validation errors only if field was touched or submit attempted
-    Object.keys(validationErrors).forEach(fieldName => {
-      if (forceShowAllErrors || shouldShowFieldError(fieldName)) {
-        displayErrors[fieldName] = validationErrors[fieldName]
-      }
-    })
-
-    return displayErrors
-  }
-
-  // Get display errors instead of merged errors
-  const displayErrors = getDisplayErrors()
 
   // Get available divisions for selected tournament
   const availableDivisions = selectedTournamentId

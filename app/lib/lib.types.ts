@@ -200,3 +200,112 @@ export type TeamFormProps = {
   className?: string
   intent?: string
 }
+
+// ============================================================================
+// Validation Types - Schema and Hook Related
+// ============================================================================
+
+/**
+ * Complex ZodObject type for createTeamFormSchema return type (full schema with privacy)
+ */
+export type TeamFormSchemaType = import('zod').ZodObject<{
+  tournamentId: import('zod').ZodString
+  clubName: import('zod').ZodString
+  teamName: import('zod').ZodString
+  division: import('zod').ZodString
+  teamLeaderName: import('zod').ZodString
+  teamLeaderPhone: import('zod').ZodEffects<import('zod').ZodString, string, string>
+  teamLeaderEmail: import('zod').ZodEffects<import('zod').ZodString, string, string>
+  privacyAgreement: import('zod').ZodEffects<import('zod').ZodBoolean, boolean, boolean>
+}>
+
+/**
+ * ZodObject type for edit mode (schema without privacy agreement)
+ */
+export type TeamFormEditSchemaType = import('zod').ZodObject<{
+  tournamentId: import('zod').ZodString
+  clubName: import('zod').ZodString
+  teamName: import('zod').ZodString
+  division: import('zod').ZodString
+  teamLeaderName: import('zod').ZodString
+  teamLeaderPhone: import('zod').ZodEffects<import('zod').ZodString, string, string>
+  teamLeaderEmail: import('zod').ZodEffects<import('zod').ZodString, string, string>
+}>
+
+/**
+ * Union type for validation schemas based on mode
+ */
+export type TeamValidationSchema = TeamFormSchemaType | TeamFormEditSchemaType
+
+/**
+ * Type for team data validation input (raw form data)
+ */
+export type TeamValidationInput = Record<string, unknown>
+
+/**
+ * Type for successful validation result in create mode
+ */
+export type TeamCreateValidationResult = {
+  tournamentId: string
+  clubName: string
+  teamName: string
+  division: string
+  teamLeaderName: string
+  teamLeaderPhone: string
+  teamLeaderEmail: string
+  privacyAgreement: boolean
+}
+
+/**
+ * Type for successful validation result in edit mode
+ */
+export type TeamEditValidationResult = {
+  tournamentId: string
+  clubName: string
+  teamName: string
+  division: string
+  teamLeaderName: string
+  teamLeaderPhone: string
+  teamLeaderEmail: string
+}
+
+/**
+ * Type-safe SafeParseReturnType for team validation
+ */
+export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
+  T extends 'create'
+    ? import('zod').SafeParseReturnType<TeamValidationInput, TeamCreateValidationResult>
+    : import('zod').SafeParseReturnType<TeamValidationInput, TeamEditValidationResult>
+
+/**
+ * Extracted team data from FormData
+ */
+export type ExtractedTeamData = {
+  tournamentId: string
+  clubName: string
+  teamName: string
+  division: string
+  teamLeaderName: string
+  teamLeaderPhone: string
+  teamLeaderEmail: string
+  privacyAgreement: boolean
+}
+
+/**
+ * Return type for useTeamFormValidation hook
+ */
+export type UseTeamFormValidationReturn = {
+  validationErrors: Record<string, string>
+  touchedFields: Record<string, boolean>
+  submitAttempted: boolean
+  forceShowAllErrors: boolean
+  displayErrors: Record<string, string>
+  validateForm: (submissionFormData: FormData, forceShowErrors?: boolean) => boolean
+  handleFieldBlur: (name: string, value: string | boolean) => void
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  shouldShowFieldError: (fieldName: string) => boolean
+  setValidationErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>
+  setTouchedFields: React.Dispatch<React.SetStateAction<Record<string, boolean>>>
+  setSubmitAttempted: React.Dispatch<React.SetStateAction<boolean>>
+  setForceShowAllErrors: React.Dispatch<React.SetStateAction<boolean>>
+}

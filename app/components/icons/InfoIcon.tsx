@@ -2,7 +2,7 @@ import { JSX } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
-interface InfoIconProps {
+type InfoIconProps = {
   className?: string
   size?: number
   weight?: IconWeight

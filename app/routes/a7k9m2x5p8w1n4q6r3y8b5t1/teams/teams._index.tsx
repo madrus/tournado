@@ -152,7 +152,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
           context='admin'
           onTeamClick={handleTeamClick}
           onTeamDelete={handleTeamDelete}
-          emptyMessage={t('admin.teams.noTeams')}
+          emptyMessage={t('teams.noTeams')}
         />
       </div>
     </div>

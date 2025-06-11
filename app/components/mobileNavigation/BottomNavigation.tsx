@@ -17,7 +17,7 @@ function BottomNavigation(): JSX.Element {
       className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-white p-3 shadow-lg md:hidden'
       aria-label='Bottom navigation'
       role='navigation'
-      data-cy='bottom-navigation'
+      data-testid='bottom-navigation'
     >
       {/* Navigation items spread across full width */}
       <div className='flex w-full justify-between px-3'>

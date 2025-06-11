@@ -74,7 +74,7 @@ export function UserMenu({
       <div
         className={`fixed inset-0 z-30 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
         onClick={() => onOpenChange?.(false)}
-        data-cy='mobile-user-menu-overlay'
+        data-testid='mobile-user-menu-overlay'
         aria-label='Mobile user menu'
         role='dialog'
         aria-modal='true'

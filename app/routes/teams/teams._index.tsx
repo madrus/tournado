@@ -70,7 +70,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
         teams={teamListItems}
         context='public'
         onTeamClick={handleTeamClick}
-        emptyMessage={t('teams.noTeamsPublic')}
+        emptyMessage={t('teams.noTeams')}
         className='min-h-[200px]'
       />
 

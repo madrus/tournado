@@ -3,7 +3,7 @@ ignoredBuiltDependencies:
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
-  - cypress
+  - '@playwright/test'
   - docsify
   - esbuild
   - msw

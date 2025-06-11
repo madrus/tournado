@@ -18,7 +18,7 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
       to={to}
       className='flex flex-col items-center'
       aria-label={`Navigate to ${label}`}
-      data-cy={`nav-${label.toLowerCase()}`}
+      data-testid={`nav-${label.toLowerCase()}`}
     >
       {renderIcon(icon, {
         size: 36,

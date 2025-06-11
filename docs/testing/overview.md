@@ -4,7 +4,7 @@
 
 The project uses a comprehensive testing strategy with multiple testing tools:
 
-- **Cypress**: End-to-end testing
+- **Playwright**: End-to-end testing
 - **Vitest**: Unit testing with AI-powered MCP integration
 - **Testing Library**: Component testing utilities
 - **MCP Vitest Server**: Advanced AI-assisted testing workflows
@@ -35,8 +35,8 @@ pnpm test
 # Run E2E tests in development mode
 pnpm test:e2e:dev
 
-# Run E2E tests in headless mode
-pnpm test:e2e
+# Run E2E tests in headless mode (starts server)
+pnpm test:e2e:all
 ```
 
 ### Unit Tests
@@ -60,7 +60,7 @@ E2E tests use a completely separate SQLite database to ensure isolation from dev
 
 ### Automatic Test Database Setup
 
-When running E2E tests via `pnpm test:e2e` or `pnpm test:e2e:dev`, the system automatically:
+When running E2E tests via `pnpm test:e2e:all` or `pnpm test:e2e:dev`, the system automatically:
 
 1. Removes any existing test database
 2. Creates a fresh test database using `prisma migrate deploy`
@@ -72,29 +72,31 @@ This ensures every test run starts with a clean, predictable database state with
 ## Test Structure
 
 ```
-cypress/
-  ├── e2e/           # End-to-end tests
+playwright/
+  ├── tests/         # End-to-end tests
   ├── fixtures/      # Test fixtures
-  └── support/       # Cypress support files
-      ├── commands.ts           # Custom Cypress commands
-      ├── create-user-test.ts   # Test user creation (uses test DB)
-      └── delete-user-test.ts   # Test user cleanup (uses test DB)
+  ├── helpers/       # Playwright helper functions
+  │   ├── database.ts          # Database operations for tests
+  │   └── global-setup.ts      # Global authentication setup
+  └── pages/         # Page object models
 ```
 
 ## Writing Tests
 
 ### E2E Tests
 
-Use Cypress for testing user flows and critical paths:
+Use Playwright for testing user flows and critical paths:
 
 ```ts
-describe('Authentication', () => {
-   it('should allow users to sign in', () => {
-      cy.visit('/signin')
-      cy.get('input[name="email"]').type('test@example.com')
-      cy.get('input[name="password"]').type('password')
-      cy.get('button[type="submit"]').click()
-      cy.url().should('include', '/dashboard')
+import { expect, test } from '@playwright/test'
+
+test.describe('Authentication', () => {
+   test('should allow users to sign in', async ({ page }) => {
+      await page.goto('/auth/signin')
+      await page.locator('#email').fill('test@example.com')
+      await page.locator('#password').fill('password')
+      await page.getByRole('button', { name: 'Inloggen' }).click()
+      await expect(page).toHaveURL('/')
    })
 })
 ```
@@ -119,13 +121,19 @@ test('renders button with correct text', () => {
 ### Authentication Helpers
 
 ```ts
-// Sign in as a test user
-cy.signin()
+import { cleanupUser, createAdminUser } from '../helpers/database'
 
-// Clean up test user
-afterEach(() => {
-   cy.cleanupUser()
+// Create and use test users
+test('admin feature', async ({ page }) => {
+   const user = await createAdminUser()
+   // Test logic here...
+   await cleanupUser(user.email)
 })
+
+// Tests can also use pre-authenticated state via projects:
+// - admin-authenticated: Uses global auth state
+// - public-no-auth: No authentication
+// - auth-flows: For testing login/signup flows
 ```
 
 ## Best Practices

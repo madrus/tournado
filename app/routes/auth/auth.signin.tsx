@@ -44,8 +44,8 @@ export const loader = async ({ request }: LoaderArgs): Promise<object> => {
     // Get the redirectTo parameter from the URL if present
     const url = new URL(request.url)
     const redirectTo = url.searchParams.get('redirectTo')
-    // Redirect to the intended destination or teams page
-    return redirect(redirectTo || '/teams')
+    // Redirect to the intended destination or homepage (consistent with action)
+    return redirect(redirectTo || '/')
   }
   return {}
 }

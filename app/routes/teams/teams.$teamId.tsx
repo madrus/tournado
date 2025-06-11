@@ -14,7 +14,7 @@ export type LoaderArgs = {
 }
 
 type LoaderData = {
-  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'teamClass'>
+  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'division'>
 }
 
 // Route metadata - this is a public route
@@ -37,7 +37,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
     { title: `${loaderData.team.clubName} ${loaderData.team.teamName} | Tournado` },
     {
       name: 'description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.teamClass} class.`,
+      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.division} class.`,
     },
     {
       property: 'og:title',
@@ -45,7 +45,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
     },
     {
       property: 'og:description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.teamClass} class.`,
+      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.division} class.`,
     },
     { property: 'og:type', content: 'website' },
   ]
@@ -54,7 +54,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
 export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
   invariant(params.teamId, 'teamId not found')
 
-  const team = await getTeamById({ id: params.teamId! })
+  const team = await getTeamById({ id: params.teamId as string })
 
   if (!team) {
     throw new Response('Not Found', { status: 404 })
@@ -74,7 +74,7 @@ export default function TeamDetailsPage(): JSX.Element {
           <h1 className='text-3xl font-bold text-gray-900'>
             {`${team.clubName} ${team.teamName}`}
           </h1>
-          <p className='mt-2 text-lg text-gray-600'>{team.teamClass}</p>
+          <p className='mt-2 text-lg text-gray-600'>{team.division}</p>
         </div>
 
         {/* Content Grid */}
@@ -160,7 +160,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 </div>
                 <div>
                   <dt className='text-sm font-medium text-gray-500'>Class</dt>
-                  <dd className='text-sm text-gray-900'>{team.teamClass}</dd>
+                  <dd className='text-sm text-gray-900'>{team.division}</dd>
                 </div>
                 <div>
                   <dt className='text-sm font-medium text-gray-500'>Status</dt>

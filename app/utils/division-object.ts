@@ -11,27 +11,27 @@ export const DIVISIONS = {
   },
   FIRST_DIVISION: {
     value: 'FIRST_DIVISION',
-    labels: { en: 'First Division', nl: '1ste klasse' },
+    labels: { en: 'First Division', nl: 'Eerste klasse' },
     order: 2,
   },
   SECOND_DIVISION: {
     value: 'SECOND_DIVISION',
-    labels: { en: 'Second Division', nl: '2de klasse' },
+    labels: { en: 'Second Division', nl: 'Tweede klasse' },
     order: 3,
   },
   THIRD_DIVISION: {
     value: 'THIRD_DIVISION',
-    labels: { en: 'Third Division', nl: '3de klasse' },
+    labels: { en: 'Third Division', nl: 'Derde klasse' },
     order: 4,
   },
   FOURTH_DIVISION: {
     value: 'FOURTH_DIVISION',
-    labels: { en: 'Fourth Division', nl: '4de klasse' },
+    labels: { en: 'Fourth Division', nl: 'Vierde klasse' },
     order: 5,
   },
   FIFTH_DIVISION: {
     value: 'FIFTH_DIVISION',
-    labels: { en: 'Fifth Division', nl: '5de klasse' },
+    labels: { en: 'Fifth Division', nl: 'Vijfde klasse' },
     order: 6,
   },
 } as const

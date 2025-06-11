@@ -11,9 +11,9 @@ import { Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
+import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { createTeam } from '~/models/team.server'
-import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -181,10 +181,10 @@ export default function NewTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { tournaments } = useLoaderData<typeof loader>()
 
-  // Prepare success message
+  // Prepare success message with translated division label
   const successMessage =
     actionData?.success && actionData.team
-      ? `Team "${actionData.team.teamName}" (${actionData.team.division}) created successfully!`
+      ? `Team "${actionData.team.teamName}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
       : undefined
 
   return (

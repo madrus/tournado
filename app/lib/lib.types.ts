@@ -1,8 +1,42 @@
 /**
- * @fileoverview
- * This file contains the types for the library.
+ * @fileoverview Centralized Type System
+ *
+ * This file contains all shared type definitions for the Tournado application.
+ *
+ * The type system implements strong typing patterns with template literal types
+ * and strict type definitions to ensure type safety across the application.
+ *
+ * Key features:
+ * - Centralized type definitions for reusability
+ * - Strong typing with template literal patterns
+ * - Database compatibility through type conversion utilities
+ * - Form system types for TeamForm component
+ * - Route-specific data structures
+ *
+ * For detailed documentation, see: docs/development/type-system.md
  */
 import type { Division, Team as PrismaTeam } from '@prisma/client'
+
+// Division types from the alternative DIVISIONS object implementation
+export type DivisionKey =
+  | 'PREMIER_DIVISION'
+  | 'FIRST_DIVISION'
+  | 'SECOND_DIVISION'
+  | 'THIRD_DIVISION'
+  | 'FOURTH_DIVISION'
+  | 'FIFTH_DIVISION'
+export type DivisionValue =
+  | 'PREMIER_DIVISION'
+  | 'FIRST_DIVISION'
+  | 'SECOND_DIVISION'
+  | 'THIRD_DIVISION'
+  | 'FOURTH_DIVISION'
+  | 'FIFTH_DIVISION'
+export type DivisionObject = {
+  value: DivisionValue
+  labels: { en: string; nl: string }
+  order: number
+}
 
 // TeamName type should have the following format:
 // e.g. "JO8-1"
@@ -64,15 +98,15 @@ export type Email = `${string}@${string}.${string}`
 export type IconVariant = 'outlined' | 'filled'
 export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
 
-// Type for form input
+// Type for form input - with strict types for better validation
 export type TeamFormData = {
   tournamentId: string // which tournament the team is registering for
   clubName: string // via API Club -- logo en basisgegevens ophalen
-  teamName: TeamName
-  division: TeamClass
+  teamName: TeamName // Strict type for validation
+  division: TeamClass // Strict type for validation
   teamLeaderName: string
   teamLeaderPhone: string
-  teamLeaderEmail: Email
+  teamLeaderEmail: Email // Strict type for validation
   privacyAgreement: boolean
 }
 
@@ -132,4 +166,37 @@ export type TeamEditActionData = {
     teamName?: string
     division?: string
   }
+}
+
+// ============================================================================
+// Team Form Component Types
+// ============================================================================
+
+/**
+ * Form mode for team forms
+ */
+export type FormMode = 'create' | 'edit'
+
+/**
+ * Form variant for team forms
+ */
+export type FormVariant = 'public' | 'admin'
+
+/**
+ * Props for TeamForm component
+ */
+export type TeamFormProps = {
+  mode: FormMode
+  variant: FormVariant
+  formData?: Partial<TeamFormData>
+  tournaments?: Array<TournamentData>
+  errors?: Record<string, string>
+  isSuccess?: boolean
+  successMessage?: string
+  submitButtonText?: string
+  onCancel?: () => void
+  showDeleteButton?: boolean
+  onDelete?: () => void
+  className?: string
+  intent?: string
 }

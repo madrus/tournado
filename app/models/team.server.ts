@@ -24,26 +24,23 @@ export const getTeam = ({
 }: {
   id: string
   teamLeaderId: string
-}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> =>
+}): Promise<Pick<TeamWithLeader, 'id' | 'division' | 'teamName'> | null> =>
   prisma.team.findFirst({
-    select: { id: true, teamClass: true, teamName: true },
+    select: { id: true, division: true, teamName: true },
     where: { id },
-  }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
+  }) as Promise<Pick<TeamWithLeader, 'id' | 'division' | 'teamName'> | null>
 
 export const getTeamById = ({
   id,
 }: {
   id: string
-}): Promise<Pick<
-  TeamWithLeader,
-  'id' | 'clubName' | 'teamClass' | 'teamName'
-> | null> =>
+}): Promise<Pick<TeamWithLeader, 'id' | 'clubName' | 'division' | 'teamName'> | null> =>
   prisma.team.findUnique({
-    select: { id: true, clubName: true, teamClass: true, teamName: true },
+    select: { id: true, clubName: true, division: true, teamName: true },
     where: { id },
   }) as Promise<Pick<
     TeamWithLeader,
-    'id' | 'clubName' | 'teamClass' | 'teamName'
+    'id' | 'clubName' | 'division' | 'teamName'
   > | null>
 
 export const getTeamListItems = async ({
@@ -76,10 +73,10 @@ export const getAllTeamListItems = async (): Promise<
 export const createTeam = async ({
   clubName,
   teamName,
-  teamClass,
+  division,
   teamLeaderId,
   tournamentId,
-}: Pick<Team, 'clubName' | 'teamName' | 'teamClass'> & {
+}: Pick<Team, 'clubName' | 'teamName' | 'division'> & {
   teamLeaderId: TeamLeader['id']
   tournamentId: string
 }): Promise<Team> =>
@@ -88,7 +85,7 @@ export const createTeam = async ({
     data: {
       clubName,
       teamName,
-      teamClass,
+      division,
       teamLeaderId,
       tournamentId,
     },

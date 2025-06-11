@@ -7,7 +7,6 @@ import eslintConfig from '@madrus/configs/eslint.config.mjs'
 import typescriptPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptParser from '@typescript-eslint/parser'
 
-import cypressPlugin from 'eslint-plugin-cypress'
 import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
 import jestDomPlugin from 'eslint-plugin-jest-dom'
@@ -30,9 +29,9 @@ export default [
       '**/*.config.*',
       'build/**',
       'coverage/**',
-      'cypress/**',
       'docs/**',
-      'mcp-servers/**',
+      'playwright-report/**',
+      'playwright-results/**',
       'mocks/**',
       'node_modules/**',
       'public/**',
@@ -66,7 +65,7 @@ export default [
   // TypeScript specific configuration
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['cypress/**/*'],
+    ignores: [],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -100,22 +99,6 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-    },
-  },
-
-  // Cypress specific configuration
-  {
-    files: ['cypress/**/*.ts'],
-    ignores: ['cypress.config.ts'],
-    languageOptions: {
-      parser: typescriptParser,
-      parserOptions: {
-        project: null,
-      },
-    },
-    plugins: {
-      cypress: cypressPlugin,
-      '@typescript-eslint': typescriptPlugin,
     },
   },
 

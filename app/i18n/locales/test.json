@@ -30,10 +30,26 @@
     "rememberMe": "remember me",
     "signInRequiredToCreateTeam": "sign in required to create team",
     "signin": "sign in",
-    "signout": "signout",
+    "signout": "sign out",
     "signup": "sign up",
     "viewTeams": "view teams",
     "viewTeamsFor": "view teams for"
+  },
+  "admin": {
+    "teams": {
+      "allTeams": "all teams",
+      "allTeamsDescription": "manage all teams in the system",
+      "confirmDelete": "confirm delete team",
+      "createTeam": "create team",
+      "createTeamDescription": "add new team to system",
+      "description": "manage all teams across tournaments",
+      "editTeam": "edit team details",
+      "saveChanges": "save changes",
+      "teamNotFound": "team not found",
+      "teamNotFoundDescription": "team not found or deleted",
+      "title": "teams management",
+      "totalTeams": "total teams"
+    }
   },
   "common": {
     "appName": "Tournado",
@@ -99,8 +115,11 @@
   },
   "teams": {
     "addTeam": "add team",
+    "count": "{{count}} team registered",
+    "count_other": "{{count}} teams registered",
     "createNewTeam": "create new team",
-    "delete": "delete",
+    "deleteTeam": "delete team",
+    "description": "register your team(s) for one or more tournaments",
     "errors": {
       "notFound": "team not found",
       "unexpectedError": "unexpected error",
@@ -109,6 +128,8 @@
     "form": {
       "clubName": "club name",
       "clubNameRequired": "club name is required",
+      "createTeam": "save",
+      "createAnotherTeam": "create another team",
       "privacyAgreement": "i agree to the privacy policy and terms of service",
       "privacyAgreementRequired": "you must agree to the privacy policy",
       "registrationDescription": "register your team for a tournament. please fill out all required fields below.",
@@ -130,8 +151,12 @@
       "tournament": "tournament",
       "tournamentRequired": "tournament selection is required"
     },
+    "getStarted": {
+      "title": "get started with team registration",
+      "description": "ready to join tournament"
+    },
     "noTeamSelected": "no team selected",
-    "noTeams": "no teams yet",
+    "noTeams": "no teams registered yet",
     "save": "save",
     "title": "teams"
   }

@@ -1,5 +1,5 @@
 {
-  "exclude": ["./cypress", "./cypress.config.ts", "./mcp-servers"],
+  "exclude": [],
   "include": ["**/*.ts", "**/*.tsx", "prisma/seed.js", ".react-router/types/**/*"],
   "compilerOptions": {
     "lib": ["ESNext", "DOM", "DOM.Iterable"],

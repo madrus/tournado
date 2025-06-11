@@ -1,20 +1,16 @@
-import { JSX, useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { JSX } from 'react'
 import {
   type ActionFunctionArgs,
-  Form,
   type LoaderFunctionArgs,
   type MetaFunction,
-  redirect,
   useActionData,
   useLoaderData,
-  useOutletContext,
 } from 'react-router'
 
-import { InputField } from '~/components/InputField'
-import { ListItemNavLink } from '~/components/PrefetchLink'
+import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { createTeam, getAllTeamListItems } from '~/models/team.server'
+import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
+import { createTeam } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -39,46 +35,9 @@ export const handle: RouteMetadata = {
   title: 'common.titles.addTeam',
 }
 
-type ContextType = {
-  type: 'sidebar' | 'main'
-}
-
-type TeamListItem = {
-  id: string
-  teamName: string
-}
-
-type ActionData = {
-  errors?: {
-    tournamentId?: string
-    clubName?: string
-    teamName?: string
-    teamClass?: string
-    teamLeaderName?: string
-    teamLeaderPhone?: string
-    teamLeaderEmail?: string
-    privacyAgreement?: string
-    teamLeader?: string
-    tournament?: string
-  }
-}
-
-type LoaderData = {
-  teamListItems: TeamListItem[]
-  tournaments: Array<{
-    id: string
-    name: string
-    location: string
-    startDate: string
-    endDate: string | null
-  }>
-}
-
 export const loader = async ({
   request: _,
-}: LoaderFunctionArgs): Promise<LoaderData> => {
-  const teamListItems = await getAllTeamListItems()
-
+}: LoaderFunctionArgs): Promise<TeamCreateLoaderData> => {
   // Fetch available tournaments
   const tournaments = await prisma.tournament.findMany({
     select: {
@@ -92,7 +51,6 @@ export const loader = async ({
   })
 
   return {
-    teamListItems,
     tournaments: tournaments.map(t => ({
       ...t,
       startDate: t.startDate.toISOString(),
@@ -114,7 +72,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
   const privacyAgreement = formData.get('privacyAgreement') as string | null
 
-  const errors: ActionData['errors'] = {}
+  const errors: TeamCreateActionData['errors'] = {}
 
   // Validate required fields
   if (!tournamentId || tournamentId.length === 0) {
@@ -188,232 +146,44 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   const team = await createTeam({
+    clubName: clubName!,
     teamName: teamName!,
     teamClass: teamClass!,
     teamLeaderId: teamLeader.id,
     tournamentId: tournamentId!,
   })
 
-  return redirect(`/teams/${team.id}`)
+  return Response.json(
+    {
+      success: true,
+      team: {
+        id: team.id,
+        teamName: team.teamName,
+        teamClass: team.teamClass,
+      },
+    },
+    { status: 200 }
+  )
 }
 
 export default function NewTeamPage(): JSX.Element {
-  const { t } = useTranslation()
-  const actionData = useActionData<ActionData>()
-  const { teamListItems, tournaments } = useLoaderData<typeof loader>()
-  const context = useOutletContext<ContextType>()
-  const teamNameRef = useRef<HTMLInputElement>(null)
-  const teamClassRef = useRef<HTMLInputElement>(null)
+  const actionData = useActionData<TeamCreateActionData>()
+  const { tournaments } = useLoaderData<typeof loader>()
 
-  useEffect(() => {
-    if (actionData?.errors?.teamName) {
-      teamNameRef.current?.focus()
-    } else if (actionData?.errors?.teamClass) {
-      teamClassRef.current?.focus()
-    }
-  }, [actionData])
+  // Prepare success message
+  const successMessage =
+    actionData?.success && actionData.team
+      ? `Team "${actionData.team.teamName}" (${actionData.team.teamClass}) created successfully!`
+      : undefined
 
-  // Render team list in sidebar
-  if (context.type === 'sidebar') {
-    if (teamListItems.length === 0) {
-      return (
-        <div className='flex flex-col gap-2 p-4'>
-          <p className='text-center text-gray-500'>{t('teams.noTeams')}</p>
-        </div>
-      )
-    }
-
-    return (
-      <div className='flex flex-col gap-2 p-4'>
-        {teamListItems.map((teamItem: TeamListItem) => (
-          <ListItemNavLink
-            key={teamItem.id}
-            to={`/teams/${teamItem.id}`}
-            className={({ isActive }: { isActive: boolean }) =>
-              `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium ${
-                isActive ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'
-              }`
-            }
-          >
-            {teamItem.teamName}
-          </ListItemNavLink>
-        ))}
-      </div>
-    )
-  }
-
-  // Render form in main content
   return (
-    <div className='min-h-full'>
-      <Form method='post' className='pb-safe max-w-6xl space-y-6 pb-8'>
-        {/* Responsive Panels Container */}
-        <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-          {/* Team Information Panel */}
-          <div className='rounded-lg bg-gray-50 p-4'>
-            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-              {t('teams.form.teamInfo')}
-            </h3>
-
-            {/* Tournament Selection */}
-            <div className='mb-4'>
-              <label className='flex w-full flex-col gap-1'>
-                <span className='font-medium'>{t('teams.form.tournament')}</span>
-                <select
-                  name='tournamentId'
-                  className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
-                  aria-invalid={actionData?.errors?.tournamentId ? true : undefined}
-                  aria-errormessage={
-                    actionData?.errors?.tournamentId ? 'tournamentId-error' : undefined
-                  }
-                >
-                  <option value=''>{t('teams.form.selectTournament')}</option>
-                  {tournaments.map(tournament => (
-                    <option key={tournament.id} value={tournament.id}>
-                      {tournament.name} - {tournament.location} (
-                      {new Date(tournament.startDate).toLocaleDateString()})
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {actionData?.errors?.tournamentId ? (
-                <div className='pt-1 text-red-700' id='tournamentId-error'>
-                  {t('teams.form.tournamentRequired')}
-                </div>
-              ) : null}
-            </div>
-
-            {/* Club Name */}
-            <InputField
-              name='clubName'
-              label={t('teams.form.clubName')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.clubName
-                  ? t('teams.form.clubNameRequired')
-                  : undefined
-              }
-              className='mb-4'
-            />
-
-            {/* Team Name */}
-            <InputField
-              ref={teamNameRef}
-              name='teamName'
-              label={t('teams.form.teamName')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamName
-                  ? t('teams.form.teamNameRequired')
-                  : undefined
-              }
-              className='mb-4'
-            />
-
-            {/* Team Class */}
-            <InputField
-              ref={teamClassRef}
-              name='teamClass'
-              label={t('teams.form.teamClass')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamClass
-                  ? t('teams.form.teamClassRequired')
-                  : undefined
-              }
-            />
-          </div>
-
-          {/* Team Leader Information Panel */}
-          <div className='rounded-lg bg-gray-50 p-4'>
-            <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-              {t('teams.form.teamLeaderInfo')}
-            </h3>
-
-            {/* Team Leader Name */}
-            <InputField
-              name='teamLeaderName'
-              label={t('teams.form.teamLeaderName')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamLeaderName
-                  ? t('teams.form.teamLeaderNameRequired')
-                  : undefined
-              }
-              className='mb-4'
-            />
-
-            {/* Team Leader Phone */}
-            <InputField
-              name='teamLeaderPhone'
-              type='tel'
-              label={t('teams.form.teamLeaderPhone')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamLeaderPhone
-                  ? t('teams.form.teamLeaderPhoneRequired')
-                  : undefined
-              }
-              className='mb-4'
-            />
-
-            {/* Team Leader Email */}
-            <InputField
-              name='teamLeaderEmail'
-              type='email'
-              label={t('teams.form.teamLeaderEmail')}
-              readOnly={false}
-              required
-              error={
-                actionData?.errors?.teamLeaderEmail
-                  ? t(
-                      actionData.errors.teamLeaderEmail === 'teamLeaderEmailInvalid'
-                        ? 'teams.form.teamLeaderEmailInvalid'
-                        : 'teams.form.teamLeaderEmailRequired'
-                    )
-                  : undefined
-              }
-            />
-          </div>
-        </div>
-
-        {/* Privacy Agreement */}
-        <div className='pl-4'>
-          <label className='flex items-start gap-3'>
-            <input
-              name='privacyAgreement'
-              type='checkbox'
-              className='mt-1 h-4 w-4 rounded border-emerald-700/30 bg-white'
-              aria-invalid={actionData?.errors?.privacyAgreement ? true : undefined}
-              aria-errormessage={
-                actionData?.errors?.privacyAgreement
-                  ? 'privacyAgreement-error'
-                  : undefined
-              }
-            />
-            <span className='text-sm'>{t('teams.form.privacyAgreement')}</span>
-          </label>
-          {actionData?.errors?.privacyAgreement ? (
-            <div className='pt-1 text-red-700' id='privacyAgreement-error'>
-              {t('teams.form.privacyAgreementRequired')}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Submit Button with Mobile-Friendly Layout */}
-        <div className='pb-8 pl-4'>
-          <button
-            type='submit'
-            className='w-full rounded-lg bg-amber-500 px-6 py-3 font-medium text-white hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none md:w-auto'
-          >
-            {t('teams.save')}
-          </button>
-        </div>
-      </Form>
-    </div>
+    <TeamForm
+      mode='create'
+      variant='public'
+      tournaments={tournaments}
+      errors={actionData?.errors || {}}
+      isSuccess={actionData?.success || false}
+      successMessage={successMessage}
+    />
   )
 }

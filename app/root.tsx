@@ -95,7 +95,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           <AppBar authenticated={authenticated} username={username} user={user} />
         </div>
         <div
-          className='flex-1 overflow-hidden pb-16 md:pb-0'
+          className='flex-1 overflow-y-auto pb-16 md:pb-0'
           style={{ position: 'relative', zIndex: 1 }}
         >
           <Outlet />
@@ -125,7 +125,7 @@ export function ErrorBoundary(): JSX.Element {
             <AppBar authenticated={authenticated} username={username} />
           </div>
           <div
-            className='flex-1 overflow-hidden pb-16 md:pb-0'
+            className='flex-1 overflow-y-auto pb-16 md:pb-0'
             style={{ position: 'relative', zIndex: 1 }}
           >
             <GeneralErrorBoundary />

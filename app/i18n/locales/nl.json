@@ -38,6 +38,8 @@
   "common": {
     "appName": "Tournado",
     "backToHome": "Terug naar home",
+    "cancel": "Annuleren",
+    "error": "Fout",
     "guest": "Bezoeker",
     "language": "Taal",
     "loading": "Laden...",
@@ -54,7 +56,24 @@
       "teams": "Teams",
       "welcome": "Welkom"
     },
+    "unknownError": "Er is een onbekende fout opgetreden",
     "welcome": "Welkom"
+  },
+  "admin": {
+    "teams": {
+      "allTeams": "Alle teams",
+      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om gegevens te bewerken of te verwijderen.",
+      "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "createTeam": "Team aanmaken",
+      "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde gegevens.",
+      "description": "Beheer alle teams in alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
+      "editTeam": "Team gegevens bewerken",
+      "saveChanges": "Wijzigingen opslaan",
+      "teamNotFound": "Team niet gevonden",
+      "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
+      "title": "Teams beheer",
+      "totalTeams": "Totaal aantal teams"
+    }
   },
   "errors": {
     "errorTitle": "Applicatiefout",
@@ -98,9 +117,12 @@
     }
   },
   "teams": {
-    "addTeam": "+ Team toevoegen",
+    "addTeam": "Team toevoegen",
+    "count": "{{count}} team geregistreerd",
+    "count_other": "{{count}} teams geregistreerd",
     "createNewTeam": "Maak een nieuw team aan",
-    "delete": "Verwijderen",
+    "deleteTeam": "Team verwijderen",
+    "description": "Registreer je team(s) voor een of meer toernooien",
     "errors": {
       "notFound": "Team niet gevonden",
       "unexpectedError": "Er is een onverwachte fout opgetreden:",
@@ -109,6 +131,8 @@
     "form": {
       "clubName": "Clubnaam:",
       "clubNameRequired": "Clubnaam is verplicht",
+      "createTeam": "Opslaan",
+      "createAnotherTeam": "Nog een team aanmaken",
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de algemene voorwaarden",
       "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
       "selectTournament": "Selecteer een toernooi",
@@ -128,8 +152,12 @@
       "tournament": "Toernooi:",
       "tournamentRequired": "Toernooi selectie is verplicht"
     },
+    "getStarted": {
+      "title": "Begin met teamregistratie",
+      "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!"
+    },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
-    "noTeams": "Nog geen teams",
+    "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",
     "save": "Opslaan",
     "title": "Teams"
   }

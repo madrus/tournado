@@ -3,8 +3,6 @@
 .prisma
 .react-router
 **/.DS_Store
-/cypress/screenshots
-/cypress/videos
 /prisma/data.db
 /prisma/data.db-journal
 /prisma/prisma
@@ -13,3 +11,12 @@ coverage
 dist
 mcp-servers/vitest/dist
 node_modules
+
+# Playwright
+blob-report
+playwright-report
+playwright-results
+playwright/.auth
+playwright/.cache
+test-results
+vitest-results.json

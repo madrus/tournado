@@ -43,7 +43,7 @@ describe('BottomNavigation', () => {
       const nav = screen.getByRole('navigation')
       expect(nav).toBeInTheDocument()
       expect(nav).toHaveAttribute('aria-label', 'Bottom navigation')
-      expect(nav).toHaveAttribute('data-cy', 'bottom-navigation')
+      expect(nav).toHaveAttribute('data-testid', 'bottom-navigation')
     })
 
     it('should have correct CSS classes for mobile-only display', () => {
@@ -251,7 +251,7 @@ describe('BottomNavigation', () => {
   })
 
   describe('Testing Attributes', () => {
-    it('should have data-cy attribute for e2e testing', () => {
+    it('should have data-testid attribute for e2e testing', () => {
       render(
         <MemoryRouter>
           <BottomNavigation />
@@ -260,7 +260,7 @@ describe('BottomNavigation', () => {
 
       const nav = screen.getByRole('navigation')
       expect(nav).toBeInTheDocument()
-      expect(nav).toHaveAttribute('data-cy', 'bottom-navigation')
+      expect(nav).toHaveAttribute('data-testid', 'bottom-navigation')
     })
   })
 

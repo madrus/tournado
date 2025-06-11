@@ -6,6 +6,27 @@ import bcrypt from 'bcryptjs'
 
 import { prisma } from '../../app/db.server'
 
+// Clean database for tests - removes all test data
+export const cleanDatabase = async (): Promise<void> => {
+  try {
+    console.log('🧹 Cleaning database for tests...')
+
+    // Delete in correct order to respect foreign key constraints
+    await prisma.matchScore.deleteMany()
+    await prisma.match.deleteMany()
+    await prisma.team.deleteMany()
+    await prisma.tournament.deleteMany()
+    await prisma.teamLeader.deleteMany()
+    await prisma.password.deleteMany()
+    await prisma.user.deleteMany()
+
+    console.log('✅ Database cleaned successfully')
+  } catch (error) {
+    console.error('❌ Error cleaning database:', error)
+    throw error
+  }
+}
+
 export async function createUser(
   userData: Pick<User, 'firstName' | 'lastName' | 'email' | 'role'> & {
     password: string
@@ -42,30 +63,18 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-// Create admin user for tests
+// Create admin user for tests with unique email
 export async function createAdminUser(): Promise<User> {
-  const adminEmail = 'admin@test.com'
+  const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
 
-  try {
-    // First try to find existing admin user
-    const existingUser = await findUserByEmail(adminEmail)
-    if (existingUser) {
-      console.log(`Admin user ${adminEmail} already exists`)
-      return existingUser
-    }
-
-    console.log(`Creating admin user ${adminEmail}`)
-    return await createUser({
-      firstName: 'Admin',
-      lastName: 'User',
-      email: adminEmail,
-      role: 'ADMIN',
-      password: 'admin123',
-    })
-  } catch (error) {
-    console.error('Error creating admin user:', error)
-    throw error
-  }
+  console.log(`Creating admin user ${adminEmail}`)
+  return await createUser({
+    firstName: 'Test',
+    lastName: 'Admin',
+    email: adminEmail,
+    role: 'ADMIN', // Ensure this is set to ADMIN role
+    password: 'MyReallyStr0ngPassw0rd!!!',
+  })
 }
 
 // Create regular user for tests
@@ -76,7 +85,7 @@ export const createRegularUser = async (): Promise<{ email: string; role: string
     lastName: faker.person.lastName(),
     email,
     role: 'PUBLIC',
-    password: 'myreallystrongpassword',
+    password: 'MyReallyStr0ngPassw0rd!!!',
   })
 
   return {

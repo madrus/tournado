@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { cleanupUser, createRegularUser } from '../helpers/database'
+import { createRegularUser } from '../helpers/database'
 
 test.describe('Authorization - Role-based Access', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,13 +22,9 @@ test.describe('Authorization - Role-based Access', () => {
 
       await page.goto('/auth/signin')
       await page.locator('#email').fill(regularUser.email)
-      await page.locator('#password').fill('myreallystrongpassword')
+      await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
       await page.getByRole('button', { name: 'Inloggen' }).click()
       await expect(page).toHaveURL('/')
-    })
-
-    test.afterEach(async () => {
-      await cleanupUser(regularUser.email)
     })
 
     test('should be denied access to admin panel', async ({ page }) => {

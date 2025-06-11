@@ -34,49 +34,59 @@ export const getTeamById = ({
   id,
 }: {
   id: string
-}): Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null> =>
+}): Promise<Pick<
+  TeamWithLeader,
+  'id' | 'clubName' | 'teamClass' | 'teamName'
+> | null> =>
   prisma.team.findUnique({
-    select: { id: true, teamClass: true, teamName: true },
+    select: { id: true, clubName: true, teamClass: true, teamName: true },
     where: { id },
-  }) as Promise<Pick<TeamWithLeader, 'id' | 'teamClass' | 'teamName'> | null>
+  }) as Promise<Pick<
+    TeamWithLeader,
+    'id' | 'clubName' | 'teamClass' | 'teamName'
+  > | null>
 
 export const getTeamListItems = async ({
   teamLeaderId,
 }: {
   teamLeaderId: TeamLeader['id']
-}): Promise<Array<Pick<Team, 'id' | 'teamName'>>> =>
+}): Promise<Array<Pick<Team, 'id' | 'clubName' | 'teamName'>>> =>
   prisma.team.findMany({
     where: { teamLeaderId },
     select: {
       id: true,
+      clubName: true,
       teamName: true,
     },
     orderBy: { updatedAt: 'desc' },
   })
 
 export const getAllTeamListItems = async (): Promise<
-  Array<Pick<Team, 'id' | 'teamName'>>
+  Array<Pick<Team, 'id' | 'clubName' | 'teamName'>>
 > =>
   prisma.team.findMany({
     select: {
       id: true,
+      clubName: true,
       teamName: true,
     },
     orderBy: { updatedAt: 'desc' },
   })
 
 export const createTeam = async ({
+  clubName,
   teamName,
   teamClass,
   teamLeaderId,
   tournamentId,
-}: Pick<Team, 'teamName' | 'teamClass'> & {
+}: Pick<Team, 'clubName' | 'teamName' | 'teamClass'> & {
   teamLeaderId: TeamLeader['id']
   tournamentId: string
 }): Promise<Team> =>
   prisma.team.create({
     // eslint-disable-next-line id-blacklist
     data: {
+      clubName,
       teamName,
       teamClass,
       teamLeaderId,

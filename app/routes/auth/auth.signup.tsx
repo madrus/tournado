@@ -13,7 +13,7 @@ import {
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { createUser, getUserByEmail } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { createUserSession, getUserId } from '~/utils/session.server'
+import { getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
 //! TODO: replace with generated type
@@ -43,9 +43,8 @@ export const handle: RouteMetadata = {
 export async function loader({ request }: LoaderArgs): Promise<object> {
   const userId = await getUserId(request)
   if (userId) {
-    // If user is already logged in, redirect them
-    // We can't determine their role here easily, so just redirect to teams
-    return redirect('/teams')
+    // If user is already logged in, redirect them to homepage
+    return redirect('/')
   }
   return {}
 }
@@ -92,7 +91,7 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     )
   }
 
-  const user = await createUser(
+  await createUser(
     email,
     password,
     typeof firstName === 'string' ? firstName : '',
@@ -100,16 +99,13 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     'PUBLIC' // Default role for new users
   )
 
-  // Use consistent default redirect for all users regardless of role
-  const defaultRedirect = '/'
+  // After successful signup, redirect to signin page (don't auto-login)
+  // Preserve the original redirectTo parameter for after they sign in
+  const signInUrl = redirectTo
+    ? `/auth/signin?redirectTo=${encodeURIComponent(redirectTo)}`
+    : '/auth/signin'
 
-  // Always respect redirectTo if provided, regardless of user role
-  return createUserSession({
-    redirectTo: redirectTo || defaultRedirect,
-    remember: false,
-    request,
-    userId: user.id,
-  })
+  return redirect(signInUrl)
 }
 
 export const meta: MetaFunction = () => [

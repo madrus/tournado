@@ -44,7 +44,7 @@
    sqlite3 prisma/data-test.db ".tables"
 
    # Run E2E tests through the proper script (auto-manages test DB)
-   pnpm test:e2e:run
+   pnpm test:e2e:all
    ```
 
 2. **Development vs Test Database Confusion**
@@ -78,12 +78,12 @@
 
    ```sh
    # Always run E2E tests via the proper commands
-   pnpm test:e2e:run    # Headless mode
+   pnpm test:e2e:all    # Headless mode (starts server)
    pnpm test:e2e:dev    # Interactive mode
 
-   # Avoid running Cypress directly (bypasses database setup)
-   # ❌ Don't do: npx cypress run
-   # ✅ Do: pnpm test:e2e:run
+   # Avoid running Playwright directly (bypasses database setup)
+   # ❌ Don't do: npx playwright test
+   # ✅ Do: pnpm test:e2e:all
    ```
 
 4. **Stale Test Data Issues**
@@ -95,7 +95,7 @@
    ```sh
    # Manually remove test database and let it be recreated
    rm -f prisma/data-test.db
-   pnpm test:e2e:run
+   pnpm test:e2e:all
    ```
 
 ## Debugging Tools

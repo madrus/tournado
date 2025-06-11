@@ -155,6 +155,7 @@ async function seed() {
     // minimal two dummy teams playing in the 1st tournament
     const createdTeam1 = await prisma.team.create({
       data: {
+        clubName: 'sv DIO',
         teamName: team1.teamName,
         teamClass: team1.teamClass,
         teamLeaderId: teamLeader.id,
@@ -164,6 +165,7 @@ async function seed() {
 
     const createdTeam2 = await prisma.team.create({
       data: {
+        clubName: 'sv DIO',
         teamName: team2.teamName,
         teamClass: team2.teamClass,
         teamLeaderId: teamLeader.id,
@@ -174,6 +176,7 @@ async function seed() {
     // minimal two dummy teams playing in the 2nd tournament
     const createdTeam3 = await prisma.team.create({
       data: {
+        clubName: 'sv DIO',
         teamName: team1.teamName,
         teamClass: team1.teamClass,
         teamLeaderId: teamLeader.id,
@@ -183,6 +186,7 @@ async function seed() {
 
     const createdTeam4 = await prisma.team.create({
       data: {
+        clubName: 'sv DIO',
         teamName: team2.teamName,
         teamClass: team2.teamClass,
         teamLeaderId: teamLeader.id,

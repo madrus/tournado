@@ -38,6 +38,8 @@
   "common": {
     "appName": "Tournado",
     "backToHome": "Back to home",
+    "cancel": "Cancel",
+    "error": "Error",
     "guest": "Guest",
     "language": "Language",
     "loading": "Loading...",
@@ -54,7 +56,24 @@
       "teams": "Teams",
       "welcome": "Welcome"
     },
+    "unknownError": "An unknown error occurred",
     "welcome": "Welcome"
+  },
+  "admin": {
+    "teams": {
+      "allTeams": "All Teams",
+      "allTeamsDescription": "Manage all teams in the system. Click on a team to edit details or delete it.",
+      "confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
+      "createTeam": "Create Team",
+      "createTeamDescription": "Add a new team to the system with all necessary details.",
+      "description": "Manage all teams across all tournaments. View, edit, or delete team information.",
+      "editTeam": "Edit Team Details",
+      "saveChanges": "Save Changes",
+      "teamNotFound": "Team Not Found",
+      "teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
+      "title": "Teams Management",
+      "totalTeams": "Total Teams"
+    }
   },
   "errors": {
     "errorTitle": "Application Error",
@@ -98,9 +117,12 @@
     }
   },
   "teams": {
-    "addTeam": "+ Add Team",
+    "addTeam": "Add Team",
+    "count": "{{count}} team registered",
+    "count_other": "{{count}} teams registered",
     "createNewTeam": "Create a new team",
-    "delete": "Delete",
+    "deleteTeam": "Delete Team",
+    "description": "Register your team(s) for one or more tournaments",
     "errors": {
       "notFound": "Team not found",
       "unexpectedError": "An unexpected error occurred:",
@@ -109,6 +131,8 @@
     "form": {
       "clubName": "Club Name:",
       "clubNameRequired": "Club name is required",
+      "createTeam": "Save",
+      "createAnotherTeam": "Create Another Team",
       "privacyAgreement": "I agree to the privacy policy and terms of service",
       "privacyAgreementRequired": "You must agree to the privacy policy",
       "selectTournament": "Select a tournament",
@@ -128,8 +152,12 @@
       "tournament": "Tournament:",
       "tournamentRequired": "Tournament selection is required"
     },
+    "getStarted": {
+      "title": "Get Started with Team Registration",
+      "description": "Ready to join a tournament? Click the 'Add Team' button above to register your team and start competing!"
+    },
     "noTeamSelected": "No team selected. Select a team on the left, or",
-    "noTeams": "No teams yet",
+    "noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
     "save": "Save",
     "title": "Teams"
   }

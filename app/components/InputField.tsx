@@ -8,6 +8,7 @@ type InputFieldProps = {
   error?: string
   required?: boolean
   className?: string
+  defaultValue?: string
 }
 
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -20,6 +21,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       error,
       required = false,
       className = '',
+      defaultValue,
     },
     ref
   ) => (
@@ -32,6 +34,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           type={type}
           readOnly={readOnly}
           required={required}
+          defaultValue={defaultValue}
           className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}

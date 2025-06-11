@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { TeamChip } from './TeamChip'
 
-interface TeamListProps {
+type TeamListProps = {
   teams: Array<{
     id: string
     clubName: string

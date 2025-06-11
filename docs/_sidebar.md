@@ -5,6 +5,7 @@
    - [Overview](development/overview.md)
    - [Routing](development/routing.md)
    - [UI Components](development/ui-components.md)
+   - [Type System](development/type-system.md)
    - [Database](development/database.md)
    - [Cursor Rules](development/cursor_rules.md)
 - Testing

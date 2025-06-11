@@ -1,6 +1,6 @@
 import { JSX } from 'react'
 
-interface TeamChipProps {
+type TeamChipProps = {
   team: {
     id: string
     clubName: string

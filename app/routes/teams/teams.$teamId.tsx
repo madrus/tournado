@@ -1,9 +1,11 @@
 import type { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
+import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById, type TeamWithLeader } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
@@ -33,11 +35,14 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
     ]
   }
 
+  // For meta tags, we'll use English as the default since we don't have access to i18n here
+  const divisionLabel = getDivisionLabel(loaderData.team.division, 'en')
+
   return [
     { title: `${loaderData.team.clubName} ${loaderData.team.teamName} | Tournado` },
     {
       name: 'description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.division} class.`,
+      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${divisionLabel} class.`,
     },
     {
       property: 'og:title',
@@ -45,7 +50,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
     },
     {
       property: 'og:description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${loaderData.team.division} class.`,
+      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${divisionLabel} class.`,
     },
     { property: 'og:type', content: 'website' },
   ]
@@ -65,6 +70,7 @@ export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
 
 export default function TeamDetailsPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
+  const { i18n } = useTranslation()
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -74,7 +80,9 @@ export default function TeamDetailsPage(): JSX.Element {
           <h1 className='text-3xl font-bold text-gray-900'>
             {`${team.clubName} ${team.teamName}`}
           </h1>
-          <p className='mt-2 text-lg text-gray-600'>{team.division}</p>
+          <p className='mt-2 text-lg text-gray-600'>
+            {getDivisionLabel(team.division, i18n.language)}
+          </p>
         </div>
 
         {/* Content Grid */}
@@ -160,7 +168,9 @@ export default function TeamDetailsPage(): JSX.Element {
                 </div>
                 <div>
                   <dt className='text-sm font-medium text-gray-500'>Class</dt>
-                  <dd className='text-sm text-gray-900'>{team.division}</dd>
+                  <dd className='text-sm text-gray-900'>
+                    {getDivisionLabel(team.division, i18n.language)}
+                  </dd>
                 </div>
                 <div>
                   <dt className='text-sm font-medium text-gray-500'>Status</dt>

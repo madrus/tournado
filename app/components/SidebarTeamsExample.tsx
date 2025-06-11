@@ -2,6 +2,10 @@
 import { JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import type { Division } from '@prisma/client'
+
+import { getDivisionLabel } from '~/lib/lib.helpers'
+
 import { SidebarLayout } from './SidebarLayout'
 import { TeamChip } from './TeamChip'
 
@@ -9,7 +13,7 @@ type Team = {
   id: string
   clubName: string
   teamName: string
-  division: string
+  division: Division
 }
 
 type SidebarTeamsExampleProps = {
@@ -24,7 +28,7 @@ type SidebarTeamsExampleProps = {
 export function SidebarTeamsExample({
   teams = [],
 }: SidebarTeamsExampleProps): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null)
 
   // Example team data (would come from loader in real implementation)
@@ -36,27 +40,32 @@ export function SidebarTeamsExample({
             id: '1',
             clubName: 'sv DIO',
             teamName: 'Heren 1',
-            division: 'Hoofdklasse',
+            division: 'PREMIER_DIVISION',
           },
           {
             id: '2',
             clubName: 'sv DIO',
             teamName: 'Dames 1',
-            division: 'Eerste klasse',
+            division: 'FIRST_DIVISION',
           },
           {
             id: '3',
             clubName: 'sv DIO',
             teamName: 'Heren 2',
-            division: 'Tweede klasse',
+            division: 'SECOND_DIVISION',
           },
           {
             id: '4',
             clubName: 'sv DIO',
             teamName: 'Dames 2',
-            division: 'Derde klasse',
+            division: 'THIRD_DIVISION',
           },
-          { id: '5', clubName: 'sv DIO', teamName: 'Mix 1', division: 'Recreanten' },
+          {
+            id: '5',
+            clubName: 'sv DIO',
+            teamName: 'Mix 1',
+            division: 'FOURTH_DIVISION',
+          },
         ]
 
   // Sidebar content - team list
@@ -78,7 +87,9 @@ export function SidebarTeamsExample({
             <div className='h-2 w-2 rounded-full bg-gray-400' />
             <div className='flex flex-col'>
               <span className='font-medium'>{`${team.clubName} ${team.teamName}`}</span>
-              <span className='text-xs text-gray-500'>{team.division}</span>
+              <span className='text-xs text-gray-500'>
+                {getDivisionLabel(team.division, i18n.language)}
+              </span>
             </div>
           </button>
         ))
@@ -108,7 +119,9 @@ export function SidebarTeamsExample({
             </div>
             <div>
               <dt className='text-sm font-medium text-gray-500'>Class</dt>
-              <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.division}</dd>
+              <dd className='mt-1 text-sm text-gray-900'>
+                {getDivisionLabel(selectedTeam.division, i18n.language)}
+              </dd>
             </div>
             <div>
               <dt className='text-sm font-medium text-gray-500'>Status</dt>
@@ -204,9 +217,9 @@ export function TeamsLayoutComparison(): JSX.Element {
   const { t: _t } = useTranslation()
 
   const exampleTeams: Team[] = [
-    { id: '1', clubName: 'sv DIO', teamName: 'Heren 1', division: 'Hoofdklasse' },
-    { id: '2', clubName: 'sv DIO', teamName: 'Dames 1', division: 'Eerste klasse' },
-    { id: '3', clubName: 'sv DIO', teamName: 'Heren 2', division: 'Tweede klasse' },
+    { id: '1', clubName: 'sv DIO', teamName: 'Heren 1', division: 'PREMIER_DIVISION' },
+    { id: '2', clubName: 'sv DIO', teamName: 'Dames 1', division: 'FIRST_DIVISION' },
+    { id: '3', clubName: 'sv DIO', teamName: 'Heren 2', division: 'SECOND_DIVISION' },
   ]
 
   return (

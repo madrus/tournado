@@ -12,9 +12,9 @@ import { Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
+import { stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { createTeam } from '~/models/team.server'
-import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 

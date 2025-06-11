@@ -11,9 +11,10 @@ import { Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
+import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
+import { extractTeamDataFromFormData, validateTeamData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
-import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 
 export const meta: MetaFunction = () => [
@@ -67,57 +68,54 @@ export const loader = async ({
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   const formData = await request.formData()
 
-  // Extract all form fields with proper typing
-  const tournamentId = formData.get('tournamentId') as string | null
-  const clubName = formData.get('clubName') as string | null
-  const teamName = formData.get('teamName') as string | null
-  const division = formData.get('division') as string | null
-  const teamLeaderName = formData.get('teamLeaderName') as string | null
-  const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
-  const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
-  const privacyAgreement = formData.get('privacyAgreement') as string | null
+  // Extract form data using shared utility
+  const teamData = extractTeamDataFromFormData(formData)
+
+  // Validate using shared schema
+  const validationResult = validateTeamData(teamData, 'create')
 
   const errors: TeamCreateActionData['errors'] = {}
 
-  // Validate required fields
-  if (!tournamentId || tournamentId.length === 0) {
-    errors.tournamentId = 'tournamentRequired'
+  if (!validationResult.success) {
+    // Convert Zod validation errors to the expected error format
+    validationResult.error.errors.forEach(error => {
+      if (error.path[0]) {
+        const fieldName = error.path[0] as string
+        // Map to simple error keys for translation
+        switch (fieldName) {
+          case 'tournamentId':
+            errors.tournamentId = 'validationError'
+            break
+          case 'clubName':
+            errors.clubName = 'validationError'
+            break
+          case 'teamName':
+            errors.teamName = 'validationError'
+            break
+          case 'division':
+            errors.division = 'validationError'
+            break
+          case 'teamLeaderName':
+            errors.teamLeaderName = 'validationError'
+            break
+          case 'teamLeaderPhone':
+            errors.teamLeaderPhone = 'validationError'
+            break
+          case 'teamLeaderEmail':
+            errors.teamLeaderEmail = 'validationError'
+            break
+          case 'privacyAgreement':
+            errors.privacyAgreement = 'validationError'
+            break
+        }
+      }
+    })
   }
 
-  if (!clubName || clubName.length === 0) {
-    errors.clubName = 'clubNameRequired'
-  }
-
-  if (!teamName || teamName.length === 0) {
-    errors.teamName = 'teamNameRequired'
-  }
-
-  if (!division || division.length === 0) {
-    errors.division = 'teamClassRequired'
-  }
-
-  // Validate division is a valid enum value
-  const validDivision = stringToDivision(division)
-  if (division && !validDivision) {
+  // Additional business logic validation
+  const validDivision = teamData.division ? stringToDivision(teamData.division) : null
+  if (teamData.division && !validDivision) {
     errors.division = 'invalidDivision'
-  }
-
-  if (!teamLeaderName || teamLeaderName.length === 0) {
-    errors.teamLeaderName = 'teamLeaderNameRequired'
-  }
-
-  if (!teamLeaderPhone || teamLeaderPhone.length === 0) {
-    errors.teamLeaderPhone = 'teamLeaderPhoneRequired'
-  }
-
-  if (!teamLeaderEmail || teamLeaderEmail.length === 0) {
-    errors.teamLeaderEmail = 'teamLeaderEmailRequired'
-  } else if (!teamLeaderEmail.includes('@')) {
-    errors.teamLeaderEmail = 'teamLeaderEmailInvalid'
-  }
-
-  if (privacyAgreement !== 'on') {
-    errors.privacyAgreement = 'privacyAgreementRequired'
   }
 
   if (Object.keys(errors).length > 0) {
@@ -126,11 +124,11 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
   // Find or create team leader
   let teamLeader = await prisma.teamLeader.findUnique({
-    where: { email: teamLeaderEmail as string },
+    where: { email: teamData.teamLeaderEmail },
   })
 
   if (!teamLeader) {
-    const [firstName, ...lastNameParts] = (teamLeaderName as string).split(' ')
+    const [firstName, ...lastNameParts] = teamData.teamLeaderName.split(' ')
     const lastName = lastNameParts.join(' ') || ''
 
     teamLeader = await prisma.teamLeader.create({
@@ -138,15 +136,15 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       data: {
         firstName,
         lastName,
-        email: teamLeaderEmail as string,
-        phone: teamLeaderPhone as string,
+        email: teamData.teamLeaderEmail,
+        phone: teamData.teamLeaderPhone,
       },
     })
   }
 
   // Verify tournament exists
   const tournament = await prisma.tournament.findUnique({
-    where: { id: tournamentId as string },
+    where: { id: teamData.tournamentId },
   })
 
   if (!tournament) {
@@ -157,11 +155,11 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   const team = await createTeam({
-    clubName: clubName as string,
-    teamName: teamName as string,
+    clubName: teamData.clubName,
+    teamName: teamData.teamName,
     division: validDivision as Division,
     teamLeaderId: teamLeader.id,
-    tournamentId: tournamentId as string,
+    tournamentId: teamData.tournamentId,
   })
 
   return Response.json(
@@ -181,10 +179,10 @@ export default function NewTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { tournaments } = useLoaderData<typeof loader>()
 
-  // Prepare success message
+  // Prepare success message with translated division label
   const successMessage =
     actionData?.success && actionData.team
-      ? `Team "${actionData.team.teamName}" (${actionData.team.division}) created successfully!`
+      ? `Team "${actionData.team.teamName}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
       : undefined
 
   return (

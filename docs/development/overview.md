@@ -48,6 +48,17 @@ The application implements a comprehensive role-based access control system thro
 
 For detailed UI component information, see [UI Components Documentation](ui-components.md).
 
+### Type System
+
+The application implements a centralized type system with strong typing patterns:
+
+- **Centralized Types**: All shared types consolidated in `app/lib/lib.types.ts`
+- **Type Conversion Utilities**: Helper functions for database-to-strict-type conversions
+- **Template Literal Types**: Enforced patterns for enhanced type safety
+- **Database Compatibility**: Seamless integration between database strings and strict types
+
+For detailed type system information, see [Type System Documentation](type-system.md).
+
 ## Development Workflow
 
 1. Start the development server:

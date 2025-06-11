@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import {
@@ -15,9 +15,13 @@ import invariant from 'tiny-invariant'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
+import {
+  stringToDivision,
+  stringToTeamClass,
+  stringToTeamName,
+} from '~/lib/lib.helpers'
 import type { TeamEditActionData } from '~/lib/lib.types'
 import { deleteTeamById, getTeamById, type TeamWithLeader } from '~/models/team.server'
-import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -211,8 +215,8 @@ export default function AdminTeamDetailsPage(): JSX.Element {
       variant='admin'
       formData={{
         clubName: team.clubName,
-        teamName: team.teamName,
-        division: team.division,
+        teamName: stringToTeamName(team.teamName),
+        division: stringToTeamClass(team.division),
       }}
       errors={actionData?.errors || {}}
       onCancel={handleCancel}

@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test'
 import * as fs from 'fs'
 import * as path from 'path'
 
-export interface TestUser {
+export type TestUser = {
   email: string
   role: string
 }

@@ -130,7 +130,7 @@
 
 **Location**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId.tsx`
 
-- **Full editing capabilities**: Update clubName, teamName, teamClass
+- **Full editing capabilities**: Update clubName, teamName, division
 - Delete functionality with confirmation
 - Form validation and error handling
 - Admin-protected route

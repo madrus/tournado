@@ -8,10 +8,13 @@ import {
   useLoaderData,
 } from 'react-router'
 
+import { Division } from '@prisma/client'
+
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { createTeam } from '~/models/team.server'
+import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -59,6 +62,7 @@ export const loader = async ({
       location: true,
       startDate: true,
       endDate: true,
+      divisions: true,
     },
     orderBy: { startDate: 'asc' },
   })
@@ -68,6 +72,7 @@ export const loader = async ({
       ...t,
       startDate: t.startDate.toISOString(),
       endDate: t.endDate?.toISOString() || null,
+      divisions: Array.isArray(t.divisions) ? (t.divisions as Division[]) : [],
     })),
   }
 }
@@ -81,7 +86,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   const tournamentId = formData.get('tournamentId') as string | null
   const clubName = formData.get('clubName') as string | null
   const teamName = formData.get('teamName') as string | null
-  const teamClass = formData.get('teamClass') as string | null
+  const division = formData.get('division') as string | null
   const teamLeaderName = formData.get('teamLeaderName') as string | null
   const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
   const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
@@ -102,8 +107,14 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
     errors.teamName = 'teamNameRequired'
   }
 
-  if (!teamClass || teamClass.length === 0) {
-    errors.teamClass = 'teamClassRequired'
+  if (!division || division.length === 0) {
+    errors.division = 'teamClassRequired'
+  }
+
+  // Validate division is a valid enum value
+  const validDivision = stringToDivision(division)
+  if (division && !validDivision) {
+    errors.division = 'invalidDivision'
   }
 
   if (!teamLeaderName || teamLeaderName.length === 0) {
@@ -130,11 +141,11 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
 
   // Find or create team leader
   let teamLeader = await prisma.teamLeader.findUnique({
-    where: { email: teamLeaderEmail! },
+    where: { email: teamLeaderEmail as string },
   })
 
   if (!teamLeader) {
-    const [firstName, ...lastNameParts] = teamLeaderName!.split(' ')
+    const [firstName, ...lastNameParts] = (teamLeaderName as string).split(' ')
     const lastName = lastNameParts.join(' ') || ''
 
     teamLeader = await prisma.teamLeader.create({
@@ -142,15 +153,15 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
       data: {
         firstName,
         lastName,
-        email: teamLeaderEmail!,
-        phone: teamLeaderPhone!,
+        email: teamLeaderEmail as string,
+        phone: teamLeaderPhone as string,
       },
     })
   }
 
   // Verify tournament exists
   const tournament = await prisma.tournament.findUnique({
-    where: { id: tournamentId! },
+    where: { id: tournamentId as string },
   })
 
   if (!tournament) {
@@ -161,11 +172,11 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   const team = await createTeam({
-    clubName: clubName!,
-    teamName: teamName!,
-    teamClass: teamClass!,
+    clubName: clubName as string,
+    teamName: teamName as string,
+    division: validDivision as Division,
     teamLeaderId: teamLeader.id,
-    tournamentId: tournamentId!,
+    tournamentId: tournamentId as string,
   })
 
   return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)

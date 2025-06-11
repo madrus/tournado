@@ -33,7 +33,7 @@ CREATE TABLE "Team" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "teamName" TEXT NOT NULL,
-    "teamClass" TEXT NOT NULL,
+    "division" TEXT NOT NULL,
     "teamLeaderId" TEXT NOT NULL,
     "tournamentId" TEXT NOT NULL,
     CONSTRAINT "Team_teamLeaderId_fkey" FOREIGN KEY ("teamLeaderId") REFERENCES "TeamLeader" ("id") ON DELETE CASCADE ON UPDATE CASCADE,

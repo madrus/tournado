@@ -9,7 +9,7 @@ type Team = {
   id: string
   clubName: string
   teamName: string
-  teamClass: string
+  division: string
 }
 
 type SidebarTeamsExampleProps = {
@@ -36,27 +36,27 @@ export function SidebarTeamsExample({
             id: '1',
             clubName: 'sv DIO',
             teamName: 'Heren 1',
-            teamClass: 'Hoofdklasse',
+            division: 'Hoofdklasse',
           },
           {
             id: '2',
             clubName: 'sv DIO',
             teamName: 'Dames 1',
-            teamClass: 'Eerste klasse',
+            division: 'Eerste klasse',
           },
           {
             id: '3',
             clubName: 'sv DIO',
             teamName: 'Heren 2',
-            teamClass: 'Tweede klasse',
+            division: 'Tweede klasse',
           },
           {
             id: '4',
             clubName: 'sv DIO',
             teamName: 'Dames 2',
-            teamClass: 'Derde klasse',
+            division: 'Derde klasse',
           },
-          { id: '5', clubName: 'sv DIO', teamName: 'Mix 1', teamClass: 'Recreanten' },
+          { id: '5', clubName: 'sv DIO', teamName: 'Mix 1', division: 'Recreanten' },
         ]
 
   // Sidebar content - team list
@@ -78,7 +78,7 @@ export function SidebarTeamsExample({
             <div className='h-2 w-2 rounded-full bg-gray-400' />
             <div className='flex flex-col'>
               <span className='font-medium'>{`${team.clubName} ${team.teamName}`}</span>
-              <span className='text-xs text-gray-500'>{team.teamClass}</span>
+              <span className='text-xs text-gray-500'>{team.division}</span>
             </div>
           </button>
         ))
@@ -108,7 +108,7 @@ export function SidebarTeamsExample({
             </div>
             <div>
               <dt className='text-sm font-medium text-gray-500'>Class</dt>
-              <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.teamClass}</dd>
+              <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.division}</dd>
             </div>
             <div>
               <dt className='text-sm font-medium text-gray-500'>Status</dt>
@@ -204,9 +204,9 @@ export function TeamsLayoutComparison(): JSX.Element {
   const { t: _t } = useTranslation()
 
   const exampleTeams: Team[] = [
-    { id: '1', clubName: 'sv DIO', teamName: 'Heren 1', teamClass: 'Hoofdklasse' },
-    { id: '2', clubName: 'sv DIO', teamName: 'Dames 1', teamClass: 'Eerste klasse' },
-    { id: '3', clubName: 'sv DIO', teamName: 'Heren 2', teamClass: 'Tweede klasse' },
+    { id: '1', clubName: 'sv DIO', teamName: 'Heren 1', division: 'Hoofdklasse' },
+    { id: '2', clubName: 'sv DIO', teamName: 'Dames 1', division: 'Eerste klasse' },
+    { id: '3', clubName: 'sv DIO', teamName: 'Heren 2', division: 'Tweede klasse' },
   ]
 
   return (

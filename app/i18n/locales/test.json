@@ -135,7 +135,7 @@
       "registrationDescription": "register your team for a tournament. please fill out all required fields below.",
       "registrationInfo": "team registration",
       "selectTournament": "select a tournament",
-      "teamClass": "team class",
+      "division": "team class",
       "teamClassRequired": "team class is required",
       "teamInfo": "team information",
       "teamLeaderEmail": "team leader email",

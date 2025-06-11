@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 # Database Schema
@@ -23,7 +23,7 @@ Stores hashed user passwords:
 ### Team
 Represents user teams:
 - Belongs to a User
-- Contains teamName and teamClass
+- Contains teamName and division
 - Tracked with creation and update timestamps
 
 ## Database Management

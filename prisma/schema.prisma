@@ -23,6 +23,15 @@ enum MatchStatus {
   POSTPONED
 }
 
+enum Division {
+  PREMIER_DIVISION
+  FIRST_DIVISION
+  SECOND_DIVISION
+  THIRD_DIVISION
+  FOURTH_DIVISION
+  FIFTH_DIVISION
+}
+
 model User {
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now())
@@ -57,7 +66,7 @@ model Team {
   updatedAt     DateTime   @updatedAt
   clubName      String
   teamName      String
-  teamClass     String
+  division      Division
   teamLeaderId  String
   teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
   tournamentId  String
@@ -73,6 +82,7 @@ model Tournament {
   updatedAt DateTime @updatedAt
   name      String
   location  String      // city
+  divisions Json        // Array of divisions stored as JSON
   startDate DateTime    // first day of tournament
   endDate   DateTime?   // optional last day; if null, single-day event
   teams     Team[]

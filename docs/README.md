@@ -36,7 +36,7 @@ The application follows the React Router v7 project structure with some addition
 
 - `app/` - Application source code
 - `prisma/` - Database schema and migrations
-- `cypress/` - End-to-end tests
+- `playwright/` - End-to-end tests
 - `docs/` - Project documentation
 
 ## Contributing

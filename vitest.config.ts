@@ -13,6 +13,18 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['./test/setup-test-env.ts'],
     watch: process.env.npm_lifecycle_event !== 'validate',
+    // Only include unit test files (not spec files - those are for Playwright)
+    include: [
+      'app/**/*.test.{ts,tsx}',
+      'test/**/*.test.{ts,tsx}',
+      '__tests__/**/*.test.{ts,tsx}',
+    ],
+    exclude: [
+      'node_modules/**',
+      'playwright/**', // Exclude all Playwright files
+      'build/**',
+      'dist/**',
+    ],
     coverage: {
       all: true,
       provider: 'v8',
@@ -27,7 +39,6 @@ export default defineConfig({
         '**/*.spec.{ts,tsx,js,jsx}',
         'test/**',
         'tests/**',
-        'cypress/**',
 
         // Configuration files
         '*.config.{ts,js,mjs}',

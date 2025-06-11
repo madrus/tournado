@@ -85,7 +85,7 @@ describe('NavigationItem', () => {
       expect(svg).toHaveClass('fill-current')
     })
 
-    it('should have correct data-cy attribute', () => {
+    it('should have correct data-testid attribute', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/',
         search: '',
@@ -101,7 +101,7 @@ describe('NavigationItem', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveAttribute('data-cy', 'nav-teams')
+      expect(link).toHaveAttribute('data-testid', 'nav-teams')
     })
   })
 
@@ -249,7 +249,7 @@ describe('NavigationItem', () => {
   })
 
   describe('Different Navigation Items', () => {
-    it('should handle different labels and data-cy attributes', () => {
+    it('should handle different labels and data-testid attributes', () => {
       const testCases: Array<{
         to: string
         icon: IconName
@@ -277,7 +277,7 @@ describe('NavigationItem', () => {
         )
 
         const link = screen.getByRole('link', { name: `Navigate to ${label}` })
-        expect(link).toHaveAttribute('data-cy', expectedDataCy)
+        expect(link).toHaveAttribute('data-testid', expectedDataCy)
         expect(link).toHaveAttribute('href', to)
 
         // Check that SVG icon is rendered

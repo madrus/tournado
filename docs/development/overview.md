@@ -20,7 +20,7 @@ app/
 - **Database**: SQLite with Prisma ORM
 - **UI Components**: Role-based context menus and responsive navigation
 - **Styling**: Tailwind CSS for modern UI
-- **Testing**: Cypress for E2E tests and Vitest for unit tests
+- **Testing**: Playwright for E2E tests and Vitest for unit tests
 - **Type Safety**: Full TypeScript support
 - **Routing**: React Router v7 with advanced prefetching and route protection
 
@@ -62,7 +62,7 @@ pnpm dev
 # Run all tests
 pnpm test
 
-# Run E2E tests
+# Run E2E tests (Playwright)
 pnpm test:e2e:dev
 
 # Run unit tests

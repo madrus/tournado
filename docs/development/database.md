@@ -13,8 +13,8 @@ This project uses a dual database setup to ensure separation between development
 ### E2E Test Database
 
 - **Location**: `prisma/prisma/data.db`
-- **Purpose**: Dedicated database for end-to-end (e2e) tests using Cypress
-- **Usage**: Used automatically when running e2e tests with `pnpm test:e2e`
+- **Purpose**: Dedicated database for end-to-end (e2e) tests using Playwright
+- **Usage**: Used automatically when running e2e tests with `pnpm test:e2e:all`
 
 ### Critical Requirement for E2E Tests
 
@@ -188,7 +188,7 @@ pnpm prisma migrate dev --name initial_schema
 
 ### Handling Database Resets in GitHub Actions
 
-Your project already has a GitHub Actions workflow that handles database migrations. For the Cypress job, it uses:
+Your project already has a GitHub Actions workflow that handles database migrations. For the Playwright job, it uses:
 
 ```yaml
 - name: 🛠 Setup Database

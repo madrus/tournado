@@ -13,7 +13,7 @@ export default function PublicTeamsLayout(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='min-h-screen bg-gray-50' data-cy='teams-layout'>
+    <div className='min-h-screen bg-gray-50' data-testid='teams-layout'>
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>

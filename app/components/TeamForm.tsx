@@ -1,9 +1,10 @@
-import { JSX, useEffect, useRef } from 'react'
+import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
 import { InputField } from '~/components/InputField'
 import type { TournamentData } from '~/lib/lib.types'
+import { divisionLabels } from '~/utils/division'
 
 export type TeamFormMode = 'create' | 'edit'
 export type TeamFormVariant = 'public' | 'admin'
@@ -11,7 +12,7 @@ export type TeamFormVariant = 'public' | 'admin'
 export interface TeamFormData {
   clubName: string
   teamName: string
-  teamClass: string
+  division: string
   teamLeaderName?: string
   teamLeaderPhone?: string
   teamLeaderEmail?: string
@@ -51,14 +52,25 @@ export function TeamForm({
 }: TeamFormProps): JSX.Element {
   const { t } = useTranslation()
   const teamNameRef = useRef<HTMLInputElement>(null)
-  const teamClassRef = useRef<HTMLInputElement>(null)
+  const teamClassRef = useRef<HTMLSelectElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+
+  // State for selected tournament (for division filtering)
+  const [selectedTournamentId, setSelectedTournamentId] = useState<string>(
+    formData.tournamentId || ''
+  )
+
+  // Get available divisions for selected tournament
+  const availableDivisions = selectedTournamentId
+    ? tournaments.find(tournament => tournament.id === selectedTournamentId)
+        ?.divisions || []
+    : []
 
   // Focus management
   useEffect(() => {
     if (errors.teamName) {
       teamNameRef.current?.focus()
-    } else if (errors.teamClass) {
+    } else if (errors.division) {
       teamClassRef.current?.focus()
     } else if (isSuccess && variant === 'public') {
       // Reset form on successful submission for public variant
@@ -112,7 +124,7 @@ export function TeamForm({
               <p className='mt-1 text-gray-600'>
                 {mode === 'create'
                   ? t('admin.teams.createTeamDescription')
-                  : formData.teamClass}
+                  : formData.division}
               </p>
             </div>
 
@@ -165,6 +177,7 @@ export function TeamForm({
                     <select
                       name='tournamentId'
                       defaultValue={formData.tournamentId || ''}
+                      onChange={event => setSelectedTournamentId(event.target.value)}
                       className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
                       aria-invalid={errors.tournamentId ? true : undefined}
                       aria-errormessage={
@@ -212,16 +225,32 @@ export function TeamForm({
               />
 
               {/* Team Class */}
-              <InputField
-                ref={teamClassRef}
-                name='teamClass'
-                label={t('teams.form.teamClass')}
-                defaultValue={formData.teamClass || ''}
-                readOnly={false}
-                required
-                error={errors.teamClass ? t('teams.form.teamClassRequired') : undefined}
-                className='mb-4'
-              />
+              <div className='mb-4'>
+                <label className='flex w-full flex-col gap-1'>
+                  <span className='font-medium'>{t('teams.form.division')}</span>
+                  <select
+                    ref={teamClassRef}
+                    name='division'
+                    defaultValue={formData.division || ''}
+                    required
+                    className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
+                    aria-invalid={errors.division ? true : undefined}
+                    aria-errormessage={errors.division ? 'division-error' : undefined}
+                  >
+                    <option value=''>{t('teams.form.selectDivision')}</option>
+                    {availableDivisions.map(division => (
+                      <option key={division} value={division}>
+                        {divisionLabels[division].nl} ({divisionLabels[division].en})
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.division ? (
+                  <div className='pt-1 text-red-700' id='division-error'>
+                    {t('teams.form.teamClassRequired')}
+                  </div>
+                ) : null}
+              </div>
             </div>
 
             {/* Team Leader Information Panel */}
@@ -314,15 +343,34 @@ export function TeamForm({
               />
 
               {/* Team Class */}
-              <InputField
-                ref={teamClassRef}
-                name='teamClass'
-                label={t('teams.form.teamClass')}
-                defaultValue={formData.teamClass || ''}
-                readOnly={false}
-                required
-                error={errors.teamClass ? t('teams.form.teamClassRequired') : undefined}
-              />
+              <div>
+                <label className='flex w-full flex-col gap-1'>
+                  <span className='font-medium'>{t('teams.form.division')}</span>
+                  <select
+                    ref={teamClassRef}
+                    name='division'
+                    defaultValue={formData.division || ''}
+                    required
+                    className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
+                    aria-invalid={errors.division ? true : undefined}
+                    aria-errormessage={
+                      errors.division ? 'division-error-admin' : undefined
+                    }
+                  >
+                    <option value=''>{t('teams.form.selectDivision')}</option>
+                    {availableDivisions.map(division => (
+                      <option key={division} value={division}>
+                        {divisionLabels[division].nl} ({divisionLabels[division].en})
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.division ? (
+                  <div className='pt-1 text-red-700' id='division-error-admin'>
+                    {t('teams.form.teamClassRequired')}
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         )}

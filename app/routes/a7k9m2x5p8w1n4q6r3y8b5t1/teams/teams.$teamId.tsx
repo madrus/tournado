@@ -9,12 +9,15 @@ import {
   useRouteError,
 } from 'react-router'
 
+import { Division } from '@prisma/client'
+
 import invariant from 'tiny-invariant'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import type { TeamEditActionData } from '~/lib/lib.types'
 import { deleteTeamById, getTeamById, type TeamWithLeader } from '~/models/team.server'
+import { stringToDivision } from '~/utils/division'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -44,7 +47,7 @@ export const handle: RouteMetadata = {
 }
 
 type LoaderData = {
-  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'teamClass'>
+  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'division'>
   tournaments: Array<{
     id: string
     name: string
@@ -90,7 +93,7 @@ export async function loader({ params, request }: LoaderArgs): Promise<LoaderDat
 
   invariant(params.teamId, 'teamId not found')
 
-  const team = await getTeamById({ id: params.teamId! })
+  const team = await getTeamById({ id: params.teamId as string })
 
   if (!team) {
     throw new Response('Not Found', { status: 404 })
@@ -127,14 +130,14 @@ export async function action({ params, request }: ActionArgs): Promise<Response>
   const intent = formData.get('intent')
 
   if (intent === 'delete') {
-    await deleteTeamById({ id: params.teamId })
+    await deleteTeamById({ id: params.teamId as string })
     return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   }
 
   if (intent === 'update') {
     const clubName = formData.get('clubName') as string | null
     const teamName = formData.get('teamName') as string | null
-    const teamClass = formData.get('teamClass') as string | null
+    const division = formData.get('division') as string | null
 
     const errors: TeamEditActionData['errors'] = {}
 
@@ -146,8 +149,14 @@ export async function action({ params, request }: ActionArgs): Promise<Response>
       errors.teamName = 'teamNameRequired'
     }
 
-    if (!teamClass || teamClass.length === 0) {
-      errors.teamClass = 'teamClassRequired'
+    if (!division || division.length === 0) {
+      errors.division = 'teamClassRequired'
+    }
+
+    // Validate division is a valid enum value
+    const validDivision = stringToDivision(division)
+    if (division && !validDivision) {
+      errors.division = 'invalidDivision'
     }
 
     if (Object.keys(errors).length > 0) {
@@ -156,16 +165,16 @@ export async function action({ params, request }: ActionArgs): Promise<Response>
 
     // Update team
     await prisma.team.update({
-      where: { id: params.teamId },
+      where: { id: params.teamId as string },
       // eslint-disable-next-line id-blacklist
       data: {
-        clubName: clubName!,
-        teamName: teamName!,
-        teamClass: teamClass!,
+        clubName: clubName as string,
+        teamName: teamName as string,
+        division: validDivision as Division,
       },
     })
 
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${params.teamId}`)
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${params.teamId as string}`)
   }
 
   throw new Response('Bad Request', { status: 400 })
@@ -203,7 +212,7 @@ export default function AdminTeamDetailsPage(): JSX.Element {
       formData={{
         clubName: team.clubName,
         teamName: team.teamName,
-        teamClass: team.teamClass,
+        division: team.division,
       }}
       errors={actionData?.errors || {}}
       onCancel={handleCancel}

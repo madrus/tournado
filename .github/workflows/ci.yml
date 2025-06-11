@@ -50,6 +50,9 @@ jobs:
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
 
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
+
       - name: 🔬 Lint
         run: pnpm lint
 
@@ -89,6 +92,9 @@ jobs:
 
       - name: 📥 Install deps
         run: pnpm install --no-frozen-lockfile
+
+      - name: 🛠 Generate Prisma Client
+        run: pnpm exec prisma generate
 
       - name: 🔎 Type check
         run: pnpm typecheck

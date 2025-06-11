@@ -2,7 +2,7 @@
  * @fileoverview
  * This file contains the types for the library.
  */
-import type { Team as PrismaTeam } from '@prisma/client'
+import type { Division, Team as PrismaTeam } from '@prisma/client'
 
 // TeamName type should have the following format:
 // e.g. "JO8-1"
@@ -69,7 +69,7 @@ export type TeamFormData = {
   tournamentId: string // which tournament the team is registering for
   clubName: string // via API Club -- logo en basisgegevens ophalen
   teamName: TeamName
-  teamClass: TeamClass
+  division: TeamClass
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: Email
@@ -89,6 +89,7 @@ export type TournamentData = {
   location: string
   startDate: string
   endDate: string | null
+  divisions: Division[] // Array of Division enum values
 }
 
 /**
@@ -106,13 +107,13 @@ export type TeamCreateActionData = {
   team?: {
     id: string
     teamName: string
-    teamClass: string
+    division: string
   }
   errors?: {
     tournamentId?: string
     clubName?: string
     teamName?: string
-    teamClass?: string
+    division?: string
     teamLeaderName?: string
     teamLeaderPhone?: string
     teamLeaderEmail?: string
@@ -129,6 +130,6 @@ export type TeamEditActionData = {
   errors?: {
     clubName?: string
     teamName?: string
-    teamClass?: string
+    division?: string
   }
 }

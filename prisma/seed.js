@@ -98,12 +98,12 @@ async function seed() {
 
     const team1 = {
       teamName: 'JO8-1',
-      teamClass: '1ste klasse',
+      division: 'FIRST_DIVISION',
     }
 
     const team2 = {
       teamName: 'MO10-2',
-      teamClass: '2de klasse',
+      division: 'SECOND_DIVISION',
     }
 
     // Find or create a default team leader
@@ -138,6 +138,7 @@ async function seed() {
       data: {
         name: 'Spring Cup',
         location: 'Amsterdam',
+        divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION', 'SECOND_DIVISION'],
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-02'),
       },
@@ -147,6 +148,7 @@ async function seed() {
       data: {
         name: 'Summer Cup',
         location: 'Aalsmeer',
+        divisions: ['FIRST_DIVISION', 'SECOND_DIVISION', 'THIRD_DIVISION'],
         startDate: new Date('2025-06-01'),
         endDate: new Date('2025-06-02'),
       },
@@ -157,7 +159,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team1.teamName,
-        teamClass: team1.teamClass,
+        division: team1.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament1.id,
       },
@@ -167,7 +169,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team2.teamName,
-        teamClass: team2.teamClass,
+        division: team2.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament1.id,
       },
@@ -178,7 +180,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team1.teamName,
-        teamClass: team1.teamClass,
+        division: team1.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament2.id,
       },
@@ -188,7 +190,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team2.teamName,
-        teamClass: team2.teamClass,
+        division: team2.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament2.id,
       },

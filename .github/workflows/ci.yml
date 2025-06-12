@@ -139,6 +139,9 @@ jobs:
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
 
+      - name: 🛠 Setup Test Database
+        run: pnpm exec prisma migrate reset --force
+
       - name: ⚡ Run vitest
         run: pnpm test:coverage
         env:

@@ -1,0 +1,100 @@
+name: Playwright Tests (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Environment to test against"
+        required: false
+        default: "local"
+        type: string
+      upload_artifact_suffix:
+        description: "Suffix for the artifact name"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  playwright:
+    name: 🎭 Playwright
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: ⎔ Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 📥 Install deps
+        run: pnpm install --no-frozen-lockfile
+
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data.db"
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: 🛠 Setup Database
+        run: |
+          # Ensure Prisma client is generated before migration
+          pnpm exec prisma generate
+          pnpm exec prisma migrate reset --force
+          # Generate client again after database reset to ensure it's fresh
+          pnpm exec prisma generate
+          # Wait for the client to be fully ready
+          sleep 3
+
+      - name: ⚙️ Build
+        run: pnpm build
+
+      - name: 🎭 Run Playwright tests with built app
+        run: |
+          set +e  # Don't exit on error
+          pnpm exec start-server-and-test 'pnpm start:mocks' http://localhost:8811 'playwright test'
+          TEST_EXIT_CODE=$?
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "✅ All tests passed successfully"
+            exit 0
+          else
+            echo "❌ Tests failed with exit code $TEST_EXIT_CODE"
+            exit $TEST_EXIT_CODE
+          fi
+        env:
+          PORT: 8811
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report${{ inputs.upload_artifact_suffix }}
+          path: playwright-report/
+          retention-days: 30

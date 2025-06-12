@@ -20,23 +20,24 @@ export function TeamChip({
   className = '',
 }: TeamChipProps): JSX.Element {
   const baseClasses = `
-    inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2
-    text-sm font-medium text-gray-700 shadow-sm transition-all duration-200
-    hover:border-gray-300 hover:shadow-md
-    ${onClick ? 'cursor-pointer hover:bg-gray-50' : ''}
+    flex items-center rounded-lg border border-red-300 bg-white py-2
+    text-sm font-medium text-red-700 shadow-sm transition-all duration-200
+    hover:border-red-300 hover:shadow-md hover:bg-red-50
+    ${onClick ? 'cursor-pointer' : ''}
+    ${showActions && onDelete ? 'pl-3 pr-2 gap-2' : 'px-3'}
     ${className}
   `.trim()
 
   const chipContent = (
     <>
-      <span className='text-gray-900'>{`${team.clubName} ${team.teamName}`}</span>
+      <span className='truncate'>{`${team.clubName} ${team.teamName}`}</span>
       {showActions && onDelete ? (
         <button
           onClick={event => {
             event.stopPropagation()
             onDelete()
           }}
-          className='ml-1 rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700'
+          className='flex-shrink-0 rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700'
           aria-label={`Delete team ${team.clubName} ${team.teamName}`}
           title='Delete team'
         >

@@ -1,6 +1,6 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
-import React, { JSX, useEffect } from 'react'
+import React, { JSX, useEffect, useLayoutEffect } from 'react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 import {
   Links,
@@ -21,7 +21,7 @@ import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import BottomNavigation from './components/mobileNavigation/BottomNavigation'
 import { PWAElements } from './components/PWAElements'
-import { i18n } from './i18n'
+import { initI18n } from './i18n/config'
 import { useAuthStore } from './stores/useAuthStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
@@ -47,25 +47,37 @@ type LoaderData = {
   ENV: Record<string, string>
   username: string
   user: User | null
+  language: string
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
+  // Read 'lang' cookie from request
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  const language = langMatch ? langMatch[1] : 'nl'
 
   return {
     authenticated: !!user,
     username: user?.email ?? '',
     user,
     ENV: getEnv(),
+    language,
   }
 }
 
-const Document = ({ children }: { children: React.ReactNode }) => {
+const Document = ({
+  children,
+  language,
+}: {
+  children: React.ReactNode
+  language: string
+}) => {
   // Use useTranslation to get dynamic language updates
   const { i18n: i18nInstance } = useTranslation()
 
   // Update HTML attributes when language changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window !== 'undefined') {
       document.documentElement.lang = i18nInstance.language
       document.documentElement.dir = getDirection(i18nInstance.language)
@@ -77,13 +89,17 @@ const Document = ({ children }: { children: React.ReactNode }) => {
       } else {
         document.body.classList.remove('text-arabic')
       }
+
+      if (i18nInstance.language) {
+        document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
+      }
     }
   }, [i18nInstance.language])
 
   return (
     <html
-      lang={i18n.language}
-      dir={getDirection(i18n.language)}
+      lang={language}
+      dir={getDirection(language)}
       className='h-full overflow-x-hidden'
     >
       <head>
@@ -95,14 +111,19 @@ const Document = ({ children }: { children: React.ReactNode }) => {
       <body
         className={cn(
           'bg-background text-foreground flex h-full flex-col',
-          getTypographyClass(i18n.language)
+          getTypographyClass(language)
         )}
       >
-        <I18nextProvider i18n={i18n}>
-          {children}
-          <PWAElements />
-        </I18nextProvider>
+        {/* i18n instance will be provided by App/ErrorBoundary */}
+        {children}
+        <PWAElements />
         <ScrollRestoration />
+        {/* Inject the SSR language for client-side hydration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)};`,
+          }}
+        />
         <Scripts />
       </body>
     </html>
@@ -112,7 +133,7 @@ const Document = ({ children }: { children: React.ReactNode }) => {
 // Auth state is now managed by the Zustand store in app/stores/authStore.ts
 
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-  const { authenticated, username, user, ENV } = loaderData
+  const { authenticated, username, user, ENV, language } = loaderData
   const { setAuth } = useAuthStore()
 
   // Update auth store only on client-side after hydration
@@ -120,28 +141,48 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
     setAuth(authenticated, username)
   }, [authenticated, username])
 
+  // Set i18n language before paint (minimize hydration mismatch)
+  useLayoutEffect(() => {
+    let lang = language
+    if (!lang) {
+      // Try to read from cookie (client-side)
+      const cookieLang =
+        typeof document !== 'undefined' ? document.cookie.match(/lang=([^;]+)/) : null
+      lang = cookieLang
+        ? cookieLang[1]
+        : (typeof localStorage !== 'undefined' ? localStorage.getItem('lang') : null) ||
+          'nl'
+    }
+    // No-op: i18n is already initialized with the correct language
+  }, [language])
+
+  // Create i18n instance for this request/language
+  const i18n = initI18n(language)
+
   return (
-    <Document>
-      <div className='flex h-full flex-col'>
-        <div className='relative' style={{ zIndex: 50 }}>
-          <AppBar authenticated={authenticated} username={username} user={user} />
+    <Document language={language}>
+      <I18nextProvider i18n={i18n}>
+        <div className='flex h-full flex-col'>
+          <div className='relative' style={{ zIndex: 50 }}>
+            <AppBar authenticated={authenticated} username={username} user={user} />
+          </div>
+          <div
+            className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
+            style={{ position: 'relative', zIndex: 1 }}
+          >
+            <Outlet />
+          </div>
+          {/* Desktop Footer - hidden on mobile */}
+          <DesktopFooter />
+          {/* Mobile Navigation - visible only on mobile */}
+          <BottomNavigation />
         </div>
-        <div
-          className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
-          style={{ position: 'relative', zIndex: 1 }}
-        >
-          <Outlet />
-        </div>
-        {/* Desktop Footer - hidden on mobile */}
-        <DesktopFooter />
-        {/* Mobile Navigation - visible only on mobile */}
-        <BottomNavigation />
-      </div>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.ENV = ${JSON.stringify(ENV)}`,
-        }}
-      />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)}`,
+          }}
+        />
+      </I18nextProvider>
     </Document>
   )
 }
@@ -149,8 +190,10 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 export function ErrorBoundary(): JSX.Element {
   const { authenticated, username } = useAuthStore()
 
+  // Use Dutch for error boundary fallback
+  const i18n = initI18n('nl')
   return (
-    <Document>
+    <Document language='nl'>
       <I18nextProvider i18n={i18n}>
         <div className='flex h-full flex-col'>
           <div className='relative' style={{ zIndex: 50 }}>

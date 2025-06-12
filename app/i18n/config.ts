@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
 
 // Import your translation files
+import ar from './locales/ar.json'
 import en from './locales/en.json'
 import nl from './locales/nl.json'
 import test from './locales/test.json'
@@ -16,6 +17,9 @@ export const resources = {
   },
   nl: {
     [defaultNS]: nl,
+  },
+  ar: {
+    [defaultNS]: ar,
   },
   test: {
     [defaultNS]: test,
@@ -57,6 +61,14 @@ const getLanguage = (): string => {
     return 'nl'
   }
 
+  // Check localStorage for saved language preference
+  if (typeof window !== 'undefined') {
+    const savedLanguage = localStorage.getItem('i18nextLng')
+    if (savedLanguage && ['nl', 'en', 'ar'].includes(savedLanguage)) {
+      return savedLanguage
+    }
+  }
+
   // For development and production, default to Dutch
   // This prevents HMR interference while maintaining functionality
   return 'nl'
@@ -80,6 +92,19 @@ i18n.init({
   },
   // Force synchronous initialization to prevent async language switching
   initImmediate: false,
+  // Enable localStorage backend
+  detection: {
+    order: ['localStorage', 'navigator'],
+    lookupLocalStorage: 'i18nextLng',
+    caches: ['localStorage'],
+  },
+})
+
+// Save language changes to localStorage
+i18n.on('languageChanged', lng => {
+  if (typeof window !== 'undefined' && !isPlaywrightTestEnvironment()) {
+    localStorage.setItem('i18nextLng', lng)
+  }
 })
 
 // Prevent language changes during Playwright tests to avoid elements being marked as "hidden"

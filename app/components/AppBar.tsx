@@ -7,6 +7,7 @@ import type { User } from '@prisma/client'
 import logo from '~/assets/logo-192x192.png'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
+import { getArabicTextClass } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
 import { UserMenu } from './UserMenu'
@@ -56,6 +57,7 @@ export function AppBar({
   const languages = [
     { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
     { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'ar', name: 'العربية', flag: '🇲🇦' },
   ]
 
   const currentLanguage =
@@ -114,6 +116,7 @@ export function AppBar({
         customIcon: lang.flag,
         onClick: () => i18n.changeLanguage(lang.code),
         active: lang.code === currentLanguage.code,
+        className: lang.code === 'ar' ? getArabicTextClass() : '',
       })),
       authenticated: false,
     },
@@ -123,9 +126,9 @@ export function AppBar({
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
-          className='flex w-full content-start items-center px-3 py-2 text-left text-emerald-800 hover:bg-gray-100'
+          className='flex w-full content-start items-center px-3 py-2 text-start text-emerald-800 hover:bg-gray-100'
         >
-          <span className='flex w-8 items-center justify-start pl-0 text-left'>
+          <span className='flex w-8 items-center justify-start ps-0 text-start'>
             {renderIcon('logout', { className: 'w-5 h-5' })}
           </span>
           {t('auth.signout')}
@@ -136,7 +139,7 @@ export function AppBar({
           className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
           onClick={handleSignIn}
         >
-          <span className='flex w-8 items-center justify-start pl-0 text-left'>
+          <span className='flex w-8 items-center justify-start ps-0 text-start'>
             {renderIcon('login', { className: 'w-5 h-5' })}
           </span>
           {t('auth.signin')}
@@ -150,7 +153,7 @@ export function AppBar({
     <>
       <header className='safe-top relative z-20 h-14 bg-emerald-800 px-4 text-white'>
         {/* Logo and Brand for all screen sizes */}
-        <div className='absolute top-1/2 left-2 flex -translate-y-1/2 items-center gap-1 lg:left-4 lg:gap-2'>
+        <div className='absolute start-2 top-1/2 flex -translate-y-1/2 items-center gap-1 lg:start-4 lg:gap-2'>
           <PrimaryNavLink to='/' className='flex items-center gap-1 lg:gap-2'>
             <img
               src={logo}
@@ -168,12 +171,12 @@ export function AppBar({
         </div>
 
         {/* Page title in center */}
-        <h2 className='pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-xl font-bold sm:text-2xl'>
-          {pageTitle}
-        </h2>
+        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
+          <h2 className='text-center text-xl font-bold sm:text-2xl'>{pageTitle}</h2>
+        </div>
 
         {/* Mobile menu button */}
-        <div className='absolute top-1/2 right-2 flex -translate-y-1/2 items-center lg:hidden'>
+        <div className='absolute end-2 top-1/2 flex -translate-y-1/2 items-center lg:hidden'>
           <button
             type='button'
             aria-label='Toggle menu'
@@ -185,7 +188,7 @@ export function AppBar({
         </div>
 
         {/* Desktop menu */}
-        <div className='absolute top-1/2 right-4 hidden -translate-y-1/2 items-center gap-4 lg:flex'>
+        <div className='absolute end-4 top-1/2 hidden -translate-y-1/2 items-center gap-4 lg:flex'>
           <UserMenu
             authenticated={isAuthenticated}
             username={username}

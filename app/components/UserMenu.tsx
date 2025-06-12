@@ -5,6 +5,8 @@ import { Link, useNavigation } from 'react-router'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 import { IconName, renderIcon } from '~/utils/iconUtils'
+import { cn } from '~/utils/misc'
+import { useRTLDropdown } from '~/utils/rtlUtils'
 
 export type MenuItemType = {
   label: string
@@ -20,6 +22,7 @@ export type MenuItemType = {
     customIcon: string
     onClick: () => void
     active: boolean
+    className?: string
   }>
 }
 
@@ -43,6 +46,9 @@ export function UserMenu({
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
   const navigation = useNavigation()
+
+  // Get RTL-aware positioning using the hook
+  const { dropdownProps, menuClasses } = useRTLDropdown()
 
   // Use translated guest name when user is not authenticated or username is empty
   const displayName = authenticated && username ? username : t('common.guest')
@@ -102,7 +108,7 @@ export function UserMenu({
                       className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
-                      <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                      <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
                         {item.customIcon ? (
                           <span className='text-lg'>{item.customIcon}</span>
                         ) : item.icon ? (
@@ -113,7 +119,7 @@ export function UserMenu({
                     </button>
 
                     {activeSubmenu === index ? (
-                      <div className='ring-opacity-5 absolute top-full left-0 z-30 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
+                      <div className='ring-opacity-5 absolute start-0 top-full z-30 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
@@ -128,10 +134,10 @@ export function UserMenu({
                               setActiveSubmenu(null)
                             }}
                           >
-                            <span className='w-8 pl-0 text-left text-lg'>
+                            <span className='w-8 ps-0 pe-2 text-start text-lg'>
                               {subItem.customIcon}
                             </span>
-                            <span>{subItem.label}</span>
+                            <span className={subItem.className}>{subItem.label}</span>
                           </button>
                         ))}
                       </div>
@@ -144,14 +150,14 @@ export function UserMenu({
                     to={item.href || '#'}
                     className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                   >
-                    <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                    <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
                       {item.icon
                         ? renderIcon(item.icon, { className: 'w-5 h-5' })
                         : null}
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (
-                      <span className='ml-2 text-xs text-emerald-600'>(TODO)</span>
+                      <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}
                   </Link>
                 )}
@@ -174,8 +180,15 @@ export function UserMenu({
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
-          className='ring-opacity-5 absolute right-0 z-40 mt-2 w-56 divide-y divide-gray-100 rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none'
-          sideOffset={5}
+          className={cn(
+            'ring-opacity-5 z-40 w-56 divide-y divide-gray-100',
+            'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+            menuClasses.spacing // Add margin for RTL spacing
+          )}
+          align={dropdownProps.align}
+          side={dropdownProps.side}
+          sideOffset={dropdownProps.sideOffset}
+          alignOffset={dropdownProps.alignOffset}
         >
           <div className='px-4 py-3'>
             <p className='text-emerald-800'>
@@ -202,7 +215,7 @@ export function UserMenu({
                       className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 focus:outline-none'
                       onClick={event => handleLanguageToggle(event, index)}
                     >
-                      <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                      <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
                         {item.customIcon ? (
                           <span className='text-lg'>{item.customIcon}</span>
                         ) : item.icon ? (
@@ -213,7 +226,12 @@ export function UserMenu({
                     </button>
 
                     {languageMenuOpen ? (
-                      <div className='ring-opacity-5 absolute right-0 z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black'>
+                      <div
+                        className={cn(
+                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black',
+                          menuClasses.alignment
+                        )}
+                      >
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
@@ -228,10 +246,10 @@ export function UserMenu({
                               setLanguageMenuOpen(false)
                             }}
                           >
-                            <span className='w-8 pl-0 text-left text-lg'>
+                            <span className={cn('w-8 ps-0 pe-2 text-start text-lg')}>
                               {subItem.customIcon}
                             </span>
-                            <span>{subItem.label}</span>
+                            <span className={subItem.className}>{subItem.label}</span>
                           </button>
                         ))}
                       </div>
@@ -254,14 +272,19 @@ export function UserMenu({
                     to={item.href || '#'}
                     className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
                   >
-                    <span className='flex w-8 items-center justify-start pl-0 text-left'>
+                    <span
+                      className={cn(
+                        'flex w-8 items-center justify-start text-start',
+                        'ps-0 pe-2'
+                      )}
+                    >
                       {item.icon
                         ? renderIcon(item.icon, { className: 'w-5 h-5' })
                         : null}
                     </span>
                     <span>{item.label}</span>
                     {item.todo ? (
-                      <span className='ml-2 text-xs text-emerald-600'>(TODO)</span>
+                      <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}
                   </Link>
                 </DropdownMenu.Item>

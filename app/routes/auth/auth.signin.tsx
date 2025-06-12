@@ -157,7 +157,7 @@ export default function SigninPage(): JSX.Element {
                 <div className='flex-shrink-0'>
                   <CheckCircleIcon className='text-green-400' size={20} />
                 </div>
-                <div className='ml-3'>
+                <div className='ms-3'>
                   <h3 className='text-sm font-medium text-green-800'>
                     {t('auth.registrationSuccess')}
                   </h3>
@@ -231,7 +231,7 @@ export default function SigninPage(): JSX.Element {
             >
               {isSubmitting ? (
                 <>
-                  <span className='mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                  <span className='me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
                   {t('common.loading')}
                 </>
               ) : (
@@ -246,7 +246,7 @@ export default function SigninPage(): JSX.Element {
                   type='checkbox'
                   className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 focus:ring-emerald-500'
                 />
-                <label htmlFor='remember' className='ml-2 block text-sm text-gray-900'>
+                <label htmlFor='remember' className='ms-2 block text-sm text-gray-900'>
                   {t('auth.rememberMe')}
                 </label>
               </div>

@@ -1,10 +1,17 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router'
+import { useLoaderData } from 'react-router'
+
+import type { User } from '@prisma/client'
 
 import { ActionLink } from '~/components/PrefetchLink'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getUser } from '~/utils/session.server'
+
+type LoaderData = {
+  user: User | null
+}
 
 export const meta: MetaFunction = () => [
   { title: 'Tournado - Tournament Management Made Easy' },
@@ -28,13 +35,18 @@ export const handle: RouteMetadata = {
   title: 'common.titles.welcome',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderData> => {
   const user = await getUser(request)
-  return Response.json({ user })
+  return { user }
 }
 
 export default function IndexPage(): JSX.Element {
   const { t } = useTranslation()
+  const { user } = useLoaderData<LoaderData>()
+
+  // Determine the correct teams route based on user role
+  const teamsRoute =
+    user?.role === 'ADMIN' ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams'
 
   return (
     <main className='flex h-full flex-col'>
@@ -50,7 +62,7 @@ export default function IndexPage(): JSX.Element {
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
               <ActionLink
-                to='/teams'
+                to={teamsRoute}
                 className='rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
               >
                 {t('landing.hero.viewTeams')}

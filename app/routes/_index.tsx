@@ -37,15 +37,15 @@ export default function IndexPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <main className='flex h-full flex-col bg-emerald-50'>
+    <main className='flex h-full flex-col'>
       {/* Hero Section */}
       <div className='flex flex-1 flex-col justify-center pt-16 pb-20'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl text-center'>
-            <h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
+            <h1 className='text-4xl font-bold tracking-tight sm:text-6xl'>
               {t('common.appName')}
             </h1>
-            <p className='mt-6 text-lg leading-8 text-gray-600'>
+            <p className='text-foreground-light mt-6 text-lg leading-8'>
               {t('landing.hero.description')}
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
@@ -64,13 +64,13 @@ export default function IndexPage(): JSX.Element {
       <div className='bg-white py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 className='text-base leading-7 font-semibold text-emerald-600'>
+            <h2 className='text-brand-dark text-base leading-7 font-semibold'>
               {t('landing.features.title')}
             </h2>
-            <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+            <p className='mt-2 text-3xl font-bold tracking-tight sm:text-4xl'>
               {t('landing.features.subtitle')}
             </p>
-            <p className='mt-6 text-lg leading-8 text-gray-600'>
+            <p className='text-foreground-light mt-6 text-lg leading-8'>
               {t('landing.features.description')}
             </p>
           </div>

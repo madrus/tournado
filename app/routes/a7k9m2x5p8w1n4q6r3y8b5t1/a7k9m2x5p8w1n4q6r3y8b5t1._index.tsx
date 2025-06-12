@@ -73,8 +73,8 @@ export default function AdminDashboard(): JSX.Element {
     <div className='space-y-8'>
       {/* Welcome Section */}
       <div>
-        <h1 className='text-2xl font-bold text-gray-900'>Admin Dashboard</h1>
-        <p className='mt-1 text-gray-600'>
+        <h1 className='text-2xl font-bold'>Admin Dashboard</h1>
+        <p className='text-foreground-light mt-1'>
           Welcome back, {user.email}. Manage your tournament platform from here.
         </p>
       </div>
@@ -84,11 +84,11 @@ export default function AdminDashboard(): JSX.Element {
         {/* Teams Management */}
         <div className='rounded-lg border bg-white p-6 shadow-sm'>
           <h3 className='mb-4 text-lg font-semibold'>Teams Management</h3>
-          <p className='mb-4 text-gray-600'>
+          <p className='text-foreground-light mb-4'>
             Manage team registrations and memberships.
           </p>
           <div className='mb-4 space-y-2'>
-            <p>
+            <p className='text-foreground-light'>
               <strong>Total Teams:</strong> {teams.length}
             </p>
           </div>
@@ -103,12 +103,14 @@ export default function AdminDashboard(): JSX.Element {
         {/* User Management */}
         <div className='rounded-lg border bg-white p-6 shadow-sm'>
           <h3 className='mb-4 text-lg font-semibold'>User Management</h3>
-          <p className='mb-4 text-gray-600'>Manage user accounts and permissions.</p>
+          <p className='text-foreground-light mb-4'>
+            Manage user accounts and permissions.
+          </p>
           <div className='space-y-2'>
-            <p>
+            <p className='text-foreground-light'>
               <strong>Current User:</strong> {user.email}
             </p>
-            <p>
+            <p className='text-foreground-light'>
               <strong>User ID:</strong> {user.id}
             </p>
           </div>
@@ -117,7 +119,7 @@ export default function AdminDashboard(): JSX.Element {
         {/* Tournament Management */}
         <div className='rounded-lg border bg-white p-6 shadow-sm'>
           <h3 className='mb-4 text-lg font-semibold'>Tournament Management</h3>
-          <p className='mb-4 text-gray-600'>
+          <p className='text-foreground-light mb-4'>
             Oversee all tournaments and competitions.
           </p>
           <button className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'>
@@ -128,7 +130,7 @@ export default function AdminDashboard(): JSX.Element {
         {/* System Settings */}
         <div className='rounded-lg border bg-white p-6 shadow-sm'>
           <h3 className='mb-4 text-lg font-semibold'>System Settings</h3>
-          <p className='mb-4 text-gray-600'>
+          <p className='text-foreground-light mb-4'>
             Configure application settings and preferences.
           </p>
           <button className='rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700'>
@@ -139,7 +141,7 @@ export default function AdminDashboard(): JSX.Element {
         {/* Reports & Analytics */}
         <div className='rounded-lg border bg-white p-6 shadow-sm'>
           <h3 className='mb-4 text-lg font-semibold'>Reports & Analytics</h3>
-          <p className='mb-4 text-gray-600'>
+          <p className='text-foreground-light mb-4'>
             View platform usage and tournament statistics.
           </p>
           <button className='rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700'>

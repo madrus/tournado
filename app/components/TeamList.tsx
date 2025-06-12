@@ -38,8 +38,8 @@ export function TeamList({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {/* Grid container for chips */}
-      <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+      {/* Flex container for chips */}
+      <div className='flex flex-wrap items-start gap-3'>
         {teams.map(team => (
           <TeamChip
             key={team.id}
@@ -47,7 +47,6 @@ export function TeamList({
             onClick={onTeamClick ? () => onTeamClick(team.id) : undefined}
             showActions={context === 'admin'}
             onDelete={onTeamDelete ? () => onTeamDelete(team.id) : undefined}
-            className='w-full justify-start'
           />
         ))}
       </div>

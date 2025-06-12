@@ -73,14 +73,12 @@ export default function TeamDetailsPage(): JSX.Element {
   const { i18n } = useTranslation()
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className='min-h-screen'>
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
-          <h1 className='text-3xl font-bold text-gray-900'>
-            {`${team.clubName} ${team.teamName}`}
-          </h1>
-          <p className='mt-2 text-lg text-gray-600'>
+          <h1 className='text-3xl font-bold'>{`${team.clubName} ${team.teamName}`}</h1>
+          <p className='text-foreground-light mt-2 text-lg'>
             {getDivisionLabel(team.division, i18n.language)}
           </p>
         </div>
@@ -91,9 +89,7 @@ export default function TeamDetailsPage(): JSX.Element {
           <div className='space-y-6 lg:col-span-2'>
             {/* Upcoming Games */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h2 className='mb-4 text-xl font-semibold text-gray-900'>
-                🏐 Upcoming Games
-              </h2>
+              <h2 className='mb-4 text-xl font-semibold'>🏐 Upcoming Games</h2>
               <div className='rounded-lg border border-blue-200 bg-blue-50 p-4'>
                 <p className='font-medium text-blue-800'>🚧 Coming Soon!</p>
                 <p className='mt-1 text-sm text-blue-700'>
@@ -108,7 +104,7 @@ export default function TeamDetailsPage(): JSX.Element {
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium text-gray-900'>vs Team Example</p>
-                      <p className='text-sm text-gray-600'>
+                      <p className='text-foreground-light text-sm'>
                         Saturday, Dec 16, 2023 at 14:00
                       </p>
                       <p className='text-sm text-gray-500'>Sports Hall Location</p>
@@ -123,7 +119,7 @@ export default function TeamDetailsPage(): JSX.Element {
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium text-gray-900'>vs Another Team</p>
-                      <p className='text-sm text-gray-600'>
+                      <p className='text-foreground-light text-sm'>
                         Sunday, Dec 17, 2023 at 16:30
                       </p>
                       <p className='text-sm text-gray-500'>Main Court</p>
@@ -138,9 +134,7 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Recent Results */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h2 className='mb-4 text-xl font-semibold text-gray-900'>
-                📊 Recent Results
-              </h2>
+              <h2 className='mb-4 text-xl font-semibold'>📊 Recent Results</h2>
               <div className='rounded-lg border border-green-200 bg-green-50 p-4'>
                 <p className='font-medium text-green-800'>🚧 Coming Soon!</p>
                 <p className='mt-1 text-sm text-green-700'>
@@ -154,9 +148,7 @@ export default function TeamDetailsPage(): JSX.Element {
           <div className='space-y-6'>
             {/* Team Info Card */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-                Team Information
-              </h3>
+              <h3 className='mb-4 text-lg font-semibold'>Team Information</h3>
               <dl className='space-y-3'>
                 <div>
                   <dt className='text-sm font-medium text-gray-500'>Club</dt>
@@ -185,22 +177,22 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Season Stats */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold text-gray-900'>Season Stats</h3>
+              <h3 className='mb-4 text-lg font-semibold'>Season Stats</h3>
               <div className='space-y-3'>
                 <div className='flex justify-between'>
-                  <span className='text-sm text-gray-600'>Games Played</span>
+                  <span className='text-foreground-light text-sm'>Games Played</span>
                   <span className='text-sm font-medium text-gray-900'>--</span>
                 </div>
                 <div className='flex justify-between'>
-                  <span className='text-sm text-gray-600'>Wins</span>
+                  <span className='text-foreground-light text-sm'>Wins</span>
                   <span className='text-sm font-medium text-green-600'>--</span>
                 </div>
                 <div className='flex justify-between'>
-                  <span className='text-sm text-gray-600'>Losses</span>
+                  <span className='text-foreground-light text-sm'>Losses</span>
                   <span className='text-sm font-medium text-red-600'>--</span>
                 </div>
                 <div className='flex justify-between'>
-                  <span className='text-sm text-gray-600'>Points</span>
+                  <span className='text-foreground-light text-sm'>Points</span>
                   <span className='text-sm font-medium text-gray-900'>--</span>
                 </div>
               </div>
@@ -213,9 +205,7 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Quick Actions */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold text-gray-900'>
-                Quick Actions
-              </h3>
+              <h3 className='mb-4 text-lg font-semibold'>Quick Actions</h3>
               <div className='space-y-3'>
                 <button
                   disabled

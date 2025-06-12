@@ -43,7 +43,9 @@
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "postinstall": "husky && ([ -f prisma/schema.prisma ] && prisma generate || true)",
     "validate": "npm-run-all2 --parallel test lint typecheck",
-    "prisma:test": "tsx test/prisma-test.ts"
+    "prisma:test": "tsx test/prisma-test.ts",
+    "db:reset:staging": "flyctl ssh console --app tournado-staging -C \"npx prisma migrate reset --force\"",
+    "db:reset:production": "flyctl ssh console --app tournado -C \"npx prisma migrate reset --force\""
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",

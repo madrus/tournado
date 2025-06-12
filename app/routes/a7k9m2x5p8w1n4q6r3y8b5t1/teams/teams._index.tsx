@@ -124,12 +124,10 @@ export default function AdminTeamsIndexPage(): JSX.Element {
             </div>
             <div className='ml-5 w-0 flex-1'>
               <dl>
-                <dt className='truncate text-sm font-medium text-gray-500'>
+                <dt className='truncate text-sm font-medium opacity-75'>
                   {t('admin.teams.totalTeams')}
                 </dt>
-                <dd className='text-lg font-medium text-gray-900'>
-                  {teamListItems.length}
-                </dd>
+                <dd className='text-lg font-medium'>{teamListItems.length}</dd>
               </dl>
             </div>
           </div>
@@ -139,10 +137,8 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       {/* Teams List */}
       <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
         <div className='mb-6'>
-          <h3 className='text-lg font-medium text-gray-900'>
-            {t('admin.teams.allTeams')}
-          </h3>
-          <p className='mt-1 text-sm text-gray-600'>
+          <h3 className='text-lg font-medium'>{t('admin.teams.allTeams')}</h3>
+          <p className='mt-1 text-sm opacity-75'>
             {t('admin.teams.allTeamsDescription')}
           </p>
         </div>

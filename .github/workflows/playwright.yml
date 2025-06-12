@@ -12,7 +12,7 @@ on:
           - staging
 
 jobs:
-  playwright:
+  e2e-tests:
     uses: ./.github/workflows/playwright-reusable.yml
     with:
       environment: ${{ inputs.environment || 'local' }}

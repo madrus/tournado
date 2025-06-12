@@ -64,6 +64,189 @@ When writing tests, follow this order of preference for selecting elements:
    cy.findByTestId('signin-button')
    ```
 
+## Test Organization Structure
+
+### File Location Guidelines
+
+To maintain a clean and organized codebase, follow these guidelines for test file placement:
+
+#### Component Tests
+
+- **Location**: `app/components/__tests__/`
+- **Pattern**: `ComponentName.test.tsx`
+- **Purpose**: Unit tests for React components
+
+```
+app/components/
+├── AppBar.tsx
+├── TeamForm.tsx
+└── __tests__/
+    ├── AppBar.test.tsx
+    ├── TeamForm.test.tsx
+    └── ...
+```
+
+#### Route Tests
+
+- **Location**: `test/routes/`
+- **Pattern**: `routeName.test.tsx`
+- **Purpose**: Unit tests for route components and their logic
+- **Why separate**: Avoids interference with file-based routing system
+
+```
+test/
+├── routes/
+│   ├── index.test.tsx          # Tests for app/routes/_index.tsx
+│   ├── about.test.tsx          # Tests for app/routes/about.tsx
+│   └── teams-index.test.tsx    # Tests for app/routes/teams/_index.tsx
+├── setup-test-env.ts
+└── prisma-test.ts
+```
+
+#### Utility Tests
+
+- **Location**: `app/utils/__tests__/`
+- **Pattern**: `utilityName.test.ts`
+- **Purpose**: Unit tests for utility functions
+
+#### Model Tests
+
+- **Location**: `app/models/__tests__/` (when needed)
+- **Pattern**: `modelName.test.ts`
+- **Purpose**: Unit tests for database models and server functions
+
+### Route Testing Examples
+
+#### Role-Based Routing Tests
+
+Routes that handle role-based logic should be thoroughly tested for all user scenarios:
+
+```typescript
+// test/routes/index.test.tsx
+import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router'
+import { expect, test, describe } from 'vitest'
+
+import type { User } from '@prisma/client'
+import IndexPage from '~/routes/_index'
+
+describe('Home Page (_index)', () => {
+  describe('View Teams Button Routing', () => {
+    test('should route to public teams page for non-authenticated users', () => {
+      mockUser = null
+
+      render(
+        <MemoryRouter>
+          <IndexPage />
+        </MemoryRouter>
+      )
+
+      const viewTeamsButton = screen.getByTestId('view-teams-button')
+      expect(viewTeamsButton).toHaveAttribute('href', '/teams')
+    })
+
+    test('should route to admin teams page for admin users', () => {
+      mockUser = {
+        id: 'admin-1',
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        // ... other properties
+      }
+
+      render(
+        <MemoryRouter>
+          <IndexPage />
+        </MemoryRouter>
+      )
+
+      const viewTeamsButton = screen.getByTestId('view-teams-button')
+      expect(viewTeamsButton).toHaveAttribute('href', '/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    })
+  })
+})
+```
+
+#### Testing All User Roles
+
+Create comprehensive test matrices for role-based functionality:
+
+```typescript
+test('should route based on user role with comprehensive test matrix', () => {
+  const testCases = [
+    {
+      scenario: 'null user (not authenticated)',
+      user: null,
+      expectedHref: '/teams',
+    },
+    {
+      scenario: 'PUBLIC role user',
+      user: { role: 'PUBLIC', /* ... */ },
+      expectedHref: '/teams',
+    },
+    {
+      scenario: 'ADMIN role user',
+      user: { role: 'ADMIN', /* ... */ },
+      expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+    },
+  ]
+
+  testCases.forEach(({ scenario, user, expectedHref }) => {
+    mockUser = user
+
+    const { unmount } = render(
+      <MemoryRouter>
+        <IndexPage />
+      </MemoryRouter>
+    )
+
+    const viewTeamsButton = screen.getByTestId('view-teams-button')
+    expect(viewTeamsButton, `Failed for scenario: ${scenario}`).toHaveAttribute('href', expectedHref)
+
+    unmount()
+  })
+})
+```
+
+#### Mock Setup for Route Tests
+
+Route tests often require mocking React Router hooks and other dependencies:
+
+```typescript
+// Mock useLoaderData
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router')
+  return {
+    ...actual,
+    useLoaderData: () => mockLoaderData(mockUser),
+  }
+})
+
+// Mock useTranslation
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}))
+
+// Mock components that might interfere with testing
+vi.mock('~/components/PrefetchLink', () => ({
+  ActionLink: ({ to, children, className }) => (
+    <a href={to} className={className} data-testid="view-teams-button">
+      {children}
+    </a>
+  ),
+}))
+```
+
+### Best Practices for Route Testing
+
+1. **Test Role-Based Logic**: Ensure all user roles are handled correctly
+2. **Mock External Dependencies**: Mock hooks, translation, and complex components
+3. **Use Test IDs Sparingly**: Only when semantic queries aren't sufficient
+4. **Test Consistency**: Verify route logic matches related components (like AppBar)
+5. **Clear Test Scenarios**: Use descriptive test names and failure messages
+6. **Proper Cleanup**: Use `unmount()` when testing multiple scenarios
+
 ## UI Component Testing
 
 ### Role-Based Access Control

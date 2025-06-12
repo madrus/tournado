@@ -1,4 +1,20 @@
 {
+  "admin": {
+    "teams": {
+      "allTeams": "Alle teams",
+      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om gegevens te bewerken of te verwijderen.",
+      "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "createTeam": "Team aanmaken",
+      "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde gegevens.",
+      "description": "Beheer alle teams in alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
+      "editTeam": "Team gegevens bewerken",
+      "saveChanges": "Wijzigingen opslaan",
+      "teamNotFound": "Team niet gevonden",
+      "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
+      "title": "Teams beheer",
+      "totalTeams": "Totaal aantal teams"
+    }
+  },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
     "createAccount": "Account aanmaken",
@@ -59,22 +75,6 @@
     "unknownError": "Er is een onbekende fout opgetreden",
     "welcome": "Welkom"
   },
-  "admin": {
-    "teams": {
-      "allTeams": "Alle teams",
-      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om gegevens te bewerken of te verwijderen.",
-      "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "createTeam": "Team aanmaken",
-      "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde gegevens.",
-      "description": "Beheer alle teams in alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
-      "editTeam": "Team gegevens bewerken",
-      "saveChanges": "Wijzigingen opslaan",
-      "teamNotFound": "Team niet gevonden",
-      "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
-      "title": "Teams beheer",
-      "totalTeams": "Totaal aantal teams"
-    }
-  },
   "errors": {
     "errorTitle": "Applicatiefout",
     "notFoundTitle": "Pagina niet gevonden"
@@ -134,26 +134,26 @@
       "createTeam": "Opslaan",
       "division": "Teamklasse:",
       "errors": {
-        "tournamentRequired": "Toernooi is verplicht",
         "clubNameRequired": "Clubnaam is verplicht",
         "clubNameTooLong": "Clubnaam moet minder dan 100 karakters zijn",
-        "teamNameRequired": "Teamnaam is verplicht",
-        "teamNameTooLong": "Teamnaam moet minder dan 50 karakters zijn",
         "divisionRequired": "Teamklasse is verplicht",
+        "emailInvalid": "Voer een geldig e-mailadres in",
+        "emailRequired": "E-mailadres is verplicht",
+        "phoneNumberInvalid": "Voer een geldig telefoonnummer in",
+        "phoneNumberRequired": "Telefoonnummer is verplicht",
+        "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
         "teamLeaderNameRequired": "Naam teamleider is verplicht",
         "teamLeaderNameTooLong": "Naam moet minder dan 100 karakters zijn",
-        "phoneNumberRequired": "Telefoonnummer is verplicht",
-        "phoneNumberInvalid": "Voer een geldig telefoonnummer in",
-        "emailRequired": "E-mailadres is verplicht",
-        "emailInvalid": "Voer een geldig e-mailadres in",
-        "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid"
+        "teamNameRequired": "Teamnaam is verplicht",
+        "teamNameTooLong": "Teamnaam moet minder dan 50 karakters zijn",
+        "tournamentRequired": "Toernooi is verplicht"
       },
       "placeholders": {
         "clubName": "Voer je clubnaam in",
-        "teamName": "Voer je teamnaam in",
+        "teamLeaderEmail": "Voer e-mailadres in",
         "teamLeaderName": "Voer volledige naam teamleider in",
         "teamLeaderPhone": "Voer telefoonnummer in",
-        "teamLeaderEmail": "Voer e-mailadres in"
+        "teamName": "Voer je teamnaam in"
       },
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de servicevoorwaarden",
       "selectDivision": "Selecteer een klasse",
@@ -167,8 +167,8 @@
       "tournament": "Toernooi:"
     },
     "getStarted": {
-      "title": "Begin met teamregistratie",
-      "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!"
+      "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",
+      "title": "Begin met teamregistratie"
     },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",

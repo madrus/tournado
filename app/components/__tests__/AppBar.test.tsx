@@ -137,6 +137,23 @@ describe('AppBar Context Menu', () => {
       const secondItem = menuItems[1]
       expect(secondItem.querySelector('[data-testid="divider"]')).toBeInTheDocument()
     })
+
+    it('should have Teams link pointing to public teams route', () => {
+      render(
+        <MemoryRouter>
+          <AppBar authenticated={false} username='' user={null} />
+        </MemoryRouter>
+      )
+
+      const desktopMenu = screen.getByTestId('user-menu-desktop')
+      const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
+
+      // Find the Teams menu item (should be first)
+      const teamsMenuItem = menuItems[0]
+      const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
+
+      expect(teamsHref).toHaveTextContent('/teams')
+    })
   })
 
   describe('Regular Authenticated User', () => {
@@ -184,6 +201,23 @@ describe('AppBar Context Menu', () => {
       const authStatus = within(desktopMenu).getByTestId('authenticated-status')
       expect(authStatus).toHaveTextContent('true')
     })
+
+    it('should have Teams link pointing to public teams route', () => {
+      render(
+        <MemoryRouter>
+          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+        </MemoryRouter>
+      )
+
+      const desktopMenu = screen.getByTestId('user-menu-desktop')
+      const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
+
+      // Find the Teams menu item (should be first)
+      const teamsMenuItem = menuItems[0]
+      const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
+
+      expect(teamsHref).toHaveTextContent('/teams')
+    })
   })
 
   describe('Admin User', () => {
@@ -218,6 +252,23 @@ describe('AppBar Context Menu', () => {
 
       // Should NOT see sign in
       expect(menuLabels).not.toContain('auth.signin')
+    })
+
+    it('should have Teams link pointing to admin teams route', () => {
+      render(
+        <MemoryRouter>
+          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+        </MemoryRouter>
+      )
+
+      const desktopMenu = screen.getByTestId('user-menu-desktop')
+      const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
+
+      // Find the Teams menu item (should be first)
+      const teamsMenuItem = menuItems[0]
+      const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
+
+      expect(teamsHref).toHaveTextContent('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
     })
 
     it('should show Admin Panel with correct properties', () => {
@@ -359,6 +410,53 @@ describe('AppBar Context Menu', () => {
       const menuLabels = Array.from(menuItems).map(item => item.textContent)
 
       expect(menuLabels).toContain('common.titles.adminPanel')
+    })
+
+    it('should route Teams link correctly based on user role', () => {
+      const roles: Array<{
+        role:
+          | 'PUBLIC'
+          | 'TOURNAMENT_MANAGER'
+          | 'REFEREE_COORDINATOR'
+          | 'REFEREE'
+          | 'ADMIN'
+        expectedHref: string
+      }> = [
+        { role: 'PUBLIC', expectedHref: '/teams' },
+        { role: 'TOURNAMENT_MANAGER', expectedHref: '/teams' },
+        { role: 'REFEREE_COORDINATOR', expectedHref: '/teams' },
+        { role: 'REFEREE', expectedHref: '/teams' },
+        { role: 'ADMIN', expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
+      ]
+
+      roles.forEach(({ role, expectedHref }) => {
+        const user: User = {
+          id: 'user-1',
+          email: 'user@example.com',
+          firstName: 'Test',
+          lastName: 'User',
+          role,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+
+        const { unmount } = render(
+          <MemoryRouter>
+            <AppBar authenticated={true} username='user@example.com' user={user} />
+          </MemoryRouter>
+        )
+
+        const desktopMenu = screen.getByTestId('user-menu-desktop')
+        const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
+
+        // Find the Teams menu item (should be first)
+        const teamsMenuItem = menuItems[0]
+        const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
+
+        expect(teamsHref).toHaveTextContent(expectedHref)
+
+        unmount()
+      })
     })
   })
 

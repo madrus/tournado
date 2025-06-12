@@ -1,4 +1,20 @@
 {
+  "admin": {
+    "teams": {
+      "allTeams": "all teams",
+      "allTeamsDescription": "manage all teams in the system",
+      "confirmDelete": "confirm delete team",
+      "createTeam": "create team",
+      "createTeamDescription": "add new team to system",
+      "description": "manage all teams across tournaments",
+      "editTeam": "edit team details",
+      "saveChanges": "save changes",
+      "teamNotFound": "team not found",
+      "teamNotFoundDescription": "team not found or deleted",
+      "title": "teams management",
+      "totalTeams": "total teams"
+    }
+  },
   "auth": {
     "alreadyHaveAccount": "have account?",
     "createAccount": "create account",
@@ -34,22 +50,6 @@
     "signup": "sign up",
     "viewTeams": "view teams",
     "viewTeamsFor": "view teams for"
-  },
-  "admin": {
-    "teams": {
-      "allTeams": "all teams",
-      "allTeamsDescription": "manage all teams in the system",
-      "confirmDelete": "confirm delete team",
-      "createTeam": "create team",
-      "createTeamDescription": "add new team to system",
-      "description": "manage all teams across tournaments",
-      "editTeam": "edit team details",
-      "saveChanges": "save changes",
-      "teamNotFound": "team not found",
-      "teamNotFoundDescription": "team not found or deleted",
-      "title": "teams management",
-      "totalTeams": "total teams"
-    }
   },
   "common": {
     "appName": "Tournado",
@@ -131,26 +131,26 @@
       "createTeam": "Save",
       "division": "Team Class:",
       "errors": {
-        "tournamentRequired": "Tournament is required",
         "clubNameRequired": "Club name is required",
         "clubNameTooLong": "Club name must be less than 100 characters",
-        "teamNameRequired": "Team name is required",
-        "teamNameTooLong": "Team name must be less than 50 characters",
         "divisionRequired": "Division is required",
+        "emailInvalid": "Please enter a valid email address",
+        "emailRequired": "Email is required",
+        "phoneNumberInvalid": "Please enter a valid phone number",
+        "phoneNumberRequired": "Phone number is required",
+        "privacyAgreementRequired": "You must agree to the privacy policy",
         "teamLeaderNameRequired": "Team leader name is required",
         "teamLeaderNameTooLong": "Name must be less than 100 characters",
-        "phoneNumberRequired": "Phone number is required",
-        "phoneNumberInvalid": "Please enter a valid phone number",
-        "emailRequired": "Email is required",
-        "emailInvalid": "Please enter a valid email address",
-        "privacyAgreementRequired": "You must agree to the privacy policy"
+        "teamNameRequired": "Team name is required",
+        "teamNameTooLong": "Team name must be less than 50 characters",
+        "tournamentRequired": "Tournament is required"
       },
       "placeholders": {
         "clubName": "Enter your club name",
-        "teamName": "Enter your team name",
+        "teamLeaderEmail": "Enter email address",
         "teamLeaderName": "Enter team leader full name",
         "teamLeaderPhone": "Enter phone number",
-        "teamLeaderEmail": "Enter email address"
+        "teamName": "Enter your team name"
       },
       "privacyAgreement": "I agree to the privacy policy and terms of service",
       "selectDivision": "Select a division",
@@ -164,8 +164,8 @@
       "tournament": "Tournament:"
     },
     "getStarted": {
-      "title": "get started with team registration",
-      "description": "ready to join tournament"
+      "description": "ready to join tournament",
+      "title": "get started with team registration"
     },
     "noTeamSelected": "no team selected",
     "noTeams": "no teams registered yet",

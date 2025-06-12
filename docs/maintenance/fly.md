@@ -8,19 +8,27 @@ fly ssh console -a tournado-staging # staging
 fly ssh console -a tournado # production
 ```
 
-## Work with the database
+## Database Reset (Recommended)
+
+### Simple One-Command Reset
+
+Reset the database completely (drops all data, applies migrations, seeds):
 
 ```sh
-cd /workdir # if not already in workdir
-# Check the status of the database
+# For staging
+flyctl ssh console --app tournado-staging -C "npx prisma migrate reset --force"
+
+# For production
+flyctl ssh console --app tournado -C "npx prisma migrate reset --force"
+```
+
+### Check Database Status (if needed)
+
+```sh
+# Connect to app first
+fly ssh console -a tournado-staging
+cd /workdir
 npx prisma migrate status
-# If you need to reset the database
-# 1. Remove the existing database
-rm /data/sqlite.db
-# 2. Run a fresh migration deploy
-npx prisma migrate deploy
-# 3. Run the seed script to initialize with basic data (if needed)
-npx prisma db seed
 ```
 
 ## Reset Session Secret

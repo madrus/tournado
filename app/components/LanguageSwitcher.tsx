@@ -5,6 +5,7 @@ const languages = [
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
   { code: 'ar', name: 'العربية', flag: '🇲🇦' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ]
 
 export function LanguageSwitcher(): JSX.Element {
@@ -14,7 +15,11 @@ export function LanguageSwitcher(): JSX.Element {
     <div className='relative inline-block text-start'>
       <select
         value={i18n.language}
-        onChange={event => i18n.changeLanguage(event.target.value)}
+        onChange={event => {
+          const lang = event.target.value
+          localStorage.setItem('lang', lang)
+          i18n.changeLanguage(lang)
+        }}
         className='cursor-pointer appearance-none bg-transparent py-1 ps-2 pe-8 text-white focus:outline-none'
         aria-label='Select language'
       >

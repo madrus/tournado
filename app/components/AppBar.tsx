@@ -58,6 +58,7 @@ export function AppBar({
     { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
     { code: 'en', name: 'English', flag: '🇬🇧' },
     { code: 'ar', name: 'العربية', flag: '🇲🇦' },
+    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
   ]
 
   const currentLanguage =

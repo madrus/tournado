@@ -1,14 +1,14 @@
 /* eslint-disable import/no-named-as-default-member */
 import { initReactI18next } from 'react-i18next'
 
-// Import only what we need
-import i18next from 'i18next'
+import i18next, { i18n as I18nType } from 'i18next'
 
 // Import your translation files
 import ar from './locales/ar.json'
 import en from './locales/en.json'
 import nl from './locales/nl.json'
 import test from './locales/test.json'
+import tr from './locales/tr.json'
 
 export const defaultNS = 'common'
 export const resources = {
@@ -21,100 +21,35 @@ export const resources = {
   ar: {
     [defaultNS]: ar,
   },
+  tr: {
+    [defaultNS]: tr,
+  },
   test: {
     [defaultNS]: test,
   },
 } as const
 
-// Detect unit test environment (Jest/Vitest) vs Playwright test environment
-const isUnitTestEnvironment = (): boolean => {
-  // Server-side unit test detection
-  if (typeof window === 'undefined') {
-    return process.env.NODE_ENV === 'test' && !process.env.PLAYWRIGHT
-  }
-  return false
+/**
+ * Initializes and returns an i18n instance with the given language.
+ * @param language The language code to initialize i18n with.
+ */
+export function initI18n(language: string): I18nType {
+  const instance = i18next.createInstance()
+  instance.use(initReactI18next)
+  instance.init({
+    compatibilityJSON: 'v4',
+    resources,
+    defaultNS,
+    fallbackLng: 'nl',
+    lng: language,
+    interpolation: {
+      escapeValue: false,
+    },
+    initImmediate: false, // Synchronous
+  })
+  return instance
 }
 
-const isPlaywrightTestEnvironment = (): boolean => {
-  // Server-side Playwright test detection
-  if (typeof window === 'undefined') {
-    // Check environment variables that Playwright might set
-    if (process.env.PLAYWRIGHT === 'true') return true
-    return false
-  }
-
-  return false
-}
-
-// Simple language detection that prevents HMR interference in development
-const getLanguage = (): string => {
-  const isUnitTest = isUnitTestEnvironment()
-  const isPlaywrightTest = isPlaywrightTestEnvironment()
-
-  // For unit tests, use test language
-  if (isUnitTest) {
-    return 'test'
-  }
-
-  // For Playwright tests, lock to Dutch to prevent language switching
-  if (isPlaywrightTest) {
-    return 'nl'
-  }
-
-  // Check localStorage for saved language preference
-  if (typeof window !== 'undefined') {
-    const savedLanguage = localStorage.getItem('i18nextLng')
-    if (savedLanguage && ['nl', 'en', 'ar'].includes(savedLanguage)) {
-      return savedLanguage
-    }
-  }
-
-  // For development and production, default to Dutch
-  // This prevents HMR interference while maintaining functionality
-  return 'nl'
-}
-
-// Initialize with determined language
-const language = getLanguage()
-const isUnitTest = isUnitTestEnvironment()
-
-// Create i18n instance
-const i18n = i18next.use(initReactI18next)
-
-// Initialize synchronously with initial language
-i18n.init({
-  resources,
-  defaultNS,
-  fallbackLng: isUnitTest ? 'test' : 'nl',
-  lng: language,
-  interpolation: {
-    escapeValue: false, // React already escapes values
-  },
-  // Force synchronous initialization to prevent async language switching
-  initImmediate: false,
-  // Enable localStorage backend
-  detection: {
-    order: ['localStorage', 'navigator'],
-    lookupLocalStorage: 'i18nextLng',
-    caches: ['localStorage'],
-  },
-})
-
-// Save language changes to localStorage
-i18n.on('languageChanged', lng => {
-  if (typeof window !== 'undefined' && !isPlaywrightTestEnvironment()) {
-    localStorage.setItem('i18nextLng', lng)
-  }
-})
-
-// Prevent language changes during Playwright tests to avoid elements being marked as "hidden"
-if (isPlaywrightTestEnvironment()) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  i18n.changeLanguage = (_newLanguage?: string, callbackFn?: any) => {
-    // Block language changes during Playwright tests
-    if (callbackFn) callbackFn(null, i18n.t)
-    return Promise.resolve(i18n.t)
-  }
-}
-
+// At the bottom of the file
+export const i18n = initI18n('test') // or 'test' if you want a test language
 export default i18n

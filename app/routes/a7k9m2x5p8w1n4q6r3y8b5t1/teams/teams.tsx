@@ -28,16 +28,14 @@ export default function AdminTeamsLayout(): JSX.Element {
       <div className='border-b border-gray-200 pb-6'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
-            <h2 className='text-2xl font-bold text-gray-900'>
-              {t('admin.teams.title')}
-            </h2>
-            <p className='mt-1 text-gray-600'>{t('admin.teams.description')}</p>
+            <h2 className='text-2xl font-bold'>{t('admin.teams.title')}</h2>
+            <p className='text-foreground-light mt-1'>{t('admin.teams.description')}</p>
           </div>
 
           {/* Add Team Button */}
           <Link
             to='new'
-            className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
+            className='bg-brand hover:bg-brand-dark focus:ring-brand inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none'
           >
             <svg
               className='mr-2 -ml-1 h-5 w-5'

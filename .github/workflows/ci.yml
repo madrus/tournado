@@ -141,6 +141,8 @@ jobs:
 
       - name: 🛠 Setup Test Database
         run: pnpm exec prisma migrate reset --force
+        env:
+          DATABASE_URL: "file:./prisma/data.db?connection_limit=1"
 
       - name: ⚡ Run vitest
         run: pnpm test:coverage

@@ -71,15 +71,44 @@ This ensures every test run starts with a clean, predictable database state with
 
 ## Test Structure
 
+### File Organization
+
 ```
+test/
+  ├── routes/                   # Route component unit tests
+  │   ├── index.test.tsx        # Home page tests
+  │   ├── about.test.tsx        # About page tests
+  │   └── teams-index.test.tsx  # Teams index tests
+  ├── setup-test-env.ts         # Vitest test environment setup
+  └── prisma-test.ts           # Database connectivity tests
+
+app/components/
+  └── __tests__/               # Component unit tests
+      ├── AppBar.test.tsx      # Navigation component tests
+      ├── TeamForm.test.tsx    # Form component tests
+      └── ...
+
+app/utils/
+  └── __tests__/               # Utility function tests
+      ├── misc.test.tsx        # Miscellaneous utilities
+      ├── utils.test.ts        # Core utilities
+      └── ...
+
 playwright/
-  ├── tests/         # End-to-end tests
-  ├── fixtures/      # Test fixtures
-  ├── helpers/       # Playwright helper functions
+  ├── tests/                   # End-to-end tests
+  ├── fixtures/                # Test fixtures
+  ├── helpers/                 # Playwright helper functions
   │   ├── database.ts          # Database operations for tests
   │   └── global-setup.ts      # Global authentication setup
-  └── pages/         # Page object models
+  └── pages/                   # Page object models
 ```
+
+### Test File Guidelines
+
+- **Route Tests**: `test/routes/` - Tests for route components to avoid interference with file-based routing
+- **Component Tests**: `app/components/__tests__/` - Tests for reusable React components
+- **Utility Tests**: `app/utils/__tests__/` - Tests for helper functions and utilities
+- **E2E Tests**: `playwright/tests/` - Full user journey tests
 
 ## Writing Tests
 

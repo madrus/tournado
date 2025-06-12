@@ -13,19 +13,19 @@ export default function PublicTeamsLayout(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='min-h-screen bg-gray-50' data-testid='teams-layout'>
+    <div className='min-h-screen' data-testid='teams-layout'>
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <p className='text-lg text-gray-600'>{t('teams.description')}</p>
+              <p className='text-foreground-light text-lg'>{t('teams.description')}</p>
             </div>
 
             {/* Add Team Button */}
             <Link
               to='new'
-              className='inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
+              className='bg-brand hover:bg-brand-dark focus:ring-brand inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none'
               aria-label={t('teams.addTeam')}
             >
               <svg

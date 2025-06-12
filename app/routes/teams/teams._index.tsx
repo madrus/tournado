@@ -60,7 +60,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Teams Count */}
       {teamListItems.length > 0 ? (
-        <div className='text-sm text-gray-600'>
+        <div className='text-foreground-light text-sm'>
           {t('teams.count', { count: teamListItems.length })}
         </div>
       ) : null}
@@ -77,10 +77,10 @@ export default function PublicTeamsIndexPage(): JSX.Element {
       {/* Info Section */}
       {teamListItems.length === 0 ? (
         <div className='mt-8 rounded-lg bg-blue-50 p-6'>
-          <h3 className='text-lg font-medium text-blue-900'>
-            {t('teams.getStarted.title')}
-          </h3>
-          <p className='mt-2 text-blue-700'>{t('teams.getStarted.description')}</p>
+          <h3 className='text-lg font-medium'>{t('teams.getStarted.title')}</h3>
+          <p className='text-foreground-light mt-2'>
+            {t('teams.getStarted.description')}
+          </p>
         </div>
       ) : null}
     </div>

@@ -188,13 +188,13 @@ export function RouteTransitionAdvanced({
   const getTransitionClasses = () => {
     switch (transitionStage) {
       case 'exiting':
-        return 'opacity-0 transform translate-x-2'
+        return 'opacity-0 transform scale-95'
       case 'entering':
-        return 'opacity-100 transform translate-x-0'
+        return 'opacity-100 transform scale-100'
       case 'stable':
-        return 'opacity-100 transform translate-x-0'
+        return 'opacity-100 transform scale-100'
       default:
-        return 'opacity-100 transform translate-x-0'
+        return 'opacity-100 transform scale-100'
     }
   }
 

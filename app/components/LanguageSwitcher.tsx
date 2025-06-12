@@ -1,45 +1,50 @@
-import { JSX } from 'react'
+import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-type Language = {
-  code: string
-  name: string
-  flag: string
-}
-
-const languages: Language[] = [
+const languages = [
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'ar', name: 'العربية', flag: '🇲🇦' },
 ]
 
 export function LanguageSwitcher(): JSX.Element {
   const { i18n } = useTranslation()
 
-  const currentLanguage =
-    languages.find(lang => lang.code === i18n.language) ||
-    languages.find(lang => lang.code === i18n.options.fallbackLng) ||
-    languages[0]
-
-  const handleLanguageChange = (langCode: string) => {
-    i18n.changeLanguage(langCode)
-  }
-
   return (
-    <div className='flex flex-col space-y-1'>
-      {languages.map(language => (
-        <button
-          key={language.code}
-          className={`flex w-full content-start items-center py-1 ${
-            language.code === currentLanguage.code
-              ? 'bg-gray-100 font-semibold text-emerald-700'
-              : 'text-gray-700 hover:bg-gray-50'
-          }`}
-          onClick={() => handleLanguageChange(language.code)}
+    <div className='relative inline-block text-start'>
+      <select
+        value={i18n.language}
+        onChange={event => i18n.changeLanguage(event.target.value)}
+        className='cursor-pointer appearance-none bg-transparent py-1 ps-2 pe-8 text-white focus:outline-none'
+        aria-label='Select language'
+      >
+        {languages.map(lang => (
+          <option
+            key={lang.code}
+            value={lang.code}
+            className='bg-emerald-800 text-white'
+          >
+            {lang.flag} {lang.name}
+          </option>
+        ))}
+      </select>
+
+      {/* Custom dropdown arrow */}
+      <div className='pointer-events-none absolute end-0 top-0 flex h-full items-center pe-2'>
+        <svg
+          className='h-4 w-4 text-white'
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
         >
-          <span className='w-8 pl-0 text-left text-lg'>{language.flag}</span>
-          <span>{language.name}</span>
-        </button>
-      ))}
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M19 9l-7 7-7-7'
+          />
+        </svg>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
 import React, { JSX, useEffect } from 'react'
-import { I18nextProvider } from 'react-i18next'
+import { I18nextProvider, useTranslation } from 'react-i18next'
 import {
   Links,
   LinksFunction,
@@ -27,6 +27,8 @@ import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
 import { getEnv } from './utils/env.server'
+import { cn } from './utils/misc'
+import { getDirection, getTypographyClass } from './utils/rtlUtils'
 import { getUser } from './utils/session.server'
 
 export const meta: MetaFunction = () => [
@@ -58,24 +60,54 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   }
 }
 
-const Document = ({ children }: { children: React.ReactNode }) => (
-  <html lang={i18n.language} className='h-full overflow-x-hidden'>
-    <head>
-      <Meta />
-      <meta charSet='utf-8' />
-      <meta name='viewport' content='width=device-width,initial-scale=1' />
-      <Links />
-    </head>
-    <body className='bg-background text-foreground flex h-full flex-col'>
-      <I18nextProvider i18n={i18n}>
-        {children}
-        <PWAElements />
-      </I18nextProvider>
-      <ScrollRestoration />
-      <Scripts />
-    </body>
-  </html>
-)
+const Document = ({ children }: { children: React.ReactNode }) => {
+  // Use useTranslation to get dynamic language updates
+  const { i18n: i18nInstance } = useTranslation()
+
+  // Update HTML attributes when language changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.lang = i18nInstance.language
+      document.documentElement.dir = getDirection(i18nInstance.language)
+
+      // Update body typography class
+      const bodyClass = getTypographyClass(i18nInstance.language)
+      if (bodyClass) {
+        document.body.classList.add(bodyClass)
+      } else {
+        document.body.classList.remove('text-arabic')
+      }
+    }
+  }, [i18nInstance.language])
+
+  return (
+    <html
+      lang={i18n.language}
+      dir={getDirection(i18n.language)}
+      className='h-full overflow-x-hidden'
+    >
+      <head>
+        <Meta />
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <Links />
+      </head>
+      <body
+        className={cn(
+          'bg-background text-foreground flex h-full flex-col',
+          getTypographyClass(i18n.language)
+        )}
+      >
+        <I18nextProvider i18n={i18n}>
+          {children}
+          <PWAElements />
+        </I18nextProvider>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  )
+}
 
 // Auth state is now managed by the Zustand store in app/stores/authStore.ts
 

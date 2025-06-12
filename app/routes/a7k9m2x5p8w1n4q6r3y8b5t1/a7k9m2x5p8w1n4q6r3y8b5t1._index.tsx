@@ -1,4 +1,5 @@
 import { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -68,6 +69,7 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
 
 export default function AdminDashboard(): JSX.Element {
   const { user, teams } = useLoaderData<LoaderData>()
+  const { t } = useTranslation()
 
   return (
     <div className='space-y-8'>
@@ -89,7 +91,8 @@ export default function AdminDashboard(): JSX.Element {
           </p>
           <div className='mb-4 space-y-2'>
             <p className='text-foreground-light'>
-              <strong>Total Teams:</strong> {teams.length}
+              <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
+              {teams.length}
             </p>
           </div>
           <Link

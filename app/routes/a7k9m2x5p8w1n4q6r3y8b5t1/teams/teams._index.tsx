@@ -122,7 +122,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
                 </svg>
               </div>
             </div>
-            <div className='ml-5 w-0 flex-1'>
+            <div className='ms-5 w-0 flex-1'>
               <dl>
                 <dt className='truncate text-sm font-medium opacity-75'>
                   {t('admin.teams.totalTeams')}

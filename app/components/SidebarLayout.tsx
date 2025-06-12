@@ -129,11 +129,9 @@ export function SidebarLayout({
 
           {/* Sidebar */}
           <div
-            className={`absolute top-0 z-30 h-full ${currentWidth} transform bg-gradient-to-b ${currentTheme.gradient} transition-transform duration-300 ease-in-out md:relative md:top-0 ${
-              isSidebarOpen
-                ? 'fixed translate-x-0 shadow-lg'
-                : '-translate-x-full md:translate-x-0'
-            } border-r ${currentTheme.border}`}
+            className={`absolute top-0 z-30 h-full ${currentWidth} bg-gradient-to-b ${currentTheme.gradient} transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+              isSidebarOpen ? 'fixed start-0 shadow-lg' : '-start-full md:start-0'
+            } border-e ${currentTheme.border}`}
           >
             <div className='relative flex h-full flex-col pt-14'>
               {/* Add Button */}
@@ -166,7 +164,7 @@ export function SidebarLayout({
           {!shouldCloseSidebar ? (
             <Link
               to={addButtonPath}
-              className={`safe-bottom fixed right-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full pt-3 text-white shadow-xl md:hidden ${currentTheme.fab}`}
+              className={`safe-bottom fixed end-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full pt-3 text-white shadow-xl md:hidden ${currentTheme.fab}`}
               role='link'
               aria-label={addButtonLabel}
               onClick={() => handleSidebarItemClick('fab-button')}
@@ -178,7 +176,7 @@ export function SidebarLayout({
           {/* Sidebar Toggle Button (for future sliding menu) */}
           <button
             onClick={() => handleSidebarToggle(!isSidebarOpen)}
-            className={`fixed top-4 left-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-lg md:hidden ${currentTheme.fab}`}
+            className={`fixed start-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-lg md:hidden ${currentTheme.fab}`}
             aria-label='Toggle sidebar'
           >
             <svg

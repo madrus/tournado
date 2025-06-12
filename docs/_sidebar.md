@@ -7,7 +7,7 @@
    - [UI Components](development/ui-components.md)
    - [Type System](development/type-system.md)
    - [Database](development/database.md)
-   - [Cursor Rules](development/cursor_rules.md)
+   - [Service Worker](service-worker.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)
@@ -19,6 +19,7 @@
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)
 - Reference
+   - [Cursor Rules](development/cursor_rules.md)
    - [Fly.io vs Vercel](fly_vs_vercel.md)
    - [Markdown Tips](markdown_tips.md)
    - [React Router v7 Stack](remix_stack.md)

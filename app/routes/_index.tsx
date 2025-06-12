@@ -6,7 +6,9 @@ import { useLoaderData } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { ActionLink } from '~/components/PrefetchLink'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getTypographyClasses } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
 
 type LoaderData = {
@@ -41,8 +43,11 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderDat
 }
 
 export default function IndexPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { user } = useLoaderData<LoaderData>()
+
+  // Get RTL-aware typography classes
+  const typography = getTypographyClasses(i18n.language)
 
   // Determine the correct teams route based on user role
   const teamsRoute =
@@ -54,10 +59,20 @@ export default function IndexPage(): JSX.Element {
       <div className='flex flex-1 flex-col justify-center pt-16 pb-20'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl text-center'>
-            <h1 className='text-4xl font-bold tracking-tight sm:text-6xl'>
+            <h1
+              className={cn(
+                'app-name text-4xl sm:text-6xl',
+                typography.appName // Use specific app name styling for consistent positioning
+              )}
+            >
               {t('common.appName')}
             </h1>
-            <p className='text-foreground-light mt-6 text-lg leading-8'>
+            <p
+              className={cn(
+                'text-foreground-light mt-6 min-h-[3.5rem] text-lg leading-8', // Ensure consistent height for 2 lines
+                typography.centerAlign
+              )}
+            >
               {t('landing.hero.description')}
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
@@ -76,13 +91,30 @@ export default function IndexPage(): JSX.Element {
       <div className='bg-white py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 className='text-brand-dark text-base leading-7 font-semibold'>
+            <h2
+              className={cn(
+                'text-brand-dark text-base leading-7 font-semibold',
+                typography.centerAlign
+              )}
+            >
               {t('landing.features.title')}
             </h2>
-            <p className='mt-2 text-3xl font-bold tracking-tight sm:text-4xl'>
+            <p
+              className={cn(
+                'mt-2 text-3xl font-bold sm:text-4xl',
+                typography.title,
+                typography.heading,
+                typography.centerAlign
+              )}
+            >
               {t('landing.features.subtitle')}
             </p>
-            <p className='text-foreground-light mt-6 text-lg leading-8'>
+            <p
+              className={cn(
+                'text-foreground-light mt-6 text-lg leading-8',
+                typography.centerAlign
+              )}
+            >
               {t('landing.features.description')}
             </p>
           </div>

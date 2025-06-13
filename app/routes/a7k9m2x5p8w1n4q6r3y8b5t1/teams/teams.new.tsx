@@ -6,6 +6,7 @@ import {
   redirect,
   useActionData,
   useLoaderData,
+  useNavigate,
 } from 'react-router'
 
 import { Division } from '@prisma/client'
@@ -91,6 +92,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
   const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
   const privacyAgreement = formData.get('privacyAgreement') as string | null
+  const category = formData.get('category') as string | null
 
   const errors: TeamCreateActionData['errors'] = {}
 
@@ -175,6 +177,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
     clubName: clubName as string,
     teamName: teamName as string,
     division: validDivision as Division,
+    category: category || '',
     teamLeaderId: teamLeader.id,
     tournamentId: tournamentId as string,
   })
@@ -182,12 +185,13 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${team.id}`)
 }
 
-export default function AdminNewTeamPage(): JSX.Element {
-  const actionData = useActionData<TeamCreateActionData>()
+export default function AdminTeamNewPage(): JSX.Element {
   const { tournaments } = useLoaderData<typeof loader>()
+  const actionData = useActionData<TeamCreateActionData>()
+  const navigate = useNavigate()
 
   const handleCancel = () => {
-    window.history.back()
+    navigate('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   }
 
   return (

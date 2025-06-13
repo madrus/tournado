@@ -25,11 +25,14 @@ export const getTeam = ({
 }: {
   id: string
   teamLeaderId: string
-}): Promise<Pick<TeamWithLeader, 'id' | 'division' | 'teamName'> | null> =>
+}): Promise<Pick<TeamWithLeader, 'id' | 'division' | 'teamName' | 'category'> | null> =>
   prisma.team.findFirst({
-    select: { id: true, division: true, teamName: true },
+    select: { id: true, division: true, teamName: true, category: true },
     where: { id },
-  }) as Promise<Pick<TeamWithLeader, 'id' | 'division' | 'teamName'> | null>
+  }) as Promise<Pick<
+    TeamWithLeader,
+    'id' | 'division' | 'teamName' | 'category'
+  > | null>
 
 export const getTeamById = ({
   id,
@@ -47,6 +50,7 @@ export const getTeamById = ({
       teamName: true,
       tournamentId: true,
       teamLeaderId: true,
+      category: true,
       teamLeader: {
         select: {
           id: true,
@@ -90,18 +94,19 @@ export const createTeam = async ({
   clubName,
   teamName,
   division,
+  category,
   teamLeaderId,
   tournamentId,
-}: Pick<Team, 'clubName' | 'teamName' | 'division'> & {
+}: Pick<Team, 'clubName' | 'teamName' | 'division' | 'category'> & {
   teamLeaderId: TeamLeader['id']
   tournamentId: string
 }): Promise<Team> =>
   prisma.team.create({
-    // eslint-disable-next-line id-blacklist
     data: {
       clubName,
       teamName,
       division,
+      category,
       teamLeaderId,
       tournamentId,
     },

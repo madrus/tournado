@@ -64,29 +64,30 @@ model Team {
   id            String     @id @default(cuid())
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  clubName      String
-  teamName      String
-  division      Division
-  teamLeaderId  String
-  teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
   tournamentId  String
   tournament    Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  // back-relations for Match
-  homeMatches   Match[]      @relation("Match_homeTeam")
-  awayMatches   Match[]      @relation("Match_awayTeam")
+  category      String      // e.g., JO8, MO9, 35+
+  division      Division
+  clubName      String
+  teamName      String
+  teamLeaderId  String
+  teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
+  homeMatches   Match[]    @relation("Match_homeTeam")
+  awayMatches   Match[]    @relation("Match_awayTeam")
 }
 
 model Tournament {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  location  String      // city
-  divisions Json        // Array of divisions stored as JSON
-  startDate DateTime    // first day of tournament
-  endDate   DateTime?   // optional last day; if null, single-day event
-  teams     Team[]
-  matches   Match[]
+  id         String     @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  name       String
+  location   String
+  divisions  Json       // array of Division enum values as JSON (SQLite limitation)
+  categories Json       // array of category strings (as JSON in SQLite)
+  startDate  DateTime
+  endDate    DateTime?
+  teams      Team[]
+  matches    Match[]
 }
 
 model Match {

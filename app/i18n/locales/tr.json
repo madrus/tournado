@@ -164,7 +164,9 @@
       "teamLeaderName": "Takım lideri adı:",
       "teamLeaderPhone": "Takım lideri telefonu:",
       "teamName": "Takım adı:",
-      "tournament": "Turnuva:"
+      "tournament": "Turnuva:",
+      "category": "Kategori:",
+      "selectCategory": "Bir kategori seçin"
     },
     "getStarted": {
       "description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Takım ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",

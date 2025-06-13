@@ -48,11 +48,19 @@ export function TeamForm({
   }, [formData.tournamentId])
   // State for selected division (for className and value control)
   const [divisionValue, setDivisionValue] = useState<string>(formData.division || '')
+  // Add state for category
+  const [categoryValue, setCategoryValue] = useState<string>(formData.category || '')
 
   // Get available divisions for selected tournament
   const availableDivisions = selectedTournamentId
     ? tournaments.find(tournament => tournament.id === selectedTournamentId)
         ?.divisions || []
+    : []
+
+  // Get available categories for selected tournament
+  const availableCategories = selectedTournamentId
+    ? tournaments.find(tournament => tournament.id === selectedTournamentId)
+        ?.categories || []
     : []
 
   // Focus management
@@ -166,6 +174,38 @@ export function TeamForm({
               onBlur={event => handleFieldBlur('clubName', event.target.value)}
             />
 
+            {/* Team Category */}
+            <ComboField
+              name='category'
+              label={t('teams.form.category')}
+              value={categoryValue}
+              onChange={event => setCategoryValue(event.target.value)}
+              onBlur={event => handleFieldBlur('category', event.target.value)}
+              options={availableCategories.map(category => ({
+                value: category,
+                label: category,
+              }))}
+              placeholder={t('teams.form.selectCategory')}
+              error={displayErrors.category}
+              required
+            />
+
+            {/* Team Class */}
+            <ComboField
+              name='division'
+              label={t('teams.form.division')}
+              value={divisionValue}
+              onChange={event => setDivisionValue(event.target.value)}
+              onBlur={event => handleFieldBlur('division', event.target.value)}
+              options={availableDivisions.map(division => ({
+                value: division,
+                label: getDivisionLabel(division as Division, i18n.language),
+              }))}
+              placeholder={t('teams.form.selectDivision')}
+              error={displayErrors.division}
+              required
+              selectRef={teamClassRef}
+            />
             {/* Team Name */}
             <TextInputField
               ref={teamNameRef}
@@ -178,23 +218,6 @@ export function TeamForm({
               error={displayErrors.teamName}
               className='mb-4'
               onBlur={event => handleFieldBlur('teamName', event.target.value)}
-            />
-
-            {/* Team Class */}
-            <ComboField
-              name='division'
-              label={t('teams.form.division')}
-              value={divisionValue}
-              onChange={event => setDivisionValue(event.target.value)}
-              onBlur={event => handleFieldBlur('division', event.target.value)}
-              options={availableDivisions.map(division => ({
-                value: division,
-                label: getDivisionLabel(division, i18n.language),
-              }))}
-              placeholder={t('teams.form.selectDivision')}
-              error={displayErrors.division}
-              required
-              selectRef={teamClassRef}
             />
           </div>
 

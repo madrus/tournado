@@ -119,6 +119,10 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
     errors.division = 'invalidDivision'
   }
 
+  if (!category || category.length === 0) {
+    errors.category = 'categoryRequired'
+  }
+
   if (!teamLeaderName || teamLeaderName.length === 0) {
     errors.teamLeaderName = 'teamLeaderNameRequired'
   }

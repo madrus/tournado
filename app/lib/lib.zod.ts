@@ -16,6 +16,7 @@ const baseTeamSchema = z.object({
   clubName: z.string().min(1).max(100),
   teamName: z.string().min(1).max(50),
   division: z.string().min(1),
+  category: z.string().min(1),
   teamLeaderName: z.string().min(1).max(100),
   teamLeaderPhone: z
     .string()
@@ -50,6 +51,7 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
       .min(1, t('teams.form.errors.teamNameRequired'))
       .max(50, t('teams.form.errors.teamNameTooLong')),
     division: z.string().min(1, t('teams.form.errors.divisionRequired')),
+    category: z.string().min(1, t('teams.form.errors.categoryRequired')),
 
     // Team leader information (required for create mode)
     teamLeaderName: z

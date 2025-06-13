@@ -137,6 +137,7 @@
         "clubNameRequired": "Club name is required",
         "clubNameTooLong": "Club name must be less than 100 characters",
         "divisionRequired": "Division is required",
+        "categoryRequired": "Category is required",
         "emailInvalid": "Please enter a valid email address",
         "emailRequired": "Email is required",
         "phoneNumberInvalid": "Please enter a valid phone number",

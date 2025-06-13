@@ -320,6 +320,9 @@ describe('TeamForm Component - onBlur Validation', () => {
           screen.getByText('teams.form.errors.divisionRequired')
         ).toBeInTheDocument()
         expect(
+          screen.getByText('teams.form.errors.categoryRequired')
+        ).toBeInTheDocument()
+        expect(
           screen.getByText('teams.form.errors.teamLeaderNameRequired')
         ).toBeInTheDocument()
         expect(
@@ -355,6 +358,9 @@ describe('TeamForm Component - onBlur Validation', () => {
         ).toBeInTheDocument()
         expect(
           screen.getByText('teams.form.errors.divisionRequired')
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText('teams.form.errors.categoryRequired')
         ).toBeInTheDocument()
         expect(
           screen.getByText('teams.form.errors.teamLeaderNameRequired')
@@ -468,6 +474,9 @@ describe('TeamForm Component - onBlur Validation', () => {
       await waitFor(() => {
         expect(
           screen.getByText('teams.form.errors.privacyAgreementRequired')
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText('teams.form.errors.categoryRequired')
         ).toBeInTheDocument()
       })
     })
@@ -614,10 +623,11 @@ describe('TeamForm Category Field', () => {
     const categorySelect = screen.getByLabelText(/teams\.form\.category/)
     fireEvent.focus(categorySelect)
     fireEvent.blur(categorySelect)
-    // Simulate error display (depends on validation logic)
-    // You may need to trigger validation or check for error message
-    // For now, just check the field is present
-    expect(categorySelect).toBeInTheDocument()
+
+    // Wait for error to appear
+    await waitFor(() => {
+      expect(screen.getByText('teams.form.errors.categoryRequired')).toBeInTheDocument()
+    })
   })
 
   it('shows correct placeholder', () => {

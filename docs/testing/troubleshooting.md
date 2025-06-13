@@ -24,9 +24,38 @@
    - Reinstall dependencies: `pnpm install`
 
 2. **Test Failures**
+
    - Check database connection
    - Verify test environment variables
    - Ensure test database is clean
+
+3. **Language Flash of Unstyled/Incorrect Content (FOUC)**
+
+   **Problem:**
+
+   - On initial page load, users would sometimes see the wrong language (e.g., English instead of Dutch or Arabic) for a brief moment before the correct language was applied. This is known as a Flash of Untranslated Content (FOUC).
+   - This happened because the language was determined only on the client side, after hydration, so the server-rendered HTML was always in the default language.
+
+   **Why it happened:**
+
+   - The server did not know the user's preferred language (from cookie, header, or localStorage) at render time, so it always rendered the default language.
+   - When the client-side JavaScript loaded, it would detect the correct language and re-render, causing a visible "flash" as the content switched.
+
+   **Solution:**
+
+   - The language detection logic was moved to the server side. Now, the server reads the user's language preference (from cookie, Accept-Language header, or other means) during the initial request.
+   - The server initializes i18n with the correct language before rendering the HTML, so the user sees the correct language immediately, with no flash.
+   - The client-side i18n instance is also initialized with the same language, ensuring consistency and no mismatch during hydration.
+
+   **Result:**
+
+   - The FOUC is eliminated. Users always see the correct language from the very first paint, both on the server and client.
+   - This approach is robust for SSR/Remix/React Router apps and is recommended for all internationalized apps.
+
+   **Troubleshooting:**
+
+   - If you see a language flash again, check that the server-side language detection is working and that the language is passed to both the server and client i18n initialization.
+   - Make sure cookies or headers are being sent correctly from the browser to the server.
 
 ### Test Database Issues
 

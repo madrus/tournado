@@ -1,6 +1,14 @@
-import { startTransition, StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
+
+import { initI18n } from './i18n/config'
+
+declare global {
+  interface Window {
+    __SSR_LANGUAGE__?: string
+  }
+}
 
 // Simple conditional logic - avoiding hydration mismatch
 const isDevelopment = import.meta.env.DEV
@@ -28,15 +36,17 @@ if (isDevelopment) {
   }
 }
 
-startTransition(() => {
-  hydrateRoot(
-    document,
-    useStrictMode ? (
-      <StrictMode>
-        <HydratedRouter />
-      </StrictMode>
-    ) : (
+// Use the SSR-injected language
+const lang = window.__SSR_LANGUAGE__ || 'nl'
+initI18n(lang)
+
+hydrateRoot(
+  document,
+  useStrictMode ? (
+    <StrictMode>
       <HydratedRouter />
-    )
+    </StrictMode>
+  ) : (
+    <HydratedRouter />
   )
-})
+)

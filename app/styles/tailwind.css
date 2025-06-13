@@ -8,6 +8,10 @@
   --color-foreground-light: #4b5563; /* gray-600 */
   --color-foreground-lighter: #6b7280; /* gray-500 */
   --color-foreground: #065f46; /* emerald-800 */
+
+  /* Font family configuration */
+  --font-family-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: var(--font-family-default);
 }
 
 /*
@@ -27,3 +31,54 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
+
+/* RTL-specific utilities */
+[dir="rtl"] .rtl\:text-right {
+  text-align: right;
+}
+
+[dir="rtl"] .rtl\:text-left {
+  text-align: left;
+}
+
+[dir="rtl"] .rtl\:ml-auto {
+  margin-left: auto;
+}
+
+[dir="rtl"] .rtl\:mr-auto {
+  margin-right: auto;
+}
+
+[dir="rtl"] .rtl\:flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Script-aware typography system */
+/* Global Arabic sizing - applied to body when app language is Arabic */
+.text-arabic {
+  font-size: 1.2em; /* Make all text 20% larger for Arabic readability */
+}
+
+/* Force Latin size within Arabic context */
+.text-arabic .text-force-latin {
+  font-size: 0.833em; /* 1/1.2 = 0.833 to cancel out the 20% increase */
+}
+
+/* Force Arabic size in any context (for Arabic text in non-Arabic pages) */
+.text-force-arabic {
+  font-size: 1.2em; /* 20% larger for Arabic readability */
+}
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+/* Override for elements that should remain LTR even in RTL */
+[dir="rtl"] .ltr-override {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Removed app-name specific CSS to prevent conflicts with Tailwind classes */

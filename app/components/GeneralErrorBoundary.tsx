@@ -24,7 +24,7 @@ export function GeneralErrorBoundary({
         <h1 className='text-2xl font-bold'>
           {error.status === 404 ? t('errors.notFoundTitle') : t('errors.errorTitle')}
         </h1>
-        <p className='text-gray-500'>
+        <p className='text-foreground-lighter'>
           {error.status === 404
             ? t('auth.errors.notFound')
             : `${error.status} ${error.data}`}
@@ -41,7 +41,7 @@ export function GeneralErrorBoundary({
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className='text-2xl font-bold'>{t('errors.errorTitle')}</h1>
-        <p className='text-gray-500'>{getErrorMessage(error)}</p>
+        <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
           {t('common.backToHome')}
         </ErrorRecoveryLink>

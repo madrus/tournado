@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 ---
@@ -27,7 +27,7 @@ This is a React Router v7 application with TypeScript, Prisma for database manag
 - `app/routes/` - Contains all route components
 - `app/styles` - Shared CSS files
 - `app/utils/` - Utility functions and helpers
-- `cypress/` - Cypress tests
+- `playwright/` - Playwright tests
 - `prisma/` - Database schema and migrations
 
 ## Configuration Files

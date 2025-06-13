@@ -57,7 +57,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6' data-testid='teams-layout'>
       {/* Teams Count */}
       {teamListItems.length > 0 ? (
         <div className='text-foreground-light text-sm'>

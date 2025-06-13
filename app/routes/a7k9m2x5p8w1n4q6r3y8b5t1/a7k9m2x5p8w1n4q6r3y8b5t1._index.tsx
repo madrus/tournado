@@ -72,86 +72,84 @@ export default function AdminDashboard(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='space-y-8'>
-      {/* Welcome Section */}
-      <div>
-        <h1 className='text-2xl font-bold'>Admin Dashboard</h1>
-        <p className='text-foreground-light mt-1'>
-          Welcome back, {user.email}. Manage your tournament platform from here.
-        </p>
-      </div>
-
-      {/* Dashboard Grid */}
-      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2'>
-        {/* Teams Management */}
-        <div className='rounded-lg border bg-white p-6 shadow-sm'>
-          <h3 className='mb-4 text-lg font-semibold'>Teams Management</h3>
-          <p className='text-foreground-light mb-4'>
-            Manage team registrations and memberships.
-          </p>
-          <div className='mb-4 space-y-2'>
-            <p className='text-foreground-light'>
-              <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
-              {teams.length}
+    <>
+      <h1 className='mb-8 text-3xl font-bold'>Admin Panel</h1>
+      <p className='text-foreground-light mb-8'>
+        Welcome back, {user.email}. Manage your tournament platform from here.
+      </p>
+      <div className='space-y-8'>
+        {/* Dashboard Grid */}
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2'>
+          {/* Teams Management */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3 className='mb-4 text-lg font-semibold'>Teams Management</h3>
+            <p className='text-foreground-light mb-4'>
+              Manage team registrations and memberships.
             </p>
+            <div className='mb-4 space-y-2'>
+              <p className='text-foreground-light'>
+                <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
+                {teams.length}
+              </p>
+            </div>
+            <Link
+              to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+              className='rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700'
+            >
+              Manage Teams
+            </Link>
           </div>
-          <Link
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-            className='rounded bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700'
-          >
-            Manage Teams
-          </Link>
-        </div>
 
-        {/* User Management */}
-        <div className='rounded-lg border bg-white p-6 shadow-sm'>
-          <h3 className='mb-4 text-lg font-semibold'>User Management</h3>
-          <p className='text-foreground-light mb-4'>
-            Manage user accounts and permissions.
-          </p>
-          <div className='space-y-2'>
-            <p className='text-foreground-light'>
-              <strong>Current User:</strong> {user.email}
+          {/* User Management */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3 className='mb-4 text-lg font-semibold'>User Management</h3>
+            <p className='text-foreground-light mb-4'>
+              Manage user accounts and permissions.
             </p>
-            <p className='text-foreground-light'>
-              <strong>User ID:</strong> {user.id}
-            </p>
+            <div className='space-y-2'>
+              <p className='text-foreground-light'>
+                <strong>Current User:</strong> {user.email}
+              </p>
+              <p className='text-foreground-light'>
+                <strong>User ID:</strong> {user.id}
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Tournament Management */}
-        <div className='rounded-lg border bg-white p-6 shadow-sm'>
-          <h3 className='mb-4 text-lg font-semibold'>Tournament Management</h3>
-          <p className='text-foreground-light mb-4'>
-            Oversee all tournaments and competitions.
-          </p>
-          <button className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'>
-            Manage Tournaments
-          </button>
-        </div>
+          {/* Tournament Management */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3 className='mb-4 text-lg font-semibold'>Tournament Management</h3>
+            <p className='text-foreground-light mb-4'>
+              Oversee all tournaments and competitions.
+            </p>
+            <button className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'>
+              Manage Tournaments
+            </button>
+          </div>
 
-        {/* System Settings */}
-        <div className='rounded-lg border bg-white p-6 shadow-sm'>
-          <h3 className='mb-4 text-lg font-semibold'>System Settings</h3>
-          <p className='text-foreground-light mb-4'>
-            Configure application settings and preferences.
-          </p>
-          <button className='rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700'>
-            System Config
-          </button>
-        </div>
+          {/* System Settings */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3 className='mb-4 text-lg font-semibold'>System Settings</h3>
+            <p className='text-foreground-light mb-4'>
+              Configure application settings and preferences.
+            </p>
+            <button className='rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700'>
+              System Config
+            </button>
+          </div>
 
-        {/* Reports & Analytics */}
-        <div className='rounded-lg border bg-white p-6 shadow-sm'>
-          <h3 className='mb-4 text-lg font-semibold'>Reports & Analytics</h3>
-          <p className='text-foreground-light mb-4'>
-            View platform usage and tournament statistics.
-          </p>
-          <button className='rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700'>
-            View Reports
-          </button>
+          {/* Reports & Analytics */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3 className='mb-4 text-lg font-semibold'>Reports & Analytics</h3>
+            <p className='text-foreground-light mb-4'>
+              View platform usage and tournament statistics.
+            </p>
+            <button className='rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700'>
+              View Reports
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -25,7 +25,7 @@ vi.mock('react-router', async () => {
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
-    i18n: { language: 'test' },
+    i18n: { language: 'en' },
   }),
 }))
 

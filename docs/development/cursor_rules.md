@@ -81,6 +81,8 @@ Covers:
 - Implementation guidelines
 - Enforcement practices
 
+- All test files should be placed in a **tests** subfolder within their respective component or feature directory. Example: app/components/buttons/**tests**/DeleteButton.test.tsx
+
 ## Using Cursor Rules
 
 1. **During Development**

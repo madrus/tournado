@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 # Development Workflow
@@ -23,8 +23,8 @@ The main scripts are defined in [package.json](mdc:package.json):
 ### Testing
 - `pnpm run test` - Run Vitest tests in watch mode
 - `pnpm run test:run` - Run Vitest tests once
-- `pnpm run test:e2e:dev` - Run Cypress E2E tests in development
-- `pnpm run test:e2e:run` - Run Cypress E2E tests in CI mode
+- `pnpm run test:e2e:dev` - Run Playwright E2E tests in development
+- `pnpm run test:e2e:run` - Run Playwright E2E tests in CI mode
 
 ### Build & Deploy
 - `pnpm run build` - Build the application

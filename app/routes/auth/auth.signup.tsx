@@ -282,7 +282,7 @@ export default function SignupPage(): JSX.Element {
           </button>
         </Form>
 
-        <p className='mt-10 text-center text-sm text-gray-500'>
+        <p className='text-foreground-lighter mt-10 text-center text-sm'>
           {t('auth.alreadyHaveAccount')}{' '}
           <Link
             to='/auth/signin'

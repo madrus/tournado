@@ -78,7 +78,7 @@ export default function TeamDetailsPage(): JSX.Element {
         {/* Header */}
         <div className='mb-8'>
           <h1 className='text-3xl font-bold'>{`${team.clubName} ${team.teamName}`}</h1>
-          <p className='text-foreground-light mt-2 text-lg'>
+          <p className='mt-2 text-lg'>
             {getDivisionLabel(team.division, i18n.language)}
           </p>
         </div>
@@ -107,7 +107,9 @@ export default function TeamDetailsPage(): JSX.Element {
                       <p className='text-foreground-light text-sm'>
                         Saturday, Dec 16, 2023 at 14:00
                       </p>
-                      <p className='text-sm text-gray-500'>Sports Hall Location</p>
+                      <p className='text-foreground-lighter text-sm'>
+                        Sports Hall Location
+                      </p>
                     </div>
                     <span className='rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800'>
                       Scheduled
@@ -122,7 +124,7 @@ export default function TeamDetailsPage(): JSX.Element {
                       <p className='text-foreground-light text-sm'>
                         Sunday, Dec 17, 2023 at 16:30
                       </p>
-                      <p className='text-sm text-gray-500'>Main Court</p>
+                      <p className='text-foreground-lighter text-sm'>Main Court</p>
                     </div>
                     <span className='rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800'>
                       Confirmed
@@ -151,21 +153,23 @@ export default function TeamDetailsPage(): JSX.Element {
               <h3 className='mb-4 text-lg font-semibold'>Team Information</h3>
               <dl className='space-y-3'>
                 <div>
-                  <dt className='text-sm font-medium text-gray-500'>Club</dt>
+                  <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
                   <dd className='text-sm text-gray-900'>{team.clubName}</dd>
                 </div>
                 <div>
-                  <dt className='text-sm font-medium text-gray-500'>Team</dt>
+                  <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
                   <dd className='text-sm text-gray-900'>{team.teamName}</dd>
                 </div>
                 <div>
-                  <dt className='text-sm font-medium text-gray-500'>Class</dt>
+                  <dt className='text-foreground-lighter text-sm font-medium'>Class</dt>
                   <dd className='text-sm text-gray-900'>
                     {getDivisionLabel(team.division, i18n.language)}
                   </dd>
                 </div>
                 <div>
-                  <dt className='text-sm font-medium text-gray-500'>Status</dt>
+                  <dt className='text-foreground-lighter text-sm font-medium'>
+                    Status
+                  </dt>
                   <dd>
                     <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800'>
                       Active
@@ -209,24 +213,24 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className='space-y-3'>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
                 >
                   📅 View Full Schedule
                 </button>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
                 >
                   📊 View Statistics
                 </button>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
                 >
                   👥 View Players
                 </button>
               </div>
-              <p className='mt-3 text-xs text-gray-500'>
+              <p className='text-foreground-lighter mt-3 text-xs'>
                 These features will be available in future updates.
               </p>
             </div>

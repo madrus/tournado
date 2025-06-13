@@ -29,7 +29,7 @@ export function TeamList({
   if (teams.length === 0) {
     return (
       <div className={`flex items-center justify-center p-8 ${className}`}>
-        <p className='text-center text-gray-500'>
+        <p className='text-foreground-lighter text-center'>
           {emptyMessage || t('teams.noTeams')}
         </p>
       </div>

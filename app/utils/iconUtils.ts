@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   DarkModeIcon,
   ErrorIcon,
+  ExpandMoreIcon,
   HomeIcon,
   InfoIcon,
   LanguageIcon,
@@ -47,6 +48,7 @@ export type IconName =
   | 'trophy'
   | 'tune'
   | 'warning'
+  | 'expand_more'
 
 export const iconMap = {
   admin_panel_settings: AdminPanelSettingsIcon,
@@ -70,6 +72,7 @@ export const iconMap = {
   trophy: TrophyIcon,
   tune: TuneIcon,
   warning: WarningIcon,
+  expand_more: ExpandMoreIcon,
 }
 
 // IconProps that match what our icon components actually accept

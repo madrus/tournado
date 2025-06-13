@@ -2,6 +2,7 @@
 import type { Prisma, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import type { TeamWithLeaderFull } from '~/lib/lib.types'
 
 export type { Team } from '@prisma/client'
 
@@ -34,14 +35,29 @@ export const getTeamById = ({
   id,
 }: {
   id: string
-}): Promise<Pick<TeamWithLeader, 'id' | 'clubName' | 'division' | 'teamName'> | null> =>
+}): Promise<TeamWithLeaderFull | null> =>
   prisma.team.findUnique({
-    select: { id: true, clubName: true, division: true, teamName: true },
     where: { id },
-  }) as Promise<Pick<
-    TeamWithLeader,
-    'id' | 'clubName' | 'division' | 'teamName'
-  > | null>
+    select: {
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      clubName: true,
+      division: true,
+      teamName: true,
+      tournamentId: true,
+      teamLeaderId: true,
+      teamLeader: {
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+        },
+      },
+    },
+  })
 
 export const getTeamListItems = async ({
   teamLeaderId,

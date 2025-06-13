@@ -15,7 +15,7 @@
  *
  * For detailed documentation, see: docs/development/type-system.md
  */
-import type { Division, Team as PrismaTeam } from '@prisma/client'
+import type { Team as PrismaTeam } from '@prisma/client'
 
 // Division types from the alternative DIVISIONS object implementation
 export type DivisionKey =
@@ -104,6 +104,7 @@ export type TeamFormData = {
   clubName: string // via API Club -- logo en basisgegevens ophalen
   teamName: TeamName // Strict type for validation
   division: TeamClass // Strict type for validation
+  category: string // added for team category
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: Email // Strict type for validation
@@ -123,7 +124,8 @@ export type TournamentData = {
   location: string
   startDate: string
   endDate: string | null
-  divisions: Division[] // Array of Division enum values
+  divisions: string[]
+  categories?: string[] // added for tournament categories
 }
 
 /**
@@ -285,6 +287,7 @@ export type ExtractedTeamData = {
   clubName: string
   teamName: string
   division: string
+  category: string // added for team category
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: string

@@ -164,7 +164,9 @@
       "teamLeaderName": "اسم قائد الفريق:",
       "teamLeaderPhone": "هاتف قائد الفريق:",
       "teamName": "اسم الفريق:",
-      "tournament": "البطولة:"
+      "tournament": "البطولة:",
+      "category": "الفئة:",
+      "selectCategory": "اختر فئة"
     },
     "getStarted": {
       "description": "مستعد للانضمام إلى بطولة؟ انقر على زر 'إضافة فريق' أعلاه لتسجيل فريقك وابدأ المنافسة!",

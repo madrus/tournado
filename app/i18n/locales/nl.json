@@ -164,7 +164,9 @@
       "teamLeaderName": "Naam teamleider:",
       "teamLeaderPhone": "Telefoon teamleider:",
       "teamName": "Teamnaam:",
-      "tournament": "Toernooi:"
+      "tournament": "Toernooi:",
+      "category": "Categorie:",
+      "selectCategory": "Selecteer een categorie"
     },
     "getStarted": {
       "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",

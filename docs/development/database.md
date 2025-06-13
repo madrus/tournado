@@ -113,6 +113,14 @@ We can hold off on actually running migrations while we iterate on our schema. P
 
 ---
 
+## Schema Changes Documentation
+
+For detailed information about database schema changes, including the recent addition of category fields to Tournament and Team models, see:
+
+📚 **[Database Schema Changes](database-schema-changes.md)** - Complete history and documentation of schema modifications
+
+---
+
 ## Deploying Database Changes
 
 When deploying database changes to staging and production environments, you have a few options depending on your deployment setup:

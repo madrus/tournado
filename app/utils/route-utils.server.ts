@@ -3,7 +3,6 @@ import { redirect } from 'react-router'
 import type { User } from '~/models/user.server'
 
 import type { RouteMetadata } from './route-types'
-import { getUser } from './session.server'
 
 /**
  * A server-side utility to determine if a route is public
@@ -45,108 +44,27 @@ export async function isPublicRoute(pathname: string): Promise<boolean> {
 }
 
 /**
- * Enhanced route protection utility that enforces route-level security
+ * Maps route metadata roles to Prisma Role enum values
  */
-export async function enforceRouteProtection(
-  request: Request,
-  routeMetadata?: RouteMetadata
-): Promise<User | null> {
-  // If no metadata provided, assume route is protected
-  if (!routeMetadata) {
-    const user = await getUser(request)
-    if (!user) {
-      const url = new URL(request.url)
-      const redirectTo = `${url.pathname}${url.search}`
-      throw redirect(`/auth/signin?redirectTo=${encodeURIComponent(redirectTo)}`)
-    }
-    return user
+function mapRouteRoleToPrismaRole(role: string): string {
+  const roleMapping: Record<string, string> = {
+    admin: 'ADMIN',
+    tournamentOrganiser: 'TOURNAMENT_MANAGER',
+    referee: 'REFEREE',
+    participant: 'PUBLIC',
   }
 
-  // If route is public, no protection needed
-  if (routeMetadata.isPublic) {
-    return await getUser(request) // Still return user if available
-  }
-
-  // Get current user
-  const user = await getUser(request)
-
-  // Check authentication requirements
-  const authRequired = routeMetadata.auth?.required ?? !routeMetadata.isPublic
-  if (authRequired && !user) {
-    const url = new URL(request.url)
-    const currentPath = `${url.pathname}${url.search}`
-    const preserveRedirect = routeMetadata.auth?.preserveRedirect ?? true
-    const redirectPath = routeMetadata.auth?.redirectTo ?? '/auth/signin'
-
-    const redirectUrl = preserveRedirect
-      ? `${redirectPath}?redirectTo=${encodeURIComponent(currentPath)}`
-      : redirectPath
-
-    throw redirect(redirectUrl)
-  }
-
-  // Check role-based authorization
-  if (user && routeMetadata.authorization?.requiredRoles) {
-    const hasRequiredRole = checkUserRoles(
-      user,
-      routeMetadata.authorization.requiredRoles,
-      routeMetadata.authorization.roleMatchMode ?? 'any'
-    )
-
-    if (!hasRequiredRole) {
-      const unauthorizedRedirect =
-        routeMetadata.authorization.redirectTo ?? '/unauthorized'
-      throw redirect(unauthorizedRedirect)
-    }
-  }
-
-  // Run custom protection check if provided
-  if (routeMetadata.protection?.customCheck) {
-    const customResult = await routeMetadata.protection.customCheck(request, user)
-    if (customResult === false) {
-      throw redirect('/unauthorized')
-    } else if (customResult instanceof Response) {
-      throw customResult
-    }
-  }
-
-  return user
+  return roleMapping[role] || role.toUpperCase()
 }
 
 /**
- * Check if user has required roles
+ * Checks if user has any of the required roles
  */
-function checkUserRoles(
-  user: User,
-  requiredRoles: string[],
-  mode: 'all' | 'any' = 'any'
-): boolean {
-  // TODO: Implement actual role checking based on your User model
-  // For now, this is a placeholder implementation
+function userHasRequiredRole(user: User, requiredRoles: string[]): boolean {
+  const userRole = user.role
+  const mappedRequiredRoles = requiredRoles.map(mapRouteRoleToPrismaRole)
 
-  // Example implementation (you'll need to adjust based on your User model):
-  const userRoles = getUserRoles(user)
-
-  if (mode === 'all') {
-    return requiredRoles.every(role => userRoles.includes(role))
-  } else {
-    return requiredRoles.some(role => userRoles.includes(role))
-  }
-}
-
-/**
- * Get user roles from user object
- * TODO: Implement based on your actual User model structure
- */
-const getUserRoles = (user: User): string[] => {
-  // Convert the database role (uppercase) to lowercase for matching route requirements
-  // Database: 'ADMIN' -> Route expects: 'admin'
-  if (user.role) {
-    return [user.role.toLowerCase()]
-  }
-
-  // Fallback for users without a role
-  return ['participant']
+  return mappedRequiredRoles.includes(userRole)
 }
 
 /**
@@ -157,24 +75,25 @@ export async function requireUserWithMetadata(
   request: Request,
   routeMetadata?: RouteMetadata
 ): Promise<User> {
-  const user = await enforceRouteProtection(request, routeMetadata)
+  const { getUser } = await import('./session.server')
+  const user = await getUser(request)
 
+  // Check authentication
   if (!user) {
-    // This should not happen if enforceRouteProtection is working correctly
-    // but adding as a safety net
     const url = new URL(request.url)
     const redirectTo = `${url.pathname}${url.search}`
-    throw redirect(`/auth/signin?redirectTo=${encodeURIComponent(redirectTo)}`)
+    const redirectUrl = routeMetadata?.auth?.redirectTo || '/auth/signin'
+    throw redirect(`${redirectUrl}?redirectTo=${encodeURIComponent(redirectTo)}`)
+  }
+
+  // Check authorization if required roles are specified
+  if (routeMetadata?.authorization?.requiredRoles) {
+    const { requiredRoles, redirectTo = '/unauthorized' } = routeMetadata.authorization
+
+    if (!userHasRequiredRole(user, requiredRoles)) {
+      throw redirect(redirectTo)
+    }
   }
 
   return user
 }
-
-/**
- * Create an unauthorized route for handling authorization failures
- */
-export const createUnauthorizedResponse = (message?: string): Response =>
-  new Response(message || 'Unauthorized', {
-    status: 403,
-    statusText: 'Forbidden',
-  })

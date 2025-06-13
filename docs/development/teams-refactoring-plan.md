@@ -19,6 +19,13 @@
 - Created migration: `20241220130542_add_club_name_to_team`
 - Applied migration: All existing teams set to `clubName: 'sv DIO'`
 
+**Update (December 2024):** Additional category field support was added later:
+
+- Added `category String` field to Team model
+- Added `categories Json` field to Tournament model
+- Migration: `20250613172548_add_categories_to_tournament`
+- See [Database Schema Changes](database-schema-changes.md) for full details
+
 ### Code Updates ✅
 
 - Updated `createTeam()` function to save clubName

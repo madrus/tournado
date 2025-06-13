@@ -11,7 +11,7 @@ import type {
 } from './lib.types'
 
 // Base team schema without translations (for server-side validation)
-export const baseTeamSchema = z.object({
+const baseTeamSchema = z.object({
   tournamentId: z.string().min(1),
   clubName: z.string().min(1).max(100),
   teamName: z.string().min(1).max(50),
@@ -29,13 +29,13 @@ export const baseTeamSchema = z.object({
 })
 
 // Schema for create mode (includes privacy agreement)
-export const createTeamSchema = baseTeamSchema
+const createTeamSchema = baseTeamSchema
 
 // Schema for edit mode (omits privacy agreement)
-export const editTeamSchema = baseTeamSchema.omit({ privacyAgreement: true })
+const editTeamSchema = baseTeamSchema.omit({ privacyAgreement: true })
 
-// Factory function for creating schemas with translated error messages
-export const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
+// Factory function for creating schemas with translated error messages (internal use only)
+const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
   z.object({
     // Tournament selection (required for create mode)
     tournamentId: z.string().min(1, t('teams.form.errors.tournamentRequired')),

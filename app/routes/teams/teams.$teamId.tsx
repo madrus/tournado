@@ -209,19 +209,19 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className='space-y-3'>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-left text-sm text-gray-500'
+                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
                 >
                   📅 View Full Schedule
                 </button>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-left text-sm text-gray-500'
+                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
                 >
                   📊 View Statistics
                 </button>
                 <button
                   disabled
-                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-left text-sm text-gray-500'
+                  className='w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm text-gray-500'
                 >
                   👥 View Players
                 </button>

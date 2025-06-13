@@ -1,143 +1,23 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 # Testing Guide
 
 The application uses multiple testing approaches defined in various configuration files:
 - [vitest.config.ts](mdc:vitest.config.ts) - Unit and integration tests
-- [cypress.config.ts](mdc:cypress.config.ts) - End-to-end tests
+- [playwright.config.ts](mdc:playwright.config.ts) - End-to-end tests
 
 ## Test Types
 
 ### Unit Tests
-- Located next to the files they test with `.test.ts` or `.test.tsx` extension
+- Located in a `__tests__` subfolder next to the files they test, with `.test.ts` or `.test.tsx` extension
 - Use Vitest as the test runner
 - Testing utilities available in [app/utils.test.ts](mdc:app/utils.test.ts)
+- **Rule:** All new unit test files must be placed in a `__tests__` subfolder adjacent to the code they test. This ensures a clean codebase and makes it easy to find related tests.
 
 ### End-to-End Tests
-- Located in the `cypress/` directory
-- Use Cypress with Testing Library
+- Located in the `playwright/` directory
+- Use Playwright with Testing Library
 - Run against a live development or production build
-
-## Element Selection Best Practices
-
-When writing tests, follow this order of preference for selecting elements:
-
-1. **By Role** (best)
-   ```typescript
-   // Buttons
-   cy.findByRole('button', { name: /sign in/i })
-   cy.findByRole('button', { name: /save/i })
-
-   // Links
-   cy.findByRole('link', { name: /teams/i })
-   cy.findByRole('link', { name: /sign up/i })
-
-   // Form inputs
-   cy.findByRole('textbox', { name: /email/i })
-   cy.findByRole('textbox', { name: /title/i })
-   cy.findByRole('checkbox', { name: /remember me/i })
-   ```
-
-2. **By Label Text**
-   ```typescript
-   cy.findByLabelText(/email/i)
-   cy.findByLabelText(/password/i)
-   ```
-
-3. **By Placeholder Text**
-   ```typescript
-   cy.findByPlaceholderText(/enter your email/i)
-   ```
-
-4. **By Text Content**
-   ```typescript
-   cy.findByText(/sign in/i)
-   cy.findByText(/no teams yet/i)
-   ```
-
-5. **By Display Value**
-   ```typescript
-   cy.findByDisplayValue('john@example.com')
-   ```
-
-6. **By Alt Text**
-   ```typescript
-   cy.findByAltText('Logo')
-   ```
-
-7. **By Title**
-   ```typescript
-   cy.findByTitle('Close')
-   ```
-
-8. **By Test ID** (last resort)
-   ```typescript
-   cy.findByTestId('signin-button')
-   ```
-
-### Why This Order?
-
-1. **Accessibility**: Using roles and labels ensures your app is accessible
-2. **Resilience**: Tests are less likely to break with UI changes
-3. **User Experience**: Tests reflect how users actually interact with the app
-4. **Maintenance**: Easier to maintain and update tests
-
-### Common Patterns
-
-#### Form Testing
-```typescript
-// Fill out a form
-cy.findByRole('textbox', { name: /email/i }).type('user@example.com')
-cy.findByLabelText(/password/i).type('password123')
-cy.findByRole('button', { name: /sign in/i }).click()
-```
-
-#### Navigation Testing
-```typescript
-// Click navigation links
-cy.findByRole('link', { name: /teams/i }).click()
-cy.findByRole('link', { name: /sign up/i }).click()
-```
-
-#### Error Message Testing
-```typescript
-// Check for error messages
-cy.findByText(/invalid email/i).should('be.visible')
-```
-
-### Best Practices
-
-1. **Use Semantic Queries**
-   - Prefer `findByRole` over `getByTestId`
-   - Use `findByText` for visible text
-   - Use `findByLabelText` for form labels
-
-2. **Make Tests Resilient**
-   - Use case-insensitive regex for text matching
-   - Use partial text matching when appropriate
-   - Avoid brittle selectors like CSS classes
-
-3. **Test Accessibility**
-   - Use roles to ensure proper ARIA attributes
-   - Test keyboard navigation
-   - Verify focus management
-
-4. **Keep Tests Simple**
-   - One assertion per test when possible
-   - Clear test descriptions
-   - Follow the Arrange-Act-Assert pattern
-
-## Mocking
-- Mock service worker (MSW) configurations in `mocks/` directory
-- Can run the application with mocks using `pnpm run start:mocks`
-
-## CI/CD Testing
-- All tests are run as part of the validation script: `pnpm run validate`
-- Includes:
-  - Unit tests
-  - Type checking
-  - Linting
-  - E2E tests

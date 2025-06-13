@@ -1,3 +1,4 @@
+const SW_DEBUG = false
 // This is a basic service worker for development mode
 self.addEventListener('install', event => {
   console.log('Service Worker installing.')
@@ -17,5 +18,7 @@ self.addEventListener('fetch', event => {
     return
   }
 
-  console.log('Service Worker fetching:', event.request.url)
+  if (SW_DEBUG) {
+    console.log('Service Worker fetching:', event.request.url)
+  }
 })

@@ -6,6 +6,7 @@ import {
   redirect,
   useActionData,
   useLoaderData,
+  useNavigate,
   useRouteError,
 } from 'react-router'
 
@@ -55,6 +56,7 @@ type LoaderData = {
     startDate: string
     endDate: string | null
     divisions: Division[]
+    categories: Array<string>
   }>
 }
 
@@ -109,6 +111,7 @@ export async function loader({ params, request }: LoaderArgs): Promise<LoaderDat
       startDate: true,
       endDate: true,
       divisions: true,
+      categories: true,
     },
     orderBy: { startDate: 'asc' },
   })
@@ -122,6 +125,11 @@ export async function loader({ params, request }: LoaderArgs): Promise<LoaderDat
       divisions: Array.isArray(tournament.divisions)
         ? (tournament.divisions as Division[])
         : [],
+      categories: Array.isArray(tournament.categories)
+        ? tournament.categories
+        : tournament.categories
+          ? JSON.parse(tournament.categories as string)
+          : [],
     })),
   }
 }
@@ -189,9 +197,10 @@ export default function AdminTeamDetailsPage(): JSX.Element {
   const { t } = useTranslation()
   const { team, tournaments: _tournaments } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamEditActionData>()
+  const navigate = useNavigate()
 
   const handleCancel = () => {
-    window.history.back()
+    navigate('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   }
 
   const handleDelete = () => {
@@ -220,6 +229,7 @@ export default function AdminTeamDetailsPage(): JSX.Element {
           clubName: team.clubName,
           teamName: team.teamName as `${'J' | 'M' | 'JM'}O${number}-${number}`,
           division: team.division,
+          category: team.category,
           teamLeaderName:
             `${team.teamLeader.firstName} ${team.teamLeader.lastName}`.trim(),
           teamLeaderPhone: team.teamLeader.phone,

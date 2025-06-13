@@ -158,6 +158,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     clubName: teamData.clubName,
     teamName: teamData.teamName,
     division: validDivision as Division,
+    category: teamData.category,
     teamLeaderId: teamLeader.id,
     tournamentId: teamData.tournamentId,
   })

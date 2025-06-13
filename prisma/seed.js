@@ -98,11 +98,25 @@ async function seed() {
 
     const team1 = {
       teamName: 'JO8-1',
-      division: 'FIRST_DIVISION',
+      category: 'JO8',
+      division: 'PREMIER_DIVISION',
     }
 
     const team2 = {
-      teamName: 'MO10-2',
+      teamName: 'JO10-1',
+      category: 'JO10',
+      division: 'FIRST_DIVISION',
+    }
+
+    const team3 = {
+      teamName: 'JO10-1',
+      category: 'JO10',
+      division: 'FIRST_DIVISION',
+    }
+
+    const team4 = {
+      teamName: 'JO10-2',
+      category: 'JO10',
       division: 'SECOND_DIVISION',
     }
 
@@ -139,6 +153,7 @@ async function seed() {
         name: 'Spring Cup',
         location: 'Amsterdam',
         divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION', 'SECOND_DIVISION'],
+        categories: ['JO8', 'JO9', 'JO10', 'JO11'],
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-02'),
       },
@@ -149,6 +164,7 @@ async function seed() {
         name: 'Summer Cup',
         location: 'Aalsmeer',
         divisions: ['FIRST_DIVISION', 'SECOND_DIVISION', 'THIRD_DIVISION'],
+        categories: ['JO9', 'JO10', 'JO11', 'JO12'],
         startDate: new Date('2025-06-01'),
         endDate: new Date('2025-06-02'),
       },
@@ -159,6 +175,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team1.teamName,
+        category: team1.category,
         division: team1.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament1.id,
@@ -169,6 +186,7 @@ async function seed() {
       data: {
         clubName: 'sv DIO',
         teamName: team2.teamName,
+        category: team2.category,
         division: team2.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament1.id,
@@ -179,8 +197,9 @@ async function seed() {
     const createdTeam3 = await prisma.team.create({
       data: {
         clubName: 'sv DIO',
-        teamName: team1.teamName,
-        division: team1.division,
+        teamName: team3.teamName,
+        category: team3.category,
+        division: team3.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament2.id,
       },
@@ -189,8 +208,9 @@ async function seed() {
     const createdTeam4 = await prisma.team.create({
       data: {
         clubName: 'sv DIO',
-        teamName: team2.teamName,
-        division: team2.division,
+        teamName: team4.teamName,
+        category: team4.category,
+        division: team4.division,
         teamLeaderId: teamLeader.id,
         tournamentId: tournament2.id,
       },

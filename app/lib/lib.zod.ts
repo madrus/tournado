@@ -92,6 +92,7 @@ export const extractTeamDataFromFormData = (formData: FormData): ExtractedTeamDa
   clubName: (formData.get('clubName') as string) || '',
   teamName: (formData.get('teamName') as string) || '',
   division: (formData.get('division') as string) || '',
+  category: (formData.get('category') as string) || '',
   teamLeaderName: (formData.get('teamLeaderName') as string) || '',
   teamLeaderPhone: (formData.get('teamLeaderPhone') as string) || '',
   teamLeaderEmail: (formData.get('teamLeaderEmail') as string) || '',

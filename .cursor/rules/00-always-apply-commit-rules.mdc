@@ -1,31 +1,147 @@
 ---
 description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 # Always Apply Conventional Commits
 
-**CRITICAL: When generating commit messages, ALWAYS use conventional commit format.**
+**CRITICAL:** All commit messages **must** use the [Conventional Commits](mdc:https:/www.conventionalcommits.org) format.
 
-## Required Format
+## Commit Message Format
+
 ```
 <type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
 ```
 
-## Most Common Types
-- `feat:` - New feature
-- `fix:` - Bug fix  
-- `refactor:` - Code refactoring
-- `docs:` - Documentation
-- `style:` - Formatting/styling
-- `test:` - Tests
-- `chore:` - Maintenance
-- `ci:` - CI/CD changes
+- **Type:** The kind of change (see below)
+- **Scope:** The area of the codebase affected (e.g., `auth`, `ui`, `api`)
+- **Description:** Short, imperative summary (max 72 characters, no period)
 
-## Example for Current Changes
-For Prisma Client and CI workflow changes:
+## Commit Types
+
+**Primary Types:**
+- `feat:` – New feature
+- `fix:` – Bug fix
+- `refactor:` – Code refactoring (not a fix or feature)
+- `docs:` – Documentation only
+- `style:` – Formatting/styling (no code meaning change)
+- `test:` – Tests (add/correct)
+- `chore:` – Maintenance, build process, auxiliary tools
+
+**Secondary Types:**
+- `ci:` – CI/CD config/scripts
+- `build:` – Build system or external dependencies
+- `perf:` – Performance improvement
+- `revert:` – Revert a previous commit
+
+## Scope Guidelines
+
+Use a relevant, lowercase scope:
+- `auth`, `ui`, `api`, `db`, `config`, `deps`, `types`, `i18n`, `routes`, etc.
+
+## Commit Message Rules
+
+- Use lowercase for type and scope
+- No period at the end of the description
+- Use imperative mood ("add", not "added" or "adds")
+- Use present tense
+- Description under 72 characters
+
+### Breaking Changes
+
+- Add `!` after type/scope: `feat!:` or `feat(api)!:`
+- Include a `BREAKING CHANGE:` footer explaining the change and migration path
+
+### Description Guidelines
+
+- Start with a verb (add, fix, update, remove, refactor, etc.)
+- Be specific and clear
+- Focus on what changed (use body for why, if needed)
+
+## Examples
+
+**Good:**
 ```
-fix(ci): enhance Prisma Client initialization and database reset
+feat(auth): add OAuth2 login functionality
+fix(ui): resolve button alignment on mobile devices
+refactor(api): simplify user validation logic
+docs(readme): update installation instructions
+style(components): format code according to prettier rules
+test(auth): add unit tests for login validation
+chore(deps): update React to version 18.2.0
+ci(github): add automated deployment workflow
+build(docker): optimize container build process
+perf(db): improve query performance with indexes
 ```
 
-**This rule applies to ALL commit message generation requests.**
+**Bad:**
+```
+❌ Updated some files
+❌ Fix bug
+❌ refactor: Fixed the issue with the authentication system that was causing problems
+❌ feat: adds new feature
+❌ WIP: working on authentication
+❌ Fixed authentication bug.
+❌ FEAT: ADD NEW COMPONENT
+```
+
+**Breaking Change Example:**
+```
+feat(api)!: change user authentication endpoint
+
+BREAKING CHANGE: The /auth endpoint now requires a different request format.
+Migration: Update client code to use { email, password } instead of { username, password }
+```
+
+**Multi-line Example:**
+```
+feat(tournament): add bracket generation algorithm
+
+Implement Swiss tournament bracket generation with automatic pairing
+based on player ratings and previous match history. Supports up to
+64 players with configurable round robin options.
+
+Closes #123
+```
+
+## Commit Message Generation Guidelines
+
+1. Analyze the changes to determine the most appropriate type
+2. Identify the scope based on files changed
+3. Summarize the change in imperative mood
+4. Keep it concise but descriptive
+5. Use consistent language and terminology
+
+**Change Mapping:**
+- New files/features → `feat:`
+- Bug fixes → `fix:`
+- Code reorganization → `refactor:`
+- Documentation updates → `docs:`
+- Test additions → `test:`
+- Dependency changes → `chore(deps):`
+- Configuration changes → `chore(config):`
+- UI/styling changes → `style:` or `feat(ui):`
+
+## Verification Checklist
+
+Before finalizing any commit message:
+- [ ] Starts with conventional commit type
+- [ ] Uses lowercase for type and scope
+- [ ] Description is imperative mood
+- [ ] Description is under 72 characters
+- [ ] No period at end of description
+- [ ] Scope is relevant to changes made
+- [ ] Breaking changes are properly marked
+
+## Tooling Integration
+
+These rules are enforced by:
+- Git hooks (e.g., Husky)
+- Commitizen
+- Conventional Changelog
+- Semantic Release
+- GitHub/GitLab commit message validation

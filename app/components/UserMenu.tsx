@@ -183,6 +183,7 @@ export function UserMenu({
           className={cn(
             'ring-opacity-5 z-40 w-56 divide-y divide-gray-100',
             'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+            'mx-4',
             menuClasses.spacing // Add margin for RTL spacing
           )}
           align={dropdownProps.align}

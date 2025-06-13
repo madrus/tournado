@@ -72,7 +72,7 @@ export function SidebarTeamsExample({
   const sidebarContent = (
     <div className='flex flex-col gap-2 p-4'>
       {exampleTeams.length === 0 ? (
-        <p className='py-8 text-center text-gray-500'>{t('teams.noTeams')}</p>
+        <p className='text-foreground-lighter py-8 text-center'>{t('teams.noTeams')}</p>
       ) : (
         exampleTeams.map(team => (
           <button
@@ -87,7 +87,7 @@ export function SidebarTeamsExample({
             <div className='h-2 w-2 rounded-full bg-gray-400' />
             <div className='flex flex-col'>
               <span className='font-medium'>{`${team.clubName} ${team.teamName}`}</span>
-              <span className='text-xs text-gray-500'>
+              <span className='text-foreground-lighter text-xs'>
                 {getDivisionLabel(team.division, i18n.language)}
               </span>
             </div>
@@ -110,21 +110,21 @@ export function SidebarTeamsExample({
           <h2 className='mb-4 text-xl font-semibold'>Team Information</h2>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div>
-              <dt className='text-sm font-medium text-gray-500'>Club</dt>
+              <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
               <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.clubName}</dd>
             </div>
             <div>
-              <dt className='text-sm font-medium text-gray-500'>Team</dt>
+              <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
               <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.teamName}</dd>
             </div>
             <div>
-              <dt className='text-sm font-medium text-gray-500'>Class</dt>
+              <dt className='text-foreground-lighter text-sm font-medium'>Class</dt>
               <dd className='mt-1 text-sm text-gray-900'>
                 {getDivisionLabel(selectedTeam.division, i18n.language)}
               </dd>
             </div>
             <div>
-              <dt className='text-sm font-medium text-gray-500'>Status</dt>
+              <dt className='text-foreground-lighter text-sm font-medium'>Status</dt>
               <dd className='mt-1'>
                 <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800'>
                   Active
@@ -177,7 +177,7 @@ export function SidebarTeamsExample({
           </svg>
         </div>
         <h3 className='mt-2 text-sm font-medium text-gray-900'>No team selected</h3>
-        <p className='mt-1 text-sm text-gray-500'>
+        <p className='text-foreground-lighter mt-1 text-sm'>
           Select a team from the sidebar to view details, or create a new team.
         </p>
       </div>

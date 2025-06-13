@@ -2,7 +2,10 @@ import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
-import { InputField } from '~/components/InputField'
+import { Division } from '@prisma/client'
+
+import { ComboField } from '~/components/inputs/ComboField'
+import { TextInputField } from '~/components/inputs/TextInputField'
 import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
@@ -40,6 +43,11 @@ export function TeamForm({
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>(
     formData.tournamentId || ''
   )
+  useEffect(() => {
+    setSelectedTournamentId(formData.tournamentId || '')
+  }, [formData.tournamentId])
+  // State for selected division (for className and value control)
+  const [divisionValue, setDivisionValue] = useState<string>(formData.division || '')
 
   // Get available divisions for selected tournament
   const availableDivisions = selectedTournamentId
@@ -93,20 +101,17 @@ export function TeamForm({
         <div className='mb-8 border-b border-gray-200 pb-6'>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <h3 className='text-xl font-bold text-gray-900'>
-                {mode === 'create'
-                  ? t('admin.teams.createTeam')
-                  : formData.clubName && formData.teamName
-                    ? `${formData.clubName} ${formData.teamName}`
-                    : t('admin.teams.editTeam')}
-              </h3>
-              <p className='mt-1 text-gray-600'>
-                {mode === 'create'
-                  ? t('admin.teams.createTeamDescription')
-                  : formData.division}
+              <h1 className='text-xl font-bold'>
+                {formData.clubName && formData.teamName
+                  ? `${formData.clubName} ${formData.teamName}`
+                  : ''}
+              </h1>
+              <p className='text-foreground-light mt-2'>
+                {formData.division
+                  ? getDivisionLabel(formData.division as Division, i18n.language)
+                  : ''}
               </p>
             </div>
-
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
               <DeleteButton onClick={onDelete} label={t('teams.deleteTeam')} />
@@ -130,45 +135,26 @@ export function TeamForm({
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           {/* Team Information Panel */}
           <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-            <h3 className='mb-6 text-lg font-semibold text-gray-900'>
-              {t('teams.form.teamInfo')}
-            </h3>
+            <h3 className='mb-6 text-lg font-semibold'>{t('teams.form.teamInfo')}</h3>
 
             {/* Tournament Selection */}
-            <div className='mb-4'>
-              <label className='flex w-full flex-col gap-1'>
-                <span className='font-medium'>{t('teams.form.tournament')}</span>
-                <select
-                  name='tournamentId'
-                  defaultValue={formData.tournamentId || ''}
-                  onChange={event => setSelectedTournamentId(event.target.value)}
-                  className={`h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 ${!selectedTournamentId ? 'text-gray-500' : 'text-gray-900'}`}
-                  aria-invalid={displayErrors.tournamentId ? true : undefined}
-                  aria-errormessage={
-                    displayErrors.tournamentId ? 'tournamentId-error' : undefined
-                  }
-                  onBlur={event => handleFieldBlur('tournamentId', event.target.value)}
-                >
-                  <option value='' className='text-gray-500'>
-                    {t('teams.form.selectTournament')}
-                  </option>
-                  {tournaments.map(tournament => (
-                    <option key={tournament.id} value={tournament.id}>
-                      {tournament.name} - {tournament.location} (
-                      {new Date(tournament.startDate).toLocaleDateString()})
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {displayErrors.tournamentId ? (
-                <div className='pt-1 text-sm text-red-700' id='tournamentId-error'>
-                  {displayErrors.tournamentId}
-                </div>
-              ) : null}
-            </div>
+            <ComboField
+              name='tournamentId'
+              label={t('teams.form.tournament')}
+              value={selectedTournamentId}
+              onChange={event => setSelectedTournamentId(event.target.value)}
+              onBlur={event => handleFieldBlur('tournamentId', event.target.value)}
+              options={tournaments.map(tournament => ({
+                value: tournament.id,
+                label: `${tournament.name} - ${tournament.location} (${new Date(tournament.startDate).toLocaleDateString()})`,
+              }))}
+              placeholder={t('teams.form.selectTournament')}
+              error={displayErrors.tournamentId}
+              required
+            />
 
             {/* Club Name */}
-            <InputField
+            <TextInputField
               name='clubName'
               label={t('teams.form.clubName')}
               defaultValue={formData.clubName || ''}
@@ -181,7 +167,7 @@ export function TeamForm({
             />
 
             {/* Team Name */}
-            <InputField
+            <TextInputField
               ref={teamNameRef}
               name='teamName'
               label={t('teams.form.teamName')}
@@ -195,47 +181,31 @@ export function TeamForm({
             />
 
             {/* Team Class */}
-            <div className='mb-4'>
-              <label className='flex w-full flex-col gap-1'>
-                <span className='font-medium'>{t('teams.form.division')}</span>
-                <select
-                  ref={teamClassRef}
-                  name='division'
-                  defaultValue={formData.division || ''}
-                  required
-                  className={`h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 ${!formData.division ? 'text-gray-500' : 'text-gray-900'}`}
-                  aria-invalid={displayErrors.division ? true : undefined}
-                  aria-errormessage={
-                    displayErrors.division ? 'division-error' : undefined
-                  }
-                  onBlur={event => handleFieldBlur('division', event.target.value)}
-                >
-                  <option value='' className='text-gray-500'>
-                    {t('teams.form.selectDivision')}
-                  </option>
-                  {availableDivisions.map(division => (
-                    <option key={division} value={division}>
-                      {getDivisionLabel(division, i18n.language)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {displayErrors.division ? (
-                <div className='pt-1 text-sm text-red-700' id='division-error'>
-                  {displayErrors.division}
-                </div>
-              ) : null}
-            </div>
+            <ComboField
+              name='division'
+              label={t('teams.form.division')}
+              value={divisionValue}
+              onChange={event => setDivisionValue(event.target.value)}
+              onBlur={event => handleFieldBlur('division', event.target.value)}
+              options={availableDivisions.map(division => ({
+                value: division,
+                label: getDivisionLabel(division, i18n.language),
+              }))}
+              placeholder={t('teams.form.selectDivision')}
+              error={displayErrors.division}
+              required
+              selectRef={teamClassRef}
+            />
           </div>
 
           {/* Team Leader Information Panel */}
           <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-            <h3 className='mb-6 text-lg font-semibold text-gray-900'>
+            <h3 className='mb-6 text-lg font-semibold'>
               {t('teams.form.teamLeaderInfo')}
             </h3>
 
             {/* Team Leader Name */}
-            <InputField
+            <TextInputField
               name='teamLeaderName'
               label={t('teams.form.teamLeaderName')}
               defaultValue={formData.teamLeaderName || ''}
@@ -248,7 +218,7 @@ export function TeamForm({
             />
 
             {/* Team Leader Phone */}
-            <InputField
+            <TextInputField
               name='teamLeaderPhone'
               label={t('teams.form.teamLeaderPhone')}
               type='tel'
@@ -262,7 +232,7 @@ export function TeamForm({
             />
 
             {/* Team Leader Email */}
-            <InputField
+            <TextInputField
               name='teamLeaderEmail'
               label={t('teams.form.teamLeaderEmail')}
               type='email'

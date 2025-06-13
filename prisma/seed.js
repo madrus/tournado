@@ -118,7 +118,7 @@ async function seed() {
             firstName: 'Madrusnl',
             lastName: 'Admin',
             email: 'user@example.com',
-            phone: '000-000-0000',
+            phone: '+31 6 1234 5678',
           },
         })
       } catch (error) {

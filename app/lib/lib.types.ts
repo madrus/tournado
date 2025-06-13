@@ -309,3 +309,16 @@ export type UseTeamFormValidationReturn = {
   setSubmitAttempted: React.Dispatch<React.SetStateAction<boolean>>
   setForceShowAllErrors: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+export type TeamLeaderFull = {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  phone: string
+}
+
+export type TeamWithLeaderFull = Team & {
+  tournamentId: string
+  teamLeader: TeamLeaderFull
+}

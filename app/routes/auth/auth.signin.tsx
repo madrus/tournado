@@ -250,7 +250,7 @@ export default function SigninPage(): JSX.Element {
                   {t('auth.rememberMe')}
                 </label>
               </div>
-              <div className='text-center text-sm text-gray-500'>
+              <div className='text-foreground-lighter text-center text-sm'>
                 {t('auth.dontHaveAccount')}{' '}
                 <Link
                   className='text-emerald-600 underline hover:text-emerald-500'

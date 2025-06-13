@@ -15,13 +15,9 @@ import invariant from 'tiny-invariant'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import {
-  stringToDivision,
-  stringToTeamClass,
-  stringToTeamName,
-} from '~/lib/lib.helpers'
-import type { TeamEditActionData } from '~/lib/lib.types'
-import { deleteTeamById, getTeamById, type TeamWithLeader } from '~/models/team.server'
+import { stringToDivision } from '~/lib/lib.helpers'
+import type { TeamEditActionData, TeamWithLeaderFull } from '~/lib/lib.types'
+import { deleteTeamById, getTeamById } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -51,13 +47,14 @@ export const handle: RouteMetadata = {
 }
 
 type LoaderData = {
-  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'division'>
+  team: TeamWithLeaderFull
   tournaments: Array<{
     id: string
     name: string
     location: string
     startDate: string
     endDate: string | null
+    divisions: Division[]
   }>
 }
 
@@ -111,16 +108,20 @@ export async function loader({ params, request }: LoaderArgs): Promise<LoaderDat
       location: true,
       startDate: true,
       endDate: true,
+      divisions: true,
     },
     orderBy: { startDate: 'asc' },
   })
 
   return {
     team,
-    tournaments: tournaments.map(t => ({
-      ...t,
-      startDate: t.startDate.toISOString(),
-      endDate: t.endDate?.toISOString() || null,
+    tournaments: tournaments.map(tournament => ({
+      ...tournament,
+      startDate: tournament.startDate.toISOString(),
+      endDate: tournament.endDate?.toISOString() || null,
+      divisions: Array.isArray(tournament.divisions)
+        ? (tournament.divisions as Division[])
+        : [],
     })),
   }
 }
@@ -210,20 +211,28 @@ export default function AdminTeamDetailsPage(): JSX.Element {
   }
 
   return (
-    <TeamForm
-      mode='edit'
-      variant='admin'
-      formData={{
-        clubName: team.clubName,
-        teamName: stringToTeamName(team.teamName),
-        division: stringToTeamClass(team.division),
-      }}
-      errors={actionData?.errors || {}}
-      onCancel={handleCancel}
-      showDeleteButton={true}
-      onDelete={handleDelete}
-      intent='update'
-    />
+    <>
+      <TeamForm
+        mode='edit'
+        variant='admin'
+        formData={{
+          tournamentId: team.tournamentId,
+          clubName: team.clubName,
+          teamName: team.teamName as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+          division: team.division,
+          teamLeaderName:
+            `${team.teamLeader.firstName} ${team.teamLeader.lastName}`.trim(),
+          teamLeaderPhone: team.teamLeader.phone,
+          teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+        }}
+        tournaments={_tournaments}
+        errors={actionData?.errors || {}}
+        onCancel={handleCancel}
+        showDeleteButton={true}
+        onDelete={handleDelete}
+        intent='update'
+      />
+    </>
   )
 }
 

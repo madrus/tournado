@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, type JSX } from 'react'
 
 type InputFieldProps = {
   name: string
@@ -13,7 +13,7 @@ type InputFieldProps = {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
 }
 
-export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
   (
     {
       name,
@@ -28,10 +28,10 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       onBlur,
     },
     ref
-  ) => (
+  ): JSX.Element => (
     <div className={className}>
-      <label className='flex w-full flex-col gap-1'>
-        <span className='font-medium'>{label}</span>
+      <label className='text-foreground-light flex w-full flex-col gap-1'>
+        <span className='text-foreground-light font-medium'>{label}</span>
         <input
           ref={ref}
           name={name}
@@ -40,7 +40,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           required={required}
           defaultValue={defaultValue}
           placeholder={placeholder}
-          className='h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 placeholder:text-gray-500'
+          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
           onBlur={onBlur}
@@ -55,4 +55,4 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   )
 )
 
-InputField.displayName = 'InputField'
+TextInputField.displayName = 'TextInputField'

@@ -30,10 +30,14 @@ export function TeamChip({
 
   const baseClasses = cn(
     'inline-flex h-10 items-center rounded-lg border border-red-300 bg-white',
-    'font-medium text-red-700 shadow-sm transition-all duration-200',
-    'hover:border-red-300 hover:shadow-md hover:bg-red-50',
+    'font-medium text-red-700 transition-all duration-200',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',
+    // 3D chip effects
+    'shadow-lg transform transition-all duration-150 ease-in-out',
+    'hover:shadow-lg hover:-translate-y-0.5 hover:border-red-400 hover:bg-red-50/30',
+    'active:shadow-md active:translate-y-0 active:scale-95',
+    'focus:ring-4 focus:ring-red-500/30 focus:outline-none shadow-red-300/50',
     className
   )
 

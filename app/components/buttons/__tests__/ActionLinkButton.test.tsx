@@ -94,7 +94,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-emerald-600')
-    expect(link).toHaveClass('hover:bg-emerald-500')
+    expect(link).toHaveClass('hover:bg-emerald-500/90')
     expect(link).toHaveClass('focus:ring-emerald-600')
   })
 
@@ -173,7 +173,7 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('py-2')
     expect(link).toHaveClass('text-sm')
     expect(link).toHaveClass('font-medium')
-    expect(link).toHaveClass('shadow-sm')
+    expect(link).toHaveClass('shadow-lg')
   })
 
   describe('RTL support', () => {

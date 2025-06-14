@@ -31,8 +31,13 @@ export function DeleteButton({
       className={cn(
         chipClasses.container,
         'inline-flex items-center justify-between rounded-md border border-red-300 bg-white py-2 text-sm font-medium',
-        'text-red-700 shadow-sm hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none',
-        'ps-4 pe-4'
+        'text-red-700 hover:bg-red-50/30 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none',
+        'ps-4 pe-4',
+        // 3D button effects
+        'transform shadow-lg transition-all duration-150 ease-in-out',
+        'hover:-translate-y-0.5 hover:border-red-400 hover:shadow-lg',
+        'active:translate-y-0 active:scale-95 active:shadow-md',
+        'shadow-red-300/50 hover:shadow-red-400/60 focus:ring-4'
       )}
     >
       {rtl ? (

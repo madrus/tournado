@@ -247,28 +247,28 @@ describe('Home Page (_index)', () => {
 
       const viewTeamsButton = screen.getByTestId('view-teams-button')
 
-      // Check button has expected styling classes from ActionLinkButton component with 3D effects
+      // Check button has expected styling classes from ActionLinkButton component with modern 3D effects
       expect(viewTeamsButton).toHaveClass(
         'inline-flex',
         'items-center',
         'justify-center',
-        'rounded-md',
-        'border',
-        'py-2',
+        'rounded-lg',
+        'border-0',
+        'py-2.5',
         'text-sm',
-        'font-medium',
+        'font-semibold',
         'ps-4',
         'pe-4',
         'bg-emerald-600',
-        'hover:bg-emerald-500/90',
-        'focus:ring-emerald-600',
-        'border-transparent',
+        'hover:bg-emerald-500',
+        'focus:ring-emerald-600/90',
         'text-white',
         'shadow-lg',
-        'transform',
+        'hover:scale-105',
+        'active:scale-95',
         'transition-all',
-        'duration-150',
-        'ease-in-out'
+        'duration-300',
+        'ease-out'
       )
     })
   })

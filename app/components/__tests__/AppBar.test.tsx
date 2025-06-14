@@ -515,51 +515,49 @@ describe('AppBar Context Menu', () => {
     })
   })
 
-  describe('Both Mobile and Desktop Menus', () => {
-    it('should render both mobile and desktop UserMenu instances', () => {
+  describe('Unified Menu', () => {
+    it('should render a single unified UserMenu instance', () => {
       render(
         <MemoryRouter>
           <AppBar authenticated={false} username='' user={null} />
         </MemoryRouter>
       )
 
-      // AppBar should render both mobile and desktop versions
-      expect(screen.getByTestId('user-menu-mobile')).toBeInTheDocument()
+      // AppBar should render only the unified menu (desktop testid is used for the unified menu)
       expect(screen.getByTestId('user-menu-desktop')).toBeInTheDocument()
+      expect(screen.queryByTestId('user-menu-mobile')).not.toBeInTheDocument()
     })
 
-    it('should have identical menu items in both mobile and desktop versions', () => {
-      render(
-        <MemoryRouter>
-          <AppBar
-            authenticated={true}
-            username='admin@example.com'
-            user={{
-              id: 'admin-1',
-              email: 'admin@example.com',
-              firstName: 'Admin',
-              lastName: 'User',
-              role: 'ADMIN',
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            }}
-          />
-        </MemoryRouter>
-      )
+    it('should work correctly for both authenticated and unauthenticated users', () => {
+      const testCases = [
+        { authenticated: false, username: '', user: null },
+        {
+          authenticated: true,
+          username: 'admin@example.com',
+          user: {
+            id: 'admin-1',
+            email: 'admin@example.com',
+            firstName: 'Admin',
+            lastName: 'User',
+            role: 'ADMIN' as const,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        },
+      ]
 
-      const mobileMenu = screen.getByTestId('user-menu-mobile')
-      const desktopMenu = screen.getByTestId('user-menu-desktop')
+      testCases.forEach(({ authenticated, username, user }) => {
+        const { unmount } = render(
+          <MemoryRouter>
+            <AppBar authenticated={authenticated} username={username} user={user} />
+          </MemoryRouter>
+        )
 
-      const mobileLabels = Array.from(
-        within(mobileMenu).getAllByTestId('menu-label')
-      ).map(item => item.textContent)
+        // Should always render the unified menu
+        expect(screen.getByTestId('user-menu-desktop')).toBeInTheDocument()
 
-      const desktopLabels = Array.from(
-        within(desktopMenu).getAllByTestId('menu-label')
-      ).map(item => item.textContent)
-
-      // Both menus should have the same items
-      expect(mobileLabels).toEqual(desktopLabels)
+        unmount()
+      })
     })
   })
 })

@@ -38,6 +38,7 @@ export type DropdownProps = {
   side: 'bottom'
   sideOffset: number
   alignOffset: number
+  avoidCollisions: boolean
 }
 
 // Helper for Radix UI dropdown positioning (viewport-aware)
@@ -46,10 +47,17 @@ export function getDropdownProps(languageCode: string): DropdownProps {
 
   return {
     // For Radix UI DropdownMenu.Content
-    align: isRtl ? ('end' as const) : ('start' as const),
+    // We want: RTL = menu on left side, LTR = menu on right side
+    // From screenshots:
+    // - Arabic (RTL): dropdown perfectly aligned to left edge of trigger using 'start'
+    // - Latin (LTR): dropdown should be aligned to right edge of trigger using 'end'
+    align: isRtl ? ('start' as const) : ('end' as const),
     side: 'bottom' as const,
     sideOffset: 8,
-    alignOffset: isRtl ? 8 : -8,
+    // Both Arabic and Latin use the same offset for symmetrical positioning
+    alignOffset: -16,
+    // Re-enable collision detection to prevent dropdown from going off-screen on mobile
+    avoidCollisions: true,
   }
 }
 

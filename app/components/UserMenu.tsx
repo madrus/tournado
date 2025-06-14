@@ -26,19 +26,17 @@ export type MenuItemType = {
   }>
 }
 
-// User menu dropdown component that works for both mobile and desktop
+// Unified user menu dropdown component using Radix UI for both mobile and desktop
 export function UserMenu({
   authenticated,
   username,
   menuItems,
-  isMobile,
   isOpen,
   onOpenChange,
 }: {
   authenticated: boolean
   username?: string
   menuItems: Array<MenuItemType>
-  isMobile?: boolean
   isOpen?: boolean
   onOpenChange?: (open: boolean) => void
 }): JSX.Element {
@@ -52,11 +50,6 @@ export function UserMenu({
 
   // Use translated guest name when user is not authenticated or username is empty
   const displayName = authenticated && username ? username : t('common.guest')
-
-  // Debug logging
-  if (!isMobile) {
-    // Debug logs removed - desktop menu working correctly
-  }
 
   // Close menu when navigation starts (Fix #1) - but only for actual navigation
   useEffect(() => {
@@ -74,102 +67,7 @@ export function UserMenu({
     setLanguageMenuOpen(!languageMenuOpen)
   }
 
-  // For mobile view
-  if (isMobile) {
-    return (
-      <div
-        className={`fixed inset-0 z-30 ${isOpen ? 'flex' : 'hidden'} items-start justify-center bg-black/60 pt-16 backdrop-blur-sm`}
-        onClick={() => onOpenChange?.(false)}
-        data-testid='mobile-user-menu-overlay'
-        aria-label='Mobile user menu'
-        role='dialog'
-        aria-modal='true'
-      >
-        <div
-          className='w-[95%] max-w-md overflow-visible rounded-lg bg-white shadow-xl'
-          onClick={event => event.stopPropagation()}
-        >
-          <div className='border-b border-gray-200 px-3 py-3'>
-            <div className='px-3'>
-              <p className='text-emerald-800'>
-                {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
-                <span className='truncate text-emerald-800'>{displayName}</span>
-              </p>
-            </div>
-          </div>
-          <div className='py-2'>
-            {menuItems.map((item, index) => (
-              <div key={index} className='block px-3 py-0'>
-                {item.divider ? (
-                  <hr className='mx-0 my-2 border-gray-200' />
-                ) : (item.customIcon || item.icon) && item.subMenu ? (
-                  <div className='relative'>
-                    <button
-                      className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
-                      onClick={event => handleLanguageToggle(event, index)}
-                    >
-                      <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
-                        {item.customIcon ? (
-                          <span className='text-lg'>{item.customIcon}</span>
-                        ) : item.icon ? (
-                          renderIcon(item.icon, { className: 'w-5 h-5' })
-                        ) : null}
-                      </span>
-                      <span>{item.label}</span>
-                    </button>
-
-                    {activeSubmenu === index ? (
-                      <div className='ring-opacity-5 absolute start-0 top-full z-30 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black'>
-                        {item.subMenu.map((subItem, subIndex) => (
-                          <button
-                            key={subIndex}
-                            className={`flex w-full content-start items-center px-3 py-1 text-sm ${
-                              subItem.active
-                                ? 'bg-gray-100 text-emerald-700'
-                                : 'text-emerald-800 hover:bg-gray-50'
-                            }`}
-                            onClick={event => {
-                              event.stopPropagation()
-                              subItem.onClick()
-                              setActiveSubmenu(null)
-                            }}
-                          >
-                            <span className='w-8 ps-0 pe-2 text-start text-lg'>
-                              {subItem.customIcon}
-                            </span>
-                            <span className={subItem.className}>{subItem.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                ) : item.action ? (
-                  item.action
-                ) : (
-                  <Link
-                    to={item.href || '#'}
-                    className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
-                  >
-                    <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
-                      {item.icon
-                        ? renderIcon(item.icon, { className: 'w-5 h-5' })
-                        : null}
-                    </span>
-                    <span>{item.label}</span>
-                    {item.todo ? (
-                      <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
-                    ) : null}
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Desktop view with Radix UI dropdown
+  // Unified Radix UI dropdown for both mobile and desktop
   return (
     <div className='relative inline-block text-left'>
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
@@ -181,8 +79,11 @@ export function UserMenu({
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           className={cn(
-            'ring-opacity-5 z-40 w-56 divide-y divide-gray-100',
+            'ring-opacity-5 z-40 w-max divide-y divide-gray-100',
             'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+            // Responsive max-width to prevent off-screen on mobile
+            'max-w-[calc(100vw-2rem)] sm:max-w-80',
+            // Ensure proper spacing from viewport edges - same for now to check
             'mx-4',
             menuClasses.spacing // Add margin for RTL spacing
           )}
@@ -190,6 +91,7 @@ export function UserMenu({
           side={dropdownProps.side}
           sideOffset={dropdownProps.sideOffset}
           alignOffset={dropdownProps.alignOffset}
+          avoidCollisions={dropdownProps.avoidCollisions}
         >
           <div className='px-4 py-3'>
             <p className={`text-emerald-800 ${menuClasses.textContainer} break-words`}>

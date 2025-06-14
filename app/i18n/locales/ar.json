@@ -60,6 +60,7 @@
     "language": "اللغة",
     "loading": "جاري التحميل...",
     "signedInAs": "مسجل الدخول كـ",
+    "toggleMenu": "فتح/إغلاق القائمة",
     "titles": {
       "about": "حول",
       "addTeam": "إضافة فريق",

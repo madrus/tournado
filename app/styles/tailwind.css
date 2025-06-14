@@ -65,6 +65,11 @@
   font-size: 1.2em; /* Make all text 20% larger for Arabic readability */
 }
 
+/* Fix menu item height consistency - reduce line-height in Arabic to compensate for font scaling */
+.text-arabic [data-radix-collection-item] {
+  line-height: 1.25; /* Reduce line-height by 20% to compensate for 20% font size increase */
+}
+
 /* Latin text - use rem to bypass inherited em scaling from body */
 .text-latin {
   font-size: 0.875em; /* Same as text-sm in Tailwind (14px) - fixed size */

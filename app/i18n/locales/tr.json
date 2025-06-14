@@ -60,6 +60,7 @@
     "language": "Dil",
     "loading": "Yükleniyor...",
     "signedInAs": "Giriş yapıldı: ",
+    "toggleMenu": "Menüyü aç/kapat",
     "titles": {
       "about": "Hakkımızda",
       "addTeam": "Takım ekle",

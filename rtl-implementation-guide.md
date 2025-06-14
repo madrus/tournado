@@ -7,11 +7,12 @@ Building a truly international web application requires more than just translati
 1. [Understanding the Challenge](#understanding-the-challenge)
 2. [Setting Up the Foundation](#setting-up-the-foundation)
 3. [HTML Direction Attribute](#html-direction-attribute)
-4. [Tailwind CSS Logical Properties](#tailwind-css-logical-properties)
-5. [Component Adaptations](#component-adaptations)
-6. [Typography Considerations](#typography-considerations)
-7. [Advanced Layout Patterns](#advanced-layout-patterns)
-8. [Testing and Validation](#testing-and-validation)
+4. [Language Persistence with Cookies](#language-persistence-with-cookies)
+5. [Tailwind CSS Logical Properties](#tailwind-css-logical-properties)
+6. [Component Adaptations](#component-adaptations)
+7. [Typography Considerations](#typography-considerations)
+8. [Advanced Layout Patterns](#advanced-layout-patterns)
+9. [Testing and Validation](#testing-and-validation)
 
 ## Understanding the Challenge
 
@@ -68,49 +69,246 @@ return (
 )
 ```
 
-**Before (LTR only):**
-
-```typescript
-<html lang={language} className='h-full overflow-x-hidden'>
-```
-
-**After (LTR/RTL support):**
-
-```typescript
-<html
-  lang={language}
-  dir={getDirection(language)} // 'ltr' for most, 'rtl' for Arabic
-  className='h-full overflow-x-hidden'
->
-```
-
 ### 3. Dynamic Direction Updates
 
-For single-page applications, the direction needs to update when users switch languages:
+For single-page applications, the direction needs to update when users switch languages. The recommended approach is to use React's declarative rendering rather than direct DOM manipulation:
 
 ```typescript
-// app/root.tsx - Dynamic updates on language change
-useLayoutEffect(() => {
-   if (typeof window !== 'undefined') {
-      document.documentElement.lang = i18nInstance.language
-      document.documentElement.dir = getDirection(i18nInstance.language)
+// app/root.tsx - Declarative approach (recommended)
+type DocumentProps = {
+  children: React.ReactNode
+  language: string
+}
 
-      // Update body typography class
-      const bodyClass = getTypographyClass(i18nInstance.language)
-      if (bodyClass) {
-         document.body.classList.add(bodyClass)
-      } else {
-         document.body.classList.remove('text-arabic')
-      }
-   }
-}, [i18nInstance.language])
+const Document = ({ children, language }: DocumentProps) => {
+  const { i18n: i18nInstance } = useTranslation()
+
+  // Use the current language from i18n instance, falling back to initial language
+  const currentLanguage = i18nInstance.language || language
+  const direction = getDirection(currentLanguage)
+  const typographyClass = getTypographyClass(currentLanguage)
+
+  // Save language preference to cookie when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && i18nInstance.language) {
+      document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
+    }
+  }, [i18nInstance.language])
+
+  return (
+    <html
+      lang={currentLanguage}
+      dir={direction}
+      className='h-full overflow-x-hidden'
+    >
+      <head>...</head>
+      <body
+        className={cn(
+          'bg-background text-foreground flex h-full flex-col',
+          typographyClass
+        )}
+      >
+        {children}
+      </body>
+    </html>
+  )
+}
 ```
 
 _[Screenshot placeholder: Developer tools showing the dir="rtl" attribute on the HTML element]_
 
+## Language Persistence with Cookies
+
+### 4. Cookie-Based Language Persistence
+
+To provide a seamless user experience, language preferences should persist across browser sessions. Here's how to implement cookie-based language persistence:
+
+```typescript
+// app/utils/cookieUtils.ts
+export const LANGUAGE_COOKIE_NAME = 'lang'
+export const COOKIE_MAX_AGE = 31536000 // 1 year in seconds
+
+export function setLanguageCookie(language: string): void {
+   if (typeof document !== 'undefined') {
+      document.cookie = `${LANGUAGE_COOKIE_NAME}=${language}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`
+   }
+}
+
+export function getLanguageCookie(): string | null {
+   if (typeof document === 'undefined') return null
+
+   const match = document.cookie.match(
+      new RegExp(`(^| )${LANGUAGE_COOKIE_NAME}=([^;]+)`)
+   )
+   return match ? match[2] : null
+}
+
+// Server-side cookie reading for SSR
+export function getLanguageFromRequest(request: Request): string {
+   const cookieHeader = request.headers.get('Cookie') || ''
+   const langMatch = cookieHeader.match(/lang=([^;]+)/)
+   return langMatch ? langMatch[1] : 'nl' // Default to Dutch
+}
+```
+
+### 5. Server-Side Language Detection
+
+In your Remix loader, read the language preference from cookies:
+
+```typescript
+// app/root.tsx - Loader function
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
+   const user = await getUser(request)
+   const language = getLanguageFromRequest(request)
+
+   return {
+      authenticated: !!user,
+      username: user?.email ?? '',
+      user,
+      ENV: getEnv(),
+      language, // Pass language to client
+   }
+}
+```
+
+### 6. Client-Side Cookie Updates
+
+Update cookies when users change language preferences:
+
+```typescript
+// app/root.tsx - Document component
+const Document = ({ children, language }: DocumentProps) => {
+  const { i18n: i18nInstance } = useTranslation()
+
+  const currentLanguage = i18nInstance.language || language
+  const direction = getDirection(currentLanguage)
+  const typographyClass = getTypographyClass(currentLanguage)
+
+  // Save language preference to cookie when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && i18nInstance.language) {
+      setLanguageCookie(i18nInstance.language)
+    }
+  }, [i18nInstance.language])
+
+  return (
+    <html lang={currentLanguage} dir={direction}>
+      {/* ... */}
+    </html>
+  )
+}
+```
+
+### 7. Language Switcher with Cookie Support
+
+Update your language switcher to persist changes:
+
+```typescript
+// app/components/LanguageSwitcher.tsx
+import { setLanguageCookie } from '~/utils/cookieUtils'
+
+export function LanguageSwitcher(): JSX.Element {
+  const { i18n } = useTranslation()
+
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = event.target.value
+
+    // Update i18n instance
+    i18n.changeLanguage(newLanguage)
+
+    // Persist to cookie (handled automatically by useEffect in Document)
+    // The useEffect in Document component will save the cookie
+  }
+
+  return (
+    <select
+      value={i18n.language}
+      onChange={handleLanguageChange}
+      className='cursor-pointer appearance-none bg-transparent py-1 ps-2 pe-8'
+    >
+      <option value='nl'>Nederlands</option>
+      <option value='en'>English</option>
+      <option value='ar'>العربية</option>
+    </select>
+  )
+}
+```
+
+### 8. Cookie Security Considerations
+
+For production applications, consider these security enhancements:
+
+```typescript
+// app/utils/cookieUtils.ts - Production-ready version
+export function setLanguageCookie(language: string): void {
+   if (typeof document !== 'undefined') {
+      const isProduction = process.env.NODE_ENV === 'production'
+      const secure = isProduction ? '; Secure' : ''
+
+      document.cookie = [
+         `${LANGUAGE_COOKIE_NAME}=${language}`,
+         'path=/',
+         `max-age=${COOKIE_MAX_AGE}`,
+         'SameSite=Lax',
+         secure,
+      ].join('; ')
+   }
+}
+```
+
+**Cookie Attributes Explained:**
+
+- `path=/` - Cookie available across entire site
+- `max-age=31536000` - Cookie expires in 1 year
+- `SameSite=Lax` - CSRF protection while allowing normal navigation
+- `Secure` - Only send over HTTPS in production
+
+### 9. Fallback Strategy
+
+Implement a robust fallback strategy for language detection:
+
+```typescript
+// app/utils/languageDetection.ts
+export function detectUserLanguage(request?: Request): string {
+   // 1. Try server-side cookie (SSR)
+   if (request) {
+      const cookieLanguage = getLanguageFromRequest(request)
+      if (cookieLanguage) return cookieLanguage
+   }
+
+   // 2. Try client-side cookie
+   if (typeof window !== 'undefined') {
+      const cookieLanguage = getLanguageCookie()
+      if (cookieLanguage) return cookieLanguage
+   }
+
+   // 3. Try browser language preference
+   if (typeof navigator !== 'undefined') {
+      const browserLanguage = navigator.language.split('-')[0]
+      const supportedLanguages = ['nl', 'en', 'ar']
+      if (supportedLanguages.includes(browserLanguage)) {
+         return browserLanguage
+      }
+   }
+
+   // 4. Default fallback
+   return 'nl'
+}
+```
+
+**Benefits of Cookie-Based Persistence:**
+
+- ✅ Works across browser sessions
+- ✅ Available on server-side for SSR
+- ✅ No JavaScript required for initial load
+- ✅ Lightweight and fast
+- ✅ Works with disabled localStorage
+
+_[Screenshot placeholder: Browser developer tools showing the language cookie being set and persisted]_
+
 ## Tailwind CSS Logical Properties
 
-### 4. Replacing Physical Properties with Logical Properties
+### 10. Replacing Physical Properties with Logical Properties
 
 The most significant change is moving from physical properties (left/right) to logical properties (start/end):
 
@@ -136,7 +334,7 @@ The most significant change is moving from physical properties (left/right) to l
 .text-start
 ```
 
-### 5. Language Switcher Example
+### 11. Language Switcher Example
 
 Here's a practical example showing the conversion of a language switcher component:
 
@@ -167,7 +365,7 @@ _[Screenshot placeholder: Language switcher showing proper arrow positioning in 
 
 ## Component Adaptations
 
-### 6. Form Input Components
+### 12. Form Input Components
 
 Form components need special attention for proper RTL layout:
 
@@ -185,7 +383,7 @@ Form components need special attention for proper RTL layout:
 + <span className='pointer-events-none absolute inset-y-0 end-0 flex items-center pe-2'>
 ```
 
-### 7. Button Components with Icons
+### 13. Button Components with Icons
 
 Buttons with icons need special handling to maintain proper visual hierarchy:
 
@@ -225,7 +423,7 @@ export function DeleteButton({ onClick, label }: DeleteButtonProps): JSX.Element
 
 _[Screenshot placeholder: Delete button showing icon placement in LTR vs RTL layout]_
 
-### 8. Advanced Component Helpers
+### 14. Advanced Component Helpers
 
 For more complex components, create reusable helper functions:
 
@@ -260,7 +458,7 @@ export function getDropdownProps(languageCode: string): DropdownProps {
 
 ## Typography Considerations
 
-### 9. Custom CSS for Arabic Typography and Mixed Content
+### 15. Custom CSS for Arabic Typography and Mixed Content
 
 Arabic text often requires special typography treatment for optimal readability, especially when mixed with Latin text:
 
@@ -343,7 +541,7 @@ When the interface is in Arabic but contains technical terms or app names:
 <!-- Note: "إنشاء بطولة جديدة" means "Create New Tournament" in Arabic -->
 ```
 
-### 10. Typography Helper Functions
+### 16. Typography Helper Functions
 
 ```typescript
 // app/utils/rtlUtils.ts - Typography helpers
@@ -371,7 +569,7 @@ _[Screenshot placeholder: Typography comparison showing Arabic text sizing vs La
 
 ## Advanced Layout Patterns
 
-### 11. Sidebar and Navigation Layouts
+### 17. Sidebar and Navigation Layouts
 
 Complex layouts require additional considerations:
 
@@ -392,7 +590,7 @@ Complex layouts require additional considerations:
 >
 ```
 
-### 12. React Hook for RTL Support
+### 18. React Hook for RTL Support
 
 Create a custom hook to simplify RTL logic in components:
 
@@ -431,7 +629,7 @@ export function MyDropdown() {
 
 ## Testing and Validation
 
-### 13. Testing Strategy
+### 19. Testing Strategy
 
 Implement comprehensive testing for RTL support:
 
@@ -456,7 +654,7 @@ test('renders with proper RTL classes in Arabic', () => {
 })
 ```
 
-### 14. Visual Testing Checklist
+### 20. Visual Testing Checklist
 
 Create a checklist for manual testing:
 
@@ -504,3 +702,344 @@ _[Screenshot placeholder: Final comparison showing a complete page layout in bot
 ---
 
 **Next Steps**: Consider implementing additional RTL languages like Hebrew or Persian, and explore advanced typography features for better text rendering in different scripts.
+
+## 3. Root Layout Setup
+
+Update your root layout to support RTL:
+
+**File: `app/root.tsx`**
+
+```typescript
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { getDirection, getTypographyClass } from '~/lib/utils/rtlUtils'
+
+export default function Root() {
+  const { i18n } = useTranslation()
+  const language = i18n.language
+
+  // Use useState for reactive values that depend on language
+  const [direction, setDirection] = useState(getDirection(language))
+  const [typographyClass, setTypographyClass] = useState(getTypographyClass(language))
+
+  // Update direction, typography, and cookie when language changes
+  useEffect(() => {
+    setDirection(getDirection(language))
+    setTypographyClass(getTypographyClass(language))
+    document.cookie = `NEXT_LOCALE=${language}; path=/; max-age=${60 * 60 * 24 * 365}`
+  }, [language])
+
+  return (
+    <html
+      lang={language}
+      dir={direction}
+      className='h-full overflow-x-hidden'
+    >
+      <body className={`h-full ${typographyClass}`}>
+        {/* Your app content */}
+      </body>
+    </html>
+  )
+}
+```
+
+## 16. RTL Context Menus and Dropdowns
+
+Context menus, dropdowns, and language switchers require special RTL handling for proper positioning and layout.
+
+### Key RTL Menu Requirements
+
+In Arabic (RTL), menus should:
+
+1. **Anchor to the right** instead of left
+2. **Icons on the right** side of text
+3. **Text flows right-to-left**
+4. **Animations/transitions** respect RTL direction
+
+### RTL Menu Utilities
+
+**File: `app/utils/rtlUtils.ts`**
+
+```typescript
+// Enhanced menu classes for RTL support
+export type MenuClasses = {
+   spacing: string
+   alignment: string
+   menuItem: string // Flex direction for menu items
+   iconContainer: string // Icon positioning and alignment
+   textContainer: string // Text alignment
+}
+
+export function getMenuClasses(languageCode: string): MenuClasses {
+   const isRtl = isRTL(languageCode)
+
+   return {
+      spacing: isRtl ? 'me-4' : 'ms-4',
+      alignment: isRtl ? 'end-0' : 'start-0',
+      // Menu item layout - icons on correct side for RTL
+      menuItem: isRtl ? 'flex-row-reverse' : 'flex-row',
+      // Icon container positioning
+      iconContainer: isRtl
+         ? 'flex w-8 items-center justify-end ps-2 pe-0 text-end' // Icon on right in RTL
+         : 'flex w-8 items-center justify-start ps-0 pe-2 text-start', // Icon on left in LTR
+      // Text container alignment
+      textContainer: isRtl ? 'text-right' : 'text-left',
+   }
+}
+
+// Language switcher specific classes
+export type LanguageSwitcherClasses = {
+   container: string
+   select: string
+   arrow: string
+}
+
+export function getLanguageSwitcherClasses(
+   languageCode: string
+): LanguageSwitcherClasses {
+   const isRtl = isRTL(languageCode)
+
+   return {
+      container: isRtl ? 'text-end' : 'text-start',
+      // Padding: more space on text side, less on arrow side
+      select: isRtl
+         ? 'ps-8 pe-2' // More padding on right (text side), less on left (arrow side)
+         : 'ps-2 pe-8', // More padding on left (text side), less on right (arrow side)
+      // Arrow positioning
+      arrow: isRtl ? 'start-0 ps-2' : 'end-0 pe-2',
+   }
+}
+
+// React hooks for easy usage
+export function useRTLDropdown() {
+   const { i18n } = useTranslation()
+   return {
+      dropdownProps: getDropdownProps(i18n.language),
+      menuClasses: getMenuClasses(i18n.language),
+      isRTL: isRTL(i18n.language),
+   }
+}
+
+export function useRTLLanguageSwitcher() {
+   const { i18n } = useTranslation()
+   return {
+      classes: getLanguageSwitcherClasses(i18n.language),
+      isRTL: isRTL(i18n.language),
+   }
+}
+```
+
+### Context Menu Implementation
+
+**File: `app/components/UserMenu.tsx`**
+
+```typescript
+import { useRTLDropdown } from '~/utils/rtlUtils'
+
+export function UserMenu({ menuItems, ...props }) {
+  const { dropdownProps, menuClasses, isRTL } = useRTLDropdown()
+
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Content
+        align={dropdownProps.align}        // 'end' for RTL, 'start' for LTR
+        alignOffset={dropdownProps.alignOffset}
+        className={menuClasses.spacing}    // Proper margin spacing
+      >
+        {/* Welcome message with RTL text alignment */}
+        <div className='px-4 py-3'>
+          <p className={`text-emerald-800 ${menuClasses.textContainer}`}>
+            {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
+            <span className='truncate text-emerald-800'>{displayName}</span>
+          </p>
+        </div>
+
+        {menuItems.map((item, index) => (
+          <DropdownMenu.Item key={index}>
+            <Link className={`flex items-center ${menuClasses.menuItem}`}>
+              <span className={menuClasses.iconContainer}>
+                {item.icon && renderIcon(item.icon)}
+              </span>
+              <span className={menuClasses.textContainer}>
+                {item.label}
+              </span>
+            </Link>
+          </DropdownMenu.Item>
+        ))}
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  )
+}
+```
+
+**File: `app/components/AppBar.tsx`**
+
+```typescript
+import { useRTLDropdown } from '~/utils/rtlUtils'
+
+export function AppBar({ authenticated, username, user }) {
+  const { menuClasses } = useRTLDropdown()
+
+  const menuItems = [
+    // ... other menu items
+    {
+      label: isAuthenticated ? t('auth.signout') : t('auth.signin'),
+      icon: (isAuthenticated ? 'logout' : 'login') as IconName,
+      action: isAuthenticated ? (
+        <button
+          onClick={handleSignOut}
+          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+        >
+          <span className={menuClasses.iconContainer}>
+            {renderIcon('logout', { className: 'w-5 h-5' })}
+          </span>
+          <span className={menuClasses.textContainer}>{t('auth.signout')}</span>
+        </button>
+      ) : (
+        <PrimaryNavLink
+          to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
+          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+          onClick={handleSignIn}
+        >
+          <span className={menuClasses.iconContainer}>
+            {renderIcon('login', { className: 'w-5 h-5' })}
+          </span>
+          <span className={menuClasses.textContainer}>{t('auth.signin')}</span>
+        </PrimaryNavLink>
+      ),
+      authenticated: false,
+    },
+  ]
+}
+```
+
+### Language Switcher Implementation
+
+**File: `app/components/LanguageSwitcher.tsx`**
+
+```typescript
+import { useRTLLanguageSwitcher } from '~/utils/rtlUtils'
+
+export function LanguageSwitcher() {
+  const { i18n } = useTranslation()
+  const { classes } = useRTLLanguageSwitcher()
+
+  return (
+    <div className={`relative inline-block ${classes.container}`}>
+      <select
+        value={i18n.language}
+        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        className={`appearance-none bg-transparent ${classes.select}`}
+      >
+        {languages.map(lang => (
+          <option key={lang.code} value={lang.code}>
+            {lang.flag} {lang.name}
+          </option>
+        ))}
+      </select>
+
+      {/* Arrow positioned correctly for RTL */}
+      <div className={`absolute top-0 ${classes.arrow}`}>
+        <ChevronDownIcon />
+      </div>
+    </div>
+  )
+}
+```
+
+### Visual Results
+
+**LTR (English/Dutch/Turkish):**
+
+```
+[🏠] Home
+[⚙️] Settings
+[🌐] Language
+```
+
+**RTL (Arabic):**
+
+```
+Home [🏠]
+Settings [⚙️]
+Language [🌐]
+```
+
+### Key Benefits
+
+1. **Proper Icon Positioning**: Icons appear on the correct side for each text direction
+2. **Natural Text Flow**: Text aligns according to language reading direction
+3. **Consistent Spacing**: Logical properties ensure proper spacing in both directions
+4. **Dropdown Anchoring**: Menus anchor to the appropriate side of the trigger
+5. **Accessibility**: Screen readers get proper text direction context
+
+### Testing RTL Menus
+
+```typescript
+// Test that menus adapt to language changes
+test('context menu adapts to RTL', () => {
+  const { rerender } = render(<UserMenu />)
+
+  // Test LTR layout
+  expect(screen.getByRole('menuitem')).toHaveClass('flex-row')
+
+  // Switch to Arabic
+  i18n.changeLanguage('ar')
+  rerender(<UserMenu />)
+
+  // Test RTL layout
+  expect(screen.getByRole('menuitem')).toHaveClass('flex-row-reverse')
+})
+```
+
+This ensures your context menus and dropdowns provide a native, intuitive experience for both LTR and RTL users.
+
+### Flexible Menu Width for Long Content
+
+Context menus need to handle long email addresses gracefully while maintaining proper alignment.
+
+**Key Requirements:**
+
+1. **Flexible width** - Menu grows to accommodate long content
+2. **Consistent padding** - Welcome message aligns with menu item icons
+3. **Responsive constraints** - Min/max width limits for usability
+
+**Implementation:**
+
+```typescript
+// Desktop menu - fits content exactly
+<DropdownMenu.Content
+  className={cn(
+    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-gray-100', // No min-width!
+    'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+    'mx-4',
+    menuClasses.spacing
+  )}
+>
+
+// Mobile menu - fits content exactly
+<div className='w-max max-w-[90vw] overflow-visible rounded-lg bg-white shadow-xl'>
+```
+
+**Width Constraints:**
+
+- **Desktop**: `w-max` (fits content) with `max-w-80` (320px) limit
+- **Mobile**: `w-max` (fits content) with `max-w-[90vw]` (90% viewport) limit
+- **No minimum width** - Menu shrinks to fit short content perfectly
+
+**Implementation:**
+
+```typescript
+// Desktop menu - fits content exactly
+<DropdownMenu.Content
+  className={cn(
+    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-gray-100', // No min-width!
+    'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+    'mx-4',
+    menuClasses.spacing
+  )}
+>
+
+// Mobile menu - fits content exactly
+<div className='w-max max-w-[90vw] overflow-visible rounded-lg bg-white shadow-xl'>
+```

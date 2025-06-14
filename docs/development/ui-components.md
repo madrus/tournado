@@ -13,7 +13,7 @@ The `AppBar` component provides the main navigation header for the application, 
 
 ### Context Menu Functionality
 
-The AppBar includes a responsive context menu (UserMenu) that displays different menu items based on the user's authentication status and role. The menu is rendered in both mobile and desktop versions.
+The AppBar includes a responsive context menu (UserMenu) that displays different menu items based on the user's authentication status and role. The menu uses a unified implementation that adapts automatically to both mobile and desktop viewports.
 
 #### Role-Based Access Control
 
@@ -111,21 +111,21 @@ The context menu includes a language selector that:
 
 ### Responsive Design
 
-The AppBar renders two instances of the UserMenu component:
+The AppBar renders a single unified UserMenu component that automatically adapts to different screen sizes:
 
-- **Mobile Version**: Full-screen overlay with touch-friendly interactions
-- **Desktop Version**: Dropdown menu with hover states
+- **Mobile Behavior**: Dropdown menu with touch-friendly interactions and collision detection
+- **Desktop Behavior**: Dropdown menu with hover states and proper spacing from viewport edges
 
-Both versions contain identical menu items and functionality, ensuring consistent user experience across devices.
+The unified implementation ensures consistent menu items and functionality across all devices while providing optimal positioning and spacing for each viewport size.
 
 ### Testing
 
-The context menu functionality is thoroughly tested with 15 comprehensive unit tests covering:
+The context menu functionality is thoroughly tested with 19 comprehensive unit tests covering:
 
 - **Role-based visibility**: Verifies correct menu items for each user type
 - **Authentication filtering**: Ensures protected items only show to authenticated users
 - **Menu structure consistency**: Validates proper ordering and divider placement
-- **Responsive design**: Tests both mobile and desktop menu instances
+- **Unified menu design**: Tests the single responsive menu implementation
 - **Edge cases**: Handles null users, role changes, and navigation states
 
 ### Security Considerations
@@ -148,12 +148,14 @@ The `UserMenu` component is a reusable dropdown/overlay menu that powers the App
 
 ### Features
 
-- Responsive design (mobile overlay vs desktop dropdown)
+- Unified responsive design that adapts to mobile and desktop viewports
 - Support for dividers and submenus
 - Icon integration with Material Symbols
 - Customizable menu items with authentication requirements
+- RTL (Right-to-Left) language support with proper positioning
 - Keyboard navigation support
 - Auto-close on navigation
+- Collision detection to prevent off-screen positioning
 
 ### Props Type
 

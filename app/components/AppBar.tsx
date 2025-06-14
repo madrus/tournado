@@ -7,7 +7,7 @@ import type { User } from '@prisma/client'
 import logo from '~/assets/logo-192x192.png'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
-import { getArabicTextClass } from '~/utils/rtlUtils'
+import { getArabicTextClass, useRTLDropdown } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
 import { UserMenu } from './UserMenu'
@@ -25,11 +25,13 @@ export function AppBar({
 }): JSX.Element {
   const { t, i18n } = useTranslation()
   const location = useLocation()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
   // Get the current page title
   const pageTitle = usePageTitle()
+
+  // Get RTL classes for auth actions
+  const { menuClasses } = useRTLDropdown()
 
   // Track optimistic authenticated state
   const isAuthenticated =
@@ -40,18 +42,16 @@ export function AppBar({
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
-    // Close both mobile and desktop menus
-    setMobileMenuOpen(false)
-    setDesktopMenuOpen(false)
-  }, [setMobileMenuOpen, setDesktopMenuOpen])
+    // Close menu
+    setMenuOpen(false)
+  }, [setMenuOpen])
 
   // Handle sign-out
   const handleSignOut = useCallback(() => {
-    setMobileMenuOpen(false)
-    setDesktopMenuOpen(false)
+    setMenuOpen(false)
     // Submit signout form
     signoutFetcher.submit({}, { method: 'post', action: '/auth/signout' })
-  }, [signoutFetcher, setMobileMenuOpen, setDesktopMenuOpen])
+  }, [signoutFetcher, setMenuOpen])
 
   // Current language logic
   const languages = [
@@ -127,23 +127,23 @@ export function AppBar({
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
-          className='flex w-full content-start items-center px-3 py-2 text-start text-emerald-800 hover:bg-gray-100'
+          className={`flex w-full content-start items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
         >
-          <span className='flex w-8 items-center justify-start ps-0 text-start'>
+          <span className={menuClasses.iconContainer}>
             {renderIcon('logout', { className: 'w-5 h-5' })}
           </span>
-          {t('auth.signout')}
+          <span className={menuClasses.textContainer}>{t('auth.signout')}</span>
         </button>
       ) : (
         <PrimaryNavLink
           to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-          className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
+          className={`flex w-full content-start items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
           onClick={handleSignIn}
         >
-          <span className='flex w-8 items-center justify-start ps-0 text-start'>
+          <span className={menuClasses.iconContainer}>
             {renderIcon('login', { className: 'w-5 h-5' })}
           </span>
-          {t('auth.signin')}
+          <span className={menuClasses.textContainer}>{t('auth.signin')}</span>
         </PrimaryNavLink>
       ),
       authenticated: false,
@@ -176,39 +176,17 @@ export function AppBar({
           <h2 className='text-center text-xl font-bold sm:text-2xl'>{pageTitle}</h2>
         </div>
 
-        {/* Mobile menu button */}
-        <div className='absolute end-2 top-1/2 flex -translate-y-1/2 items-center lg:hidden'>
-          <button
-            type='button'
-            aria-label='Toggle menu'
-            className='inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-emerald-700'
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {renderIcon('menu', { className: 'text-white', size: 32 })}
-          </button>
-        </div>
-
-        {/* Desktop menu */}
-        <div className='absolute end-4 top-1/2 hidden -translate-y-1/2 items-center gap-4 lg:flex'>
+        {/* Unified menu for both desktop and mobile */}
+        <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
           <UserMenu
             authenticated={isAuthenticated}
             username={username}
             menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
-            isOpen={desktopMenuOpen}
-            onOpenChange={setDesktopMenuOpen}
+            isOpen={menuOpen}
+            onOpenChange={setMenuOpen}
           />
         </div>
       </header>
-
-      {/* Mobile menu */}
-      <UserMenu
-        authenticated={isAuthenticated}
-        username={username}
-        menuItems={menuItems.filter(item => !item.authenticated || isAuthenticated)}
-        isMobile={true}
-        isOpen={mobileMenuOpen}
-        onOpenChange={setMobileMenuOpen}
-      />
 
       <div className='h-1.5 w-full bg-red-500' />
     </>

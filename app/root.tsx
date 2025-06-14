@@ -1,6 +1,6 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
-import React, { JSX, useEffect, useLayoutEffect } from 'react'
+import React, { JSX, useEffect, useLayoutEffect, useState } from 'react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 import {
   Links,
@@ -66,42 +66,35 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   }
 }
 
-const Document = ({
-  children,
-  language,
-}: {
+type DocumentProps = {
   children: React.ReactNode
   language: string
-}) => {
+}
+
+const Document = ({ children, language }: DocumentProps) => {
   // Use useTranslation to get dynamic language updates
   const { i18n: i18nInstance } = useTranslation()
 
-  // Update HTML attributes when language changes
-  useLayoutEffect(() => {
-    if (typeof window !== 'undefined') {
-      document.documentElement.lang = i18nInstance.language
-      document.documentElement.dir = getDirection(i18nInstance.language)
+  // Use the current language from i18n instance, falling back to initial language
+  const currentLanguage = i18nInstance.language || language
 
-      // Update body typography class
-      const bodyClass = getTypographyClass(i18nInstance.language)
-      if (bodyClass) {
-        document.body.classList.add(bodyClass)
-      } else {
-        document.body.classList.remove('text-arabic')
-      }
+  // Use useState for reactive values that depend on language
+  const [direction, setDirection] = useState(getDirection(currentLanguage))
+  const [typographyClass, setTypographyClass] = useState(
+    getTypographyClass(currentLanguage)
+  )
 
-      if (i18nInstance.language) {
-        document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
-      }
+  // Update direction, typography, and cookie when language changes
+  useEffect(() => {
+    setDirection(getDirection(currentLanguage))
+    setTypographyClass(getTypographyClass(currentLanguage))
+    if (typeof window !== 'undefined' && i18nInstance.language) {
+      document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
     }
-  }, [i18nInstance.language])
+  }, [currentLanguage, i18nInstance.language])
 
   return (
-    <html
-      lang={language}
-      dir={getDirection(language)}
-      className='h-full overflow-x-hidden'
-    >
+    <html lang={currentLanguage} dir={direction} className='h-full overflow-x-hidden'>
       <head>
         <Meta />
         <meta charSet='utf-8' />
@@ -111,7 +104,7 @@ const Document = ({
       <body
         className={cn(
           'bg-background text-foreground flex h-full flex-col',
-          getTypographyClass(language)
+          typographyClass
         )}
       >
         {/* i18n instance will be provided by App/ErrorBoundary */}

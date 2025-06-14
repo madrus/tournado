@@ -95,6 +95,9 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
           case 'division':
             errors.division = 'validationError'
             break
+          case 'category':
+            errors.category = 'validationError'
+            break
           case 'teamLeaderName':
             errors.teamLeaderName = 'validationError'
             break

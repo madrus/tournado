@@ -7,6 +7,7 @@
    - [UI Components](development/ui-components.md)
    - [Type System](development/type-system.md)
    - [Database](development/database.md)
+   - [Database Schema Changes](development/database-schema-changes.md)
    - [Service Worker](service-worker.md)
 - Testing
    - [Overview](testing/overview.md)

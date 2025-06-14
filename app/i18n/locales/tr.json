@@ -137,6 +137,7 @@
         "clubNameRequired": "Kulüp adı zorunludur",
         "clubNameTooLong": "Kulüp adı 100 karakterden kısa olmalıdır",
         "divisionRequired": "Takım sınıfı zorunludur",
+        "categoryRequired": "Kategori zorunludur",
         "emailInvalid": "Geçerli bir e-posta adresi girin",
         "emailRequired": "E-posta adresi zorunludur",
         "phoneNumberInvalid": "Geçerli bir telefon numarası girin",

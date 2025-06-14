@@ -102,6 +102,7 @@ export const createTeam = async ({
   tournamentId: string
 }): Promise<Team> =>
   prisma.team.create({
+    // eslint-disable-next-line id-blacklist
     data: {
       clubName,
       teamName,

@@ -228,7 +228,7 @@ export function SidebarLayoutDemo(): JSX.Element {
 
   const demoMainContent = (
     <div className='max-w-2xl'>
-      <h1 className='mb-4 text-3xl font-bold text-gray-900'>Sidebar Layout Demo</h1>
+      <h1 className='mb-4 text-3xl font-bold'>Sidebar Layout Demo</h1>
 
       <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
         <h2 className='mb-3 text-xl font-semibold'>

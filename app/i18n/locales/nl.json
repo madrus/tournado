@@ -137,6 +137,7 @@
         "clubNameRequired": "Clubnaam is verplicht",
         "clubNameTooLong": "Clubnaam moet minder dan 100 karakters zijn",
         "divisionRequired": "Teamklasse is verplicht",
+        "categoryRequired": "Categorie is verplicht",
         "emailInvalid": "Voer een geldig e-mailadres in",
         "emailRequired": "E-mailadres is verplicht",
         "phoneNumberInvalid": "Voer een geldig telefoonnummer in",

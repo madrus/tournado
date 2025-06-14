@@ -150,6 +150,7 @@ export type TeamCreateActionData = {
     clubName?: string
     teamName?: string
     division?: string
+    category?: string
     teamLeaderName?: string
     teamLeaderPhone?: string
     teamLeaderEmail?: string
@@ -215,6 +216,7 @@ export type TeamFormSchemaType = import('zod').ZodObject<{
   clubName: import('zod').ZodString
   teamName: import('zod').ZodString
   division: import('zod').ZodString
+  category: import('zod').ZodString
   teamLeaderName: import('zod').ZodString
   teamLeaderPhone: import('zod').ZodEffects<import('zod').ZodString, string, string>
   teamLeaderEmail: import('zod').ZodEffects<import('zod').ZodString, string, string>
@@ -229,6 +231,7 @@ export type TeamFormEditSchemaType = import('zod').ZodObject<{
   clubName: import('zod').ZodString
   teamName: import('zod').ZodString
   division: import('zod').ZodString
+  category: import('zod').ZodString
   teamLeaderName: import('zod').ZodString
   teamLeaderPhone: import('zod').ZodEffects<import('zod').ZodString, string, string>
   teamLeaderEmail: import('zod').ZodEffects<import('zod').ZodString, string, string>
@@ -252,6 +255,7 @@ export type TeamCreateValidationResult = {
   clubName: string
   teamName: string
   division: string
+  category: string
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: string
@@ -266,6 +270,7 @@ export type TeamEditValidationResult = {
   clubName: string
   teamName: string
   division: string
+  category: string
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: string

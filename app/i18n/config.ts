@@ -7,7 +7,6 @@ import i18next, { i18n as I18nType } from 'i18next'
 import ar from './locales/ar.json'
 import en from './locales/en.json'
 import nl from './locales/nl.json'
-import test from './locales/test.json'
 import tr from './locales/tr.json'
 
 export const defaultNS = 'common'
@@ -23,9 +22,6 @@ export const resources = {
   },
   tr: {
     [defaultNS]: tr,
-  },
-  test: {
-    [defaultNS]: test,
   },
 } as const
 
@@ -51,5 +47,5 @@ export function initI18n(language: string): I18nType {
 }
 
 // At the bottom of the file
-export const i18n = initI18n('test') // or 'test' if you want a test language
+export const i18n = initI18n('nl') // Default to Dutch (fallback language)
 export default i18n

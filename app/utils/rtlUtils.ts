@@ -12,12 +12,12 @@ export const getDirection = (languageCode: string): 'ltr' | 'rtl' =>
 export const getTypographyClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'text-arabic' : ''
 
-// Helper to apply text-force-latin in Arabic context for Latin content
+// Helper to apply text-latin in Arabic context for Latin content
 export const getLatinTextClass = (languageCode: string): string =>
-  isRTL(languageCode) ? 'text-force-latin' : ''
+  isRTL(languageCode) ? 'text-latin' : ''
 
-// Helper to apply text-force-arabic for Arabic content in any context
-export const getArabicTextClass = (): string => 'text-force-arabic'
+// Helper to apply text-arabic for Arabic content in any context
+export const getArabicTextClass = (): string => 'text-arabic'
 
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {

@@ -28,8 +28,8 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'flex items-center rounded-lg border border-red-300 bg-white py-2',
-    'text-sm font-medium text-red-700 shadow-sm transition-all duration-200',
+    'inline-flex h-10 items-center rounded-lg border border-red-300 bg-white',
+    'font-medium text-red-700 shadow-sm transition-all duration-200',
     'hover:border-red-300 hover:shadow-md hover:bg-red-50',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',

@@ -1,11 +1,14 @@
 import React from 'react'
 
 import {
+  AddIcon,
   AdminPanelSettingsIcon,
   ApparelIcon,
   BlockIcon,
   CheckCircleIcon,
+  CloseIcon,
   DarkModeIcon,
+  DeleteIcon,
   ErrorIcon,
   ExpandMoreIcon,
   HomeIcon,
@@ -27,11 +30,14 @@ import {
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
 export type IconName =
+  | 'add'
   | 'admin_panel_settings'
   | 'apparel'
   | 'block'
   | 'check_circle'
+  | 'close'
   | 'dark_mode'
+  | 'delete'
   | 'error'
   | 'home'
   | 'info'
@@ -51,11 +57,14 @@ export type IconName =
   | 'expand_more'
 
 export const iconMap = {
+  add: AddIcon,
   admin_panel_settings: AdminPanelSettingsIcon,
   apparel: ApparelIcon,
   block: BlockIcon,
   check_circle: CheckCircleIcon,
+  close: CloseIcon,
   dark_mode: DarkModeIcon,
+  delete: DeleteIcon,
   error: ErrorIcon,
   home: HomeIcon,
   info: InfoIcon,

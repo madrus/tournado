@@ -6,7 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { useRTLDropdown } from '~/utils/rtlUtils'
+import { getLatinTextClass, useRTLDropdown } from '~/utils/rtlUtils'
 
 export type MenuItemType = {
   label: string
@@ -42,7 +42,7 @@ export function UserMenu({
   isOpen?: boolean
   onOpenChange?: (open: boolean) => void
 }): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
   const navigation = useNavigation()
@@ -192,9 +192,13 @@ export function UserMenu({
           alignOffset={dropdownProps.alignOffset}
         >
           <div className='px-4 py-3'>
-            <p className='text-emerald-800'>
+            <p className={`text-emerald-800 ${menuClasses.textContainer} break-words`}>
               {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
-              <span className='truncate text-emerald-800'>{displayName}</span>
+              <span
+                className={`font-medium text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+              >
+                {displayName}
+              </span>
             </p>
           </div>
           <div className='py-1'>
@@ -213,17 +217,17 @@ export function UserMenu({
                 return (
                   <div key={index} className='relative'>
                     <button
-                      className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 focus:outline-none'
+                      className={`w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
                       onClick={event => handleLanguageToggle(event, index)}
                     >
-                      <span className='flex w-8 items-center justify-start ps-0 pe-2 text-start'>
+                      <span className={menuClasses.iconContainer}>
                         {item.customIcon ? (
                           <span className='text-lg'>{item.customIcon}</span>
                         ) : item.icon ? (
                           renderIcon(item.icon, { className: 'w-5 h-5' })
                         ) : null}
                       </span>
-                      <span>{item.label}</span>
+                      <span className={menuClasses.textContainer}>{item.label}</span>
                     </button>
 
                     {languageMenuOpen ? (
@@ -236,21 +240,25 @@ export function UserMenu({
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            className={`flex w-full content-start items-center px-3 py-1 text-sm ${
+                            className={`w-full items-center px-3 py-1 text-sm ${
                               subItem.active
                                 ? 'bg-gray-100 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
-                            } focus:outline-none`}
+                            } focus:outline-none ${menuClasses.menuItem}`}
                             onClick={event => {
                               event.stopPropagation()
                               subItem.onClick()
                               setLanguageMenuOpen(false)
                             }}
                           >
-                            <span className={cn('w-8 ps-0 pe-2 text-start text-lg')}>
+                            <span className={menuClasses.iconContainer}>
                               {subItem.customIcon}
                             </span>
-                            <span className={subItem.className}>{subItem.label}</span>
+                            <span
+                              className={`${subItem.className} ${menuClasses.textContainer}`}
+                            >
+                              {subItem.label}
+                            </span>
                           </button>
                         ))}
                       </div>
@@ -271,19 +279,14 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className='flex content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
+                    className={`w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
                   >
-                    <span
-                      className={cn(
-                        'flex w-8 items-center justify-start text-start',
-                        'ps-0 pe-2'
-                      )}
-                    >
+                    <span className={menuClasses.iconContainer}>
                       {item.icon
                         ? renderIcon(item.icon, { className: 'w-5 h-5' })
                         : null}
                     </span>
-                    <span>{item.label}</span>
+                    <span className={menuClasses.textContainer}>{item.label}</span>
                     {item.todo ? (
                       <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}

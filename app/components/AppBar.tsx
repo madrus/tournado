@@ -7,7 +7,7 @@ import type { User } from '@prisma/client'
 import logo from '~/assets/logo-192x192.png'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
-import { getArabicTextClass } from '~/utils/rtlUtils'
+import { getArabicTextClass, useRTLDropdown } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
 import { UserMenu } from './UserMenu'
@@ -30,6 +30,9 @@ export function AppBar({
   const signoutFetcher = useFetcher()
   // Get the current page title
   const pageTitle = usePageTitle()
+
+  // Get RTL classes for auth actions
+  const { menuClasses } = useRTLDropdown()
 
   // Track optimistic authenticated state
   const isAuthenticated =
@@ -127,23 +130,23 @@ export function AppBar({
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
-          className='flex w-full content-start items-center px-3 py-2 text-start text-emerald-800 hover:bg-gray-100'
+          className={`flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
         >
-          <span className='flex w-8 items-center justify-start ps-0 text-start'>
+          <span className={menuClasses.iconContainer}>
             {renderIcon('logout', { className: 'w-5 h-5' })}
           </span>
-          {t('auth.signout')}
+          <span className={menuClasses.textContainer}>{t('auth.signout')}</span>
         </button>
       ) : (
         <PrimaryNavLink
           to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-          className='flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100'
+          className={`flex w-full content-start items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
           onClick={handleSignIn}
         >
-          <span className='flex w-8 items-center justify-start ps-0 text-start'>
+          <span className={menuClasses.iconContainer}>
             {renderIcon('login', { className: 'w-5 h-5' })}
           </span>
-          {t('auth.signin')}
+          <span className={menuClasses.textContainer}>{t('auth.signin')}</span>
         </PrimaryNavLink>
       ),
       authenticated: false,

@@ -1,6 +1,8 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useRTLLanguageSwitcher } from '~/utils/rtlUtils'
+
 const languages = [
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -10,9 +12,10 @@ const languages = [
 
 export function LanguageSwitcher(): JSX.Element {
   const { i18n } = useTranslation()
+  const { classes } = useRTLLanguageSwitcher()
 
   return (
-    <div className='relative inline-block text-start'>
+    <div className={`relative inline-block ${classes.container}`}>
       <select
         value={i18n.language}
         onChange={event => {
@@ -20,7 +23,7 @@ export function LanguageSwitcher(): JSX.Element {
           localStorage.setItem('lang', lang)
           i18n.changeLanguage(lang)
         }}
-        className='cursor-pointer appearance-none bg-transparent py-1 ps-2 pe-8 text-white focus:outline-none'
+        className={`cursor-pointer appearance-none bg-transparent py-1 text-white focus:outline-none ${classes.select}`}
         aria-label='Select language'
       >
         {languages.map(lang => (
@@ -35,7 +38,9 @@ export function LanguageSwitcher(): JSX.Element {
       </select>
 
       {/* Custom dropdown arrow */}
-      <div className='pointer-events-none absolute end-0 top-0 flex h-full items-center pe-2'>
+      <div
+        className={`pointer-events-none absolute top-0 flex h-full items-center ${classes.arrow}`}
+      >
         <svg
           className='h-4 w-4 text-white'
           fill='none'

@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { getChipClasses, getLatinTextClass, isRTL } from '~/utils/rtlUtils'
 
@@ -48,14 +49,7 @@ export function TeamChip({
         aria-label={`Delete team ${team.clubName} ${team.teamName}`}
         title='Delete team'
       >
-        <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M6 18L18 6M6 6l12 12'
-          />
-        </svg>
+        {renderIcon('close', { className: 'h-4 w-4' })}
       </button>
     ) : null
 

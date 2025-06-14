@@ -67,7 +67,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     await signInButton.click()
 
     // Wait for successful login redirect
-    await page.waitForURL('/', { timeout: 30000 })
+    await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
 
     // Save authentication state
     await context.storageState({ path: './playwright/.auth/auth.json' })

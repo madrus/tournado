@@ -13,8 +13,8 @@ import {
 import { CheckCircleIcon } from '~/components/icons'
 import { verifySignin } from '~/models/user.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { createUserSession, getUserId } from '~/utils/session.server'
-import { safeRedirect, validateEmail } from '~/utils/utils'
+import { createUserSession, getUser } from '~/utils/session.server'
+import { validateEmail } from '~/utils/utils'
 
 //! TODO: replace with generated type
 type LoaderArgs = {
@@ -39,13 +39,10 @@ export const handle: RouteMetadata = {
 }
 
 export const loader = async ({ request }: LoaderArgs): Promise<object> => {
-  const userId = await getUserId(request)
-  if (userId) {
-    // Get the redirectTo parameter from the URL if present
-    const url = new URL(request.url)
-    const redirectTo = url.searchParams.get('redirectTo')
-    // Redirect to the intended destination or homepage (consistent with action)
-    return redirect(redirectTo || '/')
+  const user = await getUser(request)
+  if (user) {
+    // Always redirect all authorized users to Admin Panel
+    return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
   }
   return {}
 }
@@ -54,12 +51,11 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')
-  const redirectTo = safeRedirect(formData.get('redirectTo'), null) // Pass null so unsafe values return null
   const remember = formData.get('remember')
 
   if (!validateEmail(email)) {
     return Response.json(
-      { errors: { email: 'emailInvalid', password: null } },
+      { errors: { email: 'Email is invalid', password: null } },
       { status: 400 }
     )
   }
@@ -92,12 +88,9 @@ export const action = async ({ request }: ActionArgs): Promise<Response> => {
     )
   }
 
-  // Use consistent default redirect for all users regardless of role
-  const defaultRedirect = '/'
-
-  // Always respect redirectTo if provided, regardless of user role
+  // Always redirect all authorized users to Admin Panel
   return createUserSession({
-    redirectTo: redirectTo || defaultRedirect,
+    redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
     remember: remember === 'on' ? true : false,
     request,
     userId: user.id,

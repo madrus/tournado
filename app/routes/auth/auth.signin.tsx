@@ -246,7 +246,7 @@ export default function SigninPage(): JSX.Element {
                   type='checkbox'
                   className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 focus:ring-emerald-500'
                 />
-                <label htmlFor='remember' className='ms-2 block text-sm text-gray-900'>
+                <label htmlFor='remember' className='ms-2 block text-sm'>
                   {t('auth.rememberMe')}
                 </label>
               </div>

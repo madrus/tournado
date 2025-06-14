@@ -151,7 +151,7 @@ export default function SignupPage(): JSX.Element {
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <h2 className='mt-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900'>
+        <h2 className='mt-10 text-center text-2xl leading-9 font-bold tracking-tight'>
           {t('common.titles.signUp')}
         </h2>
       </div>
@@ -159,10 +159,7 @@ export default function SignupPage(): JSX.Element {
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
         <Form method='post' className='space-y-6'>
           <div>
-            <label
-              htmlFor='firstName'
-              className='block text-sm leading-6 font-medium text-gray-900'
-            >
+            <label htmlFor='firstName' className='block text-sm leading-6 font-medium'>
               {t('auth.firstName')}
             </label>
             <div className='mt-2'>
@@ -175,7 +172,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='given-name'
                 aria-invalid={actionData?.errors?.firstName ? true : undefined}
                 aria-describedby='firstName-error'
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.firstName ? (
                 <div className='pt-1 text-red-700' id='firstName-error'>
@@ -186,10 +183,7 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label
-              htmlFor='lastName'
-              className='block text-sm leading-6 font-medium text-gray-900'
-            >
+            <label htmlFor='lastName' className='block text-sm leading-6 font-medium'>
               {t('auth.lastName')}
             </label>
             <div className='mt-2'>
@@ -202,7 +196,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='family-name'
                 aria-invalid={actionData?.errors?.lastName ? true : undefined}
                 aria-describedby='lastName-error'
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.lastName ? (
                 <div className='pt-1 text-red-700' id='lastName-error'>
@@ -213,10 +207,7 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label
-              htmlFor='email'
-              className='block text-sm leading-6 font-medium text-gray-900'
-            >
+            <label htmlFor='email' className='block text-sm leading-6 font-medium'>
               {t('auth.emailAddress')}
             </label>
             <div className='mt-2'>
@@ -229,7 +220,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='email'
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby='email-error'
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.email ? (
                 <div className='pt-1 text-red-700' id='email-error'>
@@ -240,10 +231,7 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label
-              htmlFor='password'
-              className='block text-sm leading-6 font-medium text-gray-900'
-            >
+            <label htmlFor='password' className='block text-sm leading-6 font-medium'>
               {t('auth.password')}
             </label>
             <div className='mt-2'>
@@ -255,7 +243,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='new-password'
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby='password-error'
-                className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.password ? (
                 <div className='pt-1 text-red-700' id='password-error'>

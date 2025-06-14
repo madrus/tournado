@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import type { Division } from '@prisma/client'
 
 import { getDivisionLabel } from '~/lib/lib.helpers'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 import { SidebarLayout } from './SidebarLayout'
 import { TeamChip } from './TeamChip'
@@ -86,7 +87,9 @@ export function SidebarTeamsExample({
           >
             <div className='h-2 w-2 rounded-full bg-gray-400' />
             <div className='flex flex-col'>
-              <span className='font-medium'>{`${team.clubName} ${team.teamName}`}</span>
+              <span className={`font-medium ${getLatinTextClass(i18n.language)}`}>
+                {`${team.clubName} ${team.teamName}`}
+              </span>
               <span className='text-foreground-lighter text-xs'>
                 {getDivisionLabel(team.division, i18n.language)}
               </span>
@@ -100,7 +103,7 @@ export function SidebarTeamsExample({
   // Main content - team details or empty state
   const mainContent = selectedTeam ? (
     <div className='max-w-2xl'>
-      <h1 className='mb-6 text-3xl font-bold text-gray-900'>
+      <h1 className={`mb-6 text-3xl font-bold ${getLatinTextClass(i18n.language)}`}>
         {`${selectedTeam.clubName} ${selectedTeam.teamName}`}
       </h1>
 
@@ -111,15 +114,19 @@ export function SidebarTeamsExample({
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
-              <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.clubName}</dd>
+              <dd className={`mt-1 text-sm ${getLatinTextClass(i18n.language)}`}>
+                {selectedTeam.clubName}
+              </dd>
             </div>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
-              <dd className='mt-1 text-sm text-gray-900'>{selectedTeam.teamName}</dd>
+              <dd className={`mt-1 text-sm ${getLatinTextClass(i18n.language)}`}>
+                {selectedTeam.teamName}
+              </dd>
             </div>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Class</dt>
-              <dd className='mt-1 text-sm text-gray-900'>
+              <dd className='mt-1 text-sm'>
                 {getDivisionLabel(selectedTeam.division, i18n.language)}
               </dd>
             </div>
@@ -176,7 +183,7 @@ export function SidebarTeamsExample({
             />
           </svg>
         </div>
-        <h3 className='mt-2 text-sm font-medium text-gray-900'>No team selected</h3>
+        <h3 className='mt-2 text-sm font-medium'>No team selected</h3>
         <p className='text-foreground-lighter mt-1 text-sm'>
           Select a team from the sidebar to view details, or create a new team.
         </p>
@@ -226,9 +233,7 @@ export function TeamsLayoutComparison(): JSX.Element {
     <div className='space-y-8 p-6'>
       {/* Header */}
       <div className='text-center'>
-        <h1 className='mb-4 text-3xl font-bold text-gray-900'>
-          Teams Layout Evolution
-        </h1>
+        <h1 className='mb-4 text-3xl font-bold'>Teams Layout Evolution</h1>
         <p className='mx-auto max-w-2xl text-gray-600'>
           Comparison between the original sidebar layout (preserved for future sliding
           menu) and the new chip-based layout for modern UX.

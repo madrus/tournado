@@ -8,6 +8,7 @@ import invariant from 'tiny-invariant'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById, type TeamWithLeader } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 // Temporary types until auto-generation is complete
 export type LoaderArgs = {
@@ -77,7 +78,9 @@ export default function TeamDetailsPage(): JSX.Element {
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
-          <h1 className='text-3xl font-bold'>{`${team.clubName} ${team.teamName}`}</h1>
+          <h1 className={`text-3xl font-bold ${getLatinTextClass(i18n.language)}`}>
+            {`${team.clubName} ${team.teamName}`}
+          </h1>
           <p className='mt-2 text-lg'>
             {getDivisionLabel(team.division, i18n.language)}
           </p>
@@ -103,7 +106,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='font-medium text-gray-900'>vs Team Example</p>
+                      <p className='font-medium'>vs Team Example</p>
                       <p className='text-foreground-light text-sm'>
                         Saturday, Dec 16, 2023 at 14:00
                       </p>
@@ -120,7 +123,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='font-medium text-gray-900'>vs Another Team</p>
+                      <p className='font-medium'>vs Another Team</p>
                       <p className='text-foreground-light text-sm'>
                         Sunday, Dec 17, 2023 at 16:30
                       </p>
@@ -154,15 +157,19 @@ export default function TeamDetailsPage(): JSX.Element {
               <dl className='space-y-3'>
                 <div>
                   <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
-                  <dd className='text-sm text-gray-900'>{team.clubName}</dd>
+                  <dd className={`text-sm ${getLatinTextClass(i18n.language)}`}>
+                    {team.clubName}
+                  </dd>
                 </div>
                 <div>
                   <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
-                  <dd className='text-sm text-gray-900'>{team.teamName}</dd>
+                  <dd className={`text-sm ${getLatinTextClass(i18n.language)}`}>
+                    {team.teamName}
+                  </dd>
                 </div>
                 <div>
                   <dt className='text-foreground-lighter text-sm font-medium'>Class</dt>
-                  <dd className='text-sm text-gray-900'>
+                  <dd className='text-sm'>
                     {getDivisionLabel(team.division, i18n.language)}
                   </dd>
                 </div>
@@ -185,7 +192,7 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className='space-y-3'>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Games Played</span>
-                  <span className='text-sm font-medium text-gray-900'>--</span>
+                  <span className='text-sm font-medium'>--</span>
                 </div>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Wins</span>
@@ -197,7 +204,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 </div>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Points</span>
-                  <span className='text-sm font-medium text-gray-900'>--</span>
+                  <span className='text-sm font-medium'>--</span>
                 </div>
               </div>
               <div className='mt-4 rounded-lg bg-gray-50 p-3'>

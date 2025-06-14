@@ -119,7 +119,7 @@ export function UserMenu({
                 return (
                   <div key={index} className='relative'>
                     <button
-                      className={`w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
+                      className={`w-full items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
                       onClick={event => handleLanguageToggle(event, index)}
                     >
                       <span className={menuClasses.iconContainer}>
@@ -142,7 +142,7 @@ export function UserMenu({
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            className={`w-full items-center px-3 py-1 text-sm ${
+                            className={`w-full items-center px-3 py-1 text-sm leading-normal ${
                               subItem.active
                                 ? 'bg-gray-100 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
@@ -181,7 +181,7 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className={`w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+                    className={`w-full items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
                   >
                     <span className={menuClasses.iconContainer}>
                       {item.icon

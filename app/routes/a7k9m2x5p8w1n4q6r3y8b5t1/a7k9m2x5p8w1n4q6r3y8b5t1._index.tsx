@@ -44,12 +44,8 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  authorization: {
-    // Only admins can access this route
-    requiredRoles: ['admin'],
-    roleMatchMode: 'any',
-    redirectTo: '/unauthorized',
-  },
+  // No authorization restrictions - all authenticated users can access
+  // Access control will be handled within the Admin Panel components
   protection: {
     autoCheck: true,
     // Custom check: additional validation for admin access

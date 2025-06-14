@@ -72,12 +72,16 @@ export function UserMenu({
     <div className='relative inline-block text-left'>
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
-          <button className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'>
-            {/* Show subtle three-dot menu - unobtrusive for public users */}
-            {renderIcon('more_vert', { className: 'hidden md:block' })}
+          <button
+            className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'
+            aria-label='Toggle menu'
+          >
+            {/* Show hamburger menu icon - consistent across all screen sizes */}
+            {renderIcon('menu', { className: 'w-6 h-6' })}
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
+          data-testid='user-menu-dropdown'
           className={cn(
             'ring-opacity-5 z-40 w-max divide-y divide-gray-100',
             'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',

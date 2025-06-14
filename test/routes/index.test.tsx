@@ -247,7 +247,7 @@ describe('Home Page (_index)', () => {
 
       const viewTeamsButton = screen.getByTestId('view-teams-button')
 
-      // Check button has expected styling classes from ActionLinkButton component
+      // Check button has expected styling classes from ActionLinkButton component with 3D effects
       expect(viewTeamsButton).toHaveClass(
         'inline-flex',
         'items-center',
@@ -257,14 +257,18 @@ describe('Home Page (_index)', () => {
         'py-2',
         'text-sm',
         'font-medium',
-        'shadow-sm',
         'ps-4',
         'pe-4',
         'bg-emerald-600',
-        'hover:bg-emerald-500',
+        'hover:bg-emerald-500/90',
         'focus:ring-emerald-600',
         'border-transparent',
-        'text-white'
+        'text-white',
+        'shadow-lg',
+        'transform',
+        'transition-all',
+        'duration-150',
+        'ease-in-out'
       )
     })
   })

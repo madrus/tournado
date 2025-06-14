@@ -1,7 +1,8 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, Outlet } from 'react-router'
+import { Outlet } from 'react-router'
 
+import { ActionLinkButton } from '~/components/buttons'
 import type { RouteMetadata } from '~/utils/route-types'
 
 // Route metadata - admin only
@@ -33,25 +34,12 @@ export default function AdminTeamsLayout(): JSX.Element {
           </div>
 
           {/* Add Team Button */}
-          <Link
+          <ActionLinkButton
             to='new'
-            className='bg-brand hover:bg-brand-dark focus:ring-brand inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none'
-          >
-            <svg
-              className='-ms-1 me-2 h-5 w-5'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M12 6v6m0 0v6m0-6h6m-6 0H6'
-              />
-            </svg>
-            {t('teams.addTeam')}
-          </Link>
+            icon='add'
+            label={t('teams.addTeam')}
+            variant='primary'
+          />
         </div>
       </div>
 

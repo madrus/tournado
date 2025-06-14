@@ -13,11 +13,8 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  authorization: {
-    requiredRoles: ['admin'],
-    roleMatchMode: 'any',
-    redirectTo: '/unauthorized',
-  },
+  // No authorization restrictions - all authenticated users can access
+  // Access control will be handled within the Admin Panel components
 }
 
 export default function AdminTeamsLayout(): JSX.Element {

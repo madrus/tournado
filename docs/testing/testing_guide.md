@@ -315,7 +315,7 @@ it('should hide Admin Panel for non-admin users', () => {
 2. **Verify Visibility**: Check both what should and shouldn't be visible
 3. **Use Meaningful Data**: Create user objects with realistic role values
 4. **Mock Authentication State**: Test both authenticated and unauthenticated states
-5. **Test Responsive Design**: Verify both mobile and desktop menu versions
+5. **Test Responsive Design**: Verify the unified menu works across different viewport sizes
 
 ## Why This Order?
 

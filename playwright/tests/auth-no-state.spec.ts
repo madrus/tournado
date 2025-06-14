@@ -106,9 +106,9 @@ test.describe('Authentication', () => {
 
     await page.getByRole('button', { name: 'Toggle menu' }).click()
 
-    // Wait for the mobile menu overlay to become visible
-    // The overlay might re-render if language changes, so we need to be patient
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible({
+    // Wait for the user menu dropdown to become visible
+    // The dropdown might re-render if language changes, so we need to be patient
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
       timeout: 10000,
     })
 
@@ -137,9 +137,12 @@ test.describe('Authentication', () => {
     // Should redirect to homepage and show signed out state
     await expect(page).toHaveURL('/')
 
+    // Wait a moment for the page to settle after sign out
+    await page.waitForLoadState('networkidle')
+
     // Verify user is signed out - the email should no longer be visible in the menu
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible({
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
       timeout: 10000,
     })
     // User email should no longer be visible since they're signed out

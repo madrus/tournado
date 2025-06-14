@@ -5,7 +5,7 @@ import { useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
 
-import { ActionLink } from '~/components/PrefetchLink'
+import { ActionLinkButton } from '~/components/buttons'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getTypographyClasses } from '~/utils/rtlUtils'
@@ -76,12 +76,12 @@ export default function IndexPage(): JSX.Element {
               {t('landing.hero.description')}
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
-              <ActionLink
+              <ActionLinkButton
                 to={teamsRoute}
-                className='rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-emerald-600'
-              >
-                {t('landing.hero.viewTeams')}
-              </ActionLink>
+                icon='apparel'
+                label={t('landing.hero.viewTeams')}
+                variant='emerald'
+              />
             </div>
           </div>
         </div>

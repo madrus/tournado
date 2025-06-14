@@ -105,7 +105,7 @@ test.describe('Authentication', () => {
     await page.goto('/')
 
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible({
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
       timeout: 10000,
     })
     // Click "Inloggen" link (Dutch for "Sign In")
@@ -133,9 +133,14 @@ test.describe('Authentication', () => {
     // Should redirect to homepage and show signed out state
     await expect(page).toHaveURL('/')
 
+    // Wait a moment for the page to settle after sign out
+    await page.waitForLoadState('networkidle')
+
     // Verify user is signed out - the email should no longer be visible in the menu
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible()
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
+      timeout: 10000,
+    })
     // User email should no longer be visible since they're signed out
     await expect(page.getByText(testUser.email)).not.toBeVisible()
   })
@@ -177,7 +182,7 @@ test.describe('Authentication', () => {
 
     // Sign out from teams page - using Dutch text "Uitloggen"
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible({
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
       timeout: 10000,
     })
     await page.getByRole('button', { name: 'Uitloggen' }).click()
@@ -185,9 +190,12 @@ test.describe('Authentication', () => {
     // Should redirect to homepage (not stay on teams page)
     await expect(page).toHaveURL('/')
 
+    // Wait a moment for the page to settle after sign out
+    await page.waitForLoadState('networkidle')
+
     // Verify user is signed out - email should no longer be visible
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="mobile-user-menu-overlay"]')).toBeVisible({
+    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
       timeout: 10000,
     })
     await expect(page.getByText(user.email)).not.toBeVisible()

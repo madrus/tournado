@@ -254,9 +254,7 @@ export function ErrorBoundary(): JSX.Element {
     return (
       <div className='flex h-64 items-center justify-center'>
         <div className='text-center'>
-          <h3 className='text-lg font-medium text-gray-900'>
-            {t('admin.teams.teamNotFound')}
-          </h3>
+          <h3 className='text-lg font-medium'>{t('admin.teams.teamNotFound')}</h3>
           <p className='mt-2 text-gray-600'>
             {t('admin.teams.teamNotFoundDescription')}
           </p>
@@ -268,7 +266,7 @@ export function ErrorBoundary(): JSX.Element {
   return (
     <div className='flex h-64 items-center justify-center'>
       <div className='text-center'>
-        <h3 className='text-lg font-medium text-gray-900'>{t('common.error')}</h3>
+        <h3 className='text-lg font-medium'>{t('common.error')}</h3>
         <p className='mt-2 text-gray-600'>
           {error instanceof Error ? error.message : t('common.unknownError')}
         </p>

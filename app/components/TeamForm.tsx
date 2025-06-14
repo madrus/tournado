@@ -9,6 +9,7 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 import { DeleteButton } from './buttons/DeleteButton'
 
@@ -109,7 +110,7 @@ export function TeamForm({
         <div className='mb-8 border-b border-gray-200 pb-6'>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <h1 className='text-xl font-bold'>
+              <h1 className={`text-xl font-bold ${getLatinTextClass(i18n.language)}`}>
                 {formData.clubName && formData.teamName
                   ? `${formData.clubName} ${formData.teamName}`
                   : ''}

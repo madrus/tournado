@@ -1,2 +1,2 @@
+export { ActionButton } from './ActionButton'
 export { ActionLinkButton } from './ActionLinkButton'
-export { DeleteButton } from './DeleteButton'

@@ -29,15 +29,13 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'inline-flex h-10 items-center rounded-lg border border-red-300 bg-white',
-    'font-medium text-red-700 transition-all duration-200',
+    'inline-flex h-10 items-center rounded-lg border border-red-400 bg-white',
+    'font-semibold text-red-700 transition-all duration-300 ease-out relative overflow-hidden',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',
-    // 3D chip effects
-    'shadow-lg transform transition-all duration-150 ease-in-out',
-    'hover:shadow-lg hover:-translate-y-0.5 hover:border-red-400 hover:bg-red-50/30',
-    'active:shadow-md active:translate-y-0 active:scale-95',
-    'focus:ring-4 focus:ring-red-500/30 focus:outline-none shadow-red-300/50',
+    'hover:scale-105 active:scale-95',
+    'shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40 hover:bg-red-50/30 hover:border-red-500',
+    'focus:ring-2 focus:ring-offset-2 focus:ring-red-600/90 focus:outline-none',
     className
   )
 

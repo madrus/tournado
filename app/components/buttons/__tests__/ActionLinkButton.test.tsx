@@ -68,8 +68,8 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand')
-    expect(link).toHaveClass('hover:bg-brand-dark')
-    expect(link).toHaveClass('focus:ring-brand')
+    expect(link).toHaveClass('hover:bg-brand/90')
+    expect(link).toHaveClass('focus:ring-brand/90')
   })
 
   it('renders with secondary variant', () => {
@@ -80,9 +80,9 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('border-gray-300')
-    expect(link).toHaveClass('bg-white')
-    expect(link).toHaveClass('text-gray-700')
+    expect(link).toHaveClass('bg-gray-100')
+    expect(link).toHaveClass('text-gray-800')
+    expect(link).toHaveClass('hover:bg-gray-200')
   })
 
   it('renders with emerald variant', () => {
@@ -94,8 +94,8 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-emerald-600')
-    expect(link).toHaveClass('hover:bg-emerald-500/90')
-    expect(link).toHaveClass('focus:ring-emerald-600')
+    expect(link).toHaveClass('hover:bg-emerald-500')
+    expect(link).toHaveClass('focus:ring-emerald-600/90')
   })
 
   it('applies custom className', () => {
@@ -168,12 +168,14 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('inline-flex')
     expect(link).toHaveClass('items-center')
     expect(link).toHaveClass('justify-center')
-    expect(link).toHaveClass('rounded-md')
-    expect(link).toHaveClass('border')
-    expect(link).toHaveClass('py-2')
+    expect(link).toHaveClass('rounded-lg')
+    expect(link).toHaveClass('border-0')
+    expect(link).toHaveClass('py-2.5')
     expect(link).toHaveClass('text-sm')
-    expect(link).toHaveClass('font-medium')
+    expect(link).toHaveClass('font-semibold')
     expect(link).toHaveClass('shadow-lg')
+    expect(link).toHaveClass('hover:scale-105')
+    expect(link).toHaveClass('active:scale-95')
   })
 
   describe('RTL support', () => {

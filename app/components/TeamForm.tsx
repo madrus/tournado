@@ -11,7 +11,7 @@ import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
-import { DeleteButton } from './buttons/DeleteButton'
+import { ActionButton } from './buttons/ActionButton'
 
 export function TeamForm({
   mode,
@@ -123,7 +123,14 @@ export function TeamForm({
             </div>
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
-              <DeleteButton onClick={onDelete} label={t('teams.deleteTeam')} />
+              <ActionButton
+                onClick={onDelete}
+                icon='delete'
+                variant='outline'
+                color='red'
+              >
+                {t('teams.deleteTeam')}
+              </ActionButton>
             ) : null}
           </div>
         </div>
@@ -274,12 +281,12 @@ export function TeamForm({
         {/* Privacy Agreement - only shown in create mode */}
         {showPrivacyAgreement ? (
           <div className='rounded-lg bg-gray-50 p-6'>
-            <div className='flex items-start gap-3'>
+            <div className='flex items-center gap-3'>
               <input
                 type='checkbox'
                 name='privacyAgreement'
                 id='privacyAgreement'
-                className='mt-1 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500'
+                className='h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500'
                 aria-invalid={displayErrors.privacyAgreement ? true : undefined}
                 aria-errormessage={
                   displayErrors.privacyAgreement ? 'privacy-error' : undefined
@@ -304,21 +311,22 @@ export function TeamForm({
         <div className='flex justify-end gap-3'>
           {/* Cancel Button for Admin Variant */}
           {!isPublicVariant && onCancel ? (
-            <button
-              type='button'
+            <ActionButton
               onClick={onCancel}
-              className='inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none'
+              variant='light'
+              color='emerald'
+              className='min-w-32'
             >
               {t('common.cancel')}
-            </button>
+            </ActionButton>
           ) : null}
 
           {/* Submit Button */}
-          <button
+          <ActionButton
             type='submit'
-            className={`inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 ${
-              isPublicVariant ? 'px-6 py-3 text-base' : 'px-4 py-2 text-sm'
-            } font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none`}
+            variant='solid'
+            color='emerald'
+            className={isPublicVariant ? 'px-6 py-3 text-base' : ''}
           >
             {submitButtonText ||
               (isPublicVariant
@@ -328,7 +336,7 @@ export function TeamForm({
                 : mode === 'edit'
                   ? t('admin.teams.saveChanges')
                   : t('admin.teams.createTeam'))}
-          </button>
+          </ActionButton>
         </div>
       </Form>
     </div>

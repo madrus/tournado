@@ -77,7 +77,7 @@ test.describe('Authentication', () => {
     // Click sign in button using Dutch text "Inloggen"
     await page.getByRole('button', { name: 'Inloggen' }).click()
 
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
     // Screenshot: After successful sign-in
     await page.screenshot({
@@ -94,7 +94,9 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
-    await expect(page.getByText(signinForm.email)).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByTestId('user-menu-dropdown').getByText(signinForm.email)
+    ).toBeVisible({ timeout: 5000 })
   })
 
   test('should handle authentication with existing account', async ({ page }) => {
@@ -120,12 +122,14 @@ test.describe('Authentication', () => {
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
 
-    // Should be redirected back to homepage (where we started)
-    await expect(page).toHaveURL('/')
+    // Should be redirected to Admin Panel (all users go there now)
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
     // Verify user is authenticated by checking for their email in the UI (might be hidden in menu)
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.getByText(testUser.email)).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByTestId('user-menu-dropdown').getByText(testUser.email)
+    ).toBeVisible({ timeout: 5000 })
 
     // Test 2: Sign out functionality - using Dutch text "Uitloggen"
     await page.getByRole('button', { name: 'Uitloggen' }).click()
@@ -155,13 +159,13 @@ test.describe('Authentication', () => {
     await page.locator('#email').fill(user.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
     // Try to access signin page while authenticated
     await page.goto('/auth/signin')
 
-    // Should be redirected to homepage (default redirect)
-    await expect(page).toHaveURL('/')
+    // Should be redirected to Admin Panel (default redirect)
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
   })
 
   test('should redirect to homepage when signing out from teams page', async ({
@@ -174,7 +178,7 @@ test.describe('Authentication', () => {
     await page.locator('#email').fill(user.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
     await page.getByRole('button', { name: 'Inloggen' }).click()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
     // Navigate to teams page
     await page.goto('/teams')

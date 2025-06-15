@@ -12,6 +12,7 @@ import { usePageTitle } from '~/utils/route-utils'
 import {
   getArabicTextClass,
   getLatinContentClass,
+  getLatinTitleClass,
   useRTLDropdown,
 } from '~/utils/rtlUtils'
 
@@ -165,7 +166,7 @@ export function AppBar({
             />
             {/* Show Tournado text next to logo only on desktop */}
             <span
-              className={`hidden text-xl font-bold text-white lg:inline-block ${getLatinContentClass(currentLanguage)}`}
+              className={`hidden text-xl font-bold text-white lg:inline-block ${getLatinTitleClass(currentLanguage)}`}
             >
               Tournado
             </span>

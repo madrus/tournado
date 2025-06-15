@@ -9,7 +9,7 @@ import {
 } from '~/styles/button.styles'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getChipClasses, isRTL } from '~/utils/rtlUtils'
+import { isRTL } from '~/utils/rtlUtils'
 
 type ActionButtonProps = {
   onClick?: () => void
@@ -38,7 +38,6 @@ export function ActionButton({
 }: Readonly<ActionButtonProps>): JSX.Element {
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
-  const chipClasses = getChipClasses(i18n.language)
 
   const iconElement = icon
     ? renderIcon(icon, {
@@ -47,8 +46,9 @@ export function ActionButton({
     : null
 
   const baseClasses = cn(
-    chipClasses.container,
-    'inline-flex items-center justify-center rounded-lg font-semibold',
+    // Only use flex direction from chipClasses, not the padding
+    rtl ? 'flex-row-reverse' : 'flex-row',
+    'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
     'relative overflow-hidden transition-all duration-300 ease-out',
     'hover:scale-105 active:scale-95',
     'focus:ring-2 focus:ring-offset-2 focus:outline-none',

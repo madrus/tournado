@@ -19,6 +19,10 @@ export const getLatinTextClass = (languageCode: string): string =>
 // Helper to apply text-arabic for Arabic content in any context
 export const getArabicTextClass = (): string => 'text-arabic'
 
+// Helper to mark actual Arabic text content (when app is in Arabic mode)
+export const getArabicContentClass = (languageCode: string): string =>
+  isRTL(languageCode) ? 'arabic-content' : ''
+
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {
   const isRtl = isRTL(languageCode)

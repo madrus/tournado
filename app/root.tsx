@@ -36,10 +36,20 @@ export const meta: MetaFunction = () => [
   { name: 'description', content: `Tournament management for everyone` },
 ]
 
-export const links: LinksFunction = (): { rel: string; href: string }[] => [
+export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStylesheetUrl },
   { rel: 'stylesheet', href: layoutStylesheetUrl },
   { rel: 'stylesheet', href: safeAreasStylesheetUrl },
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous' as const,
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap',
+  },
 ]
 
 type LoaderData = {

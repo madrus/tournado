@@ -23,6 +23,10 @@ export const getArabicTextClass = (): string => 'text-arabic'
 export const getLatinContentClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'latin-content' : ''
 
+// Helper to mark Latin titles that should use Inter font without scaling (when app is in Arabic mode)
+export const getLatinTitleClass = (languageCode: string): string =>
+  isRTL(languageCode) ? 'latin-title' : ''
+
 // Helper to mark actual Arabic text content (when app is in Arabic mode)
 export const getArabicContentClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'arabic-content' : ''

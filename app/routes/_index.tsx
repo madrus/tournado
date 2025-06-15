@@ -8,7 +8,7 @@ import type { User } from '@prisma/client'
 import { ActionLinkButton } from '~/components/buttons'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
-import { getTypographyClasses } from '~/utils/rtlUtils'
+import { getLatinContentClass, getTypographyClasses } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
 
 type LoaderData = {
@@ -62,7 +62,8 @@ export default function IndexPage(): JSX.Element {
             <h1
               className={cn(
                 'app-name text-4xl sm:text-6xl',
-                typography.appName // Use specific app name styling for consistent positioning
+                typography.appName, // Use specific app name styling for consistent positioning
+                getLatinContentClass(i18n.language) // Mark app name as Latin content
               )}
             >
               {t('common.appName')}

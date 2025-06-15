@@ -9,7 +9,7 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
-import { getLatinTextClass } from '~/utils/rtlUtils'
+import { getLatinContentClass, getLatinTextClass } from '~/utils/rtlUtils'
 
 import { ActionButton } from './buttons/ActionButton'
 
@@ -167,6 +167,7 @@ export function TeamForm({
               placeholder={t('teams.form.selectTournament')}
               error={displayErrors.tournamentId}
               required
+              className={getLatinContentClass(i18n.language)}
             />
 
             {/* Club Name */}
@@ -178,7 +179,7 @@ export function TeamForm({
               readOnly={false}
               required
               error={displayErrors.clubName}
-              className='mb-4'
+              className={`mb-4 ${getLatinContentClass(i18n.language)}`}
               onBlur={event => handleFieldBlur('clubName', event.target.value)}
             />
 
@@ -196,6 +197,7 @@ export function TeamForm({
               placeholder={t('teams.form.selectCategory')}
               error={displayErrors.category}
               required
+              className={getLatinContentClass(i18n.language)}
             />
 
             {/* Team Class */}
@@ -224,7 +226,7 @@ export function TeamForm({
               readOnly={false}
               required
               error={displayErrors.teamName}
-              className='mb-4'
+              className={`mb-4 ${getLatinContentClass(i18n.language)}`}
               onBlur={event => handleFieldBlur('teamName', event.target.value)}
             />
           </div>
@@ -244,7 +246,7 @@ export function TeamForm({
               readOnly={false}
               required
               error={displayErrors.teamLeaderName}
-              className='mb-4'
+              className={`mb-4 ${getLatinContentClass(i18n.language)}`}
               onBlur={event => handleFieldBlur('teamLeaderName', event.target.value)}
             />
 
@@ -258,7 +260,7 @@ export function TeamForm({
               readOnly={false}
               required
               error={displayErrors.teamLeaderPhone}
-              className='mb-4'
+              className={`mb-4 ${getLatinContentClass(i18n.language)}`}
               onBlur={event => handleFieldBlur('teamLeaderPhone', event.target.value)}
             />
 
@@ -272,7 +274,7 @@ export function TeamForm({
               readOnly={false}
               required
               error={displayErrors.teamLeaderEmail}
-              className='mb-4'
+              className={`mb-4 ${getLatinContentClass(i18n.language)}`}
               onBlur={event => handleFieldBlur('teamLeaderEmail', event.target.value)}
             />
           </div>

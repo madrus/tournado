@@ -48,7 +48,7 @@ export function UserMenu({
   const navigation = useNavigation()
 
   // Get RTL-aware positioning using the hook
-  const { dropdownProps, menuClasses } = useRTLDropdown()
+  const { dropdownProps, menuClasses, isRTL } = useRTLDropdown()
 
   // Use translated guest name when user is not authenticated or username is empty
   const displayName = authenticated && username ? username : t('common.guest')
@@ -142,7 +142,8 @@ export function UserMenu({
                       <div
                         className={cn(
                           'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black',
-                          menuClasses.alignment
+                          // Position submenu to the left by half the main menu width (RTL mirrored)
+                          isRTL ? 'start-16' : 'end-16'
                         )}
                       >
                         {item.subMenu.map((subItem, subIndex) => (
@@ -150,7 +151,7 @@ export function UserMenu({
                             key={subIndex}
                             className={`w-full items-center px-3 py-2 text-base leading-normal ${
                               subItem.active
-                                ? 'bg-gray-100 text-emerald-700'
+                                ? 'bg-emerald-50 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
                             } focus:outline-none ${menuClasses.menuItem}`}
                             onClick={event => {

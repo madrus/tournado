@@ -63,7 +63,7 @@
 /* Global Arabic sizing - applied to body when app language is Arabic */
 .text-arabic {
   font-size: 1.25em; /* Make all text 25% larger for Arabic readability */
-  font-family: 'Amiri', system-ui, sans-serif; /* Use Amiri font for Arabic text with system-ui fallback */
+  font-family: 'Amiri', system-ui, sans-serif; /* Default to Arabic font for all content */
 }
 
 /* Fix menu item height consistency - reduce line-height in Arabic to compensate for font scaling */
@@ -77,19 +77,50 @@
   font-family: 'Inter', system-ui, sans-serif; /* Use Inter font for Latin text */
 }
 
-/* COMPREHENSIVE SOLUTION: Auto-apply Inter font to ALL elements in Arabic context */
-/* Only Arabic content should use Amiri - everything else uses Inter */
-.text-arabic *:not(.arabic-content):not([lang="ar"]) {
+/* FLIPPED APPROACH: Default to Arabic font, mark Latin exceptions */
+/* When Arabic is active, most content (translations) should use Arabic font */
+/* Only mark the few Latin exceptions (app name, user input, technical terms) */
+.text-arabic .latin-content,
+.text-arabic [lang="en"],
+.text-arabic .text-latin-content {
   font-family: 'Inter', system-ui, sans-serif !important;
-  /* Don't apply font-size here - it cascades and creates tiny text */
+  font-size: 0.8em !important; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */
 }
 
-/* Explicitly mark Arabic text content to use Amiri */
-.text-arabic .arabic-content,
-.text-arabic [lang="ar"],
-.text-arabic .text-arabic-content {
-  font-family: 'Amiri', system-ui, sans-serif !important;
-  /* Arabic content keeps the 1.25em scaling from .text-arabic parent */
+/* Reset font size to normal without Arabic scaling inheritance */
+.text-arabic .font-size-reset {
+  font-size: 1rem !important; /* Use rem to bypass em inheritance */
+}
+
+/* Language submenu specific fix */
+.language-submenu-item {
+  font-size: 1rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.text-arabic .language-submenu-item {
+  font-size: 1rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+/* Very specific selector for language submenu items */
+[data-testid="user-menu-dropdown"] button span {
+  font-size: 1rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.text-arabic [data-testid="user-menu-dropdown"] button span {
+  font-size: 1rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+/* Exception for flag icons - allow them to be larger */
+[data-testid="user-menu-dropdown"] button span.text-lg {
+  font-size: 1.15rem !important;
+}
+
+.text-arabic [data-testid="user-menu-dropdown"] button span.text-lg {
+  font-size: 1.15rem !important;
 }
 
 [dir="rtl"] input,

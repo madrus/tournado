@@ -100,14 +100,27 @@ export function UserMenu({
           avoidCollisions={dropdownProps.avoidCollisions}
         >
           <div className='px-4 py-3'>
-            <p className={`text-emerald-800 ${menuClasses.textContainer} break-words`}>
-              {authenticated ? t('common.signedInAs') : t('common.welcome')}{' '}
-              <span
-                className={`font-medium text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+            {authenticated ? (
+              <div className={`text-emerald-800 ${menuClasses.textContainer}`}>
+                <p className='break-words'>{t('common.signedInAs')}</p>
+                <p
+                  className={`font-medium break-words text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+                >
+                  {displayName}
+                </p>
+              </div>
+            ) : (
+              <p
+                className={`text-emerald-800 ${menuClasses.textContainer} break-words`}
               >
-                {displayName}
-              </span>
-            </p>
+                {t('common.welcome')}{' '}
+                <span
+                  className={`font-medium text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+                >
+                  {displayName}
+                </span>
+              </p>
+            )}
           </div>
           <div className='py-1'>
             {menuItems.map((item, index) => {
@@ -142,29 +155,46 @@ export function UserMenu({
                       <div
                         className={cn(
                           'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black',
-                          // Position submenu to the left by half the main menu width (RTL mirrored)
-                          isRTL ? 'start-16' : 'end-16'
+                          // Position submenu to the left of the language menu icon (mirrored for Arabic)
+                          isRTL ? '-end-16' : '-start-16',
+                          // Base text size
+                          'text-base'
                         )}
                       >
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            className={`w-full items-center px-3 py-2 text-base leading-normal ${
+                            className={`w-full items-center px-3 py-2 leading-normal ${
                               subItem.active
                                 ? 'bg-emerald-50 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
-                            } focus:outline-none ${menuClasses.menuItem}`}
+                            } focus:outline-none ${menuClasses.menuItem} !font-sans !text-base`}
+                            style={{
+                              fontSize: '16px',
+                              fontFamily: 'Inter, system-ui, sans-serif',
+                            }}
                             onClick={event => {
                               event.stopPropagation()
                               subItem.onClick()
                               setLanguageMenuOpen(false)
                             }}
                           >
-                            <span className={`${menuClasses.iconContainer} text-xl`}>
+                            <span
+                              className={`${menuClasses.iconContainer} text-lg`}
+                              style={{
+                                fontSize: '1.3rem',
+                                transform: 'scale(1.3)',
+                                display: 'inline-block',
+                              }}
+                            >
                               {subItem.customIcon}
                             </span>
                             <span
-                              className={`${subItem.className} ${menuClasses.textContainer}`}
+                              className={`${menuClasses.textContainer} ${subItem.className || ''}`}
+                              style={{
+                                fontSize: '16px',
+                                fontFamily: 'Inter, system-ui, sans-serif',
+                              }}
                             >
                               {subItem.label}
                             </span>

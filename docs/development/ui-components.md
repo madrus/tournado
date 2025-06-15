@@ -102,12 +102,15 @@ This ensures that:
 
 ### Language Support
 
-The context menu includes a language selector that:
+The context menu includes an integrated language switcher that:
 
-- Displays the current language name (e.g., "English", "Nederlands")
-- Provides a submenu with available languages
-- Uses flag emojis for visual identification
-- Maintains language state across the application
+- Displays "Language" as the menu item with a language icon
+- Provides a submenu with all supported languages (Dutch, English, Arabic, Turkish)
+- Uses flag emojis for visual identification of each language
+- Highlights the currently active language with a light emerald background
+- Maintains language state across the application through reactive persistence
+- Uses the `useLanguageSwitcher` hook for language changes
+- Supports proper RTL positioning for Arabic language mode
 
 ### Responsive Design
 

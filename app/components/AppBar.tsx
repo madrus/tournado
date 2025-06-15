@@ -9,7 +9,11 @@ import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { SUPPORTED_LANGUAGES } from '~/lib/lib.constants'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
-import { getArabicTextClass, useRTLDropdown } from '~/utils/rtlUtils'
+import {
+  getArabicTextClass,
+  getLatinContentClass,
+  useRTLDropdown,
+} from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
 import { UserMenu } from './UserMenu'
@@ -109,7 +113,10 @@ export function AppBar({
         customIcon: lang.flag,
         onClick: () => switchLanguage(lang.code),
         active: lang.code === currentLanguage,
-        className: lang.code === 'ar' ? getArabicTextClass() : '',
+        className:
+          lang.code === 'ar'
+            ? getArabicTextClass()
+            : getLatinContentClass(currentLanguage),
       })),
       authenticated: false,
     },
@@ -157,7 +164,9 @@ export function AppBar({
               loading={'eager'}
             />
             {/* Show Tournado text next to logo only on desktop */}
-            <span className='hidden text-xl font-bold text-white lg:inline-block'>
+            <span
+              className={`hidden text-xl font-bold text-white lg:inline-block ${getLatinContentClass(currentLanguage)}`}
+            >
               Tournado
             </span>
           </PrimaryNavLink>

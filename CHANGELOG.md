@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/madrus/tournado/compare/v0.4.1...v0.4.2) (2025-06-15)
+
+### Features
+
+- add category selection to TeamForm component ([f1aeba0](https://github.com/madrus/tournado/commit/f1aeba025cb1e4c4cb7c6cf1a6d6a30848f96356))
+- enhance i18n support with Turkish language and SSR integration ([17a909f](https://github.com/madrus/tournado/commit/17a909fcc3cbb008b4b94eead05b97cb7311ff42))
+- implement role-based routing in IndexPage and add unit tests ([1e53141](https://github.com/madrus/tournado/commit/1e53141e48c1a4a9be1245ea33603141b05e8bb8))
+- improves i18n support and UI enhancements ([7a5c874](https://github.com/madrus/tournado/commit/7a5c8745a7d23671a4fe905654e7b22c0e1690fe))
+- migrate from Cypress to Playwright for end-to-end testing ([df34fcc](https://github.com/madrus/tournado/commit/df34fccb49d3e9f288d56e2192e17b3e57cbd459))
+- update AppBar and Team components for role-based routing and improved styling ([9075b9f](https://github.com/madrus/tournado/commit/9075b9fb62ca6808b020017324f12eef099d3314))
+
 ### [0.4.1](https://github.com/madrus/tournado/compare/v0.4.0...v0.4.1) (2025-06-10)
 
 ### [0.3.17](https://github.com/madrus/tournado/compare/v0.3.16...v0.3.17) (2025-06-06)

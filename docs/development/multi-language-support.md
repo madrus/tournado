@@ -217,6 +217,30 @@ Latin content is marked in key areas:
 - Language menu options (except Arabic)
 - Footer attribution text
 
+#### Large Title Handling
+
+For large titles (like the homepage "Tournado"), special CSS rules prevent the Arabic scaling compensation from making them too small:
+
+```css
+/* App name title specific styling - override latin-content scaling for large titles */
+.text-arabic h1.app-name.latin-content {
+   font-size: 2.25rem !important; /* text-4xl equivalent in rem to bypass all em scaling */
+}
+
+@media (min-width: 640px) {
+   .text-arabic h1.app-name.latin-content {
+      font-size: 3.75rem !important; /* text-6xl equivalent in rem for sm: breakpoint */
+   }
+}
+```
+
+**Key principles for large titles:**
+
+- Use `rem` units instead of `em` to bypass parent scaling
+- Match exact Tailwind class values (text-4xl = 2.25rem, text-6xl = 3.75rem)
+- Apply responsive breakpoints to maintain Tailwind's responsive behavior
+- Use specific selectors to target only large titles, not regular text
+
 ### RTL (Right-to-Left) Support
 
 RTL support is enabled for Arabic using utility functions and Tailwind classes:

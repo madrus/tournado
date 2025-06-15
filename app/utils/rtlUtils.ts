@@ -19,6 +19,10 @@ export const getLatinTextClass = (languageCode: string): string =>
 // Helper to apply text-arabic for Arabic content in any context
 export const getArabicTextClass = (): string => 'text-arabic'
 
+// Helper to mark actual Arabic text content (when app is in Arabic mode)
+export const getArabicContentClass = (languageCode: string): string =>
+  isRTL(languageCode) ? 'arabic-content' : ''
+
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {
   const isRtl = isRTL(languageCode)
@@ -100,43 +104,6 @@ export function useRTLDropdown(): {
   return {
     dropdownProps: getDropdownProps(i18n.language),
     menuClasses: getMenuClasses(i18n.language),
-    isRTL: isRTL(i18n.language),
-  }
-}
-
-// Type for language switcher classes
-export type LanguageSwitcherClasses = {
-  container: string
-  select: string
-  arrow: string
-}
-
-// Helper for language switcher RTL layout
-export function getLanguageSwitcherClasses(
-  languageCode: string
-): LanguageSwitcherClasses {
-  const isRtl = isRTL(languageCode)
-
-  return {
-    container: isRtl ? 'text-end' : 'text-start',
-    // Padding: more space on text side, less on arrow side
-    select: isRtl
-      ? 'ps-8 pe-2' // More padding on right (text side), less on left (arrow side)
-      : 'ps-2 pe-8', // More padding on left (text side), less on right (arrow side)
-    // Arrow positioning
-    arrow: isRtl ? 'start-0 ps-2' : 'end-0 pe-2',
-  }
-}
-
-// React hook for RTL language switcher support
-export function useRTLLanguageSwitcher(): {
-  classes: LanguageSwitcherClasses
-  isRTL: boolean
-} {
-  const { i18n } = useTranslation()
-
-  return {
-    classes: getLanguageSwitcherClasses(i18n.language),
     isRTL: isRTL(i18n.language),
   }
 }

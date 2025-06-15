@@ -80,11 +80,17 @@
 /* FLIPPED APPROACH: Default to Arabic font, mark Latin exceptions */
 /* When Arabic is active, most content (translations) should use Arabic font */
 /* Only mark the few Latin exceptions (app name, user input, technical terms) */
-.text-arabic .latin-content,
-.text-arabic [lang="en"],
-.text-arabic .text-latin-content {
+
+/* Latin content - for regular text that needs scaling compensation */
+.text-arabic .latin-content {
   font-family: 'Inter', system-ui, sans-serif !important;
   font-size: 0.8em !important; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */
+}
+
+/* Latin titles - for headings/titles using Tailwind rem-based classes */
+.text-arabic .latin-title {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  /* No font-size needed - Tailwind rem classes bypass parent em scaling */
 }
 
 /* Reset font size to normal without Arabic scaling inheritance */
@@ -133,15 +139,4 @@
 [dir="rtl"] .ltr-override {
   direction: ltr;
   text-align: left;
-}
-
-/* App name title specific styling - override latin-content scaling for large titles */
-.text-arabic h1.app-name.latin-content {
-  font-size: 2.25rem !important; /* text-4xl equivalent in rem to bypass all em scaling */
-}
-
-@media (min-width: 640px) {
-  .text-arabic h1.app-name.latin-content {
-    font-size: 3.75rem !important; /* text-6xl equivalent in rem for sm: breakpoint */
-  }
 }

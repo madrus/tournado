@@ -27,6 +27,7 @@
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "react-router-serve ./build/server/index.js",
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",
+    "pretest": "prisma generate",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

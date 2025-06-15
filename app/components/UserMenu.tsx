@@ -26,6 +26,14 @@ export type MenuItemType = {
   }>
 }
 
+type UserMenuProps = {
+  authenticated: boolean
+  username?: string
+  menuItems: Array<MenuItemType>
+  isOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
 // Unified user menu dropdown component using Radix UI for both mobile and desktop
 export function UserMenu({
   authenticated,
@@ -33,13 +41,7 @@ export function UserMenu({
   menuItems,
   isOpen,
   onOpenChange,
-}: {
-  authenticated: boolean
-  username?: string
-  menuItems: Array<MenuItemType>
-  isOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-}): JSX.Element {
+}: Readonly<UserMenuProps>): JSX.Element {
   const { t, i18n } = useTranslation()
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
@@ -146,7 +148,7 @@ export function UserMenu({
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            className={`w-full items-center px-3 py-1 text-sm leading-normal ${
+                            className={`w-full items-center px-3 py-2 text-base leading-normal ${
                               subItem.active
                                 ? 'bg-gray-100 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
@@ -157,7 +159,7 @@ export function UserMenu({
                               setLanguageMenuOpen(false)
                             }}
                           >
-                            <span className={menuClasses.iconContainer}>
+                            <span className={`${menuClasses.iconContainer} text-xl`}>
                               {subItem.customIcon}
                             </span>
                             <span

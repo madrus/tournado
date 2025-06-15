@@ -104,43 +104,6 @@ export function useRTLDropdown(): {
   }
 }
 
-// Type for language switcher classes
-export type LanguageSwitcherClasses = {
-  container: string
-  select: string
-  arrow: string
-}
-
-// Helper for language switcher RTL layout
-export function getLanguageSwitcherClasses(
-  languageCode: string
-): LanguageSwitcherClasses {
-  const isRtl = isRTL(languageCode)
-
-  return {
-    container: isRtl ? 'text-end' : 'text-start',
-    // Padding: more space on text side, less on arrow side
-    select: isRtl
-      ? 'ps-8 pe-2' // More padding on right (text side), less on left (arrow side)
-      : 'ps-2 pe-8', // More padding on left (text side), less on right (arrow side)
-    // Arrow positioning
-    arrow: isRtl ? 'start-0 ps-2' : 'end-0 pe-2',
-  }
-}
-
-// React hook for RTL language switcher support
-export function useRTLLanguageSwitcher(): {
-  classes: LanguageSwitcherClasses
-  isRTL: boolean
-} {
-  const { i18n } = useTranslation()
-
-  return {
-    classes: getLanguageSwitcherClasses(i18n.language),
-    isRTL: isRTL(i18n.language),
-  }
-}
-
 // Type for typography classes
 export type TypographyClasses = {
   title: string

@@ -5,6 +5,8 @@ import { useFetcher, useLocation } from 'react-router'
 import type { User } from '@prisma/client'
 
 import logo from '~/assets/logo-192x192.png'
+import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
+import { SUPPORTED_LANGUAGES } from '~/lib/lib.constants'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import { getArabicTextClass, useRTLDropdown } from '~/utils/rtlUtils'
@@ -23,7 +25,7 @@ export function AppBar({
   username?: string
   user?: User | null
 }): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const signoutFetcher = useFetcher()
@@ -53,18 +55,8 @@ export function AppBar({
     signoutFetcher.submit({}, { method: 'post', action: '/auth/signout' })
   }, [signoutFetcher, setMenuOpen])
 
-  // Current language logic
-  const languages = [
-    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'ar', name: 'العربية', flag: '🇲🇦' },
-    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
-  ]
-
-  const currentLanguage =
-    languages.find(lang => lang.code === i18n.language) ||
-    languages.find(lang => lang.code === i18n.options.fallbackLng) ||
-    languages[0]
+  // Language switching logic
+  const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
     {
@@ -112,11 +104,11 @@ export function AppBar({
     {
       label: t('common.language'),
       icon: 'language' as IconName,
-      subMenu: languages.map(lang => ({
+      subMenu: SUPPORTED_LANGUAGES.map(lang => ({
         label: lang.name,
         customIcon: lang.flag,
-        onClick: () => i18n.changeLanguage(lang.code),
-        active: lang.code === currentLanguage.code,
+        onClick: () => switchLanguage(lang.code),
+        active: lang.code === currentLanguage,
         className: lang.code === 'ar' ? getArabicTextClass() : '',
       })),
       authenticated: false,

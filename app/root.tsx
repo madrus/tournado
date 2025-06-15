@@ -84,12 +84,14 @@ const Document = ({ children, language }: DocumentProps) => {
     getTypographyClass(currentLanguage)
   )
 
-  // Update direction, typography, and cookie when language changes
+  // Update direction, typography, cookie, and localStorage when language changes
   useEffect(() => {
     setDirection(getDirection(currentLanguage))
     setTypographyClass(getTypographyClass(currentLanguage))
     if (typeof window !== 'undefined' && i18nInstance.language) {
+      // Write both cookie and localStorage for persistence
       document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
+      localStorage.setItem('lang', i18nInstance.language)
     }
   }, [currentLanguage, i18nInstance.language])
 

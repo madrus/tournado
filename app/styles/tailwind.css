@@ -11,7 +11,7 @@
   --color-foreground-heading: #065f46; /* emerald-800 - for headings */
 
   /* Font family configuration */
-  --font-family-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-default: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-sans: var(--font-family-default);
 }
 
@@ -62,17 +62,34 @@
 /* Script-aware typography system */
 /* Global Arabic sizing - applied to body when app language is Arabic */
 .text-arabic {
-  font-size: 1.2em; /* Make all text 20% larger for Arabic readability */
+  font-size: 1.25em; /* Make all text 25% larger for Arabic readability */
+  font-family: 'Amiri', system-ui, sans-serif; /* Use Amiri font for Arabic text with system-ui fallback */
 }
 
 /* Fix menu item height consistency - reduce line-height in Arabic to compensate for font scaling */
 .text-arabic [data-radix-collection-item] {
-  line-height: 1.25; /* Reduce line-height by 20% to compensate for 20% font size increase */
+  line-height: 1.2; /* Reduce line-height by 25% to compensate for 25% font size increase */
 }
 
 /* Latin text - use rem to bypass inherited em scaling from body */
 .text-latin {
-  font-size: 0.875em; /* Same as text-sm in Tailwind (14px) - fixed size */
+  font-size: 0.8em; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */
+  font-family: 'Inter', system-ui, sans-serif; /* Use Inter font for Latin text */
+}
+
+/* COMPREHENSIVE SOLUTION: Auto-apply Inter font to ALL elements in Arabic context */
+/* Only Arabic content should use Amiri - everything else uses Inter */
+.text-arabic *:not(.arabic-content):not([lang="ar"]) {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  /* Don't apply font-size here - it cascades and creates tiny text */
+}
+
+/* Explicitly mark Arabic text content to use Amiri */
+.text-arabic .arabic-content,
+.text-arabic [lang="ar"],
+.text-arabic .text-arabic-content {
+  font-family: 'Amiri', system-ui, sans-serif !important;
+  /* Arabic content keeps the 1.25em scaling from .text-arabic parent */
 }
 
 [dir="rtl"] input,

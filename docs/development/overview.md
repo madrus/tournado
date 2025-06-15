@@ -17,6 +17,7 @@ app/
 ## Key Features
 
 - **Authentication**: Email/password authentication with cookie-based sessions
+- **State Management**: Zustand stores with SSR-safe hydration and persistence
 - **Database**: SQLite with Prisma ORM
 - **UI Components**: Role-based context menus and responsive navigation
 - **Styling**: Tailwind CSS for modern UI
@@ -58,6 +59,17 @@ The application implements a centralized type system with strong typing patterns
 - **Database Compatibility**: Seamless integration between database strings and strict types
 
 For detailed type system information, see [Type System Documentation](type-system.md).
+
+### State Management
+
+The application uses a hybrid state management approach with Zustand for client state:
+
+- **Auth Store**: Manages authentication state with sessionStorage persistence
+- **Language Persistence**: Reactive cookie and localStorage system for SSR compatibility
+- **Hydration Safety**: Component-level hydration to avoid side effects during module loading
+- **SSR Compatibility**: Proper server-side storage mocking and hydration skipping
+
+For detailed state management information, see [State Management Documentation](state-management.md).
 
 ## Development Workflow
 

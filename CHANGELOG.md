@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [Unreleased]
+
+### Features
+
+- **i18n**: refactor language switching to mobile-first approach
+   - Remove standalone LanguageSwitcher component
+   - Integrate language switching into UserMenu as submenu
+   - Add useLanguageSwitcher hook for clean separation of concerns
+   - Implement comprehensive font management system (Amiri for Arabic, Inter for Latin)
+   - Add reactive language persistence (localStorage + cookies)
+   - Enhance Arabic RTL support with proper font scaling and positioning
+   - Mark Latin content with minority marking strategy for better maintainability
+
 ### [0.4.2](https://github.com/madrus/tournado/compare/v0.4.1...v0.4.2) (2025-06-15)
 
 ### Features

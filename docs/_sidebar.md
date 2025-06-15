@@ -4,6 +4,8 @@
 - Development
    - [Overview](development/overview.md)
    - [Routing](development/routing.md)
+   - [State Management](development/state-management.md)
+   - [Multi-Language Support](development/multi-language-support.md)
    - [UI Components](development/ui-components.md)
    - [Type System](development/type-system.md)
    - [Database](development/database.md)

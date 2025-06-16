@@ -1,5 +1,4 @@
 // Division constants
-import { Division } from '@prisma/client'
 
 export const PWA_UPDATE_INTERVAL = 60 * 60 * 1000
 
@@ -15,7 +14,7 @@ export const SUPPORTED_LANGUAGES = [
 
 /**
  * Division display labels for internationalization
- * Currently supports: English (en), Dutch (nl), Arabic (ar)
+ * Currently supports: English (en), Dutch (nl), Arabic (ar), Turkish (tr)
  */
 export const DIVISIONS = {
   PREMIER_DIVISION: {
@@ -24,6 +23,7 @@ export const DIVISIONS = {
       en: 'Premier Division',
       nl: 'Hoofdklasse',
       ar: 'الدرجة الأولى',
+      tr: 'Premier Lig',
     },
     order: 1,
   },
@@ -33,6 +33,7 @@ export const DIVISIONS = {
       en: 'First Division',
       nl: 'Eerste klasse',
       ar: 'الدرجة الثانية',
+      tr: 'Birinci Lig',
     },
     order: 2,
   },
@@ -42,6 +43,7 @@ export const DIVISIONS = {
       en: 'Second Division',
       nl: 'Tweede klasse',
       ar: 'الدرجة الثالثة',
+      tr: 'İkinci Lig',
     },
     order: 3,
   },
@@ -51,6 +53,7 @@ export const DIVISIONS = {
       en: 'Third Division',
       nl: 'Derde klasse',
       ar: 'الدرجة الرابعة',
+      tr: 'Üçüncü Lig',
     },
     order: 4,
   },
@@ -60,6 +63,7 @@ export const DIVISIONS = {
       en: 'Fourth Division',
       nl: 'Vierde klasse',
       ar: 'الدرجة الخامسة',
+      tr: 'Dördüncü Lig',
     },
     order: 5,
   },
@@ -69,18 +73,8 @@ export const DIVISIONS = {
       en: 'Fifth Division',
       nl: 'Vijfde klasse',
       ar: 'الدرجة السادسة',
+      tr: 'Beşinci Lig',
     },
     order: 6,
   },
 } as const
-
-export const divisionLabels: Record<Division, Record<string, string>> = Object.keys(
-  DIVISIONS
-).reduce(
-  (acc, key) => {
-    const division = key as keyof typeof DIVISIONS
-    acc[key as Division] = DIVISIONS[division].labels
-    return acc
-  },
-  {} as Record<Division, Record<string, string>>
-)

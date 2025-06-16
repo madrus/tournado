@@ -135,6 +135,9 @@ This approach ensures:
 - **Single responsibility**: Hook only handles i18n changes
 - **Automatic persistence**: Root component reactively handles localStorage and cookies
 - **Server-side detection**: Cookies enable proper SSR language detection
+- **Hydration safety**: No side effects during module loading
+
+For more details on the persistence architecture, see [State Management Documentation](state-management.md).
 
 #### UserMenu Integration
 

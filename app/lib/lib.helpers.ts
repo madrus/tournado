@@ -15,7 +15,7 @@
  */
 import { Division } from '@prisma/client'
 
-import { divisionLabels, DIVISIONS } from './lib.constants'
+import { DIVISIONS } from './lib.constants'
 import type {
   DivisionObject,
   DivisionValue,
@@ -27,7 +27,7 @@ import type {
 /**
  * Gets the localized label for a division
  * @param division - The division enum value
- * @param language - The current language code (e.g., 'en', 'nl', 'fr')
+ * @param language - The current language code (e.g., 'en', 'nl', 'ar', 'tr')
  * @param fallbackLanguage - Fallback language if the requested language is not available
  * @returns The localized division label
  */
@@ -36,16 +36,22 @@ export const getDivisionLabel = (
   language = 'en',
   fallbackLanguage = 'en'
 ): string => {
-  const labels = divisionLabels[division]
+  const divisionObject = DIVISIONS[division as keyof typeof DIVISIONS]
+
+  if (!divisionObject) {
+    return division // Return the division key if not found
+  }
+
+  const labels = divisionObject.labels
 
   // Return the requested language if available
-  if (labels[language]) {
-    return labels[language]
+  if (labels[language as keyof typeof labels]) {
+    return labels[language as keyof typeof labels]
   }
 
   // Fallback to the fallback language
-  if (labels[fallbackLanguage]) {
-    return labels[fallbackLanguage]
+  if (labels[fallbackLanguage as keyof typeof labels]) {
+    return labels[fallbackLanguage as keyof typeof labels]
   }
 
   // Last resort: return the division key itself

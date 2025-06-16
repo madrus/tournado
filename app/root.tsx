@@ -22,7 +22,7 @@ import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import BottomNavigation from './components/mobileNavigation/BottomNavigation'
 import { PWAElements } from './components/PWAElements'
 import { initI18n } from './i18n/config'
-import { useAuthStore } from './stores/useAuthStore'
+import { useAuthStore, useAuthStoreHydration } from './stores/useAuthStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
@@ -141,10 +141,13 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   const { authenticated, username, user, ENV, language } = loaderData
   const { setAuth } = useAuthStore()
 
+  // Handle auth store rehydration
+  useAuthStoreHydration()
+
   // Update auth store only on client-side after hydration
   useEffect(() => {
     setAuth(authenticated, username)
-  }, [authenticated, username])
+  }, [authenticated, username, setAuth])
 
   // Set i18n language before paint (minimize hydration mismatch)
   useLayoutEffect(() => {
@@ -194,6 +197,9 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 export function ErrorBoundary(): JSX.Element {
   const { authenticated, username } = useAuthStore()
+
+  // Handle auth store rehydration
+  useAuthStoreHydration()
 
   // Use Dutch for error boundary fallback
   const i18n = initI18n('nl')

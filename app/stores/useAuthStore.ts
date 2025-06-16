@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
@@ -56,7 +58,14 @@ export const useAuthStore = create<StoreState & Actions>()(
   )
 )
 
-// Hydrate the store on the client side
-if (isBrowser) {
-  useAuthStore.persist.rehydrate()
+/**
+ * Hook to handle auth store rehydration in components
+ * Use this in components that need the auth store to be properly hydrated
+ */
+export const useAuthStoreHydration = (): void => {
+  useEffect(() => {
+    if (isBrowser) {
+      useAuthStore.persist.rehydrate()
+    }
+  }, [])
 }

@@ -194,7 +194,7 @@ export function TeamForm({
                   placeholder={t('teams.form.selectTournament')}
                   error={displayErrors.tournamentId}
                   required
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                 />
                 {selectedTournamentId ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
@@ -234,7 +234,7 @@ export function TeamForm({
                   required
                   disabled={!selectedTournamentId}
                   selectRef={teamClassRef}
-                  className={`bg-white ${!selectedTournamentId ? 'opacity-50' : ''}`}
+                  className={!selectedTournamentId ? 'opacity-50' : ''}
                 />
                 {divisionValue ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
@@ -269,7 +269,7 @@ export function TeamForm({
                   error={displayErrors.category}
                   required
                   disabled={!divisionValue}
-                  className={`${getLatinContentClass(i18n.language)} bg-white ${!divisionValue ? 'opacity-50' : ''}`}
+                  className={`${getLatinContentClass(i18n.language)} ${!divisionValue ? 'opacity-50' : ''}`}
                 />
                 {categoryValue ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
@@ -336,7 +336,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.clubName}
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                   onBlur={event => handleFieldBlur('clubName', event.target.value)}
                 />
 
@@ -350,7 +350,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamName}
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                   onBlur={event => handleFieldBlur('teamName', event.target.value)}
                 />
               </div>
@@ -377,7 +377,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderName}
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderName', event.target.value)
                   }
@@ -393,7 +393,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderPhone}
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderPhone', event.target.value)
                   }
@@ -409,7 +409,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderEmail}
-                  className={`${getLatinContentClass(i18n.language)} bg-white`}
+                  className={getLatinContentClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderEmail', event.target.value)
                   }

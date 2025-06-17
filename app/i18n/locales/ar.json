@@ -133,7 +133,7 @@
       "clubName": "اسم النادي:",
       "createAnotherTeam": "إنشاء فريق آخر",
       "createTeam": "حفظ",
-      "division": "فئة الفريق:",
+      "division": "الفئة:",
       "errors": {
         "clubNameRequired": "اسم النادي مطلوب",
         "clubNameTooLong": "يجب أن يكون اسم النادي أقل من 100 حرف",
@@ -168,7 +168,13 @@
       "teamName": "اسم الفريق:",
       "tournament": "البطولة:",
       "category": "الفئة:",
-      "selectCategory": "اختر فئة"
+      "selectCategory": "اختر فئة",
+      "teamRegistration": "تسجيل الفريق",
+      "fillOutForm": "املأ النموذج أدناه لتسجيل فريقك",
+      "selectTournamentDetails": "اختر تفاصيل البطولة",
+      "completeAllThreeFields": "يرجى إكمال جميع الحقول الثلاثة أدناه للمتابعة",
+      "enterTeamDetails": "أدخل معلومات فريقك",
+      "enterContactDetails": "أدخل تفاصيل الاتصال لقائد الفريق"
     },
     "getStarted": {
       "description": "مستعد للانضمام إلى بطولة؟ انقر على زر 'إضافة فريق' أعلاه لتسجيل فريقك وابدأ المنافسة!",

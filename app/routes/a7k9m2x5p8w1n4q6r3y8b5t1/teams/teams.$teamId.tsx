@@ -160,7 +160,7 @@ export async function action({ params, request }: ActionArgs): Promise<Response>
     }
 
     if (!division || division.length === 0) {
-      errors.division = 'teamClassRequired'
+      errors.division = 'divisionRequired'
     }
 
     // Validate division is a valid enum value

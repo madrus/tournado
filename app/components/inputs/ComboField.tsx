@@ -19,6 +19,7 @@ export type ComboFieldProps = {
   placeholder?: string
   error?: string
   required?: boolean
+  disabled?: boolean
   selectRef?: Ref<HTMLSelectElement>
   className?: string
 }
@@ -35,6 +36,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
       placeholder,
       error,
       required = false,
+      disabled = false,
       selectRef,
       className = '',
     },
@@ -57,9 +59,11 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               name={name}
               value={safeValue}
               required={required}
+              disabled={disabled}
               className={cn(
                 'h-12 w-full appearance-none rounded-md border-2 border-emerald-700/30 bg-white px-0 ps-3 pe-6 text-lg leading-6',
-                safeValue === '' ? 'text-foreground-lighter' : ''
+                safeValue === '' ? 'text-foreground-lighter' : '',
+                disabled ? 'cursor-not-allowed opacity-50' : ''
               )}
               aria-invalid={!!error || undefined}
               aria-errormessage={error ? `${name}-error` : undefined}

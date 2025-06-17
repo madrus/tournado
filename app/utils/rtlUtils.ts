@@ -1,6 +1,4 @@
 // RTL (Right-to-Left) language utilities
-import { useTranslation } from 'react-i18next'
-
 // Check if a language is RTL (only Arabic for the moment)
 export const isRTL = (languageCode: string): boolean => ['ar'].includes(languageCode)
 
@@ -98,21 +96,6 @@ export function getMenuClasses(languageCode: string): MenuClasses {
       : 'flex w-8 items-center justify-start ps-0 pe-2 text-start', // Icon on left in LTR
     // Text container alignment
     textContainer: isRtl ? 'text-right' : 'text-left',
-  }
-}
-
-// React hook for RTL dropdown support
-export function useRTLDropdown(): {
-  dropdownProps: DropdownProps
-  menuClasses: MenuClasses
-  isRTL: boolean
-} {
-  const { i18n } = useTranslation()
-
-  return {
-    dropdownProps: getDropdownProps(i18n.language),
-    menuClasses: getMenuClasses(i18n.language),
-    isRTL: isRTL(i18n.language),
   }
 }
 

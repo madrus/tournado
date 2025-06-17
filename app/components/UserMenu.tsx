@@ -4,9 +4,10 @@ import { Link, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
+import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, useRTLDropdown } from '~/utils/rtlUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 export type MenuItemType = {
   label: string

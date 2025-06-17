@@ -133,11 +133,11 @@
       "clubName": "Kulüp adı:",
       "createAnotherTeam": "Başka bir takım kaydet",
       "createTeam": "Kaydet",
-      "division": "Takım sınıfı:",
+      "division": "Bölüm:",
       "errors": {
         "clubNameRequired": "Kulüp adı zorunludur",
         "clubNameTooLong": "Kulüp adı 100 karakterden kısa olmalıdır",
-        "divisionRequired": "Takım sınıfı zorunludur",
+        "divisionRequired": "Bölüm zorunludur",
         "categoryRequired": "Kategori zorunludur",
         "emailInvalid": "Geçerli bir e-posta adresi girin",
         "emailRequired": "E-posta adresi zorunludur",
@@ -168,7 +168,13 @@
       "teamName": "Takım adı:",
       "tournament": "Turnuva:",
       "category": "Kategori:",
-      "selectCategory": "Bir kategori seçin"
+      "selectCategory": "Bir kategori seçin",
+      "teamRegistration": "Takım kaydı",
+      "fillOutForm": "Takımınızı kaydetmek için aşağıdaki formu doldurun",
+      "selectTournamentDetails": "Turnuva detaylarını seçin",
+      "completeAllThreeFields": "Devam etmek için aşağıdaki üç alanı da doldurun",
+      "enterTeamDetails": "Takım bilgilerinizi girin",
+      "enterContactDetails": "Takım lideri için iletişim bilgilerini girin"
     },
     "getStarted": {
       "description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Takım ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",

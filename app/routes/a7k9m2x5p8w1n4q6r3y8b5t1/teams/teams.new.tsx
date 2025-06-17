@@ -61,6 +61,7 @@ export const loader = async ({
       startDate: true,
       endDate: true,
       divisions: true,
+      categories: true,
     },
     orderBy: { startDate: 'asc' },
   })
@@ -71,6 +72,7 @@ export const loader = async ({
       startDate: t.startDate.toISOString(),
       endDate: t.endDate?.toISOString() || null,
       divisions: Array.isArray(t.divisions) ? (t.divisions as Division[]) : [],
+      categories: Array.isArray(t.categories) ? (t.categories as string[]) : [],
     })),
   }
 }
@@ -107,7 +109,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   if (!division || division.length === 0) {
-    errors.division = 'teamClassRequired'
+    errors.division = 'divisionRequired'
   }
 
   // Validate division is a valid enum value

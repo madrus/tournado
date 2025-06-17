@@ -167,7 +167,13 @@
       "teamName": "Teamnaam:",
       "tournament": "Toernooi:",
       "category": "Categorie:",
-      "selectCategory": "Selecteer een categorie"
+      "selectCategory": "Selecteer een categorie",
+      "teamRegistration": "Team registratie",
+      "fillOutForm": "Vul het formulier hieronder in om je team te registreren",
+      "selectTournamentDetails": "Selecteer toernooi details",
+      "completeAllThreeFields": "Vul alle drie de velden hieronder in om door te gaan",
+      "enterTeamDetails": "Voer je team informatie in",
+      "enterContactDetails": "Voer contactgegevens in voor de teamleider"
     },
     "getStarted": {
       "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",

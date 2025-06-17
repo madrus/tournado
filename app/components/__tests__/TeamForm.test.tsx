@@ -35,6 +35,7 @@ const mockTournaments: TournamentData[] = [
     startDate: '2024-01-15',
     endDate: '2024-01-16',
     divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
+    categories: ['JO8', 'JO9', 'JO10'],
   },
   {
     id: 'tournament-2',
@@ -43,6 +44,7 @@ const mockTournaments: TournamentData[] = [
     startDate: '2024-02-15',
     endDate: null,
     divisions: ['PREMIER_DIVISION', 'THIRD_DIVISION'],
+    categories: ['JO10', 'JO11', 'JO12'],
   },
 ]
 
@@ -568,7 +570,7 @@ describe('TeamForm Category Field', () => {
     renderTeamForm(
       'create',
       'public',
-      { tournamentId: 'tournament-1' },
+      { tournamentId: 'tournament-1', division: 'FIRST_DIVISION' },
       undefined,
       undefined,
       undefined,
@@ -599,7 +601,7 @@ describe('TeamForm Category Field', () => {
     renderTeamForm(
       'create',
       'public',
-      { tournamentId: 'tournament-1' },
+      { tournamentId: 'tournament-1', division: 'FIRST_DIVISION' },
       undefined,
       undefined,
       undefined,
@@ -614,7 +616,7 @@ describe('TeamForm Category Field', () => {
     renderTeamForm(
       'create',
       'public',
-      { tournamentId: 'tournament-1', category: '' },
+      { tournamentId: 'tournament-1', division: 'FIRST_DIVISION', category: '' },
       undefined,
       undefined,
       undefined,
@@ -634,7 +636,7 @@ describe('TeamForm Category Field', () => {
     renderTeamForm(
       'create',
       'public',
-      { tournamentId: 'tournament-1' },
+      { tournamentId: 'tournament-1', division: 'FIRST_DIVISION' },
       undefined,
       undefined,
       undefined,

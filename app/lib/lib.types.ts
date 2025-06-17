@@ -125,7 +125,7 @@ export type TournamentData = {
   startDate: string
   endDate: string | null
   divisions: string[]
-  categories?: string[] // added for tournament categories
+  categories: string[] // added for tournament categories
 }
 
 /**

@@ -64,7 +64,7 @@ export function AppBar({
   const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
-    // Tournaments - only show for admin users
+    // Tournaments - only show for admin users, first item
     ...(isAdmin
       ? [
           {
@@ -88,7 +88,7 @@ export function AppBar({
       divider: true,
       authenticated: false,
     },
-    // Admin Panel - only show for admin users, right after Teams
+    // Admin Panel - only show for admin users, after Teams
     ...(isAdmin
       ? [
           {

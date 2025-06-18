@@ -59,76 +59,26 @@
   flex-direction: row-reverse;
 }
 
-/* Script-aware typography system */
-/* Global Arabic sizing - applied to body when app language is Arabic */
-.text-arabic {
-  font-size: 1.25em; /* Make all text 25% larger for Arabic readability */
-  font-family: 'Amiri', system-ui, sans-serif; /* Default to Arabic font for all content */
+/* Script-aware typography system - clean and simple */
+
+/* Arabic text - for Arabic content in any context */
+.arabic-text {
+  font-family: 'Amiri', system-ui, serif !important;
+  font-size: 1.25em !important;
 }
 
-/* Fix menu item height consistency - reduce line-height in Arabic to compensate for font scaling */
-.text-arabic [data-radix-collection-item] {
-  line-height: 1.2; /* Reduce line-height by 25% to compensate for 25% font size increase */
-}
-
-/* Latin text - use rem to bypass inherited em scaling from body */
-.text-latin {
-  font-size: 0.8em; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */
-  font-family: 'Inter', system-ui, sans-serif; /* Use Inter font for Latin text */
-}
-
-/* FLIPPED APPROACH: Default to Arabic font, mark Latin exceptions */
-/* When Arabic is active, most content (translations) should use Arabic font */
-/* Only mark the few Latin exceptions (app name, user input, technical terms) */
-
-/* Latin content - for regular latin text with arabic that needs scaling compensation */
-.text-arabic .latin-content {
+/* Latin text - for Latin content in Arabic context (compensated size) */
+.latin-text {
   font-family: 'Inter', system-ui, sans-serif !important;
-  font-size: 0.8em !important; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */
+  font-size: 0.8em !important;
 }
 
-/* Latin titles - for headings/titles using Tailwind rem-based classes */
-.text-arabic .latin-title {
-  font-family: 'Inter', system-ui, sans-serif !important;
-  /* No font-size needed - Tailwind rem classes bypass parent em scaling */
-}
-
-/* Reset font size to normal without Arabic scaling inheritance */
-.text-arabic .font-size-reset {
-  font-size: 1rem !important; /* Use rem to bypass em inheritance */
-}
-
-/* Language submenu specific fix */
-.language-submenu-item {
-  font-size: 1rem !important;
+/* Latin titles - for Latin headings in Arabic context */
+.latin-title {
   font-family: 'Inter', system-ui, sans-serif !important;
 }
 
-.text-arabic .language-submenu-item {
-  font-size: 1rem !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-}
-
-/* Very specific selector for language submenu items */
-[data-testid="user-menu-dropdown"] button span {
-  font-size: 1rem !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-}
-
-.text-arabic [data-testid="user-menu-dropdown"] button span {
-  font-size: 1rem !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-}
-
-/* Exception for flag icons - allow them to be larger */
-[data-testid="user-menu-dropdown"] button span.text-lg {
-  font-size: 1.15rem !important;
-}
-
-.text-arabic [data-testid="user-menu-dropdown"] button span.text-lg {
-  font-size: 1.15rem !important;
-}
-
+/* RTL form inputs */
 [dir="rtl"] input,
 [dir="rtl"] textarea,
 [dir="rtl"] select {

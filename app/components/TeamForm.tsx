@@ -10,12 +10,7 @@ import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
-import {
-  getLatinContentClass,
-  getLatinTextClass,
-  getLatinTitleClass,
-  isRTL,
-} from '~/utils/rtlUtils'
+import { getLatinTextClass, getLatinTitleClass, isRTL } from '~/utils/rtlUtils'
 
 import { ActionButton } from './buttons/ActionButton'
 import { CheckCircleIcon, CheckIcon } from './icons'
@@ -194,7 +189,7 @@ export function TeamForm({
                   placeholder={t('teams.form.selectTournament')}
                   error={displayErrors.tournamentId}
                   required
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                 />
                 {selectedTournamentId ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
@@ -249,7 +244,7 @@ export function TeamForm({
                   error={displayErrors.category}
                   required
                   disabled={!divisionValue}
-                  className={`${getLatinContentClass(i18n.language)} ${!divisionValue ? 'opacity-50' : ''}`}
+                  className={`${getLatinTextClass(i18n.language)} ${!divisionValue ? 'opacity-50' : ''}`}
                 />
                 {categoryValue ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
@@ -291,7 +286,7 @@ export function TeamForm({
                 <h3
                   className={cn(
                     'mb-2 text-xl font-bold text-blue-800',
-                    getLatinTextClass(i18n.language)
+                    getLatinTitleClass(i18n.language)
                   )}
                 >
                   {t('teams.form.teamInfo')}
@@ -311,7 +306,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.clubName}
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                   onBlur={event => handleFieldBlur('clubName', event.target.value)}
                 />
 
@@ -325,7 +320,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamName}
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                   onBlur={event => handleFieldBlur('teamName', event.target.value)}
                 />
               </div>
@@ -337,7 +332,7 @@ export function TeamForm({
                 <h3
                   className={cn(
                     'mb-2 text-xl font-bold text-purple-800',
-                    getLatinTextClass(i18n.language)
+                    getLatinTitleClass(i18n.language)
                   )}
                 >
                   {t('teams.form.teamLeaderInfo')}
@@ -357,7 +352,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderName}
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderName', event.target.value)
                   }
@@ -373,7 +368,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderPhone}
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderPhone', event.target.value)
                   }
@@ -389,7 +384,7 @@ export function TeamForm({
                   readOnly={false}
                   required
                   error={displayErrors.teamLeaderEmail}
-                  className={getLatinContentClass(i18n.language)}
+                  className={getLatinTextClass(i18n.language)}
                   onBlur={event =>
                     handleFieldBlur('teamLeaderEmail', event.target.value)
                   }

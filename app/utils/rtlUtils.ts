@@ -8,26 +8,18 @@ export const getDirection = (languageCode: string): 'ltr' | 'rtl' =>
 
 // Get typography class for body based on language
 export const getTypographyClass = (languageCode: string): string =>
-  isRTL(languageCode) ? 'text-arabic' : ''
+  isRTL(languageCode) ? 'arabic-text' : ''
 
-// Helper to apply text-latin in Arabic context for Latin content
+// Helper to apply arabic-text for Arabic content in any context
+export const getArabicTextClass = (): string => 'arabic-text'
+
+// Helper to apply latin-text in Arabic context for Latin content
 export const getLatinTextClass = (languageCode: string): string =>
-  isRTL(languageCode) ? 'text-latin' : ''
-
-// Helper to apply text-arabic for Arabic content in any context
-export const getArabicTextClass = (): string => 'text-arabic'
-
-// Helper to mark Latin content that should use Inter font (when app is in Arabic mode)
-export const getLatinContentClass = (languageCode: string): string =>
-  isRTL(languageCode) ? 'latin-content' : ''
+  isRTL(languageCode) ? 'latin-text' : ''
 
 // Helper to mark Latin titles that should use Inter font without scaling (when app is in Arabic mode)
 export const getLatinTitleClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'latin-title' : ''
-
-// Helper to mark actual Arabic text content (when app is in Arabic mode)
-export const getArabicContentClass = (languageCode: string): string =>
-  isRTL(languageCode) ? 'arabic-content' : ''
 
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {

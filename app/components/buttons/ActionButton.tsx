@@ -52,6 +52,7 @@ export function ActionButton({
     'relative overflow-hidden transition-all duration-300 ease-out',
     'hover:scale-103 active:scale-95',
     'focus:ring-2 focus:ring-offset-2 focus:outline-none',
+    'whitespace-nowrap',
     size === 'sm' ? 'py-2 px-3 text-sm' : 'py-2.5 px-4 text-sm',
     disabled && 'opacity-50 cursor-not-allowed hover:scale-100 active:scale-100'
   )

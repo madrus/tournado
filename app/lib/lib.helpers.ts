@@ -88,7 +88,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
 
 export const getDivisionLabelByValue = (
   value: DivisionValue,
-  locale: 'en' | 'nl'
+  locale: 'en' | 'nl' | 'ar' | 'tr'
 ): string => {
   const division = getDivisionByValue(value)
   return division ? division.labels[locale] : value

@@ -13,6 +13,14 @@
       "teamNotFoundDescription": "Aradığınız takım bulunamadı veya silinmiş olabilir.",
       "title": "Takım yönetimi",
       "totalTeams": "Toplam takım sayısı"
+    },
+    "tournaments": {
+      "totalTournaments": "Toplam turnuva sayısı",
+      "confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "title": "Turnuva yönetimi",
+      "description": "Sistemdeki tüm turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
+      "allTournaments": "Tüm turnuvalar",
+      "allTournamentsDescription": "Sistemdeki tüm turnuvaları görüntüleyin ve yönetin"
     }
   },
   "auth": {
@@ -52,9 +60,11 @@
     "viewTeamsFor": "Takımları görüntüle:"
   },
   "common": {
+    "actions": "İşlemler",
     "appName": "Tournado",
     "backToHome": "Ana sayfaya dön",
     "cancel": "İptal",
+    "delete": "Sil",
     "error": "Hata",
     "guest": "Ziyaretçi",
     "language": "Dil",
@@ -184,5 +194,44 @@
     "noTeams": "Henüz hiçbir takım kaydedilmedi. Yaklaşan turnuvalar için takımınızı kaydeden ilk kişi olun!",
     "save": "Kaydet",
     "title": "Takımlar"
+  },
+  "tournaments": {
+    "addTournament": "Turnuva ekle",
+    "deleteTournament": "Turnuvayı sil",
+    "title": "Turnuvalar",
+    "name": "Ad",
+    "location": "Konum",
+    "startDate": "Başlangıç tarihi",
+    "endDate": "Bitiş tarihi",
+    "noTournaments": "Turnuva yok",
+    "noTournamentsDescription": "Henüz hiç turnuva oluşturulmamış. Başlamak için ilk turnuvanızı oluşturun!",
+    "form": {
+      "name": "Turnuva adı:",
+      "location": "Konum:",
+      "startDate": "Başlangıç tarihi:",
+      "endDate": "Bitiş tarihi:",
+      "basicInformation": "Temel bilgiler",
+      "enterBasicDetails": "Turnuva adı ve konumunu girin",
+      "dates": "Turnuva tarihleri",
+      "selectDates": "Turnuva için başlangıç ve bitiş tarihlerini seçin",
+      "divisions": "Ligler",
+      "selectDivisions": "Katılacak ligleri seçin",
+      "categories": "Kategoriler",
+      "selectCategories": "Katılacak yaş kategorilerini seçin",
+      "selected": "seçildi",
+      "tournamentRegistration": "Turnuva kaydı",
+      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
+      "saveTournament": "Turnuvayı kaydet",
+      "createTournament": "Turnuva oluştur",
+      "updateTournament": "Turnuvayı güncelle"
+    }
+  },
+  "divisions": {
+    "PREMIER_DIVISION": "Premier Lig",
+    "FIRST_DIVISION": "Birinci Lig",
+    "SECOND_DIVISION": "İkinci Lig",
+    "THIRD_DIVISION": "Üçüncü Lig",
+    "FOURTH_DIVISION": "Dördüncü Lig",
+    "FIFTH_DIVISION": "Beşinci Lig"
   }
 }

@@ -13,6 +13,8 @@ import {
 } from 'react-router'
 
 import type { User } from '@prisma/client'
+import { Theme } from '@radix-ui/themes'
+import '@radix-ui/themes/styles.css'
 
 import { AppBar } from '~/components/AppBar'
 import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
@@ -112,6 +114,38 @@ const Document = ({ children, language }: DocumentProps) => {
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Links />
+        {/* Custom CSS to override Radix green colors with emerald brand colors */}
+        <style>{`
+          .radix-themes {
+            /* Override green accent colors with emerald equivalents */
+            --green-1: #ecfdf5;
+            --green-2: #d1fae5;
+            --green-3: #a7f3d0;
+            --green-4: #6ee7b7;
+            --green-5: #34d399;
+            --green-6: #10b981;
+            --green-7: #059669;
+            --green-8: #047857;
+            --green-9: #065f46;
+            --green-10: #064e3b;
+            --green-11: #022c22;
+            --green-12: #041e17;
+
+            /* Override green alpha colors */
+            --green-a1: rgba(16, 185, 129, 0.05);
+            --green-a2: rgba(16, 185, 129, 0.1);
+            --green-a3: rgba(16, 185, 129, 0.15);
+            --green-a4: rgba(16, 185, 129, 0.2);
+            --green-a5: rgba(16, 185, 129, 0.3);
+            --green-a6: rgba(16, 185, 129, 0.4);
+            --green-a7: rgba(16, 185, 129, 0.5);
+            --green-a8: rgba(16, 185, 129, 0.6);
+            --green-a9: rgba(16, 185, 129, 0.7);
+            --green-a10: rgba(16, 185, 129, 0.8);
+            --green-a11: rgba(16, 185, 129, 0.9);
+            --green-a12: rgba(16, 185, 129, 0.95);
+          }
+        `}</style>
       </head>
       <body
         className={cn(
@@ -170,21 +204,24 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   return (
     <Document language={language}>
       <I18nextProvider i18n={i18n}>
-        <div className='flex h-full flex-col'>
-          <div className='relative' style={{ zIndex: 50 }}>
-            <AppBar authenticated={authenticated} username={username} user={user} />
+        {/* Using "green" accent but overridden with emerald colors via CSS above */}
+        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+          <div className='flex h-full flex-col'>
+            <div className='relative' style={{ zIndex: 50 }}>
+              <AppBar authenticated={authenticated} username={username} user={user} />
+            </div>
+            <div
+              className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
+              style={{ position: 'relative', zIndex: 1 }}
+            >
+              <Outlet />
+            </div>
+            {/* Desktop Footer - hidden on mobile */}
+            <DesktopFooter />
+            {/* Mobile Navigation - visible only on mobile */}
+            <BottomNavigation />
           </div>
-          <div
-            className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
-            style={{ position: 'relative', zIndex: 1 }}
-          >
-            <Outlet />
-          </div>
-          {/* Desktop Footer - hidden on mobile */}
-          <DesktopFooter />
-          {/* Mobile Navigation - visible only on mobile */}
-          <BottomNavigation />
-        </div>
+        </Theme>
         <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(ENV)}`,
@@ -206,21 +243,24 @@ export function ErrorBoundary(): JSX.Element {
   return (
     <Document language='nl'>
       <I18nextProvider i18n={i18n}>
-        <div className='flex h-full flex-col'>
-          <div className='relative' style={{ zIndex: 50 }}>
-            <AppBar authenticated={authenticated} username={username} />
+        {/* Using "green" accent but overridden with emerald colors via CSS above */}
+        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+          <div className='flex h-full flex-col'>
+            <div className='relative' style={{ zIndex: 50 }}>
+              <AppBar authenticated={authenticated} username={username} />
+            </div>
+            <div
+              className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
+              style={{ position: 'relative', zIndex: 1 }}
+            >
+              <GeneralErrorBoundary />
+            </div>
+            {/* Desktop Footer - hidden on mobile */}
+            <DesktopFooter />
+            {/* Mobile Navigation - visible only on mobile */}
+            <BottomNavigation />
           </div>
-          <div
-            className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
-            style={{ position: 'relative', zIndex: 1 }}
-          >
-            <GeneralErrorBoundary />
-          </div>
-          {/* Desktop Footer - hidden on mobile */}
-          <DesktopFooter />
-          {/* Mobile Navigation - visible only on mobile */}
-          <BottomNavigation />
-        </div>
+        </Theme>
       </I18nextProvider>
     </Document>
   )

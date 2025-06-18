@@ -34,7 +34,7 @@ export type DivisionValue =
   | 'FIFTH_DIVISION'
 export type DivisionObject = {
   value: DivisionValue
-  labels: { en: string; nl: string }
+  labels: { en: string; nl: string; ar: string; tr: string }
   order: number
 }
 

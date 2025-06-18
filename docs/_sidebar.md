@@ -11,6 +11,9 @@
    - [Database](development/database.md)
    - [Database Schema Changes](development/database-schema-changes.md)
    - [Service Worker](service-worker.md)
+- Features
+   - [Teams](development/teams.md)
+   - [Tournaments](development/tournaments.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)

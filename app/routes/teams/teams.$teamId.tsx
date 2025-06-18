@@ -7,8 +7,9 @@ import invariant from 'tiny-invariant'
 
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById, type TeamWithLeader } from '~/models/team.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
-import { getLatinTextClass } from '~/utils/rtlUtils'
+import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Temporary types until auto-generation is complete
 export type LoaderArgs = {
@@ -78,7 +79,7 @@ export default function TeamDetailsPage(): JSX.Element {
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
-          <h1 className={`text-3xl font-bold ${getLatinTextClass(i18n.language)}`}>
+          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
             {`${team.clubName} ${team.teamName}`}
           </h1>
           <p className='mt-2 text-lg'>
@@ -92,7 +93,14 @@ export default function TeamDetailsPage(): JSX.Element {
           <div className='space-y-6 lg:col-span-2'>
             {/* Upcoming Games */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h2 className='mb-4 text-xl font-semibold'>🏐 Upcoming Games</h2>
+              <h2
+                className={cn(
+                  'mb-4 text-xl font-semibold',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
+                🏐 Upcoming Games
+              </h2>
               <div className='rounded-lg border border-blue-200 bg-blue-50 p-4'>
                 <p className='font-medium text-blue-800'>🚧 Coming Soon!</p>
                 <p className='mt-1 text-sm text-blue-700'>
@@ -139,7 +147,14 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Recent Results */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h2 className='mb-4 text-xl font-semibold'>📊 Recent Results</h2>
+              <h2
+                className={cn(
+                  'mb-4 text-xl font-semibold',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
+                📊 Recent Results
+              </h2>
               <div className='rounded-lg border border-green-200 bg-green-50 p-4'>
                 <p className='font-medium text-green-800'>🚧 Coming Soon!</p>
                 <p className='mt-1 text-sm text-green-700'>
@@ -153,7 +168,14 @@ export default function TeamDetailsPage(): JSX.Element {
           <div className='space-y-6'>
             {/* Team Info Card */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold'>Team Information</h3>
+              <h3
+                className={cn(
+                  'mb-4 text-lg font-semibold',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
+                Team Information
+              </h3>
               <dl className='space-y-3'>
                 <div>
                   <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
@@ -188,7 +210,14 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Season Stats */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold'>Season Stats</h3>
+              <h3
+                className={cn(
+                  'mb-4 text-lg font-semibold',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
+                Season Stats
+              </h3>
               <div className='space-y-3'>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Games Played</span>
@@ -216,7 +245,14 @@ export default function TeamDetailsPage(): JSX.Element {
 
             {/* Quick Actions */}
             <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-              <h3 className='mb-4 text-lg font-semibold'>Quick Actions</h3>
+              <h3
+                className={cn(
+                  'mb-4 text-lg font-semibold',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
+                Quick Actions
+              </h3>
               <div className='space-y-3'>
                 <button
                   disabled

@@ -12,7 +12,9 @@ import {
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { createUser, getUserByEmail } from '~/models/user.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { getUserId } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
@@ -125,7 +127,7 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function SignupPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
@@ -151,7 +153,12 @@ export default function SignupPage(): JSX.Element {
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <h2 className='mt-10 text-center text-2xl leading-9 font-bold tracking-tight'>
+        <h2
+          className={cn(
+            'mt-10 text-center text-2xl leading-9 font-bold tracking-tight',
+            getLatinTitleClass(i18n.language)
+          )}
+        >
           {t('common.titles.signUp')}
         </h2>
       </div>
@@ -172,7 +179,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='given-name'
                 aria-invalid={actionData?.errors?.firstName ? true : undefined}
                 aria-describedby='firstName-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.firstName ? (
                 <div className='pt-1 text-red-700' id='firstName-error'>
@@ -196,7 +203,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='family-name'
                 aria-invalid={actionData?.errors?.lastName ? true : undefined}
                 aria-describedby='lastName-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.lastName ? (
                 <div className='pt-1 text-red-700' id='lastName-error'>
@@ -220,7 +227,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='email'
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby='email-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.email ? (
                 <div className='pt-1 text-red-700' id='email-error'>
@@ -243,7 +250,7 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='new-password'
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby='password-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.password ? (
                 <div className='pt-1 text-red-700' id='password-error'>

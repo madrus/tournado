@@ -5,8 +5,10 @@ import { Link, type MetaFunction, useLoaderData } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { getAllTeamListItems } from '~/models/team.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type LoaderData = {
   user: User
@@ -65,11 +67,13 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
 
 export default function AdminDashboard(): JSX.Element {
   const { user, teams } = useLoaderData<LoaderData>()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <>
-      <h1 className='mb-8 text-3xl font-bold'>Admin Panel</h1>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+        Admin Panel
+      </h1>
       <p className='text-foreground-light mb-8'>
         Welcome back, {user.email}. Manage your tournament platform from here.
       </p>
@@ -78,7 +82,14 @@ export default function AdminDashboard(): JSX.Element {
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2'>
           {/* Teams Management */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3 className='mb-4 text-lg font-semibold'>Teams Management</h3>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              Teams Management
+            </h3>
             <p className='text-foreground-light mb-4'>
               Manage team registrations and memberships.
             </p>
@@ -98,7 +109,14 @@ export default function AdminDashboard(): JSX.Element {
 
           {/* User Management */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3 className='mb-4 text-lg font-semibold'>User Management</h3>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              User Management
+            </h3>
             <p className='text-foreground-light mb-4'>
               Manage user accounts and permissions.
             </p>
@@ -114,7 +132,14 @@ export default function AdminDashboard(): JSX.Element {
 
           {/* Tournament Management */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3 className='mb-4 text-lg font-semibold'>Tournament Management</h3>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              Tournament Management
+            </h3>
             <p className='text-foreground-light mb-4'>
               Oversee all tournaments and competitions.
             </p>
@@ -125,7 +150,14 @@ export default function AdminDashboard(): JSX.Element {
 
           {/* System Settings */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3 className='mb-4 text-lg font-semibold'>System Settings</h3>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              System Settings
+            </h3>
             <p className='text-foreground-light mb-4'>
               Configure application settings and preferences.
             </p>
@@ -136,7 +168,14 @@ export default function AdminDashboard(): JSX.Element {
 
           {/* Reports & Analytics */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3 className='mb-4 text-lg font-semibold'>Reports & Analytics</h3>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              Reports & Analytics
+            </h3>
             <p className='text-foreground-light mb-4'>
               View platform usage and tournament statistics.
             </p>

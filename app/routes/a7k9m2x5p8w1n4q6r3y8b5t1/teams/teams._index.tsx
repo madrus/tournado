@@ -7,8 +7,10 @@ import type { Team } from '@prisma/client'
 
 import { TeamList } from '~/components/TeamList'
 import { deleteTeamById, getAllTeamListItems } from '~/models/team.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 //! TODO: replace with generated type
 type LoaderArgs = {
@@ -78,7 +80,7 @@ export async function action({ request }: ActionArgs): Promise<Response> {
 }
 
 export default function AdminTeamsIndexPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { teamListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
 
@@ -134,7 +136,9 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       {/* Teams List */}
       <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
         <div className='mb-6'>
-          <h3 className='text-lg font-medium'>{t('admin.teams.allTeams')}</h3>
+          <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
+            {t('admin.teams.allTeams')}
+          </h3>
           <p className='mt-1 text-sm opacity-75'>
             {t('admin.teams.allTeamsDescription')}
           </p>

@@ -35,12 +35,14 @@ export default function AdminTeamsLayout(): JSX.Element {
           </div>
 
           {/* Add Team Button */}
-          <ActionLinkButton
-            to='new'
-            icon='add'
-            label={t('teams.addTeam')}
-            variant='primary'
-          />
+          <div className='flex justify-center sm:justify-end'>
+            <ActionLinkButton
+              to='new'
+              icon='add'
+              label={t('teams.addTeam')}
+              variant='primary'
+            />
+          </div>
         </div>
       </div>
 

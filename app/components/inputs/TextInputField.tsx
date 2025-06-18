@@ -19,7 +19,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       name,
       label,
       type = 'text',
-      readOnly = true,
+      readOnly = false,
       error,
       required = false,
       className = '',

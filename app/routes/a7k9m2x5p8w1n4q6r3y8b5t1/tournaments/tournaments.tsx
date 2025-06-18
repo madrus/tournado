@@ -37,12 +37,14 @@ export default function AdminTournamentsLayout(): JSX.Element {
           </div>
 
           {/* Add Tournament Button */}
-          <ActionLinkButton
-            to='new'
-            icon='add'
-            label={t('tournaments.addTournament')}
-            variant='primary'
-          />
+          <div className='flex justify-center sm:justify-end'>
+            <ActionLinkButton
+              to='new'
+              icon='add'
+              label={t('tournaments.addTournament')}
+              variant='primary'
+            />
+          </div>
         </div>
       </div>
 

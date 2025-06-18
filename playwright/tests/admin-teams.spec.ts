@@ -17,8 +17,8 @@ test.describe('Admin Teams', () => {
     // Wait for content to actually appear (no white page)
     await page.waitForFunction(() => document.body.children.length > 0)
 
-    // Should see admin teams management interface - look for the admin panel heading
-    await expect(page.locator('h2').filter({ hasText: /Teams/i })).toBeVisible({
+    // Should see admin teams management interface - look for the admin panel heading (now h1)
+    await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible({
       timeout: 15000,
     })
 
@@ -68,8 +68,8 @@ test.describe('Admin Teams', () => {
     // Wait for content to actually appear
     await page.waitForFunction(() => document.body.children.length > 0)
 
-    // Should see admin interface - use the admin panel heading as confirmation
-    await expect(page.locator('h2').filter({ hasText: /Teams/i })).toBeVisible({
+    // Should see admin interface - use the admin panel heading as confirmation (now h1)
+    await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible({
       timeout: 15000,
     })
 

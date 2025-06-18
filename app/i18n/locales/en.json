@@ -13,6 +13,14 @@
       "teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
       "title": "Teams Management",
       "totalTeams": "Total Teams"
+    },
+    "tournaments": {
+      "totalTournaments": "Total Tournaments",
+      "confirmDelete": "Are you sure you want to delete this tournament? This action cannot be undone.",
+      "title": "Tournaments Management",
+      "description": "Manage all tournaments in the system. Create, edit, or delete tournament information.",
+      "allTournaments": "All Tournaments",
+      "allTournamentsDescription": "View and manage all tournaments in the system"
     }
   },
   "auth": {
@@ -52,9 +60,11 @@
     "viewTeamsFor": "View teams for"
   },
   "common": {
+    "actions": "Actions",
     "appName": "Tournado",
     "backToHome": "Back to home",
     "cancel": "Cancel",
+    "delete": "Delete",
     "error": "Error",
     "guest": "Guest",
     "language": "Language",
@@ -184,5 +194,44 @@
     "noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
     "save": "Save",
     "title": "Teams"
+  },
+  "tournaments": {
+    "addTournament": "Add Tournament",
+    "deleteTournament": "Delete Tournament",
+    "title": "Tournaments",
+    "name": "Name",
+    "location": "Location",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "noTournaments": "No Tournaments",
+    "noTournamentsDescription": "No tournaments have been created yet. Create your first tournament to get started!",
+    "form": {
+      "name": "Tournament Name:",
+      "location": "Location:",
+      "startDate": "Start Date:",
+      "endDate": "End Date:",
+      "basicInformation": "Basic Information",
+      "enterBasicDetails": "Enter tournament name and location",
+      "dates": "Tournament Dates",
+      "selectDates": "Select start and end dates for the tournament",
+      "divisions": "Divisions",
+      "selectDivisions": "Select the divisions that will participate",
+      "categories": "Categories",
+      "selectCategories": "Select the age categories that will participate",
+      "selected": "selected",
+      "tournamentRegistration": "Tournament Registration",
+      "fillOutForm": "Fill out the form below to create a new tournament",
+      "saveTournament": "Save Tournament",
+      "createTournament": "Create Tournament",
+      "updateTournament": "Update Tournament"
+    }
+  },
+  "divisions": {
+    "PREMIER_DIVISION": "Premier Division",
+    "FIRST_DIVISION": "First Division",
+    "SECOND_DIVISION": "Second Division",
+    "THIRD_DIVISION": "Third Division",
+    "FOURTH_DIVISION": "Fourth Division",
+    "FIFTH_DIVISION": "Fifth Division"
   }
 }

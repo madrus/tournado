@@ -6,13 +6,21 @@
       "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
       "createTeam": "Team aanmaken",
       "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde gegevens.",
-      "description": "Beheer alle teams in alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
+      "description": "Beheer alle teams voor alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
       "editTeam": "Team gegevens bewerken",
       "saveChanges": "Wijzigingen opslaan",
       "teamNotFound": "Team niet gevonden",
       "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
       "title": "Teams beheer",
       "totalTeams": "Totaal aantal teams"
+    },
+    "tournaments": {
+      "totalTournaments": "Totaal aantal toernooien",
+      "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "title": "Toernooien beheer",
+      "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
+      "allTournaments": "Alle toernooien",
+      "allTournamentsDescription": "Bekijk en beheer alle toernooien in het systeem"
     }
   },
   "auth": {
@@ -52,9 +60,11 @@
     "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
+    "actions": "Acties",
     "appName": "Tournado",
     "backToHome": "Terug naar home",
     "cancel": "Annuleren",
+    "delete": "Verwijderen",
     "error": "Fout",
     "guest": "Bezoeker",
     "language": "Taal",
@@ -183,5 +193,44 @@
     "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",
     "save": "Opslaan",
     "title": "Teams"
+  },
+  "tournaments": {
+    "addTournament": "Toernooi toevoegen",
+    "deleteTournament": "Toernooi verwijderen",
+    "title": "Toernooien",
+    "name": "Naam",
+    "location": "Locatie",
+    "startDate": "Startdatum",
+    "endDate": "Einddatum",
+    "noTournaments": "Geen toernooien",
+    "noTournamentsDescription": "Er zijn nog geen toernooien aangemaakt. Maak je eerste toernooi aan om te beginnen!",
+    "form": {
+      "name": "Toernooi naam:",
+      "location": "Locatie:",
+      "startDate": "Startdatum:",
+      "endDate": "Einddatum:",
+      "basicInformation": "Basis informatie",
+      "enterBasicDetails": "Voer toernooi naam en locatie in",
+      "dates": "Toernooi data",
+      "selectDates": "Selecteer start- en einddatum voor het toernooi",
+      "divisions": "Divisies",
+      "selectDivisions": "Selecteer de divisies die zullen deelnemen",
+      "categories": "Categorieën",
+      "selectCategories": "Selecteer de leeftijdscategorieën die zullen deelnemen",
+      "selected": "geselecteerd",
+      "tournamentRegistration": "Toernooi registratie",
+      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
+      "saveTournament": "Toernooi opslaan",
+      "createTournament": "Toernooi aanmaken",
+      "updateTournament": "Toernooi bijwerken"
+    }
+  },
+  "divisions": {
+    "PREMIER_DIVISION": "Hoofdklasse",
+    "FIRST_DIVISION": "Eerste klasse",
+    "SECOND_DIVISION": "Tweede klasse",
+    "THIRD_DIVISION": "Derde klasse",
+    "FOURTH_DIVISION": "Vierde klasse",
+    "FIFTH_DIVISION": "Vijfde klasse"
   }
 }

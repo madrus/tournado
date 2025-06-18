@@ -12,7 +12,7 @@ import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import {
   getArabicTextClass,
-  getLatinContentClass,
+  getLatinTextClass,
   getLatinTitleClass,
 } from '~/utils/rtlUtils'
 
@@ -117,7 +117,7 @@ export function AppBar({
         className:
           lang.code === 'ar'
             ? getArabicTextClass()
-            : getLatinContentClass(currentLanguage),
+            : getLatinTextClass(currentLanguage),
       })),
       authenticated: false,
     },

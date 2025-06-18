@@ -2,7 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import { getLatinContentClass } from '~/utils/rtlUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 const DesktopFooter = (): JSX.Element => {
   const { i18n } = useTranslation()
@@ -13,16 +13,14 @@ const DesktopFooter = (): JSX.Element => {
         <div className='flex items-center'>
           <Link to='/' className='flex items-center'>
             <span
-              className={`m-0 p-0 leading-[1] font-light ${getLatinContentClass(i18n.language)}`}
+              className={`m-0 p-0 leading-[1] font-light ${getLatinTextClass(i18n.language)}`}
             >
               Tournado
             </span>
           </Link>
         </div>
         <div className='flex items-center justify-end'>
-          <span
-            className={`m-0 p-0 leading-[1] ${getLatinContentClass(i18n.language)}`}
-          >
+          <span className={`m-0 p-0 leading-[1] ${getLatinTextClass(i18n.language)}`}>
             Built with ♥️ by Madrus
           </span>
         </div>

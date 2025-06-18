@@ -3,6 +3,9 @@ import { type JSX, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router'
 
+import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
+
 export type SidebarLayoutProps = {
   // Sidebar content
   sidebarContent: ReactNode
@@ -228,10 +231,12 @@ export function SidebarLayoutDemo(): JSX.Element {
 
   const demoMainContent = (
     <div className='max-w-2xl'>
-      <h1 className='mb-4 text-3xl font-bold'>Sidebar Layout Demo</h1>
+      <h1 className={cn('mb-4 text-3xl font-bold', getLatinTitleClass('en'))}>
+        Sidebar Layout Demo
+      </h1>
 
       <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
-        <h2 className='mb-3 text-xl font-semibold'>
+        <h2 className={cn('mb-3 text-xl font-semibold', getLatinTitleClass('en'))}>
           Selected: {selectedItem || 'None'}
         </h2>
         <p className='mb-4 text-gray-600'>
@@ -249,7 +254,11 @@ export function SidebarLayoutDemo(): JSX.Element {
       </div>
 
       <div className='mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4'>
-        <h3 className='mb-2 font-semibold text-blue-900'>Usage Example:</h3>
+        <h3
+          className={cn('mb-2 font-semibold text-blue-900', getLatinTitleClass('en'))}
+        >
+          Usage Example:
+        </h3>
         <pre className='overflow-x-auto text-sm text-blue-800'>
           {`<SidebarLayout
             sidebarContent={<MyTeamList />}

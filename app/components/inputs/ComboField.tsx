@@ -61,7 +61,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               required={required}
               disabled={disabled}
               className={cn(
-                'h-12 w-full appearance-none rounded-md border-2 border-emerald-700/30 bg-white px-0 ps-3 pe-6 text-lg leading-6',
+                'h-12 w-full appearance-none rounded-md border-2 border-emerald-700/30 bg-white px-0 ps-3 pe-6 text-lg',
                 safeValue === '' ? 'text-foreground-lighter' : '',
                 disabled ? 'cursor-not-allowed opacity-50' : ''
               )}

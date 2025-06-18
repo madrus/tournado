@@ -2,6 +2,9 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type ErrorResponse, isRouteErrorResponse, useRouteError } from 'react-router'
 
+import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
+
 import { ErrorRecoveryLink } from './PrefetchLink'
 
 // Get the appropriate error message translation key based on the error status
@@ -34,7 +37,7 @@ function getErrorTitleKey(error: ErrorResponse): string {
 
 export function AuthErrorBoundary(): JSX.Element {
   const error = useRouteError()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   if (typeof document !== 'undefined') {
     // eslint-disable-next-line no-console
@@ -45,7 +48,9 @@ export function AuthErrorBoundary(): JSX.Element {
     return (
       <div className='flex h-full items-center justify-center'>
         <div className='flex w-full max-w-md flex-col gap-6'>
-          <h1 className='text-2xl font-bold'>{t(getErrorTitleKey(error))}</h1>
+          <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+            {t(getErrorTitleKey(error))}
+          </h1>
           <p className='text-foreground-lighter' data-testid='error-paragraph'>
             {t(getErrorMessageKey(error))}
           </p>
@@ -64,7 +69,9 @@ export function AuthErrorBoundary(): JSX.Element {
   return (
     <div className='flex h-full items-center justify-center'>
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className='text-2xl font-bold'>{t('errors.errorTitle')}</h1>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+          {t('errors.errorTitle')}
+        </h1>
         <p className='text-foreground-lighter' data-testid='error-paragraph'>
           {t('auth.errors.unexpectedError')}{' '}
           {error instanceof Error ? error.message : t('auth.errors.unknownError')}

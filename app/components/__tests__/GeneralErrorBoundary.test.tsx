@@ -19,10 +19,14 @@ vi.mock('react-router', async () => {
   }
 })
 
-// Simple mock for i18n
+// Mock react-i18next to simply return the key as the value
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
+    // Simply return the key as the translation value for easier testing
     t: (key: string) => key,
+    i18n: {
+      language: 'en',
+    },
   }),
 }))
 

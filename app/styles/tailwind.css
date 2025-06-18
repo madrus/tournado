@@ -81,7 +81,7 @@
 /* When Arabic is active, most content (translations) should use Arabic font */
 /* Only mark the few Latin exceptions (app name, user input, technical terms) */
 
-/* Latin content - for regular text that needs scaling compensation */
+/* Latin content - for regular latin text with arabic that needs scaling compensation */
 .text-arabic .latin-content {
   font-family: 'Inter', system-ui, sans-serif !important;
   font-size: 0.8em !important; /* Compensate for 25% Arabic scaling (1/1.25 = 0.8) */

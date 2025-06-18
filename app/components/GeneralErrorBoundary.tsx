@@ -7,7 +7,8 @@ import {
   useRouteError,
 } from 'react-router'
 
-import { getErrorMessage } from '~/utils/misc'
+import { cn, getErrorMessage } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import { ErrorRecoveryLink } from './PrefetchLink'
 
@@ -18,10 +19,10 @@ type StatusHandler = (info: {
 
 export function GeneralErrorBoundary({
   defaultStatusHandler = ({ error }) => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className='text-2xl font-bold'>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
           {error.status === 404 ? t('errors.notFoundTitle') : t('errors.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>
@@ -37,10 +38,12 @@ export function GeneralErrorBoundary({
   },
   statusHandlers,
   unexpectedErrorHandler = error => {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className='text-2xl font-bold'>{t('errors.errorTitle')}</h1>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+          {t('errors.errorTitle')}
+        </h1>
         <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
           {t('common.backToHome')}

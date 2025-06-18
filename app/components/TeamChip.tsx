@@ -36,6 +36,7 @@ export function TeamChip({
     'hover:scale-105 active:scale-95',
     'shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40 hover:bg-red-50/30 hover:border-red-500',
     'focus:ring-2 focus:ring-offset-2 focus:ring-red-600/90 focus:outline-none',
+    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600/90',
     className
   )
 

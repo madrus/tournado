@@ -12,7 +12,9 @@ import {
 
 import { CheckCircleIcon } from '~/components/icons'
 import { verifySignin } from '~/models/user.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { createUserSession, getUser } from '~/utils/session.server'
 import { validateEmail } from '~/utils/utils'
 
@@ -112,7 +114,7 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function SigninPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
@@ -151,7 +153,12 @@ export default function SigninPage(): JSX.Element {
                   <CheckCircleIcon className='text-green-400' size={20} />
                 </div>
                 <div className='ms-3'>
-                  <h3 className='text-sm font-medium text-green-800'>
+                  <h3
+                    className={cn(
+                      'text-sm font-medium text-green-800',
+                      getLatinTitleClass(i18n.language)
+                    )}
+                  >
                     {t('auth.registrationSuccess')}
                   </h3>
                   <div className='mt-2 text-sm text-green-700'>
@@ -237,7 +244,7 @@ export default function SigninPage(): JSX.Element {
                   id='remember'
                   name='remember'
                   type='checkbox'
-                  className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 focus:ring-emerald-500'
+                  className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 hover:ring-2 hover:ring-emerald-500 focus:ring-emerald-500'
                 />
                 <label htmlFor='remember' className='ms-2 block text-sm'>
                   {t('auth.rememberMe')}

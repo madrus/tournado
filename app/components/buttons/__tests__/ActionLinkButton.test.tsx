@@ -174,7 +174,7 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('text-sm')
     expect(link).toHaveClass('font-semibold')
     expect(link).toHaveClass('shadow-lg')
-    expect(link).toHaveClass('hover:scale-105')
+    expect(link).toHaveClass('hover:scale-103')
     expect(link).toHaveClass('active:scale-95')
   })
 

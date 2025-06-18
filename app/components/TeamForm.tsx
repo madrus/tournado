@@ -9,9 +9,16 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { useTeamFormValidation } from '~/hooks/useTeamFormValidation'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
-import { getLatinContentClass, getLatinTextClass } from '~/utils/rtlUtils'
+import { cn } from '~/utils/misc'
+import {
+  getLatinContentClass,
+  getLatinTextClass,
+  getLatinTitleClass,
+  isRTL,
+} from '~/utils/rtlUtils'
 
 import { ActionButton } from './buttons/ActionButton'
+import { CheckCircleIcon, CheckIcon } from './icons'
 
 export function TeamForm({
   mode,
@@ -91,19 +98,7 @@ export function TeamForm({
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
               <div className='flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100'>
-                <svg
-                  className='h-6 w-6 text-emerald-600'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M5 13l4 4L19 7'
-                  />
-                </svg>
+                <CheckIcon className='h-6 w-6 text-emerald-600' size={24} />
               </div>
             </div>
             <div className='ml-4'>
@@ -115,16 +110,16 @@ export function TeamForm({
 
       {/* Header for Admin Variant */}
       {!isPublicVariant ? (
-        <div className='mb-8 rounded-xl border border-gray-200 bg-gradient-to-r from-slate-50 to-gray-50 p-6 shadow-sm'>
+        <div className='mb-8 rounded-xl border-2 border-gray-300 bg-gradient-to-r from-slate-50 to-gray-50 p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
-              <h1
-                className={`text-2xl font-bold text-gray-900 ${getLatinTextClass(i18n.language)}`}
+              <h2
+                className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
               >
                 {formData.clubName && formData.teamName
                   ? `${formData.clubName} ${formData.teamName}`
                   : t('teams.form.teamRegistration')}
-              </h1>
+              </h2>
               <p className='mt-2 text-gray-600'>
                 {formData.division
                   ? getDivisionLabel(formData.division as Division, i18n.language)
@@ -159,13 +154,18 @@ export function TeamForm({
 
         {/* Step 1: Tournament Filters */}
         <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white shadow-lg lg:-left-6'>
+          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
             1
           </div>
 
           <div className='rounded-xl border-2 border-red-200 bg-gradient-to-br from-red-50/50 to-pink-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
             <div className='mb-6'>
-              <h2 className='mb-2 text-xl font-bold text-red-800'>
+              <h2
+                className={cn(
+                  'mb-2 text-xl font-bold text-red-800',
+                  getLatinTitleClass(i18n.language)
+                )}
+              >
                 {t('teams.form.selectTournamentDetails')}
               </h2>
               <p className='text-sm text-red-600'>
@@ -197,18 +197,8 @@ export function TeamForm({
                   className={getLatinContentClass(i18n.language)}
                 />
                 {selectedTournamentId ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
-                    <svg
-                      className='h-4 w-4 text-white'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
+                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
+                    <CheckCircleIcon className='h-4 w-4 text-white' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -234,21 +224,11 @@ export function TeamForm({
                   required
                   disabled={!selectedTournamentId}
                   selectRef={teamClassRef}
-                  className={!selectedTournamentId ? 'opacity-50' : ''}
+                  className={`${!selectedTournamentId ? 'opacity-50' : ''} ${isRTL(i18n.language) ? '-mt-0.5 [&_label]:gap-0' : ''}`}
                 />
                 {divisionValue ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
-                    <svg
-                      className='h-4 w-4 text-white'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
+                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
+                    <CheckCircleIcon className='h-4 w-4 text-white' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -272,18 +252,8 @@ export function TeamForm({
                   className={`${getLatinContentClass(i18n.language)} ${!divisionValue ? 'opacity-50' : ''}`}
                 />
                 {categoryValue ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500'>
-                    <svg
-                      className='h-4 w-4 text-white'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
+                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
+                    <CheckCircleIcon className='h-4 w-4 text-white' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -291,7 +261,7 @@ export function TeamForm({
 
             {/* Progress Indicator */}
             <div className='mt-6 flex items-center justify-center'>
-              <div className='flex items-center space-x-2'>
+              <div className='flex items-center gap-1'>
                 <div
                   className={`h-3 w-3 rounded-full transition-colors duration-300 ${selectedTournamentId ? 'bg-emerald-500' : 'bg-gray-300'}`}
                 />
@@ -310,7 +280,7 @@ export function TeamForm({
         <div
           className={`relative transition-all duration-500 ${canProceedToDetails ? 'opacity-100' : 'pointer-events-none opacity-40'}`}
         >
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-lg lg:-left-6'>
+          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
             2
           </div>
 
@@ -318,7 +288,12 @@ export function TeamForm({
             {/* Team Information Panel */}
             <div className='rounded-xl border-2 border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
               <div className='mb-6'>
-                <h3 className='mb-2 text-xl font-bold text-blue-800'>
+                <h3
+                  className={cn(
+                    'mb-2 text-xl font-bold text-blue-800',
+                    getLatinTextClass(i18n.language)
+                  )}
+                >
                   {t('teams.form.teamInfo')}
                 </h3>
                 <p className='text-sm text-blue-600'>
@@ -359,7 +334,12 @@ export function TeamForm({
             {/* Team Leader Information Panel */}
             <div className='rounded-xl border-2 border-purple-200 bg-gradient-to-br from-purple-50/50 to-pink-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
               <div className='mb-6'>
-                <h3 className='mb-2 text-xl font-bold text-purple-800'>
+                <h3
+                  className={cn(
+                    'mb-2 text-xl font-bold text-purple-800',
+                    getLatinTextClass(i18n.language)
+                  )}
+                >
                   {t('teams.form.teamLeaderInfo')}
                 </h3>
                 <p className='text-sm text-purple-600'>
@@ -430,7 +410,7 @@ export function TeamForm({
                   type='checkbox'
                   name='privacyAgreement'
                   id='privacyAgreement'
-                  className='mt-1 h-5 w-5 rounded border-gray-300 text-red-600 focus:ring-2 focus:ring-red-500'
+                  className='mt-1 h-5 w-5 rounded border-gray-300 text-red-600 hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500'
                   aria-invalid={displayErrors.privacyAgreement ? true : undefined}
                   aria-errormessage={
                     displayErrors.privacyAgreement ? 'privacy-error' : undefined
@@ -479,7 +459,7 @@ export function TeamForm({
             type='submit'
             variant='solid'
             color='emerald'
-            className={`order-1 lg:order-2 ${isPublicVariant ? 'px-8 py-4 text-lg font-semibold' : 'min-w-40'} shadow-lg transition-all duration-300 hover:shadow-xl`}
+            className={`order-1 lg:order-2 ${isPublicVariant ? 'max-w-fit shrink-0 px-4 py-4 text-lg font-semibold' : 'min-w-40'} shadow-lg transition-all duration-300 hover:shadow-xl`}
           >
             {submitButtonText ||
               (isPublicVariant

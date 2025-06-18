@@ -5,7 +5,9 @@ import type { MetaFunction } from 'react-router'
 import { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { requireUser } from '~/utils/session.server'
 
 // Route metadata - this is a protected route
@@ -47,11 +49,13 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
 }
 
 export default function SettingsPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h1 className='mb-8 text-3xl font-bold'>{t('common.titles.settings')}</h1>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+        {t('common.titles.settings')}
+      </h1>
       <p>
         This is a protected route example that would redirect to login if not
         authenticated.

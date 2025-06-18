@@ -292,7 +292,11 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           <Flex align='center'>
             <Box className='flex-shrink-0'>
               <Box className='flex h-8 w-8 items-center justify-center rounded-md bg-red-500'>
-                <TrophyIcon className='text-white' size={20} variant='outlined' />
+                <TrophyIcon
+                  className='pt-1 pl-1 text-white'
+                  size={24}
+                  variant='outlined'
+                />
               </Box>
             </Box>
             <Box className='ms-5 w-0 flex-1'>
@@ -314,7 +318,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       </Grid>
 
       {/* Tournaments List */}
-      <Box className='w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <Box className='w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm md:w-fit'>
         <Box className='mb-6'>
           <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
             {t('admin.tournaments.allTournaments')}
@@ -337,7 +341,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
             </Text>
           </Box>
         ) : (
-          <div className='w-full'>
+          <div className='w-full md:w-fit md:max-w-full'>
             {/* Header - only show on desktop */}
             {isDesktop ? (
               <div className='rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-3'>

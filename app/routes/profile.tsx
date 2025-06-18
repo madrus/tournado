@@ -5,8 +5,10 @@ import type { MetaFunction } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Route metadata - this is a protected route with enhanced configuration
 
@@ -63,13 +65,20 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
 }
 
 export default function ProfilePage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h1 className='mb-8 text-3xl font-bold'>{t('common.titles.profile')}</h1>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+        {t('common.titles.profile')}
+      </h1>
       <div className='mb-6 rounded-lg bg-green-50 p-4'>
-        <h3 className='mb-2 text-lg font-semibold text-green-800'>
+        <h3
+          className={cn(
+            'mb-2 text-lg font-semibold text-green-800',
+            getLatinTitleClass(i18n.language)
+          )}
+        >
           ✅ Enhanced Route Protection Active
         </h3>
         <ul className='space-y-1 text-sm text-green-700'>

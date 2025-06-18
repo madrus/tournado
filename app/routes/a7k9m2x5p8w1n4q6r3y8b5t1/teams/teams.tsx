@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router'
 
 import { ActionLinkButton } from '~/components/buttons'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {
@@ -18,7 +20,7 @@ export const handle: RouteMetadata = {
 }
 
 export default function AdminTeamsLayout(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div className='space-y-8'>
@@ -26,7 +28,9 @@ export default function AdminTeamsLayout(): JSX.Element {
       <div className='border-b border-gray-200 pb-6'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
-            <h2 className='text-2xl font-bold'>{t('admin.teams.title')}</h2>
+            <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+              {t('admin.teams.title')}
+            </h1>
             <p className='text-foreground-light mt-1'>{t('admin.teams.description')}</p>
           </div>
 

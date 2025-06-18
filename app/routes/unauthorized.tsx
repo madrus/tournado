@@ -4,7 +4,9 @@ import type { MetaFunction } from 'react-router'
 
 import { BlockIcon } from '~/components/icons'
 import { ErrorRecoveryLink, PrimaryNavLink } from '~/components/PrefetchLink'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 export const meta: MetaFunction = () => [
   { title: 'Unauthorized | Tournado' },
@@ -28,7 +30,7 @@ export const handle: RouteMetadata = {
 }
 
 export default function UnauthorizedPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center bg-gray-50'>
@@ -40,7 +42,7 @@ export default function UnauthorizedPage(): JSX.Element {
           </div>
 
           {/* Title */}
-          <h1 className='text-2xl font-bold'>
+          <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
             {t('errors.unauthorized.title', 'Access Denied')}
           </h1>
 
@@ -56,14 +58,14 @@ export default function UnauthorizedPage(): JSX.Element {
           <div className='flex w-full flex-col gap-2'>
             <ErrorRecoveryLink
               to='/'
-              className='flex w-full items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
+              className='flex w-full items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 hover:ring-2 hover:ring-emerald-500 hover:ring-offset-2 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
             >
               {t('common.backToHome', 'Back to Home')}
             </ErrorRecoveryLink>
 
             <PrimaryNavLink
               to='/profile'
-              className='flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
+              className='flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:ring-2 hover:ring-emerald-500 hover:ring-offset-2 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
             >
               {t('common.viewProfile', 'View Profile')}
             </PrimaryNavLink>

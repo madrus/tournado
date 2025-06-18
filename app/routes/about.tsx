@@ -4,7 +4,9 @@ import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
 
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Type definition for loader data
 type LoaderData = {
@@ -45,15 +47,24 @@ export async function loader({ request: _request }: LoaderArgs): Promise<LoaderD
 }
 
 export default function AboutPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { version } = useLoaderData<LoaderData>()
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h1 className='mb-8 text-3xl font-bold'>{t('common.titles.about')}</h1>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+        {t('common.titles.about')}
+      </h1>
       <div className='space-y-6'>
         <section>
-          <h2 className='mb-4 text-2xl font-semibold'>About Tournado</h2>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            About Tournado
+          </h2>
           <p className='text-foreground-light'>
             Tournado is a comprehensive tournament management platform designed to
             streamline the organization and management of sports tournaments for
@@ -65,7 +76,14 @@ export default function AboutPage(): JSX.Element {
         </section>
 
         <section>
-          <h2 className='mb-4 text-2xl font-semibold'>Features</h2>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Features
+          </h2>
           <ul className='text-foreground-light space-y-2'>
             <li>• Tournament creation and management</li>
             <li>• Team registration and player management</li>
@@ -76,7 +94,14 @@ export default function AboutPage(): JSX.Element {
         </section>
 
         <section>
-          <h2 className='mb-4 text-2xl font-semibold'>Technology Stack</h2>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Technology Stack
+          </h2>
           <p className='text-foreground-light'>
             Built with modern web technologies including React Router v7, TypeScript,
             Prisma, and SQLite for a robust and scalable solution.

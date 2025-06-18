@@ -19,8 +19,10 @@ import { prisma } from '~/db.server'
 import { stringToDivision } from '~/lib/lib.helpers'
 import type { TeamEditActionData, TeamWithLeaderFull } from '~/lib/lib.types'
 import { deleteTeamById, getTeamById } from '~/models/team.server'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Temporary types until auto-generation is complete
 export type LoaderArgs = {
@@ -245,13 +247,15 @@ export default function AdminTeamDetailsPage(): JSX.Element {
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   if (isRouteErrorResponse(error)) {
     return (
       <div className='flex h-64 items-center justify-center'>
         <div className='text-center'>
-          <h3 className='text-lg font-medium'>{t('admin.teams.teamNotFound')}</h3>
+          <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
+            {t('admin.teams.teamNotFound')}
+          </h3>
           <p className='mt-2 text-gray-600'>
             {t('admin.teams.teamNotFoundDescription')}
           </p>
@@ -263,7 +267,9 @@ export function ErrorBoundary(): JSX.Element {
   return (
     <div className='flex h-64 items-center justify-center'>
       <div className='text-center'>
-        <h3 className='text-lg font-medium'>{t('common.error')}</h3>
+        <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
+          {t('common.error')}
+        </h3>
         <p className='mt-2 text-gray-600'>
           {error instanceof Error ? error.message : t('common.unknownError')}
         </p>

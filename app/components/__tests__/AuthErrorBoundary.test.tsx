@@ -21,6 +21,9 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     // Simply return the key as the translation value for easier testing
     t: (key: string) => key,
+    i18n: {
+      language: 'en',
+    },
   }),
 }))
 

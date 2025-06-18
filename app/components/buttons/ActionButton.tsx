@@ -48,9 +48,9 @@ export function ActionButton({
   const baseClasses = cn(
     // Only use flex direction from chipClasses, not the padding
     rtl ? 'flex-row-reverse' : 'flex-row',
-    'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
+    'inline-flex items-center justify-center rounded-lg font-semibold gap-2 min-h-12',
     'relative overflow-hidden transition-all duration-300 ease-out',
-    'hover:scale-105 active:scale-95',
+    'hover:scale-103 active:scale-95',
     'focus:ring-2 focus:ring-offset-2 focus:outline-none',
     size === 'sm' ? 'py-2 px-3 text-sm' : 'py-2.5 px-4 text-sm',
     disabled && 'opacity-50 cursor-not-allowed hover:scale-100 active:scale-100'

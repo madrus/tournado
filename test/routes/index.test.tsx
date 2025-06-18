@@ -264,7 +264,7 @@ describe('Home Page (_index)', () => {
         'focus:ring-emerald-600/90',
         'text-white',
         'shadow-lg',
-        'hover:scale-105',
+        'hover:scale-103',
         'active:scale-95',
         'transition-all',
         'duration-300',

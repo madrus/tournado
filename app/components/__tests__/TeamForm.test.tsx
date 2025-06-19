@@ -42,55 +42,7 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock Zod validation to return translation keys instead of translated text
-vi.mock('~/lib/lib.zod', async () => {
-  const actual = await vi.importActual('~/lib/lib.zod')
-  const { z } = await import('zod')
-
-  // Create schema that returns translation keys as error messages
-  const mockTeamFormSchema = z.object({
-    tournamentId: z.string().min(1, 'teams.form.errors.tournamentRequired'),
-    clubName: z
-      .string()
-      .min(1, 'teams.form.errors.clubNameRequired')
-      .max(100, 'teams.form.errors.clubNameTooLong'),
-    teamName: z
-      .string()
-      .min(1, 'teams.form.errors.teamNameRequired')
-      .max(50, 'teams.form.errors.teamNameTooLong'),
-    division: z.string().min(1, 'teams.form.errors.divisionRequired'),
-    category: z.string().min(1, 'teams.form.errors.categoryRequired'),
-    teamLeaderName: z
-      .string()
-      .min(1, 'teams.form.errors.teamLeaderNameRequired')
-      .max(100, 'teams.form.errors.teamLeaderNameTooLong'),
-    teamLeaderPhone: z
-      .string()
-      .min(1, 'teams.form.errors.phoneNumberRequired')
-      .refine(
-        val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val),
-        'teams.form.errors.phoneNumberInvalid'
-      ),
-    teamLeaderEmail: z
-      .string()
-      .min(1, 'teams.form.errors.emailRequired')
-      .refine(
-        val => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
-        'teams.form.errors.emailInvalid'
-      ),
-    privacyAgreement: z
-      .boolean()
-      .refine(val => val, 'teams.form.errors.privacyAgreementRequired'),
-  })
-
-  return {
-    ...actual,
-    getTeamValidationSchema: (mode: 'create' | 'edit') =>
-      mode === 'create'
-        ? mockTeamFormSchema
-        : mockTeamFormSchema.omit({ privacyAgreement: true }),
-  }
-})
+// No more Zod mocks - we'll test with actual English error messages from translations
 
 // Mock tournament data with correct TournamentData structure
 const mockTournaments: TournamentData[] = [
@@ -158,11 +110,9 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // Error messages should not be visible initially
+      expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
       expect(
-        screen.queryByText('teams.form.errors.clubNameRequired')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByText('teams.form.errors.emailInvalid')
+        screen.queryByText('Please enter a valid email address')
       ).not.toBeInTheDocument()
     })
 
@@ -175,9 +125,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       fireEvent.focus(clubNameInput)
 
       // Error should not appear just from focusing
-      expect(
-        screen.queryByText('teams.form.errors.clubNameRequired')
-      ).not.toBeInTheDocument()
+      expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
     })
 
     it('should show error message when required field is blurred empty', async () => {
@@ -191,9 +139,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for error to appear
       await waitFor(() => {
-        expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
-        ).toBeInTheDocument()
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
       })
     })
 
@@ -209,7 +155,9 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for error to appear
       await waitFor(() => {
-        expect(screen.getByText('teams.form.errors.emailInvalid')).toBeInTheDocument()
+        expect(
+          screen.getByText('Please enter a valid email address')
+        ).toBeInTheDocument()
       })
     })
 
@@ -226,9 +174,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait a bit to ensure no error appears
       await waitFor(
         () => {
-          expect(
-            screen.queryByText('teams.form.errors.clubNameRequired')
-          ).not.toBeInTheDocument()
+          expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
         },
         { timeout: 1000 }
       )
@@ -247,7 +193,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for error to appear
       await waitFor(() => {
         expect(
-          screen.getByText('teams.form.errors.phoneNumberInvalid')
+          screen.getByText('Please enter a valid phone number')
         ).toBeInTheDocument()
       })
     })
@@ -266,7 +212,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for error to appear
       await waitFor(() => {
         expect(
-          screen.getByText('teams.form.errors.teamNameTooLong')
+          screen.getByText('Team name cannot exceed 50 characters')
         ).toBeInTheDocument()
       })
     })
@@ -282,9 +228,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for error to appear
       await waitFor(() => {
-        expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
-        ).toBeInTheDocument()
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
       })
 
       // Now fix the error
@@ -294,9 +238,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for error to disappear
       await waitFor(() => {
-        expect(
-          screen.queryByText('teams.form.errors.clubNameRequired')
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
       })
     })
 
@@ -316,10 +258,10 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for both errors to appear
       await waitFor(() => {
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
         expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
+          screen.getByText('Please enter a valid email address')
         ).toBeInTheDocument()
-        expect(screen.getByText('teams.form.errors.emailInvalid')).toBeInTheDocument()
       })
     })
   })
@@ -357,7 +299,9 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for client-side error to appear alongside server error
       await waitFor(() => {
         expect(screen.getByText('Server error for club name')).toBeInTheDocument()
-        expect(screen.getByText('teams.form.errors.emailInvalid')).toBeInTheDocument()
+        expect(
+          screen.getByText('Please enter a valid email address')
+        ).toBeInTheDocument()
       })
     })
   })
@@ -375,30 +319,16 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // All required field errors should appear (for public create form)
       await waitFor(() => {
+        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
+        expect(screen.getByText('Team name is required')).toBeInTheDocument()
+        expect(screen.getByText('Division is required')).toBeInTheDocument()
+        expect(screen.getByText('Category is required')).toBeInTheDocument()
+        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
+        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
+        expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('teams.form.errors.tournamentRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.divisionRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.categoryRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamLeaderNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.phoneNumberRequired')
-        ).toBeInTheDocument()
-        expect(screen.getByText('teams.form.errors.emailRequired')).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.privacyAgreementRequired')
+          screen.getByText('You must agree to the privacy terms')
         ).toBeInTheDocument()
       })
     })
@@ -415,30 +345,16 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // All required field errors should appear (admin form has same fields)
       await waitFor(() => {
+        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
+        expect(screen.getByText('Team name is required')).toBeInTheDocument()
+        expect(screen.getByText('Division is required')).toBeInTheDocument()
+        expect(screen.getByText('Category is required')).toBeInTheDocument()
+        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
+        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
+        expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('teams.form.errors.tournamentRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.divisionRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.categoryRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamLeaderNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.phoneNumberRequired')
-        ).toBeInTheDocument()
-        expect(screen.getByText('teams.form.errors.emailRequired')).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.privacyAgreementRequired')
+          screen.getByText('You must agree to the privacy terms')
         ).toBeInTheDocument()
       })
     })
@@ -455,30 +371,18 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // All required field errors except privacy agreement should appear
       await waitFor(() => {
-        expect(
-          screen.getByText('teams.form.errors.tournamentRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.clubNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.divisionRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.teamLeaderNameRequired')
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.phoneNumberRequired')
-        ).toBeInTheDocument()
-        expect(screen.getByText('teams.form.errors.emailRequired')).toBeInTheDocument()
+        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
+        expect(screen.getByText('Club name is required')).toBeInTheDocument()
+        expect(screen.getByText('Team name is required')).toBeInTheDocument()
+        expect(screen.getByText('Division is required')).toBeInTheDocument()
+        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
+        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
+        expect(screen.getByText('Email is required')).toBeInTheDocument()
       })
 
       // Privacy agreement error should NOT appear in edit mode
       expect(
-        screen.queryByText('teams.form.errors.privacyAgreementRequired')
+        screen.queryByText('You must agree to the privacy terms')
       ).not.toBeInTheDocument()
     })
   })
@@ -553,11 +457,9 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Privacy agreement error should appear
       await waitFor(() => {
         expect(
-          screen.getByText('teams.form.errors.privacyAgreementRequired')
+          screen.getByText('You must agree to the privacy terms')
         ).toBeInTheDocument()
-        expect(
-          screen.getByText('teams.form.errors.categoryRequired')
-        ).toBeInTheDocument()
+        expect(screen.getByText('Category is required')).toBeInTheDocument()
       })
     })
   })
@@ -729,7 +631,7 @@ describe('TeamForm Category Field', () => {
 
     // Wait for error to appear
     await waitFor(() => {
-      expect(screen.getByText('teams.form.errors.categoryRequired')).toBeInTheDocument()
+      expect(screen.getByText('Category is required')).toBeInTheDocument()
     })
   })
 

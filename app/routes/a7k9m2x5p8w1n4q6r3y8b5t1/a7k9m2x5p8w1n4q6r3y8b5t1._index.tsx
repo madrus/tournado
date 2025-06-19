@@ -5,6 +5,7 @@ import { Link, type MetaFunction, useLoaderData } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { getAllTeamListItems } from '~/models/team.server'
+import { getAllTournamentListItems } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
@@ -16,6 +17,13 @@ type LoaderData = {
     id: string
     clubName: string
     teamName: string
+  }>
+  tournaments: Array<{
+    id: string
+    name: string
+    location: string
+    startDate: Date
+    endDate: Date | null
   }>
 }
 
@@ -46,8 +54,7 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access
-  // Access control will be handled within the Admin Panel components
+  // No authorization restrictions - all authenticated users can access admin panel
   protection: {
     autoCheck: true,
     // Custom check: additional validation for admin access
@@ -59,14 +66,15 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
   // Enhanced protection automatically handles authentication and authorization
   const user = await requireUserWithMetadata(request, handle)
 
-  // Load teams data for the overview tile
+  // Load teams and tournaments data for the overview tiles
   const teams = await getAllTeamListItems()
+  const tournaments = await getAllTournamentListItems()
 
-  return { user, teams }
+  return { user, teams, tournaments }
 }
 
 export default function AdminDashboard(): JSX.Element {
-  const { user, teams } = useLoaderData<LoaderData>()
+  const { user, teams, tournaments } = useLoaderData<LoaderData>()
   const { t, i18n } = useTranslation()
 
   return (
@@ -107,6 +115,35 @@ export default function AdminDashboard(): JSX.Element {
             </Link>
           </div>
 
+          {/* Tournament Management */}
+          <div className='rounded-lg border bg-white p-6 shadow-sm'>
+            <h3
+              className={cn(
+                'mb-4 text-lg font-semibold',
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              Tournament Management
+            </h3>
+            <p className='text-foreground-light mb-4'>
+              Create and manage tournaments and competitions.
+            </p>
+            <div className='mb-4 space-y-2'>
+              <p className='text-foreground-light'>
+                <strong className='me-1'>
+                  {t('admin.tournaments.totalTournaments')}:
+                </strong>
+                {tournaments.length}
+              </p>
+            </div>
+            <Link
+              to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+              className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
+            >
+              Manage Tournaments
+            </Link>
+          </div>
+
           {/* User Management */}
           <div className='rounded-lg border bg-white p-6 shadow-sm'>
             <h3
@@ -128,24 +165,6 @@ export default function AdminDashboard(): JSX.Element {
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
-          </div>
-
-          {/* Tournament Management */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              Tournament Management
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              Oversee all tournaments and competitions.
-            </p>
-            <button className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'>
-              Manage Tournaments
-            </button>
           </div>
 
           {/* System Settings */}

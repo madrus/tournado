@@ -32,6 +32,35 @@ enum Division {
   FIFTH_DIVISION
 }
 
+enum Category {
+  JO8
+  JO9
+  JO10
+  JO11
+  JO12
+  JO13
+  JO14
+  JO15
+  JO16
+  JO17
+  JO19
+  MO8
+  MO9
+  MO10
+  MO11
+  MO12
+  MO13
+  MO14
+  MO15
+  MO16
+  MO17
+  MO19
+  VETERANEN_35_PLUS
+  VETERANEN_40_PLUS
+  VETERANEN_45_PLUS
+  VETERANEN_50_PLUS
+}
+
 model User {
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now())
@@ -66,7 +95,7 @@ model Team {
   updatedAt     DateTime   @updatedAt
   tournamentId  String
   tournament    Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
-  category      String      // e.g., JO8, MO9, 35+
+  category      Category    // e.g., JO8, MO9, VETERANEN_35_PLUS
   division      Division
   clubName      String
   teamName      String

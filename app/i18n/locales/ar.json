@@ -6,13 +6,21 @@
       "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
       "createTeam": "إنشاء فريق",
       "createTeamDescription": "إضافة فريق جديد إلى النظام مع جميع التفاصيل اللازمة.",
-      "description": "إدارة جميع الفرق في جميع البطولات. عرض أو تعديل أو حذف معلومات الفريق.",
+      "description": "إدارة جميع الفرق عبر جميع البطولات. عرض أو تعديل أو حذف معلومات الفريق.",
       "editTeam": "تعديل تفاصيل الفريق",
       "saveChanges": "حفظ التغييرات",
       "teamNotFound": "الفريق غير موجود",
       "teamNotFoundDescription": "الفريق الذي تبحث عنه لا يمكن العثور عليه أو ربما تم حذفه.",
       "title": "إدارة الفرق",
       "totalTeams": "إجمالي الفرق"
+    },
+    "tournaments": {
+      "totalTournaments": "إجمالي البطولات",
+      "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "title": "إدارة البطولات",
+      "description": "إدارة جميع البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
+      "allTournaments": "جميع البطولات",
+      "allTournamentsDescription": "عرض وإدارة جميع البطولات في النظام"
     }
   },
   "auth": {
@@ -52,9 +60,11 @@
     "viewTeamsFor": "عرض الفرق لـ"
   },
   "common": {
+    "actions": "الإجراءات",
     "appName": "Tournado",
     "backToHome": "العودة إلى الرئيسية",
     "cancel": "إلغاء",
+    "delete": "حذف",
     "error": "خطأ",
     "guest": "ضيف",
     "language": "اللغة",
@@ -71,6 +81,7 @@
       "signIn": "تسجيل الدخول",
       "signUp": "التسجيل",
       "teams": "الفرق",
+      "tournaments": "البطولات",
       "welcome": "أهلاً وسهلاً"
     },
     "unknownError": "حدث خطأ غير معروف",
@@ -130,10 +141,10 @@
       "unknownError": "خطأ غير معروف"
     },
     "form": {
-      "clubName": "اسم النادي:",
+      "clubName": "اسم النادي",
       "createAnotherTeam": "إنشاء فريق آخر",
       "createTeam": "حفظ",
-      "division": "الفئة:",
+      "division": "الفئة",
       "errors": {
         "clubNameRequired": "اسم النادي مطلوب",
         "clubNameTooLong": "يجب أن يكون اسم النادي أقل من 100 حرف",
@@ -158,16 +169,18 @@
         "teamName": "أدخل اسم فريقك"
       },
       "privacyAgreement": "أوافق على سياسة الخصوصية وشروط الخدمة",
+      "privacyPolicy": "سياسة الخصوصية",
+      "readAndAccept": "يرجى قراءة وقبول سياسة الخصوصية للمتابعة",
       "selectDivision": "اختر فئة",
       "selectTournament": "اختر بطولة",
       "teamInfo": "الفريق",
-      "teamLeaderEmail": "بريد قائد الفريق الإلكتروني:",
+      "teamLeaderEmail": "بريد قائد الفريق الإلكتروني",
       "teamLeaderInfo": "قائد الفريق",
-      "teamLeaderName": "اسم قائد الفريق:",
-      "teamLeaderPhone": "هاتف قائد الفريق:",
-      "teamName": "اسم الفريق:",
-      "tournament": "البطولة:",
-      "category": "الفئة:",
+      "teamLeaderName": "اسم قائد الفريق",
+      "teamLeaderPhone": "هاتف قائد الفريق",
+      "teamName": "اسم الفريق",
+      "tournament": "البطولة",
+      "category": "الفئة",
       "selectCategory": "اختر فئة",
       "teamRegistration": "تسجيل الفريق",
       "fillOutForm": "املأ النموذج أدناه لتسجيل فريقك",
@@ -184,5 +197,44 @@
     "noTeams": "لم يتم تسجيل أي فرق بعد. كن أول من يسجل فريقك للبطولات القادمة!",
     "save": "حفظ",
     "title": "الفرق"
+  },
+  "tournaments": {
+    "addTournament": "إضافة بطولة",
+    "deleteTournament": "حذف البطولة",
+    "title": "البطولات",
+    "name": "الاسم",
+    "location": "الموقع",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ النهاية",
+    "noTournaments": "لا توجد بطولات",
+    "noTournamentsDescription": "لم يتم إنشاء أي بطولات بعد. أنشئ بطولتك الأولى للبدء!",
+    "form": {
+      "name": "اسم البطولة",
+      "location": "الموقع",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
+      "basicInformation": "المعلومات الأساسية",
+      "enterBasicDetails": "أدخل اسم البطولة والموقع",
+      "dates": "تواريخ البطولة",
+      "selectDates": "حدد تاريخ البداية والنهاية للبطولة",
+      "divisions": "الدرجات",
+      "selectDivisions": "حدد الدرجات التي ستشارك",
+      "categories": "الفئات",
+      "selectCategories": "حدد الفئات العمرية التي ستشارك",
+      "selected": "محدد",
+      "tournamentRegistration": "تسجيل البطولة",
+      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة",
+      "saveTournament": "حفظ البطولة",
+      "createTournament": "إنشاء البطولة",
+      "updateTournament": "تحديث البطولة"
+    }
+  },
+  "divisions": {
+    "PREMIER_DIVISION": "الدرجة الأولى",
+    "FIRST_DIVISION": "الدرجة الثانية",
+    "SECOND_DIVISION": "الدرجة الثالثة",
+    "THIRD_DIVISION": "الدرجة الرابعة",
+    "FOURTH_DIVISION": "الدرجة الخامسة",
+    "FIFTH_DIVISION": "الدرجة السادسة"
   }
 }

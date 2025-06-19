@@ -41,7 +41,7 @@ describe('useAuthStore', () => {
     state().setAuth(true, 'testuser')
 
     // Get the persisted data from sessionStorage
-    const persistedDataString = sessionStorage.getItem('auth-store-storage')
+    const persistedDataString = sessionStorage.getItem('auth-storage')
     expect(persistedDataString).not.toBeNull()
 
     if (persistedDataString) {

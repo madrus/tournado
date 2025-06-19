@@ -5,6 +5,7 @@ import { redirect, useLoaderData, useSubmit } from 'react-router'
 
 import type { Team } from '@prisma/client'
 
+import { ApparelIcon } from '~/components/icons'
 import { TeamList } from '~/components/TeamList'
 import { deleteTeamById, getAllTeamListItems } from '~/models/team.server'
 import { cn } from '~/utils/misc'
@@ -22,7 +23,7 @@ type ActionArgs = {
   request: Request
 }
 
-// Route metadata - admin only
+// Route metadata - authenticated users can access
 export const handle: RouteMetadata = {
   isPublic: false,
   auth: {
@@ -30,8 +31,7 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access
-  // Access control will be handled within the Admin Panel components
+  // No authorization restrictions - all authenticated users can access teams listing
 }
 
 export const meta: MetaFunction = () => [
@@ -106,19 +106,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
               <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-500'>
-                <svg
-                  className='h-5 w-5 text-white'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
-                  />
-                </svg>
+                <ApparelIcon className='text-white' size={24} variant='outlined' />
               </div>
             </div>
             <div className='ms-5 w-0 flex-1'>

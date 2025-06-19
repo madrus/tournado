@@ -4,16 +4,16 @@ import {
   type LoaderFunctionArgs,
   type MetaFunction,
   useActionData,
-  useLoaderData,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
-import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
-import { extractTeamDataFromFormData, validateTeamData } from '~/lib/lib.zod'
+import { validateEntireForm } from '~/lib/lib.form'
+import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
+import type { TeamCreateActionData, TeamFormData } from '~/lib/lib.types'
+import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
 
@@ -39,32 +39,8 @@ export const handle: RouteMetadata = {
   title: 'common.titles.addTeam',
 }
 
-export const loader = async ({
-  request: _,
-}: LoaderFunctionArgs): Promise<TeamCreateLoaderData> => {
-  // Fetch available tournaments
-  const tournaments = await prisma.tournament.findMany({
-    select: {
-      id: true,
-      name: true,
-      location: true,
-      startDate: true,
-      endDate: true,
-      divisions: true,
-      categories: true,
-    },
-    orderBy: { startDate: 'asc' },
-  })
-
-  return {
-    tournaments: tournaments.map(t => ({
-      ...t,
-      startDate: t.startDate.toISOString(),
-      endDate: t.endDate?.toISOString() || null,
-      divisions: Array.isArray(t.divisions) ? (t.divisions as Division[]) : [],
-      categories: Array.isArray(t.categories) ? (t.categories as string[]) : [],
-    })),
-  }
+export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<void> => {
+  // Tournaments are now loaded automatically by the root layout
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
@@ -73,58 +49,26 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
   // Extract form data using shared utility
   const teamData = extractTeamDataFromFormData(formData)
 
-  // Validate using shared schema
-  const validationResult = validateTeamData(teamData, 'create')
+  // Convert ExtractedTeamData to TeamFormData for validation
+  // We use type assertion here because server-side validation is more permissive
+  const teamFormData = teamData as TeamFormData
 
-  const errors: TeamCreateActionData['errors'] = {}
-
-  if (!validationResult.success) {
-    // Convert Zod validation errors to the expected error format
-    validationResult.error.errors.forEach(error => {
-      if (error.path[0]) {
-        const fieldName = error.path[0] as string
-        // Map to simple error keys for translation
-        switch (fieldName) {
-          case 'tournamentId':
-            errors.tournamentId = 'validationError'
-            break
-          case 'clubName':
-            errors.clubName = 'validationError'
-            break
-          case 'teamName':
-            errors.teamName = 'validationError'
-            break
-          case 'division':
-            errors.division = 'validationError'
-            break
-          case 'category':
-            errors.category = 'validationError'
-            break
-          case 'teamLeaderName':
-            errors.teamLeaderName = 'validationError'
-            break
-          case 'teamLeaderPhone':
-            errors.teamLeaderPhone = 'validationError'
-            break
-          case 'teamLeaderEmail':
-            errors.teamLeaderEmail = 'validationError'
-            break
-          case 'privacyAgreement':
-            errors.privacyAgreement = 'validationError'
-            break
-        }
-      }
-    })
-  }
+  // Validate using the form validation system
+  const fieldErrors = validateEntireForm(teamFormData, 'create')
 
   // Additional business logic validation
   const validDivision = teamData.division ? stringToDivision(teamData.division) : null
   if (teamData.division && !validDivision) {
-    errors.division = 'invalidDivision'
+    fieldErrors.division = 'Invalid division'
   }
 
-  if (Object.keys(errors).length > 0) {
-    return Response.json({ errors }, { status: 400 })
+  const validCategory = teamData.category ? stringToCategory(teamData.category) : null
+  if (teamData.category && !validCategory) {
+    fieldErrors.category = 'Invalid category'
+  }
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return Response.json({ errors: fieldErrors }, { status: 400 })
   }
 
   // Find or create team leader
@@ -154,7 +98,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
   if (!tournament) {
     return Response.json(
-      { errors: { tournament: 'tournamentNotFound' } },
+      { errors: { tournamentId: 'Tournament not found' } },
       { status: 404 }
     )
   }
@@ -163,7 +107,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     clubName: teamData.clubName,
     teamName: teamData.teamName,
     division: validDivision as Division,
-    category: teamData.category,
+    category: validCategory as Category,
     teamLeaderId: teamLeader.id,
     tournamentId: teamData.tournamentId,
   })
@@ -183,7 +127,6 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
 export default function NewTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
-  const { tournaments } = useLoaderData<typeof loader>()
 
   // Prepare success message with translated division label
   const successMessage =
@@ -195,7 +138,6 @@ export default function NewTeamPage(): JSX.Element {
     <TeamForm
       mode='create'
       variant='public'
-      tournaments={tournaments}
       errors={actionData?.errors || {}}
       isSuccess={actionData?.success || false}
       successMessage={successMessage}

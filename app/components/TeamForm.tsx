@@ -32,15 +32,8 @@ export function TeamForm({
 }: TeamFormProps): JSX.Element {
   const { t, i18n } = useTranslation()
   const teamNameRef = useRef<HTMLInputElement>(null)
-  const teamClassRef = useRef<HTMLSelectElement>(null)
+  const teamClassRef = useRef<HTMLButtonElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
-
-  // Use the custom validation hook
-  const { displayErrors, handleSubmit, handleFieldBlur } = useTeamFormValidation({
-    mode,
-    formRef,
-    serverErrors: errors,
-  })
 
   // State for selected tournament (for division filtering)
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>(
@@ -53,6 +46,18 @@ export function TeamForm({
   const [divisionValue, setDivisionValue] = useState<string>(formData.division || '')
   // Add state for category
   const [categoryValue, setCategoryValue] = useState<string>(formData.category || '')
+
+  // Use the custom validation hook
+  const { displayErrors, handleSubmit, handleFieldBlur } = useTeamFormValidation({
+    mode,
+    formRef,
+    serverErrors: errors,
+    fieldStates: {
+      selectedTournamentId,
+      divisionValue,
+      categoryValue,
+    },
+  })
 
   // Get available divisions for selected tournament
   const availableDivisions = selectedTournamentId
@@ -175,13 +180,13 @@ export function TeamForm({
                   name='tournamentId'
                   label={t('teams.form.tournament')}
                   value={selectedTournamentId}
-                  onChange={event => {
-                    setSelectedTournamentId(event.target.value)
+                  onChange={value => {
+                    setSelectedTournamentId(value)
                     // Reset dependent fields when tournament changes
                     setDivisionValue('')
                     setCategoryValue('')
                   }}
-                  onBlur={event => handleFieldBlur('tournamentId', event.target.value)}
+                  onBlur={value => handleFieldBlur('tournamentId', value)}
                   options={tournaments.map(tournament => ({
                     value: tournament.id,
                     label: `${tournament.name} - ${tournament.location}`,
@@ -204,12 +209,12 @@ export function TeamForm({
                   name='division'
                   label={t('teams.form.division')}
                   value={divisionValue}
-                  onChange={event => {
-                    setDivisionValue(event.target.value)
+                  onChange={value => {
+                    setDivisionValue(value)
                     // Reset category when division changes
                     setCategoryValue('')
                   }}
-                  onBlur={event => handleFieldBlur('division', event.target.value)}
+                  onBlur={value => handleFieldBlur('division', value)}
                   options={availableDivisions.map(division => ({
                     value: division,
                     label: getDivisionLabel(division as Division, i18n.language),
@@ -234,8 +239,8 @@ export function TeamForm({
                   name='category'
                   label={t('teams.form.category')}
                   value={categoryValue}
-                  onChange={event => setCategoryValue(event.target.value)}
-                  onBlur={event => handleFieldBlur('category', event.target.value)}
+                  onChange={value => setCategoryValue(value)}
+                  onBlur={value => handleFieldBlur('category', value)}
                   options={availableCategories.map(category => ({
                     value: category,
                     label: category,

@@ -6,6 +6,7 @@ import {
   ApparelIcon,
   BlockIcon,
   CheckCircleIcon,
+  CheckIcon,
   CloseIcon,
   DarkModeIcon,
   DeleteIcon,
@@ -34,6 +35,7 @@ export type IconName =
   | 'admin_panel_settings'
   | 'apparel'
   | 'block'
+  | 'check'
   | 'check_circle'
   | 'close'
   | 'dark_mode'
@@ -61,6 +63,7 @@ export const iconMap = {
   admin_panel_settings: AdminPanelSettingsIcon,
   apparel: ApparelIcon,
   block: BlockIcon,
+  check: CheckIcon,
   check_circle: CheckCircleIcon,
   close: CloseIcon,
   dark_mode: DarkModeIcon,

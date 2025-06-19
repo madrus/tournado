@@ -145,6 +145,20 @@ const Document = ({ children, language }: DocumentProps) => {
             --green-a11: rgba(16, 185, 129, 0.9);
             --green-a12: rgba(16, 185, 129, 0.95);
           }
+
+          /* Mobile select dropdown fix - ensure native dropdown has enough space */
+          @media (max-width: 1023px) {
+            body {
+              min-height: 100vh;
+              min-height: 100dvh; /* Dynamic viewport height for mobile */
+            }
+
+            /* Ensure select dropdowns aren't clipped by containers */
+            select {
+              position: static !important;
+            }
+          }
+
         `}</style>
       </head>
       <body
@@ -211,7 +225,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
             <div
-              className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
+              className='flex-1 overflow-visible bg-gradient-to-b from-emerald-50 to-white pb-16 md:overflow-y-auto md:pb-0'
               style={{ position: 'relative', zIndex: 1 }}
             >
               <Outlet />
@@ -250,7 +264,7 @@ export function ErrorBoundary(): JSX.Element {
               <AppBar authenticated={authenticated} username={username} />
             </div>
             <div
-              className='flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white pb-16 md:pb-0'
+              className='flex-1 overflow-visible bg-gradient-to-b from-emerald-50 to-white pb-16 md:overflow-y-auto md:pb-0'
               style={{ position: 'relative', zIndex: 1 }}
             >
               <GeneralErrorBoundary />

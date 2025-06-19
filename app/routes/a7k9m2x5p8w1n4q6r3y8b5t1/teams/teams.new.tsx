@@ -71,8 +71,16 @@ export const loader = async ({
       ...t,
       startDate: t.startDate.toISOString(),
       endDate: t.endDate?.toISOString() || null,
-      divisions: Array.isArray(t.divisions) ? (t.divisions as Division[]) : [],
-      categories: Array.isArray(t.categories) ? (t.categories as string[]) : [],
+      divisions: Array.isArray(t.divisions)
+        ? (t.divisions as Division[])
+        : t.divisions
+          ? JSON.parse(t.divisions as string)
+          : [],
+      categories: Array.isArray(t.categories)
+        ? (t.categories as string[])
+        : t.categories
+          ? JSON.parse(t.categories as string)
+          : [],
     })),
   }
 }

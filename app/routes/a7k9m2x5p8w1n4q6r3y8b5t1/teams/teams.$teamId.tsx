@@ -123,9 +123,11 @@ export async function loader({ params, request }: LoaderArgs): Promise<LoaderDat
       endDate: tournament.endDate?.toISOString() || null,
       divisions: Array.isArray(tournament.divisions)
         ? (tournament.divisions as Division[])
-        : [],
+        : tournament.divisions
+          ? JSON.parse(tournament.divisions as string)
+          : [],
       categories: Array.isArray(tournament.categories)
-        ? tournament.categories
+        ? (tournament.categories as string[])
         : tournament.categories
           ? JSON.parse(tournament.categories as string)
           : [],

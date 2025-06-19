@@ -14,6 +14,22 @@ import type {
 
 import { TeamForm } from '../TeamForm'
 
+// Mock hasPointerCapture for Radix UI components
+Object.defineProperty(HTMLElement.prototype, 'hasPointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+
+Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+
+Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+
 // Mock i18n - return key as value for testing
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -452,18 +468,30 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // Fill all required fields except privacy agreement
-      const tournamentSelect = screen.getByLabelText(/teams\.form\.tournament/)
+      const tournamentSelect = screen.getByRole('combobox', {
+        name: /teams\.form\.tournament/,
+      })
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      const divisionSelect = screen.getByLabelText(/teams\.form\.division/)
+      const divisionSelect = screen.getByRole('combobox', {
+        name: /teams\.form\.division/,
+      })
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
       const phoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
       const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
 
-      await user.selectOptions(tournamentSelect, 'tournament-1')
+      // Click tournament select and choose option
+      await user.click(tournamentSelect)
+      const tournamentOption = screen.getByRole('option', { name: /Test Tournament 1/ })
+      await user.click(tournamentOption)
+
       await user.type(clubNameInput, 'Test Club')
       await user.type(teamNameInput, 'Test Team')
-      await user.selectOptions(divisionSelect, 'FIRST_DIVISION')
+
+      // Click division select and choose option
+      await user.click(divisionSelect)
+      const divisionOption = screen.getByRole('option', { name: /FIRST_DIVISION/ })
+      await user.click(divisionOption)
       await user.type(teamLeaderNameInput, 'John Doe')
       await user.type(phoneInput, '0612345678')
       await user.type(emailInput, 'john@example.com')
@@ -488,7 +516,9 @@ describe('TeamForm Component - onBlur Validation', () => {
     it('should update divisions when tournament changes', async () => {
       renderTeamForm('create', 'public')
 
-      const tournamentSelect = screen.getByLabelText(/teams\.form\.tournament/)
+      const tournamentSelect = screen.getByRole('combobox', {
+        name: /teams\.form\.tournament/,
+      })
 
       // Initially no divisions should be available
       expect(screen.queryByDisplayValue('FIRST_DIVISION')).not.toBeInTheDocument()
@@ -566,7 +596,7 @@ describe('TeamForm Category Field', () => {
     },
   ]
 
-  it('renders category ComboField with correct options from tournament', () => {
+  it('renders category ComboField with correct options from tournament', async () => {
     renderTeamForm(
       'create',
       'public',
@@ -576,11 +606,18 @@ describe('TeamForm Category Field', () => {
       undefined,
       categoryTournaments
     )
-    const categorySelect = screen.getByLabelText(/teams\.form\.category/)
+    const categorySelect = screen.getByRole('combobox', {
+      name: /teams\.form\.category/,
+    })
+    expect(categorySelect).toBeInTheDocument()
+
+    // Click to open the select dropdown
+    await userEvent.click(categorySelect)
+
+    // Check that all options are available
     categoryTournaments[0].categories!.forEach(option => {
       expect(screen.getByRole('option', { name: option })).toBeInTheDocument()
     })
-    expect(categorySelect).toBeInTheDocument()
   })
 
   it('sets initial value from formData', () => {
@@ -593,8 +630,10 @@ describe('TeamForm Category Field', () => {
       undefined,
       categoryTournaments
     )
-    const categorySelect = screen.getByLabelText(/teams\.form\.category/)
-    expect((categorySelect as HTMLSelectElement).value).toBe('JO9')
+    const categorySelect = screen.getByRole('combobox', {
+      name: /teams\.form\.category/,
+    })
+    expect(categorySelect).toHaveTextContent('JO9')
   })
 
   it('updates value on change', async () => {
@@ -607,9 +646,19 @@ describe('TeamForm Category Field', () => {
       undefined,
       categoryTournaments
     )
-    const categorySelect = screen.getByLabelText(/teams\.form\.category/)
-    await userEvent.selectOptions(categorySelect, 'JO10')
-    expect((categorySelect as HTMLSelectElement).value).toBe('JO10')
+    const categorySelect = screen.getByRole('combobox', {
+      name: /teams\.form\.category/,
+    })
+
+    // Click to open the dropdown
+    await userEvent.click(categorySelect)
+
+    // Click on the JO10 option
+    const jo10Option = screen.getByRole('option', { name: 'JO10' })
+    await userEvent.click(jo10Option)
+
+    // Verify the value was updated
+    expect(categorySelect).toHaveTextContent('JO10')
   })
 
   it('shows required error if blurred empty', async () => {
@@ -622,7 +671,9 @@ describe('TeamForm Category Field', () => {
       undefined,
       categoryTournaments
     )
-    const categorySelect = screen.getByLabelText(/teams\.form\.category/)
+    const categorySelect = screen.getByRole('combobox', {
+      name: /teams\.form\.category/,
+    })
     fireEvent.focus(categorySelect)
     fireEvent.blur(categorySelect)
 

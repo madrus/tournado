@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
@@ -9,12 +9,18 @@ type UseTeamFormValidationProps = {
   mode: 'create' | 'edit'
   formRef: React.RefObject<HTMLFormElement | null>
   serverErrors?: Record<string, string>
+  fieldStates?: {
+    selectedTournamentId?: string
+    divisionValue?: string
+    categoryValue?: string
+  }
 }
 
 export function useTeamFormValidation({
   mode,
   formRef,
   serverErrors = {},
+  fieldStates = {},
 }: UseTeamFormValidationProps): UseTeamFormValidationReturn {
   const { t } = useTranslation()
 
@@ -66,18 +72,33 @@ export function useTeamFormValidation({
 
   // Handle field validation on blur (when user leaves the field)
   const handleFieldBlur = (name: string, value: string | boolean) => {
-    // Mark field as touched only when user leaves the field
+    // Mark field as touched immediately
     setTouchedFields(prev => ({ ...prev, [name]: true }))
 
+    // Force all errors to show immediately
+    setForceShowAllErrors(true)
+
+    // Run validation with current form data
     try {
-      // For simple field validation, we'll validate the whole form data
-      // since some fields depend on the mode/variant context
       const currentFormData = new FormData(formRef.current || undefined)
       currentFormData.set(name, value.toString())
       validateForm(currentFormData)
     } catch (_error) {
-      // Silently handle validation errors for better UX
-      // Error will be shown when user attempts to submit
+      // Validation error handling
+    }
+  }
+
+  // Check if a field should be disabled based on dependencies
+  const isFieldDisabled = (fieldName: string): boolean => {
+    const { selectedTournamentId, divisionValue } = fieldStates
+
+    switch (fieldName) {
+      case 'division':
+        return !selectedTournamentId
+      case 'category':
+        return !divisionValue
+      default:
+        return false
     }
   }
 
@@ -86,17 +107,41 @@ export function useTeamFormValidation({
     submitAttempted || touchedFields[fieldName] || false
 
   // Get filtered errors (only show errors for touched fields or after submit attempt)
-  const getDisplayErrors = (): Record<string, string> => {
+  const getDisplayErrors = (
+    currentTouchedFields?: Record<string, boolean>
+  ): Record<string, string> => {
     const displayErrors: Record<string, string> = {}
+    const effectiveTouchedFields = currentTouchedFields || touchedFields
 
-    // Always show server-side errors
+    // Always show server-side errors (translate them if they are error keys)
     Object.keys(serverErrors).forEach(fieldName => {
-      displayErrors[fieldName] = serverErrors[fieldName]
+      // Don't show errors for disabled fields
+      if (isFieldDisabled(fieldName)) {
+        return
+      }
+
+      const errorValue = serverErrors[fieldName]
+      // Check if the error value looks like a translation key (contains no spaces and ends with 'Required' or similar patterns)
+      const isTranslationKey =
+        errorValue &&
+        !errorValue.includes(' ') &&
+        (errorValue.includes('Required') ||
+          errorValue.includes('Invalid') ||
+          errorValue.includes('TooLong'))
+
+      displayErrors[fieldName] = isTranslationKey
+        ? t(`teams.form.errors.${errorValue}`)
+        : errorValue
     })
 
     // Show client-side validation errors only if field was touched or submit attempted
     Object.keys(validationErrors).forEach(fieldName => {
-      if (forceShowAllErrors || shouldShowFieldError(fieldName)) {
+      // Don't show errors for disabled fields
+      if (isFieldDisabled(fieldName)) {
+        return
+      }
+
+      if (forceShowAllErrors || submitAttempted || effectiveTouchedFields[fieldName]) {
         displayErrors[fieldName] = validationErrors[fieldName]
       }
     })
@@ -127,6 +172,19 @@ export function useTeamFormValidation({
     form.submit()
   }
 
+  // Reactive computed value for display errors
+  const displayErrors = useMemo(
+    () => getDisplayErrors(),
+    [
+      validationErrors,
+      touchedFields,
+      submitAttempted,
+      forceShowAllErrors,
+      serverErrors,
+      fieldStates,
+    ]
+  )
+
   return {
     // State
     validationErrors,
@@ -135,7 +193,7 @@ export function useTeamFormValidation({
     forceShowAllErrors,
 
     // Computed values
-    displayErrors: getDisplayErrors(),
+    displayErrors,
 
     // Functions
     validateForm,

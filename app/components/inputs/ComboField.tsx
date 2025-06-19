@@ -1,4 +1,4 @@
-import { forwardRef, Ref } from 'react'
+import { forwardRef, Ref, useRef } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
@@ -43,6 +43,9 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
     },
     ref
   ) => {
+    // Track if a selection was just made to prevent double onBlur calls
+    const justSelectedRef = useRef(false)
+
     // Normalize value to always be a string
     const normalizedValue = value ?? ''
     // Ensure the value is always present in the options, or fallback to ''
@@ -55,7 +58,20 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
       <div className={cn('mb-4', className)} ref={ref}>
         <label className='text-foreground-light flex w-full flex-col gap-1'>
           <span className='text-foreground-light font-medium'>{label}</span>
-          <Select.Root value={safeValue} onValueChange={onChange} disabled={disabled}>
+          <Select.Root
+            value={safeValue}
+            onValueChange={newValue => {
+              justSelectedRef.current = true
+              onChange(newValue)
+              // Call onBlur immediately with the new value when a selection is made
+              onBlur?.(newValue)
+              // Reset the flag after a short delay
+              setTimeout(() => {
+                justSelectedRef.current = false
+              }, 10)
+            }}
+            disabled={disabled}
+          >
             <Select.Trigger
               ref={selectRef}
               className={cn(
@@ -81,7 +97,13 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}
-                onCloseAutoFocus={() => onBlur?.(safeValue)}
+                onCloseAutoFocus={() => {
+                  // This handles the case where user opens dropdown but closes without selecting
+                  // Only trigger if no selection was made AND value is empty
+                  if (!justSelectedRef.current && safeValue === '') {
+                    onBlur?.(safeValue)
+                  }
+                }}
               >
                 <Select.Viewport className='p-1'>
                   {options.map(opt => (

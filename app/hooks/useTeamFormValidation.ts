@@ -39,6 +39,35 @@ export function useTeamFormValidation({
   // Get validation schema
   const getValidationSchema = () => getTeamValidationSchema(mode, t)
 
+  // Validate a single field
+  const validateSingleField = (
+    fieldName: string,
+    fieldValue: string | boolean
+  ): void => {
+    try {
+      const schema = getValidationSchema()
+      const fieldSchema = schema.shape[fieldName as keyof typeof schema.shape]
+
+      if (fieldSchema) {
+        fieldSchema.parse(fieldValue)
+        // Field is valid, clear its error
+        setValidationErrors(prev => {
+          const newErrors = { ...prev }
+          delete newErrors[fieldName]
+          return newErrors
+        })
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMessage = error.errors[0]?.message || `${fieldName} is invalid`
+        setValidationErrors(prev => ({
+          ...prev,
+          [fieldName]: errorMessage,
+        }))
+      }
+    }
+  }
+
   // Validate entire form
   const validateForm = (
     submissionFormData: FormData,
@@ -75,14 +104,32 @@ export function useTeamFormValidation({
     // Mark field as touched immediately
     setTouchedFields(prev => ({ ...prev, [name]: true }))
 
-    // Force all errors to show immediately
-    setForceShowAllErrors(true)
-
-    // Run validation with current form data
+    // Run validation with current form data AND the new field value
     try {
       const currentFormData = new FormData(formRef.current || undefined)
-      currentFormData.set(name, value.toString())
-      validateForm(currentFormData)
+
+      // For controlled fields, ensure their current state values are in FormData
+      // But use the new value for the field being validated
+      if (fieldStates?.selectedTournamentId) {
+        currentFormData.set('tournamentId', fieldStates.selectedTournamentId)
+      }
+      if (fieldStates?.divisionValue && name !== 'division') {
+        currentFormData.set('division', fieldStates.divisionValue)
+      }
+      if (fieldStates?.categoryValue && name !== 'category') {
+        currentFormData.set('category', fieldStates.categoryValue)
+      }
+
+      // For field selections, only validate the specific field
+      if (value !== '') {
+        validateSingleField(name, value)
+      } else {
+        // For empty values (blur without selection), validate with full form context
+        // ALWAYS use the immediate new value for the field being validated
+        currentFormData.set(name, value.toString())
+
+        validateForm(currentFormData)
+      }
     } catch (_error) {
       // Validation error handling
     }

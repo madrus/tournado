@@ -7,11 +7,11 @@ import {
   useLoaderData,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
+import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { extractTeamDataFromFormData, validateTeamData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
@@ -131,6 +131,11 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     errors.division = 'invalidDivision'
   }
 
+  const validCategory = teamData.category ? stringToCategory(teamData.category) : null
+  if (teamData.category && !validCategory) {
+    errors.category = 'invalidCategory'
+  }
+
   if (Object.keys(errors).length > 0) {
     return Response.json({ errors }, { status: 400 })
   }
@@ -171,7 +176,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
     clubName: teamData.clubName,
     teamName: teamData.teamName,
     division: validDivision as Division,
-    category: teamData.category,
+    category: validCategory as Category,
     teamLeaderId: teamLeader.id,
     tournamentId: teamData.tournamentId,
   })

@@ -6,7 +6,9 @@ import {
   getDivisionLabel,
   getDivisionLabelByValue,
   getDivisionValues,
+  isValidCategory,
   isValidDivision,
+  stringToCategory,
   stringToDivision,
   stringToDivisionValue,
 } from '../lib.helpers'
@@ -353,6 +355,177 @@ describe('lib.helpers', () => {
       const divisions = getAllDivisions()
       const sortedByOrder = [...divisions].sort((a, b) => a.order - b.order)
       expect(divisions).toEqual(sortedByOrder)
+    })
+  })
+
+  describe('stringToCategory', () => {
+    // Valid Category enum values
+    const validCategories = [
+      'JO8',
+      'JO9',
+      'JO10',
+      'JO11',
+      'JO12',
+      'JO13',
+      'JO14',
+      'JO15',
+      'JO16',
+      'JO17',
+      'JO19',
+      'MO8',
+      'MO9',
+      'MO10',
+      'MO11',
+      'MO12',
+      'MO13',
+      'MO14',
+      'MO15',
+      'MO16',
+      'MO17',
+      'MO19',
+      'VETERANEN_35_PLUS',
+      'VETERANEN_40_PLUS',
+      'VETERANEN_45_PLUS',
+      'VETERANEN_50_PLUS',
+    ]
+
+    validCategories.forEach(category => {
+      it(`should convert valid string ${category} to Category enum`, () => {
+        const result = stringToCategory(category)
+        expect(result).toBe(category)
+      })
+    })
+
+    // Case insensitive tests
+    it('should convert lowercase string jo8 to Category enum', () => {
+      const result = stringToCategory('jo8')
+      expect(result).toBe('JO8')
+    })
+
+    it('should convert mixed case string Jo9 to Category enum', () => {
+      const result = stringToCategory('Jo9')
+      expect(result).toBe('JO9')
+    })
+
+    it('should convert lowercase string veteranen_35_plus to Category enum', () => {
+      const result = stringToCategory('veteranen_35_plus')
+      expect(result).toBe('VETERANEN_35_PLUS')
+    })
+
+    // Invalid inputs
+    it('should return undefined for invalid string INVALID_CATEGORY', () => {
+      const result = stringToCategory('INVALID_CATEGORY')
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for invalid string random_string', () => {
+      const result = stringToCategory('random_string')
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for invalid string 123', () => {
+      const result = stringToCategory('123')
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for empty string', () => {
+      const result = stringToCategory('')
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for null input', () => {
+      const result = stringToCategory(null)
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined for undefined input', () => {
+      const result = stringToCategory(undefined as unknown as string | null)
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('isValidCategory', () => {
+    const validCategories = [
+      'JO8',
+      'JO9',
+      'JO10',
+      'JO11',
+      'JO12',
+      'JO13',
+      'JO14',
+      'JO15',
+      'JO16',
+      'JO17',
+      'JO19',
+      'MO8',
+      'MO9',
+      'MO10',
+      'MO11',
+      'MO12',
+      'MO13',
+      'MO14',
+      'MO15',
+      'MO16',
+      'MO17',
+      'MO19',
+      'VETERANEN_35_PLUS',
+      'VETERANEN_40_PLUS',
+      'VETERANEN_45_PLUS',
+      'VETERANEN_50_PLUS',
+    ]
+
+    validCategories.forEach(category => {
+      it(`should return true for valid category string ${category}`, () => {
+        const result = isValidCategory(category)
+        expect(result).toBe(true)
+      })
+    })
+
+    // Case insensitive tests
+    it('should return true for valid category string jo8 in any case', () => {
+      const result = isValidCategory('jo8')
+      expect(result).toBe(true)
+    })
+
+    it('should return true for valid category string Mo9 in any case', () => {
+      const result = isValidCategory('Mo9')
+      expect(result).toBe(true)
+    })
+
+    it('should return true for valid category string veteranen_40_plus in any case', () => {
+      const result = isValidCategory('veteranen_40_plus')
+      expect(result).toBe(true)
+    })
+
+    // Invalid inputs
+    it('should return false for invalid string INVALID_CATEGORY', () => {
+      const result = isValidCategory('INVALID_CATEGORY')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for invalid string random_string', () => {
+      const result = isValidCategory('random_string')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for invalid string 123', () => {
+      const result = isValidCategory('123')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for empty string', () => {
+      const result = isValidCategory('')
+      expect(result).toBe(false)
+    })
+
+    it('should return false for null input', () => {
+      const result = isValidCategory(null)
+      expect(result).toBe(false)
+    })
+
+    it('should return false for undefined input', () => {
+      const result = isValidCategory(undefined as unknown as string | null)
+      expect(result).toBe(false)
     })
   })
 })

@@ -26,7 +26,7 @@ type ActionArgs = {
   request: Request
 }
 
-// Route metadata - admin only
+// Route metadata - authenticated users can access
 export const handle: RouteMetadata = {
   isPublic: false,
   auth: {
@@ -34,8 +34,7 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access
-  // Access control will be handled within the Admin Panel components
+  // No authorization restrictions - all authenticated users can access tournaments listing
 }
 
 export const meta: MetaFunction = () => [

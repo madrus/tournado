@@ -26,8 +26,11 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access
-  // Access control will be handled within the Admin Panel components
+  authorization: {
+    requiredRoles: ['admin'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => [

@@ -9,11 +9,11 @@ import {
   useNavigate,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { stringToDivision } from '~/lib/lib.helpers'
+import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData, TeamCreateLoaderData } from '~/lib/lib.types'
 import { createTeam } from '~/models/team.server'
 import type { RouteMetadata } from '~/utils/route-types'
@@ -130,6 +130,12 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
     errors.category = 'categoryRequired'
   }
 
+  // Validate category is a valid enum value
+  const validCategory = stringToCategory(category)
+  if (category && !validCategory) {
+    errors.category = 'invalidCategory'
+  }
+
   if (!teamLeaderName || teamLeaderName.length === 0) {
     errors.teamLeaderName = 'teamLeaderNameRequired'
   }
@@ -188,7 +194,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
     clubName: clubName as string,
     teamName: teamName as string,
     division: validDivision as Division,
-    category: category || '',
+    category: validCategory as Category,
     teamLeaderId: teamLeader.id,
     tournamentId: tournamentId as string,
   })

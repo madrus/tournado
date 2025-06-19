@@ -1,4 +1,5 @@
-import type { Tournament } from '@prisma/client'
+/* eslint-disable id-blacklist */
+import type { Category, Division, Tournament } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 
@@ -88,7 +89,7 @@ export const deleteTournamentById = ({
   })
 
 // Helper functions for divisions and categories
-export const getAllDivisions = () => [
+export const getAllDivisions = (): Division[] => [
   'PREMIER_DIVISION',
   'FIRST_DIVISION',
   'SECOND_DIVISION',
@@ -98,7 +99,7 @@ export const getAllDivisions = () => [
 ]
 
 // Based on seed data - these are common Dutch youth soccer categories
-export const getAllCategories = () => [
+export const getAllCategories = (): Category[] => [
   'JO8', // Jongens Onder 8 (Boys Under 8)
   'JO9', // Jongens Onder 9 (Boys Under 9)
   'JO10', // Jongens Onder 10 (Boys Under 10)
@@ -121,8 +122,8 @@ export const getAllCategories = () => [
   'MO16', // Meisjes Onder 16 (Girls Under 16)
   'MO17', // Meisjes Onder 17 (Girls Under 17)
   'MO19', // Meisjes Onder 19 (Girls Under 19)
-  'Veteranen 35+', // Veterans 35+
-  'Veteranen 40+', // Veterans 40+
-  'Veteranen 45+', // Veterans 45+
-  'Veteranen 50+', // Veterans 50+
+  'VETERANEN_35_PLUS', // Veterans 35+
+  'VETERANEN_40_PLUS', // Veterans 40+
+  'VETERANEN_45_PLUS', // Veterans 45+
+  'VETERANEN_50_PLUS', // Veterans 50+
 ]

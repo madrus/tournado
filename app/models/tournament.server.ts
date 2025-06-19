@@ -5,20 +5,13 @@ import { prisma } from '~/db.server'
 
 export type { Tournament } from '@prisma/client'
 
-// Tournament with full data for editing
-export type TournamentFull = Tournament
-
 // Tournament list item for tables/lists
 export type TournamentListItem = Pick<
   Tournament,
   'id' | 'name' | 'location' | 'startDate' | 'endDate'
 >
 
-export const getTournamentById = ({
-  id,
-}: {
-  id: string
-}): Promise<TournamentFull | null> =>
+export const getTournamentById = ({ id }: { id: string }): Promise<Tournament | null> =>
   prisma.tournament.findUnique({
     where: { id },
   })

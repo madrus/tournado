@@ -1,33 +1,35 @@
 import { forwardRef, type JSX } from 'react'
 
-type InputFieldProps = {
+type DateInputFieldProps = {
   name: string
   label: string
-  type?: 'text' | 'email' | 'tel'
   readOnly?: boolean
   error?: string
   required?: boolean
   className?: string
-  value?: string
+  defaultValue?: string
   placeholder?: string
-  onChange?: (value: string) => void
-  onBlur?: (focusEvent: React.FocusEvent<HTMLInputElement>) => void
+  min?: string
+  max?: string
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
+export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
   (
     {
       name,
       label,
-      type = 'text',
       readOnly = false,
       error,
       required = false,
       className = '',
-      value = '',
+      defaultValue,
       placeholder,
-      onChange,
+      min,
+      max,
       onBlur,
+      onChange,
     },
     ref
   ): JSX.Element => (
@@ -37,18 +39,18 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
         <input
           ref={ref}
           name={name}
-          type={type}
+          type='date'
           readOnly={readOnly}
           required={required}
-          value={value}
+          defaultValue={defaultValue}
           placeholder={placeholder}
-          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
+          min={min}
+          max={max}
+          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none'
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
-          onChange={
-            onChange ? inputEvent => onChange(inputEvent.target.value) : undefined
-          }
           onBlur={onBlur}
+          onChange={onChange}
         />
       </label>
       {error ? (
@@ -60,4 +62,4 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
   )
 )
 
-TextInputField.displayName = 'TextInputField'
+DateInputField.displayName = 'DateInputField'

@@ -13,7 +13,7 @@
  *
  * For detailed documentation, see: docs/development/type-system.md
  */
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { DIVISIONS } from './lib.constants'
 import type {
@@ -88,7 +88,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
 
 export const getDivisionLabelByValue = (
   value: DivisionValue,
-  locale: 'en' | 'nl'
+  locale: 'en' | 'nl' | 'ar' | 'tr'
 ): string => {
   const division = getDivisionByValue(value)
   return division ? division.labels[locale] : value
@@ -135,3 +135,27 @@ export const stringToEmail = (
  * Converts a string to TeamClass type (TeamClass is just string, so no conversion needed)
  */
 export const stringToTeamClass = (value: string): TeamClass => value as TeamClass
+
+/**
+ * Converts a string value to a Category enum value
+ * @param value - The string value from form data
+ * @returns Category enum value or undefined if invalid
+ */
+export const stringToCategory = (value: string | null): Category | undefined => {
+  if (!value) return undefined
+
+  const upperValue = value.toUpperCase() as Category
+  if (Object.values(Category).includes(upperValue)) {
+    return upperValue
+  }
+
+  return undefined
+}
+
+/**
+ * Validates if a string is a valid Category enum value
+ * @param value - The string value to validate
+ * @returns true if valid Category enum value
+ */
+export const isValidCategory = (value: string | null): value is Category =>
+  stringToCategory(value) !== undefined

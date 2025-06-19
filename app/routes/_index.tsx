@@ -39,6 +39,7 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderData> => {
   const user = await getUser(request)
+
   return { user }
 }
 

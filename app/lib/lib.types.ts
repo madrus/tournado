@@ -34,7 +34,7 @@ export type DivisionValue =
   | 'FIFTH_DIVISION'
 export type DivisionObject = {
   value: DivisionValue
-  labels: { en: string; nl: string }
+  labels: { en: string; nl: string; ar: string; tr: string }
   order: number
 }
 
@@ -192,7 +192,6 @@ export type TeamFormProps = {
   mode: FormMode
   variant: FormVariant
   formData?: Partial<TeamFormData>
-  tournaments?: Array<TournamentData>
   errors?: Record<string, string>
   isSuccess?: boolean
   successMessage?: string

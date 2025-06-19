@@ -38,10 +38,11 @@ export const useAuthStore = create<StoreState & Actions>()(
     persist(
       set => ({
         ...initialStoreState,
-        setAuth: (authenticated, username) => set({ authenticated, username }),
+        setAuth: (authenticated, username) =>
+          set({ authenticated, username }, false, 'setAuth'),
       }),
       {
-        name: 'auth-store-storage',
+        name: 'auth-storage',
         // Only use sessionStorage if we're in the browser
         storage: isBrowser
           ? createJSONStorage(() => sessionStorage)

@@ -28,28 +28,41 @@ test.describe('Authorization - Role-based Access', () => {
     })
 
     test('should have access to admin panel', async ({ page }) => {
-      // Regular users can now access the admin panel
+      // Regular users can access the admin panel
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
       // Should stay on admin panel (not be redirected)
       await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
-
-      // Should see admin panel content (access control handled within)
-      await expect(page.locator('body')).toBeVisible()
     })
 
     test('should have access to admin teams page', async ({ page }) => {
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
 
-      // Regular user can now access admin teams page
+      // Regular user can access admin teams page
       await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
     })
 
     test('should have access to admin team creation', async ({ page }) => {
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
 
-      // Regular user can now access admin team creation page
+      // Regular user can access admin team creation page
       await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+    })
+
+    test('should be redirected from team editing (admin only)', async ({ page }) => {
+      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/some-team-id')
+
+      // Regular user should be redirected to unauthorized page for team editing
+      await expect(page).toHaveURL('/unauthorized')
+    })
+
+    test('should be redirected from tournament creation (admin only)', async ({
+      page,
+    }) => {
+      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+
+      // Regular user should be redirected to unauthorized page for tournament creation
+      await expect(page).toHaveURL('/unauthorized')
     })
   })
 

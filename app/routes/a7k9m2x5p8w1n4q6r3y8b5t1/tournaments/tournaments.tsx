@@ -15,10 +15,10 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access
+  // No authorization restrictions - all authenticated users can access tournaments listing
 }
 
-export default function AdminTeamsLayout(): JSX.Element {
+export default function AdminTournamentsLayout(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
@@ -28,17 +28,19 @@ export default function AdminTeamsLayout(): JSX.Element {
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
             <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-              {t('admin.teams.title')}
+              {t('admin.tournaments.title')}
             </h1>
-            <p className='text-foreground-light mt-1'>{t('admin.teams.description')}</p>
+            <p className='text-foreground-light mt-1'>
+              {t('admin.tournaments.description')}
+            </p>
           </div>
 
-          {/* Add Team Button */}
+          {/* Add Tournament Button */}
           <div className='flex justify-center sm:justify-end'>
             <ActionLinkButton
               to='new'
               icon='add'
-              label={t('teams.addTeam')}
+              label={t('tournaments.addTournament')}
               variant='primary'
             />
           </div>

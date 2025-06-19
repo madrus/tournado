@@ -264,8 +264,8 @@ describe('AppBar Context Menu', () => {
       const desktopMenu = screen.getByTestId('user-menu-desktop')
       const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
 
-      // Find the Teams menu item (should be first)
-      const teamsMenuItem = menuItems[0]
+      // Find the Teams menu item (should be second for admin, after Tournaments)
+      const teamsMenuItem = menuItems[1]
       const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
 
       expect(teamsHref).toHaveTextContent('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
@@ -291,7 +291,7 @@ describe('AppBar Context Menu', () => {
       )
     })
 
-    it('should position Admin Panel right after Teams and divider', () => {
+    it('should position Admin Panel after Teams and divider', () => {
       render(
         <MemoryRouter>
           <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
@@ -301,12 +301,14 @@ describe('AppBar Context Menu', () => {
       const menuItems = getDesktopMenuItems()
       const menuLabels = Array.from(menuItems).map(item => item.textContent)
 
-      // Find positions
+      // Find positions - For admin users: Tournaments (0), Teams (1), Admin Panel (2)
+      const tournamentsIndex = menuLabels.indexOf('common.titles.tournaments')
       const teamsIndex = menuLabels.indexOf('common.titles.teams')
       const adminPanelIndex = menuLabels.indexOf('common.titles.adminPanel')
 
-      expect(teamsIndex).toBe(0) // Teams should be first
-      expect(adminPanelIndex).toBe(1) // Admin Panel should be right after Teams (divider is not counted in labels)
+      expect(tournamentsIndex).toBe(0) // Tournaments should be first for admin
+      expect(teamsIndex).toBe(1) // Teams should be second for admin
+      expect(adminPanelIndex).toBe(2) // Admin Panel should be after Teams (divider is not counted in labels)
     })
   })
 
@@ -421,15 +423,20 @@ describe('AppBar Context Menu', () => {
           | 'REFEREE'
           | 'ADMIN'
         expectedHref: string
+        teamsMenuItemIndex: number // Index where Teams appears in menu
       }> = [
-        { role: 'PUBLIC', expectedHref: '/teams' },
-        { role: 'TOURNAMENT_MANAGER', expectedHref: '/teams' },
-        { role: 'REFEREE_COORDINATOR', expectedHref: '/teams' },
-        { role: 'REFEREE', expectedHref: '/teams' },
-        { role: 'ADMIN', expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
+        { role: 'PUBLIC', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        { role: 'TOURNAMENT_MANAGER', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        { role: 'REFEREE_COORDINATOR', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        { role: 'REFEREE', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        {
+          role: 'ADMIN',
+          expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+          teamsMenuItemIndex: 1,
+        }, // Teams is 2nd for admin (after Tournaments)
       ]
 
-      roles.forEach(({ role, expectedHref }) => {
+      roles.forEach(({ role, expectedHref, teamsMenuItemIndex }) => {
         const user: User = {
           id: 'user-1',
           email: 'user@example.com',
@@ -449,8 +456,8 @@ describe('AppBar Context Menu', () => {
         const desktopMenu = screen.getByTestId('user-menu-desktop')
         const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
 
-        // Find the Teams menu item (should be first)
-        const teamsMenuItem = menuItems[0]
+        // Find the Teams menu item at the expected index
+        const teamsMenuItem = menuItems[teamsMenuItemIndex]
         const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
 
         expect(teamsHref).toHaveTextContent(expectedHref)
@@ -461,20 +468,22 @@ describe('AppBar Context Menu', () => {
   })
 
   describe('Menu Structure Consistency', () => {
-    it('should always show Teams as the first item', () => {
+    it('should show correct first menu item based on user role', () => {
       const testCases = [
-        { authenticated: false, user: null },
+        { authenticated: false, user: null, expectedFirstItem: 'common.titles.teams' },
         {
           authenticated: true,
           user: { role: 'PUBLIC' } as User,
+          expectedFirstItem: 'common.titles.teams',
         },
         {
           authenticated: true,
           user: { role: 'ADMIN' } as User,
+          expectedFirstItem: 'common.titles.tournaments', // Admin users see Tournaments first
         },
       ]
 
-      testCases.forEach(({ authenticated, user }) => {
+      testCases.forEach(({ authenticated, user, expectedFirstItem }) => {
         const { unmount } = render(
           <MemoryRouter>
             <AppBar
@@ -486,7 +495,7 @@ describe('AppBar Context Menu', () => {
         )
 
         const menuItems = getDesktopMenuItems()
-        expect(menuItems[0]).toHaveTextContent('common.titles.teams')
+        expect(menuItems[0]).toHaveTextContent(expectedFirstItem)
 
         unmount()
       })

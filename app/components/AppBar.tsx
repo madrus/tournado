@@ -64,6 +64,17 @@ export function AppBar({
   const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
+    // Tournaments - only show for admin users, first item
+    ...(isAdmin
+      ? [
+          {
+            label: t('common.titles.tournaments'),
+            icon: 'trophy' as IconName,
+            href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+            authenticated: true,
+          },
+        ]
+      : []),
     {
       label: t('common.titles.teams'),
       icon: 'apparel' as IconName,
@@ -77,7 +88,7 @@ export function AppBar({
       divider: true,
       authenticated: false,
     },
-    // Admin Panel - only show for admin users, right after Teams
+    // Admin Panel - only show for admin users, after Teams
     ...(isAdmin
       ? [
           {

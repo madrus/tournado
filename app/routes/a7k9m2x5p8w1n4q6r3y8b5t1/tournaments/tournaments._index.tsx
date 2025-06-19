@@ -170,8 +170,8 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       }))
     }
 
-    const handleTouchMove = (event: TouchEvent) => {
-      const currentTouch = event.touches[0]
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      const currentTouch = moveEvent.touches[0]
       const deltaX = currentTouch.clientX - startX
 
       let finalX: number
@@ -230,11 +230,11 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
     const handleTouchEnd = () => {
       // Use ref to get the most current state (avoids closure issues)
-      const currentState = currentSwipeRef.current
+      const endState = currentSwipeRef.current
 
-      if (currentState.startingFromDelete) {
+      if (endState.startingFromDelete) {
         // If we started from delete state
-        if (!currentState.showDelete) {
+        if (!endState.showDelete) {
           // User swiped right to cancel - force reset to normal position
           setSwipeStates(prev => ({
             ...prev,
@@ -244,14 +244,14 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           // Stay in delete state
           setSwipeStates(prev => ({
             ...prev,
-            [tournamentId]: { x: currentState.x, swiping: false, showDelete: true },
+            [tournamentId]: { x: endState.x, swiping: false, showDelete: true },
           }))
         }
       } else {
         // Normal swipe logic
         const snapThreshold = -200 // 50% threshold
 
-        if (currentState.x < snapThreshold) {
+        if (endState.x < snapThreshold) {
           // Crossed 50% threshold - snap to delete state
           setSwipeStates(prev => ({
             ...prev,

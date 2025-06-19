@@ -5,7 +5,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 
 import { TournamentForm } from '~/components/TournamentForm'
-import type { TournamentFull } from '~/models/tournament.server'
+import type { Tournament } from '~/models/tournament.server'
 import {
   deleteTournamentById,
   getAllCategories,
@@ -61,7 +61,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 }
 
 type LoaderData = {
-  tournament: TournamentFull | null
+  tournament: Tournament | null
   divisions: string[]
   categories: string[]
 }

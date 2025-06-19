@@ -124,17 +124,14 @@ export function useTeamFormValidation({
       // Check if the error value looks like a translation key (contains no spaces and ends with 'Required' or similar patterns)
       const isTranslationKey =
         errorValue &&
+        typeof errorValue === 'string' &&
         !errorValue.includes(' ') &&
-        (errorValue.includes('Required') ||
-          errorValue.includes('Invalid') ||
-          errorValue.includes('TooLong'))
+        (errorValue.includes('.') || errorValue.endsWith('Required'))
 
-      displayErrors[fieldName] = isTranslationKey
-        ? t(`teams.form.errors.${errorValue}`)
-        : errorValue
+      displayErrors[fieldName] = isTranslationKey ? t(errorValue) : errorValue
     })
 
-    // Show client-side validation errors only if field was touched or submit attempted
+    // Show validation errors if we're forcing all errors, submitted, or field is touched
     Object.keys(validationErrors).forEach(fieldName => {
       // Don't show errors for disabled fields
       if (isFieldDisabled(fieldName)) {
@@ -157,19 +154,30 @@ export function useTeamFormValidation({
     const form = event.currentTarget
     const submissionData = new FormData(form)
 
-    // Mark that submission was attempted
-    setSubmitAttempted(true)
-
-    // Run client-side validation immediately
-    const isValid = validateForm(submissionData, true) // Pass forceShowErrors = true
-
-    if (!isValid) {
-      // Validation failed, errors have been set in state
-      return
+    // For controlled fields, ensure their values are set in FormData
+    // This is needed because controlled components might not always update FormData immediately
+    if (fieldStates?.selectedTournamentId) {
+      submissionData.set('tournamentId', fieldStates.selectedTournamentId)
+    }
+    if (fieldStates?.divisionValue) {
+      submissionData.set('division', fieldStates.divisionValue)
+    }
+    if (fieldStates?.categoryValue) {
+      submissionData.set('category', fieldStates.categoryValue)
     }
 
-    // If validation passes, manually submit the form
-    form.submit()
+    // Mark that a submit was attempted
+    setSubmitAttempted(true)
+
+    // Validate form data and force show all errors
+    const isValid = validateForm(submissionData, true)
+
+    if (isValid) {
+      // If validation passes and form has action, let it submit
+      if (form.action) {
+        form.submit()
+      }
+    }
   }
 
   // Reactive computed value for display errors
@@ -182,6 +190,7 @@ export function useTeamFormValidation({
       forceShowAllErrors,
       serverErrors,
       fieldStates,
+      t,
     ]
   )
 

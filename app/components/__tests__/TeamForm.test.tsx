@@ -42,6 +42,56 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
+// Mock Zod validation to return translation keys instead of translated text
+vi.mock('~/lib/lib.zod', async () => {
+  const actual = await vi.importActual('~/lib/lib.zod')
+  const { z } = await import('zod')
+
+  // Create schema that returns translation keys as error messages
+  const mockTeamFormSchema = z.object({
+    tournamentId: z.string().min(1, 'teams.form.errors.tournamentRequired'),
+    clubName: z
+      .string()
+      .min(1, 'teams.form.errors.clubNameRequired')
+      .max(100, 'teams.form.errors.clubNameTooLong'),
+    teamName: z
+      .string()
+      .min(1, 'teams.form.errors.teamNameRequired')
+      .max(50, 'teams.form.errors.teamNameTooLong'),
+    division: z.string().min(1, 'teams.form.errors.divisionRequired'),
+    category: z.string().min(1, 'teams.form.errors.categoryRequired'),
+    teamLeaderName: z
+      .string()
+      .min(1, 'teams.form.errors.teamLeaderNameRequired')
+      .max(100, 'teams.form.errors.teamLeaderNameTooLong'),
+    teamLeaderPhone: z
+      .string()
+      .min(1, 'teams.form.errors.phoneNumberRequired')
+      .refine(
+        val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val),
+        'teams.form.errors.phoneNumberInvalid'
+      ),
+    teamLeaderEmail: z
+      .string()
+      .min(1, 'teams.form.errors.emailRequired')
+      .refine(
+        val => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+        'teams.form.errors.emailInvalid'
+      ),
+    privacyAgreement: z
+      .boolean()
+      .refine(val => val, 'teams.form.errors.privacyAgreementRequired'),
+  })
+
+  return {
+    ...actual,
+    getTeamValidationSchema: (mode: 'create' | 'edit') =>
+      mode === 'create'
+        ? mockTeamFormSchema
+        : mockTeamFormSchema.omit({ privacyAgreement: true }),
+  }
+})
+
 // Mock tournament data with correct TournamentData structure
 const mockTournaments: TournamentData[] = [
   {
@@ -490,7 +540,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Click division select and choose option
       await user.click(divisionSelect)
-      const divisionOption = screen.getByRole('option', { name: /FIRST_DIVISION/ })
+      const divisionOption = screen.getByRole('option', { name: /First Division/ })
       await user.click(divisionOption)
       await user.type(teamLeaderNameInput, 'John Doe')
       await user.type(phoneInput, '0612345678')
@@ -520,20 +570,20 @@ describe('TeamForm Component - onBlur Validation', () => {
         name: /teams\.form\.tournament/,
       })
 
-      // Initially no divisions should be available
-      expect(screen.queryByDisplayValue('FIRST_DIVISION')).not.toBeInTheDocument()
+      // Initially no divisions should be available - we check the option text instead of displayValue
+      expect(screen.queryByText('First Division')).not.toBeInTheDocument()
 
       // Select tournament 1
       fireEvent.change(tournamentSelect, { target: { value: 'tournament-1' } })
 
       // Wait for divisions to update
       await waitFor(() => {
-        const divisionSelect = screen.getByLabelText(/teams\.form\.division/)
+        const divisionSelect = screen.getAllByLabelText(/teams\.form\.division/)[0]
         expect(divisionSelect).toBeInTheDocument()
       })
 
       // Check that correct divisions are available
-      const divisionSelect = screen.getByLabelText(/teams\.form\.division/)
+      const divisionSelect = screen.getAllByLabelText(/teams\.form\.division/)[0]
       const options = Array.from(divisionSelect.querySelectorAll('option')).map(
         option => option.value
       )

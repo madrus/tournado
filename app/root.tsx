@@ -223,7 +223,7 @@ const Document = ({ children, language }: DocumentProps) => {
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   const { authenticated, username, user, ENV, language, tournaments } = loaderData
   const { setAuth } = useAuthStore()
-  const { setAvailableTournaments } = useTeamFormStore()
+  const { setAvailableOptionsField } = useTeamFormStore()
 
   // Handle auth store rehydration
   useAuthStoreHydration()
@@ -235,8 +235,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
   // Initialize tournaments in the store
   useEffect(() => {
-    setAvailableTournaments(tournaments)
-  }, [tournaments, setAvailableTournaments])
+    setAvailableOptionsField('tournaments', tournaments)
+  }, [tournaments, setAvailableOptionsField])
 
   // Set i18n language before paint (minimize hydration mismatch)
   useLayoutEffect(() => {

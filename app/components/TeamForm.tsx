@@ -33,37 +33,33 @@ export function TeamForm({
   // Zustand store destructure - get all needed properties
   const {
     // Form field values
-    tournamentId,
-    division,
-    category,
-    clubName,
-    teamName,
-    teamLeaderName,
-    teamLeaderPhone,
-    teamLeaderEmail,
-    privacyAgreement,
+    formFields: {
+      tournamentId,
+      division,
+      category,
+      clubName,
+      teamName,
+      teamLeaderName,
+      teamLeaderPhone,
+      teamLeaderEmail,
+      privacyAgreement,
+    },
     // Validation state
-    displayErrors,
-    // Stores
-    availableTournaments,
-    availableDivisions,
-    availableCategories,
+    validation: { displayErrors },
+    // Available options
+    availableOptions: {
+      tournaments: availableTournaments,
+      divisions: availableDivisions,
+      categories: availableCategories,
+    },
+    // Form metadata
+    formMeta: { mode },
     // Actions
-    setTournamentId,
-    setDivision,
-    setCategory,
-    setClubName,
-    setTeamName,
-    setTeamLeaderName,
-    setTeamLeaderPhone,
-    setTeamLeaderEmail,
-    setPrivacyAgreement,
+    setFormField,
+    setFormMetaField,
     setFieldTouched,
     setFormData,
     validateForm,
-    // Form metadata
-    mode,
-    setMode,
   } = useTeamFormStore()
 
   // Helper function to translate error keys to user-readable messages
@@ -81,9 +77,9 @@ export function TeamForm({
   // Initialize mode in store
   useEffect(() => {
     if (formMode !== mode) {
-      setMode(formMode)
+      setFormMetaField('mode', formMode)
     }
-  }, [formMode, mode, setMode])
+  }, [formMode, mode, setFormMetaField])
 
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
@@ -204,9 +200,9 @@ export function TeamForm({
                   label={t('teams.form.tournament')}
                   value={tournamentId}
                   onChange={value => {
-                    setTournamentId(value)
-                    setDivision('')
-                    setCategory('')
+                    setFormField('tournamentId', value)
+                    setFormField('division', '')
+                    setFormField('category', '')
                   }}
                   options={availableTournaments.map(tournament => ({
                     value: tournament.id,
@@ -231,7 +227,7 @@ export function TeamForm({
                   name='division'
                   label={t('teams.form.division')}
                   value={division}
-                  onChange={setDivision}
+                  onChange={value => setFormField('division', value)}
                   options={availableDivisions.map(d => ({
                     value: d,
                     label: getDivisionLabel(d as Division, i18n.language),
@@ -256,7 +252,7 @@ export function TeamForm({
                   name='category'
                   label={t('teams.form.category')}
                   value={category}
-                  onChange={setCategory}
+                  onChange={value => setFormField('category', value)}
                   options={availableCategories.map(c => ({
                     value: c,
                     label: c,
@@ -306,7 +302,7 @@ export function TeamForm({
                   name='clubName'
                   label={t('teams.form.clubName')}
                   value={clubName || ''}
-                  onChange={setClubName}
+                  onChange={value => setFormField('clubName', value)}
                   placeholder={t('teams.form.placeholders.clubName')}
                   error={getTranslatedError('clubName')}
                   required
@@ -326,7 +322,7 @@ export function TeamForm({
                   name='teamName'
                   label={t('teams.form.teamName')}
                   value={teamName || ''}
-                  onChange={setTeamName}
+                  onChange={value => setFormField('teamName', value)}
                   placeholder={t('teams.form.placeholders.teamName')}
                   error={getTranslatedError('teamName')}
                   required
@@ -371,7 +367,7 @@ export function TeamForm({
                   name='teamLeaderName'
                   label={t('teams.form.teamLeaderName')}
                   value={teamLeaderName || ''}
-                  onChange={setTeamLeaderName}
+                  onChange={value => setFormField('teamLeaderName', value)}
                   placeholder={t('teams.form.placeholders.teamLeaderName')}
                   error={getTranslatedError('teamLeaderName')}
                   required
@@ -391,7 +387,7 @@ export function TeamForm({
                   name='teamLeaderPhone'
                   label={t('teams.form.teamLeaderPhone')}
                   value={teamLeaderPhone || ''}
-                  onChange={setTeamLeaderPhone}
+                  onChange={value => setFormField('teamLeaderPhone', value)}
                   placeholder={t('teams.form.placeholders.teamLeaderPhone')}
                   error={getTranslatedError('teamLeaderPhone')}
                   required
@@ -412,7 +408,7 @@ export function TeamForm({
                   name='teamLeaderEmail'
                   label={t('teams.form.teamLeaderEmail')}
                   value={teamLeaderEmail || ''}
-                  onChange={setTeamLeaderEmail}
+                  onChange={value => setFormField('teamLeaderEmail', value)}
                   placeholder={t('teams.form.placeholders.teamLeaderEmail')}
                   error={getTranslatedError('teamLeaderEmail')}
                   required
@@ -468,7 +464,7 @@ export function TeamForm({
                     name='privacyAgreement'
                     checked={privacyAgreement}
                     onChange={checkboxEvent =>
-                      setPrivacyAgreement(checkboxEvent.target.checked)
+                      setFormField('privacyAgreement', checkboxEvent.target.checked)
                     }
                     onBlur={() => setFieldTouched('privacyAgreement')}
                     className={cn(

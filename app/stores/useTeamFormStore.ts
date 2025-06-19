@@ -27,80 +27,80 @@ type FlexibleTeamFormData = {
   privacyAgreement?: boolean
 }
 
-type FormFieldStates = {
-  // Form field values
+// Grouped form fields
+type FormFields = {
+  // Tournament selection
   tournamentId: string
   division: string
   category: string
+  // Team information
   clubName: string
   teamName: string
+  // Team leader information
   teamLeaderName: string
   teamLeaderPhone: string
   teamLeaderEmail: string
+  // Agreement
   privacyAgreement: boolean
 }
 
-type ValidationStates = {
-  // Validation and error states
-  validationErrors: Record<string, string>
+// Validation states grouped by purpose
+type ValidationState = {
+  errors: Record<string, string>
   displayErrors: Record<string, string>
   touchedFields: Record<string, boolean>
+  serverErrors: Record<string, string>
   submitAttempted: boolean
   forceShowAllErrors: boolean
-  serverErrors: Record<string, string>
 }
 
-type FormMetadata = {
-  // Form metadata
+// Form metadata grouped
+type FormMeta = {
   mode: 'create' | 'edit'
   isSubmitting: boolean
   isValid: boolean
-
-  // Available options for dropdowns
-  availableTournaments: TournamentData[]
-  availableDivisions: string[]
-  availableCategories: string[]
 }
 
-type StoreState = FormFieldStates & ValidationStates & FormMetadata
+// Available options grouped
+type AvailableOptions = {
+  tournaments: TournamentData[]
+  divisions: string[]
+  categories: string[]
+}
+
+type StoreState = {
+  formFields: FormFields
+  validation: ValidationState
+  formMeta: FormMeta
+  availableOptions: AvailableOptions
+}
+
+// Field names for type safety
+type FormFieldName = keyof FormFields
+type ValidationFieldName = keyof ValidationState
+type FormMetaFieldName = keyof FormMeta
+type AvailableOptionsFieldName = keyof AvailableOptions
 
 type Actions = {
-  // Form field setters
-  setTournamentId: (tournamentId: string) => void
-  setDivision: (division: string) => void
-  setCategory: (category: string) => void
-  setClubName: (clubName: string) => void
-  setTeamName: (teamName: string) => void
-  setTeamLeaderName: (name: string) => void
-  setTeamLeaderPhone: (phone: string) => void
-  setTeamLeaderEmail: (email: string) => void
-  setPrivacyAgreement: (agreement: boolean) => void
+  // Universal field setter using dynamic property names
+  setFormField: (fieldName: FormFieldName, value: string | boolean) => void
+  setValidationField: (
+    fieldName: ValidationFieldName,
+    value: Record<string, string> | Record<string, boolean> | boolean
+  ) => void
+  setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => void
+  setAvailableOptionsField: (
+    fieldName: AvailableOptionsFieldName,
+    value: TournamentData[] | string[]
+  ) => void
 
-  // Bulk form data setters
+  // Convenience methods for common operations
   setFormData: (formData: Partial<FlexibleTeamFormData>) => void
   resetForm: () => void
-
-  // Touch and validation - these work together reactively
   setFieldTouched: (fieldName: string, touched?: boolean) => void
-
-  // Validation management
-  setValidationErrors: (errors: Record<string, string>) => void
-  setDisplayErrors: (errors: Record<string, string>) => void
   setFieldError: (fieldName: string, error: string) => void
   clearFieldError: (fieldName: string) => void
   clearAllErrors: () => void
-  setSubmitAttempted: (attempted: boolean) => void
-  setForceShowAllErrors: (force: boolean) => void
-
-  // Form metadata setters
-  setMode: (mode: 'create' | 'edit') => void
-  setSubmitting: (submitting: boolean) => void
-  setValid: (valid: boolean) => void
-
-  // Tournament management - set from server loaders
-  setAvailableTournaments: (tournaments: TournamentData[]) => void
-
-  // Computed setters (based on selected tournament/division)
   updateAvailableOptions: () => void
 
   // Get current form data as TeamFormData
@@ -108,22 +108,18 @@ type Actions = {
 
   // Validation helpers - reactive validation system
   validateField: (fieldName: string) => void
-  validateAllTouchedFields: () => void
   validateForm: () => boolean
-
-  // Helper to get current field value
-  getFieldValue: (fieldName: string) => string | boolean
-
-  // Server-side error handling
-  setServerErrors: (errors: Record<string, string>) => void
 
   // Helper to merge server errors with validation errors
   mergeDisplayErrors: () => void
+
+  // Server errors setter (used by form submission)
+  setServerErrors: (errors: Record<string, string>) => void
 }
 
 const storeName = 'TeamFormStore'
 
-const initialFormFieldStates: FormFieldStates = {
+const initialFormFields: FormFields = {
   tournamentId: '',
   division: '',
   category: '',
@@ -135,28 +131,32 @@ const initialFormFieldStates: FormFieldStates = {
   privacyAgreement: false,
 }
 
-const initialValidationStates: ValidationStates = {
-  validationErrors: {},
+const initialValidationState: ValidationState = {
+  errors: {},
   displayErrors: {},
   touchedFields: {},
+  serverErrors: {},
   submitAttempted: false,
   forceShowAllErrors: false,
-  serverErrors: {},
 }
 
-const initialFormMetadata: FormMetadata = {
+const initialFormMeta: FormMeta = {
   mode: 'create',
   isSubmitting: false,
   isValid: false,
-  availableTournaments: [],
-  availableDivisions: [],
-  availableCategories: [],
+}
+
+const initialAvailableOptions: AvailableOptions = {
+  tournaments: [],
+  divisions: [],
+  categories: [],
 }
 
 const initialStoreState: StoreState = {
-  ...initialFormFieldStates,
-  ...initialValidationStates,
-  ...initialFormMetadata,
+  formFields: initialFormFields,
+  validation: initialValidationState,
+  formMeta: initialFormMeta,
+  availableOptions: initialAvailableOptions,
 }
 
 // Check if we're in a browser environment
@@ -180,133 +180,112 @@ export const useTeamFormStore = create<StoreState & Actions>()(
         (set, get) => ({
           ...initialStoreState,
 
+          // Universal form field setter using dynamic property names
+          setFormField: (fieldName: FormFieldName, value: string | boolean) => {
+            set(
+              (state: StoreState) => {
+                const newFormFields = {
+                  ...state.formFields,
+                  [fieldName]: value,
+                  // Handle dependent field resets
+                  ...(fieldName === 'tournamentId' && { division: '', category: '' }),
+                  ...(fieldName === 'division' && { category: '' }),
+                }
+
+                return {
+                  ...state,
+                  formFields: newFormFields,
+                }
+              },
+              false,
+              `setFormField/${fieldName}`
+            )
+
+            // Handle side effects
+            if (fieldName === 'tournamentId') {
+              get().updateAvailableOptions()
+            }
+
+            // Re-validate touched field
+            const state = get()
+            if (state.validation.touchedFields[fieldName as string]) {
+              state.validateField(fieldName as string)
+            }
+          },
+
+          // Universal validation field setter
+          setValidationField: (
+            fieldName: ValidationFieldName,
+            value: Record<string, string> | Record<string, boolean> | boolean
+          ) => {
+            set(
+              (state: StoreState) => {
+                const newValidation = {
+                  ...state.validation,
+                  [fieldName]: value,
+                }
+
+                return {
+                  ...state,
+                  validation: newValidation,
+                }
+              },
+              false,
+              `setValidationField/${fieldName}`
+            )
+          },
+
+          // Universal form meta setter
+          setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => {
+            set(
+              (state: StoreState) => {
+                const newFormMeta = {
+                  ...state.formMeta,
+                  [fieldName]: value,
+                }
+
+                return {
+                  ...state,
+                  formMeta: newFormMeta,
+                }
+              },
+              false,
+              `setFormMetaField/${fieldName}`
+            )
+          },
+
+          // Universal available options setter
+          setAvailableOptionsField: (
+            fieldName: AvailableOptionsFieldName,
+            value: TournamentData[] | string[]
+          ) => {
+            set(
+              (state: StoreState) => {
+                const newAvailableOptions = {
+                  ...state.availableOptions,
+                  [fieldName]: value,
+                }
+
+                return {
+                  ...state,
+                  availableOptions: newAvailableOptions,
+                }
+              },
+              false,
+              `setAvailableOptionsField/${fieldName}`
+            )
+          },
+
           // Helper to get current field value
           getFieldValue: (fieldName: string): string | boolean => {
             const state = get()
-            switch (fieldName) {
-              case 'tournamentId':
-                return state.tournamentId
-              case 'clubName':
-                return state.clubName
-              case 'teamName':
-                return state.teamName
-              case 'division':
-                return state.division
-              case 'category':
-                return state.category
-              case 'teamLeaderName':
-                return state.teamLeaderName
-              case 'teamLeaderPhone':
-                return state.teamLeaderPhone
-              case 'teamLeaderEmail':
-                return state.teamLeaderEmail
-              case 'privacyAgreement':
-                return state.privacyAgreement
-              default:
-                return ''
-            }
-          },
-
-          // Form field setters
-          setTournamentId: tournamentId => {
-            set(
-              {
-                tournamentId,
-                // Reset dependent fields when tournament changes
-                division: '',
-                category: '',
-              },
-              false,
-              'setTournamentId'
-            )
-            // Update available options
-            get().updateAvailableOptions()
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.tournamentId) {
-              state.validateField('tournamentId')
-            }
-          },
-          setDivision: division => {
-            set({ division }, false, 'setDivision')
-            // Reset dependent fields
-            set({ category: '' }, false, 'setDivision/resetCategory')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.division) {
-              state.validateField('division')
-            }
-          },
-          setCategory: category => {
-            set({ category }, false, 'setCategory')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.category) {
-              state.validateField('category')
-            }
-          },
-          setClubName: clubName => {
-            set({ clubName }, false, 'setClubName')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.clubName) {
-              state.validateField('clubName')
-            }
-          },
-          setTeamName: teamName => {
-            set({ teamName }, false, 'setTeamName')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.teamName) {
-              state.validateField('teamName')
-            }
-          },
-          setTeamLeaderName: teamLeaderName => {
-            set({ teamLeaderName }, false, 'setTeamLeaderName')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.teamLeaderName) {
-              state.validateField('teamLeaderName')
-            }
-          },
-          setTeamLeaderPhone: teamLeaderPhone => {
-            set({ teamLeaderPhone }, false, 'setTeamLeaderPhone')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.teamLeaderPhone) {
-              state.validateField('teamLeaderPhone')
-            }
-          },
-          setTeamLeaderEmail: teamLeaderEmail => {
-            set({ teamLeaderEmail }, false, 'setTeamLeaderEmail')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.teamLeaderEmail) {
-              state.validateField('teamLeaderEmail')
-            }
-          },
-          setPrivacyAgreement: privacyAgreement => {
-            set({ privacyAgreement }, false, 'setPrivacyAgreement')
-
-            // Re-validate touched field
-            const state = get()
-            if (state.touchedFields.privacyAgreement) {
-              state.validateField('privacyAgreement')
-            }
+            return state.formFields[fieldName as FormFieldName] || ''
           },
 
           // Bulk form data setters
           setFormData: formData => {
             // Map external field names to internal store field names
-            const mappedData: Partial<FormFieldStates> = {}
+            const mappedData: Partial<FormFields> = {}
 
             // Map tournament field
             if (formData.tournamentId !== undefined) {
@@ -340,7 +319,14 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
 
             // Set all form data at once
-            set(state => ({ ...state, ...mappedData }), false, 'setFormData')
+            set(
+              state => ({
+                ...state,
+                formFields: { ...state.formFields, ...mappedData },
+              }),
+              false,
+              'setFormData'
+            )
 
             // Update available options if tournament was set
             if (mappedData.tournamentId !== undefined) {
@@ -350,34 +336,53 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             // Clear ALL validation state completely after everything is set
             // This prevents validation errors from showing for valid pre-populated data
             set(
-              {
-                validationErrors: {},
-                displayErrors: {},
-                serverErrors: {}, // Clear server errors too
-                touchedFields: {},
-                submitAttempted: false,
-                forceShowAllErrors: false,
-              },
+              state => ({
+                ...state,
+                validation: {
+                  ...state.validation,
+                  errors: {},
+                  displayErrors: {},
+                  serverErrors: {},
+                  touchedFields: {},
+                  submitAttempted: false,
+                  forceShowAllErrors: false,
+                },
+              }),
               false,
               'setFormData/clearValidation'
             )
           },
-          resetForm: () =>
-            set(
-              {
-                ...initialStoreState,
-                availableTournaments: get().availableTournaments,
+
+          resetForm: () => {
+            const currentTournaments = get().availableOptions.tournaments
+            const resetState = {
+              ...initialStoreState,
+              availableOptions: {
+                ...initialStoreState.availableOptions,
+                tournaments: currentTournaments,
               },
-              false,
-              'resetForm'
-            ),
+            }
+
+            set(resetState, false, 'resetForm')
+          },
 
           // Touch and validation - reactive system
           setFieldTouched: (fieldName, touched = true) => {
             set(
-              state => ({
-                touchedFields: { ...state.touchedFields, [fieldName]: touched },
-              }),
+              state => {
+                const newTouchedFields = {
+                  ...state.validation.touchedFields,
+                  [fieldName]: touched,
+                }
+
+                return {
+                  ...state,
+                  validation: {
+                    ...state.validation,
+                    touchedFields: newTouchedFields,
+                  },
+                }
+              },
               false,
               'setFieldTouched'
             )
@@ -388,82 +393,106 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
 
-          // Validation management
-          setValidationErrors: validationErrors =>
-            set({ validationErrors }, false, 'setValidationErrors'),
-          setDisplayErrors: displayErrors =>
-            set({ displayErrors }, false, 'setDisplayErrors'),
-
-          // Helper to merge server errors with validation errors
-          mergeDisplayErrors: () => {
-            const state = get()
-            // Server errors take priority over validation errors
-            const mergedErrors = { ...state.displayErrors, ...state.serverErrors }
-            set({ displayErrors: mergedErrors }, false, 'mergeDisplayErrors')
-          },
-
-          setFieldError: (fieldName, error) => {
-            set(
-              state => ({
-                displayErrors: { ...state.displayErrors, [fieldName]: error },
-              }),
-              false,
-              'setFieldError'
-            )
-            // After setting validation error, merge with server errors
-            get().mergeDisplayErrors()
-          },
           clearFieldError: fieldName => {
             const state = get()
             // Only clear if it's not a server error
-            if (!state.serverErrors[fieldName]) {
+            if (!state.validation.serverErrors[fieldName]) {
               set(
-                () => {
-                  const newDisplayErrors = { ...state.displayErrors }
+                currentState => {
+                  const newDisplayErrors = { ...currentState.validation.displayErrors }
                   delete newDisplayErrors[fieldName]
-                  return { displayErrors: newDisplayErrors }
+                  return {
+                    ...currentState,
+                    validation: {
+                      ...currentState.validation,
+                      displayErrors: newDisplayErrors,
+                    },
+                  }
                 },
                 false,
                 'clearFieldError'
               )
             }
           },
+
+          // Helper to merge server errors with validation errors
+          mergeDisplayErrors: () => {
+            const state = get()
+            // Server errors take priority over validation errors
+            const mergedErrors = {
+              ...state.validation.displayErrors,
+              ...state.validation.serverErrors,
+            }
+            set(
+              currentState => ({
+                ...currentState,
+                validation: {
+                  ...currentState.validation,
+                  displayErrors: mergedErrors,
+                },
+              }),
+              false,
+              'mergeDisplayErrors'
+            )
+          },
+
+          setFieldError: (fieldName, error) => {
+            set(
+              state => {
+                const newDisplayErrors = {
+                  ...state.validation.displayErrors,
+                  [fieldName]: error,
+                }
+
+                return {
+                  ...state,
+                  validation: {
+                    ...state.validation,
+                    displayErrors: newDisplayErrors,
+                  },
+                }
+              },
+              false,
+              'setFieldError'
+            )
+            // After setting validation error, merge with server errors
+            get().mergeDisplayErrors()
+          },
+
           clearAllErrors: () =>
             set(
-              { validationErrors: {}, displayErrors: {}, serverErrors: {} },
+              state => ({
+                ...state,
+                validation: {
+                  ...state.validation,
+                  errors: {},
+                  displayErrors: {},
+                  serverErrors: {},
+                },
+              }),
               false,
               'clearAllErrors'
-            ),
-          setSubmitAttempted: submitAttempted =>
-            set({ submitAttempted }, false, 'setSubmitAttempted'),
-          setForceShowAllErrors: forceShowAllErrors =>
-            set({ forceShowAllErrors }, false, 'setForceShowAllErrors'),
-
-          // Form metadata setters
-          setMode: mode => set({ mode }, false, 'setMode'),
-          setSubmitting: isSubmitting => set({ isSubmitting }, false, 'setSubmitting'),
-          setValid: isValid => set({ isValid }, false, 'setValid'),
-
-          // Tournament management - set from server loaders
-          setAvailableTournaments: tournaments =>
-            set(
-              { availableTournaments: tournaments },
-              false,
-              'setAvailableTournaments'
             ),
 
           // Computed setters (based on selected tournament/division)
           updateAvailableOptions: () => {
-            const state = get()
-            const selectedTournament = state.availableTournaments.find(
-              t => t.id === state.tournamentId
-            )
+            const { availableOptions, formFields } = get()
+            const { tournaments } = availableOptions
+            const { tournamentId } = formFields
+
+            const selectedTournament = tournaments.find(t => t.id === tournamentId)
+            const newDivisions = selectedTournament?.divisions || []
+            const newCategories = selectedTournament?.categories || []
 
             set(
-              {
-                availableDivisions: selectedTournament?.divisions || [],
-                availableCategories: selectedTournament?.categories || [],
-              },
+              currentState => ({
+                ...currentState,
+                availableOptions: {
+                  ...currentState.availableOptions,
+                  divisions: newDivisions,
+                  categories: newCategories,
+                },
+              }),
               false,
               'updateAvailableOptions'
             )
@@ -471,29 +500,42 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Get current form data as TeamFormData
           getFormData: (): TeamFormData => {
-            const state = get()
+            const { formFields } = get()
+            const {
+              tournamentId,
+              clubName,
+              teamName,
+              division,
+              category,
+              teamLeaderName,
+              teamLeaderPhone,
+              teamLeaderEmail,
+              privacyAgreement,
+            } = formFields
+
             return {
-              tournamentId: state.tournamentId,
-              clubName: state.clubName,
-              teamName: state.teamName as TeamFormData['teamName'],
-              division: state.division as TeamFormData['division'],
-              category: state.category,
-              teamLeaderName: state.teamLeaderName,
-              teamLeaderPhone: state.teamLeaderPhone,
-              teamLeaderEmail: state.teamLeaderEmail as TeamFormData['teamLeaderEmail'],
-              privacyAgreement: state.privacyAgreement,
+              tournamentId,
+              clubName,
+              teamName: teamName as TeamFormData['teamName'],
+              division: division as TeamFormData['division'],
+              category,
+              teamLeaderName,
+              teamLeaderPhone,
+              teamLeaderEmail: teamLeaderEmail as TeamFormData['teamLeaderEmail'],
+              privacyAgreement,
             }
           },
 
           // Individual field validation - called reactively when field is touched
           validateField: (fieldName: string) => {
             const state = get()
+            const { validation, formMeta } = state
+            const { touchedFields, forceShowAllErrors, submitAttempted } = validation
+            const { mode } = formMeta
 
             // Only validate if field is touched OR if we're forcing all errors
             const shouldValidate =
-              state.touchedFields[fieldName] ||
-              state.forceShowAllErrors ||
-              state.submitAttempted
+              touchedFields[fieldName] || forceShowAllErrors || submitAttempted
 
             if (!shouldValidate) {
               return
@@ -503,7 +545,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const formData = state.getFormData()
 
             // Use the simplified validation function
-            const error = validateSingleField(fieldName, formData, state.mode)
+            const error = validateSingleField(fieldName, formData, mode)
 
             if (error) {
               state.setFieldError(fieldName, error)
@@ -512,51 +554,62 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
 
-          // Validate all currently touched fields
-          validateAllTouchedFields: () => {
-            const state = get()
-            Object.keys(state.touchedFields).forEach(fieldName => {
-              if (state.touchedFields[fieldName]) {
-                state.validateField(fieldName)
-              }
-            })
-          },
-
           // Full form validation - called on form submission
           validateForm: (): boolean => {
             const state = get()
 
             // Force validation for all fields regardless of touched state
-            set({ forceShowAllErrors: true }, false, 'validateForm/forceShowErrors')
+            set(
+              currentState => ({
+                ...currentState,
+                validation: {
+                  ...currentState.validation,
+                  forceShowAllErrors: true,
+                },
+              }),
+              false,
+              'validateForm/forceShowErrors'
+            )
 
             const formData = state.getFormData()
 
             // Use the simplified validation function
-            const errors = validateEntireForm(formData, state.mode)
+            const errors = validateEntireForm(formData, state.formMeta.mode)
 
             if (Object.keys(errors).length > 0) {
               // Set all errors at once
               set(
-                () => ({
-                  displayErrors: { ...state.displayErrors, ...errors },
-                }),
+                currentState => {
+                  const newDisplayErrors = {
+                    ...currentState.validation.displayErrors,
+                    ...errors,
+                  }
+
+                  return {
+                    ...currentState,
+                    validation: {
+                      ...currentState.validation,
+                      displayErrors: newDisplayErrors,
+                    },
+                  }
+                },
                 false,
                 'validateForm/setErrors'
               )
-              state.setValid(false)
+              get().setFormMetaField('isValid', false)
               return false
             }
 
             // Clear all errors and set valid state if validation passed
-            state.clearAllErrors()
-            state.setValid(true)
+            get().clearAllErrors()
+            get().setFormMetaField('isValid', true)
             return true
           },
 
-          // Server-side error handling
-          setServerErrors: errors => {
-            set({ serverErrors: errors }, false, 'setServerErrors')
-            // Merge server errors with existing validation errors
+          // Server errors setter (used by form submission)
+          setServerErrors: (errors: Record<string, string>) => {
+            get().setValidationField('serverErrors', errors)
+            // Merge server errors into display errors so they're visible immediately
             get().mergeDisplayErrors()
           },
         }),
@@ -572,15 +625,8 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           partialize: state =>
             isBrowser
               ? {
-                  tournamentId: state.tournamentId,
-                  division: state.division,
-                  category: state.category,
-                  clubName: state.clubName,
-                  teamName: state.teamName,
-                  teamLeaderName: state.teamLeaderName,
-                  teamLeaderPhone: state.teamLeaderPhone,
-                  teamLeaderEmail: state.teamLeaderEmail,
-                  mode: state.mode,
+                  formFields: state.formFields,
+                  formMeta: { mode: state.formMeta.mode },
                 }
               : {},
         }
@@ -604,8 +650,7 @@ export const useTeamFormStoreHydration = (): void => {
   }, [])
 }
 
-// Optional: Create a subscription to watch for touched field changes
-// This could be used for additional reactive behaviors
 export const subscribeToTouchedFields = (
   handler: (touchedFields: Record<string, boolean>) => void
-): (() => void) => useTeamFormStore.subscribe(state => state.touchedFields, handler)
+): (() => void) =>
+  useTeamFormStore.subscribe(state => state.validation.touchedFields, handler)

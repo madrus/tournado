@@ -197,7 +197,7 @@ export function TournamentForm({
                 ref={nameRef}
                 name='name'
                 label={t('tournaments.form.name')}
-                defaultValue={formData.name}
+                value={formData.name || ''}
                 error={errors.name}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -207,7 +207,7 @@ export function TournamentForm({
               <TextInputField
                 name='location'
                 label={t('tournaments.form.location')}
-                defaultValue={formData.location}
+                value={formData.location || ''}
                 error={errors.location}
                 required
                 className={getLatinTextClass(i18n.language)}

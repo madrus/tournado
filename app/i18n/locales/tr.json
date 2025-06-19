@@ -169,6 +169,8 @@
         "teamName": "Takım adınızı girin"
       },
       "privacyAgreement": "Gizlilik politikasını ve hizmet şartlarını kabul ediyorum",
+      "privacyPolicy": "Gizlilik politikası",
+      "readAndAccept": "Devam etmek için gizlilik politikasını okuyun ve kabul edin",
       "selectDivision": "Bir sınıf seçin",
       "selectTournament": "Bir turnuva seçin",
       "teamInfo": "Takım",

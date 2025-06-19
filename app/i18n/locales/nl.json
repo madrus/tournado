@@ -168,6 +168,8 @@
         "teamName": "Voer je teamnaam in"
       },
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de servicevoorwaarden",
+      "privacyPolicy": "Privacybeleid",
+      "readAndAccept": "Lees en accepteer het privacybeleid om door te gaan",
       "selectDivision": "Selecteer een klasse",
       "selectTournament": "Selecteer een toernooi",
       "teamInfo": "Team",

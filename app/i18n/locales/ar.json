@@ -169,6 +169,8 @@
         "teamName": "أدخل اسم فريقك"
       },
       "privacyAgreement": "أوافق على سياسة الخصوصية وشروط الخدمة",
+      "privacyPolicy": "سياسة الخصوصية",
+      "readAndAccept": "يرجى قراءة وقبول سياسة الخصوصية للمتابعة",
       "selectDivision": "اختر فئة",
       "selectTournament": "اختر بطولة",
       "teamInfo": "الفريق",

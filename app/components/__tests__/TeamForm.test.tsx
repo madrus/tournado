@@ -107,7 +107,15 @@ const renderTeamForm = (
 ) => {
   // Set up tournaments in the store if provided
   const tournamentsToUse = tournaments || mockTournaments
-  useTeamFormStore.setState({ availableTournaments: tournamentsToUse })
+
+  // Set tournaments in the store's availableOptions structure
+  useTeamFormStore.setState({
+    availableOptions: {
+      tournaments: tournamentsToUse,
+      divisions: [],
+      categories: [],
+    },
+  })
 
   // Set form data in the store if provided (after tournaments are set)
   if (formData) {
@@ -122,6 +130,11 @@ const renderTeamForm = (
       teamLeaderEmail: formData.teamLeaderEmail || '',
       privacyAgreement: formData.privacyAgreement || false,
     })
+
+    // If a tournament is selected, update available options to populate divisions/categories
+    if (formData.tournamentId) {
+      state().updateAvailableOptions()
+    }
   }
 
   // Set server errors in the store if provided

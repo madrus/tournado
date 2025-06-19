@@ -124,7 +124,7 @@ vi.mock('../inputs/TextInputField', () => ({
     <div className='text-input-field'>
       <label htmlFor={name}>
         {label}
-        {required && ' *'}
+        {required ? ' *' : null}
       </label>
       <input
         ref={ref}
@@ -134,7 +134,7 @@ vi.mock('../inputs/TextInputField', () => ({
         className={className}
         data-error={!!error}
       />
-      {error && <span className='error'>{error}</span>}
+      {error ? <span className='error'>{error}</span> : null}
     </div>
   )),
 }))
@@ -158,7 +158,7 @@ vi.mock('../inputs/DateInputField', () => ({
     <div className='date-input-field'>
       <label htmlFor={name}>
         {label}
-        {required && ' *'}
+        {required ? ' *' : null}
       </label>
       <input
         id={name}
@@ -168,7 +168,7 @@ vi.mock('../inputs/DateInputField', () => ({
         className={className}
         data-error={!!error}
       />
-      {error && <span className='error'>{error}</span>}
+      {error ? <span className='error'>{error}</span> : null}
     </div>
   ),
 }))

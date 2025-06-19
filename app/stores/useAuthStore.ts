@@ -38,7 +38,8 @@ export const useAuthStore = create<StoreState & Actions>()(
     persist(
       set => ({
         ...initialStoreState,
-        setAuth: (authenticated, username) => set({ authenticated, username }),
+        setAuth: (authenticated, username) =>
+          set({ authenticated, username }, false, 'setAuth'),
       }),
       {
         name: 'auth-storage',

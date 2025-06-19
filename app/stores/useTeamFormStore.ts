@@ -209,12 +209,16 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Form field setters
           setTournamentId: tournamentId => {
-            set({
-              tournamentId,
-              // Reset dependent fields when tournament changes
-              division: '',
-              category: '',
-            })
+            set(
+              {
+                tournamentId,
+                // Reset dependent fields when tournament changes
+                division: '',
+                category: '',
+              },
+              false,
+              'setTournamentId'
+            )
             // Update available options
             get().updateAvailableOptions()
 
@@ -225,9 +229,9 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setDivision: division => {
-            set({ division })
+            set({ division }, false, 'setDivision')
             // Reset dependent fields
-            set({ category: '' })
+            set({ category: '' }, false, 'setDivision/resetCategory')
 
             // Re-validate touched field
             const state = get()
@@ -236,7 +240,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setCategory: category => {
-            set({ category })
+            set({ category }, false, 'setCategory')
 
             // Re-validate touched field
             const state = get()
@@ -245,7 +249,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setClubName: clubName => {
-            set({ clubName })
+            set({ clubName }, false, 'setClubName')
 
             // Re-validate touched field
             const state = get()
@@ -254,7 +258,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setTeamName: teamName => {
-            set({ teamName })
+            set({ teamName }, false, 'setTeamName')
 
             // Re-validate touched field
             const state = get()
@@ -263,7 +267,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setTeamLeaderName: teamLeaderName => {
-            set({ teamLeaderName })
+            set({ teamLeaderName }, false, 'setTeamLeaderName')
 
             // Re-validate touched field
             const state = get()
@@ -272,7 +276,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setTeamLeaderPhone: teamLeaderPhone => {
-            set({ teamLeaderPhone })
+            set({ teamLeaderPhone }, false, 'setTeamLeaderPhone')
 
             // Re-validate touched field
             const state = get()
@@ -281,7 +285,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setTeamLeaderEmail: teamLeaderEmail => {
-            set({ teamLeaderEmail })
+            set({ teamLeaderEmail }, false, 'setTeamLeaderEmail')
 
             // Re-validate touched field
             const state = get()
@@ -290,7 +294,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
           setPrivacyAgreement: privacyAgreement => {
-            set({ privacyAgreement })
+            set({ privacyAgreement }, false, 'setPrivacyAgreement')
 
             // Re-validate touched field
             const state = get()
@@ -336,7 +340,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
 
             // Set all form data at once
-            set(state => ({ ...state, ...mappedData }))
+            set(state => ({ ...state, ...mappedData }), false, 'setFormData')
 
             // Update available options if tournament was set
             if (mappedData.tournamentId !== undefined) {
@@ -345,26 +349,38 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
             // Clear ALL validation state completely after everything is set
             // This prevents validation errors from showing for valid pre-populated data
-            set({
-              validationErrors: {},
-              displayErrors: {},
-              serverErrors: {}, // Clear server errors too
-              touchedFields: {},
-              submitAttempted: false,
-              forceShowAllErrors: false,
-            })
+            set(
+              {
+                validationErrors: {},
+                displayErrors: {},
+                serverErrors: {}, // Clear server errors too
+                touchedFields: {},
+                submitAttempted: false,
+                forceShowAllErrors: false,
+              },
+              false,
+              'setFormData/clearValidation'
+            )
           },
           resetForm: () =>
-            set({
-              ...initialStoreState,
-              availableTournaments: get().availableTournaments,
-            }),
+            set(
+              {
+                ...initialStoreState,
+                availableTournaments: get().availableTournaments,
+              },
+              false,
+              'resetForm'
+            ),
 
           // Touch and validation - reactive system
           setFieldTouched: (fieldName, touched = true) => {
-            set(state => ({
-              touchedFields: { ...state.touchedFields, [fieldName]: touched },
-            }))
+            set(
+              state => ({
+                touchedFields: { ...state.touchedFields, [fieldName]: touched },
+              }),
+              false,
+              'setFieldTouched'
+            )
 
             // Reactive validation: when field becomes touched, validate it immediately
             if (touched) {
@@ -373,21 +389,27 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           },
 
           // Validation management
-          setValidationErrors: validationErrors => set({ validationErrors }),
-          setDisplayErrors: displayErrors => set({ displayErrors }),
+          setValidationErrors: validationErrors =>
+            set({ validationErrors }, false, 'setValidationErrors'),
+          setDisplayErrors: displayErrors =>
+            set({ displayErrors }, false, 'setDisplayErrors'),
 
           // Helper to merge server errors with validation errors
           mergeDisplayErrors: () => {
             const state = get()
             // Server errors take priority over validation errors
             const mergedErrors = { ...state.displayErrors, ...state.serverErrors }
-            set({ displayErrors: mergedErrors })
+            set({ displayErrors: mergedErrors }, false, 'mergeDisplayErrors')
           },
 
           setFieldError: (fieldName, error) => {
-            set(state => ({
-              displayErrors: { ...state.displayErrors, [fieldName]: error },
-            }))
+            set(
+              state => ({
+                displayErrors: { ...state.displayErrors, [fieldName]: error },
+              }),
+              false,
+              'setFieldError'
+            )
             // After setting validation error, merge with server errors
             get().mergeDisplayErrors()
           },
@@ -395,26 +417,40 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const state = get()
             // Only clear if it's not a server error
             if (!state.serverErrors[fieldName]) {
-              set(() => {
-                const newDisplayErrors = { ...state.displayErrors }
-                delete newDisplayErrors[fieldName]
-                return { displayErrors: newDisplayErrors }
-              })
+              set(
+                () => {
+                  const newDisplayErrors = { ...state.displayErrors }
+                  delete newDisplayErrors[fieldName]
+                  return { displayErrors: newDisplayErrors }
+                },
+                false,
+                'clearFieldError'
+              )
             }
           },
           clearAllErrors: () =>
-            set({ validationErrors: {}, displayErrors: {}, serverErrors: {} }),
-          setSubmitAttempted: submitAttempted => set({ submitAttempted }),
-          setForceShowAllErrors: forceShowAllErrors => set({ forceShowAllErrors }),
+            set(
+              { validationErrors: {}, displayErrors: {}, serverErrors: {} },
+              false,
+              'clearAllErrors'
+            ),
+          setSubmitAttempted: submitAttempted =>
+            set({ submitAttempted }, false, 'setSubmitAttempted'),
+          setForceShowAllErrors: forceShowAllErrors =>
+            set({ forceShowAllErrors }, false, 'setForceShowAllErrors'),
 
           // Form metadata setters
-          setMode: mode => set({ mode }),
-          setSubmitting: isSubmitting => set({ isSubmitting }),
-          setValid: isValid => set({ isValid }),
+          setMode: mode => set({ mode }, false, 'setMode'),
+          setSubmitting: isSubmitting => set({ isSubmitting }, false, 'setSubmitting'),
+          setValid: isValid => set({ isValid }, false, 'setValid'),
 
           // Tournament management - set from server loaders
           setAvailableTournaments: tournaments =>
-            set({ availableTournaments: tournaments }),
+            set(
+              { availableTournaments: tournaments },
+              false,
+              'setAvailableTournaments'
+            ),
 
           // Computed setters (based on selected tournament/division)
           updateAvailableOptions: () => {
@@ -423,10 +459,14 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               t => t.id === state.tournamentId
             )
 
-            set({
-              availableDivisions: selectedTournament?.divisions || [],
-              availableCategories: selectedTournament?.categories || [],
-            })
+            set(
+              {
+                availableDivisions: selectedTournament?.divisions || [],
+                availableCategories: selectedTournament?.categories || [],
+              },
+              false,
+              'updateAvailableOptions'
+            )
           },
 
           // Get current form data as TeamFormData
@@ -487,7 +527,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const state = get()
 
             // Force validation for all fields regardless of touched state
-            set({ forceShowAllErrors: true })
+            set({ forceShowAllErrors: true }, false, 'validateForm/forceShowErrors')
 
             const formData = state.getFormData()
 
@@ -496,9 +536,13 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
             if (Object.keys(errors).length > 0) {
               // Set all errors at once
-              set(() => ({
-                displayErrors: { ...state.displayErrors, ...errors },
-              }))
+              set(
+                () => ({
+                  displayErrors: { ...state.displayErrors, ...errors },
+                }),
+                false,
+                'validateForm/setErrors'
+              )
               state.setValid(false)
               return false
             }
@@ -511,7 +555,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Server-side error handling
           setServerErrors: errors => {
-            set({ serverErrors: errors })
+            set({ serverErrors: errors }, false, 'setServerErrors')
             // Merge server errors with existing validation errors
             get().mergeDisplayErrors()
           },

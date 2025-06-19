@@ -23,8 +23,11 @@ import type { Route } from './+types/root'
 import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import BottomNavigation from './components/mobileNavigation/BottomNavigation'
 import { PWAElements } from './components/PWAElements'
+import { prisma } from './db.server'
 import { initI18n } from './i18n/config'
+import type { TournamentData } from './lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from './stores/useAuthStore'
+import { useTeamFormStore } from './stores/useTeamFormStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
@@ -60,6 +63,7 @@ type LoaderData = {
   username: string
   user: User | null
   language: string
+  tournaments: TournamentData[]
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
@@ -69,12 +73,43 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   const langMatch = cookieHeader.match(/lang=([^;]+)/)
   const language = langMatch ? langMatch[1] : 'nl'
 
+  // Fetch tournaments and transform to TournamentData format
+  const tournamentsRaw = await prisma.tournament.findMany({
+    select: {
+      id: true,
+      name: true,
+      location: true,
+      startDate: true,
+      endDate: true,
+      divisions: true,
+      categories: true,
+    },
+    orderBy: { startDate: 'asc' },
+  })
+
+  const tournaments: TournamentData[] = tournamentsRaw.map(t => ({
+    ...t,
+    startDate: t.startDate.toISOString(),
+    endDate: t.endDate?.toISOString() || null,
+    divisions: Array.isArray(t.divisions)
+      ? (t.divisions as string[])
+      : t.divisions
+        ? JSON.parse(t.divisions as string)
+        : [],
+    categories: Array.isArray(t.categories)
+      ? (t.categories as string[])
+      : t.categories
+        ? JSON.parse(t.categories as string)
+        : [],
+  }))
+
   return {
     authenticated: !!user,
     username: user?.email ?? '',
     user,
     ENV: getEnv(),
     language,
+    tournaments,
   }
 }
 
@@ -186,8 +221,9 @@ const Document = ({ children, language }: DocumentProps) => {
 // Auth state is now managed by the Zustand store in app/stores/authStore.ts
 
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-  const { authenticated, username, user, ENV, language } = loaderData
+  const { authenticated, username, user, ENV, language, tournaments } = loaderData
   const { setAuth } = useAuthStore()
+  const { setAvailableTournaments } = useTeamFormStore()
 
   // Handle auth store rehydration
   useAuthStoreHydration()
@@ -196,6 +232,11 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   useEffect(() => {
     setAuth(authenticated, username)
   }, [authenticated, username, setAuth])
+
+  // Initialize tournaments in the store
+  useEffect(() => {
+    setAvailableTournaments(tournaments)
+  }, [tournaments, setAvailableTournaments])
 
   // Set i18n language before paint (minimize hydration mismatch)
   useLayoutEffect(() => {

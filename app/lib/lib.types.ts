@@ -192,7 +192,6 @@ export type TeamFormProps = {
   mode: FormMode
   variant: FormVariant
   formData?: Partial<TeamFormData>
-  tournaments?: Array<TournamentData>
   errors?: Record<string, string>
   isSuccess?: boolean
   successMessage?: string

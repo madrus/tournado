@@ -159,7 +159,8 @@
         "teamLeaderNameTooLong": "Name must be less than 100 characters",
         "teamNameRequired": "Team name is required",
         "teamNameTooLong": "Team name must be less than 50 characters",
-        "tournamentRequired": "Tournament is required"
+        "tournamentRequired": "Tournament is required",
+        "fieldRequired": "This field is required"
       },
       "placeholders": {
         "clubName": "Enter your club name",
@@ -169,6 +170,8 @@
         "teamName": "Enter your team name"
       },
       "privacyAgreement": "I agree to the privacy policy and terms of service",
+      "privacyPolicy": "Privacy Policy",
+      "readAndAccept": "Please read and accept the privacy policy to continue",
       "selectDivision": "Select a division",
       "selectTournament": "Select a tournament",
       "teamInfo": "Team",
@@ -185,7 +188,8 @@
       "selectTournamentDetails": "Select Tournament Details",
       "completeAllThreeFields": "Please complete all three fields below to proceed",
       "enterTeamDetails": "Enter your team information",
-      "enterContactDetails": "Enter contact details for the team leader"
+      "enterContactDetails": "Enter contact details for the team leader",
+      "submit": "Save"
     },
     "getStarted": {
       "description": "Ready to join a tournament? Click the 'Add Team' button above to register your team and start competing!",

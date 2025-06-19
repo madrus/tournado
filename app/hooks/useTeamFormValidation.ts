@@ -155,15 +155,17 @@ export function useTeamFormValidation({
 
   // Get filtered errors (only show errors for touched fields or after submit attempt)
   const getDisplayErrors = (
-    currentTouchedFields?: Record<string, boolean>
+    currentTouchedFields?: Record<string, boolean>,
+    forceAll?: boolean
   ): Record<string, string> => {
     const displayErrors: Record<string, string> = {}
     const effectiveTouchedFields = currentTouchedFields || touchedFields
+    const shouldForceAll = forceAll ?? forceShowAllErrors
 
     // Always show server-side errors (translate them if they are error keys)
     Object.keys(serverErrors).forEach(fieldName => {
-      // Don't show errors for disabled fields
-      if (isFieldDisabled(fieldName)) {
+      // Don't show errors for disabled fields UNLESS we're forcing all errors (form submission)
+      if (isFieldDisabled(fieldName) && !shouldForceAll) {
         return
       }
 
@@ -180,12 +182,12 @@ export function useTeamFormValidation({
 
     // Show validation errors if we're forcing all errors, submitted, or field is touched
     Object.keys(validationErrors).forEach(fieldName => {
-      // Don't show errors for disabled fields
-      if (isFieldDisabled(fieldName)) {
+      // Don't show errors for disabled fields UNLESS we're forcing all errors (form submission)
+      if (isFieldDisabled(fieldName) && !shouldForceAll) {
         return
       }
 
-      if (forceShowAllErrors || submitAttempted || effectiveTouchedFields[fieldName]) {
+      if (shouldForceAll || submitAttempted || effectiveTouchedFields[fieldName]) {
         displayErrors[fieldName] = validationErrors[fieldName]
       }
     })
@@ -213,10 +215,11 @@ export function useTeamFormValidation({
       submissionData.set('category', fieldStates.categoryValue)
     }
 
-    // Mark that a submit was attempted
+    // Mark that a submit was attempted and force show all errors
     setSubmitAttempted(true)
+    setForceShowAllErrors(true)
 
-    // Validate form data and force show all errors
+    // Validate form data
     const isValid = validateForm(submissionData, true)
 
     if (isValid) {

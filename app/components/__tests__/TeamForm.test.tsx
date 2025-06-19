@@ -30,10 +30,35 @@ Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
   writable: true,
 })
 
-// Mock i18n - return key as value for testing
+// Mock i18n - return English translations for error messages, keys for others
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string) => {
+      // For Zod error messages, return the actual English translations
+      const errorTranslations: Record<string, string> = {
+        'teams.form.errors.tournamentRequired': 'Tournament is required',
+        'teams.form.errors.clubNameRequired': 'Club name is required',
+        'teams.form.errors.clubNameTooLong':
+          'Club name must be less than 100 characters',
+        'teams.form.errors.teamNameRequired': 'Team name is required',
+        'teams.form.errors.teamNameTooLong':
+          'Team name must be less than 50 characters',
+        'teams.form.errors.divisionRequired': 'Division is required',
+        'teams.form.errors.categoryRequired': 'Category is required',
+        'teams.form.errors.teamLeaderNameRequired': 'Team leader name is required',
+        'teams.form.errors.teamLeaderNameTooLong':
+          'Name must be less than 100 characters',
+        'teams.form.errors.phoneNumberRequired': 'Phone number is required',
+        'teams.form.errors.phoneNumberInvalid': 'Please enter a valid phone number',
+        'teams.form.errors.emailRequired': 'Email is required',
+        'teams.form.errors.emailInvalid': 'Please enter a valid email address',
+        'teams.form.errors.privacyAgreementRequired':
+          'You must agree to the privacy policy',
+      }
+
+      // Return English translation if it exists, otherwise return the key (for UI labels)
+      return errorTranslations[key] || key
+    },
     i18n: {
       language: 'en',
       changeLanguage: vi.fn(),
@@ -328,7 +353,7 @@ describe('TeamForm Component - onBlur Validation', () => {
         expect(screen.getByText('Phone number is required')).toBeInTheDocument()
         expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('You must agree to the privacy terms')
+          screen.getByText('You must agree to the privacy policy')
         ).toBeInTheDocument()
       })
     })
@@ -354,7 +379,7 @@ describe('TeamForm Component - onBlur Validation', () => {
         expect(screen.getByText('Phone number is required')).toBeInTheDocument()
         expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('You must agree to the privacy terms')
+          screen.getByText('You must agree to the privacy policy')
         ).toBeInTheDocument()
       })
     })
@@ -382,7 +407,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Privacy agreement error should NOT appear in edit mode
       expect(
-        screen.queryByText('You must agree to the privacy terms')
+        screen.queryByText('You must agree to the privacy policy')
       ).not.toBeInTheDocument()
     })
   })
@@ -457,7 +482,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Privacy agreement error should appear
       await waitFor(() => {
         expect(
-          screen.getByText('You must agree to the privacy terms')
+          screen.getByText('You must agree to the privacy policy')
         ).toBeInTheDocument()
         expect(screen.getByText('Category is required')).toBeInTheDocument()
       })

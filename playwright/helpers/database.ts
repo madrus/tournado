@@ -77,20 +77,20 @@ export async function createAdminUser(): Promise<User> {
   })
 }
 
-// Create regular user for tests
+// Create regular user for tests (non-admin authenticated user)
 export const createRegularUser = async (): Promise<{ email: string; role: string }> => {
   const email = `user-${faker.string.alphanumeric(8)}@example.com`
   const user = await createUser({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email,
-    role: 'PUBLIC',
+    role: 'TOURNAMENT_MANAGER', // Non-admin but authenticated user
     password: 'MyReallyStr0ngPassw0rd!!!',
   })
 
   return {
     email: user.email,
-    role: 'PUBLIC',
+    role: 'TOURNAMENT_MANAGER',
   }
 }
 

@@ -11,28 +11,29 @@ import { TeamForm } from '~/components/TeamForm'
 import { validateEntireForm } from '~/lib/lib.form'
 import type { TeamCreateActionData, TeamFormData } from '~/lib/lib.types'
 import type { User } from '~/models/user.server'
-import { getUser, requireUserId } from '~/utils/session.server'
+import type { RouteMetadata } from '~/utils/route-types'
+import { requireUserWithMetadata } from '~/utils/route-utils.server'
+
+// Route metadata - authenticated users can access (team creation is also public via /teams/new)
+export const handle: RouteMetadata = {
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  // No authorization restrictions - all authenticated users can access team creation
+}
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<{
   user: User
 }> {
-  await requireUserId(request)
-  const user = await getUser(request)
-
-  if (user?.role !== 'ADMIN') {
-    throw redirect('/unauthorized')
-  }
-
+  const user = await requireUserWithMetadata(request, handle)
   return { user }
 }
 
 export async function action({ request }: ActionFunctionArgs): Promise<Response> {
-  await requireUserId(request)
-  const user = await getUser(request)
-
-  if (user?.role !== 'ADMIN') {
-    throw redirect('/unauthorized')
-  }
+  await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()
   const intent = formData.get('intent')

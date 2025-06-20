@@ -247,6 +247,41 @@ vi.mock('~/components/PrefetchLink', () => ({
 5. **Clear Test Scenarios**: Use descriptive test names and failure messages
 6. **Proper Cleanup**: Use `unmount()` when testing multiple scenarios
 
+## Handling Server-Side Error Messages in Tests
+
+When testing form submissions and other server interactions, it's crucial to correctly handle server-side error messages. In this project, server-side validation errors are managed as constants to ensure consistency between the backend and frontend tests.
+
+For this purpose, we use the `TEST_TRANSLATIONS` object, which is defined in `app/lib/lib.constants.ts`.
+
+### Purpose of `TEST_TRANSLATIONS`
+
+- **Single Source of Truth**: This constant provides a single, reliable source for all server-side error message strings.
+- **Decoupling from i18n**: It separates server-side messages, which are not typically translated on the client, from the standard i18n client-side translation workflow.
+- **Test Stability**: Using this constant in tests prevents failures that could be caused by minor wording changes in error messages.
+
+### How to Use in Unit Tests
+
+Instead of hardcoding error strings in your assertions, import `TEST_TRANSLATIONS` and use the corresponding key.
+
+#### Example
+
+```typescript
+import { TEST_TRANSLATIONS } from '~/lib/lib.constants'
+
+it('should display a server-side error for a required field', async () => {
+   // ... form setup and submission logic ...
+
+   await waitFor(() => {
+      // Assert that the specific error message from the constant is visible
+      expect(
+         screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).toBeInTheDocument()
+   })
+})
+```
+
+By following this pattern, you ensure that your tests remain robust and aligned with the backend validation logic.
+
 ## UI Component Testing
 
 ### Role-Based Access Control

@@ -78,6 +78,16 @@ export function TeamForm({
     }
   }, [formMode, mode, setFormMetaField])
 
+  // Reset specific fields when switching to create mode to ensure clean state
+  useEffect(() => {
+    if (formMode === 'create') {
+      // Clear team-specific fields for new team creation
+      setFormField('clubName', '')
+      setFormField('teamName', '')
+      setFormField('privacyAgreement', false)
+    }
+  }, [formMode, setFormField])
+
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
     if (formData && availableTournaments.length > 0) {
@@ -151,7 +161,7 @@ export function TeamForm({
                 color='red'
                 className='lg:self-start'
               >
-                {t('teams.deleteTeam')}
+                {t('common.actions.delete')}
               </ActionButton>
             ) : null}
           </div>
@@ -481,7 +491,12 @@ export function TeamForm({
                     />
                   ) : null}
                 </div>
-                <span className='text-sm font-medium'>
+                <span
+                  className={cn(
+                    'text-lg font-normal text-gray-600',
+                    getLatinTextClass(i18n.language)
+                  )}
+                >
                   {t('teams.form.agreeToPrivacyPolicy')}
                 </span>
               </label>
@@ -501,8 +516,14 @@ export function TeamForm({
               {t('common.actions.cancel')}
             </ActionButton>
           ) : null}
-          <ActionButton type='submit' variant='solid' className='md:ml-auto'>
-            {submitButtonText || t('teams.form.submit')}
+          <ActionButton
+            type='submit'
+            variant='solid'
+            color='red'
+            icon='check_circle'
+            aria-label={t('common.actions.save')}
+          >
+            {submitButtonText || t('common.actions.save')}
           </ActionButton>
         </div>
       </Form>

@@ -1,16 +1,83 @@
 # Tournaments Feature
 
-The tournaments feature provides a complete tournament management system for administrators, including creation, editing, and mobile-optimized swipe-to-delete functionality.
+The tournaments feature provides a complete tournament management system for administrators, including creation, editing, and mobile-optimized swipe-to-delete functionality. **Tournaments now appear as the first menu item for admin users** in the navigation.
 
 ## Overview
 
 Tournaments are a core feature of the Tournado application, allowing administrators to:
 
+- **Access via dedicated menu item** - First item in admin navigation menu
 - Create new tournaments with essential details (name, location, dates, categories)
 - View all tournaments in a responsive list
 - Edit existing tournament information
 - Delete tournaments with confirmation
 - Mobile-optimized swipe gestures for deletion
+
+## Navigation & Access
+
+### Two Ways to Access Tournaments
+
+Admin users can access the tournaments feature through **two different methods**:
+
+#### 1. Context Menu Navigation (First Menu Item)
+
+For **admin users**, tournaments appear as the first item in the navigation menu:
+
+```typescript
+// In AppBar.tsx - Menu structure for admin users:
+const menuItems = [
+   // Tournaments - only show for admin users, first item
+   ...(isAdmin
+      ? [
+           {
+              label: t('common.titles.tournaments'),
+              icon: 'trophy' as IconName,
+              href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+              authenticated: true,
+           },
+        ]
+      : []),
+   // ... other menu items follow
+]
+```
+
+#### 2. Admin Panel Button Access
+
+Tournaments can also be accessed directly from the **Admin Panel dashboard**:
+
+```typescript
+// In a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx - Admin Panel Dashboard
+<div className='rounded-lg border bg-white p-6 shadow-sm'>
+  <h3 className='mb-4 text-lg font-semibold'>
+    Tournament Management
+  </h3>
+  <p className='text-foreground-light mb-4'>
+    Create and manage tournaments and competitions.
+  </p>
+  <div className='mb-4 space-y-2'>
+    <p className='text-foreground-light'>
+      <strong>Total Tournaments:</strong> {tournaments.length}
+    </p>
+  </div>
+  <Link
+    to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+    className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
+  >
+    Manage Tournaments
+  </Link>
+</div>
+```
+
+**Navigation Flow**: Admin Panel (`/a7k9m2x5p8w1n4q6r3y8b5t1`) → "Manage Tournaments" button → Tournaments List
+
+### Access Control
+
+- **Admin Users**:
+   - Full access via context menu (first menu item)
+   - Full access via Admin Panel dashboard button
+   - Complete tournament management features
+- **Regular Users**: No access to tournaments functionality (menu item hidden, no admin panel access)
+- **Unauthenticated Users**: No access to tournaments functionality
 
 ## Architecture
 

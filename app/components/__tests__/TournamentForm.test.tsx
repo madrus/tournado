@@ -29,8 +29,9 @@ vi.mock('react-i18next', () => ({
         'tournaments.form.selected': 'selected',
         'tournaments.form.categories': 'Categories',
         'tournaments.form.selectCategories': 'Select available categories',
-        'tournaments.form.saveTournament': 'Save Tournament',
-        'common.cancel': 'Cancel',
+        'common.actions.save': 'Save',
+        'common.actions.cancel': 'Cancel',
+        'common.actions.delete': 'Delete',
       }
       return translations[key] || key
     },
@@ -309,9 +310,7 @@ describe('TournamentForm Component', () => {
       expect(screen.getByText('Tournament Dates')).toBeInTheDocument()
       expect(screen.getByText('Divisions')).toBeInTheDocument()
       expect(screen.getByText('Categories')).toBeInTheDocument()
-      expect(
-        screen.getByRole('button', { name: 'Save Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('should render all form fields correctly', () => {
@@ -534,9 +533,7 @@ describe('TournamentForm Component', () => {
     it('should render submit button with default text', () => {
       renderTournamentForm()
 
-      expect(
-        screen.getByRole('button', { name: 'Save Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('should render submit button with custom text', () => {
@@ -576,9 +573,7 @@ describe('TournamentForm Component', () => {
         onDelete: handleDelete,
       })
 
-      expect(
-        screen.getByRole('button', { name: 'Delete Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     })
 
     it('should call onDelete when delete button is clicked', async () => {
@@ -590,7 +585,7 @@ describe('TournamentForm Component', () => {
         onDelete: handleDelete,
       })
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete Tournament' })
+      const deleteButton = screen.getByRole('button', { name: 'Delete' })
       await user.click(deleteButton)
 
       expect(handleDelete).toHaveBeenCalledTimes(1)
@@ -599,9 +594,7 @@ describe('TournamentForm Component', () => {
     it('should not render delete button when showDeleteButton is false', () => {
       renderTournamentForm({ showDeleteButton: false })
 
-      expect(
-        screen.queryByRole('button', { name: 'Delete Tournament' })
-      ).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
     })
   })
 

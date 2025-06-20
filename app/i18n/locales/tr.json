@@ -2,17 +2,19 @@
   "admin": {
     "teams": {
       "allTeams": "Tüm takımlar",
-      "allTeamsDescription": "Sistemdeki tüm takımları yönetin. Bir takıma tıklayarak bilgileri düzenleyin veya silin.",
+      "allTeamsDescription": "Sistemdeki tüm takımları yönetin. Detayları düzenlemek veya silmek için bir takıma tıklayın.",
       "confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
       "createTeam": "Takım oluştur",
-      "createTeamDescription": "Sisteme gerekli tüm bilgilerle yeni bir takım ekleyin.",
+      "createTeamDescription": "Gerekli tüm ayrıntılarla sisteme yeni bir takım ekleyin.",
+      "newTeam": "Yeni takım",
+      "createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
       "description": "Tüm turnuvalardaki tüm takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
-      "editTeam": "Takım bilgilerini düzenle",
+      "editTeam": "Takım detaylarını düzenle",
       "saveChanges": "Değişiklikleri kaydet",
       "teamNotFound": "Takım bulunamadı",
       "teamNotFoundDescription": "Aradığınız takım bulunamadı veya silinmiş olabilir.",
       "title": "Takım yönetimi",
-      "totalTeams": "Toplam takım sayısı"
+      "totalTeams": "Toplam takım"
     },
     "tournaments": {
       "totalTournaments": "Toplam turnuva sayısı",
@@ -60,11 +62,13 @@
     "viewTeamsFor": "Takımları görüntüle:"
   },
   "common": {
-    "actions": "İşlemler",
+    "actions": {
+      "save": "Kaydet",
+      "cancel": "İptal",
+      "delete": "Sil"
+    },
     "appName": "Tournado",
     "backToHome": "Ana sayfaya dön",
-    "cancel": "İptal",
-    "delete": "Sil",
     "error": "Hata",
     "guest": "Ziyaretçi",
     "language": "Dil",
@@ -168,9 +172,10 @@
         "teamLeaderPhone": "Telefon numarası girin",
         "teamName": "Takım adınızı girin"
       },
-      "privacyAgreement": "Gizlilik politikasını ve hizmet şartlarını kabul ediyorum",
+      "privacyAgreement": "Gizlilik politikası ve hizmet şartlarını kabul ediyorum",
       "privacyPolicy": "Gizlilik politikası",
-      "readAndAccept": "Devam etmek için gizlilik politikasını okuyun ve kabul edin",
+      "agreeToPrivacyPolicy": "Gizlilik politikasını kabul ediyorum",
+      "readAndAccept": "Devam etmek için lütfen gizlilik politikasını okuyun ve kabul edin",
       "selectDivision": "Bir sınıf seçin",
       "selectTournament": "Bir turnuva seçin",
       "teamInfo": "Takım",
@@ -195,7 +200,6 @@
     },
     "noTeamSelected": "Hiçbir takım seçilmedi. Soldan bir takım seçin veya",
     "noTeams": "Henüz hiçbir takım kaydedilmedi. Yaklaşan turnuvalar için takımınızı kaydeden ilk kişi olun!",
-    "save": "Kaydet",
     "title": "Takımlar"
   },
   "tournaments": {
@@ -224,7 +228,6 @@
       "selected": "seçildi",
       "tournamentRegistration": "Turnuva kaydı",
       "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
-      "saveTournament": "Turnuvayı kaydet",
       "createTournament": "Turnuva oluştur",
       "updateTournament": "Turnuvayı güncelle"
     }

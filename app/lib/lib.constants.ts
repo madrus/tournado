@@ -369,4 +369,5 @@ export const TEST_TRANSLATIONS = {
   'teams.form.errors.emailRequired': 'Email is required',
   'teams.form.errors.emailInvalid': 'Please enter a valid email address',
   'teams.form.errors.privacyAgreementRequired': 'You must agree to the privacy policy',
+  'teams.form.errors.fieldRequired': 'This field is required',
 } as const

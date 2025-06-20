@@ -139,7 +139,7 @@ export function TournamentForm({
                 color='red'
                 className='lg:self-start'
               >
-                {t('tournaments.deleteTournament')}
+                {t('common.actions.delete')}
               </ActionButton>
             ) : null}
           </div>
@@ -387,12 +387,18 @@ export function TournamentForm({
               color='gray'
               className='min-w-32'
             >
-              {t('common.cancel')}
+              {t('common.actions.cancel')}
             </ActionButton>
           ) : null}
 
-          <ActionButton type='submit' variant='solid' color='red' icon='check_circle'>
-            {submitButtonText || t('tournaments.form.saveTournament')}
+          <ActionButton
+            type='submit'
+            variant='solid'
+            color='red'
+            icon='check_circle'
+            aria-label={t('common.actions.save')}
+          >
+            {submitButtonText || t('common.actions.save')}
           </ActionButton>
         </div>
       </Form>

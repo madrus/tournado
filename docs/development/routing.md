@@ -30,7 +30,17 @@ app/routes/
 │
 ├── a7k9m2x5p8w1n4q6r3y8b5t1/                  (Admin section)
 │   ├── a7k9m2x5p8w1n4q6r3y8b5t1.tsx          →  /a7k9m2x5p8w1n4q6r3y8b5t1 (layout)
-│   └── a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx   →  /a7k9m2x5p8w1n4q6r3y8b5t1 (index child)
+│   ├── a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx   →  /a7k9m2x5p8w1n4q6r3y8b5t1 (index child)
+│   ├── teams/                                 (Admin Teams section)
+│   │   ├── teams.tsx                          →  /a7k9m2x5p8w1n4q6r3y8b5t1/teams (layout)
+│   │   ├── teams._index.tsx                   →  /a7k9m2x5p8w1n4q6r3y8b5t1/teams (index)
+│   │   ├── teams.new.tsx                      →  /a7k9m2x5p8w1n4q6r3y8b5t1/teams/new
+│   │   └── teams.$teamId.tsx                  →  /a7k9m2x5p8w1n4q6r3y8b5t1/teams/:teamId
+│   └── tournaments/                           (Admin Tournaments section)
+│       ├── tournaments.tsx                    →  /a7k9m2x5p8w1n4q6r3y8b5t1/tournaments (layout)
+│       ├── tournaments._index.tsx             →  /a7k9m2x5p8w1n4q6r3y8b5t1/tournaments (index)
+│       ├── tournaments.new.tsx                →  /a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new
+│       └── tournaments.$tournamentId.tsx      →  /a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/:tournamentId
 │
 └── resources/                                 (Resources section)
     └── resources.healthcheck.tsx              →  /resources/healthcheck
@@ -233,12 +243,12 @@ const context = useOutletContext<{ type: string }>()
 
 ## Benefits
 
-✅ **Automatic Discovery**: No manual route configuration needed  
-✅ **Organized**: Related routes clustered in folders  
-✅ **Proper Nesting**: Parent-child route relationships work correctly  
-✅ **Type-safe**: Full TypeScript support with route parameters  
-✅ **Clean Logic**: Simple, maintainable route scanning  
-✅ **Consistent**: All route clusters follow the same pattern  
+✅ **Automatic Discovery**: No manual route configuration needed
+✅ **Organized**: Related routes clustered in folders
+✅ **Proper Nesting**: Parent-child route relationships work correctly
+✅ **Type-safe**: Full TypeScript support with route parameters
+✅ **Clean Logic**: Simple, maintainable route scanning
+✅ **Consistent**: All route clusters follow the same pattern
 ✅ **Scalable**: Add new routes by just creating files
 
 ## Adding New Routes
@@ -364,3 +374,121 @@ Your new games cluster will be automatically available with the following routes
 6. **Hot Reloading**: Vite automatically reloads when route files change
 
 This approach gives you **automatic route discovery** with organized folder structure, proper nested routing behavior, and zero configuration overhead for new routes. The clean, consistent logic makes it easy to understand and maintain.
+
+## Authentication & Authorization Flow
+
+### Post-Login Routing Behavior
+
+**All authenticated users are redirected to the Admin Panel after successful login**:
+
+```typescript
+// app/routes/auth/auth.signin.tsx
+export const loader = async ({ request }: LoaderArgs): Promise<object> => {
+   const user = await getUser(request)
+   if (user) {
+      // Always redirect all authorized users to Admin Panel
+      return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
+   }
+   return {}
+}
+
+export const action = async ({ request }: ActionArgs): Promise<Response> => {
+   // ... validation logic ...
+
+   // Always redirect all authorized users to Admin Panel
+   return createUserSession({
+      redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+      remember: remember === 'on' ? true : false,
+      request,
+      userId: user.id,
+   })
+}
+```
+
+### Route Protection Levels
+
+#### 1. Public Routes (No Authentication Required)
+
+- `/` - Homepage
+- `/teams` - Public teams listing
+- `/about` - About page
+- `/auth/signin` - Sign in page
+- `/auth/signup` - Sign up page
+
+#### 2. Authenticated Routes (Login Required)
+
+- `/a7k9m2x5p8w1n4q6r3y8b5t1` - Admin Panel (all authenticated users)
+- `/a7k9m2x5p8w1n4q6r3y8b5t1/teams` - Admin Teams (all authenticated users)
+- `/profile` - User profile
+- `/settings` - User settings
+
+#### 3. Admin-Only Routes (ADMIN Role Required)
+
+- `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments` - Tournament management
+- `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new` - Create tournament
+- `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/:tournamentId` - Edit tournament
+
+### Route Metadata Example
+
+Routes use metadata to define their protection requirements:
+
+```typescript
+// Admin-only route example
+export const handle: RouteMetadata = {
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  authorization: {
+    requiredRoles: ['admin'],
+    roleMatchMode: 'any',
+    redirectTo: '/unauthorized',
+  },
+}
+
+// Authenticated-only route example
+export const handle: RouteMetadata = {
+  isPublic: false,
+  auth: {
+    required: true,
+    redirectTo: '/auth/signin',
+    preserveRedirect: true,
+  },
+  // No authorization restrictions - all authenticated users can access
+}
+```
+
+### Navigation Menu Structure
+
+The `AppBar` component dynamically shows menu items based on user authentication and role:
+
+#### For Admin Users:
+
+1. **Tournaments** (admin only) - `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments`
+2. **Teams** - `/a7k9m2x5p8w1n4q6r3y8b5t1/teams`
+3. **Admin Panel** - `/a7k9m2x5p8w1n4q6r3y8b5t1`
+4. **Profile** - `/profile`
+5. **Settings** - `/settings`
+6. **About** - `/about`
+7. **Language Selector**
+8. **Sign Out**
+
+#### For Regular Authenticated Users:
+
+1. **Teams** - `/teams` (public view)
+2. **Profile** - `/profile`
+3. **Settings** - `/settings`
+4. **About** - `/about`
+5. **Language Selector**
+6. **Sign Out**
+
+#### For Unauthenticated Users:
+
+1. **Teams** - `/teams` (public view)
+2. **About** - `/about`
+3. **Language Selector**
+4. **Sign In** - `/auth/signin`
+
+This ensures that all users have appropriate access while maintaining clear separation between public, authenticated, and admin-only functionality.

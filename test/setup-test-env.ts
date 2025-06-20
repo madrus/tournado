@@ -4,6 +4,9 @@ import '@testing-library/jest-dom/vitest'
 
 import { afterEach, beforeEach, vi } from 'vitest'
 
+// Set up required environment variables for tests
+process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
+
 // Mock Prisma Client to prevent database initialization during tests
 vi.mock('~/db.server.ts', () => ({
   prisma: {

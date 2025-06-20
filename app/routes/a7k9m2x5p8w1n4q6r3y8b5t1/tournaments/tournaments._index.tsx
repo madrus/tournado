@@ -466,7 +466,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                         >
                           <DeleteIcon className='h-5 w-5' />
                           <Text size='2' weight='medium'>
-                            {t('tournaments.deleteTournament', 'Delete tournament')}
+                            {t('tournaments.deleteTournament')}
                           </Text>
                         </div>
                       </div>
@@ -504,7 +504,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                             handleTournamentDelete(tournament.id)
                           }}
                           className='flex items-center justify-center rounded pt-1 pr-1 pb-1 pl-2 text-red-600 transition-colors duration-200 hover:text-red-900'
-                          title={t('common.delete')}
+                          title={t('tournaments.deleteTournament')}
                         >
                           <DeleteIcon className='h-4 w-4' />
                         </button>

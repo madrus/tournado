@@ -83,12 +83,17 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
   }
 
   return (
-    <div className='w-80 rounded-lg border border-gray-200 bg-white p-4 shadow-lg'>
+    <div
+      className='w-80 rounded-lg border border-gray-200 bg-white p-4 shadow-lg'
+      role='dialog'
+      aria-label='calendar'
+    >
       {/* Header */}
       <div className='mb-4 flex items-center justify-between'>
         <button
           type='button'
           onClick={goToPrevMonth}
+          aria-label='previous month'
           className='rounded-full p-1 font-bold text-emerald-600 transition-colors hover:bg-emerald-100'
         >
           <ChevronLeftIcon className='h-5 w-5' size={20} />
@@ -99,6 +104,7 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
         <button
           type='button'
           onClick={goToNextMonth}
+          aria-label='next month'
           className='rounded-full p-1 font-bold text-emerald-600 transition-colors hover:bg-emerald-100'
         >
           <ChevronRightIcon className='h-5 w-5' size={20} />
@@ -133,6 +139,7 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
               key={date.toISOString()}
               type='button'
               disabled={disabled}
+              aria-label={`${date.getDate()} ${monthName}`}
               onClick={() => !disabled && onSelect(date)}
               className={cn(
                 'relative p-2 text-sm transition-colors',
@@ -210,6 +217,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
               <button
                 type='button'
                 disabled={readOnly}
+                aria-label={`${label} - select date`}
                 className={cn(
                   'placeholder:text-foreground-lighter flex h-12 w-full items-center justify-between rounded-md border-2 border-emerald-700/30 bg-white px-3 text-left text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
                   readOnly && 'cursor-not-allowed opacity-50',

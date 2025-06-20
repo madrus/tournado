@@ -32,6 +32,7 @@ export default [
       'docs/**',
       'playwright-report/**',
       'playwright-results/**',
+      'playwright/**',
       'mocks/**',
       'node_modules/**',
       'public/**',

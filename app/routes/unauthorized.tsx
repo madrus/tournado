@@ -43,7 +43,7 @@ export default function UnauthorizedPage(): JSX.Element {
 
           {/* Title */}
           <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-            {t('errors.unauthorized.title', 'Access Denied')}
+            {t('auth.errors.unauthorizedTitle')}
           </h1>
 
           {/* Description */}
@@ -60,14 +60,14 @@ export default function UnauthorizedPage(): JSX.Element {
               to='/'
               className='flex w-full items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 hover:ring-2 hover:ring-emerald-500 hover:ring-offset-2 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
             >
-              {t('common.backToHome', 'Back to Home')}
+              {t('common.backToHome')}
             </ErrorRecoveryLink>
 
             <PrimaryNavLink
               to='/profile'
               className='flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:ring-2 hover:ring-emerald-500 hover:ring-offset-2 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
             >
-              {t('common.viewProfile', 'View Profile')}
+              {t('common.titles.profile')}
             </PrimaryNavLink>
           </div>
         </div>

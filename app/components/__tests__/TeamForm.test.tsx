@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { TEST_TRANSLATIONS } from '~/lib/lib.constants'
 import type {
   FormMode,
   FormVariant,
@@ -33,34 +34,16 @@ Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
   writable: true,
 })
 
-// Mock i18n - return English translations for error messages, keys for others
+// Mock i18n - translate error keys to actual messages for testing
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
-      // For Zod error messages, return the actual English translations
-      const errorTranslations: Record<string, string> = {
-        'teams.form.errors.tournamentRequired': 'Tournament is required',
-        'teams.form.errors.clubNameRequired': 'Club name is required',
-        'teams.form.errors.clubNameTooLong':
-          'Club name must be less than 100 characters',
-        'teams.form.errors.teamNameRequired': 'Team name is required',
-        'teams.form.errors.teamNameTooLong':
-          'Team name must be less than 50 characters',
-        'teams.form.errors.divisionRequired': 'Division is required',
-        'teams.form.errors.categoryRequired': 'Category is required',
-        'teams.form.errors.teamLeaderNameRequired': 'Team leader name is required',
-        'teams.form.errors.teamLeaderNameTooLong':
-          'Name must be less than 100 characters',
-        'teams.form.errors.phoneNumberRequired': 'Phone number is required',
-        'teams.form.errors.phoneNumberInvalid': 'Please enter a valid phone number',
-        'teams.form.errors.emailRequired': 'Email is required',
-        'teams.form.errors.emailInvalid': 'Please enter a valid email address',
-        'teams.form.errors.privacyAgreementRequired':
-          'You must agree to the privacy policy',
+      // For error translation keys, return the actual message from TEST_TRANSLATIONS
+      if (key.startsWith('teams.form.errors.')) {
+        return TEST_TRANSLATIONS[key as keyof typeof TEST_TRANSLATIONS] || key
       }
-
-      // Return English translation if it exists, otherwise return the key (for UI labels)
-      return errorTranslations[key] || key
+      // For all other keys, return the key as-is
+      return key
     },
     i18n: {
       language: 'en',
@@ -178,23 +161,37 @@ describe('TeamForm Component - onBlur Validation', () => {
     it('should not show error messages initially', () => {
       renderTeamForm('create', 'public')
 
-      // Error messages should not be visible initially
-      expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
+      // Should not show any error messages initially
       expect(
-        screen.queryByText('Please enter a valid email address')
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(
+          TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
+        )
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberRequired'])
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.emailRequired'])
       ).not.toBeInTheDocument()
     })
 
     it('should not show error messages on focus', async () => {
       renderTeamForm('create', 'public')
 
+      // Focus on a field
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      await userEvent.click(clubNameInput)
 
-      // Focus the field
-      fireEvent.focus(clubNameInput)
-
-      // Error should not appear just from focusing
-      expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
+      // Should not show error messages while focused
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).not.toBeInTheDocument()
     })
 
     it('should show error message when required field is blurred empty', async () => {
@@ -202,14 +199,31 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
 
-      // Focus and then blur the field without entering any value
-      fireEvent.focus(clubNameInput)
-      fireEvent.blur(clubNameInput)
+      // Focus and then blur the input (without typing anything)
+      await userEvent.click(clubNameInput)
+      await userEvent.tab() // This will blur the current field
 
-      // Wait for error to appear
+      // Should show error message after blur
       await waitFor(() => {
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
       })
+    })
+
+    it('should not show error message when valid content is entered', async () => {
+      renderTeamForm('create', 'public')
+
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+
+      // Enter valid content and blur
+      await userEvent.type(clubNameInput, 'Valid Club Name')
+      await userEvent.tab()
+
+      // Should not show error message
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).not.toBeInTheDocument()
     })
 
     it('should show error message when email field is blurred with invalid email', async () => {
@@ -217,38 +231,60 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
 
-      // Focus, enter invalid email, then blur
-      fireEvent.focus(emailInput)
-      fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
-      fireEvent.blur(emailInput)
+      // Enter invalid email and blur
+      await userEvent.type(emailInput, 'invalid-email')
+      await userEvent.tab()
 
-      screen.debug(emailInput)
-
-      // Wait for error to appear
+      // Should show email validation error
       await waitFor(() => {
         expect(
-          screen.getByText('Please enter a valid email address')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
         ).toBeInTheDocument()
       })
     })
 
-    it('should not show error when valid data is entered and field is blurred', async () => {
+    it('should show error message when club name exceeds length', async () => {
       renderTeamForm('create', 'public')
 
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
 
-      // Focus, enter valid data, then blur
-      fireEvent.focus(clubNameInput)
-      fireEvent.change(clubNameInput, { target: { value: 'sv DIO' } })
-      fireEvent.blur(clubNameInput)
+      // Type a very long club name (over 100 characters)
+      const longClubName = 'A'.repeat(101)
+      await userEvent.type(clubNameInput, longClubName)
+      await userEvent.tab()
 
-      // Wait a bit to ensure no error appears
-      await waitFor(
-        () => {
-          expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
-        },
-        { timeout: 1000 }
-      )
+      // Should show length validation error
+      await waitFor(() => {
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameTooLong'])
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('should clear error when valid input is provided after blur error', async () => {
+      renderTeamForm('create', 'public')
+
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+
+      // First trigger an error by blurring empty field
+      await userEvent.click(clubNameInput)
+      await userEvent.tab()
+
+      // Wait for error to appear
+      await waitFor(() => {
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+      })
+
+      // Now type valid content
+      await userEvent.type(clubNameInput, 'Valid Club Name')
+      await userEvent.tab()
+
+      // Error should be cleared
+      expect(
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).not.toBeInTheDocument()
     })
 
     it('should show error when phone field is blurred with invalid phone number', async () => {
@@ -264,7 +300,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for error to appear
       await waitFor(() => {
         expect(
-          screen.getByText('Please enter a valid phone number')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberInvalid'])
         ).toBeInTheDocument()
       })
     })
@@ -283,33 +319,8 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for error to appear
       await waitFor(() => {
         expect(
-          screen.getByText('Team name must be less than 50 characters')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
         ).toBeInTheDocument()
-      })
-    })
-
-    it('should clear error when field is corrected and blurred again', async () => {
-      renderTeamForm('create', 'public')
-
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-
-      // First, trigger an error
-      fireEvent.focus(clubNameInput)
-      fireEvent.blur(clubNameInput)
-
-      // Wait for error to appear
-      await waitFor(() => {
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
-      })
-
-      // Now fix the error
-      fireEvent.focus(clubNameInput)
-      fireEvent.change(clubNameInput, { target: { value: 'sv DIO' } })
-      fireEvent.blur(clubNameInput)
-
-      // Wait for error to disappear
-      await waitFor(() => {
-        expect(screen.queryByText('Club name is required')).not.toBeInTheDocument()
       })
     })
 
@@ -329,9 +340,11 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for both errors to appear
       await waitFor(() => {
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
         expect(
-          screen.getByText('Please enter a valid email address')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
         ).toBeInTheDocument()
       })
     })
@@ -340,26 +353,32 @@ describe('TeamForm Component - onBlur Validation', () => {
   describe('Server-side Errors', () => {
     it('should display server-side errors immediately without requiring touch', () => {
       const serverErrors = {
-        clubName: 'Club name already exists',
-        teamName: 'Team name is not unique',
+        clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
+        teamName: TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'],
       }
 
       renderTeamForm('create', 'public', undefined, serverErrors)
 
       // Server errors should be visible immediately
-      expect(screen.getByText('Club name already exists')).toBeInTheDocument()
-      expect(screen.getByText('Team name is not unique')).toBeInTheDocument()
+      expect(
+        screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+      ).toBeInTheDocument()
     })
 
     it('should show both server-side and client-side errors', async () => {
       const serverErrors = {
-        clubName: 'Server error for club name',
+        clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
       }
 
       renderTeamForm('create', 'public', undefined, serverErrors)
 
       // Server error should be visible immediately
-      expect(screen.getByText('Server error for club name')).toBeInTheDocument()
+      expect(
+        screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+      ).toBeInTheDocument()
 
       // Trigger a client-side error on a different field
       const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
@@ -369,9 +388,11 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Wait for client-side error to appear alongside server error
       await waitFor(() => {
-        expect(screen.getByText('Server error for club name')).toBeInTheDocument()
         expect(
-          screen.getByText('Please enter a valid email address')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
         ).toBeInTheDocument()
       })
     })
@@ -383,23 +404,45 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // Get the submit button and click it using userEvent for realistic interaction
-      const submitButton = screen.getByRole('button', { name: /teams\.form\.submit/i })
+      const submitButton = screen.getByRole('button', {
+        name: 'common.actions.save',
+      })
 
       // Submit form without filling any fields
       await user.click(submitButton)
 
       // All required field errors should appear (for public create form)
       await waitFor(() => {
-        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
-        expect(screen.getByText('Team name is required')).toBeInTheDocument()
-        expect(screen.getByText('Division is required')).toBeInTheDocument()
-        expect(screen.getByText('Category is required')).toBeInTheDocument()
-        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
-        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
-        expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('You must agree to the privacy policy')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.tournamentRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.divisionRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.categoryRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
+          )
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.privacyAgreementRequired']
+          )
         ).toBeInTheDocument()
       })
     })
@@ -409,23 +452,45 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'admin')
 
       // Get the submit button and click it
-      const submitButton = screen.getByRole('button', { name: /teams\.form\.submit/i })
+      const submitButton = screen.getByRole('button', {
+        name: 'common.actions.save',
+      })
 
       // Submit form without filling any fields
       await user.click(submitButton)
 
       // All required field errors should appear (admin form has same fields)
       await waitFor(() => {
-        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
-        expect(screen.getByText('Team name is required')).toBeInTheDocument()
-        expect(screen.getByText('Division is required')).toBeInTheDocument()
-        expect(screen.getByText('Category is required')).toBeInTheDocument()
-        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
-        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
-        expect(screen.getByText('Email is required')).toBeInTheDocument()
         expect(
-          screen.getByText('You must agree to the privacy policy')
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.tournamentRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.divisionRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.categoryRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
+          )
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.privacyAgreementRequired']
+          )
         ).toBeInTheDocument()
       })
     })
@@ -435,25 +500,45 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('edit', 'public')
 
       // Get the submit button and click it
-      const submitButton = screen.getByRole('button', { name: /teams\.form\.submit/i })
+      const submitButton = screen.getByRole('button', {
+        name: 'common.actions.save',
+      })
 
       // Submit form without filling any fields
       await user.click(submitButton)
 
       // All required field errors except privacy agreement should appear
       await waitFor(() => {
-        expect(screen.getByText('Tournament is required')).toBeInTheDocument()
-        expect(screen.getByText('Club name is required')).toBeInTheDocument()
-        expect(screen.getByText('Team name is required')).toBeInTheDocument()
-        expect(screen.getByText('Division is required')).toBeInTheDocument()
-        expect(screen.getByText('Team leader name is required')).toBeInTheDocument()
-        expect(screen.getByText('Phone number is required')).toBeInTheDocument()
-        expect(screen.getByText('Email is required')).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.tournamentRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.divisionRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
+          )
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberRequired'])
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailRequired'])
+        ).toBeInTheDocument()
       })
 
       // Privacy agreement error should NOT appear in edit mode
       expect(
-        screen.queryByText('You must agree to the privacy policy')
+        screen.queryByText(
+          TEST_TRANSLATIONS['teams.form.errors.privacyAgreementRequired']
+        )
       ).not.toBeInTheDocument()
     })
   })
@@ -522,15 +607,21 @@ describe('TeamForm Component - onBlur Validation', () => {
       await user.type(emailInput, 'john@example.com')
 
       // Submit without checking privacy agreement
-      const submitButton = screen.getByRole('button', { name: /teams\.form\.submit/i })
+      const submitButton = screen.getByRole('button', {
+        name: 'common.actions.save',
+      })
       await user.click(submitButton)
 
       // Privacy agreement error should appear
       await waitFor(() => {
         expect(
-          screen.getByText('You must agree to the privacy policy')
+          screen.getByText(
+            TEST_TRANSLATIONS['teams.form.errors.privacyAgreementRequired']
+          )
         ).toBeInTheDocument()
-        expect(screen.getByText('Category is required')).toBeInTheDocument()
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.categoryRequired'])
+        ).toBeInTheDocument()
       })
     })
   })
@@ -751,7 +842,9 @@ describe('TeamForm Category Field', () => {
 
     // Wait for error to appear
     await waitFor(() => {
-      expect(screen.getByText('Category is required')).toBeInTheDocument()
+      expect(
+        screen.getByText(TEST_TRANSLATIONS['teams.form.errors.categoryRequired'])
+      ).toBeInTheDocument()
     })
   })
 

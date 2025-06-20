@@ -16,13 +16,15 @@ app/
 
 ## Key Features
 
-- **Authentication**: Email/password authentication with cookie-based sessions
+- **Authentication**: Email/password authentication with cookie-based sessions (all users redirect to admin panel post-login)
+- **Tournament Management**: Complete tournament CRUD with mobile-optimized swipe-to-delete functionality
+- **Team Management**: Comprehensive team creation and management system
 - **State Management**: Zustand stores with SSR-safe hydration and persistence
 - **Database**: SQLite with Prisma ORM
 - **UI Components**: Role-based context menus and responsive navigation
 - **Styling**: Tailwind CSS for modern UI
-- **Testing**: Playwright for E2E tests and Vitest for unit tests
-- **Type Safety**: Full TypeScript support
+- **Testing**: Vitest for unit tests (584 tests) and Playwright for E2E tests
+- **Type Safety**: Full TypeScript support with Prisma enum integration
 - **Routing**: React Router v7 with advanced prefetching and route protection
 
 ## Architecture

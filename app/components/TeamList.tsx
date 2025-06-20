@@ -47,6 +47,7 @@ export function TeamList({
             onClick={onTeamClick ? () => onTeamClick(team.id) : undefined}
             showActions={context === 'admin'}
             onDelete={onTeamDelete ? () => onTeamDelete(team.id) : undefined}
+            deleteAriaLabel={`${t('teams.deleteTeam')} ${team.clubName} ${team.teamName}`}
           />
         ))}
       </div>

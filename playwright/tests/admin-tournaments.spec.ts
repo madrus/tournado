@@ -27,8 +27,8 @@ test.describe('Admin Tournaments', () => {
     // Open user menu by clicking hamburger menu
     await page.getByRole('button', { name: 'Toggle menu' }).click()
 
-    // Wait for dropdown to appear first
-    await page.waitForTimeout(1000)
+    // Wait for the dropdown menu to be visible
+    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible()
 
     // Look for tournaments link using text content (more flexible)
     const tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })

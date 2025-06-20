@@ -18,9 +18,7 @@ import { Category, Division } from '@prisma/client'
 import { CATEGORIES, DIVISIONS } from './lib.constants'
 import type {
   CategoryObject,
-  CategoryValue,
   DivisionObject,
-  DivisionValue,
   Email,
   TeamClass,
   TeamName,
@@ -69,7 +67,8 @@ export const stringToDivision = (value: string | null): Division | undefined => 
   if (!value) return undefined
 
   const upperValue = value.toUpperCase() as Division
-  if (Object.values(Division).includes(upperValue)) {
+  const validDivisions = getDivisionValues()
+  if (validDivisions.includes(upperValue)) {
     return upperValue
   }
 
@@ -89,7 +88,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
   Object.values(DIVISIONS).find(division => division.value === value)
 
 export const getDivisionLabelByValue = (
-  value: DivisionValue,
+  value: Division,
   locale: 'en' | 'nl' | 'ar' | 'tr'
 ): string => {
   const division = getDivisionByValue(value)
@@ -98,16 +97,13 @@ export const getDivisionLabelByValue = (
 
 export const getAllDivisions = (): DivisionObject[] => Object.values(DIVISIONS)
 
-export const getDivisionValues = (): DivisionValue[] =>
-  Object.values(DIVISIONS).map(d => d.value)
+export const getDivisionValues = (): Division[] => Object.values(Division)
 
 // For form usage
-export const stringToDivisionValue = (
-  value: string | null
-): DivisionValue | undefined => {
+export const stringToDivisionValue = (value: string | null): Division | undefined => {
   if (!value) return undefined
 
-  const upperValue = value.toUpperCase() as DivisionValue
+  const upperValue = value.toUpperCase() as Division
   return getDivisionValues().includes(upperValue) ? upperValue : undefined
 }
 
@@ -130,7 +126,7 @@ export const getCategoryByValue = (value: string): CategoryObject | undefined =>
  * @returns The localized category label
  */
 export const getCategoryLabelByValue = (
-  value: CategoryValue,
+  value: Category,
   locale: 'en' | 'nl' | 'ar' | 'tr'
 ): string => {
   const category = getCategoryByValue(value)
@@ -145,22 +141,19 @@ export const getAllCategories = (): CategoryObject[] => Object.values(CATEGORIES
 
 /**
  * Gets all category values
- * @returns Array of all CategoryValue instances
+ * @returns Array of all Category enum values
  */
-export const getCategoryValues = (): CategoryValue[] =>
-  Object.values(CATEGORIES).map(c => c.value)
+export const getCategoryValues = (): Category[] => Object.values(Category)
 
 /**
- * Converts a string to CategoryValue type with validation
+ * Converts a string to Category enum value with validation
  * @param value - The string value from form data
- * @returns CategoryValue or undefined if invalid
+ * @returns Category enum value or undefined if invalid
  */
-export const stringToCategoryValue = (
-  value: string | null
-): CategoryValue | undefined => {
+export const stringToCategoryValue = (value: string | null): Category | undefined => {
   if (!value) return undefined
 
-  const upperValue = value.toUpperCase() as CategoryValue
+  const upperValue = value.toUpperCase() as Category
   return getCategoryValues().includes(upperValue) ? upperValue : undefined
 }
 
@@ -200,7 +193,8 @@ export const stringToCategory = (value: string | null): Category | undefined => 
   if (!value) return undefined
 
   const upperValue = value.toUpperCase() as Category
-  if (Object.values(Category).includes(upperValue)) {
+  const validCategories = getCategoryValues()
+  if (validCategories.includes(upperValue)) {
     return upperValue
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -166,7 +165,9 @@ export function SidebarTeamsExample({
           </p>
           <TeamChip
             team={selectedTeam}
-            onClick={() => console.log('Team chip clicked:', selectedTeam.id)}
+            onClick={() => {
+              /* Team chip clicked */
+            }}
           />
         </div>
 
@@ -228,17 +229,15 @@ export function SidebarTeamsExample({
       closeSidebarOnPaths={['/new', '/edit']}
       theme='red'
       sidebarWidth='medium'
-      onSidebarToggle={isOpen => {
-        console.log('Teams sidebar toggled:', isOpen)
+      onSidebarToggle={_isOpen => {
         // Future: Could save sidebar state to localStorage
         // localStorage.setItem('teamsSidebarOpen', String(isOpen))
       }}
-      onSidebarItemClick={itemId => {
-        console.log('Teams sidebar item clicked:', itemId)
+      onSidebarItemClick={_itemId => {
         // Future: Could track analytics or handle special actions
-        if (itemId === 'add-button' || itemId === 'fab-button') {
-          console.log('Add team button clicked')
-        }
+        // if (itemId === 'add-button' || itemId === 'fab-button') {
+        //   // Add team button clicked
+        // }
       }}
     />
   )
@@ -290,7 +289,9 @@ export function TeamsLayoutComparison(): JSX.Element {
             <TeamChip
               key={team.id}
               team={team}
-              onClick={() => console.log('Chip clicked:', team.id)}
+              onClick={() => {
+                /* Chip clicked */
+              }}
             />
           ))}
         </div>

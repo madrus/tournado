@@ -2,10 +2,9 @@ import { JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
-import { Division } from '@prisma/client'
-
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
@@ -26,13 +25,15 @@ export function TeamForm({
   intent,
   formData,
   submitButtonText,
-}: TeamFormProps): JSX.Element {
+}: Omit<
+  TeamFormProps,
+  'availableDivisions' | 'availableCategories' | 'tournamentId'
+>): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
 
-  // Zustand store destructure - get all needed properties
+  // Get all state from the form store
   const {
-    // Form field values
     formFields: {
       tournamentId,
       division,
@@ -44,21 +45,17 @@ export function TeamForm({
       teamLeaderEmail,
       privacyAgreement,
     },
-    // Validation state
     validation: { displayErrors },
-    // Available options
+    formMeta: { mode },
     availableOptions: {
       tournaments: availableTournaments,
       divisions: availableDivisions,
       categories: availableCategories,
     },
-    // Form metadata
-    formMeta: { mode },
-    // Actions
     setFormField,
     setFormMetaField,
-    setFieldTouched,
     setFormData,
+    setFieldTouched,
     validateForm,
   } = useTeamFormStore()
 

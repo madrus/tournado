@@ -44,6 +44,7 @@ vi.mock('react-i18next', () => ({
 
 // Mock RTL utilities
 vi.mock('~/utils/rtlUtils', () => ({
+  getArabicTextClass: () => 'arabic-text',
   getLatinTextClass: () => 'latin-text',
   getLatinTitleClass: () => 'latin-title',
 }))
@@ -69,11 +70,17 @@ vi.mock('~/lib/lib.helpers', () => ({
       MO8: { en: 'MO8', nl: 'MO8', ar: 'MO8', tr: 'MO8' },
       MO9: { en: 'MO9', nl: 'MO9', ar: 'MO9', tr: 'MO9' },
       MO10: { en: 'MO10', nl: 'MO10', ar: 'MO10', tr: 'MO10' },
-      Veteranen_35_Plus: {
+      VETERANEN_35_PLUS: {
         en: 'Veterans 35+',
         nl: 'Veteranen 35+',
-        ar: 'قدامى 35+',
+        ar: 'كبار 35+',
         tr: 'Veteranlar 35+',
+      },
+      VETERANEN_40_PLUS: {
+        en: 'Veterans 40+',
+        nl: 'Veteranen 40+',
+        ar: 'كبار 40+',
+        tr: 'Veteranlar 40+',
       },
     }
     return labels[category]?.[language] || category
@@ -87,13 +94,47 @@ vi.mock('~/utils/misc', () => ({
 }))
 
 // Mock icons
-vi.mock('../icons', () => ({
-  CheckIcon: ({ className, size }: { className?: string; size?: number }) => (
-    <span data-testid='check-icon' className={className} data-size={size}>
-      ✓
-    </span>
-  ),
-}))
+vi.mock('../icons', () => {
+  const createMockIcon =
+    (testId: string, symbol: string) =>
+    ({ className, size }: { className?: string; size?: number }) => (
+      <span data-testid={testId} className={className} data-size={size}>
+        {symbol}
+      </span>
+    )
+
+  return {
+    AddIcon: createMockIcon('add-icon', '+'),
+    AdminPanelSettingsIcon: createMockIcon('admin-panel-settings-icon', '👤'),
+    ApparelIcon: createMockIcon('apparel-icon', '👕'),
+    BlockIcon: createMockIcon('block-icon', '🚫'),
+    CalendarIcon: createMockIcon('calendar-icon', '📅'),
+    CheckCircleIcon: createMockIcon('check-circle-icon', '✅'),
+    CheckIcon: createMockIcon('check-icon', '✓'),
+    ChevronLeftIcon: createMockIcon('chevron-left-icon', '‹'),
+    ChevronRightIcon: createMockIcon('chevron-right-icon', '›'),
+    CloseIcon: createMockIcon('close-icon', '✕'),
+    DarkModeIcon: createMockIcon('dark-mode-icon', '🌙'),
+    DeleteIcon: createMockIcon('delete-icon', '🗑'),
+    ErrorIcon: createMockIcon('error-icon', '❌'),
+    ExpandMoreIcon: createMockIcon('expand-more-icon', '▼'),
+    HomeIcon: createMockIcon('home-icon', '🏠'),
+    InfoIcon: createMockIcon('info-icon', 'ℹ'),
+    LanguageIcon: createMockIcon('language-icon', '🌐'),
+    LightModeIcon: createMockIcon('light-mode-icon', '☀'),
+    LoginIcon: createMockIcon('login-icon', '🔑'),
+    LogoutIcon: createMockIcon('logout-icon', '🚪'),
+    MenuIcon: createMockIcon('menu-icon', '☰'),
+    MoreHorizIcon: createMockIcon('more-horiz-icon', '⋯'),
+    MoreVertIcon: createMockIcon('more-vert-icon', '⋮'),
+    PendingIcon: createMockIcon('pending-icon', '⏳'),
+    PersonIcon: createMockIcon('person-icon', '👤'),
+    SettingsIcon: createMockIcon('settings-icon', '⚙'),
+    TrophyIcon: createMockIcon('trophy-icon', '🏆'),
+    TuneIcon: createMockIcon('tune-icon', '🎛'),
+    WarningIcon: createMockIcon('warning-icon', '⚠'),
+  }
+})
 
 // Mock ActionButton component
 vi.mock('../buttons/ActionButton', () => ({
@@ -135,11 +176,12 @@ vi.mock('../inputs/TextInputField', () => ({
       name: string
       label: string
       value?: string
+      defaultValue?: string
       error?: string
       required?: boolean
       className?: string
     }
-  >(({ name, label, value, error, required, className }, ref) => (
+  >(({ name, label, value, defaultValue, error, required, className }, ref) => (
     <div className='text-input-field'>
       <label htmlFor={name}>
         {label}
@@ -149,7 +191,8 @@ vi.mock('../inputs/TextInputField', () => ({
         ref={ref}
         id={name}
         name={name}
-        defaultValue={value}
+        value={value}
+        defaultValue={defaultValue}
         className={className}
         data-error={!!error}
       />
@@ -190,6 +233,37 @@ vi.mock('../inputs/DateInputField', () => ({
       {error ? <span className='error'>{error}</span> : null}
     </div>
   ),
+}))
+
+vi.mock('../inputs/CustomDatePicker', () => ({
+  CustomDatePicker: React.forwardRef<
+    HTMLInputElement,
+    {
+      name: string
+      label: string
+      defaultValue?: string
+      error?: string
+      required?: boolean
+      className?: string
+    }
+  >(({ name, label, defaultValue, error, required, className }, ref) => (
+    <div className='custom-date-picker'>
+      <label htmlFor={name}>
+        {label}
+        {required ? ' *' : null}
+      </label>
+      <input
+        ref={ref}
+        id={name}
+        name={name}
+        type='date'
+        defaultValue={defaultValue}
+        className={className}
+        data-error={!!error}
+      />
+      {error ? <span className='error'>{error}</span> : null}
+    </div>
+  )),
 }))
 
 const mockDivisions = [

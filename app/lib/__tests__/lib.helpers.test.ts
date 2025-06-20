@@ -12,96 +12,112 @@ import {
   stringToDivision,
   stringToDivisionValue,
 } from '../lib.helpers'
-import type { DivisionValue } from '../lib.types'
+
+// Use our division values for tests
+const TestDivision = {
+  PREMIER_DIVISION: 'PREMIER_DIVISION',
+  FIRST_DIVISION: 'FIRST_DIVISION',
+  SECOND_DIVISION: 'SECOND_DIVISION',
+  THIRD_DIVISION: 'THIRD_DIVISION',
+  FOURTH_DIVISION: 'FOURTH_DIVISION',
+  FIFTH_DIVISION: 'FIFTH_DIVISION',
+} as const
 
 describe('lib.helpers', () => {
   describe('getDivisionLabel', () => {
     it.each([
-      [Division.PREMIER_DIVISION, 'en', 'Premier Division'],
-      [Division.FIRST_DIVISION, 'en', 'First Division'],
-      [Division.SECOND_DIVISION, 'en', 'Second Division'],
-      [Division.THIRD_DIVISION, 'en', 'Third Division'],
-      [Division.FOURTH_DIVISION, 'en', 'Fourth Division'],
-      [Division.FIFTH_DIVISION, 'en', 'Fifth Division'],
+      [TestDivision.PREMIER_DIVISION, 'en', 'Premier Division'],
+      [TestDivision.FIRST_DIVISION, 'en', 'First Division'],
+      [TestDivision.SECOND_DIVISION, 'en', 'Second Division'],
+      [TestDivision.THIRD_DIVISION, 'en', 'Third Division'],
+      [TestDivision.FOURTH_DIVISION, 'en', 'Fourth Division'],
+      [TestDivision.FIFTH_DIVISION, 'en', 'Fifth Division'],
     ])('should return correct English label for %s', (division, language, expected) => {
-      expect(getDivisionLabel(division, language)).toBe(expected)
+      expect(getDivisionLabel(division as Division, language)).toBe(expected)
     })
 
     it.each([
-      [Division.PREMIER_DIVISION, 'nl', 'Hoofdklasse'],
-      [Division.FIRST_DIVISION, 'nl', 'Eerste klasse'],
-      [Division.SECOND_DIVISION, 'nl', 'Tweede klasse'],
-      [Division.THIRD_DIVISION, 'nl', 'Derde klasse'],
-      [Division.FOURTH_DIVISION, 'nl', 'Vierde klasse'],
-      [Division.FIFTH_DIVISION, 'nl', 'Vijfde klasse'],
+      [TestDivision.PREMIER_DIVISION, 'nl', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'nl', 'Eerste klasse'],
+      [TestDivision.SECOND_DIVISION, 'nl', 'Tweede klasse'],
+      [TestDivision.THIRD_DIVISION, 'nl', 'Derde klasse'],
+      [TestDivision.FOURTH_DIVISION, 'nl', 'Vierde klasse'],
+      [TestDivision.FIFTH_DIVISION, 'nl', 'Vijfde klasse'],
     ])('should return correct Dutch label for %s', (division, language, expected) => {
-      expect(getDivisionLabel(division, language)).toBe(expected)
+      expect(getDivisionLabel(division as Division, language)).toBe(expected)
     })
 
     it.each([
-      [Division.PREMIER_DIVISION, 'ar', 'الدرجة الأولى'],
-      [Division.FIRST_DIVISION, 'ar', 'الدرجة الثانية'],
-      [Division.SECOND_DIVISION, 'ar', 'الدرجة الثالثة'],
+      [TestDivision.PREMIER_DIVISION, 'ar', 'الدرجة الأولى'],
+      [TestDivision.FIRST_DIVISION, 'ar', 'الدرجة الثانية'],
+      [TestDivision.SECOND_DIVISION, 'ar', 'الدرجة الثالثة'],
     ])('should return correct Arabic label for %s', (division, language, expected) => {
-      expect(getDivisionLabel(division, language)).toBe(expected)
+      expect(getDivisionLabel(division as Division, language)).toBe(expected)
     })
 
     it.each([
-      [Division.PREMIER_DIVISION, 'fr', 'Premier Division'],
-      [Division.FIRST_DIVISION, 'de', 'First Division'],
+      [TestDivision.PREMIER_DIVISION, 'fr', 'Premier Division'],
+      [TestDivision.FIRST_DIVISION, 'de', 'First Division'],
     ])(
       'should fallback to English when language %s not available for %s',
       (division, language, expected) => {
-        expect(getDivisionLabel(division, language)).toBe(expected)
+        expect(getDivisionLabel(division as Division, language)).toBe(expected)
       }
     )
 
     it.each([
-      [Division.PREMIER_DIVISION, 'fr', 'nl', 'Hoofdklasse'],
-      [Division.FIRST_DIVISION, 'de', 'nl', 'Eerste klasse'],
+      [TestDivision.PREMIER_DIVISION, 'fr', 'nl', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'de', 'nl', 'Eerste klasse'],
     ])(
       'should fallback to custom fallback language for %s',
       (division, language, fallback, expected) => {
-        expect(getDivisionLabel(division, language, fallback)).toBe(expected)
+        expect(getDivisionLabel(division as Division, language, fallback)).toBe(
+          expected
+        )
       }
     )
 
     it('should return division key when no language available', () => {
       // Test with a valid division but requesting a language that doesn't exist
-      expect(getDivisionLabel(Division.PREMIER_DIVISION, 'invalid_lang' as never)).toBe(
-        'Premier Division'
-      )
+      expect(
+        getDivisionLabel(
+          TestDivision.PREMIER_DIVISION as Division,
+          'invalid_lang' as never
+        )
+      ).toBe('Premier Division')
     })
 
     it('should use English as default language', () => {
-      expect(getDivisionLabel(Division.PREMIER_DIVISION)).toBe('Premier Division')
+      expect(getDivisionLabel(TestDivision.PREMIER_DIVISION as Division)).toBe(
+        'Premier Division'
+      )
     })
   })
 
   describe('stringToDivision', () => {
     it.each([
-      ['PREMIER_DIVISION', Division.PREMIER_DIVISION],
-      ['FIRST_DIVISION', Division.FIRST_DIVISION],
-      ['SECOND_DIVISION', Division.SECOND_DIVISION],
-      ['THIRD_DIVISION', Division.THIRD_DIVISION],
-      ['FOURTH_DIVISION', Division.FOURTH_DIVISION],
-      ['FIFTH_DIVISION', Division.FIFTH_DIVISION],
-    ])('should convert valid string %s to Division enum', (input, expected) => {
+      ['PREMIER_DIVISION', TestDivision.PREMIER_DIVISION],
+      ['FIRST_DIVISION', TestDivision.FIRST_DIVISION],
+      ['SECOND_DIVISION', TestDivision.SECOND_DIVISION],
+      ['THIRD_DIVISION', TestDivision.THIRD_DIVISION],
+      ['FOURTH_DIVISION', TestDivision.FOURTH_DIVISION],
+      ['FIFTH_DIVISION', TestDivision.FIFTH_DIVISION],
+    ])('should convert valid string %s to Division', (input, expected) => {
       expect(stringToDivision(input)).toBe(expected)
     })
 
     it.each([
-      ['premier_division', Division.PREMIER_DIVISION],
-      ['first_division', Division.FIRST_DIVISION],
-      ['second_division', Division.SECOND_DIVISION],
-    ])('should convert lowercase string %s to Division enum', (input, expected) => {
+      ['premier_division', TestDivision.PREMIER_DIVISION],
+      ['first_division', TestDivision.FIRST_DIVISION],
+      ['second_division', TestDivision.SECOND_DIVISION],
+    ])('should convert lowercase string %s to Division', (input, expected) => {
       expect(stringToDivision(input)).toBe(expected)
     })
 
     it.each([
-      ['Premier_Division', Division.PREMIER_DIVISION],
-      ['First_DIVISION', Division.FIRST_DIVISION],
-    ])('should convert mixed case string %s to Division enum', (input, expected) => {
+      ['Premier_Division', TestDivision.PREMIER_DIVISION],
+      ['First_DIVISION', TestDivision.FIRST_DIVISION],
+    ])('should convert mixed case string %s to Division', (input, expected) => {
       expect(stringToDivision(input)).toBe(expected)
     })
 
@@ -185,7 +201,7 @@ describe('lib.helpers', () => {
       ['FIRST_DIVISION', 'en', 'First Division'],
       ['SECOND_DIVISION', 'en', 'Second Division'],
     ])('should return correct English label for %s', (value, language, expected) => {
-      expect(getDivisionLabelByValue(value as DivisionValue, language)).toBe(expected)
+      expect(getDivisionLabelByValue(value as Division, language)).toBe(expected)
     })
 
     it.each<[string, 'en' | 'nl', string]>([
@@ -193,7 +209,7 @@ describe('lib.helpers', () => {
       ['FIRST_DIVISION', 'nl', 'Eerste klasse'],
       ['SECOND_DIVISION', 'nl', 'Tweede klasse'],
     ])('should return correct Dutch label for %s', (value, language, expected) => {
-      expect(getDivisionLabelByValue(value as DivisionValue, language)).toBe(expected)
+      expect(getDivisionLabelByValue(value as Division, language)).toBe(expected)
     })
 
     it.each<[string, 'en' | 'nl', string]>([
@@ -341,12 +357,15 @@ describe('lib.helpers', () => {
       divisions.forEach(division => {
         // Test English labels
         const labelFromHelper = getDivisionLabel(division.value as Division, 'en')
-        const labelFromValue = getDivisionLabelByValue(division.value, 'en')
+        const labelFromValue = getDivisionLabelByValue(division.value as Division, 'en')
         expect(labelFromHelper).toBe(labelFromValue)
 
         // Test Dutch labels
         const nlLabelFromHelper = getDivisionLabel(division.value as Division, 'nl')
-        const nlLabelFromValue = getDivisionLabelByValue(division.value, 'nl')
+        const nlLabelFromValue = getDivisionLabelByValue(
+          division.value as Division,
+          'nl'
+        )
         expect(nlLabelFromHelper).toBe(nlLabelFromValue)
       })
     })

@@ -6,8 +6,8 @@ import { ActionButton } from '~/components/buttons'
 import { CheckIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
-import type { CategoryValue, DivisionValue } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
@@ -305,7 +305,7 @@ export function TournamentForm({
                     )}
                   >
                     {getDivisionLabelByValue(
-                      division as DivisionValue,
+                      division as Division,
                       i18n.language as 'en' | 'nl' | 'ar' | 'tr'
                     )}
                   </span>
@@ -341,47 +341,35 @@ export function TournamentForm({
             </div>
 
             <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
-              {categories.map(category => {
-                // Debug: let's see what we're working with
-                console.log('Category:', category)
-                console.log(
-                  'Translation:',
-                  getCategoryLabelByValue(
-                    category as CategoryValue,
-                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                  )
-                )
-
-                return (
-                  <label
-                    key={category}
+              {categories.map(category => (
+                <label
+                  key={category}
+                  className={cn(
+                    'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
+                    selectedCategories.includes(category)
+                      ? 'border-purple-500 bg-purple-50 text-purple-800'
+                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
+                  )}
+                >
+                  <input
+                    type='checkbox'
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => handleCategoryToggle(category)}
+                    className='sr-only'
+                  />
+                  <span
                     className={cn(
-                      'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                      selectedCategories.includes(category)
-                        ? 'border-purple-500 bg-purple-50 text-purple-800'
-                        : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
+                      'text-base font-medium',
+                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                     )}
                   >
-                    <input
-                      type='checkbox'
-                      checked={selectedCategories.includes(category)}
-                      onChange={() => handleCategoryToggle(category)}
-                      className='sr-only'
-                    />
-                    <span
-                      className={cn(
-                        'text-base font-medium',
-                        i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
-                      )}
-                    >
-                      {getCategoryLabelByValue(
-                        category as CategoryValue,
-                        i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                      )}
-                    </span>
-                  </label>
-                )
-              })}
+                    {getCategoryLabelByValue(
+                      category as Category,
+                      i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                    )}
+                  </span>
+                </label>
+              ))}
             </div>
             {errors.categories ? (
               <p className='mt-2 text-sm text-red-600'>{errors.categories}</p>

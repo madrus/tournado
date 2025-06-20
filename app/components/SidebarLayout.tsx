@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { type JSX, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router'
@@ -284,8 +283,12 @@ export function SidebarLayoutDemo(): JSX.Element {
       closeSidebarOnPaths={['/demo/new']}
       theme='red'
       sidebarWidth='medium'
-      onSidebarToggle={isOpen => console.log('Demo sidebar toggled:', isOpen)}
-      onSidebarItemClick={itemId => console.log('Demo item clicked:', itemId)}
+      onSidebarToggle={_isOpen => {
+        /* Demo sidebar toggled */
+      }}
+      onSidebarItemClick={_itemId => {
+        /* Demo item clicked */
+      }}
     />
   )
 }

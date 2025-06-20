@@ -7,7 +7,6 @@ import type {
   TeamFormSchemaType,
   TeamValidationInput,
   TeamValidationSafeParseResult,
-  TeamValidationSchema,
 } from './lib.types'
 
 // Base team schema without translations (for server-side validation)
@@ -83,7 +82,7 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
 export function getTeamValidationSchema(
   mode: 'create' | 'edit',
   t: TFunction
-): TeamValidationSchema {
+): TeamFormSchemaType | ReturnType<TeamFormSchemaType['omit']> {
   const schema = createTeamFormSchema(t)
   return mode === 'create' ? schema : schema.omit({ privacyAgreement: true })
 }

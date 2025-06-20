@@ -5,8 +5,10 @@ import { useLoaderData } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
+// Import Division type from the database
+import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
-import { getTeamById, type TeamWithLeader } from '~/models/team.server'
+import { getTeamById } from '~/models/team.server'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
@@ -18,7 +20,12 @@ export type LoaderArgs = {
 }
 
 type LoaderData = {
-  team: Pick<TeamWithLeader, 'id' | 'clubName' | 'teamName' | 'division'>
+  team: {
+    id: string
+    clubName: string
+    teamName: string
+    division: Division
+  }
 }
 
 // Route metadata - this is a public route
@@ -67,7 +74,9 @@ export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
     throw new Response('Not Found', { status: 404 })
   }
 
-  return { team }
+  // Cast the team to our expected type since Prisma returns proper enum values at runtime
+  // but the TypeScript definition uses string due to the custom Team type in lib.types.ts
+  return { team: team as LoaderData['team'] }
 }
 
 export default function TeamDetailsPage(): JSX.Element {

@@ -38,6 +38,67 @@ export type DivisionObject = {
   order: number
 }
 
+// Category types from the CATEGORIES object implementation
+export type CategoryKey =
+  | 'JO8'
+  | 'JO9'
+  | 'JO10'
+  | 'JO11'
+  | 'JO12'
+  | 'JO13'
+  | 'JO14'
+  | 'JO15'
+  | 'JO16'
+  | 'JO17'
+  | 'JO19'
+  | 'MO8'
+  | 'MO9'
+  | 'MO10'
+  | 'MO11'
+  | 'MO12'
+  | 'MO13'
+  | 'MO14'
+  | 'MO15'
+  | 'MO16'
+  | 'MO17'
+  | 'MO19'
+  | 'VETERANEN_35_PLUS'
+  | 'VETERANEN_40_PLUS'
+  | 'VETERANEN_45_PLUS'
+  | 'VETERANEN_50_PLUS'
+export type CategoryValue =
+  | 'JO8'
+  | 'JO9'
+  | 'JO10'
+  | 'JO11'
+  | 'JO12'
+  | 'JO13'
+  | 'JO14'
+  | 'JO15'
+  | 'JO16'
+  | 'JO17'
+  | 'JO19'
+  | 'MO8'
+  | 'MO9'
+  | 'MO10'
+  | 'MO11'
+  | 'MO12'
+  | 'MO13'
+  | 'MO14'
+  | 'MO15'
+  | 'MO16'
+  | 'MO17'
+  | 'MO19'
+  | 'VETERANEN_35_PLUS'
+  | 'VETERANEN_40_PLUS'
+  | 'VETERANEN_45_PLUS'
+  | 'VETERANEN_50_PLUS'
+export type CategoryObject = {
+  value: CategoryValue
+  labels: { en: string; nl: string; ar: string; tr: string }
+  order: number
+}
+
 // TeamName type should have the following format:
 // e.g. "JO8-1"
 // J = Jongens (boys), M = Meisjes (girls), JM = Jongens e Meisjes (boys and girls)

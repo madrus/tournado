@@ -2,15 +2,14 @@ import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
-import { DateInputField } from '~/components/inputs/DateInputField'
+import { ActionButton } from '~/components/buttons'
+import { CheckIcon } from '~/components/icons'
+import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { getDivisionLabelByValue } from '~/lib/lib.helpers'
-import type { DivisionValue } from '~/lib/lib.types'
+import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import type { CategoryValue, DivisionValue } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
-
-import { ActionButton } from './buttons/ActionButton'
-import { CheckIcon } from './icons'
 
 type TournamentFormProps = {
   mode?: 'create' | 'edit' // Make optional since it's not used yet
@@ -197,7 +196,7 @@ export function TournamentForm({
                 ref={nameRef}
                 name='name'
                 label={t('tournaments.form.name')}
-                value={formData.name || ''}
+                defaultValue={formData.name || ''}
                 error={errors.name}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -207,7 +206,7 @@ export function TournamentForm({
               <TextInputField
                 name='location'
                 label={t('tournaments.form.location')}
-                value={formData.location || ''}
+                defaultValue={formData.location || ''}
                 error={errors.location}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -239,7 +238,7 @@ export function TournamentForm({
 
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               {/* Start Date */}
-              <DateInputField
+              <CustomDatePicker
                 name='startDate'
                 label={t('tournaments.form.startDate')}
                 defaultValue={formData.startDate}
@@ -249,7 +248,7 @@ export function TournamentForm({
               />
 
               {/* End Date */}
-              <DateInputField
+              <CustomDatePicker
                 name='endDate'
                 label={t('tournaments.form.endDate')}
                 defaultValue={formData.endDate}
@@ -301,8 +300,8 @@ export function TournamentForm({
                   />
                   <span
                     className={cn(
-                      'text-sm font-medium',
-                      getLatinTextClass(i18n.language)
+                      'text-base font-medium',
+                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                     )}
                   >
                     {getDivisionLabelByValue(
@@ -342,32 +341,47 @@ export function TournamentForm({
             </div>
 
             <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
-              {categories.map(category => (
-                <label
-                  key={category}
-                  className={cn(
-                    'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                    selectedCategories.includes(category)
-                      ? 'border-purple-500 bg-purple-50 text-purple-800'
-                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
-                  )}
-                >
-                  <input
-                    type='checkbox'
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryToggle(category)}
-                    className='sr-only'
-                  />
-                  <span
+              {categories.map(category => {
+                // Debug: let's see what we're working with
+                console.log('Category:', category)
+                console.log(
+                  'Translation:',
+                  getCategoryLabelByValue(
+                    category as CategoryValue,
+                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                  )
+                )
+
+                return (
+                  <label
+                    key={category}
                     className={cn(
-                      'text-sm font-medium',
-                      getLatinTextClass(i18n.language)
+                      'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
+                      selectedCategories.includes(category)
+                        ? 'border-purple-500 bg-purple-50 text-purple-800'
+                        : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
                     )}
                   >
-                    {category}
-                  </span>
-                </label>
-              ))}
+                    <input
+                      type='checkbox'
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryToggle(category)}
+                      className='sr-only'
+                    />
+                    <span
+                      className={cn(
+                        'text-base font-medium',
+                        i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
+                      )}
+                    >
+                      {getCategoryLabelByValue(
+                        category as CategoryValue,
+                        i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                      )}
+                    </span>
+                  </label>
+                )
+              })}
             </div>
             {errors.categories ? (
               <p className='mt-2 text-sm text-red-600'>{errors.categories}</p>

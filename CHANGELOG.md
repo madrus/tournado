@@ -2,18 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased]
+## [0.5.0](https://github.com/madrus/tournado/compare/v0.4.2...v0.5.0) (2025-06-20)
 
 ### Features
 
-- **i18n**: refactor language switching to mobile-first approach
-   - Remove standalone LanguageSwitcher component
-   - Integrate language switching into UserMenu as submenu
-   - Add useLanguageSwitcher hook for clean separation of concerns
-   - Implement comprehensive font management system (Amiri for Arabic, Inter for Latin)
-   - Add reactive language persistence (localStorage + cookies)
-   - Enhance Arabic RTL support with proper font scaling and positioning
-   - Mark Latin content with minority marking strategy for better maintainability
+- add CustomDatePicker component and integrate Radix UI popover ([33d7c3f](https://github.com/madrus/tournado/commit/33d7c3f1e7c0a3ed79f2d6b2db6c836d98516b42))
+- add Radix UI select component and enhance TeamForm validation ([a1082e3](https://github.com/madrus/tournado/commit/a1082e3b2f2d0cac7fbf56eb5caa39ad8f0340d5))
+- add tournaments menu item for admin users and update translations ([276b6ea](https://github.com/madrus/tournado/commit/276b6ea209015f0e32d7a2da7751986f54721a7a))
+- implement tournament management feature with CRUD operations ([39068e4](https://github.com/madrus/tournado/commit/39068e47e45a1ebdab5c614af7436e7b33301aa2))
+- integrate tournament data fetching and enhance TeamForm validation ([1c5cfaa](https://github.com/madrus/tournado/commit/1c5cfaad0d7717b44daaf8e4465062110a9d7183))
+- **schema:** add Category enum and improve type consistency ([6de1fe0](https://github.com/madrus/tournado/commit/6de1fe043fec874b978407638990f05a7a7e7b53))
+
+### Bug Fixes
+
+- add Turkish language support for division labels and update pretest script ([b66302f](https://github.com/madrus/tournado/commit/b66302fa50a2f6e1886f63372ba338f3cedc5947))
+- **tests:** resolve variable shadowing and improve TeamForm test mocking ([960284a](https://github.com/madrus/tournado/commit/960284a2b642fac5df2f84950508dcbb814b2056))
+- **tests:** update i18n mock to return English translations for Zod errors - Remove Zod mocks and use actual English error messages - Fix privacy agreement error text to match translations - Attempt to fix disabled field validation logic - Still 7 tests failing, need to debug validation hook ([389f3cb](https://github.com/madrus/tournado/commit/389f3cb5ea6179bba29274589b2db2630bf6b0f8))
+- update TextInputField to allow editing and adjust layout for Add Team button ([b41a1b7](https://github.com/madrus/tournado/commit/b41a1b73c98a38a7249203f83717fb04652c9059))
 
 ### [0.4.2](https://github.com/madrus/tournado/compare/v0.4.1...v0.4.2) (2025-06-15)
 

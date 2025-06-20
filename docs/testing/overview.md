@@ -15,7 +15,7 @@ The project includes a sophisticated **Model Context Protocol (MCP) server** tha
 
 - **3 Core Tools**: Execute tests, analyze coverage, and health checks
 - **3 Intelligent Resources**: Persistent test data, coverage reports, and summaries
-- **167 tests** across 12 test suites with comprehensive coverage analysis
+- **584 tests** across 24 test suites with comprehensive coverage analysis
 - **Smart project detection** - works from any directory
 - **Real-time integration** with AI development tools like Cursor
 
@@ -68,6 +68,27 @@ When running E2E tests via `pnpm test:e2e:all` or `pnpm test:e2e:dev`, the syste
 4. Sets `DATABASE_URL` environment variable to point to the test database
 
 This ensures every test run starts with a clean, predictable database state without affecting your development data.
+
+## Environment Requirements
+
+### ✅ SESSION_SECRET Environment Variable (2024)
+
+**Critical**: Tests now require `SESSION_SECRET` environment variable due to authentication module loading:
+
+```typescript
+// test/setup-test-env.ts
+process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
+```
+
+**Why this changed**: When importing `@prisma/client` types in tests, the session server module gets loaded at runtime, which requires `SESSION_SECRET` at module initialization time. This change occurred when we updated components to use Prisma enum types directly.
+
+**Impact**: Without this environment variable, tests will fail with:
+
+```
+Error: SESSION_SECRET must be set
+```
+
+**Solution**: The environment variable is automatically set in `test/setup-test-env.ts`, so no additional configuration is needed for developers.
 
 ## Test Structure
 

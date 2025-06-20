@@ -2,10 +2,9 @@ import { JSX, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
-import { Division } from '@prisma/client'
-
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
@@ -26,13 +25,15 @@ export function TeamForm({
   intent,
   formData,
   submitButtonText,
-}: TeamFormProps): JSX.Element {
+}: Omit<
+  TeamFormProps,
+  'availableDivisions' | 'availableCategories' | 'tournamentId'
+>): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
 
-  // Zustand store destructure - get all needed properties
+  // Get all state from the form store
   const {
-    // Form field values
     formFields: {
       tournamentId,
       division,
@@ -44,21 +45,17 @@ export function TeamForm({
       teamLeaderEmail,
       privacyAgreement,
     },
-    // Validation state
     validation: { displayErrors },
-    // Available options
+    formMeta: { mode },
     availableOptions: {
       tournaments: availableTournaments,
       divisions: availableDivisions,
       categories: availableCategories,
     },
-    // Form metadata
-    formMeta: { mode },
-    // Actions
     setFormField,
     setFormMetaField,
-    setFieldTouched,
     setFormData,
+    setFieldTouched,
     validateForm,
   } = useTeamFormStore()
 
@@ -80,6 +77,16 @@ export function TeamForm({
       setFormMetaField('mode', formMode)
     }
   }, [formMode, mode, setFormMetaField])
+
+  // Reset specific fields when switching to create mode to ensure clean state
+  useEffect(() => {
+    if (formMode === 'create') {
+      // Clear team-specific fields for new team creation
+      setFormField('clubName', '')
+      setFormField('teamName', '')
+      setFormField('privacyAgreement', false)
+    }
+  }, [formMode, setFormField])
 
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
@@ -154,7 +161,7 @@ export function TeamForm({
                 color='red'
                 className='lg:self-start'
               >
-                {t('teams.deleteTeam')}
+                {t('common.actions.delete')}
               </ActionButton>
             ) : null}
           </div>
@@ -484,7 +491,12 @@ export function TeamForm({
                     />
                   ) : null}
                 </div>
-                <span className='text-sm font-medium'>
+                <span
+                  className={cn(
+                    'text-lg font-normal text-gray-600',
+                    getLatinTextClass(i18n.language)
+                  )}
+                >
                   {t('teams.form.agreeToPrivacyPolicy')}
                 </span>
               </label>
@@ -504,8 +516,14 @@ export function TeamForm({
               {t('common.actions.cancel')}
             </ActionButton>
           ) : null}
-          <ActionButton type='submit' variant='solid' className='md:ml-auto'>
-            {submitButtonText || t('teams.form.submit')}
+          <ActionButton
+            type='submit'
+            variant='solid'
+            color='red'
+            icon='check_circle'
+            aria-label={t('common.actions.save')}
+          >
+            {submitButtonText || t('common.actions.save')}
           </ActionButton>
         </div>
       </Form>

@@ -29,8 +29,9 @@ vi.mock('react-i18next', () => ({
         'tournaments.form.selected': 'selected',
         'tournaments.form.categories': 'Categories',
         'tournaments.form.selectCategories': 'Select available categories',
-        'tournaments.form.saveTournament': 'Save Tournament',
-        'common.cancel': 'Cancel',
+        'common.actions.save': 'Save',
+        'common.actions.cancel': 'Cancel',
+        'common.actions.delete': 'Delete',
       }
       return translations[key] || key
     },
@@ -44,11 +45,12 @@ vi.mock('react-i18next', () => ({
 
 // Mock RTL utilities
 vi.mock('~/utils/rtlUtils', () => ({
+  getArabicTextClass: () => 'arabic-text',
   getLatinTextClass: () => 'latin-text',
   getLatinTitleClass: () => 'latin-title',
 }))
 
-// Mock division helpers
+// Mock division and category helpers
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: (division: string) => {
     const labels: Record<string, string> = {
@@ -59,6 +61,31 @@ vi.mock('~/lib/lib.helpers', () => ({
     }
     return labels[division] || division
   },
+  getCategoryLabelByValue: (category: string, language: string) => {
+    const labels: Record<string, Record<string, string>> = {
+      JO8: { en: 'JO8', nl: 'JO8', ar: 'JO8', tr: 'JO8' },
+      JO9: { en: 'JO9', nl: 'JO9', ar: 'JO9', tr: 'JO9' },
+      JO10: { en: 'JO10', nl: 'JO10', ar: 'JO10', tr: 'JO10' },
+      JO11: { en: 'JO11', nl: 'JO11', ar: 'JO11', tr: 'JO11' },
+      JO12: { en: 'JO12', nl: 'JO12', ar: 'JO12', tr: 'JO12' },
+      MO8: { en: 'MO8', nl: 'MO8', ar: 'MO8', tr: 'MO8' },
+      MO9: { en: 'MO9', nl: 'MO9', ar: 'MO9', tr: 'MO9' },
+      MO10: { en: 'MO10', nl: 'MO10', ar: 'MO10', tr: 'MO10' },
+      VETERANEN_35_PLUS: {
+        en: 'Veterans 35+',
+        nl: 'Veteranen 35+',
+        ar: 'كبار 35+',
+        tr: 'Veteranlar 35+',
+      },
+      VETERANEN_40_PLUS: {
+        en: 'Veterans 40+',
+        nl: 'Veteranen 40+',
+        ar: 'كبار 40+',
+        tr: 'Veteranlar 40+',
+      },
+    }
+    return labels[category]?.[language] || category
+  },
 }))
 
 // Mock cn utility
@@ -68,13 +95,47 @@ vi.mock('~/utils/misc', () => ({
 }))
 
 // Mock icons
-vi.mock('../icons', () => ({
-  CheckIcon: ({ className, size }: { className?: string; size?: number }) => (
-    <span data-testid='check-icon' className={className} data-size={size}>
-      ✓
-    </span>
-  ),
-}))
+vi.mock('../icons', () => {
+  const createMockIcon =
+    (testId: string, symbol: string) =>
+    ({ className, size }: { className?: string; size?: number }) => (
+      <span data-testid={testId} className={className} data-size={size}>
+        {symbol}
+      </span>
+    )
+
+  return {
+    AddIcon: createMockIcon('add-icon', '+'),
+    AdminPanelSettingsIcon: createMockIcon('admin-panel-settings-icon', '👤'),
+    ApparelIcon: createMockIcon('apparel-icon', '👕'),
+    BlockIcon: createMockIcon('block-icon', '🚫'),
+    CalendarIcon: createMockIcon('calendar-icon', '📅'),
+    CheckCircleIcon: createMockIcon('check-circle-icon', '✅'),
+    CheckIcon: createMockIcon('check-icon', '✓'),
+    ChevronLeftIcon: createMockIcon('chevron-left-icon', '‹'),
+    ChevronRightIcon: createMockIcon('chevron-right-icon', '›'),
+    CloseIcon: createMockIcon('close-icon', '✕'),
+    DarkModeIcon: createMockIcon('dark-mode-icon', '🌙'),
+    DeleteIcon: createMockIcon('delete-icon', '🗑'),
+    ErrorIcon: createMockIcon('error-icon', '❌'),
+    ExpandMoreIcon: createMockIcon('expand-more-icon', '▼'),
+    HomeIcon: createMockIcon('home-icon', '🏠'),
+    InfoIcon: createMockIcon('info-icon', 'ℹ'),
+    LanguageIcon: createMockIcon('language-icon', '🌐'),
+    LightModeIcon: createMockIcon('light-mode-icon', '☀'),
+    LoginIcon: createMockIcon('login-icon', '🔑'),
+    LogoutIcon: createMockIcon('logout-icon', '🚪'),
+    MenuIcon: createMockIcon('menu-icon', '☰'),
+    MoreHorizIcon: createMockIcon('more-horiz-icon', '⋯'),
+    MoreVertIcon: createMockIcon('more-vert-icon', '⋮'),
+    PendingIcon: createMockIcon('pending-icon', '⏳'),
+    PersonIcon: createMockIcon('person-icon', '👤'),
+    SettingsIcon: createMockIcon('settings-icon', '⚙'),
+    TrophyIcon: createMockIcon('trophy-icon', '🏆'),
+    TuneIcon: createMockIcon('tune-icon', '🎛'),
+    WarningIcon: createMockIcon('warning-icon', '⚠'),
+  }
+})
 
 // Mock ActionButton component
 vi.mock('../buttons/ActionButton', () => ({
@@ -116,11 +177,12 @@ vi.mock('../inputs/TextInputField', () => ({
       name: string
       label: string
       value?: string
+      defaultValue?: string
       error?: string
       required?: boolean
       className?: string
     }
-  >(({ name, label, value, error, required, className }, ref) => (
+  >(({ name, label, value, defaultValue, error, required, className }, ref) => (
     <div className='text-input-field'>
       <label htmlFor={name}>
         {label}
@@ -130,7 +192,8 @@ vi.mock('../inputs/TextInputField', () => ({
         ref={ref}
         id={name}
         name={name}
-        defaultValue={value}
+        value={value}
+        defaultValue={defaultValue}
         className={className}
         data-error={!!error}
       />
@@ -171,6 +234,37 @@ vi.mock('../inputs/DateInputField', () => ({
       {error ? <span className='error'>{error}</span> : null}
     </div>
   ),
+}))
+
+vi.mock('../inputs/CustomDatePicker', () => ({
+  CustomDatePicker: React.forwardRef<
+    HTMLInputElement,
+    {
+      name: string
+      label: string
+      defaultValue?: string
+      error?: string
+      required?: boolean
+      className?: string
+    }
+  >(({ name, label, defaultValue, error, required, className }, ref) => (
+    <div className='custom-date-picker'>
+      <label htmlFor={name}>
+        {label}
+        {required ? ' *' : null}
+      </label>
+      <input
+        ref={ref}
+        id={name}
+        name={name}
+        type='date'
+        defaultValue={defaultValue}
+        className={className}
+        data-error={!!error}
+      />
+      {error ? <span className='error'>{error}</span> : null}
+    </div>
+  )),
 }))
 
 const mockDivisions = [
@@ -216,9 +310,7 @@ describe('TournamentForm Component', () => {
       expect(screen.getByText('Tournament Dates')).toBeInTheDocument()
       expect(screen.getByText('Divisions')).toBeInTheDocument()
       expect(screen.getByText('Categories')).toBeInTheDocument()
-      expect(
-        screen.getByRole('button', { name: 'Save Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('should render all form fields correctly', () => {
@@ -441,9 +533,7 @@ describe('TournamentForm Component', () => {
     it('should render submit button with default text', () => {
       renderTournamentForm()
 
-      expect(
-        screen.getByRole('button', { name: 'Save Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('should render submit button with custom text', () => {
@@ -483,9 +573,7 @@ describe('TournamentForm Component', () => {
         onDelete: handleDelete,
       })
 
-      expect(
-        screen.getByRole('button', { name: 'Delete Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     })
 
     it('should call onDelete when delete button is clicked', async () => {
@@ -497,7 +585,7 @@ describe('TournamentForm Component', () => {
         onDelete: handleDelete,
       })
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete Tournament' })
+      const deleteButton = screen.getByRole('button', { name: 'Delete' })
       await user.click(deleteButton)
 
       expect(handleDelete).toHaveBeenCalledTimes(1)
@@ -506,9 +594,7 @@ describe('TournamentForm Component', () => {
     it('should not render delete button when showDeleteButton is false', () => {
       renderTournamentForm({ showDeleteButton: false })
 
-      expect(
-        screen.queryByRole('button', { name: 'Delete Tournament' })
-      ).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
     })
   })
 

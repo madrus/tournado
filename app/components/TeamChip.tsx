@@ -14,6 +14,7 @@ type TeamChipProps = {
   onClick?: () => void
   showActions?: boolean // for admin context
   onDelete?: () => void // admin only
+  deleteAriaLabel?: string // accessibility text for delete button
   className?: string
 }
 
@@ -22,6 +23,7 @@ export function TeamChip({
   onClick,
   showActions = false,
   onDelete,
+  deleteAriaLabel,
   className = '',
 }: TeamChipProps): JSX.Element {
   const { i18n } = useTranslation()
@@ -49,8 +51,7 @@ export function TeamChip({
           onDelete()
         }}
         className='flex-shrink-0 rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700'
-        aria-label={`Delete team ${team.clubName} ${team.teamName}`}
-        title='Delete team'
+        aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.teamName}`}
       >
         {renderIcon('close', { className: 'h-4 w-4' })}
       </button>

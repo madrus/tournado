@@ -18,7 +18,8 @@ This project features a **production-ready MCP server** for AI-assisted testing:
 - **NPM Package**: `@madrus/vitest-mcp-server` - Available globally
 - **Status**: v1.0.5 - All tools working reliably
 - **Integration**: Seamless Cursor & Claude Desktop support
-- **Coverage**: 167 tests across 72 test suites with comprehensive coverage analysis
+- **Coverage**: 584 tests across 24 test suites with comprehensive coverage analysis
+- **Environment**: Requires `SESSION_SECRET` for authentication module compatibility
 
 [Learn more about the Vitest MCP Server →](testing/vitest_mcp.md)
 
@@ -27,9 +28,17 @@ This project features a **production-ready MCP server** for AI-assisted testing:
 Tournado is a tournament management application built with:
 
 - [React Router v7](https://reactrouter.com/) - Full stack web framework
-- [Prisma](https://prisma.io) - Database ORM
+- [Prisma](https://prisma.io) - Database ORM with enum types
 - [TypeScript](https://typescriptlang.org) - Type-safe JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+
+### Key Features
+
+- **Authentication**: All users redirect to admin panel after successful login
+- **Tournament Management**: Admin-only feature with dedicated menu navigation
+- **Team Management**: Comprehensive team creation and management
+- **Role-Based Access**: Different UI experiences for admin vs regular users
+- **Mobile Optimized**: Swipe-to-delete functionality and responsive design
 
 ## Project Structure
 

@@ -74,6 +74,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
           >
             <Select.Trigger
               ref={selectRef}
+              aria-label={`${label} - select option`}
               className={cn(
                 'flex h-12 w-full items-center justify-between rounded-md border-2 border-emerald-700/30 bg-white px-3 py-2 text-lg',
                 'focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none',

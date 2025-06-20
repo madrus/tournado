@@ -2,12 +2,14 @@
   "admin": {
     "teams": {
       "allTeams": "Alle teams",
-      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om gegevens te bewerken of te verwijderen.",
-      "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om details te bewerken of te verwijderen.",
+      "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
       "createTeam": "Team aanmaken",
-      "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde gegevens.",
+      "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde details.",
+      "newTeam": "Nieuw team",
+      "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "description": "Beheer alle teams voor alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
-      "editTeam": "Team gegevens bewerken",
+      "editTeam": "Team bewerken",
       "saveChanges": "Wijzigingen opslaan",
       "teamNotFound": "Team niet gevonden",
       "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
@@ -60,11 +62,13 @@
     "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
-    "actions": "Acties",
+    "actions": {
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "delete": "Verwijderen"
+    },
     "appName": "Tournado",
     "backToHome": "Terug naar home",
-    "cancel": "Annuleren",
-    "delete": "Verwijderen",
     "error": "Fout",
     "guest": "Bezoeker",
     "language": "Taal",
@@ -169,6 +173,7 @@
       },
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de servicevoorwaarden",
       "privacyPolicy": "Privacybeleid",
+      "agreeToPrivacyPolicy": "Ik ga akkoord met het privacybeleid",
       "readAndAccept": "Lees en accepteer het privacybeleid om door te gaan",
       "selectDivision": "Selecteer een klasse",
       "selectTournament": "Selecteer een toernooi",
@@ -194,7 +199,6 @@
     },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",
-    "save": "Opslaan",
     "title": "Teams"
   },
   "tournaments": {
@@ -223,7 +227,6 @@
       "selected": "geselecteerd",
       "tournamentRegistration": "Toernooi registratie",
       "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
-      "saveTournament": "Toernooi opslaan",
       "createTournament": "Toernooi aanmaken",
       "updateTournament": "Toernooi bijwerken"
     }

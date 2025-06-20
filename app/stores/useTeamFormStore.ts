@@ -622,10 +622,21 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // Skip persistence completely on server-side
           skipHydration: !isBrowser,
           // Only persist form data, not validation state
+          // Exclude privacyAgreement since it should always start fresh for new teams
           partialize: state =>
             isBrowser
               ? {
-                  formFields: state.formFields,
+                  formFields: {
+                    tournamentId: state.formFields.tournamentId,
+                    division: state.formFields.division,
+                    category: state.formFields.category,
+                    clubName: state.formFields.clubName,
+                    teamName: state.formFields.teamName,
+                    teamLeaderName: state.formFields.teamLeaderName,
+                    teamLeaderPhone: state.formFields.teamLeaderPhone,
+                    teamLeaderEmail: state.formFields.teamLeaderEmail,
+                    // Explicitly exclude privacyAgreement from persistence
+                  },
                   formMeta: { mode: state.formMeta.mode },
                 }
               : {},

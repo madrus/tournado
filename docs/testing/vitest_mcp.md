@@ -4,7 +4,7 @@
 
 **Status**: ✅ **PRODUCTION-READY v1.0.5** - Advanced MCP server published to NPM with robust execution and coverage analysis
 **NPM Package**: `@madrus/vitest-mcp-server` - Available globally via `npx @madrus/vitest-mcp-server@latest`
-**Current Project**: React Router v7 application (Tournado) with comprehensive testing setup (167 tests across 72 test suites)
+**Current Project**: React Router v7 application (Tournado) with comprehensive testing setup (584 tests across 24 test suites)
 **Technology Stack**: TypeScript, Vitest, Prisma, MCP SDK, spawn-based execution
 **Architecture**: Sophisticated MCP server with tools, resources, intelligent caching, and reliable test execution
 
@@ -20,7 +20,7 @@
 ### ✅ Core Tools (3) - All Fixed & Working
 
 1. **`ping`** - Health check connectivity test ✅
-2. **`run-vitest`** - Execute complete test suite (167 tests across 72 suites) ✅
+2. **`run-vitest`** - Execute complete test suite (584 tests across 24 suites) ✅
 3. **`run-vitest-coverage`** - Execute tests with comprehensive coverage analysis ✅ **FIXED in v1.0.5**
 
 ## 🔍 Why This MCP Server Needs Environment Variables
@@ -176,8 +176,8 @@ vitest run --outputFile=vitest-results.json --coverage
 ### Current Project Test Status
 
 ```
-✅ 167/167 tests passing
-✅ 72 test suites executed
+✅ 584/584 tests passing
+✅ 24 test suites executed
 ✅ Coverage analysis across 80+ files
 ✅ Perfect coverage files: AuthErrorBoundary, GeneralErrorBoundary, PrefetchLink, Navigation components
 ⚠️ Partial coverage files: AppBar (95.78%), IconUtils (91.66%)
@@ -188,8 +188,8 @@ vitest run --outputFile=vitest-results.json --coverage
 
 ```json
 {
-   "numTotalTests": 167,
-   "numPassedTests": 167,
+   "numTotalTests": 584,
+   "numPassedTests": 584,
    "numFailedTests": 0,
    "coverage": {
       "app/components/AppBar.tsx": {
@@ -243,7 +243,7 @@ vitest run --outputFile=vitest-results.json --coverage
 "numTotalTests": 0, "coverage": {...}
 
 # ✅ Fixed behavior (v1.0.5+)
-"numTotalTests": 167, "coverage": {...}
+"numTotalTests": 584, "coverage": {...}
 
 # Solution: Update to latest version
 npx @madrus/vitest-mcp-server@latest
@@ -314,7 +314,7 @@ npx clear-npx-cache
 ### AI-Assisted Development Workflow
 
 1. **Health Check**: `ping` → Verify MCP server connectivity ✅
-2. **Execute Tests**: `run-vitest` → Get detailed results for 167 tests ✅
+2. **Execute Tests**: `run-vitest` → Get detailed results for 584 tests ✅
 3. **Analyze Coverage**: `run-vitest-coverage` → Identify gaps in 80+ files ✅
 4. **Access Resources**: Query `vitest://test-results` for persistent data ✅
 5. **Iterate**: Fix issues based on comprehensive feedback ✅
@@ -346,7 +346,7 @@ results.coverage.forEach(file => {
 
 ### Performance Metrics
 
-- **⚡ Fast Execution**: 167 tests in ~3-5 seconds
+- **⚡ Fast Execution**: 584 tests in ~3-5 seconds
 - **📊 Comprehensive Coverage**: 80+ files analyzed with line-level precision
 - **🔄 Smart Caching**: Zero-overhead resource access through intelligent caching
 - **🌐 Universal Access**: Works from any directory with proper configuration
@@ -363,7 +363,7 @@ results.coverage.forEach(file => {
 The Vitest MCP server v1.0.5 represents a **significant milestone** in AI-assisted testing automation:
 
 ✅ **Bulletproof Execution** - All tools working reliably across environments
-✅ **Comprehensive Analysis** - 167 tests + detailed coverage for 80+ files
+✅ **Comprehensive Analysis** - 584 tests + detailed coverage for 80+ files
 ✅ **Global Availability** - NPM package ready for teams and CI/CD
 ✅ **Production Hardened** - Fixed all known issues, robust error handling
 ✅ **AI-Native Design** - Built specifically for AI assistant integration

@@ -46,7 +46,8 @@ The application supports three distinct user contexts:
 - **Status**: `authenticated = true`
 - **Role**: `ADMIN`
 - **Visible Menu Items**:
-   - Teams (public access)
+   - **Tournaments** (admin only) - First menu item
+   - Teams (admin view)
    - **Admin Panel** (admin only)
    - Profile (authenticated only)
    - Settings (authenticated only)
@@ -58,14 +59,15 @@ The application supports three distinct user contexts:
 
 The context menu follows a consistent structure:
 
-1. **Teams** - Always first, available to all users
-2. **Divider** - Visual separator
-3. **Admin Panel** - Only visible to users with `ADMIN` role
-4. **Profile** - Available to authenticated users
-5. **Settings** - Available to authenticated users
-6. **About** - Available to all users
-7. **Language Selector** - Available to all users
-8. **Authentication Action** - Sign In (public) or Sign Out (authenticated)
+1. **Tournaments** - First for admin users only, with trophy icon
+2. **Teams** - Available to all users (admin view for admins, public view for others)
+3. **Divider** - Visual separator
+4. **Admin Panel** - Only visible to users with `ADMIN` role
+5. **Profile** - Available to authenticated users
+6. **Settings** - Available to authenticated users
+7. **About** - Available to all users
+8. **Language Selector** - Available to all users
+9. **Authentication Action** - Sign In (public) or Sign Out (authenticated)
 
 #### Implementation Details
 

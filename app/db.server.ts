@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client'
 let prisma: PrismaClient
 
 declare global {
-  // eslint-disable-next-line no-var
   var __db__: PrismaClient
 }
 
@@ -20,5 +19,10 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.__db__
   prisma.$connect()
 }
+
+// Re-export types from Prisma client
+// Since pnpm's module resolution can cause issues with direct imports,
+// we re-export them here for consistent access across the app
+export type { Category, Division } from '@prisma/client'
 
 export { prisma }

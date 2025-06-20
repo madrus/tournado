@@ -48,7 +48,7 @@ vi.mock('~/utils/rtlUtils', () => ({
   getLatinTitleClass: () => 'latin-title',
 }))
 
-// Mock division helpers
+// Mock division and category helpers
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: (division: string) => {
     const labels: Record<string, string> = {
@@ -58,6 +58,25 @@ vi.mock('~/lib/lib.helpers', () => ({
       THIRD_DIVISION: 'Third Division',
     }
     return labels[division] || division
+  },
+  getCategoryLabelByValue: (category: string, language: string) => {
+    const labels: Record<string, Record<string, string>> = {
+      JO8: { en: 'JO8', nl: 'JO8', ar: 'JO8', tr: 'JO8' },
+      JO9: { en: 'JO9', nl: 'JO9', ar: 'JO9', tr: 'JO9' },
+      JO10: { en: 'JO10', nl: 'JO10', ar: 'JO10', tr: 'JO10' },
+      JO11: { en: 'JO11', nl: 'JO11', ar: 'JO11', tr: 'JO11' },
+      JO12: { en: 'JO12', nl: 'JO12', ar: 'JO12', tr: 'JO12' },
+      MO8: { en: 'MO8', nl: 'MO8', ar: 'MO8', tr: 'MO8' },
+      MO9: { en: 'MO9', nl: 'MO9', ar: 'MO9', tr: 'MO9' },
+      MO10: { en: 'MO10', nl: 'MO10', ar: 'MO10', tr: 'MO10' },
+      Veteranen_35_Plus: {
+        en: 'Veterans 35+',
+        nl: 'Veteranen 35+',
+        ar: 'قدامى 35+',
+        tr: 'Veteranlar 35+',
+      },
+    }
+    return labels[category]?.[language] || category
   },
 }))
 

@@ -43,14 +43,17 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
           readOnly={readOnly}
           required={required}
           defaultValue={defaultValue}
-          placeholder={placeholder}
+          placeholder={placeholder || 'dd-mm-yyyy'}
           min={min}
           max={max}
-          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none'
+          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none [&::-webkit-calendar-picker-indicator]:opacity-70'
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
           onBlur={onBlur}
           onChange={onChange}
+          style={{
+            colorScheme: 'light',
+          }}
         />
       </label>
       {error ? (

@@ -15,8 +15,10 @@
  */
 import { Category, Division } from '@prisma/client'
 
-import { DIVISIONS } from './lib.constants'
+import { CATEGORIES, DIVISIONS } from './lib.constants'
 import type {
+  CategoryObject,
+  CategoryValue,
   DivisionObject,
   DivisionValue,
   Email,
@@ -107,6 +109,59 @@ export const stringToDivisionValue = (
 
   const upperValue = value.toUpperCase() as DivisionValue
   return getDivisionValues().includes(upperValue) ? upperValue : undefined
+}
+
+// ============================================================================
+// Category Helper Functions
+// ============================================================================
+
+/**
+ * Gets the category object by its value
+ * @param value - The category value (e.g., 'JO8', 'VETERANEN_35_PLUS')
+ * @returns CategoryObject or undefined if not found
+ */
+export const getCategoryByValue = (value: string): CategoryObject | undefined =>
+  Object.values(CATEGORIES).find(category => category.value === value)
+
+/**
+ * Gets the localized label for a category by its value
+ * @param value - The category value (e.g., 'JO8', 'VETERANEN_35_PLUS')
+ * @param locale - The current language code (e.g., 'en', 'nl', 'ar', 'tr')
+ * @returns The localized category label
+ */
+export const getCategoryLabelByValue = (
+  value: CategoryValue,
+  locale: 'en' | 'nl' | 'ar' | 'tr'
+): string => {
+  const category = getCategoryByValue(value)
+  return category ? category.labels[locale] : value
+}
+
+/**
+ * Gets all category objects
+ * @returns Array of all CategoryObject instances
+ */
+export const getAllCategories = (): CategoryObject[] => Object.values(CATEGORIES)
+
+/**
+ * Gets all category values
+ * @returns Array of all CategoryValue instances
+ */
+export const getCategoryValues = (): CategoryValue[] =>
+  Object.values(CATEGORIES).map(c => c.value)
+
+/**
+ * Converts a string to CategoryValue type with validation
+ * @param value - The string value from form data
+ * @returns CategoryValue or undefined if invalid
+ */
+export const stringToCategoryValue = (
+  value: string | null
+): CategoryValue | undefined => {
+  if (!value) return undefined
+
+  const upperValue = value.toUpperCase() as CategoryValue
+  return getCategoryValues().includes(upperValue) ? upperValue : undefined
 }
 
 // ============================================================================

@@ -9,6 +9,7 @@ type InputFieldProps = {
   required?: boolean
   className?: string
   value?: string
+  defaultValue?: string
   placeholder?: string
   onChange?: (value: string) => void
   onBlur?: (focusEvent: React.FocusEvent<HTMLInputElement>) => void
@@ -24,7 +25,8 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       error,
       required = false,
       className = '',
-      value = '',
+      value,
+      defaultValue,
       placeholder,
       onChange,
       onBlur,
@@ -41,6 +43,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           readOnly={readOnly}
           required={required}
           value={value}
+          defaultValue={defaultValue}
           placeholder={placeholder}
           className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6'
           aria-invalid={error ? true : undefined}

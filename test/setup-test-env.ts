@@ -4,6 +4,38 @@ import '@testing-library/jest-dom/vitest'
 
 import { afterEach, beforeEach, vi } from 'vitest'
 
+// Set up required environment variables for tests
+process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
+
+// Mock Prisma Client to prevent database initialization during tests
+vi.mock('~/db.server.ts', () => ({
+  prisma: {
+    user: {
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    team: {
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    tournament: {
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    $transaction: vi.fn(),
+    $disconnect: vi.fn(),
+  },
+}))
+
 // Happy DOM should provide these globals, but let's ensure they're available
 if (typeof global !== 'undefined') {
   // Make sure document is available globally

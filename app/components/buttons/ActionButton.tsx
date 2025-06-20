@@ -22,6 +22,7 @@ type ActionButtonProps = {
   disabled?: boolean
   className?: string
   'aria-label'?: string
+  'aria-describedby'?: string
 }
 
 export function ActionButton({
@@ -35,6 +36,7 @@ export function ActionButton({
   disabled = false,
   className,
   'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
 }: Readonly<ActionButtonProps>): JSX.Element {
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
@@ -69,6 +71,7 @@ export function ActionButton({
         className
       )}
       aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
     >
       {rtl ? (
         <>

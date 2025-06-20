@@ -2,15 +2,14 @@ import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
-import { DateInputField } from '~/components/inputs/DateInputField'
+import { ActionButton } from '~/components/buttons'
+import { CheckIcon } from '~/components/icons'
+import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { getDivisionLabelByValue } from '~/lib/lib.helpers'
-import type { DivisionValue } from '~/lib/lib.types'
+import type { Category, Division } from '~/db.server'
+import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
-
-import { ActionButton } from './buttons/ActionButton'
-import { CheckIcon } from './icons'
 
 type TournamentFormProps = {
   mode?: 'create' | 'edit' // Make optional since it's not used yet
@@ -140,7 +139,7 @@ export function TournamentForm({
                 color='red'
                 className='lg:self-start'
               >
-                {t('tournaments.deleteTournament')}
+                {t('common.actions.delete')}
               </ActionButton>
             ) : null}
           </div>
@@ -197,7 +196,7 @@ export function TournamentForm({
                 ref={nameRef}
                 name='name'
                 label={t('tournaments.form.name')}
-                value={formData.name || ''}
+                defaultValue={formData.name || ''}
                 error={errors.name}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -207,7 +206,7 @@ export function TournamentForm({
               <TextInputField
                 name='location'
                 label={t('tournaments.form.location')}
-                value={formData.location || ''}
+                defaultValue={formData.location || ''}
                 error={errors.location}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -239,7 +238,7 @@ export function TournamentForm({
 
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               {/* Start Date */}
-              <DateInputField
+              <CustomDatePicker
                 name='startDate'
                 label={t('tournaments.form.startDate')}
                 defaultValue={formData.startDate}
@@ -249,7 +248,7 @@ export function TournamentForm({
               />
 
               {/* End Date */}
-              <DateInputField
+              <CustomDatePicker
                 name='endDate'
                 label={t('tournaments.form.endDate')}
                 defaultValue={formData.endDate}
@@ -301,12 +300,12 @@ export function TournamentForm({
                   />
                   <span
                     className={cn(
-                      'text-sm font-medium',
-                      getLatinTextClass(i18n.language)
+                      'text-base font-medium',
+                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                     )}
                   >
                     {getDivisionLabelByValue(
-                      division as DivisionValue,
+                      division as Division,
                       i18n.language as 'en' | 'nl' | 'ar' | 'tr'
                     )}
                   </span>
@@ -360,11 +359,14 @@ export function TournamentForm({
                   />
                   <span
                     className={cn(
-                      'text-sm font-medium',
-                      getLatinTextClass(i18n.language)
+                      'text-base font-medium',
+                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                     )}
                   >
-                    {category}
+                    {getCategoryLabelByValue(
+                      category as Category,
+                      i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                    )}
                   </span>
                 </label>
               ))}
@@ -385,12 +387,18 @@ export function TournamentForm({
               color='gray'
               className='min-w-32'
             >
-              {t('common.cancel')}
+              {t('common.actions.cancel')}
             </ActionButton>
           ) : null}
 
-          <ActionButton type='submit' variant='solid' color='red' icon='check_circle'>
-            {submitButtonText || t('tournaments.form.saveTournament')}
+          <ActionButton
+            type='submit'
+            variant='solid'
+            color='red'
+            icon='check_circle'
+            aria-label={t('common.actions.save')}
+          >
+            {submitButtonText || t('common.actions.save')}
           </ActionButton>
         </div>
       </Form>

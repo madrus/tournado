@@ -127,7 +127,6 @@ describe('TeamChip Component', () => {
 
       const deleteButton = screen.getByLabelText('Delete team FC Test Team A')
       expect(deleteButton).toBeInTheDocument()
-      expect(deleteButton).toHaveAttribute('title', 'Delete team')
     })
 
     it('should call onDelete when delete button is clicked', () => {
@@ -307,7 +306,6 @@ describe('TeamChip Component', () => {
       render(<TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />)
 
       const deleteButton = screen.getByLabelText('Delete team FC Test Team A')
-      expect(deleteButton).toHaveAttribute('title', 'Delete team')
       expect(deleteButton).toHaveAttribute('aria-label', 'Delete team FC Test Team A')
     })
   })

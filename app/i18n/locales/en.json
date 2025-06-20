@@ -6,6 +6,8 @@
       "confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
       "createTeam": "Create Team",
       "createTeamDescription": "Add a new team to the system with all necessary details.",
+      "newTeam": "New Team",
+      "createNewTeamDescription": "Create a new team with tournament details and contact information.",
       "description": "Manage all teams across all tournaments. View, edit, or delete team information.",
       "editTeam": "Edit Team Details",
       "saveChanges": "Save Changes",
@@ -60,11 +62,13 @@
     "viewTeamsFor": "View teams for"
   },
   "common": {
-    "actions": "Actions",
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
     "appName": "Tournado",
     "backToHome": "Back to home",
-    "cancel": "Cancel",
-    "delete": "Delete",
     "error": "Error",
     "guest": "Guest",
     "language": "Language",
@@ -171,6 +175,7 @@
       },
       "privacyAgreement": "I agree to the privacy policy and terms of service",
       "privacyPolicy": "Privacy Policy",
+      "agreeToPrivacyPolicy": "I agree to the privacy policy",
       "readAndAccept": "Please read and accept the privacy policy to continue",
       "selectDivision": "Select a division",
       "selectTournament": "Select a tournament",
@@ -188,8 +193,7 @@
       "selectTournamentDetails": "Select Tournament Details",
       "completeAllThreeFields": "Please complete all three fields below to proceed",
       "enterTeamDetails": "Enter your team information",
-      "enterContactDetails": "Enter contact details for the team leader",
-      "submit": "Save"
+      "enterContactDetails": "Enter contact details for the team leader"
     },
     "getStarted": {
       "description": "Ready to join a tournament? Click the 'Add Team' button above to register your team and start competing!",
@@ -197,7 +201,6 @@
     },
     "noTeamSelected": "No team selected. Select a team on the left, or",
     "noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
-    "save": "Save",
     "title": "Teams"
   },
   "tournaments": {
@@ -226,7 +229,6 @@
       "selected": "selected",
       "tournamentRegistration": "Tournament Registration",
       "fillOutForm": "Fill out the form below to create a new tournament",
-      "saveTournament": "Save Tournament",
       "createTournament": "Create Tournament",
       "updateTournament": "Update Tournament"
     }

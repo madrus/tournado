@@ -178,7 +178,8 @@ const renderTeamForm = (
   isSuccess?: boolean,
   successMessage?: string,
   tournaments?: TournamentData[],
-  submitButtonText?: string
+  submitButtonText?: string,
+  onCancel?: () => void
 ) => {
   // Set up tournaments in the store if provided
   const tournamentsToUse = tournaments || mockTournaments
@@ -229,6 +230,7 @@ const renderTeamForm = (
             submitButtonText={submitButtonText}
             isSuccess={isSuccess}
             successMessage={successMessage}
+            onCancel={onCancel}
           />
         ),
         action: () => ({ ok: true }),
@@ -1140,5 +1142,437 @@ describe('TeamForm Category Field', () => {
       categoryTournaments
     )
     expect(screen.getByText('teams.form.selectCategory')).toBeInTheDocument()
+  })
+})
+
+describe('TeamForm Reset Button Functionality', () => {
+  beforeEach(() => {
+    // Reset store before each test to prevent cross-test contamination
+    state().resetForm()
+  })
+
+  describe('Reset Button Visibility', () => {
+    it('should show reset button when onCancel prop is provided', () => {
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      expect(
+        screen.getByRole('button', { name: /common\.actions\.reset/i })
+      ).toBeInTheDocument()
+    })
+
+    it('should not show reset button when onCancel prop is not provided', () => {
+      renderTeamForm('create', 'public')
+
+      expect(
+        screen.queryByRole('button', { name: /common\.actions\.reset/i })
+      ).not.toBeInTheDocument()
+    })
+
+    it('should show reset button with correct text', () => {
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      expect(resetButton).toHaveTextContent('common.actions.reset')
+    })
+  })
+
+  describe('New Team Creation - Reset to Empty State', () => {
+    it('should call onCancel when reset button is clicked in create mode', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Fill out the form with some data
+      await completePanel1(user)
+
+      // Fill panel 2 fields
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      await user.type(clubNameInput, 'Test Club Name')
+      await user.type(teamNameInput, 'Test Team Name')
+
+      // Fill panel 3 fields
+      const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
+      const teamLeaderPhoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
+      const teamLeaderEmailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
+      await user.type(teamLeaderNameInput, 'John Doe')
+      await user.type(teamLeaderPhoneInput, '0612345678')
+      await user.type(teamLeaderEmailInput, 'john@example.com')
+
+      // Check privacy agreement
+      const privacyCheckbox = screen.getByRole('checkbox', {
+        name: /teams\.form\.agreeToPrivacyPolicy/i,
+      })
+      await user.click(privacyCheckbox)
+
+      // Verify fields are filled
+      expect(clubNameInput).toHaveValue('Test Club Name')
+      expect(teamNameInput).toHaveValue('Test Team Name')
+      expect(teamLeaderNameInput).toHaveValue('John Doe')
+      expect(teamLeaderPhoneInput).toHaveValue('0612345678')
+      expect(teamLeaderEmailInput).toHaveValue('john@example.com')
+      expect(privacyCheckbox).toBeChecked()
+
+      // Click reset button and wait for state updates
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      // Wait for onCancel to be called and state to be reset
+      await waitFor(() => {
+        expect(mockOnCancel).toHaveBeenCalledTimes(1)
+      })
+
+      // After reset, errors should be cleared
+      await waitFor(() => {
+        expect(
+          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(
+            TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
+          )
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    it('should call onCancel when validation errors are present in create mode', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Complete panel 1 to enable subsequent panels
+      await completePanel1(user)
+
+      // Get club name field from panel 2 (which is now enabled)
+      const clubNameInput = screen.getByRole('textbox', {
+        name: /teams\.form\.clubName/i,
+      })
+
+      // Type and then clear to trigger validation
+      await user.type(clubNameInput, 'Test Club')
+      await user.clear(clubNameInput)
+      await user.tab() // Blur the field
+
+      // Wait for validation error to appear
+      await waitFor(() => {
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+      })
+
+      // Click reset button and wait for state updates
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      // Verify onCancel was called with the click event
+      await waitFor(() => {
+        expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        expect(mockOnCancel).toHaveBeenCalledWith(expect.any(Object))
+      })
+    })
+  })
+
+  describe('Team Edit Mode - Reset to Initial Data', () => {
+    const initialTeamData: Partial<TeamFormData> = {
+      tournamentId: 'tournament-1',
+      clubName: 'Original Club',
+      teamName: 'Original Team',
+      division: 'FIRST_DIVISION',
+      category: 'JO8',
+      teamLeaderName: 'Original Leader',
+      teamLeaderPhone: '0611111111',
+      teamLeaderEmail: 'original@example.com',
+      privacyAgreement: true,
+    }
+
+    it('should call onCancel when reset button is clicked in edit mode with modifications', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'edit',
+        'admin',
+        initialTeamData,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Wait for form to be populated with initial data
+      await waitFor(() => {
+        expect(screen.getByDisplayValue('Original Club')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('Original Team')).toBeInTheDocument()
+      })
+
+      // Modify the form fields
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
+
+      await user.clear(clubNameInput)
+      await user.type(clubNameInput, 'Modified Club')
+      await user.clear(teamNameInput)
+      await user.type(teamNameInput, 'Modified Team')
+      await user.clear(teamLeaderNameInput)
+      await user.type(teamLeaderNameInput, 'Modified Leader')
+
+      // Verify fields are modified
+      expect(clubNameInput).toHaveValue('Modified Club')
+      expect(teamNameInput).toHaveValue('Modified Team')
+      expect(teamLeaderNameInput).toHaveValue('Modified Leader')
+
+      // Click reset button and wait for state updates
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      // Verify onCancel was called
+      await waitFor(() => {
+        expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        expect(mockOnCancel).toHaveBeenCalledWith(expect.any(Object))
+      })
+    })
+
+    it('should call onCancel when reset button is clicked in edit mode', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'edit',
+        'admin',
+        initialTeamData,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Wait for form to be populated
+      await waitFor(() => {
+        const clubNameInputs = screen.getAllByDisplayValue('Original Club')
+        expect(clubNameInputs.length).toBeGreaterThan(0)
+      })
+
+      // Clear a required field to trigger validation error
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      await user.clear(clubNameInput)
+      await user.tab() // Blur to trigger validation
+
+      // Wait for validation error
+      await waitFor(() => {
+        expect(
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).toBeInTheDocument()
+      })
+
+      // Click reset button and wait for state updates
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      // Verify onCancel was called
+      await waitFor(() => {
+        expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        expect(mockOnCancel).toHaveBeenCalledWith(expect.any(Object))
+      })
+    })
+
+    it('should call onCancel when reset button is clicked with form modifications', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'edit',
+        'admin',
+        initialTeamData,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Wait for initial population - use specific form input selectors
+      await waitFor(() => {
+        expect(screen.getByLabelText(/teams\.form\.clubName/)).toHaveValue(
+          'Original Club'
+        )
+        expect(screen.getByLabelText(/teams\.form\.teamName/)).toHaveValue(
+          'Original Team'
+        )
+        expect(screen.getByLabelText(/teams\.form\.teamLeaderName/)).toHaveValue(
+          'Original Leader'
+        )
+        expect(screen.getByLabelText(/teams\.form\.teamLeaderPhone/)).toHaveValue(
+          '0611111111'
+        )
+        expect(screen.getByLabelText(/teams\.form\.teamLeaderEmail/)).toHaveValue(
+          'original@example.com'
+        )
+      })
+
+      // Modify multiple fields
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const teamLeaderEmailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
+
+      await user.clear(clubNameInput)
+      await user.type(clubNameInput, 'Completely Different Club')
+      await user.clear(teamNameInput)
+      await user.type(teamNameInput, 'Completely Different Team')
+      await user.clear(teamLeaderEmailInput)
+      await user.type(teamLeaderEmailInput, 'different@example.com')
+
+      // Click reset button and wait for state updates
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      // Verify onCancel was called
+      await waitFor(() => {
+        expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        expect(mockOnCancel).toHaveBeenCalledWith(expect.any(Object))
+      })
+    })
+  })
+
+  describe('Reset Button Behavior Across Modes', () => {
+    it('should call onCancel function when reset button is clicked', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      await user.click(resetButton)
+
+      expect(mockOnCancel).toHaveBeenCalledTimes(1)
+      expect(mockOnCancel).toHaveBeenCalledWith(expect.any(Object))
+    })
+
+    it('should not interfere with form submission', async () => {
+      const user = userEvent.setup()
+      const mockOnCancel = vi.fn()
+
+      renderTeamForm(
+        'create',
+        'public',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        mockOnCancel
+      )
+
+      // Fill out form completely
+      await completePanel1(user)
+
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      await user.type(clubNameInput, 'Test Club')
+      await user.type(teamNameInput, 'Test Team')
+
+      const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
+      const teamLeaderPhoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
+      const teamLeaderEmailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
+      await user.type(teamLeaderNameInput, 'John Doe')
+      await user.type(teamLeaderPhoneInput, '0612345678')
+      await user.type(teamLeaderEmailInput, 'john@example.com')
+
+      const privacyCheckbox = screen.getByRole('checkbox', {
+        name: /teams\.form\.agreeToPrivacyPolicy/i,
+      })
+      await user.click(privacyCheckbox)
+
+      // Verify save button is enabled
+      const saveButton = screen.getByRole('button', { name: /common\.actions\.save/i })
+      expect(saveButton).toBeEnabled()
+
+      // Verify reset button is also present and functional
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.reset/i,
+      })
+      expect(resetButton).toBeInTheDocument()
+      expect(resetButton).toBeEnabled()
+
+      // Click reset button should not affect save button functionality
+      await user.click(resetButton)
+      expect(mockOnCancel).toHaveBeenCalledTimes(1)
+    })
   })
 })

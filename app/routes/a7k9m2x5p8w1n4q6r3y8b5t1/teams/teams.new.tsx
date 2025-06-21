@@ -57,15 +57,20 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
 export default function AdminNewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<TeamCreateActionData>()
-  const { resetForm } = useTeamFormStore()
 
   // Reset the form on every mount to ensure a clean slate
   useEffect(() => {
+    const { resetForm } = useTeamFormStore.getState()
     resetForm()
-  }, [resetForm])
+  }, [])
 
   // This page now redirects on success, so a success message is no longer needed here.
   const successMessage = undefined
+
+  const handleReset = () => {
+    const { resetForm } = useTeamFormStore.getState()
+    resetForm()
+  }
 
   return (
     <div className='container mx-auto max-w-6xl p-6'>
@@ -84,6 +89,7 @@ export default function AdminNewTeamPage(): JSX.Element {
         errors={actionData?.errors || {}}
         isSuccess={actionData?.success || false}
         successMessage={successMessage}
+        onCancel={handleReset}
       />
     </div>
   )

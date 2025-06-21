@@ -6,7 +6,6 @@ import {
   redirect,
   useActionData,
   useLoaderData,
-  useNavigate,
 } from 'react-router'
 
 import { Division } from '@prisma/client'
@@ -15,6 +14,7 @@ import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import { stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
+import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -199,10 +199,25 @@ export async function action({
 export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
-  const navigate = useNavigate()
 
-  const handleCancel = () => {
-    navigate('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+  // Prepare the initial team data for reset functionality
+  const initialTeamData = {
+    tournamentId: team.tournament.id,
+    clubName: team.clubName,
+    teamName: team.teamName as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+    division: team.division,
+    category: team.category,
+    teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
+    teamLeaderPhone: team.teamLeader.phone,
+    teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+    privacyAgreement: true, // Always true for existing teams
+  }
+
+  const handleReset = () => {
+    // Reset the form to the original team data - get store reference inside handler
+    const { setFormData, clearAllErrors } = useTeamFormStore.getState()
+    setFormData(initialTeamData)
+    clearAllErrors()
   }
 
   const handleDelete = () => {
@@ -224,22 +239,12 @@ export default function AdminTeamPage(): JSX.Element {
     <TeamForm
       mode='edit'
       variant='admin'
-      formData={{
-        tournamentId: team.tournament.id,
-        clubName: team.clubName,
-        teamName: team.teamName as `${'J' | 'M' | 'JM'}O${number}-${number}`,
-        division: team.division,
-        category: team.category,
-        teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
-        teamLeaderPhone: team.teamLeader.phone,
-        teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
-        privacyAgreement: true, // Always true for existing teams
-      }}
+      formData={initialTeamData}
       errors={actionData?.errors || {}}
       intent='update'
       showDeleteButton={true}
       onDelete={handleDelete}
-      onCancel={handleCancel}
+      onCancel={handleReset}
     />
   )
 }

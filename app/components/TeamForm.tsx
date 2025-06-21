@@ -138,6 +138,8 @@ export function TeamForm({
           teamLeaderEmail: formData.teamLeaderEmail || '',
           privacyAgreement: formData.privacyAgreement || false,
         })
+        // Note: updateAvailableOptions() will be called by the second useEffect
+        // when tournaments are loaded and tournamentId is set
       }
     }
   }, [formData, setFormData, formMode, availableTournaments.length])

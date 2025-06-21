@@ -9,6 +9,15 @@ import type {
   TeamValidationSafeParseResult,
 } from './lib.types'
 
+// More comprehensive email validation regex
+// This regex validates:
+// - Local part: alphanumeric, dots, hyphens, underscores, plus signs
+// - @ symbol (required)
+// - Domain: alphanumeric with hyphens (but not at start/end)
+// - At least one dot in domain
+// - TLD: at least 2 characters, letters only
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 // Base team schema without translations (for server-side validation)
 const baseTeamSchema = z.object({
   tournamentId: z.string().min(1),
@@ -24,7 +33,7 @@ const baseTeamSchema = z.object({
   teamLeaderEmail: z
     .string()
     .min(1)
-    .refine(val => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)),
+    .refine(val => val.length === 0 || EMAIL_REGEX.test(val)),
   privacyAgreement: z.boolean().refine(val => val),
 })
 
@@ -68,7 +77,7 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
       .string()
       .min(1, t('teams.form.errors.emailRequired'))
       .refine(
-        val => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+        val => val.length === 0 || EMAIL_REGEX.test(val),
         t('teams.form.errors.emailInvalid')
       ),
 

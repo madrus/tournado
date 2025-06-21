@@ -8,8 +8,8 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
-import { validateEntireForm, validateSingleField } from '~/lib/lib.form'
 import type { TeamFormData, TournamentData } from '~/lib/lib.types'
+import { validateEntireForm, validateSingleField } from '~/utils/form-validation'
 
 // Flexible type that can accept data from various sources (forms, APIs, etc.)
 // This is more lenient than the strict TeamFormData type used for validation
@@ -103,6 +103,7 @@ type Actions = {
   clearFieldError: (fieldName: string) => void
   clearAllErrors: () => void
   updateAvailableOptions: () => void
+  resetStoreState: () => void
 
   // Get current form data as TeamFormData
   getFormData: () => TeamFormData
@@ -189,6 +190,9 @@ export const useTeamFormStore = create<StoreState & Actions>()(
       persist(
         (set, get) => ({
           ...initialStoreState,
+          resetStoreState: () => {
+            set(initialStoreState, false, 'resetStoreState')
+          },
 
           // ===== SETTERS =====
 
@@ -400,6 +404,11 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               'setFieldBlurred'
             )
+
+            // Automatically trigger validation when field becomes blurred
+            if (blurred) {
+              get().validateField(fieldName)
+            }
           },
 
           // Validate field on blur - also marks field as blurred

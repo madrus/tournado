@@ -2,11 +2,11 @@
 import { Category, Division } from '@prisma/client'
 
 import { prisma } from '~/db.server'
-import { validateEntireForm } from '~/lib/lib.form'
 import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamFormData } from '~/lib/lib.types'
 import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
+import { validateEntireForm } from '~/utils/form-validation'
 
 type TeamCreationResult = {
   success: boolean

@@ -1,5 +1,5 @@
 /* eslint-disable id-blacklist */
-import { JSX } from 'react'
+import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
@@ -67,6 +67,7 @@ type LoaderData = {
   tournament: Tournament | null
   divisions: string[]
   categories: string[]
+  language: string // Add language to LoaderData
 }
 
 type ActionData = {
@@ -85,6 +86,11 @@ type ActionData = {
 export async function loader({ request, params }: LoaderArgs): Promise<LoaderData> {
   await requireUserWithMetadata(request, handle)
 
+  // Read 'lang' cookie from request
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  const language = langMatch ? langMatch[1] : 'nl'
+
   const { tournamentId } = params
   if (!tournamentId) {
     throw new Response('Tournament ID is required', { status: 400 })
@@ -102,6 +108,7 @@ export async function loader({ request, params }: LoaderArgs): Promise<LoaderDat
     tournament,
     divisions,
     categories,
+    language, // Pass language to loader data
   }
 }
 
@@ -202,9 +209,16 @@ export async function action({
 }
 
 export default function EditTournamentPage(): JSX.Element {
-  const { t } = useTranslation()
-  const { tournament, divisions, categories } = useLoaderData<LoaderData>()
+  const { t, i18n } = useTranslation()
+  const { tournament, divisions, categories, language } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
+
+  // Set i18n language if different
+  useEffect(() => {
+    if (language && i18n.language !== language) {
+      i18n.changeLanguage(language)
+    }
+  }, [language, i18n])
 
   if (!tournament) {
     return (

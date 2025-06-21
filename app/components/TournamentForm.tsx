@@ -153,16 +153,15 @@ export function TournamentForm({
         {/* Hidden fields for arrays */}
         {selectedDivisions.map((division, index) => (
           <input
-            key={`division-${index}`}
+            key={`hidden-division-${index}`}
             type='hidden'
             name='divisions'
             value={division}
           />
         ))}
-
         {selectedCategories.map((category, index) => (
           <input
-            key={`category-${index}`}
+            key={`hidden-category-${index}`}
             type='hidden'
             name='categories'
             value={category}

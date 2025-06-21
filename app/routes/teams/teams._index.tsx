@@ -1,7 +1,7 @@
-import { JSX } from 'react'
+import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { useLoaderData, useNavigate } from 'react-router'
+import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
 import type { Team } from '@prisma/client'
 
@@ -53,6 +53,15 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { teamListItems } = useLoaderData<LoaderData>()
   const navigate = useNavigate()
+  const revalidator = useRevalidator()
+
+  useEffect(() => {
+    const handlePopState = () => {
+      revalidator.revalidate()
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [revalidator])
 
   const handleTeamClick = (teamId: string) => {
     navigate(`/teams/${teamId}`)

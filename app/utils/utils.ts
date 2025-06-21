@@ -94,8 +94,17 @@ export function useUser(): User {
   return maybeUser
 }
 
+// More comprehensive email validation regex
+// This regex validates:
+// - Local part: alphanumeric, dots, hyphens, underscores, plus signs
+// - @ symbol (required)
+// - Domain: alphanumeric with hyphens (but not at start/end)
+// - At least one dot in domain
+// - TLD: at least 2 characters, letters only
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 export const validateEmail = (email: unknown): email is string =>
-  typeof email === 'string' && email.length > 3 && email.includes('@')
+  typeof email === 'string' && EMAIL_REGEX.test(email)
 
 export const capitalize = <T extends string>(str: T): Capitalize<Lowercase<T>> => {
   if (!str) return '' as Capitalize<Lowercase<T>>

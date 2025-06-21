@@ -54,7 +54,7 @@ describe('useTeamFormStore', () => {
     it('should initialize with default validation state', () => {
       expect(state().validation.errors).toEqual({})
       expect(state().validation.displayErrors).toEqual({})
-      expect(state().validation.touchedFields).toEqual({})
+      expect(state().validation.blurredFields).toEqual({})
       expect(state().validation.submitAttempted).toBe(false)
       expect(state().validation.forceShowAllErrors).toBe(false)
     })
@@ -189,13 +189,13 @@ describe('useTeamFormStore', () => {
   describe('Reactive Validation System', () => {
     it('should validate field immediately when touched', () => {
       // Mark field as touched - should trigger validation immediately
-      state().setFieldTouched('clubName')
+      state().setFieldBlurred('clubName')
 
       // Since clubName is empty and now touched, should show error
       expect(state().validation.displayErrors.clubName).toBe(
         'teams.form.errors.clubNameRequired'
       )
-      expect(state().validation.touchedFields.clubName).toBe(true)
+      expect(state().validation.blurredFields.clubName).toBe(true)
     })
 
     it('should not show validation errors for untouched fields', () => {
@@ -230,7 +230,7 @@ describe('useTeamFormStore', () => {
 
     it('should clear error when field becomes valid', () => {
       // Touch field and trigger error
-      state().setFieldTouched('clubName')
+      state().setFieldBlurred('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
         'teams.form.errors.clubNameRequired'
       )
@@ -245,9 +245,9 @@ describe('useTeamFormStore', () => {
 
     it('should validate all touched fields', () => {
       // Touch multiple fields
-      state().setFieldTouched('clubName')
-      state().setFieldTouched('teamName')
-      state().setFieldTouched('teamLeaderName')
+      state().setFieldBlurred('clubName')
+      state().setFieldBlurred('teamName')
+      state().setFieldBlurred('teamLeaderName')
 
       // Validate all touched fields - this method was removed, so we'll validate individually
       state().validateField('clubName')
@@ -476,7 +476,7 @@ describe('useTeamFormStore', () => {
       expect(Object.keys(state().validation.displayErrors)).toHaveLength(0)
 
       // User clicks on club name field and tabs away empty - should show error
-      state().setFieldTouched('clubName')
+      state().setFieldBlurred('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
         'teams.form.errors.clubNameRequired'
       )
@@ -487,7 +487,7 @@ describe('useTeamFormStore', () => {
       expect(state().validation.displayErrors.clubName).toBeUndefined()
 
       // User touches team name but leaves empty - should show error
-      state().setFieldTouched('teamName')
+      state().setFieldBlurred('teamName')
       expect(state().validation.displayErrors.teamName).toBe(
         'teams.form.errors.teamNameRequired'
       )
@@ -499,9 +499,9 @@ describe('useTeamFormStore', () => {
 
     it('should handle cascade validation with tournament changes', () => {
       // User selects tournament and division, marks them as touched
-      state().setFieldTouched('tournamentId')
+      state().setFieldBlurred('tournamentId')
       state().setFormField('tournamentId', 'tournament1')
-      state().setFieldTouched('division')
+      state().setFieldBlurred('division')
       state().setFormField('division', 'FIRST_DIVISION')
 
       // Both should be valid now
@@ -521,9 +521,9 @@ describe('useTeamFormStore', () => {
 
     it('should handle form submission with mixed touched/untouched fields', () => {
       // User only touches and fills some fields
-      state().setFieldTouched('clubName')
+      state().setFieldBlurred('clubName')
       state().setFormField('clubName', 'Test Club')
-      state().setFieldTouched('teamName')
+      state().setFieldBlurred('teamName')
       state().setFormField('teamName', 'JO8-1')
 
       // Only touched fields show errors currently

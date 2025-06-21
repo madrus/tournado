@@ -1,7 +1,7 @@
 import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useLoaderData, useSubmit } from 'react-router'
+import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
 
 import { Box, Flex, Grid, Heading, Text } from '@radix-ui/themes'
 
@@ -84,6 +84,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { tournamentListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
+  const revalidator = useRevalidator()
 
   // Track if we're on desktop for conditional rendering
   const [isDesktop, setIsDesktop] = useState(false)
@@ -118,6 +119,14 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     window.addEventListener('resize', checkIsDesktop)
     return () => window.removeEventListener('resize', checkIsDesktop)
   }, [])
+
+  useEffect(() => {
+    const handlePopState = () => {
+      revalidator.revalidate()
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [revalidator])
 
   const handleTournamentClick = (tournamentId: string) => {
     // Don't navigate if user is swiping or delete is showing

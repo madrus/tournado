@@ -13,7 +13,7 @@ import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
 import { ActionButton } from './buttons/ActionButton'
 import { ActionLinkButton } from './buttons/ActionLinkButton'
-import { CheckIcon } from './icons'
+import { CheckIcon, RestorePageIcon } from './icons'
 
 export function TeamForm({
   mode: formMode = 'create',
@@ -22,6 +22,7 @@ export function TeamForm({
   successMessage,
   showDeleteButton = false,
   onDelete,
+  onCancel,
   className = '',
   intent,
   formData,
@@ -122,20 +123,24 @@ export function TeamForm({
 
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
-    if (formData && availableTournaments.length > 0) {
-      setFormData({
-        tournamentId: formData.tournamentId || '',
-        clubName: formData.clubName || '',
-        teamName: formData.teamName || '',
-        division: formData.division || '',
-        category: formData.category || '',
-        teamLeaderName: formData.teamLeaderName || '',
-        teamLeaderPhone: formData.teamLeaderPhone || '',
-        teamLeaderEmail: formData.teamLeaderEmail || '',
-        privacyAgreement: formData.privacyAgreement || false,
-      })
+    if (formData) {
+      // In edit mode, set form data immediately since we have all the data
+      // In create mode, wait for tournaments to be loaded
+      if (formMode === 'edit' || availableTournaments.length > 0) {
+        setFormData({
+          tournamentId: formData.tournamentId || '',
+          clubName: formData.clubName || '',
+          teamName: formData.teamName || '',
+          division: formData.division || '',
+          category: formData.category || '',
+          teamLeaderName: formData.teamLeaderName || '',
+          teamLeaderPhone: formData.teamLeaderPhone || '',
+          teamLeaderEmail: formData.teamLeaderEmail || '',
+          privacyAgreement: formData.privacyAgreement || false,
+        })
+      }
     }
-  }, [formData, setFormData, availableTournaments.length])
+  }, [formData, setFormData, formMode, availableTournaments.length])
 
   // When the list of available tournaments changes (i.e., is loaded from root),
   // check if a tournament is already selected (e.g., from persisted state).
@@ -439,13 +444,13 @@ export function TeamForm({
         {/* Step 3: Team Leader Information */}
         <div
           className={cn('relative transition-opacity duration-300', {
-            'pointer-events-none opacity-50': !isPanelValid(2),
+            'pointer-events-none opacity-50': !isPanelEnabled(3),
           })}
         >
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelValid(2) ? 'bg-green-600' : 'bg-gray-400'
+              isPanelEnabled(3) ? 'bg-green-600' : 'bg-gray-400'
             )}
           >
             3
@@ -454,7 +459,7 @@ export function TeamForm({
           <div
             className={cn(
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-              isPanelValid(2)
+              isPanelEnabled(3)
                 ? 'border-green-200 bg-gradient-to-br from-green-50/50 to-emerald-50/30 hover:shadow-xl'
                 : 'border-gray-200 bg-gray-50'
             )}
@@ -464,7 +469,7 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelValid(2) ? 'text-green-800' : 'text-gray-400'
+                  isPanelEnabled(3) ? 'text-green-800' : 'text-gray-400'
                 )}
               >
                 {t('teams.form.teamLeaderInfo')}
@@ -472,7 +477,7 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelValid(2) ? 'text-green-600' : 'text-gray-400'
+                  isPanelEnabled(3) ? 'text-green-600' : 'text-gray-400'
                 )}
               >
                 {t('teams.form.enterContactDetails')}
@@ -490,17 +495,17 @@ export function TeamForm({
                   placeholder={t('teams.form.placeholders.teamLeaderName')}
                   error={getTranslatedError(
                     'teamLeaderName',
-                    isPublicSuccess || !isPanelValid(2)
+                    isPublicSuccess || !isPanelEnabled(3)
                   )}
                   required
-                  disabled={isPublicSuccess || !isPanelValid(2)}
+                  disabled={isPublicSuccess || !isPanelEnabled(3)}
                   className={getLatinTextClass(i18n.language)}
                   onBlur={() => validateFieldOnBlur('teamLeaderName')}
                 />
                 {teamLeaderName &&
                 !getTranslatedError(
                   'teamLeaderName',
-                  isPublicSuccess || !isPanelValid(2)
+                  isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
                     <CheckIcon className='h-4 w-4 text-white' size={16} />
@@ -518,18 +523,18 @@ export function TeamForm({
                   placeholder={t('teams.form.placeholders.teamLeaderPhone')}
                   error={getTranslatedError(
                     'teamLeaderPhone',
-                    isPublicSuccess || !isPanelValid(2)
+                    isPublicSuccess || !isPanelEnabled(3)
                   )}
                   required
                   type='tel'
-                  disabled={isPublicSuccess || !isPanelValid(2)}
+                  disabled={isPublicSuccess || !isPanelEnabled(3)}
                   className={getLatinTextClass(i18n.language)}
                   onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
                 />
                 {teamLeaderPhone &&
                 !getTranslatedError(
                   'teamLeaderPhone',
-                  isPublicSuccess || !isPanelValid(2)
+                  isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
                     <CheckIcon className='h-4 w-4 text-white' size={16} />
@@ -547,18 +552,18 @@ export function TeamForm({
                   placeholder={t('teams.form.placeholders.teamLeaderEmail')}
                   error={getTranslatedError(
                     'teamLeaderEmail',
-                    isPublicSuccess || !isPanelValid(2)
+                    isPublicSuccess || !isPanelEnabled(3)
                   )}
                   required
                   type='email'
-                  disabled={isPublicSuccess || !isPanelValid(2)}
+                  disabled={isPublicSuccess || !isPanelEnabled(3)}
                   className={getLatinTextClass(i18n.language)}
                   onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
                 />
                 {teamLeaderEmail &&
                 !getTranslatedError(
                   'teamLeaderEmail',
-                  isPublicSuccess || !isPanelValid(2)
+                  isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
                     <CheckIcon className='h-4 w-4 text-white' size={16} />
@@ -682,9 +687,16 @@ export function TeamForm({
 
         {/* Submit and Action Buttons */}
         <div className='flex flex-col gap-4 md:flex-row md:justify-end'>
-          {variant === 'admin' && mode === 'edit' ? (
-            <ActionButton type='button' onClick={() => window.history.back()}>
-              {t('common.actions.cancel')}
+          {onCancel ? (
+            <ActionButton
+              type='button'
+              onClick={onCancel}
+              variant='outline'
+              color='gray'
+              className='min-w-32'
+            >
+              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+              {t('common.actions.reset')}
             </ActionButton>
           ) : null}
           {isPublicSuccess ? (
@@ -701,6 +713,7 @@ export function TeamForm({
             color='red'
             icon='check_circle'
             aria-label={t('common.actions.save')}
+            className='min-w-32'
             disabled={
               isSubmitting ||
               isPublicSuccess ||

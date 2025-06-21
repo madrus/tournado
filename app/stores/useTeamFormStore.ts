@@ -8,7 +8,7 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
-import type { TeamFormData, TournamentData } from '~/lib/lib.types'
+import type { FormFields, TeamFormData, TournamentData } from '~/lib/lib.types'
 import { validateEntireForm, validateSingleField } from '~/utils/form-validation'
 
 // Flexible type that can accept data from various sources (forms, APIs, etc.)
@@ -25,23 +25,6 @@ type FlexibleTeamFormData = {
   teamLeaderPhone?: string
   teamLeaderEmail?: string // More flexible than the strict Email type
   privacyAgreement?: boolean
-}
-
-// Grouped form fields
-type FormFields = {
-  // Tournament selection
-  tournamentId: string
-  division: string
-  category: string
-  // Team information
-  clubName: string
-  teamName: string
-  // Team leader information
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  // Agreement
-  privacyAgreement: boolean
 }
 
 // Validation states grouped by purpose
@@ -418,8 +401,25 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const { mode } = formMeta
             const { blurredFields, displayErrors } = validation
 
-            // Mark field as blurred first
-            state.setFieldBlurred(fieldName)
+            // Mark field as blurred first (without triggering validation)
+            set(
+              currentState => {
+                const newBlurredFields = {
+                  ...currentState.validation.blurredFields,
+                  [fieldName]: true,
+                }
+
+                return {
+                  ...currentState,
+                  validation: {
+                    ...currentState.validation,
+                    blurredFields: newBlurredFields,
+                  },
+                }
+              },
+              false,
+              'validateFieldOnBlur/setBlurred'
+            )
 
             // Get current form data for validation
             const formData = state.getFormData()
@@ -619,8 +619,9 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // --- Panel Validity Selectors ---
           isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
-            const { formFields, validation } = get()
+            const { formFields, validation, formMeta } = get()
             const { displayErrors } = validation
+            const { mode } = formMeta
 
             // Panel field mapping
             const panelFieldMap = {
@@ -639,6 +640,17 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             // Error display: Still requires blur (handled in validateField function)
             // This gives users immediate feedback when panels become available
             // while maintaining good UX for error messaging
+
+            // In edit mode, only check if field values are present (ignore display errors)
+            // since the data comes from the database and should be valid
+            if (mode === 'edit') {
+              return panelFields.every(field => {
+                const fieldValue = formFields[field as keyof typeof formFields]
+                return !!fieldValue
+              })
+            }
+
+            // In create mode, check both field values and display errors
             return panelFields.every(field => {
               const fieldValue = formFields[field as keyof typeof formFields]
               return !!fieldValue && !displayErrors[field]
@@ -647,6 +659,15 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Panel enablement - determines if a panel should be interactive
           isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
+            const { formMeta } = get()
+            const { mode } = formMeta
+
+            // In edit mode, all panels are enabled since data is pre-populated
+            if (mode === 'edit') {
+              return true
+            }
+
+            // In create mode, use progressive enabling logic
             switch (panelNumber) {
               case 1:
                 // Panel 1 is always enabled (first panel)

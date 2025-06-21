@@ -65,7 +65,8 @@
     "actions": {
       "save": "حفظ",
       "cancel": "إلغاء",
-      "delete": "حذف"
+      "delete": "حذف",
+      "reset": "إعادة"
     },
     "appName": "Tournado",
     "backToHome": "العودة إلى الرئيسية",

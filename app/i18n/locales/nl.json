@@ -65,7 +65,8 @@
     "actions": {
       "save": "Opslaan",
       "cancel": "Annuleren",
-      "delete": "Verwijderen"
+      "delete": "Verwijderen",
+      "reset": "Opnieuw"
     },
     "appName": "Tournado",
     "backToHome": "Terug naar home",

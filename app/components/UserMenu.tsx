@@ -80,7 +80,7 @@ export function UserMenu({
             aria-label='Toggle menu'
           >
             {/* Show hamburger menu icon - consistent across all screen sizes */}
-            {renderIcon('menu', { className: 'w-6 h-6' })}
+            {renderIcon('menu', { className: 'w-6 h-6 md:w-10 md:h-10' })}
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content

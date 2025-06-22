@@ -17,27 +17,16 @@ export function CheckIcon({
   const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2 : 2
 
   return (
-    <div
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
       className={`inline-block ${className}`}
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-      }}
+      style={{ strokeWidth }}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='currentColor'
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          strokeWidth,
-        }}
-      >
-        <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
-      </svg>
-    </div>
+      <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
+    </svg>
   )
 }

@@ -20,19 +20,14 @@ export function ExpandMoreIcon({
     weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
 
   return (
-    <div
-      className={`inline-block ${className}`}
-      style={{ width: `${size}px`, height: `${size}px` }}
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      className={`inline-block fill-current ${className}`}
+      style={{ strokeWidth }}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox='0 0 24 24'
-        className='fill-current'
-        style={{ width: `${size}px`, height: `${size}px`, strokeWidth }}
-      >
-        <path d={path} />
-      </svg>
-    </div>
+      <path d={path} />
+    </svg>
   )
 }

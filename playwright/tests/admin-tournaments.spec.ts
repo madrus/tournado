@@ -181,7 +181,7 @@ test.describe('Tournament-Team Integration', () => {
     await page.setViewportSize({ width: 375, height: 812 })
   })
 
-  test('should create tournament and verify it appears in team creation options', async ({
+  test('should create tournament and verify combo field integration in team creation', async ({
     page,
   }) => {
     // Step 1: Create a tournament
@@ -197,7 +197,6 @@ test.describe('Tournament-Team Integration', () => {
       .getByRole('button', { name: /startdatum.*select date|start date.*select date/i })
       .click()
     await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
-    // Click on day 15 (any day in the current month)
     await page.getByRole('button', { name: /^15 / }).click()
 
     // Select end date using date picker
@@ -205,10 +204,9 @@ test.describe('Tournament-Team Integration', () => {
       .getByRole('button', { name: /einddatum.*select date|end date.*select date/i })
       .click()
     await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
-    // Click on day 20 (any day in the current month)
     await page.getByRole('button', { name: /^20 / }).click()
 
-    // Select divisions - find division checkboxes with exact Dutch names
+    // Select divisions
     const firstDivisionLabel = page
       .locator('label')
       .filter({ hasText: /eerste klasse/i })
@@ -230,32 +228,66 @@ test.describe('Tournament-Team Integration', () => {
     await expect(jo10Label).toBeVisible()
     await jo10Label.click()
 
-    // Submit form
+    // Submit form - should redirect to tournament edit page
     await page.getByRole('button', { name: 'Opslaan' }).click()
-
-    // Wait for success/redirect
     await page.waitForLoadState('networkidle')
-    await expect(page).toHaveURL(/\/tournaments$/)
 
-    // Step 2: Verify tournament appears in team creation form
+    // Verify we're on the tournament edit page (not the list)
+    await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/) // Should be /tournaments/{id}
+
+    // Step 2: Navigate to teams route
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    await page.waitForLoadState('networkidle')
+
+    // Step 3: Navigate to new team route
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
     await page.waitForLoadState('networkidle')
 
-    // Look for tournament dropdown/combobox
-    const tournamentField = page.getByRole('combobox', {
+    // Step 4: Open tournament combo and select the newly created tournament
+    const tournamentCombo = page.getByRole('combobox', {
       name: /toernooi.*select option|tournament.*select option/i,
     })
-    await expect(tournamentField).toBeVisible()
+    await expect(tournamentCombo).toBeVisible()
+    await tournamentCombo.click()
 
-    // Open dropdown to see if our tournament is there
-    await tournamentField.click()
+    // Wait for dropdown to open and find the tournament option using role
+    await page.waitForTimeout(500)
+    const tournamentOption = page.getByRole('option', {
+      name: /Test Tournament E2E - Test Location/i,
+    })
+    await expect(tournamentOption).toBeVisible()
+    await tournamentOption.click()
 
-    // Wait for dropdown options to be populated and check if our tournament exists
-    await page.waitForTimeout(1000)
-    const tournamentOption = page
-      .locator('option')
-      .filter({ hasText: /Test Tournament E2E/i })
-    await expect(tournamentOption.first()).toBeAttached({ timeout: 5000 })
+    // Step 5: Open divisions combo, verify list, and select first division
+    const divisionCombo = page.getByRole('combobox', {
+      name: /teamklasse.*select option|division.*select option/i,
+    })
+    await expect(divisionCombo).toBeVisible()
+    await divisionCombo.click()
+
+    // Wait for dropdown to open and verify divisions are populated
+    await page.waitForTimeout(500)
+    const firstDivisionOption = page.getByRole('option', {
+      name: /eerste klasse|first division/i,
+    })
+    await expect(firstDivisionOption).toBeVisible()
+    await firstDivisionOption.click()
+
+    // Step 6: Open categories combo and verify the list
+    const categoryCombo = page.getByRole('combobox', {
+      name: /categorie.*select option|category.*select option/i,
+    })
+    await expect(categoryCombo).toBeVisible()
+    await categoryCombo.click()
+
+    // Wait for dropdown to open and verify categories are populated
+    await page.waitForTimeout(500)
+    const jo8Option = page.getByRole('option', { name: /JO8/i })
+    const jo10Option = page.getByRole('option', { name: /JO10/i })
+
+    // Verify we can see both categories we selected for the tournament
+    await expect(jo8Option).toBeVisible()
+    await expect(jo10Option).toBeVisible()
   })
 
   test('should show empty divisions and categories when no tournament selected', async ({

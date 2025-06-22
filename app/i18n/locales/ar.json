@@ -63,7 +63,10 @@
   },
   "common": {
     "actions": {
+      "add": "إضافة",
       "save": "حفظ",
+      "saving": "جاري الحفظ...",
+      "update": "تحديث",
       "cancel": "إلغاء",
       "delete": "حذف",
       "reset": "إعادة"
@@ -134,7 +137,6 @@
     }
   },
   "teams": {
-    "addTeam": "إضافة فريق",
     "count": "{{count}} فريق مسجل",
     "count_other": "{{count}} فريق مسجل",
     "createNewTeam": "إنشاء فريق جديد",
@@ -148,7 +150,6 @@
     "form": {
       "clubName": "اسم النادي",
       "createAnotherTeam": "إنشاء فريق آخر",
-      "createTeam": "حفظ",
       "division": "الفئة",
       "errors": {
         "clubNameRequired": "اسم النادي مطلوب",
@@ -204,7 +205,6 @@
     "title": "الفرق"
   },
   "tournaments": {
-    "addTournament": "إضافة بطولة",
     "deleteTournament": "حذف البطولة",
     "title": "البطولات",
     "name": "الاسم",
@@ -228,9 +228,7 @@
       "selectCategories": "حدد الفئات العمرية التي ستشارك",
       "selected": "محدد",
       "tournamentRegistration": "تسجيل البطولة",
-      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة",
-      "createTournament": "إنشاء البطولة",
-      "updateTournament": "تحديث البطولة"
+      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة"
     }
   },
   "divisions": {

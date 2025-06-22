@@ -176,7 +176,7 @@ export default function NewTournamentPage(): JSX.Element {
         errors={actionData?.errors || {}}
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
-        submitButtonText={t('tournaments.form.createTournament')}
+        submitButtonText={t('common.actions.save')}
         onCancel={handleReset}
       />
     </div>

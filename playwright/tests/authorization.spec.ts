@@ -75,7 +75,7 @@ test.describe('Authorization - Role-based Access', () => {
       await page.goto('/teams')
 
       await expect(page).toHaveURL('/teams')
-      await expect(page.getByRole('link', { name: 'Team toevoegen' })).toBeVisible()
+      await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
     })
 
     test('should redirect to signin when accessing protected routes', async ({

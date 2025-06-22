@@ -540,32 +540,30 @@ describe('TournamentForm Component', () => {
 
     it('should render submit button with custom text', () => {
       renderTournamentForm({
-        submitButtonText: 'Create Tournament',
+        submitButtonText: 'Save',
       })
 
-      expect(
-        screen.getByRole('button', { name: 'Create Tournament' })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
     it('should render reset button when onCancel is provided', () => {
-      const handleCancel = vi.fn()
-      renderTournamentForm({ onCancel: handleCancel })
+      const handleReset = vi.fn()
+      renderTournamentForm({ onCancel: handleReset })
 
       const resetButton = screen.getByRole('button', { name: '↻ Reset' })
       expect(resetButton).toBeInTheDocument()
     })
 
     it('should call onCancel when reset button is clicked', async () => {
-      const handleCancel = vi.fn()
+      const handleReset = vi.fn()
       const user = userEvent.setup()
 
-      renderTournamentForm({ onCancel: handleCancel })
+      renderTournamentForm({ onCancel: handleReset })
 
       const resetButton = screen.getByRole('button', { name: '↻ Reset' })
       await user.click(resetButton)
 
-      expect(handleCancel).toHaveBeenCalledTimes(1)
+      expect(handleReset).toHaveBeenCalledTimes(1)
     })
 
     it('should render delete button when showDeleteButton is true', () => {

@@ -72,7 +72,7 @@ export default function NewTeamPage(): JSX.Element {
       ? `Team "${actionData.team.teamName}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
       : undefined
 
-  const handleCancel = () => {
+  const handleReset = () => {
     const { resetForm } = useTeamFormStore.getState()
     resetForm()
   }
@@ -84,7 +84,7 @@ export default function NewTeamPage(): JSX.Element {
       errors={actionData?.errors || {}}
       isSuccess={actionData?.success || false}
       successMessage={successMessage}
-      onCancel={handleCancel}
+      onCancel={handleReset}
     />
   )
 }

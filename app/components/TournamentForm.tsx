@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
-import { CheckIcon } from '~/components/icons'
+import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import type { Category, Division } from '~/db.server'
@@ -383,10 +383,11 @@ export function TournamentForm({
               type='button'
               onClick={onCancel}
               variant='outline'
-              color='gray'
+              color='red'
               className='min-w-32'
             >
-              {t('common.actions.cancel')}
+              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+              {t('common.actions.reset')}
             </ActionButton>
           ) : null}
 

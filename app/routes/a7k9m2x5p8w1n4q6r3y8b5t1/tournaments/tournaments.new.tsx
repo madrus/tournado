@@ -161,7 +161,7 @@ export default function NewTournamentPage(): JSX.Element {
   const { divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
 
-  const handleCancel = () => {
+  const handleReset = () => {
     window.history.back()
   }
 
@@ -176,7 +176,7 @@ export default function NewTournamentPage(): JSX.Element {
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
         submitButtonText={t('tournaments.form.createTournament')}
-        onCancel={handleCancel}
+        onCancel={handleReset}
       />
     </div>
   )

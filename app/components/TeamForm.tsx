@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef } from 'react'
+import { JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
@@ -41,8 +41,6 @@ export function TeamForm({
 
   // Get all state from the form store
   const {
-    formFields,
-    initialFormFields,
     formFields: {
       tournamentId,
       division,
@@ -67,9 +65,9 @@ export function TeamForm({
     validateForm,
     validateFieldOnBlur,
     updateAvailableOptions,
-    isPanelValid,
     isPanelEnabled,
     isFormReadyForSubmission,
+    isDirty,
   } = useTeamFormStore()
 
   // --- Panel Validity Logic ---
@@ -81,35 +79,33 @@ export function TeamForm({
   // 2. All fields when forceShowAllErrors is true - for form submission validation
   // 3. All fields when submitAttempted is true - for form submission validation
   // Don't show errors for disabled fields
-  const getTranslatedError = (
-    fieldName: string,
-    isDisabled = false
-  ): string | undefined => {
-    // Don't show errors for disabled fields
-    if (isDisabled) return undefined
+  const getTranslatedError = useCallback(
+    (fieldName: string, isDisabled = false): string | undefined => {
+      // Don't show errors for disabled fields
+      if (isDisabled) return undefined
 
-    // Show errors if field has been blurred OR if we're forcing all errors OR if form was submitted
-    const shouldShowError =
-      blurredFields[fieldName] || forceShowAllErrors || submitAttempted
+      // Show errors if field has been blurred OR if we're forcing all errors OR if form was submitted
+      const shouldShowError =
+        blurredFields[fieldName] || forceShowAllErrors || submitAttempted
 
-    if (!shouldShowError) return undefined
+      if (!shouldShowError) return undefined
 
-    const errorKey = displayErrors[fieldName]
-    if (!errorKey) return undefined
+      const errorKey = displayErrors[fieldName]
+      if (!errorKey) return undefined
 
-    // If the error is already a plain message (from server), return as-is
-    if (!errorKey.includes('.')) return errorKey
+      // If the error is already a plain message (from server), return as-is
+      if (!errorKey.includes('.')) return errorKey
 
-    // Otherwise, translate the key
-    return t(errorKey)
-  }
+      // Otherwise, translate the key
+      return t(errorKey)
+    },
+    [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t]
+  )
 
   // Initialize mode in store
-  useEffect(() => {
-    if (formMode !== mode) {
-      setFormMetaField('mode', formMode)
-    }
-  }, [formMode, mode, setFormMetaField])
+  if (mode !== formMode) {
+    setFormMetaField('mode', formMode)
+  }
 
   // Reset specific fields when switching to create mode to ensure clean state
   useEffect(() => {
@@ -153,7 +149,7 @@ export function TeamForm({
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
 
-  // Handle form submission and validation
+  // Handle client-side form submission and validation
   const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
@@ -162,10 +158,9 @@ export function TeamForm({
     }
   }
 
-  // Otherwise let Remix handle the submission normally
+  // Otherwise let React Router handle the submission normally
 
   const isPublicSuccess = isSuccess && variant === 'public'
-  const isDirty = JSON.stringify(formFields) !== JSON.stringify(initialFormFields)
 
   return (
     <div className={`mx-auto max-w-6xl ${className}`}>
@@ -259,8 +254,12 @@ export function TeamForm({
                   value={tournamentId}
                   onChange={value => {
                     setFormField('tournamentId', value)
-                    setFormField('division', '')
-                    setFormField('category', '')
+                    // Only clear dependent fields in create mode
+                    // In edit mode, preserve existing values
+                    if (formMode === 'create') {
+                      setFormField('division', '')
+                      setFormField('category', '')
+                    }
                   }}
                   options={availableTournaments.map(tournament => ({
                     value: tournament.id,
@@ -289,7 +288,11 @@ export function TeamForm({
                   value={division}
                   onChange={value => {
                     setFormField('division', value)
-                    setFormField('category', '')
+                    // Only clear dependent fields in create mode
+                    // In edit mode, preserve existing values
+                    if (formMode === 'create') {
+                      setFormField('category', '')
+                    }
                   }}
                   options={availableDivisions.map(d => ({
                     value: d,
@@ -350,9 +353,10 @@ export function TeamForm({
 
         {/* Step 2: Team Information */}
         <div
-          className={cn('relative transition-opacity duration-300', {
-            'pointer-events-none opacity-50': !isPanelEnabled(2),
-          })}
+          className={cn(
+            'relative transition-opacity duration-300',
+            !isPanelEnabled(2) ? 'pointer-events-none opacity-50' : ''
+          )}
         >
           <div
             className={cn(
@@ -376,7 +380,7 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelValid(1) ? 'text-blue-800' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-800' : 'text-gray-400'
                 )}
               >
                 {t('teams.form.teamInfo')}
@@ -384,7 +388,7 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelValid(1) ? 'text-blue-600' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-600' : 'text-gray-400'
                 )}
               >
                 {t('teams.form.enterTeamDetails')}
@@ -402,14 +406,14 @@ export function TeamForm({
                   placeholder={t('teams.form.placeholders.clubName')}
                   error={getTranslatedError(
                     'clubName',
-                    isPublicSuccess || !isPanelValid(1)
+                    isPublicSuccess || !isPanelEnabled(2)
                   )}
                   required
-                  disabled={isPublicSuccess || !isPanelValid(1)}
+                  disabled={isPublicSuccess || !isPanelEnabled(2)}
                   className={getLatinTextClass(i18n.language)}
                   onBlur={() => validateFieldOnBlur('clubName')}
                 />
-                {clubName && !getTranslatedError('clubName', !isPanelValid(1)) ? (
+                {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
                     <CheckIcon className='h-4 w-4 text-white' size={16} />
                   </div>
@@ -426,14 +430,14 @@ export function TeamForm({
                   placeholder={t('teams.form.placeholders.teamName')}
                   error={getTranslatedError(
                     'teamName',
-                    isPublicSuccess || !isPanelValid(1)
+                    isPublicSuccess || !isPanelEnabled(2)
                   )}
                   required
-                  disabled={isPublicSuccess || !isPanelValid(1)}
+                  disabled={isPublicSuccess || !isPanelEnabled(2)}
                   className={getLatinTextClass(i18n.language)}
                   onBlur={() => validateFieldOnBlur('teamName')}
                 />
-                {teamName && !getTranslatedError('teamName', !isPanelValid(1)) ? (
+                {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
                   <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
                     <CheckIcon className='h-4 w-4 text-white' size={16} />
                   </div>
@@ -694,7 +698,7 @@ export function TeamForm({
               type='button'
               onClick={onCancel}
               variant='outline'
-              color='gray'
+              color='red'
               className='min-w-32'
             >
               <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
@@ -720,7 +724,7 @@ export function TeamForm({
               isSubmitting ||
               isPublicSuccess ||
               !isFormReadyForSubmission() ||
-              (mode === 'edit' && !isDirty)
+              (mode === 'edit' && !isDirty())
             }
           >
             {isSubmitting

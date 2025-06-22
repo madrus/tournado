@@ -63,7 +63,10 @@
   },
   "common": {
     "actions": {
+      "add": "Toevoegen",
       "save": "Opslaan",
+      "saving": "Opslaan...",
+      "update": "Bijwerken",
       "cancel": "Annuleren",
       "delete": "Verwijderen",
       "reset": "Opnieuw"
@@ -133,7 +136,6 @@
     }
   },
   "teams": {
-    "addTeam": "Team toevoegen",
     "count": "{{count}} team geregistreerd",
     "count_other": "{{count}} teams geregistreerd",
     "createNewTeam": "Maak een nieuw team aan",
@@ -147,7 +149,6 @@
     "form": {
       "clubName": "Clubnaam",
       "createAnotherTeam": "Nog een team aanmelden",
-      "createTeam": "Opslaan",
       "division": "Teamklasse",
       "errors": {
         "clubNameRequired": "Clubnaam is verplicht",
@@ -195,7 +196,7 @@
       "enterContactDetails": "Voer contactgegevens in voor de teamleider"
     },
     "getStarted": {
-      "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Team toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",
+      "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",
       "title": "Begin met teamregistratie"
     },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
@@ -203,7 +204,6 @@
     "title": "Teams"
   },
   "tournaments": {
-    "addTournament": "Toernooi toevoegen",
     "deleteTournament": "Toernooi verwijderen",
     "title": "Toernooien",
     "name": "Naam",
@@ -227,9 +227,7 @@
       "selectCategories": "Selecteer de leeftijdscategorieën die zullen deelnemen",
       "selected": "geselecteerd",
       "tournamentRegistration": "Toernooi registratie",
-      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
-      "createTournament": "Toernooi aanmaken",
-      "updateTournament": "Toernooi bijwerken"
+      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken"
     }
   },
   "divisions": {

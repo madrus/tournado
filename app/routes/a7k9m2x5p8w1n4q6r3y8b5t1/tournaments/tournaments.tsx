@@ -40,7 +40,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
             <ActionLinkButton
               to='new'
               icon='add'
-              label={t('tournaments.addTournament')}
+              label={t('common.actions.add')}
               variant='primary'
             />
           </div>

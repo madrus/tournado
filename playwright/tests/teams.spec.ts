@@ -19,15 +19,15 @@ test.describe('Public Teams', () => {
     // Should be able to view teams page without authentication
     await expect(page).toHaveURL('/teams')
 
-    // Should see the "Team toevoegen" button (exact Dutch text)
-    await expect(page.getByRole('link', { name: 'Team toevoegen' })).toBeVisible()
+    // Should see the "Toevoegen" button (new simplified text)
+    await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
   })
 
   test('should allow public team registration', async ({ page }) => {
     await page.goto('/teams')
 
-    // Click "Team toevoegen" button (public team registration)
-    await page.getByRole('link', { name: 'Team toevoegen' }).click()
+    // Click "Toevoegen" button (public team registration)
+    await page.getByRole('link', { name: 'Toevoegen' }).click()
 
     // Should navigate to new team page
     await expect(page).toHaveURL('/teams/new')

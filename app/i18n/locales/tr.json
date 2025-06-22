@@ -63,7 +63,10 @@
   },
   "common": {
     "actions": {
+      "add": "Ekle",
       "save": "Kaydet",
+      "saving": "Kaydediliyor...",
+      "update": "Güncelle",
       "cancel": "İptal",
       "delete": "Sil",
       "reset": "Sıfırla"
@@ -78,7 +81,6 @@
     "toggleMenu": "Menüyü aç/kapat",
     "titles": {
       "about": "Hakkımızda",
-      "addTeam": "Takım ekle",
       "adminPanel": "Yönetici paneli",
       "more": "Daha fazla",
       "profile": "Profil",
@@ -134,7 +136,6 @@
     }
   },
   "teams": {
-    "addTeam": "Takım ekle",
     "count": "{{count}} takım kaydedildi",
     "count_other": "{{count}} takım kaydedildi",
     "createNewTeam": "Yeni bir takım oluştur",
@@ -148,7 +149,6 @@
     "form": {
       "clubName": "Kulüp adı",
       "createAnotherTeam": "Başka bir takım kaydet",
-      "createTeam": "Kaydet",
       "division": "Bölüm",
       "errors": {
         "clubNameRequired": "Kulüp adı zorunludur",
@@ -196,7 +196,7 @@
       "enterContactDetails": "Takım lideri için iletişim bilgilerini girin"
     },
     "getStarted": {
-      "description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Takım ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",
+      "description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",
       "title": "Takım kaydı ile başlayın"
     },
     "noTeamSelected": "Hiçbir takım seçilmedi. Soldan bir takım seçin veya",
@@ -204,7 +204,6 @@
     "title": "Takımlar"
   },
   "tournaments": {
-    "addTournament": "Turnuva ekle",
     "deleteTournament": "Turnuvayı sil",
     "title": "Turnuvalar",
     "name": "Ad",
@@ -228,9 +227,7 @@
       "selectCategories": "Katılacak yaş kategorilerini seçin",
       "selected": "seçildi",
       "tournamentRegistration": "Turnuva kaydı",
-      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
-      "createTournament": "Turnuva oluştur",
-      "updateTournament": "Turnuvayı güncelle"
+      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun"
     }
   },
   "divisions": {

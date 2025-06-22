@@ -38,7 +38,7 @@ export default function AdminTeamsLayout(): JSX.Element {
             <ActionLinkButton
               to='new'
               icon='add'
-              label={t('teams.addTeam')}
+              label={t('common.actions.add')}
               variant='primary'
             />
           </div>

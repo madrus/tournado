@@ -315,7 +315,7 @@ export default function EditTournamentPage(): JSX.Element {
         errors={actionData?.errors || {}}
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
-        submitButtonText={t('tournaments.form.updateTournament')}
+        submitButtonText={t('common.actions.update')}
         onCancel={handleReset}
         showDeleteButton={true}
         onDelete={handleDelete}

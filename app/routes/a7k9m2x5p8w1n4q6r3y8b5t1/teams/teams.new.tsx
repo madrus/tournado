@@ -85,7 +85,7 @@ export default function AdminNewTeamPage(): JSX.Element {
         mode='create'
         variant='admin'
         intent='create'
-        submitButtonText={t('admin.teams.createTeam')}
+        submitButtonText={t('common.actions.save')}
         errors={actionData?.errors || {}}
         isSuccess={actionData?.success || false}
         successMessage={successMessage}

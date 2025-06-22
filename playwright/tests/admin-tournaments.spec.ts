@@ -14,10 +14,8 @@ test.describe('Admin Tournaments', () => {
     // Should see page content indicating tournaments (checking Dutch content since interface is in Dutch)
     await expect(page.locator('body')).toContainText(/toernooi/i, { timeout: 15000 })
 
-    // Should see the Add Tournament link (it's an ActionLinkButton, which renders as a link)
-    await expect(
-      page.getByRole('link', { name: /toernooi toevoegen|add tournament/i })
-    ).toBeVisible()
+    // Should see the Add button (it's an ActionLinkButton, which renders as a link)
+    await expect(page.getByRole('link', { name: /^toevoegen$|^add$/i })).toBeVisible()
   })
 
   test('should access tournaments via context menu', async ({ page }) => {
@@ -139,15 +137,12 @@ test.describe('Admin Tournaments', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(2000)
 
-    // Look for "Add Tournament" or similar button
-    const addButton = page
-      .locator('a, button')
-      .filter({ hasText: /toernooi|tournament/i })
-      .filter({ hasText: /add|toevoegen|new|nieuw/i })
-    await expect(addButton.first()).toBeVisible({ timeout: 15000 })
+    // Look for "Add" button (simplified since it's now just "Add")
+    const addButton = page.getByRole('link', { name: /^toevoegen$|^add$/i })
+    await expect(addButton).toBeVisible({ timeout: 15000 })
 
-    // Click the add tournament button
-    await addButton.first().click()
+    // Click the add button
+    await addButton.click()
 
     // Should navigate to new tournament page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')

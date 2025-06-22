@@ -108,6 +108,9 @@ type Actions = {
 
   // Form submission readiness
   isFormReadyForSubmission: () => boolean
+
+  // Form state helpers
+  isDirty: () => boolean
 }
 
 const storeName = 'TeamFormStore'
@@ -711,6 +714,12 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
 
             return false
+          },
+
+          // Form state helpers - determines if form has been modified
+          isDirty: (): boolean => {
+            const { formFields, initialFormFields } = get()
+            return JSON.stringify(formFields) !== JSON.stringify(initialFormFields)
           },
 
           // Individual field validation - called reactively when field is touched

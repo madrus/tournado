@@ -121,12 +121,12 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconDiv = container.querySelector('div[class*="text-emerald-800"]')
+      const iconSvg = container.querySelector('svg[class*="text-emerald-800"]')
       const label = screen.getByText('Teams')
 
       // Check inactive styling
-      expect(iconDiv).toHaveClass('text-emerald-800')
-      expect(iconDiv).not.toHaveClass('text-red-500')
+      expect(iconSvg).toHaveClass('text-emerald-800')
+      expect(iconSvg).not.toHaveClass('text-red-500')
       expect(label).toHaveClass('text-emerald-800')
       expect(label).not.toHaveClass('text-red-500', 'font-bold')
     })
@@ -146,12 +146,12 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconDiv = container.querySelector('div[class*="text-red-500"]')
+      const iconSvg = container.querySelector('svg[class*="text-red-500"]')
       const label = screen.getByText('Teams')
 
       // Check active styling
-      expect(iconDiv).toHaveClass('text-red-500')
-      expect(iconDiv).not.toHaveClass('text-emerald-800')
+      expect(iconSvg).toHaveClass('text-red-500')
+      expect(iconSvg).not.toHaveClass('text-emerald-800')
       expect(label).toHaveClass('text-red-500', 'font-bold')
       expect(label).not.toHaveClass('text-emerald-800')
     })
@@ -178,8 +178,8 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      let iconDiv = container.querySelector('div[class*="text-red-500"]')
-      expect(iconDiv).toHaveClass('text-red-500') // Should be active
+      let iconSvg = container.querySelector('svg[class*="text-red-500"]')
+      expect(iconSvg).toHaveClass('text-red-500') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({
@@ -196,8 +196,8 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      iconDiv = container.querySelector('div[class*="text-emerald-800"]')
-      expect(iconDiv).toHaveClass('text-emerald-800') // Should be inactive
+      iconSvg = container.querySelector('svg[class*="text-emerald-800"]')
+      expect(iconSvg).toHaveClass('text-emerald-800') // Should be inactive
     })
   })
 
@@ -220,10 +220,6 @@ describe('NavigationItem', () => {
       const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveAttribute('width', '36')
       expect(svg).toHaveAttribute('height', '36')
-      expect(svg).toHaveStyle({
-        width: '36px',
-        height: '36px',
-      })
     })
 
     it('should render icon as inline SVG', () => {
@@ -312,8 +308,8 @@ describe('NavigationItem', () => {
       const link = screen.getByRole('link')
       expect(link).toHaveClass('flex', 'flex-col', 'items-center')
 
-      const iconDiv = container.querySelector('div[class*="text-emerald-800"]')
-      expect(iconDiv).toHaveClass('text-emerald-800') // Default inactive state
+      const iconSvg = container.querySelector('svg[class*="text-emerald-800"]')
+      expect(iconSvg).toHaveClass('text-emerald-800') // Default inactive state
 
       const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveClass('fill-current')

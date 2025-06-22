@@ -33,26 +33,14 @@ export function HomeIcon({
       : undefined
 
   return (
-    <div
-      className={`inline-block ${className}`}
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-      }}
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 -960 960 960'
+      className={`inline-block fill-current ${className}`}
+      style={{ strokeWidth }}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox='0 -960 960 960'
-        className='fill-current'
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          strokeWidth,
-        }}
-      >
-        <path d={path} />
-      </svg>
-    </div>
+      <path d={path} />
+    </svg>
   )
 }

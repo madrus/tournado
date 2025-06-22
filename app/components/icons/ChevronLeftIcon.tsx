@@ -18,11 +18,10 @@ export const ChevronLeftIcon = ({
   'data-testid': dataTestId,
 }: Readonly<ChevronLeftIconProps>): JSX.Element => (
   <svg
-    className={className}
     width={size}
     height={size}
     viewBox='0 0 24 24'
-    fill='none'
+    className={`inline-block ${className}`}
     stroke='currentColor'
     strokeWidth={weight / 200}
     strokeLinecap='round'

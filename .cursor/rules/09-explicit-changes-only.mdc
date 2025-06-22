@@ -1,0 +1,135 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+---
+description: Critical rule to only make explicitly requested changes
+globs: ["**/*.{ts,tsx,js,jsx,json,md,mdx}"]
+alwaysApply: true
+---
+
+# Explicit Changes Only
+
+**CRITICAL:** NEVER make changes to code that was not explicitly requested. Do not "improve," "simplify," "refactor," or "optimize" code unless specifically asked to do so.
+
+## Core Rule
+
+**Rule:** Only make the exact changes that were explicitly requested. Do not make any additional changes, improvements, or modifications.
+
+### ✅ Correct Behavior
+- User asks: "Change the button text from 'Add Team' to 'Add'"
+- You change: ONLY the button text
+- You do NOT: Refactor the component, change styling, or modify other parts
+
+### ❌ Incorrect Behavior
+- User asks: "Change the button text from 'Add Team' to 'Add'"
+- You change: Button text + component structure + styling + other unrelated code
+- You do: "Improvements" that weren't requested
+
+### Why This Rule?
+- **Respects User Intent** - User knows what they want to change
+- **Prevents Unwanted Side Effects** - Avoids breaking working code
+- **Maintains Trust** - User can rely on precise changes
+- **Reduces Confusion** - Clear scope of what will be modified
+
+## When You See Potential Improvements
+
+**Rule:** If you notice something that could be improved, changed, or optimized, you MUST ask for consent before making any changes.
+
+### ✅ Correct Process
+1. **Complete the requested change** first
+2. **Ask for consent** before making additional changes
+3. **Explain your reasoning** clearly
+4. **Wait for approval** before proceeding
+
+### ❌ Incorrect Process
+- Making changes without asking
+- Assuming the user wants "improvements"
+- Changing multiple things at once
+- Not explaining why you think changes are needed
+
+## Examples of What NOT to Do
+
+### ❌ Icon Simplification
+- User asks: "Fix responsive sizing for hamburger menu"
+- You do: Change SVG paths, remove wrapper divs, "simplify" icon structure
+- Result: Icons look completely different
+
+### ❌ Component Refactoring
+- User asks: "Update translation key"
+- You do: Refactor component structure, change props, "optimize" code
+- Result: Component behavior changes unexpectedly
+
+### ❌ Code "Improvements"
+- User asks: "Add a new field to the form"
+- You do: "Improve" validation, "simplify" logic, change unrelated functions
+- Result: Form behavior changes in unexpected ways
+
+## Examples of What TO Do
+
+### ✅ Precise Changes
+- User asks: "Change button text from 'Add Team' to 'Add'"
+- You change: Only the text content
+- Result: Button works exactly the same, just different text
+
+### ✅ Minimal Scope
+- User asks: "Fix responsive sizing for hamburger menu"
+- You change: Only the sizing classes or specific sizing issue
+- Result: Menu works exactly the same, just properly sized
+
+### ✅ Focused Updates
+- User asks: "Update translation key"
+- You change: Only the translation key reference
+- Result: Same functionality, just different translation
+
+### ✅ Asking for Consent
+- User asks: "Update translation key"
+- You complete: The translation key update
+- You ask: "I also noticed the component has some unused imports. Would you like me to clean those up as well?"
+- You wait: For user approval before proceeding
+
+## When in Doubt
+
+1. **Complete the requested change** first
+2. **Ask for clarification** before making additional changes
+3. **Make the minimal change** needed to fulfill the request
+4. **If you see potential improvements**, suggest them separately and ask for consent
+5. **Preserve existing behavior** unless explicitly asked to change it
+
+## Verification Checklist
+
+Before making any changes:
+- [ ] Is this change explicitly requested?
+- [ ] Am I only changing what was asked for?
+- [ ] Am I preserving existing functionality?
+- [ ] Am I not making "improvements" that weren't requested?
+- [ ] Would the user be surprised by any of my changes?
+- [ ] If I see potential improvements, am I asking for consent first?
+
+## Enforcement
+
+This rule is **CRITICAL** and should be:
+- ✅ **Always followed** - No exceptions
+- ✅ **Applied to all code changes** - Not just refactoring
+- ✅ **Checked before every change** - Use the verification checklist
+- ✅ **Remembered by all AI assistants** - This is a fundamental rule
+
+## Real-World Example
+
+**User Request:** "Fix all icon components havings sizing issue"
+
+**❌ What I Did Wrong:**
+- Changed SVG paths in 30+ icon components
+- Removed wrapper divs from all icons
+- "Simplified" icon structure
+- Changed visual appearance of icons
+
+**✅ What I Should Have Done:**
+- Identified the specific sizing issue
+- Made minimal change to fix only that issue
+- Preserved all existing icon appearances
+- Only changed what was necessary for responsive sizing
+- If I noticed the wrapper div issue, I should have asked: "I see the issue is caused by wrapper divs preventing responsive classes from working. Would you like me to remove these wrapper divs to fix the responsive sizing?"
+
+**Result:** User had to revert all changes because icons looked completely different.

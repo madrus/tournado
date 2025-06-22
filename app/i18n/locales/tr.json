@@ -65,7 +65,8 @@
     "actions": {
       "save": "Kaydet",
       "cancel": "İptal",
-      "delete": "Sil"
+      "delete": "Sil",
+      "reset": "Sıfırla"
     },
     "appName": "Tournado",
     "backToHome": "Ana sayfaya dön",

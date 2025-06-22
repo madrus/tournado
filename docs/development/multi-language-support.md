@@ -4,6 +4,24 @@ This document describes how multi-language (i18n) support is implemented in the 
 
 ---
 
+## Language Switching: Cookie, Loader, and SSR/CSR Consistency
+
+Tournado supports seamless language switching and persistence across server and client renders:
+
+- The user's language preference is stored in a cookie (`lang`).
+- On every page load, the loader reads the `lang` cookie and sets the language accordingly.
+- The page component uses a `useEffect` to update the i18n language if it differs from the current one.
+- This ensures a consistent language experience, even after form submissions or navigation, and works for both SSR and CSR.
+
+**Key Implementation:**
+
+- Loader reads the `lang` cookie and passes the language to the page.
+- Page component sets i18n language from loader data on mount.
+
+For more details on how this works in practice, see the loader and page component code in the tournaments and teams admin features.
+
+---
+
 ## 1. Supported Languages & Core Setup
 
 We currently support four languages:

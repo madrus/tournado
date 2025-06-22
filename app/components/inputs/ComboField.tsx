@@ -63,8 +63,6 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
             onValueChange={newValue => {
               justSelectedRef.current = true
               onChange(newValue)
-              // Call onBlur immediately with the new value when a selection is made
-              onBlur?.(newValue)
               // Reset the flag after a short delay
               setTimeout(() => {
                 justSelectedRef.current = false

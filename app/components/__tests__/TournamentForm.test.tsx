@@ -31,6 +31,7 @@ vi.mock('react-i18next', () => ({
         'tournaments.form.selectCategories': 'Select available categories',
         'common.actions.save': 'Save',
         'common.actions.cancel': 'Cancel',
+        'common.actions.reset': 'Reset',
         'common.actions.delete': 'Delete',
       }
       return translations[key] || key
@@ -130,6 +131,7 @@ vi.mock('../icons', () => {
     MoreVertIcon: createMockIcon('more-vert-icon', '⋮'),
     PendingIcon: createMockIcon('pending-icon', '⏳'),
     PersonIcon: createMockIcon('person-icon', '👤'),
+    RestorePageIcon: createMockIcon('restore-page-icon', '↻'),
     SettingsIcon: createMockIcon('settings-icon', '⚙'),
     TrophyIcon: createMockIcon('trophy-icon', '🏆'),
     TuneIcon: createMockIcon('tune-icon', '🎛'),
@@ -546,22 +548,22 @@ describe('TournamentForm Component', () => {
       ).toBeInTheDocument()
     })
 
-    it('should render cancel button when onCancel is provided', () => {
+    it('should render reset button when onCancel is provided', () => {
       const handleCancel = vi.fn()
       renderTournamentForm({ onCancel: handleCancel })
 
-      const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-      expect(cancelButton).toBeInTheDocument()
+      const resetButton = screen.getByRole('button', { name: '↻ Reset' })
+      expect(resetButton).toBeInTheDocument()
     })
 
-    it('should call onCancel when cancel button is clicked', async () => {
+    it('should call onCancel when reset button is clicked', async () => {
       const handleCancel = vi.fn()
       const user = userEvent.setup()
 
       renderTournamentForm({ onCancel: handleCancel })
 
-      const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-      await user.click(cancelButton)
+      const resetButton = screen.getByRole('button', { name: '↻ Reset' })
+      await user.click(resetButton)
 
       expect(handleCancel).toHaveBeenCalledTimes(1)
     })

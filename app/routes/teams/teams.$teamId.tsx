@@ -5,7 +5,6 @@ import { useLoaderData } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
-// Import Division type from the database
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById } from '~/models/team.server'

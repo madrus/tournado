@@ -268,6 +268,12 @@ Since we use component-level hydration, tests can import stores without triggeri
 
 ---
 
+## Data Freshness and Navigation
+
+For strategies to ensure your UI always shows the latest data after edits or navigation (such as using popstate and revalidation in list pages), see [Data Freshness](development/data-freshness.md).
+
+---
+
 ## Summary
 
 - **Auth store** uses Zustand with sessionStorage and component-level hydration

@@ -6,6 +6,7 @@
    - [Routing](development/routing.md)
    - [State Management](development/state-management.md)
    - [Multi-Language Support](development/multi-language-support.md)
+   - [Data Freshness](development/data-freshness.md)
    - [UI Components](development/ui-components.md)
    - [Type System](development/type-system.md)
    - [Database](development/database.md)

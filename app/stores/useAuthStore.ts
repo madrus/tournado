@@ -10,6 +10,7 @@ type StoreState = {
 
 type Actions = {
   setAuth: (authenticated: boolean, username: string) => void
+  resetStoreState: () => void
 }
 
 const storeName = 'AuthStore'
@@ -38,6 +39,9 @@ export const useAuthStore = create<StoreState & Actions>()(
     persist(
       set => ({
         ...initialStoreState,
+        resetStoreState: () => {
+          set(initialStoreState, false, 'resetStoreState')
+        },
         setAuth: (authenticated, username) =>
           set({ authenticated, username }, false, 'setAuth'),
       }),

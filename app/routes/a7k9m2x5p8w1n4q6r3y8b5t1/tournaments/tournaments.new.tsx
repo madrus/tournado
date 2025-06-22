@@ -137,7 +137,7 @@ export async function action({ request }: ActionArgs): Promise<Response | Action
   }
 
   try {
-    await createTournament({
+    const tournament = await createTournament({
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),
@@ -146,7 +146,8 @@ export async function action({ request }: ActionArgs): Promise<Response | Action
       categories,
     })
 
-    return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+    // Redirect to the edit page for the new tournament
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}`)
   } catch (_error) {
     return {
       errors: {

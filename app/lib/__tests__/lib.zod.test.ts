@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import type { TFunction } from 'i18next'
+import { TEST_TRANSLATIONS } from 'test/helpers/constants'
 
-import { TEST_TRANSLATIONS } from '../lib.constants'
 import {
   type CreateTeamData,
   type EditTeamData,

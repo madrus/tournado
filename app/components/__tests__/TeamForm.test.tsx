@@ -5,7 +5,8 @@ import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { TEST_TRANSLATIONS } from '~/lib/lib.constants'
+import { TEST_TRANSLATIONS } from 'test/helpers/constants'
+
 import type {
   FormMode,
   FormVariant,

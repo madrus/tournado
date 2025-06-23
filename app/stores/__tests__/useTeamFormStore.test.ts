@@ -125,7 +125,6 @@ describe('useTeamFormStore', () => {
       state().setFormField('tournamentId', 'tournament1')
       state().setFormField('privacyAgreement', true)
 
-      // Test getFieldValue helper - since this was removed, we'll access directly
       expect(state().formFields.clubName).toBe('Test Club')
       expect(state().formFields.tournamentId).toBe('tournament1')
       expect(state().formFields.privacyAgreement).toBe(true)

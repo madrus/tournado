@@ -129,3 +129,48 @@ docker run -p 3000:8080 tournado:test
 4. Check the database: `npx prisma db pull`
 5. Check schema: `sqlite3 prisma/data.db ".schema"`
 6. If the database is not in the desired state, we can reset it: `npx prisma migrate reset --force`
+
+## CI/CD Slack Notifications
+
+This project uses a GitHub Actions workflow to send notifications to Slack about CI/CD events such as build results, workflow successes, and failures.
+
+### How it works
+
+- The workflow is defined in `.github/workflows/slack.yml`.
+- It triggers on every push to the `main` and `dev` branches.
+- After each workflow run, a message is sent to a designated Slack channel using an incoming webhook.
+- The message includes:
+   - The build result (success or failure)
+   - The branch name
+   - The GitHub actor who triggered the workflow
+   - The commit message
+   - Direct links to the commit and the workflow run
+
+### Example Slack Message
+
+```
+*GitHub Action build result*: success on branch dev by alice
+https://github.com/your-org/your-repo/commit/abc123
+
+GitHub Action build result: success on branch `dev`
+Triggered by: alice
+Commit message: Update dependencies
+View Commit | View Workflow Run
+```
+
+### How to configure
+
+1. **Create a Slack Incoming Webhook**
+   - Go to your Slack workspace settings and add a new [Incoming Webhook](https://api.slack.com/messaging/webhooks).
+   - Choose the channel where you want to receive notifications.
+   - Copy the generated webhook URL.
+2. **Add the webhook to GitHub**
+   - Go to your repository's **Settings > Secrets and variables > Actions**.
+   - Add a new secret named `SLACK_WEBHOOK_URL` and paste the webhook URL.
+3. **(Optional) Customize the workflow**
+   - Edit `.github/workflows/slack.yml` to change the message format or notification conditions as needed.
+
+### Notes
+
+- Only the webhook method is used for notifications (no bot user required).
+- If you need more advanced Slack features (threads, message updates, etc.), you can add a bot user and update the workflow accordingly.

@@ -1,7 +1,12 @@
 import type { TournamentData } from '~/lib/lib.types'
-import type { FormFields } from '~/stores/helpers/teamFormTypes'
 
-import { TEAM_PANELS_FIELD_MAP } from './teamConstants'
+import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './teamFormConstants'
+import type {
+  FormFieldName,
+  FormFields,
+  StoreState,
+  ValidationState,
+} from './teamFormTypes'
 
 /**
  * Checks if the specified panel is complete and valid.
@@ -179,3 +184,24 @@ export const getPanelNumberForField = (fieldName: keyof FormFields): number =>
       (fields as readonly (keyof FormFields)[]).includes(fieldName)
     )?.[0] ?? 0
   )
+
+// Helper to determine if a field should be validated
+export const shouldValidateField = (
+  fieldName: FormFieldName,
+  validation: ValidationState
+): boolean =>
+  validation.blurredFields[fieldName] ||
+  validation.forceShowAllErrors ||
+  validation.submitAttempted
+
+// Helper to reset state while preserving specified keys
+export function resetStatePreserving<T extends keyof StoreState>(
+  preserveKeys: T[],
+  get: () => StoreState
+): StoreState {
+  const preserved: Partial<StoreState> = {}
+  for (const key of preserveKeys) {
+    preserved[key] = get()[key]
+  }
+  return { ...initialStoreState, ...preserved } as StoreState
+}

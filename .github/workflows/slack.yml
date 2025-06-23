@@ -1,0 +1,37 @@
+name: Slack Notification
+on:
+  push:
+    branches: [main, dev]
+jobs:
+  slack-notifications:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Send message to Slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: "C092LU1LN92"
+          payload: |
+            {
+              "text": "GitHub Action failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Production deployment check failed* :fire_engine:\n High error rate detected after deployment!"
+                  }
+                }
+              ]
+            }
+      - name: Post a message in a channel
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "*GitHub Action build result*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"

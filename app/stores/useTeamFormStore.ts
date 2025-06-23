@@ -8,49 +8,32 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
-import { TEAM_PANELS_FIELD_MAP } from '~/lib/lib.constants'
-import type { FormFields, TeamFormData, TournamentData } from '~/lib/lib.types'
+import { isBrowser } from '~/lib/lib.helpers'
+import type { TeamFormData, TournamentData } from '~/lib/lib.types'
+import {
+  computeAvailableOptions,
+  getDependentFieldResets,
+  getPanelNumberForField,
+  isFormDirty,
+  isPanelEnabled,
+  isPanelValid,
+  mapFlexibleToFormData,
+  mergeErrors,
+} from '~/stores/helpers/teamHelpers'
 import { validateEntireForm, validateSingleField } from '~/utils/form-validation'
 
-// Flexible type that can accept data from various sources (forms, APIs, etc.)
-// This is more lenient than the strict TeamFormData type used for validation
-type FlexibleTeamFormData = {
-  // External API field names
-  tournamentId?: string
-  division?: string
-  category?: string
-  // Other fields (same names in both)
-  clubName?: string
-  teamName?: string // More flexible than the strict TeamName type
-  teamLeaderName?: string
-  teamLeaderPhone?: string
-  teamLeaderEmail?: string // More flexible than the strict Email type
-  privacyAgreement?: boolean
-}
-
-// Validation states grouped by purpose
-type ValidationState = {
-  errors: Record<string, string>
-  displayErrors: Record<string, string>
-  blurredFields: Record<string, boolean>
-  serverErrors: Record<string, string>
-  submitAttempted: boolean
-  forceShowAllErrors: boolean
-}
-
-// Form metadata grouped
-type FormMeta = {
-  mode: 'create' | 'edit'
-  isSubmitting: boolean
-  isValid: boolean
-}
-
-// Available options grouped
-type AvailableOptions = {
-  tournaments: TournamentData[]
-  divisions: string[]
-  categories: string[]
-}
+import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamConstants'
+import type {
+  AvailableOptions,
+  AvailableOptionsFieldName,
+  FlexibleTeamFormData,
+  FormFieldName,
+  FormFields,
+  FormMeta,
+  FormMetaFieldName,
+  ValidationFieldName,
+  ValidationState,
+} from './helpers/teamFormTypes'
 
 type StoreState = {
   formFields: FormFields
@@ -59,12 +42,6 @@ type StoreState = {
   formMeta: FormMeta
   availableOptions: AvailableOptions
 }
-
-// Field names for type safety
-type FormFieldName = keyof FormFields
-type ValidationFieldName = keyof ValidationState
-type FormMetaFieldName = keyof FormMeta
-type AvailableOptionsFieldName = keyof AvailableOptions
 
 type Actions = {
   // Universal field setter using dynamic property names
@@ -116,50 +93,6 @@ type Actions = {
 
 const storeName = 'TeamFormStore'
 
-const initialFormFields: FormFields = {
-  tournamentId: '',
-  division: '',
-  category: '',
-  clubName: '',
-  teamName: '',
-  teamLeaderName: '',
-  teamLeaderPhone: '',
-  teamLeaderEmail: '',
-  privacyAgreement: false,
-}
-
-const initialValidationState: ValidationState = {
-  errors: {},
-  displayErrors: {},
-  blurredFields: {},
-  serverErrors: {},
-  submitAttempted: false,
-  forceShowAllErrors: false,
-}
-
-const initialFormMeta: FormMeta = {
-  mode: 'create',
-  isSubmitting: false,
-  isValid: false,
-}
-
-const initialAvailableOptions: AvailableOptions = {
-  tournaments: [],
-  divisions: [],
-  categories: [],
-}
-
-const initialStoreState: StoreState = {
-  formFields: initialFormFields,
-  oldFormFields: initialFormFields,
-  validation: initialValidationState,
-  formMeta: initialFormMeta,
-  availableOptions: initialAvailableOptions,
-}
-
-// Check if we're in a browser environment
-const isBrowser = typeof window !== 'undefined'
-
 // Server-side storage mock for when sessionStorage is not available
 const createServerSideStorage = () => ({
   getItem: () => null,
@@ -183,16 +116,14 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // ===== SETTERS =====
 
-          // Universal form field setter using dynamic property names
+          // Universal field setter using dynamic property names
           setFormField: (fieldName: FormFieldName, value: string | boolean) => {
             set(
               (state: StoreState) => {
                 const newFormFields = {
                   ...state.formFields,
                   [fieldName]: value,
-                  // Handle dependent field resets
-                  ...(fieldName === 'tournamentId' && { division: '', category: '' }),
-                  ...(fieldName === 'division' && { category: '' }),
+                  ...getDependentFieldResets(fieldName),
                 }
 
                 return {
@@ -285,41 +216,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Bulk form data setters
           setFormData: formData => {
-            // Map external field names to internal store field names
-            const mappedData: Partial<FormFields> = {}
-
-            // Map tournament field
-            if (formData.tournamentId !== undefined) {
-              mappedData.tournamentId = formData.tournamentId
-            }
-
-            // Map division field
-            if (formData.division !== undefined) {
-              mappedData.division = formData.division
-            }
-
-            // Map category field
-            if (formData.category !== undefined) {
-              mappedData.category = formData.category
-            }
-
-            // Direct mapping for other fields
-            if (formData.clubName !== undefined) mappedData.clubName = formData.clubName
-            if (formData.teamName !== undefined) mappedData.teamName = formData.teamName
-            if (formData.teamLeaderName !== undefined) {
-              mappedData.teamLeaderName = formData.teamLeaderName
-            }
-            if (formData.teamLeaderPhone !== undefined) {
-              mappedData.teamLeaderPhone = formData.teamLeaderPhone
-            }
-            if (formData.teamLeaderEmail !== undefined) {
-              mappedData.teamLeaderEmail = formData.teamLeaderEmail
-            }
-            if (formData.privacyAgreement !== undefined) {
-              mappedData.privacyAgreement = formData.privacyAgreement
-            }
-
-            // Set all form data at once, and capture the initial state
+            const mappedData = mapFlexibleToFormData(formData)
             set(
               state => {
                 const newFormFields = { ...state.formFields, ...mappedData }
@@ -332,14 +229,9 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               'setFormData'
             )
-
-            // Update available options if tournament was set
             if (mappedData.tournamentId !== undefined) {
               get().updateAvailableOptions()
             }
-
-            // Clear ALL validation state completely after everything is set
-            // This prevents validation errors from showing for valid pre-populated data
             set(
               state => ({
                 ...state,
@@ -363,7 +255,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               ...initialStoreState,
               // Keep available tournaments populated
               availableOptions: {
-                ...initialAvailableOptions,
+                ...initialStoreState.availableOptions,
                 tournaments: get().availableOptions.tournaments,
               },
             })
@@ -439,20 +331,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
             // Check if this blur event should enable the next panel
             // Find which panel this field belongs to
-            let currentPanel = 0
-            for (const panelNumber of Object.keys(
-              TEAM_PANELS_FIELD_MAP
-            ) as unknown as Array<keyof typeof TEAM_PANELS_FIELD_MAP>) {
-              const fields = TEAM_PANELS_FIELD_MAP[panelNumber]
-              if (
-                (fields as readonly (keyof FormFields)[]).includes(
-                  fieldName as keyof FormFields
-                )
-              ) {
-                currentPanel = panelNumber
-                break
-              }
-            }
+            const currentPanel = getPanelNumberForField(fieldName as keyof FormFields)
 
             // Check if all fields in this panel are now blurred and valid
             if (currentPanel > 0) {
@@ -505,11 +384,10 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // Helper to merge server errors with validation errors
           mergeDisplayErrors: () => {
             const state = get()
-            // Server errors take priority over validation errors
-            const mergedErrors = {
-              ...state.validation.displayErrors,
-              ...state.validation.serverErrors,
-            }
+            const mergedErrors = mergeErrors(
+              state.validation.displayErrors,
+              state.validation.serverErrors
+            )
             set(
               currentState => ({
                 ...currentState,
@@ -566,18 +444,17 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const { availableOptions, formFields } = get()
             const { tournaments } = availableOptions
             const { tournamentId } = formFields
-
-            const selectedTournament = tournaments.find(t => t.id === tournamentId)
-            const newDivisions = selectedTournament?.divisions || []
-            const newCategories = selectedTournament?.categories || []
-
+            const { divisions, categories } = computeAvailableOptions(
+              tournaments,
+              tournamentId
+            )
             set(
               currentState => ({
                 ...currentState,
                 availableOptions: {
                   ...currentState.availableOptions,
-                  divisions: newDivisions,
-                  categories: newCategories,
+                  divisions,
+                  categories,
                 },
               }),
               false,
@@ -625,60 +502,20 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // --- Panel Validity Selectors ---
           isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
             const { formFields, validation, formMeta } = get()
-            const { displayErrors } = validation
-            const { mode } = formMeta
-            const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
-            if (!panelFields) return false
-
-            // HYBRID VALIDATION APPROACH:
-            // Panel enabling: Based on field values and validity (no blur requirement)
-            // Error display: Still requires blur (handled in validateField function)
-            // This gives users immediate feedback when panels become available
-            // while maintaining good UX for error messaging
-
-            // In edit mode, only check if field values are present (ignore display errors)
-            // since the data comes from the database and should be valid
-            if (mode === 'edit') {
-              return panelFields.every(field => {
-                const fieldValue = formFields[field as keyof typeof formFields]
-                return !!fieldValue
-              })
-            }
-
-            // In create mode, check both field values and display errors
-            return panelFields.every(field => {
-              const fieldValue = formFields[field as keyof typeof formFields]
-              return !!fieldValue && !displayErrors[field]
-            })
+            return isPanelValid(
+              panelNumber,
+              formFields,
+              validation.displayErrors,
+              formMeta.mode
+            )
           },
 
           // Panel enablement - determines if a panel should be interactive
           isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
             const { formMeta } = get()
-            const { mode } = formMeta
-
-            // In edit mode, all panels are enabled since data is pre-populated
-            if (mode === 'edit') {
-              return true
-            }
-
-            // In create mode, use progressive enabling logic
-            switch (panelNumber) {
-              case 1:
-                // Panel 1 is always enabled (first panel)
-                return true
-              case 2:
-                // Panel 2 enables when panel 1 is complete
-                return get().isPanelValid(1)
-              case 3:
-                // Panel 3 enables when panel 2 is complete
-                return get().isPanelValid(2)
-              case 4:
-                // Panel 4 enables when panel 3 is complete
-                return get().isPanelValid(3)
-              default:
-                return false
-            }
+            return isPanelEnabled(panelNumber, formMeta.mode, panel =>
+              get().isPanelValid(panel)
+            )
           },
 
           // Form submission readiness - determines if Save button should be enabled
@@ -711,7 +548,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // Form state helpers - determines if form has been modified
           isDirty: (): boolean => {
             const { formFields, oldFormFields } = get()
-            return JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
+            return isFormDirty(formFields, oldFormFields)
           },
 
           // Individual field validation - called reactively when field is touched
@@ -819,7 +656,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
                     teamLeaderEmail: state.formFields.teamLeaderEmail,
                     // Explicitly exclude privacyAgreement from persistence
                   },
-                  initialFormFields: state.oldFormFields, // Persist initial state
+                  oldFormFields: state.oldFormFields, // Persist initial state
                   formMeta: { mode: state.formMeta.mode },
                 }
               : {},

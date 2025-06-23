@@ -24,6 +24,9 @@ import type {
   TeamName,
 } from './lib.types'
 
+// Check if we're in a browser environment
+export const isBrowser = typeof window !== 'undefined'
+
 /**
  * Gets the localized label for a division
  * @param division - The division enum value

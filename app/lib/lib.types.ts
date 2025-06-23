@@ -129,25 +129,6 @@ export type TeamFormData = {
   privacyAgreement: boolean
 }
 
-/**
- * Grouped form fields for store state management
- */
-export type FormFields = {
-  // Tournament selection
-  tournamentId: string
-  division: string
-  category: string
-  // Team information
-  clubName: string
-  teamName: string
-  // Team leader information
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  // Agreement
-  privacyAgreement: boolean
-}
-
 export type TeamLeaderFull = {
   id: string
   email: string

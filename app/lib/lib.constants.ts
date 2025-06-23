@@ -371,3 +371,11 @@ export const TEST_TRANSLATIONS = {
   'teams.form.errors.privacyAgreementRequired': 'You must agree to the privacy policy',
   'teams.form.errors.fieldRequired': 'This field is required',
 } as const
+
+// Pure constant - no side effects
+export const TEAM_PANELS_FIELD_MAP = {
+  1: ['tournamentId', 'division', 'category'],
+  2: ['clubName', 'teamName'],
+  3: ['teamLeaderName', 'teamLeaderPhone', 'teamLeaderEmail'],
+  4: ['privacyAgreement'],
+} as const

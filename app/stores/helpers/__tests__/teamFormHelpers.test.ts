@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { TEAM_PANELS_FIELD_MAP } from '../teamConstants'
+import { TEAM_PANELS_FIELD_MAP } from '../teamFormConstants'
 import {
   computeAvailableOptions,
   getDependentFieldResets,
@@ -11,19 +11,10 @@ import {
   isPanelValid,
   mapFlexibleToFormData,
   mergeErrors,
-} from '../teamHelpers'
-
-type FormFields = {
-  tournamentId: string
-  division: string
-  category: string
-  clubName: string
-  teamName: string
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  privacyAgreement: boolean
-}
+  resetStatePreserving,
+  shouldValidateField,
+} from '../teamFormHelpers'
+import type { FormFields } from '../teamFormTypes'
 
 const mockFormFields: FormFields = {
   tournamentId: 't1',
@@ -35,6 +26,16 @@ const mockFormFields: FormFields = {
   teamLeaderPhone: '123',
   teamLeaderEmail: 'a@b.com',
   privacyAgreement: true,
+}
+
+const mockTournament: import('~/lib/lib.types').TournamentData = {
+  id: 't1',
+  name: 'Tournament 1',
+  location: 'Loc',
+  startDate: '2024-01-01',
+  endDate: null,
+  divisions: ['d1'],
+  categories: ['c1'],
 }
 
 describe('lib.store', () => {
@@ -129,5 +130,131 @@ describe('lib.store', () => {
   })
   it('getPanelNumberForField returns 0 for unknown field', () => {
     expect(getPanelNumberForField('notAField' as keyof FormFields)).toBe(0)
+  })
+})
+
+describe('shouldValidateField', () => {
+  const validation = {
+    errors: {},
+    displayErrors: {},
+    blurredFields: { clubName: false, teamName: false },
+    serverErrors: {},
+    submitAttempted: false,
+    forceShowAllErrors: false,
+  }
+  it('returns true if field is blurred', () => {
+    expect(
+      shouldValidateField('clubName', {
+        ...validation,
+        blurredFields: { clubName: true },
+      })
+    ).toBe(true)
+  })
+  it('returns true if forceShowAllErrors is true', () => {
+    expect(
+      shouldValidateField('clubName', { ...validation, forceShowAllErrors: true })
+    ).toBe(true)
+  })
+  it('returns true if submitAttempted is true', () => {
+    expect(
+      shouldValidateField('clubName', { ...validation, submitAttempted: true })
+    ).toBe(true)
+  })
+  it('returns false if none are true', () => {
+    expect(shouldValidateField('clubName', validation)).toBe(false)
+  })
+})
+
+describe('resetStatePreserving', () => {
+  const get = () => ({
+    formFields: {
+      tournamentId: 't1',
+      division: 'd1',
+      category: 'c1',
+      clubName: 'Club',
+      teamName: 'Team',
+      teamLeaderName: 'Leader',
+      teamLeaderPhone: '123',
+      teamLeaderEmail: 'a@b.com',
+      privacyAgreement: true,
+    },
+    oldFormFields: {
+      tournamentId: 't2',
+      division: 'd2',
+      category: 'c2',
+      clubName: 'Other',
+      teamName: 'OtherTeam',
+      teamLeaderName: 'OtherLeader',
+      teamLeaderPhone: '456',
+      teamLeaderEmail: 'c@d.com',
+      privacyAgreement: false,
+    },
+    validation: {
+      errors: {},
+      displayErrors: {},
+      blurredFields: {},
+      serverErrors: {},
+      submitAttempted: false,
+      forceShowAllErrors: false,
+    },
+    formMeta: { mode: 'create' as const, isSubmitting: false, isValid: false },
+    availableOptions: { tournaments: [mockTournament], divisions: [], categories: [] },
+  })
+  it('preserves specified keys', () => {
+    const result = resetStatePreserving(['availableOptions'], get)
+    expect(result.availableOptions).toEqual({
+      tournaments: [mockTournament],
+      divisions: [],
+      categories: [],
+    })
+    expect(result.formFields).toEqual({
+      tournamentId: '',
+      division: '',
+      category: '',
+      clubName: '',
+      teamName: '',
+      teamLeaderName: '',
+      teamLeaderPhone: '',
+      teamLeaderEmail: '',
+      privacyAgreement: false,
+    })
+  })
+  it('preserves multiple keys', () => {
+    const result = resetStatePreserving(['availableOptions', 'formFields'], get)
+    expect(result.availableOptions).toEqual({
+      tournaments: [mockTournament],
+      divisions: [],
+      categories: [],
+    })
+    expect(result.formFields).toEqual({
+      tournamentId: 't1',
+      division: 'd1',
+      category: 'c1',
+      clubName: 'Club',
+      teamName: 'Team',
+      teamLeaderName: 'Leader',
+      teamLeaderPhone: '123',
+      teamLeaderEmail: 'a@b.com',
+      privacyAgreement: true,
+    })
+  })
+  it('returns initial state for other keys', () => {
+    const result = resetStatePreserving([], get)
+    expect(result.formFields).toEqual({
+      tournamentId: '',
+      division: '',
+      category: '',
+      clubName: '',
+      teamName: '',
+      teamLeaderName: '',
+      teamLeaderPhone: '',
+      teamLeaderEmail: '',
+      privacyAgreement: false,
+    })
+    expect(result.availableOptions).toEqual({
+      tournaments: [],
+      divisions: [],
+      categories: [],
+    })
   })
 })

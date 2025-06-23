@@ -4,34 +4,23 @@ on:
     branches: [main, dev]
 jobs:
   slack-notifications:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
-      - name: Send message to Slack
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          channel-id: "C092LU1LN92"
-          payload: |
-            {
-              "text": "GitHub Action failed",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Production deployment check failed* :fire_engine:\n High error rate detected after deployment!"
-                  }
-                }
-              ]
-            }
       - name: Post a message in a channel
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
-            text: "*GitHub Action build result*: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
-            blocks:
-              - type: "section"
-                text:
-                  type: "mrkdwn"
-                  text: "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            {
+              "text": "*GitHub Action build result*: ${{ job.status }} on branch ${{ github.ref_name }} by ${{ github.actor }}\n${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "GitHub Action build result: ${{ job.status }} on branch `${{ github.ref_name }}`\n*Triggered by:* ${{ github.actor }}\n*Commit message:* ${{ github.event.head_commit.message }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|View Commit> | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>"
+                  }
+                }
+              ]
+            }

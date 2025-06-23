@@ -57,13 +57,13 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "*Deployment successful*: `dev` deployed by `${{ github.actor }}`\nApp: `${{ steps.app_name.outputs.value }}`\nCommit: ${{ github.event.workflow_run.head_sha }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|View Commit>",
+              "text": "*Deployment successful*: `dev` deployed by `${{ github.event.workflow_run.actor.login }}`\nApp: `${{ steps.app_name.outputs.value }}-staging`\nCommit: ${{ github.event.workflow_run.head_sha }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|View Commit>",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Deployment successful*: `dev` deployed by `${{ github.actor }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>"
+                    "text": "*Deployment successful*: `dev` deployed by `${{ github.event.workflow_run.actor.login }}`\n*App:* `${{ steps.app_name.outputs.value }}-staging`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Deployment Run>"
                   }
                 }
               ]
@@ -106,13 +106,13 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "*Deployment successful*: `main` deployed by `${{ github.actor }}`\nApp: `${{ steps.app_name.outputs.value }}`\nCommit: ${{ github.event.workflow_run.head_sha }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|View Commit>",
+              "text": "*Deployment successful*: `main` deployed by `${{ github.event.workflow_run.actor.login }}`\nApp: `${{ steps.app_name.outputs.value }}`\nCommit: ${{ github.event.workflow_run.head_sha }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|View Commit>",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Deployment successful*: `main` deployed by `${{ github.actor }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>"
+                    "text": "*Deployment successful*: `main` deployed by `${{ github.event.workflow_run.actor.login }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Deployment Run>"
                   }
                 }
               ]

@@ -8,6 +8,7 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
+import { TEAM_PANELS_FIELD_MAP } from '~/lib/lib.constants'
 import type { FormFields, TeamFormData, TournamentData } from '~/lib/lib.types'
 import { validateEntireForm, validateSingleField } from '~/utils/form-validation'
 
@@ -53,7 +54,7 @@ type AvailableOptions = {
 
 type StoreState = {
   formFields: FormFields
-  initialFormFields: FormFields
+  oldFormFields: FormFields
   validation: ValidationState
   formMeta: FormMeta
   availableOptions: AvailableOptions
@@ -150,7 +151,7 @@ const initialAvailableOptions: AvailableOptions = {
 
 const initialStoreState: StoreState = {
   formFields: initialFormFields,
-  initialFormFields,
+  oldFormFields: initialFormFields,
   validation: initialValidationState,
   formMeta: initialFormMeta,
   availableOptions: initialAvailableOptions,
@@ -325,7 +326,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
                 return {
                   ...state,
                   formFields: newFormFields,
-                  initialFormFields: newFormFields,
+                  oldFormFields: newFormFields,
                 }
               },
               false,
@@ -437,19 +438,18 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
 
             // Check if this blur event should enable the next panel
-            // Determine which panel this field belongs to
-            const panelFieldMap = {
-              1: ['tournamentId', 'division', 'category'],
-              2: ['clubName', 'teamName'],
-              3: ['teamLeaderName', 'teamLeaderPhone', 'teamLeaderEmail'],
-              4: ['privacyAgreement'],
-            }
-
             // Find which panel this field belongs to
             let currentPanel = 0
-            for (const [panel, fields] of Object.entries(panelFieldMap)) {
-              if (fields.includes(fieldName)) {
-                currentPanel = parseInt(panel, 10)
+            for (const panelNumber of Object.keys(
+              TEAM_PANELS_FIELD_MAP
+            ) as unknown as Array<keyof typeof TEAM_PANELS_FIELD_MAP>) {
+              const fields = TEAM_PANELS_FIELD_MAP[panelNumber]
+              if (
+                (fields as readonly (keyof FormFields)[]).includes(
+                  fieldName as keyof FormFields
+                )
+              ) {
+                currentPanel = panelNumber
                 break
               }
             }
@@ -457,7 +457,9 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             // Check if all fields in this panel are now blurred and valid
             if (currentPanel > 0) {
               const panelFields =
-                panelFieldMap[currentPanel as keyof typeof panelFieldMap]
+                TEAM_PANELS_FIELD_MAP[
+                  currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP
+                ]
               const allFieldsBlurred = panelFields.every(field => blurredFields[field])
               const allFieldsValid = panelFields.every(field => {
                 const fieldValue = formFields[field as keyof typeof formFields]
@@ -625,17 +627,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const { formFields, validation, formMeta } = get()
             const { displayErrors } = validation
             const { mode } = formMeta
-
-            // Panel field mapping
-            const panelFieldMap = {
-              1: ['tournamentId', 'division', 'category'],
-              2: ['clubName', 'teamName'],
-              3: ['teamLeaderName', 'teamLeaderPhone', 'teamLeaderEmail'],
-              4: ['privacyAgreement'],
-            }
-
-            // Check if the specified panel itself is complete
-            const panelFields = panelFieldMap[panelNumber]
+            const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
             if (!panelFields) return false
 
             // HYBRID VALIDATION APPROACH:
@@ -718,8 +710,8 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // Form state helpers - determines if form has been modified
           isDirty: (): boolean => {
-            const { formFields, initialFormFields } = get()
-            return JSON.stringify(formFields) !== JSON.stringify(initialFormFields)
+            const { formFields, oldFormFields } = get()
+            return JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
           },
 
           // Individual field validation - called reactively when field is touched
@@ -827,7 +819,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
                     teamLeaderEmail: state.formFields.teamLeaderEmail,
                     // Explicitly exclude privacyAgreement from persistence
                   },
-                  initialFormFields: state.initialFormFields, // Persist initial state
+                  initialFormFields: state.oldFormFields, // Persist initial state
                   formMeta: { mode: state.formMeta.mode },
                 }
               : {},

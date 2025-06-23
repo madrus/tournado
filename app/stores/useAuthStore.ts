@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
+import { isBrowser } from '~/lib/lib.helpers'
+
 type StoreState = {
   authenticated: boolean
   username: string
@@ -19,9 +21,6 @@ const initialStoreState: StoreState = {
   authenticated: false,
   username: '',
 }
-
-// Check if we're in a browser environment
-const isBrowser = typeof window !== 'undefined'
 
 // Server-side storage mock for when sessionStorage is not available
 const createServerSideStorage = () => ({

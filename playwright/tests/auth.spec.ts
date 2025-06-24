@@ -74,10 +74,21 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
+    // Ensure form is ready and fields are properly filled
+    await expect(page.locator('#email')).toHaveValue(signinForm.email)
+    await expect(page.locator('#password')).toHaveValue(signinForm.password)
+
+    // Wait for the login button to be enabled and ready
+    const loginButton = page.getByRole('button', { name: 'Inloggen' })
+    await expect(loginButton).toBeEnabled()
+
+    // Wait for any loading states to complete before submission
+    await page.waitForLoadState('networkidle')
+
     // Click sign in button using Dutch text "Inloggen"
     await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }),
-      page.getByRole('button', { name: 'Inloggen' }).click(),
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      loginButton.click(),
     ])
 
     // Double-check we're on the correct page
@@ -125,13 +136,24 @@ test.describe('Authentication', () => {
     await page.locator('#email').fill(testUser.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
 
-    // Wait for the form submission and navigation to complete
+    // Ensure form is ready and fields are properly filled
+    await expect(page.locator('#email')).toHaveValue(testUser.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+    // Wait for the login button to be enabled and ready
+    const loginButton = page.getByRole('button', { name: 'Inloggen' })
+    await expect(loginButton).toBeEnabled()
+
+    // Wait for any loading states to complete before submission
+    await page.waitForLoadState('networkidle')
+
+    // Click the login button and wait for navigation to complete
     await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }),
-      page.getByRole('button', { name: 'Inloggen' }).click(),
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      loginButton.click(),
     ])
 
-    // Should be redirected to Admin Panel (all users go there now)
+    // Double-check we're on the correct page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Wait for the page to fully load and auth store to hydrate

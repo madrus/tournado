@@ -87,22 +87,28 @@ export function TournamentForm({
 
   // Helper function to translate error keys to user-readable messages
   // Show errors for:
-  // 1. Fields that have been blurred - for individual field validation
-  // 2. All fields when forceShowAllErrors is true - for form submission validation
-  // 3. All fields when submitAttempted is true - for form submission validation
+  // 1. Server errors (from props) - always shown with priority
+  // 2. Fields that have been blurred - for individual field validation
+  // 3. All fields when forceShowAllErrors is true - for form submission validation
+  // 4. All fields when submitAttempted is true - for form submission validation
   // Don't show errors for disabled fields
   const getTranslatedError = useCallback(
     (fieldName: string, isDisabled = false): string | undefined => {
       // Don't show errors for disabled fields
       if (isDisabled) return undefined
 
-      // Show errors if field has been blurred OR if we're forcing all errors OR if form was submitted
+      // Check for server errors first (these have priority and are always shown)
+      if (errors[fieldName]) {
+        return errors[fieldName]
+      }
+
+      // Show client-side errors if field has been blurred OR if we're forcing all errors OR if form was submitted
       const shouldShowError =
         blurredFields[fieldName] || forceShowAllErrors || submitAttempted
 
       if (!shouldShowError) return undefined
 
-      const errorKey = displayErrors[fieldName] || errors[fieldName]
+      const errorKey = displayErrors[fieldName]
       if (!errorKey) return undefined
 
       // If the error is already a plain message (from server), return as-is
@@ -111,7 +117,7 @@ export function TournamentForm({
       // Otherwise, translate the key
       return t(errorKey)
     },
-    [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, errors, t]
+    [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t, errors]
   )
 
   // Initialize mode in store
@@ -121,7 +127,8 @@ export function TournamentForm({
 
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
-    if (formData) {
+    // Only set form data if we have meaningful formData content (not just empty object)
+    if (formData && Object.keys(formData).length > 0) {
       setFormData({
         name: formData.name || '',
         location: formData.location || '',
@@ -131,13 +138,13 @@ export function TournamentForm({
         categories: formData.categories || [],
       })
     }
-  }, [formData, setFormData])
+  }, [formData]) // Removed setFormData from dependencies - Zustand functions are stable
 
   // Initialize available options in store
   useEffect(() => {
     setAvailableOptionsField('divisions', divisions)
     setAvailableOptionsField('categories', categories)
-  }, [divisions, categories, setAvailableOptionsField])
+  }, [divisions, categories])
 
   // Focus management
   useEffect(() => {
@@ -348,8 +355,8 @@ export function TournamentForm({
                 name='startDate'
                 label={t('tournaments.form.startDate')}
                 defaultValue={startDate}
-                onChange={e => {
-                  setFormField('startDate', e.target.value)
+                onChange={event => {
+                  setFormField('startDate', event.target.value)
                   validateFieldOnBlur('startDate')
                 }}
                 error={getTranslatedError('startDate', !isPanelEnabled(2))}
@@ -363,8 +370,8 @@ export function TournamentForm({
                 name='endDate'
                 label={t('tournaments.form.endDate')}
                 defaultValue={endDate}
-                onChange={e => {
-                  setFormField('endDate', e.target.value)
+                onChange={event => {
+                  setFormField('endDate', event.target.value)
                   validateFieldOnBlur('endDate')
                 }}
                 error={getTranslatedError('endDate', !isPanelEnabled(2))}

@@ -1,5 +1,9 @@
 import type { TeamFormData } from '~/lib/lib.types'
-import { validateTeamData } from '~/lib/lib.zod'
+import {
+  type TournamentFormData,
+  validateTeamData,
+  validateTournamentData,
+} from '~/lib/lib.zod'
 
 // Map store field names to Zod schema field names
 export const mapStoreFieldToZodField = (storeFieldName: string): string =>
@@ -56,7 +60,7 @@ export const getFieldErrorTranslationKey = (
 }
 
 // Validate a single field and return translation key if any
-export const validateSingleField = (
+export const validateSingleTeamField = (
   fieldName: string,
   formData: TeamFormData,
   mode: 'create' | 'edit'
@@ -93,7 +97,7 @@ export const validateSingleField = (
 }
 
 // Validate entire form and return all translation keys
-export const validateEntireForm = (
+export const validateEntireTeamForm = (
   formData: TeamFormData,
   mode: 'create' | 'edit'
 ): Record<string, string> => {
@@ -111,6 +115,97 @@ export const validateEntireForm = (
         if (zodFieldName) {
           // Store field names are now the same as Zod field names
           errors[zodFieldName] = getFieldErrorTranslationKey(zodFieldName, error)
+        }
+      })
+    }
+  } catch (_error: unknown) {
+    // Validation error occurred, returning empty errors object
+  }
+
+  return errors
+}
+
+// ===== TOURNAMENT VALIDATION UTILITIES =====
+
+// Map tournament field names to translation keys
+export const getTournamentFieldErrorTranslationKey = (
+  fieldName: string,
+  zodIssue?: { code?: string }
+): string => {
+  // Handle string too long errors
+  if (zodIssue?.code === 'too_big') {
+    if (fieldName === 'name') {
+      return 'tournaments.form.errors.nameTooLong'
+    }
+    if (fieldName === 'location') {
+      return 'tournaments.form.errors.locationTooLong'
+    }
+  }
+
+  // Default required field translation keys
+  const errorKeyMap: Record<string, string> = {
+    name: 'tournaments.form.errors.nameRequired',
+    location: 'tournaments.form.errors.locationRequired',
+    startDate: 'tournaments.form.errors.startDateRequired',
+    endDate: 'tournaments.form.errors.endDateRequired',
+    divisions: 'tournaments.form.errors.divisionsRequired',
+    categories: 'tournaments.form.errors.categoriesRequired',
+  }
+  return errorKeyMap[fieldName] || 'tournaments.form.errors.fieldRequired'
+}
+
+// Validate a single tournament field and return translation key if any
+export const validateSingleTournamentField = (
+  fieldName: string,
+  formData: TournamentFormData,
+  mode: 'create' | 'edit'
+): string | null => {
+  try {
+    const result = validateTournamentData(formData, mode)
+
+    if (!result.success) {
+      // Find the error for this specific field
+      const fieldError = result.error.errors.find(error => {
+        const path = error.path[0]
+        return path === fieldName
+      })
+
+      if (fieldError) {
+        return getTournamentFieldErrorTranslationKey(fieldName, fieldError)
+      }
+    }
+
+    return null
+  } catch (_error: unknown) {
+    // Fallback validation for basic empty field check
+    const fieldValue = formData[fieldName as keyof TournamentFormData]
+    if (Array.isArray(fieldValue)) {
+      return fieldValue.length === 0
+        ? getTournamentFieldErrorTranslationKey(fieldName)
+        : null
+    }
+    if (!fieldValue || (typeof fieldValue === 'string' && fieldValue.trim() === '')) {
+      return getTournamentFieldErrorTranslationKey(fieldName)
+    }
+    return null
+  }
+}
+
+// Validate entire tournament form and return all translation keys
+export const validateEntireTournamentForm = (
+  formData: TournamentFormData,
+  mode: 'create' | 'edit'
+): Record<string, string> => {
+  const errors: Record<string, string> = {}
+
+  try {
+    const result = validateTournamentData(formData, mode)
+
+    if (!result.success) {
+      result.error.errors.forEach(error => {
+        const fieldName = error.path[0] as string
+        if (fieldName) {
+          errors[fieldName] = getTournamentFieldErrorTranslationKey(fieldName, error)
         }
       })
     }

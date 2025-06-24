@@ -228,7 +228,18 @@
       "selectCategories": "حدد الفئات العمرية التي ستشارك",
       "selected": "محدد",
       "tournamentRegistration": "تسجيل البطولة",
-      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة"
+      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة",
+      "errors": {
+        "nameRequired": "اسم البطولة مطلوب",
+        "nameTooLong": "يجب أن يكون اسم البطولة أقل من 100 حرف",
+        "locationRequired": "الموقع مطلوب",
+        "locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",
+        "startDateRequired": "تاريخ البداية مطلوب",
+        "endDateRequired": "تاريخ النهاية مطلوب",
+        "divisionsRequired": "مطلوب درجة واحدة على الأقل",
+        "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
+        "fieldRequired": "هذا الحقل مطلوب"
+      }
     }
   },
   "divisions": {

@@ -114,13 +114,16 @@ export function mapFlexibleToFormData(
 
   if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
   if (flexibleData.location !== undefined) mappedData.location = flexibleData.location
-  if (flexibleData.startDate !== undefined)
+  if (flexibleData.startDate !== undefined) {
     mappedData.startDate = flexibleData.startDate
+  }
   if (flexibleData.endDate !== undefined) mappedData.endDate = flexibleData.endDate
-  if (flexibleData.divisions !== undefined)
+  if (flexibleData.divisions !== undefined) {
     mappedData.divisions = flexibleData.divisions
-  if (flexibleData.categories !== undefined)
+  }
+  if (flexibleData.categories !== undefined) {
     mappedData.categories = flexibleData.categories
+  }
 
   return mappedData
 }
@@ -161,4 +164,34 @@ export function resetStatePreserving<T extends keyof StoreState>(
   })
 
   return preservedState
+}
+
+/**
+ * Checks if all fields in a panel are blurred and valid.
+ * Used to determine if a panel is complete for progressive form navigation.
+ */
+export function isPanelComplete(
+  panelNumber: 1 | 2 | 3 | 4,
+  formFields: FormFields,
+  blurredFields: Record<string, boolean>,
+  displayErrors: Record<string, string>
+): boolean {
+  const panelFields = TOURNAMENT_PANELS_FIELD_MAP[panelNumber]
+  if (!panelFields) return false
+
+  const allFieldsBlurred = panelFields.every(field => blurredFields[field])
+  const allFieldsValid = panelFields.every(field => {
+    const value = formFields[field as keyof FormFields]
+    let hasValue = false
+
+    if (Array.isArray(value)) {
+      hasValue = value.length > 0
+    } else {
+      hasValue = !!value
+    }
+
+    return hasValue && !displayErrors[field]
+  })
+
+  return allFieldsBlurred && allFieldsValid
 }

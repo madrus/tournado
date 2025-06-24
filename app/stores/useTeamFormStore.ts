@@ -10,7 +10,10 @@ import {
 
 import { isBrowser } from '~/lib/lib.helpers'
 import type { TeamFormData, TournamentData } from '~/lib/lib.types'
-import { validateEntireForm, validateSingleField } from '~/utils/form-validation'
+import {
+  validateEntireTeamForm,
+  validateSingleTeamField,
+} from '~/utils/form-validation'
 
 import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamFormConstants'
 import {
@@ -207,7 +210,8 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             )
           },
 
-          // Bulk form data setters
+          // ===== CONVENIENCE METHODS =====
+
           setFormData: formData => {
             const mappedData = mapFlexibleToFormData(formData)
             set(
@@ -249,7 +253,6 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             useTeamFormStore.persist.clearStorage()
           },
 
-          // Blur tracking - reactive system
           setFieldBlurred: (fieldName, blurred = true) => {
             set(
               state => {
@@ -276,60 +279,29 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
 
-          // Validate field on blur - also marks field as blurred
-          validateFieldOnBlur: (fieldName: string) => {
-            const state = get()
-            const { formMeta, validation } = state
-            const { mode } = formMeta
-            // Mark field as blurred first (without triggering validation)
+          setFieldError: (fieldName, error) => {
             set(
-              currentState => {
-                const newBlurredFields = {
-                  ...currentState.validation.blurredFields,
-                  [fieldName]: true,
+              state => {
+                const newDisplayErrors = {
+                  ...state.validation.displayErrors,
+                  [fieldName]: error,
                 }
+                // Merge with server errors
+                const mergedErrors = mergeErrors(
+                  newDisplayErrors,
+                  state.validation.serverErrors
+                )
                 return {
-                  ...currentState,
+                  ...state,
                   validation: {
-                    ...currentState.validation,
-                    blurredFields: newBlurredFields,
+                    ...state.validation,
+                    displayErrors: mergedErrors,
                   },
                 }
               },
               false,
-              'validateFieldOnBlur/setBlurred'
+              'setFieldError'
             )
-            // Get current form data for validation
-            const formData = state.getFormData()
-            // Use the simplified validation function
-            const error = validateSingleField(fieldName, formData, mode)
-            if (error) {
-              state.setFieldError(fieldName as FormFieldName, error)
-            } else {
-              state.clearFieldError(fieldName as FormFieldName)
-            }
-            // Check if this blur event should enable the next panel
-            // Find which panel this field belongs to
-            const currentPanel = getPanelNumberForField(fieldName as keyof FormFields)
-            // Check if all fields in this panel are now blurred and valid
-            if (currentPanel > 0) {
-              const panelFields =
-                TEAM_PANELS_FIELD_MAP[
-                  currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP
-                ]
-              const allFieldsBlurred = panelFields.every(
-                field => validation.blurredFields[field]
-              )
-              const allFieldsValid = panelFields.every(field => {
-                const fieldValue =
-                  state.formFields[field as keyof typeof state.formFields]
-                return !!fieldValue && !validation.displayErrors[field]
-              })
-              if (allFieldsBlurred && allFieldsValid) {
-                // Panel is now complete - next panel will be enabled by isPanelValid
-                // No additional action needed - the UI will re-render automatically
-              }
-            }
           },
 
           clearFieldError: fieldName => {
@@ -357,184 +329,6 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               'clearFieldError'
             )
-          },
-
-          // Server errors setter (used by form submission)
-          setServerErrors: (errors: Record<string, string>) => {
-            get().setValidationField('serverErrors', errors)
-            // Merge server errors into display errors so they're visible immediately
-            const state = get()
-            const mergedErrors = mergeErrors(state.validation.displayErrors, errors)
-            set(
-              currentState => ({
-                ...currentState,
-                validation: {
-                  ...currentState.validation,
-                  displayErrors: mergedErrors,
-                },
-              }),
-              false,
-              'setServerErrors/mergeErrors'
-            )
-          },
-
-          // ===== GETTERS =====
-
-          // Get current form data as TeamFormData
-          getFormData: (): TeamFormData => {
-            const { formFields } = get()
-            const {
-              tournamentId,
-              clubName,
-              teamName,
-              division,
-              category,
-              teamLeaderName,
-              teamLeaderPhone,
-              teamLeaderEmail,
-              privacyAgreement,
-            } = formFields
-
-            return {
-              tournamentId,
-              clubName,
-              teamName: teamName as TeamFormData['teamName'],
-              division: division as TeamFormData['division'],
-              category,
-              teamLeaderName,
-              teamLeaderPhone,
-              teamLeaderEmail: teamLeaderEmail as TeamFormData['teamLeaderEmail'],
-              privacyAgreement,
-            }
-          },
-
-          // --- Panel Validity Selectors ---
-          isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
-            const { formFields, validation, formMeta } = get()
-            return isPanelValid(
-              panelNumber,
-              formFields,
-              validation.displayErrors,
-              formMeta.mode
-            )
-          },
-
-          // Panel enablement - determines if a panel should be interactive
-          isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
-            const { formMeta } = get()
-            return isPanelEnabled(panelNumber, formMeta.mode, panel =>
-              get().isPanelValid(panel)
-            )
-          },
-
-          // Form submission readiness - determines if Save button should be enabled
-          isFormReadyForSubmission: (): boolean => {
-            const { formMeta } = get()
-            const { mode } = formMeta
-
-            // For create mode, check all 4 panels
-            if (mode === 'create') {
-              const isPanel1Valid = get().isPanelValid(1)
-              const isPanel2Valid = get().isPanelValid(2)
-              const isPanel3Valid = get().isPanelValid(3)
-              const isPanel4Valid = get().isPanelValid(4)
-
-              return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
-            }
-
-            // For edit mode, check panels 1-3 (no privacy panel)
-            if (mode === 'edit') {
-              const isPanel1Valid = get().isPanelValid(1)
-              const isPanel2Valid = get().isPanelValid(2)
-              const isPanel3Valid = get().isPanelValid(3)
-
-              return isPanel1Valid && isPanel2Valid && isPanel3Valid
-            }
-
-            return false
-          },
-
-          // Form state helpers - determines if form has been modified
-          isDirty: (): boolean => {
-            const { formFields, oldFormFields } = get()
-            return isFormDirty(formFields, oldFormFields)
-          },
-
-          // Individual field validation - called reactively when field is touched
-          validateField: (fieldName: string) => {
-            const state = get()
-            const { validation, formMeta } = state
-            const { mode } = formMeta
-            // Only validate if field is blurred OR if we're forcing all errors
-            const shouldValidate = shouldValidateField(
-              fieldName as FormFieldName,
-              validation
-            )
-            if (!shouldValidate) {
-              return
-            }
-            // Get current form data for validation
-            const formData = state.getFormData()
-            // Use the simplified validation function
-            const error = validateSingleField(fieldName, formData, mode)
-            if (error) {
-              state.setFieldError(fieldName as FormFieldName, error)
-            } else {
-              state.clearFieldError(fieldName as FormFieldName)
-            }
-          },
-
-          // Full form validation - called on form submission
-          validateForm: (): boolean => {
-            const state = get()
-
-            // Force validation for all fields regardless of touched state
-            set(
-              currentState => ({
-                ...currentState,
-                validation: {
-                  ...currentState.validation,
-                  forceShowAllErrors: true,
-                  submitAttempted: true,
-                },
-              }),
-              false,
-              'validateForm/forceShowErrors'
-            )
-
-            const formData = state.getFormData()
-
-            // Use the simplified validation function
-            const errors = validateEntireForm(formData, state.formMeta.mode)
-
-            if (Object.keys(errors).length > 0) {
-              // Set all errors at once
-              set(
-                currentState => {
-                  const newDisplayErrors = {
-                    ...currentState.validation.displayErrors,
-                    ...errors,
-                  }
-
-                  return {
-                    ...currentState,
-                    validation: {
-                      ...currentState.validation,
-                      displayErrors: newDisplayErrors,
-                    },
-                  }
-                },
-                false,
-                'validateForm/setErrors'
-              )
-              get().setFormMetaField('isValid', false)
-              return false
-            }
-
-            // Clear all errors and set valid state if validation passed
-            get().clearAllErrors()
-            get().setFormMetaField('isValid', true)
-            return true
           },
 
           clearAllErrors: () =>
@@ -574,29 +368,246 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             )
           },
 
-          setFieldError: (fieldName, error) => {
+          // ===== GETTERS =====
+
+          // Get current form data as TeamFormData
+          getFormData: (): TeamFormData => {
+            const { formFields } = get()
+            const {
+              tournamentId,
+              clubName,
+              teamName,
+              division,
+              category,
+              teamLeaderName,
+              teamLeaderPhone,
+              teamLeaderEmail,
+              privacyAgreement,
+            } = formFields
+
+            return {
+              tournamentId,
+              clubName,
+              teamName: teamName as TeamFormData['teamName'],
+              division: division as TeamFormData['division'],
+              category,
+              teamLeaderName,
+              teamLeaderPhone,
+              teamLeaderEmail: teamLeaderEmail as TeamFormData['teamLeaderEmail'],
+              privacyAgreement,
+            }
+          },
+
+          // ===== VALIDATION =====
+
+          // Individual field validation - called reactively when field is touched
+          validateField: (fieldName: string) => {
+            const state = get()
+            const { validation, formMeta } = state
+            const { mode } = formMeta
+            // Only validate if field is blurred OR if we're forcing all errors
+            const shouldValidate = shouldValidateField(
+              fieldName as FormFieldName,
+              validation
+            )
+            if (!shouldValidate) {
+              return
+            }
+            // Get current form data for validation
+            const formData = state.getFormData()
+            // Use the simplified validation function
+            const error = validateSingleTeamField(fieldName, formData, mode)
+            if (error) {
+              state.setFieldError(fieldName as FormFieldName, error)
+            } else {
+              state.clearFieldError(fieldName as FormFieldName)
+            }
+          },
+
+          // Validate field on blur - also marks field as blurred
+          validateFieldOnBlur: (fieldName: string) => {
+            const state = get()
+            const { formMeta, validation } = state
+            const { mode } = formMeta
+            // Mark field as blurred first (without triggering validation)
             set(
-              state => {
-                const newDisplayErrors = {
-                  ...state.validation.displayErrors,
-                  [fieldName]: error,
+              currentState => {
+                const newBlurredFields = {
+                  ...currentState.validation.blurredFields,
+                  [fieldName]: true,
                 }
-                // Merge with server errors
-                const mergedErrors = mergeErrors(
-                  newDisplayErrors,
-                  state.validation.serverErrors
-                )
                 return {
-                  ...state,
+                  ...currentState,
                   validation: {
-                    ...state.validation,
-                    displayErrors: mergedErrors,
+                    ...currentState.validation,
+                    blurredFields: newBlurredFields,
                   },
                 }
               },
               false,
-              'setFieldError'
+              'validateFieldOnBlur/setBlurred'
             )
+            // Get current form data for validation
+            const formData = state.getFormData()
+            // Use the simplified validation function
+            const error = validateSingleTeamField(fieldName, formData, mode)
+            if (error) {
+              state.setFieldError(fieldName as FormFieldName, error)
+            } else {
+              state.clearFieldError(fieldName as FormFieldName)
+            }
+            // Check if this blur event should enable the next panel
+            // Find which panel this field belongs to
+            const currentPanel = getPanelNumberForField(fieldName as keyof FormFields)
+            // Check if all fields in this panel are now blurred and valid
+            if (currentPanel > 0) {
+              const panelFields =
+                TEAM_PANELS_FIELD_MAP[
+                  currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP
+                ]
+              const allFieldsBlurred = panelFields.every(
+                field => validation.blurredFields[field]
+              )
+              const allFieldsValid = panelFields.every(field => {
+                const fieldValue =
+                  state.formFields[field as keyof typeof state.formFields]
+                return !!fieldValue && !validation.displayErrors[field]
+              })
+              if (allFieldsBlurred && allFieldsValid) {
+                // Panel is now complete - next panel will be enabled by isPanelValid
+                // No additional action needed - the UI will re-render automatically
+              }
+            }
+          },
+
+          // Full form validation - called on form submission
+          validateForm: (): boolean => {
+            const state = get()
+
+            // Force validation for all fields regardless of touched state
+            set(
+              currentState => ({
+                ...currentState,
+                validation: {
+                  ...currentState.validation,
+                  forceShowAllErrors: true,
+                  submitAttempted: true,
+                },
+              }),
+              false,
+              'validateForm/forceShowErrors'
+            )
+
+            const formData = state.getFormData()
+
+            // Use the simplified validation function
+            const errors = validateEntireTeamForm(formData, state.formMeta.mode)
+
+            if (Object.keys(errors).length > 0) {
+              // Set all errors at once
+              set(
+                currentState => {
+                  const newDisplayErrors = {
+                    ...currentState.validation.displayErrors,
+                    ...errors,
+                  }
+
+                  return {
+                    ...currentState,
+                    validation: {
+                      ...currentState.validation,
+                      displayErrors: newDisplayErrors,
+                    },
+                  }
+                },
+                false,
+                'validateForm/setErrors'
+              )
+              get().setFormMetaField('isValid', false)
+              return false
+            }
+
+            // Clear all errors and set valid state if validation passed
+            get().clearAllErrors()
+            get().setFormMetaField('isValid', true)
+            return true
+          },
+
+          // ===== SERVER ERRORS =====
+
+          // Server errors setter (used by form submission)
+          setServerErrors: (errors: Record<string, string>) => {
+            get().setValidationField('serverErrors', errors)
+            // Merge server errors into display errors so they're visible immediately
+            const state = get()
+            const mergedErrors = mergeErrors(state.validation.displayErrors, errors)
+            set(
+              currentState => ({
+                ...currentState,
+                validation: {
+                  ...currentState.validation,
+                  displayErrors: mergedErrors,
+                },
+              }),
+              false,
+              'setServerErrors/mergeErrors'
+            )
+          },
+
+          // ===== PANEL VALIDITY =====
+
+          // --- Panel Validity Selectors ---
+          isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
+            const { formFields, validation, formMeta } = get()
+            return isPanelValid(
+              panelNumber,
+              formFields,
+              validation.displayErrors,
+              formMeta.mode
+            )
+          },
+
+          // Panel enablement - determines if a panel should be interactive
+          isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
+            const { formMeta } = get()
+            return isPanelEnabled(panelNumber, formMeta.mode, panel =>
+              get().isPanelValid(panel)
+            )
+          },
+
+          // ===== FORM STATE =====
+
+          // Form submission readiness - determines if Save button should be enabled
+          isFormReadyForSubmission: (): boolean => {
+            const { formMeta } = get()
+            const { mode } = formMeta
+
+            // For create mode, check all 4 panels
+            if (mode === 'create') {
+              const isPanel1Valid = get().isPanelValid(1)
+              const isPanel2Valid = get().isPanelValid(2)
+              const isPanel3Valid = get().isPanelValid(3)
+              const isPanel4Valid = get().isPanelValid(4)
+
+              return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
+            }
+
+            // For edit mode, check panels 1-3 (no privacy panel)
+            if (mode === 'edit') {
+              const isPanel1Valid = get().isPanelValid(1)
+              const isPanel2Valid = get().isPanelValid(2)
+              const isPanel3Valid = get().isPanelValid(3)
+
+              return isPanel1Valid && isPanel2Valid && isPanel3Valid
+            }
+
+            return false
+          },
+
+          // Form state helpers - determines if form has been modified
+          isDirty: (): boolean => {
+            const { formFields, oldFormFields } = get()
+            return isFormDirty(formFields, oldFormFields)
           },
         }),
         {

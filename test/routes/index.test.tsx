@@ -260,7 +260,7 @@ describe('Home Page (_index)', () => {
         'pe-4',
         'bg-emerald-600',
         'hover:bg-emerald-500',
-        'enabled:focus:ring-emerald-600/90',
+        'focus:ring-emerald-600/90',
         'text-white',
         'shadow-lg',
         'hover:scale-103',

@@ -227,7 +227,18 @@
       "selectCategories": "Selecteer de leeftijdscategorieën die zullen deelnemen",
       "selected": "geselecteerd",
       "tournamentRegistration": "Toernooi registratie",
-      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken"
+      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
+      "errors": {
+        "nameRequired": "Toernooi naam is verplicht",
+        "nameTooLong": "Toernooi naam moet minder dan 100 karakters zijn",
+        "locationRequired": "Locatie is verplicht",
+        "locationTooLong": "Locatie moet minder dan 100 karakters zijn",
+        "startDateRequired": "Startdatum is verplicht",
+        "endDateRequired": "Einddatum is verplicht",
+        "divisionsRequired": "Minstens één divisie is verplicht",
+        "categoriesRequired": "Minstens één categorie is verplicht",
+        "fieldRequired": "Dit veld is verplicht"
+      }
     }
   },
   "divisions": {

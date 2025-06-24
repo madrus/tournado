@@ -6,9 +6,13 @@ on:
     types:
       - completed
 
+env:
+  ACTIONS_STEP_DEBUG: true
+  ACTIONS_RUNNER_DEBUG: true
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false # Test without cancellation
 
 permissions:
   contents: read

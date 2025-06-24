@@ -137,25 +137,44 @@ export const buttonVariantClasses = {
   },
 } as const
 
+// Link-specific color classes (without 'enabled:' prefix since links don't have enabled/disabled states)
+const linkColorClasses = {
+  brand: {
+    shadow: 'shadow-brand/25 hover:shadow-brand/40',
+    focus: 'focus:ring-brand/90',
+    hover: 'hover:ring-2 hover:ring-offset-2 hover:ring-brand/90',
+  },
+  gray: {
+    shadow: 'shadow-gray-500/25 hover:shadow-gray-500/25',
+    focus: 'focus:ring-gray-700/90',
+    hover: 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-700/90',
+  },
+  emerald: {
+    shadow: 'shadow-emerald-500/25 hover:shadow-emerald-500/40',
+    focus: 'focus:ring-emerald-600/90',
+    hover: 'hover:ring-2 hover:ring-offset-2 hover:ring-emerald-600/90',
+  },
+} as const
+
 // ActionLinkButton variant classes (for backward compatibility)
 export const linkButtonVariantClasses = {
   primary: cn(
     'bg-brand text-white hover:bg-brand/90 border-0',
-    colorClasses.brand.shadow,
-    colorClasses.brand.focus,
-    colorClasses.brand.hover
+    'shadow-red-500/25 hover:shadow-red-500/40',
+    'focus:ring-red-600/90',
+    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600/90'
   ),
   secondary: cn(
     'bg-gray-100 text-gray-800 hover:bg-gray-200 border-0',
-    'shadow-gray-500/15 hover:shadow-gray-500/25',
-    'focus:ring-gray-700/90',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-gray-700/90'
+    linkColorClasses.gray.shadow,
+    linkColorClasses.gray.focus,
+    linkColorClasses.gray.hover
   ),
   emerald: cn(
     'bg-emerald-600 text-white hover:bg-emerald-500 border-0',
-    colorClasses.emerald.shadow,
-    colorClasses.emerald.focus,
-    colorClasses.emerald.hover
+    linkColorClasses.emerald.shadow,
+    linkColorClasses.emerald.focus,
+    linkColorClasses.emerald.hover
   ),
 } as const
 

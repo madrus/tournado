@@ -233,7 +233,8 @@ jobs:
             {
               "text": ${{
                 (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
-                  && 'CI was skipped because there were no new changes in the code.'
+                  && format('CI was skipped for the {0} environment because there were no new changes in the code.',
+                    github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
                   || format('*GitHub Action build result*: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
                     (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
                     github.ref_name,
@@ -250,7 +251,8 @@ jobs:
                     "type": "mrkdwn",
                     "text": ${{
                       (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
-                        && 'CI was skipped because there were no new changes in the code.'
+                        && format('CI was skipped for the {0} environment because there were no new changes in the code.',
+                          github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
                         || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
                           (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
                           github.ref_name,

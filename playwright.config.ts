@@ -45,9 +45,9 @@ export default defineConfig({
     /* Take screenshot on failure */
     screenshot: 'on',
 
-    /* Optimized timeouts - reduced since form issues are resolved */
-    actionTimeout: process.env.CI ? 20000 : 10000, // 20s in CI, 10s locally
-    navigationTimeout: process.env.CI ? 30000 : 15000, // 30s in CI, 15s locally
+    /* Timeouts - using proven working values */
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
 
     /* Add test header for server-side test detection */
     extraHTTPHeaders: {

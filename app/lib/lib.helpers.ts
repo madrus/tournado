@@ -211,3 +211,79 @@ export const stringToCategory = (value: string | null): Category | undefined => 
  */
 export const isValidCategory = (value: string | null): value is Category =>
   stringToCategory(value) !== undefined
+
+/**
+ * Custom team sorting function that handles category names with numbers properly
+ * e.g., JO8 comes before JO10, MO12 comes before MO14, etc.
+ *
+ * Sorting order:
+ * 1. Club name (alphabetical)
+ * 2. Category (with numeric awareness for formats like JO8, MO12, etc.)
+ * 3. Team name (alphabetical)
+ */
+export const sortTeams = <
+  T extends { clubName: string; teamName: string; category?: string },
+>(
+  teams: T[]
+): T[] =>
+  teams.sort((a, b) => {
+    // First sort by club name
+    const clubComparison = a.clubName.localeCompare(b.clubName)
+    if (clubComparison !== 0) return clubComparison
+
+    // Then sort by category with numeric awareness
+    if (a.category && b.category) {
+      const categoryComparison = smartCategorySort(a.category, b.category)
+      if (categoryComparison !== 0) return categoryComparison
+    } else if (a.category && !b.category) {
+      return -1 // Teams with categories come first
+    } else if (!a.category && b.category) {
+      return 1 // Teams without categories come last
+    }
+
+    // Finally sort by team name
+    return a.teamName.localeCompare(b.teamName)
+  })
+
+/**
+ * Smart category sorting that handles numeric parts in category names
+ * Examples: JO8, JO10, MO12, MO14, etc.
+ */
+function smartCategorySort(categoryA: string, categoryB: string): number {
+  // Extract the prefix (letters) and number from each category
+  const parseCategory = (category: string) => {
+    const match = category.match(/^([A-Za-z]+)(\d+)(.*)$/)
+    if (match) {
+      return {
+        prefix: match[1].toLowerCase(),
+        number: parseInt(match[2], 10),
+        suffix: match[3].toLowerCase(),
+        original: category.toLowerCase(),
+      }
+    }
+    return {
+      prefix: category.toLowerCase(),
+      number: 0,
+      suffix: '',
+      original: category.toLowerCase(),
+    }
+  }
+
+  const parsedA = parseCategory(categoryA)
+  const parsedB = parseCategory(categoryB)
+
+  // First compare the prefix (JO vs MO etc.)
+  const prefixComparison = parsedA.prefix.localeCompare(parsedB.prefix)
+  if (prefixComparison !== 0) return prefixComparison
+
+  // Then compare the numbers numerically
+  const numberComparison = parsedA.number - parsedB.number
+  if (numberComparison !== 0) return numberComparison
+
+  // Then compare the suffix
+  const suffixComparison = parsedA.suffix.localeCompare(parsedB.suffix)
+  if (suffixComparison !== 0) return suffixComparison
+
+  // Finally, fall back to original string comparison
+  return parsedA.original.localeCompare(parsedB.original)
+}

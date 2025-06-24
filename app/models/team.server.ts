@@ -90,6 +90,28 @@ export const getAllTeamListItems = async (): Promise<
     orderBy: { updatedAt: 'desc' },
   })
 
+export const getFilteredTeamListItems = async ({
+  tournamentId,
+}: {
+  tournamentId?: string
+} = {}): Promise<Array<Pick<Team, 'id' | 'clubName' | 'teamName' | 'category'>>> => {
+  const whereClause = tournamentId ? { tournamentId } : {}
+
+  const teams = await prisma.team.findMany({
+    where: whereClause,
+    select: {
+      id: true,
+      clubName: true,
+      teamName: true,
+      category: true,
+    },
+  })
+
+  // Import the sorting function dynamically to avoid circular imports
+  const { sortTeams } = await import('~/lib/lib.helpers')
+  return sortTeams(teams)
+}
+
 export const createTeam = async ({
   clubName,
   teamName,

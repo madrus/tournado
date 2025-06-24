@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
-import type { Team } from '@prisma/client'
-
 import { TeamList } from '~/components/TeamList'
-import { getAllTeamListItems } from '~/models/team.server'
+import { TournamentFilter } from '~/components/TournamentFilter'
+import { loadTeamsData } from '~/lib/teams.server'
+import type { TeamsLoaderData } from '~/lib/teams.types'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -37,21 +37,13 @@ export const meta: MetaFunction = () => [
   { property: 'og:type', content: 'website' },
 ]
 
-type LoaderData = {
-  teamListItems: TeamListItem[]
-}
-
-type TeamListItem = Pick<Team, 'id' | 'clubName' | 'teamName'>
-
-export async function loader({ request: _ }: LoaderArgs): Promise<LoaderData> {
-  const teamListItems = await getAllTeamListItems()
-
-  return { teamListItems }
-}
+export const loader = async ({ request }: LoaderArgs): Promise<TeamsLoaderData> =>
+  loadTeamsData(request)
 
 export default function PublicTeamsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const { teamListItems } = useLoaderData<LoaderData>()
+  const { teamListItems, tournamentListItems, selectedTournamentId } =
+    useLoaderData<TeamsLoaderData>()
   const navigate = useNavigate()
   const revalidator = useRevalidator()
 
@@ -69,10 +61,25 @@ export default function PublicTeamsIndexPage(): JSX.Element {
 
   return (
     <div className='space-y-6' data-testid='teams-layout'>
+      {/* Tournament Filter */}
+      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <TournamentFilter
+          tournamentListItems={tournamentListItems}
+          selectedTournamentId={selectedTournamentId}
+          className='max-w-md'
+        />
+      </div>
+
       {/* Teams Count */}
       {teamListItems.length > 0 ? (
         <div className='text-foreground-light text-sm'>
           {t('teams.count', { count: teamListItems.length })}
+          {selectedTournamentId ? (
+            <span>
+              {' '}
+              ({tournamentListItems.find(t => t.id === selectedTournamentId)?.name})
+            </span>
+          ) : null}
         </div>
       ) : null}
 

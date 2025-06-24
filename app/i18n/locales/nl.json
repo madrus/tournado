@@ -141,6 +141,8 @@
     "createNewTeam": "Maak een nieuw team aan",
     "deleteTeam": "Team verwijderen",
     "description": "Registreer je team(s) voor een of meer toernooien",
+    "filterByTournament": "Filter op toernooi",
+    "allTournaments": "Alle toernooien",
     "errors": {
       "notFound": "Team niet gevonden",
       "unexpectedError": "Er is een onverwachte fout opgetreden:",

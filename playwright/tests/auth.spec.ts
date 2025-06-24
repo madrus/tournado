@@ -64,9 +64,16 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
-    // Continue with sign-in
-    await page.locator('#email').fill(signinForm.email)
-    await page.locator('#password').fill(signinForm.password)
+    // Continue with sign-in - use deliberate field filling to prevent clearing issues
+    await page.locator('#email').click()
+    await page.locator('#email').clear()
+    await page.locator('#email').pressSequentially(signinForm.email, { delay: 50 })
+
+    await page.locator('#password').click()
+    await page.locator('#password').clear()
+    await page
+      .locator('#password')
+      .pressSequentially(signinForm.password, { delay: 50 })
 
     // Screenshot: Sign-in form filled
     await page.screenshot({
@@ -84,6 +91,13 @@ test.describe('Authentication', () => {
 
     // Wait for any loading states to complete before submission
     await page.waitForLoadState('networkidle')
+
+    // Additional wait to ensure form is stable before submission
+    await page.waitForTimeout(500)
+
+    // Re-verify fields just before submission to catch any clearing
+    await expect(page.locator('#email')).toHaveValue(signinForm.email)
+    await expect(page.locator('#password')).toHaveValue(signinForm.password)
 
     // Click sign in button using Dutch text "Inloggen"
     await Promise.all([
@@ -132,9 +146,16 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/auth\/signin/)
     await expect(page).toHaveURL(/redirectTo=%2F/) // Should redirect back to homepage
 
-    // Sign in with our fixture user
-    await page.locator('#email').fill(testUser.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
+    // Sign in with our fixture user - use more deliberate field filling
+    await page.locator('#email').click()
+    await page.locator('#email').clear()
+    await page.locator('#email').pressSequentially(testUser.email, { delay: 50 })
+
+    await page.locator('#password').click()
+    await page.locator('#password').clear()
+    await page
+      .locator('#password')
+      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
 
     // Ensure form is ready and fields are properly filled
     await expect(page.locator('#email')).toHaveValue(testUser.email)
@@ -147,11 +168,41 @@ test.describe('Authentication', () => {
     // Wait for any loading states to complete before submission
     await page.waitForLoadState('networkidle')
 
+    // Additional wait to ensure form is stable before submission
+    await page.waitForTimeout(500)
+
+    // Re-verify fields just before submission to catch any clearing
+    await expect(page.locator('#email')).toHaveValue(testUser.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+    // Highlight the button to make click more visible
+    await loginButton.highlight()
+    await page.waitForTimeout(500) // Pause to make highlight visible
+
+    // Screenshot: Just before clicking login button
+    await page.screenshot({
+      path: 'playwright-results/before-login-click.png',
+      fullPage: true,
+    })
+
     // Click the login button and wait for navigation to complete
+    console.log('🔄 Clicking login button...')
     await Promise.all([
       page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
+      (async () => {
+        console.log('🖱️ About to click login button')
+        await loginButton.click({ force: true })
+        console.log('✅ Login button clicked')
+        await page.waitForTimeout(1000) // Give time to see the click effect
+      })(),
     ])
+    console.log('🎉 Navigation completed to admin panel')
+
+    // Screenshot: After successful login
+    await page.screenshot({
+      path: 'playwright-results/after-login-success.png',
+      fullPage: true,
+    })
 
     // Double-check we're on the correct page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
@@ -190,11 +241,39 @@ test.describe('Authentication', () => {
     const user = await createAdminUser()
 
     await page.goto('/auth/signin')
-    await page.locator('#email').fill(user.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
+
+    // Use deliberate field filling to prevent clearing issues
+    await page.locator('#email').click()
+    await page.locator('#email').clear()
+    await page.locator('#email').pressSequentially(user.email, { delay: 50 })
+
+    await page.locator('#password').click()
+    await page.locator('#password').clear()
+    await page
+      .locator('#password')
+      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+
+    // Ensure form is ready and fields are properly filled
+    await expect(page.locator('#email')).toHaveValue(user.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+    // Wait for the login button to be enabled and ready
+    const loginButton = page.getByRole('button', { name: 'Inloggen' })
+    await expect(loginButton).toBeEnabled()
+
+    // Wait for any loading states to complete before submission
+    await page.waitForLoadState('networkidle')
+
+    // Additional wait to ensure form is stable before submission
+    await page.waitForTimeout(500)
+
+    // Re-verify fields just before submission to catch any clearing
+    await expect(page.locator('#email')).toHaveValue(user.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
     await Promise.all([
       page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      page.getByRole('button', { name: 'Inloggen' }).click(),
+      loginButton.click(),
     ])
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
@@ -212,11 +291,39 @@ test.describe('Authentication', () => {
     const user = await createAdminUser()
 
     await page.goto('/auth/signin')
-    await page.locator('#email').fill(user.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
+
+    // Use deliberate field filling to prevent clearing issues
+    await page.locator('#email').click()
+    await page.locator('#email').clear()
+    await page.locator('#email').pressSequentially(user.email, { delay: 50 })
+
+    await page.locator('#password').click()
+    await page.locator('#password').clear()
+    await page
+      .locator('#password')
+      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+
+    // Ensure form is ready and fields are properly filled
+    await expect(page.locator('#email')).toHaveValue(user.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+    // Wait for the login button to be enabled and ready
+    const loginButton = page.getByRole('button', { name: 'Inloggen' })
+    await expect(loginButton).toBeEnabled()
+
+    // Wait for any loading states to complete before submission
+    await page.waitForLoadState('networkidle')
+
+    // Additional wait to ensure form is stable before submission
+    await page.waitForTimeout(500)
+
+    // Re-verify fields just before submission to catch any clearing
+    await expect(page.locator('#email')).toHaveValue(user.email)
+    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
     await Promise.all([
       page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      page.getByRole('button', { name: 'Inloggen' }).click(),
+      loginButton.click(),
     ])
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 

@@ -2,6 +2,7 @@
 import type { Prisma, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import { sortTeams } from '~/lib/lib.helpers'
 import type { TeamWithLeaderFull } from '~/lib/lib.types'
 
 export type { Team } from '@prisma/client'
@@ -107,8 +108,6 @@ export const getFilteredTeamListItems = async ({
     },
   })
 
-  // Import the sorting function dynamically to avoid circular imports
-  const { sortTeams } = await import('~/lib/lib.helpers')
   return sortTeams(teams)
 }
 

@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/madrus/tournado/compare/v0.5.0...v0.6.0) (2025-06-24)
+
+### Features
+
+- add tournament filtering functionality to team listings, enhance sorting logic for teams, and update translations for tournament-related terms ([a81aff1](https://github.com/madrus/tournado/commit/a81aff1c3c01446413de3581a894d4a037133077))
+- **ci:** enhance CI/CD workflows with Slack notifications for build and deployment results ([08e8978](https://github.com/madrus/tournado/commit/08e897897077c0c49a1ab3b47080f5836d6c7fdc))
+- enhance TournamentFilter component with type definitions, add comprehensive tests for tournament filtering logic, and improve useTournamentFilter hook for better state management ([f180af7](https://github.com/madrus/tournado/commit/f180af7be738d4aa91d4b9fba27aa134bf504e6e))
+- implement tournament form state management with Zustand and enhance validation logic ([837aeca](https://github.com/madrus/tournado/commit/837aecaf4d678914ac0a84647e8bf704d300f807))
+- **slack:** add GitHub Actions workflow for Slack notifications ([e868a50](https://github.com/madrus/tournado/commit/e868a5040bfdd3cb25c028e43cd0dd0373fd7b0b))
+- **TeamForm:** add reset button functionality and improve form handling ([fed4bfa](https://github.com/madrus/tournado/commit/fed4bfa6b243677019be227938a321222640f5bc))
+
+### Bug Fixes
+
+- **TeamForm:** add note for updateAvailableOptions call in useEffect ([7ea7c5d](https://github.com/madrus/tournado/commit/7ea7c5d985315d904444634669db34311ae0a2b3))
+- **tests:** correct Radix UI Select interactions in admin-tournaments tests ([c45cb1c](https://github.com/madrus/tournado/commit/c45cb1c6798f2ebe263d4755d382dd26620ea181))
+
 ## [0.5.0](https://github.com/madrus/tournado/compare/v0.4.2...v0.5.0) (2025-06-20)
 
 ### Features

@@ -38,7 +38,7 @@ export function ActionLinkButton({
 
   const baseClasses = cn(
     chipClasses.container,
-    'inline-flex items-center justify-center rounded-lg border-0 py-2.5 text-sm font-semibold min-h-12',
+    'inline-flex items-center justify-center rounded-lg border-0 py-2.5 text-sm font-semibold min-h-12 min-w-32',
     'ps-4 pe-4 transition-all duration-300 ease-out relative overflow-hidden',
     'hover:scale-103 active:scale-95',
     'focus:outline-none',

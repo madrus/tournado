@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test'
 
-import { signInUser } from '../helpers/auth'
 import { createRegularUser } from '../helpers/database'
 
 test.describe('Authorization - Role-based Access', () => {
@@ -21,8 +20,42 @@ test.describe('Authorization - Role-based Access', () => {
     test.beforeEach(async ({ page }) => {
       regularUser = await createRegularUser()
 
-      // Use the signin helper instead of inline code
-      await signInUser(page, regularUser.email)
+      await page.goto('/auth/signin')
+
+      // Use deliberate field filling to prevent clearing issues
+      await page.locator('#email').click()
+      await page.locator('#email').clear()
+      await page.locator('#email').pressSequentially(regularUser.email, { delay: 50 })
+
+      await page.locator('#password').click()
+      await page.locator('#password').clear()
+      await page
+        .locator('#password')
+        .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+
+      // Ensure form is ready and fields are properly filled
+      await expect(page.locator('#email')).toHaveValue(regularUser.email)
+      await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+      // Wait for the login button to be enabled and ready
+      const loginButton = page.getByRole('button', { name: 'Inloggen' })
+      await expect(loginButton).toBeEnabled()
+
+      // Wait for any loading states to complete before submission
+      await page.waitForLoadState('networkidle')
+
+      // Additional wait to ensure form is stable before submission
+      await page.waitForTimeout(500)
+
+      // Re-verify fields just before submission to catch any clearing
+      await expect(page.locator('#email')).toHaveValue(regularUser.email)
+      await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+
+      await Promise.all([
+        page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+        loginButton.click(),
+      ])
+      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
     })
 
     test('should have access to admin panel', async ({ page }) => {

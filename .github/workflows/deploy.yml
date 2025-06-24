@@ -6,10 +6,6 @@ on:
     types:
       - completed
 
-run-name: >-
-  Deploy ${{ github.event.workflow_run.head_branch == 'main' && '(Production)'
-  || github.event.workflow_run.head_branch == 'dev' && '(Staging)' }}
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -24,9 +20,6 @@ jobs:
     name: Deploy to Staging (dev)
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: read
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -53,33 +46,18 @@ jobs:
             --max-unavailable 0.33 \
             --wait-timeout 5m \
             --yes
-      - name: Debug Slack Webhook URL
+      - name: Test Step After Deploy
+        run: echo "This is a test step to see if it appears in logs"
+      - name: Another Test Step
         run: |
-          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
-            echo "SLACK_WEBHOOK_URL secret is not available"
-          else
-            echo "SLACK_WEBHOOK_URL secret is available (length: ${#SLACK_WEBHOOK_URL})"
-          fi
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - name: Notify Slack of successful deployment to Staging
-        if: always()
-        uses: slackapi/slack-github-action@v2.1.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "Deployment successful: dev deployed to staging"
-            }
+          echo "Testing if this step appears"
+          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Actor: ${{ github.event.workflow_run.actor.login }}"
 
   deploy_production:
     name: Deploy to Production (main)
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: read
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -106,22 +84,10 @@ jobs:
             --max-unavailable 0.33 \
             --wait-timeout 5m \
             --yes
-      - name: Debug Slack Webhook URL
+      - name: Test Step After Deploy
+        run: echo "This is a test step to see if it appears in logs"
+      - name: Another Test Step
         run: |
-          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
-            echo "SLACK_WEBHOOK_URL secret is not available"
-          else
-            echo "SLACK_WEBHOOK_URL secret is available (length: ${#SLACK_WEBHOOK_URL})"
-          fi
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - name: Notify Slack of successful deployment to Production
-        if: always()
-        uses: slackapi/slack-github-action@v2.1.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "Deployment successful: main deployed to production"
-            }
+          echo "Testing if this step appears"
+          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Actor: ${{ github.event.workflow_run.actor.login }}"

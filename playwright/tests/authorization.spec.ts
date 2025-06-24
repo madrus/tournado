@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 
+import { signInUser } from '../helpers/auth'
 import { createRegularUser } from '../helpers/database'
 
 test.describe('Authorization - Role-based Access', () => {
@@ -20,26 +21,8 @@ test.describe('Authorization - Role-based Access', () => {
     test.beforeEach(async ({ page }) => {
       regularUser = await createRegularUser()
 
-      await page.goto('/auth/signin')
-      await page.locator('#email').fill(regularUser.email)
-      await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-
-      // Ensure form is ready and fields are properly filled
-      await expect(page.locator('#email')).toHaveValue(regularUser.email)
-      await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
-
-      // Wait for the login button to be enabled and ready
-      const loginButton = page.getByRole('button', { name: 'Inloggen' })
-      await expect(loginButton).toBeEnabled()
-
-      // Wait for any loading states to complete before submission
-      await page.waitForLoadState('networkidle')
-
-      await Promise.all([
-        page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-        loginButton.click(),
-      ])
-      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
+      // Use the signin helper instead of inline code
+      await signInUser(page, regularUser.email)
     })
 
     test('should have access to admin panel', async ({ page }) => {

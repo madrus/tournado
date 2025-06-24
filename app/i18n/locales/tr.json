@@ -141,6 +141,8 @@
     "createNewTeam": "Yeni bir takım oluştur",
     "deleteTeam": "Takımı sil",
     "description": "Bir veya daha fazla turnuva için takım(lar)ınızı kaydedin",
+    "filterByTournament": "Turnuvaya göre filtrele",
+    "allTournaments": "Tüm turnuvalar",
     "errors": {
       "notFound": "Takım bulunamadı",
       "unexpectedError": "Beklenmeyen bir hata oluştu:",

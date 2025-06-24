@@ -141,6 +141,8 @@
     "createNewTeam": "Create a new team",
     "deleteTeam": "Delete Team",
     "description": "Register your team(s) for one or more tournaments",
+    "filterByTournament": "Filter by tournament",
+    "allTournaments": "All tournaments",
     "errors": {
       "notFound": "Team not found",
       "unexpectedError": "An unexpected error occurred:",

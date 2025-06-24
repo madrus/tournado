@@ -142,6 +142,8 @@
     "createNewTeam": "إنشاء فريق جديد",
     "deleteTeam": "حذف الفريق",
     "description": "سجل فريقك (فرقك) لبطولة واحدة أو أكثر",
+    "filterByTournament": "تصفية حسب البطولة",
+    "allTournaments": "جميع البطولات",
     "errors": {
       "notFound": "الفريق غير موجود",
       "unexpectedError": "حدث خطأ غير متوقع:",

@@ -23,8 +23,11 @@ test.describe('Authorization - Role-based Access', () => {
       await page.goto('/auth/signin')
       await page.locator('#email').fill(regularUser.email)
       await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-      await page.getByRole('button', { name: 'Inloggen' }).click()
-      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+      await Promise.all([
+        page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+        page.getByRole('button', { name: 'Inloggen' }).click(),
+      ])
+      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
     })
 
     test('should have access to admin panel', async ({ page }) => {

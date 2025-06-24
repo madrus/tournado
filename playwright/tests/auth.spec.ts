@@ -75,9 +75,13 @@ test.describe('Authentication', () => {
     })
 
     // Click sign in button using Dutch text "Inloggen"
-    await page.getByRole('button', { name: 'Inloggen' }).click()
+    await Promise.all([
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }),
+      page.getByRole('button', { name: 'Inloggen' }).click(),
+    ])
 
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Double-check we're on the correct page
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Screenshot: After successful sign-in
     await page.screenshot({
@@ -123,12 +127,12 @@ test.describe('Authentication', () => {
 
     // Wait for the form submission and navigation to complete
     await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 }),
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }),
       page.getByRole('button', { name: 'Inloggen' }).click(),
     ])
 
     // Should be redirected to Admin Panel (all users go there now)
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Wait for the page to fully load and auth store to hydrate
     await page.waitForLoadState('networkidle')
@@ -166,8 +170,11 @@ test.describe('Authentication', () => {
     await page.goto('/auth/signin')
     await page.locator('#email').fill(user.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await Promise.all([
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      page.getByRole('button', { name: 'Inloggen' }).click(),
+    ])
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Try to access signin page while authenticated
     await page.goto('/auth/signin')
@@ -185,8 +192,11 @@ test.describe('Authentication', () => {
     await page.goto('/auth/signin')
     await page.locator('#email').fill(user.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await Promise.all([
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      page.getByRole('button', { name: 'Inloggen' }).click(),
+    ])
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Navigate to teams page
     await page.goto('/teams')

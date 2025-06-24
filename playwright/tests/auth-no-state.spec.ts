@@ -75,9 +75,13 @@ test.describe('Authentication', () => {
     })
 
     // Click sign in button using Dutch text "Inloggen"
-    await page.getByRole('button', { name: 'Inloggen' }).click()
+    await Promise.all([
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      page.getByRole('button', { name: 'Inloggen' }).click(),
+    ])
 
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Double-check we're on the correct page
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Screenshot: After successful sign-in
     await page.screenshot({
@@ -124,10 +128,15 @@ test.describe('Authentication', () => {
     // Sign in with our fixture user
     await page.locator('#email').fill(testUser.email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
 
-    // Should be redirected to Admin Panel (all users go there now)
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Click the login button and wait for navigation to complete
+    await Promise.all([
+      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
+      page.getByRole('button', { name: 'Inloggen' }).click(),
+    ])
+
+    // Double-check we're on the correct page (redundant but safe)
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
 
     // Verify user is authenticated by checking for their email in the UI (might be hidden in menu)
     await page.getByRole('button', { name: 'Toggle menu' }).click()

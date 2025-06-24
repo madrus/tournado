@@ -23,6 +23,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Add expect timeout for CI reliability */
+  expect: {
+    timeout: process.env.CI ? 10000 : 5000, // Longer timeouts in CI
+  },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -41,9 +45,9 @@ export default defineConfig({
     /* Take screenshot on failure */
     screenshot: 'on',
 
-    /* Increase timeouts for better reliability */
-    actionTimeout: 15000,
-    navigationTimeout: 30000,
+    /* Increase timeouts for better reliability, especially in CI */
+    actionTimeout: process.env.CI ? 30000 : 15000, // 30s in CI, 15s locally
+    navigationTimeout: process.env.CI ? 60000 : 30000, // 60s in CI, 30s locally
 
     /* Add test header for server-side test detection */
     extraHTTPHeaders: {

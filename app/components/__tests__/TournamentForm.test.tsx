@@ -206,60 +206,51 @@ vi.mock('../buttons/ActionButton', () => ({
 }))
 
 // Mock input components
-vi.mock('../inputs/TextInputField', () => ({
-  TextInputField: React.forwardRef<
-    HTMLInputElement,
-    {
-      name: string
-      label: string
-      value?: string
-      defaultValue?: string
-      error?: string
-      required?: boolean
-      className?: string
-      disabled?: boolean
-      onChange?: (value: string) => void
-      onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void
-      onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
-    }
-  >(
-    (
-      {
-        name,
-        label,
-        value,
-        defaultValue,
-        error,
-        required,
-        className,
-        disabled,
-        onChange,
-        onFocus,
-        onBlur,
-      },
-      ref
-    ) => (
-      <div className='text-input-field'>
-        <label htmlFor={name}>
-          {label}
-          {required ? ' *' : null}
-        </label>
-        <input
-          ref={ref}
-          id={name}
-          name={name}
-          value={value}
-          defaultValue={defaultValue}
-          className={className}
-          disabled={disabled}
-          data-error={!!error}
-          onChange={onChange ? e => onChange(e.target.value) : undefined}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-        {error ? <span className='error'>{error}</span> : null}
-      </div>
-    )
+vi.mock('../inputs/InputField', () => ({
+  InputField: ({
+    name,
+    label,
+    value,
+    defaultValue,
+    error,
+    required,
+    className,
+    disabled,
+    onChange,
+    onFocus,
+    onBlur,
+  }: {
+    name: string
+    label: string
+    value?: string
+    defaultValue?: string
+    error?: string
+    required?: boolean
+    className?: string
+    disabled?: boolean
+    onChange?: (value: string) => void
+    onFocus?: () => void
+    onBlur?: () => void
+  }) => (
+    <div className='input-field'>
+      <label htmlFor={name}>
+        {label}
+        {required ? ' *' : null}
+      </label>
+      <input
+        id={name}
+        name={name}
+        value={value}
+        defaultValue={defaultValue}
+        className={className}
+        disabled={disabled}
+        data-error={!!error}
+        onChange={onChange ? event => onChange(event.target.value) : undefined}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+      {error ? <span className='error'>{error}</span> : null}
+    </div>
   ),
 }))
 
@@ -411,8 +402,8 @@ describe('TournamentForm Component', () => {
     it('should render all form fields correctly', () => {
       renderTournamentForm()
 
-      expect(screen.getByLabelText('Tournament Name *')).toBeInTheDocument()
-      expect(screen.getByLabelText('Location *')).toBeInTheDocument()
+      expect(screen.getByLabelText('Tournament Name')).toBeInTheDocument()
+      expect(screen.getByLabelText('Location')).toBeInTheDocument()
       expect(screen.getByLabelText('Start Date *')).toBeInTheDocument()
       expect(screen.getByLabelText('End Date')).toBeInTheDocument()
     })
@@ -607,8 +598,8 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Get the form fields
-      const nameInput = screen.getByLabelText('Tournament Name *')
-      const locationInput = screen.getByLabelText('Location *')
+      const nameInput = screen.getByLabelText('Tournament Name')
+      const locationInput = screen.getByLabelText('Location')
 
       // Focus and then blur fields to trigger validation - using user.tab() like TeamForm
       await user.click(nameInput)
@@ -633,7 +624,7 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      const nameInput = screen.getByLabelText('Tournament Name *')
+      const nameInput = screen.getByLabelText('Tournament Name')
 
       // Trigger validation error by blurring empty field
       await user.click(nameInput)
@@ -782,7 +773,7 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Basic information grid should be responsive
-      const basicInfoGrid = screen.getByText('Tournament Name *').closest('.grid')
+      const basicInfoGrid = screen.getByText('Tournament Name').closest('.grid')
       expect(basicInfoGrid).toHaveClass('grid-cols-1', 'md:grid-cols-2')
     })
   })
@@ -791,8 +782,8 @@ describe('TournamentForm Component', () => {
     it('should have proper form labels', () => {
       renderTournamentForm()
 
-      expect(screen.getByLabelText('Tournament Name *')).toBeInTheDocument()
-      expect(screen.getByLabelText('Location *')).toBeInTheDocument()
+      expect(screen.getByLabelText('Tournament Name')).toBeInTheDocument()
+      expect(screen.getByLabelText('Location')).toBeInTheDocument()
       expect(screen.getByLabelText('Start Date *')).toBeInTheDocument()
       expect(screen.getByLabelText('End Date')).toBeInTheDocument()
     })

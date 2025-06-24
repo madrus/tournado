@@ -77,7 +77,13 @@ export default function PublicTeamsIndexPage(): JSX.Element {
           {selectedTournamentId ? (
             <span>
               {' '}
-              ({tournamentListItems.find(t => t.id === selectedTournamentId)?.name})
+              (
+              {
+                tournamentListItems.find(
+                  tournament => tournament.id === selectedTournamentId
+                )?.name
+              }
+              )
             </span>
           ) : null}
         </div>

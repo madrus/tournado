@@ -231,13 +231,38 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "*GitHub Action build result*: ${{ (needs.check_changes.outputs.code_changed == 'true' && needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') || (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success') && 'success' || 'failure' }} on branch ${{ github.ref_name }} by ${{ github.actor }}\n${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}",
+              "text": ${{
+                (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
+                  && 'CI was skipped because there were no new changes in the code.'
+                  || format('*GitHub Action build result*: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
+                    (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
+                    github.ref_name,
+                    github.actor,
+                    github.server_url,
+                    github.repository,
+                    github.sha
+                  )
+              }},
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "GitHub Action build result: ${{ (needs.check_changes.outputs.code_changed == 'true' && needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') || (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success') && 'success' || 'failure' }} on branch `${{ github.ref_name }}`\n*Triggered by:* ${{ github.actor }}\n*Change type:* ${{ needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only' }}\n*Commit message:* ${{ github.event.head_commit.message }}\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|View Commit> | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>"
+                    "text": ${{
+                      (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
+                        && 'CI was skipped because there were no new changes in the code.'
+                        || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
+                          (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
+                          github.ref_name,
+                          github.actor,
+                          needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
+                          github.event.head_commit.message,
+                          github.server_url,
+                          github.repository,
+                          github.sha,
+                          github.run_id
+                        )
+                    }}
                   }
                 }
               ]

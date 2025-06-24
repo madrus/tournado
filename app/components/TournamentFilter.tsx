@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ComboField } from '~/components/inputs/ComboField'
@@ -14,7 +15,7 @@ export function TournamentFilter({
   tournamentListItems,
   selectedTournamentId,
   className = 'max-w-md',
-}: TournamentFilterProps) {
+}: TournamentFilterProps): ReactElement {
   const { t } = useTranslation()
   const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
     tournamentListItems,

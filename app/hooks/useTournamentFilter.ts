@@ -1,42 +1,70 @@
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 
-import type { TournamentFilterOption, TournamentListItem } from '~/lib/teams.types'
+import type { TournamentListItem } from '~/lib/teams.types'
 
 type UseTournamentFilterProps = {
   tournamentListItems: TournamentListItem[]
   selectedTournamentId?: string
 }
 
+type UseTournamentFilterReturn = {
+  tournamentOptions: { value: string; label: string }[]
+  selectedValue: string
+  onChange: (value: string) => void
+}
+
 export function useTournamentFilter({
   tournamentListItems,
   selectedTournamentId,
-}: UseTournamentFilterProps) {
+}: UseTournamentFilterProps): UseTournamentFilterReturn {
   const { t } = useTranslation()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
-  const handleTournamentFilterChange = (tournamentId: string) => {
+  const tournamentOptions = useMemo(() => {
+    const allOption = { value: 'all', label: t('teams.allTournaments') }
+
+    if (!tournamentListItems?.length) {
+      return [allOption]
+    }
+
+    const tournamentOptionsFromData = tournamentListItems.map(tournament => ({
+      value: tournament.id,
+      label: tournament.name,
+    }))
+
+    return [allOption, ...tournamentOptionsFromData]
+  }, [tournamentListItems, t])
+
+  const selectedValue = useMemo(() => {
+    if (!selectedTournamentId) return 'all'
+
+    // Check if the selected tournament exists in the list
+    const tournamentExists = tournamentListItems?.some(
+      tournament => tournament.id === selectedTournamentId
+    )
+
+    return tournamentExists ? selectedTournamentId : 'all'
+  }, [selectedTournamentId, tournamentListItems])
+
+  const onChange = (value: string) => {
     const newSearchParams = new URLSearchParams(searchParams)
-    if (tournamentId === 'all') {
+
+    if (value === 'all') {
       newSearchParams.delete('tournament')
     } else {
-      newSearchParams.set('tournament', tournamentId)
+      newSearchParams.set('tournament', value)
     }
-    setSearchParams(newSearchParams, { replace: true })
-  }
 
-  // Prepare tournament options for the combo field
-  const tournamentOptions: TournamentFilterOption[] = [
-    { value: 'all', label: t('teams.allTournaments') },
-    ...tournamentListItems.map(tournament => ({
-      value: tournament.id,
-      label: `${tournament.name} - ${tournament.location}`,
-    })),
-  ]
+    const queryString = newSearchParams.toString()
+    navigate(queryString ? `?${queryString}` : '')
+  }
 
   return {
     tournamentOptions,
-    selectedValue: selectedTournamentId || 'all',
-    onChange: handleTournamentFilterChange,
+    selectedValue,
+    onChange,
   }
 }

@@ -105,9 +105,31 @@ export class LoginPage extends BasePage {
     await this.emailInput.fill(email)
     await this.emailInput.blur()
 
+    // Verify email was filled correctly
+    const actualEmail = await this.emailInput.inputValue()
+    if (actualEmail !== email) {
+      console.log(`- email field mismatch. Expected: "${email}", Got: "${actualEmail}"`)
+      throw new Error(
+        `Email field truncated. Expected: "${email}", Got: "${actualEmail}"`
+      )
+    }
+    console.log(`- email filled successfully: "${actualEmail}"`)
+
     await this.passwordInput.clear()
     await this.passwordInput.fill(password)
     await this.passwordInput.blur()
+
+    // Verify password was filled correctly
+    const actualPassword = await this.passwordInput.inputValue()
+    if (actualPassword !== password) {
+      console.log(
+        `- password field mismatch. Expected: "${password}", Got: "${actualPassword}"`
+      )
+      throw new Error(
+        `Password field truncated. Expected: "${password}", Got: "${actualPassword}"`
+      )
+    }
+    console.log(`- password filled successfully`)
 
     await this.page.waitForTimeout(100) // wait for any async effects
 

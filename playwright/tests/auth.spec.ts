@@ -3,6 +3,9 @@ import { expect, test } from '@playwright/test'
 
 import { createAdminUser, createRegularUser } from '../helpers/database'
 import { createValidTestEmail } from '../helpers/test-utils'
+import { HomePage } from '../pages/HomePage'
+import { LoginPage } from '../pages/LoginPage'
+import { SignupPage } from '../pages/SignupPage'
 
 // This test file runs without stored auth state to test actual authentication
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -26,101 +29,36 @@ test.describe('Authentication', () => {
       password: 'MyReallyStr0ngPassw0rd!!!',
     }
 
-    // 1. Register new user
-    await page.goto('/auth/signup')
-    await page.waitForLoadState('networkidle')
+    // 1. Register new user using SignupPage
+    const signupPage = new SignupPage(page)
+    await signupPage.register(newUser)
 
-    // Screenshot: Signup page loaded
-    await page.screenshot({
-      path: 'playwright-results/01-signup-page.png',
-      fullPage: true,
-    })
+    // 2. Sign in with newly created user using LoginPage
+    const loginPage = new LoginPage(page)
+    await loginPage.expectToBeOnLoginPage()
+    await loginPage.login(newUser.email, newUser.password)
 
-    // Fill firstName using clean approach
-    const firstNameField = page.locator('#firstName')
-    await firstNameField.clear()
-    await firstNameField.fill(newUser.firstName)
-    await firstNameField.blur()
-
-    // Verify firstName was filled correctly
-    const actualFirstName = await firstNameField.inputValue()
-    if (actualFirstName !== newUser.firstName) {
-      console.log(
-        `- firstName field mismatch. Expected: "${newUser.firstName}", Got: "${actualFirstName}"`
-      )
-      throw new Error(
-        `FirstName field truncated. Expected: "${newUser.firstName}", Got: "${actualFirstName}"`
-      )
-    }
-    console.log(`- firstName filled successfully: "${actualFirstName}"`)
-
-    // Fill other fields normally
-    await page.locator('#lastName').fill(newUser.lastName)
-    await page.locator('#email').fill(newUser.email)
-    await page.locator('#password').fill(newUser.password)
-
-    // Verify all fields before submission
-    await expect(page.locator('#firstName')).toHaveValue(newUser.firstName)
-    await expect(page.locator('#lastName')).toHaveValue(newUser.lastName)
-
-    // Screenshot: Form filled out
-    await page.screenshot({
-      path: 'playwright-results/02-form-filled.png',
-      fullPage: true,
-    })
-
-    // Submit with proper wait - using Dutch text "Account aanmaken"
-    await Promise.all([
-      page.waitForURL('/auth/signin'),
-      page.getByRole('button', { name: 'Account aanmaken' }).click(),
-    ])
-
-    // Screenshot: After signup redirect
-    await page.screenshot({
-      path: 'playwright-results/03-after-signup.png',
-      fullPage: true,
-    })
-
-    // 2. Sign in with newly created user
-    await page.locator('#email').fill(newUser.email)
-    await page.locator('#password').fill(newUser.password)
-
-    // Wait for form to be ready and submit
-    await page.waitForLoadState('networkidle')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
-
-    // 3. Verify redirect to admin panel
+    // 3. Verify redirect to admin panel and authentication
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
-
-    // 4. Verify user is signed in by checking menu
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(
-      page.getByTestId('user-menu-dropdown').getByText(newUser.email)
-    ).toBeVisible({ timeout: 5000 })
+    await loginPage.verifyAuthentication()
   })
 
   test('should sign in as regular user and verify menu options', async ({ page }) => {
     // 1. Create regular user (non-admin)
     const regularUser = await createRegularUser()
 
-    // 2. Sign in as regular user
-    await page.goto('/auth/signin')
-    await page.waitForLoadState('networkidle')
-
-    await page.locator('#email').fill(regularUser.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-
-    await page.waitForLoadState('networkidle')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
+    // 2. Sign in as regular user using LoginPage
+    const loginPage = new LoginPage(page)
+    await loginPage.login(regularUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
     // 3. Verify redirect to admin panel (all users go to admin panel after login)
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
 
-    // 4. Open context menu and verify menu options
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
+    // 4. Verify authentication first (this will open menu)
+    await loginPage.verifyAuthentication()
 
-    // 5. Verify regular user menu: should have sign out but NO tournaments management
+    // 5. Menu should be open now, verify regular user menu: should have sign out but NO tournaments management
+    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
     await expect(page.getByRole('button', { name: 'Uitloggen' })).toBeVisible()
 
     // Check that tournaments management option is NOT visible for regular users
@@ -135,61 +73,89 @@ test.describe('Authentication', () => {
     // 1. Create admin user
     const adminUser = await createAdminUser()
 
-    // 2. Sign in as admin user
-    await page.goto('/auth/signin')
-    await page.waitForLoadState('networkidle')
-
-    await page.locator('#email').fill(adminUser.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-
-    await page.waitForLoadState('networkidle')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
+    // 2. Sign in as admin user using LoginPage
+    const loginPage = new LoginPage(page)
+    await loginPage.login(adminUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
     // 3. Verify redirect to admin panel
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
 
-    // 4. Open context menu and verify admin menu options
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
+    // 4. Verify authentication first (this will open menu)
+    await loginPage.verifyAuthentication()
 
-    // 5. Verify admin menu: should have tournaments management option
+    // 5. Menu should be open now, verify admin menu: should have tournaments management option
+    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
     await expect(
       page.getByTestId('user-menu-dropdown').getByText('Toernooien')
     ).toBeVisible()
     await expect(page.getByRole('button', { name: 'Uitloggen' })).toBeVisible()
   })
 
+  test('should handle authentication with existing account from homepage', async ({
+    page,
+  }) => {
+    // Create admin user
+    const testUser = await createAdminUser()
+
+    const homePage = new HomePage(page)
+    const loginPage = new LoginPage(page)
+
+    // 1. Start from homepage
+    await homePage.goto()
+    await homePage.expectToBeOnHomePage()
+
+    // 2. Navigate to sign in from homepage menu
+    await page.getByRole('button', { name: 'Toggle menu' }).click()
+    await page.getByRole('link', { name: 'Inloggen' }).click()
+
+    // 3. Should be on signin page
+    await loginPage.expectToBeOnLoginPage()
+
+    // 4. Login with test user
+    await loginPage.login(testUser.email, 'MyReallyStr0ngPassw0rd!!!')
+
+    // 5. Verify authentication and redirect
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await loginPage.verifyAuthentication()
+
+    // 6. Test sign out - menu should already be open from verifyAuthentication
+    const userDropdown = page.getByTestId('user-menu-dropdown')
+    const isDropdownVisible = await userDropdown.isVisible().catch(() => false)
+
+    if (!isDropdownVisible) {
+      await page.getByRole('button', { name: 'Toggle menu' }).click()
+    }
+
+    await page.getByRole('button', { name: 'Uitloggen' }).click()
+    await expect(page).toHaveURL('/')
+  })
+
   test('should sign out user and redirect to home page without login page', async ({
     page,
   }) => {
-    // 1. Create and sign in a user
+    // 1. Create and sign in a user using LoginPage
     const user = await createAdminUser()
+    const loginPage = new LoginPage(page)
 
-    await page.goto('/auth/signin')
-    await page.waitForLoadState('networkidle')
-
-    await page.locator('#email').fill(user.email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-
-    await page.waitForLoadState('networkidle')
-    await page.getByRole('button', { name: 'Inloggen' }).click()
+    await loginPage.login(user.email, 'MyReallyStr0ngPassw0rd!!!')
 
     // Verify we're signed in
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
 
-    // 2. Sign out
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
+    // 2. Verify authentication first (this will open menu)
+    await loginPage.verifyAuthentication()
 
+    // 3. Menu should be open now, sign out directly
+    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
     await page.getByRole('button', { name: 'Uitloggen' }).click()
 
-    // 3. Verify redirect to home page (not login page)
+    // 4. Verify redirect to home page (not login page)
     await expect(page).toHaveURL('/', { timeout: 5000 })
 
-    // 4. Wait for page to settle and verify user is signed out
+    // 5. Wait for page to settle and verify user is signed out
     await page.waitForLoadState('networkidle')
 
-    // 5. Verify user is signed out by checking menu shows login option
+    // 6. Verify user is signed out by checking menu shows login option
     await page.getByRole('button', { name: 'Toggle menu' }).click()
     await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
 

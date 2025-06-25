@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test'
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  globalSetup: './playwright/helpers/global-setup.ts', // Re-enabled for auth.json creation
+  globalSetup: './playwright/helpers/global-setup.ts', // Creates both admin and user auth contexts
   globalTeardown: './playwright/helpers/global-teardown.ts', // Clean database after tests
   testDir: './playwright/tests',
   /* Run tests in files in parallel */
@@ -57,37 +57,38 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // Admin tests - use authenticated state from global setup
+    // Admin tests - use admin authentication context
     {
       name: 'admin-authenticated',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: './playwright/.auth/auth.json',
+        storageState: './playwright/.auth/admin-auth.json',
       },
       testMatch: ['**/admin-*.spec.ts'],
     },
 
-    // Public tests - no authentication required
+    // Regular user tests - use regular user authentication context for user-specific features
     {
-      name: 'public-no-auth',
+      name: 'user-authenticated',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: { cookies: [], origins: [] },
+        storageState: './playwright/.auth/user-auth.json',
       },
-      testMatch: ['**/public-*.spec.ts', '**/teams.spec.ts'],
+      testMatch: ['**/menu-toggle.spec.ts', '**/user-authorization.spec.ts'],
     },
 
-    // Auth flow tests - per-test authentication (login/signup testing)
+    // Public/no-auth tests - for testing auth flows, public access, and features available to all users
     {
-      name: 'auth-flows',
+      name: 'no-auth',
       use: {
         ...devices['Desktop Chrome'],
         storageState: { cookies: [], origins: [] },
       },
       testMatch: [
         '**/auth*.spec.ts',
-        '**/authorization.spec.ts',
+        '**/teams.spec.ts',
         '**/navigation.spec.ts',
+        '**/authorization.spec.ts',
       ],
     },
 

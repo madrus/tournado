@@ -95,12 +95,13 @@ export class LoginPage extends BasePage {
     // Wait for page to stabilize
     await this.page.waitForLoadState('domcontentloaded')
 
-    // Fill credentials using clean approach
+    // Fill credentials using approach compatible with controlled inputs
     console.log('- filling credentials...')
 
-    await this.emailInput.clear()
-    await this.emailInput.fill(email)
-    await this.emailInput.blur()
+    // Select all and type for controlled inputs
+    await this.emailInput.click()
+    await this.emailInput.selectText()
+    await this.emailInput.type(email)
 
     // Verify email was filled correctly
     const actualEmail = await this.emailInput.inputValue()
@@ -112,9 +113,9 @@ export class LoginPage extends BasePage {
     }
     console.log(`- email filled successfully: "${actualEmail}"`)
 
-    await this.passwordInput.clear()
-    await this.passwordInput.fill(password)
-    await this.passwordInput.blur()
+    await this.passwordInput.click()
+    await this.passwordInput.selectText()
+    await this.passwordInput.type(password)
 
     // Verify password was filled correctly
     const actualPassword = await this.passwordInput.inputValue()

@@ -85,6 +85,8 @@ export class LoginPage extends BasePage {
 
   async login(email: string, password: string): Promise<void> {
     console.log('- performing login...')
+    console.log(`CI DEBUG: Target email to fill: "${email}"`)
+    console.log(`CI DEBUG: Browser context: ${process.env.CI ? 'CI' : 'LOCAL'}`)
 
     // Use relative URL - Playwright will use the configured baseURL
     await this.page.goto('/auth/signin', {
@@ -102,31 +104,106 @@ export class LoginPage extends BasePage {
     const emailLocator = this.emailInput
     await expect(emailLocator).toBeVisible({ timeout: 3000 })
 
+    // CI DEBUG: Check initial state
+    const initialValue = await emailLocator.inputValue()
+    console.log(`CI DEBUG: Initial email input value: "${initialValue}"`)
+
     // For React controlled inputs, try clearing first then typing
+    console.log(`CI DEBUG: Clearing email field...`)
     await emailLocator.clear()
+
+    // CI DEBUG: Verify clear worked
+    const valueAfterClear = await emailLocator.inputValue()
+    console.log(`CI DEBUG: Email value after clear: "${valueAfterClear}"`)
+
     await this.page.waitForTimeout(100) // Brief pause after clear
 
     // Try different approaches for filling in case of React controlled inputs
     try {
+      console.log(`CI DEBUG: Attempting to fill with standard fill()...`)
       // Method 1: Standard fill
       await emailLocator.fill(email || '')
+
+      // CI DEBUG: Immediate check after fill
+      const immediateValueAfterFill = await emailLocator.inputValue()
+      console.log(`CI DEBUG: IMMEDIATE value after fill: "${immediateValueAfterFill}"`)
+
+      // CI DEBUG: Wait a bit and check again (React might update state)
+      await this.page.waitForTimeout(200)
+      const delayedValueAfterFill = await emailLocator.inputValue()
+      console.log(
+        `CI DEBUG: DELAYED value after fill (200ms): "${delayedValueAfterFill}"`
+      )
 
       // Check if standard fill worked
       const valueAfterFill = await emailLocator.inputValue()
 
       if (valueAfterFill !== email) {
+        console.log(`CI DEBUG: Standard fill failed, trying pressSequentially...`)
+
         // Method 2: Clear and type sequentially (better for React)
         await emailLocator.clear()
+        console.log(`CI DEBUG: Cleared before pressSequentially`)
+
         await emailLocator.pressSequentially(email, { delay: 50 })
+        console.log(`CI DEBUG: Completed pressSequentially`)
+
+        // CI DEBUG: Check value after pressSequentially
+        const valueAfterSequential = await emailLocator.inputValue()
+        console.log(
+          `CI DEBUG: Value after pressSequentially: "${valueAfterSequential}"`
+        )
+
+        // CI DEBUG: Wait and check again
+        await this.page.waitForTimeout(200)
+        const delayedValueAfterSequential = await emailLocator.inputValue()
+        console.log(
+          `CI DEBUG: DELAYED value after pressSequentially (200ms): "${delayedValueAfterSequential}"`
+        )
       }
     } catch (error) {
+      console.log(`CI DEBUG: Error during email fill: ${error}`)
       throw error
     }
+
+    // CI DEBUG: Final check before verification
+    const preVerificationValue = await emailLocator.inputValue()
+    console.log(`CI DEBUG: Pre-verification email value: "${preVerificationValue}"`)
 
     // Verify email was filled correctly using the same locator we filled
     const actualEmail = await emailLocator.inputValue()
 
     if (actualEmail !== email) {
+      // CI DEBUG: Extended debugging for failure case
+      console.log(`CI DEBUG: EMAIL FILL VERIFICATION FAILED!`)
+      console.log(`CI DEBUG: Expected: "${email}"`)
+      console.log(`CI DEBUG: Actual: "${actualEmail}"`)
+
+      // Check input properties
+      const isDisabled = await emailLocator.isDisabled()
+      const isEditable = await emailLocator.isEditable()
+      const isVisible = await emailLocator.isVisible()
+      const readonly = await emailLocator.getAttribute('readonly')
+      const inputType = await emailLocator.getAttribute('type')
+      const inputName = await emailLocator.getAttribute('name')
+
+      console.log(
+        `CI DEBUG: Input state - disabled: ${isDisabled}, editable: ${isEditable}, visible: ${isVisible}`
+      )
+      console.log(
+        `CI DEBUG: Input attrs - readonly: ${readonly}, type: ${inputType}, name: ${inputName}`
+      )
+
+      // Try one more fill attempt with detailed logging
+      console.log(`CI DEBUG: Attempting recovery fill...`)
+      await emailLocator.clear()
+      await this.page.waitForTimeout(100)
+      await emailLocator.fill(email)
+      await this.page.waitForTimeout(300)
+
+      const recoveryValue = await emailLocator.inputValue()
+      console.log(`CI DEBUG: Recovery fill result: "${recoveryValue}"`)
+
       throw new Error(
         `Email field truncated. Expected: "${email}", Got: "${actualEmail}"`
       )
@@ -136,12 +213,20 @@ export class LoginPage extends BasePage {
     const passcode = this.page.locator('input[name="password"]')
     await expect(passcode).toBeVisible({ timeout: 3000 })
 
+    console.log(`CI DEBUG: Filling password field...`)
     await this.page.waitForTimeout(100) // Brief pause after clear
     await passcode.fill(password || '')
+
+    // CI DEBUG: Check password fill
+    const passwordValue = await passcode.inputValue()
+    console.log(`CI DEBUG: Password filled, length: ${passwordValue.length}`)
 
     // Verify password was filled correctly
     const actualPassword = await this.passwordInput.inputValue()
     if (actualPassword !== password) {
+      console.log(
+        `CI DEBUG: Password verification failed - Expected length: ${password.length}, Got length: ${actualPassword.length}`
+      )
       throw new Error(
         `Password field truncated. Expected: "${password}", Got: "${actualPassword}"`
       )
@@ -150,9 +235,33 @@ export class LoginPage extends BasePage {
 
     await this.page.waitForTimeout(100) // wait for any async effects
 
+    // CI DEBUG: Final pre-submit verification
+    console.log(`CI DEBUG: Pre-submit verification...`)
+    const finalEmailCheck = await this.emailInput.inputValue()
+    const finalPasswordCheck = await this.passwordInput.inputValue()
+    console.log(`CI DEBUG: Final email value: "${finalEmailCheck}"`)
+    console.log(`CI DEBUG: Final password length: ${finalPasswordCheck.length}`)
+
     // Final verification that both fields are correctly filled
-    await expect(this.emailInput).toHaveValue(email)
-    await expect(this.passwordInput).toHaveValue(password)
+    try {
+      await expect(this.emailInput).toHaveValue(email)
+      console.log(`CI DEBUG: Email verification passed`)
+    } catch (error) {
+      console.log(`CI DEBUG: EMAIL VERIFICATION FAILED at final check!`)
+      const failureValue = await this.emailInput.inputValue()
+      console.log(
+        `CI DEBUG: Failed verification - expected: "${email}", got: "${failureValue}"`
+      )
+      throw error
+    }
+
+    try {
+      await expect(this.passwordInput).toHaveValue(password)
+      console.log(`CI DEBUG: Password verification passed`)
+    } catch (error) {
+      console.log(`CI DEBUG: PASSWORD VERIFICATION FAILED at final check!`)
+      throw error
+    }
 
     // Wait for button to be enabled
     await expect(this.signInButton).toBeEnabled()

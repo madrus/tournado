@@ -200,7 +200,7 @@ export function TeamForm({
             </div>
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
-              <div className='flex justify-center lg:justify-start'>
+              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
                 <ActionButton
                   onClick={onDelete}
                   icon='delete'
@@ -693,43 +693,45 @@ export function TeamForm({
         ) : null}
 
         {/* Submit and Action Buttons */}
-        <div className='flex flex-col gap-4 md:flex-row md:justify-end'>
-          {onCancel ? (
+        <div className='flex justify-end rtl:justify-start'>
+          <div className='flex gap-4'>
+            {onCancel ? (
+              <ActionButton
+                type='button'
+                onClick={onCancel}
+                variant='outline'
+                color='red'
+              >
+                <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+                {t('common.actions.reset')}
+              </ActionButton>
+            ) : null}
+            {isPublicSuccess ? (
+              <ActionLinkButton
+                to='/teams/new'
+                variant='emerald'
+                icon='add'
+                label={t('teams.form.createAnotherTeam')}
+              />
+            ) : null}
             <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='outline'
+              type='submit'
+              variant='solid'
               color='red'
+              icon='check_circle'
+              aria-label={t('common.actions.save')}
+              disabled={
+                isSubmitting ||
+                isPublicSuccess ||
+                !isFormReadyForSubmission() ||
+                (mode === 'edit' && !isDirty())
+              }
             >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
+              {isSubmitting
+                ? t('common.actions.saving')
+                : submitButtonText || t('common.actions.save')}
             </ActionButton>
-          ) : null}
-          {isPublicSuccess ? (
-            <ActionLinkButton
-              to='/teams/new'
-              variant='emerald'
-              icon='add'
-              label={t('teams.form.createAnotherTeam')}
-            />
-          ) : null}
-          <ActionButton
-            type='submit'
-            variant='solid'
-            color='red'
-            icon='check_circle'
-            aria-label={t('common.actions.save')}
-            disabled={
-              isSubmitting ||
-              isPublicSuccess ||
-              !isFormReadyForSubmission() ||
-              (mode === 'edit' && !isDirty())
-            }
-          >
-            {isSubmitting
-              ? t('common.actions.saving')
-              : submitButtonText || t('common.actions.save')}
-          </ActionButton>
+          </div>
         </div>
       </Form>
     </div>

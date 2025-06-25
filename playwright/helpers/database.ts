@@ -63,23 +63,10 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-// Create admin user for tests with unique email
-export async function createAdminUser(): Promise<User> {
-  const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
-
-  console.log(`- creating admin user ${adminEmail}`)
-  return await createUser({
-    firstName: 'Test',
-    lastName: 'Admin',
-    email: adminEmail,
-    role: 'ADMIN', // Ensure this is set to ADMIN role
-    password: 'MyReallyStr0ngPassw0rd!!!',
-  })
-}
-
 // Create regular user for tests (non-admin authenticated user)
 export const createRegularUser = async (): Promise<{ email: string; role: string }> => {
   const email = `user-${faker.string.alphanumeric(8)}@example.com`
+
   const user = await createUser({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
@@ -92,6 +79,21 @@ export const createRegularUser = async (): Promise<{ email: string; role: string
     email: user.email,
     role: 'TOURNAMENT_MANAGER',
   }
+}
+
+// Create admin user for tests with unique email
+export async function createAdminUser(): Promise<User> {
+  const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
+
+  console.log(`- creating admin user ${adminEmail}`)
+
+  return await createUser({
+    firstName: 'Test',
+    lastName: 'Admin',
+    email: adminEmail,
+    role: 'ADMIN', // Ensure this is set to ADMIN role
+    password: 'MyReallyStr0ngPassw0rd!!!',
+  })
 }
 
 // Cleanup user by email (for test cleanup)

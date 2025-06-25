@@ -60,7 +60,7 @@ export class LoginPage extends BasePage {
     // Debug: Check if button is enabled and not covered
     const isEnabled = await userMenuButton.isEnabled()
     const boundingBox = await userMenuButton.boundingBox()
-    console.log(`- menu button enabled: ${isEnabled}, boundingBox:`, boundingBox)
+    console.log(`- menu button enabled: ${isEnabled}`)
 
     // Try multiple click approaches since normal clicks aren't working
     try {
@@ -98,60 +98,18 @@ export class LoginPage extends BasePage {
     // Wait for page to stabilize
     await this.page.waitForLoadState('domcontentloaded')
 
-    // Fill credentials with verification and retry logic
+    // Fill credentials using clean approach
     console.log('- filling credentials...')
 
-    // Fill email with retry logic
-    let emailRetries = 3
-    while (emailRetries > 0) {
-      await this.emailInput.click()
-      await this.emailInput.clear()
-      await this.page.waitForTimeout(100) // Allow clear to complete
-      await this.emailInput.pressSequentially(email, { delay: 25 })
+    await this.emailInput.clear()
+    await this.emailInput.fill(email)
+    await this.emailInput.blur()
 
-      // Verify immediately after filling
-      const currentEmailValue = await this.emailInput.inputValue()
-      if (currentEmailValue === email) {
-        break // Success
-      }
+    await this.passwordInput.clear()
+    await this.passwordInput.fill(password)
+    await this.passwordInput.blur()
 
-      console.log(
-        `- email fill attempt failed. Expected: "${email}", Got: "${currentEmailValue}". Retries left: ${emailRetries - 1}`
-      )
-      emailRetries--
-      if (emailRetries === 0) {
-        throw new Error(
-          `Failed to fill email field after 3 attempts. Expected: "${email}", Got: "${currentEmailValue}"`
-        )
-      }
-      await this.page.waitForTimeout(200) // Wait before retry
-    }
-
-    // Fill password with retry logic
-    let passwordRetries = 3
-    while (passwordRetries > 0) {
-      await this.passwordInput.click()
-      await this.passwordInput.clear()
-      await this.page.waitForTimeout(100) // Allow clear to complete
-      await this.passwordInput.pressSequentially(password, { delay: 25 })
-
-      // Verify immediately after filling
-      const currentPasswordValue = await this.passwordInput.inputValue()
-      if (currentPasswordValue === password) {
-        break // Success
-      }
-
-      console.log(
-        `- password fill attempt failed. Expected: "${password}", Got: "${currentPasswordValue}". Retries left: ${passwordRetries - 1}`
-      )
-      passwordRetries--
-      if (passwordRetries === 0) {
-        throw new Error(
-          `Failed to fill password field after 3 attempts. Expected: "${password}", Got: "${currentPasswordValue}"`
-        )
-      }
-      await this.page.waitForTimeout(200) // Wait before retry
-    }
+    await this.page.waitForTimeout(100) // wait for any async effects
 
     // Final verification that both fields are correctly filled
     await expect(this.emailInput).toHaveValue(email)

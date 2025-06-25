@@ -140,14 +140,12 @@ test.describe('Authentication', () => {
     await expect(page.locator('#email')).toHaveValue(signinForm.email)
     await expect(page.locator('#password')).toHaveValue(signinForm.password)
 
-    // Click sign in button using Dutch text "Inloggen"
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
-    ])
+    // Click sign in button
+    await loginButton.click()
+    console.log('- login button clicked')
 
     // Double-check we're on the correct page
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 3000 })
 
     // Screenshot: After successful sign-in
     await page.screenshot({
@@ -249,18 +247,9 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
-    // Click the login button and wait for navigation to complete
-    console.log('- clicking login button...')
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      (async () => {
-        console.log('- about to click login button')
-        await loginButton.click({ force: true })
-        console.log('- login button clicked')
-        await page.waitForTimeout(1000) // Give time to see the click effect
-      })(),
-    ])
-    console.log('- navigation completed to admin panel')
+    // Click sign in button
+    await loginButton.click()
+    console.log('- login button clicked')
 
     // Screenshot: After successful login
     await page.screenshot({
@@ -269,7 +258,7 @@ test.describe('Authentication', () => {
     })
 
     // Double-check we're on the correct page
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 3000 })
 
     // Wait for the page to fully load and auth store to hydrate
     await page.waitForLoadState('networkidle')
@@ -358,11 +347,11 @@ test.describe('Authentication', () => {
 
     // Fields already verified after blur() - proceed with submission
 
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
-    ])
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
+    // Click sign in button
+    await loginButton.click()
+    console.log('- login button clicked')
+
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 3000 })
 
     // Try to access signin page while authenticated
     await page.goto('/auth/signin')
@@ -431,11 +420,11 @@ test.describe('Authentication', () => {
 
     // Fields already verified after blur() - proceed with submission
 
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
-    ])
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
+    // Click sign in button
+    await loginButton.click()
+    console.log('- login button clicked')
+
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 3000 })
 
     // Navigate to teams page
     await page.goto('/teams')

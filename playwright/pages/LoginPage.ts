@@ -11,8 +11,6 @@ export class LoginPage extends BasePage {
 
   constructor(protected override page: Page) {
     super(page)
-
-    // Dutch-specific locators (based on your app)
     this.emailInput = page.locator('#email')
     this.passwordInput = page.locator('#password')
     this.signInButton = page.getByRole('button', { name: 'Inloggen' }) // Dutch text
@@ -59,7 +57,6 @@ export class LoginPage extends BasePage {
 
     // Debug: Check if button is enabled and not covered
     const isEnabled = await userMenuButton.isEnabled()
-    const boundingBox = await userMenuButton.boundingBox()
     console.log(`- menu button enabled: ${isEnabled}`)
 
     // Try multiple click approaches since normal clicks aren't working

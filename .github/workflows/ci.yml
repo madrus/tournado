@@ -231,11 +231,11 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": ${{
+              "text": "${{
                 (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
                   && format('CI was skipped for the {0} environment because there were no new changes in the code.',
                     github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
-                  || format('*GitHub Action build result*: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
+                  || format('GitHub Action build result: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
                     (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
                     github.ref_name,
                     github.actor,
@@ -243,13 +243,13 @@ jobs:
                     github.repository,
                     github.sha
                   )
-              }},
+              }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ${{
+                    "text": "${{
                       (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
                         && format('CI was skipped for the {0} environment because there were no new changes in the code.',
                           github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
@@ -264,7 +264,7 @@ jobs:
                           github.sha,
                           github.run_id
                         )
-                    }}
+                    }}"
                   }
                 }
               ]

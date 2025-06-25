@@ -18,6 +18,7 @@
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)
+   - [Playwright Guide](testing/playwright_guide.md)
    - [Vitest MCP Server](testing/vitest_mcp.md)
    - [Troubleshooting](testing/troubleshooting.md)
 - Deployment

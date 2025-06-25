@@ -39,6 +39,8 @@ pnpm test:e2e:dev
 pnpm test:e2e:all
 ```
 
+[📖 **Comprehensive Playwright Guide**](playwright_guide.md) - Complete guide to our Playwright setup with authentication contexts and Page Object Model
+
 ### Unit Tests
 
 ```sh
@@ -117,11 +119,22 @@ app/utils/
 
 playwright/
   ├── tests/                   # End-to-end tests
-  ├── fixtures/                # Test fixtures
+  │   ├── auth.spec.ts         # Authentication flow tests (no-auth project)
+  │   ├── admin-*.spec.ts      # Admin feature tests (admin-authenticated project)
+  │   ├── user-authorization.spec.ts # User permission tests (user-authenticated project)
+  │   └── *.spec.ts            # Public access tests (no-auth project)
+  ├── pages/                   # Page object models
+  │   ├── BasePage.ts          # Common page functionality
+  │   ├── HomePage.ts          # Homepage interactions
+  │   ├── LoginPage.ts         # Authentication flows
+  │   └── SignupPage.ts        # Registration flows
   ├── helpers/                 # Playwright helper functions
-  │   ├── database.ts          # Database operations for tests
-  │   └── global-setup.ts      # Global authentication setup
-  └── pages/                   # Page object models
+  │   ├── database.ts          # Test user creation/cleanup
+  │   ├── global-setup.ts      # Authentication context setup
+  │   └── test-utils.ts        # Common test utilities
+  └── .auth/                   # Authentication contexts (generated)
+      ├── admin-auth.json      # Admin user session
+      └── user-auth.json       # Regular user session
 ```
 
 ### Test File Guidelines
@@ -151,6 +164,14 @@ test.describe('Authentication', () => {
 })
 ```
 
+**Key Features:**
+
+- **Authentication Contexts**: Pre-authenticated admin and user contexts for fast test execution
+- **Page Object Model**: Structured, reusable page interactions
+- **Smart Test Organization**: Three projects (admin-authenticated, user-authenticated, no-auth)
+- **Dutch Language Support**: Tests work with Dutch UI text
+- **Mobile-First Testing**: Consistent mobile viewport testing
+
 ### Unit Tests
 
 Use Vitest for testing individual components and utilities:
@@ -171,19 +192,21 @@ test('renders button with correct text', () => {
 ### Authentication Helpers
 
 ```ts
-import { cleanupUser, createAdminUser } from '../helpers/database'
+import { createAdminUser, createRegularUser } from '../helpers/database'
+import { LoginPage } from '../pages/LoginPage'
 
-// Create and use test users
+// Create and use test users for auth flow tests
 test('admin feature', async ({ page }) => {
    const user = await createAdminUser()
+   const loginPage = new LoginPage(page)
+   await loginPage.login(user.email, 'MyReallyStr0ngPassw0rd!!!')
    // Test logic here...
-   await cleanupUser(user.email)
 })
 
 // Tests can also use pre-authenticated state via projects:
-// - admin-authenticated: Uses global auth state
-// - public-no-auth: No authentication
-// - auth-flows: For testing login/signup flows
+// - admin-authenticated: Uses admin-auth.json (for admin features)
+// - user-authenticated: Uses user-auth.json (for user permissions)
+// - no-auth: No authentication (for auth flows & public access)
 ```
 
 ## Best Practices

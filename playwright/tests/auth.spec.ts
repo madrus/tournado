@@ -39,6 +39,18 @@ test.describe('Authentication', () => {
     await firstNameField.fill(signinForm.firstName)
     await firstNameField.blur()
 
+    // Verify firstName was filled correctly
+    const actualFirstName = await firstNameField.inputValue()
+    if (actualFirstName !== signinForm.firstName) {
+      console.log(
+        `- firstName field mismatch. Expected: "${signinForm.firstName}", Got: "${actualFirstName}"`
+      )
+      throw new Error(
+        `FirstName field truncated. Expected: "${signinForm.firstName}", Got: "${actualFirstName}"`
+      )
+    }
+    console.log(`- firstName filled successfully: "${actualFirstName}"`)
+
     // Fill other fields normally
     await page.locator('#lastName').fill(signinForm.lastName)
     await page.locator('#email').fill(signinForm.email)
@@ -74,9 +86,33 @@ test.describe('Authentication', () => {
     await emailField.fill(signinForm.email)
     await emailField.blur()
 
+    // Verify email was filled correctly
+    const actualEmail = await emailField.inputValue()
+    if (actualEmail !== signinForm.email) {
+      console.log(
+        `- email field mismatch. Expected: "${signinForm.email}", Got: "${actualEmail}"`
+      )
+      throw new Error(
+        `Email field truncated. Expected: "${signinForm.email}", Got: "${actualEmail}"`
+      )
+    }
+    console.log(`- email filled successfully: "${actualEmail}"`)
+
     await passwordField.clear()
     await passwordField.fill(signinForm.password)
     await passwordField.blur()
+
+    // Verify password was filled correctly
+    const actualPassword = await passwordField.inputValue()
+    if (actualPassword !== signinForm.password) {
+      console.log(
+        `- password field mismatch. Expected: "${signinForm.password}", Got: "${actualPassword}"`
+      )
+      throw new Error(
+        `Password field truncated. Expected: "${signinForm.password}", Got: "${actualPassword}"`
+      )
+    }
+    console.log(`- password filled successfully`)
 
     await page.waitForTimeout(100) // wait for any async effects
 
@@ -159,9 +195,33 @@ test.describe('Authentication', () => {
     await emailField.fill(testUser.email)
     await emailField.blur()
 
+    // Verify email was filled correctly
+    const actualEmail = await emailField.inputValue()
+    if (actualEmail !== testUser.email) {
+      console.log(
+        `- email field mismatch. Expected: "${testUser.email}", Got: "${actualEmail}"`
+      )
+      throw new Error(
+        `Email field truncated. Expected: "${testUser.email}", Got: "${actualEmail}"`
+      )
+    }
+    console.log(`- email filled successfully: "${actualEmail}"`)
+
     await passwordField.clear()
     await passwordField.fill('MyReallyStr0ngPassw0rd!!!')
     await passwordField.blur()
+
+    // Verify password was filled correctly
+    const actualPassword = await passwordField.inputValue()
+    if (actualPassword !== 'MyReallyStr0ngPassw0rd!!!') {
+      console.log(
+        `- password field mismatch. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+      throw new Error(
+        `Password field truncated. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+    }
+    console.log(`- password filled successfully`)
 
     await page.waitForTimeout(100) // wait for any async effects
 
@@ -258,9 +318,33 @@ test.describe('Authentication', () => {
     await emailField.fill(user.email)
     await emailField.blur()
 
+    // Verify email was filled correctly
+    const actualEmail = await emailField.inputValue()
+    if (actualEmail !== user.email) {
+      console.log(
+        `- email field mismatch. Expected: "${user.email}", Got: "${actualEmail}"`
+      )
+      throw new Error(
+        `Email field truncated. Expected: "${user.email}", Got: "${actualEmail}"`
+      )
+    }
+    console.log(`- email filled successfully: "${actualEmail}"`)
+
     await passwordField.clear()
     await passwordField.fill('MyReallyStr0ngPassw0rd!!!')
     await passwordField.blur()
+
+    // Verify password was filled correctly
+    const actualPassword = await passwordField.inputValue()
+    if (actualPassword !== 'MyReallyStr0ngPassw0rd!!!') {
+      console.log(
+        `- password field mismatch. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+      throw new Error(
+        `Password field truncated. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+    }
+    console.log(`- password filled successfully`)
 
     await page.waitForTimeout(100) // wait for any async effects
 
@@ -311,9 +395,33 @@ test.describe('Authentication', () => {
     await emailField.fill(user.email)
     await emailField.blur()
 
+    // Verify email was filled correctly
+    const actualEmail = await emailField.inputValue()
+    if (actualEmail !== user.email) {
+      console.log(
+        `- email field mismatch. Expected: "${user.email}", Got: "${actualEmail}"`
+      )
+      throw new Error(
+        `Email field truncated. Expected: "${user.email}", Got: "${actualEmail}"`
+      )
+    }
+    console.log(`- email filled successfully: "${actualEmail}"`)
+
     await passwordField.clear()
     await passwordField.fill('MyReallyStr0ngPassw0rd!!!')
     await passwordField.blur()
+
+    // Verify password was filled correctly
+    const actualPassword = await passwordField.inputValue()
+    if (actualPassword !== 'MyReallyStr0ngPassw0rd!!!') {
+      console.log(
+        `- password field mismatch. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+      throw new Error(
+        `Password field truncated. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${actualPassword}"`
+      )
+    }
+    console.log(`- password filled successfully`)
 
     await page.waitForTimeout(100) // wait for any async effects
 

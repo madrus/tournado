@@ -243,20 +243,65 @@ test.describe('Authentication', () => {
 
     await page.goto('/auth/signin')
 
-    // Use deliberate field filling to prevent clearing issues
-    await page.locator('#email').click()
-    await page.locator('#email').clear()
-    await page.locator('#email').pressSequentially(user.email, { delay: 50 })
+    // Use deliberate field filling with verification and retry
+    const emailField = page.locator('#email')
+    const passwordField = page.locator('#password')
 
-    await page.locator('#password').click()
-    await page.locator('#password').clear()
-    await page
-      .locator('#password')
-      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+    // Fill email with retry logic
+    let emailRetries = 3
+    while (emailRetries > 0) {
+      await emailField.click()
+      await emailField.clear()
+      await page.waitForTimeout(100) // Allow clear to complete
+      await emailField.pressSequentially(user.email, { delay: 50 })
 
-    // Ensure form is ready and fields are properly filled
-    await expect(page.locator('#email')).toHaveValue(user.email)
-    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+      // Verify immediately after filling
+      const currentEmailValue = await emailField.inputValue()
+      if (currentEmailValue === user.email) {
+        break // Success
+      }
+
+      console.log(
+        `Email fill attempt failed. Expected: "${user.email}", Got: "${currentEmailValue}". Retries left: ${emailRetries - 1}`
+      )
+      emailRetries--
+      if (emailRetries === 0) {
+        throw new Error(
+          `Failed to fill email field after 3 attempts. Expected: "${user.email}", Got: "${currentEmailValue}"`
+        )
+      }
+      await page.waitForTimeout(200) // Wait before retry
+    }
+
+    // Fill password with retry logic
+    let passwordRetries = 3
+    while (passwordRetries > 0) {
+      await passwordField.click()
+      await passwordField.clear()
+      await page.waitForTimeout(100) // Allow clear to complete
+      await passwordField.pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+
+      // Verify immediately after filling
+      const currentPasswordValue = await passwordField.inputValue()
+      if (currentPasswordValue === 'MyReallyStr0ngPassw0rd!!!') {
+        break // Success
+      }
+
+      console.log(
+        `Password fill attempt failed. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${currentPasswordValue}". Retries left: ${passwordRetries - 1}`
+      )
+      passwordRetries--
+      if (passwordRetries === 0) {
+        throw new Error(
+          `Failed to fill password field after 3 attempts. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${currentPasswordValue}"`
+        )
+      }
+      await page.waitForTimeout(200) // Wait before retry
+    }
+
+    // Final verification that both fields are correctly filled
+    await expect(emailField).toHaveValue(user.email)
+    await expect(passwordField).toHaveValue('MyReallyStr0ngPassw0rd!!!')
 
     // Wait for the login button to be enabled and ready
     const loginButton = page.getByRole('button', { name: 'Inloggen' })
@@ -293,20 +338,65 @@ test.describe('Authentication', () => {
 
     await page.goto('/auth/signin')
 
-    // Use deliberate field filling to prevent clearing issues
-    await page.locator('#email').click()
-    await page.locator('#email').clear()
-    await page.locator('#email').pressSequentially(user.email, { delay: 50 })
+    // Use deliberate field filling with verification and retry
+    const emailField = page.locator('#email')
+    const passwordField = page.locator('#password')
 
-    await page.locator('#password').click()
-    await page.locator('#password').clear()
-    await page
-      .locator('#password')
-      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+    // Fill email with retry logic
+    let emailRetries = 3
+    while (emailRetries > 0) {
+      await emailField.click()
+      await emailField.clear()
+      await page.waitForTimeout(100) // Allow clear to complete
+      await emailField.pressSequentially(user.email, { delay: 50 })
 
-    // Ensure form is ready and fields are properly filled
-    await expect(page.locator('#email')).toHaveValue(user.email)
-    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+      // Verify immediately after filling
+      const currentEmailValue = await emailField.inputValue()
+      if (currentEmailValue === user.email) {
+        break // Success
+      }
+
+      console.log(
+        `Email fill attempt failed. Expected: "${user.email}", Got: "${currentEmailValue}". Retries left: ${emailRetries - 1}`
+      )
+      emailRetries--
+      if (emailRetries === 0) {
+        throw new Error(
+          `Failed to fill email field after 3 attempts. Expected: "${user.email}", Got: "${currentEmailValue}"`
+        )
+      }
+      await page.waitForTimeout(200) // Wait before retry
+    }
+
+    // Fill password with retry logic
+    let passwordRetries = 3
+    while (passwordRetries > 0) {
+      await passwordField.click()
+      await passwordField.clear()
+      await page.waitForTimeout(100) // Allow clear to complete
+      await passwordField.pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+
+      // Verify immediately after filling
+      const currentPasswordValue = await passwordField.inputValue()
+      if (currentPasswordValue === 'MyReallyStr0ngPassw0rd!!!') {
+        break // Success
+      }
+
+      console.log(
+        `Password fill attempt failed. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${currentPasswordValue}". Retries left: ${passwordRetries - 1}`
+      )
+      passwordRetries--
+      if (passwordRetries === 0) {
+        throw new Error(
+          `Failed to fill password field after 3 attempts. Expected: "MyReallyStr0ngPassw0rd!!!", Got: "${currentPasswordValue}"`
+        )
+      }
+      await page.waitForTimeout(200) // Wait before retry
+    }
+
+    // Final verification that both fields are correctly filled
+    await expect(emailField).toHaveValue(user.email)
+    await expect(passwordField).toHaveValue('MyReallyStr0ngPassw0rd!!!')
 
     // Wait for the login button to be enabled and ready
     const loginButton = page.getByRole('button', { name: 'Inloggen' })

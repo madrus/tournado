@@ -98,39 +98,50 @@ export class LoginPage extends BasePage {
     // Fill credentials using approach compatible with controlled inputs
     console.log('- filling credentials...')
 
-    // For React controlled inputs, use pressSequentially to simulate real typing
-    // await this.emailInput.click()
-    // await this.emailInput.clear()
-    const login = this.page.locator('input[name="email"]')
-    await expect(login).toBeVisible({ timeout: 10000 })
-    await this.page.waitForTimeout(100) // Brief pause after clear
-    await login.fill(email || '')
-    // await this.emailInput.pressSequentially(email, { delay: 20 })
+    // Use the primary locator defined in constructor for consistency
+    const emailLocator = this.emailInput
+    await expect(emailLocator).toBeVisible({ timeout: 3000 })
 
-    // Verify email was filled correctly
-    const actualEmail = await this.emailInput.inputValue()
+    // For React controlled inputs, try clearing first then typing
+    await emailLocator.clear()
+    await this.page.waitForTimeout(100) // Brief pause after clear
+
+    // Try different approaches for filling in case of React controlled inputs
+    try {
+      // Method 1: Standard fill
+      await emailLocator.fill(email || '')
+
+      // Check if standard fill worked
+      const valueAfterFill = await emailLocator.inputValue()
+
+      if (valueAfterFill !== email) {
+        // Method 2: Clear and type sequentially (better for React)
+        await emailLocator.clear()
+        await emailLocator.pressSequentially(email, { delay: 50 })
+      }
+    } catch (error) {
+      throw error
+    }
+
+    // Verify email was filled correctly using the same locator we filled
+    const actualEmail = await emailLocator.inputValue()
+
     if (actualEmail !== email) {
-      console.log(`- email field mismatch. Expected: "${email}", Got: "${actualEmail}"`)
       throw new Error(
         `Email field truncated. Expected: "${email}", Got: "${actualEmail}"`
       )
     }
     console.log(`- email filled successfully: "${actualEmail}"`)
 
-    // await this.passwordInput.click()
-    // await this.passwordInput.clear()
     const passcode = this.page.locator('input[name="password"]')
-    await expect(passcode).toBeVisible({ timeout: 10000 })
+    await expect(passcode).toBeVisible({ timeout: 3000 })
+
     await this.page.waitForTimeout(100) // Brief pause after clear
     await passcode.fill(password || '')
-    // await this.passwordInput.pressSequentially(password, { delay: 20 })
 
     // Verify password was filled correctly
     const actualPassword = await this.passwordInput.inputValue()
     if (actualPassword !== password) {
-      console.log(
-        `- password field mismatch. Expected: "${password}", Got: "${actualPassword}"`
-      )
       throw new Error(
         `Password field truncated. Expected: "${password}", Got: "${actualPassword}"`
       )

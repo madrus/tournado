@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { chromium, FullConfig } from '@playwright/test'
 
-import { cleanDatabase, createAdminUser } from './database'
+import { cleanDatabase, createAdminUser, createRegularUser } from './database'
 
 // Wait for server to be ready
 async function waitForServer(url: string, timeout = 60000): Promise<void> {
@@ -35,20 +35,59 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   // Clean database before starting tests
   await cleanDatabase()
 
-  // Create a browser instance for authentication
-  const browser = await chromium.launch()
-  const context = await browser.newContext({
+  const browserConfig = {
     viewport: { width: 375, height: 812 }, // Mobile viewport
     baseURL: serverUrl,
     extraHTTPHeaders: {
       'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for Playwright tests
     },
-  })
+  }
+
+  // Create browser instance for authentication
+  const browser = await chromium.launch()
+
+  try {
+    // Create admin user and save admin auth state
+    const adminUser = await createAdminUser()
+    await createAuthState(
+      browser,
+      browserConfig,
+      adminUser.email,
+      './playwright/.auth/admin-auth.json',
+      'admin'
+    )
+
+    // Create regular user and save regular user auth state
+    const regularUser = await createRegularUser()
+    await createAuthState(
+      browser,
+      browserConfig,
+      regularUser.email,
+      './playwright/.auth/user-auth.json',
+      'regular user'
+    )
+
+    console.log('- both authentication contexts created successfully')
+  } catch (error) {
+    console.error('- global setup failed:', error)
+    throw error
+  } finally {
+    await browser.close()
+  }
+}
+
+async function createAuthState(
+  browser: any,
+  browserConfig: any,
+  email: string,
+  authFilePath: string,
+  userType: string
+): Promise<void> {
+  const context = await browser.newContext(browserConfig)
   const page = await context.newPage()
 
   try {
-    // Create admin user
-    const adminUser = await createAdminUser()
+    console.log(`- creating ${userType} authentication context for ${email}`)
 
     // Navigate to signin page
     await page.goto('/auth/signin')
@@ -58,7 +97,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     await page.waitForTimeout(1000)
 
     // Fill out login form
-    await page.locator('#email').fill(adminUser.email)
+    await page.locator('#email').fill(email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
 
     // Wait for and click the Sign In button
@@ -70,22 +109,21 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
 
     // Save authentication state
-    await context.storageState({ path: './playwright/.auth/auth.json' })
+    await context.storageState({ path: authFilePath })
 
-    // Don't clean up the test user here - we need it to exist for the session to be valid
-    console.log(`Admin user ${adminUser.email} created for global authentication state`)
+    console.log(`- ${userType} authentication state saved to ${authFilePath}`)
   } catch (error) {
-    console.error('Global setup failed:', error)
+    console.error(`- ${userType} authentication setup failed:`, error)
 
     // Take a debug screenshot
     await page.screenshot({
-      path: './playwright/.auth/global-setup-error.png',
+      path: `./playwright/.auth/${userType}-setup-error.png`,
       fullPage: true,
     })
 
     throw error
   } finally {
-    await browser.close()
+    await context.close()
   }
 }
 

@@ -90,6 +90,7 @@ jobs:
           fi
         env:
           PORT: 8811
+          PLAYWRIGHT_TEST: true
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

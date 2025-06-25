@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 
+// Navigation Tests - PUBLIC ACCESS (no authentication needed for bottom navigation)
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page }) => {
     // Set mobile viewport for consistent testing

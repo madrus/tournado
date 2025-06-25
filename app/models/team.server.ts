@@ -2,6 +2,7 @@
 import type { Prisma, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import { sortTeams } from '~/lib/lib.helpers'
 import type { TeamWithLeaderFull } from '~/lib/lib.types'
 
 export type { Team } from '@prisma/client'
@@ -89,6 +90,26 @@ export const getAllTeamListItems = async (): Promise<
     },
     orderBy: { updatedAt: 'desc' },
   })
+
+export const getFilteredTeamListItems = async ({
+  tournamentId,
+}: {
+  tournamentId?: string
+} = {}): Promise<Array<Pick<Team, 'id' | 'clubName' | 'teamName' | 'category'>>> => {
+  const whereClause = tournamentId ? { tournamentId } : {}
+
+  const teams = await prisma.team.findMany({
+    where: whereClause,
+    select: {
+      id: true,
+      clubName: true,
+      teamName: true,
+      category: true,
+    },
+  })
+
+  return sortTeams(teams)
+}
 
 export const createTeam = async ({
   clubName,

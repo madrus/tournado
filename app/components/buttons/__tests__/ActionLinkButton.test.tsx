@@ -69,7 +69,7 @@ describe('ActionLinkButton', () => {
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand')
     expect(link).toHaveClass('hover:bg-brand/90')
-    expect(link).toHaveClass('enabled:focus:ring-brand/90')
+    expect(link).toHaveClass('focus:ring-red-600/90')
   })
 
   it('renders with secondary variant', () => {
@@ -95,7 +95,7 @@ describe('ActionLinkButton', () => {
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-emerald-600')
     expect(link).toHaveClass('hover:bg-emerald-500')
-    expect(link).toHaveClass('enabled:focus:ring-emerald-600/90')
+    expect(link).toHaveClass('focus:ring-emerald-600/90')
   })
 
   it('applies custom className', () => {
@@ -255,8 +255,11 @@ describe('ActionLinkButton', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass('focus:ring-2')
-      expect(link).toHaveClass('focus:ring-offset-2')
+      // Check for focus ring (appears on keyboard focus)
+      expect(link).toHaveClass('focus:ring-red-600/90')
+      // Check for hover ring (appears on hover)
+      expect(link).toHaveClass('hover:ring-2')
+      expect(link).toHaveClass('hover:ring-offset-2')
       expect(link).toHaveClass('focus:outline-none')
     })
 

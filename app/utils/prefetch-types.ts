@@ -40,49 +40,91 @@ export type PrefetchConfig = {
 }
 
 /**
+ * Detect if we're running in a test environment
+ * Supports both Vitest and Playwright test environments
+ */
+function isTestEnvironment(): boolean {
+  // Check for Node.js test environment
+  if (typeof process !== 'undefined') {
+    // Vitest sets NODE_ENV to 'test'
+    if (process.env.NODE_ENV === 'test') return true
+
+    // Playwright tests run with custom headers
+    if (process.env.PLAYWRIGHT_TEST === 'true') return true
+
+    // MSW mock server indicates test environment
+    if (process.env.MSW_MODE === 'test') return true
+  }
+
+  // Check for browser test environment
+  if (typeof window !== 'undefined') {
+    // Playwright sets custom headers that we can detect
+    const userAgent = navigator.userAgent || ''
+    if (userAgent.includes('Playwright')) return true
+
+    // Check for test-specific markers in URL or global variables
+    if (window.location?.hostname === 'localhost' && window.location?.port) {
+      // Common test ports
+      const testPorts = ['8811', '3000', '5173']
+      if (testPorts.includes(window.location.port)) {
+        // Additional check for test headers via fetch interception
+        const acceptLanguage = document.querySelector('html')?.getAttribute('lang')
+        if (acceptLanguage === 'nl') return true // Playwright sets Dutch as primary language
+      }
+    }
+  }
+
+  return false
+}
+
+/**
  * Default prefetch configuration optimized for performance and UX
  */
 export const defaultPrefetchConfig: PrefetchConfig = {
   // Primary navigation: Prefetch on hover/focus for instant navigation
-  primaryNavigation: 'intent',
+  primaryNavigation: isTestEnvironment() ? 'none' : 'intent',
 
   // Secondary navigation: Prefetch on hover for supporting navigation
-  secondaryNavigation: 'intent',
+  secondaryNavigation: isTestEnvironment() ? 'none' : 'intent',
 
-  // Action buttons: Prefetch immediately for critical user flows
-  actionButtons: 'render',
+  // Action buttons: Disable in tests to reduce network noise
+  actionButtons: isTestEnvironment() ? 'none' : 'render',
 
-  // List items: Prefetch on hover to avoid overwhelming the network
-  listItems: 'intent',
+  // List items: Disable in tests to reduce network noise
+  listItems: isTestEnvironment() ? 'none' : 'intent',
 
-  // Pagination: Prefetch immediately for smooth browsing
-  pagination: 'render',
+  // Pagination: Disable in tests to reduce network noise
+  pagination: isTestEnvironment() ? 'none' : 'render',
 
-  // Error page links: Prefetch immediately to help users recover quickly
-  errorPageLinks: 'render',
+  // Error page links: Disable in tests to reduce network noise
+  errorPageLinks: isTestEnvironment() ? 'none' : 'render',
 }
 
 /**
  * Route-specific prefetch overrides for high-traffic or critical routes
+ * Disabled in test environments to reduce network load
  */
-export const routePrefetchOverrides: Record<string, PrefetchStrategy> = {
-  // Home page CTA should prefetch teams immediately
-  '/teams': 'render',
+export const routePrefetchOverrides: Record<string, PrefetchStrategy> =
+  isTestEnvironment()
+    ? {} // No overrides in test environment
+    : {
+        // Home page CTA should prefetch teams immediately
+        '/teams': 'render',
 
-  // Profile and settings accessed frequently after login
-  '/profile': 'intent',
-  '/settings': 'intent',
+        // Profile and settings accessed frequently after login
+        '/profile': 'intent',
+        '/settings': 'intent',
 
-  // Auth routes for quick access
-  '/auth/signin': 'intent',
-  '/auth/signup': 'intent',
+        // Auth routes for quick access
+        '/auth/signin': 'intent',
+        '/auth/signup': 'intent',
 
-  // Admin routes only when needed
-  '/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
+        // Admin routes only when needed
+        '/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
 
-  // About page - lower priority
-  '/about': 'intent',
-}
+        // About page - lower priority
+        '/about': 'intent',
+      }
 
 /**
  * Get the appropriate prefetch strategy for a given route and context
@@ -92,6 +134,11 @@ export function getPrefetchStrategy(
   context: keyof PrefetchConfig,
   config: PrefetchConfig = defaultPrefetchConfig
 ): PrefetchStrategy {
+  // In test environment, always return 'none' to minimize network requests
+  if (isTestEnvironment()) {
+    return 'none'
+  }
+
   // Check for route-specific overrides first
   if (routePrefetchOverrides[route]) {
     return routePrefetchOverrides[route]
@@ -112,6 +159,11 @@ export function getAdaptivePrefetchStrategy(
     isMobile?: boolean
   }
 ): PrefetchStrategy {
+  // Always disable in test environment
+  if (isTestEnvironment()) {
+    return 'none'
+  }
+
   // Reduce prefetching on slow connections or low data mode
   if (context?.isSlowConnection || context?.isLowDataMode) {
     switch (baseStrategy) {

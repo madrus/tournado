@@ -200,15 +200,16 @@ export function TeamForm({
             </div>
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
-              <ActionButton
-                onClick={onDelete}
-                icon='delete'
-                variant='outline'
-                color='red'
-                className='lg:self-start'
-              >
-                {t('common.actions.delete')}
-              </ActionButton>
+              <div className='flex justify-center lg:justify-start'>
+                <ActionButton
+                  onClick={onDelete}
+                  icon='delete'
+                  variant='outline'
+                  color='red'
+                >
+                  {t('common.actions.delete')}
+                </ActionButton>
+              </div>
             ) : null}
           </div>
         </div>
@@ -699,7 +700,6 @@ export function TeamForm({
               onClick={onCancel}
               variant='outline'
               color='red'
-              className='min-w-32'
             >
               <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
               {t('common.actions.reset')}
@@ -719,7 +719,6 @@ export function TeamForm({
             color='red'
             icon='check_circle'
             aria-label={t('common.actions.save')}
-            className='min-w-32'
             disabled={
               isSubmitting ||
               isPublicSuccess ||

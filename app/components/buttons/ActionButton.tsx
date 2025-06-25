@@ -50,7 +50,7 @@ export function ActionButton({
   const baseClasses = cn(
     // Only use flex direction from chipClasses, not the padding
     rtl ? 'flex-row-reverse' : 'flex-row',
-    'inline-flex items-center justify-center rounded-lg font-semibold gap-2 min-h-12',
+    'inline-flex items-center justify-center rounded-lg font-semibold gap-2 min-h-12 min-w-32',
     'relative overflow-hidden transition-all duration-300 ease-out',
     'whitespace-nowrap',
     size === 'sm' ? 'py-2 px-3 text-sm' : 'py-2.5 px-4 text-sm',

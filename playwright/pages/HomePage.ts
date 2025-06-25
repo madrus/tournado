@@ -3,37 +3,42 @@ import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from './BasePage'
 
 export class HomePage extends BasePage {
-  private baseUrl: string
-
   constructor(protected override page: Page) {
     super(page)
-    this.baseUrl = 'http://localhost:5173'
   }
 
-  // Locators
+  // Locators - updated to match actual homepage
   get heroTitle(): Locator {
     return this.page.locator('h1').filter({ hasText: /tournado/i })
   }
 
   get heroDescription(): Locator {
+    // Updated to match actual content
     return this.page.locator('p').filter({ hasText: /manage your sports tournaments/i })
   }
 
   get viewTeamsButton(): Locator {
-    return this.page.getByRole('link', { name: /view teams/i })
+    // Updated to use Dutch text that's actually shown
+    return this.page.getByRole('link', { name: /teams bekijken/i })
   }
 
   get featuresSection(): Locator {
-    return this.page.locator('.bg-white').filter({ hasText: /features/i })
+    // Updated to match actual section structure
+    return this.page
+      .locator('.bg-white')
+      .filter({ hasText: /tournament management made easy/i })
   }
 
   get featuresTitle(): Locator {
-    return this.page.locator('h2').filter({ hasText: /features/i })
+    // Updated to match actual title
+    return this.page
+      .locator('h2')
+      .filter({ hasText: /tournament management made easy/i })
   }
 
   // Navigation methods
   async goto(): Promise<void> {
-    await this.page.goto(`${this.baseUrl}/`, {
+    await this.page.goto('/', {
       waitUntil: 'domcontentloaded',
       timeout: 15000,
     })

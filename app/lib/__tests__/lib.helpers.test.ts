@@ -8,6 +8,7 @@ import {
   getDivisionValues,
   isValidCategory,
   isValidDivision,
+  sortTeams,
   stringToCategory,
   stringToDivision,
   stringToDivisionValue,
@@ -545,6 +546,201 @@ describe('lib.helpers', () => {
     it('should return false for undefined input', () => {
       const result = isValidCategory(undefined as unknown as string | null)
       expect(result).toBe(false)
+    })
+  })
+
+  describe('sortTeams', () => {
+    const mockTeams = [
+      { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO12' },
+      { id: '2', clubName: 'Feyenoord', teamName: 'Team B', category: 'JO8' },
+      { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'JO10' },
+      { id: '4', clubName: 'PSV', teamName: 'Team D', category: 'MO8' },
+      { id: '5', clubName: 'Ajax', teamName: 'Team E', category: 'JO8' },
+      { id: '6', clubName: 'PSV', teamName: 'Team F', category: 'MO12' },
+      { id: '7', clubName: 'Feyenoord', teamName: 'Team G', category: 'JO12' },
+      { id: '8', clubName: 'Ajax', teamName: 'Team H' }, // No category
+      { id: '9', clubName: 'PSV', teamName: 'Team I', category: 'VETERANEN_35_PLUS' },
+    ]
+
+    describe('club name sorting', () => {
+      it('should sort teams primarily by club name alphabetically', () => {
+        const result = sortTeams(mockTeams)
+
+        // Extract club names to verify ordering
+        const clubNames = result.map(team => team.clubName)
+        expect(clubNames).toEqual([
+          'Ajax',
+          'Ajax',
+          'Ajax',
+          'Ajax', // All Ajax teams first
+          'Feyenoord',
+          'Feyenoord', // Then Feyenoord
+          'PSV',
+          'PSV',
+          'PSV', // Finally PSV
+        ])
+      })
+    })
+
+    describe('category sorting with numeric awareness', () => {
+      it('should sort JO categories numerically (JO8 before JO10 before JO12)', () => {
+        const ajaxTeams = mockTeams.filter(team => team.clubName === 'Ajax')
+        const result = sortTeams(ajaxTeams)
+
+        // Ajax teams should be ordered: JO8, JO10, JO12, then no category last
+        expect(result).toEqual([
+          expect.objectContaining({ teamName: 'Team E', category: 'JO8' }),
+          expect.objectContaining({ teamName: 'Team C', category: 'JO10' }),
+          expect.objectContaining({ teamName: 'Team A', category: 'JO12' }),
+          expect.objectContaining({ teamName: 'Team H' }), // No category (property not present)
+        ])
+      })
+
+      it('should sort different category prefixes alphabetically (JO before MO)', () => {
+        const psvTeams = mockTeams.filter(team => team.clubName === 'PSV')
+        const result = sortTeams(psvTeams)
+
+        expect(result).toEqual([
+          expect.objectContaining({ teamName: 'Team D', category: 'MO8' }),
+          expect.objectContaining({ teamName: 'Team F', category: 'MO12' }),
+          expect.objectContaining({
+            teamName: 'Team I',
+            category: 'VETERANEN_35_PLUS',
+          }),
+        ])
+      })
+
+      it('should handle teams without categories by placing them last', () => {
+        const teamsWithoutCategory = [
+          { id: '1', clubName: 'Ajax', teamName: 'Team Z', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', teamName: 'Team A' }, // No category
+          { id: '3', clubName: 'Ajax', teamName: 'Team B', category: 'JO10' },
+        ]
+
+        const result = sortTeams(teamsWithoutCategory)
+
+        expect(result).toEqual([
+          expect.objectContaining({ teamName: 'Team Z', category: 'JO8' }),
+          expect.objectContaining({ teamName: 'Team B', category: 'JO10' }),
+          expect.objectContaining({ teamName: 'Team A' }), // No category (property not present)
+        ])
+      })
+    })
+
+    describe('team name sorting', () => {
+      it('should sort by team name when club and category are the same', () => {
+        const sameClubCategory = [
+          { id: '1', clubName: 'Ajax', teamName: 'Team Z', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', teamName: 'Team A', category: 'JO8' },
+          { id: '3', clubName: 'Ajax', teamName: 'Team M', category: 'JO8' },
+        ]
+
+        const result = sortTeams(sameClubCategory)
+
+        expect(result.map(team => team.teamName)).toEqual([
+          'Team A',
+          'Team M',
+          'Team Z',
+        ])
+      })
+    })
+
+    describe('complex category formats', () => {
+      it('should handle complex category names with suffixes', () => {
+        const complexCategories = [
+          { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO12_A' },
+          { id: '2', clubName: 'Ajax', teamName: 'Team B', category: 'JO12_B' },
+          { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'JO8_A' },
+        ]
+
+        const result = sortTeams(complexCategories)
+
+        expect(result).toEqual([
+          expect.objectContaining({ category: 'JO8_A' }), // JO8 before JO12
+          expect.objectContaining({ category: 'JO12_A' }), // JO12_A before JO12_B (suffix sorting)
+          expect.objectContaining({ category: 'JO12_B' }),
+        ])
+      })
+
+      it('should handle non-numeric categories alphabetically', () => {
+        const nonNumericCategories = [
+          {
+            id: '1',
+            clubName: 'Ajax',
+            teamName: 'Team A',
+            category: 'VETERANEN_45_PLUS',
+          },
+          {
+            id: '2',
+            clubName: 'Ajax',
+            teamName: 'Team B',
+            category: 'VETERANEN_35_PLUS',
+          },
+          { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'AMATEUR' },
+        ]
+
+        const result = sortTeams(nonNumericCategories)
+
+        expect(result).toEqual([
+          expect.objectContaining({ category: 'AMATEUR' }), // Alphabetically first
+          expect.objectContaining({ category: 'VETERANEN_35_PLUS' }), // 35 before 45
+          expect.objectContaining({ category: 'VETERANEN_45_PLUS' }),
+        ])
+      })
+    })
+
+    describe('full integration sorting', () => {
+      it('should apply all sorting rules correctly in order', () => {
+        const result = sortTeams(mockTeams)
+
+        // Verify the complete expected order
+        expect(
+          result.map(team => ({
+            club: team.clubName,
+            name: team.teamName,
+            category: team.category || 'none',
+          }))
+        ).toEqual([
+          { club: 'Ajax', name: 'Team E', category: 'JO8' },
+          { club: 'Ajax', name: 'Team C', category: 'JO10' },
+          { club: 'Ajax', name: 'Team A', category: 'JO12' },
+          { club: 'Ajax', name: 'Team H', category: 'none' }, // No category last for Ajax
+          { club: 'Feyenoord', name: 'Team B', category: 'JO8' },
+          { club: 'Feyenoord', name: 'Team G', category: 'JO12' },
+          { club: 'PSV', name: 'Team D', category: 'MO8' },
+          { club: 'PSV', name: 'Team F', category: 'MO12' },
+          { club: 'PSV', name: 'Team I', category: 'VETERANEN_35_PLUS' },
+        ])
+      })
+    })
+
+    describe('edge cases', () => {
+      it('should handle empty array', () => {
+        const result = sortTeams([])
+        expect(result).toEqual([])
+      })
+
+      it('should handle single team', () => {
+        const singleTeam = [
+          { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO8' },
+        ]
+        const result = sortTeams(singleTeam)
+        expect(result).toEqual(singleTeam)
+      })
+
+      it('should handle teams with empty string values', () => {
+        const teamsWithEmptyStrings = [
+          { id: '1', clubName: '', teamName: 'Team A', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', teamName: '', category: 'JO8' },
+          { id: '3', clubName: 'Ajax', teamName: 'Team B', category: '' },
+        ]
+
+        const result = sortTeams(teamsWithEmptyStrings)
+
+        // Should still sort without throwing errors
+        expect(result).toHaveLength(3)
+        expect(result[0].clubName).toBe('') // Empty string should come first alphabetically
+      })
     })
   })
 })

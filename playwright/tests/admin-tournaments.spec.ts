@@ -22,6 +22,14 @@ test.describe('Admin Tournaments', () => {
     // Navigate to home first
     await page.goto('/')
 
+    // Wait for navigation to settle completely to avoid interference
+    // with the dropdown's navigation state effect
+    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
+
+    // Give React a moment to finish any hydration/navigation state updates
+    await page.waitForTimeout(100)
+
     // Open user menu by clicking hamburger menu
     await page.getByRole('button', { name: 'Toggle menu' }).click()
 

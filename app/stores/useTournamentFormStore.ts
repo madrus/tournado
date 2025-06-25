@@ -9,16 +9,17 @@ import {
 } from 'zustand/middleware'
 
 import { isBrowser } from '~/lib/lib.helpers'
-import type { TeamFormData, TournamentData } from '~/lib/lib.types'
+import type { TournamentFormData } from '~/lib/lib.zod'
 import {
-  validateEntireTeamForm,
-  validateSingleTeamField,
+  validateEntireTournamentForm,
+  validateSingleTournamentField,
 } from '~/utils/form-validation'
 
-import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamFormConstants'
 import {
-  computeAvailableOptions,
-  getDependentFieldResets,
+  initialStoreState,
+  TOURNAMENT_PANELS_FIELD_MAP,
+} from './helpers/tournamentFormConstants'
+import {
   getPanelNumberForField,
   isFormDirty,
   isPanelEnabled,
@@ -27,18 +28,18 @@ import {
   mergeErrors,
   resetStatePreserving,
   shouldValidateField,
-} from './helpers/teamFormHelpers'
+} from './helpers/tournamentFormHelpers'
 import type {
   AvailableOptions,
   AvailableOptionsFieldName,
-  FlexibleTeamFormData,
+  FlexibleTournamentFormData,
   FormFieldName,
   FormFields,
   FormMeta,
   FormMetaFieldName,
   ValidationFieldName,
   ValidationState,
-} from './helpers/teamFormTypes'
+} from './helpers/tournamentFormTypes'
 
 type StoreState = {
   formFields: FormFields
@@ -50,7 +51,7 @@ type StoreState = {
 
 type Actions = {
   // Universal field setter using dynamic property names
-  setFormField: (fieldName: FormFieldName, value: string | boolean) => void
+  setFormField: (fieldName: FormFieldName, value: string | string[]) => void
   setValidationField: (
     fieldName: ValidationFieldName,
     value: Record<string, string> | Record<string, boolean> | boolean
@@ -58,21 +59,21 @@ type Actions = {
   setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => void
   setAvailableOptionsField: (
     fieldName: AvailableOptionsFieldName,
-    value: TournamentData[] | string[]
+    value: string[]
   ) => void
 
   // Convenience methods for common operations
-  setFormData: (formData: Partial<FlexibleTeamFormData>) => void
+  setFormData: (formData: Partial<FlexibleTournamentFormData>) => void
   resetForm: () => void
   setFieldBlurred: (fieldName: string, blurred?: boolean) => void
   setFieldError: (fieldName: string, error: string) => void
   clearFieldError: (fieldName: string) => void
   clearAllErrors: () => void
-  updateAvailableOptions: () => void
   resetStoreState: () => void
+  updateAvailableOptions: () => void
 
-  // Get current form data as TeamFormData
-  getFormData: () => TeamFormData
+  // Get current form data
+  getFormData: () => TournamentFormData
 
   // Validation helpers - reactive validation system
   validateField: (fieldName: string) => void
@@ -93,7 +94,7 @@ type Actions = {
   isDirty: () => boolean
 }
 
-const storeName = 'TeamFormStore'
+const storeName = 'TournamentFormStore'
 
 // Server-side storage mock for when sessionStorage is not available
 const createServerSideStorage = () => ({
@@ -106,7 +107,7 @@ const createServerSideStorage = () => ({
   },
 })
 
-export const useTeamFormStore = create<StoreState & Actions>()(
+export const useTournamentFormStore = create<StoreState & Actions>()(
   devtools(
     subscribeWithSelector(
       persist(
@@ -119,13 +120,12 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // ===== SETTERS =====
 
           // Universal field setter using dynamic property names
-          setFormField: (fieldName: FormFieldName, value: string | boolean) => {
+          setFormField: (fieldName: FormFieldName, value: string | string[]) => {
             set(
               (state: StoreState) => {
                 const newFormFields = {
                   ...state.formFields,
                   [fieldName]: value,
-                  ...getDependentFieldResets(fieldName),
                 }
 
                 return {
@@ -136,11 +136,6 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               `setFormField/${fieldName}`
             )
-
-            // Handle side effects
-            if (fieldName === 'tournamentId') {
-              get().updateAvailableOptions()
-            }
 
             // When a user types, immediately clear any existing error for that field.
             // Validation will be re-triggered on blur.
@@ -191,7 +186,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // Universal available options setter
           setAvailableOptionsField: (
             fieldName: AvailableOptionsFieldName,
-            value: TournamentData[] | string[]
+            value: string[]
           ) => {
             set(
               (state: StoreState) => {
@@ -212,7 +207,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // ===== CONVENIENCE METHODS =====
 
-          setFormData: formData => {
+          setFormData: (formData: Partial<FlexibleTournamentFormData>) => {
             const mappedData = mapFlexibleToFormData(formData)
             set(
               state => {
@@ -226,9 +221,6 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               'setFormData'
             )
-            if (mappedData.tournamentId !== undefined) {
-              get().updateAvailableOptions()
-            }
             set(
               state => ({
                 ...state,
@@ -250,36 +242,27 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           resetForm: () => {
             set(resetStatePreserving(['availableOptions'], get))
             // Clear the persisted state from session storage to prevent rehydration
-            useTeamFormStore.persist.clearStorage()
+            useTournamentFormStore.persist.clearStorage()
           },
 
-          setFieldBlurred: (fieldName, blurred = true) => {
+          setFieldBlurred: (fieldName: string, blurred = true) => {
             set(
-              state => {
-                const newBlurredFields = {
-                  ...state.validation.blurredFields,
-                  [fieldName]: blurred,
-                }
-
-                return {
-                  ...state,
-                  validation: {
-                    ...state.validation,
-                    blurredFields: newBlurredFields,
+              (state: StoreState) => ({
+                ...state,
+                validation: {
+                  ...state.validation,
+                  blurredFields: {
+                    ...state.validation.blurredFields,
+                    [fieldName]: blurred,
                   },
-                }
-              },
+                },
+              }),
               false,
-              'setFieldBlurred'
+              `setFieldBlurred/${fieldName}`
             )
-
-            // Automatically trigger validation when field becomes blurred
-            if (blurred) {
-              get().validateField(fieldName)
-            }
           },
 
-          setFieldError: (fieldName, error) => {
+          setFieldError: (fieldName: string, error: string) => {
             set(
               state => {
                 const newDisplayErrors = {
@@ -304,36 +287,31 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             )
           },
 
-          clearFieldError: fieldName => {
+          clearFieldError: (fieldName: string) => {
             set(
-              state => {
-                const { errors, displayErrors, serverErrors } = state.validation
-                const newErrors = { ...errors }
-                const newDisplayErrors = { ...displayErrors }
-                const newServerErrors = { ...serverErrors }
-
-                delete newErrors[fieldName]
+              (state: StoreState) => {
+                const newDisplayErrors = { ...state.validation.displayErrors }
                 delete newDisplayErrors[fieldName]
+                const newServerErrors = { ...state.validation.serverErrors }
                 delete newServerErrors[fieldName]
 
                 return {
                   ...state,
                   validation: {
                     ...state.validation,
-                    errors: newErrors,
                     displayErrors: newDisplayErrors,
                     serverErrors: newServerErrors,
                   },
                 }
               },
               false,
-              'clearFieldError'
+              `clearFieldError/${fieldName}`
             )
           },
 
-          clearAllErrors: () =>
+          clearAllErrors: () => {
             set(
-              state => ({
+              (state: StoreState) => ({
                 ...state,
                 validation: {
                   ...state.validation,
@@ -344,91 +322,56 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               }),
               false,
               'clearAllErrors'
-            ),
+            )
+          },
 
           updateAvailableOptions: () => {
-            const { availableOptions, formFields } = get()
-            const { tournaments } = availableOptions
-            const { tournamentId } = formFields
-            const { divisions, categories } = computeAvailableOptions(
-              tournaments,
-              tournamentId
-            )
-            set(
-              currentState => ({
-                ...currentState,
-                availableOptions: {
-                  ...currentState.availableOptions,
-                  divisions,
-                  categories,
-                },
-              }),
-              false,
-              'updateAvailableOptions'
-            )
+            // Tournament forms don't have cascading dependencies like teams
+            // This function exists for API consistency but is a no-op
+            // Since tournaments don't depend on selecting other tournaments
           },
 
           // ===== GETTERS =====
 
-          // Get current form data as TeamFormData
-          getFormData: (): TeamFormData => {
-            const { formFields } = get()
-            const {
-              tournamentId,
-              clubName,
-              teamName,
-              division,
-              category,
-              teamLeaderName,
-              teamLeaderPhone,
-              teamLeaderEmail,
-              privacyAgreement,
-            } = formFields
-
-            return {
-              tournamentId,
-              clubName,
-              teamName: teamName as TeamFormData['teamName'],
-              division: division as TeamFormData['division'],
-              category,
-              teamLeaderName,
-              teamLeaderPhone,
-              teamLeaderEmail: teamLeaderEmail as TeamFormData['teamLeaderEmail'],
-              privacyAgreement,
-            }
+          getFormData: (): TournamentFormData => {
+            const state = get()
+            return state.formFields as TournamentFormData
           },
 
           // ===== VALIDATION =====
 
-          // Individual field validation - called reactively when field is touched
           validateField: (fieldName: string) => {
             const state = get()
             const { validation, formMeta } = state
             const { mode } = formMeta
+
             // Only validate if field is blurred OR if we're forcing all errors
             const shouldValidate = shouldValidateField(
               fieldName as FormFieldName,
               validation
             )
+
             if (!shouldValidate) {
               return
             }
+
             // Get current form data for validation
             const formData = state.getFormData()
             // Use the simplified validation function
-            const error = validateSingleTeamField(fieldName, formData, mode)
-            if (error) {
-              state.setFieldError(fieldName as FormFieldName, error)
+            const error = validateSingleTournamentField(fieldName, formData, mode)
+
+            if (!error) {
+              get().clearFieldError(fieldName)
             } else {
-              state.clearFieldError(fieldName as FormFieldName)
+              get().setFieldError(fieldName, error)
             }
           },
 
-          // Validate field on blur - also marks field as blurred
           validateFieldOnBlur: (fieldName: string) => {
             const state = get()
-            const { formMeta, validation } = state
+            const { validation, formMeta } = state
             const { mode } = formMeta
+
             // Mark field as blurred first (without triggering validation)
             set(
               currentState => {
@@ -447,30 +390,35 @@ export const useTeamFormStore = create<StoreState & Actions>()(
               false,
               'validateFieldOnBlur/setBlurred'
             )
+
             // Get current form data for validation
             const formData = state.getFormData()
             // Use the simplified validation function
-            const error = validateSingleTeamField(fieldName, formData, mode)
+            const error = validateSingleTournamentField(fieldName, formData, mode)
+
             if (error) {
-              state.setFieldError(fieldName as FormFieldName, error)
+              state.setFieldError(fieldName, error)
             } else {
-              state.clearFieldError(fieldName as FormFieldName)
+              state.clearFieldError(fieldName)
             }
+
             // Check if this blur event should enable the next panel
             // Find which panel this field belongs to
             const currentPanel = getPanelNumberForField(fieldName as keyof FormFields)
             // Check if all fields in this panel are now blurred and valid
             if (currentPanel > 0) {
-              const panelFields =
-                TEAM_PANELS_FIELD_MAP[
-                  currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP
-                ]
+              const panelFields = TOURNAMENT_PANELS_FIELD_MAP[
+                currentPanel as keyof typeof TOURNAMENT_PANELS_FIELD_MAP
+              ] as readonly string[]
               const allFieldsBlurred = panelFields.every(
-                field => validation.blurredFields[field]
+                (field: string) => validation.blurredFields[field]
               )
-              const allFieldsValid = panelFields.every(field => {
+              const allFieldsValid = panelFields.every((field: string) => {
                 const fieldValue =
                   state.formFields[field as keyof typeof state.formFields]
+                if (Array.isArray(fieldValue)) {
+                  return fieldValue.length > 0 && !validation.displayErrors[field]
+                }
                 return !!fieldValue && !validation.displayErrors[field]
               })
               if (allFieldsBlurred && allFieldsValid) {
@@ -480,8 +428,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             }
           },
 
-          // Full form validation - called on form submission
-          validateForm: (): boolean => {
+          validateForm: () => {
             const state = get()
 
             // Force validation for all fields regardless of touched state
@@ -501,7 +448,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const formData = state.getFormData()
 
             // Use the simplified validation function
-            const errors = validateEntireTeamForm(formData, state.formMeta.mode)
+            const errors = validateEntireTournamentForm(formData, state.formMeta.mode)
 
             if (Object.keys(errors).length > 0) {
               // Set all errors at once
@@ -535,83 +482,65 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
           // ===== SERVER ERRORS =====
 
-          // Server errors setter (used by form submission)
           setServerErrors: (errors: Record<string, string>) => {
-            get().setValidationField('serverErrors', errors)
-            // Merge server errors into display errors so they're visible immediately
-            const state = get()
-            const mergedErrors = mergeErrors(state.validation.displayErrors, errors)
             set(
-              currentState => ({
-                ...currentState,
+              (state: StoreState) => ({
+                ...state,
                 validation: {
-                  ...currentState.validation,
-                  displayErrors: mergedErrors,
+                  ...state.validation,
+                  serverErrors: errors,
+                  displayErrors: mergeErrors(state.validation.displayErrors, errors),
                 },
               }),
               false,
-              'setServerErrors/mergeErrors'
+              'setServerErrors'
             )
           },
 
           // ===== PANEL VALIDITY =====
 
-          // --- Panel Validity Selectors ---
-          isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
-            const { formFields, validation, formMeta } = get()
+          isPanelValid: (panelNumber: 1 | 2 | 3 | 4) => {
+            const state = get()
             return isPanelValid(
               panelNumber,
-              formFields,
-              validation.displayErrors,
-              formMeta.mode
+              state.formFields,
+              state.validation.displayErrors,
+              state.formMeta.mode
             )
           },
 
-          // Panel enablement - determines if a panel should be interactive
-          isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
-            const { formMeta } = get()
-            return isPanelEnabled(panelNumber, formMeta.mode, panel =>
+          isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4) => {
+            const state = get()
+            return isPanelEnabled(panelNumber, state.formMeta.mode, panel =>
               get().isPanelValid(panel)
             )
           },
 
           // ===== FORM STATE =====
 
-          // Form submission readiness - determines if Save button should be enabled
-          isFormReadyForSubmission: (): boolean => {
-            const { formMeta } = get()
-            const { mode } = formMeta
+          isFormReadyForSubmission: () => {
+            const state = get()
+            const allPanelsValid = [1, 2, 3, 4].every(panel =>
+              get().isPanelValid(panel as 1 | 2 | 3 | 4)
+            )
+            const noErrors =
+              Object.keys(
+                mergeErrors(
+                  state.validation.displayErrors,
+                  state.validation.serverErrors
+                )
+              ).length === 0
 
-            // For create mode, check all 4 panels
-            if (mode === 'create') {
-              const isPanel1Valid = get().isPanelValid(1)
-              const isPanel2Valid = get().isPanelValid(2)
-              const isPanel3Valid = get().isPanelValid(3)
-              const isPanel4Valid = get().isPanelValid(4)
-
-              return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
-            }
-
-            // For edit mode, check panels 1-3 (no privacy panel)
-            if (mode === 'edit') {
-              const isPanel1Valid = get().isPanelValid(1)
-              const isPanel2Valid = get().isPanelValid(2)
-              const isPanel3Valid = get().isPanelValid(3)
-
-              return isPanel1Valid && isPanel2Valid && isPanel3Valid
-            }
-
-            return false
+            return allPanelsValid && noErrors
           },
 
-          // Form state helpers - determines if form has been modified
-          isDirty: (): boolean => {
-            const { formFields, oldFormFields } = get()
-            return isFormDirty(formFields, oldFormFields)
+          isDirty: () => {
+            const state = get()
+            return isFormDirty(state.formFields, state.oldFormFields)
           },
         }),
         {
-          name: 'team-form-storage',
+          name: storeName,
           // Only use sessionStorage if we're in the browser
           storage: isBrowser
             ? createJSONStorage(() => sessionStorage)
@@ -619,21 +548,10 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           // Skip persistence completely on server-side
           skipHydration: !isBrowser,
           // Only persist form data, not validation state
-          // Exclude privacyAgreement since it should always start fresh for new teams
           partialize: state =>
             isBrowser
               ? {
-                  formFields: {
-                    tournamentId: state.formFields.tournamentId,
-                    division: state.formFields.division,
-                    category: state.formFields.category,
-                    clubName: state.formFields.clubName,
-                    teamName: state.formFields.teamName,
-                    teamLeaderName: state.formFields.teamLeaderName,
-                    teamLeaderPhone: state.formFields.teamLeaderPhone,
-                    teamLeaderEmail: state.formFields.teamLeaderEmail,
-                    // Explicitly exclude privacyAgreement from persistence
-                  },
+                  formFields: state.formFields,
                   oldFormFields: state.oldFormFields, // Persist initial state
                   formMeta: { mode: state.formMeta.mode },
                 }
@@ -641,20 +559,18 @@ export const useTeamFormStore = create<StoreState & Actions>()(
         }
       )
     ),
-    {
-      name: storeName,
-    }
+    { name: storeName }
   )
 )
 
 /**
- * Hook to handle team form store rehydration in components
- * Use this in components that need the team form store to be properly hydrated
+ * Hook to handle tournament form store rehydration in components
+ * Use this in components that need the tournament form store to be properly hydrated
  */
-export const useTeamFormStoreHydration = (): void => {
+export const useTournamentFormStoreHydration = (): void => {
   useEffect(() => {
     if (isBrowser) {
-      useTeamFormStore.persist.rehydrate()
+      useTournamentFormStore.persist.rehydrate()
     }
   }, [])
 }
@@ -662,4 +578,4 @@ export const useTeamFormStoreHydration = (): void => {
 export const subscribeToBlurredFields = (
   handler: (blurredFields: Record<string, boolean>) => void
 ): (() => void) =>
-  useTeamFormStore.subscribe(state => state.validation.blurredFields, handler)
+  useTournamentFormStore.subscribe(state => state.validation.blurredFields, handler)

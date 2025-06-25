@@ -141,6 +141,8 @@
     "createNewTeam": "Create a new team",
     "deleteTeam": "Delete Team",
     "description": "Register your team(s) for one or more tournaments",
+    "filterByTournament": "Filter by tournament",
+    "allTournaments": "All tournaments",
     "errors": {
       "notFound": "Team not found",
       "unexpectedError": "An unexpected error occurred:",
@@ -228,7 +230,18 @@
       "selectCategories": "Select the age categories that will participate",
       "selected": "selected",
       "tournamentRegistration": "Tournament Registration",
-      "fillOutForm": "Fill out the form below to create a new tournament"
+      "fillOutForm": "Fill out the form below to create a new tournament",
+      "errors": {
+        "nameRequired": "Tournament name is required",
+        "nameTooLong": "Tournament name must be less than 100 characters",
+        "locationRequired": "Location is required",
+        "locationTooLong": "Location must be less than 100 characters",
+        "startDateRequired": "Start date is required",
+        "endDateRequired": "End date is required",
+        "divisionsRequired": "At least one division is required",
+        "categoriesRequired": "At least one category is required",
+        "fieldRequired": "This field is required"
+      }
     }
   },
   "divisions": {

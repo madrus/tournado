@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 
 import * as fs from 'fs'
 import * as path from 'path'
@@ -45,3 +45,12 @@ export const getTestUser = async (
     email: 'test-user@example.com',
     role: 'ADMIN',
   })
+
+/**
+ * Navigate to a page and verify authentication state
+ */
+export async function goToAuthenticatedPage(page: Page, url: string): Promise<void> {
+  await page.goto(url)
+  await expect(page).toHaveURL(url)
+  await page.waitForLoadState('networkidle')
+}

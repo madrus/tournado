@@ -211,3 +211,71 @@ export const stringToCategory = (value: string | null): Category | undefined => 
  */
 export const isValidCategory = (value: string | null): value is Category =>
   stringToCategory(value) !== undefined
+
+/**
+ * Custom team sorting function that handles category names with numbers properly
+ * e.g., JO8 comes before JO10, MO12 comes before MO14, etc.
+ *
+ * Sorting order:
+ * 1. Club name (alphabetical)
+ * 2. Category (with numeric awareness for formats like JO8, MO12, etc.)
+ * 3. Team name (alphabetical)
+ */
+export const sortTeams = <
+  T extends { clubName: string; teamName: string; category?: string },
+>(
+  teams: T[]
+): T[] =>
+  teams.sort((a, b) => {
+    // First sort by club name
+    const clubComparison = a.clubName.localeCompare(b.clubName)
+    if (clubComparison !== 0) return clubComparison
+
+    // Then sort by category with numeric awareness
+    if (a.category && b.category) {
+      const categoryComparison = smartCategorySort(a.category, b.category)
+      if (categoryComparison !== 0) return categoryComparison
+    } else if (a.category && !b.category) {
+      return -1 // Teams with categories come first
+    } else if (!a.category && b.category) {
+      return 1 // Teams without categories come last
+    }
+
+    // Finally sort by team name
+    return a.teamName.localeCompare(b.teamName)
+  })
+
+/**
+ * Smart category sorting that handles numeric values within category names
+ * e.g., JO8, JO10, JO12 will be sorted numerically rather than alphabetically
+ */
+function smartCategorySort(a: string, b: string): number {
+  // Regular expression to match category structure: prefix + number + optional suffix
+  const categoryRegex = /^([A-Z]+)(\d+)(.*)$/i
+
+  const matchA = a.match(categoryRegex)
+  const matchB = b.match(categoryRegex)
+
+  // If neither matches the pattern, fall back to alphabetical sort
+  if (!matchA && !matchB) return a.localeCompare(b)
+
+  // If only one matches the pattern, prioritize the structured one
+  if (!matchA) return 1
+  if (!matchB) return -1
+
+  // Both match: compare prefix first
+  const [, prefixA, numStrA, suffixA] = matchA
+  const [, prefixB, numStrB, suffixB] = matchB
+
+  const prefixComparison = prefixA.localeCompare(prefixB)
+  if (prefixComparison !== 0) return prefixComparison
+
+  // Same prefix: compare numbers numerically
+  const numericA = parseInt(numStrA, 10)
+  const numericB = parseInt(numStrB, 10)
+  const numericComparison = numericA - numericB
+  if (numericComparison !== 0) return numericComparison
+
+  // Same prefix and number: compare suffix
+  return suffixA.localeCompare(suffixB)
+}

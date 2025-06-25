@@ -108,12 +108,14 @@ export default function AdminDashboard(): JSX.Element {
                 {teams.length}
               </p>
             </div>
-            <ActionLinkButton
-              to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-              label='Manage Teams'
-              icon='apparel'
-              variant='emerald'
-            />
+            <div className='flex justify-end rtl:justify-start'>
+              <ActionLinkButton
+                to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+                label='Manage Teams'
+                icon='apparel'
+                variant='emerald'
+              />
+            </div>
           </div>
 
           {/* Tournament Management */}
@@ -137,12 +139,14 @@ export default function AdminDashboard(): JSX.Element {
                 {tournaments.length}
               </p>
             </div>
-            <ActionLinkButton
-              to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
-              label='Manage Tournaments'
-              icon='trophy'
-              variant='primary'
-            />
+            <div className='flex justify-end rtl:justify-start'>
+              <ActionLinkButton
+                to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+                label='Manage Tournaments'
+                icon='trophy'
+                variant='primary'
+              />
+            </div>
           </div>
 
           {/* User Management */}
@@ -181,12 +185,14 @@ export default function AdminDashboard(): JSX.Element {
             <p className='text-foreground-light mb-4'>
               Configure application settings and preferences.
             </p>
-            <ActionLinkButton
-              to=''
-              label='System Config'
-              icon='settings'
-              className='border border-red-600 bg-white text-red-700 shadow-red-500/25 hover:border-red-500 hover:bg-red-50/30 hover:ring-2 hover:shadow-red-500/40 hover:ring-red-600/90 hover:ring-offset-2 focus:ring-red-600/90'
-            />
+            <div className='flex justify-end rtl:justify-start'>
+              <ActionLinkButton
+                to=''
+                label='System Config'
+                icon='settings'
+                className='border border-red-600 bg-white text-red-700 shadow-red-500/25 hover:border-red-500 hover:bg-red-50/30 hover:ring-2 hover:shadow-red-500/40 hover:ring-red-600/90 hover:ring-offset-2 focus:ring-red-600/90'
+              />
+            </div>
           </div>
 
           {/* Reports & Analytics */}
@@ -202,12 +208,14 @@ export default function AdminDashboard(): JSX.Element {
             <p className='text-foreground-light mb-4'>
               View platform usage and tournament statistics.
             </p>
-            <ActionLinkButton
-              to=''
-              label='View Reports'
-              icon='tune'
-              className='border border-emerald-600 bg-white text-emerald-700 shadow-emerald-500/25 hover:border-emerald-500 hover:bg-emerald-50/30 hover:ring-2 hover:shadow-emerald-500/40 hover:ring-emerald-600/90 hover:ring-offset-2 focus:ring-emerald-600/90'
-            />
+            <div className='flex justify-end rtl:justify-start'>
+              <ActionLinkButton
+                to=''
+                label='View Reports'
+                icon='tune'
+                className='border border-emerald-600 bg-white text-emerald-700 shadow-emerald-500/25 hover:border-emerald-500 hover:bg-emerald-50/30 hover:ring-2 hover:shadow-emerald-500/40 hover:ring-emerald-600/90 hover:ring-offset-2 focus:ring-emerald-600/90'
+              />
+            </div>
           </div>
         </div>
       </div>

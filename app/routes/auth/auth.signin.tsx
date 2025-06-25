@@ -1,4 +1,4 @@
-import { type JSX, useEffect, useRef } from 'react'
+import { type JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Form,
@@ -125,6 +125,12 @@ export default function SigninPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
+  // Use controlled inputs to prevent clearing issues
+  const [formData, setFormData] = useState({
+    email: emailFromRegistration || '',
+    password: '',
+  })
+
   useEffect(() => {
     if (actionData?.errors?.email) {
       emailRef.current?.focus()
@@ -135,12 +141,20 @@ export default function SigninPage(): JSX.Element {
 
   useEffect(() => {
     // Pre-fill email if provided from registration
-    if (emailFromRegistration && emailRef.current) {
-      emailRef.current.value = emailFromRegistration
+    if (emailFromRegistration) {
+      setFormData(prev => ({ ...prev, email: emailFromRegistration }))
       // Focus on password field if email is pre-filled
       passwordRef.current?.focus()
     }
   }, [emailFromRegistration])
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, email: event.target.value }))
+  }
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, password: event.target.value }))
+  }
 
   return (
     <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
@@ -185,6 +199,8 @@ export default function SigninPage(): JSX.Element {
                   name='email'
                   type='email'
                   autoComplete='email'
+                  value={formData.email}
+                  onChange={handleEmailChange}
                   aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby='email-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
@@ -211,6 +227,8 @@ export default function SigninPage(): JSX.Element {
                   name='password'
                   type='password'
                   autoComplete='current-password'
+                  value={formData.password}
+                  onChange={handlePasswordChange}
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby='password-error'
                   className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'

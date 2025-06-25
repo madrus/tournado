@@ -506,13 +506,13 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                           {tournament.endDate ? formatDate(tournament.endDate) : '-'}
                         </Text>
                       </Box>
-                      <Box className='flex w-8 items-start justify-center'>
+                      <Box className='flex items-start justify-center'>
                         <button
                           onClick={event => {
                             event.stopPropagation()
                             handleTournamentDelete(tournament.id)
                           }}
-                          className='flex items-center justify-center rounded pt-1 pr-1 pb-1 pl-2 text-red-600 transition-colors duration-200 hover:text-red-900'
+                          className='flex min-w-32 items-center justify-center rounded-full p-1 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700'
                           title={t('tournaments.deleteTournament')}
                         >
                           <DeleteIcon className='h-4 w-4' />

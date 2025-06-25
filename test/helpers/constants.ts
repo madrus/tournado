@@ -19,4 +19,16 @@ export const TEST_TRANSLATIONS = {
   'teams.form.errors.emailInvalid': 'Please enter a valid email address',
   'teams.form.errors.privacyAgreementRequired': 'You must agree to the privacy policy',
   'teams.form.errors.fieldRequired': 'This field is required',
+  // Tournament form error translations
+  'tournaments.form.errors.nameRequired': 'Tournament name is required',
+  'tournaments.form.errors.nameTooLong':
+    'Tournament name must be less than 100 characters',
+  'tournaments.form.errors.locationRequired': 'Location is required',
+  'tournaments.form.errors.locationTooLong':
+    'Location must be less than 100 characters',
+  'tournaments.form.errors.startDateRequired': 'Start date is required',
+  'tournaments.form.errors.endDateRequired': 'End date is required',
+  'tournaments.form.errors.divisionsRequired': 'At least one division is required',
+  'tournaments.form.errors.categoriesRequired': 'At least one category is required',
+  'tournaments.form.errors.fieldRequired': 'This field is required',
 } as const

@@ -6,7 +6,7 @@ import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamFormData } from '~/lib/lib.types'
 import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
-import { validateEntireForm } from '~/utils/form-validation'
+import { validateEntireTeamForm } from '~/utils/form-validation'
 
 type TeamCreationResult = {
   success: boolean
@@ -71,7 +71,7 @@ export async function createTeamFromFormData(
   const teamFormData = teamData as TeamFormData
 
   // Validate using the form validation system
-  const fieldErrors = validateEntireForm(teamFormData, 'create')
+  const fieldErrors = validateEntireTeamForm(teamFormData, 'create')
 
   // Additional business logic validation
   const validDivision = teamData.division ? stringToDivision(teamData.division) : null

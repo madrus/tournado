@@ -5,8 +5,8 @@ import type { Email, TeamFormData, TeamName } from '~/lib/lib.types'
 import {
   getFieldErrorTranslationKey,
   mapStoreFieldToZodField,
-  validateEntireForm,
-  validateSingleField,
+  validateEntireTeamForm,
+  validateSingleTeamField,
 } from '../form-validation'
 
 describe('form-validation', () => {
@@ -169,7 +169,7 @@ describe('form-validation', () => {
         ]
 
         fields.forEach(fieldName => {
-          const result = validateSingleField(fieldName, validFormData, 'create')
+          const result = validateSingleTeamField(fieldName, validFormData, 'create')
           expect(result).toBeNull()
         })
       })
@@ -182,20 +182,20 @@ describe('form-validation', () => {
           teamName: '' as TeamName,
         }
 
-        expect(validateSingleField('tournamentId', emptyFormData, 'create')).toBe(
+        expect(validateSingleTeamField('tournamentId', emptyFormData, 'create')).toBe(
           'teams.form.errors.tournamentRequired'
         )
-        expect(validateSingleField('clubName', emptyFormData, 'create')).toBe(
+        expect(validateSingleTeamField('clubName', emptyFormData, 'create')).toBe(
           'teams.form.errors.clubNameRequired'
         )
-        expect(validateSingleField('teamName', emptyFormData, 'create')).toBe(
+        expect(validateSingleTeamField('teamName', emptyFormData, 'create')).toBe(
           'teams.form.errors.teamNameRequired'
         )
       })
 
       it('should return error key for privacy agreement in create mode', () => {
         const invalidFormData = { ...validFormData, privacyAgreement: false }
-        const result = validateSingleField(
+        const result = validateSingleTeamField(
           'privacyAgreement',
           invalidFormData,
           'create'
@@ -208,13 +208,21 @@ describe('form-validation', () => {
           ...validFormData,
           teamLeaderEmail: 'invalid-email' as Email,
         }
-        const result = validateSingleField('teamLeaderEmail', invalidFormData, 'create')
+        const result = validateSingleTeamField(
+          'teamLeaderEmail',
+          invalidFormData,
+          'create'
+        )
         expect(result).toBe('teams.form.errors.emailInvalid')
       })
 
       it('should return error key for invalid phone format', () => {
         const invalidFormData = { ...validFormData, teamLeaderPhone: 'invalid' }
-        const result = validateSingleField('teamLeaderPhone', invalidFormData, 'create')
+        const result = validateSingleTeamField(
+          'teamLeaderPhone',
+          invalidFormData,
+          'create'
+        )
         expect(result).toBe('teams.form.errors.phoneNumberInvalid')
       })
 
@@ -224,7 +232,7 @@ describe('form-validation', () => {
           teamName:
             'This is a very long team name that exceeds the maximum allowed length' as TeamName,
         }
-        const result = validateSingleField('teamName', invalidFormData, 'create')
+        const result = validateSingleTeamField('teamName', invalidFormData, 'create')
         expect(result).toBe('teams.form.errors.teamNameTooLong')
       })
     })
@@ -243,14 +251,18 @@ describe('form-validation', () => {
         ]
 
         fields.forEach(fieldName => {
-          const result = validateSingleField(fieldName, validFormData, 'edit')
+          const result = validateSingleTeamField(fieldName, validFormData, 'edit')
           expect(result).toBeNull()
         })
       })
 
       it('should not require privacy agreement in edit mode', () => {
         const invalidFormData = { ...validFormData, privacyAgreement: false }
-        const result = validateSingleField('privacyAgreement', invalidFormData, 'edit')
+        const result = validateSingleTeamField(
+          'privacyAgreement',
+          invalidFormData,
+          'edit'
+        )
         expect(result).toBeNull()
       })
 
@@ -262,13 +274,13 @@ describe('form-validation', () => {
           teamName: '' as TeamName,
         }
 
-        expect(validateSingleField('tournamentId', emptyFormData, 'edit')).toBe(
+        expect(validateSingleTeamField('tournamentId', emptyFormData, 'edit')).toBe(
           'teams.form.errors.tournamentRequired'
         )
-        expect(validateSingleField('clubName', emptyFormData, 'edit')).toBe(
+        expect(validateSingleTeamField('clubName', emptyFormData, 'edit')).toBe(
           'teams.form.errors.clubNameRequired'
         )
-        expect(validateSingleField('teamName', emptyFormData, 'edit')).toBe(
+        expect(validateSingleTeamField('teamName', emptyFormData, 'edit')).toBe(
           'teams.form.errors.teamNameRequired'
         )
       })
@@ -278,12 +290,12 @@ describe('form-validation', () => {
       it('should handle validation errors gracefully', () => {
         // Test with invalid form data that might cause validation to throw
         const invalidFormData = {} as TeamFormData
-        const result = validateSingleField('clubName', invalidFormData, 'create')
+        const result = validateSingleTeamField('clubName', invalidFormData, 'create')
         expect(result).toBe('teams.form.errors.clubNameRequired')
       })
 
       it('should handle unknown field names', () => {
-        const result = validateSingleField('unknownField', validFormData, 'create')
+        const result = validateSingleTeamField('unknownField', validFormData, 'create')
         expect(result).toBeNull()
       })
     })
@@ -304,7 +316,7 @@ describe('form-validation', () => {
 
     describe('create mode', () => {
       it('should return empty errors for valid form data', () => {
-        const result = validateEntireForm(validFormData, 'create')
+        const result = validateEntireTeamForm(validFormData, 'create')
         expect(result).toEqual({})
       })
 
@@ -321,7 +333,7 @@ describe('form-validation', () => {
           privacyAgreement: false,
         }
 
-        const result = validateEntireForm(emptyFormData, 'create')
+        const result = validateEntireTeamForm(emptyFormData, 'create')
 
         expect(result).toEqual({
           tournamentId: 'teams.form.errors.tournamentRequired',
@@ -345,7 +357,7 @@ describe('form-validation', () => {
             'This is a very long team name that exceeds the maximum allowed length' as TeamName,
         }
 
-        const result = validateEntireForm(invalidFormData, 'create')
+        const result = validateEntireTeamForm(invalidFormData, 'create')
 
         expect(result.teamLeaderEmail).toBe('teams.form.errors.emailInvalid')
         expect(result.teamLeaderPhone).toBe('teams.form.errors.phoneNumberInvalid')
@@ -355,7 +367,7 @@ describe('form-validation', () => {
 
     describe('edit mode', () => {
       it('should return empty errors for valid form data', () => {
-        const result = validateEntireForm(validFormData, 'edit')
+        const result = validateEntireTeamForm(validFormData, 'edit')
         expect(result).toEqual({})
       })
 
@@ -365,7 +377,7 @@ describe('form-validation', () => {
           privacyAgreement: false,
         }
 
-        const result = validateEntireForm(formDataWithoutPrivacy, 'edit')
+        const result = validateEntireTeamForm(formDataWithoutPrivacy, 'edit')
         expect(result.privacyAgreement).toBeUndefined()
       })
 
@@ -382,7 +394,7 @@ describe('form-validation', () => {
           privacyAgreement: false, // Should not be required in edit mode
         }
 
-        const result = validateEntireForm(emptyFormData, 'edit')
+        const result = validateEntireTeamForm(emptyFormData, 'edit')
 
         expect(result).toEqual({
           tournamentId: 'teams.form.errors.tournamentRequired',
@@ -401,7 +413,7 @@ describe('form-validation', () => {
       it('should handle validation errors gracefully', () => {
         // Test with invalid form data that might cause validation to throw
         const invalidFormData = {} as TeamFormData
-        const result = validateEntireForm(invalidFormData, 'create')
+        const result = validateEntireTeamForm(invalidFormData, 'create')
         // Empty form data should still return validation errors for required fields
         expect(Object.keys(result).length).toBeGreaterThan(0)
         expect(result.tournamentId).toBe('teams.form.errors.tournamentRequired')
@@ -409,7 +421,7 @@ describe('form-validation', () => {
 
       it('should return empty object for unexpected errors', () => {
         // Test edge case scenarios
-        const result = validateEntireForm(null as unknown as TeamFormData, 'create')
+        const result = validateEntireTeamForm(null as unknown as TeamFormData, 'create')
         expect(result).toEqual({})
       })
     })

@@ -141,6 +141,8 @@
     "createNewTeam": "Yeni bir takım oluştur",
     "deleteTeam": "Takımı sil",
     "description": "Bir veya daha fazla turnuva için takım(lar)ınızı kaydedin",
+    "filterByTournament": "Turnuvaya göre filtrele",
+    "allTournaments": "Tüm turnuvalar",
     "errors": {
       "notFound": "Takım bulunamadı",
       "unexpectedError": "Beklenmeyen bir hata oluştu:",
@@ -227,7 +229,18 @@
       "selectCategories": "Katılacak yaş kategorilerini seçin",
       "selected": "seçildi",
       "tournamentRegistration": "Turnuva kaydı",
-      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun"
+      "fillOutForm": "Yeni bir turnuva oluşturmak için aşağıdaki formu doldurun",
+      "errors": {
+        "nameRequired": "Turnuva adı zorunludur",
+        "nameTooLong": "Turnuva adı 100 karakterden kısa olmalıdır",
+        "locationRequired": "Konum zorunludur",
+        "locationTooLong": "Konum 100 karakterden kısa olmalıdır",
+        "startDateRequired": "Başlangıç tarihi zorunludur",
+        "endDateRequired": "Bitiş tarihi zorunludur",
+        "divisionsRequired": "En az bir lig zorunludur",
+        "categoriesRequired": "En az bir kategori zorunludur",
+        "fieldRequired": "Bu alan zorunludur"
+      }
     }
   },
   "divisions": {

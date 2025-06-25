@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
 
-import type { Team } from '@prisma/client'
-
 import { ApparelIcon } from '~/components/icons'
 import { TeamList } from '~/components/TeamList'
-import { deleteTeamById, getAllTeamListItems } from '~/models/team.server'
+import { TournamentFilter } from '~/components/TournamentFilter'
+import { loadTeamsData } from '~/lib/teams.server'
+import type { TeamsLoaderData } from '~/lib/teams.types'
+import { deleteTeamById } from '~/models/team.server'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
@@ -50,18 +51,9 @@ export const meta: MetaFunction = () => [
   { property: 'og:type', content: 'website' },
 ]
 
-type LoaderData = {
-  teamListItems: TeamListItem[]
-}
-
-type TeamListItem = Pick<Team, 'id' | 'clubName' | 'teamName'>
-
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: LoaderArgs): Promise<TeamsLoaderData> {
   await requireUserWithMetadata(request, handle)
-
-  const teamListItems = await getAllTeamListItems()
-
-  return { teamListItems }
+  return loadTeamsData(request)
 }
 
 export async function action({ request }: ActionArgs): Promise<Response> {
@@ -81,7 +73,8 @@ export async function action({ request }: ActionArgs): Promise<Response> {
 
 export default function AdminTeamsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const { teamListItems } = useLoaderData<LoaderData>()
+  const { teamListItems, tournamentListItems, selectedTournamentId } =
+    useLoaderData<TeamsLoaderData>()
   const submit = useSubmit()
   const revalidator = useRevalidator()
 
@@ -139,6 +132,15 @@ export default function AdminTeamsIndexPage(): JSX.Element {
           <p className='mt-1 text-sm opacity-75'>
             {t('admin.teams.allTeamsDescription')}
           </p>
+        </div>
+
+        {/* Tournament Filter */}
+        <div className='mb-6'>
+          <TournamentFilter
+            tournamentListItems={tournamentListItems}
+            selectedTournamentId={selectedTournamentId}
+            className='max-w-md'
+          />
         </div>
 
         <TeamList

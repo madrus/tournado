@@ -42,6 +42,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
               icon='add'
               label={t('common.actions.add')}
               variant='primary'
+              className='min-w-32'
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef, useState } from 'react'
+import { JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
@@ -8,11 +8,15 @@ import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import {
+  useTournamentFormStore,
+  useTournamentFormStoreHydration,
+} from '~/stores/useTournamentFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
 type TournamentFormProps = {
-  mode?: 'create' | 'edit' // Make optional since it's not used yet
+  mode?: 'create' | 'edit'
   variant?: 'admin' | 'public'
   formData?: {
     id?: string
@@ -37,7 +41,7 @@ type TournamentFormProps = {
 }
 
 export function TournamentForm({
-  mode: _mode,
+  mode: formMode = 'create',
   variant = 'admin',
   formData = {},
   divisions = [],
@@ -53,22 +57,95 @@ export function TournamentForm({
   intent,
 }: TournamentFormProps): JSX.Element {
   const { t, i18n } = useTranslation()
-  const nameRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
 
-  // State for selected divisions and categories (multi-select)
-  const [selectedDivisions, setSelectedDivisions] = useState<string[]>(
-    formData.divisions || []
-  )
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    formData.categories || []
+  // Ensure the tournament form store is properly hydrated
+  useTournamentFormStoreHydration()
+
+  // Get all state from the form store
+  const {
+    formFields: {
+      name,
+      location,
+      startDate,
+      endDate,
+      divisions: selectedDivisions,
+      categories: selectedCategories,
+    },
+    validation: { displayErrors, blurredFields, forceShowAllErrors, submitAttempted },
+    formMeta: { mode },
+    setFormField,
+    setFormMetaField,
+    setFormData,
+    setAvailableOptionsField,
+    validateForm,
+    validateFieldOnBlur,
+    isPanelEnabled,
+    isFormReadyForSubmission,
+    isDirty,
+  } = useTournamentFormStore()
+
+  // Helper function to translate error keys to user-readable messages
+  // Show errors for:
+  // 1. Server errors (from props) - always shown with priority
+  // 2. Fields that have been blurred - for individual field validation
+  // 3. All fields when forceShowAllErrors is true - for form submission validation
+  // 4. All fields when submitAttempted is true - for form submission validation
+  // Don't show errors for disabled fields
+  const getTranslatedError = useCallback(
+    (fieldName: string, isDisabled = false): string | undefined => {
+      // Don't show errors for disabled fields
+      if (isDisabled) return undefined
+
+      // Check for server errors first (these have priority and are always shown)
+      if (errors[fieldName]) {
+        return errors[fieldName]
+      }
+
+      // Show client-side errors if field has been blurred OR if we're forcing all errors OR if form was submitted
+      const shouldShowError =
+        blurredFields[fieldName] || forceShowAllErrors || submitAttempted
+
+      if (!shouldShowError) return undefined
+
+      const errorKey = displayErrors[fieldName]
+      if (!errorKey) return undefined
+
+      // If the error is already a plain message (from server), return as-is
+      if (!errorKey.includes('.')) return errorKey
+
+      // Otherwise, translate the key
+      return t(errorKey)
+    },
+    [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t, errors]
   )
 
-  // Update state when formData changes
+  // Initialize mode in store
+  if (mode !== formMode) {
+    setFormMetaField('mode', formMode)
+  }
+
+  // Initialize form data in store when formData prop is provided
   useEffect(() => {
-    setSelectedDivisions(formData.divisions || [])
-    setSelectedCategories(formData.categories || [])
-  }, [formData.divisions, formData.categories])
+    // Only set form data if we have meaningful formData content (not just empty object)
+    if (formData && Object.keys(formData).length > 0) {
+      setFormData({
+        name: formData.name || '',
+        location: formData.location || '',
+        startDate: formData.startDate || '',
+        endDate: formData.endDate || '',
+        divisions: formData.divisions || [],
+        categories: formData.categories || [],
+      })
+    }
+  }, [formData]) // Removed setFormData from dependencies - Zustand functions are stable
+
+  // Initialize available options in store
+  useEffect(() => {
+    setAvailableOptionsField('divisions', divisions)
+    setAvailableOptionsField('categories', categories)
+  }, [divisions, categories])
 
   // Focus management
   useEffect(() => {
@@ -80,24 +157,36 @@ export function TournamentForm({
     }
   }, [errors, isSuccess, variant])
 
-  const isPublicVariant = variant === 'public'
+  // Handle client-side form submission and validation
+  const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+    const isValid = validateForm()
+
+    if (!isValid) {
+      formEvent.preventDefault()
+    }
+  }
 
   const handleDivisionToggle = (division: string) => {
-    setSelectedDivisions(prev =>
-      prev.includes(division) ? prev.filter(d => d !== division) : [...prev, division]
-    )
+    const newDivisions = selectedDivisions.includes(division)
+      ? selectedDivisions.filter(d => d !== division)
+      : [...selectedDivisions, division]
+    setFormField('divisions', newDivisions)
   }
 
   const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
-    )
+    const newCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter(c => c !== category)
+      : [...selectedCategories, category]
+    setFormField('categories', newCategories)
   }
+
+  const isPublicVariant = variant === 'public'
+  const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
     <div className={`mx-auto max-w-6xl ${className}`}>
       {/* Success Message for Public Variant */}
-      {isSuccess && isPublicVariant && successMessage ? (
+      {isPublicSuccess && successMessage ? (
         <div className='mb-8 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 p-6 shadow-lg'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
@@ -120,33 +209,38 @@ export function TournamentForm({
               <h2
                 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
               >
-                {formData.name
-                  ? formData.name
-                  : t('tournaments.form.tournamentRegistration')}
+                {name ? name : t('tournaments.form.tournamentRegistration')}
               </h2>
               <p className='mt-2 text-gray-600'>
-                {formData.location
-                  ? `${t('tournaments.form.location')} ${formData.location}`
+                {location
+                  ? `${t('tournaments.form.location')} ${location}`
                   : t('tournaments.form.fillOutForm')}
               </p>
             </div>
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
-              <ActionButton
-                onClick={onDelete}
-                icon='delete'
-                variant='outline'
-                color='red'
-                className='lg:self-start'
-              >
-                {t('common.actions.delete')}
-              </ActionButton>
+              <div className='flex justify-center lg:justify-start'>
+                <ActionButton
+                  onClick={onDelete}
+                  icon='delete'
+                  variant='outline'
+                  color='red'
+                >
+                  {t('common.actions.delete')}
+                </ActionButton>
+              </div>
             ) : null}
           </div>
         </div>
       ) : null}
 
-      <Form ref={formRef} method='post' className='space-y-8' noValidate>
+      <Form
+        ref={formRef}
+        method='post'
+        className='space-y-8'
+        noValidate
+        onSubmit={handleSubmit}
+      >
         {/* Hidden fields */}
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
@@ -168,7 +262,7 @@ export function TournamentForm({
           />
         ))}
 
-        {/* Step 1: Basic Information */}
+        {/* Step 1: Basic Information - Always enabled */}
         <div className='relative'>
           <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
             1
@@ -195,28 +289,44 @@ export function TournamentForm({
                 ref={nameRef}
                 name='name'
                 label={t('tournaments.form.name')}
-                defaultValue={formData.name || ''}
-                error={errors.name}
+                value={name}
+                onChange={value => setFormField('name', value)}
+                onBlur={() => validateFieldOnBlur('name')}
+                error={getTranslatedError('name')}
                 required
                 className={getLatinTextClass(i18n.language)}
+                disabled={isPublicSuccess}
               />
 
               {/* Location */}
               <TextInputField
                 name='location'
                 label={t('tournaments.form.location')}
-                defaultValue={formData.location || ''}
-                error={errors.location}
+                value={location}
+                onChange={value => setFormField('location', value)}
+                onBlur={() => validateFieldOnBlur('location')}
+                error={getTranslatedError('location')}
                 required
                 className={getLatinTextClass(i18n.language)}
+                disabled={isPublicSuccess}
               />
             </div>
           </div>
         </div>
 
         {/* Step 2: Dates */}
-        <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
+        <div
+          className={cn(
+            'relative',
+            !isPanelEnabled(2) ? 'pointer-events-none opacity-50' : ''
+          )}
+        >
+          <div
+            className={cn(
+              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
+              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-gray-400'
+            )}
+          >
             2
           </div>
 
@@ -224,13 +334,19 @@ export function TournamentForm({
             <div className='mb-6'>
               <h2
                 className={cn(
-                  'mb-2 text-xl font-bold text-blue-800',
-                  getLatinTitleClass(i18n.language)
+                  'mb-2 text-xl font-bold',
+                  getLatinTitleClass(i18n.language),
+                  isPanelEnabled(2) ? 'text-blue-800' : 'text-gray-400'
                 )}
               >
                 {t('tournaments.form.dates')}
               </h2>
-              <p className='text-sm text-blue-600'>
+              <p
+                className={cn(
+                  'text-sm',
+                  isPanelEnabled(2) ? 'text-blue-600' : 'text-gray-400'
+                )}
+              >
                 {t('tournaments.form.selectDates')}
               </p>
             </div>
@@ -240,27 +356,47 @@ export function TournamentForm({
               <CustomDatePicker
                 name='startDate'
                 label={t('tournaments.form.startDate')}
-                defaultValue={formData.startDate}
-                error={errors.startDate}
+                defaultValue={startDate}
+                onChange={event => {
+                  setFormField('startDate', event.target.value)
+                  validateFieldOnBlur('startDate')
+                }}
+                error={getTranslatedError('startDate', !isPanelEnabled(2))}
                 required
                 className={getLatinTextClass(i18n.language)}
+                readOnly={isPublicSuccess || !isPanelEnabled(2)}
               />
 
               {/* End Date */}
               <CustomDatePicker
                 name='endDate'
                 label={t('tournaments.form.endDate')}
-                defaultValue={formData.endDate}
-                error={errors.endDate}
+                defaultValue={endDate}
+                onChange={event => {
+                  setFormField('endDate', event.target.value)
+                  validateFieldOnBlur('endDate')
+                }}
+                error={getTranslatedError('endDate', !isPanelEnabled(2))}
                 className={getLatinTextClass(i18n.language)}
+                readOnly={isPublicSuccess || !isPanelEnabled(2)}
               />
             </div>
           </div>
         </div>
 
         {/* Step 3: Divisions */}
-        <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
+        <div
+          className={cn(
+            'relative',
+            !isPanelEnabled(3) ? 'pointer-events-none opacity-50' : ''
+          )}
+        >
+          <div
+            className={cn(
+              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
+              isPanelEnabled(3) ? 'bg-green-600' : 'bg-gray-400'
+            )}
+          >
             3
           </div>
 
@@ -268,13 +404,19 @@ export function TournamentForm({
             <div className='mb-6'>
               <h2
                 className={cn(
-                  'mb-2 text-xl font-bold text-green-800',
-                  getLatinTitleClass(i18n.language)
+                  'mb-2 text-xl font-bold',
+                  getLatinTitleClass(i18n.language),
+                  isPanelEnabled(3) ? 'text-green-800' : 'text-gray-400'
                 )}
               >
                 {t('tournaments.form.divisions')}
               </h2>
-              <p className='text-sm text-green-600'>
+              <p
+                className={cn(
+                  'text-sm',
+                  isPanelEnabled(3) ? 'text-green-600' : 'text-gray-400'
+                )}
+              >
                 {t('tournaments.form.selectDivisions')} ({selectedDivisions.length}{' '}
                 {t('tournaments.form.selected')})
               </p>
@@ -288,13 +430,16 @@ export function TournamentForm({
                     'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
                     selectedDivisions.includes(division)
                       ? 'border-green-500 bg-green-50 text-green-800'
-                      : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
+                      : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50',
+                    (!isPanelEnabled(3) || isPublicSuccess) &&
+                      'cursor-not-allowed opacity-50'
                   )}
                 >
                   <input
                     type='checkbox'
                     checked={selectedDivisions.includes(division)}
                     onChange={() => handleDivisionToggle(division)}
+                    disabled={!isPanelEnabled(3) || isPublicSuccess}
                     className='sr-only'
                   />
                   <span
@@ -311,15 +456,27 @@ export function TournamentForm({
                 </label>
               ))}
             </div>
-            {errors.divisions ? (
-              <p className='mt-2 text-sm text-red-600'>{errors.divisions}</p>
+            {getTranslatedError('divisions', !isPanelEnabled(3)) ? (
+              <p className='mt-2 text-sm text-red-600'>
+                {getTranslatedError('divisions', !isPanelEnabled(3))}
+              </p>
             ) : null}
           </div>
         </div>
 
         {/* Step 4: Categories */}
-        <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
+        <div
+          className={cn(
+            'relative',
+            !isPanelEnabled(4) ? 'pointer-events-none opacity-50' : ''
+          )}
+        >
+          <div
+            className={cn(
+              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
+              isPanelEnabled(4) ? 'bg-purple-600' : 'bg-gray-400'
+            )}
+          >
             4
           </div>
 
@@ -327,13 +484,19 @@ export function TournamentForm({
             <div className='mb-6'>
               <h2
                 className={cn(
-                  'mb-2 text-xl font-bold text-purple-800',
-                  getLatinTitleClass(i18n.language)
+                  'mb-2 text-xl font-bold',
+                  getLatinTitleClass(i18n.language),
+                  isPanelEnabled(4) ? 'text-purple-800' : 'text-gray-400'
                 )}
               >
                 {t('tournaments.form.categories')}
               </h2>
-              <p className='text-sm text-purple-600'>
+              <p
+                className={cn(
+                  'text-sm',
+                  isPanelEnabled(4) ? 'text-purple-600' : 'text-gray-400'
+                )}
+              >
                 {t('tournaments.form.selectCategories')} ({selectedCategories.length}{' '}
                 {t('tournaments.form.selected')})
               </p>
@@ -347,13 +510,16 @@ export function TournamentForm({
                     'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
                     selectedCategories.includes(category)
                       ? 'border-purple-500 bg-purple-50 text-purple-800'
-                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
+                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50',
+                    (!isPanelEnabled(4) || isPublicSuccess) &&
+                      'cursor-not-allowed opacity-50'
                   )}
                 >
                   <input
                     type='checkbox'
                     checked={selectedCategories.includes(category)}
                     onChange={() => handleCategoryToggle(category)}
+                    disabled={!isPanelEnabled(4) || isPublicSuccess}
                     className='sr-only'
                   />
                   <span
@@ -370,8 +536,10 @@ export function TournamentForm({
                 </label>
               ))}
             </div>
-            {errors.categories ? (
-              <p className='mt-2 text-sm text-red-600'>{errors.categories}</p>
+            {getTranslatedError('categories', !isPanelEnabled(4)) ? (
+              <p className='mt-2 text-sm text-red-600'>
+                {getTranslatedError('categories', !isPanelEnabled(4))}
+              </p>
             ) : null}
           </div>
         </div>
@@ -384,7 +552,6 @@ export function TournamentForm({
               onClick={onCancel}
               variant='outline'
               color='red'
-              className='min-w-32'
             >
               <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
               {t('common.actions.reset')}
@@ -397,6 +564,11 @@ export function TournamentForm({
             color='red'
             icon='check_circle'
             aria-label={t('common.actions.save')}
+            disabled={
+              isPublicSuccess ||
+              !isFormReadyForSubmission() ||
+              (mode === 'edit' && !isDirty())
+            }
           >
             {submitButtonText || t('common.actions.save')}
           </ActionButton>

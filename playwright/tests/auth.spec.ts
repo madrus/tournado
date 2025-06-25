@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import { expect, test } from '@playwright/test'
 
 import { createAdminUser } from '../helpers/database'
+import { createValidTestEmail } from '../helpers/test-utils'
 
 // This test file runs without stored auth state to test actual authentication
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -19,7 +20,7 @@ test.describe('Authentication', () => {
     const signinForm = {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
-      email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
+      email: createValidTestEmail(),
       password: 'MyReallyStr0ngPassw0rd!!!',
     }
 
@@ -186,17 +187,17 @@ test.describe('Authentication', () => {
     })
 
     // Click the login button and wait for navigation to complete
-    console.log('🔄 Clicking login button...')
+    console.log('- clicking login button...')
     await Promise.all([
       page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
       (async () => {
-        console.log('🖱️ About to click login button')
+        console.log('- about to click login button')
         await loginButton.click({ force: true })
-        console.log('✅ Login button clicked')
+        console.log('- login button clicked')
         await page.waitForTimeout(1000) // Give time to see the click effect
       })(),
     ])
-    console.log('🎉 Navigation completed to admin panel')
+    console.log('- navigation completed to admin panel')
 
     // Screenshot: After successful login
     await page.screenshot({

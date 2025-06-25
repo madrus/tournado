@@ -9,7 +9,7 @@ import { prisma } from '../../app/db.server'
 // Clean database for tests - removes all test data
 export const cleanDatabase = async (): Promise<void> => {
   try {
-    console.log('🧹 Cleaning database for tests...')
+    console.log('- cleaning database for tests...')
 
     // Delete in correct order to respect foreign key constraints
     await prisma.matchScore.deleteMany()
@@ -20,9 +20,9 @@ export const cleanDatabase = async (): Promise<void> => {
     await prisma.password.deleteMany()
     await prisma.user.deleteMany()
 
-    console.log('✅ Database cleaned successfully')
+    console.log('- database cleaned successfully')
   } catch (error) {
-    console.error('❌ Error cleaning database:', error)
+    console.error('❌ error cleaning database:', error)
     throw error
   }
 }
@@ -67,7 +67,7 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
 export async function createAdminUser(): Promise<User> {
   const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
 
-  console.log(`Creating admin user ${adminEmail}`)
+  console.log(`- creating admin user ${adminEmail}`)
   return await createUser({
     firstName: 'Test',
     lastName: 'Admin',
@@ -98,9 +98,9 @@ export const createRegularUser = async (): Promise<{ email: string; role: string
 export const cleanupUser = async (email: string): Promise<void> => {
   try {
     await deleteUserByEmail(email)
-    console.log(`Test user ${email} cleaned up`)
+    console.log(`- test user ${email} cleaned up`)
   } catch (_error) {
     // User might not exist, which is fine
-    console.log(`Test user ${email} cleanup skipped (not found)`)
+    console.log(`- test user ${email} cleanup skipped (not found)`)
   }
 }

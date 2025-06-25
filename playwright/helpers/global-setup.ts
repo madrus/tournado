@@ -73,9 +73,11 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     await context.storageState({ path: './playwright/.auth/auth.json' })
 
     // Don't clean up the test user here - we need it to exist for the session to be valid
-    console.log(`Admin user ${adminUser.email} created for global authentication state`)
+    console.log(
+      `- admin user ${adminUser.email} created for global authentication state`
+    )
   } catch (error) {
-    console.error('Global setup failed:', error)
+    console.error('- global setup failed:', error)
 
     // Take a debug screenshot
     await page.screenshot({

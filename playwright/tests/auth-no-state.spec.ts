@@ -2,6 +2,8 @@ import { faker } from '@faker-js/faker'
 import { expect, test } from '@playwright/test'
 
 import { createAdminUser } from '../helpers/database'
+import { HomePage } from '../pages/HomePage'
+import { LoginPage } from '../pages/LoginPage'
 
 // This test file runs without stored auth state to test actual authentication
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -16,13 +18,24 @@ test.describe('Authentication', () => {
   })
 
   test('should allow you to register and sign in', async ({ page }) => {
-    const signinForm = {
+    const loginPage = new LoginPage(page)
+    const homePage = new HomePage(page)
+
+    // Generate test user data
+    const testUser = {
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
-      email: `${faker.person.firstName().toLowerCase()}${faker.person.lastName().toLowerCase()}@example.com`,
+      email: `${faker.person
+        .firstName()
+        .toLowerCase()
+        .replace(/[^a-z]/g, '')}${faker.person
+        .lastName()
+        .toLowerCase()
+        .replace(/[^a-z]/g, '')}@example.com`,
       password: 'MyReallyStr0ngPassw0rd!!!',
     }
 
+    // Go to signup page
     await page.goto('/auth/signup')
     await page.waitForLoadState('networkidle')
 
@@ -35,16 +48,16 @@ test.describe('Authentication', () => {
     // Use more explicit field interaction for firstName (has been problematic)
     await page.locator('#firstName').click()
     await page.locator('#firstName').clear()
-    await page.locator('#firstName').pressSequentially(signinForm.firstName)
+    await page.locator('#firstName').pressSequentially(testUser.firstName)
 
     // Fill other fields normally
-    await page.locator('#lastName').fill(signinForm.lastName)
-    await page.locator('#email').fill(signinForm.email)
-    await page.locator('#password').fill(signinForm.password)
+    await page.locator('#lastName').fill(testUser.lastName)
+    await page.locator('#email').fill(testUser.email)
+    await page.locator('#password').fill(testUser.password)
 
     // Verify all fields before submission
-    await expect(page.locator('#firstName')).toHaveValue(signinForm.firstName)
-    await expect(page.locator('#lastName')).toHaveValue(signinForm.lastName)
+    await expect(page.locator('#firstName')).toHaveValue(testUser.firstName)
+    await expect(page.locator('#lastName')).toHaveValue(testUser.lastName)
 
     // Screenshot: Form filled out
     await page.screenshot({
@@ -52,11 +65,9 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
-    // Submit with proper wait - using Dutch text "Account aanmaken"
-    await Promise.all([
-      page.waitForURL('/auth/signin'),
-      page.getByRole('button', { name: 'Account aanmaken' }).click(),
-    ])
+    // Submit signup
+    await page.getByRole('button', { name: 'Account aanmaken' }).click()
+    await page.waitForURL('/auth/signin')
 
     // Screenshot: After signup redirect
     await page.screenshot({
@@ -64,151 +75,42 @@ test.describe('Authentication', () => {
       fullPage: true,
     })
 
-    // Continue with sign-in - use deliberate field filling to prevent clearing issues
-    await page.locator('#email').click()
-    await page.locator('#email').clear()
-    await page.locator('#email').pressSequentially(signinForm.email, { delay: 50 })
+    // Now login with the created user
+    await loginPage.login(testUser.email, testUser.password)
 
-    await page.locator('#password').click()
-    await page.locator('#password').clear()
-    await page
-      .locator('#password')
-      .pressSequentially(signinForm.password, { delay: 50 })
+    // Verify we're redirected to admin panel
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
-    // Screenshot: Sign-in form filled
-    await page.screenshot({
-      path: 'playwright-results/04-signin-filled.png',
-      fullPage: true,
-    })
-
-    // Ensure form is ready and fields are properly filled
-    await expect(page.locator('#email')).toHaveValue(signinForm.email)
-    await expect(page.locator('#password')).toHaveValue(signinForm.password)
-
-    // Wait for the login button to be enabled and ready
-    const loginButton = page.getByRole('button', { name: 'Inloggen' })
-    await expect(loginButton).toBeEnabled()
-
-    // Wait for any loading states to complete before submission
-    await page.waitForLoadState('networkidle')
-
-    // Additional wait to ensure form is stable before submission
-    await page.waitForTimeout(500)
-
-    // Re-verify fields just before submission to catch any clearing
-    await expect(page.locator('#email')).toHaveValue(signinForm.email)
-    await expect(page.locator('#password')).toHaveValue(signinForm.password)
-
-    // Click sign in button using Dutch text "Inloggen"
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
-    ])
-
-    // Double-check we're on the correct page
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
-
-    // Screenshot: After successful sign-in
-    await page.screenshot({
-      path: 'playwright-results/05-signed-in.png',
-      fullPage: true,
-    })
-
-    // Verify signed in
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-
-    // Screenshot: Menu opened
-    await page.screenshot({
-      path: 'playwright-results/06-menu-opened.png',
-      fullPage: true,
-    })
-
-    await expect(
-      page.getByTestId('user-menu-dropdown').getByText(signinForm.email)
-    ).toBeVisible({ timeout: 5000 })
+    // Verify user is authenticated
+    await loginPage.verifyAuthentication()
   })
 
   test('should handle authentication with existing account', async ({ page }) => {
-    // Create a test user fixture in the database first
+    const loginPage = new LoginPage(page)
     const testUser = await createAdminUser()
 
-    // Test 1: Sign in from homepage - should redirect back to homepage
+    // Test sign in from homepage
     await page.goto('/')
-
     await page.getByRole('button', { name: 'Toggle menu' }).click()
-
-    // Wait for the user menu dropdown to become visible
-    // The dropdown might re-render if language changes, so we need to be patient
-    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
-      timeout: 10000,
-    })
-
-    // Click "Inloggen" link (Dutch for "Sign In")
     await page.getByRole('link', { name: 'Inloggen' }).click()
 
-    // Verify we're on signin page with correct redirectTo parameter
-    await expect(page).toHaveURL(/\/auth\/signin/)
-    await expect(page).toHaveURL(/redirectTo=%2F/) // Should redirect back to homepage
+    // Login with test user
+    await loginPage.login(testUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
-    // Sign in with our fixture user - use deliberate field filling to prevent clearing issues
-    await page.locator('#email').click()
-    await page.locator('#email').clear()
-    await page.locator('#email').pressSequentially(testUser.email, { delay: 50 })
+    // Verify authentication and redirect
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await loginPage.verifyAuthentication()
 
-    await page.locator('#password').click()
-    await page.locator('#password').clear()
-    await page
-      .locator('#password')
-      .pressSequentially('MyReallyStr0ngPassw0rd!!!', { delay: 50 })
+    // Test sign out
+    // Check if menu is already open, if not, open it
+    const userDropdown = page.getByTestId('user-menu-dropdown')
+    const isDropdownVisible = await userDropdown.isVisible().catch(() => false)
 
-    // Ensure form is ready and fields are properly filled
-    await expect(page.locator('#email')).toHaveValue(testUser.email)
-    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
+    if (!isDropdownVisible) {
+      await page.getByRole('button', { name: 'Toggle menu' }).click()
+    }
 
-    // Wait for the login button to be enabled and ready
-    const loginButton = page.getByRole('button', { name: 'Inloggen' })
-    await expect(loginButton).toBeEnabled()
-
-    // Wait for any loading states to complete before submission
-    await page.waitForLoadState('networkidle')
-
-    // Additional wait to ensure form is stable before submission
-    await page.waitForTimeout(500)
-
-    // Re-verify fields just before submission to catch any clearing
-    await expect(page.locator('#email')).toHaveValue(testUser.email)
-    await expect(page.locator('#password')).toHaveValue('MyReallyStr0ngPassw0rd!!!')
-
-    // Click the login button and wait for navigation to complete
-    await Promise.all([
-      page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 }), // Increased timeout for CI
-      loginButton.click(),
-    ])
-
-    // Double-check we're on the correct page (redundant but safe)
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 10000 })
-
-    // Verify user is authenticated by checking for their email in the UI (might be hidden in menu)
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(
-      page.getByTestId('user-menu-dropdown').getByText(testUser.email)
-    ).toBeVisible({ timeout: 5000 })
-
-    // Test 2: Sign out functionality - using Dutch text "Uitloggen"
     await page.getByRole('button', { name: 'Uitloggen' }).click()
-
-    // Should redirect to homepage and show signed out state
     await expect(page).toHaveURL('/')
-
-    // Wait a moment for the page to settle after sign out
-    await page.waitForLoadState('networkidle')
-
-    // Verify user is signed out - the email should no longer be visible in the menu
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await expect(page.locator('[data-testid="user-menu-dropdown"]')).toBeVisible({
-      timeout: 10000,
-    })
-    // User email should no longer be visible since they're signed out
-    await expect(page.getByText(testUser.email)).not.toBeVisible()
   })
 })

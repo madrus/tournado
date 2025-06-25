@@ -99,10 +99,13 @@ export class LoginPage extends BasePage {
     console.log('- filling credentials...')
 
     // For React controlled inputs, use pressSequentially to simulate real typing
-    await this.emailInput.click()
-    await this.emailInput.clear()
+    // await this.emailInput.click()
+    // await this.emailInput.clear()
+    const login = this.page.locator('input[name="email"]')
+    await expect(login).toBeVisible({ timeout: 10000 })
     await this.page.waitForTimeout(100) // Brief pause after clear
-    await this.emailInput.pressSequentially(email, { delay: 20 })
+    await login.fill(email || '')
+    // await this.emailInput.pressSequentially(email, { delay: 20 })
 
     // Verify email was filled correctly
     const actualEmail = await this.emailInput.inputValue()
@@ -114,10 +117,13 @@ export class LoginPage extends BasePage {
     }
     console.log(`- email filled successfully: "${actualEmail}"`)
 
-    await this.passwordInput.click()
-    await this.passwordInput.clear()
+    // await this.passwordInput.click()
+    // await this.passwordInput.clear()
+    const passcode = this.page.locator('input[name="password"]')
+    await expect(passcode).toBeVisible({ timeout: 10000 })
     await this.page.waitForTimeout(100) // Brief pause after clear
-    await this.passwordInput.pressSequentially(password, { delay: 20 })
+    await passcode.fill(password || '')
+    // await this.passwordInput.pressSequentially(password, { delay: 20 })
 
     // Verify password was filled correctly
     const actualPassword = await this.passwordInput.inputValue()

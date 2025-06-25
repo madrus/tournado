@@ -24,12 +24,14 @@ export default function PublicTeamsLayout(): JSX.Element {
         <p className='text-foreground-light text-start text-lg'>
           {t('teams.description')}
         </p>
-        <ActionLinkButton
-          to='new'
-          icon='add'
-          label={t('common.actions.add')}
-          variant='primary'
-        />
+        <div className='flex justify-end lg:justify-end rtl:justify-start lg:rtl:justify-start'>
+          <ActionLinkButton
+            to='new'
+            icon='add'
+            label={t('common.actions.add')}
+            variant='primary'
+          />
+        </div>
       </div>
       {/* Main Content */}
       <Outlet />

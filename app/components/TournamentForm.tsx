@@ -219,7 +219,7 @@ export function TournamentForm({
             </div>
             {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
-              <div className='flex justify-center lg:justify-start'>
+              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
                 <ActionButton
                   onClick={onDelete}
                   icon='delete'
@@ -545,33 +545,35 @@ export function TournamentForm({
         </div>
 
         {/* Submit Button */}
-        <div className='flex justify-end gap-4'>
-          {onCancel ? (
-            <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='outline'
-              color='red'
-            >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
-            </ActionButton>
-          ) : null}
+        <div className='flex justify-end rtl:justify-start'>
+          <div className='flex gap-4'>
+            {onCancel ? (
+              <ActionButton
+                type='button'
+                onClick={onCancel}
+                variant='outline'
+                color='red'
+              >
+                <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+                {t('common.actions.reset')}
+              </ActionButton>
+            ) : null}
 
-          <ActionButton
-            type='submit'
-            variant='solid'
-            color='red'
-            icon='check_circle'
-            aria-label={t('common.actions.save')}
-            disabled={
-              isPublicSuccess ||
-              !isFormReadyForSubmission() ||
-              (mode === 'edit' && !isDirty())
-            }
-          >
-            {submitButtonText || t('common.actions.save')}
-          </ActionButton>
+            <ActionButton
+              type='submit'
+              variant='solid'
+              color='red'
+              icon='check_circle'
+              aria-label={t('common.actions.save')}
+              disabled={
+                isPublicSuccess ||
+                !isFormReadyForSubmission() ||
+                (mode === 'edit' && !isDirty())
+              }
+            >
+              {submitButtonText || t('common.actions.save')}
+            </ActionButton>
+          </div>
         </div>
       </Form>
     </div>

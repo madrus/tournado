@@ -148,12 +148,12 @@ export default function SigninPage(): JSX.Element {
     }
   }, [emailFromRegistration])
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, email: e.target.value }))
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, email: event.target.value }))
   }
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, password: e.target.value }))
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, password: event.target.value }))
   }
 
   return (

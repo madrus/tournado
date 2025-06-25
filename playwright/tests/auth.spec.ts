@@ -105,8 +105,24 @@ test.describe('Authentication', () => {
     await homePage.expectToBeOnHomePage()
 
     // 2. Navigate to sign in from homepage menu
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
-    await page.getByRole('link', { name: 'Inloggen' }).click()
+    // Wait for page to be fully loaded and interactive
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(1000) // Allow for any hydration/JavaScript loading
+
+    // Find and click the toggle menu button with better error handling
+    const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
+    await toggleButton.waitFor({ state: 'visible', timeout: 10000 })
+    await toggleButton.scrollIntoViewIfNeeded()
+
+    // Ensure button is clickable
+    await expect(toggleButton).toBeEnabled()
+    await toggleButton.click()
+
+    // Wait for menu to appear and then click login link
+    await page.waitForTimeout(500) // Allow menu animation
+    const loginLink = page.getByRole('link', { name: 'Inloggen' })
+    await loginLink.waitFor({ state: 'visible', timeout: 5000 })
+    await loginLink.click()
 
     // 3. Should be on signin page
     await loginPage.expectToBeOnLoginPage()

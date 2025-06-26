@@ -28,9 +28,9 @@ export const handle: RouteMetadata = {
   isPublic: true,
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const loaderData = data as LoaderData | undefined
-  if (!loaderData?.team) {
+export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
+  const teamData = loaderData as LoaderData | undefined
+  if (!teamData?.team) {
     return [
       { title: 'Team Not Found | Tournado' },
       {
@@ -41,21 +41,21 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   }
 
   // For meta tags, we'll use English as the default since we don't have access to i18n here
-  const divisionLabel = getDivisionLabel(loaderData.team.division, 'en')
+  const divisionLabel = getDivisionLabel(teamData.team.division, 'en')
 
   return [
-    { title: `${loaderData.team.clubName} ${loaderData.team.teamName} | Tournado` },
+    { title: `${teamData.team.clubName} ${teamData.team.teamName} | Tournado` },
     {
       name: 'description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${divisionLabel} class.`,
+      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.teamName} in the ${divisionLabel} class.`,
     },
     {
       property: 'og:title',
-      content: `${loaderData.team.clubName} ${loaderData.team.teamName} | Tournado`,
+      content: `${teamData.team.clubName} ${teamData.team.teamName} | Tournado`,
     },
     {
       property: 'og:description',
-      content: `View games and schedule for ${loaderData.team.clubName} ${loaderData.team.teamName} in the ${divisionLabel} class.`,
+      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.teamName} in the ${divisionLabel} class.`,
     },
     { property: 'og:type', content: 'website' },
   ]

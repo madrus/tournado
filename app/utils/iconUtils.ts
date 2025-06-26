@@ -93,6 +93,7 @@ export type IconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  style?: React.CSSProperties
   'data-testid'?: string
 }
 
@@ -108,5 +109,21 @@ export function renderIcon(
     return null
   }
 
-  return React.createElement(IconComponent, props)
+  const { style, ...componentProps } = props
+  const element = React.createElement(IconComponent, componentProps)
+
+  // If style is provided, clone the element with the style applied to the SVG
+  if (style && React.isValidElement(element)) {
+    return React.cloneElement(
+      element as React.ReactElement<React.SVGProps<SVGSVGElement>>,
+      {
+        style: {
+          ...((element.props as React.SVGProps<SVGSVGElement>).style || {}),
+          ...style,
+        },
+      }
+    )
+  }
+
+  return element
 }

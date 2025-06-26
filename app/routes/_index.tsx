@@ -90,7 +90,7 @@ export default function IndexPage(): JSX.Element {
       </div>
 
       {/* Features Section */}
-      <div className='bg-white py-24 sm:py-32'>
+      <div className='py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
             <h2

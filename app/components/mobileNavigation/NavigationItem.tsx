@@ -24,11 +24,11 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
         size: 36,
         variant: isActive ? 'filled' : 'outlined',
         weight: isActive ? 700 : 400,
-        className: isActive ? 'text-red-500' : 'text-emerald-800',
+        className: isActive ? 'text-red-500' : 'text-emerald-800 dark:text-white',
         'data-testid': 'nav-icon',
       })}
       <span
-        className={`mt-1 text-xs ${isActive ? 'font-bold text-red-500' : 'text-emerald-800'}`}
+        className={`mt-1 text-xs ${isActive ? 'font-bold text-red-500' : 'text-emerald-800 dark:text-white'}`}
       >
         {label}
       </span>

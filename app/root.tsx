@@ -28,6 +28,7 @@ import { initI18n } from './i18n/config'
 import type { TournamentData } from './lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from './stores/useAuthStore'
 import { useTeamFormStore } from './stores/useTeamFormStore'
+import { useThemeStore, useThemeStoreHydration } from './stores/useThemeStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
@@ -122,6 +123,12 @@ const Document = ({ children, language }: DocumentProps) => {
   // Use useTranslation to get dynamic language updates
   const { i18n: i18nInstance } = useTranslation()
 
+  // Get theme from store
+  const { theme } = useThemeStore()
+
+  // Handle theme store rehydration
+  useThemeStoreHydration()
+
   // Use the current language from i18n instance, falling back to initial language
   const currentLanguage = i18nInstance.language || language
 
@@ -143,7 +150,11 @@ const Document = ({ children, language }: DocumentProps) => {
   }, [currentLanguage, i18nInstance.language])
 
   return (
-    <html lang={currentLanguage} dir={direction} className='h-full overflow-x-hidden'>
+    <html
+      lang={currentLanguage}
+      dir={direction}
+      className={cn('h-full overflow-x-hidden', theme)}
+    >
       <head>
         <Meta />
         <meta charSet='utf-8' />
@@ -266,8 +277,13 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
             <div
-              className='flex-1 overflow-visible bg-gradient-to-b from-emerald-50 to-white pb-16 md:overflow-y-auto md:pb-0'
-              style={{ position: 'relative', zIndex: 1 }}
+              className='flex-1 overflow-visible pb-16 md:overflow-y-auto md:pb-0'
+              style={{
+                background:
+                  'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
+                position: 'relative',
+                zIndex: 1,
+              }}
             >
               <Outlet />
             </div>
@@ -305,8 +321,13 @@ export function ErrorBoundary(): JSX.Element {
               <AppBar authenticated={authenticated} username={username} />
             </div>
             <div
-              className='flex-1 overflow-visible bg-gradient-to-b from-emerald-50 to-white pb-16 md:overflow-y-auto md:pb-0'
-              style={{ position: 'relative', zIndex: 1 }}
+              className='flex-1 overflow-visible pb-16 md:overflow-y-auto md:pb-0'
+              style={{
+                background:
+                  'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
+                position: 'relative',
+                zIndex: 1,
+              }}
             >
               <GeneralErrorBoundary />
             </div>

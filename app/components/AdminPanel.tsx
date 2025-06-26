@@ -85,7 +85,10 @@ export function AdminPanel({
 
   const content = (
     <div
-      className={cn('flex flex-col items-start space-y-4', typographyClasses.textAlign)}
+      className={cn(
+        'flex flex-col items-start space-y-4 break-words',
+        typographyClasses.textAlign
+      )}
     >
       <div
         className={cn(
@@ -99,14 +102,19 @@ export function AdminPanel({
       </div>
       <h3
         className={cn(
-          'text-lg font-semibold transition-colors',
+          'text-lg font-semibold break-words transition-colors',
           colors.titleHover,
           getLatinTitleClass(language)
         )}
       >
         {title}
       </h3>
-      <p className={cn('text-foreground-light transition-colors', colors.textHover)}>
+      <p
+        className={cn(
+          'text-foreground-light break-words transition-colors',
+          colors.textHover
+        )}
+      >
         {description}
       </p>
       {children}

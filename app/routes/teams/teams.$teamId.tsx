@@ -12,11 +12,7 @@ import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
-// Temporary types until auto-generation is complete
-export type LoaderArgs = {
-  params: Record<string, string | undefined>
-  request: Request
-}
+import type { Route } from './+types/teams.$teamId'
 
 type LoaderData = {
   team: {
@@ -32,7 +28,8 @@ export const handle: RouteMetadata = {
   isPublic: true,
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const loaderData = data as LoaderData | undefined
   if (!loaderData?.team) {
     return [
       { title: 'Team Not Found | Tournado' },
@@ -64,7 +61,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
   ]
 }
 
-export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> {
   invariant(params.teamId, 'teamId not found')
 
   const team = await getTeamById({ id: params.teamId as string })

@@ -10,15 +10,12 @@ import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { requireUser } from '~/utils/session.server'
 
+import type { Route } from './+types/settings'
+
 // Route metadata - this is a protected route
 
 type LoaderData = {
   user: User
-}
-
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
 }
 
 export const meta: MetaFunction = () => [
@@ -43,7 +40,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.settings',
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await requireUser(request)
   return { user }
 }

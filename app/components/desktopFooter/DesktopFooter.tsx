@@ -21,7 +21,7 @@ const DesktopFooter = (): JSX.Element => {
         </div>
         <div className='flex items-center justify-end'>
           <span className={`m-0 p-0 leading-[1] ${getLatinTextClass(i18n.language)}`}>
-            Built with ♥️ by Madrus
+            Built with ♥️ by Madrus4U
           </span>
         </div>
       </div>

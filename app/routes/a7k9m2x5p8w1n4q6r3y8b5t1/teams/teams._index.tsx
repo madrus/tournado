@@ -28,13 +28,13 @@ export const handle: RouteMetadata = {
 }
 
 export const meta: MetaFunction = () => [
-  { title: 'Teams Management | Admin | Tournado' },
+  { title: 'Team Management | Admin | Tournado' },
   {
     name: 'description',
     content:
       'Manage all teams in the system. View, edit, delete teams and oversee tournament participation.',
   },
-  { property: 'og:title', content: 'Teams Management | Admin | Tournado' },
+  { property: 'og:title', content: 'Team Management | Admin | Tournado' },
   {
     property: 'og:description',
     content:

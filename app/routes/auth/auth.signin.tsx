@@ -18,14 +18,7 @@ import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { createUserSession, getUser } from '~/utils/session.server'
 import { validateEmail } from '~/utils/utils'
 
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
-}
-
-type ActionArgs = {
-  request: Request
-}
+import type { Route } from './+types/auth.signin'
 
 type ActionData = {
   errors?: {
@@ -40,7 +33,7 @@ export const handle: RouteMetadata = {
   title: 'common.titles.signIn',
 }
 
-export const loader = async ({ request }: LoaderArgs): Promise<object> => {
+export const loader = async ({ request }: Route.LoaderArgs): Promise<object> => {
   const user = await getUser(request)
   if (user) {
     // Always redirect all authorized users to Admin Panel
@@ -49,7 +42,7 @@ export const loader = async ({ request }: LoaderArgs): Promise<object> => {
   return {}
 }
 
-export const action = async ({ request }: ActionArgs): Promise<Response> => {
+export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')

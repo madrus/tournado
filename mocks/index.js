@@ -20,8 +20,6 @@ const server = setupServer(...miscHandlers)
 
 server.listen({
   onUnhandledRequest: 'bypass',
-  // Disable session tracking in MSW
-  disableSession: true,
 })
 console.info('Mock server running')
 

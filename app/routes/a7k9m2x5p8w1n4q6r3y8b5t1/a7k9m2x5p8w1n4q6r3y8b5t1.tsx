@@ -5,7 +5,7 @@ import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 
 export default function AdminLayout(): JSX.Element {
   return (
-    <div className='container mx-auto px-4 py-8'>
+    <div className='container mx-auto min-w-[320px] px-4 py-8'>
       <Outlet />
     </div>
   )

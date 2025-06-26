@@ -16,15 +16,7 @@ import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
-}
-
-//! TODO: replace with generated type
-type ActionArgs = {
-  request: Request
-}
+import type { Route } from './+types/tournaments._index'
 
 // Route metadata - authenticated users can access
 export const handle: RouteMetadata = {
@@ -38,13 +30,13 @@ export const handle: RouteMetadata = {
 }
 
 export const meta: MetaFunction = () => [
-  { title: 'Tournaments Management | Admin | Tournado' },
+  { title: 'Tournament Management | Admin | Tournado' },
   {
     name: 'description',
     content:
       'Manage all tournaments in the system. View, edit, delete tournaments and oversee competition details.',
   },
-  { property: 'og:title', content: 'Tournaments Management | Admin | Tournado' },
+  { property: 'og:title', content: 'Tournament Management | Admin | Tournado' },
   {
     property: 'og:description',
     content:
@@ -57,7 +49,7 @@ type LoaderData = {
   tournamentListItems: TournamentListItem[]
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   await requireUserWithMetadata(request, handle)
 
   const tournamentListItems = await getAllTournamentListItems()
@@ -65,7 +57,7 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
   return { tournamentListItems }
 }
 
-export async function action({ request }: ActionArgs): Promise<Response> {
+export async function action({ request }: Route.ActionArgs): Promise<Response> {
   await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()

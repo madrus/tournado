@@ -198,7 +198,7 @@ const Document = ({ children, language }: DocumentProps) => {
       </head>
       <body
         className={cn(
-          'bg-background text-foreground flex h-full flex-col',
+          'bg-background text-foreground flex h-full min-w-[320px] flex-col',
           typographyClass
         )}
       >

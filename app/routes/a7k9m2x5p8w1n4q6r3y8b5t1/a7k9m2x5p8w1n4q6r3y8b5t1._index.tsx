@@ -4,13 +4,22 @@ import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
 
-import { ActionLinkButton } from '~/components/buttons'
+import { AdminPanel } from '~/components/AdminPanel'
+import {
+  ApparelIcon,
+  PersonIcon,
+  SettingsIcon,
+  TrophyIcon,
+  TuneIcon,
+} from '~/components/icons'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
+
+import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
 
 type LoaderData = {
   user: User
@@ -26,11 +35,6 @@ type LoaderData = {
     startDate: Date
     endDate: Date | null
   }>
-}
-
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
 }
 
 export const meta: MetaFunction = () => [
@@ -63,7 +67,7 @@ export const handle: RouteMetadata = {
   },
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   // Enhanced protection automatically handles authentication and authorization
   const user = await requireUserWithMetadata(request, handle)
 
@@ -89,134 +93,87 @@ export default function AdminDashboard(): JSX.Element {
       <div className='space-y-8'>
         {/* Dashboard Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2'>
-          {/* Teams Management */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              Teams Management
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              Manage team registrations and memberships.
-            </p>
-            <div className='mb-4 space-y-2'>
-              <p className='text-foreground-light'>
+          {/* Team Management */}
+          <AdminPanel
+            title='Team Management'
+            description='Manage team registrations and memberships.'
+            icon={
+              <ApparelIcon className='h-5 w-5 text-emerald-700 transition-colors group-hover:text-emerald-800' />
+            }
+            colorScheme='emerald'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+            language={i18n.language}
+          >
+            <div className='space-y-2'>
+              <p className='text-foreground-light transition-colors group-hover:text-emerald-600'>
                 <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
                 {teams.length}
               </p>
             </div>
-            <div className='flex justify-end rtl:justify-start'>
-              <ActionLinkButton
-                to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-                label='Manage Teams'
-                icon='apparel'
-                variant='emerald'
-              />
-            </div>
-          </div>
+          </AdminPanel>
 
           {/* Tournament Management */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              Tournament Management
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              Create and manage tournaments and competitions.
-            </p>
-            <div className='mb-4 space-y-2'>
-              <p className='text-foreground-light'>
+          <AdminPanel
+            title='Tournament Management'
+            description='Create and manage tournaments and competitions.'
+            icon={
+              <TrophyIcon className='h-5 w-5 text-blue-700 transition-colors group-hover:text-blue-800' />
+            }
+            colorScheme='blue'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+            language={i18n.language}
+          >
+            <div className='space-y-2'>
+              <p className='text-foreground-light transition-colors group-hover:text-blue-600'>
                 <strong className='me-1'>
                   {t('admin.tournaments.totalTournaments')}:
                 </strong>
                 {tournaments.length}
               </p>
             </div>
-            <div className='flex justify-end rtl:justify-start'>
-              <ActionLinkButton
-                to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
-                label='Manage Tournaments'
-                icon='trophy'
-                variant='primary'
-              />
-            </div>
-          </div>
+          </AdminPanel>
 
           {/* User Management */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              User Management
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              Manage user accounts and permissions.
-            </p>
+          <AdminPanel
+            title='User Management'
+            description='Manage user accounts and permissions.'
+            icon={
+              <PersonIcon className='h-5 w-5 text-gray-700 transition-colors group-hover:text-gray-800' />
+            }
+            colorScheme='gray'
+            language={i18n.language}
+          >
             <div className='space-y-2'>
-              <p className='text-foreground-light'>
+              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='text-foreground-light'>
+              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
-          </div>
+          </AdminPanel>
 
           {/* System Settings */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              System Settings
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              Configure application settings and preferences.
-            </p>
-            <div className='flex justify-end rtl:justify-start'>
-              <ActionLinkButton
-                to=''
-                label='System Config'
-                icon='settings'
-                className='border border-red-600 bg-white text-red-700 shadow-red-500/25 hover:border-red-500 hover:bg-red-50/30 hover:ring-2 hover:shadow-red-500/40 hover:ring-red-600/90 hover:ring-offset-2 focus:ring-red-600/90'
-              />
-            </div>
-          </div>
+          <AdminPanel
+            title='System Settings'
+            description='Configure application settings and preferences.'
+            icon={
+              <SettingsIcon className='h-5 w-5 text-red-700 transition-colors group-hover:text-red-800' />
+            }
+            colorScheme='red'
+            language={i18n.language}
+          />
 
           {/* Reports & Analytics */}
-          <div className='rounded-lg border bg-white p-6 shadow-sm'>
-            <h3
-              className={cn(
-                'mb-4 text-lg font-semibold',
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              Reports & Analytics
-            </h3>
-            <p className='text-foreground-light mb-4'>
-              View platform usage and tournament statistics.
-            </p>
-            <div className='flex justify-end rtl:justify-start'>
-              <ActionLinkButton
-                to=''
-                label='View Reports'
-                icon='tune'
-                className='border border-emerald-600 bg-white text-emerald-700 shadow-emerald-500/25 hover:border-emerald-500 hover:bg-emerald-50/30 hover:ring-2 hover:shadow-emerald-500/40 hover:ring-emerald-600/90 hover:ring-offset-2 focus:ring-emerald-600/90'
-              />
-            </div>
-          </div>
+          <AdminPanel
+            title='Reports & Analytics'
+            description='View platform usage and tournament statistics.'
+            icon={
+              <TuneIcon className='h-5 w-5 text-emerald-700 transition-colors group-hover:text-emerald-800' />
+            }
+            colorScheme='emerald'
+            language={i18n.language}
+          />
         </div>
       </div>
     </>

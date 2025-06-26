@@ -16,17 +16,7 @@ import {
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
-  params: { tournamentId: string }
-}
-
-//! TODO: replace with generated type
-type ActionArgs = {
-  request: Request
-  params: { tournamentId: string }
-}
+import type { Route } from './+types/tournaments.$tournamentId'
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {
@@ -83,7 +73,10 @@ type ActionData = {
   message?: string
 }
 
-export async function loader({ request, params }: LoaderArgs): Promise<LoaderData> {
+export async function loader({
+  request,
+  params,
+}: Route.LoaderArgs): Promise<LoaderData> {
   await requireUserWithMetadata(request, handle)
 
   // Read 'lang' cookie from request
@@ -115,7 +108,7 @@ export async function loader({ request, params }: LoaderArgs): Promise<LoaderDat
 export async function action({
   request,
   params,
-}: ActionArgs): Promise<Response | ActionData> {
+}: Route.ActionArgs): Promise<Response | ActionData> {
   await requireUserWithMetadata(request, handle)
 
   const { tournamentId } = params

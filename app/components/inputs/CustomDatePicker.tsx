@@ -13,11 +13,13 @@ type CustomDatePickerProps = {
   error?: string
   required?: boolean
   className?: string
+  value?: string
   defaultValue?: string
   placeholder?: string
   min?: string
   max?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur?: () => void
 }
 
 type CalendarProps = {
@@ -169,22 +171,36 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       error,
       required = false,
       className = '',
+      value,
       defaultValue,
       placeholder,
       min,
       max,
       onChange,
+      onBlur,
     },
     ref
   ): JSX.Element => {
     const { i18n } = useTranslation()
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-      defaultValue ? new Date(defaultValue) : undefined
+    // Use controlled value if provided, otherwise fall back to defaultValue for uncontrolled mode
+    const isControlled = value !== undefined
+    const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(
+      (isControlled ? value : defaultValue)
+        ? new Date(isControlled ? value! : defaultValue!)
+        : undefined
     )
+    const selectedDate = isControlled
+      ? value
+        ? new Date(value)
+        : undefined
+      : internalSelectedDate
     const [isOpen, setIsOpen] = useState(false)
 
     const handleDateSelect = (date: Date) => {
-      setSelectedDate(date)
+      // Update internal state only for uncontrolled mode
+      if (!isControlled) {
+        setInternalSelectedDate(date)
+      }
       setIsOpen(false)
 
       // Create synthetic event for onChange handler
@@ -218,6 +234,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 type='button'
                 disabled={readOnly}
                 aria-label={`${label} - select date`}
+                onBlur={onBlur}
                 className={cn(
                   'placeholder:text-foreground-lighter flex h-12 w-full items-center justify-between rounded-md border-2 border-emerald-700/30 bg-white px-3 text-left text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
                   readOnly && 'cursor-not-allowed opacity-50',

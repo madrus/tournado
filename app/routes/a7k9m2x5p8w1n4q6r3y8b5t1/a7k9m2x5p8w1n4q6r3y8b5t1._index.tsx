@@ -92,7 +92,7 @@ export default function AdminDashboard(): JSX.Element {
       </p>
       <div className='space-y-8'>
         {/* Dashboard Grid */}
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2'>
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Team Management */}
           <AdminPanel
             title='Team Management'

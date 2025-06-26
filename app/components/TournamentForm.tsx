@@ -122,9 +122,11 @@ export function TournamentForm({
   )
 
   // Initialize mode in store
-  if (mode !== formMode) {
-    setFormMetaField('mode', formMode)
-  }
+  useEffect(() => {
+    if (mode !== formMode) {
+      setFormMetaField('mode', formMode)
+    }
+  }, [mode, formMode, setFormMetaField])
 
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
@@ -356,11 +358,9 @@ export function TournamentForm({
               <CustomDatePicker
                 name='startDate'
                 label={t('tournaments.form.startDate')}
-                defaultValue={startDate}
-                onChange={event => {
-                  setFormField('startDate', event.target.value)
-                  validateFieldOnBlur('startDate')
-                }}
+                value={startDate}
+                onChange={event => setFormField('startDate', event.target.value)}
+                onBlur={() => validateFieldOnBlur('startDate')}
                 error={getTranslatedError('startDate', !isPanelEnabled(2))}
                 required
                 className={getLatinTextClass(i18n.language)}
@@ -371,11 +371,9 @@ export function TournamentForm({
               <CustomDatePicker
                 name='endDate'
                 label={t('tournaments.form.endDate')}
-                defaultValue={endDate}
-                onChange={event => {
-                  setFormField('endDate', event.target.value)
-                  validateFieldOnBlur('endDate')
-                }}
+                value={endDate}
+                onChange={event => setFormField('endDate', event.target.value)}
+                onBlur={() => validateFieldOnBlur('endDate')}
                 error={getTranslatedError('endDate', !isPanelEnabled(2))}
                 className={getLatinTextClass(i18n.language)}
                 readOnly={isPublicSuccess || !isPanelEnabled(2)}

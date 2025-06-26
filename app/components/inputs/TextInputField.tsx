@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from 'react'
+import { type FocusEvent, forwardRef, type JSX } from 'react'
 
 import { cn } from '~/utils/misc'
 
@@ -15,8 +15,8 @@ type InputFieldProps = {
   defaultValue?: string
   placeholder?: string
   onChange?: (value: string) => void
-  onFocus?: (focusEvent: React.FocusEvent<HTMLInputElement>) => void
-  onBlur?: (focusEvent: React.FocusEvent<HTMLInputElement>) => void
+  onFocus?: (focusEvent: FocusEvent<HTMLInputElement>) => void
+  onBlur?: (focusEvent: FocusEvent<HTMLInputElement>) => void
 }
 
 export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(

@@ -160,9 +160,9 @@ const linkColorClasses = {
 export const linkButtonVariantClasses = {
   primary: cn(
     'bg-brand text-white hover:bg-brand/90 border-0',
-    'shadow-red-500/25 hover:shadow-red-500/40',
-    'focus:ring-red-600/90',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600/90'
+    linkColorClasses.brand.shadow,
+    linkColorClasses.brand.focus,
+    linkColorClasses.brand.hover
   ),
   secondary: cn(
     'bg-gray-100 text-gray-800 hover:bg-gray-200 border-0',

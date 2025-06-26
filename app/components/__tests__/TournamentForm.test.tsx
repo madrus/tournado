@@ -294,6 +294,7 @@ vi.mock('../inputs/CustomDatePicker', () => ({
     {
       name: string
       label: string
+      value?: string
       defaultValue?: string
       error?: string
       required?: boolean
@@ -303,7 +304,17 @@ vi.mock('../inputs/CustomDatePicker', () => ({
     }
   >(
     (
-      { name, label, defaultValue, error, required, className, readOnly, onChange },
+      {
+        name,
+        label,
+        value,
+        defaultValue,
+        error,
+        required,
+        className,
+        readOnly,
+        onChange,
+      },
       ref
     ) => (
       <div className='custom-date-picker'>
@@ -316,6 +327,7 @@ vi.mock('../inputs/CustomDatePicker', () => ({
           id={name}
           name={name}
           type='date'
+          value={value}
           defaultValue={defaultValue}
           className={className}
           readOnly={readOnly}

@@ -20,6 +20,10 @@
   /* Background gradient variables */
   --gradient-from: #d1fae5; /* emerald-100 (one step darker than emerald-50) */
   --gradient-to: #f9fafb; /* gray-50 (one step darker than white) */
+  
+  /* Footer background */
+  --footer-bg: #ffffff; /* white */
+  --footer-text: #374151; /* gray-700 */
 }
 
 /* Dark mode color overrides */
@@ -30,6 +34,8 @@
   --color-title: var(--color-accent); /* emerald-300 titles in dark mode */
   --gradient-from: #022c22; /* emerald-950 */
   --gradient-to: #065f46; /* emerald-800 */
+  --footer-bg: #065f46; /* emerald-800 in dark mode */
+  --footer-text: #ffffff; /* white text in dark mode */
 }
 
 /*
@@ -82,34 +88,9 @@
     color: var(--color-foreground) !important;
   }
 
-  /* Dark mode footer styles */
-  .dark footer {
-    background-color: #065f46 !important; /* emerald-800 */
-  }
+  /* Footer styles handled by component classes */
 
-  .dark footer * {
-    color: #ffffff !important; /* white text */
-  }
-
-  /* Dark mode mobile navigation */
-  .dark nav[data-testid="bottom-navigation"] {
-    background-color: #065f46 !important; /* emerald-800 */
-  }
-
-  /* Default white text and icons for inactive items */
-  .dark nav[data-testid="bottom-navigation"] span:not(.text-red-500) {
-    color: #ffffff !important; /* white text */
-  }
-
-  .dark nav[data-testid="bottom-navigation"] svg:not(.text-red-500) {
-    color: #ffffff !important; /* white icons */
-  }
-
-  /* Keep active items red in mobile nav - both text and icons */
-  .dark nav[data-testid="bottom-navigation"] .text-red-500,
-  .dark nav[data-testid="bottom-navigation"] .text-red-500 svg {
-    color: #ef4444 !important; /* keep red-500 for active items */
-  }
+  /* Mobile navigation uses CSS custom properties */
 }
 
 /* RTL-specific utilities */

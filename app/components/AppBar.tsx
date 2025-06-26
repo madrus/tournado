@@ -187,7 +187,9 @@ export function AppBar({
 
         {/* Page title in center */}
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <h2 className='text-center text-xl font-bold sm:text-2xl'>{pageTitle}</h2>
+          <h2 className='text-center text-xl font-bold text-white sm:text-2xl'>
+            {pageTitle}
+          </h2>
         </div>
 
         {/* Unified menu for both desktop and mobile */}

@@ -103,9 +103,11 @@ export function TeamForm({
   )
 
   // Initialize mode in store
-  if (mode !== formMode) {
-    setFormMetaField('mode', formMode)
-  }
+  useEffect(() => {
+    if (mode !== formMode) {
+      setFormMetaField('mode', formMode)
+    }
+  }, [mode, formMode, setFormMetaField])
 
   // Reset specific fields when switching to create mode to ensure clean state
   useEffect(() => {

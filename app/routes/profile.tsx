@@ -10,15 +10,12 @@ import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
+import type { Route } from './+types/profile'
+
 // Route metadata - this is a protected route with enhanced configuration
 
 type LoaderData = {
   user: User
-}
-
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
 }
 
 export const meta: MetaFunction = () => [
@@ -58,7 +55,7 @@ export const handle: RouteMetadata = {
   },
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   // Use the enhanced protection system
   const user = await requireUserWithMetadata(request, handle)
   return { user }

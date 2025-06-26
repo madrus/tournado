@@ -12,15 +12,7 @@ import {
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
-}
-
-//! TODO: replace with generated type
-type ActionArgs = {
-  request: Request
-}
+import type { Route } from './+types/tournaments.new'
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {
@@ -69,7 +61,7 @@ type ActionData = {
   message?: string
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   await requireUserWithMetadata(request, handle)
 
   const divisions = getAllDivisions()
@@ -81,7 +73,9 @@ export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
   }
 }
 
-export async function action({ request }: ActionArgs): Promise<Response | ActionData> {
+export async function action({
+  request,
+}: Route.ActionArgs): Promise<Response | ActionData> {
   await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()

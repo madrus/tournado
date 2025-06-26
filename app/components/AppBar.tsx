@@ -17,6 +17,7 @@ import {
 } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
+import { ThemeToggle } from './ThemeToggle'
 import { UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
@@ -191,6 +192,7 @@ export function AppBar({
 
         {/* Unified menu for both desktop and mobile */}
         <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+          <ThemeToggle />
           <UserMenu
             authenticated={isAuthenticated}
             username={username}

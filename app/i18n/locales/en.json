@@ -79,6 +79,9 @@
     "loading": "Loading...",
     "signedInAs": "Signed in as",
     "toggleMenu": "Toggle menu",
+    "toggleTheme": "Toggle theme",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
     "titles": {
       "about": "About",
       "adminPanel": "Admin Panel",

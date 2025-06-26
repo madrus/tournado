@@ -1,6 +1,8 @@
 - Home
    - [Overview](README.md)
    - [Getting Started](getting_started.md)
+- Work in Progress
+   - [WIP Items](wip.md)
 - Development
    - [Overview](development/overview.md)
    - [Routing](development/routing.md)
@@ -32,5 +34,3 @@
    - [Markdown Tips](markdown_tips.md)
    - [React Router v7 Stack](remix_stack.md)
    - [Prefetching Strategy](prefetching_strategy.md)
-- Work in Progress
-   - [WIP Items](wip.md)

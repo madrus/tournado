@@ -79,6 +79,9 @@
     "loading": "جاري التحميل...",
     "signedInAs": "مسجل الدخول كـ",
     "toggleMenu": "فتح/إغلاق القائمة",
+    "toggleTheme": "تبديل المظهر",
+    "lightMode": "المظهر الفاتح",
+    "darkMode": "المظهر الداكن",
     "titles": {
       "about": "حول",
       "addTeam": "إضافة فريق",

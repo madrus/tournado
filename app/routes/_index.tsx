@@ -103,7 +103,7 @@ export default function IndexPage(): JSX.Element {
             </h2>
             <p
               className={cn(
-                'mt-2 text-3xl font-bold sm:text-4xl',
+                'text-foreground-heading mt-2 text-3xl font-bold sm:text-4xl',
                 typography.title,
                 typography.heading,
                 typography.centerAlign

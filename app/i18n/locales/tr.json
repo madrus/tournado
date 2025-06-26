@@ -79,6 +79,9 @@
     "loading": "Yükleniyor...",
     "signedInAs": "Giriş yapıldı: ",
     "toggleMenu": "Menüyü aç/kapat",
+    "toggleTheme": "Temayı değiştir",
+    "lightMode": "Açık mod",
+    "darkMode": "Koyu mod",
     "titles": {
       "about": "Hakkımızda",
       "adminPanel": "Yönetici paneli",

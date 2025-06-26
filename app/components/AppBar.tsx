@@ -191,7 +191,7 @@ export function AppBar({
         </div>
 
         {/* Unified menu for both desktop and mobile */}
-        <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+        <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center'>
           <ThemeToggle />
           <UserMenu
             authenticated={isAuthenticated}

@@ -13,13 +13,13 @@
       "saveChanges": "Save Changes",
       "teamNotFound": "Team Not Found",
       "teamNotFoundDescription": "The team you are looking for could not be found or may have been deleted.",
-      "title": "Teams Management",
+      "title": "Team Management",
       "totalTeams": "Total Teams"
     },
     "tournaments": {
       "totalTournaments": "Total Tournaments",
       "confirmDelete": "Are you sure you want to delete this tournament? This action cannot be undone.",
-      "title": "Tournaments Management",
+      "title": "Tournament Management",
       "description": "Manage all tournaments in the system. Create, edit, or delete tournament information.",
       "allTournaments": "All Tournaments",
       "allTournamentsDescription": "View and manage all tournaments in the system"

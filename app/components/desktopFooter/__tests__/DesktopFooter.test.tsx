@@ -120,7 +120,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus')
+      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
       expect(attribution).toBeInTheDocument()
     })
 
@@ -131,7 +131,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus')
+      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
       expect(attribution).toHaveClass('m-0', 'p-0', 'leading-[1]')
       expect(attribution.tagName).toBe('SPAN')
     })
@@ -143,7 +143,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus')
+      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
       expect(attribution.textContent).toContain('♥️')
     })
   })
@@ -281,7 +281,7 @@ describe('DesktopFooter', () => {
       expect(screen.getByText('Tournado')).toBeInTheDocument()
 
       // Attribution text
-      expect(screen.getByText('Built with ♥️ by Madrus')).toBeInTheDocument()
+      expect(screen.getByText('Built with ♥️ by Madrus4U')).toBeInTheDocument()
     })
   })
 
@@ -303,7 +303,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Built with ♥️ by Madrus')).toBeInTheDocument()
+      expect(screen.getByText('Built with ♥️ by Madrus4U')).toBeInTheDocument()
     })
 
     it('should not contain any additional text content', () => {
@@ -315,7 +315,7 @@ describe('DesktopFooter', () => {
 
       const footer = screen.getByRole('contentinfo')
       const textContent = footer.textContent
-      expect(textContent).toBe('TournadoBuilt with ♥️ by Madrus')
+      expect(textContent).toBe('TournadoBuilt with ♥️ by Madrus4U')
     })
   })
 
@@ -333,7 +333,7 @@ describe('DesktopFooter', () => {
       const rightSection = container.children[1] as HTMLElement
       const logoLink = screen.getByRole('link')
       const logoText = screen.getByText('Tournado')
-      const attribution = screen.getByText('Built with ♥️ by Madrus')
+      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
 
       // Footer classes
       expect(footer).toHaveClass('hidden', 'md:block')

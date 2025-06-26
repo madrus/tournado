@@ -30,13 +30,13 @@ export const handle: RouteMetadata = {
 }
 
 export const meta: MetaFunction = () => [
-  { title: 'Tournaments Management | Admin | Tournado' },
+  { title: 'Tournament Management | Admin | Tournado' },
   {
     name: 'description',
     content:
       'Manage all tournaments in the system. View, edit, delete tournaments and oversee competition details.',
   },
-  { property: 'og:title', content: 'Tournaments Management | Admin | Tournado' },
+  { property: 'og:title', content: 'Tournament Management | Admin | Tournado' },
   {
     property: 'og:description',
     content:

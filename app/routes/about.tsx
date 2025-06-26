@@ -8,14 +8,11 @@ import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
+import type { Route } from './+types/about'
+
 // Type definition for loader data
 type LoaderData = {
   version: string
-}
-
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
 }
 
 // Route metadata - this is a public route
@@ -40,7 +37,9 @@ export const meta: MetaFunction = () => [
   { property: 'og:type', content: 'website' },
 ]
 
-export async function loader({ request: _request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({
+  request: _request,
+}: Route.LoaderArgs): Promise<LoaderData> {
   // Read version from package.json
   const packageJson = await import('../../package.json')
   return { version: packageJson.version }

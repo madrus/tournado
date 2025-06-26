@@ -12,6 +12,8 @@ import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
+import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
+
 type LoaderData = {
   user: User
   teams: Array<{
@@ -26,11 +28,6 @@ type LoaderData = {
     startDate: Date
     endDate: Date | null
   }>
-}
-
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
 }
 
 export const meta: MetaFunction = () => [
@@ -63,7 +60,7 @@ export const handle: RouteMetadata = {
   },
 }
 
-export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   // Enhanced protection automatically handles authentication and authorization
   const user = await requireUserWithMetadata(request, handle)
 

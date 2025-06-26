@@ -11,10 +11,7 @@ import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
-//! TODO: replace with generated type
-type LoaderArgs = {
-  request: Request
-}
+import type { Route } from './+types/teams._index'
 
 // Route metadata - this will inherit from the parent route
 export const handle: RouteMetadata = {
@@ -37,7 +34,7 @@ export const meta: MetaFunction = () => [
   { property: 'og:type', content: 'website' },
 ]
 
-export const loader = async ({ request }: LoaderArgs): Promise<TeamsLoaderData> =>
+export const loader = async ({ request }: Route.LoaderArgs): Promise<TeamsLoaderData> =>
   loadTeamsData(request)
 
 export default function PublicTeamsIndexPage(): JSX.Element {

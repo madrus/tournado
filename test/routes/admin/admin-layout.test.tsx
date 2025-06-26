@@ -288,7 +288,7 @@ describe('Admin Layout', () => {
 
       // Verify the container is the direct parent of the outlet
       expect(outlet.parentElement).toBe(container)
-      expect(container?.className).toBe('container mx-auto px-4 py-8')
+      expect(container?.className).toBe('container mx-auto min-w-[320px] px-4 py-8')
     })
   })
 
@@ -301,7 +301,7 @@ describe('Admin Layout', () => {
       )
 
       const container = screen.getByTestId('outlet').parentElement
-      const expectedClasses = ['container', 'mx-auto', 'px-4', 'py-8']
+      const expectedClasses = ['container', 'mx-auto', 'min-w-[320px]', 'px-4', 'py-8']
 
       expectedClasses.forEach(className => {
         expect(container).toHaveClass(className)
@@ -316,7 +316,7 @@ describe('Admin Layout', () => {
       )
 
       const container = screen.getByTestId('outlet').parentElement
-      expect(container?.className).toBe('container mx-auto px-4 py-8')
+      expect(container?.className).toBe('container mx-auto min-w-[320px] px-4 py-8')
     })
   })
 })

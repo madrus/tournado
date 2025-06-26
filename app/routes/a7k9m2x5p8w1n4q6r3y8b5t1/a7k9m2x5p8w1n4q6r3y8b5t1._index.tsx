@@ -144,10 +144,10 @@ export default function AdminDashboard(): JSX.Element {
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light transition-colors group-hover:text-gray-600'>
+              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='text-foreground-light transition-colors group-hover:text-gray-600'>
+              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>

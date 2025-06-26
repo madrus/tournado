@@ -55,6 +55,8 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           className={cn(
             'placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6',
             'transition-all duration-300 ease-in-out',
+            'focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
+            'hover:border-emerald-500',
             'disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400',
             error ? 'border-red-700' : '',
             className

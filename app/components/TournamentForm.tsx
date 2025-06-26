@@ -128,10 +128,24 @@ export function TournamentForm({
     }
   }, [mode, formMode, setFormMetaField])
 
+  // Reset form state when switching to create mode to ensure clean state
+  useEffect(() => {
+    if (formMode === 'create') {
+      // Clear form fields for new tournament creation
+      setFormField('name', '')
+      setFormField('location', '')
+      setFormField('startDate', '')
+      setFormField('endDate', '')
+      setFormField('divisions', [])
+      setFormField('categories', [])
+    }
+  }, [formMode, setFormField])
+
   // Initialize form data in store when formData prop is provided
   useEffect(() => {
     // Only set form data if we have meaningful formData content (not just empty object)
-    if (formData && Object.keys(formData).length > 0) {
+    // AND we're in edit mode (create mode should start clean)
+    if (formData && Object.keys(formData).length > 0 && formMode === 'edit') {
       setFormData({
         name: formData.name || '',
         location: formData.location || '',
@@ -141,7 +155,7 @@ export function TournamentForm({
         categories: formData.categories || [],
       })
     }
-  }, [formData]) // Removed setFormData from dependencies - Zustand functions are stable
+  }, [formData, formMode, setFormData])
 
   // Initialize available options in store
   useEffect(() => {

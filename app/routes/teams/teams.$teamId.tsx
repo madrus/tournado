@@ -80,7 +80,7 @@ export default function TeamDetailsPage(): JSX.Element {
   const { i18n } = useTranslation()
 
   const cardClass =
-    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 dark:text-gray-100'
 
   return (
     <div className='min-h-screen'>
@@ -212,7 +212,7 @@ export default function TeamDetailsPage(): JSX.Element {
                     Status
                   </dt>
                   <dd>
-                    <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800'>
+                    <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/40 dark:text-green-300'>
                       Active
                     </span>
                   </dd>

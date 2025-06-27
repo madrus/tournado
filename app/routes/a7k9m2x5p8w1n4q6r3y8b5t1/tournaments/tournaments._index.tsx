@@ -79,7 +79,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const revalidator = useRevalidator()
 
   const cardClass =
-    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 dark:text-gray-100'
 
   // Track if we're on desktop for conditional rendering
   const [isDesktop, setIsDesktop] = useState(false)

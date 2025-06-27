@@ -57,7 +57,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   }
 
   const cardClass =
-    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 dark:text-gray-100'
 
   return (
     <div className='space-y-6' data-testid='teams-layout'>
@@ -104,7 +104,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>
-          <p className='text-foreground-light mt-2'>
+          <p className='text-foreground-light mt-2 dark:text-blue-100'>
             {t('teams.getStarted.description')}
           </p>
         </div>

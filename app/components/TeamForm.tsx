@@ -364,7 +364,9 @@ export function TeamForm({
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-gray-400'
+              isPanelEnabled(2)
+                ? 'bg-blue-600 dark:bg-blue-700'
+                : 'bg-gray-400 dark:bg-gray-700'
             )}
           >
             2
@@ -374,8 +376,8 @@ export function TeamForm({
             className={cn(
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
               isPanelEnabled(2)
-                ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl'
-                : 'border-gray-200 bg-gray-50'
+                ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl dark:border-blue-700 dark:from-blue-900/40 dark:to-cyan-900/20'
+                : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
             )}
           >
             <div className='mb-6'>
@@ -383,7 +385,9 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-gray-400'
+                  isPanelEnabled(2)
+                    ? 'text-blue-800 dark:text-blue-300'
+                    : 'text-gray-400 dark:text-gray-500'
                 )}
               >
                 {t('teams.form.teamInfo')}
@@ -391,7 +395,9 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-gray-400'
+                  isPanelEnabled(2)
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-400 dark:text-gray-500'
                 )}
               >
                 {t('teams.form.enterTeamDetails')}
@@ -459,7 +465,9 @@ export function TeamForm({
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(3) ? 'bg-green-600' : 'bg-gray-400'
+              isPanelEnabled(3)
+                ? 'bg-green-600 dark:bg-green-700'
+                : 'bg-gray-400 dark:bg-gray-700'
             )}
           >
             3
@@ -469,8 +477,8 @@ export function TeamForm({
             className={cn(
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
               isPanelEnabled(3)
-                ? 'border-green-200 bg-gradient-to-br from-green-50/50 to-emerald-50/30 hover:shadow-xl'
-                : 'border-gray-200 bg-gray-50'
+                ? 'border-green-200 bg-gradient-to-br from-green-50/50 to-emerald-50/30 hover:shadow-xl dark:border-green-700 dark:from-green-900/40 dark:to-emerald-900/20'
+                : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
             )}
           >
             <div className='mb-6'>
@@ -478,7 +486,9 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3) ? 'text-green-800' : 'text-gray-400'
+                  isPanelEnabled(3)
+                    ? 'text-green-800 dark:text-green-300'
+                    : 'text-gray-400 dark:text-gray-500'
                 )}
               >
                 {t('teams.form.teamLeaderInfo')}
@@ -486,7 +496,9 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(3) ? 'text-green-600' : 'text-gray-400'
+                  isPanelEnabled(3)
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-gray-400 dark:text-gray-500'
                 )}
               >
                 {t('teams.form.enterContactDetails')}
@@ -593,7 +605,9 @@ export function TeamForm({
             <div
               className={cn(
                 'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-                isPanelEnabled(4) ? 'bg-purple-600' : 'bg-gray-400'
+                isPanelEnabled(4)
+                  ? 'bg-purple-600 dark:bg-purple-700'
+                  : 'bg-gray-400 dark:bg-gray-700'
               )}
             >
               4
@@ -603,8 +617,8 @@ export function TeamForm({
               className={cn(
                 'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
                 isPanelEnabled(4)
-                  ? 'border-purple-200 bg-gradient-to-br from-purple-50/50 to-indigo-50/30 hover:shadow-xl'
-                  : 'border-gray-200 bg-gray-50'
+                  ? 'border-purple-200 bg-gradient-to-br from-purple-50/50 to-indigo-50/30 hover:shadow-xl dark:border-purple-700 dark:from-purple-900/40 dark:to-indigo-900/20'
+                  : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800'
               )}
             >
               <div className='mb-6'>
@@ -612,7 +626,9 @@ export function TeamForm({
                   className={cn(
                     'mb-2 text-xl font-bold',
                     getLatinTitleClass(i18n.language),
-                    isPanelEnabled(4) ? 'text-purple-800' : 'text-gray-400'
+                    isPanelEnabled(4)
+                      ? 'text-purple-800 dark:text-purple-300'
+                      : 'text-gray-400 dark:text-gray-500'
                   )}
                 >
                   {t('teams.form.privacyPolicy')}
@@ -620,7 +636,9 @@ export function TeamForm({
                 <p
                   className={cn(
                     'text-sm',
-                    isPanelEnabled(4) ? 'text-purple-600' : 'text-gray-400'
+                    isPanelEnabled(4)
+                      ? 'text-purple-600 dark:text-purple-400'
+                      : 'text-gray-400 dark:text-gray-500'
                   )}
                 >
                   {t('teams.form.readAndAccept')}
@@ -631,13 +649,13 @@ export function TeamForm({
                 className={cn(
                   'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
                   privacyAgreement
-                    ? 'border-purple-500 bg-purple-50 text-purple-800'
+                    ? 'border-purple-500 bg-purple-50 text-purple-800 dark:border-purple-600 dark:bg-purple-900/30 dark:text-purple-300'
                     : getTranslatedError(
                           'privacyAgreement',
                           isPublicSuccess || !isPanelEnabled(4)
                         )
-                      ? 'border-red-500 bg-red-50 text-red-800'
-                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
+                      ? 'border-red-500 bg-red-50 text-red-800 dark:border-red-600 dark:bg-red-900/30 dark:text-red-300'
+                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-purple-900/40'
                 )}
               >
                 <div className='relative flex-shrink-0'>
@@ -657,8 +675,8 @@ export function TeamForm({
                               'privacyAgreement',
                               isPublicSuccess || !isPanelEnabled(4)
                             )
-                          ? 'border-red-500 bg-red-50'
-                          : 'border-gray-300 bg-white'
+                          ? 'border-red-500 bg-red-50 dark:border-red-600 dark:bg-red-900/30'
+                          : 'border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700'
                     )}
                     required
                     disabled={isPublicSuccess || !isPanelEnabled(4)}
@@ -672,7 +690,7 @@ export function TeamForm({
                 </div>
                 <span
                   className={cn(
-                    'text-lg font-normal text-gray-600',
+                    'text-lg font-normal text-gray-600 dark:text-gray-300',
                     getLatinTextClass(i18n.language)
                   )}
                 >
@@ -683,7 +701,7 @@ export function TeamForm({
                 'privacyAgreement',
                 isPublicSuccess || !isPanelEnabled(4)
               ) ? (
-                <p className='mt-2 text-sm text-red-600'>
+                <p className='mt-2 text-sm text-red-600 dark:text-red-400'>
                   {getTranslatedError(
                     'privacyAgreement',
                     isPublicSuccess || !isPanelEnabled(4)

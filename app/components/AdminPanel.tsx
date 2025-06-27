@@ -78,7 +78,7 @@ export function AdminPanel({
   const colors = colorClasses[colorScheme]
 
   const panelBaseClasses =
-    'group rounded-lg border bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700'
+    'group rounded-lg border bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900 dark:text-gray-100'
 
   const baseClassName = cn(panelBaseClasses, colors.hoverBorder, colors.hoverBg)
 

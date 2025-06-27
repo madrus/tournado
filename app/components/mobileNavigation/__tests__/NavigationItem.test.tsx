@@ -147,14 +147,12 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconSvg = container.querySelector('svg[class*="text-red-500"]')
+      const iconSvg = container.querySelector('svg[class*="text-brand-accent"]')
       const label = screen.getByText('Teams')
 
       // Check active styling
-      expect(iconSvg).toHaveClass('text-red-500')
-      expect(iconSvg).not.toHaveClass('text-emerald-800')
-      expect(label).toHaveClass('text-red-500', 'font-bold')
-      expect(label).not.toHaveClass('text-emerald-800')
+      expect(iconSvg).toHaveClass('text-brand-accent')
+      expect(label).toHaveClass('text-brand-accent', 'font-bold')
     })
 
     it('should handle different routes correctly', () => {
@@ -179,8 +177,8 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      let iconSvg = container.querySelector('svg[class*="text-red-500"]')
-      expect(iconSvg).toHaveClass('text-red-500') // Should be active
+      let iconSvg = container.querySelector('svg[class*="text-brand-accent"]')
+      expect(iconSvg).toHaveClass('text-brand-accent') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({

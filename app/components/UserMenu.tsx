@@ -7,7 +7,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass } from '~/utils/rtlUtils'
+import { getLatinTextClass, getTypographyClass } from '~/utils/rtlUtils'
 
 export type MenuItemType = {
   label: string
@@ -76,11 +76,21 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button
-            className='inline-flex content-start items-center text-white hover:text-emerald-100 focus:outline-none'
+            className='relative inline-flex h-8 w-8 translate-y-0.5 items-center justify-center text-white focus:outline-none'
             aria-label='Toggle menu'
           >
-            {/* Show hamburger menu icon - consistent across all screen sizes */}
-            {renderIcon('menu', { className: 'w-6 h-6 md:w-10 md:h-10' })}
+            {/* Hamburger icon - rotates and fades when menu opens */}
+            <div
+              className={`absolute transition-all duration-300 ${isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`}
+            >
+              {renderIcon('menu', { className: 'w-6 h-6' })}
+            </div>
+            {/* Close icon - rotates and fades when menu closes */}
+            <div
+              className={`absolute transition-all duration-300 ${isOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'}`}
+            >
+              {renderIcon('close', { className: 'w-6 h-6' })}
+            </div>
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
@@ -103,7 +113,9 @@ export function UserMenu({
           <div className='px-4 py-3'>
             {authenticated ? (
               <div className={`text-emerald-800 ${menuClasses.textContainer}`}>
-                <p className='break-words'>{t('common.signedInAs')}</p>
+                <p className={`break-words ${getTypographyClass(i18n.language)}`}>
+                  {t('common.signedInAs')}
+                </p>
                 <p
                   className={`font-medium break-words text-emerald-800 ${getLatinTextClass(i18n.language)}`}
                 >
@@ -112,7 +124,7 @@ export function UserMenu({
               </div>
             ) : (
               <p
-                className={`text-emerald-800 ${menuClasses.textContainer} break-words`}
+                className={`text-emerald-800 ${menuClasses.textContainer} break-words ${getTypographyClass(i18n.language)}`}
               >
                 {t('common.welcome')}{' '}
                 <span
@@ -149,17 +161,19 @@ export function UserMenu({
                           renderIcon(item.icon, { className: 'w-5 h-5' })
                         ) : null}
                       </span>
-                      <span className={menuClasses.textContainer}>{item.label}</span>
+                      <span
+                        className={`${menuClasses.textContainer} ${getTypographyClass(i18n.language)}`}
+                      >
+                        {item.label}
+                      </span>
                     </button>
 
                     {languageMenuOpen ? (
                       <div
                         className={cn(
-                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black',
+                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black',
                           // Position submenu to the left of the language menu icon (mirrored for Arabic)
-                          isRTL ? '-end-16' : '-start-16',
-                          // Base text size
-                          'text-base'
+                          isRTL ? '-end-16' : '-start-16'
                         )}
                       >
                         {item.subMenu.map((subItem, subIndex) => (
@@ -169,11 +183,7 @@ export function UserMenu({
                               subItem.active
                                 ? 'bg-emerald-50 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
-                            } focus:outline-none ${menuClasses.menuItem} !font-sans !text-base`}
-                            style={{
-                              fontSize: '16px',
-                              fontFamily: 'Inter, system-ui, sans-serif',
-                            }}
+                            } focus:outline-none ${menuClasses.menuItem}`}
                             onClick={event => {
                               event.stopPropagation()
                               subItem.onClick()
@@ -192,10 +202,6 @@ export function UserMenu({
                             </span>
                             <span
                               className={`${menuClasses.textContainer} ${subItem.className || ''}`}
-                              style={{
-                                fontSize: '16px',
-                                fontFamily: 'Inter, system-ui, sans-serif',
-                              }}
                             >
                               {subItem.label}
                             </span>
@@ -226,7 +232,11 @@ export function UserMenu({
                         ? renderIcon(item.icon, { className: 'w-5 h-5' })
                         : null}
                     </span>
-                    <span className={menuClasses.textContainer}>{item.label}</span>
+                    <span
+                      className={`${menuClasses.textContainer} ${getTypographyClass(i18n.language)}`}
+                    >
+                      {item.label}
+                    </span>
                     {item.todo ? (
                       <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
                     ) : null}

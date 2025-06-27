@@ -4,15 +4,41 @@
   --color-background: #ffffff;
   --color-brand: #dc2626; /* red-600 */
   --color-brand-dark: #b91c1c; /* red-700 */
+  --color-brand-light: #f87171; /* red-400 */
   --color-foreground-darker: #064e3b; /* emerald-900 for emphasis */
   --color-foreground-light: #4b5563; /* gray-600 */
   --color-foreground-lighter: #6b7280; /* gray-500 */
   --color-foreground: #1f2937; /* gray-800 - default body text */
   --color-foreground-heading: #065f46; /* emerald-800 - for headings */
+  --color-title: #065f46; /* emerald-800 - for titles */
+  --color-accent: #a7f3d0; /* emerald-300 - for accents */
 
   /* Font family configuration */
-  --font-family-default: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-sans: var(--font-family-default);
+
+  /* Background gradient variables */
+  --gradient-from: #d1fae5; /* emerald-100 (one step darker than emerald-50) */
+  --gradient-to: #f9fafb; /* gray-50 (one step darker than white) */
+
+  /* Footer background */
+  --footer-bg: #ffffff; /* white */
+  --footer-text: #374151; /* gray-700 */
+}
+
+/* Dark mode color overrides */
+.dark {
+  --color-background: #111827; /* gray-900 */
+  --color-foreground: #e5e7eb; /* gray-200 body text */
+  --color-foreground-light: #d1d5db; /* gray-300 */
+  --color-foreground-lighter: #9ca3af; /* gray-400 */
+  --color-brand: #ef4444; /* red-500 */
+  /* --color-brand-dark keeps its original red-700 value in both modes */
+  --color-title: var(--color-accent); /* emerald-300 titles in dark mode */
+  --gradient-from: #022c22; /* emerald-950 */
+  --gradient-to: #065f46; /* emerald-800 */
+  --footer-bg: #065f46; /* emerald-800 in dark mode */
+  --footer-text: #e5e7eb; /* gray-200 */
 }
 
 /*
@@ -32,10 +58,42 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 
-  /* Ensure headings use the emerald-800 color */
+  /* Ensure headings use the title color */
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-foreground-heading);
+    color: var(--color-title);
   }
+
+  /* Dark mode heading colors - exclude AppBar */
+  .dark main h1, .dark main h2, .dark main h3, .dark main h4, .dark main h5, .dark main h6 {
+    color: var(--color-title) !important;
+  }
+
+  /* Main app title */
+  .dark main .app-name {
+    color: var(--color-title) !important;
+  }
+
+  /* Dark mode text colors for utility classes - exclude AppBar */
+  .dark main .text-brand-dark {
+    color: #b91c1c !important; /* keep same brand red-700 as light mode */
+  }
+
+  .dark main .text-foreground-heading {
+    color: var(--color-title) !important;
+  }
+
+  .dark main .text-foreground-light {
+    color: var(--color-foreground-light) !important;
+  }
+
+  /* Make all paragraph text use foreground color in dark mode for accessibility */
+  .dark main p:not(.text-foreground-heading) {
+    color: var(--color-foreground) !important;
+  }
+
+  /* Footer styles handled by component classes */
+
+  /* Mobile navigation uses CSS custom properties */
 }
 
 /* RTL-specific utilities */
@@ -62,20 +120,47 @@
 /* Script-aware typography system - clean and simple */
 
 /* Arabic text - for Arabic content in any context */
+.arabic-text.text-base,
 .arabic-text {
-  font-family: 'Amiri', system-ui, serif !important;
-  font-size: 1.25em !important;
+  font-family: 'Amiri', serif !important;
+  font-size: 1.25rem !important; /* Use rem to avoid em cascade issues */
 }
 
-/* Latin text - for Latin content in Arabic context (compensated size) */
-.latin-text {
-  font-family: 'Inter', system-ui, sans-serif !important;
-  font-size: 0.8em !important;
+/* Ensure Arabic text applies to all children unless overridden */
+.arabic-text * {
+  font-family: 'Amiri', serif !important;
+}
+
+/* Latin text - for Latin content in Arabic context */
+.latin-text,
+.arabic-text .latin-text {
+  font-family: system-ui, sans-serif !important;
+  font-size: 1rem !important; /* Use absolute size to match Latin mode */
+}
+
+/* Ensure Latin text style applies to children with higher specificity */
+.latin-text *,
+.arabic-text .latin-text * {
+  font-family: system-ui, sans-serif !important;
+  font-size: 1rem !important;
 }
 
 /* Latin titles - for Latin headings in Arabic context */
 .latin-title {
-  font-family: 'Inter', system-ui, sans-serif !important;
+  font-family: system-ui, sans-serif !important;
+  /* Fix letter spacing for titles in Arabic mode */
+  /* letter-spacing: -0.02em !important; Tighter letter spacing */
+}
+
+/* Specific fix for app name on home page in RTL context */
+[dir="rtl"] .app-name.latin-title {
+  font-family: system-ui, sans-serif !important;
+  /* letter-spacing: -0.05em !important; Even tighter for the app name specifically */
+  /* Maintain consistent line height without conflicting with Tailwind classes */
+  line-height: 1.5 !important; /* Match leading-normal from typography.appName */
+  vertical-align: baseline !important; /* Prevent vertical shifting */
+  display: block !important; /* Ensure consistent block-level behavior */
+  margin: 0 !important; /* Reset any unwanted margins */
 }
 
 /* RTL form inputs */
@@ -89,4 +174,62 @@
 [dir="rtl"] .ltr-override {
   direction: ltr;
   text-align: left;
+}
+
+/* User menu dropdown animation - synced with icon animation */
+[data-testid="user-menu-dropdown"] {
+  transform-origin: top;
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+/* Opening animation */
+[data-testid="user-menu-dropdown"][data-state="open"] {
+  animation-name: menu-open;
+}
+
+/* Closing animation */
+[data-testid="user-menu-dropdown"][data-state="closed"] {
+  animation-name: menu-close;
+}
+
+@keyframes menu-open {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes menu-close {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+/* AppBar title Arabic text - needs higher specificity to override Tailwind size classes */
+[dir="rtl"] header .arabic-text.text-xl {
+  font-size: 1.5625rem !important; /* 25px = 20px * 1.25 */
+  transform: translateY(4px) !important; /* More downward adjustment */
+}
+
+[dir="rtl"] header .arabic-text.sm\:text-2xl {
+  font-size: 1.875rem !important; /* 30px = 24px * 1.25 */
+  transform: translateY(5px) !important; /* More downward adjustment for larger text */
+}
+
+@media (min-width: 640px) {
+  [dir="rtl"] header .arabic-text.sm\:text-2xl {
+    font-size: 1.875rem !important; /* 30px = 24px * 1.25 */
+    transform: translateY(5px) !important; /* More downward adjustment for larger text */
+  }
 }

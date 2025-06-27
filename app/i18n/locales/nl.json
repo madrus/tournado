@@ -78,6 +78,10 @@
     "language": "Taal",
     "loading": "Laden...",
     "signedInAs": "Ingelogd als",
+    "toggleMenu": "Menu openen/sluiten",
+    "toggleTheme": "Thema wisselen",
+    "lightMode": "Lichte modus",
+    "darkMode": "Donkere modus",
     "titles": {
       "about": "Over ons",
       "addTeam": "Team toevoegen",

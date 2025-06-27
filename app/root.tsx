@@ -235,6 +235,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   const { authenticated, username, user, ENV, language, tournaments } = loaderData
   const { setAuth } = useAuthStore()
   const { setAvailableOptionsField } = useTeamFormStore()
+  const { theme } = useThemeStore()
 
   // Handle auth store rehydration
   useAuthStoreHydration()
@@ -271,7 +272,13 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
     <Document language={language}>
       <I18nextProvider i18n={i18n}>
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
-        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+        <Theme
+          accentColor='green'
+          grayColor='gray'
+          radius='medium'
+          scaling='100%'
+          appearance={theme}
+        >
           <div className='flex h-full flex-col'>
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />
@@ -305,6 +312,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 export function ErrorBoundary(): JSX.Element {
   const { authenticated, username } = useAuthStore()
+  const { theme } = useThemeStore()
 
   // Handle auth store rehydration
   useAuthStoreHydration()
@@ -315,7 +323,13 @@ export function ErrorBoundary(): JSX.Element {
     <Document language='nl'>
       <I18nextProvider i18n={i18n}>
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
-        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+        <Theme
+          accentColor='green'
+          grayColor='gray'
+          radius='medium'
+          scaling='100%'
+          appearance={theme}
+        >
           <div className='flex h-full flex-col'>
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} />

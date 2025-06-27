@@ -14,9 +14,11 @@ import {
   getArabicTextClass,
   getLatinTextClass,
   getLatinTitleClass,
+  getTypographyClass,
 } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
+import { ThemeToggle } from './ThemeToggle'
 import { UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
@@ -186,11 +188,16 @@ export function AppBar({
 
         {/* Page title in center */}
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <h2 className='text-center text-xl font-bold sm:text-2xl'>{pageTitle}</h2>
+          <h2
+            className={`text-center text-xl font-bold text-white sm:text-2xl ${getTypographyClass(currentLanguage)}`}
+          >
+            {pageTitle}
+          </h2>
         </div>
 
         {/* Unified menu for both desktop and mobile */}
-        <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center gap-4'>
+        <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center'>
+          <ThemeToggle />
           <UserMenu
             authenticated={isAuthenticated}
             username={username}

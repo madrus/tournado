@@ -62,11 +62,12 @@ describe('BottomNavigation', () => {
         'z-50',
         'flex',
         'justify-between',
-        'bg-white',
         'p-3',
         'shadow-lg',
         'md:hidden'
       )
+      // Background color is now set via CSS custom property
+      expect(nav).toHaveAttribute('style', 'background-color: var(--footer-bg);')
     })
 
     it('should render inner container with correct layout classes', () => {

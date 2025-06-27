@@ -57,7 +57,7 @@ export default function IndexPage(): JSX.Element {
   return (
     <main className='flex h-full flex-col'>
       {/* Hero Section */}
-      <div className='flex flex-1 flex-col justify-center pt-16 pb-20'>
+      <div className='pt-16 pb-8'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl text-center'>
             <h1
@@ -90,20 +90,22 @@ export default function IndexPage(): JSX.Element {
       </div>
 
       {/* Features Section */}
-      <div className='bg-white py-24 sm:py-32'>
+      <div className='py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2
+            <span
               className={cn(
-                'text-brand-dark text-base leading-7 font-semibold',
+                'block text-base leading-7 font-semibold text-red-500',
                 typography.centerAlign
               )}
+              role='heading'
+              aria-level={2}
             >
               {t('landing.features.title')}
-            </h2>
+            </span>
             <p
               className={cn(
-                'mt-2 text-3xl font-bold sm:text-4xl',
+                'text-foreground-heading mt-2 text-3xl font-bold sm:text-4xl',
                 typography.title,
                 typography.heading,
                 typography.centerAlign

@@ -21,44 +21,44 @@ const colorClasses = {
   emerald: {
     border: 'border-emerald-600',
     hoverBorder: 'hover:border-emerald-300',
-    hoverBg: 'hover:bg-emerald-50/30',
+    hoverBg: 'hover:bg-emerald-50/30 dark:hover:bg-emerald-900/30',
     focus: 'focus:ring-emerald-500',
     iconBorder: 'border-emerald-600',
     iconHoverBorder: 'group-hover:border-emerald-700',
-    iconHoverBg: 'group-hover:bg-emerald-50',
+    iconHoverBg: 'group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/40',
     titleHover: 'group-hover:text-emerald-700',
     textHover: 'group-hover:text-emerald-600',
   },
   blue: {
     border: 'border-blue-600',
     hoverBorder: 'hover:border-blue-300',
-    hoverBg: 'hover:bg-blue-50/30',
+    hoverBg: 'hover:bg-blue-50/30 dark:hover:bg-blue-900/30',
     focus: 'focus:ring-blue-500',
     iconBorder: 'border-blue-600',
     iconHoverBorder: 'group-hover:border-blue-700',
-    iconHoverBg: 'group-hover:bg-blue-50',
+    iconHoverBg: 'group-hover:bg-blue-50 dark:group-hover:bg-blue-900/40',
     titleHover: 'group-hover:text-blue-700',
     textHover: 'group-hover:text-blue-600',
   },
   gray: {
     border: 'border-gray-600',
     hoverBorder: 'hover:border-gray-300',
-    hoverBg: 'hover:bg-gray-50/30',
+    hoverBg: 'hover:bg-gray-50/30 dark:hover:bg-gray-700',
     focus: 'focus:ring-gray-500',
     iconBorder: 'border-gray-600',
     iconHoverBorder: 'group-hover:border-gray-700',
-    iconHoverBg: 'group-hover:bg-gray-50',
+    iconHoverBg: 'group-hover:bg-gray-50 dark:group-hover:bg-gray-700',
     titleHover: 'group-hover:text-gray-700',
     textHover: 'group-hover:text-gray-600',
   },
   red: {
     border: 'border-red-600',
     hoverBorder: 'hover:border-red-300',
-    hoverBg: 'hover:bg-red-50/30',
+    hoverBg: 'hover:bg-red-50/30 dark:hover:bg-red-900/30',
     focus: 'focus:ring-red-500',
     iconBorder: 'border-red-600',
     iconHoverBorder: 'group-hover:border-red-700',
-    iconHoverBg: 'group-hover:bg-red-50',
+    iconHoverBg: 'group-hover:bg-red-50 dark:group-hover:bg-red-900/40',
     titleHover: 'group-hover:text-red-700',
     textHover: 'group-hover:text-red-600',
   },
@@ -77,11 +77,10 @@ export function AdminPanel({
   const typographyClasses = getTypographyClasses(language)
   const colors = colorClasses[colorScheme]
 
-  const baseClassName = cn(
-    'group rounded-lg border bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md',
-    colors.hoverBorder,
-    colors.hoverBg
-  )
+  const panelBaseClasses =
+    'group rounded-lg border bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800 dark:border-gray-700'
+
+  const baseClassName = cn(panelBaseClasses, colors.hoverBorder, colors.hoverBg)
 
   const content = (
     <div

@@ -56,10 +56,13 @@ export default function PublicTeamsIndexPage(): JSX.Element {
     navigate(`/teams/${teamId}`)
   }
 
+  const cardClass =
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className={cardClass}>
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId}
@@ -97,7 +100,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
 
       {/* Info Section */}
       {teamListItems.length === 0 ? (
-        <div className='mt-8 rounded-lg bg-blue-50 p-6'>
+        <div className='mt-8 rounded-lg bg-blue-50 p-6 dark:bg-blue-900/40'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>

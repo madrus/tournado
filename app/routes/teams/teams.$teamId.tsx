@@ -79,6 +79,9 @@ export default function TeamDetailsPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const { i18n } = useTranslation()
 
+  const cardClass =
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+
   return (
     <div className='min-h-screen'>
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
@@ -97,7 +100,7 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Main Content - Games & Schedule */}
           <div className='space-y-6 lg:col-span-2'>
             {/* Upcoming Games */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className={cardClass}>
               <h2
                 className={cn(
                   'mb-4 text-xl font-semibold',
@@ -106,9 +109,11 @@ export default function TeamDetailsPage(): JSX.Element {
               >
                 🏐 Upcoming Games
               </h2>
-              <div className='rounded-lg border border-blue-200 bg-blue-50 p-4'>
-                <p className='font-medium text-blue-800'>🚧 Coming Soon!</p>
-                <p className='mt-1 text-sm text-blue-700'>
+              <div className='rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-700 dark:bg-blue-900/40'>
+                <p className='font-medium text-blue-800 dark:text-blue-300'>
+                  🚧 Coming Soon!
+                </p>
+                <p className='mt-1 text-sm text-blue-700 dark:text-blue-300'>
                   Team schedule and game management will be implemented here. This will
                   show upcoming matches, match results, and tournament standings.
                 </p>
@@ -116,7 +121,7 @@ export default function TeamDetailsPage(): JSX.Element {
 
               {/* Placeholder for future games list */}
               <div className='mt-4 space-y-3'>
-                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
+                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-700'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium'>vs Team Example</p>
@@ -127,13 +132,13 @@ export default function TeamDetailsPage(): JSX.Element {
                         Sports Hall Location
                       </p>
                     </div>
-                    <span className='rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800'>
+                    <span className='rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'>
                       Scheduled
                     </span>
                   </div>
                 </div>
 
-                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
+                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-700'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium'>vs Another Team</p>
@@ -142,7 +147,7 @@ export default function TeamDetailsPage(): JSX.Element {
                       </p>
                       <p className='text-foreground-lighter text-sm'>Main Court</p>
                     </div>
-                    <span className='rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800'>
+                    <span className='rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 dark:bg-green-900/40 dark:text-green-300'>
                       Confirmed
                     </span>
                   </div>
@@ -151,7 +156,7 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Recent Results */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className={cardClass}>
               <h2
                 className={cn(
                   'mb-4 text-xl font-semibold',
@@ -160,9 +165,11 @@ export default function TeamDetailsPage(): JSX.Element {
               >
                 📊 Recent Results
               </h2>
-              <div className='rounded-lg border border-green-200 bg-green-50 p-4'>
-                <p className='font-medium text-green-800'>🚧 Coming Soon!</p>
-                <p className='mt-1 text-sm text-green-700'>
+              <div className='rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-700 dark:bg-green-900/40'>
+                <p className='font-medium text-green-800 dark:text-green-300'>
+                  🚧 Coming Soon!
+                </p>
+                <p className='mt-1 text-sm text-green-700 dark:text-green-300'>
                   Match results and statistics will be displayed here.
                 </p>
               </div>
@@ -172,7 +179,7 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Sidebar - Team Info & Stats */}
           <div className='space-y-6'>
             {/* Team Info Card */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className={cardClass}>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -214,7 +221,7 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Season Stats */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className={cardClass}>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -241,15 +248,15 @@ export default function TeamDetailsPage(): JSX.Element {
                   <span className='text-sm font-medium'>--</span>
                 </div>
               </div>
-              <div className='mt-4 rounded-lg bg-gray-50 p-3'>
-                <p className='text-xs text-gray-600'>
+              <div className='mt-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700'>
+                <p className='text-xs text-gray-600 dark:text-gray-300'>
                   Stats will be calculated automatically from game results.
                 </p>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className={cardClass}>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -261,19 +268,19 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className='space-y-3'>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm dark:bg-gray-700'
                 >
                   📅 View Full Schedule
                 </button>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm dark:bg-gray-700'
                 >
                   📊 View Statistics
                 </button>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm dark:bg-gray-700'
                 >
                   👥 View Players
                 </button>

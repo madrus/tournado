@@ -78,6 +78,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const submit = useSubmit()
   const revalidator = useRevalidator()
 
+  const cardClass =
+    'rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800'
+
   // Track if we're on desktop for conditional rendering
   const [isDesktop, setIsDesktop] = useState(false)
 
@@ -288,7 +291,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats using Radix Grid */}
       <Grid columns={{ initial: '1', sm: '3' }} gap='5' width='auto'>
-        <Box className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <Box className={cardClass}>
           <Flex align='center'>
             <Box className='flex-shrink-0'>
               <Box className='flex h-8 w-8 items-center justify-center rounded-md bg-red-500'>
@@ -318,7 +321,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       </Grid>
 
       {/* Tournaments List */}
-      <Box className='w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm md:w-fit'>
+      <Box className={cn(cardClass, 'w-full md:w-fit')}>
         <Box className='mb-6'>
           <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
             {t('admin.tournaments.allTournaments')}
@@ -330,7 +333,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
         {tournamentListItems.length === 0 ? (
           <Box className='py-12 text-center'>
-            <Box className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
+            <Box className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800/60'>
               <TrophyIcon className='text-gray-400' size={24} variant='outlined' />
             </Box>
             <Text size='4' weight='medium' className='mb-2 text-gray-900'>
@@ -344,7 +347,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           <div className='w-full md:w-fit md:max-w-full'>
             {/* Header - only show on desktop */}
             {isDesktop ? (
-              <div className='rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-3'>
+              <div className='rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-3 dark:border-gray-700 dark:bg-gray-700'>
                 <div className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6'>
                   <Text
                     size='1'
@@ -404,7 +407,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   key={tournament.id}
                   className={cn(
                     'relative overflow-hidden',
-                    isDesktop ? 'border-b border-gray-100' : 'border-b border-gray-100',
+                    isDesktop
+                      ? 'border-b border-gray-100 dark:border-gray-700'
+                      : 'border-b border-gray-100 dark:border-gray-700',
                     index === tournamentListItems.length - 1 &&
                       'rounded-b-lg border-b-0'
                   )}
@@ -418,7 +423,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     >
                       {/* Main content - fixed width */}
                       <div
-                        className='w-full flex-shrink-0 cursor-pointer bg-white transition-colors hover:bg-gray-50'
+                        className='w-full flex-shrink-0 cursor-pointer bg-white transition-colors hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700'
                         onClick={() => handleTournamentClick(tournament.id)}
                       >
                         <div className='px-6 py-4'>
@@ -475,7 +480,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   ) : (
                     // Desktop: Table-like grid layout with improved column sizing
                     <div
-                      className='grid cursor-pointer grid-cols-[2fr_1fr_1fr_auto] gap-6 bg-white px-6 py-4 transition-colors hover:bg-gray-50'
+                      className='grid cursor-pointer grid-cols-[2fr_1fr_1fr_auto] gap-6 bg-white px-6 py-4 transition-colors hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700'
                       onClick={() => handleTournamentClick(tournament.id)}
                     >
                       <Box>
@@ -504,7 +509,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                             event.stopPropagation()
                             handleTournamentDelete(tournament.id)
                           }}
-                          className='flex min-w-32 items-center justify-center rounded-full p-1 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700'
+                          className='flex min-w-32 items-center justify-center rounded-full p-1 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/40'
                           title={t('tournaments.deleteTournament')}
                         >
                           <DeleteIcon className='h-4 w-4' />

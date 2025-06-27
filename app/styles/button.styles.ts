@@ -6,6 +6,7 @@ export const commonButtonClasses = cn(
   'min-h-12 min-w-32 py-2.5 px-4 text-sm',
   'relative transition-all duration-300 ease-out',
   'whitespace-nowrap',
+  'shadow-lg hover:shadow-xl',
   'hover:scale-103 active:scale-95',
   'focus:outline-none',
   'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
@@ -24,6 +25,13 @@ const ringColor = {
   gray: 'focus-visible:ring-gray-600 hover:ring-gray-600',
 }
 
+const shadowColor = {
+  emerald: 'shadow-emerald-700/40 hover:shadow-emerald-700/60',
+  brand: 'shadow-brand/40 hover:shadow-brand/60',
+  blue: 'shadow-blue-700/40 hover:shadow-blue-700/60',
+  gray: 'shadow-gray-700/40 hover:shadow-gray-700/60',
+}
+
 const border = {
   emerald: 'border border-emerald-600',
   brand: 'border border-brand',
@@ -33,28 +41,55 @@ const border = {
 
 const colors = {
   emerald: {
-    primary: cn('bg-emerald-600 text-white', border.emerald, ringColor.emerald),
+    primary: cn(
+      'bg-emerald-600 text-white',
+      border.emerald,
+      ringColor.emerald,
+      shadowColor.emerald
+    ),
     secondary: cn(
       'bg-transparent text-emerald-600 border border-emerald-600',
-      ringColor.emerald
+      ringColor.emerald,
+      shadowColor.emerald
     ),
   },
   brand: {
-    primary: cn('bg-brand text-white', border.brand, ringColor.brand),
-    secondary: cn('bg-transparent text-brand border border-brand', ringColor.brand),
+    primary: cn(
+      'bg-brand text-white',
+      border.brand,
+      ringColor.brand,
+      shadowColor.brand
+    ),
+    secondary: cn(
+      'bg-transparent text-brand border border-brand',
+      ringColor.brand,
+      shadowColor.brand
+    ),
   },
   blue: {
-    primary: cn('bg-blue-600 text-white', border.blue, ringColor.blue),
+    primary: cn(
+      'bg-blue-600 text-white',
+      border.blue,
+      ringColor.blue,
+      shadowColor.blue
+    ),
     secondary: cn(
       'bg-transparent text-blue-600 border border-blue-600',
-      ringColor.blue
+      ringColor.blue,
+      shadowColor.blue
     ),
   },
   gray: {
-    primary: cn('bg-gray-600 text-white', border.gray, ringColor.gray),
+    primary: cn(
+      'bg-gray-600 text-white',
+      border.gray,
+      ringColor.gray,
+      shadowColor.gray
+    ),
     secondary: cn(
       'bg-transparent text-gray-600 border border-gray-600',
-      ringColor.gray
+      ringColor.gray,
+      shadowColor.gray
     ),
   },
 } as const

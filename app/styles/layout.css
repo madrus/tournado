@@ -6,7 +6,11 @@ html {
 body {
   height: 100%;
   overflow-x: hidden;
-  background: linear-gradient(to bottom, rgb(236 253 245) 0%, rgb(220 252 231) 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--gradient-from) 0%,
+    var(--gradient-to) 100%
+  );
 }
 
 /* Route transition styles */

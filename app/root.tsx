@@ -1,7 +1,7 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
-import React, { JSX, useEffect, useLayoutEffect, useState } from 'react'
-import { I18nextProvider, useTranslation } from 'react-i18next'
+import React, { JSX, useEffect, useState } from 'react'
+import { I18nextProvider } from 'react-i18next'
 import {
   Links,
   LinksFunction,
@@ -27,8 +27,8 @@ import { prisma } from './db.server'
 import { initI18n } from './i18n/config'
 import type { TournamentData } from './lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from './stores/useAuthStore'
+import { useSettingsStore, useSettingsStoreHydration } from './stores/useSettingsStore'
 import { useTeamFormStore } from './stores/useTeamFormStore'
-import { useThemeStore, useThemeStoreHydration } from './stores/useThemeStore'
 import layoutStylesheetUrl from './styles/layout.css?url'
 import safeAreasStylesheetUrl from './styles/safe-areas.css?url'
 import tailwindStylesheetUrl from './styles/tailwind.css?url'
@@ -64,15 +64,18 @@ type LoaderData = {
   username: string
   user: User | null
   language: string
+  theme: 'light' | 'dark'
   tournaments: TournamentData[]
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   const user = await getUser(request)
-  // Read 'lang' cookie from request
+  // Read 'lang' and 'theme' cookies from request
   const cookieHeader = request.headers.get('Cookie') || ''
   const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  const themeMatch = cookieHeader.match(/theme=([^;]+)/)
   const language = langMatch ? langMatch[1] : 'nl'
+  const theme = (themeMatch ? themeMatch[1] : 'light') as 'light' | 'dark'
 
   // Fetch tournaments and transform to TournamentData format
   const tournamentsRaw = await prisma.tournament.findMany({
@@ -110,6 +113,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
     user,
     ENV: getEnv(),
     language,
+    theme,
     tournaments,
   }
 }
@@ -117,20 +121,24 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 type DocumentProps = {
   children: React.ReactNode
   language: string
+  theme: 'light' | 'dark'
 }
 
-const Document = ({ children, language }: DocumentProps) => {
-  // Use useTranslation to get dynamic language updates
-  const { i18n: i18nInstance } = useTranslation()
+const Document = ({ children, language, theme: serverTheme }: DocumentProps) => {
+  // Get current theme and language from store (reactive to changes)
+  const { theme: storeTheme, language: storeLanguage } = useSettingsStore()
 
-  // Get theme from store
-  const { theme } = useThemeStore()
+  // Use store values after hydration, otherwise use server values for SSR
+  // This prevents flash on initial load while allowing reactive updates
+  const [isHydrated, setIsHydrated] = useState(false)
 
-  // Handle theme store rehydration
-  useThemeStoreHydration()
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
-  // Use the current language from i18n instance, falling back to initial language
-  const currentLanguage = i18nInstance.language || language
+  const currentTheme = isHydrated ? storeTheme : serverTheme
+  // Use store language after hydration, server language during SSR
+  const currentLanguage = isHydrated ? storeLanguage : language
 
   // Use useState for reactive values that depend on language
   const [direction, setDirection] = useState(getDirection(currentLanguage))
@@ -138,22 +146,17 @@ const Document = ({ children, language }: DocumentProps) => {
     getTypographyClass(currentLanguage)
   )
 
-  // Update direction, typography, cookie, and localStorage when language changes
+  // Update direction and typography when language changes
   useEffect(() => {
     setDirection(getDirection(currentLanguage))
     setTypographyClass(getTypographyClass(currentLanguage))
-    if (typeof window !== 'undefined' && i18nInstance.language) {
-      // Write both cookie and localStorage for persistence
-      document.cookie = `lang=${i18nInstance.language}; path=/; max-age=31536000`
-      localStorage.setItem('lang', i18nInstance.language)
-    }
-  }, [currentLanguage, i18nInstance.language])
+  }, [currentLanguage])
 
   return (
     <html
       lang={currentLanguage}
       dir={direction}
-      className={cn('h-full overflow-x-hidden', theme)}
+      className={cn('h-full overflow-x-hidden', currentTheme)}
     >
       <head>
         <Meta />
@@ -217,10 +220,10 @@ const Document = ({ children, language }: DocumentProps) => {
         {children}
         <PWAElements />
         <ScrollRestoration />
-        {/* Inject the SSR language for client-side hydration */}
+        {/* Inject the SSR language and theme for client-side hydration */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)};`,
+            __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
           }}
         />
         <Scripts />
@@ -232,46 +235,74 @@ const Document = ({ children, language }: DocumentProps) => {
 // Auth state is now managed by the Zustand store in app/stores/authStore.ts
 
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-  const { authenticated, username, user, ENV, language, tournaments } = loaderData
+  const {
+    authenticated,
+    username,
+    user,
+    ENV,
+    language: serverLanguage,
+    theme: serverTheme,
+    tournaments,
+  } = loaderData
   const { setAuth } = useAuthStore()
   const { setAvailableOptionsField } = useTeamFormStore()
+  const {
+    setTheme,
+    setLanguage,
+    theme: currentTheme,
+    language: storeLanguage,
+  } = useSettingsStore()
 
-  // Handle auth store rehydration
+  // Handle store rehydration
   useAuthStoreHydration()
+  useSettingsStoreHydration()
+
+  // Get current language from store (this makes store the source of truth)
+  const [isHydrated, setIsHydrated] = useState(false)
+  const currentLanguage = isHydrated ? storeLanguage : serverLanguage
+
+  // Create i18n instance - use store language after hydration, server language for SSR
+  const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
+
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
   // Update auth store only on client-side after hydration
   useEffect(() => {
     setAuth(authenticated, username)
   }, [authenticated, username, setAuth])
 
+  // Initialize theme store with server-side values
+  useEffect(() => {
+    setTheme(serverTheme)
+    setLanguage(serverLanguage as 'nl' | 'en' | 'ar' | 'tr')
+  }, [serverTheme, serverLanguage, setTheme, setLanguage])
+
   // Initialize tournaments in the store
   useEffect(() => {
     setAvailableOptionsField('tournaments', tournaments)
   }, [tournaments, setAvailableOptionsField])
 
-  // Set i18n language before paint (minimize hydration mismatch)
-  useLayoutEffect(() => {
-    let lang = language
-    if (!lang) {
-      // Try to read from cookie (client-side)
-      const cookieLang =
-        typeof document !== 'undefined' ? document.cookie.match(/lang=([^;]+)/) : null
-      lang = cookieLang
-        ? cookieLang[1]
-        : (typeof localStorage !== 'undefined' ? localStorage.getItem('lang') : null) ||
-          'nl'
+  // Update i18n when store language changes (after hydration)
+  useEffect(() => {
+    if (isHydrated) {
+      const newI18n = initI18n(currentLanguage)
+      setI18n(newI18n)
     }
-    // No-op: i18n is already initialized with the correct language
-  }, [language])
-
-  // Create i18n instance for this request/language
-  const i18n = initI18n(language)
+  }, [currentLanguage, isHydrated])
 
   return (
-    <Document language={language}>
+    <Document language={serverLanguage} theme={serverTheme}>
       <I18nextProvider i18n={i18n}>
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
-        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+        <Theme
+          accentColor='green'
+          grayColor='gray'
+          radius='medium'
+          scaling='100%'
+          appearance={currentTheme}
+        >
           <div className='flex h-full flex-col'>
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />
@@ -306,16 +337,25 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 export function ErrorBoundary(): JSX.Element {
   const { authenticated, username } = useAuthStore()
 
-  // Handle auth store rehydration
+  // Handle store rehydration before accessing theme
   useAuthStoreHydration()
+  useSettingsStoreHydration()
+
+  const { theme } = useSettingsStore()
 
   // Use Dutch for error boundary fallback
   const i18n = initI18n('nl')
   return (
-    <Document language='nl'>
+    <Document language='nl' theme={theme}>
       <I18nextProvider i18n={i18n}>
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
-        <Theme accentColor='green' grayColor='gray' radius='medium' scaling='100%'>
+        <Theme
+          accentColor='green'
+          grayColor='gray'
+          radius='medium'
+          scaling='100%'
+          appearance={theme}
+        >
           <div className='flex h-full flex-col'>
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} />

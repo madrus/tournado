@@ -3,12 +3,12 @@
 
 /* Safelist ring and ring-offset classes for button hover/focus effects */
 @source inline("{focus-visible:,hover:,}ring-2");
-@source inline("{focus-visible:,hover:,}ring-white");
 @source inline("{focus-visible:,hover:,}ring-offset-2");
-@source inline("{focus-visible:,hover:,}ring-offset-emerald-600");
-@source inline("{focus-visible:,hover:,}ring-offset-brand");
-@source inline("{focus-visible:,hover:,}ring-offset-blue-600");
-@source inline("{focus-visible:,hover:,}ring-offset-gray-600");
+@source inline("{focus-visible:,hover:,}ring-offset-white");
+@source inline("{focus-visible:,hover:,}ring-emerald-600");
+@source inline("{focus-visible:,hover:,}ring-brand");
+@source inline("{focus-visible:,hover:,}ring-blue-600");
+@source inline("{focus-visible:,hover:,}ring-gray-600");
 
 /* Tailwind v4 Theme Configuration */
 @theme {

@@ -62,7 +62,7 @@ export default function IndexPage(): JSX.Element {
           <div className='mx-auto max-w-2xl text-center'>
             <h1
               className={cn(
-                'app-name text-4xl sm:text-6xl',
+                'text-4xl sm:text-6xl',
                 typography.appName, // Use specific app name styling for consistent positioning
                 getLatinTitleClass(i18n.language) // Mark app name as Latin title
               )}
@@ -93,26 +93,26 @@ export default function IndexPage(): JSX.Element {
       <div className='py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <span
+            <h2
               className={cn(
-                'block text-base leading-7 font-semibold text-red-500',
+                'text-brand-accent block text-base leading-7 font-semibold',
                 typography.centerAlign
               )}
               role='heading'
               aria-level={2}
             >
               {t('landing.features.title')}
-            </span>
-            <p
+            </h2>
+            <h3
               className={cn(
-                'text-foreground-heading mt-2 text-3xl font-bold sm:text-4xl',
+                'mt-2 text-3xl font-bold sm:text-4xl',
                 typography.title,
                 typography.heading,
                 typography.centerAlign
               )}
             >
               {t('landing.features.subtitle')}
-            </p>
+            </h3>
             <p
               className={cn(
                 'text-foreground-light mt-6 text-lg leading-8',

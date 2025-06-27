@@ -165,11 +165,11 @@ export function UserMenu({
                     {languageMenuOpen ? (
                       <div
                         className={cn(
-                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 shadow-lg ring-1 ring-black',
+                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black',
                           // Position submenu to the left of the language menu icon (mirrored for Arabic)
                           isRTL ? '-end-16' : '-start-16',
-                          // Base text size
-                          'text-base'
+                          // Apply Arabic text scaling to the container when in Arabic mode
+                          i18n.language === 'ar' ? 'arabic-text' : ''
                         )}
                       >
                         {item.subMenu.map((subItem, subIndex) => (
@@ -179,11 +179,7 @@ export function UserMenu({
                               subItem.active
                                 ? 'bg-emerald-50 text-emerald-700'
                                 : 'text-emerald-800 hover:bg-gray-50'
-                            } focus:outline-none ${menuClasses.menuItem} !font-sans !text-base`}
-                            style={{
-                              fontSize: '16px',
-                              fontFamily: 'Inter, system-ui, sans-serif',
-                            }}
+                            } focus:outline-none ${menuClasses.menuItem} ${getLatinTextClass(i18n.language)}`}
                             onClick={event => {
                               event.stopPropagation()
                               subItem.onClick()
@@ -201,11 +197,7 @@ export function UserMenu({
                               {subItem.customIcon}
                             </span>
                             <span
-                              className={`${menuClasses.textContainer} ${subItem.className || ''}`}
-                              style={{
-                                fontSize: '16px',
-                                fontFamily: 'Inter, system-ui, sans-serif',
-                              }}
+                              className={`${menuClasses.textContainer} ${subItem.className || ''} ${getLatinTextClass(i18n.language)}`}
                             >
                               {subItem.label}
                             </span>

@@ -261,7 +261,6 @@ describe('Home Page (_index)', () => {
         'px-4',
         'text-sm',
         'relative',
-        'overflow-hidden',
         'transition-all',
         'duration-300',
         'ease-out',
@@ -269,14 +268,21 @@ describe('Home Page (_index)', () => {
         'hover:scale-103',
         'active:scale-95',
         'focus:outline-none',
-        'focus:ring-2',
-        'focus:ring-offset-2',
+        'focus-visible:ring-2',
+        'focus-visible:ring-white',
+        'focus-visible:ring-offset-2',
+        'hover:ring-2',
+        'hover:ring-white',
+        'hover:ring-offset-2',
+        'focus-visible:disabled:ring-0',
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
         'bg-emerald-600',
         'text-white',
-        'hover:bg-emerald-700',
-        'focus:ring-emerald-600'
+        'border',
+        'border-emerald-600',
+        'focus-visible:ring-offset-emerald-600',
+        'hover:ring-offset-emerald-600'
       )
     })
   })

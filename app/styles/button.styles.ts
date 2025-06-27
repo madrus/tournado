@@ -4,37 +4,58 @@ import { cn } from '~/utils/misc'
 export const commonButtonClasses = cn(
   'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
   'min-h-12 min-w-32 py-2.5 px-4 text-sm',
-  'relative overflow-hidden transition-all duration-300 ease-out',
+  'relative transition-all duration-300 ease-out',
   'whitespace-nowrap',
   'hover:scale-103 active:scale-95',
-  'focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'focus:outline-none',
+  'focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
+  'hover:ring-2 hover:ring-white hover:ring-offset-2',
+  'focus-visible:disabled:ring-0',
   'disabled:cursor-not-allowed disabled:opacity-50'
 )
 
-// Simplified color system
+// Color system
 export type ButtonColor = 'emerald' | 'brand' | 'blue' | 'gray'
 
-// Color definitions
+const ringOffset = {
+  emerald: 'focus-visible:ring-offset-emerald-600 hover:ring-offset-emerald-600',
+  brand: 'focus-visible:ring-offset-brand hover:ring-offset-brand',
+  blue: 'focus-visible:ring-offset-blue-600 hover:ring-offset-blue-600',
+  gray: 'focus-visible:ring-offset-gray-600 hover:ring-offset-gray-600',
+}
+
+const border = {
+  emerald: 'border border-emerald-600',
+  brand: 'border border-brand',
+  blue: 'border border-blue-600',
+  gray: 'border border-gray-600',
+}
+
 const colors = {
   emerald: {
-    primary: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-600',
-    secondary:
-      'bg-transparent text-emerald-600 border border-emerald-600 hover:bg-emerald-50 focus:ring-emerald-600',
+    primary: cn('bg-emerald-600 text-white', border.emerald, ringOffset.emerald),
+    secondary: cn(
+      'bg-transparent text-emerald-600 border border-emerald-600',
+      ringOffset.emerald
+    ),
   },
   brand: {
-    primary: 'bg-brand text-white hover:bg-brand/90 focus:ring-brand',
-    secondary:
-      'bg-transparent text-brand border border-brand hover:bg-brand/10 focus:ring-brand',
+    primary: cn('bg-brand text-white', border.brand, ringOffset.brand),
+    secondary: cn('bg-transparent text-brand border border-brand', ringOffset.brand),
   },
   blue: {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-600',
-    secondary:
-      'bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50 focus:ring-blue-600',
+    primary: cn('bg-blue-600 text-white', border.blue, ringOffset.blue),
+    secondary: cn(
+      'bg-transparent text-blue-600 border border-blue-600',
+      ringOffset.blue
+    ),
   },
   gray: {
-    primary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-600',
-    secondary:
-      'bg-transparent text-gray-600 border border-gray-600 hover:bg-gray-50 focus:ring-gray-600',
+    primary: cn('bg-gray-600 text-white', border.gray, ringOffset.gray),
+    secondary: cn(
+      'bg-transparent text-gray-600 border border-gray-600',
+      ringOffset.gray
+    ),
   },
 } as const
 

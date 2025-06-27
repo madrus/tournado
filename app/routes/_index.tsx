@@ -6,6 +6,7 @@ import { useLoaderData } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { ActionLinkButton } from '~/components/buttons'
+import { useTheme } from '~/hooks/useTheme'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
@@ -46,6 +47,7 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderDat
 export default function IndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { user } = useLoaderData<LoaderData>()
+  const { theme, getThemeColor } = useTheme()
 
   // Get RTL-aware typography classes
   const typography = getTypographyClasses(i18n.language)
@@ -55,7 +57,7 @@ export default function IndexPage(): JSX.Element {
     user?.role === 'ADMIN' ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams'
 
   return (
-    <main className='flex h-full flex-col'>
+    <main className={`flex h-full flex-col ${theme}`}>
       {/* Hero Section */}
       <div className='pt-16 pb-8'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
@@ -63,17 +65,19 @@ export default function IndexPage(): JSX.Element {
             <h1
               className={cn(
                 'text-4xl sm:text-6xl',
-                typography.appName, // Use specific app name styling for consistent positioning
-                getLatinTitleClass(i18n.language) // Mark app name as Latin title
+                typography.appName,
+                getLatinTitleClass(i18n.language)
               )}
+              style={{ color: getThemeColor('title') }}
             >
               {t('common.appName')}
             </h1>
             <p
               className={cn(
-                'text-foreground-light mt-6 min-h-[3.5rem] text-lg leading-8', // Ensure consistent height for 2 lines
+                'mt-6 min-h-[3.5rem] text-lg leading-8',
                 typography.centerAlign
               )}
+              style={{ color: getThemeColor('foregroundLight') }}
             >
               {t('landing.hero.description')}
             </p>
@@ -82,7 +86,8 @@ export default function IndexPage(): JSX.Element {
                 to={teamsRoute}
                 icon='apparel'
                 label={t('landing.hero.viewTeams')}
-                variant='emerald'
+                variant='primary'
+                color='emerald'
               />
             </div>
           </div>
@@ -95,9 +100,10 @@ export default function IndexPage(): JSX.Element {
           <div className='mx-auto max-w-2xl lg:text-center'>
             <h2
               className={cn(
-                'text-brand-accent block text-base leading-7 font-semibold',
+                'block text-base leading-7 font-semibold',
                 typography.centerAlign
               )}
+              style={{ color: getThemeColor('brandAccent') }}
               role='heading'
               aria-level={2}
             >
@@ -110,14 +116,13 @@ export default function IndexPage(): JSX.Element {
                 typography.heading,
                 typography.centerAlign
               )}
+              style={{ color: getThemeColor('title') }}
             >
               {t('landing.features.subtitle')}
             </h3>
             <p
-              className={cn(
-                'text-foreground-light mt-6 text-lg leading-8',
-                typography.centerAlign
-              )}
+              className={cn('mt-6 text-lg leading-8', typography.centerAlign)}
+              style={{ color: getThemeColor('foregroundLight') }}
             >
               {t('landing.features.description')}
             </p>

@@ -2,20 +2,20 @@ import { reactRouter } from '@react-router/dev/vite'
 
 import { reactRouterDevTools } from 'react-router-devtools'
 
+import tailwindcss from '@tailwindcss/vite'
+
 import path from 'path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  css: {
-    transformer: 'postcss',
-  },
   plugins: [
     ...(process.env.ENABLE_REACT_ROUTER_DEVTOOLS === 'true'
       ? [reactRouterDevTools()]
       : []),
     reactRouter(),
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt'],

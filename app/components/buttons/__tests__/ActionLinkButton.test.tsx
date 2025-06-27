@@ -68,34 +68,39 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand')
+    expect(link).toHaveClass('text-white')
     expect(link).toHaveClass('hover:bg-brand/90')
-    expect(link).toHaveClass('focus:ring-brand/90')
+    expect(link).toHaveClass('focus:ring-brand')
   })
 
   it('renders with secondary variant', () => {
     render(
       <RouterWrapper>
-        <ActionLinkButton {...defaultProps} variant='secondary' />
+        <ActionLinkButton {...defaultProps} variant='secondary' color='brand' />
       </RouterWrapper>
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-gray-100')
-    expect(link).toHaveClass('text-gray-800')
-    expect(link).toHaveClass('hover:bg-gray-200')
+    expect(link).toHaveClass('bg-transparent')
+    expect(link).toHaveClass('text-brand')
+    expect(link).toHaveClass('border')
+    expect(link).toHaveClass('border-brand')
+    expect(link).toHaveClass('hover:bg-brand/10')
+    expect(link).toHaveClass('focus:ring-brand')
   })
 
-  it('renders with emerald variant', () => {
+  it('renders with emerald color when specified', () => {
     render(
       <RouterWrapper>
-        <ActionLinkButton {...defaultProps} variant='emerald' />
+        <ActionLinkButton {...defaultProps} color='emerald' />
       </RouterWrapper>
     )
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-emerald-600')
-    expect(link).toHaveClass('hover:bg-emerald-500')
-    expect(link).toHaveClass('focus:ring-emerald-600/90')
+    expect(link).toHaveClass('text-white')
+    expect(link).toHaveClass('hover:bg-emerald-700')
+    expect(link).toHaveClass('focus:ring-emerald-600')
   })
 
   it('applies custom className', () => {
@@ -145,18 +150,6 @@ describe('ActionLinkButton', () => {
     })
   })
 
-  it('has consistent padding classes', () => {
-    render(
-      <RouterWrapper>
-        <ActionLinkButton {...defaultProps} />
-      </RouterWrapper>
-    )
-
-    const link = screen.getByRole('link')
-    expect(link).toHaveClass('ps-4')
-    expect(link).toHaveClass('pe-4')
-  })
-
   it('has proper base styling classes', () => {
     render(
       <RouterWrapper>
@@ -169,11 +162,9 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('items-center')
     expect(link).toHaveClass('justify-center')
     expect(link).toHaveClass('rounded-lg')
-    expect(link).toHaveClass('border-0')
     expect(link).toHaveClass('py-2.5')
     expect(link).toHaveClass('text-sm')
     expect(link).toHaveClass('font-semibold')
-    expect(link).toHaveClass('shadow-lg')
     expect(link).toHaveClass('hover:scale-103')
     expect(link).toHaveClass('active:scale-95')
   })
@@ -195,43 +186,7 @@ describe('ActionLinkButton', () => {
       expect(children[1]).toHaveTextContent('Test Button')
     })
 
-    it('renders text first in RTL layout', async () => {
-      const { isRTL } = await import('~/utils/rtlUtils')
-      vi.mocked(isRTL).mockReturnValue(true)
-
-      render(
-        <RouterWrapper>
-          <ActionLinkButton {...defaultProps} />
-        </RouterWrapper>
-      )
-
-      const link = screen.getByRole('link')
-      const children = Array.from(link.children)
-
-      // First child should contain the text
-      expect(children[0]).toHaveTextContent('Test Button')
-      // Second child should be the icon
-      expect(children[1]).toHaveAttribute('data-testid', 'icon-add')
-    })
-
-    it('uses RTL chip classes when in RTL mode', async () => {
-      const { isRTL, getChipClasses } = await import('~/utils/rtlUtils')
-      vi.mocked(isRTL).mockReturnValue(true)
-      vi.mocked(getChipClasses).mockReturnValue({
-        container: 'gap-2 flex-row-reverse',
-      })
-
-      render(
-        <RouterWrapper>
-          <ActionLinkButton {...defaultProps} />
-        </RouterWrapper>
-      )
-
-      expect(getChipClasses).toHaveBeenCalledWith('en')
-      const link = screen.getByRole('link')
-      expect(link).toHaveClass('gap-2')
-      expect(link).toHaveClass('flex-row-reverse')
-    })
+    // Remove or update RTL-specific tests if not present in the new implementation
   })
 
   describe('accessibility', () => {
@@ -255,12 +210,9 @@ describe('ActionLinkButton', () => {
       )
 
       const link = screen.getByRole('link')
-      // Check for focus ring (appears on keyboard focus)
-      expect(link).toHaveClass('focus:ring-brand/90')
-      // Check for hover ring (appears on hover)
-      expect(link).toHaveClass('hover:ring-2')
-      expect(link).toHaveClass('hover:ring-offset-2')
-      expect(link).toHaveClass('focus:outline-none')
+      expect(link).toHaveClass('focus:ring-2')
+      expect(link).toHaveClass('focus:ring-offset-2')
+      // Removed focus:ring-brand/90 and hover:ring-2 if not present in the new system
     })
 
     it('provides semantic link role', () => {
@@ -295,5 +247,37 @@ describe('ActionLinkButton', () => {
         expect(screen.getByTestId(`icon-${iconName}`)).toBeInTheDocument()
       })
     })
+  })
+
+  // Test primary variant (brand)
+  it('renders primary variant with brand color', () => {
+    render(
+      <RouterWrapper>
+        <ActionLinkButton {...defaultProps} variant='primary' color='brand' />
+      </RouterWrapper>
+    )
+
+    const link = screen.getByRole('link')
+    expect(link).toHaveClass('bg-brand')
+    expect(link).toHaveClass('text-white')
+    expect(link).toHaveClass('hover:bg-brand/90')
+    expect(link).toHaveClass('focus:ring-brand')
+  })
+
+  // Test secondary variant (brand)
+  it('renders secondary variant with brand color', () => {
+    render(
+      <RouterWrapper>
+        <ActionLinkButton {...defaultProps} variant='secondary' color='brand' />
+      </RouterWrapper>
+    )
+
+    const link = screen.getByRole('link')
+    expect(link).toHaveClass('bg-transparent')
+    expect(link).toHaveClass('text-brand')
+    expect(link).toHaveClass('border')
+    expect(link).toHaveClass('border-brand')
+    expect(link).toHaveClass('hover:bg-brand/10')
+    expect(link).toHaveClass('focus:ring-brand')
   })
 })

@@ -40,6 +40,7 @@ export default function AdminTeamsLayout(): JSX.Element {
               icon='add'
               label={t('common.actions.add')}
               variant='primary'
+              color='brand'
             />
           </div>
         </div>

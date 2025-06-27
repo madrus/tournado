@@ -10,6 +10,10 @@
 @source inline("{focus-visible:,hover:,}ring-blue-600");
 @source inline("{focus-visible:,hover:,}ring-gray-600");
 
+/* Safelist shadow classes for button effects */
+@source inline("shadow-md");
+@source inline("hover:shadow-lg");
+
 /* Tailwind v4 Theme Configuration */
 @theme {
   --color-background: var(--color-background);

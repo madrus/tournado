@@ -1,45 +1,5 @@
+@import './colors.css';
 @import 'tailwindcss';
-
-@theme {
-  --color-background: #ffffff;
-  --color-brand: #dc2626; /* red-600 */
-  --color-brand-dark: #b91c1c; /* red-700 */
-  --color-brand-light: #f87171; /* red-400 */
-  --color-foreground-darker: #064e3b; /* emerald-900 for emphasis */
-  --color-foreground-light: #4b5563; /* gray-600 */
-  --color-foreground-lighter: #6b7280; /* gray-500 */
-  --color-foreground: #1f2937; /* gray-800 - default body text */
-  --color-foreground-heading: #065f46; /* emerald-800 - for headings */
-  --color-title: #065f46; /* emerald-800 - for titles */
-  --color-accent: #a7f3d0; /* emerald-300 - for accents */
-
-  /* Font family configuration */
-  --font-family-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-sans: var(--font-family-default);
-
-  /* Background gradient variables */
-  --gradient-from: #d1fae5; /* emerald-100 (one step darker than emerald-50) */
-  --gradient-to: #f9fafb; /* gray-50 (one step darker than white) */
-
-  /* Footer background */
-  --footer-bg: #ffffff; /* white */
-  --footer-text: #374151; /* gray-700 */
-}
-
-/* Dark mode color overrides */
-.dark {
-  --color-background: #111827; /* gray-900 */
-  --color-foreground: #e5e7eb; /* gray-200 body text */
-  --color-foreground-light: #d1d5db; /* gray-300 */
-  --color-foreground-lighter: #9ca3af; /* gray-400 */
-  --color-brand: #ef4444; /* red-500 */
-  /* --color-brand-dark keeps its original red-700 value in both modes */
-  --color-title: var(--color-accent); /* emerald-300 titles in dark mode */
-  --gradient-from: #022c22; /* emerald-950 */
-  --gradient-to: #065f46; /* emerald-800 */
-  --footer-bg: #065f46; /* emerald-800 in dark mode */
-  --footer-text: #e5e7eb; /* gray-200 */
-}
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
@@ -64,36 +24,77 @@
   }
 
   /* Dark mode heading colors - exclude AppBar */
-  .dark main h1, .dark main h2, .dark main h3, .dark main h4, .dark main h5, .dark main h6 {
-    color: var(--color-title) !important;
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: var(--color-title-accent);
   }
 
-  /* Main app title */
-  .dark main .app-name {
-    color: var(--color-title) !important;
+  .dark .text-foreground-heading {
+    color: var(--color-title);
   }
 
-  /* Dark mode text colors for utility classes - exclude AppBar */
-  .dark main .text-brand-dark {
-    color: #b91c1c !important; /* keep same brand red-700 as light mode */
-  }
-
-  .dark main .text-foreground-heading {
-    color: var(--color-title) !important;
-  }
-
-  .dark main .text-foreground-light {
-    color: var(--color-foreground-light) !important;
+  .dark .text-foreground-light {
+    color: var(--color-foreground-light);
   }
 
   /* Make all paragraph text use foreground color in dark mode for accessibility */
-  .dark main p:not(.text-foreground-heading) {
-    color: var(--color-foreground) !important;
+  .dark p:not(.text-foreground-heading) {
+    color: var(--color-foreground);
   }
 
   /* Footer styles handled by component classes */
 
   /* Mobile navigation uses CSS custom properties */
+}
+
+/* Semantic color utility classes for homepage and general use */
+.text-accent {
+  color: var(--color-accent);
+}
+.dark .text-accent {
+  color: var(--color-accent); /* Same as light for now */
+}
+
+.text-brand-accent {
+  color: var(--color-brand-accent); /* Uses theme-aware brand color */
+}
+.dark .text-brand-accent {
+  color: var(--color-brand-accent); /* Uses theme-aware brand color */
+}
+
+.text-brand {
+  color: var(--color-brand);
+}
+.dark .text-brand {
+  color: var(--color-brand); /* Uses theme-aware brand color */
+}
+
+.text-error {
+  color: var(--color-brand);
+}
+.dark .text-error {
+  color: var(--color-brand); /* Same as light for now */
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+.dark .bg-accent {
+  background-color: var(--color-accent); /* Same as light for now */
+}
+
+.bg-error {
+  background-color: var(--color-brand);
+}
+.dark .bg-error {
+  background-color: var(--color-brand); /* Same as light for now */
+}
+
+.font-semibold-accent {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+.dark .font-semibold-accent {
+  color: var(--color-accent);
 }
 
 /* RTL-specific utilities */

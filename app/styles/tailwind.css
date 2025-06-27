@@ -149,13 +149,13 @@
 .latin-title {
   font-family: system-ui, sans-serif !important;
   /* Fix letter spacing for titles in Arabic mode */
-  letter-spacing: -0.02em !important; /* Tighter letter spacing */
+  /* letter-spacing: -0.02em !important; Tighter letter spacing */
 }
 
 /* Specific fix for app name on home page in RTL context */
 [dir="rtl"] .app-name.latin-title {
   font-family: system-ui, sans-serif !important;
-  letter-spacing: -0.05em !important; /* Even tighter for the app name specifically */
+  /* letter-spacing: -0.05em !important; Even tighter for the app name specifically */
   /* Maintain consistent line height without conflicting with Tailwind classes */
   line-height: 1.5 !important; /* Match leading-normal from typography.appName */
   vertical-align: baseline !important; /* Prevent vertical shifting */
@@ -174,4 +174,62 @@
 [dir="rtl"] .ltr-override {
   direction: ltr;
   text-align: left;
+}
+
+/* User menu dropdown animation - synced with icon animation */
+[data-testid="user-menu-dropdown"] {
+  transform-origin: top;
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+/* Opening animation */
+[data-testid="user-menu-dropdown"][data-state="open"] {
+  animation-name: menu-open;
+}
+
+/* Closing animation */
+[data-testid="user-menu-dropdown"][data-state="closed"] {
+  animation-name: menu-close;
+}
+
+@keyframes menu-open {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes menu-close {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+/* AppBar title Arabic text - needs higher specificity to override Tailwind size classes */
+[dir="rtl"] header .arabic-text.text-xl {
+  font-size: 1.5625rem !important; /* 25px = 20px * 1.25 */
+  transform: translateY(4px) !important; /* More downward adjustment */
+}
+
+[dir="rtl"] header .arabic-text.sm\:text-2xl {
+  font-size: 1.875rem !important; /* 30px = 24px * 1.25 */
+  transform: translateY(5px) !important; /* More downward adjustment for larger text */
+}
+
+@media (min-width: 640px) {
+  [dir="rtl"] header .arabic-text.sm\:text-2xl {
+    font-size: 1.875rem !important; /* 30px = 24px * 1.25 */
+    transform: translateY(5px) !important; /* More downward adjustment for larger text */
+  }
 }

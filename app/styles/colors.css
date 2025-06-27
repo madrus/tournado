@@ -1,0 +1,36 @@
+/* Centralized color tokens for Tournado app (light and dark mode) */
+
+:root {
+  --color-background: #ffffff;
+  --color-brand: #dc2626; /* red-600 */
+  --color-brand-accent: #fa2c37; /* red-500 */
+  --color-brand-dark: #b91c1c; /* red-700 */
+  --color-brand-light: #f87171; /* red-400 */
+  --color-main: #065f46; /* emerald-800 - canonical main accent */
+  --color-foreground-darker: var(--color-main); /* for emphasis */
+  --color-foreground-light: #4b5563; /* gray-600 */
+  --color-foreground-lighter: #6b7280; /* gray-500 */
+  --color-foreground: #1f2937; /* gray-800 - default body text */
+  --color-foreground-heading: var(--color-main); /* for headings */
+  --color-title: var(--color-main); /* for titles */
+  --color-accent: #a7f3d0; /* emerald-300 - for accents */
+  --color-title-accent: var(--color-accent); /* emerald-300 - for accents */
+  --gradient-from: #d1fae5; /* emerald-100 */
+  --gradient-to: #f9fafb; /* gray-50 */
+  --footer-bg: #ffffff; /* white */
+  --footer-text: #374151; /* gray-700 */
+}
+
+.dark {
+  --color-background: #111827; /* gray-900 */
+  --color-foreground: #e5e7eb; /* gray-200 body text */
+  --color-foreground-light: #d1d5db; /* gray-300 */
+  --color-foreground-lighter: #9ca3af; /* gray-400 */
+  --color-foreground-darker: var(--color-main);
+  --color-foreground-heading: var(--color-main);
+  --color-title: var(--color-main);
+  --gradient-from: #022c22; /* emerald-950 */
+  --gradient-to: #065f46; /* emerald-800 */
+  --footer-bg: #065f46; /* emerald-800 in dark mode */
+  --footer-text: #e5e7eb; /* gray-200 */
+}

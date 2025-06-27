@@ -6,21 +6,25 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import { isBrowser } from '~/lib/lib.helpers'
 
 type Theme = 'light' | 'dark'
+type Language = 'nl' | 'en' | 'ar' | 'tr'
 
 type StoreState = {
   theme: Theme
+  language: Language
 }
 
 type Actions = {
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
+  setLanguage: (language: Language) => void
   resetStoreState: () => void
 }
 
-const storeName = 'ThemeStore'
+const storeName = 'UIPreferencesStore'
 
 const initialStoreState: StoreState = {
   theme: 'light',
+  language: 'nl',
 }
 
 // Server-side storage mock for when localStorage is not available
@@ -34,7 +38,7 @@ const createServerSideStorage = () => ({
   },
 })
 
-export const useThemeStore = create<StoreState & Actions>()(
+export const useSettingsStore = create<StoreState & Actions>()(
   devtools(
     persist(
       set => ({
@@ -62,10 +66,17 @@ export const useThemeStore = create<StoreState & Actions>()(
             false,
             'toggleTheme'
           ),
+        setLanguage: language => {
+          // Persist to both localStorage and cookies for server-side access
+          if (isBrowser) {
+            document.cookie = `lang=${language}; path=/; max-age=31536000`
+          }
+          set({ language }, false, 'setLanguage')
+        },
       }),
       {
-        name: 'theme-storage',
-        // Use localStorage for theme persistence (unlike auth which uses sessionStorage)
+        name: 'settings-storage',
+        // Use localStorage for UI preferences persistence (unlike auth which uses sessionStorage)
         storage: isBrowser
           ? createJSONStorage(() => localStorage)
           : createJSONStorage(createServerSideStorage),
@@ -82,13 +93,13 @@ export const useThemeStore = create<StoreState & Actions>()(
 )
 
 /**
- * Hook to handle theme store rehydration in components
- * Use this in components that need the theme store to be properly hydrated
+ * Hook to handle UI preferences store rehydration in components
+ * Use this in components that need the UI preferences store to be properly hydrated
  */
-export const useThemeStoreHydration = (): void => {
+export const useSettingsStoreHydration = (): void => {
   useEffect(() => {
     if (isBrowser) {
-      useThemeStore.persist.rehydrate()
+      useSettingsStore.persist.rehydrate()
     }
   }, [])
 }

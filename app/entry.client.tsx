@@ -7,6 +7,7 @@ import { initI18n } from './i18n/config'
 declare global {
   interface Window {
     __SSR_LANGUAGE__?: string
+    __SSR_THEME__?: string
   }
 }
 
@@ -36,7 +37,7 @@ if (isDevelopment) {
   }
 }
 
-// Use the SSR-injected language
+// Use the SSR-injected language and theme
 const lang = window.__SSR_LANGUAGE__ || 'nl'
 initI18n(lang)
 

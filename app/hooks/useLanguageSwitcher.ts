@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
 type UseLanguageSwitcherReturn = {
   switchLanguage: (langCode: string) => void
@@ -7,19 +7,20 @@ type UseLanguageSwitcherReturn = {
 
 /**
  * Hook for switching languages in the application.
- * Only triggers i18n language change - persistence (localStorage + cookie)
- * is handled automatically by root.tsx when language changes.
+ * Updates the theme store which acts as the single source of truth.
+ * The store handles cookie and localStorage persistence automatically.
+ * The i18n instance will be updated automatically when the store changes.
  */
 export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
-  const { i18n } = useTranslation()
+  const { language: storeLanguage, setLanguage } = useSettingsStore()
 
   const switchLanguage = (langCode: string) => {
-    // Only trigger i18n change - root.tsx will handle persistence
-    i18n.changeLanguage(langCode)
+    // Only update store - i18n will follow automatically
+    setLanguage(langCode as 'nl' | 'en' | 'ar' | 'tr')
   }
 
   return {
     switchLanguage,
-    currentLanguage: i18n.language,
+    currentLanguage: storeLanguage,
   }
 }

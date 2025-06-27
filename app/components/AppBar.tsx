@@ -14,6 +14,7 @@ import {
   getArabicTextClass,
   getLatinTextClass,
   getLatinTitleClass,
+  getTypographyClass,
 } from '~/utils/rtlUtils'
 
 import { PrimaryNavLink } from './PrefetchLink'
@@ -187,7 +188,9 @@ export function AppBar({
 
         {/* Page title in center */}
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <h2 className='text-center text-xl font-bold text-white sm:text-2xl'>
+          <h2
+            className={`text-center text-xl font-bold text-white sm:text-2xl ${getTypographyClass(currentLanguage)}`}
+          >
             {pageTitle}
           </h2>
         </div>

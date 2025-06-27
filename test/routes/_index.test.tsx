@@ -269,11 +269,11 @@ describe('Home Page (_index)', () => {
         'active:scale-95',
         'focus:outline-none',
         'focus-visible:ring-2',
-        'focus-visible:ring-white',
         'focus-visible:ring-offset-2',
+        'focus-visible:ring-offset-white',
         'hover:ring-2',
-        'hover:ring-white',
         'hover:ring-offset-2',
+        'hover:ring-offset-white',
         'focus-visible:disabled:ring-0',
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
@@ -281,8 +281,8 @@ describe('Home Page (_index)', () => {
         'text-white',
         'border',
         'border-emerald-600',
-        'focus-visible:ring-offset-emerald-600',
-        'hover:ring-offset-emerald-600'
+        'focus-visible:ring-emerald-600',
+        'hover:ring-emerald-600'
       )
     })
   })

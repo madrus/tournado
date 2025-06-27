@@ -8,8 +8,8 @@ export const commonButtonClasses = cn(
   'whitespace-nowrap',
   'hover:scale-103 active:scale-95',
   'focus:outline-none',
-  'focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
-  'hover:ring-2 hover:ring-white hover:ring-offset-2',
+  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+  'hover:ring-2 hover:ring-offset-2 hover:ring-offset-white',
   'focus-visible:disabled:ring-0',
   'disabled:cursor-not-allowed disabled:opacity-50'
 )
@@ -17,11 +17,11 @@ export const commonButtonClasses = cn(
 // Color system
 export type ButtonColor = 'emerald' | 'brand' | 'blue' | 'gray'
 
-const ringOffset = {
-  emerald: 'focus-visible:ring-offset-emerald-600 hover:ring-offset-emerald-600',
-  brand: 'focus-visible:ring-offset-brand hover:ring-offset-brand',
-  blue: 'focus-visible:ring-offset-blue-600 hover:ring-offset-blue-600',
-  gray: 'focus-visible:ring-offset-gray-600 hover:ring-offset-gray-600',
+const ringColor = {
+  emerald: 'focus-visible:ring-emerald-600 hover:ring-emerald-600',
+  brand: 'focus-visible:ring-brand hover:ring-brand',
+  blue: 'focus-visible:ring-blue-600 hover:ring-blue-600',
+  gray: 'focus-visible:ring-gray-600 hover:ring-gray-600',
 }
 
 const border = {
@@ -33,28 +33,28 @@ const border = {
 
 const colors = {
   emerald: {
-    primary: cn('bg-emerald-600 text-white', border.emerald, ringOffset.emerald),
+    primary: cn('bg-emerald-600 text-white', border.emerald, ringColor.emerald),
     secondary: cn(
       'bg-transparent text-emerald-600 border border-emerald-600',
-      ringOffset.emerald
+      ringColor.emerald
     ),
   },
   brand: {
-    primary: cn('bg-brand text-white', border.brand, ringOffset.brand),
-    secondary: cn('bg-transparent text-brand border border-brand', ringOffset.brand),
+    primary: cn('bg-brand text-white', border.brand, ringColor.brand),
+    secondary: cn('bg-transparent text-brand border border-brand', ringColor.brand),
   },
   blue: {
-    primary: cn('bg-blue-600 text-white', border.blue, ringOffset.blue),
+    primary: cn('bg-blue-600 text-white', border.blue, ringColor.blue),
     secondary: cn(
       'bg-transparent text-blue-600 border border-blue-600',
-      ringOffset.blue
+      ringColor.blue
     ),
   },
   gray: {
-    primary: cn('bg-gray-600 text-white', border.gray, ringOffset.gray),
+    primary: cn('bg-gray-600 text-white', border.gray, ringColor.gray),
     secondary: cn(
       'bg-transparent text-gray-600 border border-gray-600',
-      ringOffset.gray
+      ringColor.gray
     ),
   },
 } as const

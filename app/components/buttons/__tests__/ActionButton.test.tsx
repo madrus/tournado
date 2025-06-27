@@ -86,8 +86,8 @@ describe('ActionButton', () => {
     expect(primaryButton).toHaveClass('bg-emerald-600')
     expect(primaryButton).toHaveClass('text-white')
     expect(primaryButton).toHaveClass('border-emerald-600')
-    expect(primaryButton).toHaveClass('focus-visible:ring-offset-emerald-600')
-    expect(primaryButton).toHaveClass('hover:ring-offset-emerald-600')
+    expect(primaryButton).toHaveClass('focus-visible:ring-emerald-600')
+    expect(primaryButton).toHaveClass('hover:ring-emerald-600')
 
     // Test secondary variant (emerald)
     rerender(
@@ -102,8 +102,8 @@ describe('ActionButton', () => {
     expect(secondaryButton).toHaveClass('text-emerald-600')
     expect(secondaryButton).toHaveClass('border')
     expect(secondaryButton).toHaveClass('border-emerald-600')
-    expect(secondaryButton).toHaveClass('focus-visible:ring-offset-emerald-600')
-    expect(secondaryButton).toHaveClass('hover:ring-offset-emerald-600')
+    expect(secondaryButton).toHaveClass('focus-visible:ring-emerald-600')
+    expect(secondaryButton).toHaveClass('hover:ring-emerald-600')
   })
 
   it('handles submit type without onClick', () => {

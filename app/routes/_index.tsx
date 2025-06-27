@@ -93,14 +93,16 @@ export default function IndexPage(): JSX.Element {
       <div className='py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2
+            <span
               className={cn(
-                'text-brand-dark text-base leading-7 font-semibold',
+                'block text-base leading-7 font-semibold text-red-500',
                 typography.centerAlign
               )}
+              role='heading'
+              aria-level={2}
             >
               {t('landing.features.title')}
-            </h2>
+            </span>
             <p
               className={cn(
                 'text-foreground-heading mt-2 text-3xl font-bold sm:text-4xl',

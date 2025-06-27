@@ -28,14 +28,17 @@
 
 /* Dark mode color overrides */
 .dark {
-  --color-foreground: #ffffff; /* white text for dark mode */
-  --color-foreground-light: #ffffff; /* white text for dark mode */
+  --color-background: #111827; /* gray-900 */
+  --color-foreground: #e5e7eb; /* gray-200 body text */
+  --color-foreground-light: #d1d5db; /* gray-300 */
+  --color-foreground-lighter: #9ca3af; /* gray-400 */
+  --color-brand: #ef4444; /* red-500 */
   /* --color-brand-dark keeps its original red-700 value in both modes */
   --color-title: var(--color-accent); /* emerald-300 titles in dark mode */
   --gradient-from: #022c22; /* emerald-950 */
   --gradient-to: #065f46; /* emerald-800 */
   --footer-bg: #065f46; /* emerald-800 in dark mode */
-  --footer-text: #ffffff; /* white text in dark mode */
+  --footer-text: #e5e7eb; /* gray-200 */
 }
 
 /*

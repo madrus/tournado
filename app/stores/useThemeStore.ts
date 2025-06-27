@@ -42,10 +42,23 @@ export const useThemeStore = create<StoreState & Actions>()(
         resetStoreState: () => {
           set(initialStoreState, false, 'resetStoreState')
         },
-        setTheme: theme => set({ theme }, false, 'setTheme'),
+        setTheme: theme => {
+          // Persist to both localStorage and cookies for server-side access
+          if (isBrowser) {
+            document.cookie = `theme=${theme}; path=/; max-age=31536000`
+          }
+          set({ theme }, false, 'setTheme')
+        },
         toggleTheme: () =>
           set(
-            state => ({ theme: state.theme === 'light' ? 'dark' : 'light' }),
+            state => {
+              const newTheme = state.theme === 'light' ? 'dark' : 'light'
+              // Persist to cookies for server-side access
+              if (isBrowser) {
+                document.cookie = `theme=${newTheme}; path=/; max-age=31536000`
+              }
+              return { theme: newTheme }
+            },
             false,
             'toggleTheme'
           ),

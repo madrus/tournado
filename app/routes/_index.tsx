@@ -57,7 +57,7 @@ export default function IndexPage(): JSX.Element {
   return (
     <main className='flex h-full flex-col'>
       {/* Hero Section */}
-      <div className='flex flex-1 flex-col justify-center pt-16 pb-20'>
+      <div className='pt-16 pb-8'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl text-center'>
             <h1

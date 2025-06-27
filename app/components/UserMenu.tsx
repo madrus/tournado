@@ -81,13 +81,25 @@ export function UserMenu({
           >
             {/* Hamburger icon - rotates and fades when menu opens */}
             <div
-              className={`absolute transition-all duration-300 ${isOpen ? 'rotate-90 opacity-0' : 'rotate-0 opacity-100'}`}
+              className={`absolute transition-all duration-300 ${
+                isOpen
+                  ? isRTL
+                    ? 'rotate-90 opacity-0'
+                    : '-rotate-90 opacity-0' // Arabic: clockwise, Latin: counter-clockwise
+                  : 'rotate-0 opacity-100'
+              }`}
             >
               {renderIcon('menu', { className: 'w-6 h-6' })}
             </div>
             {/* Close icon - rotates and fades when menu closes */}
             <div
-              className={`absolute transition-all duration-300 ${isOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0'}`}
+              className={`absolute transition-all duration-300 ${
+                isOpen
+                  ? 'rotate-0 opacity-100'
+                  : isRTL
+                    ? '-rotate-90 opacity-0'
+                    : 'rotate-90 opacity-0' // Arabic: counter-clockwise, Latin: clockwise
+              }`}
             >
               {renderIcon('close', { className: 'w-6 h-6' })}
             </div>

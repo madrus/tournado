@@ -239,8 +239,8 @@ export function TournamentForm({
                 <ActionButton
                   onClick={onDelete}
                   icon='delete'
-                  variant='outline'
-                  color='red'
+                  variant='secondary'
+                  color='brand'
                 >
                   {t('common.actions.delete')}
                 </ActionButton>
@@ -563,8 +563,8 @@ export function TournamentForm({
               <ActionButton
                 type='button'
                 onClick={onCancel}
-                variant='outline'
-                color='red'
+                variant='secondary'
+                color='brand'
               >
                 <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
                 {t('common.actions.reset')}
@@ -573,8 +573,8 @@ export function TournamentForm({
 
             <ActionButton
               type='submit'
-              variant='solid'
-              color='red'
+              variant='primary'
+              color='brand'
               icon='check_circle'
               aria-label={t('common.actions.save')}
               disabled={

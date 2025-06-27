@@ -48,54 +48,77 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Profile')
     })
 
-    test('should render protection status information', () => {
+    test('should render profile information section', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
+      expect(screen.getByText('Profile Information')).toBeInTheDocument()
+    })
 
+    test('should render account settings section', () => {
+      render(
+        <MemoryRouter>
+          <ProfilePage />
+        </MemoryRouter>
+      )
+      expect(screen.getByText('Account Settings')).toBeInTheDocument()
+    })
+
+    test('should render tournament access section', () => {
+      render(
+        <MemoryRouter>
+          <ProfilePage />
+        </MemoryRouter>
+      )
+      expect(screen.getByText('Tournament Access')).toBeInTheDocument()
+    })
+  })
+
+  describe('Content Structure', () => {
+    test('should render profile information content', () => {
+      render(
+        <MemoryRouter>
+          <ProfilePage />
+        </MemoryRouter>
+      )
       expect(
-        screen.getByText('✅ Enhanced Route Protection Active')
+        screen.getByText(/Manage your profile settings and account information/)
       ).toBeInTheDocument()
     })
 
-    test('should render protection features list', () => {
+    test('should render account settings list', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
-
-      const protectionFeatures = [
-        'Authentication required',
-        'Role-based access control enabled',
-        'Custom protection logic applied',
-        'Automatic redirect to /auth/signin if not authenticated',
-        'Automatic redirect to /unauthorized if insufficient permissions',
+      const accountSettings = [
+        'Personal information management',
+        'Password and security settings',
+        'Notification preferences',
+        'Privacy and data settings',
+        'Account deletion options',
       ]
-
-      protectionFeatures.forEach(feature => {
-        expect(screen.getByText(new RegExp(feature))).toBeInTheDocument()
+      accountSettings.forEach(setting => {
+        expect(screen.getByText(new RegExp(setting))).toBeInTheDocument()
       })
     })
 
-    test('should render placeholder content', () => {
+    test('should render tournament access content', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
-
       expect(
-        screen.getByText(/This is a protected route example that demonstrates/)
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText('User settings will be implemented here.')
+        screen.getByText(
+          /Your profile provides access to tournament management features/
+        )
       ).toBeInTheDocument()
     })
   })
@@ -107,7 +130,6 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-
       const container = screen.getByRole('heading', { level: 1 }).closest('div')
       expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
     })
@@ -118,73 +140,48 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-
       const heading = screen.getByRole('heading', { level: 1 })
       expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
     })
 
-    test('should apply correct styling to protection status section', () => {
+    test('should apply correct styling to section headings', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
-
-      const protectionSection = screen
-        .getByText('✅ Enhanced Route Protection Active')
-        .closest('div')
-      expect(protectionSection).toHaveClass('mb-6', 'rounded-lg', 'bg-green-50', 'p-4')
-    })
-
-    test('should apply correct styling to protection title', () => {
-      render(
-        <MemoryRouter>
-          <ProfilePage />
-        </MemoryRouter>
-      )
-
-      const protectionTitle = screen.getByText('✅ Enhanced Route Protection Active')
-      expect(protectionTitle).toHaveClass(
-        'mb-2',
-        'text-lg',
-        'font-semibold',
-        'text-green-800'
-      )
+      const sectionHeadings = screen.getAllByRole('heading', { level: 2 })
+      sectionHeadings.forEach(heading => {
+        expect(heading).toHaveClass('mb-4', 'text-2xl', 'font-semibold')
+      })
     })
   })
 
-  describe('Protection Features Display', () => {
-    test('should render protection features as a list', () => {
+  describe('Section Structure', () => {
+    test('should have proper section hierarchy', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
-
-      // Check that protection features are rendered with list item markers
-      const protectionList = screen.getByText('• Authentication required').closest('ul')
-      expect(protectionList).toHaveClass('space-y-1', 'text-sm', 'text-green-700')
+      const h1Elements = screen.getAllByRole('heading', { level: 1 })
+      const h2Elements = screen.getAllByRole('heading', { level: 2 })
+      expect(h1Elements).toHaveLength(1)
+      expect(h2Elements).toHaveLength(3)
     })
 
-    test('should include bullet points for each protection feature', () => {
+    test('should render sections in correct order', () => {
       render(
         <MemoryRouter>
           <ProfilePage />
         </MemoryRouter>
       )
-
-      // Check that each feature has a bullet point
-      const featuresWithBullets = [
-        '• Authentication required',
-        '• Role-based access control enabled',
-        '• Custom protection logic applied',
-        '• Automatic redirect to /auth/signin if not authenticated',
-        '• Automatic redirect to /unauthorized if insufficient permissions',
-      ]
-
-      featuresWithBullets.forEach(feature => {
-        expect(screen.getByText(feature)).toBeInTheDocument()
-      })
+      const headings = screen.getAllByRole('heading')
+      const headingTexts = headings.map(h => h.textContent)
+      expect(headingTexts[0]).toBe('Profile') // h1
+      expect(headingTexts[1]).toBe('Profile Information') // h2
+      expect(headingTexts[2]).toBe('Account Settings') // h2
+      expect(headingTexts[3]).toBe('Tournament Access') // h2
     })
   })
 
@@ -195,68 +192,10 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
-      const h3Elements = screen.getAllByRole('heading', { level: 3 })
-
+      const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-      expect(h3Elements).toHaveLength(1) // Protection status heading
-    })
-
-    test('should have semantic HTML structure', () => {
-      render(
-        <MemoryRouter>
-          <ProfilePage />
-        </MemoryRouter>
-      )
-
-      // Check for proper list structure
-      const protectionList = screen.getByText('• Authentication required').closest('ul')
-      expect(protectionList).toBeInTheDocument()
-
-      // Check list items
-      const listItems = protectionList?.querySelectorAll('li')
-      expect(listItems).toHaveLength(5)
-    })
-  })
-
-  describe('Content Organization', () => {
-    test('should organize content in logical sections', () => {
-      render(
-        <MemoryRouter>
-          <ProfilePage />
-        </MemoryRouter>
-      )
-
-      // Check main sections are present and in order
-      const container = screen.getByRole('heading', { level: 1 }).closest('div')
-      const content = container?.textContent || ''
-
-      // Verify content flows logically
-      expect(content.indexOf('Profile')).toBeLessThan(
-        content.indexOf('Enhanced Route Protection Active')
-      )
-      expect(content.indexOf('Enhanced Route Protection Active')).toBeLessThan(
-        content.indexOf('This is a protected route example')
-      )
-    })
-
-    test('should separate protection info from main content', () => {
-      render(
-        <MemoryRouter>
-          <ProfilePage />
-        </MemoryRouter>
-      )
-
-      // Protection section should be visually distinct
-      const protectionSection = screen
-        .getByText('✅ Enhanced Route Protection Active')
-        .closest('div')
-      expect(protectionSection).toHaveClass('bg-green-50') // Distinct background
-
-      // Main content should be separate
-      const mainContent = screen.getByText(/This is a protected route example/)
-      expect(mainContent.closest('.bg-green-50')).toBeNull()
+      expect(h2Elements).toHaveLength(3)
     })
   })
 
@@ -267,8 +206,6 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-
-      // Verify the heading is rendered with translation
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Profile')
     })
   })

@@ -69,28 +69,55 @@ export default function ProfilePage(): JSX.Element {
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         {t('common.titles.profile')}
       </h1>
-      <div className='mb-6 rounded-lg bg-green-50 p-4'>
-        <h3
-          className={cn(
-            'mb-2 text-lg font-semibold text-green-800',
-            getLatinTitleClass(i18n.language)
-          )}
-        >
-          ✅ Enhanced Route Protection Active
-        </h3>
-        <ul className='space-y-1 text-sm text-green-700'>
-          <li>• Authentication required</li>
-          <li>• Role-based access control enabled</li>
-          <li>• Custom protection logic applied</li>
-          <li>• Automatic redirect to /auth/signin if not authenticated</li>
-          <li>• Automatic redirect to /unauthorized if insufficient permissions</li>
-        </ul>
+      <div className='space-y-6'>
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Profile Information
+          </h2>
+          <p className='text-foreground-light'>
+            Manage your profile settings and account information for tournament
+            management.
+          </p>
+        </section>
+
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Account Settings
+          </h2>
+          <ul className='text-foreground-light space-y-2'>
+            <li>• Personal information management</li>
+            <li>• Password and security settings</li>
+            <li>• Notification preferences</li>
+            <li>• Privacy and data settings</li>
+            <li>• Account deletion options</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Tournament Access
+          </h2>
+          <p className='text-foreground-light'>
+            Your profile provides access to tournament management features based on your
+            role and permissions.
+          </p>
+        </section>
       </div>
-      <p>
-        This is a protected route example that demonstrates the enhanced route
-        protection system.
-      </p>
-      <p>User settings will be implemented here.</p>
     </div>
   )
 }

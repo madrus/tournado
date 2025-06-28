@@ -1,3 +1,4 @@
+import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 // Common classes for all buttons
@@ -17,7 +18,6 @@ export const commonButtonClasses = cn(
 )
 
 // Color system
-export type ButtonColor = 'emerald' | 'brand' | 'blue' | 'gray'
 
 const ringColor = {
   emerald:
@@ -102,13 +102,14 @@ const colors = {
 export type ButtonVariant = 'primary' | 'secondary'
 
 // Set default button color
-export const DEFAULT_BUTTON_COLOR: ButtonColor = 'brand'
+export const DEFAULT_BUTTON_COLOR: ColorAccent = 'brand'
 
 // Get button classes based on variant and color, defaulting to 'brand'
 export const getButtonClasses = (
   variant: ButtonVariant,
-  color: ButtonColor = DEFAULT_BUTTON_COLOR
+  color: ColorAccent = DEFAULT_BUTTON_COLOR
 ): string => cn(commonButtonClasses, colors[color][variant])
 
 // Legacy type exports for backward compatibility
 export type LinkButtonVariant = ButtonVariant
+export type ButtonColor = ColorAccent // Legacy alias

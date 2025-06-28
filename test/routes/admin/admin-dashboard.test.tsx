@@ -66,9 +66,9 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock AdminPanel component
-vi.mock('~/components/AdminPanel', () => ({
-  AdminPanel: ({
+// Mock ActionLinkPanel component
+vi.mock('~/components/ActionLinkPanel', () => ({
+  ActionLinkPanel: ({
     title,
     description,
     colorScheme,
@@ -223,7 +223,7 @@ describe('Admin Dashboard', () => {
       )
 
       const settingsPanel = screen.getByTestId('admin-panel-system-settings')
-      expect(settingsPanel).toHaveAttribute('data-color-scheme', 'red')
+      expect(settingsPanel).toHaveAttribute('data-color-scheme', 'brand')
       expect(settingsPanel).not.toHaveAttribute('data-link-to') // No navigation
       expect(settingsPanel).toHaveTextContent('System Settings')
       expect(settingsPanel).toHaveTextContent(

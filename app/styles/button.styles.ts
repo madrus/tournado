@@ -3,7 +3,7 @@ import { cn } from '~/utils/misc'
 // Common classes for all buttons
 export const commonButtonClasses = cn(
   'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
-  'min-h-12 min-w-32 py-2.5 px-4 text-sm',
+  'min-h-12 min-w-32 py-2.5 px-4 text-sm uppercase',
   'relative transition-all duration-300 ease-out',
   'whitespace-nowrap',
   'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',

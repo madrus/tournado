@@ -16,7 +16,7 @@ export const getInputColorClasses = (
       hover: 'hover:border-input-hover',
       focus: 'focus:border-input-focus focus:ring-2 focus:ring-input-ring/20',
     },
-    red: {
+    brand: {
       border: 'border-error/30',
       hover: 'hover:border-error',
       focus: 'focus:border-error focus:ring-2 focus:ring-error/20',
@@ -25,6 +25,11 @@ export const getInputColorClasses = (
       border: 'border-blue-700/30',
       hover: 'hover:border-blue-600',
       focus: 'focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20',
+    },
+    gray: {
+      border: 'border-gray-700/30',
+      hover: 'hover:border-gray-600',
+      focus: 'focus:border-gray-600 focus:ring-2 focus:ring-gray-600/20',
     },
   }
 
@@ -43,8 +48,9 @@ export const getInputColorClasses = (
 export const getDropdownItemColorClasses = (color: ColorAccent): string => {
   const colorMap = {
     emerald: 'focus:bg-emerald-lightest focus:text-emerald-darkest',
-    red: 'focus:bg-red-50 focus:text-red-900',
+    brand: 'focus:bg-brand-lightest focus:text-brand-darkest',
     blue: 'focus:bg-blue-50 focus:text-blue-900',
+    gray: 'focus:bg-gray-50 focus:text-gray-900',
   }
 
   return colorMap[color]
@@ -59,7 +65,7 @@ export const getCalendarColorClasses = (
       hover: 'hover:bg-emerald-lighter',
       navButton: 'text-emerald-dark hover:bg-emerald-lighter',
     },
-    red: {
+    brand: {
       today: 'bg-brand-light text-brand-dark',
       hover: 'hover:bg-brand-light',
       navButton: 'text-brand hover:bg-brand-light',
@@ -68,6 +74,11 @@ export const getCalendarColorClasses = (
       today: 'bg-blue-100 text-blue-900',
       hover: 'hover:bg-blue-100',
       navButton: 'text-blue-600 hover:bg-blue-100',
+    },
+    gray: {
+      today: 'bg-gray-100 text-gray-900',
+      hover: 'hover:bg-gray-100',
+      navButton: 'text-gray-600 hover:bg-gray-100',
     },
   }
 

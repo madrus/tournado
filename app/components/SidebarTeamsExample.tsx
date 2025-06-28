@@ -81,15 +81,16 @@ export function SidebarTeamsExample({
           <button
             key={team.id}
             onClick={() => setSelectedTeam(team)}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-left text-sm font-medium transition-colors ${
+            className={cn(
+              'flex items-center gap-2 rounded-lg px-4 py-2 text-left text-sm font-medium transition-colors',
               selectedTeam?.id === team.id
-                ? 'bg-red-100 text-red-700'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
+                ? 'bg-accent text-primary'
+                : 'text-foreground hover:bg-background-hover'
+            )}
           >
-            <div className='h-2 w-2 rounded-full bg-gray-400' />
+            <div className='bg-foreground-lighter h-2 w-2 rounded-full' />
             <div className='flex flex-col'>
-              <span className={`font-medium ${getLatinTextClass(i18n.language)}`}>
+              <span className={cn('font-medium', getLatinTextClass(i18n.language))}>
                 {`${team.clubName} ${team.teamName}`}
               </span>
               <span className='text-foreground-lighter text-xs'>
@@ -111,7 +112,7 @@ export function SidebarTeamsExample({
 
       <div className='space-y-6'>
         {/* Team Info Card */}
-        <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
           <h2
             className={cn(
               'mb-4 text-xl font-semibold',
@@ -123,13 +124,13 @@ export function SidebarTeamsExample({
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
-              <dd className={`mt-1 text-sm ${getLatinTextClass(i18n.language)}`}>
+              <dd className={cn('mt-1 text-sm', getLatinTextClass(i18n.language))}>
                 {selectedTeam.clubName}
               </dd>
             </div>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
-              <dd className={`mt-1 text-sm ${getLatinTextClass(i18n.language)}`}>
+              <dd className={cn('mt-1 text-sm', getLatinTextClass(i18n.language))}>
                 {selectedTeam.teamName}
               </dd>
             </div>
@@ -142,7 +143,7 @@ export function SidebarTeamsExample({
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Status</dt>
               <dd className='mt-1'>
-                <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800'>
+                <span className='bg-accent text-primary inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium'>
                   Active
                 </span>
               </dd>
@@ -151,7 +152,7 @@ export function SidebarTeamsExample({
         </div>
 
         {/* Team Chip Preview */}
-        <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
           <h3
             className={cn(
               'mb-4 text-lg font-semibold',
@@ -160,7 +161,7 @@ export function SidebarTeamsExample({
           >
             Team Chip Preview
           </h3>
-          <p className='mb-4 text-gray-600'>
+          <p className='text-foreground-light mb-4'>
             This is how this team appears in the new chip-based layout:
           </p>
           <TeamChip
@@ -172,7 +173,7 @@ export function SidebarTeamsExample({
         </div>
 
         {/* Actions */}
-        <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
           <h3
             className={cn(
               'mb-4 text-lg font-semibold',
@@ -182,13 +183,13 @@ export function SidebarTeamsExample({
             Available Actions
           </h3>
           <div className='flex flex-wrap gap-3'>
-            <button className='inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'>
+            <button className='border-foreground-lighter bg-background text-foreground hover:bg-background-hover inline-flex items-center rounded-md border px-3 py-2 text-sm font-medium'>
               Edit Team
             </button>
-            <button className='inline-flex items-center rounded-md border border-transparent bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700'>
+            <button className='bg-brand text-primary-foreground hover:bg-brand-accent inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium'>
               View Matches
             </button>
-            <button className='inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50'>
+            <button className='border-brand bg-background text-brand hover:bg-accent inline-flex items-center rounded-md border px-3 py-2 text-sm font-medium'>
               Delete Team
             </button>
           </div>
@@ -198,7 +199,7 @@ export function SidebarTeamsExample({
   ) : (
     <div className='flex h-64 items-center justify-center'>
       <div className='text-center'>
-        <div className='mx-auto h-12 w-12 text-gray-400'>
+        <div className='text-foreground-lighter mx-auto h-12 w-12'>
           <svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path
               strokeLinecap='round'
@@ -265,14 +266,14 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           Teams Layout Evolution
         </h1>
-        <p className='mx-auto max-w-2xl text-gray-600'>
+        <p className='text-foreground-light mx-auto max-w-2xl'>
           Comparison between the original sidebar layout (preserved for future sliding
           menu) and the new chip-based layout for modern UX.
         </p>
       </div>
 
       {/* New Chip-Based Layout */}
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
         <h2
           className={cn(
             'mb-4 text-xl font-semibold',
@@ -281,7 +282,7 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           ✨ New Chip-Based Layout
         </h2>
-        <p className='mb-4 text-gray-600'>
+        <p className='text-foreground-light mb-4'>
           Modern, responsive grid layout with team chips:
         </p>
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4'>
@@ -298,7 +299,7 @@ export function TeamsLayoutComparison(): JSX.Element {
       </div>
 
       {/* Original Sidebar Layout */}
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
         <h2
           className={cn(
             'mb-4 text-xl font-semibold',
@@ -307,26 +308,26 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           🗂️ Original Sidebar Layout (Preserved)
         </h2>
-        <p className='mb-4 text-gray-600'>
+        <p className='text-foreground-light mb-4'>
           Classic sidebar layout with list view, perfect for future sliding menu
           implementations:
         </p>
-        <div className='h-96 overflow-hidden rounded-lg border border-gray-200'>
+        <div className='border-foreground-lighter h-96 overflow-hidden rounded-lg border'>
           <SidebarTeamsExample teams={exampleTeams} />
         </div>
       </div>
 
       {/* Usage Notes */}
-      <div className='rounded-lg border border-blue-200 bg-blue-50 p-6'>
+      <div className='border-primary bg-accent rounded-lg border p-6'>
         <h3
           className={cn(
-            'mb-3 text-lg font-semibold text-blue-900',
+            'text-primary mb-3 text-lg font-semibold',
             getLatinTitleClass(i18n.language)
           )}
         >
           📋 Implementation Notes
         </h3>
-        <ul className='space-y-2 text-blue-800'>
+        <ul className='text-foreground-darker space-y-2'>
           <li>
             • <strong>Current:</strong> Chip-based layout for public teams view
           </li>

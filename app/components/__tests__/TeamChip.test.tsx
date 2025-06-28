@@ -339,10 +339,10 @@ describe('TeamChip Component', () => {
         'items-center',
         'rounded-lg',
         'border',
-        'border-red-400',
-        'bg-white',
+        'border-brand',
+        'bg-background',
         'font-semibold',
-        'text-red-700',
+        'text-brand',
         'transition-all',
         'duration-300',
         'ease-out',
@@ -359,18 +359,18 @@ describe('TeamChip Component', () => {
         'hover:scale-105',
         'active:scale-95',
         'shadow-lg',
-        'shadow-red-500/25',
+        'shadow-brand/25',
         'hover:shadow-xl',
-        'hover:shadow-red-500/40',
-        'hover:bg-red-50/30',
-        'hover:border-red-500',
+        'hover:shadow-brand/40',
+        'hover:bg-accent',
+        'hover:border-brand-accent',
         'focus:ring-2',
         'focus:ring-offset-2',
-        'focus:ring-red-600/90',
+        'focus:ring-brand',
         'focus:outline-none',
         'hover:ring-2',
         'hover:ring-offset-2',
-        'hover:ring-red-600/90'
+        'hover:ring-brand'
       )
     })
 

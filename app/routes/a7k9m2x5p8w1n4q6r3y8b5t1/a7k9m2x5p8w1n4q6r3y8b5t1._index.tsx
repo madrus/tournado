@@ -4,7 +4,7 @@ import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
 
-import { AdminPanel } from '~/components/AdminPanel'
+import { ActionLinkPanel } from '~/components/ActionLinkPanel'
 import {
   ApparelIcon,
   PersonIcon,
@@ -94,7 +94,7 @@ export default function AdminDashboard(): JSX.Element {
         {/* Dashboard Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Team Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Team Management'
             description='Manage team registrations and memberships.'
             icon={
@@ -110,10 +110,10 @@ export default function AdminDashboard(): JSX.Element {
                 {teams.length}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* Tournament Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Tournament Management'
             description='Create and manage tournaments and competitions.'
             icon={
@@ -131,10 +131,10 @@ export default function AdminDashboard(): JSX.Element {
                 {tournaments.length}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* User Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='User Management'
             description='Manage user accounts and permissions.'
             icon={
@@ -151,21 +151,21 @@ export default function AdminDashboard(): JSX.Element {
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* System Settings */}
-          <AdminPanel
+          <ActionLinkPanel
             title='System Settings'
             description='Configure application settings and preferences.'
             icon={
               <SettingsIcon className='h-5 w-5 text-red-700 transition-colors group-hover:text-red-800' />
             }
-            colorScheme='red'
+            colorScheme='brand'
             language={i18n.language}
           />
 
           {/* Reports & Analytics */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'
             icon={

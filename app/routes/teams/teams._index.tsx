@@ -59,7 +59,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-6 shadow-sm'>
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId}

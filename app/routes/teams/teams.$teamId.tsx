@@ -97,7 +97,7 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Main Content - Games & Schedule */}
           <div className='space-y-6 lg:col-span-2'>
             {/* Upcoming Games */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className='border-button-neutral-secondary-border rounded-lg border bg-white p-6 shadow-sm'>
               <h2
                 className={cn(
                   'mb-4 text-xl font-semibold',
@@ -116,7 +116,7 @@ export default function TeamDetailsPage(): JSX.Element {
 
               {/* Placeholder for future games list */}
               <div className='mt-4 space-y-3'>
-                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
+                <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-4'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium'>vs Team Example</p>
@@ -133,7 +133,7 @@ export default function TeamDetailsPage(): JSX.Element {
                   </div>
                 </div>
 
-                <div className='rounded-lg border border-gray-200 bg-gray-50 p-4'>
+                <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-4'>
                   <div className='flex items-center justify-between'>
                     <div>
                       <p className='font-medium'>vs Another Team</p>
@@ -151,7 +151,7 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Recent Results */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className='border-button-neutral-secondary-border rounded-lg border bg-white p-6 shadow-sm'>
               <h2
                 className={cn(
                   'mb-4 text-xl font-semibold',
@@ -172,7 +172,7 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Sidebar - Team Info & Stats */}
           <div className='space-y-6'>
             {/* Team Info Card */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className='border-button-neutral-secondary-border rounded-lg border bg-white p-6 shadow-sm'>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -214,7 +214,7 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Season Stats */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className='border-button-neutral-secondary-border rounded-lg border bg-white p-6 shadow-sm'>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -234,22 +234,22 @@ export default function TeamDetailsPage(): JSX.Element {
                 </div>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Losses</span>
-                  <span className='text-sm font-medium text-red-600'>--</span>
+                  <span className='text-error text-sm font-medium'>--</span>
                 </div>
                 <div className='flex justify-between'>
                   <span className='text-foreground-light text-sm'>Points</span>
                   <span className='text-sm font-medium'>--</span>
                 </div>
               </div>
-              <div className='mt-4 rounded-lg bg-gray-50 p-3'>
-                <p className='text-xs text-gray-600'>
+              <div className='bg-button-neutral-background mt-4 rounded-lg p-3'>
+                <p className='text-foreground-light text-xs'>
                   Stats will be calculated automatically from game results.
                 </p>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+            <div className='border-button-neutral-secondary-border rounded-lg border bg-white p-6 shadow-sm'>
               <h3
                 className={cn(
                   'mb-4 text-lg font-semibold',
@@ -261,19 +261,19 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className='space-y-3'>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter bg-button-neutral-secondary-background w-full cursor-not-allowed rounded-lg px-3 py-2 text-start text-sm'
                 >
                   📅 View Full Schedule
                 </button>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter bg-button-neutral-secondary-background w-full cursor-not-allowed rounded-lg px-3 py-2 text-start text-sm'
                 >
                   📊 View Statistics
                 </button>
                 <button
                   disabled
-                  className='text-foreground-lighter w-full cursor-not-allowed rounded-lg bg-gray-100 px-3 py-2 text-start text-sm'
+                  className='text-foreground-lighter bg-button-neutral-secondary-background w-full cursor-not-allowed rounded-lg px-3 py-2 text-start text-sm'
                 >
                   👥 View Players
                 </button>

@@ -832,7 +832,7 @@ describe('TournamentForm Component', () => {
 
       // Each step should have its own color theme
       expect(
-        screen.getByText('Basic Information').closest('.border-red-200')
+        screen.getByText('Basic Information').closest('.border-brand')
       ).toBeInTheDocument()
       expect(
         screen.getByText('Tournament Dates').closest('.border-blue-200')

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { renderIcon } from '~/utils/iconUtils'
+import { cn } from '~/utils/misc'
 
 export function ThemeToggle(): JSX.Element {
   const { t } = useTranslation()
@@ -18,15 +19,21 @@ export function ThemeToggle(): JSX.Element {
     >
       {/* Dark mode icon - visible when light theme */}
       <div
-        className={`absolute transition-opacity duration-500 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`}
+        className={cn(
+          'absolute transition-opacity duration-500',
+          theme === 'light' ? 'opacity-100' : 'opacity-0'
+        )}
       >
-        {renderIcon('dark_mode', { className: 'w-6 h-6 text-white' })}
+        {renderIcon('dark_mode', { className: 'w-6 h-6 text-primary-foreground' })}
       </div>
       {/* Light mode icon - visible when dark theme */}
       <div
-        className={`absolute transition-opacity duration-500 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`}
+        className={cn(
+          'absolute transition-opacity duration-500',
+          theme === 'dark' ? 'opacity-100' : 'opacity-0'
+        )}
       >
-        {renderIcon('light_mode', { className: 'w-6 h-6 text-white' })}
+        {renderIcon('light_mode', { className: 'w-6 h-6 text-primary-foreground' })}
       </div>
     </button>
   )

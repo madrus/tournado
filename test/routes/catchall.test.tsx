@@ -176,9 +176,10 @@ describe('Catch-all Route ($)', () => {
 
       const pathDisplay = screen.getByText('/non-existent-path')
       expect(pathDisplay).toHaveClass(
-        'text-body-lg',
+        'text-lg',
         'break-all',
-        'whitespace-pre-wrap'
+        'whitespace-pre-wrap',
+        'text-foreground'
       )
     })
   })
@@ -193,7 +194,7 @@ describe('Catch-all Route ($)', () => {
 
       const homeLink = screen.getByTestId('error-recovery-link')
       expect(homeLink).toHaveAttribute('href', '/')
-      expect(homeLink).toHaveClass('text-body-md', 'underline')
+      expect(homeLink).toHaveClass('text-base', 'underline', 'text-foreground')
     })
 
     test('should have accessible link text', () => {

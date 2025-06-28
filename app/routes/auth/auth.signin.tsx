@@ -150,25 +150,25 @@ export default function SigninPage(): JSX.Element {
   }
 
   return (
-    <div className='flex min-h-screen flex-col bg-gradient-to-b from-emerald-50 via-white to-white'>
+    <div className='bg-background flex min-h-screen flex-col'>
       <div className='flex flex-1 flex-col'>
-        <div className='mx-auto mt-24 w-full max-w-md rounded-lg bg-white/50 p-8'>
+        <div className='bg-background mx-auto mt-24 w-full max-w-md rounded-lg p-8'>
           {registered ? (
-            <div className='mb-4 rounded-md bg-green-50 p-4'>
+            <div className='bg-accent mb-4 rounded-md p-4'>
               <div className='flex'>
                 <div className='flex-shrink-0'>
-                  <CheckCircleIcon className='text-green-400' size={20} />
+                  <CheckCircleIcon className='text-accent' size={20} />
                 </div>
                 <div className='ms-3'>
                   <h3
                     className={cn(
-                      'text-sm font-medium text-green-800',
+                      'text-foreground text-sm font-medium',
                       getLatinTitleClass(i18n.language)
                     )}
                   >
                     {t('auth.registrationSuccess')}
                   </h3>
-                  <div className='mt-2 text-sm text-green-700'>
+                  <div className='text-foreground-light mt-2 text-sm'>
                     <p>{t('auth.pleaseSignIn')}</p>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function SigninPage(): JSX.Element {
             <div>
               <label
                 htmlFor='email'
-                className='block text-sm font-medium text-gray-700'
+                className='text-foreground block text-sm font-medium'
               >
                 {t('auth.emailAddress')}
               </label>
@@ -196,10 +196,10 @@ export default function SigninPage(): JSX.Element {
                   onChange={handleEmailChange}
                   aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby='email-error'
-                  className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
+                  className='border-input-border text-input-foreground bg-input w-full rounded-sm border px-2 py-1 text-lg'
                 />
                 {actionData?.errors?.email ? (
-                  <div className='pt-1 text-red-700' id='email-error'>
+                  <div className='text-error pt-1' id='email-error'>
                     {t(`auth.errors.${actionData.errors.email}`)}
                   </div>
                 ) : null}
@@ -209,7 +209,7 @@ export default function SigninPage(): JSX.Element {
             <div>
               <label
                 htmlFor='password'
-                className='block text-sm font-medium text-gray-700'
+                className='text-foreground block text-sm font-medium'
               >
                 {t('auth.password')}
               </label>
@@ -224,10 +224,10 @@ export default function SigninPage(): JSX.Element {
                   onChange={handlePasswordChange}
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby='password-error'
-                  className='w-full rounded-sm border border-gray-500 px-2 py-1 text-lg'
+                  className='border-input-border text-input-foreground bg-input w-full rounded-sm border px-2 py-1 text-lg'
                 />
                 {actionData?.errors?.password ? (
-                  <div className='pt-1 text-red-700' id='password-error'>
+                  <div className='text-error pt-1' id='password-error'>
                     {t(`auth.errors.${actionData.errors.password}`)}
                   </div>
                 ) : null}
@@ -238,11 +238,11 @@ export default function SigninPage(): JSX.Element {
             <button
               type='submit'
               disabled={isSubmitting}
-              className='w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300'
+              className='bg-button-primary-background text-button-primary-text hover:bg-button-primary-hover-background focus-visible:outline-primary w-full rounded-md px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50'
             >
               {isSubmitting ? (
                 <>
-                  <span className='me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                  <span className='border-button-primary-text me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-t-transparent'></span>
                   {t('common.loading')}
                 </>
               ) : (
@@ -255,7 +255,7 @@ export default function SigninPage(): JSX.Element {
                   id='remember'
                   name='remember'
                   type='checkbox'
-                  className='h-4 w-4 rounded-sm border-gray-300 text-emerald-600 hover:ring-2 hover:ring-emerald-500 focus:ring-emerald-500'
+                  className='border-input-border text-primary hover:ring-primary focus:ring-primary h-4 w-4 rounded-sm hover:ring-2'
                 />
                 <label htmlFor='remember' className='ms-2 block text-sm'>
                   {t('auth.rememberMe')}
@@ -264,7 +264,7 @@ export default function SigninPage(): JSX.Element {
               <div className='text-foreground-lighter text-center text-sm'>
                 {t('auth.dontHaveAccount')}{' '}
                 <Link
-                  className='text-emerald-600 underline hover:text-emerald-500'
+                  className='text-primary hover:text-primary-hover underline'
                   to={{
                     pathname: '/auth/signup',
                     search: searchParams.toString(),

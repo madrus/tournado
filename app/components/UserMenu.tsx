@@ -77,7 +77,7 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button
-            className='relative inline-flex h-8 w-8 translate-y-0.25 items-center justify-center text-white focus:outline-none'
+            className='text-primary-foreground relative inline-flex h-8 w-8 translate-y-0.25 items-center justify-center focus:outline-none'
             aria-label='Toggle menu'
           >
             <AnimatedHamburgerIcon
@@ -90,8 +90,8 @@ export function UserMenu({
         <DropdownMenu.Content
           data-testid='user-menu-dropdown'
           className={cn(
-            'ring-opacity-5 z-40 w-max divide-y divide-gray-100',
-            'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
+            'ring-opacity-5 divide-border z-40 w-max divide-y',
+            'bg-background ring-border rounded-md p-1 shadow-lg ring-1 focus:outline-none',
             // Responsive max-width to prevent off-screen on mobile
             'max-w-[calc(100vw-2rem)] sm:max-w-80',
             // Ensure proper spacing from viewport edges - same for now to check
@@ -106,23 +106,33 @@ export function UserMenu({
         >
           <div className='px-4 py-3'>
             {authenticated ? (
-              <div className={`text-emerald-darkest ${menuClasses.textContainer}`}>
+              <div className={cn('text-foreground-darker', menuClasses.textContainer)}>
                 <p className={`break-words ${getTypographyClass(i18n.language)}`}>
                   {t('common.signedInAs')}
                 </p>
                 <p
-                  className={`text-emerald-darkest font-medium break-words ${getLatinTextClass(i18n.language)}`}
+                  className={cn(
+                    'text-foreground-darker font-medium break-words',
+                    getLatinTextClass(i18n.language)
+                  )}
                 >
                   {displayName}
                 </p>
               </div>
             ) : (
               <p
-                className={`text-emerald-darkest ${menuClasses.textContainer} break-words ${getTypographyClass(i18n.language)}`}
+                className={cn(
+                  'text-foreground-darker break-words',
+                  menuClasses.textContainer,
+                  getTypographyClass(i18n.language)
+                )}
               >
                 {t('common.welcome')}{' '}
                 <span
-                  className={`text-emerald-darkest font-medium ${getLatinTextClass(i18n.language)}`}
+                  className={cn(
+                    'text-foreground-darker font-medium',
+                    getLatinTextClass(i18n.language)
+                  )}
                 >
                   {displayName}
                 </span>
@@ -135,7 +145,7 @@ export function UserMenu({
                 return (
                   <DropdownMenu.Separator
                     key={index}
-                    className='mx-1 my-1 h-px bg-gray-200'
+                    className='bg-border mx-1 my-1 h-px'
                   />
                 )
               }
@@ -145,7 +155,10 @@ export function UserMenu({
                 return (
                   <div key={index} className='relative'>
                     <button
-                      className={`text-emerald-darkest w-full items-center px-3 py-2 leading-normal hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
+                      className={cn(
+                        'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
+                        menuClasses.menuItem
+                      )}
                       onClick={event => handleLanguageToggle(event, index)}
                     >
                       <span className={menuClasses.iconContainer}>
@@ -156,7 +169,10 @@ export function UserMenu({
                         ) : null}
                       </span>
                       <span
-                        className={`${menuClasses.textContainer} ${getTypographyClass(i18n.language)}`}
+                        className={cn(
+                          menuClasses.textContainer,
+                          getTypographyClass(i18n.language)
+                        )}
                       >
                         {item.label}
                       </span>
@@ -165,7 +181,7 @@ export function UserMenu({
                     {languageMenuOpen ? (
                       <div
                         className={cn(
-                          'ring-opacity-5 absolute z-30 mt-1 min-w-[8rem] rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black',
+                          'ring-opacity-5 bg-background ring-border absolute z-30 mt-1 min-w-[8rem] rounded-md p-1 text-base shadow-lg ring-1',
                           // Position submenu to the left of the language menu icon (mirrored for Arabic)
                           isRTL ? '-end-16' : '-start-16'
                         )}
@@ -173,11 +189,13 @@ export function UserMenu({
                         {item.subMenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            className={`w-full items-center px-3 py-2 leading-normal ${
+                            className={cn(
+                              'w-full items-center px-3 py-2 leading-normal focus:outline-none',
                               subItem.active
-                                ? 'bg-emerald-lightest text-emerald-darker'
-                                : 'text-emerald-darkest hover:bg-gray-50'
-                            } focus:outline-none ${menuClasses.menuItem}`}
+                                ? 'bg-accent text-foreground-darker'
+                                : 'text-foreground-darker hover:bg-accent/50',
+                              menuClasses.menuItem
+                            )}
                             onClick={event => {
                               event.stopPropagation()
                               subItem.onClick()
@@ -195,7 +213,10 @@ export function UserMenu({
                               {subItem.customIcon}
                             </span>
                             <span
-                              className={`${menuClasses.textContainer} ${subItem.className || ''}`}
+                              className={cn(
+                                menuClasses.textContainer,
+                                subItem.className || ''
+                              )}
                             >
                               {subItem.label}
                             </span>
@@ -219,7 +240,10 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className={`text-emerald-darkest w-full items-center px-3 py-2 leading-normal hover:bg-gray-100 ${menuClasses.menuItem}`}
+                    className={cn(
+                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal',
+                      menuClasses.menuItem
+                    )}
                   >
                     <span className={menuClasses.iconContainer}>
                       {item.icon
@@ -227,12 +251,15 @@ export function UserMenu({
                         : null}
                     </span>
                     <span
-                      className={`${menuClasses.textContainer} ${getTypographyClass(i18n.language)}`}
+                      className={cn(
+                        menuClasses.textContainer,
+                        getTypographyClass(i18n.language)
+                      )}
                     >
                       {item.label}
                     </span>
                     {item.todo ? (
-                      <span className='text-emerald-dark ms-2 text-xs'>(TODO)</span>
+                      <span className='text-brand ms-2 text-xs'>(TODO)</span>
                     ) : null}
                   </Link>
                 </DropdownMenu.Item>

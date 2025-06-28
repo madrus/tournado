@@ -200,18 +200,20 @@ export function TournamentForm({
   const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
-    <div className={`mx-auto max-w-6xl ${className}`}>
+    <div className={cn('mx-auto max-w-6xl', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <div className='mb-8 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 p-6 shadow-lg'>
+        <div className='border-primary from-accent to-accent mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <div className='flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100'>
-                <CheckIcon className='h-6 w-6 text-emerald-600' size={24} />
+              <div className='bg-accent flex h-10 w-10 items-center justify-center rounded-full'>
+                <CheckIcon className='text-primary h-6 w-6' size={24} />
               </div>
             </div>
             <div className='ml-4'>
-              <p className='text-sm font-semibold text-emerald-800'>{successMessage}</p>
+              <p className='text-foreground-darker text-sm font-semibold'>
+                {successMessage}
+              </p>
             </div>
           </div>
         </div>
@@ -219,7 +221,7 @@ export function TournamentForm({
 
       {/* Header for Admin Variant */}
       {!isPublicVariant ? (
-        <div className='mb-8 rounded-xl border-2 border-gray-300 bg-gradient-to-r from-slate-50 to-gray-50 p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
+        <div className='border-foreground-lighter from-background to-background-hover mb-8 rounded-xl border-2 bg-gradient-to-r p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -227,7 +229,7 @@ export function TournamentForm({
               >
                 {name ? name : t('tournaments.form.tournamentRegistration')}
               </h2>
-              <p className='mt-2 text-gray-600'>
+              <p className='text-foreground-light mt-2'>
                 {location
                   ? `${t('tournaments.form.location')} ${location}`
                   : t('tournaments.form.fillOutForm')}
@@ -280,21 +282,21 @@ export function TournamentForm({
 
         {/* Step 1: Basic Information - Always enabled */}
         <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
+          <div className='bg-brand text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
             1
           </div>
 
-          <div className='rounded-xl border-2 border-red-200 bg-gradient-to-br from-red-50/50 to-pink-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
+          <div className='border-brand from-accent to-accent rounded-xl border-2 bg-gradient-to-br p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
             <div className='mb-6'>
               <h2
                 className={cn(
-                  'mb-2 text-xl font-bold text-red-800',
+                  'text-foreground-darker mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language)
                 )}
               >
                 {t('tournaments.form.basicInformation')}
               </h2>
-              <p className='text-sm text-red-600'>
+              <p className='text-brand text-sm'>
                 {t('tournaments.form.enterBasicDetails')}
               </p>
             </div>
@@ -469,7 +471,7 @@ export function TournamentForm({
               ))}
             </div>
             {getTranslatedError('divisions', !isPanelEnabled(3)) ? (
-              <p className='mt-2 text-sm text-red-600'>
+              <p className='text-destructive mt-2 text-sm'>
                 {getTranslatedError('divisions', !isPanelEnabled(3))}
               </p>
             ) : null}
@@ -549,7 +551,7 @@ export function TournamentForm({
               ))}
             </div>
             {getTranslatedError('categories', !isPanelEnabled(4)) ? (
-              <p className='mt-2 text-sm text-red-600'>
+              <p className='text-destructive mt-2 text-sm'>
                 {getTranslatedError('categories', !isPanelEnabled(4))}
               </p>
             ) : null}

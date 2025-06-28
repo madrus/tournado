@@ -149,12 +149,12 @@ describe('Unauthorized Page', () => {
         'items-center',
         'justify-center',
         'rounded-md',
-        'bg-emerald-600',
+        'bg-button-primary-background',
         'px-4',
         'py-2',
         'text-sm',
         'font-medium',
-        'text-white'
+        'text-button-primary-text'
       )
     })
 
@@ -173,13 +173,13 @@ describe('Unauthorized Page', () => {
         'justify-center',
         'rounded-md',
         'border',
-        'border-gray-300',
-        'bg-white',
+        'border-button-secondary-border',
+        'bg-button-secondary-background',
         'px-4',
         'py-2',
         'text-sm',
         'font-medium',
-        'text-gray-700'
+        'text-button-secondary-text'
       )
     })
   })
@@ -201,7 +201,7 @@ describe('Unauthorized Page', () => {
         'flex-col',
         'items-center',
         'justify-center',
-        'bg-gray-50'
+        'bg-background'
       )
     })
 
@@ -214,12 +214,12 @@ describe('Unauthorized Page', () => {
 
       const contentCard = screen
         .getByText('Access Denied')
-        .closest('div[class*="bg-white"]')
+        .closest('div[class*="bg-background"]')
       expect(contentCard).toHaveClass(
         'mx-auto',
         'max-w-md',
         'rounded-lg',
-        'bg-white',
+        'bg-background',
         'p-6',
         'shadow-md'
       )
@@ -240,7 +240,7 @@ describe('Unauthorized Page', () => {
         'items-center',
         'justify-center',
         'rounded-full',
-        'bg-red-100'
+        'bg-error'
       )
     })
 
@@ -265,7 +265,7 @@ describe('Unauthorized Page', () => {
       const description = screen.getByText(
         /You do not have permission to access this page/
       )
-      expect(description).toHaveClass('text-center', 'text-gray-600')
+      expect(description).toHaveClass('text-center', 'text-foreground-light')
     })
   })
 
@@ -401,7 +401,7 @@ describe('Unauthorized Page', () => {
       const iconContainer = icon.closest('div')
 
       expect(icon).toHaveClass('text-brand')
-      expect(iconContainer).toHaveClass('bg-red-100')
+      expect(iconContainer).toHaveClass('bg-error')
     })
 
     test('should center content on screen', () => {

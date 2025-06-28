@@ -366,7 +366,7 @@ export function TeamForm({
           <div
             className={cn(
               'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(2) ? 'bg-primary' : 'bg-foreground-lighter'
+              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-foreground-lighter'
             )}
           >
             2
@@ -376,7 +376,7 @@ export function TeamForm({
             className={cn(
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
               isPanelEnabled(2)
-                ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
+                ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl'
                 : 'border-foreground-lighter bg-background-hover'
             )}
           >
@@ -385,9 +385,7 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2)
-                    ? 'text-foreground-darker'
-                    : 'text-foreground-lighter'
+                  isPanelEnabled(2) ? 'text-blue-800' : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.teamInfo')}
@@ -395,7 +393,7 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(2) ? 'text-primary' : 'text-foreground-lighter'
+                  isPanelEnabled(2) ? 'text-blue-600' : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.enterTeamDetails')}

@@ -111,8 +111,8 @@
   --gradient-to: var(--gradient-to);
 
   /* Footer Colors */
-  --footer-bg: var(--footer-bg);
-  --footer-text: var(--footer-text);
+  --color-footer: var(--footer-bg);
+  --color-footer-foreground: var(--footer-text);
 
   /* Hover Colors */
   --color-background-hover: var(--color-background-hover);

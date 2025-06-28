@@ -48,33 +48,79 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Settings')
     })
 
-    test('should render protected route information', () => {
+    test('should render application settings section', () => {
       render(
         <MemoryRouter>
           <SettingsPage />
         </MemoryRouter>
       )
+      expect(screen.getByText('Application Settings')).toBeInTheDocument()
+    })
 
+    test('should render preferences section', () => {
+      render(
+        <MemoryRouter>
+          <SettingsPage />
+        </MemoryRouter>
+      )
+      expect(screen.getByText('Preferences')).toBeInTheDocument()
+    })
+
+    test('should render tournament configuration section', () => {
+      render(
+        <MemoryRouter>
+          <SettingsPage />
+        </MemoryRouter>
+      )
+      expect(screen.getByText('Tournament Configuration')).toBeInTheDocument()
+    })
+  })
+
+  describe('Content Structure', () => {
+    test('should render application settings content', () => {
+      render(
+        <MemoryRouter>
+          <SettingsPage />
+        </MemoryRouter>
+      )
       expect(
         screen.getByText(
-          /This is a protected route example that would redirect to login/
+          /Configure your tournament settings, preferences, and account options/
         )
       ).toBeInTheDocument()
     })
 
-    test('should render placeholder content', () => {
+    test('should render preferences list', () => {
       render(
         <MemoryRouter>
           <SettingsPage />
         </MemoryRouter>
       )
+      const preferences = [
+        'Language and regional settings',
+        'Theme and appearance options',
+        'Notification preferences',
+        'Privacy and security settings',
+        'Data export and backup options',
+      ]
+      preferences.forEach(preference => {
+        expect(screen.getByText(new RegExp(preference))).toBeInTheDocument()
+      })
+    })
 
+    test('should render tournament configuration content', () => {
+      render(
+        <MemoryRouter>
+          <SettingsPage />
+        </MemoryRouter>
+      )
       expect(
-        screen.getByText('User settings will be implemented here.')
+        screen.getByText(
+          /Customize tournament management settings and default configurations/
+        )
       ).toBeInTheDocument()
     })
   })
@@ -86,7 +132,6 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-
       const container = screen.getByRole('heading', { level: 1 }).closest('div')
       expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
     })
@@ -97,43 +142,48 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-
       const heading = screen.getByRole('heading', { level: 1 })
       expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
     })
+
+    test('should apply correct styling to section headings', () => {
+      render(
+        <MemoryRouter>
+          <SettingsPage />
+        </MemoryRouter>
+      )
+      const sectionHeadings = screen.getAllByRole('heading', { level: 2 })
+      sectionHeadings.forEach(heading => {
+        expect(heading).toHaveClass('mb-4', 'text-2xl', 'font-semibold')
+      })
+    })
   })
 
-  describe('Content Structure', () => {
-    test('should have simple content structure', () => {
+  describe('Section Structure', () => {
+    test('should have proper section hierarchy', () => {
       render(
         <MemoryRouter>
           <SettingsPage />
         </MemoryRouter>
       )
-
-      // Check main sections are present and in order
-      const container = screen.getByRole('heading', { level: 1 }).closest('div')
-      const content = container?.textContent || ''
-
-      // Verify content flows logically
-      expect(content.indexOf('Settings')).toBeLessThan(
-        content.indexOf('This is a protected route example')
-      )
-      expect(content.indexOf('This is a protected route example')).toBeLessThan(
-        content.indexOf('User settings will be implemented here')
-      )
+      const h1Elements = screen.getAllByRole('heading', { level: 1 })
+      const h2Elements = screen.getAllByRole('heading', { level: 2 })
+      expect(h1Elements).toHaveLength(1)
+      expect(h2Elements).toHaveLength(3)
     })
 
-    test('should contain information about protection', () => {
+    test('should render sections in correct order', () => {
       render(
         <MemoryRouter>
           <SettingsPage />
         </MemoryRouter>
       )
-
-      expect(
-        screen.getByText(/would redirect to login if not authenticated/)
-      ).toBeInTheDocument()
+      const headings = screen.getAllByRole('heading')
+      const headingTexts = headings.map(h => h.textContent)
+      expect(headingTexts[0]).toBe('Settings') // h1
+      expect(headingTexts[1]).toBe('Application Settings') // h2
+      expect(headingTexts[2]).toBe('Preferences') // h2
+      expect(headingTexts[3]).toBe('Tournament Configuration') // h2
     })
   })
 
@@ -144,46 +194,10 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
+      const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-    })
-
-    test('should have semantic HTML structure', () => {
-      render(
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      )
-
-      // Check for proper container structure
-      const mainContainer = screen.getByRole('heading', { level: 1 }).closest('div')
-      expect(mainContainer).toBeInTheDocument()
-    })
-  })
-
-  describe('Protected Route Characteristics', () => {
-    test('should indicate this is a protected route', () => {
-      render(
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      )
-
-      // The page explicitly mentions it's a protected route
-      expect(screen.getByText(/protected route example/)).toBeInTheDocument()
-    })
-
-    test('should mention login redirection behavior', () => {
-      render(
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      )
-
-      expect(
-        screen.getByText(/redirect to login if not authenticated/)
-      ).toBeInTheDocument()
+      expect(h2Elements).toHaveLength(3)
     })
   })
 
@@ -194,36 +208,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-
-      // Verify the heading is rendered with translation
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Settings')
-    })
-  })
-
-  describe('Future Implementation Placeholder', () => {
-    test('should indicate future settings implementation', () => {
-      render(
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      )
-
-      expect(
-        screen.getByText('User settings will be implemented here.')
-      ).toBeInTheDocument()
-    })
-
-    test('should have minimal content as placeholder', () => {
-      render(
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      )
-
-      // The page should be minimal since it's a placeholder
-      const container = screen.getByRole('heading', { level: 1 }).closest('div')
-      const paragraphs = container?.querySelectorAll('p')
-      expect(paragraphs).toHaveLength(2) // Two informational paragraphs
     })
   })
 })

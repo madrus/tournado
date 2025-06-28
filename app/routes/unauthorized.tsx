@@ -38,7 +38,7 @@ export default function UnauthorizedPage(): JSX.Element {
         <div className='flex flex-col items-center gap-4'>
           {/* Icon */}
           <div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-100'>
-            <BlockIcon className='text-red-600' size={24} />
+            <BlockIcon className='text-brand' size={24} />
           </div>
 
           {/* Title */}

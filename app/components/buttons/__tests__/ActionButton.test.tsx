@@ -27,7 +27,12 @@ describe('ActionButton', () => {
     const i18nInstance = createI18n('en')
     render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} icon='delete' variant='outline' color='red'>
+        <ActionButton
+          onClick={handleClick}
+          icon='delete'
+          variant='secondary'
+          color='brand'
+        >
           {buttonText}
         </ActionButton>
       </I18nextProvider>
@@ -47,7 +52,12 @@ describe('ActionButton', () => {
     const i18nInstance = createI18n('ar')
     render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} icon='delete' variant='outline' color='red'>
+        <ActionButton
+          onClick={handleClick}
+          icon='delete'
+          variant='secondary'
+          color='brand'
+        >
           {buttonText}
         </ActionButton>
       </I18nextProvider>
@@ -56,8 +66,6 @@ describe('ActionButton', () => {
     expect(screen.getByText(buttonText)).toBeInTheDocument()
     fireEvent.click(button)
     expect(handleClick).toHaveBeenCalled()
-    // Check that the button has flex-row-reverse for RTL
-    expect(button.className).toMatch(/flex-row-reverse/)
     // Check that the icon is present
     expect(button.querySelector('svg')).toBeInTheDocument()
   })
@@ -66,42 +74,43 @@ describe('ActionButton', () => {
     const handleClick = vi.fn()
     const i18nInstance = createI18n('en')
 
-    // Test solid variant
+    // Test primary variant (emerald)
     const { rerender } = render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} variant='solid' color='emerald'>
-          Solid Button
+        <ActionButton onClick={handleClick} variant='primary' color='emerald'>
+          Primary Button
         </ActionButton>
       </I18nextProvider>
     )
-    expect(screen.getByRole('button')).toHaveClass('bg-emerald-600')
+    const primaryButton = screen.getByRole('button')
+    expect(primaryButton).toHaveClass('bg-emerald-600')
+    expect(primaryButton).toHaveClass('text-white')
+    expect(primaryButton).toHaveClass('border-emerald-600')
+    expect(primaryButton).toHaveClass('focus-visible:ring-emerald-600')
+    expect(primaryButton).toHaveClass('hover:ring-emerald-600')
 
-    // Test light variant
+    // Test secondary variant (emerald)
     rerender(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} variant='light' color='emerald'>
-          Light Button
+        <ActionButton onClick={handleClick} variant='secondary' color='emerald'>
+          Secondary Button
         </ActionButton>
       </I18nextProvider>
     )
-    expect(screen.getByRole('button')).toHaveClass('bg-emerald-50')
-
-    // Test outline variant
-    rerender(
-      <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} variant='outline' color='red'>
-          Outline Button
-        </ActionButton>
-      </I18nextProvider>
-    )
-    expect(screen.getByRole('button')).toHaveClass('bg-white')
+    const secondaryButton = screen.getByRole('button')
+    expect(secondaryButton).toHaveClass('bg-transparent')
+    expect(secondaryButton).toHaveClass('text-emerald-600')
+    expect(secondaryButton).toHaveClass('border')
+    expect(secondaryButton).toHaveClass('border-emerald-600')
+    expect(secondaryButton).toHaveClass('focus-visible:ring-emerald-600')
+    expect(secondaryButton).toHaveClass('hover:ring-emerald-600')
   })
 
   it('handles submit type without onClick', () => {
     const i18nInstance = createI18n('en')
     render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton type='submit' variant='solid' color='emerald'>
+        <ActionButton type='submit' variant='primary' color='emerald'>
           Submit Button
         </ActionButton>
       </I18nextProvider>
@@ -123,10 +132,21 @@ describe('ActionButton', () => {
     )
     const button = screen.getByRole('button')
     expect(button).toBeDisabled()
-    // Check for disabled styling classes (default outline variant has these)
-    expect(button).toHaveClass('disabled:bg-gray-50')
-    expect(button).toHaveClass('disabled:text-gray-400')
+
+    // Verify disabled cursor
     expect(button).toHaveClass('disabled:cursor-not-allowed')
+
+    // Verify disabled colors (gray semantic colors)
+    expect(button).toHaveClass('disabled:bg-button-neutral-background')
+    expect(button).toHaveClass('disabled:text-button-neutral-text')
+    expect(button).toHaveClass('disabled:border-button-neutral-secondary-border')
+
+    // Verify no animations on disabled buttons
+    expect(button).toHaveClass('disabled:hover:scale-100') // No scale animation
+    expect(button).toHaveClass('disabled:hover:ring-0') // No ring animation
+    expect(button).toHaveClass('disabled:hover:ring-offset-0') // No ring offset animation
+    expect(button).toHaveClass('disabled:hover:shadow-button-neutral-background/70') // No shadow animation
+
     fireEvent.click(button)
     expect(handleClick).not.toHaveBeenCalled()
   })

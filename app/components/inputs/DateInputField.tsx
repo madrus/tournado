@@ -1,5 +1,9 @@
 import { forwardRef, type JSX } from 'react'
 
+import { type ColorAccent } from '~/lib/lib.types'
+import { getInputColorClasses } from '~/styles/inputStyles'
+import { cn } from '~/utils/misc'
+
 type DateInputFieldProps = {
   name: string
   label: string
@@ -11,6 +15,7 @@ type DateInputFieldProps = {
   placeholder?: string
   min?: string
   max?: string
+  color?: ColorAccent
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -28,6 +33,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
       placeholder,
       min,
       max,
+      color = 'emerald',
       onBlur,
       onChange,
     },
@@ -46,7 +52,12 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
           placeholder={placeholder || 'dd-mm-yyyy'}
           min={min}
           max={max}
-          className='placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none [&::-webkit-calendar-picker-indicator]:opacity-70'
+          className={cn(
+            'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
+            'transition-all duration-300 ease-in-out focus:outline-none [&::-webkit-calendar-picker-indicator]:opacity-70',
+            'disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400',
+            getInputColorClasses(color, readOnly, error)
+          )}
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
           onBlur={onBlur}
@@ -57,7 +68,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
         />
       </label>
       {error ? (
-        <div className='pt-1 text-sm text-red-700' id={`${name}-error`}>
+        <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
           {error}
         </div>
       ) : null}

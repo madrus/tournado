@@ -53,23 +53,27 @@ describe('FooterLink', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass('transition-colors', 'hover:text-gray-600')
+      expect(link).toHaveClass(
+        'transition-colors',
+        'text-foreground-light',
+        'hover:text-foreground-darker'
+      )
     })
 
     it('should apply custom className prop', () => {
       render(
         <MemoryRouter>
-          <FooterLink {...defaultProps} className='font-bold text-blue-500' />
+          <FooterLink {...defaultProps} className='font-bold underline' />
         </MemoryRouter>
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass(
-        'transition-colors',
-        'hover:text-gray-600',
-        'text-blue-500',
-        'font-bold'
-      )
+      // Test that both default and custom classes are present
+      expect(link).toHaveClass('text-foreground-light')
+      expect(link).toHaveClass('hover:text-foreground-darker')
+      expect(link).toHaveClass('transition-colors')
+      expect(link).toHaveClass('font-bold')
+      expect(link).toHaveClass('underline')
     })
 
     it('should handle empty className prop', () => {
@@ -80,9 +84,15 @@ describe('FooterLink', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass('transition-colors', 'hover:text-gray-600')
+      expect(link).toHaveClass(
+        'transition-colors',
+        'text-foreground-light',
+        'hover:text-foreground-darker'
+      )
       // Should not have any additional classes
-      expect(link.className).toBe('transition-colors hover:text-gray-600 ')
+      expect(link.className).toBe(
+        'text-foreground-light hover:text-foreground-darker transition-colors'
+      )
     })
 
     it('should handle undefined className prop', () => {
@@ -93,9 +103,15 @@ describe('FooterLink', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass('transition-colors', 'hover:text-gray-600')
+      expect(link).toHaveClass(
+        'transition-colors',
+        'text-foreground-light',
+        'hover:text-foreground-darker'
+      )
       // Should use default empty string
-      expect(link.className).toBe('transition-colors hover:text-gray-600 ')
+      expect(link.className).toBe(
+        'text-foreground-light hover:text-foreground-darker transition-colors'
+      )
     })
   })
 
@@ -197,7 +213,8 @@ describe('FooterLink', () => {
 
       // Should contain both default and custom classes
       expect(classNames).toContain('transition-colors')
-      expect(classNames).toContain('hover:text-gray-600')
+      expect(classNames).toContain('text-foreground-light')
+      expect(classNames).toContain('hover:text-foreground-darker')
       expect(classNames).toContain('custom-class')
       expect(classNames).toContain('another-class')
     })
@@ -210,7 +227,7 @@ describe('FooterLink', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link).toHaveClass('hover:text-gray-600')
+      expect(link).toHaveClass('hover:text-foreground-darker')
     })
 
     it('should apply transition class for smooth interactions', () => {
@@ -262,7 +279,9 @@ describe('FooterLink', () => {
 
       const link = screen.getByRole('link')
       // Should have default classes plus the default empty string
-      expect(link.className).toBe('transition-colors hover:text-gray-600 ')
+      expect(link.className).toBe(
+        'text-foreground-light hover:text-foreground-darker transition-colors'
+      )
     })
   })
 })

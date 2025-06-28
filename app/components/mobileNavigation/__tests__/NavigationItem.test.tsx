@@ -124,12 +124,11 @@ describe('NavigationItem', () => {
       const iconSvg = container.querySelector('svg')
       const label = screen.getByText('Teams')
 
-      // Check inactive styling - now uses inline styles via CSS custom properties
-      // Icon should have inline style for color
+      // Check inactive styling - now uses semantic classes
       expect(iconSvg).toBeTruthy()
-      expect(iconSvg).not.toHaveClass('text-red-500')
-      expect(label).toHaveAttribute('style', 'color: var(--footer-text);')
-      expect(label).not.toHaveClass('text-red-500', 'font-bold')
+      expect(iconSvg).toHaveClass('text-footer-foreground')
+      expect(label).toHaveClass('text-footer-foreground')
+      expect(label).not.toHaveClass('text-brand', 'font-bold')
     })
 
     it('should show active state when on current route', () => {
@@ -147,12 +146,12 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconSvg = container.querySelector('svg[class*="text-brand-accent"]')
+      const iconSvg = container.querySelector('svg[class*="text-brand"]')
       const label = screen.getByText('Teams')
 
       // Check active styling
-      expect(iconSvg).toHaveClass('text-brand-accent')
-      expect(label).toHaveClass('text-brand-accent', 'font-bold')
+      expect(iconSvg).toHaveClass('text-brand')
+      expect(label).toHaveClass('text-brand', 'font-bold')
     })
 
     it('should handle different routes correctly', () => {
@@ -177,8 +176,8 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      let iconSvg = container.querySelector('svg[class*="text-brand-accent"]')
-      expect(iconSvg).toHaveClass('text-brand-accent') // Should be active
+      let iconSvg = container.querySelector('svg[class*="text-brand"]')
+      expect(iconSvg).toHaveClass('text-brand') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({

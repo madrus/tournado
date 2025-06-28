@@ -183,35 +183,35 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
   if (!showPrompt) return null
 
   return (
-    <div className='safe-bottom fixed right-0 bottom-0 left-0 z-40 bg-emerald-50 p-4 shadow-lg'>
+    <div className='safe-bottom bg-emerald-lightest fixed right-0 bottom-0 left-0 z-40 p-4 shadow-lg'>
       <div className='flex items-center justify-between gap-4'>
         <div className='flex-1'>
-          <p className='text-sm font-medium text-emerald-900'>
+          <p className='text-emerald-darkest text-sm font-medium'>
             {promptText[platform].title}
           </p>
           <div className='mt-1 flex items-center gap-2'>
-            <p className='text-xs text-emerald-700'>
+            <p className='text-emerald-darker text-xs'>
               {promptText[platform].instruction}
             </p>
             <div className='relative'>
               {showTopArrow ? (
                 <div className='flex flex-col items-center'>
                   <svg
-                    className='h-6 w-6 animate-bounce text-emerald-600'
+                    className='text-emerald-dark h-6 w-6 animate-bounce'
                     fill='currentColor'
                     viewBox='0 0 24 24'
                   >
                     <path d='M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z' />
                   </svg>
-                  <div className='h-16 w-1 bg-gradient-to-b from-emerald-600/20 to-transparent' />
+                  <div className='from-emerald-dark/20 h-16 w-1 bg-gradient-to-b to-transparent' />
                 </div>
               ) : null}
               {showMenuDots ? (
                 <div className='flex flex-col items-center'>
-                  <span className='animate-pulse text-lg font-bold text-emerald-600'>
+                  <span className='text-emerald-dark animate-pulse text-lg font-bold'>
                     {promptText[platform].icon}
                   </span>
-                  <div className='h-16 w-1 bg-gradient-to-t from-emerald-600/20 to-transparent' />
+                  <div className='from-emerald-dark/20 h-16 w-1 bg-gradient-to-t to-transparent' />
                 </div>
               ) : null}
             </div>
@@ -219,7 +219,7 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
         </div>
         <button
           onClick={handleDismiss}
-          className='rounded-full bg-emerald-100 p-2 text-emerald-500 hover:bg-emerald-200'
+          className='bg-emerald-lighter text-emerald-medium hover:bg-emerald-light rounded-full p-2'
           aria-label='Close prompt'
         >
           <svg

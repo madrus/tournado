@@ -80,7 +80,7 @@
   --color-foreground-lighter: #9ca3af; /* gray-400 */
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
-  --color-title: var(--color-main);
+  --color-title: var(--color-title-accent);
   --gradient-from: #022c22; /* emerald-950 */
   --gradient-to: #065f46; /* emerald-800 */
   --footer-bg: #065f46; /* emerald-800 in dark mode */

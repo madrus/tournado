@@ -66,18 +66,17 @@ export default function IndexPage(): JSX.Element {
               className={cn(
                 'text-4xl sm:text-6xl',
                 typography.appName,
-                getLatinTitleClass(i18n.language)
+                getLatinTitleClass(i18n.language),
+                getThemeColor('title')
               )}
-              style={{ color: getThemeColor('title') }}
             >
               {t('common.appName')}
             </h1>
             <p
               className={cn(
-                'mt-6 min-h-[3.5rem] text-lg leading-8',
+                'text-foreground-light mt-6 min-h-[3.5rem] text-lg leading-8',
                 typography.centerAlign
               )}
-              style={{ color: getThemeColor('foregroundLight') }}
             >
               {t('landing.hero.description')}
             </p>
@@ -100,10 +99,9 @@ export default function IndexPage(): JSX.Element {
           <div className='mx-auto max-w-2xl lg:text-center'>
             <h2
               className={cn(
-                'block text-base leading-7 font-semibold',
+                'text-brand-accent block text-base leading-7 font-semibold',
                 typography.centerAlign
               )}
-              style={{ color: getThemeColor('brandAccent') }}
               role='heading'
               aria-level={2}
             >
@@ -111,18 +109,20 @@ export default function IndexPage(): JSX.Element {
             </h2>
             <h3
               className={cn(
-                'mt-2 text-3xl font-bold sm:text-4xl',
+                'text-title mt-2 text-3xl font-bold sm:text-4xl',
                 typography.title,
                 typography.heading,
-                typography.centerAlign
+                typography.centerAlign,
+                getThemeColor('title')
               )}
-              style={{ color: getThemeColor('title') }}
             >
               {t('landing.features.subtitle')}
             </h3>
             <p
-              className={cn('mt-6 text-lg leading-8', typography.centerAlign)}
-              style={{ color: getThemeColor('foregroundLight') }}
+              className={cn(
+                'text-foreground-light mt-6 text-lg leading-8',
+                typography.centerAlign
+              )}
             >
               {t('landing.features.description')}
             </p>

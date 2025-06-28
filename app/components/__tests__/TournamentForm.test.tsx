@@ -141,6 +141,7 @@ vi.mock('../icons', () => {
 
   return {
     AddIcon: createMockIcon('add-icon', '+'),
+    AnimatedHamburgerIcon: createMockIcon('animated-hamburger-icon', '☰'),
     AdminPanelSettingsIcon: createMockIcon('admin-panel-settings-icon', '👤'),
     ApparelIcon: createMockIcon('apparel-icon', '👕'),
     BlockIcon: createMockIcon('block-icon', '🚫'),
@@ -160,7 +161,6 @@ vi.mock('../icons', () => {
     LightModeIcon: createMockIcon('light-mode-icon', '☀'),
     LoginIcon: createMockIcon('login-icon', '🔑'),
     LogoutIcon: createMockIcon('logout-icon', '🚪'),
-    MenuIcon: createMockIcon('menu-icon', '☰'),
     MoreHorizIcon: createMockIcon('more-horiz-icon', '⋯'),
     MoreVertIcon: createMockIcon('more-vert-icon', '⋮'),
     PendingIcon: createMockIcon('pending-icon', '⏳'),

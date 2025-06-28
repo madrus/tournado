@@ -66,8 +66,8 @@ describe('BottomNavigation', () => {
         'shadow-lg',
         'md:hidden'
       )
-      // Background color is now set via CSS custom property
-      expect(nav).toHaveAttribute('style', 'background-color: var(--footer-bg);')
+      // Background color is now set via semantic class
+      expect(nav).toHaveClass('bg-footer')
     })
 
     it('should render inner container with correct layout classes', () => {

@@ -77,7 +77,7 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button
-            className='relative inline-flex h-8 w-8 translate-y-0.5 items-center justify-center text-white focus:outline-none'
+            className='relative inline-flex h-8 w-8 translate-y-0.25 items-center justify-center text-white focus:outline-none'
             aria-label='Toggle menu'
           >
             <AnimatedHamburgerIcon
@@ -106,23 +106,23 @@ export function UserMenu({
         >
           <div className='px-4 py-3'>
             {authenticated ? (
-              <div className={`text-emerald-800 ${menuClasses.textContainer}`}>
+              <div className={`text-emerald-darkest ${menuClasses.textContainer}`}>
                 <p className={`break-words ${getTypographyClass(i18n.language)}`}>
                   {t('common.signedInAs')}
                 </p>
                 <p
-                  className={`font-medium break-words text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+                  className={`text-emerald-darkest font-medium break-words ${getLatinTextClass(i18n.language)}`}
                 >
                   {displayName}
                 </p>
               </div>
             ) : (
               <p
-                className={`text-emerald-800 ${menuClasses.textContainer} break-words ${getTypographyClass(i18n.language)}`}
+                className={`text-emerald-darkest ${menuClasses.textContainer} break-words ${getTypographyClass(i18n.language)}`}
               >
                 {t('common.welcome')}{' '}
                 <span
-                  className={`font-medium text-emerald-800 ${getLatinTextClass(i18n.language)}`}
+                  className={`text-emerald-darkest font-medium ${getLatinTextClass(i18n.language)}`}
                 >
                   {displayName}
                 </span>
@@ -145,7 +145,7 @@ export function UserMenu({
                 return (
                   <div key={index} className='relative'>
                     <button
-                      className={`w-full items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
+                      className={`text-emerald-darkest w-full items-center px-3 py-2 leading-normal hover:bg-gray-100 focus:outline-none ${menuClasses.menuItem}`}
                       onClick={event => handleLanguageToggle(event, index)}
                     >
                       <span className={menuClasses.iconContainer}>
@@ -175,8 +175,8 @@ export function UserMenu({
                             key={subIndex}
                             className={`w-full items-center px-3 py-2 leading-normal ${
                               subItem.active
-                                ? 'bg-emerald-50 text-emerald-700'
-                                : 'text-emerald-800 hover:bg-gray-50'
+                                ? 'bg-emerald-lightest text-emerald-darker'
+                                : 'text-emerald-darkest hover:bg-gray-50'
                             } focus:outline-none ${menuClasses.menuItem}`}
                             onClick={event => {
                               event.stopPropagation()
@@ -219,7 +219,7 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
-                    className={`w-full items-center px-3 py-2 leading-normal text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+                    className={`text-emerald-darkest w-full items-center px-3 py-2 leading-normal hover:bg-gray-100 ${menuClasses.menuItem}`}
                   >
                     <span className={menuClasses.iconContainer}>
                       {item.icon
@@ -232,7 +232,7 @@ export function UserMenu({
                       {item.label}
                     </span>
                     {item.todo ? (
-                      <span className='ms-2 text-xs text-emerald-600'>(TODO)</span>
+                      <span className='text-emerald-dark ms-2 text-xs'>(TODO)</span>
                     ) : null}
                   </Link>
                 </DropdownMenu.Item>

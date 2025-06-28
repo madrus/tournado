@@ -132,8 +132,21 @@ describe('ActionButton', () => {
     )
     const button = screen.getByRole('button')
     expect(button).toBeDisabled()
-    // Only check for 'disabled:cursor-not-allowed' if that's the only disabled class in the new system
+
+    // Verify disabled cursor
     expect(button).toHaveClass('disabled:cursor-not-allowed')
+
+    // Verify disabled colors (gray semantic colors)
+    expect(button).toHaveClass('disabled:bg-button-neutral-background')
+    expect(button).toHaveClass('disabled:text-button-neutral-text')
+    expect(button).toHaveClass('disabled:border-button-neutral-secondary-border')
+
+    // Verify no animations on disabled buttons
+    expect(button).toHaveClass('disabled:hover:scale-100') // No scale animation
+    expect(button).toHaveClass('disabled:hover:ring-0') // No ring animation
+    expect(button).toHaveClass('disabled:hover:ring-offset-0') // No ring offset animation
+    expect(button).toHaveClass('disabled:hover:shadow-button-neutral-background/70') // No shadow animation
+
     fireEvent.click(button)
     expect(handleClick).not.toHaveBeenCalled()
   })

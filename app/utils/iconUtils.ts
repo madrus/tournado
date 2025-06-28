@@ -18,7 +18,6 @@ import {
   LightModeIcon,
   LoginIcon,
   LogoutIcon,
-  MenuIcon,
   MoreHorizIcon,
   MoreVertIcon,
   PendingIcon,
@@ -47,7 +46,6 @@ export type IconName =
   | 'light_mode'
   | 'login'
   | 'logout'
-  | 'menu'
   | 'more_horiz'
   | 'more_vert'
   | 'pending'
@@ -75,7 +73,6 @@ export const iconMap = {
   light_mode: LightModeIcon,
   login: LoginIcon,
   logout: LogoutIcon,
-  menu: MenuIcon,
   more_horiz: MoreHorizIcon,
   more_vert: MoreVertIcon,
   pending: PendingIcon,

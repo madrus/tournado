@@ -171,6 +171,28 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('active:scale-95')
   })
 
+  it('has proper animation classes (since links are not disabled)', () => {
+    render(
+      <RouterWrapper>
+        <ActionLinkButton {...defaultProps} />
+      </RouterWrapper>
+    )
+
+    const link = screen.getByRole('link')
+
+    // Verify link buttons have animations (unlike disabled action buttons)
+    expect(link).toHaveClass('hover:scale-103') // Scale animation on hover
+    expect(link).toHaveClass('active:scale-95') // Scale animation on active
+    expect(link).toHaveClass('hover:shadow-xl') // Shadow animation on hover
+    expect(link).toHaveClass('hover:ring-2') // Ring animation on hover
+    expect(link).toHaveClass('hover:ring-offset-2') // Ring offset animation on hover
+
+    // Verify transition classes for smooth animations
+    expect(link).toHaveClass('transition-all')
+    expect(link).toHaveClass('duration-300')
+    expect(link).toHaveClass('ease-out')
+  })
+
   describe('RTL support', () => {
     it('renders icon first in LTR layout', () => {
       render(

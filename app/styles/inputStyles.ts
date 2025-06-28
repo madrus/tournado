@@ -4,7 +4,7 @@ export const getInputColorClasses = (
   color: ColorAccent,
   disabled: boolean,
   error?: string
-) => {
+): string => {
   // If disabled, always use neutral border - no animations
   if (disabled) {
     return 'border-button-neutral-tertiary-border'
@@ -40,7 +40,7 @@ export const getInputColorClasses = (
   return `${colors.border} ${colors.hover} ${colors.focus}`
 }
 
-export const getDropdownItemColorClasses = (color: ColorAccent) => {
+export const getDropdownItemColorClasses = (color: ColorAccent): string => {
   const colorMap = {
     emerald: 'focus:bg-emerald-lightest focus:text-emerald-darkest',
     red: 'focus:bg-red-50 focus:text-red-900',
@@ -50,7 +50,9 @@ export const getDropdownItemColorClasses = (color: ColorAccent) => {
   return colorMap[color]
 }
 
-export const getCalendarColorClasses = (color: ColorAccent) => {
+export const getCalendarColorClasses = (
+  color: ColorAccent
+): { today: string; hover: string; navButton: string } => {
   const colorMap = {
     emerald: {
       today: 'bg-emerald-lighter text-emerald-darkest',

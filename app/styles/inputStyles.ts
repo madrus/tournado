@@ -5,9 +5,9 @@ export const getInputColorClasses = (
   disabled: boolean,
   error?: string
 ) => {
-  // If disabled, always use gray - no animations
+  // If disabled, always use neutral border - no animations
   if (disabled) {
-    return 'border-gray-300'
+    return 'border-button-neutral-tertiary-border'
   }
 
   const colorMap = {
@@ -58,9 +58,9 @@ export const getCalendarColorClasses = (color: ColorAccent) => {
       navButton: 'text-emerald-dark hover:bg-emerald-lighter',
     },
     red: {
-      today: 'bg-red-100 text-red-900',
-      hover: 'hover:bg-red-100',
-      navButton: 'text-red-600 hover:bg-red-100',
+      today: 'bg-brand-light text-brand-dark',
+      hover: 'hover:bg-brand-light',
+      navButton: 'text-brand hover:bg-brand-light',
     },
     blue: {
       today: 'bg-blue-100 text-blue-900',

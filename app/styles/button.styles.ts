@@ -6,30 +6,34 @@ export const commonButtonClasses = cn(
   'min-h-12 min-w-32 py-2.5 px-4 text-sm',
   'relative transition-all duration-300 ease-out',
   'whitespace-nowrap',
-  'shadow-lg hover:shadow-xl',
-  'hover:scale-103 active:scale-95',
+  'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
+  'hover:scale-103 active:scale-95 disabled:hover:scale-100',
   'focus:outline-none',
   'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
-  'hover:ring-2 hover:ring-offset-2 hover:ring-offset-white',
+  'hover:ring-2 hover:ring-offset-2 hover:ring-offset-white disabled:hover:ring-0 disabled:hover:ring-offset-0',
   'focus-visible:disabled:ring-0',
-  'disabled:cursor-not-allowed disabled:opacity-50'
+  'disabled:cursor-not-allowed disabled:opacity-50',
+  'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border'
 )
 
 // Color system
 export type ButtonColor = 'emerald' | 'brand' | 'blue' | 'gray'
 
 const ringColor = {
-  emerald: 'focus-visible:ring-emerald-600 hover:ring-emerald-600',
-  brand: 'focus-visible:ring-brand hover:ring-brand',
-  blue: 'focus-visible:ring-blue-600 hover:ring-blue-600',
-  gray: 'focus-visible:ring-gray-600 hover:ring-gray-600',
+  emerald:
+    'focus-visible:ring-emerald-600 hover:ring-emerald-600 disabled:hover:ring-0',
+  brand: 'focus-visible:ring-brand hover:ring-brand disabled:hover:ring-0',
+  blue: 'focus-visible:ring-blue-600 hover:ring-blue-600 disabled:hover:ring-0',
+  gray: 'focus-visible:ring-gray-600 hover:ring-gray-600 disabled:hover:ring-0',
 }
 
 const shadowColor = {
-  emerald: 'shadow-emerald-700/40 hover:shadow-emerald-700/60',
-  brand: 'shadow-brand/40 hover:shadow-brand/60',
-  blue: 'shadow-blue-700/40 hover:shadow-blue-700/60',
-  gray: 'shadow-gray-700/40 hover:shadow-gray-700/60',
+  emerald:
+    'shadow-emerald-700/40 hover:shadow-emerald-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+  brand:
+    'shadow-brand/40 hover:shadow-brand/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+  blue: 'shadow-blue-700/40 hover:shadow-blue-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+  gray: 'shadow-gray-700/40 hover:shadow-gray-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
 }
 
 const border = {

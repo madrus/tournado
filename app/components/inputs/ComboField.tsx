@@ -2,6 +2,8 @@ import { forwardRef, Ref, useRef } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
+import { type ColorAccent } from '~/lib/lib.types'
+import { getDropdownItemColorClasses, getInputColorClasses } from '~/styles/inputStyles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
@@ -23,6 +25,7 @@ export type ComboFieldProps = {
   disabled?: boolean
   selectRef?: Ref<HTMLButtonElement>
   className?: string
+  color?: ColorAccent
 }
 
 export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
@@ -40,6 +43,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
       disabled = false,
       selectRef,
       className = '',
+      color = 'emerald',
     },
     ref
   ) => {
@@ -74,11 +78,10 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               ref={selectRef}
               aria-label={`${label} - select option`}
               className={cn(
-                'flex h-12 w-full items-center justify-between rounded-md border-2 border-emerald-700/30 bg-white px-3 py-2 text-lg',
-                'transition-all duration-300 ease-in-out',
-                'focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
-                'hover:border-emerald-500',
+                'bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md border-2 px-3 py-2 text-lg',
+                'transition-all duration-300 ease-in-out focus:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
+                getInputColorClasses(color, disabled, error),
                 safeValue === '' ? 'text-foreground-lighter' : ''
               )}
               aria-invalid={!!error || undefined}
@@ -113,7 +116,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                       value={opt.value}
                       className={cn(
                         'relative flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none select-none',
-                        'focus:bg-emerald-100 focus:text-emerald-900',
+                        getDropdownItemColorClasses(color),
                         'data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
                       )}
                     >
@@ -158,7 +161,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
           </select>
         </label>
         {error ? (
-          <div className='pt-1 text-sm text-red-700' id={`${name}-error`}>
+          <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
             {error}
           </div>
         ) : null}

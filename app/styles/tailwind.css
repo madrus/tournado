@@ -29,6 +29,15 @@
   --color-main: var(--color-main);
   --color-accent: var(--color-accent);
 
+  /* Emerald Colors */
+  --color-emerald-lightest: var(--color-emerald-lightest);
+  --color-emerald-lighter: var(--color-emerald-lighter);
+  --color-emerald-light: var(--color-emerald-light);
+  --color-emerald-medium: var(--color-emerald-medium);
+  --color-emerald-dark: var(--color-emerald-dark);
+  --color-emerald-darker: var(--color-emerald-darker);
+  --color-emerald-darkest: var(--color-emerald-darkest);
+
   /* Text Colors */
   --color-title: var(--color-title);
   --color-title-accent: var(--color-title-accent);
@@ -113,6 +122,23 @@
   /* Footer Colors */
   --color-footer: var(--footer-bg);
   --color-footer-foreground: var(--footer-text);
+
+  /* Input Colors - using emerald system from existing variables */
+  --color-input: var(--color-background);
+  --color-input-foreground: var(--color-foreground);
+  --color-input-border: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */  
+  --color-input-focus: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-ring: var(--color-button-primary-background); /* emerald-700 */
+
+  /* Error Colors */
+  --color-error: var(--color-brand);
+  --color-error-foreground: var(--color-brand-dark);
+
+  /* Primary Colors - using emerald system */
+  --color-primary: var(--color-button-primary-background);
+  --color-primary-foreground: var(--color-button-primary-text);
+  --color-primary-hover: var(--color-main);
 
   /* Hover Colors */
   --color-background-hover: var(--color-background-hover);

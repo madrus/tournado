@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import * as Popover from '@radix-ui/react-popover'
 
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
+import { type ColorAccent } from '~/lib/lib.types'
+import { getCalendarColorClasses, getInputColorClasses } from '~/styles/inputStyles'
 import { cn } from '~/utils/misc'
 
 type CustomDatePickerProps = {
@@ -18,6 +20,8 @@ type CustomDatePickerProps = {
   placeholder?: string
   min?: string
   max?: string
+  color?: ColorAccent
+  noPast?: boolean
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onBlur?: () => void
 }
@@ -28,10 +32,20 @@ type CalendarProps = {
   locale: string
   minDate?: Date
   maxDate?: Date
+  color: ColorAccent
+  noPast?: boolean
 }
 
 // Custom Calendar Component
-function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: CalendarProps) {
+function Calendar({
+  selectedDate,
+  onSelect,
+  locale,
+  minDate,
+  maxDate,
+  color,
+  noPast = false,
+}: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(selectedDate || new Date())
 
   const today = new Date()
@@ -79,10 +93,13 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
     selectedDate && date.toDateString() === selectedDate.toDateString()
 
   const isDisabled = (date: Date) => {
-    if (minDate && date < minDate) return true
+    const effectiveMinDate = noPast ? today : minDate
+    if (effectiveMinDate && date < effectiveMinDate) return true
     if (maxDate && date > maxDate) return true
     return false
   }
+
+  const calendarColors = getCalendarColorClasses(color)
 
   return (
     <div
@@ -96,7 +113,10 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
           type='button'
           onClick={goToPrevMonth}
           aria-label='previous month'
-          className='rounded-full p-1 font-bold text-emerald-600 transition-colors hover:bg-emerald-100'
+          className={cn(
+            'rounded-full p-1 font-bold transition-colors',
+            calendarColors.navButton
+          )}
         >
           <ChevronLeftIcon className='h-5 w-5' size={20} />
         </button>
@@ -107,7 +127,10 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
           type='button'
           onClick={goToNextMonth}
           aria-label='next month'
-          className='rounded-full p-1 font-bold text-emerald-600 transition-colors hover:bg-emerald-100'
+          className={cn(
+            'rounded-full p-1 font-bold transition-colors',
+            calendarColors.navButton
+          )}
         >
           <ChevronRightIcon className='h-5 w-5' size={20} />
         </button>
@@ -135,6 +158,7 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
           const disabled = isDisabled(date)
           const isCurrentDay = isToday(date)
           const selected = isSelected(date)
+          const isPastDate = noPast && date < today
 
           return (
             <button
@@ -144,13 +168,14 @@ function Calendar({ selectedDate, onSelect, locale, minDate, maxDate }: Calendar
               aria-label={`${date.getDate()} ${monthName}`}
               onClick={() => !disabled && onSelect(date)}
               className={cn(
-                'relative p-2 text-sm transition-colors',
-                'focus:ring-2 focus:ring-emerald-500 focus:outline-none',
-                !selected && 'hover:bg-emerald-100',
+                'relative rounded-full p-2 text-sm transition-colors',
+                'focus:ring-2 focus:outline-none',
+                !selected && !disabled && calendarColors.hover,
                 disabled && 'cursor-not-allowed opacity-50 hover:bg-transparent',
-                isCurrentDay && !selected && 'rounded-full bg-emerald-100 font-bold',
-                selected && 'rounded-full bg-red-400 font-bold text-white',
-                !isCurrentDay && !selected && 'rounded-full text-gray-900'
+                isPastDate && 'bg-gray-50',
+                isCurrentDay && !selected && cn('font-bold', calendarColors.today),
+                selected && 'bg-brand-light font-bold text-white',
+                !isCurrentDay && !selected && 'text-gray-900'
               )}
             >
               {date.getDate()}
@@ -176,6 +201,8 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       placeholder,
       min,
       max,
+      color = 'emerald',
+      noPast = false,
       onChange,
       onBlur,
     },
@@ -205,7 +232,11 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
       // Create synthetic event for onChange handler
       if (onChange) {
-        const formattedDate = date.toISOString().split('T')[0] // yyyy-mm-dd format
+        // Use local date formatting to avoid timezone issues
+        const year = date.getFullYear()
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const day = date.getDate().toString().padStart(2, '0')
+        const formattedDate = `${year}-${month}-${day}` // yyyy-mm-dd format
         const syntheticEvent = {
           target: { name, value: formattedDate },
           currentTarget: { name, value: formattedDate },
@@ -236,9 +267,11 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 aria-label={`${label} - select date`}
                 onBlur={onBlur}
                 className={cn(
-                  'placeholder:text-foreground-lighter flex h-12 w-full items-center justify-between rounded-md border-2 border-emerald-700/30 bg-white px-3 text-left text-lg leading-6 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
+                  'placeholder:text-foreground-lighter bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md border-2 px-3 text-left text-lg leading-6',
+                  'transition-all duration-300 ease-in-out focus:outline-none',
                   readOnly && 'cursor-not-allowed opacity-50',
-                  !readOnly && 'cursor-pointer hover:border-emerald-500'
+                  !readOnly && 'cursor-pointer',
+                  getInputColorClasses(color, readOnly, error)
                 )}
                 aria-invalid={error ? true : undefined}
                 aria-errormessage={error ? `${name}-error` : undefined}
@@ -257,6 +290,8 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 locale={i18n.language}
                 minDate={min ? new Date(min) : undefined}
                 maxDate={max ? new Date(max) : undefined}
+                color={color}
+                noPast={noPast}
               />
             </Popover.Content>
           </Popover.Root>
@@ -272,7 +307,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
         </label>
 
         {error ? (
-          <div className='pt-1 text-sm text-red-700' id={`${name}-error`}>
+          <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
             {error}
           </div>
         ) : null}

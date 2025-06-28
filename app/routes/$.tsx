@@ -53,11 +53,11 @@ export function ErrorBoundary(): JSX.Element {
               <h1 className={cn(getLatinTitleClass(i18n.language))}>
                 We can't find this page:
               </h1>
-              <pre className='text-body-lg break-all whitespace-pre-wrap'>
+              <pre className='text-foreground text-lg break-all whitespace-pre-wrap'>
                 {location.pathname}
               </pre>
             </div>
-            <ErrorRecoveryLink to='/' className='text-body-md underline'>
+            <ErrorRecoveryLink to='/' className='text-foreground text-base underline'>
               Back to home
             </ErrorRecoveryLink>
           </div>

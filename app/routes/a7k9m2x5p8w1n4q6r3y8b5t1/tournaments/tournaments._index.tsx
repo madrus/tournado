@@ -291,7 +291,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
         <Box className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
           <Flex align='center'>
             <Box className='flex-shrink-0'>
-              <Box className='flex h-8 w-8 items-center justify-center rounded-md bg-red-500'>
+              <Box className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
                 <TrophyIcon
                   className='pt-1 pl-1 text-white'
                   size={24}
@@ -463,7 +463,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                       </div>
 
                       {/* Red delete area - fixed width */}
-                      <div className='flex w-screen flex-shrink-0 items-center justify-center bg-red-500'>
+                      <div className='bg-error flex w-screen flex-shrink-0 items-center justify-center'>
                         <div
                           className='flex cursor-pointer items-center space-x-2 text-white'
                           onClick={event => {
@@ -512,7 +512,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                             event.stopPropagation()
                             handleTournamentDelete(tournament.id)
                           }}
-                          className='flex items-center justify-center rounded-full p-1 text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-700'
+                          className='text-error hover:bg-brand-accent hover:text-brand-dark flex items-center justify-center rounded-full p-1 transition-colors duration-200'
                           title={t('tournaments.deleteTournament')}
                         >
                           <DeleteIcon className='h-4 w-4' />

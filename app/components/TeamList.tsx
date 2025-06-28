@@ -1,6 +1,8 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { cn } from '~/utils/misc'
+
 import { TeamChip } from './TeamChip'
 
 type TeamListProps = {
@@ -28,7 +30,7 @@ export function TeamList({
 
   if (teams.length === 0) {
     return (
-      <div className={`flex items-center justify-center p-8 ${className}`}>
+      <div className={cn('flex items-center justify-center p-8', className)}>
         <p className='text-foreground-lighter text-center'>
           {emptyMessage || t('teams.noTeams')}
         </p>
@@ -37,7 +39,7 @@ export function TeamList({
   }
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={cn('space-y-4', className)}>
       {/* Flex container for chips */}
       <div className='flex flex-wrap items-start gap-3'>
         {teams.map(team => (

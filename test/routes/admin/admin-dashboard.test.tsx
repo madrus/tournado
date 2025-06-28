@@ -312,9 +312,9 @@ describe('Admin Dashboard', () => {
       expect(apparelIcon).toHaveClass(
         'h-5',
         'w-5',
-        'text-emerald-700',
+        'text-primary',
         'transition-colors',
-        'group-hover:text-emerald-800'
+        'group-hover:text-primary-hover'
       )
 
       const trophyIcon = screen.getByTestId('trophy-icon')

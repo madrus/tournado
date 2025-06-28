@@ -39,6 +39,11 @@ export type TeamClass = string
 export type IconVariant = 'outlined' | 'filled'
 export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
 
+/**
+ * Color accent options for UI components
+ */
+export type ColorAccent = 'emerald' | 'red' | 'blue'
+
 // ============================================================================
 // Division System
 // ============================================================================

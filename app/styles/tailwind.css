@@ -1,23 +1,151 @@
 @import './colors.css';
 @import 'tailwindcss';
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+/* Safelist ring and ring-offset classes for button hover/focus effects */
+@source inline("{focus-visible:,hover:,}ring-2");
+@source inline("{focus-visible:,hover:,}ring-offset-2");
+@source inline("{focus-visible:,hover:,}ring-offset-white");
+@source inline("{focus-visible:,hover:,}ring-emerald-600");
+@source inline("{focus-visible:,hover:,}ring-brand");
+@source inline("{focus-visible:,hover:,}ring-blue-600");
+@source inline("{focus-visible:,hover:,}ring-gray-600");
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* Safelist shadow classes for button effects */
+@source inline("shadow-md");
+@source inline("hover:shadow-lg");
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+
+  /* Brand Colors */
+  --color-brand: var(--color-brand);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-light: var(--color-brand-light);
+
+  /* Main Accent */
+  --color-main: var(--color-main);
+  --color-accent: var(--color-accent);
+
+  /* Emerald Colors */
+  --color-emerald-lightest: var(--color-emerald-lightest);
+  --color-emerald-lighter: var(--color-emerald-lighter);
+  --color-emerald-light: var(--color-emerald-light);
+  --color-emerald-medium: var(--color-emerald-medium);
+  --color-emerald-dark: var(--color-emerald-dark);
+  --color-emerald-darker: var(--color-emerald-darker);
+  --color-emerald-darkest: var(--color-emerald-darkest);
+
+  /* Text Colors */
+  --color-title: var(--color-title);
+  --color-title-accent: var(--color-title-accent);
+  --color-foreground-heading: var(--color-foreground-heading);
+  --color-foreground-light: var(--color-foreground-light);
+  --color-foreground-lighter: var(--color-foreground-lighter);
+  --color-foreground-darker: var(--color-foreground-darker);
+
+  /* Button Colors */
+  --color-button-primary-background: var(--color-button-primary-background);
+  --color-button-primary-text: var(--color-button-primary-text);
+  --color-button-primary-hover-background: var(--color-button-primary-hover-background);
+
+  --color-button-secondary-background: var(--color-button-secondary-background);
+  --color-button-secondary-text: var(--color-button-secondary-text);
+  --color-button-secondary-border: var(--color-button-secondary-border);
+  --color-button-secondary-hover-background: var(--color-button-secondary-hover-background);
+
+  --color-button-tertiary-background: var(--color-button-tertiary-background);
+  --color-button-tertiary-text: var(--color-button-tertiary-text);
+  --color-button-tertiary-border: var(--color-button-tertiary-border);
+  --color-button-tertiary-hover-background: var(--color-button-tertiary-hover-background);
+  --color-button-tertiary-hover-border: var(--color-button-tertiary-hover-border);
+
+  /* Danger Button Colors */
+  --color-button-danger-background: var(--color-button-danger-background);
+  --color-button-danger-text: var(--color-button-danger-text);
+  --color-button-danger-hover-background: var(--color-button-danger-hover-background);
+
+  --color-button-danger-secondary-background: var(--color-button-danger-secondary-background);
+  --color-button-danger-secondary-text: var(--color-button-danger-secondary-text);
+  --color-button-danger-secondary-border: var(--color-button-danger-secondary-border);
+  --color-button-danger-secondary-hover-background: var(--color-button-danger-secondary-hover-background);
+
+  --color-button-danger-tertiary-background: var(--color-button-danger-tertiary-background);
+  --color-button-danger-tertiary-text: var(--color-button-danger-tertiary-text);
+  --color-button-danger-tertiary-border: var(--color-button-danger-tertiary-border);
+  --color-button-danger-tertiary-hover-background: var(--color-button-danger-tertiary-hover-background);
+  --color-button-danger-tertiary-hover-border: var(--color-button-danger-tertiary-hover-border);
+
+  /* Brand Button Colors */
+  --color-button-brand-background: var(--color-button-brand-background);
+  --color-button-brand-text: var(--color-button-brand-text);
+  --color-button-brand-hover-background: var(--color-button-brand-hover-background);
+
+  --color-button-brand-secondary-background: var(--color-button-brand-secondary-background);
+  --color-button-brand-secondary-text: var(--color-button-brand-secondary-text);
+  --color-button-brand-secondary-border: var(--color-button-brand-secondary-border);
+  --color-button-brand-secondary-hover-background: var(--color-button-brand-secondary-hover-background);
+
+  --color-button-brand-tertiary-background: var(--color-button-brand-tertiary-background);
+  --color-button-brand-tertiary-text: var(--color-button-brand-tertiary-text);
+  --color-button-brand-tertiary-border: var(--color-button-brand-tertiary-border);
+  --color-button-brand-tertiary-hover-background: var(--color-button-brand-tertiary-hover-background);
+  --color-button-brand-tertiary-hover-border: var(--color-button-brand-tertiary-hover-border);
+
+  /* Neutral Button Colors */
+  --color-button-neutral-background: var(--color-button-neutral-background);
+  --color-button-neutral-text: var(--color-button-neutral-text);
+  --color-button-neutral-hover-background: var(--color-button-neutral-hover-background);
+
+  --color-button-neutral-secondary-background: var(--color-button-neutral-secondary-background);
+  --color-button-neutral-secondary-text: var(--color-button-neutral-secondary-text);
+  --color-button-neutral-secondary-border: var(--color-button-neutral-secondary-border);
+  --color-button-neutral-secondary-hover-background: var(--color-button-neutral-secondary-hover-background);
+
+  --color-button-neutral-tertiary-background: var(--color-button-neutral-tertiary-background);
+  --color-button-neutral-tertiary-text: var(--color-button-neutral-tertiary-text);
+  --color-button-neutral-tertiary-border: var(--color-button-neutral-tertiary-border);
+  --color-button-neutral-tertiary-hover-background: var(--color-button-neutral-tertiary-hover-background);
+  --color-button-neutral-tertiary-hover-border: var(--color-button-neutral-tertiary-hover-border);
+
+  /* Focus Ring Colors */
+  --color-button-danger-outline-focus-ring-inner: var(--color-button-danger-outline-focus-ring-inner);
+  --color-button-danger-outline-focus-ring-outer: var(--color-button-danger-outline-focus-ring-outer);
+  --color-button-outline-border-red: var(--color-button-outline-border-red);
+
+  /* Gradients */
+  --gradient-from: var(--gradient-from);
+  --gradient-to: var(--gradient-to);
+
+  /* Footer Colors */
+  --color-footer: var(--footer-bg);
+  --color-footer-foreground: var(--footer-text);
+
+  /* Input Colors - using emerald system from existing variables */
+  --color-input: var(--color-background);
+  --color-input-foreground: var(--color-foreground);
+  --color-input-border: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */  
+  --color-input-focus: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-ring: var(--color-button-primary-background); /* emerald-700 */
+
+  /* Error Colors */
+  --color-error: var(--color-brand);
+  --color-error-foreground: var(--color-brand-dark);
+
+  /* Primary Colors - using emerald system */
+  --color-primary: var(--color-button-primary-background);
+  --color-primary-foreground: var(--color-button-primary-text);
+  --color-primary-hover: var(--color-main);
+
+  /* Hover Colors */
+  --color-background-hover: var(--color-background-hover);
+}
+
+/* Base Styles */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-
   /* Ensure headings use the title color */
   h1, h2, h3, h4, h5, h6 {
     color: var(--color-title);
@@ -82,16 +210,20 @@
   background-color: var(--color-accent); /* Same as light for now */
 }
 
+.bg-brand-accent {
+  background-color: var(--color-brand-accent);
+}
+.dark .bg-brand-accent {
+  background-color: var(--color-brand-accent);
+}
+
 .bg-error {
   background-color: var(--color-brand);
 }
-.dark .bg-error {
-  background-color: var(--color-brand); /* Same as light for now */
-}
 
-.font-semibold-accent {
-  font-weight: 600;
-  color: var(--color-accent);
+.focus-ring-double {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-button-danger-outline-focus-ring-inner), 0 0 0 4px var(--color-button-danger-outline-focus-ring-outer);
 }
 .dark .font-semibold-accent {
   color: var(--color-accent);

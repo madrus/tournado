@@ -1,5 +1,7 @@
 import { type FocusEvent, forwardRef, type JSX } from 'react'
 
+import { type ColorAccent } from '~/lib/lib.types'
+import { getInputColorClasses } from '~/styles/inputStyles'
 import { cn } from '~/utils/misc'
 
 type InputFieldProps = {
@@ -14,6 +16,7 @@ type InputFieldProps = {
   value?: string
   defaultValue?: string
   placeholder?: string
+  color?: ColorAccent
   onChange?: (value: string) => void
   onFocus?: (focusEvent: FocusEvent<HTMLInputElement>) => void
   onBlur?: (focusEvent: FocusEvent<HTMLInputElement>) => void
@@ -33,6 +36,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       value,
       defaultValue,
       placeholder,
+      color = 'emerald',
       onChange,
       onFocus,
       onBlur,
@@ -53,12 +57,10 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           defaultValue={defaultValue}
           placeholder={placeholder}
           className={cn(
-            'placeholder:text-foreground-lighter h-12 w-full rounded-md border-2 border-emerald-700/30 bg-white px-3 text-lg leading-6',
-            'transition-all duration-300 ease-in-out',
-            'focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none',
-            'hover:border-emerald-500',
-            'disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400',
-            error ? 'border-red-700' : '',
+            'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
+            'transition-all duration-300 ease-in-out focus:outline-none',
+            'disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400',
+            getInputColorClasses(color, disabled, error),
             className
           )}
           aria-invalid={error ? true : undefined}
@@ -71,7 +73,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
         />
       </label>
       {error ? (
-        <div className='pt-1 text-sm text-red-700' id={`${name}-error`}>
+        <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
           {error}
         </div>
       ) : null}

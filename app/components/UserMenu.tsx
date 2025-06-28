@@ -4,6 +4,7 @@ import { Link, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
+import { AnimatedHamburgerIcon } from '~/components/icons/AnimatedHamburgerIcon'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
@@ -76,33 +77,14 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button
-            className='relative inline-flex h-8 w-8 translate-y-0.5 items-center justify-center text-white focus:outline-none'
+            className='relative inline-flex h-8 w-8 translate-y-1 items-center justify-center text-white focus:outline-none'
             aria-label='Toggle menu'
           >
-            {/* Hamburger icon - rotates and fades when menu opens */}
-            <div
-              className={`absolute transition-all duration-300 ${
-                isOpen
-                  ? isRTL
-                    ? 'rotate-90 opacity-0'
-                    : '-rotate-90 opacity-0' // Arabic: clockwise, Latin: counter-clockwise
-                  : 'rotate-0 opacity-100'
-              }`}
-            >
-              {renderIcon('menu', { className: 'w-6 h-6' })}
-            </div>
-            {/* Close icon - rotates and fades when menu closes */}
-            <div
-              className={`absolute transition-all duration-300 ${
-                isOpen
-                  ? 'rotate-0 opacity-100'
-                  : isRTL
-                    ? '-rotate-90 opacity-0'
-                    : 'rotate-90 opacity-0' // Arabic: counter-clockwise, Latin: clockwise
-              }`}
-            >
-              {renderIcon('close', { className: 'w-6 h-6' })}
-            </div>
+            <AnimatedHamburgerIcon
+              isOpen={!!isOpen}
+              isRTL={isRTL}
+              className='h-6 w-6'
+            />
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content

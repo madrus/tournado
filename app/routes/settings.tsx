@@ -53,11 +53,55 @@ export default function SettingsPage(): JSX.Element {
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         {t('common.titles.settings')}
       </h1>
-      <p>
-        This is a protected route example that would redirect to login if not
-        authenticated.
-      </p>
-      <p>User settings will be implemented here.</p>
+      <div className='space-y-6'>
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Application Settings
+          </h2>
+          <p className='text-foreground-light'>
+            Configure your tournament settings, preferences, and account options for
+            optimal experience.
+          </p>
+        </section>
+
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Preferences
+          </h2>
+          <ul className='text-foreground-light space-y-2'>
+            <li>• Language and regional settings</li>
+            <li>• Theme and appearance options</li>
+            <li>• Notification preferences</li>
+            <li>• Privacy and security settings</li>
+            <li>• Data export and backup options</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2
+            className={cn(
+              'mb-4 text-2xl font-semibold',
+              getLatinTitleClass(i18n.language)
+            )}
+          >
+            Tournament Configuration
+          </h2>
+          <p className='text-foreground-light'>
+            Customize tournament management settings and default configurations for your
+            organization.
+          </p>
+        </section>
+      </div>
     </div>
   )
 }

@@ -95,7 +95,7 @@ describe('Unauthorized Page', () => {
 
       const blockIcon = screen.getByTestId('block-icon')
       expect(blockIcon).toBeInTheDocument()
-      expect(blockIcon).toHaveClass('text-red-600')
+      expect(blockIcon).toHaveClass('text-brand')
     })
 
     test('should render navigation links', () => {
@@ -400,7 +400,7 @@ describe('Unauthorized Page', () => {
       const icon = screen.getByTestId('block-icon')
       const iconContainer = icon.closest('div')
 
-      expect(icon).toHaveClass('text-red-600')
+      expect(icon).toHaveClass('text-brand')
       expect(iconContainer).toHaveClass('bg-red-100')
     })
 

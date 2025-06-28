@@ -6,7 +6,16 @@
   --color-brand-accent: #fa2c37; /* red-500 */
   --color-brand-dark: #b91c1c; /* red-700 */
   --color-brand-light: #f87171; /* red-400 */
-  --color-main: #065f46; /* emerald-800 - canonical main accent */
+  --color-main: var(--color-emerald-darkest); /* emerald-800 - canonical main accent */
+
+  /* Emerald semantic colors */
+  --color-emerald-lightest: #ecfdf5; /* emerald-50 */
+  --color-emerald-lighter: #d1fae5; /* emerald-100 */
+  --color-emerald-light: #34d399; /* emerald-400 */
+  --color-emerald-medium: #10b981; /* emerald-500 */
+  --color-emerald-dark: #059669; /* emerald-600 */
+  --color-emerald-darker: #047857; /* emerald-700 */
+  --color-emerald-darkest: #065f46; /* emerald-800 */
   --color-foreground-darker: var(--color-main); /* for emphasis */
   --color-foreground-light: #4b5563; /* gray-600 */
   --color-foreground-lighter: #6b7280; /* gray-500 */
@@ -20,18 +29,22 @@
   --footer-bg: #ffffff; /* white */
   --footer-text: #374151; /* gray-700 */
   --color-background-hover: #f3f4f6; /* gray-100 */
-  --color-button-primary-background: #059669; /* emerald-700 */
+  --color-button-primary-background: var(--color-emerald-darker); /* emerald-700 */
   --color-button-primary-text: #ffffff; /* white */
-  --color-button-primary-hover-background: #059669; /* emerald-700 */
-  --color-button-secondary-background: #ecfdf5; /* emerald-50 */
-  --color-button-secondary-text: #059669; /* emerald-700 */
-  --color-button-secondary-border: #059669; /* emerald-700 */
+  --color-button-primary-hover-background: var(
+    --color-emerald-darker
+  ); /* emerald-700 */
+  --color-button-secondary-background: var(--color-emerald-lightest); /* emerald-50 */
+  --color-button-secondary-text: var(--color-emerald-darker); /* emerald-700 */
+  --color-button-secondary-border: var(--color-emerald-darker); /* emerald-700 */
   --color-button-secondary-hover-background: #ffffff; /* white */
   --color-button-tertiary-background: #ffffff; /* white */
-  --color-button-tertiary-text: #059669; /* emerald-700 */
-  --color-button-tertiary-border: #6ee7b7; /* emerald-400 */
-  --color-button-tertiary-hover-background: #ecfdf5; /* emerald-50/30 */
-  --color-button-tertiary-hover-border: #34d399; /* emerald-500 */
+  --color-button-tertiary-text: var(--color-emerald-darker); /* emerald-700 */
+  --color-button-tertiary-border: var(--color-emerald-light); /* emerald-400 */
+  --color-button-tertiary-hover-background: var(
+    --color-emerald-lightest
+  ); /* emerald-50/30 */
+  --color-button-tertiary-hover-border: var(--color-emerald-medium); /* emerald-500 */
   --color-button-danger-background: #dc2626; /* red-600 */
   --color-button-danger-text: #ffffff; /* white */
   --color-button-danger-hover-background: #ef4444; /* red-500 */

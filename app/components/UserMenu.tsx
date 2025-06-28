@@ -77,7 +77,7 @@ export function UserMenu({
       <DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
         <DropdownMenu.Trigger asChild>
           <button
-            className='relative inline-flex h-8 w-8 translate-y-1 items-center justify-center text-white focus:outline-none'
+            className='relative inline-flex h-8 w-8 translate-y-0.5 items-center justify-center text-white focus:outline-none'
             aria-label='Toggle menu'
           >
             <AnimatedHamburgerIcon

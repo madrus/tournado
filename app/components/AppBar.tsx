@@ -7,7 +7,7 @@ import type { User } from '@prisma/client'
 import logo from '~/assets/logo-192x192.png'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
-import { SUPPORTED_LANGUAGES } from '~/lib/lib.constants'
+import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import {

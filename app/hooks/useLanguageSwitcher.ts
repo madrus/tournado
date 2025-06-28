@@ -1,7 +1,8 @@
+import { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
 type UseLanguageSwitcherReturn = {
-  switchLanguage: (langCode: string) => void
+  switchLanguage: (langCode: Language) => void
   currentLanguage: string
 }
 
@@ -14,9 +15,9 @@ type UseLanguageSwitcherReturn = {
 export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
   const { language: storeLanguage, setLanguage } = useSettingsStore()
 
-  const switchLanguage = (langCode: string) => {
+  const switchLanguage = (langCode: Language) => {
     // Only update store - i18n will follow automatically
-    setLanguage(langCode as 'nl' | 'en' | 'ar' | 'tr')
+    setLanguage(langCode)
   }
 
   return {

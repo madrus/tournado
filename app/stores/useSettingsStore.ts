@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
+import { Language } from '~/i18n/config'
 import { isBrowser } from '~/lib/lib.helpers'
 
 type Theme = 'light' | 'dark'
-type Language = 'nl' | 'en' | 'ar' | 'tr'
 
 type StoreState = {
   theme: Theme

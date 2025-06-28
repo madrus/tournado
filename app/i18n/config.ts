@@ -25,6 +25,15 @@ export const resources = {
   },
 } as const
 
+export const SUPPORTED_LANGUAGES = [
+  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'ar', name: 'العربية', flag: '🇲🇦' },
+  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+] as const
+
+export type Language = (typeof SUPPORTED_LANGUAGES)[number]['code']
+
 /**
  * Initializes and returns an i18n instance with the given language.
  * @param language The language code to initialize i18n with.

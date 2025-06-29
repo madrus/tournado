@@ -259,7 +259,6 @@ describe('ActionLinkPanel Component', () => {
       expect(iconContainer).toHaveClass('rounded-full')
       expect(iconContainer).toHaveClass('border-2')
       expect(iconContainer).toHaveClass('bg-transparent')
-      expect(iconContainer).toHaveClass('transition-all')
     })
 
     it('should apply correct title styling', () => {
@@ -268,7 +267,6 @@ describe('ActionLinkPanel Component', () => {
       const title = screen.getByText('Test Panel')
       expect(title).toHaveClass('text-lg')
       expect(title).toHaveClass('font-semibold')
-      expect(title).toHaveClass('transition-colors')
       expect(title).toHaveClass('text-white')
     })
 
@@ -276,7 +274,6 @@ describe('ActionLinkPanel Component', () => {
       render(<ActionLinkPanel {...defaultProps} />)
 
       const description = screen.getByText('Test description')
-      expect(description).toHaveClass('transition-colors')
       expect(description).toHaveClass('text-emerald-100/80')
     })
   })

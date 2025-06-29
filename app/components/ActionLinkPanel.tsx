@@ -56,9 +56,14 @@ export function ActionLinkPanel({
   const hoverIconBorderColor = hoverIconColor.replace('text-', 'border-')
 
   const panel = (
-    <div className='group relative' onClick={onClick}>
-      {/* Base panel - always mainColor */}
-      <div className={mainPanelClasses.base}>
+    <div className={cn(mainPanelClasses.base, 'group relative')} onClick={onClick}>
+      {/* Base panel layer - fades out on hover */}
+      <div
+        className={cn(
+          'absolute inset-0 transition-opacity duration-750 ease-in-out',
+          hoverColor ? 'group-hover:opacity-0' : ''
+        )}
+      >
         {/* Base glow */}
         <div className={mainPanelClasses.glow} />
 
@@ -71,7 +76,7 @@ export function ActionLinkPanel({
         >
           <div
             className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-all duration-750 ease-in-out',
+              'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
               iconColor,
               iconColor.replace('text-', 'border-')
             )}

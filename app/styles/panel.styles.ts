@@ -81,7 +81,6 @@ export function getPanelClasses(colorScheme: ColorAccent): {
   return {
     base: cn(
       'relative overflow-hidden rounded-2xl border shadow-xl p-6 group cursor-pointer',
-      'transition-[border-color,background-image,background-color] duration-500 ease-in-out',
       style.border,
       style.gradient
     ),
@@ -93,7 +92,6 @@ export function getPanelClasses(colorScheme: ColorAccent): {
     ),
     glow: cn(
       'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90',
-      'transition-[background-color] duration-500 ease-in-out',
       style.glow
     ),
   }
@@ -101,15 +99,12 @@ export function getPanelClasses(colorScheme: ColorAccent): {
 
 export function getTitleClasses(colorScheme: ColorAccent): string {
   const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
-  return cn(
-    'text-lg font-semibold break-words transition-colors duration-500 ease-in-out',
-    style.title
-  )
+  return cn('text-lg font-semibold break-words', style.title)
 }
 
 export function getDescriptionClasses(colorScheme: ColorAccent): string {
   const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
-  return cn('transition-colors duration-500 ease-in-out', style.description)
+  return cn(style.description)
 }
 
 export function getIconTextClasses(colorScheme: ColorAccent): string {

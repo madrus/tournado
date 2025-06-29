@@ -1,4 +1,4 @@
-import { JSX, ReactNode, useState } from 'react'
+import { JSX, ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { type ColorAccent } from '~/lib/lib.types'
@@ -35,74 +35,92 @@ export function ActionLinkPanel({
   children,
   language,
 }: ActionLinkPanelProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState<boolean>(false)
-
   const typographyClasses = getTypographyClasses(language)
 
-  // Calculate current effective color scheme based on hover state
-  const currentColor = isHovered && hoverColor ? hoverColor : mainColor
+  // Always use mainColor as base (no more state switching)
+  const mainPanelClasses = getPanelClasses(mainColor)
+  const mainTitleClasses = getTitleClasses(mainColor)
+  const mainDescriptionClasses = getDescriptionClasses(mainColor)
 
-  // Calculate current icon color based on hover state and hoverColor
+  // Generate hover overlay classes if hoverColor is provided
+  const hoverPanelClasses = hoverColor ? getPanelClasses(hoverColor) : null
+  const hoverTitleClasses = hoverColor ? getTitleClasses(hoverColor) : null
+  const hoverDescriptionClasses = hoverColor ? getDescriptionClasses(hoverColor) : null
+
+  // Calculate hover icon color
   const getHoverIconColor = () => {
-    if (!hoverColor) return 'text-emerald-300'
+    if (!hoverColor) return iconColor
     return hoverColor === 'brand' ? 'text-red-600' : `text-${hoverColor}-300`
   }
-
-  const currentIconColor = isHovered ? getHoverIconColor() : iconColor
-
-  // Calculate icon border color to match icon text color
-  const getIconBorderColor = (iconTextColor: string) =>
-    iconTextColor.replace('text-', 'border-')
-
-  const currentIconBorderColor = getIconBorderColor(currentIconColor)
-
-  const panelClasses = getPanelClasses(currentColor)
-  const titleClasses = getTitleClasses(currentColor)
-  const descriptionClasses = getDescriptionClasses(currentColor)
-
-  const handleMouseEnter = () => {
-    if (hoverColor) {
-      setIsHovered(true)
-    }
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-  }
-
-  const content = (
-    <div
-      className={cn(
-        'relative z-10 flex flex-col items-start space-y-4 break-words',
-        typographyClasses.textAlign
-      )}
-    >
-      <div
-        className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all duration-1000 ease-in-out',
-          currentIconColor,
-          currentIconBorderColor,
-          'bg-transparent'
-        )}
-      >
-        {icon}
-      </div>
-      <h3 className={cn(titleClasses, getLatinTitleClass(language))}>{title}</h3>
-      <p className={descriptionClasses}>{description}</p>
-      {children}
-    </div>
-  )
+  const hoverIconColor = getHoverIconColor()
+  const hoverIconBorderColor = hoverIconColor.replace('text-', 'border-')
 
   const panel = (
-    <div
-      className={panelClasses.base}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-    >
-      {/* Glow in the top-right corner */}
-      <div className={panelClasses.glow} />
-      {content}
+    <div className='group relative' onClick={onClick}>
+      {/* Base panel - always mainColor */}
+      <div className={mainPanelClasses.base}>
+        {/* Base glow */}
+        <div className={mainPanelClasses.glow} />
+
+        {/* Base content */}
+        <div
+          className={cn(
+            'relative z-10 flex flex-col items-start space-y-4 break-words',
+            typographyClasses.textAlign
+          )}
+        >
+          <div
+            className={cn(
+              'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-all duration-750 ease-in-out',
+              iconColor,
+              iconColor.replace('text-', 'border-')
+            )}
+          >
+            {icon}
+          </div>
+          <h3 className={cn(mainTitleClasses, getLatinTitleClass(language))}>
+            {title}
+          </h3>
+          <p className={mainDescriptionClasses}>{description}</p>
+          {children}
+        </div>
+      </div>
+
+      {/* Hover overlay panel - only if hoverColor exists */}
+      {hoverColor && hoverPanelClasses ? (
+        <div
+          className={cn(
+            hoverPanelClasses.base,
+            'absolute inset-0 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
+          )}
+        >
+          {/* Hover glow */}
+          <div className={hoverPanelClasses.glow} />
+
+          {/* Hover content */}
+          <div
+            className={cn(
+              'relative z-10 flex flex-col items-start space-y-4 break-words',
+              typographyClasses.textAlign
+            )}
+          >
+            <div
+              className={cn(
+                'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
+                hoverIconColor,
+                hoverIconBorderColor
+              )}
+            >
+              {icon}
+            </div>
+            <h3 className={cn(hoverTitleClasses, getLatinTitleClass(language))}>
+              {title}
+            </h3>
+            <p className={hoverDescriptionClasses ?? ''}>{description}</p>
+            {children}
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 

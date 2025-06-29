@@ -448,6 +448,7 @@ export function TournamentForm({
                     (!isPanelEnabled(3) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}
+                  data-testid={`division-${division.toLowerCase()}`}
                 >
                   <input
                     type='checkbox'
@@ -528,6 +529,7 @@ export function TournamentForm({
                     (!isPanelEnabled(4) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}
+                  data-testid={`category-${category.toLowerCase()}`}
                 >
                   <input
                     type='checkbox'

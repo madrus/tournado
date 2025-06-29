@@ -59,7 +59,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
         : ''
 
     return (
-      <div className={cn('mb-4', className)} ref={ref} data-testid={`combo-field-${name}`}>
+      <div className={cn('mb-4', className)} ref={ref}>
         <label className='text-foreground-light flex w-full flex-col gap-1'>
           <span className='text-foreground-light font-medium'>{label}</span>
           <Select.Root

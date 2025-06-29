@@ -50,7 +50,7 @@ export default function AboutPage(): JSX.Element {
   const { version } = useLoaderData<LoaderData>()
 
   return (
-    <div className='container mx-auto px-4 py-8' data-testid='about-container'>
+    <div className='container mx-auto px-4 py-8'>
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         {t('common.titles.about')}
       </h1>

@@ -65,7 +65,7 @@ export default function ProfilePage(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
-    <div className='container mx-auto px-4 py-8' data-testid='profile-container'>
+    <div className='container mx-auto px-4 py-8'>
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         {t('common.titles.profile')}
       </h1>

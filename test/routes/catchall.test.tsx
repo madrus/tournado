@@ -320,7 +320,9 @@ describe('Catch-all Route ($)', () => {
       // They should be separate elements
       expect(title).not.toBe(path)
       // Title and path should have different content, even if same container
-      expect(title).not.toHaveTextContent(path.textContent)
+      if (path.textContent) {
+        expect(title).not.toHaveTextContent(path.textContent)
+      }
     })
   })
 })

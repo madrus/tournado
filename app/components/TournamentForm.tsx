@@ -258,6 +258,7 @@ export function TournamentForm({
         className='space-y-8'
         noValidate
         onSubmit={handleSubmit}
+        role='form'
       >
         {/* Hidden fields */}
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}

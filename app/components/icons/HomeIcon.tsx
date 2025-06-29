@@ -7,6 +7,7 @@ type HomeIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  [key: string]: any // Allow extra props
 }
 
 export function HomeIcon({
@@ -14,6 +15,7 @@ export function HomeIcon({
   size = 24,
   variant = 'outlined',
   weight = 400,
+  ...props
 }: HomeIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -39,6 +41,7 @@ export function HomeIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      {...props}
     >
       <path d={path} />
     </svg>

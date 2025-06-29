@@ -56,56 +56,80 @@ export function ActionLinkPanel({
   const hoverIconBorderColor = hoverIconColor.replace('text-', 'border-')
 
   const panel = (
-    <div className={cn(mainPanelClasses.base, 'group relative')} onClick={onClick}>
-      {/* Base panel layer - fades out on hover */}
+    <div
+      className={cn(
+        'group relative cursor-pointer overflow-hidden rounded-2xl border border-emerald-300 shadow-xl transition-colors duration-750 ease-in-out hover:border-red-300'
+      )}
+      onClick={onClick}
+    >
+      {/* Base panel background and glow */}
       <div
         className={cn(
           'absolute inset-0 transition-opacity duration-750 ease-in-out',
+          hoverColor ? 'group-hover:opacity-0' : '',
+          mainPanelClasses.base
+            .replace('relative', '')
+            .replace('overflow-hidden', '')
+            .replace('rounded-2xl', '')
+            .replace('border', '')
+            .replace('shadow-xl', '')
+            .replace('group', '')
+            .replace('cursor-pointer', '')
+        )}
+      >
+        <div className={mainPanelClasses.glow} />
+      </div>
+
+      {/* Base content layer - defines the height and layout */}
+      <div
+        className={cn(
+          'relative z-20 flex flex-col items-start space-y-4 p-6 break-words transition-opacity duration-750 ease-in-out',
+          typographyClasses.textAlign,
           hoverColor ? 'group-hover:opacity-0' : ''
         )}
       >
-        {/* Base glow */}
-        <div className={mainPanelClasses.glow} />
-
-        {/* Base content */}
         <div
           className={cn(
-            'relative z-10 flex flex-col items-start space-y-4 break-words',
-            typographyClasses.textAlign
+            'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
+            iconColor,
+            iconColor.replace('text-', 'border-')
           )}
         >
-          <div
-            className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-              iconColor,
-              iconColor.replace('text-', 'border-')
-            )}
-          >
-            {icon}
-          </div>
-          <h3 className={cn(mainTitleClasses, getLatinTitleClass(language))}>
-            {title}
-          </h3>
-          <p className={mainDescriptionClasses}>{description}</p>
-          {children}
+          {icon}
         </div>
+        <h3 className={cn(mainTitleClasses, getLatinTitleClass(language))}>{title}</h3>
+        <p className={mainDescriptionClasses}>{description}</p>
+        {children}
       </div>
 
       {/* Hover overlay panel - only if hoverColor exists */}
       {hoverColor && hoverPanelClasses ? (
         <div
           className={cn(
-            hoverPanelClasses.base,
-            'absolute inset-0 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
+            'absolute inset-0 z-10 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
           )}
         >
-          {/* Hover glow */}
-          <div className={hoverPanelClasses.glow} />
+          {/* Hover background */}
+          <div
+            className={cn(
+              'absolute inset-0',
+              hoverPanelClasses.base
+                .replace('relative', '')
+                .replace('overflow-hidden', '')
+                .replace('rounded-2xl', '')
+                .replace('border', '')
+                .replace('shadow-xl', '')
+                .replace('group', '')
+                .replace('cursor-pointer', '')
+            )}
+          >
+            <div className={hoverPanelClasses.glow} />
+          </div>
 
           {/* Hover content */}
           <div
             className={cn(
-              'relative z-10 flex flex-col items-start space-y-4 break-words',
+              'relative z-20 flex flex-col items-start space-y-4 p-6 break-words',
               typographyClasses.textAlign
             )}
           >

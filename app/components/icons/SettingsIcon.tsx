@@ -6,7 +6,7 @@ type SettingsIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
-  [key: string]: any // Allow extra props
+  [key: string]: unknown // Allow extra props
 }
 
 export function SettingsIcon({

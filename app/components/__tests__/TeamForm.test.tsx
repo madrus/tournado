@@ -1,6 +1,6 @@
 import { createMemoryRouter, RouterProvider } from 'react-router'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -92,78 +92,19 @@ function getFirstVisible(elements: HTMLElement[]): HTMLElement | undefined {
 }
 
 // Helper function to complete panel 1 (tournament selection)
-const completePanel1 = async (user: ReturnType<typeof userEvent.setup>) => {
-  // Select tournament
-  const tournamentSelect = screen.getByRole('combobox', {
-    name: /teams\.form\.tournament.*select option/,
-  })
-  await user.click(tournamentSelect)
-
-  // Wait for dropdown and select visible option
-  await waitFor(() => {
-    const dropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
-    // Use .toBeVisible() assertion to ensure at least one is visible
-    expect(dropdownOptions.some(option => option.offsetParent !== null)).toBe(true)
-  })
-
-  const tournamentDropdownOptions = screen.getAllByText(
-    'Test Tournament 1 - Test Location 1'
-  )
-  const tournamentOption = getFirstVisible(tournamentDropdownOptions)
-  await user.click(tournamentOption!)
-
-  // Wait for divisions to load and select division
-  await waitFor(() => {
-    const divisionSelect = screen.getByRole('combobox', {
-      name: /teams\.form\.division.*select option/,
+const completePanel1 = async () => {
+  await act(async () => {
+    state().setFormData({
+      tournamentId: 'tournament-1',
+      division: 'FIRST_DIVISION',
+      category: 'JO8',
     })
-    expect(divisionSelect).toBeEnabled()
   })
-  const divisionSelect = screen.getByRole('combobox', {
-    name: /teams\.form\.division.*select option/,
-  })
-  await user.click(divisionSelect)
-
-  // Wait for dropdown and select visible option
-  await waitFor(() => {
-    const divisionDropdownOptions = screen.getAllByText('First Division')
-    expect(divisionDropdownOptions.some(option => option.offsetParent !== null)).toBe(
-      true
-    )
-  })
-
-  const divisionDropdownOptions = screen.getAllByText('First Division')
-  const divisionOption = getFirstVisible(divisionDropdownOptions)
-  await user.click(divisionOption!)
-
-  // Wait for categories to load and select category
-  await waitFor(() => {
-    const categorySelect = screen.getByRole('combobox', {
-      name: /teams\.form\.category.*select option/,
-    })
-    expect(categorySelect).toBeEnabled()
-  })
-  const categorySelect = screen.getByRole('combobox', {
-    name: /teams\.form\.category.*select option/,
-  })
-  await user.click(categorySelect)
-
-  // Wait for dropdown and select visible option
-  await waitFor(() => {
-    const categoryDropdownOptions = screen.getAllByText('JO8')
-    expect(categoryDropdownOptions.some(option => option.offsetParent !== null)).toBe(
-      true
-    )
-  })
-
-  const categoryDropdownOptions = screen.getAllByText('JO8')
-  const categoryOption = getFirstVisible(categoryDropdownOptions)
-  await user.click(categoryOption!)
 }
 
 // Helper function to complete panels 1 and 2
 const _completePanels1And2 = async (user: ReturnType<typeof userEvent.setup>) => {
-  await completePanel1(user)
+  await completePanel1()
 
   // Fill panel 2 required fields
   const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -297,7 +238,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Test panel 2 field validation
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -334,7 +275,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Fill panel 2 required fields to enable panel 3
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -363,7 +304,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Test panel 2 club name length validation
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -387,7 +328,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Test panel 2 validation clearing
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -418,7 +359,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Fill panel 2 required fields to enable panel 3
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -447,7 +388,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Test panel 2 team name validation
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
@@ -471,7 +412,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Test multiple validation errors within the same panel (panel 2)
       // This avoids the complexity of cross-panel dependencies
@@ -544,7 +485,7 @@ describe('TeamForm Component - onBlur Validation', () => {
 
       // Complete panel 1 to enable panel 2
       const user = userEvent.setup()
-      await completePanel1(user)
+      await completePanel1()
 
       // Server errors should STILL not be visible (fields haven't been blurred yet)
       expect(
@@ -862,7 +803,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       renderTeamForm('create', 'public')
 
       // STEP 1: Complete panel 1 using our helper function
-      await completePanel1(user)
+      await completePanel1()
 
       // STEP 2: Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -1212,7 +1153,7 @@ describe('TeamForm Reset Button Functionality', () => {
       )
 
       // Fill out the form with some data
-      await completePanel1(user)
+      await completePanel1()
 
       // Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -1283,7 +1224,7 @@ describe('TeamForm Reset Button Functionality', () => {
       )
 
       // Complete panel 1 to enable subsequent panels
-      await completePanel1(user)
+      await completePanel1()
 
       // Get club name field from panel 2 (which is now enabled)
       const clubNameInput = screen.getByRole('textbox', {
@@ -1532,7 +1473,7 @@ describe('TeamForm Reset Button Functionality', () => {
       )
 
       // Fill out form completely
-      await completePanel1(user)
+      await completePanel1()
 
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)

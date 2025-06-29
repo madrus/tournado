@@ -73,21 +73,18 @@ export function ActionLinkPanel({
         hoverBorderColor
       )}
       onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={`${title} panel`}
     >
       {/* Base panel background and glow */}
       <div
         className={cn(
           'absolute inset-0 transition-opacity duration-750 ease-in-out',
           hoverColor ? 'group-hover:opacity-0' : '',
-          mainPanelClasses.base
-            .replace('relative', '')
-            .replace('overflow-hidden', '')
-            .replace('rounded-2xl', '')
-            .replace('border', '')
-            .replace('shadow-xl', '')
-            .replace('group', '')
-            .replace('cursor-pointer', '')
+          mainPanelClasses.background
         )}
+        data-testid="panel-background"
       >
         <div className={mainPanelClasses.glow} />
       </div>
@@ -106,6 +103,7 @@ export function ActionLinkPanel({
             iconColor,
             iconColor.replace('text-', 'border-')
           )}
+          aria-label="panel icon"
         >
           {icon}
         </div>
@@ -122,19 +120,7 @@ export function ActionLinkPanel({
           )}
         >
           {/* Hover background */}
-          <div
-            className={cn(
-              'absolute inset-0',
-              hoverPanelClasses.base
-                .replace('relative', '')
-                .replace('overflow-hidden', '')
-                .replace('rounded-2xl', '')
-                .replace('border', '')
-                .replace('shadow-xl', '')
-                .replace('group', '')
-                .replace('cursor-pointer', '')
-            )}
-          >
+          <div className={cn('absolute inset-0', hoverPanelClasses.background)}>
             <div className={hoverPanelClasses.glow} />
           </div>
 
@@ -151,6 +137,7 @@ export function ActionLinkPanel({
                 hoverIconColor,
                 hoverIconBorderColor
               )}
+              aria-label="panel icon"
             >
               {icon}
             </div>

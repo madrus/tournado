@@ -855,7 +855,7 @@ describe('TournamentForm Component', () => {
       const divisionsSection = screen
         .getByText('Divisions')
         .closest('.border-green-200')!
-      expect(divisionsSection.querySelector('p')!.textContent).toMatch(/0 selected/)
+      expect(divisionsSection.querySelector('p')!).toHaveTextContent(/0 selected/)
 
       // Select first division
       const firstDivisionLabel = screen.getByText('First Division').parentElement!
@@ -863,7 +863,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(divisionsSection.querySelector('p')!.textContent).toMatch(/1 selected/)
+        expect(divisionsSection.querySelector('p')!).toHaveTextContent(/1 selected/)
       })
     })
 
@@ -875,7 +875,7 @@ describe('TournamentForm Component', () => {
       const categoriesSection = screen
         .getByText('Categories')
         .closest('.border-purple-200')!
-      expect(categoriesSection.querySelector('p')!.textContent).toMatch(/0 selected/)
+      expect(categoriesSection.querySelector('p')!).toHaveTextContent(/0 selected/)
 
       // Select first category
       const jo8Label = screen.getByText('JO8').parentElement!
@@ -883,7 +883,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(categoriesSection.querySelector('p')!.textContent).toMatch(/1 selected/)
+        expect(categoriesSection.querySelector('p')!).toHaveTextContent(/1 selected/)
       })
     })
 
@@ -897,7 +897,7 @@ describe('TournamentForm Component', () => {
       const divisionsSection = screen
         .getByText('Divisions')
         .closest('.border-green-200')!
-      expect(divisionsSection.querySelector('p')!.textContent).toMatch(/1 selected/)
+      expect(divisionsSection.querySelector('p')!).toHaveTextContent(/1 selected/)
 
       // Deselect the division
       const firstDivisionLabel = screen.getByText('First Division').parentElement!
@@ -905,7 +905,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 0 selected
       await waitFor(() => {
-        expect(divisionsSection.querySelector('p')!.textContent).toMatch(/0 selected/)
+        expect(divisionsSection.querySelector('p')!).toHaveTextContent(/0 selected/)
       })
     })
   })

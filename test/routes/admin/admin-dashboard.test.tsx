@@ -343,9 +343,7 @@ describe('Admin Dashboard', () => {
 
       // Check main structure exists
       const heading = screen.getByRole('heading', { level: 1 })
-      const container = heading.parentElement
-
-      expect(container).toBeInTheDocument()
+      expect(heading).toBeInTheDocument()
 
       // All panels should be present
       expect(screen.getAllByTestId(/^admin-panel-/)).toHaveLength(5)

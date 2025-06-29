@@ -940,7 +940,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       await waitFor(() => {
         const divisionSelect = screen.getAllByLabelText(/teams\.form\.division/)[0]
         expect(divisionSelect).toBeInTheDocument()
-        expect(divisionSelect).not.toHaveAttribute('disabled')
+        expect(divisionSelect).toBeEnabled()
       })
 
       // Check that correct divisions are available by opening division dropdown

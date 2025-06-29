@@ -92,6 +92,7 @@ export function TeamChip({
           }
         }}
         aria-pressed='false'
+        data-testid="team-chip"
       >
         {chipContent}
       </div>
@@ -101,11 +102,11 @@ export function TeamChip({
   if (onClick) {
     // Non-admin: outer is a real button
     return (
-      <button onClick={onClick} className={baseClasses} type='button'>
+      <button onClick={onClick} className={baseClasses} type='button' data-testid="team-chip">
         {chipContent}
       </button>
     )
   }
 
-  return <div className={baseClasses}>{chipContent}</div>
+  return <div className={baseClasses} data-testid="team-chip">{chipContent}</div>
 }

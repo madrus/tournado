@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
@@ -133,7 +133,7 @@ describe('BottomNavigation', () => {
       const navItems = screen.getAllByTestId(/^nav-item-/)
       const itemLabels = navItems.map(item => {
         const href = item.getAttribute('href')
-        const label = item.querySelector('[data-testid^="label-"]')?.textContent
+        const label = within(item).getByTestId(/^label-/).textContent
         return { href, label }
       })
 

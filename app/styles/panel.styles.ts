@@ -1,74 +1,30 @@
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
-// Panel style mapping for different color schemes
-const panelStyleMap: Record<
-  string,
-  {
-    border: string
-    gradient: string
-    glow: string
-    iconBorder: string
-    iconBg: string
-    iconText: string
-    title: string
-    description: string
-    hoverBorder?: string
-    hoverGradient?: string
+// Resolve color aliases to actual colors
+function resolveColorAccent(color: ColorAccent): string {
+  if (color === 'primary') return 'emerald'
+  if (color === 'brand') return 'red'
+  return color
+}
+
+// Generate panel styles dynamically based on color
+function getPanelStyles(colorScheme: ColorAccent) {
+  const resolvedColor = resolveColorAccent(colorScheme)
+
+  // Special case for brand: use gray gradient instead of red gradient
+  const gradientColor = colorScheme === 'brand' ? 'gray' : resolvedColor
+
+  return {
+    border: `border-${resolvedColor}-400/60`,
+    gradient: `bg-gradient-to-br from-${gradientColor}-950 via-${gradientColor}-900 to-${gradientColor}-900`,
+    glow: `bg-${resolvedColor}-400/30`,
+    iconBorder: `border-${resolvedColor}-400/70`,
+    iconBg: `bg-${resolvedColor}-400/10`,
+    iconText: `text-${resolvedColor}-300`,
+    title: 'text-white',
+    description: `text-${resolvedColor}-100/80`,
   }
-> = {
-  emerald: {
-    border: 'border-emerald-400/60',
-    gradient: 'bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-800/80',
-    glow: 'bg-emerald-400/30',
-    iconBorder: 'border-emerald-400/70',
-    iconBg: 'bg-emerald-400/10',
-    iconText: 'text-emerald-300',
-    title: 'text-white',
-    description: 'text-emerald-100/80',
-  },
-  teal: {
-    border: 'border-teal-400/60',
-    gradient: 'bg-gradient-to-br from-teal-950 via-teal-900 to-teal-800/80',
-    glow: 'bg-teal-400/30',
-    iconBorder: 'border-teal-400/70',
-    iconBg: 'bg-teal-400/10',
-    iconText: 'text-teal-300',
-    title: 'text-white',
-    description: 'text-teal-100/80',
-    hoverBorder: 'hover:border-teal-400/80',
-    hoverGradient: 'hover:from-teal-950 hover:via-teal-900 hover:to-teal-800/90',
-  },
-  brand: {
-    border: 'border-red-400/60',
-    gradient: 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800/80',
-    glow: 'bg-red-400/30',
-    iconBorder: 'border-red-400/70',
-    iconBg: 'bg-red-400/10',
-    iconText: 'text-red-300',
-    title: 'text-white',
-    description: 'text-red-100/80',
-  },
-  blue: {
-    border: 'border-blue-400/60',
-    gradient: 'bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800/80',
-    glow: 'bg-blue-400/30',
-    iconBorder: 'border-blue-400/70',
-    iconBg: 'bg-blue-400/10',
-    iconText: 'text-blue-300',
-    title: 'text-white',
-    description: 'text-blue-100/80',
-  },
-  gray: {
-    border: 'border-gray-400/60',
-    gradient: 'bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800/80',
-    glow: 'bg-gray-400/30',
-    iconBorder: 'border-gray-400/70',
-    iconBg: 'bg-gray-400/10',
-    iconText: 'text-gray-300',
-    title: 'text-white',
-    description: 'text-gray-100/80',
-  },
 }
 
 export function getPanelClasses(colorScheme: ColorAccent): {
@@ -76,7 +32,7 @@ export function getPanelClasses(colorScheme: ColorAccent): {
   icon: string
   glow: string
 } {
-  const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
+  const style = getPanelStyles(colorScheme)
 
   return {
     base: cn(
@@ -98,17 +54,17 @@ export function getPanelClasses(colorScheme: ColorAccent): {
 }
 
 export function getTitleClasses(colorScheme: ColorAccent): string {
-  const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
+  const style = getPanelStyles(colorScheme)
   return cn('text-lg font-semibold break-words', style.title)
 }
 
 export function getDescriptionClasses(colorScheme: ColorAccent): string {
-  const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
+  const style = getPanelStyles(colorScheme)
   return cn(style.description)
 }
 
 export function getIconTextClasses(colorScheme: ColorAccent): string {
-  const style = panelStyleMap[colorScheme] || panelStyleMap.emerald
+  const style = getPanelStyles(colorScheme)
   return cn('transition-colors duration-500 ease-in-out', style.iconText)
 }
 

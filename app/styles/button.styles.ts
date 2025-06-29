@@ -19,84 +19,52 @@ export const commonButtonClasses = cn(
 
 // Color system
 
-const ringColor = {
-  emerald:
-    'focus-visible:ring-emerald-600 hover:ring-emerald-600 disabled:hover:ring-0',
-  brand: 'focus-visible:ring-brand hover:ring-brand disabled:hover:ring-0',
-  blue: 'focus-visible:ring-blue-600 hover:ring-blue-600 disabled:hover:ring-0',
-  gray: 'focus-visible:ring-gray-600 hover:ring-gray-600 disabled:hover:ring-0',
+// Helper to resolve color name: 'primary' -> 'emerald', 'brand' -> 'red', else itself
+const resolveColorName = (color: ColorAccent): string => {
+  if (color === 'primary') return 'emerald'
+  if (color === 'brand') return 'red'
+  return color
 }
 
-const shadowColor = {
-  emerald:
-    'shadow-emerald-700/40 hover:shadow-emerald-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-  brand:
-    'shadow-brand/40 hover:shadow-brand/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-  blue: 'shadow-blue-700/40 hover:shadow-blue-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-  gray: 'shadow-gray-700/40 hover:shadow-gray-700/60 disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+const getRingClasses = (color: ColorAccent): string => {
+  const resolvedColor = resolveColorName(color)
+  return `focus-visible:ring-${resolvedColor}-600 hover:ring-${resolvedColor}-600 disabled:hover:ring-0`
 }
 
-const border = {
-  emerald: 'border border-emerald-600',
-  brand: 'border border-brand',
-  blue: 'border border-blue-600',
-  gray: 'border border-gray-600',
+const getShadowClasses = (color: ColorAccent): string => {
+  const resolvedColor = resolveColorName(color)
+  const disabledShadow =
+    'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70'
+  return `shadow-${resolvedColor}-700/40 hover:shadow-${resolvedColor}-700/60 ${disabledShadow}`
 }
 
-const colors = {
-  emerald: {
-    primary: cn(
-      'bg-emerald-600 text-white',
-      border.emerald,
-      ringColor.emerald,
-      shadowColor.emerald
-    ),
-    secondary: cn(
-      'bg-transparent text-emerald-600 border border-emerald-600',
-      ringColor.emerald,
-      shadowColor.emerald
-    ),
-  },
-  brand: {
-    primary: cn(
-      'bg-brand text-white',
-      border.brand,
-      ringColor.brand,
-      shadowColor.brand
-    ),
-    secondary: cn(
-      'bg-transparent text-brand border border-brand',
-      ringColor.brand,
-      shadowColor.brand
-    ),
-  },
-  blue: {
-    primary: cn(
-      'bg-blue-600 text-white',
-      border.blue,
-      ringColor.blue,
-      shadowColor.blue
-    ),
-    secondary: cn(
-      'bg-transparent text-blue-600 border border-blue-600',
-      ringColor.blue,
-      shadowColor.blue
-    ),
-  },
-  gray: {
-    primary: cn(
-      'bg-gray-600 text-white',
-      border.gray,
-      ringColor.gray,
-      shadowColor.gray
-    ),
-    secondary: cn(
-      'bg-transparent text-gray-600 border border-gray-600',
-      ringColor.gray,
-      shadowColor.gray
-    ),
-  },
-} as const
+const getBorderClasses = (color: ColorAccent): string => {
+  const resolvedColor = resolveColorName(color)
+  return `border border-${resolvedColor}-600`
+}
+
+const getColorClasses = (color: ColorAccent, variant: ButtonVariant): string => {
+  const resolvedColor = resolveColorName(color)
+  const ringClasses = getRingClasses(color)
+  const shadowClasses = getShadowClasses(color)
+  const borderClasses = getBorderClasses(color)
+
+  if (variant === 'primary') {
+    return cn(
+      `bg-${resolvedColor}-600 text-white`,
+      borderClasses,
+      ringClasses,
+      shadowClasses
+    )
+  } else {
+    return cn(
+      `bg-transparent text-${resolvedColor}-600`,
+      borderClasses,
+      ringClasses,
+      shadowClasses
+    )
+  }
+}
 
 // Variant definitions
 export type ButtonVariant = 'primary' | 'secondary'
@@ -108,7 +76,7 @@ export const DEFAULT_BUTTON_COLOR: ColorAccent = 'brand'
 export const getButtonClasses = (
   variant: ButtonVariant,
   color: ColorAccent = DEFAULT_BUTTON_COLOR
-): string => cn(commonButtonClasses, colors[color][variant])
+): string => cn(commonButtonClasses, getColorClasses(color, variant))
 
 // Legacy type exports for backward compatibility
 export type LinkButtonVariant = ButtonVariant

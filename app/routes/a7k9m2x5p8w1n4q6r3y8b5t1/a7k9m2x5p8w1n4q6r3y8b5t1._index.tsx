@@ -4,7 +4,7 @@ import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
 
-import { AdminPanel } from '~/components/AdminPanel'
+import { ActionLinkPanel } from '~/components/ActionLinkPanel'
 import {
   ApparelIcon,
   PersonIcon,
@@ -94,26 +94,26 @@ export default function AdminDashboard(): JSX.Element {
         {/* Dashboard Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Team Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Team Management'
             description='Manage team registrations and memberships.'
             icon={
-              <ApparelIcon className='h-5 w-5 text-emerald-700 transition-colors group-hover:text-emerald-800' />
+              <ApparelIcon className='text-primary group-hover:text-primary-hover h-5 w-5 transition-colors' />
             }
             colorScheme='emerald'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light transition-colors group-hover:text-emerald-600'>
+              <p className='text-foreground-light group-hover:text-primary transition-colors'>
                 <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
                 {teams.length}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* Tournament Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Tournament Management'
             description='Create and manage tournaments and competitions.'
             icon={
@@ -131,45 +131,45 @@ export default function AdminDashboard(): JSX.Element {
                 {tournaments.length}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* User Management */}
-          <AdminPanel
+          <ActionLinkPanel
             title='User Management'
             description='Manage user accounts and permissions.'
             icon={
-              <PersonIcon className='h-5 w-5 text-gray-700 transition-colors group-hover:text-gray-800' />
+              <PersonIcon className='text-button-neutral-text group-hover:text-foreground h-5 w-5 transition-colors' />
             }
             colorScheme='gray'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
+              <p className='text-foreground-light group-hover:text-foreground-light break-all transition-colors'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='text-foreground-light break-all transition-colors group-hover:text-gray-600'>
+              <p className='text-foreground-light group-hover:text-foreground-light break-all transition-colors'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
-          </AdminPanel>
+          </ActionLinkPanel>
 
           {/* System Settings */}
-          <AdminPanel
+          <ActionLinkPanel
             title='System Settings'
             description='Configure application settings and preferences.'
             icon={
-              <SettingsIcon className='h-5 w-5 text-red-700 transition-colors group-hover:text-red-800' />
+              <SettingsIcon className='text-brand group-hover:text-brand-dark h-5 w-5 transition-colors' />
             }
-            colorScheme='red'
+            colorScheme='brand'
             language={i18n.language}
           />
 
           {/* Reports & Analytics */}
-          <AdminPanel
+          <ActionLinkPanel
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'
             icon={
-              <TuneIcon className='h-5 w-5 text-emerald-700 transition-colors group-hover:text-emerald-800' />
+              <TuneIcon className='text-primary group-hover:text-primary-hover h-5 w-5 transition-colors' />
             }
             colorScheme='emerald'
             language={i18n.language}

@@ -33,18 +33,20 @@ export function UpdatePrompt(): JSX.Element | null {
   if (!showUpdatePrompt) return null
 
   return (
-    <div className='safe-bottom fixed right-0 bottom-0 left-0 z-40 bg-blue-50 p-4 shadow-lg'>
+    <div className='safe-bottom bg-accent fixed right-0 bottom-0 left-0 z-40 p-4 shadow-lg'>
       <div className='flex items-center justify-between gap-4'>
         <div className='flex-1'>
-          <p className='text-sm font-medium text-blue-900'>{t('pwa.update.title')}</p>
-          <p className='mt-1 text-xs text-blue-700'>{t('pwa.update.instruction')}</p>
+          <p className='text-foreground-darker text-sm font-medium'>
+            {t('pwa.update.title')}
+          </p>
+          <p className='text-brand mt-1 text-xs'>{t('pwa.update.instruction')}</p>
         </div>
         <button
           onClick={() => {
             updateServiceWorker()
             setShowUpdatePrompt(false)
           }}
-          className='rounded-md bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-200'
+          className='bg-background text-brand hover:bg-background-hover rounded-md px-4 py-2 text-sm font-medium'
         >
           {t('pwa.update.button')}
         </button>

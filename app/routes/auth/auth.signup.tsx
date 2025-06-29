@@ -159,7 +159,10 @@ export default function SignupPage(): JSX.Element {
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
         <Form method='post' className='space-y-6'>
           <div>
-            <label htmlFor='firstName' className='block text-sm leading-6 font-medium'>
+            <label
+              htmlFor='firstName'
+              className='text-foreground block text-sm leading-6 font-medium'
+            >
               {t('auth.firstName')}
             </label>
             <div className='mt-2'>
@@ -172,10 +175,10 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='given-name'
                 aria-invalid={actionData?.errors?.firstName ? true : undefined}
                 aria-describedby='firstName-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.firstName ? (
-                <div className='pt-1 text-red-700' id='firstName-error'>
+                <div className='text-error pt-1' id='firstName-error'>
                   {t(`auth.errors.${actionData.errors.firstName}`)}
                 </div>
               ) : null}
@@ -183,7 +186,10 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label htmlFor='lastName' className='block text-sm leading-6 font-medium'>
+            <label
+              htmlFor='lastName'
+              className='text-foreground block text-sm leading-6 font-medium'
+            >
               {t('auth.lastName')}
             </label>
             <div className='mt-2'>
@@ -196,10 +202,10 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='family-name'
                 aria-invalid={actionData?.errors?.lastName ? true : undefined}
                 aria-describedby='lastName-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.lastName ? (
-                <div className='pt-1 text-red-700' id='lastName-error'>
+                <div className='text-error pt-1' id='lastName-error'>
                   {t(`auth.errors.${actionData.errors.lastName}`)}
                 </div>
               ) : null}
@@ -207,7 +213,10 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label htmlFor='email' className='block text-sm leading-6 font-medium'>
+            <label
+              htmlFor='email'
+              className='text-foreground block text-sm leading-6 font-medium'
+            >
               {t('auth.emailAddress')}
             </label>
             <div className='mt-2'>
@@ -220,10 +229,10 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='email'
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby='email-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.email ? (
-                <div className='pt-1 text-red-700' id='email-error'>
+                <div className='text-error pt-1' id='email-error'>
                   {t(`auth.errors.${actionData.errors.email}`)}
                 </div>
               ) : null}
@@ -231,7 +240,10 @@ export default function SignupPage(): JSX.Element {
           </div>
 
           <div>
-            <label htmlFor='password' className='block text-sm leading-6 font-medium'>
+            <label
+              htmlFor='password'
+              className='text-foreground block text-sm leading-6 font-medium'
+            >
               {t('auth.password')}
             </label>
             <div className='mt-2'>
@@ -243,10 +255,10 @@ export default function SignupPage(): JSX.Element {
                 autoComplete='new-password'
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby='password-error'
-                className='block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 hover:ring-2 hover:ring-emerald-600 hover:ring-inset focus:ring-2 focus:ring-emerald-600 focus:ring-inset sm:text-sm sm:leading-6'
+                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
               />
               {actionData?.errors?.password ? (
-                <div className='pt-1 text-red-700' id='password-error'>
+                <div className='text-error pt-1' id='password-error'>
                   {t(`auth.errors.${actionData.errors.password}`)}
                 </div>
               ) : null}
@@ -257,11 +269,11 @@ export default function SignupPage(): JSX.Element {
           <button
             type='submit'
             disabled={isSubmitting}
-            className='focus-visible:outline-offset flex w-full justify-center rounded-md bg-emerald-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-emerald-600 disabled:bg-emerald-300'
+            className='focus-visible:outline-offset bg-button-primary-background text-button-primary-text hover:bg-button-primary-hover-background focus-visible:outline-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm leading-6 font-semibold shadow-sm focus-visible:outline-2 disabled:opacity-50'
           >
             {isSubmitting ? (
               <>
-                <span className='me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                <span className='border-button-primary-text me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-t-transparent'></span>
                 {t('common.loading')}
               </>
             ) : (
@@ -274,7 +286,7 @@ export default function SignupPage(): JSX.Element {
           {t('auth.alreadyHaveAccount')}{' '}
           <Link
             to='/auth/signin'
-            className='leading-6 font-semibold text-emerald-600 hover:text-emerald-500'
+            className='text-primary hover:text-primary-hover leading-6 font-semibold'
           >
             {t('auth.signin')}
           </Link>

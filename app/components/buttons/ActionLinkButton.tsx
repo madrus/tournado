@@ -2,11 +2,8 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionLink } from '~/components/PrefetchLink'
-import {
-  type ButtonColor,
-  type ButtonVariant,
-  getButtonClasses,
-} from '~/styles/button.styles'
+import { type ColorAccent } from '~/lib/lib.types'
+import { type ButtonVariant, getButtonClasses } from '~/styles/button.styles'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { isRTL } from '~/utils/rtlUtils'
@@ -16,7 +13,7 @@ type ActionLinkButtonProps = {
   label: string
   icon: IconName
   variant?: ButtonVariant
-  color?: ButtonColor
+  color?: ColorAccent
   className?: string
 }
 

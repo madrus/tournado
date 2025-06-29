@@ -3,16 +3,6 @@
 export const PWA_UPDATE_INTERVAL = 60 * 60 * 1000
 
 /**
- * Supported languages for the application
- */
-export const SUPPORTED_LANGUAGES = [
-  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'ar', name: 'العربية', flag: '🇲🇦' },
-  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
-] as const
-
-/**
  * Division display labels for internationalization
  * Currently supports: English (en), Dutch (nl), Arabic (ar), Turkish (tr)
  */

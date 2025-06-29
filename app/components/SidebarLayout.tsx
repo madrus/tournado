@@ -89,25 +89,25 @@ export function SidebarLayout({
     wide: 'w-full sm:w-96',
   }
 
-  // Theme classes
+  // Theme classes using semantic colors
   const themeClasses = {
     emerald: {
-      gradient: 'from-emerald-50 via-white to-white',
-      border: 'border-emerald-500',
-      button: 'border-emerald-500 text-emerald-500 hover:bg-emerald-50',
-      fab: 'bg-emerald-500 hover:bg-emerald-600',
+      gradient: 'from-accent via-background to-background',
+      border: 'border-primary',
+      button: 'border-primary text-primary hover:bg-accent',
+      fab: 'bg-primary hover:bg-primary-hover',
     },
     red: {
-      gradient: 'from-red-50 via-white to-white',
-      border: 'border-red-500',
-      button: 'border-red-500 text-red-500 hover:bg-red-50',
-      fab: 'bg-red-500 hover:bg-red-600',
+      gradient: 'from-accent via-background to-background',
+      border: 'border-brand',
+      button: 'border-brand text-brand hover:bg-accent',
+      fab: 'bg-brand hover:bg-brand-accent',
     },
     blue: {
-      gradient: 'from-blue-50 via-white to-white',
-      border: 'border-blue-500',
-      button: 'border-blue-500 text-blue-500 hover:bg-blue-50',
-      fab: 'bg-blue-500 hover:bg-blue-600',
+      gradient: 'from-accent via-background to-background',
+      border: 'border-primary',
+      button: 'border-primary text-primary hover:bg-accent',
+      fab: 'bg-primary hover:bg-primary-hover',
     },
   }
 
@@ -115,15 +115,18 @@ export function SidebarLayout({
   const currentWidth = widthClasses[sidebarWidth]
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className='bg-background-hover min-h-screen'>
       <div className='flex min-h-screen'>
         <main
-          className={`flex flex-1 overflow-hidden bg-gradient-to-b ${currentTheme.gradient} md:flex-row`}
+          className={cn(
+            'flex flex-1 overflow-hidden bg-gradient-to-b md:flex-row',
+            currentTheme.gradient
+          )}
         >
           {/* Mobile Sidebar Overlay */}
           {isSidebarOpen ? (
             <div
-              className='fixed inset-0 z-20 bg-black/50 md:hidden'
+              className='bg-foreground/50 fixed inset-0 z-20 md:hidden'
               onClick={() => handleSidebarToggle(false)}
               aria-label='Close sidebar'
             />
@@ -131,16 +134,23 @@ export function SidebarLayout({
 
           {/* Sidebar */}
           <div
-            className={`absolute top-0 z-30 h-full ${currentWidth} bg-gradient-to-b ${currentTheme.gradient} transition-transform duration-300 ease-in-out md:relative md:top-0 ${
+            className={cn(
+              'absolute top-0 z-30 h-full border-e bg-gradient-to-b transition-transform duration-300 ease-in-out md:relative md:top-0',
+              currentWidth,
+              currentTheme.gradient,
+              currentTheme.border,
               isSidebarOpen ? 'fixed start-0 shadow-lg' : '-start-full md:start-0'
-            } border-e ${currentTheme.border}`}
+            )}
           >
             <div className='relative flex h-full flex-col pt-14'>
               {/* Add Button */}
               <div className='p-4'>
                 <Link
                   to={addButtonPath}
-                  className={`flex w-full min-w-[120px] items-center justify-center rounded-full border bg-white px-6 py-2 text-center text-base font-semibold shadow-xs ${currentTheme.button}`}
+                  className={cn(
+                    'bg-background flex w-full min-w-[120px] items-center justify-center rounded-full border px-6 py-2 text-center text-base font-semibold shadow-xs',
+                    currentTheme.button
+                  )}
                   aria-label={`Sidebar button to ${addButtonLabel.toLowerCase()}`}
                   onClick={() => handleSidebarItemClick('add-button')}
                 >
@@ -148,7 +158,7 @@ export function SidebarLayout({
                 </Link>
               </div>
 
-              <hr className='border-gray-300' />
+              <hr className='border-foreground-lighter' />
 
               {/* Sidebar Content */}
               <div className='pb-safe flex-1 overflow-y-auto'>
@@ -166,19 +176,25 @@ export function SidebarLayout({
           {!shouldCloseSidebar ? (
             <Link
               to={addButtonPath}
-              className={`safe-bottom fixed end-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full pt-3 text-white shadow-xl md:hidden ${currentTheme.fab}`}
+              className={cn(
+                'safe-bottom text-primary-foreground fixed end-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center rounded-full pt-3 shadow-xl md:hidden',
+                currentTheme.fab
+              )}
               role='link'
               aria-label={addButtonLabel}
               onClick={() => handleSidebarItemClick('fab-button')}
             >
-              <span className='text-3xl text-white'>+</span>
+              <span className='text-primary-foreground text-3xl'>+</span>
             </Link>
           ) : null}
 
           {/* Sidebar Toggle Button (for future sliding menu) */}
           <button
             onClick={() => handleSidebarToggle(!isSidebarOpen)}
-            className={`fixed start-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-lg md:hidden ${currentTheme.fab}`}
+            className={cn(
+              'text-primary-foreground fixed start-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg shadow-lg md:hidden',
+              currentTheme.fab
+            )}
             aria-label='Toggle sidebar'
           >
             <svg
@@ -215,13 +231,14 @@ export function SidebarLayoutDemo(): JSX.Element {
         <button
           key={item}
           onClick={() => setSelectedItem(item)}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-left text-sm font-medium ${
+          className={cn(
+            'flex items-center gap-2 rounded-lg px-4 py-2 text-left text-sm font-medium',
             selectedItem === item
-              ? 'bg-red-100 text-red-700'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
+              ? 'bg-accent text-primary'
+              : 'text-foreground hover:bg-background-hover'
+          )}
         >
-          <div className='h-2 w-2 rounded-full bg-gray-400' />
+          <div className='bg-foreground-lighter h-2 w-2 rounded-full' />
           {item}
         </button>
       ))}
@@ -234,14 +251,14 @@ export function SidebarLayoutDemo(): JSX.Element {
         Sidebar Layout Demo
       </h1>
 
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
         <h2 className={cn('mb-3 text-xl font-semibold', getLatinTitleClass('en'))}>
           Selected: {selectedItem || 'None'}
         </h2>
-        <p className='mb-4 text-gray-600'>
+        <p className='text-foreground-light mb-4'>
           This demo shows the sidebar layout component with all its features:
         </p>
-        <ul className='list-inside list-disc space-y-2 text-gray-600'>
+        <ul className='text-foreground-light list-inside list-disc space-y-2'>
           <li>Responsive sidebar with mobile overlay</li>
           <li>Floating action button on mobile</li>
           <li>Smooth animations and transitions</li>
@@ -252,13 +269,11 @@ export function SidebarLayoutDemo(): JSX.Element {
         </ul>
       </div>
 
-      <div className='mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4'>
-        <h3
-          className={cn('mb-2 font-semibold text-blue-900', getLatinTitleClass('en'))}
-        >
+      <div className='border-primary bg-accent mt-6 rounded-lg border p-4'>
+        <h3 className={cn('text-primary mb-2 font-semibold', getLatinTitleClass('en'))}>
           Usage Example:
         </h3>
-        <pre className='overflow-x-auto text-sm text-blue-800'>
+        <pre className='text-foreground-darker overflow-x-auto text-sm'>
           {`<SidebarLayout
             sidebarContent={<MyTeamList />}
             mainContent={<MyTeamDetails />}

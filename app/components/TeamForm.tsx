@@ -165,18 +165,20 @@ export function TeamForm({
   const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
-    <div className={`mx-auto max-w-6xl ${className}`}>
+    <div className={cn('mx-auto max-w-6xl', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <div className='mb-8 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 p-6 shadow-lg'>
+        <div className='border-primary from-accent to-accent mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <div className='flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100'>
-                <CheckIcon className='h-6 w-6 text-emerald-600' size={24} />
+              <div className='bg-accent flex h-10 w-10 items-center justify-center rounded-full'>
+                <CheckIcon className='text-primary h-6 w-6' size={24} />
               </div>
             </div>
             <div className='ml-4'>
-              <p className='text-sm font-semibold text-emerald-800'>{successMessage}</p>
+              <p className='text-foreground-darker text-sm font-semibold'>
+                {successMessage}
+              </p>
             </div>
           </div>
         </div>
@@ -184,7 +186,7 @@ export function TeamForm({
 
       {/* Header for Admin Variant */}
       {variant !== 'public' ? (
-        <div className='mb-8 rounded-xl border-2 border-gray-300 bg-gradient-to-r from-slate-50 to-gray-50 p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
+        <div className='border-foreground-lighter from-background to-background-hover mb-8 rounded-xl border-2 bg-gradient-to-r p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -194,7 +196,7 @@ export function TeamForm({
                   ? `${clubName} ${teamName}`
                   : t('teams.form.teamRegistration')}
               </h2>
-              <p className='mt-2 text-gray-600'>
+              <p className='text-foreground-light mt-2'>
                 {division
                   ? getDivisionLabel(division as Division, i18n.language)
                   : t('teams.form.fillOutForm')}
@@ -229,21 +231,21 @@ export function TeamForm({
 
         {/* Step 1: Tournament Filters */}
         <div className='relative'>
-          <div className='absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6'>
+          <div className='bg-brand text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6'>
             1
           </div>
 
-          <div className='rounded-xl border-2 border-red-200 bg-gradient-to-br from-red-50/50 to-pink-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
+          <div className='border-brand from-accent to-accent rounded-xl border-2 bg-gradient-to-br p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
             <div className='mb-6'>
               <h2
                 className={cn(
-                  'mb-2 text-xl font-bold text-red-800',
+                  'text-foreground-darker mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language)
                 )}
               >
                 {t('teams.form.selectTournamentDetails')}
               </h2>
-              <p className='text-sm text-red-600'>
+              <p className='text-brand text-sm'>
                 {t('teams.form.completeAllThreeFields')}
               </p>
             </div>
@@ -277,8 +279,8 @@ export function TeamForm({
                 />
                 {tournamentId &&
                 !getTranslatedError('tournamentId', isPublicSuccess) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -313,8 +315,8 @@ export function TeamForm({
                 />
                 {division &&
                 !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -345,8 +347,8 @@ export function TeamForm({
                   'category',
                   !tournamentId || !division || isPublicSuccess
                 ) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -363,8 +365,8 @@ export function TeamForm({
         >
           <div
             className={cn(
-              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-gray-400'
+              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
+              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-foreground-lighter'
             )}
           >
             2
@@ -375,7 +377,7 @@ export function TeamForm({
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
               isPanelEnabled(2)
                 ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl'
-                : 'border-gray-200 bg-gray-50'
+                : 'border-foreground-lighter bg-background-hover'
             )}
           >
             <div className='mb-6'>
@@ -383,7 +385,7 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-800' : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.teamInfo')}
@@ -391,7 +393,7 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-600' : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.enterTeamDetails')}
@@ -417,8 +419,8 @@ export function TeamForm({
                   onBlur={() => validateFieldOnBlur('clubName')}
                 />
                 {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -441,8 +443,8 @@ export function TeamForm({
                   onBlur={() => validateFieldOnBlur('teamName')}
                 />
                 {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -458,8 +460,8 @@ export function TeamForm({
         >
           <div
             className={cn(
-              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(3) ? 'bg-green-600' : 'bg-gray-400'
+              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
+              isPanelEnabled(3) ? 'bg-primary' : 'bg-foreground-lighter'
             )}
           >
             3
@@ -469,8 +471,8 @@ export function TeamForm({
             className={cn(
               'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
               isPanelEnabled(3)
-                ? 'border-green-200 bg-gradient-to-br from-green-50/50 to-emerald-50/30 hover:shadow-xl'
-                : 'border-gray-200 bg-gray-50'
+                ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
+                : 'border-foreground-lighter bg-background-hover'
             )}
           >
             <div className='mb-6'>
@@ -478,7 +480,9 @@ export function TeamForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3) ? 'text-green-800' : 'text-gray-400'
+                  isPanelEnabled(3)
+                    ? 'text-foreground-darker'
+                    : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.teamLeaderInfo')}
@@ -486,7 +490,7 @@ export function TeamForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(3) ? 'text-green-600' : 'text-gray-400'
+                  isPanelEnabled(3) ? 'text-primary' : 'text-foreground-lighter'
                 )}
               >
                 {t('teams.form.enterContactDetails')}
@@ -516,8 +520,8 @@ export function TeamForm({
                   'teamLeaderName',
                   isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -545,8 +549,8 @@ export function TeamForm({
                   'teamLeaderPhone',
                   isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -574,8 +578,8 @@ export function TeamForm({
                   'teamLeaderEmail',
                   isPublicSuccess || !isPanelEnabled(3)
                 ) ? (
-                  <div className='absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='h-4 w-4 text-white' size={16} />
+                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                   </div>
                 ) : null}
               </div>
@@ -592,8 +596,8 @@ export function TeamForm({
           >
             <div
               className={cn(
-                'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-                isPanelEnabled(4) ? 'bg-purple-600' : 'bg-gray-400'
+                'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
+                isPanelEnabled(4) ? 'bg-primary' : 'bg-foreground-lighter'
               )}
             >
               4
@@ -603,8 +607,8 @@ export function TeamForm({
               className={cn(
                 'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
                 isPanelEnabled(4)
-                  ? 'border-purple-200 bg-gradient-to-br from-purple-50/50 to-indigo-50/30 hover:shadow-xl'
-                  : 'border-gray-200 bg-gray-50'
+                  ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
+                  : 'border-foreground-lighter bg-background-hover'
               )}
             >
               <div className='mb-6'>
@@ -612,7 +616,9 @@ export function TeamForm({
                   className={cn(
                     'mb-2 text-xl font-bold',
                     getLatinTitleClass(i18n.language),
-                    isPanelEnabled(4) ? 'text-purple-800' : 'text-gray-400'
+                    isPanelEnabled(4)
+                      ? 'text-foreground-darker'
+                      : 'text-foreground-lighter'
                   )}
                 >
                   {t('teams.form.privacyPolicy')}
@@ -620,7 +626,7 @@ export function TeamForm({
                 <p
                   className={cn(
                     'text-sm',
-                    isPanelEnabled(4) ? 'text-purple-600' : 'text-gray-400'
+                    isPanelEnabled(4) ? 'text-primary' : 'text-foreground-lighter'
                   )}
                 >
                   {t('teams.form.readAndAccept')}
@@ -631,13 +637,13 @@ export function TeamForm({
                 className={cn(
                   'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
                   privacyAgreement
-                    ? 'border-purple-500 bg-purple-50 text-purple-800'
+                    ? 'border-primary bg-accent text-foreground-darker'
                     : getTranslatedError(
                           'privacyAgreement',
                           isPublicSuccess || !isPanelEnabled(4)
                         )
-                      ? 'border-red-500 bg-red-50 text-red-800'
-                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50'
+                      ? 'border-brand bg-accent text-brand'
+                      : 'border-foreground-lighter bg-background hover:border-primary hover:bg-accent'
                 )}
               >
                 <div className='relative flex-shrink-0'>
@@ -652,27 +658,27 @@ export function TeamForm({
                     className={cn(
                       'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
                       privacyAgreement
-                        ? 'border-purple-500 bg-purple-500'
+                        ? 'border-primary bg-primary'
                         : getTranslatedError(
                               'privacyAgreement',
                               isPublicSuccess || !isPanelEnabled(4)
                             )
-                          ? 'border-red-500 bg-red-50'
-                          : 'border-gray-300 bg-white'
+                          ? 'border-brand bg-accent'
+                          : 'border-foreground-lighter bg-background'
                     )}
                     required
                     disabled={isPublicSuccess || !isPanelEnabled(4)}
                   />
                   {privacyAgreement ? (
                     <CheckIcon
-                      className='pointer-events-none absolute top-0.5 left-0.5 h-4 w-4 text-white'
+                      className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
                       size={16}
                     />
                   ) : null}
                 </div>
                 <span
                   className={cn(
-                    'text-lg font-normal text-gray-600',
+                    'text-foreground-light text-lg font-normal',
                     getLatinTextClass(i18n.language)
                   )}
                 >
@@ -683,7 +689,7 @@ export function TeamForm({
                 'privacyAgreement',
                 isPublicSuccess || !isPanelEnabled(4)
               ) ? (
-                <p className='mt-2 text-sm text-red-600'>
+                <p className='text-brand mt-2 text-sm'>
                   {getTranslatedError(
                     'privacyAgreement',
                     isPublicSuccess || !isPanelEnabled(4)

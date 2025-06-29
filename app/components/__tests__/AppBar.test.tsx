@@ -34,6 +34,7 @@ vi.mock('react-i18next', () => ({
       options: { fallbackLng: 'en' },
     },
   }),
+  initReactI18next: { type: '3rdParty', init: vi.fn() },
 }))
 
 // Mock route utils

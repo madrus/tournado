@@ -31,14 +31,14 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'inline-flex h-10 items-center rounded-lg border border-red-400 bg-white',
-    'font-semibold text-red-700 transition-all duration-300 ease-out relative overflow-hidden',
+    'inline-flex h-10 items-center rounded-lg border border-brand bg-background',
+    'font-semibold text-brand transition-all duration-300 ease-out relative overflow-hidden',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',
     'hover:scale-105 active:scale-95',
-    'shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40 hover:bg-red-50/30 hover:border-red-500',
-    'focus:ring-2 focus:ring-offset-2 focus:ring-red-600/90 focus:outline-none',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600/90',
+    'shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/40 hover:bg-accent hover:border-brand-accent',
+    'focus:ring-2 focus:ring-offset-2 focus:ring-brand focus:outline-none',
+    'hover:ring-2 hover:ring-offset-2 hover:ring-brand',
     className
   )
 
@@ -50,7 +50,7 @@ export function TeamChip({
           event.stopPropagation()
           onDelete()
         }}
-        className='flex-shrink-0 rounded-full p-1 text-red-500 hover:bg-red-50 hover:text-red-700'
+        className='text-brand hover:bg-accent hover:text-brand-accent flex-shrink-0 rounded-full p-1'
         aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.teamName}`}
       >
         {renderIcon('close', { className: 'h-4 w-4' })}

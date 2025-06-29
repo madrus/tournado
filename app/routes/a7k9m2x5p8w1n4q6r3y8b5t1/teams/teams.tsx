@@ -24,7 +24,7 @@ export default function AdminTeamsLayout(): JSX.Element {
   return (
     <div className='space-y-8'>
       {/* Header */}
-      <div className='border-b border-gray-200 pb-6'>
+      <div className='border-button-neutral-secondary-border border-b pb-6'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
             <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>

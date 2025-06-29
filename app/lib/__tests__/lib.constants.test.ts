@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest'
 
-import { resources } from '~/i18n/config'
+import { resources, SUPPORTED_LANGUAGES } from '~/i18n/config'
 
-import { DIVISIONS, SUPPORTED_LANGUAGES } from '../lib.constants'
+import { DIVISIONS } from '../lib.constants'
 
 describe('lib.constants', () => {
   describe('SUPPORTED_LANGUAGES', () => {

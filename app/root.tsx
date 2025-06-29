@@ -24,7 +24,7 @@ import { GeneralErrorBoundary } from './components/GeneralErrorBoundary'
 import BottomNavigation from './components/mobileNavigation/BottomNavigation'
 import { PWAElements } from './components/PWAElements'
 import { prisma } from './db.server'
-import { initI18n } from './i18n/config'
+import { initI18n, Language, SUPPORTED_LANGUAGES } from './i18n/config'
 import type { TournamentData } from './lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from './stores/useAuthStore'
 import { useSettingsStore, useSettingsStoreHydration } from './stores/useSettingsStore'
@@ -74,8 +74,17 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   const cookieHeader = request.headers.get('Cookie') || ''
   const langMatch = cookieHeader.match(/lang=([^;]+)/)
   const themeMatch = cookieHeader.match(/theme=([^;]+)/)
-  const language = langMatch ? langMatch[1] : 'nl'
-  const theme = (themeMatch ? themeMatch[1] : 'light') as 'light' | 'dark'
+
+  // Validate theme
+  const rawTheme = themeMatch ? themeMatch[1] : undefined
+  const theme = rawTheme === 'dark' || rawTheme === 'light' ? rawTheme : 'light'
+
+  // Validate language
+  const rawLanguage = langMatch ? langMatch[1] : undefined
+  const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
+  const language = supportedLanguageCodes.includes(rawLanguage as Language)
+    ? (rawLanguage as Language)
+    : 'nl'
 
   // Fetch tournaments and transform to TournamentData format
   const tournamentsRaw = await prisma.tournament.findMany({
@@ -244,6 +253,11 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
     theme: serverTheme,
     tournaments,
   } = loaderData
+
+  // Handle store rehydration FIRST, before accessing store values
+  useAuthStoreHydration()
+  useSettingsStoreHydration()
+
   const { setAuth } = useAuthStore()
   const { setAvailableOptionsField } = useTeamFormStore()
   const {
@@ -252,10 +266,6 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
     theme: currentTheme,
     language: storeLanguage,
   } = useSettingsStore()
-
-  // Handle store rehydration
-  useAuthStoreHydration()
-  useSettingsStoreHydration()
 
   // Get current language from store (this makes store the source of truth)
   const [isHydrated, setIsHydrated] = useState(false)
@@ -335,12 +345,11 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 }
 
 export function ErrorBoundary(): JSX.Element {
-  const { authenticated, username } = useAuthStore()
-
-  // Handle store rehydration before accessing theme
+  // Handle store rehydration FIRST, before accessing store values
   useAuthStoreHydration()
   useSettingsStoreHydration()
 
+  const { authenticated, username } = useAuthStore()
   const { theme } = useSettingsStore()
 
   // Use Dutch for error boundary fallback

@@ -14,8 +14,7 @@ function BottomNavigation(): JSX.Element {
 
   return (
     <nav
-      className='fixed right-0 bottom-0 left-0 z-50 flex justify-between p-3 shadow-lg md:hidden'
-      style={{ backgroundColor: 'var(--footer-bg)' }}
+      className='bg-footer fixed right-0 bottom-0 left-0 z-50 flex justify-between p-3 shadow-lg md:hidden'
       aria-label='Bottom navigation'
       role='navigation'
       data-testid='bottom-navigation'

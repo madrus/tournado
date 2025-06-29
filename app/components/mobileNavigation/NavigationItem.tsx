@@ -24,13 +24,11 @@ function NavigationItem({ to, icon, label }: NavigationItemProps): JSX.Element {
         size: 36,
         variant: isActive ? 'filled' : 'outlined',
         weight: isActive ? 700 : 400,
-        className: isActive ? 'text-brand-accent' : '',
-        style: isActive ? {} : { color: 'var(--footer-text)' },
+        className: isActive ? 'text-brand' : 'text-footer-foreground',
         'data-testid': 'nav-icon',
       })}
       <span
-        className={`mt-1 text-xs ${isActive ? 'text-brand-accent font-bold' : ''}`}
-        style={isActive ? {} : { color: 'var(--footer-text)' }}
+        className={`mt-1 text-xs ${isActive ? 'text-brand font-bold' : 'text-footer-foreground'}`}
       >
         {label}
       </span>

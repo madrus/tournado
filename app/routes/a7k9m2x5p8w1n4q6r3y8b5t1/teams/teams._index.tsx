@@ -99,7 +99,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
         <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-500'>
+              <div className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
                 <ApparelIcon className='text-white' size={24} variant='outlined' />
               </div>
             </div>

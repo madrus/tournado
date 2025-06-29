@@ -7,7 +7,7 @@ import type { User } from '@prisma/client'
 import logo from '~/assets/logo-192x192.png'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
-import { SUPPORTED_LANGUAGES } from '~/lib/lib.constants'
+import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import {
@@ -165,7 +165,7 @@ export function AppBar({
 
   return (
     <>
-      <header className='safe-top relative z-20 h-14 bg-emerald-800 px-4 text-white'>
+      <header className='safe-top bg-primary text-primary-foreground relative z-20 h-14 px-4'>
         {/* Logo and Brand for all screen sizes */}
         <div className='absolute start-2 top-1/2 flex -translate-y-1/2 items-center gap-1 lg:start-4 lg:gap-2'>
           <PrimaryNavLink to='/' className='flex items-center gap-1 lg:gap-2'>
@@ -179,7 +179,7 @@ export function AppBar({
             />
             {/* Show Tournado text next to logo only on desktop */}
             <span
-              className={`hidden text-xl font-bold text-white lg:inline-block ${getLatinTitleClass(currentLanguage)}`}
+              className={`text-primary-foreground hidden text-xl font-bold lg:inline-block ${getLatinTitleClass(currentLanguage)}`}
             >
               Tournado
             </span>
@@ -189,7 +189,7 @@ export function AppBar({
         {/* Page title in center */}
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
           <h2
-            className={`text-center text-xl font-bold text-white sm:text-2xl ${getTypographyClass(currentLanguage)}`}
+            className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass(currentLanguage)}`}
           >
             {pageTitle}
           </h2>

@@ -1,11 +1,8 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import {
-  type ButtonColor,
-  type ButtonVariant,
-  getButtonClasses,
-} from '~/styles/button.styles'
+import { type ColorAccent } from '~/lib/lib.types'
+import { type ButtonVariant, getButtonClasses } from '~/styles/button.styles'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { isRTL } from '~/utils/rtlUtils'
@@ -15,7 +12,7 @@ type ActionButtonProps = {
   children: React.ReactNode
   icon?: IconName
   variant?: ButtonVariant
-  color?: ButtonColor
+  color?: ColorAccent
   size?: 'sm' | 'md'
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean

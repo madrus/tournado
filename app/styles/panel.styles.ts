@@ -2,7 +2,7 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 // Resolve color aliases to actual colors
-function resolveColorAccent(color: ColorAccent): string {
+export function resolveColorAccent(color: ColorAccent): string {
   if (color === 'primary') return 'emerald'
   if (color === 'brand') return 'red'
   return color
@@ -12,12 +12,17 @@ function resolveColorAccent(color: ColorAccent): string {
 function getPanelStyles(colorScheme: ColorAccent) {
   const resolvedColor = resolveColorAccent(colorScheme)
 
-  // Special case for brand: use gray gradient instead of red gradient
-  const gradientColor = colorScheme === 'brand' ? 'gray' : resolvedColor
+  // Special case for brand: use gray gradient with different values
+  const getGradient = () => {
+    if (colorScheme === 'brand') {
+      return 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-800'
+    }
+    return `bg-gradient-to-br from-${resolvedColor}-950 via-${resolvedColor}-900 to-${resolvedColor}-900`
+  }
 
   return {
     border: `border-${resolvedColor}-400/60`,
-    gradient: `bg-gradient-to-br from-${gradientColor}-950 via-${gradientColor}-900 to-${gradientColor}-900`,
+    gradient: getGradient(),
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
     iconBg: `bg-${resolvedColor}-400/10`,

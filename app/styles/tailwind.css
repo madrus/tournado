@@ -14,6 +14,61 @@
 @source inline("shadow-md");
 @source inline("hover:shadow-lg");
 
+/* Safelist gradient classes for all ColorAccent colors */
+@source inline("bg-gradient-to-br");
+@source inline("from-purple-950 via-purple-900 to-purple-900");
+@source inline("from-violet-950 via-violet-900 to-violet-900");
+@source inline("from-pink-950 via-pink-900 to-pink-900");
+@source inline("from-rose-950 via-rose-900 to-rose-900");
+@source inline("from-fuchsia-950 via-fuchsia-900 to-fuchsia-900");
+@source inline("from-indigo-950 via-indigo-900 to-indigo-900");
+@source inline("from-cyan-950 via-cyan-900 to-cyan-900");
+@source inline("from-sky-950 via-sky-900 to-sky-900");
+@source inline("from-lime-950 via-lime-900 to-lime-900");
+@source inline("from-yellow-950 via-yellow-900 to-yellow-900");
+@source inline("from-amber-950 via-amber-900 to-amber-900");
+@source inline("from-orange-950 via-orange-900 to-orange-900");
+@source inline("from-slate-950 via-slate-900 to-slate-900");
+@source inline("from-zinc-950 via-zinc-900 to-zinc-900");
+@source inline("from-neutral-950 via-neutral-900 to-neutral-900");
+@source inline("from-stone-950 via-stone-900 to-stone-900");
+
+/* Safelist border classes for all ColorAccent colors */
+@source inline("border-purple-400/60 hover:border-purple-400/60");
+@source inline("border-violet-400/60 hover:border-violet-400/60");
+@source inline("border-pink-400/60 hover:border-pink-400/60");
+@source inline("border-rose-400/60 hover:border-rose-400/60");
+@source inline("border-fuchsia-400/60 hover:border-fuchsia-400/60");
+@source inline("border-indigo-400/60 hover:border-indigo-400/60");
+@source inline("border-cyan-400/60 hover:border-cyan-400/60");
+@source inline("border-sky-400/60 hover:border-sky-400/60");
+@source inline("border-lime-400/60 hover:border-lime-400/60");
+@source inline("border-yellow-400/60 hover:border-yellow-400/60");
+@source inline("border-amber-400/60 hover:border-amber-400/60");
+@source inline("border-orange-400/60 hover:border-orange-400/60");
+@source inline("border-slate-400/60 hover:border-slate-400/60");
+@source inline("border-zinc-400/60 hover:border-zinc-400/60");
+@source inline("border-neutral-400/60 hover:border-neutral-400/60");
+@source inline("border-stone-400/60 hover:border-stone-400/60");
+
+/* Safelist glow, text, and other panel classes for all ColorAccent colors */
+@source inline("bg-purple-400/30 text-purple-300 text-purple-100/80 border-purple-400/60 border-purple-400/70 bg-purple-400/10");
+@source inline("bg-violet-400/30 text-violet-300 text-violet-100/80 border-violet-400/60 border-violet-400/70 bg-violet-400/10");
+@source inline("bg-pink-400/30 text-pink-300 text-pink-100/80 border-pink-400/60 border-pink-400/70 bg-pink-400/10");
+@source inline("bg-rose-400/30 text-rose-300 text-rose-100/80 border-rose-400/60 border-rose-400/70 bg-rose-400/10");
+@source inline("bg-fuchsia-400/30 text-fuchsia-300 text-fuchsia-100/80 border-fuchsia-400/60 border-fuchsia-400/70 bg-fuchsia-400/10");
+@source inline("bg-indigo-400/30 text-indigo-300 text-indigo-100/80 border-indigo-400/60 border-indigo-400/70 bg-indigo-400/10");
+@source inline("bg-cyan-400/30 text-cyan-300 text-cyan-100/80 border-cyan-400/60 border-cyan-400/70 bg-cyan-400/10");
+@source inline("bg-sky-400/30 text-sky-300 text-sky-100/80 border-sky-400/60 border-sky-400/70 bg-sky-400/10");
+@source inline("bg-lime-400/30 text-lime-300 text-lime-100/80 border-lime-400/60 border-lime-400/70 bg-lime-400/10");
+@source inline("bg-yellow-400/30 text-yellow-300 text-yellow-100/80 border-yellow-400/60 border-yellow-400/70 bg-yellow-400/10");
+@source inline("bg-amber-400/30 text-amber-300 text-amber-100/80 border-amber-400/60 border-amber-400/70 bg-amber-400/10");
+@source inline("bg-orange-400/30 text-orange-300 text-orange-100/80 border-orange-400/60 border-orange-400/70 bg-orange-400/10");
+@source inline("bg-slate-400/30 text-slate-300 text-slate-100/80 border-slate-400/60 border-slate-400/70 bg-slate-400/10");
+@source inline("bg-zinc-400/30 text-zinc-300 text-zinc-100/80 border-zinc-400/60 border-zinc-400/70 bg-zinc-400/10");
+@source inline("bg-neutral-400/30 text-neutral-300 text-neutral-100/80 border-neutral-400/60 border-neutral-400/70 bg-neutral-400/10");
+@source inline("bg-stone-400/30 text-stone-300 text-stone-100/80 border-stone-400/60 border-stone-400/70 bg-stone-400/10");
+
 /* Tailwind v4 Theme Configuration */
 @theme {
   --color-background: var(--color-background);
@@ -127,7 +182,7 @@
   --color-input: var(--color-background);
   --color-input-foreground: var(--color-foreground);
   --color-input-border: var(--color-button-primary-background); /* emerald-700 */
-  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */  
+  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */
   --color-input-focus: var(--color-button-primary-background); /* emerald-700 */
   --color-input-ring: var(--color-button-primary-background); /* emerald-700 */
 

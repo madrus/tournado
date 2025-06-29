@@ -6,6 +6,7 @@ import {
   getDescriptionClasses,
   getPanelClasses,
   getTitleClasses,
+  resolveColorAccent,
 } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
@@ -55,10 +56,21 @@ export function ActionLinkPanel({
   const hoverIconColor = getHoverIconColor()
   const hoverIconBorderColor = hoverIconColor.replace('text-', 'border-')
 
+  // Generate border colors based on resolved colors
+  const getBorderColor = (color: ColorAccent, prefix = 'border') => {
+    const resolvedColor = resolveColorAccent(color)
+    return `${prefix}-${resolvedColor}-400/60`
+  }
+
+  const mainBorderColor = getBorderColor(mainColor)
+  const hoverBorderColor = hoverColor ? getBorderColor(hoverColor, 'hover:border') : ''
+
   const panel = (
     <div
       className={cn(
-        'group relative cursor-pointer overflow-hidden rounded-2xl border border-emerald-300 shadow-xl transition-colors duration-750 ease-in-out hover:border-red-300'
+        'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl transition-colors duration-750 ease-in-out',
+        mainBorderColor,
+        hoverBorderColor
       )}
       onClick={onClick}
     >

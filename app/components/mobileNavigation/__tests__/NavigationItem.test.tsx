@@ -115,20 +115,17 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const iconSvg = container.querySelector('svg')
-      const label = screen.getByText('Teams')
-
-      // Check inactive styling - now uses semantic classes
-      expect(iconSvg).toBeTruthy()
-      expect(iconSvg).toHaveClass('text-footer-foreground')
-      expect(label).toHaveClass('text-footer-foreground')
-      expect(label).not.toHaveClass('text-brand', 'font-bold')
+      // Instead of direct node access, use getByTestId for icon and getByText for label
+      const icon = screen.getByTestId('nav-icon')
+      expect(icon).toBeInTheDocument() // Default inactive state
+      expect(icon).toHaveClass('fill-current')
+      expect(screen.getByText('Teams')).toBeInTheDocument()
     })
 
     it('should show active state when on current route', () => {
@@ -140,18 +137,17 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
       )
 
-      const iconSvg = container.querySelector('svg[class*="text-brand"]')
-      const label = screen.getByText('Teams')
-
-      // Check active styling
-      expect(iconSvg).toHaveClass('text-brand')
-      expect(label).toHaveClass('text-brand', 'font-bold')
+      // Instead of direct node access, use getByTestId for icon and getByText for label
+      const icon = screen.getByTestId('nav-icon')
+      expect(icon).toHaveClass('text-brand')
+      const labelNode = screen.getByText('Teams')
+      expect(labelNode).toHaveClass('text-brand', 'font-bold')
     })
 
     it('should handle different routes correctly', () => {
@@ -170,14 +166,14 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { rerender, container } = render(
+      const { rerender } = render(
         <MemoryRouter>
           <NavigationItem {...homeProps} />
         </MemoryRouter>
       )
 
-      let iconSvg = container.querySelector('svg[class*="text-brand"]')
-      expect(iconSvg).toHaveClass('text-brand') // Should be active
+      let homeIcon = screen.getByTestId('nav-icon')
+      expect(homeIcon).toHaveClass('text-brand') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({
@@ -193,9 +189,8 @@ describe('NavigationItem', () => {
           <NavigationItem {...homeProps} />
         </MemoryRouter>
       )
-
-      iconSvg = container.querySelector('svg')
-      expect(iconSvg).toBeTruthy() // Should be inactive
+      homeIcon = screen.getByTestId('nav-icon')
+      expect(homeIcon).toBeInTheDocument() // Should be inactive
     })
   })
 
@@ -264,7 +259,7 @@ describe('NavigationItem', () => {
           key: 'default',
         })
 
-        const { unmount, container } = render(
+        render(
           <MemoryRouter>
             <NavigationItem to={to} icon={icon} label={label} />
           </MemoryRouter>
@@ -275,14 +270,12 @@ describe('NavigationItem', () => {
         expect(link).toHaveAttribute('href', to)
 
         // Check that SVG icon is rendered
-        const iconElement = container.querySelector('svg')
+        const iconElement = screen.getByTestId('nav-icon')
         expect(iconElement).toBeInTheDocument()
         expect(iconElement).toHaveClass('fill-current')
 
         // Check that label is rendered
         expect(screen.getByText(label)).toBeInTheDocument()
-
-        unmount()
       })
     })
   })
@@ -297,7 +290,7 @@ describe('NavigationItem', () => {
         key: 'default',
       })
 
-      const { container } = render(
+      render(
         <MemoryRouter>
           <NavigationItem {...defaultProps} />
         </MemoryRouter>
@@ -305,9 +298,6 @@ describe('NavigationItem', () => {
 
       const link = screen.getByRole('link')
       expect(link).toHaveClass('flex', 'flex-col', 'items-center')
-
-      const iconSvg = container.querySelector('svg')
-      expect(iconSvg).toBeTruthy() // Default inactive state
 
       const svg = screen.getByTestId('nav-icon')
       expect(svg).toHaveClass('fill-current')

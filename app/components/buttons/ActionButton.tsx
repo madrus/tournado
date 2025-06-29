@@ -40,6 +40,7 @@ export function ActionButton({
   const iconElement = icon
     ? renderIcon(icon, {
         className: size === 'sm' ? 'h-4 w-4' : 'h-5 w-5',
+        'data-testid': 'action-button-icon',
       })
     : null
 

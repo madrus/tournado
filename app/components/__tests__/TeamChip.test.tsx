@@ -55,19 +55,19 @@ describe('TeamChip Component', () => {
     })
 
     it('should render as a div when no onClick or showActions', () => {
-      const { container } = render(<TeamChip team={mockTeam} />)
+      render(<TeamChip team={mockTeam} />)
 
-      const chip = container.firstChild
-      expect(chip?.nodeName).toBe('DIV')
+      const chip = screen.getByTestId('team-chip')
+      expect(chip.tagName).toBe('DIV')
       expect(chip).not.toHaveAttribute('role')
     })
 
     it('should apply custom className', () => {
-      const { container } = render(
+      render(
         <TeamChip team={mockTeam} className='custom-class' />
       )
 
-      expect(container.firstChild).toHaveClass('custom-class')
+      expect(screen.getByTestId('team-chip')).toHaveClass('custom-class')
     })
   })
 
@@ -93,9 +93,9 @@ describe('TeamChip Component', () => {
 
     it('should add cursor-pointer class when onClick is provided', () => {
       const handleClick = vi.fn()
-      const { container } = render(<TeamChip team={mockTeam} onClick={handleClick} />)
+      render(<TeamChip team={mockTeam} onClick={handleClick} />)
 
-      expect(container.firstChild).toHaveClass('cursor-pointer')
+      expect(screen.getByTestId('team-chip')).toHaveClass('cursor-pointer')
     })
   })
 
@@ -177,11 +177,11 @@ describe('TeamChip Component', () => {
 
     it('should apply admin chip classes when showActions and onDelete are provided', () => {
       const handleDelete = vi.fn()
-      const { container } = render(
+      render(
         <TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />
       )
 
-      expect(container.firstChild).toHaveClass('pl-2 pr-3') // LTR chip classes
+      expect(screen.getByTestId('team-chip')).toHaveClass('pl-2 pr-3') // LTR chip classes
     })
   })
 
@@ -320,19 +320,19 @@ describe('TeamChip Component', () => {
 
     it('should apply correct chip classes for admin mode', () => {
       const handleDelete = vi.fn()
-      const { container } = render(
+      render(
         <TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />
       )
 
-      expect(container.firstChild).toHaveClass('pl-2 pr-3') // LTR chip classes (based on mocked language)
+      expect(screen.getByTestId('team-chip')).toHaveClass('pl-2 pr-3') // LTR chip classes (based on mocked language)
     })
   })
 
   describe('CSS Classes', () => {
     it('should have correct base CSS classes', () => {
-      const { container } = render(<TeamChip team={mockTeam} />)
+      render(<TeamChip team={mockTeam} />)
 
-      const chip = container.firstChild
+      const chip = screen.getByTestId('team-chip')
       expect(chip).toHaveClass(
         'inline-flex',
         'h-10',
@@ -352,9 +352,9 @@ describe('TeamChip Component', () => {
     })
 
     it('should have hover and focus classes', () => {
-      const { container } = render(<TeamChip team={mockTeam} />)
+      render(<TeamChip team={mockTeam} />)
 
-      const chip = container.firstChild
+      const chip = screen.getByTestId('team-chip')
       expect(chip).toHaveClass(
         'hover:scale-105',
         'active:scale-95',
@@ -375,9 +375,9 @@ describe('TeamChip Component', () => {
     })
 
     it('should have default padding when not in admin mode', () => {
-      const { container } = render(<TeamChip team={mockTeam} />)
+      render(<TeamChip team={mockTeam} />)
 
-      expect(container.firstChild).toHaveClass('px-3')
+      expect(screen.getByTestId('team-chip')).toHaveClass('px-3')
     })
   })
 

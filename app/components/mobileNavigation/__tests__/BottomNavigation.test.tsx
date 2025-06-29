@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
@@ -77,7 +77,7 @@ describe('BottomNavigation', () => {
         </MemoryRouter>
       )
 
-      const innerContainer = screen.getByRole('navigation').firstChild
+      const innerContainer = screen.getByTestId('navigation-items-container')
       expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
     })
   })
@@ -133,7 +133,7 @@ describe('BottomNavigation', () => {
       const navItems = screen.getAllByTestId(/^nav-item-/)
       const itemLabels = navItems.map(item => {
         const href = item.getAttribute('href')
-        const label = item.querySelector('[data-testid^="label-"]')?.textContent
+        const label = within(item).getByTestId(/^label-/).textContent
         return { href, label }
       })
 
@@ -206,13 +206,14 @@ describe('BottomNavigation', () => {
       )
 
       const nav = screen.getByRole('navigation')
-      expect(nav.children).toHaveLength(1)
+      expect(nav).toContainElement(screen.getByTestId('navigation-items-container'))
 
-      const innerContainer = nav.firstChild as HTMLElement
+      const innerContainer = screen.getByTestId('navigation-items-container')
       expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
 
       // Should have 3 navigation items inside the container
-      expect(innerContainer.children).toHaveLength(3)
+      const navigationItems = within(innerContainer).getAllByRole('link')
+      expect(navigationItems).toHaveLength(3)
     })
   })
 

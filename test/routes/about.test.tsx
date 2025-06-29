@@ -126,7 +126,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('heading', { level: 1 }).closest('div')
+      const container = screen.getByTestId('about-container')
       expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
     })
 
@@ -193,7 +193,7 @@ describe('About Page', () => {
 
       // All section headings should be within proper structure
       headings.forEach(heading => {
-        expect(heading.parentElement).toBeInTheDocument()
+        expect(heading).toBeInTheDocument()
       })
     })
   })

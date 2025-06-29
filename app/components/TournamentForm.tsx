@@ -258,6 +258,7 @@ export function TournamentForm({
         className='space-y-8'
         noValidate
         onSubmit={handleSubmit}
+        role='form'
       >
         {/* Hidden fields */}
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
@@ -448,6 +449,7 @@ export function TournamentForm({
                     (!isPanelEnabled(3) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}
+                  data-testid={`division-${division.toLowerCase()}`}
                 >
                   <input
                     type='checkbox'
@@ -528,6 +530,7 @@ export function TournamentForm({
                     (!isPanelEnabled(4) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}
+                  data-testid={`category-${category.toLowerCase()}`}
                 >
                   <input
                     type='checkbox'

@@ -91,7 +91,8 @@ describe('FooterLink', () => {
       )
       // Should not have any additional classes
       expect(link).toHaveClass(
-        'text-foreground-light hover:text-foreground-darker transition-colors', { exact: true }
+        'text-foreground-light hover:text-foreground-darker transition-colors',
+        { exact: true }
       )
     })
 
@@ -110,7 +111,8 @@ describe('FooterLink', () => {
       )
       // Should use default empty string
       expect(link).toHaveClass(
-        'text-foreground-light hover:text-foreground-darker transition-colors', { exact: true }
+        'text-foreground-light hover:text-foreground-darker transition-colors',
+        { exact: true }
       )
     })
   })
@@ -263,8 +265,10 @@ describe('FooterLink', () => {
       )
 
       const link = screen.getByRole('link')
-      expect(link.children).toHaveLength(0) // Should contain only text, no nested elements
-      expect(link.firstChild?.nodeType).toBe(Node.TEXT_NODE)
+      expect(link).toHaveTextContent(defaultProps.label)
+      // Instead of direct node access, check for no nested elements using childNodes
+      expect(link.childNodes.length).toBe(1)
+      expect(link.childNodes[0].nodeType).toBe(Node.TEXT_NODE)
     })
   })
 
@@ -280,7 +284,8 @@ describe('FooterLink', () => {
       const link = screen.getByRole('link')
       // Should have default classes plus the default empty string
       expect(link).toHaveClass(
-        'text-foreground-light hover:text-foreground-darker transition-colors', { exact: true }
+        'text-foreground-light hover:text-foreground-darker transition-colors',
+        { exact: true }
       )
     })
   })

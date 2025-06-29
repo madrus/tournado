@@ -78,6 +78,19 @@ const mockTournaments: TournamentData[] = [
   },
 ]
 
+// Helper function to get the first visible element from a list
+function getFirstVisible(elements: HTMLElement[]): HTMLElement | undefined {
+  for (const el of elements) {
+    try {
+      expect(el).toBeVisible()
+      return el
+    } catch {
+      // not visible
+    }
+  }
+  return undefined
+}
+
 // Helper function to complete panel 1 (tournament selection)
 const completePanel1 = async (user: ReturnType<typeof userEvent.setup>) => {
   // Select tournament
@@ -89,19 +102,15 @@ const completePanel1 = async (user: ReturnType<typeof userEvent.setup>) => {
   // Wait for dropdown and select visible option
   await waitFor(() => {
     const dropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
-    const visibleOption = dropdownOptions.find(
-      option => !option.closest('select[aria-hidden="true"]')
-    )
-    expect(visibleOption).toBeInTheDocument()
+    // Use .toBeVisible() assertion to ensure at least one is visible
+    expect(dropdownOptions.some(option => option.offsetParent !== null)).toBe(true)
   })
 
   const tournamentDropdownOptions = screen.getAllByText(
     'Test Tournament 1 - Test Location 1'
   )
-  const tournamentOption = tournamentDropdownOptions.find(
-    option => !option.closest('select[aria-hidden="true"]')
-  )!
-  await user.click(tournamentOption)
+  const tournamentOption = getFirstVisible(tournamentDropdownOptions)
+  await user.click(tournamentOption!)
 
   // Wait for divisions to load and select division
   await waitFor(() => {
@@ -118,17 +127,14 @@ const completePanel1 = async (user: ReturnType<typeof userEvent.setup>) => {
   // Wait for dropdown and select visible option
   await waitFor(() => {
     const divisionDropdownOptions = screen.getAllByText('First Division')
-    const visibleOption = divisionDropdownOptions.find(
-      option => !option.closest('select[aria-hidden="true"]')
+    expect(divisionDropdownOptions.some(option => option.offsetParent !== null)).toBe(
+      true
     )
-    expect(visibleOption).toBeInTheDocument()
   })
 
   const divisionDropdownOptions = screen.getAllByText('First Division')
-  const divisionOption = divisionDropdownOptions.find(
-    option => !option.closest('select[aria-hidden="true"]')
-  )!
-  await user.click(divisionOption)
+  const divisionOption = getFirstVisible(divisionDropdownOptions)
+  await user.click(divisionOption!)
 
   // Wait for categories to load and select category
   await waitFor(() => {
@@ -145,17 +151,14 @@ const completePanel1 = async (user: ReturnType<typeof userEvent.setup>) => {
   // Wait for dropdown and select visible option
   await waitFor(() => {
     const categoryDropdownOptions = screen.getAllByText('JO8')
-    const visibleOption = categoryDropdownOptions.find(
-      option => !option.closest('select[aria-hidden="true"]')
+    expect(categoryDropdownOptions.some(option => option.offsetParent !== null)).toBe(
+      true
     )
-    expect(visibleOption).toBeInTheDocument()
   })
 
   const categoryDropdownOptions = screen.getAllByText('JO8')
-  const categoryOption = categoryDropdownOptions.find(
-    option => !option.closest('select[aria-hidden="true"]')
-  )!
-  await user.click(categoryOption)
+  const categoryOption = getFirstVisible(categoryDropdownOptions)
+  await user.click(categoryOption!)
 }
 
 // Helper function to complete panels 1 and 2
@@ -677,19 +680,15 @@ describe('TeamForm Component - onBlur Validation', () => {
           'Test Tournament 1 - Test Location 1'
         )
         // The visible dropdown option will be the one that's not hidden
-        const visibleOption = dropdownOptions.find(
-          option => !option.closest('select[aria-hidden="true"]')
-        )
-        expect(visibleOption).toBeInTheDocument()
+        const visibleOption = getFirstVisible(dropdownOptions)
+        expect(visibleOption).toBeDefined()
       })
 
       const tournamentDropdownOptions = screen.getAllByText(
         'Test Tournament 1 - Test Location 1'
       )
-      const tournamentOption = tournamentDropdownOptions.find(
-        option => !option.closest('select[aria-hidden="true"]')
-      )!
-      await user.click(tournamentOption)
+      const tournamentOption = getFirstVisible(tournamentDropdownOptions)
+      await user.click(tournamentOption!)
 
       // Wait for divisions to load and select division
       await waitFor(() => {
@@ -706,17 +705,13 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for dropdown and select visible option
       await waitFor(() => {
         const divisionDropdownOptions = screen.getAllByText('First Division')
-        const visibleOption = divisionDropdownOptions.find(
-          option => !option.closest('select[aria-hidden="true"]')
-        )
-        expect(visibleOption).toBeInTheDocument()
+        const visibleOption = getFirstVisible(divisionDropdownOptions)
+        expect(visibleOption).toBeDefined()
       })
 
       const divisionDropdownOptions = screen.getAllByText('First Division')
-      const divisionOption = divisionDropdownOptions.find(
-        option => !option.closest('select[aria-hidden="true"]')
-      )!
-      await user.click(divisionOption)
+      const divisionOption = getFirstVisible(divisionDropdownOptions)
+      await user.click(divisionOption!)
 
       // Wait for categories to load and select category
       await waitFor(() => {
@@ -733,17 +728,13 @@ describe('TeamForm Component - onBlur Validation', () => {
       // Wait for dropdown and select visible option
       await waitFor(() => {
         const categoryDropdownOptions = screen.getAllByText('JO8')
-        const visibleOption = categoryDropdownOptions.find(
-          option => !option.closest('select[aria-hidden="true"]')
-        )
-        expect(visibleOption).toBeInTheDocument()
+        const visibleOption = getFirstVisible(categoryDropdownOptions)
+        expect(visibleOption).toBeDefined()
       })
 
       const categoryDropdownOptions = screen.getAllByText('JO8')
-      const categoryOption = categoryDropdownOptions.find(
-        option => !option.closest('select[aria-hidden="true"]')
-      )!
-      await user.click(categoryOption)
+      const categoryOption = getFirstVisible(categoryDropdownOptions)
+      await user.click(categoryOption!)
 
       // STEP 2: Now test panel 2 (team info) validation
 

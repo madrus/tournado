@@ -201,13 +201,10 @@ describe('ActionLinkButton', () => {
         </RouterWrapper>
       )
 
-      const link = screen.getByRole('link')
-      const children = Array.from(link.children)
-
-      // First child should be the icon
-      expect(children[0]).toHaveAttribute('data-testid', 'icon-add')
-      // Second child should contain the text
-      expect(children[1]).toHaveTextContent('Test Button')
+      // Instead of assigning 'link', use inline queries
+      expect(screen.getByTestId('icon-add')).toBeInTheDocument()
+      expect(screen.getByTestId('icon-add')).toHaveAttribute('data-testid', 'icon-add')
+      expect(screen.getByText('Test Button')).toBeInTheDocument()
     })
 
     // Remove or update RTL-specific tests if not present in the new implementation

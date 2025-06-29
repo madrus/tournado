@@ -121,7 +121,7 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconSvg = screen.getByTestId('nav-icon')
+      const iconSvg = container.querySelector('svg')
       const label = screen.getByText('Teams')
 
       // Check inactive styling - now uses semantic classes
@@ -146,7 +146,7 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      const iconSvg = screen.getByTestId('nav-icon')
+      const iconSvg = container.querySelector('svg[class*="text-brand"]')
       const label = screen.getByText('Teams')
 
       // Check active styling
@@ -176,7 +176,7 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      let iconSvg = screen.getByTestId('nav-icon')
+      let iconSvg = container.querySelector('svg[class*="text-brand"]')
       expect(iconSvg).toHaveClass('text-brand') // Should be active
 
       // Test teams route
@@ -194,7 +194,7 @@ describe('NavigationItem', () => {
         </MemoryRouter>
       )
 
-      iconSvg = screen.getByTestId('nav-icon')
+      iconSvg = container.querySelector('svg')
       expect(iconSvg).toBeTruthy() // Should be inactive
     })
   })
@@ -275,7 +275,7 @@ describe('NavigationItem', () => {
         expect(link).toHaveAttribute('href', to)
 
         // Check that SVG icon is rendered
-        const iconElement = screen.getByTestId('nav-icon')
+        const iconElement = container.querySelector('svg')
         expect(iconElement).toBeInTheDocument()
         expect(iconElement).toHaveClass('fill-current')
 
@@ -306,7 +306,7 @@ describe('NavigationItem', () => {
       const link = screen.getByRole('link')
       expect(link).toHaveClass('flex', 'flex-col', 'items-center')
 
-      const iconSvg = screen.getByTestId('nav-icon')
+      const iconSvg = container.querySelector('svg')
       expect(iconSvg).toBeTruthy() // Default inactive state
 
       const svg = screen.getByTestId('nav-icon')

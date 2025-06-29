@@ -77,7 +77,7 @@ describe('BottomNavigation', () => {
         </MemoryRouter>
       )
 
-      const innerContainer = screen.getByRole('navigation').firstChild
+      const innerContainer = screen.getByTestId('navigation-items-container')
       expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
     })
   })
@@ -206,13 +206,14 @@ describe('BottomNavigation', () => {
       )
 
       const nav = screen.getByRole('navigation')
-      expect(nav.children).toHaveLength(1)
+      expect(nav).toContainElement(screen.getByTestId('navigation-items-container'))
 
-      const innerContainer = nav.firstChild as HTMLElement
+      const innerContainer = screen.getByTestId('navigation-items-container')
       expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
 
       // Should have 3 navigation items inside the container
-      expect(innerContainer.children).toHaveLength(3)
+      const navigationItems = within(innerContainer).getAllByRole('link')
+      expect(navigationItems).toHaveLength(3)
     })
   })
 

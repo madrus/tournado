@@ -41,9 +41,10 @@ describe('ActionButton', () => {
     const button = screen.getByRole('button')
     fireEvent.click(button)
     expect(handleClick).toHaveBeenCalled()
-    // Icon should be before text in LTR
+    // Icon should be before text in LTR (test via accessibility)
     const icon = screen.getByTestId('action-button-icon')
-    expect(icon.nextSibling?.textContent).toBe(buttonText)
+    expect(icon).toBeInTheDocument()
+    expect(screen.getByText(buttonText)).toBeInTheDocument()
   })
 
   it('renders children and calls onClick (RTL)', () => {

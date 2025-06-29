@@ -158,7 +158,7 @@ export default function AdminDashboard(): JSX.Element {
             title='System Settings'
             description='Configure application settings and preferences.'
             icon={<SettingsIcon className='h-5 w-5' />}
-            mainColor='teal'
+            mainColor='emerald'
             hoverColor='brand'
             iconColor='text-red-600'
             language={i18n.language}
@@ -169,7 +169,7 @@ export default function AdminDashboard(): JSX.Element {
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'
             icon={<TuneIcon className='h-5 w-5' />}
-            mainColor='teal'
+            mainColor='emerald'
             hoverColor='brand'
             iconColor='text-emerald-300'
             language={i18n.language}

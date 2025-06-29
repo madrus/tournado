@@ -34,6 +34,7 @@ function getPanelStyles(colorScheme: ColorAccent) {
 
 export function getPanelClasses(colorScheme: ColorAccent): {
   base: string
+  background: string
   icon: string
   glow: string
 } {
@@ -45,6 +46,7 @@ export function getPanelClasses(colorScheme: ColorAccent): {
       style.border,
       style.gradient
     ),
+    background: style.gradient,
     icon: cn(
       'flex h-8 w-8 items-center justify-center rounded-full border-2',
       'transition-[border-color,background-color,color] duration-500 ease-in-out',

@@ -144,7 +144,7 @@ describe('DesktopFooter', () => {
       )
 
       const attribution = screen.getByText('Built with ♥️ by Madrus4U')
-      expect(attribution.textContent).toContain('♥️')
+      expect(attribution).toHaveTextContent(/♥️/)
     })
   })
 

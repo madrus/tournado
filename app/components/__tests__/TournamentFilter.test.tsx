@@ -129,8 +129,7 @@ describe('TournamentFilter', () => {
     )
 
     // Check that the custom class is applied to the container
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
-    const comboField = comboFields[0].closest('div')
+    const comboField = screen.getByTestId('combo-field-tournamentFilter')
     expect(comboField).toHaveClass(customClassName)
   })
 
@@ -138,8 +137,7 @@ describe('TournamentFilter', () => {
     render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
     // Check that default class is applied
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
-    const comboField = comboFields[0].closest('div')
+    const comboField = screen.getByTestId('combo-field-tournamentFilter')
     expect(comboField).toHaveClass('max-w-md')
   })
 

@@ -128,19 +128,17 @@ describe('TournamentFilter', () => {
       />
     )
 
-    // Check that the custom class is applied to the container
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
-    const comboField = comboFields[0].closest('div')
-    expect(comboField).toHaveClass(customClassName)
+    // Check that the custom class is applied to the ComboField container
+    const comboFieldContainer = screen.getByTestId('tournamentFilter-combo-field')
+    expect(comboFieldContainer).toHaveClass(customClassName)
   })
 
   it('should apply default className when no className prop is provided', () => {
     render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
-    // Check that default class is applied
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
-    const comboField = comboFields[0].closest('div')
-    expect(comboField).toHaveClass('max-w-md')
+    // Check that default class is applied to the ComboField container
+    const comboFieldContainer = screen.getByTestId('tournamentFilter-combo-field')
+    expect(comboFieldContainer).toHaveClass('max-w-md')
   })
 
   it('should pass correct props to useTournamentFilter hook', () => {
@@ -202,8 +200,9 @@ describe('TournamentFilter', () => {
 
       // Should be able to tab to the component
       await user.tab()
-      const focusedElement = document.activeElement
-      expect(focusedElement).toBeInTheDocument()
+      // Instead of direct node access, use screen.getByLabelText or screen.getByRole
+      const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+      expect(comboFields[0]).toHaveFocus()
     })
   })
 })

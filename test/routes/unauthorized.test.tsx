@@ -192,9 +192,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const mainContainer = screen
-        .getByText('Access Denied')
-        .closest('div[class*="min-h-screen"]')
+      const mainContainer = screen.getByTestId('main-container')
       expect(mainContainer).toHaveClass(
         'flex',
         'min-h-screen',
@@ -212,9 +210,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const contentCard = screen
-        .getByText('Access Denied')
-        .closest('div[class*="bg-background"]')
+      const contentCard = screen.getByTestId('content-card')
       expect(contentCard).toHaveClass(
         'mx-auto',
         'max-w-md',
@@ -232,7 +228,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const iconContainer = screen.getByTestId('block-icon').closest('div')
+      const iconContainer = screen.getByTestId('icon-container')
       expect(iconContainer).toHaveClass(
         'flex',
         'h-12',
@@ -277,7 +273,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByText('Access Denied').closest('div[class*="gap-4"]')
+      const container = screen.getByTestId('content-wrapper')
       expect(container).toHaveClass('flex', 'flex-col', 'items-center', 'gap-4')
     })
 
@@ -288,9 +284,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const content =
-        screen.getByText('Access Denied').closest('div[class*="gap-4"]')?.textContent ||
-        ''
+      const content = screen.getByTestId('content-wrapper').textContent || ''
 
       // Verify content flows logically: icon, title, description, actions
       expect(content.indexOf('Access Denied')).toBeLessThan(
@@ -308,7 +302,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const actionsContainer = screen.getByTestId('error-recovery-link').closest('div')
+      const actionsContainer = screen.getByTestId('actions-container')
       expect(actionsContainer).toHaveClass('flex', 'w-full', 'flex-col', 'gap-2')
     })
   })
@@ -398,7 +392,7 @@ describe('Unauthorized Page', () => {
       )
 
       const icon = screen.getByTestId('block-icon')
-      const iconContainer = icon.closest('div')
+      const iconContainer = screen.getByTestId('icon-container')
 
       expect(icon).toHaveClass('text-brand')
       expect(iconContainer).toHaveClass('bg-error')
@@ -411,9 +405,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const mainContainer = screen
-        .getByText('Access Denied')
-        .closest('div[class*="min-h-screen"]')
+      const mainContainer = screen.getByTestId('main-container')
       expect(mainContainer).toHaveClass('items-center', 'justify-center')
     })
   })

@@ -127,6 +127,23 @@ export default [
         version: 28,
       },
     },
+    rules: {
+      // Enforce React Testing Library best practices
+      'testing-library/prefer-screen-queries': 'error',
+      'testing-library/no-node-access': 'error',
+      'testing-library/prefer-find-by': 'error',
+      'testing-library/await-async-queries': 'error',
+      'testing-library/await-async-utils': 'error',
+      
+      // Jest DOM best practices
+      'jest-dom/prefer-checked': 'error',
+      'jest-dom/prefer-enabled-disabled': 'error',
+      'jest-dom/prefer-required': 'error',
+      'jest-dom/prefer-to-have-attribute': 'error',
+      'jest-dom/prefer-to-have-class': 'error',
+      'jest-dom/prefer-to-have-text-content': 'error',
+      'jest-dom/prefer-to-have-value': 'error',
+    },
   },
 
   // Node specific configuration

@@ -10,8 +10,11 @@ const DesktopFooter = (): JSX.Element => {
 
   return (
     <footer className='bg-footer border-footer/10 hidden border-t md:block'>
-      <div className='container mx-auto grid h-14 grid-cols-2 px-4'>
-        <div className='flex items-center'>
+      <div
+        className='container mx-auto grid h-14 grid-cols-2 px-4'
+        data-testid='footer-container'
+      >
+        <div className='flex items-center' data-testid='footer-left-section'>
           <Link to='/' className='flex items-center'>
             <span
               className={cn(
@@ -23,7 +26,10 @@ const DesktopFooter = (): JSX.Element => {
             </span>
           </Link>
         </div>
-        <div className='flex items-center justify-end'>
+        <div
+          className='flex items-center justify-end'
+          data-testid='footer-right-section'
+        >
           <span
             className={cn(
               'text-footer-foreground m-0 p-0 leading-[1]',

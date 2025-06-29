@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -259,23 +259,27 @@ describe('NavigationItem', () => {
           key: 'default',
         })
 
-        render(
+        const { container, unmount } = render(
           <MemoryRouter>
             <NavigationItem to={to} icon={icon} label={label} />
           </MemoryRouter>
         )
 
-        const link = screen.getByRole('link', { name: `Navigate to ${label}` })
+        const link = within(container).getByRole('link', {
+          name: `Navigate to ${label}`,
+        })
         expect(link).toHaveAttribute('data-testid', expectedDataCy)
         expect(link).toHaveAttribute('href', to)
 
         // Check that SVG icon is rendered
-        const iconElement = screen.getByTestId('nav-icon')
+        const iconElement = within(container).getByTestId('nav-icon')
         expect(iconElement).toBeInTheDocument()
         expect(iconElement).toHaveClass('fill-current')
 
         // Check that label is rendered
-        expect(screen.getByText(label)).toBeInTheDocument()
+        expect(within(container).getByText(label)).toBeInTheDocument()
+
+        unmount()
       })
     })
   })

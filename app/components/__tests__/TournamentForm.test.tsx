@@ -851,8 +851,8 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      // Initially no divisions selected - check count text
-      expect(screen.getByText(/0 selected/)).toBeInTheDocument()
+      // Initially no divisions selected - the first "0 selected" text belongs to divisions
+      expect(screen.getAllByText(/0 selected/)[0]).toBeInTheDocument()
 
       // Select first division
       const firstDivisionLabel = screen.getByTestId('division-first_division')
@@ -860,7 +860,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(screen.getByText(/1 selected/)).toBeInTheDocument()
+        expect(screen.getAllByText(/1 selected/)[0]).toBeInTheDocument()
       })
     })
 
@@ -868,8 +868,8 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      // Initially no categories selected - check count text
-      expect(screen.getByText(/0 selected/)).toBeInTheDocument()
+      // Initially no categories selected - the second "0 selected" text belongs to categories
+      expect(screen.getAllByText(/0 selected/)[1]).toBeInTheDocument()
 
       // Select first category
       const jo8Label = screen.getByTestId('category-jo8')
@@ -877,7 +877,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(screen.getByText(/1 selected/)).toBeInTheDocument()
+        expect(screen.getAllByText(/1 selected/)[1]).toBeInTheDocument()
       })
     })
 
@@ -894,9 +894,9 @@ describe('TournamentForm Component', () => {
       const firstDivisionLabel = screen.getByTestId('division-first_division')
       await user.click(firstDivisionLabel)
 
-      // Should show 0 selected
+      // Should show 0 selected for divisions
       await waitFor(() => {
-        expect(screen.getByText(/0 selected/)).toBeInTheDocument()
+        expect(screen.getAllByText(/0 selected/)[0]).toBeInTheDocument()
       })
     })
   })

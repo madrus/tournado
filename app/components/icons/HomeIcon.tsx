@@ -7,7 +7,7 @@ type HomeIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  [key: string]: any // Allow extra props
+  [key: string]: unknown // Allow extra props
 }
 
 export function HomeIcon({

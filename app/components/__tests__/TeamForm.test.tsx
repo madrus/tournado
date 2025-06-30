@@ -1,6 +1,6 @@
 import { createMemoryRouter, RouterProvider } from 'react-router'
 
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -35,7 +35,7 @@ Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
   writable: true,
 })
 
-// Mock i18n - translate error keys to actual messages for testing
+// Mock i18n - return keys as-is for testing
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
@@ -78,6 +78,25 @@ const mockTournaments: TournamentData[] = [
   },
 ]
 
+// Add at the top of the test file, after mockTournaments:
+const PANEL1_FORMDATA: Partial<TeamFormData> = {
+  tournamentId: 'tournament-1',
+  division: 'FIRST_DIVISION',
+  category: 'JO8',
+}
+
+const ALL_PANELS_FORMDATA: Partial<TeamFormData> = {
+  tournamentId: 'tournament-1',
+  clubName: 'Original Club',
+  teamName: 'Original Team',
+  division: 'FIRST_DIVISION',
+  category: 'JO8',
+  teamLeaderName: 'Original Leader',
+  teamLeaderPhone: '0611111111',
+  teamLeaderEmail: 'original@example.com',
+  privacyAgreement: true,
+}
+
 // Helper function to get the first visible element from a list
 function getFirstVisible(elements: HTMLElement[]): HTMLElement | undefined {
   for (const el of elements) {
@@ -89,29 +108,6 @@ function getFirstVisible(elements: HTMLElement[]): HTMLElement | undefined {
     }
   }
   return undefined
-}
-
-// Helper function to complete panel 1 (tournament selection)
-const completePanel1 = async () => {
-  await act(async () => {
-    state().setFormData({
-      tournamentId: 'tournament-1',
-      division: 'FIRST_DIVISION',
-      category: 'JO8',
-    })
-  })
-}
-
-// Helper function to complete panels 1 and 2
-const _completePanels1And2 = async (user: ReturnType<typeof userEvent.setup>) => {
-  await completePanel1()
-
-  // Fill panel 2 required fields
-  const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-  const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-
-  await user.type(clubNameInput, 'Test Club')
-  await user.type(teamNameInput, 'Test Team')
 }
 
 // Helper to render TeamForm with required props and proper router context
@@ -192,10 +188,11 @@ const renderTeamForm = (
 
 // Reset store before each test to prevent cross-test contamination
 beforeEach(() => {
+  state().resetStoreState()
   state().resetForm()
 })
 
-describe('TeamForm Component - onBlur Validation', () => {
+describe('TeamForm Component - filling the form', () => {
   describe('Touch-based Error Display', () => {
     it('should not show error messages initially', () => {
       renderTeamForm('create', 'public')
@@ -233,217 +230,139 @@ describe('TeamForm Component - onBlur Validation', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('should show error message when required field is blurred empty', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Test panel 2 field validation
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-
-      // Focus and then blur the input (without typing anything)
-      await user.click(clubNameInput)
-      await user.tab() // This will blur the current field
-
-      // Should show error message after blur
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should not show error message when valid content is entered', async () => {
-      renderTeamForm('create', 'public')
-
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-
-      // Enter valid content and blur
-      await userEvent.type(clubNameInput, 'Valid Club Name')
-      await userEvent.tab()
-
-      // Should not show error message
-      expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-      ).not.toBeInTheDocument()
-    })
-
-    it('should show error message when email field is blurred with invalid email', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Fill panel 2 required fields to enable panel 3
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      await user.type(clubNameInput, 'Test Club')
-      await user.type(teamNameInput, 'Test Team')
-
-      // STEP 3: Test panel 3 email validation
-      const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
-
-      // Focus, enter invalid email, then blur
-      await user.click(emailInput)
-      await user.type(emailInput, 'invalid-email')
-      await user.tab()
-
-      // Wait for error to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should show error message when club name exceeds length', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Test panel 2 club name length validation
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const longClubName = 'a'.repeat(101) // Exceeds 100 character limit
-
-      // Focus, enter long club name, then blur
-      await user.click(clubNameInput)
-      await user.type(clubNameInput, longClubName)
-      await user.tab()
-
-      // Wait for length validation error to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameTooLong'])
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should clear error when valid input is provided after blur error', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Test panel 2 validation clearing
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-
-      // First trigger an error by blurring empty field
-      await user.click(clubNameInput)
-      await user.tab()
-
-      // Wait for error to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-        ).toBeInTheDocument()
+    describe('when panel 1 is completed', () => {
+      it('should show error message when required field is blurred empty', async () => {
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        expect(clubNameInput).toBeEnabled()
+        await userEvent.click(clubNameInput)
+        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        await userEvent.click(teamNameInput)
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          ).toBeInTheDocument()
+        })
       })
 
-      // Now type valid content
-      await user.type(clubNameInput, 'Valid Club Name')
-      await user.tab()
-
-      // Error should be cleared
-      expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-      ).not.toBeInTheDocument()
-    })
-
-    it('should show error when phone field is blurred with invalid phone number', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Fill panel 2 required fields to enable panel 3
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      await user.type(clubNameInput, 'Test Club')
-      await user.type(teamNameInput, 'Test Team')
-
-      // STEP 3: Test panel 3 phone validation
-      const phoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
-
-      // Focus, enter invalid phone (letters not allowed), then blur
-      await user.click(phoneInput)
-      await user.type(phoneInput, 'abc123')
-      await user.tab()
-
-      // Wait for error to appear
-      await waitFor(() => {
+      it('should not show error message when valid content is entered', async () => {
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        await userEvent.type(clubNameInput, 'Valid Club Name')
+        await userEvent.tab()
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberInvalid'])
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should show error when team name exceeds length limit and field is blurred', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Test panel 2 team name validation
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      const longTeamName = 'a'.repeat(51) // Exceeds 50 character limit
-
-      // Focus, enter long team name, then blur
-      await user.click(teamNameInput)
-      await user.type(teamNameInput, longTeamName)
-      await user.tab()
-
-      // Wait for error to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should show multiple field errors when multiple fields are blurred with invalid data', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
-      // STEP 1: Complete panel 1 to enable panel 2
-      await completePanel1()
-
-      // STEP 2: Test multiple validation errors within the same panel (panel 2)
-      // This avoids the complexity of cross-panel dependencies
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-
-      // Trigger club name validation error
-      await user.click(clubNameInput)
-      await user.tab() // Leave empty to trigger required error
-
-      // Wait for club name error to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-        ).toBeInTheDocument()
+          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).not.toBeInTheDocument()
       })
 
-      // Trigger team name length validation error
-      const longTeamName = 'a'.repeat(51) // Exceeds 50 character limit
-      await user.click(teamNameInput)
-      await user.type(teamNameInput, longTeamName)
-      await user.tab()
+      it('should show error message when email field is blurred with invalid email', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        await user.type(clubNameInput, 'Test Club')
+        await user.type(teamNameInput, 'Test Team')
+        const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
+        await user.click(emailInput)
+        await user.type(emailInput, 'invalid-email')
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
+          ).toBeInTheDocument()
+        })
+      })
 
-      // Wait for both errors to be visible simultaneously
-      await waitFor(() => {
+      it('should show error message when club name exceeds length', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        const longClubName = 'a'.repeat(101)
+        await user.click(clubNameInput)
+        await user.type(clubNameInput, longClubName)
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameTooLong'])
+          ).toBeInTheDocument()
+        })
+      })
+
+      it('should clear error when valid input is provided after blur error', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        await user.click(clubNameInput)
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          ).toBeInTheDocument()
+        })
+        await user.type(clubNameInput, 'Valid Club Name')
+        await userEvent.tab()
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-        ).toBeInTheDocument()
-        expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
-        ).toBeInTheDocument()
+          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        ).not.toBeInTheDocument()
+      })
+
+      it('should show error when phone field is blurred with invalid phone number', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        await user.type(clubNameInput, 'Test Club')
+        await user.type(teamNameInput, 'Test Team')
+        const phoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
+        await user.click(phoneInput)
+        await user.type(phoneInput, 'abc123')
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberInvalid'])
+          ).toBeInTheDocument()
+        })
+      })
+
+      it('should show error when team name exceeds length limit and field is blurred', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        const longTeamName = 'a'.repeat(51)
+        await user.click(teamNameInput)
+        await user.type(teamNameInput, longTeamName)
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
+          ).toBeInTheDocument()
+        })
+      })
+
+      it('should show multiple field errors when multiple fields are blurred with invalid data', async () => {
+        const user = userEvent.setup()
+        renderTeamForm('create', 'public', PANEL1_FORMDATA)
+        const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        await user.click(clubNameInput)
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          ).toBeInTheDocument()
+        })
+        const longTeamName = 'a'.repeat(51)
+        await user.click(teamNameInput)
+        await user.type(teamNameInput, longTeamName)
+        await userEvent.tab()
+        await waitFor(() => {
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          ).toBeInTheDocument()
+          expect(
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
+          ).toBeInTheDocument()
+        })
       })
     })
   })
@@ -473,21 +392,10 @@ describe('TeamForm Component - onBlur Validation', () => {
         teamName: TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'],
       }
 
-      renderTeamForm('create', 'public', undefined, serverErrors)
+      // Start with panel 1 filled so panel 2 is enabled
+      renderTeamForm('create', 'public', PANEL1_FORMDATA, serverErrors)
 
-      // Server errors should NOT be visible initially (fields are disabled)
-      expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
-      ).not.toBeInTheDocument()
-
-      // Complete panel 1 to enable panel 2
-      const user = userEvent.setup()
-      await completePanel1()
-
-      // Server errors should STILL not be visible (fields haven't been blurred yet)
+      // Server errors should NOT be visible initially (fields are not blurred yet)
       expect(
         screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
       ).not.toBeInTheDocument()
@@ -499,10 +407,10 @@ describe('TeamForm Component - onBlur Validation', () => {
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
 
-      await user.click(clubNameInput)
-      await user.tab() // blur clubName
-      await user.click(teamNameInput)
-      await user.tab() // blur teamName
+      await userEvent.click(clubNameInput)
+      await userEvent.tab() // blur clubName
+      await userEvent.click(teamNameInput)
+      await userEvent.tab() // blur teamName
 
       // Now server errors should be visible for the blurred fields
       await waitFor(() => {
@@ -605,10 +513,10 @@ describe('TeamForm Component - onBlur Validation', () => {
 
     it('should show validation errors when fields are blurred with invalid data', async () => {
       const user = userEvent.setup()
-      renderTeamForm('create', 'public')
+      // Start with panel 1 filled so panel 2 is enabled
+      renderTeamForm('create', 'public', PANEL1_FORMDATA)
 
       // STEP 1: Complete panel 1 (tournament selection) to enable panel 2
-
       // Select tournament - use the combobox button role instead of label text
       const tournamentSelect = screen.getByRole('combobox', {
         name: /teams\.form\.tournament.*select option/,
@@ -678,18 +586,17 @@ describe('TeamForm Component - onBlur Validation', () => {
       await user.click(categoryOption!)
 
       // STEP 2: Now test panel 2 (team info) validation
-
       // Wait for panel 2 to be enabled
       await waitFor(() => {
         expect(screen.getByLabelText(/teams\.form\.clubName/)).toBeEnabled()
       })
 
       // Test clubName validation - focus and blur without entering data
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/i)
       await user.click(clubNameInput)
       await user.tab()
 
-      // Check that the error appears in the DOM
+      // Check that the error appears in the DOM (panel 2 is enabled)
       await waitFor(() => {
         const errorText = screen.queryByText(
           TEST_TRANSLATIONS['teams.form.errors.clubNameRequired']
@@ -698,7 +605,6 @@ describe('TeamForm Component - onBlur Validation', () => {
       })
 
       // STEP 3: Complete panel 2 to enable panel 3, then test email validation
-
       // Fill in required team info to enable panel 3
       await user.type(clubNameInput, 'Test Club')
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
@@ -721,10 +627,16 @@ describe('TeamForm Component - onBlur Validation', () => {
         )
         expect(emailErrorText).toBeInTheDocument()
       })
+
+      // At this point, the SAVE button should still be disabled (privacy agreement not checked)
+      const submitButton = screen.getByRole('button', {
+        name: 'common.actions.save',
+      })
+      expect(submitButton).toBeDisabled()
     })
 
     it('should disable save button when form is invalid for admin form', async () => {
-      renderTeamForm('create', 'admin')
+      renderTeamForm('create', 'admin', PANEL1_FORMDATA)
 
       // Get the submit button
       const submitButton = screen.getByRole('button', {
@@ -744,7 +656,7 @@ describe('TeamForm Component - onBlur Validation', () => {
     })
 
     it('should disable save button when form is invalid for edit form', async () => {
-      renderTeamForm('edit', 'public')
+      renderTeamForm('edit', 'public', PANEL1_FORMDATA)
 
       // Get the submit button
       const submitButton = screen.getByRole('button', {
@@ -768,20 +680,9 @@ describe('TeamForm Component - onBlur Validation', () => {
     })
   })
 
-  describe('Admin Form Variant', () => {
-    it('should not show privacy agreement checkbox in edit mode', async () => {
-      renderTeamForm('edit', 'admin')
-
-      // Privacy agreement checkbox should not be present in edit mode
-      expect(
-        screen.queryByRole('checkbox', { name: /teams\.form\.agreeToPrivacyPolicy/ })
-      ).not.toBeInTheDocument()
-    })
-  })
-
   describe('Privacy Agreement Field', () => {
     it('should show privacy agreement checkbox in create mode', () => {
-      renderTeamForm('create', 'public')
+      renderTeamForm('create', 'public', ALL_PANELS_FORMDATA)
 
       const privacyCheckbox = screen.getByRole('checkbox', {
         name: /teams\.form\.agreeToPrivacyPolicy/,
@@ -790,7 +691,7 @@ describe('TeamForm Component - onBlur Validation', () => {
     })
 
     it('should hide privacy agreement checkbox in edit mode', () => {
-      renderTeamForm('edit', 'public')
+      renderTeamForm('edit', 'public', ALL_PANELS_FORMDATA)
 
       const privacyCheckbox = screen.queryByRole('checkbox', {
         name: /teams\.form\.agreeToPrivacyPolicy/,
@@ -799,25 +700,22 @@ describe('TeamForm Component - onBlur Validation', () => {
     })
 
     it('should keep save button disabled until all required fields including privacy agreement are filled', async () => {
-      const user = userEvent.setup()
-      renderTeamForm('create', 'public')
-
       // STEP 1: Complete panel 1 using our helper function
-      await completePanel1()
+      renderTeamForm('create', 'public', PANEL1_FORMDATA)
 
       // STEP 2: Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      await user.type(clubNameInput, 'Test Club')
-      await user.type(teamNameInput, 'Test Team')
+      await userEvent.type(clubNameInput, 'Test Club')
+      await userEvent.type(teamNameInput, 'Test Team')
 
       // STEP 3: Fill panel 3 fields
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
       const phoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
       const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
-      await user.type(teamLeaderNameInput, 'John Doe')
-      await user.type(phoneInput, '0612345678')
-      await user.type(emailInput, 'john@example.com')
+      await userEvent.type(teamLeaderNameInput, 'John Doe')
+      await userEvent.type(phoneInput, '0612345678')
+      await userEvent.type(emailInput, 'john@example.com')
 
       // Submit button should still be disabled (privacy agreement not checked)
       const submitButton = screen.getByRole('button', {
@@ -829,7 +727,7 @@ describe('TeamForm Component - onBlur Validation', () => {
       const privacyCheckbox = screen.getByRole('checkbox', {
         name: /teams\.form\.agreeToPrivacyPolicy/,
       })
-      await user.click(privacyCheckbox)
+      await userEvent.click(privacyCheckbox)
 
       // Now button should be enabled
       await waitFor(() => {
@@ -837,8 +735,19 @@ describe('TeamForm Component - onBlur Validation', () => {
       })
 
       // Uncheck privacy agreement - button should be disabled again
-      await user.click(privacyCheckbox)
+      await userEvent.click(privacyCheckbox)
       expect(submitButton).toBeDisabled()
+    })
+  })
+
+  describe('Admin Form Variant', () => {
+    it('should not show privacy agreement checkbox in edit mode', async () => {
+      renderTeamForm('edit', 'admin')
+
+      // Privacy agreement checkbox should not be present in edit mode
+      expect(
+        screen.queryByRole('checkbox', { name: /teams\.form\.agreeToPrivacyPolicy/ })
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -1079,11 +988,6 @@ describe('TeamForm Category Field', () => {
 })
 
 describe('TeamForm Reset Button Functionality', () => {
-  beforeEach(() => {
-    // Reset store before each test to prevent cross-test contamination
-    state().resetForm()
-  })
-
   describe('Reset Button Visibility', () => {
     it('should show reset button when onCancel prop is provided', () => {
       const mockOnCancel = vi.fn()
@@ -1140,10 +1044,11 @@ describe('TeamForm Reset Button Functionality', () => {
       const user = userEvent.setup()
       const mockOnCancel = vi.fn()
 
+      // Fill out the form with some data
       renderTeamForm(
         'create',
         'public',
-        undefined,
+        PANEL1_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1151,9 +1056,6 @@ describe('TeamForm Reset Button Functionality', () => {
         undefined,
         mockOnCancel
       )
-
-      // Fill out the form with some data
-      await completePanel1()
 
       // Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
@@ -1211,10 +1113,11 @@ describe('TeamForm Reset Button Functionality', () => {
       const user = userEvent.setup()
       const mockOnCancel = vi.fn()
 
+      // Complete panel 1 to enable subsequent panels
       renderTeamForm(
         'create',
         'public',
-        undefined,
+        ALL_PANELS_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1223,17 +1126,12 @@ describe('TeamForm Reset Button Functionality', () => {
         mockOnCancel
       )
 
-      // Complete panel 1 to enable subsequent panels
-      await completePanel1()
-
       // Get club name field from panel 2 (which is now enabled)
-      const clubNameInput = screen.getByRole('textbox', {
-        name: /teams\.form\.clubName/i,
-      })
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/i)
 
       // Type and then clear to trigger validation
-      await user.type(clubNameInput, 'Test Club')
-      await user.clear(clubNameInput)
+      await user.click(clubNameInput)
+      await user.keyboard('{Control>}a{/Control}{Delete}')
       await user.tab() // Blur the field
 
       // Wait for validation error to appear
@@ -1258,18 +1156,6 @@ describe('TeamForm Reset Button Functionality', () => {
   })
 
   describe('Team Edit Mode - Reset to Initial Data', () => {
-    const initialTeamData: Partial<TeamFormData> = {
-      tournamentId: 'tournament-1',
-      clubName: 'Original Club',
-      teamName: 'Original Team',
-      division: 'FIRST_DIVISION',
-      category: 'JO8',
-      teamLeaderName: 'Original Leader',
-      teamLeaderPhone: '0611111111',
-      teamLeaderEmail: 'original@example.com',
-      privacyAgreement: true,
-    }
-
     it('should call onCancel when reset button is clicked in edit mode with modifications', async () => {
       const user = userEvent.setup()
       const mockOnCancel = vi.fn()
@@ -1277,7 +1163,7 @@ describe('TeamForm Reset Button Functionality', () => {
       renderTeamForm(
         'edit',
         'admin',
-        initialTeamData,
+        ALL_PANELS_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1292,17 +1178,18 @@ describe('TeamForm Reset Button Functionality', () => {
         expect(screen.getByDisplayValue('Original Team')).toBeInTheDocument()
       })
 
-      // Modify the form fields
-      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
+      // Modify the form fields using getByLabelText
+      const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/i)
+      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/i)
+      const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/i)
 
-      await user.clear(clubNameInput)
-      await user.type(clubNameInput, 'Modified Club')
-      await user.clear(teamNameInput)
-      await user.type(teamNameInput, 'Modified Team')
-      await user.clear(teamLeaderNameInput)
-      await user.type(teamLeaderNameInput, 'Modified Leader')
+      // Clear and type new values
+      await userEvent.clear(clubNameInput)
+      await userEvent.type(clubNameInput, 'Modified Club')
+      await userEvent.clear(teamNameInput)
+      await userEvent.type(teamNameInput, 'Modified Team')
+      await userEvent.clear(teamLeaderNameInput)
+      await userEvent.type(teamLeaderNameInput, 'Modified Leader')
 
       // Verify fields are modified
       expect(clubNameInput).toHaveValue('Modified Club')
@@ -1329,7 +1216,7 @@ describe('TeamForm Reset Button Functionality', () => {
       renderTeamForm(
         'edit',
         'admin',
-        initialTeamData,
+        ALL_PANELS_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1346,7 +1233,8 @@ describe('TeamForm Reset Button Functionality', () => {
 
       // Clear a required field to trigger validation error
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      await user.clear(clubNameInput)
+      await user.tripleClick(clubNameInput)
+      await user.keyboard('{Delete}')
       await user.tab() // Blur to trigger validation
 
       // Wait for validation error
@@ -1376,7 +1264,7 @@ describe('TeamForm Reset Button Functionality', () => {
       renderTeamForm(
         'edit',
         'admin',
-        initialTeamData,
+        ALL_PANELS_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1409,11 +1297,14 @@ describe('TeamForm Reset Button Functionality', () => {
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
       const teamLeaderEmailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
 
-      await user.clear(clubNameInput)
+      await user.click(clubNameInput)
+      await user.keyboard('{Control>}a{/Control}')
       await user.type(clubNameInput, 'Completely Different Club')
-      await user.clear(teamNameInput)
+      await user.click(teamNameInput)
+      await user.keyboard('{Control>}a{/Control}')
       await user.type(teamNameInput, 'Completely Different Team')
-      await user.clear(teamLeaderEmailInput)
+      await user.click(teamLeaderEmailInput)
+      await user.keyboard('{Control>}a{/Control}')
       await user.type(teamLeaderEmailInput, 'different@example.com')
 
       // Click reset button and wait for state updates
@@ -1460,10 +1351,11 @@ describe('TeamForm Reset Button Functionality', () => {
       const user = userEvent.setup()
       const mockOnCancel = vi.fn()
 
+      // Fill out form completely
       renderTeamForm(
         'create',
         'public',
-        undefined,
+        PANEL1_FORMDATA,
         undefined,
         undefined,
         undefined,
@@ -1471,9 +1363,6 @@ describe('TeamForm Reset Button Functionality', () => {
         undefined,
         mockOnCancel
       )
-
-      // Fill out form completely
-      await completePanel1()
 
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
       const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)

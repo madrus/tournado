@@ -35,6 +35,46 @@ vi.mock('~/utils/rtlUtils', () => ({
   getLatinTitleClass: (language: string) => (language === 'ar' ? 'latin-title' : ''),
 }))
 
+// Mock child components
+vi.mock('../PanelBackground', () => ({
+  PanelBackground: ({
+    backgroundColor,
+    'data-testid': testId,
+  }: {
+    backgroundColor: string
+    'data-testid'?: string
+  }) => (
+    <div data-testid={testId} className={backgroundColor}>
+      panel-background
+    </div>
+  ),
+}))
+
+vi.mock('../PanelLayer', () => ({
+  PanelLayer: ({
+    title,
+    description,
+    'data-testid': testId,
+    children,
+    isHover,
+    className,
+  }: {
+    title: string
+    description: string
+    'data-testid'?: string
+    children?: React.ReactNode
+    isHover?: boolean
+    className?: string
+  }) => (
+    <div data-testid={testId} className={className}>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <div data-testid={isHover ? 'hover-icon' : 'base-icon'}>icon</div>
+      {children}
+    </div>
+  ),
+}))
+
 // Mock icon component
 const MockIcon = ({ className }: { className?: string }) => (
   <span data-testid='mock-icon' className={className}>
@@ -44,7 +84,7 @@ const MockIcon = ({ className }: { className?: string }) => (
 
 const mockedLink = vi.mocked(Link)
 
-describe('ActionLinkPanel Component', () => {
+describe('ActionLinkPanel Component Integration', () => {
   const defaultProps = {
     title: 'Test Panel',
     description: 'Test description',
@@ -58,44 +98,67 @@ describe('ActionLinkPanel Component', () => {
     vi.clearAllMocks()
   })
 
-  describe('Basic Rendering', () => {
-    it('should render title and description correctly', () => {
+  describe('Component Architecture', () => {
+    it('should render PanelBackground with correct props', () => {
       render(<ActionLinkPanel {...defaultProps} />)
 
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-      expect(screen.getByText('Test description')).toBeInTheDocument()
+      const background = screen.getByTestId('panel-background')
+      expect(background).toBeInTheDocument()
+      expect(background).toHaveClass('bg-emerald-800')
     })
 
-    it('should render the provided icon', () => {
+    it('should render base PanelLayer with correct props', () => {
       render(<ActionLinkPanel {...defaultProps} />)
 
-      const icon = screen.getByTestId('mock-icon')
-      expect(icon).toBeInTheDocument()
-      expect(icon).toHaveClass('test-icon')
+      const baseLayer = screen.getByTestId('main-panel-layer')
+      expect(baseLayer).toBeInTheDocument()
+      expect(baseLayer).toHaveTextContent('Test Panel')
+      expect(baseLayer).toHaveTextContent('Test description')
+
+      const baseIcon = screen.getByTestId('base-icon')
+      expect(baseIcon).toBeInTheDocument()
     })
 
-    it('should render as clickable div when no "to" prop is provided', () => {
+    it('should render hover PanelLayer when hoverColor provided', () => {
+      render(<ActionLinkPanel {...defaultProps} hoverColor='blue' />)
+
+      const hoverLayer = screen.getByTestId('hover-panel-layer')
+      expect(hoverLayer).toBeInTheDocument()
+      expect(hoverLayer).toHaveTextContent('Test Panel')
+      expect(hoverLayer).toHaveTextContent('Test description')
+
+      const hoverIcon = screen.getByTestId('hover-icon')
+      expect(hoverIcon).toBeInTheDocument()
+    })
+
+    it('should not render hover PanelLayer when no hoverColor', () => {
       render(<ActionLinkPanel {...defaultProps} />)
 
-      // Test that content is rendered (div vs other elements is implementation detail)
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-      expect(screen.getByText('Test description')).toBeInTheDocument()
+      expect(screen.queryByTestId('hover-panel-layer')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('hover-icon')).not.toBeInTheDocument()
     })
 
-    it('should render children when provided', () => {
+    it('should pass children to both layers when hoverColor provided', () => {
       render(
-        <ActionLinkPanel {...defaultProps}>
+        <ActionLinkPanel {...defaultProps} hoverColor='blue'>
           <div data-testid='test-children'>Test children</div>
         </ActionLinkPanel>
       )
 
-      expect(screen.getByTestId('test-children')).toBeInTheDocument()
-      expect(screen.getByText('Test children')).toBeInTheDocument()
+      const baseLayers = screen.getAllByTestId('test-children')
+      expect(baseLayers).toHaveLength(2) // One in base layer, one in hover layer
     })
   })
 
-  describe('Link Rendering', () => {
-    it('should render as Link when "to" prop is provided', () => {
+  describe('Router Integration', () => {
+    it('should render as div when no "to" prop provided', () => {
+      render(<ActionLinkPanel {...defaultProps} />)
+
+      expect(mockedLink).not.toHaveBeenCalled()
+      expect(screen.getByLabelText('Test Panel panel')).toBeInTheDocument()
+    })
+
+    it('should render as Link when "to" prop provided', () => {
       render(
         <MemoryRouter>
           <ActionLinkPanel {...defaultProps} to='/test-route' />
@@ -105,24 +168,26 @@ describe('ActionLinkPanel Component', () => {
       expect(mockedLink).toHaveBeenCalled()
       const linkCall = mockedLink.mock.calls[0][0]
       expect(linkCall.to).toBe('/test-route')
+      expect(linkCall.className).toBe('block')
     })
 
-    it('should apply focus classes when rendered as Link', () => {
+    it('should not apply onClick when "to" prop provided', () => {
+      const handleClick = vi.fn()
+
       render(
         <MemoryRouter>
-          <ActionLinkPanel {...defaultProps} to='/test-route' />
+          <ActionLinkPanel {...defaultProps} to='/test-route' onClick={handleClick} />
         </MemoryRouter>
       )
 
       expect(mockedLink).toHaveBeenCalled()
       const linkCall = mockedLink.mock.calls[0][0]
-      // Basic focus handling is provided by the component
-      expect(linkCall.className).toBeTruthy()
+      expect(linkCall.onClick).toBeUndefined()
     })
   })
 
-  describe('Click Functionality', () => {
-    it('should call onClick when clicked (div variant)', () => {
+  describe('Event Handling', () => {
+    it('should handle onClick when no "to" prop', () => {
       const handleClick = vi.fn()
       render(<ActionLinkPanel {...defaultProps} onClick={handleClick} />)
 
@@ -132,323 +197,96 @@ describe('ActionLinkPanel Component', () => {
       expect(handleClick).toHaveBeenCalledTimes(1)
     })
 
-    it('should not have onClick when "to" prop is provided', () => {
+    it('should apply button role when onClick provided', () => {
       const handleClick = vi.fn()
+      render(<ActionLinkPanel {...defaultProps} onClick={handleClick} />)
 
-      render(
-        <MemoryRouter>
-          <ActionLinkPanel {...defaultProps} to='/test-route' onClick={handleClick} />
-        </MemoryRouter>
-      )
+      const panel = screen.getByLabelText('Test Panel panel')
+      expect(panel).toHaveAttribute('role', 'button')
+      expect(panel).toHaveAttribute('tabIndex', '0')
+    })
 
-      // onClick should be ignored when to prop is provided
-      expect(mockedLink).toHaveBeenCalled()
-      const linkCall = mockedLink.mock.calls[0][0]
-      expect(linkCall.onClick).toBeUndefined()
+    it('should not apply button role when no onClick', () => {
+      render(<ActionLinkPanel {...defaultProps} />)
+
+      const panel = screen.getByLabelText('Test Panel panel')
+      expect(panel).not.toHaveAttribute('role')
+      expect(panel).not.toHaveAttribute('tabIndex')
     })
   })
 
-  describe('Color Schemes', () => {
-    it('should apply emerald color scheme correctly', () => {
-      render(
-        <ActionLinkPanel {...defaultProps} mainColor='emerald' iconColor='emerald' />
-      )
+  describe('Border Color Logic', () => {
+    it('should apply main border color', () => {
+      render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-emerald-300')
-      expect(iconContainer).toHaveClass('border-emerald-300')
+      const panel = screen.getByLabelText('Test Panel panel')
+      expect(panel).toHaveClass('border-teal-400/60')
     })
 
-    it('should apply blue color scheme correctly', () => {
-      render(<ActionLinkPanel {...defaultProps} mainColor='blue' iconColor='blue' />)
+    it('should apply hover border color when hoverColor provided', () => {
+      render(<ActionLinkPanel {...defaultProps} mainColor='teal' hoverColor='brand' />)
 
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-blue-300')
-      expect(iconContainer).toHaveClass('border-blue-300')
+      const panel = screen.getByLabelText('Test Panel panel')
+      expect(panel).toHaveClass('border-teal-400/60')
+      expect(panel).toHaveClass('hover:border-red-400/60')
     })
 
-    it('should apply gray color scheme correctly', () => {
-      render(<ActionLinkPanel {...defaultProps} mainColor='gray' iconColor='gray' />)
+    it('should not apply hover border when no hoverColor', () => {
+      render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-gray-300')
-      expect(iconContainer).toHaveClass('border-gray-300')
-    })
-
-    it('should apply brand color scheme correctly', () => {
-      render(<ActionLinkPanel {...defaultProps} mainColor='brand' iconColor='red' />)
-
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-300')
-      expect(iconContainer).toHaveClass('border-red-300')
-    })
-
-    it('should apply brand color scheme correctly', () => {
-      render(<ActionLinkPanel {...defaultProps} mainColor='brand' iconColor='brand' />)
-
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-600')
-      expect(iconContainer).toHaveClass('border-red-600')
+      const panel = screen.getByLabelText('Test Panel panel')
+      expect(panel).toHaveClass('border-teal-400/60')
+      expect(panel.className).not.toMatch(/hover:border/)
     })
   })
 
-  describe('RTL Support', () => {
-    it('should apply correct text alignment for LTR languages', () => {
-      render(<ActionLinkPanel {...defaultProps} language='en' />)
-
-      // Text direction is applied via CSS (test with integration tests)
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-    })
-
-    it('should apply correct text alignment for RTL languages', () => {
-      render(<ActionLinkPanel {...defaultProps} language='ar' />)
-
-      // Text direction is applied via CSS (test with integration tests)
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-    })
-
-    it('should apply Latin title class for RTL languages', () => {
-      render(<ActionLinkPanel {...defaultProps} language='ar' />)
-
-      const title = screen.getByText('Test Panel')
-      expect(title).toHaveClass('latin-title')
-    })
-
-    it('should not apply Latin title class for LTR languages', () => {
-      render(<ActionLinkPanel {...defaultProps} language='en' />)
-
-      const title = screen.getByText('Test Panel')
-      expect(title).not.toHaveClass('latin-title')
-    })
-  })
-
-  describe('Styling and CSS Classes', () => {
-    it('should apply base panel styling', () => {
+  describe('Base Styling', () => {
+    it('should apply core panel classes', () => {
       render(<ActionLinkPanel {...defaultProps} />)
 
       const panel = screen.getByLabelText('Test Panel panel')
       expect(panel).toHaveClass('group')
+      expect(panel).toHaveClass('relative')
+      expect(panel).toHaveClass('cursor-pointer')
+      expect(panel).toHaveClass('overflow-hidden')
       expect(panel).toHaveClass('rounded-2xl')
       expect(panel).toHaveClass('border')
       expect(panel).toHaveClass('shadow-xl')
-      expect(panel).toHaveClass('cursor-pointer')
-      expect(panel).toHaveClass('relative')
-      expect(panel).toHaveClass('overflow-hidden')
-
-      // Test that content is also accessible
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-      expect(screen.getByText('Test description')).toBeInTheDocument()
-      expect(screen.getByLabelText('panel icon')).toBeInTheDocument()
+      expect(panel).toHaveClass('transition-colors')
+      expect(panel).toHaveClass('duration-750')
+      expect(panel).toHaveClass('ease-in-out')
     })
 
-    it('should apply emerald hover colors', () => {
-      render(<ActionLinkPanel {...defaultProps} mainColor='emerald' />)
-
-      const panel = screen.getByLabelText('Test Panel panel')
-      expect(panel).toHaveClass('border-emerald-400/60')
-
-      // Test that gradient background exists
-      const backgroundElement = screen.getByTestId('panel-background')
-      expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-    })
-
-    it('should apply correct icon container styling', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('flex')
-      expect(iconContainer).toHaveClass('h-8')
-      expect(iconContainer).toHaveClass('w-8')
-      expect(iconContainer).toHaveClass('items-center')
-      expect(iconContainer).toHaveClass('justify-center')
-      expect(iconContainer).toHaveClass('rounded-full')
-      expect(iconContainer).toHaveClass('border-2')
-      expect(iconContainer).toHaveClass('bg-transparent')
-    })
-
-    it('should apply correct title styling', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      const title = screen.getByText('Test Panel')
-      expect(title).toHaveClass('text-lg')
-      expect(title).toHaveClass('font-semibold')
-      expect(title).toHaveClass('text-white')
-    })
-
-    it('should apply correct description styling', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      const description = screen.getByText('Test description')
-      expect(description).toHaveClass('text-emerald-100/80')
-    })
-  })
-
-  describe('Content Layout', () => {
-    it('should organize content in correct layout', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      // Test that all content elements are accessible (layout is implementation detail)
-      expect(screen.getByLabelText('panel icon')).toBeInTheDocument()
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-      expect(screen.getByText('Test description')).toBeInTheDocument()
-    })
-
-    it('should place icon before title', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      // Test that both icon and title are present (order is implementation detail)
-      expect(screen.getByLabelText('panel icon')).toBeInTheDocument()
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-    })
-
-    it('should place children after description when provided', () => {
-      render(
-        <ActionLinkPanel {...defaultProps}>
-          <div data-testid='custom-children'>Custom content</div>
-        </ActionLinkPanel>
-      )
-
-      // Test that children are rendered (position is implementation detail)
-      expect(screen.getByTestId('custom-children')).toBeInTheDocument()
-    })
-  })
-
-  describe('Hover States', () => {
-    it('should render hover overlay when hoverColor is provided', () => {
+    it('should apply correct transition classes to layers', () => {
       render(<ActionLinkPanel {...defaultProps} hoverColor='blue' />)
 
-      // Should have both base content and hover overlay (both with same text)
-      const titles = screen.getAllByText('Test Panel')
-      expect(titles).toHaveLength(2)
+      const baseLayer = screen.getByTestId('main-panel-layer')
+      expect(baseLayer).toHaveClass('group-hover:opacity-0')
 
-      // Should have both base and hover icon containers
-      const iconContainers = screen.getAllByLabelText('panel icon')
-      expect(iconContainers).toHaveLength(2)
-    })
-
-    it('should not render hover overlay when no hoverColor is provided', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      // Should only have base content (no hover overlay)
-      const titles = screen.getAllByText('Test Panel')
-      expect(titles).toHaveLength(1)
-    })
-
-    it('should apply correct hover background colors', () => {
-      render(
-        <ActionLinkPanel {...defaultProps} mainColor='emerald' hoverColor='blue' />
-      )
-
-      // Check that both base and hover backgrounds exist
-      const baseBackground = screen.getByTestId('panel-background')
-      expect(baseBackground).toHaveClass('bg-gradient-to-br')
-      expect(baseBackground).toHaveClass('group-hover:opacity-0')
-
-      // Hover overlay should exist with blue colors
-      const titles = screen.getAllByText('Test Panel')
-      expect(titles).toHaveLength(2)
-    })
-
-    describe('Icon Color Transitions', () => {
-      it('should handle non-brand to non-brand color transition', () => {
-        render(
-          <ActionLinkPanel {...defaultProps} iconColor='green' hoverColor='blue' />
-        )
-
-        const iconContainers = screen.getAllByLabelText('panel icon')
-        expect(iconContainers).toHaveLength(2)
-
-        // Base icon (green)
-        expect(iconContainers[0]).toHaveClass('text-green-300')
-        expect(iconContainers[0]).toHaveClass('border-green-300')
-
-        // Hover icon (blue)
-        expect(iconContainers[1]).toHaveClass('text-blue-300')
-        expect(iconContainers[1]).toHaveClass('border-blue-300')
-      })
-
-      it('should handle non-brand to brand color transition', () => {
-        render(
-          <ActionLinkPanel {...defaultProps} iconColor='green' hoverColor='brand' />
-        )
-
-        const iconContainers = screen.getAllByLabelText('panel icon')
-        expect(iconContainers).toHaveLength(2)
-
-        // Base icon (green)
-        expect(iconContainers[0]).toHaveClass('text-green-300')
-        expect(iconContainers[0]).toHaveClass('border-green-300')
-
-        // Hover icon (brand = red-600)
-        expect(iconContainers[1]).toHaveClass('text-red-600')
-        expect(iconContainers[1]).toHaveClass('border-red-600')
-      })
-
-      it('should handle brand to non-brand color transition', () => {
-        render(
-          <ActionLinkPanel {...defaultProps} iconColor='brand' hoverColor='purple' />
-        )
-
-        const iconContainers = screen.getAllByLabelText('panel icon')
-        expect(iconContainers).toHaveLength(2)
-
-        // Base icon (brand = red-600)
-        expect(iconContainers[0]).toHaveClass('text-red-600')
-        expect(iconContainers[0]).toHaveClass('border-red-600')
-
-        // Hover icon (purple)
-        expect(iconContainers[1]).toHaveClass('text-purple-300')
-        expect(iconContainers[1]).toHaveClass('border-purple-300')
-      })
-
-      it('should handle brand to brand color transition', () => {
-        render(
-          <ActionLinkPanel {...defaultProps} iconColor='brand' hoverColor='brand' />
-        )
-
-        const iconContainers = screen.getAllByLabelText('panel icon')
-        expect(iconContainers).toHaveLength(2)
-
-        // Both icons should be brand (red-600)
-        expect(iconContainers[0]).toHaveClass('text-red-600')
-        expect(iconContainers[0]).toHaveClass('border-red-600')
-        expect(iconContainers[1]).toHaveClass('text-red-600')
-        expect(iconContainers[1]).toHaveClass('border-red-600')
-      })
-    })
-
-    it('should apply correct border color transitions', () => {
-      render(
-        <ActionLinkPanel {...defaultProps} mainColor='emerald' hoverColor='blue' />
-      )
-
-      const panel = screen.getByLabelText('Test Panel panel')
-      expect(panel).toHaveClass('border-emerald-400/60')
-      expect(panel).toHaveClass('hover:border-blue-400/60')
+      const hoverLayer = screen.getByTestId('hover-panel-layer')
+      expect(hoverLayer).toHaveClass('opacity-0')
+      expect(hoverLayer).toHaveClass('group-hover:opacity-100')
     })
   })
 
   describe('Edge Cases', () => {
-    it('should handle empty title', () => {
-      render(<ActionLinkPanel {...defaultProps} title='' />)
+    it('should handle missing optional props gracefully', () => {
+      const minimalProps = {
+        title: 'Test',
+        description: 'Test desc',
+        icon: <MockIcon />,
+        mainColor: 'blue' as ColorAccent,
+        iconColor: 'blue' as ColorAccent,
+        language: 'en',
+      }
 
-      const title = screen.getByRole('heading', { level: 3 })
-      expect(title).toHaveTextContent('')
+      expect(() => render(<ActionLinkPanel {...minimalProps} />)).not.toThrow()
     })
 
-    it('should handle empty description', () => {
-      render(<ActionLinkPanel {...defaultProps} description='' />)
+    it('should handle empty strings', () => {
+      render(<ActionLinkPanel {...defaultProps} title='' description='' />)
 
-      // Test that title is still visible when description is empty
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
-      // Empty description still creates a paragraph element (implementation detail)
-    })
-
-    it('should handle missing onClick and to props', () => {
-      render(<ActionLinkPanel {...defaultProps} />)
-
-      // Panel renders without crashing when no onClick or to props
-      expect(screen.getByText('Test Panel')).toBeInTheDocument()
+      expect(screen.getByTestId('main-panel-layer')).toBeInTheDocument()
     })
   })
 })

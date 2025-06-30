@@ -2,16 +2,12 @@ import { JSX, ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import {
-  getDescriptionClasses,
-  getPanelClasses,
-  getTitleClasses,
-  resolveColorAccent,
-} from '~/styles/panel.styles'
+import { resolveColorAccent } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
-import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
+import { getTypographyClasses } from '~/utils/rtlUtils'
 
-import PanelBackground from './PanelBackground'
+import { PanelBackground } from './PanelBackground'
+import { PanelLayer } from './PanelLayer'
 
 type ActionLinkPanelProps = {
   title: string
@@ -40,24 +36,6 @@ export function ActionLinkPanel({
 }: ActionLinkPanelProps): JSX.Element {
   const typographyClasses = getTypographyClasses(language)
 
-  // Always use mainColor as base (no more state switching)
-  const mainPanelClasses = getPanelClasses(mainColor)
-  const mainTitleClasses = getTitleClasses(mainColor)
-  const mainDescriptionClasses = getDescriptionClasses(mainColor)
-
-  // Generate hover overlay classes if hoverColor is provided
-  const hoverPanelClasses = hoverColor ? getPanelClasses(hoverColor) : null
-  const hoverTitleClasses = hoverColor ? getTitleClasses(hoverColor) : null
-  const hoverDescriptionClasses = hoverColor ? getDescriptionClasses(hoverColor) : null
-
-  // Calculate hover icon color
-  const getHoverIconColor = () => {
-    if (!hoverColor) return `text-${iconColor}-300`
-    return hoverColor === 'brand' ? 'text-red-600' : `text-${hoverColor}-300`
-  }
-  const hoverIconColor = getHoverIconColor()
-  const hoverIconBorderColor = hoverIconColor.replace('text-', 'border-')
-
   // Generate border colors based on resolved colors
   const getBorderColor = (color: ColorAccent, prefix = 'border') => {
     const resolvedColor = resolveColorAccent(color)
@@ -79,80 +57,49 @@ export function ActionLinkPanel({
       tabIndex={onClick ? 0 : undefined}
       aria-label={`${title} panel`}
     >
-      {/* New: Stable background layer */}
-      <PanelBackground backgroundColor='bg-emerald-800' />
-
-      {/* Base panel background and glow */}
-      <div
-        className={cn(
-          'absolute inset-0 transition-opacity duration-750 ease-in-out',
-          hoverColor ? 'group-hover:opacity-0' : '',
-          mainPanelClasses.background
-        )}
+      {/* Stable background layer */}
+      <PanelBackground
+        backgroundColor='bg-emerald-800'
         data-testid='panel-background'
-      >
-        <div className={mainPanelClasses.glow} />
-      </div>
+      />
 
-      {/* Base content layer - defines the height and layout */}
-      <div
+      {/* Base panel layer (normal flow) */}
+      <PanelLayer
+        title={title}
+        description={description}
+        icon={icon}
+        iconColor={iconColor} // always pass ColorAccent, not a Tailwind class string
+        mainColor={mainColor}
+        language={language}
+        textAlign={typographyClasses.textAlign}
         className={cn(
-          'relative z-20 flex flex-col items-start space-y-4 p-6 break-words transition-opacity duration-750 ease-in-out',
-          typographyClasses.textAlign,
+          'relative z-20 transition-opacity duration-750 ease-in-out',
           hoverColor ? 'group-hover:opacity-0' : ''
         )}
+        data-testid='main-panel-layer'
       >
-        <div
-          className={cn(
-            'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-            iconColor === 'brand' ? 'text-red-600' : `text-${iconColor}-300`,
-            iconColor === 'brand' ? 'border-red-600' : `border-${iconColor}-300`
-          )}
-          aria-label='panel icon'
-        >
-          {icon}
-        </div>
-        <h3 className={cn(mainTitleClasses, getLatinTitleClass(language))}>{title}</h3>
-        <p className={mainDescriptionClasses}>{description}</p>
         {children}
-      </div>
+      </PanelLayer>
 
-      {/* Hover overlay panel - only if hoverColor exists */}
-      {hoverColor && hoverPanelClasses ? (
-        <div
+      {/* Hover overlay panel - absolutely positioned overlay */}
+      {hoverColor ? (
+        <PanelLayer
+          title={title}
+          description={description}
+          icon={icon}
+          iconColor={iconColor} // keep original iconColor for consistency
+          mainColor={mainColor}
+          hoverColor={hoverColor}
+          isHover
+          language={language}
+          textAlign={typographyClasses.textAlign}
           className={cn(
-            'absolute inset-0 z-10 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
+            'absolute inset-0 z-30 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
           )}
+          data-testid='hover-panel-layer'
         >
-          {/* Hover background */}
-          <div className={cn('absolute inset-0', hoverPanelClasses.background)}>
-            <div className={hoverPanelClasses.glow} />
-          </div>
-
-          {/* Hover content */}
-          <div
-            className={cn(
-              'relative z-20 flex flex-col items-start space-y-4 p-6 break-words',
-              typographyClasses.textAlign
-            )}
-          >
-            <div
-              className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-                hoverIconColor,
-                hoverIconBorderColor
-              )}
-              aria-label='panel icon'
-            >
-              {icon}
-            </div>
-            <h3 className={cn(hoverTitleClasses, getLatinTitleClass(language))}>
-              {title}
-            </h3>
-            <p className={hoverDescriptionClasses ?? ''}>{description}</p>
-            {children}
-          </div>
-        </div>
+          {children}
+        </PanelLayer>
       ) : null}
     </div>
   )

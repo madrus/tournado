@@ -307,11 +307,11 @@ describe('Panel Styles', () => {
       ]
 
       Object.keys(colorClasses).forEach(colorKey => {
-        const colorScheme = colorClasses[colorKey as keyof typeof colorClasses]
+        const colorAccent = colorClasses[colorKey as keyof typeof colorClasses]
 
         requiredProperties.forEach(prop => {
-          expect(colorScheme).toHaveProperty(prop)
-          expect(typeof colorScheme[prop as keyof typeof colorScheme]).toBe('string')
+          expect(colorAccent).toHaveProperty(prop)
+          expect(typeof colorAccent[prop as keyof typeof colorAccent]).toBe('string')
         })
       })
     })

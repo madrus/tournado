@@ -91,4 +91,27 @@ test.describe('Admin Teams', () => {
     // Should see some admin interface (either team details or error page)
     await expect(page.locator('body')).toBeVisible()
   })
+
+  test('should access teams via admin panel button', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+    // Wait for page to load and content to render
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(2000)
+
+    // Wait for content to actually appear
+    await page.waitForFunction(() => document.body.children.length > 0)
+
+    // Should see "Team Management" panel in admin panel
+    const manageTeamsPanel = page.getByRole('link', {
+      name: 'Team Management',
+    })
+    await expect(manageTeamsPanel).toBeVisible({ timeout: 15000 })
+
+    // Click the panel
+    await manageTeamsPanel.click()
+
+    // Should navigate to teams page
+    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+  })
 })

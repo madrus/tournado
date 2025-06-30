@@ -134,7 +134,7 @@ export default [
       'testing-library/prefer-find-by': 'error',
       'testing-library/await-async-queries': 'error',
       'testing-library/await-async-utils': 'error',
-      
+
       // Jest DOM best practices
       'jest-dom/prefer-checked': 'error',
       'jest-dom/prefer-enabled-disabled': 'error',

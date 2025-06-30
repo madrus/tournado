@@ -9,12 +9,14 @@ import {
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
-type PanelLayerProps = {
+export type PanelLayerProps = {
   title: string
   description: string
   icon: JSX.Element
   iconColor: ColorAccent | string
-  color: ColorAccent
+  mainColor: ColorAccent
+  hoverColor?: ColorAccent
+  isHover?: boolean
   language: string
   textAlign: string
   children?: ReactNode
@@ -27,21 +29,37 @@ export function PanelLayer({
   description,
   icon,
   iconColor,
-  color,
+  mainColor,
+  hoverColor,
+  isHover = false,
   language,
   textAlign,
   children,
   className,
   'data-testid': testId,
 }: Readonly<PanelLayerProps>): JSX.Element {
-  const panelClasses = getPanelClasses(color)
-  const titleClasses = getTitleClasses(color)
-  const descriptionClasses = getDescriptionClasses(color)
+  // Determine which color to use for background/glow
+  const effectiveColor = isHover && hoverColor ? hoverColor : mainColor
+  const panelClasses = getPanelClasses(effectiveColor)
+  const titleClasses = getTitleClasses(effectiveColor)
+  const descriptionClasses = getDescriptionClasses(effectiveColor)
 
-  // Icon color logic (string for hover, ColorAccent for base)
+  // Icon color logic
   const getIconClasses = () => {
+    if (isHover && hoverColor) {
+      // Use hover icon color logic
+      const hoverIconColor =
+        hoverColor === 'brand' ? 'text-red-600' : `text-${hoverColor}-300`
+      const hoverIconBorder = hoverIconColor.replace('text-', 'border-')
+      return cn(
+        'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
+        hoverIconColor,
+        hoverIconBorder
+      )
+    }
+
+    // base layer: ColorAccent
     if (typeof iconColor === 'string' && iconColor.startsWith('text-')) {
-      // hover layer: text-xxx-300 or text-red-600
       const borderClass = iconColor.replace('text-', 'border-')
       return cn(
         'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
@@ -49,7 +67,6 @@ export function PanelLayer({
         borderClass
       )
     }
-    // base layer: ColorAccent
     return cn(
       'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
       iconColor === 'brand'
@@ -59,10 +76,16 @@ export function PanelLayer({
   }
 
   return (
-    <div className={cn('absolute inset-0', className)} data-testid={testId}>
+    <div className={cn('relative', className)} data-testid={testId}>
       {/* Panel gradient background and glow */}
-      <div className={panelClasses.background}>
-        <div className={panelClasses.glow} />
+      <div
+        className={cn('absolute inset-0', panelClasses.background)}
+        data-testid={testId ? `${testId}-background` : undefined}
+      >
+        <div
+          className={panelClasses.glow}
+          data-testid={testId ? `${testId}-glow` : undefined}
+        />
       </div>
       {/* Content */}
       <div
@@ -81,5 +104,3 @@ export function PanelLayer({
     </div>
   )
 }
-
-export default PanelLayer

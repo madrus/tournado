@@ -8,7 +8,7 @@ type PanelBackgroundProps = {
   'data-testid'?: string
 }
 
-const PanelBackground = ({
+export const PanelBackground = ({
   backgroundColor,
   className,
   'data-testid': testId,
@@ -18,5 +18,3 @@ const PanelBackground = ({
     data-testid={testId}
   />
 )
-
-export default PanelBackground

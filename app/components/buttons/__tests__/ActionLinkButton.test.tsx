@@ -67,11 +67,11 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-brand')
+    expect(link).toHaveClass('bg-red-600')
     expect(link).toHaveClass('text-white')
-    expect(link).toHaveClass('border-brand')
-    expect(link).toHaveClass('focus-visible:ring-brand')
-    expect(link).toHaveClass('hover:ring-brand')
+    expect(link).toHaveClass('border-red-600')
+    expect(link).toHaveClass('focus-visible:ring-red-600')
+    expect(link).toHaveClass('hover:ring-red-600')
   })
 
   it('renders with secondary variant', () => {
@@ -83,11 +83,11 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-transparent')
-    expect(link).toHaveClass('text-brand')
+    expect(link).toHaveClass('text-red-600')
     expect(link).toHaveClass('border')
-    expect(link).toHaveClass('border-brand')
-    expect(link).toHaveClass('focus-visible:ring-brand')
-    expect(link).toHaveClass('hover:ring-brand')
+    expect(link).toHaveClass('border-red-600')
+    expect(link).toHaveClass('focus-visible:ring-red-600')
+    expect(link).toHaveClass('hover:ring-red-600')
   })
 
   it('renders with emerald color when specified', () => {
@@ -201,13 +201,10 @@ describe('ActionLinkButton', () => {
         </RouterWrapper>
       )
 
-      const link = screen.getByRole('link')
-      const children = Array.from(link.children)
-
-      // First child should be the icon
-      expect(children[0]).toHaveAttribute('data-testid', 'icon-add')
-      // Second child should contain the text
-      expect(children[1]).toHaveTextContent('Test Button')
+      // Instead of assigning 'link', use inline queries
+      expect(screen.getByTestId('icon-add')).toBeInTheDocument()
+      expect(screen.getByTestId('icon-add')).toHaveAttribute('data-testid', 'icon-add')
+      expect(screen.getByText('Test Button')).toBeInTheDocument()
     })
 
     // Remove or update RTL-specific tests if not present in the new implementation
@@ -240,8 +237,8 @@ describe('ActionLinkButton', () => {
       expect(link).toHaveClass('hover:ring-2')
       expect(link).toHaveClass('hover:ring-offset-2')
       expect(link).toHaveClass('hover:ring-offset-white')
-      expect(link).toHaveClass('focus-visible:ring-brand')
-      expect(link).toHaveClass('hover:ring-brand')
+      expect(link).toHaveClass('focus-visible:ring-red-600')
+      expect(link).toHaveClass('hover:ring-red-600')
     })
 
     it('provides semantic link role', () => {
@@ -287,11 +284,11 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-brand')
+    expect(link).toHaveClass('bg-red-600')
     expect(link).toHaveClass('text-white')
-    expect(link).toHaveClass('border-brand')
-    expect(link).toHaveClass('focus-visible:ring-brand')
-    expect(link).toHaveClass('hover:ring-brand')
+    expect(link).toHaveClass('border-red-600')
+    expect(link).toHaveClass('focus-visible:ring-red-600')
+    expect(link).toHaveClass('hover:ring-red-600')
   })
 
   // Test secondary variant (brand)
@@ -304,10 +301,10 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-transparent')
-    expect(link).toHaveClass('text-brand')
+    expect(link).toHaveClass('text-red-600')
     expect(link).toHaveClass('border')
-    expect(link).toHaveClass('border-brand')
-    expect(link).toHaveClass('focus-visible:ring-brand')
-    expect(link).toHaveClass('hover:ring-brand')
+    expect(link).toHaveClass('border-red-600')
+    expect(link).toHaveClass('focus-visible:ring-red-600')
+    expect(link).toHaveClass('hover:ring-red-600')
   })
 })

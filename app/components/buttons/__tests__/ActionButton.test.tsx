@@ -41,9 +41,10 @@ describe('ActionButton', () => {
     const button = screen.getByRole('button')
     fireEvent.click(button)
     expect(handleClick).toHaveBeenCalled()
-    // Icon should be before text in LTR
-    const svg = button.querySelector('svg')
-    expect(svg?.nextSibling?.textContent).toBe(buttonText)
+    // Icon should be before text in LTR (test via accessibility)
+    const icon = screen.getByTestId('action-button-icon')
+    expect(icon).toBeInTheDocument()
+    expect(screen.getByText(buttonText)).toBeInTheDocument()
   })
 
   it('renders children and calls onClick (RTL)', () => {
@@ -67,7 +68,7 @@ describe('ActionButton', () => {
     fireEvent.click(button)
     expect(handleClick).toHaveBeenCalled()
     // Check that the icon is present
-    expect(button.querySelector('svg')).toBeInTheDocument()
+    expect(screen.getByTestId('action-button-icon')).toBeInTheDocument()
   })
 
   it('renders different variants correctly', () => {

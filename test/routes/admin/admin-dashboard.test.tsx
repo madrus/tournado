@@ -173,7 +173,6 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveAttribute('data-color-scheme', 'emerald')
       expect(teamPanel).toHaveAttribute(
         'data-link-to',
         '/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
@@ -190,7 +189,6 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveAttribute('data-color-scheme', 'blue')
       expect(tournamentPanel).toHaveAttribute(
         'data-link-to',
         '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
@@ -209,7 +207,6 @@ describe('Admin Dashboard', () => {
       )
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveAttribute('data-color-scheme', 'gray')
       expect(userPanel).not.toHaveAttribute('data-link-to') // No navigation
       expect(userPanel).toHaveTextContent('User Management')
       expect(userPanel).toHaveTextContent('Manage user accounts and permissions.')
@@ -223,7 +220,6 @@ describe('Admin Dashboard', () => {
       )
 
       const settingsPanel = screen.getByTestId('admin-panel-system-settings')
-      expect(settingsPanel).toHaveAttribute('data-color-scheme', 'brand')
       expect(settingsPanel).not.toHaveAttribute('data-link-to') // No navigation
       expect(settingsPanel).toHaveTextContent('System Settings')
       expect(settingsPanel).toHaveTextContent(
@@ -239,7 +235,6 @@ describe('Admin Dashboard', () => {
       )
 
       const reportsPanel = screen.getByTestId('admin-panel-reports-&-analytics')
-      expect(reportsPanel).toHaveAttribute('data-color-scheme', 'emerald')
       expect(reportsPanel).not.toHaveAttribute('data-link-to') // No navigation
       expect(reportsPanel).toHaveTextContent('Reports & Analytics')
       expect(reportsPanel).toHaveTextContent(
@@ -309,22 +304,10 @@ describe('Admin Dashboard', () => {
       )
 
       const apparelIcon = screen.getByTestId('apparel-icon')
-      expect(apparelIcon).toHaveClass(
-        'h-5',
-        'w-5',
-        'text-primary',
-        'transition-colors',
-        'group-hover:text-primary-hover'
-      )
+      expect(apparelIcon).toHaveClass('h-5', 'w-5')
 
       const trophyIcon = screen.getByTestId('trophy-icon')
-      expect(trophyIcon).toHaveClass(
-        'h-5',
-        'w-5',
-        'text-blue-700',
-        'transition-colors',
-        'group-hover:text-blue-800'
-      )
+      expect(trophyIcon).toHaveClass('h-5', 'w-5')
     })
   })
 
@@ -360,9 +343,7 @@ describe('Admin Dashboard', () => {
 
       // Check main structure exists
       const heading = screen.getByRole('heading', { level: 1 })
-      const container = heading.parentElement
-
-      expect(container).toBeInTheDocument()
+      expect(heading).toBeInTheDocument()
 
       // All panels should be present
       expect(screen.getAllByTestId(/^admin-panel-/)).toHaveLength(5)

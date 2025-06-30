@@ -41,8 +41,35 @@ export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
 
 /**
  * Color accent options for UI components
+ * Includes all official Tailwind CSS color names, plus:
+ * - 'brand' (maps to 'red')
+ * - 'primary' (maps to 'emerald')
  */
-export type ColorAccent = 'emerald' | 'brand' | 'blue' | 'gray'
+export type ColorAccent =
+  | 'brand' // special: maps to 'red'
+  | 'primary' // special: maps to 'emerald'
+  | 'slate'
+  | 'gray'
+  | 'zinc'
+  | 'neutral'
+  | 'stone'
+  | 'red'
+  | 'orange'
+  | 'amber'
+  | 'yellow'
+  | 'lime'
+  | 'green'
+  | 'emerald'
+  | 'teal'
+  | 'cyan'
+  | 'sky'
+  | 'blue'
+  | 'indigo'
+  | 'violet'
+  | 'purple'
+  | 'fuchsia'
+  | 'pink'
+  | 'rose'
 
 // ============================================================================
 // Division System

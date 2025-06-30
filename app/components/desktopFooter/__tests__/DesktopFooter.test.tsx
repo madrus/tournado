@@ -40,9 +40,8 @@ describe('DesktopFooter', () => {
       )
 
       const footer = screen.getByRole('contentinfo')
-      expect(footer.children).toHaveLength(1)
-
-      const container = footer.firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
+      expect(footer).toContainElement(container)
       expect(container).toHaveClass(
         'container',
         'mx-auto',
@@ -60,15 +59,17 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('contentinfo').firstChild as HTMLElement
-      expect(container.children).toHaveLength(2)
+      const container = screen.getByTestId('footer-container')
+      const leftSection = screen.getByTestId('footer-left-section')
+      const rightSection = screen.getByTestId('footer-right-section')
+
+      expect(container).toContainElement(leftSection)
+      expect(container).toContainElement(rightSection)
 
       // Left section (logo)
-      const leftSection = container.children[0] as HTMLElement
       expect(leftSection).toHaveClass('flex', 'items-center')
 
       // Right section (attribution)
-      const rightSection = container.children[1] as HTMLElement
       expect(rightSection).toHaveClass('flex', 'items-center', 'justify-end')
     })
   })
@@ -144,7 +145,7 @@ describe('DesktopFooter', () => {
       )
 
       const attribution = screen.getByText('Built with ♥️ by Madrus4U')
-      expect(attribution.textContent).toContain('♥️')
+      expect(attribution).toHaveTextContent('♥️')
     })
   })
 
@@ -205,7 +206,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('contentinfo').firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
       expect(container).toHaveClass('grid-cols-2')
     })
 
@@ -216,7 +217,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('contentinfo').firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
       expect(container).toHaveClass('h-14')
     })
 
@@ -227,7 +228,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('contentinfo').firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
       expect(container).toHaveClass('container', 'mx-auto')
     })
 
@@ -238,7 +239,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByRole('contentinfo').firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
       expect(container).toHaveClass('px-4')
     })
   })
@@ -254,13 +255,13 @@ describe('DesktopFooter', () => {
       const footer = screen.getByRole('contentinfo')
       expect(footer.tagName).toBe('FOOTER')
 
-      const container = footer.firstChild as HTMLElement
+      const container = screen.getByTestId('footer-container')
       expect(container.tagName).toBe('DIV')
 
-      const leftSection = container.children[0] as HTMLElement
+      const leftSection = screen.getByTestId('footer-left-section')
       expect(leftSection.tagName).toBe('DIV')
 
-      const rightSection = container.children[1] as HTMLElement
+      const rightSection = screen.getByTestId('footer-right-section')
       expect(rightSection.tagName).toBe('DIV')
     })
 
@@ -328,9 +329,9 @@ describe('DesktopFooter', () => {
       )
 
       const footer = screen.getByRole('contentinfo')
-      const container = footer.firstChild as HTMLElement
-      const leftSection = container.children[0] as HTMLElement
-      const rightSection = container.children[1] as HTMLElement
+      const container = screen.getByTestId('footer-container')
+      const leftSection = screen.getByTestId('footer-left-section')
+      const rightSection = screen.getByTestId('footer-right-section')
       const logoLink = screen.getByRole('link')
       const logoText = screen.getByText('Tournado')
       const attribution = screen.getByText('Built with ♥️ by Madrus4U')

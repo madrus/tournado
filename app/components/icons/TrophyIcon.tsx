@@ -7,6 +7,7 @@ type TrophyIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  'data-testid'?: string
 }
 
 export function TrophyIcon({
@@ -14,6 +15,7 @@ export function TrophyIcon({
   size = 24,
   variant = 'outlined',
   weight = 400,
+  'data-testid': dataTestId,
 }: TrophyIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -40,6 +42,7 @@ export function TrophyIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      data-testid={dataTestId}
     >
       <path d={path} />
     </svg>

@@ -44,10 +44,15 @@ const mockNavigator = {
     effectiveType: '4g',
     saveData: false,
   },
+  clipboard: {
+    read: vi.fn(),
+    write: vi.fn(),
+  },
 }
 
 const mockWindow = {
   innerWidth: 1024,
+  navigator: mockNavigator,
 }
 
 describe('PrefetchLink', () => {

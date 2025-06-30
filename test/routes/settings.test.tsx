@@ -132,7 +132,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      const container = screen.getByRole('heading', { level: 1 }).closest('div')
+      const container = screen.getByTestId('settings-container')
       expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
     })
 

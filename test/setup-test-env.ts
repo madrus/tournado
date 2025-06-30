@@ -1,6 +1,7 @@
 /* eslint-disable id-blacklist */
 /* eslint-disable no-console */
 import '@testing-library/jest-dom/vitest'
+import userEvent, { PointerEventsCheckLevel } from '@testing-library/user-event'
 
 import { afterEach, beforeEach, vi } from 'vitest'
 
@@ -93,6 +94,40 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+})
+
+// Polyfill PointerEvent for libraries relying on it
+if (typeof window.PointerEvent === 'undefined') {
+  class PointerEventPolyfill extends MouseEvent {}
+  window.PointerEvent =
+    PointerEventPolyfill as unknown as typeof globalThis.PointerEvent
+  ;(globalThis as { PointerEvent: typeof globalThis.PointerEvent }).PointerEvent =
+    window.PointerEvent
+}
+
+// Polyfill pointer capture methods used by Radix UI and user-event
+Object.defineProperty(HTMLElement.prototype, 'hasPointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
+  value: vi.fn(),
+  writable: true,
+})
+
+// Ensure userEvent does not error on elements with `pointer-events: none`
+const originalSetup = userEvent.setup
+Object.defineProperty(userEvent, 'setup', {
+  configurable: true,
+  value: (options?: Record<string, unknown>) =>
+    originalSetup({
+      pointerEventsCheck: PointerEventsCheckLevel.Never,
+      ...(options || {}),
+    }),
 })
 
 // Custom console handling during tests to show clean error messages

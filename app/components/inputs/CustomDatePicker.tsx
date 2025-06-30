@@ -5,7 +5,7 @@ import * as Popover from '@radix-ui/react-popover'
 
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
-import { getCalendarColorClasses, getInputColorClasses } from '~/styles/inputStyles'
+import { getCalendarColorClasses, getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
 
 type CustomDatePickerProps = {

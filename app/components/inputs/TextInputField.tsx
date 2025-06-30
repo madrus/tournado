@@ -1,7 +1,7 @@
 import { type FocusEvent, forwardRef, type JSX } from 'react'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import { getInputColorClasses } from '~/styles/inputStyles'
+import { getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
 
 type InputFieldProps = {

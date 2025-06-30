@@ -17,7 +17,7 @@ type ActionLinkPanelProps = {
   icon: JSX.Element
   mainColor: ColorAccent
   hoverColor?: ColorAccent
-  iconColor: string
+  iconColor: ColorAccent
   to?: string
   onClick?: () => void
   children?: ReactNode
@@ -50,7 +50,7 @@ export function ActionLinkPanel({
 
   // Calculate hover icon color
   const getHoverIconColor = () => {
-    if (!hoverColor) return iconColor
+    if (!hoverColor) return `text-${iconColor}-300`
     return hoverColor === 'brand' ? 'text-red-600' : `text-${hoverColor}-300`
   }
   const hoverIconColor = getHoverIconColor()
@@ -73,7 +73,7 @@ export function ActionLinkPanel({
         hoverBorderColor
       )}
       onClick={onClick}
-      role={onClick ? "button" : undefined}
+      role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       aria-label={`${title} panel`}
     >
@@ -84,7 +84,7 @@ export function ActionLinkPanel({
           hoverColor ? 'group-hover:opacity-0' : '',
           mainPanelClasses.background
         )}
-        data-testid="panel-background"
+        data-testid='panel-background'
       >
         <div className={mainPanelClasses.glow} />
       </div>
@@ -100,10 +100,10 @@ export function ActionLinkPanel({
         <div
           className={cn(
             'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-            iconColor,
-            iconColor.replace('text-', 'border-')
+            iconColor === 'brand' ? 'text-red-600' : `text-${iconColor}-300`,
+            iconColor === 'brand' ? 'border-red-600' : `border-${iconColor}-300`
           )}
-          aria-label="panel icon"
+          aria-label='panel icon'
         >
           {icon}
         </div>
@@ -137,7 +137,7 @@ export function ActionLinkPanel({
                 hoverIconColor,
                 hoverIconBorderColor
               )}
-              aria-label="panel icon"
+              aria-label='panel icon'
             >
               {icon}
             </div>

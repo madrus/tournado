@@ -6,6 +6,7 @@ type PersonIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
+  'data-testid'?: string
   [key: string]: unknown // Allow extra props
 }
 
@@ -13,6 +14,7 @@ export function PersonIcon({
   className = '',
   size = 24,
   weight = 400,
+  'data-testid': dataTestId,
   ...props
 }: PersonIconProps): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
@@ -27,8 +29,9 @@ export function PersonIcon({
     <svg
       width={size}
       height={size}
-      viewBox='-960 0 960 960'
+      viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
+      data-testid={dataTestId}
       style={{ strokeWidth }}
       {...props}
     >

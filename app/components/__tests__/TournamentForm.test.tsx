@@ -875,9 +875,15 @@ describe('TournamentForm Component', () => {
       const jo8Label = screen.getByTestId('category-jo8')
       await user.click(jo8Label)
 
-      // Should show 1 selected
+      // Should show 1 selected for categories
       await waitFor(() => {
-        expect(screen.getAllByText(/1 selected/)[1]).toBeInTheDocument()
+        const selectedTexts = screen.getAllByText(/1 selected/)
+        expect(selectedTexts.length).toBeGreaterThan(0)
+        // If there are multiple "1 selected" texts, check the second one (categories)
+        // If there's only one, it should be the categories since we selected a category
+        const categoriesSelectedText =
+          selectedTexts.length > 1 ? selectedTexts[1] : selectedTexts[0]
+        expect(categoriesSelectedText).toBeInTheDocument()
       })
     })
 

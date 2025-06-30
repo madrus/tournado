@@ -53,6 +53,7 @@ export function ActionButton({
   return (
     <button
       type={type}
+      role='button'
       onClick={disabled ? void 0 : onClick}
       disabled={disabled}
       className={buttonClasses}

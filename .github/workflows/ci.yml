@@ -224,6 +224,21 @@ jobs:
       - workflow_only_success
     if: always()
     steps:
+      - name: Sanitize values
+        id: sanitize
+        run: |
+          # Sanitize commit message by removing newlines and quotes
+          SANITIZED_COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | tr '\n\r' ' ' | sed 's/"/\\"/g')
+          echo "sanitized_commit_message=$SANITIZED_COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+
+          # Sanitize actor name
+          SANITIZED_ACTOR=$(echo "${{ github.actor }}" | tr '\n\r' ' ' | sed 's/"/\\"/g')
+          echo "sanitized_actor=$SANITIZED_ACTOR" >> $GITHUB_OUTPUT
+
+          # Sanitize branch name
+          SANITIZED_BRANCH=$(echo "${{ github.ref_name }}" | tr '\n\r' ' ' | sed 's/"/\\"/g')
+          echo "sanitized_branch=$SANITIZED_BRANCH" >> $GITHUB_OUTPUT
+
       - name: Post a message in a channel
         uses: slackapi/slack-github-action@v2.1.0
         with:
@@ -237,8 +252,8 @@ jobs:
                     github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
                   || format('GitHub Action build result: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
                     (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
-                    github.ref_name,
-                    github.actor,
+                    steps.sanitize.outputs.sanitized_branch,
+                    steps.sanitize.outputs.sanitized_actor,
                     github.server_url,
                     github.repository,
                     github.sha
@@ -255,10 +270,10 @@ jobs:
                           github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
                         || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
                           (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
-                          github.ref_name,
-                          github.actor,
+                          steps.sanitize.outputs.sanitized_branch,
+                          steps.sanitize.outputs.sanitized_actor,
                           needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
-                          github.event.head_commit.message,
+                          steps.sanitize.outputs.sanitized_commit_message,
                           github.server_url,
                           github.repository,
                           github.sha,

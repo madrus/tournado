@@ -27,7 +27,7 @@ export function SettingsIcon({
     <svg
       width={size}
       height={size}
-      viewBox='-960 0 960 960'
+      viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
       {...props}

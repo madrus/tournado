@@ -3,7 +3,10 @@ import { forwardRef, Ref, useRef } from 'react'
 import * as Select from '@radix-ui/react-select'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import { getDropdownItemColorClasses, getInputColorClasses } from '~/styles/inputStyles'
+import {
+  getDropdownItemColorClasses,
+  getInputColorClasses,
+} from '~/styles/input.styles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 

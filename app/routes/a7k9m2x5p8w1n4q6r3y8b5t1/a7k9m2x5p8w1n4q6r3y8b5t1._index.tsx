@@ -93,33 +93,33 @@ export default function AdminDashboard(): JSX.Element {
       <div className='space-y-8'>
         {/* Dashboard Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {/* Panel 1 - Emerald */}
+          {/* Panel 1 - Teal */}
           <ActionLinkPanel
             title='Team Management'
             description='Manage team registrations and memberships.'
             icon={<ApparelIcon className='h-5 w-5' />}
-            mainColor='emerald'
+            mainColor='teal'
             hoverColor='brand'
-            iconColor='text-emerald-300'
+            iconColor='green'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-emerald-300/80'>
+              <p className='text-green-300/80'>
                 <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
                 {teams.length}
               </p>
             </div>
           </ActionLinkPanel>
 
-          {/* Panel 2 - Emerald */}
+          {/* Panel 2 - Teal */}
           <ActionLinkPanel
             title='Tournament Management'
             description='Create and manage tournaments and competitions.'
             icon={<TrophyIcon className='h-5 w-5' />}
-            mainColor='emerald'
+            mainColor='teal'
             hoverColor='brand'
-            iconColor='text-cyan-300'
+            iconColor='cyan'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
             language={i18n.language}
           >
@@ -133,45 +133,45 @@ export default function AdminDashboard(): JSX.Element {
             </div>
           </ActionLinkPanel>
 
-          {/* Panel 3 - Emerald */}
+          {/* Panel 3 - Teal */}
           <ActionLinkPanel
             title='User Management'
             description='Manage user accounts and permissions.'
             icon={<PersonIcon className='h-5 w-5' />}
-            mainColor='emerald'
+            mainColor='teal'
             hoverColor='brand'
-            iconColor='text-gray-300'
+            iconColor='yellow'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='break-all text-gray-300/80'>
+              <p className='break-all text-yellow-300/80'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='break-all text-gray-300/80'>
+              <p className='break-all text-yellow-300/80'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
           </ActionLinkPanel>
 
-          {/* Panel 4 - Emerald */}
+          {/* Panel 4 - Teal */}
           <ActionLinkPanel
             title='System Settings'
             description='Configure application settings and preferences.'
             icon={<SettingsIcon className='h-5 w-5' />}
-            mainColor='emerald'
+            mainColor='teal'
             hoverColor='brand'
-            iconColor='text-red-600'
+            iconColor='brand'
             language={i18n.language}
           />
 
-          {/* Panel 5 - Emerald */}
+          {/* Panel 5 - Teal */}
           <ActionLinkPanel
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'
             icon={<TuneIcon className='h-5 w-5' />}
-            mainColor='emerald'
+            mainColor='teal'
             hoverColor='brand'
-            iconColor='text-emerald-300'
+            iconColor='violet'
             language={i18n.language}
           />
         </div>

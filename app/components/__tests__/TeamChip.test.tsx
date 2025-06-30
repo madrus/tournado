@@ -63,9 +63,7 @@ describe('TeamChip Component', () => {
     })
 
     it('should apply custom className', () => {
-      render(
-        <TeamChip team={mockTeam} className='custom-class' />
-      )
+      render(<TeamChip team={mockTeam} className='custom-class' />)
 
       expect(screen.getByTestId('team-chip')).toHaveClass('custom-class')
     })
@@ -177,9 +175,7 @@ describe('TeamChip Component', () => {
 
     it('should apply admin chip classes when showActions and onDelete are provided', () => {
       const handleDelete = vi.fn()
-      render(
-        <TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />
-      )
+      render(<TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />)
 
       expect(screen.getByTestId('team-chip')).toHaveClass('pl-2 pr-3') // LTR chip classes
     })
@@ -320,9 +316,7 @@ describe('TeamChip Component', () => {
 
     it('should apply correct chip classes for admin mode', () => {
       const handleDelete = vi.fn()
-      render(
-        <TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />
-      )
+      render(<TeamChip team={mockTeam} showActions={true} onDelete={handleDelete} />)
 
       expect(screen.getByTestId('team-chip')).toHaveClass('pl-2 pr-3') // LTR chip classes (based on mocked language)
     })

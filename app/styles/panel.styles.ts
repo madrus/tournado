@@ -9,12 +9,12 @@ export function resolveColorAccent(color: ColorAccent): string {
 }
 
 // Generate panel styles dynamically based on color
-function getPanelStyles(colorScheme: ColorAccent) {
-  const resolvedColor = resolveColorAccent(colorScheme)
+function getPanelStyles(colorAccent: ColorAccent) {
+  const resolvedColor = resolveColorAccent(colorAccent)
 
-  // Special case for brand: use gray gradient with different values
+  // Special case for brand: use gray gradient
   const getGradient = () => {
-    if (colorScheme === 'brand') {
+    if (colorAccent === 'brand') {
       return 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-800'
     }
     return `bg-gradient-to-br from-${resolvedColor}-950 via-${resolvedColor}-900 to-${resolvedColor}-900`
@@ -32,13 +32,13 @@ function getPanelStyles(colorScheme: ColorAccent) {
   }
 }
 
-export function getPanelClasses(colorScheme: ColorAccent): {
+export function getPanelClasses(colorAccent: ColorAccent): {
   base: string
   background: string
   icon: string
   glow: string
 } {
-  const style = getPanelStyles(colorScheme)
+  const style = getPanelStyles(colorAccent)
 
   return {
     base: cn(
@@ -60,18 +60,18 @@ export function getPanelClasses(colorScheme: ColorAccent): {
   }
 }
 
-export function getTitleClasses(colorScheme: ColorAccent): string {
-  const style = getPanelStyles(colorScheme)
+export function getTitleClasses(colorAccent: ColorAccent): string {
+  const style = getPanelStyles(colorAccent)
   return cn('text-lg font-semibold break-words', style.title)
 }
 
-export function getDescriptionClasses(colorScheme: ColorAccent): string {
-  const style = getPanelStyles(colorScheme)
+export function getDescriptionClasses(colorAccent: ColorAccent): string {
+  const style = getPanelStyles(colorAccent)
   return cn(style.description)
 }
 
-export function getIconTextClasses(colorScheme: ColorAccent): string {
-  const style = getPanelStyles(colorScheme)
+export function getIconTextClasses(colorAccent: ColorAccent): string {
+  const style = getPanelStyles(colorAccent)
   return cn('transition-colors duration-500 ease-in-out', style.iconText)
 }
 
@@ -143,14 +143,14 @@ function resolvePanelColor(color: ColorAccent): keyof typeof colorClasses {
   return 'emerald'
 }
 
-export function getActionLinkPanelClasses(colorScheme: ColorAccent): {
+export function getActionLinkPanelClasses(colorAccent: ColorAccent): {
   base: string
   icon: string
   title: string
   description: string
   focus: string
 } {
-  const colors = colorClasses[resolvePanelColor(colorScheme)]
+  const colors = colorClasses[resolvePanelColor(colorAccent)]
 
   return {
     base: cn(

@@ -71,21 +71,21 @@ vi.mock('~/components/ActionLinkPanel', () => ({
   ActionLinkPanel: ({
     title,
     description,
-    colorScheme,
+    colorAccent,
     to,
     icon,
     children,
   }: {
     title: string
     description: string
-    colorScheme: string
+    colorAccent: string
     to?: string
     icon?: React.ReactNode
     children?: React.ReactNode
   }) => (
     <div
       data-testid={`admin-panel-${title.toLowerCase().replace(/\s+/g, '-')}`}
-      data-color-scheme={colorScheme}
+      data-color-scheme={colorAccent}
       data-link-to={to}
     >
       {icon}

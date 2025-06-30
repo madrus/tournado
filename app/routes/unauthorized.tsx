@@ -33,11 +33,20 @@ export default function UnauthorizedPage(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
-    <div className='bg-background flex min-h-screen flex-col items-center justify-center'>
-      <div className='bg-background mx-auto max-w-md rounded-lg p-6 shadow-md'>
-        <div className='flex flex-col items-center gap-4'>
+    <div
+      className='bg-background flex min-h-screen flex-col items-center justify-center'
+      data-testid='main-container'
+    >
+      <div
+        className='bg-background mx-auto max-w-md rounded-lg p-6 shadow-md'
+        data-testid='content-card'
+      >
+        <div className='flex flex-col items-center gap-4' data-testid='content-wrapper'>
           {/* Icon */}
-          <div className='bg-error flex h-12 w-12 items-center justify-center rounded-full'>
+          <div
+            className='bg-error flex h-12 w-12 items-center justify-center rounded-full'
+            data-testid='icon-container'
+          >
             <BlockIcon className='text-brand' size={24} />
           </div>
 
@@ -55,7 +64,7 @@ export default function UnauthorizedPage(): JSX.Element {
           </p>
 
           {/* Actions */}
-          <div className='flex w-full flex-col gap-2'>
+          <div className='flex w-full flex-col gap-2' data-testid='actions-container'>
             <ErrorRecoveryLink
               to='/'
               className='bg-button-primary-background text-button-primary-text hover:bg-button-primary-hover-background hover:ring-primary focus:ring-primary flex w-full items-center justify-center rounded-md px-4 py-2 text-sm font-medium hover:ring-2 hover:ring-offset-2 focus:ring-2 focus:ring-offset-2 focus:outline-none'

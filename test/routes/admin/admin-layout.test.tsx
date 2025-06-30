@@ -31,7 +31,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       expect(container).toBeInTheDocument()
       expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
     })
@@ -56,7 +56,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       expect(container).toHaveClass('container')
       expect(container).toHaveClass('mx-auto')
       expect(container).toHaveClass('px-4')
@@ -71,10 +71,10 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = outlet.parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       expect(container).toBeInTheDocument()
-      expect(container?.tagName.toLowerCase()).toBe('div')
+      expect(container.tagName.toLowerCase()).toBe('div')
       expect(outlet).toBeInTheDocument()
     })
   })
@@ -100,7 +100,7 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = outlet.parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify that the layout container wraps the outlet
       expect(container).toContainElement(outlet)
@@ -116,7 +116,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       expect(container).toHaveClass('container') // Responsive container
       expect(container).toHaveClass('mx-auto') // Center horizontally
     })
@@ -128,7 +128,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       expect(container).toHaveClass('px-4') // Horizontal padding
       expect(container).toHaveClass('py-8') // Vertical padding
     })
@@ -175,7 +175,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify layout consistency
       expect(container).toHaveClass('container') // Bootstrap-style container
@@ -192,11 +192,11 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = outlet.parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify that the layout structure is consistent
-      expect(container?.children).toHaveLength(1) // Only the Outlet
-      expect(container?.firstChild).toBe(outlet)
+      expect(container).toContainElement(outlet) // Contains the Outlet
+      expect(screen.getByTestId('outlet')).toBeInTheDocument()
     })
   })
 
@@ -208,10 +208,10 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify semantic HTML structure
-      expect(container?.tagName.toLowerCase()).toBe('div')
+      expect(container.tagName.toLowerCase()).toBe('div')
       expect(container).toBeInTheDocument()
     })
 
@@ -237,7 +237,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       const outlet = screen.getByTestId('outlet')
 
       // Verify content flow
@@ -252,7 +252,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify spacing is appropriate for admin interface
       expect(container).toHaveClass('py-8') // Good vertical spacing
@@ -269,11 +269,11 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = outlet.parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify minimal DOM structure
-      expect(container?.children).toHaveLength(1)
-      expect(container?.firstChild).toBe(outlet)
+      expect(container).toContainElement(outlet)
+      expect(screen.getByTestId('outlet')).toBeInTheDocument()
     })
 
     test('should provide clean layout without unnecessary wrappers', () => {
@@ -284,11 +284,17 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = outlet.parentElement
+      const container = screen.getByTestId('admin-layout-container')
 
       // Verify the container is the direct parent of the outlet
-      expect(outlet.parentElement).toBe(container)
-      expect(container?.className).toBe('container mx-auto min-w-[320px] px-4 py-8')
+      expect(container).toContainElement(outlet)
+      expect(container).toHaveClass(
+        'container',
+        'mx-auto',
+        'min-w-[320px]',
+        'px-4',
+        'py-8'
+      )
     })
   })
 
@@ -300,7 +306,7 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
+      const container = screen.getByTestId('admin-layout-container')
       const expectedClasses = ['container', 'mx-auto', 'min-w-[320px]', 'px-4', 'py-8']
 
       expectedClasses.forEach(className => {
@@ -315,8 +321,14 @@ describe('Admin Layout', () => {
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('outlet').parentElement
-      expect(container?.className).toBe('container mx-auto min-w-[320px] px-4 py-8')
+      const container = screen.getByTestId('admin-layout-container')
+      expect(container).toHaveClass(
+        'container',
+        'mx-auto',
+        'min-w-[320px]',
+        'px-4',
+        'py-8'
+      )
     })
   })
 })

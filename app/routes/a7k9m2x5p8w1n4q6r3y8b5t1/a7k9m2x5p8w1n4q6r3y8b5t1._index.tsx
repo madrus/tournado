@@ -93,38 +93,38 @@ export default function AdminDashboard(): JSX.Element {
       <div className='space-y-8'>
         {/* Dashboard Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {/* Team Management */}
+          {/* Panel 1 - Emerald */}
           <ActionLinkPanel
             title='Team Management'
             description='Manage team registrations and memberships.'
-            icon={
-              <ApparelIcon className='text-primary group-hover:text-primary-hover h-5 w-5 transition-colors' />
-            }
-            colorScheme='emerald'
+            icon={<ApparelIcon className='h-5 w-5' />}
+            mainColor='emerald'
+            hoverColor='brand'
+            iconColor='text-emerald-300'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light group-hover:text-primary transition-colors'>
+              <p className='text-emerald-300/80'>
                 <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
                 {teams.length}
               </p>
             </div>
           </ActionLinkPanel>
 
-          {/* Tournament Management */}
+          {/* Panel 2 - Emerald */}
           <ActionLinkPanel
             title='Tournament Management'
             description='Create and manage tournaments and competitions.'
-            icon={
-              <TrophyIcon className='h-5 w-5 text-blue-700 transition-colors group-hover:text-blue-800' />
-            }
-            colorScheme='blue'
+            icon={<TrophyIcon className='h-5 w-5' />}
+            mainColor='emerald'
+            hoverColor='brand'
+            iconColor='text-cyan-300'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light transition-colors group-hover:text-blue-600'>
+              <p className='text-cyan-300/80'>
                 <strong className='me-1'>
                   {t('admin.tournaments.totalTournaments')}:
                 </strong>
@@ -133,45 +133,45 @@ export default function AdminDashboard(): JSX.Element {
             </div>
           </ActionLinkPanel>
 
-          {/* User Management */}
+          {/* Panel 3 - Emerald */}
           <ActionLinkPanel
             title='User Management'
             description='Manage user accounts and permissions.'
-            icon={
-              <PersonIcon className='text-button-neutral-text group-hover:text-foreground h-5 w-5 transition-colors' />
-            }
-            colorScheme='gray'
+            icon={<PersonIcon className='h-5 w-5' />}
+            mainColor='emerald'
+            hoverColor='brand'
+            iconColor='text-gray-300'
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-foreground-light group-hover:text-foreground-light break-all transition-colors'>
+              <p className='break-all text-gray-300/80'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='text-foreground-light group-hover:text-foreground-light break-all transition-colors'>
+              <p className='break-all text-gray-300/80'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>
           </ActionLinkPanel>
 
-          {/* System Settings */}
+          {/* Panel 4 - Emerald */}
           <ActionLinkPanel
             title='System Settings'
             description='Configure application settings and preferences.'
-            icon={
-              <SettingsIcon className='text-brand group-hover:text-brand-dark h-5 w-5 transition-colors' />
-            }
-            colorScheme='brand'
+            icon={<SettingsIcon className='h-5 w-5' />}
+            mainColor='emerald'
+            hoverColor='brand'
+            iconColor='text-red-600'
             language={i18n.language}
           />
 
-          {/* Reports & Analytics */}
+          {/* Panel 5 - Emerald */}
           <ActionLinkPanel
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'
-            icon={
-              <TuneIcon className='text-primary group-hover:text-primary-hover h-5 w-5 transition-colors' />
-            }
-            colorScheme='emerald'
+            icon={<TuneIcon className='h-5 w-5' />}
+            mainColor='emerald'
+            hoverColor='brand'
+            iconColor='text-emerald-300'
             language={i18n.language}
           />
         </div>

@@ -451,9 +451,30 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const formData = state.getFormData()
             // Use the simplified validation function
             const error = validateSingleTeamField(fieldName, formData, mode)
+
+            // Check if there's a server error for this field
+            const serverError = validation.serverErrors[fieldName]
+
             if (error) {
+              // Client-side validation failed - show client error
               state.setFieldError(fieldName as FormFieldName, error)
+            } else if (serverError) {
+              // No client-side error, but there's a server error
+              // Only clear server error if field has valid content
+              const fieldValue = formData[fieldName as keyof typeof formData]
+              const hasValidContent =
+                fieldValue &&
+                (typeof fieldValue === 'string' ? fieldValue.trim() !== '' : true)
+
+              if (hasValidContent) {
+                // Field has content and passes client validation - clear server error
+                state.clearFieldError(fieldName as FormFieldName)
+              } else {
+                // Field is empty - keep server error visible
+                state.setFieldError(fieldName as FormFieldName, serverError)
+              }
             } else {
+              // No client error and no server error - clear any existing error
               state.clearFieldError(fieldName as FormFieldName)
             }
             // Check if this blur event should enable the next panel

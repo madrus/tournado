@@ -58,14 +58,14 @@ test.describe('Admin Tournaments', () => {
     // Wait for content to actually appear
     await page.waitForFunction(() => document.body.children.length > 0)
 
-    // Should see "Manage Tournaments" button in admin panel
-    const manageTournamentsButton = page.getByRole('link', {
-      name: 'Manage Tournaments',
+    // Should see "Tournament Management" panel in admin panel
+    const manageTournamentsPanel = page.getByRole('link', {
+      name: 'Tournament Management',
     })
-    await expect(manageTournamentsButton).toBeVisible({ timeout: 15000 })
+    await expect(manageTournamentsPanel).toBeVisible({ timeout: 15000 })
 
-    // Click the button
-    await manageTournamentsButton.click()
+    // Click the panel
+    await manageTournamentsPanel.click()
 
     // Should navigate to tournaments page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')

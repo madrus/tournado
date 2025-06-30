@@ -136,7 +136,7 @@ describe('AppBar Context Menu', () => {
       // Check that divider appears after Teams (should be the second item)
       const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
       const secondItem = menuItems[1]
-      expect(secondItem.querySelector('[data-testid="divider"]')).toBeInTheDocument()
+      expect(within(secondItem).getByTestId('divider')).toBeInTheDocument()
     })
 
     it('should have Teams link pointing to public teams route', () => {

@@ -77,6 +77,9 @@ export function ActionLinkPanel({
       tabIndex={onClick ? 0 : undefined}
       aria-label={`${title} panel`}
     >
+      {/* New: Stable background layer */}
+      <div className='absolute inset-0 bg-emerald-800' />
+
       {/* Base panel background and glow */}
       <div
         className={cn(

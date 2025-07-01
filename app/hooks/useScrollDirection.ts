@@ -1,31 +1,41 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function useScrollDirection() {
-  const [showHeader, setShowHeader] = useState(true)
-  const lastScrollY = useRef(0)
+// Detect scroll direction globally (works even if the scrollable container is not window)
+export function useScrollDirection(threshold = 20): { showHeader: boolean } {
+  const [showHeader, setShowHeader] = useState<boolean>(false)
+  const lastY = useRef(0)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const scrollingUp = currentScrollY < lastScrollY.current
-
-      if (currentScrollY < 100) {
-        // Near top - always show
-        setShowHeader(true)
-      } else if (scrollingUp) {
-        // Scrolling up - show header
-        setShowHeader(true)
-      } else {
-        // Scrolling down - hide header
-        setShowHeader(false)
-      }
-
-      lastScrollY.current = currentScrollY
+    const getScrollY = () => {
+      if (typeof window === 'undefined') return 0
+      return (
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0
+      )
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const onScroll = () => {
+      const y = getScrollY()
+      const diff = y - lastY.current
+
+      if (Math.abs(diff) < threshold) return
+
+      setShowHeader(diff <= 0) // up => show, down => hide
+
+      lastY.current = y
+    }
+
+    // Listen on both window and document to capture most scroll situations
+    window.addEventListener('scroll', onScroll, { passive: true })
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true })
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      document.removeEventListener('scroll', onScroll, { capture: true })
+    }
+  }, [threshold])
 
   return { showHeader }
 }

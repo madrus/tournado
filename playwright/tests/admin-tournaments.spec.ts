@@ -30,6 +30,9 @@ test.describe('Admin Tournaments', () => {
     // Give React a moment to finish any hydration/navigation state updates
     await page.waitForTimeout(100)
 
+    // Ensure we are at top so AppBar is visible (header may auto-hide in CI)
+    await page.evaluate(() => window.scrollTo(0, 0))
+
     // Open user menu by clicking hamburger menu
     await page.getByRole('button', { name: 'Toggle menu' }).click()
 

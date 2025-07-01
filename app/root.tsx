@@ -313,7 +313,10 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           scaling='100%'
           appearance={currentTheme}
         >
-          <div className='flex h-full flex-col'>
+          <div
+            className='flex h-full flex-col'
+            style={{ paddingTop: 'var(--header-height, 62px)' }}
+          >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
@@ -369,7 +372,10 @@ export function ErrorBoundary(): JSX.Element {
           scaling='100%'
           appearance={theme}
         >
-          <div className='flex h-full flex-col'>
+          <div
+            className='flex h-full flex-col'
+            style={{ paddingTop: 'var(--header-padding, 62px)' }}
+          >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} />
             </div>

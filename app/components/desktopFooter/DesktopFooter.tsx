@@ -36,7 +36,15 @@ const DesktopFooter = (): JSX.Element => {
               getLatinTextClass(i18n.language)
             )}
           >
-            Built with ♥️ by Madrus4U
+            Built with ♥️ by{' '}
+            <a
+              href='https://madrus4u.com'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='underline hover:text-white'
+            >
+              Madrus4U
+            </a>
           </span>
         </div>
       </div>

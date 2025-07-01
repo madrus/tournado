@@ -1,4 +1,4 @@
-import { JSX, useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { JSX, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useLocation } from 'react-router'
 
@@ -167,6 +167,17 @@ export function AppBar({
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [headerHeight, setHeaderHeight] = useState(56)
 
+  // Inject bounce keyframes once
+  useEffect(() => {
+    const styleId = 'appbar-bounce-keyframes'
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style')
+      style.id = styleId
+      style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} }`
+      document.head.appendChild(style)
+    }
+  }, [])
+
   // Measure header height once after mount
   useLayoutEffect(() => {
     if (containerRef.current) {
@@ -195,7 +206,10 @@ export function AppBar({
         className='fixed top-0 right-0 left-0 z-30'
         style={{
           transform: showHeader ? 'translateY(0)' : `translateY(-${headerHeight}px)`,
-          transition: 'transform 0.2s ease-out',
+          transition: showHeader ? undefined : 'transform 0.2s ease-out',
+          animation: showHeader
+            ? 'appBarBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards'
+            : undefined,
         }}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>

@@ -66,8 +66,8 @@ describe('BottomNavigation', () => {
         'shadow-lg',
         'md:hidden'
       )
-      // Background color is now set via semantic class
-      expect(nav).toHaveClass('bg-footer')
+      // Background color updated to emerald theme
+      expect(nav).toHaveClass('bg-emerald-800')
     })
 
     it('should render inner container with correct layout classes', () => {

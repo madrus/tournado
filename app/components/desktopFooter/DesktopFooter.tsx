@@ -31,6 +31,8 @@ const DesktopFooter = (): JSX.Element => {
           data-testid='footer-right-section'
         >
           <span
+            data-testid='footer-attribution'
+            aria-label='Built with ♥️ by Madrus4U'
             className={cn(
               'm-0 p-0 leading-[1] text-white/90',
               getLatinTextClass(i18n.language)

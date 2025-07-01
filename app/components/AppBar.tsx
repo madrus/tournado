@@ -173,7 +173,7 @@ export function AppBar({
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style')
       style.id = styleId
-      style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} }`
+      style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} } @keyframes appBarSlideOut{0%{transform:translateY(0);}100%{transform:translateY(-100%);} }`
       document.head.appendChild(style)
     }
   }, [])
@@ -205,11 +205,10 @@ export function AppBar({
         ref={containerRef}
         className='fixed top-0 right-0 left-0 z-30'
         style={{
-          transform: showHeader ? 'translateY(0)' : `translateY(-${headerHeight}px)`,
-          transition: showHeader ? undefined : 'transform 0.2s ease-out',
+          transform: showHeader ? 'translateY(0)' : undefined,
           animation: showHeader
-            ? 'appBarBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards'
-            : undefined,
+            ? 'appBarBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards'
+            : 'appBarSlideOut 0.5s ease-out forwards',
         }}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>

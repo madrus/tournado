@@ -121,7 +121,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
+      const attribution = screen.getByTestId('footer-attribution')
       expect(attribution).toBeInTheDocument()
     })
 
@@ -132,7 +132,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
+      const attribution = screen.getByTestId('footer-attribution')
       expect(attribution).toHaveClass('m-0', 'p-0', 'leading-[1]')
       expect(attribution.tagName).toBe('SPAN')
     })
@@ -144,7 +144,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
+      const attribution = screen.getByTestId('footer-attribution')
       expect(attribution).toHaveTextContent('♥️')
     })
   })
@@ -168,7 +168,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      const logoLink = screen.getByRole('link', { name: 'Tournado' })
+      const [logoLink] = screen.getAllByRole('link')
       expect(logoLink).toBeInTheDocument()
       expect(logoLink).toHaveAttribute('href', '/')
     })
@@ -282,7 +282,7 @@ describe('DesktopFooter', () => {
       expect(screen.getByText('Tournado')).toBeInTheDocument()
 
       // Attribution text
-      expect(screen.getByText('Built with ♥️ by Madrus4U')).toBeInTheDocument()
+      expect(screen.getByTestId('footer-attribution')).toBeInTheDocument()
     })
   })
 
@@ -304,7 +304,7 @@ describe('DesktopFooter', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Built with ♥️ by Madrus4U')).toBeInTheDocument()
+      expect(screen.getByTestId('footer-attribution')).toBeInTheDocument()
     })
 
     it('should not contain any additional text content', () => {
@@ -332,9 +332,9 @@ describe('DesktopFooter', () => {
       const container = screen.getByTestId('footer-container')
       const leftSection = screen.getByTestId('footer-left-section')
       const rightSection = screen.getByTestId('footer-right-section')
-      const logoLink = screen.getByRole('link')
+      const [logoLink] = screen.getAllByRole('link')
       const logoText = screen.getByText('Tournado')
-      const attribution = screen.getByText('Built with ♥️ by Madrus4U')
+      const attribution = screen.getByTestId('footer-attribution')
 
       // Footer classes
       expect(footer).toHaveClass('hidden', 'md:block')

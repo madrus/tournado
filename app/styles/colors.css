@@ -98,4 +98,7 @@
   --gradient-to: #065f46; /* emerald-800 */
   --footer-bg: #065f46; /* emerald-800 in dark mode */
   --footer-text: #e5e7eb; /* gray-200 */
+
+  /* AppBar primary color - match emerald-900 */
+  --color-button-primary-background: #064e3b; /* emerald-900 for dark mode */
 }

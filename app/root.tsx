@@ -313,12 +313,15 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           scaling='100%'
           appearance={currentTheme}
         >
-          <div className='flex h-full flex-col'>
+          <div
+            className='flex h-full flex-col'
+            style={{ paddingTop: 'var(--header-height, 62px)' }}
+          >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
             <div
-              className='flex-1 overflow-visible pb-16 md:overflow-y-auto md:pb-0'
+              className='flex-1 overflow-visible pb-16 md:pb-0'
               style={{
                 background:
                   'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
@@ -326,11 +329,15 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
                 zIndex: 1,
               }}
             >
-              <Outlet />
+              <div className='flex min-h-full flex-col'>
+                <div className='flex-1'>
+                  <Outlet />
+                </div>
+                {/* Desktop Footer - positioned at bottom of content */}
+                <DesktopFooter />
+              </div>
             </div>
-            {/* Desktop Footer - hidden on mobile */}
-            <DesktopFooter />
-            {/* Mobile Navigation - visible only on mobile */}
+            {/* Mobile Navigation - fixed at bottom of viewport */}
             <BottomNavigation />
           </div>
         </Theme>
@@ -365,12 +372,15 @@ export function ErrorBoundary(): JSX.Element {
           scaling='100%'
           appearance={theme}
         >
-          <div className='flex h-full flex-col'>
+          <div
+            className='flex h-full flex-col'
+            style={{ paddingTop: 'var(--header-padding, 62px)' }}
+          >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} />
             </div>
             <div
-              className='flex-1 overflow-visible pb-16 md:overflow-y-auto md:pb-0'
+              className='flex-1 overflow-visible pb-16 md:pb-0'
               style={{
                 background:
                   'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
@@ -378,11 +388,15 @@ export function ErrorBoundary(): JSX.Element {
                 zIndex: 1,
               }}
             >
-              <GeneralErrorBoundary />
+              <div className='flex min-h-full flex-col'>
+                <div className='flex-1'>
+                  <GeneralErrorBoundary />
+                </div>
+                {/* Desktop Footer - positioned at bottom of content */}
+                <DesktopFooter />
+              </div>
             </div>
-            {/* Desktop Footer - hidden on mobile */}
-            <DesktopFooter />
-            {/* Mobile Navigation - visible only on mobile */}
+            {/* Mobile Navigation - fixed at bottom of viewport */}
             <BottomNavigation />
           </div>
         </Theme>

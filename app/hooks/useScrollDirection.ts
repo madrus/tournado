@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 // Detect scroll direction globally (works even if the scrollable container is not window)
 export function useScrollDirection(threshold = 20): { showHeader: boolean } {
-  const [showHeader, setShowHeader] = useState<boolean>(false)
+  const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef(0)
 
   useEffect(() => {

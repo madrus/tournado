@@ -9,7 +9,7 @@ const DesktopFooter = (): JSX.Element => {
   const { i18n } = useTranslation()
 
   return (
-    <footer className='bg-footer border-footer/10 hidden border-t md:block'>
+    <footer className='hidden border-t border-emerald-950/10 bg-emerald-800 md:block'>
       <div
         className='container mx-auto grid h-14 grid-cols-2 px-4'
         data-testid='footer-container'
@@ -18,7 +18,7 @@ const DesktopFooter = (): JSX.Element => {
           <Link to='/' className='flex items-center'>
             <span
               className={cn(
-                'text-footer-foreground m-0 p-0 leading-[1] font-light',
+                'm-0 p-0 leading-[1] font-light text-white/90',
                 getLatinTextClass(i18n.language)
               )}
             >
@@ -32,7 +32,7 @@ const DesktopFooter = (): JSX.Element => {
         >
           <span
             className={cn(
-              'text-footer-foreground m-0 p-0 leading-[1]',
+              'm-0 p-0 leading-[1] text-white/90',
               getLatinTextClass(i18n.language)
             )}
           >

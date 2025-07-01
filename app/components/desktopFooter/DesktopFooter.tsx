@@ -9,7 +9,7 @@ const DesktopFooter = (): JSX.Element => {
   const { i18n } = useTranslation()
 
   return (
-    <footer className='hidden border-t border-emerald-950/10 bg-emerald-800 md:block'>
+    <footer className='hidden border-t border-emerald-950/10 bg-emerald-900 md:block'>
       <div
         className='container mx-auto grid h-14 grid-cols-2 px-4'
         data-testid='footer-container'
@@ -32,7 +32,7 @@ const DesktopFooter = (): JSX.Element => {
         >
           <span
             data-testid='footer-attribution'
-            aria-label='Built with ♥️ by Madrus4U'
+            aria-label='Built with love by Madrus4U'
             className={cn(
               'm-0 p-0 leading-[1] text-white/90',
               getLatinTextClass(i18n.language)

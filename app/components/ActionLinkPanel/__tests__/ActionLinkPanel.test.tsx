@@ -228,7 +228,7 @@ describe('ActionLinkPanel Component Integration', () => {
 
       const panel = screen.getByLabelText('Test Panel panel')
       expect(panel).toHaveClass('border-teal-400/60')
-      expect(panel).toHaveClass('hover:border-red-400/60')
+      expect(panel).toHaveClass('hover:border-brand-400/60')
     })
 
     it('should not apply hover border when no hoverColor', () => {

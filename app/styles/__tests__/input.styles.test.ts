@@ -91,16 +91,16 @@ describe('Input Styles', () => {
   })
 
   describe('getDropdownItemColorClasses', () => {
-    it('should generate correct classes for emerald/primary color', () => {
+    it('should generate correct classes for primary color', () => {
       const classes = getDropdownItemColorClasses('primary')
 
-      expect(classes).toBe('focus:bg-emerald-lightest focus:text-emerald-darkest')
+      expect(classes).toBe('focus:bg-primary-50 focus:text-primary-800')
     })
 
-    it('should generate correct classes for brand/red color', () => {
+    it('should generate correct classes for brand color', () => {
       const classes = getDropdownItemColorClasses('brand')
 
-      expect(classes).toBe('focus:bg-brand-lightest focus:text-brand-darkest')
+      expect(classes).toBe('focus:bg-brand-100 focus:text-brand-800')
     })
 
     it('should generate correct classes for standard colors', () => {
@@ -114,23 +114,23 @@ describe('Input Styles', () => {
   })
 
   describe('getCalendarColorClasses', () => {
-    it('should generate correct classes for emerald/primary color', () => {
+    it('should generate correct classes for primary color', () => {
       const classes = getCalendarColorClasses('primary')
 
       expect(classes).toEqual({
-        today: 'bg-emerald-lighter text-emerald-darkest',
-        hover: 'hover:bg-emerald-lighter',
-        navButton: 'text-emerald-dark hover:bg-emerald-lighter',
+        today: 'bg-primary-100 text-primary-800',
+        hover: 'hover:bg-primary-100',
+        navButton: 'text-primary-600 hover:bg-primary-100',
       })
     })
 
-    it('should generate correct classes for brand/red color', () => {
+    it('should generate correct classes for brand color', () => {
       const classes = getCalendarColorClasses('brand')
 
       expect(classes).toEqual({
-        today: 'bg-brand-light text-brand-dark',
-        hover: 'hover:bg-brand-light',
-        navButton: 'text-brand hover:bg-brand-light',
+        today: 'bg-brand-400 text-brand-700',
+        hover: 'hover:bg-brand-400',
+        navButton: 'text-brand-600 hover:bg-brand-400',
       })
     })
 
@@ -166,10 +166,10 @@ describe('Input Styles', () => {
       const dropdownClasses = getDropdownItemColorClasses('primary')
       const calendarClasses = getCalendarColorClasses('primary')
 
-      // All should use emerald variations for primary
-      expect(inputClasses).toContain('border-input-border/30') // emerald custom
-      expect(dropdownClasses).toContain('emerald-lightest')
-      expect(calendarClasses.today).toContain('emerald-lighter')
+      // All should use primary semantic colors
+      expect(inputClasses).toContain('border-input-border/30') // primary custom
+      expect(dropdownClasses).toContain('primary-50')
+      expect(calendarClasses.today).toContain('primary-100')
     })
 
     it('should handle brand color consistently across all functions', () => {
@@ -177,10 +177,10 @@ describe('Input Styles', () => {
       const dropdownClasses = getDropdownItemColorClasses('brand')
       const calendarClasses = getCalendarColorClasses('brand')
 
-      // All should use red/brand variations for brand
-      expect(inputClasses).toContain('border-error/30') // red/error custom
-      expect(dropdownClasses).toContain('brand-lightest')
-      expect(calendarClasses.today).toContain('brand-light')
+      // All should use brand semantic colors
+      expect(inputClasses).toContain('border-error/30') // brand/error custom
+      expect(dropdownClasses).toContain('brand-100')
+      expect(calendarClasses.today).toContain('brand-400')
     })
 
     it('should handle standard colors consistently across all functions', () => {

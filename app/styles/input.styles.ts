@@ -1,9 +1,7 @@
 import { type ColorAccent } from '~/lib/lib.types'
 
 // Helper to resolve color name: 'primary' stays 'primary', 'brand' stays 'brand', else itself
-const resolveColorName = (color: ColorAccent): string => {
-  return color // No more mapping needed - primary and brand are semantic colors now
-}
+const resolveColorName = (color: ColorAccent): string => color // No more mapping needed - primary and brand are semantic colors now
 
 const getInputColors = (color: ColorAccent) => {
   const resolvedColor = resolveColorName(color)

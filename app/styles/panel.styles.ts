@@ -2,9 +2,7 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 // Resolve color aliases to actual colors
-export function resolveColorAccent(color: ColorAccent): string {
-  return color // No more mapping needed - primary and brand are semantic colors now
-}
+export const resolveColorAccent = (color: ColorAccent): string => color // No more mapping needed - primary and brand are semantic colors now;
 
 // Generate panel styles dynamically based on color
 function getPanelStyles(colorAccent: ColorAccent) {

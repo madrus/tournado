@@ -20,23 +20,22 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 **Foundation Layer**
 
-- ✅ **Authentication System**: Role-based access control with 5 user roles (Admin, Tournament Manager, Referee Coordinator, Referee, Public)
-- ✅ **Multi-language Support**: Dutch, English, Turkish, and Arabic with RTL support
+- ✅ **Authentication System**: Cookie-based authentication with 5 user roles defined in schema (ADMIN, TOURNAMENT_MANAGER, REFEREE_COORDINATOR, REFEREE, PUBLIC)
+- ✅ **Multi-language Support**: Dutch, English, Arabic, Turkish with RTL support
 - ✅ **Mobile-First PWA**: Responsive design with offline capabilities
 - ✅ **Database Schema**: Complete data model for tournaments, teams, matches, and scoring
 
-**Admin Tournament Management**
+**Tournament Management**
 
 - ✅ **Tournament CRUD**: Create, read, update, delete tournaments with categories and divisions
-- ✅ **Team Management**: Full team administration and oversight
-- ✅ **Admin Dashboard**: Centralized management interface
-- ✅ **Navigation System**: Role-based menu system with mobile optimization
+- ✅ **Admin Dashboard**: Centralized management interface (`/a7k9m2x5p8w1n4q6r3y8b5t1`)
+- ✅ **Navigation System**: Basic menu system with authentication awareness
 
-**Public Team Registration**
+**Team Registration System**
 
-- ✅ **Team Registration**: Public users can register teams for tournaments
-- ✅ **Team Leader Information**: Contact person management for teams
-- ✅ **Tournament Selection**: Teams can select which tournaments to join
+- ✅ **Public Team Registration**: Unauthenticated users can register teams with contact information
+- ✅ **Team Viewing**: Public can view team lists
+- ✅ **Contact Management**: TeamLeader model stores contact information (not user accounts)
 
 **Technical Infrastructure**
 
@@ -47,6 +46,12 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ### 🔄 In Progress Features
 
+**Authentication & Authorization**
+
+- 🔄 **Role-Based Access Control**: Schema defines 5 roles but not yet implemented
+- 🔄 **User Role Differentiation**: Currently all authenticated users redirect to admin panel
+- 🔄 **Permission System**: Need to implement role-based permissions
+
 **Data Management**
 
 - 🔄 **Team Categories**: Full category system (JO8-JO19, MO8-MO19, Veterans)
@@ -55,54 +60,62 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ### 📋 Planned Features (PRD Scope)
 
-**Admin Tournament Operations**
+**Core Pool System (Phase 2)**
 
-- 📋 **Match Scheduling**: Automated bracket generation and pool creation
-- 📋 **Team Management**: Full team administration, approval, and organization
-- 📋 **Tournament Configuration**: Advanced tournament setup and bracket management
-- 📋 **Results Management**: Match result validation and publication
-
-**Public Features**
-
-- 📋 **Team Registration**: Enhanced team sign-up process for tournaments
-- 📋 **Live Updates**: Real-time match results and standings viewing
-- 📋 **Public Dashboard**: Live tournament following for spectators
-- 📋 **Classification Viewing**: Dynamic rankings and pool standings
-
-**Shared Features**
-
+- 📋 **Pool Creation**: Automated team grouping based on categories and divisions
+- 📋 **Pool Management**: Admin tools for pool organization and team assignment
+- 📋 **Basic Match Generation**: Simple match creation within pools
 - 📋 **Score Management**: Referee score entry and validation
-- 📋 **Real-time Updates**: Live match progress for all users
+
+**Advanced Features (Later Phases)**
+
+- 📋 **Bracket Generation**: Swiss tournament and knockout bracket algorithms
+- 📋 **Live Updates**: Real-time match results and standings
+- 📋 **Public Dashboard**: Live tournament following for spectators
+- 📋 **Classification System**: Dynamic rankings and pool standings
 
 ---
 
 ## User Personas & Use Cases
 
-### 1. Tournament Administrator (Admin Role)
+### 1. Tournament Administrator (ADMIN Role)
 
+**Authentication**: Required
 **Primary Goals**: Complete tournament setup and oversight
 **Key Features Needed**:
 
-- Tournament creation with complex bracket systems
-- Team pool management and seeding
-- Match scheduling and field assignments
+- Tournament creation with pool systems
+- Team pool management and organization
+- Match scheduling within pools
 - Real-time tournament monitoring
 - Results validation and publication
 - Team approval and organization
 
-### 2. Tournament Manager (Admin Role)
+### 2. Tournament Manager (TOURNAMENT_MANAGER Role)
 
+**Authentication**: Required
 **Primary Goals**: Operational tournament management
 **Key Features Needed**:
 
-- Match scheduling tools
-- Pool and bracket management
+- Pool creation and management tools
 - Team coordination and communication
 - Results publication
-- Tournament configuration
+- Tournament configuration assistance
 
-### 3. Referee/Match Officials (Referee Role)
+### 3. Referee Coordinator (REFEREE_COORDINATOR Role)
 
+**Authentication**: Required
+**Primary Goals**: Referee assignment and coordination
+**Key Features Needed**:
+
+- Referee scheduling and assignment
+- Match assignment dashboard
+- Communication with referees
+- Referee performance tracking
+
+### 4. Referee (REFEREE Role)
+
+**Authentication**: Required
 **Primary Goals**: Quick and accurate score entry
 **Key Features Needed**:
 
@@ -111,19 +124,31 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - Quick match status updates (postponed, cancelled)
 - Offline score entry with sync capabilities
 
-### 4. Team Leaders (Public Role)
+### 5. Registered Public Users (PUBLIC Role)
 
-**Primary Goals**: Team registration and tournament information
+**Authentication**: Required
+**Primary Goals**: Enhanced tournament following
 **Key Features Needed**:
 
-- Team registration for tournaments
-- Team profile management
-- Match schedule viewing
-- Team performance tracking
-- Communication with tournament officials
+- Personalized tournament dashboard
+- Favorite team tracking
+- Notification preferences
+- Match alerts and updates
 
-### 5. Public/Spectators (Public Role)
+### 6. Team Leaders (Unauthenticated Public)
 
+**Authentication**: Not required
+**Primary Goals**: Team registration and basic tournament information
+**Key Features Needed**:
+
+- Team registration for tournaments (contact form only)
+- View team information
+- Basic tournament schedule viewing
+- Contact tournament officials
+
+### 7. General Public/Spectators (Unauthenticated)
+
+**Authentication**: Not required
 **Primary Goals**: Following tournament progress and results
 **Key Features Needed**:
 
@@ -136,111 +161,130 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ## Feature Roadmap
 
-### Phase 1: Core Match System (Q1 2024)
+### Phase 1: Role-Based Access Control (Q1 2025)
 
 **Priority**: Critical
-**Timeline**: 4-6 weeks
+**Timeline**: 3-4 weeks
 
-#### 1.1 Admin Match Scheduling System
+#### 1.1 Authentication System Implementation
 
-- **Pool Creation Engine**: Automatic team grouping based on categories and divisions
-- **Bracket Generation**: Swiss tournament and knockout bracket algorithms
+- **Role-Based Routing**: Implement proper role-based access control
+- **User Role Management**: Different access levels per role
+- **Admin Panel Restriction**: Only ADMIN and TOURNAMENT_MANAGER roles access admin panel
+- **Public Access**: Unauthenticated users can register teams and view tournaments
+
+#### 1.2 Permission System
+
+- **Route Protection**: Implement role-based route protection
+- **Feature Permissions**: Role-specific feature access
+- **User Management**: Admin ability to manage user roles
+- **Access Control Tests**: Comprehensive testing of role permissions
+
+#### 1.3 Team Registration Enhancement
+
+- **Unauthenticated Registration**: Streamlined team registration without login
+- **Contact Information**: TeamLeader model as contact info only
+- **Admin Team Review**: Admin workflow for reviewing team registrations
+- **Registration Status**: Track team approval status
+
+### Phase 2: Pool Creation & Management (Q2 2025)
+
+**Priority**: Critical
+**Timeline**: 6-8 weeks
+
+#### 2.1 Pool Creation Engine
+
+- **Pool Creation**: Automatic team grouping based on categories and divisions
 - **Field Assignment**: Multi-field scheduling with time slot management
 - **Conflict Resolution**: Automatic detection and resolution of scheduling conflicts
 - **Team Approval**: Admin approval workflow for team registrations
 
-#### 1.2 Score Entry Interface (Referee Features)
+#### 2.2 Score Entry Interface
 
 - **Referee Dashboard**: Match assignment and score entry interface
 - **Mobile Score Entry**: Touch-optimized scoring with validation
 - **Offline Support**: Score entry with background sync
 - **Match Status Management**: Real-time status updates (upcoming, playing, completed)
 
-#### 1.3 Basic Live Updates (Public Features)
+#### 2.3 Basic Live Updates
 
 - **Real-time Score Broadcasting**: WebSocket-based live updates
 - **Match Status Tracking**: Live match progress indicators
 - **Basic Notifications**: Score update alerts for interested parties
 
-### Phase 2: Public Engagement (Q2 2024)
+### Phase 3: Public Engagement (Q3 2025)
 
 **Priority**: High
-**Timeline**: 3-4 weeks
+**Timeline**: 4-5 weeks
 
-#### 2.1 Enhanced Public Team Registration
-
-- **Tournament Discovery**: Public browsing of available tournaments
-- **Team Registration Flow**: Streamlined team sign-up process
-- **Registration Status**: Track team approval and tournament participation
-- **Team Profile Management**: Edit team information and contact details
-
-#### 2.2 Public Tournament Dashboard
+#### 3.1 Public Tournament Dashboard
 
 - **Live Tournament View**: Real-time tournament overview
 - **Match Results Display**: Comprehensive results with match details
 - **Team Performance**: Individual team statistics and history
 - **Search and Filter**: Easy navigation through tournament data
 
-#### 2.3 Classification System (Public Viewing)
+#### 3.2 Classification System
 
 - **Dynamic Rankings**: Real-time pool standings calculation
 - **Promotion/Relegation**: Automatic division movement tracking
 - **Performance Metrics**: Team and player statistics
 - **Historical Data**: Tournament history and comparisons
 
-#### 2.4 Enhanced Mobile Experience
+#### 3.3 Enhanced Mobile Experience
 
 - **Progressive Web App**: Enhanced offline capabilities
 - **Push Notifications**: Match alerts and score updates
 - **Home Screen Integration**: Quick access to tournament info
 - **Swipe Gestures**: Intuitive navigation between matches and standings
 
-### Phase 3: Advanced Admin Features (Q3 2024)
+### Phase 4: Advanced Tournament Features (Q4 2025)
 
 **Priority**: Medium
-**Timeline**: 4-5 weeks
+**Timeline**: 6-8 weeks
 
-#### 3.1 Advanced Tournament Types (Admin)
+#### 4.1 Bracket Generation & Advanced Tournament Types
 
+- **Bracket Generation**: Swiss tournament and knockout bracket algorithms
 - **Multiple Tournament Formats**: Round-robin, knockout, Swiss system
 - **Multi-stage Tournaments**: Group phase + knockout combinations
 - **Playoff Systems**: Configurable playoff structures
 - **Custom Scoring**: Different point systems per tournament
 
-#### 3.2 Communication System (All Roles)
+#### 4.2 Communication System
 
-- **In-app Messaging**: Communication between roles
+- **In-app Messaging**: Communication between authenticated users
 - **Announcements**: Tournament-wide notifications
 - **Email Integration**: Automated match reminders and results
-- **SMS Notifications**: Critical updates for referees and teams
+- **Contact Forms**: Communication for unauthenticated users
 
-#### 3.3 Reporting and Analytics (Admin)
+#### 4.3 Reporting and Analytics
 
 - **Tournament Reports**: Comprehensive tournament summaries
 - **Performance Analytics**: Team and player performance insights
 - **Export Functionality**: Data export for external analysis
 - **Custom Dashboards**: Role-specific information views
 
-### Phase 4: Extended Functionality (Q4 2024)
+### Phase 5: Extended Functionality (Q1 2026)
 
 **Priority**: Low
-**Timeline**: 6-8 weeks
+**Timeline**: 8-10 weeks
 
-#### 4.1 Advanced Administration (Admin)
+#### 5.1 Advanced Administration
 
 - **Multi-tournament Management**: Season-long tournament series
 - **Referee Scheduling**: Automated referee assignment
 - **Equipment Management**: Field and equipment tracking
 - **Financial Tracking**: Tournament fee and payment management
 
-#### 4.2 Integration Capabilities (All Roles)
+#### 5.2 Integration Capabilities
 
 - **Third-party Integrations**: External tournament platforms
 - **API Development**: Public API for tournament data
 - **Calendar Integration**: Match schedule exports
 - **Social Media**: Automated result sharing
 
-#### 4.3 Enhanced User Experience (All Roles)
+#### 5.3 Enhanced User Experience
 
 - **Customizable Themes**: Tournament-specific branding
 - **Advanced Search**: Full-text search across tournament data
@@ -250,6 +294,34 @@ Tournado is a comprehensive tournament management system designed to streamline 
 ---
 
 ## Technical Requirements
+
+### Current Technical Architecture
+
+#### Authentication System
+
+- **Current State**: Cookie-based sessions with all authenticated users redirecting to admin panel
+- **Role System**: 5 roles defined in schema but not implemented in application logic
+- **Access Control**: Route-based protection exists but not role-specific
+
+#### Data Models
+
+- **User Model**: Authentication accounts with role assignment (not enforced)
+- **TeamLeader Model**: Contact information only - not linked to user accounts
+- **Tournament Model**: JSON-based divisions and categories (SQLite limitation)
+- **Match/MatchScore Models**: Scoring system foundation (not yet utilized)
+
+#### Current Routes
+
+- **Public**: `/`, `/teams`, `/about`, `/auth/*`
+- **Authenticated**: `/profile`, `/settings`, `/a7k9m2x5p8w1n4q6r3y8b5t1/*` (all roles)
+- **Admin**: `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/*` (ADMIN role required but not enforced)
+
+### Current Architecture Limitations
+
+- **Role Implementation**: Roles defined in schema but not enforced in application
+- **Access Control**: All authenticated users currently access admin panel
+- **Team Registration**: Public registration works but lacks approval workflow
+- **Match System**: Database schema exists but no pool/match management logic
 
 ### Architecture Requirements
 
@@ -267,7 +339,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ### Data Requirements
 
-- **Real-time Updates**: WebSocket connections for live data
+- **Real-time Updates**: WebSocket connections for live data (Not Yet Implemented)
 - **Offline Support**: Local storage with background synchronization
 - **Data Integrity**: Transactional updates with rollback capabilities
 - **Backup Strategy**: Daily automated backups with point-in-time recovery
@@ -317,6 +389,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ### Technical Risks
 
+- **Role System Refactoring**: Significant changes to current authentication flow
 - **Real-time Data Complexity**: WebSocket implementation challenges
 - **Offline Sync Conflicts**: Data consistency during offline usage
 - **Scalability Concerns**: High concurrent user loads during tournaments
@@ -340,25 +413,31 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ## Implementation Timeline
 
-### Q1 2024: Foundation
+### Q1 2025: Authentication & Access Control
 
-- **Weeks 1-2**: Admin match scheduling system development
-- **Weeks 3-4**: Score entry interface and referee dashboard
-- **Weeks 5-6**: Basic live updates and WebSocket implementation
+- **Weeks 1-2**: Role-based access control implementation
+- **Weeks 3-4**: User role management and permissions
+- **Weeks 5-6**: Team registration workflow and admin approval
 
-### Q2 2024: Public Features
+### Q2 2025: Pool Creation & Management
 
-- **Weeks 1-2**: Enhanced public team registration
-- **Weeks 3-4**: Public tournament dashboard and classification viewing
+- **Weeks 1-3**: Pool creation engine development
+- **Weeks 4-6**: Score entry interface and referee dashboard
+- **Weeks 7-8**: Basic live updates and WebSocket implementation
+
+### Q3 2025: Public Features
+
+- **Weeks 1-2**: Public tournament dashboard
+- **Weeks 3-4**: Classification system and dynamic rankings
 - **Weeks 5-6**: Enhanced mobile experience and PWA features
 
-### Q3 2024: Advanced Features
+### Q4 2025: Advanced Features
 
-- **Weeks 1-2**: Advanced tournament types and admin features
-- **Weeks 3-4**: Communication system and notifications
-- **Weeks 5-6**: Reporting and analytics dashboard
+- **Weeks 1-3**: Bracket generation and advanced tournament types
+- **Weeks 4-6**: Communication system and notifications
+- **Weeks 7-8**: Reporting and analytics dashboard
 
-### Q4 2024: Extended Functionality
+### Q1 2026: Extended Functionality
 
 - **Weeks 1-3**: Advanced administration features
 - **Weeks 4-6**: Integration capabilities and API development
@@ -368,19 +447,35 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ## Conclusion
 
-This PRD outlines a comprehensive roadmap for completing the Tournado tournament management system with clear separation between admin and public functionalities. The phased approach ensures that critical functionality is delivered first while building toward a full-featured platform that serves all user types effectively.
+This PRD outlines a comprehensive roadmap for completing the Tournado tournament management system. The critical first phase focuses on implementing the role-based access control system that is defined in the schema but not yet enforced in the application.
 
 **Key Architectural Principles**:
 
-- **Admin Users**: Full tournament and team management capabilities
-- **Public Users**: Team registration and tournament viewing only
-- **Shared Features**: Live updates and match following for all users
+- **ADMIN/TOURNAMENT_MANAGER**: Full tournament and pool management capabilities
+- **REFEREE_COORDINATOR**: Referee assignment and coordination
+- **REFEREE**: Score entry and match management
+- **PUBLIC (Authenticated)**: Enhanced tournament following with personalization
+- **Team Leaders (Unauthenticated)**: Contact-based team registration only
+- **General Public (Unauthenticated)**: Tournament viewing and basic information
+
+**Critical First Steps**:
+
+1. Implement role-based access control system
+2. Focus Phase 2 on pool creation and management
+3. Add bracket generation in Phase 4 once pool system is stable
+4. Build comprehensive tournament management platform
+
+**Pool-First Approach**:
+
+- Phase 2 focuses on pool creation and basic match management
+- Bracket generation moved to Phase 4 for better stability
+- Provides immediate value with simpler tournament formats
 
 The focus on mobile-first design, real-time updates, and multi-language support positions Tournado as a modern solution for tournament management in an increasingly digital world.
 
 **Next Steps**:
 
 1. Review and approve this PRD with stakeholders
-2. Begin Phase 1 development with admin match scheduling system
-3. Establish weekly progress reviews and user feedback sessions
-4. Prepare for beta testing with real tournaments in Q2 2024
+2. Begin Phase 1 development with role-based access control
+3. Design pool creation algorithms for Phase 2
+4. Prepare for beta testing with real tournaments in Q3 2025

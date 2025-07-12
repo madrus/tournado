@@ -19,11 +19,9 @@ export const commonButtonClasses = cn(
 
 // Color system
 
-// Helper to resolve color name: 'primary' -> 'emerald', 'brand' -> 'red', else itself
+// Helper to resolve color name: 'primary' stays 'primary', 'brand' stays 'brand', else itself
 const resolveColorName = (color: ColorAccent): string => {
-  if (color === 'primary') return 'emerald'
-  if (color === 'brand') return 'red'
-  return color
+  return color // No more mapping needed - primary and brand are semantic colors now
 }
 
 const getRingClasses = (color: ColorAccent): string => {

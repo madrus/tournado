@@ -1,24 +1,22 @@
 import { type ColorAccent } from '~/lib/lib.types'
 
-// Helper to resolve color name: 'primary' -> 'emerald', 'brand' -> 'red', else itself
+// Helper to resolve color name: 'primary' stays 'primary', 'brand' stays 'brand', else itself
 const resolveColorName = (color: ColorAccent): string => {
-  if (color === 'primary') return 'emerald'
-  if (color === 'brand') return 'red'
-  return color
+  return color // No more mapping needed - primary and brand are semantic colors now
 }
 
 const getInputColors = (color: ColorAccent) => {
   const resolvedColor = resolveColorName(color)
-  // Special case for emerald - uses custom CSS properties
-  if (resolvedColor === 'emerald') {
+  // Special case for primary - uses custom CSS properties
+  if (resolvedColor === 'primary') {
     return {
       border: 'border-input-border/30',
       hover: 'hover:border-input-hover',
       focus: 'focus:border-input-focus focus:ring-2 focus:ring-input-ring/20',
     }
   }
-  // Special case for red (brand) - uses error styles
-  if (resolvedColor === 'red') {
+  // Special case for brand - uses error styles
+  if (resolvedColor === 'brand') {
     return {
       border: 'border-error/30',
       hover: 'hover:border-error',
@@ -53,11 +51,11 @@ export const getInputColorClasses = (
 
 export const getDropdownItemColorClasses = (color: ColorAccent): string => {
   const resolvedColor = resolveColorName(color)
-  if (resolvedColor === 'emerald') {
-    return 'focus:bg-emerald-lightest focus:text-emerald-darkest'
+  if (resolvedColor === 'primary') {
+    return 'focus:bg-primary-50 focus:text-primary-800'
   }
-  if (resolvedColor === 'red') {
-    return 'focus:bg-brand-lightest focus:text-brand-darkest'
+  if (resolvedColor === 'brand') {
+    return 'focus:bg-brand-100 focus:text-brand-800'
   }
   return `focus:bg-${resolvedColor}-50 focus:text-${resolvedColor}-900`
 }
@@ -66,18 +64,18 @@ export const getCalendarColorClasses = (
   color: ColorAccent
 ): { today: string; hover: string; navButton: string } => {
   const resolvedColor = resolveColorName(color)
-  if (resolvedColor === 'emerald') {
+  if (resolvedColor === 'primary') {
     return {
-      today: 'bg-emerald-lighter text-emerald-darkest',
-      hover: 'hover:bg-emerald-lighter',
-      navButton: 'text-emerald-dark hover:bg-emerald-lighter',
+      today: 'bg-primary-100 text-primary-800',
+      hover: 'hover:bg-primary-100',
+      navButton: 'text-primary-600 hover:bg-primary-100',
     }
   }
-  if (resolvedColor === 'red') {
+  if (resolvedColor === 'brand') {
     return {
-      today: 'bg-brand-light text-brand-dark',
-      hover: 'hover:bg-brand-light',
-      navButton: 'text-brand hover:bg-brand-light',
+      today: 'bg-brand-400 text-brand-700',
+      hover: 'hover:bg-brand-400',
+      navButton: 'text-brand-600 hover:bg-brand-400',
     }
   }
   return {

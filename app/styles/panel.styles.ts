@@ -3,9 +3,7 @@ import { cn } from '~/utils/misc'
 
 // Resolve color aliases to actual colors
 export function resolveColorAccent(color: ColorAccent): string {
-  if (color === 'primary') return 'emerald'
-  if (color === 'brand') return 'red'
-  return color
+  return color // No more mapping needed - primary and brand are semantic colors now
 }
 
 // Generate panel styles dynamically based on color
@@ -79,15 +77,15 @@ export function getIconTextClasses(colorAccent: ColorAccent): string {
 export type ColorScheme = ColorAccent
 export const colorClasses = {
   emerald: {
-    border: 'border-emerald-dark',
-    hoverBorder: 'hover:border-emerald-light',
-    hoverBg: 'hover:bg-emerald-lightest/30',
-    focus: 'focus:ring-emerald-medium',
-    iconBorder: 'border-emerald-dark',
-    iconHoverBorder: 'group-hover:border-emerald-darker',
-    iconHoverBg: 'group-hover:bg-emerald-lightest',
-    titleHover: 'group-hover:text-emerald-darker',
-    textHover: 'group-hover:text-emerald-dark',
+    border: 'border-emerald-600',
+    hoverBorder: 'hover:border-emerald-400',
+    hoverBg: 'hover:bg-emerald-50/30',
+    focus: 'focus:ring-emerald-500',
+    iconBorder: 'border-emerald-600',
+    iconHoverBorder: 'group-hover:border-emerald-700',
+    iconHoverBg: 'group-hover:bg-emerald-50',
+    titleHover: 'group-hover:text-emerald-700',
+    textHover: 'group-hover:text-emerald-600',
   },
   blue: {
     border: 'border-blue-600',
@@ -112,15 +110,15 @@ export const colorClasses = {
     textHover: 'group-hover:text-gray-600',
   },
   brand: {
-    border: 'border-brand',
-    hoverBorder: 'hover:border-brand-light',
-    hoverBg: 'hover:bg-brand-lightest/30',
-    focus: 'focus:ring-brand-medium',
-    iconBorder: 'border-brand',
-    iconHoverBorder: 'group-hover:border-brand-dark',
-    iconHoverBg: 'group-hover:bg-brand-lightest',
-    titleHover: 'group-hover:text-brand-dark',
-    textHover: 'group-hover:text-brand',
+    border: 'border-brand-600',
+    hoverBorder: 'hover:border-brand-400',
+    hoverBg: 'hover:bg-brand-100/30',
+    focus: 'focus:ring-brand-500',
+    iconBorder: 'border-brand-600',
+    iconHoverBorder: 'group-hover:border-brand-700',
+    iconHoverBg: 'group-hover:bg-brand-100',
+    titleHover: 'group-hover:text-brand-700',
+    textHover: 'group-hover:text-brand-600',
   },
   teal: {
     border: 'border-teal-600',

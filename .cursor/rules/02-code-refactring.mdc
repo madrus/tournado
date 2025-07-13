@@ -4,6 +4,9 @@ globs: ["**/*.{ts,tsx,js,jsx}"]
 alwaysApply: true
 ---
 
+<!-- @tailwindcss-intellisense-disable -->
+<!-- This file contains intentionally bad examples for documentation purposes -->
+
 # Code Refactoring
 
 These rules ensure proper handling of code history and mobile-first layouts during refactoring.

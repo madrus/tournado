@@ -90,13 +90,14 @@ export function UserMenu({
         <DropdownMenu.Content
           data-testid='user-menu-dropdown'
           className={cn(
-            'ring-opacity-5 divide-border z-40 w-max divide-y',
-            'bg-background ring-border rounded-md p-1 shadow-lg ring-1 focus:outline-none',
-            // Responsive max-width to prevent off-screen on mobile
-            'max-w-[calc(100vw-2rem)] sm:max-w-80',
-            // Ensure proper spacing from viewport edges - same for now to check
-            'mx-4',
-            menuClasses.spacing // Add margin for RTL spacing
+            // basic container
+            'bg-background z-40 w-max rounded-md p-1 shadow-lg focus:outline-none',
+            // border colors
+            'border border-red-500 dark:border-emerald-500',
+            // responsive sizing / spacing
+            'mx-4 max-w-[calc(100vw-2rem)] sm:max-w-80',
+            // RTL margin helpers
+            menuClasses.spacing
           )}
           align={dropdownProps.align}
           side={dropdownProps.side}
@@ -139,11 +140,15 @@ export function UserMenu({
               </p>
             )}
           </div>
+          <div className='h-px bg-red-500 dark:bg-emerald-500'></div>
           <div className='py-1'>
             {menuItems.map((item, index) => {
               if (item.divider) {
                 return (
-                  <DropdownMenu.Separator key={index} className='bg-border my-1 h-px' />
+                  <DropdownMenu.Separator
+                    key={index}
+                    className='my-1 h-px bg-red-500 dark:bg-emerald-500'
+                  />
                 )
               }
 

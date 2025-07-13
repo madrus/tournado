@@ -42,8 +42,8 @@
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
   --color-accent: var(
-    --color-primary-50
-  ); /* primary-100 - lighter primary hover background for light mode */
+    --color-brand-50
+  ); /* brand-50 - lighter brand hover background for light mode */
   --color-title-accent: var(--color-primary-200); /* primary-200 - for accents */
   --gradient-from: var(--color-primary-100); /* primary-100 */
   --gradient-to: #f9fafb; /* gray-50 */
@@ -131,5 +131,4 @@
   --color-usermenu-bg: var(--color-primary-900); /* Darker emerald background */
   --color-usermenu-text: #f3f4f6; /* gray-100 for high contrast readability */
   --color-usermenu-hover-bg: var(--color-primary-800); /* Primary tint for hover */
-  --color-usermenu-border: var(--color-primary-600); /* Border and divider color */
 }

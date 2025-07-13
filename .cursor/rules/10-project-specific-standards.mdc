@@ -1,0 +1,211 @@
+# Project-Specific Standards
+
+## TypeScript & React Conventions
+
+### TypeScript Style
+- **Type Declarations**: Use `type` instead of `interface` (unless impossible)
+- **Type Inference**: Prefer inferred types unless ESLint requires explicit types
+- **Syntax**: No semicolons; single quotes
+- **Naming**: PascalCase for types, camelCase for variables
+
+### React Components
+- **Function Style**: Use function declarations, not expressions
+- **Component Props**: Always use `type` for prop definitions
+
+```typescript
+// ✅ Good
+type ButtonProps = {
+  label: string
+  onClick: () => void
+}
+
+export default function Button({ label, onClick }: ButtonProps) {
+  return <button onClick={onClick}>{label}</button>
+}
+
+// ❌ Bad
+interface ButtonProps {
+  label: string
+  onClick: () => void
+}
+
+const Button = ({ label, onClick }: ButtonProps) => {
+  return <button onClick={onClick}>{label}</button>
+}
+```
+
+## Tailwind CSS Standards
+
+### Class Organization
+Group classes in this order: **layout → spacing → color → typography → effects**
+
+```tsx
+// ✅ Good
+<div className="flex flex-col gap-4 p-6 bg-white text-lg font-medium shadow-lg">
+
+// ❌ Bad
+<div className="shadow-lg text-lg bg-white flex p-6 gap-4 flex-col font-medium">
+```
+
+### Responsive Design
+- **Mobile-First**: Default styling for mobile (< 1024px)
+- **Desktop**: Add `lg:` prefix for desktop (1024px+)
+- **Avoid Hardcoded Values**: Use Tailwind's spacing scale over manual values
+
+```tsx
+// ✅ Good
+<div className="w-full p-4 lg:w-1/2 lg:p-8">
+
+// ❌ Bad
+<div className="w-[100%] p-[16px] lg:w-[50%] lg:p-[32px]">
+```
+
+## Routing Standards (React Router v7)
+
+### Route Management
+- **Declarative Routes**: Routes must be colocated with layouts when possible
+- **Navigation**: Use `useNavigate` and `useParams` from `react-router@7`
+- **Manual Updates**: Always update parent `routes.tsx` when adding new routes
+- **Lazy Loading**: Prefer lazy-loaded routes unless performance requires otherwise
+
+### Route Organization
+```typescript
+// ✅ Good
+import { useNavigate, useParams } from 'react-router'
+
+// ❌ Bad
+import { useHistory } from 'react-router' // v6 syntax
+```
+
+## State Management Standards
+
+### Zustand Best Practices
+- **Immutable Updates**: Never mutate state directly - always use setter
+- **Flat Structure**: Keep slices flat; use selectors for derived state
+- **Single Responsibility**: Don't nest stores - prefer small slices per concern
+- **Action Extraction**: Extract actions into `actions.ts` if they grow beyond 3-5 functions
+
+### Tanstack Query
+- **Key Structure**: Use tuple-style keys: `['project', id]` not string-based
+- **Collocation**: Colocate query/mutation function with the hook
+- **Error Handling**: Favor suspense + error boundaries over conditional `isLoading`
+
+## Testing Standards
+
+### Vitest (Unit Tests)
+- **File Organization**: Tests in `__tests__` subfolders adjacent to code they test
+- **Zustand Testing**: Smoke test all mutations and selectors minimally
+- **API Mocking**: Use MSW for API responses, not custom fetch mocks
+
+### Playwright (E2E Tests)
+- **User Behavior**: Describe real user actions ("click login", "assert dashboard appears")
+- **Test Organization**: Use page objects for complex interactions
+- **Realistic Testing**: Test actual user workflows, not implementation details
+
+## Cursor Development Workflow
+
+### AI Assistant Guidelines
+- **Context7**: Always enable for non-trivial code modifications
+- **Sequential Thinking**: Use for multi-file changes and complex planning
+- **Manual Review**: Review diffs manually after `fixErrors` or `autoFix`
+- **Smart Commits**: Only use after verifying file renames, deletions, and semantic scope
+
+### Change Philosophy
+- **Minimal Changes**: Follow the minimal change principle for refactoring
+- **Explicit Only**: Don't apply formatting or stylistic cleanups unless requested
+- **Focused Scope**: Avoid renaming public APIs unless updating all usages
+
+## Implementation Guidelines
+
+### When Adding New Features
+1. **Plan First**: Use sequential thinking for multi-file changes
+2. **Test Adjacent**: Create tests in `__tests__` subfolder
+3. **Mobile-First**: Implement mobile layout first, then desktop
+4. **Type Safety**: Use `type` declarations for all new interfaces
+
+### When Refactoring
+1. **Preserve History**: Don't delete commented-out code
+2. **Maintain Context**: Update related comments
+3. **Scope Limitation**: Only change what's being refactored
+4. **Layout Testing**: Verify both mobile and desktop layouts
+
+## Enforcement
+
+These standards should be:
+- ✅ **Always applied** in new code
+- ✅ **Followed during refactoring**
+- ✅ **Checked before commits**
+- ✅ **Remembered by AI assistants**
+
+---
+
+## Examples in Practice
+
+### Complete Component Example
+```typescript
+// ✅ Good: Following all standards
+type TournamentCardProps = {
+  tournament: {
+    id: string
+    name: string
+    date: string
+  }
+  onEdit: (id: string) => void
+}
+
+export default function TournamentCard({ tournament, onEdit }: TournamentCardProps) {
+  const navigate = useNavigate()
+
+  return (
+    <div className="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md lg:flex-row lg:gap-4 lg:p-6">
+      <div className="flex-1">
+        <h3 className="text-lg font-semibold text-gray-900">{tournament.name}</h3>
+        <p className="text-sm text-gray-600">{tournament.date}</p>
+      </div>
+      <div className="flex gap-2 lg:gap-3">
+        <button
+          onClick={() => navigate(`/tournaments/${tournament.id}`)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          View
+        </button>
+        <button
+          onClick={() => onEdit(tournament.id)}
+          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  )
+}
+```
+
+### Test Example
+```typescript
+// tests/__tests__/TournamentCard.test.tsx
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import TournamentCard from '../TournamentCard'
+
+describe('TournamentCard', () => {
+  it('renders tournament information correctly', () => {
+    const mockTournament = {
+      id: '1',
+      name: 'Spring Championship',
+      date: '2025-03-15'
+    }
+
+    render(<TournamentCard tournament={mockTournament} onEdit={vi.fn()} />)
+
+    expect(screen.getByText('Spring Championship')).toBeInTheDocument()
+    expect(screen.getByText('2025-03-15')).toBeInTheDocument()
+  })
+})
+```
+
+This consolidated standard ensures consistent development practices across the entire project.
+description:
+globs:
+alwaysApply: false
+---

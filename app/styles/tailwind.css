@@ -82,7 +82,26 @@
 @source inline("dark:text-yellow-100/80 dark:text-green-100/80 dark:text-violet-100/80 dark:text-gray-100/80");
 @source inline("dark:text-white dark:text-emerald-300 dark:text-red-300 dark:text-teal-300 dark:text-cyan-300");
 @source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
-@source inline("dark:text-red-200 text-gray-700");
+@source inline("dark:text-red-200 text-gray-700 text-red-900");
+/* Semantic colors for panel titles and descriptions */
+@source inline("text-title text-foreground text-foreground-light text-foreground-heading dark:text-white");
+/* Light mode darker text colors for better contrast */
+@source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-gray-950");
+@source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-gray-900");
+@source inline("text-emerald-700 text-red-700 text-teal-700 text-cyan-700 text-yellow-700 text-green-700 text-violet-700 text-gray-700");
+/* Icon border colors for light mode */
+@source inline("border-emerald-700 border-red-700 border-teal-700 border-cyan-700 border-yellow-700 border-green-700 border-violet-700 border-gray-700");
+@source inline("dark:border-emerald-300 dark:border-red-300 dark:border-teal-300 dark:border-cyan-300 dark:border-yellow-300 dark:border-green-300 dark:border-violet-300 dark:border-gray-300");
+/* Children text colors - brand (red) - only last child */
+@source inline("[&>*:last-child_p]:text-red-600 [&>*:last-child_strong]:text-red-600");
+/* Children text colors - other colors - only last child */
+@source inline("[&>*:last-child_p]:text-emerald-700 [&>*:last-child_p]:dark:text-emerald-300 [&>*:last-child_strong]:text-emerald-700 [&>*:last-child_strong]:dark:text-emerald-300");
+@source inline("[&>*:last-child_p]:text-teal-700 [&>*:last-child_p]:dark:text-teal-300 [&>*:last-child_strong]:text-teal-700 [&>*:last-child_strong]:dark:text-teal-300");
+@source inline("[&>*:last-child_p]:text-cyan-700 [&>*:last-child_p]:dark:text-cyan-300 [&>*:last-child_strong]:text-cyan-700 [&>*:last-child_strong]:dark:text-cyan-300");
+@source inline("[&>*:last-child_p]:text-yellow-700 [&>*:last-child_p]:dark:text-yellow-300 [&>*:last-child_strong]:text-yellow-700 [&>*:last-child_strong]:dark:text-yellow-300");
+@source inline("[&>*:last-child_p]:text-green-700 [&>*:last-child_p]:dark:text-green-300 [&>*:last-child_strong]:text-green-700 [&>*:last-child_strong]:dark:text-green-300");
+@source inline("[&>*:last-child_p]:text-violet-700 [&>*:last-child_p]:dark:text-violet-300 [&>*:last-child_strong]:text-violet-700 [&>*:last-child_strong]:dark:text-violet-300");
+@source inline("[&>*:last-child_p]:text-gray-700 [&>*:last-child_p]:dark:text-gray-300 [&>*:last-child_strong]:text-gray-700 [&>*:last-child_strong]:dark:text-gray-300");
 
 /* Panel background colors for light/dark mode */
 @source inline("bg-emerald-100 bg-red-100 bg-teal-100 bg-cyan-100 bg-yellow-100 bg-green-100 bg-violet-100 bg-gray-100");
@@ -92,6 +111,13 @@
 @theme {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
+  
+  /* Text Colors */
+  --color-title: var(--color-title);
+  --color-foreground-heading: var(--color-foreground-heading);
+  --color-foreground-light: var(--color-foreground-light);
+  --color-foreground-lighter: var(--color-foreground-lighter);
+  --color-foreground-darker: var(--color-foreground-darker);
 
   /* Brand Colors */
   --color-brand: var(--color-brand);

@@ -24,9 +24,9 @@ function getPanelStyles(colorAccent: ColorAccent) {
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
     iconBg: `bg-${resolvedColor}-400/10`,
-    iconText: `text-${resolvedColor}-600 dark:text-${resolvedColor}-300`,
-    title: `text-${resolvedColor}-900 dark:text-white`,
-    description: `text-${resolvedColor}-700 dark:text-${resolvedColor}-100/80`,
+    iconText: `text-${resolvedColor}-700 dark:text-${resolvedColor}-300`,
+    title: `text-title dark:text-white`,
+    description: `text-foreground dark:text-${resolvedColor}-100/80`,
   }
 }
 
@@ -65,9 +65,9 @@ export function getTitleClasses(colorAccent: ColorAccent): string {
 
 export function getDescriptionClasses(colorAccent: ColorAccent): string {
   const style = getPanelStyles(colorAccent)
-  // Special case for brand hover: use lighter red
+  // Special case for brand hover: use red tint in both modes
   if (colorAccent === 'brand') {
-    return cn('text-gray-700 dark:text-red-200')
+    return cn('text-red-900 dark:text-red-200')
   }
   return cn(style.description)
 }

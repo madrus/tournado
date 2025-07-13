@@ -42,7 +42,7 @@ describe('Panel Styles', () => {
     it('should generate correct classes for primary color', () => {
       const classes = getPanelClasses('primary')
 
-      expect(classes.base).toContain('border-primary-400/60')
+      expect(classes.base).toContain('border-primary-400')
       expect(classes.base).toContain('bg-gradient-to-br')
       expect(classes.base).toContain('from-primary-950')
       expect(classes.base).toContain('via-primary-900')
@@ -57,13 +57,14 @@ describe('Panel Styles', () => {
     it('should generate correct classes for brand color with special gray gradient', () => {
       const classes = getPanelClasses('brand')
 
-      expect(classes.base).toContain('border-brand-400/60')
+      expect(classes.base).toContain('border-brand-400')
       expect(classes.base).toContain('bg-gradient-to-br')
-      expect(classes.base).toContain('from-gray-900')
-      expect(classes.base).toContain('via-gray-800')
-      expect(classes.base).toContain('to-gray-800')
-      expect(classes.background).toContain('bg-gradient-to-br')
-      expect(classes.background).toContain('from-gray-900')
+      expect(classes.base).toContain('from-brand-from')
+      expect(classes.base).toContain('via-brand-via')
+      expect(classes.base).toContain('to-brand-to')
+      expect(classes.background).toContain('from-brand-from')
+      expect(classes.background).toContain('via-brand-via')
+      expect(classes.background).toContain('to-brand-to')
       expect(classes.icon).toContain('border-brand-400/70')
       expect(classes.icon).toContain('bg-brand-400/10')
       expect(classes.glow).toContain('bg-brand-400/30')
@@ -82,7 +83,7 @@ describe('Panel Styles', () => {
       colors.forEach(color => {
         const classes = getPanelClasses(color)
 
-        expect(classes.base).toContain(`border-${color}-400/60`)
+        expect(classes.base).toContain(`border-${color}-400`)
         expect(classes.base).toContain('bg-gradient-to-br')
         expect(classes.base).toContain(`from-${color}-950`)
         expect(classes.base).toContain(`via-${color}-900`)
@@ -143,7 +144,7 @@ describe('Panel Styles', () => {
         expect(classes).toContain('text-lg')
         expect(classes).toContain('font-semibold')
         expect(classes).toContain('break-words')
-        expect(classes).toContain('text-white')
+        expect(classes).toContain('text-title')
       })
     })
   })
@@ -151,12 +152,14 @@ describe('Panel Styles', () => {
   describe('getDescriptionClasses', () => {
     it('should generate correct description classes for primary color', () => {
       const classes = getDescriptionClasses('primary')
-      expect(classes).toContain('text-primary-100/80')
+      expect(classes).toContain('text-foreground')
+      expect(classes).toContain('dark:text-primary-100/80')
     })
 
     it('should generate correct description classes for brand color', () => {
       const classes = getDescriptionClasses('brand')
-      expect(classes).toContain('text-brand-100/80')
+      expect(classes).toContain('text-brand-darkest')
+      expect(classes).toContain('dark:text-red-200')
     })
 
     it('should generate correct description classes for standard colors', () => {
@@ -164,7 +167,8 @@ describe('Panel Styles', () => {
 
       colors.forEach(color => {
         const classes = getDescriptionClasses(color)
-        expect(classes).toContain(`text-${color}-100/80`)
+        expect(classes).toContain('text-foreground')
+        expect(classes).toContain(`dark:text-${color}-100/80`)
       })
     })
   })
@@ -176,7 +180,8 @@ describe('Panel Styles', () => {
       expect(classes).toContain('transition-colors')
       expect(classes).toContain('duration-500')
       expect(classes).toContain('ease-in-out')
-      expect(classes).toContain('text-primary-300')
+      expect(classes).toContain('text-primary-700')
+      expect(classes).toContain('dark:text-primary-300')
     })
 
     it('should generate correct icon text classes for brand color', () => {
@@ -185,7 +190,8 @@ describe('Panel Styles', () => {
       expect(classes).toContain('transition-colors')
       expect(classes).toContain('duration-500')
       expect(classes).toContain('ease-in-out')
-      expect(classes).toContain('text-brand-300')
+      expect(classes).toContain('text-brand-700')
+      expect(classes).toContain('dark:text-brand-300')
     })
 
     it('should generate correct icon text classes for standard colors', () => {
@@ -197,7 +203,8 @@ describe('Panel Styles', () => {
         expect(classes).toContain('transition-colors')
         expect(classes).toContain('duration-500')
         expect(classes).toContain('ease-in-out')
-        expect(classes).toContain(`text-${color}-300`)
+        expect(classes).toContain(`text-${color}-700`)
+        expect(classes).toContain(`dark:text-${color}-300`)
       })
     })
   })
@@ -325,10 +332,12 @@ describe('Panel Styles', () => {
       const iconTextClasses = getIconTextClasses('primary')
 
       // All should use primary semantic colors
-      expect(panelClasses.base).toContain('border-primary-400/60')
-      expect(titleClasses).toContain('text-white')
-      expect(descriptionClasses).toContain('text-primary-100/80')
-      expect(iconTextClasses).toContain('text-primary-300')
+      expect(panelClasses.base).toContain('border-primary-400')
+      expect(titleClasses).toContain('text-title')
+      expect(descriptionClasses).toContain('text-foreground')
+      expect(descriptionClasses).toContain('dark:text-primary-100/80')
+      expect(iconTextClasses).toContain('text-primary-700')
+      expect(iconTextClasses).toContain('dark:text-primary-300')
     })
 
     it('should handle brand color consistently across all functions', () => {
@@ -338,20 +347,22 @@ describe('Panel Styles', () => {
       const iconTextClasses = getIconTextClasses('brand')
 
       // All should use brand semantic colors
-      expect(panelClasses.base).toContain('border-brand-400/60')
-      expect(titleClasses).toContain('text-white')
-      expect(descriptionClasses).toContain('text-brand-100/80')
-      expect(iconTextClasses).toContain('text-brand-300')
+      expect(panelClasses.base).toContain('border-brand-400')
+      expect(titleClasses).toContain('text-title')
+      expect(descriptionClasses).toContain('text-brand-darkest')
+      expect(descriptionClasses).toContain('dark:text-red-200')
+      expect(iconTextClasses).toContain('text-brand-700')
+      expect(iconTextClasses).toContain('dark:text-brand-300')
     })
 
     it('should handle brand gradient special case', () => {
       const brandClasses = getPanelClasses('brand')
       const standardClasses = getPanelClasses('blue')
 
-      // Brand should use gray gradient, standard should use color gradient
-      expect(brandClasses.background).toContain('from-gray-900')
-      expect(brandClasses.background).toContain('via-gray-800')
-      expect(brandClasses.background).toContain('to-gray-800')
+      // Brand should use semantic panel gradient, standard should use color gradient
+      expect(brandClasses.background).toContain('from-brand-from')
+      expect(brandClasses.background).toContain('via-brand-via')
+      expect(brandClasses.background).toContain('to-brand-to')
 
       expect(standardClasses.background).toContain('from-blue-950')
       expect(standardClasses.background).toContain('via-blue-900')

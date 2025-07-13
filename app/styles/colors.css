@@ -55,10 +55,27 @@
   --panel-gradient-via: #f3f4f6; /* gray-100 */
   --panel-gradient-to: #f9fafb; /* gray-50 */
 
-  /* Brand panel gradients (gray in light mode) */
-  --panel-gradient-brand-from: #f9fafb; /* gray-50 */
-  --panel-gradient-brand-via: #f3f4f6; /* gray-100 */
-  --panel-gradient-brand-to: #f9fafb; /* gray-50 */
+  /* Brand panel gradients - light mode */
+  --brand-light-from: #f8fafc; /* slate-50 */
+  --brand-light-via: #f1f5f9; /* slate-100 */
+  --brand-light-to: #f8fafc; /* slate-50 */
+
+  /* Brand gradient classes - use light mode values by default */
+  --brand-from: var(--brand-light-from);
+  --brand-via: var(--brand-light-via);
+  --brand-to: var(--brand-light-to);
+
+  /* Panel background colors */
+  --panel-bg-primary: #d1fae5; /* emerald-100 */
+  --panel-bg-brand: #f3f4f6; /* gray-100 */
+  --panel-bg-emerald: #d1fae5; /* emerald-100 */
+  --panel-bg-teal: #ccfbf1; /* teal-100 */
+  --panel-bg-cyan: #cffafe; /* cyan-100 */
+  --panel-bg-blue: #dbeafe; /* blue-100 */
+  --panel-bg-green: #dcfce7; /* green-100 */
+  --panel-bg-yellow: #fef3c7; /* yellow-100 */
+  --panel-bg-violet: #ede9fe; /* violet-100 */
+  --panel-bg-gray: #f3f4f6; /* gray-100 */
   --footer-bg: #ffffff; /* white */
   --footer-text: #374151; /* gray-700 */
   --color-background-hover: #f3f4f6; /* gray-100 */
@@ -137,10 +154,27 @@
   --panel-gradient-via: #1e293b; /* slate-800 */
   --panel-gradient-to: #1e293b; /* slate-800 */
 
-  /* Brand panel gradients (gray in dark mode) */
-  --panel-gradient-brand-from: #111827; /* gray-900 */
-  --panel-gradient-brand-via: #1f2937; /* gray-800 */
-  --panel-gradient-brand-to: #1f2937; /* gray-800 */
+  /* Brand panel gradients - dark mode */
+  --brand-dark-from: #0f172a; /* slate-900 */
+  --brand-dark-via: #1e293b; /* slate-800 */
+  --brand-dark-to: #1e293b; /* slate-800 */
+
+  /* Brand gradient classes - use dark mode values in dark mode */
+  --brand-from: var(--brand-dark-from);
+  --brand-via: var(--brand-dark-via);
+  --brand-to: var(--brand-dark-to);
+
+  /* Panel background colors for dark mode */
+  --panel-bg-primary: #065f46; /* emerald-800 */
+  --panel-bg-brand: #1f2937; /* gray-800 */
+  --panel-bg-emerald: #065f46; /* emerald-800 */
+  --panel-bg-teal: #115e59; /* teal-800 */
+  --panel-bg-cyan: #155e63; /* cyan-800 */
+  --panel-bg-blue: #1e40af; /* blue-800 */
+  --panel-bg-green: #166534; /* green-800 */
+  --panel-bg-yellow: #92400e; /* yellow-800 */
+  --panel-bg-violet: #5b21b6; /* violet-800 */
+  --panel-bg-gray: #1f2937; /* gray-800 */
   --footer-bg: var(--color-primary-800); /* primary-800 in dark mode */
   --footer-text: #e5e7eb; /* gray-200 */
 

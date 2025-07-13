@@ -19,7 +19,7 @@ function getPanelStyles(colorAccent: ColorAccent) {
   }
 
   return {
-    border: `border-${resolvedColor}-400/60`,
+    border: `border-${resolvedColor}-400`,
     gradient: getGradient(),
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
@@ -40,7 +40,7 @@ export function getPanelClasses(colorAccent: ColorAccent): {
 
   return {
     base: cn(
-      'relative overflow-hidden rounded-2xl border shadow-xl p-6 group cursor-pointer',
+      'relative overflow-hidden rounded-2xl border-2 shadow-xl p-6 group cursor-pointer',
       style.border,
       style.gradient
     ),
@@ -65,9 +65,9 @@ export function getTitleClasses(colorAccent: ColorAccent): string {
 
 export function getDescriptionClasses(colorAccent: ColorAccent): string {
   const style = getPanelStyles(colorAccent)
-  // Special case for brand hover: use red tint in both modes
+  // Special case for brand hover: use semantic red tint in both modes
   if (colorAccent === 'brand') {
-    return cn('text-red-900 dark:text-red-200')
+    return cn('text-brand-darkest dark:text-red-200')
   }
   return cn(style.description)
 }

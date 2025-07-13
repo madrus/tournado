@@ -20,6 +20,8 @@
   --color-brand: var(--color-brand-600); /* red-600 */
   --color-brand-accent: var(--color-brand-500); /* red-500 */
   --color-brand-dark: var(--color-brand-700); /* red-700 */
+  --color-brand-darker: var(--color-brand-800); /* red-800 */
+  --color-brand-darkest: var(--color-brand-900); /* red-900 */
   --color-brand-light: var(--color-brand-400); /* red-400 */
   --color-main: var(--color-primary-800); /* primary-800 - canonical main accent */
 

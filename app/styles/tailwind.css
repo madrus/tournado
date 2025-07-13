@@ -265,6 +265,25 @@
     background-color: #10b981 !important; /* emerald-500 */
   }
 
+  /* Language submenu styling - light mode */
+  .light [data-testid="user-menu-dropdown"] .bg-background {
+    background-color: #ffffff !important; /* white background */
+    border-color: #ef4444 !important; /* red-500 border */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .bg-accent {
+    background-color: #d1fae5 !important; /* emerald-100 for selected language */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover {
+    background-color: #ecfdf5 !important; /* emerald-50 for hover */
+  }
+
+  /* Language submenu styling - dark mode */
+  .dark [data-testid="user-menu-dropdown"] .bg-accent {
+    background-color: #047857 !important; /* emerald-700 for selected language */
+  }
+
   /* All text elements in UserMenu dropdown - dark mode only */
   .dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
   .dark [data-testid="user-menu-dropdown"] .text-main {

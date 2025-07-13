@@ -190,7 +190,7 @@ export function UserMenu({
                               'w-full items-center px-3 py-2 leading-normal focus:outline-none',
                               subItem.active
                                 ? 'bg-accent text-foreground-darker'
-                                : 'text-foreground-darker hover:bg-accent/50',
+                                : 'text-foreground-darker hover:bg-accent',
                               menuClasses.menuItem
                             )}
                             onClick={event => {
@@ -228,7 +228,7 @@ export function UserMenu({
               if (item.action) {
                 return (
                   <DropdownMenu.Item key={index} asChild>
-                    <div>{item.action}</div>
+                    <div className='focus:outline-none'>{item.action}</div>
                   </DropdownMenu.Item>
                 )
               }
@@ -238,7 +238,7 @@ export function UserMenu({
                   <Link
                     to={item.href || '#'}
                     className={cn(
-                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal',
+                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
                       menuClasses.menuItem
                     )}
                   >

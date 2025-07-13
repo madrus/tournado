@@ -39,7 +39,7 @@ export function ActionLinkPanel({
   // Generate border colors based on resolved colors
   const getBorderColor = (color: ColorAccent, prefix = 'border') => {
     const resolvedColor = resolveColorAccent(color)
-    return `${prefix}-${resolvedColor}-400/60`
+    return `${prefix}-${resolvedColor}-400`
   }
 
   const mainBorderColor = getBorderColor(mainColor)

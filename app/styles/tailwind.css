@@ -58,14 +58,15 @@
 @source inline("from-panel-gradient-brand-from via-panel-gradient-brand-via to-panel-gradient-brand-to");
 
 /* Safelist border classes for actually used colors */
-@source inline("border-emerald-400/60 hover:border-emerald-400/60");
-@source inline("border-red-400/60 hover:border-red-400/60");
-@source inline("border-teal-400/60 hover:border-teal-400/60");
-@source inline("border-cyan-400/60 hover:border-cyan-400/60");
-@source inline("border-yellow-400/60 hover:border-yellow-400/60");
-@source inline("border-green-400/60 hover:border-green-400/60");
-@source inline("border-violet-400/60 hover:border-violet-400/60");
-@source inline("border-gray-400/60 hover:border-gray-400/60");
+/* Light mode borders (400) and dark mode borders (400) - solid colors, 1px thickness */
+@source inline("border-emerald-400 dark:border-emerald-400 hover:border-emerald-400 hover:dark:border-emerald-400");
+@source inline("border-red-400 dark:border-red-400 hover:border-red-400 hover:dark:border-red-400");
+@source inline("border-teal-400 dark:border-teal-400 hover:border-teal-400 hover:dark:border-teal-400");
+@source inline("border-cyan-400 dark:border-cyan-400 hover:border-cyan-400 hover:dark:border-cyan-400");
+@source inline("border-yellow-400 dark:border-yellow-400 hover:border-yellow-400 hover:dark:border-yellow-400");
+@source inline("border-green-400 dark:border-green-400 hover:border-green-400 hover:dark:border-green-400");
+@source inline("border-violet-400 dark:border-violet-400 hover:border-violet-400 hover:dark:border-violet-400");
+@source inline("border-gray-400 dark:border-gray-400 hover:border-gray-400 hover:dark:border-gray-400");
 
 /* Safelist glow, text, and other panel classes for actually used colors */
 @source inline("bg-emerald-400/30 text-emerald-300 text-emerald-100/80 border-emerald-400/60 border-emerald-400/70 bg-emerald-400/10");
@@ -84,7 +85,7 @@
 @source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
 @source inline("dark:text-red-200 text-gray-700 text-red-900");
 /* Semantic colors for panel titles and descriptions */
-@source inline("text-title text-foreground text-foreground-light text-foreground-heading dark:text-white");
+@source inline("text-title text-foreground text-foreground-light text-foreground-heading text-brand-dark text-brand-darker text-brand-darkest dark:text-white");
 /* Light mode darker text colors for better contrast */
 @source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-gray-950");
 @source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-gray-900");
@@ -123,6 +124,8 @@
   --color-brand: var(--color-brand);
   --color-brand-accent: var(--color-brand-accent);
   --color-brand-dark: var(--color-brand-dark);
+  --color-brand-darker: var(--color-brand-darker);
+  --color-brand-darkest: var(--color-brand-darkest);
   --color-brand-light: var(--color-brand-light);
 
   /* Main Accent */

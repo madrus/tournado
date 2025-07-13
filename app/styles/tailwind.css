@@ -55,7 +55,10 @@
 
 /* Semantic panel gradient classes */
 @source inline("from-panel-gradient-from via-panel-gradient-via to-panel-gradient-to");
-@source inline("from-panel-gradient-brand-from via-panel-gradient-brand-via to-panel-gradient-brand-to");
+@source inline("from-brand-from via-brand-via to-brand-to");
+
+/* Semantic panel background classes */
+@source inline("bg-panel-bg-primary bg-panel-bg-brand bg-panel-bg-emerald bg-panel-bg-teal bg-panel-bg-cyan bg-panel-bg-blue bg-panel-bg-green bg-panel-bg-yellow bg-panel-bg-violet bg-panel-bg-gray");
 
 /* Safelist border classes for actually used colors */
 /* Light mode borders (400) and dark mode borders (400) - solid colors, 1px thickness */
@@ -275,9 +278,21 @@
   --color-panel-gradient-from: var(--panel-gradient-from);
   --color-panel-gradient-via: var(--panel-gradient-via);
   --color-panel-gradient-to: var(--panel-gradient-to);
-  --color-panel-gradient-brand-from: var(--panel-gradient-brand-from);
-  --color-panel-gradient-brand-via: var(--panel-gradient-brand-via);
-  --color-panel-gradient-brand-to: var(--panel-gradient-brand-to);
+  --color-brand-from: var(--brand-from);
+  --color-brand-via: var(--brand-via);
+  --color-brand-to: var(--brand-to);
+
+  /* Panel Background Colors */
+  --color-panel-bg-primary: var(--panel-bg-primary);
+  --color-panel-bg-brand: var(--panel-bg-brand);
+  --color-panel-bg-emerald: var(--panel-bg-emerald);
+  --color-panel-bg-teal: var(--panel-bg-teal);
+  --color-panel-bg-cyan: var(--panel-bg-cyan);
+  --color-panel-bg-blue: var(--panel-bg-blue);
+  --color-panel-bg-green: var(--panel-bg-green);
+  --color-panel-bg-yellow: var(--panel-bg-yellow);
+  --color-panel-bg-violet: var(--panel-bg-violet);
+  --color-panel-bg-gray: var(--panel-bg-gray);
 }
 
 /* Base Styles */

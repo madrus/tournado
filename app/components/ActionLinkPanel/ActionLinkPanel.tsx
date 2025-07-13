@@ -59,11 +59,7 @@ export function ActionLinkPanel({
     >
       {/* Stable background layer */}
       <PanelBackground
-        backgroundColor={
-          mainColor === 'brand'
-            ? 'bg-gray-100 dark:bg-gray-800'
-            : `bg-${resolveColorAccent(mainColor)}-100 dark:bg-${resolveColorAccent(mainColor)}-800`
-        }
+        backgroundColor={`bg-panel-bg-${resolveColorAccent(mainColor)}`}
         data-testid='panel-background'
       />
 

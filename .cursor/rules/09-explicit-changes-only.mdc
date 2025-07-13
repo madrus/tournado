@@ -11,7 +11,7 @@ alwaysApply: true
 
 # Explicit Changes Only
 
-**CRITICAL:** NEVER make changes to code that was not explicitly requested. Do not "improve," "simplify," "refactor," or "optimize" code unless specifically asked to do so.
+**CRITICAL:** NEVER make changes to code that were not explicitly requested. Do not "improve," "simplify," "refactor," or "optimize" code unless specifically asked to do so.
 
 ## Core Rule
 

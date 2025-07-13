@@ -2,6 +2,7 @@
 
 :root {
   --color-background: #ffffff;
+  --color-border: #e5e7eb; /* gray-200 - light mode border */
   /* Brand colors (red-based) - complete number set */
   --color-brand-50: #fef2f2; /* red-50 */
   --color-brand-100: #fee2e2; /* red-100 */
@@ -106,6 +107,7 @@
 
 .dark {
   --color-background: #111827; /* gray-900 */
+  --color-border: #6b7280; /* gray-500 - lighter for better contrast against dark background */
   --color-foreground: #e5e7eb; /* gray-200 body text */
   --color-foreground-light: #d1d5db; /* gray-300 */
   --color-foreground-lighter: #9ca3af; /* gray-400 */
@@ -121,4 +123,10 @@
   --color-button-primary-background: var(
     --color-primary-900
   ); /* primary-900 for dark mode */
+
+  /* UserMenu specific dark mode colors - using primary tints */
+  --color-usermenu-bg: var(--color-primary-900); /* Darker emerald background */
+  --color-usermenu-text: #f3f4f6; /* gray-100 for high contrast readability */
+  --color-usermenu-hover-bg: var(--color-primary-800); /* Primary tint for hover */
+  --color-usermenu-border: var(--color-primary-600); /* Border and divider color */
 }

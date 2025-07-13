@@ -20,6 +20,12 @@
 @source inline("shadow-md");
 @source inline("hover:shadow-lg");
 
+/* Safelist UserMenu colors for dark mode */
+@source inline("bg-usermenu-bg text-usermenu-text hover:bg-usermenu-hover-bg bg-usermenu-border");
+@source inline("dark:bg-usermenu-bg dark:text-usermenu-text dark:hover:bg-usermenu-hover-bg dark:bg-usermenu-border");
+@source inline("dark:!bg-primary-900 dark:!text-gray-100 dark:!border-primary-600 dark:hover:!bg-primary-800 dark:!ring-primary-600 dark:hover:!bg-primary-800/70");
+@source inline("bg-border border-border");
+
 /* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
 @source inline("from-primary-950 via-primary-900 to-primary-900");
@@ -202,6 +208,15 @@
 
   /* Hover Colors */
   --color-background-hover: var(--color-background-hover);
+  
+  /* Border Colors */
+  --color-border: var(--color-border);
+  
+  /* UserMenu Colors */
+  --color-usermenu-bg: var(--color-usermenu-bg);
+  --color-usermenu-text: var(--color-usermenu-text);
+  --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+  --color-usermenu-border: var(--color-usermenu-border);
 }
 
 /* Base Styles */
@@ -232,6 +247,55 @@
   /* Footer styles handled by component classes */
 
   /* Mobile navigation uses CSS custom properties */
+  
+}
+
+@layer components {
+  /* UserMenu dark mode specific styling - only affects UserMenu dropdown in dark mode */
+  .dark [data-testid="user-menu-dropdown"] {
+    background-color: var(--color-usermenu-bg) !important;
+    border-color: var(--color-usermenu-border) !important;
+  }
+  
+  /* All text elements in UserMenu dropdown - dark mode only */
+  .dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
+  .dark [data-testid="user-menu-dropdown"] .text-main {
+    color: var(--color-usermenu-text) !important;
+  }
+  
+  /* All hover states in UserMenu dropdown - background only, no borders */
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-accent\/50:hover {
+    background-color: var(--color-usermenu-hover-bg) !important;
+    border-color: transparent !important;
+  }
+  
+  /* Ensure no borders on hover elements */
+  .dark [data-testid="user-menu-dropdown"] button:hover,
+  .dark [data-testid="user-menu-dropdown"] a:hover {
+    border-color: transparent !important;
+    outline: none !important;
+  }
+  
+  /* ONLY the UserMenu container border (the main dropdown border) should be primary-600 */
+  .dark [data-testid="user-menu-dropdown"] {
+    border-color: var(--color-usermenu-border) !important;
+  }
+  
+  /* Content dividers (between menu items) should use default border color */
+  .dark [data-testid="user-menu-dropdown"] [role="separator"] {
+    background-color: var(--color-border) !important;
+  }
+  
+  .dark [data-testid="user-menu-dropdown"] .bg-border {
+    background-color: var(--color-border) !important;
+  }
+  
+  /* UserMenu submenu (language menu) dark mode styling */
+  .dark [data-testid="user-menu-dropdown"] .bg-background {
+    background-color: var(--color-usermenu-bg) !important;
+  }
 }
 
 /* Semantic color utility classes for homepage and general use */

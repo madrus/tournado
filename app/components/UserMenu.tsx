@@ -143,10 +143,7 @@ export function UserMenu({
             {menuItems.map((item, index) => {
               if (item.divider) {
                 return (
-                  <DropdownMenu.Separator
-                    key={index}
-                    className='bg-border mx-1 my-1 h-px'
-                  />
+                  <DropdownMenu.Separator key={index} className='bg-border my-1 h-px' />
                 )
               }
 

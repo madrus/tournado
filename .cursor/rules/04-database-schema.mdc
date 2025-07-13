@@ -1,7 +1,7 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: Database schema guidelines and Prisma best practices
+globs: ["prisma/**/*.prisma", "app/models/**/*.{ts,tsx}", "**/*.sql"]
+alwaysApply: true
 ---
 # Database Schema
 

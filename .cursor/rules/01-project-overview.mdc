@@ -1,37 +1,89 @@
 ---
-description:
-globs:
-alwaysApply: false
----
----
-description: Project overview rules
-globs:
+description: Project overview and architecture guide for Tournado tournament management system
+globs: ["**/*"]
 alwaysApply: true
 ---
 
-# Project Overview
+# Project Overview - Tournado
 
-This is a React Router v7 application with TypeScript, Prisma for database management, and Vite for build tooling.
+**Tournado** is a comprehensive tournament management system built with React Router v7, designed to streamline soccer tournament operations from team registration through live match tracking and public results viewing.
 
-## Main Entry Points
-- [app/root.tsx](mdc:app/root.tsx) - The root component of the application
-- [app/entry.client.tsx](mdc:app/entry.client.tsx) - Client-side entry point
-- [app/entry.server.tsx](mdc:app/entry.server.tsx) - Server-side entry point
+## 🎯 Project Purpose
+A modern, mobile-first PWA that serves multiple user roles:
+- **Public Users**: Team registration and tournament viewing
+- **Admins**: Complete tournament and team management
+- **Referees**: Score entry and match management
+- **Tournament Managers**: Tournament-specific administration
 
-## Core Directories
-- `app/assets/` - Static assets (images, icons) that are directly imported and used in the application code
-- `app/components/` - Reusable React components
-- `app/i18n` - Multi-language translation files
-- `app/lib` - Support constants and functions
-- `app/models/` - Data models and business logic
-- `app/routes/` - Contains all route components
-- `app/styles` - Shared CSS files
-- `app/utils/` - Utility functions and helpers
-- `playwright/` - Playwright tests
-- `prisma/` - Database schema and migrations
+## 🏗️ Technology Stack
+- **Frontend**: React Router v7 + TypeScript + Vite
+- **Styling**: Tailwind CSS (mobile-first approach)
+- **Database**: Prisma ORM with PostgreSQL
+- **Authentication**: Session-based with role-based access control
+- **Internationalization**: i18next (Dutch, English, Arabic, Turkish)
+- **Testing**: Playwright (E2E) + Vitest (Unit)
+- **PWA**: Service Worker with offline capabilities
 
-## Configuration Files
-- [react-router-config.js](mdc:react-router-config.js) - Remix configuration
-- [vite.config.ts](mdc:vite.config.ts) - Vite build configuration
-- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
-- [prisma/schema.prisma](mdc:prisma/schema.prisma) - Database schema definition
+## 📁 Core Architecture
+
+### Main Entry Points
+- `app/root.tsx` - Root component with theme and i18n providers
+- `app/entry.client.tsx` - Client-side hydration and PWA registration
+- `app/entry.server.tsx` - Server-side rendering entry point
+
+### Key Directories
+- `app/routes/` - Route-based file structure with nested layouts
+- `app/components/` - Reusable React components (buttons, inputs, navigation)
+- `app/stores/` - Zustand state management for forms and auth
+- `app/models/` - Database models and business logic
+- `app/i18n/` - Multi-language translation files and configuration
+- `app/utils/` - Utility functions, validation, and helpers
+- `app/styles/` - Tailwind CSS and custom styles
+- `app/hooks/` - Custom React hooks for common functionality
+- `prisma/` - Database schema, migrations, and seed data
+- `playwright/` - End-to-end tests and test utilities
+
+### Database Models (Prisma)
+- **User**: Authentication and role management
+- **Tournament**: Tournament details, categories, divisions
+- **Team**: Team registration and management
+- **Pool**: Tournament pool organization
+- **Match**: Match scheduling and results
+- **Score**: Match scoring system
+
+## 🎨 UI/UX Design Principles
+- **Mobile-First**: All layouts prioritize mobile experience
+- **Responsive**: Desktop enhancements using `lg:` breakpoint
+- **Accessibility**: ARIA labels and keyboard navigation
+- **Progressive Web App**: Offline functionality and installability
+- **Multi-Language**: RTL support for Arabic
+
+## 🔧 Configuration Files
+- `react-router-config.ts` - React Router configuration
+- `vite.config.ts` - Vite build configuration and plugins
+- `tsconfig.json` - TypeScript configuration
+- `prisma/schema.prisma` - Database schema definition
+- `tailwind.config.ts` - Tailwind CSS configuration
+- `playwright.config.ts` - E2E test configuration
+
+## 🚀 Development Workflow
+- **Development**: `pnpm dev` - Hot reload development server
+- **Database**: `pnpm db:reset` - Reset and seed database
+- **Testing**: `pnpm test` - Run Vitest unit tests
+- **E2E Testing**: `pnpm test:e2e` - Run Playwright tests
+- **Build**: `pnpm build` - Production build
+- **Deployment**: Fly.io with Docker containerization
+
+## 📖 Documentation
+- **PRD**: `docs/development/prd.md` - Product requirements and roadmap
+- **Architecture**: `docs/development/overview.md` - Technical architecture
+- **API Documentation**: Auto-generated from code
+- **Testing Guide**: `docs/testing/overview.md` - Testing strategies
+
+## 🎯 Current Development Phase
+**Phase 1**: Foundation (User Authentication, Basic CRUD) - ✅ In Progress
+**Phase 2**: Pool Creation & Management - 🔄 Planned
+**Phase 3**: Match Scheduling & Score Entry - 📋 Planned
+**Phase 4**: Live Results & Public Display - 📋 Planned
+
+This overview provides essential context for understanding the Tournado tournament management system architecture and development approach.

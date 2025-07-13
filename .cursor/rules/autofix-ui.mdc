@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description: Automated UI error detection and fixing using Playwright
+globs: ["app/components/**/*.{ts,tsx}", "app/routes/**/*.{ts,tsx}", "app/styles/**/*.{css,ts}"]
 alwaysApply: false
 ---
 Use the playwright MCP to open the browser to the url I provide, check for any errors, also in the DevTools console, automatically fix those errors in my codebase by:

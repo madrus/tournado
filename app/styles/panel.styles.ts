@@ -8,12 +8,14 @@ export const resolveColorAccent = (color: ColorAccent): string => color // No mo
 function getPanelStyles(colorAccent: ColorAccent) {
   const resolvedColor = resolveColorAccent(colorAccent)
 
-  // Special case for brand: use gray gradient
+  // Brand uses semantic colors, others use specific colors with light/dark variants
   const getGradient = () => {
     if (colorAccent === 'brand') {
-      return 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-800'
+      // Brand: semantic gray gradients (gray in light, gray in dark)
+      return 'bg-gradient-to-br from-panel-gradient-brand-from via-panel-gradient-brand-via to-panel-gradient-brand-to'
     }
-    return `bg-gradient-to-br from-${resolvedColor}-950 via-${resolvedColor}-900 to-${resolvedColor}-900`
+    // For other colors: light gray in light mode, specific color in dark mode
+    return `bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
   }
 
   return {
@@ -22,9 +24,9 @@ function getPanelStyles(colorAccent: ColorAccent) {
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
     iconBg: `bg-${resolvedColor}-400/10`,
-    iconText: `text-${resolvedColor}-300`,
-    title: 'text-white',
-    description: `text-${resolvedColor}-100/80`,
+    iconText: `text-${resolvedColor}-600 dark:text-${resolvedColor}-300`,
+    title: `text-${resolvedColor}-900 dark:text-white`,
+    description: `text-${resolvedColor}-700 dark:text-${resolvedColor}-100/80`,
   }
 }
 
@@ -63,6 +65,10 @@ export function getTitleClasses(colorAccent: ColorAccent): string {
 
 export function getDescriptionClasses(colorAccent: ColorAccent): string {
   const style = getPanelStyles(colorAccent)
+  // Special case for brand hover: use lighter red
+  if (colorAccent === 'brand') {
+    return cn('text-gray-700 dark:text-red-200')
+  }
   return cn(style.description)
 }
 

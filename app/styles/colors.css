@@ -47,6 +47,16 @@
   --color-title-accent: var(--color-primary-200); /* primary-200 - for accents */
   --gradient-from: var(--color-primary-100); /* primary-100 */
   --gradient-to: #f9fafb; /* gray-50 */
+
+  /* Panel gradient colors for light mode */
+  --panel-gradient-from: #f9fafb; /* gray-50 - light, subtle */
+  --panel-gradient-via: #f3f4f6; /* gray-100 */
+  --panel-gradient-to: #f9fafb; /* gray-50 */
+
+  /* Brand panel gradients (gray in light mode) */
+  --panel-gradient-brand-from: #f9fafb; /* gray-50 */
+  --panel-gradient-brand-via: #f3f4f6; /* gray-100 */
+  --panel-gradient-brand-to: #f9fafb; /* gray-50 */
   --footer-bg: #ffffff; /* white */
   --footer-text: #374151; /* gray-700 */
   --color-background-hover: #f3f4f6; /* gray-100 */
@@ -119,6 +129,16 @@
   --color-accent: #1f2937; /* gray-800 - subtle dark hover background without borders */
   --gradient-from: var(--color-primary-950); /* primary-950 */
   --gradient-to: var(--color-primary-800); /* primary-800 */
+
+  /* Panel gradient colors for dark mode */
+  --panel-gradient-from: #0f172a; /* slate-900 - rich, deep */
+  --panel-gradient-via: #1e293b; /* slate-800 */
+  --panel-gradient-to: #1e293b; /* slate-800 */
+
+  /* Brand panel gradients (gray in dark mode) */
+  --panel-gradient-brand-from: #111827; /* gray-900 */
+  --panel-gradient-brand-via: #1f2937; /* gray-800 */
+  --panel-gradient-brand-to: #1f2937; /* gray-800 */
   --footer-bg: var(--color-primary-800); /* primary-800 in dark mode */
   --footer-text: #e5e7eb; /* gray-200 */
 

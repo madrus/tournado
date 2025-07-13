@@ -30,14 +30,21 @@
 
 /* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
-@source inline("from-emerald-950 via-emerald-900 to-emerald-900");
-@source inline("from-red-950 via-red-900 to-red-900");
-@source inline("from-teal-950 via-teal-900 to-teal-900");
-@source inline("from-cyan-950 via-cyan-900 to-cyan-900");
-@source inline("from-yellow-950 via-yellow-900 to-yellow-900");
-@source inline("from-green-950 via-green-900 to-green-900");
-@source inline("from-violet-950 via-violet-900 to-violet-900");
-@source inline("from-gray-900 via-gray-800 to-gray-800");
+/* Light mode gradients */
+@source inline("from-gray-50 via-gray-100 to-gray-50");
+/* Dark mode gradients */
+@source inline("dark:from-emerald-950 dark:via-emerald-900 dark:to-emerald-900");
+@source inline("dark:from-red-950 dark:via-red-900 dark:to-red-900");
+@source inline("dark:from-teal-950 dark:via-teal-900 dark:to-teal-900");
+@source inline("dark:from-cyan-950 dark:via-cyan-900 dark:to-cyan-900");
+@source inline("dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900");
+@source inline("dark:from-green-950 dark:via-green-900 dark:to-green-900");
+@source inline("dark:from-violet-950 dark:via-violet-900 dark:to-violet-900");
+@source inline("dark:from-gray-950 dark:via-gray-900 dark:to-gray-900");
+
+/* Semantic panel gradient classes */
+@source inline("from-panel-gradient-from via-panel-gradient-via to-panel-gradient-to");
+@source inline("from-panel-gradient-brand-from via-panel-gradient-brand-via to-panel-gradient-brand-to");
 
 /* Safelist border classes for actually used colors */
 @source inline("border-emerald-400/60 hover:border-emerald-400/60");
@@ -58,6 +65,13 @@
 @source inline("bg-green-400/30 text-green-300 text-green-100/80 border-green-400/60 border-green-400/70 bg-green-400/10");
 @source inline("bg-violet-400/30 text-violet-300 text-violet-100/80 border-violet-400/60 border-violet-400/70 bg-violet-400/10");
 @source inline("bg-gray-400/30 text-gray-300 text-gray-100/80 border-gray-400/60 border-gray-400/70 bg-gray-400/10");
+
+/* Dark mode text colors for panels */
+@source inline("dark:text-emerald-100/80 dark:text-red-100/80 dark:text-teal-100/80 dark:text-cyan-100/80");
+@source inline("dark:text-yellow-100/80 dark:text-green-100/80 dark:text-violet-100/80 dark:text-gray-100/80");
+@source inline("dark:text-white dark:text-emerald-300 dark:text-red-300 dark:text-teal-300 dark:text-cyan-300");
+@source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
+@source inline("dark:text-red-200 text-gray-700");
 
 /* Tailwind v4 Theme Configuration */
 @theme {
@@ -212,6 +226,14 @@
   --color-usermenu-bg: var(--color-usermenu-bg);
   --color-usermenu-text: var(--color-usermenu-text);
   --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+
+  /* Panel Gradient Colors */
+  --color-panel-gradient-from: var(--panel-gradient-from);
+  --color-panel-gradient-via: var(--panel-gradient-via);
+  --color-panel-gradient-to: var(--panel-gradient-to);
+  --color-panel-gradient-brand-from: var(--panel-gradient-brand-from);
+  --color-panel-gradient-brand-via: var(--panel-gradient-brand-via);
+  --color-panel-gradient-brand-to: var(--panel-gradient-brand-to);
 }
 
 /* Base Styles */

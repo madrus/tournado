@@ -1,3 +1,9 @@
+---
+description: Project-specific coding standards and cursor guidance
+globs: ["**/*.{ts,tsx,js,jsx,md,mdx}"]
+alwaysApply: true
+---
+
 # Project-Specific Standards
 
 ## TypeScript & React Conventions

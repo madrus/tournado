@@ -1,9 +1,4 @@
 ---
-description:
-globs:
-alwaysApply: true
----
----
 description: Critical rule to only make explicitly requested changes
 globs: ["**/*.{ts,tsx,js,jsx,json,md,mdx}"]
 alwaysApply: true

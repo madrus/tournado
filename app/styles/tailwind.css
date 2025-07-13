@@ -5,8 +5,6 @@
 @source inline("{focus-visible:,hover:,}ring-2");
 @source inline("{focus-visible:,hover:,}ring-offset-2");
 @source inline("{focus-visible:,hover:,}ring-offset-white");
-@source inline("{focus-visible:,hover:,}ring-primary-600");
-@source inline("{focus-visible:,hover:,}ring-brand-600");
 @source inline("{focus-visible:,hover:,}ring-emerald-600");
 @source inline("{focus-visible:,hover:,}ring-red-600");
 @source inline("{focus-visible:,hover:,}ring-teal-600");
@@ -20,16 +18,18 @@
 @source inline("shadow-md");
 @source inline("hover:shadow-lg");
 
+/* Safelist UserMenu colors using standard Tailwind classes */
+@source inline("border-red-400 divide-red-400 bg-red-400 h-px");
+@source inline("dark:border-emerald-400 dark:divide-emerald-400 dark:bg-emerald-400");
+
 /* Safelist UserMenu colors for dark mode */
-@source inline("bg-usermenu-bg text-usermenu-text hover:bg-usermenu-hover-bg bg-usermenu-border");
-@source inline("dark:bg-usermenu-bg dark:text-usermenu-text dark:hover:bg-usermenu-hover-bg dark:bg-usermenu-border");
+@source inline("bg-usermenu-bg text-usermenu-text hover:bg-usermenu-hover-bg");
+@source inline("dark:bg-usermenu-bg dark:text-usermenu-text dark:hover:bg-usermenu-hover-bg");
 @source inline("dark:!bg-primary-900 dark:!text-gray-100 dark:!border-primary-600 dark:hover:!bg-primary-800 dark:!ring-primary-600 dark:hover:!bg-primary-800/70");
 @source inline("bg-border border-border");
 
 /* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
-@source inline("from-primary-950 via-primary-900 to-primary-900");
-@source inline("from-brand-950 via-brand-900 to-brand-900");
 @source inline("from-emerald-950 via-emerald-900 to-emerald-900");
 @source inline("from-red-950 via-red-900 to-red-900");
 @source inline("from-teal-950 via-teal-900 to-teal-900");
@@ -40,8 +40,6 @@
 @source inline("from-gray-900 via-gray-800 to-gray-800");
 
 /* Safelist border classes for actually used colors */
-@source inline("border-primary-400/60 hover:border-primary-400/60");
-@source inline("border-brand-400/60 hover:border-brand-400/60");
 @source inline("border-emerald-400/60 hover:border-emerald-400/60");
 @source inline("border-red-400/60 hover:border-red-400/60");
 @source inline("border-teal-400/60 hover:border-teal-400/60");
@@ -52,8 +50,6 @@
 @source inline("border-gray-400/60 hover:border-gray-400/60");
 
 /* Safelist glow, text, and other panel classes for actually used colors */
-@source inline("bg-primary-400/30 text-primary-300 text-primary-100/80 border-primary-400/60 border-primary-400/70 bg-primary-400/10");
-@source inline("bg-brand-400/30 text-brand-300 text-brand-100/80 border-brand-400/60 border-brand-400/70 bg-brand-400/10");
 @source inline("bg-emerald-400/30 text-emerald-300 text-emerald-100/80 border-emerald-400/60 border-emerald-400/70 bg-emerald-400/10");
 @source inline("bg-red-400/30 text-red-300 text-red-100/80 border-red-400/60 border-red-400/70 bg-red-400/10");
 @source inline("bg-teal-400/30 text-teal-300 text-teal-100/80 border-teal-400/60 border-teal-400/70 bg-teal-400/10");
@@ -90,7 +86,7 @@
   --color-primary-800: var(--color-primary-800);
   --color-primary-900: var(--color-primary-900);
   --color-primary-950: var(--color-primary-950);
-  
+
   /* Brand Colors */
   --color-brand-50: var(--color-brand-50);
   --color-brand-100: var(--color-brand-100);
@@ -208,15 +204,14 @@
 
   /* Hover Colors */
   --color-background-hover: var(--color-background-hover);
-  
+
   /* Border Colors */
   --color-border: var(--color-border);
-  
+
   /* UserMenu Colors */
   --color-usermenu-bg: var(--color-usermenu-bg);
   --color-usermenu-text: var(--color-usermenu-text);
   --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
-  --color-usermenu-border: var(--color-usermenu-border);
 }
 
 /* Base Styles */
@@ -247,22 +242,35 @@
   /* Footer styles handled by component classes */
 
   /* Mobile navigation uses CSS custom properties */
-  
+
 }
 
 @layer components {
-  /* UserMenu dark mode specific styling - only affects UserMenu dropdown in dark mode */
+  /* UserMenu light mode - force red colors */
+  .light [data-testid="user-menu-dropdown"] {
+    border-color: #ef4444 !important; /* red-500 */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .bg-red-500 {
+    background-color: #ef4444 !important; /* red-500 */
+  }
+
+  /* UserMenu dark mode specific styling */
   .dark [data-testid="user-menu-dropdown"] {
     background-color: var(--color-usermenu-bg) !important;
-    border-color: var(--color-usermenu-border) !important;
+    border-color: #10b981 !important; /* emerald-500 */
   }
-  
+
+  .dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
+    background-color: #10b981 !important; /* emerald-500 */
+  }
+
   /* All text elements in UserMenu dropdown - dark mode only */
   .dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
   .dark [data-testid="user-menu-dropdown"] .text-main {
     color: var(--color-usermenu-text) !important;
   }
-  
+
   /* All hover states in UserMenu dropdown - background only, no borders */
   .dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
   .dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
@@ -270,28 +278,19 @@
     background-color: var(--color-usermenu-hover-bg) !important;
     border-color: transparent !important;
   }
-  
+
   /* Ensure no borders on hover elements */
   .dark [data-testid="user-menu-dropdown"] button:hover,
   .dark [data-testid="user-menu-dropdown"] a:hover {
     border-color: transparent !important;
     outline: none !important;
   }
-  
-  /* ONLY the UserMenu container border (the main dropdown border) should be primary-600 */
-  .dark [data-testid="user-menu-dropdown"] {
-    border-color: var(--color-usermenu-border) !important;
-  }
-  
-  /* Content dividers (between menu items) should use default border color */
-  .dark [data-testid="user-menu-dropdown"] [role="separator"] {
-    background-color: var(--color-border) !important;
-  }
-  
+
+
   .dark [data-testid="user-menu-dropdown"] .bg-border {
     background-color: var(--color-border) !important;
   }
-  
+
   /* UserMenu submenu (language menu) dark mode styling */
   .dark [data-testid="user-menu-dropdown"] .bg-background {
     background-color: var(--color-usermenu-bg) !important;
@@ -340,6 +339,8 @@
 .dark .bg-brand-accent {
   background-color: var(--color-brand-accent);
 }
+
+/* Custom brand/primary CSS classes removed - now using standard Tailwind red/emerald classes */
 
 .bg-error {
   background-color: var(--color-brand);

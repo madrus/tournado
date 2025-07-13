@@ -14,8 +14,8 @@ function getPanelStyles(colorAccent: ColorAccent) {
       // Brand: semantic gray gradients (gray in light, gray in dark)
       return 'bg-gradient-to-br from-panel-gradient-brand-from via-panel-gradient-brand-via to-panel-gradient-brand-to'
     }
-    // For other colors: light gray in light mode, specific color in dark mode
-    return `bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
+    // For other colors: light color in light mode, dark color in dark mode
+    return `bg-gradient-to-br from-${resolvedColor}-50 via-${resolvedColor}-100 to-${resolvedColor}-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
   }
 
   return {

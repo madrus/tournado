@@ -1,6 +1,8 @@
 @import './colors.css';
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Safelist ring and ring-offset classes for button hover/focus effects */
 @source inline("{focus-visible:,hover:,}ring-2");
 @source inline("{focus-visible:,hover:,}ring-offset-2");
@@ -30,8 +32,17 @@
 
 /* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
-/* Light mode gradients */
+/* Light mode gradients - complete safelist */
 @source inline("from-gray-50 via-gray-100 to-gray-50");
+@source inline("from-emerald-50 via-emerald-100 to-emerald-50");
+@source inline("from-red-50 via-red-100 to-red-50");
+@source inline("from-teal-50 via-teal-100 to-teal-50");
+@source inline("from-cyan-50 via-cyan-100 to-cyan-50");
+@source inline("from-yellow-50 via-yellow-100 to-yellow-50");
+@source inline("from-green-50 via-green-100 to-green-50");
+@source inline("from-violet-50 via-violet-100 to-violet-50");
+/* Individual gradient pieces for light mode */
+@source inline("from-teal-50 via-teal-100 to-teal-50 from-teal-100 teal-50 teal-100");
 /* Dark mode gradients */
 @source inline("dark:from-emerald-950 dark:via-emerald-900 dark:to-emerald-900");
 @source inline("dark:from-red-950 dark:via-red-900 dark:to-red-900");
@@ -72,6 +83,10 @@
 @source inline("dark:text-white dark:text-emerald-300 dark:text-red-300 dark:text-teal-300 dark:text-cyan-300");
 @source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
 @source inline("dark:text-red-200 text-gray-700");
+
+/* Panel background colors for light/dark mode */
+@source inline("bg-emerald-100 bg-red-100 bg-teal-100 bg-cyan-100 bg-yellow-100 bg-green-100 bg-violet-100 bg-gray-100");
+@source inline("dark:bg-emerald-800 dark:bg-red-800 dark:bg-teal-800 dark:bg-cyan-800 dark:bg-yellow-800 dark:bg-green-800 dark:bg-violet-800 dark:bg-gray-800");
 
 /* Tailwind v4 Theme Configuration */
 @theme {

@@ -2,72 +2,123 @@
 
 :root {
   --color-background: #ffffff;
-  --color-brand: #dc2626; /* red-600 */
-  --color-brand-accent: #fa2c37; /* red-500 */
-  --color-brand-dark: #b91c1c; /* red-700 */
-  --color-brand-light: #f87171; /* red-400 */
-  --color-main: var(--color-emerald-darkest); /* emerald-800 - canonical main accent */
+  --color-border: #e5e7eb; /* gray-200 - light mode border */
+  /* Brand colors (red-based) - complete number set */
+  --color-brand-50: #fef2f2; /* red-50 */
+  --color-brand-100: #fee2e2; /* red-100 */
+  --color-brand-200: #fecaca; /* red-200 */
+  --color-brand-300: #fca5a5; /* red-300 */
+  --color-brand-400: #f87171; /* red-400 */
+  --color-brand-500: #ef4444; /* red-500 */
+  --color-brand-600: #dc2626; /* red-600 */
+  --color-brand-700: #b91c1c; /* red-700 */
+  --color-brand-800: #991b1b; /* red-800 */
+  --color-brand-900: #7f1d1d; /* red-900 */
+  --color-brand-950: #450a0a; /* red-950 */
 
-  /* Emerald semantic colors */
-  --color-emerald-lightest: #ecfdf5; /* emerald-50 */
-  --color-emerald-lighter: #d1fae5; /* emerald-100 */
-  --color-emerald-light: #34d399; /* emerald-400 */
-  --color-emerald-medium: #10b981; /* emerald-500 */
-  --color-emerald-dark: #059669; /* emerald-600 */
-  --color-emerald-darker: #047857; /* emerald-700 */
-  --color-emerald-darkest: #065f46; /* emerald-800 */
+  /* Legacy brand aliases - keep for backward compatibility */
+  --color-brand: var(--color-brand-600); /* red-600 */
+  --color-brand-accent: var(--color-brand-500); /* red-500 */
+  --color-brand-dark: var(--color-brand-700); /* red-700 */
+  --color-brand-darker: var(--color-brand-800); /* red-800 */
+  --color-brand-darkest: var(--color-brand-900); /* red-900 */
+  --color-brand-light: var(--color-brand-400); /* red-400 */
+  --color-main: var(--color-primary-800); /* primary-800 - canonical main accent */
+
+  /* Primary colors (emerald-based) - complete number set */
+  --color-primary-50: #ecfdf5; /* emerald-50 */
+  --color-primary-100: #d1fae5; /* emerald-100 */
+  --color-primary-200: #a7f3d0; /* emerald-200 */
+  --color-primary-300: #6ee7b7; /* emerald-300 */
+  --color-primary-400: #34d399; /* emerald-400 */
+  --color-primary-500: #10b981; /* emerald-500 */
+  --color-primary-600: #059669; /* emerald-600 */
+  --color-primary-700: #047857; /* emerald-700 */
+  --color-primary-800: #065f46; /* emerald-800 */
+  --color-primary-900: #064e3b; /* emerald-900 */
+  --color-primary-950: #022c22; /* emerald-950 */
   --color-foreground-darker: var(--color-main); /* for emphasis */
   --color-foreground-light: #4b5563; /* gray-600 */
   --color-foreground-lighter: #6b7280; /* gray-500 */
-  --color-foreground: #1f2937; /* gray-800 - default body text */
+  --color-foreground: #064e3b; /* emerald-900 - default body text */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
-  --color-accent: #a7f3d0; /* emerald-300 - for accents */
-  --color-title-accent: var(--color-accent); /* emerald-300 - for accents */
-  --gradient-from: #d1fae5; /* emerald-100 */
+  --color-chip-border: #dc2626; /* red-600 - chip border color */
+  --color-chip-ring: #dc2626; /* red-600 - chip focus/hover ring color */
+  --color-chip-ring-offset: #ffffff; /* white - chip ring offset color */
+  --color-accent: var(
+    --color-brand-50
+  ); /* brand-50 - lighter brand hover background for light mode */
+  --color-title-accent: var(--color-primary-200); /* primary-200 - for accents */
+  --gradient-from: var(--color-primary-100); /* primary-100 */
   --gradient-to: #f9fafb; /* gray-50 */
+
+  /* Panel gradient colors for light mode */
+  --panel-gradient-from: #f9fafb; /* gray-50 - light, subtle */
+  --panel-gradient-via: #f3f4f6; /* gray-100 */
+  --panel-gradient-to: #f9fafb; /* gray-50 */
+
+  /* Brand panel gradients - light mode */
+  --brand-light-from: #f8fafc; /* slate-50 */
+  --brand-light-via: #f1f5f9; /* slate-100 */
+  --brand-light-to: #f8fafc; /* slate-50 */
+
+  /* Brand gradient classes - use light mode values by default */
+  --brand-from: var(--brand-light-from);
+  --brand-via: var(--brand-light-via);
+  --brand-to: var(--brand-light-to);
+
+  /* Panel background colors */
+  --panel-bg-primary: #d1fae5; /* emerald-100 */
+  --panel-bg-brand: #f3f4f6; /* gray-100 */
+  --panel-bg-emerald: #d1fae5; /* emerald-100 */
+  --panel-bg-teal: #ccfbf1; /* teal-100 */
+  --panel-bg-cyan: #cffafe; /* cyan-100 */
+  --panel-bg-blue: #dbeafe; /* blue-100 */
+  --panel-bg-green: #dcfce7; /* green-100 */
+  --panel-bg-yellow: #fef3c7; /* yellow-100 */
+  --panel-bg-violet: #ede9fe; /* violet-100 */
+  --panel-bg-gray: #f3f4f6; /* gray-100 */
   --footer-bg: #ffffff; /* white */
   --footer-text: #374151; /* gray-700 */
   --color-background-hover: #f3f4f6; /* gray-100 */
-  --color-button-primary-background: var(--color-emerald-darker); /* emerald-700 */
+  --color-button-primary-background: var(--color-primary-700); /* primary-700 */
   --color-button-primary-text: #ffffff; /* white */
-  --color-button-primary-hover-background: var(
-    --color-emerald-darker
-  ); /* emerald-700 */
-  --color-button-secondary-background: var(--color-emerald-lightest); /* emerald-50 */
-  --color-button-secondary-text: var(--color-emerald-darker); /* emerald-700 */
-  --color-button-secondary-border: var(--color-emerald-darker); /* emerald-700 */
+  --color-button-primary-hover-background: var(--color-primary-700); /* primary-700 */
+  --color-button-secondary-background: var(--color-primary-50); /* primary-50 */
+  --color-button-secondary-text: var(--color-primary-700); /* primary-700 */
+  --color-button-secondary-border: var(--color-primary-700); /* primary-700 */
   --color-button-secondary-hover-background: #ffffff; /* white */
   --color-button-tertiary-background: #ffffff; /* white */
-  --color-button-tertiary-text: var(--color-emerald-darker); /* emerald-700 */
-  --color-button-tertiary-border: var(--color-emerald-light); /* emerald-400 */
-  --color-button-tertiary-hover-background: var(
-    --color-emerald-lightest
-  ); /* emerald-50/30 */
-  --color-button-tertiary-hover-border: var(--color-emerald-medium); /* emerald-500 */
-  --color-button-danger-background: #dc2626; /* red-600 */
+  --color-button-tertiary-text: var(--color-primary-700); /* primary-700 */
+  --color-button-tertiary-border: var(--color-primary-400); /* primary-400 */
+  --color-button-tertiary-hover-background: var(--color-primary-50); /* primary-50/30 */
+  --color-button-tertiary-hover-border: var(--color-primary-500); /* primary-500 */
+  --color-button-danger-background: var(--color-brand-600); /* brand-600 */
   --color-button-danger-text: #ffffff; /* white */
-  --color-button-danger-hover-background: #ef4444; /* red-500 */
-  --color-button-danger-secondary-background: #fee2e2; /* red-50 */
-  --color-button-danger-secondary-text: #b91c1c; /* red-700 */
-  --color-button-danger-secondary-border: #b91c1c; /* red-700 */
+  --color-button-danger-hover-background: var(--color-brand-500); /* brand-500 */
+  --color-button-danger-secondary-background: var(--color-brand-100); /* brand-100 */
+  --color-button-danger-secondary-text: var(--color-brand-700); /* brand-700 */
+  --color-button-danger-secondary-border: var(--color-brand-700); /* brand-700 */
   --color-button-danger-secondary-hover-background: #ffffff; /* white */
   --color-button-danger-tertiary-background: #ffffff; /* white */
-  --color-button-danger-tertiary-text: #b91c1c; /* red-700 */
-  --color-button-danger-tertiary-border: #f87171; /* red-400 */
-  --color-button-danger-tertiary-hover-background: #fee2e2; /* red-50/30 */
-  --color-button-danger-tertiary-hover-border: #ef4444; /* red-500 */
+  --color-button-danger-tertiary-text: var(--color-brand-700); /* brand-700 */
+  --color-button-danger-tertiary-border: var(--color-brand-400); /* brand-400 */
+  --color-button-danger-tertiary-hover-background: var(
+    --color-brand-100
+  ); /* brand-100/30 */
+  --color-button-danger-tertiary-hover-border: var(--color-brand-500); /* brand-500 */
   --color-button-brand-background: var(--color-brand);
   --color-button-brand-text: #ffffff; /* white */
-  --color-button-brand-hover-background: var(--color-brand-dark);
-  --color-button-brand-secondary-background: var(--color-brand-light);
-  --color-button-brand-secondary-text: var(--color-brand-dark);
-  --color-button-brand-secondary-border: var(--color-brand-dark);
+  --color-button-brand-hover-background: var(--color-brand-700);
+  --color-button-brand-secondary-background: var(--color-brand-400);
+  --color-button-brand-secondary-text: var(--color-brand-700);
+  --color-button-brand-secondary-border: var(--color-brand-700);
   --color-button-brand-secondary-hover-background: #ffffff; /* white */
   --color-button-brand-tertiary-background: #ffffff; /* white */
   --color-button-brand-tertiary-text: var(--color-brand);
-  --color-button-brand-tertiary-border: var(--color-brand-light);
-  --color-button-brand-tertiary-hover-background: var(--color-brand-light);
+  --color-button-brand-tertiary-border: var(--color-brand-400);
+  --color-button-brand-tertiary-hover-background: var(--color-brand-400);
   --color-button-brand-tertiary-hover-border: var(--color-brand);
   --color-button-neutral-background: #4b5563; /* gray-600 */
   --color-button-neutral-text: #ffffff; /* white */
@@ -82,23 +133,65 @@
   --color-button-neutral-tertiary-hover-background: #f3f4f6; /* gray-50/30 */
   --color-button-neutral-tertiary-hover-border: #6b7280; /* gray-500 */
   --color-button-danger-outline-focus-ring-inner: #ffffff; /* white */
-  --color-button-danger-outline-focus-ring-outer: #dc2626; /* red-600 */
-  --color-button-outline-border-red: #dc2626; /* red-600 */
+  --color-button-danger-outline-focus-ring-outer: var(
+    --color-brand-600
+  ); /* brand-600 */
+  --color-button-outline-border-red: var(--color-brand-600); /* brand-600 */
 }
 
 .dark {
   --color-background: #111827; /* gray-900 */
-  --color-foreground: #e5e7eb; /* gray-200 body text */
+  --color-border: #6b7280; /* gray-500 - lighter for better contrast against dark background */
+  --color-foreground: #d1fae5cc; /* emerald-100 with 80% opacity - body text */
   --color-foreground-light: #d1d5db; /* gray-300 */
   --color-foreground-lighter: #9ca3af; /* gray-400 */
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
+  --color-brand: #f1f5f9; /* slate-100 - for team chips and other brand text in dark mode */
+  --color-chip-border: #f1f5f9; /* slate-100 - chip border color */
+  --color-chip-ring: #f1f5f9; /* slate-100 - chip ring color */
+  --color-chip-ring-offset: #dc2626; /* red-600 - chip ring offset color */
   --color-title: var(--color-title-accent);
-  --gradient-from: #022c22; /* emerald-950 */
-  --gradient-to: #065f46; /* emerald-800 */
-  --footer-bg: #065f46; /* emerald-800 in dark mode */
+  --color-accent: #1f2937; /* gray-800 - subtle dark hover background without borders */
+  --gradient-from: var(--color-primary-950); /* primary-950 */
+  --gradient-to: var(--color-primary-800); /* primary-800 */
+
+  /* Panel gradient colors for dark mode */
+  --panel-gradient-from: #0f172a; /* slate-900 - rich, deep */
+  --panel-gradient-via: #1e293b; /* slate-800 */
+  --panel-gradient-to: #1e293b; /* slate-800 */
+
+  /* Brand panel gradients - dark mode */
+  --brand-dark-from: #0f172a; /* slate-900 */
+  --brand-dark-via: #1e293b; /* slate-800 */
+  --brand-dark-to: #1e293b; /* slate-800 */
+
+  /* Brand gradient classes - use dark mode values in dark mode */
+  --brand-from: var(--brand-dark-from);
+  --brand-via: var(--brand-dark-via);
+  --brand-to: var(--brand-dark-to);
+
+  /* Panel background colors for dark mode */
+  --panel-bg-primary: #065f46; /* emerald-800 */
+  --panel-bg-brand: #1f2937; /* gray-800 */
+  --panel-bg-emerald: #065f46; /* emerald-800 */
+  --panel-bg-teal: #115e59; /* teal-800 */
+  --panel-bg-cyan: #155e63; /* cyan-800 */
+  --panel-bg-blue: #1e40af; /* blue-800 */
+  --panel-bg-green: #166534; /* green-800 */
+  --panel-bg-yellow: #92400e; /* yellow-800 */
+  --panel-bg-violet: #5b21b6; /* violet-800 */
+  --panel-bg-gray: #1f2937; /* gray-800 */
+  --footer-bg: var(--color-primary-800); /* primary-800 in dark mode */
   --footer-text: #e5e7eb; /* gray-200 */
 
-  /* AppBar primary color - match emerald-900 */
-  --color-button-primary-background: #064e3b; /* emerald-900 for dark mode */
+  /* AppBar primary color - match primary-900 */
+  --color-button-primary-background: var(
+    --color-primary-900
+  ); /* primary-900 for dark mode */
+
+  /* UserMenu specific dark mode colors - using primary tints */
+  --color-usermenu-bg: var(--color-primary-900); /* Darker emerald background */
+  --color-usermenu-text: #f3f4f6; /* gray-100 for high contrast readability */
+  --color-usermenu-hover-bg: var(--color-primary-800); /* Primary tint for hover */
 }

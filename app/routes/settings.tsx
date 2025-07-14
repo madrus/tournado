@@ -63,7 +63,7 @@ export default function SettingsPage(): JSX.Element {
           >
             Application Settings
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Configure your tournament settings, preferences, and account options for
             optimal experience.
           </p>
@@ -78,7 +78,7 @@ export default function SettingsPage(): JSX.Element {
           >
             Preferences
           </h2>
-          <ul className='text-foreground-light space-y-2'>
+          <ul className='text-foreground space-y-2'>
             <li>• Language and regional settings</li>
             <li>• Theme and appearance options</li>
             <li>• Notification preferences</li>
@@ -96,7 +96,7 @@ export default function SettingsPage(): JSX.Element {
           >
             Tournament Configuration
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Customize tournament management settings and default configurations for your
             organization.
           </p>

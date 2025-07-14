@@ -1,54 +1,16 @@
 ---
-description:
-globs:
+description: Language-specific coding standards and documentation rules
+globs: ["**/*.{ts,tsx,js,jsx,json,md,mdx}"]
 alwaysApply: true
 ---
+
 # Coding Standards
 
 These rules ensure consistent coding style and standards across the project.
 
-## TypeScript Conventions
-
-### 1. Use Types Instead of Interfaces
-
-**Rule:** Always use `type` declarations instead of `interface` declarations unless it is not possible for a reason. In that later case, inform me about the case and the reason.
-
-#### ✅ Correct
-```typescript
-type UserProps = {
-  id: string
-  name: string
-  email: string
-}
-
-type ComponentProps = {
-  children: React.ReactNode
-  className?: string
-}
-```
-
-#### ❌ Incorrect
-```typescript
-interface UserProps {
-  id: string
-  name: string
-  email: string
-}
-
-interface ComponentProps {
-  children: React.ReactNode
-  className?: string
-}
-```
-
-#### Why This Rule?
-- **Consistency** - One way to define object shapes
-- **Flexibility** - Types support union types, computed properties, and other advanced features
-- **Simplicity** - Less cognitive overhead deciding between type vs interface
-
 ## Markdown Documentation Standards
 
-### 2. No Bold Formatting in Headers
+### No Bold Formatting in Headers
 
 **Rule:** Never use bold markdown formatting (`**text**`) within markdown headers. Headers are already emphasized by their `#` syntax.
 
@@ -76,7 +38,7 @@ interface ComponentProps {
 
 ## Internationalization (i18n) Standards
 
-### 3. Dutch Language Capitalization
+### Dutch Language Capitalization
 
 **Rule:** In Dutch translations, only capitalize the first word of titles and labels (sentence case), not every word.
 
@@ -115,54 +77,46 @@ interface ComponentProps {
 
 ## Implementation Guidelines
 
-### When Adding TypeScript Definitions
-1. Always use `type` keyword
-2. Use PascalCase for type names
-3. Use object literal syntax `{ }` instead of interface syntax
-
 ### When Adding Dutch Translations
 1. Only capitalize the first letter of the first word
 2. Keep all other words lowercase unless they are proper nouns
 3. Follow Dutch sentence structure and grammar rules
 
-### Examples in Practice
+### When Writing Documentation
+1. Use standard markdown header formatting without bold
+2. Maintain consistent header hierarchy
+3. Follow markdown best practices for readability
 
-#### Component Props
-```typescript
-// Good
-type InputFieldProps = {
-  name: string
-  label: string
-  type?: 'text' | 'email' | 'tel'
-  readOnly?: boolean
-  error?: string
-  required?: boolean
-  className?: string
-}
+## Examples in Practice
 
-// Bad
-interface InputFieldProps {
-  name: string
-  label: string
-  // ...
-}
-```
-
-#### Translation Keys
+### Translation Keys
 ```json
-// Good - Dutch
+// ✅ Good - Dutch
 {
   "auth": {
     "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken"
   }
 }
 
-// Bad - Dutch
+// ❌ Bad - Dutch
 {
   "auth": {
     "signInRequiredToCreateTeam": "Je Moet Inloggen Om Een Team Aan Te Maken"
   }
 }
+```
+
+### Documentation Structure
+```markdown
+# ✅ Good - Clean Headers
+## Authentication System
+### User Roles
+#### Admin Permissions
+
+# ❌ Bad - Bold Headers
+## **Authentication System**
+### **User Roles**
+#### **Admin Permissions**
 ```
 
 ## Enforcement

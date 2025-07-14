@@ -261,7 +261,7 @@ describe('Unauthorized Page', () => {
       const description = screen.getByText(
         /You do not have permission to access this page/
       )
-      expect(description).toHaveClass('text-center', 'text-foreground-light')
+      expect(description).toHaveClass('text-center', 'text-foreground')
     })
   })
 

@@ -331,7 +331,7 @@ describe('Admin Dashboard', () => {
       )
 
       const welcomeMessage = screen.getByText(/Welcome back, admin@example.com/)
-      expect(welcomeMessage).toHaveClass('text-foreground-light', 'mb-8')
+      expect(welcomeMessage).toHaveClass('text-foreground', 'mb-8')
     })
 
     test('should organize content in proper structure', () => {

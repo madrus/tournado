@@ -217,7 +217,7 @@ export default function EditTournamentPage(): JSX.Element {
     return (
       <div className='py-12 text-center'>
         <h2 className='text-foreground text-xl font-semibold'>Tournament not found</h2>
-        <p className='text-foreground-light mt-2'>
+        <p className='text-foreground mt-2'>
           The tournament you're looking for doesn't exist.
         </p>
       </div>

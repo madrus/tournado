@@ -13,7 +13,7 @@ const FooterLink = ({ to, label, className = '' }: FooterLinkProps): JSX.Element
   <Link
     to={to}
     className={cn(
-      'text-foreground-light hover:text-foreground-darker transition-colors',
+      'text-foreground hover:text-foreground-darker transition-colors',
       className
     )}
   >

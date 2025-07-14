@@ -229,7 +229,7 @@ export function TournamentForm({
               >
                 {name ? name : t('tournaments.form.tournamentRegistration')}
               </h2>
-              <p className='text-foreground-light mt-2'>
+              <p className='text-foreground mt-2'>
                 {location
                   ? `${t('tournaments.form.location')} ${location}`
                   : t('tournaments.form.fillOutForm')}

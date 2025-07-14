@@ -30,9 +30,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
             <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
               {t('admin.tournaments.title')}
             </h1>
-            <p className='text-foreground-light mt-1'>
-              {t('admin.tournaments.description')}
-            </p>
+            <p className='text-foreground mt-1'>{t('admin.tournaments.description')}</p>
           </div>
 
           {/* Add Tournament Button */}

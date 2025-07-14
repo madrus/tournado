@@ -7,6 +7,7 @@ import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import { loadTeamsData } from '~/lib/teams.server'
 import type { TeamsLoaderData } from '~/lib/teams.types'
+import { getStaticPanelClasses } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -44,6 +45,8 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   const navigate = useNavigate()
   const revalidator = useRevalidator()
 
+  const panelClasses = getStaticPanelClasses('teal')
+
   useEffect(() => {
     const handlePopState = () => {
       revalidator.revalidate()
@@ -59,17 +62,22 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-6 shadow-sm'>
-        <TournamentFilter
-          tournamentListItems={tournamentListItems}
-          selectedTournamentId={selectedTournamentId}
-          className='max-w-md'
-        />
+      <div className={panelClasses.container}>
+        {/* Glow effect */}
+        <div className={panelClasses.glow} />
+        {/* Content */}
+        <div className={panelClasses.content}>
+          <TournamentFilter
+            tournamentListItems={tournamentListItems}
+            selectedTournamentId={selectedTournamentId}
+            className='max-w-md'
+          />
+        </div>
       </div>
 
       {/* Teams Count */}
       {teamListItems.length > 0 ? (
-        <div className='text-foreground-light text-sm'>
+        <div className='text-foreground text-sm'>
           {t('teams.count', { count: teamListItems.length })}
           {selectedTournamentId ? (
             <span>
@@ -101,9 +109,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>
-          <p className='text-foreground-light mt-2'>
-            {t('teams.getStarted.description')}
-          </p>
+          <p className='text-foreground mt-2'>{t('teams.getStarted.description')}</p>
         </div>
       ) : null}
     </div>

@@ -1,12 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
-description:
-globs:
-alwaysApply: false
+description: Guidelines for improving prompts and communication with AI agents
+globs: ["**/*"]
+alwaysApply: true
 ---
 
 # Improve the User's Prompt Following the Patterns Below

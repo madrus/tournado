@@ -2,33 +2,31 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 // Resolve color aliases to actual colors
-export function resolveColorAccent(color: ColorAccent): string {
-  if (color === 'primary') return 'emerald'
-  if (color === 'brand') return 'red'
-  return color
-}
+export const resolveColorAccent = (color: ColorAccent): string => color // No more mapping needed - primary and brand are semantic colors now;
 
 // Generate panel styles dynamically based on color
 function getPanelStyles(colorAccent: ColorAccent) {
   const resolvedColor = resolveColorAccent(colorAccent)
 
-  // Special case for brand: use gray gradient
+  // Brand uses semantic colors, others use specific colors with light/dark variants
   const getGradient = () => {
     if (colorAccent === 'brand') {
-      return 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-800'
+      // Brand: semantic gray gradients (gray in light, gray in dark)
+      return 'bg-gradient-to-br from-brand-from via-brand-via to-brand-to'
     }
-    return `bg-gradient-to-br from-${resolvedColor}-950 via-${resolvedColor}-900 to-${resolvedColor}-900`
+    // For other colors: light color in light mode, dark color in dark mode
+    return `bg-gradient-to-br from-${resolvedColor}-50 via-${resolvedColor}-100 to-${resolvedColor}-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
   }
 
   return {
-    border: `border-${resolvedColor}-400/60`,
+    border: `border-${resolvedColor}-400`,
     gradient: getGradient(),
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
     iconBg: `bg-${resolvedColor}-400/10`,
-    iconText: `text-${resolvedColor}-300`,
-    title: 'text-white',
-    description: `text-${resolvedColor}-100/80`,
+    iconText: `text-${resolvedColor}-700 dark:text-${resolvedColor}-300`,
+    title: `text-title`,
+    description: `text-foreground dark:text-${resolvedColor}-100/80`,
   }
 }
 
@@ -42,7 +40,7 @@ export function getPanelClasses(colorAccent: ColorAccent): {
 
   return {
     base: cn(
-      'relative overflow-hidden rounded-2xl border shadow-xl p-6 group cursor-pointer',
+      'relative overflow-hidden rounded-2xl border-2 shadow-xl p-6 group cursor-pointer',
       style.border,
       style.gradient
     ),
@@ -67,6 +65,10 @@ export function getTitleClasses(colorAccent: ColorAccent): string {
 
 export function getDescriptionClasses(colorAccent: ColorAccent): string {
   const style = getPanelStyles(colorAccent)
+  // Special case for brand hover: use semantic red tint in both modes
+  if (colorAccent === 'brand') {
+    return cn('text-brand-darkest dark:text-red-200')
+  }
   return cn(style.description)
 }
 
@@ -79,15 +81,15 @@ export function getIconTextClasses(colorAccent: ColorAccent): string {
 export type ColorScheme = ColorAccent
 export const colorClasses = {
   emerald: {
-    border: 'border-emerald-dark',
-    hoverBorder: 'hover:border-emerald-light',
-    hoverBg: 'hover:bg-emerald-lightest/30',
-    focus: 'focus:ring-emerald-medium',
-    iconBorder: 'border-emerald-dark',
-    iconHoverBorder: 'group-hover:border-emerald-darker',
-    iconHoverBg: 'group-hover:bg-emerald-lightest',
-    titleHover: 'group-hover:text-emerald-darker',
-    textHover: 'group-hover:text-emerald-dark',
+    border: 'border-emerald-600',
+    hoverBorder: 'hover:border-emerald-400',
+    hoverBg: 'hover:bg-emerald-50/30',
+    focus: 'focus:ring-emerald-500',
+    iconBorder: 'border-emerald-600',
+    iconHoverBorder: 'group-hover:border-emerald-700',
+    iconHoverBg: 'group-hover:bg-emerald-50',
+    titleHover: 'group-hover:text-emerald-700',
+    textHover: 'group-hover:text-emerald-600',
   },
   blue: {
     border: 'border-blue-600',
@@ -112,15 +114,15 @@ export const colorClasses = {
     textHover: 'group-hover:text-gray-600',
   },
   brand: {
-    border: 'border-brand',
-    hoverBorder: 'hover:border-brand-light',
-    hoverBg: 'hover:bg-brand-lightest/30',
-    focus: 'focus:ring-brand-medium',
-    iconBorder: 'border-brand',
-    iconHoverBorder: 'group-hover:border-brand-dark',
-    iconHoverBg: 'group-hover:bg-brand-lightest',
-    titleHover: 'group-hover:text-brand-dark',
-    textHover: 'group-hover:text-brand',
+    border: 'border-brand-600',
+    hoverBorder: 'hover:border-brand-400',
+    hoverBg: 'hover:bg-brand-100/30',
+    focus: 'focus:ring-brand-500',
+    iconBorder: 'border-brand-600',
+    iconHoverBorder: 'group-hover:border-brand-700',
+    iconHoverBg: 'group-hover:bg-brand-100',
+    titleHover: 'group-hover:text-brand-700',
+    textHover: 'group-hover:text-brand-600',
   },
   teal: {
     border: 'border-teal-600',
@@ -141,6 +143,21 @@ function resolvePanelColor(color: ColorAccent): keyof typeof colorClasses {
   if (color === 'brand') return 'brand'
   if (color in colorClasses) return color as keyof typeof colorClasses
   return 'emerald'
+}
+
+// Generate static panel classes (without hover effects)
+export function getStaticPanelClasses(colorAccent: ColorAccent = 'teal'): {
+  container: string
+  glow: string
+  content: string
+} {
+  const resolvedColor = resolveColorAccent(colorAccent)
+
+  return {
+    container: `relative overflow-hidden rounded-2xl border border-${resolvedColor}-400 shadow-xl p-6 bg-gradient-to-br from-${resolvedColor}-50 via-${resolvedColor}-100 to-${resolvedColor}-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`,
+    glow: `pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90 bg-${resolvedColor}-400/30`,
+    content: 'relative z-20',
+  }
 }
 
 export function getActionLinkPanelClasses(colorAccent: ColorAccent): {
@@ -165,10 +182,7 @@ export function getActionLinkPanelClasses(colorAccent: ColorAccent): {
       colors.iconHoverBg
     ),
     title: cn('text-lg font-semibold break-words transition-colors', colors.titleHover),
-    description: cn(
-      'text-foreground-light break-words transition-colors',
-      colors.textHover
-    ),
+    description: cn('text-foreground break-words transition-colors', colors.textHover),
     focus: cn(colors.focus, 'focus:ring-2 focus:ring-offset-2 focus:outline-none'),
   }
 }

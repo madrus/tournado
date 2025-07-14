@@ -1,7 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: false
+description: Database migration procedures and schema change guidelines
+globs: ["prisma/**/*.prisma", "prisma/migrations/**/*.sql", "app/models/**/*.{ts,tsx}"]
+alwaysApply: true
 ---
 # Database Schema Migrations
 
@@ -15,26 +15,26 @@ This guide covers the process of making database schema changes and managing mig
    ```bash
    pnpm prisma migrate dev --name <action>_<target>_<details>
    ```
-   
+
    Migration naming convention:
    - `<action>`: The type of change (create, add, remove, update, rename)
    - `<target>`: The affected model or field
    - `<details>`: Optional additional context
-   
+
    Examples:
    ```bash
    # Adding a new field
    pnpm prisma migrate dev --name add_user_role_field
-   
+
    # Creating a new model
    pnpm prisma migrate dev --name create_tournament_model
-   
+
    # Adding a relation
    pnpm prisma migrate dev --name add_tournament_player_relation
-   
+
    # Updating field type
    pnpm prisma migrate dev --name update_score_to_decimal
-   
+
    # Multiple changes (keep it focused)
    pnpm prisma migrate dev --name add_tournament_dates_and_status
    ```

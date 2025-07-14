@@ -168,7 +168,7 @@ export default function SigninPage(): JSX.Element {
                   >
                     {t('auth.registrationSuccess')}
                   </h3>
-                  <div className='text-foreground-light mt-2 text-sm'>
+                  <div className='text-foreground mt-2 text-sm'>
                     <p>{t('auth.pleaseSignIn')}</p>
                   </div>
                 </div>

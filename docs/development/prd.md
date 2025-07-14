@@ -53,6 +53,10 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 ### 🔄 In Progress Features
 
+**Dark Mode**
+
+- [ ] **Uniform Styling**: Many pages and components need proper light/dark mode styling
+
 **Authentication & Authorization**
 
 - [ ] **Role-Based Access Control**: Schema defines 5 roles but enforcement not implemented

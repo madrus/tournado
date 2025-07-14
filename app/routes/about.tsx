@@ -64,7 +64,7 @@ export default function AboutPage(): JSX.Element {
           >
             About Tournado
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Tournado is a comprehensive tournament management platform designed to
             streamline the organization and management of sports tournaments for
             organizations and teams.
@@ -83,7 +83,7 @@ export default function AboutPage(): JSX.Element {
           >
             Features
           </h2>
-          <ul className='text-foreground-light space-y-2'>
+          <ul className='text-foreground space-y-2'>
             <li>• Tournament creation and management</li>
             <li>• Team registration and player management</li>
             <li>• Schedule generation and match tracking</li>
@@ -101,7 +101,7 @@ export default function AboutPage(): JSX.Element {
           >
             Technology Stack
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Built with modern web technologies including React Router v7, TypeScript,
             Prisma, and SQLite for a robust and scalable solution.
           </p>

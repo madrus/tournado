@@ -30,7 +30,7 @@ export default function AdminTeamsLayout(): JSX.Element {
             <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
               {t('admin.teams.title')}
             </h1>
-            <p className='text-foreground-light mt-1'>{t('admin.teams.description')}</p>
+            <p className='text-foreground mt-1'>{t('admin.teams.description')}</p>
           </div>
 
           {/* Add Team Button */}

@@ -74,7 +74,7 @@ export default function IndexPage(): JSX.Element {
             </h1>
             <p
               className={cn(
-                'text-foreground-light mt-6 min-h-[3.5rem] text-lg leading-8',
+                'text-foreground mt-6 min-h-[3.5rem] text-lg leading-8',
                 typography.centerAlign
               )}
             >
@@ -120,7 +120,7 @@ export default function IndexPage(): JSX.Element {
             </h3>
             <p
               className={cn(
-                'text-foreground-light mt-6 text-lg leading-8',
+                'text-foreground mt-6 text-lg leading-8',
                 typography.centerAlign
               )}
             >

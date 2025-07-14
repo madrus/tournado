@@ -33,25 +33,25 @@ describe('Button Styles', () => {
       it('should generate correct classes for brand color', () => {
         const classes = getButtonClasses('primary', 'brand')
 
-        expect(classes).toContain('bg-red-600')
+        expect(classes).toContain('bg-brand-600')
         expect(classes).toContain('text-white')
-        expect(classes).toContain('border-red-600')
-        expect(classes).toContain('focus-visible:ring-red-600')
-        expect(classes).toContain('hover:ring-red-600')
-        expect(classes).toContain('shadow-red-700/40')
-        expect(classes).toContain('hover:shadow-red-700/60')
+        expect(classes).toContain('border-brand-600')
+        expect(classes).toContain('focus-visible:ring-brand-600')
+        expect(classes).toContain('hover:ring-brand-600')
+        expect(classes).toContain('shadow-brand-700/40')
+        expect(classes).toContain('hover:shadow-brand-700/60')
       })
 
       it('should generate correct classes for primary color (emerald)', () => {
         const classes = getButtonClasses('primary', 'primary')
 
-        expect(classes).toContain('bg-emerald-600')
+        expect(classes).toContain('bg-primary-600')
         expect(classes).toContain('text-white')
-        expect(classes).toContain('border-emerald-600')
-        expect(classes).toContain('focus-visible:ring-emerald-600')
-        expect(classes).toContain('hover:ring-emerald-600')
-        expect(classes).toContain('shadow-emerald-700/40')
-        expect(classes).toContain('hover:shadow-emerald-700/60')
+        expect(classes).toContain('border-primary-600')
+        expect(classes).toContain('focus-visible:ring-primary-600')
+        expect(classes).toContain('hover:ring-primary-600')
+        expect(classes).toContain('shadow-primary-700/40')
+        expect(classes).toContain('hover:shadow-primary-700/60')
       })
 
       it('should generate correct classes for standard colors', () => {
@@ -73,10 +73,10 @@ describe('Button Styles', () => {
       it('should use default color when no color specified', () => {
         const classes = getButtonClasses('primary')
 
-        // Should use brand (red) as default
-        expect(classes).toContain('bg-red-600')
+        // Should use brand as default
+        expect(classes).toContain('bg-brand-600')
         expect(classes).toContain('text-white')
-        expect(classes).toContain('border-red-600')
+        expect(classes).toContain('border-brand-600')
       })
     })
 
@@ -85,24 +85,24 @@ describe('Button Styles', () => {
         const classes = getButtonClasses('secondary', 'brand')
 
         expect(classes).toContain('bg-transparent')
-        expect(classes).toContain('text-red-600')
-        expect(classes).toContain('border-red-600')
-        expect(classes).toContain('focus-visible:ring-red-600')
-        expect(classes).toContain('hover:ring-red-600')
-        expect(classes).toContain('shadow-red-700/40')
-        expect(classes).toContain('hover:shadow-red-700/60')
+        expect(classes).toContain('text-brand-600')
+        expect(classes).toContain('border-brand-600')
+        expect(classes).toContain('focus-visible:ring-brand-600')
+        expect(classes).toContain('hover:ring-brand-600')
+        expect(classes).toContain('shadow-brand-700/40')
+        expect(classes).toContain('hover:shadow-brand-700/60')
       })
 
       it('should generate correct classes for primary color (emerald)', () => {
         const classes = getButtonClasses('secondary', 'primary')
 
         expect(classes).toContain('bg-transparent')
-        expect(classes).toContain('text-emerald-600')
-        expect(classes).toContain('border-emerald-600')
-        expect(classes).toContain('focus-visible:ring-emerald-600')
-        expect(classes).toContain('hover:ring-emerald-600')
-        expect(classes).toContain('shadow-emerald-700/40')
-        expect(classes).toContain('hover:shadow-emerald-700/60')
+        expect(classes).toContain('text-primary-600')
+        expect(classes).toContain('border-primary-600')
+        expect(classes).toContain('focus-visible:ring-primary-600')
+        expect(classes).toContain('hover:ring-primary-600')
+        expect(classes).toContain('shadow-primary-700/40')
+        expect(classes).toContain('hover:shadow-primary-700/60')
       })
 
       it('should generate correct classes for standard colors', () => {
@@ -124,10 +124,10 @@ describe('Button Styles', () => {
       it('should use default color when no color specified', () => {
         const classes = getButtonClasses('secondary')
 
-        // Should use brand (red) as default
+        // Should use brand as default
         expect(classes).toContain('bg-transparent')
-        expect(classes).toContain('text-red-600')
-        expect(classes).toContain('border-red-600')
+        expect(classes).toContain('text-brand-600')
+        expect(classes).toContain('border-brand-600')
       })
     })
 

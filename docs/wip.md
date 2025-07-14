@@ -24,7 +24,7 @@ practices.
 #### Code Quality
 
 - Strict TypeScript configuration with proper type safety
-- Comprehensive testing - 167 unit tests + extensive Playwright E2E suite
+- Comprehensive testing - 584+ unit tests + extensive Playwright E2E suite
 - Excellent accessibility considerations (jsx-a11y plugin)
 - Professional error boundaries and error handling
 - Consistent component patterns with proper hooks usage
@@ -58,7 +58,8 @@ practices.
 
 - Consider extracting design tokens to a dedicated file
 - Add a proper component library documentation (Storybook?)
-- Implement dark mode (infrastructure exists but not fully utilized)
+- Complete dark mode restyling (core variables in place, some components still need refinement)
+- Implement role-based access control (roles defined in schema but not enforced)
 
 #### Performance
 
@@ -126,7 +127,7 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
    1. [ ] Notes Page Layout:
       - [x] Convert the sidebar into a collapsible menu for mobile
       - [x] Implement a hamburger menu for mobile navigation
-      - [ ] Stack the team list and content vertically on mobile
+      - [x] Stack the team list and content vertically on mobile
       - [x] Add a floating action button for "New Team" on mobile
       - [x] Make the header responsive with proper spacing
    2. [x] Team Detail Page:
@@ -141,11 +142,12 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
 3. Implementation Strategy:
 
    1. [ ] First Phase - Core Layout:
-      - [ ] Add a mobile-first breakpoint system using Tailwind's responsive classes
-      - [ ] Implement a responsive header with hamburger menu
-      - [ ] Create a collapsible sidebar for mobile
-      - [ ] Add proper spacing and padding for mobile screens
+      - [x] Add a mobile-first breakpoint system using Tailwind's responsive classes
+      - [x] Implement a responsive header with hamburger menu
+      - [x] Add proper spacing and padding for mobile screens
    2. [ ] Second Phase - Component Adjustments:
+      - [ ] Complete full dark mode implementation across all components
+      - [ ] Create a collapsible sidebar for mobile
       - [ ] Make form inputs and buttons more touch-friendly
       - [ ] Adjust typography for better readability on mobile
       - [ ] Implement proper spacing between interactive elements
@@ -212,7 +214,7 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
 
 ?> We can start with the most critical components first, such as the main layout and navigation structure.
 
-### Create a favicon set
+### Create a favicon set (Done)
 
 ```sh
 magick soccer_ball.png -resize 16x16 favicon-16x16.png
@@ -222,3 +224,16 @@ magick soccer_ball.png -resize 192x192 android-chrome-192x192.png
 magick soccer_ball.png -resize 512x512 android-chrome-512x512.png
 magick favicon-32x32.png favicon.ico
 ```
+
+## Dark Mode Restyling – Next Steps
+
+1. **Component Audit** – catalogue all components still using hard-coded Tailwind colour utilities (e.g. `bg-gray-100`) and replace them with semantic tokens (`bg-background`, `text-foreground`, etc.).
+2. **Variable Mapping** – extend `app/styles/colors.css` to expose any missing semantic tokens (e.g. `--color-surface`, `--color-elevated`) that dark mode will override.
+3. **Tailwind Plugin** – add a small Tailwind plugin/config alias so that design-token class names (`bg-background`, `text-primary`) map to the CSS variables above. This keeps templates clean and theme-agnostic.
+4. **Contrast Verification** – run an accessibility pass (Lighthouse/axe) in both light & dark themes, adjusting variables to meet WCAG 2.1 AA contrast ratios.
+5. **Visual Regression Tests** – extend the Playwright suite with a dark-theme snapshot of critical pages (Home, Teams list/form, Admin Dashboard) to prevent regressions.
+6. **Icon & Illustration Pass** – ensure inline SVGs/icons inherit `currentColor` or use CSS variables so they adapt automatically.
+7. **Documentation Update** – add a short “Dark-mode guidelines” section to the docs, explaining token usage and do/do-nots for future contributors.
+8. **Roll-out** – migrate pages incrementally: `root → layout components → forms → dashboards`. Track progress with TODO checklists in this file.
+
+> Target completion: before starting Phase 2 (Pool Creation) so that new pages inherit the refined theme.

@@ -76,7 +76,7 @@ export default function AdminNewTeamPage(): JSX.Element {
     <div className='container mx-auto max-w-6xl p-6'>
       <div className='mb-8'>
         <h1 className='text-3xl font-bold'>{t('admin.teams.newTeam')}</h1>
-        <p className='text-foreground-light mt-2'>
+        <p className='text-foreground mt-2'>
           {t('admin.teams.createNewTeamDescription')}
         </p>
       </div>

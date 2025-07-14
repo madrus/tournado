@@ -1,113 +1,172 @@
 @import './colors.css';
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Safelist ring and ring-offset classes for button hover/focus effects */
 @source inline("{focus-visible:,hover:,}ring-2");
 @source inline("{focus-visible:,hover:,}ring-offset-2");
 @source inline("{focus-visible:,hover:,}ring-offset-white");
 @source inline("{focus-visible:,hover:,}ring-emerald-600");
-@source inline("{focus-visible:,hover:,}ring-brand");
-@source inline("{focus-visible:,hover:,}ring-blue-600");
+@source inline("{focus-visible:,hover:,}ring-red-600");
+@source inline("border-chip-border");
+@source inline("{focus-visible:,hover:,}ring-chip-ring");
+@source inline("{focus-visible:,hover:,}ring-offset-chip-ring-offset");
+@source inline("{focus-visible:,hover:,}ring-offset-white");
+@source inline("dark:border-slate-100");
+@source inline("dark:hover:ring-brand-600 dark:focus:ring-brand-600");
+@source inline("dark:hover:ring-offset-slate-100 dark:focus:ring-offset-slate-100");
+@source inline("{focus-visible:,hover:,}ring-teal-600");
+@source inline("{focus-visible:,hover:,}ring-cyan-600");
+@source inline("{focus-visible:,hover:,}ring-yellow-600");
+@source inline("{focus-visible:,hover:,}ring-green-600");
+@source inline("{focus-visible:,hover:,}ring-violet-600");
 @source inline("{focus-visible:,hover:,}ring-gray-600");
 
 /* Safelist shadow classes for button effects */
 @source inline("shadow-md");
 @source inline("hover:shadow-lg");
 
-/* Safelist gradient classes for all ColorAccent colors */
+/* Safelist UserMenu colors using standard Tailwind classes */
+@source inline("border-red-400 divide-red-400 bg-red-400 h-px");
+@source inline("dark:border-emerald-400 dark:divide-emerald-400 dark:bg-emerald-400");
+
+/* Safelist UserMenu colors for dark mode */
+@source inline("bg-usermenu-bg text-usermenu-text hover:bg-usermenu-hover-bg");
+@source inline("dark:bg-usermenu-bg dark:text-usermenu-text dark:hover:bg-usermenu-hover-bg");
+@source inline("dark:!bg-primary-900 dark:!text-gray-100 dark:!border-primary-600 dark:hover:!bg-primary-800 dark:!ring-primary-600 dark:hover:!bg-primary-800/70");
+@source inline("bg-border border-border");
+
+/* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
-@source inline("from-amber-950 via-amber-900 to-amber-900");
-@source inline("from-blue-950 via-blue-900 to-blue-900");
-@source inline("from-cyan-950 via-cyan-900 to-cyan-900");
-@source inline("from-emerald-950 via-emerald-900 to-emerald-900");
-@source inline("from-fuchsia-950 via-fuchsia-900 to-fuchsia-900");
-@source inline("from-gray-900 via-gray-800 to-gray-800");
-@source inline("from-green-950 via-green-900 to-green-900");
-@source inline("from-indigo-950 via-indigo-900 to-indigo-900");
-@source inline("from-lime-950 via-lime-900 to-lime-900");
-@source inline("from-neutral-950 via-neutral-900 to-neutral-900");
-@source inline("from-orange-950 via-orange-900 to-orange-900");
-@source inline("from-pink-950 via-pink-900 to-pink-900");
-@source inline("from-purple-950 via-purple-900 to-purple-900");
-@source inline("from-red-950 via-red-900 to-red-900");
-@source inline("from-rose-950 via-rose-900 to-rose-900");
-@source inline("from-sky-950 via-sky-900 to-sky-900");
-@source inline("from-slate-950 via-slate-900 to-slate-900");
-@source inline("from-stone-950 via-stone-900 to-stone-900");
-@source inline("from-teal-950 via-teal-900 to-teal-900");
-@source inline("from-violet-950 via-violet-900 to-violet-900");
-@source inline("from-yellow-950 via-yellow-900 to-yellow-900");
-@source inline("from-zinc-950 via-zinc-900 to-zinc-900");
+/* Light mode gradients - complete safelist */
+@source inline("from-gray-50 via-gray-100 to-gray-50");
+@source inline("from-emerald-50 via-emerald-100 to-emerald-50");
+@source inline("from-red-50 via-red-100 to-red-50");
+@source inline("from-teal-50 via-teal-100 to-teal-50");
+@source inline("from-cyan-50 via-cyan-100 to-cyan-50");
+@source inline("from-yellow-50 via-yellow-100 to-yellow-50");
+@source inline("from-green-50 via-green-100 to-green-50");
+@source inline("from-violet-50 via-violet-100 to-violet-50");
+/* Individual gradient pieces for light mode */
+@source inline("from-teal-50 via-teal-100 to-teal-50 from-teal-100 teal-50 teal-100");
+/* Dark mode gradients */
+@source inline("dark:from-emerald-950 dark:via-emerald-900 dark:to-emerald-900");
+@source inline("dark:from-red-950 dark:via-red-900 dark:to-red-900");
+@source inline("dark:from-teal-950 dark:via-teal-900 dark:to-teal-900");
+@source inline("dark:from-cyan-950 dark:via-cyan-900 dark:to-cyan-900");
+@source inline("dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900");
+@source inline("dark:from-green-950 dark:via-green-900 dark:to-green-900");
+@source inline("dark:from-violet-950 dark:via-violet-900 dark:to-violet-900");
+@source inline("dark:from-gray-950 dark:via-gray-900 dark:to-gray-900");
 
-/* Safelist border classes for all ColorAccent colors */
-@source inline("border-amber-400/60 hover:border-amber-400/60");
-@source inline("border-blue-400/60 hover:border-blue-400/60");
-@source inline("border-cyan-400/60 hover:border-cyan-400/60");
-@source inline("border-emerald-400/60 hover:border-emerald-400/60");
-@source inline("border-fuchsia-400/60 hover:border-fuchsia-400/60");
-@source inline("border-green-400/60 hover:border-green-400/60");
-@source inline("border-indigo-400/60 hover:border-indigo-400/60");
-@source inline("border-lime-400/60 hover:border-lime-400/60");
-@source inline("border-neutral-400/60 hover:border-neutral-400/60");
-@source inline("border-orange-400/60 hover:border-orange-400/60");
-@source inline("border-pink-400/60 hover:border-pink-400/60");
-@source inline("border-purple-400/60 hover:border-purple-400/60");
-@source inline("border-red-400/60 hover:border-red-400/60");
-@source inline("border-rose-400/60 hover:border-rose-400/60");
-@source inline("border-sky-400/60 hover:border-sky-400/60");
-@source inline("border-slate-400/60 hover:border-slate-400/60");
-@source inline("border-stone-400/60 hover:border-stone-400/60");
-@source inline("border-teal-400/60 hover:border-teal-400/60");
-@source inline("border-violet-400/60 hover:border-violet-400/60");
-@source inline("border-yellow-400/60 hover:border-yellow-400/60");
-@source inline("border-zinc-400/60 hover:border-zinc-400/60");
+/* Semantic panel gradient classes */
+@source inline("from-panel-gradient-from via-panel-gradient-via to-panel-gradient-to");
+@source inline("from-brand-from via-brand-via to-brand-to");
 
-/* Safelist glow, text, and other panel classes for all ColorAccent colors */
-@source inline("bg-amber-400/30 text-amber-300 text-amber-100/80 border-amber-400/60 border-amber-400/70 bg-amber-400/10");
-@source inline("bg-blue-400/30 text-blue-300 text-blue-100/80 border-blue-400/60 border-blue-400/70 bg-blue-400/10");
-@source inline("bg-cyan-400/30 text-cyan-300 text-cyan-100/80 border-cyan-400/60 border-cyan-400/70 bg-cyan-400/10");
+/* Semantic panel background classes */
+@source inline("bg-panel-bg-primary bg-panel-bg-brand bg-panel-bg-emerald bg-panel-bg-teal bg-panel-bg-cyan bg-panel-bg-blue bg-panel-bg-green bg-panel-bg-yellow bg-panel-bg-violet bg-panel-bg-gray");
+
+/* Safelist border classes for actually used colors */
+/* Light mode borders (400) and dark mode borders (400) - solid colors, 1px thickness */
+@source inline("border-emerald-400 dark:border-emerald-400 hover:border-emerald-400 hover:dark:border-emerald-400");
+@source inline("border-red-400 dark:border-red-400 hover:border-red-400 hover:dark:border-red-400");
+@source inline("border-teal-400 dark:border-teal-400 hover:border-teal-400 hover:dark:border-teal-400");
+@source inline("border-cyan-400 dark:border-cyan-400 hover:border-cyan-400 hover:dark:border-cyan-400");
+@source inline("border-yellow-400 dark:border-yellow-400 hover:border-yellow-400 hover:dark:border-yellow-400");
+@source inline("border-green-400 dark:border-green-400 hover:border-green-400 hover:dark:border-green-400");
+@source inline("border-violet-400 dark:border-violet-400 hover:border-violet-400 hover:dark:border-violet-400");
+@source inline("border-gray-400 dark:border-gray-400 hover:border-gray-400 hover:dark:border-gray-400");
+
+/* Safelist glow, text, and other panel classes for actually used colors */
 @source inline("bg-emerald-400/30 text-emerald-300 text-emerald-100/80 border-emerald-400/60 border-emerald-400/70 bg-emerald-400/10");
-@source inline("bg-fuchsia-400/30 text-fuchsia-300 text-fuchsia-100/80 border-fuchsia-400/60 border-fuchsia-400/70 bg-fuchsia-400/10");
-@source inline("bg-green-400/30 text-green-300 text-green-100/80 border-green-400/60 border-green-400/70 bg-green-400/10");
-@source inline("bg-indigo-400/30 text-indigo-300 text-indigo-100/80 border-indigo-400/60 border-indigo-400/70 bg-indigo-400/10");
-@source inline("bg-lime-400/30 text-lime-300 text-lime-100/80 border-lime-400/60 border-lime-400/70 bg-lime-400/10");
-@source inline("bg-neutral-400/30 text-neutral-300 text-neutral-100/80 border-neutral-400/60 border-neutral-400/70 bg-neutral-400/10");
-@source inline("bg-orange-400/30 text-orange-300 text-orange-100/80 border-orange-400/60 border-orange-400/70 bg-orange-400/10");
-@source inline("bg-pink-400/30 text-pink-300 text-pink-100/80 border-pink-400/60 border-pink-400/70 bg-pink-400/10");
-@source inline("bg-purple-400/30 text-purple-300 text-purple-100/80 border-purple-400/60 border-purple-400/70 bg-purple-400/10");
 @source inline("bg-red-400/30 text-red-300 text-red-100/80 border-red-400/60 border-red-400/70 bg-red-400/10");
-@source inline("bg-rose-400/30 text-rose-300 text-rose-100/80 border-rose-400/60 border-rose-400/70 bg-rose-400/10");
-@source inline("bg-sky-400/30 text-sky-300 text-sky-100/80 border-sky-400/60 border-sky-400/70 bg-sky-400/10");
-@source inline("bg-slate-400/30 text-slate-300 text-slate-100/80 border-slate-400/60 border-slate-400/70 bg-slate-400/10");
-@source inline("bg-stone-400/30 text-stone-300 text-stone-100/80 border-stone-400/60 border-stone-400/70 bg-stone-400/10");
 @source inline("bg-teal-400/30 text-teal-300 text-teal-100/80 border-teal-400/60 border-teal-400/70 bg-teal-400/10");
-@source inline("bg-violet-400/30 text-violet-300 text-violet-100/80 border-violet-400/60 border-violet-400/70 bg-violet-400/10");
+@source inline("bg-cyan-400/30 text-cyan-300 text-cyan-100/80 border-cyan-400/60 border-cyan-400/70 bg-cyan-400/10");
 @source inline("bg-yellow-400/30 text-yellow-300 text-yellow-100/80 border-yellow-400/60 border-yellow-400/70 bg-yellow-400/10");
-@source inline("bg-zinc-400/30 text-zinc-300 text-zinc-100/80 border-zinc-400/60 border-zinc-400/70 bg-zinc-400/10");
+@source inline("bg-green-400/30 text-green-300 text-green-100/80 border-green-400/60 border-green-400/70 bg-green-400/10");
+@source inline("bg-violet-400/30 text-violet-300 text-violet-100/80 border-violet-400/60 border-violet-400/70 bg-violet-400/10");
+@source inline("bg-gray-400/30 text-gray-300 text-gray-100/80 border-gray-400/60 border-gray-400/70 bg-gray-400/10");
+
+/* Dark mode text colors for panels */
+@source inline("dark:text-emerald-100/80 dark:text-red-100/80 dark:text-teal-100/80 dark:text-cyan-100/80");
+@source inline("dark:text-yellow-100/80 dark:text-green-100/80 dark:text-violet-100/80 dark:text-gray-100/80");
+@source inline("dark:text-white dark:text-emerald-300 dark:text-red-300 dark:text-teal-300 dark:text-cyan-300");
+@source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
+@source inline("dark:text-red-200 text-gray-700 text-red-900");
+/* Semantic colors for panel titles and descriptions */
+@source inline("text-title text-foreground text-foreground-heading text-brand-dark text-brand-darker text-brand-darkest dark:text-white");
+/* Light mode darker text colors for better contrast */
+@source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-gray-950");
+@source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-gray-900");
+@source inline("text-emerald-700 text-red-700 text-teal-700 text-cyan-700 text-yellow-700 text-green-700 text-violet-700 text-gray-700");
+/* Icon border colors for light mode */
+@source inline("border-emerald-700 border-red-700 border-teal-700 border-cyan-700 border-yellow-700 border-green-700 border-violet-700 border-gray-700");
+@source inline("dark:border-emerald-300 dark:border-red-300 dark:border-teal-300 dark:border-cyan-300 dark:border-yellow-300 dark:border-green-300 dark:border-violet-300 dark:border-gray-300");
+/* Children text colors - brand (red) - only last child */
+@source inline("[&>*:last-child_p]:text-red-600 [&>*:last-child_strong]:text-red-600");
+/* Children text colors - other colors - only last child */
+@source inline("[&>*:last-child_p]:text-emerald-700 [&>*:last-child_p]:dark:text-emerald-300 [&>*:last-child_strong]:text-emerald-700 [&>*:last-child_strong]:dark:text-emerald-300");
+@source inline("[&>*:last-child_p]:text-teal-700 [&>*:last-child_p]:dark:text-teal-300 [&>*:last-child_strong]:text-teal-700 [&>*:last-child_strong]:dark:text-teal-300");
+@source inline("[&>*:last-child_p]:text-cyan-700 [&>*:last-child_p]:dark:text-cyan-300 [&>*:last-child_strong]:text-cyan-700 [&>*:last-child_strong]:dark:text-cyan-300");
+@source inline("[&>*:last-child_p]:text-yellow-700 [&>*:last-child_p]:dark:text-yellow-300 [&>*:last-child_strong]:text-yellow-700 [&>*:last-child_strong]:dark:text-yellow-300");
+@source inline("[&>*:last-child_p]:text-green-700 [&>*:last-child_p]:dark:text-green-300 [&>*:last-child_strong]:text-green-700 [&>*:last-child_strong]:dark:text-green-300");
+@source inline("[&>*:last-child_p]:text-violet-700 [&>*:last-child_p]:dark:text-violet-300 [&>*:last-child_strong]:text-violet-700 [&>*:last-child_strong]:dark:text-violet-300");
+@source inline("[&>*:last-child_p]:text-gray-700 [&>*:last-child_p]:dark:text-gray-300 [&>*:last-child_strong]:text-gray-700 [&>*:last-child_strong]:dark:text-gray-300");
+
+/* Panel background colors for light/dark mode */
+@source inline("bg-emerald-100 bg-red-100 bg-teal-100 bg-cyan-100 bg-yellow-100 bg-green-100 bg-violet-100 bg-gray-100");
+@source inline("dark:bg-emerald-800 dark:bg-red-800 dark:bg-teal-800 dark:bg-cyan-800 dark:bg-yellow-800 dark:bg-green-800 dark:bg-violet-800 dark:bg-gray-800");
 
 /* Tailwind v4 Theme Configuration */
 @theme {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
 
+  /* Text Colors */
+  --color-title: var(--color-title);
+  --color-foreground-heading: var(--color-foreground-heading);
+  --color-foreground-light: var(--color-foreground-light);
+  --color-foreground-lighter: var(--color-foreground-lighter);
+  --color-foreground-darker: var(--color-foreground-darker);
+
   /* Brand Colors */
   --color-brand: var(--color-brand);
   --color-brand-accent: var(--color-brand-accent);
   --color-brand-dark: var(--color-brand-dark);
+  --color-brand-darker: var(--color-brand-darker);
+  --color-brand-darkest: var(--color-brand-darkest);
   --color-brand-light: var(--color-brand-light);
 
   /* Main Accent */
   --color-main: var(--color-main);
   --color-accent: var(--color-accent);
 
-  /* Emerald Colors */
-  --color-emerald-lightest: var(--color-emerald-lightest);
-  --color-emerald-lighter: var(--color-emerald-lighter);
-  --color-emerald-light: var(--color-emerald-light);
-  --color-emerald-medium: var(--color-emerald-medium);
-  --color-emerald-dark: var(--color-emerald-dark);
-  --color-emerald-darker: var(--color-emerald-darker);
-  --color-emerald-darkest: var(--color-emerald-darkest);
+  /* Primary Colors */
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
+
+  /* Brand Colors */
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+  --color-brand-950: var(--color-brand-950);
 
   /* Text Colors */
   --color-title: var(--color-title);
@@ -115,7 +174,6 @@
   --color-foreground-heading: var(--color-foreground-heading);
   --color-foreground-light: var(--color-foreground-light);
   --color-foreground-lighter: var(--color-foreground-lighter);
-  --color-foreground-darker: var(--color-foreground-darker);
 
   /* Button Colors */
   --color-button-primary-background: var(--color-button-primary-background);
@@ -213,6 +271,34 @@
 
   /* Hover Colors */
   --color-background-hover: var(--color-background-hover);
+
+  /* Border Colors */
+  --color-border: var(--color-border);
+
+  /* UserMenu Colors */
+  --color-usermenu-bg: var(--color-usermenu-bg);
+  --color-usermenu-text: var(--color-usermenu-text);
+  --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+
+  /* Panel Gradient Colors */
+  --color-panel-gradient-from: var(--panel-gradient-from);
+  --color-panel-gradient-via: var(--panel-gradient-via);
+  --color-panel-gradient-to: var(--panel-gradient-to);
+  --color-brand-from: var(--brand-from);
+  --color-brand-via: var(--brand-via);
+  --color-brand-to: var(--brand-to);
+
+  /* Panel Background Colors */
+  --color-panel-bg-primary: var(--panel-bg-primary);
+  --color-panel-bg-brand: var(--panel-bg-brand);
+  --color-panel-bg-emerald: var(--panel-bg-emerald);
+  --color-panel-bg-teal: var(--panel-bg-teal);
+  --color-panel-bg-cyan: var(--panel-bg-cyan);
+  --color-panel-bg-blue: var(--panel-bg-blue);
+  --color-panel-bg-green: var(--panel-bg-green);
+  --color-panel-bg-yellow: var(--panel-bg-yellow);
+  --color-panel-bg-violet: var(--panel-bg-violet);
+  --color-panel-bg-gray: var(--panel-bg-gray);
 }
 
 /* Base Styles */
@@ -231,8 +317,8 @@
     color: var(--color-title);
   }
 
-  .dark .text-foreground-light {
-    color: var(--color-foreground-light);
+  .dark .text-foreground {
+    color: var(--color-foreground);
   }
 
   /* Make all paragraph text use foreground color in dark mode for accessibility */
@@ -243,6 +329,78 @@
   /* Footer styles handled by component classes */
 
   /* Mobile navigation uses CSS custom properties */
+
+}
+
+@layer components {
+  /* UserMenu light mode - force red colors */
+  .light [data-testid="user-menu-dropdown"] {
+    border-color: #ef4444 !important; /* red-500 */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .bg-red-500 {
+    background-color: #ef4444 !important; /* red-500 */
+  }
+
+  /* UserMenu dark mode specific styling */
+  .dark [data-testid="user-menu-dropdown"] {
+    background-color: var(--color-usermenu-bg) !important;
+    border-color: #10b981 !important; /* emerald-500 */
+  }
+
+  .dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
+    background-color: #10b981 !important; /* emerald-500 */
+  }
+
+  /* Language submenu styling - light mode */
+  .light [data-testid="user-menu-dropdown"] .bg-background {
+    background-color: #ffffff !important; /* white background */
+    border-color: #ef4444 !important; /* red-500 border */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .bg-accent {
+    background-color: #d1fae5 !important; /* emerald-100 for selected language */
+  }
+
+  .light [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover {
+    background-color: #ecfdf5 !important; /* emerald-50 for hover */
+  }
+
+  /* Language submenu styling - dark mode */
+  .dark [data-testid="user-menu-dropdown"] .bg-accent {
+    background-color: #047857 !important; /* emerald-700 for selected language */
+  }
+
+  /* All text elements in UserMenu dropdown - dark mode only */
+  .dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
+  .dark [data-testid="user-menu-dropdown"] .text-main {
+    color: var(--color-usermenu-text) !important;
+  }
+
+  /* All hover states in UserMenu dropdown - background only, no borders */
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
+  .dark [data-testid="user-menu-dropdown"] .hover\:bg-accent\/50:hover {
+    background-color: var(--color-usermenu-hover-bg) !important;
+    border-color: transparent !important;
+  }
+
+  /* Ensure no borders on hover elements */
+  .dark [data-testid="user-menu-dropdown"] button:hover,
+  .dark [data-testid="user-menu-dropdown"] a:hover {
+    border-color: transparent !important;
+    outline: none !important;
+  }
+
+
+  .dark [data-testid="user-menu-dropdown"] .bg-border {
+    background-color: var(--color-border) !important;
+  }
+
+  /* UserMenu submenu (language menu) dark mode styling */
+  .dark [data-testid="user-menu-dropdown"] .bg-background {
+    background-color: var(--color-usermenu-bg) !important;
+  }
 }
 
 /* Semantic color utility classes for homepage and general use */
@@ -287,6 +445,8 @@
 .dark .bg-brand-accent {
   background-color: var(--color-brand-accent);
 }
+
+/* Custom brand/primary CSS classes removed - now using standard Tailwind red/emerald classes */
 
 .bg-error {
   background-color: var(--color-brand);

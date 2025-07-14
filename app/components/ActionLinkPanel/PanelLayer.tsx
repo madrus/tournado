@@ -71,7 +71,7 @@ export function PanelLayer({
       'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
       iconColor === 'brand'
         ? 'text-red-600 border-red-600'
-        : `text-${iconColor}-300 border-${iconColor}-300`
+        : `text-${iconColor}-700 dark:text-${iconColor}-300 border-${iconColor}-700 dark:border-${iconColor}-300`
     )
   }
 
@@ -91,7 +91,11 @@ export function PanelLayer({
       <div
         className={cn(
           'relative z-20 flex flex-col items-start space-y-4 p-6 break-words',
-          textAlign
+          textAlign,
+          // Apply icon color only to children content, not description
+          iconColor === 'brand'
+            ? '[&>*:last-child_p]:text-red-600 [&>*:last-child_strong]:text-red-600'
+            : `[&>*:last-child_p]:text-${iconColor}-700 [&>*:last-child_p]:dark:text-${iconColor}-300 [&>*:last-child_strong]:text-${iconColor}-700 [&>*:last-child_strong]:dark:text-${iconColor}-300`
         )}
       >
         <div className={getIconClasses()} aria-label='panel icon'>

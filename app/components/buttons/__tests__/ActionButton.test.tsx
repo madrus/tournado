@@ -75,43 +75,43 @@ describe('ActionButton', () => {
     const handleClick = vi.fn()
     const i18nInstance = createI18n('en')
 
-    // Test primary variant (emerald)
+    // Test primary variant (primary)
     const { rerender } = render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} variant='primary' color='emerald'>
+        <ActionButton onClick={handleClick} variant='primary' color='primary'>
           Primary Button
         </ActionButton>
       </I18nextProvider>
     )
     const primaryButton = screen.getByRole('button')
-    expect(primaryButton).toHaveClass('bg-emerald-600')
+    expect(primaryButton).toHaveClass('bg-primary-600')
     expect(primaryButton).toHaveClass('text-white')
-    expect(primaryButton).toHaveClass('border-emerald-600')
-    expect(primaryButton).toHaveClass('focus-visible:ring-emerald-600')
-    expect(primaryButton).toHaveClass('hover:ring-emerald-600')
+    expect(primaryButton).toHaveClass('border-primary-600')
+    expect(primaryButton).toHaveClass('focus-visible:ring-primary-600')
+    expect(primaryButton).toHaveClass('hover:ring-primary-600')
 
-    // Test secondary variant (emerald)
+    // Test secondary variant (primary)
     rerender(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton onClick={handleClick} variant='secondary' color='emerald'>
+        <ActionButton onClick={handleClick} variant='secondary' color='primary'>
           Secondary Button
         </ActionButton>
       </I18nextProvider>
     )
     const secondaryButton = screen.getByRole('button')
     expect(secondaryButton).toHaveClass('bg-transparent')
-    expect(secondaryButton).toHaveClass('text-emerald-600')
+    expect(secondaryButton).toHaveClass('text-primary-600')
     expect(secondaryButton).toHaveClass('border')
-    expect(secondaryButton).toHaveClass('border-emerald-600')
-    expect(secondaryButton).toHaveClass('focus-visible:ring-emerald-600')
-    expect(secondaryButton).toHaveClass('hover:ring-emerald-600')
+    expect(secondaryButton).toHaveClass('border-primary-600')
+    expect(secondaryButton).toHaveClass('focus-visible:ring-primary-600')
+    expect(secondaryButton).toHaveClass('hover:ring-primary-600')
   })
 
   it('handles submit type without onClick', () => {
     const i18nInstance = createI18n('en')
     render(
       <I18nextProvider i18n={i18nInstance}>
-        <ActionButton type='submit' variant='primary' color='emerald'>
+        <ActionButton type='submit' variant='primary' color='primary'>
           Submit Button
         </ActionButton>
       </I18nextProvider>

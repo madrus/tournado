@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "epicshop": {
+      "command": "npx",
+      "args": ["-y", "@epic-web/workshop-mcp@latest"]
+    },
+    "vitest-runner": {
+      "command": "npx",
+      "args": ["-y", "@madrus/vitest-mcp-server@latest"],
+      "env": {
+        "VITEST_PROJECT_DIR": "/Users/madrus/dev/biz/toernooien/tournado"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

@@ -40,8 +40,8 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
     ref
   ): JSX.Element => (
     <div className={className}>
-      <label className='text-foreground-light flex w-full flex-col gap-1'>
-        <span className='text-foreground-light font-medium'>{label}</span>
+      <label className='text-foreground flex w-full flex-col gap-1'>
+        <span className='text-foreground font-medium'>{label}</span>
         <input
           ref={ref}
           name={name}

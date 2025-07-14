@@ -67,8 +67,8 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
         ref={ref}
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
-        <label className='text-foreground-light flex w-full flex-col gap-1'>
-          <span className='text-foreground-light font-medium'>{label}</span>
+        <label className='text-foreground flex w-full flex-col gap-1'>
+          <span className='text-foreground font-medium'>{label}</span>
           <Select.Root
             value={safeValue}
             onValueChange={newValue => {

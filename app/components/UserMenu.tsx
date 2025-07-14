@@ -90,13 +90,14 @@ export function UserMenu({
         <DropdownMenu.Content
           data-testid='user-menu-dropdown'
           className={cn(
-            'ring-opacity-5 divide-border z-40 w-max divide-y',
-            'bg-background ring-border rounded-md p-1 shadow-lg ring-1 focus:outline-none',
-            // Responsive max-width to prevent off-screen on mobile
-            'max-w-[calc(100vw-2rem)] sm:max-w-80',
-            // Ensure proper spacing from viewport edges - same for now to check
-            'mx-4',
-            menuClasses.spacing // Add margin for RTL spacing
+            // basic container
+            'bg-background z-40 w-max rounded-md p-1 shadow-lg focus:outline-none',
+            // border colors
+            'border border-red-500 dark:border-emerald-500',
+            // responsive sizing / spacing
+            'mx-4 max-w-[calc(100vw-2rem)] sm:max-w-80',
+            // RTL margin helpers
+            menuClasses.spacing
           )}
           align={dropdownProps.align}
           side={dropdownProps.side}
@@ -139,13 +140,14 @@ export function UserMenu({
               </p>
             )}
           </div>
+          <div className='h-px bg-red-500 dark:bg-emerald-500'></div>
           <div className='py-1'>
             {menuItems.map((item, index) => {
               if (item.divider) {
                 return (
                   <DropdownMenu.Separator
                     key={index}
-                    className='bg-border mx-1 my-1 h-px'
+                    className='my-1 h-px bg-red-500 dark:bg-emerald-500'
                   />
                 )
               }
@@ -193,7 +195,7 @@ export function UserMenu({
                               'w-full items-center px-3 py-2 leading-normal focus:outline-none',
                               subItem.active
                                 ? 'bg-accent text-foreground-darker'
-                                : 'text-foreground-darker hover:bg-accent/50',
+                                : 'text-foreground-darker hover:bg-accent',
                               menuClasses.menuItem
                             )}
                             onClick={event => {
@@ -231,7 +233,7 @@ export function UserMenu({
               if (item.action) {
                 return (
                   <DropdownMenu.Item key={index} asChild>
-                    <div>{item.action}</div>
+                    <div className='focus:outline-none'>{item.action}</div>
                   </DropdownMenu.Item>
                 )
               }
@@ -241,7 +243,7 @@ export function UserMenu({
                   <Link
                     to={item.href || '#'}
                     className={cn(
-                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal',
+                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
                       menuClasses.menuItem
                     )}
                   >

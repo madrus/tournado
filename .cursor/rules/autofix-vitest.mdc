@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: Automated test failure detection and fixing using Vitest
+globs: ["**/*.{test,spec}.{ts,tsx}", "app/**/*.{ts,tsx}", "test/**/*.{ts,tsx}"]
 alwaysApply: false
 ---
 Use the vitest-runner MCP to run all unit tests, analyze any failing tests and their error messages, automatically fix those test failures in my codebase by:

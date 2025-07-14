@@ -161,7 +161,7 @@ export function SidebarTeamsExample({
           >
             Team Chip Preview
           </h3>
-          <p className='text-foreground-light mb-4'>
+          <p className='text-foreground mb-4'>
             This is how this team appears in the new chip-based layout:
           </p>
           <TeamChip
@@ -266,7 +266,7 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           Teams Layout Evolution
         </h1>
-        <p className='text-foreground-light mx-auto max-w-2xl'>
+        <p className='text-foreground mx-auto max-w-2xl'>
           Comparison between the original sidebar layout (preserved for future sliding
           menu) and the new chip-based layout for modern UX.
         </p>
@@ -282,7 +282,7 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           ✨ New Chip-Based Layout
         </h2>
-        <p className='text-foreground-light mb-4'>
+        <p className='text-foreground mb-4'>
           Modern, responsive grid layout with team chips:
         </p>
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4'>
@@ -308,7 +308,7 @@ export function TeamsLayoutComparison(): JSX.Element {
         >
           🗂️ Original Sidebar Layout (Preserved)
         </h2>
-        <p className='text-foreground-light mb-4'>
+        <p className='text-foreground mb-4'>
           Classic sidebar layout with list view, perfect for future sliding menu
           implementations:
         </p>

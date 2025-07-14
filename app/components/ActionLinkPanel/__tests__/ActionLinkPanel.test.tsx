@@ -104,7 +104,7 @@ describe('ActionLinkPanel Component Integration', () => {
 
       const background = screen.getByTestId('panel-background')
       expect(background).toBeInTheDocument()
-      expect(background).toHaveClass('bg-emerald-800')
+      expect(background).toHaveClass('bg-panel-bg-emerald')
     })
 
     it('should render base PanelLayer with correct props', () => {
@@ -220,22 +220,22 @@ describe('ActionLinkPanel Component Integration', () => {
       render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
       const panel = screen.getByLabelText('Test Panel panel')
-      expect(panel).toHaveClass('border-teal-400/60')
+      expect(panel).toHaveClass('border-teal-400')
     })
 
     it('should apply hover border color when hoverColor provided', () => {
       render(<ActionLinkPanel {...defaultProps} mainColor='teal' hoverColor='brand' />)
 
       const panel = screen.getByLabelText('Test Panel panel')
-      expect(panel).toHaveClass('border-teal-400/60')
-      expect(panel).toHaveClass('hover:border-red-400/60')
+      expect(panel).toHaveClass('border-teal-400')
+      expect(panel).toHaveClass('hover:border-brand-400')
     })
 
     it('should not apply hover border when no hoverColor', () => {
       render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
       const panel = screen.getByLabelText('Test Panel panel')
-      expect(panel).toHaveClass('border-teal-400/60')
+      expect(panel).toHaveClass('border-teal-400')
       expect(panel.className).not.toMatch(/hover:border/)
     })
   })

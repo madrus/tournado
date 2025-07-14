@@ -1,7 +1,7 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: Testing guidelines and best practices for unit and e2e tests
+globs: ["**/*.{ts,tsx,js,jsx}", "**/*.{test,spec}.{ts,tsx}"]
+alwaysApply: true
 ---
 # Testing Guide
 

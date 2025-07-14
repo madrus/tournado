@@ -190,7 +190,7 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
             {promptText[platform].title}
           </p>
           <div className='mt-1 flex items-center gap-2'>
-            <p className='text-foreground-light text-xs'>
+            <p className='text-foreground text-xs'>
               {promptText[platform].instruction}
             </p>
             <div className='relative'>

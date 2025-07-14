@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: Enforces conventional commits format for all commit messages
+globs: ["**/*"]
 alwaysApply: true
 ---
 # Always Apply Conventional Commits

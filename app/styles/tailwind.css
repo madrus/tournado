@@ -9,6 +9,13 @@
 @source inline("{focus-visible:,hover:,}ring-offset-white");
 @source inline("{focus-visible:,hover:,}ring-emerald-600");
 @source inline("{focus-visible:,hover:,}ring-red-600");
+@source inline("border-chip-border");
+@source inline("{focus-visible:,hover:,}ring-chip-ring");
+@source inline("{focus-visible:,hover:,}ring-offset-chip-ring-offset");
+@source inline("{focus-visible:,hover:,}ring-offset-white");
+@source inline("dark:border-slate-100");
+@source inline("dark:hover:ring-brand-600 dark:focus:ring-brand-600");
+@source inline("dark:hover:ring-offset-slate-100 dark:focus:ring-offset-slate-100");
 @source inline("{focus-visible:,hover:,}ring-teal-600");
 @source inline("{focus-visible:,hover:,}ring-cyan-600");
 @source inline("{focus-visible:,hover:,}ring-yellow-600");
@@ -167,7 +174,11 @@
   --color-foreground-heading: var(--color-foreground-heading);
   --color-foreground-light: var(--color-foreground-light);
   --color-foreground-lighter: var(--color-foreground-lighter);
-  --color-foreground-darker: var(--color-foreground-darker);
+
+  /* Chip Colors */
+  --color-chip-border: var(--color-chip-border);
+  --color-chip-ring: var(--color-chip-ring);
+  --color-chip-ring-offset: var(--color-chip-ring-offset);
 
   /* Button Colors */
   --color-button-primary-background: var(--color-button-primary-background);
@@ -395,6 +406,17 @@
   .dark [data-testid="user-menu-dropdown"] .bg-background {
     background-color: var(--color-usermenu-bg) !important;
   }
+}
+
+/* Chip utility classes */
+.border-chip-border {
+  border-color: var(--color-chip-border);
+}
+.ring-chip-ring {
+  --tw-ring-color: var(--color-chip-ring);
+}
+.ring-offset-chip-ring-offset {
+  --tw-ring-offset-color: var(--color-chip-ring-offset);
 }
 
 /* Semantic color utility classes for homepage and general use */

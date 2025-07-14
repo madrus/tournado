@@ -43,6 +43,9 @@
   --color-foreground: #064e3b; /* emerald-900 - default body text */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
+  --color-chip-border: #dc2626; /* red-600 - chip border color */
+  --color-chip-ring: #dc2626; /* red-600 - chip focus/hover ring color */
+  --color-chip-ring-offset: #ffffff; /* white - chip ring offset color */
   --color-accent: var(
     --color-brand-50
   ); /* brand-50 - lighter brand hover background for light mode */
@@ -144,6 +147,10 @@
   --color-foreground-lighter: #9ca3af; /* gray-400 */
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
+  --color-brand: #f1f5f9; /* slate-100 - for team chips and other brand text in dark mode */
+  --color-chip-border: #f1f5f9; /* slate-100 - chip border color */
+  --color-chip-ring: #f1f5f9; /* slate-100 - chip ring color */
+  --color-chip-ring-offset: #dc2626; /* red-600 - chip ring offset color */
   --color-title: var(--color-title-accent);
   --color-accent: #1f2937; /* gray-800 - subtle dark hover background without borders */
   --gradient-from: var(--color-primary-950); /* primary-950 */

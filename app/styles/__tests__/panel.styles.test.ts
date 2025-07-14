@@ -232,7 +232,7 @@ describe('Panel Styles', () => {
       expect(classes.title).toContain('font-semibold')
       expect(classes.title).toContain('group-hover:text-emerald-700')
 
-      expect(classes.description).toContain('text-foreground-light')
+      expect(classes.description).toContain('text-foreground')
       expect(classes.description).toContain('group-hover:text-emerald-600')
 
       expect(classes.focus).toContain('focus:ring-emerald-500')

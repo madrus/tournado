@@ -88,7 +88,7 @@
 @source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
 @source inline("dark:text-red-200 text-gray-700 text-red-900");
 /* Semantic colors for panel titles and descriptions */
-@source inline("text-title text-foreground text-foreground-light text-foreground-heading text-brand-dark text-brand-darker text-brand-darkest dark:text-white");
+@source inline("text-title text-foreground text-foreground-heading text-brand-dark text-brand-darker text-brand-darkest dark:text-white");
 /* Light mode darker text colors for better contrast */
 @source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-gray-950");
 @source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-gray-900");
@@ -115,7 +115,7 @@
 @theme {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
-  
+
   /* Text Colors */
   --color-title: var(--color-title);
   --color-foreground-heading: var(--color-foreground-heading);

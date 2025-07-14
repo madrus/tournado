@@ -40,7 +40,7 @@
   --color-foreground-darker: var(--color-main); /* for emphasis */
   --color-foreground-light: #4b5563; /* gray-600 */
   --color-foreground-lighter: #6b7280; /* gray-500 */
-  --color-foreground: #1f2937; /* gray-800 - default body text */
+  --color-foreground: #064e3b; /* emerald-900 - default body text */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
   --color-accent: var(
@@ -139,7 +139,7 @@
 .dark {
   --color-background: #111827; /* gray-900 */
   --color-border: #6b7280; /* gray-500 - lighter for better contrast against dark background */
-  --color-foreground: #e5e7eb; /* gray-200 body text */
+  --color-foreground: #d1fae5cc; /* emerald-100 with 80% opacity - body text */
   --color-foreground-light: #d1d5db; /* gray-300 */
   --color-foreground-lighter: #9ca3af; /* gray-400 */
   --color-foreground-darker: var(--color-main);

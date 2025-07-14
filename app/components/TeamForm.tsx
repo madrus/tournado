@@ -196,7 +196,7 @@ export function TeamForm({
                   ? `${clubName} ${teamName}`
                   : t('teams.form.teamRegistration')}
               </h2>
-              <p className='text-foreground-light mt-2'>
+              <p className='text-foreground mt-2'>
                 {division
                   ? getDivisionLabel(division as Division, i18n.language)
                   : t('teams.form.fillOutForm')}
@@ -678,7 +678,7 @@ export function TeamForm({
                 </div>
                 <span
                   className={cn(
-                    'text-foreground-light text-lg font-normal',
+                    'text-foreground text-lg font-normal',
                     getLatinTextClass(i18n.language)
                   )}
                 >

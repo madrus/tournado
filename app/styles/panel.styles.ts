@@ -145,6 +145,21 @@ function resolvePanelColor(color: ColorAccent): keyof typeof colorClasses {
   return 'emerald'
 }
 
+// Generate static panel classes (without hover effects)
+export function getStaticPanelClasses(colorAccent: ColorAccent = 'teal'): {
+  container: string
+  glow: string
+  content: string
+} {
+  const resolvedColor = resolveColorAccent(colorAccent)
+
+  return {
+    container: `relative overflow-hidden rounded-2xl border border-${resolvedColor}-400 shadow-xl p-6 bg-gradient-to-br from-${resolvedColor}-50 via-${resolvedColor}-100 to-${resolvedColor}-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`,
+    glow: `pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90 bg-${resolvedColor}-400/30`,
+    content: 'relative z-20',
+  }
+}
+
 export function getActionLinkPanelClasses(colorAccent: ColorAccent): {
   base: string
   icon: string
@@ -167,10 +182,7 @@ export function getActionLinkPanelClasses(colorAccent: ColorAccent): {
       colors.iconHoverBg
     ),
     title: cn('text-lg font-semibold break-words transition-colors', colors.titleHover),
-    description: cn(
-      'text-foreground-light break-words transition-colors',
-      colors.textHover
-    ),
+    description: cn('text-foreground break-words transition-colors', colors.textHover),
     focus: cn(colors.focus, 'focus:ring-2 focus:ring-offset-2 focus:outline-none'),
   }
 }

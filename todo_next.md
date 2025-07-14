@@ -19,7 +19,7 @@
 
 4. Update design docs: note the new tokens and deprecate direct Tailwind grey/white utilities.
 
-When these components are migrated, dark-mode coverage will be above 90 %, leaving only edge-case SVG fills or static images to address.
+When these components are migrated, dark-mode coverage will be above 90%, leaving only edge-case SVG fills or static images to address.
 
 ---
 
@@ -27,36 +27,39 @@ When these components are migrated, dark-mode coverage will be above 90 %, leavi
 
 **Goal**: “hard-coded Tailwind colour utilities” → replace with semantic tokens such as bg-background, text-foreground, border-border, etc.
 
-1. **High-traffic Routes** -`app/routes/.../tournaments/tournaments.\_index.tsx` -`bg-gray-100`, `bg-gray-50`, `bg-white`, `border-gray-200`, `text-gray-*`, plus conditional `bg-*-600/400` colour toggles inside the status pills.
+1. **High-traffic Routes** -`app/routes/.../tournaments/tournaments.\_index.tsx`
 
+   - `bg-gray-100`, `bg-gray-50`, `bg-white`, `border-gray-200`, `text-gray-*`,
+     plus conditional `bg-*-600/400` colour toggles inside the status pills.
    - `app/routes/.../teams/teams._index.tsx`
-      - Same pattern: card shells use bg-white + border-gray-200.`
+      - Same pattern: card shells use `bg-white` + `border-gray-200`.
 
-1. **Reusable Form Components**
+2. **Reusable Form Components**
 
    - `app/components/inputs/CustomDatePicker.tsx`
-      - Calendar pop-over: bg-white, border-gray-200, date states bg-gray-50, text-grays.
+      - Calendar pop-over: `bg-white`, `border-gray-200`, date states `bg-gray-50`, `text-grays`.
    - `app/components/inputs/DateInputField.tsx`
-      - Disabled state uses disabled:bg-gray-100 & disabled:text-gray-400.
+      - Disabled state uses `disabled:bg-gray-100` & `disabled:text-gray-400`.
    - `app/components/inputs/TextInputField.tsx`
       - Same disabled-colour pattern.
    - `app/components/inputs/ComboField.tsx`
-      - Dropdown menu shell bg-white border-gray-200, caret icon text-gray-400.
+      - Dropdown menu shell `bg-white border-gray-200`, caret icon `text-gray-400`.
 
-1. **Complex Forms**
+3. **Complex Forms**
 
    - `app/components/TournamentForm.tsx`
-      - Panel progress bar still hard-codes bg-gray-400, text-gray-400, and several bg-\*-600 colour accents that should map to semantic tokens (e.g., bg-status-active).
+      - Panel progress bar still hard-codes `bg-gray-400`, `text-gray-400`, and several `bg-*-600` colour accents that should map to semantic tokens (e.g., `bg-status-active`).
    - `app/components/TeamForm.tsx` (not flagged by first 50 hits but worth checking).
 
-1. **Misc./Visual Components**
+4. **Misc./Visual Components**
 
-   - `app/components/ActionLinkPanel/__tests__/PanelBackground.test.tsx` references bg-gray-800/900 (test helpers).
-   - `app/routes/mobile header sections` (header still uses bg-slate-800 by design—confirm if this stays brand-primary in both themes).
+   - `app/components/ActionLinkPanel/__tests__/PanelBackground.test.tsx` references `bg-gray-800/900` (test helpers).
+   - `app/routes/mobile header sections` (header still uses `bg-slate-800` by design—confirm if this stays `brand-primary` in both themes).
 
-1. **Border / Card Patterns**
+5. **Border / Card Patterns**
 
-   - Widespread border-gray-200 bg-white rounded-lg shadow-sm card skeleton appears in multiple list/grid views. Should become something like bg-surface border-border.
+   - Widespread `border-gray-200 bg-white rounded-lg shadow-sm` card skeleton appears in multiple list/grid views. Should become something like `bg-surface border-border`.
 
-1. **Icons & Inline SVGs**
-   - Several icons specify fixed greys (text-gray-400/500)—switch to text-foreground-light or similar so they inherit theme.
+6. **Icons & Inline SVGs**
+
+   - Several icons specify fixed greys `text-gray-400/500` — switch to `text-foreground` or similar so they inherit theme.

@@ -27,8 +27,7 @@ When these components are migrated, dark-mode coverage will be above 90 %, leavi
 
 **Goal**: “hard-coded Tailwind colour utilities” → replace with semantic tokens such as bg-background, text-foreground, border-border, etc.
 
-1. **High-traffic Routes**
-   `  -`app/routes/.../tournaments/tournaments.\_index.tsx`     -`bg-gray-100`, `bg-gray-50`, `bg-white`, `border-gray-200`, `text-gray-_`, plus conditional `bg-_-600/400` colour toggles inside the status pills.
+1. **High-traffic Routes** -`app/routes/.../tournaments/tournaments.\_index.tsx` -`bg-gray-100`, `bg-gray-50`, `bg-white`, `border-gray-200`, `text-gray-*`, plus conditional `bg-*-600/400` colour toggles inside the status pills.
 
    - `app/routes/.../teams/teams._index.tsx`
       - Same pattern: card shells use bg-white + border-gray-200.`

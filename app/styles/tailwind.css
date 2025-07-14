@@ -317,8 +317,8 @@
     color: var(--color-title);
   }
 
-  .dark .text-foreground-light {
-    color: var(--color-foreground-light);
+  .dark .text-foreground {
+    color: var(--color-foreground);
   }
 
   /* Make all paragraph text use foreground color in dark mode for accessibility */

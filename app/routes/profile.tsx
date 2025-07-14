@@ -79,7 +79,7 @@ export default function ProfilePage(): JSX.Element {
           >
             Profile Information
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Manage your profile settings and account information for tournament
             management.
           </p>
@@ -94,7 +94,7 @@ export default function ProfilePage(): JSX.Element {
           >
             Account Settings
           </h2>
-          <ul className='text-foreground-light space-y-2'>
+          <ul className='text-foreground space-y-2'>
             <li>• Personal information management</li>
             <li>• Password and security settings</li>
             <li>• Notification preferences</li>
@@ -112,7 +112,7 @@ export default function ProfilePage(): JSX.Element {
           >
             Tournament Access
           </h2>
-          <p className='text-foreground-light'>
+          <p className='text-foreground'>
             Your profile provides access to tournament management features based on your
             role and permissions.
           </p>

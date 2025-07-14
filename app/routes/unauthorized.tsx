@@ -56,7 +56,7 @@ export default function UnauthorizedPage(): JSX.Element {
           </h1>
 
           {/* Description */}
-          <p className='text-foreground-light text-center'>
+          <p className='text-foreground text-center'>
             {t(
               'errors.unauthorized.description',
               'You do not have permission to access this page. Contact your administrator if you believe this is an error.'

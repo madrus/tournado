@@ -255,10 +255,10 @@ export function SidebarLayoutDemo(): JSX.Element {
         <h2 className={cn('mb-3 text-xl font-semibold', getLatinTitleClass('en'))}>
           Selected: {selectedItem || 'None'}
         </h2>
-        <p className='text-foreground-light mb-4'>
+        <p className='text-foreground mb-4'>
           This demo shows the sidebar layout component with all its features:
         </p>
-        <ul className='text-foreground-light list-inside list-disc space-y-2'>
+        <ul className='text-foreground list-inside list-disc space-y-2'>
           <li>Responsive sidebar with mobile overlay</li>
           <li>Floating action button on mobile</li>
           <li>Smooth animations and transitions</li>

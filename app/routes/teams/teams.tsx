@@ -21,9 +21,7 @@ export default function PublicTeamsLayout(): JSX.Element {
         {t('common.titles.teams')}
       </h1>
       <div className='mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <p className='text-foreground-light text-start text-lg'>
-          {t('teams.description')}
-        </p>
+        <p className='text-foreground text-start text-lg'>{t('teams.description')}</p>
         <div className='flex justify-end lg:justify-end rtl:justify-start lg:rtl:justify-start'>
           <ActionLinkButton
             to='new'

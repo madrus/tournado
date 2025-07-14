@@ -87,7 +87,7 @@ export default function AdminDashboard(): JSX.Element {
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         Admin Panel
       </h1>
-      <p className='text-foreground-light mb-8'>
+      <p className='text-foreground mb-8'>
         Welcome back, {user.email}. Manage your tournament platform from here.
       </p>
       <div className='space-y-8'>

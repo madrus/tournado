@@ -31,7 +31,7 @@ export function TeamList({
   if (teams.length === 0) {
     return (
       <div className={cn('flex items-center justify-center p-8', className)}>
-        <p className='text-foreground-lighter text-center'>
+        <p className='text-foreground text-center'>
           {emptyMessage || t('teams.noTeams')}
         </p>
       </div>

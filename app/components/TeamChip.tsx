@@ -31,14 +31,14 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'inline-flex h-10 items-center rounded-lg border border-brand bg-background',
+    'inline-flex h-10 items-center rounded-lg border border-red-600 dark:!border-slate-100 bg-background dark:bg-brand-900',
     'font-semibold text-brand transition-all duration-300 ease-out relative overflow-hidden',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',
     'hover:scale-105 active:scale-95',
-    'shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/40 hover:bg-accent hover:border-brand-accent',
-    'focus:ring-2 focus:ring-offset-2 focus:ring-brand focus:outline-none',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-brand',
+    'shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/40 hover:bg-accent hover:border-brand-accent dark:hover:bg-brand-700',
+    'focus:ring-2 focus:ring-offset-2 focus:ring-red-600 focus:ring-offset-white dark:focus:ring-slate-100 dark:focus:ring-offset-red-600 focus:outline-none',
+    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600 hover:ring-offset-white dark:hover:ring-slate-100 dark:hover:ring-offset-red-600',
     className
   )
 
@@ -50,7 +50,7 @@ export function TeamChip({
           event.stopPropagation()
           onDelete()
         }}
-        className='text-brand hover:bg-accent hover:text-brand-accent flex-shrink-0 rounded-full p-1'
+        className='text-brand hover:bg-accent hover:text-brand-accent dark:hover:bg-brand-700 flex-shrink-0 rounded-full p-1'
         aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.teamName}`}
       >
         {renderIcon('close', { className: 'h-4 w-4' })}

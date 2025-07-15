@@ -1,19 +1,19 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { type ColorAccent } from '~/lib/lib.types'
-import { type ButtonVariant, getButtonClasses } from '~/styles/button.styles'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { isRTL } from '~/utils/rtlUtils'
+
+import { buttonVariants, type ButtonVariants } from './button.variants'
 
 type ActionButtonProps = {
   onClick?: () => void
   children: React.ReactNode
   icon?: IconName
-  variant?: ButtonVariant
-  color?: ColorAccent
-  size?: 'sm' | 'md'
+  variant?: ButtonVariants['variant']
+  color?: ButtonVariants['color']
+  size?: ButtonVariants['size']
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   className?: string
@@ -26,7 +26,7 @@ export function ActionButton({
   children,
   icon,
   variant = 'primary',
-  color = 'emerald',
+  color = 'brand',
   size = 'md',
   type = 'button',
   disabled = false,
@@ -44,11 +44,7 @@ export function ActionButton({
       })
     : null
 
-  const buttonClasses = cn(
-    getButtonClasses(variant, color),
-    size === 'sm' && 'min-h-10 min-w-24 py-2 px-3 text-xs',
-    className
-  )
+  const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   return (
     <button

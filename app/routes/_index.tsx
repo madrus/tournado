@@ -86,7 +86,7 @@ export default function IndexPage(): JSX.Element {
                 icon='apparel'
                 label={t('landing.hero.viewTeams')}
                 variant='primary'
-                color='emerald'
+                color='primary'
               />
             </div>
           </div>

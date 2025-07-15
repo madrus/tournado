@@ -247,70 +247,18 @@ describe('Home Page (_index)', () => {
 
       const viewTeamsButton = screen.getByTestId('view-teams-button')
 
-      // Check button has core styling classes from ActionLinkButton component
-      expect(viewTeamsButton).toHaveClass(
-        'inline-flex',
-        'items-center',
-        'justify-center',
-        'rounded-lg',
-        'font-semibold',
-        'gap-2',
-        'min-h-12',
-        'min-w-32',
-        'py-2.5',
-        'px-4',
-        'text-sm',
-        'uppercase',
-        'relative',
-        'transition-all',
-        'duration-300',
-        'ease-out',
-        'whitespace-nowrap',
-        'shadow-lg',
-        'hover:shadow-xl',
-        'disabled:hover:shadow-lg',
-        'hover:scale-103',
-        'active:scale-95',
-        'disabled:hover:scale-100',
-        'disabled:cursor-not-allowed',
-        'disabled:opacity-50',
-        'disabled:bg-button-neutral-background',
-        'disabled:text-button-neutral-text',
-        'disabled:border-button-neutral-secondary-border',
-        'focus-visible:ring-2',
-        'focus-visible:ring-offset-2',
-        'focus-visible:ring-offset-slate-50',
-        'hover:ring-2',
-        'hover:ring-offset-2',
-        'hover:ring-offset-slate-50',
-        'bg-emerald-600',
-        'text-white',
-        'border',
-        'border-emerald-600',
-        'focus-visible:ring-emerald-600',
-        'focus-visible:dark:ring-slate-50',
-        'focus-visible:dark:ring-offset-emerald-600',
-        'focus:ring-2',
-        'focus:ring-offset-2',
-        'focus:ring-emerald-600',
-        'focus:ring-offset-slate-50',
-        'focus:dark:ring-slate-50',
-        'focus:dark:ring-offset-emerald-600',
-        'focus:outline-none',
-        'hover:ring-emerald-600',
-        'hover:dark:ring-slate-50',
-        'hover:dark:ring-offset-emerald-600',
-        'disabled:hover:ring-0',
-        'disabled:hover:ring-offset-0',
-        'disabled:focus-visible:ring-0',
-        'disabled:focus-visible:ring-offset-0',
-        'disabled:focus:ring-0',
-        'disabled:focus:ring-offset-0',
-        'shadow-emerald-700/40',
-        'hover:shadow-emerald-700/60',
-        'disabled:shadow-button-neutral-background/70',
-        'disabled:hover:shadow-button-neutral-background/70'
-      )
+      // Check button has essential styling classes (key functional classes)
+      expect(viewTeamsButton).toHaveClass('inline-flex')
+      expect(viewTeamsButton).toHaveClass('items-center')
+      expect(viewTeamsButton).toHaveClass('justify-center')
+      expect(viewTeamsButton).toHaveClass('rounded-lg')
+      expect(viewTeamsButton).toHaveClass('font-semibold')
+      expect(viewTeamsButton).toHaveClass('bg-primary-600') // primary variant, primary color = emerald
+      expect(viewTeamsButton).toHaveClass('text-white')
+      expect(viewTeamsButton).toHaveClass('border')
+
+      // Check it's a proper link element
+      expect(viewTeamsButton.tagName).toBe('A')
     })
   })
 

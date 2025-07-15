@@ -2,7 +2,7 @@
 
 :root {
   --color-background: var(--color-white);
-  --color-border: var(--color-gray-200); /* light mode border */
+  --color-border: var(--color-slate-200); /* light mode border */
   /* Brand colors (red-based) - complete number set */
   --color-brand-50: var(--color-red-50);
   --color-brand-100: var(--color-red-100);
@@ -38,8 +38,8 @@
   --color-primary-900: var(--color-emerald-900);
   --color-primary-950: var(--color-emerald-950);
   --color-foreground-darker: var(--color-main); /* for emphasis */
-  --color-foreground-light: var(--color-gray-600);
-  --color-foreground-lighter: var(--color-gray-500);
+  --color-foreground-light: var(--color-slate-600);
+  --color-foreground-lighter: var(--color-slate-500);
   --color-foreground: var(--color-emerald-900); /* default body text */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
@@ -51,12 +51,12 @@
   ); /* lighter brand hover background for light mode */
   --color-title-accent: var(--color-primary-200); /* for accents */
   --gradient-from: var(--color-primary-100);
-  --gradient-to: var(--color-gray-50);
+  --gradient-to: var(--color-slate-50);
 
   /* Panel gradient colors for light mode */
-  --panel-gradient-from: var(--color-gray-50); /* light, subtle */
-  --panel-gradient-via: var(--color-gray-100);
-  --panel-gradient-to: var(--color-gray-50);
+  --panel-gradient-from: var(--color-slate-50); /* light, subtle */
+  --panel-gradient-via: var(--color-slate-100);
+  --panel-gradient-to: var(--color-slate-50);
 
   /* Brand panel gradients - light mode */
   --brand-light-from: var(--color-slate-50);
@@ -70,7 +70,7 @@
 
   /* Panel background colors */
   --panel-bg-primary: var(--color-emerald-100);
-  --panel-bg-brand: var(--color-gray-100);
+  --panel-bg-brand: var(--color-slate-100);
   --panel-bg-emerald: var(--color-emerald-100);
   --panel-bg-teal: var(--color-teal-100);
   --panel-bg-cyan: var(--color-cyan-100);
@@ -78,10 +78,10 @@
   --panel-bg-green: var(--color-green-100);
   --panel-bg-yellow: var(--color-yellow-100);
   --panel-bg-violet: var(--color-violet-100);
-  --panel-bg-gray: var(--color-gray-100);
+  --panel-bg-gray: var(--color-slate-100);
   --footer-bg: var(--color-white);
-  --footer-text: var(--color-gray-700);
-  --color-background-hover: var(--color-gray-100);
+  --footer-text: var(--color-slate-700);
+  --color-background-hover: var(--color-slate-100);
   --color-button-primary-background: var(--color-primary-700);
   --color-button-primary-text: var(--color-white);
   --color-button-primary-hover-background: var(--color-primary-700);
@@ -118,32 +118,32 @@
   --color-button-brand-tertiary-border: var(--color-brand-400);
   --color-button-brand-tertiary-hover-background: var(--color-brand-400);
   --color-button-brand-tertiary-hover-border: var(--color-brand);
-  --color-button-neutral-background: var(--color-gray-600);
+  --color-button-neutral-background: var(--color-slate-700);
   --color-button-neutral-text: var(--color-white);
-  --color-button-neutral-hover-background: var(--color-gray-500);
-  --color-button-neutral-secondary-background: var(--color-gray-50);
-  --color-button-neutral-secondary-text: var(--color-gray-700);
-  --color-button-neutral-secondary-border: var(--color-gray-700);
+  --color-button-neutral-hover-background: var(--color-slate-500);
+  --color-button-neutral-secondary-background: var(--color-slate-50);
+  --color-button-neutral-secondary-text: var(--color-slate-700);
+  --color-button-neutral-secondary-border: var(--color-slate-700);
   --color-button-neutral-secondary-hover-background: var(--color-white);
   --color-button-neutral-tertiary-background: var(--color-white);
-  --color-button-neutral-tertiary-text: var(--color-gray-700);
-  --color-button-neutral-tertiary-border: var(--color-gray-400);
-  --color-button-neutral-tertiary-hover-background: var(--color-gray-50);
-  --color-button-neutral-tertiary-hover-border: var(--color-gray-500);
+  --color-button-neutral-tertiary-text: var(--color-slate-700);
+  --color-button-neutral-tertiary-border: var(--color-slate-400);
+  --color-button-neutral-tertiary-hover-background: var(--color-slate-50);
+  --color-button-neutral-tertiary-hover-border: var(--color-slate-500);
   --color-button-danger-outline-focus-ring-inner: var(--color-white);
   --color-button-danger-outline-focus-ring-outer: var(--color-brand-600);
   --color-button-outline-border-red: var(--color-brand-600);
 }
 
 .dark {
-  --color-background: var(--color-gray-900);
+  --color-background: var(--color-slate-900);
   --color-input: var(--color-slate-800); /* elegant contrast against teal panels */
   --color-border: var(
-    --color-gray-500
+    --color-slate-500
   ); /* lighter for better contrast against dark background */
   --color-foreground: #d1fae5cc; /* emerald-100 with 80% opacity - body text */
-  --color-foreground-light: var(--color-gray-300);
-  --color-foreground-lighter: var(--color-gray-400);
+  --color-foreground-light: var(--color-slate-300);
+  --color-foreground-lighter: var(--color-slate-400);
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
   --color-brand: var(
@@ -154,7 +154,7 @@
   --color-chip-ring-offset: var(--color-red-600); /* chip ring offset color */
   --color-title: var(--color-title-accent);
   --color-accent: var(
-    --color-gray-800
+    --color-slate-800
   ); /* subtle dark hover background without borders */
   --gradient-from: var(--color-primary-950);
   --gradient-to: var(--color-primary-800);
@@ -176,7 +176,7 @@
 
   /* Panel background colors for dark mode */
   --panel-bg-primary: var(--color-emerald-800);
-  --panel-bg-brand: var(--color-gray-800);
+  --panel-bg-brand: var(--color-slate-800);
   --panel-bg-emerald: var(--color-emerald-800);
   --panel-bg-teal: var(--color-teal-800);
   --panel-bg-cyan: var(--color-cyan-800);
@@ -184,15 +184,15 @@
   --panel-bg-green: var(--color-green-800);
   --panel-bg-yellow: var(--color-yellow-800);
   --panel-bg-violet: var(--color-violet-800);
-  --panel-bg-gray: var(--color-gray-800);
+  --panel-bg-gray: var(--color-slate-800);
   --footer-bg: var(--color-primary-800); /* in dark mode */
-  --footer-text: var(--color-gray-200);
+  --footer-text: var(--color-slate-200);
 
   /* AppBar primary color - match primary-900 */
   --color-button-primary-background: var(--color-primary-900); /* for dark mode */
 
   /* UserMenu specific dark mode colors - using primary tints */
   --color-usermenu-bg: var(--color-primary-900); /* darker emerald background */
-  --color-usermenu-text: var(--color-gray-100); /* for high contrast readability */
+  --color-usermenu-text: var(--color-slate-100); /* for high contrast readability */
   --color-usermenu-hover-bg: var(--color-primary-800); /* primary tint for hover */
 }

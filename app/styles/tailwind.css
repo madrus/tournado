@@ -398,6 +398,24 @@
     transform: none !important;
   }
 
+  /* Direct fix for reset button to match light mode exactly */
+  .dark button[class*="text-brand-600"][class*="bg-transparent"] {
+    background: var(--color-white) !important;
+    background-color: var(--color-white) !important;
+    color: var(--color-red-600) !important;
+    border-color: var(--color-red-600) !important;
+  }
+  
+  /* Ensure ring system works on hover/focus for secondary buttons in dark mode */
+  .dark button[class*="text-brand-600"][class*="bg-transparent"]:hover,
+  .dark button[class*="text-brand-600"][class*="bg-transparent"]:focus,
+  .dark button[class*="text-brand-600"][class*="bg-transparent"]:focus-visible {
+    --tw-ring-color: var(--color-red-600) !important;
+    --tw-ring-offset-color: var(--color-white) !important;
+    --tw-ring-width: 2px !important;
+    --tw-ring-offset-width: 2px !important;
+  }
+
   /* Force border color to stay consistent on disabled buttons */
   button:disabled,
   button:disabled:hover,

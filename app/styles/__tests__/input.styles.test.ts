@@ -14,21 +14,21 @@ describe('Input Styles', () => {
       it('should generate correct classes for emerald/primary color', () => {
         const classes = getInputColorClasses('primary', false)
 
-        expect(classes).toContain('border-input-border/30')
-        expect(classes).toContain('hover:border-input-hover')
-        expect(classes).toContain('focus:border-input-focus')
-        expect(classes).toContain('focus:ring-2')
-        expect(classes).toContain('focus:ring-input-ring/20')
+        expect(classes).toContain('border-primary-700/30')
+        expect(classes).toContain('hover:border-2')
+        expect(classes).toContain('hover:border-primary-700/50')
+        expect(classes).toContain('focus:border-2')
+        expect(classes).toContain('focus:border-primary-200')
       })
 
       it('should generate correct classes for brand/red color', () => {
         const classes = getInputColorClasses('brand', false)
 
-        expect(classes).toContain('border-error/30')
-        expect(classes).toContain('hover:border-error')
-        expect(classes).toContain('focus:border-error')
-        expect(classes).toContain('focus:ring-2')
-        expect(classes).toContain('focus:ring-error/20')
+        expect(classes).toContain('border-brand-700/30')
+        expect(classes).toContain('hover:border-2')
+        expect(classes).toContain('hover:border-brand-700/50')
+        expect(classes).toContain('focus:border-2')
+        expect(classes).toContain('focus:border-brand-200')
       })
 
       it('should generate correct classes for standard colors', () => {
@@ -38,10 +38,10 @@ describe('Input Styles', () => {
           const classes = getInputColorClasses(color, false)
 
           expect(classes).toContain(`border-${color}-700/30`)
-          expect(classes).toContain(`hover:border-${color}-600`)
-          expect(classes).toContain(`focus:border-${color}-600`)
-          expect(classes).toContain('focus:ring-2')
-          expect(classes).toContain(`focus:ring-${color}-600/20`)
+          expect(classes).toContain('hover:border-2')
+          expect(classes).toContain(`hover:border-${color}-700/50`)
+          expect(classes).toContain('focus:border-2')
+          expect(classes).toContain(`focus:border-${color}-200`)
         })
       })
     })
@@ -69,11 +69,11 @@ describe('Input Styles', () => {
         colors.forEach(color => {
           const classes = getInputColorClasses(color, false, 'Some error message')
 
-          expect(classes).toContain('border-error')
-          expect(classes).toContain('hover:border-error')
-          expect(classes).toContain('focus:border-error')
-          expect(classes).toContain('focus:ring-2')
-          expect(classes).toContain('focus:ring-error/20')
+          expect(classes).toContain('border-error/30')
+          expect(classes).toContain('hover:border-2')
+          expect(classes).toContain('hover:border-brand-700/50')
+          expect(classes).toContain('focus:border-2')
+          expect(classes).toContain('focus:border-brand-200')
         })
       })
 
@@ -82,10 +82,10 @@ describe('Input Styles', () => {
 
         // Empty string is falsy, so should use normal color classes
         expect(classes).toContain('border-blue-700/30')
-        expect(classes).toContain('hover:border-blue-600')
-        expect(classes).toContain('focus:border-blue-600')
-        expect(classes).toContain('focus:ring-2')
-        expect(classes).toContain('focus:ring-blue-600/20')
+        expect(classes).toContain('hover:border-2')
+        expect(classes).toContain('hover:border-blue-700/50')
+        expect(classes).toContain('focus:border-2')
+        expect(classes).toContain('focus:border-blue-200')
       })
     })
   })
@@ -167,7 +167,7 @@ describe('Input Styles', () => {
       const calendarClasses = getCalendarColorClasses('primary')
 
       // All should use primary semantic colors
-      expect(inputClasses).toContain('border-input-border/30') // primary custom
+      expect(inputClasses).toContain('border-primary-700/30') // primary colors
       expect(dropdownClasses).toContain('primary-50')
       expect(calendarClasses.today).toContain('primary-100')
     })
@@ -178,7 +178,7 @@ describe('Input Styles', () => {
       const calendarClasses = getCalendarColorClasses('brand')
 
       // All should use brand semantic colors
-      expect(inputClasses).toContain('border-error/30') // brand/error custom
+      expect(inputClasses).toContain('border-brand-700/30') // brand colors
       expect(dropdownClasses).toContain('brand-100')
       expect(calendarClasses.today).toContain('brand-400')
     })

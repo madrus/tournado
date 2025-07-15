@@ -5,27 +5,12 @@ const resolveColorName = (color: ColorAccent): string => color // No more mappin
 
 const getInputColors = (color: ColorAccent) => {
   const resolvedColor = resolveColorName(color)
-  // Special case for primary - uses custom CSS properties
-  if (resolvedColor === 'primary') {
-    return {
-      border: 'border-input-border/30',
-      hover: 'hover:border-input-hover',
-      focus: 'focus:border-input-focus focus:ring-2 focus:ring-input-ring/20',
-    }
-  }
-  // Special case for brand - uses error styles
-  if (resolvedColor === 'brand') {
-    return {
-      border: 'border-error/30',
-      hover: 'hover:border-error',
-      focus: 'focus:border-error focus:ring-2 focus:ring-error/20',
-    }
-  }
-  // Standard pattern for all other Tailwind colors
+  // Use wider borders instead of rings: 1px normal → 2px on hover/focus
+  // Hover uses 700/50 for better visibility, focus uses 200 for subtle highlight
   return {
-    border: `border-${resolvedColor}-700/30`,
-    hover: `hover:border-${resolvedColor}-600`,
-    focus: `focus:border-${resolvedColor}-600 focus:ring-2 focus:ring-${resolvedColor}-600/20`,
+    border: `border border-${resolvedColor}-700/30`,
+    hover: `hover:border-2 hover:border-${resolvedColor}-700/50`,
+    focus: `focus:border-2 focus:border-${resolvedColor}-200`,
   }
 }
 
@@ -39,12 +24,24 @@ export const getInputColorClasses = (
   }
   const colors = error
     ? {
-        border: 'border-error',
-        hover: 'hover:border-error',
-        focus: 'focus:border-error focus:ring-2 focus:ring-error/20',
+        border: 'border border-error/30',
+        hover: 'hover:border-2 hover:border-brand-700/50',
+        focus: 'focus:border-2 focus:border-brand-200',
       }
     : getInputColors(color)
   return `${colors.border} ${colors.hover} ${colors.focus}`
+}
+
+export const getInputOpenStateClasses = (
+  color: ColorAccent,
+  error?: string
+): string => {
+  if (error) {
+    return 'data-[state=open]:border-2 data-[state=open]:border-brand-200'
+  }
+
+  const resolvedColor = resolveColorName(color)
+  return `data-[state=open]:border-2 data-[state=open]:border-${resolvedColor}-200`
 }
 
 export const getDropdownItemColorClasses = (color: ColorAccent): string => {

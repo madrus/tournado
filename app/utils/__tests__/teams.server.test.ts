@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest'
 
+import type { TeamListItem } from '~/lib/lib.types'
 import { getFilteredTeamListItems } from '~/models/team.server'
 import {
   getAllTournamentListItems,
@@ -7,7 +8,6 @@ import {
 } from '~/models/tournament.server'
 
 import { loadTeamsData } from '../teams.server'
-import type { TeamListItem } from '../teams.types'
 
 // Mock the dependencies
 vi.mock('~/models/tournament.server')

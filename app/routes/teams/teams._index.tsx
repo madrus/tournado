@@ -5,12 +5,12 @@ import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
-import { loadTeamsData } from '~/lib/teams.server'
-import type { TeamsLoaderData } from '~/lib/teams.types'
+import type { TeamsLoaderData } from '~/lib/lib.types'
 import { getStaticPanelClasses } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 

@@ -137,7 +137,7 @@ describe('ActionButton', () => {
     // Verify disabled cursor
     expect(button).toHaveClass('disabled:cursor-not-allowed')
 
-    // Verify disabled colors (gray semantic colors)
+    // Verify disabled colors (slate semantic colors)
     expect(button).toHaveClass('disabled:bg-button-neutral-background')
     expect(button).toHaveClass('disabled:text-button-neutral-text')
     expect(button).toHaveClass('disabled:border-button-neutral-secondary-border')

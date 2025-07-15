@@ -288,7 +288,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats using Radix Grid */}
       <Grid columns={{ initial: '1', sm: '3' }} gap='5' width='auto'>
-        <Box className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <Box className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
           <Flex align='center'>
             <Box className='flex-shrink-0'>
               <Box className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
@@ -318,7 +318,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       </Grid>
 
       {/* Tournaments List */}
-      <Box className='w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm md:w-fit'>
+      <Box className='w-full rounded-lg border border-slate-200 bg-white p-6 shadow-sm md:w-fit'>
         <Box className='mb-6'>
           <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
             {t('admin.tournaments.allTournaments')}
@@ -330,13 +330,13 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
         {tournamentListItems.length === 0 ? (
           <Box className='py-12 text-center'>
-            <Box className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100'>
-              <TrophyIcon className='text-gray-400' size={24} variant='outlined' />
+            <Box className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>
+              <TrophyIcon className='text-slate-400' size={24} variant='outlined' />
             </Box>
-            <Text size='4' weight='medium' className='mb-2 text-gray-900'>
+            <Text size='4' weight='medium' className='mb-2 text-slate-900'>
               {t('tournaments.noTournaments')}
             </Text>
-            <Text size='2' className='mb-6 text-gray-600'>
+            <Text size='2' className='mb-6 text-slate-600'>
               {t('tournaments.noTournamentsDescription')}
             </Text>
           </Box>
@@ -344,13 +344,13 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           <div className='w-full md:w-fit md:max-w-full'>
             {/* Header - only show on desktop */}
             {isDesktop ? (
-              <div className='rounded-t-lg border-b border-gray-200 bg-gray-50 px-3 py-3'>
+              <div className='rounded-t-lg border-b border-slate-200 bg-slate-50 px-3 py-3'>
                 <div className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6'>
                   <div className='flex items-start'>
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-gray-500 uppercase'
+                      className='tracking-wider text-slate-500 uppercase'
                     >
                       {t('tournaments.name')}
                     </Text>
@@ -359,7 +359,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-gray-500 uppercase'
+                      className='tracking-wider text-slate-500 uppercase'
                     >
                       {t('tournaments.startDate')}
                     </Text>
@@ -368,14 +368,14 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-gray-500 uppercase'
+                      className='tracking-wider text-slate-500 uppercase'
                     >
                       {t('tournaments.endDate')}
                     </Text>
                   </div>
                   <div className='flex w-6 items-start justify-center'>
                     <span className='sr-only'>{t('common.actions')}</span>
-                    <DeleteIcon className='h-4 w-4 text-gray-500' />
+                    <DeleteIcon className='h-4 w-4 text-slate-500' />
                   </div>
                 </div>
               </div>
@@ -410,7 +410,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   key={tournament.id}
                   className={cn(
                     'relative overflow-hidden',
-                    isDesktop ? 'border-b border-gray-100' : 'border-b border-gray-100',
+                    isDesktop
+                      ? 'border-b border-slate-100'
+                      : 'border-b border-slate-100',
                     index === tournamentListItems.length - 1 &&
                       'rounded-b-lg border-b-0'
                   )}
@@ -424,7 +426,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     >
                       {/* Main content - fixed width */}
                       <div
-                        className='w-full flex-shrink-0 cursor-pointer bg-white transition-colors hover:bg-gray-50'
+                        className='w-full flex-shrink-0 cursor-pointer bg-white transition-colors hover:bg-slate-50'
                         onClick={() => handleTournamentClick(tournament.id)}
                       >
                         <div className='px-6 py-4'>
@@ -433,27 +435,27 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                               <Text
                                 size='2'
                                 weight='medium'
-                                className='block text-gray-900'
+                                className='block text-slate-900'
                               >
                                 {tournament.name}
                               </Text>
-                              <Text size='1' className='mt-1 block text-gray-600'>
+                              <Text size='1' className='mt-1 block text-slate-600'>
                                 {tournament.location}
                               </Text>
                             </div>
                             <div className='ml-4 flex-shrink-0 text-right'>
                               <Text
                                 size='2'
-                                className='block font-medium text-gray-700'
+                                className='block font-medium text-slate-700'
                               >
                                 {formatDate(tournament.startDate)}
                               </Text>
                               {tournament.endDate ? (
-                                <Text size='1' className='mt-1 block text-gray-500'>
+                                <Text size='1' className='mt-1 block text-slate-500'>
                                   {formatDate(tournament.endDate)}
                                 </Text>
                               ) : (
-                                <Text size='1' className='mt-1 block text-gray-400'>
+                                <Text size='1' className='mt-1 block text-slate-400'>
                                   -
                                 </Text>
                               )}
@@ -481,28 +483,28 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   ) : (
                     // Desktop: Table-like grid layout with improved column sizing
                     <div
-                      className='grid cursor-pointer grid-cols-[2fr_1fr_1fr_auto] gap-6 bg-white px-3 py-4 transition-colors hover:bg-gray-50'
+                      className='grid cursor-pointer grid-cols-[2fr_1fr_1fr_auto] gap-6 bg-white px-3 py-4 transition-colors hover:bg-slate-50'
                       onClick={() => handleTournamentClick(tournament.id)}
                     >
                       <div className='flex items-start'>
                         <div>
-                          <Text size='2' weight='medium' className='text-gray-900'>
+                          <Text size='2' weight='medium' className='text-slate-900'>
                             {tournament.name}
                           </Text>
                           <div className='mt-1'>
-                            <Text size='1' className='text-gray-600'>
+                            <Text size='1' className='text-slate-600'>
                               {tournament.location}
                             </Text>
                           </div>
                         </div>
                       </div>
                       <div className='flex items-start'>
-                        <Text size='2' className='text-gray-600'>
+                        <Text size='2' className='text-slate-600'>
                           {formatDate(tournament.startDate)}
                         </Text>
                       </div>
                       <div className='flex items-start'>
-                        <Text size='2' className='text-gray-600'>
+                        <Text size='2' className='text-slate-600'>
                           {tournament.endDate ? formatDate(tournament.endDate) : '-'}
                         </Text>
                       </div>

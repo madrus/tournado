@@ -103,7 +103,7 @@ function Calendar({
 
   return (
     <div
-      className='w-80 rounded-lg border border-gray-200 bg-white p-4 shadow-lg'
+      className='w-80 rounded-lg border border-slate-200 bg-white p-4 shadow-lg'
       role='dialog'
       aria-label='calendar'
     >
@@ -121,7 +121,7 @@ function Calendar({
           <ChevronLeftIcon className='h-5 w-5' size={20} />
         </button>
 
-        <h2 className='text-lg font-semibold text-gray-900'>{monthName}</h2>
+        <h2 className='text-lg font-semibold text-slate-900'>{monthName}</h2>
 
         <button
           type='button'
@@ -141,7 +141,7 @@ function Calendar({
         {weekdays.map((weekday, index) => (
           <div
             key={index}
-            className='p-2 text-center text-sm font-medium text-gray-500'
+            className='p-2 text-center text-sm font-medium text-slate-500'
           >
             {weekday}
           </div>
@@ -172,10 +172,10 @@ function Calendar({
                 'focus:ring-2 focus:outline-none',
                 !selected && !disabled && calendarColors.hover,
                 disabled && 'cursor-not-allowed opacity-50 hover:bg-transparent',
-                isPastDate && 'bg-gray-50',
+                isPastDate && 'bg-slate-50',
                 isCurrentDay && !selected && cn('font-bold', calendarColors.today),
                 selected && 'bg-brand-light font-bold text-white',
-                !isCurrentDay && !selected && 'text-gray-900'
+                !isCurrentDay && !selected && 'text-slate-900'
               )}
             >
               {date.getDate()}
@@ -276,10 +276,10 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 aria-invalid={error ? true : undefined}
                 aria-errormessage={error ? `${name}-error` : undefined}
               >
-                <span className={displayValue ? 'text-gray-900' : 'text-gray-400'}>
+                <span className={displayValue ? 'text-slate-900' : 'text-slate-400'}>
                   {displayValue || placeholder || 'Select date'}
                 </span>
-                <CalendarIcon className='h-5 w-5 text-gray-400' size={20} />
+                <CalendarIcon className='h-5 w-5 text-slate-400' size={20} />
               </button>
             </Popover.Trigger>
 

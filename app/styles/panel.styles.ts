@@ -11,7 +11,7 @@ function getPanelStyles(colorAccent: ColorAccent) {
   // Brand uses semantic colors, others use specific colors with light/dark variants
   const getGradient = () => {
     if (colorAccent === 'brand') {
-      // Brand: semantic gray gradients (gray in light, gray in dark)
+      // Brand: semantic slate gradients (slate in light, slate in dark)
       return 'bg-gradient-to-br from-brand-from via-brand-via to-brand-to'
     }
     // For other colors: light color in light mode, dark color in dark mode
@@ -102,16 +102,16 @@ export const colorClasses = {
     titleHover: 'group-hover:text-blue-700',
     textHover: 'group-hover:text-blue-600',
   },
-  gray: {
-    border: 'border-gray-600',
-    hoverBorder: 'hover:border-gray-300',
-    hoverBg: 'hover:bg-gray-50/30',
-    focus: 'focus:ring-gray-500',
-    iconBorder: 'border-gray-600',
-    iconHoverBorder: 'group-hover:border-gray-700',
-    iconHoverBg: 'group-hover:bg-gray-50',
-    titleHover: 'group-hover:text-gray-700',
-    textHover: 'group-hover:text-gray-600',
+  slate: {
+    border: 'border-slate-600',
+    hoverBorder: 'hover:border-slate-300',
+    hoverBg: 'hover:bg-slate-50/30',
+    focus: 'focus:ring-slate-500',
+    iconBorder: 'border-slate-600',
+    iconHoverBorder: 'group-hover:border-slate-700',
+    iconHoverBg: 'group-hover:bg-slate-50',
+    titleHover: 'group-hover:text-slate-700',
+    textHover: 'group-hover:text-slate-600',
   },
   brand: {
     border: 'border-brand-600',

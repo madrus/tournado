@@ -32,7 +32,7 @@ describe('Input Styles', () => {
       })
 
       it('should generate correct classes for standard colors', () => {
-        const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'gray']
+        const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'slate']
 
         colors.forEach(color => {
           const classes = getInputColorClasses(color, false)
@@ -104,7 +104,7 @@ describe('Input Styles', () => {
     })
 
     it('should generate correct classes for standard colors', () => {
-      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'gray']
+      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'slate']
 
       colors.forEach(color => {
         const classes = getDropdownItemColorClasses(color)
@@ -135,7 +135,7 @@ describe('Input Styles', () => {
     })
 
     it('should generate correct classes for standard colors', () => {
-      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'gray']
+      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'slate']
 
       colors.forEach(color => {
         const classes = getCalendarColorClasses(color)

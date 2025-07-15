@@ -120,7 +120,7 @@ describe('PanelLayer Component', () => {
       expect(backgroundElement).toHaveClass('dark:to-purple-900')
     })
 
-    it('should use gray gradient for brand color', () => {
+    it('should use slate gradient for brand color', () => {
       render(<PanelLayer {...defaultProps} mainColor='brand' />)
 
       const backgroundElement = screen.getByTestId('test-layer-background')

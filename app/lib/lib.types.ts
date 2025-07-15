@@ -1,3 +1,8 @@
+// ============================================================================
+// Team Types (moved from teams.types.ts)
+// ============================================================================
+import type { Team as PrismaTeam } from '@prisma/client'
+
 /**
  * @fileoverview Centralized Type System for Tournado Application
  *
@@ -13,9 +18,7 @@
  * For detailed documentation, see: docs/development/type-system.md
  */
 
-// ============================================================================
 // Foundation Types
-// ============================================================================
 
 /**
  * Branded type for team names with validation potential
@@ -70,6 +73,29 @@ export type ColorAccent =
   | 'fuchsia'
   | 'pink'
   | 'rose'
+
+// ============================================================================
+
+// ============================================================================
+
+export type TeamListItem = Pick<PrismaTeam, 'id' | 'clubName' | 'teamName' | 'category'>
+
+export type TournamentListItem = {
+  id: string
+  name: string
+  location: string
+}
+
+export type TeamsLoaderData = {
+  teamListItems: TeamListItem[]
+  tournamentListItems: TournamentListItem[]
+  selectedTournamentId?: string
+}
+
+export type TournamentFilterOption = {
+  value: string
+  label: string
+}
 
 // ============================================================================
 // Division System

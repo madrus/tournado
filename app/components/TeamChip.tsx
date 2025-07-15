@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { getTeamChipRingClasses } from '~/styles/ring.styles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { getChipClasses, getLatinTextClass, isRTL } from '~/utils/rtlUtils'
@@ -37,8 +38,7 @@ export function TeamChip({
     showActions && onDelete ? chipClasses.container : 'px-3',
     'hover:scale-105 active:scale-95',
     'shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/40 hover:bg-accent hover:border-brand-accent dark:hover:bg-brand-700',
-    'focus:ring-2 focus:ring-offset-2 focus:ring-red-600 focus:ring-offset-white dark:focus:ring-slate-100 dark:focus:ring-offset-red-600 focus:outline-none',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600 hover:ring-offset-white dark:hover:ring-slate-100 dark:hover:ring-offset-red-600',
+    getTeamChipRingClasses(),
     className
   )
 

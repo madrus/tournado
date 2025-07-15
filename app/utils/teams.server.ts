@@ -1,7 +1,6 @@
+import type { TeamsLoaderData } from '~/lib/lib.types'
 import { getFilteredTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
-
-import type { TeamsLoaderData } from './teams.types'
 
 /**
  * Shared loader function for both public and admin teams pages

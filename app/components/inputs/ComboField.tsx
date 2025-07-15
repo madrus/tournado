@@ -6,6 +6,7 @@ import { type ColorAccent } from '~/lib/lib.types'
 import {
   getDropdownItemColorClasses,
   getInputColorClasses,
+  getInputOpenStateClasses,
 } from '~/styles/input.styles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
@@ -85,10 +86,12 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               ref={selectRef}
               aria-label={`${label} - select option`}
               className={cn(
-                'bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md border-2 px-3 py-2 text-lg',
+                'bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md px-3 py-2 text-lg',
                 'transition-all duration-300 ease-in-out focus:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 getInputColorClasses(color, disabled, error),
+                // Add open state styling to maintain hover-like appearance
+                getInputOpenStateClasses(color, error),
                 safeValue === '' ? 'text-foreground' : ''
               )}
               aria-invalid={!!error || undefined}
@@ -108,12 +111,13 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}
-                onCloseAutoFocus={() => {
-                  // This handles the case where user opens dropdown but closes without selecting
-                  // Only trigger if no selection was made AND value is empty
+                onCloseAutoFocus={_event => {
+                  // Allow natural focus management - don't prevent default
+                  // Only trigger onBlur if no selection was made AND value is empty
                   if (!justSelectedRef.current && safeValue === '') {
                     onBlur?.(safeValue)
                   }
+                  // Don't prevent default - let the focus naturally move away
                 }}
               >
                 <Select.Viewport className='p-1'>

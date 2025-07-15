@@ -3,25 +3,72 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Safelist ring and ring-offset classes for button hover/focus effects */
-@source inline("{focus-visible:,hover:,}ring-2");
-@source inline("{focus-visible:,hover:,}ring-offset-2");
-@source inline("{focus-visible:,hover:,}ring-offset-white");
-@source inline("{focus-visible:,hover:,}ring-emerald-600");
-@source inline("{focus-visible:,hover:,}ring-red-600");
+/* Safelist ring and ring-offset classes for unified ring system */
+@source inline("{focus-visible:,hover:,focus:,}ring-2");
+@source inline("{focus-visible:,hover:,focus:,}ring-offset-2");
+@source inline("{focus-visible:,hover:,focus:,}ring-offset-slate-50");
+@source inline("{focus-visible:,hover:,focus:,}ring-emerald-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-red-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-teal-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-cyan-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-yellow-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-green-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-violet-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-gray-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-brand-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-primary-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-slate-50");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-slate-100");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-red-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-emerald-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-teal-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-cyan-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-yellow-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-green-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-violet-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-gray-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-brand-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-primary-600");
+
+/* Dark mode button border classes - only on hover/focus */
+@source inline("hover:dark:border-slate-50 focus-visible:dark:border-slate-50");
+
+/* Safelist border classes for input field styling - wider borders on hover/focus */
+@source inline("border border-emerald-700/30 border-emerald-700/50 border-emerald-200");
+@source inline("hover:border-2 hover:border-emerald-700/50");
+@source inline("focus:border-2 focus:border-emerald-200");
+@source inline("data-[state=open]:border-2 data-[state=open]:border-emerald-200");
+@source inline("hover:border-brand-700/50 focus:border-brand-200");
+@source inline("data-[state=open]:border-brand-200");
+/* Disabled ring classes for buttons */
+@source inline("disabled:hover:ring-0 disabled:hover:ring-offset-0 focus-visible:disabled:ring-0");
 @source inline("border-chip-border");
 @source inline("{focus-visible:,hover:,}ring-chip-ring");
 @source inline("{focus-visible:,hover:,}ring-offset-chip-ring-offset");
-@source inline("{focus-visible:,hover:,}ring-offset-white");
 @source inline("dark:border-slate-100");
 @source inline("dark:hover:ring-brand-600 dark:focus:ring-brand-600");
 @source inline("dark:hover:ring-offset-slate-100 dark:focus:ring-offset-slate-100");
-@source inline("{focus-visible:,hover:,}ring-teal-600");
-@source inline("{focus-visible:,hover:,}ring-cyan-600");
-@source inline("{focus-visible:,hover:,}ring-yellow-600");
-@source inline("{focus-visible:,hover:,}ring-green-600");
-@source inline("{focus-visible:,hover:,}ring-violet-600");
-@source inline("{focus-visible:,hover:,}ring-gray-600");
+
+/* Safelist border widths and colors for all accent colors */
+@source inline("border border-2");
+@source inline("hover:border-2 focus:border-2 data-[state=open]:border-2");
+@source inline("border-teal-700/30 border-teal-700/50 border-teal-200");
+@source inline("border-cyan-700/30 border-cyan-700/50 border-cyan-200");
+@source inline("border-yellow-700/30 border-yellow-700/50 border-yellow-200");
+@source inline("border-green-700/30 border-green-700/50 border-green-200");
+@source inline("border-violet-700/30 border-violet-700/50 border-violet-200");
+@source inline("border-gray-700/30 border-gray-700/50 border-gray-200");
+@source inline("border-red-700/30 border-red-700/50 border-red-200");
+@source inline("hover:border-teal-700/50 hover:border-cyan-700/50 hover:border-yellow-700/50");
+@source inline("hover:border-green-700/50 hover:border-violet-700/50 hover:border-gray-700/50");
+@source inline("hover:border-red-700/50");
+@source inline("focus:border-teal-200 focus:border-cyan-200 focus:border-yellow-200");
+@source inline("focus:border-green-200 focus:border-violet-200 focus:border-gray-200");
+@source inline("focus:border-red-200");
+@source inline("data-[state=open]:border-teal-200 data-[state=open]:border-cyan-200");
+@source inline("data-[state=open]:border-yellow-200 data-[state=open]:border-green-200");
+@source inline("data-[state=open]:border-violet-200 data-[state=open]:border-gray-200");
+@source inline("data-[state=open]:border-red-200");
 
 /* Safelist shadow classes for button effects */
 @source inline("shadow-md");

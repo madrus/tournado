@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router'
 
-import type { TournamentListItem } from '~/lib/teams.types'
+import type { TournamentListItem } from '~/lib/lib.types'
 
 type UseTournamentFilterProps = {
   tournamentListItems: TournamentListItem[]

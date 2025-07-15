@@ -28,7 +28,7 @@ describe('Panel Styles', () => {
         'green',
         'purple',
         'indigo',
-        'gray',
+        'slate',
         'teal',
       ]
 
@@ -54,7 +54,7 @@ describe('Panel Styles', () => {
       expect(classes.glow).toContain('bg-primary-400/30')
     })
 
-    it('should generate correct classes for brand color with special gray gradient', () => {
+    it('should generate correct classes for brand color with special slate gradient', () => {
       const classes = getPanelClasses('brand')
 
       expect(classes.base).toContain('border-brand-400')
@@ -76,7 +76,7 @@ describe('Panel Styles', () => {
         'green',
         'purple',
         'indigo',
-        'gray',
+        'slate',
         'teal',
       ]
 
@@ -163,7 +163,7 @@ describe('Panel Styles', () => {
     })
 
     it('should generate correct description classes for standard colors', () => {
-      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'gray']
+      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'slate']
 
       colors.forEach(color => {
         const classes = getDescriptionClasses(color)
@@ -195,7 +195,7 @@ describe('Panel Styles', () => {
     })
 
     it('should generate correct icon text classes for standard colors', () => {
-      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'gray']
+      const colors: ColorAccent[] = ['blue', 'green', 'purple', 'indigo', 'slate']
 
       colors.forEach(color => {
         const classes = getIconTextClasses(color)
@@ -293,7 +293,7 @@ describe('Panel Styles', () => {
 
   describe('colorClasses constant', () => {
     it('should contain all expected color schemes', () => {
-      const expectedColors = ['emerald', 'blue', 'gray', 'brand', 'teal']
+      const expectedColors = ['emerald', 'blue', 'slate', 'brand', 'teal']
 
       expectedColors.forEach(color => {
         expect(colorClasses).toHaveProperty(color)

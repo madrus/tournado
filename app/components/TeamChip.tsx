@@ -31,7 +31,7 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'inline-flex h-10 items-center rounded-lg border border-red-600 dark:!border-slate-100 bg-background dark:bg-brand-900',
+    'inline-flex h-10 items-center rounded-lg border border-red-600 dark:!border-slate-100 bg-background dark:bg-brand-700',
     'font-semibold text-brand transition-all duration-300 ease-out relative overflow-hidden',
     onClick && 'cursor-pointer',
     showActions && onDelete ? chipClasses.container : 'px-3',

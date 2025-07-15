@@ -89,7 +89,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 'transition-all duration-300 ease-in-out focus:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 getInputColorClasses(color, disabled, error),
-                safeValue === '' ? 'text-foreground-lighter' : ''
+                safeValue === '' ? 'text-foreground' : ''
               )}
               aria-invalid={!!error || undefined}
               aria-errormessage={error ? `${name}-error` : undefined}

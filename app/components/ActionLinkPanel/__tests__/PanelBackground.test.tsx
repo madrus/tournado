@@ -47,7 +47,7 @@ describe('PanelBackground Component', () => {
     it('should apply data-testid when provided', () => {
       render(
         <PanelBackground
-          backgroundColor='bg-gray-800'
+          backgroundColor='bg-slate-800'
           data-testid='custom-background'
         />
       )
@@ -129,7 +129,7 @@ describe('PanelBackground Component', () => {
     it('should not break with empty className', () => {
       render(
         <PanelBackground
-          backgroundColor='bg-gray-900'
+          backgroundColor='bg-slate-900'
           className=''
           data-testid='empty-class-bg'
         />
@@ -138,7 +138,7 @@ describe('PanelBackground Component', () => {
       const background = screen.getByTestId('empty-class-bg')
       expect(background).toHaveClass('absolute')
       expect(background).toHaveClass('inset-0')
-      expect(background).toHaveClass('bg-gray-900')
+      expect(background).toHaveClass('bg-slate-900')
     })
 
     it('should handle undefined className gracefully', () => {

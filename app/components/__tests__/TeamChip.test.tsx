@@ -336,7 +336,7 @@ describe('TeamChip Component', () => {
         'border-red-600',
         'dark:!border-slate-100',
         'bg-background',
-        'dark:bg-brand-900',
+        'dark:bg-brand-700',
         'font-semibold',
         'text-brand',
         'transition-all',

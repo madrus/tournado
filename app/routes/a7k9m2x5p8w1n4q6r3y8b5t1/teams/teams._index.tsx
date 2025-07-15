@@ -96,7 +96,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats */}
       <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
-        <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+        <div className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
               <div className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
@@ -116,7 +116,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       </div>
 
       {/* Teams List */}
-      <div className='rounded-lg border border-gray-200 bg-white p-6 shadow-sm'>
+      <div className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
         <div className='mb-6'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('admin.teams.allTeams')}

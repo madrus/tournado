@@ -55,7 +55,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
           className={cn(
             'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
             'transition-all duration-300 ease-in-out focus:outline-none [&::-webkit-calendar-picker-indicator]:opacity-70',
-            'disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400',
+            'disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400',
             getInputColorClasses(color, readOnly, error)
           )}
           aria-invalid={error ? true : undefined}

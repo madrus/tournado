@@ -49,7 +49,7 @@ export type ColorAccent =
   | 'brand' // special: maps to 'red'
   | 'primary' // special: maps to 'emerald'
   | 'slate'
-  | 'gray'
+  | 'slate'
   | 'zinc'
   | 'neutral'
   | 'stone'

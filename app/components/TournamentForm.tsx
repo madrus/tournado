@@ -343,7 +343,7 @@ export function TournamentForm({
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-gray-400'
+              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-slate-400'
             )}
           >
             2
@@ -355,7 +355,7 @@ export function TournamentForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-800' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.dates')}
@@ -363,7 +363,7 @@ export function TournamentForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-gray-400'
+                  isPanelEnabled(2) ? 'text-blue-600' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.selectDates')}
@@ -409,7 +409,7 @@ export function TournamentForm({
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(3) ? 'bg-green-600' : 'bg-gray-400'
+              isPanelEnabled(3) ? 'bg-green-600' : 'bg-slate-400'
             )}
           >
             3
@@ -421,7 +421,7 @@ export function TournamentForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3) ? 'text-green-800' : 'text-gray-400'
+                  isPanelEnabled(3) ? 'text-green-800' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.divisions')}
@@ -429,7 +429,7 @@ export function TournamentForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(3) ? 'text-green-600' : 'text-gray-400'
+                  isPanelEnabled(3) ? 'text-green-600' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.selectDivisions')} ({selectedDivisions.length}{' '}
@@ -445,7 +445,7 @@ export function TournamentForm({
                     'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
                     selectedDivisions.includes(division)
                       ? 'border-green-500 bg-green-50 text-green-800'
-                      : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50',
+                      : 'border-slate-200 bg-white hover:border-green-300 hover:bg-green-50',
                     (!isPanelEnabled(3) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}
@@ -490,7 +490,7 @@ export function TournamentForm({
           <div
             className={cn(
               'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(4) ? 'bg-purple-600' : 'bg-gray-400'
+              isPanelEnabled(4) ? 'bg-purple-600' : 'bg-slate-400'
             )}
           >
             4
@@ -502,7 +502,7 @@ export function TournamentForm({
                 className={cn(
                   'mb-2 text-xl font-bold',
                   getLatinTitleClass(i18n.language),
-                  isPanelEnabled(4) ? 'text-purple-800' : 'text-gray-400'
+                  isPanelEnabled(4) ? 'text-purple-800' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.categories')}
@@ -510,7 +510,7 @@ export function TournamentForm({
               <p
                 className={cn(
                   'text-sm',
-                  isPanelEnabled(4) ? 'text-purple-600' : 'text-gray-400'
+                  isPanelEnabled(4) ? 'text-purple-600' : 'text-slate-400'
                 )}
               >
                 {t('tournaments.form.selectCategories')} ({selectedCategories.length}{' '}
@@ -526,7 +526,7 @@ export function TournamentForm({
                     'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
                     selectedCategories.includes(category)
                       ? 'border-purple-500 bg-purple-50 text-purple-800'
-                      : 'border-gray-200 bg-white hover:border-purple-300 hover:bg-purple-50',
+                      : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50',
                     (!isPanelEnabled(4) || isPublicSuccess) &&
                       'cursor-not-allowed opacity-50'
                   )}

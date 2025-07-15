@@ -2,18 +2,19 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionLink } from '~/components/PrefetchLink'
-import { type ColorAccent } from '~/lib/lib.types'
-import { type ButtonVariant, getButtonClasses } from '~/styles/button.styles'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { isRTL } from '~/utils/rtlUtils'
+
+import { buttonVariants, type ButtonVariants } from './button.variants'
 
 type ActionLinkButtonProps = {
   to: string
   label: string
   icon: IconName
-  variant?: ButtonVariant
-  color?: ColorAccent
+  variant?: ButtonVariants['variant']
+  color?: ButtonVariants['color']
+  size?: ButtonVariants['size']
   className?: string
 }
 
@@ -23,18 +24,19 @@ export function ActionLinkButton({
   icon,
   variant = 'primary',
   color = 'brand',
+  size = 'md',
   className,
 }: Readonly<ActionLinkButtonProps>): JSX.Element {
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
 
   const iconElement = renderIcon(icon, {
-    className: 'h-5 w-5',
+    className: size === 'sm' ? 'h-4 w-4' : 'h-5 w-5',
   })
 
   const labelText = <span>{label}</span>
 
-  const buttonClasses = cn(getButtonClasses(variant, color), className)
+  const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   return (
     <ActionLink to={to} className={buttonClasses} aria-label={label}>

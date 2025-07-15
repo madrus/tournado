@@ -117,13 +117,11 @@ I want to make my app to be mobile first. at the moment, it is not. please analy
 Based on my analysis of the codebase, here's a comprehensive plan to make the app mobile-first:
 
 1. Layout Structure Issues:
-
    - The main layout in `teams.tsx` uses a fixed-width sidebar (`w-80`) which won't work well on mobile
    - The header has a fixed layout that might overflow on smaller screens
    - The team list and content area are side-by-side, which is not ideal for mobile
 
 2. Proposed Changes:
-
    1. [ ] Notes Page Layout:
       - [x] Convert the sidebar into a collapsible menu for mobile
       - [x] Implement a hamburger menu for mobile navigation
@@ -140,7 +138,6 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
       - [ ] Ensure proper spacing between elements
 
 3. Implementation Strategy:
-
    1. [ ] First Phase - Core Layout:
       - [x] Add a mobile-first breakpoint system using Tailwind's responsive classes
       - [x] Implement a responsive header with hamburger menu
@@ -159,7 +156,6 @@ Based on my analysis of the codebase, here's a comprehensive plan to make the ap
       - [ ] Ensure proper keyboard handling for mobile forms
 
 4. Specific Changes Needed:
-
    1. Notes Page:
 
    ```tsx

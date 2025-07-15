@@ -128,13 +128,13 @@ describe('form-validation', () => {
       })
 
       it('should handle zodIssue without code', () => {
-        expect(getFieldErrorTranslationKey('clubName', {})).toBe(
+        expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
           'teams.form.errors.clubNameRequired'
         )
       })
 
       it('should handle unknown zodIssue codes', () => {
-        expect(getFieldErrorTranslationKey('clubName', { code: 'unknown' })).toBe(
+        expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
           'teams.form.errors.clubNameRequired'
         )
       })

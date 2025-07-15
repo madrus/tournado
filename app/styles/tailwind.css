@@ -41,7 +41,7 @@
 @source inline("hover:border-brand-700/50 focus:border-brand-200");
 @source inline("data-[state=open]:border-brand-200");
 /* Disabled ring classes for buttons */
-@source inline("disabled:hover:ring-0 disabled:hover:ring-offset-0 focus-visible:disabled:ring-0");
+@source inline("disabled:hover:ring-0 disabled:hover:ring-offset-0 disabled:focus-visible:ring-0 disabled:focus-visible:ring-offset-0 disabled:focus:ring-0 disabled:focus:ring-offset-0");
 @source inline("border-chip-border");
 @source inline("{focus-visible:,hover:,}ring-chip-ring");
 @source inline("{focus-visible:,hover:,}ring-offset-chip-ring-offset");
@@ -380,6 +380,40 @@
 }
 
 @layer components {
+  /* Nuclear option: completely disable all visual changes on disabled buttons */
+  button:disabled,
+  button:disabled:hover,
+  button:disabled:focus,
+  button:disabled:focus-visible,
+  button:disabled:active {
+    --tw-ring-width: 0px !important;
+    --tw-ring-offset-width: 0px !important;
+    --tw-ring-color: transparent !important;
+    --tw-ring-offset-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border: 1px solid !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Force border color to stay consistent on disabled buttons */
+  button:disabled,
+  button:disabled:hover,
+  button:disabled:focus,
+  button:disabled:focus-visible {
+    border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
+  }
+
+  /* Dark mode disabled button border override */
+  .dark button:disabled,
+  .dark button:disabled:hover,
+  .dark button:disabled:focus,
+  .dark button:disabled:focus-visible {
+    border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
+  }
+
   /* UserMenu light mode - force red colors */
   .light [data-testid="user-menu-dropdown"] {
     border-color: #ef4444 !important; /* red-500 */

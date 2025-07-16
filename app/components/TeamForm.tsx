@@ -573,115 +573,103 @@ export function TeamForm({
 
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (
-          <div
-            className={cn('relative transition-opacity duration-300', {
-              'pointer-events-none opacity-50': !isPanelEnabled(4),
-            })}
+          <Panel
+            color='amber'
+            panelNumber={4}
+            disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
+            className='lg:p-8'
           >
-            <div
-              className={cn(
-                'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-                isPanelEnabled(4) ? 'bg-primary' : 'bg-foreground-lighter'
-              )}
-            >
-              4
-            </div>
-
-            <div
-              className={cn(
-                'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-                isPanelEnabled(4)
-                  ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
-                  : 'border-foreground-lighter bg-background-hover'
-              )}
-            >
-              <div className='mb-6'>
-                <h2
-                  className={cn(
-                    'mb-2 text-xl font-bold',
-                    getLatinTitleClass(i18n.language),
-                    isPanelEnabled(4)
-                      ? 'text-foreground-darker'
-                      : 'text-foreground-lighter'
-                  )}
-                >
-                  {t('teams.form.privacyPolicy')}
-                </h2>
-                <p
-                  className={cn(
-                    'text-sm',
-                    isPanelEnabled(4) ? 'text-primary' : 'text-foreground-lighter'
-                  )}
-                >
-                  {t('teams.form.readAndAccept')}
-                </p>
-              </div>
-
-              <label
+            <div className='mb-6'>
+              <h2
                 className={cn(
-                  'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
-                  privacyAgreement
-                    ? 'border-primary bg-accent text-foreground-darker'
-                    : getTranslatedError(
-                          'privacyAgreement',
-                          isPublicSuccess || !isPanelEnabled(4)
-                        )
-                      ? 'border-brand bg-accent text-brand'
-                      : 'border-foreground-lighter bg-background hover:border-primary hover:bg-accent'
+                  panelTitleVariants({
+                    size: 'md',
+                    color: formMode === 'edit' || isPanelEnabled(4) ? 'amber' : 'slate',
+                  }),
+                  getLatinTitleClass(i18n.language)
                 )}
               >
-                <div className='relative flex-shrink-0'>
-                  <input
-                    type='checkbox'
-                    name='privacyAgreement'
-                    checked={privacyAgreement}
-                    onChange={checkboxEvent =>
-                      setFormField('privacyAgreement', checkboxEvent.target.checked)
-                    }
-                    onBlur={() => validateFieldOnBlur('privacyAgreement')}
-                    className={cn(
-                      'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
-                      privacyAgreement
-                        ? 'border-primary bg-primary'
-                        : getTranslatedError(
-                              'privacyAgreement',
-                              isPublicSuccess || !isPanelEnabled(4)
-                            )
-                          ? 'border-brand bg-accent'
-                          : 'border-foreground-lighter bg-background'
-                    )}
-                    required
-                    disabled={isPublicSuccess || !isPanelEnabled(4)}
-                  />
-                  {privacyAgreement ? (
-                    <CheckIcon
-                      className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
-                      size={16}
-                    />
-                  ) : null}
-                </div>
-                <span
-                  className={cn(
-                    'text-foreground text-lg font-normal',
-                    getLatinTextClass(i18n.language)
-                  )}
-                >
-                  {t('teams.form.agreeToPrivacyPolicy')}
-                </span>
-              </label>
-              {getTranslatedError(
-                'privacyAgreement',
-                isPublicSuccess || !isPanelEnabled(4)
-              ) ? (
-                <p className='text-brand mt-2 text-sm'>
-                  {getTranslatedError(
-                    'privacyAgreement',
-                    isPublicSuccess || !isPanelEnabled(4)
-                  )}
-                </p>
-              ) : null}
+                {t('teams.form.privacyPolicy')}
+              </h2>
+              <p
+                className={cn(
+                  panelDescriptionVariants(),
+                  formMode === 'edit' || isPanelEnabled(4)
+                    ? 'text-foreground'
+                    : 'text-foreground-lighter'
+                )}
+              >
+                {t('teams.form.readAndAccept')}
+              </p>
             </div>
-          </div>
+
+            <label
+              className={cn(
+                'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
+                privacyAgreement
+                  ? 'border-primary bg-accent text-foreground-darker'
+                  : getTranslatedError(
+                        'privacyAgreement',
+                        isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                      )
+                    ? 'border-brand bg-accent text-brand'
+                    : 'border-foreground-lighter bg-background hover:border-primary hover:bg-accent'
+              )}
+            >
+              <div className='relative mt-0.5 flex-shrink-0'>
+                <input
+                  type='checkbox'
+                  name='privacyAgreement'
+                  checked={privacyAgreement}
+                  onChange={checkboxEvent =>
+                    setFormField('privacyAgreement', checkboxEvent.target.checked)
+                  }
+                  onBlur={() => validateFieldOnBlur('privacyAgreement')}
+                  className={cn(
+                    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
+                    privacyAgreement
+                      ? 'border-primary bg-primary'
+                      : getTranslatedError(
+                            'privacyAgreement',
+                            isPublicSuccess ||
+                              (formMode === 'create' && !isPanelEnabled(4))
+                          )
+                        ? 'border-brand bg-accent'
+                        : 'border-foreground-lighter bg-background'
+                  )}
+                  required
+                  disabled={
+                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                  }
+                />
+                {privacyAgreement ? (
+                  <CheckIcon
+                    className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
+                    size={16}
+                  />
+                ) : null}
+              </div>
+              <span
+                className={cn(
+                  'text-foreground text-lg leading-6 font-normal',
+                  getLatinTextClass(i18n.language)
+                )}
+              >
+                {t('teams.form.agreeToPrivacyPolicy')}
+              </span>
+            </label>
+            {getTranslatedError(
+              'privacyAgreement',
+              isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+            ) ? (
+              <p className='text-brand mt-2 text-sm'>
+                {getTranslatedError(
+                  'privacyAgreement',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                )}
+              </p>
+            ) : null}
+          </Panel>
         ) : null}
 
         {/* Submit and Action Buttons */}

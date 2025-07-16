@@ -330,11 +330,75 @@ export const calendarDayVariants = cva(
   }
 )
 
+// Date input field variants
+export const dateInputFieldVariants = cva(
+  [
+    'h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
+    'placeholder:text-foreground-lighter bg-input dark:bg-input/40 text-input-foreground',
+    'transition-all duration-300 ease-in-out focus:outline-none',
+    '[&::-webkit-calendar-picker-indicator]:opacity-70',
+  ],
+  {
+    variants: {
+      color: {
+        brand:
+          'border border-brand-700/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
+        primary:
+          'border border-primary-700/30 hover:border-2 hover:border-primary-700/50 focus:border-2 focus:border-primary-200',
+        emerald:
+          'border border-emerald-700/30 hover:border-2 hover:border-emerald-700/50 focus:border-2 focus:border-emerald-200',
+        red: 'border border-red-700/30 hover:border-2 hover:border-red-700/50 focus:border-2 focus:border-red-200',
+        blue: 'border border-blue-700/30 hover:border-2 hover:border-blue-700/50 focus:border-2 focus:border-blue-200',
+        green:
+          'border border-green-700/30 hover:border-2 hover:border-green-700/50 focus:border-2 focus:border-green-200',
+        yellow:
+          'border border-yellow-700/30 hover:border-2 hover:border-yellow-700/50 focus:border-2 focus:border-yellow-200',
+        purple:
+          'border border-purple-700/30 hover:border-2 hover:border-purple-700/50 focus:border-2 focus:border-purple-200',
+        pink: 'border border-pink-700/30 hover:border-2 hover:border-pink-700/50 focus:border-2 focus:border-pink-200',
+        indigo:
+          'border border-indigo-700/30 hover:border-2 hover:border-indigo-700/50 focus:border-2 focus:border-indigo-200',
+        gray: 'border border-gray-700/30 hover:border-2 hover:border-gray-700/50 focus:border-2 focus:border-gray-200',
+        slate:
+          'border border-slate-700/30 hover:border-2 hover:border-slate-700/50 focus:border-2 focus:border-slate-200',
+        zinc: 'border border-zinc-700/30 hover:border-2 hover:border-zinc-700/50 focus:border-2 focus:border-zinc-200',
+        neutral:
+          'border border-neutral-700/30 hover:border-2 hover:border-neutral-700/50 focus:border-2 focus:border-neutral-200',
+        stone:
+          'border border-stone-700/30 hover:border-2 hover:border-stone-700/50 focus:border-2 focus:border-stone-200',
+        orange:
+          'border border-orange-700/30 hover:border-2 hover:border-orange-700/50 focus:border-2 focus:border-orange-200',
+        amber:
+          'border border-amber-700/30 hover:border-2 hover:border-amber-700/50 focus:border-2 focus:border-amber-200',
+        lime: 'border border-lime-700/30 hover:border-2 hover:border-lime-700/50 focus:border-2 focus:border-lime-200',
+        teal: 'border border-teal-700/30 hover:border-2 hover:border-teal-700/50 focus:border-2 focus:border-teal-200',
+        cyan: 'border border-cyan-700/30 hover:border-2 hover:border-cyan-700/50 focus:border-2 focus:border-cyan-200',
+        sky: 'border border-sky-700/30 hover:border-2 hover:border-sky-700/50 focus:border-2 focus:border-sky-200',
+        violet:
+          'border border-violet-700/30 hover:border-2 hover:border-violet-700/50 focus:border-2 focus:border-violet-200',
+        fuchsia:
+          'border border-fuchsia-700/30 hover:border-2 hover:border-fuchsia-700/50 focus:border-2 focus:border-fuchsia-200',
+        rose: 'border border-rose-700/30 hover:border-2 hover:border-rose-700/50 focus:border-2 focus:border-rose-200',
+      },
+      disabled: {
+        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+      },
+      error: {
+        true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
+      },
+    },
+    defaultVariants: {
+      color: 'emerald',
+    },
+  }
+)
+
 // Export variant types
 export type TextInputFieldVariants = VariantProps<typeof textInputFieldVariants>
 export type ComboFieldTriggerVariants = VariantProps<typeof comboFieldTriggerVariants>
 export type ComboFieldContentVariants = VariantProps<typeof comboFieldContentVariants>
 export type ComboFieldItemVariants = VariantProps<typeof comboFieldItemVariants>
+export type DateInputFieldVariants = VariantProps<typeof dateInputFieldVariants>
 export type DatePickerButtonVariants = VariantProps<typeof datePickerButtonVariants>
 export type DatePickerTextVariants = VariantProps<typeof datePickerTextVariants>
 export type DatePickerIconVariants = VariantProps<typeof datePickerIconVariants>

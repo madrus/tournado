@@ -64,7 +64,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
 
     return (
       <div
-        className={cn('mb-4', className)}
+        className={cn(className)}
         ref={ref}
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >

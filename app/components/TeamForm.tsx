@@ -235,7 +235,7 @@ export function TeamForm({
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
         {/* Step 1: Tournament Filters */}
-        <Panel color='red' panelNumber={1} className='lg:p-8'>
+        <Panel color='red' panelNumber={1} className='pb-4 lg:p-8'>
           <div className='mb-6'>
             <h2
               className={cn(

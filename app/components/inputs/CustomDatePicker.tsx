@@ -116,7 +116,7 @@ function Calendar({
           type='button'
           onClick={goToPrevMonth}
           aria-label='previous month'
-          className='hover:bg-input-hover rounded-full p-1 font-bold transition-colors'
+          className='text-brand-500 hover:bg-brand-100 hover:text-brand-700 rounded-full p-1 font-bold transition-colors'
         >
           <ChevronLeftIcon className='h-5 w-5' size={20} />
         </button>
@@ -127,7 +127,7 @@ function Calendar({
           type='button'
           onClick={goToNextMonth}
           aria-label='next month'
-          className='hover:bg-input-hover rounded-full p-1 font-bold transition-colors'
+          className='text-brand-500 hover:bg-brand-100 hover:text-brand-700 rounded-full p-1 font-bold transition-colors'
         >
           <ChevronRightIcon className='h-5 w-5' size={20} />
         </button>

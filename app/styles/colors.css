@@ -40,7 +40,7 @@
   --color-foreground-darker: var(--color-main); /* for emphasis */
   --color-foreground-light: var(--color-slate-600);
   --color-foreground-lighter: var(--color-slate-500);
-  --color-foreground: var(--color-emerald-900); /* default body text */
+  --color-foreground: var(--color-slate-900); /* default body text (light) */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
   --color-chip-border: var(--color-red-600); /* chip border color */
@@ -151,7 +151,7 @@
   --color-border: var(
     --color-slate-500
   ); /* lighter for better contrast against dark background */
-  --color-foreground: #d1fae5cc; /* emerald-100 with 80% opacity - body text */
+  --color-foreground: #f1f5f9cc; /* slate-100 with 80% opacity - body text */
   --color-foreground-light: var(--color-slate-300);
   --color-foreground-lighter: var(--color-slate-400);
   --color-foreground-darker: var(--color-main);

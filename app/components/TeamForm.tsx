@@ -352,235 +352,202 @@ export function TeamForm({
         </Panel>
 
         {/* Step 2: Team Information */}
-        <div
-          className={cn(
-            'relative transition-opacity duration-300',
-            !isPanelEnabled(2) ? 'pointer-events-none opacity-50' : ''
-          )}
+        <Panel
+          color='blue'
+          panelNumber={2}
+          disabled={!isPanelEnabled(2)}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-foreground-lighter'
-            )}
-          >
-            2
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color: isPanelEnabled(2) ? 'blue' : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.teamInfo')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                isPanelEnabled(2) ? 'text-foreground' : 'text-foreground-lighter'
+              )}
+            >
+              {t('teams.form.enterTeamDetails')}
+            </p>
           </div>
 
-          <div
-            className={cn(
-              'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-              isPanelEnabled(2)
-                ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl'
-                : 'border-foreground-lighter bg-background-hover'
-            )}
-          >
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-foreground-lighter'
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+            {/* Club Name */}
+            <div className='relative'>
+              <TextInputField
+                name='clubName'
+                label={t('teams.form.clubName')}
+                value={clubName || ''}
+                onChange={value => setFormField('clubName', value)}
+                placeholder={t('teams.form.placeholders.clubName')}
+                error={getTranslatedError(
+                  'clubName',
+                  isPublicSuccess || !isPanelEnabled(2)
                 )}
-              >
-                {t('teams.form.teamInfo')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-foreground-lighter'
-                )}
-              >
-                {t('teams.form.enterTeamDetails')}
-              </p>
+                required
+                disabled={isPublicSuccess || !isPanelEnabled(2)}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('clubName')}
+              />
+              {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
             </div>
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              {/* Club Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='clubName'
-                  label={t('teams.form.clubName')}
-                  value={clubName || ''}
-                  onChange={value => setFormField('clubName', value)}
-                  placeholder={t('teams.form.placeholders.clubName')}
-                  error={getTranslatedError(
-                    'clubName',
-                    isPublicSuccess || !isPanelEnabled(2)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(2)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('clubName')}
-                />
-                {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
-
-              {/* Team Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamName'
-                  label={t('teams.form.teamName')}
-                  value={teamName || ''}
-                  onChange={value => setFormField('teamName', value)}
-                  placeholder={t('teams.form.placeholders.teamName')}
-                  error={getTranslatedError(
-                    'teamName',
-                    isPublicSuccess || !isPanelEnabled(2)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(2)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamName')}
-                />
-                {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+            {/* Team Name */}
+            <div className='relative'>
+              <TextInputField
+                name='teamName'
+                label={t('teams.form.teamName')}
+                value={teamName || ''}
+                onChange={value => setFormField('teamName', value)}
+                placeholder={t('teams.form.placeholders.teamName')}
+                error={getTranslatedError(
+                  'teamName',
+                  isPublicSuccess || !isPanelEnabled(2)
+                )}
+                required
+                disabled={isPublicSuccess || !isPanelEnabled(2)}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('teamName')}
+              />
+              {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 3: Team Leader Information */}
-        <div
-          className={cn('relative transition-opacity duration-300', {
-            'pointer-events-none opacity-50': !isPanelEnabled(3),
-          })}
+        <Panel
+          color='fuchsia'
+          panelNumber={3}
+          disabled={!isPanelEnabled(3)}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(3) ? 'bg-primary' : 'bg-foreground-lighter'
-            )}
-          >
-            3
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color: isPanelEnabled(3) ? 'fuchsia' : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.teamLeaderInfo')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                isPanelEnabled(3) ? 'text-foreground' : 'text-foreground-lighter'
+              )}
+            >
+              {t('teams.form.enterContactDetails')}
+            </p>
           </div>
 
-          <div
-            className={cn(
-              'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-              isPanelEnabled(3)
-                ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
-                : 'border-foreground-lighter bg-background-hover'
-            )}
-          >
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3)
-                    ? 'text-foreground-darker'
-                    : 'text-foreground-lighter'
-                )}
-              >
-                {t('teams.form.teamLeaderInfo')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(3) ? 'text-primary' : 'text-foreground-lighter'
-                )}
-              >
-                {t('teams.form.enterContactDetails')}
-              </p>
-            </div>
-
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-              {/* Team Leader Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderName'
-                  label={t('teams.form.teamLeaderName')}
-                  value={teamLeaderName || ''}
-                  onChange={value => setFormField('teamLeaderName', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderName')}
-                  error={getTranslatedError(
-                    'teamLeaderName',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderName')}
-                />
-                {teamLeaderName &&
-                !getTranslatedError(
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+            {/* Team Leader Name */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderName'
+                label={t('teams.form.teamLeaderName')}
+                value={teamLeaderName || ''}
+                onChange={value => setFormField('teamLeaderName', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderName')}
+                error={getTranslatedError(
                   'teamLeaderName',
                   isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                )}
+                required
+                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('teamLeaderName')}
+              />
+              {teamLeaderName &&
+              !getTranslatedError(
+                'teamLeaderName',
+                isPublicSuccess || !isPanelEnabled(3)
+              ) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
+            </div>
 
-              {/* Team Leader Phone */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderPhone'
-                  label={t('teams.form.teamLeaderPhone')}
-                  value={teamLeaderPhone || ''}
-                  onChange={value => setFormField('teamLeaderPhone', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderPhone')}
-                  error={getTranslatedError(
-                    'teamLeaderPhone',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  type='tel'
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
-                />
-                {teamLeaderPhone &&
-                !getTranslatedError(
+            {/* Team Leader Phone */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderPhone'
+                label={t('teams.form.teamLeaderPhone')}
+                value={teamLeaderPhone || ''}
+                onChange={value => setFormField('teamLeaderPhone', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderPhone')}
+                error={getTranslatedError(
                   'teamLeaderPhone',
                   isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                )}
+                required
+                type='tel'
+                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
+              />
+              {teamLeaderPhone &&
+              !getTranslatedError(
+                'teamLeaderPhone',
+                isPublicSuccess || !isPanelEnabled(3)
+              ) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
+            </div>
 
-              {/* Team Leader Email */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderEmail'
-                  label={t('teams.form.teamLeaderEmail')}
-                  value={teamLeaderEmail || ''}
-                  onChange={value => setFormField('teamLeaderEmail', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderEmail')}
-                  error={getTranslatedError(
-                    'teamLeaderEmail',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  type='email'
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
-                />
-                {teamLeaderEmail &&
-                !getTranslatedError(
+            {/* Team Leader Email */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderEmail'
+                label={t('teams.form.teamLeaderEmail')}
+                value={teamLeaderEmail || ''}
+                onChange={value => setFormField('teamLeaderEmail', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderEmail')}
+                error={getTranslatedError(
                   'teamLeaderEmail',
                   isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                )}
+                required
+                type='email'
+                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
+              />
+              {teamLeaderEmail &&
+              !getTranslatedError(
+                'teamLeaderEmail',
+                isPublicSuccess || !isPanelEnabled(3)
+              ) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (

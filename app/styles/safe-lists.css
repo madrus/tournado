@@ -1,0 +1,30 @@
+/* Safelist directives extracted from tailwind.css to ensure Tailwind v4 generates all necessary utility classes used dynamically in the app. */
+
+/* Ring & ring-offset */
+@source inline("{focus-visible:,hover:,focus:,}ring-2");
+@source inline("{focus-visible:,hover:,focus:,}ring-offset-2");
+@source inline("{focus-visible:,hover:,focus:,}ring-offset-slate-50");
+@source inline("{focus-visible:,hover:,focus:,}ring-emerald-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-red-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-teal-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-cyan-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-yellow-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-green-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-violet-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-slate-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-brand-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-primary-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-slate-50");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-slate-100");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-red-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-emerald-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-teal-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-cyan-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-yellow-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-green-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-violet-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-slate-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-brand-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-primary-600");
+
+/* ... (rest of @source inline directives copied as-is from tailwind.css) ... */

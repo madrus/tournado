@@ -48,11 +48,9 @@ export function Panel({
     return cn(baseClasses, colorClass)
   }
 
-  const containerClasses = cn(
-    getPanelClasses(color),
-    className,
-    disabled && 'pointer-events-none opacity-20'
-  )
+  const containerClasses = cn(getPanelClasses(color), className)
+
+  const innerWrapperClasses = cn(disabled && 'pointer-events-none opacity-20')
 
   return (
     <div className={containerClasses}>
@@ -60,10 +58,13 @@ export function Panel({
       {panelNumber !== undefined ? (
         <div className={getNumberClasses(color)}>{panelNumber}</div>
       ) : null}
-      {/* Glow effect */}
-      <div className={getGlowClasses(color)} />
-      {/* Content */}
-      <div className='relative z-20'>{children}</div>
+
+      <div className={innerWrapperClasses}>
+        {/* Glow effect */}
+        <div className={getGlowClasses(color)} />
+        {/* Content */}
+        <div className='relative z-20'>{children}</div>
+      </div>
     </div>
   )
 }

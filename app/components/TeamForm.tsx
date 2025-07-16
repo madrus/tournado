@@ -285,6 +285,7 @@ export function TeamForm({
                 required
                 disabled={isPublicSuccess}
                 className={getLatinTextClass(i18n.language)}
+                color='red'
                 onBlur={() => validateFieldOnBlur('tournamentId')}
               />
               <FieldCheckmark
@@ -317,6 +318,7 @@ export function TeamForm({
                 required
                 disabled={!tournamentId || isPublicSuccess}
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('division')}
               />
               {division &&
@@ -346,6 +348,7 @@ export function TeamForm({
                 required
                 disabled={!tournamentId || !division || isPublicSuccess}
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('category')}
               />
               {category &&

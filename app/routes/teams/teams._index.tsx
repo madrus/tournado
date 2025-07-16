@@ -3,11 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
-import {
-  panelContentVariants,
-  panelGlowVariants,
-  panelVariants,
-} from '~/components/shared/panel.variants'
+import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
@@ -64,18 +60,13 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className={panelVariants({ color: 'teal' })}>
-        {/* Glow effect */}
-        <div className={panelGlowVariants({ color: 'teal' })} />
-        {/* Content */}
-        <div className={panelContentVariants()}>
-          <TournamentFilter
-            tournamentListItems={tournamentListItems}
-            selectedTournamentId={selectedTournamentId}
-            className='max-w-md'
-          />
-        </div>
-      </div>
+      <Panel color='teal'>
+        <TournamentFilter
+          tournamentListItems={tournamentListItems}
+          selectedTournamentId={selectedTournamentId}
+          className='max-w-md'
+        />
+      </Panel>
 
       {/* Teams Count */}
       {teamListItems.length > 0 ? (

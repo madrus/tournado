@@ -3,13 +3,17 @@ import { forwardRef, Ref, useRef } from 'react'
 import * as Select from '@radix-ui/react-select'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import {
-  getDropdownItemColorClasses,
-  getInputColorClasses,
-  getInputOpenStateClasses,
-} from '~/styles/input.styles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
+
+import {
+  comboFieldContentVariants,
+  comboFieldItemVariants,
+  comboFieldTriggerVariants,
+  textInputErrorVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from './inputs.variants'
 
 export type ComboFieldOption = {
   value: string
@@ -68,8 +72,8 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
         ref={ref}
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
-        <label className='text-foreground flex w-full flex-col gap-1'>
-          <span className='text-foreground font-medium'>{label}</span>
+        <label className={textInputLabelVariants()}>
+          <span className={textInputLabelTextVariants()}>{label}</span>
           <Select.Root
             value={safeValue}
             onValueChange={newValue => {
@@ -86,12 +90,11 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               ref={selectRef}
               aria-label={`${label} - select option`}
               className={cn(
-                'bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md px-3 py-2 text-lg',
-                'transition-all duration-300 ease-in-out focus:outline-none',
-                'disabled:cursor-not-allowed disabled:opacity-50',
-                getInputColorClasses(color, disabled, error),
-                // Add open state styling to maintain hover-like appearance
-                getInputOpenStateClasses(color, error),
+                comboFieldTriggerVariants({
+                  color,
+                  disabled: disabled ? true : undefined,
+                  error: error ? true : undefined,
+                }),
                 safeValue === '' ? 'text-foreground' : ''
               )}
               aria-invalid={!!error || undefined}
@@ -101,13 +104,15 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
               </div>
               <Select.Icon asChild>
-                {renderIcon('expand_more', { className: 'w-5 h-5 text-slate-400' })}
+                {renderIcon('expand_more', {
+                  className: 'w-5 h-5 text-foreground-lighter',
+                })}
               </Select.Icon>
             </Select.Trigger>
 
             <Select.Portal>
               <Select.Content
-                className='z-50 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg'
+                className={comboFieldContentVariants()}
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}
@@ -125,11 +130,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                     <Select.Item
                       key={opt.value}
                       value={opt.value}
-                      className={cn(
-                        'relative flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none select-none',
-                        getDropdownItemColorClasses(color),
-                        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
-                      )}
+                      className={comboFieldItemVariants({ color })}
                     >
                       <Select.ItemText>{opt.label}</Select.ItemText>
                       <Select.ItemIndicator className='absolute right-2 flex h-3.5 w-3.5 items-center justify-center'>
@@ -172,7 +173,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
           </select>
         </label>
         {error ? (
-          <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+          <div className={textInputErrorVariants()} id={`${name}-error`}>
             {error}
           </div>
         ) : null}

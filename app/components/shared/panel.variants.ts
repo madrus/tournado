@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 export const panelVariants = cva(
   // Base classes - common panel styling
-  ['relative overflow-hidden rounded-2xl border shadow-xl p-6'],
+  ['relative overflow-visible rounded-2xl border shadow-xl p-6'],
   {
     variants: {
       color: {
@@ -50,7 +50,7 @@ export const panelVariants = cva(
 export const panelGlowVariants = cva(
   // Base classes for glow effect
   [
-    'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90',
+    'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-60',
   ],
   {
     variants: {
@@ -132,5 +132,101 @@ export const panelDescriptionVariants = cva(['text-foreground text-sm'], {
   variants: {},
 })
 
+// Panel number badge styling
+export const panelNumberVariants = cva(
+  [
+    'text-primary-foreground absolute top-8 -left-4 z-30 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
+  ],
+  {
+    variants: {
+      color: {
+        brand: 'bg-brand-600',
+        primary: 'bg-primary-600',
+        emerald: 'bg-emerald-600',
+        blue: 'bg-blue-600',
+        slate: 'bg-slate-600',
+        teal: 'bg-teal-600',
+        red: 'bg-red-600',
+        cyan: 'bg-cyan-600',
+        yellow: 'bg-yellow-600',
+        green: 'bg-green-600',
+        violet: 'bg-violet-600',
+        zinc: 'bg-zinc-600',
+        orange: 'bg-orange-600',
+        amber: 'bg-amber-600',
+        lime: 'bg-lime-600',
+        sky: 'bg-sky-600',
+        indigo: 'bg-indigo-600',
+        purple: 'bg-purple-600',
+        fuchsia: 'bg-fuchsia-600',
+        pink: 'bg-pink-600',
+        rose: 'bg-rose-600',
+      },
+    },
+    defaultVariants: {
+      color: 'brand',
+    },
+  }
+)
+
+// Field validation checkmark styling
+export const fieldCheckmarkVariants = cva(
+  [
+    'absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2',
+  ],
+  {
+    variants: {
+      color: {
+        brand: 'bg-brand-500',
+        primary: 'bg-primary-500',
+        emerald: 'bg-emerald-500',
+        blue: 'bg-blue-500',
+        slate: 'bg-slate-500',
+        teal: 'bg-teal-500',
+        red: 'bg-red-500',
+        cyan: 'bg-cyan-500',
+        yellow: 'bg-yellow-500',
+        green: 'bg-green-500',
+        violet: 'bg-violet-500',
+        zinc: 'bg-zinc-500',
+        orange: 'bg-orange-500',
+        amber: 'bg-amber-500',
+        lime: 'bg-lime-500',
+        sky: 'bg-sky-500',
+        indigo: 'bg-indigo-500',
+        purple: 'bg-purple-500',
+        fuchsia: 'bg-fuchsia-500',
+        pink: 'bg-pink-500',
+        rose: 'bg-rose-500',
+      },
+    },
+    defaultVariants: {
+      color: 'primary',
+    },
+  }
+)
+
+// Checkbox styling for forms
+export const checkboxVariants = cva(
+  [
+    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
+  ],
+  {
+    variants: {
+      state: {
+        checked: 'border-primary-500 bg-primary-500',
+        error: 'border-brand bg-accent',
+        default: 'border-foreground-lighter bg-background',
+      },
+    },
+    defaultVariants: {
+      state: 'default',
+    },
+  }
+)
+
 export type PanelVariants = VariantProps<typeof panelVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
+export type PanelNumberVariants = VariantProps<typeof panelNumberVariants>
+export type FieldCheckmarkVariants = VariantProps<typeof fieldCheckmarkVariants>
+export type CheckboxVariants = VariantProps<typeof checkboxVariants>

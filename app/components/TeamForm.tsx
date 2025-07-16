@@ -5,6 +5,7 @@ import { Form, useNavigation } from 'react-router'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
+import { FieldCheckmark } from '~/components/shared/FieldCheckmark'
 import {
   panelDescriptionVariants,
   panelTitleVariants,
@@ -40,6 +41,15 @@ export function TeamForm({
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
+
+  // Panel color constants - single source of truth
+  const PANEL_COLORS = {
+    header: 'sky' as const,
+    step1: 'red' as const,
+    step2: 'amber' as const,
+    step3: 'indigo' as const,
+    step4: 'fuchsia' as const,
+  }
 
   // Ensure the team form store is properly hydrated
   useTeamFormStoreHydration()
@@ -191,7 +201,7 @@ export function TeamForm({
 
       {/* Header for Admin Variant */}
       {variant !== 'public' ? (
-        <Panel color='teal' className='mb-8'>
+        <Panel color={PANEL_COLORS.header} className='mb-8'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -235,11 +245,11 @@ export function TeamForm({
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
         {/* Step 1: Tournament Filters */}
-        <Panel color='red' panelNumber={1} className='pb-4 lg:p-8'>
+        <Panel color={PANEL_COLORS.step1} panelNumber={1} className='pb-4 lg:p-8'>
           <div className='mb-6'>
             <h2
               className={cn(
-                panelTitleVariants({ size: 'md', color: 'red' }),
+                panelTitleVariants({ size: 'md', color: PANEL_COLORS.step1 }),
                 getLatinTitleClass(i18n.language)
               )}
             >
@@ -277,11 +287,11 @@ export function TeamForm({
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('tournamentId')}
               />
-              {tournamentId && !getTranslatedError('tournamentId', isPublicSuccess) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldCheckmark
+                show={Boolean(
+                  tournamentId && !getTranslatedError('tournamentId', isPublicSuccess)
+                )}
+              />
             </div>
 
             {/* Division Selection */}
@@ -311,7 +321,7 @@ export function TeamForm({
               />
               {division &&
               !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -343,7 +353,7 @@ export function TeamForm({
                 'category',
                 !tournamentId || !division || isPublicSuccess
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -353,7 +363,7 @@ export function TeamForm({
 
         {/* Step 2: Team Information */}
         <Panel
-          color='blue'
+          color={PANEL_COLORS.step2}
           panelNumber={2}
           disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
           className='lg:p-8'
@@ -363,7 +373,10 @@ export function TeamForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: formMode === 'edit' || isPanelEnabled(2) ? 'blue' : 'slate',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(2)
+                      ? PANEL_COLORS.step2
+                      : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -407,7 +420,7 @@ export function TeamForm({
                 'clubName',
                 formMode === 'create' && !isPanelEnabled(2)
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -437,7 +450,7 @@ export function TeamForm({
                 'teamName',
                 formMode === 'create' && !isPanelEnabled(2)
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -447,7 +460,7 @@ export function TeamForm({
 
         {/* Step 3: Team Leader Information */}
         <Panel
-          color='fuchsia'
+          color={PANEL_COLORS.step3}
           panelNumber={3}
           disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
           className='lg:p-8'
@@ -457,7 +470,10 @@ export function TeamForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: formMode === 'edit' || isPanelEnabled(3) ? 'fuchsia' : 'slate',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(3)
+                      ? PANEL_COLORS.step3
+                      : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -501,7 +517,7 @@ export function TeamForm({
                 'teamLeaderName',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -532,7 +548,7 @@ export function TeamForm({
                 'teamLeaderPhone',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -563,7 +579,7 @@ export function TeamForm({
                 'teamLeaderEmail',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
-                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
               ) : null}
@@ -574,7 +590,7 @@ export function TeamForm({
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (
           <Panel
-            color='amber'
+            color={PANEL_COLORS.step4}
             panelNumber={4}
             disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
             className='lg:p-8'
@@ -584,7 +600,10 @@ export function TeamForm({
                 className={cn(
                   panelTitleVariants({
                     size: 'md',
-                    color: formMode === 'edit' || isPanelEnabled(4) ? 'amber' : 'slate',
+                    color:
+                      formMode === 'edit' || isPanelEnabled(4)
+                        ? PANEL_COLORS.step4
+                        : 'slate',
                   }),
                   getLatinTitleClass(i18n.language)
                 )}
@@ -628,7 +647,7 @@ export function TeamForm({
                   className={cn(
                     'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
                     privacyAgreement
-                      ? 'border-primary bg-primary'
+                      ? 'border-primary-500 bg-primary-500'
                       : getTranslatedError(
                             'privacyAgreement',
                             isPublicSuccess ||

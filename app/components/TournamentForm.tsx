@@ -65,6 +65,15 @@ export function TournamentForm({
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
 
+  // Panel color constants - single source of truth
+  const PANEL_COLORS = {
+    header: 'sky' as const,
+    step1: 'red' as const,
+    step2: 'amber' as const,
+    step3: 'indigo' as const,
+    step4: 'fuchsia' as const,
+  }
+
   // Ensure the tournament form store is properly hydrated
   useTournamentFormStoreHydration()
 
@@ -226,7 +235,7 @@ export function TournamentForm({
 
       {/* Header for Admin Variant */}
       {!isPublicVariant ? (
-        <Panel color='teal' className='mb-8'>
+        <Panel color={PANEL_COLORS.header} className='mb-8'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -286,11 +295,11 @@ export function TournamentForm({
         ))}
 
         {/* Step 1: Basic Information - Always enabled */}
-        <Panel color='red' panelNumber={1} className='lg:p-8'>
+        <Panel color={PANEL_COLORS.step1} panelNumber={1} className='lg:p-8'>
           <div className='mb-6'>
             <h2
               className={cn(
-                panelTitleVariants({ size: 'md', color: 'red' }),
+                panelTitleVariants({ size: 'md', color: PANEL_COLORS.step1 }),
                 getLatinTitleClass(i18n.language)
               )}
             >
@@ -333,7 +342,7 @@ export function TournamentForm({
 
         {/* Step 2: Dates */}
         <Panel
-          color='blue'
+          color={PANEL_COLORS.step2}
           panelNumber={2}
           disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
           className='lg:p-8'
@@ -343,7 +352,10 @@ export function TournamentForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: formMode === 'edit' || isPanelEnabled(2) ? 'blue' : 'slate',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(2)
+                      ? PANEL_COLORS.step2
+                      : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -402,7 +414,7 @@ export function TournamentForm({
 
         {/* Step 3: Divisions */}
         <Panel
-          color='lime'
+          color={PANEL_COLORS.step3}
           panelNumber={3}
           disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
           className='lg:p-8'
@@ -412,7 +424,10 @@ export function TournamentForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: formMode === 'edit' || isPanelEnabled(3) ? 'lime' : 'slate',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(3)
+                      ? PANEL_COLORS.step3
+                      : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -484,7 +499,7 @@ export function TournamentForm({
 
         {/* Step 4: Categories */}
         <Panel
-          color='purple'
+          color={PANEL_COLORS.step4}
           panelNumber={4}
           disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
           className='lg:p-8'
@@ -494,7 +509,10 @@ export function TournamentForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: formMode === 'edit' || isPanelEnabled(4) ? 'purple' : 'slate',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(4)
+                      ? PANEL_COLORS.step4
+                      : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}

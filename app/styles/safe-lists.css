@@ -36,6 +36,9 @@
 @source inline("border-purple-400 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-50 dark:from-purple-950 dark:via-purple-900 dark:to-purple-900");
 @source inline("border-amber-400 bg-gradient-to-br from-amber-50 via-amber-100 to-amber-50 dark:from-amber-950 dark:via-amber-900 dark:to-amber-900");
 
+/* Panel disabled colors */
+@source inline("border-slate-300 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:border-slate-600 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800");
+
 /* Panel glow effects */
 @source inline("bg-red-400/30");
 @source inline("bg-blue-400/30");
@@ -44,6 +47,7 @@
 @source inline("bg-lime-400/30");
 @source inline("bg-purple-400/30");
 @source inline("bg-amber-400/30");
+@source inline("bg-slate-400/20");
 
 /* Panel number badges */
 @source inline("bg-red-600");
@@ -53,3 +57,4 @@
 @source inline("bg-lime-600");
 @source inline("bg-purple-600");
 @source inline("bg-amber-600");
+@source inline("bg-slate-400 dark:bg-slate-600");

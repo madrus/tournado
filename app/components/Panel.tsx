@@ -50,7 +50,7 @@ export function Panel({
 
   const containerClasses = cn(getPanelClasses(color), className)
 
-  const innerWrapperClasses = cn(disabled && 'pointer-events-none opacity-20')
+  const innerWrapperClasses = cn(disabled === true && 'pointer-events-none opacity-20')
 
   return (
     <div className={containerClasses}>

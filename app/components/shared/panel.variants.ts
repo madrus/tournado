@@ -135,7 +135,7 @@ export const panelDescriptionVariants = cva(['text-foreground text-sm'], {
 // Panel number badge styling
 export const panelNumberVariants = cva(
   [
-    'text-primary-foreground absolute top-8 -left-4 z-30 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
+    'text-primary-foreground absolute top-8 -left-4 z-30 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg rtl:-right-4 rtl:left-auto',
   ],
   {
     variants: {

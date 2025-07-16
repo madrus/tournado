@@ -9,7 +9,7 @@ import {
   deleteButtonVariants,
   teamChipVariants,
   type TeamChipVariants,
-} from './TeamChip.variants'
+} from './teamChip.variants'
 
 type TeamChipProps = {
   team: {

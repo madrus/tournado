@@ -11,6 +11,7 @@ import {
   panelDescriptionVariants,
   panelTitleVariants,
 } from '~/components/shared/panel.variants'
+import { ToggleChip } from '~/components/ToggleChip'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 import {
@@ -449,39 +450,21 @@ export function TournamentForm({
 
           <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'>
             {divisions.map(division => (
-              <label
+              <ToggleChip
                 key={division}
-                className={cn(
-                  'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                  selectedDivisions.includes(division)
-                    ? 'border-lime-500 bg-lime-50 text-lime-800'
-                    : 'border-slate-200 bg-white hover:border-lime-300 hover:bg-lime-50',
-                  ((formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess) &&
-                    'cursor-not-allowed opacity-50'
+                value={division}
+                label={getDivisionLabelByValue(
+                  division as Division,
+                  i18n.language as 'en' | 'nl' | 'ar' | 'tr'
                 )}
+                selected={selectedDivisions.includes(division)}
+                disabled={
+                  (formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess
+                }
+                variant='divisions'
+                onToggle={handleDivisionToggle}
                 data-testid={`division-${division.toLowerCase()}`}
-              >
-                <input
-                  type='checkbox'
-                  checked={selectedDivisions.includes(division)}
-                  onChange={() => handleDivisionToggle(division)}
-                  disabled={
-                    (formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess
-                  }
-                  className='sr-only'
-                />
-                <span
-                  className={cn(
-                    'text-base font-medium',
-                    i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
-                  )}
-                >
-                  {getDivisionLabelByValue(
-                    division as Division,
-                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                  )}
-                </span>
-              </label>
+              />
             ))}
           </div>
           {getTranslatedError(
@@ -534,39 +517,21 @@ export function TournamentForm({
 
           <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
             {categories.map(category => (
-              <label
+              <ToggleChip
                 key={category}
-                className={cn(
-                  'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                  selectedCategories.includes(category)
-                    ? 'border-purple-500 bg-purple-50 text-purple-800'
-                    : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50',
-                  ((formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess) &&
-                    'cursor-not-allowed opacity-50'
+                value={category}
+                label={getCategoryLabelByValue(
+                  category as Category,
+                  i18n.language as 'en' | 'nl' | 'ar' | 'tr'
                 )}
+                selected={selectedCategories.includes(category)}
+                disabled={
+                  (formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess
+                }
+                variant='categories'
+                onToggle={handleCategoryToggle}
                 data-testid={`category-${category.toLowerCase()}`}
-              >
-                <input
-                  type='checkbox'
-                  checked={selectedCategories.includes(category)}
-                  onChange={() => handleCategoryToggle(category)}
-                  disabled={
-                    (formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess
-                  }
-                  className='sr-only'
-                />
-                <span
-                  className={cn(
-                    'text-base font-medium',
-                    i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
-                  )}
-                >
-                  {getCategoryLabelByValue(
-                    category as Category,
-                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                  )}
-                </span>
-              </label>
+              />
             ))}
           </div>
           {getTranslatedError(

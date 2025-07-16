@@ -49,24 +49,19 @@ export const getDropdownItemColorClasses = (color: ColorAccent): string => {
   if (resolvedColor === 'primary') {
     return 'focus:bg-primary-50 focus:text-primary-800'
   }
-  if (resolvedColor === 'brand') {
-    return 'focus:bg-brand-100 focus:text-brand-800'
-  }
-  return `focus:bg-${resolvedColor}-50 focus:text-${resolvedColor}-900`
+  return `focus:bg-${resolvedColor}-50 focus:text-${resolvedColor}-800`
 }
 
-export const getCalendarColorClasses = (
-  color: ColorAccent
-): { today: string; hover: string; navButton: string } => {
+export const getCalendarColorClasses = (color: ColorAccent) => {
   const resolvedColor = resolveColorName(color)
-  if (resolvedColor === 'primary') {
+  if (resolvedColor === 'brand') {
     return {
-      today: 'bg-primary-100 text-primary-800',
-      hover: 'hover:bg-primary-100',
-      navButton: 'text-primary-600 hover:bg-primary-100',
+      today: 'bg-brand-400 text-brand-700',
+      hover: 'hover:bg-brand-400',
+      navButton: 'text-brand-600 hover:bg-brand-400',
     }
   }
-  if (resolvedColor === 'brand') {
+  if (resolvedColor === 'primary') {
     return {
       today: 'bg-brand-400 text-brand-700',
       hover: 'hover:bg-brand-400',

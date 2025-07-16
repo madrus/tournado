@@ -1,8 +1,14 @@
 import { type FocusEvent, forwardRef, type JSX } from 'react'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import { getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
+
+import {
+  textInputErrorVariants,
+  textInputFieldVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from './inputs.variants'
 
 type InputFieldProps = {
   name: string
@@ -44,8 +50,8 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
     ref
   ): JSX.Element => (
     <div className={className}>
-      <label className='text-foreground flex w-full flex-col gap-1'>
-        <span className='text-foreground font-medium'>{label}</span>
+      <label className={textInputLabelVariants()}>
+        <span className={textInputLabelTextVariants()}>{label}</span>
         <input
           ref={ref}
           name={name}
@@ -57,10 +63,11 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           defaultValue={defaultValue}
           placeholder={placeholder}
           className={cn(
-            'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-            'transition-all duration-300 ease-in-out focus:outline-none',
-            'disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400',
-            getInputColorClasses(color, disabled, error),
+            textInputFieldVariants({
+              color,
+              disabled: disabled ? true : undefined,
+              error: error ? true : undefined,
+            }),
             className
           )}
           aria-invalid={error ? true : undefined}
@@ -73,7 +80,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
         />
       </label>
       {error ? (
-        <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+        <div className={textInputErrorVariants()} id={`${name}-error`}>
           {error}
         </div>
       ) : null}

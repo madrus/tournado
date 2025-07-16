@@ -100,7 +100,7 @@ describe('Input Styles', () => {
     it('should generate correct classes for brand color', () => {
       const classes = getDropdownItemColorClasses('brand')
 
-      expect(classes).toBe('focus:bg-brand-100 focus:text-brand-800')
+      expect(classes).toBe('focus:bg-brand-50 focus:text-brand-800')
     })
 
     it('should generate correct classes for standard colors', () => {
@@ -108,7 +108,7 @@ describe('Input Styles', () => {
 
       colors.forEach(color => {
         const classes = getDropdownItemColorClasses(color)
-        expect(classes).toBe(`focus:bg-${color}-50 focus:text-${color}-900`)
+        expect(classes).toBe(`focus:bg-${color}-50 focus:text-${color}-800`)
       })
     })
   })
@@ -118,9 +118,9 @@ describe('Input Styles', () => {
       const classes = getCalendarColorClasses('primary')
 
       expect(classes).toEqual({
-        today: 'bg-primary-100 text-primary-800',
-        hover: 'hover:bg-primary-100',
-        navButton: 'text-primary-600 hover:bg-primary-100',
+        today: 'bg-brand-400 text-brand-700',
+        hover: 'hover:bg-brand-400',
+        navButton: 'text-brand-600 hover:bg-brand-400',
       })
     })
 
@@ -169,7 +169,7 @@ describe('Input Styles', () => {
       // All should use primary semantic colors
       expect(inputClasses).toContain('border-primary-700/30') // primary colors
       expect(dropdownClasses).toContain('primary-50')
-      expect(calendarClasses.today).toContain('primary-100')
+      expect(calendarClasses.today).toContain('brand-400') // primary maps to brand in calendar
     })
 
     it('should handle brand color consistently across all functions', () => {
@@ -179,7 +179,7 @@ describe('Input Styles', () => {
 
       // All should use brand semantic colors
       expect(inputClasses).toContain('border-brand-700/30') // brand colors
-      expect(dropdownClasses).toContain('brand-100')
+      expect(dropdownClasses).toContain('brand-50') // brand uses 50-level background
       expect(calendarClasses.today).toContain('brand-400')
     })
 

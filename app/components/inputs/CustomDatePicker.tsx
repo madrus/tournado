@@ -4,8 +4,19 @@ import { useTranslation } from 'react-i18next'
 import * as Popover from '@radix-ui/react-popover'
 
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
+import {
+  calendarContainerVariants,
+  calendarDayVariants,
+  calendarHeaderVariants,
+  calendarWeekdayVariants,
+  datePickerButtonVariants,
+  datePickerIconVariants,
+  datePickerTextVariants,
+  textInputErrorVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from '~/components/inputs/inputs.variants'
 import { type ColorAccent } from '~/lib/lib.types'
-import { getCalendarColorClasses, getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
 
 type CustomDatePickerProps = {
@@ -32,7 +43,6 @@ type CalendarProps = {
   locale: string
   minDate?: Date
   maxDate?: Date
-  color: ColorAccent
   noPast?: boolean
 }
 
@@ -43,7 +53,6 @@ function Calendar({
   locale,
   minDate,
   maxDate,
-  color,
   noPast = false,
 }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(selectedDate || new Date())
@@ -99,38 +108,26 @@ function Calendar({
     return false
   }
 
-  const calendarColors = getCalendarColorClasses(color)
-
   return (
-    <div
-      className='w-80 rounded-lg border border-slate-200 bg-white p-4 shadow-lg'
-      role='dialog'
-      aria-label='calendar'
-    >
+    <div className={calendarContainerVariants()} role='dialog' aria-label='calendar'>
       {/* Header */}
       <div className='mb-4 flex items-center justify-between'>
         <button
           type='button'
           onClick={goToPrevMonth}
           aria-label='previous month'
-          className={cn(
-            'rounded-full p-1 font-bold transition-colors',
-            calendarColors.navButton
-          )}
+          className='hover:bg-input-hover rounded-full p-1 font-bold transition-colors'
         >
           <ChevronLeftIcon className='h-5 w-5' size={20} />
         </button>
 
-        <h2 className='text-lg font-semibold text-slate-900'>{monthName}</h2>
+        <h2 className={calendarHeaderVariants()}>{monthName}</h2>
 
         <button
           type='button'
           onClick={goToNextMonth}
           aria-label='next month'
-          className={cn(
-            'rounded-full p-1 font-bold transition-colors',
-            calendarColors.navButton
-          )}
+          className='hover:bg-input-hover rounded-full p-1 font-bold transition-colors'
         >
           <ChevronRightIcon className='h-5 w-5' size={20} />
         </button>
@@ -139,10 +136,7 @@ function Calendar({
       {/* Weekday headers */}
       <div className='mb-2 grid grid-cols-7 gap-1'>
         {weekdays.map((weekday, index) => (
-          <div
-            key={index}
-            className='p-2 text-center text-sm font-medium text-slate-500'
-          >
+          <div key={index} className={calendarWeekdayVariants()}>
             {weekday}
           </div>
         ))}
@@ -160,6 +154,14 @@ function Calendar({
           const selected = isSelected(date)
           const isPastDate = noPast && date < today
 
+          // Determine the state for the CVA variant - priority order matters
+          let dayState: 'default' | 'today' | 'selected' | 'disabled' | 'past' =
+            'default'
+          if (disabled) dayState = 'disabled'
+          else if (selected) dayState = 'selected'
+          else if (isCurrentDay) dayState = 'today'
+          else if (isPastDate) dayState = 'past'
+
           return (
             <button
               key={date.toISOString()}
@@ -167,16 +169,7 @@ function Calendar({
               disabled={disabled}
               aria-label={`${date.getDate()} ${monthName}`}
               onClick={() => !disabled && onSelect(date)}
-              className={cn(
-                'relative rounded-full p-2 text-sm transition-colors',
-                'focus:ring-2 focus:outline-none',
-                !selected && !disabled && calendarColors.hover,
-                disabled && 'cursor-not-allowed opacity-50 hover:bg-transparent',
-                isPastDate && 'bg-slate-50',
-                isCurrentDay && !selected && cn('font-bold', calendarColors.today),
-                selected && 'bg-brand-light font-bold text-white',
-                !isCurrentDay && !selected && 'text-slate-900'
-              )}
+              className={calendarDayVariants({ state: dayState })}
             >
               {date.getDate()}
             </button>
@@ -256,8 +249,8 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
     return (
       <div className={className}>
-        <label className='text-foreground flex w-full flex-col gap-1'>
-          <span className='text-foreground font-medium'>{label}</span>
+        <label className={textInputLabelVariants()}>
+          <span className={textInputLabelTextVariants()}>{label}</span>
 
           <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
             <Popover.Trigger asChild>
@@ -267,19 +260,24 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 aria-label={`${label} - select date`}
                 onBlur={onBlur}
                 className={cn(
-                  'placeholder:text-foreground-lighter bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md border-2 px-3 text-left text-lg leading-6',
-                  'transition-all duration-300 ease-in-out focus:outline-none',
-                  readOnly && 'cursor-not-allowed opacity-50',
-                  !readOnly && 'cursor-pointer',
-                  getInputColorClasses(color, readOnly, error)
+                  datePickerButtonVariants({
+                    color,
+                    disabled: readOnly ? true : undefined,
+                    error: error ? true : undefined,
+                  }),
+                  !readOnly && 'cursor-pointer'
                 )}
                 aria-invalid={error ? true : undefined}
                 aria-errormessage={error ? `${name}-error` : undefined}
               >
-                <span className={displayValue ? 'text-slate-900' : 'text-slate-400'}>
+                <span
+                  className={datePickerTextVariants({
+                    state: displayValue ? 'selected' : 'placeholder',
+                  })}
+                >
                   {displayValue || placeholder || 'Select date'}
                 </span>
-                <CalendarIcon className='h-5 w-5 text-slate-400' size={20} />
+                <CalendarIcon className={datePickerIconVariants()} size={20} />
               </button>
             </Popover.Trigger>
 
@@ -290,7 +288,6 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                 locale={i18n.language}
                 minDate={min ? new Date(min) : undefined}
                 maxDate={max ? new Date(max) : undefined}
-                color={color}
                 noPast={noPast}
               />
             </Popover.Content>
@@ -307,7 +304,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
         </label>
 
         {error ? (
-          <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+          <div className={textInputErrorVariants()} id={`${name}-error`}>
             {error}
           </div>
         ) : null}

@@ -101,13 +101,13 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
               </div>
               <Select.Icon asChild>
-                {renderIcon('expand_more', { className: 'w-5 h-5 text-gray-400' })}
+                {renderIcon('expand_more', { className: 'w-5 h-5 text-slate-400' })}
               </Select.Icon>
             </Select.Trigger>
 
             <Select.Portal>
               <Select.Content
-                className='z-50 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg'
+                className='z-50 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg'
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}

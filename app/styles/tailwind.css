@@ -14,7 +14,7 @@
 @source inline("{focus-visible:,hover:,focus:,}ring-yellow-600");
 @source inline("{focus-visible:,hover:,focus:,}ring-green-600");
 @source inline("{focus-visible:,hover:,focus:,}ring-violet-600");
-@source inline("{focus-visible:,hover:,focus:,}ring-gray-600");
+@source inline("{focus-visible:,hover:,focus:,}ring-slate-600");
 @source inline("{focus-visible:,hover:,focus:,}ring-brand-600");
 @source inline("{focus-visible:,hover:,focus:,}ring-primary-600");
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-slate-50");
@@ -26,7 +26,7 @@
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-yellow-600");
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-green-600");
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-violet-600");
-@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-gray-600");
+@source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-slate-600");
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-brand-600");
 @source inline("{focus-visible:,hover:,focus:,}dark:ring-offset-primary-600");
 
@@ -57,17 +57,17 @@
 @source inline("border-yellow-700/30 border-yellow-700/50 border-yellow-200");
 @source inline("border-green-700/30 border-green-700/50 border-green-200");
 @source inline("border-violet-700/30 border-violet-700/50 border-violet-200");
-@source inline("border-gray-700/30 border-gray-700/50 border-gray-200");
+@source inline("border-slate-700/30 border-slate-700/50 border-slate-200");
 @source inline("border-red-700/30 border-red-700/50 border-red-200");
 @source inline("hover:border-teal-700/50 hover:border-cyan-700/50 hover:border-yellow-700/50");
-@source inline("hover:border-green-700/50 hover:border-violet-700/50 hover:border-gray-700/50");
+@source inline("hover:border-green-700/50 hover:border-violet-700/50 hover:border-slate-700/50");
 @source inline("hover:border-red-700/50");
 @source inline("focus:border-teal-200 focus:border-cyan-200 focus:border-yellow-200");
-@source inline("focus:border-green-200 focus:border-violet-200 focus:border-gray-200");
+@source inline("focus:border-green-200 focus:border-violet-200 focus:border-slate-200");
 @source inline("focus:border-red-200");
 @source inline("data-[state=open]:border-teal-200 data-[state=open]:border-cyan-200");
 @source inline("data-[state=open]:border-yellow-200 data-[state=open]:border-green-200");
-@source inline("data-[state=open]:border-violet-200 data-[state=open]:border-gray-200");
+@source inline("data-[state=open]:border-violet-200 data-[state=open]:border-slate-200");
 @source inline("data-[state=open]:border-red-200");
 
 /* Safelist shadow classes for button effects */
@@ -81,13 +81,13 @@
 /* Safelist UserMenu colors for dark mode */
 @source inline("bg-usermenu-bg text-usermenu-text hover:bg-usermenu-hover-bg");
 @source inline("dark:bg-usermenu-bg dark:text-usermenu-text dark:hover:bg-usermenu-hover-bg");
-@source inline("dark:!bg-primary-900 dark:!text-gray-100 dark:!border-primary-600 dark:hover:!bg-primary-800 dark:!ring-primary-600 dark:hover:!bg-primary-800/70");
+@source inline("dark:!bg-primary-900 dark:!text-slate-100 dark:!border-primary-600 dark:hover:!bg-primary-800 dark:!ring-primary-600 dark:hover:!bg-primary-800/70");
 @source inline("bg-border border-border");
 
 /* Safelist gradient classes for actually used colors */
 @source inline("bg-gradient-to-br");
 /* Light mode gradients - complete safelist */
-@source inline("from-gray-50 via-gray-100 to-gray-50");
+@source inline("from-slate-50 via-slate-100 to-slate-50");
 @source inline("from-emerald-50 via-emerald-100 to-emerald-50");
 @source inline("from-red-50 via-red-100 to-red-50");
 @source inline("from-teal-50 via-teal-100 to-teal-50");
@@ -105,14 +105,14 @@
 @source inline("dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900");
 @source inline("dark:from-green-950 dark:via-green-900 dark:to-green-900");
 @source inline("dark:from-violet-950 dark:via-violet-900 dark:to-violet-900");
-@source inline("dark:from-gray-950 dark:via-gray-900 dark:to-gray-900");
+@source inline("dark:from-slate-950 dark:via-slate-900 dark:to-slate-900");
 
 /* Semantic panel gradient classes */
 @source inline("from-panel-gradient-from via-panel-gradient-via to-panel-gradient-to");
 @source inline("from-brand-from via-brand-via to-brand-to");
 
 /* Semantic panel background classes */
-@source inline("bg-panel-bg-primary bg-panel-bg-brand bg-panel-bg-emerald bg-panel-bg-teal bg-panel-bg-cyan bg-panel-bg-blue bg-panel-bg-green bg-panel-bg-yellow bg-panel-bg-violet bg-panel-bg-gray");
+@source inline("bg-panel-bg-primary bg-panel-bg-brand bg-panel-bg-emerald bg-panel-bg-teal bg-panel-bg-cyan bg-panel-bg-blue bg-panel-bg-green bg-panel-bg-yellow bg-panel-bg-violet bg-panel-bg-slate bg-panel-bg-zinc bg-panel-bg-orange bg-panel-bg-amber bg-panel-bg-lime bg-panel-bg-sky bg-panel-bg-indigo bg-panel-bg-purple bg-panel-bg-fuchsia bg-panel-bg-pink bg-panel-bg-rose");
 
 /* Safelist border classes for actually used colors */
 /* Light mode borders (400) and dark mode borders (400) - solid colors, 1px thickness */
@@ -123,7 +123,7 @@
 @source inline("border-yellow-400 dark:border-yellow-400 hover:border-yellow-400 hover:dark:border-yellow-400");
 @source inline("border-green-400 dark:border-green-400 hover:border-green-400 hover:dark:border-green-400");
 @source inline("border-violet-400 dark:border-violet-400 hover:border-violet-400 hover:dark:border-violet-400");
-@source inline("border-gray-400 dark:border-gray-400 hover:border-gray-400 hover:dark:border-gray-400");
+@source inline("border-slate-400 dark:border-slate-400 hover:border-slate-400 hover:dark:border-slate-400");
 
 /* Safelist glow, text, and other panel classes for actually used colors */
 @source inline("bg-emerald-400/30 text-emerald-300 text-emerald-100/80 border-emerald-400/60 border-emerald-400/70 bg-emerald-400/10");
@@ -133,23 +133,23 @@
 @source inline("bg-yellow-400/30 text-yellow-300 text-yellow-100/80 border-yellow-400/60 border-yellow-400/70 bg-yellow-400/10");
 @source inline("bg-green-400/30 text-green-300 text-green-100/80 border-green-400/60 border-green-400/70 bg-green-400/10");
 @source inline("bg-violet-400/30 text-violet-300 text-violet-100/80 border-violet-400/60 border-violet-400/70 bg-violet-400/10");
-@source inline("bg-gray-400/30 text-gray-300 text-gray-100/80 border-gray-400/60 border-gray-400/70 bg-gray-400/10");
+@source inline("bg-slate-400/30 text-slate-300 text-slate-100/80 border-slate-400/60 border-slate-400/70 bg-slate-400/10");
 
 /* Dark mode text colors for panels */
 @source inline("dark:text-emerald-100/80 dark:text-red-100/80 dark:text-teal-100/80 dark:text-cyan-100/80");
-@source inline("dark:text-yellow-100/80 dark:text-green-100/80 dark:text-violet-100/80 dark:text-gray-100/80");
+@source inline("dark:text-yellow-100/80 dark:text-green-100/80 dark:text-violet-100/80 dark:text-slate-100/80");
 @source inline("dark:text-white dark:text-emerald-300 dark:text-red-300 dark:text-teal-300 dark:text-cyan-300");
-@source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-gray-300");
-@source inline("dark:text-red-200 text-gray-700 text-red-900");
+@source inline("dark:text-yellow-300 dark:text-green-300 dark:text-violet-300 dark:text-slate-300");
+@source inline("dark:text-red-200 text-slate-700 text-red-900");
 /* Semantic colors for panel titles and descriptions */
 @source inline("text-title text-foreground text-foreground-heading text-brand-dark text-brand-darker text-brand-darkest dark:text-white");
 /* Light mode darker text colors for better contrast */
-@source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-gray-950");
-@source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-gray-900");
-@source inline("text-emerald-700 text-red-700 text-teal-700 text-cyan-700 text-yellow-700 text-green-700 text-violet-700 text-gray-700");
+@source inline("text-emerald-950 text-red-950 text-teal-950 text-cyan-950 text-yellow-950 text-green-950 text-violet-950 text-slate-950");
+@source inline("text-emerald-900 text-red-900 text-teal-900 text-cyan-900 text-yellow-900 text-green-900 text-violet-900 text-slate-900");
+@source inline("text-emerald-700 text-red-700 text-teal-700 text-cyan-700 text-yellow-700 text-green-700 text-violet-700 text-slate-700");
 /* Icon border colors for light mode */
-@source inline("border-emerald-700 border-red-700 border-teal-700 border-cyan-700 border-yellow-700 border-green-700 border-violet-700 border-gray-700");
-@source inline("dark:border-emerald-300 dark:border-red-300 dark:border-teal-300 dark:border-cyan-300 dark:border-yellow-300 dark:border-green-300 dark:border-violet-300 dark:border-gray-300");
+@source inline("border-emerald-700 border-red-700 border-teal-700 border-cyan-700 border-yellow-700 border-green-700 border-violet-700 border-slate-700");
+@source inline("dark:border-emerald-300 dark:border-red-300 dark:border-teal-300 dark:border-cyan-300 dark:border-yellow-300 dark:border-green-300 dark:border-violet-300 dark:border-slate-300");
 /* Children text colors - brand (red) - only last child */
 @source inline("[&>*:last-child_p]:text-red-600 [&>*:last-child_strong]:text-red-600");
 /* Children text colors - other colors - only last child */
@@ -159,11 +159,11 @@
 @source inline("[&>*:last-child_p]:text-yellow-700 [&>*:last-child_p]:dark:text-yellow-300 [&>*:last-child_strong]:text-yellow-700 [&>*:last-child_strong]:dark:text-yellow-300");
 @source inline("[&>*:last-child_p]:text-green-700 [&>*:last-child_p]:dark:text-green-300 [&>*:last-child_strong]:text-green-700 [&>*:last-child_strong]:dark:text-green-300");
 @source inline("[&>*:last-child_p]:text-violet-700 [&>*:last-child_p]:dark:text-violet-300 [&>*:last-child_strong]:text-violet-700 [&>*:last-child_strong]:dark:text-violet-300");
-@source inline("[&>*:last-child_p]:text-gray-700 [&>*:last-child_p]:dark:text-gray-300 [&>*:last-child_strong]:text-gray-700 [&>*:last-child_strong]:dark:text-gray-300");
+@source inline("[&>*:last-child_p]:text-slate-700 [&>*:last-child_p]:dark:text-slate-300 [&>*:last-child_strong]:text-slate-700 [&>*:last-child_strong]:dark:text-slate-300");
 
 /* Panel background colors for light/dark mode */
-@source inline("bg-emerald-100 bg-red-100 bg-teal-100 bg-cyan-100 bg-yellow-100 bg-green-100 bg-violet-100 bg-gray-100");
-@source inline("dark:bg-emerald-800 dark:bg-red-800 dark:bg-teal-800 dark:bg-cyan-800 dark:bg-yellow-800 dark:bg-green-800 dark:bg-violet-800 dark:bg-gray-800");
+@source inline("bg-emerald-100 bg-red-100 bg-teal-100 bg-cyan-100 bg-yellow-100 bg-green-100 bg-violet-100 bg-slate-100");
+@source inline("dark:bg-emerald-800 dark:bg-red-800 dark:bg-teal-800 dark:bg-cyan-800 dark:bg-yellow-800 dark:bg-green-800 dark:bg-violet-800 dark:bg-slate-800");
 
 /* Tailwind v4 Theme Configuration */
 @theme {
@@ -345,7 +345,17 @@
   --color-panel-bg-green: var(--panel-bg-green);
   --color-panel-bg-yellow: var(--panel-bg-yellow);
   --color-panel-bg-violet: var(--panel-bg-violet);
-  --color-panel-bg-gray: var(--panel-bg-gray);
+  --color-panel-bg-slate: var(--panel-bg-slate);
+  --color-panel-bg-zinc: var(--panel-bg-zinc);
+  --color-panel-bg-orange: var(--panel-bg-orange);
+  --color-panel-bg-amber: var(--panel-bg-amber);
+  --color-panel-bg-lime: var(--panel-bg-lime);
+  --color-panel-bg-sky: var(--panel-bg-sky);
+  --color-panel-bg-indigo: var(--panel-bg-indigo);
+  --color-panel-bg-purple: var(--panel-bg-purple);
+  --color-panel-bg-fuchsia: var(--panel-bg-fuchsia);
+  --color-panel-bg-pink: var(--panel-bg-pink);
+  --color-panel-bg-rose: var(--panel-bg-rose);
 }
 
 /* Base Styles */

@@ -78,7 +78,17 @@
   --panel-bg-green: var(--color-green-100);
   --panel-bg-yellow: var(--color-yellow-100);
   --panel-bg-violet: var(--color-violet-100);
-  --panel-bg-gray: var(--color-slate-100);
+  --panel-bg-slate: var(--color-slate-100);
+  --panel-bg-zinc: var(--color-zinc-100);
+  --panel-bg-orange: var(--color-orange-100);
+  --panel-bg-amber: var(--color-amber-100);
+  --panel-bg-lime: var(--color-lime-100);
+  --panel-bg-sky: var(--color-sky-100);
+  --panel-bg-indigo: var(--color-indigo-100);
+  --panel-bg-purple: var(--color-purple-100);
+  --panel-bg-fuchsia: var(--color-fuchsia-100);
+  --panel-bg-pink: var(--color-pink-100);
+  --panel-bg-rose: var(--color-rose-100);
   --footer-bg: var(--color-white);
   --footer-text: var(--color-slate-700);
   --color-background-hover: var(--color-slate-100);
@@ -184,7 +194,17 @@
   --panel-bg-green: var(--color-green-800);
   --panel-bg-yellow: var(--color-yellow-800);
   --panel-bg-violet: var(--color-violet-800);
-  --panel-bg-gray: var(--color-slate-800);
+  --panel-bg-slate: var(--color-slate-800);
+  --panel-bg-zinc: var(--color-zinc-800);
+  --panel-bg-orange: var(--color-orange-800);
+  --panel-bg-amber: var(--color-amber-800);
+  --panel-bg-lime: var(--color-lime-800);
+  --panel-bg-sky: var(--color-sky-800);
+  --panel-bg-indigo: var(--color-indigo-800);
+  --panel-bg-purple: var(--color-purple-800);
+  --panel-bg-fuchsia: var(--color-fuchsia-800);
+  --panel-bg-pink: var(--color-pink-800);
+  --panel-bg-rose: var(--color-rose-800);
   --footer-bg: var(--color-primary-800); /* in dark mode */
   --footer-text: var(--color-slate-200);
 

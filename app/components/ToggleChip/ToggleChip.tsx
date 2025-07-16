@@ -28,9 +28,9 @@ type ToggleChipProps = {
    */
   disabled?: boolean
   /**
-   * The variant determines the color scheme (divisions = lime, categories = purple)
+   * The color scheme matching the panel color
    */
-  variant: NonNullable<ToggleChipVariants['variant']>
+  color: NonNullable<ToggleChipVariants['color']>
   /**
    * Callback when the item is toggled
    */
@@ -45,12 +45,16 @@ type ToggleChipProps = {
   'data-testid'?: string
 }
 
+/**
+ * ToggleChip component for selectable options
+ * Used for divisions and categories selection in tournament forms
+ */
 export function ToggleChip({
   value,
   label,
   selected,
   disabled = false,
-  variant,
+  color,
   onToggle,
   className,
   'data-testid': dataTestId,
@@ -65,20 +69,21 @@ export function ToggleChip({
 
   return (
     <label
-      className={cn(toggleChipVariants({ variant, selected, disabled }), className)}
+      className={cn(toggleChipVariants({ color, selected, disabled }), className)}
       data-testid={dataTestId || 'toggle-chip-container'}
     >
       <input
         type='checkbox'
+        className='sr-only'
         checked={selected}
         onChange={handleToggle}
         disabled={disabled}
-        className='sr-only'
+        aria-label={label}
       />
       <span
         className={cn(
-          toggleChipTextVariants(),
-          i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
+          toggleChipTextVariants({ color, selected }),
+          getLatinTextClass(i18n.language)
         )}
       >
         {label}

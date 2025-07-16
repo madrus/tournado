@@ -16,7 +16,7 @@ describe('ToggleChip', () => {
     value: 'test-value',
     label: 'Test Label',
     selected: false,
-    variant: 'divisions' as const,
+    color: 'indigo' as const,
     onToggle: vi.fn(),
   }
 
@@ -81,30 +81,32 @@ describe('ToggleChip', () => {
     })
   })
 
-  describe('Variants', () => {
-    it('should apply divisions variant styling', () => {
-      render(<ToggleChip {...defaultProps} variant='divisions' />)
+  describe('Color Variants', () => {
+    it('should apply indigo color styling', () => {
+      render(<ToggleChip {...defaultProps} color='indigo' />)
       expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
-        'hover:border-lime-300'
+        'hover:border-indigo-300'
       )
     })
 
-    it('should apply categories variant styling', () => {
-      render(<ToggleChip {...defaultProps} variant='categories' />)
+    it('should apply fuchsia color styling', () => {
+      render(<ToggleChip {...defaultProps} color='fuchsia' />)
       expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
-        'hover:border-purple-300'
+        'hover:border-fuchsia-300'
       )
     })
 
-    it('should apply selected divisions styling', () => {
-      render(<ToggleChip {...defaultProps} variant='divisions' selected />)
-      expect(screen.getByTestId('toggle-chip-container')).toHaveClass('border-lime-500')
+    it('should apply selected indigo styling', () => {
+      render(<ToggleChip {...defaultProps} color='indigo' selected />)
+      expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
+        'border-indigo-500'
+      )
     })
 
-    it('should apply selected categories styling', () => {
-      render(<ToggleChip {...defaultProps} variant='categories' selected />)
+    it('should apply selected fuchsia styling', () => {
+      render(<ToggleChip {...defaultProps} color='fuchsia' selected />)
       expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
-        'border-purple-500'
+        'border-fuchsia-500'
       )
     })
   })

@@ -44,6 +44,7 @@ type CalendarProps = {
   minDate?: Date
   maxDate?: Date
   noPast?: boolean
+  color?: ColorAccent
 }
 
 // Custom Calendar Component
@@ -194,7 +195,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       placeholder,
       min,
       max,
-      color = 'emerald',
+      color = 'slate',
       noPast = false,
       onChange,
       onBlur,
@@ -281,16 +282,19 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
               </button>
             </Popover.Trigger>
 
-            <Popover.Content align='start' sideOffset={4} className='z-50'>
-              <Calendar
-                selectedDate={selectedDate}
-                onSelect={handleDateSelect}
-                locale={i18n.language}
-                minDate={min ? new Date(min) : undefined}
-                maxDate={max ? new Date(max) : undefined}
-                noPast={noPast}
-              />
-            </Popover.Content>
+            <Popover.Portal>
+              <Popover.Content align='start' sideOffset={4} className='z-[9999]'>
+                <Calendar
+                  selectedDate={selectedDate}
+                  onSelect={handleDateSelect}
+                  locale={i18n.language}
+                  minDate={min ? new Date(min) : undefined}
+                  maxDate={max ? new Date(max) : undefined}
+                  noPast={noPast}
+                  color={color}
+                />
+              </Popover.Content>
+            </Popover.Portal>
           </Popover.Root>
 
           {/* Hidden input for form submission */}

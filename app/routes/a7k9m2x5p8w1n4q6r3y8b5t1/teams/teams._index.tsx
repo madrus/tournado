@@ -4,6 +4,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
 
 import { ApparelIcon } from '~/components/icons'
+import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
@@ -96,10 +97,10 @@ export default function AdminTeamsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats */}
       <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
-        <div className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
+        <Panel color='teal'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <div className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-600'>
                 <ApparelIcon className='text-white' size={24} variant='outlined' />
               </div>
             </div>
@@ -112,11 +113,11 @@ export default function AdminTeamsIndexPage(): JSX.Element {
               </dl>
             </div>
           </div>
-        </div>
+        </Panel>
       </div>
 
       {/* Teams List */}
-      <div className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
+      <Panel color='teal'>
         <div className='mb-6'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('admin.teams.allTeams')}
@@ -142,7 +143,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
           onTeamDelete={handleTeamDelete}
           emptyMessage={t('teams.noTeams')}
         />
-      </div>
+      </Panel>
     </div>
   )
 }

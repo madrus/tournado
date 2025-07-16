@@ -4,6 +4,7 @@ import { Form, useNavigation } from 'react-router'
 
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import { Panel } from '~/components/Panel'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
@@ -186,7 +187,7 @@ export function TeamForm({
 
       {/* Header for Admin Variant */}
       {variant !== 'public' ? (
-        <div className='border-foreground-lighter from-background to-background-hover mb-8 rounded-xl border-2 bg-gradient-to-r p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
+        <Panel color='teal' className='mb-8'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -216,7 +217,7 @@ export function TeamForm({
               </div>
             ) : null}
           </div>
-        </div>
+        </Panel>
       ) : null}
 
       <Form

@@ -6,6 +6,7 @@ import { ActionButton } from '~/components/buttons'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import { Panel } from '~/components/Panel'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 import {
@@ -221,7 +222,7 @@ export function TournamentForm({
 
       {/* Header for Admin Variant */}
       {!isPublicVariant ? (
-        <div className='border-foreground-lighter from-background to-background-hover mb-8 rounded-xl border-2 bg-gradient-to-r p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
+        <Panel color='teal' className='mb-8'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -235,7 +236,6 @@ export function TournamentForm({
                   : t('tournaments.form.fillOutForm')}
               </p>
             </div>
-            {/* Delete Button for Admin Edit Mode */}
             {showDeleteButton && onDelete ? (
               <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
                 <ActionButton
@@ -249,7 +249,7 @@ export function TournamentForm({
               </div>
             ) : null}
           </div>
-        </div>
+        </Panel>
       ) : null}
 
       <Form

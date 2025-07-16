@@ -1,13 +1,20 @@
 import { forwardRef, type JSX } from 'react'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import { getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
+
+import {
+  dateInputFieldVariants,
+  textInputErrorVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from './inputs.variants'
 
 type DateInputFieldProps = {
   name: string
   label: string
   readOnly?: boolean
+  disabled?: boolean
   error?: string
   required?: boolean
   className?: string
@@ -26,6 +33,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
       name,
       label,
       readOnly = false,
+      disabled = false,
       error,
       required = false,
       className = '',
@@ -40,23 +48,25 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
     ref
   ): JSX.Element => (
     <div className={className}>
-      <label className='text-foreground flex w-full flex-col gap-1'>
-        <span className='text-foreground font-medium'>{label}</span>
+      <label className={textInputLabelVariants()}>
+        <span className={textInputLabelTextVariants()}>{label}</span>
         <input
           ref={ref}
           name={name}
           type='date'
           readOnly={readOnly}
+          disabled={disabled}
           required={required}
           defaultValue={defaultValue}
           placeholder={placeholder || 'dd-mm-yyyy'}
           min={min}
           max={max}
           className={cn(
-            'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-            'transition-all duration-300 ease-in-out focus:outline-none [&::-webkit-calendar-picker-indicator]:opacity-70',
-            'disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400',
-            getInputColorClasses(color, readOnly, error)
+            dateInputFieldVariants({
+              color,
+              disabled: disabled || readOnly ? true : undefined,
+              error: error ? true : undefined,
+            })
           )}
           aria-invalid={error ? true : undefined}
           aria-errormessage={error ? `${name}-error` : undefined}
@@ -68,7 +78,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
         />
       </label>
       {error ? (
-        <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+        <div className={textInputErrorVariants()} id={`${name}-error`}>
           {error}
         </div>
       ) : null}

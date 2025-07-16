@@ -6,6 +6,7 @@ import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router
 import { Box, Flex, Grid, Heading, Text } from '@radix-ui/themes'
 
 import { DeleteIcon, TrophyIcon } from '~/components/icons'
+import { Panel } from '~/components/Panel'
 import type { TournamentListItem } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -288,16 +289,12 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats using Radix Grid */}
       <Grid columns={{ initial: '1', sm: '3' }} gap='5' width='auto'>
-        <Box className='rounded-lg border border-slate-200 bg-white p-6 shadow-sm'>
+        <Panel color='teal'>
           <Flex align='center'>
             <Box className='flex-shrink-0'>
-              <Box className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
-                <TrophyIcon
-                  className='pt-1 pl-1 text-white'
-                  size={24}
-                  variant='outlined'
-                />
-              </Box>
+              <div className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
+                <TrophyIcon className='text-white' size={26} variant='outlined' />
+              </div>
             </Box>
             <Box className='ms-5 w-0 flex-1'>
               <dl>
@@ -314,11 +311,11 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
               </dl>
             </Box>
           </Flex>
-        </Box>
+        </Panel>
       </Grid>
 
       {/* Tournaments List */}
-      <Box className='w-full rounded-lg border border-slate-200 bg-white p-6 shadow-sm md:w-fit'>
+      <Panel color='teal' className='w-full md:w-fit'>
         <Box className='mb-6'>
           <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
             {t('admin.tournaments.allTournaments')}
@@ -527,7 +524,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
             })}
           </div>
         )}
-      </Box>
+      </Panel>
     </div>
   )
 }

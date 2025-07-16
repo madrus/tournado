@@ -355,7 +355,7 @@ export function TeamForm({
         <Panel
           color='blue'
           panelNumber={2}
-          disabled={!isPanelEnabled(2)}
+          disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
           className='lg:p-8'
         >
           <div className='mb-6'>
@@ -363,7 +363,7 @@ export function TeamForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: isPanelEnabled(2) ? 'blue' : 'slate',
+                  color: formMode === 'edit' || isPanelEnabled(2) ? 'blue' : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -373,7 +373,9 @@ export function TeamForm({
             <p
               className={cn(
                 panelDescriptionVariants(),
-                isPanelEnabled(2) ? 'text-foreground' : 'text-foreground-lighter'
+                formMode === 'edit' || isPanelEnabled(2)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
               )}
             >
               {t('teams.form.enterTeamDetails')}
@@ -391,14 +393,20 @@ export function TeamForm({
                 placeholder={t('teams.form.placeholders.clubName')}
                 error={getTranslatedError(
                   'clubName',
-                  isPublicSuccess || !isPanelEnabled(2)
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 )}
                 required
-                disabled={isPublicSuccess || !isPanelEnabled(2)}
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                }
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('clubName')}
               />
-              {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
+              {clubName &&
+              !getTranslatedError(
+                'clubName',
+                formMode === 'create' && !isPanelEnabled(2)
+              ) ? (
                 <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
@@ -415,14 +423,20 @@ export function TeamForm({
                 placeholder={t('teams.form.placeholders.teamName')}
                 error={getTranslatedError(
                   'teamName',
-                  isPublicSuccess || !isPanelEnabled(2)
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 )}
                 required
-                disabled={isPublicSuccess || !isPanelEnabled(2)}
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                }
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('teamName')}
               />
-              {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
+              {teamName &&
+              !getTranslatedError(
+                'teamName',
+                formMode === 'create' && !isPanelEnabled(2)
+              ) ? (
                 <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
                 </div>
@@ -435,7 +449,7 @@ export function TeamForm({
         <Panel
           color='fuchsia'
           panelNumber={3}
-          disabled={!isPanelEnabled(3)}
+          disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
           className='lg:p-8'
         >
           <div className='mb-6'>
@@ -443,7 +457,7 @@ export function TeamForm({
               className={cn(
                 panelTitleVariants({
                   size: 'md',
-                  color: isPanelEnabled(3) ? 'fuchsia' : 'slate',
+                  color: formMode === 'edit' || isPanelEnabled(3) ? 'fuchsia' : 'slate',
                 }),
                 getLatinTitleClass(i18n.language)
               )}
@@ -453,7 +467,9 @@ export function TeamForm({
             <p
               className={cn(
                 panelDescriptionVariants(),
-                isPanelEnabled(3) ? 'text-foreground' : 'text-foreground-lighter'
+                formMode === 'edit' || isPanelEnabled(3)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
               )}
             >
               {t('teams.form.enterContactDetails')}
@@ -471,17 +487,19 @@ export function TeamForm({
                 placeholder={t('teams.form.placeholders.teamLeaderName')}
                 error={getTranslatedError(
                   'teamLeaderName',
-                  isPublicSuccess || !isPanelEnabled(3)
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 )}
                 required
-                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('teamLeaderName')}
               />
               {teamLeaderName &&
               !getTranslatedError(
                 'teamLeaderName',
-                isPublicSuccess || !isPanelEnabled(3)
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
                 <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
@@ -499,18 +517,20 @@ export function TeamForm({
                 placeholder={t('teams.form.placeholders.teamLeaderPhone')}
                 error={getTranslatedError(
                   'teamLeaderPhone',
-                  isPublicSuccess || !isPanelEnabled(3)
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 )}
                 required
                 type='tel'
-                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
               />
               {teamLeaderPhone &&
               !getTranslatedError(
                 'teamLeaderPhone',
-                isPublicSuccess || !isPanelEnabled(3)
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
                 <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
@@ -528,18 +548,20 @@ export function TeamForm({
                 placeholder={t('teams.form.placeholders.teamLeaderEmail')}
                 error={getTranslatedError(
                   'teamLeaderEmail',
-                  isPublicSuccess || !isPanelEnabled(3)
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 )}
                 required
                 type='email'
-                disabled={isPublicSuccess || !isPanelEnabled(3)}
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
                 className={getLatinTextClass(i18n.language)}
                 onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
               />
               {teamLeaderEmail &&
               !getTranslatedError(
                 'teamLeaderEmail',
-                isPublicSuccess || !isPanelEnabled(3)
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               ) ? (
                 <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
                   <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />

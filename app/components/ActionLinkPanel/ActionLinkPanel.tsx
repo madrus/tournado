@@ -2,10 +2,14 @@ import { JSX, ReactNode } from 'react'
 import { Link } from 'react-router'
 
 import { type ColorAccent } from '~/lib/lib.types'
-import { resolveColorAccent } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import { getTypographyClasses } from '~/utils/rtlUtils'
 
+import {
+  actionLinkPanelVariants,
+  panelBackgroundVariants,
+  panelLayerVariants,
+} from './ActionLinkPanel.variants'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'
 
@@ -20,6 +24,7 @@ type ActionLinkPanelProps = {
   onClick?: () => void
   children?: ReactNode
   language: string
+  className?: string
 }
 
 export function ActionLinkPanel({
@@ -33,24 +38,18 @@ export function ActionLinkPanel({
   onClick,
   children,
   language,
+  className,
 }: ActionLinkPanelProps): JSX.Element {
   const typographyClasses = getTypographyClasses(language)
-
-  // Generate border colors based on resolved colors
-  const getBorderColor = (color: ColorAccent, prefix = 'border') => {
-    const resolvedColor = resolveColorAccent(color)
-    return `${prefix}-${resolvedColor}-400`
-  }
-
-  const mainBorderColor = getBorderColor(mainColor)
-  const hoverBorderColor = hoverColor ? getBorderColor(hoverColor, 'hover:border') : ''
 
   const panel = (
     <div
       className={cn(
-        'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl transition-colors duration-750 ease-in-out',
-        mainBorderColor,
-        hoverBorderColor
+        actionLinkPanelVariants({
+          color: mainColor,
+          hoverColor: hoverColor || 'none',
+        }),
+        className
       )}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
@@ -59,7 +58,7 @@ export function ActionLinkPanel({
     >
       {/* Stable background layer */}
       <PanelBackground
-        backgroundColor={`bg-panel-bg-${resolveColorAccent(mainColor)}`}
+        backgroundColor={panelBackgroundVariants({ color: mainColor })}
         data-testid='panel-background'
       />
 
@@ -72,10 +71,10 @@ export function ActionLinkPanel({
         mainColor={mainColor}
         language={language}
         textAlign={typographyClasses.textAlign}
-        className={cn(
-          'relative z-20 transition-opacity duration-750 ease-in-out',
-          hoverColor ? 'group-hover:opacity-0' : ''
-        )}
+        className={panelLayerVariants({
+          isHover: false,
+          hasHoverColor: !!hoverColor,
+        })}
         data-testid='main-panel-layer'
       >
         {children}
@@ -93,9 +92,10 @@ export function ActionLinkPanel({
           isHover
           language={language}
           textAlign={typographyClasses.textAlign}
-          className={cn(
-            'absolute inset-0 z-30 opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100'
-          )}
+          className={panelLayerVariants({
+            isHover: true,
+            hasHoverColor: false,
+          })}
           data-testid='hover-panel-layer'
         >
           {children}

@@ -3,10 +3,14 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
+import {
+  panelContentVariants,
+  panelGlowVariants,
+  panelVariants,
+} from '~/components/shared/panel.variants'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
-import { getStaticPanelClasses } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -45,8 +49,6 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   const navigate = useNavigate()
   const revalidator = useRevalidator()
 
-  const panelClasses = getStaticPanelClasses('teal')
-
   useEffect(() => {
     const handlePopState = () => {
       revalidator.revalidate()
@@ -62,11 +64,11 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className={panelClasses.container}>
+      <div className={panelVariants({ color: 'teal' })}>
         {/* Glow effect */}
-        <div className={panelClasses.glow} />
+        <div className={panelGlowVariants({ color: 'teal' })} />
         {/* Content */}
-        <div className={panelClasses.content}>
+        <div className={panelContentVariants()}>
           <TournamentFilter
             tournamentListItems={tournamentListItems}
             selectedTournamentId={selectedTournamentId}

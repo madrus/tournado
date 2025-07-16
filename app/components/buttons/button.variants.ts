@@ -30,7 +30,6 @@ export const buttonVariants = cva(
         yellow: [],
         green: [],
         violet: [],
-        gray: [],
         slate: [],
       },
       size: {

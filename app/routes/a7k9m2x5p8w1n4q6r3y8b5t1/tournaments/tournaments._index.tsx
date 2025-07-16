@@ -292,7 +292,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
         <Panel color='teal'>
           <Flex align='center'>
             <Box className='flex-shrink-0'>
-              <div className='bg-error flex h-8 w-8 items-center justify-center rounded-md'>
+              <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-600'>
                 <TrophyIcon className='text-white' size={26} variant='outlined' />
               </div>
             </Box>

@@ -112,7 +112,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
 
             <Select.Portal>
               <Select.Content
-                className={comboFieldContentVariants()}
+                className={comboFieldContentVariants({ color })}
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}

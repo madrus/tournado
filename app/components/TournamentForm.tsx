@@ -7,6 +7,10 @@ import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
+import {
+  panelDescriptionVariants,
+  panelTitleVariants,
+} from '~/components/shared/panel.variants'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 import {
@@ -282,284 +286,283 @@ export function TournamentForm({
         ))}
 
         {/* Step 1: Basic Information - Always enabled */}
-        <div className='relative'>
-          <div className='bg-brand text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto'>
-            1
+        <Panel color='red' panelNumber={1} className='lg:p-8'>
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({ size: 'md', color: 'red' }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('tournaments.form.basicInformation')}
+            </h2>
+            <p className={panelDescriptionVariants()}>
+              {t('tournaments.form.enterBasicDetails')}
+            </p>
           </div>
 
-          <div className='border-brand from-accent to-accent rounded-xl border-2 bg-gradient-to-br p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'text-foreground-darker mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language)
-                )}
-              >
-                {t('tournaments.form.basicInformation')}
-              </h2>
-              <p className='text-brand text-sm'>
-                {t('tournaments.form.enterBasicDetails')}
-              </p>
-            </div>
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+            {/* Tournament Name */}
+            <TextInputField
+              ref={nameRef}
+              name='name'
+              label={t('tournaments.form.name')}
+              value={name}
+              onChange={value => setFormField('name', value)}
+              onBlur={() => validateFieldOnBlur('name')}
+              error={getTranslatedError('name')}
+              required
+              className={getLatinTextClass(i18n.language)}
+              disabled={isPublicSuccess}
+            />
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              {/* Tournament Name */}
-              <TextInputField
-                ref={nameRef}
-                name='name'
-                label={t('tournaments.form.name')}
-                value={name}
-                onChange={value => setFormField('name', value)}
-                onBlur={() => validateFieldOnBlur('name')}
-                error={getTranslatedError('name')}
-                required
-                className={getLatinTextClass(i18n.language)}
-                disabled={isPublicSuccess}
-              />
-
-              {/* Location */}
-              <TextInputField
-                name='location'
-                label={t('tournaments.form.location')}
-                value={location}
-                onChange={value => setFormField('location', value)}
-                onBlur={() => validateFieldOnBlur('location')}
-                error={getTranslatedError('location')}
-                required
-                className={getLatinTextClass(i18n.language)}
-                disabled={isPublicSuccess}
-              />
-            </div>
+            {/* Location */}
+            <TextInputField
+              name='location'
+              label={t('tournaments.form.location')}
+              value={location}
+              onChange={value => setFormField('location', value)}
+              onBlur={() => validateFieldOnBlur('location')}
+              error={getTranslatedError('location')}
+              required
+              className={getLatinTextClass(i18n.language)}
+              disabled={isPublicSuccess}
+            />
           </div>
-        </div>
+        </Panel>
 
         {/* Step 2: Dates */}
-        <div
-          className={cn(
-            'relative',
-            !isPanelEnabled(2) ? 'pointer-events-none opacity-50' : ''
-          )}
+        <Panel
+          color='blue'
+          panelNumber={2}
+          disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-slate-400'
-            )}
-          >
-            2
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color: formMode === 'edit' || isPanelEnabled(2) ? 'blue' : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('tournaments.form.dates')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                formMode === 'edit' || isPanelEnabled(2)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
+              )}
+            >
+              {t('tournaments.form.selectDates')}
+            </p>
           </div>
 
-          <div className='rounded-xl border-2 border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-slate-400'
-                )}
-              >
-                {t('tournaments.form.dates')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-slate-400'
-                )}
-              >
-                {t('tournaments.form.selectDates')}
-              </p>
-            </div>
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+            {/* Start Date */}
+            <CustomDatePicker
+              name='startDate'
+              label={t('tournaments.form.startDate')}
+              value={startDate}
+              onChange={event => setFormField('startDate', event.target.value)}
+              onBlur={() => validateFieldOnBlur('startDate')}
+              error={getTranslatedError(
+                'startDate',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              )}
+              required
+              className={getLatinTextClass(i18n.language)}
+              readOnly={
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              }
+            />
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              {/* Start Date */}
-              <CustomDatePicker
-                name='startDate'
-                label={t('tournaments.form.startDate')}
-                value={startDate}
-                onChange={event => setFormField('startDate', event.target.value)}
-                onBlur={() => validateFieldOnBlur('startDate')}
-                error={getTranslatedError('startDate', !isPanelEnabled(2))}
-                required
-                className={getLatinTextClass(i18n.language)}
-                readOnly={isPublicSuccess || !isPanelEnabled(2)}
-              />
-
-              {/* End Date */}
-              <CustomDatePicker
-                name='endDate'
-                label={t('tournaments.form.endDate')}
-                value={endDate}
-                onChange={event => setFormField('endDate', event.target.value)}
-                onBlur={() => validateFieldOnBlur('endDate')}
-                error={getTranslatedError('endDate', !isPanelEnabled(2))}
-                className={getLatinTextClass(i18n.language)}
-                readOnly={isPublicSuccess || !isPanelEnabled(2)}
-              />
-            </div>
+            {/* End Date */}
+            <CustomDatePicker
+              name='endDate'
+              label={t('tournaments.form.endDate')}
+              value={endDate}
+              onChange={event => setFormField('endDate', event.target.value)}
+              onBlur={() => validateFieldOnBlur('endDate')}
+              error={getTranslatedError(
+                'endDate',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              )}
+              className={getLatinTextClass(i18n.language)}
+              readOnly={
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              }
+            />
           </div>
-        </div>
+        </Panel>
 
         {/* Step 3: Divisions */}
-        <div
-          className={cn(
-            'relative',
-            !isPanelEnabled(3) ? 'pointer-events-none opacity-50' : ''
-          )}
+        <Panel
+          color='lime'
+          panelNumber={3}
+          disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(3) ? 'bg-green-600' : 'bg-slate-400'
-            )}
-          >
-            3
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color: formMode === 'edit' || isPanelEnabled(3) ? 'lime' : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('tournaments.form.divisions')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                formMode === 'edit' || isPanelEnabled(3)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
+              )}
+            >
+              {t('tournaments.form.selectDivisions')} ({selectedDivisions.length}{' '}
+              {t('tournaments.form.selected')})
+            </p>
           </div>
 
-          <div className='rounded-xl border-2 border-green-200 bg-gradient-to-br from-green-50/50 to-emerald-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
+          <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'>
+            {divisions.map(division => (
+              <label
+                key={division}
                 className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3) ? 'text-green-800' : 'text-slate-400'
+                  'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
+                  selectedDivisions.includes(division)
+                    ? 'border-lime-500 bg-lime-50 text-lime-800'
+                    : 'border-slate-200 bg-white hover:border-lime-300 hover:bg-lime-50',
+                  ((formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess) &&
+                    'cursor-not-allowed opacity-50'
                 )}
+                data-testid={`division-${division.toLowerCase()}`}
               >
-                {t('tournaments.form.divisions')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(3) ? 'text-green-600' : 'text-slate-400'
-                )}
-              >
-                {t('tournaments.form.selectDivisions')} ({selectedDivisions.length}{' '}
-                {t('tournaments.form.selected')})
-              </p>
-            </div>
-
-            <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'>
-              {divisions.map(division => (
-                <label
-                  key={division}
+                <input
+                  type='checkbox'
+                  checked={selectedDivisions.includes(division)}
+                  onChange={() => handleDivisionToggle(division)}
+                  disabled={
+                    (formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess
+                  }
+                  className='sr-only'
+                />
+                <span
                   className={cn(
-                    'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                    selectedDivisions.includes(division)
-                      ? 'border-green-500 bg-green-50 text-green-800'
-                      : 'border-slate-200 bg-white hover:border-green-300 hover:bg-green-50',
-                    (!isPanelEnabled(3) || isPublicSuccess) &&
-                      'cursor-not-allowed opacity-50'
+                    'text-base font-medium',
+                    i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                   )}
-                  data-testid={`division-${division.toLowerCase()}`}
                 >
-                  <input
-                    type='checkbox'
-                    checked={selectedDivisions.includes(division)}
-                    onChange={() => handleDivisionToggle(division)}
-                    disabled={!isPanelEnabled(3) || isPublicSuccess}
-                    className='sr-only'
-                  />
-                  <span
-                    className={cn(
-                      'text-base font-medium',
-                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
-                    )}
-                  >
-                    {getDivisionLabelByValue(
-                      division as Division,
-                      i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                    )}
-                  </span>
-                </label>
-              ))}
-            </div>
-            {getTranslatedError('divisions', !isPanelEnabled(3)) ? (
-              <p className='text-destructive mt-2 text-sm'>
-                {getTranslatedError('divisions', !isPanelEnabled(3))}
-              </p>
-            ) : null}
+                  {getDivisionLabelByValue(
+                    division as Division,
+                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                  )}
+                </span>
+              </label>
+            ))}
           </div>
-        </div>
+          {getTranslatedError(
+            'divisions',
+            isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+          ) ? (
+            <p className='text-destructive mt-2 text-sm'>
+              {getTranslatedError(
+                'divisions',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+              )}
+            </p>
+          ) : null}
+        </Panel>
 
         {/* Step 4: Categories */}
-        <div
-          className={cn(
-            'relative',
-            !isPanelEnabled(4) ? 'pointer-events-none opacity-50' : ''
-          )}
+        <Panel
+          color='purple'
+          panelNumber={4}
+          disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6 lg:rtl:left-auto',
-              isPanelEnabled(4) ? 'bg-purple-600' : 'bg-slate-400'
-            )}
-          >
-            4
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color: formMode === 'edit' || isPanelEnabled(4) ? 'purple' : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('tournaments.form.categories')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                formMode === 'edit' || isPanelEnabled(4)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
+              )}
+            >
+              {t('tournaments.form.selectCategories')} ({selectedCategories.length}{' '}
+              {t('tournaments.form.selected')})
+            </p>
           </div>
 
-          <div className='rounded-xl border-2 border-purple-200 bg-gradient-to-br from-purple-50/50 to-violet-50/30 p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
+          <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
+            {categories.map(category => (
+              <label
+                key={category}
                 className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(4) ? 'text-purple-800' : 'text-slate-400'
+                  'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
+                  selectedCategories.includes(category)
+                    ? 'border-purple-500 bg-purple-50 text-purple-800'
+                    : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50',
+                  ((formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess) &&
+                    'cursor-not-allowed opacity-50'
                 )}
+                data-testid={`category-${category.toLowerCase()}`}
               >
-                {t('tournaments.form.categories')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(4) ? 'text-purple-600' : 'text-slate-400'
-                )}
-              >
-                {t('tournaments.form.selectCategories')} ({selectedCategories.length}{' '}
-                {t('tournaments.form.selected')})
-              </p>
-            </div>
-
-            <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
-              {categories.map(category => (
-                <label
-                  key={category}
+                <input
+                  type='checkbox'
+                  checked={selectedCategories.includes(category)}
+                  onChange={() => handleCategoryToggle(category)}
+                  disabled={
+                    (formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess
+                  }
+                  className='sr-only'
+                />
+                <span
                   className={cn(
-                    'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
-                    selectedCategories.includes(category)
-                      ? 'border-purple-500 bg-purple-50 text-purple-800'
-                      : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50',
-                    (!isPanelEnabled(4) || isPublicSuccess) &&
-                      'cursor-not-allowed opacity-50'
+                    'text-base font-medium',
+                    i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
                   )}
-                  data-testid={`category-${category.toLowerCase()}`}
                 >
-                  <input
-                    type='checkbox'
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryToggle(category)}
-                    disabled={!isPanelEnabled(4) || isPublicSuccess}
-                    className='sr-only'
-                  />
-                  <span
-                    className={cn(
-                      'text-base font-medium',
-                      i18n.language !== 'ar' ? getLatinTextClass(i18n.language) : ''
-                    )}
-                  >
-                    {getCategoryLabelByValue(
-                      category as Category,
-                      i18n.language as 'en' | 'nl' | 'ar' | 'tr'
-                    )}
-                  </span>
-                </label>
-              ))}
-            </div>
-            {getTranslatedError('categories', !isPanelEnabled(4)) ? (
-              <p className='text-destructive mt-2 text-sm'>
-                {getTranslatedError('categories', !isPanelEnabled(4))}
-              </p>
-            ) : null}
+                  {getCategoryLabelByValue(
+                    category as Category,
+                    i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                  )}
+                </span>
+              </label>
+            ))}
           </div>
-        </div>
+          {getTranslatedError(
+            'categories',
+            isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+          ) ? (
+            <p className='text-destructive mt-2 text-sm'>
+              {getTranslatedError(
+                'categories',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+              )}
+            </p>
+          ) : null}
+        </Panel>
 
         {/* Submit Button */}
         <div className='flex justify-end rtl:justify-start'>

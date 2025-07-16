@@ -461,7 +461,7 @@ export function TournamentForm({
                 disabled={
                   (formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess
                 }
-                variant='divisions'
+                color={PANEL_COLORS.step3}
                 onToggle={handleDivisionToggle}
                 data-testid={`division-${division.toLowerCase()}`}
               />
@@ -528,7 +528,7 @@ export function TournamentForm({
                 disabled={
                   (formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess
                 }
-                variant='categories'
+                color={PANEL_COLORS.step4}
                 onToggle={handleCategoryToggle}
                 data-testid={`category-${category.toLowerCase()}`}
               />

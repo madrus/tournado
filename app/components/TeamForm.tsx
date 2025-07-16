@@ -5,6 +5,10 @@ import { Form, useNavigation } from 'react-router'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
+import {
+  panelDescriptionVariants,
+  panelTitleVariants,
+} from '~/components/shared/panel.variants'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
@@ -231,131 +235,121 @@ export function TeamForm({
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
         {/* Step 1: Tournament Filters */}
-        <div className='relative'>
-          <div className='bg-brand text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6'>
-            1
+        <Panel color='red' panelNumber={1} className='lg:p-8'>
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({ size: 'md', color: 'red' }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.selectTournamentDetails')}
+            </h2>
+            <p className={panelDescriptionVariants()}>
+              {t('teams.form.completeAllThreeFields')}
+            </p>
           </div>
 
-          <div className='border-brand from-accent to-accent rounded-xl border-2 bg-gradient-to-br p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'text-foreground-darker mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language)
-                )}
-              >
-                {t('teams.form.selectTournamentDetails')}
-              </h2>
-              <p className='text-brand text-sm'>
-                {t('teams.form.completeAllThreeFields')}
-              </p>
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {/* Tournament Selection */}
+            <div className='relative'>
+              <ComboField
+                name='tournamentId'
+                label={t('teams.form.tournament')}
+                value={tournamentId}
+                onChange={value => {
+                  setFormField('tournamentId', value)
+                  // Only clear dependent fields in create mode
+                  // In edit mode, preserve existing values
+                  if (formMode === 'create') {
+                    setFormField('division', '')
+                    setFormField('category', '')
+                  }
+                }}
+                options={availableTournaments.map(tournament => ({
+                  value: tournament.id,
+                  label: `${tournament.name} - ${tournament.location}`,
+                }))}
+                placeholder={t('teams.form.selectTournament')}
+                error={getTranslatedError('tournamentId', isPublicSuccess)}
+                required
+                disabled={isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('tournamentId')}
+              />
+              {tournamentId && !getTranslatedError('tournamentId', isPublicSuccess) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
             </div>
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-              {/* Tournament Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='tournamentId'
-                  label={t('teams.form.tournament')}
-                  value={tournamentId}
-                  onChange={value => {
-                    setFormField('tournamentId', value)
-                    // Only clear dependent fields in create mode
-                    // In edit mode, preserve existing values
-                    if (formMode === 'create') {
-                      setFormField('division', '')
-                      setFormField('category', '')
-                    }
-                  }}
-                  options={availableTournaments.map(tournament => ({
-                    value: tournament.id,
-                    label: `${tournament.name} - ${tournament.location}`,
-                  }))}
-                  placeholder={t('teams.form.selectTournament')}
-                  error={getTranslatedError('tournamentId', isPublicSuccess)}
-                  required
-                  disabled={isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('tournamentId')}
-                />
-                {tournamentId &&
-                !getTranslatedError('tournamentId', isPublicSuccess) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+            {/* Division Selection */}
+            <div className='relative'>
+              <ComboField
+                name='division'
+                label={t('teams.form.division')}
+                value={division}
+                onChange={value => {
+                  setFormField('division', value)
+                  // Only clear dependent fields in create mode
+                  // In edit mode, preserve existing values
+                  if (formMode === 'create') {
+                    setFormField('category', '')
+                  }
+                }}
+                options={availableDivisions.map(d => ({
+                  value: d,
+                  label: getDivisionLabel(d as Division, i18n.language),
+                }))}
+                placeholder={t('teams.form.selectDivision')}
+                error={getTranslatedError('division', !tournamentId || isPublicSuccess)}
+                required
+                disabled={!tournamentId || isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('division')}
+              />
+              {division &&
+              !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
+            </div>
 
-              {/* Division Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='division'
-                  label={t('teams.form.division')}
-                  value={division}
-                  onChange={value => {
-                    setFormField('division', value)
-                    // Only clear dependent fields in create mode
-                    // In edit mode, preserve existing values
-                    if (formMode === 'create') {
-                      setFormField('category', '')
-                    }
-                  }}
-                  options={availableDivisions.map(d => ({
-                    value: d,
-                    label: getDivisionLabel(d as Division, i18n.language),
-                  }))}
-                  placeholder={t('teams.form.selectDivision')}
-                  error={getTranslatedError(
-                    'division',
-                    !tournamentId || isPublicSuccess
-                  )}
-                  required
-                  disabled={!tournamentId || isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('division')}
-                />
-                {division &&
-                !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
-
-              {/* Category Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='category'
-                  label={t('teams.form.category')}
-                  value={category}
-                  onChange={value => setFormField('category', value)}
-                  options={availableCategories.map(c => ({
-                    value: c,
-                    label: c,
-                  }))}
-                  placeholder={t('teams.form.selectCategory')}
-                  error={getTranslatedError(
-                    'category',
-                    !tournamentId || !division || isPublicSuccess
-                  )}
-                  required
-                  disabled={!tournamentId || !division || isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('category')}
-                />
-                {category &&
-                !getTranslatedError(
+            {/* Category Selection */}
+            <div className='relative'>
+              <ComboField
+                name='category'
+                label={t('teams.form.category')}
+                value={category}
+                onChange={value => setFormField('category', value)}
+                options={availableCategories.map(c => ({
+                  value: c,
+                  label: c,
+                }))}
+                placeholder={t('teams.form.selectCategory')}
+                error={getTranslatedError(
                   'category',
                   !tournamentId || !division || isPublicSuccess
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                )}
+                required
+                disabled={!tournamentId || !division || isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                onBlur={() => validateFieldOnBlur('category')}
+              />
+              {category &&
+              !getTranslatedError(
+                'category',
+                !tournamentId || !division || isPublicSuccess
+              ) ? (
+                <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
+                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
+                </div>
+              ) : null}
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 2: Team Information */}
         <div

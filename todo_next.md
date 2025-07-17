@@ -41,16 +41,18 @@ The dark mode and semantic color system has been **successfully implemented**:
 
 ### **Testing & Quality Assurance**
 
-3. Add Playwright visual-regression snapshots for:
-   - [ ] Tournaments list page in both light/dark modes
-   - [ ] Teams list page in both light/dark modes
-   - [ ] Forms using CustomDatePicker in both themes
-   - [ ] ActionLinkPanel components with different color accents
+3. Add robust structural and functional tests for:
+   - [x] Tournaments list page structure and functionality
+   - [x] Teams list page structure and functionality
+   - [x] Form panel progression and DatePicker integration
+   - [x] ActionLinkPanel components and navigation
+   - [x] Dark/light theme functionality
+   - [x] Responsive design verification
 
-4. [ ] **Documentation Updates**
-   - [ ] Update design docs to document the implemented semantic token system
-   - [ ] Document color accent usage patterns for components
-   - [ ] Add dark mode guidelines for future contributors
+4. [x] **Documentation Updates**
+   - [x] Update design docs to document the implemented semantic token system
+   - [x] Document color accent usage patterns for components
+   - [x] Add dark mode guidelines for future contributors
 
 ### **Enhancement Opportunities**
 

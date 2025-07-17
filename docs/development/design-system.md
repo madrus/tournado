@@ -328,6 +328,53 @@ The color system includes RTL-aware styling:
 - **Cultural considerations** - Color meanings adapt to cultural context
 - **Accessibility maintained** - Contrast ratios preserved in RTL layouts
 
+## 🎯 Icon System Integration
+
+The Tournado application features a **comprehensive icon system with 31 optimized SVG components** that seamlessly integrate with the design system:
+
+### Perfect Theme Compatibility
+
+All icons have been audited and optimized for flawless theme adaptation:
+
+```typescript
+// ✅ Stroke-based icons (currentColor inheritance)
+<svg stroke="currentColor" className="inline-block">
+  <path d="..." />
+</svg>
+
+// ✅ Fill-based icons (semantic token integration)
+<svg className="inline-block fill-current">
+  <path d="..." />
+</svg>
+```
+
+### Icon System Achievements
+
+- ✅ **31/31 icons audited** - Complete coverage of all icon components
+- ✅ **100% theme compatibility** - All icons adapt automatically to light/dark modes
+- ✅ **Zero hard-coded colors** - Perfect `currentColor` inheritance
+- ✅ **Complete accessibility** - All icons include proper ARIA labels
+- ✅ **Performance optimized** - Efficient SVG paths and consistent patterns
+
+### Icon Categories
+
+The icon system covers all application needs:
+
+- **Navigation & Interface** (8 icons) - AddIcon, ChevronIcons, CloseIcon, etc.
+- **User & Authentication** (6 icons) - PersonIcon, LoginIcon, AdminPanelSettings, etc.
+- **Status & Feedback** (7 icons) - CheckIcon, ErrorIcon, WarningIcon, etc.
+- **Theme & Interface** (4 icons) - DarkModeIcon, LightModeIcon, LanguageIcon, etc.
+- **Content & Actions** (6 icons) - HomeIcon, CalendarIcon, DeleteIcon, etc.
+
+### Advanced Icon Features
+
+- **Weight variants** - Support for 400/500/600 font weights
+- **Style variants** - Outlined and filled variants for key icons
+- **RTL support** - AnimatedHamburgerIcon includes RTL-aware animations
+- **Responsive sizing** - Configurable size props for different contexts
+
+For comprehensive icon usage guidelines and implementation patterns, see [Icon Guidelines](icon-guidelines.md).
+
 ## 📚 Reference
 
 ### Key Files
@@ -343,6 +390,7 @@ The color system includes RTL-aware styling:
 - **Button Components**: Comprehensive variant system
 - **Form Inputs**: Semantic token usage patterns
 - **Navigation**: Theme-aware styling
+- **Icon System**: 31 optimized SVG components with perfect theme adaptation
 
 ### Testing
 

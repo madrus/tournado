@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const textInputFieldVariants = cva(
   [
     'h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-    'placeholder:text-foreground-lighter bg-input dark:bg-input/40 text-foreground',
+    'placeholder:[color:var(--color-placeholder)] bg-input dark:bg-input/40 text-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
@@ -59,7 +59,7 @@ export const textInputFieldVariants = cva(
 export const comboFieldTriggerVariants = cva(
   [
     'flex h-12 w-full items-center justify-between rounded-md px-3 py-2 text-lg border-2',
-    'bg-input dark:bg-input/40 text-input-foreground',
+    'bg-input dark:bg-input/40 text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
@@ -203,7 +203,7 @@ export const comboFieldItemVariants = cva(
 export const datePickerButtonVariants = cva(
   [
     'flex h-12 w-full items-center justify-between rounded-md border-2 px-3 text-left text-lg leading-6',
-    'bg-input dark:bg-input/40 text-input-foreground placeholder:text-foreground-lighter',
+    'bg-input dark:bg-input/40 text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
@@ -337,7 +337,7 @@ export const calendarDayVariants = cva(
 export const dateInputFieldVariants = cva(
   [
     'h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-    'placeholder:text-foreground-lighter bg-input dark:bg-input/40 text-input-foreground',
+    'placeholder:[color:var(--color-placeholder)] bg-input dark:bg-input/40 text-input-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     '[&::-webkit-calendar-picker-indicator]:opacity-70',
   ],

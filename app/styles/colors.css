@@ -38,9 +38,15 @@
   --color-primary-900: var(--color-emerald-900);
   --color-primary-950: var(--color-emerald-950);
   --color-foreground-darker: var(--color-main); /* for emphasis */
-  --color-foreground-light: var(--color-slate-600);
-  --color-foreground-lighter: var(--color-slate-500);
   --color-foreground: var(--color-slate-900); /* default body text (light) */
+  --color-foreground-light: var(--color-slate-600); /* lighter than default */
+  --color-foreground-lighter: var(--color-slate-400); /* even lighter */
+  --color-foreground-lightest: var(
+    --color-slate-400
+  ); /* least prominent, e.g. placeholder */
+  --color-placeholder: var(
+    --color-foreground-lightest
+  ); /* use lightest for placeholder in light mode */
   --color-foreground-heading: var(--color-main); /* for headings */
   --color-title: var(--color-main); /* for titles */
   --color-chip-border: var(--color-red-600); /* chip border color */
@@ -151,9 +157,15 @@
   --color-border: var(
     --color-slate-500
   ); /* lighter for better contrast against dark background */
-  --color-foreground: #f1f5f9cc; /* slate-100 with 80% opacity - body text */
-  --color-foreground-light: var(--color-slate-300);
-  --color-foreground-lighter: var(--color-slate-400);
+  --color-foreground: var(--color-slate-100); /* most prominent, main text */
+  --color-foreground-light: var(--color-slate-300); /* less prominent */
+  --color-foreground-lighter: var(--color-slate-400); /* even less prominent */
+  --color-foreground-lightest: var(
+    --color-slate-500
+  ); /* least prominent, e.g. placeholder */
+  --color-placeholder: var(
+    --color-foreground-lightest
+  ); /* use lightest for placeholder in dark mode */
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
   --color-brand: var(

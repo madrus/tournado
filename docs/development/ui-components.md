@@ -289,3 +289,40 @@ The design system is optimized for performance:
 - **Semantic tokens** - Consistent styling reduces CSS bundle size
 
 For detailed implementation examples and advanced patterns, see the [Design System Documentation](design-system.md).
+
+## 🎨 Icon System
+
+The application features a comprehensive icon system with **31 optimized SVG components** that have been fully audited for theme compatibility:
+
+### Icon System Status
+
+- ✅ **31/31 icons audited** - Complete coverage
+- ✅ **100% theme compatibility** - Perfect light/dark mode adaptation
+- ✅ **Zero hard-coded colors** - All icons use `currentColor` inheritance
+- ✅ **Complete accessibility** - Proper ARIA labeling throughout
+
+### Key Icon Categories
+
+- **Navigation & Interface** (8 icons) - AddIcon, ChevronIcons, AnimatedHamburgerIcon
+- **User & Authentication** (6 icons) - PersonIcon, LoginIcon, AdminPanelSettings
+- **Status & Feedback** (7 icons) - CheckIcon, ErrorIcon, WarningIcon, TrophyIcon
+- **Theme & Interface** (4 icons) - DarkModeIcon, LightModeIcon, LanguageIcon
+- **Content & Actions** (6 icons) - HomeIcon, CalendarIcon, DeleteIcon
+
+### Implementation Patterns
+
+Icons follow consistent patterns for optimal theme integration:
+
+```typescript
+// Stroke-based icons (simple line art)
+<svg stroke="currentColor" className="inline-block">
+  <path d="..." />
+</svg>
+
+// Fill-based icons (Material Design)
+<svg className="inline-block fill-current">
+  <path d="..." />
+</svg>
+```
+
+All icons support configurable sizing, weight variants, and accessibility features. For comprehensive usage guidelines and implementation details, see [Icon Guidelines](icon-guidelines.md).

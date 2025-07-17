@@ -409,6 +409,111 @@ export const dateInputFieldVariants = cva(
   }
 )
 
+// Checkbox agreement field variants
+export const checkboxAgreementFieldVariants = cva(
+  [
+    'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
+    'bg-input dark:bg-input/40',
+  ],
+  {
+    variants: {
+      color: {
+        brand:
+          'border-brand-700/30 hover:border-brand-600 hover:shadow-md hover:shadow-brand-500/20 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 dark:hover:shadow-brand-400/30 dark:focus:ring-brand-400/30',
+        primary:
+          'border-primary-700/30 hover:border-primary-600 hover:shadow-md hover:shadow-primary-500/20 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:hover:shadow-primary-400/30 dark:focus:ring-primary-400/30',
+        emerald:
+          'border-emerald-700/30 hover:border-emerald-600 hover:shadow-md hover:shadow-emerald-500/20 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 dark:hover:shadow-emerald-400/30 dark:focus:ring-emerald-400/30',
+        red: 'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 dark:hover:shadow-red-400/30 dark:focus:ring-red-400/30',
+        blue: 'border-blue-700/30 hover:border-blue-600 hover:shadow-md hover:shadow-blue-500/20 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:hover:shadow-blue-400/30 dark:focus:ring-blue-400/30',
+        green:
+          'border-green-700/30 hover:border-green-600 hover:shadow-md hover:shadow-green-500/20 focus:border-green-500 focus:ring-4 focus:ring-green-500/20 dark:hover:shadow-green-400/30 dark:focus:ring-green-400/30',
+        yellow:
+          'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 dark:hover:shadow-yellow-400/30 dark:focus:ring-yellow-400/30',
+        purple:
+          'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:hover:shadow-purple-400/30 dark:focus:ring-purple-400/30',
+        pink: 'border-pink-700/30 hover:border-pink-600 hover:shadow-md hover:shadow-pink-500/20 focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 dark:hover:shadow-pink-400/30 dark:focus:ring-pink-400/30',
+        indigo:
+          'border-indigo-700/30 hover:border-indigo-600 hover:shadow-md hover:shadow-indigo-500/20 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:hover:shadow-indigo-400/30 dark:focus:ring-indigo-400/30',
+        slate:
+          'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:hover:shadow-slate-400/30 dark:focus:ring-slate-400/30',
+        zinc: 'border-zinc-700/30 hover:border-zinc-600 hover:shadow-md hover:shadow-zinc-500/20 focus:border-zinc-500 focus:ring-4 focus:ring-zinc-500/20 dark:hover:shadow-zinc-400/30 dark:focus:ring-zinc-400/30',
+        orange:
+          'border-orange-700/30 hover:border-orange-600 hover:shadow-md hover:shadow-orange-500/20 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 dark:hover:shadow-orange-400/30 dark:focus:ring-orange-400/30',
+        amber:
+          'border-amber-700/30 hover:border-amber-600 hover:shadow-md hover:shadow-amber-500/20 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 dark:hover:shadow-amber-400/30 dark:focus:ring-amber-400/30',
+        lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-md hover:shadow-lime-500/20 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:hover:shadow-lime-400/30 dark:focus:ring-lime-400/30',
+        teal: 'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 dark:hover:shadow-teal-400/30 dark:focus:ring-teal-400/30',
+        cyan: 'border-cyan-700/30 hover:border-cyan-600 hover:shadow-md hover:shadow-cyan-500/20 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 dark:hover:shadow-cyan-400/30 dark:focus:ring-cyan-400/30',
+        sky: 'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 dark:hover:shadow-sky-400/30 dark:focus:ring-sky-400/30',
+        violet:
+          'border-violet-700/30 hover:border-violet-600 hover:shadow-md hover:shadow-violet-500/20 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/20 dark:hover:shadow-violet-400/30 dark:focus:ring-violet-400/30',
+        fuchsia:
+          'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
+        rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
+      },
+      disabled: {
+        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+      },
+      error: {
+        true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
+      },
+    },
+  }
+)
+
+export const checkboxAgreementInputVariants = cva(
+  [
+    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
+    'bg-input dark:bg-input/40',
+  ],
+  {
+    variants: {
+      color: {
+        brand:
+          'border-brand-700/30 hover:border-brand-600 hover:shadow-md hover:shadow-brand-500/20 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 dark:hover:shadow-brand-400/30 dark:focus:ring-brand-400/30',
+        primary:
+          'border-primary-700/30 hover:border-primary-600 hover:shadow-md hover:shadow-primary-500/20 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:hover:shadow-primary-400/30 dark:focus:ring-primary-400/30',
+        emerald:
+          'border-emerald-700/30 hover:border-emerald-600 hover:shadow-md hover:shadow-emerald-500/20 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 dark:hover:shadow-emerald-400/30 dark:focus:ring-emerald-400/30',
+        red: 'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 dark:hover:shadow-red-400/30 dark:focus:ring-red-400/30',
+        blue: 'border-blue-700/30 hover:border-blue-600 hover:shadow-md hover:shadow-blue-500/20 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 dark:hover:shadow-blue-400/30 dark:focus:ring-blue-400/30',
+        green:
+          'border-green-700/30 hover:border-green-600 hover:shadow-md hover:shadow-green-500/20 focus:border-green-500 focus:ring-4 focus:ring-green-500/20 dark:hover:shadow-green-400/30 dark:focus:ring-green-400/30',
+        yellow:
+          'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 dark:hover:shadow-yellow-400/30 dark:focus:ring-yellow-400/30',
+        purple:
+          'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:hover:shadow-purple-400/30 dark:focus:ring-purple-400/30',
+        pink: 'border-pink-700/30 hover:border-pink-600 hover:shadow-md hover:shadow-pink-500/20 focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 dark:hover:shadow-pink-400/30 dark:focus:ring-pink-400/30',
+        indigo:
+          'border-indigo-700/30 hover:border-indigo-600 hover:shadow-md hover:shadow-indigo-500/20 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:hover:shadow-indigo-400/30 dark:focus:ring-indigo-400/30',
+        slate:
+          'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:hover:shadow-slate-400/30 dark:focus:ring-slate-400/30',
+        zinc: 'border-zinc-700/30 hover:border-zinc-600 hover:shadow-md hover:shadow-zinc-500/20 focus:border-zinc-500 focus:ring-4 focus:ring-zinc-500/20 dark:hover:shadow-zinc-400/30 dark:focus:ring-zinc-400/30',
+        orange:
+          'border-orange-700/30 hover:border-orange-600 hover:shadow-md hover:shadow-orange-500/20 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 dark:hover:shadow-orange-400/30 dark:focus:ring-orange-400/30',
+        amber:
+          'border-amber-700/30 hover:border-amber-600 hover:shadow-md hover:shadow-amber-500/20 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 dark:hover:shadow-amber-400/30 dark:focus:ring-amber-400/30',
+        lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-md hover:shadow-lime-500/20 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:hover:shadow-lime-400/30 dark:focus:ring-lime-400/30',
+        teal: 'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 dark:hover:shadow-teal-400/30 dark:focus:ring-teal-400/30',
+        cyan: 'border-cyan-700/30 hover:border-cyan-600 hover:shadow-md hover:shadow-cyan-500/20 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 dark:hover:shadow-cyan-400/30 dark:focus:ring-cyan-400/30',
+        sky: 'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 dark:hover:shadow-sky-400/30 dark:focus:ring-sky-400/30',
+        violet:
+          'border-violet-700/30 hover:border-violet-600 hover:shadow-md hover:shadow-violet-500/20 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/20 dark:hover:shadow-violet-400/30 dark:focus:ring-violet-400/30',
+        fuchsia:
+          'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
+        rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
+      },
+      disabled: {
+        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+      },
+      error: {
+        true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
+      },
+    },
+  }
+)
+
 // Export variant types
 export type TextInputFieldVariants = VariantProps<typeof textInputFieldVariants>
 export type ComboFieldTriggerVariants = VariantProps<typeof comboFieldTriggerVariants>
@@ -426,3 +531,6 @@ export type CalendarContainerVariants = VariantProps<typeof calendarContainerVar
 export type CalendarHeaderVariants = VariantProps<typeof calendarHeaderVariants>
 export type CalendarWeekdayVariants = VariantProps<typeof calendarWeekdayVariants>
 export type CalendarDayVariants = VariantProps<typeof calendarDayVariants>
+export type CheckboxAgreementInputVariants = VariantProps<
+  typeof checkboxAgreementInputVariants
+>

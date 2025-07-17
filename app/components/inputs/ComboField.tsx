@@ -114,7 +114,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   safeValue === '' ? 'text-foreground' : ''
                 )}
                 aria-invalid={!!error || undefined}
-                aria-errormessage={error ? `${name}-error` : undefined}
+                aria-errormessage={error && name ? `${name}-error` : undefined}
               >
                 <div
                   className={comboFieldValueVariants({
@@ -188,7 +188,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
           </select>
         </label>
         {error ? (
-          <ErrorMessage panelColor={color} id={`${name}-error`}>
+          <ErrorMessage panelColor={color} id={name ? `${name}-error` : undefined}>
             {error}
           </ErrorMessage>
         ) : null}

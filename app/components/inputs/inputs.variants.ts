@@ -374,14 +374,9 @@ export const dateInputFieldVariants = cva(
         pink: 'border border-pink-700/30 hover:border-2 hover:border-pink-700/50 focus:border-2 focus:border-pink-200',
         indigo:
           'border border-indigo-700/30 hover:border-2 hover:border-indigo-700/50 focus:border-2 focus:border-indigo-200',
-        gray: 'border border-gray-700/30 hover:border-2 hover:border-gray-700/50 focus:border-2 focus:border-gray-200',
         slate:
           'border border-slate-700/30 hover:border-2 hover:border-slate-700/50 focus:border-2 focus:border-slate-200',
         zinc: 'border border-zinc-700/30 hover:border-2 hover:border-zinc-700/50 focus:border-2 focus:border-zinc-200',
-        neutral:
-          'border border-neutral-700/30 hover:border-2 hover:border-neutral-700/50 focus:border-2 focus:border-neutral-200',
-        stone:
-          'border border-stone-700/30 hover:border-2 hover:border-stone-700/50 focus:border-2 focus:border-stone-200',
         orange:
           'border border-orange-700/30 hover:border-2 hover:border-orange-700/50 focus:border-2 focus:border-orange-200',
         amber:

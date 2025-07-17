@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import { describe, expect, it, vi } from 'vitest'
 
 import type { TFunction } from 'i18next'
@@ -62,8 +64,8 @@ describe('lib.zod', () => {
 
         expect(result.success).toBe(false)
         if (!result.success) {
-          const privacyError = result.error.errors.find(
-            err => err.path[0] === 'privacyAgreement'
+          const privacyError = result.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'privacyAgreement'
           )
           expect(privacyError?.message).toBe('You must agree to the privacy policy')
         }
@@ -75,7 +77,7 @@ describe('lib.zod', () => {
 
         expect(result.success).toBe(false)
         if (!result.success) {
-          const errorPaths = result.error.errors.map(err => err.path[0])
+          const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
           expect(errorPaths).toContain('teamName')
@@ -131,7 +133,7 @@ describe('lib.zod', () => {
 
         expect(result.success).toBe(false)
         if (!result.success) {
-          const errorPaths = result.error.errors.map(err => err.path[0])
+          const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
           expect(errorPaths).toContain('teamName')
@@ -165,8 +167,8 @@ describe('lib.zod', () => {
         })
         expect(emptyResult.success).toBe(false)
         if (!emptyResult.success) {
-          const error = emptyResult.error.errors.find(
-            err => err.path[0] === 'tournamentId'
+          const error = emptyResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'tournamentId'
           )
           expect(error?.message).toBe('Tournament is required')
         }
@@ -203,7 +205,9 @@ describe('lib.zod', () => {
         })
         expect(emptyResult.success).toBe(false)
         if (!emptyResult.success) {
-          const error = emptyResult.error.errors.find(err => err.path[0] === 'clubName')
+          const error = emptyResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'clubName'
+          )
           expect(error?.message).toBe('Club name is required')
         }
 
@@ -222,7 +226,9 @@ describe('lib.zod', () => {
         })
         expect(longResult.success).toBe(false)
         if (!longResult.success) {
-          const error = longResult.error.errors.find(err => err.path[0] === 'clubName')
+          const error = longResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'clubName'
+          )
           expect(error?.message).toBe('Club name must be less than 100 characters')
         }
 
@@ -258,7 +264,9 @@ describe('lib.zod', () => {
         })
         expect(emptyResult.success).toBe(false)
         if (!emptyResult.success) {
-          const error = emptyResult.error.errors.find(err => err.path[0] === 'teamName')
+          const error = emptyResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'teamName'
+          )
           expect(error?.message).toBe('Team name is required')
         }
 
@@ -277,7 +285,9 @@ describe('lib.zod', () => {
         })
         expect(longResult.success).toBe(false)
         if (!longResult.success) {
-          const error = longResult.error.errors.find(err => err.path[0] === 'teamName')
+          const error = longResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'teamName'
+          )
           expect(error?.message).toBe('Team name must be less than 50 characters')
         }
 
@@ -313,8 +323,8 @@ describe('lib.zod', () => {
         })
         expect(invalidEmailResult.success).toBe(false)
         if (!invalidEmailResult.success) {
-          const error = invalidEmailResult.error.errors.find(
-            err => err.path[0] === 'teamLeaderEmail'
+          const error = invalidEmailResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'teamLeaderEmail'
           )
           expect(error?.message).toBe('Please enter a valid email address')
         }
@@ -351,8 +361,8 @@ describe('lib.zod', () => {
         })
         expect(invalidPhoneResult.success).toBe(false)
         if (!invalidPhoneResult.success) {
-          const error = invalidPhoneResult.error.errors.find(
-            err => err.path[0] === 'teamLeaderPhone'
+          const error = invalidPhoneResult.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'teamLeaderPhone'
           )
           expect(error?.message).toBe('Please enter a valid phone number')
         }
@@ -490,8 +500,8 @@ describe('lib.zod', () => {
         const result = validateTeamData(invalidData, 'create')
         expect(result.success).toBe(false)
         if (!result.success) {
-          const privacyError = result.error.errors.find(
-            err => err.path[0] === 'privacyAgreement'
+          const privacyError = result.error.issues.find(
+            (err: z.ZodIssue) => err.path[0] === 'privacyAgreement'
           )
           expect(privacyError).toBeDefined()
         }
@@ -502,7 +512,7 @@ describe('lib.zod', () => {
         const result = validateTeamData(emptyData, 'create')
         expect(result.success).toBe(false)
         if (!result.success) {
-          const errorPaths = result.error.errors.map(err => err.path[0])
+          const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
           expect(errorPaths).toContain('teamName')
@@ -559,7 +569,7 @@ describe('lib.zod', () => {
         const result = validateTeamData(emptyData, 'edit')
         expect(result.success).toBe(false)
         if (!result.success) {
-          const errorPaths = result.error.errors.map(err => err.path[0])
+          const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
           expect(errorPaths).toContain('teamName')

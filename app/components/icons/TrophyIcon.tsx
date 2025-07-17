@@ -8,6 +8,7 @@ type TrophyIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
   [key: string]: unknown // Allow extra props
 }
 
@@ -17,6 +18,7 @@ export function TrophyIcon({
   variant = 'outlined',
   weight = 400,
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Trophy',
   ...props
 }: TrophyIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
@@ -45,6 +47,8 @@ export function TrophyIcon({
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
       data-testid={dataTestId}
+      role='img'
+      aria-label={ariaLabel}
       {...props}
     >
       <path d={path} />

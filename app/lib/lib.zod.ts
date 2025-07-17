@@ -29,12 +29,18 @@ const baseTeamSchema = z.object({
   teamLeaderPhone: z
     .string()
     .min(1)
-    .refine(val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val)),
+    .refine(val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val), {
+      message: 'Invalid phone number format',
+    }),
   teamLeaderEmail: z
     .string()
     .min(1)
-    .refine(val => val.length === 0 || EMAIL_REGEX.test(val)),
-  privacyAgreement: z.boolean().refine(val => val),
+    .refine(val => val.length === 0 || EMAIL_REGEX.test(val), {
+      message: 'Invalid email address',
+    }),
+  privacyAgreement: z.boolean().refine(val => val, {
+    message: 'Privacy agreement is required',
+  }),
 })
 
 // Schema for create mode (includes privacy agreement)
@@ -69,22 +75,20 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
     teamLeaderPhone: z
       .string()
       .min(1, t('teams.form.errors.phoneNumberRequired'))
-      .refine(
-        val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val),
-        t('teams.form.errors.phoneNumberInvalid')
-      ),
+      .refine(val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val), {
+        message: t('teams.form.errors.phoneNumberInvalid'),
+      }),
     teamLeaderEmail: z
       .string()
       .min(1, t('teams.form.errors.emailRequired'))
-      .refine(
-        val => val.length === 0 || EMAIL_REGEX.test(val),
-        t('teams.form.errors.emailInvalid')
-      ),
+      .refine(val => val.length === 0 || EMAIL_REGEX.test(val), {
+        message: t('teams.form.errors.emailInvalid'),
+      }),
 
     // Privacy agreement (required for public create mode)
-    privacyAgreement: z
-      .boolean()
-      .refine(val => val, t('teams.form.errors.privacyAgreementRequired')),
+    privacyAgreement: z.boolean().refine(val => val, {
+      message: t('teams.form.errors.privacyAgreementRequired'),
+    }),
   })
 
 // Factory for getting appropriate schema based on mode
@@ -183,10 +187,9 @@ export function getTournamentValidationSchema(
 export function validateTournamentData(
   tournamentData: z.infer<typeof baseTournamentSchema>,
   mode: 'create' | 'edit'
-): z.SafeParseReturnType<
-  z.infer<typeof baseTournamentSchema>,
-  z.infer<typeof baseTournamentSchema>
-> {
+): // eslint-disable-next-line id-blacklist
+| { success: true; data: z.infer<typeof baseTournamentSchema> }
+  | { success: false; error: z.ZodError } {
   const schema = mode === 'create' ? createTournamentSchema : editTournamentSchema
   return schema.safeParse(tournamentData)
 }

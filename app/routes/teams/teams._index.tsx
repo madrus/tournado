@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
+import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
-import { loadTeamsData } from '~/lib/teams.server'
-import type { TeamsLoaderData } from '~/lib/teams.types'
-import { getStaticPanelClasses } from '~/styles/panel.styles'
+import type { TeamsLoaderData } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 
@@ -45,8 +45,6 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   const navigate = useNavigate()
   const revalidator = useRevalidator()
 
-  const panelClasses = getStaticPanelClasses('teal')
-
   useEffect(() => {
     const handlePopState = () => {
       revalidator.revalidate()
@@ -62,18 +60,13 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <div className={panelClasses.container}>
-        {/* Glow effect */}
-        <div className={panelClasses.glow} />
-        {/* Content */}
-        <div className={panelClasses.content}>
-          <TournamentFilter
-            tournamentListItems={tournamentListItems}
-            selectedTournamentId={selectedTournamentId}
-            className='max-w-md'
-          />
-        </div>
-      </div>
+      <Panel color='teal'>
+        <TournamentFilter
+          tournamentListItems={tournamentListItems}
+          selectedTournamentId={selectedTournamentId}
+          className='max-w-md'
+        />
+      </Panel>
 
       {/* Teams Count */}
       {teamListItems.length > 0 ? (

@@ -1,3 +1,8 @@
+// ============================================================================
+// Team Types (moved from teams.types.ts)
+// ============================================================================
+import type { Team as PrismaTeam } from '@prisma/client'
+
 /**
  * @fileoverview Centralized Type System for Tournado Application
  *
@@ -13,9 +18,7 @@
  * For detailed documentation, see: docs/development/type-system.md
  */
 
-// ============================================================================
 // Foundation Types
-// ============================================================================
 
 /**
  * Branded type for team names with validation potential
@@ -49,10 +52,7 @@ export type ColorAccent =
   | 'brand' // special: maps to 'red'
   | 'primary' // special: maps to 'emerald'
   | 'slate'
-  | 'gray'
   | 'zinc'
-  | 'neutral'
-  | 'stone'
   | 'red'
   | 'orange'
   | 'amber'
@@ -70,6 +70,29 @@ export type ColorAccent =
   | 'fuchsia'
   | 'pink'
   | 'rose'
+
+// ============================================================================
+
+// ============================================================================
+
+export type TeamListItem = Pick<PrismaTeam, 'id' | 'clubName' | 'teamName' | 'category'>
+
+export type TournamentListItem = {
+  id: string
+  name: string
+  location: string
+}
+
+export type TeamsLoaderData = {
+  teamListItems: TeamListItem[]
+  tournamentListItems: TournamentListItem[]
+  selectedTournamentId?: string
+}
+
+export type TournamentFilterOption = {
+  value: string
+  label: string
+}
 
 // ============================================================================
 // Division System
@@ -256,20 +279,21 @@ export type TeamFormSchemaType = import('zod').ZodObject<{
   division: import('zod').ZodString
   category: import('zod').ZodString
   teamLeaderName: import('zod').ZodString
-  teamLeaderPhone: import('zod').ZodEffects<import('zod').ZodString, string, string>
-  teamLeaderEmail: import('zod').ZodEffects<import('zod').ZodString, string, string>
-  privacyAgreement: import('zod').ZodEffects<import('zod').ZodBoolean, boolean, boolean>
+  teamLeaderPhone: import('zod').ZodSchema<string>
+  teamLeaderEmail: import('zod').ZodSchema<string>
+  privacyAgreement: import('zod').ZodSchema<boolean>
 }>
 
 export type TeamValidationInput = Record<string, unknown>
 export type TeamValidationSchema = TeamFormSchemaType
 export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
   T extends 'create'
-    ? import('zod').SafeParseReturnType<TeamValidationInput, TeamFormData>
-    : import('zod').SafeParseReturnType<
-        TeamValidationInput,
-        Omit<TeamFormData, 'privacyAgreement'>
-      >
+    ? // eslint-disable-next-line id-blacklist
+      | { success: true; data: TeamFormData }
+        | { success: false; error: import('zod').ZodError }
+    : // eslint-disable-next-line id-blacklist
+      | { success: true; data: Omit<TeamFormData, 'privacyAgreement'> }
+        | { success: false; error: import('zod').ZodError }
 
 export type ExtractedTeamData = {
   tournamentId: string

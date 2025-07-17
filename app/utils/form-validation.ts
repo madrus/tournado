@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import type { TeamFormData } from '~/lib/lib.types'
 import {
   type TournamentFormData,
@@ -12,7 +14,7 @@ export const mapStoreFieldToZodField = (storeFieldName: string): string =>
 // Map field names to translation keys (matches translation file structure)
 export const getFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: { code?: string }
+  zodIssue?: Pick<z.ZodIssue, 'code'>
 ): string => {
   // If we have a Zod issue, check if it's a refine error (custom validation)
   if (zodIssue?.code === 'custom') {
@@ -74,7 +76,7 @@ export const validateSingleTeamField = (
     if (!result.success) {
       // Find the error for this specific field
       const zodFieldName = mapStoreFieldToZodField(fieldName)
-      const fieldError = result.error.errors.find(error => {
+      const fieldError = result.error.issues.find((error: z.ZodIssue) => {
         const path = error.path[0]
         return path === zodFieldName
       })
@@ -110,7 +112,7 @@ export const validateEntireTeamForm = (
         : validateTeamData(formData, 'edit')
 
     if (!result.success) {
-      result.error.errors.forEach(error => {
+      result.error.issues.forEach((error: z.ZodIssue) => {
         const zodFieldName = error.path[0] as string
         if (zodFieldName) {
           // Store field names are now the same as Zod field names
@@ -130,7 +132,7 @@ export const validateEntireTeamForm = (
 // Map tournament field names to translation keys
 export const getTournamentFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: { code?: string }
+  zodIssue?: Pick<z.ZodIssue, 'code'>
 ): string => {
   // Handle string too long errors
   if (zodIssue?.code === 'too_big') {
@@ -165,7 +167,7 @@ export const validateSingleTournamentField = (
 
     if (!result.success) {
       // Find the error for this specific field
-      const fieldError = result.error.errors.find(error => {
+      const fieldError = result.error.issues.find((error: z.ZodIssue) => {
         const path = error.path[0]
         return path === fieldName
       })
@@ -202,7 +204,7 @@ export const validateEntireTournamentForm = (
     const result = validateTournamentData(formData, mode)
 
     if (!result.success) {
-      result.error.errors.forEach(error => {
+      result.error.issues.forEach((error: z.ZodIssue) => {
         const fieldName = error.path[0] as string
         if (fieldName) {
           errors[fieldName] = getTournamentFieldErrorTranslationKey(fieldName, error)

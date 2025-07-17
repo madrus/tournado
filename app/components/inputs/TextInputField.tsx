@@ -1,8 +1,14 @@
 import { type FocusEvent, forwardRef, type JSX } from 'react'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
-import { getInputColorClasses } from '~/styles/input.styles'
 import { cn } from '~/utils/misc'
+
+import {
+  textInputFieldVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from './inputs.variants'
 
 type InputFieldProps = {
   name: string
@@ -36,7 +42,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       value,
       defaultValue,
       placeholder,
-      color = 'emerald',
+      color = 'slate',
       onChange,
       onFocus,
       onBlur,
@@ -44,38 +50,41 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
     ref
   ): JSX.Element => (
     <div className={className}>
-      <label className='text-foreground flex w-full flex-col gap-1'>
-        <span className='text-foreground font-medium'>{label}</span>
-        <input
-          ref={ref}
-          name={name}
-          type={type}
-          readOnly={readOnly}
-          disabled={disabled}
-          required={required}
-          value={value}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          className={cn(
-            'placeholder:text-foreground-lighter bg-input text-input-foreground h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-            'transition-all duration-300 ease-in-out focus:outline-none',
-            'disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400',
-            getInputColorClasses(color, disabled, error),
-            className
-          )}
-          aria-invalid={error ? true : undefined}
-          aria-errormessage={error ? `${name}-error` : undefined}
-          onChange={
-            onChange ? inputEvent => onChange(inputEvent.target.value) : undefined
-          }
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
+      <label className={textInputLabelVariants()}>
+        <span className={textInputLabelTextVariants()}>{label}</span>
+        <div className='relative'>
+          <input
+            ref={ref}
+            name={name}
+            type={type}
+            readOnly={readOnly}
+            disabled={disabled}
+            required={required}
+            value={value}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            className={cn(
+              textInputFieldVariants({
+                color,
+                disabled: disabled ? true : undefined,
+                error: error ? true : undefined,
+              }),
+              className
+            )}
+            aria-invalid={error ? true : undefined}
+            aria-errormessage={error ? `${name}-error` : undefined}
+            onChange={
+              onChange ? inputEvent => onChange(inputEvent.target.value) : undefined
+            }
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </div>
       </label>
       {error ? (
-        <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+        <ErrorMessage panelColor={color} id={`${name}-error`}>
           {error}
-        </div>
+        </ErrorMessage>
       ) : null}
     </div>
   )

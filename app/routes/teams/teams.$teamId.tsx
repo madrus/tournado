@@ -5,10 +5,14 @@ import { useLoaderData } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
+import {
+  panelContentVariants,
+  panelGlowVariants,
+  panelVariants,
+} from '~/components/shared/panel.variants'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById } from '~/models/team.server'
-import { getStaticPanelClasses } from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
@@ -80,8 +84,6 @@ export default function TeamDetailsPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const { i18n } = useTranslation()
 
-  const panelClasses = getStaticPanelClasses('teal')
-
   return (
     <div className='min-h-screen'>
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
@@ -100,9 +102,9 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Main Content - Games & Schedule */}
           <div className='space-y-6 lg:col-span-2'>
             {/* Upcoming Games */}
-            <div className={panelClasses.container}>
-              <div className={panelClasses.glow} />
-              <div className={panelClasses.content}>
+            <div className={panelVariants({ color: 'teal' })}>
+              <div className={panelGlowVariants({ color: 'teal' })} />
+              <div className={panelContentVariants()}>
                 <h2
                   className={cn(
                     'mb-4 text-xl font-semibold',
@@ -157,9 +159,9 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Recent Results */}
-            <div className={panelClasses.container}>
-              <div className={panelClasses.glow} />
-              <div className={panelClasses.content}>
+            <div className={panelVariants({ color: 'teal' })}>
+              <div className={panelGlowVariants({ color: 'teal' })} />
+              <div className={panelContentVariants()}>
                 <h2
                   className={cn(
                     'mb-4 text-xl font-semibold',
@@ -181,9 +183,9 @@ export default function TeamDetailsPage(): JSX.Element {
           {/* Sidebar - Team Info & Stats */}
           <div className='space-y-6'>
             {/* Team Info Card */}
-            <div className={panelClasses.container}>
-              <div className={panelClasses.glow} />
-              <div className={panelClasses.content}>
+            <div className={panelVariants({ color: 'teal' })}>
+              <div className={panelGlowVariants({ color: 'teal' })} />
+              <div className={panelContentVariants()}>
                 <h3
                   className={cn(
                     'mb-4 text-lg font-semibold',
@@ -232,9 +234,9 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Season Stats */}
-            <div className={panelClasses.container}>
-              <div className={panelClasses.glow} />
-              <div className={panelClasses.content}>
+            <div className={panelVariants({ color: 'teal' })}>
+              <div className={panelGlowVariants({ color: 'teal' })} />
+              <div className={panelContentVariants()}>
                 <h3
                   className={cn(
                     'mb-4 text-lg font-semibold',
@@ -270,9 +272,9 @@ export default function TeamDetailsPage(): JSX.Element {
             </div>
 
             {/* Quick Actions */}
-            <div className={panelClasses.container}>
-              <div className={panelClasses.glow} />
-              <div className={panelClasses.content}>
+            <div className={panelVariants({ color: 'teal' })}>
+              <div className={panelGlowVariants({ color: 'teal' })} />
+              <div className={panelContentVariants()}>
                 <h3
                   className={cn(
                     'mb-4 text-lg font-semibold',

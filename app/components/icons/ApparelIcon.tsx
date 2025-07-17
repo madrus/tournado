@@ -8,6 +8,7 @@ type ApparelIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
 }
 
 export function ApparelIcon({
@@ -16,6 +17,7 @@ export function ApparelIcon({
   variant = 'outlined',
   weight = 400,
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Apparel',
 }: ApparelIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -43,6 +45,8 @@ export function ApparelIcon({
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
       data-testid={dataTestId}
+      role='img'
+      aria-label={ariaLabel}
     >
       <path d={path} />
     </svg>

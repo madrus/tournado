@@ -7,6 +7,7 @@ type HomeIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
+  'aria-label'?: string
   [key: string]: unknown // Allow extra props
 }
 
@@ -15,6 +16,7 @@ export function HomeIcon({
   size = 24,
   variant = 'outlined',
   weight = 400,
+  'aria-label': ariaLabel = 'Home',
   ...props
 }: HomeIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
@@ -41,6 +43,8 @@ export function HomeIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
       {...props}
     >
       <path d={path} />

@@ -99,7 +99,7 @@ describe('ActionButton', () => {
       </I18nextProvider>
     )
     const secondaryButton = screen.getByRole('button')
-    expect(secondaryButton).toHaveClass('bg-transparent')
+    expect(secondaryButton).toHaveClass('bg-primary-50')
     expect(secondaryButton).toHaveClass('text-primary-600')
     expect(secondaryButton).toHaveClass('border')
     expect(secondaryButton).toHaveClass('border-primary-600')
@@ -137,7 +137,7 @@ describe('ActionButton', () => {
     // Verify disabled cursor
     expect(button).toHaveClass('disabled:cursor-not-allowed')
 
-    // Verify disabled colors (gray semantic colors)
+    // Verify disabled colors (slate semantic colors)
     expect(button).toHaveClass('disabled:bg-button-neutral-background')
     expect(button).toHaveClass('disabled:text-button-neutral-text')
     expect(button).toHaveClass('disabled:border-button-neutral-secondary-border')

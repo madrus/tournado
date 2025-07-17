@@ -285,7 +285,7 @@ export function TeamForm({
                 required
                 disabled={isPublicSuccess}
                 className={getLatinTextClass(i18n.language)}
-                color='red'
+                color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('tournamentId')}
               />
               <FieldCheckmark
@@ -416,6 +416,7 @@ export function TeamForm({
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 }
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step2}
                 onBlur={() => validateFieldOnBlur('clubName')}
               />
               {clubName &&
@@ -446,6 +447,7 @@ export function TeamForm({
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 }
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step2}
                 onBlur={() => validateFieldOnBlur('teamName')}
               />
               {teamName &&
@@ -513,6 +515,7 @@ export function TeamForm({
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 }
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderName')}
               />
               {teamLeaderName &&
@@ -544,6 +547,7 @@ export function TeamForm({
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 }
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
               />
               {teamLeaderPhone &&
@@ -575,6 +579,7 @@ export function TeamForm({
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
                 }
                 className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
               />
               {teamLeaderEmail &&

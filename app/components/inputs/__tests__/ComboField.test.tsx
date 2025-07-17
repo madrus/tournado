@@ -193,4 +193,56 @@ describe('ComboField', () => {
     // Should still render without crashing
     expect(screen.getByRole('combobox')).toBeInTheDocument()
   })
+
+  it('should have hover transition animations', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    const trigger = screen.getByRole('combobox')
+
+    // Check for transition classes
+    expect(trigger).toHaveClass('transition-all', 'duration-300', 'ease-in-out')
+
+    // Hover should trigger border and shadow changes
+    await user.hover(trigger)
+
+    // Focus with tab should keep focus on trigger
+    await user.tab()
+    expect(trigger).toHaveFocus()
+  })
+
+  it('should have focus transition animations', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    const trigger = screen.getByRole('combobox')
+
+    // Check for GPU acceleration classes
+    expect(trigger).toHaveClass('transform-gpu', 'will-change-transform')
+
+    // Test focus state with tab
+    await user.tab()
+    expect(trigger).toHaveFocus()
+
+    // Test blur state
+    await user.tab()
+    expect(trigger).not.toHaveFocus()
+  })
+
+  it('should have item hover animations', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    const trigger = screen.getByRole('combobox')
+    await user.click(trigger)
+
+    await waitFor(() => {
+      const option1Elements = screen.getAllByText('Option 1')
+      expect(option1Elements.length).toBeGreaterThan(0)
+    })
+
+    // Find the option with role="option" and check for transition classes
+    const option = screen.getByRole('option', { name: 'Option 1' })
+    expect(option).toHaveClass('transition-colors', 'duration-200')
+  })
 })

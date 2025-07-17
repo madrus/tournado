@@ -238,4 +238,39 @@ describe('TextInputField', () => {
     const input = screen.getByRole('textbox')
     expect(input).toHaveValue('')
   })
+
+  it('should have hover transition animations', async () => {
+    const user = userEvent.setup()
+    render(<TextInputField {...defaultProps} />)
+
+    const input = screen.getByRole('textbox')
+
+    // Check for transition classes
+    expect(input).toHaveClass('transition-all', 'duration-300', 'ease-in-out')
+
+    // Hover should trigger border and shadow changes
+    await user.hover(input)
+
+    // Focus should trigger border, ring, and shadow changes
+    await user.click(input)
+    expect(input).toHaveFocus()
+  })
+
+  it('should have focus transition animations', async () => {
+    const user = userEvent.setup()
+    render(<TextInputField {...defaultProps} />)
+
+    const input = screen.getByRole('textbox')
+
+    // Check for GPU acceleration classes
+    expect(input).toHaveClass('transform-gpu', 'will-change-transform')
+
+    // Test focus state
+    await user.click(input)
+    expect(input).toHaveFocus()
+
+    // Test blur state
+    await user.tab()
+    expect(input).not.toHaveFocus()
+  })
 })

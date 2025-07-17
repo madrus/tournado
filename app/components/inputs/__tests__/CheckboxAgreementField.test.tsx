@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { describe, expect, it, vi } from 'vitest'
 
@@ -48,6 +49,37 @@ describe('CheckboxAgreementField', () => {
     fireEvent.blur(checkbox)
 
     expect(mockOnBlur).toHaveBeenCalled()
+  })
+
+  it('should have hover transition animations', async () => {
+    const user = userEvent.setup()
+    render(<CheckboxAgreementField {...defaultProps} />)
+
+    const checkbox = screen.getByRole('checkbox')
+
+    // Check checkbox for transition classes
+    expect(checkbox).toHaveClass('transition-all', 'duration-300')
+
+    // Hover should trigger border and shadow changes
+    await user.hover(checkbox)
+  })
+
+  it('should have focus transition animations', async () => {
+    const user = userEvent.setup()
+    render(<CheckboxAgreementField {...defaultProps} />)
+
+    const checkbox = screen.getByRole('checkbox')
+
+    // Check for transition classes on the checkbox input
+    expect(checkbox).toHaveClass('transition-all', 'duration-300')
+
+    // Test focus state
+    await user.click(checkbox)
+    expect(checkbox).toHaveFocus()
+
+    // Test blur state
+    await user.tab()
+    expect(checkbox).not.toHaveFocus()
   })
 
   it('should display error message when error prop is provided', () => {

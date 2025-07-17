@@ -2,6 +2,7 @@ import { JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
+import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
@@ -630,72 +631,24 @@ export function TeamForm({
               </p>
             </div>
 
-            <label
-              className={cn(
-                'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
-                privacyAgreement
-                  ? 'border-primary bg-accent text-foreground-darker'
-                  : getTranslatedError(
-                        'privacyAgreement',
-                        isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                      )
-                    ? 'border-brand bg-accent text-brand'
-                    : 'border-foreground-lighter bg-background hover:border-primary hover:bg-accent'
+            <CheckboxAgreementField
+              name='privacyAgreement'
+              checked={privacyAgreement}
+              label={t('teams.form.agreeToPrivacyPolicy')}
+              description={t('teams.form.readAndAccept')}
+              error={getTranslatedError(
+                'privacyAgreement',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
               )}
-            >
-              <div className='relative mt-0.5 flex-shrink-0'>
-                <input
-                  type='checkbox'
-                  name='privacyAgreement'
-                  checked={privacyAgreement}
-                  onChange={checkboxEvent =>
-                    setFormField('privacyAgreement', checkboxEvent.target.checked)
-                  }
-                  onBlur={() => validateFieldOnBlur('privacyAgreement')}
-                  className={cn(
-                    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
-                    privacyAgreement
-                      ? 'border-primary-500 bg-primary-500'
-                      : getTranslatedError(
-                            'privacyAgreement',
-                            isPublicSuccess ||
-                              (formMode === 'create' && !isPanelEnabled(4))
-                          )
-                        ? 'border-brand bg-accent'
-                        : 'border-foreground-lighter bg-background'
-                  )}
-                  required
-                  disabled={
-                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                  }
-                />
-                {privacyAgreement ? (
-                  <CheckIcon
-                    className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
-                    size={16}
-                  />
-                ) : null}
-              </div>
-              <span
-                className={cn(
-                  'text-foreground text-lg leading-6 font-normal',
-                  getLatinTextClass(i18n.language)
-                )}
-              >
-                {t('teams.form.agreeToPrivacyPolicy')}
-              </span>
-            </label>
-            {getTranslatedError(
-              'privacyAgreement',
-              isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-            ) ? (
-              <p className='text-brand mt-2 text-sm'>
-                {getTranslatedError(
-                  'privacyAgreement',
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                )}
-              </p>
-            ) : null}
+              required
+              disabled={
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+              }
+              onChange={(checked: boolean) => setFormField('privacyAgreement', checked)}
+              onBlur={() => validateFieldOnBlur('privacyAgreement')}
+              language={i18n.language}
+              color={PANEL_COLORS.step4}
+            />
           </Panel>
         ) : null}
 

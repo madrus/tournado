@@ -42,7 +42,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       value,
       defaultValue,
       placeholder,
-      color = 'emerald',
+      color = 'slate',
       onChange,
       onFocus,
       onBlur,

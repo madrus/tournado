@@ -51,7 +51,7 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
       disabled = false,
       selectRef,
       className = '',
-      color = 'emerald',
+      color = 'slate',
     },
     ref
   ) => {

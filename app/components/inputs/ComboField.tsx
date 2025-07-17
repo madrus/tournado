@@ -57,6 +57,8 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
   ) => {
     // Track if a selection was just made to prevent double onBlur calls
     const justSelectedRef = useRef(false)
+    // Ref for the trigger button to programmatically blur on close
+    const triggerRef = useRef<HTMLButtonElement>(null)
 
     // Normalize value to always be a string
     const normalizedValue = value ?? ''
@@ -87,7 +89,15 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
             disabled={disabled}
           >
             <Select.Trigger
-              ref={selectRef}
+              ref={node => {
+                if (typeof selectRef === 'function') selectRef(node)
+                else if (selectRef) {
+                  ;(
+                    selectRef as React.MutableRefObject<HTMLButtonElement | null>
+                  ).current = node
+                }
+                triggerRef.current = node
+              }}
               aria-label={`${label} - select option`}
               className={cn(
                 comboFieldTriggerVariants({
@@ -116,13 +126,14 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
                 position='popper'
                 sideOffset={4}
                 style={{ minWidth: 'var(--radix-select-trigger-width)' }}
-                onCloseAutoFocus={_event => {
-                  // Allow natural focus management - don't prevent default
+                onCloseAutoFocus={event => {
+                  // Remove focus from the trigger when closing
+                  event.preventDefault()
+                  triggerRef.current?.blur()
                   // Only trigger onBlur if no selection was made AND value is empty
                   if (!justSelectedRef.current && safeValue === '') {
                     onBlur?.(safeValue)
                   }
-                  // Don't prevent default - let the focus naturally move away
                 }}
               >
                 <Select.Viewport className='p-1'>

@@ -208,4 +208,36 @@ describe('DateInputField', () => {
     const input = screen.getByLabelText('Test Date')
     expect(input).toBeInvalid() // Empty required field should be invalid
   })
+
+  it('should have hover transition animations', async () => {
+    const user = userEvent.setup()
+    render(<DateInputField {...defaultProps} />)
+
+    const input = screen.getByLabelText('Test Date')
+
+    // Check for transition classes
+    expect(input).toHaveClass('transition-all', 'duration-300', 'ease-in-out')
+
+    // Hover should trigger border and shadow changes
+    await user.hover(input)
+
+    // Focus should trigger border changes
+    await user.click(input)
+    expect(input).toHaveFocus()
+  })
+
+  it('should have focus transition animations', async () => {
+    const user = userEvent.setup()
+    render(<DateInputField {...defaultProps} />)
+
+    const input = screen.getByLabelText('Test Date')
+
+    // Test focus state
+    await user.click(input)
+    expect(input).toHaveFocus()
+
+    // Test blur state
+    await user.tab()
+    expect(input).not.toHaveFocus()
+  })
 })

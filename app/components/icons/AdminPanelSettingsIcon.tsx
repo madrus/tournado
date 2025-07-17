@@ -6,12 +6,14 @@ type AdminPanelSettingsIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
+  'aria-label'?: string
 }
 
 export function AdminPanelSettingsIcon({
   className = '',
   size = 24,
   weight = 400,
+  'aria-label': ariaLabel = 'Admin panel settings',
 }: AdminPanelSettingsIconProps): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
   const path =
@@ -28,6 +30,8 @@ export function AdminPanelSettingsIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
     >
       <path d={path} />
     </svg>

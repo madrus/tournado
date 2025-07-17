@@ -388,19 +388,16 @@ cy.findByText(/invalid email/i).should('be.visible')
 ## Best Practices
 
 1. **Use Semantic Queries**
-
    - Prefer `findByRole` over `getByTestId`
    - Use `findByText` for visible text
    - Use `findByLabelText` for form labels
 
 2. **Make Tests Resilient**
-
    - Use case-insensitive regex for text matching
    - Use partial text matching when appropriate
    - Avoid brittle selectors like CSS classes
 
 3. **Test Accessibility**
-
    - Use roles to ensure proper ARIA attributes
    - Test keyboard navigation
    - Verify focus management

@@ -5,6 +5,12 @@ import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { getChipClasses, getLatinTextClass, isRTL } from '~/utils/rtlUtils'
 
+import {
+  deleteButtonVariants,
+  teamChipVariants,
+  type TeamChipVariants,
+} from './teamChip.variants'
+
 type TeamChipProps = {
   team: {
     id: string
@@ -15,6 +21,7 @@ type TeamChipProps = {
   showActions?: boolean // for admin context
   onDelete?: () => void // admin only
   deleteAriaLabel?: string // accessibility text for delete button
+  color?: TeamChipVariants['color']
   className?: string
 }
 
@@ -24,6 +31,7 @@ export function TeamChip({
   showActions = false,
   onDelete,
   deleteAriaLabel,
+  color = 'brand',
   className = '',
 }: TeamChipProps): JSX.Element {
   const { i18n } = useTranslation()
@@ -31,14 +39,12 @@ export function TeamChip({
   const isRtl = isRTL(i18n.language)
 
   const baseClasses = cn(
-    'inline-flex h-10 items-center rounded-lg border border-red-600 dark:!border-slate-100 bg-background dark:bg-brand-900',
-    'font-semibold text-brand transition-all duration-300 ease-out relative overflow-hidden',
-    onClick && 'cursor-pointer',
-    showActions && onDelete ? chipClasses.container : 'px-3',
-    'hover:scale-105 active:scale-95',
-    'shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/40 hover:bg-accent hover:border-brand-accent dark:hover:bg-brand-700',
-    'focus:ring-2 focus:ring-offset-2 focus:ring-red-600 focus:ring-offset-white dark:focus:ring-slate-100 dark:focus:ring-offset-red-600 focus:outline-none',
-    'hover:ring-2 hover:ring-offset-2 hover:ring-red-600 hover:ring-offset-white dark:hover:ring-slate-100 dark:hover:ring-offset-red-600',
+    teamChipVariants({
+      interactive: !!onClick,
+      hasActions: showActions && !!onDelete,
+      color,
+    }),
+    showActions && onDelete ? chipClasses.container : undefined,
     className
   )
 
@@ -50,7 +56,7 @@ export function TeamChip({
           event.stopPropagation()
           onDelete()
         }}
-        className='text-brand hover:bg-accent hover:text-brand-accent dark:hover:bg-brand-700 flex-shrink-0 rounded-full p-1'
+        className={deleteButtonVariants()}
         aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.teamName}`}
       >
         {renderIcon('close', { className: 'h-4 w-4' })}

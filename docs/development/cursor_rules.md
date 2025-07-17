@@ -86,13 +86,11 @@ Covers:
 ## Using Cursor Rules
 
 1. **During Development**
-
    - Rules are automatically available to AI when using Cursor
    - They provide contextual help and guidance
    - Reference them for consistent practices
 
 2. **Maintaining Rules**
-
    - Rules should be updated when related code changes
    - Keep rules concise and focused
    - Link to this documentation for detailed information

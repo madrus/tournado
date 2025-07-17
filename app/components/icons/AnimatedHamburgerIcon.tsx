@@ -4,18 +4,22 @@ type AnimatedHamburgerIconProps = {
   isOpen: boolean
   isRTL: boolean
   className?: string
+  'aria-label'?: string
 }
 
 export const AnimatedHamburgerIcon = ({
   isOpen,
   isRTL,
   className = 'w-6 h-6',
+  'aria-label': ariaLabel = 'Menu',
 }: AnimatedHamburgerIconProps): JSX.Element => (
   <svg
     className={className}
     viewBox='0 0 24 24'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
+    role='img'
+    aria-label={ariaLabel}
   >
     {/* Top line */}
     <line

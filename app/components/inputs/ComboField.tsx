@@ -1,142 +1,162 @@
-import { forwardRef, Ref, useRef } from 'react'
+import { forwardRef, type JSX, useRef } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
-import {
-  getDropdownItemColorClasses,
-  getInputColorClasses,
-} from '~/styles/input.styles'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
-export type ComboFieldOption = {
+import {
+  comboFieldContentVariants,
+  comboFieldItemVariants,
+  comboFieldTriggerVariants,
+  comboFieldValueVariants,
+  textInputLabelTextVariants,
+  textInputLabelVariants,
+} from './inputs.variants'
+
+export type Option = {
   value: string
   label: string
 }
 
-export type ComboFieldProps = {
-  name: string
+type ComboFieldProps = {
+  name?: string
   label: string
+  options: Option[]
   value: string
   onChange: (value: string) => void
-  onBlur?: (value: string) => void
-  options: ComboFieldOption[]
   placeholder?: string
   error?: string
-  required?: boolean
   disabled?: boolean
-  selectRef?: Ref<HTMLButtonElement>
+  required?: boolean
   className?: string
   color?: ColorAccent
+  onBlur?: () => void
 }
 
-export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
+export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
   (
     {
       name,
       label,
+      options,
       value,
       onChange,
-      onBlur,
-      options,
       placeholder,
       error,
-      required = false,
       disabled = false,
-      selectRef,
+      required = false,
       className = '',
       color = 'emerald',
+      onBlur,
     },
-    ref
-  ) => {
-    // Track if a selection was just made to prevent double onBlur calls
+    selectRef
+  ): JSX.Element => {
+    const triggerRef = useRef<HTMLButtonElement>(null)
     const justSelectedRef = useRef(false)
 
-    // Normalize value to always be a string
-    const normalizedValue = value ?? ''
-    // Ensure the value is always present in the options, or fallback to ''
-    const safeValue =
-      normalizedValue === '' || options.some(opt => opt.value === normalizedValue)
-        ? normalizedValue
-        : ''
+    // Ensure value is always a string
+    const safeValue = value || ''
+
+    // Handle blur when dropdown closes
+    const handleCloseAutoFocus = (event: Event) => {
+      // Prevent default auto focus behavior when closing
+      event.preventDefault()
+      // Manually blur the trigger to ensure onBlur is called
+      if (triggerRef.current) {
+        triggerRef.current.blur()
+      }
+      // Explicitly call the onBlur callback since native blur() doesn't trigger React's synthetic event
+      if (onBlur) {
+        onBlur()
+      }
+    }
 
     return (
       <div
-        className={cn('mb-4', className)}
-        ref={ref}
+        className={cn(className)}
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
-        <label className='text-foreground flex w-full flex-col gap-1'>
-          <span className='text-foreground font-medium'>{label}</span>
-          <Select.Root
-            value={safeValue}
-            onValueChange={newValue => {
-              justSelectedRef.current = true
-              onChange(newValue)
-              // Reset the flag after a short delay
-              setTimeout(() => {
-                justSelectedRef.current = false
-              }, 10)
-            }}
-            disabled={disabled}
-          >
-            <Select.Trigger
-              ref={selectRef}
-              aria-label={`${label} - select option`}
-              className={cn(
-                'bg-input text-input-foreground flex h-12 w-full items-center justify-between rounded-md border-2 px-3 py-2 text-lg',
-                'transition-all duration-300 ease-in-out focus:outline-none',
-                'disabled:cursor-not-allowed disabled:opacity-50',
-                getInputColorClasses(color, disabled, error),
-                safeValue === '' ? 'text-foreground-lighter' : ''
-              )}
-              aria-invalid={!!error || undefined}
-              aria-errormessage={error ? `${name}-error` : undefined}
+        <label className={textInputLabelVariants()}>
+          <span className={textInputLabelTextVariants()}>{label}</span>
+          <div className='relative'>
+            <Select.Root
+              value={safeValue}
+              onValueChange={newValue => {
+                justSelectedRef.current = true
+                onChange(newValue)
+                // Reset the flag after a short delay
+                setTimeout(() => {
+                  justSelectedRef.current = false
+                }, 10)
+              }}
+              disabled={disabled}
             >
-              <div className='flex-1 truncate text-left'>
-                <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
-              </div>
-              <Select.Icon asChild>
-                {renderIcon('expand_more', { className: 'w-5 h-5 text-gray-400' })}
-              </Select.Icon>
-            </Select.Trigger>
-
-            <Select.Portal>
-              <Select.Content
-                className='z-50 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg'
-                position='popper'
-                sideOffset={4}
-                style={{ minWidth: 'var(--radix-select-trigger-width)' }}
-                onCloseAutoFocus={() => {
-                  // This handles the case where user opens dropdown but closes without selecting
-                  // Only trigger if no selection was made AND value is empty
-                  if (!justSelectedRef.current && safeValue === '') {
-                    onBlur?.(safeValue)
+              <Select.Trigger
+                ref={node => {
+                  if (typeof selectRef === 'function') selectRef(node)
+                  else if (selectRef) {
+                    ;(
+                      selectRef as React.MutableRefObject<HTMLButtonElement | null>
+                    ).current = node
                   }
+                  triggerRef.current = node
                 }}
+                aria-label={`${label} - select option`}
+                className={cn(
+                  comboFieldTriggerVariants({
+                    color,
+                    disabled: disabled ? true : undefined,
+                    error: error ? true : undefined,
+                  }),
+                  safeValue === '' ? 'text-foreground' : ''
+                )}
+                aria-invalid={!!error || undefined}
+                aria-errormessage={error ? `${name}-error` : undefined}
               >
-                <Select.Viewport className='p-1'>
-                  {options.map(opt => (
-                    <Select.Item
-                      key={opt.value}
-                      value={opt.value}
-                      className={cn(
-                        'relative flex cursor-pointer items-center rounded-sm px-3 py-2 text-sm outline-none select-none',
-                        getDropdownItemColorClasses(color),
-                        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
-                      )}
-                    >
-                      <Select.ItemText>{opt.label}</Select.ItemText>
-                      <Select.ItemIndicator className='absolute right-2 flex h-3.5 w-3.5 items-center justify-center'>
-                        {renderIcon('check', { className: 'w-4 h-4' })}
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  ))}
-                </Select.Viewport>
-              </Select.Content>
-            </Select.Portal>
-          </Select.Root>
+                <div
+                  className={comboFieldValueVariants({
+                    state: safeValue === '' ? 'placeholder' : 'value',
+                  })}
+                >
+                  <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
+                </div>
+                <Select.Icon className='text-foreground ml-1'>
+                  {renderIcon('expand_more', {
+                    className: 'h-6 w-6',
+                    'data-testid': 'icon-expand_more',
+                  })}
+                </Select.Icon>
+              </Select.Trigger>
+
+              <Select.Portal>
+                <Select.Content
+                  className={comboFieldContentVariants({ color })}
+                  position='popper'
+                  sideOffset={4}
+                  onCloseAutoFocus={handleCloseAutoFocus}
+                  style={{ width: 'var(--radix-select-trigger-width)' }}
+                >
+                  <Select.Viewport className='max-h-60 overflow-auto p-1'>
+                    {options.map(opt => (
+                      <Select.Item
+                        key={opt.value}
+                        value={opt.value}
+                        className={comboFieldItemVariants({ color })}
+                      >
+                        <Select.ItemText>{opt.label}</Select.ItemText>
+                        <Select.ItemIndicator className='absolute right-2 flex h-3.5 w-3.5 items-center justify-center'>
+                          {renderIcon('check', { className: 'w-4 h-4' })}
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                    ))}
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </div>
 
           {/* Hidden native select for form submission */}
           <select
@@ -168,9 +188,9 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
           </select>
         </label>
         {error ? (
-          <div className='text-error-foreground pt-1 text-sm' id={`${name}-error`}>
+          <ErrorMessage panelColor={color} id={`${name}-error`}>
             {error}
-          </div>
+          </ErrorMessage>
         ) : null}
       </div>
     )

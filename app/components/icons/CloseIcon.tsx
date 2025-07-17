@@ -8,6 +8,7 @@ type CloseIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
 }
 
 export const CloseIcon = ({
@@ -16,6 +17,7 @@ export const CloseIcon = ({
   variant: _variant = 'outlined',
   weight = 400,
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Close',
 }: Readonly<CloseIconProps>): JSX.Element => (
   <svg
     width={size}
@@ -28,6 +30,8 @@ export const CloseIcon = ({
     strokeLinecap='round'
     strokeLinejoin='round'
     data-testid={dataTestId}
+    role='img'
+    aria-label={ariaLabel}
   >
     <path d='M6 18L18 6M6 6l12 12' />
   </svg>

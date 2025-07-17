@@ -1,6 +1,8 @@
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
+import { getButtonRingClasses } from './ring.styles'
+
 // Common classes for all buttons
 export const commonButtonClasses = cn(
   'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
@@ -9,10 +11,6 @@ export const commonButtonClasses = cn(
   'whitespace-nowrap',
   'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
   'hover:scale-103 active:scale-95 disabled:hover:scale-100',
-  'focus:outline-none',
-  'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
-  'hover:ring-2 hover:ring-offset-2 hover:ring-offset-white disabled:hover:ring-0 disabled:hover:ring-offset-0',
-  'focus-visible:disabled:ring-0',
   'disabled:cursor-not-allowed disabled:opacity-50',
   'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border'
 )
@@ -22,10 +20,7 @@ export const commonButtonClasses = cn(
 // Helper to resolve color name: 'primary' stays 'primary', 'brand' stays 'brand', else itself
 const resolveColorName = (color: ColorAccent): string => color // No more mapping needed - primary and brand are semantic colors now
 
-const getRingClasses = (color: ColorAccent): string => {
-  const resolvedColor = resolveColorName(color)
-  return `focus-visible:ring-${resolvedColor}-600 hover:ring-${resolvedColor}-600 disabled:hover:ring-0`
-}
+// Ring classes are now handled by the unified ring system
 
 const getShadowClasses = (color: ColorAccent): string => {
   const resolvedColor = resolveColorName(color)
@@ -36,12 +31,18 @@ const getShadowClasses = (color: ColorAccent): string => {
 
 const getBorderClasses = (color: ColorAccent): string => {
   const resolvedColor = resolveColorName(color)
+
+  // For red/brand buttons, use white border in dark mode ONLY on hover/focus for white-red-white pattern
+  if (resolvedColor === 'red' || resolvedColor === 'brand') {
+    return `border border-${resolvedColor}-600 hover:dark:border-slate-50 focus-visible:dark:border-slate-50`
+  }
+
   return `border border-${resolvedColor}-600`
 }
 
 const getColorClasses = (color: ColorAccent, variant: ButtonVariant): string => {
   const resolvedColor = resolveColorName(color)
-  const ringClasses = getRingClasses(color)
+  const ringClasses = getButtonRingClasses(color)
   const shadowClasses = getShadowClasses(color)
   const borderClasses = getBorderClasses(color)
 

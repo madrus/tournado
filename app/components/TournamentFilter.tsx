@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ComboField } from '~/components/inputs/ComboField'
 import { useTournamentFilter } from '~/hooks/useTournamentFilter'
-import type { TournamentListItem } from '~/lib/teams.types'
+import type { TournamentListItem } from '~/lib/lib.types'
 
 type TournamentFilterProps = {
   tournamentListItems: TournamentListItem[]

@@ -7,7 +7,6 @@
 Yes, Fly.io is an alternative to Vercel, though they have some key differences:
 
 - Fly.io:
-
    - Focuses on running full-stack applications close to users
    - Deploys your apps as lightweight VMs (using Docker containers)
    - Provides global distribution with automatic regional failover

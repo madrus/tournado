@@ -336,7 +336,7 @@ describe('TeamChip Component', () => {
         'border-red-600',
         'dark:!border-slate-100',
         'bg-background',
-        'dark:bg-brand-900',
+        'dark:bg-brand-700',
         'font-semibold',
         'text-brand',
         'transition-all',
@@ -347,34 +347,24 @@ describe('TeamChip Component', () => {
       )
     })
 
-    it('should have hover and focus classes', () => {
-      render(<TeamChip team={mockTeam} />)
+    it('should have hover and focus classes when interactive', () => {
+      render(<TeamChip team={mockTeam} onClick={vi.fn()} />)
 
       const chip = screen.getByTestId('team-chip')
-      expect(chip).toHaveClass(
-        'hover:scale-105',
-        'active:scale-95',
-        'shadow-lg',
-        'shadow-brand/25',
-        'hover:shadow-xl',
-        'hover:shadow-brand/40',
-        'hover:bg-accent',
-        'hover:border-brand-accent',
-        'dark:hover:bg-brand-700',
-        'focus:ring-2',
-        'focus:ring-offset-2',
-        'focus:ring-red-600',
-        'focus:ring-offset-white',
-        'dark:focus:ring-slate-100',
-        'dark:focus:ring-offset-red-600',
-        'focus:outline-none',
-        'hover:ring-2',
-        'hover:ring-offset-2',
-        'hover:ring-red-600',
-        'hover:ring-offset-white',
-        'dark:hover:ring-slate-100',
-        'dark:hover:ring-offset-red-600'
-      )
+
+      // Check key interactive classes
+      expect(chip).toHaveClass('cursor-pointer')
+      expect(chip).toHaveClass('hover:scale-105')
+      expect(chip).toHaveClass('active:scale-95')
+
+      // Check ring system classes
+      expect(chip).toHaveClass('focus-visible:ring-2')
+      expect(chip).toHaveClass('hover:ring-2')
+      expect(chip).toHaveClass('focus:outline-none')
+
+      // Check shadow classes
+      expect(chip).toHaveClass('shadow-lg')
+      expect(chip).toHaveClass('hover:shadow-xl')
     })
 
     it('should have default padding when not in admin mode', () => {

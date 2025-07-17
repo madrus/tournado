@@ -308,7 +308,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
         <Theme
           accentColor='green'
-          grayColor='gray'
+          grayColor='slate'
           radius='medium'
           scaling='100%'
           appearance={currentTheme}
@@ -367,7 +367,7 @@ export function ErrorBoundary(): JSX.Element {
         {/* Using "green" accent but overridden with emerald colors via CSS above */}
         <Theme
           accentColor='green'
-          grayColor='gray'
+          grayColor='slate'
           radius='medium'
           scaling='100%'
           appearance={theme}

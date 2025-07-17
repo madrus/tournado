@@ -2,8 +2,15 @@ import { JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
+import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import { Panel } from '~/components/Panel'
+import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
+import {
+  panelDescriptionVariants,
+  panelTitleVariants,
+} from '~/components/shared/panel.variants'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
@@ -35,6 +42,15 @@ export function TeamForm({
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
+
+  // Panel color constants - single source of truth
+  const PANEL_COLORS = {
+    header: 'sky' as const,
+    step1: 'red' as const,
+    step2: 'amber' as const,
+    step3: 'indigo' as const,
+    step4: 'fuchsia' as const,
+  }
 
   // Ensure the team form store is properly hydrated
   useTeamFormStoreHydration()
@@ -100,6 +116,30 @@ export function TeamForm({
       return t(errorKey)
     },
     [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t]
+  )
+
+  // Helper function to get field status (success/error/neutral)
+  const getFieldStatus = useCallback(
+    (
+      fieldName: string,
+      fieldValue: string | boolean,
+      isDisabled = false
+    ): 'success' | 'error' | 'neutral' => {
+      // Don't show any status for disabled fields
+      if (isDisabled) return 'neutral'
+
+      // Check if field has a value
+      const hasValue = Boolean(fieldValue)
+
+      // Check if field has an error
+      const hasError = Boolean(getTranslatedError(fieldName, isDisabled))
+
+      // Return appropriate status
+      if (hasValue && !hasError) return 'success'
+      if (hasError) return 'error'
+      return 'neutral'
+    },
+    [getTranslatedError]
   )
 
   // Initialize mode in store
@@ -186,7 +226,7 @@ export function TeamForm({
 
       {/* Header for Admin Variant */}
       {variant !== 'public' ? (
-        <div className='border-foreground-lighter from-background to-background-hover mb-8 rounded-xl border-2 bg-gradient-to-r p-6 shadow-lg transition-all duration-300 hover:shadow-xl'>
+        <Panel color={PANEL_COLORS.header} className='mb-8'>
           <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
             <div>
               <h2
@@ -216,7 +256,7 @@ export function TeamForm({
               </div>
             ) : null}
           </div>
-        </div>
+        </Panel>
       ) : null}
 
       <Form
@@ -230,474 +270,408 @@ export function TeamForm({
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
         {/* Step 1: Tournament Filters */}
-        <div className='relative'>
-          <div className='bg-brand text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6'>
-            1
+        <Panel color={PANEL_COLORS.step1} panelNumber={1} className='pb-4 lg:p-8'>
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({ size: 'md', color: PANEL_COLORS.step1 }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.selectTournamentDetails')}
+            </h2>
+            <p className={panelDescriptionVariants()}>
+              {t('teams.form.completeAllThreeFields')}
+            </p>
           </div>
 
-          <div className='border-brand from-accent to-accent rounded-xl border-2 bg-gradient-to-br p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:p-8'>
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'text-foreground-darker mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language)
-                )}
-              >
-                {t('teams.form.selectTournamentDetails')}
-              </h2>
-              <p className='text-brand text-sm'>
-                {t('teams.form.completeAllThreeFields')}
-              </p>
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {/* Tournament Selection */}
+            <div className='relative'>
+              <ComboField
+                name='tournamentId'
+                label={t('teams.form.tournament')}
+                value={tournamentId}
+                onChange={value => {
+                  setFormField('tournamentId', value)
+                  // Only clear dependent fields in create mode
+                  // In edit mode, preserve existing values
+                  if (formMode === 'create') {
+                    setFormField('division', '')
+                    setFormField('category', '')
+                  }
+                }}
+                options={availableTournaments.map(tournament => ({
+                  value: tournament.id,
+                  label: `${tournament.name} - ${tournament.location}`,
+                }))}
+                placeholder={t('teams.form.selectTournament')}
+                error={getTranslatedError('tournamentId', isPublicSuccess)}
+                required
+                disabled={isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step1}
+                onBlur={() => validateFieldOnBlur('tournamentId')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus('tournamentId', tournamentId, isPublicSuccess)}
+              />
             </div>
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-              {/* Tournament Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='tournamentId'
-                  label={t('teams.form.tournament')}
-                  value={tournamentId}
-                  onChange={value => {
-                    setFormField('tournamentId', value)
-                    // Only clear dependent fields in create mode
-                    // In edit mode, preserve existing values
-                    if (formMode === 'create') {
-                      setFormField('division', '')
-                      setFormField('category', '')
-                    }
-                  }}
-                  options={availableTournaments.map(tournament => ({
-                    value: tournament.id,
-                    label: `${tournament.name} - ${tournament.location}`,
-                  }))}
-                  placeholder={t('teams.form.selectTournament')}
-                  error={getTranslatedError('tournamentId', isPublicSuccess)}
-                  required
-                  disabled={isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('tournamentId')}
-                />
-                {tournamentId &&
-                !getTranslatedError('tournamentId', isPublicSuccess) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+            {/* Division Selection */}
+            <div className='relative'>
+              <ComboField
+                name='division'
+                label={t('teams.form.division')}
+                value={division}
+                onChange={value => {
+                  setFormField('division', value)
+                  // Only clear dependent fields in create mode
+                  // In edit mode, preserve existing values
+                  if (formMode === 'create') {
+                    setFormField('category', '')
+                  }
+                }}
+                options={availableDivisions.map(d => ({
+                  value: d,
+                  label: getDivisionLabel(d as Division, i18n.language),
+                }))}
+                placeholder={t('teams.form.selectDivision')}
+                error={getTranslatedError('division', !tournamentId || isPublicSuccess)}
+                required
+                disabled={!tournamentId || isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step1}
+                onBlur={() => validateFieldOnBlur('division')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'division',
+                  division,
+                  !tournamentId || isPublicSuccess
+                )}
+              />
+            </div>
 
-              {/* Division Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='division'
-                  label={t('teams.form.division')}
-                  value={division}
-                  onChange={value => {
-                    setFormField('division', value)
-                    // Only clear dependent fields in create mode
-                    // In edit mode, preserve existing values
-                    if (formMode === 'create') {
-                      setFormField('category', '')
-                    }
-                  }}
-                  options={availableDivisions.map(d => ({
-                    value: d,
-                    label: getDivisionLabel(d as Division, i18n.language),
-                  }))}
-                  placeholder={t('teams.form.selectDivision')}
-                  error={getTranslatedError(
-                    'division',
-                    !tournamentId || isPublicSuccess
-                  )}
-                  required
-                  disabled={!tournamentId || isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('division')}
-                />
-                {division &&
-                !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
-
-              {/* Category Selection */}
-              <div className='relative'>
-                <ComboField
-                  name='category'
-                  label={t('teams.form.category')}
-                  value={category}
-                  onChange={value => setFormField('category', value)}
-                  options={availableCategories.map(c => ({
-                    value: c,
-                    label: c,
-                  }))}
-                  placeholder={t('teams.form.selectCategory')}
-                  error={getTranslatedError(
-                    'category',
-                    !tournamentId || !division || isPublicSuccess
-                  )}
-                  required
-                  disabled={!tournamentId || !division || isPublicSuccess}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('category')}
-                />
-                {category &&
-                !getTranslatedError(
+            {/* Category Selection */}
+            <div className='relative'>
+              <ComboField
+                name='category'
+                label={t('teams.form.category')}
+                value={category}
+                onChange={value => setFormField('category', value)}
+                options={availableCategories.map(c => ({
+                  value: c,
+                  label: c,
+                }))}
+                placeholder={t('teams.form.selectCategory')}
+                error={getTranslatedError(
                   'category',
                   !tournamentId || !division || isPublicSuccess
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                )}
+                required
+                disabled={!tournamentId || !division || isPublicSuccess}
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step1}
+                onBlur={() => validateFieldOnBlur('category')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'category',
+                  category,
+                  !tournamentId || !division || isPublicSuccess
+                )}
+              />
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 2: Team Information */}
-        <div
-          className={cn(
-            'relative transition-opacity duration-300',
-            !isPanelEnabled(2) ? 'pointer-events-none opacity-50' : ''
-          )}
+        <Panel
+          color={PANEL_COLORS.step2}
+          panelNumber={2}
+          disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(2) ? 'bg-blue-600' : 'bg-foreground-lighter'
-            )}
-          >
-            2
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(2)
+                      ? PANEL_COLORS.step2
+                      : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.teamInfo')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                formMode === 'edit' || isPanelEnabled(2)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
+              )}
+            >
+              {t('teams.form.enterTeamDetails')}
+            </p>
           </div>
 
-          <div
-            className={cn(
-              'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-              isPanelEnabled(2)
-                ? 'border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/30 hover:shadow-xl'
-                : 'border-foreground-lighter bg-background-hover'
-            )}
-          >
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(2) ? 'text-blue-800' : 'text-foreground-lighter'
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+            {/* Club Name */}
+            <div className='relative'>
+              <TextInputField
+                name='clubName'
+                label={t('teams.form.clubName')}
+                value={clubName || ''}
+                onChange={value => setFormField('clubName', value)}
+                placeholder={t('teams.form.placeholders.clubName')}
+                error={getTranslatedError(
+                  'clubName',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 )}
-              >
-                {t('teams.form.teamInfo')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(2) ? 'text-blue-600' : 'text-foreground-lighter'
+                required
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                }
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step2}
+                onBlur={() => validateFieldOnBlur('clubName')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'clubName',
+                  clubName || '',
+                  formMode === 'create' && !isPanelEnabled(2)
                 )}
-              >
-                {t('teams.form.enterTeamDetails')}
-              </p>
+              />
             </div>
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              {/* Club Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='clubName'
-                  label={t('teams.form.clubName')}
-                  value={clubName || ''}
-                  onChange={value => setFormField('clubName', value)}
-                  placeholder={t('teams.form.placeholders.clubName')}
-                  error={getTranslatedError(
-                    'clubName',
-                    isPublicSuccess || !isPanelEnabled(2)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(2)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('clubName')}
-                />
-                {clubName && !getTranslatedError('clubName', !isPanelEnabled(2)) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
-
-              {/* Team Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamName'
-                  label={t('teams.form.teamName')}
-                  value={teamName || ''}
-                  onChange={value => setFormField('teamName', value)}
-                  placeholder={t('teams.form.placeholders.teamName')}
-                  error={getTranslatedError(
-                    'teamName',
-                    isPublicSuccess || !isPanelEnabled(2)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(2)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamName')}
-                />
-                {teamName && !getTranslatedError('teamName', !isPanelEnabled(2)) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+            {/* Team Name */}
+            <div className='relative'>
+              <TextInputField
+                name='teamName'
+                label={t('teams.form.teamName')}
+                value={teamName || ''}
+                onChange={value => setFormField('teamName', value)}
+                placeholder={t('teams.form.placeholders.teamName')}
+                error={getTranslatedError(
+                  'teamName',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                )}
+                required
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                }
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step2}
+                onBlur={() => validateFieldOnBlur('teamName')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamName',
+                  teamName || '',
+                  formMode === 'create' && !isPanelEnabled(2)
+                )}
+              />
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 3: Team Leader Information */}
-        <div
-          className={cn('relative transition-opacity duration-300', {
-            'pointer-events-none opacity-50': !isPanelEnabled(3),
-          })}
+        <Panel
+          color={PANEL_COLORS.step3}
+          panelNumber={3}
+          disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
+          className='lg:p-8'
         >
-          <div
-            className={cn(
-              'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-              isPanelEnabled(3) ? 'bg-primary' : 'bg-foreground-lighter'
-            )}
-          >
-            3
+          <div className='mb-6'>
+            <h2
+              className={cn(
+                panelTitleVariants({
+                  size: 'md',
+                  color:
+                    formMode === 'edit' || isPanelEnabled(3)
+                      ? PANEL_COLORS.step3
+                      : 'slate',
+                }),
+                getLatinTitleClass(i18n.language)
+              )}
+            >
+              {t('teams.form.teamLeaderInfo')}
+            </h2>
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                formMode === 'edit' || isPanelEnabled(3)
+                  ? 'text-foreground'
+                  : 'text-foreground-lighter'
+              )}
+            >
+              {t('teams.form.enterContactDetails')}
+            </p>
           </div>
 
-          <div
-            className={cn(
-              'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-              isPanelEnabled(3)
-                ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
-                : 'border-foreground-lighter bg-background-hover'
-            )}
-          >
-            <div className='mb-6'>
-              <h2
-                className={cn(
-                  'mb-2 text-xl font-bold',
-                  getLatinTitleClass(i18n.language),
-                  isPanelEnabled(3)
-                    ? 'text-foreground-darker'
-                    : 'text-foreground-lighter'
-                )}
-              >
-                {t('teams.form.teamLeaderInfo')}
-              </h2>
-              <p
-                className={cn(
-                  'text-sm',
-                  isPanelEnabled(3) ? 'text-primary' : 'text-foreground-lighter'
-                )}
-              >
-                {t('teams.form.enterContactDetails')}
-              </p>
-            </div>
-
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-              {/* Team Leader Name */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderName'
-                  label={t('teams.form.teamLeaderName')}
-                  value={teamLeaderName || ''}
-                  onChange={value => setFormField('teamLeaderName', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderName')}
-                  error={getTranslatedError(
-                    'teamLeaderName',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderName')}
-                />
-                {teamLeaderName &&
-                !getTranslatedError(
+          <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+            {/* Team Leader Name */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderName'
+                label={t('teams.form.teamLeaderName')}
+                value={teamLeaderName || ''}
+                onChange={value => setFormField('teamLeaderName', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderName')}
+                error={getTranslatedError(
                   'teamLeaderName',
-                  isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+                required
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
+                onBlur={() => validateFieldOnBlur('teamLeaderName')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderName',
+                  teamLeaderName || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
+            </div>
 
-              {/* Team Leader Phone */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderPhone'
-                  label={t('teams.form.teamLeaderPhone')}
-                  value={teamLeaderPhone || ''}
-                  onChange={value => setFormField('teamLeaderPhone', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderPhone')}
-                  error={getTranslatedError(
-                    'teamLeaderPhone',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  type='tel'
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
-                />
-                {teamLeaderPhone &&
-                !getTranslatedError(
+            {/* Team Leader Phone */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderPhone'
+                label={t('teams.form.teamLeaderPhone')}
+                value={teamLeaderPhone || ''}
+                onChange={value => setFormField('teamLeaderPhone', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderPhone')}
+                error={getTranslatedError(
                   'teamLeaderPhone',
-                  isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+                required
+                type='tel'
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
+                onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderPhone',
+                  teamLeaderPhone || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
+            </div>
 
-              {/* Team Leader Email */}
-              <div className='relative'>
-                <TextInputField
-                  name='teamLeaderEmail'
-                  label={t('teams.form.teamLeaderEmail')}
-                  value={teamLeaderEmail || ''}
-                  onChange={value => setFormField('teamLeaderEmail', value)}
-                  placeholder={t('teams.form.placeholders.teamLeaderEmail')}
-                  error={getTranslatedError(
-                    'teamLeaderEmail',
-                    isPublicSuccess || !isPanelEnabled(3)
-                  )}
-                  required
-                  type='email'
-                  disabled={isPublicSuccess || !isPanelEnabled(3)}
-                  className={getLatinTextClass(i18n.language)}
-                  onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
-                />
-                {teamLeaderEmail &&
-                !getTranslatedError(
+            {/* Team Leader Email */}
+            <div className='relative'>
+              <TextInputField
+                name='teamLeaderEmail'
+                label={t('teams.form.teamLeaderEmail')}
+                value={teamLeaderEmail || ''}
+                onChange={value => setFormField('teamLeaderEmail', value)}
+                placeholder={t('teams.form.placeholders.teamLeaderEmail')}
+                error={getTranslatedError(
                   'teamLeaderEmail',
-                  isPublicSuccess || !isPanelEnabled(3)
-                ) ? (
-                  <div className='bg-primary absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                    <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                  </div>
-                ) : null}
-              </div>
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+                required
+                type='email'
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                }
+                className={getLatinTextClass(i18n.language)}
+                color={PANEL_COLORS.step3}
+                onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderEmail',
+                  teamLeaderEmail || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
             </div>
           </div>
-        </div>
+        </Panel>
 
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (
-          <div
-            className={cn('relative transition-opacity duration-300', {
-              'pointer-events-none opacity-50': !isPanelEnabled(4),
-            })}
+          <Panel
+            color={PANEL_COLORS.step4}
+            panelNumber={4}
+            disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
+            className='lg:p-8'
           >
-            <div
-              className={cn(
-                'text-primary-foreground absolute top-8 -left-4 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold shadow-lg lg:-left-6 rtl:-right-4 rtl:left-auto lg:rtl:-right-6',
-                isPanelEnabled(4) ? 'bg-primary' : 'bg-foreground-lighter'
-              )}
-            >
-              4
-            </div>
-
-            <div
-              className={cn(
-                'rounded-xl border-2 p-6 shadow-lg transition-all duration-300 lg:p-8',
-                isPanelEnabled(4)
-                  ? 'border-primary from-accent to-accent bg-gradient-to-br hover:shadow-xl'
-                  : 'border-foreground-lighter bg-background-hover'
-              )}
-            >
-              <div className='mb-6'>
-                <h2
-                  className={cn(
-                    'mb-2 text-xl font-bold',
-                    getLatinTitleClass(i18n.language),
-                    isPanelEnabled(4)
-                      ? 'text-foreground-darker'
-                      : 'text-foreground-lighter'
-                  )}
-                >
-                  {t('teams.form.privacyPolicy')}
-                </h2>
-                <p
-                  className={cn(
-                    'text-sm',
-                    isPanelEnabled(4) ? 'text-primary' : 'text-foreground-lighter'
-                  )}
-                >
-                  {t('teams.form.readAndAccept')}
-                </p>
-              </div>
-
-              <label
+            <div className='mb-6'>
+              <h2
                 className={cn(
-                  'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
-                  privacyAgreement
-                    ? 'border-primary bg-accent text-foreground-darker'
-                    : getTranslatedError(
-                          'privacyAgreement',
-                          isPublicSuccess || !isPanelEnabled(4)
-                        )
-                      ? 'border-brand bg-accent text-brand'
-                      : 'border-foreground-lighter bg-background hover:border-primary hover:bg-accent'
+                  panelTitleVariants({
+                    size: 'md',
+                    color:
+                      formMode === 'edit' || isPanelEnabled(4)
+                        ? PANEL_COLORS.step4
+                        : 'slate',
+                  }),
+                  getLatinTitleClass(i18n.language)
                 )}
               >
-                <div className='relative flex-shrink-0'>
-                  <input
-                    type='checkbox'
-                    name='privacyAgreement'
-                    checked={privacyAgreement}
-                    onChange={checkboxEvent =>
-                      setFormField('privacyAgreement', checkboxEvent.target.checked)
-                    }
-                    onBlur={() => validateFieldOnBlur('privacyAgreement')}
-                    className={cn(
-                      'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
-                      privacyAgreement
-                        ? 'border-primary bg-primary'
-                        : getTranslatedError(
-                              'privacyAgreement',
-                              isPublicSuccess || !isPanelEnabled(4)
-                            )
-                          ? 'border-brand bg-accent'
-                          : 'border-foreground-lighter bg-background'
-                    )}
-                    required
-                    disabled={isPublicSuccess || !isPanelEnabled(4)}
-                  />
-                  {privacyAgreement ? (
-                    <CheckIcon
-                      className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
-                      size={16}
-                    />
-                  ) : null}
-                </div>
-                <span
-                  className={cn(
-                    'text-foreground text-lg font-normal',
-                    getLatinTextClass(i18n.language)
-                  )}
-                >
-                  {t('teams.form.agreeToPrivacyPolicy')}
-                </span>
-              </label>
-              {getTranslatedError(
-                'privacyAgreement',
-                isPublicSuccess || !isPanelEnabled(4)
-              ) ? (
-                <p className='text-brand mt-2 text-sm'>
-                  {getTranslatedError(
-                    'privacyAgreement',
-                    isPublicSuccess || !isPanelEnabled(4)
-                  )}
-                </p>
-              ) : null}
+                {t('teams.form.privacyPolicy')}
+              </h2>
+              <p
+                className={cn(
+                  panelDescriptionVariants(),
+                  formMode === 'edit' || isPanelEnabled(4)
+                    ? 'text-foreground'
+                    : 'text-foreground-lighter'
+                )}
+              >
+                {t('teams.form.readAndAccept')}
+              </p>
             </div>
-          </div>
+
+            <div className='relative'>
+              <CheckboxAgreementField
+                name='privacyAgreement'
+                checked={privacyAgreement}
+                label={t('teams.form.agreeToPrivacyPolicy')}
+                description={t('teams.form.readAndAccept')}
+                error={getTranslatedError(
+                  'privacyAgreement',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                )}
+                required
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                }
+                onChange={(checked: boolean) =>
+                  setFormField('privacyAgreement', checked)
+                }
+                onBlur={() => validateFieldOnBlur('privacyAgreement')}
+                language={i18n.language}
+                color={PANEL_COLORS.step4}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'privacyAgreement',
+                  privacyAgreement,
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                )}
+              />
+            </div>
+          </Panel>
         ) : null}
 
         {/* Submit and Action Buttons */}

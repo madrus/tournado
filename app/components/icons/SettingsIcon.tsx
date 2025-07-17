@@ -6,6 +6,7 @@ type SettingsIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
+  'aria-label'?: string
   [key: string]: unknown // Allow extra props
 }
 
@@ -13,6 +14,7 @@ export function SettingsIcon({
   className = '',
   size = 24,
   weight = 400,
+  'aria-label': ariaLabel = 'Settings',
   ...props
 }: SettingsIconProps): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
@@ -30,6 +32,8 @@ export function SettingsIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
       {...props}
     >
       <path d={path} />

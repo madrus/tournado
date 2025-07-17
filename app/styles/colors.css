@@ -163,9 +163,7 @@
   --color-foreground-lightest: var(
     --color-slate-500
   ); /* least prominent, e.g. placeholder */
-  --color-placeholder: var(
-    --color-foreground-lightest
-  ); /* use lightest for placeholder in dark mode */
+  --color-placeholder: var(--color-slate-400); /* balanced placeholder for dark mode */
   --color-foreground-darker: var(--color-main);
   --color-foreground-heading: var(--color-main);
   --color-brand: var(

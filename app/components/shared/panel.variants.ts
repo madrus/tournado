@@ -172,7 +172,7 @@ export const panelNumberVariants = cva(
 // Field validation checkmark styling
 export const fieldCheckmarkVariants = cva(
   [
-    'absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2',
+    'absolute -top-2 right-1 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:left-1',
   ],
   {
     variants: {
@@ -206,6 +206,46 @@ export const fieldCheckmarkVariants = cva(
   }
 )
 
+// Field validation error icon styling
+export const fieldErrorIconVariants = cva(
+  [
+    'absolute -top-2 right-1 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:left-1',
+    'bg-red-500', // Always red for errors regardless of panel color
+  ],
+  {
+    variants: {
+      color: {
+        // All colors use red background for error state, but we keep the variants
+        // for consistency with the checkmark pattern and potential future customization
+        brand: '',
+        primary: '',
+        emerald: '',
+        blue: '',
+        slate: '',
+        teal: '',
+        red: '',
+        cyan: '',
+        yellow: '',
+        green: '',
+        violet: '',
+        zinc: '',
+        orange: '',
+        amber: '',
+        lime: '',
+        sky: '',
+        indigo: '',
+        purple: '',
+        fuchsia: '',
+        pink: '',
+        rose: '',
+      },
+    },
+    defaultVariants: {
+      color: 'primary',
+    },
+  }
+)
+
 // Checkbox styling for forms
 export const checkboxVariants = cva(
   [
@@ -229,4 +269,5 @@ export type PanelVariants = VariantProps<typeof panelVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
 export type PanelNumberVariants = VariantProps<typeof panelNumberVariants>
 export type FieldCheckmarkVariants = VariantProps<typeof fieldCheckmarkVariants>
+export type FieldErrorIconVariants = VariantProps<typeof fieldErrorIconVariants>
 export type CheckboxVariants = VariantProps<typeof checkboxVariants>

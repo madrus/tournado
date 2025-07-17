@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
@@ -66,7 +67,7 @@ export const CheckboxAgreementField = forwardRef<
             type='checkbox'
             name={name}
             checked={checked}
-            onChange={e => onChange(e.target.checked)}
+            onChange={event => onChange(event.target.checked)}
             onBlur={onBlur}
             className={cn(
               checkboxAgreementInputVariants({ color, error: !!error, disabled }),
@@ -91,7 +92,7 @@ export const CheckboxAgreementField = forwardRef<
           {label}
         </span>
       </label>
-      {error ? <p className='text-brand mt-2 text-sm'>{error}</p> : null}
+      {error ? <ErrorMessage panelColor={color}>{error}</ErrorMessage> : null}
     </div>
   )
 )

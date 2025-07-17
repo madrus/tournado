@@ -7,6 +7,7 @@ type PersonIconProps = {
   size?: number
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
   [key: string]: unknown // Allow extra props
 }
 
@@ -15,6 +16,7 @@ export function PersonIcon({
   size = 24,
   weight = 400,
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Person',
   ...props
 }: PersonIconProps): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
@@ -33,6 +35,8 @@ export function PersonIcon({
       className={`inline-block fill-current ${className}`}
       data-testid={dataTestId}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
       {...props}
     >
       <path d={path} />

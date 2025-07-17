@@ -68,6 +68,9 @@ vi.mock('~/components/icons', () => ({
   ChevronRightIcon: ({ className }: { className?: string }) => (
     <span data-testid='chevron-right-icon' className={className} />
   ),
+  ErrorIcon: ({ className }: { className?: string }) => (
+    <span data-testid='error-icon' className={className} />
+  ),
 }))
 
 describe('CustomDatePicker', () => {

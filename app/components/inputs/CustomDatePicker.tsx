@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import * as Popover from '@radix-ui/react-popover'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
 import {
   calendarContainerVariants,
@@ -12,7 +13,6 @@ import {
   datePickerButtonVariants,
   datePickerIconVariants,
   datePickerTextVariants,
-  textInputErrorVariants,
   textInputLabelTextVariants,
   textInputLabelVariants,
 } from '~/components/inputs/inputs.variants'
@@ -253,49 +253,51 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
         <label className={textInputLabelVariants()}>
           <span className={textInputLabelTextVariants()}>{label}</span>
 
-          <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
-            <Popover.Trigger asChild>
-              <button
-                type='button'
-                disabled={readOnly}
-                aria-label={`${label} - select date`}
-                onBlur={onBlur}
-                className={cn(
-                  datePickerButtonVariants({
-                    color,
-                    disabled: readOnly ? true : undefined,
-                    error: error ? true : undefined,
-                  }),
-                  !readOnly && 'cursor-pointer'
-                )}
-                aria-invalid={error ? true : undefined}
-                aria-errormessage={error ? `${name}-error` : undefined}
-              >
-                <span
-                  className={datePickerTextVariants({
-                    state: displayValue ? 'selected' : 'placeholder',
-                  })}
+          <div className='relative'>
+            <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
+              <Popover.Trigger asChild>
+                <button
+                  type='button'
+                  disabled={readOnly}
+                  aria-label={`${label} - select date`}
+                  onBlur={onBlur}
+                  className={cn(
+                    datePickerButtonVariants({
+                      color,
+                      disabled: readOnly ? true : undefined,
+                      error: error ? true : undefined,
+                    }),
+                    !readOnly && 'cursor-pointer'
+                  )}
+                  aria-invalid={error ? true : undefined}
+                  aria-errormessage={error ? `${name}-error` : undefined}
                 >
-                  {displayValue || placeholder || 'Select date'}
-                </span>
-                <CalendarIcon className={datePickerIconVariants()} size={20} />
-              </button>
-            </Popover.Trigger>
+                  <span
+                    className={datePickerTextVariants({
+                      state: displayValue ? 'selected' : 'placeholder',
+                    })}
+                  >
+                    {displayValue || placeholder || 'Select date'}
+                  </span>
+                  <CalendarIcon className={datePickerIconVariants()} size={20} />
+                </button>
+              </Popover.Trigger>
 
-            <Popover.Portal>
-              <Popover.Content align='start' sideOffset={4} className='z-[9999]'>
-                <Calendar
-                  selectedDate={selectedDate}
-                  onSelect={handleDateSelect}
-                  locale={i18n.language}
-                  minDate={min ? new Date(min) : undefined}
-                  maxDate={max ? new Date(max) : undefined}
-                  noPast={noPast}
-                  color={color}
-                />
-              </Popover.Content>
-            </Popover.Portal>
-          </Popover.Root>
+              <Popover.Portal>
+                <Popover.Content align='start' sideOffset={4} className='z-[9999]'>
+                  <Calendar
+                    selectedDate={selectedDate}
+                    onSelect={handleDateSelect}
+                    locale={i18n.language}
+                    minDate={min ? new Date(min) : undefined}
+                    maxDate={max ? new Date(max) : undefined}
+                    noPast={noPast}
+                    color={color}
+                  />
+                </Popover.Content>
+              </Popover.Portal>
+            </Popover.Root>
+          </div>
 
           {/* Hidden input for form submission */}
           <input
@@ -308,9 +310,9 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
         </label>
 
         {error ? (
-          <div className={textInputErrorVariants()} id={`${name}-error`}>
+          <ErrorMessage panelColor={color} id={`${name}-error`}>
             {error}
-          </div>
+          </ErrorMessage>
         ) : null}
       </div>
     )

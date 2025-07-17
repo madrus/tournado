@@ -1,11 +1,11 @@
-import { forwardRef, type JSX } from 'react'
+import { type FocusEvent, forwardRef, type JSX } from 'react'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 import {
   dateInputFieldVariants,
-  textInputErrorVariants,
   textInputLabelTextVariants,
   textInputLabelVariants,
 } from './inputs.variants'
@@ -23,7 +23,7 @@ type DateInputFieldProps = {
   min?: string
   max?: string
   color?: ColorAccent
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+  onBlur?: (focusEvent: FocusEvent<HTMLInputElement>) => void
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -50,37 +50,39 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
     <div className={className}>
       <label className={textInputLabelVariants()}>
         <span className={textInputLabelTextVariants()}>{label}</span>
-        <input
-          ref={ref}
-          name={name}
-          type='date'
-          readOnly={readOnly}
-          disabled={disabled}
-          required={required}
-          defaultValue={defaultValue}
-          placeholder={placeholder || 'dd-mm-yyyy'}
-          min={min}
-          max={max}
-          className={cn(
-            dateInputFieldVariants({
-              color,
-              disabled: disabled || readOnly ? true : undefined,
-              error: error ? true : undefined,
-            })
-          )}
-          aria-invalid={error ? true : undefined}
-          aria-errormessage={error ? `${name}-error` : undefined}
-          onBlur={onBlur}
-          onChange={onChange}
-          style={{
-            colorScheme: 'light',
-          }}
-        />
+        <div className='relative'>
+          <input
+            ref={ref}
+            name={name}
+            type='date'
+            readOnly={readOnly}
+            disabled={disabled}
+            required={required}
+            defaultValue={defaultValue}
+            placeholder={placeholder || 'dd-mm-yyyy'}
+            min={min}
+            max={max}
+            className={cn(
+              dateInputFieldVariants({
+                color,
+                disabled: disabled || readOnly ? true : undefined,
+                error: error ? true : undefined,
+              })
+            )}
+            aria-invalid={error ? true : undefined}
+            aria-errormessage={error ? `${name}-error` : undefined}
+            onBlur={onBlur}
+            onChange={onChange}
+            style={{
+              colorScheme: 'light',
+            }}
+          />
+        </div>
       </label>
       {error ? (
-        <div className={textInputErrorVariants()} id={`${name}-error`}>
+        <ErrorMessage panelColor={color} id={`${name}-error`}>
           {error}
-        </div>
+        </ErrorMessage>
       ) : null}
     </div>
   )

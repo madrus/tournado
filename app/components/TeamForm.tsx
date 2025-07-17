@@ -6,7 +6,7 @@ import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementFie
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
-import { FieldCheckmark } from '~/components/shared/FieldCheckmark'
+import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import {
   panelDescriptionVariants,
   panelTitleVariants,
@@ -116,6 +116,30 @@ export function TeamForm({
       return t(errorKey)
     },
     [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t]
+  )
+
+  // Helper function to get field status (success/error/neutral)
+  const getFieldStatus = useCallback(
+    (
+      fieldName: string,
+      fieldValue: string | boolean,
+      isDisabled = false
+    ): 'success' | 'error' | 'neutral' => {
+      // Don't show any status for disabled fields
+      if (isDisabled) return 'neutral'
+
+      // Check if field has a value
+      const hasValue = Boolean(fieldValue)
+
+      // Check if field has an error
+      const hasError = Boolean(getTranslatedError(fieldName, isDisabled))
+
+      // Return appropriate status
+      if (hasValue && !hasError) return 'success'
+      if (hasError) return 'error'
+      return 'neutral'
+    },
+    [getTranslatedError]
   )
 
   // Initialize mode in store
@@ -289,10 +313,8 @@ export function TeamForm({
                 color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('tournamentId')}
               />
-              <FieldCheckmark
-                show={Boolean(
-                  tournamentId && !getTranslatedError('tournamentId', isPublicSuccess)
-                )}
+              <FieldStatusIcon
+                status={getFieldStatus('tournamentId', tournamentId, isPublicSuccess)}
               />
             </div>
 
@@ -322,12 +344,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('division')}
               />
-              {division &&
-              !getTranslatedError('division', !tournamentId || isPublicSuccess) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'division',
+                  division,
+                  !tournamentId || isPublicSuccess
+                )}
+              />
             </div>
 
             {/* Category Selection */}
@@ -352,15 +375,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step1}
                 onBlur={() => validateFieldOnBlur('category')}
               />
-              {category &&
-              !getTranslatedError(
-                'category',
-                !tournamentId || !division || isPublicSuccess
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'category',
+                  category,
+                  !tournamentId || !division || isPublicSuccess
+                )}
+              />
             </div>
           </div>
         </Panel>
@@ -420,15 +441,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step2}
                 onBlur={() => validateFieldOnBlur('clubName')}
               />
-              {clubName &&
-              !getTranslatedError(
-                'clubName',
-                formMode === 'create' && !isPanelEnabled(2)
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'clubName',
+                  clubName || '',
+                  formMode === 'create' && !isPanelEnabled(2)
+                )}
+              />
             </div>
 
             {/* Team Name */}
@@ -451,15 +470,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step2}
                 onBlur={() => validateFieldOnBlur('teamName')}
               />
-              {teamName &&
-              !getTranslatedError(
-                'teamName',
-                formMode === 'create' && !isPanelEnabled(2)
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamName',
+                  teamName || '',
+                  formMode === 'create' && !isPanelEnabled(2)
+                )}
+              />
             </div>
           </div>
         </Panel>
@@ -519,15 +536,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderName')}
               />
-              {teamLeaderName &&
-              !getTranslatedError(
-                'teamLeaderName',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderName',
+                  teamLeaderName || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
             </div>
 
             {/* Team Leader Phone */}
@@ -551,15 +566,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderPhone')}
               />
-              {teamLeaderPhone &&
-              !getTranslatedError(
-                'teamLeaderPhone',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderPhone',
+                  teamLeaderPhone || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
             </div>
 
             {/* Team Leader Email */}
@@ -583,15 +596,13 @@ export function TeamForm({
                 color={PANEL_COLORS.step3}
                 onBlur={() => validateFieldOnBlur('teamLeaderEmail')}
               />
-              {teamLeaderEmail &&
-              !getTranslatedError(
-                'teamLeaderEmail',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
-              ) ? (
-                <div className='bg-primary-500 absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:-left-2'>
-                  <CheckIcon className='text-primary-foreground h-4 w-4' size={16} />
-                </div>
-              ) : null}
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'teamLeaderEmail',
+                  teamLeaderEmail || '',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+                )}
+              />
             </div>
           </div>
         </Panel>
@@ -631,24 +642,35 @@ export function TeamForm({
               </p>
             </div>
 
-            <CheckboxAgreementField
-              name='privacyAgreement'
-              checked={privacyAgreement}
-              label={t('teams.form.agreeToPrivacyPolicy')}
-              description={t('teams.form.readAndAccept')}
-              error={getTranslatedError(
-                'privacyAgreement',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-              )}
-              required
-              disabled={
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-              }
-              onChange={(checked: boolean) => setFormField('privacyAgreement', checked)}
-              onBlur={() => validateFieldOnBlur('privacyAgreement')}
-              language={i18n.language}
-              color={PANEL_COLORS.step4}
-            />
+            <div className='relative'>
+              <CheckboxAgreementField
+                name='privacyAgreement'
+                checked={privacyAgreement}
+                label={t('teams.form.agreeToPrivacyPolicy')}
+                description={t('teams.form.readAndAccept')}
+                error={getTranslatedError(
+                  'privacyAgreement',
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                )}
+                required
+                disabled={
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                }
+                onChange={(checked: boolean) =>
+                  setFormField('privacyAgreement', checked)
+                }
+                onBlur={() => validateFieldOnBlur('privacyAgreement')}
+                language={i18n.language}
+                color={PANEL_COLORS.step4}
+              />
+              <FieldStatusIcon
+                status={getFieldStatus(
+                  'privacyAgreement',
+                  privacyAgreement,
+                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                )}
+              />
+            </div>
           </Panel>
         ) : null}
 

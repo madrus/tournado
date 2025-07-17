@@ -1,0 +1,76 @@
+import { render, screen } from '@testing-library/react'
+
+import { describe, expect, it } from 'vitest'
+
+import { FieldStatusIcon } from '../FieldStatusIcon'
+
+describe('FieldStatusIcon', () => {
+  it('should render nothing when status is neutral', () => {
+    const { container } = render(<FieldStatusIcon status='neutral' />)
+    expect(container).toBeEmptyDOMElement()
+  })
+
+  it('should render success icon when status is success', () => {
+    render(<FieldStatusIcon status='success' />)
+
+    const icon = screen.getByRole('img', { name: 'Check mark' })
+    expect(icon).toBeInTheDocument()
+    expect(icon).toHaveClass('inline-block')
+  })
+
+  it('should render error icon when status is error', () => {
+    render(<FieldStatusIcon status='error' />)
+
+    const icon = screen.getByRole('img', { name: 'Close' })
+    expect(icon).toBeInTheDocument()
+    expect(icon).toHaveClass('inline-block')
+  })
+
+  it('should apply custom className to container', () => {
+    render(<FieldStatusIcon status='success' className='custom-class' />)
+
+    const iconContainer = screen.getByTestId('field-status-success')
+    expect(iconContainer).toBeInTheDocument()
+    expect(iconContainer).toHaveClass('bg-emerald-500', 'custom-class')
+  })
+
+  it('should always use emerald background for success status', () => {
+    render(<FieldStatusIcon status='success' />)
+
+    const iconContainer = screen.getByTestId('field-status-success')
+    expect(iconContainer).toBeInTheDocument()
+    expect(iconContainer).toHaveClass('absolute', '-top-2', 'right-1', 'bg-emerald-500')
+  })
+
+  it('should always use red background for error status', () => {
+    render(<FieldStatusIcon status='error' />)
+
+    const iconContainer = screen.getByTestId('field-status-error')
+    expect(iconContainer).toBeInTheDocument()
+    expect(iconContainer).toHaveClass('absolute', '-top-2', 'right-1', 'bg-red-500')
+  })
+
+  it('should have proper positioning classes', () => {
+    render(<FieldStatusIcon status='success' />)
+
+    const iconContainer = screen.getByTestId('field-status-success')
+    expect(iconContainer).toHaveClass(
+      'absolute',
+      '-top-2',
+      'right-1',
+      'flex',
+      'h-6',
+      'w-6',
+      'items-center',
+      'justify-center',
+      'rounded-full'
+    )
+  })
+
+  it('should render with white text color for icons', () => {
+    render(<FieldStatusIcon status='success' />)
+
+    const icon = screen.getByRole('img', { name: 'Check mark' })
+    expect(icon).toHaveClass('text-white')
+  })
+})

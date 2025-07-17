@@ -323,6 +323,7 @@ export function TournamentForm({
               error={getTranslatedError('name')}
               required
               className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
             />
 
@@ -336,6 +337,7 @@ export function TournamentForm({
               error={getTranslatedError('location')}
               required
               className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
             />
           </div>
@@ -389,6 +391,7 @@ export function TournamentForm({
               )}
               required
               className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step2}
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }
@@ -406,6 +409,7 @@ export function TournamentForm({
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               )}
               className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step2}
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }

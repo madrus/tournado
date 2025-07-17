@@ -216,7 +216,7 @@ export function TournamentForm({
   const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
-    <div className={cn('mx-auto max-w-6xl', className)}>
+    <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
         <div className='border-primary from-accent to-accent mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>

@@ -10,6 +10,7 @@ import {
   comboFieldContentVariants,
   comboFieldItemVariants,
   comboFieldTriggerVariants,
+  comboFieldValueVariants,
   textInputErrorVariants,
   textInputLabelTextVariants,
   textInputLabelVariants,
@@ -110,7 +111,11 @@ export const ComboField = forwardRef<HTMLDivElement, ComboFieldProps>(
               aria-invalid={!!error || undefined}
               aria-errormessage={error ? `${name}-error` : undefined}
             >
-              <div className='flex-1 truncate text-left'>
+              <div
+                className={comboFieldValueVariants({
+                  state: safeValue === '' ? 'placeholder' : 'value',
+                })}
+              >
                 <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
               </div>
               <Select.Icon asChild>

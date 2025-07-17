@@ -7,6 +7,15 @@ import { Box, Flex, Grid, Heading, Text } from '@radix-ui/themes'
 
 import { DeleteIcon, TrophyIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
+import {
+  datatableActionButtonVariants,
+  datatableCellTextVariants,
+  datatableContainerVariants,
+  datatableDeleteAreaVariants,
+  datatableHeaderTextVariants,
+  datatableHeaderVariants,
+  datatableRowVariants,
+} from '~/components/shared/datatable.variants'
 import type { TournamentListItem } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -338,16 +347,16 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
             </Text>
           </Box>
         ) : (
-          <div className='w-full md:w-fit md:max-w-full'>
+          <div className={datatableContainerVariants({ color: 'slate' })}>
             {/* Header - only show on desktop */}
             {isDesktop ? (
-              <div className='rounded-t-lg border-b border-slate-200 bg-slate-50 px-3 py-3'>
+              <div className={datatableHeaderVariants({ color: 'slate' })}>
                 <div className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6'>
                   <div className='flex items-start'>
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-slate-500 uppercase'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
                     >
                       {t('tournaments.name')}
                     </Text>
@@ -356,7 +365,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-slate-500 uppercase'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
                     >
                       {t('tournaments.startDate')}
                     </Text>
@@ -365,14 +374,19 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     <Text
                       size='1'
                       weight='medium'
-                      className='tracking-wider text-slate-500 uppercase'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
                     >
                       {t('tournaments.endDate')}
                     </Text>
                   </div>
                   <div className='flex w-6 items-start justify-center'>
                     <span className='sr-only'>{t('common.actions')}</span>
-                    <DeleteIcon className='h-4 w-4 text-slate-500' />
+                    <DeleteIcon
+                      className={cn(
+                        'h-4 w-4',
+                        datatableHeaderTextVariants({ color: 'slate' })
+                      )}
+                    />
                   </div>
                 </div>
               </div>
@@ -407,11 +421,11 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   key={tournament.id}
                   className={cn(
                     'relative overflow-hidden',
-                    isDesktop
-                      ? 'border-b border-slate-100'
-                      : 'border-b border-slate-100',
-                    index === tournamentListItems.length - 1 &&
-                      'rounded-b-lg border-b-0'
+                    datatableRowVariants({
+                      color: 'slate',
+                      variant:
+                        index === tournamentListItems.length - 1 ? 'last' : 'default',
+                    })
                   )}
                 >
                   {/* Container that slides as one unit */}
@@ -423,7 +437,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     >
                       {/* Main content - fixed width */}
                       <div
-                        className='w-full flex-shrink-0 cursor-pointer bg-white transition-colors hover:bg-slate-50'
+                        className='w-full flex-shrink-0'
                         onClick={() => handleTournamentClick(tournament.id)}
                       >
                         <div className='px-6 py-4'>
@@ -432,27 +446,51 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                               <Text
                                 size='2'
                                 weight='medium'
-                                className='block text-slate-900'
+                                className={cn(
+                                  'block',
+                                  datatableCellTextVariants({ variant: 'primary' })
+                                )}
                               >
                                 {tournament.name}
                               </Text>
-                              <Text size='1' className='mt-1 block text-slate-600'>
+                              <Text
+                                size='1'
+                                className={cn(
+                                  'mt-1 block',
+                                  datatableCellTextVariants({ variant: 'secondary' })
+                                )}
+                              >
                                 {tournament.location}
                               </Text>
                             </div>
                             <div className='ml-4 flex-shrink-0 text-right'>
                               <Text
                                 size='2'
-                                className='block font-medium text-slate-700'
+                                className={cn(
+                                  'block font-medium',
+                                  datatableCellTextVariants({ variant: 'primary' })
+                                )}
                               >
                                 {formatDate(tournament.startDate)}
                               </Text>
                               {tournament.endDate ? (
-                                <Text size='1' className='mt-1 block text-slate-500'>
+                                <Text
+                                  size='1'
+                                  className={cn(
+                                    'mt-1 block',
+                                    datatableCellTextVariants({ variant: 'secondary' })
+                                  )}
+                                >
                                   {formatDate(tournament.endDate)}
                                 </Text>
                               ) : (
-                                <Text size='1' className='mt-1 block text-slate-400'>
+                                <Text
+                                  size='1'
+                                  className={cn(
+                                    'mt-1 block',
+                                    datatableCellTextVariants({ variant: 'muted' })
+                                  )}
+                                >
                                   -
                                 </Text>
                               )}
@@ -462,7 +500,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                       </div>
 
                       {/* Red delete area - fixed width */}
-                      <div className='bg-error flex w-screen flex-shrink-0 items-center justify-center'>
+                      <div className={datatableDeleteAreaVariants({ color: 'red' })}>
                         <div
                           className='flex cursor-pointer items-center space-x-2 text-white'
                           onClick={event => {
@@ -480,28 +518,49 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                   ) : (
                     // Desktop: Table-like grid layout with improved column sizing
                     <div
-                      className='grid cursor-pointer grid-cols-[2fr_1fr_1fr_auto] gap-6 bg-white px-3 py-4 transition-colors hover:bg-slate-50'
+                      className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6 px-3 py-4'
                       onClick={() => handleTournamentClick(tournament.id)}
                     >
                       <div className='flex items-start'>
                         <div>
-                          <Text size='2' weight='medium' className='text-slate-900'>
+                          <Text
+                            size='2'
+                            weight='medium'
+                            className={datatableCellTextVariants({
+                              variant: 'primary',
+                            })}
+                          >
                             {tournament.name}
                           </Text>
                           <div className='mt-1'>
-                            <Text size='1' className='text-slate-600'>
+                            <Text
+                              size='1'
+                              className={datatableCellTextVariants({
+                                variant: 'secondary',
+                              })}
+                            >
                               {tournament.location}
                             </Text>
                           </div>
                         </div>
                       </div>
                       <div className='flex items-start'>
-                        <Text size='2' className='text-slate-600'>
+                        <Text
+                          size='2'
+                          className={datatableCellTextVariants({
+                            variant: 'secondary',
+                          })}
+                        >
                           {formatDate(tournament.startDate)}
                         </Text>
                       </div>
                       <div className='flex items-start'>
-                        <Text size='2' className='text-slate-600'>
+                        <Text
+                          size='2'
+                          className={datatableCellTextVariants({
+                            variant: 'secondary',
+                          })}
+                        >
                           {tournament.endDate ? formatDate(tournament.endDate) : '-'}
                         </Text>
                       </div>
@@ -511,7 +570,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                             event.stopPropagation()
                             handleTournamentDelete(tournament.id)
                           }}
-                          className='text-error hover:bg-brand-accent hover:text-brand-dark flex items-center justify-center rounded-full p-1 transition-colors duration-200'
+                          className={datatableActionButtonVariants({
+                            action: 'delete',
+                          })}
                           title={t('tournaments.deleteTournament')}
                         >
                           <DeleteIcon className='h-4 w-4' />

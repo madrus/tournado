@@ -8,6 +8,7 @@ type ChevronLeftIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
 }
 
 export const ChevronLeftIcon = ({
@@ -16,6 +17,7 @@ export const ChevronLeftIcon = ({
   variant: _variant = 'outlined',
   weight = 600, // Default to bold
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Chevron left',
 }: Readonly<ChevronLeftIconProps>): JSX.Element => (
   <svg
     width={size}
@@ -27,6 +29,8 @@ export const ChevronLeftIcon = ({
     strokeLinecap='round'
     strokeLinejoin='round'
     data-testid={dataTestId}
+    role='img'
+    aria-label={ariaLabel}
   >
     <path d='M15 18l-6-6 6-6' />
   </svg>

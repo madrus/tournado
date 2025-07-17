@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
@@ -475,12 +476,12 @@ export function TournamentForm({
             'divisions',
             isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
           ) ? (
-            <p className='text-destructive mt-2 text-sm'>
+            <ErrorMessage panelColor={PANEL_COLORS.step3}>
               {getTranslatedError(
                 'divisions',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               )}
-            </p>
+            </ErrorMessage>
           ) : null}
         </Panel>
 
@@ -542,12 +543,12 @@ export function TournamentForm({
             'categories',
             isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
           ) ? (
-            <p className='text-destructive mt-2 text-sm'>
+            <ErrorMessage panelColor={PANEL_COLORS.step4}>
               {getTranslatedError(
                 'categories',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
               )}
-            </p>
+            </ErrorMessage>
           ) : null}
         </Panel>
 

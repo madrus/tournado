@@ -1,10 +1,10 @@
 import { type FocusEvent, forwardRef, type JSX } from 'react'
 
+import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 import {
-  textInputErrorVariants,
   textInputFieldVariants,
   textInputLabelTextVariants,
   textInputLabelVariants,
@@ -52,37 +52,39 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
     <div className={className}>
       <label className={textInputLabelVariants()}>
         <span className={textInputLabelTextVariants()}>{label}</span>
-        <input
-          ref={ref}
-          name={name}
-          type={type}
-          readOnly={readOnly}
-          disabled={disabled}
-          required={required}
-          value={value}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          className={cn(
-            textInputFieldVariants({
-              color,
-              disabled: disabled ? true : undefined,
-              error: error ? true : undefined,
-            }),
-            className
-          )}
-          aria-invalid={error ? true : undefined}
-          aria-errormessage={error ? `${name}-error` : undefined}
-          onChange={
-            onChange ? inputEvent => onChange(inputEvent.target.value) : undefined
-          }
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
+        <div className='relative'>
+          <input
+            ref={ref}
+            name={name}
+            type={type}
+            readOnly={readOnly}
+            disabled={disabled}
+            required={required}
+            value={value}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            className={cn(
+              textInputFieldVariants({
+                color,
+                disabled: disabled ? true : undefined,
+                error: error ? true : undefined,
+              }),
+              className
+            )}
+            aria-invalid={error ? true : undefined}
+            aria-errormessage={error ? `${name}-error` : undefined}
+            onChange={
+              onChange ? inputEvent => onChange(inputEvent.target.value) : undefined
+            }
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </div>
       </label>
       {error ? (
-        <div className={textInputErrorVariants()} id={`${name}-error`}>
+        <ErrorMessage panelColor={color} id={`${name}-error`}>
           {error}
-        </div>
+        </ErrorMessage>
       ) : null}
     </div>
   )

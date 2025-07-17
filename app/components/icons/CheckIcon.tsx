@@ -6,12 +6,14 @@ type CheckIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
+  'aria-label'?: string
 }
 
 export function CheckIcon({
   className = '',
   size = 24,
   weight = 400,
+  'aria-label': ariaLabel = 'Check mark',
 }: CheckIconProps): JSX.Element {
   // Convert weight to stroke-width for simple check mark
   const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2 : 2
@@ -25,6 +27,8 @@ export function CheckIcon({
       stroke='currentColor'
       className={`inline-block ${className}`}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
     >
       <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
     </svg>

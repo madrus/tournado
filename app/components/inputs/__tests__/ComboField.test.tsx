@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import type { ComboFieldOption } from '../ComboField'
+import type { Option } from '../ComboField'
 import { ComboField } from '../ComboField'
 
 // Mock the icon utilities
@@ -12,7 +12,7 @@ vi.mock('~/utils/iconUtils', () => ({
 }))
 
 describe('ComboField', () => {
-  const mockOptions: ComboFieldOption[] = [
+  const mockOptions: Option[] = [
     { value: 'option1', label: 'Option 1' },
     { value: 'option2', label: 'Option 2' },
     { value: 'option3', label: 'Option 3' },

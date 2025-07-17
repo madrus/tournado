@@ -8,6 +8,7 @@ type PendingIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'data-testid'?: string
+  'aria-label'?: string
 }
 
 export function PendingIcon({
@@ -16,6 +17,7 @@ export function PendingIcon({
   variant = 'outlined',
   weight = 400,
   'data-testid': dataTestId,
+  'aria-label': ariaLabel = 'Pending',
 }: PendingIconProps): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -43,6 +45,8 @@ export function PendingIcon({
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
       data-testid={dataTestId}
+      role='img'
+      aria-label={ariaLabel}
     >
       <path d={path} />
     </svg>

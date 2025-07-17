@@ -373,11 +373,58 @@
   color: var(--color-brand); /* Uses theme-aware brand color */
 }
 
-.text-error {
+/* DEPRECATED: .text-error class - now using adaptive ErrorMessage component */
+/* .text-error {
   color: var(--color-brand);
 }
 .dark .text-error {
-  color: var(--color-brand); /* Same as light for now */
+  color: var(--color-brand);
+} */
+
+/* ErrorMessage component adaptive text colors - override dark mode defaults */
+.error-message-white {
+  color: var(--color-white) !important;
+}
+.error-message-amber {
+  color: var(--color-amber-900) !important;
+}
+.error-message-indigo {
+  color: var(--color-white) !important;
+}
+.error-message-fuchsia {
+  color: var(--color-white) !important;
+}
+.error-message-slate {
+  color: var(--color-slate-800) !important;
+}
+.error-message-sky {
+  color: var(--color-sky-900) !important;
+}
+.error-message-red {
+  color: var(--color-red-800) !important;
+}
+
+/* Dark mode overrides for ErrorMessage component */
+.dark .error-message-white {
+  color: var(--color-white) !important;
+}
+.dark .error-message-amber {
+  color: var(--color-amber-900) !important;
+}
+.dark .error-message-indigo {
+  color: var(--color-white) !important;
+}
+.dark .error-message-fuchsia {
+  color: var(--color-white) !important;
+}
+.dark .error-message-slate {
+  color: var(--color-slate-800) !important;
+}
+.dark .error-message-sky {
+  color: var(--color-sky-900) !important;
+}
+.dark .error-message-red {
+  color: var(--color-red-800) !important;
 }
 
 .bg-accent {

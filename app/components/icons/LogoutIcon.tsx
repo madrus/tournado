@@ -6,12 +6,14 @@ type LogoutIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
+  'aria-label'?: string
 }
 
 export function LogoutIcon({
   className = '',
   size = 24,
   weight = 400,
+  'aria-label': ariaLabel = 'Logout',
 }: LogoutIconProps): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
   const path =
@@ -28,6 +30,8 @@ export function LogoutIcon({
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
       style={{ strokeWidth }}
+      role='img'
+      aria-label={ariaLabel}
     >
       <path d={path} />
     </svg>

@@ -302,8 +302,8 @@ export const textInputLabelVariants = cva(['flex w-full flex-col gap-1'])
 // Text input label text variants
 export const textInputLabelTextVariants = cva(['font-medium text-foreground'])
 
-// Text input error variants
-export const textInputErrorVariants = cva(['mt-2 text-sm text-brand'])
+// Text input error variants - DEPRECATED: Use ErrorMessage component instead
+// export const textInputErrorVariants = cva(['mt-2 text-sm text-brand'])
 
 // Calendar container variants
 export const calendarContainerVariants = cva([
@@ -526,7 +526,7 @@ export type DatePickerTextVariants = VariantProps<typeof datePickerTextVariants>
 export type DatePickerIconVariants = VariantProps<typeof datePickerIconVariants>
 export type TextInputLabelVariants = VariantProps<typeof textInputLabelVariants>
 export type TextInputLabelTextVariants = VariantProps<typeof textInputLabelTextVariants>
-export type TextInputErrorVariants = VariantProps<typeof textInputErrorVariants>
+// export type TextInputErrorVariants = VariantProps<typeof textInputErrorVariants> // DEPRECATED: Now using ErrorMessage component
 export type CalendarContainerVariants = VariantProps<typeof calendarContainerVariants>
 export type CalendarHeaderVariants = VariantProps<typeof calendarHeaderVariants>
 export type CalendarWeekdayVariants = VariantProps<typeof calendarWeekdayVariants>

@@ -48,25 +48,24 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    ```
 - [x] Copy `components/shared/panel.variants.ts` → `panel.variants.ts` and replace every `dark:` with `@dark:`.
 - [x] Keep the old shared variant file in place until Phase 6.
-- [x] **Implement internal 3-layer render model** inside `Panel.tsx`:
-   - [x] Static background `<div className="absolute inset-0" />` using `panelVariants({ color })`.
+- [x] **Create Panel.tsx** making it possible to implement the following variants:
+   - [x] Static background panel `<div className="absolute inset-0" />` using `panelVariants({ color })`.
    - [x] Base content container (`opacity-100 group-hover:opacity-0`).
    - [x] Optional hover overlay (`opacity-0 group-hover:opacity-100`) rendered only when `hoverColor` prop is provided.
-   - [x] Ensure no colour-flash occurs during transitions by keeping background constant.
 - [x] **Compliance check:** `grep -R --line-number "dark:" app/components/Panel | grep -v "@dark:"` returns no results (ensures Panel package uses only `@dark:` syntax).
 - [x] Replace every `dark:` utility inside **panel-specific** TypeScript/JSX code (variants, tests) with `@dark:` to use the new inline directive.
-- [ ] **Validation & commit:** all quality checks pass; open draft PR or commit.
+- [x] **Validation & commit:** all quality checks pass; open draft PR or commit.
 
 ---
 
 ## Phase 4 · Early-Adopter Migration
 
 - [ ] **Trim ActionLinkPanel files**
-   - [ ] Delete `PanelBackground.tsx`, `PanelLayer.tsx`, `actionLinkPanel.variants.ts`.
-   - [ ] Replace with a one-liner wrapper that passes props to new `Panel` (inherits 3-layer logic).
+   - [ ] Refactor `PanelBackground.tsx` and `PanelLayer.tsx` via the new `Panel`.
    - [ ] Update/replace unit tests to cover hover opacity toggle and link behaviour.
 - [ ] **Admin dashboard (5 tiles)** – verify UI in light & dark mode; gradients must still match the `@variant dark` overrides in `tailwind.css`.
 - [ ] Commit **PR-1 “panel package & early adopters”**.
+- [ ] **Validation** run full quality suite.
 - [ ] **Validation & commit:** run full quality suite; merge PR-1 once green.
 
 ---

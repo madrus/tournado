@@ -14,8 +14,8 @@ function getPanelStyles(colorAccent: ColorAccent) {
       // Brand: semantic slate gradients (slate in light, slate in dark)
       return 'bg-gradient-to-br from-brand-from via-brand-via to-brand-to'
     }
-    // For other colors: light color in light mode, dark color in dark mode
-    return `bg-gradient-to-br from-${resolvedColor}-50 via-${resolvedColor}-100 to-${resolvedColor}-50 dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
+    // For other colors: white edges with color center
+    return `bg-gradient-to-br from-white via-${resolvedColor}-100 to-white dark:from-${resolvedColor}-950 dark:via-${resolvedColor}-900 dark:to-${resolvedColor}-900`
   }
 
   return {
@@ -24,7 +24,7 @@ function getPanelStyles(colorAccent: ColorAccent) {
     glow: `bg-${resolvedColor}-400/30`,
     iconBorder: `border-${resolvedColor}-400/70`,
     iconBg: `bg-${resolvedColor}-400/10`,
-    iconText: `text-${resolvedColor}-700 dark:text-${resolvedColor}-300`,
+    iconText: colorAccent === 'brand' ? `text-red-600` : `text-${resolvedColor}-600`,
     title: `text-title`,
     description: `text-foreground dark:text-${resolvedColor}-100/80`,
   }

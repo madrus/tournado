@@ -199,6 +199,14 @@
 
 /* Base Styles */
 @layer base {
+  /* Smooth theme transitions for all color-related properties */
+  * {
+    transition: background-color 0.2s ease-in-out, 
+                border-color 0.2s ease-in-out, 
+                color 0.2s ease-in-out,
+                box-shadow 0.2s ease-in-out;
+  }
+
   /* Ensure headings use the title color */
   h1, h2, h3, h4, h5, h6 {
     color: var(--color-title);

@@ -71,7 +71,7 @@ export function PanelLayer({
       'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
       iconColor === 'brand'
         ? 'text-red-600 border-red-600'
-        : `text-${iconColor}-700 dark:text-${iconColor}-300 border-${iconColor}-700 dark:border-${iconColor}-300`
+        : `text-${iconColor}-600 border-${iconColor}-600`
     )
   }
 

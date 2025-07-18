@@ -47,7 +47,6 @@ export function ActionLinkPanel({
       className={cn(
         actionLinkPanelVariants({
           color: mainColor,
-          hoverColor: hoverColor || 'none',
         }),
         className
       )}

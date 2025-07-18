@@ -6,7 +6,7 @@ import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router
 import { Box, Flex, Grid, Heading, Text } from '@radix-ui/themes'
 
 import { DeleteIcon, TrophyIcon } from '~/components/icons'
-import { Panel } from '~/components/Panel'
+import { PanelOld as Panel } from '~/components/PanelOld'
 import {
   datatableActionButtonVariants,
   datatableCellTextVariants,

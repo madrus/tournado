@@ -34,14 +34,15 @@ export const actionLinkPanelVariants = cva(
         primary: 'panel-primary',
       },
       size: {
-        default: 'p-6',
-        sm: 'p-4',
-        lg: 'p-8',
+        none: '',
+        default: '',
+        sm: '',
+        lg: '',
       },
     },
     defaultVariants: {
       color: 'teal',
-      size: 'default',
+      size: 'none',
     },
   }
 )

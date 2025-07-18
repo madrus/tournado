@@ -4,7 +4,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
 
 import { ApparelIcon } from '~/components/icons'
-import { Panel } from '~/components/Panel'
+import { PanelOld as Panel } from '~/components/PanelOld'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'

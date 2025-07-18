@@ -13,26 +13,26 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ## Phase 1 · Preparation
 
-- [ ] Create tracking branch `feat/panel-refactor`.
-- [ ] Inventory legacy usage:
+- [x] Create tracking branch `feat/panel-refactor`.
+- [x] Inventory legacy usage:
    ```bash
    grep -R "from '~/components/Panel'" app | wc -l
    grep -R "getPanelClasses(" app | wc -l
    ```
-- [ ] Produce a checklist of legacy callers and test files.
-- [ ] **Validation & commit:** ensure `pnpm lint`, `pnpm typecheck`, and `pnpm test` pass; commit the branch state.
+- [x] Produce a checklist of legacy callers and test files.
+- [x] **Validation & commit:** ensure `pnpm lint`, `pnpm typecheck`, and `pnpm test` pass; commit the branch state.
 
 ---
 
 ## Phase 2 · Legacy Isolation
 
-- [ ] **Rename file** `app/components/Panel.tsx` → `app/components/PanelOld.tsx` and `export function PanelOld …`.
-- [ ] **Automated import shim** – temporarily rewrite existing imports:
+- [x] **Rename file** `app/components/Panel.tsx` → `app/components/PanelOld.tsx` and `export function PanelOld …`.
+- [x] **Automated import shim** – temporarily rewrite existing imports:
    ```ts
    import { PanelOld as Panel } from '~/components/PanelOld'
    ```
-- [ ] Ensure the repo compiles with the shim in place.
-- [ ] **Validation & commit:** repo must lint, type-check, and test cleanly; push interim commit.
+- [x] Ensure the repo compiles with the shim in place.
+- [x] **Validation & commit:** repo must lint, type-check, and test cleanly; push interim commit.
 
 ---
 

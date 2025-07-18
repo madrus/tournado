@@ -79,9 +79,9 @@ describe('PanelLayer Component', () => {
 
       const backgroundElement = screen.getByTestId('test-layer-background')
       expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-      expect(backgroundElement).toHaveClass('from-teal-50')
+      expect(backgroundElement).toHaveClass('from-white')
       expect(backgroundElement).toHaveClass('via-teal-100')
-      expect(backgroundElement).toHaveClass('to-teal-50')
+      expect(backgroundElement).toHaveClass('to-white')
       expect(backgroundElement).toHaveClass('dark:from-teal-950')
       expect(backgroundElement).toHaveClass('dark:via-teal-900')
       expect(backgroundElement).toHaveClass('dark:to-teal-900')
@@ -99,9 +99,9 @@ describe('PanelLayer Component', () => {
 
       const backgroundElement = screen.getByTestId('test-layer-background')
       expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-      expect(backgroundElement).toHaveClass('from-blue-50')
+      expect(backgroundElement).toHaveClass('from-white')
       expect(backgroundElement).toHaveClass('via-blue-100')
-      expect(backgroundElement).toHaveClass('to-blue-50')
+      expect(backgroundElement).toHaveClass('to-white')
       expect(backgroundElement).toHaveClass('dark:from-blue-950')
       expect(backgroundElement).toHaveClass('dark:via-blue-900')
       expect(backgroundElement).toHaveClass('dark:to-blue-900')
@@ -112,9 +112,9 @@ describe('PanelLayer Component', () => {
 
       const backgroundElement = screen.getByTestId('test-layer-background')
       expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-      expect(backgroundElement).toHaveClass('from-purple-50')
+      expect(backgroundElement).toHaveClass('from-white')
       expect(backgroundElement).toHaveClass('via-purple-100')
-      expect(backgroundElement).toHaveClass('to-purple-50')
+      expect(backgroundElement).toHaveClass('to-white')
       expect(backgroundElement).toHaveClass('dark:from-purple-950')
       expect(backgroundElement).toHaveClass('dark:via-purple-900')
       expect(backgroundElement).toHaveClass('dark:to-purple-900')
@@ -136,10 +136,8 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} iconColor='teal' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-teal-700')
-      expect(iconContainer).toHaveClass('dark:text-teal-300')
-      expect(iconContainer).toHaveClass('border-teal-700')
-      expect(iconContainer).toHaveClass('dark:border-teal-300')
+      expect(iconContainer).toHaveClass('text-teal-600')
+      expect(iconContainer).toHaveClass('border-teal-600')
     })
 
     it('should handle brand iconColor for base layer', () => {
@@ -274,9 +272,9 @@ describe('PanelLayer Component', () => {
 
       const backgroundElement = screen.getByTestId('test-layer-background')
       expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-      expect(backgroundElement).toHaveClass('from-emerald-50')
+      expect(backgroundElement).toHaveClass('from-white')
       expect(backgroundElement).toHaveClass('via-emerald-100')
-      expect(backgroundElement).toHaveClass('to-emerald-50')
+      expect(backgroundElement).toHaveClass('to-white')
       expect(backgroundElement).toHaveClass('dark:from-emerald-950')
       expect(backgroundElement).toHaveClass('dark:via-emerald-900')
       expect(backgroundElement).toHaveClass('dark:to-emerald-900')

@@ -174,27 +174,6 @@
   --color-brand-via: var(--brand-via);
   --color-brand-to: var(--brand-to);
 
-  /* Panel Background Colors */
-  --color-panel-bg-primary: var(--panel-bg-primary);
-  --color-panel-bg-brand: var(--panel-bg-brand);
-  --color-panel-bg-emerald: var(--panel-bg-emerald);
-  --color-panel-bg-teal: var(--panel-bg-teal);
-  --color-panel-bg-cyan: var(--panel-bg-cyan);
-  --color-panel-bg-blue: var(--panel-bg-blue);
-  --color-panel-bg-green: var(--panel-bg-green);
-  --color-panel-bg-yellow: var(--panel-bg-yellow);
-  --color-panel-bg-violet: var(--panel-bg-violet);
-  --color-panel-bg-slate: var(--panel-bg-slate);
-  --color-panel-bg-zinc: var(--panel-bg-zinc);
-  --color-panel-bg-orange: var(--panel-bg-orange);
-  --color-panel-bg-amber: var(--panel-bg-amber);
-  --color-panel-bg-lime: var(--panel-bg-lime);
-  --color-panel-bg-sky: var(--panel-bg-sky);
-  --color-panel-bg-indigo: var(--panel-bg-indigo);
-  --color-panel-bg-purple: var(--panel-bg-purple);
-  --color-panel-bg-fuchsia: var(--panel-bg-fuchsia);
-  --color-panel-bg-pink: var(--panel-bg-pink);
-  --color-panel-bg-rose: var(--panel-bg-rose);
 }
 
 /* Base Styles */
@@ -598,5 +577,284 @@
   [dir="rtl"] header .arabic-text.sm\:text-2xl {
     font-size: 1.875rem !important; /* 30px = 24px * 1.25 */
     transform: translateY(5px) !important; /* More downward adjustment for larger text */
+  }
+}
+
+/* Panel @variant dark styles for ActionLinkPanel components */
+@variant dark {
+  /* Main panel container styles */
+  .panel-teal {
+    background: linear-gradient(135deg, from white via var(--color-teal-100) to white);
+    border-color: var(--color-teal-300);
+  }
+
+  .panel-brand {
+    background: linear-gradient(135deg, from white via var(--color-red-100) to white);
+    border-color: var(--color-red-300);
+  }
+
+  .panel-emerald {
+    background: linear-gradient(135deg, from white via var(--color-emerald-100) to white);
+    border-color: var(--color-emerald-300);
+  }
+
+  .panel-blue {
+    background: linear-gradient(135deg, from white via var(--color-blue-100) to white);
+    border-color: var(--color-blue-300);
+  }
+
+  .panel-slate {
+    background: linear-gradient(135deg, from white via var(--color-slate-100) to white);
+    border-color: var(--color-slate-300);
+  }
+
+  .panel-red {
+    background: linear-gradient(135deg, from white via var(--color-red-100) to white);
+    border-color: var(--color-red-300);
+  }
+
+  .panel-cyan {
+    background: linear-gradient(135deg, from white via var(--color-cyan-100) to white);
+    border-color: var(--color-cyan-300);
+  }
+
+  .panel-yellow {
+    background: linear-gradient(135deg, from white via var(--color-yellow-100) to white);
+    border-color: var(--color-yellow-300);
+  }
+
+  .panel-green {
+    background: linear-gradient(135deg, from white via var(--color-green-100) to white);
+    border-color: var(--color-green-300);
+  }
+
+  .panel-violet {
+    background: linear-gradient(135deg, from white via var(--color-violet-100) to white);
+    border-color: var(--color-violet-300);
+  }
+
+  .panel-zinc {
+    background: linear-gradient(135deg, from white via var(--color-zinc-100) to white);
+    border-color: var(--color-zinc-300);
+  }
+
+  .panel-orange {
+    background: linear-gradient(135deg, from white via var(--color-orange-100) to white);
+    border-color: var(--color-orange-300);
+  }
+
+  .panel-amber {
+    background: linear-gradient(135deg, from white via var(--color-amber-100) to white);
+    border-color: var(--color-amber-300);
+  }
+
+  .panel-lime {
+    background: linear-gradient(135deg, from white via var(--color-lime-100) to white);
+    border-color: var(--color-lime-300);
+  }
+
+  .panel-sky {
+    background: linear-gradient(135deg, from white via var(--color-sky-100) to white);
+    border-color: var(--color-sky-300);
+  }
+
+  .panel-indigo {
+    background: linear-gradient(135deg, from white via var(--color-indigo-100) to white);
+    border-color: var(--color-indigo-300);
+  }
+
+  .panel-purple {
+    background: linear-gradient(135deg, from white via var(--color-purple-100) to white);
+    border-color: var(--color-purple-300);
+  }
+
+  .panel-fuchsia {
+    background: linear-gradient(135deg, from white via var(--color-fuchsia-100) to white);
+    border-color: var(--color-fuchsia-300);
+  }
+
+  .panel-pink {
+    background: linear-gradient(135deg, from white via var(--color-pink-100) to white);
+    border-color: var(--color-pink-300);
+  }
+
+  .panel-rose {
+    background: linear-gradient(135deg, from white via var(--color-rose-100) to white);
+    border-color: var(--color-rose-300);
+  }
+
+  .panel-primary {
+    background: linear-gradient(135deg, from white via var(--color-emerald-100) to white);
+    border-color: var(--color-emerald-300);
+  }
+
+  /* Background layer styles */
+  .panel-teal-bg {
+    background: linear-gradient(135deg, var(--color-teal-950), var(--color-teal-900), var(--color-teal-900));
+  }
+
+  .panel-brand-bg {
+    background: linear-gradient(135deg, var(--color-red-950), var(--color-red-900), var(--color-red-900));
+  }
+
+  .panel-emerald-bg {
+    background: linear-gradient(135deg, var(--color-emerald-950), var(--color-emerald-900), var(--color-emerald-900));
+  }
+
+  .panel-blue-bg {
+    background: linear-gradient(135deg, var(--color-blue-950), var(--color-blue-900), var(--color-blue-900));
+  }
+
+  .panel-slate-bg {
+    background: linear-gradient(135deg, var(--color-slate-950), var(--color-slate-900), var(--color-slate-900));
+  }
+
+  .panel-red-bg {
+    background: linear-gradient(135deg, var(--color-red-950), var(--color-red-900), var(--color-red-900));
+  }
+
+  .panel-cyan-bg {
+    background: linear-gradient(135deg, var(--color-cyan-950), var(--color-cyan-900), var(--color-cyan-900));
+  }
+
+  .panel-yellow-bg {
+    background: linear-gradient(135deg, var(--color-yellow-950), var(--color-yellow-900), var(--color-yellow-900));
+  }
+
+  .panel-green-bg {
+    background: linear-gradient(135deg, var(--color-green-950), var(--color-green-900), var(--color-green-900));
+  }
+
+  .panel-violet-bg {
+    background: linear-gradient(135deg, var(--color-violet-950), var(--color-violet-900), var(--color-violet-900));
+  }
+
+  .panel-zinc-bg {
+    background: linear-gradient(135deg, var(--color-zinc-950), var(--color-zinc-900), var(--color-zinc-900));
+  }
+
+  .panel-orange-bg {
+    background: linear-gradient(135deg, var(--color-orange-950), var(--color-orange-900), var(--color-orange-900));
+  }
+
+  .panel-amber-bg {
+    background: linear-gradient(135deg, var(--color-amber-950), var(--color-amber-900), var(--color-amber-900));
+  }
+
+  .panel-lime-bg {
+    background: linear-gradient(135deg, var(--color-lime-950), var(--color-lime-900), var(--color-lime-900));
+  }
+
+  .panel-sky-bg {
+    background: linear-gradient(135deg, var(--color-sky-950), var(--color-sky-900), var(--color-sky-900));
+  }
+
+  .panel-indigo-bg {
+    background: linear-gradient(135deg, var(--color-indigo-950), var(--color-indigo-900), var(--color-indigo-900));
+  }
+
+  .panel-purple-bg {
+    background: linear-gradient(135deg, var(--color-purple-950), var(--color-purple-900), var(--color-purple-900));
+  }
+
+  .panel-fuchsia-bg {
+    background: linear-gradient(135deg, var(--color-fuchsia-950), var(--color-fuchsia-900), var(--color-fuchsia-900));
+  }
+
+  .panel-pink-bg {
+    background: linear-gradient(135deg, var(--color-pink-950), var(--color-pink-900), var(--color-pink-900));
+  }
+
+  .panel-rose-bg {
+    background: linear-gradient(135deg, var(--color-rose-950), var(--color-rose-900), var(--color-rose-900));
+  }
+
+  .panel-primary-bg {
+    background: linear-gradient(135deg, var(--color-emerald-950), var(--color-emerald-900), var(--color-emerald-900));
+  }
+
+  /* Glow effect styles */
+  .panel-teal-glow {
+    background: var(--color-teal-400);
+  }
+
+  .panel-brand-glow {
+    background: var(--color-red-400);
+  }
+
+  .panel-emerald-glow {
+    background: var(--color-emerald-400);
+  }
+
+  .panel-blue-glow {
+    background: var(--color-blue-400);
+  }
+
+  .panel-slate-glow {
+    background: var(--color-slate-400);
+  }
+
+  .panel-red-glow {
+    background: var(--color-red-400);
+  }
+
+  .panel-cyan-glow {
+    background: var(--color-cyan-400);
+  }
+
+  .panel-yellow-glow {
+    background: var(--color-yellow-400);
+  }
+
+  .panel-green-glow {
+    background: var(--color-green-400);
+  }
+
+  .panel-violet-glow {
+    background: var(--color-violet-400);
+  }
+
+  .panel-zinc-glow {
+    background: var(--color-zinc-400);
+  }
+
+  .panel-orange-glow {
+    background: var(--color-orange-400);
+  }
+
+  .panel-amber-glow {
+    background: var(--color-amber-400);
+  }
+
+  .panel-lime-glow {
+    background: var(--color-lime-400);
+  }
+
+  .panel-sky-glow {
+    background: var(--color-sky-400);
+  }
+
+  .panel-indigo-glow {
+    background: var(--color-indigo-400);
+  }
+
+  .panel-purple-glow {
+    background: var(--color-purple-400);
+  }
+
+  .panel-fuchsia-glow {
+    background: var(--color-fuchsia-400);
+  }
+
+  .panel-pink-glow {
+    background: var(--color-pink-400);
+  }
+
+  .panel-rose-glow {
+    background: var(--color-rose-400);
+  }
+
+  .panel-primary-glow {
+    background: var(--color-emerald-400);
   }
 }

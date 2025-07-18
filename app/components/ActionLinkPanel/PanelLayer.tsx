@@ -9,7 +9,7 @@ import {
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
-import { panelChildrenVariants } from './actionLinkPanel1.variants'
+import { panelChildrenVariants } from './actionLinkPanel.variants'
 
 export type PanelLayerProps = {
   title: string

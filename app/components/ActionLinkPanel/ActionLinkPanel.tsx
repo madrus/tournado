@@ -9,7 +9,7 @@ import {
   actionLinkPanelVariants,
   panelBackgroundVariants,
   panelLayerVariants,
-} from './actionLinkPanel1.variants'
+} from './actionLinkPanel.variants'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'
 

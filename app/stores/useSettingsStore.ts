@@ -99,8 +99,8 @@ export const useSettingsStore = create<StoreState & Actions>()(
           document.cookie = `theme=${systemTheme}; path=/; max-age=31536000`
 
           // Listen for system theme changes
-          const handleThemeChange = (e: MediaQueryListEvent) => {
-            const newSystemTheme: Theme = e.matches ? 'dark' : 'light'
+          const handleThemeChange = (event: MediaQueryListEvent) => {
+            const newSystemTheme: Theme = event.matches ? 'dark' : 'light'
             const currentState = useSettingsStore.getState()
 
             // Only auto-update if user hasn't manually overridden

@@ -1,25 +1,17 @@
 import { JSX, ReactNode } from 'react'
 
+import { Panel } from '~/components/Panel'
 import { type ColorAccent } from '~/lib/lib.types'
-import {
-  getDescriptionClasses,
-  getPanelClasses,
-  getTitleClasses,
-} from '~/styles/panel.styles'
 import { cn } from '~/utils/misc'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
-
-import { panelChildrenVariants } from './actionLinkPanel.variants'
 
 export type PanelLayerProps = {
   title: string
   description: string
   icon: JSX.Element
-  iconColor: ColorAccent | string
+  iconColor: ColorAccent
   mainColor: ColorAccent
   hoverColor?: ColorAccent
   isHover?: boolean
-  language: string
   textAlign: string
   children?: ReactNode
   className?: string
@@ -34,84 +26,48 @@ export function PanelLayer({
   mainColor,
   hoverColor,
   isHover = false,
-  language,
-  textAlign,
+  textAlign: _textAlign,
   children,
   className,
   'data-testid': testId,
 }: Readonly<PanelLayerProps>): JSX.Element {
-  // Determine which color to use for background/glow
+  // Determine which color to use for the panel
   const effectiveColor = isHover && hoverColor ? hoverColor : mainColor
-  const panelClasses = getPanelClasses(effectiveColor)
-  const titleClasses = getTitleClasses(effectiveColor)
-  const descriptionClasses = getDescriptionClasses(effectiveColor)
 
-  // Icon color logic
-  const getIconClasses = () => {
-    if (isHover && hoverColor) {
-      // Use hover icon color logic
-      const hoverIconColor =
-        hoverColor === 'brand' ? 'text-red-600' : `text-${hoverColor}-300`
-      const hoverIconBorder = hoverIconColor.replace('text-', 'border-')
-      return cn(
-        'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-        hoverIconColor,
-        hoverIconBorder
-      )
-    }
+  // For hover layers, change icon to the hover color (so brand hover makes icon red)
+  // Pass iconColor directly to Panel component since it handles ColorAccent properly
+  const effectiveIconColor = isHover && hoverColor ? hoverColor : iconColor
 
-    // base layer: ColorAccent
-    if (typeof iconColor === 'string' && iconColor.startsWith('text-')) {
-      const borderClass = iconColor.replace('text-', 'border-')
-      return cn(
-        'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-        iconColor,
-        borderClass
-      )
-    }
-    return cn(
-      'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-      iconColor === 'brand'
-        ? 'text-red-600 border-red-600'
-        : `text-${iconColor}-600 border-${iconColor}-600`
-    )
-  }
+  // For childrenIconColor, use the original iconColor (Panel will handle the fallback)
+  const effectiveChildrenIconColor = iconColor
+
+  // Apply positioning based on hover state
+  const positioningClasses = isHover
+    ? 'absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-750 ease-in-out panel-hover-layer'
+    : 'relative z-20 transition-opacity duration-750 ease-in-out'
+
+  // Apply fade-out for base layer when hover color exists
+  const opacityClasses =
+    !isHover && hoverColor ? 'group-hover:opacity-0 panel-base-layer' : ''
 
   return (
     <div
-      className={cn('relative flex h-full flex-col', className)}
-      data-testid={testId}
+      className={cn(positioningClasses, opacityClasses, className)}
+      data-testid={testId ? `${testId}-wrapper` : undefined}
     >
-      {/* Panel gradient background and glow */}
-      <div
-        className={cn('absolute inset-0', panelClasses.background)}
-        data-testid={testId ? `${testId}-background` : undefined}
+      <Panel
+        color={effectiveColor}
+        title={title}
+        subtitle={description}
+        icon={icon}
+        iconColor={effectiveIconColor}
+        childrenIconColor={effectiveChildrenIconColor}
+        showGlow
+        className={className}
+        data-testid={testId}
       >
-        <div
-          className={panelClasses.glow}
-          data-testid={testId ? `${testId}-glow` : undefined}
-        />
-      </div>
-      {/* Content */}
-      <div
-        className={cn(
-          'relative z-20 flex flex-1 flex-col items-start space-y-4 p-6 break-words',
-          textAlign
-        )}
-      >
-        <div className={getIconClasses()} aria-label='panel icon'>
-          {icon}
-        </div>
-        <h3 className={cn(titleClasses, getLatinTitleClass(language))}>{title}</h3>
-        <p className={descriptionClasses}>{description}</p>
-        {children ? (
-          <div
-            className={panelChildrenVariants({ iconColor: iconColor as ColorAccent })}
-          >
-            {children}
-          </div>
-        ) : null}
-      </div>
+        {children}
+      </Panel>
     </div>
   )
 }

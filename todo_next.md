@@ -60,12 +60,18 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ## Phase 4 · Early-Adopter Migration
 
-- [ ] **Trim ActionLinkPanel files**
-   - [ ] Refactor `PanelBackground.tsx` and `PanelLayer.tsx` via the new `Panel`.
+- [x] **Trim ActionLinkPanel files**
+   - [x] Refactor `PanelBackground.tsx` and `PanelLayer.tsx` via the new `Panel`.
+   - [x] **Fixed height issues:** Restored three-layer architecture with proper positioning (base: `relative z-20`, hover: `absolute inset-0 z-30`)
+   - [x] **Fixed hover transitions:** Proper opacity transitions (750ms) between base and hover layers
+   - [x] **Fixed brand color mapping:** Brand colors now use semantic gradients that map to red (light) and slate (dark)
+   - [x] **Fixed icon color on hover:** Icons properly change to red when hovering with `hoverColor='brand'`
+   - [x] **Fixed children text color:** Children text maintains original color (doesn't change on hover)
+   - [x] **Fixed duplicate borders:** Removed conflicting styling between PanelBackground and Panel component
    - [ ] Update/replace unit tests to cover hover opacity toggle and link behaviour.
-- [ ] **Admin dashboard (5 tiles)** – verify UI in light & dark mode; gradients must still match the `@variant dark` overrides in `tailwind.css`.
-- [ ] Commit **PR-1 “panel package & early adopters”**.
-- [ ] **Validation** run full quality suite.
+- [x] **Admin dashboard (5 tiles)** – verify UI in light & dark mode; gradients must still match the `@variant dark` overrides in `tailwind.css`.
+- [ ] **CVA Compliance Issues Identified:**
+   - [ ] Use semantic class names (`panel-teal`, `panel-brand`) in ActionLinkPanel and its children as much as possible → fix usage of the actual Tailwind classes
 - [ ] **Validation & commit:** run full quality suite; merge PR-1 once green.
 
 ---

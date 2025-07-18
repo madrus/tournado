@@ -1,11 +1,14 @@
 import { type JSX, ReactNode } from 'react'
 
+import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 import {
+  panelChildrenVariants,
   panelDescriptionVariants,
   panelGlowVariants,
+  panelIconVariants,
   panelNumberVariants,
   panelTitleVariants,
   panelVariants,
@@ -25,6 +28,8 @@ export type PanelProps = {
   icon?: JSX.Element
   /** Icon color - defaults to the same as panel color */
   iconColor?: ColorAccent
+  /** Children text color - defaults to iconColor */
+  childrenIconColor?: ColorAccent
   /** Optional step/section number displayed in a colored badge */
   panelNumber?: number | string
   /** If true, the panel is disabled (pointer events are disabled) */
@@ -44,29 +49,18 @@ export function Panel({
   subtitle,
   icon,
   iconColor,
+  childrenIconColor,
   panelNumber,
   disabled = false,
   showGlow = false,
   'data-testid': testId,
 }: PanelProps): JSX.Element {
+  const { currentLanguage } = useLanguageSwitcher()
   const effectiveIconColor = iconColor || color
+  const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
-  // Icon styling using consistent approach
-  const getIconClasses = () => {
-    const baseClasses =
-      'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-[border-color,background-color,color] duration-500 ease-in-out'
-
-    if (effectiveIconColor === 'brand') {
-      return cn(baseClasses, 'text-red-600 border-red-600')
-    }
-    if (effectiveIconColor === 'primary') {
-      return cn(baseClasses, 'text-emerald-600 border-emerald-600')
-    }
-    return cn(
-      baseClasses,
-      `text-${effectiveIconColor}-600 border-${effectiveIconColor}-600`
-    )
-  }
+  // Icon styling using CVA variants
+  const getIconClasses = () => panelIconVariants({ color: effectiveIconColor })
 
   const containerClasses = cn(
     panelVariants({ color, variant }),
@@ -82,27 +76,57 @@ export function Panel({
       ) : null}
 
       {/* Optional glow effect */}
-      {showGlow ? <div className={panelGlowVariants({ color })} /> : null}
+      {showGlow ? (
+        <div
+          className={panelGlowVariants({ color })}
+          data-testid={testId ? `${testId}-glow` : undefined}
+        />
+      ) : null}
 
       {/* Content area */}
-      <div className='flex flex-col items-start space-y-4 break-words'>
+      <div
+        className={cn(
+          'flex flex-col items-start break-words',
+          variant === 'hover' ? 'p-6' : ''
+        )}
+      >
         {/* Icon */}
         {icon ? (
-          <div className={getIconClasses()} aria-label='panel icon'>
+          <div className={cn(getIconClasses(), 'mb-4')} aria-label='panel icon'>
             {icon}
           </div>
         ) : null}
 
         {/* Title */}
         {title ? (
-          <h3 className={panelTitleVariants({ color, size: 'md' })}>{title}</h3>
+          <h3 className={panelTitleVariants({ size: 'md', language: currentLanguage })}>
+            {title}
+          </h3>
         ) : null}
 
         {/* Subtitle */}
-        {subtitle ? <p className={panelDescriptionVariants()}>{subtitle}</p> : null}
+        {subtitle ? (
+          <p
+            className={cn(
+              panelDescriptionVariants(),
+              'mb-4',
+              // Special case for brand color: use red tint in both modes
+              color === 'brand' ? 'text-brand-darkest dark:text-red-200' : ''
+            )}
+          >
+            {subtitle}
+          </p>
+        ) : null}
 
         {/* Children */}
-        {children}
+        {children ? (
+          <div
+            className={panelChildrenVariants({ iconColor: effectiveChildrenIconColor })}
+            data-testid={testId ? `${testId}-children` : undefined}
+          >
+            {children}
+          </div>
+        ) : null}
       </div>
     </div>
   )

@@ -9,6 +9,8 @@ import {
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
+import { panelChildrenVariants } from './actionLinkPanel1.variants'
+
 export type PanelLayerProps = {
   title: string
   description: string
@@ -76,7 +78,10 @@ export function PanelLayer({
   }
 
   return (
-    <div className={cn('relative', className)} data-testid={testId}>
+    <div
+      className={cn('relative flex h-full flex-col', className)}
+      data-testid={testId}
+    >
       {/* Panel gradient background and glow */}
       <div
         className={cn('absolute inset-0', panelClasses.background)}
@@ -90,12 +95,8 @@ export function PanelLayer({
       {/* Content */}
       <div
         className={cn(
-          'relative z-20 flex flex-col items-start space-y-4 p-6 break-words',
-          textAlign,
-          // Apply icon color only to children content, not description
-          iconColor === 'brand'
-            ? '[&>*:last-child_p]:text-red-600 [&>*:last-child_strong]:text-red-600'
-            : `[&>*:last-child_p]:text-${iconColor}-700 [&>*:last-child_p]:dark:text-${iconColor}-300 [&>*:last-child_strong]:text-${iconColor}-700 [&>*:last-child_strong]:dark:text-${iconColor}-300`
+          'relative z-20 flex flex-1 flex-col items-start space-y-4 p-6 break-words',
+          textAlign
         )}
       >
         <div className={getIconClasses()} aria-label='panel icon'>
@@ -103,7 +104,13 @@ export function PanelLayer({
         </div>
         <h3 className={cn(titleClasses, getLatinTitleClass(language))}>{title}</h3>
         <p className={descriptionClasses}>{description}</p>
-        {children}
+        {children ? (
+          <div
+            className={panelChildrenVariants({ iconColor: iconColor as ColorAccent })}
+          >
+            {children}
+          </div>
+        ) : null}
       </div>
     </div>
   )

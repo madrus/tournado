@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const actionLinkPanelVariants = cva(
   // Base classes - all the common panel styling
   [
-    'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
+    'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl h-full',
     'transition-colors duration-750 ease-in-out',
   ],
   {
@@ -188,9 +188,46 @@ export const panelIconVariants = cva(
   }
 )
 
+// Children text color variants
+export const panelChildrenVariants = cva(
+  // Base classes for children content
+  [],
+  {
+    variants: {
+      iconColor: {
+        brand: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
+        green: '[&_p]:!text-green-600 [&_strong]:!text-green-600',
+        cyan: '[&_p]:!text-cyan-600 [&_strong]:!text-cyan-600',
+        yellow: '[&_p]:!text-yellow-600 [&_strong]:!text-yellow-600',
+        violet: '[&_p]:!text-violet-600 [&_strong]:!text-violet-600',
+        teal: '[&_p]:!text-teal-600 [&_strong]:!text-teal-600',
+        blue: '[&_p]:!text-blue-600 [&_strong]:!text-blue-600',
+        emerald: '[&_p]:!text-emerald-600 [&_strong]:!text-emerald-600',
+        red: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
+        slate: '[&_p]:!text-slate-600 [&_strong]:!text-slate-600',
+        zinc: '[&_p]:!text-zinc-600 [&_strong]:!text-zinc-600',
+        orange: '[&_p]:!text-orange-600 [&_strong]:!text-orange-600',
+        amber: '[&_p]:!text-amber-600 [&_strong]:!text-amber-600',
+        lime: '[&_p]:!text-lime-600 [&_strong]:!text-lime-600',
+        sky: '[&_p]:!text-sky-600 [&_strong]:!text-sky-600',
+        indigo: '[&_p]:!text-indigo-600 [&_strong]:!text-indigo-600',
+        purple: '[&_p]:!text-purple-600 [&_strong]:!text-purple-600',
+        fuchsia: '[&_p]:!text-fuchsia-600 [&_strong]:!text-fuchsia-600',
+        pink: '[&_p]:!text-pink-600 [&_strong]:!text-pink-600',
+        rose: '[&_p]:!text-rose-600 [&_strong]:!text-rose-600',
+        primary: '[&_p]:!text-emerald-600 [&_strong]:!text-emerald-600',
+      },
+    },
+    defaultVariants: {
+      iconColor: 'teal',
+    },
+  }
+)
+
 // Export types
 export type ActionLinkPanelVariants = VariantProps<typeof actionLinkPanelVariants>
 export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariants>
 export type PanelLayerVariants = VariantProps<typeof panelLayerVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
 export type PanelIconVariants = VariantProps<typeof panelIconVariants>
+export type PanelChildrenVariants = VariantProps<typeof panelChildrenVariants>

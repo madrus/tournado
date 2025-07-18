@@ -92,7 +92,7 @@ export default function AdminDashboard(): JSX.Element {
       </p>
       <div className='space-y-8'>
         {/* Dashboard Grid */}
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {/* Panel 1 - Teal */}
           <ActionLinkPanel
             title='Team Management'
@@ -105,7 +105,7 @@ export default function AdminDashboard(): JSX.Element {
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-green-300/80'>
+              <p>
                 <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
                 {teams.length}
               </p>
@@ -124,7 +124,7 @@ export default function AdminDashboard(): JSX.Element {
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='text-cyan-300/80'>
+              <p>
                 <strong className='me-1'>
                   {t('admin.tournaments.totalTournaments')}:
                 </strong>
@@ -144,10 +144,10 @@ export default function AdminDashboard(): JSX.Element {
             language={i18n.language}
           >
             <div className='space-y-2'>
-              <p className='break-all text-yellow-300/80'>
+              <p className='break-all'>
                 <strong>Current User:</strong> {user.email}
               </p>
-              <p className='break-all text-yellow-300/80'>
+              <p className='break-all'>
                 <strong>User ID:</strong> {user.id}
               </p>
             </div>

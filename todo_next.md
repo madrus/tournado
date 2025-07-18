@@ -38,24 +38,24 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ## Phase 3 · New Package
 
-- [ ] Create directory structure:
+- [x] Create directory structure:
    ```
    app/components/Panel/
      ├─ Panel.tsx            # generic wrapper
      ├─ panel.variants.ts    # Tailwind-v4 CVA map
      ├─ index.ts             # barrel export
-     └─ Panel.types.ts       # shared types (optional)
+     └─ panel.types.ts       # shared types (optional)
    ```
-- [ ] Copy `components/shared/panel.variants.ts` → `panel.variants.ts` and replace every `dark:` with `@dark:`.
-- [ ] Keep the old shared variant file in place until Phase 6.
-- [ ] **Implement internal 3-layer render model** inside `Panel.tsx`:
-   - [ ] Static background `<div className="absolute inset-0" />` using `gradientFor(color)`.
-   - [ ] Base content container (`opacity-100 group-hover:opacity-0`).
-   - [ ] Optional hover overlay (`opacity-0 group-hover:opacity-100`) rendered only when `hoverColor` prop is provided.
-   - [ ] Ensure no colour-flash occurs during transitions by keeping background constant.
+- [x] Copy `components/shared/panel.variants.ts` → `panel.variants.ts` and replace every `dark:` with `@dark:`.
+- [x] Keep the old shared variant file in place until Phase 6.
+- [x] **Implement internal 3-layer render model** inside `Panel.tsx`:
+   - [x] Static background `<div className="absolute inset-0" />` using `panelVariants({ color })`.
+   - [x] Base content container (`opacity-100 group-hover:opacity-0`).
+   - [x] Optional hover overlay (`opacity-0 group-hover:opacity-100`) rendered only when `hoverColor` prop is provided.
+   - [x] Ensure no colour-flash occurs during transitions by keeping background constant.
+- [x] **Compliance check:** `grep -R --line-number "dark:" app/components/Panel | grep -v "@dark:"` returns no results (ensures Panel package uses only `@dark:` syntax).
+- [x] Replace every `dark:` utility inside **panel-specific** TypeScript/JSX code (variants, tests) with `@dark:` to use the new inline directive.
 - [ ] **Validation & commit:** all quality checks pass; open draft PR or commit.
-- [ ] **Compliance check:** `grep -R --line-number "dark:" app/components/Panel | grep -v "@dark:"` returns no results (ensures Panel package uses only `@dark:` syntax).
-- [ ] Replace every `dark:` utility inside **panel-specific** TypeScript/JSX code (variants, tests) with `@dark:` to use the new inline directive.
 
 ---
 

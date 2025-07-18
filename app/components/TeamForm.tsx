@@ -5,7 +5,7 @@ import { Form, useNavigation } from 'react-router'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel } from '~/components/Panel'
+import { PanelOld as Panel } from '~/components/PanelOld'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import {
   panelDescriptionVariants,

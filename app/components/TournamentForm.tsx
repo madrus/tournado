@@ -7,7 +7,7 @@ import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel } from '~/components/Panel'
+import { PanelOld as Panel } from '~/components/PanelOld'
 import {
   panelDescriptionVariants,
   panelTitleVariants,

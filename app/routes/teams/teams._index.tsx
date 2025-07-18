@@ -98,12 +98,12 @@ export default function PublicTeamsIndexPage(): JSX.Element {
 
       {/* Info Section */}
       {teamListItems.length === 0 ? (
-        <div className='mt-8 rounded-lg bg-blue-50 p-6'>
+        <Panel color='teal' className='mt-8'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>
           <p className='text-foreground mt-2'>{t('teams.getStarted.description')}</p>
-        </div>
+        </Panel>
       ) : null}
     </div>
   )

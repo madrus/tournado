@@ -208,7 +208,7 @@ export function TeamForm({
     <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <div className='border-primary from-accent to-accent mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>
+        <div className='border-accent from-accent-50 via-accent-100 to-accent-50 mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
               <div className='bg-accent flex h-10 w-10 items-center justify-center rounded-full'>

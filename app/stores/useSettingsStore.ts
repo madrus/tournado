@@ -22,6 +22,8 @@ type Actions = {
   detectSystemTheme: () => void
 }
 
+// Theme switching is now instant with no global transitions to manage
+
 const storeName = 'UIPreferencesStore'
 
 const initialStoreState: StoreState = {
@@ -57,7 +59,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
           // Mark as user override when manually setting theme
           set({ theme, systemThemeDetected: false }, false, 'setTheme')
         },
-        toggleTheme: () =>
+        toggleTheme: () => {
           set(
             state => {
               const newTheme = state.theme === 'light' ? 'dark' : 'light'
@@ -70,7 +72,8 @@ export const useSettingsStore = create<StoreState & Actions>()(
             },
             false,
             'toggleTheme'
-          ),
+          )
+        },
         setLanguage: language => {
           // Persist to both localStorage and cookies for server-side access
           if (isBrowser) {

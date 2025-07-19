@@ -108,10 +108,14 @@ export function Panel({
           </div>
         </div>
       ) : (
-        /* Standard variants: vertical layout */
+        /* Standard variants: content wrapper */
         <div
           className={cn(
-            'flex flex-col items-start break-words',
+            // Only apply structured layout for content-panel with icon/title
+            variant === 'content-panel' && (icon || title)
+              ? 'flex flex-col items-start'
+              : '',
+            'break-words',
             variant === 'hover' ? 'p-6' : ''
           )}
         >
@@ -125,7 +129,11 @@ export function Panel({
           {/* Title */}
           {title ? (
             <h3
-              className={panelTitleVariants({ size: 'md', language: currentLanguage })}
+              className={cn(
+                panelTitleVariants({ size: 'md', language: currentLanguage }),
+                // Apply disabled styling for form panels
+                disabled && variant === 'form-panel' ? 'text-foreground-lighter' : ''
+              )}
             >
               {title}
             </h3>
@@ -135,10 +143,10 @@ export function Panel({
           {subtitle ? (
             <p
               className={cn(
-                panelDescriptionVariants(),
+                panelDescriptionVariants({ color }),
                 'mb-4',
-                // Special case for brand color: use red tint in both modes
-                color === 'brand' ? 'text-brand-darkest dark:text-red-200' : ''
+                // Apply disabled styling for form panels
+                disabled && variant === 'form-panel' ? 'text-foreground-lighter' : ''
               )}
             >
               {subtitle}

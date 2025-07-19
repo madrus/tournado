@@ -133,21 +133,23 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ### 6.4 Form Panel Migration (Most Complex)
 
-- [ ] **Enhance Panel for form variant:**
-   - [ ] Add numbered step support (panelNumber prop integration)
-   - [ ] Add progressive disclosure (disabled state styling)
-   - [ ] Add form-optimized layout and spacing
-   - [ ] Add validation state integration
-- [ ] **TeamForm step panels migration:**
-   - [ ] Replace `PanelOld` imports with new `Panel` component
-   - [ ] Migrate `PANEL_COLORS` usage to new Panel `color` prop
-   - [ ] Update step numbering to use Panel `number` prop
-   - [ ] Convert panel title/description styling to Panel `title`/`subtitle` props
-   - [ ] Test form progression and disabled state behavior
-- [ ] **TournamentForm step panels migration:**
-   - [ ] Same migration steps as TeamForm
-   - [ ] Ensure consistent multi-step panel behavior
-   - [ ] Verify all form interactions work correctly
+- [x] **Enhance Panel for form variant:**
+   - [x] Add numbered step support (panelNumber prop integration)
+   - [x] Add progressive disclosure (disabled state styling)
+   - [x] Add form-optimized layout and spacing
+   - [x] Add CVA color variants for subtitle styling
+   - [x] Fix layout constraints to preserve justify-between and grid layouts
+- [x] **TeamForm step panels migration:**
+   - [x] Replace `PanelOld` imports with new `Panel` component
+   - [x] Migrate `PANEL_COLORS` usage to new Panel `color` prop
+   - [x] Update step numbering to use Panel `panelNumber` prop
+   - [x] Convert panel title/description styling to Panel `title`/`subtitle` props
+   - [x] Test form progression and disabled state behavior
+- [x] **TournamentForm step panels migration:**
+   - [x] Same migration steps as TeamForm
+   - [x] Ensure consistent multi-step panel behavior using Panel title/subtitle props
+   - [x] Fix subtitle coloring to match panel colors using CVA variants
+   - [x] Verify all form interactions work correctly
 
 ### 6.5 Legacy Component Cleanup
 
@@ -179,6 +181,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Add comprehensive CVA variant testing
    - [x] Test dashboard variant with RTL layout
    - [x] Fix Testing Library violations in panel tests
+   - [x] Update unit tests for colored subtitle classes (panelDescriptionVariants)
 
 ### 6.6 Testing & Validation
 
@@ -192,10 +195,11 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Verify glow positioning in RTL vs LTR languages
    - [x] Test gradient direction changes for Arabic
    - [x] Confirm dashboard icon positioning works in RTL
-- [ ] **Functional testing:**
-   - [ ] Test form progression (disabled → enabled panel states)
-   - [ ] Verify panel click/navigation behavior
-   - [ ] Test responsive behavior on different screen sizes
+- [x] **Functional testing:**
+   - [x] Test form progression (disabled → enabled panel states)
+   - [x] Verify panel click/navigation behavior (ActionLinkPanel)
+   - [x] Test responsive behavior on different screen sizes
+   - [x] Verify layout preservation (justify-between, grid layouts)
 - [ ] **Accessibility testing:**
    - [ ] Ensure panel focus management works correctly
    - [ ] Verify ARIA labels and semantic structure

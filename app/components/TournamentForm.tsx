@@ -7,12 +7,7 @@ import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel as ContentPanel } from '~/components/Panel'
-import { PanelOld as Panel } from '~/components/PanelOld'
-import {
-  panelDescriptionVariants,
-  panelTitleVariants,
-} from '~/components/shared/panel.variants'
+import { Panel } from '~/components/Panel'
 import { ToggleChip } from '~/components/ToggleChip'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
@@ -220,7 +215,7 @@ export function TournamentForm({
     <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <ContentPanel
+        <Panel
           variant='content-panel'
           color='primary'
           icon={<CheckIcon size={24} />}
@@ -230,7 +225,7 @@ export function TournamentForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </ContentPanel>
+        </Panel>
       ) : null}
 
       {/* Header for Admin Variant */}
@@ -295,21 +290,13 @@ export function TournamentForm({
         ))}
 
         {/* Step 1: Basic Information - Always enabled */}
-        <Panel color={PANEL_COLORS.step1} panelNumber={1} className='lg:p-8'>
-          <div className='mb-6'>
-            <h2
-              className={cn(
-                panelTitleVariants({ size: 'md', color: PANEL_COLORS.step1 }),
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              {t('tournaments.form.basicInformation')}
-            </h2>
-            <p className={panelDescriptionVariants()}>
-              {t('tournaments.form.enterBasicDetails')}
-            </p>
-          </div>
-
+        <Panel
+          variant='form-panel'
+          color={PANEL_COLORS.step1}
+          panelNumber={1}
+          title={t('tournaments.form.basicInformation')}
+          subtitle={t('tournaments.form.enterBasicDetails')}
+        >
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             {/* Tournament Name */}
             <TextInputField
@@ -344,38 +331,15 @@ export function TournamentForm({
 
         {/* Step 2: Dates */}
         <Panel
-          color={PANEL_COLORS.step2}
+          variant='form-panel'
+          color={
+            formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'
+          }
           panelNumber={2}
           disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
-          className='lg:p-8'
+          title={t('tournaments.form.dates')}
+          subtitle={t('tournaments.form.selectDates')}
         >
-          <div className='mb-6'>
-            <h2
-              className={cn(
-                panelTitleVariants({
-                  size: 'md',
-                  color:
-                    formMode === 'edit' || isPanelEnabled(2)
-                      ? PANEL_COLORS.step2
-                      : 'slate',
-                }),
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              {t('tournaments.form.dates')}
-            </h2>
-            <p
-              className={cn(
-                panelDescriptionVariants(),
-                formMode === 'edit' || isPanelEnabled(2)
-                  ? 'text-foreground'
-                  : 'text-foreground-lighter'
-              )}
-            >
-              {t('tournaments.form.selectDates')}
-            </p>
-          </div>
-
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             {/* Start Date */}
             <CustomDatePicker
@@ -418,39 +382,15 @@ export function TournamentForm({
 
         {/* Step 3: Divisions */}
         <Panel
-          color={PANEL_COLORS.step3}
+          variant='form-panel'
+          color={
+            formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'
+          }
           panelNumber={3}
           disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
-          className='lg:p-8'
+          title={t('tournaments.form.divisions')}
+          subtitle={`${t('tournaments.form.selectDivisions')} (${selectedDivisions.length} ${t('tournaments.form.selected')})`}
         >
-          <div className='mb-6'>
-            <h2
-              className={cn(
-                panelTitleVariants({
-                  size: 'md',
-                  color:
-                    formMode === 'edit' || isPanelEnabled(3)
-                      ? PANEL_COLORS.step3
-                      : 'slate',
-                }),
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              {t('tournaments.form.divisions')}
-            </h2>
-            <p
-              className={cn(
-                panelDescriptionVariants(),
-                formMode === 'edit' || isPanelEnabled(3)
-                  ? 'text-foreground'
-                  : 'text-foreground-lighter'
-              )}
-            >
-              {t('tournaments.form.selectDivisions')} ({selectedDivisions.length}{' '}
-              {t('tournaments.form.selected')})
-            </p>
-          </div>
-
           <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'>
             {divisions.map(division => (
               <ToggleChip
@@ -485,39 +425,15 @@ export function TournamentForm({
 
         {/* Step 4: Categories */}
         <Panel
-          color={PANEL_COLORS.step4}
+          variant='form-panel'
+          color={
+            formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'
+          }
           panelNumber={4}
           disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
-          className='lg:p-8'
+          title={t('tournaments.form.categories')}
+          subtitle={`${t('tournaments.form.selectCategories')} (${selectedCategories.length} ${t('tournaments.form.selected')})`}
         >
-          <div className='mb-6'>
-            <h2
-              className={cn(
-                panelTitleVariants({
-                  size: 'md',
-                  color:
-                    formMode === 'edit' || isPanelEnabled(4)
-                      ? PANEL_COLORS.step4
-                      : 'slate',
-                }),
-                getLatinTitleClass(i18n.language)
-              )}
-            >
-              {t('tournaments.form.categories')}
-            </h2>
-            <p
-              className={cn(
-                panelDescriptionVariants(),
-                formMode === 'edit' || isPanelEnabled(4)
-                  ? 'text-foreground'
-                  : 'text-foreground-lighter'
-              )}
-            >
-              {t('tournaments.form.selectCategories')} ({selectedCategories.length}{' '}
-              {t('tournaments.form.selected')})
-            </p>
-          </div>
-
           <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
             {categories.map(category => (
               <ToggleChip

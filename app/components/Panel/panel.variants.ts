@@ -40,7 +40,7 @@ export const panelVariants = cva(
         'content-panel': 'rounded-xl border shadow-lg', // General content panels
         'dashboard-panel':
           'rounded-xl border shadow-lg p-6 [&_.dashboard-content]:flex [&_.dashboard-content]:items-center [&_.dashboard-icon]:flex-shrink-0 [&_.dashboard-icon]:me-5 [&_.dashboard-stats]:w-0 [&_.dashboard-stats]:flex-1', // Stats/metrics panels with horizontal layout
-        'form-panel': 'rounded-xl border shadow-lg', // Multi-step form panels
+        'form-panel': 'rounded-xl border shadow-lg p-6 lg:p-8', // Multi-step form panels with responsive padding
       },
     },
     defaultVariants: {
@@ -115,7 +115,34 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
 
 // Panel description styling
 export const panelDescriptionVariants = cva(['text-foreground'], {
-  variants: {},
+  variants: {
+    color: {
+      brand: 'text-brand-darkest dark:text-red-200',
+      primary: 'text-emerald-600 dark:text-emerald-400',
+      emerald: 'text-emerald-600 dark:text-emerald-400',
+      blue: 'text-blue-600 dark:text-blue-400',
+      slate: 'text-foreground',
+      teal: 'text-teal-600 dark:text-teal-400',
+      red: 'text-red-600 dark:text-red-400',
+      cyan: 'text-cyan-600 dark:text-cyan-400',
+      yellow: 'text-yellow-600 dark:text-yellow-400',
+      green: 'text-green-600 dark:text-green-400',
+      violet: 'text-violet-600 dark:text-violet-400',
+      zinc: 'text-zinc-600 dark:text-zinc-400',
+      orange: 'text-orange-600 dark:text-orange-400',
+      amber: 'text-amber-600 dark:text-amber-400',
+      lime: 'text-lime-600 dark:text-lime-400',
+      sky: 'text-sky-600 dark:text-sky-400',
+      indigo: 'text-indigo-600 dark:text-indigo-400',
+      purple: 'text-purple-600 dark:text-purple-400',
+      fuchsia: 'text-fuchsia-600 dark:text-fuchsia-400',
+      pink: 'text-pink-600 dark:text-pink-400',
+      rose: 'text-rose-600 dark:text-rose-400',
+    },
+  },
+  defaultVariants: {
+    color: 'slate',
+  },
 })
 
 // Panel number badge styling

@@ -17,6 +17,9 @@ import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 
+// Local constants
+const PANEL_COLOR = 'teal' as const
+
 // Route metadata - authenticated users can access
 export const handle: RouteMetadata = {
   isPublic: false,
@@ -97,7 +100,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
     <div className='space-y-6'>
       {/* Stats */}
       <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
-        <Panel color='teal'>
+        <Panel color={PANEL_COLOR}>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
               <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-600'>
@@ -117,7 +120,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       </div>
 
       {/* Teams List */}
-      <Panel color='teal'>
+      <Panel color={PANEL_COLOR}>
         <div className='mb-6'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('admin.teams.allTeams')}
@@ -133,6 +136,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
             tournamentListItems={tournamentListItems}
             selectedTournamentId={selectedTournamentId}
             className='max-w-md'
+            color={PANEL_COLOR}
           />
         </div>
 

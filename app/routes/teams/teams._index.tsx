@@ -14,6 +14,9 @@ import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 
+// Local constants
+const PANEL_COLOR = 'teal' as const
+
 // Route metadata - this will inherit from the parent route
 export const handle: RouteMetadata = {
   isPublic: true,
@@ -60,11 +63,12 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <Panel color='teal'>
+      <Panel color={PANEL_COLOR}>
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId}
           className='max-w-md'
+          color={PANEL_COLOR}
         />
       </Panel>
 
@@ -98,7 +102,7 @@ export default function PublicTeamsIndexPage(): JSX.Element {
 
       {/* Info Section */}
       {teamListItems.length === 0 ? (
-        <Panel color='teal' className='mt-8'>
+        <Panel color={PANEL_COLOR} className='mt-8'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>

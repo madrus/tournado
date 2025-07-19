@@ -3,6 +3,7 @@ import { JSX, ReactNode } from 'react'
 import { Panel } from '~/components/Panel'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 export type PanelLayerProps = {
   title: string
@@ -26,7 +27,7 @@ export function PanelLayer({
   mainColor,
   hoverColor,
   isHover = false,
-  textAlign: _textAlign,
+  textAlign,
   children,
   className,
   'data-testid': testId,
@@ -63,7 +64,7 @@ export function PanelLayer({
         iconColor={effectiveIconColor}
         childrenIconColor={effectiveChildrenIconColor}
         showGlow
-        className={className}
+        className={cn(textAlign, getLatinTitleClass(title), className)}
         data-testid={testId}
       >
         {children}

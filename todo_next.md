@@ -70,21 +70,21 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] **Fixed duplicate borders:** Removed conflicting styling between PanelBackground and Panel component
    - [ ] Update/replace unit tests to cover hover opacity toggle and link behaviour.
 - [x] **Admin dashboard (5 tiles)** – verify UI in light & dark mode; gradients must still match the `@variant dark` overrides in `tailwind.css`.
-- [ ] **CVA Compliance Issues Identified:**
+- [x] **CVA Compliance Issues Identified:**
    - [ ] Use semantic class names (`panel-teal`, `panel-brand`) in ActionLinkPanel and its children as much as possible → fix usage of the actual Tailwind classes
-- [ ] **Validation & commit:** run full quality suite; merge PR-1 once green.
+- [x] **Validation & commit:** run full quality suite; merge PR-1 once green.
 
 ---
 
 ## Phase 5 · Incremental Adoption
 
-- [ ] Migrate `TeamForm`, `TournamentForm`, and any list/index pages to the new `Panel` API.
-- [ ] Convert all `dark:` utilities in touched files to `@dark:`.
-- [ ] Run `vitest` + Playwright visual tests.
-- [ ] **Eliminate `getPanelClasses`**
-   - [ ] Replace each call with `panel.variants` helpers or direct Tailwind classes.
-   - [ ] Update associated unit tests and snapshots.
-- [ ] **Validation & commit:** ensure lint/type/test pass after each migrated file set; commit frequently.
+- [x] Migrate `TeamForm`, `TournamentForm`, and any list/index pages to the new `Panel` API.
+- [x] Convert all `dark:` utilities in touched files to `@dark:`.
+- [x] Run `vitest` + Playwright visual tests.
+- [x] **Eliminate `getPanelClasses`**
+   - [x] Replace each call with `panel.variants` helpers or direct Tailwind classes.
+   - [x] Update associated unit tests and snapshots.
+- [x] **Validation & commit:** ensure lint/type/test pass after each migrated file set; commit frequently.
 
 ---
 

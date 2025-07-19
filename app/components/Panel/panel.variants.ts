@@ -13,28 +13,20 @@ export const panelVariants = cva(
         slate: 'border-slate-300 panel-slate-bg',
         teal: 'border-teal-300 panel-teal-bg',
         red: 'border-red-300 panel-red-bg',
-        cyan: 'border-cyan-300 bg-gradient-to-br from-white via-cyan-100 to-white dark:from-cyan-950 dark:via-cyan-900 dark:to-cyan-900',
-        yellow:
-          'border-yellow-300 bg-gradient-to-br from-white via-yellow-100 to-white dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900',
-        green:
-          'border-green-300 bg-gradient-to-br from-white via-green-100 to-white dark:from-green-950 dark:via-green-900 dark:to-green-900',
-        violet:
-          'border-violet-300 bg-gradient-to-br from-white via-violet-100 to-white dark:from-violet-950 dark:via-violet-900 dark:to-violet-900',
-        zinc: 'border-zinc-300 bg-gradient-to-br from-white via-zinc-100 to-white dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
-        orange:
-          'border-orange-300 bg-gradient-to-br from-white via-orange-100 to-white dark:from-orange-950 dark:via-orange-900 dark:to-orange-900',
-        amber:
-          'border-amber-300 bg-gradient-to-br from-white via-amber-100 to-white dark:from-amber-950 dark:via-amber-900 dark:to-amber-900',
-        lime: 'border-lime-300 bg-gradient-to-br from-white via-lime-100 to-white dark:from-lime-950 dark:via-lime-900 dark:to-lime-900',
-        sky: 'border-sky-300 bg-gradient-to-br from-white via-sky-100 to-white dark:from-sky-950 dark:via-sky-900 dark:to-sky-900',
-        indigo:
-          'border-indigo-300 bg-gradient-to-br from-white via-indigo-100 to-white dark:from-indigo-950 dark:via-indigo-900 dark:to-indigo-900',
-        purple:
-          'border-purple-300 bg-gradient-to-br from-white via-purple-100 to-white dark:from-purple-950 dark:via-purple-900 dark:to-purple-900',
-        fuchsia:
-          'border-fuchsia-300 bg-gradient-to-br from-white via-fuchsia-100 to-white dark:from-fuchsia-950 dark:via-fuchsia-900 dark:to-fuchsia-900',
-        pink: 'border-pink-300 bg-gradient-to-br from-white via-pink-100 to-white dark:from-pink-950 dark:via-pink-900 dark:to-pink-900',
-        rose: 'border-rose-300 bg-gradient-to-br from-white via-rose-100 to-white dark:from-rose-950 dark:via-rose-900 dark:to-rose-900',
+        cyan: 'border-cyan-300 panel-cyan-bg',
+        yellow: 'border-yellow-300 panel-yellow-bg',
+        green: 'border-green-300 panel-green-bg',
+        violet: 'border-violet-300 panel-violet-bg',
+        zinc: 'border-zinc-300 panel-zinc-bg',
+        orange: 'border-orange-300 panel-orange-bg',
+        amber: 'border-amber-300 panel-amber-bg',
+        lime: 'border-lime-300 panel-lime-bg',
+        sky: 'border-sky-300 panel-sky-bg',
+        indigo: 'border-indigo-300 panel-indigo-bg',
+        purple: 'border-purple-300 panel-purple-bg',
+        fuchsia: 'border-fuchsia-300 panel-fuchsia-bg',
+        pink: 'border-pink-300 panel-pink-bg',
+        rose: 'border-rose-300 panel-rose-bg',
       },
       variant: {
         // Layer-specific variants

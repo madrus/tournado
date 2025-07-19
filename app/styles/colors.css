@@ -57,22 +57,16 @@
   ); /* lighter brand hover background for light mode */
   --color-title-accent: var(--color-primary-200); /* for accents */
   --gradient-from: var(--color-primary-100);
-  --gradient-to: var(--color-slate-50);
+  --gradient-to: var(--color-white);
 
-  /* Panel gradient colors for light mode */
-  --panel-gradient-from: var(--color-slate-50); /* light, subtle */
-  --panel-gradient-via: var(--color-slate-100);
-  --panel-gradient-to: var(--color-slate-50);
+  --primary-light-from: var(--color-white);
+  --primary-light-via: var(--color-primary-50);
+  --primary-light-to: var(--color-white);
 
   /* Brand panel gradients - light mode */
-  --brand-light-from: var(--color-slate-50);
-  --brand-light-via: var(--color-slate-100);
-  --brand-light-to: var(--color-slate-50);
-
-  /* Brand gradient classes - use light mode values by default */
-  --brand-from: var(--brand-light-from);
-  --brand-via: var(--brand-light-via);
-  --brand-to: var(--brand-light-to);
+  --brand-light-from: var(--color-white);
+  --brand-light-via: var(--color-red-50);
+  --brand-light-to: var(--color-white);
 
   /* Panel background colors */
   --panel-bg-primary: var(--color-emerald-100);

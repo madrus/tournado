@@ -107,13 +107,9 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} mainColor='purple' isHover={true} />)
 
       const backgroundElement = screen.getByTestId('test-layer')
-      expect(backgroundElement).toHaveClass('bg-gradient-to-br')
-      expect(backgroundElement).toHaveClass('from-white')
-      expect(backgroundElement).toHaveClass('via-purple-100')
-      expect(backgroundElement).toHaveClass('to-white')
-      expect(backgroundElement).toHaveClass('dark:from-purple-950')
-      expect(backgroundElement).toHaveClass('dark:via-purple-900')
-      expect(backgroundElement).toHaveClass('dark:to-purple-900')
+      // Test for semantic classes instead of raw Tailwind
+      expect(backgroundElement).toHaveClass('panel-purple-bg')
+      expect(backgroundElement).toHaveClass('border-purple-300')
     })
 
     it('should use slate gradient for brand color', () => {

@@ -128,11 +128,18 @@ describe('Panel Component', () => {
   })
 
   describe('Panel Variants', () => {
-    it('should apply content variant by default', () => {
+    it('should apply content-panel variant by default', () => {
       render(<Panel {...defaultProps} />)
 
       const panel = screen.getByTestId('test-panel')
-      expect(panel).toHaveClass('relative', 'z-20', 'p-6')
+      expect(panel).toHaveClass(
+        'relative',
+        'overflow-visible',
+        'p-6',
+        'rounded-xl',
+        'border',
+        'shadow-lg'
+      )
     })
 
     it('should apply container variant classes', () => {

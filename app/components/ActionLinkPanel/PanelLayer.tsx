@@ -58,6 +58,7 @@ export function PanelLayer({
     >
       <Panel
         color={effectiveColor}
+        variant='content'
         title={title}
         subtitle={description}
         icon={icon}

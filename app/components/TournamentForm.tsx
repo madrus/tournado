@@ -7,6 +7,7 @@ import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import { Panel as ContentPanel } from '~/components/Panel'
 import { PanelOld as Panel } from '~/components/PanelOld'
 import {
   panelDescriptionVariants,
@@ -219,20 +220,17 @@ export function TournamentForm({
     <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <div className='border-accent from-accent-50 via-accent-100 to-accent-50 mb-8 rounded-xl border bg-gradient-to-r p-6 shadow-lg'>
-          <div className='flex items-center'>
-            <div className='flex-shrink-0'>
-              <div className='bg-accent flex h-10 w-10 items-center justify-center rounded-full'>
-                <CheckIcon className='text-primary h-6 w-6' size={24} />
-              </div>
-            </div>
-            <div className='ml-4'>
-              <p className='text-foreground-darker text-sm font-semibold'>
-                {successMessage}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ContentPanel
+          variant='content-panel'
+          color='primary'
+          icon={<CheckIcon size={24} />}
+          className='mb-8'
+          data-testid='tournament-form-success'
+        >
+          <p className='text-foreground-darker text-sm font-semibold'>
+            {successMessage}
+          </p>
+        </ContentPanel>
       ) : null}
 
       {/* Header for Admin Variant */}

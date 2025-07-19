@@ -29,17 +29,22 @@ export const panelVariants = cva(
         rose: 'border-rose-300 panel-rose-bg',
       },
       variant: {
-        // Layer-specific variants
+        // Layer-specific variants (for ActionLinkPanel architecture)
         container: 'cursor-pointer transition-colors duration-750 ease-in-out',
         background: 'absolute inset-0 p-0',
         content: 'relative z-20 p-6',
         hover:
           'absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-750 ease-in-out',
+
+        // Semantic panel type variants
+        'content-panel': 'rounded-xl border shadow-lg', // General content panels
+        'dashboard-panel': 'rounded-xl border shadow-lg', // Stats/metrics panels
+        'form-panel': 'rounded-xl border shadow-lg', // Multi-step form panels
       },
     },
     defaultVariants: {
       color: 'brand',
-      variant: 'content',
+      variant: 'content-panel',
     },
   }
 )

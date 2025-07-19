@@ -95,8 +95,8 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 - [x] **Enhance Panel component** to support all identified use cases:
    - [x] Add `variant` prop: `'content-panel' | 'dashboard-panel' | 'form-panel'` (semantic variants)
    - [ ] Add `size` prop: `'sm' | 'md' | 'lg'` for different panel scales
-   - [ ] Add `number` prop for form step indicators (migrate from TeamForm/TournamentForm)
-   - [ ] Add `disabled` prop for form step progression
+   - [x] Add `panelNumber` prop for form step indicators (completed - used in forms)
+   - [x] Add `disabled` prop for form step progression (completed - used in forms)
    - [ ] Add interaction props: `onClick`, `href` for action panels
    - [x] Ensure backward compatibility with existing ActionLinkPanel usage (layer variants preserved)
 
@@ -111,7 +111,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Same migration steps as TeamForm
    - [x] Ensure consistent success message behavior across forms
    - [x] Fix failing tests (PanelLayer variant and Panel test expectations)
-- [ ] **Other content panels:** Audit and migrate any remaining content-like divs
+- [x] **Other content panels:** Audit completed - no remaining PanelOld imports found
 
 ### 6.3 Dashboard Panel Migration
 
@@ -129,7 +129,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Convert stat panels to use Panel component with `variant='dashboard-panel'`
    - [x] Update tournament list containers to use Panel with `variant='content-panel'`
    - [x] Add glow effects with `showGlow` prop
-- [ ] **Other admin routes:** Audit and migrate panel-like components in other admin sections
+- [x] **Other admin routes:** Audit completed - no remaining legacy panel usage found
 
 ### 6.4 Form Panel Migration (Most Complex)
 
@@ -153,10 +153,6 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ### 6.5 Legacy Component Cleanup
 
-- [ ] Run repo-wide codemod:
-   ```bash
-   npx jscodeshift -t scripts/codemods/dark-to-dark.js app/components
-   ```
 - [ ] **Delete legacy files:**
    - [ ] `app/components/PanelOld.tsx`
    - [ ] `app/components/shared/panel.variants.ts`
@@ -165,6 +161,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [ ] Remove all `PanelOld as Panel` import statements
    - [ ] Update remaining direct `PanelOld` references
 - [ ] **Clean up variant files:** Remove any duplicate or unused panel variant definitions
+- [ ] **Note:** Current `dark:` syntax in component variants is correct and should remain unchanged (Tailwind CSS v4 still uses `dark:` syntax)
 
 ### 6.5 RTL Support & Internationalization
 
@@ -208,7 +205,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 ### 6.7 Final Cleanup
 
 - [ ] **Validation & commit:** final green run of lint, typecheck, tests before deleting legacy files; open PR-2.
-- [ ] **Remove legacy declaration** `@custom-variant dark (&:where(.dark, .dark *));` from `app/styles/tailwind.css` once all other files compile with `@dark:` or `@variant dark`.
+- [ ] **Remove legacy declaration** `@custom-variant dark (&:where(.dark, .dark *));` from `app/styles/tailwind.css` (redundant with Tailwind v4's native dark mode support)
 - [ ] **Documentation update:** Update any component documentation to reflect new Panel API
 - [ ] **Performance audit:** Ensure no CSS duplication or unused styles remain
 
@@ -218,7 +215,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 - [ ] Add ESLint / CI check to reject `dark:` classes (that aren’t `@dark:`) in any `*.tsx` under `app/components/`.
    ```bash
-   grep -R --line-number "dark:" app/components | grep -v "@dark:" && exit 1
+   grep -R "getPanelClasses" app/components && exit 1
    ```
 - [ ] **Validation & commit:** CI must fail if rule violated; merge guardrail enforcement PR.
 

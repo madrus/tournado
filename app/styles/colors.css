@@ -147,7 +147,11 @@
 
 .dark {
   --color-background: var(--color-slate-900);
-  --color-input: var(--color-slate-800); /* elegant contrast against teal panels */
+  --color-input: color-mix(
+    in srgb,
+    var(--color-slate-800) 40%,
+    transparent
+  ); /* 40% transparent slate-800 for elegant contrast against panels */
   --color-border: var(
     --color-slate-500
   ); /* lighter for better contrast against dark background */

@@ -174,6 +174,189 @@
 
 }
 
+/* Dark mode variant rules for inputs */
+@variant dark {
+  /* Input backgrounds - consistent across all input types */
+  .bg-input {
+    background-color: var(--color-input);
+  }
+  
+  /* Combo content backgrounds - use slate-800 */
+  .combo-content-bg {
+    background-color: var(--color-slate-800);
+  }
+  
+  /* Universal dark mode shadow adjustments for inputs */
+  .shadow-brand-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-brand-400) / 0.3);
+  }
+  
+  .shadow-primary-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-primary-400) / 0.3);
+  }
+  
+  .shadow-emerald-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-emerald-400) / 0.3);
+  }
+  
+  .shadow-red-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-red-400) / 0.3);
+  }
+  
+  .shadow-blue-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-blue-400) / 0.3);
+  }
+  
+  .shadow-green-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-green-400) / 0.3);
+  }
+  
+  .shadow-yellow-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-yellow-400) / 0.3);
+  }
+  
+  .shadow-purple-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-purple-400) / 0.3);
+  }
+  
+  .shadow-pink-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-pink-400) / 0.3);
+  }
+  
+  .shadow-indigo-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-indigo-400) / 0.3);
+  }
+  
+  .shadow-slate-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-slate-400) / 0.3);
+  }
+  
+  .shadow-zinc-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-zinc-400) / 0.3);
+  }
+  
+  .shadow-orange-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-orange-400) / 0.3);
+  }
+  
+  .shadow-amber-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-amber-400) / 0.3);
+  }
+  
+  .shadow-lime-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-lime-400) / 0.3);
+  }
+  
+  .shadow-teal-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-teal-400) / 0.3);
+  }
+  
+  .shadow-cyan-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-cyan-400) / 0.3);
+  }
+  
+  .shadow-sky-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-sky-400) / 0.3);
+  }
+  
+  .shadow-violet-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-violet-400) / 0.3);
+  }
+  
+  .shadow-fuchsia-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-fuchsia-400) / 0.3);
+  }
+  
+  .shadow-rose-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-rose-400) / 0.3);
+  }
+  
+  /* Ring color adjustments for dark mode */
+  .ring-brand-500\/20 {
+    --tw-ring-color: rgb(var(--color-brand-400) / 0.3);
+  }
+  
+  .ring-primary-500\/20 {
+    --tw-ring-color: rgb(var(--color-primary-400) / 0.3);
+  }
+  
+  .ring-emerald-500\/20 {
+    --tw-ring-color: rgb(var(--color-emerald-400) / 0.3);
+  }
+  
+  .ring-red-500\/20 {
+    --tw-ring-color: rgb(var(--color-red-400) / 0.3);
+  }
+  
+  .ring-blue-500\/20 {
+    --tw-ring-color: rgb(var(--color-blue-400) / 0.3);
+  }
+  
+  .ring-green-500\/20 {
+    --tw-ring-color: rgb(var(--color-green-400) / 0.3);
+  }
+  
+  .ring-yellow-500\/20 {
+    --tw-ring-color: rgb(var(--color-yellow-400) / 0.3);
+  }
+  
+  .ring-purple-500\/20 {
+    --tw-ring-color: rgb(var(--color-purple-400) / 0.3);
+  }
+  
+  .ring-pink-500\/20 {
+    --tw-ring-color: rgb(var(--color-pink-400) / 0.3);
+  }
+  
+  .ring-indigo-500\/20 {
+    --tw-ring-color: rgb(var(--color-indigo-400) / 0.3);
+  }
+  
+  .ring-slate-500\/20 {
+    --tw-ring-color: rgb(var(--color-slate-400) / 0.3);
+  }
+  
+  .ring-zinc-500\/20 {
+    --tw-ring-color: rgb(var(--color-zinc-400) / 0.3);
+  }
+  
+  .ring-orange-500\/20 {
+    --tw-ring-color: rgb(var(--color-orange-400) / 0.3);
+  }
+  
+  .ring-amber-500\/20 {
+    --tw-ring-color: rgb(var(--color-amber-400) / 0.3);
+  }
+  
+  .ring-lime-500\/20 {
+    --tw-ring-color: rgb(var(--color-lime-400) / 0.3);
+  }
+  
+  .ring-teal-500\/20 {
+    --tw-ring-color: rgb(var(--color-teal-400) / 0.3);
+  }
+  
+  .ring-cyan-500\/20 {
+    --tw-ring-color: rgb(var(--color-cyan-400) / 0.3);
+  }
+  
+  .ring-sky-500\/20 {
+    --tw-ring-color: rgb(var(--color-sky-400) / 0.3);
+  }
+  
+  .ring-violet-500\/20 {
+    --tw-ring-color: rgb(var(--color-violet-400) / 0.3);
+  }
+  
+  .ring-fuchsia-500\/20 {
+    --tw-ring-color: rgb(var(--color-fuchsia-400) / 0.3);
+  }
+  
+  .ring-rose-500\/20 {
+    --tw-ring-color: rgb(var(--color-rose-400) / 0.3);
+  }
+}
+
 /* Base Styles */
 @layer base {
   /* Theme transitions removed to prevent flickering during mode switches */

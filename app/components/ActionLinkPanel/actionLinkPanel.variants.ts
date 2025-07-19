@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const actionLinkPanelVariants = cva(
   // Base classes - all the common panel styling
   [
-    'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl h-full',
+    'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
     'transition-colors duration-750 ease-in-out',
   ],
   {
@@ -34,14 +34,15 @@ export const actionLinkPanelVariants = cva(
         primary: 'panel-primary',
       },
       size: {
-        default: 'p-6',
-        sm: 'p-4',
-        lg: 'p-8',
+        none: '',
+        default: '',
+        sm: '',
+        lg: '',
       },
     },
     defaultVariants: {
       color: 'teal',
-      size: 'default',
+      size: 'none',
     },
   }
 )
@@ -53,27 +54,35 @@ export const panelBackgroundVariants = cva(
   {
     variants: {
       color: {
-        teal: 'panel-teal-bg',
         brand: 'panel-brand-bg',
+        primary: 'panel-emerald-bg',
         emerald: 'panel-emerald-bg',
         blue: 'panel-blue-bg',
         slate: 'panel-slate-bg',
+        teal: 'panel-teal-bg',
         red: 'panel-red-bg',
-        cyan: 'panel-cyan-bg',
-        yellow: 'panel-yellow-bg',
-        green: 'panel-green-bg',
-        violet: 'panel-violet-bg',
-        zinc: 'panel-zinc-bg',
-        orange: 'panel-orange-bg',
-        amber: 'panel-amber-bg',
-        lime: 'panel-lime-bg',
-        sky: 'panel-sky-bg',
-        indigo: 'panel-indigo-bg',
-        purple: 'panel-purple-bg',
-        fuchsia: 'panel-fuchsia-bg',
-        pink: 'panel-pink-bg',
-        rose: 'panel-rose-bg',
-        primary: 'panel-primary-bg',
+        cyan: 'bg-gradient-to-br from-white via-cyan-100 to-white dark:from-cyan-950 dark:via-cyan-900 dark:to-cyan-900',
+        yellow:
+          'bg-gradient-to-br from-white via-yellow-100 to-white dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900',
+        green:
+          'bg-gradient-to-br from-white via-green-100 to-white dark:from-green-950 dark:via-green-900 dark:to-green-900',
+        violet:
+          'bg-gradient-to-br from-white via-violet-100 to-white dark:from-violet-950 dark:via-violet-900 dark:to-violet-900',
+        zinc: 'bg-gradient-to-br from-white via-zinc-100 to-white dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
+        orange:
+          'bg-gradient-to-br from-white via-orange-100 to-white dark:from-orange-950 dark:via-orange-900 dark:to-orange-900',
+        amber:
+          'bg-gradient-to-br from-white via-amber-100 to-white dark:from-amber-950 dark:via-amber-900 dark:to-amber-900',
+        lime: 'bg-gradient-to-br from-white via-lime-100 to-white dark:from-lime-950 dark:via-lime-900 dark:to-lime-900',
+        sky: 'bg-gradient-to-br from-white via-sky-100 to-white dark:from-sky-950 dark:via-sky-900 dark:to-sky-900',
+        indigo:
+          'bg-gradient-to-br from-white via-indigo-100 to-white dark:from-indigo-950 dark:via-indigo-900 dark:to-indigo-900',
+        purple:
+          'bg-gradient-to-br from-white via-purple-100 to-white dark:from-purple-950 dark:via-purple-900 dark:to-purple-900',
+        fuchsia:
+          'bg-gradient-to-br from-white via-fuchsia-100 to-white dark:from-fuchsia-950 dark:via-fuchsia-900 dark:to-fuchsia-900',
+        pink: 'bg-gradient-to-br from-white via-pink-100 to-white dark:from-pink-950 dark:via-pink-900 dark:to-pink-900',
+        rose: 'bg-gradient-to-br from-white via-rose-100 to-white dark:from-rose-950 dark:via-rose-900 dark:to-rose-900',
       },
     },
     defaultVariants: {
@@ -90,7 +99,7 @@ export const panelLayerVariants = cva(
     variants: {
       isHover: {
         true: 'absolute inset-0 z-30 opacity-0 group-hover:opacity-100',
-        false: '',
+        false: 'relative z-20',
       },
       hasHoverColor: {
         true: 'group-hover:opacity-0',
@@ -198,7 +207,8 @@ export const panelChildrenVariants = cva(
         brand: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
         green: '[&_p]:!text-green-600 [&_strong]:!text-green-600',
         cyan: '[&_p]:!text-cyan-600 [&_strong]:!text-cyan-600',
-        yellow: '[&_p]:!text-yellow-600 [&_strong]:!text-yellow-600',
+        yellow:
+          '[&_p]:!text-yellow-700 [&_p]:dark:!text-yellow-300 [&_strong]:!text-yellow-700 [&_strong]:dark:!text-yellow-300',
         violet: '[&_p]:!text-violet-600 [&_strong]:!text-violet-600',
         teal: '[&_p]:!text-teal-600 [&_strong]:!text-teal-600',
         blue: '[&_p]:!text-blue-600 [&_strong]:!text-blue-600',

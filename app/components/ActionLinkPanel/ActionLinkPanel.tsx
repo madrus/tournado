@@ -8,7 +8,6 @@ import { getTypographyClasses } from '~/utils/rtlUtils'
 import {
   actionLinkPanelVariants,
   panelBackgroundVariants,
-  panelLayerVariants,
 } from './actionLinkPanel.variants'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'
@@ -68,12 +67,8 @@ export function ActionLinkPanel({
         icon={icon}
         iconColor={iconColor} // always pass ColorAccent, not a Tailwind class string
         mainColor={mainColor}
-        language={language}
+        hoverColor={hoverColor}
         textAlign={typographyClasses.textAlign}
-        className={panelLayerVariants({
-          isHover: false,
-          hasHoverColor: !!hoverColor,
-        })}
         data-testid='main-panel-layer'
       >
         {children}
@@ -89,12 +84,7 @@ export function ActionLinkPanel({
           mainColor={mainColor}
           hoverColor={hoverColor}
           isHover
-          language={language}
           textAlign={typographyClasses.textAlign}
-          className={panelLayerVariants({
-            isHover: true,
-            hasHoverColor: false,
-          })}
           data-testid='hover-panel-layer'
         >
           {children}

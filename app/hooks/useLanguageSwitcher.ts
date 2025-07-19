@@ -3,7 +3,7 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 
 type UseLanguageSwitcherReturn = {
   switchLanguage: (langCode: Language) => void
-  currentLanguage: string
+  currentLanguage: Language
 }
 
 /**

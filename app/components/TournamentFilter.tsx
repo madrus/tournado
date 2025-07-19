@@ -3,18 +3,20 @@ import { useTranslation } from 'react-i18next'
 
 import { ComboField } from '~/components/inputs/ComboField'
 import { useTournamentFilter } from '~/hooks/useTournamentFilter'
-import type { TournamentListItem } from '~/lib/lib.types'
+import type { ColorAccent, TournamentListItem } from '~/lib/lib.types'
 
 type TournamentFilterProps = {
   tournamentListItems: TournamentListItem[]
   selectedTournamentId?: string
   className?: string
+  color?: ColorAccent
 }
 
 export function TournamentFilter({
   tournamentListItems,
   selectedTournamentId,
   className = 'max-w-md',
+  color = 'emerald',
 }: TournamentFilterProps): ReactElement {
   const { t } = useTranslation()
   const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
@@ -31,6 +33,7 @@ export function TournamentFilter({
       options={tournamentOptions}
       placeholder={t('teams.allTournaments')}
       className={className}
+      color={color}
     />
   )
 }

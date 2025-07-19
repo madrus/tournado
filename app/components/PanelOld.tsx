@@ -9,7 +9,7 @@ import {
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
-type PanelProps = {
+type PanelOldProps = {
   children: ReactNode
   color?: ColorAccent
   className?: string
@@ -19,13 +19,13 @@ type PanelProps = {
   disabled?: boolean
 }
 
-export function Panel({
+export function PanelOld({
   children,
   color = 'slate',
   className,
   panelNumber,
   disabled = false,
-}: PanelProps): JSX.Element {
+}: PanelOldProps): JSX.Element {
   const containerClasses = cn(
     panelVariants({ color }),
     disabled === true && 'opacity-20 pointer-events-none',

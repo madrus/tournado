@@ -44,7 +44,6 @@ type CalendarProps = {
   minDate?: Date
   maxDate?: Date
   noPast?: boolean
-  color?: ColorAccent
 }
 
 // Custom Calendar Component
@@ -292,7 +291,6 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
                     minDate={min ? new Date(min) : undefined}
                     maxDate={max ? new Date(max) : undefined}
                     noPast={noPast}
-                    color={color}
                   />
                 </Popover.Content>
               </Popover.Portal>

@@ -30,7 +30,7 @@ export const panelVariants = cva(
         amber:
           'border-amber-400 bg-gradient-to-br from-amber-50 via-amber-100 to-amber-50 dark:from-amber-950 dark:via-amber-900 dark:to-amber-900',
         lime: 'border-lime-400 bg-gradient-to-br from-lime-50 via-lime-100 to-lime-50 dark:from-lime-950 dark:via-lime-900 dark:to-lime-900',
-        sky: 'border-sky-400 bg-gradient-to-br from-sky-50 via-sky-100 to-sky-50 dark:from-sky-950 dark:via-sky-900 dark:to-sky-900',
+        sky: 'border-sky-400 bg-gradient-to-br from-white via-sky-100 to-white dark:from-sky-950 dark:via-sky-900 dark:to-sky-900',
         indigo:
           'border-indigo-400 bg-gradient-to-br from-indigo-50 via-indigo-100 to-indigo-50 dark:from-indigo-950 dark:via-indigo-900 dark:to-indigo-900',
         purple:

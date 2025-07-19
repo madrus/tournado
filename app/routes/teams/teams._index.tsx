@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData, useNavigate, useRevalidator } from 'react-router'
 
-import { Panel } from '~/components/Panel'
+import { PanelOld as Panel } from '~/components/PanelOld'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
@@ -13,6 +13,9 @@ import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
+
+// Local constants
+const PANEL_COLOR = 'teal' as const
 
 // Route metadata - this will inherit from the parent route
 export const handle: RouteMetadata = {
@@ -60,11 +63,12 @@ export default function PublicTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='teams-layout'>
       {/* Tournament Filter */}
-      <Panel color='teal'>
+      <Panel color={PANEL_COLOR}>
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId}
           className='max-w-md'
+          color={PANEL_COLOR}
         />
       </Panel>
 
@@ -98,12 +102,12 @@ export default function PublicTeamsIndexPage(): JSX.Element {
 
       {/* Info Section */}
       {teamListItems.length === 0 ? (
-        <div className='mt-8 rounded-lg bg-blue-50 p-6'>
+        <Panel color={PANEL_COLOR} className='mt-8'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('teams.getStarted.title')}
           </h3>
           <p className='text-foreground mt-2'>{t('teams.getStarted.description')}</p>
-        </div>
+        </Panel>
       ) : null}
     </div>
   )

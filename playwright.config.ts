@@ -92,6 +92,16 @@ export default defineConfig({
       ],
     },
 
+    // Visual regression tests - for testing visual consistency across themes
+    {
+      name: 'visual-regression',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: './playwright/.auth/admin-auth.json',
+      },
+      testMatch: ['**/visual-regression.spec.ts'],
+    },
+
     // Uncomment for multi-browser testing
     // {
     //   name: 'firefox',

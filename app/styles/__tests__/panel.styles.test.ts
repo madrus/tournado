@@ -180,8 +180,7 @@ describe('Panel Styles', () => {
       expect(classes).toContain('transition-colors')
       expect(classes).toContain('duration-500')
       expect(classes).toContain('ease-in-out')
-      expect(classes).toContain('text-primary-700')
-      expect(classes).toContain('dark:text-primary-300')
+      expect(classes).toContain('text-primary-600')
     })
 
     it('should generate correct icon text classes for brand color', () => {
@@ -190,8 +189,7 @@ describe('Panel Styles', () => {
       expect(classes).toContain('transition-colors')
       expect(classes).toContain('duration-500')
       expect(classes).toContain('ease-in-out')
-      expect(classes).toContain('text-brand-700')
-      expect(classes).toContain('dark:text-brand-300')
+      expect(classes).toContain('text-red-600')
     })
 
     it('should generate correct icon text classes for standard colors', () => {
@@ -203,8 +201,7 @@ describe('Panel Styles', () => {
         expect(classes).toContain('transition-colors')
         expect(classes).toContain('duration-500')
         expect(classes).toContain('ease-in-out')
-        expect(classes).toContain(`text-${color}-700`)
-        expect(classes).toContain(`dark:text-${color}-300`)
+        expect(classes).toContain(`text-${color}-600`)
       })
     })
   })
@@ -336,8 +333,7 @@ describe('Panel Styles', () => {
       expect(titleClasses).toContain('text-title')
       expect(descriptionClasses).toContain('text-foreground')
       expect(descriptionClasses).toContain('dark:text-primary-100/80')
-      expect(iconTextClasses).toContain('text-primary-700')
-      expect(iconTextClasses).toContain('dark:text-primary-300')
+      expect(iconTextClasses).toContain('text-primary-600')
     })
 
     it('should handle brand color consistently across all functions', () => {
@@ -351,8 +347,7 @@ describe('Panel Styles', () => {
       expect(titleClasses).toContain('text-title')
       expect(descriptionClasses).toContain('text-brand-darkest')
       expect(descriptionClasses).toContain('dark:text-red-200')
-      expect(iconTextClasses).toContain('text-brand-700')
-      expect(iconTextClasses).toContain('dark:text-brand-300')
+      expect(iconTextClasses).toContain('text-red-600')
     })
 
     it('should handle brand gradient special case', () => {

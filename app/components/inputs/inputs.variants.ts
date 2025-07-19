@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const textInputFieldVariants = cva(
   [
     'h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
-    'placeholder:[color:var(--color-placeholder)] bg-input dark:bg-input/40 text-foreground',
+    'placeholder:[color:var(--color-placeholder)] bg-input text-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
@@ -59,7 +59,7 @@ export const textInputFieldVariants = cva(
 export const comboFieldTriggerVariants = cva(
   [
     'flex h-12 w-full items-center justify-between rounded-md px-3 py-2 text-lg border-2',
-    'bg-input dark:bg-input/40 text-input-foreground placeholder:[color:var(--color-placeholder)]',
+    'bg-input text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
@@ -116,30 +116,27 @@ export const comboFieldContentVariants = cva(
   {
     variants: {
       color: {
-        brand: 'bg-red-50 text-red-800 dark:bg-slate-800 dark:text-red-50',
-        primary:
-          'bg-emerald-50 text-emerald-800 dark:bg-slate-800 dark:text-emerald-50',
-        emerald:
-          'bg-emerald-50 text-emerald-800 dark:bg-slate-800 dark:text-emerald-50',
-        red: 'bg-red-50 text-red-800 dark:bg-slate-800 dark:text-red-50',
-        blue: 'bg-blue-50 text-blue-800 dark:bg-slate-800 dark:text-blue-50',
-        green: 'bg-green-50 text-green-800 dark:bg-slate-800 dark:text-green-50',
-        yellow: 'bg-yellow-50 text-yellow-800 dark:bg-slate-800 dark:text-yellow-50',
-        purple: 'bg-purple-50 text-purple-800 dark:bg-slate-800 dark:text-purple-50',
-        pink: 'bg-pink-50 text-pink-800 dark:bg-slate-800 dark:text-pink-50',
-        indigo: 'bg-indigo-50 text-indigo-800 dark:bg-slate-800 dark:text-indigo-50',
-        slate: 'bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-50',
-        zinc: 'bg-zinc-50 text-zinc-800 dark:bg-slate-800 dark:text-zinc-50',
-        orange: 'bg-orange-50 text-orange-800 dark:bg-slate-800 dark:text-orange-50',
-        amber: 'bg-amber-50 text-amber-800 dark:bg-slate-800 dark:text-amber-50',
-        lime: 'bg-lime-50 text-lime-800 dark:bg-slate-800 dark:text-lime-50',
-        teal: 'bg-teal-50 text-teal-800 dark:bg-slate-800 dark:text-teal-50',
-        cyan: 'bg-cyan-50 text-cyan-800 dark:bg-slate-800 dark:text-cyan-50',
-        sky: 'bg-sky-50 text-sky-800 dark:bg-slate-800 dark:text-sky-50',
-        violet: 'bg-violet-50 text-violet-800 dark:bg-slate-800 dark:text-violet-50',
-        fuchsia:
-          'bg-fuchsia-50 text-fuchsia-800 dark:bg-slate-800 dark:text-fuchsia-50',
-        rose: 'bg-rose-50 text-rose-800 dark:bg-slate-800 dark:text-rose-50',
+        brand: 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50',
+        primary: 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50',
+        emerald: 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50',
+        red: 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50',
+        blue: 'bg-blue-50 text-blue-800 combo-content-bg dark:text-blue-50',
+        green: 'bg-green-50 text-green-800 combo-content-bg dark:text-green-50',
+        yellow: 'bg-yellow-50 text-yellow-800 combo-content-bg dark:text-yellow-50',
+        purple: 'bg-purple-50 text-purple-800 combo-content-bg dark:text-purple-50',
+        pink: 'bg-pink-50 text-pink-800 combo-content-bg dark:text-pink-50',
+        indigo: 'bg-indigo-50 text-indigo-800 combo-content-bg dark:text-indigo-50',
+        slate: 'bg-slate-50 text-slate-800 combo-content-bg dark:text-slate-50',
+        zinc: 'bg-zinc-50 text-zinc-800 combo-content-bg dark:text-zinc-50',
+        orange: 'bg-orange-50 text-orange-800 combo-content-bg dark:text-orange-50',
+        amber: 'bg-amber-50 text-amber-800 combo-content-bg dark:text-amber-50',
+        lime: 'bg-lime-50 text-lime-800 combo-content-bg dark:text-lime-50',
+        teal: 'bg-teal-50 text-teal-800 combo-content-bg dark:text-teal-50',
+        cyan: 'bg-cyan-50 text-cyan-800 combo-content-bg dark:text-cyan-50',
+        sky: 'bg-sky-50 text-sky-800 combo-content-bg dark:text-sky-50',
+        violet: 'bg-violet-50 text-violet-800 combo-content-bg dark:text-violet-50',
+        fuchsia: 'bg-fuchsia-50 text-fuchsia-800 combo-content-bg dark:text-fuchsia-50',
+        rose: 'bg-rose-50 text-rose-800 combo-content-bg dark:text-rose-50',
       },
     },
     defaultVariants: {
@@ -216,7 +213,7 @@ export const comboFieldValueVariants = cva(['flex-1 truncate text-left'], {
 export const datePickerButtonVariants = cva(
   [
     'flex h-12 w-full items-center justify-between rounded-md border-2 px-3 text-left text-lg leading-6',
-    'bg-input dark:bg-input/40 text-input-foreground placeholder:[color:var(--color-placeholder)]',
+    'bg-input text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],

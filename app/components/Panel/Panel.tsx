@@ -43,7 +43,7 @@ export type PanelProps = {
 export function Panel({
   children,
   color = 'brand',
-  variant = 'content',
+  variant = 'content-panel',
   className,
   title,
   subtitle,

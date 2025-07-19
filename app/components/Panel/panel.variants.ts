@@ -152,7 +152,7 @@ export const panelNumberVariants = cva(
 // Panel icon styling
 export const panelIconVariants = cva(
   [
-    'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-colors duration-500 ease-in-out',
+    'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-[color,border-color] duration-500 ease-in-out',
   ],
   {
     variants: {

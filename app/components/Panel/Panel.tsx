@@ -5,6 +5,7 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 import {
+  dashboardIconVariants,
   panelChildrenVariants,
   panelDescriptionVariants,
   panelGlowVariants,
@@ -84,50 +85,79 @@ export function Panel({
       ) : null}
 
       {/* Content area */}
-      <div
-        className={cn(
-          'flex flex-col items-start break-words',
-          variant === 'hover' ? 'p-6' : ''
-        )}
-      >
-        {/* Icon */}
-        {icon ? (
-          <div className={cn(getIconClasses(), 'mb-4')} aria-label='panel icon'>
-            {icon}
+      {variant === 'dashboard-panel' ? (
+        /* Dashboard variant: horizontal layout with icon + stats */
+        <div className='dashboard-content'>
+          {/* Icon section */}
+          {icon ? (
+            <div className='dashboard-icon'>
+              <div className={dashboardIconVariants({ color: effectiveIconColor })}>
+                {icon}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Stats section */}
+          <div className='dashboard-stats'>
+            <dl>
+              {title ? (
+                <dt className='truncate text-sm font-medium opacity-75'>{title}</dt>
+              ) : null}
+              {children ? <dd className='text-lg font-medium'>{children}</dd> : null}
+            </dl>
           </div>
-        ) : null}
+        </div>
+      ) : (
+        /* Standard variants: vertical layout */
+        <div
+          className={cn(
+            'flex flex-col items-start break-words',
+            variant === 'hover' ? 'p-6' : ''
+          )}
+        >
+          {/* Icon */}
+          {icon ? (
+            <div className={cn(getIconClasses(), 'mb-4')} aria-label='panel icon'>
+              {icon}
+            </div>
+          ) : null}
 
-        {/* Title */}
-        {title ? (
-          <h3 className={panelTitleVariants({ size: 'md', language: currentLanguage })}>
-            {title}
-          </h3>
-        ) : null}
+          {/* Title */}
+          {title ? (
+            <h3
+              className={panelTitleVariants({ size: 'md', language: currentLanguage })}
+            >
+              {title}
+            </h3>
+          ) : null}
 
-        {/* Subtitle */}
-        {subtitle ? (
-          <p
-            className={cn(
-              panelDescriptionVariants(),
-              'mb-4',
-              // Special case for brand color: use red tint in both modes
-              color === 'brand' ? 'text-brand-darkest dark:text-red-200' : ''
-            )}
-          >
-            {subtitle}
-          </p>
-        ) : null}
+          {/* Subtitle */}
+          {subtitle ? (
+            <p
+              className={cn(
+                panelDescriptionVariants(),
+                'mb-4',
+                // Special case for brand color: use red tint in both modes
+                color === 'brand' ? 'text-brand-darkest dark:text-red-200' : ''
+              )}
+            >
+              {subtitle}
+            </p>
+          ) : null}
 
-        {/* Children */}
-        {children ? (
-          <div
-            className={panelChildrenVariants({ iconColor: effectiveChildrenIconColor })}
-            data-testid={testId ? `${testId}-children` : undefined}
-          >
-            {children}
-          </div>
-        ) : null}
-      </div>
+          {/* Children */}
+          {children ? (
+            <div
+              className={panelChildrenVariants({
+                iconColor: effectiveChildrenIconColor,
+              })}
+              data-testid={testId ? `${testId}-children` : undefined}
+            >
+              {children}
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   )
 }

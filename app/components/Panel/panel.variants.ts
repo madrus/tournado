@@ -38,7 +38,8 @@ export const panelVariants = cva(
 
         // Semantic panel type variants
         'content-panel': 'rounded-xl border shadow-lg', // General content panels
-        'dashboard-panel': 'rounded-xl border shadow-lg', // Stats/metrics panels
+        'dashboard-panel':
+          'rounded-xl border shadow-lg p-6 [&_.dashboard-content]:flex [&_.dashboard-content]:items-center [&_.dashboard-icon]:flex-shrink-0 [&_.dashboard-icon]:me-5 [&_.dashboard-stats]:w-0 [&_.dashboard-stats]:flex-1', // Stats/metrics panels with horizontal layout
         'form-panel': 'rounded-xl border shadow-lg', // Multi-step form panels
       },
     },
@@ -50,9 +51,9 @@ export const panelVariants = cva(
 )
 
 export const panelGlowVariants = cva(
-  // Base classes for glow effect
+  // Base classes for glow effect - RTL aware positioning
   [
-    'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-60',
+    'pointer-events-none absolute -top-8 -right-8 rtl:-left-8 rtl:right-auto h-32 w-32 rounded-full blur-2xl opacity-60',
   ],
   {
     variants: {
@@ -247,6 +248,41 @@ export const panelChildrenVariants = cva(
   }
 )
 
+// Dashboard icon background styling
+export const dashboardIconVariants = cva(
+  ['flex h-8 w-8 items-center justify-center rounded-md text-white'],
+  {
+    variants: {
+      color: {
+        brand: 'bg-red-600',
+        primary: 'bg-emerald-600',
+        emerald: 'bg-emerald-600',
+        blue: 'bg-blue-600',
+        slate: 'bg-slate-600',
+        teal: 'bg-teal-600',
+        red: 'bg-red-600',
+        cyan: 'bg-cyan-600',
+        yellow: 'bg-yellow-600',
+        green: 'bg-green-600',
+        violet: 'bg-violet-600',
+        zinc: 'bg-zinc-600',
+        orange: 'bg-orange-600',
+        amber: 'bg-amber-600',
+        lime: 'bg-lime-600',
+        sky: 'bg-sky-600',
+        indigo: 'bg-indigo-600',
+        purple: 'bg-purple-600',
+        fuchsia: 'bg-fuchsia-600',
+        pink: 'bg-pink-600',
+        rose: 'bg-rose-600',
+      },
+    },
+    defaultVariants: {
+      color: 'brand',
+    },
+  }
+)
+
 export type PanelVariants = VariantProps<typeof panelVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
 export type PanelNumberVariants = VariantProps<typeof panelNumberVariants>
@@ -254,3 +290,4 @@ export type PanelTitleVariants = VariantProps<typeof panelTitleVariants>
 export type PanelDescriptionVariants = VariantProps<typeof panelDescriptionVariants>
 export type PanelIconVariants = VariantProps<typeof panelIconVariants>
 export type PanelChildrenVariants = VariantProps<typeof panelChildrenVariants>
+export type DashboardIconVariants = VariantProps<typeof dashboardIconVariants>

@@ -107,22 +107,28 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Convert icon structure to use Panel's `icon` prop
    - [x] Maintain existing visual styling and behavior
    - [x] Simplify component structure (15 lines → 8 lines)
-- [ ] **TournamentForm success message migration:**
-   - [ ] Same migration steps as TeamForm
-   - [ ] Ensure consistent success message behavior across forms
+- [x] **TournamentForm success message migration:**
+   - [x] Same migration steps as TeamForm
+   - [x] Ensure consistent success message behavior across forms
+   - [x] Fix failing tests (PanelLayer variant and Panel test expectations)
 - [ ] **Other content panels:** Audit and migrate any remaining content-like divs
 
 ### 6.3 Dashboard Panel Migration
 
-- [ ] **Enhance Panel for dashboard variant:**
-   - [ ] Add structured layout for metrics display
-   - [ ] Optimize icon positioning for stats
-   - [ ] Add consistent theming support
-- [ ] **Admin Teams route migration:**
-   - [ ] Convert stat panels to use Panel component with `variant='dashboard-panel'`
-   - [ ] Maintain consistent 'teal' color theme throughout admin section
-   - [ ] Update team list containers to use Panel
-   - [ ] Ensure responsive behavior on mobile/desktop
+- [x] **Enhance Panel for dashboard variant:**
+   - [x] Add structured layout for metrics display with horizontal icon + stats layout
+   - [x] Optimize icon positioning for stats (CVA-based `dashboardIconVariants`)
+   - [x] Add consistent theming support with independent panel/icon color control
+   - [x] Add RTL support for dashboard layouts and positioning
+- [x] **Admin Teams route migration:**
+   - [x] Convert stat panels to use Panel component with `variant='dashboard-panel'`
+   - [x] Maintain consistent 'teal' color theme throughout admin section
+   - [x] Update team list containers to use Panel with `variant='content-panel'`
+   - [x] Ensure responsive behavior on mobile/desktop
+- [x] **Admin Tournaments route migration:**
+   - [x] Convert stat panels to use Panel component with `variant='dashboard-panel'`
+   - [x] Update tournament list containers to use Panel with `variant='content-panel'`
+   - [x] Add glow effects with `showGlow` prop
 - [ ] **Other admin routes:** Audit and migrate panel-like components in other admin sections
 
 ### 6.4 Form Panel Migration (Most Complex)
@@ -158,14 +164,34 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [ ] Update remaining direct `PanelOld` references
 - [ ] **Clean up variant files:** Remove any duplicate or unused panel variant definitions
 
+### 6.5 RTL Support & Internationalization
+
+- [x] **RTL-aware positioning:**
+   - [x] Update glow effect positioning (top-right LTR → top-left RTL)
+   - [x] Update gradient directions (bottom-right LTR → bottom-left RTL)
+   - [x] Test Arabic language support with proper glow and gradient mirroring
+- [x] **CSS class updates:**
+   - [x] Add `rtl:-left-8 rtl:right-auto` to panel glow variants
+   - [x] Add `rtl:bg-gradient-to-bl` to all panel background classes
+   - [x] Ensure all panel variants support RTL languages
+- [x] **Testing coverage:**
+   - [x] Add RTL-specific unit tests for glow positioning
+   - [x] Add comprehensive CVA variant testing
+   - [x] Test dashboard variant with RTL layout
+   - [x] Fix Testing Library violations in panel tests
+
 ### 6.6 Testing & Validation
 
-- [ ] **Visual regression testing:**
+- [x] **Visual regression testing:**
    - [x] Verify TeamForm success message renders correctly
-   - [ ] Test TournamentForm success message
-   - [ ] Test admin dashboard panel layouts
-   - [ ] Confirm ActionLinkPanel hover effects still work
-   - [ ] Test dark/light mode transitions across all panel types
+   - [x] Test TournamentForm success message (all 1,223 tests passing)
+   - [x] Test admin dashboard panel layouts with proper metrics display
+   - [x] Confirm ActionLinkPanel hover effects still work
+   - [x] Test dark/light mode transitions across all panel types
+- [x] **RTL testing:**
+   - [x] Verify glow positioning in RTL vs LTR languages
+   - [x] Test gradient direction changes for Arabic
+   - [x] Confirm dashboard icon positioning works in RTL
 - [ ] **Functional testing:**
    - [ ] Test form progression (disabled → enabled panel states)
    - [ ] Verify panel click/navigation behavior

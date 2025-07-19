@@ -173,6 +173,13 @@ describe('Panel Component', () => {
         'group-hover:opacity-100'
       )
     })
+
+    it('should apply dashboard-panel variant classes', () => {
+      render(<Panel {...defaultProps} variant='dashboard-panel' />)
+
+      const panel = screen.getByTestId('test-panel')
+      expect(panel).toHaveClass('rounded-xl', 'border', 'shadow-lg', 'p-6')
+    })
   })
 
   describe('Icon Color Logic', () => {
@@ -240,6 +247,8 @@ describe('Panel Component', () => {
       const glowElement = screen.getByTestId('test-panel-glow')
       expect(glowElement).toBeInTheDocument()
       expect(glowElement).toHaveClass('bg-blue-400/30')
+      // Test RTL-aware positioning
+      expect(glowElement).toHaveClass('-right-8', 'rtl:-left-8', 'rtl:right-auto')
     })
 
     it('should apply disabled styling when disabled=true', () => {
@@ -324,6 +333,41 @@ describe('Panel Component', () => {
       expect(title).toBeInTheDocument()
       expect(subtitle).toBeInTheDocument()
       expect(children).toBeInTheDocument()
+    })
+
+    it('should organize dashboard variant content in horizontal layout', () => {
+      render(
+        <Panel
+          {...defaultProps}
+          variant='dashboard-panel'
+          icon={<MockIcon />}
+          title='Dashboard Title'
+          iconColor='brand'
+        >
+          <span>123</span>
+        </Panel>
+      )
+
+      // Dashboard variant uses different structure - no h3 title or icon label
+      expect(screen.queryByRole('heading', { level: 3 })).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('panel icon')).not.toBeInTheDocument()
+
+      // Should have title in dt element and children in dd element
+      const titleElement = screen.getByText('Dashboard Title')
+      expect(titleElement).toBeInTheDocument()
+
+      const valueElement = screen.getByText('123')
+      expect(valueElement).toBeInTheDocument()
+
+      // Should have dashboard icon with brand color background
+      const iconElement = screen.getByTestId('mock-icon')
+      expect(iconElement).toBeInTheDocument()
+
+      // Test for the presence of dashboard structure classes
+      const panel = screen.getByTestId('test-panel')
+      expect(panel).toHaveClass('[&_.dashboard-content]:flex')
+      expect(panel).toHaveClass('[&_.dashboard-icon]:flex-shrink-0')
+      expect(panel).toHaveClass('[&_.dashboard-stats]:w-0')
     })
 
     it('should apply correct spacing classes', () => {

@@ -4,7 +4,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
 
 import { ApparelIcon } from '~/components/icons'
-import { PanelOld as Panel } from '~/components/PanelOld'
+import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
@@ -98,29 +98,23 @@ export default function AdminTeamsIndexPage(): JSX.Element {
 
   return (
     <div className='space-y-6'>
-      {/* Stats */}
+      {/* Stats using optimized dashboard panels */}
       <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
-        <Panel color={PANEL_COLOR}>
-          <div className='flex items-center'>
-            <div className='flex-shrink-0'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-md bg-red-600'>
-                <ApparelIcon className='text-white' size={24} variant='outlined' />
-              </div>
-            </div>
-            <div className='ms-5 w-0 flex-1'>
-              <dl>
-                <dt className='truncate text-sm font-medium opacity-75'>
-                  {t('admin.teams.totalTeams')}
-                </dt>
-                <dd className='text-lg font-medium'>{teamListItems.length}</dd>
-              </dl>
-            </div>
-          </div>
+        <Panel
+          color={PANEL_COLOR}
+          variant='dashboard-panel'
+          icon={<ApparelIcon size={24} variant='outlined' />}
+          iconColor='brand'
+          title={t('admin.teams.totalTeams')}
+          showGlow
+          data-testid='teams-total-stat'
+        >
+          {teamListItems.length}
         </Panel>
       </div>
 
       {/* Teams List */}
-      <Panel color={PANEL_COLOR}>
+      <Panel color={PANEL_COLOR} variant='content-panel'>
         <div className='mb-6'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
             {t('admin.teams.allTeams')}

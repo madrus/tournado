@@ -184,3 +184,145 @@ type MenuItemType = {
 ```
 
 This component provides the foundation for any dropdown menu needs throughout the application while maintaining consistent styling and behavior.
+
+## 🎨 Design System Integration
+
+All UI components in the Tournado application follow the comprehensive [Design System](design-system.md) which includes:
+
+### Color Accent System
+
+Components support **20+ color accents** through the CVA (Class Variance Authority) variants pattern:
+
+```typescript
+// Example: ActionLinkPanel color variants
+color: {
+  brand: 'border-brand-400',      // Red-based brand color
+  primary: 'border-primary-400',  // Emerald-based primary color
+  blue: 'border-blue-400',
+  green: 'border-green-400',
+  // ... 20+ total color accents
+}
+```
+
+### Component Variants Structure
+
+Each component with theming support follows this pattern:
+
+```
+ComponentName/
+├── ComponentName.tsx          # Main component implementation
+├── ComponentName.variants.ts  # CVA color and style variants
+├── index.ts                  # Export barrel
+└── __tests__/
+    └── ComponentName.test.tsx # Component tests
+```
+
+### Dark Mode Support
+
+All components automatically support light and dark themes through semantic tokens:
+
+- **Light Theme**: Uses semantic tokens like `--color-background` (white)
+- **Dark Theme**: Automatically switches when `.dark` class is applied to root
+- **Theme Toggle**: Available via `ThemeToggle` component in the AppBar
+
+### Key Component Categories
+
+#### 1. **Form Components**
+
+- **TextInputField**: Semantic token-based inputs with validation states
+- **ComboField**: Dropdown selections with accent color theming
+- **CheckboxAgreementField**: Agreement checkboxes with brand accent
+- **CustomDatePicker**: Date selection with primary color theming
+
+#### 2. **Navigation Components**
+
+- **ActionLinkPanel**: Full 20+ color accent system implementation
+- **BottomNavigation**: Mobile navigation with semantic tokens
+- **AppBar**: Theme-aware header with user menu
+
+#### 3. **Interactive Components**
+
+- **Button variants**: 6 variants × 10+ colors = 60+ combinations
+- **ToggleChip**: Multi-state toggles with accent colors
+- **TeamChip**: Team display chips with customizable accents
+
+#### 4. **Layout Components**
+
+- **Panel**: Container component with gradient backgrounds
+- **SidebarLayout**: Admin layout with theme support
+- **RouteTransition**: Animated transitions respecting theme
+
+### Implementation Guidelines
+
+#### ✅ Best Practices
+
+1. **Always use semantic tokens**: `bg-background`, `text-foreground`, `border-border`
+2. **Support color accents**: Include color variants for visual variety
+3. **Test both themes**: Verify component works in light and dark mode
+4. **Follow CVA pattern**: Use Class Variance Authority for consistent APIs
+5. **Include focus states**: Ensure accessibility with visible focus indicators
+
+#### ❌ Anti-patterns
+
+1. **Hard-coded colors**: Never use `bg-white`, `text-black`, `border-gray-200`
+2. **Theme-specific styles**: Avoid conditional styling based on theme
+3. **Missing variants**: Components should support multiple color accents when applicable
+4. **Accessibility issues**: Always include proper contrast ratios and focus states
+
+### Accessibility Features
+
+All components include:
+
+- **WCAG 2.1 AA compliance** - Color contrast ratios meet accessibility standards
+- **Focus management** - Visible focus indicators on all interactive elements
+- **Screen reader support** - Proper ARIA labels and semantic markup
+- **Keyboard navigation** - Full keyboard accessibility for all interactions
+- **RTL support** - Right-to-left language compatibility
+
+### Performance Considerations
+
+The design system is optimized for performance:
+
+- **CSS Custom Properties** - Efficient theme switching without re-rendering
+- **Tailwind CSS** - Optimized utility classes with automatic purging
+- **Component variants** - CVA provides optimal class concatenation
+- **Semantic tokens** - Consistent styling reduces CSS bundle size
+
+For detailed implementation examples and advanced patterns, see the [Design System Documentation](design-system.md).
+
+## 🎨 Icon System
+
+The application features a comprehensive icon system with **31 optimized SVG components** that have been fully audited for theme compatibility:
+
+### Icon System Status
+
+- ✅ **31/31 icons audited** - Complete coverage
+- ✅ **100% theme compatibility** - Perfect light/dark mode adaptation
+- ✅ **Zero hard-coded colors** - All icons use `currentColor` inheritance
+- ✅ **Complete accessibility** - Proper ARIA labeling throughout
+
+### Key Icon Categories
+
+- **Navigation & Interface** (8 icons) - AddIcon, ChevronIcons, AnimatedHamburgerIcon
+- **User & Authentication** (6 icons) - PersonIcon, LoginIcon, AdminPanelSettings
+- **Status & Feedback** (7 icons) - CheckIcon, ErrorIcon, WarningIcon, TrophyIcon
+- **Theme & Interface** (4 icons) - DarkModeIcon, LightModeIcon, LanguageIcon
+- **Content & Actions** (6 icons) - HomeIcon, CalendarIcon, DeleteIcon
+
+### Implementation Patterns
+
+Icons follow consistent patterns for optimal theme integration:
+
+```typescript
+// Stroke-based icons (simple line art)
+<svg stroke="currentColor" className="inline-block">
+  <path d="..." />
+</svg>
+
+// Fill-based icons (Material Design)
+<svg className="inline-block fill-current">
+  <path d="..." />
+</svg>
+```
+
+All icons support configurable sizing, weight variants, and accessibility features. For comprehensive usage guidelines and implementation details, see [Icon Guidelines](icon-guidelines.md).

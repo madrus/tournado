@@ -5,6 +5,9 @@
    - [WIP Items](wip.md)
 - Development
    - [Overview](development/overview.md)
+   - [Design System](development/design-system.md)
+   - [Icon Guidelines](development/icon-guidelines.md)
+   - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
    - [Routing](development/routing.md)
    - [State Management](development/state-management.md)
    - [Multi-Language Support](development/multi-language-support.md)

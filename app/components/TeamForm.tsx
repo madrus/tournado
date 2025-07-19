@@ -5,13 +5,8 @@ import { Form, useNavigation } from 'react-router'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { Panel as ContentPanel } from '~/components/Panel'
-import { PanelOld as Panel } from '~/components/PanelOld'
+import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
-import {
-  panelDescriptionVariants,
-  panelTitleVariants,
-} from '~/components/shared/panel.variants'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
@@ -209,7 +204,7 @@ export function TeamForm({
     <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
       {isPublicSuccess && successMessage ? (
-        <ContentPanel
+        <Panel
           variant='content-panel'
           color='primary'
           icon={<CheckIcon size={24} />}
@@ -219,7 +214,7 @@ export function TeamForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </ContentPanel>
+        </Panel>
       ) : null}
 
       {/* Header for Admin Variant */}
@@ -268,17 +263,17 @@ export function TeamForm({
         {intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
         {/* Step 1: Tournament Filters */}
-        <Panel color={PANEL_COLORS.step1} panelNumber={1} className='pb-4 lg:p-8'>
+        <Panel
+          variant='form-panel'
+          color={PANEL_COLORS.step1}
+          panelNumber={1}
+          className='pb-4 lg:p-8'
+        >
           <div className='mb-6'>
-            <h2
-              className={cn(
-                panelTitleVariants({ size: 'md', color: PANEL_COLORS.step1 }),
-                getLatinTitleClass(i18n.language)
-              )}
-            >
+            <h2 className='text-title mb-4 text-xl font-bold'>
               {t('teams.form.selectTournamentDetails')}
             </h2>
-            <p className={panelDescriptionVariants()}>
+            <p className='text-foreground mb-4'>
               {t('teams.form.completeAllThreeFields')}
             </p>
           </div>
@@ -386,7 +381,10 @@ export function TeamForm({
 
         {/* Step 2: Team Information */}
         <Panel
-          color={PANEL_COLORS.step2}
+          variant='form-panel'
+          color={
+            formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'
+          }
           panelNumber={2}
           disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
           className='lg:p-8'
@@ -394,24 +392,20 @@ export function TeamForm({
           <div className='mb-6'>
             <h2
               className={cn(
-                panelTitleVariants({
-                  size: 'md',
-                  color:
-                    formMode === 'edit' || isPanelEnabled(2)
-                      ? PANEL_COLORS.step2
-                      : 'slate',
-                }),
-                getLatinTitleClass(i18n.language)
+                'text-title mb-4 text-xl font-bold',
+                formMode === 'create' && !isPanelEnabled(2)
+                  ? 'text-foreground-lighter'
+                  : ''
               )}
             >
               {t('teams.form.teamInfo')}
             </h2>
             <p
               className={cn(
-                panelDescriptionVariants(),
-                formMode === 'edit' || isPanelEnabled(2)
-                  ? 'text-foreground'
-                  : 'text-foreground-lighter'
+                'text-foreground mb-4',
+                formMode === 'create' && !isPanelEnabled(2)
+                  ? 'text-foreground-lighter'
+                  : ''
               )}
             >
               {t('teams.form.enterTeamDetails')}
@@ -481,7 +475,10 @@ export function TeamForm({
 
         {/* Step 3: Team Leader Information */}
         <Panel
-          color={PANEL_COLORS.step3}
+          variant='form-panel'
+          color={
+            formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'
+          }
           panelNumber={3}
           disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
           className='lg:p-8'
@@ -489,24 +486,20 @@ export function TeamForm({
           <div className='mb-6'>
             <h2
               className={cn(
-                panelTitleVariants({
-                  size: 'md',
-                  color:
-                    formMode === 'edit' || isPanelEnabled(3)
-                      ? PANEL_COLORS.step3
-                      : 'slate',
-                }),
-                getLatinTitleClass(i18n.language)
+                'text-title mb-4 text-xl font-bold',
+                formMode === 'create' && !isPanelEnabled(3)
+                  ? 'text-foreground-lighter'
+                  : ''
               )}
             >
               {t('teams.form.teamLeaderInfo')}
             </h2>
             <p
               className={cn(
-                panelDescriptionVariants(),
-                formMode === 'edit' || isPanelEnabled(3)
-                  ? 'text-foreground'
-                  : 'text-foreground-lighter'
+                'text-foreground mb-4',
+                formMode === 'create' && !isPanelEnabled(3)
+                  ? 'text-foreground-lighter'
+                  : ''
               )}
             >
               {t('teams.form.enterContactDetails')}
@@ -608,7 +601,10 @@ export function TeamForm({
         {/* Step 4: Privacy Agreement (Create Mode Only) */}
         {mode === 'create' ? (
           <Panel
-            color={PANEL_COLORS.step4}
+            variant='form-panel'
+            color={
+              formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'
+            }
             panelNumber={4}
             disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
             className='lg:p-8'
@@ -616,24 +612,20 @@ export function TeamForm({
             <div className='mb-6'>
               <h2
                 className={cn(
-                  panelTitleVariants({
-                    size: 'md',
-                    color:
-                      formMode === 'edit' || isPanelEnabled(4)
-                        ? PANEL_COLORS.step4
-                        : 'slate',
-                  }),
-                  getLatinTitleClass(i18n.language)
+                  'text-title mb-4 text-xl font-bold',
+                  formMode === 'create' && !isPanelEnabled(4)
+                    ? 'text-foreground-lighter'
+                    : ''
                 )}
               >
                 {t('teams.form.privacyPolicy')}
               </h2>
               <p
                 className={cn(
-                  panelDescriptionVariants(),
-                  formMode === 'edit' || isPanelEnabled(4)
-                    ? 'text-foreground'
-                    : 'text-foreground-lighter'
+                  'text-foreground mb-4',
+                  formMode === 'create' && !isPanelEnabled(4)
+                    ? 'text-foreground-lighter'
+                    : ''
                 )}
               >
                 {t('teams.form.readAndAccept')}

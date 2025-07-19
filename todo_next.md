@@ -88,19 +88,99 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ---
 
-## Phase 6 · Bulk Migration & Cleanup
+## Phase 6 · Comprehensive Panel Refactoring & Cleanup
+
+### 6.1 Enhanced Panel Component Development
+
+- [x] **Enhance Panel component** to support all identified use cases:
+   - [x] Add `variant` prop: `'content-panel' | 'dashboard-panel' | 'form-panel'` (semantic variants)
+   - [ ] Add `size` prop: `'sm' | 'md' | 'lg'` for different panel scales
+   - [ ] Add `number` prop for form step indicators (migrate from TeamForm/TournamentForm)
+   - [ ] Add `disabled` prop for form step progression
+   - [ ] Add interaction props: `onClick`, `href` for action panels
+   - [x] Ensure backward compatibility with existing ActionLinkPanel usage (layer variants preserved)
+
+### 6.2 Content Panel Migration (Simple → Complex)
+
+- [x] **TeamForm success message migration:**
+   - [x] Replace custom div with Panel component using `variant='content-panel'`
+   - [x] Convert icon structure to use Panel's `icon` prop
+   - [x] Maintain existing visual styling and behavior
+   - [x] Simplify component structure (15 lines → 8 lines)
+- [ ] **TournamentForm success message migration:**
+   - [ ] Same migration steps as TeamForm
+   - [ ] Ensure consistent success message behavior across forms
+- [ ] **Other content panels:** Audit and migrate any remaining content-like divs
+
+### 6.3 Dashboard Panel Migration
+
+- [ ] **Enhance Panel for dashboard variant:**
+   - [ ] Add structured layout for metrics display
+   - [ ] Optimize icon positioning for stats
+   - [ ] Add consistent theming support
+- [ ] **Admin Teams route migration:**
+   - [ ] Convert stat panels to use Panel component with `variant='dashboard-panel'`
+   - [ ] Maintain consistent 'teal' color theme throughout admin section
+   - [ ] Update team list containers to use Panel
+   - [ ] Ensure responsive behavior on mobile/desktop
+- [ ] **Other admin routes:** Audit and migrate panel-like components in other admin sections
+
+### 6.4 Form Panel Migration (Most Complex)
+
+- [ ] **Enhance Panel for form variant:**
+   - [ ] Add numbered step support (panelNumber prop integration)
+   - [ ] Add progressive disclosure (disabled state styling)
+   - [ ] Add form-optimized layout and spacing
+   - [ ] Add validation state integration
+- [ ] **TeamForm step panels migration:**
+   - [ ] Replace `PanelOld` imports with new `Panel` component
+   - [ ] Migrate `PANEL_COLORS` usage to new Panel `color` prop
+   - [ ] Update step numbering to use Panel `number` prop
+   - [ ] Convert panel title/description styling to Panel `title`/`subtitle` props
+   - [ ] Test form progression and disabled state behavior
+- [ ] **TournamentForm step panels migration:**
+   - [ ] Same migration steps as TeamForm
+   - [ ] Ensure consistent multi-step panel behavior
+   - [ ] Verify all form interactions work correctly
+
+### 6.5 Legacy Component Cleanup
 
 - [ ] Run repo-wide codemod:
    ```bash
    npx jscodeshift -t scripts/codemods/dark-to-dark.js app/components
    ```
-- [ ] Delete legacy files:
+- [ ] **Delete legacy files:**
    - [ ] `app/components/PanelOld.tsx`
    - [ ] `app/components/shared/panel.variants.ts`
    - [ ] `app/styles/panel.styles.ts` (removes `getPanelClasses` and legacy helpers)
-- [ ] Remove the temporary import shim lines.
+- [ ] **Remove temporary import shims:**
+   - [ ] Remove all `PanelOld as Panel` import statements
+   - [ ] Update remaining direct `PanelOld` references
+- [ ] **Clean up variant files:** Remove any duplicate or unused panel variant definitions
+
+### 6.6 Testing & Validation
+
+- [ ] **Visual regression testing:**
+   - [x] Verify TeamForm success message renders correctly
+   - [ ] Test TournamentForm success message
+   - [ ] Test admin dashboard panel layouts
+   - [ ] Confirm ActionLinkPanel hover effects still work
+   - [ ] Test dark/light mode transitions across all panel types
+- [ ] **Functional testing:**
+   - [ ] Test form progression (disabled → enabled panel states)
+   - [ ] Verify panel click/navigation behavior
+   - [ ] Test responsive behavior on different screen sizes
+- [ ] **Accessibility testing:**
+   - [ ] Ensure panel focus management works correctly
+   - [ ] Verify ARIA labels and semantic structure
+   - [ ] Test keyboard navigation through form panels
+
+### 6.7 Final Cleanup
+
 - [ ] **Validation & commit:** final green run of lint, typecheck, tests before deleting legacy files; open PR-2.
 - [ ] **Remove legacy declaration** `@custom-variant dark (&:where(.dark, .dark *));` from `app/styles/tailwind.css` once all other files compile with `@dark:` or `@variant dark`.
+- [ ] **Documentation update:** Update any component documentation to reflect new Panel API
+- [ ] **Performance audit:** Ensure no CSS duplication or unused styles remain
 
 ---
 

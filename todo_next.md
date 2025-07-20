@@ -154,7 +154,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 ### 6.5 Legacy Component Cleanup
 
 - [ ] **Delete legacy files:**
-   - [ ] `app/components/PanelOld.tsx`
+   - [x] `app/components/PanelOld.tsx`
    - [ ] `app/components/shared/panel.variants.ts`
    - [ ] `app/styles/panel.styles.ts` (removes `getPanelClasses` and legacy helpers)
 - [ ] **Remove temporary import shims:**

@@ -1,0 +1,258 @@
+@theme {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+
+  /* Text Colors */
+  --color-title: var(--color-title);
+  --color-foreground-heading: var(--color-foreground-heading);
+  --color-foreground-light: var(--color-foreground-light);
+  --color-foreground-lighter: var(--color-foreground-lighter);
+  --color-foreground-darker: var(--color-foreground-darker);
+
+  /* Brand Colors */
+  --color-brand: var(--color-brand);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-darker: var(--color-brand-darker);
+  --color-brand-darkest: var(--color-brand-darkest);
+  --color-brand-light: var(--color-brand-light);
+
+  /* Main Accent */
+  --color-main: var(--color-main);
+  --color-accent: var(--color-accent);
+
+  /* Primary Colors */
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
+
+  /* Brand Colors */
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+  --color-brand-950: var(--color-brand-950);
+
+  /* Button Colors */
+  --color-button-primary-background: var(--color-button-primary-background);
+  --color-button-primary-text: var(--color-button-primary-text);
+  --color-button-primary-hover-background: var(--color-button-primary-hover-background);
+
+  --color-button-secondary-background: var(--color-button-secondary-background);
+  --color-button-secondary-text: var(--color-button-secondary-text);
+  --color-button-secondary-border: var(--color-button-secondary-border);
+  --color-button-secondary-hover-background: var(
+    --color-button-secondary-hover-background
+  );
+
+  --color-button-tertiary-background: var(--color-button-tertiary-background);
+  --color-button-tertiary-text: var(--color-button-tertiary-text);
+  --color-button-tertiary-border: var(--color-button-tertiary-border);
+  --color-button-tertiary-hover-background: var(
+    --color-button-tertiary-hover-background
+  );
+  --color-button-tertiary-hover-border: var(--color-button-tertiary-hover-border);
+
+  /* Danger Button Colors */
+  --color-button-danger-background: var(--color-button-danger-background);
+  --color-button-danger-text: var(--color-button-danger-text);
+  --color-button-danger-hover-background: var(--color-button-danger-hover-background);
+
+  --color-button-danger-secondary-background: var(
+    --color-button-danger-secondary-background
+  );
+  --color-button-danger-secondary-text: var(--color-button-danger-secondary-text);
+  --color-button-danger-secondary-border: var(--color-button-danger-secondary-border);
+  --color-button-danger-secondary-hover-background: var(
+    --color-button-danger-secondary-hover-background
+  );
+
+  --color-button-danger-tertiary-background: var(
+    --color-button-danger-tertiary-background
+  );
+  --color-button-danger-tertiary-text: var(--color-button-danger-tertiary-text);
+  --color-button-danger-tertiary-border: var(--color-button-danger-tertiary-border);
+  --color-button-danger-tertiary-hover-background: var(
+    --color-button-danger-tertiary-hover-background
+  );
+  --color-button-danger-tertiary-hover-border: var(
+    --color-button-danger-tertiary-hover-border
+  );
+
+  /* Brand Button Colors */
+  --color-button-brand-background: var(--color-button-brand-background);
+  --color-button-brand-text: var(--color-button-brand-text);
+  --color-button-brand-hover-background: var(--color-button-brand-hover-background);
+
+  --color-button-brand-secondary-background: var(
+    --color-button-brand-secondary-background
+  );
+  --color-button-brand-secondary-text: var(--color-button-brand-secondary-text);
+  --color-button-brand-secondary-border: var(--color-button-brand-secondary-border);
+  --color-button-brand-secondary-hover-background: var(
+    --color-button-brand-secondary-hover-background
+  );
+
+  --color-button-brand-tertiary-background: var(
+    --color-button-brand-tertiary-background
+  );
+  --color-button-brand-tertiary-text: var(--color-button-brand-tertiary-text);
+  --color-button-brand-tertiary-border: var(--color-button-brand-tertiary-border);
+  --color-button-brand-tertiary-hover-background: var(
+    --color-button-brand-tertiary-hover-background
+  );
+  --color-button-brand-tertiary-hover-border: var(
+    --color-button-brand-tertiary-hover-border
+  );
+
+  /* Neutral Button Colors */
+  --color-button-neutral-background: var(--color-button-neutral-background);
+  --color-button-neutral-text: var(--color-button-neutral-text);
+  --color-button-neutral-hover-background: var(--color-button-neutral-hover-background);
+
+  --color-button-neutral-secondary-background: var(
+    --color-button-neutral-secondary-background
+  );
+  --color-button-neutral-secondary-text: var(--color-button-neutral-secondary-text);
+  --color-button-neutral-secondary-border: var(--color-button-neutral-secondary-border);
+  --color-button-neutral-secondary-hover-background: var(
+    --color-button-neutral-secondary-hover-background
+  );
+
+  --color-button-neutral-tertiary-background: var(
+    --color-button-neutral-tertiary-background
+  );
+  --color-button-neutral-tertiary-text: var(--color-button-neutral-tertiary-text);
+  --color-button-neutral-tertiary-border: var(--color-button-neutral-tertiary-border);
+  --color-button-neutral-tertiary-hover-background: var(
+    --color-button-neutral-tertiary-hover-background
+  );
+  --color-button-neutral-tertiary-hover-border: var(
+    --color-button-neutral-tertiary-hover-border
+  );
+
+  /* Focus Ring Colors */
+  --color-button-danger-outline-focus-ring-inner: var(
+    --color-button-danger-outline-focus-ring-inner
+  );
+  --color-button-danger-outline-focus-ring-outer: var(
+    --color-button-danger-outline-focus-ring-outer
+  );
+  --color-button-outline-border-red: var(--color-button-outline-border-red);
+
+  /* Gradients */
+  --gradient-from: var(--gradient-from);
+  --gradient-to: var(--gradient-to);
+
+  /* Footer Colors */
+  --color-footer: var(--footer-bg);
+  --color-footer-foreground: var(--footer-text);
+
+  /* Input Colors - using emerald system from existing variables */
+  --color-input: var(--color-background);
+  --color-input-foreground: var(--color-foreground);
+  --color-input-border: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-hover: var(--color-emerald-medium); /* emerald-500 */
+  --color-input-focus: var(--color-button-primary-background); /* emerald-700 */
+  --color-input-ring: var(--color-button-primary-background); /* emerald-700 */
+
+  /* Error Colors */
+  --color-error: var(--color-brand);
+  --color-error-foreground: var(--color-brand-dark);
+
+  /* Primary Colors - using emerald system */
+  --color-primary: var(--color-button-primary-background);
+  --color-primary-foreground: var(--color-button-primary-text);
+  --color-primary-hover: var(--color-main);
+
+  /* Hover Colors */
+  --color-background-hover: var(--color-background-hover);
+
+  /* Border Colors */
+  --color-border: var(--color-border);
+
+  /* UserMenu Colors */
+  --color-usermenu-bg: var(--color-usermenu-bg);
+  --color-usermenu-text: var(--color-usermenu-text);
+  --color-usermenu-hover-bg: var(--color-usermenu-hover-bg);
+
+  /* Panel Gradient Colors */
+  --color-panel-gradient-from: var(--panel-gradient-from);
+  --color-panel-gradient-via: var(--panel-gradient-via);
+  --color-panel-gradient-to: var(--panel-gradient-to);
+  --color-brand-from: var(--color-brand-from);
+  --color-brand-via: var(--color-brand-via);
+  --color-brand-to: var(--color-brand-to);
+  --color-primary-from: var(--color-primary-light-from);
+  --color-primary-via: var(--color-primary-light-via);
+  --color-primary-to: var(--color-primary-light-to);
+
+  /* Adaptive Color System - Consolidated Variables (600 weights for readability) */
+  --color-adaptive-red: var(--color-red-600);
+  --color-adaptive-blue: var(--color-blue-600);
+  --color-adaptive-emerald: var(--color-emerald-600);
+  --color-adaptive-teal: var(--color-teal-600);
+  --color-adaptive-cyan: var(--color-cyan-600);
+  --color-adaptive-green: var(--color-green-600);
+  --color-adaptive-yellow: var(--color-yellow-600);
+  --color-adaptive-orange: var(--color-orange-600);
+  --color-adaptive-amber: var(--color-amber-600);
+  --color-adaptive-lime: var(--color-lime-600);
+  --color-adaptive-violet: var(--color-violet-600);
+  --color-adaptive-purple: var(--color-purple-600);
+  --color-adaptive-fuchsia: var(--color-fuchsia-600);
+  --color-adaptive-pink: var(--color-pink-600);
+  --color-adaptive-rose: var(--color-rose-600);
+  --color-adaptive-slate: var(--color-slate-600);
+  --color-adaptive-zinc: var(--color-zinc-600);
+  --color-adaptive-indigo: var(--color-indigo-600);
+  --color-adaptive-sky: var(--color-sky-600);
+  --color-adaptive-brand: var(--color-red-700);
+
+  /* Adaptive Color System - Selected State Text Colors (800/900 weights) */
+  --color-adaptive-red-selected: var(--color-red-800);
+  --color-adaptive-blue-selected: var(--color-blue-800);
+  --color-adaptive-emerald-selected: var(--color-emerald-800);
+  --color-adaptive-teal-selected: var(--color-teal-800);
+  --color-adaptive-cyan-selected: var(--color-cyan-800);
+  --color-adaptive-green-selected: var(--color-green-800);
+  --color-adaptive-yellow-selected: var(--color-yellow-800);
+  --color-adaptive-orange-selected: var(--color-orange-800);
+  --color-adaptive-amber-selected: var(--color-amber-800);
+  --color-adaptive-lime-selected: var(--color-lime-800);
+  --color-adaptive-violet-selected: var(--color-violet-800);
+  --color-adaptive-purple-selected: var(--color-purple-800);
+  --color-adaptive-fuchsia-selected: var(--color-fuchsia-800);
+  --color-adaptive-pink-selected: var(--color-pink-800);
+  --color-adaptive-rose-selected: var(--color-rose-800);
+  --color-adaptive-slate-selected: var(--color-slate-800);
+  --color-adaptive-zinc-selected: var(--color-zinc-800);
+  --color-adaptive-indigo-selected: var(--color-indigo-800);
+  --color-adaptive-sky-selected: var(--color-sky-800);
+  --color-adaptive-brand-selected: var(--color-brand-800);
+  --color-adaptive-primary-selected: var(--color-primary-800);
+
+  /* Adaptive Color System - Unselected State Text Colors (shared across components) */
+  --color-adaptive-unselected: var(--color-slate-700);
+
+  /* Adaptive Color System - Cell Text Colors (for table cell content) */
+  --color-adaptive-cell-primary: var(--color-slate-900);
+  --color-adaptive-cell-secondary: var(--color-slate-600);
+  --color-adaptive-cell-muted: var(--color-slate-500);
+}
+
+/* Dark mode variant rules for inputs */

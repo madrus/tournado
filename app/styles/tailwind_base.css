@@ -1,0 +1,41 @@
+@layer base {
+  /* Theme transitions removed to prevent flickering during mode switches */
+  /* Individual element animations are preserved via specific classes */
+
+  /* Ensure headings use the title color */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-title);
+  }
+
+  /* Dark mode heading colors - exclude AppBar */
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    color: var(--color-title-accent);
+  }
+
+  .dark .text-foreground-heading {
+    color: var(--color-title);
+  }
+
+  .dark .text-foreground {
+    color: var(--color-foreground);
+  }
+
+  /* Make all paragraph text use foreground color in dark mode for accessibility */
+  .dark p:not(.text-foreground-heading) {
+    color: var(--color-foreground);
+  }
+
+  /* Footer styles handled by component classes */
+
+  /* Mobile navigation uses CSS custom properties */
+}

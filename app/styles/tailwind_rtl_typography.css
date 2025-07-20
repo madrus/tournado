@@ -1,0 +1,79 @@
+/* RTL-specific utilities */
+[dir='rtl'] .rtl\:text-right {
+  text-align: right;
+}
+
+[dir='rtl'] .rtl\:text-left {
+  text-align: left;
+}
+
+[dir='rtl'] .rtl\:ml-auto {
+  margin-left: auto;
+}
+
+[dir='rtl'] .rtl\:mr-auto {
+  margin-right: auto;
+}
+
+[dir='rtl'] .rtl\:flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Script-aware typography system - clean and simple */
+
+/* Arabic text - for Arabic content in any context */
+.arabic-text.text-base,
+.arabic-text {
+  font-family: 'Amiri', serif !important;
+  font-size: 1.25rem !important; /* Use rem to avoid em cascade issues */
+}
+
+/* Ensure Arabic text applies to all children unless overridden */
+.arabic-text * {
+  font-family: 'Amiri', serif !important;
+}
+
+/* Latin text - for Latin content in Arabic context */
+.latin-text,
+.arabic-text .latin-text {
+  font-family: system-ui, sans-serif !important;
+  font-size: 1rem !important; /* Use absolute size to match Latin mode */
+}
+
+/* Ensure Latin text style applies to children with higher specificity */
+.latin-text *,
+.arabic-text .latin-text * {
+  font-family: system-ui, sans-serif !important;
+  font-size: 1rem !important;
+}
+
+/* Latin titles - for Latin headings in Arabic context */
+.latin-title {
+  font-family: system-ui, sans-serif !important;
+  /* Fix letter spacing for titles in Arabic mode */
+  /* letter-spacing: -0.02em !important; Tighter letter spacing */
+}
+
+/* Specific fix for app name on home page in RTL context */
+[dir='rtl'] .app-name.latin-title {
+  font-family: system-ui, sans-serif !important;
+  /* letter-spacing: -0.05em !important; Even tighter for the app name specifically */
+  /* Maintain consistent line height without conflicting with Tailwind classes */
+  line-height: 1.5 !important; /* Match leading-normal from typography.appName */
+  vertical-align: baseline !important; /* Prevent vertical shifting */
+  display: block !important; /* Ensure consistent block-level behavior */
+  margin: 0 !important; /* Reset any unwanted margins */
+}
+
+/* RTL form inputs */
+[dir='rtl'] input,
+[dir='rtl'] textarea,
+[dir='rtl'] select {
+  text-align: right;
+}
+
+/* Override for elements that should remain LTR even in RTL */
+[dir='rtl'] .ltr-override {
+  direction: ltr;
+  text-align: left;
+}

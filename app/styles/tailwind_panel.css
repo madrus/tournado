@@ -1,0 +1,181 @@
+/* ActionLinkPanel color classes - now consolidated to use only .panel-{color}-bg variants */
+
+/* Panel background classes with borders - consolidated single set */
+.panel-teal-bg {
+  @apply border-teal-400 bg-gradient-to-br from-teal-50 via-teal-100 to-teal-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-brand-bg {
+  @apply border-brand-400 bg-gradient-to-br from-white via-red-100 to-white rtl:bg-gradient-to-bl;
+}
+
+.panel-emerald-bg {
+  @apply border-emerald-400 bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-blue-bg {
+  @apply border-blue-400 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-slate-bg {
+  @apply border-slate-400 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-red-bg {
+  @apply border-red-400 bg-gradient-to-br from-red-50 via-red-100 to-red-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-cyan-bg {
+  @apply border-cyan-400 bg-gradient-to-br from-cyan-50 via-cyan-100 to-cyan-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-yellow-bg {
+  @apply border-yellow-400 bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-green-bg {
+  @apply border-green-400 bg-gradient-to-br from-green-50 via-green-100 to-green-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-violet-bg {
+  @apply border-violet-400 bg-gradient-to-br from-violet-50 via-violet-100 to-violet-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-zinc-bg {
+  @apply border-zinc-400 bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-orange-bg {
+  @apply border-orange-400 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-amber-bg {
+  @apply border-amber-400 bg-gradient-to-br from-amber-50 via-amber-100 to-amber-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-lime-bg {
+  @apply border-lime-400 bg-gradient-to-br from-lime-50 via-lime-100 to-lime-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-sky-bg {
+  @apply border-sky-400 bg-gradient-to-br from-sky-50 via-sky-100 to-sky-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-indigo-bg {
+  @apply border-indigo-400 bg-gradient-to-br from-indigo-50 via-indigo-100 to-indigo-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-purple-bg {
+  @apply border-purple-400 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-fuchsia-bg {
+  @apply border-fuchsia-400 bg-gradient-to-br from-fuchsia-50 via-fuchsia-100 to-fuchsia-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-pink-bg {
+  @apply border-pink-400 bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-rose-bg {
+  @apply border-rose-400 bg-gradient-to-br from-rose-50 via-rose-100 to-rose-50 rtl:bg-gradient-to-bl;
+}
+
+.panel-primary-bg {
+  @apply border-emerald-400 bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50 rtl:bg-gradient-to-bl;
+}
+
+@variant dark {
+  .panel-teal-bg {
+    @apply bg-gradient-to-br from-teal-950 via-teal-900 to-teal-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-brand-bg {
+    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-emerald-bg {
+    @apply bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-blue-bg {
+    @apply bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-slate-bg {
+    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-red-bg {
+    @apply bg-gradient-to-br from-red-950 via-red-900 to-red-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-cyan-bg {
+    @apply bg-gradient-to-br from-cyan-950 via-cyan-900 to-cyan-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-yellow-bg {
+    @apply bg-gradient-to-br from-yellow-950 via-yellow-900 to-yellow-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-green-bg {
+    @apply bg-gradient-to-br from-green-950 via-green-900 to-green-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-violet-bg {
+    @apply bg-gradient-to-br from-violet-950 via-violet-900 to-violet-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-zinc-bg {
+    @apply bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-orange-bg {
+    @apply bg-gradient-to-br from-orange-950 via-orange-900 to-orange-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-amber-bg {
+    @apply bg-gradient-to-br from-amber-950 via-amber-900 to-amber-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-lime-bg {
+    @apply bg-gradient-to-br from-lime-950 via-lime-900 to-lime-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-sky-bg {
+    @apply bg-gradient-to-br from-sky-950 via-sky-900 to-sky-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-indigo-bg {
+    @apply bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-purple-bg {
+    @apply bg-gradient-to-br from-purple-950 via-purple-900 to-purple-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-fuchsia-bg {
+    @apply bg-gradient-to-br from-fuchsia-950 via-fuchsia-900 to-fuchsia-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-pink-bg {
+    @apply bg-gradient-to-br from-pink-950 via-pink-900 to-pink-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-rose-bg {
+    @apply bg-gradient-to-br from-rose-950 via-rose-900 to-rose-950 rtl:bg-gradient-to-bl;
+  }
+
+  .panel-primary-bg {
+    @apply bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 rtl:bg-gradient-to-bl;
+  }
+}
+
+/* Panel transition classes */
+.panel-base-layer {
+  @apply transition-opacity duration-750 ease-in-out group-hover:opacity-0;
+}
+
+.panel-hover-layer {
+  @apply opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100;
+}

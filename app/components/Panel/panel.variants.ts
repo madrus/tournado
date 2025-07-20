@@ -117,27 +117,27 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
 export const panelDescriptionVariants = cva(['text-foreground'], {
   variants: {
     color: {
-      brand: 'text-brand-darkest dark:text-red-200',
-      primary: 'text-emerald-600 dark:text-emerald-400',
-      emerald: 'text-emerald-600 dark:text-emerald-400',
-      blue: 'text-blue-600 dark:text-blue-400',
-      slate: 'text-foreground',
-      teal: 'text-teal-600 dark:text-teal-400',
-      red: 'text-red-600 dark:text-red-400',
-      cyan: 'text-cyan-600 dark:text-cyan-400',
-      yellow: 'text-yellow-600 dark:text-yellow-400',
-      green: 'text-green-600 dark:text-green-400',
-      violet: 'text-violet-600 dark:text-violet-400',
-      zinc: 'text-zinc-600 dark:text-zinc-400',
-      orange: 'text-orange-600 dark:text-orange-400',
-      amber: 'text-amber-600 dark:text-amber-400',
-      lime: 'text-lime-600 dark:text-lime-400',
-      sky: 'text-sky-600 dark:text-sky-400',
-      indigo: 'text-indigo-600 dark:text-indigo-400',
-      purple: 'text-purple-600 dark:text-purple-400',
-      fuchsia: 'text-fuchsia-600 dark:text-fuchsia-400',
-      pink: 'text-pink-600 dark:text-pink-400',
-      rose: 'text-rose-600 dark:text-rose-400',
+      brand: 'text-brand-darkest dark:text-red-200', // Keep custom brand logic
+      primary: 'text-adaptive-emerald',
+      emerald: 'text-adaptive-emerald',
+      blue: 'text-adaptive-blue',
+      slate: 'text-foreground', // Keep semantic foreground
+      teal: 'text-adaptive-teal',
+      red: 'text-adaptive-red',
+      cyan: 'text-adaptive-cyan',
+      yellow: 'text-adaptive-yellow',
+      green: 'text-adaptive-green',
+      violet: 'text-adaptive-violet',
+      zinc: 'text-adaptive-zinc',
+      orange: 'text-adaptive-orange',
+      amber: 'text-adaptive-amber',
+      lime: 'text-adaptive-lime',
+      sky: 'text-adaptive-sky',
+      indigo: 'text-adaptive-indigo',
+      purple: 'text-adaptive-purple',
+      fuchsia: 'text-adaptive-fuchsia',
+      pink: 'text-adaptive-pink',
+      rose: 'text-adaptive-rose',
     },
   },
   defaultVariants: {
@@ -192,35 +192,25 @@ export const panelIconVariants = cva(
       color: {
         brand: 'text-red-600 border-red-600',
         primary: 'text-emerald-600 border-emerald-600',
-        emerald:
-          'text-emerald-700 dark:text-emerald-300 border-emerald-700 dark:border-emerald-300',
-        blue: 'text-blue-700 dark:text-blue-300 border-blue-700 dark:border-blue-300',
-        slate:
-          'text-slate-700 dark:text-slate-300 border-slate-700 dark:border-slate-300',
-        teal: 'text-teal-700 dark:text-teal-300 border-teal-700 dark:border-teal-300',
-        red: 'text-red-700 dark:text-red-300 border-red-700 dark:border-red-300',
-        cyan: 'text-cyan-700 dark:text-cyan-300 border-cyan-700 dark:border-cyan-300',
-        yellow:
-          'text-yellow-700 dark:text-yellow-300 border-yellow-700 dark:border-yellow-300',
-        green:
-          'text-green-700 dark:text-green-300 border-green-700 dark:border-green-300',
-        violet:
-          'text-violet-700 dark:text-violet-300 border-violet-700 dark:border-violet-300',
-        zinc: 'text-zinc-700 dark:text-zinc-300 border-zinc-700 dark:border-zinc-300',
-        orange:
-          'text-orange-700 dark:text-orange-300 border-orange-700 dark:border-orange-300',
-        amber:
-          'text-amber-700 dark:text-amber-300 border-amber-700 dark:border-amber-300',
-        lime: 'text-lime-700 dark:text-lime-300 border-lime-700 dark:border-lime-300',
-        sky: 'text-sky-700 dark:text-sky-300 border-sky-700 dark:border-sky-300',
-        indigo:
-          'text-indigo-700 dark:text-indigo-300 border-indigo-700 dark:border-indigo-300',
-        purple:
-          'text-purple-700 dark:text-purple-300 border-purple-700 dark:border-purple-300',
-        fuchsia:
-          'text-fuchsia-700 dark:text-fuchsia-300 border-fuchsia-700 dark:border-fuchsia-300',
-        pink: 'text-pink-700 dark:text-pink-300 border-pink-700 dark:border-pink-300',
-        rose: 'text-rose-700 dark:text-rose-300 border-rose-700 dark:border-rose-300',
+        emerald: 'text-adaptive-emerald-icon border-adaptive-emerald-icon',
+        blue: 'text-adaptive-blue-icon border-adaptive-blue-icon',
+        slate: 'text-adaptive-slate-icon border-adaptive-slate-icon',
+        teal: 'text-adaptive-teal-icon border-adaptive-teal-icon',
+        red: 'text-adaptive-red-icon border-adaptive-red-icon',
+        cyan: 'text-adaptive-cyan-icon border-adaptive-cyan-icon',
+        yellow: 'text-adaptive-yellow-icon border-adaptive-yellow-icon',
+        green: 'text-adaptive-green-icon border-adaptive-green-icon',
+        violet: 'text-adaptive-violet-icon border-adaptive-violet-icon',
+        zinc: 'text-adaptive-zinc-icon border-adaptive-zinc-icon',
+        orange: 'text-adaptive-orange-icon border-adaptive-orange-icon',
+        amber: 'text-adaptive-amber-icon border-adaptive-amber-icon',
+        lime: 'text-adaptive-lime-icon border-adaptive-lime-icon',
+        sky: 'text-adaptive-sky-icon border-adaptive-sky-icon',
+        indigo: 'text-adaptive-indigo-icon border-adaptive-indigo-icon',
+        purple: 'text-adaptive-purple-icon border-adaptive-purple-icon',
+        fuchsia: 'text-adaptive-fuchsia-icon border-adaptive-fuchsia-icon',
+        pink: 'text-adaptive-pink-icon border-adaptive-pink-icon',
+        rose: 'text-adaptive-rose-icon border-adaptive-rose-icon',
       },
     },
     defaultVariants: {

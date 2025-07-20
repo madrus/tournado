@@ -145,10 +145,10 @@ export default function AdminDashboard(): JSX.Element {
           >
             <div className='space-y-2'>
               <p className='break-all'>
-                <strong>Current User:</strong> {user.email}
+                <strong data-color='action'>Current User:</strong> {user.email}
               </p>
               <p className='break-all'>
-                <strong>User ID:</strong> {user.id}
+                <strong data-color='action'>User ID:</strong> {user.id}
               </p>
             </div>
           </ActionLinkPanel>

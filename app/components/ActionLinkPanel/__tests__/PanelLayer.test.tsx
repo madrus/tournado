@@ -135,8 +135,8 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} iconColor='brand' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-600')
-      expect(iconContainer).toHaveClass('border-red-600')
+      expect(iconContainer).toHaveClass('text-adaptive-red-action')
+      expect(iconContainer).toHaveClass('border-adaptive-red-action')
     })
 
     it('should use hover logic for hover layer with non-brand color', () => {
@@ -166,8 +166,8 @@ describe('PanelLayer Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-600')
-      expect(iconContainer).toHaveClass('border-red-600')
+      expect(iconContainer).toHaveClass('text-adaptive-red-action')
+      expect(iconContainer).toHaveClass('border-adaptive-red-action')
     })
   })
 

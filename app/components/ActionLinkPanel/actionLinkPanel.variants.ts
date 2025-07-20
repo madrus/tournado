@@ -168,27 +168,27 @@ export const panelIconVariants = cva(
   {
     variants: {
       color: {
-        brand: 'text-red-600 border-red-600',
-        teal: 'text-teal-600 border-teal-600',
-        emerald: 'text-emerald-600 border-emerald-600',
-        blue: 'text-blue-600 border-blue-600',
-        slate: 'text-slate-600 border-slate-600',
-        red: 'text-red-600 border-red-600',
-        cyan: 'text-cyan-600 border-cyan-600',
-        yellow: 'text-yellow-600 border-yellow-600',
-        green: 'text-green-600 border-green-600',
-        violet: 'text-violet-600 border-violet-600',
-        zinc: 'text-zinc-600 border-zinc-600',
-        orange: 'text-orange-600 border-orange-600',
-        amber: 'text-amber-600 border-amber-600',
-        lime: 'text-lime-600 border-lime-600',
-        sky: 'text-sky-600 border-sky-600',
-        indigo: 'text-indigo-600 border-indigo-600',
-        purple: 'text-purple-600 border-purple-600',
-        fuchsia: 'text-fuchsia-600 border-fuchsia-600',
-        pink: 'text-pink-600 border-pink-600',
-        rose: 'text-rose-600 border-rose-600',
-        primary: 'text-emerald-600 border-emerald-600',
+        brand: 'text-adaptive-red-action border-adaptive-red-action',
+        teal: 'text-adaptive-teal-action border-adaptive-teal-action',
+        emerald: 'text-adaptive-emerald-action border-adaptive-emerald-action',
+        blue: 'text-adaptive-blue-action border-adaptive-blue-action',
+        slate: 'text-adaptive-slate-action border-adaptive-slate-action',
+        red: 'text-adaptive-red-action border-adaptive-red-action',
+        cyan: 'text-adaptive-cyan-action border-adaptive-cyan-action',
+        yellow: 'text-adaptive-yellow-action border-adaptive-yellow-action',
+        green: 'text-adaptive-green-action border-adaptive-green-action',
+        violet: 'text-adaptive-violet-action border-adaptive-violet-action',
+        zinc: 'text-adaptive-zinc-action border-adaptive-zinc-action',
+        orange: 'text-adaptive-orange-action border-adaptive-orange-action',
+        amber: 'text-adaptive-amber-action border-adaptive-amber-action',
+        lime: 'text-adaptive-lime-action border-adaptive-lime-action',
+        sky: 'text-adaptive-sky-action border-adaptive-sky-action',
+        indigo: 'text-adaptive-indigo-action border-adaptive-indigo-action',
+        purple: 'text-adaptive-purple-action border-adaptive-purple-action',
+        fuchsia: 'text-adaptive-fuchsia-action border-adaptive-fuchsia-action',
+        pink: 'text-adaptive-pink-action border-adaptive-pink-action',
+        rose: 'text-adaptive-rose-action border-adaptive-rose-action',
+        primary: 'text-adaptive-emerald-action border-adaptive-emerald-action',
       },
     },
     defaultVariants: {
@@ -204,28 +204,38 @@ export const panelChildrenVariants = cva(
   {
     variants: {
       iconColor: {
-        brand: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
-        green: '[&_p]:!text-green-600 [&_strong]:!text-green-600',
-        cyan: '[&_p]:!text-cyan-600 [&_strong]:!text-cyan-600',
+        brand: '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action',
+        green:
+          '[&_p]:!text-adaptive-green-action [&_strong]:!text-adaptive-green-action',
+        cyan: '[&_p]:!text-adaptive-cyan-action [&_strong]:!text-adaptive-cyan-action',
         yellow:
-          '[&_p]:!text-yellow-700 [&_p]:dark:!text-yellow-300 [&_strong]:!text-yellow-700 [&_strong]:dark:!text-yellow-300',
-        violet: '[&_p]:!text-violet-600 [&_strong]:!text-violet-600',
-        teal: '[&_p]:!text-teal-600 [&_strong]:!text-teal-600',
-        blue: '[&_p]:!text-blue-600 [&_strong]:!text-blue-600',
-        emerald: '[&_p]:!text-emerald-600 [&_strong]:!text-emerald-600',
-        red: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
-        slate: '[&_p]:!text-slate-600 [&_strong]:!text-slate-600',
-        zinc: '[&_p]:!text-zinc-600 [&_strong]:!text-zinc-600',
-        orange: '[&_p]:!text-orange-600 [&_strong]:!text-orange-600',
-        amber: '[&_p]:!text-amber-600 [&_strong]:!text-amber-600',
-        lime: '[&_p]:!text-lime-600 [&_strong]:!text-lime-600',
-        sky: '[&_p]:!text-sky-600 [&_strong]:!text-sky-600',
-        indigo: '[&_p]:!text-indigo-600 [&_strong]:!text-indigo-600',
-        purple: '[&_p]:!text-purple-600 [&_strong]:!text-purple-600',
-        fuchsia: '[&_p]:!text-fuchsia-600 [&_strong]:!text-fuchsia-600',
-        pink: '[&_p]:!text-pink-600 [&_strong]:!text-pink-600',
-        rose: '[&_p]:!text-rose-600 [&_strong]:!text-rose-600',
-        primary: '[&_p]:!text-emerald-600 [&_strong]:!text-emerald-600',
+          '[&_p]:!text-adaptive-yellow-action [&_strong]:!text-adaptive-yellow-action',
+        violet:
+          '[&_p]:!text-adaptive-violet-action [&_strong]:!text-adaptive-violet-action',
+        teal: '[&_p]:!text-adaptive-teal-action [&_strong]:!text-adaptive-teal-action',
+        blue: '[&_p]:!text-adaptive-blue-action [&_strong]:!text-adaptive-blue-action',
+        emerald:
+          '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action',
+        red: '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action',
+        slate:
+          '[&_p]:!text-adaptive-slate-action [&_strong]:!text-adaptive-slate-action',
+        zinc: '[&_p]:!text-adaptive-zinc-action [&_strong]:!text-adaptive-zinc-action',
+        orange:
+          '[&_p]:!text-adaptive-orange-action [&_strong]:!text-adaptive-orange-action',
+        amber:
+          '[&_p]:!text-adaptive-amber-action [&_strong]:!text-adaptive-amber-action',
+        lime: '[&_p]:!text-adaptive-lime-action [&_strong]:!text-adaptive-lime-action',
+        sky: '[&_p]:!text-adaptive-sky-action [&_strong]:!text-adaptive-sky-action',
+        indigo:
+          '[&_p]:!text-adaptive-indigo-action [&_strong]:!text-adaptive-indigo-action',
+        purple:
+          '[&_p]:!text-adaptive-purple-action [&_strong]:!text-adaptive-purple-action',
+        fuchsia:
+          '[&_p]:!text-adaptive-fuchsia-action [&_strong]:!text-adaptive-fuchsia-action',
+        pink: '[&_p]:!text-adaptive-pink-action [&_strong]:!text-adaptive-pink-action',
+        rose: '[&_p]:!text-adaptive-rose-action [&_strong]:!text-adaptive-rose-action',
+        primary:
+          '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action',
       },
     },
     defaultVariants: {

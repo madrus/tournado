@@ -69,14 +69,12 @@ describe('datatable.variants', () => {
   describe('datatableHeaderTextVariants', () => {
     it('should apply default slate color variant', () => {
       const result = datatableHeaderTextVariants()
-      expect(result).toContain('text-slate-600')
-      expect(result).toContain('dark:text-slate-300')
+      expect(result).toContain('text-adaptive-slate-header')
     })
 
     it('should apply emerald color variant', () => {
       const result = datatableHeaderTextVariants({ color: 'emerald' })
-      expect(result).toContain('text-emerald-600')
-      expect(result).toContain('dark:text-emerald-300')
+      expect(result).toContain('text-adaptive-emerald-header')
     })
 
     it('should include base header text classes', () => {
@@ -124,21 +122,18 @@ describe('datatable.variants', () => {
   describe('datatableCellTextVariants', () => {
     it('should apply default primary variant', () => {
       const result = datatableCellTextVariants()
-      expect(result).toContain('text-slate-900')
-      expect(result).toContain('dark:text-slate-100')
+      expect(result).toContain('text-adaptive-cell-primary')
       expect(result).toContain('font-medium')
     })
 
     it('should apply secondary variant', () => {
       const result = datatableCellTextVariants({ variant: 'secondary' })
-      expect(result).toContain('text-slate-600')
-      expect(result).toContain('dark:text-slate-400')
+      expect(result).toContain('text-adaptive-cell-secondary')
     })
 
     it('should apply muted variant', () => {
       const result = datatableCellTextVariants({ variant: 'muted' })
-      expect(result).toContain('text-slate-500')
-      expect(result).toContain('dark:text-slate-500')
+      expect(result).toContain('text-adaptive-cell-muted')
     })
 
     it('should include base cell text classes', () => {

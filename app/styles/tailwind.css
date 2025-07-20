@@ -172,10 +172,204 @@
   --color-primary-via: var(--color-primary-light-via);
   --color-primary-to: var(--color-primary-light-to);
 
+  /* Adaptive Color System - Text Colors (Light Mode Defaults) */
+  --color-adaptive-red-text: var(--color-red-400);
+  --color-adaptive-blue-text: var(--color-blue-400);
+  --color-adaptive-emerald-text: var(--color-emerald-400);
+  --color-adaptive-teal-text: var(--color-teal-400);
+  --color-adaptive-cyan-text: var(--color-cyan-400);
+  --color-adaptive-green-text: var(--color-green-400);
+  --color-adaptive-yellow-text: var(--color-yellow-400);
+  --color-adaptive-orange-text: var(--color-orange-400);
+  --color-adaptive-amber-text: var(--color-amber-400);
+  --color-adaptive-lime-text: var(--color-lime-400);
+  --color-adaptive-violet-text: var(--color-violet-400);
+  --color-adaptive-purple-text: var(--color-purple-400);
+  --color-adaptive-fuchsia-text: var(--color-fuchsia-400);
+  --color-adaptive-pink-text: var(--color-pink-400);
+  --color-adaptive-rose-text: var(--color-rose-400);
+  --color-adaptive-slate-text: var(--color-slate-400);
+  --color-adaptive-zinc-text: var(--color-zinc-400);
+  --color-adaptive-indigo-text: var(--color-indigo-400);
+  --color-adaptive-sky-text: var(--color-sky-400);
+
+  /* Adaptive Color System - Selected State Text Colors (800/900 weights) */
+  --color-adaptive-red-selected: var(--color-red-800);
+  --color-adaptive-blue-selected: var(--color-blue-800);
+  --color-adaptive-emerald-selected: var(--color-emerald-800);
+  --color-adaptive-teal-selected: var(--color-teal-800);
+  --color-adaptive-cyan-selected: var(--color-cyan-800);
+  --color-adaptive-green-selected: var(--color-green-800);
+  --color-adaptive-yellow-selected: var(--color-yellow-800);
+  --color-adaptive-orange-selected: var(--color-orange-800);
+  --color-adaptive-amber-selected: var(--color-amber-800);
+  --color-adaptive-lime-selected: var(--color-lime-800);
+  --color-adaptive-violet-selected: var(--color-violet-800);
+  --color-adaptive-purple-selected: var(--color-purple-800);
+  --color-adaptive-fuchsia-selected: var(--color-fuchsia-800);
+  --color-adaptive-pink-selected: var(--color-pink-800);
+  --color-adaptive-rose-selected: var(--color-rose-800);
+  --color-adaptive-slate-selected: var(--color-slate-800);
+  --color-adaptive-zinc-selected: var(--color-zinc-800);
+  --color-adaptive-indigo-selected: var(--color-indigo-800);
+  --color-adaptive-sky-selected: var(--color-sky-800);
+  --color-adaptive-brand-selected: var(--color-brand-800);
+  --color-adaptive-primary-selected: var(--color-primary-800);
+
+  /* Adaptive Color System - Unselected State Text Colors (shared across components) */
+  --color-adaptive-unselected-text: var(--color-slate-700);
+
+  /* Adaptive Color System - Header Text Colors (600/300 weights for table headers) */
+  --color-adaptive-red-header: var(--color-red-600);
+  --color-adaptive-blue-header: var(--color-blue-600);
+  --color-adaptive-emerald-header: var(--color-emerald-600);
+  --color-adaptive-teal-header: var(--color-teal-600);
+  --color-adaptive-cyan-header: var(--color-cyan-600);
+  --color-adaptive-green-header: var(--color-green-600);
+  --color-adaptive-yellow-header: var(--color-yellow-600);
+  --color-adaptive-orange-header: var(--color-orange-600);
+  --color-adaptive-amber-header: var(--color-amber-600);
+  --color-adaptive-lime-header: var(--color-lime-600);
+  --color-adaptive-violet-header: var(--color-violet-600);
+  --color-adaptive-purple-header: var(--color-purple-600);
+  --color-adaptive-fuchsia-header: var(--color-fuchsia-600);
+  --color-adaptive-pink-header: var(--color-pink-600);
+  --color-adaptive-rose-header: var(--color-rose-600);
+  --color-adaptive-slate-header: var(--color-slate-600);
+  --color-adaptive-zinc-header: var(--color-zinc-600);
+  --color-adaptive-indigo-header: var(--color-indigo-600);
+  --color-adaptive-sky-header: var(--color-sky-600);
+  --color-adaptive-brand-header: var(--color-brand-600);
+  --color-adaptive-primary-header: var(--color-primary-600);
+
+  /* Adaptive Color System - Icon Text & Border Colors (700/300 weights for panel icons) */
+  --color-adaptive-red-icon: var(--color-red-700);
+  --color-adaptive-blue-icon: var(--color-blue-700);
+  --color-adaptive-emerald-icon: var(--color-emerald-700);
+  --color-adaptive-teal-icon: var(--color-teal-700);
+  --color-adaptive-cyan-icon: var(--color-cyan-700);
+  --color-adaptive-green-icon: var(--color-green-700);
+  --color-adaptive-yellow-icon: var(--color-yellow-700);
+  --color-adaptive-orange-icon: var(--color-orange-700);
+  --color-adaptive-amber-icon: var(--color-amber-700);
+  --color-adaptive-lime-icon: var(--color-lime-700);
+  --color-adaptive-violet-icon: var(--color-violet-700);
+  --color-adaptive-purple-icon: var(--color-purple-700);
+  --color-adaptive-fuchsia-icon: var(--color-fuchsia-700);
+  --color-adaptive-pink-icon: var(--color-pink-700);
+  --color-adaptive-rose-icon: var(--color-rose-700);
+  --color-adaptive-slate-icon: var(--color-slate-700);
+  --color-adaptive-zinc-icon: var(--color-zinc-700);
+  --color-adaptive-indigo-icon: var(--color-indigo-700);
+  --color-adaptive-sky-icon: var(--color-sky-700);
+
+  /* Adaptive Color System - Cell Text Colors (for table cell content) */
+  --color-adaptive-cell-primary: var(--color-slate-900);
+  --color-adaptive-cell-secondary: var(--color-slate-600);
+  --color-adaptive-cell-muted: var(--color-slate-500);
+
 }
 
 /* Dark mode variant rules for inputs */
 @variant dark {
+  /* Adaptive Color System - Dark Mode Overrides */
+  :root {
+    --color-adaptive-red-text: var(--color-red-400);
+    --color-adaptive-blue-text: var(--color-blue-400);
+    --color-adaptive-emerald-text: var(--color-emerald-400);
+    --color-adaptive-teal-text: var(--color-teal-400);
+    --color-adaptive-cyan-text: var(--color-cyan-400);
+    --color-adaptive-green-text: var(--color-green-400);
+    --color-adaptive-yellow-text: var(--color-yellow-400);
+    --color-adaptive-orange-text: var(--color-orange-400);
+    --color-adaptive-amber-text: var(--color-amber-400);
+    --color-adaptive-lime-text: var(--color-lime-400);
+    --color-adaptive-violet-text: var(--color-violet-400);
+    --color-adaptive-purple-text: var(--color-purple-400);
+    --color-adaptive-fuchsia-text: var(--color-fuchsia-400);
+    --color-adaptive-pink-text: var(--color-pink-400);
+    --color-adaptive-rose-text: var(--color-rose-400);
+    --color-adaptive-slate-text: var(--color-slate-400);
+    --color-adaptive-zinc-text: var(--color-zinc-400);
+    --color-adaptive-indigo-text: var(--color-indigo-400);
+    --color-adaptive-sky-text: var(--color-sky-400);
+
+    /* Selected State Dark Mode Overrides (900 weight for better contrast) */
+    --color-adaptive-red-selected: var(--color-red-900);
+    --color-adaptive-blue-selected: var(--color-blue-900);
+    --color-adaptive-emerald-selected: var(--color-emerald-900);
+    --color-adaptive-teal-selected: var(--color-teal-900);
+    --color-adaptive-cyan-selected: var(--color-cyan-900);
+    --color-adaptive-green-selected: var(--color-green-900);
+    --color-adaptive-yellow-selected: var(--color-yellow-900);
+    --color-adaptive-orange-selected: var(--color-orange-900);
+    --color-adaptive-amber-selected: var(--color-amber-900);
+    --color-adaptive-lime-selected: var(--color-lime-900);
+    --color-adaptive-violet-selected: var(--color-violet-900);
+    --color-adaptive-purple-selected: var(--color-purple-900);
+    --color-adaptive-fuchsia-selected: var(--color-fuchsia-900);
+    --color-adaptive-pink-selected: var(--color-pink-900);
+    --color-adaptive-rose-selected: var(--color-rose-900);
+    --color-adaptive-slate-selected: var(--color-slate-900);
+    --color-adaptive-zinc-selected: var(--color-zinc-900);
+    --color-adaptive-indigo-selected: var(--color-indigo-900);
+    --color-adaptive-sky-selected: var(--color-sky-900);
+    --color-adaptive-brand-selected: var(--color-brand-900);
+    --color-adaptive-primary-selected: var(--color-primary-900);
+
+    /* Unselected State Dark Mode Override */
+    --color-adaptive-unselected-text: var(--color-slate-900);
+
+    /* Header Text Dark Mode Overrides (300 weight for lighter appearance) */
+    --color-adaptive-red-header: var(--color-red-300);
+    --color-adaptive-blue-header: var(--color-blue-300);
+    --color-adaptive-emerald-header: var(--color-emerald-300);
+    --color-adaptive-teal-header: var(--color-teal-300);
+    --color-adaptive-cyan-header: var(--color-cyan-300);
+    --color-adaptive-green-header: var(--color-green-300);
+    --color-adaptive-yellow-header: var(--color-yellow-300);
+    --color-adaptive-orange-header: var(--color-orange-300);
+    --color-adaptive-amber-header: var(--color-amber-300);
+    --color-adaptive-lime-header: var(--color-lime-300);
+    --color-adaptive-violet-header: var(--color-violet-300);
+    --color-adaptive-purple-header: var(--color-purple-300);
+    --color-adaptive-fuchsia-header: var(--color-fuchsia-300);
+    --color-adaptive-pink-header: var(--color-pink-300);
+    --color-adaptive-rose-header: var(--color-rose-300);
+    --color-adaptive-slate-header: var(--color-slate-300);
+    --color-adaptive-zinc-header: var(--color-zinc-300);
+    --color-adaptive-indigo-header: var(--color-indigo-300);
+    --color-adaptive-sky-header: var(--color-sky-300);
+    --color-adaptive-brand-header: var(--color-brand-300);
+    --color-adaptive-primary-header: var(--color-primary-300);
+
+    /* Icon Text & Border Dark Mode Overrides (300 weight for consistency) */
+    --color-adaptive-red-icon: var(--color-red-300);
+    --color-adaptive-blue-icon: var(--color-blue-300);
+    --color-adaptive-emerald-icon: var(--color-emerald-300);
+    --color-adaptive-teal-icon: var(--color-teal-300);
+    --color-adaptive-cyan-icon: var(--color-cyan-300);
+    --color-adaptive-green-icon: var(--color-green-300);
+    --color-adaptive-yellow-icon: var(--color-yellow-300);
+    --color-adaptive-orange-icon: var(--color-orange-300);
+    --color-adaptive-amber-icon: var(--color-amber-300);
+    --color-adaptive-lime-icon: var(--color-lime-300);
+    --color-adaptive-violet-icon: var(--color-violet-300);
+    --color-adaptive-purple-icon: var(--color-purple-300);
+    --color-adaptive-fuchsia-icon: var(--color-fuchsia-300);
+    --color-adaptive-pink-icon: var(--color-pink-300);
+    --color-adaptive-rose-icon: var(--color-rose-300);
+    --color-adaptive-slate-icon: var(--color-slate-300);
+    --color-adaptive-zinc-icon: var(--color-zinc-300);
+    --color-adaptive-indigo-icon: var(--color-indigo-300);
+    --color-adaptive-sky-icon: var(--color-sky-300);
+
+    /* Cell Text Dark Mode Overrides */
+    --color-adaptive-cell-primary: var(--color-slate-100);
+    --color-adaptive-cell-secondary: var(--color-slate-400);
+    --color-adaptive-cell-muted: var(--color-slate-500);
+  }
+
   /* Input backgrounds - consistent across all input types */
   .bg-input {
     background-color: var(--color-input);
@@ -392,6 +586,122 @@
 }
 
 @layer components {
+  /* Adaptive Text Color Utilities - Promoted from Component Variants */
+  .text-adaptive-red { color: var(--color-adaptive-red-text); }
+  .text-adaptive-blue { color: var(--color-adaptive-blue-text); }
+  .text-adaptive-emerald { color: var(--color-adaptive-emerald-text); }
+  .text-adaptive-teal { color: var(--color-adaptive-teal-text); }
+  .text-adaptive-cyan { color: var(--color-adaptive-cyan-text); }
+  .text-adaptive-green { color: var(--color-adaptive-green-text); }
+  .text-adaptive-yellow { color: var(--color-adaptive-yellow-text); }
+  .text-adaptive-orange { color: var(--color-adaptive-orange-text); }
+  .text-adaptive-amber { color: var(--color-adaptive-amber-text); }
+  .text-adaptive-lime { color: var(--color-adaptive-lime-text); }
+  .text-adaptive-violet { color: var(--color-adaptive-violet-text); }
+  .text-adaptive-purple { color: var(--color-adaptive-purple-text); }
+  .text-adaptive-fuchsia { color: var(--color-adaptive-fuchsia-text); }
+  .text-adaptive-pink { color: var(--color-adaptive-pink-text); }
+  .text-adaptive-rose { color: var(--color-adaptive-rose-text); }
+  .text-adaptive-slate { color: var(--color-adaptive-slate-text); }
+  .text-adaptive-zinc { color: var(--color-adaptive-zinc-text); }
+  .text-adaptive-indigo { color: var(--color-adaptive-indigo-text); }
+  .text-adaptive-sky { color: var(--color-adaptive-sky-text); }
+
+  /* Adaptive Selected State Text Color Utilities - For Toggle Chips and Selected States */
+  .text-adaptive-red-selected { color: var(--color-adaptive-red-selected); }
+  .text-adaptive-blue-selected { color: var(--color-adaptive-blue-selected); }
+  .text-adaptive-emerald-selected { color: var(--color-adaptive-emerald-selected); }
+  .text-adaptive-teal-selected { color: var(--color-adaptive-teal-selected); }
+  .text-adaptive-cyan-selected { color: var(--color-adaptive-cyan-selected); }
+  .text-adaptive-green-selected { color: var(--color-adaptive-green-selected); }
+  .text-adaptive-yellow-selected { color: var(--color-adaptive-yellow-selected); }
+  .text-adaptive-orange-selected { color: var(--color-adaptive-orange-selected); }
+  .text-adaptive-amber-selected { color: var(--color-adaptive-amber-selected); }
+  .text-adaptive-lime-selected { color: var(--color-adaptive-lime-selected); }
+  .text-adaptive-violet-selected { color: var(--color-adaptive-violet-selected); }
+  .text-adaptive-purple-selected { color: var(--color-adaptive-purple-selected); }
+  .text-adaptive-fuchsia-selected { color: var(--color-adaptive-fuchsia-selected); }
+  .text-adaptive-pink-selected { color: var(--color-adaptive-pink-selected); }
+  .text-adaptive-rose-selected { color: var(--color-adaptive-rose-selected); }
+  .text-adaptive-slate-selected { color: var(--color-adaptive-slate-selected); }
+  .text-adaptive-zinc-selected { color: var(--color-adaptive-zinc-selected); }
+  .text-adaptive-indigo-selected { color: var(--color-adaptive-indigo-selected); }
+  .text-adaptive-sky-selected { color: var(--color-adaptive-sky-selected); }
+  .text-adaptive-brand-selected { color: var(--color-adaptive-brand-selected); }
+  .text-adaptive-primary-selected { color: var(--color-adaptive-primary-selected); }
+
+  /* Adaptive Unselected State Text Color Utility - Common Pattern */
+  .text-adaptive-unselected { color: var(--color-adaptive-unselected-text); }
+
+  /* Adaptive Header Text Color Utilities - For Table Headers (600/300 weights) */
+  .text-adaptive-red-header { color: var(--color-adaptive-red-header); }
+  .text-adaptive-blue-header { color: var(--color-adaptive-blue-header); }
+  .text-adaptive-emerald-header { color: var(--color-adaptive-emerald-header); }
+  .text-adaptive-teal-header { color: var(--color-adaptive-teal-header); }
+  .text-adaptive-cyan-header { color: var(--color-adaptive-cyan-header); }
+  .text-adaptive-green-header { color: var(--color-adaptive-green-header); }
+  .text-adaptive-yellow-header { color: var(--color-adaptive-yellow-header); }
+  .text-adaptive-orange-header { color: var(--color-adaptive-orange-header); }
+  .text-adaptive-amber-header { color: var(--color-adaptive-amber-header); }
+  .text-adaptive-lime-header { color: var(--color-adaptive-lime-header); }
+  .text-adaptive-violet-header { color: var(--color-adaptive-violet-header); }
+  .text-adaptive-purple-header { color: var(--color-adaptive-purple-header); }
+  .text-adaptive-fuchsia-header { color: var(--color-adaptive-fuchsia-header); }
+  .text-adaptive-pink-header { color: var(--color-adaptive-pink-header); }
+  .text-adaptive-rose-header { color: var(--color-adaptive-rose-header); }
+  .text-adaptive-slate-header { color: var(--color-adaptive-slate-header); }
+  .text-adaptive-zinc-header { color: var(--color-adaptive-zinc-header); }
+  .text-adaptive-indigo-header { color: var(--color-adaptive-indigo-header); }
+  .text-adaptive-sky-header { color: var(--color-adaptive-sky-header); }
+  .text-adaptive-brand-header { color: var(--color-adaptive-brand-header); }
+  .text-adaptive-primary-header { color: var(--color-adaptive-primary-header); }
+
+  /* Adaptive Icon Text & Border Color Utilities - For Panel Icons (700/300 weights) */
+  .text-adaptive-red-icon { color: var(--color-adaptive-red-icon); }
+  .text-adaptive-blue-icon { color: var(--color-adaptive-blue-icon); }
+  .text-adaptive-emerald-icon { color: var(--color-adaptive-emerald-icon); }
+  .text-adaptive-teal-icon { color: var(--color-adaptive-teal-icon); }
+  .text-adaptive-cyan-icon { color: var(--color-adaptive-cyan-icon); }
+  .text-adaptive-green-icon { color: var(--color-adaptive-green-icon); }
+  .text-adaptive-yellow-icon { color: var(--color-adaptive-yellow-icon); }
+  .text-adaptive-orange-icon { color: var(--color-adaptive-orange-icon); }
+  .text-adaptive-amber-icon { color: var(--color-adaptive-amber-icon); }
+  .text-adaptive-lime-icon { color: var(--color-adaptive-lime-icon); }
+  .text-adaptive-violet-icon { color: var(--color-adaptive-violet-icon); }
+  .text-adaptive-purple-icon { color: var(--color-adaptive-purple-icon); }
+  .text-adaptive-fuchsia-icon { color: var(--color-adaptive-fuchsia-icon); }
+  .text-adaptive-pink-icon { color: var(--color-adaptive-pink-icon); }
+  .text-adaptive-rose-icon { color: var(--color-adaptive-rose-icon); }
+  .text-adaptive-slate-icon { color: var(--color-adaptive-slate-icon); }
+  .text-adaptive-zinc-icon { color: var(--color-adaptive-zinc-icon); }
+  .text-adaptive-indigo-icon { color: var(--color-adaptive-indigo-icon); }
+  .text-adaptive-sky-icon { color: var(--color-adaptive-sky-icon); }
+
+  .border-adaptive-red-icon { border-color: var(--color-adaptive-red-icon); }
+  .border-adaptive-blue-icon { border-color: var(--color-adaptive-blue-icon); }
+  .border-adaptive-emerald-icon { border-color: var(--color-adaptive-emerald-icon); }
+  .border-adaptive-teal-icon { border-color: var(--color-adaptive-teal-icon); }
+  .border-adaptive-cyan-icon { border-color: var(--color-adaptive-cyan-icon); }
+  .border-adaptive-green-icon { border-color: var(--color-adaptive-green-icon); }
+  .border-adaptive-yellow-icon { border-color: var(--color-adaptive-yellow-icon); }
+  .border-adaptive-orange-icon { border-color: var(--color-adaptive-orange-icon); }
+  .border-adaptive-amber-icon { border-color: var(--color-adaptive-amber-icon); }
+  .border-adaptive-lime-icon { border-color: var(--color-adaptive-lime-icon); }
+  .border-adaptive-violet-icon { border-color: var(--color-adaptive-violet-icon); }
+  .border-adaptive-purple-icon { border-color: var(--color-adaptive-purple-icon); }
+  .border-adaptive-fuchsia-icon { border-color: var(--color-adaptive-fuchsia-icon); }
+  .border-adaptive-pink-icon { border-color: var(--color-adaptive-pink-icon); }
+  .border-adaptive-rose-icon { border-color: var(--color-adaptive-rose-icon); }
+  .border-adaptive-slate-icon { border-color: var(--color-adaptive-slate-icon); }
+  .border-adaptive-zinc-icon { border-color: var(--color-adaptive-zinc-icon); }
+  .border-adaptive-indigo-icon { border-color: var(--color-adaptive-indigo-icon); }
+  .border-adaptive-sky-icon { border-color: var(--color-adaptive-sky-icon); }
+
+  /* Adaptive Cell Text Color Utilities - For Table Cell Content */
+  .text-adaptive-cell-primary { color: var(--color-adaptive-cell-primary); }
+  .text-adaptive-cell-secondary { color: var(--color-adaptive-cell-secondary); }
+  .text-adaptive-cell-muted { color: var(--color-adaptive-cell-muted); }
+
   /* Nuclear option: completely disable all visual changes on disabled buttons */
   button:disabled,
   button:disabled:hover,

@@ -68,7 +68,9 @@ export function PanelLayer({
         className={cn(textAlign, getLatinTitleClass(title), className)}
         data-testid={testId}
       >
-        {children}
+        {children ? (
+          <div className={`action-panel-${effectiveChildrenIconColor}`}>{children}</div>
+        ) : null}
       </Panel>
     </div>
   )

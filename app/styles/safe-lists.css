@@ -58,3 +58,6 @@
 @source inline("bg-purple-600");
 @source inline("bg-amber-600");
 @source inline("bg-slate-400 dark:bg-slate-600");
+
+/* Panel background class names - ensure these custom classes are compiled */
+@source inline("panel-teal-bg panel-brand-bg panel-emerald-bg panel-blue-bg panel-slate-bg panel-red-bg panel-cyan-bg panel-yellow-bg panel-green-bg panel-violet-bg panel-zinc-bg panel-orange-bg panel-amber-bg panel-lime-bg panel-sky-bg panel-indigo-bg panel-purple-bg panel-fuchsia-bg panel-pink-bg panel-rose-bg panel-primary-bg");

@@ -31,7 +31,7 @@ describe('FieldStatusIcon', () => {
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toBeInTheDocument()
-    expect(iconContainer).toHaveClass('bg-emerald-500', 'custom-class')
+    expect(iconContainer).toHaveClass('checkmark-emerald', 'custom-class')
   })
 
   it('should always use emerald background for success status', () => {
@@ -39,7 +39,12 @@ describe('FieldStatusIcon', () => {
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toBeInTheDocument()
-    expect(iconContainer).toHaveClass('absolute', '-top-2', 'right-1', 'bg-emerald-500')
+    expect(iconContainer).toHaveClass(
+      'absolute',
+      '-top-2',
+      'right-1',
+      'checkmark-emerald'
+    )
   })
 
   it('should always use red background for error status', () => {
@@ -47,7 +52,12 @@ describe('FieldStatusIcon', () => {
 
     const iconContainer = screen.getByTestId('field-status-error')
     expect(iconContainer).toBeInTheDocument()
-    expect(iconContainer).toHaveClass('absolute', '-top-2', 'right-1', 'bg-red-500')
+    expect(iconContainer).toHaveClass(
+      'absolute',
+      '-top-2',
+      'right-1',
+      'field-error-icon'
+    )
   })
 
   it('should have proper positioning classes', () => {

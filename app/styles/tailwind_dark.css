@@ -20,6 +20,7 @@
   --color-adaptive-indigo: var(--color-indigo-300);
   --color-adaptive-sky: var(--color-sky-300);
   --color-adaptive-brand: var(--color-red-600);
+  --color-adaptive-brand-text: var(--color-red-200);
 
   /* Selected State Dark Mode Overrides (900 weight for better contrast) */
   --color-adaptive-red-selected: var(--color-red-900);

@@ -117,7 +117,7 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
 export const panelDescriptionVariants = cva(['text-foreground'], {
   variants: {
     color: {
-      brand: 'text-adaptive-red',
+      brand: 'text-adaptive-brand-text',
       primary: 'text-adaptive-emerald',
       emerald: 'text-adaptive-emerald',
       blue: 'text-adaptive-blue',

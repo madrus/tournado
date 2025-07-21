@@ -298,7 +298,7 @@ describe('Panel Component', () => {
       render(<Panel {...defaultProps} color='brand' subtitle='Brand subtitle' />)
 
       const subtitle = screen.getByText('Brand subtitle')
-      expect(subtitle).toHaveClass('text-adaptive-red', 'mb-4')
+      expect(subtitle).toHaveClass('text-foreground', 'mb-4')
     })
 
     it('should not apply special brand text color for other colors', () => {

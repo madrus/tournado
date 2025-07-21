@@ -222,6 +222,7 @@
   --color-adaptive-indigo: var(--color-indigo-600);
   --color-adaptive-sky: var(--color-sky-600);
   --color-adaptive-brand: var(--color-red-600);
+  --color-adaptive-brand-text: var(--color-red-800);
 
   /* Adaptive Color System - Selected State Text Colors (800/900 weights) */
   --color-adaptive-red-selected: var(--color-red-800);

@@ -3,7 +3,7 @@ import { type JSX } from 'react'
 import { CloseIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
 
-import { fieldErrorIconVariants } from './panel.variants'
+import { fieldErrorIconVariants } from './field.variants'
 
 type FieldErrorIconProps = {
   /** Whether to show the error icon */

@@ -1,59 +1,56 @@
-@variant dark {
+:where(.dark, .dark *) {
   /* Adaptive Color System - Dark Mode Overrides */
-  :root {
-    --color-adaptive-red: var(--color-red-300);
-    --color-adaptive-blue: var(--color-blue-300);
-    --color-adaptive-emerald: var(--color-emerald-300);
-    --color-adaptive-teal: var(--color-teal-300);
-    --color-adaptive-cyan: var(--color-cyan-300);
-    --color-adaptive-green: var(--color-green-300);
-    --color-adaptive-yellow: var(--color-yellow-300);
-    --color-adaptive-orange: var(--color-orange-300);
-    --color-adaptive-amber: var(--color-amber-300);
-    --color-adaptive-lime: var(--color-lime-300);
-    --color-adaptive-violet: var(--color-violet-300);
-    --color-adaptive-purple: var(--color-purple-300);
-    --color-adaptive-fuchsia: var(--color-fuchsia-300);
-    --color-adaptive-pink: var(--color-pink-300);
-    --color-adaptive-rose: var(--color-rose-300);
-    --color-adaptive-slate: var(--color-slate-300);
-    --color-adaptive-zinc: var(--color-zinc-300);
-    --color-adaptive-indigo: var(--color-indigo-300);
-    --color-adaptive-sky: var(--color-sky-300);
-    --color-adaptive-brand: var(--color-red-700);
+  --color-adaptive-red: var(--color-red-300);
+  --color-adaptive-blue: var(--color-blue-300);
+  --color-adaptive-emerald: var(--color-emerald-300);
+  --color-adaptive-teal: var(--color-teal-300);
+  --color-adaptive-cyan: var(--color-cyan-300);
+  --color-adaptive-green: var(--color-green-300);
+  --color-adaptive-yellow: var(--color-yellow-300);
+  --color-adaptive-orange: var(--color-orange-300);
+  --color-adaptive-amber: var(--color-amber-300);
+  --color-adaptive-lime: var(--color-lime-300);
+  --color-adaptive-violet: var(--color-violet-300);
+  --color-adaptive-purple: var(--color-purple-300);
+  --color-adaptive-fuchsia: var(--color-fuchsia-300);
+  --color-adaptive-pink: var(--color-pink-300);
+  --color-adaptive-rose: var(--color-rose-300);
+  --color-adaptive-slate: var(--color-slate-300);
+  --color-adaptive-zinc: var(--color-zinc-300);
+  --color-adaptive-indigo: var(--color-indigo-300);
+  --color-adaptive-sky: var(--color-sky-300);
+  --color-adaptive-brand: var(--color-red-600);
 
-    /* Selected State Dark Mode Overrides (900 weight for better contrast) */
-    --color-adaptive-red-selected: var(--color-red-900);
-    --color-adaptive-blue-selected: var(--color-blue-900);
-    --color-adaptive-emerald-selected: var(--color-emerald-900);
-    --color-adaptive-teal-selected: var(--color-teal-900);
-    --color-adaptive-cyan-selected: var(--color-cyan-900);
-    --color-adaptive-green-selected: var(--color-green-900);
-    --color-adaptive-yellow-selected: var(--color-yellow-900);
-    --color-adaptive-orange-selected: var(--color-orange-900);
-    --color-adaptive-amber-selected: var(--color-amber-900);
-    --color-adaptive-lime-selected: var(--color-lime-900);
-    --color-adaptive-violet-selected: var(--color-violet-900);
-    --color-adaptive-purple-selected: var(--color-purple-900);
-    --color-adaptive-fuchsia-selected: var(--color-fuchsia-900);
-    --color-adaptive-pink-selected: var(--color-pink-900);
-    --color-adaptive-rose-selected: var(--color-rose-900);
-    --color-adaptive-slate-selected: var(--color-slate-900);
-    --color-adaptive-zinc-selected: var(--color-zinc-900);
-    --color-adaptive-indigo-selected: var(--color-indigo-900);
-    --color-adaptive-sky-selected: var(--color-sky-900);
-    --color-adaptive-brand-selected: var(--color-brand-900);
-    --color-adaptive-primary-selected: var(--color-primary-900);
+  /* Selected State Dark Mode Overrides (900 weight for better contrast) */
+  --color-adaptive-red-selected: var(--color-red-900);
+  --color-adaptive-blue-selected: var(--color-blue-900);
+  --color-adaptive-emerald-selected: var(--color-emerald-900);
+  --color-adaptive-teal-selected: var(--color-teal-900);
+  --color-adaptive-cyan-selected: var(--color-cyan-900);
+  --color-adaptive-green-selected: var(--color-green-900);
+  --color-adaptive-yellow-selected: var(--color-yellow-900);
+  --color-adaptive-orange-selected: var(--color-orange-900);
+  --color-adaptive-amber-selected: var(--color-amber-900);
+  --color-adaptive-lime-selected: var(--color-lime-900);
+  --color-adaptive-violet-selected: var(--color-violet-900);
+  --color-adaptive-purple-selected: var(--color-purple-900);
+  --color-adaptive-fuchsia-selected: var(--color-fuchsia-900);
+  --color-adaptive-pink-selected: var(--color-pink-900);
+  --color-adaptive-rose-selected: var(--color-rose-900);
+  --color-adaptive-slate-selected: var(--color-slate-900);
+  --color-adaptive-zinc-selected: var(--color-zinc-900);
+  --color-adaptive-indigo-selected: var(--color-indigo-900);
+  --color-adaptive-sky-selected: var(--color-sky-900);
+  --color-adaptive-brand-selected: var(--color-brand-900);
+  --color-adaptive-primary-selected: var(--color-primary-900);
 
-    /* Unselected State Dark Mode Override */
-    --color-adaptive-unselected: var(--color-slate-900);
+  /* Unselected State Dark Mode Override */
+  --color-adaptive-unselected: var(--color-slate-900);
 
-    /* Cell Text Dark Mode Overrides */
-    --color-adaptive-cell-primary: var(--color-slate-100);
-    --color-adaptive-cell-secondary: var(--color-slate-400);
-    --color-adaptive-cell-muted: var(--color-slate-500);
-  }
-
+  /* Cell Text Dark Mode Overrides */
+  --color-adaptive-cell-primary: var(--color-slate-100);
+  --color-adaptive-cell-secondary: var(--color-slate-400);
+  --color-adaptive-cell-muted: var(--color-slate-500);
   /* Input backgrounds - consistent across all input types */
   .bg-input {
     background-color: var(--color-input);

@@ -234,28 +234,6 @@ export const fieldErrorIconVariants = cva(
   }
 )
 
-// Checkbox styling for forms
-export const checkboxVariants = cva(
-  [
-    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
-  ],
-  {
-    variants: {
-      state: {
-        checked: 'border-primary-500 bg-primary-500',
-        error: 'border-brand bg-accent',
-        default: 'border-foreground-lighter bg-background',
-      },
-    },
-    defaultVariants: {
-      state: 'default',
-    },
-  }
-)
-
 export type PanelVariants = VariantProps<typeof panelVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
 export type PanelNumberVariants = VariantProps<typeof panelNumberVariants>
-export type FieldCheckmarkVariants = VariantProps<typeof fieldCheckmarkVariants>
-export type FieldErrorIconVariants = VariantProps<typeof fieldErrorIconVariants>
-export type CheckboxVariants = VariantProps<typeof checkboxVariants>

@@ -37,6 +37,8 @@ export type PanelProps = {
   disabled?: boolean
   /** Include glow effect */
   showGlow?: boolean
+  /** Whether this is a hover state panel */
+  isHover?: boolean
   /** Test ID for testing purposes */
   'data-testid'?: string
 }
@@ -54,6 +56,7 @@ export function Panel({
   panelNumber,
   disabled = false,
   showGlow = false,
+  isHover = false,
   'data-testid': testId,
 }: PanelProps): JSX.Element {
   const { currentLanguage } = useLanguageSwitcher()
@@ -143,7 +146,8 @@ export function Panel({
           {subtitle ? (
             <p
               className={cn(
-                panelDescriptionVariants({ color }),
+                // For non-hover state, use text-foreground. For hover state, use adaptive colors
+                isHover ? panelDescriptionVariants({ color }) : 'text-foreground',
                 'mb-4',
                 // Apply disabled styling for form panels
                 disabled && variant === 'form-panel' ? 'text-foreground-lighter' : ''

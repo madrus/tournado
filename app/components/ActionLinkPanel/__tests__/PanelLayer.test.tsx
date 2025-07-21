@@ -277,7 +277,7 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} />)
 
       const description = screen.getByText('Test description')
-      expect(description).toHaveClass('text-adaptive-emerald')
+      expect(description).toHaveClass('text-foreground')
       expect(description).toHaveClass('mb-4')
     })
   })

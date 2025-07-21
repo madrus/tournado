@@ -65,6 +65,7 @@ export function PanelLayer({
         iconColor={effectiveIconColor}
         childrenIconColor={effectiveChildrenIconColor}
         showGlow
+        isHover={isHover}
         className={cn(textAlign, getLatinTitleClass(title), className)}
         data-testid={testId}
       >

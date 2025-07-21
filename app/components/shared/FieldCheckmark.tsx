@@ -3,7 +3,7 @@ import { type JSX } from 'react'
 import { CheckIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
 
-import { fieldCheckmarkVariants } from './panel.variants'
+import { fieldCheckmarkVariants } from './field.variants'
 
 type FieldCheckmarkProps = {
   /** Whether to show the checkmark */

@@ -60,6 +60,9 @@
   .text-adaptive-brand {
     color: var(--color-adaptive-brand);
   }
+  .text-adaptive-brand-text {
+    color: var(--color-adaptive-brand-text);
+  }
 
   /* Adaptive Border Color Utilities - For Icons Using Standard Text Colors */
   .border-adaptive-red {
@@ -686,5 +689,77 @@
   /* UserMenu submenu (language menu) dark mode styling */
   .dark [data-testid='user-menu-dropdown'] .bg-background {
     background-color: var(--color-usermenu-bg) !important;
+  }
+
+  /* Field Validation Styling - Semantic Classes */
+
+  /* Field Checkmark Colors */
+  .checkmark-brand {
+    background-color: var(--color-brand-500);
+  }
+  .checkmark-primary {
+    background-color: var(--color-primary-500);
+  }
+  .checkmark-emerald {
+    background-color: var(--color-emerald-500);
+  }
+  .checkmark-blue {
+    background-color: var(--color-blue-500);
+  }
+  .checkmark-slate {
+    background-color: var(--color-slate-500);
+  }
+  .checkmark-teal {
+    background-color: var(--color-teal-500);
+  }
+  .checkmark-red {
+    background-color: var(--color-red-500);
+  }
+  .checkmark-cyan {
+    background-color: var(--color-cyan-500);
+  }
+  .checkmark-yellow {
+    background-color: var(--color-yellow-500);
+  }
+  .checkmark-green {
+    background-color: var(--color-green-500);
+  }
+  .checkmark-violet {
+    background-color: var(--color-violet-500);
+  }
+  .checkmark-zinc {
+    background-color: var(--color-zinc-500);
+  }
+  .checkmark-orange {
+    background-color: var(--color-orange-500);
+  }
+  .checkmark-amber {
+    background-color: var(--color-amber-500);
+  }
+  .checkmark-lime {
+    background-color: var(--color-lime-500);
+  }
+  .checkmark-sky {
+    background-color: var(--color-sky-500);
+  }
+  .checkmark-indigo {
+    background-color: var(--color-indigo-500);
+  }
+  .checkmark-purple {
+    background-color: var(--color-purple-500);
+  }
+  .checkmark-fuchsia {
+    background-color: var(--color-fuchsia-500);
+  }
+  .checkmark-pink {
+    background-color: var(--color-pink-500);
+  }
+  .checkmark-rose {
+    background-color: var(--color-rose-500);
+  }
+
+  /* Field Error Icon - Always red for errors */
+  .field-error-icon {
+    background-color: var(--color-red-500);
   }
 }

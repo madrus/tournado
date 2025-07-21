@@ -1,3 +1,5 @@
+@config { darkMode: 'class' };
+
 @import './colors.css';
 @import './safe-lists.css';
 @import 'tailwindcss';

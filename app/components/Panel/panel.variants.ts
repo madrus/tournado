@@ -109,7 +109,7 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
   },
   defaultVariants: {
     size: 'md',
-    language: 'en',
+    language: 'nl',
   },
 })
 
@@ -219,44 +219,34 @@ export const panelIconVariants = cva(
   }
 )
 
-// Panel children text color variants
+// Panel children text color variants - using semantic classes
 export const panelChildrenVariants = cva(
   // Base classes for children content
   [],
   {
     variants: {
       iconColor: {
-        brand: '[&_p]:text-red-600 [&_strong]:text-red-600',
-        primary: '[&_p]:text-emerald-600 [&_strong]:text-emerald-600',
-        emerald:
-          '[&_p]:text-emerald-700 [&_p]:dark:text-emerald-300 [&_strong]:text-emerald-700 [&_strong]:dark:text-emerald-300',
-        blue: '[&_p]:text-blue-700 [&_p]:dark:text-blue-300 [&_strong]:text-blue-700 [&_strong]:dark:text-blue-300',
-        slate:
-          '[&_p]:text-slate-700 [&_p]:dark:text-slate-300 [&_strong]:text-slate-700 [&_strong]:dark:text-slate-300',
-        teal: '[&_p]:text-teal-700 [&_p]:dark:text-teal-300 [&_strong]:text-teal-700 [&_strong]:dark:text-teal-300',
-        red: '[&_p]:text-red-700 [&_p]:dark:text-red-300 [&_strong]:text-red-700 [&_strong]:dark:text-red-300',
-        cyan: '[&_p]:text-cyan-700 [&_p]:dark:text-cyan-300 [&_strong]:text-cyan-700 [&_strong]:dark:text-cyan-300',
-        yellow:
-          '[&_p]:text-yellow-700 [&_p]:dark:text-yellow-300 [&_strong]:text-yellow-700 [&_strong]:dark:text-yellow-300',
-        green:
-          '[&_p]:text-green-700 [&_p]:dark:text-green-300 [&_strong]:text-green-700 [&_strong]:dark:text-green-300',
-        violet:
-          '[&_p]:text-violet-700 [&_p]:dark:text-violet-300 [&_strong]:text-violet-700 [&_strong]:dark:text-violet-300',
-        zinc: '[&_p]:text-zinc-700 [&_p]:dark:text-zinc-300 [&_strong]:text-zinc-700 [&_strong]:dark:text-zinc-300',
-        orange:
-          '[&_p]:text-orange-700 [&_p]:dark:text-orange-300 [&_strong]:text-orange-700 [&_strong]:dark:text-orange-300',
-        amber:
-          '[&_p]:text-amber-700 [&_p]:dark:text-amber-300 [&_strong]:text-amber-700 [&_strong]:dark:text-amber-300',
-        lime: '[&_p]:text-lime-700 [&_p]:dark:text-lime-300 [&_strong]:text-lime-700 [&_strong]:dark:text-lime-300',
-        sky: '[&_p]:text-sky-700 [&_p]:dark:text-sky-300 [&_strong]:text-sky-700 [&_strong]:dark:text-sky-300',
-        indigo:
-          '[&_p]:text-indigo-700 [&_p]:dark:text-indigo-300 [&_strong]:text-indigo-700 [&_strong]:dark:text-indigo-300',
-        purple:
-          '[&_p]:text-purple-700 [&_p]:dark:text-purple-300 [&_strong]:text-purple-700 [&_strong]:dark:text-purple-300',
-        fuchsia:
-          '[&_p]:text-fuchsia-700 [&_p]:dark:text-fuchsia-300 [&_strong]:text-fuchsia-700 [&_strong]:dark:text-fuchsia-300',
-        pink: '[&_p]:text-pink-700 [&_p]:dark:text-pink-300 [&_strong]:text-pink-700 [&_strong]:dark:text-pink-300',
-        rose: '[&_p]:text-rose-700 [&_p]:dark:text-rose-300 [&_strong]:text-rose-700 [&_strong]:dark:text-rose-300',
+        brand: '[&_p]:text-adaptive-brand [&_strong]:text-adaptive-brand',
+        primary: '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald',
+        emerald: '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald',
+        blue: '[&_p]:text-adaptive-blue [&_strong]:text-adaptive-blue',
+        slate: '[&_p]:text-adaptive-slate [&_strong]:text-adaptive-slate',
+        teal: '[&_p]:text-adaptive-teal [&_strong]:text-adaptive-teal',
+        red: '[&_p]:text-adaptive-red [&_strong]:text-adaptive-red',
+        cyan: '[&_p]:text-adaptive-cyan [&_strong]:text-adaptive-cyan',
+        yellow: '[&_p]:text-adaptive-yellow [&_strong]:text-adaptive-yellow',
+        green: '[&_p]:text-adaptive-green [&_strong]:text-adaptive-green',
+        violet: '[&_p]:text-adaptive-violet [&_strong]:text-adaptive-violet',
+        zinc: '[&_p]:text-adaptive-zinc [&_strong]:text-adaptive-zinc',
+        orange: '[&_p]:text-adaptive-orange [&_strong]:text-adaptive-orange',
+        amber: '[&_p]:text-adaptive-amber [&_strong]:text-adaptive-amber',
+        lime: '[&_p]:text-adaptive-lime [&_strong]:text-adaptive-lime',
+        sky: '[&_p]:text-adaptive-sky [&_strong]:text-adaptive-sky',
+        indigo: '[&_p]:text-adaptive-indigo [&_strong]:text-adaptive-indigo',
+        purple: '[&_p]:text-adaptive-purple [&_strong]:text-adaptive-purple',
+        fuchsia: '[&_p]:text-adaptive-fuchsia [&_strong]:text-adaptive-fuchsia',
+        pink: '[&_p]:text-adaptive-pink [&_strong]:text-adaptive-pink',
+        rose: '[&_p]:text-adaptive-rose [&_strong]:text-adaptive-rose',
       },
     },
     defaultVariants: {

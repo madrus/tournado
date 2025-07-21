@@ -127,16 +127,16 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} iconColor='teal' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-adaptive-teal-icon')
-      expect(iconContainer).toHaveClass('border-adaptive-teal-icon')
+      expect(iconContainer).toHaveClass('text-adaptive-teal')
+      expect(iconContainer).toHaveClass('border-adaptive-teal')
     })
 
     it('should handle brand iconColor for base layer', () => {
       render(<PanelLayer {...defaultProps} iconColor='brand' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-adaptive-red-action')
-      expect(iconContainer).toHaveClass('border-adaptive-red-action')
+      expect(iconContainer).toHaveClass('text-adaptive-brand')
+      expect(iconContainer).toHaveClass('border-adaptive-brand')
     })
 
     it('should use hover logic for hover layer with non-brand color', () => {
@@ -151,8 +151,8 @@ describe('PanelLayer Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-adaptive-blue-icon')
-      expect(iconContainer).toHaveClass('border-adaptive-blue-icon')
+      expect(iconContainer).toHaveClass('text-adaptive-blue')
+      expect(iconContainer).toHaveClass('border-adaptive-blue')
     })
 
     it('should use hover logic for hover layer with brand color', () => {
@@ -166,8 +166,8 @@ describe('PanelLayer Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-adaptive-red-action')
-      expect(iconContainer).toHaveClass('border-adaptive-red-action')
+      expect(iconContainer).toHaveClass('text-adaptive-brand')
+      expect(iconContainer).toHaveClass('border-adaptive-brand')
     })
   })
 

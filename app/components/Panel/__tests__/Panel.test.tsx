@@ -187,10 +187,7 @@ describe('Panel Component', () => {
       render(<Panel {...defaultProps} color='teal' icon={<MockIcon />} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass(
-        'text-adaptive-teal-icon',
-        'border-adaptive-teal-icon'
-      )
+      expect(iconContainer).toHaveClass('text-adaptive-teal', 'border-adaptive-teal')
     })
 
     it('should use specified iconColor over panel color', () => {
@@ -199,10 +196,7 @@ describe('Panel Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass(
-        'text-adaptive-blue-icon',
-        'border-adaptive-blue-icon'
-      )
+      expect(iconContainer).toHaveClass('text-adaptive-blue', 'border-adaptive-blue')
     })
 
     it('should use iconColor for children when no childrenIconColor specified', () => {
@@ -214,8 +208,8 @@ describe('Panel Component', () => {
 
       // Test the children container for the styling classes
       const childrenContainer = screen.getByTestId('panel-with-children-children')
-      expect(childrenContainer).toHaveClass('[&_p]:!text-teal-700')
-      expect(childrenContainer).toHaveClass('[&_strong]:!text-teal-700')
+      expect(childrenContainer).toHaveClass('[&_p]:text-adaptive-teal')
+      expect(childrenContainer).toHaveClass('[&_strong]:text-adaptive-teal')
     })
 
     it('should use specified childrenIconColor over iconColor', () => {
@@ -232,8 +226,8 @@ describe('Panel Component', () => {
 
       // Test the children container for the styling classes
       const childrenContainer = screen.getByTestId('panel-with-red-children-children')
-      expect(childrenContainer).toHaveClass('[&_p]:!text-red-700')
-      expect(childrenContainer).toHaveClass('[&_strong]:!text-red-700')
+      expect(childrenContainer).toHaveClass('[&_p]:text-adaptive-red')
+      expect(childrenContainer).toHaveClass('[&_strong]:text-adaptive-red')
     })
   })
 

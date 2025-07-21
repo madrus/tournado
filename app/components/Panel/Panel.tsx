@@ -60,9 +60,6 @@ export function Panel({
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
-  // Icon styling using CVA variants
-  const getIconClasses = () => panelIconVariants({ color: effectiveIconColor })
-
   const containerClasses = cn(
     panelVariants({ color, variant }),
     disabled && 'opacity-20 pointer-events-none',
@@ -121,7 +118,10 @@ export function Panel({
         >
           {/* Icon */}
           {icon ? (
-            <div className={cn(getIconClasses(), 'mb-4')} aria-label='panel icon'>
+            <div
+              className={cn(panelIconVariants({ color: effectiveIconColor }), 'mb-4')}
+              aria-label='panel icon'
+            >
               {icon}
             </div>
           ) : null}

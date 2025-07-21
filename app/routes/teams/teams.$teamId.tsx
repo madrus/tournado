@@ -107,7 +107,7 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className={panelContentVariants()}>
                 <h2
                   className={cn(
-                    'mb-4 text-xl font-semibold',
+                    'mb-4 text-xl font-semibold text-teal-800 dark:text-teal-100',
                     getLatinTitleClass(i18n.language)
                   )}
                 >
@@ -123,14 +123,16 @@ export default function TeamDetailsPage(): JSX.Element {
 
                 {/* Placeholder for future games list */}
                 <div className='mt-4 space-y-3'>
-                  <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-4'>
+                  <div className='rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800'>
                     <div className='flex items-center justify-between'>
                       <div>
-                        <p className='font-medium'>vs Team Example</p>
-                        <p className='text-foreground text-sm'>
+                        <p className='font-medium text-slate-900 dark:text-slate-100'>
+                          vs Team Example
+                        </p>
+                        <p className='text-sm text-slate-600 dark:text-slate-300'>
                           Saturday, Dec 16, 2023 at 14:00
                         </p>
-                        <p className='text-foreground-lighter text-sm'>
+                        <p className='text-sm text-slate-500 dark:text-slate-400'>
                           Sports Hall Location
                         </p>
                       </div>
@@ -140,14 +142,18 @@ export default function TeamDetailsPage(): JSX.Element {
                     </div>
                   </div>
 
-                  <div className='border-button-neutral-secondary-border bg-button-neutral-background rounded-lg border p-4'>
+                  <div className='rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800'>
                     <div className='flex items-center justify-between'>
                       <div>
-                        <p className='font-medium'>vs Another Team</p>
-                        <p className='text-foreground text-sm'>
+                        <p className='font-medium text-slate-900 dark:text-slate-100'>
+                          vs Another Team
+                        </p>
+                        <p className='text-sm text-slate-600 dark:text-slate-300'>
                           Sunday, Dec 17, 2023 at 16:30
                         </p>
-                        <p className='text-foreground-lighter text-sm'>Main Court</p>
+                        <p className='text-sm text-slate-500 dark:text-slate-400'>
+                          Main Court
+                        </p>
                       </div>
                       <span className='rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800'>
                         Confirmed
@@ -164,7 +170,7 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className={panelContentVariants()}>
                 <h2
                   className={cn(
-                    'mb-4 text-xl font-semibold',
+                    'mb-4 text-xl font-semibold text-teal-800 dark:text-teal-100',
                     getLatinTitleClass(i18n.language)
                   )}
                 >
@@ -188,7 +194,7 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className={panelContentVariants()}>
                 <h3
                   className={cn(
-                    'mb-4 text-lg font-semibold',
+                    'mb-4 text-lg font-semibold text-teal-800 dark:text-teal-100',
                     getLatinTitleClass(i18n.language)
                   )}
                 >
@@ -239,7 +245,7 @@ export default function TeamDetailsPage(): JSX.Element {
               <div className={panelContentVariants()}>
                 <h3
                   className={cn(
-                    'mb-4 text-lg font-semibold',
+                    'mb-4 text-lg font-semibold text-teal-800 dark:text-teal-100',
                     getLatinTitleClass(i18n.language)
                   )}
                 >

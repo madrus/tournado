@@ -1,6 +1,6 @@
 /* ActionLinkPanel color classes - now consolidated to use only .panel-{color}-bg variants */
 
-/* Panel background classes with borders - consolidated single set */
+/* Panel background classes with borders - consolidated single set with dark mode support */
 .panel-teal-bg {
   @apply border-teal-400 bg-gradient-to-br from-teal-50 via-teal-100 to-teal-50 rtl:bg-gradient-to-bl;
 }

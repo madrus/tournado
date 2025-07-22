@@ -1,0 +1,781 @@
+/* ActionLinkPanel color classes - now consolidated to use only .panel-{color}-bg variants */
+
+/* Panel background classes with borders - consolidated single set with dark mode support */
+/* Light mode panel classes - using direct CSS properties */
+.panel-teal-bg {
+  border-color: var(--color-teal-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-teal-50),
+    var(--color-teal-100),
+    var(--color-teal-50)
+  );
+}
+
+[dir='rtl'] .panel-teal-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-teal-50),
+    var(--color-teal-100),
+    var(--color-teal-50)
+  );
+}
+
+/* Dark mode panel classes using custom variant */
+:where(.dark, .dark *) .panel-teal-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-teal-950),
+    var(--color-teal-900),
+    var(--color-teal-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-teal-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-teal-950),
+    var(--color-teal-900),
+    var(--color-teal-950)
+  );
+}
+
+.panel-brand-bg {
+  border-color: var(--color-red-400);
+  background: linear-gradient(to bottom right, white, var(--color-red-100), white);
+}
+
+[dir='rtl'] .panel-brand-bg {
+  background: linear-gradient(to bottom left, white, var(--color-red-100), white);
+}
+
+.panel-emerald-bg {
+  border-color: var(--color-emerald-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-50),
+    var(--color-emerald-100),
+    var(--color-emerald-50)
+  );
+}
+
+[dir='rtl'] .panel-emerald-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-50),
+    var(--color-emerald-100),
+    var(--color-emerald-50)
+  );
+}
+
+.panel-blue-bg {
+  border-color: var(--color-blue-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-blue-50),
+    var(--color-blue-100),
+    var(--color-blue-50)
+  );
+}
+
+[dir='rtl'] .panel-blue-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-blue-50),
+    var(--color-blue-100),
+    var(--color-blue-50)
+  );
+}
+
+.panel-slate-bg {
+  border-color: var(--color-slate-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-slate-50),
+    var(--color-slate-100),
+    var(--color-slate-50)
+  );
+}
+
+[dir='rtl'] .panel-slate-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-slate-50),
+    var(--color-slate-100),
+    var(--color-slate-50)
+  );
+}
+
+.panel-red-bg {
+  border-color: var(--color-red-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-red-50),
+    var(--color-red-100),
+    var(--color-red-50)
+  );
+}
+
+[dir='rtl'] .panel-red-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-red-50),
+    var(--color-red-100),
+    var(--color-red-50)
+  );
+}
+
+.panel-cyan-bg {
+  border-color: var(--color-cyan-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-cyan-50),
+    var(--color-cyan-100),
+    var(--color-cyan-50)
+  );
+}
+
+[dir='rtl'] .panel-cyan-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-cyan-50),
+    var(--color-cyan-100),
+    var(--color-cyan-50)
+  );
+}
+
+.panel-yellow-bg {
+  border-color: var(--color-yellow-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-yellow-50),
+    var(--color-yellow-100),
+    var(--color-yellow-50)
+  );
+}
+
+[dir='rtl'] .panel-yellow-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-yellow-50),
+    var(--color-yellow-100),
+    var(--color-yellow-50)
+  );
+}
+
+.panel-green-bg {
+  border-color: var(--color-green-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-green-50),
+    var(--color-green-100),
+    var(--color-green-50)
+  );
+}
+
+[dir='rtl'] .panel-green-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-green-50),
+    var(--color-green-100),
+    var(--color-green-50)
+  );
+}
+
+.panel-violet-bg {
+  border-color: var(--color-violet-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-violet-50),
+    var(--color-violet-100),
+    var(--color-violet-50)
+  );
+}
+
+[dir='rtl'] .panel-violet-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-violet-50),
+    var(--color-violet-100),
+    var(--color-violet-50)
+  );
+}
+
+.panel-zinc-bg {
+  border-color: var(--color-zinc-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-zinc-50),
+    var(--color-zinc-100),
+    var(--color-zinc-50)
+  );
+}
+
+[dir='rtl'] .panel-zinc-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-zinc-50),
+    var(--color-zinc-100),
+    var(--color-zinc-50)
+  );
+}
+
+.panel-orange-bg {
+  border-color: var(--color-orange-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-orange-50),
+    var(--color-orange-100),
+    var(--color-orange-50)
+  );
+}
+
+[dir='rtl'] .panel-orange-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-orange-50),
+    var(--color-orange-100),
+    var(--color-orange-50)
+  );
+}
+
+.panel-amber-bg {
+  border-color: var(--color-amber-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-amber-50),
+    var(--color-amber-100),
+    var(--color-amber-50)
+  );
+}
+
+[dir='rtl'] .panel-amber-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-amber-50),
+    var(--color-amber-100),
+    var(--color-amber-50)
+  );
+}
+
+.panel-lime-bg {
+  border-color: var(--color-lime-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-lime-50),
+    var(--color-lime-100),
+    var(--color-lime-50)
+  );
+}
+
+[dir='rtl'] .panel-lime-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-lime-50),
+    var(--color-lime-100),
+    var(--color-lime-50)
+  );
+}
+
+.panel-sky-bg {
+  border-color: var(--color-sky-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-sky-50),
+    var(--color-sky-100),
+    var(--color-sky-50)
+  );
+}
+
+[dir='rtl'] .panel-sky-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-sky-50),
+    var(--color-sky-100),
+    var(--color-sky-50)
+  );
+}
+
+.panel-indigo-bg {
+  border-color: var(--color-indigo-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-indigo-50),
+    var(--color-indigo-100),
+    var(--color-indigo-50)
+  );
+}
+
+[dir='rtl'] .panel-indigo-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-indigo-50),
+    var(--color-indigo-100),
+    var(--color-indigo-50)
+  );
+}
+
+.panel-purple-bg {
+  border-color: var(--color-purple-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-purple-50),
+    var(--color-purple-100),
+    var(--color-purple-50)
+  );
+}
+
+[dir='rtl'] .panel-purple-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-purple-50),
+    var(--color-purple-100),
+    var(--color-purple-50)
+  );
+}
+
+.panel-fuchsia-bg {
+  border-color: var(--color-fuchsia-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+
+[dir='rtl'] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+
+.panel-pink-bg {
+  border-color: var(--color-pink-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-pink-50),
+    var(--color-pink-100),
+    var(--color-pink-50)
+  );
+}
+
+[dir='rtl'] .panel-pink-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-pink-50),
+    var(--color-pink-100),
+    var(--color-pink-50)
+  );
+}
+
+.panel-rose-bg {
+  border-color: var(--color-rose-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-rose-50),
+    var(--color-rose-100),
+    var(--color-rose-50)
+  );
+}
+
+[dir='rtl'] .panel-rose-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-rose-50),
+    var(--color-rose-100),
+    var(--color-rose-50)
+  );
+}
+
+.panel-primary-bg {
+  border-color: var(--color-emerald-400);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-50),
+    var(--color-emerald-100),
+    var(--color-emerald-50)
+  );
+}
+
+[dir='rtl'] .panel-primary-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-50),
+    var(--color-emerald-100),
+    var(--color-emerald-50)
+  );
+}
+
+/* Dark mode panel backgrounds using custom variant */
+:where(.dark, .dark *) .panel-brand-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-slate-900),
+    var(--color-slate-800),
+    var(--color-slate-900)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-brand-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-slate-900),
+    var(--color-slate-800),
+    var(--color-slate-900)
+  );
+}
+
+:where(.dark, .dark *) .panel-emerald-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-950),
+    var(--color-emerald-900),
+    var(--color-emerald-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-emerald-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-950),
+    var(--color-emerald-900),
+    var(--color-emerald-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-blue-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-blue-950),
+    var(--color-blue-900),
+    var(--color-blue-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-blue-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-blue-950),
+    var(--color-blue-900),
+    var(--color-blue-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-slate-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-slate-900),
+    var(--color-slate-800),
+    var(--color-slate-900)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-slate-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-slate-900),
+    var(--color-slate-800),
+    var(--color-slate-900)
+  );
+}
+
+:where(.dark, .dark *) .panel-red-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-red-950),
+    var(--color-red-900),
+    var(--color-red-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-red-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-red-950),
+    var(--color-red-900),
+    var(--color-red-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-cyan-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-cyan-950),
+    var(--color-cyan-900),
+    var(--color-cyan-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-cyan-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-cyan-950),
+    var(--color-cyan-900),
+    var(--color-cyan-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-yellow-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-yellow-950),
+    var(--color-yellow-900),
+    var(--color-yellow-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-yellow-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-yellow-950),
+    var(--color-yellow-900),
+    var(--color-yellow-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-green-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-green-950),
+    var(--color-green-900),
+    var(--color-green-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-green-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-green-950),
+    var(--color-green-900),
+    var(--color-green-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-violet-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-violet-950),
+    var(--color-violet-900),
+    var(--color-violet-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-violet-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-violet-950),
+    var(--color-violet-900),
+    var(--color-violet-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-zinc-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-zinc-950),
+    var(--color-zinc-900),
+    var(--color-zinc-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-zinc-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-zinc-950),
+    var(--color-zinc-900),
+    var(--color-zinc-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-orange-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-orange-950),
+    var(--color-orange-900),
+    var(--color-orange-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-orange-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-orange-950),
+    var(--color-orange-900),
+    var(--color-orange-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-amber-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-amber-950),
+    var(--color-amber-900),
+    var(--color-amber-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-amber-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-amber-950),
+    var(--color-amber-900),
+    var(--color-amber-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-lime-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-lime-950),
+    var(--color-lime-900),
+    var(--color-lime-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-lime-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-lime-950),
+    var(--color-lime-900),
+    var(--color-lime-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-sky-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-sky-950),
+    var(--color-sky-900),
+    var(--color-sky-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-sky-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-sky-950),
+    var(--color-sky-900),
+    var(--color-sky-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-indigo-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-indigo-950),
+    var(--color-indigo-900),
+    var(--color-indigo-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-indigo-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-indigo-950),
+    var(--color-indigo-900),
+    var(--color-indigo-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-purple-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-purple-950),
+    var(--color-purple-900),
+    var(--color-purple-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-purple-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-purple-950),
+    var(--color-purple-900),
+    var(--color-purple-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-900),
+    var(--color-fuchsia-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-900),
+    var(--color-fuchsia-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-pink-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-pink-950),
+    var(--color-pink-900),
+    var(--color-pink-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-pink-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-pink-950),
+    var(--color-pink-900),
+    var(--color-pink-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-rose-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-rose-950),
+    var(--color-rose-900),
+    var(--color-rose-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-rose-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-rose-950),
+    var(--color-rose-900),
+    var(--color-rose-950)
+  );
+}
+
+:where(.dark, .dark *) .panel-primary-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-950),
+    var(--color-emerald-900),
+    var(--color-emerald-950)
+  );
+}
+
+:where(.dark, .dark *) [dir='rtl'] .panel-primary-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-950),
+    var(--color-emerald-900),
+    var(--color-emerald-950)
+  );
+}
+
+/* Panel transition classes */
+.panel-base-layer {
+  @apply transition-opacity duration-750 ease-in-out group-hover:opacity-0;
+}
+
+.panel-hover-layer {
+  @apply opacity-0 transition-opacity duration-750 ease-in-out group-hover:opacity-100;
+}

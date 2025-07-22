@@ -127,16 +127,16 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} iconColor='teal' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-teal-700')
-      expect(iconContainer).toHaveClass('border-teal-700')
+      expect(iconContainer).toHaveClass('text-adaptive-teal')
+      expect(iconContainer).toHaveClass('border-adaptive-teal')
     })
 
     it('should handle brand iconColor for base layer', () => {
       render(<PanelLayer {...defaultProps} iconColor='brand' isHover={false} />)
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-600')
-      expect(iconContainer).toHaveClass('border-red-600')
+      expect(iconContainer).toHaveClass('text-adaptive-brand')
+      expect(iconContainer).toHaveClass('border-adaptive-brand')
     })
 
     it('should use hover logic for hover layer with non-brand color', () => {
@@ -151,8 +151,8 @@ describe('PanelLayer Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-blue-700')
-      expect(iconContainer).toHaveClass('border-blue-700')
+      expect(iconContainer).toHaveClass('text-adaptive-blue')
+      expect(iconContainer).toHaveClass('border-adaptive-blue')
     })
 
     it('should use hover logic for hover layer with brand color', () => {
@@ -166,8 +166,8 @@ describe('PanelLayer Component', () => {
       )
 
       const iconContainer = screen.getByLabelText('panel icon')
-      expect(iconContainer).toHaveClass('text-red-600')
-      expect(iconContainer).toHaveClass('border-red-600')
+      expect(iconContainer).toHaveClass('text-adaptive-brand')
+      expect(iconContainer).toHaveClass('border-adaptive-brand')
     })
   })
 
@@ -218,7 +218,7 @@ describe('PanelLayer Component', () => {
   describe('RTL Support', () => {
     it('should apply Latin title class for Arabic language', () => {
       // Mock Arabic language
-      vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
+      vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'ar',
         switchLanguage: vi.fn(),
       })
@@ -231,7 +231,7 @@ describe('PanelLayer Component', () => {
 
     it('should not apply Latin title class for English language', () => {
       // Mock English language (default)
-      vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
+      vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'en',
         switchLanguage: vi.fn(),
       })
@@ -277,8 +277,7 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} />)
 
       const description = screen.getByText('Test description')
-      expect(description).toHaveClass('text-emerald-600')
-      expect(description).toHaveClass('dark:text-emerald-400')
+      expect(description).toHaveClass('text-foreground')
       expect(description).toHaveClass('mb-4')
     })
   })

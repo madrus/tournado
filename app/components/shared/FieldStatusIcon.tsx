@@ -2,7 +2,7 @@ import { type JSX } from 'react'
 
 import { CheckIcon, CloseIcon } from '~/components/icons'
 
-import { fieldCheckmarkVariants, fieldErrorIconVariants } from './panel.variants'
+import { fieldCheckmarkVariants, fieldErrorIconVariants } from './field.variants'
 
 type FieldStatusIconProps = {
   /** The field validation status */

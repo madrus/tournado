@@ -153,15 +153,23 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
 
 ### 6.5 Legacy Component Cleanup
 
+- [x] **Field variants extraction:**
+   - [x] Create `app/components/shared/field.variants.ts` with semantic classes (`checkmark-brand`, `field-error-icon`)
+   - [x] Add semantic CSS classes to `tailwind_components.css` using color variables
+   - [x] Update `FieldCheckmark`, `FieldErrorIcon`, `FieldStatusIcon` to import from field variants
+   - [x] Remove field-specific variants from `shared/panel.variants.ts`
+   - [x] Add field variants to `shared/index.ts` exports
+- [ ] **Outstanding migrations:**
+   - [ ] Migrate `app/routes/teams/teams.$teamId.tsx` to use new Panel component (currently uses legacy panel variants)
 - [ ] **Delete legacy files:**
-   - [ ] `app/components/PanelOld.tsx`
-   - [ ] `app/components/shared/panel.variants.ts`
+   - [x] `app/components/PanelOld.tsx`
+   - [ ] `app/components/shared/panel.variants.ts` _(blocked by `app/routes/teams/teams.$teamId.tsx` - requires Panel migration)_
    - [ ] `app/styles/panel.styles.ts` (removes `getPanelClasses` and legacy helpers)
-- [ ] **Remove temporary import shims:**
-   - [ ] Remove all `PanelOld as Panel` import statements
-   - [ ] Update remaining direct `PanelOld` references
+- [x] **Remove temporary import shims:**
+   - [x] Remove all `PanelOld as Panel` import statements
+   - [x] Update remaining direct `PanelOld` references
 - [ ] **Clean up variant files:** Remove any duplicate or unused panel variant definitions
-- [ ] **Note:** Current `dark:` syntax in component variants is correct and should remain unchanged (Tailwind CSS v4 still uses `dark:` syntax)
+- [x] **Note:** Current `dark:` syntax in component variants is correct and should remain unchanged (Tailwind CSS v4 still uses `dark:` syntax)
 
 ### 6.5 RTL Support & Internationalization
 

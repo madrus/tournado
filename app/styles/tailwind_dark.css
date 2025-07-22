@@ -1,0 +1,236 @@
+:where(.dark, .dark *) {
+  /* Adaptive Color System - Dark Mode Overrides */
+  --color-adaptive-red: var(--color-red-300);
+  --color-adaptive-blue: var(--color-blue-300);
+  --color-adaptive-emerald: var(--color-emerald-300);
+  --color-adaptive-teal: var(--color-teal-300);
+  --color-adaptive-cyan: var(--color-cyan-300);
+  --color-adaptive-green: var(--color-green-300);
+  --color-adaptive-yellow: var(--color-yellow-300);
+  --color-adaptive-orange: var(--color-orange-300);
+  --color-adaptive-amber: var(--color-amber-300);
+  --color-adaptive-lime: var(--color-lime-300);
+  --color-adaptive-violet: var(--color-violet-300);
+  --color-adaptive-purple: var(--color-purple-300);
+  --color-adaptive-fuchsia: var(--color-fuchsia-300);
+  --color-adaptive-pink: var(--color-pink-300);
+  --color-adaptive-rose: var(--color-rose-300);
+  --color-adaptive-slate: var(--color-slate-300);
+  --color-adaptive-zinc: var(--color-zinc-300);
+  --color-adaptive-indigo: var(--color-indigo-300);
+  --color-adaptive-sky: var(--color-sky-300);
+  --color-adaptive-brand: var(--color-red-600);
+  --color-adaptive-brand-text: var(--color-red-200);
+
+  /* Selected State Dark Mode Overrides (900 weight for better contrast) */
+  --color-adaptive-red-selected: var(--color-red-900);
+  --color-adaptive-blue-selected: var(--color-blue-900);
+  --color-adaptive-emerald-selected: var(--color-emerald-900);
+  --color-adaptive-teal-selected: var(--color-teal-900);
+  --color-adaptive-cyan-selected: var(--color-cyan-900);
+  --color-adaptive-green-selected: var(--color-green-900);
+  --color-adaptive-yellow-selected: var(--color-yellow-900);
+  --color-adaptive-orange-selected: var(--color-orange-900);
+  --color-adaptive-amber-selected: var(--color-amber-900);
+  --color-adaptive-lime-selected: var(--color-lime-900);
+  --color-adaptive-violet-selected: var(--color-violet-900);
+  --color-adaptive-purple-selected: var(--color-purple-900);
+  --color-adaptive-fuchsia-selected: var(--color-fuchsia-900);
+  --color-adaptive-pink-selected: var(--color-pink-900);
+  --color-adaptive-rose-selected: var(--color-rose-900);
+  --color-adaptive-slate-selected: var(--color-slate-900);
+  --color-adaptive-zinc-selected: var(--color-zinc-900);
+  --color-adaptive-indigo-selected: var(--color-indigo-900);
+  --color-adaptive-sky-selected: var(--color-sky-900);
+  --color-adaptive-brand-selected: var(--color-brand-900);
+  --color-adaptive-primary-selected: var(--color-primary-900);
+
+  /* Unselected State Dark Mode Override */
+  --color-adaptive-unselected: var(--color-slate-900);
+
+  /* Cell Text Dark Mode Overrides */
+  --color-adaptive-cell-primary: var(--color-slate-100);
+  --color-adaptive-cell-secondary: var(--color-slate-400);
+  --color-adaptive-cell-muted: var(--color-slate-500);
+  /* Input backgrounds - consistent across all input types */
+  .bg-input {
+    background-color: var(--color-input);
+  }
+
+  /* Combo content backgrounds - use slate-800 */
+  .combo-content-bg {
+    background-color: var(--color-slate-800);
+  }
+
+  /* Universal dark mode shadow adjustments for inputs */
+  .shadow-brand-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-brand-400) / 0.3);
+  }
+
+  .shadow-primary-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-primary-400) / 0.3);
+  }
+
+  .shadow-emerald-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-emerald-400) / 0.3);
+  }
+
+  .shadow-red-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-red-400) / 0.3);
+  }
+
+  .shadow-blue-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-blue-400) / 0.3);
+  }
+
+  .shadow-green-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-green-400) / 0.3);
+  }
+
+  .shadow-yellow-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-yellow-400) / 0.3);
+  }
+
+  .shadow-purple-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-purple-400) / 0.3);
+  }
+
+  .shadow-pink-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-pink-400) / 0.3);
+  }
+
+  .shadow-indigo-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-indigo-400) / 0.3);
+  }
+
+  .shadow-slate-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-slate-400) / 0.3);
+  }
+
+  .shadow-zinc-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-zinc-400) / 0.3);
+  }
+
+  .shadow-orange-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-orange-400) / 0.3);
+  }
+
+  .shadow-amber-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-amber-400) / 0.3);
+  }
+
+  .shadow-lime-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-lime-400) / 0.3);
+  }
+
+  .shadow-teal-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-teal-400) / 0.3);
+  }
+
+  .shadow-cyan-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-cyan-400) / 0.3);
+  }
+
+  .shadow-sky-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-sky-400) / 0.3);
+  }
+
+  .shadow-violet-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-violet-400) / 0.3);
+  }
+
+  .shadow-fuchsia-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-fuchsia-400) / 0.3);
+  }
+
+  .shadow-rose-500\/20 {
+    box-shadow: 0 4px 6px -1px rgb(var(--color-rose-400) / 0.3);
+  }
+
+  /* Ring color adjustments for dark mode */
+  .ring-brand-500\/20 {
+    --tw-ring-color: rgb(var(--color-brand-400) / 0.3);
+  }
+
+  .ring-primary-500\/20 {
+    --tw-ring-color: rgb(var(--color-primary-400) / 0.3);
+  }
+
+  .ring-emerald-500\/20 {
+    --tw-ring-color: rgb(var(--color-emerald-400) / 0.3);
+  }
+
+  .ring-red-500\/20 {
+    --tw-ring-color: rgb(var(--color-red-400) / 0.3);
+  }
+
+  .ring-blue-500\/20 {
+    --tw-ring-color: rgb(var(--color-blue-400) / 0.3);
+  }
+
+  .ring-green-500\/20 {
+    --tw-ring-color: rgb(var(--color-green-400) / 0.3);
+  }
+
+  .ring-yellow-500\/20 {
+    --tw-ring-color: rgb(var(--color-yellow-400) / 0.3);
+  }
+
+  .ring-purple-500\/20 {
+    --tw-ring-color: rgb(var(--color-purple-400) / 0.3);
+  }
+
+  .ring-pink-500\/20 {
+    --tw-ring-color: rgb(var(--color-pink-400) / 0.3);
+  }
+
+  .ring-indigo-500\/20 {
+    --tw-ring-color: rgb(var(--color-indigo-400) / 0.3);
+  }
+
+  .ring-slate-500\/20 {
+    --tw-ring-color: rgb(var(--color-slate-400) / 0.3);
+  }
+
+  .ring-zinc-500\/20 {
+    --tw-ring-color: rgb(var(--color-zinc-400) / 0.3);
+  }
+
+  .ring-orange-500\/20 {
+    --tw-ring-color: rgb(var(--color-orange-400) / 0.3);
+  }
+
+  .ring-amber-500\/20 {
+    --tw-ring-color: rgb(var(--color-amber-400) / 0.3);
+  }
+
+  .ring-lime-500\/20 {
+    --tw-ring-color: rgb(var(--color-lime-400) / 0.3);
+  }
+
+  .ring-teal-500\/20 {
+    --tw-ring-color: rgb(var(--color-teal-400) / 0.3);
+  }
+
+  .ring-cyan-500\/20 {
+    --tw-ring-color: rgb(var(--color-cyan-400) / 0.3);
+  }
+
+  .ring-sky-500\/20 {
+    --tw-ring-color: rgb(var(--color-sky-400) / 0.3);
+  }
+
+  .ring-violet-500\/20 {
+    --tw-ring-color: rgb(var(--color-violet-400) / 0.3);
+  }
+
+  .ring-fuchsia-500\/20 {
+    --tw-ring-color: rgb(var(--color-fuchsia-400) / 0.3);
+  }
+
+  .ring-rose-500\/20 {
+    --tw-ring-color: rgb(var(--color-rose-400) / 0.3);
+  }
+}
+
+/* Base Styles */

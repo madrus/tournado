@@ -6,39 +6,27 @@ export const panelVariants = cva(
   {
     variants: {
       color: {
-        brand:
-          'border-brand-400 bg-gradient-to-br from-brand-from via-brand-via to-brand-to',
-        primary:
-          'border-primary-400 bg-gradient-to-br from-primary-50 via-primary-100 to-primary-50 dark:from-primary-950 dark:via-primary-900 dark:to-primary-900',
-        emerald:
-          'border-emerald-400 bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50 dark:from-emerald-950 dark:via-emerald-900 dark:to-emerald-900',
-        blue: 'border-blue-400 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 dark:from-blue-950 dark:via-blue-900 dark:to-blue-900',
-        slate:
-          'border-slate-400 bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900',
-        teal: 'border-teal-400 bg-gradient-to-br from-teal-50 via-teal-100 to-teal-50 dark:from-teal-950 dark:via-teal-900 dark:to-teal-900',
-        red: 'border-red-400 bg-gradient-to-br from-red-50 via-red-100 to-red-50 dark:from-red-950 dark:via-red-900 dark:to-red-900',
-        cyan: 'border-cyan-400 bg-gradient-to-br from-cyan-50 via-cyan-100 to-cyan-50 dark:from-cyan-950 dark:via-cyan-900 dark:to-cyan-900',
-        yellow:
-          'border-yellow-400 bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-50 dark:from-yellow-950 dark:via-yellow-900 dark:to-yellow-900',
-        green:
-          'border-green-400 bg-gradient-to-br from-green-50 via-green-100 to-green-50 dark:from-green-950 dark:via-green-900 dark:to-green-900',
-        violet:
-          'border-violet-400 bg-gradient-to-br from-violet-50 via-violet-100 to-violet-50 dark:from-violet-950 dark:via-violet-900 dark:to-violet-900',
-        zinc: 'border-zinc-400 bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
-        orange:
-          'border-orange-400 bg-gradient-to-br from-orange-50 via-orange-100 to-orange-50 dark:from-orange-950 dark:via-orange-900 dark:to-orange-900',
-        amber:
-          'border-amber-400 bg-gradient-to-br from-amber-50 via-amber-100 to-amber-50 dark:from-amber-950 dark:via-amber-900 dark:to-amber-900',
-        lime: 'border-lime-400 bg-gradient-to-br from-lime-50 via-lime-100 to-lime-50 dark:from-lime-950 dark:via-lime-900 dark:to-lime-900',
-        sky: 'border-sky-400 bg-gradient-to-br from-white via-sky-100 to-white dark:from-sky-950 dark:via-sky-900 dark:to-sky-900',
-        indigo:
-          'border-indigo-400 bg-gradient-to-br from-indigo-50 via-indigo-100 to-indigo-50 dark:from-indigo-950 dark:via-indigo-900 dark:to-indigo-900',
-        purple:
-          'border-purple-400 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-50 dark:from-purple-950 dark:via-purple-900 dark:to-purple-900',
-        fuchsia:
-          'border-fuchsia-400 bg-gradient-to-br from-fuchsia-50 via-fuchsia-100 to-fuchsia-50 dark:from-fuchsia-950 dark:via-fuchsia-900 dark:to-fuchsia-900',
-        pink: 'border-pink-400 bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 dark:from-pink-950 dark:via-pink-900 dark:to-pink-900',
-        rose: 'border-rose-400 bg-gradient-to-br from-rose-50 via-rose-100 to-rose-50 dark:from-rose-950 dark:via-rose-900 dark:to-rose-900',
+        brand: 'panel-brand-bg',
+        primary: 'panel-primary-bg',
+        emerald: 'panel-emerald-bg',
+        blue: 'panel-blue-bg',
+        slate: 'panel-slate-bg',
+        teal: 'panel-teal-bg',
+        red: 'panel-red-bg',
+        cyan: 'panel-cyan-bg',
+        yellow: 'panel-yellow-bg',
+        green: 'panel-green-bg',
+        violet: 'panel-violet-bg',
+        zinc: 'panel-zinc-bg',
+        orange: 'panel-orange-bg',
+        amber: 'panel-amber-bg',
+        lime: 'panel-lime-bg',
+        sky: 'panel-sky-bg',
+        indigo: 'panel-indigo-bg',
+        purple: 'panel-purple-bg',
+        fuchsia: 'panel-fuchsia-bg',
+        pink: 'panel-pink-bg',
+        rose: 'panel-rose-bg',
       },
     },
     defaultVariants: {
@@ -98,27 +86,27 @@ export const panelTitleVariants = cva(['mb-2 font-bold'], {
       sm: 'text-lg',
     },
     color: {
-      slate: 'text-foreground-darker',
-      red: 'text-red-600 dark:text-red-400',
-      blue: 'text-blue-600 dark:text-blue-400',
-      emerald: 'text-emerald-600 dark:text-emerald-400',
-      teal: 'text-teal-600 dark:text-teal-400',
-      cyan: 'text-cyan-600 dark:text-cyan-400',
-      green: 'text-green-600 dark:text-green-400',
-      violet: 'text-violet-600 dark:text-violet-400',
-      purple: 'text-purple-600 dark:text-purple-400',
-      yellow: 'text-yellow-600 dark:text-yellow-400',
-      orange: 'text-orange-600 dark:text-orange-400',
-      pink: 'text-pink-600 dark:text-pink-400',
-      indigo: 'text-indigo-600 dark:text-indigo-400',
-      fuchsia: 'text-fuchsia-600 dark:text-fuchsia-400',
-      sky: 'text-sky-600 dark:text-sky-400',
-      lime: 'text-lime-600 dark:text-lime-400',
-      amber: 'text-amber-600 dark:text-amber-400',
-      rose: 'text-rose-600 dark:text-rose-400',
-      brand: 'text-red-600 dark:text-red-400',
-      primary: 'text-emerald-600 dark:text-emerald-400',
-      zinc: 'text-zinc-600 dark:text-zinc-400',
+      slate: 'text-foreground-darker', // Keep semantic
+      red: 'text-adaptive-red',
+      blue: 'text-adaptive-blue',
+      emerald: 'text-adaptive-emerald',
+      teal: 'text-adaptive-teal',
+      cyan: 'text-adaptive-cyan',
+      green: 'text-adaptive-green',
+      violet: 'text-adaptive-violet',
+      purple: 'text-adaptive-purple',
+      yellow: 'text-adaptive-yellow',
+      orange: 'text-adaptive-orange',
+      pink: 'text-adaptive-pink',
+      indigo: 'text-adaptive-indigo',
+      fuchsia: 'text-adaptive-fuchsia',
+      sky: 'text-adaptive-sky',
+      lime: 'text-adaptive-lime',
+      amber: 'text-adaptive-amber',
+      rose: 'text-adaptive-rose',
+      brand: 'text-adaptive-red', // Map brand to red adaptive
+      primary: 'text-adaptive-emerald', // Map primary to emerald adaptive
+      zinc: 'text-adaptive-zinc',
     },
   },
   defaultVariants: {
@@ -246,28 +234,6 @@ export const fieldErrorIconVariants = cva(
   }
 )
 
-// Checkbox styling for forms
-export const checkboxVariants = cva(
-  [
-    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
-  ],
-  {
-    variants: {
-      state: {
-        checked: 'border-primary-500 bg-primary-500',
-        error: 'border-brand bg-accent',
-        default: 'border-foreground-lighter bg-background',
-      },
-    },
-    defaultVariants: {
-      state: 'default',
-    },
-  }
-)
-
 export type PanelVariants = VariantProps<typeof panelVariants>
 export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
 export type PanelNumberVariants = VariantProps<typeof panelNumberVariants>
-export type FieldCheckmarkVariants = VariantProps<typeof fieldCheckmarkVariants>
-export type FieldErrorIconVariants = VariantProps<typeof fieldErrorIconVariants>
-export type CheckboxVariants = VariantProps<typeof checkboxVariants>

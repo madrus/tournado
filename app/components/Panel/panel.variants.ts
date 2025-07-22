@@ -109,7 +109,7 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
   },
   defaultVariants: {
     size: 'md',
-    language: 'en',
+    language: 'nl',
   },
 })
 
@@ -117,27 +117,27 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
 export const panelDescriptionVariants = cva(['text-foreground'], {
   variants: {
     color: {
-      brand: 'text-brand-darkest dark:text-red-200',
-      primary: 'text-emerald-600 dark:text-emerald-400',
-      emerald: 'text-emerald-600 dark:text-emerald-400',
-      blue: 'text-blue-600 dark:text-blue-400',
-      slate: 'text-foreground',
-      teal: 'text-teal-600 dark:text-teal-400',
-      red: 'text-red-600 dark:text-red-400',
-      cyan: 'text-cyan-600 dark:text-cyan-400',
-      yellow: 'text-yellow-600 dark:text-yellow-400',
-      green: 'text-green-600 dark:text-green-400',
-      violet: 'text-violet-600 dark:text-violet-400',
-      zinc: 'text-zinc-600 dark:text-zinc-400',
-      orange: 'text-orange-600 dark:text-orange-400',
-      amber: 'text-amber-600 dark:text-amber-400',
-      lime: 'text-lime-600 dark:text-lime-400',
-      sky: 'text-sky-600 dark:text-sky-400',
-      indigo: 'text-indigo-600 dark:text-indigo-400',
-      purple: 'text-purple-600 dark:text-purple-400',
-      fuchsia: 'text-fuchsia-600 dark:text-fuchsia-400',
-      pink: 'text-pink-600 dark:text-pink-400',
-      rose: 'text-rose-600 dark:text-rose-400',
+      brand: 'text-adaptive-brand-text',
+      primary: 'text-adaptive-emerald',
+      emerald: 'text-adaptive-emerald',
+      blue: 'text-adaptive-blue',
+      slate: 'text-adaptive-slate',
+      teal: 'text-adaptive-teal',
+      red: 'text-adaptive-red',
+      cyan: 'text-adaptive-cyan',
+      yellow: 'text-adaptive-yellow',
+      green: 'text-adaptive-green',
+      violet: 'text-adaptive-violet',
+      zinc: 'text-adaptive-zinc',
+      orange: 'text-adaptive-orange',
+      amber: 'text-adaptive-amber',
+      lime: 'text-adaptive-lime',
+      sky: 'text-adaptive-sky',
+      indigo: 'text-adaptive-indigo',
+      purple: 'text-adaptive-purple',
+      fuchsia: 'text-adaptive-fuchsia',
+      pink: 'text-adaptive-pink',
+      rose: 'text-adaptive-rose',
     },
   },
   defaultVariants: {
@@ -190,37 +190,27 @@ export const panelIconVariants = cva(
   {
     variants: {
       color: {
-        brand: 'text-red-600 border-red-600',
-        primary: 'text-emerald-600 border-emerald-600',
-        emerald:
-          'text-emerald-700 dark:text-emerald-300 border-emerald-700 dark:border-emerald-300',
-        blue: 'text-blue-700 dark:text-blue-300 border-blue-700 dark:border-blue-300',
-        slate:
-          'text-slate-700 dark:text-slate-300 border-slate-700 dark:border-slate-300',
-        teal: 'text-teal-700 dark:text-teal-300 border-teal-700 dark:border-teal-300',
-        red: 'text-red-700 dark:text-red-300 border-red-700 dark:border-red-300',
-        cyan: 'text-cyan-700 dark:text-cyan-300 border-cyan-700 dark:border-cyan-300',
-        yellow:
-          'text-yellow-700 dark:text-yellow-300 border-yellow-700 dark:border-yellow-300',
-        green:
-          'text-green-700 dark:text-green-300 border-green-700 dark:border-green-300',
-        violet:
-          'text-violet-700 dark:text-violet-300 border-violet-700 dark:border-violet-300',
-        zinc: 'text-zinc-700 dark:text-zinc-300 border-zinc-700 dark:border-zinc-300',
-        orange:
-          'text-orange-700 dark:text-orange-300 border-orange-700 dark:border-orange-300',
-        amber:
-          'text-amber-700 dark:text-amber-300 border-amber-700 dark:border-amber-300',
-        lime: 'text-lime-700 dark:text-lime-300 border-lime-700 dark:border-lime-300',
-        sky: 'text-sky-700 dark:text-sky-300 border-sky-700 dark:border-sky-300',
-        indigo:
-          'text-indigo-700 dark:text-indigo-300 border-indigo-700 dark:border-indigo-300',
-        purple:
-          'text-purple-700 dark:text-purple-300 border-purple-700 dark:border-purple-300',
-        fuchsia:
-          'text-fuchsia-700 dark:text-fuchsia-300 border-fuchsia-700 dark:border-fuchsia-300',
-        pink: 'text-pink-700 dark:text-pink-300 border-pink-700 dark:border-pink-300',
-        rose: 'text-rose-700 dark:text-rose-300 border-rose-700 dark:border-rose-300',
+        brand: 'text-adaptive-brand border-adaptive-brand',
+        primary: 'text-adaptive-emerald border-adaptive-emerald',
+        emerald: 'text-adaptive-emerald border-adaptive-emerald',
+        blue: 'text-adaptive-blue border-adaptive-blue',
+        slate: 'text-adaptive-slate border-adaptive-slate',
+        teal: 'text-adaptive-teal border-adaptive-teal',
+        red: 'text-adaptive-red border-adaptive-red',
+        cyan: 'text-adaptive-cyan border-adaptive-cyan',
+        yellow: 'text-adaptive-yellow border-adaptive-yellow',
+        green: 'text-adaptive-green border-adaptive-green',
+        violet: 'text-adaptive-violet border-adaptive-violet',
+        zinc: 'text-adaptive-zinc border-adaptive-zinc',
+        orange: 'text-adaptive-orange border-adaptive-orange',
+        amber: 'text-adaptive-amber border-adaptive-amber',
+        lime: 'text-adaptive-lime border-adaptive-lime',
+        sky: 'text-adaptive-sky border-adaptive-sky',
+        indigo: 'text-adaptive-indigo border-adaptive-indigo',
+        purple: 'text-adaptive-purple border-adaptive-purple',
+        fuchsia: 'text-adaptive-fuchsia border-adaptive-fuchsia',
+        pink: 'text-adaptive-pink border-adaptive-pink',
+        rose: 'text-adaptive-rose border-adaptive-rose',
       },
     },
     defaultVariants: {
@@ -229,44 +219,34 @@ export const panelIconVariants = cva(
   }
 )
 
-// Panel children text color variants
+// Panel children text color variants - using semantic classes
 export const panelChildrenVariants = cva(
   // Base classes for children content
   [],
   {
     variants: {
       iconColor: {
-        brand: '[&_p]:!text-red-600 [&_strong]:!text-red-600',
-        primary: '[&_p]:!text-emerald-600 [&_strong]:!text-emerald-600',
-        emerald:
-          '[&_p]:!text-emerald-700 [&_p]:dark:!text-emerald-300 [&_strong]:!text-emerald-700 [&_strong]:dark:!text-emerald-300',
-        blue: '[&_p]:!text-blue-700 [&_p]:dark:!text-blue-300 [&_strong]:!text-blue-700 [&_strong]:dark:!text-blue-300',
-        slate:
-          '[&_p]:!text-slate-700 [&_p]:dark:!text-slate-300 [&_strong]:!text-slate-700 [&_strong]:dark:!text-slate-300',
-        teal: '[&_p]:!text-teal-700 [&_p]:dark:!text-teal-300 [&_strong]:!text-teal-700 [&_strong]:dark:!text-teal-300',
-        red: '[&_p]:!text-red-700 [&_p]:dark:!text-red-300 [&_strong]:!text-red-700 [&_strong]:dark:!text-red-300',
-        cyan: '[&_p]:!text-cyan-700 [&_p]:dark:!text-cyan-300 [&_strong]:!text-cyan-700 [&_strong]:dark:!text-cyan-300',
-        yellow:
-          '[&_p]:!text-yellow-700 [&_p]:dark:!text-yellow-300 [&_strong]:!text-yellow-700 [&_strong]:dark:!text-yellow-300',
-        green:
-          '[&_p]:!text-green-700 [&_p]:dark:!text-green-300 [&_strong]:!text-green-700 [&_strong]:dark:!text-green-300',
-        violet:
-          '[&_p]:!text-violet-700 [&_p]:dark:!text-violet-300 [&_strong]:!text-violet-700 [&_strong]:dark:!text-violet-300',
-        zinc: '[&_p]:!text-zinc-700 [&_p]:dark:!text-zinc-300 [&_strong]:!text-zinc-700 [&_strong]:dark:!text-zinc-300',
-        orange:
-          '[&_p]:!text-orange-700 [&_p]:dark:!text-orange-300 [&_strong]:!text-orange-700 [&_strong]:dark:!text-orange-300',
-        amber:
-          '[&_p]:!text-amber-700 [&_p]:dark:!text-amber-300 [&_strong]:!text-amber-700 [&_strong]:dark:!text-amber-300',
-        lime: '[&_p]:!text-lime-700 [&_p]:dark:!text-lime-300 [&_strong]:!text-lime-700 [&_strong]:dark:!text-lime-300',
-        sky: '[&_p]:!text-sky-700 [&_p]:dark:!text-sky-300 [&_strong]:!text-sky-700 [&_strong]:dark:!text-sky-300',
-        indigo:
-          '[&_p]:!text-indigo-700 [&_p]:dark:!text-indigo-300 [&_strong]:!text-indigo-700 [&_strong]:dark:!text-indigo-300',
-        purple:
-          '[&_p]:!text-purple-700 [&_p]:dark:!text-purple-300 [&_strong]:!text-purple-700 [&_strong]:dark:!text-purple-300',
-        fuchsia:
-          '[&_p]:!text-fuchsia-700 [&_p]:dark:!text-fuchsia-300 [&_strong]:!text-fuchsia-700 [&_strong]:dark:!text-fuchsia-300',
-        pink: '[&_p]:!text-pink-700 [&_p]:dark:!text-pink-300 [&_strong]:!text-pink-700 [&_strong]:dark:!text-pink-300',
-        rose: '[&_p]:!text-rose-700 [&_p]:dark:!text-rose-300 [&_strong]:!text-rose-700 [&_strong]:dark:!text-rose-300',
+        brand: '[&_p]:text-adaptive-brand [&_strong]:text-adaptive-brand',
+        primary: '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald',
+        emerald: '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald',
+        blue: '[&_p]:text-adaptive-blue [&_strong]:text-adaptive-blue',
+        slate: '[&_p]:text-adaptive-slate [&_strong]:text-adaptive-slate',
+        teal: '[&_p]:text-adaptive-teal [&_strong]:text-adaptive-teal',
+        red: '[&_p]:text-adaptive-red [&_strong]:text-adaptive-red',
+        cyan: '[&_p]:text-adaptive-cyan [&_strong]:text-adaptive-cyan',
+        yellow: '[&_p]:text-adaptive-yellow [&_strong]:text-adaptive-yellow',
+        green: '[&_p]:text-adaptive-green [&_strong]:text-adaptive-green',
+        violet: '[&_p]:text-adaptive-violet [&_strong]:text-adaptive-violet',
+        zinc: '[&_p]:text-adaptive-zinc [&_strong]:text-adaptive-zinc',
+        orange: '[&_p]:text-adaptive-orange [&_strong]:text-adaptive-orange',
+        amber: '[&_p]:text-adaptive-amber [&_strong]:text-adaptive-amber',
+        lime: '[&_p]:text-adaptive-lime [&_strong]:text-adaptive-lime',
+        sky: '[&_p]:text-adaptive-sky [&_strong]:text-adaptive-sky',
+        indigo: '[&_p]:text-adaptive-indigo [&_strong]:text-adaptive-indigo',
+        purple: '[&_p]:text-adaptive-purple [&_strong]:text-adaptive-purple',
+        fuchsia: '[&_p]:text-adaptive-fuchsia [&_strong]:text-adaptive-fuchsia',
+        pink: '[&_p]:text-adaptive-pink [&_strong]:text-adaptive-pink',
+        rose: '[&_p]:text-adaptive-rose [&_strong]:text-adaptive-rose',
       },
     },
     defaultVariants: {

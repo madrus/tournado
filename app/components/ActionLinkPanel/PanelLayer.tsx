@@ -1,6 +1,7 @@
 import { JSX, ReactNode } from 'react'
 
 import { Panel } from '~/components/Panel'
+import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -32,6 +33,8 @@ export function PanelLayer({
   className,
   'data-testid': testId,
 }: Readonly<PanelLayerProps>): JSX.Element {
+  const { currentLanguage } = useLanguageSwitcher()
+
   // Determine which color to use for the panel
   const effectiveColor = isHover && hoverColor ? hoverColor : mainColor
 
@@ -65,10 +68,13 @@ export function PanelLayer({
         iconColor={effectiveIconColor}
         childrenIconColor={effectiveChildrenIconColor}
         showGlow
-        className={cn(textAlign, getLatinTitleClass(title), className)}
+        isHover={isHover}
+        className={cn(textAlign, getLatinTitleClass(currentLanguage), className)}
         data-testid={testId}
       >
-        {children}
+        {children ? (
+          <div className={`action-panel-${effectiveChildrenIconColor}`}>{children}</div>
+        ) : null}
       </Panel>
     </div>
   )

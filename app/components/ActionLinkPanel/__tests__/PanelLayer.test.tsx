@@ -218,7 +218,7 @@ describe('PanelLayer Component', () => {
   describe('RTL Support', () => {
     it('should apply Latin title class for Arabic language', () => {
       // Mock Arabic language
-      vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
+      vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'ar',
         switchLanguage: vi.fn(),
       })
@@ -231,7 +231,7 @@ describe('PanelLayer Component', () => {
 
     it('should not apply Latin title class for English language', () => {
       // Mock English language (default)
-      vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
+      vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'en',
         switchLanguage: vi.fn(),
       })

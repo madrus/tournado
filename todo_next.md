@@ -169,7 +169,7 @@ Unify every “panel-like” UI element under **one generic `Panel` wrapper** (c
    - [x] Remove all `PanelOld as Panel` import statements
    - [x] Update remaining direct `PanelOld` references
 - [ ] **Clean up variant files:** Remove any duplicate or unused panel variant definitions
-- [ ] **Note:** Current `dark:` syntax in component variants is correct and should remain unchanged (Tailwind CSS v4 still uses `dark:` syntax)
+- [x] **Note:** Current `dark:` syntax in component variants is correct and should remain unchanged (Tailwind CSS v4 still uses `dark:` syntax)
 
 ### 6.5 RTL Support & Internationalization
 

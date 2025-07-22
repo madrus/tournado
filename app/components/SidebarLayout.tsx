@@ -2,6 +2,7 @@ import { type JSX, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router'
 
+import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
@@ -224,6 +225,8 @@ export function SidebarLayout({
 export function SidebarLayoutDemo(): JSX.Element {
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
 
+  const { currentLanguage } = useLanguageSwitcher()
+
   const demoSidebarContent = (
     <div className='flex flex-col gap-2 p-4'>
       {/* Demo list items */}
@@ -247,12 +250,19 @@ export function SidebarLayoutDemo(): JSX.Element {
 
   const demoMainContent = (
     <div className='max-w-2xl'>
-      <h1 className={cn('mb-4 text-3xl font-bold', getLatinTitleClass('en'))}>
+      <h1
+        className={cn('mb-4 text-3xl font-bold', getLatinTitleClass(currentLanguage))}
+      >
         Sidebar Layout Demo
       </h1>
 
       <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-        <h2 className={cn('mb-3 text-xl font-semibold', getLatinTitleClass('en'))}>
+        <h2
+          className={cn(
+            'mb-3 text-xl font-semibold',
+            getLatinTitleClass(currentLanguage)
+          )}
+        >
           Selected: {selectedItem || 'None'}
         </h2>
         <p className='text-foreground mb-4'>
@@ -270,7 +280,12 @@ export function SidebarLayoutDemo(): JSX.Element {
       </div>
 
       <div className='border-primary bg-accent mt-6 rounded-lg border p-4'>
-        <h3 className={cn('text-primary mb-2 font-semibold', getLatinTitleClass('en'))}>
+        <h3
+          className={cn(
+            'text-primary mb-2 font-semibold',
+            getLatinTitleClass(currentLanguage)
+          )}
+        >
           Usage Example:
         </h3>
         <pre className='text-foreground-darker overflow-x-auto text-sm'>

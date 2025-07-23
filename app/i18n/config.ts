@@ -6,6 +6,7 @@ import i18next, { i18n as I18nType } from 'i18next'
 // Import your translation files
 import ar from './locales/ar.json'
 import en from './locales/en.json'
+import fr from './locales/fr.json'
 import nl from './locales/nl.json'
 import tr from './locales/tr.json'
 
@@ -23,11 +24,15 @@ export const resources = {
   tr: {
     [defaultNS]: tr,
   },
+  fr: {
+    [defaultNS]: fr,
+  },
 } as const
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
   { code: 'ar', name: 'العربية', flag: '🇲🇦' },
   { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ] as const

@@ -71,7 +71,7 @@ model Team {
 
 - **Dynamic Options**: Categories populate based on tournament selection
 - **Validation**: Required field with client-side and server-side validation
-- **Internationalization**: Supports multiple languages (Dutch, English, Arabic, Turkish)
+- **Internationalization**: Supports multiple languages (Dutch, English, French, Arabic, Turkish)
 - **Responsive Design**: Consistent with existing form layout
 
 #### 2. Translation Updates
@@ -93,6 +93,7 @@ model Team {
 
 - English (`en.json`)
 - Dutch (`nl.json`)
+- French (`fr.json`)
 - Arabic (`ar.json`)
 - Turkish (`tr.json`)
 

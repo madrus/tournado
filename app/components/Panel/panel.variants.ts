@@ -105,6 +105,7 @@ export const panelTitleVariants = cva(['mb-4 font-bold text-title'], {
       en: '', // English LTR - no additional classes
       nl: '', // Dutch LTR - no additional classes
       tr: '', // Turkish LTR - no additional classes
+      fr: '', // French LTR - no additional classes
     },
   },
   defaultVariants: {

@@ -108,6 +108,7 @@ export type DivisionObject = {
     nl: string
     ar: string
     tr: string
+    fr: string
   }
   order: number
 }
@@ -126,6 +127,7 @@ export type CategoryObject = {
     nl: string
     ar: string
     tr: string
+    fr: string
   }
   order: number
   ageGroup?: {

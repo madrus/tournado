@@ -145,3 +145,17 @@ export const deleteTeamById = ({ id }: Pick<Team, 'id'>): Promise<Team> =>
   prisma.team.delete({
     where: { id },
   })
+
+export const getTeamLeader = async (
+  teamLeaderId: string
+): Promise<TeamWithLeaderFull['teamLeader'] | null> =>
+  prisma.teamLeader.findUnique({
+    where: { id: teamLeaderId },
+    select: {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      phone: true,
+    },
+  })

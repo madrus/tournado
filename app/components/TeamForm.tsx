@@ -1,4 +1,4 @@
-import { JSX, useCallback, useEffect, useRef } from 'react'
+import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
@@ -188,7 +188,7 @@ export function TeamForm({
   }, [availableTournaments, tournamentId, updateAvailableOptions])
 
   // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
     if (!isValid) {

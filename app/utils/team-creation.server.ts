@@ -6,6 +6,8 @@ import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamFormData } from '~/lib/lib.types'
 import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
+import { getTournamentById } from '~/models/tournament.server'
+import { sendConfirmationEmail } from '~/utils/email.server'
 import { validateEntireTeamForm } from '~/utils/form-validation'
 
 type TeamCreationSuccess = {
@@ -119,6 +121,30 @@ export async function createTeamFromFormData(
     teamLeaderId: teamLeader.id,
     tournamentId: teamData.tournamentId,
   })
+
+  // Get tournament details for email
+  const tournament = await getTournamentById({ id: teamData.tournamentId })
+
+  // Send confirmation email (don't block team creation if email fails)
+  if (tournament) {
+    try {
+      // eslint-disable-next-line no-console
+      console.log('About to send confirmation email for team:', team.name)
+      await sendConfirmationEmail(team, tournament)
+      // eslint-disable-next-line no-console
+      console.log('Confirmation email sent successfully for team:', team.name)
+    } catch (emailError) {
+      // Log the error but don't fail the team creation
+      // eslint-disable-next-line no-console
+      console.error('Failed to send confirmation email:', emailError)
+    }
+  } else {
+    // eslint-disable-next-line no-console
+    console.error(
+      'Tournament not found for email sending, tournament ID:',
+      teamData.tournamentId
+    )
+  }
 
   return {
     success: true,

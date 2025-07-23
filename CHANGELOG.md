@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/madrus/tournado/compare/v0.6.0...v0.7.0) (2025-07-23)
+
+### Features
+
+- add bounce animation to AppBar for enhanced visibility ([6f52f15](https://github.com/madrus/tournado/commit/6f52f158dda9e548d536cc11817e9952fab01cc8))
+- add comprehensive Product Requirements Document (PRD) and cursor rules ([f952db8](https://github.com/madrus/tournado/commit/f952db8b85927a4f141b804adf1981fb58820bfa))
+- add French language support and update internationalization ([858da0e](https://github.com/madrus/tournado/commit/858da0e61ec0a3b1e099592b5a9db672bd5c071d))
+- add stable background layer to ActionLinkPanel for improved visual consistency ([7e32867](https://github.com/madrus/tournado/commit/7e328677beca37b1f16a7961bffd4f13c6a9da45))
+- add TeamsLayoutHeader component for improved team page headers ([cf9bb55](https://github.com/madrus/tournado/commit/cf9bb552566e1c3a3fddb6c88e9d170725beb8fa))
+- add theme toggle functionality and localization support ([b24b7a3](https://github.com/madrus/tournado/commit/b24b7a33a3397fcf4e7cb032f4c4b8edb77021eb))
+- enhance AppBar and BottomNavigation animations for improved user experience ([5444b24](https://github.com/madrus/tournado/commit/5444b24f63f8c39f8e4abf6c7ffdf5de41cf8620))
+- enhance icon system with comprehensive guidelines and optimizations ([3a3eac5](https://github.com/madrus/tournado/commit/3a3eac5a24ac05fb85344ab71551e8b42d8d4621))
+- enhance internationalization support and validate language/theme settings ([d1eefac](https://github.com/madrus/tournado/commit/d1eefac11420e6244e8d9fb009b5bf9e8c2c3f70))
+- enhance layout and scrolling behavior in App component ([2983f3a](https://github.com/madrus/tournado/commit/2983f3a9ce45aa15b27948ae43b6f1cff329523d))
+- enhance Panel component with new features and integrate into TeamForm ([18a1454](https://github.com/madrus/tournado/commit/18a1454c211bc9a78d4a3ab18d853ea6f7e58a79))
+- implement ActionLinkPanel component with customizable styles and hover effects ([ef4f751](https://github.com/madrus/tournado/commit/ef4f7518f7fb110e071117b923f7b8ab2f33a8a7))
+- implement visual regression testing framework and enhance documentation ([821dcf8](https://github.com/madrus/tournado/commit/821dcf8861e402bf1b0b446c5598b5d7c005cef8))
+- improve AppBar behavior and layout with dynamic header visibility ([ec861cc](https://github.com/madrus/tournado/commit/ec861cca6200bc8b6458cbfaa236e7e0820bb60a))
+- introduce ActionLinkPanel component and update related styles ([f3e5c0c](https://github.com/madrus/tournado/commit/f3e5c0c24206c7a2a71e55be874906af1c85bd5c))
+- introduce AnimatedHamburgerIcon component and update UserMenu ([efe49fd](https://github.com/madrus/tournado/commit/efe49fdfdf15fa56bc37c719be910b89dd0ec84c))
+- introduce ErrorMessage component for consistent error handling across forms ([24b5521](https://github.com/madrus/tournado/commit/24b5521312154b6c65405a2cc9bde876f4b17f08))
+- introduce Panel component for consistent UI styling ([3854942](https://github.com/madrus/tournado/commit/3854942aa7e4db7533917d5b8595a57c38abffcc))
+- **settings:** implement centralized settings store for theme and language management ([bf841b9](https://github.com/madrus/tournado/commit/bf841b93c1aca090059a764e39305c93fd59edda))
+- **test:** disable prefetching during tests to improve CI performance ([3fed1ec](https://github.com/madrus/tournado/commit/3fed1ec8efc312871bbfa4ad7e3aababf13c041c))
+- **theme:** enhance theme management with cookie persistence and SSR support ([bd231e2](https://github.com/madrus/tournado/commit/bd231e221f8966b46c12f5221f3400d79e3be9ea))
+- **tournament:** add comprehensive tests for tournament form state management ([db97faa](https://github.com/madrus/tournado/commit/db97faa759bf918161b0499381b10e3f6fccb628))
+- update PRD for Tournado tournament management system with new features and enhancements ([ca1a3aa](https://github.com/madrus/tournado/commit/ca1a3aaec69bf4f034b2a7e662cc1cb2cb2aa3fd))
+- update Product Requirements Document (PRD) for Tournado tournament management system ([8e09200](https://github.com/madrus/tournado/commit/8e09200a420cc32b9712b2135038392cd971a915))
+
+### Bug Fixes
+
+- improve error handling in ComboField and CustomDatePicker components ([28e6452](https://github.com/madrus/tournado/commit/28e6452a36d852505c638b4d6fb852a2d72282c3))
+- **tests:** resolve form input issues in auth tests ([d8ae00c](https://github.com/madrus/tournado/commit/d8ae00ca25040b84d71afc9c7b24a9fb7dcb67d4))
+- update footer attribution link for improved accessibility ([512b643](https://github.com/madrus/tournado/commit/512b64325a6c389cee378529dcf051bc42419b68))
+- update initial header visibility state in useScrollDirection hook ([f08357b](https://github.com/madrus/tournado/commit/f08357b592e9b0d1819ef00d25d6cd022ad5be2d))
+
 ## [0.6.0](https://github.com/madrus/tournado/compare/v0.5.0...v0.6.0) (2025-06-24)
 
 ### Features

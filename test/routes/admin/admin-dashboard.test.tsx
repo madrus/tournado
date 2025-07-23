@@ -20,7 +20,7 @@ const mockUser: User = {
 
 // Mock teams data
 const mockTeams = [
-  { id: 'team-1', clubName: 'Club A', teamName: 'Team Alpha' },
+  { id: 'team-1', clubName: 'Club A', name: 'Team Alpha' },
   { id: 'team-2', clubName: 'Club B', teamName: 'Team Beta' },
   { id: 'team-3', clubName: 'Club C', teamName: 'Team Gamma' },
 ]

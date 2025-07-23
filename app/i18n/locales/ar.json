@@ -168,16 +168,17 @@
         "privacyAgreementRequired": "يجب الموافقة على سياسة الخصوصية",
         "teamLeaderNameRequired": "اسم قائد الفريق مطلوب",
         "teamLeaderNameTooLong": "يجب أن يكون الاسم أقل من 100 حرف",
-        "teamNameRequired": "اسم الفريق مطلوب",
-        "teamNameTooLong": "يجب أن يكون اسم الفريق أقل من 50 حرف",
-        "tournamentRequired": "البطولة مطلوبة"
+        "nameRequired": "اسم الفريق مطلوب",
+        "nameTooLong": "يجب أن يكون اسم الفريق أقل من 50 حرف",
+        "tournamentRequired": "البطولة مطلوبة",
+        "fieldRequired": "هذا الحقل مطلوب"
       },
       "placeholders": {
         "clubName": "أدخل اسم ناديك",
         "teamLeaderEmail": "أدخل عنوان البريد الإلكتروني",
         "teamLeaderName": "أدخل الاسم الكامل لقائد الفريق",
         "teamLeaderPhone": "أدخل رقم الهاتف",
-        "teamName": "أدخل اسم فريقك"
+        "name": "أدخل اسم فريقك"
       },
       "privacyAgreement": "أوافق على سياسة الخصوصية وشروط الخدمة",
       "privacyPolicy": "سياسة الخصوصية",
@@ -190,7 +191,7 @@
       "teamLeaderInfo": "قائد الفريق",
       "teamLeaderName": "اسم قائد الفريق",
       "teamLeaderPhone": "هاتف قائد الفريق",
-      "teamName": "اسم الفريق",
+      "name": "اسم الفريق",
       "tournament": "البطولة",
       "category": "الفئة",
       "selectCategory": "اختر فئة",

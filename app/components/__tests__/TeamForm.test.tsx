@@ -88,7 +88,7 @@ const PANEL1_FORMDATA: Partial<TeamFormData> = {
 const ALL_PANELS_FORMDATA: Partial<TeamFormData> = {
   tournamentId: 'tournament-1',
   clubName: 'Original Club',
-  teamName: 'Original Team',
+  name: 'Original Team',
   division: 'FIRST_DIVISION',
   category: 'JO8',
   teamLeaderName: 'Original Leader',
@@ -139,7 +139,7 @@ const renderTeamForm = (
     state().setFormData({
       tournamentId: formData.tournamentId || '',
       clubName: formData.clubName || '',
-      teamName: formData.teamName || '',
+      name: formData.name || '',
       division: formData.division || '',
       category: formData.category || '',
       teamLeaderName: formData.teamLeaderName || '',
@@ -202,7 +202,7 @@ describe('TeamForm Component - filling the form', () => {
         screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
       ).not.toBeInTheDocument()
       expect(
         screen.queryByText(
@@ -236,8 +236,8 @@ describe('TeamForm Component - filling the form', () => {
         const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
         expect(clubNameInput).toBeEnabled()
         await userEvent.click(clubNameInput)
-        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-        await userEvent.click(teamNameInput)
+        const nameInput = screen.getByLabelText(/teams\.form\.name/)
+        await userEvent.click(nameInput)
         await waitFor(() => {
           expect(
             screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
@@ -259,9 +259,9 @@ describe('TeamForm Component - filling the form', () => {
         const user = userEvent.setup()
         renderTeamForm('create', 'public', PANEL1_FORMDATA)
         const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        const nameInput = screen.getByLabelText(/teams\.form\.name/)
         await user.type(clubNameInput, 'Test Club')
-        await user.type(teamNameInput, 'Test Team')
+        await user.type(nameInput, 'Test Team')
         const emailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
         await user.click(emailInput)
         await user.type(emailInput, 'invalid-email')
@@ -310,9 +310,9 @@ describe('TeamForm Component - filling the form', () => {
         const user = userEvent.setup()
         renderTeamForm('create', 'public', PANEL1_FORMDATA)
         const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        const nameInput = screen.getByLabelText(/teams\.form\.name/)
         await user.type(clubNameInput, 'Test Club')
-        await user.type(teamNameInput, 'Test Team')
+        await user.type(nameInput, 'Test Team')
         const phoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)
         await user.click(phoneInput)
         await user.type(phoneInput, 'abc123')
@@ -324,17 +324,17 @@ describe('TeamForm Component - filling the form', () => {
         })
       })
 
-      it('should show error when team name exceeds length limit and field is blurred', async () => {
+      it('should show error when name exceeds length limit and field is blurred', async () => {
         const user = userEvent.setup()
         renderTeamForm('create', 'public', PANEL1_FORMDATA)
-        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-        const longTeamName = 'a'.repeat(51)
-        await user.click(teamNameInput)
-        await user.type(teamNameInput, longTeamName)
+        const nameInput = screen.getByLabelText(/teams\.form\.name/)
+        const longName = 'a'.repeat(51)
+        await user.click(nameInput)
+        await user.type(nameInput, longName)
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameTooLong'])
           ).toBeInTheDocument()
         })
       })
@@ -343,7 +343,7 @@ describe('TeamForm Component - filling the form', () => {
         const user = userEvent.setup()
         renderTeamForm('create', 'public', PANEL1_FORMDATA)
         const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-        const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+        const nameInput = screen.getByLabelText(/teams\.form\.name/)
         await user.click(clubNameInput)
         await userEvent.tab()
         await waitFor(() => {
@@ -351,16 +351,16 @@ describe('TeamForm Component - filling the form', () => {
             screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
           ).toBeInTheDocument()
         })
-        const longTeamName = 'a'.repeat(51)
-        await user.click(teamNameInput)
-        await user.type(teamNameInput, longTeamName)
+        const longName = 'a'.repeat(51)
+        await user.click(nameInput)
+        await user.type(nameInput, longName)
         await userEvent.tab()
         await waitFor(() => {
           expect(
             screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
           ).toBeInTheDocument()
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameTooLong'])
+            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameTooLong'])
           ).toBeInTheDocument()
         })
       })
@@ -372,7 +372,7 @@ describe('TeamForm Component - filling the form', () => {
       // Server errors for disabled fields should NOT be visible
       const serverErrors = {
         clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
-        teamName: TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'],
+        name: TEST_TRANSLATIONS['teams.form.errors.nameRequired'],
       }
 
       renderTeamForm('create', 'public', undefined, serverErrors)
@@ -382,14 +382,14 @@ describe('TeamForm Component - filling the form', () => {
         screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
       ).not.toBeInTheDocument()
     })
 
     it('should show server-side errors when fields become enabled and are interacted with', async () => {
       const serverErrors = {
         clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
-        teamName: TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'],
+        name: TEST_TRANSLATIONS['teams.form.errors.nameRequired'],
       }
 
       // Start with panel 1 filled so panel 2 is enabled
@@ -400,17 +400,17 @@ describe('TeamForm Component - filling the form', () => {
         screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
       ).not.toBeInTheDocument()
 
       // Interact with the fields (blur them) to trigger server error display
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
 
       await userEvent.click(clubNameInput)
       await userEvent.tab() // blur clubName
-      await userEvent.click(teamNameInput)
-      await userEvent.tab() // blur teamName
+      await userEvent.click(nameInput)
+      await userEvent.tab() // blur name
 
       // Now server errors should be visible for the blurred fields
       await waitFor(() => {
@@ -418,7 +418,7 @@ describe('TeamForm Component - filling the form', () => {
           screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
         ).toBeInTheDocument()
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.teamNameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
         ).toBeInTheDocument()
       })
     })
@@ -481,9 +481,9 @@ describe('TeamForm Component - filling the form', () => {
 
       // Step 4: Team information
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
       await user.type(clubNameInput, 'Test Club')
-      await user.type(teamNameInput, 'Test Team')
+      await user.type(nameInput, 'Test Team')
 
       // Button should still be disabled
       expect(submitButton).toBeDisabled()
@@ -607,8 +607,8 @@ describe('TeamForm Component - filling the form', () => {
       // STEP 3: Complete panel 2 to enable panel 3, then test email validation
       // Fill in required team info to enable panel 3
       await user.type(clubNameInput, 'Test Club')
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
-      await user.type(teamNameInput, 'Test Team')
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
+      await user.type(nameInput, 'Test Team')
 
       // Wait for panel 3 to be enabled
       await waitFor(() => {
@@ -705,9 +705,9 @@ describe('TeamForm Component - filling the form', () => {
 
       // STEP 2: Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
       await userEvent.type(clubNameInput, 'Test Club')
-      await userEvent.type(teamNameInput, 'Test Team')
+      await userEvent.type(nameInput, 'Test Team')
 
       // STEP 3: Fill panel 3 fields
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
@@ -827,7 +827,7 @@ describe('TeamForm Component - filling the form', () => {
       const formData: Partial<TeamFormData> = {
         tournamentId: 'tournament-1',
         clubName: 'Pre-filled Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         teamLeaderName: 'Jane Doe',
         teamLeaderPhone: '0698765432',
@@ -1059,9 +1059,9 @@ describe('TeamForm Reset Button Functionality', () => {
 
       // Fill panel 2 fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
       await user.type(clubNameInput, 'Test Club Name')
-      await user.type(teamNameInput, 'Test Team Name')
+      await user.type(nameInput, 'Test Team Name')
 
       // Fill panel 3 fields
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
@@ -1079,7 +1079,7 @@ describe('TeamForm Reset Button Functionality', () => {
 
       // Verify fields are filled
       expect(clubNameInput).toHaveValue('Test Club Name')
-      expect(teamNameInput).toHaveValue('Test Team Name')
+      expect(nameInput).toHaveValue('Test Team Name')
       expect(teamLeaderNameInput).toHaveValue('John Doe')
       expect(teamLeaderPhoneInput).toHaveValue('0612345678')
       expect(teamLeaderEmailInput).toHaveValue('john@example.com')
@@ -1180,20 +1180,20 @@ describe('TeamForm Reset Button Functionality', () => {
 
       // Modify the form fields using getByLabelText
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/i)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/i)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/i)
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/i)
 
       // Clear and type new values
       await userEvent.clear(clubNameInput)
       await userEvent.type(clubNameInput, 'Modified Club')
-      await userEvent.clear(teamNameInput)
-      await userEvent.type(teamNameInput, 'Modified Team')
+      await userEvent.clear(nameInput)
+      await userEvent.type(nameInput, 'Modified Team')
       await userEvent.clear(teamLeaderNameInput)
       await userEvent.type(teamLeaderNameInput, 'Modified Leader')
 
       // Verify fields are modified
       expect(clubNameInput).toHaveValue('Modified Club')
-      expect(teamNameInput).toHaveValue('Modified Team')
+      expect(nameInput).toHaveValue('Modified Team')
       expect(teamLeaderNameInput).toHaveValue('Modified Leader')
 
       // Click reset button and wait for state updates
@@ -1278,9 +1278,7 @@ describe('TeamForm Reset Button Functionality', () => {
         expect(screen.getByLabelText(/teams\.form\.clubName/)).toHaveValue(
           'Original Club'
         )
-        expect(screen.getByLabelText(/teams\.form\.teamName/)).toHaveValue(
-          'Original Team'
-        )
+        expect(screen.getByLabelText(/teams\.form\.name/)).toHaveValue('Original Team')
         expect(screen.getByLabelText(/teams\.form\.teamLeaderName/)).toHaveValue(
           'Original Leader'
         )
@@ -1294,15 +1292,15 @@ describe('TeamForm Reset Button Functionality', () => {
 
       // Modify multiple fields
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
       const teamLeaderEmailInput = screen.getByLabelText(/teams\.form\.teamLeaderEmail/)
 
       await user.click(clubNameInput)
       await user.keyboard('{Control>}a{/Control}')
       await user.type(clubNameInput, 'Completely Different Club')
-      await user.click(teamNameInput)
+      await user.click(nameInput)
       await user.keyboard('{Control>}a{/Control}')
-      await user.type(teamNameInput, 'Completely Different Team')
+      await user.type(nameInput, 'Completely Different Team')
       await user.click(teamLeaderEmailInput)
       await user.keyboard('{Control>}a{/Control}')
       await user.type(teamLeaderEmailInput, 'different@example.com')
@@ -1365,9 +1363,9 @@ describe('TeamForm Reset Button Functionality', () => {
       )
 
       const clubNameInput = screen.getByLabelText(/teams\.form\.clubName/)
-      const teamNameInput = screen.getByLabelText(/teams\.form\.teamName/)
+      const nameInput = screen.getByLabelText(/teams\.form\.name/)
       await user.type(clubNameInput, 'Test Club')
-      await user.type(teamNameInput, 'Test Team')
+      await user.type(nameInput, 'Test Team')
 
       const teamLeaderNameInput = screen.getByLabelText(/teams\.form\.teamLeaderName/)
       const teamLeaderPhoneInput = screen.getByLabelText(/teams\.form\.teamLeaderPhone/)

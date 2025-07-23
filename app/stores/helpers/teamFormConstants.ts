@@ -5,7 +5,7 @@ const initialFormFields: FormFields = {
   division: '',
   category: '',
   clubName: '',
-  teamName: '',
+  name: '',
   teamLeaderName: '',
   teamLeaderPhone: '',
   teamLeaderEmail: '',
@@ -38,7 +38,7 @@ export const initialStoreState: StoreState = {
 // Pure constant - no side effects
 export const TEAM_PANELS_FIELD_MAP = {
   1: ['tournamentId', 'division', 'category'],
-  2: ['clubName', 'teamName'],
+  2: ['clubName', 'name'],
   3: ['teamLeaderName', 'teamLeaderPhone', 'teamLeaderEmail'],
   4: ['privacyAgreement'],
 } as const

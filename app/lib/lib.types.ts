@@ -75,7 +75,7 @@ export type ColorAccent =
 
 // ============================================================================
 
-export type TeamListItem = Pick<PrismaTeam, 'id' | 'clubName' | 'teamName' | 'category'>
+export type TeamListItem = Pick<PrismaTeam, 'id' | 'name' | 'clubName' | 'category'>
 
 export type TournamentListItem = {
   id: string
@@ -164,20 +164,20 @@ export type TournamentData = {
 
 export type Team = {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  name: string
   tournamentId: string
   category: string
   division: string
   clubName: string
-  teamName: string
   teamLeaderId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type TeamFormData = {
   tournamentId: string
   clubName: string
-  teamName: string
+  name: string
   division: string
   category: string
   teamLeaderName: string
@@ -252,13 +252,13 @@ export type TeamCreateActionData = {
   success?: boolean
   team?: {
     id: string
-    teamName: string
+    name: string
     division: string
   }
   errors?: {
     tournamentId?: string
     clubName?: string
-    teamName?: string
+    name?: string
     division?: string
     category?: string
     teamLeaderName?: string
@@ -277,7 +277,7 @@ export type TeamCreateActionData = {
 export type TeamFormSchemaType = import('zod').ZodObject<{
   tournamentId: import('zod').ZodString
   clubName: import('zod').ZodString
-  teamName: import('zod').ZodString
+  name: import('zod').ZodString
   division: import('zod').ZodString
   category: import('zod').ZodString
   teamLeaderName: import('zod').ZodString
@@ -300,7 +300,7 @@ export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
 export type ExtractedTeamData = {
   tournamentId: string
   clubName: string
-  teamName: string
+  name: string
   division: string
   category: string
   teamLeaderName: string

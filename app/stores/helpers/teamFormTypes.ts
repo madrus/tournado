@@ -10,7 +10,7 @@ export type FormFields = {
   category: string
   // Team information
   clubName: string
-  teamName: string
+  name: string
   // Team leader information
   teamLeaderName: string
   teamLeaderPhone: string
@@ -28,7 +28,7 @@ export type FlexibleTeamFormData = {
   category?: string
   // Other fields (same names in both)
   clubName?: string
-  teamName?: string // More flexible than the strict TeamName type
+  name?: string // More flexible than the strict TeamName type
   teamLeaderName?: string
   teamLeaderPhone?: string
   teamLeaderEmail?: string // More flexible than the strict Email type

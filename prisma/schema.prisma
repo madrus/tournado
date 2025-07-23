@@ -62,13 +62,13 @@ enum Category {
 
 model User {
   id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
   firstName String
   lastName  String
   email     String    @unique
   password  Password?
   role      Role
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Password {
@@ -79,41 +79,41 @@ model Password {
 
 model TeamLeader { // contact person
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   firstName String
   lastName  String
   email     String   @unique
   phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   teams     Team[]
 }
 
 model Team {
   id            String     @id @default(cuid())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  name          String
   tournamentId  String
   tournament    Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   category      Category    // e.g., JO8, MO9, VETERANEN_35_PLUS
   division      Division
   clubName      String
-  teamName      String
   teamLeaderId  String
   teamLeader    TeamLeader @relation(fields: [teamLeaderId], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   homeMatches   Match[]    @relation("Match_homeTeam")
   awayMatches   Match[]    @relation("Match_awayTeam")
 }
 
 model Tournament {
   id         String     @id @default(cuid())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
   name       String
   location   String
   divisions  Json       // array of Division enum values as JSON (SQLite limitation)
   categories Json       // array of category strings (as JSON in SQLite)
   startDate  DateTime
   endDate    DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
   teams      Team[]
   matches    Match[]
 }

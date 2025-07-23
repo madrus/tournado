@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX, useMemo } from 'react'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -36,25 +36,25 @@ export const handle: RouteMetadata = {
 export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => [
   {
     title: loaderData?.team
-      ? `${loaderData.team.clubName} ${loaderData.team.teamName} | Admin | Tournado`
+      ? `${loaderData.team.clubName} ${loaderData.team.name} | Admin | Tournado`
       : 'Team | Admin | Tournado',
   },
   {
     name: 'description',
     content: loaderData?.team
-      ? `View and edit ${loaderData.team.clubName} ${loaderData.team.teamName} team details.`
+      ? `View and edit ${loaderData.team.clubName} ${loaderData.team.name} team details.`
       : 'View and edit team details in the admin panel.',
   },
   {
     property: 'og:title',
     content: loaderData?.team
-      ? `${loaderData.team.clubName} ${loaderData.team.teamName} | Admin | Tournado`
+      ? `${loaderData.team.clubName} ${loaderData.team.name} | Admin | Tournado`
       : 'Team | Admin | Tournado',
   },
   {
     property: 'og:description',
     content: loaderData?.team
-      ? `View and edit ${loaderData.team.clubName} ${loaderData.team.teamName} team details.`
+      ? `View and edit ${loaderData.team.clubName} ${loaderData.team.name} team details.`
       : 'View and edit team details in the admin panel.',
   },
   { property: 'og:type', content: 'website' },
@@ -63,8 +63,8 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => [
 type LoaderData = {
   team: {
     id: string
+    name: string
     clubName: string
-    teamName: string
     division: string
     category: string
     teamLeader: {
@@ -108,7 +108,7 @@ export const loader = async ({
     team: {
       id: team.id,
       clubName: team.clubName,
-      teamName: team.teamName,
+      name: team.name,
       division: team.division,
       category: team.category.toString(),
       teamLeader: {
@@ -143,7 +143,7 @@ export async function action({
   if (intent === 'update') {
     // Extract all form fields with proper typing
     const clubName = formData.get('clubName') as string | null
-    const teamName = formData.get('teamName') as string | null
+    const name = formData.get('name') as string | null
     const division = formData.get('division') as string | null
 
     const errors: TeamCreateActionData['errors'] = {}
@@ -153,8 +153,8 @@ export async function action({
       errors.clubName = 'clubNameRequired'
     }
 
-    if (!teamName || teamName.length === 0) {
-      errors.teamName = 'teamNameRequired'
+    if (!name || name.length === 0) {
+      errors.name = 'nameRequired'
     }
 
     if (!division || division.length === 0) {
@@ -177,7 +177,7 @@ export async function action({
       // eslint-disable-next-line id-blacklist
       data: {
         clubName: clubName as string,
-        teamName: teamName as string,
+        name: name as string,
         division: validDivision as Division,
       },
     })
@@ -199,23 +199,26 @@ export async function action({
 export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
+  const { setFormData, clearAllErrors } = useTeamFormStore()
 
-  // Prepare the initial team data for reset functionality
-  const initialTeamData = {
-    tournamentId: team.tournament.id,
-    clubName: team.clubName,
-    teamName: team.teamName as `${'J' | 'M' | 'JM'}O${number}-${number}`,
-    division: team.division,
-    category: team.category,
-    teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
-    teamLeaderPhone: team.teamLeader.phone,
-    teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
-    privacyAgreement: true, // Always true for existing teams
-  }
+  // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
+  const initialTeamData = useMemo(
+    () => ({
+      tournamentId: team.tournament.id,
+      clubName: team.clubName,
+      name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+      division: team.division,
+      category: team.category,
+      teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
+      teamLeaderPhone: team.teamLeader.phone,
+      teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+      privacyAgreement: true, // Always true for existing teams
+    }),
+    [team]
+  )
 
   const handleReset = () => {
-    // Reset the form to the original team data - get store reference inside handler
-    const { setFormData, clearAllErrors } = useTeamFormStore.getState()
+    // Reset the form to the original team data
     setFormData(initialTeamData)
     clearAllErrors()
   }

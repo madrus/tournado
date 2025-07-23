@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX, useMemo } from 'react'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -199,23 +199,26 @@ export async function action({
 export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
+  const { setFormData, clearAllErrors } = useTeamFormStore()
 
-  // Prepare the initial team data for reset functionality
-  const initialTeamData = {
-    tournamentId: team.tournament.id,
-    clubName: team.clubName,
-    name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
-    division: team.division,
-    category: team.category,
-    teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
-    teamLeaderPhone: team.teamLeader.phone,
-    teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
-    privacyAgreement: true, // Always true for existing teams
-  }
+  // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
+  const initialTeamData = useMemo(
+    () => ({
+      tournamentId: team.tournament.id,
+      clubName: team.clubName,
+      name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+      division: team.division,
+      category: team.category,
+      teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
+      teamLeaderPhone: team.teamLeader.phone,
+      teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+      privacyAgreement: true, // Always true for existing teams
+    }),
+    [team]
+  )
 
   const handleReset = () => {
-    // Reset the form to the original team data - get store reference inside handler
-    const { setFormData, clearAllErrors } = useTeamFormStore()
+    // Reset the form to the original team data
     setFormData(initialTeamData)
     clearAllErrors()
   }

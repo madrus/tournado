@@ -22,7 +22,7 @@ vi.mock('~/models/team.server', () => ({
 }))
 
 // Import the actual implementation and dependencies for testing
-const { sendConfirmationEmail } = await import('../email.server')
+const { sendConfirmationEmail, resetResendClient } = await import('../email.server')
 const { getTeamLeader } = await import('~/models/team.server')
 const { render } = await import('@react-email/render')
 const { Resend } = await import('resend')
@@ -65,6 +65,9 @@ describe('email.server', () => {
   beforeEach(() => {
     vi.clearAllMocks()
 
+    // Reset the Resend client to ensure fresh initialization in tests
+    resetResendClient()
+
     // Setup Resend mock
     mockEmailsSend.mockResolvedValue({ id: 'email-123' })
     mockResendInstance = {
@@ -77,6 +80,7 @@ describe('email.server', () => {
     vi.mocked(render).mockResolvedValue('<html>mocked email html</html>')
 
     // Setup environment variables
+    process.env.RESEND_API_KEY = 'test-api-key'
     process.env.EMAIL_FROM = 'test@example.com'
     process.env.NODE_ENV = 'test'
 
@@ -117,6 +121,15 @@ describe('email.server', () => {
 
       await expect(sendConfirmationEmail(mockTeam, mockTournament)).rejects.toThrow(
         'EMAIL_FROM environment variable is not set'
+      )
+    })
+
+    it('should throw error when RESEND_API_KEY not set', async () => {
+      resetResendClient() // Reset to clear any cached client
+      delete process.env.RESEND_API_KEY
+
+      await expect(sendConfirmationEmail(mockTeam, mockTournament)).rejects.toThrow(
+        'RESEND_API_KEY environment variable is not set'
       )
     })
 

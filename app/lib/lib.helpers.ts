@@ -30,14 +30,14 @@ export const isBrowser = typeof window !== 'undefined'
 /**
  * Gets the localized label for a division
  * @param division - The division enum value
- * @param language - The current language code (e.g., 'en', 'nl', 'ar', 'tr')
+ * @param language - The current language code (e.g., 'en', 'nl', 'ar', 'tr', 'fr')
  * @param fallbackLanguage - Fallback language if the requested language is not available
  * @returns The localized division label
  */
 export const getDivisionLabel = (
   division: Division,
-  language = 'en',
-  fallbackLanguage = 'en'
+  language = 'nl',
+  fallbackLanguage = 'nl'
 ): string => {
   const divisionObject = DIVISIONS[division as keyof typeof DIVISIONS]
 
@@ -92,7 +92,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
 
 export const getDivisionLabelByValue = (
   value: Division,
-  locale: 'en' | 'nl' | 'ar' | 'tr'
+  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
 ): string => {
   const division = getDivisionByValue(value)
   return division ? division.labels[locale] : value
@@ -125,12 +125,12 @@ export const getCategoryByValue = (value: string): CategoryObject | undefined =>
 /**
  * Gets the localized label for a category by its value
  * @param value - The category value (e.g., 'JO8', 'VETERANEN_35_PLUS')
- * @param locale - The current language code (e.g., 'en', 'nl', 'ar', 'tr')
+ * @param locale - The current language code (e.g., 'en', 'nl', 'ar', 'tr', 'fr')
  * @returns The localized category label
  */
 export const getCategoryLabelByValue = (
   value: Category,
-  locale: 'en' | 'nl' | 'ar' | 'tr'
+  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
 ): string => {
   const category = getCategoryByValue(value)
   return category ? category.labels[locale] : value

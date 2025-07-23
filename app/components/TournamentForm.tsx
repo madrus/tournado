@@ -398,7 +398,7 @@ export function TournamentForm({
                 value={division}
                 label={getDivisionLabelByValue(
                   division as Division,
-                  i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                  i18n.language as 'en' | 'nl' | 'ar' | 'tr' | 'fr'
                 )}
                 selected={selectedDivisions.includes(division)}
                 disabled={
@@ -441,7 +441,7 @@ export function TournamentForm({
                 value={category}
                 label={getCategoryLabelByValue(
                   category as Category,
-                  i18n.language as 'en' | 'nl' | 'ar' | 'tr'
+                  i18n.language as 'en' | 'nl' | 'fr' | 'ar' | 'tr'
                 )}
                 selected={selectedCategories.includes(category)}
                 disabled={

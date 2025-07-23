@@ -57,18 +57,26 @@ describe('lib.helpers', () => {
     })
 
     it.each([
-      [TestDivision.PREMIER_DIVISION, 'fr', 'Premier Division'],
-      [TestDivision.FIRST_DIVISION, 'de', 'First Division'],
+      [TestDivision.PREMIER_DIVISION, 'fr', 'Division Première'],
+      [TestDivision.FIRST_DIVISION, 'fr', 'Première Division'],
+      [TestDivision.SECOND_DIVISION, 'fr', 'Deuxième Division'],
+    ])('should return correct French label for %s', (division, language, expected) => {
+      expect(getDivisionLabel(division as Division, language)).toBe(expected)
+    })
+
+    it.each([
+      [TestDivision.PREMIER_DIVISION, 'de', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'es', 'Eerste klasse'],
     ])(
-      'should fallback to English when language %s not available for %s',
+      'should fallback to Dutch when language %s not available for %s',
       (division, language, expected) => {
         expect(getDivisionLabel(division as Division, language)).toBe(expected)
       }
     )
 
     it.each([
-      [TestDivision.PREMIER_DIVISION, 'fr', 'nl', 'Hoofdklasse'],
-      [TestDivision.FIRST_DIVISION, 'de', 'nl', 'Eerste klasse'],
+      [TestDivision.PREMIER_DIVISION, 'de', 'nl', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'es', 'nl', 'Eerste klasse'],
     ])(
       'should fallback to custom fallback language for %s',
       (division, language, fallback, expected) => {
@@ -85,12 +93,12 @@ describe('lib.helpers', () => {
           TestDivision.PREMIER_DIVISION as Division,
           'invalid_lang' as never
         )
-      ).toBe('Premier Division')
+      ).toBe('Hoofdklasse')
     })
 
-    it('should use English as default language', () => {
+    it('should use Dutch as default language', () => {
       expect(getDivisionLabel(TestDivision.PREMIER_DIVISION as Division)).toBe(
-        'Premier Division'
+        'Hoofdklasse'
       )
     })
   })

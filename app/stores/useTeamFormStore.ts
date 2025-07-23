@@ -376,7 +376,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             const {
               tournamentId,
               clubName,
-              teamName,
+              name,
               division,
               category,
               teamLeaderName,
@@ -388,7 +388,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
             return {
               tournamentId,
               clubName,
-              teamName: teamName as TeamFormData['teamName'],
+              name: name as TeamFormData['name'],
               division: division as TeamFormData['division'],
               category,
               teamLeaderName,
@@ -649,7 +649,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
                     division: state.formFields.division,
                     category: state.formFields.category,
                     clubName: state.formFields.clubName,
-                    teamName: state.formFields.teamName,
+                    name: state.formFields.name,
                     teamLeaderName: state.formFields.teamLeaderName,
                     teamLeaderPhone: state.formFields.teamLeaderPhone,
                     teamLeaderEmail: state.formFields.teamLeaderEmail,
@@ -679,7 +679,6 @@ export const useTeamFormStoreHydration = (): void => {
     }
   }, [])
 }
-
 export const subscribeToBlurredFields = (
   handler: (blurredFields: Record<string, boolean>) => void
 ): (() => void) =>

@@ -22,8 +22,8 @@ import type { Route } from './+types/teams.$teamId'
 type LoaderData = {
   team: {
     id: string
+    name: string
     clubName: string
-    teamName: string
     division: Division
   }
 }
@@ -49,18 +49,18 @@ export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
   const divisionLabel = getDivisionLabel(teamData.team.division, 'en')
 
   return [
-    { title: `${teamData.team.clubName} ${teamData.team.teamName} | Tournado` },
+    { title: `${teamData.team.clubName} ${teamData.team.name} | Tournado` },
     {
       name: 'description',
-      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.teamName} in the ${divisionLabel} class.`,
+      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.name} in the ${divisionLabel} class.`,
     },
     {
       property: 'og:title',
-      content: `${teamData.team.clubName} ${teamData.team.teamName} | Tournado`,
+      content: `${teamData.team.clubName} ${teamData.team.name} | Tournado`,
     },
     {
       property: 'og:description',
-      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.teamName} in the ${divisionLabel} class.`,
+      content: `View games and schedule for ${teamData.team.clubName} ${teamData.team.name} in the ${divisionLabel} class.`,
     },
     { property: 'og:type', content: 'website' },
   ]
@@ -90,7 +90,7 @@ export default function TeamDetailsPage(): JSX.Element {
         {/* Header */}
         <div className='mb-8'>
           <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            {`${team.clubName} ${team.teamName}`}
+            {`${team.clubName} ${team.name}`}
           </h1>
           <p className='mt-2 text-lg'>
             {getDivisionLabel(team.division, i18n.language)}
@@ -214,7 +214,7 @@ export default function TeamDetailsPage(): JSX.Element {
                       Team
                     </dt>
                     <dd className={`text-sm ${getLatinTextClass(i18n.language)}`}>
-                      {team.teamName}
+                      {team.name}
                     </dd>
                   </div>
                   <div>

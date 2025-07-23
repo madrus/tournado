@@ -222,7 +222,7 @@ export const isValidCategory = (value: string | null): value is Category =>
  * 3. Team name (alphabetical)
  */
 export const sortTeams = <
-  T extends { clubName: string; teamName: string; category?: string },
+  T extends { name: string; clubName: string; category?: string },
 >(
   teams: T[]
 ): T[] =>
@@ -242,7 +242,7 @@ export const sortTeams = <
     }
 
     // Finally sort by team name
-    return a.teamName.localeCompare(b.teamName)
+    return a.name.localeCompare(b.name)
   })
 
 /**

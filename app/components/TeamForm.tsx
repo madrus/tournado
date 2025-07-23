@@ -58,7 +58,7 @@ export function TeamForm({
       division,
       category,
       clubName,
-      teamName,
+      name,
       teamLeaderName,
       teamLeaderPhone,
       teamLeaderEmail,
@@ -150,7 +150,7 @@ export function TeamForm({
     if (formMode === 'create') {
       // Clear team-specific fields for new team creation
       setFormField('clubName', '')
-      setFormField('teamName', '')
+      setFormField('name', '')
       setFormField('privacyAgreement', false)
     }
   }, [formMode, setFormField])
@@ -164,7 +164,7 @@ export function TeamForm({
         setFormData({
           tournamentId: formData.tournamentId || '',
           clubName: formData.clubName || '',
-          teamName: formData.teamName || '',
+          name: formData.name || '',
           division: formData.division || '',
           category: formData.category || '',
           teamLeaderName: formData.teamLeaderName || '',
@@ -225,8 +225,8 @@ export function TeamForm({
               <h2
                 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
               >
-                {clubName && teamName
-                  ? `${clubName} ${teamName}`
+                {clubName && name
+                  ? `${clubName} ${name}`
                   : t('teams.form.teamRegistration')}
               </h2>
               <p className='text-foreground mt-2'>
@@ -445,13 +445,13 @@ export function TeamForm({
             {/* Team Name */}
             <div className='relative'>
               <TextInputField
-                name='teamName'
-                label={t('teams.form.teamName')}
-                value={teamName || ''}
-                onChange={value => setFormField('teamName', value)}
-                placeholder={t('teams.form.placeholders.teamName')}
+                name='name'
+                label={t('teams.form.name')}
+                value={name || ''}
+                onChange={value => setFormField('name', value)}
+                placeholder={t('teams.form.placeholders.name')}
                 error={getTranslatedError(
-                  'teamName',
+                  'name',
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
                 )}
                 required
@@ -460,12 +460,12 @@ export function TeamForm({
                 }
                 className={getLatinTextClass(i18n.language)}
                 color={PANEL_COLORS.step2}
-                onBlur={() => validateFieldOnBlur('teamName')}
+                onBlur={() => validateFieldOnBlur('name')}
               />
               <FieldStatusIcon
                 status={getFieldStatus(
-                  'teamName',
-                  teamName || '',
+                  'name',
+                  name || '',
                   formMode === 'create' && !isPanelEnabled(2)
                 )}
               />

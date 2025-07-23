@@ -25,8 +25,8 @@ type LoaderData = {
   user: User
   teams: Array<{
     id: string
+    name: string
     clubName: string
-    teamName: string
   }>
   tournaments: Array<{
     id: string

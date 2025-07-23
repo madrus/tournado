@@ -46,20 +46,20 @@ describe('teams.server', () => {
     const mockTeamListItems: TeamListItem[] = [
       {
         id: 'team-1',
+        name: 'Team A',
         clubName: 'Ajax',
-        teamName: 'Team A',
         category: 'JO8',
       },
       {
         id: 'team-2',
+        name: 'Team B',
         clubName: 'Feyenoord',
-        teamName: 'Team B',
         category: 'JO10',
       },
       {
         id: 'team-3',
+        name: 'Team C',
         clubName: 'PSV',
-        teamName: 'Team C',
         category: 'MO8',
       },
     ]

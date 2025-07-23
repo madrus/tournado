@@ -21,7 +21,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 **Foundation Layer**
 
 - [x] **Authentication System**: Cookie-based authentication with 5 user roles defined in schema (ADMIN, TOURNAMENT_MANAGER, REFEREE_COORDINATOR, REFEREE, PUBLIC)
-- [x] **Multi-language Support**: Dutch, English, Arabic, Turkish with RTL support
+- [x] **Multi-language Support**: Dutch, English, French, Arabic, Turkish with RTL support for Arabic
 - [x] **Mobile-First PWA**: Responsive design with offline capabilities, service worker, installable
 - [x] **Database Schema**: Complete data model for tournaments, teams, matches, and scoring
 
@@ -339,7 +339,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 - [x] **Mobile-First**: Responsive design with touch-optimized interfaces
 - [x] **Progressive Web App**: Offline capabilities and home screen installation
-- [x] **Multi-language**: Support for 4+ languages with RTL support
+- [x] **Multi-language**: Support for 5+ languages with RTL support for Arabic
 - [x] **Cross-browser**: Support for modern browsers (Chrome, Firefox, Safari, Edge)
 
 ### Data Requirements

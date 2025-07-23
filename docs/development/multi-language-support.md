@@ -24,21 +24,23 @@ For more details on how this works in practice, see the loader and page componen
 
 ## 1. Supported Languages & Core Setup
 
-We currently support four languages:
+We currently support five languages:
 
 - Dutch (`nl`) - Default language
 - English (`en`)
+- French (`fr`)
 - Arabic (`ar`) - RTL support with Amiri font
 - Turkish (`tr`)
 
 ### Language Constants
 
-Supported languages are defined in `app/lib/lib.constants.ts`:
+Supported languages are defined in `app/i18n/config.ts`:
 
 ```ts
 export const SUPPORTED_LANGUAGES = [
    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
    { code: 'en', name: 'English', flag: '🇬🇧' },
+   { code: 'fr', name: 'Français', flag: '🇫🇷' },
    { code: 'ar', name: 'العربية', flag: '🇲🇦' },
    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ] as const
@@ -51,6 +53,7 @@ Each language has its own JSON file in `app/i18n/locales/`:
 ```text
 app/i18n/locales/en.json
 app/i18n/locales/nl.json
+app/i18n/locales/fr.json
 app/i18n/locales/ar.json
 app/i18n/locales/tr.json
 ```
@@ -85,12 +88,14 @@ import i18n from 'i18next'
 
 import ar from './locales/ar.json'
 import en from './locales/en.json'
+import fr from './locales/fr.json'
 import nl from './locales/nl.json'
 import tr from './locales/tr.json'
 
 export const resources = {
    en: { translation: en },
    nl: { translation: nl },
+   fr: { translation: fr },
    ar: { translation: ar },
    tr: { translation: tr },
 }
@@ -230,6 +235,7 @@ The system uses a **minority marking** approach:
 
 - **Arabic mode**: Default to Amiri font, mark Latin content with `.latin-content`
 - **Latin modes**: Default to Inter font, no special marking needed
+- **French is LTR and uses the Latin font**
 
 Latin content is marked in key areas:
 
@@ -374,7 +380,7 @@ Language switching was consolidated into the UserMenu for several reasons:
 
 ## Summary
 
-- Four languages are supported with separate JSON files and constants
+- Five languages are supported with separate JSON files and constants
 - Language switching uses a custom hook with reactive persistence
 - Font management automatically handles Arabic (Amiri) and Latin (Inter) scripts
 - Mobile-first design consolidates language switching into UserMenu

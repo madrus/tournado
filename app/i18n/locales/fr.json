@@ -1,0 +1,258 @@
+{
+  "admin": {
+    "teams": {
+      "allTeams": "Toutes les équipes",
+      "allTeamsDescription": "Gérer toutes les équipes du système. Cliquez sur une équipe pour modifier les détails ou la supprimer.",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action ne peut pas être annulée.",
+      "createTeam": "Créer une équipe",
+      "createTeamDescription": "Ajouter une nouvelle équipe au système avec tous les détails nécessaires.",
+      "newTeam": "Nouvelle équipe",
+      "createNewTeamDescription": "Créer une nouvelle équipe avec les détails du tournoi et les informations de contact.",
+      "description": "Gérer toutes les équipes pour tous les tournois. Voir, modifier ou supprimer les informations d'équipe.",
+      "editTeam": "Modifier l'équipe",
+      "saveChanges": "Enregistrer les modifications",
+      "teamNotFound": "Équipe non trouvée",
+      "teamNotFoundDescription": "L'équipe que vous recherchez n'a pas pu être trouvée ou a peut-être été supprimée.",
+      "title": "Gestion des équipes",
+      "totalTeams": "Nombre total d'équipes"
+    },
+    "tournaments": {
+      "totalTournaments": "Nombre total de tournois",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action ne peut pas être annulée.",
+      "title": "Gestion des tournois",
+      "description": "Gérer tous les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
+      "allTournaments": "Tous les tournois",
+      "allTournamentsDescription": "Voir et gérer tous les tournois du système"
+    }
+  },
+  "auth": {
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "createAccount": "Créer un compte",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "emailAddress": "Adresse e-mail",
+    "errors": {
+      "emailExists": "Un utilisateur existe déjà avec cette adresse e-mail",
+      "emailInvalid": "L'adresse e-mail est invalide",
+      "emailRequired": "L'adresse e-mail est obligatoire",
+      "forbidden": "Vous n'avez pas l'autorisation d'accéder à cette page",
+      "forbiddenTitle": "Accès refusé",
+      "invalidCredentials": "Adresse e-mail ou mot de passe invalide",
+      "notFound": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL ou naviguer en utilisant le lien ci-dessous.",
+      "passwordRequired": "Le mot de passe est obligatoire",
+      "passwordTooShort": "Le mot de passe est trop court",
+      "serverError": "Erreur serveur, veuillez réessayer plus tard",
+      "title": "Erreur d'authentification",
+      "unauthorized": "Vous devez vous connecter pour voir cette page",
+      "unauthorizedTitle": "Connexion requise",
+      "unexpectedError": "Une erreur inattendue s'est produite",
+      "unknownError": "Erreur inconnue"
+    },
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "notSignedIn": "Non connecté",
+    "password": "Mot de passe",
+    "pleaseSignIn": "Veuillez vous connecter avec votre nouveau compte",
+    "registrationSuccess": "Compte créé avec succès",
+    "rememberMe": "Se souvenir de moi",
+    "signInRequiredToCreateTeam": "Vous devez vous connecter pour créer une équipe.",
+    "signin": "Se connecter",
+    "signout": "Se déconnecter",
+    "signup": "S'inscrire",
+    "viewTeams": "Voir les équipes",
+    "viewTeamsFor": "Voir les équipes pour"
+  },
+  "common": {
+    "actions": {
+      "add": "Ajouter",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "update": "Mettre à jour",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "reset": "Réinitialiser"
+    },
+    "appName": "Tournado",
+    "backToHome": "Retour à l'accueil",
+    "error": "Erreur",
+    "guest": "Invité",
+    "language": "Langue",
+    "loading": "Chargement...",
+    "signedInAs": "Connecté en tant que",
+    "toggleMenu": "Basculer le menu",
+    "toggleTheme": "Changer de thème",
+    "lightMode": "Mode clair",
+    "darkMode": "Mode sombre",
+    "titles": {
+      "about": "À propos",
+      "addTeam": "Ajouter une équipe",
+      "adminPanel": "Panneau d'administration",
+      "more": "Plus",
+      "profile": "Profil",
+      "settings": "Paramètres",
+      "signIn": "Se connecter",
+      "signUp": "S'inscrire",
+      "teams": "Équipes",
+      "tournaments": "Tournois",
+      "welcome": "Bienvenue"
+    },
+    "unknownError": "Une erreur inconnue s'est produite",
+    "welcome": "Bienvenue"
+  },
+  "errors": {
+    "errorTitle": "Erreur d'application",
+    "notFoundTitle": "Page non trouvée"
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado fournit tous les outils dont vous avez besoin pour gérer efficacement vos tournois sportifs. De l'inscription des équipes à la planification des matchs, nous vous couvrons.",
+      "subtitle": "Tout ce dont vous avez besoin pour gérer vos tournois",
+      "title": "Gestion de tournois simplifiée"
+    },
+    "hero": {
+      "description": "Gérez facilement vos tournois sportifs. Créez, organisez et suivez vos équipes et matchs en un seul endroit.",
+      "signup": "S'inscrire gratuitement",
+      "viewTeams": "Voir les équipes"
+    }
+  },
+  "pwa": {
+    "install": {
+      "android": {
+        "chrome": "Appuyez sur le menu (⋮) et sélectionnez \"Installer l'application\"",
+        "firefox": "Appuyez sur le menu (⋮) et sélectionnez \"Installer\"",
+        "samsung": "Appuyez sur le menu (⋮) et sélectionnez \"Ajouter la page à\" puis \"Écran d'accueil\"",
+        "title": "Installer cette application sur votre appareil"
+      },
+      "ios": {
+        "chrome": "Appuyez sur le bouton de partage puis sur \"Ajouter à l'écran d'accueil\"",
+        "firefox": "Appuyez sur le menu hamburger, puis sur \"Partager\" et \"Ajouter à l'écran d'accueil\"",
+        "safari": "Appuyez sur le bouton de partage puis sur \"Ajouter à l'écran d'accueil\"",
+        "title": "Installer cette application sur votre iPhone"
+      },
+      "other": {
+        "instruction": "Ouvrez le menu du navigateur et sélectionnez \"Ajouter à l'écran d'accueil\"",
+        "title": "Installer cette application sur votre appareil"
+      }
+    },
+    "update": {
+      "button": "Mettre à jour",
+      "instruction": "Actualisez pour mettre à jour l'application",
+      "title": "Une nouvelle version est disponible"
+    }
+  },
+  "teams": {
+    "count": "{{count}} équipe inscrite",
+    "count_other": "{{count}} équipes inscrites",
+    "createNewTeam": "Créer une nouvelle équipe",
+    "deleteTeam": "Supprimer l'équipe",
+    "description": "Inscrivez votre/vos équipe(s) pour un ou plusieurs tournois",
+    "filterByTournament": "Filtrer par tournoi",
+    "allTournaments": "Tous les tournois",
+    "errors": {
+      "notFound": "Équipe non trouvée",
+      "unexpectedError": "Une erreur inattendue s'est produite :",
+      "unknownError": "Erreur inconnue"
+    },
+    "form": {
+      "clubName": "Nom du club",
+      "createAnotherTeam": "Inscrire une autre équipe",
+      "division": "Division",
+      "errors": {
+        "clubNameRequired": "Le nom du club est obligatoire",
+        "clubNameTooLong": "Le nom du club doit contenir moins de 100 caractères",
+        "divisionRequired": "La division est obligatoire",
+        "categoryRequired": "La catégorie est obligatoire",
+        "emailInvalid": "Veuillez entrer une adresse e-mail valide",
+        "emailRequired": "L'adresse e-mail est obligatoire",
+        "phoneNumberInvalid": "Veuillez entrer un numéro de téléphone valide",
+        "phoneNumberRequired": "Le numéro de téléphone est obligatoire",
+        "privacyAgreementRequired": "Vous devez accepter la politique de confidentialité",
+        "teamLeaderNameRequired": "Le nom du responsable d'équipe est obligatoire",
+        "teamLeaderNameTooLong": "Le nom doit contenir moins de 100 caractères",
+        "teamNameRequired": "Le nom de l'équipe est obligatoire",
+        "teamNameTooLong": "Le nom de l'équipe doit contenir moins de 50 caractères",
+        "tournamentRequired": "Le tournoi est obligatoire"
+      },
+      "placeholders": {
+        "clubName": "Entrez le nom de votre club",
+        "teamLeaderEmail": "Entrez l'adresse e-mail",
+        "teamLeaderName": "Entrez le nom complet du responsable d'équipe",
+        "teamLeaderPhone": "Entrez le numéro de téléphone",
+        "teamName": "Entrez le nom de votre équipe"
+      },
+      "privacyAgreement": "J'accepte la politique de confidentialité et les conditions de service",
+      "privacyPolicy": "Politique de confidentialité",
+      "agreeToPrivacyPolicy": "J'accepte la politique de confidentialité",
+      "readAndAccept": "Veuillez lire et accepter la politique de confidentialité pour continuer",
+      "selectDivision": "Sélectionnez une division",
+      "selectTournament": "Sélectionnez un tournoi",
+      "teamInfo": "Équipe",
+      "teamLeaderEmail": "E-mail du responsable d'équipe",
+      "teamLeaderInfo": "Responsable d'équipe",
+      "teamLeaderName": "Nom du responsable d'équipe",
+      "teamLeaderPhone": "Téléphone du responsable d'équipe",
+      "teamName": "Nom de l'équipe",
+      "tournament": "Tournoi",
+      "category": "Catégorie",
+      "selectCategory": "Sélectionnez une catégorie",
+      "teamRegistration": "Inscription d'équipe",
+      "fillOutForm": "Remplissez le formulaire ci-dessous pour inscrire votre équipe",
+      "selectTournamentDetails": "Sélectionnez les détails du tournoi",
+      "completeAllThreeFields": "Veuillez compléter les trois champs ci-dessous pour continuer",
+      "enterTeamDetails": "Entrez les informations de votre équipe",
+      "enterContactDetails": "Entrez les coordonnées du responsable d'équipe"
+    },
+    "getStarted": {
+      "description": "Prêt à rejoindre un tournoi ? Cliquez sur le bouton 'Ajouter' ci-dessus pour inscrire votre équipe et commencer à jouer !",
+      "title": "Commencer l'inscription d'équipe"
+    },
+    "noTeamSelected": "Aucune équipe sélectionnée. Sélectionnez une équipe à gauche, ou",
+    "noTeams": "Aucune équipe n'a encore été inscrite. Soyez le premier à inscrire votre équipe pour les tournois à venir !",
+    "title": "Équipes"
+  },
+  "tournaments": {
+    "deleteTournament": "Supprimer le tournoi",
+    "title": "Tournois",
+    "name": "Nom",
+    "location": "Lieu",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "noTournaments": "Aucun tournoi",
+    "noTournamentsDescription": "Aucun tournoi n'a encore été créé. Créez votre premier tournoi pour commencer !",
+    "form": {
+      "name": "Nom du tournoi",
+      "location": "Lieu",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "basicInformation": "Informations de base",
+      "enterBasicDetails": "Entrez le nom du tournoi et le lieu",
+      "dates": "Dates du tournoi",
+      "selectDates": "Sélectionnez les dates de début et de fin du tournoi",
+      "divisions": "Divisions",
+      "selectDivisions": "Sélectionnez les divisions qui participeront",
+      "categories": "Catégories",
+      "selectCategories": "Sélectionnez les catégories d'âge qui participeront",
+      "selected": "sélectionné",
+      "tournamentRegistration": "Inscription au tournoi",
+      "fillOutForm": "Remplissez le formulaire ci-dessous pour créer un nouveau tournoi",
+      "errors": {
+        "nameRequired": "Le nom du tournoi est obligatoire",
+        "nameTooLong": "Le nom du tournoi doit contenir moins de 100 caractères",
+        "locationRequired": "Le lieu est obligatoire",
+        "locationTooLong": "Le lieu doit contenir moins de 100 caractères",
+        "startDateRequired": "La date de début est obligatoire",
+        "endDateRequired": "La date de fin est obligatoire",
+        "divisionsRequired": "Au moins une division est obligatoire",
+        "categoriesRequired": "Au moins une catégorie est obligatoire",
+        "fieldRequired": "Ce champ est obligatoire"
+      }
+    }
+  },
+  "divisions": {
+    "PREMIER_DIVISION": "Division Première",
+    "FIRST_DIVISION": "Première Division",
+    "SECOND_DIVISION": "Deuxième Division",
+    "THIRD_DIVISION": "Troisième Division",
+    "FOURTH_DIVISION": "Quatrième Division",
+    "FIFTH_DIVISION": "Cinquième Division"
+  }
+}

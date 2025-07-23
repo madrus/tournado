@@ -286,7 +286,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   // Initialize theme store with server-side values
   useEffect(() => {
     setTheme(serverTheme)
-    setLanguage(serverLanguage as 'nl' | 'en' | 'ar' | 'tr')
+    setLanguage(serverLanguage as 'nl' | 'en' | 'fr' | 'ar' | 'tr')
   }, [serverTheme, serverLanguage, setTheme, setLanguage])
 
   // Initialize tournaments in the store

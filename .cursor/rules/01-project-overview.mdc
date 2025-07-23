@@ -1,14 +1,9 @@
----
-description: Project overview and architecture guide for Tournado tournament management system
-globs: ["**/*"]
-alwaysApply: true
----
 
 # Project Overview - Tournado
 
 **Tournado** is a comprehensive tournament management system built with React Router v7, designed to streamline soccer tournament operations from team registration through live match tracking and public results viewing.
 
-## 🎯 Project Purpose
+## 🏆 Project Purpose
 A modern, mobile-first PWA that serves multiple user roles:
 - **Public Users**: Team registration and tournament viewing
 - **Admins**: Complete tournament and team management
@@ -20,7 +15,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Styling**: Tailwind CSS (mobile-first approach)
 - **Database**: Prisma ORM with PostgreSQL
 - **Authentication**: Session-based with role-based access control
-- **Internationalization**: i18next (Dutch, English, Arabic, Turkish)
+- **Internationalization**: i18next (Dutch, English, French, Arabic, Turkish)
 - **Testing**: Playwright (E2E) + Vitest (Unit)
 - **PWA**: Service Worker with offline capabilities
 
@@ -56,7 +51,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 - **Responsive**: Desktop enhancements using `lg:` breakpoint
 - **Accessibility**: ARIA labels and keyboard navigation
 - **Progressive Web App**: Offline functionality and installability
-- **Multi-Language**: RTL support for Arabic
+- **Multi-Language**: RTL support for Arabic, LTR for Dutch, English, French, Turkish
 
 ## 🔧 Configuration Files
 - `react-router-config.ts` - React Router configuration
@@ -83,6 +78,11 @@ A modern, mobile-first PWA that serves multiple user roles:
 ## 🎯 Current Development Phase
 **Phase 1**: Foundation (User Authentication, Basic CRUD) - ✅ In Progress
 **Phase 2**: Pool Creation & Management - 🔄 Planned
+**Phase 3**: Match Scheduling & Score Entry - 📋 Planned
+**Phase 4**: Live Results & Public Display - 📋 Planned
+
+This overview provides essential context for understanding the Tournado tournament management system architecture and development approach.
+
 **Phase 3**: Match Scheduling & Score Entry - 📋 Planned
 **Phase 4**: Live Results & Public Display - 📋 Planned
 

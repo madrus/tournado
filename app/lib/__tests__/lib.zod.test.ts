@@ -36,7 +36,7 @@ describe('lib.zod', () => {
         const result = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -53,7 +53,7 @@ describe('lib.zod', () => {
         const result = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -80,7 +80,7 @@ describe('lib.zod', () => {
           const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
-          expect(errorPaths).toContain('teamName')
+          expect(errorPaths).toContain('name')
           expect(errorPaths).toContain('division')
           expect(errorPaths).toContain('category')
           expect(errorPaths).toContain('teamLeaderName')
@@ -97,7 +97,7 @@ describe('lib.zod', () => {
         const result = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -113,7 +113,7 @@ describe('lib.zod', () => {
         const result = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -136,7 +136,7 @@ describe('lib.zod', () => {
           const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
-          expect(errorPaths).toContain('teamName')
+          expect(errorPaths).toContain('name')
           expect(errorPaths).toContain('division')
           expect(errorPaths).toContain('category')
           expect(errorPaths).toContain('teamLeaderName')
@@ -157,7 +157,7 @@ describe('lib.zod', () => {
         const emptyResult = schema.safeParse({
           tournamentId: '',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -177,7 +177,7 @@ describe('lib.zod', () => {
         const validResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -195,7 +195,7 @@ describe('lib.zod', () => {
         const emptyResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: '',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -216,7 +216,7 @@ describe('lib.zod', () => {
         const longResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: longClubName,
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -236,7 +236,7 @@ describe('lib.zod', () => {
         const validResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -247,14 +247,14 @@ describe('lib.zod', () => {
         expect(validResult.success).toBe(true)
       })
 
-      it('should validate teamName field', () => {
+      it('should validate name field', () => {
         const schema = getTeamValidationSchema('create', createMockTFunction())
 
-        // Empty teamName
+        // Empty name
         const emptyResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: '',
+          name: '',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -265,17 +265,17 @@ describe('lib.zod', () => {
         expect(emptyResult.success).toBe(false)
         if (!emptyResult.success) {
           const error = emptyResult.error.issues.find(
-            (err: z.ZodIssue) => err.path[0] === 'teamName'
+            (err: z.ZodIssue) => err.path[0] === 'name'
           )
           expect(error?.message).toBe('Team name is required')
         }
 
-        // Too long teamName
-        const longTeamName = 'a'.repeat(51)
+        // Too long name
+        const longName = 'a'.repeat(51)
         const longResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: longTeamName,
+          name: longName,
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -286,16 +286,16 @@ describe('lib.zod', () => {
         expect(longResult.success).toBe(false)
         if (!longResult.success) {
           const error = longResult.error.issues.find(
-            (err: z.ZodIssue) => err.path[0] === 'teamName'
+            (err: z.ZodIssue) => err.path[0] === 'name'
           )
           expect(error?.message).toBe('Team name must be less than 50 characters')
         }
 
-        // Valid teamName
+        // Valid name
         const validResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -313,7 +313,7 @@ describe('lib.zod', () => {
         const invalidEmailResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -333,7 +333,7 @@ describe('lib.zod', () => {
         const validResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -351,7 +351,7 @@ describe('lib.zod', () => {
         const invalidPhoneResult = schema.safeParse({
           tournamentId: 'tournament-1',
           clubName: 'Test Club',
-          teamName: 'JO8-1',
+          name: 'JO8-1',
           division: 'FIRST_DIVISION',
           category: 'JO8',
           teamLeaderName: 'John Doe',
@@ -380,7 +380,7 @@ describe('lib.zod', () => {
           const validResult = schema.safeParse({
             tournamentId: 'tournament-1',
             clubName: 'Test Club',
-            teamName: 'JO8-1',
+            name: 'JO8-1',
             division: 'FIRST_DIVISION',
             category: 'JO8',
             teamLeaderName: 'John Doe',
@@ -399,7 +399,7 @@ describe('lib.zod', () => {
       const formData = new FormData()
       formData.set('tournamentId', 'tournament-1')
       formData.set('clubName', 'Test Club')
-      formData.set('teamName', 'JO8-1')
+      formData.set('name', 'JO8-1')
       formData.set('division', 'FIRST_DIVISION')
       formData.set('category', 'JO8')
       formData.set('teamLeaderName', 'John Doe')
@@ -412,7 +412,7 @@ describe('lib.zod', () => {
       expect(result).toEqual({
         tournamentId: 'tournament-1',
         clubName: 'Test Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         category: 'JO8',
         teamLeaderName: 'John Doe',
@@ -432,7 +432,7 @@ describe('lib.zod', () => {
       expect(result).toEqual({
         tournamentId: '',
         clubName: 'Test Club',
-        teamName: '',
+        name: '',
         division: '',
         category: '',
         teamLeaderName: '',
@@ -462,7 +462,7 @@ describe('lib.zod', () => {
       expect(result).toEqual({
         tournamentId: '',
         clubName: '',
-        teamName: '',
+        name: '',
         division: '',
         category: '',
         teamLeaderName: '',
@@ -477,7 +477,7 @@ describe('lib.zod', () => {
     const validTeamData = {
       tournamentId: 'tournament-1',
       clubName: 'Test Club',
-      teamName: 'JO8-1',
+      name: 'JO8-1',
       division: 'FIRST_DIVISION',
       category: 'JO8',
       teamLeaderName: 'John Doe',
@@ -515,7 +515,7 @@ describe('lib.zod', () => {
           const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
-          expect(errorPaths).toContain('teamName')
+          expect(errorPaths).toContain('name')
           expect(errorPaths).toContain('division')
           expect(errorPaths).toContain('category')
           expect(errorPaths).toContain('teamLeaderName')
@@ -529,7 +529,7 @@ describe('lib.zod', () => {
         const invalidData = {
           ...validTeamData,
           clubName: 'a'.repeat(101), // Too long
-          teamName: 'a'.repeat(51), // Too long
+          name: 'a'.repeat(51), // Too long
           teamLeaderName: 'a'.repeat(101), // Too long
         }
         const result = validateTeamData(invalidData, 'create')
@@ -572,7 +572,7 @@ describe('lib.zod', () => {
           const errorPaths = result.error.issues.map((err: z.ZodIssue) => err.path[0])
           expect(errorPaths).toContain('tournamentId')
           expect(errorPaths).toContain('clubName')
-          expect(errorPaths).toContain('teamName')
+          expect(errorPaths).toContain('name')
           expect(errorPaths).toContain('division')
           expect(errorPaths).toContain('category')
           expect(errorPaths).toContain('teamLeaderName')
@@ -588,7 +588,7 @@ describe('lib.zod', () => {
         const nullData = {
           tournamentId: null,
           clubName: undefined,
-          teamName: '',
+          name: '',
           division: null,
           category: undefined,
           teamLeaderName: '',
@@ -604,7 +604,7 @@ describe('lib.zod', () => {
         const invalidTypeData = {
           tournamentId: 123,
           clubName: ['not', 'a', 'string'],
-          teamName: { invalid: 'object' },
+          name: { invalid: 'object' },
           division: true,
           category: Symbol('symbol'),
           teamLeaderName: 456,
@@ -624,7 +624,7 @@ describe('lib.zod', () => {
       const teamFormData: TeamFormData = {
         tournamentId: 'tournament-1',
         clubName: 'Test Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         category: 'JO8',
         teamLeaderName: 'John Doe',
@@ -636,7 +636,7 @@ describe('lib.zod', () => {
       const createTeamData: CreateTeamData = {
         tournamentId: 'tournament-1',
         clubName: 'Test Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         category: 'JO8',
         teamLeaderName: 'John Doe',
@@ -648,7 +648,7 @@ describe('lib.zod', () => {
       const editTeamData: EditTeamData = {
         tournamentId: 'tournament-1',
         clubName: 'Test Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         category: 'JO8',
         teamLeaderName: 'John Doe',

@@ -41,6 +41,8 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   const intent = formData.get('intent')
 
   if (intent === 'create') {
+    // eslint-disable-next-line no-console
+    console.log('🔥 ADMIN ROUTE: About to call createTeamFromFormData')
     const result = await createTeamFromFormData(formData)
 
     if (!result.success) {

@@ -69,7 +69,7 @@ export default function NewTeamPage(): JSX.Element {
   // Prepare success message with translated division label
   const successMessage =
     actionData?.success && actionData.team
-      ? `Team "${actionData.team.teamName}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
+      ? `Team "${actionData.team.name}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
       : undefined
 
   const handleReset = () => {

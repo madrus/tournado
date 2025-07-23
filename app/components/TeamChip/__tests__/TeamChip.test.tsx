@@ -43,7 +43,7 @@ vi.mock('~/utils/misc', () => ({
 const mockTeam = {
   id: 'team-1',
   clubName: 'FC Test',
-  teamName: 'Team A',
+  name: 'Team A',
 }
 
 describe('TeamChip Component', () => {
@@ -378,8 +378,8 @@ describe('TeamChip Component', () => {
     it('should handle different team names', () => {
       const team = {
         id: 'team-2',
+        name: 'Juvenil A',
         clubName: 'Real Madrid',
-        teamName: 'Juvenil A',
       }
 
       render(<TeamChip team={team} />)
@@ -390,8 +390,8 @@ describe('TeamChip Component', () => {
     it('should handle special characters in team names', () => {
       const team = {
         id: 'team-3',
+        name: 'U-21 Ñ',
         clubName: 'FC São Paulo',
-        teamName: 'U-21 Ñ',
       }
 
       render(<TeamChip team={team} />)
@@ -402,8 +402,8 @@ describe('TeamChip Component', () => {
     it('should truncate long team names', () => {
       const team = {
         id: 'team-4',
+        name: 'Very Long Team Name That Should Also Be Truncated',
         clubName: 'Very Long Club Name That Should Be Truncated',
-        teamName: 'Very Long Team Name That Should Also Be Truncated',
       }
 
       render(<TeamChip team={team} />)

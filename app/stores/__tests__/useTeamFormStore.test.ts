@@ -44,7 +44,7 @@ describe('useTeamFormStore', () => {
       expect(state().formFields.division).toBe('')
       expect(state().formFields.category).toBe('')
       expect(state().formFields.clubName).toBe('')
-      expect(state().formFields.teamName).toBe('')
+      expect(state().formFields.name).toBe('')
       expect(state().formFields.teamLeaderName).toBe('')
       expect(state().formFields.teamLeaderPhone).toBe('')
       expect(state().formFields.teamLeaderEmail).toBe('')
@@ -72,14 +72,14 @@ describe('useTeamFormStore', () => {
   describe('Form Field Management', () => {
     it('should set individual form fields', () => {
       state().setFormField('clubName', 'Test Club')
-      state().setFormField('teamName', 'Test Team')
+      state().setFormField('name', 'Test Team')
       state().setFormField('teamLeaderName', 'John Doe')
       state().setFormField('teamLeaderPhone', '+1234567890')
       state().setFormField('teamLeaderEmail', 'john@example.com')
       state().setFormField('privacyAgreement', true)
 
       expect(state().formFields.clubName).toBe('Test Club')
-      expect(state().formFields.teamName).toBe('Test Team')
+      expect(state().formFields.name).toBe('Test Team')
       expect(state().formFields.teamLeaderName).toBe('John Doe')
       expect(state().formFields.teamLeaderPhone).toBe('+1234567890')
       expect(state().formFields.teamLeaderEmail).toBe('john@example.com')
@@ -89,7 +89,7 @@ describe('useTeamFormStore', () => {
     it('should set bulk form data', () => {
       const formData = {
         clubName: 'Bulk Club',
-        teamName: 'JO8-1' as const,
+        name: 'JO8-1' as const,
         teamLeaderName: 'Jane Doe',
         teamLeaderEmail: 'jane@example.com' as const,
       }
@@ -97,7 +97,7 @@ describe('useTeamFormStore', () => {
       state().setFormData(formData)
 
       expect(state().formFields.clubName).toBe('Bulk Club')
-      expect(state().formFields.teamName).toBe('JO8-1')
+      expect(state().formFields.name).toBe('JO8-1')
       expect(state().formFields.teamLeaderName).toBe('Jane Doe')
       expect(state().formFields.teamLeaderEmail).toBe('jane@example.com')
     })
@@ -245,20 +245,20 @@ describe('useTeamFormStore', () => {
     it('should validate all touched fields', () => {
       // Touch multiple fields
       state().setFieldBlurred('clubName')
-      state().setFieldBlurred('teamName')
+      state().setFieldBlurred('name')
       state().setFieldBlurred('teamLeaderName')
 
       // Validate all touched fields - this method was removed, so we'll validate individually
       state().validateField('clubName')
-      state().validateField('teamName')
+      state().validateField('name')
       state().validateField('teamLeaderName')
 
       // All touched fields should show errors
       expect(state().validation.displayErrors.clubName).toBe(
         'teams.form.errors.clubNameRequired'
       )
-      expect(state().validation.displayErrors.teamName).toBe(
-        'teams.form.errors.teamNameRequired'
+      expect(state().validation.displayErrors.name).toBe(
+        'teams.form.errors.nameRequired'
       )
       expect(state().validation.displayErrors.teamLeaderName).toBe(
         'teams.form.errors.teamLeaderNameRequired'
@@ -285,8 +285,8 @@ describe('useTeamFormStore', () => {
       expect(state().validation.displayErrors.clubName).toBe(
         'teams.form.errors.clubNameRequired'
       )
-      expect(state().validation.displayErrors.teamName).toBe(
-        'teams.form.errors.teamNameRequired'
+      expect(state().validation.displayErrors.name).toBe(
+        'teams.form.errors.nameRequired'
       )
       expect(state().validation.displayErrors.division).toBe(
         'teams.form.errors.divisionRequired'
@@ -312,7 +312,7 @@ describe('useTeamFormStore', () => {
       // Fill all required fields
       state().setFormField('tournamentId', 'tournament1')
       state().setFormField('clubName', 'Test Club')
-      state().setFormField('teamName', 'JO8-1')
+      state().setFormField('name', 'JO8-1')
       state().setFormField('division', 'FIRST_DIVISION')
       state().setFormField('category', 'JO8')
       state().setFormField('teamLeaderName', 'John Doe')
@@ -335,7 +335,7 @@ describe('useTeamFormStore', () => {
       // Fill required fields except privacy agreement
       state().setFormField('tournamentId', 'tournament1')
       state().setFormField('clubName', 'Test Club')
-      state().setFormField('teamName', 'JO8-1')
+      state().setFormField('name', 'JO8-1')
       state().setFormField('division', 'FIRST_DIVISION')
       state().setFormField('category', 'JO8')
       state().setFormField('teamLeaderName', 'John Doe')
@@ -365,7 +365,7 @@ describe('useTeamFormStore', () => {
     it('should set validation errors in bulk', () => {
       const errors = {
         clubName: 'Required',
-        teamName: 'Too long',
+        name: 'Too long',
       }
 
       state().setValidationField('errors', errors)
@@ -375,7 +375,7 @@ describe('useTeamFormStore', () => {
     it('should set display errors in bulk', () => {
       const errors = {
         clubName: 'teams.form.errors.clubNameRequired',
-        teamName: 'teams.form.errors.teamNameRequired',
+        name: 'teams.form.errors.nameRequired',
       }
 
       state().setValidationField('displayErrors', errors)
@@ -415,7 +415,7 @@ describe('useTeamFormStore', () => {
       // Set up form data
       state().setFormField('tournamentId', 'tournament1')
       state().setFormField('clubName', 'Test Club')
-      state().setFormField('teamName', 'JO8-1')
+      state().setFormField('name', 'JO8-1')
       state().setFormField('division', 'FIRST_DIVISION')
       state().setFormField('category', 'JO8')
       state().setFormField('teamLeaderName', 'John Doe')
@@ -428,7 +428,7 @@ describe('useTeamFormStore', () => {
       expect(formData).toEqual({
         tournamentId: 'tournament1',
         clubName: 'Test Club',
-        teamName: 'JO8-1',
+        name: 'JO8-1',
         division: 'FIRST_DIVISION',
         category: 'JO8',
         teamLeaderName: 'John Doe',
@@ -486,9 +486,9 @@ describe('useTeamFormStore', () => {
       expect(state().validation.displayErrors.clubName).toBeUndefined()
 
       // User touches team name but leaves empty - should show error
-      state().setFieldBlurred('teamName')
-      expect(state().validation.displayErrors.teamName).toBe(
-        'teams.form.errors.teamNameRequired'
+      state().setFieldBlurred('name')
+      expect(state().validation.displayErrors.name).toBe(
+        'teams.form.errors.nameRequired'
       )
 
       // Other untouched fields should still not show errors
@@ -522,8 +522,8 @@ describe('useTeamFormStore', () => {
       // User only touches and fills some fields
       state().setFieldBlurred('clubName')
       state().setFormField('clubName', 'Test Club')
-      state().setFieldBlurred('teamName')
-      state().setFormField('teamName', 'JO8-1')
+      state().setFieldBlurred('name')
+      state().setFormField('name', 'JO8-1')
 
       // Only touched fields show errors currently
       expect(Object.keys(state().validation.displayErrors)).toHaveLength(0)

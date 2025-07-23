@@ -30,8 +30,8 @@ export const getFieldErrorTranslationKey = (
 
   // Handle string too long errors
   if (zodIssue?.code === 'too_big') {
-    if (fieldName === 'teamName') {
-      return 'teams.form.errors.teamNameTooLong'
+    if (fieldName === 'name') {
+      return 'teams.form.errors.nameTooLong'
     }
     if (fieldName === 'clubName') {
       return 'teams.form.errors.clubNameTooLong'
@@ -46,7 +46,7 @@ export const getFieldErrorTranslationKey = (
     // Zod field names
     tournamentId: 'teams.form.errors.tournamentRequired',
     clubName: 'teams.form.errors.clubNameRequired',
-    teamName: 'teams.form.errors.teamNameRequired',
+    name: 'teams.form.errors.nameRequired',
     division: 'teams.form.errors.divisionRequired',
     category: 'teams.form.errors.categoryRequired',
     teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',

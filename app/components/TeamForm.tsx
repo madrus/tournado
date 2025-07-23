@@ -620,16 +620,6 @@ export function TeamForm({
               >
                 {t('teams.form.privacyPolicy')}
               </h2>
-              <p
-                className={cn(
-                  'text-foreground mb-4',
-                  formMode === 'create' && !isPanelEnabled(4)
-                    ? 'text-foreground-lighter'
-                    : ''
-                )}
-              >
-                {t('teams.form.readAndAccept')}
-              </p>
             </div>
 
             <div className='relative'>

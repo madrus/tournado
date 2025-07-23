@@ -559,15 +559,15 @@ describe('lib.helpers', () => {
 
   describe('sortTeams', () => {
     const mockTeams = [
-      { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO12' },
-      { id: '2', clubName: 'Feyenoord', teamName: 'Team B', category: 'JO8' },
-      { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'JO10' },
-      { id: '4', clubName: 'PSV', teamName: 'Team D', category: 'MO8' },
-      { id: '5', clubName: 'Ajax', teamName: 'Team E', category: 'JO8' },
-      { id: '6', clubName: 'PSV', teamName: 'Team F', category: 'MO12' },
-      { id: '7', clubName: 'Feyenoord', teamName: 'Team G', category: 'JO12' },
-      { id: '8', clubName: 'Ajax', teamName: 'Team H' }, // No category
-      { id: '9', clubName: 'PSV', teamName: 'Team I', category: 'VETERANEN_35_PLUS' },
+      { id: '1', clubName: 'Ajax', name: 'Team A', category: 'JO12' },
+      { id: '2', clubName: 'Feyenoord', name: 'Team B', category: 'JO8' },
+      { id: '3', clubName: 'Ajax', name: 'Team C', category: 'JO10' },
+      { id: '4', clubName: 'PSV', name: 'Team D', category: 'MO8' },
+      { id: '5', clubName: 'Ajax', name: 'Team E', category: 'JO8' },
+      { id: '6', clubName: 'PSV', name: 'Team F', category: 'MO12' },
+      { id: '7', clubName: 'Feyenoord', name: 'Team G', category: 'JO12' },
+      { id: '8', clubName: 'Ajax', name: 'Team H' }, // No category
+      { id: '9', clubName: 'PSV', name: 'Team I', category: 'VETERANEN_35_PLUS' },
     ]
 
     describe('club name sorting', () => {
@@ -597,10 +597,10 @@ describe('lib.helpers', () => {
 
         // Ajax teams should be ordered: JO8, JO10, JO12, then no category last
         expect(result).toEqual([
-          expect.objectContaining({ teamName: 'Team E', category: 'JO8' }),
-          expect.objectContaining({ teamName: 'Team C', category: 'JO10' }),
-          expect.objectContaining({ teamName: 'Team A', category: 'JO12' }),
-          expect.objectContaining({ teamName: 'Team H' }), // No category (property not present)
+          expect.objectContaining({ name: 'Team E', category: 'JO8' }),
+          expect.objectContaining({ name: 'Team C', category: 'JO10' }),
+          expect.objectContaining({ name: 'Team A', category: 'JO12' }),
+          expect.objectContaining({ name: 'Team H' }), // No category (property not present)
         ])
       })
 
@@ -609,10 +609,10 @@ describe('lib.helpers', () => {
         const result = sortTeams(psvTeams)
 
         expect(result).toEqual([
-          expect.objectContaining({ teamName: 'Team D', category: 'MO8' }),
-          expect.objectContaining({ teamName: 'Team F', category: 'MO12' }),
+          expect.objectContaining({ name: 'Team D', category: 'MO8' }),
+          expect.objectContaining({ name: 'Team F', category: 'MO12' }),
           expect.objectContaining({
-            teamName: 'Team I',
+            name: 'Team I',
             category: 'VETERANEN_35_PLUS',
           }),
         ])
@@ -620,17 +620,17 @@ describe('lib.helpers', () => {
 
       it('should handle teams without categories by placing them last', () => {
         const teamsWithoutCategory = [
-          { id: '1', clubName: 'Ajax', teamName: 'Team Z', category: 'JO8' },
-          { id: '2', clubName: 'Ajax', teamName: 'Team A' }, // No category
-          { id: '3', clubName: 'Ajax', teamName: 'Team B', category: 'JO10' },
+          { id: '1', clubName: 'Ajax', name: 'Team Z', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', name: 'Team A' }, // No category
+          { id: '3', clubName: 'Ajax', name: 'Team B', category: 'JO10' },
         ]
 
         const result = sortTeams(teamsWithoutCategory)
 
         expect(result).toEqual([
-          expect.objectContaining({ teamName: 'Team Z', category: 'JO8' }),
-          expect.objectContaining({ teamName: 'Team B', category: 'JO10' }),
-          expect.objectContaining({ teamName: 'Team A' }), // No category (property not present)
+          expect.objectContaining({ name: 'Team Z', category: 'JO8' }),
+          expect.objectContaining({ name: 'Team B', category: 'JO10' }),
+          expect.objectContaining({ name: 'Team A' }), // No category (property not present)
         ])
       })
     })
@@ -638,27 +638,23 @@ describe('lib.helpers', () => {
     describe('team name sorting', () => {
       it('should sort by team name when club and category are the same', () => {
         const sameClubCategory = [
-          { id: '1', clubName: 'Ajax', teamName: 'Team Z', category: 'JO8' },
-          { id: '2', clubName: 'Ajax', teamName: 'Team A', category: 'JO8' },
-          { id: '3', clubName: 'Ajax', teamName: 'Team M', category: 'JO8' },
+          { id: '1', clubName: 'Ajax', name: 'Team Z', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', name: 'Team A', category: 'JO8' },
+          { id: '3', clubName: 'Ajax', name: 'Team M', category: 'JO8' },
         ]
 
         const result = sortTeams(sameClubCategory)
 
-        expect(result.map(team => team.teamName)).toEqual([
-          'Team A',
-          'Team M',
-          'Team Z',
-        ])
+        expect(result.map(team => team.name)).toEqual(['Team A', 'Team M', 'Team Z'])
       })
     })
 
     describe('complex category formats', () => {
       it('should handle complex category names with suffixes', () => {
         const complexCategories = [
-          { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO12_A' },
-          { id: '2', clubName: 'Ajax', teamName: 'Team B', category: 'JO12_B' },
-          { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'JO8_A' },
+          { id: '1', clubName: 'Ajax', name: 'Team A', category: 'JO12_A' },
+          { id: '2', clubName: 'Ajax', name: 'Team B', category: 'JO12_B' },
+          { id: '3', clubName: 'Ajax', name: 'Team C', category: 'JO8_A' },
         ]
 
         const result = sortTeams(complexCategories)
@@ -675,16 +671,16 @@ describe('lib.helpers', () => {
           {
             id: '1',
             clubName: 'Ajax',
-            teamName: 'Team A',
+            name: 'Team A',
             category: 'VETERANEN_45_PLUS',
           },
           {
             id: '2',
             clubName: 'Ajax',
-            teamName: 'Team B',
+            name: 'Team B',
             category: 'VETERANEN_35_PLUS',
           },
-          { id: '3', clubName: 'Ajax', teamName: 'Team C', category: 'AMATEUR' },
+          { id: '3', clubName: 'Ajax', name: 'Team C', category: 'AMATEUR' },
         ]
 
         const result = sortTeams(nonNumericCategories)
@@ -705,7 +701,7 @@ describe('lib.helpers', () => {
         expect(
           result.map(team => ({
             club: team.clubName,
-            name: team.teamName,
+            name: team.name,
             category: team.category || 'none',
           }))
         ).toEqual([
@@ -730,7 +726,7 @@ describe('lib.helpers', () => {
 
       it('should handle single team', () => {
         const singleTeam = [
-          { id: '1', clubName: 'Ajax', teamName: 'Team A', category: 'JO8' },
+          { id: '1', clubName: 'Ajax', name: 'Team A', category: 'JO8' },
         ]
         const result = sortTeams(singleTeam)
         expect(result).toEqual(singleTeam)
@@ -738,9 +734,9 @@ describe('lib.helpers', () => {
 
       it('should handle teams with empty string values', () => {
         const teamsWithEmptyStrings = [
-          { id: '1', clubName: '', teamName: 'Team A', category: 'JO8' },
-          { id: '2', clubName: 'Ajax', teamName: '', category: 'JO8' },
-          { id: '3', clubName: 'Ajax', teamName: 'Team B', category: '' },
+          { id: '1', clubName: '', name: 'Team A', category: 'JO8' },
+          { id: '2', clubName: 'Ajax', name: '', category: 'JO8' },
+          { id: '3', clubName: 'Ajax', name: 'Team B', category: '' },
         ]
 
         const result = sortTeams(teamsWithEmptyStrings)

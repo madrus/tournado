@@ -145,7 +145,7 @@ export function mapFlexibleToFormData(
     division?: string
     category?: string
     clubName?: string
-    teamName?: string
+    name?: string
     teamLeaderName?: string
     teamLeaderPhone?: string
     teamLeaderEmail?: string
@@ -159,7 +159,7 @@ export function mapFlexibleToFormData(
   if (flexibleData.division !== undefined) mappedData.division = flexibleData.division
   if (flexibleData.category !== undefined) mappedData.category = flexibleData.category
   if (flexibleData.clubName !== undefined) mappedData.clubName = flexibleData.clubName
-  if (flexibleData.teamName !== undefined) mappedData.teamName = flexibleData.teamName
+  if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
   if (flexibleData.teamLeaderName !== undefined) {
     mappedData.teamLeaderName = flexibleData.teamLeaderName
   }

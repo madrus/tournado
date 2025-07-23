@@ -35,7 +35,7 @@ test.describe('Public Teams', () => {
     // Should see team registration form (public access)
     await expect(page.locator('form')).toBeVisible()
     await expect(page.locator('[name="clubName"]')).toBeVisible()
-    await expect(page.locator('[name="teamName"]')).toBeVisible()
+    await expect(page.locator('[name="name"]')).toBeVisible()
   })
 
   test('should display existing teams publicly', async ({ page }) => {

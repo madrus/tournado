@@ -8,15 +8,21 @@ import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
 import { validateEntireTeamForm } from '~/utils/form-validation'
 
-type TeamCreationResult = {
-  success: boolean
-  team?: {
+type TeamCreationSuccess = {
+  success: true
+  team: {
+    name: string
     id: string
-    teamName: string
     division: string
   }
-  errors?: Record<string, string>
 }
+
+type TeamCreationError = {
+  success: false
+  errors: Record<string, string>
+}
+
+type TeamCreationResult = TeamCreationSuccess | TeamCreationError
 
 /**
  * Find or create a team leader based on email
@@ -107,7 +113,7 @@ export async function createTeamFromFormData(
   // Create the team
   const team = await createTeam({
     clubName: teamData.clubName,
-    teamName: teamData.teamName,
+    name: teamData.name,
     division: validDivision as Division,
     category: validCategory as Category,
     teamLeaderId: teamLeader.id,
@@ -118,7 +124,7 @@ export async function createTeamFromFormData(
     success: true,
     team: {
       id: team.id,
-      teamName: team.teamName,
+      name: team.name,
       division: team.division,
     },
   }

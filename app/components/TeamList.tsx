@@ -9,7 +9,7 @@ type TeamListProps = {
   teams: Array<{
     id: string
     clubName: string
-    teamName: string
+    name: string
   }>
   context: 'public' | 'admin'
   onTeamClick?: (teamId: string) => void
@@ -49,7 +49,7 @@ export function TeamList({
             onClick={onTeamClick ? () => onTeamClick(team.id) : undefined}
             showActions={context === 'admin'}
             onDelete={onTeamDelete ? () => onTeamDelete(team.id) : undefined}
-            deleteAriaLabel={`${t('teams.deleteTeam')} ${team.clubName} ${team.teamName}`}
+            deleteAriaLabel={`${t('teams.deleteTeam')} ${team.clubName} ${team.name}`}
           />
         ))}
       </div>

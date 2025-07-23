@@ -21,8 +21,8 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 // Base team schema without translations (for server-side validation)
 const baseTeamSchema = z.object({
   tournamentId: z.string().min(1),
+  name: z.string().min(1).max(50),
   clubName: z.string().min(1).max(100),
-  teamName: z.string().min(1).max(50),
   division: z.string().min(1),
   category: z.string().min(1),
   teamLeaderName: z.string().min(1).max(100),
@@ -56,14 +56,14 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
     tournamentId: z.string().min(1, t('teams.form.errors.tournamentRequired')),
 
     // Basic team information
+    name: z
+      .string()
+      .min(1, t('teams.form.errors.nameRequired'))
+      .max(50, t('teams.form.errors.nameTooLong')),
     clubName: z
       .string()
       .min(1, t('teams.form.errors.clubNameRequired'))
       .max(100, t('teams.form.errors.clubNameTooLong')),
-    teamName: z
-      .string()
-      .min(1, t('teams.form.errors.teamNameRequired'))
-      .max(50, t('teams.form.errors.teamNameTooLong')),
     division: z.string().min(1, t('teams.form.errors.divisionRequired')),
     category: z.string().min(1, t('teams.form.errors.categoryRequired')),
 
@@ -104,7 +104,7 @@ export function getTeamValidationSchema(
 export const extractTeamDataFromFormData = (formData: FormData): ExtractedTeamData => ({
   tournamentId: (formData.get('tournamentId') as string) || '',
   clubName: (formData.get('clubName') as string) || '',
-  teamName: (formData.get('teamName') as string) || '',
+  name: (formData.get('name') as string) || '',
   division: (formData.get('division') as string) || '',
   category: (formData.get('category') as string) || '',
   teamLeaderName: (formData.get('teamLeaderName') as string) || '',

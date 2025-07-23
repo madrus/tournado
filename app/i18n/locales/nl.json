@@ -158,8 +158,8 @@
       "division": "Teamklasse",
       "errors": {
         "clubNameRequired": "Clubnaam is verplicht",
-        "clubNameTooLong": "Clubnaam moet minder dan 100 karakters zijn",
-        "divisionRequired": "Teamklasse is verplicht",
+        "clubNameTooLong": "Clubnaam mag niet langer zijn dan 100 tekens",
+        "divisionRequired": "Divisie is verplicht",
         "categoryRequired": "Categorie is verplicht",
         "emailInvalid": "Voer een geldig e-mailadres in",
         "emailRequired": "E-mailadres is verplicht",
@@ -167,17 +167,18 @@
         "phoneNumberRequired": "Telefoonnummer is verplicht",
         "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
         "teamLeaderNameRequired": "Naam teamleider is verplicht",
-        "teamLeaderNameTooLong": "Naam moet minder dan 100 karakters zijn",
-        "teamNameRequired": "Teamnaam is verplicht",
-        "teamNameTooLong": "Teamnaam moet minder dan 50 karakters zijn",
-        "tournamentRequired": "Toernooi is verplicht"
+        "teamLeaderNameTooLong": "Naam mag niet langer zijn dan 100 tekens",
+        "nameRequired": "Teamnaam is verplicht",
+        "nameTooLong": "Teamnaam mag niet langer zijn dan 50 tekens",
+        "tournamentRequired": "Toernooi is verplicht",
+        "fieldRequired": "Dit veld is verplicht"
       },
       "placeholders": {
         "clubName": "Voer je clubnaam in",
         "teamLeaderEmail": "Voer e-mailadres in",
         "teamLeaderName": "Voer volledige naam teamleider in",
         "teamLeaderPhone": "Voer telefoonnummer in",
-        "teamName": "Voer je teamnaam in"
+        "name": "Voer je teamnaam in"
       },
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de servicevoorwaarden",
       "privacyPolicy": "Privacybeleid",
@@ -190,7 +191,7 @@
       "teamLeaderInfo": "Teamleider",
       "teamLeaderName": "Naam teamleider",
       "teamLeaderPhone": "Telefoon teamleider",
-      "teamName": "Teamnaam",
+      "name": "Teamnaam",
       "tournament": "Toernooi",
       "category": "Categorie",
       "selectCategory": "Selecteer een categorie",

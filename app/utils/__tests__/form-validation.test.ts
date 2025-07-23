@@ -15,7 +15,7 @@ describe('form-validation', () => {
       const testCases = [
         'tournamentId',
         'clubName',
-        'teamName',
+        'name',
         'division',
         'category',
         'teamLeaderName',
@@ -58,9 +58,9 @@ describe('form-validation', () => {
     })
 
     describe('too_big validation errors', () => {
-      it('should return teamName too long key for teamName too_big errors', () => {
-        const result = getFieldErrorTranslationKey('teamName', { code: 'too_big' })
-        expect(result).toBe('teams.form.errors.teamNameTooLong')
+      it('should return name too long key for name too_big errors', () => {
+        const result = getFieldErrorTranslationKey('name', { code: 'too_big' })
+        expect(result).toBe('teams.form.errors.nameTooLong')
       })
 
       it('should return clubName too long key for clubName too_big errors', () => {
@@ -86,7 +86,7 @@ describe('form-validation', () => {
         const expectedMappings = {
           tournamentId: 'teams.form.errors.tournamentRequired',
           clubName: 'teams.form.errors.clubNameRequired',
-          teamName: 'teams.form.errors.teamNameRequired',
+          name: 'teams.form.errors.nameRequired',
           division: 'teams.form.errors.divisionRequired',
           category: 'teams.form.errors.categoryRequired',
           teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
@@ -145,7 +145,7 @@ describe('form-validation', () => {
     const validFormData: TeamFormData = {
       tournamentId: 'tournament-1',
       clubName: 'Test Club',
-      teamName: 'JO8-1' as TeamName,
+      name: 'JO8-1' as TeamName,
       division: 'FIRST_DIVISION',
       category: 'JO8',
       teamLeaderName: 'John Doe',
@@ -159,7 +159,7 @@ describe('form-validation', () => {
         const fields = [
           'tournamentId',
           'clubName',
-          'teamName',
+          'name',
           'division',
           'category',
           'teamLeaderName',
@@ -179,7 +179,7 @@ describe('form-validation', () => {
           ...validFormData,
           tournamentId: '',
           clubName: '',
-          teamName: '' as TeamName,
+          name: '' as TeamName,
         }
 
         expect(validateSingleTeamField('tournamentId', emptyFormData, 'create')).toBe(
@@ -188,8 +188,8 @@ describe('form-validation', () => {
         expect(validateSingleTeamField('clubName', emptyFormData, 'create')).toBe(
           'teams.form.errors.clubNameRequired'
         )
-        expect(validateSingleTeamField('teamName', emptyFormData, 'create')).toBe(
-          'teams.form.errors.teamNameRequired'
+        expect(validateSingleTeamField('name', emptyFormData, 'create')).toBe(
+          'teams.form.errors.nameRequired'
         )
       })
 
@@ -229,11 +229,10 @@ describe('form-validation', () => {
       it('should return error key for too long team name', () => {
         const invalidFormData = {
           ...validFormData,
-          teamName:
-            'This is a very long team name that exceeds the maximum allowed length' as TeamName,
+          name: 'This is a very long team name that exceeds the maximum allowed length' as TeamName,
         }
-        const result = validateSingleTeamField('teamName', invalidFormData, 'create')
-        expect(result).toBe('teams.form.errors.teamNameTooLong')
+        const result = validateSingleTeamField('name', invalidFormData, 'create')
+        expect(result).toBe('teams.form.errors.nameTooLong')
       })
     })
 
@@ -242,7 +241,7 @@ describe('form-validation', () => {
         const fields = [
           'tournamentId',
           'clubName',
-          'teamName',
+          'name',
           'division',
           'category',
           'teamLeaderName',
@@ -271,7 +270,7 @@ describe('form-validation', () => {
           ...validFormData,
           tournamentId: '',
           clubName: '',
-          teamName: '' as TeamName,
+          name: '' as TeamName,
         }
 
         expect(validateSingleTeamField('tournamentId', emptyFormData, 'edit')).toBe(
@@ -280,8 +279,8 @@ describe('form-validation', () => {
         expect(validateSingleTeamField('clubName', emptyFormData, 'edit')).toBe(
           'teams.form.errors.clubNameRequired'
         )
-        expect(validateSingleTeamField('teamName', emptyFormData, 'edit')).toBe(
-          'teams.form.errors.teamNameRequired'
+        expect(validateSingleTeamField('name', emptyFormData, 'edit')).toBe(
+          'teams.form.errors.nameRequired'
         )
       })
     })
@@ -305,7 +304,7 @@ describe('form-validation', () => {
     const validFormData: TeamFormData = {
       tournamentId: 'tournament-1',
       clubName: 'Test Club',
-      teamName: 'JO8-1' as TeamName,
+      name: 'JO8-1' as TeamName,
       division: 'FIRST_DIVISION',
       category: 'JO8',
       teamLeaderName: 'John Doe',
@@ -324,7 +323,7 @@ describe('form-validation', () => {
         const emptyFormData = {
           tournamentId: '',
           clubName: '',
-          teamName: '' as TeamName,
+          name: '' as TeamName,
           division: '',
           category: '',
           teamLeaderName: '',
@@ -338,7 +337,7 @@ describe('form-validation', () => {
         expect(result).toEqual({
           tournamentId: 'teams.form.errors.tournamentRequired',
           clubName: 'teams.form.errors.clubNameRequired',
-          teamName: 'teams.form.errors.teamNameRequired',
+          name: 'teams.form.errors.nameRequired',
           division: 'teams.form.errors.divisionRequired',
           category: 'teams.form.errors.categoryRequired',
           teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
@@ -353,15 +352,14 @@ describe('form-validation', () => {
           ...validFormData,
           teamLeaderEmail: 'invalid-email' as Email,
           teamLeaderPhone: 'invalid',
-          teamName:
-            'This is a very long team name that exceeds the maximum allowed length' as TeamName,
+          name: 'This is a very long team name that exceeds the maximum allowed length' as TeamName,
         }
 
         const result = validateEntireTeamForm(invalidFormData, 'create')
 
         expect(result.teamLeaderEmail).toBe('teams.form.errors.emailInvalid')
         expect(result.teamLeaderPhone).toBe('teams.form.errors.phoneNumberInvalid')
-        expect(result.teamName).toBe('teams.form.errors.teamNameTooLong')
+        expect(result.name).toBe('teams.form.errors.nameTooLong')
       })
     })
 
@@ -385,7 +383,7 @@ describe('form-validation', () => {
         const emptyFormData = {
           tournamentId: '',
           clubName: '',
-          teamName: '' as TeamName,
+          name: '' as TeamName,
           division: '',
           category: '',
           teamLeaderName: '',
@@ -399,7 +397,7 @@ describe('form-validation', () => {
         expect(result).toEqual({
           tournamentId: 'teams.form.errors.tournamentRequired',
           clubName: 'teams.form.errors.clubNameRequired',
-          teamName: 'teams.form.errors.teamNameRequired',
+          name: 'teams.form.errors.nameRequired',
           division: 'teams.form.errors.divisionRequired',
           category: 'teams.form.errors.categoryRequired',
           teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',

@@ -165,7 +165,7 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Check that form fields exist (even if disabled initially)
       await expect(page.locator('[name="clubName"]')).toBeVisible()
-      await expect(page.locator('[name="teamName"]')).toBeVisible()
+      await expect(page.locator('[name="name"]')).toBeVisible()
     })
   })
 

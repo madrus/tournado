@@ -15,7 +15,7 @@ type TeamChipProps = {
   team: {
     id: string
     clubName: string
-    teamName: string
+    name: string
   }
   onClick?: () => void
   showActions?: boolean // for admin context
@@ -57,7 +57,7 @@ export function TeamChip({
           onDelete()
         }}
         className={deleteButtonVariants()}
-        aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.teamName}`}
+        aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.name}`}
       >
         {renderIcon('close', { className: 'h-4 w-4' })}
       </button>
@@ -65,7 +65,7 @@ export function TeamChip({
 
   const teamText = (
     <span className={cn('truncate', getLatinTextClass(i18n.language))}>
-      {`${team.clubName} ${team.teamName}`}
+      {`${team.clubName} ${team.name}`}
     </span>
   )
 

@@ -12,8 +12,8 @@ import { TeamChip } from './TeamChip'
 
 type Team = {
   id: string
+  name: string
   clubName: string
-  teamName: string
   division: Division
 }
 
@@ -41,32 +41,32 @@ export function SidebarTeamsExample({
       : [
           {
             id: '1',
+            name: 'Heren 1',
             clubName: 'sv DIO',
-            teamName: 'Heren 1',
             division: 'PREMIER_DIVISION',
           },
           {
             id: '2',
+            name: 'Dames 1',
             clubName: 'sv DIO',
-            teamName: 'Dames 1',
             division: 'FIRST_DIVISION',
           },
           {
             id: '3',
+            name: 'Heren 2',
             clubName: 'sv DIO',
-            teamName: 'Heren 2',
             division: 'SECOND_DIVISION',
           },
           {
             id: '4',
+            name: 'Dames 2',
             clubName: 'sv DIO',
-            teamName: 'Dames 2',
             division: 'THIRD_DIVISION',
           },
           {
             id: '5',
+            name: 'Mix 1',
             clubName: 'sv DIO',
-            teamName: 'Mix 1',
             division: 'FOURTH_DIVISION',
           },
         ]
@@ -91,7 +91,7 @@ export function SidebarTeamsExample({
             <div className='bg-foreground-lighter h-2 w-2 rounded-full' />
             <div className='flex flex-col'>
               <span className={cn('font-medium', getLatinTextClass(i18n.language))}>
-                {`${team.clubName} ${team.teamName}`}
+                {`${team.clubName} ${team.name}`}
               </span>
               <span className='text-foreground-lighter text-xs'>
                 {getDivisionLabel(team.division, i18n.language)}
@@ -107,7 +107,7 @@ export function SidebarTeamsExample({
   const mainContent = selectedTeam ? (
     <div className='max-w-2xl'>
       <h1 className={cn('mb-6 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-        {`${selectedTeam.clubName} ${selectedTeam.teamName}`}
+        {`${selectedTeam.clubName} ${selectedTeam.name}`}
       </h1>
 
       <div className='space-y-6'>
@@ -131,7 +131,7 @@ export function SidebarTeamsExample({
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
               <dd className={cn('mt-1 text-sm', getLatinTextClass(i18n.language))}>
-                {selectedTeam.teamName}
+                {selectedTeam.name}
               </dd>
             </div>
             <div>
@@ -252,9 +252,9 @@ export function TeamsLayoutComparison(): JSX.Element {
   const { t: _t, i18n } = useTranslation()
 
   const exampleTeams: Team[] = [
-    { id: '1', clubName: 'sv DIO', teamName: 'Heren 1', division: 'PREMIER_DIVISION' },
-    { id: '2', clubName: 'sv DIO', teamName: 'Dames 1', division: 'FIRST_DIVISION' },
-    { id: '3', clubName: 'sv DIO', teamName: 'Heren 2', division: 'SECOND_DIVISION' },
+    { id: '1', clubName: 'sv DIO', name: 'Heren 1', division: 'PREMIER_DIVISION' },
+    { id: '2', clubName: 'sv DIO', name: 'Dames 1', division: 'FIRST_DIVISION' },
+    { id: '3', clubName: 'sv DIO', name: 'Heren 2', division: 'SECOND_DIVISION' },
   ]
 
   return (

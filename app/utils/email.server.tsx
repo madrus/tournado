@@ -7,10 +7,27 @@ import type { Team } from '~/lib/lib.types'
 import { getTeamLeader } from '~/models/team.server'
 import type { Tournament } from '~/models/tournament.server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 // Toggle this to false when using Resend sandbox, true when using your own domain
 const isRealDomainRegistered = false
+
+// Lazy initialization of Resend client to avoid crashes when API key is missing
+let resendClient: Resend | null = null
+
+function getResendClient(): Resend {
+  if (!resendClient) {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY environment variable is not set')
+    }
+    resendClient = new Resend(apiKey)
+  }
+  return resendClient
+}
+
+// For testing purposes - allows resetting the client
+export function resetResendClient(): void {
+  resendClient = null
+}
 
 export async function sendConfirmationEmail(
   team: Team,
@@ -62,6 +79,7 @@ export async function sendConfirmationEmail(
   )
 
   try {
+    const resend = getResendClient()
     await resend.emails.send({
       from: emailFrom,
       to: teamLeader.email,
@@ -71,6 +89,15 @@ export async function sendConfirmationEmail(
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to send confirmation email:', error)
+
+    // Re-throw configuration errors as-is for better debugging
+    if (
+      error instanceof Error &&
+      (error.message.includes('RESEND_API_KEY') || error.message.includes('EMAIL_FROM'))
+    ) {
+      throw error
+    }
+
     throw new Error('Failed to send confirmation email')
   }
 }

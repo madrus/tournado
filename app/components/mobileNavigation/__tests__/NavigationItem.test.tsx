@@ -301,10 +301,51 @@ describe('NavigationItem', () => {
       expect(svg).toHaveAttribute('viewBox', '0 -960 960 960')
       expect(svg).toHaveClass('fill-current')
     })
+
+    it('should support custom icon sizes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      })
+
+      render(
+        <MemoryRouter>
+          <NavigationItem {...defaultProps} iconSize={48} />
+        </MemoryRouter>
+      )
+
+      const svg = screen.getByTestId('nav-icon')
+      expect(svg).toHaveAttribute('width', '48')
+      expect(svg).toHaveAttribute('height', '48')
+    })
+
+    it('should use responsive icon sizing by default', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      })
+
+      render(
+        <MemoryRouter>
+          <NavigationItem {...defaultProps} />
+        </MemoryRouter>
+      )
+
+      const svg = screen.getByTestId('nav-icon')
+      // Should have responsive size (32 or 36 depending on viewport)
+      const size = svg.getAttribute('width')
+      expect(['32', '36']).toContain(size)
+    })
   })
 
   describe('Color Variants', () => {
-    it('should support all color variants in active state', () => {
+    it('should support all navigation color variants in active state', () => {
       const colorTestCases = [
         { color: 'brand' as const, expectedActiveClass: 'text-adaptive-brand' },
         { color: 'primary' as const, expectedActiveClass: 'text-adaptive-emerald' },
@@ -312,7 +353,6 @@ describe('NavigationItem', () => {
         { color: 'blue' as const, expectedActiveClass: 'text-adaptive-blue' },
         { color: 'red' as const, expectedActiveClass: 'text-adaptive-red' },
         { color: 'teal' as const, expectedActiveClass: 'text-adaptive-teal' },
-        { color: 'cyan' as const, expectedActiveClass: 'text-adaptive-cyan' },
       ]
 
       colorTestCases.forEach(({ color, expectedActiveClass }) => {
@@ -341,8 +381,8 @@ describe('NavigationItem', () => {
       })
     })
 
-    it('should use neutral color for all variants in inactive state', () => {
-      const colors = ['brand', 'primary', 'emerald', 'blue', 'red'] as const
+    it('should use neutral color for all navigation variants in inactive state', () => {
+      const colors = ['brand', 'primary', 'emerald', 'blue', 'red', 'teal'] as const
 
       colors.forEach(color => {
         mockUseLocation.mockReturnValue({

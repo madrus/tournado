@@ -1,77 +1,47 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
+import {
+  type ColorVariantKey,
+  createColorVariantMapping,
+} from '../shared/colorVariants'
+
+/**
+ * Toggle chip variants for selectable chip components.
+ *
+ * Provides styling for interactive chips with selected/unselected states.
+ * Uses light/dark mode appropriate colors and hover effects.
+ *
+ * Design Pattern:
+ * - Unselected: White/light backgrounds with subtle hover effects
+ * - Selected: Colored backgrounds with contrast text
+ * - Smooth transitions between states
+ *
+ * @example
+ * ```tsx
+ * <div className={toggleChipVariants({ color: 'brand', selected: true })}>
+ *   Chip Content
+ * </div>
+ * ```
+ */
 export const toggleChipVariants = cva(
   [
     'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
   ],
   {
     variants: {
-      color: {
-        brand: [
-          // Unselected state: white in light mode, brand-50 in dark mode
-          'border-slate-200 bg-white dark:bg-brand-50 hover:border-brand-300 hover:bg-brand-50 dark:hover:bg-brand-100',
-        ],
-        primary: [
-          'border-slate-200 bg-white dark:bg-primary-50 hover:border-primary-300 hover:bg-primary-50 dark:hover:bg-primary-100',
-        ],
-        emerald: [
-          'border-slate-200 bg-white dark:bg-emerald-50 hover:border-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-100',
-        ],
-        red: [
-          'border-slate-200 bg-white dark:bg-red-50 hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-100',
-        ],
-        blue: [
-          'border-slate-200 bg-white dark:bg-blue-50 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-100',
-        ],
-        green: [
-          'border-slate-200 bg-white dark:bg-green-50 hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-100',
-        ],
-        yellow: [
-          'border-slate-200 bg-white dark:bg-yellow-50 hover:border-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-100',
-        ],
-        purple: [
-          'border-slate-200 bg-white dark:bg-purple-50 hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-100',
-        ],
-        pink: [
-          'border-slate-200 bg-white dark:bg-pink-50 hover:border-pink-300 hover:bg-pink-50 dark:hover:bg-pink-100',
-        ],
-        indigo: [
-          'border-slate-200 bg-white dark:bg-indigo-50 hover:border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-100',
-        ],
-        slate: [
-          'border-slate-200 bg-white dark:bg-slate-50 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-100',
-        ],
-        zinc: [
-          'border-slate-200 bg-white dark:bg-zinc-50 hover:border-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-100',
-        ],
-        orange: [
-          'border-slate-200 bg-white dark:bg-orange-50 hover:border-orange-300 hover:bg-orange-50 dark:hover:bg-orange-100',
-        ],
-        amber: [
-          'border-slate-200 bg-white dark:bg-amber-50 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-100',
-        ],
-        lime: [
-          'border-slate-200 bg-white dark:bg-lime-50 hover:border-lime-300 hover:bg-lime-50 dark:hover:bg-lime-100',
-        ],
-        teal: [
-          'border-slate-200 bg-white dark:bg-teal-50 hover:border-teal-300 hover:bg-teal-50 dark:hover:bg-teal-100',
-        ],
-        cyan: [
-          'border-slate-200 bg-white dark:bg-cyan-50 hover:border-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-100',
-        ],
-        sky: [
-          'border-slate-200 bg-white dark:bg-sky-50 hover:border-sky-300 hover:bg-sky-50 dark:hover:bg-sky-100',
-        ],
-        violet: [
-          'border-slate-200 bg-white dark:bg-violet-50 hover:border-violet-300 hover:bg-violet-50 dark:hover:bg-violet-100',
-        ],
-        fuchsia: [
-          'border-slate-200 bg-white dark:bg-fuchsia-50 hover:border-fuchsia-300 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-100',
-        ],
-        rose: [
-          'border-slate-200 bg-white dark:bg-rose-50 hover:border-rose-300 hover:bg-rose-50 dark:hover:bg-rose-100',
-        ],
-      },
+      /**
+       * Color theme variants with unselected state styling.
+       * Selected state is handled via compound variants.
+       *
+       * Pattern: Light backgrounds with subtle hover effects
+       * - Base: White background with slate borders
+       * - Dark mode: Colored -50 backgrounds
+       * - Hover: Colored -300 borders and -50/-100 backgrounds
+       */
+      color: createColorVariantMapping(
+        color =>
+          `border-slate-200 bg-white dark:bg-${color}-50 hover:border-${color}-300 hover:bg-${color}-50 dark:hover:bg-${color}-100`
+      ),
       selected: {
         true: '',
         false: '',
@@ -328,5 +298,22 @@ export const toggleChipTextVariants = cva(
   }
 )
 
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for toggleChipVariants props.
+ * Use this when defining component props that accept toggle chip styling options.
+ */
 export type ToggleChipVariants = VariantProps<typeof toggleChipVariants>
+
+/**
+ * Type definition for toggleChipTextVariants props.
+ * Use this for toggle chip text styling options.
+ */
 export type ToggleChipTextVariants = VariantProps<typeof toggleChipTextVariants>
+
+/**
+ * Shared color variant key type for toggle chip components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type ToggleChipColorVariant = ColorVariantKey

@@ -1,6 +1,27 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-// Text input field variants
+import { type ColorVariantKey } from '../shared/colorVariants'
+
+/**
+ * Text input field variants with comprehensive interaction states.
+ *
+ * Provides styling for form input fields with:
+ * - Complex border and shadow transitions
+ * - Focus ring system for accessibility
+ * - Hover effects with colored shadows
+ * - Light/dark theme support
+ *
+ * Color Pattern:
+ * - Border: Uses -700/30 opacity for subtle initial state
+ * - Hover: -600 border with -500/20 shadow
+ * - Focus: -500 border with -500/20 ring
+ * - Dark mode: Enhanced shadows with -400 variants
+ *
+ * @example
+ * ```tsx
+ * <input className={textInputFieldVariants({ color: 'brand' })} />
+ * ```
+ */
 export const textInputFieldVariants = cva(
   [
     'h-12 w-full rounded-md border-2 px-3 text-lg leading-6',
@@ -10,6 +31,10 @@ export const textInputFieldVariants = cva(
   ],
   {
     variants: {
+      /**
+       * Color variants with complex interaction states.
+       * Each color includes border, hover, focus, and dark mode variations.
+       */
       color: {
         brand:
           'border-brand-700/30 hover:border-brand-600 hover:shadow-md hover:shadow-brand-500/20 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 dark:hover:shadow-brand-400/30 dark:focus:ring-brand-400/30',
@@ -506,23 +531,95 @@ export const checkboxAgreementInputVariants = cva(
   }
 )
 
-// Export variant types
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for textInputFieldVariants props.
+ * Use this when defining component props that accept text input styling options.
+ */
 export type TextInputFieldVariants = VariantProps<typeof textInputFieldVariants>
+
+/**
+ * Type definition for comboFieldTriggerVariants props.
+ */
 export type ComboFieldTriggerVariants = VariantProps<typeof comboFieldTriggerVariants>
+
+/**
+ * Type definition for comboFieldContentVariants props.
+ */
 export type ComboFieldContentVariants = VariantProps<typeof comboFieldContentVariants>
+
+/**
+ * Type definition for comboFieldItemVariants props.
+ */
 export type ComboFieldItemVariants = VariantProps<typeof comboFieldItemVariants>
+
+/**
+ * Type definition for comboFieldValueVariants props.
+ */
 export type ComboFieldValueVariants = VariantProps<typeof comboFieldValueVariants>
+
+/**
+ * Type definition for dateInputFieldVariants props.
+ */
 export type DateInputFieldVariants = VariantProps<typeof dateInputFieldVariants>
+
+/**
+ * Type definition for datePickerButtonVariants props.
+ */
 export type DatePickerButtonVariants = VariantProps<typeof datePickerButtonVariants>
+
+/**
+ * Type definition for datePickerTextVariants props.
+ */
 export type DatePickerTextVariants = VariantProps<typeof datePickerTextVariants>
+
+/**
+ * Type definition for datePickerIconVariants props.
+ */
 export type DatePickerIconVariants = VariantProps<typeof datePickerIconVariants>
+
+/**
+ * Type definition for textInputLabelVariants props.
+ */
 export type TextInputLabelVariants = VariantProps<typeof textInputLabelVariants>
+
+/**
+ * Type definition for textInputLabelTextVariants props.
+ */
 export type TextInputLabelTextVariants = VariantProps<typeof textInputLabelTextVariants>
+
 // export type TextInputErrorVariants = VariantProps<typeof textInputErrorVariants> // DEPRECATED: Now using ErrorMessage component
+
+/**
+ * Type definition for calendarContainerVariants props.
+ */
 export type CalendarContainerVariants = VariantProps<typeof calendarContainerVariants>
+
+/**
+ * Type definition for calendarHeaderVariants props.
+ */
 export type CalendarHeaderVariants = VariantProps<typeof calendarHeaderVariants>
+
+/**
+ * Type definition for calendarWeekdayVariants props.
+ */
 export type CalendarWeekdayVariants = VariantProps<typeof calendarWeekdayVariants>
+
+/**
+ * Type definition for calendarDayVariants props.
+ */
 export type CalendarDayVariants = VariantProps<typeof calendarDayVariants>
+
+/**
+ * Type definition for checkboxAgreementInputVariants props.
+ */
 export type CheckboxAgreementInputVariants = VariantProps<
   typeof checkboxAgreementInputVariants
 >
+
+/**
+ * Shared color variant key type for input components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type InputColorVariant = ColorVariantKey

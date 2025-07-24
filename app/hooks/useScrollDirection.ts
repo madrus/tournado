@@ -20,6 +20,19 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
       const y = getScrollY()
       const diff = y - lastY.current
 
+      // Prevent overscroll bounce from affecting header visibility
+      const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.clientHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+      )
+      const maxScrollY = documentHeight - window.innerHeight
+
+      // Ignore scroll events outside valid range (overscroll/bounce)
+      if (y < 0 || y > maxScrollY) return
+
       if (Math.abs(diff) < threshold) return
 
       setShowHeader(diff <= 0) // up => show, down => hide

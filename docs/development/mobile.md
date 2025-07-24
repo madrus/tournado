@@ -8,7 +8,7 @@ This document describes the PWA (Progressive Web App) configuration implemented 
 
 ### 1. Web App Manifest (`/public/manifest.json`)
 
-Created a manifest file with the following key properties:
+Created a comprehensive manifest file with the following key properties:
 
 ```json
 {
@@ -16,7 +16,28 @@ Created a manifest file with the following key properties:
    "short_name": "Tournado",
    "display": "standalone",
    "background_color": "#134e4a",
-   "theme_color": "#03c989"
+   "theme_color": "#03c989",
+   "scope": "/",
+   "categories": ["sports", "utilities"],
+   "icons": [
+      {
+         "src": "/favicon.ico",
+         "sizes": "48x48",
+         "type": "image/x-icon"
+      },
+      {
+         "src": "/icon-192.png",
+         "sizes": "192x192",
+         "type": "image/png",
+         "purpose": "any maskable"
+      },
+      {
+         "src": "/icon-512.png",
+         "sizes": "512x512",
+         "type": "image/png",
+         "purpose": "any maskable"
+      }
+   ]
 }
 ```
 
@@ -39,6 +60,38 @@ Added manifest link to the `links` function in `root.tsx`:
 ```typescript
 { rel: 'manifest', href: '/manifest.json' }
 ```
+
+## PWA Improvements Made
+
+### Enhanced Manifest Properties
+
+Based on PR review feedback, the following improvements were implemented:
+
+#### ✅ **Multiple Icon Sizes**
+
+- Added `192x192` icon for standard PWA requirements
+- Added `512x512` icon for high-resolution displays and splash screens
+- Both icons support `"purpose": "any maskable"` for adaptive Android icons
+
+#### ✅ **Navigation Scope**
+
+- Added `"scope": "/"` to define the navigation scope
+- Ensures all app URLs are handled within the PWA context
+- Prevents navigation outside the app boundaries
+
+#### ✅ **App Store Classification**
+
+- Added `"categories": ["sports", "utilities"]` for better app store discovery
+- Helps users find the app in relevant categories
+
+### Icon Requirements
+
+**Note**: The actual icon files (`icon-192.png`, `icon-512.png`) need to be created and placed in the `/public` directory. These should be:
+
+- **192x192**: Standard PWA icon, used for home screen shortcuts
+- **512x512**: High-resolution icon for splash screens and app stores
+- **Format**: PNG with transparent background
+- **Design**: Should work well with maskable icon treatment on Android
 
 ## How It Works
 

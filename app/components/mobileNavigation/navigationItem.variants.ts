@@ -1,10 +1,16 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import {
-  COLOR_VARIANT_KEYS,
-  type ColorVariantKey,
-  createColorVariantObject,
-} from '../shared/colorVariants'
+// Tree-shaking optimization: Only include colors actually used in navigation
+const NAVIGATION_COLORS = {
+  brand: '',
+  primary: '',
+  emerald: '',
+  blue: '',
+  teal: '',
+  red: '',
+} as const
+
+type NavigationColorKey = keyof typeof NAVIGATION_COLORS
 
 /**
  * Navigation item container variant styles for mobile bottom navigation.
@@ -27,11 +33,12 @@ export const navigationItemVariants = cva(
     variants: {
       /**
        * Color theme variants following the design system color mapping.
+       * Limited to commonly used navigation colors for bundle size optimization.
        * - brand: Primary brand color (red) for key navigation items
        * - primary: Secondary brand color (emerald) for default items
-       * - Other colors: Extended palette for specialized navigation contexts
+       * - Other colors: Essential colors for different navigation contexts
        */
-      color: createColorVariantObject(),
+      color: NAVIGATION_COLORS,
       /**
        * Active state indicating current page/route.
        * Combined with color variants to show proper visual hierarchy.
@@ -71,9 +78,9 @@ export const navigationIconVariants = cva(
     variants: {
       /**
        * Color theme for the navigation icon.
-       * Maps to semantic CSS classes that handle light/dark theme adaptation.
+       * Limited to essential navigation colors for bundle optimization.
        */
-      color: createColorVariantObject(),
+      color: NAVIGATION_COLORS,
       /**
        * Active/inactive state for current page indication.
        */
@@ -83,11 +90,11 @@ export const navigationIconVariants = cva(
       },
     },
     compoundVariants: [
-      // Generate compound variants for all colors
-      ...Object.keys(COLOR_VARIANT_KEYS).flatMap(color => [
+      // Generate compound variants for navigation colors only
+      ...Object.keys(NAVIGATION_COLORS).flatMap(color => [
         // Active state: use adaptive color for visual prominence
         {
-          color: color as ColorVariantKey,
+          color: color as NavigationColorKey,
           active: true,
           class:
             color === 'brand'
@@ -98,7 +105,7 @@ export const navigationIconVariants = cva(
         },
         // Inactive state: use neutral foreground for all colors
         {
-          color: color as ColorVariantKey,
+          color: color as NavigationColorKey,
           active: false,
           class: 'text-primary-foreground',
         },
@@ -136,9 +143,9 @@ export const navigationLabelVariants = cva(
     variants: {
       /**
        * Color theme for the navigation label text.
-       * Uses semantic classes that adapt to light/dark themes.
+       * Limited to essential navigation colors for bundle optimization.
        */
-      color: createColorVariantObject(),
+      color: NAVIGATION_COLORS,
       /**
        * Active/inactive state affecting both color and typography weight.
        */
@@ -148,11 +155,11 @@ export const navigationLabelVariants = cva(
       },
     },
     compoundVariants: [
-      // Generate compound variants for all colors with typography emphasis
-      ...Object.keys(COLOR_VARIANT_KEYS).flatMap(color => [
+      // Generate compound variants for navigation colors with typography emphasis
+      ...Object.keys(NAVIGATION_COLORS).flatMap(color => [
         // Active state: use adaptive color + bold font for emphasis
         {
-          color: color as ColorVariantKey,
+          color: color as NavigationColorKey,
           active: true,
           class:
             color === 'brand'
@@ -163,7 +170,7 @@ export const navigationLabelVariants = cva(
         },
         // Inactive state: use neutral foreground for all colors
         {
-          color: color as ColorVariantKey,
+          color: color as NavigationColorKey,
           active: false,
           class: 'text-primary-foreground',
         },
@@ -197,7 +204,7 @@ export type NavigationIconVariants = VariantProps<typeof navigationIconVariants>
 export type NavigationLabelVariants = VariantProps<typeof navigationLabelVariants>
 
 /**
- * Shared color variant key type for navigation components.
- * Ensures consistency with the design system's color palette.
+ * Navigation-specific color variant type.
+ * Limited to colors actually used in navigation for bundle optimization.
  */
-export type NavigationColorVariant = ColorVariantKey
+export type NavigationColorVariant = NavigationColorKey

@@ -16,6 +16,8 @@ type NavigationItemProps = {
   icon: IconName
   label: string
   color?: NavigationItemVariants['color']
+  /** Icon size in pixels. Defaults to responsive sizing (32px mobile, 36px desktop) */
+  iconSize?: number
 }
 
 function NavigationItem({
@@ -23,11 +25,16 @@ function NavigationItem({
   icon,
   label,
   color = 'brand',
+  iconSize,
 }: NavigationItemProps): JSX.Element {
   const location = useLocation()
 
   // Robust route matching that handles trailing slashes and query params
   const isActive = normalizePathname(location.pathname) === normalizePathname(to)
+
+  // Responsive icon sizing: smaller on mobile, larger on desktop
+  const responsiveIconSize =
+    iconSize ?? (typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 36)
 
   return (
     <Link
@@ -37,7 +44,7 @@ function NavigationItem({
       data-testid={`nav-${label.toLowerCase()}`}
     >
       {renderIcon(icon, {
-        size: 36,
+        size: responsiveIconSize,
         variant: isActive ? 'filled' : 'outlined',
         weight: isActive ? 700 : 400,
         className: navigationIconVariants({ color, active: isActive }),

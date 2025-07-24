@@ -6,10 +6,10 @@ import { useLoaderData } from 'react-router'
 import invariant from 'tiny-invariant'
 
 import {
-  panelContentVariants,
-  panelGlowVariants,
-  panelVariants,
-} from '~/components/shared/panel.variants'
+  basePanelContentVariants as panelContentVariants,
+  basePanelGlowVariants as panelGlowVariants,
+  basePanelVariants as panelVariants,
+} from '~/components/shared/panel-base.variants'
 import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById } from '~/models/team.server'

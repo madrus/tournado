@@ -40,9 +40,13 @@ import { getUser } from './utils/session.server'
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
   { name: 'description', content: `Tournament management for everyone` },
+  { name: 'apple-mobile-web-app-capable', content: 'yes' },
+  { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+  { name: 'mobile-web-app-capable', content: 'yes' },
 ]
 
 export const links: LinksFunction = () => [
+  { rel: 'manifest', href: '/manifest.json' },
   { rel: 'stylesheet', href: tailwindStylesheetUrl },
   { rel: 'stylesheet', href: layoutStylesheetUrl },
   { rel: 'stylesheet', href: safeAreasStylesheetUrl },

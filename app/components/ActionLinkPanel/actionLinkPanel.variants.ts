@@ -1,6 +1,37 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-// CVA variants for ActionLinkPanel - modern approach with @variant dark support
+import {
+  type ColorVariantKey,
+  createColorVariantMapping,
+} from '../shared/colorVariants'
+
+// Import base panel variants that are shared across all panel components
+export {
+  basePanelContentVariants as panelContentVariants,
+  basePanelGlowVariants as panelGlowVariants,
+  type BasePanelContentVariants as PanelContentVariants,
+  type BasePanelGlowVariants as PanelGlowVariants,
+} from '../shared/panel-base.variants'
+
+/**
+ * ActionLinkPanel variants for interactive panel components.
+ *
+ * Provides styling for clickable panels with hover effects and semantic backgrounds.
+ * Uses panel-{color}-bg classes for consistent theming across light/dark modes.
+ *
+ * Features:
+ * - Smooth color transitions on hover
+ * - Semantic background classes for theme adaptation
+ * - Interactive cursor and overflow handling
+ * - Group-based hover effects for child elements
+ *
+ * @example
+ * ```tsx
+ * <div className={actionLinkPanelVariants({ color: 'brand' })}>
+ *   <ActionLinkContent />
+ * </div>
+ * ```
+ */
 export const actionLinkPanelVariants = cva(
   // Base classes - all the common panel styling
   [
@@ -9,30 +40,11 @@ export const actionLinkPanelVariants = cva(
   ],
   {
     variants: {
-      color: {
-        // Panel specific classes - consolidated to use -bg variants only
-        teal: 'panel-teal-bg',
-        brand: 'panel-brand-bg',
-        emerald: 'panel-emerald-bg',
-        blue: 'panel-blue-bg',
-        slate: 'panel-slate-bg',
-        red: 'panel-red-bg',
-        cyan: 'panel-cyan-bg',
-        yellow: 'panel-yellow-bg',
-        green: 'panel-green-bg',
-        violet: 'panel-violet-bg',
-        zinc: 'panel-zinc-bg',
-        orange: 'panel-orange-bg',
-        amber: 'panel-amber-bg',
-        lime: 'panel-lime-bg',
-        sky: 'panel-sky-bg',
-        indigo: 'panel-indigo-bg',
-        purple: 'panel-purple-bg',
-        fuchsia: 'panel-fuchsia-bg',
-        pink: 'panel-pink-bg',
-        rose: 'panel-rose-bg',
-        primary: 'panel-primary-bg',
-      },
+      /**
+       * Color theme variants using semantic panel background classes.
+       * Each color uses panel-{color}-bg for consistent theming.
+       */
+      color: createColorVariantMapping(color => `panel-${color}-bg`),
       size: {
         none: '',
         default: '',
@@ -47,35 +59,37 @@ export const actionLinkPanelVariants = cva(
   }
 )
 
-// Background variants for the stable background layer
+/**
+ * Panel background variants for stable background layers.
+ *
+ * Provides absolute positioning for background layers in ActionLinkPanel architecture.
+ * Uses semantic panel background classes for consistent theming across components.
+ *
+ * Design Pattern:
+ * - Absolute positioning to cover entire panel area
+ * - Uses panel-{color}-bg classes for semantic color mapping
+ * - Special handling for primary -> emerald mapping
+ *
+ * @example
+ * ```tsx
+ * <div className={panelBackgroundVariants({ color: 'brand' })} />
+ * ```
+ */
 export const panelBackgroundVariants = cva(
   // Base classes for panel background
   ['absolute inset-0'],
   {
     variants: {
-      color: {
-        brand: 'panel-brand-bg',
-        primary: 'panel-emerald-bg',
-        emerald: 'panel-emerald-bg',
-        blue: 'panel-blue-bg',
-        slate: 'panel-slate-bg',
-        teal: 'panel-teal-bg',
-        red: 'panel-red-bg',
-        cyan: 'panel-cyan-bg',
-        yellow: 'panel-yellow-bg',
-        green: 'panel-green-bg',
-        violet: 'panel-violet-bg',
-        zinc: 'panel-zinc-bg',
-        orange: 'panel-orange-bg',
-        amber: 'panel-amber-bg',
-        lime: 'panel-lime-bg',
-        sky: 'panel-sky-bg',
-        indigo: 'panel-indigo-bg',
-        purple: 'panel-purple-bg',
-        fuchsia: 'panel-fuchsia-bg',
-        pink: 'panel-pink-bg',
-        rose: 'panel-rose-bg',
-      },
+      /**
+       * Background color variants using semantic panel classes.
+       * Special mapping for primary to emerald for design consistency.
+       */
+      color: createColorVariantMapping(color => {
+        // Primary maps to emerald background
+        if (color === 'primary') return 'panel-emerald-bg'
+        // Standard pattern for all other colors
+        return `panel-${color}-bg`
+      }),
     },
     defaultVariants: {
       color: 'teal',
@@ -112,37 +126,32 @@ export const panelLayerVariants = cva(
   }
 )
 
-// Glow effect variants
-export const panelGlowVariants = cva(
+// ============================================================================
+// ACTIONLINKPANEL COMPONENT-SPECIFIC VARIANTS
+// These variants are only used by ActionLinkPanel and not shared
+// ============================================================================
+
+/**
+ * ActionLinkPanel-specific glow variants with different styling.
+ *
+ * @deprecated Consider using basePanelGlowVariants from panel-base.variants.ts
+ * for consistency. This variant uses panel-{color}-glow classes and higher opacity.
+ *
+ * Uses semantic panel-{color}-glow classes instead of direct color classes.
+ * Higher opacity (90%) compared to base glow variants (60%).
+ */
+export const actionLinkPanelGlowVariants = cva(
   // Base classes for glow effect
   [
     'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90',
   ],
   {
     variants: {
-      color: {
-        teal: 'panel-teal-glow',
-        brand: 'panel-brand-glow',
-        emerald: 'panel-emerald-glow',
-        blue: 'panel-blue-glow',
-        slate: 'panel-slate-glow',
-        red: 'panel-red-glow',
-        cyan: 'panel-cyan-glow',
-        yellow: 'panel-yellow-glow',
-        green: 'panel-green-glow',
-        violet: 'panel-violet-glow',
-        zinc: 'panel-zinc-glow',
-        orange: 'panel-orange-glow',
-        amber: 'panel-amber-glow',
-        lime: 'panel-lime-glow',
-        sky: 'panel-sky-glow',
-        indigo: 'panel-indigo-glow',
-        purple: 'panel-purple-glow',
-        fuchsia: 'panel-fuchsia-glow',
-        pink: 'panel-pink-glow',
-        rose: 'panel-rose-glow',
-        primary: 'panel-primary-glow',
-      },
+      /**
+       * Glow color variants using semantic panel glow classes.
+       * Coordinates with panel background colors for visual consistency.
+       */
+      color: createColorVariantMapping(color => `panel-${color}-glow`),
     },
     defaultVariants: {
       color: 'teal',
@@ -150,7 +159,25 @@ export const panelGlowVariants = cva(
   }
 )
 
-// Icon variants for consistent icon styling
+/**
+ * Panel icon variants for ActionLinkPanel icon styling.
+ *
+ * Provides consistent styling for icons within ActionLinkPanel components.
+ * Uses adaptive action colors for proper contrast and theme coordination.
+ *
+ * Design Features:
+ * - Circular 32px containers with transparent backgrounds
+ * - 2px borders matching text colors
+ * - Smooth color transitions for theme changes
+ * - Uses text-adaptive-{color}-action classes for enhanced contrast
+ *
+ * @example
+ * ```tsx
+ * <div className={panelIconVariants({ color: 'brand' })}>
+ *   <ActionIcon />
+ * </div>
+ * ```
+ */
 export const panelIconVariants = cva(
   // Base classes for icons
   [
@@ -159,29 +186,21 @@ export const panelIconVariants = cva(
   ],
   {
     variants: {
-      color: {
-        brand: 'text-adaptive-red-action border-adaptive-red-action',
-        teal: 'text-adaptive-teal-action border-adaptive-teal-action',
-        emerald: 'text-adaptive-emerald-action border-adaptive-emerald-action',
-        blue: 'text-adaptive-blue-action border-adaptive-blue-action',
-        slate: 'text-adaptive-slate-action border-adaptive-slate-action',
-        red: 'text-adaptive-red-action border-adaptive-red-action',
-        cyan: 'text-adaptive-cyan-action border-adaptive-cyan-action',
-        yellow: 'text-adaptive-yellow-action border-adaptive-yellow-action',
-        green: 'text-adaptive-green-action border-adaptive-green-action',
-        violet: 'text-adaptive-violet-action border-adaptive-violet-action',
-        zinc: 'text-adaptive-zinc-action border-adaptive-zinc-action',
-        orange: 'text-adaptive-orange-action border-adaptive-orange-action',
-        amber: 'text-adaptive-amber-action border-adaptive-amber-action',
-        lime: 'text-adaptive-lime-action border-adaptive-lime-action',
-        sky: 'text-adaptive-sky-action border-adaptive-sky-action',
-        indigo: 'text-adaptive-indigo-action border-adaptive-indigo-action',
-        purple: 'text-adaptive-purple-action border-adaptive-purple-action',
-        fuchsia: 'text-adaptive-fuchsia-action border-adaptive-fuchsia-action',
-        pink: 'text-adaptive-pink-action border-adaptive-pink-action',
-        rose: 'text-adaptive-rose-action border-adaptive-rose-action',
-        primary: 'text-adaptive-emerald-action border-adaptive-emerald-action',
-      },
+      /**
+       * Icon color variants using adaptive action classes.
+       * Special handling for brand and primary color mappings.
+       */
+      color: createColorVariantMapping(color => {
+        // Special cases for color mapping
+        if (color === 'brand') {
+          return 'text-adaptive-red-action border-adaptive-red-action'
+        }
+        if (color === 'primary') {
+          return 'text-adaptive-emerald-action border-adaptive-emerald-action'
+        }
+        // Standard pattern for other colors
+        return `text-adaptive-${color}-action border-adaptive-${color}-action`
+      }),
     },
     defaultVariants: {
       color: 'teal',
@@ -189,46 +208,46 @@ export const panelIconVariants = cva(
   }
 )
 
-// Children text color variants
+/**
+ * Panel children content variants for ActionLinkPanel text styling.
+ *
+ * Applies adaptive action colors to child paragraph and strong elements.
+ * Uses CSS child selectors with !important to override default text colors.
+ *
+ * Design Pattern:
+ * - Uses [&_element] syntax for scoped child styling
+ * - Applies same color to both p and strong elements
+ * - Uses !important for color override specificity
+ * - Special handling for brand/primary color mappings
+ *
+ * @example
+ * ```tsx
+ * <div className={panelChildrenVariants({ iconColor: 'brand' })}>
+ *   <p>This paragraph will be brand colored</p>
+ *   <strong>This text will also be brand colored</strong>
+ * </div>
+ * ```
+ */
 export const panelChildrenVariants = cva(
   // Base classes for children content
   [],
   {
     variants: {
-      iconColor: {
-        brand: '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action',
-        green:
-          '[&_p]:!text-adaptive-green-action [&_strong]:!text-adaptive-green-action',
-        cyan: '[&_p]:!text-adaptive-cyan-action [&_strong]:!text-adaptive-cyan-action',
-        yellow:
-          '[&_p]:!text-adaptive-yellow-action [&_strong]:!text-adaptive-yellow-action',
-        violet:
-          '[&_p]:!text-adaptive-violet-action [&_strong]:!text-adaptive-violet-action',
-        teal: '[&_p]:!text-adaptive-teal-action [&_strong]:!text-adaptive-teal-action',
-        blue: '[&_p]:!text-adaptive-blue-action [&_strong]:!text-adaptive-blue-action',
-        emerald:
-          '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action',
-        red: '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action',
-        slate:
-          '[&_p]:!text-adaptive-slate-action [&_strong]:!text-adaptive-slate-action',
-        zinc: '[&_p]:!text-adaptive-zinc-action [&_strong]:!text-adaptive-zinc-action',
-        orange:
-          '[&_p]:!text-adaptive-orange-action [&_strong]:!text-adaptive-orange-action',
-        amber:
-          '[&_p]:!text-adaptive-amber-action [&_strong]:!text-adaptive-amber-action',
-        lime: '[&_p]:!text-adaptive-lime-action [&_strong]:!text-adaptive-lime-action',
-        sky: '[&_p]:!text-adaptive-sky-action [&_strong]:!text-adaptive-sky-action',
-        indigo:
-          '[&_p]:!text-adaptive-indigo-action [&_strong]:!text-adaptive-indigo-action',
-        purple:
-          '[&_p]:!text-adaptive-purple-action [&_strong]:!text-adaptive-purple-action',
-        fuchsia:
-          '[&_p]:!text-adaptive-fuchsia-action [&_strong]:!text-adaptive-fuchsia-action',
-        pink: '[&_p]:!text-adaptive-pink-action [&_strong]:!text-adaptive-pink-action',
-        rose: '[&_p]:!text-adaptive-rose-action [&_strong]:!text-adaptive-rose-action',
-        primary:
-          '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action',
-      },
+      /**
+       * Child element color variants using adaptive action classes.
+       * Applies colors to nested p and strong elements with override specificity.
+       */
+      iconColor: createColorVariantMapping(color => {
+        // Special cases for color mapping
+        if (color === 'brand') {
+          return '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action'
+        }
+        if (color === 'primary') {
+          return '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action'
+        }
+        // Standard pattern for other colors
+        return `[&_p]:!text-adaptive-${color}-action [&_strong]:!text-adaptive-${color}-action`
+      }),
     },
     defaultVariants: {
       iconColor: 'teal',
@@ -236,10 +255,48 @@ export const panelChildrenVariants = cva(
   }
 )
 
-// Export types
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for actionLinkPanelVariants props.
+ * Use this when defining component props that accept ActionLinkPanel styling options.
+ */
 export type ActionLinkPanelVariants = VariantProps<typeof actionLinkPanelVariants>
+
+/**
+ * Type definition for panelBackgroundVariants props.
+ * Use this for panel background layer styling options.
+ */
 export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariants>
+
+/**
+ * Type definition for panelLayerVariants props.
+ * Use this for panel layer positioning options.
+ */
 export type PanelLayerVariants = VariantProps<typeof panelLayerVariants>
-export type PanelGlowVariants = VariantProps<typeof panelGlowVariants>
+
+/**
+ * Type definition for actionLinkPanelGlowVariants props.
+ * Use this for ActionLinkPanel-specific glow effect styling options.
+ */
+export type ActionLinkPanelGlowVariants = VariantProps<
+  typeof actionLinkPanelGlowVariants
+>
+
+/**
+ * Type definition for panelIconVariants props.
+ * Use this for panel icon styling options.
+ */
 export type PanelIconVariants = VariantProps<typeof panelIconVariants>
+
+/**
+ * Type definition for panelChildrenVariants props.
+ * Use this for panel children content styling options.
+ */
 export type PanelChildrenVariants = VariantProps<typeof panelChildrenVariants>
+
+/**
+ * Shared color variant key type for ActionLinkPanel components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type ActionLinkPanelColorVariant = ColorVariantKey

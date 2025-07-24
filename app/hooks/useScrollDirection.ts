@@ -42,11 +42,15 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
       // If there's not enough content to scroll, always show header
       if (maxScrollY <= 0) {
         setShowHeader(true)
+        lastY.current = y // Fix: update lastY to prevent drift
         return
       }
 
       // Ignore scroll events outside valid range (overscroll/bounce)
-      if (y < 0 || y > maxScrollY) return
+      if (y < 0 || y > maxScrollY) {
+        lastY.current = y // Fix: update lastY to prevent position drift
+        return
+      }
 
       if (Math.abs(diff) < threshold) return
 

@@ -1,6 +1,10 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey, createColorVariantObject } from '../shared/colorVariants'
+import {
+  COLOR_VARIANT_KEYS,
+  type ColorVariantKey,
+  createColorVariantObject,
+} from '../shared/colorVariants'
 
 /**
  * Navigation item container variant styles for mobile bottom navigation.
@@ -79,29 +83,26 @@ export const navigationIconVariants = cva(
       },
     },
     compoundVariants: [
-      // Brand color active/inactive states - primary accent color
-      {
-        color: 'brand',
-        active: true,
-        class: 'text-adaptive-brand', // Semantic brand color class
-      },
-      {
-        color: 'brand',
-        active: false,
-        class: 'text-primary-foreground', // Neutral inactive color
-      },
-      // Primary color active/inactive states - secondary brand color (emerald)
-      {
-        color: 'primary',
-        active: true,
-        class: 'text-adaptive-emerald', // Semantic emerald color class
-      },
-      {
-        color: 'primary',
-        active: false,
-        class: 'text-primary-foreground', // Neutral inactive color
-      },
-      // Additional color variants can be added as needed following the same pattern
+      // Generate compound variants for all colors
+      ...Object.keys(COLOR_VARIANT_KEYS).flatMap(color => [
+        // Active state: use adaptive color for visual prominence
+        {
+          color: color as ColorVariantKey,
+          active: true,
+          class:
+            color === 'brand'
+              ? 'text-adaptive-brand' // Brand uses special adaptive class
+              : color === 'primary'
+                ? 'text-adaptive-emerald' // Primary maps to emerald
+                : `text-adaptive-${color}`, // Standard adaptive pattern
+        },
+        // Inactive state: use neutral foreground for all colors
+        {
+          color: color as ColorVariantKey,
+          active: false,
+          class: 'text-primary-foreground',
+        },
+      ]),
     ],
     defaultVariants: {
       color: 'brand',
@@ -147,29 +148,26 @@ export const navigationLabelVariants = cva(
       },
     },
     compoundVariants: [
-      // Brand color active/inactive states with typography emphasis
-      {
-        color: 'brand',
-        active: true,
-        class: 'text-adaptive-brand font-bold', // Brand color + bold for active state
-      },
-      {
-        color: 'brand',
-        active: false,
-        class: 'text-primary-foreground', // Neutral color for inactive state
-      },
-      // Primary color active/inactive states
-      {
-        color: 'primary',
-        active: true,
-        class: 'text-adaptive-emerald font-bold', // Emerald color + bold for active state
-      },
-      {
-        color: 'primary',
-        active: false,
-        class: 'text-primary-foreground', // Neutral color for inactive state
-      },
-      // Additional color variants follow the same active/inactive pattern
+      // Generate compound variants for all colors with typography emphasis
+      ...Object.keys(COLOR_VARIANT_KEYS).flatMap(color => [
+        // Active state: use adaptive color + bold font for emphasis
+        {
+          color: color as ColorVariantKey,
+          active: true,
+          class:
+            color === 'brand'
+              ? 'text-adaptive-brand font-bold' // Brand uses special adaptive class
+              : color === 'primary'
+                ? 'text-adaptive-emerald font-bold' // Primary maps to emerald
+                : `text-adaptive-${color} font-bold`, // Standard adaptive pattern
+        },
+        // Inactive state: use neutral foreground for all colors
+        {
+          color: color as ColorVariantKey,
+          active: false,
+          class: 'text-primary-foreground',
+        },
+      ]),
     ],
     defaultVariants: {
       color: 'brand',

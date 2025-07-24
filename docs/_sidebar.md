@@ -10,6 +10,7 @@
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
    - [Icon Guidelines](development/icon-guidelines.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
+   - [Mobile Web App Configuration](development/mobile.md)
    - [Routing](development/routing.md)
    - [State Management](development/state-management.md)
    - [Multi-Language Support](development/multi-language-support.md)

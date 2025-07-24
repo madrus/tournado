@@ -2,6 +2,7 @@ import { JSX } from 'react'
 import { Link, useLocation } from 'react-router'
 
 import { IconName, renderIcon } from '~/utils/iconUtils'
+import { normalizePathname } from '~/utils/route-utils'
 
 import {
   navigationIconVariants,
@@ -24,7 +25,9 @@ function NavigationItem({
   color = 'brand',
 }: NavigationItemProps): JSX.Element {
   const location = useLocation()
-  const isActive = location.pathname === to
+
+  // Robust route matching that handles trailing slashes and query params
+  const isActive = normalizePathname(location.pathname) === normalizePathname(to)
 
   return (
     <Link

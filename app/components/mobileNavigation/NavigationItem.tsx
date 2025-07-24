@@ -32,9 +32,15 @@ function NavigationItem({
   // Robust route matching that handles trailing slashes and query params
   const isActive = normalizePathname(location.pathname) === normalizePathname(to)
 
-  // Responsive icon sizing: smaller on mobile, larger on desktop
-  const responsiveIconSize =
-    iconSize ?? (typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 36)
+  // Responsive icon sizing: Use CSS-based detection that matches Tailwind breakpoints
+  // Check if we're in a mobile context by testing if a CSS media query matches
+  const isMobileBreakpoint =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 767px)').matches
+      : false
+
+  // Default to 36px for desktop/testing, 32px for mobile breakpoint
+  const responsiveIconSize = iconSize ?? (isMobileBreakpoint ? 32 : 36)
 
   return (
     <Link

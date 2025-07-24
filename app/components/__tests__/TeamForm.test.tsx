@@ -193,6 +193,90 @@ beforeEach(() => {
 })
 
 describe('TeamForm Component - filling the form', () => {
+  describe('Panel 1 Conditional Error Message', () => {
+    it('should not show panel 1 error message initially', () => {
+      renderTeamForm('create', 'public')
+
+      // Panel 1 validation message should not appear initially
+      expect(
+        screen.queryByText('teams.form.completeAllThreeFields')
+      ).not.toBeInTheDocument()
+    })
+
+    it('should not show panel 1 error message when fields are empty but not validated', () => {
+      renderTeamForm('create', 'public')
+
+      // Even with empty fields, validation message should not appear until validation is attempted
+      expect(
+        screen.queryByText('teams.form.completeAllThreeFields')
+      ).not.toBeInTheDocument()
+    })
+
+    it('should show panel 1 error message when panel is invalid and forceShowAllErrors is true', async () => {
+      renderTeamForm('create', 'public')
+
+      // Wait for the form to render, then force show all errors
+      await waitFor(() => {
+        state().setValidationField('forceShowAllErrors', true)
+      })
+
+      // Wait for the error message to appear
+      await waitFor(() => {
+        expect(
+          screen.getByText('teams.form.completeAllThreeFields')
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('should show panel 1 error message when panel is invalid and submitAttempted is true', async () => {
+      renderTeamForm('create', 'public')
+
+      // Wait for the form to render, then simulate form submission attempt
+      await waitFor(() => {
+        state().setValidationField('submitAttempted', true)
+      })
+
+      // Wait for the error message to appear
+      await waitFor(() => {
+        expect(
+          screen.getByText('teams.form.completeAllThreeFields')
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('should not show panel 1 error message when panel is valid', async () => {
+      // Start with panel 1 completed (valid)
+      renderTeamForm('create', 'public', PANEL1_FORMDATA)
+
+      // Wait for the form to render, then force show all errors but panel is valid
+      await waitFor(() => {
+        state().setValidationField('forceShowAllErrors', true)
+      })
+
+      // Wait a moment to ensure any potential error message would have appeared
+      await waitFor(() => {
+        // Validation message should not appear because panel 1 is valid
+        expect(
+          screen.queryByText('teams.form.completeAllThreeFields')
+        ).not.toBeInTheDocument()
+      })
+    })
+
+    it('should use destructive text color for panel 1 error message', async () => {
+      renderTeamForm('create', 'public')
+
+      // Wait for the form to render, then force show validation error
+      await waitFor(() => {
+        state().setValidationField('forceShowAllErrors', true)
+      })
+
+      await waitFor(() => {
+        const errorMessage = screen.getByText('teams.form.completeAllThreeFields')
+        expect(errorMessage).toHaveClass('text-destructive')
+      })
+    })
+  })
+
   describe('Touch-based Error Display', () => {
     it('should not show error messages initially', () => {
       renderTeamForm('create', 'public')

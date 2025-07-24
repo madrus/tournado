@@ -178,6 +178,10 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               clip: 'rect(0, 0, 0, 0)',
               whiteSpace: 'nowrap',
               wordWrap: 'normal',
+              visibility: 'hidden',
+              opacity: 0,
+              pointerEvents: 'none',
+              zIndex: -1,
             }}
           >
             {options.map(opt => (

@@ -319,7 +319,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         >
           <div
             className='flex h-full flex-col'
-            style={{ paddingTop: 'var(--header-height, 62px)' }}
+            style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />

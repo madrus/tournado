@@ -145,9 +145,9 @@ describe('NavigationItem', () => {
 
       // Instead of direct node access, use getByTestId for icon and getByText for label
       const icon = screen.getByTestId('nav-icon')
-      expect(icon).toHaveClass('text-brand')
+      expect(icon).toHaveClass('text-adaptive-brand')
       const labelNode = screen.getByText('Teams')
-      expect(labelNode).toHaveClass('text-brand', 'font-bold')
+      expect(labelNode).toHaveClass('text-adaptive-brand', 'font-bold')
     })
 
     it('should handle different routes correctly', () => {
@@ -173,7 +173,7 @@ describe('NavigationItem', () => {
       )
 
       let homeIcon = screen.getByTestId('nav-icon')
-      expect(homeIcon).toHaveClass('text-brand') // Should be active
+      expect(homeIcon).toHaveClass('text-adaptive-brand') // Should be active
 
       // Test teams route
       mockUseLocation.mockReturnValue({

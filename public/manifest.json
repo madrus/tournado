@@ -1,0 +1,17 @@
+{
+  "name": "Tournado",
+  "short_name": "Tournado",
+  "description": "Tournament management for everyone",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#134e4a",
+  "theme_color": "#03c989",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

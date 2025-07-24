@@ -27,6 +27,9 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
       lastY.current = y
     }
 
+    // Initialize lastY to current scroll position on mount
+    lastY.current = getScrollY()
+
     // Listen on both window and document to capture most scroll situations
     window.addEventListener('scroll', onScroll, { passive: true })
     document.addEventListener('scroll', onScroll, { passive: true, capture: true })

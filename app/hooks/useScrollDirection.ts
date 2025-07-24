@@ -5,6 +5,7 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
+  const isDocumentHeightInitialized = useRef<boolean>(false)
 
   useEffect(() => {
     const getScrollY = () => {
@@ -27,11 +28,17 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
         document.documentElement.offsetHeight
       )
       documentHeightRef.current = height
+      isDocumentHeightInitialized.current = true
     }
 
     const onScroll = () => {
       const y = getScrollY()
       const diff = y - lastY.current
+
+      // Ensure document height is calculated before using it
+      if (!isDocumentHeightInitialized.current) {
+        updateDocumentHeight()
+      }
 
       // Prevent overscroll bounce from affecting header visibility
       const maxScrollY = Math.max(
@@ -52,7 +59,9 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
         return
       }
 
-      if (Math.abs(diff) < threshold) return
+      // Cache Math.abs calculation for performance
+      const absDiff = Math.abs(diff)
+      if (absDiff < threshold) return
 
       setShowHeader(diff <= 0) // up => show, down => hide
 

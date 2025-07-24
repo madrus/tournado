@@ -1,5 +1,28 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
+/**
+ * Team chip variants for tournament team display components.
+ *
+ * Specialized chip design for team names with tournament-specific styling.
+ * Features a complex focus ring system optimized for tournament interfaces.
+ *
+ * Design Features:
+ * - Tournament-specific brand color (red) theming
+ * - Complex focus ring system for accessibility
+ * - Interactive states with scaling animations
+ * - Optimized for team name display context
+ *
+ * Focus Ring System:
+ * - Light mode: Red ring with white offset
+ * - Dark mode: White ring with red offset (creates white-red-white pattern)
+ *
+ * @example
+ * ```tsx
+ * <div className={teamChipVariants({ color: 'brand', interactive: true, hasActions: false })}>
+ *   Team Amsterdam
+ * </div>
+ * ```
+ */
 export const teamChipVariants = cva(
   // Base classes for all team chips
   [
@@ -27,6 +50,13 @@ export const teamChipVariants = cva(
         true: [], // padding handled by chipClasses.container
         false: 'px-3',
       },
+      /**
+       * Color variants optimized for team display context.
+       * Limited to brand and neutral for tournament-specific design.
+       *
+       * - brand: Tournament brand color (red) for primary teams
+       * - neutral: Neutral styling for secondary/disabled teams
+       */
       color: {
         brand: [
           'border-red-600 dark:!border-slate-100',
@@ -35,7 +65,7 @@ export const teamChipVariants = cva(
           'shadow-brand/25 hover:shadow-brand/40',
           'hover:bg-accent hover:border-brand-accent dark:hover:bg-brand-700',
         ],
-        // Could add other color variants for different chip types
+        // Neutral variant for non-primary team display
         neutral: [
           'border-slate-600 dark:border-slate-400',
           'bg-background dark:bg-slate-700',
@@ -53,10 +83,40 @@ export const teamChipVariants = cva(
   }
 )
 
+/**
+ * Delete button variants for team chip removal functionality.
+ *
+ * Provides styling for small delete/remove buttons within team chips.
+ * Uses brand colors to maintain visual consistency with team chip theming.
+ *
+ * @example
+ * ```tsx
+ * <button className={deleteButtonVariants()}>
+ *   <XIcon />
+ * </button>
+ * ```
+ */
 export const deleteButtonVariants = cva([
   'text-brand hover:bg-accent hover:text-brand-accent dark:hover:bg-brand-700',
   'flex-shrink-0 rounded-full p-1',
 ])
 
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for teamChipVariants props.
+ * Use this when defining component props that accept team chip styling options.
+ */
 export type TeamChipVariants = VariantProps<typeof teamChipVariants>
+
+/**
+ * Type definition for deleteButtonVariants props.
+ * Use this for delete button styling within team chips.
+ */
 export type DeleteButtonVariants = VariantProps<typeof deleteButtonVariants>
+
+/**
+ * Team chip color variant type (limited to brand/neutral for tournament context).
+ * Intentionally restricted compared to full ColorVariantKey for specialized use case.
+ */
+export type TeamChipColorVariant = 'brand' | 'neutral'

@@ -71,15 +71,16 @@ export function TeamForm({
       divisions: availableDivisions,
       categories: availableCategories,
     },
+    isDirty,
+    isFormReadyForSubmission,
+    isPanelEnabled,
+    isPanelValid,
+    setFormData,
     setFormField,
     setFormMetaField,
-    setFormData,
-    validateForm,
-    validateFieldOnBlur,
     updateAvailableOptions,
-    isPanelEnabled,
-    isFormReadyForSubmission,
-    isDirty,
+    validateFieldOnBlur,
+    validateForm,
   } = useTeamFormStore()
 
   // --- Panel Validity Logic ---
@@ -273,9 +274,12 @@ export function TeamForm({
             <h2 className='text-title mb-4 text-xl font-bold'>
               {t('teams.form.selectTournamentDetails')}
             </h2>
-            <p className='text-foreground mb-4'>
-              {t('teams.form.completeAllThreeFields')}
-            </p>
+            {/* Only show error message when validation has been attempted */}
+            {!isPanelValid(1) && (forceShowAllErrors || submitAttempted) ? (
+              <p className='text-destructive mb-4'>
+                {t('teams.form.completeAllThreeFields')}
+              </p>
+            ) : null}
           </div>
 
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>

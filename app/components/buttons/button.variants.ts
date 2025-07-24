@@ -1,5 +1,29 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
+import { type ColorVariantKey, createColorVariantObject } from '../shared/colorVariants'
+
+/**
+ * Button component variants with comprehensive styling and interaction states.
+ *
+ * Provides a complete button system with:
+ * - Multiple visual variants (primary, secondary)
+ * - Full color palette support
+ * - Size variants for different contexts
+ * - Advanced interaction states (hover, active, disabled)
+ * - Accessibility features (focus rings, disabled states)
+ *
+ * Design System Integration:
+ * - Uses semantic CSS custom properties for consistent theming
+ * - Supports all standard design system colors
+ * - Includes hover animations and state transitions
+ *
+ * @example
+ * ```tsx
+ * <button className={buttonVariants({ variant: 'primary', color: 'brand', size: 'md' })}>
+ *   Click Me
+ * </button>
+ * ```
+ */
 export const buttonVariants = cva(
   // Base classes - all the common button styling
   [
@@ -11,30 +35,34 @@ export const buttonVariants = cva(
     'disabled:cursor-not-allowed disabled:opacity-50',
     'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border',
     'focus:outline-none',
-    // Ring system base classes
+    // Ring system base classes for accessibility
     'disabled:hover:ring-0 disabled:hover:ring-offset-0 disabled:focus-visible:ring-0 disabled:focus-visible:ring-offset-0 disabled:focus:ring-0 disabled:focus:ring-offset-0',
   ],
   {
     variants: {
+      /**
+       * Visual style variants affecting button appearance.
+       * - primary: Filled buttons with white text (default)
+       * - secondary: Outlined buttons with transparent background
+       */
       variant: {
         primary: ['text-white'],
         secondary: ['border'],
       },
-      color: {
-        brand: [],
-        primary: [],
-        emerald: [],
-        red: [],
-        teal: [],
-        cyan: [],
-        yellow: [],
-        green: [],
-        violet: [],
-        slate: [],
-      },
+      /**
+       * Color theme variants following the design system palette.
+       * Empty arrays indicate that styling is handled via compound variants
+       * which combine color + variant for complete button styles.
+       */
+      color: createColorVariantObject(),
+      /**
+       * Size variants for different contexts.
+       * - sm: Smaller buttons for compact interfaces
+       * - md: Default size for standard use cases
+       */
       size: {
         sm: 'min-h-10 min-w-24 py-2 px-3 text-xs',
-        md: '', // Default size, no additional classes
+        md: '', // Default size, no additional classes needed
       },
     },
     compoundVariants: [
@@ -234,7 +262,34 @@ export const buttonVariants = cva(
   }
 )
 
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for buttonVariants props.
+ * Use this when defining component props that accept button styling options.
+ */
 export type ButtonVariants = VariantProps<typeof buttonVariants>
+
+/**
+ * Type definition for button visual variants.
+ * Ensures type safety when specifying button styles.
+ */
 export type ButtonVariant = NonNullable<ButtonVariants['variant']>
+
+/**
+ * Type definition for button color options.
+ * Aligned with the design system's color palette.
+ */
 export type ButtonColor = NonNullable<ButtonVariants['color']>
+
+/**
+ * Type definition for button size options.
+ * Provides type safety for size-related props.
+ */
 export type ButtonSize = NonNullable<ButtonVariants['size']>
+
+/**
+ * Shared color variant key type for button components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type ButtonColorVariant = ColorVariantKey

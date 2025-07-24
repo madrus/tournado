@@ -40,9 +40,13 @@ import { getUser } from './utils/session.server'
 export const meta: MetaFunction = () => [
   { title: 'Tournado' },
   { name: 'description', content: `Tournament management for everyone` },
+  { name: 'apple-mobile-web-app-capable', content: 'yes' },
+  { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+  { name: 'mobile-web-app-capable', content: 'yes' },
 ]
 
 export const links: LinksFunction = () => [
+  { rel: 'manifest', href: '/manifest.json' },
   { rel: 'stylesheet', href: tailwindStylesheetUrl },
   { rel: 'stylesheet', href: layoutStylesheetUrl },
   { rel: 'stylesheet', href: safeAreasStylesheetUrl },
@@ -315,7 +319,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         >
           <div
             className='flex h-full flex-col'
-            style={{ paddingTop: 'var(--header-height, 62px)' }}
+            style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>
               <AppBar authenticated={authenticated} username={username} user={user} />

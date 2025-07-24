@@ -73,6 +73,7 @@
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "isbot": "^5.1.28",
+    "modern-normalize": "^3.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-email": "^4.2.3",

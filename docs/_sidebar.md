@@ -2,7 +2,8 @@
    - [Overview](README.md)
    - [Getting Started](getting_started.md)
 - Work in Progress
-   - [WIP Items](wip.md)
+   - [Claude Code Analysis](wip/claude-20250717.md)
+   - [Claude QC PR#154](wip/claude-20250723.md)
 - Development
    - [Overview](development/overview.md)
    - [Design System](development/design-system.md)

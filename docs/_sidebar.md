@@ -2,13 +2,15 @@
    - [Overview](README.md)
    - [Getting Started](getting_started.md)
 - Work in Progress
-   - [WIP Items](wip.md)
+   - [Claude Code Analysis](wip/claude-20250717.md)
+   - [Claude QC PR#154](wip/claude-20250723.md)
 - Development
    - [Overview](development/overview.md)
    - [Design System](development/design-system.md)
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
    - [Icon Guidelines](development/icon-guidelines.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
+   - [Mobile Web App Configuration](development/mobile.md)
    - [Routing](development/routing.md)
    - [State Management](development/state-management.md)
    - [Multi-Language Support](development/multi-language-support.md)

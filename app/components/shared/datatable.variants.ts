@@ -1,42 +1,37 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-// Datatable container styling
+import { type ColorVariantKey, createColorVariantMapping } from './colorVariants'
+
+/**
+ * Datatable container variants for data table wrapper styling.
+ *
+ * Provides consistent container styling for data tables with themed borders and backgrounds.
+ * Uses subtle -50 backgrounds in light mode and -950 in dark mode for optimal content contrast.
+ *
+ * Pattern:
+ * - Light mode: -200 borders with -50 backgrounds
+ * - Dark mode: -800 borders with -950 backgrounds
+ *
+ * @example
+ * ```tsx
+ * <div className={datatableContainerVariants({ color: 'brand' })}>
+ *   <table>...</table>
+ * </div>
+ * ```
+ */
 export const datatableContainerVariants = cva(
   // Base classes - container styling
   ['w-full overflow-hidden rounded-lg border'],
   {
     variants: {
-      color: {
-        brand: 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950',
-        primary:
-          'border-primary-200 bg-primary-50 dark:border-primary-800 dark:bg-primary-950',
-        emerald:
-          'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950',
-        blue: 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950',
-        slate: 'border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950',
-        teal: 'border-teal-200 bg-teal-50 dark:border-teal-800 dark:bg-teal-950',
-        red: 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950',
-        cyan: 'border-cyan-200 bg-cyan-50 dark:border-cyan-800 dark:bg-cyan-950',
-        yellow:
-          'border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950',
-        green: 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950',
-        violet:
-          'border-violet-200 bg-violet-50 dark:border-violet-800 dark:bg-violet-950',
-        zinc: 'border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950',
-        orange:
-          'border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950',
-        amber: 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950',
-        lime: 'border-lime-200 bg-lime-50 dark:border-lime-800 dark:bg-lime-950',
-        sky: 'border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950',
-        indigo:
-          'border-indigo-200 bg-indigo-50 dark:border-indigo-800 dark:bg-indigo-950',
-        purple:
-          'border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950',
-        fuchsia:
-          'border-fuchsia-200 bg-fuchsia-50 dark:border-fuchsia-800 dark:bg-fuchsia-950',
-        pink: 'border-pink-200 bg-pink-50 dark:border-pink-800 dark:bg-pink-950',
-        rose: 'border-rose-200 bg-rose-50 dark:border-rose-800 dark:bg-rose-950',
-      },
+      /**
+       * Color theme variants for container borders and backgrounds.
+       * Uses subtle colors appropriate for data table contexts.
+       */
+      color: createColorVariantMapping(
+        color =>
+          `border-${color}-200 bg-${color}-50 dark:border-${color}-800 dark:bg-${color}-950`
+      ),
     },
     defaultVariants: {
       color: 'slate',
@@ -44,43 +39,31 @@ export const datatableContainerVariants = cva(
   }
 )
 
-// Datatable header row styling
+/**
+ * Datatable header row variants for table headers.
+ *
+ * Provides themed styling for table header rows with stronger contrast than container.
+ * Uses -100 backgrounds in light mode and -900 in dark mode for header emphasis.
+ *
+ * @example
+ * ```tsx
+ * <thead className={datatableHeaderVariants({ color: 'brand' })}>
+ *   <tr>...</tr>
+ * </thead>
+ * ```
+ */
 export const datatableHeaderVariants = cva(
   // Base classes for header row
   ['border-b px-3 py-3'],
   {
     variants: {
-      color: {
-        brand: 'border-brand-200 bg-brand-100 dark:border-brand-700 dark:bg-brand-900',
-        primary:
-          'border-primary-200 bg-primary-100 dark:border-primary-700 dark:bg-primary-900',
-        emerald:
-          'border-emerald-200 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900',
-        blue: 'border-blue-200 bg-blue-100 dark:border-blue-700 dark:bg-blue-900',
-        slate: 'border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900',
-        teal: 'border-teal-200 bg-teal-100 dark:border-teal-700 dark:bg-teal-900',
-        red: 'border-red-200 bg-red-100 dark:border-red-700 dark:bg-red-900',
-        cyan: 'border-cyan-200 bg-cyan-100 dark:border-cyan-700 dark:bg-cyan-900',
-        yellow:
-          'border-yellow-200 bg-yellow-100 dark:border-yellow-700 dark:bg-yellow-900',
-        green: 'border-green-200 bg-green-100 dark:border-green-700 dark:bg-green-900',
-        violet:
-          'border-violet-200 bg-violet-100 dark:border-violet-700 dark:bg-violet-900',
-        zinc: 'border-zinc-200 bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900',
-        orange:
-          'border-orange-200 bg-orange-100 dark:border-orange-700 dark:bg-orange-900',
-        amber: 'border-amber-200 bg-amber-100 dark:border-amber-700 dark:bg-amber-900',
-        lime: 'border-lime-200 bg-lime-100 dark:border-lime-700 dark:bg-lime-900',
-        sky: 'border-sky-200 bg-sky-100 dark:border-sky-700 dark:bg-sky-900',
-        indigo:
-          'border-indigo-200 bg-indigo-100 dark:border-indigo-700 dark:bg-indigo-900',
-        purple:
-          'border-purple-200 bg-purple-100 dark:border-purple-700 dark:bg-purple-900',
-        fuchsia:
-          'border-fuchsia-200 bg-fuchsia-100 dark:border-fuchsia-700 dark:bg-fuchsia-900',
-        pink: 'border-pink-200 bg-pink-100 dark:border-pink-700 dark:bg-pink-900',
-        rose: 'border-rose-200 bg-rose-100 dark:border-rose-700 dark:bg-rose-900',
-      },
+      /**
+       * Color theme variants for header styling with stronger contrast.
+       */
+      color: createColorVariantMapping(
+        color =>
+          `border-${color}-200 bg-${color}-100 dark:border-${color}-700 dark:bg-${color}-900`
+      ),
     },
     defaultVariants: {
       color: 'slate',
@@ -88,35 +71,29 @@ export const datatableHeaderVariants = cva(
   }
 )
 
-// Datatable header text styling
+/**
+ * Datatable header text variants for table column headers.
+ *
+ * Provides styling for table header text with adaptive colors and consistent typography.
+ * Uses small caps formatting typical for data table headers.
+ *
+ * @example
+ * ```tsx
+ * <th className={datatableHeaderTextVariants({ color: 'brand' })}>
+ *   Column Header
+ * </th>
+ * ```
+ */
 export const datatableHeaderTextVariants = cva(
   // Base classes for header text
   ['text-xs font-medium uppercase tracking-wider'],
   {
     variants: {
-      color: {
-        brand: 'text-adaptive-brand-header',
-        primary: 'text-adaptive-primary-header',
-        emerald: 'text-adaptive-emerald-header',
-        blue: 'text-adaptive-blue-header',
-        slate: 'text-adaptive-slate-header',
-        teal: 'text-adaptive-teal-header',
-        red: 'text-adaptive-red-header',
-        cyan: 'text-adaptive-cyan-header',
-        yellow: 'text-adaptive-yellow-header',
-        green: 'text-adaptive-green-header',
-        violet: 'text-adaptive-violet-header',
-        zinc: 'text-adaptive-zinc-header',
-        orange: 'text-adaptive-orange-header',
-        amber: 'text-adaptive-amber-header',
-        lime: 'text-adaptive-lime-header',
-        sky: 'text-adaptive-sky-header',
-        indigo: 'text-adaptive-indigo-header',
-        purple: 'text-adaptive-purple-header',
-        fuchsia: 'text-adaptive-fuchsia-header',
-        pink: 'text-adaptive-pink-header',
-        rose: 'text-adaptive-rose-header',
-      },
+      /**
+       * Header text color variants using adaptive header classes.
+       * Provides consistent text colors optimized for header readability.
+       */
+      color: createColorVariantMapping(color => `text-adaptive-${color}-header`),
     },
     defaultVariants: {
       color: 'slate',
@@ -124,47 +101,39 @@ export const datatableHeaderTextVariants = cva(
   }
 )
 
-// Datatable row styling
+/**
+ * Datatable row variants for table data rows.
+ *
+ * Provides styling for interactive table rows with hover effects and theming.
+ * Includes support for special row variants like the last row styling.
+ *
+ * Pattern:
+ * - Light mode: -100 borders with -50 hover backgrounds
+ * - Dark mode: -800 borders with -900/50 hover backgrounds
+ *
+ * @example
+ * ```tsx
+ * <tr className={datatableRowVariants({ color: 'brand', variant: 'default' })}>
+ *   <td>Row content</td>
+ * </tr>
+ * ```
+ */
 export const datatableRowVariants = cva(
   // Base classes for data rows
   ['cursor-pointer border-b bg-white transition-colors dark:bg-slate-950'],
   {
     variants: {
-      color: {
-        brand:
-          'border-brand-100 hover:bg-brand-50 dark:border-brand-800 dark:hover:bg-brand-900/50',
-        primary:
-          'border-primary-100 hover:bg-primary-50 dark:border-primary-800 dark:hover:bg-primary-900/50',
-        emerald:
-          'border-emerald-100 hover:bg-emerald-50 dark:border-emerald-800 dark:hover:bg-emerald-900/50',
-        blue: 'border-blue-100 hover:bg-blue-50 dark:border-blue-800 dark:hover:bg-blue-900/50',
-        slate:
-          'border-slate-100 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900/50',
-        teal: 'border-teal-100 hover:bg-teal-50 dark:border-teal-800 dark:hover:bg-teal-900/50',
-        red: 'border-red-100 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/50',
-        cyan: 'border-cyan-100 hover:bg-cyan-50 dark:border-cyan-800 dark:hover:bg-cyan-900/50',
-        yellow:
-          'border-yellow-100 hover:bg-yellow-50 dark:border-yellow-800 dark:hover:bg-yellow-900/50',
-        green:
-          'border-green-100 hover:bg-green-50 dark:border-green-800 dark:hover:bg-green-900/50',
-        violet:
-          'border-violet-100 hover:bg-violet-50 dark:border-violet-800 dark:hover:bg-violet-900/50',
-        zinc: 'border-zinc-100 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900/50',
-        orange:
-          'border-orange-100 hover:bg-orange-50 dark:border-orange-800 dark:hover:bg-orange-900/50',
-        amber:
-          'border-amber-100 hover:bg-amber-50 dark:border-amber-800 dark:hover:bg-amber-900/50',
-        lime: 'border-lime-100 hover:bg-lime-50 dark:border-lime-800 dark:hover:bg-lime-900/50',
-        sky: 'border-sky-100 hover:bg-sky-50 dark:border-sky-800 dark:hover:bg-sky-900/50',
-        indigo:
-          'border-indigo-100 hover:bg-indigo-50 dark:border-indigo-800 dark:hover:bg-indigo-900/50',
-        purple:
-          'border-purple-100 hover:bg-purple-50 dark:border-purple-800 dark:hover:bg-purple-900/50',
-        fuchsia:
-          'border-fuchsia-100 hover:bg-fuchsia-50 dark:border-fuchsia-800 dark:hover:bg-fuchsia-900/50',
-        pink: 'border-pink-100 hover:bg-pink-50 dark:border-pink-800 dark:hover:bg-pink-900/50',
-        rose: 'border-rose-100 hover:bg-rose-50 dark:border-rose-800 dark:hover:bg-rose-900/50',
-      },
+      /**
+       * Color theme variants for row borders and hover states.
+       * Uses subtle colors for non-intrusive row highlighting.
+       */
+      color: createColorVariantMapping(
+        color =>
+          `border-${color}-100 hover:bg-${color}-50 dark:border-${color}-800 dark:hover:bg-${color}-900/50`
+      ),
+      /**
+       * Row layout variants for special positioning.
+       */
       variant: {
         default: '',
         last: 'border-b-0 rounded-b-lg',
@@ -214,12 +183,33 @@ export const datatableActionButtonVariants = cva(
   }
 )
 
-// Datatable delete area styling (for mobile swipe)
+/**
+ * Datatable delete area variants for mobile swipe actions.
+ *
+ * Provides styling for the delete area revealed during mobile swipe gestures.
+ * Uses strong background colors to clearly indicate destructive actions.
+ *
+ * Design Pattern:
+ * - Full screen width for easy touch targets
+ * - Centered content layout
+ * - Strong -500/-600 colors for clear action indication
+ *
+ * @example
+ * ```tsx
+ * <div className={datatableDeleteAreaVariants({ color: 'red' })}>
+ *   <DeleteIcon />
+ * </div>
+ * ```
+ */
 export const datatableDeleteAreaVariants = cva(
   // Base classes for delete area
   ['flex w-screen flex-shrink-0 items-center justify-center'],
   {
     variants: {
+      /**
+       * Color variants for delete area backgrounds.
+       * Limited to destructive action colors (red/brand).
+       */
       color: {
         red: 'bg-red-500 dark:bg-red-600',
         brand: 'bg-brand-500 dark:bg-brand-600',
@@ -231,17 +221,58 @@ export const datatableDeleteAreaVariants = cva(
   }
 )
 
-// Export types
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for datatableContainerVariants props.
+ * Use this when defining component props that accept datatable container styling options.
+ */
 export type DatatableContainerVariants = VariantProps<typeof datatableContainerVariants>
+
+/**
+ * Type definition for datatableHeaderVariants props.
+ * Use this for datatable header row styling options.
+ */
 export type DatatableHeaderVariants = VariantProps<typeof datatableHeaderVariants>
+
+/**
+ * Type definition for datatableHeaderTextVariants props.
+ * Use this for datatable header text styling options.
+ */
 export type DatatableHeaderTextVariants = VariantProps<
   typeof datatableHeaderTextVariants
 >
+
+/**
+ * Type definition for datatableRowVariants props.
+ * Use this for datatable row styling options.
+ */
 export type DatatableRowVariants = VariantProps<typeof datatableRowVariants>
+
+/**
+ * Type definition for datatableCellTextVariants props.
+ * Use this for datatable cell text styling options.
+ */
 export type DatatableCellTextVariants = VariantProps<typeof datatableCellTextVariants>
+
+/**
+ * Type definition for datatableActionButtonVariants props.
+ * Use this for datatable action button styling options.
+ */
 export type DatatableActionButtonVariants = VariantProps<
   typeof datatableActionButtonVariants
 >
+
+/**
+ * Type definition for datatableDeleteAreaVariants props.
+ * Use this for datatable delete area styling options.
+ */
 export type DatatableDeleteAreaVariants = VariantProps<
   typeof datatableDeleteAreaVariants
 >
+
+/**
+ * Shared color variant key type for datatable components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type DatatableColorVariant = ColorVariantKey

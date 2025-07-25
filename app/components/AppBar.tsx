@@ -5,11 +5,11 @@ import { useFetcher, useLocation } from 'react-router'
 import type { User } from '@prisma/client'
 
 import logo from '~/assets/logo-192x192.png'
+import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
-import { getAnimationClass } from '~/utils/animationConstants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
@@ -222,11 +222,11 @@ export function AppBar({
     <>
       <div
         ref={containerRef}
-        className={`fixed top-0 right-0 left-0 z-30 ${getAnimationClass(
-          'APP_BAR',
-          isMobile,
-          effectiveShowHeader
-        )}`}
+        className={`fixed top-0 right-0 left-0 z-30 ${navigationVariants({
+          component: 'APP_BAR',
+          viewport: isMobile ? 'mobile' : 'desktop',
+          visible: effectiveShowHeader,
+        })}`}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>
           {/* Logo and Brand for all screen sizes */}

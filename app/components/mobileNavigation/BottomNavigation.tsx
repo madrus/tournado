@@ -1,7 +1,7 @@
 import { JSX, useEffect, useState } from 'react'
 
+import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
-import { getAnimationClass } from '~/utils/animationConstants'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 
@@ -40,10 +40,12 @@ function BottomNavigation(): JSX.Element {
 
   return (
     <nav
-      className={`fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-emerald-800 p-3 text-white shadow-lg md:hidden ${getAnimationClass(
-        'BOTTOM_NAV',
-        isMobile,
-        showHeader
+      className={`fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-emerald-800 p-3 text-white shadow-lg md:hidden ${navigationVariants(
+        {
+          component: 'BOTTOM_NAV',
+          viewport: isMobile ? 'mobile' : 'desktop',
+          visible: showHeader,
+        }
       )}`}
       aria-label='Bottom navigation'
       role='navigation'

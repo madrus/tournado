@@ -7,13 +7,14 @@ import {
   ANIMATIONS,
   type AnimationState,
   type AnimationType,
+  CUBIC_BEZIER_SMOOTH,
 } from '../animationConstants'
 
 describe('animationConstants', () => {
   describe('ANIMATION_DURATION', () => {
-    it('should export correct duration values', () => {
-      expect(ANIMATION_DURATION.BOUNCE).toBe('1s')
-      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.5s')
+    it('should export correct duration values synchronized with CSS', () => {
+      expect(ANIMATION_DURATION.BOUNCE).toBe('0.6s')
+      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.3s')
     })
 
     it('should have consistent duration format', () => {
@@ -24,8 +25,8 @@ describe('animationConstants', () => {
   })
 
   describe('ANIMATION_TIMING', () => {
-    it('should export correct timing function values', () => {
-      expect(ANIMATION_TIMING.BOUNCE).toBe('cubic-bezier(0.34, 1.56, 0.64, 1)')
+    it('should export correct timing function values synchronized with CSS', () => {
+      expect(ANIMATION_TIMING.BOUNCE).toBe(CUBIC_BEZIER_SMOOTH)
       expect(ANIMATION_TIMING.SLIDE_OUT).toBe('ease-out')
     })
 
@@ -152,7 +153,7 @@ describe('animationConstants', () => {
       // The animation keyframes should focus on transform properties
       // This test ensures we're following best practices for performance
       expect(ANIMATION_TIMING.SLIDE_OUT).toBe('ease-out')
-      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.5s')
+      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.3s')
     })
 
     it('should have reasonable animation durations', () => {
@@ -163,8 +164,8 @@ describe('animationConstants', () => {
       expect(bounceMs).toBeGreaterThan(slideOutMs)
 
       // Neither should be too long to avoid poor UX
-      expect(bounceMs).toBeLessThanOrEqual(2000)
-      expect(slideOutMs).toBeLessThanOrEqual(1000)
+      expect(bounceMs).toBeLessThanOrEqual(1000)
+      expect(slideOutMs).toBeLessThanOrEqual(500)
     })
   })
 })

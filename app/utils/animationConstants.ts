@@ -5,15 +5,18 @@
  * for smooth show/hide transitions on mobile devices.
  */
 
-// Animation durations
+// Animation durations - synchronized with CSS
 export const ANIMATION_DURATION = {
-  BOUNCE: '1s',
-  SLIDE_OUT: '0.5s',
+  BOUNCE: '0.6s',
+  SLIDE_OUT: '0.3s',
 } as const
 
-// Animation timing functions
+// Animation timing constants for reusability
+export const CUBIC_BEZIER_SMOOTH = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' as const
+
+// Animation timing functions - synchronized with CSS
 export const ANIMATION_TIMING = {
-  BOUNCE: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+  BOUNCE: CUBIC_BEZIER_SMOOTH,
   SLIDE_OUT: 'ease-out',
 } as const
 
@@ -50,3 +53,22 @@ export const ANIMATION_CLASSES = {
  */
 export type AnimationState = 'visible' | 'hidden'
 export type AnimationType = 'bounce' | 'slideOut'
+export type ComponentType = 'APP_BAR' | 'BOTTOM_NAV'
+
+/**
+ * More specific animation class type based on actual structure
+ */
+export type AnimationClass =
+  // eslint-disable-next-line max-len
+  (typeof ANIMATION_CLASSES)[ComponentType][keyof (typeof ANIMATION_CLASSES)[ComponentType]]
+
+/**
+ * Animation duration values
+ */
+export type AnimationDuration =
+  (typeof ANIMATION_DURATION)[keyof typeof ANIMATION_DURATION]
+
+/**
+ * Animation timing function values
+ */
+export type AnimationTiming = (typeof ANIMATION_TIMING)[keyof typeof ANIMATION_TIMING]

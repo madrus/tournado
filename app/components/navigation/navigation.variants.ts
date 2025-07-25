@@ -41,8 +41,12 @@ export const navigationVariants = cva(
       },
       /**
        * Viewport variants for responsive behavior.
-       * - mobile: Mobile viewport with animations
+       * - mobile: Mobile viewport with animations (AppBar: <1024px, BottomNav: ≤767px)
        * - desktop: Desktop viewport with simple show/hide
+       *
+       * Note: Tablets (768px-1023px) use different breakpoints for different components:
+       * - AppBar: 'mobile' viewport for scroll-based animations
+       * - BottomNavigation: 'desktop' viewport (hidden) since it only shows ≤767px
        */
       viewport: {
         mobile: [],

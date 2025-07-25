@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import { Link, useLocation } from 'react-router'
 
+import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { normalizePathname } from '~/utils/route-utils'
 
@@ -32,9 +33,9 @@ function NavigationItem({
   // Robust route matching that handles trailing slashes and query params
   const isActive = normalizePathname(location.pathname) === normalizePathname(to)
 
-  // Responsive icon sizing: smaller on mobile, larger on desktop
-  const responsiveIconSize =
-    iconSize ?? (typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 36)
+  // Responsive icon sizing: Use proper media query hook that updates on resize
+  const isMobileBreakpoint = useMediaQuery('(max-width: 767px)')
+  const responsiveIconSize = iconSize ?? (isMobileBreakpoint ? 32 : 36)
 
   return (
     <Link

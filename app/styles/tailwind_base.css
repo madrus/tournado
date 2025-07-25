@@ -2,6 +2,16 @@
   /* Theme transitions removed to prevent flickering during mode switches */
   /* Individual element animations are preserved via specific classes */
 
+  /* Comprehensive webkit appearance reset to prevent mobile diamond artifacts */
+  input,
+  select,
+  textarea,
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
   /* Ensure headings use the title color */
   h1,
   h2,

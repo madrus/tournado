@@ -1,6 +1,7 @@
-import { JSX } from 'react'
+import { JSX, useEffect, useState } from 'react'
 
 import { useScrollDirection } from '~/hooks/useScrollDirection'
+import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 
 import NavigationItem from './NavigationItem'
@@ -8,6 +9,26 @@ import NavigationItem from './NavigationItem'
 function BottomNavigation(): JSX.Element {
   // Detect scroll direction (same hook as AppBar)
   const { showHeader } = useScrollDirection()
+
+  // Track if we're on mobile (under MD breakpoint) for animations
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const checkMobile = () => {
+      setIsMobile(breakpoints.showBottomNav())
+    }
+
+    // Set initial state
+    checkMobile()
+
+    // Listen for changes
+    const mediaQuery = window.matchMedia(breakpoints.queries.mobile)
+    mediaQuery.addEventListener('change', checkMobile)
+
+    return () => mediaQuery.removeEventListener('change', checkMobile)
+  }, [])
 
   // Define navigation items - can be expanded in the future
   const navigationItems: Array<{ to: string; icon: IconName; label: string }> = [
@@ -21,9 +42,11 @@ function BottomNavigation(): JSX.Element {
       className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-emerald-800 p-3 text-white shadow-lg md:hidden'
       style={{
         transform: showHeader ? 'translateY(0)' : 'translateY(100%)',
-        animation: showHeader
-          ? 'bottomNavBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
-          : 'bottomNavSlideOut 0.5s ease-out forwards',
+        animation: isMobile
+          ? showHeader
+            ? 'bottomNavBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
+            : 'bottomNavSlideOut 0.5s ease-out forwards'
+          : undefined,
       }}
       aria-label='Bottom navigation'
       role='navigation'

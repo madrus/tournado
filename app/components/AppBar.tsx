@@ -167,11 +167,8 @@ export function AppBar({
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [headerHeight, setHeaderHeight] = useState<number>(56)
-  // Initialize isMobile properly to avoid SSR hydration mismatch
-  const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false
-    return breakpoints.showBottomNav()
-  })
+  // Initialize isMobile to false to avoid SSR hydration mismatch
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   // Track bottom navigation visibility and inject styles only on client side
   useEffect(() => {
@@ -226,9 +223,9 @@ export function AppBar({
         ref={containerRef}
         className='fixed top-0 right-0 left-0 z-30'
         style={{
-          transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+          transform: effectiveShowHeader ? 'translateY(0)' : 'translateY(-100%)',
           animation: isMobile
-            ? showHeader
+            ? effectiveShowHeader
               ? 'appBarBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
               : 'appBarSlideOut 0.5s ease-out forwards'
             : undefined,

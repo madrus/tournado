@@ -1,6 +1,7 @@
-import { JSX, useMemo } from 'react'
+import { JSX } from 'react'
 import { Link, useLocation } from 'react-router'
 
+import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { normalizePathname } from '~/utils/route-utils'
 
@@ -32,19 +33,9 @@ function NavigationItem({
   // Robust route matching that handles trailing slashes and query params
   const isActive = normalizePathname(location.pathname) === normalizePathname(to)
 
-  // Responsive icon sizing: Memoize expensive matchMedia call
-  const responsiveIconSize = useMemo(() => {
-    if (iconSize) return iconSize
-
-    // Check if we're in a mobile context by testing if a CSS media query matches
-    const isMobileBreakpoint =
-      typeof window !== 'undefined'
-        ? window.matchMedia('(max-width: 767px)').matches
-        : false
-
-    // Default to 36px for desktop/testing, 32px for mobile breakpoint
-    return isMobileBreakpoint ? 32 : 36
-  }, [iconSize])
+  // Responsive icon sizing: Use proper media query hook that updates on resize
+  const isMobileBreakpoint = useMediaQuery('(max-width: 767px)')
+  const responsiveIconSize = iconSize ?? (isMobileBreakpoint ? 32 : 36)
 
   return (
     <Link

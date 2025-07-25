@@ -7,22 +7,24 @@ import {
   useState,
 } from 'react'
 
+import { breakpoints } from '~/utils/breakpoints'
 import { debounce, getDocumentHeight, getScrollY } from '~/utils/dom-utils'
 
 // Detect scroll direction globally (works even if the scrollable container is not window)
 export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   const [showHeader, setShowHeader] = useState<boolean>(true)
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  // Initialize isMobile properly to avoid race condition
+  const [isMobile, setIsMobile] = useState<boolean>(() => breakpoints.isMobile())
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
 
   // Handle resize
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024) // Match lg breakpoint
+      setIsMobile(breakpoints.isMobile())
     }
 
-    checkMobile() // Initial check
+    // Only add listener, initial state is set in useState
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])

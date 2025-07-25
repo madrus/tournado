@@ -24,11 +24,10 @@ function BottomNavigation(): JSX.Element {
     // Set initial state
     checkMobile()
 
-    // Listen for changes
-    const mediaQuery = window.matchMedia(breakpoints.queries.mobile)
-    mediaQuery.addEventListener('change', checkMobile)
+    // Listen for changes - use resize event to match checkMobile logic
+    window.addEventListener('resize', checkMobile)
 
-    return () => mediaQuery.removeEventListener('change', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Define navigation items - can be expanded in the future

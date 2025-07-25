@@ -30,8 +30,8 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
     }
 
     // Ignore scroll events outside valid range (overscroll/bounce)
+    // Do NOT update lastY.current with invalid positions to prevent drift
     if (y < 0 || y > maxScrollY) {
-      lastY.current = y // Fix: update lastY to prevent position drift
       return
     }
 

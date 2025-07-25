@@ -2,6 +2,9 @@ import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
+import { ActionButton } from '~/components/buttons/ActionButton'
+import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
+import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
@@ -13,10 +16,6 @@ import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore, useTeamFormStoreHydration } from '~/stores/useTeamFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
-
-import { ActionButton } from './buttons/ActionButton'
-import { ActionLinkButton } from './buttons/ActionLinkButton'
-import { CheckIcon, RestorePageIcon } from './icons'
 
 export function TeamForm({
   mode: formMode = 'create',

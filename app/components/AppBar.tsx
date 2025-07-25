@@ -5,10 +5,12 @@ import { useFetcher, useLocation } from 'react-router'
 import type { User } from '@prisma/client'
 
 import logo from '~/assets/logo-192x192.png'
+import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
+import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import {
@@ -165,17 +167,26 @@ export function AppBar({
   ]
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [headerHeight, setHeaderHeight] = useState(56)
+  const [headerHeight, setHeaderHeight] = useState<number>(56)
+  // Initialize isMobile to false to avoid SSR hydration mismatch
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
-  // Inject bounce keyframes once
+  // Track mobile state - use same breakpoint logic as useScrollDirection for consistency
   useEffect(() => {
-    const styleId = 'appbar-bounce-keyframes'
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style')
-      style.id = styleId
-      style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} } @keyframes appBarSlideOut{0%{transform:translateY(0);}100%{transform:translateY(-100%);} }`
-      document.head.appendChild(style)
+    // Check if we're in the browser
+    if (typeof window === 'undefined') return
+
+    // Use same mobile detection as useScrollDirection hook to avoid breakpoint mismatch
+    const checkMobile = () => {
+      setIsMobile(breakpoints.isMobile())
     }
+
+    // Initial setup
+    checkMobile()
+
+    // Add listener for window resize changes
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Measure header height once after mount
@@ -191,25 +202,28 @@ export function AppBar({
   // Use direction-based show/hide logic
   const { showHeader } = useScrollDirection()
 
-  // Update padding variable when visibility changes
+  // Adjust header visibility based on `isMobile`
+  const effectiveShowHeader = isMobile ? showHeader : true
+
+  // Update padding variable when visibility changes - client side only
   useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+
     document.documentElement.style.setProperty(
       '--header-padding',
-      showHeader ? `${headerHeight}px` : '0px'
+      effectiveShowHeader ? `${headerHeight}px` : '0px'
     )
-  }, [showHeader, headerHeight])
+  }, [effectiveShowHeader, headerHeight])
 
   return (
     <>
       <div
         ref={containerRef}
-        className='fixed top-0 right-0 left-0 z-30'
-        style={{
-          transform: showHeader ? 'translateY(0)' : undefined,
-          animation: showHeader
-            ? 'appBarBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards'
-            : 'appBarSlideOut 0.5s ease-out forwards',
-        }}
+        className={`fixed top-0 right-0 left-0 z-30 ${navigationVariants({
+          component: 'APP_BAR',
+          viewport: isMobile ? 'mobile' : 'desktop',
+          visible: effectiveShowHeader,
+        })}`}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>
           {/* Logo and Brand for all screen sizes */}

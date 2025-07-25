@@ -61,7 +61,7 @@ export const CheckboxAgreementField = forwardRef<
           labelClassName
         )}
       >
-        <div className='relative mt-0.5 flex-shrink-0'>
+        <div className='relative flex-shrink-0'>
           <input
             ref={ref}
             type='checkbox'
@@ -78,7 +78,7 @@ export const CheckboxAgreementField = forwardRef<
           />
           {checked ? (
             <CheckIcon
-              className='text-primary-foreground pointer-events-none absolute top-0.5 left-0.5 h-4 w-4'
+              className='text-primary-foreground pointer-events-none absolute inset-0 m-auto h-4 w-4'
               size={16}
             />
           ) : null}

@@ -45,3 +45,44 @@ export function getMaxScrollY(): number {
  * @returns true if the page is scrollable, false otherwise
  */
 export const isPageScrollable = (): boolean => getMaxScrollY() > 0
+
+/**
+ * A function type that can be debounced
+ */
+type DebouncableFunction = (...args: unknown[]) => void
+
+/**
+ * A debounced function with a cancel method
+ */
+type DebouncedFunction<T extends DebouncableFunction> = T & { cancel: () => void }
+
+/**
+ * Creates a debounced function that delays invoking func until after wait milliseconds
+ * have elapsed since the last time the debounced function was invoked.
+ *
+ * @param func The function to debounce
+ * @param wait The number of milliseconds to delay
+ * @returns The debounced function with a cancel method
+ */
+export function debounce<T extends DebouncableFunction>(
+  func: T,
+  wait: number
+): DebouncedFunction<T> {
+  let timeoutId: number | undefined
+
+  const debounced = ((...args: Parameters<T>) => {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+    }
+    timeoutId = window.setTimeout(() => func(...args), wait)
+  }) as DebouncedFunction<T>
+
+  debounced.cancel = () => {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId)
+      timeoutId = undefined
+    }
+  }
+
+  return debounced
+}

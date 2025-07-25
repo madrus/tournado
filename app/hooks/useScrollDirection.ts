@@ -12,8 +12,20 @@ import { debounce, getDocumentHeight, getScrollY } from '~/utils/dom-utils'
 // Detect scroll direction globally (works even if the scrollable container is not window)
 export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   const [showHeader, setShowHeader] = useState<boolean>(true)
+  const [isMobile, setIsMobile] = useState<boolean>(false)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
+
+  // Handle resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024) // Match lg breakpoint
+    }
+
+    checkMobile() // Initial check
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const updateDocumentHeight = useCallback(() => {
     documentHeightRef.current = getDocumentHeight()
@@ -26,6 +38,11 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   )
 
   const onScroll = useCallback(() => {
+    if (!isMobile) {
+      setShowHeader(true)
+      return
+    }
+
     const y = getScrollY()
     const diff = y - lastY.current
 

@@ -100,6 +100,12 @@ export function useIntersectionScrollDirection(): { showHeader: boolean } {
  *
  * This creates sentinels at different positions to better detect scroll direction
  * rather than just presence at a threshold.
+ *
+ * Performance Considerations:
+ * - Creates 4 DOM elements and 4 IntersectionObserver instances
+ * - Monitor performance impact on content-heavy pages with many DOM elements
+ * - Consider reducing sentinel count or using single-sentinel approach if performance issues arise
+ * - IntersectionObserver is generally more performant than scroll events, but multiple instances may offset benefits
  */
 export function useEnhancedIntersectionScrollDirection(): { showHeader: boolean } {
   const [showHeader, setShowHeader] = useState<boolean>(true)

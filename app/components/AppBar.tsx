@@ -9,6 +9,7 @@ import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
+import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
 import {
@@ -166,7 +167,11 @@ export function AppBar({
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [headerHeight, setHeaderHeight] = useState<number>(56)
-  const [isMobile, setIsMobile] = useState<boolean>(true) // Default to mobile to ensure smooth initial render
+  // Initialize isMobile properly to avoid SSR hydration mismatch
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    return breakpoints.showBottomNav()
+  })
 
   // Track bottom navigation visibility and inject styles only on client side
   useEffect(() => {
@@ -174,27 +179,15 @@ export function AppBar({
     if (typeof window === 'undefined') return
 
     // Media query to match when bottom navigation icons are visible
-    const mediaQuery = window.matchMedia('(max-width: 767px)') // Matches Tailwind's `md` breakpoint
+    const mediaQuery = window.matchMedia(breakpoints.queries.mobile)
 
     // Handle visibility check
     const checkMobile = () => {
       setIsMobile(mediaQuery.matches)
     }
 
-    // Handle keyframe injection
-    const injectKeyframes = () => {
-      const styleId = 'appbar-bounce-keyframes'
-      if (!document.getElementById(styleId)) {
-        const style = document.createElement('style')
-        style.id = styleId
-        style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} } @keyframes appBarSlideOut{0%{transform:translateY(0);}100%{transform:translateY(-100%);} }`
-        document.head.appendChild(style)
-      }
-    }
-
     // Initial setup
     checkMobile()
-    injectKeyframes()
 
     // Add listener for media query changes
     mediaQuery.addEventListener('change', checkMobile)
@@ -233,13 +226,12 @@ export function AppBar({
         ref={containerRef}
         className='fixed top-0 right-0 left-0 z-30'
         style={{
-          transform: showHeader ? 'translateY(0)' : undefined,
-          animation:
-            isMobile && showHeader !== undefined
-              ? showHeader
-                ? 'appBarBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
-                : 'appBarSlideOut 0.5s ease-out forwards'
-              : undefined,
+          transform: showHeader ? 'translateY(0)' : 'translateY(-100%)',
+          animation: isMobile
+            ? showHeader
+              ? 'appBarBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
+              : 'appBarSlideOut 0.5s ease-out forwards'
+            : undefined,
         }}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>

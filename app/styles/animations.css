@@ -1,0 +1,67 @@
+/**
+ * Shared animation keyframes for responsive navigation components
+ * 
+ * These animations are used by both AppBar and BottomNavigation components
+ * for smooth show/hide transitions on mobile devices.
+ */
+
+/* AppBar animations */
+@keyframes appBarBounce {
+  0% {
+    transform: translateY(-100%);
+  }
+  80% {
+    transform: translateY(3%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes appBarSlideOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+/* BottomNavigation animations */
+@keyframes bottomNavBounce {
+  0% {
+    transform: translateY(100%);
+  }
+  80% {
+    transform: translateY(-3%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bottomNavSlideOut {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Animation utility classes */
+.app-bar-bounce {
+  animation: appBarBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.app-bar-slide-out {
+  animation: appBarSlideOut 0.5s ease-out forwards;
+}
+
+.bottom-nav-bounce {
+  animation: bottomNavBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.bottom-nav-slide-out {
+  animation: bottomNavSlideOut 0.5s ease-out forwards;
+}

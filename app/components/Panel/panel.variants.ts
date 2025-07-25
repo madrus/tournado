@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { createColorVariantMapping } from '../shared/colorVariants'
+import { createColorVariantMapping } from '~/components/shared/colorVariants'
 
 // Import base panel variants that are shared across all panel components
 export {
@@ -17,7 +17,7 @@ export {
   type BasePanelNumberVariants as PanelNumberVariants,
   type BasePanelTitleVariants as PanelTitleVariants,
   type BasePanelVariants as PanelVariants,
-} from '../shared/panel-base.variants'
+} from '~/components/shared/panel-base.variants'
 
 // ============================================================================
 // PANEL COMPONENT-SPECIFIC VARIANTS

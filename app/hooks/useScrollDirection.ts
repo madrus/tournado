@@ -1,6 +1,13 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
-import { getDocumentHeight, getScrollY } from '~/utils/dom-utils'
+import { debounce, getDocumentHeight, getScrollY } from '~/utils/dom-utils'
 
 // Detect scroll direction globally (works even if the scrollable container is not window)
 export function useScrollDirection(threshold = 20): { showHeader: boolean } {
@@ -11,6 +18,12 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   const updateDocumentHeight = useCallback(() => {
     documentHeightRef.current = getDocumentHeight()
   }, [])
+
+  // Memoized debounced resize handler to avoid excessive recalculations
+  const debouncedUpdateDocumentHeight = useMemo(
+    () => debounce(updateDocumentHeight, 100),
+    [updateDocumentHeight]
+  )
 
   const onScroll = useCallback(() => {
     const y = getScrollY()
@@ -52,17 +65,19 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   }, [updateDocumentHeight])
 
   useEffect(() => {
-    // Update document height on resize
-    window.addEventListener('resize', updateDocumentHeight, { passive: true })
+    // Update document height on resize with debouncing for performance
+    window.addEventListener('resize', debouncedUpdateDocumentHeight, { passive: true })
 
     // Use only window scroll listener to avoid redundant calls
     window.addEventListener('scroll', onScroll, { passive: true })
 
     return () => {
-      window.removeEventListener('resize', updateDocumentHeight)
+      // Clean up debounced function on unmount
+      debouncedUpdateDocumentHeight.cancel()
+      window.removeEventListener('resize', debouncedUpdateDocumentHeight)
       window.removeEventListener('scroll', onScroll)
     }
-  }, [updateDocumentHeight, onScroll])
+  }, [debouncedUpdateDocumentHeight, onScroll])
 
   return { showHeader }
 }

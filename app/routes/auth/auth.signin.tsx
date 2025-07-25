@@ -255,7 +255,7 @@ export default function SigninPage(): JSX.Element {
                   id='remember'
                   name='remember'
                   type='checkbox'
-                  className='border-input-border text-primary hover:ring-primary focus:ring-primary h-4 w-4 rounded-sm hover:ring-2'
+                  className='border-input-border text-primary hover:ring-primary focus:ring-primary checked:bg-primary checked:border-primary relative h-4 w-4 appearance-none rounded-sm border-2 bg-white checked:after:absolute checked:after:inset-0 checked:after:flex checked:after:items-center checked:after:justify-center checked:after:text-xs checked:after:text-white checked:after:content-["✓"] hover:ring-2'
                 />
                 <label htmlFor='remember' className='ms-2 block text-sm'>
                   {t('auth.rememberMe')}

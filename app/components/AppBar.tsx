@@ -9,7 +9,7 @@ import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
-import { ANIMATION_CLASSES } from '~/utils/animationConstants'
+import { getAnimationClass } from '~/utils/animationConstants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
@@ -222,15 +222,11 @@ export function AppBar({
     <>
       <div
         ref={containerRef}
-        className={`fixed top-0 right-0 left-0 z-30 ${
-          isMobile
-            ? effectiveShowHeader
-              ? ANIMATION_CLASSES.APP_BAR.BOUNCE
-              : ANIMATION_CLASSES.APP_BAR.SLIDE_OUT
-            : effectiveShowHeader
-              ? ANIMATION_CLASSES.APP_BAR.VISIBLE
-              : ANIMATION_CLASSES.APP_BAR.HIDDEN
-        }`}
+        className={`fixed top-0 right-0 left-0 z-30 ${getAnimationClass(
+          'APP_BAR',
+          isMobile,
+          effectiveShowHeader
+        )}`}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>
           {/* Logo and Brand for all screen sizes */}

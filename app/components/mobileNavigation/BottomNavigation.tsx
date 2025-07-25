@@ -1,6 +1,7 @@
 import { JSX, useEffect, useState } from 'react'
 
 import { useScrollDirection } from '~/hooks/useScrollDirection'
+import { ANIMATION_CLASSES } from '~/utils/animationConstants'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 
@@ -39,15 +40,15 @@ function BottomNavigation(): JSX.Element {
 
   return (
     <nav
-      className='fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-emerald-800 p-3 text-white shadow-lg md:hidden'
-      style={{
-        transform: showHeader ? 'translateY(0)' : 'translateY(100%)',
-        animation: isMobile
+      className={`fixed right-0 bottom-0 left-0 z-50 flex justify-between bg-emerald-800 p-3 text-white shadow-lg md:hidden ${
+        isMobile
           ? showHeader
-            ? 'bottomNavBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
-            : 'bottomNavSlideOut 0.5s ease-out forwards'
-          : undefined,
-      }}
+            ? ANIMATION_CLASSES.BOTTOM_NAV.BOUNCE
+            : ANIMATION_CLASSES.BOTTOM_NAV.SLIDE_OUT
+          : showHeader
+            ? ANIMATION_CLASSES.BOTTOM_NAV.VISIBLE
+            : ANIMATION_CLASSES.BOTTOM_NAV.HIDDEN
+      }`}
       aria-label='Bottom navigation'
       role='navigation'
       data-testid='bottom-navigation'

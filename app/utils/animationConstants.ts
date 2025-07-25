@@ -11,9 +11,12 @@ export const ANIMATION_DURATION = {
   SLIDE_OUT: '0.3s',
 } as const
 
+// Animation timing constants for reusability
+export const CUBIC_BEZIER_SMOOTH = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' as const
+
 // Animation timing functions - synchronized with CSS
 export const ANIMATION_TIMING = {
-  BOUNCE: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  BOUNCE: CUBIC_BEZIER_SMOOTH,
   SLIDE_OUT: 'ease-out',
 } as const
 
@@ -69,25 +72,3 @@ export type AnimationDuration =
  * Animation timing function values
  */
 export type AnimationTiming = (typeof ANIMATION_TIMING)[keyof typeof ANIMATION_TIMING]
-
-/**
- * Utility function to get the appropriate animation class based on component state
- *
- * @param component - The component type ('APP_BAR' | 'BOTTOM_NAV')
- * @param isMobile - Whether the viewport is mobile
- * @param isVisible - Whether the component should be visible
- * @returns The appropriate CSS class name
- */
-export function getAnimationClass(
-  component: ComponentType,
-  isMobile: boolean,
-  isVisible: boolean
-): string {
-  const classes = ANIMATION_CLASSES[component]
-
-  if (isMobile) {
-    return isVisible ? classes.BOUNCE : classes.SLIDE_OUT
-  }
-
-  return isVisible ? classes.VISIBLE : classes.HIDDEN
-}

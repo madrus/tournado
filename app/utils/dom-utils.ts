@@ -44,6 +44,4 @@ export function getMaxScrollY(): number {
  * Checks if the current page has enough content to be scrollable
  * @returns true if the page is scrollable, false otherwise
  */
-export function isPageScrollable(): boolean {
-  return getMaxScrollY() > 0
-}
+export const isPageScrollable = (): boolean => getMaxScrollY() > 0

@@ -165,17 +165,40 @@ export function AppBar({
   ]
 
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [headerHeight, setHeaderHeight] = useState(56)
+  const [headerHeight, setHeaderHeight] = useState<number>(56)
+  const [isMobile, setIsMobile] = useState<boolean>(true) // Default to mobile to ensure smooth initial render
 
-  // Inject bounce keyframes once
+  // Track bottom navigation visibility and inject styles only on client side
   useEffect(() => {
-    const styleId = 'appbar-bounce-keyframes'
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style')
-      style.id = styleId
-      style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} } @keyframes appBarSlideOut{0%{transform:translateY(0);}100%{transform:translateY(-100%);} }`
-      document.head.appendChild(style)
+    // Check if we're in the browser
+    if (typeof window === 'undefined') return
+
+    // Media query to match when bottom navigation icons are visible
+    const mediaQuery = window.matchMedia('(max-width: 767px)') // Matches Tailwind's `md` breakpoint
+
+    // Handle visibility check
+    const checkMobile = () => {
+      setIsMobile(mediaQuery.matches)
     }
+
+    // Handle keyframe injection
+    const injectKeyframes = () => {
+      const styleId = 'appbar-bounce-keyframes'
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style')
+        style.id = styleId
+        style.innerHTML = `@keyframes appBarBounce{0%{transform:translateY(-100%);}80%{transform:translateY(3%);}100%{transform:translateY(0);} } @keyframes appBarSlideOut{0%{transform:translateY(0);}100%{transform:translateY(-100%);} }`
+        document.head.appendChild(style)
+      }
+    }
+
+    // Initial setup
+    checkMobile()
+    injectKeyframes()
+
+    // Add listener for media query changes
+    mediaQuery.addEventListener('change', checkMobile)
+    return () => mediaQuery.removeEventListener('change', checkMobile)
   }, [])
 
   // Measure header height once after mount
@@ -191,13 +214,18 @@ export function AppBar({
   // Use direction-based show/hide logic
   const { showHeader } = useScrollDirection()
 
-  // Update padding variable when visibility changes
+  // Adjust header visibility based on `isMobile`
+  const effectiveShowHeader = isMobile ? showHeader : true
+
+  // Update padding variable when visibility changes - client side only
   useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+
     document.documentElement.style.setProperty(
       '--header-padding',
-      showHeader ? `${headerHeight}px` : '0px'
+      effectiveShowHeader ? `${headerHeight}px` : '0px'
     )
-  }, [showHeader, headerHeight])
+  }, [effectiveShowHeader, headerHeight])
 
   return (
     <>
@@ -206,9 +234,12 @@ export function AppBar({
         className='fixed top-0 right-0 left-0 z-30'
         style={{
           transform: showHeader ? 'translateY(0)' : undefined,
-          animation: showHeader
-            ? 'appBarBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards'
-            : 'appBarSlideOut 0.5s ease-out forwards',
+          animation:
+            isMobile && showHeader !== undefined
+              ? showHeader
+                ? 'appBarBounce 1s cubic-bezier(0.34,1.56,0.64,1) forwards'
+                : 'appBarSlideOut 0.5s ease-out forwards'
+              : undefined,
         }}
       >
         <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>

@@ -65,3 +65,20 @@
 .bottom-nav-slide-out {
   animation: bottomNavSlideOut 0.5s ease-out forwards;
 }
+
+/* State-based animation classes for better performance */
+.app-bar-visible {
+  transform: translateY(0);
+}
+
+.app-bar-hidden {
+  transform: translateY(-100%);
+}
+
+.bottom-nav-visible {
+  transform: translateY(0);
+}
+
+.bottom-nav-hidden {
+  transform: translateY(100%);
+}

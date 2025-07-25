@@ -467,35 +467,35 @@ export function TournamentForm({
         </Panel>
 
         {/* Submit Button */}
-        <div className='flex justify-end rtl:justify-start'>
-          <div className='flex gap-4'>
-            {onCancel ? (
-              <ActionButton
-                type='button'
-                onClick={onCancel}
-                variant='secondary'
-                color='brand'
-              >
-                <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-                {t('common.actions.reset')}
-              </ActionButton>
-            ) : null}
-
+        <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+          {onCancel ? (
             <ActionButton
-              type='submit'
-              variant='primary'
+              type='button'
+              onClick={onCancel}
+              variant='secondary'
               color='brand'
-              icon='check_circle'
-              aria-label={t('common.actions.save')}
-              disabled={
-                isPublicSuccess ||
-                !isFormReadyForSubmission() ||
-                (mode === 'edit' && !isDirty())
-              }
             >
-              {submitButtonText || t('common.actions.save')}
+              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+              {t('common.actions.reset')}
             </ActionButton>
-          </div>
+          ) : (
+            <div />
+          )}
+
+          <ActionButton
+            type='submit'
+            variant='primary'
+            color='brand'
+            icon='check_circle'
+            aria-label={t('common.actions.save')}
+            disabled={
+              isPublicSuccess ||
+              !isFormReadyForSubmission() ||
+              (mode === 'edit' && !isDirty())
+            }
+          >
+            {submitButtonText || t('common.actions.save')}
+          </ActionButton>
         </div>
       </Form>
     </div>

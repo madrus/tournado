@@ -34,7 +34,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
           </div>
 
           {/* Add Tournament Button */}
-          <div className='flex justify-end sm:justify-end rtl:justify-start sm:rtl:justify-start'>
+          <div className='flex justify-end gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
             <ActionLinkButton
               to='new'
               icon='add'

@@ -9,18 +9,21 @@ type FieldStatusIconProps = {
   status: 'success' | 'error' | 'neutral'
   /** Additional CSS classes */
   className?: string
+  /** Field type for positioning - defaults to 'input' */
+  fieldType?: 'input' | 'checkbox'
 }
 
 export function FieldStatusIcon({
   status,
   className,
+  fieldType = 'input',
 }: FieldStatusIconProps): JSX.Element | null {
   if (status === 'neutral') return null
 
   if (status === 'success') {
     return (
       <div
-        className={fieldCheckmarkVariants({ color: 'emerald', className })}
+        className={fieldCheckmarkVariants({ color: 'emerald', fieldType, className })}
         data-testid='field-status-success'
       >
         <CheckIcon className='h-4 w-4 text-white' size={16} />
@@ -31,7 +34,7 @@ export function FieldStatusIcon({
   if (status === 'error') {
     return (
       <div
-        className={fieldErrorIconVariants({ color: 'red', className })}
+        className={fieldErrorIconVariants({ color: 'red', fieldType, className })}
         data-testid='field-status-error'
       >
         <CloseIcon className='h-4 w-4 text-white' size={16} />

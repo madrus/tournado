@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import {
   type ColorVariantKey,
   createColorVariantMapping,
-} from '../shared/colorVariants'
+} from '~/components/shared/colorVariants'
 
 /**
  * Toggle chip variants for selectable chip components.

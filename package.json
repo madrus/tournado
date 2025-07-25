@@ -21,7 +21,7 @@
     "docs": "docsify serve docs -o -p 3030",
     "format": "prettier --write .",
     "format-ci": "pretty-quick --staged",
-    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "pnpm format && eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "react-router typegen && tsc",
     "pretypecheck": "rm -rf node_modules/.prisma && prisma generate",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",

@@ -1,77 +1,57 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+
+import { getDocumentHeight, getScrollY } from '~/utils/dom-utils'
 
 // Detect scroll direction globally (works even if the scrollable container is not window)
 export function useScrollDirection(threshold = 20): { showHeader: boolean } {
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
-  const isDocumentHeightInitialized = useRef<boolean>(false)
 
-  useEffect(() => {
-    const getScrollY = () => {
-      if (typeof window === 'undefined') return 0
-      return (
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop ||
-        0
-      )
+  const updateDocumentHeight = useCallback(() => {
+    documentHeightRef.current = getDocumentHeight()
+  }, [])
+
+  const onScroll = useCallback(() => {
+    const y = getScrollY()
+    const diff = y - lastY.current
+
+    // Prevent overscroll bounce from affecting header visibility
+    const maxScrollY = Math.max(
+      0,
+      documentHeightRef.current - (window?.innerHeight || 0)
+    )
+
+    // If there's not enough content to scroll, always show header
+    if (maxScrollY <= 0) {
+      setShowHeader(true)
+      lastY.current = y // Fix: update lastY to prevent drift
+      return
     }
 
-    const updateDocumentHeight = () => {
-      if (typeof window === 'undefined') return
-      const height = Math.max(
-        document.body.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.clientHeight,
-        document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight
-      )
-      documentHeightRef.current = height
-      isDocumentHeightInitialized.current = true
+    // Ignore scroll events outside valid range (overscroll/bounce)
+    if (y < 0 || y > maxScrollY) {
+      lastY.current = y // Fix: update lastY to prevent position drift
+      return
     }
 
-    const onScroll = () => {
-      const y = getScrollY()
-      const diff = y - lastY.current
+    // Cache Math.abs calculation for performance
+    const absDiff = Math.abs(diff)
+    if (absDiff < threshold) return
 
-      // Ensure document height is calculated before using it
-      if (!isDocumentHeightInitialized.current) {
-        updateDocumentHeight()
-      }
+    setShowHeader(diff <= 0) // up => show, down => hide
 
-      // Prevent overscroll bounce from affecting header visibility
-      const maxScrollY = Math.max(
-        0,
-        documentHeightRef.current - (window?.innerHeight || 0)
-      )
+    lastY.current = y
+  }, [threshold])
 
-      // If there's not enough content to scroll, always show header
-      if (maxScrollY <= 0) {
-        setShowHeader(true)
-        lastY.current = y // Fix: update lastY to prevent drift
-        return
-      }
-
-      // Ignore scroll events outside valid range (overscroll/bounce)
-      if (y < 0 || y > maxScrollY) {
-        lastY.current = y // Fix: update lastY to prevent position drift
-        return
-      }
-
-      // Cache Math.abs calculation for performance
-      const absDiff = Math.abs(diff)
-      if (absDiff < threshold) return
-
-      setShowHeader(diff <= 0) // up => show, down => hide
-
-      lastY.current = y
-    }
-
-    // Initialize document height and scroll position
+  // Initialize document height calculation synchronously to avoid layout shifts
+  useLayoutEffect(() => {
+    // Initialize document height and scroll position before first paint
     updateDocumentHeight()
     lastY.current = getScrollY()
+  }, [updateDocumentHeight])
 
+  useEffect(() => {
     // Update document height on resize
     window.addEventListener('resize', updateDocumentHeight, { passive: true })
 
@@ -82,7 +62,7 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
       window.removeEventListener('resize', updateDocumentHeight)
       window.removeEventListener('scroll', onScroll)
     }
-  }, [threshold])
+  }, [updateDocumentHeight, onScroll])
 
   return { showHeader }
 }

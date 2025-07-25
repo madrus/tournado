@@ -1,6 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey, createColorVariantObject } from '../shared/colorVariants'
+import {
+  type ColorVariantKey,
+  createColorVariantObject,
+} from '~/components/shared/colorVariants'
 
 /**
  * Button component variants with comprehensive styling and interaction states.

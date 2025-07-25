@@ -105,6 +105,7 @@ export function useEnhancedIntersectionScrollDirection(): { showHeader: boolean 
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const [isMobile, setIsMobile] = useState<boolean>(false)
   const isClient = useIsClient()
+  const lastScrollY = useRef<number>(0)
   const lastDirection = useRef<'up' | 'down'>('up')
 
   useEffect(() => {
@@ -149,20 +150,26 @@ export function useEnhancedIntersectionScrollDirection(): { showHeader: boolean 
       const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
-            const currentPosition = parseInt(
-              (entry.target as HTMLElement).dataset.position || '0',
-              10
-            )
-
             if (!entry.isIntersecting) {
-              // Sentinel is out of view - determine direction
-              if (currentPosition < window.scrollY) {
-                // Scrolling down
+              // Sentinel is out of view - determine direction based on intersection ratio history
+              const currentScrollY = window.scrollY
+
+              // Compare with last known scroll position for more reliable direction detection
+              if (currentScrollY > (lastScrollY.current || 0)) {
+                // Scrolling down - hide header
                 if (lastDirection.current !== 'down') {
                   lastDirection.current = 'down'
                   setShowHeader(false)
                 }
+              } else if (currentScrollY < (lastScrollY.current || 0)) {
+                // Scrolling up - show header
+                if (lastDirection.current !== 'up') {
+                  lastDirection.current = 'up'
+                  setShowHeader(true)
+                }
               }
+
+              lastScrollY.current = currentScrollY
             } else {
               // Sentinel is in view - likely scrolling up
               if (lastDirection.current !== 'up') {

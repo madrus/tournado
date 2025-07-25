@@ -7,13 +7,15 @@ import {
   ANIMATIONS,
   type AnimationState,
   type AnimationType,
+  type ComponentType,
+  getAnimationClass,
 } from '../animationConstants'
 
 describe('animationConstants', () => {
   describe('ANIMATION_DURATION', () => {
-    it('should export correct duration values', () => {
-      expect(ANIMATION_DURATION.BOUNCE).toBe('1s')
-      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.5s')
+    it('should export correct duration values synchronized with CSS', () => {
+      expect(ANIMATION_DURATION.BOUNCE).toBe('0.6s')
+      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.3s')
     })
 
     it('should have consistent duration format', () => {
@@ -24,8 +26,8 @@ describe('animationConstants', () => {
   })
 
   describe('ANIMATION_TIMING', () => {
-    it('should export correct timing function values', () => {
-      expect(ANIMATION_TIMING.BOUNCE).toBe('cubic-bezier(0.34, 1.56, 0.64, 1)')
+    it('should export correct timing function values synchronized with CSS', () => {
+      expect(ANIMATION_TIMING.BOUNCE).toBe('cubic-bezier(0.25, 0.46, 0.45, 0.94)')
       expect(ANIMATION_TIMING.SLIDE_OUT).toBe('ease-out')
     })
 
@@ -152,7 +154,7 @@ describe('animationConstants', () => {
       // The animation keyframes should focus on transform properties
       // This test ensures we're following best practices for performance
       expect(ANIMATION_TIMING.SLIDE_OUT).toBe('ease-out')
-      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.5s')
+      expect(ANIMATION_DURATION.SLIDE_OUT).toBe('0.3s')
     })
 
     it('should have reasonable animation durations', () => {
@@ -163,8 +165,40 @@ describe('animationConstants', () => {
       expect(bounceMs).toBeGreaterThan(slideOutMs)
 
       // Neither should be too long to avoid poor UX
-      expect(bounceMs).toBeLessThanOrEqual(2000)
-      expect(slideOutMs).toBeLessThanOrEqual(1000)
+      expect(bounceMs).toBeLessThanOrEqual(1000)
+      expect(slideOutMs).toBeLessThanOrEqual(500)
+    })
+  })
+
+  describe('getAnimationClass utility function', () => {
+    it('should return correct classes for mobile AppBar', () => {
+      expect(getAnimationClass('APP_BAR', true, true)).toBe('app-bar-bounce')
+      expect(getAnimationClass('APP_BAR', true, false)).toBe('app-bar-slide-out')
+    })
+
+    it('should return correct classes for desktop AppBar', () => {
+      expect(getAnimationClass('APP_BAR', false, true)).toBe('app-bar-visible')
+      expect(getAnimationClass('APP_BAR', false, false)).toBe('app-bar-hidden')
+    })
+
+    it('should return correct classes for mobile BottomNav', () => {
+      expect(getAnimationClass('BOTTOM_NAV', true, true)).toBe('bottom-nav-bounce')
+      expect(getAnimationClass('BOTTOM_NAV', true, false)).toBe('bottom-nav-slide-out')
+    })
+
+    it('should return correct classes for desktop BottomNav', () => {
+      expect(getAnimationClass('BOTTOM_NAV', false, true)).toBe('bottom-nav-visible')
+      expect(getAnimationClass('BOTTOM_NAV', false, false)).toBe('bottom-nav-hidden')
+    })
+
+    it('should handle all valid component types', () => {
+      const componentTypes: ComponentType[] = ['APP_BAR', 'BOTTOM_NAV']
+
+      componentTypes.forEach(component => {
+        // Should not throw for any valid component type
+        expect(() => getAnimationClass(component, true, true)).not.toThrow()
+        expect(() => getAnimationClass(component, false, false)).not.toThrow()
+      })
     })
   })
 })

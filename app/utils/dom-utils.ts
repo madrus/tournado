@@ -86,3 +86,54 @@ export function debounce<T extends DebouncableFunction>(
 
   return debounced
 }
+
+/**
+ * Scroll direction detection logic
+ */
+export const scrollLogic = {
+  /**
+   * Determines if header should show based on scroll direction and threshold
+   * @param currentY Current scroll position
+   * @param lastY Previous scroll position
+   * @param threshold Minimum movement required to trigger change
+   * @returns true to show header, false to hide, null for no change
+   */
+  shouldShowHeader(currentY: number, lastY: number, threshold: number): boolean | null {
+    const diff = currentY - lastY
+    const absDiff = Math.abs(diff)
+
+    // Special case: zero threshold with no movement should return null
+    if (threshold === 0 && diff === 0) return null
+
+    if (absDiff < threshold) return null // No change
+
+    return diff <= 0 // up = show, down = hide
+  },
+
+  /**
+   * Checks if scroll position is within valid range (not overscroll)
+   * @param y Current scroll position
+   * @param maxScrollY Maximum valid scroll position
+   * @returns true if position is valid
+   */
+  isValidScrollPosition: (y: number, maxScrollY: number): boolean =>
+    y >= 0 && y <= maxScrollY,
+
+  /**
+   * Calculates maximum scrollable distance
+   * @param documentHeight Total document height
+   * @param windowHeight Viewport height
+   * @returns Maximum scroll Y position
+   */
+  calculateMaxScrollY: (documentHeight: number, windowHeight: number): number =>
+    Math.max(0, documentHeight - Math.max(0, windowHeight)),
+
+  /**
+   * Determines if page has enough content to be scrollable
+   * @param documentHeight Total document height
+   * @param windowHeight Viewport height
+   * @returns true if page is scrollable
+   */
+  isScrollable: (documentHeight: number, windowHeight: number): boolean =>
+    documentHeight > windowHeight,
+}

@@ -29,7 +29,7 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
     const y = getScrollY()
     const diff = y - lastY.current
 
-    // Prevent overscroll bounce from affecting header visibility
+    // Calculate document boundaries
     const maxScrollY = Math.max(
       0,
       documentHeightRef.current - (window?.innerHeight || 0)
@@ -38,22 +38,24 @@ export function useScrollDirection(threshold = 20): { showHeader: boolean } {
     // If there's not enough content to scroll, always show header
     if (maxScrollY <= 0) {
       setShowHeader(true)
-      lastY.current = y // Fix: update lastY to prevent drift
+      lastY.current = y
       return
     }
 
-    // Ignore scroll events outside valid range (overscroll/bounce)
-    // Do NOT update lastY.current with invalid positions to prevent drift
+    // CRITICAL BUG FIX: Ignore overscroll completely to prevent flickering
     if (y < 0 || y > maxScrollY) {
+      // Don't update lastY or state during overscroll - this prevents flickering!
       return
     }
 
-    // Cache Math.abs calculation for performance
+    // Check if movement is significant enough
     const absDiff = Math.abs(diff)
     if (absDiff < threshold) return
 
-    setShowHeader(diff <= 0) // up => show, down => hide
+    // Update header visibility based on scroll direction
+    setShowHeader(diff <= 0) // up = show, down = hide
 
+    // Update lastY only with valid positions
     lastY.current = y
   }, [threshold])
 

@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey } from '../shared/colorVariants'
+import { type ColorVariantKey } from '~/components/shared/colorVariants'
 
 /**
  * Text input field variants with comprehensive interaction states.

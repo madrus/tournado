@@ -169,7 +169,7 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
     <html
       lang={currentLanguage}
       dir={direction}
-      className={cn('h-full overflow-x-hidden', currentTheme)}
+      className={cn('min-h-full overflow-x-hidden', currentTheme)}
     >
       <head>
         <Meta />
@@ -225,7 +225,7 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
       </head>
       <body
         className={cn(
-          'bg-background text-foreground flex h-full min-w-[320px] flex-col',
+          'bg-background text-foreground flex min-h-full min-w-[320px] flex-col',
           typographyClass
         )}
       >
@@ -318,7 +318,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           appearance={currentTheme}
         >
           <div
-            className='flex h-full flex-col'
+            className='flex min-h-full flex-col'
             style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>
@@ -377,7 +377,7 @@ export function ErrorBoundary(): JSX.Element {
           appearance={theme}
         >
           <div
-            className='flex h-full flex-col'
+            className='flex min-h-full flex-col'
             style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>

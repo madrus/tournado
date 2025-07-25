@@ -41,7 +41,7 @@ export function TeamsLayoutHeader({
           </div>
 
           {/* Add Team Button */}
-          <div className='flex justify-end sm:justify-end rtl:justify-start sm:rtl:justify-start'>
+          <div className='flex justify-end gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
             <ActionLinkButton
               to={addButtonTo}
               icon='add'
@@ -62,7 +62,7 @@ export function TeamsLayoutHeader({
       </h1>
       <div className='mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <p className='text-foreground text-start text-lg'>{description}</p>
-        <div className='flex justify-end lg:justify-end rtl:justify-start lg:rtl:justify-start'>
+        <div className='flex justify-end gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
           <ActionLinkButton
             to={addButtonTo}
             icon='add'

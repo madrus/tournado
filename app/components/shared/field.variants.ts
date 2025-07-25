@@ -22,9 +22,7 @@ import { type ColorVariantKey, createColorVariantMapping } from './colorVariants
  * ```
  */
 export const fieldCheckmarkVariants = cva(
-  [
-    'absolute -top-2 right-1 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:left-1',
-  ],
+  ['absolute flex h-6 w-6 items-center justify-center rounded-full'],
   {
     variants: {
       /**
@@ -32,9 +30,19 @@ export const fieldCheckmarkVariants = cva(
        * Each color uses checkmark-{color} for consistent validation styling.
        */
       color: createColorVariantMapping(color => `checkmark-${color}`),
+      /**
+       * Field type variants for different input layouts.
+       * - input: Standard input fields (text, select, etc.)
+       * - checkbox: Checkbox agreement fields with complex layout
+       */
+      fieldType: {
+        input: '-top-2 right-1 rtl:right-auto rtl:left-1',
+        checkbox: 'top-2 right-2 rtl:right-auto rtl:left-2',
+      },
     },
     defaultVariants: {
       color: 'primary',
+      fieldType: 'input',
     },
   }
 )
@@ -62,7 +70,7 @@ export const fieldCheckmarkVariants = cva(
  */
 export const fieldErrorIconVariants = cva(
   [
-    'absolute -top-2 right-1 flex h-6 w-6 items-center justify-center rounded-full rtl:right-auto rtl:left-1',
+    'absolute flex h-6 w-6 items-center justify-center rounded-full',
     'field-error-icon', // Semantic class for error styling
   ],
   {
@@ -73,9 +81,19 @@ export const fieldErrorIconVariants = cva(
        * but variants are maintained for API consistency.
        */
       color: createColorVariantMapping(() => ''),
+      /**
+       * Field type variants for different input layouts.
+       * - input: Standard input fields (text, select, etc.)
+       * - checkbox: Checkbox agreement fields with complex layout
+       */
+      fieldType: {
+        input: '-top-2 right-1 rtl:right-auto rtl:left-1',
+        checkbox: 'top-2 right-2 rtl:right-auto rtl:left-2',
+      },
     },
     defaultVariants: {
       color: 'primary',
+      fieldType: 'input',
     },
   }
 )

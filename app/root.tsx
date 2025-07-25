@@ -325,7 +325,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
             <div
-              className='flex-1 overflow-visible pb-16 md:pb-0'
+              className='min-h-screen flex-1 overflow-visible pb-16 md:pb-0'
               style={{
                 background:
                   'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',

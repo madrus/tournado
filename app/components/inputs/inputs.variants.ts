@@ -483,6 +483,10 @@ export const checkboxAgreementInputVariants = cva(
   [
     'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
     'bg-input dark:bg-input/40',
+    // Ensure checkbox renders consistently across platforms
+    'checked:bg-primary checked:border-primary',
+    // Android-specific improvements
+    '-webkit-appearance-none -moz-appearance-none',
   ],
   {
     variants: {

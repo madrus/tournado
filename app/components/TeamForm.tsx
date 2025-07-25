@@ -652,25 +652,29 @@ export function TeamForm({
                   privacyAgreement,
                   isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
                 )}
+                fieldType='checkbox'
               />
             </div>
           </Panel>
         ) : null}
 
         {/* Submit and Action Buttons */}
-        <div className='flex justify-end rtl:justify-start'>
+        <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+          {onCancel ? (
+            <ActionButton
+              type='button'
+              onClick={onCancel}
+              variant='secondary'
+              color='brand'
+            >
+              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+              {t('common.actions.reset')}
+            </ActionButton>
+          ) : (
+            <div />
+          )}
+
           <div className='flex gap-4'>
-            {onCancel ? (
-              <ActionButton
-                type='button'
-                onClick={onCancel}
-                variant='secondary'
-                color='brand'
-              >
-                <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-                {t('common.actions.reset')}
-              </ActionButton>
-            ) : null}
             {isPublicSuccess ? (
               <ActionLinkButton
                 to='/teams/new'

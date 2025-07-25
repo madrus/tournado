@@ -171,25 +171,22 @@ export function AppBar({
   // Initialize isMobile to false to avoid SSR hydration mismatch
   const [isMobile, setIsMobile] = useState<boolean>(false)
 
-  // Track bottom navigation visibility and inject styles only on client side
+  // Track mobile state - use same breakpoint logic as useScrollDirection for consistency
   useEffect(() => {
     // Check if we're in the browser
     if (typeof window === 'undefined') return
 
-    // Media query to match when bottom navigation icons are visible
-    const mediaQuery = window.matchMedia(breakpoints.queries.mobile)
-
-    // Handle visibility check
+    // Use same mobile detection as useScrollDirection hook to avoid breakpoint mismatch
     const checkMobile = () => {
-      setIsMobile(mediaQuery.matches)
+      setIsMobile(breakpoints.isMobile())
     }
 
     // Initial setup
     checkMobile()
 
-    // Add listener for media query changes
-    mediaQuery.addEventListener('change', checkMobile)
-    return () => mediaQuery.removeEventListener('change', checkMobile)
+    // Add listener for window resize changes
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Measure header height once after mount

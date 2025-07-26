@@ -7,6 +7,7 @@ import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
 import {
+  checkboxAgreementCheckmarkVariants,
   checkboxAgreementFieldVariants,
   checkboxAgreementInputVariants,
 } from './inputs.variants'
@@ -78,7 +79,11 @@ export const CheckboxAgreementField = forwardRef<
           />
           {checked ? (
             <CheckIcon
-              className='text-primary-foreground pointer-events-none absolute inset-0 m-auto h-4 w-4'
+              className={checkboxAgreementCheckmarkVariants({
+                color,
+                error: !!error,
+                disabled,
+              })}
               size={16}
             />
           ) : null}

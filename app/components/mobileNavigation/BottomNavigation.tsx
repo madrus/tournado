@@ -52,7 +52,7 @@ function BottomNavigation(): JSX.Element {
     >
       {/* Navigation items spread across full width */}
       <div
-        className='flex w-full justify-between px-3'
+        className='flex w-full justify-between px-1'
         data-testid='navigation-items-container'
       >
         {navigationItems.map(item => (

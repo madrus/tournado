@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import {
   type ColorVariantKey,
   createColorVariantMapping,
+  createColorVariantObject,
 } from '~/components/shared/colorVariants'
 
 /**
@@ -192,29 +193,7 @@ export const toggleChipTextVariants = cva(
   ['font-medium text-sm transition-colors duration-200'],
   {
     variants: {
-      color: {
-        brand: 'text-adaptive-unselected',
-        primary: 'text-adaptive-unselected',
-        emerald: 'text-adaptive-unselected',
-        red: 'text-adaptive-unselected',
-        blue: 'text-adaptive-unselected',
-        green: 'text-adaptive-unselected',
-        yellow: 'text-adaptive-unselected',
-        purple: 'text-adaptive-unselected',
-        pink: 'text-adaptive-unselected',
-        indigo: 'text-adaptive-unselected',
-        slate: 'text-adaptive-unselected',
-        zinc: 'text-adaptive-unselected',
-        orange: 'text-adaptive-unselected',
-        amber: 'text-adaptive-unselected',
-        lime: 'text-adaptive-unselected',
-        teal: 'text-adaptive-unselected',
-        cyan: 'text-adaptive-unselected',
-        sky: 'text-adaptive-unselected',
-        violet: 'text-adaptive-unselected',
-        fuchsia: 'text-adaptive-unselected',
-        rose: 'text-adaptive-unselected',
-      },
+      color: createColorVariantObject('text-adaptive-unselected'),
       selected: {
         true: '',
         false: '',

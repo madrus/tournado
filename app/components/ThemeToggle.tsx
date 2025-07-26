@@ -13,7 +13,7 @@ export function ThemeToggle(): JSX.Element {
     <button
       type='button'
       onClick={toggleTheme}
-      className='relative flex h-8 w-8 items-center justify-center rounded-full focus:outline-none'
+      className='relative flex h-8 w-8 items-center justify-center rounded-full pb-0.5 focus:outline-none'
       aria-label={t('common.toggleTheme')}
       title={theme === 'light' ? t('common.darkMode') : t('common.lightMode')}
     >
@@ -24,7 +24,7 @@ export function ThemeToggle(): JSX.Element {
           theme === 'light' ? 'opacity-100' : 'opacity-0'
         )}
       >
-        {renderIcon('dark_mode', { className: 'w-6 h-6 text-primary-foreground' })}
+        {renderIcon('dark_mode', { className: 'h-8 w-8 text-primary-foreground' })}
       </div>
       {/* Light mode icon - visible when dark theme */}
       <div

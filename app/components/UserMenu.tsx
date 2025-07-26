@@ -83,7 +83,7 @@ export function UserMenu({
             <AnimatedHamburgerIcon
               isOpen={!!isOpen}
               isRTL={isRTL}
-              className='h-6 w-6'
+              className='h-8 w-8'
             />
           </button>
         </DropdownMenu.Trigger>

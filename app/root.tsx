@@ -27,6 +27,7 @@ import type { TournamentData } from '~/lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from '~/stores/useAuthStore'
 import { useSettingsStore, useSettingsStoreHydration } from '~/stores/useSettingsStore'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
+import { CONTENT_CONTAINER_CLASSES } from '~/styles/constants'
 import layoutStylesheetUrl from '~/styles/layout.css?url'
 import safeAreasStylesheetUrl from '~/styles/safe-areas.css?url'
 import tailwindStylesheetUrl from '~/styles/tailwind.css?url'
@@ -176,38 +177,8 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Links />
-        {/* Custom CSS to override Radix green colors with emerald brand colors */}
+        {/* Mobile viewport and dropdown fixes */}
         <style>{`
-          .radix-themes {
-            /* Override green accent colors with emerald equivalents */
-            --green-1: #ecfdf5;
-            --green-2: #d1fae5;
-            --green-3: #a7f3d0;
-            --green-4: #6ee7b7;
-            --green-5: #34d399;
-            --green-6: #10b981;
-            --green-7: #059669;
-            --green-8: #047857;
-            --green-9: #065f46;
-            --green-10: #064e3b;
-            --green-11: #022c22;
-            --green-12: #041e17;
-
-            /* Override green alpha colors */
-            --green-a1: rgba(16, 185, 129, 0.05);
-            --green-a2: rgba(16, 185, 129, 0.1);
-            --green-a3: rgba(16, 185, 129, 0.15);
-            --green-a4: rgba(16, 185, 129, 0.2);
-            --green-a5: rgba(16, 185, 129, 0.3);
-            --green-a6: rgba(16, 185, 129, 0.4);
-            --green-a7: rgba(16, 185, 129, 0.5);
-            --green-a8: rgba(16, 185, 129, 0.6);
-            --green-a9: rgba(16, 185, 129, 0.7);
-            --green-a10: rgba(16, 185, 129, 0.8);
-            --green-a11: rgba(16, 185, 129, 0.9);
-            --green-a12: rgba(16, 185, 129, 0.95);
-          }
-
           /* Mobile select dropdown fix - ensure native dropdown has enough space */
           @media (max-width: 1023px) {
             body {
@@ -220,7 +191,6 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
               position: static !important;
             }
           }
-
         `}</style>
       </head>
       <body
@@ -309,9 +279,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   return (
     <Document language={serverLanguage} theme={serverTheme}>
       <I18nextProvider i18n={i18n}>
-        {/* Using "green" accent but overridden with emerald colors via CSS above */}
         <Theme
-          accentColor='green'
+          accentColor='teal'
           grayColor='slate'
           radius='medium'
           scaling='100%'
@@ -325,7 +294,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
               <AppBar authenticated={authenticated} username={username} user={user} />
             </div>
             <div
-              className='min-h-screen flex-1 overflow-visible pb-16 md:pb-0'
+              className='flex-1 overflow-visible pb-16 md:pb-0'
               style={{
                 background:
                   'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
@@ -334,7 +303,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
               }}
             >
               <div className='flex min-h-full flex-col'>
-                <div className='flex-1'>
+                <div className='flex-1 px-4 pt-8 md:px-8 md:pb-4 lg:px-16'>
                   <Outlet />
                 </div>
                 {/* Desktop Footer - positioned at bottom of content */}
@@ -368,9 +337,8 @@ export function ErrorBoundary(): JSX.Element {
   return (
     <Document language='nl' theme={theme}>
       <I18nextProvider i18n={i18n}>
-        {/* Using "green" accent but overridden with emerald colors via CSS above */}
         <Theme
-          accentColor='green'
+          accentColor='teal'
           grayColor='slate'
           radius='medium'
           scaling='100%'
@@ -393,7 +361,7 @@ export function ErrorBoundary(): JSX.Element {
               }}
             >
               <div className='flex min-h-full flex-col'>
-                <div className='flex-1'>
+                <div className={cn('flex-1 pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}>
                   <GeneralErrorBoundary />
                 </div>
                 {/* Desktop Footer - positioned at bottom of content */}

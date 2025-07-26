@@ -146,10 +146,12 @@ export const comboFieldContentVariants = cva(
     variants: {
       color: createColorVariantMapping(color => {
         // Special mappings for brand/primary
-        if (color === 'brand')
+        if (color === 'brand') {
           return 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50'
-        if (color === 'primary')
+        }
+        if (color === 'primary') {
           return 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50'
+        }
         // Standard pattern for all other colors
         return `bg-${color}-50 text-${color}-800 combo-content-bg dark:text-${color}-50`
       }),

@@ -49,7 +49,7 @@ export default function SettingsPage(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
-    <div className='container mx-auto px-4 py-8' data-testid='settings-container'>
+    <div data-testid='settings-container'>
       <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
         {t('common.titles.settings')}
       </h1>

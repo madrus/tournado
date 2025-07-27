@@ -297,7 +297,10 @@ export function SidebarLayoutDemo(): JSX.Element {
             closeSidebarOnPaths={['/new']}
             theme="red"
             sidebarWidth="medium"
-            onSidebarToggle={(isOpen) => console.log('Sidebar:', isOpen)}
+            onSidebarToggle={(isOpen) => {
+              // eslint-disable-next-line no-console
+              console.log('Sidebar:', isOpen)}
+            }
           />`}
         </pre>
       </div>

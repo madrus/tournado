@@ -24,19 +24,7 @@ vi.mock('~/components/AuthErrorBoundary', () => ({
 
 describe('Admin Layout', () => {
   describe('Basic Rendering', () => {
-    test('should render the layout container', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-      expect(container).toBeInTheDocument()
-      expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
-    })
-
-    test('should render the Outlet component', () => {
+    test('should render the Outlet component directly', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
@@ -46,36 +34,17 @@ describe('Admin Layout', () => {
       expect(screen.getByTestId('outlet')).toBeInTheDocument()
       expect(screen.getByText('Mock Outlet Content')).toBeInTheDocument()
     })
-  })
 
-  describe('Layout Structure', () => {
-    test('should have proper container styling', () => {
+    test('should provide minimal layout structure', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('admin-layout-container')
-      expect(container).toHaveClass('container')
-      expect(container).toHaveClass('mx-auto')
-      expect(container).toHaveClass('px-4')
-      expect(container).toHaveClass('py-8')
-    })
-
-    test('should organize content in proper structure', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const outlet = screen.getByTestId('outlet')
-      const container = screen.getByTestId('admin-layout-container')
-
-      expect(container).toBeInTheDocument()
-      expect(container.tagName.toLowerCase()).toBe('div')
-      expect(outlet).toBeInTheDocument()
+      // Verify that only the outlet is rendered - no extra containers
+      expect(screen.getByTestId('outlet')).toBeInTheDocument()
+      expect(screen.queryByTestId('admin-layout-container')).not.toBeInTheDocument()
     })
   })
 
@@ -92,7 +61,7 @@ describe('Admin Layout', () => {
       expect(screen.getByText('Mock Outlet Content')).toBeInTheDocument()
     })
 
-    test('should provide layout structure for nested routes', () => {
+    test('should provide pass-through layout for nested routes', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
@@ -100,37 +69,10 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = screen.getByTestId('admin-layout-container')
 
-      // Verify that the layout container wraps the outlet
-      expect(container).toContainElement(outlet)
-      expect(container).toHaveClass('container', 'mx-auto', 'px-4', 'py-8')
-    })
-  })
-
-  describe('Responsive Design', () => {
-    test('should apply responsive container classes', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-      expect(container).toHaveClass('container') // Responsive container
-      expect(container).toHaveClass('mx-auto') // Center horizontally
-    })
-
-    test('should apply consistent padding', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-      expect(container).toHaveClass('px-4') // Horizontal padding
-      expect(container).toHaveClass('py-8') // Vertical padding
+      // Verify that the layout acts as a pass-through
+      expect(outlet).toBeInTheDocument()
+      expect(outlet).toBeVisible()
     })
   })
 
@@ -149,14 +91,9 @@ describe('Admin Layout', () => {
         throw new Error('Test error')
       }
 
-      const AdminLayoutWithError = () => (
-        <div className='container mx-auto px-4 py-8'>
-          <ThrowError />
-        </div>
-      )
+      const AdminLayoutWithError = () => <ThrowError />
 
-      // This test verifies the layout structure remains consistent
-      // even when considering error boundary integration
+      // This test verifies the error boundary is available
       expect(() => {
         render(
           <MemoryRouter>
@@ -167,24 +104,22 @@ describe('Admin Layout', () => {
     })
   })
 
-  describe('Layout Consistency', () => {
-    test('should provide consistent spacing and layout', () => {
+  describe('Layout Architecture', () => {
+    test('should delegate layout responsibility to child routes', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('admin-layout-container')
-
-      // Verify layout consistency
-      expect(container).toHaveClass('container') // Bootstrap-style container
-      expect(container).toHaveClass('mx-auto') // Centered
-      expect(container).toHaveClass('px-4') // Consistent horizontal padding
-      expect(container).toHaveClass('py-8') // Consistent vertical padding
+      // Verify that this layout doesn't impose any container structure
+      // Layout responsibility is delegated to child routes (like teams)
+      expect(screen.getByTestId('outlet')).toBeInTheDocument()
+      expect(screen.queryByRole('main')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('admin-layout-container')).not.toBeInTheDocument()
     })
 
-    test('should maintain layout structure regardless of content', () => {
+    test('should maintain simple pass-through structure', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
@@ -192,29 +127,14 @@ describe('Admin Layout', () => {
       )
 
       const outlet = screen.getByTestId('outlet')
-      const container = screen.getByTestId('admin-layout-container')
 
-      // Verify that the layout structure is consistent
-      expect(container).toContainElement(outlet) // Contains the Outlet
-      expect(screen.getByTestId('outlet')).toBeInTheDocument()
+      // Verify minimal DOM structure - just the outlet
+      expect(outlet).toBeInTheDocument()
+      expect(outlet).toHaveAttribute('data-testid', 'outlet')
     })
   })
 
   describe('Accessibility', () => {
-    test('should provide proper semantic structure', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-
-      // Verify semantic HTML structure
-      expect(container.tagName.toLowerCase()).toBe('div')
-      expect(container).toBeInTheDocument()
-    })
-
     test('should not interfere with child content accessibility', () => {
       render(
         <MemoryRouter>
@@ -227,108 +147,34 @@ describe('Admin Layout', () => {
       expect(outlet).toBeInTheDocument()
       expect(outlet).toBeVisible()
     })
+
+    test('should preserve semantic structure of child routes', () => {
+      render(
+        <MemoryRouter>
+          <AdminLayout />
+        </MemoryRouter>
+      )
+
+      // Verify that semantic structure is preserved
+      const outlet = screen.getByTestId('outlet')
+      expect(outlet).toBeInTheDocument()
+      expect(outlet).toHaveTextContent('Mock Outlet Content')
+    })
   })
 
   describe('Content Flow', () => {
-    test('should allow content to flow naturally within container', () => {
+    test('should allow unrestricted content flow to child routes', () => {
       render(
         <MemoryRouter>
           <AdminLayout />
         </MemoryRouter>
       )
 
-      const container = screen.getByTestId('admin-layout-container')
       const outlet = screen.getByTestId('outlet')
 
-      // Verify content flow
-      expect(container).toContainElement(outlet)
+      // Verify content flows directly to child routes
+      expect(outlet).toBeInTheDocument()
       expect(outlet).toHaveTextContent('Mock Outlet Content')
-    })
-
-    test('should provide adequate spacing for admin content', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-
-      // Verify spacing is appropriate for admin interface
-      expect(container).toHaveClass('py-8') // Good vertical spacing
-      expect(container).toHaveClass('px-4') // Good horizontal padding
-    })
-  })
-
-  describe('Layout Isolation', () => {
-    test('should not add extra DOM elements beyond container and outlet', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const outlet = screen.getByTestId('outlet')
-      const container = screen.getByTestId('admin-layout-container')
-
-      // Verify minimal DOM structure
-      expect(container).toContainElement(outlet)
-      expect(screen.getByTestId('outlet')).toBeInTheDocument()
-    })
-
-    test('should provide clean layout without unnecessary wrappers', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const outlet = screen.getByTestId('outlet')
-      const container = screen.getByTestId('admin-layout-container')
-
-      // Verify the container is the direct parent of the outlet
-      expect(container).toContainElement(outlet)
-      expect(container).toHaveClass(
-        'container',
-        'mx-auto',
-        'min-w-[320px]',
-        'px-4',
-        'py-8'
-      )
-    })
-  })
-
-  describe('Styling Verification', () => {
-    test('should apply all required Tailwind classes', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-      const expectedClasses = ['container', 'mx-auto', 'min-w-[320px]', 'px-4', 'py-8']
-
-      expectedClasses.forEach(className => {
-        expect(container).toHaveClass(className)
-      })
-    })
-
-    test('should not have any additional unexpected classes', () => {
-      render(
-        <MemoryRouter>
-          <AdminLayout />
-        </MemoryRouter>
-      )
-
-      const container = screen.getByTestId('admin-layout-container')
-      expect(container).toHaveClass(
-        'container',
-        'mx-auto',
-        'min-w-[320px]',
-        'px-4',
-        'py-8'
-      )
     })
   })
 })

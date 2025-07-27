@@ -83,99 +83,102 @@ export default function AdminDashboard(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
-    <>
-      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-        Admin Panel
-      </h1>
-      <p className='text-foreground mb-8'>
-        Welcome back, {user.email}. Manage your tournament platform from here.
-      </p>
-      <div className='space-y-8'>
-        {/* Dashboard Grid */}
-        <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {/* Panel 1 - Teal */}
-          <ActionLinkPanel
-            title='Team Management'
-            description='Manage team registrations and memberships.'
-            icon={<ApparelIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='green'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-            language={i18n.language}
-          >
-            <div className='space-y-2'>
-              <p>
-                <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
-                {teams.length}
-              </p>
-            </div>
-          </ActionLinkPanel>
-
-          {/* Panel 2 - Teal */}
-          <ActionLinkPanel
-            title='Tournament Management'
-            description='Create and manage tournaments and competitions.'
-            icon={<TrophyIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='cyan'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
-            language={i18n.language}
-          >
-            <div className='space-y-2'>
-              <p>
-                <strong className='me-1'>
-                  {t('admin.tournaments.totalTournaments')}:
-                </strong>
-                {tournaments.length}
-              </p>
-            </div>
-          </ActionLinkPanel>
-
-          {/* Panel 3 - Teal */}
-          <ActionLinkPanel
-            title='User Management'
-            description='Manage user accounts and permissions.'
-            icon={<PersonIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='yellow'
-            language={i18n.language}
-          >
-            <div className='space-y-2'>
-              <p className='break-all'>
-                <strong data-color='action'>Current User:</strong> {user.email}
-              </p>
-              <p className='break-all'>
-                <strong data-color='action'>User ID:</strong> {user.id}
-              </p>
-            </div>
-          </ActionLinkPanel>
-
-          {/* Panel 4 - Teal */}
-          <ActionLinkPanel
-            title='System Settings'
-            description='Configure application settings and preferences.'
-            icon={<SettingsIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='brand'
-            language={i18n.language}
-          />
-
-          {/* Panel 5 - Teal */}
-          <ActionLinkPanel
-            title='Reports & Analytics'
-            description='View platform usage and tournament statistics.'
-            icon={<TuneIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='violet'
-            language={i18n.language}
-          />
-        </div>
+    <div className='space-y-8' data-testid='admin-dashboard-container'>
+      <div>
+        <h1
+          className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}
+        >
+          Admin Panel
+        </h1>
+        <p className='text-foreground mb-8'>
+          Welcome back, {user.email}. Manage your tournament platform from here.
+        </p>
       </div>
-    </>
+
+      {/* Dashboard Grid */}
+      <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        {/* Panel 1 - Teal */}
+        <ActionLinkPanel
+          title='Team Management'
+          description='Manage team registrations and memberships.'
+          icon={<ApparelIcon className='h-5 w-5' />}
+          mainColor='teal'
+          hoverColor='brand'
+          iconColor='green'
+          to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+          language={i18n.language}
+        >
+          <div className='space-y-2'>
+            <p>
+              <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
+              {teams.length}
+            </p>
+          </div>
+        </ActionLinkPanel>
+
+        {/* Panel 2 - Teal */}
+        <ActionLinkPanel
+          title='Tournament Management'
+          description='Create and manage tournaments and competitions.'
+          icon={<TrophyIcon className='h-5 w-5' />}
+          mainColor='teal'
+          hoverColor='brand'
+          iconColor='cyan'
+          to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+          language={i18n.language}
+        >
+          <div className='space-y-2'>
+            <p>
+              <strong className='me-1'>
+                {t('admin.tournaments.totalTournaments')}:
+              </strong>
+              {tournaments.length}
+            </p>
+          </div>
+        </ActionLinkPanel>
+
+        {/* Panel 3 - Teal */}
+        <ActionLinkPanel
+          title='User Management'
+          description='Manage user accounts and permissions.'
+          icon={<PersonIcon className='h-5 w-5' />}
+          mainColor='teal'
+          hoverColor='brand'
+          iconColor='yellow'
+          language={i18n.language}
+        >
+          <div className='space-y-2'>
+            <p className='break-all'>
+              <strong data-color='action'>Current User:</strong> {user.email}
+            </p>
+            <p className='break-all'>
+              <strong data-color='action'>User ID:</strong> {user.id}
+            </p>
+          </div>
+        </ActionLinkPanel>
+
+        {/* Panel 4 - Teal */}
+        <ActionLinkPanel
+          title='System Settings'
+          description='Configure application settings and preferences.'
+          icon={<SettingsIcon className='h-5 w-5' />}
+          mainColor='teal'
+          hoverColor='brand'
+          iconColor='brand'
+          language={i18n.language}
+        />
+
+        {/* Panel 5 - Teal */}
+        <ActionLinkPanel
+          title='Reports & Analytics'
+          description='View platform usage and tournament statistics.'
+          icon={<TuneIcon className='h-5 w-5' />}
+          mainColor='teal'
+          hoverColor='brand'
+          iconColor='violet'
+          language={i18n.language}
+        />
+      </div>
+    </div>
   )
 }

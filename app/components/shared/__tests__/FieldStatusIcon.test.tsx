@@ -41,7 +41,7 @@ describe('FieldStatusIcon', () => {
     expect(iconContainer).toBeInTheDocument()
     expect(iconContainer).toHaveClass(
       'absolute',
-      '-top-2',
+      '-top-1',
       'right-1',
       'checkmark-emerald'
     )
@@ -54,7 +54,7 @@ describe('FieldStatusIcon', () => {
     expect(iconContainer).toBeInTheDocument()
     expect(iconContainer).toHaveClass(
       'absolute',
-      '-top-2',
+      '-top-1',
       'right-1',
       'field-error-icon'
     )
@@ -66,8 +66,10 @@ describe('FieldStatusIcon', () => {
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
       'absolute',
-      'top-2',
-      'right-2',
+      'top-0',
+      'right-1',
+      'md:top-1',
+      'md:right-2',
       'checkmark-emerald'
     )
   })
@@ -78,8 +80,10 @@ describe('FieldStatusIcon', () => {
     const iconContainer = screen.getByTestId('field-status-error')
     expect(iconContainer).toHaveClass(
       'absolute',
-      'top-2',
-      'right-2',
+      'top-0',
+      'right-1',
+      'md:top-1',
+      'md:right-2',
       'field-error-icon'
     )
   })
@@ -90,7 +94,7 @@ describe('FieldStatusIcon', () => {
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
       'absolute',
-      '-top-2',
+      '-top-1',
       'right-1',
       'checkmark-emerald'
     )
@@ -102,7 +106,7 @@ describe('FieldStatusIcon', () => {
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
       'absolute',
-      '-top-2',
+      '-top-1',
       'right-1',
       'flex',
       'h-6',
@@ -119,8 +123,10 @@ describe('FieldStatusIcon', () => {
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
       'absolute',
-      'top-2',
-      'right-2',
+      'top-0',
+      'right-1',
+      'md:top-1',
+      'md:right-2',
       'flex',
       'h-6',
       'w-6',

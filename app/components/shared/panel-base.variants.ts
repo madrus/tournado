@@ -43,6 +43,14 @@ export const basePanelVariants = cva(
         return `border-${color}-300 panel-${color}-bg`
       }),
       /**
+       * Disabled state variant for consistent panel disabling.
+       * Uses !important to override other opacity and pointer-event settings.
+       */
+      disabled: {
+        true: '!opacity-20 !pointer-events-none',
+        false: '',
+      },
+      /**
        * Panel layout and interaction variants.
        *
        * Layer-specific variants support ActionLinkPanel's layered architecture,
@@ -77,6 +85,7 @@ export const basePanelVariants = cva(
     defaultVariants: {
       color: 'brand',
       variant: 'content-panel',
+      disabled: false,
     },
   }
 )
@@ -248,9 +257,18 @@ export const basePanelNumberVariants = cva(
        * All colors provide sufficient contrast with white text.
        */
       color: createColorVariantMapping(color => `bg-${color}-600`),
+      /**
+       * Disabled state variant that overrides color with subtle light gray.
+       * Shows panel number is disabled while maintaining visibility.
+       */
+      disabled: {
+        true: '!bg-gray-200 !text-gray-700',
+        false: '',
+      },
     },
     defaultVariants: {
       color: 'brand',
+      disabled: false,
     },
   }
 )

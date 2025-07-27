@@ -3,6 +3,16 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { type ColorVariantKey, createColorVariantMapping } from './colorVariants'
 
 /**
+ * Shared positioning constants for field status icons.
+ * Both success checkmarks and error icons use identical positioning.
+ */
+const FIELD_ICON_POSITIONING = {
+  input: '-top-1 right-1 rtl:right-auto rtl:left-1 md:-top-2',
+  checkbox:
+    'top-0 right-1 rtl:right-auto rtl:left-1 md:top-1 md:right-2 md:rtl:right-auto md:rtl:left-2',
+} as const
+
+/**
  * Field validation checkmark variants for form field success states.
  *
  * Provides styling for checkmark icons that appear when form fields pass validation.
@@ -35,10 +45,7 @@ export const fieldCheckmarkVariants = cva(
        * - input: Standard input fields (text, select, etc.)
        * - checkbox: Checkbox agreement fields with complex layout
        */
-      fieldType: {
-        input: '-top-2 right-1 rtl:right-auto rtl:left-1',
-        checkbox: 'top-2 right-2 rtl:right-auto rtl:left-2',
-      },
+      fieldType: FIELD_ICON_POSITIONING,
     },
     defaultVariants: {
       color: 'primary',
@@ -86,10 +93,7 @@ export const fieldErrorIconVariants = cva(
        * - input: Standard input fields (text, select, etc.)
        * - checkbox: Checkbox agreement fields with complex layout
        */
-      fieldType: {
-        input: '-top-2 right-1 rtl:right-auto rtl:left-1',
-        checkbox: 'top-2 right-2 rtl:right-auto rtl:left-2',
-      },
+      fieldType: FIELD_ICON_POSITIONING,
     },
     defaultVariants: {
       color: 'primary',

@@ -78,7 +78,7 @@ describe('BottomNavigation', () => {
       )
 
       const innerContainer = screen.getByTestId('navigation-items-container')
-      expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
+      expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-1')
     })
   })
 
@@ -209,7 +209,7 @@ describe('BottomNavigation', () => {
       expect(nav).toContainElement(screen.getByTestId('navigation-items-container'))
 
       const innerContainer = screen.getByTestId('navigation-items-container')
-      expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-3')
+      expect(innerContainer).toHaveClass('flex', 'w-full', 'justify-between', 'px-1')
 
       // Should have 3 navigation items inside the container
       const navigationItems = within(innerContainer).getAllByRole('link')

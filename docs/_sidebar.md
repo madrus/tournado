@@ -23,6 +23,8 @@
 - Features
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
+- Security
+   - [Overview](security/overview.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)

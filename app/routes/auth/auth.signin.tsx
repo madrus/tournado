@@ -54,7 +54,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
   const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.ADMIN_LOGIN)
 
   if (!rateLimitResult.allowed) {
-    return createRateLimitResponse(rateLimitResult)
+    return createRateLimitResponse(rateLimitResult, RATE_LIMITS.ADMIN_LOGIN)
   }
 
   const formData = await request.formData()

@@ -208,13 +208,15 @@ describe('rateLimit.server', () => {
         resetTime: Date.now() + 60000,
         retryAfter: 60,
       }
+      const config = { maxAttempts: 5, windowMs: 60000 }
 
-      const response = createRateLimitResponse(result)
+      const response = createRateLimitResponse(result, config)
 
       expect(response.status).toBe(429)
       expect(response.headers.get('Content-Type')).toBe('application/json')
       expect(response.headers.get('Retry-After')).toBe('60')
       expect(response.headers.get('X-RateLimit-Remaining')).toBe('0')
+      expect(response.headers.get('X-RateLimit-Limit')).toBe('5')
     })
 
     test('should include proper headers without retry-after when allowed', () => {
@@ -223,11 +225,13 @@ describe('rateLimit.server', () => {
         remaining: 2,
         resetTime: Date.now() + 60000,
       }
+      const config = { maxAttempts: 5, windowMs: 60000 }
 
-      const response = createRateLimitResponse(result)
+      const response = createRateLimitResponse(result, config)
 
       expect(response.status).toBe(429) // Still 429 since this is an error response
       expect(response.headers.get('X-RateLimit-Remaining')).toBe('2')
+      expect(response.headers.get('X-RateLimit-Limit')).toBe('5')
       expect(response.headers.get('Retry-After')).toBeNull()
     })
 
@@ -238,8 +242,9 @@ describe('rateLimit.server', () => {
         resetTime: Date.now() + 60000,
         retryAfter: 30,
       }
+      const config = { maxAttempts: 5, windowMs: 60000 }
 
-      const response = createRateLimitResponse(result)
+      const response = createRateLimitResponse(result, config)
       const body = await response.json()
 
       expect(body.error).toBe('Too many requests')

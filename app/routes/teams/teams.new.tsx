@@ -12,6 +12,7 @@ import { TeamForm } from '~/components/TeamForm'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
+import { isRateLimitResponse, withAdminRateLimit } from '~/utils/adminMiddleware.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { createTeamFromFormData } from '~/utils/team-creation.server'
 
@@ -42,19 +43,27 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<void> 
 }
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
-  const result = await createTeamFromFormData(await request.formData())
+  const response = await withAdminRateLimit(request, async () => {
+    const result = await createTeamFromFormData(await request.formData())
 
-  if (!result.success) {
-    return Response.json({ errors: result.errors }, { status: 400 })
+    if (!result.success) {
+      return Response.json({ errors: result.errors }, { status: 400 })
+    }
+
+    return Response.json(
+      {
+        success: true,
+        team: result.team,
+      },
+      { status: 200 }
+    )
+  })
+
+  if (isRateLimitResponse(response)) {
+    return response
   }
 
-  return Response.json(
-    {
-      success: true,
-      team: result.team,
-    },
-    { status: 200 }
-  )
+  return response as Response
 }
 
 export default function NewTeamPage(): JSX.Element {

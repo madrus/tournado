@@ -30,7 +30,7 @@ export function getChipClasses(languageCode: string): { container: string } {
     // ps-3 = padding-inline-start (more space where content starts)
     // pe-2 = padding-inline-end (less space where content ends, where delete button is)
     // flex-row-reverse still needed to change visual order in RTL
-    container: isRtl ? 'ps-3 pe-2 gap-2 flex-row-reverse' : 'ps-3 pe-2 gap-2 flex-row',
+    container: isRtl ? 'ps-2 pe-1 gap-2 flex-row-reverse' : 'ps-2 pe-1 gap-2 flex-row',
   }
 }
 

@@ -10,6 +10,7 @@ import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
+import { CONTENT_PX } from '~/styles/constants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { usePageTitle } from '~/utils/route-utils'
@@ -225,10 +226,12 @@ export function AppBar({
           visible: effectiveShowHeader,
         })}`}
       >
-        <header className='safe-top bg-primary text-primary-foreground relative h-14 w-full px-4'>
+        <header
+          className={`safe-top bg-primary text-primary-foreground relative h-14 w-full ${CONTENT_PX}`}
+        >
           {/* Logo and Brand for all screen sizes */}
-          <div className='absolute start-2 top-1/2 flex -translate-y-1/2 items-center gap-1 lg:start-4 lg:gap-2'>
-            <PrimaryNavLink to='/' className='flex items-center gap-1 lg:gap-2'>
+          <div className='absolute start-4 top-1/2 flex -translate-y-1/2 items-center gap-2'>
+            <PrimaryNavLink to='/' className='flex items-center gap-2'>
               <img
                 src={logo}
                 alt='Tournado Logo'
@@ -256,7 +259,7 @@ export function AppBar({
           </div>
 
           {/* Unified menu for both desktop and mobile */}
-          <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center'>
+          <div className='absolute end-4 top-1/2 flex -translate-y-1/2 items-center gap-1'>
             <ThemeToggle />
             <UserMenu
               authenticated={isAuthenticated}

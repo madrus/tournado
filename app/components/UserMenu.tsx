@@ -14,7 +14,6 @@ export type MenuItemType = {
   label: string
   icon?: IconName
   href?: string
-  todo?: boolean
   action?: JSX.Element
   customIcon?: string
   authenticated?: boolean
@@ -83,7 +82,7 @@ export function UserMenu({
             <AnimatedHamburgerIcon
               isOpen={!!isOpen}
               isRTL={isRTL}
-              className='h-6 w-6'
+              className='h-8 w-8'
             />
           </button>
         </DropdownMenu.Trigger>
@@ -260,9 +259,6 @@ export function UserMenu({
                     >
                       {item.label}
                     </span>
-                    {item.todo ? (
-                      <span className='text-brand ms-2 text-xs'>(TODO)</span>
-                    ) : null}
                   </Link>
                 </DropdownMenu.Item>
               )

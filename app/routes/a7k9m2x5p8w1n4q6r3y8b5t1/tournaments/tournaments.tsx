@@ -22,7 +22,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
   const { t, i18n } = useTranslation()
 
   return (
-    <div className='space-y-8'>
+    <div className='space-y-8' data-testid='admin-tournaments-layout-container'>
       {/* Header */}
       <div className='border-button-neutral-secondary-border border-b pb-6'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>

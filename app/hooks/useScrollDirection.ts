@@ -16,7 +16,7 @@ import { useIsClient } from './useIsomorphicWindow'
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
 const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
-const BOUNCE_SAFETY_TIMEOUT = 1000 // Max time to keep bounce state active (ms)
+const BOUNCE_SAFETY_TIMEOUT = 5000 // Max time to keep bounce state active (ms)
 
 /**
  * Hook to detect scroll direction and control header visibility

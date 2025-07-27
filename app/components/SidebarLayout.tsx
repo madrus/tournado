@@ -297,7 +297,7 @@ export function SidebarLayoutDemo(): JSX.Element {
             closeSidebarOnPaths={['/new']}
             theme="red"
             sidebarWidth="medium"
-            onSidebarToggle={(isOpen) => console.log('Sidebar:', isOpen)}
+            onSidebarToggle={(isOpen) => alert('Sidebar:', isOpen)}
           />`}
         </pre>
       </div>

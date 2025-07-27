@@ -7,3 +7,7 @@
 - `npm run lint` - to run eslint
 - `npm run typecheck` - to run tsc linter
 - `npm run format` - to run prettier formatting
+
+### Rules
+
+- Always use the semantic color classes from app/styles/tailwind.css if the colors fall under ColorAccent type

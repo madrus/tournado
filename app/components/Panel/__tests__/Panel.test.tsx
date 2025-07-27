@@ -264,7 +264,7 @@ describe('Panel Component', () => {
       render(<Panel {...defaultProps} disabled />)
 
       const panel = screen.getByTestId('test-panel')
-      expect(panel).toHaveClass('opacity-20', 'pointer-events-none')
+      expect(panel).toHaveClass('!opacity-20', '!pointer-events-none')
     })
 
     it('should merge custom className with generated classes', () => {

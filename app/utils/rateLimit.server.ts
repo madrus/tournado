@@ -331,9 +331,9 @@ export const RATE_LIMITS = {
     blockDurationMs: 10 * 60 * 1000, // 10 minutes block
   },
   USER_REGISTRATION: {
-    maxAttempts: 3,
-    windowMs: 60 * 60 * 1000, // 1 hour
-    blockDurationMs: 2 * 60 * 60 * 1000, // 2 hours block
+    maxAttempts: 5, // Allow for form validation errors
+    windowMs: 30 * 60 * 1000, // 30 minutes
+    blockDurationMs: 60 * 60 * 1000, // 1 hour block
   },
 } as const
 

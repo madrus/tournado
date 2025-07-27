@@ -63,13 +63,7 @@ export function Panel({
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
-  const containerClasses = cn(
-    panelVariants({ color, variant }),
-    // Apply opacity to all disabled panels
-    disabled && 'opacity-20',
-    disabled && 'pointer-events-none',
-    className
-  )
+  const containerClasses = cn(panelVariants({ color, variant, disabled }), className)
 
   return (
     <div className={containerClasses} data-testid={testId}>

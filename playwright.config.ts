@@ -52,6 +52,7 @@ export default defineConfig({
     /* Add test header for server-side test detection */
     extraHTTPHeaders: {
       'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for Playwright tests
+      'x-test-bypass': 'true', // Bypass rate limiting in tests
     },
   },
 

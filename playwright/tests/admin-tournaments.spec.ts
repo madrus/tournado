@@ -173,7 +173,7 @@ test.describe('Admin Tournaments', () => {
     await page.waitForFunction(() => document.body.children.length > 0)
 
     // Should show tournaments interface
-    const tournamentsContainer = page.locator('.container').first()
+    const tournamentsContainer = page.getByTestId('admin-tournaments-layout-container')
     await expect(tournamentsContainer).toBeVisible({ timeout: 15000 })
 
     // Should show either tournaments list or empty state message

@@ -16,6 +16,7 @@ import { useIsClient } from './useIsomorphicWindow'
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
 const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
+const BOUNCE_SAFETY_TIMEOUT = 1000 // Max time to keep bounce state active (ms)
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -28,10 +29,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 } {
   const isClient = useIsClient()
 
-  // Initialize with proper SSR-safe mobile detection
-  const [isMobile, setIsMobile] = useState<boolean>(() =>
-    isClient ? breakpoints.isMobile() : false
-  )
+  // Initialize isMobile to false to avoid hydration mismatches
+  const [isMobile, setIsMobile] = useState<boolean>(false)
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
@@ -40,6 +39,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const lastTouchY = useRef<number | null>(null)
   const isTouching = useRef<boolean>(false)
   const isBouncingBottom = useRef<boolean>(false)
+  const bounceTimeoutRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
 
   // Synchronous mobile detection to minimize flash
@@ -166,8 +166,25 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       // At bottom and dragging up (deltaY < 0 means dragging up)
       if (y >= maxScrollY - 5 && deltaY < 0) {
         isBouncingBottom.current = true
+
+        // Clear any existing timeout
+        if (bounceTimeoutRef.current) {
+          clearTimeout(bounceTimeoutRef.current)
+        }
+
+        // Set safety timeout to prevent stuck bounce state
+        bounceTimeoutRef.current = window.setTimeout(() => {
+          isBouncingBottom.current = false
+          bounceTimeoutRef.current = null
+        }, BOUNCE_SAFETY_TIMEOUT)
       } else {
         isBouncingBottom.current = false
+
+        // Clear timeout when not bouncing
+        if (bounceTimeoutRef.current) {
+          clearTimeout(bounceTimeoutRef.current)
+          bounceTimeoutRef.current = null
+        }
       }
     },
     [isMobile]
@@ -177,6 +194,12 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     isTouching.current = false
     lastTouchY.current = null
     isBouncingBottom.current = false
+
+    // Clear bounce timeout on touch end
+    if (bounceTimeoutRef.current) {
+      clearTimeout(bounceTimeoutRef.current)
+      bounceTimeoutRef.current = null
+    }
   }, [])
 
   // Initialize document height calculation synchronously to avoid layout shifts
@@ -216,6 +239,12 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
         rafRef.current = null
+      }
+
+      // Clear bounce timeout
+      if (bounceTimeoutRef.current) {
+        clearTimeout(bounceTimeoutRef.current)
+        bounceTimeoutRef.current = null
       }
     }
   }, [

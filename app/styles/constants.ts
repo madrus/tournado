@@ -4,13 +4,11 @@
  */
 
 // Horizontal padding/margins for main content areas - responsive three-tier system
-export const CONTENT_PX = 'px-2 md:px-8 lg:px-16' // 8px mobile, 32px tablet, 64px desktop
+export const CONTENT_PX = 'px-3 md:px-8 lg:px-16' // 8px mobile, 32px tablet, 64px desktop
 
 // Container constraints
 export const CONTENT_MIN_WIDTH = 'min-w-[320px]'
+export const CONTENT_MAX_WIDTH = 'max-w-7xl' // Prevent content stretching on large screens
 
 // Common layout classes that should be used consistently
-export const CONTENT_CONTAINER_CLASSES = `mx-auto ${CONTENT_MIN_WIDTH} ${CONTENT_PX}`
-
-// CSS custom property for consistent horizontal padding
-export const CONTENT_PX_VALUE = '1rem' // 16px
+export const CONTENT_CONTAINER_CLASSES = `mx-auto ${CONTENT_MIN_WIDTH} ${CONTENT_MAX_WIDTH} ${CONTENT_PX}`

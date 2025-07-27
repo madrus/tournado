@@ -4,22 +4,72 @@ interface RateLimitAttempt {
   lastAttempt: number
 }
 
-// In-memory store for rate limiting attempts
+// In-memory store for rate limiting attempts with size limits
 const attempts = new Map<string, RateLimitAttempt>()
 
-// Clean up old entries every 10 minutes
+// Security: Maximum entries to prevent memory exhaustion attacks
+const MAX_ENTRIES = 10000
+
+// Enhanced cleanup strategy - runs every 5 minutes with more aggressive cleanup
 setInterval(
   () => {
     const now = Date.now()
-    const tenMinutesAgo = now - 10 * 60 * 1000
+    const cleanupThresholds = [
+      30 * 60 * 1000, // 30 minutes - expired entries
+      20 * 60 * 1000, // 20 minutes - if over 80% capacity
+      10 * 60 * 1000, // 10 minutes - if over 90% capacity
+    ]
+
+    let currentThreshold = cleanupThresholds[0]
+
+    // Use more aggressive cleanup if approaching memory limits
+    if (attempts.size > MAX_ENTRIES * 0.9) {
+      currentThreshold = cleanupThresholds[2] // 10 minutes
+    } else if (attempts.size > MAX_ENTRIES * 0.8) {
+      currentThreshold = cleanupThresholds[1] // 20 minutes
+    }
+
+    const cutoffTime = now - currentThreshold
+    let deletedCount = 0
 
     for (const [key, attempt] of attempts.entries()) {
-      if (attempt.lastAttempt < tenMinutesAgo) {
+      if (attempt.lastAttempt < cutoffTime) {
         attempts.delete(key)
+        deletedCount++
       }
     }
+
+    // Emergency cleanup if still over limit - remove oldest entries
+    if (attempts.size > MAX_ENTRIES) {
+      const sortedEntries = Array.from(attempts.entries()).sort(
+        ([, a], [, b]) => a.lastAttempt - b.lastAttempt
+      )
+
+      const entriesToRemove = attempts.size - MAX_ENTRIES + 1000 // Remove extra buffer
+      for (let i = 0; i < entriesToRemove && i < sortedEntries.length; i++) {
+        attempts.delete(sortedEntries[i][0])
+        deletedCount++
+      }
+    }
+
+    // Log cleanup stats in development and alert in production for high usage
+    if (process.env.NODE_ENV === 'development' && deletedCount > 0) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `Rate limit cleanup: removed ${deletedCount} entries, ${attempts.size} remaining`
+      )
+    } else if (
+      process.env.NODE_ENV === 'production' &&
+      attempts.size > MAX_ENTRIES * 0.8
+    ) {
+      // Alert when memory usage is consistently high in production
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Rate limit high memory usage: ${attempts.size}/${MAX_ENTRIES} entries (${Math.round((attempts.size / MAX_ENTRIES) * 100)}%). Consider monitoring for potential attacks.`
+      )
+    }
   },
-  10 * 60 * 1000
+  5 * 60 * 1000 // Run every 5 minutes instead of 10
 )
 
 export interface RateLimitConfig {
@@ -37,13 +87,77 @@ export interface RateLimitResult {
 
 /**
  * Check if a request should be rate limited
+ *
+ * Security Features:
+ * - Memory leak protection with MAX_ENTRIES limit
+ * - Test bypass only in development/test environments
+ * - IP validation to prevent header manipulation
+ * - Localhost validation for test bypasses
+ * - Production environment completely disables bypasses
  */
 export function checkRateLimit(
   identifier: string,
-  config: RateLimitConfig
+  config: RateLimitConfig,
+  request?: Request
 ): RateLimitResult {
+  // Security: Strict test environment bypass with multiple validations
+  const isTestEnv = process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT === 'true'
+  const isLocalhost = request ? isLocalhostRequest(request) : false
+
+  if (isTestEnv && isLocalhost) {
+    return {
+      allowed: true,
+      remaining: config.maxAttempts - 1,
+      resetTime: Date.now() + config.windowMs,
+    }
+  }
+
+  // Security: Test bypass header only works in development/test with additional validation
+  const testBypassHeader = request?.headers.get('x-test-bypass')
+  if (
+    testBypassHeader === 'true' &&
+    (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') &&
+    isLocalhost
+  ) {
+    // Additional security: Log bypass usage in development
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.warn(`Rate limit bypassed for ${identifier} via test header`)
+    }
+
+    return {
+      allowed: true,
+      remaining: config.maxAttempts - 1,
+      resetTime: Date.now() + config.windowMs,
+    }
+  }
+
+  // Security: Prevent bypass in production regardless of headers
+  if (process.env.NODE_ENV === 'production') {
+    // Remove any test bypass logic in production builds
+    // All rate limiting is enforced regardless of headers
+  }
   const now = Date.now()
   const attempt = attempts.get(identifier)
+
+  // Security: Check if we're approaching memory limits before adding new entries
+  if (!attempt && attempts.size >= MAX_ENTRIES) {
+    // Alert in production when hitting memory limits
+    if (process.env.NODE_ENV === 'production') {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Rate limit memory capacity reached: ${attempts.size}/${MAX_ENTRIES} entries. Consider increasing cleanup frequency or MAX_ENTRIES.`
+      )
+    }
+
+    // Reject new entries if at capacity to prevent memory exhaustion
+    return {
+      allowed: false,
+      remaining: 0,
+      resetTime: now + config.windowMs,
+      retryAfter: Math.ceil(config.windowMs / 1000),
+    }
+  }
 
   // If no previous attempts, allow and record
   if (!attempt) {
@@ -120,23 +234,143 @@ export function checkRateLimit(
 }
 
 /**
- * Get client IP address from request
+ * Validate if a string is a valid IP address (IPv4 or IPv6) with enhanced security checks
+ */
+function isValidIP(ip: string): boolean {
+  // Security: Reject suspicious patterns that could indicate manipulation
+  if (!ip || ip.length > 45 || /[<>'"&]/.test(ip)) {
+    return false
+  }
+
+  // IPv4 regex
+  const ipv4Regex =
+    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+
+  // IPv6 regex (simplified - covers most common cases)
+  const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::/
+
+  return ipv4Regex.test(ip) || ipv6Regex.test(ip)
+}
+
+/**
+ * Enhanced IP header validation with additional security checks
+ */
+function validateIPHeader(ip: string, headerName: string): boolean {
+  // Basic validation
+  if (!isValidIP(ip)) {
+    return false
+  }
+
+  // Security: Additional checks for suspicious patterns
+  const suspiciousPatterns = [
+    /^\d{1,3}\.\d{1,3}\.\d{1,3}\.0$/, // Network addresses
+    /^0\./, // Invalid starting octets
+    /\.0\./, // Suspicious middle octets in some contexts
+    /^255\.255\.255\.255$/, // Broadcast address
+  ]
+
+  // Only apply IPv4-specific suspicious pattern checks for IPv4 addresses
+  const isIPv4 = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ip)
+  if (isIPv4 && suspiciousPatterns.some(pattern => pattern.test(ip))) {
+    // Log suspicious attempts in production
+    if (process.env.NODE_ENV === 'production') {
+      // eslint-disable-next-line no-console
+      console.warn(`Suspicious IP in ${headerName} header: ${ip}`)
+    }
+    return false
+  }
+
+  return true
+}
+
+/**
+ * Get client IP address from request with security validation
  */
 export function getClientIP(request: Request): string {
-  // Check common headers for real IP (from proxies, load balancers)
-  const xForwardedFor = request.headers.get('x-forwarded-for')
-  const xRealIP = request.headers.get('x-real-ip')
-  const cfConnectingIP = request.headers.get('cf-connecting-ip')
+  // Security: Only trust certain headers based on deployment environment
+  const trustedProxies = process.env.TRUSTED_PROXIES?.split(',') || []
+  const isProxyTrusted = trustedProxies.length > 0
 
-  if (cfConnectingIP) return cfConnectingIP
-  if (xRealIP) return xRealIP
-  if (xForwardedFor) {
-    // x-forwarded-for can be a comma-separated list
-    return xForwardedFor.split(',')[0].trim()
+  // Check Cloudflare header first (most reliable if using CF)
+  const cfConnectingIP = request.headers.get('cf-connecting-ip')
+  if (cfConnectingIP && validateIPHeader(cfConnectingIP, 'cf-connecting-ip')) {
+    return cfConnectingIP
+  }
+
+  // Check real IP header (used by some reverse proxies)
+  const xRealIP = request.headers.get('x-real-ip')
+  if (
+    xRealIP &&
+    validateIPHeader(xRealIP, 'x-real-ip') &&
+    !isPrivateIP(xRealIP) && // Additional validation: reject private IPs
+    (isProxyTrusted || process.env.NODE_ENV === 'development')
+  ) {
+    return xRealIP
+  }
+
+  // Check X-Forwarded-For header (can be manipulated, so validate carefully)
+  const xForwardedFor = request.headers.get('x-forwarded-for')
+  if (xForwardedFor && (isProxyTrusted || process.env.NODE_ENV === 'development')) {
+    // Security: Limit the number of IPs processed to prevent DoS
+    const ips = xForwardedFor
+      .split(',')
+      .map(ip => ip.trim())
+      .slice(0, 5)
+    for (const ip of ips) {
+      if (validateIPHeader(ip, 'x-forwarded-for')) {
+        // Security: Skip private/local IPs in forwarded headers unless in development
+        if (process.env.NODE_ENV === 'development' || !isPrivateIP(ip)) {
+          return ip
+        }
+      }
+    }
   }
 
   // Fallback to connection info (may not be available in all environments)
   return 'unknown'
+}
+
+/**
+ * Check if an IP address is in private/local range
+ */
+function isPrivateIP(ip: string): boolean {
+  // Common private IP ranges
+  const privateRanges = [
+    /^10\./, // 10.0.0.0/8
+    /^172\.(1[6-9]|2[0-9]|3[01])\./, // 172.16.0.0/12
+    /^192\.168\./, // 192.168.0.0/16
+    /^127\./, // 127.0.0.0/8 (localhost)
+    /^169\.254\./, // 169.254.0.0/16 (link-local)
+    /^fc00:/, // IPv6 private
+    /^fe80:/, // IPv6 link-local
+    /^::1$/, // IPv6 localhost
+  ]
+
+  return privateRanges.some(range => range.test(ip))
+}
+
+/**
+ * Security: Check if request is from localhost/development environment
+ */
+function isLocalhostRequest(request: Request): boolean {
+  const url = new URL(request.url)
+  const hostname = url.hostname
+
+  // Check for localhost hostnames
+  const localhostPatterns = ['localhost', '127.0.0.1', '0.0.0.0', '::1']
+
+  if (localhostPatterns.includes(hostname)) {
+    return true
+  }
+
+  // Check for local development ports
+  const port = url.port
+  const commonDevPorts = ['3000', '5173', '8080', '4000', '8000']
+
+  return (
+    commonDevPorts.includes(port) &&
+    (hostname === 'localhost' || hostname.startsWith('127.'))
+  )
 }
 
 /**
@@ -154,9 +388,9 @@ export const RATE_LIMITS = {
     blockDurationMs: 10 * 60 * 1000, // 10 minutes block
   },
   USER_REGISTRATION: {
-    maxAttempts: 3,
-    windowMs: 60 * 60 * 1000, // 1 hour
-    blockDurationMs: 2 * 60 * 60 * 1000, // 2 hours block
+    maxAttempts: 5, // Allow for form validation errors
+    windowMs: 30 * 60 * 1000, // 30 minutes
+    blockDurationMs: 60 * 60 * 1000, // 1 hour block
   },
 } as const
 

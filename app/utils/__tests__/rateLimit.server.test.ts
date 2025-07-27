@@ -270,9 +270,9 @@ describe('rateLimit.server', () => {
     })
 
     test('should have proper user registration limits', () => {
-      expect(RATE_LIMITS.USER_REGISTRATION.maxAttempts).toBe(3)
-      expect(RATE_LIMITS.USER_REGISTRATION.windowMs).toBe(60 * 60 * 1000) // 1 hour
-      expect(RATE_LIMITS.USER_REGISTRATION.blockDurationMs).toBe(2 * 60 * 60 * 1000) // 2 hours
+      expect(RATE_LIMITS.USER_REGISTRATION.maxAttempts).toBe(5)
+      expect(RATE_LIMITS.USER_REGISTRATION.windowMs).toBe(30 * 60 * 1000) // 30 minutes
+      expect(RATE_LIMITS.USER_REGISTRATION.blockDurationMs).toBe(60 * 60 * 1000) // 1 hour
     })
   })
 

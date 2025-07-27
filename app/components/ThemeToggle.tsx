@@ -33,7 +33,7 @@ export function ThemeToggle(): JSX.Element {
           theme === 'dark' ? 'opacity-100' : 'opacity-0'
         )}
       >
-        {renderIcon('light_mode', { className: 'w-6 h-6 text-primary-foreground' })}
+        {renderIcon('light_mode', { className: 'w-8 h-8 text-primary-foreground' })}
       </div>
     </button>
   )

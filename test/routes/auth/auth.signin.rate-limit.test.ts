@@ -118,12 +118,15 @@ describe('auth.signin rate limiting', () => {
       'login:192.168.1.100',
       rateLimitModule.RATE_LIMITS.ADMIN_LOGIN
     )
-    expect(mockCreateRateLimitResponse).toHaveBeenCalledWith({
-      allowed: false,
-      remaining: 0,
-      resetTime: expect.any(Number),
-      retryAfter: 1800,
-    })
+    expect(mockCreateRateLimitResponse).toHaveBeenCalledWith(
+      {
+        allowed: false,
+        remaining: 0,
+        resetTime: expect.any(Number),
+        retryAfter: 1800,
+      },
+      rateLimitModule.RATE_LIMITS.ADMIN_LOGIN
+    )
     expect(response).toBe(mockRateLimitResponse)
   })
 

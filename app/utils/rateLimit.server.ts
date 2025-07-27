@@ -163,9 +163,12 @@ export const RATE_LIMITS = {
 /**
  * Create a rate limit error response
  */
-export function createRateLimitResponse(result: RateLimitResult): Response {
+export function createRateLimitResponse(
+  result: RateLimitResult,
+  config: RateLimitConfig
+): Response {
   const headers = new Headers({
-    'X-RateLimit-Limit': String(result.remaining + (result.allowed ? 1 : 0)),
+    'X-RateLimit-Limit': String(config.maxAttempts),
     'X-RateLimit-Remaining': String(result.remaining),
     'X-RateLimit-Reset': String(Math.ceil(result.resetTime / 1000)),
   })

@@ -27,7 +27,7 @@ import type { TournamentData } from '~/lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from '~/stores/useAuthStore'
 import { useSettingsStore, useSettingsStoreHydration } from '~/stores/useSettingsStore'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
-import { CONTENT_CONTAINER_CLASSES } from '~/styles/constants'
+import { CONTENT_CONTAINER_CLASSES, CONTENT_PX } from '~/styles/constants'
 import layoutStylesheetUrl from '~/styles/layout.css?url'
 import safeAreasStylesheetUrl from '~/styles/safe-areas.css?url'
 import tailwindStylesheetUrl from '~/styles/tailwind.css?url'
@@ -175,7 +175,10 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
       <head>
         <Meta />
         <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width,initial-scale=1' />
+        <meta
+          name='viewport'
+          content='width=device-width,initial-scale=1,viewport-fit=cover'
+        />
         <Links />
       </head>
       <body
@@ -287,7 +290,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
                 zIndex: 1,
               }}
             >
-              <div className='px-4 pt-8 md:px-8 md:pb-8 lg:px-16'>
+              <div className={`${CONTENT_PX} pt-8 md:pb-8`}>
                 <Outlet />
               </div>
             </div>

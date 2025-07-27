@@ -48,7 +48,7 @@ export const teamChipVariants = cva(
       },
       hasActions: {
         true: [], // padding handled by chipClasses.container
-        false: 'px-3',
+        false: 'px-2',
       },
       /**
        * Color variants optimized for team display context.

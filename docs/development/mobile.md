@@ -110,6 +110,58 @@ To test the implementation:
 3. Launch from home screen icon
 4. Verify no browser address bar or navigation buttons are visible
 
+## Mobile Scroll Behavior & Navigation
+
+### Bounce Detection Implementation
+
+To improve mobile UX, we implemented smart bounce detection that prevents navigation flicker during overscroll bounce animations.
+
+#### Problem Solved
+
+When users scroll to the bottom of pages on mobile devices and experience the natural iOS/Android bounce effect, the bounce-back motion was incorrectly interpreted as "scroll up" which caused navigation bars to flicker in and out of view, making it difficult to see content at the bottom of pages.
+
+#### Solution
+
+**Touch-based bounce detection** implemented in `app/hooks/useScrollDirection.ts`:
+
+- **Touch event tracking**: Listens to `touchstart`, `touchmove`, `touchend` events to detect user intent
+- **Position-based detection**: When user is near bottom (within 5px) and dragging up, bounce is detected
+- **State isolation**: During bounce, scroll direction changes are ignored but visual bounce animation is preserved
+- **Clean state management**: Bounce state resets when touch ends
+
+#### Key Constants
+
+```typescript
+const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
+```
+
+#### Technical Features
+
+- **SSR-safe mobile detection**: Prevents hydration mismatches
+- **Performance optimized**: Uses `requestAnimationFrame` for smooth scroll handling
+- **Comprehensive test coverage**: Unit tests verify bounce detection behavior
+
+#### Result
+
+- ✅ Beautiful bounce animation preserved
+- ✅ No navigation flicker during overscroll bounce
+- ✅ Normal scroll behavior intact
+- ✅ Better mobile user experience
+
+### CSS Scroll Configuration
+
+Located in `app/styles/safe-areas.css`:
+
+```css
+/* Enable smooth scrolling on mobile */
+html,
+body {
+   -webkit-overflow-scrolling: touch;
+}
+```
+
+**Note**: We intentionally removed `overscroll-behavior: none` to preserve the natural bounce effect while using JavaScript-based bounce detection for navigation control.
+
 ## Browser Support
 
 - **iOS Safari**: Uses `apple-mobile-web-app-*` meta tags

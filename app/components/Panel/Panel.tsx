@@ -65,7 +65,9 @@ export function Panel({
 
   const containerClasses = cn(
     panelVariants({ color, variant }),
-    disabled && 'opacity-20 pointer-events-none',
+    // Apply opacity to all disabled panels
+    disabled && 'opacity-20',
+    disabled && 'pointer-events-none',
     className
   )
 
@@ -73,7 +75,7 @@ export function Panel({
     <div className={containerClasses} data-testid={testId}>
       {/* Optional numbered badge */}
       {panelNumber !== undefined ? (
-        <div className={panelNumberVariants({ color })}>{panelNumber}</div>
+        <div className={panelNumberVariants({ color, disabled })}>{panelNumber}</div>
       ) : null}
 
       {/* Optional glow effect */}

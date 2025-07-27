@@ -39,6 +39,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const lastTouchY = useRef<number | null>(null)
   const isTouching = useRef<boolean>(false)
   const isBouncingBottom = useRef<boolean>(false)
+  const isMountedRef = useRef<boolean>(true)
 
   // Handle resize and initial mobile check
   useEffect(() => {
@@ -57,7 +58,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   }, [isClient])
 
   const updateDocumentHeight = useCallback(() => {
-    documentHeightRef.current = getDocumentHeight()
+    if (isMountedRef.current) {
+      documentHeightRef.current = getDocumentHeight()
+    }
   }, [])
 
   /**
@@ -89,7 +92,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
-    // Calculate document boundaries only when needed
+    // Use cached document height for performance
     const maxScrollY = Math.max(
       0,
       documentHeightRef.current - (window?.innerHeight || 0)
@@ -110,6 +113,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // More lenient overscroll handling - allow slight overscroll
     if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
+      lastY.current = y
       return
     }
 
@@ -196,6 +200,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     window.addEventListener('touchend', handleTouchEnd, { passive: true })
 
     return () => {
+      // Mark component as unmounted to prevent memory leaks
+      isMountedRef.current = false
+
       // Clean up debounced function on unmount
       debouncedUpdateDocumentHeight.cancel()
       window.removeEventListener('resize', debouncedUpdateDocumentHeight)

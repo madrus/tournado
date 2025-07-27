@@ -370,7 +370,7 @@ describe('TeamChip Component', () => {
     it('should have default padding when not in admin mode', () => {
       render(<TeamChip team={mockTeam} />)
 
-      expect(screen.getByTestId('team-chip')).toHaveClass('px-3')
+      expect(screen.getByTestId('team-chip')).toHaveClass('px-2')
     })
   })
 

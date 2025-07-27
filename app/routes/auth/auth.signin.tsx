@@ -51,7 +51,11 @@ export const loader = async ({ request }: Route.LoaderArgs): Promise<object> => 
 export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
   // Rate limiting - check before processing any form data
   const clientIP = getClientIP(request)
-  const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.ADMIN_LOGIN)
+  const rateLimitResult = checkRateLimit(
+    `login:${clientIP}`,
+    RATE_LIMITS.ADMIN_LOGIN,
+    request
+  )
 
   if (!rateLimitResult.allowed) {
     return createRateLimitResponse(rateLimitResult, RATE_LIMITS.ADMIN_LOGIN)

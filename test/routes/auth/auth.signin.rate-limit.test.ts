@@ -73,7 +73,8 @@ describe('auth.signin rate limiting', () => {
     expect(mockGetClientIP).toHaveBeenCalledWith(request)
     expect(mockCheckRateLimit).toHaveBeenCalledWith(
       'login:192.168.1.100',
-      rateLimitModule.RATE_LIMITS.ADMIN_LOGIN
+      rateLimitModule.RATE_LIMITS.ADMIN_LOGIN,
+      request
     )
   })
 
@@ -116,7 +117,8 @@ describe('auth.signin rate limiting', () => {
     expect(mockGetClientIP).toHaveBeenCalledWith(request)
     expect(mockCheckRateLimit).toHaveBeenCalledWith(
       'login:192.168.1.100',
-      rateLimitModule.RATE_LIMITS.ADMIN_LOGIN
+      rateLimitModule.RATE_LIMITS.ADMIN_LOGIN,
+      request
     )
     expect(mockCreateRateLimitResponse).toHaveBeenCalledWith(
       {
@@ -148,11 +150,15 @@ describe('auth.signin rate limiting', () => {
 
     await action({ request } as ActionFunctionArgs)
 
-    expect(mockCheckRateLimit).toHaveBeenCalledWith('login:192.168.1.100', {
-      maxAttempts: 5,
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      blockDurationMs: 30 * 60 * 1000, // 30 minutes
-    })
+    expect(mockCheckRateLimit).toHaveBeenCalledWith(
+      'login:192.168.1.100',
+      {
+        maxAttempts: 5,
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        blockDurationMs: 30 * 60 * 1000, // 30 minutes
+      },
+      request
+    )
   })
 
   test('should handle different IP addresses separately', async () => {
@@ -194,12 +200,14 @@ describe('auth.signin rate limiting', () => {
     expect(mockCheckRateLimit).toHaveBeenNthCalledWith(
       1,
       'login:192.168.1.1',
-      expect.any(Object)
+      expect.any(Object),
+      request1
     )
     expect(mockCheckRateLimit).toHaveBeenNthCalledWith(
       2,
       'login:192.168.1.2',
-      expect.any(Object)
+      expect.any(Object),
+      request2
     )
   })
 
@@ -286,7 +294,8 @@ describe('auth.signin rate limiting', () => {
 
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'login:203.0.113.1',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
     })
 
@@ -314,7 +323,8 @@ describe('auth.signin rate limiting', () => {
 
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'login:198.51.100.1',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
     })
 
@@ -340,7 +350,8 @@ describe('auth.signin rate limiting', () => {
 
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'login:unknown',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
     })
   })

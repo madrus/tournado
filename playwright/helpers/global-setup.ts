@@ -3,6 +3,9 @@ import { chromium, FullConfig } from '@playwright/test'
 
 import { cleanDatabase, createAdminUser, createRegularUser } from './database'
 
+// Set environment variable for test detection
+process.env.PLAYWRIGHT = 'true'
+
 // Wait for server to be ready
 async function waitForServer(url: string, timeout = 60000): Promise<void> {
   const start = Date.now()
@@ -40,6 +43,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     baseURL: serverUrl,
     extraHTTPHeaders: {
       'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for Playwright tests
+      'x-test-bypass': 'true', // Bypass rate limiting in tests
     },
   }
 

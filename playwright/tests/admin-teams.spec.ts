@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test'
 
+import { AdminPanelPage } from '../pages/AdminPanelPage'
+import { AdminTeamsPage } from '../pages/AdminTeamsPage'
+
 // Admin Teams Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Teams', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,73 +11,34 @@ test.describe('Admin Teams', () => {
   })
 
   test('should display admin teams management page', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    const adminTeamsPage = new AdminTeamsPage(page)
 
-    // Wait for page to load and content to render
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-    // Wait for content to actually appear (no white page)
-    await page.waitForFunction(() => document.body.children.length > 0)
-
-    // Should see admin teams management interface - look for the admin panel heading (now h1)
-    await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible({
-      timeout: 15000,
-    })
-
-    // Should see admin interface content - look for the specific admin container
-    await expect(page.locator('.container').first()).toBeVisible()
+    await adminTeamsPage.goto()
+    await adminTeamsPage.expectToBeOnAdminTeamsPage()
   })
 
   test('should allow admin team creation', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+    const adminTeamsPage = new AdminTeamsPage(page)
 
-    // Wait for page to load and content to render
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-    // Wait for content to actually appear
-    await page.waitForFunction(() => document.body.children.length > 0)
-
-    // Should see admin team creation form
-    await expect(page.locator('form')).toBeVisible({ timeout: 15000 })
-    await expect(page.locator('.container').first()).toBeVisible()
+    await adminTeamsPage.gotoCreateTeam()
+    await adminTeamsPage.expectToBeOnCreateTeamPage()
   })
 
   test('should show admin teams interface', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    const adminTeamsPage = new AdminTeamsPage(page)
 
-    // Wait for page to load and content to render
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-    // Wait for content to actually appear
-    await page.waitForFunction(() => document.body.children.length > 0)
-
-    // Should see admin teams interface - look for the first container (admin content)
-    await expect(page.locator('.container').first()).toBeVisible({ timeout: 15000 })
-
-    // Should see some content on the admin teams page
-    await expect(page.locator('body')).toContainText(/team/i)
+    await adminTeamsPage.goto()
+    await adminTeamsPage.expectAdminTeamsInterface()
   })
 
   test('should allow admin access to teams', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    const adminTeamsPage = new AdminTeamsPage(page)
 
-    // Wait for page to load and content to render
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2500) // Extra wait for hydration/language switching
-
-    // Wait for content to actually appear
-    await page.waitForFunction(() => document.body.children.length > 0)
-
-    // Should see admin interface - use the admin panel heading as confirmation (now h1)
-    await expect(page.locator('h1').filter({ hasText: /Teams/i })).toBeVisible({
-      timeout: 15000,
-    })
+    await adminTeamsPage.goto()
+    await adminTeamsPage.expectToBeOnAdminTeamsPage()
 
     // Page should not be empty
-    const bodyText = await page.locator('body').textContent()
+    const bodyText = await adminTeamsPage.bodyContent.textContent()
     expect(bodyText).toBeTruthy()
     expect(bodyText!.length).toBeGreaterThan(50) // Should have substantial content
   })
@@ -93,23 +57,11 @@ test.describe('Admin Teams', () => {
   })
 
   test('should access teams via admin panel button', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    const adminPanelPage = new AdminPanelPage(page)
 
-    // Wait for page to load and content to render
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000)
-
-    // Wait for content to actually appear
-    await page.waitForFunction(() => document.body.children.length > 0)
-
-    // Should see "Team Management" panel in admin panel
-    const manageTeamsPanel = page.getByRole('link', {
-      name: 'Team Management',
-    })
-    await expect(manageTeamsPanel).toBeVisible({ timeout: 15000 })
-
-    // Click the panel
-    await manageTeamsPanel.click()
+    await adminPanelPage.goto()
+    await adminPanelPage.expectTeamManagementVisible()
+    await adminPanelPage.clickTeamManagement()
 
     // Should navigate to teams page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')

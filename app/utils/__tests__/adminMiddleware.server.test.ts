@@ -47,7 +47,8 @@ describe('adminMiddleware.server', () => {
       expect(mockGetClientIP).toHaveBeenCalledWith(request)
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'admin:192.168.1.1',
-        rateLimitModule.RATE_LIMITS.ADMIN_ACTIONS
+        rateLimitModule.RATE_LIMITS.ADMIN_ACTIONS,
+        request
       )
       expect(mockHandler).toHaveBeenCalled()
       expect(result).toEqual({ success: true })
@@ -71,7 +72,8 @@ describe('adminMiddleware.server', () => {
       expect(mockGetClientIP).toHaveBeenCalledWith(request)
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'admin:192.168.1.1',
-        rateLimitModule.RATE_LIMITS.ADMIN_ACTIONS
+        rateLimitModule.RATE_LIMITS.ADMIN_ACTIONS,
+        request
       )
       expect(mockCreateRateLimitResponse).toHaveBeenCalled()
       expect(mockHandler).not.toHaveBeenCalled()
@@ -147,11 +149,15 @@ describe('adminMiddleware.server', () => {
 
       await withAdminSensitiveRateLimit(request, mockHandler)
 
-      expect(mockCheckRateLimit).toHaveBeenCalledWith('admin-sensitive:192.168.1.1', {
-        maxAttempts: 10,
-        windowMs: 5 * 60 * 1000,
-        blockDurationMs: 15 * 60 * 1000,
-      })
+      expect(mockCheckRateLimit).toHaveBeenCalledWith(
+        'admin-sensitive:192.168.1.1',
+        {
+          maxAttempts: 10,
+          windowMs: 5 * 60 * 1000,
+          blockDurationMs: 15 * 60 * 1000,
+        },
+        request
+      )
       expect(mockHandler).toHaveBeenCalled()
     })
 
@@ -170,11 +176,15 @@ describe('adminMiddleware.server', () => {
 
       const result = await withAdminSensitiveRateLimit(request, mockHandler)
 
-      expect(mockCheckRateLimit).toHaveBeenCalledWith('admin-sensitive:192.168.1.1', {
-        maxAttempts: 10,
-        windowMs: 5 * 60 * 1000,
-        blockDurationMs: 15 * 60 * 1000,
-      })
+      expect(mockCheckRateLimit).toHaveBeenCalledWith(
+        'admin-sensitive:192.168.1.1',
+        {
+          maxAttempts: 10,
+          windowMs: 5 * 60 * 1000,
+          blockDurationMs: 15 * 60 * 1000,
+        },
+        request
+      )
       expect(mockHandler).not.toHaveBeenCalled()
       expect(result).toBe(mockRateLimitResponse)
     })
@@ -200,12 +210,14 @@ describe('adminMiddleware.server', () => {
       expect(mockCheckRateLimit).toHaveBeenNthCalledWith(
         1,
         'admin-sensitive:192.168.1.1',
-        expect.any(Object)
+        expect.any(Object),
+        request1
       )
       expect(mockCheckRateLimit).toHaveBeenNthCalledWith(
         2,
         'admin-sensitive:192.168.1.2',
-        expect.any(Object)
+        expect.any(Object),
+        request2
       )
     })
   })
@@ -255,14 +267,16 @@ describe('adminMiddleware.server', () => {
       await withAdminRateLimit(request, mockHandler)
       expect(mockCheckRateLimit).toHaveBeenLastCalledWith(
         'admin:203.0.113.1',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
 
       // Test sensitive admin middleware
       await withAdminSensitiveRateLimit(request, mockHandler)
       expect(mockCheckRateLimit).toHaveBeenLastCalledWith(
         'admin-sensitive:203.0.113.1',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
     })
 
@@ -281,7 +295,8 @@ describe('adminMiddleware.server', () => {
 
       expect(mockCheckRateLimit).toHaveBeenCalledWith(
         'admin:unknown',
-        expect.any(Object)
+        expect.any(Object),
+        request
       )
     })
   })

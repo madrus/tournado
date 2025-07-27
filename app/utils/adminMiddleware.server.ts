@@ -14,7 +14,11 @@ export async function withAdminRateLimit<T>(
   handler: () => Promise<T> | T
 ): Promise<T | Response> {
   const clientIP = getClientIP(request)
-  const rateLimitResult = checkRateLimit(`admin:${clientIP}`, RATE_LIMITS.ADMIN_ACTIONS)
+  const rateLimitResult = checkRateLimit(
+    `admin:${clientIP}`,
+    RATE_LIMITS.ADMIN_ACTIONS,
+    request
+  )
 
   if (!rateLimitResult.allowed) {
     return createRateLimitResponse(rateLimitResult, RATE_LIMITS.ADMIN_ACTIONS)
@@ -37,7 +41,11 @@ export async function withAdminSensitiveRateLimit<T>(
     windowMs: 5 * 60 * 1000, // 5 minutes
     blockDurationMs: 15 * 60 * 1000, // 15 minutes block
   }
-  const rateLimitResult = checkRateLimit(`admin-sensitive:${clientIP}`, sensitiveConfig)
+  const rateLimitResult = checkRateLimit(
+    `admin-sensitive:${clientIP}`,
+    sensitiveConfig,
+    request
+  )
 
   if (!rateLimitResult.allowed) {
     return createRateLimitResponse(rateLimitResult, sensitiveConfig)

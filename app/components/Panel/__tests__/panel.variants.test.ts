@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   dashboardIconVariants,
   panelGlowVariants,
+  panelNumberVariants,
   panelVariants,
 } from '../panel.variants'
 
@@ -240,6 +241,58 @@ describe('Panel Variants (CVA)', () => {
       expect(panelClasses).toContain('border-teal-300') // teal panel
       expect(iconClasses).toContain('bg-red-600') // brand icon (red)
       expect(glowClasses).toContain('bg-teal-400/30') // teal glow
+    })
+  })
+
+  describe('panelNumberVariants (basePanelNumberVariants)', () => {
+    it('should generate correct base classes', () => {
+      const classes = panelNumberVariants({})
+      expect(classes).toContain('absolute')
+      expect(classes).toContain('top-8')
+      expect(classes).toContain('-left-4')
+      expect(classes).toContain('z-30')
+      expect(classes).toContain('flex')
+      expect(classes).toContain('h-8')
+      expect(classes).toContain('w-8')
+      expect(classes).toContain('items-center')
+      expect(classes).toContain('justify-center')
+      expect(classes).toContain('rounded-full')
+      expect(classes).toContain('text-sm')
+      expect(classes).toContain('font-bold')
+      expect(classes).toContain('shadow-lg')
+      expect(classes).toContain('rtl:-right-4')
+      expect(classes).toContain('rtl:left-auto')
+    })
+
+    it('should apply color variants correctly', () => {
+      const brandNumber = panelNumberVariants({ color: 'brand' })
+      expect(brandNumber).toContain('bg-brand-600')
+
+      const tealNumber = panelNumberVariants({ color: 'teal' })
+      expect(tealNumber).toContain('bg-teal-600')
+
+      const emeraldNumber = panelNumberVariants({ color: 'emerald' })
+      expect(emeraldNumber).toContain('bg-emerald-600')
+    })
+
+    it('should apply disabled variant with gray styling', () => {
+      const disabledNumber = panelNumberVariants({ disabled: true })
+      expect(disabledNumber).toContain('bg-gray-200')
+      expect(disabledNumber).toContain('!text-gray-700')
+    })
+
+    it('should use correct default variants', () => {
+      const defaultNumber = panelNumberVariants({})
+      expect(defaultNumber).toContain('bg-brand-600') // default color: brand
+      expect(defaultNumber).not.toContain('bg-gray-200') // default disabled: false
+    })
+
+    it('should override color with disabled styling when disabled=true', () => {
+      const disabledTealNumber = panelNumberVariants({ color: 'teal', disabled: true })
+      // Should have both color and disabled classes, but disabled takes precedence
+      expect(disabledTealNumber).toContain('bg-teal-600')
+      expect(disabledTealNumber).toContain('bg-gray-200')
+      expect(disabledTealNumber).toContain('!text-gray-700')
     })
   })
 })

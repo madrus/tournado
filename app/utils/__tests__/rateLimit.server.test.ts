@@ -15,10 +15,14 @@ const getUniqueId = () => `test-${++testCounter}-${Date.now()}`
 describe('rateLimit.server', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+    // Mock environment to ensure rate limiting is active during tests
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('PLAYWRIGHT', 'false')
   })
 
   afterEach(() => {
     vi.useRealTimers()
+    vi.unstubAllEnvs()
   })
 
   describe('checkRateLimit', () => {
@@ -290,6 +294,71 @@ describe('rateLimit.server', () => {
       // The old entry should be cleaned up, so new request to old-ip should start fresh
       const result = checkRateLimit(oldId, config)
       expect(result.remaining).toBe(4) // Fresh start
+    })
+  })
+
+  describe('test environment bypass', () => {
+    const testConfig: RateLimitConfig = {
+      maxAttempts: 1,
+      windowMs: 60000,
+      blockDurationMs: 120000,
+    }
+
+    test('should bypass rate limiting when NODE_ENV is test', () => {
+      vi.stubEnv('NODE_ENV', 'test')
+
+      const testId = getUniqueId()
+
+      // Make multiple requests - should all be allowed
+      for (let i = 0; i < 5; i++) {
+        const result = checkRateLimit(testId, testConfig)
+        expect(result.allowed).toBe(true)
+        expect(result.remaining).toBe(0) // maxAttempts - 1
+      }
+    })
+
+    test('should bypass rate limiting when PLAYWRIGHT is true', () => {
+      vi.stubEnv('PLAYWRIGHT', 'true')
+
+      const testId = getUniqueId()
+
+      // Make multiple requests - should all be allowed
+      for (let i = 0; i < 5; i++) {
+        const result = checkRateLimit(testId, testConfig)
+        expect(result.allowed).toBe(true)
+        expect(result.remaining).toBe(0) // maxAttempts - 1
+      }
+    })
+
+    test('should bypass rate limiting with x-test-bypass header', () => {
+      const request = new Request('http://example.com', {
+        headers: { 'x-test-bypass': 'true' },
+      })
+
+      const testId = getUniqueId()
+
+      // Make multiple requests - should all be allowed
+      for (let i = 0; i < 5; i++) {
+        const result = checkRateLimit(testId, testConfig, request)
+        expect(result.allowed).toBe(true)
+        expect(result.remaining).toBe(0) // maxAttempts - 1
+      }
+    })
+
+    test('should not bypass without test header', () => {
+      const request = new Request('http://example.com', {
+        headers: { 'x-other-header': 'value' },
+      })
+
+      const testId = getUniqueId()
+
+      // First request should be allowed
+      let result = checkRateLimit(testId, testConfig, request)
+      expect(result.allowed).toBe(true)
+
+      // Second request should be blocked (maxAttempts is 1)
+      result = checkRateLimit(testId, testConfig, request)
+      expect(result.allowed).toBe(false)
     })
   })
 })

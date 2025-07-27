@@ -142,6 +142,15 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   }, [handleScrollDirection])
 
   // Touch event handlers for bounce detection
+  // Shared function to reset bounce state
+  const resetBounceState = useCallback(() => {
+    isBouncingBottom.current = false
+    if (bounceTimeoutRef.current) {
+      clearTimeout(bounceTimeoutRef.current)
+      bounceTimeoutRef.current = null
+    }
+  }, [])
+
   const handleTouchStart = useCallback((event: TouchEvent) => {
     if (event.touches.length === 0) return
 
@@ -178,29 +187,24 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
           bounceTimeoutRef.current = null
         }, BOUNCE_SAFETY_TIMEOUT)
       } else {
-        isBouncingBottom.current = false
-
-        // Clear timeout when not bouncing
-        if (bounceTimeoutRef.current) {
-          clearTimeout(bounceTimeoutRef.current)
-          bounceTimeoutRef.current = null
-        }
+        resetBounceState()
       }
     },
-    [isMobile]
+    [isMobile, resetBounceState]
   )
 
   const handleTouchEnd = useCallback(() => {
     isTouching.current = false
     lastTouchY.current = null
-    isBouncingBottom.current = false
+    resetBounceState()
+  }, [resetBounceState])
 
-    // Clear bounce timeout on touch end
-    if (bounceTimeoutRef.current) {
-      clearTimeout(bounceTimeoutRef.current)
-      bounceTimeoutRef.current = null
+  // Reset bounce state when page loses focus to prevent stuck state
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      resetBounceState()
     }
-  }, [])
+  }, [resetBounceState])
 
   // Initialize document height calculation synchronously to avoid layout shifts
   useLayoutEffect(() => {
@@ -223,6 +227,12 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     window.addEventListener('touchmove', handleTouchMove, { passive: true })
     window.addEventListener('touchend', handleTouchEnd, { passive: true })
 
+    // Add listeners to reset bounce state when interaction is interrupted
+    document.addEventListener('visibilitychange', handleVisibilityChange, {
+      passive: true,
+    })
+    window.addEventListener('blur', resetBounceState, { passive: true })
+
     return () => {
       // Mark component as unmounted to prevent memory leaks
       isMountedRef.current = false
@@ -234,6 +244,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
       window.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('blur', resetBounceState)
 
       // Cancel any pending animation frame
       if (rafRef.current) {
@@ -253,6 +265,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleVisibilityChange,
+    resetBounceState,
     isClient,
   ])
 

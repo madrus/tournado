@@ -12,7 +12,7 @@
       "command": "npx",
       "args": ["-y", "@madrus/vitest-mcp-server@latest"],
       "env": {
-        "VITEST_PROJECT_DIR": "/Users/madrus/dev/biz/toernooien/tournado"
+        "VITEST_PROJECT_DIR": "."
       }
     },
     "sequential-thinking": {

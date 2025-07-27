@@ -25,9 +25,9 @@ const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
 export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   showHeader: boolean
 } {
-  const [showHeader, setShowHeader] = useState<boolean>(true)
   // Initialize isMobile to false to avoid race condition with SSR
   const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
   const rafRef = useRef<number | null>(null)
@@ -77,7 +77,12 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     const y = getScrollY()
     const diff = y - lastY.current
 
-    // Calculate document boundaries
+    // Simple boundary check - don't process negative scroll positions
+    if (y < 0) {
+      return
+    }
+
+    // Calculate document boundaries only when needed
     const maxScrollY = Math.max(
       0,
       documentHeightRef.current - (window?.innerHeight || 0)
@@ -90,9 +95,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
-    // CRITICAL BUG FIX: Ignore overscroll completely to prevent flickering
-    if (y < 0 || y > maxScrollY) {
-      // Don't update lastY or state during overscroll - this prevents flickering!
+    // More lenient overscroll handling - allow slight overscroll
+    if (y > maxScrollY + 50) {
       return
     }
 
@@ -101,9 +105,10 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     if (absDiff < threshold) return
 
     // Update header visibility based on scroll direction
-    setShowHeader(diff <= 0) // up = show, down = hide
+    const shouldShow = diff <= 0 // up = show, down = hide
+    setShowHeader(shouldShow)
 
-    // Update lastY only with valid positions
+    // Always update lastY to prevent state getting stuck
     lastY.current = y
   }, [threshold, isMobile])
 

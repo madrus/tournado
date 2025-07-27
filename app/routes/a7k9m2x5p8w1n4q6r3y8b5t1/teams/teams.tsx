@@ -17,9 +17,8 @@ export const handle: RouteMetadata = {
 
 export default function AdminTeamsLayout(): JSX.Element {
   return (
-    <div className='space-y-8'>
+    <div className='space-y-8' data-testid='admin-teams-layout-container'>
       <TeamsLayoutHeader variant='admin' />
-      {/* Content */}
       <Outlet />
     </div>
   )

@@ -13,6 +13,12 @@ import {
 import { CheckCircleIcon } from '~/components/icons'
 import { verifySignin } from '~/models/user.server'
 import { cn } from '~/utils/misc'
+import {
+  checkRateLimit,
+  createRateLimitResponse,
+  getClientIP,
+  RATE_LIMITS,
+} from '~/utils/rateLimit.server'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { createUserSession, getUser } from '~/utils/session.server'
@@ -43,6 +49,14 @@ export const loader = async ({ request }: Route.LoaderArgs): Promise<object> => 
 }
 
 export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
+  // Rate limiting - check before processing any form data
+  const clientIP = getClientIP(request)
+  const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.ADMIN_LOGIN)
+
+  if (!rateLimitResult.allowed) {
+    return createRateLimitResponse(rateLimitResult)
+  }
+
   const formData = await request.formData()
   const email = formData.get('email')
   const password = formData.get('password')

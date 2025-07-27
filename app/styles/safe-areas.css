@@ -5,8 +5,9 @@
   --sal: env(safe-area-inset-left);
 }
 
+/* Fullscreen PWA - no body padding to allow content to use full screen */
 body {
-  padding: var(--sat) var(--sar) var(--sab) var(--sal);
+  padding: 0;
 }
 
 /* Ensure content doesn't go under status bar */

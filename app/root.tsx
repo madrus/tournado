@@ -177,21 +177,6 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width,initial-scale=1' />
         <Links />
-        {/* Mobile viewport and dropdown fixes */}
-        <style>{`
-          /* Mobile select dropdown fix - ensure native dropdown has enough space */
-          @media (max-width: 1023px) {
-            body {
-              min-height: 100vh;
-              min-height: 100dvh; /* Dynamic viewport height for mobile */
-            }
-
-            /* Ensure select dropdowns aren't clipped by containers */
-            select {
-              position: static !important;
-            }
-          }
-        `}</style>
       </head>
       <body
         className={cn(
@@ -287,7 +272,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
           appearance={currentTheme}
         >
           <div
-            className='flex min-h-full flex-col'
+            className='flex min-h-screen flex-col'
             style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>
@@ -302,15 +287,13 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
                 zIndex: 1,
               }}
             >
-              <div className='flex min-h-full flex-col'>
-                <div className='flex-1 px-4 pt-8 md:px-8 md:pb-4 lg:px-16'>
-                  <Outlet />
-                </div>
-                {/* Desktop Footer - positioned at bottom of content */}
-                <DesktopFooter />
+              <div className='px-4 pt-8 md:px-8 md:pb-8 lg:px-16'>
+                <Outlet />
               </div>
             </div>
-            {/* Mobile Navigation - fixed at bottom of viewport */}
+            {/* Desktop Footer - positioned at bottom of viewport */}
+            <DesktopFooter />
+            {/* Mobile Navigation - positioned at bottom of viewport */}
             <BottomNavigation />
           </div>
         </Theme>
@@ -345,7 +328,7 @@ export function ErrorBoundary(): JSX.Element {
           appearance={theme}
         >
           <div
-            className='flex min-h-full flex-col'
+            className='flex min-h-screen flex-col'
             style={{ paddingTop: 'var(--header-padding, 62px)' }}
           >
             <div className='relative' style={{ zIndex: 50 }}>
@@ -360,15 +343,13 @@ export function ErrorBoundary(): JSX.Element {
                 zIndex: 1,
               }}
             >
-              <div className='flex min-h-full flex-col'>
-                <div className={cn('flex-1 pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}>
-                  <GeneralErrorBoundary />
-                </div>
-                {/* Desktop Footer - positioned at bottom of content */}
-                <DesktopFooter />
+              <div className={cn('pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}>
+                <GeneralErrorBoundary />
               </div>
             </div>
-            {/* Mobile Navigation - fixed at bottom of viewport */}
+            {/* Desktop Footer - positioned at bottom of viewport */}
+            <DesktopFooter />
+            {/* Mobile Navigation - positioned at bottom of viewport */}
             <BottomNavigation />
           </div>
         </Theme>

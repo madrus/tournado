@@ -308,10 +308,11 @@ describe('rateLimit.server', () => {
       vi.stubEnv('NODE_ENV', 'test')
 
       const testId = getUniqueId()
+      const localhostRequest = new Request('http://localhost:5173/test')
 
       // Make multiple requests - should all be allowed
       for (let i = 0; i < 5; i++) {
-        const result = checkRateLimit(testId, testConfig)
+        const result = checkRateLimit(testId, testConfig, localhostRequest)
         expect(result.allowed).toBe(true)
         expect(result.remaining).toBe(0) // maxAttempts - 1
       }
@@ -321,17 +322,18 @@ describe('rateLimit.server', () => {
       vi.stubEnv('PLAYWRIGHT', 'true')
 
       const testId = getUniqueId()
+      const localhostRequest = new Request('http://localhost:5173/test')
 
       // Make multiple requests - should all be allowed
       for (let i = 0; i < 5; i++) {
-        const result = checkRateLimit(testId, testConfig)
+        const result = checkRateLimit(testId, testConfig, localhostRequest)
         expect(result.allowed).toBe(true)
         expect(result.remaining).toBe(0) // maxAttempts - 1
       }
     })
 
     test('should bypass rate limiting with x-test-bypass header', () => {
-      const request = new Request('http://example.com', {
+      const request = new Request('http://localhost:5173/test', {
         headers: { 'x-test-bypass': 'true' },
       })
 

@@ -23,7 +23,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await expect(page.getByRole('link', { name: /toevoegen|add/i })).toBeVisible()
 
       // Check that the main content area exists
-      await expect(page.locator('.container').first()).toBeVisible()
+      await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
     })
 
     test('should display tournaments content', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Test structure - be more specific to avoid multiple matches
       await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible()
-      await expect(page.locator('.container').first()).toBeVisible()
+      await expect(page.getByTestId('admin-teams-layout-container')).toBeVisible()
     })
 
     test('should display teams content', async ({ page }) => {
@@ -208,7 +208,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await expect(
         page.getByRole('heading', { name: 'Toernooien beheer' })
       ).toBeVisible()
-      await expect(page.locator('.container').first()).toBeVisible()
+      await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
     })
 
     test('should handle desktop viewport correctly', async ({ page }) => {
@@ -220,7 +220,7 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Page should load and be functional on desktop - be specific to avoid multiple matches
       await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible()
-      await expect(page.locator('.container').first()).toBeVisible()
+      await expect(page.getByTestId('admin-teams-layout-container')).toBeVisible()
     })
   })
 })

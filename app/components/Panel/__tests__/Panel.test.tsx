@@ -241,6 +241,15 @@ describe('Panel Component', () => {
       expect(numberBadge).toHaveClass('bg-emerald-600')
     })
 
+    it('should apply disabled styling to panel number when disabled=true', () => {
+      render(<Panel {...defaultProps} panelNumber={3} disabled />)
+
+      const numberBadge = screen.getByText('3')
+      expect(numberBadge).toBeInTheDocument()
+      expect(numberBadge).toHaveClass('!bg-gray-200')
+      expect(numberBadge).toHaveClass('!text-gray-700')
+    })
+
     it('should render glow effect when showGlow=true', () => {
       render(<Panel {...defaultProps} showGlow color='blue' />)
 
@@ -255,7 +264,7 @@ describe('Panel Component', () => {
       render(<Panel {...defaultProps} disabled />)
 
       const panel = screen.getByTestId('test-panel')
-      expect(panel).toHaveClass('opacity-20', 'pointer-events-none')
+      expect(panel).toHaveClass('!opacity-20', '!pointer-events-none')
     })
 
     it('should merge custom className with generated classes', () => {

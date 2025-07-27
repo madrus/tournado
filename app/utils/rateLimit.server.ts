@@ -234,9 +234,14 @@ export function checkRateLimit(
 }
 
 /**
- * Validate if a string is a valid IP address (IPv4 or IPv6)
+ * Validate if a string is a valid IP address (IPv4 or IPv6) with enhanced security checks
  */
 function isValidIP(ip: string): boolean {
+  // Security: Reject suspicious patterns that could indicate manipulation
+  if (!ip || ip.length > 45 || /[<>'"&]/.test(ip)) {
+    return false
+  }
+
   // IPv4 regex
   const ipv4Regex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
@@ -245,6 +250,37 @@ function isValidIP(ip: string): boolean {
   const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::/
 
   return ipv4Regex.test(ip) || ipv6Regex.test(ip)
+}
+
+/**
+ * Enhanced IP header validation with additional security checks
+ */
+function validateIPHeader(ip: string, headerName: string): boolean {
+  // Basic validation
+  if (!isValidIP(ip)) {
+    return false
+  }
+
+  // Security: Additional checks for suspicious patterns
+  const suspiciousPatterns = [
+    /^\d{1,3}\.\d{1,3}\.\d{1,3}\.0$/, // Network addresses
+    /^0\./, // Invalid starting octets
+    /\.0\./, // Suspicious middle octets in some contexts
+    /^255\.255\.255\.255$/, // Broadcast address
+  ]
+
+  // Only apply IPv4-specific suspicious pattern checks for IPv4 addresses
+  const isIPv4 = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(ip)
+  if (isIPv4 && suspiciousPatterns.some(pattern => pattern.test(ip))) {
+    // Log suspicious attempts in production
+    if (process.env.NODE_ENV === 'production') {
+      // eslint-disable-next-line no-console
+      console.warn(`Suspicious IP in ${headerName} header: ${ip}`)
+    }
+    return false
+  }
+
+  return true
 }
 
 /**
@@ -257,7 +293,7 @@ export function getClientIP(request: Request): string {
 
   // Check Cloudflare header first (most reliable if using CF)
   const cfConnectingIP = request.headers.get('cf-connecting-ip')
-  if (cfConnectingIP && isValidIP(cfConnectingIP)) {
+  if (cfConnectingIP && validateIPHeader(cfConnectingIP, 'cf-connecting-ip')) {
     return cfConnectingIP
   }
 
@@ -265,7 +301,7 @@ export function getClientIP(request: Request): string {
   const xRealIP = request.headers.get('x-real-ip')
   if (
     xRealIP &&
-    isValidIP(xRealIP) &&
+    validateIPHeader(xRealIP, 'x-real-ip') &&
     !isPrivateIP(xRealIP) && // Additional validation: reject private IPs
     (isProxyTrusted || process.env.NODE_ENV === 'development')
   ) {
@@ -275,10 +311,13 @@ export function getClientIP(request: Request): string {
   // Check X-Forwarded-For header (can be manipulated, so validate carefully)
   const xForwardedFor = request.headers.get('x-forwarded-for')
   if (xForwardedFor && (isProxyTrusted || process.env.NODE_ENV === 'development')) {
-    // x-forwarded-for can be a comma-separated list - take the first valid IP
-    const ips = xForwardedFor.split(',').map(ip => ip.trim())
+    // Security: Limit the number of IPs processed to prevent DoS
+    const ips = xForwardedFor
+      .split(',')
+      .map(ip => ip.trim())
+      .slice(0, 5)
     for (const ip of ips) {
-      if (isValidIP(ip)) {
+      if (validateIPHeader(ip, 'x-forwarded-for')) {
         // Security: Skip private/local IPs in forwarded headers unless in development
         if (process.env.NODE_ENV === 'development' || !isPrivateIP(ip)) {
           return ip

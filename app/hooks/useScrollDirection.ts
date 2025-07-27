@@ -15,6 +15,7 @@ import { useIsClient } from './useIsomorphicWindow'
 // Constants for scroll direction detection
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
+const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -25,8 +26,12 @@ const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
 export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   showHeader: boolean
 } {
-  // Initialize isMobile to false to avoid race condition with SSR
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const isClient = useIsClient()
+
+  // Initialize with proper SSR-safe mobile detection
+  const [isMobile, setIsMobile] = useState<boolean>(() =>
+    isClient ? breakpoints.isMobile() : false
+  )
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
@@ -34,7 +39,6 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const lastTouchY = useRef<number | null>(null)
   const isTouching = useRef<boolean>(false)
   const isBouncingBottom = useRef<boolean>(false)
-  const isClient = useIsClient()
 
   // Handle resize and initial mobile check
   useEffect(() => {
@@ -105,7 +109,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     }
 
     // More lenient overscroll handling - allow slight overscroll
-    if (y > maxScrollY + 50) {
+    if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
       return
     }
 

@@ -248,9 +248,18 @@ export const basePanelNumberVariants = cva(
        * All colors provide sufficient contrast with white text.
        */
       color: createColorVariantMapping(color => `bg-${color}-600`),
+      /**
+       * Disabled state variant that overrides color with subtle light gray.
+       * Shows panel number is disabled while maintaining visibility.
+       */
+      disabled: {
+        true: 'bg-gray-200 !text-gray-700',
+        false: '',
+      },
     },
     defaultVariants: {
       color: 'brand',
+      disabled: false,
     },
   }
 )

@@ -10,6 +10,20 @@ body {
   padding: 0;
 }
 
+/* Enable smooth scrolling on mobile */
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fullscreen PWA support - hide Android system bars */
+@media (display-mode: fullscreen) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 /* Ensure content doesn't go under status bar */
 .safe-top {
   padding-top: max(env(safe-area-inset-top), 16px);

@@ -253,7 +253,7 @@ export const basePanelNumberVariants = cva(
        * Shows panel number is disabled while maintaining visibility.
        */
       disabled: {
-        true: 'bg-gray-200 !text-gray-700',
+        true: '!bg-gray-200 !text-gray-700',
         false: '',
       },
     },

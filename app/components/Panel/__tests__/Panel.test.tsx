@@ -246,7 +246,7 @@ describe('Panel Component', () => {
 
       const numberBadge = screen.getByText('3')
       expect(numberBadge).toBeInTheDocument()
-      expect(numberBadge).toHaveClass('bg-gray-200')
+      expect(numberBadge).toHaveClass('!bg-gray-200')
       expect(numberBadge).toHaveClass('!text-gray-700')
     })
 

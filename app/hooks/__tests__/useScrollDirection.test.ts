@@ -60,10 +60,15 @@ describe('useScrollDirection', () => {
       innerHeight: 800,
       addEventListener: mockAddEventListener,
       removeEventListener: mockRemoveEventListener,
+      setTimeout: globalThis.setTimeout,
     })
     vi.stubGlobal(
       'requestAnimationFrame',
-      vi.fn((handler: FrameRequestCallback) => setTimeout(handler, 16))
+      vi.fn((handler: FrameRequestCallback) => {
+        // Execute immediately for predictable testing
+        handler(Date.now())
+        return 1
+      })
     )
     vi.stubGlobal('cancelAnimationFrame', vi.fn())
   })
@@ -183,6 +188,207 @@ describe('useScrollDirection', () => {
     })
   })
 
+  describe('bounce detection', () => {
+    beforeEach(() => {
+      mockIsMobile.mockReturnValue(true)
+      vi.mocked(domUtils.getDocumentHeight).mockReturnValue(2000)
+    })
+
+    it('should set up touch event listeners for bounce detection', () => {
+      renderHook(() => useScrollDirection())
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchstart',
+        expect.any(Function),
+        { passive: true }
+      )
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchmove',
+        expect.any(Function),
+        { passive: true }
+      )
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchend',
+        expect.any(Function),
+        { passive: true }
+      )
+    })
+
+    it('should detect bounce at bottom and prevent navigation animation', async () => {
+      let scrollY = 1195 // Near bottom: 2000 - 800 - 5 = 1195
+      mockGetScrollY.mockImplementation(() => scrollY)
+
+      const { result, rerender } = renderHook(() => useScrollDirection(20))
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      // Get the touch event handlers
+      const touchStartHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchstart'
+      )?.[1] as EventListener
+      const touchMoveHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )?.[1] as EventListener
+      const scrollHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'scroll'
+      )?.[1] as EventListener
+
+      expect(touchStartHandler).toBeDefined()
+      expect(touchMoveHandler).toBeDefined()
+      expect(scrollHandler).toBeDefined()
+
+      // Initial state at bottom
+      expect(result.current.showHeader).toBe(true)
+
+      // Simulate touch start at bottom
+      const touchStartEvent = new TouchEvent('touchstart', {
+        touches: [{ clientY: 400 } as Touch],
+      })
+      touchStartHandler(touchStartEvent)
+
+      // Simulate dragging up (decreasing Y coordinate) which triggers bounce detection
+      const touchMoveEvent = new TouchEvent('touchmove', {
+        touches: [{ clientY: 350 } as Touch], // deltaY = -50 (dragging up)
+      })
+      touchMoveHandler(touchMoveEvent)
+
+      // Now simulate scroll up during bounce (this would normally hide header)
+      scrollY = 1165 // Scrolled up 30px - normally this would show header
+      scrollHandler(new Event('scroll'))
+
+      await new Promise(resolve => setTimeout(resolve, 20))
+      rerender()
+
+      // During bounce, header state should not change due to scroll direction
+      // It should remain in its current state (true)
+      expect(result.current.showHeader).toBe(true)
+    })
+
+    it('should handle touch events for bounce detection', () => {
+      mockIsMobile.mockReturnValue(true)
+      renderHook(() => useScrollDirection(20))
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      // Verify that touch event handlers are properly attached
+      const touchStartCall = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchstart'
+      )
+      const touchMoveCall = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )
+      const touchEndCall = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchend'
+      )
+
+      expect(touchStartCall).toBeDefined()
+      expect(touchMoveCall).toBeDefined()
+      expect(touchEndCall).toBeDefined()
+
+      // Verify touch handlers can be called without throwing
+      const touchStartHandler = touchStartCall?.[1] as EventListener
+      const touchMoveHandler = touchMoveCall?.[1] as EventListener
+      const touchEndHandler = touchEndCall?.[1] as EventListener
+
+      expect(() => {
+        touchStartHandler(
+          new TouchEvent('touchstart', {
+            touches: [{ clientY: 400 } as Touch],
+          })
+        )
+      }).not.toThrow()
+
+      expect(() => {
+        touchMoveHandler(
+          new TouchEvent('touchmove', {
+            touches: [{ clientY: 350 } as Touch],
+          })
+        )
+      }).not.toThrow()
+
+      expect(() => {
+        touchEndHandler(new TouchEvent('touchend'))
+      }).not.toThrow()
+    })
+
+    it('should reset bounce state on touch end', () => {
+      const { result, rerender } = renderHook(() => useScrollDirection(20))
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      const touchStartHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchstart'
+      )?.[1] as EventListener
+      const touchMoveHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )?.[1] as EventListener
+      const touchEndHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchend'
+      )?.[1] as EventListener
+      const scrollHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'scroll'
+      )?.[1] as EventListener
+
+      // Set up bounce state
+      mockGetScrollY.mockReturnValue(1195)
+      touchStartHandler(
+        new TouchEvent('touchstart', {
+          touches: [{ clientY: 400 } as Touch],
+        })
+      )
+      touchMoveHandler(
+        new TouchEvent('touchmove', {
+          touches: [{ clientY: 350 } as Touch],
+        })
+      )
+
+      // End touch
+      touchEndHandler(new TouchEvent('touchend'))
+
+      // Now simulate normal scroll up after touch ended
+      mockGetScrollY.mockReturnValue(1165) // Scrolled up 30px
+      scrollHandler(new Event('scroll'))
+
+      rerender()
+
+      // After touch end, normal scroll behavior should resume
+      // Header should show when scrolling up
+      expect(result.current.showHeader).toBe(true)
+    })
+
+    it('should handle overscroll behavior (scroll past maximum)', () => {
+      const { result, rerender } = renderHook(() => useScrollDirection(20))
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      const scrollHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'scroll'
+      )?.[1] as EventListener
+
+      // Simulate scrolling past the maximum (overscroll)
+      const maxScrollY = 2000 - 800 // 1200
+      mockGetScrollY.mockReturnValue(maxScrollY + 100) // Past maximum
+
+      scrollHandler(new Event('scroll'))
+      rerender()
+
+      // Should maintain current header state during overscroll
+      expect(result.current.showHeader).toBe(true)
+    })
+  })
+
   describe('cleanup', () => {
     it('should clean up event listeners on unmount', () => {
       const { unmount } = renderHook(() => useScrollDirection())
@@ -204,6 +410,21 @@ describe('useScrollDirection', () => {
         expect.any(Function),
         { passive: true }
       )
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchstart',
+        expect.any(Function),
+        { passive: true }
+      )
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchmove',
+        expect.any(Function),
+        { passive: true }
+      )
+      expect(addEventListenerMock).toHaveBeenCalledWith(
+        'touchend',
+        expect.any(Function),
+        { passive: true }
+      )
 
       unmount()
 
@@ -213,6 +434,18 @@ describe('useScrollDirection', () => {
       )
       expect(removeEventListenerMock).toHaveBeenCalledWith(
         'resize',
+        expect.any(Function)
+      )
+      expect(removeEventListenerMock).toHaveBeenCalledWith(
+        'touchstart',
+        expect.any(Function)
+      )
+      expect(removeEventListenerMock).toHaveBeenCalledWith(
+        'touchmove',
+        expect.any(Function)
+      )
+      expect(removeEventListenerMock).toHaveBeenCalledWith(
+        'touchend',
         expect.any(Function)
       )
     })

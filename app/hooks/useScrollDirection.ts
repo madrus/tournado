@@ -31,6 +31,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
   const rafRef = useRef<number | null>(null)
+  const lastTouchY = useRef<number | null>(null)
+  const isTouching = useRef<boolean>(false)
+  const isBouncingBottom = useRef<boolean>(false)
   const isClient = useIsClient()
 
   // Handle resize and initial mobile check
@@ -95,6 +98,12 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
+    // If we're bouncing at the bottom, ignore scroll direction changes
+    if (isBouncingBottom.current) {
+      lastY.current = y
+      return
+    }
+
     // More lenient overscroll handling - allow slight overscroll
     if (y > maxScrollY + 50) {
       return
@@ -125,6 +134,42 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     })
   }, [handleScrollDirection])
 
+  // Touch event handlers for bounce detection
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    isTouching.current = true
+    lastTouchY.current = e.touches[0].clientY
+  }, [])
+
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!isMobile || lastTouchY.current === null) return
+
+      const currentY = e.touches[0].clientY
+      const deltaY = currentY - lastTouchY.current
+      lastTouchY.current = currentY
+
+      const y = getScrollY()
+      const maxScrollY = Math.max(
+        0,
+        documentHeightRef.current - (window?.innerHeight || 0)
+      )
+
+      // At bottom and dragging up (deltaY < 0 means dragging up)
+      if (y >= maxScrollY - 5 && deltaY < 0) {
+        isBouncingBottom.current = true
+      } else {
+        isBouncingBottom.current = false
+      }
+    },
+    [isMobile]
+  )
+
+  const handleTouchEnd = useCallback(() => {
+    isTouching.current = false
+    lastTouchY.current = null
+    isBouncingBottom.current = false
+  }, [])
+
   // Initialize document height calculation synchronously to avoid layout shifts
   useLayoutEffect(() => {
     // Initialize document height and scroll position before first paint
@@ -141,11 +186,19 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     // Use only window scroll listener to avoid redundant calls
     window.addEventListener('scroll', onScroll, { passive: true })
 
+    // Add touch event listeners for bounce detection
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+
     return () => {
       // Clean up debounced function on unmount
       debouncedUpdateDocumentHeight.cancel()
       window.removeEventListener('resize', debouncedUpdateDocumentHeight)
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleTouchEnd)
 
       // Cancel any pending animation frame
       if (rafRef.current) {
@@ -153,7 +206,14 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
         rafRef.current = null
       }
     }
-  }, [debouncedUpdateDocumentHeight, onScroll, isClient])
+  }, [
+    debouncedUpdateDocumentHeight,
+    onScroll,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    isClient,
+  ])
 
   return { showHeader }
 }

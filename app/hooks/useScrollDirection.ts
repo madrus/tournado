@@ -143,18 +143,18 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   }, [handleScrollDirection])
 
   // Touch event handlers for bounce detection
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (e.touches.length === 0) return
+  const handleTouchStart = useCallback((event: TouchEvent) => {
+    if (event.touches.length === 0) return
 
     isTouching.current = true
-    lastTouchY.current = e.touches[0].clientY
+    lastTouchY.current = event.touches[0].clientY
   }, [])
 
   const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (!isMobile || lastTouchY.current === null || e.touches.length === 0) return
+    (event: TouchEvent) => {
+      if (!isMobile || lastTouchY.current === null || event.touches.length === 0) return
 
-      const currentY = e.touches[0].clientY
+      const currentY = event.touches[0].clientY
       const deltaY = currentY - lastTouchY.current
       lastTouchY.current = currentY
 

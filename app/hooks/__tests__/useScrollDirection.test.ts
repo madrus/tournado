@@ -385,9 +385,11 @@ describe('useScrollDirection', () => {
 
       const touchEventTypes = ['touchstart', 'touchmove', 'touchend']
       touchEventTypes.forEach(eventType => {
-        const call = addEventListenerMock.mock.calls.find(call => call[0] === eventType)
-        expect(call).toBeDefined()
-        expect(call?.[2]).toEqual({ passive: true })
+        const eventCall = addEventListenerMock.mock.calls.find(
+          call => call[0] === eventType
+        )
+        expect(eventCall).toBeDefined()
+        expect(eventCall?.[2]).toEqual({ passive: true })
       })
 
       // This test confirms that:

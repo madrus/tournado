@@ -35,21 +35,22 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const [showHeader, setShowHeader] = useState<boolean>(true)
   const lastY = useRef<number>(0)
   const documentHeightRef = useRef<number>(0)
+  const windowHeightRef = useRef<number>(0)
   const rafRef = useRef<number | null>(null)
   const lastTouchY = useRef<number | null>(null)
   const isTouching = useRef<boolean>(false)
   const isBouncingBottom = useRef<boolean>(false)
   const isMountedRef = useRef<boolean>(true)
 
-  // Handle resize and initial mobile check
-  useEffect(() => {
+  // Synchronous mobile detection to minimize flash
+  useLayoutEffect(() => {
     if (!isClient) return
 
     const checkMobile = () => {
       setIsMobile(breakpoints.isMobile())
     }
 
-    // Set initial state after mount
+    // Set initial state synchronously before paint
     checkMobile()
 
     // Add listener for changes
@@ -60,6 +61,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const updateDocumentHeight = useCallback(() => {
     if (isMountedRef.current) {
       documentHeightRef.current = getDocumentHeight()
+      windowHeightRef.current = window?.innerHeight || 0
     }
   }, [])
 
@@ -92,11 +94,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
-    // Use cached document height for performance
-    const maxScrollY = Math.max(
-      0,
-      documentHeightRef.current - (window?.innerHeight || 0)
-    )
+    // Use cached document and window heights for performance
+    const maxScrollY = Math.max(0, documentHeightRef.current - windowHeightRef.current)
 
     // If there's not enough content to scroll, always show header
     if (maxScrollY <= 0) {
@@ -161,7 +160,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       const y = getScrollY()
       const maxScrollY = Math.max(
         0,
-        documentHeightRef.current - (window?.innerHeight || 0)
+        documentHeightRef.current - windowHeightRef.current
       )
 
       // At bottom and dragging up (deltaY < 0 means dragging up)

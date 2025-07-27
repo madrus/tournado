@@ -52,11 +52,20 @@ setInterval(
       }
     }
 
-    // Log cleanup stats in development
+    // Log cleanup stats in development and alert in production for high usage
     if (process.env.NODE_ENV === 'development' && deletedCount > 0) {
       // eslint-disable-next-line no-console
       console.log(
         `Rate limit cleanup: removed ${deletedCount} entries, ${attempts.size} remaining`
+      )
+    } else if (
+      process.env.NODE_ENV === 'production' &&
+      attempts.size > MAX_ENTRIES * 0.8
+    ) {
+      // Alert when memory usage is consistently high in production
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Rate limit high memory usage: ${attempts.size}/${MAX_ENTRIES} entries (${Math.round((attempts.size / MAX_ENTRIES) * 100)}%). Consider monitoring for potential attacks.`
       )
     }
   },
@@ -133,6 +142,14 @@ export function checkRateLimit(
 
   // Security: Check if we're approaching memory limits before adding new entries
   if (!attempt && attempts.size >= MAX_ENTRIES) {
+    // Alert in production when hitting memory limits
+    if (process.env.NODE_ENV === 'production') {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Rate limit memory capacity reached: ${attempts.size}/${MAX_ENTRIES} entries. Consider increasing cleanup frequency or MAX_ENTRIES.`
+      )
+    }
+
     // Reject new entries if at capacity to prevent memory exhaustion
     return {
       allowed: false,
@@ -249,6 +266,7 @@ export function getClientIP(request: Request): string {
   if (
     xRealIP &&
     isValidIP(xRealIP) &&
+    !isPrivateIP(xRealIP) && // Additional validation: reject private IPs
     (isProxyTrusted || process.env.NODE_ENV === 'development')
   ) {
     return xRealIP

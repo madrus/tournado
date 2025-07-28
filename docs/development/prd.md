@@ -51,11 +51,11 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [x] **Mobile Navigation**: Bottom navigation bar with proper touch handling
 - [x] **MCP Testing Server**: AI-assisted testing with production-ready NPM package
 
-### 🔄 In Progress Features
-
 **Dark Mode**
 
-- [ ] **Uniform Styling**: Many pages and components need proper light/dark mode styling
+- [x] **Uniform Styling**: Many pages and components need proper light/dark mode styling
+
+### 🔄 In Progress Features
 
 **Authentication & Authorization**
 

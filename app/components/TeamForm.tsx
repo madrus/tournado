@@ -15,19 +15,17 @@ import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore, useTeamFormStoreHydration } from '~/stores/useTeamFormStore'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 export function TeamForm({
   mode: formMode = 'create',
   variant,
   isSuccess = false,
   successMessage,
-  showDeleteButton = false,
   className = '',
   intent,
   formData,
   submitButtonText,
-  onDelete,
 }: Omit<
   TeamFormProps,
   'availableDivisions' | 'availableCategories' | 'tournamentId'
@@ -214,41 +212,6 @@ export function TeamForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </Panel>
-      ) : null}
-
-      {/* Header for Admin Variant */}
-      {variant !== 'public' ? (
-        <Panel color={PANEL_COLORS.header} className='mb-8'>
-          <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-            <div>
-              <h2
-                className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
-              >
-                {clubName && name
-                  ? `${clubName} ${name}`
-                  : t('teams.form.teamRegistration')}
-              </h2>
-              <p className='text-foreground mt-2'>
-                {division
-                  ? getDivisionLabel(division as Division, i18n.language)
-                  : t('teams.form.fillOutForm')}
-              </p>
-            </div>
-            {/* Delete Button for Admin Edit Mode */}
-            {showDeleteButton && onDelete ? (
-              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
-                <ActionButton
-                  onClick={onDelete}
-                  icon='delete'
-                  variant='secondary'
-                  color='brand'
-                >
-                  {t('common.actions.delete')}
-                </ActionButton>
-              </div>
-            ) : null}
-          </div>
         </Panel>
       ) : null}
 

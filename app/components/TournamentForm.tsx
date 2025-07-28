@@ -36,11 +36,10 @@ type TournamentFormProps = {
   isSuccess?: boolean
   successMessage?: string
   submitButtonText?: string
-  onCancel?: () => void
   showDeleteButton?: boolean
-  onDelete?: () => void
   className?: string
   intent?: string
+  onDelete?: () => void
 }
 
 export function TournamentForm({
@@ -53,11 +52,10 @@ export function TournamentForm({
   isSuccess = false,
   successMessage,
   submitButtonText,
-  onCancel,
   showDeleteButton = false,
-  onDelete,
   className = '',
   intent,
+  onDelete,
 }: TournamentFormProps): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
@@ -96,6 +94,7 @@ export function TournamentForm({
     isPanelEnabled,
     isFormReadyForSubmission,
     isDirty,
+    resetForm,
   } = useTournamentFormStore()
 
   // Helper function to translate error keys to user-readable messages
@@ -191,6 +190,9 @@ export function TournamentForm({
 
     if (!isValid) {
       formEvent.preventDefault()
+    } else {
+      // Scroll to top on successful submission
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
@@ -468,19 +470,18 @@ export function TournamentForm({
 
         {/* Submit Button */}
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          {onCancel ? (
-            <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='secondary'
-              color='brand'
-            >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
-            </ActionButton>
-          ) : (
-            <div />
-          )}
+          <ActionButton
+            type='button'
+            onClick={() => {
+              resetForm()
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            variant='secondary'
+            color='brand'
+          >
+            <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+            {t('common.actions.reset')}
+          </ActionButton>
 
           <ActionButton
             type='submit'

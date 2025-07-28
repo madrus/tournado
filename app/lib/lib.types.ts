@@ -217,15 +217,14 @@ export type TeamFormProps = {
   isSuccess?: boolean
   successMessage?: string
   submitButtonText?: string
-  onCancel?: () => void
   showDeleteButton?: boolean
-  onDelete?: () => void
   className?: string
   intent?: string
   // Optional props for providing data directly (can be undefined for backward compatibility)
   availableDivisions?: string[]
   availableCategories?: string[]
   tournamentId?: string | null
+  onDelete?: () => void
 }
 
 /**

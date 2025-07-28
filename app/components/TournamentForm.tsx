@@ -16,7 +16,7 @@ import {
   useTournamentFormStoreHydration,
 } from '~/stores/useTournamentFormStore'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 type TournamentFormProps = {
   mode?: 'create' | 'edit'
@@ -36,10 +36,8 @@ type TournamentFormProps = {
   isSuccess?: boolean
   successMessage?: string
   submitButtonText?: string
-  showDeleteButton?: boolean
   className?: string
   intent?: string
-  onDelete?: () => void
 }
 
 export function TournamentForm({
@@ -52,10 +50,8 @@ export function TournamentForm({
   isSuccess = false,
   successMessage,
   submitButtonText,
-  showDeleteButton = false,
   className = '',
   intent,
-  onDelete,
 }: TournamentFormProps): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
@@ -210,7 +206,6 @@ export function TournamentForm({
     setFormField('categories', newCategories)
   }
 
-  const isPublicVariant = variant === 'public'
   const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
@@ -227,38 +222,6 @@ export function TournamentForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </Panel>
-      ) : null}
-
-      {/* Header for Admin Variant */}
-      {!isPublicVariant ? (
-        <Panel color={PANEL_COLORS.header} className='mb-8'>
-          <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-            <div>
-              <h2
-                className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
-              >
-                {name ? name : t('tournaments.form.tournamentRegistration')}
-              </h2>
-              <p className='text-foreground mt-2'>
-                {location
-                  ? `${t('tournaments.form.location')} ${location}`
-                  : t('tournaments.form.fillOutForm')}
-              </p>
-            </div>
-            {showDeleteButton && onDelete ? (
-              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
-                <ActionButton
-                  onClick={onDelete}
-                  icon='delete'
-                  variant='secondary'
-                  color='brand'
-                >
-                  {t('common.actions.delete')}
-                </ActionButton>
-              </div>
-            ) : null}
-          </div>
         </Panel>
       ) : null}
 

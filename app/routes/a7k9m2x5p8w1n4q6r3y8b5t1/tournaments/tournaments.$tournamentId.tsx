@@ -224,10 +224,6 @@ export default function EditTournamentPage(): JSX.Element {
     )
   }
 
-  const handleReset = () => {
-    window.history.back()
-  }
-
   const handleDelete = () => {
     if (confirm(t('admin.tournaments.confirmDelete'))) {
       const form = document.createElement('form')
@@ -309,7 +305,6 @@ export default function EditTournamentPage(): JSX.Element {
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
         submitButtonText={t('common.actions.update')}
-        onCancel={handleReset}
         showDeleteButton={true}
         onDelete={handleDelete}
         intent='update'

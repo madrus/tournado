@@ -14,7 +14,6 @@ import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import { stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -199,7 +198,6 @@ export async function action({
 export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
-  const { setFormData, clearAllErrors } = useTeamFormStore()
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(
@@ -216,12 +214,6 @@ export default function AdminTeamPage(): JSX.Element {
     }),
     [team]
   )
-
-  const handleReset = () => {
-    // Reset the form to the original team data
-    setFormData(initialTeamData)
-    clearAllErrors()
-  }
 
   const handleDelete = () => {
     if (confirm('Are you sure you want to delete this team?')) {
@@ -247,7 +239,6 @@ export default function AdminTeamPage(): JSX.Element {
       intent='update'
       showDeleteButton={true}
       onDelete={handleDelete}
-      onCancel={handleReset}
     />
   )
 }

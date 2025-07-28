@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
@@ -9,6 +9,7 @@ import {
   getAllCategories,
   getAllDivisions,
 } from '~/models/tournament.server'
+import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -155,10 +156,16 @@ export default function NewTournamentPage(): JSX.Element {
   const { t } = useTranslation()
   const { divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
+  const { resetForm } = useTournamentFormStore()
 
-  const handleReset = () => {
-    window.history.back()
-  }
+  const handleReset = useCallback(() => {
+    resetForm()
+  }, [resetForm])
+
+  // Reset the form on every mount to ensure a clean slate
+  useEffect(() => {
+    handleReset()
+  }, [handleReset])
 
   return (
     <div className='space-y-8'>
@@ -171,7 +178,6 @@ export default function NewTournamentPage(): JSX.Element {
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
         submitButtonText={t('common.actions.save')}
-        onCancel={handleReset}
       />
     </div>
   )

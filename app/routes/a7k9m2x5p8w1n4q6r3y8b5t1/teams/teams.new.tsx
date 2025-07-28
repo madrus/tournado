@@ -57,20 +57,14 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
 export default function AdminNewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<TeamCreateActionData>()
+  const { resetForm } = useTeamFormStore()
+  //! TODO: This page now redirects on success, we should show a toast instead
+  const successMessage = undefined
 
   // Reset the form on every mount to ensure a clean slate
   useEffect(() => {
-    const { resetForm } = useTeamFormStore.getState()
     resetForm()
-  }, [])
-
-  // This page now redirects on success, so a success message is no longer needed here.
-  const successMessage = undefined
-
-  const handleReset = () => {
-    const { resetForm } = useTeamFormStore.getState()
-    resetForm()
-  }
+  }, [resetForm])
 
   return (
     <div className='space-y-8' data-testid='admin-new-team-container'>
@@ -89,7 +83,6 @@ export default function AdminNewTeamPage(): JSX.Element {
         errors={actionData?.errors || {}}
         isSuccess={actionData?.success || false}
         successMessage={successMessage}
-        onCancel={handleReset}
       />
     </div>
   )

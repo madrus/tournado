@@ -23,12 +23,11 @@ export function TeamForm({
   isSuccess = false,
   successMessage,
   showDeleteButton = false,
-  onDelete,
-  onCancel,
   className = '',
   intent,
   formData,
   submitButtonText,
+  onDelete,
 }: Omit<
   TeamFormProps,
   'availableDivisions' | 'availableCategories' | 'tournamentId'
@@ -37,6 +36,7 @@ export function TeamForm({
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
+  const isPublicSuccess = isSuccess && variant === 'public'
 
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -80,7 +80,20 @@ export function TeamForm({
     updateAvailableOptions,
     validateFieldOnBlur,
     validateForm,
+    resetForm,
   } = useTeamFormStore()
+
+  // Handle client-side form submission and validation
+  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
+    const isValid = validateForm()
+
+    if (!isValid) {
+      formEvent.preventDefault()
+    } else {
+      // Scroll to top on successful submission
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   // --- Panel Validity Logic ---
   // Panel enabling is handled directly in the JSX using isPanelEnabled() calls
@@ -186,19 +199,6 @@ export function TeamForm({
       updateAvailableOptions()
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
-
-  // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
-    const isValid = validateForm()
-
-    if (!isValid) {
-      formEvent.preventDefault()
-    }
-  }
-
-  // Otherwise let React Router handle the submission normally
-
-  const isPublicSuccess = isSuccess && variant === 'public'
 
   return (
     <div className={cn('w-full', className)}>
@@ -660,19 +660,18 @@ export function TeamForm({
 
         {/* Submit and Action Buttons */}
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          {onCancel ? (
-            <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='secondary'
-              color='brand'
-            >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
-            </ActionButton>
-          ) : (
-            <div />
-          )}
+          <ActionButton
+            type='button'
+            onClick={() => {
+              resetForm()
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            variant='secondary'
+            color='brand'
+          >
+            <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+            {t('common.actions.reset')}
+          </ActionButton>
 
           <div className='flex gap-4'>
             {isPublicSuccess ? (

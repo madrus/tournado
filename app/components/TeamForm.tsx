@@ -82,16 +82,28 @@ export function TeamForm({
   } = useTeamFormStore()
 
   // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
-    const isValid = validateForm()
+  const handleSubmit = useCallback(
+    (formEvent: FormEvent<HTMLFormElement>) => {
+      const isValid = validateForm()
 
-    if (!isValid) {
-      formEvent.preventDefault()
-    } else {
-      // Scroll to top on successful submission
+      if (!isValid) {
+        formEvent.preventDefault()
+      }
+    },
+    [validateForm]
+  )
+
+  // Scroll to top on successful server-side submission
+  useEffect(() => {
+    if (isSuccess) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-  }
+  }, [isSuccess])
+
+  const handleReset = useCallback(() => {
+    resetForm()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [resetForm])
 
   // --- Panel Validity Logic ---
   // Panel enabling is handled directly in the JSX using isPanelEnabled() calls
@@ -625,10 +637,7 @@ export function TeamForm({
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
           <ActionButton
             type='button'
-            onClick={() => {
-              resetForm()
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
+            onClick={() => handleReset()}
             variant='secondary'
             color='brand'
           >

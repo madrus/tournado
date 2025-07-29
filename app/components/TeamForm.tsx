@@ -93,13 +93,6 @@ export function TeamForm({
     [validateForm]
   )
 
-  // Scroll to top on successful server-side submission
-  useEffect(() => {
-    if (isSuccess) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }, [isSuccess])
-
   const handleReset = useCallback(() => {
     resetForm()
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -209,6 +202,13 @@ export function TeamForm({
       updateAvailableOptions()
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
+
+  // Scroll to top on successful server-side submission
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [isSuccess])
 
   return (
     <div className={cn('w-full', className)}>
@@ -642,7 +642,7 @@ export function TeamForm({
             color='brand'
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-            {t('common.actions.reset')}
+            {t('common.actions.cancel')}
           </ActionButton>
 
           <div className='flex gap-4'>

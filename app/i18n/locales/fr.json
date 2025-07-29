@@ -68,8 +68,7 @@
       "saving": "Enregistrement...",
       "update": "Mettre à jour",
       "cancel": "Annuler",
-      "delete": "Supprimer",
-      "reset": "Réinitialiser"
+      "delete": "Supprimer"
     },
     "appName": "Tournado",
     "backToHome": "Retour à l'accueil",

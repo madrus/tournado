@@ -65,8 +65,8 @@ describe('lib.helpers', () => {
     })
 
     it.each([
-      [TestDivision.PREMIER_DIVISION, 'de', 'Hoofdklasse'],
-      [TestDivision.FIRST_DIVISION, 'es', 'Eerste klasse'],
+      [TestDivision.PREMIER_DIVISION, 'xx', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'zz', 'Eerste klasse'],
     ])(
       'should fallback to Dutch when language %s not available for %s',
       (division, language, expected) => {
@@ -75,8 +75,8 @@ describe('lib.helpers', () => {
     )
 
     it.each([
-      [TestDivision.PREMIER_DIVISION, 'de', 'nl', 'Hoofdklasse'],
-      [TestDivision.FIRST_DIVISION, 'es', 'nl', 'Eerste klasse'],
+      [TestDivision.PREMIER_DIVISION, 'xx', 'nl', 'Hoofdklasse'],
+      [TestDivision.FIRST_DIVISION, 'zz', 'nl', 'Eerste klasse'],
     ])(
       'should fallback to custom fallback language for %s',
       (division, language, fallback, expected) => {

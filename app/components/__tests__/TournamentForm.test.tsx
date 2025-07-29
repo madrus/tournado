@@ -62,7 +62,6 @@ vi.mock('react-i18next', () => ({
           'Select the age categories that will participate',
         'common.actions.save': 'Save',
         'common.actions.cancel': 'Cancel',
-        'common.actions.reset': 'Reset',
         'common.actions.delete': 'Delete',
       }
 
@@ -636,7 +635,7 @@ describe('TournamentForm Component', () => {
     it('should always render reset button', () => {
       renderTournamentForm()
 
-      const resetButton = screen.getByRole('button', { name: '↻ Reset' })
+      const resetButton = screen.getByRole('button', { name: '↻ Cancel' })
       expect(resetButton).toBeInTheDocument()
     })
 
@@ -645,7 +644,7 @@ describe('TournamentForm Component', () => {
 
       renderTournamentForm()
 
-      const resetButton = screen.getByRole('button', { name: '↻ Reset' })
+      const resetButton = screen.getByRole('button', { name: '↻ Cancel' })
       await user.click(resetButton)
 
       // Verify no error is thrown and reset button is still functional

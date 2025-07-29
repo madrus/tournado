@@ -1,4 +1,4 @@
-import { JSX, useCallback, useEffect, useRef } from 'react'
+import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
@@ -178,7 +178,7 @@ export function TournamentForm({
   }, [errors, isSuccess, variant])
 
   // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
     if (!isValid) {
@@ -348,7 +348,7 @@ export function TournamentForm({
                 value={division}
                 label={getDivisionLabelByValue(
                   division as Division,
-                  i18n.language as 'en' | 'nl' | 'ar' | 'tr' | 'fr'
+                  i18n.language as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
                 )}
                 selected={selectedDivisions.includes(division)}
                 disabled={
@@ -391,7 +391,7 @@ export function TournamentForm({
                 value={category}
                 label={getCategoryLabelByValue(
                   category as Category,
-                  i18n.language as 'en' | 'nl' | 'fr' | 'ar' | 'tr'
+                  i18n.language as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
                 )}
                 selected={selectedCategories.includes(category)}
                 disabled={
@@ -425,7 +425,7 @@ export function TournamentForm({
             color='brand'
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-            {t('common.actions.reset')}
+            {t('common.actions.cancel')}
           </ActionButton>
 
           <ActionButton

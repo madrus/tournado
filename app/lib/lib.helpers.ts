@@ -92,7 +92,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
 
 export const getDivisionLabelByValue = (
   value: Division,
-  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
 ): string => {
   const division = getDivisionByValue(value)
   return division ? division.labels[locale] : value
@@ -130,7 +130,7 @@ export const getCategoryByValue = (value: string): CategoryObject | undefined =>
  */
 export const getCategoryLabelByValue = (
   value: Category,
-  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
 ): string => {
   const category = getCategoryByValue(value)
   return category ? category.labels[locale] : value

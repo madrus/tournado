@@ -11,37 +11,13 @@ import { Panel } from '~/components/Panel'
 import { ToggleChip } from '~/components/ToggleChip'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import type { TournamentFormProps } from '~/lib/lib.types'
 import {
   useTournamentFormStore,
   useTournamentFormStoreHydration,
 } from '~/stores/useTournamentFormStore'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
-
-type TournamentFormProps = {
-  mode?: 'create' | 'edit'
-  variant?: 'admin' | 'public'
-  formData?: {
-    id?: string
-    name?: string
-    location?: string
-    divisions?: string[]
-    categories?: string[]
-    startDate?: string
-    endDate?: string
-  }
-  divisions?: string[]
-  categories?: string[]
-  errors?: Record<string, string>
-  isSuccess?: boolean
-  successMessage?: string
-  submitButtonText?: string
-  onCancel?: () => void
-  showDeleteButton?: boolean
-  onDelete?: () => void
-  className?: string
-  intent?: string
-}
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 export function TournamentForm({
   mode: formMode = 'create',
@@ -53,16 +29,13 @@ export function TournamentForm({
   isSuccess = false,
   successMessage,
   submitButtonText,
-  onCancel,
-  showDeleteButton = false,
-  onDelete,
   className = '',
   intent,
-}: TournamentFormProps): JSX.Element {
+}: Readonly<TournamentFormProps>): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
-
+  const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
     header: 'sky' as const,
@@ -71,10 +44,6 @@ export function TournamentForm({
     step3: 'indigo' as const,
     step4: 'fuchsia' as const,
   }
-
-  // Ensure the tournament form store is properly hydrated
-  useTournamentFormStoreHydration()
-
   // Get all state from the form store
   const {
     formFields: {
@@ -96,7 +65,11 @@ export function TournamentForm({
     isPanelEnabled,
     isFormReadyForSubmission,
     isDirty,
+    resetForm,
   } = useTournamentFormStore()
+
+  // Ensure the tournament form store is properly hydrated
+  useTournamentFormStoreHydration()
 
   // Helper function to translate error keys to user-readable messages
   // Show errors for:
@@ -132,6 +105,25 @@ export function TournamentForm({
     },
     [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t, errors]
   )
+
+  const handleReset = useCallback(() => {
+    resetForm()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [resetForm])
+
+  const handleDivisionToggle = (division: string) => {
+    const newDivisions = selectedDivisions.includes(division)
+      ? selectedDivisions.filter(d => d !== division)
+      : [...selectedDivisions, division]
+    setFormField('divisions', newDivisions)
+  }
+
+  const handleCategoryToggle = (category: string) => {
+    const newCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter(c => c !== category)
+      : [...selectedCategories, category]
+    setFormField('categories', newCategories)
+  }
 
   // Initialize mode in store
   useEffect(() => {
@@ -194,22 +186,12 @@ export function TournamentForm({
     }
   }
 
-  const handleDivisionToggle = (division: string) => {
-    const newDivisions = selectedDivisions.includes(division)
-      ? selectedDivisions.filter(d => d !== division)
-      : [...selectedDivisions, division]
-    setFormField('divisions', newDivisions)
-  }
-
-  const handleCategoryToggle = (category: string) => {
-    const newCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter(c => c !== category)
-      : [...selectedCategories, category]
-    setFormField('categories', newCategories)
-  }
-
-  const isPublicVariant = variant === 'public'
-  const isPublicSuccess = isSuccess && variant === 'public'
+  // Scroll to top on successful server-side submission
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [isSuccess])
 
   return (
     <div className={cn('w-full', className)}>
@@ -225,38 +207,6 @@ export function TournamentForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </Panel>
-      ) : null}
-
-      {/* Header for Admin Variant */}
-      {!isPublicVariant ? (
-        <Panel color={PANEL_COLORS.header} className='mb-8'>
-          <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-            <div>
-              <h2
-                className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
-              >
-                {name ? name : t('tournaments.form.tournamentRegistration')}
-              </h2>
-              <p className='text-foreground mt-2'>
-                {location
-                  ? `${t('tournaments.form.location')} ${location}`
-                  : t('tournaments.form.fillOutForm')}
-              </p>
-            </div>
-            {showDeleteButton && onDelete ? (
-              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
-                <ActionButton
-                  onClick={onDelete}
-                  icon='delete'
-                  variant='secondary'
-                  color='brand'
-                >
-                  {t('common.actions.delete')}
-                </ActionButton>
-              </div>
-            ) : null}
-          </div>
         </Panel>
       ) : null}
 
@@ -468,19 +418,15 @@ export function TournamentForm({
 
         {/* Submit Button */}
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          {onCancel ? (
-            <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='secondary'
-              color='brand'
-            >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
-            </ActionButton>
-          ) : (
-            <div />
-          )}
+          <ActionButton
+            type='button'
+            onClick={() => handleReset()}
+            variant='secondary'
+            color='brand'
+          >
+            <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+            {t('common.actions.reset')}
+          </ActionButton>
 
           <ActionButton
             type='submit'

@@ -4,7 +4,7 @@
  */
 
 // Horizontal padding/margins for main content areas - responsive three-tier system
-export const CONTENT_PX = 'px-3 md:px-8 lg:px-16' // 8px mobile, 32px tablet, 64px desktop
+export const CONTENT_PX = 'px-4 md:px-8 lg:px-16' // 8px mobile, 32px tablet, 64px desktop
 
 // Container constraints
 export const CONTENT_MIN_WIDTH = 'min-w-[320px]'

@@ -1,4 +1,5 @@
 import { JSX, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -10,11 +11,12 @@ import {
 
 import { Division } from '@prisma/client'
 
+import { ActionButton } from '~/components/buttons/ActionButton'
+import { Panel } from '~/components/Panel'
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { stringToDivision } from '~/lib/lib.helpers'
+import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/route-types'
 import { requireUserWithMetadata } from '~/utils/route-utils.server'
 
@@ -199,7 +201,7 @@ export async function action({
 export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
-  const { setFormData, clearAllErrors } = useTeamFormStore()
+  const { i18n, t } = useTranslation()
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(
@@ -217,12 +219,6 @@ export default function AdminTeamPage(): JSX.Element {
     [team]
   )
 
-  const handleReset = () => {
-    // Reset the form to the original team data
-    setFormData(initialTeamData)
-    clearAllErrors()
-  }
-
   const handleDelete = () => {
     if (confirm('Are you sure you want to delete this team?')) {
       // Create a form and submit it with delete intent
@@ -239,15 +235,44 @@ export default function AdminTeamPage(): JSX.Element {
   }
 
   return (
-    <TeamForm
-      mode='edit'
-      variant='admin'
-      formData={initialTeamData}
-      errors={actionData?.errors || {}}
-      intent='update'
-      showDeleteButton={true}
-      onDelete={handleDelete}
-      onCancel={handleReset}
-    />
+    <div className='w-full'>
+      {/* Admin Header with Delete Button */}
+      <Panel color='sky' className='mb-8'>
+        <div className='flex items-center justify-between gap-4'>
+          <div className='flex-1'>
+            <h2 className='text-2xl font-bold'>
+              {team.clubName && team.name
+                ? `${team.clubName} ${team.name}`
+                : t('teams.form.teamRegistration')}
+            </h2>
+            <p className='text-foreground mt-2'>
+              {team.division
+                ? getDivisionLabel(team.division as Division, i18n.language)
+                : t('teams.form.fillOutForm')}
+            </p>
+          </div>
+          {/* Delete Button */}
+          <div className='flex-shrink-0'>
+            <ActionButton
+              onClick={handleDelete}
+              icon='delete'
+              variant='secondary'
+              color='brand'
+            >
+              {t('common.actions.delete')}
+            </ActionButton>
+          </div>
+        </div>
+      </Panel>
+
+      {/* Team Form */}
+      <TeamForm
+        mode='edit'
+        variant='admin'
+        formData={initialTeamData}
+        errors={actionData?.errors || {}}
+        intent='update'
+      />
+    </div>
   )
 }

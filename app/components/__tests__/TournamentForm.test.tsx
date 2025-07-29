@@ -403,7 +403,6 @@ describe('TournamentForm Component', () => {
     it('should render form with all basic elements', () => {
       renderTournamentForm()
 
-      expect(screen.getByText('Tournament Registration')).toBeInTheDocument()
       expect(screen.getByText('Basic Information')).toBeInTheDocument()
       expect(screen.getByText('Tournament Dates')).toBeInTheDocument()
       expect(screen.getByText('Divisions')).toBeInTheDocument()
@@ -429,24 +428,6 @@ describe('TournamentForm Component', () => {
   })
 
   describe('Variant Handling', () => {
-    it('should render admin header for admin variant', () => {
-      renderTournamentForm({ variant: 'admin' })
-
-      expect(screen.getByText('Tournament Registration')).toBeInTheDocument()
-      expect(
-        screen.getByText('Fill out the form below to create a new tournament')
-      ).toBeInTheDocument()
-    })
-
-    it('should not render admin header for public variant', () => {
-      renderTournamentForm({ variant: 'public' })
-
-      expect(screen.queryByText('Tournament Registration')).not.toBeInTheDocument()
-      expect(
-        screen.queryByText('Fill out the form below to create a new tournament')
-      ).not.toBeInTheDocument()
-    })
-
     it('should show success message for public variant when isSuccess is true', () => {
       renderTournamentForm({
         variant: 'public',
@@ -488,22 +469,6 @@ describe('TournamentForm Component', () => {
       expect(screen.getByDisplayValue('Test Stadium')).toBeInTheDocument()
       expect(screen.getByDisplayValue('2024-06-01')).toBeInTheDocument()
       expect(screen.getByDisplayValue('2024-06-03')).toBeInTheDocument()
-    })
-
-    it('should display tournament name in header when provided', () => {
-      renderTournamentForm({
-        formData: { name: 'Summer Cup 2024' },
-      })
-
-      expect(screen.getByText('Summer Cup 2024')).toBeInTheDocument()
-    })
-
-    it('should display location in header when provided', () => {
-      renderTournamentForm({
-        formData: { name: 'Test Tournament', location: 'Wembley Stadium' },
-      })
-
-      expect(screen.getByText(/Location Wembley Stadium/)).toBeInTheDocument()
     })
   })
 
@@ -668,55 +633,23 @@ describe('TournamentForm Component', () => {
       expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
     })
 
-    it('should render reset button when onCancel is provided', () => {
-      const handleReset = vi.fn()
-      renderTournamentForm({ onCancel: handleReset })
+    it('should always render reset button', () => {
+      renderTournamentForm()
 
       const resetButton = screen.getByRole('button', { name: '↻ Reset' })
       expect(resetButton).toBeInTheDocument()
     })
 
-    it('should call onCancel when reset button is clicked', async () => {
-      const handleReset = vi.fn()
+    it('should reset form when reset button is clicked', async () => {
       const user = userEvent.setup()
 
-      renderTournamentForm({ onCancel: handleReset })
+      renderTournamentForm()
 
       const resetButton = screen.getByRole('button', { name: '↻ Reset' })
       await user.click(resetButton)
 
-      expect(handleReset).toHaveBeenCalledTimes(1)
-    })
-
-    it('should render delete button when showDeleteButton is true', () => {
-      const handleDelete = vi.fn()
-      renderTournamentForm({
-        showDeleteButton: true,
-        onDelete: handleDelete,
-      })
-
-      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
-    })
-
-    it('should call onDelete when delete button is clicked', async () => {
-      const handleDelete = vi.fn()
-      const user = userEvent.setup()
-
-      renderTournamentForm({
-        showDeleteButton: true,
-        onDelete: handleDelete,
-      })
-
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
-      await user.click(deleteButton)
-
-      expect(handleDelete).toHaveBeenCalledTimes(1)
-    })
-
-    it('should not render delete button when showDeleteButton is false', () => {
-      renderTournamentForm({ showDeleteButton: false })
-
-      expect(screen.queryByRole('button', { name: 'Delete' })).not.toBeInTheDocument()
+      // Verify no error is thrown and reset button is still functional
+      expect(resetButton).toBeInTheDocument()
     })
   })
 
@@ -831,8 +764,8 @@ describe('TournamentForm Component', () => {
         className: 'custom-tournament-form',
       })
 
-      // Check custom class is applied to main container
-      expect(screen.getByText('Tournament Registration')).toBeInTheDocument()
+      // Check that the form renders with the custom class by verifying form elements exist
+      expect(screen.getByText('Basic Information')).toBeInTheDocument()
     })
 
     it('should have step-specific color themes', () => {

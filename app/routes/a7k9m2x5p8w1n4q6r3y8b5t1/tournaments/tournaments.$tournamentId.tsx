@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 
+import { ActionButton } from '~/components/buttons/ActionButton'
+import { Panel } from '~/components/Panel'
 import { TournamentForm } from '~/components/TournamentForm'
 import type { Tournament } from '~/models/tournament.server'
 import {
@@ -224,10 +226,6 @@ export default function EditTournamentPage(): JSX.Element {
     )
   }
 
-  const handleReset = () => {
-    window.history.back()
-  }
-
   const handleDelete = () => {
     if (confirm(t('admin.tournaments.confirmDelete'))) {
       const form = document.createElement('form')
@@ -275,9 +273,37 @@ export default function EditTournamentPage(): JSX.Element {
   }
 
   return (
-    <div className='space-y-8'>
+    <div className='w-full'>
+      {/* Admin Header with Delete Button */}
+      <Panel color='sky' className='mb-8'>
+        <div className='flex items-center justify-between gap-4'>
+          <div className='flex-1'>
+            <h2 className='text-2xl font-bold'>
+              {tournament.name || t('tournaments.form.tournamentRegistration')}
+            </h2>
+            <p className='text-foreground mt-2'>
+              {tournament.location
+                ? `${t('tournaments.form.location')} ${tournament.location}`
+                : t('tournaments.form.fillOutForm')}
+            </p>
+          </div>
+          {/* Delete Button */}
+          <div className='flex-shrink-0'>
+            <ActionButton
+              onClick={handleDelete}
+              icon='delete'
+              variant='secondary'
+              color='brand'
+            >
+              {t('common.actions.delete')}
+            </ActionButton>
+          </div>
+        </div>
+      </Panel>
+
+      {/* Success Message */}
       {actionData?.success ? (
-        <div className='rounded-md bg-green-50 p-4'>
+        <div className='mb-8 rounded-md bg-green-50 p-4'>
           <div className='flex'>
             <div className='flex-shrink-0'>
               <svg
@@ -299,6 +325,7 @@ export default function EditTournamentPage(): JSX.Element {
         </div>
       ) : null}
 
+      {/* Tournament Form */}
       <TournamentForm
         mode='edit'
         variant='admin'
@@ -309,9 +336,6 @@ export default function EditTournamentPage(): JSX.Element {
         isSuccess={actionData?.success || false}
         successMessage={actionData?.message}
         submitButtonText={t('common.actions.update')}
-        onCancel={handleReset}
-        showDeleteButton={true}
-        onDelete={handleDelete}
         intent='update'
       />
     </div>

@@ -34,52 +34,58 @@ describe('FieldStatusIcon', () => {
     expect(iconContainer).toHaveClass('checkmark-emerald', 'custom-class')
   })
 
-  it('should always use emerald background for success status with default input positioning', () => {
+  it('should always use emerald background for success status with inline positioning', () => {
     render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toBeInTheDocument()
     expect(iconContainer).toHaveClass(
-      'absolute',
-      '-top-1',
-      'right-1',
+      'flex',
+      'h-6',
+      'w-6',
+      'items-center',
+      'justify-center',
+      'rounded-full',
       'checkmark-emerald'
     )
   })
 
-  it('should always use red background for error status with default input positioning', () => {
+  it('should always use red background for error status with inline positioning', () => {
     render(<FieldStatusIcon status='error' />)
 
     const iconContainer = screen.getByTestId('field-status-error')
     expect(iconContainer).toBeInTheDocument()
     expect(iconContainer).toHaveClass(
-      'absolute',
-      '-top-1',
-      'right-1',
+      'flex',
+      'h-6',
+      'w-6',
+      'items-center',
+      'justify-center',
+      'rounded-full',
       'field-error-icon'
     )
   })
 
-  it('should use correct input positioning for the checkmark field', () => {
+  it('should use inline positioning for all field types', () => {
     render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
-      'absolute',
-      '-top-1',
-      'right-1',
+      'flex',
+      'h-6',
+      'w-6',
+      'items-center',
+      'justify-center',
+      'rounded-full',
       'checkmark-emerald'
     )
   })
 
-  it('should have proper positioning classes for other input fields', () => {
+  it('should have proper layout classes for inline positioning', () => {
     render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
-      'absolute',
-      '-top-1',
-      'right-1',
       'flex',
       'h-6',
       'w-6',
@@ -89,16 +95,11 @@ describe('FieldStatusIcon', () => {
     )
   })
 
-  it('should have proper positioning classes for checkbox fields', () => {
-    render(<FieldStatusIcon status='success' />)
+  it('should render error icon with consistent inline positioning', () => {
+    render(<FieldStatusIcon status='error' />)
 
-    const iconContainer = screen.getByTestId('field-status-success')
+    const iconContainer = screen.getByTestId('field-status-error')
     expect(iconContainer).toHaveClass(
-      'absolute',
-      'top-0',
-      'right-1',
-      'md:top-1',
-      'md:right-2',
       'flex',
       'h-6',
       'w-6',

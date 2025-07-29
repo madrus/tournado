@@ -2,6 +2,7 @@ import { type FocusEvent, forwardRef, type JSX, type ReactNode } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
+import { INPUT_LABEL_SPACING } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 
 import {
@@ -53,7 +54,9 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
   ): JSX.Element => (
     <div className={className}>
       <label className={textInputLabelVariants()}>
-        <div className='mb-1 flex items-center justify-between gap-2'>
+        <div
+          className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+        >
           <span className={textInputLabelTextVariants()}>{label}</span>
           <div className='w-6 flex-shrink-0'>{statusIcon}</div>
         </div>

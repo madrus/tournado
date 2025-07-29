@@ -11,6 +11,10 @@ vi.mock('~/utils/form-validation', () => ({
 // Helper to access store state
 const state = useTournamentFormStore.getState
 
+// Mock the clearStorage method
+const mockClearStorage = vi.fn()
+useTournamentFormStore.persist.clearStorage = mockClearStorage
+
 describe('useTournamentFormStore', () => {
   beforeEach(() => {
     // Reset store to initial state
@@ -21,6 +25,7 @@ describe('useTournamentFormStore', () => {
 
     // Clear mocks
     vi.clearAllMocks()
+    mockClearStorage.mockClear()
   })
 
   describe('Initial State', () => {
@@ -481,6 +486,41 @@ describe('useTournamentFormStore', () => {
         // Should NOT persist validation state
         expect(persistedData.state).not.toHaveProperty('validation')
       }
+    })
+  })
+
+  describe('Session Storage Management', () => {
+    it('should clear session storage when clearSessionStorage is called', () => {
+      state().clearSessionStorage()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call clearSessionStorage when resetStoreState is called', () => {
+      state().resetStoreState()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call clearSessionStorage when resetForm is called', () => {
+      state().resetForm()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should reset store state and clear session storage', () => {
+      // Set some form data
+      state().setFormField('name', 'Test Tournament')
+      state().setFormField('location', 'Test Location')
+      state().setValidationField('displayErrors', { name: 'Test error' })
+
+      // Reset store state
+      state().resetStoreState()
+
+      // Check that form fields are reset
+      expect(state().formFields.name).toBe('')
+      expect(state().formFields.location).toBe('')
+      expect(state().validation.displayErrors).toEqual({})
+
+      // Check that clearSessionStorage was called
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
     })
   })
 })

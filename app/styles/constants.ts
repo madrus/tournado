@@ -12,3 +12,10 @@ export const CONTENT_MAX_WIDTH = 'max-w-7xl' // Prevent content stretching on la
 
 // Common layout classes that should be used consistently
 export const CONTENT_CONTAINER_CLASSES = `mx-auto ${CONTENT_MIN_WIDTH} ${CONTENT_MAX_WIDTH} ${CONTENT_PX}`
+
+// Form input spacing
+/**
+ * Consistent spacing between input field labels and inputs
+ * Based on the checkbox field spacing which provides optimal visual hierarchy
+ */
+export const INPUT_LABEL_SPACING = 'mb-2' as const

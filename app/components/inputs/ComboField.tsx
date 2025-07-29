@@ -4,6 +4,7 @@ import * as Select from '@radix-ui/react-select'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
+import { INPUT_LABEL_SPACING } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
@@ -82,7 +83,9 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
         <label className={textInputLabelVariants()}>
-          <div className='mb-1 flex items-center justify-between gap-2'>
+          <div
+            className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+          >
             <span className={textInputLabelTextVariants()}>{label}</span>
             <div className='w-6 flex-shrink-0'>{statusIcon}</div>
           </div>

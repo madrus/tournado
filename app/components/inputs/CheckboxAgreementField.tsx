@@ -3,6 +3,7 @@ import { forwardRef, type ReactNode } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
+import { INPUT_LABEL_SPACING } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
@@ -56,7 +57,7 @@ export const CheckboxAgreementField = forwardRef<
   ) => (
     <div className={className}>
       {description ? (
-        <div className='mb-2 flex items-end justify-between gap-2'>
+        <div className={`${INPUT_LABEL_SPACING} flex items-end justify-between gap-2`}>
           <label
             htmlFor={name}
             className={cn('text-foreground font-medium', getLatinTextClass(language))}
@@ -99,14 +100,15 @@ export const CheckboxAgreementField = forwardRef<
             />
           ) : null}
         </div>
-        <span
+        <label
+          htmlFor={name}
           className={cn(
-            'text-foreground text-lg leading-6 font-normal',
+            'text-foreground cursor-pointer text-lg leading-6 font-normal',
             getLatinTextClass(language)
           )}
         >
           {label}
-        </span>
+        </label>
       </div>
       {error ? <ErrorMessage panelColor={color}>{error}</ErrorMessage> : null}
     </div>

@@ -3,7 +3,7 @@ import { forwardRef, type ReactNode } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
-import { INPUT_LABEL_SPACING } from '~/styles/constants'
+import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
@@ -12,6 +12,18 @@ import {
   checkboxAgreementFieldVariants,
   checkboxAgreementInputVariants,
 } from './inputs.variants'
+
+/**
+ * CheckboxAgreementField with inline status icon support
+ *
+ * The statusIcon prop renders validation status (success/error/neutral) inline
+ * with the field description, providing better accessibility and preventing layout
+ * shifts when description text wraps to multiple lines. The status icon is positioned
+ * in a fixed-width container to maintain consistent alignment.
+ *
+ * This component uses items-end alignment to ensure the status icon aligns with
+ * the bottom of the description text for optimal visual hierarchy.
+ */
 
 export type CheckboxAgreementFieldProps = {
   name: string
@@ -28,7 +40,7 @@ export type CheckboxAgreementFieldProps = {
   inputClassName?: string
   language?: string // add language prop
   color?: ColorAccent // add color prop
-  statusIcon?: ReactNode // add status icon prop
+  statusIcon?: ReactNode // Status icon (success/error) rendered inline with description
 }
 
 export const CheckboxAgreementField = forwardRef<
@@ -58,13 +70,13 @@ export const CheckboxAgreementField = forwardRef<
     <div className={className}>
       {description ? (
         <div className={`${INPUT_LABEL_SPACING} flex items-end justify-between gap-2`}>
-          <label
-            htmlFor={name}
+          <div
             className={cn('text-foreground font-medium', getLatinTextClass(language))}
           >
             {description}
-          </label>
-          <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+          </div>
+          {/* Status icon container with fixed width to prevent layout shifts */}
+          <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
         </div>
       ) : null}
       <div

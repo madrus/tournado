@@ -2,7 +2,7 @@ import { type FocusEvent, forwardRef, type JSX, type ReactNode } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
-import { INPUT_LABEL_SPACING } from '~/styles/constants'
+import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 
 import {
@@ -10,6 +10,15 @@ import {
   textInputLabelTextVariants,
   textInputLabelVariants,
 } from './inputs.variants'
+
+/**
+ * TextInputField with inline status icon support
+ *
+ * The statusIcon prop renders validation status (success/error/neutral) inline
+ * with the field label, providing better accessibility and preventing layout
+ * shifts when labels wrap to multiple lines. The status icon is positioned
+ * in a fixed-width container to maintain consistent alignment.
+ */
 
 type InputFieldProps = {
   name: string
@@ -24,7 +33,7 @@ type InputFieldProps = {
   defaultValue?: string
   placeholder?: string
   color?: ColorAccent
-  statusIcon?: ReactNode
+  statusIcon?: ReactNode // Status icon (success/error) rendered inline with label
   onChange?: (value: string) => void
   onFocus?: (focusEvent: FocusEvent<HTMLInputElement>) => void
   onBlur?: (focusEvent: FocusEvent<HTMLInputElement>) => void
@@ -58,7 +67,8 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
           className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
         >
           <span className={textInputLabelTextVariants()}>{label}</span>
-          <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+          {/* Status icon container with fixed width to prevent layout shifts */}
+          <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
         </div>
         <div className='relative'>
           <input

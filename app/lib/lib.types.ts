@@ -230,15 +230,24 @@ export type TeamFormProps = {
  */
 export type TournamentFormProps = {
   mode?: 'create' | 'edit'
-  initialData?: {
+  variant?: 'admin' | 'public'
+  formData?: {
     id?: string
-    name: string
-    location: string
-    divisions: string[]
-    categories: string[]
-    startDate: string
+    name?: string
+    location?: string
+    divisions?: string[]
+    categories?: string[]
+    startDate?: string
     endDate?: string
   }
+  divisions?: string[]
+  categories?: string[]
+  errors?: Record<string, string>
+  isSuccess?: boolean
+  successMessage?: string
+  submitButtonText?: string
+  className?: string
+  intent?: string
 }
 
 // ============================================================================

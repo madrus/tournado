@@ -49,27 +49,28 @@ type StoreState = {
 }
 
 type Actions = {
-  // Universal field setter using dynamic property names
-  setFormField: (fieldName: FormFieldName, value: string | boolean) => void
-  setValidationField: (
-    fieldName: ValidationFieldName,
-    value: Record<string, string> | Record<string, boolean> | boolean
-  ) => void
-  setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => void
   setAvailableOptionsField: (
     fieldName: AvailableOptionsFieldName,
     value: TournamentData[] | string[]
   ) => void
+  // Universal field setter using dynamic property names
+  setFormField: (fieldName: FormFieldName, value: string | boolean) => void
+  setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => void
+  setValidationField: (
+    fieldName: ValidationFieldName,
+    value: Record<string, string> | Record<string, boolean> | boolean
+  ) => void
 
   // Convenience methods for common operations
-  setFormData: (formData: Partial<FlexibleTeamFormData>) => void
+  clearAllErrors: () => void
+  clearFieldError: (fieldName: string) => void
+  clearSessionStorage: () => void
   resetForm: () => void
+  resetStoreState: () => void
   setFieldBlurred: (fieldName: string, blurred?: boolean) => void
   setFieldError: (fieldName: string, error: string) => void
-  clearFieldError: (fieldName: string) => void
-  clearAllErrors: () => void
+  setFormData: (formData: Partial<FlexibleTeamFormData>) => void
   updateAvailableOptions: () => void
-  resetStoreState: () => void
 
   // Get current form data as TeamFormData
   getFormData: () => TeamFormData
@@ -114,6 +115,11 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           ...initialStoreState,
           resetStoreState: () => {
             set(initialStoreState, false, 'resetStoreState')
+            get().clearSessionStorage()
+          },
+
+          clearSessionStorage: () => {
+            useTeamFormStore.persist.clearStorage()
           },
 
           // ===== SETTERS =====
@@ -250,7 +256,7 @@ export const useTeamFormStore = create<StoreState & Actions>()(
           resetForm: () => {
             set(resetStatePreserving(['availableOptions'], get))
             // Clear the persisted state from session storage to prevent rehydration
-            useTeamFormStore.persist.clearStorage()
+            get().clearSessionStorage()
           },
 
           setFieldBlurred: (fieldName, blurred = true) => {

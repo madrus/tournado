@@ -11,34 +11,13 @@ import { Panel } from '~/components/Panel'
 import { ToggleChip } from '~/components/ToggleChip'
 import type { Category, Division } from '~/db.server'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import type { TournamentFormProps } from '~/lib/lib.types'
 import {
   useTournamentFormStore,
   useTournamentFormStoreHydration,
 } from '~/stores/useTournamentFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
-
-type TournamentFormProps = {
-  mode?: 'create' | 'edit'
-  variant?: 'admin' | 'public'
-  formData?: {
-    id?: string
-    name?: string
-    location?: string
-    divisions?: string[]
-    categories?: string[]
-    startDate?: string
-    endDate?: string
-  }
-  divisions?: string[]
-  categories?: string[]
-  errors?: Record<string, string>
-  isSuccess?: boolean
-  successMessage?: string
-  submitButtonText?: string
-  className?: string
-  intent?: string
-}
 
 export function TournamentForm({
   mode: formMode = 'create',
@@ -52,11 +31,11 @@ export function TournamentForm({
   submitButtonText,
   className = '',
   intent,
-}: TournamentFormProps): JSX.Element {
+}: Readonly<TournamentFormProps>): JSX.Element {
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
-
+  const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
     header: 'sky' as const,
@@ -65,10 +44,6 @@ export function TournamentForm({
     step3: 'indigo' as const,
     step4: 'fuchsia' as const,
   }
-
-  // Ensure the tournament form store is properly hydrated
-  useTournamentFormStoreHydration()
-
   // Get all state from the form store
   const {
     formFields: {
@@ -92,6 +67,9 @@ export function TournamentForm({
     isDirty,
     resetForm,
   } = useTournamentFormStore()
+
+  // Ensure the tournament form store is properly hydrated
+  useTournamentFormStoreHydration()
 
   // Helper function to translate error keys to user-readable messages
   // Show errors for:
@@ -127,6 +105,25 @@ export function TournamentForm({
     },
     [blurredFields, forceShowAllErrors, submitAttempted, displayErrors, t, errors]
   )
+
+  const handleReset = useCallback(() => {
+    resetForm()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [resetForm])
+
+  const handleDivisionToggle = (division: string) => {
+    const newDivisions = selectedDivisions.includes(division)
+      ? selectedDivisions.filter(d => d !== division)
+      : [...selectedDivisions, division]
+    setFormField('divisions', newDivisions)
+  }
+
+  const handleCategoryToggle = (category: string) => {
+    const newCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter(c => c !== category)
+      : [...selectedCategories, category]
+    setFormField('categories', newCategories)
+  }
 
   // Initialize mode in store
   useEffect(() => {
@@ -186,27 +183,15 @@ export function TournamentForm({
 
     if (!isValid) {
       formEvent.preventDefault()
-    } else {
-      // Scroll to top on successful submission
-      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
-  const handleDivisionToggle = (division: string) => {
-    const newDivisions = selectedDivisions.includes(division)
-      ? selectedDivisions.filter(d => d !== division)
-      : [...selectedDivisions, division]
-    setFormField('divisions', newDivisions)
-  }
-
-  const handleCategoryToggle = (category: string) => {
-    const newCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter(c => c !== category)
-      : [...selectedCategories, category]
-    setFormField('categories', newCategories)
-  }
-
-  const isPublicSuccess = isSuccess && variant === 'public'
+  // Scroll to top on successful server-side submission
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [isSuccess])
 
   return (
     <div className={cn('w-full', className)}>
@@ -435,10 +420,7 @@ export function TournamentForm({
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
           <ActionButton
             type='button'
-            onClick={() => {
-              resetForm()
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
+            onClick={() => handleReset()}
             variant='secondary'
             color='brand'
           >

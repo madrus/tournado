@@ -15,16 +15,13 @@ import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore, useTeamFormStoreHydration } from '~/stores/useTeamFormStore'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 export function TeamForm({
   mode: formMode = 'create',
   variant,
   isSuccess = false,
   successMessage,
-  showDeleteButton = false,
-  onDelete,
-  onCancel,
   className = '',
   intent,
   formData,
@@ -37,6 +34,7 @@ export function TeamForm({
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
+  const isPublicSuccess = isSuccess && variant === 'public'
 
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -80,7 +78,32 @@ export function TeamForm({
     updateAvailableOptions,
     validateFieldOnBlur,
     validateForm,
+    resetForm,
   } = useTeamFormStore()
+
+  // Handle client-side form submission and validation
+  const handleSubmit = useCallback(
+    (formEvent: FormEvent<HTMLFormElement>) => {
+      const isValid = validateForm()
+
+      if (!isValid) {
+        formEvent.preventDefault()
+      }
+    },
+    [validateForm]
+  )
+
+  // Scroll to top on successful server-side submission
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [isSuccess])
+
+  const handleReset = useCallback(() => {
+    resetForm()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [resetForm])
 
   // --- Panel Validity Logic ---
   // Panel enabling is handled directly in the JSX using isPanelEnabled() calls
@@ -187,19 +210,6 @@ export function TeamForm({
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
 
-  // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
-    const isValid = validateForm()
-
-    if (!isValid) {
-      formEvent.preventDefault()
-    }
-  }
-
-  // Otherwise let React Router handle the submission normally
-
-  const isPublicSuccess = isSuccess && variant === 'public'
-
   return (
     <div className={cn('w-full', className)}>
       {/* Success Message for Public Variant */}
@@ -214,41 +224,6 @@ export function TeamForm({
           <p className='text-foreground-darker text-sm font-semibold'>
             {successMessage}
           </p>
-        </Panel>
-      ) : null}
-
-      {/* Header for Admin Variant */}
-      {variant !== 'public' ? (
-        <Panel color={PANEL_COLORS.header} className='mb-8'>
-          <div className='flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-            <div>
-              <h2
-                className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}
-              >
-                {clubName && name
-                  ? `${clubName} ${name}`
-                  : t('teams.form.teamRegistration')}
-              </h2>
-              <p className='text-foreground mt-2'>
-                {division
-                  ? getDivisionLabel(division as Division, i18n.language)
-                  : t('teams.form.fillOutForm')}
-              </p>
-            </div>
-            {/* Delete Button for Admin Edit Mode */}
-            {showDeleteButton && onDelete ? (
-              <div className='flex justify-end lg:justify-start rtl:justify-start lg:rtl:justify-end'>
-                <ActionButton
-                  onClick={onDelete}
-                  icon='delete'
-                  variant='secondary'
-                  color='brand'
-                >
-                  {t('common.actions.delete')}
-                </ActionButton>
-              </div>
-            ) : null}
-          </div>
         </Panel>
       ) : null}
 
@@ -660,19 +635,15 @@ export function TeamForm({
 
         {/* Submit and Action Buttons */}
         <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          {onCancel ? (
-            <ActionButton
-              type='button'
-              onClick={onCancel}
-              variant='secondary'
-              color='brand'
-            >
-              <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-              {t('common.actions.reset')}
-            </ActionButton>
-          ) : (
-            <div />
-          )}
+          <ActionButton
+            type='button'
+            onClick={() => handleReset()}
+            variant='secondary'
+            color='brand'
+          >
+            <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+            {t('common.actions.reset')}
+          </ActionButton>
 
           <div className='flex gap-4'>
             {isPublicSuccess ? (

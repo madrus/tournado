@@ -68,12 +68,7 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
 
 export default function NewTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
-
-  // Reset the form on every mount to ensure a clean slate
-  useEffect(() => {
-    const { resetForm } = useTeamFormStore.getState()
-    resetForm()
-  }, [])
+  const { resetForm } = useTeamFormStore()
 
   // Prepare success message with translated division label
   const successMessage =
@@ -81,10 +76,10 @@ export default function NewTeamPage(): JSX.Element {
       ? `Team "${actionData.team.name}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
       : undefined
 
-  const handleReset = () => {
-    const { resetForm } = useTeamFormStore.getState()
+  // Reset the form on every mount to ensure a clean slate
+  useEffect(() => {
     resetForm()
-  }
+  }, [resetForm])
 
   return (
     <TeamForm
@@ -93,7 +88,6 @@ export default function NewTeamPage(): JSX.Element {
       errors={actionData?.errors || {}}
       isSuccess={actionData?.success || false}
       successMessage={successMessage}
-      onCancel={handleReset}
     />
   )
 }

@@ -33,7 +33,7 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Different behavior based on trigger phrase
           custom_instructions: |
-            If the user says "@claude review", provide a structured code review focusing on:
+            If the user says "@review", provide a structured code review focusing on:
             - Code quality and best practices
             - Potential bugs or issues  
             - Performance considerations

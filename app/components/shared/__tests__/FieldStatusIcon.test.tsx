@@ -60,36 +60,8 @@ describe('FieldStatusIcon', () => {
     )
   })
 
-  it('should use checkbox positioning when fieldType is checkbox', () => {
-    render(<FieldStatusIcon status='success' fieldType='checkbox' />)
-
-    const iconContainer = screen.getByTestId('field-status-success')
-    expect(iconContainer).toHaveClass(
-      'absolute',
-      'top-0',
-      'right-1',
-      'md:top-1',
-      'md:right-2',
-      'checkmark-emerald'
-    )
-  })
-
-  it('should use checkbox positioning for error icons when fieldType is checkbox', () => {
-    render(<FieldStatusIcon status='error' fieldType='checkbox' />)
-
-    const iconContainer = screen.getByTestId('field-status-error')
-    expect(iconContainer).toHaveClass(
-      'absolute',
-      'top-0',
-      'right-1',
-      'md:top-1',
-      'md:right-2',
-      'field-error-icon'
-    )
-  })
-
-  it('should use input positioning when fieldType is explicitly input', () => {
-    render(<FieldStatusIcon status='success' fieldType='input' />)
+  it('should use correct input positioning for the checkmark field', () => {
+    render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
@@ -100,8 +72,8 @@ describe('FieldStatusIcon', () => {
     )
   })
 
-  it('should have proper positioning classes for input fields', () => {
-    render(<FieldStatusIcon status='success' fieldType='input' />)
+  it('should have proper positioning classes for other input fields', () => {
+    render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(
@@ -118,7 +90,7 @@ describe('FieldStatusIcon', () => {
   })
 
   it('should have proper positioning classes for checkbox fields', () => {
-    render(<FieldStatusIcon status='success' fieldType='checkbox' />)
+    render(<FieldStatusIcon status='success' />)
 
     const iconContainer = screen.getByTestId('field-status-success')
     expect(iconContainer).toHaveClass(

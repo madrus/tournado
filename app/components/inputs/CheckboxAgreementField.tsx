@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon } from '~/components/icons'
@@ -27,6 +27,7 @@ export type CheckboxAgreementFieldProps = {
   inputClassName?: string
   language?: string // add language prop
   color?: ColorAccent // add color prop
+  statusIcon?: ReactNode // add status icon prop
 }
 
 export const CheckboxAgreementField = forwardRef<
@@ -49,14 +50,23 @@ export const CheckboxAgreementField = forwardRef<
       inputClassName = '',
       language = 'en', // default to 'en'
       color = 'slate',
+      statusIcon,
     },
     ref
   ) => (
     <div className={className}>
       {description ? (
-        <p className={cn('mb-2', getLatinTextClass(language))}>{description}</p>
+        <div className='mb-2 flex items-end justify-between gap-2'>
+          <label
+            htmlFor={name}
+            className={cn('text-foreground font-medium', getLatinTextClass(language))}
+          >
+            {description}
+          </label>
+          <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+        </div>
       ) : null}
-      <label
+      <div
         className={cn(
           checkboxAgreementFieldVariants({ color, error: !!error, disabled }),
           labelClassName
@@ -67,6 +77,7 @@ export const CheckboxAgreementField = forwardRef<
             ref={ref}
             type='checkbox'
             name={name}
+            id={name}
             checked={checked}
             onChange={event => onChange(event.target.checked)}
             onBlur={onBlur}
@@ -96,7 +107,7 @@ export const CheckboxAgreementField = forwardRef<
         >
           {label}
         </span>
-      </label>
+      </div>
       {error ? <ErrorMessage panelColor={color}>{error}</ErrorMessage> : null}
     </div>
   )

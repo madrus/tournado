@@ -4,7 +4,7 @@ import * as Select from '@radix-ui/react-select'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { type ColorAccent } from '~/lib/lib.types'
-import { INPUT_LABEL_SPACING } from '~/styles/constants'
+import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
@@ -16,6 +16,15 @@ import {
   textInputLabelTextVariants,
   textInputLabelVariants,
 } from './inputs.variants'
+
+/**
+ * ComboField with inline status icon support
+ *
+ * The statusIcon prop renders validation status (success/error/neutral) inline
+ * with the field label, providing better accessibility and preventing layout
+ * shifts when labels wrap to multiple lines. The status icon is positioned
+ * in a fixed-width container to maintain consistent alignment.
+ */
 
 export type Option = {
   value: string
@@ -34,7 +43,7 @@ type ComboFieldProps = {
   required?: boolean
   className?: string
   color?: ColorAccent
-  statusIcon?: ReactNode
+  statusIcon?: ReactNode // Status icon (success/error) rendered inline with label
   onBlur?: () => void
 }
 
@@ -87,7 +96,8 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
             className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
           >
             <span className={textInputLabelTextVariants()}>{label}</span>
-            <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+            {/* Status icon container with fixed width to prevent layout shifts */}
+            <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
           </div>
           <div className='relative'>
             <Select.Root

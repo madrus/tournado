@@ -7,6 +7,10 @@ import { useTeamFormStore } from '../useTeamFormStore'
 // Helper to access store state
 const state = useTeamFormStore.getState
 
+// Mock the clearStorage method
+const mockClearStorage = vi.fn()
+useTeamFormStore.persist.clearStorage = mockClearStorage
+
 // Mock data
 const mockTournaments: TournamentData[] = [
   {
@@ -36,6 +40,7 @@ describe('useTeamFormStore', () => {
 
     // Clear mocks
     vi.clearAllMocks()
+    mockClearStorage.mockClear()
   })
 
   describe('Initial State', () => {
@@ -548,6 +553,41 @@ describe('useTeamFormStore', () => {
       // Previously valid touched fields should remain valid
       expect(state().validation.displayErrors.clubName).toBeUndefined()
       expect(state().validation.displayErrors.teamName).toBeUndefined()
+    })
+  })
+
+  describe('Session Storage Management', () => {
+    it('should clear session storage when clearSessionStorage is called', () => {
+      state().clearSessionStorage()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call clearSessionStorage when resetStoreState is called', () => {
+      state().resetStoreState()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call clearSessionStorage when resetForm is called', () => {
+      state().resetForm()
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
+    })
+
+    it('should reset store state and clear session storage', () => {
+      // Set some form data
+      state().setFormField('clubName', 'Test Club')
+      state().setFormField('tournamentId', 'tournament1')
+      state().setValidationField('displayErrors', { clubName: 'Test error' })
+
+      // Reset store state
+      state().resetStoreState()
+
+      // Check that form fields are reset
+      expect(state().formFields.clubName).toBe('')
+      expect(state().formFields.tournamentId).toBe('')
+      expect(state().validation.displayErrors).toEqual({})
+
+      // Check that clearSessionStorage was called
+      expect(mockClearStorage).toHaveBeenCalledTimes(1)
     })
   })
 })

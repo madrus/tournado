@@ -1,4 +1,4 @@
-import { forwardRef, type JSX, useRef } from 'react'
+import { forwardRef, type JSX, type ReactNode, useRef } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
@@ -33,6 +33,7 @@ type ComboFieldProps = {
   required?: boolean
   className?: string
   color?: ColorAccent
+  statusIcon?: ReactNode
   onBlur?: () => void
 }
 
@@ -50,6 +51,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
       required = false,
       className = '',
       color = 'emerald',
+      statusIcon,
       onBlur,
     },
     selectRef
@@ -80,7 +82,10 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
         <label className={textInputLabelVariants()}>
-          <span className={textInputLabelTextVariants()}>{label}</span>
+          <div className='mb-1 flex items-center justify-between gap-2'>
+            <span className={textInputLabelTextVariants()}>{label}</span>
+            <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+          </div>
           <div className='relative'>
             <Select.Root
               value={safeValue}

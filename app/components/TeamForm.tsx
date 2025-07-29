@@ -258,36 +258,36 @@ export function TeamForm({
 
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {/* Tournament Selection */}
-            <div className='relative'>
-              <ComboField
-                name='tournamentId'
-                label={t('teams.form.tournament')}
-                value={tournamentId}
-                onChange={value => {
-                  setFormField('tournamentId', value)
-                  // Only clear dependent fields in create mode
-                  // In edit mode, preserve existing values
-                  if (formMode === 'create') {
-                    setFormField('division', '')
-                    setFormField('category', '')
-                  }
-                }}
-                options={availableTournaments.map(tournament => ({
-                  value: tournament.id,
-                  label: `${tournament.name} - ${tournament.location}`,
-                }))}
-                placeholder={t('teams.form.selectTournament')}
-                error={getTranslatedError('tournamentId', isPublicSuccess)}
-                required
-                disabled={isPublicSuccess}
-                className={getLatinTextClass(i18n.language)}
-                color={PANEL_COLORS.step1}
-                onBlur={() => validateFieldOnBlur('tournamentId')}
-              />
-              <FieldStatusIcon
-                status={getFieldStatus('tournamentId', tournamentId, isPublicSuccess)}
-              />
-            </div>
+            <ComboField
+              name='tournamentId'
+              label={t('teams.form.tournament')}
+              value={tournamentId}
+              onChange={value => {
+                setFormField('tournamentId', value)
+                // Only clear dependent fields in create mode
+                // In edit mode, preserve existing values
+                if (formMode === 'create') {
+                  setFormField('division', '')
+                  setFormField('category', '')
+                }
+              }}
+              options={availableTournaments.map(tournament => ({
+                value: tournament.id,
+                label: `${tournament.name} - ${tournament.location}`,
+              }))}
+              placeholder={t('teams.form.selectTournament')}
+              error={getTranslatedError('tournamentId', isPublicSuccess)}
+              required
+              disabled={isPublicSuccess}
+              className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step1}
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus('tournamentId', tournamentId, isPublicSuccess)}
+                />
+              }
+              onBlur={() => validateFieldOnBlur('tournamentId')}
+            />
 
             {/* Division Selection */}
             <div className='relative'>
@@ -392,33 +392,33 @@ export function TeamForm({
 
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             {/* Club Name */}
-            <div className='relative'>
-              <TextInputField
-                name='clubName'
-                label={t('teams.form.clubName')}
-                value={clubName || ''}
-                onChange={value => setFormField('clubName', value)}
-                placeholder={t('teams.form.placeholders.clubName')}
-                error={getTranslatedError(
-                  'clubName',
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
-                )}
-                required
-                disabled={
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
-                }
-                className={getLatinTextClass(i18n.language)}
-                color={PANEL_COLORS.step2}
-                onBlur={() => validateFieldOnBlur('clubName')}
-              />
-              <FieldStatusIcon
-                status={getFieldStatus(
-                  'clubName',
-                  clubName || '',
-                  formMode === 'create' && !isPanelEnabled(2)
-                )}
-              />
-            </div>
+            <TextInputField
+              name='clubName'
+              label={t('teams.form.clubName')}
+              value={clubName || ''}
+              onChange={value => setFormField('clubName', value)}
+              placeholder={t('teams.form.placeholders.clubName')}
+              error={getTranslatedError(
+                'clubName',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              )}
+              required
+              disabled={
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+              }
+              className={getLatinTextClass(i18n.language)}
+              color={PANEL_COLORS.step2}
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    'clubName',
+                    clubName || '',
+                    formMode === 'create' && !isPanelEnabled(2)
+                  )}
+                />
+              }
+              onBlur={() => validateFieldOnBlur('clubName')}
+            />
 
             {/* Team Name */}
             <div className='relative'>
@@ -600,36 +600,33 @@ export function TeamForm({
               </h2>
             </div>
 
-            <div className='relative'>
-              <CheckboxAgreementField
-                name='privacyAgreement'
-                checked={privacyAgreement}
-                label={t('teams.form.agreeToPrivacyPolicy')}
-                description={t('teams.form.readAndAccept')}
-                error={getTranslatedError(
-                  'privacyAgreement',
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                )}
-                required
-                disabled={
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                }
-                onChange={(checked: boolean) =>
-                  setFormField('privacyAgreement', checked)
-                }
-                onBlur={() => validateFieldOnBlur('privacyAgreement')}
-                language={i18n.language}
-                color={PANEL_COLORS.step4}
-              />
-              <FieldStatusIcon
-                status={getFieldStatus(
-                  'privacyAgreement',
-                  privacyAgreement,
-                  isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                )}
-                fieldType='checkbox'
-              />
-            </div>
+            <CheckboxAgreementField
+              name='privacyAgreement'
+              checked={privacyAgreement}
+              label={t('teams.form.agreeToPrivacyPolicy')}
+              description={t('teams.form.readAndAccept')}
+              error={getTranslatedError(
+                'privacyAgreement',
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+              )}
+              required
+              disabled={
+                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+              }
+              onChange={(checked: boolean) => setFormField('privacyAgreement', checked)}
+              onBlur={() => validateFieldOnBlur('privacyAgreement')}
+              language={i18n.language}
+              color={PANEL_COLORS.step4}
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    'privacyAgreement',
+                    privacyAgreement,
+                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+                  )}
+                />
+              }
+            />
           </Panel>
         ) : null}
 

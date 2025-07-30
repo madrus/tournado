@@ -254,6 +254,9 @@
   --color-adaptive-cell-primary: var(--color-slate-900);
   --color-adaptive-cell-secondary: var(--color-slate-600);
   --color-adaptive-cell-muted: var(--color-slate-500);
+
+  /* Panel Background Variables - missing from Tailwind auto-generation */
+  --panel-bg-red: var(--color-red-100);
 }
 
 /* Dark mode variant rules for inputs */

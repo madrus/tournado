@@ -279,3 +279,59 @@ function smartCategorySort(a: string, b: string): number {
   // Same prefix and number: compare suffix
   return suffixA.localeCompare(suffixB)
 }
+
+/**
+ * Determines the validation status for a form field to display appropriate status icons
+ *
+ * This utility function provides consistent validation logic across different form components
+ * for determining when to show success (green checkmark), error (red cross), or neutral (no icon) states.
+ *
+ * @param fieldValue - The current value of the field (string, array, or boolean)
+ * @param hasError - Whether the field currently has a validation error
+ * @param isRequired - Whether the field is required
+ * @param isDisabled - Whether the field is disabled
+ * @returns The status to display: 'success' (green checkmark), 'error' (red cross), or 'neutral' (no icon)
+ *
+ * @example
+ * ```typescript
+ * // Required text field with value and no error
+ * getFieldStatus('John Doe', false, true, false) // returns 'success'
+ *
+ * // Required empty field with error
+ * getFieldStatus('', true, true, false) // returns 'error'
+ *
+ * // Optional empty field
+ * getFieldStatus('', false, false, false) // returns 'neutral'
+ *
+ * // Disabled field
+ * getFieldStatus('', true, true, true) // returns 'neutral'
+ *
+ * // Array field (like toggle chips)
+ * getFieldStatus(['item1', 'item2'], false, true, false) // returns 'success'
+ * ```
+ */
+export function getFieldStatus(
+  fieldValue: string | string[] | boolean,
+  hasError: boolean,
+  isRequired: boolean,
+  isDisabled = false
+): 'success' | 'error' | 'neutral' {
+  if (isDisabled) return 'neutral'
+
+  // Determine if field has a value based on type
+  const hasValue = Array.isArray(fieldValue)
+    ? fieldValue.length > 0
+    : Boolean(fieldValue)
+
+  // For required fields: show error if empty, success if filled
+  if (isRequired) {
+    if (hasValue && !hasError) return 'success'
+    if (hasError) return 'error'
+    return 'neutral'
+  }
+
+  // For optional fields: only show success if filled, never show error for being empty
+  if (hasValue && !hasError) return 'success'
+  if (hasError) return 'error'
+  return 'neutral'
+}

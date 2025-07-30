@@ -421,7 +421,7 @@ export const dateInputFieldVariants = cva(
 // Checkbox agreement field variants
 export const checkboxAgreementFieldVariants = cva(
   [
-    'flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all duration-300',
+    'flex cursor-pointer items-center gap-3 rounded-lg border-2 p-4 transition-all duration-300',
     'bg-input dark:bg-input/40',
   ],
   {
@@ -473,7 +473,7 @@ export const checkboxAgreementFieldVariants = cva(
 
 export const checkboxAgreementInputVariants = cva(
   [
-    'peer h-5 w-5 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
+    'peer h-6 w-6 cursor-pointer appearance-none rounded border-2 transition-all duration-300',
     'bg-input dark:bg-input/40',
     // Android-specific improvements
     '-webkit-appearance-none -moz-appearance-none',

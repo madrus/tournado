@@ -17,6 +17,7 @@ import {
   textInputLabelVariants,
 } from '~/components/inputs/inputs.variants'
 import { type ColorAccent } from '~/lib/lib.types'
+import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 
 type CustomDatePickerProps = {
@@ -33,6 +34,7 @@ type CustomDatePickerProps = {
   max?: string
   color?: ColorAccent
   noPast?: boolean
+  statusIcon?: React.ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onBlur?: () => void
 }
@@ -196,6 +198,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       max,
       color = 'slate',
       noPast = false,
+      statusIcon,
       onChange,
       onBlur,
     },
@@ -250,7 +253,13 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
     return (
       <div className={className}>
         <label className={textInputLabelVariants()}>
-          <span className={textInputLabelTextVariants()}>{label}</span>
+          <div
+            className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+          >
+            <span className={textInputLabelTextVariants()}>{label}</span>
+            {/* Status icon container with fixed width to prevent layout shifts */}
+            <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
+          </div>
 
           <div className='relative'>
             <Popover.Root open={isOpen} onOpenChange={setIsOpen}>

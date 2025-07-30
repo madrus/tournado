@@ -1,5 +1,6 @@
 export { AddIcon } from './AddIcon'
 export { AnimatedHamburgerIcon } from './AnimatedHamburgerIcon'
+export { AnimatedUnfoldIcon } from './AnimatedUnfoldIcon'
 export { AdminPanelSettingsIcon } from './AdminPanelSettingsIcon'
 export { ApparelIcon } from './ApparelIcon'
 export { BlockIcon } from './BlockIcon'
@@ -27,6 +28,8 @@ export { RestorePageIcon } from './RestorePageIcon'
 export { SettingsIcon } from './SettingsIcon'
 export { TrophyIcon } from './TrophyIcon'
 export { TuneIcon } from './TuneIcon'
+export { UnfoldLessIcon } from './UnfoldLessIcon'
+export { UnfoldMoreIcon } from './UnfoldMoreIcon'
 export { WarningIcon } from './WarningIcon'
 
 // Re-export types for convenience

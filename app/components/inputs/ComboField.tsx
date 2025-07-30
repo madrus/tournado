@@ -1,8 +1,9 @@
-import { forwardRef, type JSX, type ReactNode, useRef } from 'react'
+import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
+import { AnimatedUnfoldIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
@@ -68,6 +69,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
   ): JSX.Element => {
     const triggerRef = useRef<HTMLButtonElement>(null)
     const justSelectedRef = useRef(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     // Ensure value is always a string
     const safeValue = value || ''
@@ -110,6 +112,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   justSelectedRef.current = false
                 }, 10)
               }}
+              onOpenChange={setIsOpen}
               disabled={disabled}
             >
               <Select.Trigger
@@ -142,10 +145,11 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
                 </div>
                 <Select.Icon className='text-foreground ml-1'>
-                  {renderIcon('expand_more', {
-                    className: 'h-6 w-6',
-                    'data-testid': 'icon-expand_more',
-                  })}
+                  <AnimatedUnfoldIcon
+                    isOpen={isOpen}
+                    className='h-6 w-6'
+                    aria-label={isOpen ? 'Collapse options' : 'Expand options'}
+                  />
                 </Select.Icon>
               </Select.Trigger>
 

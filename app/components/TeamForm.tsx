@@ -617,15 +617,6 @@ export function TeamForm({
               onBlur={() => validateFieldOnBlur('privacyAgreement')}
               language={i18n.language}
               color={PANEL_COLORS.step4}
-              statusIcon={
-                <FieldStatusIcon
-                  status={getFieldStatus(
-                    'privacyAgreement',
-                    privacyAgreement,
-                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-                  )}
-                />
-              }
             />
           </Panel>
         ) : null}

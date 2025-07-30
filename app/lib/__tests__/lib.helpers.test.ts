@@ -6,6 +6,7 @@ import {
   getDivisionLabel,
   getDivisionLabelByValue,
   getDivisionValues,
+  getFieldStatus,
   isValidCategory,
   isValidDivision,
   sortTeams,
@@ -744,6 +745,158 @@ describe('lib.helpers', () => {
         // Should still sort without throwing errors
         expect(result).toHaveLength(3)
         expect(result[0].clubName).toBe('') // Empty string should come first alphabetically
+      })
+    })
+  })
+
+  describe('getFieldStatus', () => {
+    describe('when field is disabled', () => {
+      it('should return neutral regardless of other conditions', () => {
+        expect(getFieldStatus('', true, true, true)).toBe('neutral')
+        expect(getFieldStatus('value', true, true, true)).toBe('neutral')
+        expect(getFieldStatus('', false, false, true)).toBe('neutral')
+        expect(getFieldStatus(['item'], false, true, true)).toBe('neutral')
+        expect(getFieldStatus(true, true, true, true)).toBe('neutral')
+      })
+    })
+
+    describe('when field is required', () => {
+      it('should return success when has value and no error', () => {
+        expect(getFieldStatus('John Doe', false, true, false)).toBe('success')
+        expect(getFieldStatus(['item1'], false, true, false)).toBe('success')
+        expect(getFieldStatus(true, false, true, false)).toBe('success')
+      })
+
+      it('should return error when has error', () => {
+        expect(getFieldStatus('', true, true, false)).toBe('error')
+        expect(getFieldStatus('value', true, true, false)).toBe('error')
+        expect(getFieldStatus([], true, true, false)).toBe('error')
+        expect(getFieldStatus(false, true, true, false)).toBe('error')
+      })
+
+      it('should return neutral when no value and no error', () => {
+        expect(getFieldStatus('', false, true, false)).toBe('neutral')
+        expect(getFieldStatus([], false, true, false)).toBe('neutral')
+        expect(getFieldStatus(false, false, true, false)).toBe('neutral')
+      })
+    })
+
+    describe('when field is optional', () => {
+      it('should return success when has value and no error', () => {
+        expect(getFieldStatus('Some description', false, false, false)).toBe('success')
+        expect(getFieldStatus(['item1', 'item2'], false, false, false)).toBe('success')
+        expect(getFieldStatus(true, false, false, false)).toBe('success')
+      })
+
+      it('should return neutral when no value (never error for optional)', () => {
+        expect(getFieldStatus('', false, false, false)).toBe('neutral')
+        expect(getFieldStatus([], false, false, false)).toBe('neutral')
+        expect(getFieldStatus(false, false, false, false)).toBe('neutral')
+      })
+
+      it('should return error when has error (even for optional fields)', () => {
+        expect(getFieldStatus('', true, false, false)).toBe('error')
+        expect(getFieldStatus('invalid value', true, false, false)).toBe('error')
+        expect(getFieldStatus(['invalid'], true, false, false)).toBe('error')
+      })
+    })
+
+    describe('value type handling', () => {
+      it('should handle string values correctly', () => {
+        expect(getFieldStatus('', false, false, false)).toBe('neutral')
+        expect(getFieldStatus('value', false, false, false)).toBe('success')
+        expect(getFieldStatus('   ', false, false, false)).toBe('success') // whitespace counts as value
+        expect(getFieldStatus('0', false, false, false)).toBe('success') // zero string counts as value
+      })
+
+      it('should handle array values correctly', () => {
+        expect(getFieldStatus([], false, false, false)).toBe('neutral')
+        expect(getFieldStatus([''], false, false, false)).toBe('success') // array with empty string counts as having value
+        expect(getFieldStatus(['item1'], false, false, false)).toBe('success')
+        expect(getFieldStatus(['item1', 'item2'], false, false, false)).toBe('success')
+      })
+
+      it('should handle boolean values correctly', () => {
+        expect(getFieldStatus(false, false, false, false)).toBe('neutral')
+        expect(getFieldStatus(true, false, false, false)).toBe('success')
+      })
+    })
+
+    describe('real-world scenarios', () => {
+      it('should handle tournament name field correctly', () => {
+        // Empty name, required, has error
+        expect(getFieldStatus('', true, true, false)).toBe('error')
+
+        // Valid name, required, no error
+        expect(getFieldStatus('Spring Tournament', false, true, false)).toBe('success')
+
+        // Disabled during form creation
+        expect(getFieldStatus('Tournament Name', true, true, true)).toBe('neutral')
+      })
+
+      it('should handle start date field correctly', () => {
+        // Empty date, required, has error
+        expect(getFieldStatus('', true, true, false)).toBe('error')
+
+        // Valid date, required, no error
+        expect(getFieldStatus('2024-01-01', false, true, false)).toBe('success')
+      })
+
+      it('should handle end date field correctly (optional)', () => {
+        // Empty end date, optional, no error
+        expect(getFieldStatus('', false, false, false)).toBe('neutral')
+
+        // Valid end date, optional, no error
+        expect(getFieldStatus('2024-12-31', false, false, false)).toBe('success')
+      })
+
+      it('should handle toggle chip arrays correctly', () => {
+        // No divisions selected, required, has error
+        expect(getFieldStatus([], true, true, false)).toBe('error')
+
+        // Divisions selected, required, no error
+        expect(
+          getFieldStatus(['PREMIER_DIVISION', 'FIRST_DIVISION'], false, true, false)
+        ).toBe('success')
+
+        // Optional chip group with no selection
+        expect(getFieldStatus([], false, false, false)).toBe('neutral')
+      })
+
+      it('should handle checkbox agreement correctly', () => {
+        // Unchecked, required, has error
+        expect(getFieldStatus(false, true, true, false)).toBe('error')
+
+        // Checked, required, no error
+        expect(getFieldStatus(true, false, true, false)).toBe('success')
+
+        // Optional checkbox unchecked
+        expect(getFieldStatus(false, false, false, false)).toBe('neutral')
+
+        // Optional checkbox checked
+        expect(getFieldStatus(true, false, false, false)).toBe('success')
+      })
+    })
+
+    describe('edge cases', () => {
+      it('should handle undefined as disabled parameter', () => {
+        // When isDisabled parameter is omitted, should default to false
+        expect(getFieldStatus('value', false, true)).toBe('success')
+        expect(getFieldStatus('', false, true)).toBe('neutral')
+      })
+
+      it('should prioritize disabled state over all other conditions', () => {
+        // Even with error and required, disabled should return neutral
+        expect(getFieldStatus('', true, true, true)).toBe('neutral')
+        expect(getFieldStatus('value', true, true, true)).toBe('neutral')
+      })
+
+      it('should handle complex validation states', () => {
+        // Required field with value but validation error (e.g., format error)
+        expect(getFieldStatus('invalid-email', true, true, false)).toBe('error')
+
+        // Optional field with value but validation error
+        expect(getFieldStatus('invalid-phone', true, false, false)).toBe('error')
       })
     })
   })

@@ -178,4 +178,92 @@ describe('CheckboxAgreementField', () => {
     const checkedCheckbox = screen.getByRole('checkbox')
     expect(checkedCheckbox).toBeChecked()
   })
+
+  // New tests for internal validation logic
+  describe('Internal validation status', () => {
+    it('should show success status when checked and required', () => {
+      render(
+        <CheckboxAgreementField
+          {...defaultProps}
+          checked={true}
+          required={true}
+          description='Accept terms'
+        />
+      )
+
+      const statusIcon = screen.getByTestId('field-status-success')
+      expect(statusIcon).toBeInTheDocument()
+    })
+
+    it('should show error status when unchecked, required, and has error', () => {
+      render(
+        <CheckboxAgreementField
+          {...defaultProps}
+          checked={false}
+          required={true}
+          error='This field is required'
+          description='Accept terms'
+        />
+      )
+
+      const statusIcon = screen.getByTestId('field-status-error')
+      expect(statusIcon).toBeInTheDocument()
+    })
+
+    it('should show neutral status when disabled regardless of other props', () => {
+      render(
+        <CheckboxAgreementField
+          {...defaultProps}
+          disabled={true}
+          required={true}
+          error='Some error'
+          description='Accept terms'
+        />
+      )
+
+      // Check that no status icon is rendered for neutral state
+      expect(screen.queryByTestId('field-status-success')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('field-status-error')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('field-status-neutral')).not.toBeInTheDocument()
+    })
+
+    it('should show neutral status for optional field when unchecked', () => {
+      render(
+        <CheckboxAgreementField
+          {...defaultProps}
+          checked={false}
+          required={false}
+          description='Accept terms'
+        />
+      )
+
+      // Check that no status icon is rendered for neutral state
+      expect(screen.queryByTestId('field-status-success')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('field-status-error')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('field-status-neutral')).not.toBeInTheDocument()
+    })
+
+    it('should show success status for optional field when checked', () => {
+      render(
+        <CheckboxAgreementField
+          {...defaultProps}
+          checked={true}
+          required={false}
+          description='Accept terms'
+        />
+      )
+
+      const statusIcon = screen.getByTestId('field-status-success')
+      expect(statusIcon).toBeInTheDocument()
+    })
+
+    it('should render status icon even when no description is provided', () => {
+      render(
+        <CheckboxAgreementField {...defaultProps} checked={true} required={true} />
+      )
+
+      // Should still show success status icon even without description
+      expect(screen.getByTestId('field-status-success')).toBeInTheDocument()
+    })
+  })
 })

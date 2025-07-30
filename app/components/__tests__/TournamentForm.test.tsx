@@ -120,6 +120,7 @@ vi.mock('~/lib/lib.helpers', () => ({
     }
     return labels[category]?.[language] || category
   },
+  getFieldStatus: vi.fn().mockReturnValue('success'),
 }))
 
 // Mock cn utility
@@ -412,10 +413,10 @@ describe('TournamentForm Component', () => {
     it('should render all form fields correctly', () => {
       renderTournamentForm()
 
-      expect(screen.getByLabelText('Tournament Name')).toBeInTheDocument()
-      expect(screen.getByLabelText('Location')).toBeInTheDocument()
-      expect(screen.getByLabelText('Start Date *')).toBeInTheDocument()
-      expect(screen.getByLabelText('End Date')).toBeInTheDocument()
+      expect(screen.getByText('Tournament Name')).toBeInTheDocument()
+      expect(screen.getByText('Location')).toBeInTheDocument()
+      expect(screen.getByText('Start Date *')).toBeInTheDocument()
+      expect(screen.getByText('End Date')).toBeInTheDocument()
     })
 
     it('should render step numbers correctly', () => {
@@ -435,7 +436,12 @@ describe('TournamentForm Component', () => {
       })
 
       expect(screen.getByText('Tournament created successfully!')).toBeInTheDocument()
-      expect(screen.getByTestId('check-icon')).toBeInTheDocument()
+      // Check for the specific check icon in the success panel (size 24)
+      const successPanel = screen.getByTestId('tournament-form-success')
+      expect(successPanel).toBeInTheDocument()
+      // The success panel should contain a check icon with size 24
+      const checkIcon = within(successPanel).getByTestId('check-icon')
+      expect(checkIcon).toBeInTheDocument()
     })
 
     it('should not show success message for admin variant', () => {
@@ -578,8 +584,8 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Get the form fields
-      const nameInput = screen.getByLabelText('Tournament Name')
-      const locationInput = screen.getByLabelText('Location')
+      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
+      const locationInput = screen.getByRole('textbox', { name: /location/i })
 
       // Focus and then blur fields to trigger validation - using user.tab() like TeamForm
       await user.click(nameInput)
@@ -604,7 +610,7 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      const nameInput = screen.getByLabelText('Tournament Name')
+      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
 
       // Trigger validation error by blurring empty field
       await user.click(nameInput)
@@ -722,8 +728,8 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Basic information grid should be responsive - verify form layout
-      const nameInput = screen.getByLabelText('Tournament Name')
-      const locationInput = screen.getByLabelText('Location')
+      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
+      const locationInput = screen.getByRole('textbox', { name: /location/i })
       expect(nameInput).toBeInTheDocument()
       expect(locationInput).toBeInTheDocument()
     })
@@ -733,10 +739,12 @@ describe('TournamentForm Component', () => {
     it('should have proper form labels', () => {
       renderTournamentForm()
 
-      expect(screen.getByLabelText('Tournament Name')).toBeInTheDocument()
-      expect(screen.getByLabelText('Location')).toBeInTheDocument()
-      expect(screen.getByLabelText('Start Date *')).toBeInTheDocument()
-      expect(screen.getByLabelText('End Date')).toBeInTheDocument()
+      expect(
+        screen.getByRole('textbox', { name: /tournament name/i })
+      ).toBeInTheDocument()
+      expect(screen.getByRole('textbox', { name: /location/i })).toBeInTheDocument()
+      expect(screen.getByText('Start Date *')).toBeInTheDocument()
+      expect(screen.getByText('End Date')).toBeInTheDocument()
     })
 
     it('should have proper heading structure', () => {

@@ -1,9 +1,10 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon } from '~/components/icons'
+import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
+import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import { type ColorAccent } from '~/lib/lib.types'
-import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
@@ -38,9 +39,8 @@ export type CheckboxAgreementFieldProps = {
   className?: string
   labelClassName?: string
   inputClassName?: string
-  language?: string // add language prop
-  color?: ColorAccent // add color prop
-  statusIcon?: ReactNode // Status icon (success/error) rendered inline with description
+  language?: string
+  color?: ColorAccent
 }
 
 export const CheckboxAgreementField = forwardRef<
@@ -61,70 +61,92 @@ export const CheckboxAgreementField = forwardRef<
       className = '',
       labelClassName = '',
       inputClassName = '',
-      language = 'en', // default to 'en'
+      language = 'en',
       color = 'slate',
-      statusIcon,
     },
     ref
-  ) => (
-    <div className={className}>
-      {description ? (
-        <div className={`${INPUT_LABEL_SPACING} flex items-end justify-between gap-2`}>
-          <div
-            className={cn('text-foreground font-medium', getLatinTextClass(language))}
-          >
-            {description}
-          </div>
-          {/* Status icon container with fixed width to prevent layout shifts */}
-          <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
-        </div>
-      ) : null}
-      <div
-        className={cn(
-          checkboxAgreementFieldVariants({ color, error: !!error, disabled }),
-          labelClassName
-        )}
-      >
-        <div className='relative flex-shrink-0'>
-          <input
-            ref={ref}
-            type='checkbox'
-            name={name}
-            id={name}
-            checked={checked}
-            onChange={event => onChange(event.target.checked)}
-            onBlur={onBlur}
-            className={cn(
-              checkboxAgreementInputVariants({ color, error: !!error, disabled }),
-              inputClassName
-            )}
-            required={required}
-            disabled={disabled}
+  ) => {
+    // Helper function to determine field status for status icons
+    const getFieldStatus = (): 'success' | 'error' | 'neutral' => {
+      if (disabled) return 'neutral'
+      const hasValue = checked
+      const hasError = Boolean(error)
+
+      // For required fields: show error if empty, success if filled
+      if (required) {
+        if (hasValue && !hasError) return 'success'
+        if (hasError) return 'error'
+        return 'neutral'
+      }
+
+      // For optional fields: only show success if filled, never show error for being empty
+      if (hasValue && !hasError) return 'success'
+      return 'neutral'
+    }
+
+    const statusIcon = <FieldStatusIcon status={getFieldStatus()} />
+
+    return (
+      <div className={className}>
+        {description ? (
+          <LabelWithStatusIcon
+            label={description}
+            statusIcon={statusIcon}
+            language={language}
           />
-          {checked ? (
-            <CheckIcon
-              className={checkboxAgreementCheckmarkVariants({
-                color,
-                error: !!error,
-                disabled,
-              })}
-              size={16}
-            />
-          ) : null}
-        </div>
-        <label
-          htmlFor={name}
+        ) : statusIcon ? (
+          // Only render container if there's actually an icon to show
+          <div className='mb-2 flex justify-end'>
+            <div className='w-6 flex-shrink-0'>{statusIcon}</div>
+          </div>
+        ) : null}
+        <div
           className={cn(
-            'text-foreground cursor-pointer text-lg leading-6 font-normal',
-            getLatinTextClass(language)
+            checkboxAgreementFieldVariants({ color, error: !!error, disabled }),
+            labelClassName
           )}
         >
-          {label}
-        </label>
+          <div className='relative flex flex-shrink-0 items-center justify-center'>
+            <input
+              ref={ref}
+              type='checkbox'
+              name={name}
+              id={name}
+              checked={checked}
+              onChange={event => onChange(event.target.checked)}
+              onBlur={onBlur}
+              className={cn(
+                checkboxAgreementInputVariants({ color, error: !!error, disabled }),
+                inputClassName
+              )}
+              required={required}
+              disabled={disabled}
+            />
+            {checked ? (
+              <CheckIcon
+                className={checkboxAgreementCheckmarkVariants({
+                  color,
+                  error: !!error,
+                  disabled,
+                })}
+                size={18}
+              />
+            ) : null}
+          </div>
+          <label
+            htmlFor={name}
+            className={cn(
+              'text-foreground cursor-pointer text-lg leading-6 font-normal',
+              getLatinTextClass(language)
+            )}
+          >
+            {label}
+          </label>
+        </div>
+        {error ? <ErrorMessage panelColor={color}>{error}</ErrorMessage> : null}
       </div>
-      {error ? <ErrorMessage panelColor={color}>{error}</ErrorMessage> : null}
-    </div>
-  )
+    )
+  }
 )
 
 CheckboxAgreementField.displayName = 'CheckboxAgreementField'

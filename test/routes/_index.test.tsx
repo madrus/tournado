@@ -64,9 +64,11 @@ describe('Home Page (_index)', () => {
     })
 
     test('should route to public teams page for authenticated non-admin users', () => {
-      const nonAdminRoles: Array<
-        'PUBLIC' | 'TOURNAMENT_MANAGER' | 'REFEREE_COORDINATOR' | 'REFEREE'
-      > = ['PUBLIC', 'TOURNAMENT_MANAGER', 'REFEREE_COORDINATOR', 'REFEREE']
+      const nonAdminRoles: Array<'PUBLIC' | 'MANAGER' | 'REFEREE'> = [
+        'PUBLIC',
+        'MANAGER',
+        'REFEREE',
+      ]
 
       nonAdminRoles.forEach(role => {
         mockUser = {
@@ -138,26 +140,13 @@ describe('Home Page (_index)', () => {
           expectedHref: '/teams',
         },
         {
-          scenario: 'TOURNAMENT_MANAGER role user',
+          scenario: 'MANAGER role user',
           user: {
             id: 'user-2',
             email: 'manager@example.com',
             firstName: 'Tournament',
             lastName: 'Manager',
-            role: 'TOURNAMENT_MANAGER',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-          expectedHref: '/teams',
-        },
-        {
-          scenario: 'REFEREE_COORDINATOR role user',
-          user: {
-            id: 'user-3',
-            email: 'coordinator@example.com',
-            firstName: 'Referee',
-            lastName: 'Coordinator',
-            role: 'REFEREE_COORDINATOR',
+            role: 'MANAGER',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -266,17 +255,11 @@ describe('Home Page (_index)', () => {
     test('should use same routing logic as AppBar Teams menu item', () => {
       // This test ensures our routing logic matches the AppBar component
       const roles: Array<{
-        role:
-          | 'PUBLIC'
-          | 'TOURNAMENT_MANAGER'
-          | 'REFEREE_COORDINATOR'
-          | 'REFEREE'
-          | 'ADMIN'
+        role: 'PUBLIC' | 'MANAGER' | 'REFEREE' | 'ADMIN'
         expectedRoute: string
       }> = [
         { role: 'PUBLIC', expectedRoute: '/teams' },
-        { role: 'TOURNAMENT_MANAGER', expectedRoute: '/teams' },
-        { role: 'REFEREE_COORDINATOR', expectedRoute: '/teams' },
+        { role: 'MANAGER', expectedRoute: '/teams' },
         { role: 'REFEREE', expectedRoute: '/teams' },
         { role: 'ADMIN', expectedRoute: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
       ]

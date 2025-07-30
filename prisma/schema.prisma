@@ -9,8 +9,7 @@ datasource db {
 
 enum Role {
   ADMIN
-  TOURNAMENT_MANAGER
-  REFEREE_COORDINATOR
+  MANAGER
   REFEREE
   PUBLIC
 }

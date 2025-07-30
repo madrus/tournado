@@ -49,7 +49,7 @@ export async function isPublicRoute(pathname: string): Promise<boolean> {
 function mapRouteRoleToPrismaRole(role: string): string {
   const roleMapping: Record<string, string> = {
     admin: 'ADMIN',
-    tournamentOrganiser: 'TOURNAMENT_MANAGER',
+    tournamentOrganiser: 'MANAGER',
     referee: 'REFEREE',
     participant: 'PUBLIC',
   }

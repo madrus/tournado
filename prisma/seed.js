@@ -79,7 +79,7 @@ async function seed() {
       )
     )
 
-    // Create TOURNAMENT_MANAGER users
+    // Create MANAGER users
     await Promise.all(
       users.map(async email =>
         prisma.user.create({
@@ -89,7 +89,7 @@ async function seed() {
               email.split('@')[0].charAt(0).toUpperCase() +
               email.split('@')[0].slice(1),
             lastName: 'User',
-            role: 'TOURNAMENT_MANAGER',
+            role: 'MANAGER',
             password: { create: { hash: hashedInitialPassword } },
           },
         })

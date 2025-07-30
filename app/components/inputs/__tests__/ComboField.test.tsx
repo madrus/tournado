@@ -11,6 +11,33 @@ vi.mock('~/utils/iconUtils', () => ({
   renderIcon: vi.fn((name, props) => <span data-testid={`icon-${name}`} {...props} />),
 }))
 
+// Mock the AnimatedUnfoldIcon while preserving other exports
+vi.mock('~/components/icons', async importOriginal => {
+  const actual = (await importOriginal()) as Record<string, unknown>
+  return {
+    ...actual,
+    AnimatedUnfoldIcon: ({
+      isOpen,
+      className,
+      'aria-label': ariaLabel,
+    }: {
+      isOpen: boolean
+      className?: string
+      'aria-label'?: string
+    }) => (
+      <div
+        data-testid={
+          isOpen ? 'animated-unfold-icon-open' : 'animated-unfold-icon-closed'
+        }
+        className={className}
+        aria-label={ariaLabel}
+      >
+        {isOpen ? 'unfold_less' : 'unfold_more'}
+      </div>
+    ),
+  }
+})
+
 describe('ComboField', () => {
   const mockOptions: Option[] = [
     { value: 'option1', label: 'Option 1' },
@@ -161,11 +188,30 @@ describe('ComboField', () => {
     expect(mockOnChange).toHaveBeenCalled()
   })
 
-  it('should display chevron icon', () => {
+  it('should display animated unfold icon in closed state', () => {
     render(<ComboField {...defaultProps} />)
 
-    // The icon testid is 'icon-expand_more', not 'icon-ChevronRightIcon'
-    expect(screen.getByTestId('icon-expand_more')).toBeInTheDocument()
+    // Should show the closed state icon
+    expect(screen.getByTestId('animated-unfold-icon-closed')).toBeInTheDocument()
+    expect(screen.getByText('unfold_more')).toBeInTheDocument()
+  })
+
+  it('should animate icon when dropdown opens', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    // Initially closed
+    expect(screen.getByTestId('animated-unfold-icon-closed')).toBeInTheDocument()
+
+    // Open the dropdown
+    const trigger = screen.getByRole('combobox')
+    await user.click(trigger)
+
+    // Wait for the icon to change to open state
+    await waitFor(() => {
+      expect(screen.getByTestId('animated-unfold-icon-open')).toBeInTheDocument()
+      expect(screen.getByText('unfold_less')).toBeInTheDocument()
+    })
   })
 
   it('should handle large number of options', async () => {

@@ -169,6 +169,8 @@ vi.mock('../icons', () => {
     SettingsIcon: createMockIcon('settings-icon', '⚙'),
     TrophyIcon: createMockIcon('trophy-icon', '🏆'),
     TuneIcon: createMockIcon('tune-icon', '🎛'),
+    UnfoldLessIcon: createMockIcon('unfold-less-icon', '⇈'),
+    UnfoldMoreIcon: createMockIcon('unfold-more-icon', '⇊'),
     WarningIcon: createMockIcon('warning-icon', '⚠'),
   }
 })

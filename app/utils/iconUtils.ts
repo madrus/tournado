@@ -25,6 +25,8 @@ import {
   SettingsIcon,
   TrophyIcon,
   TuneIcon,
+  UnfoldLessIcon,
+  UnfoldMoreIcon,
   WarningIcon,
 } from '~/components/icons'
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
@@ -53,6 +55,8 @@ export type IconName =
   | 'settings'
   | 'trophy'
   | 'tune'
+  | 'unfold_less'
+  | 'unfold_more'
   | 'warning'
   | 'expand_more'
 
@@ -80,6 +84,8 @@ export const iconMap = {
   settings: SettingsIcon,
   trophy: TrophyIcon,
   tune: TuneIcon,
+  unfold_less: UnfoldLessIcon,
+  unfold_more: UnfoldMoreIcon,
   warning: WarningIcon,
   expand_more: ExpandMoreIcon,
 }

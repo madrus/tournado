@@ -207,9 +207,10 @@ describe('ComboField', () => {
     const trigger = screen.getByRole('combobox')
     await user.click(trigger)
 
-    // Wait for the icon to change to open state
+    // Wait for the icon to change to open state with crossfade
     await waitFor(() => {
       expect(screen.getByTestId('animated-unfold-icon-open')).toBeInTheDocument()
+      // Should show unfold_less when open
       expect(screen.getByText('unfold_less')).toBeInTheDocument()
     })
   })

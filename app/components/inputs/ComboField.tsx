@@ -160,6 +160,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   sideOffset={4}
                   onCloseAutoFocus={handleCloseAutoFocus}
                   style={{ width: 'var(--radix-select-trigger-width)' }}
+                  data-radix-select-content
                 >
                   <Select.Viewport className='max-h-60 overflow-auto p-1'>
                     {options.map(opt => (

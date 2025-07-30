@@ -359,12 +359,11 @@ describe('AppBar Context Menu', () => {
 
   describe('Role-Specific Behavior', () => {
     it('should hide Admin Panel for non-admin roles', () => {
-      const roles: (
-        | 'PUBLIC'
-        | 'TOURNAMENT_MANAGER'
-        | 'REFEREE_COORDINATOR'
-        | 'REFEREE'
-      )[] = ['PUBLIC', 'TOURNAMENT_MANAGER', 'REFEREE_COORDINATOR', 'REFEREE']
+      const roles: ('PUBLIC' | 'MANAGER' | 'REFEREE')[] = [
+        'PUBLIC',
+        'MANAGER',
+        'REFEREE',
+      ]
 
       roles.forEach(role => {
         const user: User = {
@@ -417,18 +416,12 @@ describe('AppBar Context Menu', () => {
 
     it('should route Teams link correctly based on user role', () => {
       const roles: Array<{
-        role:
-          | 'PUBLIC'
-          | 'TOURNAMENT_MANAGER'
-          | 'REFEREE_COORDINATOR'
-          | 'REFEREE'
-          | 'ADMIN'
+        role: 'PUBLIC' | 'MANAGER' | 'REFEREE' | 'ADMIN'
         expectedHref: string
         teamsMenuItemIndex: number // Index where Teams appears in menu
       }> = [
         { role: 'PUBLIC', expectedHref: '/teams', teamsMenuItemIndex: 0 },
-        { role: 'TOURNAMENT_MANAGER', expectedHref: '/teams', teamsMenuItemIndex: 0 },
-        { role: 'REFEREE_COORDINATOR', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        { role: 'MANAGER', expectedHref: '/teams', teamsMenuItemIndex: 0 },
         { role: 'REFEREE', expectedHref: '/teams', teamsMenuItemIndex: 0 },
         {
           role: 'ADMIN',

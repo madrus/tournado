@@ -25,18 +25,17 @@ export type Permission =
   | 'matches:referee' // Referee match actions
 
 // Role permission matrix based on actual Prisma roles
-const ROLE_PERMISSIONS: Record<Role | 'UNAUTHENTICATED', Permission[]> = {
+// Note: Unauthenticated users are treated as PUBLIC users
+const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   PUBLIC: ['teams:read', 'tournaments:read', 'matches:read'],
-  REFEREE: ['teams:read', 'tournaments:read', 'matches:read', 'matches:referee'],
-  REFEREE_COORDINATOR: [
+  REFEREE: [
     'teams:read',
     'tournaments:read',
     'matches:read',
-    'matches:create',
     'matches:edit',
     'matches:referee',
   ],
-  TOURNAMENT_MANAGER: [
+  MANAGER: [
     'teams:read',
     'teams:create',
     'teams:edit',
@@ -65,14 +64,12 @@ const ROLE_PERMISSIONS: Record<Role | 'UNAUTHENTICATED', Permission[]> = {
     'matches:delete',
     'matches:referee',
   ],
-  UNAUTHENTICATED: ['teams:read', 'tournaments:read', 'matches:read'],
 }
 
 /**
- * Get user role, with fallback for unauthenticated users
+ * Get user role, with fallback to PUBLIC for unauthenticated users
  */
-export const getUserRole = (user: User | null): Role | 'UNAUTHENTICATED' =>
-  user?.role ?? 'UNAUTHENTICATED'
+export const getUserRole = (user: User | null): Role => user?.role ?? 'PUBLIC'
 
 /**
  * Check if a user has a specific permission
@@ -104,7 +101,7 @@ export const hasAllPermissions = (
  */
 export function getUIContext(user: User | null): 'public' | 'admin' {
   const role = getUserRole(user)
-  return ['ADMIN', 'TOURNAMENT_MANAGER'].includes(role) ? 'admin' : 'public'
+  return ['ADMIN', 'MANAGER'].includes(role) ? 'admin' : 'public'
 }
 
 /**
@@ -112,7 +109,7 @@ export function getUIContext(user: User | null): 'public' | 'admin' {
  */
 export function isAdmin(user: User | null): boolean {
   const role = getUserRole(user)
-  return ['ADMIN', 'TOURNAMENT_MANAGER'].includes(role)
+  return ['ADMIN', 'MANAGER'].includes(role)
 }
 
 /**
@@ -121,7 +118,7 @@ export function isAdmin(user: User | null): boolean {
  */
 export function requirePermission(user: User | null, permission: Permission): void {
   if (!hasPermission(user, permission)) {
-    throw new Response('Forbidden: Insufficient permissions', { status: 403 })
+    throw new Error('Forbidden: Insufficient permissions')
   }
 }
 
@@ -134,14 +131,12 @@ export const canAccess = (user: User | null, permission: Permission): boolean =>
 /**
  * Get role hierarchy level for comparison
  */
-export function getRoleLevel(role: Role | 'UNAUTHENTICATED'): number {
+export function getRoleLevel(role: Role): number {
   const levels = {
-    UNAUTHENTICATED: 0,
-    PUBLIC: 1,
-    REFEREE: 2,
-    REFEREE_COORDINATOR: 3,
-    TOURNAMENT_MANAGER: 4,
-    ADMIN: 5,
+    PUBLIC: 0,
+    REFEREE: 1,
+    MANAGER: 2,
+    ADMIN: 3,
   }
   return levels[role] ?? 0
 }

@@ -385,7 +385,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-teal-50),
-    var(--panel-bg-teal),
+    var(--panel-bg-teal, var(--color-teal-100)),
     var(--color-teal-50)
   );
 }
@@ -394,18 +394,28 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-teal-50),
-    var(--panel-bg-teal),
+    var(--panel-bg-teal, var(--color-teal-100)),
     var(--color-teal-50)
   );
 }
 
 .panel-brand-bg {
   border-color: var(--color-red-400);
-  background: linear-gradient(to bottom right, white, var(--panel-bg-brand), white);
+  background: linear-gradient(
+    to bottom right,
+    white,
+    var(--panel-bg-brand, var(--color-red-100)),
+    white
+  );
 }
 
 [dir='rtl'] .panel-brand-bg {
-  background: linear-gradient(to bottom left, white, var(--panel-bg-brand), white);
+  background: linear-gradient(
+    to bottom left,
+    white,
+    var(--panel-bg-brand, var(--color-red-100)),
+    white
+  );
 }
 
 .panel-emerald-bg {
@@ -413,7 +423,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-emerald-50),
-    var(--panel-bg-emerald),
+    var(--panel-bg-emerald, var(--color-emerald-100)),
     var(--color-emerald-50)
   );
 }
@@ -422,7 +432,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-emerald-50),
-    var(--panel-bg-emerald),
+    var(--panel-bg-emerald, var(--color-emerald-100)),
     var(--color-emerald-50)
   );
 }
@@ -432,7 +442,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-blue-50),
-    var(--panel-bg-blue),
+    var(--panel-bg-blue, var(--color-blue-100)),
     var(--color-blue-50)
   );
 }
@@ -441,7 +451,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-blue-50),
-    var(--panel-bg-blue),
+    var(--panel-bg-blue, var(--color-blue-100)),
     var(--color-blue-50)
   );
 }
@@ -451,7 +461,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-slate-50),
-    var(--panel-bg-slate),
+    var(--panel-bg-slate, var(--color-slate-100)),
     var(--color-slate-50)
   );
 }
@@ -460,7 +470,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-slate-50),
-    var(--panel-bg-slate),
+    var(--panel-bg-slate, var(--color-slate-100)),
     var(--color-slate-50)
   );
 }
@@ -489,7 +499,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-cyan-50),
-    var(--panel-bg-cyan),
+    var(--panel-bg-cyan, var(--color-cyan-100)),
     var(--color-cyan-50)
   );
 }
@@ -498,7 +508,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-cyan-50),
-    var(--panel-bg-cyan),
+    var(--panel-bg-cyan, var(--color-cyan-100)),
     var(--color-cyan-50)
   );
 }
@@ -508,7 +518,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-yellow-50),
-    var(--panel-bg-yellow),
+    var(--panel-bg-yellow, var(--color-yellow-100)),
     var(--color-yellow-50)
   );
 }
@@ -517,7 +527,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-yellow-50),
-    var(--panel-bg-yellow),
+    var(--panel-bg-yellow, var(--color-yellow-100)),
     var(--color-yellow-50)
   );
 }
@@ -527,7 +537,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-green-50),
-    var(--panel-bg-green),
+    var(--panel-bg-green, var(--color-green-100)),
     var(--color-green-50)
   );
 }
@@ -536,7 +546,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-green-50),
-    var(--panel-bg-green),
+    var(--panel-bg-green, var(--color-green-100)),
     var(--color-green-50)
   );
 }
@@ -546,7 +556,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-violet-50),
-    var(--panel-bg-violet),
+    var(--panel-bg-violet, var(--color-violet-100)),
     var(--color-violet-50)
   );
 }
@@ -555,7 +565,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-violet-50),
-    var(--panel-bg-violet),
+    var(--panel-bg-violet, var(--color-violet-100)),
     var(--color-violet-50)
   );
 }
@@ -565,7 +575,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-zinc-50),
-    var(--panel-bg-zinc),
+    var(--panel-bg-zinc, var(--color-zinc-100)),
     var(--color-zinc-50)
   );
 }
@@ -574,7 +584,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-zinc-50),
-    var(--panel-bg-zinc),
+    var(--panel-bg-zinc, var(--color-zinc-100)),
     var(--color-zinc-50)
   );
 }
@@ -584,7 +594,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-orange-50),
-    var(--panel-bg-orange),
+    var(--panel-bg-orange, var(--color-orange-100)),
     var(--color-orange-50)
   );
 }
@@ -593,7 +603,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-orange-50),
-    var(--panel-bg-orange),
+    var(--panel-bg-orange, var(--color-orange-100)),
     var(--color-orange-50)
   );
 }
@@ -603,7 +613,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-amber-50),
-    var(--panel-bg-amber),
+    var(--panel-bg-amber, var(--color-amber-100)),
     var(--color-amber-50)
   );
 }
@@ -612,7 +622,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-amber-50),
-    var(--panel-bg-amber),
+    var(--panel-bg-amber, var(--color-amber-100)),
     var(--color-amber-50)
   );
 }
@@ -622,7 +632,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-lime-50),
-    var(--panel-bg-lime),
+    var(--panel-bg-lime, var(--color-lime-100)),
     var(--color-lime-50)
   );
 }
@@ -631,7 +641,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-lime-50),
-    var(--panel-bg-lime),
+    var(--panel-bg-lime, var(--color-lime-100)),
     var(--color-lime-50)
   );
 }
@@ -641,7 +651,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-sky-50),
-    var(--panel-bg-sky),
+    var(--panel-bg-sky, var(--color-sky-100)),
     var(--color-sky-50)
   );
 }
@@ -650,7 +660,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-sky-50),
-    var(--panel-bg-sky),
+    var(--panel-bg-sky, var(--color-sky-100)),
     var(--color-sky-50)
   );
 }
@@ -660,7 +670,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-indigo-50),
-    var(--panel-bg-indigo),
+    var(--panel-bg-indigo, var(--color-indigo-100)),
     var(--color-indigo-50)
   );
 }
@@ -669,7 +679,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-indigo-50),
-    var(--panel-bg-indigo),
+    var(--panel-bg-indigo, var(--color-indigo-100)),
     var(--color-indigo-50)
   );
 }
@@ -679,7 +689,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-purple-50),
-    var(--panel-bg-purple),
+    var(--panel-bg-purple, var(--color-purple-100)),
     var(--color-purple-50)
   );
 }
@@ -688,7 +698,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-purple-50),
-    var(--panel-bg-purple),
+    var(--panel-bg-purple, var(--color-purple-100)),
     var(--color-purple-50)
   );
 }
@@ -698,7 +708,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-fuchsia-50),
-    var(--panel-bg-fuchsia),
+    var(--panel-bg-fuchsia, var(--color-fuchsia-100)),
     var(--color-fuchsia-50)
   );
 }
@@ -707,7 +717,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-fuchsia-50),
-    var(--panel-bg-fuchsia),
+    var(--panel-bg-fuchsia, var(--color-fuchsia-100)),
     var(--color-fuchsia-50)
   );
 }
@@ -717,7 +727,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-pink-50),
-    var(--panel-bg-pink),
+    var(--panel-bg-pink, var(--color-pink-100)),
     var(--color-pink-50)
   );
 }
@@ -726,7 +736,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-pink-50),
-    var(--panel-bg-pink),
+    var(--panel-bg-pink, var(--color-pink-100)),
     var(--color-pink-50)
   );
 }
@@ -736,7 +746,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-rose-50),
-    var(--panel-bg-rose),
+    var(--panel-bg-rose, var(--color-rose-100)),
     var(--color-rose-50)
   );
 }
@@ -745,7 +755,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-rose-50),
-    var(--panel-bg-rose),
+    var(--panel-bg-rose, var(--color-rose-100)),
     var(--color-rose-50)
   );
 }
@@ -755,7 +765,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom right,
     var(--color-emerald-50),
-    var(--panel-bg-primary),
+    var(--panel-bg-primary, var(--color-emerald-100)),
     var(--color-emerald-50)
   );
 }
@@ -764,7 +774,7 @@ html.dark [dir='rtl'] .panel-primary-bg {
   background: linear-gradient(
     to bottom left,
     var(--color-emerald-50),
-    var(--panel-bg-primary),
+    var(--panel-bg-primary, var(--color-emerald-100)),
     var(--color-emerald-50)
   );
 }

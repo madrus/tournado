@@ -1,13 +1,391 @@
-/* ActionLinkPanel color classes - now consolidated to use only .panel-{color}-bg variants */
+/* Panel background classes using CSS variables to match Tailwind's system */
 
-/* Panel background classes with borders - consolidated single set with dark mode support */
-/* Light mode panel classes - using direct CSS properties */
+/* Dark mode panel backgrounds - using CSS selectors that actually work */
+html.dark .panel-sky-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-sky-950),
+    var(--color-sky-800),
+    var(--color-sky-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-sky-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-sky-950),
+    var(--color-sky-800),
+    var(--color-sky-950)
+  ) !important;
+}
+
+html.dark .panel-red-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-red-950),
+    var(--color-red-800),
+    var(--color-red-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-red-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-red-950),
+    var(--color-red-800),
+    var(--color-red-950)
+  ) !important;
+}
+
+html.dark .panel-amber-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-amber-950),
+    var(--color-amber-800),
+    var(--color-amber-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-amber-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-amber-950),
+    var(--color-amber-800),
+    var(--color-amber-950)
+  ) !important;
+}
+
+html.dark .panel-indigo-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-indigo-950),
+    var(--color-indigo-800),
+    var(--color-indigo-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-indigo-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-indigo-950),
+    var(--color-indigo-800),
+    var(--color-indigo-950)
+  ) !important;
+}
+
+html.dark .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-800),
+    var(--color-fuchsia-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-800),
+    var(--color-fuchsia-950)
+  ) !important;
+}
+
+html.dark .panel-teal-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-teal-950),
+    var(--color-teal-800),
+    var(--color-teal-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-teal-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-teal-950),
+    var(--color-teal-800),
+    var(--color-teal-950)
+  ) !important;
+}
+
+html.dark .panel-brand-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-slate-950),
+    var(--color-slate-800),
+    var(--color-slate-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-brand-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-slate-950),
+    var(--color-slate-800),
+    var(--color-slate-950)
+  ) !important;
+}
+
+html.dark .panel-emerald-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-950),
+    var(--color-emerald-800),
+    var(--color-emerald-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-emerald-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-950),
+    var(--color-emerald-800),
+    var(--color-emerald-950)
+  ) !important;
+}
+
+html.dark .panel-blue-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-blue-950),
+    var(--color-blue-800),
+    var(--color-blue-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-blue-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-blue-950),
+    var(--color-blue-800),
+    var(--color-blue-950)
+  ) !important;
+}
+
+html.dark .panel-slate-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-slate-950),
+    var(--color-slate-800),
+    var(--color-slate-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-slate-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-slate-950),
+    var(--color-slate-800),
+    var(--color-slate-950)
+  ) !important;
+}
+
+html.dark .panel-cyan-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-cyan-950),
+    var(--color-cyan-800),
+    var(--color-cyan-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-cyan-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-cyan-950),
+    var(--color-cyan-800),
+    var(--color-cyan-950)
+  ) !important;
+}
+
+html.dark .panel-yellow-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-yellow-950),
+    var(--color-yellow-800),
+    var(--color-yellow-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-yellow-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-yellow-950),
+    var(--color-yellow-800),
+    var(--color-yellow-950)
+  ) !important;
+}
+
+html.dark .panel-green-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-green-950),
+    var(--color-green-800),
+    var(--color-green-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-green-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-green-950),
+    var(--color-green-800),
+    var(--color-green-950)
+  ) !important;
+}
+
+html.dark .panel-violet-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-violet-950),
+    var(--color-violet-800),
+    var(--color-violet-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-violet-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-violet-950),
+    var(--color-violet-800),
+    var(--color-violet-950)
+  ) !important;
+}
+
+html.dark .panel-zinc-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-zinc-950),
+    var(--color-zinc-800),
+    var(--color-zinc-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-zinc-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-zinc-950),
+    var(--color-zinc-800),
+    var(--color-zinc-950)
+  ) !important;
+}
+
+html.dark .panel-orange-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-orange-950),
+    var(--color-orange-800),
+    var(--color-orange-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-orange-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-orange-950),
+    var(--color-orange-800),
+    var(--color-orange-950)
+  ) !important;
+}
+
+html.dark .panel-lime-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-lime-950),
+    var(--color-lime-800),
+    var(--color-lime-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-lime-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-lime-950),
+    var(--color-lime-800),
+    var(--color-lime-950)
+  ) !important;
+}
+
+html.dark .panel-purple-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-purple-950),
+    var(--color-purple-800),
+    var(--color-purple-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-purple-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-purple-950),
+    var(--color-purple-800),
+    var(--color-purple-950)
+  ) !important;
+}
+
+html.dark .panel-pink-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-pink-950),
+    var(--color-pink-800),
+    var(--color-pink-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-pink-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-pink-950),
+    var(--color-pink-800),
+    var(--color-pink-950)
+  ) !important;
+}
+
+html.dark .panel-rose-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-rose-950),
+    var(--color-rose-800),
+    var(--color-rose-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-rose-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-rose-950),
+    var(--color-rose-800),
+    var(--color-rose-950)
+  ) !important;
+}
+
+html.dark .panel-primary-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-emerald-950),
+    var(--color-emerald-800),
+    var(--color-emerald-950)
+  ) !important;
+}
+
+html.dark [dir='rtl'] .panel-primary-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-emerald-950),
+    var(--color-emerald-800),
+    var(--color-emerald-950)
+  ) !important;
+}
+
+/* Light mode panel classes */
 .panel-teal-bg {
   border-color: var(--color-teal-400);
   background: linear-gradient(
     to bottom right,
     var(--color-teal-50),
-    var(--color-teal-100),
+    var(--panel-bg-teal),
     var(--color-teal-50)
   );
 }
@@ -16,37 +394,18 @@
   background: linear-gradient(
     to bottom left,
     var(--color-teal-50),
-    var(--color-teal-100),
+    var(--panel-bg-teal),
     var(--color-teal-50)
-  );
-}
-
-/* Dark mode panel classes using custom variant */
-:where(.dark, .dark *) .panel-teal-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-teal-950),
-    var(--color-teal-900),
-    var(--color-teal-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-teal-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-teal-950),
-    var(--color-teal-900),
-    var(--color-teal-950)
   );
 }
 
 .panel-brand-bg {
   border-color: var(--color-red-400);
-  background: linear-gradient(to bottom right, white, var(--color-red-100), white);
+  background: linear-gradient(to bottom right, white, var(--panel-bg-brand), white);
 }
 
 [dir='rtl'] .panel-brand-bg {
-  background: linear-gradient(to bottom left, white, var(--color-red-100), white);
+  background: linear-gradient(to bottom left, white, var(--panel-bg-brand), white);
 }
 
 .panel-emerald-bg {
@@ -54,7 +413,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-emerald-50),
-    var(--color-emerald-100),
+    var(--panel-bg-emerald),
     var(--color-emerald-50)
   );
 }
@@ -63,7 +422,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-emerald-50),
-    var(--color-emerald-100),
+    var(--panel-bg-emerald),
     var(--color-emerald-50)
   );
 }
@@ -73,7 +432,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-blue-50),
-    var(--color-blue-100),
+    var(--panel-bg-blue),
     var(--color-blue-50)
   );
 }
@@ -82,7 +441,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-blue-50),
-    var(--color-blue-100),
+    var(--panel-bg-blue),
     var(--color-blue-50)
   );
 }
@@ -92,7 +451,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-slate-50),
-    var(--color-slate-100),
+    var(--panel-bg-slate),
     var(--color-slate-50)
   );
 }
@@ -101,7 +460,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-slate-50),
-    var(--color-slate-100),
+    var(--panel-bg-slate),
     var(--color-slate-50)
   );
 }
@@ -111,7 +470,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-red-50),
-    var(--color-red-100),
+    var(--panel-bg-red, var(--color-red-100)),
     var(--color-red-50)
   );
 }
@@ -120,7 +479,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-red-50),
-    var(--color-red-100),
+    var(--panel-bg-red, var(--color-red-100)),
     var(--color-red-50)
   );
 }
@@ -130,7 +489,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-cyan-50),
-    var(--color-cyan-100),
+    var(--panel-bg-cyan),
     var(--color-cyan-50)
   );
 }
@@ -139,7 +498,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-cyan-50),
-    var(--color-cyan-100),
+    var(--panel-bg-cyan),
     var(--color-cyan-50)
   );
 }
@@ -149,7 +508,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-yellow-50),
-    var(--color-yellow-100),
+    var(--panel-bg-yellow),
     var(--color-yellow-50)
   );
 }
@@ -158,7 +517,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-yellow-50),
-    var(--color-yellow-100),
+    var(--panel-bg-yellow),
     var(--color-yellow-50)
   );
 }
@@ -168,7 +527,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-green-50),
-    var(--color-green-100),
+    var(--panel-bg-green),
     var(--color-green-50)
   );
 }
@@ -177,7 +536,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-green-50),
-    var(--color-green-100),
+    var(--panel-bg-green),
     var(--color-green-50)
   );
 }
@@ -187,7 +546,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-violet-50),
-    var(--color-violet-100),
+    var(--panel-bg-violet),
     var(--color-violet-50)
   );
 }
@@ -196,7 +555,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-violet-50),
-    var(--color-violet-100),
+    var(--panel-bg-violet),
     var(--color-violet-50)
   );
 }
@@ -206,7 +565,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-zinc-50),
-    var(--color-zinc-100),
+    var(--panel-bg-zinc),
     var(--color-zinc-50)
   );
 }
@@ -215,7 +574,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-zinc-50),
-    var(--color-zinc-100),
+    var(--panel-bg-zinc),
     var(--color-zinc-50)
   );
 }
@@ -225,7 +584,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-orange-50),
-    var(--color-orange-100),
+    var(--panel-bg-orange),
     var(--color-orange-50)
   );
 }
@@ -234,7 +593,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-orange-50),
-    var(--color-orange-100),
+    var(--panel-bg-orange),
     var(--color-orange-50)
   );
 }
@@ -244,7 +603,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-amber-50),
-    var(--color-amber-100),
+    var(--panel-bg-amber),
     var(--color-amber-50)
   );
 }
@@ -253,7 +612,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-amber-50),
-    var(--color-amber-100),
+    var(--panel-bg-amber),
     var(--color-amber-50)
   );
 }
@@ -263,7 +622,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-lime-50),
-    var(--color-lime-100),
+    var(--panel-bg-lime),
     var(--color-lime-50)
   );
 }
@@ -272,7 +631,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-lime-50),
-    var(--color-lime-100),
+    var(--panel-bg-lime),
     var(--color-lime-50)
   );
 }
@@ -282,7 +641,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-sky-50),
-    var(--color-sky-100),
+    var(--panel-bg-sky),
     var(--color-sky-50)
   );
 }
@@ -291,7 +650,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-sky-50),
-    var(--color-sky-100),
+    var(--panel-bg-sky),
     var(--color-sky-50)
   );
 }
@@ -301,7 +660,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-indigo-50),
-    var(--color-indigo-100),
+    var(--panel-bg-indigo),
     var(--color-indigo-50)
   );
 }
@@ -310,7 +669,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-indigo-50),
-    var(--color-indigo-100),
+    var(--panel-bg-indigo),
     var(--color-indigo-50)
   );
 }
@@ -320,7 +679,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-purple-50),
-    var(--color-purple-100),
+    var(--panel-bg-purple),
     var(--color-purple-50)
   );
 }
@@ -329,7 +688,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-purple-50),
-    var(--color-purple-100),
+    var(--panel-bg-purple),
     var(--color-purple-50)
   );
 }
@@ -339,7 +698,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
+    var(--panel-bg-fuchsia),
     var(--color-fuchsia-50)
   );
 }
@@ -348,7 +707,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-fuchsia-50),
-    var(--color-fuchsia-100),
+    var(--panel-bg-fuchsia),
     var(--color-fuchsia-50)
   );
 }
@@ -358,7 +717,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-pink-50),
-    var(--color-pink-100),
+    var(--panel-bg-pink),
     var(--color-pink-50)
   );
 }
@@ -367,7 +726,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-pink-50),
-    var(--color-pink-100),
+    var(--panel-bg-pink),
     var(--color-pink-50)
   );
 }
@@ -377,7 +736,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-rose-50),
-    var(--color-rose-100),
+    var(--panel-bg-rose),
     var(--color-rose-50)
   );
 }
@@ -386,7 +745,7 @@
   background: linear-gradient(
     to bottom left,
     var(--color-rose-50),
-    var(--color-rose-100),
+    var(--panel-bg-rose),
     var(--color-rose-50)
   );
 }
@@ -396,7 +755,7 @@
   background: linear-gradient(
     to bottom right,
     var(--color-emerald-50),
-    var(--color-emerald-100),
+    var(--panel-bg-primary),
     var(--color-emerald-50)
   );
 }
@@ -405,369 +764,8 @@
   background: linear-gradient(
     to bottom left,
     var(--color-emerald-50),
-    var(--color-emerald-100),
+    var(--panel-bg-primary),
     var(--color-emerald-50)
-  );
-}
-
-/* Dark mode panel backgrounds using custom variant */
-:where(.dark, .dark *) .panel-brand-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-slate-900),
-    var(--color-slate-800),
-    var(--color-slate-900)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-brand-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-slate-900),
-    var(--color-slate-800),
-    var(--color-slate-900)
-  );
-}
-
-:where(.dark, .dark *) .panel-emerald-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-emerald-950),
-    var(--color-emerald-900),
-    var(--color-emerald-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-emerald-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-emerald-950),
-    var(--color-emerald-900),
-    var(--color-emerald-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-blue-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-blue-950),
-    var(--color-blue-900),
-    var(--color-blue-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-blue-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-blue-950),
-    var(--color-blue-900),
-    var(--color-blue-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-slate-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-slate-900),
-    var(--color-slate-800),
-    var(--color-slate-900)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-slate-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-slate-900),
-    var(--color-slate-800),
-    var(--color-slate-900)
-  );
-}
-
-:where(.dark, .dark *) .panel-red-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-red-950),
-    var(--color-red-900),
-    var(--color-red-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-red-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-red-950),
-    var(--color-red-900),
-    var(--color-red-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-cyan-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-cyan-950),
-    var(--color-cyan-900),
-    var(--color-cyan-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-cyan-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-cyan-950),
-    var(--color-cyan-900),
-    var(--color-cyan-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-yellow-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-yellow-950),
-    var(--color-yellow-900),
-    var(--color-yellow-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-yellow-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-yellow-950),
-    var(--color-yellow-900),
-    var(--color-yellow-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-green-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-green-950),
-    var(--color-green-900),
-    var(--color-green-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-green-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-green-950),
-    var(--color-green-900),
-    var(--color-green-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-violet-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-violet-950),
-    var(--color-violet-900),
-    var(--color-violet-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-violet-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-violet-950),
-    var(--color-violet-900),
-    var(--color-violet-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-zinc-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-zinc-950),
-    var(--color-zinc-900),
-    var(--color-zinc-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-zinc-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-zinc-950),
-    var(--color-zinc-900),
-    var(--color-zinc-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-orange-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-orange-950),
-    var(--color-orange-900),
-    var(--color-orange-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-orange-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-orange-950),
-    var(--color-orange-900),
-    var(--color-orange-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-amber-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-amber-950),
-    var(--color-amber-900),
-    var(--color-amber-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-amber-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-amber-950),
-    var(--color-amber-900),
-    var(--color-amber-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-lime-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-lime-950),
-    var(--color-lime-900),
-    var(--color-lime-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-lime-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-lime-950),
-    var(--color-lime-900),
-    var(--color-lime-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-sky-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-sky-950),
-    var(--color-sky-900),
-    var(--color-sky-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-sky-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-sky-950),
-    var(--color-sky-900),
-    var(--color-sky-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-indigo-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-indigo-950),
-    var(--color-indigo-900),
-    var(--color-indigo-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-indigo-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-indigo-950),
-    var(--color-indigo-900),
-    var(--color-indigo-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-purple-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-purple-950),
-    var(--color-purple-900),
-    var(--color-purple-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-purple-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-purple-950),
-    var(--color-purple-900),
-    var(--color-purple-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-fuchsia-950),
-    var(--color-fuchsia-900),
-    var(--color-fuchsia-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-fuchsia-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-fuchsia-950),
-    var(--color-fuchsia-900),
-    var(--color-fuchsia-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-pink-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-pink-950),
-    var(--color-pink-900),
-    var(--color-pink-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-pink-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-pink-950),
-    var(--color-pink-900),
-    var(--color-pink-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-rose-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-rose-950),
-    var(--color-rose-900),
-    var(--color-rose-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-rose-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-rose-950),
-    var(--color-rose-900),
-    var(--color-rose-950)
-  );
-}
-
-:where(.dark, .dark *) .panel-primary-bg {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-emerald-950),
-    var(--color-emerald-900),
-    var(--color-emerald-950)
-  );
-}
-
-:where(.dark, .dark *) [dir='rtl'] .panel-primary-bg {
-  background: linear-gradient(
-    to bottom left,
-    var(--color-emerald-950),
-    var(--color-emerald-900),
-    var(--color-emerald-950)
   );
 }
 

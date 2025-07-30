@@ -71,13 +71,13 @@ export const createRegularUser = async (): Promise<{ email: string; role: string
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email,
-    role: 'TOURNAMENT_MANAGER', // Non-admin but authenticated user
+    role: 'MANAGER', // Non-admin but authenticated user
     password: 'MyReallyStr0ngPassw0rd!!!',
   })
 
   return {
     email: user.email,
-    role: 'TOURNAMENT_MANAGER',
+    role: 'MANAGER',
   }
 }
 

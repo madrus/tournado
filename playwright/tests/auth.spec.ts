@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { expect, test } from '@playwright/test'
 
-import { createAdminUser, createRegularUser } from '../helpers/database'
+import { createAdminUser, createManagerUser } from '../helpers/database'
 import { createValidTestEmail } from '../helpers/test-utils'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
@@ -19,7 +19,7 @@ test.describe('Authentication', () => {
     // The i18n config will use Dutch for Playwright tests
   })
 
-  test('should register new user and sign in with redirect to admin panel', async ({
+  test('should register new user and sign in with redirect to teams page', async ({
     page,
   }) => {
     const newUser = {
@@ -38,18 +38,18 @@ test.describe('Authentication', () => {
     await loginPage.expectToBeOnLoginPage()
     await loginPage.login(newUser.email, newUser.password)
 
-    // 3. Verify redirect to admin panel and authentication
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
+    // 3. Verify redirect to teams page (new users get PUBLIC role)
+    await expect(page).toHaveURL('/teams', { timeout: 5000 })
     await loginPage.verifyAuthentication()
   })
 
-  test('should sign in as regular user and verify menu options', async ({ page }) => {
-    // 1. Create regular user (non-admin)
-    const regularUser = await createRegularUser()
+  test('should sign in as manager user and verify menu options', async ({ page }) => {
+    // 1. Create manager user (non-admin)
+    const managerUser = await createManagerUser()
 
-    // 2. Sign in as regular user using LoginPage
+    // 2. Sign in as manager user using LoginPage
     const loginPage = new LoginPage(page)
-    await loginPage.login(regularUser.email, 'MyReallyStr0ngPassw0rd!!!')
+    await loginPage.login(managerUser.email, 'MyReallyStr0ngPassw0rd!!!')
 
     // 3. Verify redirect to admin panel (all users go to admin panel after login)
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })

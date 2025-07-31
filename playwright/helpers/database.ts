@@ -63,15 +63,15 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-// Create regular user for tests (non-admin authenticated user)
-export const createRegularUser = async (): Promise<{ email: string; role: string }> => {
-  const email = `user-${faker.string.alphanumeric(8)}@example.com`
+// Create manager user for tests (manager role authenticated user)
+export const createManagerUser = async (): Promise<{ email: string; role: string }> => {
+  const email = `manager-${faker.string.alphanumeric(8)}@test.com`
 
   const user = await createUser({
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
+    firstName: 'Test',
+    lastName: 'Manager',
     email,
-    role: 'MANAGER', // Non-admin but authenticated user
+    role: 'MANAGER',
     password: 'MyReallyStr0ngPassw0rd!!!',
   })
 
@@ -92,6 +92,21 @@ export async function createAdminUser(): Promise<User> {
     lastName: 'Admin',
     email: adminEmail,
     role: 'ADMIN', // Ensure this is set to ADMIN role
+    password: 'MyReallyStr0ngPassw0rd!!!',
+  })
+}
+
+// Create referee user for tests with unique email
+export async function createRefereeUser(): Promise<User> {
+  const refereeEmail = `referee-${faker.string.alphanumeric(8)}@test.com`
+
+  console.log(`- creating referee user ${refereeEmail}`)
+
+  return await createUser({
+    firstName: 'Test',
+    lastName: 'Referee',
+    email: refereeEmail,
+    role: 'REFEREE',
     password: 'MyReallyStr0ngPassw0rd!!!',
   })
 }

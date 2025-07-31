@@ -83,7 +83,11 @@ export class SignInPage extends BasePage {
     console.log('- UI verification successful')
   }
 
-  async signIn(email: string, password: string): Promise<void> {
+  async signIn(
+    email: string,
+    password: string,
+    expectedRedirect?: string
+  ): Promise<void> {
     console.log('- performing sign in...')
 
     // Use relative URL - Playwright will use the configured baseURL
@@ -167,15 +171,18 @@ export class SignInPage extends BasePage {
     // Click the login button
     await this.signInButton.click()
 
-    // Wait for navigation
-    await this.page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
+    // Wait for navigation - use expectedRedirect or default to admin panel
+    const redirectUrl = expectedRedirect || '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    await this.page.waitForURL(redirectUrl, { timeout: 30000 })
     console.log(`- redirected to: ${this.page.url()}`)
 
     // Allow extra time for the authentication state to propagate
     await this.page.waitForTimeout(2000)
 
-    // Verify authentication
-    await this.verifyAuthentication()
+    // Only verify authentication if we're on the admin panel (has menu)
+    if (this.page.url().includes('/a7k9m2x5p8w1n4q6r3y8b5t1')) {
+      await this.verifyAuthentication()
+    }
   }
 
   async loginWithTestUser(): Promise<void> {

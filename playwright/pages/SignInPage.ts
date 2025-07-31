@@ -3,7 +3,7 @@ import { expect, type Locator, type Page } from '@playwright/test'
 
 import { BasePage } from './BasePage'
 
-export class LoginPage extends BasePage {
+export class SignInPage extends BasePage {
   readonly emailInput: Locator
   readonly passwordInput: Locator
   readonly signInButton: Locator
@@ -19,7 +19,7 @@ export class LoginPage extends BasePage {
     )
   }
 
-  async expectToBeOnLoginPage(): Promise<void> {
+  async expectToBeOnSignInPage(): Promise<void> {
     console.log('- checking if on signin page...')
     await this.page.waitForURL(/.*\/auth\/signin.*/, { timeout: 10000 })
     await expect(this.signInButton).toBeVisible()
@@ -83,8 +83,8 @@ export class LoginPage extends BasePage {
     console.log('- UI verification successful')
   }
 
-  async login(email: string, password: string): Promise<void> {
-    console.log('- performing login...')
+  async signIn(email: string, password: string): Promise<void> {
+    console.log('- performing sign in...')
 
     // Use relative URL - Playwright will use the configured baseURL
     await this.page.goto('/auth/signin', {

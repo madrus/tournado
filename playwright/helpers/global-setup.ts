@@ -66,24 +66,14 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       'admin'
     )
 
-    // Create manager user and save manager user auth state
-    const managerUser = await createManagerUser()
+    // Create regular user and save user auth state
+    const regularUser = await createManagerUser() // Use manager as regular user for tests
     await createAuthState(
       browser,
       browserConfig,
-      managerUser.email,
-      './playwright/.auth/manager-auth.json',
-      'manager user'
-    )
-
-    // Create referee user and save referee user auth state
-    const refereeUser = await createRefereeUser()
-    await createAuthState(
-      browser,
-      browserConfig,
-      refereeUser.email,
-      './playwright/.auth/referee-auth.json',
-      'referee user'
+      regularUser.email,
+      './playwright/.auth/user-auth.json',
+      'regular user'
     )
 
     console.log('- all authentication contexts created successfully')

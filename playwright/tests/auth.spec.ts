@@ -19,7 +19,7 @@ test.describe('Authentication', () => {
     // The i18n config will use Dutch for Playwright tests
   })
 
-  test('should register new user and sign in with redirect to teams page', async ({
+  test('should register new user and sign in with redirect to homepage', async ({
     page,
   }) => {
     const newUser = {
@@ -36,11 +36,17 @@ test.describe('Authentication', () => {
     // 2. Sign in with newly created user using SignInPage
     const signInPage = new SignInPage(page)
     await signInPage.expectToBeOnSignInPage()
-    await signInPage.signIn(newUser.email, newUser.password)
+    await signInPage.signIn(newUser.email, newUser.password, '/')
 
-    // 3. Verify redirect to teams page (new users get PUBLIC role)
-    await expect(page).toHaveURL('/teams', { timeout: 5000 })
-    await signInPage.verifyAuthentication()
+    // 3. Verify redirect to homepage (new users get PUBLIC role)
+    await expect(page).toHaveURL('/', { timeout: 5000 })
+
+    // 4. Verify user is authenticated by checking menu shows user email in dropdown specifically
+    await page.getByRole('button', { name: 'Toggle menu' }).click()
+    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
+    await expect(
+      page.getByTestId('user-menu-dropdown').getByText(newUser.email)
+    ).toBeVisible()
   })
 
   test('should sign in as manager user and verify menu options', async ({ page }) => {

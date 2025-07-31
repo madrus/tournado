@@ -15,7 +15,7 @@ const ROLE_LANDING_PAGES = {
   ADMIN: '/a7k9m2x5p8w1n4q6r3y8b5t1',
   MANAGER: '/a7k9m2x5p8w1n4q6r3y8b5t1',
   REFEREE: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Referees need admin panel for match management
-  PUBLIC: '/teams',
+  PUBLIC: '/',
 } as const
 
 /**
@@ -37,9 +37,9 @@ export function getPostSignInRedirect(
   user: User | null,
   requestedPath?: string
 ): string {
-  // If no user, redirect to teams (shouldn't happen in post-signin context)
+  // If no user, redirect to homepage (shouldn't happen in post-signin context)
   if (!user) {
-    return '/teams'
+    return '/'
   }
 
   // If user requested a specific path, validate if they can access it
@@ -56,7 +56,7 @@ export function getPostSignInRedirect(
 
   // Get role-based landing page
   const role = getUserRole(user)
-  return ROLE_LANDING_PAGES[role] || '/teams'
+  return ROLE_LANDING_PAGES[role] || '/'
 }
 
 /**
@@ -148,7 +148,7 @@ export function getUnauthorizedRedirect(
   switch (role) {
     case 'PUBLIC':
       // Public users who try to access protected content
-      return '/teams?error=insufficient-permissions'
+      return '/?error=insufficient-permissions'
 
     case 'REFEREE':
       // Referees who try to access content beyond their permissions
@@ -160,7 +160,7 @@ export function getUnauthorizedRedirect(
       return '/a7k9m2x5p8w1n4q6r3y8b5t1?error=access-denied'
 
     default:
-      return '/teams?error=unauthorized'
+      return '/?error=unauthorized'
   }
 }
 

@@ -15,8 +15,8 @@ import {
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
+import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
@@ -59,17 +59,15 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access admin panel
-  protection: {
-    autoCheck: true,
-    // Custom check: additional validation for admin access
-    customCheck: async (_request, user) => user !== null, // Placeholder logic
+  authorization: {
+    requiredRoles: ['admin', 'manager'],
+    redirectTo: '/unauthorized',
   },
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Enhanced protection automatically handles authentication and authorization
-  const user = await requireUserWithMetadata(request, handle)
+  // Require admin-level access (ADMIN or MANAGER roles)
+  const user = await requireAdminUser(request)
 
   // Load teams and tournaments data for the overview tiles
   const teams = await getAllTeamListItems()

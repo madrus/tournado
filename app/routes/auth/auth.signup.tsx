@@ -13,9 +13,10 @@ import {
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { createUser, getUserByEmail } from '~/models/user.server'
 import { cn } from '~/utils/misc'
+import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-import { getUserId } from '~/utils/session.server'
+import { getUser } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
 import type { Route } from './+types/auth.signup'
@@ -36,10 +37,13 @@ export const handle: RouteMetadata = {
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<object> {
-  const userId = await getUserId(request)
-  if (userId) {
-    // If user is already logged in, redirect them to homepage
-    return redirect('/')
+  const user = await getUser(request)
+  if (user) {
+    // Use role-based redirect instead of always going to homepage
+    const redirectTo = shouldRedirectAuthenticatedUser(user, '/auth/signup')
+    if (redirectTo) {
+      return redirect(redirectTo)
+    }
   }
   return {}
 }

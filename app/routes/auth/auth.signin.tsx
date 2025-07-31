@@ -19,6 +19,10 @@ import {
   getClientIP,
   RATE_LIMITS,
 } from '~/utils/rateLimit.server'
+import {
+  getPostSignInRedirect,
+  shouldRedirectAuthenticatedUser,
+} from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { createUserSession, getUser } from '~/utils/session.server'
@@ -42,8 +46,11 @@ export const handle: RouteMetadata = {
 export const loader = async ({ request }: Route.LoaderArgs): Promise<object> => {
   const user = await getUser(request)
   if (user) {
-    // Always redirect all authorized users to Admin Panel
-    return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Use role-based redirect instead of always going to admin panel
+    const redirectTo = shouldRedirectAuthenticatedUser(user, '/auth/signin')
+    if (redirectTo) {
+      return redirect(redirectTo)
+    }
   }
   return {}
 }
@@ -101,9 +108,13 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     )
   }
 
-  // Always redirect all authorized users to Admin Panel
+  // Get role-based redirect destination
+  const url = new URL(request.url)
+  const requestedPath = url.searchParams.get('redirectTo')
+  const redirectTo = getPostSignInRedirect(user, requestedPath || undefined)
+
   return createUserSession({
-    redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+    redirectTo,
     remember: remember === 'on' ? true : false,
     request,
     userId: user.id,

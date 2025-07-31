@@ -1,12 +1,19 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
+import { useLoaderData } from 'react-router'
+
+import type { User } from '@prisma/client'
 
 import { BlockIcon } from '~/components/icons'
 import { ErrorRecoveryLink, PrimaryNavLink } from '~/components/PrefetchLink'
 import { cn } from '~/utils/misc'
+import { getUserRole } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { getUser } from '~/utils/session.server'
+
+import type { Route } from './+types/unauthorized'
 
 export const meta: MetaFunction = () => [
   { title: 'Unauthorized | Tournado' },
@@ -29,8 +36,66 @@ export const handle: RouteMetadata = {
   title: 'Unauthorized',
 }
 
+type LoaderData = {
+  user: User | null
+  role: string
+}
+
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
+  const user = await getUser(request)
+  const role = getUserRole(user)
+
+  return { user, role }
+}
+
 export default function UnauthorizedPage(): JSX.Element {
+  // Try to get loader data, fallback to defaults for tests
+  let user: User | null = null
+  let role = 'PUBLIC'
+
+  try {
+    const loaderData = useLoaderData<LoaderData>()
+    user = loaderData.user
+    role = loaderData.role
+  } catch {
+    // Tests don't have loader data, use defaults
+  }
+
   const { t, i18n } = useTranslation()
+
+  const getRoleBasedMessage = () => {
+    if (!user) {
+      return {
+        title: t('auth.errors.unauthorizedSignInRequiredTitle'),
+        message: t('auth.errors.unauthorizedSignInRequired'),
+      }
+    }
+
+    switch (role) {
+      case 'PUBLIC':
+        return {
+          title: t('auth.errors.unauthorizedAdminRequiredTitle'),
+          message: t('auth.errors.unauthorizedAdminRequired'),
+        }
+      case 'REFEREE':
+        return {
+          title: t('auth.errors.unauthorizedManagerRequiredTitle'),
+          message: t('auth.errors.unauthorizedManagerRequired'),
+        }
+      case 'MANAGER':
+        return {
+          title: t('auth.errors.unauthorizedSuperAdminRequiredTitle'),
+          message: t('auth.errors.unauthorizedSuperAdminRequired'),
+        }
+      default:
+        return {
+          title: t('auth.errors.unauthorizedDefaultTitle'),
+          message: t('auth.errors.unauthorizedDefault'),
+        }
+    }
+  }
+
+  const { title, message } = getRoleBasedMessage()
 
   return (
     <div
@@ -52,16 +117,18 @@ export default function UnauthorizedPage(): JSX.Element {
 
           {/* Title */}
           <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-            {t('auth.errors.unauthorizedTitle')}
+            {title}
           </h1>
 
           {/* Description */}
-          <p className='text-foreground text-center'>
-            {t(
-              'errors.unauthorized.description',
-              'You do not have permission to access this page. Contact your administrator if you believe this is an error.'
-            )}
-          </p>
+          <p className='text-foreground text-center'>{message}</p>
+
+          {user ? (
+            <p className='text-muted-foreground text-center text-sm'>
+              Current role:{' '}
+              <span className='font-medium capitalize'>{role.toLowerCase()}</span>
+            </p>
+          ) : null}
 
           {/* Actions */}
           <div className='flex w-full flex-col gap-2' data-testid='actions-container'>

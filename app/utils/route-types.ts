@@ -12,7 +12,7 @@ export type RouteMetadata = {
   /**
    * Which roles can access this route (when implemented)
    */
-  roles?: Array<'tournamentOrganiser' | 'admin' | 'referee' | 'participant'>
+  roles?: Array<'manager' | 'admin' | 'referee' | 'visitor'>
 
   /**
    * The page title to display in the app bar
@@ -49,7 +49,7 @@ export type RouteMetadata = {
     /**
      * Required roles to access this route
      */
-    requiredRoles?: Array<'tournamentOrganiser' | 'admin' | 'referee' | 'participant'>
+    requiredRoles?: Array<'manager' | 'admin' | 'referee' | 'visitor'>
 
     /**
      * Whether user needs ALL roles or just ONE of the roles

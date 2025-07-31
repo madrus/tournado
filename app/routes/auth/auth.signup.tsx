@@ -10,12 +10,23 @@ import {
   useSearchParams,
 } from 'react-router'
 
+import {
+  signinButtonContainerVariants,
+  signinButtonVariants,
+  signinContainerVariants,
+  signinFormContainerVariants,
+  signinFormFooterVariants,
+  signinFormLabelVariants,
+  signinFormVariants,
+  signinFormWrapperVariants,
+  signinLinkVariants,
+  signinSecondaryTextVariants,
+} from '~/components/auth/signin.variants'
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import type { Language } from '~/i18n/config'
 import { createUser, getUserByEmail } from '~/models/user.server'
-import { cn } from '~/utils/misc'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/route-types'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
 import { safeRedirect, validateEmail } from '~/utils/utils'
 
@@ -148,153 +159,157 @@ export default function SignupPage(): JSX.Element {
   }, [actionData])
 
   return (
-    <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
-      <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <h2
-          className={cn(
-            'mt-10 text-center text-2xl leading-9 font-bold tracking-tight',
-            getLatinTitleClass(i18n.language)
-          )}
-        >
-          {t('common.titles.signUp')}
-        </h2>
-      </div>
-
-      <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-        <Form method='post' className='space-y-6'>
-          <div>
-            <label
-              htmlFor='firstName'
-              className='text-foreground block text-sm leading-6 font-medium'
-            >
-              {t('auth.firstName')}
-            </label>
-            <div className='mt-2'>
-              <input
-                ref={firstNameRef}
-                id='firstName'
-                required
-                name='firstName'
-                type='text'
-                autoComplete='given-name'
-                aria-invalid={actionData?.errors?.firstName ? true : undefined}
-                aria-describedby='firstName-error'
-                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
-              />
-              {actionData?.errors?.firstName ? (
-                <div className='text-error pt-1' id='firstName-error'>
-                  {t(`auth.errors.${actionData.errors.firstName}`)}
-                </div>
-              ) : null}
+    <div className={signinContainerVariants()}>
+      <div className={signinFormContainerVariants()}>
+        <div className={signinFormWrapperVariants()}>
+          <Form method='post' className={signinFormVariants()}>
+            <div>
+              <label
+                htmlFor='firstName'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
+              >
+                {t('auth.firstName')}
+              </label>
+              <div className='mt-1'>
+                <input
+                  ref={firstNameRef}
+                  id='firstName'
+                  required
+                  name='firstName'
+                  type='text'
+                  autoComplete='given-name'
+                  aria-invalid={actionData?.errors?.firstName ? true : undefined}
+                  aria-describedby='firstName-error'
+                  className='text-foreground placeholder:text-foreground/60 w-full rounded-md border border-teal-600 bg-teal-900/20 px-4 py-3 text-lg transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none dark:border-teal-400 dark:bg-teal-200/10 dark:focus:border-teal-300 dark:focus:ring-teal-300/20'
+                />
+                {actionData?.errors?.firstName ? (
+                  <div className='text-error pt-1' id='firstName-error'>
+                    {t(`auth.errors.${actionData.errors.firstName}`)}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor='lastName'
-              className='text-foreground block text-sm leading-6 font-medium'
-            >
-              {t('auth.lastName')}
-            </label>
-            <div className='mt-2'>
-              <input
-                ref={lastNameRef}
-                id='lastName'
-                required
-                name='lastName'
-                type='text'
-                autoComplete='family-name'
-                aria-invalid={actionData?.errors?.lastName ? true : undefined}
-                aria-describedby='lastName-error'
-                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
-              />
-              {actionData?.errors?.lastName ? (
-                <div className='text-error pt-1' id='lastName-error'>
-                  {t(`auth.errors.${actionData.errors.lastName}`)}
-                </div>
-              ) : null}
+            <div>
+              <label
+                htmlFor='lastName'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
+              >
+                {t('auth.lastName')}
+              </label>
+              <div className='mt-1'>
+                <input
+                  ref={lastNameRef}
+                  id='lastName'
+                  required
+                  name='lastName'
+                  type='text'
+                  autoComplete='family-name'
+                  aria-invalid={actionData?.errors?.lastName ? true : undefined}
+                  aria-describedby='lastName-error'
+                  className='text-foreground placeholder:text-foreground/60 w-full rounded-md border border-teal-600 bg-teal-900/20 px-4 py-3 text-lg transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none dark:border-teal-400 dark:bg-teal-200/10 dark:focus:border-teal-300 dark:focus:ring-teal-300/20'
+                />
+                {actionData?.errors?.lastName ? (
+                  <div className='text-error pt-1' id='lastName-error'>
+                    {t(`auth.errors.${actionData.errors.lastName}`)}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor='email'
-              className='text-foreground block text-sm leading-6 font-medium'
-            >
-              {t('auth.emailAddress')}
-            </label>
-            <div className='mt-2'>
-              <input
-                ref={emailRef}
-                id='email'
-                required
-                name='email'
-                type='email'
-                autoComplete='email'
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby='email-error'
-                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
-              />
-              {actionData?.errors?.email ? (
-                <div className='text-error pt-1' id='email-error'>
-                  {t(`auth.errors.${actionData.errors.email}`)}
-                </div>
-              ) : null}
+            <div>
+              <label
+                htmlFor='email'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
+              >
+                {t('auth.emailAddress')}
+              </label>
+              <div className='mt-1'>
+                <input
+                  ref={emailRef}
+                  id='email'
+                  required
+                  name='email'
+                  type='email'
+                  autoComplete='email'
+                  aria-invalid={actionData?.errors?.email ? true : undefined}
+                  aria-describedby='email-error'
+                  className='text-foreground placeholder:text-foreground/60 w-full rounded-md border border-teal-600 bg-teal-900/20 px-4 py-3 text-lg transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none dark:border-teal-400 dark:bg-teal-200/10 dark:focus:border-teal-300 dark:focus:ring-teal-300/20'
+                />
+                {actionData?.errors?.email ? (
+                  <div className='text-error pt-1' id='email-error'>
+                    {t(`auth.errors.${actionData.errors.email}`)}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label
-              htmlFor='password'
-              className='text-foreground block text-sm leading-6 font-medium'
-            >
-              {t('auth.password')}
-            </label>
-            <div className='mt-2'>
-              <input
-                id='password'
-                ref={passwordRef}
-                name='password'
-                type='password'
-                autoComplete='new-password'
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby='password-error'
-                className='ring-input-border placeholder:text-foreground-lighter hover:ring-input-hover focus:ring-input-focus bg-input text-input-foreground block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset hover:ring-2 hover:ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
-              />
-              {actionData?.errors?.password ? (
-                <div className='text-error pt-1' id='password-error'>
-                  {t(`auth.errors.${actionData.errors.password}`)}
-                </div>
-              ) : null}
+            <div>
+              <label
+                htmlFor='password'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
+              >
+                {t('auth.password')}
+              </label>
+              <div className='mt-1'>
+                <input
+                  id='password'
+                  ref={passwordRef}
+                  name='password'
+                  type='password'
+                  autoComplete='new-password'
+                  aria-invalid={actionData?.errors?.password ? true : undefined}
+                  aria-describedby='password-error'
+                  className='text-foreground placeholder:text-foreground/60 w-full rounded-md border border-teal-600 bg-teal-900/20 px-4 py-3 text-lg transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none dark:border-teal-400 dark:bg-teal-200/10 dark:focus:border-teal-300 dark:focus:ring-teal-300/20'
+                />
+                {actionData?.errors?.password ? (
+                  <div className='text-error pt-1' id='password-error'>
+                    {t(`auth.errors.${actionData.errors.password}`)}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
 
-          <input type='hidden' name='redirectTo' value={redirectTo} />
-          <button
-            type='submit'
-            disabled={isSubmitting}
-            className='focus-visible:outline-offset bg-button-primary-background text-button-primary-text hover:bg-button-primary-hover-background focus-visible:outline-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm leading-6 font-semibold shadow-sm focus-visible:outline-2 disabled:opacity-50'
-          >
-            {isSubmitting ? (
-              <>
-                <span className='border-button-primary-text me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-t-transparent'></span>
-                {t('common.loading')}
-              </>
-            ) : (
-              t('auth.createAccount')
-            )}
-          </button>
-        </Form>
-
-        <p className='text-foreground-lighter mt-10 text-center text-sm'>
-          {t('auth.alreadyHaveAccount')}{' '}
-          <Link
-            to='/auth/signin'
-            className='text-primary hover:text-primary-hover leading-6 font-semibold'
-          >
-            {t('auth.signin')}
-          </Link>
-        </p>
+            <div className={signinButtonContainerVariants()}>
+              <input type='hidden' name='redirectTo' value={redirectTo} />
+              <button
+                type='submit'
+                disabled={isSubmitting}
+                className={signinButtonVariants()}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className='me-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                    {t('common.loading')}
+                  </>
+                ) : (
+                  t('auth.createAccount')
+                )}
+              </button>
+            </div>
+            <div className={signinFormFooterVariants()}>
+              <div></div> {/* Empty div for flexbox spacing */}
+              <div
+                className={signinSecondaryTextVariants({
+                  language: i18n.language as Language,
+                })}
+              >
+                {t('auth.alreadyHaveAccount')}{' '}
+                <Link to='/auth/signin' className={signinLinkVariants()}>
+                  {t('auth.signin')}
+                </Link>
+              </div>
+            </div>
+          </Form>
+        </div>
       </div>
     </div>
   )

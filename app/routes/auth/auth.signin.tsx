@@ -10,9 +10,24 @@ import {
   useSearchParams,
 } from 'react-router'
 
+import {
+  signinButtonContainerVariants,
+  signinButtonVariants,
+  signinCheckboxContainerVariants,
+  signinCheckboxLabelVariants,
+  signinCheckboxVariants,
+  signinContainerVariants,
+  signinFormContainerVariants,
+  signinFormFooterVariants,
+  signinFormLabelVariants,
+  signinFormVariants,
+  signinFormWrapperVariants,
+  signinLinkVariants,
+  signinSecondaryTextVariants,
+} from '~/components/auth/signin.variants'
 import { CheckCircleIcon } from '~/components/icons'
+import { type Language } from '~/i18n/config'
 import { verifySignin } from '~/models/user.server'
-import { INPUT_LABEL_SPACING } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import {
   checkRateLimit,
@@ -180,9 +195,9 @@ export default function SigninPage(): JSX.Element {
   }
 
   return (
-    <div className='flex min-h-screen flex-col'>
-      <div className='flex flex-1 flex-col items-center justify-start px-6 pt-24'>
-        <div className='w-full max-w-md'>
+    <div className={signinContainerVariants()}>
+      <div className={signinFormContainerVariants()}>
+        <div className={signinFormWrapperVariants()}>
           {registered ? (
             <div className='bg-accent mb-6 rounded-md p-4'>
               <div className='flex'>
@@ -206,11 +221,13 @@ export default function SigninPage(): JSX.Element {
             </div>
           ) : null}
 
-          <Form method='post' className='space-y-6'>
+          <Form method='post' className={signinFormVariants()}>
             <div>
               <label
                 htmlFor='email'
-                className='text-foreground block text-sm font-medium'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
               >
                 {t('auth.emailAddress')}
               </label>
@@ -240,7 +257,9 @@ export default function SigninPage(): JSX.Element {
             <div>
               <label
                 htmlFor='password'
-                className='text-foreground block text-sm font-medium'
+                className={signinFormLabelVariants({
+                  language: i18n.language as Language,
+                })}
               >
                 {t('auth.password')}
               </label>
@@ -265,12 +284,12 @@ export default function SigninPage(): JSX.Element {
               </div>
             </div>
 
-            <div className={`mt-12 ${INPUT_LABEL_SPACING}`}>
+            <div className={signinButtonContainerVariants()}>
               <input type='hidden' name='redirectTo' value={redirectTo} />
               <button
                 type='submit'
                 disabled={isSubmitting}
-                className='w-full rounded-md bg-red-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-50'
+                className={signinButtonVariants()}
               >
                 {isSubmitting ? (
                   <>
@@ -282,25 +301,31 @@ export default function SigninPage(): JSX.Element {
                 )}
               </button>
             </div>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center'>
+            <div className={signinFormFooterVariants()}>
+              <div className={signinCheckboxContainerVariants()}>
                 <input
                   id='remember'
                   name='remember'
                   type='checkbox'
-                  className='relative h-4 w-4 appearance-none rounded-sm border-2 border-teal-600 bg-transparent transition-colors checked:border-teal-600 checked:bg-teal-600 checked:after:absolute checked:after:inset-0 checked:after:flex checked:after:items-center checked:after:justify-center checked:after:text-xs checked:after:text-white checked:after:content-["✓"] hover:ring-2 hover:ring-teal-500/20 focus:ring-2 focus:ring-teal-500/20 dark:border-teal-400 dark:checked:border-teal-400 dark:checked:bg-teal-400 dark:checked:after:text-teal-900 dark:hover:ring-teal-300/20 dark:focus:ring-teal-300/20'
+                  className={signinCheckboxVariants()}
                 />
                 <label
                   htmlFor='remember'
-                  className='text-foreground ms-2 block text-sm rtl:ms-0 rtl:me-2'
+                  className={signinCheckboxLabelVariants({
+                    language: i18n.language as Language,
+                  })}
                 >
                   {t('auth.rememberMe')}
                 </label>
               </div>
-              <div className='text-foreground-lighter text-center text-sm'>
+              <div
+                className={signinSecondaryTextVariants({
+                  language: i18n.language as Language,
+                })}
+              >
                 {t('auth.dontHaveAccount')}{' '}
                 <Link
-                  className='text-emerald-200 underline hover:text-emerald-100'
+                  className={signinLinkVariants()}
                   to={{
                     pathname: '/auth/signup',
                     search: searchParams.toString(),

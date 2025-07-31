@@ -147,6 +147,9 @@
     "vitest": "3.2.4",
     "wait-on": "^8.0.4"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "engines": {
     "node": ">=22",
     "pnpm": ">=10"

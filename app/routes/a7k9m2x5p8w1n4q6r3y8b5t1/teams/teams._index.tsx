@@ -97,7 +97,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6' data-testid='admin-teams-page-content'>
       {/* Stats using optimized dashboard panels */}
       <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
         <Panel

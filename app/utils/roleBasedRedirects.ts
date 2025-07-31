@@ -44,7 +44,11 @@ export function getPostSignInRedirect(
 
   // If user requested a specific path, validate if they can access it
   if (requestedPath && requestedPath !== '/auth/signin') {
-    if (canUserAccessPath(user, requestedPath)) {
+    // Never redirect authenticated users to auth pages
+    if (requestedPath.startsWith('/auth/')) {
+      // Auth pages are not valid destinations for authenticated users
+      // Fall through to role-based default
+    } else if (canUserAccessPath(user, requestedPath)) {
       return requestedPath
     }
     // If they can't access the requested path, fall through to role-based default

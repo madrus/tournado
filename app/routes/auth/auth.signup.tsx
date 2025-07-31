@@ -23,6 +23,7 @@ import {
   signinSecondaryTextVariants,
 } from '~/components/auth/signin.variants'
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import { prisma } from '~/db.server'
 import type { Language } from '~/i18n/config'
 import { createUser, getUserByEmail } from '~/models/user.server'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
@@ -101,12 +102,16 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     )
   }
 
+  // Check if this is the first user (make them admin)
+  const userCount = await prisma.user.count()
+  const role = userCount === 0 ? 'ADMIN' : 'PUBLIC'
+
   await createUser(
     email,
     password,
     typeof firstName === 'string' ? firstName : '',
     typeof lastName === 'string' ? lastName : '',
-    'PUBLIC' // Default role for new users
+    role
   )
 
   // After successful signup, redirect to signin page (don't auto-login)

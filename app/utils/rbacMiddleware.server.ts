@@ -126,13 +126,9 @@ export function getPostAuthRedirect(
   switch (role) {
     case 'ADMIN':
     case 'MANAGER':
-      // Admin users go to admin panel
-      return '/a7k9m2x5p8w1n4q6r3y8b5t1'
-
     case 'REFEREE':
-      // Referees could have a referee dashboard in the future
-      // For now, send them to public teams view
-      return '/teams'
+      // Admin panel access for ADMIN, MANAGER, and REFEREE users
+      return '/a7k9m2x5p8w1n4q6r3y8b5t1'
 
     case 'PUBLIC':
     default:

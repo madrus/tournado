@@ -359,11 +359,7 @@ describe('AppBar Context Menu', () => {
 
   describe('Role-Specific Behavior', () => {
     it('should hide Admin Panel for non-admin roles', () => {
-      const roles: ('PUBLIC' | 'MANAGER' | 'REFEREE')[] = [
-        'PUBLIC',
-        'MANAGER',
-        'REFEREE',
-      ]
+      const roles: 'PUBLIC'[] = ['PUBLIC']
 
       roles.forEach(role => {
         const user: User = {
@@ -391,7 +387,7 @@ describe('AppBar Context Menu', () => {
       })
     })
 
-    it('should show Admin Panel only for ADMIN role', () => {
+    it('should show Admin Panel for ADMIN, MANAGER, and REFEREE roles', () => {
       const adminUser: User = {
         id: 'admin-1',
         email: 'admin@example.com',

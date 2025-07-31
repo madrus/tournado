@@ -105,11 +105,19 @@ export function getUIContext(user: User | null): 'public' | 'admin' {
 }
 
 /**
- * Check if user has admin-level access
+ * Check if user has admin-level access (full management permissions)
  */
 export function isAdmin(user: User | null): boolean {
   const role = getUserRole(user)
   return ['ADMIN', 'MANAGER'].includes(role)
+}
+
+/**
+ * Check if user has admin panel access (can access admin interface)
+ */
+export function hasAdminPanelAccess(user: User | null): boolean {
+  const role = getUserRole(user)
+  return ['ADMIN', 'MANAGER', 'REFEREE'].includes(role)
 }
 
 /**

@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 import { chromium, FullConfig } from '@playwright/test'
 
-import { cleanDatabase, createAdminUser, createRegularUser } from './database'
+import {
+  cleanDatabase,
+  createAdminUser,
+  createManagerUser,
+  createRefereeUser,
+} from './database'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
@@ -61,17 +66,27 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       'admin'
     )
 
-    // Create regular user and save regular user auth state
-    const regularUser = await createRegularUser()
+    // Create manager user and save manager user auth state
+    const managerUser = await createManagerUser()
     await createAuthState(
       browser,
       browserConfig,
-      regularUser.email,
-      './playwright/.auth/user-auth.json',
-      'regular user'
+      managerUser.email,
+      './playwright/.auth/manager-auth.json',
+      'manager user'
     )
 
-    console.log('- both authentication contexts created successfully')
+    // Create referee user and save referee user auth state
+    const refereeUser = await createRefereeUser()
+    await createAuthState(
+      browser,
+      browserConfig,
+      refereeUser.email,
+      './playwright/.auth/referee-auth.json',
+      'referee user'
+    )
+
+    console.log('- all authentication contexts created successfully')
   } catch (error) {
     console.error('- global setup failed:', error)
     throw error

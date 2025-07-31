@@ -154,7 +154,7 @@ export default function AdminDashboard(): JSX.Element {
             icon={<SportsIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
-            iconColor='orange'
+            iconColor='lime'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/matches'
             language={i18n.language}
           >

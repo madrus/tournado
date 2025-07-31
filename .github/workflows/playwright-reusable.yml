@@ -70,6 +70,7 @@ jobs:
           pnpm exec prisma migrate reset --force
           # Generate client again after database reset to ensure it's fresh
           pnpm exec prisma generate
+          pnpm exec prisma db seed
           # Wait for the client to be fully ready
           sleep 3
 

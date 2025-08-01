@@ -70,7 +70,6 @@ export function TeamsLayoutHeader({
             label={t('common.actions.add')}
             variant='primary'
             color='brand'
-            permission='teams:create'
           />
         </div>
       </div>

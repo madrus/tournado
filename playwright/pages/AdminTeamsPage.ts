@@ -9,11 +9,15 @@ export class AdminTeamsPage extends BasePage {
 
   // Locators
   get layoutContainer(): Locator {
-    return this.page.getByTestId('admin-teams-layout-container')
+    return this.page.getByTestId('admin-teams-page-content')
+  }
+
+  get createTeamContainer(): Locator {
+    return this.page.getByTestId('admin-new-team-container')
   }
 
   get pageTitle(): Locator {
-    return this.page.getByRole('heading', { name: 'Teams beheer' })
+    return this.page.getByRole('heading', { name: 'Alle teams' })
   }
 
   get createTeamButton(): Locator {
@@ -61,7 +65,7 @@ export class AdminTeamsPage extends BasePage {
 
   async expectToBeOnCreateTeamPage(): Promise<void> {
     await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new$/)
-    await expect(this.layoutContainer).toBeVisible()
+    await expect(this.createTeamContainer).toBeVisible()
   }
 
   async expectAdminTeamsInterface(): Promise<void> {

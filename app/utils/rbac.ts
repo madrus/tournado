@@ -6,6 +6,17 @@
  */
 import type { Role, User } from '@prisma/client'
 
+// Define a custom error for forbidden access
+export class ForbiddenError extends Error {
+  statusCode: number
+
+  constructor(message = 'Forbidden: Insufficient permissions') {
+    super(message)
+    this.name = 'ForbiddenError'
+    this.statusCode = 403
+  }
+}
+
 // Define available permissions
 export type Permission =
   | 'teams:read' // View teams
@@ -23,30 +34,34 @@ export type Permission =
   | 'matches:edit'
   | 'matches:delete'
   | 'matches:referee' // Referee match actions
+  | 'system:settings' // System settings configuration
+  | 'system:reports' // View reports and analytics
 
 // Role permission matrix based on actual Prisma roles
-const ROLE_PERMISSIONS: Record<Role | 'UNAUTHENTICATED', Permission[]> = {
+// Note: Unauthenticated users are treated as PUBLIC users
+const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   PUBLIC: ['teams:read', 'tournaments:read', 'matches:read'],
-  REFEREE: ['teams:read', 'tournaments:read', 'matches:read', 'matches:referee'],
-  REFEREE_COORDINATOR: [
+  REFEREE: [
     'teams:read',
     'tournaments:read',
     'matches:read',
-    'matches:create',
     'matches:edit',
     'matches:referee',
   ],
-  TOURNAMENT_MANAGER: [
+  MANAGER: [
     'teams:read',
     'teams:create',
     'teams:edit',
     'teams:delete',
+    'teams:manage',
     'tournaments:read',
     'tournaments:create',
     'tournaments:edit',
     'matches:read',
     'matches:create',
     'matches:edit',
+    'matches:delete',
+    'system:reports',
   ],
   ADMIN: [
     'teams:read',
@@ -64,15 +79,15 @@ const ROLE_PERMISSIONS: Record<Role | 'UNAUTHENTICATED', Permission[]> = {
     'matches:edit',
     'matches:delete',
     'matches:referee',
+    'system:settings',
+    'system:reports',
   ],
-  UNAUTHENTICATED: ['teams:read', 'tournaments:read', 'matches:read'],
 }
 
 /**
- * Get user role, with fallback for unauthenticated users
+ * Get user role, with fallback to PUBLIC for unauthenticated users
  */
-export const getUserRole = (user: User | null): Role | 'UNAUTHENTICATED' =>
-  user?.role ?? 'UNAUTHENTICATED'
+export const getUserRole = (user: User | null): Role => user?.role ?? 'PUBLIC'
 
 /**
  * Check if a user has a specific permission
@@ -104,15 +119,23 @@ export const hasAllPermissions = (
  */
 export function getUIContext(user: User | null): 'public' | 'admin' {
   const role = getUserRole(user)
-  return ['ADMIN', 'TOURNAMENT_MANAGER'].includes(role) ? 'admin' : 'public'
+  return ['ADMIN', 'MANAGER'].includes(role) ? 'admin' : 'public'
 }
 
 /**
- * Check if user has admin-level access
+ * Check if user has admin-level access (full management permissions)
  */
 export function isAdmin(user: User | null): boolean {
   const role = getUserRole(user)
-  return ['ADMIN', 'TOURNAMENT_MANAGER'].includes(role)
+  return ['ADMIN', 'MANAGER'].includes(role)
+}
+
+/**
+ * Check if user has admin panel access (can access admin interface)
+ */
+export function hasAdminPanelAccess(user: User | null): boolean {
+  const role = getUserRole(user)
+  return ['ADMIN', 'MANAGER', 'REFEREE'].includes(role)
 }
 
 /**
@@ -121,7 +144,7 @@ export function isAdmin(user: User | null): boolean {
  */
 export function requirePermission(user: User | null, permission: Permission): void {
   if (!hasPermission(user, permission)) {
-    throw new Response('Forbidden: Insufficient permissions', { status: 403 })
+    throw new ForbiddenError()
   }
 }
 
@@ -134,14 +157,12 @@ export const canAccess = (user: User | null, permission: Permission): boolean =>
 /**
  * Get role hierarchy level for comparison
  */
-export function getRoleLevel(role: Role | 'UNAUTHENTICATED'): number {
+export function getRoleLevel(role: Role): number {
   const levels = {
-    UNAUTHENTICATED: 0,
-    PUBLIC: 1,
-    REFEREE: 2,
-    REFEREE_COORDINATOR: 3,
-    TOURNAMENT_MANAGER: 4,
-    ADMIN: 5,
+    PUBLIC: 0,
+    REFEREE: 1,
+    MANAGER: 2,
+    ADMIN: 3,
   }
   return levels[role] ?? 0
 }

@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 import { chromium, FullConfig } from '@playwright/test'
 
-import { cleanDatabase, createAdminUser, createRegularUser } from './database'
+import {
+  cleanDatabase,
+  createAdminUser,
+  createManagerUser,
+  createRefereeUser,
+} from './database'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
@@ -61,8 +66,8 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       'admin'
     )
 
-    // Create regular user and save regular user auth state
-    const regularUser = await createRegularUser()
+    // Create regular user and save user auth state
+    const regularUser = await createManagerUser() // Use manager as regular user for tests
     await createAuthState(
       browser,
       browserConfig,
@@ -71,7 +76,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       'regular user'
     )
 
-    console.log('- both authentication contexts created successfully')
+    console.log('- all authentication contexts created successfully')
   } catch (error) {
     console.error('- global setup failed:', error)
     throw error
@@ -109,8 +114,13 @@ async function createAuthState(
     await signInButton.waitFor({ state: 'visible', timeout: 30000 })
     await signInButton.click()
 
-    // Wait for successful login redirect
-    await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
+    // Wait for successful login redirect based on user type
+    if (userType === 'admin') {
+      await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
+    } else {
+      // Regular user (manager used as regular user) should go to admin panel
+      await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
+    }
 
     // Save authentication state
     await context.storageState({ path: authFilePath })

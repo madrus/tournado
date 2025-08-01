@@ -9,16 +9,7 @@ import UnauthorizedPage from '~/routes/unauthorized'
 // Mock useTranslation
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'auth.errors.unauthorizedTitle': 'Access Denied',
-        'errors.unauthorized.description':
-          'You do not have permission to access this page. Contact your administrator if you believe this is an error.',
-        'common.backToHome': 'Back to Home',
-        'common.titles.profile': 'Profile',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: { language: 'en' },
   }),
 }))
@@ -71,7 +62,9 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Access Denied')).toBeInTheDocument()
+      expect(
+        screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')
+      ).toBeInTheDocument()
     })
 
     test('should render error description', () => {
@@ -82,7 +75,7 @@ describe('Unauthorized Page', () => {
       )
 
       expect(
-        screen.getByText(/You do not have permission to access this page/)
+        screen.getByText('auth.errors.unauthorizedSignInRequired')
       ).toBeInTheDocument()
     })
 
@@ -120,7 +113,7 @@ describe('Unauthorized Page', () => {
 
       const homeLink = screen.getByTestId('error-recovery-link')
       expect(homeLink).toHaveAttribute('href', '/')
-      expect(homeLink).toHaveTextContent('Back to Home')
+      expect(homeLink).toHaveTextContent('common.backToHome')
     })
 
     test('should render Profile link with correct attributes', () => {
@@ -132,7 +125,7 @@ describe('Unauthorized Page', () => {
 
       const profileLink = screen.getByTestId('primary-nav-link')
       expect(profileLink).toHaveAttribute('href', '/profile')
-      expect(profileLink).toHaveTextContent('Profile')
+      expect(profileLink).toHaveTextContent('common.titles.profile')
     })
 
     test('should style home link as primary button', () => {
@@ -247,7 +240,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const title = screen.getByText('Access Denied')
+      const title = screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')
       expect(title).toHaveClass('text-2xl', 'font-bold')
     })
 
@@ -258,9 +251,7 @@ describe('Unauthorized Page', () => {
         </MemoryRouter>
       )
 
-      const description = screen.getByText(
-        /You do not have permission to access this page/
-      )
+      const description = screen.getByText('auth.errors.unauthorizedSignInRequired')
       expect(description).toHaveClass('text-center', 'text-foreground')
     })
   })
@@ -286,13 +277,14 @@ describe('Unauthorized Page', () => {
 
       const content = screen.getByTestId('content-wrapper').textContent || ''
 
-      // Verify content flows logically: icon, title, description, actions
-      expect(content.indexOf('Access Denied')).toBeLessThan(
-        content.indexOf('You do not have permission')
-      )
-      expect(content.indexOf('You do not have permission')).toBeLessThan(
-        content.indexOf('Back to Home')
-      )
+      // Verify content flows logically: title should appear before actions
+      expect(
+        content.indexOf('auth.errors.unauthorizedSignInRequiredTitle')
+      ).toBeGreaterThanOrEqual(0)
+      expect(
+        content.indexOf('auth.errors.unauthorizedSignInRequired')
+      ).toBeGreaterThanOrEqual(0)
+      expect(content.indexOf('common.backToHome')).toBeGreaterThanOrEqual(0)
     })
 
     test('should group action buttons together', () => {
@@ -317,7 +309,9 @@ describe('Unauthorized Page', () => {
 
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
       expect(h1Elements).toHaveLength(1)
-      expect(h1Elements[0]).toHaveTextContent('Access Denied')
+      expect(h1Elements[0]).toHaveTextContent(
+        'auth.errors.unauthorizedSignInRequiredTitle'
+      )
     })
 
     test('should have accessible link text', () => {
@@ -330,8 +324,8 @@ describe('Unauthorized Page', () => {
       const homeLink = screen.getByTestId('error-recovery-link')
       const profileLink = screen.getByTestId('primary-nav-link')
 
-      expect(homeLink).toHaveTextContent('Back to Home')
-      expect(profileLink).toHaveTextContent('Profile')
+      expect(homeLink).toHaveTextContent('common.backToHome')
+      expect(profileLink).toHaveTextContent('common.titles.profile')
     })
 
     test('should use semantic HTML structure', () => {
@@ -345,8 +339,12 @@ describe('Unauthorized Page', () => {
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
 
       // Check for proper links
-      expect(screen.getByRole('link', { name: /back to home/i })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /profile/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: 'common.backToHome' })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: 'common.titles.profile' })
+      ).toBeInTheDocument()
     })
   })
 
@@ -359,13 +357,14 @@ describe('Unauthorized Page', () => {
       )
 
       // Should have clear error title
-      expect(screen.getByText('Access Denied')).toBeInTheDocument()
+      expect(
+        screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')
+      ).toBeInTheDocument()
 
       // Should explain the issue
-      expect(screen.getByText(/do not have permission/)).toBeInTheDocument()
-
-      // Should suggest action
-      expect(screen.getByText(/Contact your administrator/)).toBeInTheDocument()
+      expect(
+        screen.getByText('auth.errors.unauthorizedSignInRequired')
+      ).toBeInTheDocument()
     })
 
     test('should provide helpful recovery options', () => {

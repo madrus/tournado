@@ -5,11 +5,12 @@ import { type ColorVariantKey, createColorVariantMapping } from './colorVariants
 /**
  * Shared positioning constants for field status icons.
  * Both success checkmarks and error icons use identical positioning.
+ * Now positioned inline with labels rather than absolutely positioned.
  */
 const FIELD_ICON_POSITIONING = {
-  input: '-top-1 right-1 rtl:right-auto rtl:left-1 md:-top-2',
+  input: '',
   checkbox:
-    'top-0 right-1 rtl:right-auto rtl:left-1 md:top-1 md:right-2 md:rtl:right-auto md:rtl:left-2',
+    'absolute top-8 right-1 rtl:right-auto rtl:left-1 md:top-8 md:right-2 md:rtl:right-auto md:rtl:left-2',
 } as const
 
 /**
@@ -32,7 +33,7 @@ const FIELD_ICON_POSITIONING = {
  * ```
  */
 export const fieldCheckmarkVariants = cva(
-  ['absolute flex h-6 w-6 items-center justify-center rounded-full'],
+  ['flex h-6 w-6 items-center justify-center rounded-full'],
   {
     variants: {
       /**
@@ -40,17 +41,8 @@ export const fieldCheckmarkVariants = cva(
        * Each color uses checkmark-{color} for consistent validation styling.
        */
       color: createColorVariantMapping(color => `checkmark-${color}`),
-      /**
-       * Field type variants for different input layouts.
-       * - input: Standard input fields (text, select, etc.)
-       * - checkbox: Checkbox agreement fields with complex layout
-       */
-      fieldType: FIELD_ICON_POSITIONING,
     },
-    defaultVariants: {
-      color: 'primary',
-      fieldType: 'input',
-    },
+    defaultVariants: { color: 'primary' },
   }
 )
 
@@ -77,7 +69,7 @@ export const fieldCheckmarkVariants = cva(
  */
 export const fieldErrorIconVariants = cva(
   [
-    'absolute flex h-6 w-6 items-center justify-center rounded-full',
+    'flex h-6 w-6 items-center justify-center rounded-full',
     'field-error-icon', // Semantic class for error styling
   ],
   {

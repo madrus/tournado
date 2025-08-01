@@ -1,9 +1,11 @@
-import { forwardRef, type JSX, useRef } from 'react'
+import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
 
 import * as Select from '@radix-ui/react-select'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
+import { AnimatedUnfoldIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
+import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
@@ -15,6 +17,15 @@ import {
   textInputLabelTextVariants,
   textInputLabelVariants,
 } from './inputs.variants'
+
+/**
+ * ComboField with inline status icon support
+ *
+ * The statusIcon prop renders validation status (success/error/neutral) inline
+ * with the field label, providing better accessibility and preventing layout
+ * shifts when labels wrap to multiple lines. The status icon is positioned
+ * in a fixed-width container to maintain consistent alignment.
+ */
 
 export type Option = {
   value: string
@@ -33,6 +44,7 @@ type ComboFieldProps = {
   required?: boolean
   className?: string
   color?: ColorAccent
+  statusIcon?: ReactNode // Status icon (success/error) rendered inline with label
   onBlur?: () => void
 }
 
@@ -50,12 +62,14 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
       required = false,
       className = '',
       color = 'emerald',
+      statusIcon,
       onBlur,
     },
     selectRef
   ): JSX.Element => {
     const triggerRef = useRef<HTMLButtonElement>(null)
     const justSelectedRef = useRef(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     // Ensure value is always a string
     const safeValue = value || ''
@@ -80,7 +94,13 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
         data-testid={name ? `${name}-combo-field` : 'combo-field'}
       >
         <label className={textInputLabelVariants()}>
-          <span className={textInputLabelTextVariants()}>{label}</span>
+          <div
+            className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+          >
+            <span className={textInputLabelTextVariants()}>{label}</span>
+            {/* Status icon container with fixed width to prevent layout shifts */}
+            <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
+          </div>
           <div className='relative'>
             <Select.Root
               value={safeValue}
@@ -92,6 +112,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   justSelectedRef.current = false
                 }, 10)
               }}
+              onOpenChange={setIsOpen}
               disabled={disabled}
             >
               <Select.Trigger
@@ -124,10 +145,11 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
                 </div>
                 <Select.Icon className='text-foreground ml-1'>
-                  {renderIcon('expand_more', {
-                    className: 'h-6 w-6',
-                    'data-testid': 'icon-expand_more',
-                  })}
+                  <AnimatedUnfoldIcon
+                    isOpen={isOpen}
+                    className='h-6 w-6'
+                    aria-label={isOpen ? 'Collapse options' : 'Expand options'}
+                  />
                 </Select.Icon>
               </Select.Trigger>
 
@@ -138,6 +160,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                   sideOffset={4}
                   onCloseAutoFocus={handleCloseAutoFocus}
                   style={{ width: 'var(--radix-select-trigger-width)' }}
+                  data-radix-select-content
                 >
                   <Select.Viewport className='max-h-60 overflow-auto p-1'>
                     {options.map(opt => (

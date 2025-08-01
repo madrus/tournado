@@ -10,4 +10,6 @@
 
 ### Rules
 
-- Always use the semantic color classes from app/styles/tailwind.css if the colors fall under ColorAccent type
+- Always use the semantic color classes from app/styles/tailwind.css if the colors fall under ColorAccent type.
+- Avoid direct Node access. Prefer using the methods from Testing Library.
+- Avoid "any" as type. Always use strong typing.

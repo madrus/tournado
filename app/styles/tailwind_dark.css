@@ -52,6 +52,9 @@
   --color-adaptive-cell-primary: var(--color-slate-100);
   --color-adaptive-cell-secondary: var(--color-slate-400);
   --color-adaptive-cell-muted: var(--color-slate-500);
+
+  /* Panel Background Dark Mode Overrides */
+  --panel-bg-red: var(--color-red-800);
   /* Input backgrounds - consistent across all input types */
   .bg-input {
     background-color: var(--color-input);

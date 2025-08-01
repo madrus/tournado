@@ -44,6 +44,16 @@
       "title": "Authentication Error",
       "unauthorized": "You need to sign in to access this page",
       "unauthorizedTitle": "Sign In Required",
+      "unauthorizedDefault": "You do not have permission to access this page. Contact your administrator if you believe this is an error.",
+      "unauthorizedDefaultTitle": "Access Denied",
+      "unauthorizedSignInRequired": "You need to sign in to access this resource.",
+      "unauthorizedSignInRequiredTitle": "Authentication Required",
+      "unauthorizedAdminRequired": "This area is restricted to tournament managers and administrators.",
+      "unauthorizedAdminRequiredTitle": "Admin Access Required",
+      "unauthorizedManagerRequired": "This area is restricted to tournament managers and administrators.",
+      "unauthorizedManagerRequiredTitle": "Manager Access Required",
+      "unauthorizedSuperAdminRequired": "This specific area is restricted to system administrators.",
+      "unauthorizedSuperAdminRequiredTitle": "Admin Access Required",
       "unexpectedError": "An unexpected error occurred",
       "unknownError": "Unknown error"
     },
@@ -68,8 +78,7 @@
       "saving": "Saving...",
       "update": "Update",
       "cancel": "Cancel",
-      "delete": "Delete",
-      "reset": "Reset"
+      "delete": "Delete"
     },
     "appName": "Tournado",
     "backToHome": "Back to home",
@@ -84,6 +93,7 @@
     "darkMode": "Dark mode",
     "titles": {
       "about": "About",
+      "addTeam": "Add Team",
       "adminPanel": "Admin Panel",
       "more": "More",
       "profile": "Profile",

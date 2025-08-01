@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/madrus/tournado/compare/v0.7.0...v0.8.0) (2025-07-31)
+
+### Features
+
+- add animated unfold icons and integrate into ComboField component ([076e344](https://github.com/madrus/tournado/commit/076e3448dd657a920869237b789ca9c996bf0081))
+- add MCP server configurations and update role-based redirects ([28029ff](https://github.com/madrus/tournado/commit/28029ff921163a84850db4b018b7af60251f1494))
+- add modern-normalize for consistent styling across browsers ([3bcda10](https://github.com/madrus/tournado/commit/3bcda10fec38644e2c33bbc952e5aaa283726d28))
+- add pathname normalization utility and enhance NavigationItem component ([aa4ea55](https://github.com/madrus/tournado/commit/aa4ea5504007b64b80e41b9cdfcfd155d9759bb9))
+- add TeamsLayout component and enhance AdminLayout with min-height ([0f9201f](https://github.com/madrus/tournado/commit/0f9201fa785e6b52663799ff7e10e072fac53a18))
+- enhance email sending functionality with lazy initialization and error handling ([822a5c5](https://github.com/madrus/tournado/commit/822a5c56e77e6d5d2d571b90be60a7789b80d084))
+- enhance NavigationItem component with responsive icon sizing and optimize color variants ([b3e3c3b](https://github.com/madrus/tournado/commit/b3e3c3b068b5c76606cf8fa56c7acb10c0041440))
+- enhance rate limiting alerts and IP validation ([69f30ec](https://github.com/madrus/tournado/commit/69f30ec8a972351988b0211a13df76734102104a))
+- enhance rate limiting and testing for admin routes ([c25f756](https://github.com/madrus/tournado/commit/c25f756d0f3124fee9ca3fd4b90f2e189ea7aa25))
+- enhance rate limiting functionality and security measures ([2565659](https://github.com/madrus/tournado/commit/256565951c8ae9e724e409d69293c41282326f1d))
+- enhance scroll direction handling and layout responsiveness ([fc94eb2](https://github.com/madrus/tournado/commit/fc94eb2bfa75270b2209a5a7c9234dd3a13a28ec))
+- enhance SidebarLayout and IP validation security ([d57dab6](https://github.com/madrus/tournado/commit/d57dab60528ff505fa9b6ecac3beeb5eeeda454b))
+- implement mobile web app configuration and navigation item variants ([b246882](https://github.com/madrus/tournado/commit/b2468826e2ff4d5c63b3462b84bc56fd1cf6dac0))
+- implement overscroll tolerance and improve mobile detection in useScrollDirection hook ([e35ace7](https://github.com/madrus/tournado/commit/e35ace7eb970ad3f96756b829a6742173b67f1f7))
+- implement rate limiting for admin routes and enhance security measures ([08a0ae4](https://github.com/madrus/tournado/commit/08a0ae48e26815dcad25e89235de52413b88111c))
+- implement role-based redirects and add MCP configuration ([5069b21](https://github.com/madrus/tournado/commit/5069b21998cbde7f567a4a78976f7d04fa6ec976))
+- implement shared animations and responsive breakpoints ([08b1ac2](https://github.com/madrus/tournado/commit/08b1ac2942ec704e9dce0ad7b20996660a1f9006))
+- implement team registration email functionality ([c948500](https://github.com/madrus/tournado/commit/c94850052ecbaa4bd4952e733df843d926476893))
+- introduce shared color variants and refactor panel styling ([d983eb3](https://github.com/madrus/tournado/commit/d983eb3fab86eceff3a8417b7a2724d7da46699d))
+- update sidebar and enhance checkbox styling ([71bf05f](https://github.com/madrus/tournado/commit/71bf05f6c73770e3d9b85379a5501ace37f97671)), closes [PR#154](https://github.com/madrus/PR/issues/154)
+
+### Bug Fixes
+
+- enhance scroll direction hook and improve checkbox styling ([c4cad2d](https://github.com/madrus/tournado/commit/c4cad2db23e33f7420e8c1c3f906bb369958845d))
+- enhance useScrollDirection hook for improved scroll handling ([05a5564](https://github.com/madrus/tournado/commit/05a55644f3d516f2e235c8bb6a256ca8b8458cbd))
+- implement useMediaQuery hook for responsive design in NavigationItem ([5507b5f](https://github.com/madrus/tournado/commit/5507b5f43b490362233c7f638d6f477bb3088b63))
+- improve layout and responsive design across components ([01abd91](https://github.com/madrus/tournado/commit/01abd910bafaa5f520fe6af68dbfba98611ab40c))
+- improve touch event handling in useScrollDirection hook ([a15f943](https://github.com/madrus/tournado/commit/a15f943f041c308d64369f7ae9f6f65b1cd745cd))
+- optimize initial team data preparation with useMemo ([783930d](https://github.com/madrus/tournado/commit/783930d10787d3a687d6a19a049e10151f9281b9))
+- optimize responsive icon sizing and improve scroll direction handling ([e62c515](https://github.com/madrus/tournado/commit/e62c5150f6d5f80496df48b39b0b35d62dbba7cd))
+- prevent memory leaks in useScrollDirection hook by tracking component mount status ([0c6614d](https://github.com/madrus/tournado/commit/0c6614d1fa79e06c4fc0c263792d184fa80e18f1))
+- prevent position drift in useScrollDirection hook ([b05821f](https://github.com/madrus/tournado/commit/b05821f5c7b2139de93ad910bd0181db2af80c4c))
+- update CONTENT_PX for improved mobile padding and mark uniform styling as complete in documentation ([85a6935](https://github.com/madrus/tournado/commit/85a6935684d20eb09955a197a8fad04feef56707))
+- update icon size in ThemeToggle component for improved visibility ([e431f76](https://github.com/madrus/tournado/commit/e431f7607297c1654c1350681a2a64014b594f86))
+- update Panel component styling for disabled state ([5d7ee5b](https://github.com/madrus/tournado/commit/5d7ee5be9c7178d3d8750c84e5b3550a5808ab09))
+- update sidebar toggle behavior to use alert instead of console log ([88ce991](https://github.com/madrus/tournado/commit/88ce9917089498aeabb8ae779517e2cc09a8a0d1))
+- update TeamForm validation logic and improve error message handling ([2024b62](https://github.com/madrus/tournado/commit/2024b622d960b642aaa17d299bc9f7076fe597ff))
+
 ## [0.7.0](https://github.com/madrus/tournado/compare/v0.6.0...v0.7.0) (2025-07-23)
 
 ### Features

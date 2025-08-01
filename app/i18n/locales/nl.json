@@ -44,6 +44,16 @@
       "title": "Authenticatiefout",
       "unauthorized": "Je moet inloggen om deze pagina te bekijken",
       "unauthorizedTitle": "Inloggen vereist",
+      "unauthorizedDefault": "Je hebt geen toestemming om deze pagina te bekijken. Neem contact op met je beheerder als je denkt dat dit een fout is.",
+      "unauthorizedDefaultTitle": "Toegang geweigerd",
+      "unauthorizedSignInRequired": "Je moet inloggen om toegang te krijgen tot deze bron.",
+      "unauthorizedSignInRequiredTitle": "Authenticatie vereist",
+      "unauthorizedAdminRequired": "Dit gebied is beperkt tot toernooibeheerders en administrators.",
+      "unauthorizedAdminRequiredTitle": "Beheerderstoegang vereist",
+      "unauthorizedManagerRequired": "Dit gebied is beperkt tot toernooibeheerders en administrators.",
+      "unauthorizedManagerRequiredTitle": "Beheerderstoegang vereist",
+      "unauthorizedSuperAdminRequired": "Dit specifieke gebied is beperkt tot systeembeheerders.",
+      "unauthorizedSuperAdminRequiredTitle": "Beheerderstoegang vereist",
       "unexpectedError": "Er is een onverwachte fout opgetreden",
       "unknownError": "Onbekende fout"
     },
@@ -68,8 +78,7 @@
       "saving": "Opslaan...",
       "update": "Bijwerken",
       "cancel": "Annuleren",
-      "delete": "Verwijderen",
-      "reset": "Opnieuw"
+      "delete": "Verwijderen"
     },
     "appName": "Tournado",
     "backToHome": "Terug naar home",

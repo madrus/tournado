@@ -93,6 +93,7 @@
     "darkMode": "Dark mode",
     "titles": {
       "about": "About",
+      "addTeam": "Add Team",
       "adminPanel": "Admin Panel",
       "more": "More",
       "profile": "Profile",

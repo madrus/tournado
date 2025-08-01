@@ -1,22 +1,8 @@
-import { useTranslation } from 'react-i18next'
-
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { vi } from 'vitest'
 
 import ErrorBoundary from '../ErrorBoundary'
-
-// Mock the useTranslation hook
-vi.mock('react-i18next', async importOriginal => {
-  const original = await importOriginal()
-  return {
-    ...original,
-    useTranslation: vi.fn(() => ({
-      t: vi.fn(key => key), // Mock t function to return the key
-      i18n: { language: 'en' },
-    })),
-  }
-})
 
 describe('ErrorBoundary', () => {
   const ProblemChild = () => {

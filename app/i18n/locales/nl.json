@@ -1,5 +1,9 @@
 {
   "admin": {
+    "panel": {
+      "title": "Beheerpaneel",
+      "description": "Welkom terug, <email>{{email}}</email>. Beheer je toernooiplatform vanaf hier."
+    },
     "teams": {
       "allTeams": "Alle teams",
       "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om details te bewerken of te verwijderen.",

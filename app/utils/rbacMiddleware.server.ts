@@ -29,6 +29,7 @@ export async function requireUserWithPermission(
     redirectTo?: string
     allowSelfAccess?: boolean
     userIdParam?: string // For routes like /profile/:userId - allow user to access their own
+    params?: Record<string, string | undefined> // Route params from loader
   }
 ): Promise<User> {
   const user = await getUser(request)
@@ -42,13 +43,10 @@ export async function requireUserWithPermission(
   }
 
   // Handle self-access for routes like profile management
-  if (options?.allowSelfAccess && options?.userIdParam) {
-    const url = new URL(request.url)
-    const pathSegments = url.pathname.split('/')
-    const userIdIndex = pathSegments.findIndex(
-      segment => segment === options.userIdParam?.replace(':', '')
-    )
-    const targetUserId = pathSegments[userIdIndex + 1]
+  if (options?.allowSelfAccess && options?.userIdParam && options?.params) {
+    // Use the route params directly instead of parsing URL
+    const paramName = options.userIdParam.replace(':', '')
+    const targetUserId = options.params[paramName]
 
     if (targetUserId === user.id) {
       return user // User can access their own resources

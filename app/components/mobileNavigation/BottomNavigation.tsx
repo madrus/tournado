@@ -4,6 +4,8 @@ import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
+import { canAccess } from '~/utils/rbac'
+import { useOptionalUser } from '~/utils/utils'
 
 import NavigationItem from './NavigationItem'
 
@@ -30,10 +32,27 @@ function BottomNavigation(): JSX.Element {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Define navigation items - can be expanded in the future
+  // Get current user from root loader data (with fallback for tests)
+  let user = null
+  try {
+    user = useOptionalUser()
+  } catch (_error) {
+    // Fallback for test environments or when router context is not available
+    user = null
+  }
+
+  // Check user permissions
+  const canManageTeams = canAccess(user || null, 'teams:manage')
+
+  // Define navigation items with role-based URLs
   const navigationItems: Array<{ to: string; icon: IconName; label: string }> = [
     { to: '/', icon: 'trophy', label: 'Home' },
-    { to: '/teams', icon: 'apparel', label: 'Teams' },
+    {
+      // Teams link goes to admin teams if user can manage teams, otherwise public teams
+      to: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
+      icon: 'apparel',
+      label: 'Teams',
+    },
     { to: '/about', icon: 'pending', label: 'More' },
   ]
 

@@ -13,7 +13,7 @@ import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
-import { hasAdminPanelAccess } from '~/utils/rbac'
+import { canAccess, hasAdminPanelAccess } from '~/utils/rbac'
 import { usePageTitle } from '~/utils/route-utils'
 import {
   getArabicTextClass,
@@ -51,10 +51,9 @@ export function AppBar({
   const isAuthenticated =
     signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
-  // Check if user is admin (ADMIN role only)
-  const isAdmin = user?.role === 'ADMIN'
-
-  // Check if user has admin panel access (ADMIN, MANAGER, or REFEREE)
+  // Check user permissions using RBAC utilities
+  const canManageTournaments = canAccess(user || null, 'tournaments:manage')
+  const canManageTeams = canAccess(user || null, 'teams:manage')
   const userHasAdminPanelAccess = hasAdminPanelAccess(user || null)
 
   // Handle sign-in
@@ -74,8 +73,8 @@ export function AppBar({
   const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
-    // Tournaments - only show for admin users (not referees), first item
-    ...(isAdmin
+    // Tournaments - only show for users who can manage tournaments (ADMIN, MANAGER)
+    ...(canManageTournaments
       ? [
           {
             label: t('common.titles.tournaments'),
@@ -88,7 +87,7 @@ export function AppBar({
     {
       label: t('common.titles.teams'),
       icon: 'apparel' as IconName,
-      href: isAdmin ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
+      href: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
       authenticated: false,
     },
     // Divider after Teams

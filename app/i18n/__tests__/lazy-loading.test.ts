@@ -33,12 +33,12 @@ describe('i18n Lazy Loading Performance', () => {
       const i18n = await initI18nLazy('de')
 
       // Should have German loaded
-      expect(i18n.hasResourceBundle('de', 'common')).toBe(true)
+      expect(i18n.hasResourceBundle('de', 'root')).toBe(true)
 
       // Should NOT have other languages loaded initially
-      expect(i18n.hasResourceBundle('en', 'common')).toBe(false)
-      expect(i18n.hasResourceBundle('fr', 'common')).toBe(false)
-      expect(i18n.hasResourceBundle('ar', 'common')).toBe(false)
+      expect(i18n.hasResourceBundle('en', 'root')).toBe(false)
+      expect(i18n.hasResourceBundle('fr', 'root')).toBe(false)
+      expect(i18n.hasResourceBundle('ar', 'root')).toBe(false)
     })
   })
 
@@ -82,13 +82,13 @@ describe('i18n Lazy Loading Performance', () => {
       const i18n = await initI18nLazy('nl')
 
       // Initially only Dutch should be loaded
-      expect(i18n.hasResourceBundle('nl', 'common')).toBe(true)
-      expect(i18n.hasResourceBundle('de', 'common')).toBe(false)
+      expect(i18n.hasResourceBundle('nl', 'root')).toBe(true)
+      expect(i18n.hasResourceBundle('de', 'root')).toBe(false)
 
       // Switch to German - should load it dynamically
       await i18n.changeLanguage('de')
 
-      expect(i18n.hasResourceBundle('de', 'common')).toBe(true)
+      expect(i18n.hasResourceBundle('de', 'root')).toBe(true)
       expect(i18n.language).toBe('de')
     })
 
@@ -167,7 +167,7 @@ describe('i18n Lazy Loading Performance', () => {
       for (const { code } of SUPPORTED_LANGUAGES) {
         const i18n = await initI18nLazy(code)
         expect(i18n.language).toBe(code)
-        expect(i18n.hasResourceBundle(code, 'common')).toBe(true)
+        expect(i18n.hasResourceBundle(code, 'root')).toBe(true)
 
         // Test a basic translation
         const translation = i18n.t('common.appName')

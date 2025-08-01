@@ -10,7 +10,7 @@ import { createInstance, type i18n as I18nType, type Resource } from 'i18next'
 
 import { loadTranslationCached, translationCache, warmCache } from './cache'
 
-export const defaultNS = 'common'
+export const defaultNS = 'root'
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },

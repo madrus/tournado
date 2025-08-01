@@ -83,7 +83,7 @@ describe('i18n Basic Functionality', () => {
 
     it('should have common namespace in all resources', () => {
       Object.keys(resources).forEach(lang => {
-        expect(resources[lang as keyof typeof resources].common).toBeDefined()
+        expect(resources[lang as keyof typeof resources].root).toBeDefined()
       })
     })
   })

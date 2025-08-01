@@ -11,7 +11,7 @@ import fr from './locales/fr.json'
 import nl from './locales/nl.json'
 import tr from './locales/tr.json'
 
-export const defaultNS = 'common'
+export const defaultNS = 'root'
 export const resources = {
   nl: {
     [defaultNS]: nl,

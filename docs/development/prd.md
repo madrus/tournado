@@ -55,13 +55,13 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 - [x] **Uniform Styling**: Many pages and components need proper light/dark mode styling
 
-### 🔄 In Progress Features
-
 **Authentication & Authorization**
 
-- [ ] **Role-Based Access Control**: Schema defines 5 roles but enforcement not implemented
-- [ ] **User Role Differentiation**: Currently all authenticated users redirect to admin panel
-- [ ] **Permission System**: Need to implement role-based permissions
+- [x] **Role-Based Access Control**: Schema defines 5 roles but enforcement not implemented
+- [x] **User Role Differentiation**: Currently all authenticated users redirect to admin panel
+- [x] **Permission System**: Need to implement role-based permissions
+
+### 🔄 In Progress Features
 
 ### 📋 Planned Features (PRD Scope)
 
@@ -96,7 +96,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Results validation and publication
 - [ ] Team approval and organization
 
-### 2. Tournament Manager (TOURNAMENT_MANAGER Role)
+### 2. Tournament Manager (MANAGER Role)
 
 **Authentication**: Required
 **Primary Goals**: Operational tournament management
@@ -106,19 +106,12 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Team coordination and communication
 - [ ] Results publication
 - [ ] Tournament configuration assistance
-
-### 3. Referee Coordinator (REFEREE_COORDINATOR Role)
-
-**Authentication**: Required
-**Primary Goals**: Referee assignment and coordination
-**Key Features Needed**:
-
 - [ ] Referee scheduling and assignment
 - [ ] Match assignment dashboard
 - [ ] Communication with referees
 - [ ] Referee performance tracking
 
-### 4. Referee (REFEREE Role)
+### 3. Referee (REFEREE Role)
 
 **Authentication**: Required
 **Primary Goals**: Quick and accurate score entry
@@ -129,7 +122,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Quick match status updates (postponed, cancelled)
 - [ ] Offline score entry with sync capabilities
 
-### 5. Registered Public Users (PUBLIC Role)
+### 4. Registered Public Users (PUBLIC Role)
 
 **Authentication**: Required
 **Primary Goals**: Enhanced tournament following
@@ -140,7 +133,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Notification preferences
 - [ ] Match alerts and updates
 
-### 6. Team Leaders (Unauthenticated Public)
+### 5. Team Leaders (Unauthenticated Public)
 
 **Authentication**: Not required
 **Primary Goals**: Team registration and basic tournament information
@@ -151,7 +144,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Basic tournament schedule viewing
 - [ ] Contact tournament officials
 
-### 7. General Public/Spectators (Unauthenticated)
+### 6. General Public/Spectators (Unauthenticated)
 
 **Authentication**: Not required
 **Primary Goals**: Following tournament progress and results
@@ -173,9 +166,9 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 #### 1.1 Authentication System Implementation
 
-- [ ] **Role-Based Routing**: Implement proper role-based access control
-- [ ] **User Role Management**: Different access levels per role
-- [ ] **Admin Panel Restriction**: Only ADMIN and TOURNAMENT_MANAGER roles access admin panel
+- [x] **Role-Based Routing**: Implement proper role-based access control
+- [x] **User Role Management**: Different access levels per role
+- [x] **Admin Panel Restriction**: Only ADMIN, MANAGER, and REFEREE roles access Admin Panel
 - [x] **Public Access**: Unauthenticated users can register teams and view tournaments
 
 #### 1.2 Permission System

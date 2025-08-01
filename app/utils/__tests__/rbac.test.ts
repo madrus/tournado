@@ -94,7 +94,7 @@ describe('RBAC', () => {
       expect(hasPermission(manager, 'matches:read')).toBe(true)
       expect(hasPermission(manager, 'matches:create')).toBe(true)
       expect(hasPermission(manager, 'matches:edit')).toBe(true)
-      expect(hasPermission(manager, 'matches:delete')).toBe(false) // Only ADMIN
+      expect(hasPermission(manager, 'matches:delete')).toBe(true)
       expect(hasPermission(manager, 'matches:referee')).toBe(false) // Only ADMIN and REFEREE
     })
 
@@ -127,6 +127,7 @@ describe('RBAC', () => {
       expect(hasPermission(publicUser, 'matches:read')).toBe(true)
       expect(hasPermission(publicUser, 'matches:create')).toBe(false)
       expect(hasPermission(publicUser, 'matches:edit')).toBe(false)
+      expect(hasPermission(publicUser, 'matches:delete')).toBe(false)
       expect(hasPermission(publicUser, 'matches:referee')).toBe(false)
     })
 
@@ -138,6 +139,9 @@ describe('RBAC', () => {
       expect(hasPermission(null, 'tournaments:create')).toBe(false)
       expect(hasPermission(null, 'matches:read')).toBe(true)
       expect(hasPermission(null, 'matches:create')).toBe(false)
+      expect(hasPermission(null, 'matches:edit')).toBe(false)
+      expect(hasPermission(null, 'matches:delete')).toBe(false)
+      expect(hasPermission(null, 'matches:referee')).toBe(false)
     })
   })
 

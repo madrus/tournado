@@ -6,6 +6,11 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
+import {
+  panelLayerOpacityVariants,
+  panelLayerPositioningVariants,
+} from './actionLinkPanel.variants'
+
 export type PanelLayerProps = {
   title: string
   description: string
@@ -46,13 +51,14 @@ export function PanelLayer({
   const effectiveChildrenIconColor = iconColor
 
   // Apply positioning based on hover state
-  const positioningClasses = isHover
-    ? 'absolute inset-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-750 ease-in-out panel-hover-layer'
-    : 'relative z-20 transition-opacity duration-750 ease-in-out'
+  const positioningClasses = panelLayerPositioningVariants({
+    isHover,
+  })
 
-  // Apply fade-out for base layer when hover color exists
-  const opacityClasses =
-    !isHover && hoverColor ? 'group-hover:opacity-0 panel-base-layer' : ''
+  const opacityClasses = panelLayerOpacityVariants({
+    isHover,
+    isBaseLayerWithHoverColor: !isHover && !!hoverColor,
+  })
 
   return (
     <div
@@ -69,7 +75,13 @@ export function PanelLayer({
         childrenIconColor={effectiveChildrenIconColor}
         showGlow
         isHover={isHover}
-        className={cn(textAlign, getLatinTitleClass(currentLanguage), className)}
+        className={cn(
+          textAlign,
+          getLatinTitleClass(currentLanguage),
+          className,
+          'flex-grow',
+          'h-full'
+        )}
         data-testid={testId}
       >
         {children ? (

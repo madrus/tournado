@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import { MemoryRouter, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -61,17 +62,40 @@ vi.mock('react-i18next', () => ({
   Trans: ({
     i18nKey,
     values,
+    components,
   }: {
     i18nKey: string
     values?: Record<string, unknown>
+    components?: Record<string, ReactElement>
   }) => {
-    // Simple mock that returns the key with interpolated values
+    // Mock that handles both value interpolation and JSX component tags
     let result = i18nKey
+
+    // First, handle JSX component tags (e.g., <email>{{email}}</email>)
+    if (components) {
+      Object.entries(components).forEach(([tagName, _component]) => {
+        const tagRegex = new RegExp(`<${tagName}>(.*?)</${tagName}>`, 'g')
+        result = result.replace(tagRegex, (match, content) => {
+          // For testing purposes, we'll return the interpolated content
+          // In a real implementation, this would render the component
+          let processedContent = content
+          if (values) {
+            Object.entries(values).forEach(([key, value]) => {
+              processedContent = processedContent.replace(`{{${key}}}`, String(value))
+            })
+          }
+          return processedContent
+        })
+      })
+    }
+
+    // Then handle any remaining value interpolations
     if (values) {
       Object.entries(values).forEach(([key, value]) => {
         result = result.replace(`{{${key}}}`, String(value))
       })
     }
+
     return result
   },
 }))

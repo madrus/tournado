@@ -38,7 +38,7 @@ vi.mock('react-i18next', () => ({
 }))
 
 // Mock route utils
-vi.mock('~/utils/route-utils', () => ({
+vi.mock('~/utils/routeUtils', () => ({
   usePageTitle: () => 'Test Page',
 }))
 

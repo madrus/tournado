@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
+import { canAccess, type Permission } from '~/utils/rbac'
+import { useUser } from '~/utils/routeUtils'
 import { isRTL } from '~/utils/rtlUtils'
 
 import { buttonVariants, type ButtonVariants } from './button.variants'
@@ -19,6 +21,16 @@ type ActionButtonProps = {
   className?: string
   'aria-label'?: string
   'aria-describedby'?: string
+  /**
+   * Required permission to access this action.
+   * If provided, the button will be disabled if user lacks this permission.
+   */
+  permission?: Permission
+  /**
+   * Whether to hide the button entirely when user lacks permission (default: false)
+   * If false, the button will be disabled but visible
+   */
+  hideWhenDisabled?: boolean
 }
 
 export function ActionButton({
@@ -33,9 +45,22 @@ export function ActionButton({
   className,
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
-}: Readonly<ActionButtonProps>): JSX.Element {
+  permission,
+  hideWhenDisabled = false,
+}: Readonly<ActionButtonProps>): JSX.Element | null {
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
+
+  // Get current user with fallback handling
+  const user = useUser()
+
+  // Check if user has required permission
+  const hasRequiredPermission = permission ? canAccess(user, permission) : true
+
+  // Hide button if user lacks permission and hideWhenDisabled is true
+  if (permission && !hasRequiredPermission && hideWhenDisabled) {
+    return null
+  }
 
   const iconElement = icon
     ? renderIcon(icon, {
@@ -44,14 +69,16 @@ export function ActionButton({
       })
     : null
 
+  // Combine permission-based disabled state with explicit disabled prop
+  const isDisabled = disabled || (permission && !hasRequiredPermission)
   const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   return (
     <button
       type={type}
       role='button'
-      onClick={disabled ? void 0 : onClick}
-      disabled={disabled}
+      onClick={isDisabled ? void 0 : onClick}
+      disabled={isDisabled}
       className={buttonClasses}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}

@@ -10,10 +10,7 @@ import {
 
 import { isBrowser } from '~/lib/lib.helpers'
 import type { TeamFormData, TournamentData } from '~/lib/lib.types'
-import {
-  validateEntireTeamForm,
-  validateSingleTeamField,
-} from '~/utils/form-validation'
+import { validateEntireTeamForm, validateSingleTeamField } from '~/utils/formValidation'
 
 import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamFormConstants'
 import {

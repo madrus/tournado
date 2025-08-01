@@ -18,7 +18,7 @@ import { getAllTournamentListItems } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
 import { hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'

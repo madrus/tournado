@@ -9,7 +9,7 @@ import { BlockIcon } from '~/components/icons'
 import { ErrorRecoveryLink, PrimaryNavLink } from '~/components/PrefetchLink'
 import { cn } from '~/utils/misc'
 import { getUserRole } from '~/utils/rbac'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
 

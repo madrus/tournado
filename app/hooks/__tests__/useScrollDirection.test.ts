@@ -11,12 +11,12 @@ import {
 } from 'vitest'
 
 import * as breakpointsUtils from '~/utils/breakpoints'
-import * as domUtils from '~/utils/dom-utils'
+import * as domUtils from '~/utils/domUtils'
 
 import { useScrollDirection } from '../useScrollDirection'
 
 // Mock DOM utilities
-vi.mock('~/utils/dom-utils', () => ({
+vi.mock('~/utils/domUtils', () => ({
   debounce: (fn: (...args: unknown[]) => void, _delay: number) => {
     const debounced = (...args: unknown[]) => fn(...args)
     debounced.cancel = vi.fn()
@@ -39,18 +39,18 @@ vi.mock('../useIsomorphicWindow', () => ({
 }))
 
 describe('useScrollDirection', () => {
-  let mockGetScrollY: ReturnType<typeof vi.mocked<typeof domUtils.getScrollY>>
-  let mockIsMobile: ReturnType<
-    typeof vi.mocked<typeof breakpointsUtils.breakpoints.isMobile>
-  >
+  let mockGetScrollY: MockedFunction<typeof domUtils.getScrollY>
+  let mockIsMobile: MockedFunction<typeof breakpointsUtils.breakpoints.isMobile>
 
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks()
 
     // Setup default mocks
-    mockGetScrollY = vi.mocked(domUtils.getScrollY)
-    mockIsMobile = vi.mocked(breakpointsUtils.breakpoints.isMobile)
+    mockGetScrollY = domUtils.getScrollY as MockedFunction<typeof domUtils.getScrollY>
+    mockIsMobile = breakpointsUtils.breakpoints.isMobile as MockedFunction<
+      typeof breakpointsUtils.breakpoints.isMobile
+    >
 
     // Mock window and requestAnimationFrame
     const mockAddEventListener = vi.fn()
@@ -179,7 +179,9 @@ describe('useScrollDirection', () => {
     })
 
     it('should handle insufficient content height', () => {
-      vi.mocked(domUtils.getDocumentHeight).mockReturnValue(500)
+      ;(
+        domUtils.getDocumentHeight as MockedFunction<typeof domUtils.getDocumentHeight>
+      ).mockReturnValue(500)
       mockGetScrollY.mockReturnValue(0)
 
       const { result } = renderHook(() => useScrollDirection())
@@ -191,7 +193,9 @@ describe('useScrollDirection', () => {
   describe('bounce detection', () => {
     beforeEach(() => {
       mockIsMobile.mockReturnValue(true)
-      vi.mocked(domUtils.getDocumentHeight).mockReturnValue(2000)
+      ;(
+        domUtils.getDocumentHeight as MockedFunction<typeof domUtils.getDocumentHeight>
+      ).mockReturnValue(2000)
     })
 
     it('should set up touch event listeners for bounce detection', () => {

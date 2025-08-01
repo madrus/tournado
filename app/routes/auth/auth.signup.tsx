@@ -7,9 +7,9 @@ import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { prisma } from '~/db.server'
 import { createUser, getUserByEmail } from '~/models/user.server'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { safeRedirect, validateEmail } from '~/utils/routeUtils'
 import { getUser } from '~/utils/session.server'
-import { safeRedirect, validateEmail } from '~/utils/utils'
 
 import type { Route } from './+types/auth.signup'
 

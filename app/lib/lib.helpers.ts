@@ -335,3 +335,51 @@ export function getFieldStatus(
   if (hasError) return 'error'
   return 'neutral'
 }
+
+// ============================================================================
+// i18n Helper Functions
+// ============================================================================
+
+/**
+ * Recursively gets all keys from a nested object.
+ * @param obj - The object to extract keys from.
+ * @param prefix - The prefix for the keys.
+ * @returns An array of all keys.
+ */
+export function getAllKeys(obj: Record<string, unknown>, prefix = ''): string[] {
+  const keys: string[] = []
+
+  for (const [key, value] of Object.entries(obj)) {
+    const fullKey = prefix ? `${prefix}.${key}` : key
+
+    if (typeof value === 'object' && value !== null) {
+      keys.push(...getAllKeys(value as Record<string, unknown>, fullKey))
+    } else {
+      keys.push(fullKey)
+    }
+  }
+
+  return keys.sort()
+}
+
+/**
+ * Gets the keys that are in the reference array but not in the compare array.
+ * @param referenceKeys - The array of reference keys.
+ * @param compareKeys - The array of keys to compare.
+ * @returns An array of missing keys.
+ */
+export const getMissingKeys = (
+  referenceKeys: string[],
+  compareKeys: string[]
+): string[] => referenceKeys.filter(key => !compareKeys.includes(key))
+
+/**
+ * Gets the keys that are in the compare array but not in the reference array.
+ * @param referenceKeys - The array of reference keys.
+ * @param compareKeys - The array of keys to compare.
+ * @returns An array of extra keys.
+ */
+export const getExtraKeys = (
+  referenceKeys: string[],
+  compareKeys: string[]
+): string[] => compareKeys.filter(key => !referenceKeys.includes(key))

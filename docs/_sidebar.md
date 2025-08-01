@@ -35,6 +35,8 @@
    - [Troubleshooting](testing/troubleshooting.md)
 - Deployment
    - [Overview](deployment/overview.md)
+   - [CI/CD Pipeline](deployment/cicd-pipeline.md)
+   - [Mobile Deployment](deployment/mobile.md)
 - Maintenance
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)

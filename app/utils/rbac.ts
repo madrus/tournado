@@ -23,6 +23,8 @@ export type Permission =
   | 'matches:edit'
   | 'matches:delete'
   | 'matches:referee' // Referee match actions
+  | 'system:settings' // System settings configuration
+  | 'system:reports' // View reports and analytics
 
 // Role permission matrix based on actual Prisma roles
 // Note: Unauthenticated users are treated as PUBLIC users
@@ -46,6 +48,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:read',
     'matches:create',
     'matches:edit',
+    'system:reports',
   ],
   ADMIN: [
     'teams:read',
@@ -63,6 +66,8 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:edit',
     'matches:delete',
     'matches:referee',
+    'system:settings',
+    'system:reports',
   ],
 }
 

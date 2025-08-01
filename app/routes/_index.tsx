@@ -8,6 +8,7 @@ import type { User } from '@prisma/client'
 import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
 import { cn } from '~/utils/misc'
+import { hasAdminPanelAccess } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/route-types'
 import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
@@ -52,9 +53,10 @@ export default function IndexPage(): JSX.Element {
   // Get RTL-aware typography classes
   const typography = getTypographyClasses(i18n.language)
 
-  // Determine the correct teams route based on user role
-  const teamsRoute =
-    user?.role === 'ADMIN' ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams'
+  // Determine the correct teams route based on user permissions
+  const teamsRoute = hasAdminPanelAccess(user)
+    ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+    : '/teams'
 
   return (
     <main className={`flex h-full flex-col ${theme}`}>
@@ -87,6 +89,7 @@ export default function IndexPage(): JSX.Element {
                 label={t('landing.hero.viewTeams')}
                 variant='primary'
                 color='primary'
+                data-testid='view-teams-button'
               />
             </div>
           </div>

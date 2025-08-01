@@ -16,6 +16,7 @@ type ActionLinkButtonProps = {
   color?: ButtonVariants['color']
   size?: ButtonVariants['size']
   className?: string
+  'data-testid'?: string
 }
 
 export function ActionLinkButton({
@@ -26,6 +27,7 @@ export function ActionLinkButton({
   color = 'brand',
   size = 'md',
   className,
+  'data-testid': testId,
 }: Readonly<ActionLinkButtonProps>): JSX.Element {
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
@@ -39,7 +41,12 @@ export function ActionLinkButton({
   const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   return (
-    <ActionLink to={to} className={buttonClasses} aria-label={label}>
+    <ActionLink
+      to={to}
+      className={buttonClasses}
+      aria-label={label}
+      data-testid={testId}
+    >
       {rtl ? (
         <>
           {labelText}

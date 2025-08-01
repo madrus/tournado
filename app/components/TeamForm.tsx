@@ -628,7 +628,6 @@ export function TeamForm({
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
-            permission={formMode === 'edit' ? 'teams:edit' : 'teams:create'}
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
             {t('common.actions.cancel')}
@@ -656,7 +655,7 @@ export function TeamForm({
                 isSubmitting ||
                 isPublicSuccess ||
                 !isFormReadyForSubmission() ||
-                (mode === 'edit' && !isDirty())
+                (formMode === 'edit' && !isDirty())
               }
             >
               {isSubmitting

@@ -48,7 +48,7 @@ export async function requireUserWithPermission(
     const paramName = options.userIdParam.replace(':', '')
     const targetUserId = options.params[paramName]
 
-    if (targetUserId === user.id) {
+    if (targetUserId && targetUserId === user.id) {
       return user // User can access their own resources
     }
   }

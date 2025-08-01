@@ -53,6 +53,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'teams:create',
     'teams:edit',
     'teams:delete',
+    'teams:manage',
     'tournaments:read',
     'tournaments:create',
     'tournaments:edit',

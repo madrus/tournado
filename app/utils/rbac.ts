@@ -6,6 +6,17 @@
  */
 import type { Role, User } from '@prisma/client'
 
+// Define a custom error for forbidden access
+export class ForbiddenError extends Error {
+  statusCode: number
+
+  constructor(message = 'Forbidden: Insufficient permissions') {
+    super(message)
+    this.name = 'ForbiddenError'
+    this.statusCode = 403
+  }
+}
+
 // Define available permissions
 export type Permission =
   | 'teams:read' // View teams
@@ -48,6 +59,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:read',
     'matches:create',
     'matches:edit',
+    'matches:delete',
     'system:reports',
   ],
   ADMIN: [
@@ -131,7 +143,7 @@ export function hasAdminPanelAccess(user: User | null): boolean {
  */
 export function requirePermission(user: User | null, permission: Permission): void {
   if (!hasPermission(user, permission)) {
-    throw new Error('Forbidden: Insufficient permissions')
+    throw new ForbiddenError()
   }
 }
 

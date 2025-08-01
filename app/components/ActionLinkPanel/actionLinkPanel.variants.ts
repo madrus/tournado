@@ -37,6 +37,7 @@ export const actionLinkPanelVariants = cva(
   [
     'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
     'transition-colors duration-750 ease-in-out',
+    'flex flex-col', // Add flex-col to make it a flex container
   ],
   {
     variants: {
@@ -93,6 +94,50 @@ export const panelBackgroundVariants = cva(
     },
     defaultVariants: {
       color: 'teal',
+    },
+  }
+)
+
+// Layer variants for panel content layers
+export const panelLayerPositioningVariants = cva(
+  // Base classes for panel layers
+  ['relative z-20 flex flex-col h-full'],
+  {
+    variants: {
+      isHover: {
+        true: 'absolute inset-0 z-30 panel-hover-layer',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      isHover: false,
+    },
+  }
+)
+
+export const panelLayerOpacityVariants = cva(
+  ['transition-opacity duration-750 ease-in-out'],
+  {
+    variants: {
+      isHover: {
+        true: 'opacity-0 group-hover:opacity-100',
+        false: '',
+      },
+      isBaseLayerWithHoverColor: {
+        true: 'group-hover:opacity-0 panel-base-layer',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      {
+        isHover: false,
+        isBaseLayerWithHoverColor: true,
+        class: 'group-hover:opacity-0 panel-base-layer',
+      },
+    ],
+    defaultVariants: {
+      isHover: false,
+      isBaseLayerWithHoverColor: false,
     },
   }
 )

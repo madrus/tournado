@@ -7,7 +7,7 @@ import {
   mapStoreFieldToZodField,
   validateEntireTeamForm,
   validateSingleTeamField,
-} from '../form-validation'
+} from '../formValidation'
 
 describe('form-validation', () => {
   describe('mapStoreFieldToZodField', () => {

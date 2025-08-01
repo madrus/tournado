@@ -5,8 +5,8 @@ import { ActionLink } from '~/components/PrefetchLink'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { canAccess, type Permission } from '~/utils/rbac'
+import { useOptionalUserWithFallback } from '~/utils/routeUtils'
 import { isRTL } from '~/utils/rtlUtils'
-import { useOptionalUser } from '~/utils/utils'
 
 import { buttonVariants, type ButtonVariants } from './button.variants'
 
@@ -46,14 +46,8 @@ export function ActionLinkButton({
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
 
-  // Get current user and check permissions
-  let user = null
-  try {
-    user = useOptionalUser()
-  } catch (_error) {
-    // Fallback for test environments or when router context is not available
-    user = null
-  }
+  // Get current user with fallback handling
+  const user = useOptionalUserWithFallback()
 
   // Check if user has required permission
   const hasRequiredPermission = permission ? canAccess(user, permission) : true
@@ -73,18 +67,43 @@ export function ActionLinkButton({
   const isDisabled = permission && !hasRequiredPermission
   const buttonClasses = cn(
     buttonVariants({ variant, color, size }),
-    isDisabled && 'pointer-events-none opacity-50 cursor-not-allowed',
+    isDisabled && 'pointer-events-none', // Only add pointer-events-none, other disabled styles handled by buttonVariants
     className
   )
 
+  // Render as button when disabled for better UX and semantics
+  if (isDisabled) {
+    return (
+      <button
+        type='button'
+        className={buttonClasses}
+        aria-label={label}
+        aria-disabled={true}
+        disabled={true}
+        data-testid={testId}
+      >
+        {rtl ? (
+          <>
+            {labelText}
+            {iconElement}
+          </>
+        ) : (
+          <>
+            {iconElement}
+            {labelText}
+          </>
+        )}
+      </button>
+    )
+  }
+
+  // Render as link when enabled
   return (
     <ActionLink
-      to={isDisabled ? '#' : to}
+      to={to}
       className={buttonClasses}
       aria-label={label}
-      aria-disabled={isDisabled}
       data-testid={testId}
-      onClick={isDisabled ? event => event.preventDefault() : undefined}
     >
       {rtl ? (
         <>

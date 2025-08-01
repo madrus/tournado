@@ -9,7 +9,7 @@ import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
 import { cn } from '~/utils/misc'
 import { hasAdminPanelAccess } from '~/utils/rbac'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
 import { getUser } from '~/utils/session.server'
 

@@ -13,7 +13,7 @@ import type { TournamentFormData } from '~/lib/lib.zod'
 import {
   validateEntireTournamentForm,
   validateSingleTournamentField,
-} from '~/utils/form-validation'
+} from '~/utils/formValidation'
 
 import {
   initialStoreState,

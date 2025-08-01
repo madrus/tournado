@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { canAccess, type Permission } from '~/utils/rbac'
+import { useOptionalUserWithFallback } from '~/utils/routeUtils'
 import { isRTL } from '~/utils/rtlUtils'
-import { useOptionalUser } from '~/utils/utils'
 
 import { buttonVariants, type ButtonVariants } from './button.variants'
 
@@ -51,14 +51,8 @@ export function ActionButton({
   const { i18n } = useTranslation()
   const rtl = isRTL(i18n.language)
 
-  // Get current user and check permissions
-  let user = null
-  try {
-    user = useOptionalUser()
-  } catch (_error) {
-    // Fallback for test environments or when router context is not available
-    user = null
-  }
+  // Get current user with fallback handling
+  const user = useOptionalUserWithFallback()
 
   // Check if user has required permission
   const hasRequiredPermission = permission ? canAccess(user, permission) : true

@@ -14,7 +14,7 @@ import { CONTENT_PX } from '~/styles/constants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { canAccess, hasAdminPanelAccess } from '~/utils/rbac'
-import { usePageTitle } from '~/utils/route-utils'
+import { usePageTitle } from '~/utils/routeUtils'
 import {
   getArabicTextClass,
   getLatinTextClass,

@@ -17,8 +17,8 @@ import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
-import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {

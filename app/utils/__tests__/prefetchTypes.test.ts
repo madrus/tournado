@@ -5,7 +5,7 @@ import {
   getAdaptivePrefetchStrategy,
   getPrefetchStrategy,
   routePrefetchOverrides,
-} from '../prefetch-types'
+} from '../prefetchTypes'
 
 describe('defaultPrefetchConfig in test environment', () => {
   test('disables all prefetching during tests', () => {

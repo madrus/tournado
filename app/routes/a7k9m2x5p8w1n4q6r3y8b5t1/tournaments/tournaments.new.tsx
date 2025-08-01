@@ -10,8 +10,8 @@ import {
   getAllDivisions,
 } from '~/models/tournament.server'
 import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
-import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/tournaments.new'
 

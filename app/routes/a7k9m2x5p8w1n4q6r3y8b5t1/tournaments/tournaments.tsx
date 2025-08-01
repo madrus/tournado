@@ -4,7 +4,7 @@ import { Outlet } from 'react-router'
 
 import { ActionLinkButton } from '~/components/buttons'
 import { cn } from '~/utils/misc'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Route metadata - authenticated users can access

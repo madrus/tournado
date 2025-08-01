@@ -8,7 +8,7 @@ import {
 } from 'react'
 
 import { breakpoints } from '~/utils/breakpoints'
-import { debounce, getDocumentHeight, getScrollY } from '~/utils/dom-utils'
+import { debounce, getDocumentHeight, getScrollY } from '~/utils/domUtils'
 
 import { useIsClient } from './useIsomorphicWindow'
 

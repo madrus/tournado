@@ -13,9 +13,9 @@ import {
   getPostSignInRedirect,
   shouldRedirectAuthenticatedUser,
 } from '~/utils/roleBasedRedirects'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { validateEmail } from '~/utils/routeUtils'
 import { createUserSession, getUser } from '~/utils/session.server'
-import { validateEmail } from '~/utils/utils'
 
 import type { Route } from './+types/auth.signin'
 

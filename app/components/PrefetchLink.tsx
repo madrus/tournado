@@ -6,7 +6,7 @@ import {
   getPrefetchStrategy,
   type PrefetchConfig,
   type PrefetchStrategy,
-} from '~/utils/prefetch-types'
+} from '~/utils/prefetchTypes'
 
 // Type definition for Network Information API
 type NetworkInformation = {

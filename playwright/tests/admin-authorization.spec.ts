@@ -23,7 +23,7 @@ test.describe('Admin Authorization', () => {
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1/)
 
       // Should see specific admin content (correct heading text) - use the h1 specifically
-      await expect(page.locator('h1').filter({ hasText: 'Admin Panel' })).toBeVisible({
+      await expect(page.locator('h1').filter({ hasText: 'Beheerpaneel' })).toBeVisible({
         timeout: 15000,
       })
     })

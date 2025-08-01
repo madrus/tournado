@@ -43,8 +43,8 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    // Only participants, admins, and tournament organisers can access profiles
-    requiredRoles: ['participant', 'admin', 'tournamentOrganiser'],
+    // Only authenticated users with roles can access profiles (no visitors)
+    requiredRoles: ['referee', 'manager', 'admin'],
     roleMatchMode: 'any',
     redirectTo: '/unauthorized',
   },

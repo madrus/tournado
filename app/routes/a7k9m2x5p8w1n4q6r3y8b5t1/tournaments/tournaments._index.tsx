@@ -22,13 +22,13 @@ import {
   getAllTournamentListItems,
 } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/tournaments._index'
 
-// Route metadata - authenticated users can access
+// Route metadata - requires tournaments read permission
 export const handle: RouteMetadata = {
   isPublic: false,
   auth: {
@@ -36,7 +36,10 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access tournaments listing
+  authorization: {
+    requiredRoles: ['admin', 'manager'],
+    redirectTo: '/unauthorized',
+  },
 }
 
 export const meta: MetaFunction = () => [
@@ -60,7 +63,8 @@ type LoaderData = {
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireUserWithMetadata(request, handle)
+  // Require permission to read tournaments
+  await requireUserWithPermission(request, 'tournaments:read')
 
   const tournamentListItems = await getAllTournamentListItems()
 
@@ -68,7 +72,8 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export async function action({ request }: Route.ActionArgs): Promise<Response> {
-  await requireUserWithMetadata(request, handle)
+  // Require permission to delete tournaments
+  await requireUserWithPermission(request, 'tournaments:delete')
 
   const formData = await request.formData()
   const intent = formData.get('intent')

@@ -26,6 +26,7 @@
    - [Tournaments](development/tournaments.md)
 - Security
    - [Overview](security/overview.md)
+   - [Role-Based Access Control (RBAC)](security/rbac.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing_guide.md)
@@ -37,6 +38,8 @@
 - Maintenance
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)
+- Guides
+   - [RTL Implementation](guides/rtl-implementation-guide.md)
 - Reference
    - [Cursor Rules](development/cursor_rules.md)
    - [Fly.io vs Vercel](fly_vs_vercel.md)

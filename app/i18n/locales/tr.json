@@ -44,6 +44,16 @@
       "title": "Kimlik doğrulama hatası",
       "unauthorized": "Bu sayfayı görüntülemek için giriş yapmalısınız",
       "unauthorizedTitle": "Giriş gerekli",
+      "unauthorizedDefault": "Bu sayfaya erişim izniniz yok. Bu bir hata olduğunu düşünüyorsanız yöneticinize başvurun.",
+      "unauthorizedDefaultTitle": "Erişim reddedildi",
+      "unauthorizedSignInRequired": "Bu kaynağa erişmek için giriş yapmalısınız.",
+      "unauthorizedSignInRequiredTitle": "Kimlik doğrulama gerekli",
+      "unauthorizedAdminRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
+      "unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedManagerRequired": "Bu alan turnuva yöneticileri ve yöneticilerle sınırlıdır.",
+      "unauthorizedManagerRequiredTitle": "Yönetici erişimi gerekli",
+      "unauthorizedSuperAdminRequired": "Bu özel alan sistem yöneticileriyle sınırlıdır.",
+      "unauthorizedSuperAdminRequiredTitle": "Yönetici erişimi gerekli",
       "unexpectedError": "Beklenmeyen bir hata oluştu",
       "unknownError": "Bilinmeyen hata"
     },
@@ -68,8 +78,7 @@
       "saving": "Kaydediliyor...",
       "update": "Güncelle",
       "cancel": "İptal",
-      "delete": "Sil",
-      "reset": "Sıfırla"
+      "delete": "Sil"
     },
     "appName": "Tournado",
     "backToHome": "Ana sayfaya dön",
@@ -84,6 +93,7 @@
     "darkMode": "Koyu mod",
     "titles": {
       "about": "Hakkımızda",
+      "addTeam": "Takım ekle",
       "adminPanel": "Yönetici paneli",
       "more": "Daha fazla",
       "profile": "Profil",

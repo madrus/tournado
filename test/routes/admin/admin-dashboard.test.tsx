@@ -113,6 +113,12 @@ vi.mock('~/components/icons', () => ({
   TuneIcon: ({ className }: { className?: string }) => (
     <div data-testid='tune-icon' className={className} />
   ),
+  SportsIcon: ({ className }: { className?: string }) => (
+    <div data-testid='sports-icon' className={className} />
+  ),
+  ScoreboardIcon: ({ className }: { className?: string }) => (
+    <div data-testid='scoreboard-icon' className={className} />
+  ),
 }))
 
 describe('Admin Dashboard', () => {
@@ -346,7 +352,7 @@ describe('Admin Dashboard', () => {
       expect(heading).toBeInTheDocument()
 
       // All panels should be present
-      expect(screen.getAllByTestId(/^admin-panel-/)).toHaveLength(5)
+      expect(screen.getAllByTestId(/^admin-panel-/)).toHaveLength(6)
     })
   })
 
@@ -408,7 +414,7 @@ describe('Admin Dashboard', () => {
       const h3Elements = screen.getAllByRole('heading', { level: 3 })
 
       expect(h1Elements).toHaveLength(1)
-      expect(h3Elements).toHaveLength(5) // Panel titles
+      expect(h3Elements).toHaveLength(6) // Panel titles
     })
 
     test('should have descriptive panel titles', () => {

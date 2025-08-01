@@ -92,7 +92,7 @@ export const getDivisionByValue = (value: string): DivisionObject | undefined =>
 
 export const getDivisionLabelByValue = (
   value: Division,
-  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
 ): string => {
   const division = getDivisionByValue(value)
   return division ? division.labels[locale] : value
@@ -130,7 +130,7 @@ export const getCategoryByValue = (value: string): CategoryObject | undefined =>
  */
 export const getCategoryLabelByValue = (
   value: Category,
-  locale: 'en' | 'nl' | 'ar' | 'tr' | 'fr'
+  locale: 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
 ): string => {
   const category = getCategoryByValue(value)
   return category ? category.labels[locale] : value
@@ -279,3 +279,107 @@ function smartCategorySort(a: string, b: string): number {
   // Same prefix and number: compare suffix
   return suffixA.localeCompare(suffixB)
 }
+
+/**
+ * Determines the validation status for a form field to display appropriate status icons
+ *
+ * This utility function provides consistent validation logic across different form components
+ * for determining when to show success (green checkmark), error (red cross), or neutral (no icon) states.
+ *
+ * @param fieldValue - The current value of the field (string, array, or boolean)
+ * @param hasError - Whether the field currently has a validation error
+ * @param isRequired - Whether the field is required
+ * @param isDisabled - Whether the field is disabled
+ * @returns The status to display: 'success' (green checkmark), 'error' (red cross), or 'neutral' (no icon)
+ *
+ * @example
+ * ```typescript
+ * // Required text field with value and no error
+ * getFieldStatus('John Doe', false, true, false) // returns 'success'
+ *
+ * // Required empty field with error
+ * getFieldStatus('', true, true, false) // returns 'error'
+ *
+ * // Optional empty field
+ * getFieldStatus('', false, false, false) // returns 'neutral'
+ *
+ * // Disabled field
+ * getFieldStatus('', true, true, true) // returns 'neutral'
+ *
+ * // Array field (like toggle chips)
+ * getFieldStatus(['item1', 'item2'], false, true, false) // returns 'success'
+ * ```
+ */
+export function getFieldStatus(
+  fieldValue: string | string[] | boolean,
+  hasError: boolean,
+  isRequired: boolean,
+  isDisabled = false
+): 'success' | 'error' | 'neutral' {
+  if (isDisabled) return 'neutral'
+
+  // Determine if field has a value based on type
+  const hasValue = Array.isArray(fieldValue)
+    ? fieldValue.length > 0
+    : Boolean(fieldValue)
+
+  // For required fields: show error if empty, success if filled
+  if (isRequired) {
+    if (hasValue && !hasError) return 'success'
+    if (hasError) return 'error'
+    return 'neutral'
+  }
+
+  // For optional fields: only show success if filled, never show error for being empty
+  if (hasValue && !hasError) return 'success'
+  if (hasError) return 'error'
+  return 'neutral'
+}
+
+// ============================================================================
+// i18n Helper Functions
+// ============================================================================
+
+/**
+ * Recursively gets all keys from a nested object.
+ * @param obj - The object to extract keys from.
+ * @param prefix - The prefix for the keys.
+ * @returns An array of all keys.
+ */
+export function getAllKeys(obj: Record<string, unknown>, prefix = ''): string[] {
+  const keys: string[] = []
+
+  for (const [key, value] of Object.entries(obj)) {
+    const fullKey = prefix ? `${prefix}.${key}` : key
+
+    if (typeof value === 'object' && value !== null) {
+      keys.push(...getAllKeys(value as Record<string, unknown>, fullKey))
+    } else {
+      keys.push(fullKey)
+    }
+  }
+
+  return keys.sort()
+}
+
+/**
+ * Gets the keys that are in the reference array but not in the compare array.
+ * @param referenceKeys - The array of reference keys.
+ * @param compareKeys - The array of keys to compare.
+ * @returns An array of missing keys.
+ */
+export const getMissingKeys = (
+  referenceKeys: string[],
+  compareKeys: string[]
+): string[] => referenceKeys.filter(key => !compareKeys.includes(key))
+
+/**
+ * Gets the keys that are in the compare array but not in the reference array.
+ * @param referenceKeys - The array of reference keys.
+ * @param compareKeys - The array of keys to compare.
+ * @returns An array of extra keys.
+ */
+export const getExtraKeys = (
+  referenceKeys: string[],
+  compareKeys: string[]
+): string[] => compareKeys.filter(key => !referenceKeys.includes(key))

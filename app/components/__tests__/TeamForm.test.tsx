@@ -1069,28 +1069,28 @@ describe('TeamForm Category Field', () => {
   })
 })
 
-describe('TeamForm Reset Button Functionality', () => {
-  describe('Reset Button Visibility', () => {
-    it('should always show reset button', () => {
+describe('TeamForm Cancel Button Functionality', () => {
+  describe('Cancel Button Visibility', () => {
+    it('should always show cancel button', () => {
       renderTeamForm('create', 'public')
 
       expect(
-        screen.getByRole('button', { name: /common\.actions\.reset/i })
+        screen.getByRole('button', { name: /common\.actions\.cancel/i })
       ).toBeInTheDocument()
     })
 
-    it('should show reset button with correct text', () => {
+    it('should show cancel button with correct text', () => {
       renderTeamForm('create', 'public')
 
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      expect(resetButton).toHaveTextContent('common.actions.reset')
+      expect(cancelButton).toHaveTextContent('common.actions.cancel')
     })
   })
 
-  describe('New Team Creation - Reset to Empty State', () => {
-    it('should reset form state when reset button is clicked in create mode', async () => {
+  describe('New Team Creation - Cancel to Empty State', () => {
+    it('should reset form state when cancel button is clicked in create mode', async () => {
       const user = userEvent.setup()
 
       // Fill out the form with some data
@@ -1124,11 +1124,11 @@ describe('TeamForm Reset Button Functionality', () => {
       expect(teamLeaderEmailInput).toHaveValue('john@example.com')
       expect(privacyCheckbox).toBeChecked()
 
-      // Click reset button and wait for state updates
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Click cancel button and wait for state updates
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // Wait for form to be reset - verify fields are cleared
       await waitFor(() => {
@@ -1153,7 +1153,7 @@ describe('TeamForm Reset Button Functionality', () => {
       })
     })
 
-    it('should clear validation errors when reset button is clicked in create mode', async () => {
+    it('should clear validation errors when cancel button is clicked in create mode', async () => {
       const user = userEvent.setup()
 
       // Complete panel 1 to enable subsequent panels
@@ -1174,11 +1174,11 @@ describe('TeamForm Reset Button Functionality', () => {
         ).toBeInTheDocument()
       })
 
-      // Click reset button and wait for state updates
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Click cancel button and wait for state updates
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // Verify validation errors are cleared after reset
       await waitFor(() => {
@@ -1189,7 +1189,7 @@ describe('TeamForm Reset Button Functionality', () => {
     })
   })
 
-  describe('Team Edit Mode - Reset Functionality', () => {
+  describe('Team Edit Mode - Cancel Functionality', () => {
     it('should reset form when reset button is clicked in edit mode', async () => {
       const user = userEvent.setup()
 
@@ -1219,11 +1219,11 @@ describe('TeamForm Reset Button Functionality', () => {
       expect(nameInput).toHaveValue('Modified Team')
       expect(teamLeaderNameInput).toHaveValue('Modified Leader')
 
-      // Click reset button and wait for state updates
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Click cancel button and wait for state updates
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // Verify form state has been reset (fields are cleared)
       await waitFor(() => {
@@ -1233,7 +1233,7 @@ describe('TeamForm Reset Button Functionality', () => {
       })
     })
 
-    it('should clear validation errors when reset button is clicked in edit mode', async () => {
+    it('should clear validation errors when cancel button is clicked in edit mode', async () => {
       const user = userEvent.setup()
 
       renderTeamForm('edit', 'admin', ALL_PANELS_FORMDATA)
@@ -1257,11 +1257,11 @@ describe('TeamForm Reset Button Functionality', () => {
         ).toBeInTheDocument()
       })
 
-      // Click reset button and wait for state updates
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Click cancel button and wait for state updates
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // Verify validation errors are cleared after reset
       await waitFor(() => {
@@ -1308,11 +1308,11 @@ describe('TeamForm Reset Button Functionality', () => {
       await user.keyboard('{Control>}a{/Control}')
       await user.type(teamLeaderEmailInput, 'different@example.com')
 
-      // Click reset button and wait for state updates
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Click cancel button and wait for state updates
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // Verify form state has been reset (fields are cleared)
       await waitFor(() => {
@@ -1323,19 +1323,19 @@ describe('TeamForm Reset Button Functionality', () => {
     })
   })
 
-  describe('Reset Button Behavior Across Modes', () => {
+  describe('Cancel Button Behavior Across Modes', () => {
     it('should reset form when reset button is clicked', async () => {
       const user = userEvent.setup()
 
       renderTeamForm('create', 'public')
 
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
-      // Verify reset button works (no error thrown, form remains stable)
-      expect(resetButton).toBeInTheDocument()
+      // Verify cancel button works (no error thrown, form remains stable)
+      expect(cancelButton).toBeInTheDocument()
     })
 
     it('should not interfere with form submission', async () => {
@@ -1365,15 +1365,15 @@ describe('TeamForm Reset Button Functionality', () => {
       const saveButton = screen.getByRole('button', { name: /common\.actions\.save/i })
       expect(saveButton).toBeEnabled()
 
-      // Verify reset button is also present and functional
-      const resetButton = screen.getByRole('button', {
-        name: /common\.actions\.reset/i,
+      // Verify cancel button is also present and functional
+      const cancelButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
       })
-      expect(resetButton).toBeInTheDocument()
-      expect(resetButton).toBeEnabled()
+      expect(cancelButton).toBeInTheDocument()
+      expect(cancelButton).toBeEnabled()
 
       // Click reset button - should reset form state
-      await user.click(resetButton)
+      await user.click(cancelButton)
 
       // After reset, form should be cleared and save button disabled
       await waitFor(() => {

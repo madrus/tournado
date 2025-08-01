@@ -9,14 +9,16 @@ import {
   ApparelIcon,
   PersonIcon,
   SettingsIcon,
+  SportsIcon,
   TrophyIcon,
   TuneIcon,
 } from '~/components/icons'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
+import { hasPermission } from '~/utils/rbac'
+import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
@@ -59,17 +61,15 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  // No authorization restrictions - all authenticated users can access admin panel
-  protection: {
-    autoCheck: true,
-    // Custom check: additional validation for admin access
-    customCheck: async (_request, user) => user !== null, // Placeholder logic
+  authorization: {
+    requiredRoles: ['admin', 'manager', 'referee'],
+    redirectTo: '/unauthorized',
   },
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Enhanced protection automatically handles authentication and authorization
-  const user = await requireUserWithMetadata(request, handle)
+  // Require admin panel access (ADMIN, MANAGER, or REFEREE roles)
+  const user = await requireAdminUser(request)
 
   // Load teams and tournaments data for the overview tiles
   const teams = await getAllTeamListItems()
@@ -81,6 +81,13 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 export default function AdminDashboard(): JSX.Element {
   const { user, teams, tournaments } = useLoaderData<LoaderData>()
   const { t, i18n } = useTranslation()
+
+  // Check user permissions for conditional rendering
+  const canManageTeams = hasPermission(user, 'teams:manage')
+  const canManageTournaments = hasPermission(user, 'tournaments:manage')
+  const canRefereeMatches = hasPermission(user, 'matches:referee')
+  const canAccessSystemSettings = hasPermission(user, 'system:settings')
+  const canViewReports = hasPermission(user, 'system:reports')
 
   return (
     <div className='space-y-8' data-testid='admin-dashboard-container'>
@@ -97,47 +104,72 @@ export default function AdminDashboard(): JSX.Element {
 
       {/* Dashboard Grid */}
       <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Panel 1 - Teal */}
-        <ActionLinkPanel
-          title='Team Management'
-          description='Manage team registrations and memberships.'
-          icon={<ApparelIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='green'
-          to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-          language={i18n.language}
-        >
-          <div className='space-y-2'>
-            <p>
-              <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
-              {teams.length}
-            </p>
-          </div>
-        </ActionLinkPanel>
+        {/* Panel 1 - Team Management (only for ADMIN and MANAGER) */}
+        {canManageTeams ? (
+          <ActionLinkPanel
+            title='Team Management'
+            description='Manage team registrations and memberships.'
+            icon={<ApparelIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='green'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+            language={i18n.language}
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
+                {teams.length}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
 
-        {/* Panel 2 - Teal */}
-        <ActionLinkPanel
-          title='Tournament Management'
-          description='Create and manage tournaments and competitions.'
-          icon={<TrophyIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='cyan'
-          to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
-          language={i18n.language}
-        >
-          <div className='space-y-2'>
-            <p>
-              <strong className='me-1'>
-                {t('admin.tournaments.totalTournaments')}:
-              </strong>
-              {tournaments.length}
-            </p>
-          </div>
-        </ActionLinkPanel>
+        {/* Panel 2 - Tournament Management (only for ADMIN and MANAGER) */}
+        {canManageTournaments ? (
+          <ActionLinkPanel
+            title='Tournament Management'
+            description='Create and manage tournaments and competitions.'
+            icon={<TrophyIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='cyan'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
+            language={i18n.language}
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>
+                  {t('admin.tournaments.totalTournaments')}:
+                </strong>
+                {tournaments.length}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
 
-        {/* Panel 3 - Teal */}
+        {/* Panel 3 - Match Management (for REFEREE, MANAGER, and ADMIN) */}
+        {canRefereeMatches ? (
+          <ActionLinkPanel
+            title='Match Management'
+            description='Manage match scores and referee assignments.'
+            icon={<SportsIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='lime'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/matches'
+            language={i18n.language}
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>Role:</strong>
+                {user.role}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
+
+        {/* Panel 4 - User Management (for ADMIN and MANAGER) */}
         <ActionLinkPanel
           title='User Management'
           description='Manage user accounts and permissions.'
@@ -157,27 +189,31 @@ export default function AdminDashboard(): JSX.Element {
           </div>
         </ActionLinkPanel>
 
-        {/* Panel 4 - Teal */}
-        <ActionLinkPanel
-          title='System Settings'
-          description='Configure application settings and preferences.'
-          icon={<SettingsIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='brand'
-          language={i18n.language}
-        />
+        {/* Panel 5 - System Settings (for ADMIN only) */}
+        {canAccessSystemSettings ? (
+          <ActionLinkPanel
+            title='System Settings'
+            description='Configure application settings and preferences.'
+            icon={<SettingsIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='brand'
+            language={i18n.language}
+          />
+        ) : null}
 
-        {/* Panel 5 - Teal */}
-        <ActionLinkPanel
-          title='Reports & Analytics'
-          description='View platform usage and tournament statistics.'
-          icon={<TuneIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='violet'
-          language={i18n.language}
-        />
+        {/* Panel 6 - Reports & Analytics (for ADMIN and MANAGER) */}
+        {canViewReports ? (
+          <ActionLinkPanel
+            title='Reports & Analytics'
+            description='View platform usage and tournament statistics.'
+            icon={<TuneIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='violet'
+            language={i18n.language}
+          />
+        ) : null}
       </div>
     </div>
   )

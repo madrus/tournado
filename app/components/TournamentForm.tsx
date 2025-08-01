@@ -1,16 +1,15 @@
-import { JSX, useCallback, useEffect, useRef } from 'react'
+import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
-import { ErrorMessage } from '~/components/ErrorMessage'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
-import { ToggleChip } from '~/components/ToggleChip'
-import type { Category, Division } from '~/db.server'
-import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
+import { ToggleChipsField } from '~/components/ToggleChip'
+import { getFieldStatus } from '~/lib/lib.helpers'
 import type { TournamentFormProps } from '~/lib/lib.types'
 import {
   useTournamentFormStore,
@@ -178,7 +177,7 @@ export function TournamentForm({
   }, [errors, isSuccess, variant])
 
   // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
     if (!isValid) {
@@ -261,6 +260,16 @@ export function TournamentForm({
               className={getLatinTextClass(i18n.language)}
               color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    name,
+                    Boolean(getTranslatedError('name', isPublicSuccess)),
+                    true /* required */,
+                    isPublicSuccess
+                  )}
+                />
+              }
             />
 
             {/* Location */}
@@ -275,6 +284,16 @@ export function TournamentForm({
               className={getLatinTextClass(i18n.language)}
               color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    location,
+                    Boolean(getTranslatedError('location', isPublicSuccess)),
+                    true /* required */,
+                    isPublicSuccess
+                  )}
+                />
+              }
             />
           </div>
         </Panel>
@@ -308,6 +327,21 @@ export function TournamentForm({
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    startDate,
+                    Boolean(
+                      getTranslatedError(
+                        'startDate',
+                        isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                      )
+                    ),
+                    true /* required */,
+                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                  )}
+                />
+              }
             />
 
             {/* End Date */}
@@ -326,6 +360,21 @@ export function TournamentForm({
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }
+              statusIcon={
+                <FieldStatusIcon
+                  status={getFieldStatus(
+                    endDate,
+                    Boolean(
+                      getTranslatedError(
+                        'endDate',
+                        isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                      )
+                    ),
+                    false /* not required */,
+                    isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+                  )}
+                />
+              }
             />
           </div>
         </Panel>
@@ -339,38 +388,22 @@ export function TournamentForm({
           panelNumber={3}
           disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
           title={t('tournaments.form.divisions')}
-          subtitle={`${t('tournaments.form.selectDivisions')} (${selectedDivisions.length} ${t('tournaments.form.selected')})`}
         >
-          <div className='grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'>
-            {divisions.map(division => (
-              <ToggleChip
-                key={division}
-                value={division}
-                label={getDivisionLabelByValue(
-                  division as Division,
-                  i18n.language as 'en' | 'nl' | 'ar' | 'tr' | 'fr'
-                )}
-                selected={selectedDivisions.includes(division)}
-                disabled={
-                  (formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess
-                }
-                color={PANEL_COLORS.step3}
-                onToggle={handleDivisionToggle}
-                data-testid={`division-${division.toLowerCase()}`}
-              />
-            ))}
-          </div>
-          {getTranslatedError(
-            'divisions',
-            isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
-          ) ? (
-            <ErrorMessage panelColor={PANEL_COLORS.step3}>
-              {getTranslatedError(
-                'divisions',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
-              )}
-            </ErrorMessage>
-          ) : null}
+          <ToggleChipsField
+            items={divisions}
+            type='divisions'
+            selectedValues={selectedDivisions}
+            onToggle={handleDivisionToggle}
+            label={`${t('tournaments.form.selectDivisions')} (${selectedDivisions.length} ${t('tournaments.form.selected')})`}
+            error={getTranslatedError(
+              'divisions',
+              isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+            )}
+            required
+            disabled={(formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess}
+            color={PANEL_COLORS.step3}
+            language={i18n.language}
+          />
         </Panel>
 
         {/* Step 4: Categories */}
@@ -382,38 +415,22 @@ export function TournamentForm({
           panelNumber={4}
           disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
           title={t('tournaments.form.categories')}
-          subtitle={`${t('tournaments.form.selectCategories')} (${selectedCategories.length} ${t('tournaments.form.selected')})`}
         >
-          <div className='grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6'>
-            {categories.map(category => (
-              <ToggleChip
-                key={category}
-                value={category}
-                label={getCategoryLabelByValue(
-                  category as Category,
-                  i18n.language as 'en' | 'nl' | 'fr' | 'ar' | 'tr'
-                )}
-                selected={selectedCategories.includes(category)}
-                disabled={
-                  (formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess
-                }
-                color={PANEL_COLORS.step4}
-                onToggle={handleCategoryToggle}
-                data-testid={`category-${category.toLowerCase()}`}
-              />
-            ))}
-          </div>
-          {getTranslatedError(
-            'categories',
-            isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-          ) ? (
-            <ErrorMessage panelColor={PANEL_COLORS.step4}>
-              {getTranslatedError(
-                'categories',
-                isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
-              )}
-            </ErrorMessage>
-          ) : null}
+          <ToggleChipsField
+            items={categories}
+            type='categories'
+            selectedValues={selectedCategories}
+            onToggle={handleCategoryToggle}
+            label={`${t('tournaments.form.selectCategories')} (${selectedCategories.length} ${t('tournaments.form.selected')})`}
+            error={getTranslatedError(
+              'categories',
+              isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+            )}
+            required
+            disabled={(formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess}
+            color={PANEL_COLORS.step4}
+            language={i18n.language}
+          />
         </Panel>
 
         {/* Submit Button */}
@@ -425,7 +442,7 @@ export function TournamentForm({
             color='brand'
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
-            {t('common.actions.reset')}
+            {t('common.actions.cancel')}
           </ActionButton>
 
           <ActionButton

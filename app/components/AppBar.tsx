@@ -13,6 +13,7 @@ import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
 import { breakpoints } from '~/utils/breakpoints'
 import { IconName, renderIcon } from '~/utils/iconUtils'
+import { hasAdminPanelAccess } from '~/utils/rbac'
 import { usePageTitle } from '~/utils/route-utils'
 import {
   getArabicTextClass,
@@ -50,8 +51,11 @@ export function AppBar({
   const isAuthenticated =
     signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
-  // Check if user is admin
+  // Check if user is admin (ADMIN role only)
   const isAdmin = user?.role === 'ADMIN'
+
+  // Check if user has admin panel access (ADMIN, MANAGER, or REFEREE)
+  const userHasAdminPanelAccess = hasAdminPanelAccess(user || null)
 
   // Handle sign-in
   const handleSignIn = useCallback(() => {
@@ -70,7 +74,7 @@ export function AppBar({
   const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
-    // Tournaments - only show for admin users, first item
+    // Tournaments - only show for admin users (not referees), first item
     ...(isAdmin
       ? [
           {
@@ -94,8 +98,8 @@ export function AppBar({
       divider: true,
       authenticated: false,
     },
-    // Admin Panel - only show for admin users, after Teams
-    ...(isAdmin
+    // Admin Panel - show for admin panel access (admin, manager, referee)
+    ...(userHasAdminPanelAccess
       ? [
           {
             label: t('common.titles.adminPanel'),

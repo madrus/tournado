@@ -104,11 +104,12 @@ export type TournamentFilterOption = {
 export type DivisionObject = {
   value: string
   labels: {
-    en: string
     nl: string
+    en: string
+    de: string
+    fr: string
     ar: string
     tr: string
-    fr: string
   }
   order: number
 }
@@ -123,11 +124,12 @@ export type DivisionObject = {
 export type CategoryObject = {
   value: string
   labels: {
-    en: string
     nl: string
+    en: string
+    de: string
+    fr: string
     ar: string
     tr: string
-    fr: string
   }
   order: number
   ageGroup?: {

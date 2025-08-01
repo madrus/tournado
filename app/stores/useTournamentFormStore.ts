@@ -63,13 +63,14 @@ type Actions = {
   ) => void
 
   // Convenience methods for common operations
-  setFormData: (formData: Partial<FlexibleTournamentFormData>) => void
+  clearAllErrors: () => void
+  clearFieldError: (fieldName: string) => void
+  clearSessionStorage: () => void
   resetForm: () => void
+  resetStoreState: () => void
   setFieldBlurred: (fieldName: string, blurred?: boolean) => void
   setFieldError: (fieldName: string, error: string) => void
-  clearFieldError: (fieldName: string) => void
-  clearAllErrors: () => void
-  resetStoreState: () => void
+  setFormData: (formData: Partial<FlexibleTournamentFormData>) => void
   updateAvailableOptions: () => void
 
   // Get current form data
@@ -115,6 +116,11 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
           ...initialStoreState,
           resetStoreState: () => {
             set(initialStoreState, false, 'resetStoreState')
+            get().clearSessionStorage()
+          },
+
+          clearSessionStorage: () => {
+            useTournamentFormStore.persist.clearStorage()
           },
 
           // ===== SETTERS =====
@@ -242,7 +248,7 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
           resetForm: () => {
             set(resetStatePreserving(['availableOptions'], get))
             // Clear the persisted state from session storage to prevent rehydration
-            useTournamentFormStore.persist.clearStorage()
+            get().clearSessionStorage()
           },
 
           setFieldBlurred: (fieldName: string, blurred = true) => {

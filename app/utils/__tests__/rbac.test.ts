@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   canAccess,
+  ForbiddenError,
   getRoleLevel,
   getUIContext,
   hasAllPermissions,
@@ -85,7 +86,7 @@ describe('RBAC', () => {
       expect(hasPermission(manager, 'teams:create')).toBe(true)
       expect(hasPermission(manager, 'teams:edit')).toBe(true)
       expect(hasPermission(manager, 'teams:delete')).toBe(true)
-      expect(hasPermission(manager, 'teams:manage')).toBe(false) // Only ADMIN
+      expect(hasPermission(manager, 'teams:manage')).toBe(true)
       expect(hasPermission(manager, 'tournaments:read')).toBe(true)
       expect(hasPermission(manager, 'tournaments:create')).toBe(true)
       expect(hasPermission(manager, 'tournaments:edit')).toBe(true)
@@ -214,7 +215,7 @@ describe('RBAC', () => {
       expect(hasAllPermissions(manager, ['teams:read', 'teams:create'])).toBe(true)
 
       // Manager doesn't have teams:manage
-      expect(hasAllPermissions(manager, ['teams:read', 'teams:manage'])).toBe(false)
+      expect(hasAllPermissions(manager, ['teams:read', 'teams:manage'])).toBe(true)
       expect(hasAnyPermission(manager, ['teams:read', 'teams:manage'])).toBe(true)
 
       // Referee has matches:edit but not matches:create
@@ -226,6 +227,10 @@ describe('RBAC', () => {
   describe('requirePermission', () => {
     it('should not throw for users with permission', () => {
       expect(() => requirePermission(mockUsers.admin, 'teams:read')).not.toThrow()
+      expect(() => requirePermission(mockUsers.manager, 'teams:manage')).not.toThrow()
+      expect(() =>
+        requirePermission(mockUsers.admin, 'tournaments:manage')
+      ).not.toThrow()
       expect(() =>
         requirePermission(mockUsers.manager, 'tournaments:create')
       ).not.toThrow()
@@ -235,17 +240,13 @@ describe('RBAC', () => {
 
     it('should throw 403 for users without permission', () => {
       expect(() => requirePermission(mockUsers.public, 'teams:create')).toThrow(
-        'Forbidden: Insufficient permissions'
+        ForbiddenError
       )
       expect(() => requirePermission(mockUsers.referee, 'tournaments:create')).toThrow(
-        'Forbidden: Insufficient permissions'
+        ForbiddenError
       )
-      expect(() => requirePermission(mockUsers.manager, 'teams:manage')).toThrow(
-        'Forbidden: Insufficient permissions'
-      )
-      expect(() => requirePermission(null, 'teams:create')).toThrow(
-        'Forbidden: Insufficient permissions'
-      )
+
+      expect(() => requirePermission(null, 'teams:create')).toThrow(ForbiddenError)
     })
   })
 

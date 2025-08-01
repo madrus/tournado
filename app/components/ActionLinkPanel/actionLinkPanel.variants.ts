@@ -37,6 +37,7 @@ export const actionLinkPanelVariants = cva(
   [
     'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
     'transition-colors duration-750 ease-in-out',
+    'flex flex-col', // Add flex-col to make it a flex container
   ],
   {
     variants: {
@@ -98,33 +99,50 @@ export const panelBackgroundVariants = cva(
 )
 
 // Layer variants for panel content layers
-export const panelLayerVariants = cva(
+export const panelLayerPositioningVariants = cva(
   // Base classes for panel layers
-  ['relative z-20 transition-opacity duration-750 ease-in-out'],
+  ['flex flex-col h-full'],
   {
     variants: {
       isHover: {
-        true: 'absolute inset-0 z-30 opacity-0 group-hover:opacity-100',
+        true: 'absolute inset-0 z-30 panel-hover-layer',
         false: 'relative z-20',
       },
-      hasHoverColor: {
-        true: 'group-hover:opacity-0',
+    },
+    defaultVariants: {
+      isHover: false,
+    },
+  }
+)
+
+export const panelLayerOpacityVariants = cva(
+  ['transition-opacity duration-750 ease-in-out'],
+  {
+    variants: {
+      isHover: {
+        true: 'opacity-0 group-hover:opacity-100',
+        false: '',
+      },
+      isBaseLayerWithHoverColor: {
+        true: 'group-hover:opacity-0 panel-base-layer',
         false: '',
       },
     },
     compoundVariants: [
       {
         isHover: false,
-        hasHoverColor: true,
-        class: 'group-hover:opacity-0',
+        isBaseLayerWithHoverColor: true,
+        class: 'group-hover:opacity-0 panel-base-layer',
       },
     ],
     defaultVariants: {
       isHover: false,
-      hasHoverColor: false,
+      isBaseLayerWithHoverColor: false,
     },
   }
 )
+
+// Layer variants for panel content layers
 
 // ============================================================================
 // ACTIONLINKPANEL COMPONENT-SPECIFIC VARIANTS
@@ -268,12 +286,6 @@ export type ActionLinkPanelVariants = VariantProps<typeof actionLinkPanelVariant
  * Use this for panel background layer styling options.
  */
 export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariants>
-
-/**
- * Type definition for panelLayerVariants props.
- * Use this for panel layer positioning options.
- */
-export type PanelLayerVariants = VariantProps<typeof panelLayerVariants>
 
 /**
  * Type definition for actionLinkPanelGlowVariants props.

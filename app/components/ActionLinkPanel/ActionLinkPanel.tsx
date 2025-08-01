@@ -9,6 +9,7 @@ import {
   actionLinkPanelVariants,
   panelBackgroundVariants,
 } from './actionLinkPanel.variants'
+import ErrorBoundary from './ErrorBoundary'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'
 
@@ -42,55 +43,57 @@ export function ActionLinkPanel({
   const typographyClasses = getTypographyClasses(language)
 
   const panel = (
-    <div
-      className={cn(
-        actionLinkPanelVariants({
-          color: mainColor,
-        }),
-        className
-      )}
-      onClick={onClick}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      aria-label={`${title} panel`}
-    >
-      {/* Stable background layer */}
-      <PanelBackground
-        backgroundColor={panelBackgroundVariants({ color: mainColor })}
-        data-testid='panel-background'
-      />
-
-      {/* Base panel layer (normal flow) */}
-      <PanelLayer
-        title={title}
-        description={description}
-        icon={icon}
-        iconColor={iconColor} // always pass ColorAccent, not a Tailwind class string
-        mainColor={mainColor}
-        hoverColor={hoverColor}
-        textAlign={typographyClasses.textAlign}
-        data-testid='main-panel-layer'
+    <ErrorBoundary>
+      <div
+        className={cn(
+          actionLinkPanelVariants({
+            color: mainColor,
+          }),
+          className
+        )}
+        onClick={onClick}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        aria-label={`${title} panel`}
       >
-        {children}
-      </PanelLayer>
+        {/* Stable background layer */}
+        <PanelBackground
+          backgroundColor={panelBackgroundVariants({ color: mainColor })}
+          data-testid='panel-background'
+        />
 
-      {/* Hover overlay panel - absolutely positioned overlay */}
-      {hoverColor ? (
+        {/* Base panel layer (normal flow) */}
         <PanelLayer
           title={title}
           description={description}
           icon={icon}
-          iconColor={iconColor} // keep original iconColor for consistency
+          iconColor={iconColor} // always pass ColorAccent, not a Tailwind class string
           mainColor={mainColor}
           hoverColor={hoverColor}
-          isHover
           textAlign={typographyClasses.textAlign}
-          data-testid='hover-panel-layer'
+          data-testid='main-panel-layer'
         >
           {children}
         </PanelLayer>
-      ) : null}
-    </div>
+
+        {/* Hover overlay panel - absolutely positioned overlay */}
+        {hoverColor ? (
+          <PanelLayer
+            title={title}
+            description={description}
+            icon={icon}
+            iconColor={iconColor} // keep original iconColor for consistency
+            mainColor={mainColor}
+            hoverColor={hoverColor}
+            isHover
+            textAlign={typographyClasses.textAlign}
+            data-testid='hover-panel-layer'
+          >
+            {children}
+          </PanelLayer>
+        ) : null}
+      </div>
+    </ErrorBoundary>
   )
 
   if (to) {

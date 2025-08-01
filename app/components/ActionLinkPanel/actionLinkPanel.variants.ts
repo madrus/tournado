@@ -143,33 +143,6 @@ export const panelLayerOpacityVariants = cva(
 )
 
 // Layer variants for panel content layers
-export const panelLayerVariants = cva(
-  // Base classes for panel layers
-  ['relative z-20 transition-opacity duration-750 ease-in-out'],
-  {
-    variants: {
-      isHover: {
-        true: 'absolute inset-0 z-30 opacity-0 group-hover:opacity-100',
-        false: 'relative z-20',
-      },
-      hasHoverColor: {
-        true: 'group-hover:opacity-0',
-        false: '',
-      },
-    },
-    compoundVariants: [
-      {
-        isHover: false,
-        hasHoverColor: true,
-        class: 'group-hover:opacity-0',
-      },
-    ],
-    defaultVariants: {
-      isHover: false,
-      hasHoverColor: false,
-    },
-  }
-)
 
 // ============================================================================
 // ACTIONLINKPANEL COMPONENT-SPECIFIC VARIANTS
@@ -313,12 +286,6 @@ export type ActionLinkPanelVariants = VariantProps<typeof actionLinkPanelVariant
  * Use this for panel background layer styling options.
  */
 export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariants>
-
-/**
- * Type definition for panelLayerVariants props.
- * Use this for panel layer positioning options.
- */
-export type PanelLayerVariants = VariantProps<typeof panelLayerVariants>
 
 /**
  * Type definition for actionLinkPanelGlowVariants props.

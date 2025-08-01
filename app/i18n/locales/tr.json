@@ -1,5 +1,9 @@
 {
   "admin": {
+    "panel": {
+      "title": "Yönetici Paneli",
+      "description": "Tekrar hoş geldiniz, <email>{{email}}</email>. Turnuva platformunuzu buradan yönetin."
+    },
     "teams": {
       "allTeams": "Tüm takımlar",
       "allTeamsDescription": "Sistemdeki tüm takımları yönetin. Detayları düzenlemek veya silmek için bir takıma tıklayın.",

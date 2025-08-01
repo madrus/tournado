@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -19,7 +19,7 @@ import { cn } from '~/utils/misc'
 import { hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
 
@@ -55,7 +55,7 @@ export const meta: MetaFunction = () => [
 
 export const handle: RouteMetadata = {
   isPublic: false,
-  title: 'Admin Panel',
+  title: 'common.titles.adminPanel',
   auth: {
     required: true,
     redirectTo: '/auth/signin',
@@ -82,6 +82,9 @@ export default function AdminDashboard(): JSX.Element {
   const { user, teams, tournaments } = useLoaderData<LoaderData>()
   const { t, i18n } = useTranslation()
 
+  // Get typography classes for Arabic support
+  const typography = getTypographyClasses(i18n.language)
+
   // Check user permissions for conditional rendering
   const canManageTeams = hasPermission(user, 'teams:manage')
   const canManageTournaments = hasPermission(user, 'tournaments:manage')
@@ -93,12 +96,24 @@ export default function AdminDashboard(): JSX.Element {
     <div className='space-y-8' data-testid='admin-dashboard-container'>
       <div>
         <h1
-          className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}
+          className={cn(
+            'mb-8 text-3xl font-bold',
+            typography.title,
+            typography.textAlign
+          )}
         >
-          Admin Panel
+          {t('common.titles.adminPanel')}
         </h1>
-        <p className='text-foreground mb-8'>
-          Welcome back, {user.email}. Manage your tournament platform from here.
+        <p
+          className={cn('text-foreground mb-8 text-lg leading-7', typography.textAlign)}
+        >
+          <Trans
+            i18nKey='admin.panel.description'
+            values={{ email: user.email }}
+            components={{
+              email: <span className={getLatinTitleClass(i18n.language)} />,
+            }}
+          />
         </p>
       </div>
 

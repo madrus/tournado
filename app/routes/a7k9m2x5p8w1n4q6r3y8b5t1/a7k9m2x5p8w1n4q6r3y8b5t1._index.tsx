@@ -86,6 +86,8 @@ export default function AdminDashboard(): JSX.Element {
   const canManageTeams = hasPermission(user, 'teams:manage')
   const canManageTournaments = hasPermission(user, 'tournaments:manage')
   const canRefereeMatches = hasPermission(user, 'matches:referee')
+  const canAccessSystemSettings = hasPermission(user, 'system:settings')
+  const canViewReports = hasPermission(user, 'system:reports')
 
   return (
     <div className='space-y-8' data-testid='admin-dashboard-container'>
@@ -187,8 +189,8 @@ export default function AdminDashboard(): JSX.Element {
           </div>
         </ActionLinkPanel>
 
-        {/* Panel 5 - System Settings (for ADMIN and MANAGER) */}
-        {canManageTeams ? (
+        {/* Panel 5 - System Settings (for ADMIN only) */}
+        {canAccessSystemSettings ? (
           <ActionLinkPanel
             title='System Settings'
             description='Configure application settings and preferences.'
@@ -201,7 +203,7 @@ export default function AdminDashboard(): JSX.Element {
         ) : null}
 
         {/* Panel 6 - Reports & Analytics (for ADMIN and MANAGER) */}
-        {canManageTeams ? (
+        {canViewReports ? (
           <ActionLinkPanel
             title='Reports & Analytics'
             description='View platform usage and tournament statistics.'

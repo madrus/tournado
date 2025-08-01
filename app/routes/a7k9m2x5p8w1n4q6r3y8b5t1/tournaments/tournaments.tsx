@@ -4,7 +4,7 @@ import { Outlet } from 'react-router'
 
 import { ActionLinkButton } from '~/components/buttons'
 import { cn } from '~/utils/misc'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 // Route metadata - authenticated users can access
@@ -42,6 +42,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
               variant='primary'
               color='brand'
               className='min-w-32'
+              permission='tournaments:create'
             />
           </div>
         </div>

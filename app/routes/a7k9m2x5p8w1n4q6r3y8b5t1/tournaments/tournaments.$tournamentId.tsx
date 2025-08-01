@@ -15,8 +15,8 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
-import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/tournaments.$tournamentId'
 

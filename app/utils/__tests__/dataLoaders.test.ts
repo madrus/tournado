@@ -7,7 +7,7 @@ import {
   type TournamentListItem,
 } from '~/models/tournament.server'
 
-import { loadTeamsData } from '../teams.server'
+import { loadTeamsAndTournamentsData } from '../dataLoaders'
 
 // Mock the dependencies
 vi.mock('~/models/tournament.server')
@@ -20,12 +20,12 @@ const mockGetFilteredTeamListItems = getFilteredTeamListItems as MockedFunction<
   typeof getFilteredTeamListItems
 >
 
-describe('teams.server', () => {
+describe('dataLoaders', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  describe('loadTeamsData', () => {
+  describe('loadTeamsAndTournamentsData', () => {
     const mockTournamentListItems: TournamentListItem[] = [
       {
         id: 'tournament-1',
@@ -76,7 +76,7 @@ describe('teams.server', () => {
       mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
 
       const request = createMockRequest()
-      const result = await loadTeamsData(request)
+      const result = await loadTeamsAndTournamentsData(request)
 
       expect(mockGetAllTournamentListItems).toHaveBeenCalledTimes(1)
       expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({
@@ -97,7 +97,7 @@ describe('teams.server', () => {
       mockGetFilteredTeamListItems.mockResolvedValue(filteredTeams)
 
       const request = createMockRequest(tournamentId)
-      const result = await loadTeamsData(request)
+      const result = await loadTeamsAndTournamentsData(request)
 
       expect(mockGetAllTournamentListItems).toHaveBeenCalledTimes(1)
       expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({ tournamentId })
@@ -113,7 +113,7 @@ describe('teams.server', () => {
       mockGetFilteredTeamListItems.mockResolvedValue([])
 
       const request = createMockRequest()
-      const result = await loadTeamsData(request)
+      const result = await loadTeamsAndTournamentsData(request)
 
       expect(result).toEqual({
         teamListItems: [],
@@ -127,7 +127,9 @@ describe('teams.server', () => {
       mockGetAllTournamentListItems.mockRejectedValue(dbError)
 
       const request = createMockRequest()
-      await expect(loadTeamsData(request)).rejects.toThrow('Database connection failed')
+      await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow(
+        'Database connection failed'
+      )
     })
 
     it('should handle team loading errors gracefully', async () => {
@@ -136,7 +138,9 @@ describe('teams.server', () => {
       mockGetFilteredTeamListItems.mockRejectedValue(teamError)
 
       const request = createMockRequest()
-      await expect(loadTeamsData(request)).rejects.toThrow('Failed to load teams')
+      await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow(
+        'Failed to load teams'
+      )
     })
 
     it('should call functions in parallel for performance', async () => {
@@ -156,7 +160,7 @@ describe('teams.server', () => {
       })
 
       const request = createMockRequest()
-      await loadTeamsData(request)
+      await loadTeamsAndTournamentsData(request)
 
       // Both calls should start roughly at the same time (within 5ms)
       expect(Math.abs(tournamentsCallTime! - teamsCallTime!)).toBeLessThan(5)
@@ -170,7 +174,7 @@ describe('teams.server', () => {
         mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
 
         const request = createMockRequest()
-        const result = await loadTeamsData(request)
+        const result = await loadTeamsAndTournamentsData(request)
 
         expect(result.tournamentListItems).toBe(null)
         expect(result.teamListItems).toEqual(mockTeamListItems)
@@ -183,7 +187,7 @@ describe('teams.server', () => {
         )
 
         const request = createMockRequest()
-        const result = await loadTeamsData(request)
+        const result = await loadTeamsAndTournamentsData(request)
 
         expect(result.tournamentListItems).toEqual(mockTournamentListItems)
         expect(result.teamListItems).toBe(null)
@@ -194,7 +198,7 @@ describe('teams.server', () => {
         mockGetFilteredTeamListItems.mockResolvedValue([])
 
         const request = createMockRequest('')
-        const result = await loadTeamsData(request)
+        const result = await loadTeamsAndTournamentsData(request)
 
         expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({
           tournamentId: undefined,
@@ -214,7 +218,7 @@ describe('teams.server', () => {
         const request = new Request(
           'http://localhost:3000/teams?tournament=1&tournament=2'
         )
-        const result = await loadTeamsData(request)
+        const result = await loadTeamsAndTournamentsData(request)
 
         // Should use the first tournament parameter
         expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({ tournamentId: '1' })

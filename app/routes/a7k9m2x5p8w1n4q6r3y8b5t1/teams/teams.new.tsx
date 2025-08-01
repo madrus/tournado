@@ -12,9 +12,9 @@ import { TeamForm } from '~/components/TeamForm'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import type { User } from '~/models/user.server'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
-import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
-import { createTeamFromFormData } from '~/utils/team-creation.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 // Route metadata - authenticated users can access (team creation is also public via /teams/new)
 export const handle: RouteMetadata = {

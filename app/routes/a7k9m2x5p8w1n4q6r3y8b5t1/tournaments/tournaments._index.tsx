@@ -23,7 +23,7 @@ import {
 } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/tournaments._index'

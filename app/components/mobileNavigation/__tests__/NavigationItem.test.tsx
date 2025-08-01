@@ -5,7 +5,7 @@ import { render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { IconName } from '~/utils/iconUtils'
-import { normalizePathname } from '~/utils/route-utils'
+import { normalizePathname } from '~/utils/routeUtils'
 
 import NavigationItem from '../NavigationItem'
 

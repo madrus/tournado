@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import * as formValidation from '~/utils/formValidation'
+
 import { useTournamentFormStore } from '../useTournamentFormStore'
 
 // Mock the form validation utilities
-vi.mock('~/utils/form-validation', () => ({
+vi.mock('~/utils/formValidation', () => ({
   validateSingleTournamentField: vi.fn(() => null),
   validateEntireTournamentForm: vi.fn(() => ({})),
 }))
@@ -133,10 +135,9 @@ describe('useTournamentFormStore', () => {
   describe('Reactive Validation System', () => {
     it('should validate field immediately when touched', async () => {
       // Mock validation to return error for empty field
-      const { validateSingleTournamentField } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
-      vi.mocked(validateSingleTournamentField).mockReturnValue(
+      const validateSingleTournamentField =
+        formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
+      validateSingleTournamentField.mockReturnValue(
         'tournaments.form.errors.nameRequired'
       )
 
@@ -160,10 +161,9 @@ describe('useTournamentFormStore', () => {
 
     it('should validate field when forceShowAllErrors is true', async () => {
       // Mock validation to return error
-      const { validateSingleTournamentField } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
-      vi.mocked(validateSingleTournamentField).mockReturnValue(
+      const validateSingleTournamentField =
+        formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
+      validateSingleTournamentField.mockReturnValue(
         'tournaments.form.errors.nameRequired'
       )
 
@@ -179,10 +179,9 @@ describe('useTournamentFormStore', () => {
 
     it('should validate field when submitAttempted is true', async () => {
       // Mock validation to return error
-      const { validateSingleTournamentField } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
-      vi.mocked(validateSingleTournamentField).mockReturnValue(
+      const validateSingleTournamentField =
+        formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
+      validateSingleTournamentField.mockReturnValue(
         'tournaments.form.errors.nameRequired'
       )
 
@@ -198,10 +197,9 @@ describe('useTournamentFormStore', () => {
 
     it('should clear error when field becomes valid', async () => {
       // Mock validation to first return error, then null
-      const { validateSingleTournamentField } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
-      vi.mocked(validateSingleTournamentField).mockReturnValueOnce(
+      const validateSingleTournamentField =
+        formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
+      validateSingleTournamentField.mockReturnValueOnce(
         'tournaments.form.errors.nameRequired'
       )
 
@@ -212,7 +210,7 @@ describe('useTournamentFormStore', () => {
       )
 
       // Mock validation to return null for valid value
-      vi.mocked(validateSingleTournamentField).mockReturnValueOnce(null)
+      validateSingleTournamentField.mockReturnValueOnce(null)
 
       // Set valid value and validate again
       state().setFormField('name', 'Valid Tournament')
@@ -226,9 +224,8 @@ describe('useTournamentFormStore', () => {
   describe('Form Validation as Collection of Field Validations', () => {
     it('should validate entire form and show all required field errors', async () => {
       // Mock form validation to return errors for required fields
-      const { validateEntireTournamentForm } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
+      const validateEntireTournamentForm =
+        formValidation.validateEntireTournamentForm as ReturnType<typeof vi.fn>
       const mockErrors = {
         name: 'tournaments.form.errors.nameRequired',
         location: 'tournaments.form.errors.locationRequired',
@@ -236,7 +233,7 @@ describe('useTournamentFormStore', () => {
         divisions: 'tournaments.form.errors.divisionsRequired',
         categories: 'tournaments.form.errors.categoriesRequired',
       }
-      vi.mocked(validateEntireTournamentForm).mockReturnValue(mockErrors)
+      validateEntireTournamentForm.mockReturnValue(mockErrors)
 
       // Form with missing required fields should be invalid
       const isValid = state().validateForm()
@@ -265,10 +262,9 @@ describe('useTournamentFormStore', () => {
 
     it('should validate form as valid when all required fields are filled', async () => {
       // Mock form validation to return no errors
-      const { validateEntireTournamentForm } = vi.mocked(
-        await import('~/utils/form-validation')
-      )
-      vi.mocked(validateEntireTournamentForm).mockReturnValue({})
+      const validateEntireTournamentForm =
+        formValidation.validateEntireTournamentForm as ReturnType<typeof vi.fn>
+      validateEntireTournamentForm.mockReturnValue({})
 
       // Fill all required fields
       state().setFormField('name', 'Test Tournament')

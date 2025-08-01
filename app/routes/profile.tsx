@@ -6,8 +6,8 @@ import type { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { cn } from '~/utils/misc'
-import type { RouteMetadata } from '~/utils/route-types'
-import { requireUserWithMetadata } from '~/utils/route-utils.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/profile'

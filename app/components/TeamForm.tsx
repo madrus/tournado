@@ -641,6 +641,7 @@ export function TeamForm({
                 color='emerald'
                 icon='add'
                 label={t('teams.form.createAnotherTeam')}
+                permission='teams:create'
               />
             ) : null}
             <ActionButton
@@ -649,11 +650,12 @@ export function TeamForm({
               color='brand'
               icon='check_circle'
               aria-label={t('common.actions.save')}
+              permission={formMode === 'edit' ? 'teams:edit' : 'teams:create'}
               disabled={
                 isSubmitting ||
                 isPublicSuccess ||
                 !isFormReadyForSubmission() ||
-                (mode === 'edit' && !isDirty())
+                (formMode === 'edit' && !isDirty())
               }
             >
               {isSubmitting

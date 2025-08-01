@@ -8,7 +8,7 @@ import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { sendConfirmationEmail } from '~/utils/email.server'
-import { validateEntireTeamForm } from '~/utils/form-validation'
+import { validateEntireTeamForm } from '~/utils/formValidation'
 
 type TeamCreationSuccess = {
   success: true

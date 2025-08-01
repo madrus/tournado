@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { scrollLogic } from '../dom-utils'
+import { scrollLogic } from '../domUtils'
 
 describe('scrollLogic', () => {
   describe('shouldShowHeader', () => {

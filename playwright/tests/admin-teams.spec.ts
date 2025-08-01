@@ -6,8 +6,7 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 // Admin Teams Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Teams', () => {
   test.beforeEach(async ({ page }) => {
-    // Set mobile viewport
-    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   })
 
   test('should display admin teams management page', async ({ page }) => {
@@ -65,5 +64,12 @@ test.describe('Admin Teams', () => {
 
     // Should navigate to teams page
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+  })
+
+  test('should display "Toevoegen" link for admin users on admin teams page', async ({
+    page,
+  }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
   })
 })

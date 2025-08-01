@@ -13,8 +13,8 @@ import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import { isRateLimitResponse, withAdminRateLimit } from '~/utils/adminMiddleware.server'
-import type { RouteMetadata } from '~/utils/route-types'
-import { createTeamFromFormData } from '~/utils/team-creation.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 export const meta: MetaFunction = () => [
   { title: 'New Team | Tournado' },

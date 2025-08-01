@@ -7,10 +7,10 @@ import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
+import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 
@@ -39,7 +39,7 @@ export const meta: MetaFunction = () => [
 ]
 
 export const loader = async ({ request }: Route.LoaderArgs): Promise<TeamsLoaderData> =>
-  loadTeamsData(request)
+  loadTeamsAndTournamentsData(request)
 
 export default function PublicTeamsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()

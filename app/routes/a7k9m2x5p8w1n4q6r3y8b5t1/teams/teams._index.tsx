@@ -9,11 +9,11 @@ import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
 import { deleteTeamById } from '~/models/team.server'
+import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
-import { loadTeamsData } from '~/utils/teams.server'
 
 import type { Route } from './+types/teams._index'
 
@@ -49,7 +49,7 @@ export const meta: MetaFunction = () => [
 
 export async function loader({ request }: Route.LoaderArgs): Promise<TeamsLoaderData> {
   await requireUserWithMetadata(request, handle)
-  return loadTeamsData(request)
+  return loadTeamsAndTournamentsData(request)
 }
 
 export async function action({ request }: Route.ActionArgs): Promise<Response> {

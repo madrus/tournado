@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
-import { scanFlatRoutes } from '../flat-routes'
+import { scanFlatRoutes } from '../flatRoutes'
 
 // Mock glob with factory function
 vi.mock('glob', () => ({

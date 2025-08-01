@@ -14,7 +14,7 @@ import type { Division } from '~/db.server'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { getTeamById } from '~/models/team.server'
 import { cn } from '~/utils/misc'
-import type { RouteMetadata } from '~/utils/route-types'
+import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/teams.$teamId'

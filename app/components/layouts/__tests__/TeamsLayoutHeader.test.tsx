@@ -2,7 +2,7 @@ import { MemoryRouter } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { TeamsLayoutHeader } from '../TeamsLayoutHeader'
 
@@ -26,7 +26,12 @@ vi.mock('react-i18next', () => ({
 }))
 
 // Mock user utilities for permission testing
-vi.mock('~/utils/utils', () => ({
+vi.mock('~/utils/routeUtils', () => ({
+  useOptionalUserWithFallback: () => ({
+    id: 'test-user-id',
+    email: 'test@example.com',
+    role: 'ADMIN', // Give full permissions for tests
+  }),
   useOptionalUser: () => ({
     id: 'test-user-id',
     email: 'test@example.com',

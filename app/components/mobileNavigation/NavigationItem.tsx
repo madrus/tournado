@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router'
 
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { IconName, renderIcon } from '~/utils/iconUtils'
-import { normalizePathname } from '~/utils/route-utils'
+import { normalizePathname } from '~/utils/routeUtils'
 
 import {
   navigationIconVariants,

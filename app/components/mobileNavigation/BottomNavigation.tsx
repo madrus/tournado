@@ -5,7 +5,7 @@ import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 import { canAccess } from '~/utils/rbac'
-import { useOptionalUser } from '~/utils/utils'
+import { useOptionalUserWithFallback } from '~/utils/routeUtils'
 
 import NavigationItem from './NavigationItem'
 
@@ -32,17 +32,11 @@ function BottomNavigation(): JSX.Element {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Get current user from root loader data (with fallback for tests)
-  let user = null
-  try {
-    user = useOptionalUser()
-  } catch (_error) {
-    // Fallback for test environments or when router context is not available
-    user = null
-  }
+  // Get current user with fallback handling
+  const user = useOptionalUserWithFallback()
 
   // Check user permissions
-  const canManageTeams = canAccess(user || null, 'teams:manage')
+  const canManageTeams = canAccess(user, 'teams:manage')
 
   // Define navigation items with role-based URLs
   const navigationItems: Array<{ to: string; icon: IconName; label: string }> = [

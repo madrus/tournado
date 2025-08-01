@@ -17,7 +17,7 @@ vi.mock('~/lib/lib.zod', () => ({
   extractTeamDataFromFormData: vi.fn(),
 }))
 
-vi.mock('~/utils/form-validation', () => ({
+vi.mock('~/utils/formValidation', () => ({
   validateEntireTeamForm: vi.fn(),
 }))
 
@@ -38,16 +38,16 @@ vi.mock('~/db.server', () => ({
   },
 }))
 
-const { createTeamFromFormData } = await import('../team-creation.server')
+const { createTeamFromFormData } = await import('../teamCreation.server')
 const { sendConfirmationEmail } = await import('~/utils/email.server')
 const { getTournamentById } = await import('~/models/tournament.server')
 const { createTeam } = await import('~/models/team.server')
 const { extractTeamDataFromFormData } = await import('~/lib/lib.zod')
-const { validateEntireTeamForm } = await import('~/utils/form-validation')
+const { validateEntireTeamForm } = await import('~/utils/formValidation')
 const { stringToDivision, stringToCategory } = await import('~/lib/lib.helpers')
 const { prisma } = await import('~/db.server')
 
-describe('team-creation.server - createTeamFromFormData', () => {
+describe('teamCreation.server - createTeamFromFormData', () => {
   const mockFormData = new FormData()
   mockFormData.append('name', 'Ajax Amsterdam')
   mockFormData.append('clubName', 'Ajax')

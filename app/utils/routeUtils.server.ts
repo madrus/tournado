@@ -2,7 +2,7 @@ import { redirect } from 'react-router'
 
 import type { User } from '~/models/user.server'
 
-import type { RouteMetadata } from './route-types'
+import type { RouteMetadata } from './routeTypes'
 
 /**
  * A server-side utility to determine if a route is public

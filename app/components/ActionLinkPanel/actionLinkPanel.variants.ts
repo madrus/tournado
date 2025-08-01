@@ -101,12 +101,12 @@ export const panelBackgroundVariants = cva(
 // Layer variants for panel content layers
 export const panelLayerPositioningVariants = cva(
   // Base classes for panel layers
-  ['relative z-20 flex flex-col h-full'],
+  ['flex flex-col h-full'],
   {
     variants: {
       isHover: {
         true: 'absolute inset-0 z-30 panel-hover-layer',
-        false: '',
+        false: 'relative z-20',
       },
     },
     defaultVariants: {

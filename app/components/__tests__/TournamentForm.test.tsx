@@ -77,8 +77,8 @@ vi.mock('react-i18next', () => ({
 }))
 
 // Mock user utilities for permission testing
-vi.mock('~/utils/utils', () => ({
-  useOptionalUser: () => ({
+vi.mock('~/utils/routeUtils', () => ({
+  useUser: () => ({
     id: 'test-user-id',
     email: 'test@example.com',
     role: 'ADMIN', // Give full permissions for tests

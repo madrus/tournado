@@ -1,5 +1,9 @@
 {
   "admin": {
+    "panel": {
+      "title": "Admin-Panel",
+      "description": "Willkommen zurück, <email>{{email}}</email>. Verwalten Sie Ihre Turnierplattform von hier aus."
+    },
     "teams": {
       "allTeams": "Alle Teams",
       "allTeamsDescription": "Verwalten Sie alle Teams im System. Klicken Sie auf ein Team, um Details zu bearbeiten oder es zu löschen.",

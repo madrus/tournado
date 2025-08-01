@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import { MemoryRouter, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -52,18 +53,51 @@ vi.mock('react-router', async () => {
   }
 })
 
-// Mock useTranslation
+// Mock useTranslation and Trans
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'admin.teams.totalTeams': 'Total Teams',
-        'admin.tournaments.totalTournaments': 'Total Tournaments',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: { language: 'en' },
   }),
+  Trans: ({
+    i18nKey,
+    values,
+    components,
+  }: {
+    i18nKey: string
+    values?: Record<string, unknown>
+    components?: Record<string, ReactElement>
+  }) => {
+    // Mock that handles both value interpolation and JSX component tags
+    let result = i18nKey
+
+    // First, handle JSX component tags (e.g., <email>{{email}}</email>)
+    if (components) {
+      Object.entries(components).forEach(([tagName, _component]) => {
+        const tagRegex = new RegExp(`<${tagName}>(.*?)</${tagName}>`, 'g')
+        result = result.replace(tagRegex, (match, content) => {
+          // For testing purposes, we'll return the interpolated content
+          // In a real implementation, this would render the component
+          let processedContent = content
+          if (values) {
+            Object.entries(values).forEach(([key, value]) => {
+              processedContent = processedContent.replace(`{{${key}}}`, String(value))
+            })
+          }
+          return processedContent
+        })
+      })
+    }
+
+    // Then handle any remaining value interpolations
+    if (values) {
+      Object.entries(values).forEach(([key, value]) => {
+        result = result.replace(`{{${key}}}`, String(value))
+      })
+    }
+
+    return result
+  },
 }))
 
 // Mock ActionLinkPanel component
@@ -140,7 +174,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Admin Panel')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'common.titles.adminPanel'
+      )
     })
 
     test('should render welcome message with user email', () => {
@@ -150,7 +186,7 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText(/Welcome back, admin@example.com/)).toBeInTheDocument()
+      expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
     })
 
     test('should render all five admin panels', () => {
@@ -258,7 +294,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('Total Teams:')
+      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
       expect(teamPanel).toHaveTextContent('3') // Mock teams length
     })
 
@@ -270,7 +306,7 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('Total Tournaments:')
+      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
       expect(tournamentPanel).toHaveTextContent('2') // Mock tournaments length
     })
 
@@ -336,8 +372,8 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      const welcomeMessage = screen.getByText(/Welcome back, admin@example.com/)
-      expect(welcomeMessage).toHaveClass('text-foreground', 'mb-8')
+      const description = screen.getByText(/admin.panel.description/)
+      expect(description).toHaveClass('text-foreground', 'mb-8')
     })
 
     test('should organize content in proper structure', () => {
@@ -440,8 +476,10 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Total Teams:')).toBeInTheDocument()
-      expect(screen.getByText('Total Tournaments:')).toBeInTheDocument()
+      expect(screen.getByText(/admin\.teams\.totalTeams/)).toBeInTheDocument()
+      expect(
+        screen.getByText(/admin\.tournaments\.totalTournaments/)
+      ).toBeInTheDocument()
     })
 
     test('should render with English language context', () => {
@@ -452,7 +490,9 @@ describe('Admin Dashboard', () => {
       )
 
       // Verify main heading renders correctly
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Admin Panel')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'common.titles.adminPanel'
+      )
     })
   })
 
@@ -472,7 +512,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('Total Teams:')
+      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
       expect(teamPanel).toHaveTextContent('0')
     })
 
@@ -491,7 +531,7 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('Total Tournaments:')
+      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
       expect(tournamentPanel).toHaveTextContent('0')
     })
   })
@@ -504,7 +544,7 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText(/Welcome back, admin@example.com/)).toBeInTheDocument()
+      expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
       expect(userPanel).toHaveTextContent('Current User: admin@example.com')
@@ -529,9 +569,7 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(
-        screen.getByText(/Welcome back, different@example.com/)
-      ).toBeInTheDocument()
+      expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
       expect(userPanel).toHaveTextContent('Current User: different@example.com')

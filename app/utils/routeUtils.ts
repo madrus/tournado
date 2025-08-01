@@ -79,31 +79,17 @@ const isUser = (user: unknown): user is User =>
   'email' in user &&
   typeof user.email === 'string'
 
-export function useOptionalUser(): User | null {
-  const useData = useMatchesData('root')
-  if (!useData || !isUser(useData.user)) {
-    return null
-  }
-  return useData.user
-}
-
-export function useUser(): User {
-  const maybeUser = useOptionalUser()
-  if (!maybeUser) {
-    throw new Error(
-      'No user found in root loader, but user is required by useUser. If user is optional, try useOptionalUser instead.'
-    )
-  }
-  return maybeUser
-}
-
 /**
  * Hook that gets the current user with fallback handling for test environments
  * This reduces code duplication in components that need user data with error handling
  */
-export function useOptionalUserWithFallback(): User | null {
+export function useUser(): User | null {
   try {
-    return useOptionalUser()
+    const useData = useMatchesData('root')
+    if (!useData || !isUser(useData.user)) {
+      return null
+    }
+    return useData.user
   } catch (_error) {
     // Fallback for test environments or when router context is not available
     return null

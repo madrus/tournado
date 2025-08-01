@@ -5,7 +5,7 @@ import { useScrollDirection } from '~/hooks/useScrollDirection'
 import { breakpoints } from '~/utils/breakpoints'
 import type { IconName } from '~/utils/iconUtils'
 import { canAccess } from '~/utils/rbac'
-import { useOptionalUserWithFallback } from '~/utils/routeUtils'
+import { useUser } from '~/utils/routeUtils'
 
 import NavigationItem from './NavigationItem'
 
@@ -33,7 +33,7 @@ function BottomNavigation(): JSX.Element {
   }, [])
 
   // Get current user with fallback handling
-  const user = useOptionalUserWithFallback()
+  const user = useUser()
 
   // Check user permissions
   const canManageTeams = canAccess(user, 'teams:manage')

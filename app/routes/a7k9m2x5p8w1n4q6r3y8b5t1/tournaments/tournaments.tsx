@@ -42,6 +42,7 @@ export default function AdminTournamentsLayout(): JSX.Element {
               variant='primary'
               color='brand'
               className='min-w-32'
+              permission='tournaments:create'
             />
           </div>
         </div>

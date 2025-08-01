@@ -76,10 +76,10 @@ const isUser = (user: unknown): user is User =>
   'email' in user &&
   typeof user.email === 'string'
 
-export function useOptionalUser(): User | undefined {
+export function useOptionalUser(): User | null {
   const useData = useMatchesData('root')
   if (!useData || !isUser(useData.user)) {
-    return undefined
+    return null
   }
   return useData.user
 }

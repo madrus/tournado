@@ -25,6 +25,16 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
+// Mock user utilities for permission testing
+vi.mock('~/utils/utils', () => ({
+  useOptionalUser: () => ({
+    id: 'test-user-id',
+    email: 'test@example.com',
+    role: 'ADMIN', // Give full permissions for tests
+  }),
+  useMatchesData: vi.fn(() => ({})),
+}))
+
 const renderWithRouter = (component: React.ReactElement) =>
   render(<MemoryRouter>{component}</MemoryRouter>)
 

@@ -628,6 +628,7 @@ export function TeamForm({
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
+            permission={formMode === 'edit' ? 'teams:edit' : 'teams:create'}
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
             {t('common.actions.cancel')}
@@ -641,6 +642,7 @@ export function TeamForm({
                 color='emerald'
                 icon='add'
                 label={t('teams.form.createAnotherTeam')}
+                permission='teams:create'
               />
             ) : null}
             <ActionButton
@@ -649,6 +651,7 @@ export function TeamForm({
               color='brand'
               icon='check_circle'
               aria-label={t('common.actions.save')}
+              permission={formMode === 'edit' ? 'teams:edit' : 'teams:create'}
               disabled={
                 isSubmitting ||
                 isPublicSuccess ||

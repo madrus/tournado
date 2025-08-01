@@ -54,6 +54,16 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
+// Mock user utilities for permission testing
+vi.mock('~/utils/utils', () => ({
+  useOptionalUser: () => ({
+    id: 'test-user-id',
+    email: 'test@example.com',
+    role: 'ADMIN', // Give full permissions for tests
+  }),
+  useMatchesData: vi.fn(() => ({})),
+}))
+
 // No more Zod mocks - we'll test with actual English error messages from translations
 
 // Mock tournament data with correct TournamentData structure

@@ -76,6 +76,16 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
+// Mock user utilities for permission testing
+vi.mock('~/utils/utils', () => ({
+  useOptionalUser: () => ({
+    id: 'test-user-id',
+    email: 'test@example.com',
+    role: 'ADMIN', // Give full permissions for tests
+  }),
+  useMatchesData: vi.fn(() => ({})),
+}))
+
 // Mock RTL utilities
 vi.mock('~/utils/rtlUtils', () => ({
   getArabicTextClass: () => 'arabic-text',

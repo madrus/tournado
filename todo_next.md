@@ -1,12 +1,6 @@
 # What to do next
 
-##
-
-**Q**: looking at @prisma/schema.prisma can you figure out what data is necessary to show a block with 2 teams
-that are going to play a match?
-⎿  Read prisma/schema.prisma (148 lines)
-
-**A**: To show a block with 2 teams that are going to play a match, you need:
+## To show a block with 2 teams that are going to play a match, you need:
 
 - From Match model (schema.prisma:121-137):
    - id, date, time, location, status

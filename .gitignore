@@ -1,8 +1,9 @@
-.DS_Store
 .env
 .prisma
 .react-router
+**/.cache
 **/.DS_Store
+**/cache
 /prisma/data.db
 /prisma/data.db-journal
 /prisma/prisma
@@ -11,6 +12,7 @@ coverage
 dist
 mcp-servers/vitest/dist
 node_modules
+vitest-results.json
 
 # Playwright
 blob-report
@@ -19,4 +21,3 @@ playwright-results
 playwright/.auth
 playwright/.cache
 test-results
-vitest-results.json

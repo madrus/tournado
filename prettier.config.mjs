@@ -5,7 +5,10 @@ prettierConfig.overrides = [
   ...prettierConfig.overrides,
   {
     files: ['*.md', '*.mdx'],
-    options: { tabWidth: 3 },
+    options: {
+      tabWidth: 3,
+      proseWrap: 'preserve',
+    },
   },
 ]
 

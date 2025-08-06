@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "Kulüp adı",
-      "createAnotherTeam": "Başka bir takım kaydet",
       "division": "Bölüm",
       "errors": {
         "clubNameRequired": "Kulüp adı gereklidir",

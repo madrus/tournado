@@ -40,7 +40,7 @@ export type Permission =
 // Role permission matrix based on actual Prisma roles
 // Note: Unauthenticated users are treated as PUBLIC users
 const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
-  PUBLIC: ['teams:read', 'tournaments:read', 'matches:read'],
+  PUBLIC: ['teams:read', 'teams:create', 'tournaments:read', 'matches:read'],
   REFEREE: [
     'teams:read',
     'tournaments:read',

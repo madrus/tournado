@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "Nom du club",
-      "createAnotherTeam": "Inscrire une autre équipe",
       "division": "Division",
       "errors": {
         "clubNameRequired": "Le nom du club est requis",

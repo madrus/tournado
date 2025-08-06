@@ -117,12 +117,12 @@ describe('RBAC', () => {
       expect(hasPermission(referee, 'matches:referee')).toBe(true)
     })
 
-    it('should grant only read permissions to PUBLIC', () => {
+    it('should grant read and team creation permissions to PUBLIC', () => {
       const publicUser = mockUsers.public
 
-      // PUBLIC should only have read permissions
+      // PUBLIC should have read permissions and team creation for public registration
       expect(hasPermission(publicUser, 'teams:read')).toBe(true)
-      expect(hasPermission(publicUser, 'teams:create')).toBe(false)
+      expect(hasPermission(publicUser, 'teams:create')).toBe(true)
       expect(hasPermission(publicUser, 'tournaments:read')).toBe(true)
       expect(hasPermission(publicUser, 'tournaments:create')).toBe(false)
       expect(hasPermission(publicUser, 'matches:read')).toBe(true)
@@ -133,9 +133,9 @@ describe('RBAC', () => {
     })
 
     it('should handle unauthenticated users', () => {
-      // Unauthenticated users should only have read permissions
+      // Unauthenticated users get PUBLIC permissions (including team creation)
       expect(hasPermission(null, 'teams:read')).toBe(true)
-      expect(hasPermission(null, 'teams:create')).toBe(false)
+      expect(hasPermission(null, 'teams:create')).toBe(true)
       expect(hasPermission(null, 'tournaments:read')).toBe(true)
       expect(hasPermission(null, 'tournaments:create')).toBe(false)
       expect(hasPermission(null, 'matches:read')).toBe(true)
@@ -239,14 +239,16 @@ describe('RBAC', () => {
     })
 
     it('should throw 403 for users without permission', () => {
-      expect(() => requirePermission(mockUsers.public, 'teams:create')).toThrow(
+      // PUBLIC users can now create teams, so test a different permission they don't have
+      expect(() => requirePermission(mockUsers.public, 'teams:edit')).toThrow(
         ForbiddenError
       )
       expect(() => requirePermission(mockUsers.referee, 'tournaments:create')).toThrow(
         ForbiddenError
       )
 
-      expect(() => requirePermission(null, 'teams:create')).toThrow(ForbiddenError)
+      // Unauthenticated users (null) now have teams:create permission, test teams:edit instead
+      expect(() => requirePermission(null, 'teams:edit')).toThrow(ForbiddenError)
     })
   })
 

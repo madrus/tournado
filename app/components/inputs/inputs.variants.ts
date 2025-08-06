@@ -531,7 +531,7 @@ export const checkboxAgreementCheckmarkVariants = cva(
     'pointer-events-none absolute h-4 w-4',
     'text-primary-foreground',
     // Positioning for visual balance
-    'bottom-1/3 left-1/2 -translate-x-1/2',
+    'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
   ],
   {
     variants: {

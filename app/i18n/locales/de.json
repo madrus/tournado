@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "Vereinsname",
-      "createAnotherTeam": "Weiteres Team erstellen",
       "division": "Liga",
       "errors": {
         "clubNameRequired": "Vereinsname ist erforderlich",

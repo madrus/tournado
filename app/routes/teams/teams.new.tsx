@@ -3,13 +3,11 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
   type MetaFunction,
+  redirect,
   useActionData,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
-
 import { TeamForm } from '~/components/TeamForm'
-import { getDivisionLabel } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import { isRateLimitResponse, withAdminRateLimit } from '~/utils/adminMiddleware.server'
@@ -50,13 +48,16 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       return Response.json({ errors: result.errors }, { status: 400 })
     }
 
-    return Response.json(
-      {
-        success: true,
-        team: result.team,
-      },
-      { status: 200 }
-    )
+    // Ensure we have a valid team with an ID before redirecting
+    if (!result?.team?.id) {
+      return Response.json(
+        { errors: { general: 'Team creation failed - invalid team data' } },
+        { status: 500 }
+      )
+    }
+
+    // Redirect to team details page on success (same as admin route)
+    return redirect(`/teams/${result.team.id}`)
   })
 
   if (isRateLimitResponse(response)) {
@@ -70,24 +71,10 @@ export default function NewTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { resetForm } = useTeamFormStore()
 
-  // Prepare success message with translated division label
-  const successMessage =
-    actionData?.success && actionData.team
-      ? `Team "${actionData.team.name}" (${getDivisionLabel(actionData.team.division as Division, 'en')}) created successfully!`
-      : undefined
-
   // Reset the form on every mount to ensure a clean slate
   useEffect(() => {
     resetForm()
   }, [resetForm])
 
-  return (
-    <TeamForm
-      mode='create'
-      variant='public'
-      errors={actionData?.errors || {}}
-      isSuccess={actionData?.success || false}
-      successMessage={successMessage}
-    />
-  )
+  return <TeamForm mode='create' variant='public' errors={actionData?.errors || {}} />
 }

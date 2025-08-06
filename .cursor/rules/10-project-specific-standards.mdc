@@ -7,6 +7,10 @@ alwaysApply: true
 
 # Project-Specific Standards
 
+## Project Conventions
+
+- use pnpm when installing new packages or creating new apps
+
 ## Product Requirements Document (PRD) Alignment
 
 ### PRD Consideration Rule

@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Form, useNavigation } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
-import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
-import { CheckIcon, RestorePageIcon } from '~/components/icons'
+import { RestorePageIcon } from '~/components/icons'
 import { CheckboxAgreementField } from '~/components/inputs/CheckboxAgreementField'
 import { ComboField } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
@@ -21,7 +20,6 @@ export function TeamForm({
   mode: formMode = 'create',
   variant,
   isSuccess = false,
-  successMessage,
   className = '',
   intent,
   formData,
@@ -71,7 +69,6 @@ export function TeamForm({
     isDirty,
     isFormReadyForSubmission,
     isPanelEnabled,
-    isPanelValid,
     setFormData,
     setFormField,
     setFormMetaField,
@@ -212,21 +209,6 @@ export function TeamForm({
 
   return (
     <div className={cn('w-full', className)}>
-      {/* Success Message for Public Variant */}
-      {isPublicSuccess && successMessage ? (
-        <Panel
-          variant='content-panel'
-          color='primary'
-          icon={<CheckIcon size={24} />}
-          className='mb-8'
-          data-testid='team-form-success'
-        >
-          <p className='text-foreground-darker text-sm font-semibold'>
-            {successMessage}
-          </p>
-        </Panel>
-      ) : null}
-
       <Form
         ref={formRef}
         method='post'
@@ -248,12 +230,6 @@ export function TeamForm({
             <h2 className='text-title mb-4 text-xl font-bold'>
               {t('teams.form.selectTournamentDetails')}
             </h2>
-            {/* Only show error message when validation has been attempted */}
-            {!isPanelValid(1) && (forceShowAllErrors || submitAttempted) ? (
-              <p className='text-destructive mb-4'>
-                {t('teams.form.completeAllThreeFields')}
-              </p>
-            ) : null}
           </div>
 
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -634,16 +610,6 @@ export function TeamForm({
           </ActionButton>
 
           <div className='flex gap-4'>
-            {isPublicSuccess ? (
-              <ActionLinkButton
-                to='/teams/new'
-                variant='primary'
-                color='emerald'
-                icon='add'
-                label={t('teams.form.createAnotherTeam')}
-                permission='teams:create'
-              />
-            ) : null}
             <ActionButton
               type='submit'
               variant='primary'

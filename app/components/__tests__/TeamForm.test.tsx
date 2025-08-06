@@ -201,26 +201,17 @@ beforeEach(() => {
 })
 
 describe('TeamForm Component - filling the form', () => {
-  describe('Panel 1 Conditional Error Message', () => {
-    it('should not show panel 1 error message initially', () => {
+  describe('Panel 1 Validation Logic', () => {
+    it('should not show panel-level error messages since they are removed', () => {
       renderTeamForm('create', 'public')
 
-      // Panel 1 validation message should not appear initially
+      // Panel-level validation messages have been removed in favor of snackbar notifications
       expect(
         screen.queryByText('teams.form.completeAllThreeFields')
       ).not.toBeInTheDocument()
     })
 
-    it('should not show panel 1 error message when fields are empty but not validated', () => {
-      renderTeamForm('create', 'public')
-
-      // Even with empty fields, validation message should not appear until validation is attempted
-      expect(
-        screen.queryByText('teams.form.completeAllThreeFields')
-      ).not.toBeInTheDocument()
-    })
-
-    it('should show panel 1 error message when panel is invalid and forceShowAllErrors is true', async () => {
+    it('should maintain validation logic internally without displaying panel errors', async () => {
       renderTeamForm('create', 'public')
 
       // Wait for the form to render, then force show all errors
@@ -228,60 +219,24 @@ describe('TeamForm Component - filling the form', () => {
         state().setValidationField('forceShowAllErrors', true)
       })
 
-      // Wait for the error message to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText('teams.form.completeAllThreeFields')
-        ).toBeInTheDocument()
-      })
+      // Panel error message should not appear (removed feature)
+      expect(
+        screen.queryByText('teams.form.completeAllThreeFields')
+      ).not.toBeInTheDocument()
     })
 
-    it('should show panel 1 error message when panel is invalid and submitAttempted is true', async () => {
+    it('should keep panel validation working internally for form submission', async () => {
       renderTeamForm('create', 'public')
 
-      // Wait for the form to render, then simulate form submission attempt
+      // Validation logic should still work internally even without displayed errors
       await waitFor(() => {
         state().setValidationField('submitAttempted', true)
       })
 
-      // Wait for the error message to appear
-      await waitFor(() => {
-        expect(
-          screen.getByText('teams.form.completeAllThreeFields')
-        ).toBeInTheDocument()
-      })
-    })
-
-    it('should not show panel 1 error message when panel is valid', async () => {
-      // Start with panel 1 completed (valid)
-      renderTeamForm('create', 'public', PANEL1_FORMDATA)
-
-      // Wait for the form to render, then force show all errors but panel is valid
-      await waitFor(() => {
-        state().setValidationField('forceShowAllErrors', true)
-      })
-
-      // Wait a moment to ensure any potential error message would have appeared
-      await waitFor(() => {
-        // Validation message should not appear because panel 1 is valid
-        expect(
-          screen.queryByText('teams.form.completeAllThreeFields')
-        ).not.toBeInTheDocument()
-      })
-    })
-
-    it('should use destructive text color for panel 1 error message', async () => {
-      renderTeamForm('create', 'public')
-
-      // Wait for the form to render, then force show validation error
-      await waitFor(() => {
-        state().setValidationField('forceShowAllErrors', true)
-      })
-
-      await waitFor(() => {
-        const errorMessage = screen.getByText('teams.form.completeAllThreeFields')
-        expect(errorMessage).toHaveClass('text-destructive')
-      })
+      // Panel error message should not be displayed (feature removed)
+      expect(
+        screen.queryByText('teams.form.completeAllThreeFields')
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -900,7 +855,7 @@ describe('TeamForm Component - filling the form', () => {
   })
 
   describe('Form Submission Success', () => {
-    it('should handle successful form submission', () => {
+    it('should not display success panels since they are removed', () => {
       renderTeamForm(
         'create',
         'public',
@@ -910,7 +865,10 @@ describe('TeamForm Component - filling the form', () => {
         'Team registered successfully!'
       )
 
-      expect(screen.getByText('Team registered successfully!')).toBeInTheDocument()
+      // Success panels have been removed in favor of redirection to team details
+      expect(
+        screen.queryByText('Team registered successfully!')
+      ).not.toBeInTheDocument()
     })
   })
 

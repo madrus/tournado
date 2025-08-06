@@ -173,6 +173,7 @@ vi.mock('../icons', () => {
     LogoutIcon: createMockIcon('logout-icon', '🚪'),
     MoreHorizIcon: createMockIcon('more-horiz-icon', '⋯'),
     MoreVertIcon: createMockIcon('more-vert-icon', '⋮'),
+    NewWindowIcon: createMockIcon('new-window-icon', '🗖'),
     PendingIcon: createMockIcon('pending-icon', '⏳'),
     PersonIcon: createMockIcon('person-icon', '👤'),
     RestorePageIcon: createMockIcon('restore-page-icon', '↻'),

@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "اسم النادي",
-      "createAnotherTeam": "إنشاء فريق آخر",
       "division": "الفئة",
       "errors": {
         "clubNameRequired": "اسم النادي مطلوب",

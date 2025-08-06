@@ -20,6 +20,7 @@ import {
   LogoutIcon,
   MoreHorizIcon,
   MoreVertIcon,
+  NewWindowIcon,
   PendingIcon,
   PersonIcon,
   SettingsIcon,
@@ -41,6 +42,7 @@ export type IconName =
   | 'close'
   | 'dark_mode'
   | 'delete'
+  | 'newWindow'
   | 'error'
   | 'home'
   | 'info'
@@ -50,6 +52,7 @@ export type IconName =
   | 'logout'
   | 'more_horiz'
   | 'more_vert'
+  | 'newWindow'
   | 'pending'
   | 'person'
   | 'settings'
@@ -70,6 +73,7 @@ export const iconMap = {
   close: CloseIcon,
   dark_mode: DarkModeIcon,
   delete: DeleteIcon,
+  newWindow: NewWindowIcon,
   error: ErrorIcon,
   home: HomeIcon,
   info: InfoIcon,

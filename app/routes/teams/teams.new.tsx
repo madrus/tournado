@@ -48,8 +48,16 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       return Response.json({ errors: result.errors }, { status: 400 })
     }
 
+    // Ensure we have a valid team with an ID before redirecting
+    if (!result?.team?.id) {
+      return Response.json(
+        { errors: { general: 'Team creation failed - invalid team data' } },
+        { status: 500 }
+      )
+    }
+
     // Redirect to team details page on success (same as admin route)
-    return redirect(`/teams/${result.team?.id}`)
+    return redirect(`/teams/${result.team.id}`)
   })
 
   if (isRateLimitResponse(response)) {

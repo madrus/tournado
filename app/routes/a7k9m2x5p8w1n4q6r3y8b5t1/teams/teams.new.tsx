@@ -47,8 +47,16 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
       return Response.json({ errors: result.errors }, { status: 400 })
     }
 
+    // Ensure we have a valid team with an ID before redirecting
+    if (!result?.team?.id) {
+      return Response.json(
+        { errors: { general: 'Team creation failed - invalid team data' } },
+        { status: 500 }
+      )
+    }
+
     // Redirect to the new team's edit page on success
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${result.team?.id}`)
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${result.team.id}`)
   }
 
   return Response.json({ errors: {} })

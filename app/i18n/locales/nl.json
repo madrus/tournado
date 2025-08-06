@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "Clubnaam",
-      "createAnotherTeam": "Nog een team aanmelden",
       "division": "Teamklasse",
       "errors": {
         "clubNameRequired": "Clubnaam is verplicht",

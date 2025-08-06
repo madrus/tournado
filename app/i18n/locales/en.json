@@ -167,7 +167,6 @@
     },
     "form": {
       "clubName": "Club Name",
-      "createAnotherTeam": "Create Another Team",
       "division": "Division",
       "errors": {
         "clubNameRequired": "Club name is required",

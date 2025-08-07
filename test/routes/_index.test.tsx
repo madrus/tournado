@@ -29,19 +29,27 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock ActionLink component
-vi.mock('~/components/PrefetchLink', () => ({
-  ActionLink: ({
+// Mock ActionLinkButton component
+vi.mock('~/components/buttons', () => ({
+  ActionLinkButton: ({
     to,
     children,
+    label,
     className,
+    'data-testid': dataTestId,
   }: {
     to: string
-    children: React.ReactNode
+    children?: React.ReactNode
+    label?: string
     className?: string
+    'data-testid'?: string
   }) => (
-    <a href={to} className={className} data-testid='view-teams-button'>
-      {children}
+    <a
+      href={to}
+      className={`bg-primary-600 inline-flex items-center justify-center rounded-lg border font-semibold text-white ${className || ''}`}
+      data-testid={dataTestId}
+    >
+      {label || children}
     </a>
   ),
 }))

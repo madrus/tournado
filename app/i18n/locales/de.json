@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "Kein Team ausgewählt. Wählen Sie links ein Team aus, oder",
     "noTeams": "Es wurden noch keine Teams registriert. Seien Sie der Erste, der sein Team für kommende Turniere registriert!",
+    "notifications": {
+      "registrationError": "Team registrieren fehlgeschlagen",
+      "registrationErrorDesc": "Beim Registrieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "registrationSuccess": "Team erfolgreich registriert",
+      "registrationSuccessDesc": "Ihr Team wurde erfolgreich registriert.",
+      "updateError": "Team aktualisieren fehlgeschlagen",
+      "updateErrorDesc": "Beim Aktualisieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "updateSuccess": "Team erfolgreich aktualisiert",
+      "updateSuccessDesc": "Ihr Team wurde erfolgreich aktualisiert."
+    },
     "title": "Teams"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "Mindestens eine Liga ist erforderlich",
         "categoriesRequired": "Mindestens eine Kategorie ist erforderlich",
         "fieldRequired": "Dieses Feld ist erforderlich"
+      },
+      "notifications": {
+        "registrationError": "Turnier registrieren fehlgeschlagen",
+        "registrationErrorDesc": "Beim Registrieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "registrationSuccess": "Turnier erfolgreich registriert",
+        "registrationSuccessDesc": "Das Turnier wurde erfolgreich registriert.",
+        "updateError": "Turnier aktualisieren fehlgeschlagen",
+        "updateErrorDesc": "Beim Aktualisieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "updateSuccess": "Turnier erfolgreich aktualisiert",
+        "updateSuccessDesc": "Das Turnier wurde erfolgreich aktualisiert."
       }
     }
   },

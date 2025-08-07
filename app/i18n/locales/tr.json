@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "Hiçbir takım seçilmedi. Soldan bir takım seçin veya",
     "noTeams": "Henüz hiçbir takım kaydedilmedi. Yaklaşan turnuvalar için takımınızı kaydeden ilk kişi olun!",
+    "notifications": {
+      "registrationError": "Takım kayıt başarısız",
+      "registrationErrorDesc": "Takımınızı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
+      "registrationSuccess": "Takım başarıyla kaydedildi",
+      "registrationSuccessDesc": "Takımınız başarıyla kaydedildi.",
+      "updateError": "Takım güncelleme başarısız",
+      "updateErrorDesc": "Takımınızı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
+      "updateSuccess": "Takım başarıyla güncellendi",
+      "updateSuccessDesc": "Takımınız başarıyla güncellendi."
+    },
     "title": "Takımlar"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "En az bir lig zorunludur",
         "categoriesRequired": "En az bir kategori zorunludur",
         "fieldRequired": "Bu alan zorunludur"
+      },
+      "notifications": {
+        "registrationError": "Turnuva kayıt başarısız",
+        "registrationErrorDesc": "Turnuvayı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",
+        "registrationSuccess": "Turnuva başarıyla kaydedildi",
+        "registrationSuccessDesc": "Turnuva başarıyla kaydedildi.",
+        "updateError": "Turnuva güncelleme başarısız",
+        "updateErrorDesc": "Turnuvayı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
+        "updateSuccess": "Turnuva başarıyla güncellendi",
+        "updateSuccessDesc": "Turnuva başarıyla güncellendi."
       }
     }
   },

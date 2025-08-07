@@ -55,8 +55,8 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
       )
     }
 
-    // Redirect to the new team's edit page on success
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${result.team.id}`)
+    // Redirect to admin team detail page with success parameter
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${result.team.id}?success=created`)
   }
 
   return Response.json({ errors: {} })
@@ -66,8 +66,6 @@ export default function AdminNewTeamPage(): JSX.Element {
   const { t } = useTranslation()
   const actionData = useActionData<TeamCreateActionData>()
   const { resetForm } = useTeamFormStore()
-  //! TODO: This page now redirects on success, we should show a toast instead
-  const successMessage = undefined
 
   // Reset the form on every mount to ensure a clean slate
   useEffect(() => {
@@ -89,8 +87,6 @@ export default function AdminNewTeamPage(): JSX.Element {
         intent='create'
         submitButtonText={t('common.actions.save')}
         errors={actionData?.errors || {}}
-        isSuccess={actionData?.success || false}
-        successMessage={successMessage}
       />
     </div>
   )

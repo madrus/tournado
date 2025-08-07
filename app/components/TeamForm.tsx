@@ -15,6 +15,7 @@ import type { TeamFormProps } from '~/lib/lib.types'
 import { useTeamFormStore, useTeamFormStoreHydration } from '~/stores/useTeamFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
+import { toast } from '~/utils/toastUtils'
 
 export function TeamForm({
   mode: formMode = 'create',
@@ -24,6 +25,7 @@ export function TeamForm({
   intent,
   formData,
   submitButtonText,
+  errors = {},
 }: Omit<
   TeamFormProps,
   'availableDivisions' | 'availableCategories' | 'tournamentId'
@@ -200,12 +202,50 @@ export function TeamForm({
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
 
-  // Scroll to top on successful server-side submission
+  // Memoized toast callbacks for performance optimization
+  const showSuccessToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.success(t('teams.notifications.registrationSuccess'), {
+        description: t('teams.notifications.registrationSuccessDesc'),
+      })
+    } else {
+      toast.success(t('teams.notifications.updateSuccess'), {
+        description: t('teams.notifications.updateSuccessDesc'),
+      })
+    }
+  }, [formMode, t])
+
+  // Scroll to top on successful server-side submission and show toast
   useEffect(() => {
     if (isSuccess) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      showSuccessToast()
     }
-  }, [isSuccess])
+  }, [isSuccess, showSuccessToast])
+
+  // Memoized error toast callback for performance optimization
+  const showErrorToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.error(t('teams.notifications.registrationError'), {
+        description: t('teams.notifications.registrationErrorDesc'),
+      })
+    } else {
+      toast.error(t('teams.notifications.updateError'), {
+        description: t('teams.notifications.updateErrorDesc'),
+      })
+    }
+  }, [formMode, t])
+
+  // Show error toast on form submission failure
+  useEffect(() => {
+    if (navigation.state === 'idle' && errors && Object.keys(errors).length > 0) {
+      showErrorToast()
+    }
+  }, [navigation.state, errors, showErrorToast])
 
   return (
     <div className={cn('w-full', className)}>

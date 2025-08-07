@@ -1,7 +1,8 @@
 import type { JSX } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLoaderData, useSearchParams } from 'react-router'
 import type { MetaFunction } from 'react-router'
-import { useLoaderData } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
@@ -16,6 +17,7 @@ import { getTeamById } from '~/models/team.server'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
+import { toast } from '~/utils/toastUtils'
 
 import type { Route } from './+types/teams.$teamId'
 
@@ -82,7 +84,22 @@ export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> 
 
 export default function TeamDetailsPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // Check for success parameter and show toast
+  useEffect(() => {
+    const success = searchParams.get('success')
+    if (success === 'created') {
+      toast.success(t('teams.notifications.registrationSuccess'), {
+        description: t('teams.notifications.registrationSuccessDesc'),
+      })
+
+      // Remove the success parameter from URL
+      searchParams.delete('success')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
 
   return (
     <div className='min-h-screen'>

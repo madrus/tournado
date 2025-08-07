@@ -15,7 +15,7 @@ export function UnfoldLessIcon({
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Unfold less',
-}: UnfoldLessIconProps): JSX.Element {
+}: Readonly<UnfoldLessIconProps>): JSX.Element {
   // Convert weight to stroke-width (optional, for consistency)
   const strokeWidth =
     weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined

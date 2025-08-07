@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "لم يتم اختيار فريق. اختر فريقاً على اليسار، أو",
     "noTeams": "لم يتم تسجيل أي فرق بعد. كن أول من يسجل فريقك للبطولات القادمة!",
+    "notifications": {
+      "registrationError": "فشل في تسجيل الفريق",
+      "registrationErrorDesc": "حدث خطأ أثناء تسجيل فريقك. يرجى المحاولة مرة أخرى.",
+      "registrationSuccess": "تم تسجيل الفريق بنجاح",
+      "registrationSuccessDesc": "تم تسجيل فريقك بنجاح.",
+      "updateError": "فشل في تحديث الفريق",
+      "updateErrorDesc": "حدث خطأ أثناء تحديث فريقك. يرجى المحاولة مرة أخرى.",
+      "updateSuccess": "تم تحديث الفريق بنجاح",
+      "updateSuccessDesc": "تم تحديث فريقك بنجاح."
+    },
     "title": "الفرق"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "مطلوب درجة واحدة على الأقل",
         "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
         "fieldRequired": "هذا الحقل مطلوب"
+      },
+      "notifications": {
+        "registrationError": "فشل في تسجيل البطولة",
+        "registrationErrorDesc": "حدث خطأ أثناء تسجيل البطولة. يرجى المحاولة مرة أخرى.",
+        "registrationSuccess": "تم تسجيل البطولة بنجاح",
+        "registrationSuccessDesc": "تم تسجيل البطولة بنجاح.",
+        "updateError": "فشل في تحديث البطولة",
+        "updateErrorDesc": "حدث خطأ أثناء تحديث البطولة. يرجى المحاولة مرة أخرى.",
+        "updateSuccess": "تم تحديث البطولة بنجاح",
+        "updateSuccessDesc": "تم تحديث البطولة بنجاح."
       }
     }
   },

@@ -12,7 +12,7 @@ export const AnimatedHamburgerIcon = ({
   isRTL,
   className = 'w-6 h-6',
   'aria-label': ariaLabel = 'Menu',
-}: AnimatedHamburgerIconProps): JSX.Element => (
+}: Readonly<AnimatedHamburgerIconProps>): JSX.Element => (
   <svg
     className={className}
     viewBox='0 0 24 24'

@@ -2,25 +2,21 @@ import { JSX } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
-type WarningIconProps = {
+type InfoLetterIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
   'aria-label'?: string
 }
 
-export function WarningIcon({
+export function InfoLetterIcon({
   className = '',
   size = 24,
   weight = 400,
-  'aria-label': ariaLabel = 'Warning',
-}: Readonly<WarningIconProps>): JSX.Element {
-  // Lucide triangle-alert SVG paths with fill
-  const paths = [
-    'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3',
-    'M12 9v4',
-    'M12 17h.01',
-  ]
+  'aria-label': ariaLabel = 'Info',
+}: Readonly<InfoLetterIconProps>): JSX.Element {
+  // Lucide circle-info paths (circular version)
+  const paths = ['M12 16v-4', 'M12 8h.01']
 
   // Convert weight to stroke-width for Lucide style
   const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2.25 : 2
@@ -38,9 +34,10 @@ export function WarningIcon({
       role='img'
       aria-label={ariaLabel}
     >
-      <path d={paths[0]} stroke='white' />
-      <path d={paths[1]} stroke='currentColor' />
-      <path d={paths[2]} stroke='currentColor' />
+      <circle cx='12' cy='12' r='10' stroke='white' />
+      {paths.map((path, index) => (
+        <path key={index} d={path} stroke='currentColor' />
+      ))}
     </svg>
   )
 }

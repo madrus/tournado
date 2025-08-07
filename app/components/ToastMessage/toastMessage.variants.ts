@@ -1,6 +1,11 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
 /**
+ * Toast type variant type for consistent typing across the application.
+ */
+import type { ToastType } from '~/lib/lib.types'
+
+/**
  * Toast message variants for notification display components.
  *
  * Provides styled toast notifications with different types (success, error, info, warning).
@@ -47,12 +52,42 @@ export const toastMessageVariants = cva(
           'text-white',
           'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
         ],
+        network: [
+          'bg-red-600',
+          'text-white',
+          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
+        permission: [
+          'bg-red-600',
+          'text-white',
+          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
+        server: [
+          'bg-red-600',
+          'text-white',
+          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
+        client: [
+          'bg-red-600',
+          'text-white',
+          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
+        unknown: [
+          'bg-red-600',
+          'text-white',
+          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
         info: [
           'bg-sky-600',
           'text-white',
           'shadow-lg shadow-sky-900/40 dark:shadow-md dark:shadow-white/20',
         ],
         warning: [
+          'bg-orange-600',
+          'text-white',
+          'shadow-lg shadow-orange-900/40 dark:shadow-md dark:shadow-white/20',
+        ],
+        validation: [
           'bg-orange-600',
           'text-white',
           'shadow-lg shadow-orange-900/40 dark:shadow-md dark:shadow-white/20',
@@ -117,8 +152,14 @@ export const toastCloseButtonVariants = cva(
       type: {
         success: 'text-white',
         error: 'text-white',
+        network: 'text-white',
+        permission: 'text-white',
+        server: 'text-white',
+        client: 'text-white',
+        unknown: 'text-white',
         info: 'text-white',
         warning: 'text-white',
+        validation: 'text-white',
       },
     },
     defaultVariants: {
@@ -147,7 +188,4 @@ export type ToastIconVariants = VariantProps<typeof toastIconVariants>
  */
 export type ToastCloseButtonVariants = VariantProps<typeof toastCloseButtonVariants>
 
-/**
- * Toast type variant type for consistent typing across the application.
- */
-export type ToastType = 'success' | 'error' | 'info' | 'warning'
+export type { ToastType }

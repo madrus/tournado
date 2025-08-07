@@ -24,7 +24,7 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
           data-testid='success-wrapper'
         >
           <SuccessIcon
-            className='h-[18px] w-[18px] text-emerald-700'
+            className='h-[18px] w-[18px] text-white'
             size={TOAST_SUCCESS_ICON_SIZE}
             weight={600}
           />
@@ -43,7 +43,7 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
           data-testid='error-wrapper'
         >
           <ExclamationIcon
-            className='h-6 w-6 text-red-700'
+            className='h-6 w-6 text-white'
             size={TOAST_ICON_SIZE}
             weight={600}
           />
@@ -57,7 +57,7 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
           data-testid='info-wrapper'
         >
           <InfoLetterIcon
-            className='h-6 w-6 text-sky-400'
+            className='h-6 w-6 text-white'
             size={TOAST_ICON_SIZE}
             weight={600}
           />
@@ -72,7 +72,7 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
           data-testid='warning-wrapper'
         >
           <WarningIcon
-            className='h-6 w-6 text-orange-700'
+            className='h-6 w-6 text-white'
             size={TOAST_ICON_SIZE}
             weight={600}
           />

@@ -18,6 +18,7 @@ import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
 import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
+import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -186,7 +187,7 @@ export async function action({
       },
     })
 
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`)
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}?success=updated`)
   }
 
   if (intent === 'delete') {
@@ -205,6 +206,7 @@ export default function AdminTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { i18n, t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
+  const setFormData = useTeamFormStore(state => state.setFormData)
 
   // Check for success parameter and show toast
   useEffect(() => {
@@ -217,8 +219,29 @@ export default function AdminTeamPage(): JSX.Element {
       // Remove the success parameter from URL
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
+    } else if (success === 'updated') {
+      toast.success(t('teams.notifications.updateSuccess'), {
+        description: t('teams.notifications.updateSuccessDesc'),
+      })
+
+      // Sync the store with the latest loader data so UI reflects persisted update
+      setFormData({
+        tournamentId: team.tournament.id,
+        clubName: team.clubName,
+        name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+        division: team.division,
+        category: team.category,
+        teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
+        teamLeaderPhone: team.teamLeader.phone,
+        teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+        privacyAgreement: true,
+      })
+
+      // Remove the success parameter from URL
+      searchParams.delete('success')
+      setSearchParams(searchParams, { replace: true })
     }
-  }, [searchParams, setSearchParams, t])
+  }, [searchParams, setSearchParams, t, setFormData])
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(

@@ -1,19 +1,15 @@
 import { JSX } from 'react'
 
-import type { IconWeight } from '~/lib/lib.types'
+import type { IconProps } from '~/lib/lib.types'
 
-type SuccessIconProps = {
-  className?: string
-  size?: number
-  weight?: IconWeight
-  'aria-label'?: string
-}
+type SuccessIconProps = IconProps
 
 export function SuccessIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Success',
+  'aria-hidden': ariaHidden,
 }: Readonly<SuccessIconProps>): JSX.Element {
   // Lucide check SVG path
   const path = 'M20 6 9 17l-5-5'
@@ -34,6 +30,7 @@ export function SuccessIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
+      aria-hidden={ariaHidden}
     >
       <path d={path} />
     </svg>

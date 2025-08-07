@@ -202,42 +202,50 @@ export function TeamForm({
     }
   }, [availableTournaments, tournamentId, updateAvailableOptions])
 
+  // Memoized toast callbacks for performance optimization
+  const showSuccessToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.success(t('teams.notifications.registrationSuccess'), {
+        description: t('teams.notifications.registrationSuccessDesc'),
+      })
+    } else {
+      toast.success(t('teams.notifications.updateSuccess'), {
+        description: t('teams.notifications.updateSuccessDesc'),
+      })
+    }
+  }, [formMode, t])
+
   // Scroll to top on successful server-side submission and show toast
   useEffect(() => {
     if (isSuccess) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
-
-      // Show success toast based on mode and variant
-      const isCreating = formMode === 'create'
-
-      if (isCreating) {
-        toast.success(t('teams.notifications.registrationSuccess'), {
-          description: t('teams.notifications.registrationSuccessDesc'),
-        })
-      } else {
-        toast.success(t('teams.notifications.updateSuccess'), {
-          description: t('teams.notifications.updateSuccessDesc'),
-        })
-      }
+      showSuccessToast()
     }
-  }, [isSuccess, formMode, variant, t])
+  }, [isSuccess, showSuccessToast])
+
+  // Memoized error toast callback for performance optimization
+  const showErrorToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.error(t('teams.notifications.registrationError'), {
+        description: t('teams.notifications.registrationErrorDesc'),
+      })
+    } else {
+      toast.error(t('teams.notifications.updateError'), {
+        description: t('teams.notifications.updateErrorDesc'),
+      })
+    }
+  }, [formMode, t])
 
   // Show error toast on form submission failure
   useEffect(() => {
     if (navigation.state === 'idle' && errors && Object.keys(errors).length > 0) {
-      const isCreating = formMode === 'create'
-
-      if (isCreating) {
-        toast.error(t('teams.notifications.registrationError'), {
-          description: t('teams.notifications.registrationErrorDesc'),
-        })
-      } else {
-        toast.error(t('teams.notifications.updateError'), {
-          description: t('teams.notifications.updateErrorDesc'),
-        })
-      }
+      showErrorToast()
     }
-  }, [navigation.state, errors, formMode, variant, t])
+  }, [navigation.state, errors, showErrorToast])
 
   return (
     <div className={cn('w-full', className)}>

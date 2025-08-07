@@ -187,42 +187,50 @@ export function TournamentForm({
     }
   }
 
+  // Memoized toast callbacks for performance optimization
+  const showSuccessToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.success(t('tournaments.notifications.registrationSuccess'), {
+        description: t('tournaments.notifications.registrationSuccessDesc'),
+      })
+    } else {
+      toast.success(t('tournaments.notifications.updateSuccess'), {
+        description: t('tournaments.notifications.updateSuccessDesc'),
+      })
+    }
+  }, [formMode, t])
+
   // Scroll to top on successful server-side submission and show toast
   useEffect(() => {
     if (isSuccess) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
-
-      // Show success toast based on mode and variant
-      const isCreating = formMode === 'create'
-
-      if (isCreating) {
-        toast.success(t('tournaments.notifications.registrationSuccess'), {
-          description: t('tournaments.notifications.registrationSuccessDesc'),
-        })
-      } else {
-        toast.success(t('tournaments.notifications.updateSuccess'), {
-          description: t('tournaments.notifications.updateSuccessDesc'),
-        })
-      }
+      showSuccessToast()
     }
-  }, [isSuccess, formMode, variant, t])
+  }, [isSuccess, showSuccessToast])
+
+  // Memoized error toast callback for performance optimization
+  const showErrorToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.error(t('tournaments.notifications.registrationError'), {
+        description: t('tournaments.notifications.registrationErrorDesc'),
+      })
+    } else {
+      toast.error(t('tournaments.notifications.updateError'), {
+        description: t('tournaments.notifications.updateErrorDesc'),
+      })
+    }
+  }, [formMode, t])
 
   // Show error toast on form submission failure
   useEffect(() => {
     if (navigation.state === 'idle' && errors && Object.keys(errors).length > 0) {
-      const isCreating = formMode === 'create'
-
-      if (isCreating) {
-        toast.error(t('tournaments.notifications.registrationError'), {
-          description: t('tournaments.notifications.registrationErrorDesc'),
-        })
-      } else {
-        toast.error(t('tournaments.notifications.updateError'), {
-          description: t('tournaments.notifications.updateErrorDesc'),
-        })
-      }
+      showErrorToast()
     }
-  }, [navigation.state, errors, formMode, variant, t])
+  }, [navigation.state, errors, showErrorToast])
 
   return (
     <div className={cn('w-full', className)}>

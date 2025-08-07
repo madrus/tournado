@@ -10,84 +10,24 @@ vi.mock('~/utils/misc', () => ({
     classes.filter(Boolean).join(' '),
 }))
 
-// Mock the icon components
-vi.mock('~/components/icons', () => ({
-  CloseIcon: ({ className, size }: { className?: string; size?: number }) => (
-    <span data-testid='close-icon' className={className} data-size={size}>
+// Mock the extracted components
+vi.mock('../ToastIcon', () => ({
+  ToastIcon: ({ type }: { type: string }) => (
+    <span data-testid={`${type}-icon`}>
+      {type === 'success' ? '✓' : type === 'error' ? '!' : type === 'info' ? 'i' : '⚠'}
+    </span>
+  ),
+}))
+
+vi.mock('../ToastCloseButton', () => ({
+  ToastCloseButton: ({ type, onClose }: { type: string; onClose?: () => void }) => (
+    <button
+      onClick={onClose}
+      aria-label={`Close ${type} notification`}
+      data-testid='close-button'
+    >
       ×
-    </span>
-  ),
-  SuccessIcon: ({
-    className,
-    size,
-    weight,
-  }: {
-    className?: string
-    size?: number
-    weight?: number
-  }) => (
-    <span
-      data-testid='success-icon'
-      className={className}
-      data-size={size}
-      data-weight={weight}
-    >
-      ✓
-    </span>
-  ),
-  ExclamationIcon: ({
-    className,
-    size,
-    weight,
-  }: {
-    className?: string
-    size?: number
-    weight?: number
-  }) => (
-    <span
-      data-testid='exclamation-icon'
-      className={className}
-      data-size={size}
-      data-weight={weight}
-    >
-      !
-    </span>
-  ),
-  InfoLetterIcon: ({
-    className,
-    size,
-    weight,
-  }: {
-    className?: string
-    size?: number
-    weight?: number
-  }) => (
-    <span
-      data-testid='info-icon'
-      className={className}
-      data-size={size}
-      data-weight={weight}
-    >
-      i
-    </span>
-  ),
-  WarningIcon: ({
-    className,
-    size,
-    weight,
-  }: {
-    className?: string
-    size?: number
-    weight?: number
-  }) => (
-    <span
-      data-testid='warning-icon'
-      className={className}
-      data-size={size}
-      data-weight={weight}
-    >
-      ⚠
-    </span>
+    </button>
   ),
 }))
 
@@ -134,7 +74,7 @@ describe('ToastMessage Component', () => {
       render(<ToastMessage type='error' title='Error!' />)
 
       expect(screen.getByText('Error!')).toHaveClass('font-medium')
-      expect(screen.getByTestId('exclamation-icon')).toBeInTheDocument()
+      expect(screen.getByTestId('error-icon')).toBeInTheDocument()
     })
 
     it('should render info toast with correct styling', () => {
@@ -153,52 +93,18 @@ describe('ToastMessage Component', () => {
   })
 
   describe('Icons', () => {
-    it('should render success icon with white background wrapper', () => {
-      render(<ToastMessage type='success' title='Success!' />)
+    it('should render icons for all toast types', () => {
+      const types = ['success', 'error', 'info', 'warning'] as const
 
-      const successIcon = screen.getByTestId('success-icon')
-      expect(successIcon).toHaveClass('h-[18px]', 'w-[18px]', 'text-emerald-700')
-      expect(successIcon).toHaveAttribute('data-size', '18')
-      expect(successIcon).toHaveAttribute('data-weight', '600')
+      types.forEach(type => {
+        const { unmount } = render(
+          <ToastMessage type={type} title={`${type} message`} />
+        )
 
-      // Success icon is rendered with proper attributes
-      expect(successIcon).toBeInTheDocument()
-    })
+        expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument()
 
-    it('should render error icon without background wrapper', () => {
-      render(<ToastMessage type='error' title='Error!' />)
-
-      const errorIcon = screen.getByTestId('exclamation-icon')
-      expect(errorIcon).toHaveClass('h-6', 'w-6', 'text-red-700')
-      expect(errorIcon).toHaveAttribute('data-size', '24')
-      expect(errorIcon).toHaveAttribute('data-weight', '600')
-
-      // Error icon is rendered with proper attributes
-      expect(errorIcon).toBeInTheDocument()
-    })
-
-    it('should render info icon without background wrapper', () => {
-      render(<ToastMessage type='info' title='Info!' />)
-
-      const infoIcon = screen.getByTestId('info-icon')
-      expect(infoIcon).toHaveClass('h-6', 'w-6', 'text-sky-400')
-      expect(infoIcon).toHaveAttribute('data-size', '24')
-      expect(infoIcon).toHaveAttribute('data-weight', '600')
-
-      // Info icon is rendered with proper attributes
-      expect(infoIcon).toBeInTheDocument()
-    })
-
-    it('should render warning icon without background wrapper', () => {
-      render(<ToastMessage type='warning' title='Warning!' />)
-
-      const warningIcon = screen.getByTestId('warning-icon')
-      expect(warningIcon).toHaveClass('h-6', 'w-6', 'text-orange-700')
-      expect(warningIcon).toHaveAttribute('data-size', '24')
-      expect(warningIcon).toHaveAttribute('data-weight', '600')
-
-      // Warning icon is rendered with proper attributes
-      expect(warningIcon).toBeInTheDocument()
+        unmount()
+      })
     })
   })
 
@@ -207,16 +113,16 @@ describe('ToastMessage Component', () => {
       const handleClose = vi.fn()
       render(<ToastMessage type='info' title='Test' onClose={handleClose} />)
 
-      const closeButton = screen.getByRole('button', { name: 'Close' })
+      const closeButton = screen.getByTestId('close-button')
       expect(closeButton).toBeInTheDocument()
-      expect(screen.getByTestId('close-icon')).toBeInTheDocument()
+      expect(closeButton).toHaveAttribute('aria-label', 'Close info notification')
     })
 
     it('should call onClose when close button is clicked', () => {
       const handleClose = vi.fn()
       render(<ToastMessage type='success' title='Test' onClose={handleClose} />)
 
-      const closeButton = screen.getByRole('button', { name: 'Close' })
+      const closeButton = screen.getByTestId('close-button')
       fireEvent.click(closeButton)
 
       expect(handleClose).toHaveBeenCalledTimes(1)
@@ -225,20 +131,19 @@ describe('ToastMessage Component', () => {
     it('should render close button even when onClose is not provided', () => {
       render(<ToastMessage type='error' title='Test' />)
 
-      const closeButton = screen.getByRole('button', { name: 'Close' })
+      const closeButton = screen.getByTestId('close-button')
       expect(closeButton).toBeInTheDocument()
+      expect(closeButton).toHaveAttribute('aria-label', 'Close error notification')
     })
 
-    it('should have correct close button styling for each toast type', () => {
+    it('should have correct aria-label for each toast type', () => {
       const types = ['success', 'error', 'info', 'warning'] as const
 
       types.forEach(type => {
         const { unmount } = render(<ToastMessage type={type} title='Test' />)
 
-        const closeButton = screen.getByRole('button', { name: 'Close' })
-        expect(closeButton).toHaveClass('text-white')
-        expect(closeButton).toHaveClass('opacity-70')
-        expect(closeButton).toHaveClass('hover:opacity-100')
+        const closeButton = screen.getByTestId('close-button')
+        expect(closeButton).toHaveAttribute('aria-label', `Close ${type} notification`)
 
         unmount()
       })
@@ -252,7 +157,7 @@ describe('ToastMessage Component', () => {
       // Verify the component renders with the expected elements
       expect(screen.getByText('Test')).toBeInTheDocument()
       expect(screen.getByTestId('info-icon')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+      expect(screen.getByTestId('close-button')).toBeInTheDocument()
     })
 
     it('should have proper structure with title and description', () => {
@@ -279,19 +184,19 @@ describe('ToastMessage Component', () => {
       const handleClose = vi.fn()
       render(<ToastMessage type='info' title='Test' onClose={handleClose} />)
 
-      const closeButton = screen.getByRole('button', { name: 'Close' })
-      expect(closeButton).toHaveAttribute('aria-label', 'Close')
+      const closeButton = screen.getByTestId('close-button')
+      expect(closeButton).toHaveAttribute('aria-label', 'Close info notification')
     })
 
     it('should be keyboard accessible', () => {
       const handleClose = vi.fn()
       render(<ToastMessage type='info' title='Test' onClose={handleClose} />)
 
-      const closeButton = screen.getByRole('button', { name: 'Close' })
+      const closeButton = screen.getByTestId('close-button')
 
       // Simulate keyboard interaction
       closeButton.focus()
-      fireEvent.keyDown(closeButton, { key: 'Enter' })
+      expect(closeButton).toHaveFocus()
 
       // Button should still be clickable
       fireEvent.click(closeButton)
@@ -361,15 +266,15 @@ describe('ToastMessage Component', () => {
       expect(screen.getByText('Integration Test')).toBeInTheDocument()
       expect(screen.getByText('Testing all props together')).toBeInTheDocument()
       expect(screen.getByTestId('success-icon')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+      expect(screen.getByTestId('close-button')).toBeInTheDocument()
     })
 
     it('should work with minimal props', () => {
       render(<ToastMessage type='error' title='Minimal Test' />)
 
       expect(screen.getByText('Minimal Test')).toBeInTheDocument()
-      expect(screen.getByTestId('exclamation-icon')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+      expect(screen.getByTestId('error-icon')).toBeInTheDocument()
+      expect(screen.getByTestId('close-button')).toBeInTheDocument()
     })
   })
 })

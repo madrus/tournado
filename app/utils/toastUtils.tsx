@@ -1,5 +1,6 @@
 import { toast as sonnerToast } from 'sonner'
 
+import { ToastMessage } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 
 // Default toast duration constant
@@ -89,39 +90,21 @@ export const createToast = (
       }),
     }
 
-    switch (type) {
-      case 'success':
-        return sonnerToast.success(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'error':
-      case 'network':
-      case 'permission':
-      case 'server':
-      case 'client':
-      case 'unknown':
-        return sonnerToast.error(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'warning':
-      case 'validation':
-        return sonnerToast.warning(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'info':
-        return sonnerToast.info(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      default:
-        return sonnerToast(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-    }
+    return sonnerToast.custom(
+      toast => (
+        <ToastMessage
+          type={type}
+          title={message}
+          description={options?.description}
+          onClose={() => {
+            if (typeof toast === 'object' && toast && 'dismiss' in toast) {
+              ;(toast as { dismiss: () => void }).dismiss()
+            }
+          }}
+        />
+      ),
+      toastOptions
+    )
   }
 }
 

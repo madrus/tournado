@@ -122,9 +122,22 @@ export const toastIconVariants = cva(
         true: 'rounded-full bg-white',
         false: '',
       },
+      type: {
+        success: 'text-emerald-600',
+        error: 'text-red-600',
+        network: 'text-red-600',
+        permission: 'text-red-600',
+        server: 'text-red-600',
+        client: 'text-red-600',
+        unknown: 'text-red-600',
+        info: 'text-sky-600',
+        warning: 'text-orange-600',
+        validation: 'text-orange-600',
+      },
     },
     defaultVariants: {
       hasBackground: false,
+      type: 'info',
     },
   }
 )

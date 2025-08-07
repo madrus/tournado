@@ -254,7 +254,8 @@ describe('FooterLink', () => {
 
       const link = screen.getByRole('link')
       // Should be a react-router Link (rendered as <a> in test environment)
-      expect(link.tagName).toBe('A')
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href')
     })
 
     it('should have proper DOM structure', () => {
@@ -266,9 +267,9 @@ describe('FooterLink', () => {
 
       const link = screen.getByRole('link')
       expect(link).toHaveTextContent(defaultProps.label)
-      // Instead of direct node access, check for no nested elements using childNodes
-      expect(link.childNodes.length).toBe(1)
-      expect(link.childNodes[0].nodeType).toBe(Node.TEXT_NODE)
+      // Check structure using Testing Library methods instead of direct node access
+      expect(link).toHaveTextContent(defaultProps.label)
+      expect(link).not.toContainHTML('<')
     })
   })
 

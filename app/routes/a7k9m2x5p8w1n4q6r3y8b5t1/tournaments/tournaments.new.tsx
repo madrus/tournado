@@ -59,6 +59,7 @@ type ActionData = {
     categories?: string
   }
   success?: boolean
+  tournamentId?: string
   message?: string
 }
 
@@ -141,8 +142,10 @@ export async function action({
       categories,
     })
 
-    // Redirect to the edit page for the new tournament
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}`)
+    // Redirect to tournament detail page with success parameter
+    return redirect(
+      `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}?success=created`
+    )
   } catch (_error) {
     return {
       errors: {
@@ -157,7 +160,6 @@ export default function NewTournamentPage(): JSX.Element {
   const { divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
   const { resetForm } = useTournamentFormStore()
-
   const handleReset = useCallback(() => {
     resetForm()
   }, [resetForm])
@@ -175,8 +177,6 @@ export default function NewTournamentPage(): JSX.Element {
         divisions={divisions}
         categories={categories}
         errors={actionData?.errors || {}}
-        isSuccess={actionData?.success || false}
-        successMessage={actionData?.message}
         submitButtonText={t('common.actions.save')}
       />
     </div>

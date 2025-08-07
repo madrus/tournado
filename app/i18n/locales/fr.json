@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "Aucune équipe sélectionnée. Sélectionnez une équipe à gauche, ou",
     "noTeams": "Aucune équipe n'a encore été inscrite. Soyez le premier à inscrire votre équipe pour les tournois à venir !",
+    "notifications": {
+      "registrationError": "Échec de l'enregistrement de l'équipe",
+      "registrationErrorDesc": "Une erreur s'est produite lors de l'enregistrement de votre équipe. Veuillez réessayer.",
+      "registrationSuccess": "Équipe enregistrée avec succès",
+      "registrationSuccessDesc": "Votre équipe a été enregistrée avec succès.",
+      "updateError": "Échec de la mise à jour de l'équipe",
+      "updateErrorDesc": "Une erreur s'est produite lors de la mise à jour de votre équipe. Veuillez réessayer.",
+      "updateSuccess": "Équipe mise à jour avec succès",
+      "updateSuccessDesc": "Votre équipe a été mise à jour avec succès."
+    },
     "title": "Équipes"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "Au moins une division est obligatoire",
         "categoriesRequired": "Au moins une catégorie est obligatoire",
         "fieldRequired": "Ce champ est obligatoire"
+      },
+      "notifications": {
+        "registrationError": "Échec de l'enregistrement du tournoi",
+        "registrationErrorDesc": "Une erreur s'est produite lors de l'enregistrement du tournoi. Veuillez réessayer.",
+        "registrationSuccess": "Tournoi enregistré avec succès",
+        "registrationSuccessDesc": "Le tournoi a été enregistré avec succès.",
+        "updateError": "Échec de la mise à jour du tournoi",
+        "updateErrorDesc": "Une erreur s'est produite lors de la mise à jour du tournoi. Veuillez réessayer.",
+        "updateSuccess": "Tournoi mis à jour avec succès",
+        "updateSuccessDesc": "Le tournoi a été mis à jour avec succès."
       }
     }
   },

@@ -56,8 +56,8 @@ export const action = async ({ request }: ActionFunctionArgs): Promise<Response>
       )
     }
 
-    // Redirect to team details page on success (same as admin route)
-    return redirect(`/teams/${result.team.id}`)
+    // Redirect to team details page with success parameter
+    return redirect(`/teams/${result.team.id}?success=created`)
   })
 
   if (isRateLimitResponse(response)) {

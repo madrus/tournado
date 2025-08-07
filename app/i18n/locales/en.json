@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "No team selected. Select a team on the left, or",
     "noTeams": "No teams have been registered yet. Be the first to register your team for upcoming tournaments!",
+    "notifications": {
+      "registrationError": "Failed to register team",
+      "registrationErrorDesc": "There was an error registering your team. Please try again.",
+      "registrationSuccess": "Team registered successfully",
+      "registrationSuccessDesc": "Your team has been registered successfully.",
+      "updateError": "Failed to update team",
+      "updateErrorDesc": "There was an error updating your team. Please try again.",
+      "updateSuccess": "Team updated successfully",
+      "updateSuccessDesc": "Your team has been updated successfully."
+    },
     "title": "Teams"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "At least one division is required",
         "categoriesRequired": "At least one category is required",
         "fieldRequired": "This field is required"
+      },
+      "notifications": {
+        "registrationError": "Failed to register tournament",
+        "registrationErrorDesc": "There was an error registering the tournament. Please try again.",
+        "registrationSuccess": "Tournament registered successfully",
+        "registrationSuccessDesc": "The tournament has been registered successfully.",
+        "updateError": "Failed to update tournament",
+        "updateErrorDesc": "There was an error updating the tournament. Please try again.",
+        "updateSuccess": "Tournament updated successfully",
+        "updateSuccessDesc": "The tournament has been updated successfully."
       }
     }
   },

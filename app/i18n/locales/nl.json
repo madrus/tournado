@@ -220,6 +220,16 @@
     },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",
+    "notifications": {
+      "registrationError": "Team registreren mislukt",
+      "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van je team. Probeer het opnieuw.",
+      "registrationSuccess": "Team succesvol geregistreerd",
+      "registrationSuccessDesc": "Je team is succesvol geregistreerd.",
+      "updateError": "Team bijwerken mislukt",
+      "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van je team. Probeer het opnieuw.",
+      "updateSuccess": "Team succesvol bijgewerkt",
+      "updateSuccessDesc": "Je team is succesvol bijgewerkt."
+    },
     "title": "Teams"
   },
   "tournaments": {
@@ -257,6 +267,16 @@
         "divisionsRequired": "Minstens één divisie is verplicht",
         "categoriesRequired": "Minstens één categorie is verplicht",
         "fieldRequired": "Dit veld is verplicht"
+      },
+      "notifications": {
+        "registrationError": "Toernooi registreren mislukt",
+        "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van het toernooi. Probeer het opnieuw.",
+        "registrationSuccess": "Toernooi succesvol geregistreerd",
+        "registrationSuccessDesc": "Het toernooi is succesvol geregistreerd.",
+        "updateError": "Toernooi bijwerken mislukt",
+        "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van het toernooi. Probeer het opnieuw.",
+        "updateSuccess": "Toernooi succesvol bijgewerkt",
+        "updateSuccessDesc": "Het toernooi is succesvol bijgewerkt."
       }
     }
   },

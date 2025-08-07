@@ -49,7 +49,17 @@ export function getPostSignInRedirect(
       // Auth pages are not valid destinations for authenticated users
       // Fall through to role-based default
     } else if (canUserAccessPath(user, requestedPath)) {
-      return requestedPath
+      // For admin users, prioritize admin panel unless they specifically requested an admin route
+      const role = getUserRole(user)
+      const isAdminUser = ['ADMIN', 'MANAGER', 'REFEREE'].includes(role)
+      const requestedAdminRoute = requestedPath.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+      // If admin user requested a non-admin route, redirect to admin panel instead
+      if (isAdminUser && !requestedAdminRoute) {
+        // Fall through to role-based default (admin panel)
+      } else {
+        return requestedPath
+      }
     }
     // If they can't access the requested path, fall through to role-based default
   }

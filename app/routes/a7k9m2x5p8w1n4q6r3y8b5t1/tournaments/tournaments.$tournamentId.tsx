@@ -1,8 +1,8 @@
 /* eslint-disable id-blacklist */
-import { JSX } from 'react'
+import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useActionData, useLoaderData } from 'react-router'
+import { redirect, useActionData, useLoaderData, useSearchParams } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Panel } from '~/components/Panel'
@@ -17,6 +17,7 @@ import {
 } from '~/models/tournament.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { toast } from '~/utils/toastUtils'
 
 import type { Route } from './+types/tournaments.$tournamentId'
 
@@ -200,6 +201,21 @@ export default function EditTournamentPage(): JSX.Element {
   const { t } = useTranslation()
   const { tournament, divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // Check for success parameter and show toast
+  useEffect(() => {
+    const success = searchParams.get('success')
+    if (success === 'created') {
+      toast.success(t('tournaments.notifications.createSuccess'), {
+        description: t('tournaments.notifications.createSuccessDesc'),
+      })
+
+      // Remove the success parameter from URL
+      searchParams.delete('success')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
 
   if (!tournament) {
     return (

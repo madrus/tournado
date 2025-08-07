@@ -207,8 +207,8 @@ export default function EditTournamentPage(): JSX.Element {
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
-      toast.success(t('tournaments.notifications.createSuccess'), {
-        description: t('tournaments.notifications.createSuccessDesc'),
+      toast.success(t('tournaments.notifications.registrationSuccess'), {
+        description: t('tournaments.notifications.registrationSuccessDesc'),
       })
 
       // Remove the success parameter from URL

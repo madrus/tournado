@@ -19,12 +19,12 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
       // Success icon gets white circle wrapper (non-shaped icon)
       return (
         <div
-          className={toastIconVariants({ hasBackground: true })}
+          className={toastIconVariants({ hasBackground: true, type })}
           aria-hidden='true'
           data-testid='success-wrapper'
         >
           <SuccessIcon
-            className='h-[18px] w-[18px] text-white'
+            className='h-4 w-4'
             size={TOAST_SUCCESS_ICON_SIZE}
             weight={600}
           />
@@ -38,44 +38,32 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
     case 'unknown':
       return (
         <div
-          className={toastIconVariants({ hasBackground: false })}
+          className={toastIconVariants({ hasBackground: false, type })}
           aria-hidden='true'
           data-testid='error-wrapper'
         >
-          <ExclamationIcon
-            className='h-6 w-6 text-white'
-            size={TOAST_ICON_SIZE}
-            weight={600}
-          />
+          <ExclamationIcon className='h-6 w-6' size={TOAST_ICON_SIZE} weight={600} />
         </div>
       )
     case 'info':
       return (
         <div
-          className={toastIconVariants({ hasBackground: false })}
+          className={toastIconVariants({ hasBackground: false, type })}
           aria-hidden='true'
           data-testid='info-wrapper'
         >
-          <InfoLetterIcon
-            className='h-6 w-6 text-white'
-            size={TOAST_ICON_SIZE}
-            weight={600}
-          />
+          <InfoLetterIcon className='h-6 w-6' size={TOAST_ICON_SIZE} weight={600} />
         </div>
       )
     case 'warning':
     case 'validation':
       return (
         <div
-          className={toastIconVariants({ hasBackground: false })}
+          className={toastIconVariants({ hasBackground: false, type })}
           aria-hidden='true'
           data-testid='warning-wrapper'
         >
-          <WarningIcon
-            className='h-6 w-6 text-white'
-            size={TOAST_ICON_SIZE}
-            weight={600}
-          />
+          <WarningIcon className='h-6 w-6' size={TOAST_ICON_SIZE} weight={600} />
         </div>
       )
   }

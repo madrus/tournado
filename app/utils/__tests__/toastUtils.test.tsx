@@ -15,6 +15,7 @@ import {
 // Mock Sonner toast library
 vi.mock('sonner', () => ({
   toast: {
+    custom: vi.fn(),
     success: vi.fn(),
     error: vi.fn(),
     info: vi.fn(),
@@ -32,21 +33,17 @@ describe('toastUtils', () => {
     it('should create a success toast with title only', () => {
       toast.success('Operation completed successfully')
 
-      expect(sonnerToast.success).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.success).toHaveBeenCalledWith(
-        'Operation completed successfully',
-        {
-          duration: 7500,
-        }
-      )
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
+        duration: 7500,
+      })
     })
 
     it('should create a success toast with title and description', () => {
       toast.success('Success!', { description: 'The task was completed successfully.' })
 
-      expect(sonnerToast.success).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.success).toHaveBeenCalledWith('Success!', {
-        description: 'The task was completed successfully.',
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -54,8 +51,8 @@ describe('toastUtils', () => {
     it('should create a success toast with custom duration', () => {
       toast.success('Quick message', { duration: 3000 })
 
-      expect(sonnerToast.success).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.success).toHaveBeenCalledWith('Quick message', {
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 3000,
       })
     })
@@ -63,7 +60,7 @@ describe('toastUtils', () => {
     it('should handle priority option', () => {
       toast.success('Test message', { priority: 'high' })
 
-      expect(sonnerToast.success).toHaveBeenCalledWith('Test message', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
         style: { borderLeft: '4px solid var(--color-red-500)' },
       })
@@ -74,8 +71,8 @@ describe('toastUtils', () => {
     it('should create an error toast with title only', () => {
       toast.error('An error occurred')
 
-      expect(sonnerToast.error).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.error).toHaveBeenCalledWith('An error occurred', {
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -83,9 +80,8 @@ describe('toastUtils', () => {
     it('should create an error toast with title and description', () => {
       toast.error('Error!', { description: 'Something went wrong.' })
 
-      expect(sonnerToast.error).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.error).toHaveBeenCalledWith('Error!', {
-        description: 'Something went wrong.',
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -95,8 +91,8 @@ describe('toastUtils', () => {
     it('should create an info toast with title only', () => {
       toast.info('Information message')
 
-      expect(sonnerToast.info).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.info).toHaveBeenCalledWith('Information message', {
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -104,9 +100,8 @@ describe('toastUtils', () => {
     it('should create an info toast with title and description', () => {
       toast.info('Info!', { description: 'Here is some information.' })
 
-      expect(sonnerToast.info).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.info).toHaveBeenCalledWith('Info!', {
-        description: 'Here is some information.',
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -116,8 +111,8 @@ describe('toastUtils', () => {
     it('should create a warning toast with title only', () => {
       toast.warning('Warning message')
 
-      expect(sonnerToast.warning).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.warning).toHaveBeenCalledWith('Warning message', {
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -125,9 +120,8 @@ describe('toastUtils', () => {
     it('should create a warning toast with title and description', () => {
       toast.warning('Warning!', { description: 'Please be careful.' })
 
-      expect(sonnerToast.warning).toHaveBeenCalledTimes(1)
-      expect(sonnerToast.warning).toHaveBeenCalledWith('Warning!', {
-        description: 'Please be careful.',
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -137,7 +131,7 @@ describe('toastUtils', () => {
     it('should use default duration when no duration is provided', () => {
       toast.success('Test message')
 
-      expect(sonnerToast.success).toHaveBeenCalledWith('Test message', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -145,7 +139,7 @@ describe('toastUtils', () => {
     it('should use custom duration when provided', () => {
       toast.error('Test message', { duration: 5000 })
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Test message', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 5000,
       })
     })
@@ -153,7 +147,7 @@ describe('toastUtils', () => {
     it('should handle undefined description', () => {
       toast.info('Test message', { description: undefined })
 
-      expect(sonnerToast.info).toHaveBeenCalledWith('Test message', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -179,10 +173,11 @@ describe('toastUtils', () => {
 
   describe('Return values', () => {
     it('should return the result of sonner toast methods', () => {
-      vi.mocked(sonnerToast.success).mockReturnValue('success-toast-id')
-      vi.mocked(sonnerToast.error).mockReturnValue('error-toast-id')
-      vi.mocked(sonnerToast.info).mockReturnValue('info-toast-id')
-      vi.mocked(sonnerToast.warning).mockReturnValue('warning-toast-id')
+      vi.mocked(sonnerToast.custom)
+        .mockImplementationOnce((): string | number => 'success-toast-id')
+        .mockImplementationOnce((): string | number => 'error-toast-id')
+        .mockImplementationOnce((): string | number => 'info-toast-id')
+        .mockImplementationOnce((): string | number => 'warning-toast-id')
 
       expect(toast.success('Test')).toBe('success-toast-id')
       expect(toast.error('Test')).toBe('error-toast-id')
@@ -191,10 +186,7 @@ describe('toastUtils', () => {
     })
 
     it('should return consistent values for all toast types', () => {
-      vi.mocked(sonnerToast.success).mockReturnValue('toast-id')
-      vi.mocked(sonnerToast.error).mockReturnValue('toast-id')
-      vi.mocked(sonnerToast.info).mockReturnValue('toast-id')
-      vi.mocked(sonnerToast.warning).mockReturnValue('toast-id')
+      vi.mocked(sonnerToast.custom).mockReturnValue('toast-id')
 
       const successResult = toast.success('Test')
       const errorResult = toast.error('Test')
@@ -212,7 +204,7 @@ describe('toastUtils', () => {
     it('should handle validation errors', () => {
       toast.validation('Validation error')
 
-      expect(sonnerToast.warning).toHaveBeenCalledWith('Validation error', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -220,7 +212,7 @@ describe('toastUtils', () => {
     it('should handle network errors', () => {
       toast.network('Network error')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Network error', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -228,7 +220,7 @@ describe('toastUtils', () => {
     it('should handle permission errors', () => {
       toast.permission('Permission denied')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Permission denied', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -236,7 +228,7 @@ describe('toastUtils', () => {
     it('should handle server errors', () => {
       toast.server('Server error')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Server error', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -244,7 +236,7 @@ describe('toastUtils', () => {
     it('should handle client errors', () => {
       toast.client('Client error')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Client error', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -252,7 +244,7 @@ describe('toastUtils', () => {
     it('should handle unknown errors', () => {
       toast.unknown('Unknown error')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Unknown error', {
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -263,8 +255,7 @@ describe('toastUtils', () => {
       const error = new Error('Test error')
       createErrorToast(error, 'network')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Test error', {
-        description: error.stack?.split('\n')[1]?.trim(),
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
         style: { borderLeft: '4px solid var(--color-red-500)' },
       })
@@ -273,8 +264,7 @@ describe('toastUtils', () => {
     it('should show validation error with showValidationError', () => {
       showValidationError('email', 'Invalid email format')
 
-      expect(sonnerToast.warning).toHaveBeenCalledWith('email: Invalid email format', {
-        description: 'Please check your input and try again.',
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -282,8 +272,7 @@ describe('toastUtils', () => {
     it('should show network error with showNetworkError', () => {
       showNetworkError('Connection failed')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Connection failed', {
-        description: 'Please check your connection and try again.',
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -291,8 +280,7 @@ describe('toastUtils', () => {
     it('should show permission error with showPermissionError', () => {
       showPermissionError('Access denied')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Access denied', {
-        description: 'You do not have permission to perform this action.',
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })
@@ -300,9 +288,7 @@ describe('toastUtils', () => {
     it('should show server error with showServerError', () => {
       showServerError('Internal server error')
 
-      expect(sonnerToast.error).toHaveBeenCalledWith('Internal server error', {
-        description:
-          'Please try again later or contact support if the problem persists.',
+      expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
     })

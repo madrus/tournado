@@ -1,6 +1,6 @@
 import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form } from 'react-router'
+import { Form, useNavigation } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
@@ -17,6 +17,7 @@ import {
 } from '~/stores/useTournamentFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
+import { toast } from '~/utils/toastUtils'
 
 export function TournamentForm({
   mode: formMode = 'create',
@@ -34,6 +35,7 @@ export function TournamentForm({
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
+  const navigation = useNavigation()
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -185,12 +187,50 @@ export function TournamentForm({
     }
   }
 
-  // Scroll to top on successful server-side submission
+  // Memoized toast callbacks for performance optimization
+  const showSuccessToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.success(t('tournaments.notifications.registrationSuccess'), {
+        description: t('tournaments.notifications.registrationSuccessDesc'),
+      })
+    } else {
+      toast.success(t('tournaments.notifications.updateSuccess'), {
+        description: t('tournaments.notifications.updateSuccessDesc'),
+      })
+    }
+  }, [formMode, t])
+
+  // Scroll to top on successful server-side submission and show toast
   useEffect(() => {
     if (isSuccess) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      showSuccessToast()
     }
-  }, [isSuccess])
+  }, [isSuccess, showSuccessToast])
+
+  // Memoized error toast callback for performance optimization
+  const showErrorToast = useCallback(() => {
+    const isCreating = formMode === 'create'
+
+    if (isCreating) {
+      toast.error(t('tournaments.notifications.registrationError'), {
+        description: t('tournaments.notifications.registrationErrorDesc'),
+      })
+    } else {
+      toast.error(t('tournaments.notifications.updateError'), {
+        description: t('tournaments.notifications.updateErrorDesc'),
+      })
+    }
+  }, [formMode, t])
+
+  // Show error toast on form submission failure
+  useEffect(() => {
+    if (navigation.state === 'idle' && errors && Object.keys(errors).length > 0) {
+      showErrorToast()
+    }
+  }, [navigation.state, errors, showErrorToast])
 
   return (
     <div className={cn('w-full', className)}>

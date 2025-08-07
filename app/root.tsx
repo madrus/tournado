@@ -16,6 +16,8 @@ import type { User } from '@prisma/client'
 import { Theme } from '@radix-ui/themes'
 import '@radix-ui/themes/styles.css'
 
+import { Toaster } from 'sonner'
+
 import { AppBar } from '~/components/AppBar'
 import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
@@ -299,6 +301,16 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
             {/* Mobile Navigation - positioned at bottom of viewport */}
             <BottomNavigation />
           </div>
+          <Toaster
+            position='top-center'
+            toastOptions={{
+              duration: 7500,
+              unstyled: true,
+            }}
+            visibleToasts={10}
+            closeButton
+            expand={true}
+          />
         </Theme>
         <script
           dangerouslySetInnerHTML={{
@@ -355,6 +367,16 @@ export function ErrorBoundary(): JSX.Element {
             {/* Mobile Navigation - positioned at bottom of viewport */}
             <BottomNavigation />
           </div>
+          <Toaster
+            position='top-center'
+            toastOptions={{
+              duration: 7500,
+              unstyled: true,
+            }}
+            visibleToasts={10}
+            closeButton
+            expand={true}
+          />
         </Theme>
       </I18nextProvider>
     </Document>

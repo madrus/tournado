@@ -1,4 +1,4 @@
-import { JSX, useMemo } from 'react'
+import { JSX, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
@@ -7,6 +7,7 @@ import {
   redirect,
   useActionData,
   useLoaderData,
+  useSearchParams,
 } from 'react-router'
 
 import { Division } from '@prisma/client'
@@ -19,6 +20,7 @@ import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { toast } from '~/utils/toastUtils'
 
 // Route metadata - admin only
 export const handle: RouteMetadata = {
@@ -202,6 +204,21 @@ export default function AdminTeamPage(): JSX.Element {
   const { team } = useLoaderData<LoaderData>()
   const actionData = useActionData<TeamCreateActionData>()
   const { i18n, t } = useTranslation()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // Check for success parameter and show toast
+  useEffect(() => {
+    const success = searchParams.get('success')
+    if (success === 'created') {
+      toast.success(t('teams.notifications.registrationSuccess'), {
+        description: t('teams.notifications.registrationSuccessDesc'),
+      })
+
+      // Remove the success parameter from URL
+      searchParams.delete('success')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(

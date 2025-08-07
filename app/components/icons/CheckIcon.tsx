@@ -14,7 +14,7 @@ export function CheckIcon({
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Check mark',
-}: CheckIconProps): JSX.Element {
+}: Readonly<CheckIconProps>): JSX.Element {
   // Convert weight to stroke-width for simple check mark
   const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2 : 2
 

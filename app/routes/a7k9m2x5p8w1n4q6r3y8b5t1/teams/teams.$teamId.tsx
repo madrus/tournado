@@ -279,7 +279,7 @@ export default function AdminTeamPage(): JSX.Element {
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
     }
-  }, [searchParams, setSearchParams, t, setFormData])
+  }, [searchParams, setSearchParams, t, setFormData, team])
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(

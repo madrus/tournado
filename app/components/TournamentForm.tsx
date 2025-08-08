@@ -200,11 +200,13 @@ export function TournamentForm({
         }
 
         let resolved = false
+        // eslint-disable-next-line prefer-const
+        let timeoutId: number | undefined
         const onResolve = () => {
           if (resolved) return
           resolved = true
           window.removeEventListener('scroll', onScroll)
-          window.clearTimeout(timeoutId)
+          if (timeoutId !== undefined) window.clearTimeout(timeoutId)
           resolve()
         }
 
@@ -212,7 +214,7 @@ export function TournamentForm({
           if (window.scrollY <= 4) onResolve()
         }
 
-        const timeoutId = window.setTimeout(onResolve, 800)
+        timeoutId = window.setTimeout(onResolve, 800)
         window.addEventListener('scroll', onScroll, { passive: true })
         window.scrollTo({ top: 0, behavior: 'smooth' })
       })

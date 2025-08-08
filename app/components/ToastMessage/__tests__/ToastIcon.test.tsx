@@ -93,7 +93,7 @@ describe('ToastIcon Component', () => {
 
       const successIcon = screen.getByTestId('success-icon')
       expect(successIcon).toBeInTheDocument()
-      // Current implementation uses h-4 w-4; icon color should be 600 variant
+      // Current implementation uses h-4 w-4; success icon remains emerald
       expect(successIcon).toHaveClass('h-4', 'w-4', 'text-emerald-600')
       expect(successIcon).toHaveAttribute('data-size', '18')
       expect(successIcon).toHaveAttribute('data-weight', '600')
@@ -114,7 +114,8 @@ describe('ToastIcon Component', () => {
 
       const errorIcon = screen.getByTestId('error-icon')
       expect(errorIcon).toBeInTheDocument()
-      expect(errorIcon).toHaveClass('h-6', 'w-6', 'text-red-600')
+      // Non-success icons are white over glossy backgrounds
+      expect(errorIcon).toHaveClass('h-6', 'w-6')
       expect(errorIcon).toHaveAttribute('data-size', '24')
       expect(errorIcon).toHaveAttribute('data-weight', '600')
     })
@@ -134,7 +135,7 @@ describe('ToastIcon Component', () => {
 
       const infoIcon = screen.getByTestId('info-icon')
       expect(infoIcon).toBeInTheDocument()
-      expect(infoIcon).toHaveClass('h-6', 'w-6', 'text-sky-600')
+      expect(infoIcon).toHaveClass('h-6', 'w-6')
       expect(infoIcon).toHaveAttribute('data-size', '24')
       expect(infoIcon).toHaveAttribute('data-weight', '600')
     })
@@ -154,7 +155,7 @@ describe('ToastIcon Component', () => {
 
       const warningIcon = screen.getByTestId('warning-icon')
       expect(warningIcon).toBeInTheDocument()
-      expect(warningIcon).toHaveClass('h-6', 'w-6', 'text-orange-600')
+      expect(warningIcon).toHaveClass('h-6', 'w-6')
       expect(warningIcon).toHaveAttribute('data-size', '24')
       expect(warningIcon).toHaveAttribute('data-weight', '600')
     })

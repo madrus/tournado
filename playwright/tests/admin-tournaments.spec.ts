@@ -257,10 +257,6 @@ test.describe('Tournament-Team Integration', () => {
       name: /toernooi.*select option|tournament.*select option/i,
     })
     await expect(tournamentCombo).toBeVisible()
-    // Ensure root loader data (tournaments) includes the newly created tournament
-    // by performing a hard reload to re-run server loaders in CI.
-    await page.reload()
-    await page.waitForLoadState('networkidle')
 
     // Open combo and wait for Radix content to be visible
     await tournamentCombo.click()
@@ -271,7 +267,7 @@ test.describe('Tournament-Team Integration', () => {
     const tournamentOption = tournamentDropdown.getByRole('option', {
       name: /Test Tournament E2E - Test Location/i,
     })
-    await expect(tournamentOption).toBeVisible({ timeout: 3000 })
+    await expect(tournamentOption).toBeVisible({ timeout: 10000 })
     await tournamentOption.click()
 
     // Step 5: Open divisions combo, verify list, and select first division

@@ -140,24 +140,24 @@ export const toastMessageVariants = cva(
  */
 export const toastIconVariants = cva(
   // Base classes for all toast icons
-  ['flex h-6 w-6 items-center justify-center'],
+  ['flex h-5 w-5 items-center justify-center'],
   {
     variants: {
       hasBackground: {
-        true: 'rounded-full bg-white',
+        true: 'rounded-full bg-white ring-2 ring-white/70',
         false: '',
       },
       type: {
         success: 'text-emerald-600',
-        error: 'text-white',
-        network: 'text-white',
-        permission: 'text-white',
-        server: 'text-white',
-        client: 'text-white',
-        unknown: 'text-white',
-        info: 'text-white',
-        warning: 'text-white',
-        validation: 'text-white',
+        error: 'text-red-600',
+        network: 'text-red-600',
+        permission: 'text-red-600',
+        server: 'text-red-600',
+        client: 'text-red-600',
+        unknown: 'text-red-600',
+        info: 'text-sky-600',
+        warning: 'text-orange-600',
+        validation: 'text-orange-600',
       },
     },
     defaultVariants: {

@@ -42,6 +42,21 @@ vi.mock('~/components/icons', () => ({
       !
     </span>
   ),
+  ExclamationMarkIcon: (props: {
+    className?: string
+    size?: number
+    weight?: number
+    'data-testid'?: string
+  }) => (
+    <span
+      data-testid={props['data-testid'] ?? 'exclamation-mark-icon'}
+      className={`${props.className ? `${props.className} ` : ''}text-red-600`}
+      data-size={props.size}
+      data-weight={props.weight}
+    >
+      !
+    </span>
+  ),
   InfoLetterIcon: ({
     className,
     size,
@@ -120,11 +135,11 @@ describe('ToastIcon Component', () => {
       expect(errorIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render error icon without background wrapper', () => {
+    it('should render error icon with background wrapper', () => {
       render(<ToastIcon type='error' />)
 
       const wrapper = screen.getByTestId('error-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })
@@ -140,11 +155,11 @@ describe('ToastIcon Component', () => {
       expect(infoIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render info icon without background wrapper', () => {
+    it('should render info icon with background wrapper', () => {
       render(<ToastIcon type='info' />)
 
       const wrapper = screen.getByTestId('info-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })
@@ -160,11 +175,11 @@ describe('ToastIcon Component', () => {
       expect(warningIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render warning icon without background wrapper', () => {
+    it('should render warning icon with background wrapper', () => {
       render(<ToastIcon type='warning' />)
 
       const wrapper = screen.getByTestId('warning-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })

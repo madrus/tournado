@@ -1,11 +1,6 @@
 import type { JSX } from 'react'
 
-import {
-  ExclamationIcon,
-  InfoLetterIcon,
-  SuccessIcon,
-  WarningIcon,
-} from '~/components/icons'
+import { ExclamationMarkIcon, InfoLetterIcon, SuccessIcon } from '~/components/icons'
 import type { IconProps as AppIconProps } from '~/lib/lib.types'
 
 import { toastIconVariants, type ToastType } from './toastMessage.variants'
@@ -41,37 +36,37 @@ const ICONS: Record<BaseToastType, ToastIconConfig> = {
     Icon: SuccessIcon,
     iconTestId: 'success-icon',
     wrapperTestId: 'success-wrapper',
-    iconClass: 'h-4 w-4',
+    iconClass: 'h-4 w-4 text-emerald-800/60',
     size: TOAST_SUCCESS_ICON_SIZE,
     weight: 600,
     wrapperHasBackground: true,
   },
   error: {
-    Icon: ExclamationIcon,
+    Icon: ExclamationMarkIcon,
     iconTestId: 'error-icon',
     wrapperTestId: 'error-wrapper',
-    iconClass: 'h-6 w-6',
+    iconClass: 'h-6 w-6 text-red-800/50',
     size: TOAST_ICON_SIZE,
     weight: 600,
-    wrapperHasBackground: false,
+    wrapperHasBackground: true,
   },
   info: {
     Icon: InfoLetterIcon,
     iconTestId: 'info-icon',
     wrapperTestId: 'info-wrapper',
-    iconClass: 'h-6 w-6',
+    iconClass: 'h-6 w-6 text-sky-800/60',
     size: TOAST_ICON_SIZE,
     weight: 600,
-    wrapperHasBackground: false,
+    wrapperHasBackground: true,
   },
   warning: {
-    Icon: WarningIcon,
+    Icon: ExclamationMarkIcon,
     iconTestId: 'warning-icon',
     wrapperTestId: 'warning-wrapper',
-    iconClass: 'h-6 w-6',
+    iconClass: 'h-6 w-6 text-orange-800/50',
     size: TOAST_ICON_SIZE,
     weight: 600,
-    wrapperHasBackground: false,
+    wrapperHasBackground: true,
   },
 }
 

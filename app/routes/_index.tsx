@@ -105,55 +105,51 @@ export default function IndexPage(): JSX.Element {
             <div className='flex flex-wrap justify-center gap-4'>
               <ActionButton
                 icon='check'
-                variant='primary'
+                variant='secondary'
                 color='emerald'
-                className='!border-violet-600 !bg-violet-600 !text-white hover:!bg-violet-700'
                 onClick={() =>
                   toast.success('Team created successfully!', {
                     description: 'Your team has been added to the tournament.',
                   })
                 }
               >
-                Success Toast
+                Success
               </ActionButton>
               <ActionButton
-                icon='error'
-                variant='primary'
+                icon='exclamation_mark'
+                variant='secondary'
                 color='red'
-                className='!border-violet-600 !bg-violet-600 !text-white hover:!bg-violet-700'
                 onClick={() =>
                   toast.error('Failed to save team', {
                     description: 'Please check your connection and try again.',
                   })
                 }
               >
-                Error Toast
+                Error
               </ActionButton>
               <ActionButton
-                icon='warning'
+                icon='exclamation_mark'
                 variant='secondary'
-                color='orange'
-                className='!border-violet-600 !bg-violet-600 !text-white hover:!bg-violet-700'
+                color='yellow'
                 onClick={() =>
                   toast.warning('Tournament is full', {
                     description: 'Only 2 spots remaining for registration.',
                   })
                 }
               >
-                Warning Toast
+                Warning
               </ActionButton>
               <ActionButton
-                icon='info'
+                icon='info_letter'
                 variant='secondary'
-                color='sky'
-                className='!border-violet-600 !bg-violet-600 !text-white hover:!bg-violet-700'
+                color='cyan'
                 onClick={() =>
                   toast.info('New update available', {
                     description: 'Version 2.1.0 includes performance improvements.',
                   })
                 }
               >
-                Info Toast
+                Info
               </ActionButton>
             </div>
           </div>

@@ -26,6 +26,22 @@ import type { ToastType } from '~/lib/lib.types'
  * </div>
  * ```
  */
+// Common styling patterns for toast types
+const COMMON_STYLES = {
+  errorStyles: [
+    'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
+    'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
+    'text-white',
+    'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
+  ],
+  warningStyles: [
+    'bg-gradient-to-br from-orange-600/75 via-orange-600/55 to-orange-600/45',
+    'dark:from-orange-700/55 dark:via-orange-700/45 dark:to-orange-700/40',
+    'text-white',
+    'shadow-xl shadow-orange-950/30 dark:shadow-md dark:shadow-white/20',
+  ],
+} as const
+
 export const toastMessageVariants = cva(
   // Base classes for all toast messages
   [
@@ -63,60 +79,20 @@ export const toastMessageVariants = cva(
           'text-white',
           'shadow-xl shadow-emerald-950/30 dark:shadow-md dark:shadow-white/20',
         ],
-        error: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        network: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        permission: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        server: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        client: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        unknown: [
-          'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
-          'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
-          'text-white',
-          'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
+        error: COMMON_STYLES.errorStyles,
+        network: COMMON_STYLES.errorStyles,
+        permission: COMMON_STYLES.errorStyles,
+        server: COMMON_STYLES.errorStyles,
+        client: COMMON_STYLES.errorStyles,
+        unknown: COMMON_STYLES.errorStyles,
         info: [
           'bg-gradient-to-br from-sky-600/75 via-sky-600/55 to-sky-600/45',
           'dark:from-sky-700/55 dark:via-sky-700/45 dark:to-sky-700/40',
           'text-white',
           'shadow-xl shadow-sky-950/30 dark:shadow-md dark:shadow-white/20',
         ],
-        warning: [
-          'bg-gradient-to-br from-orange-600/75 via-orange-600/55 to-orange-600/45',
-          'dark:from-orange-700/55 dark:via-orange-700/45 dark:to-orange-700/40',
-          'text-white',
-          'shadow-xl shadow-orange-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
-        validation: [
-          'bg-gradient-to-br from-orange-600/75 via-orange-600/55 to-orange-600/45',
-          'dark:from-orange-700/55 dark:via-orange-700/45 dark:to-orange-700/40',
-          'text-white',
-          'shadow-xl shadow-orange-950/30 dark:shadow-md dark:shadow-white/20',
-        ],
+        warning: COMMON_STYLES.warningStyles,
+        validation: COMMON_STYLES.warningStyles,
       },
     },
     defaultVariants: {
@@ -181,26 +157,13 @@ export const toastIconVariants = cva(
  * ```
  */
 export const toastCloseButtonVariants = cva(
-  // Base classes for all close buttons
-  ['flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full'],
+  // Base classes for all close buttons - all toast types use white text
+  ['flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-white'],
   {
     variants: {
-      type: {
-        success: 'text-white',
-        error: 'text-white',
-        network: 'text-white',
-        permission: 'text-white',
-        server: 'text-white',
-        client: 'text-white',
-        unknown: 'text-white',
-        info: 'text-white',
-        warning: 'text-white',
-        validation: 'text-white',
-      },
+      // All types use the same white text styling, so no type variants needed
     },
-    defaultVariants: {
-      type: 'info',
-    },
+    defaultVariants: {},
   }
 )
 

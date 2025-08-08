@@ -62,8 +62,14 @@ const TOAST_CONFIGS: Record<ToastType, ToastConfig> = {
   },
 }
 
+// Global memoized ToastMessage to avoid re-creating components
+const MemoizedToastMessage = memo(ToastMessageBase)
+
+// Toast cache for performance optimization with rapid toasts
+const toastCache = new Map<string, ReturnType<typeof sonnerToast.custom>>()
+
 /**
- * Enhanced toast function with better error handling
+ * Enhanced toast function with better error handling and performance optimizations
  */
 export const createToast = (
   type: ToastType
@@ -77,9 +83,6 @@ export const createToast = (
 ) => string | number) => {
   const config = TOAST_CONFIGS[type]
 
-  // Memoized ToastMessage to avoid re-render churn from inline functions
-  const ToastMessage = memo(ToastMessageBase)
-
   return (
     message: string,
     options?: {
@@ -88,6 +91,15 @@ export const createToast = (
       priority?: 'low' | 'normal' | 'high'
     }
   ) => {
+    // Create cache key to prevent duplicate rapid toasts
+    const cacheKey = `${type}:${message}:${options?.description || ''}`
+
+    // Check if identical toast is already showing (prevent spam)
+    if (toastCache.has(cacheKey)) {
+      const cachedToast = toastCache.get(cacheKey)
+      if (cachedToast) return cachedToast
+    }
+
     const toastOptions = {
       duration: options?.duration ?? config.duration,
       ...(options?.priority === 'high' && {
@@ -95,21 +107,35 @@ export const createToast = (
       }),
     }
 
-    return sonnerToast.custom(
-      toastId => (
-        <ToastMessage
+    const toastId = sonnerToast.custom(
+      id => (
+        <MemoizedToastMessage
           type={type}
           title={message}
           description={options?.description}
           onClose={() => {
-            if (typeof toastId === 'string' || typeof toastId === 'number') {
-              sonnerToast.dismiss(toastId)
+            if (typeof id === 'string' || typeof id === 'number') {
+              toastCache.delete(cacheKey) // Clean up cache
+              sonnerToast.dismiss(id)
             }
           }}
         />
       ),
       toastOptions
     )
+
+    // Cache the toast briefly to prevent duplicates
+    toastCache.set(cacheKey, toastId)
+
+    // Auto-cleanup cache after toast duration
+    setTimeout(
+      () => {
+        toastCache.delete(cacheKey)
+      },
+      (options?.duration ?? config.duration ?? DEFAULT_TOAST_DURATION) + 1000
+    )
+
+    return toastId
   }
 }
 

@@ -96,14 +96,14 @@ export const createToast = (
     }
 
     return sonnerToast.custom(
-      t => (
+      toastId => (
         <ToastMessage
           type={type}
           title={message}
           description={options?.description}
           onClose={() => {
-            if (typeof t === 'object' && t && 'dismiss' in t) {
-              ;(t as { dismiss: () => void }).dismiss()
+            if (typeof toastId === 'string' || typeof toastId === 'number') {
+              sonnerToast.dismiss(toastId)
             }
           }}
         />

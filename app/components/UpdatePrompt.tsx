@@ -31,7 +31,7 @@ export function UpdatePrompt(): JSX.Element | null {
     return () => {
       window.removeEventListener('serviceWorkerUpdateReady', handleUpdateFound)
     }
-  }, [isClient])
+  }, [isClient, t])
 
   // Don't render anything during SSR
   if (!isClient) return null

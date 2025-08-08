@@ -257,12 +257,10 @@ test.describe('Tournament-Team Integration', () => {
       name: /toernooi.*select option|tournament.*select option/i,
     })
     await expect(tournamentCombo).toBeVisible()
-    // Ensure tournaments are hydrated (hidden native select mirrors options)
-    await expect(
-      page
-        .locator('select[name="tournamentId"] option')
-        .filter({ hasText: /Test Tournament E2E - Test Location/i })
-    ).toHaveCount(1, { timeout: 5000 })
+    // Ensure root loader data (tournaments) includes the newly created tournament
+    // by performing a hard reload to re-run server loaders in CI.
+    await page.reload()
+    await page.waitForLoadState('networkidle')
 
     // Open combo and wait for Radix content to be visible
     await tournamentCombo.click()

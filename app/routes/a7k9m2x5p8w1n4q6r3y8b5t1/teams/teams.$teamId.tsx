@@ -236,6 +236,12 @@ export default function AdminTeamPage(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams()
   const setFormData = useTeamFormStore(state => state.setFormData)
 
+  // Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
+  const isValidTeamName = (
+    value: string
+  ): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
+    /^(?:J|M|JM)O\d+-\d+$/.test(value)
+
   // Check for success parameter and show toast
   useEffect(() => {
     const success = searchParams.get('success')
@@ -260,7 +266,7 @@ export default function AdminTeamPage(): JSX.Element {
       setFormData({
         tournamentId: team.tournament.id,
         clubName: team.clubName,
-        name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+        name: isValidTeamName(team.name) ? team.name : (team.name as string),
         division: team.division,
         category: team.category,
         teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
@@ -280,7 +286,7 @@ export default function AdminTeamPage(): JSX.Element {
     () => ({
       tournamentId: team.tournament.id,
       clubName: team.clubName,
-      name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+      name: isValidTeamName(team.name) ? team.name : (team.name as string),
       division: team.division,
       category: team.category,
       teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,

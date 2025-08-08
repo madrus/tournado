@@ -100,8 +100,8 @@ describe('Toast Message Variants', () => {
       const baseClasses = toastIconVariants({})
 
       expect(baseClasses).toContain('flex')
-      expect(baseClasses).toContain('h-6')
-      expect(baseClasses).toContain('w-6')
+      expect(baseClasses).toContain('h-5')
+      expect(baseClasses).toContain('w-5')
       expect(baseClasses).toContain('items-center')
       expect(baseClasses).toContain('justify-center')
     })
@@ -133,8 +133,8 @@ describe('Toast Message Variants', () => {
 
       // Should have both base and variant classes
       expect(withBackgroundClasses).toContain('flex')
-      expect(withBackgroundClasses).toContain('h-6')
-      expect(withBackgroundClasses).toContain('w-6')
+      expect(withBackgroundClasses).toContain('h-5')
+      expect(withBackgroundClasses).toContain('w-5')
       expect(withBackgroundClasses).toContain('rounded-full')
       expect(withBackgroundClasses).toContain('bg-white')
     })

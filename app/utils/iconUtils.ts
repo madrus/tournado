@@ -11,9 +11,12 @@ import {
   DarkModeIcon,
   DeleteIcon,
   ErrorIcon,
+  ExclamationIcon,
+  ExclamationMarkIcon,
   ExpandMoreIcon,
   HomeIcon,
   InfoIcon,
+  InfoLetterIcon,
   LanguageIcon,
   LightModeIcon,
   LoginIcon,
@@ -44,8 +47,11 @@ export type IconName =
   | 'delete'
   | 'newWindow'
   | 'error'
+  | 'exclamation'
+  | 'exclamation_mark'
   | 'home'
   | 'info'
+  | 'info_letter'
   | 'language'
   | 'light_mode'
   | 'login'
@@ -75,8 +81,11 @@ export const iconMap = {
   delete: DeleteIcon,
   newWindow: NewWindowIcon,
   error: ErrorIcon,
+  exclamation: ExclamationIcon,
+  exclamation_mark: ExclamationMarkIcon,
   home: HomeIcon,
   info: InfoIcon,
+  info_letter: InfoLetterIcon,
   language: LanguageIcon,
   light_mode: LightModeIcon,
   login: LoginIcon,

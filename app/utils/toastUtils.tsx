@@ -1,6 +1,8 @@
+import { memo } from 'react'
+
 import { toast as sonnerToast } from 'sonner'
 
-import { ToastMessage } from '~/components/ToastMessage'
+import { ToastMessage as ToastMessageBase } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 
 // Default toast duration constant
@@ -75,6 +77,9 @@ export const createToast = (
 ) => string | number) => {
   const config = TOAST_CONFIGS[type]
 
+  // Memoized ToastMessage to avoid re-render churn from inline functions
+  const ToastMessage = memo(ToastMessageBase)
+
   return (
     message: string,
     options?: {
@@ -91,14 +96,14 @@ export const createToast = (
     }
 
     return sonnerToast.custom(
-      toast => (
+      t => (
         <ToastMessage
           type={type}
           title={message}
           description={options?.description}
           onClose={() => {
-            if (typeof toast === 'object' && toast && 'dismiss' in toast) {
-              ;(toast as { dismiss: () => void }).dismiss()
+            if (typeof t === 'object' && t && 'dismiss' in t) {
+              ;(t as { dismiss: () => void }).dismiss()
             }
           }}
         />

@@ -62,12 +62,46 @@ export function ActionButton({
     return null
   }
 
-  const iconElement = icon
+  // Determine if the icon should be wrapped in a circle with colored border (transparent fill)
+  const iconNeedsCircle =
+    icon === 'exclamation_mark' || icon === 'info_letter' || icon === 'check'
+
+  const rawIcon = icon
     ? renderIcon(icon, {
-        className: size === 'sm' ? 'h-4 w-4' : 'h-5 w-5',
+        className: cn(
+          iconNeedsCircle ? 'h-[18px] w-[18px]' : size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'
+        ),
+        weight: iconNeedsCircle ? 600 : undefined,
         'data-testid': 'action-button-icon',
       })
     : null
+
+  const iconElement = rawIcon ? (
+    iconNeedsCircle ? (
+      <span
+        className={cn(
+          'mr-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-transparent',
+          color === 'emerald' && 'border-emerald-600/70',
+          color === 'red' && 'border-red-600/70',
+          color === 'yellow' && 'border-yellow-600/70',
+          color === 'cyan' && 'border-cyan-600/70',
+          color === 'green' && 'border-green-600/70',
+          color === 'teal' && 'border-teal-600/70',
+          color === 'violet' && 'border-violet-600/70',
+          color === 'slate' && 'border-slate-600/70',
+          color === 'primary' && 'border-primary-600/70',
+          color === 'brand' && 'border-brand-600/70'
+        )}
+        aria-hidden='true'
+      >
+        {rawIcon}
+      </span>
+    ) : (
+      <span className='mr-1.5' aria-hidden='true'>
+        {rawIcon}
+      </span>
+    )
+  ) : null
 
   // Combine permission-based disabled state with explicit disabled prop
   const isDisabled = disabled || (permission && !hasRequiredPermission)

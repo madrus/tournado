@@ -193,29 +193,34 @@ export function TournamentForm({
 
     const waitForTop = (): Promise<void> =>
       new Promise(resolve => {
+        // If already near the top, resolve immediately
         if (window.scrollY <= 4) {
           resolve()
           return
         }
-        const onScroll = () => {
-          if (window.scrollY <= 4) {
-            window.removeEventListener('scroll', onScroll)
-            resolve()
-          }
-        }
-        window.addEventListener('scroll', onScroll, { passive: true })
-        // fail-safe timeout in case scroll event is throttled or interrupted
-        window.setTimeout(() => {
+
+        let resolved = false
+        const onResolve = () => {
+          if (resolved) return
+          resolved = true
           window.removeEventListener('scroll', onScroll)
+          window.clearTimeout(timeoutId)
           resolve()
-        }, 800)
+        }
+
+        const onScroll = () => {
+          if (window.scrollY <= 4) onResolve()
+        }
+
+        const timeoutId = window.setTimeout(onResolve, 800)
+        window.addEventListener('scroll', onScroll, { passive: true })
         window.scrollTo({ top: 0, behavior: 'smooth' })
       })
 
     await waitForTop()
-    if (formRef.current) {
-      submit(formRef.current)
-    }
+    // Fallback to the event target form if ref is not available
+    const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+    submit(formEl)
   }
 
   // Memoized toast callbacks for performance optimization

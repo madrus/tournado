@@ -37,6 +37,9 @@ export function TournamentForm({
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
   const submit = useSubmit()
+  // Refs to track scroll listener and timeout for cleanup on unmount
+  const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
+  const scrollTimeoutRef = useRef<number | undefined>(undefined)
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -206,7 +209,14 @@ export function TournamentForm({
           if (resolved) return
           resolved = true
           window.removeEventListener('scroll', onScroll)
-          if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+          scrollListenerRef.current = null
+          if (timeoutId !== undefined) {
+            window.clearTimeout(timeoutId)
+          }
+          if (scrollTimeoutRef.current !== undefined) {
+            window.clearTimeout(scrollTimeoutRef.current)
+          }
+          scrollTimeoutRef.current = undefined
           resolve()
         }
 
@@ -215,6 +225,8 @@ export function TournamentForm({
         }
 
         timeoutId = window.setTimeout(onResolve, 800)
+        scrollTimeoutRef.current = timeoutId
+        scrollListenerRef.current = onScroll
         window.addEventListener('scroll', onScroll, { passive: true })
         window.scrollTo({ top: 0, behavior: 'smooth' })
       })
@@ -269,6 +281,21 @@ export function TournamentForm({
       showErrorToast()
     }
   }, [navigation.state, errors, showErrorToast])
+
+  // Cleanup any lingering scroll listeners/timeouts on unmount to avoid leaks
+  useEffect(
+    () => () => {
+      if (scrollListenerRef.current) {
+        window.removeEventListener('scroll', scrollListenerRef.current)
+        scrollListenerRef.current = null
+      }
+      if (scrollTimeoutRef.current !== undefined) {
+        window.clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = undefined
+      }
+    },
+    []
+  )
 
   return (
     <div className={cn('w-full', className)}>

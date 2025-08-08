@@ -280,12 +280,25 @@ test.describe('Tournament-Team Integration', () => {
 
       // Close dropdown and try once more to give database more time
       await page.keyboard.press('Escape')
-      await page.waitForTimeout(1000)
+      await page.reload()
+      await page.waitForLoadState('networkidle')
 
-      // Second attempt: Reopen dropdown
-      await tournamentCombo.click()
+      // Second attempt: Get fresh combo reference after reload and reopen dropdown
+      const refreshedTournamentCombo = page.getByRole('combobox', {
+        name: /toernooi.*select option|tournament.*select option/i,
+      })
+      await expect(refreshedTournamentCombo).toBeVisible()
+      await refreshedTournamentCombo.click()
+
       const tournamentDropdown = page.locator('[data-radix-select-content]').last()
       await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+
+      // Debug: Log what options are actually available
+      const allOptions = await tournamentDropdown.locator('[role="option"]').all()
+      const optionTexts = await Promise.all(
+        allOptions.map(option => option.textContent())
+      )
+      console.log('Available tournament options:', optionTexts)
 
       const tournamentOption = tournamentDropdown.getByRole('option', {
         name: /Test Tournament E2E - Test Location/i,

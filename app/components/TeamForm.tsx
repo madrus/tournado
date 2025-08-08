@@ -34,6 +34,9 @@ export function TeamForm({
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
   const submit = useSubmit()
+  // Refs to track scroll listener and timeout for cleanup on unmount
+  const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
+  const scrollTimeoutRef = useRef<number | undefined>(undefined)
   const isSubmitting = navigation.state === 'submitting'
   const isPublicSuccess = isSuccess && variant === 'public'
 
@@ -105,23 +108,32 @@ export function TeamForm({
           const onScroll = () => {
             if (window.scrollY <= 4) {
               window.removeEventListener('scroll', onScroll)
-              if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+              scrollListenerRef.current = null
+              if (timeoutId !== undefined) {
+                window.clearTimeout(timeoutId)
+              }
+              if (scrollTimeoutRef.current !== undefined) {
+                window.clearTimeout(scrollTimeoutRef.current)
+              }
+              scrollTimeoutRef.current = undefined
               resolve()
             }
           }
+          scrollListenerRef.current = onScroll
           window.addEventListener('scroll', onScroll, { passive: true })
           // fail-safe timeout in case scroll event is throttled or interrupted
           timeoutId = window.setTimeout(() => {
             window.removeEventListener('scroll', onScroll)
+            scrollListenerRef.current = null
             resolve()
           }, 800)
+          scrollTimeoutRef.current = timeoutId
           window.scrollTo({ top: 0, behavior: 'smooth' })
         })
 
       await waitForTop()
-      if (formRef.current) {
-        submit(formRef.current)
-      }
+      const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+      submit(formEl)
     },
     [validateForm, submit]
   )
@@ -280,6 +292,21 @@ export function TeamForm({
       showErrorToast()
     }
   }, [navigation.state, errors, showErrorToast])
+
+  // Cleanup any lingering scroll listeners/timeouts on unmount to avoid leaks
+  useEffect(
+    () => () => {
+      if (scrollListenerRef.current) {
+        window.removeEventListener('scroll', scrollListenerRef.current)
+        scrollListenerRef.current = null
+      }
+      if (scrollTimeoutRef.current !== undefined) {
+        window.clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = undefined
+      }
+    },
+    []
+  )
 
   return (
     <div className={cn('w-full', className)}>

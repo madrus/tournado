@@ -100,16 +100,18 @@ export function TeamForm({
             resolve()
             return
           }
+          // eslint-disable-next-line prefer-const
+          let timeoutId: number | undefined
           const onScroll = () => {
             if (window.scrollY <= 4) {
               window.removeEventListener('scroll', onScroll)
-              if (timeoutId) clearTimeout(timeoutId)
+              if (timeoutId !== undefined) window.clearTimeout(timeoutId)
               resolve()
             }
           }
           window.addEventListener('scroll', onScroll, { passive: true })
           // fail-safe timeout in case scroll event is throttled or interrupted
-          const timeoutId = window.setTimeout(() => {
+          timeoutId = window.setTimeout(() => {
             window.removeEventListener('scroll', onScroll)
             resolve()
           }, 800)

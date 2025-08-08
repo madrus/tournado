@@ -142,7 +142,7 @@ describe('Toast Message Variants', () => {
 
   describe('toastCloseButtonVariants', () => {
     it('should generate correct base classes', () => {
-      const baseClasses = toastCloseButtonVariants({ type: 'info' })
+      const baseClasses = toastCloseButtonVariants()
 
       expect(baseClasses).toContain('flex')
       expect(baseClasses).toContain('h-5')
@@ -155,23 +155,20 @@ describe('Toast Message Variants', () => {
     })
 
     it('should generate correct text color for all toast types', () => {
-      const types: ToastType[] = ['success', 'error', 'info', 'warning']
-
-      types.forEach(type => {
-        const classes = toastCloseButtonVariants({ type })
-        expect(classes).toContain('text-white')
-      })
+      // All toast types use the same white text styling
+      const classes = toastCloseButtonVariants()
+      expect(classes).toContain('text-white')
     })
 
     it('should use default variant when no type is provided', () => {
-      const defaultClasses = toastCloseButtonVariants({})
+      const defaultClasses = toastCloseButtonVariants()
 
       // Should default to info type
       expect(defaultClasses).toContain('text-white')
     })
 
     it('should combine base classes with variant classes correctly', () => {
-      const successClasses = toastCloseButtonVariants({ type: 'success' })
+      const successClasses = toastCloseButtonVariants()
 
       // Should have both base and variant classes
       expect(successClasses).toContain('flex')
@@ -191,7 +188,7 @@ describe('Toast Message Variants', () => {
         hasBackgroundOptions.forEach(hasBackground => {
           const messageClasses = toastMessageVariants({ type })
           const iconClasses = toastIconVariants({ hasBackground })
-          const closeButtonClasses = toastCloseButtonVariants({ type })
+          const closeButtonClasses = toastCloseButtonVariants()
 
           expect(messageClasses).toBeTruthy()
           expect(iconClasses).toBeTruthy()
@@ -224,7 +221,7 @@ describe('Toast Message Variants', () => {
       validTypes.forEach(type => {
         expect(() => {
           toastMessageVariants({ type })
-          toastCloseButtonVariants({ type })
+          toastCloseButtonVariants()
         }).not.toThrow()
       })
     })
@@ -233,7 +230,7 @@ describe('Toast Message Variants', () => {
       expect(() => {
         toastMessageVariants({})
         toastIconVariants({})
-        toastCloseButtonVariants({})
+        toastCloseButtonVariants()
       }).not.toThrow()
     })
   })

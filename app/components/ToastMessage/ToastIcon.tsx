@@ -23,13 +23,21 @@ type ToastIconConfig = {
 const TOAST_ICON_SIZE = 24
 const TOAST_SUCCESS_ICON_SIZE = 18
 
-// Normalize all extended toast types to base types for rendering
-const normalizeType = (type: ToastType): BaseToastType => {
-  if (type === 'success' || type === 'info') return type
-  if (type === 'warning' || type === 'validation') return 'warning'
-  // error-like aliases
-  return 'error'
-}
+// Normalize all extended toast types to base types for rendering - optimized mapping
+const TYPE_MAPPING: Record<ToastType, BaseToastType> = {
+  success: 'success',
+  info: 'info',
+  warning: 'warning',
+  validation: 'warning',
+  error: 'error',
+  network: 'error',
+  permission: 'error',
+  server: 'error',
+  client: 'error',
+  unknown: 'error',
+} as const
+
+const normalizeType = (type: ToastType): BaseToastType => TYPE_MAPPING[type]
 
 const ICONS: Record<BaseToastType, ToastIconConfig> = {
   success: {

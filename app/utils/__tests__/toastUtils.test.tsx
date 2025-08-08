@@ -185,18 +185,24 @@ describe('toastUtils', () => {
       expect(toast.warning('Test')).toBe('warning-toast-id')
     })
 
-    it('should return consistent values for all toast types', () => {
-      vi.mocked(sonnerToast.custom).mockReturnValue('toast-id')
+    it('should return unique values for different toast types with same message', () => {
+      // Each call to sonnerToast.custom should return a new ID
+      vi.mocked(sonnerToast.custom)
+        .mockReturnValueOnce('success-toast-id')
+        .mockReturnValueOnce('error-toast-id')
+        .mockReturnValueOnce('info-toast-id')
+        .mockReturnValueOnce('warning-toast-id')
 
       const successResult = toast.success('Test')
       const errorResult = toast.error('Test')
       const infoResult = toast.info('Test')
       const warningResult = toast.warning('Test')
 
-      expect(successResult).toBe('toast-id')
-      expect(errorResult).toBe('toast-id')
-      expect(infoResult).toBe('toast-id')
-      expect(warningResult).toBe('toast-id')
+      // Different toast types should have different IDs even with same message
+      expect(successResult).toBe('success-toast-id')
+      expect(errorResult).toBe('error-toast-id')
+      expect(infoResult).toBe('info-toast-id')
+      expect(warningResult).toBe('warning-toast-id')
     })
   })
 

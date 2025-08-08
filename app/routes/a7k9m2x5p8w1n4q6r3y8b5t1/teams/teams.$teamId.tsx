@@ -266,7 +266,7 @@ export default function AdminTeamPage(): JSX.Element {
       setFormData({
         tournamentId: team.tournament.id,
         clubName: team.clubName,
-        name: isValidTeamName(team.name) ? team.name : (team.name as string),
+        name: isValidTeamName(team.name) ? team.name : String(team.name),
         division: team.division,
         category: team.category,
         teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
@@ -286,7 +286,7 @@ export default function AdminTeamPage(): JSX.Element {
     () => ({
       tournamentId: team.tournament.id,
       clubName: team.clubName,
-      name: isValidTeamName(team.name) ? team.name : (team.name as string),
+      name: isValidTeamName(team.name) ? team.name : String(team.name),
       division: team.division,
       category: team.category,
       teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,

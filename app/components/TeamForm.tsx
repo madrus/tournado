@@ -103,12 +103,13 @@ export function TeamForm({
           const onScroll = () => {
             if (window.scrollY <= 4) {
               window.removeEventListener('scroll', onScroll)
+              if (timeoutId) clearTimeout(timeoutId)
               resolve()
             }
           }
           window.addEventListener('scroll', onScroll, { passive: true })
           // fail-safe timeout in case scroll event is throttled or interrupted
-          window.setTimeout(() => {
+          const timeoutId = window.setTimeout(() => {
             window.removeEventListener('scroll', onScroll)
             resolve()
           }, 800)

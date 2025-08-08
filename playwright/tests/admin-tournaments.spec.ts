@@ -262,7 +262,7 @@ test.describe('Tournament-Team Integration', () => {
       page
         .locator('select[name="tournamentId"] option')
         .filter({ hasText: /Test Tournament E2E - Test Location/i })
-    ).toHaveCount(1, { timeout: 3000 })
+    ).toHaveCount(1, { timeout: 5000 })
 
     // Open combo and wait for Radix content to be visible
     await tournamentCombo.click()

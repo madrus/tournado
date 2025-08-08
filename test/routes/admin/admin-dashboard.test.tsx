@@ -75,7 +75,7 @@ vi.mock('react-i18next', () => ({
     if (components) {
       Object.entries(components).forEach(([tagName, _component]) => {
         const tagRegex = new RegExp(`<${tagName}>(.*?)</${tagName}>`, 'g')
-        result = result.replace(tagRegex, (match, content) => {
+        result = result.replace(tagRegex, (_match, content) => {
           // For testing purposes, we'll return the interpolated content
           // In a real implementation, this would render the component
           let processedContent = content

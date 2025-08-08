@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Prisma, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
@@ -12,20 +11,12 @@ export type TeamWithLeader = Team & {
 }
 
 // Define types using Prisma.Args utility
-type TeamPayload = Prisma.TeamGetPayload<{
-  include: { teamLeader: true }
-}>
-
-type LeaderPayload = Prisma.TeamLeaderGetPayload<{
-  select: { id: true; email: true }
-}>
+// These types are kept for future use when we need to work with full team and leader payloads
 
 export const getTeam = ({
   id,
-  teamLeaderId,
 }: {
   id: string
-  teamLeaderId: string
 }): Promise<Pick<TeamWithLeader, 'id' | 'name' | 'division' | 'category'> | null> =>
   prisma.team.findFirst({
     select: { id: true, name: true, division: true, category: true },

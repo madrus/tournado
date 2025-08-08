@@ -10,13 +10,13 @@ import {
   useSearchParams,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Panel } from '~/components/Panel'
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
+import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -150,6 +150,10 @@ export async function action({
     const clubName = formData.get('clubName') as string | null
     const name = formData.get('name') as string | null
     const division = formData.get('division') as string | null
+    const category = formData.get('category') as string | null
+    const teamLeaderName = formData.get('teamLeaderName') as string | null
+    const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
+    const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
 
     const errors: TeamCreateActionData['errors'] = {}
 
@@ -172,6 +176,12 @@ export async function action({
       errors.division = 'invalidDivision'
     }
 
+    // Validate category is a valid enum value
+    const validCategory = stringToCategory(category)
+    if (category && !validCategory) {
+      errors.category = 'invalidCategory'
+    }
+
     if (Object.keys(errors).length > 0) {
       return Response.json({ errors }, { status: 400 })
     }
@@ -184,6 +194,24 @@ export async function action({
         clubName: clubName as string,
         name: name as string,
         division: validDivision as Division,
+        ...(validCategory ? { category: validCategory as Category } : {}),
+        // Update team leader nested (firstName/lastName split from teamLeaderName)
+        ...(teamLeaderName || teamLeaderEmail || teamLeaderPhone
+          ? {
+              teamLeader: {
+                update: {
+                  ...(teamLeaderName
+                    ? {
+                        firstName: teamLeaderName.split(' ')[0] || '',
+                        lastName: teamLeaderName.split(' ').slice(1).join(' ') || '',
+                      }
+                    : {}),
+                  ...(teamLeaderEmail ? { email: teamLeaderEmail } : {}),
+                  ...(teamLeaderPhone ? { phone: teamLeaderPhone } : {}),
+                },
+              },
+            }
+          : {}),
       },
     })
 
@@ -212,6 +240,8 @@ export default function AdminTeamPage(): JSX.Element {
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
+      // Smooth scroll to top for better UX after successful create
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('teams.notifications.registrationSuccess'), {
         description: t('teams.notifications.registrationSuccessDesc'),
       })
@@ -220,6 +250,8 @@ export default function AdminTeamPage(): JSX.Element {
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
     } else if (success === 'updated') {
+      // Smooth scroll to top for better UX after successful update
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('teams.notifications.updateSuccess'), {
         description: t('teams.notifications.updateSuccessDesc'),
       })

@@ -150,9 +150,10 @@ vi.mock('../icons', () => {
     )
 
   return {
+    // Icons used across forms and toast components
     AddIcon: createMockIcon('add-icon', '+'),
-    AnimatedHamburgerIcon: createMockIcon('animated-hamburger-icon', '☰'),
     AdminPanelSettingsIcon: createMockIcon('admin-panel-settings-icon', '👤'),
+    AnimatedHamburgerIcon: createMockIcon('animated-hamburger-icon', '☰'),
     ApparelIcon: createMockIcon('apparel-icon', '👕'),
     BlockIcon: createMockIcon('block-icon', '🚫'),
     CalendarIcon: createMockIcon('calendar-icon', '📅'),
@@ -164,9 +165,11 @@ vi.mock('../icons', () => {
     DarkModeIcon: createMockIcon('dark-mode-icon', '🌙'),
     DeleteIcon: createMockIcon('delete-icon', '🗑'),
     ErrorIcon: createMockIcon('error-icon', '❌'),
+    ExclamationIcon: createMockIcon('exclamation-icon', '!'),
     ExpandMoreIcon: createMockIcon('expand-more-icon', '▼'),
     HomeIcon: createMockIcon('home-icon', '🏠'),
     InfoIcon: createMockIcon('info-icon', 'ℹ'),
+    InfoLetterIcon: createMockIcon('info-letter-icon', 'i'),
     LanguageIcon: createMockIcon('language-icon', '🌐'),
     LightModeIcon: createMockIcon('light-mode-icon', '☀'),
     LoginIcon: createMockIcon('login-icon', '🔑'),
@@ -178,6 +181,7 @@ vi.mock('../icons', () => {
     PersonIcon: createMockIcon('person-icon', '👤'),
     RestorePageIcon: createMockIcon('restore-page-icon', '↻'),
     SettingsIcon: createMockIcon('settings-icon', '⚙'),
+    SuccessIcon: createMockIcon('success-icon', '✓'),
     TrophyIcon: createMockIcon('trophy-icon', '🏆'),
     TuneIcon: createMockIcon('tune-icon', '🎛'),
     UnfoldLessIcon: createMockIcon('unfold-less-icon', '⇈'),

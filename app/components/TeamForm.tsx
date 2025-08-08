@@ -1,6 +1,6 @@
 import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, useNavigation } from 'react-router'
+import { Form, useNavigation, useSubmit } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { RestorePageIcon } from '~/components/icons'
@@ -33,6 +33,7 @@ export function TeamForm({
   const { t, i18n } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const navigation = useNavigation()
+  const submit = useSubmit()
   const isSubmitting = navigation.state === 'submitting'
   const isPublicSuccess = isSuccess && variant === 'public'
 
@@ -82,14 +83,44 @@ export function TeamForm({
 
   // Handle client-side form submission and validation
   const handleSubmit = useCallback(
-    (formEvent: FormEvent<HTMLFormElement>) => {
+    async (formEvent: FormEvent<HTMLFormElement>) => {
       const isValid = validateForm()
 
       if (!isValid) {
         formEvent.preventDefault()
+        return
+      }
+
+      // Smooth-scroll to top first, then submit to allow UX to finish before redirect
+      formEvent.preventDefault()
+
+      const waitForTop = (): Promise<void> =>
+        new Promise(resolve => {
+          if (window.scrollY <= 4) {
+            resolve()
+            return
+          }
+          const onScroll = () => {
+            if (window.scrollY <= 4) {
+              window.removeEventListener('scroll', onScroll)
+              resolve()
+            }
+          }
+          window.addEventListener('scroll', onScroll, { passive: true })
+          // fail-safe timeout in case scroll event is throttled or interrupted
+          window.setTimeout(() => {
+            window.removeEventListener('scroll', onScroll)
+            resolve()
+          }, 800)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        })
+
+      await waitForTop()
+      if (formRef.current) {
+        submit(formRef.current)
       }
     },
-    [validateForm]
+    [validateForm, submit]
   )
 
   const handleReset = useCallback(() => {

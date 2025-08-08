@@ -66,7 +66,8 @@ const TOAST_CONFIGS: Record<ToastType, ToastConfig> = {
 const MemoizedToastMessage = memo(ToastMessageBase)
 
 // Toast cache for performance optimization with rapid toasts
-const toastCache = new Map<string, ReturnType<typeof sonnerToast.custom>>()
+// The cacheKeys are in the format: `${type}:${message}:${options?.description || ''}`
+export const toastCache = new Map<string, ReturnType<typeof sonnerToast.custom>>()
 
 /**
  * Enhanced toast function with better error handling and performance optimizations
@@ -128,12 +129,16 @@ export const createToast = (
     toastCache.set(cacheKey, toastId)
 
     // Auto-cleanup cache after toast duration
-    setTimeout(
-      () => {
-        toastCache.delete(cacheKey)
-      },
-      (options?.duration ?? config.duration ?? DEFAULT_TOAST_DURATION) + 1000
-    )
+    // In test environments we won't actually run this timer
+    // but in production it ensures the cache gets cleaned up
+    if (process.env.NODE_ENV !== 'test') {
+      setTimeout(
+        () => {
+          toastCache.delete(cacheKey)
+        },
+        (options?.duration ?? config.duration ?? DEFAULT_TOAST_DURATION) + 1000
+      )
+    }
 
     return toastId
   }

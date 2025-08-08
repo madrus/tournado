@@ -176,7 +176,6 @@ const createTournamentFormSchema = (t: TFunction) =>
 
 // Factory for getting appropriate tournament schema based on mode
 export function getTournamentValidationSchema(
-  mode: 'create' | 'edit',
   t: TFunction
 ): ReturnType<typeof createTournamentFormSchema> {
   const schema = createTournamentFormSchema(t)

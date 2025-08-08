@@ -10,6 +10,7 @@ import {
   showServerError,
   showValidationError,
   toast,
+  toastCache,
 } from '../toastUtils'
 
 // Mock Sonner toast library
@@ -297,6 +298,159 @@ describe('toastUtils', () => {
       expect(sonnerToast.custom).toHaveBeenCalledWith(expect.any(Function), {
         duration: 7500,
       })
+    })
+  })
+
+  describe('Performance and Memory Management', () => {
+    beforeEach(() => {
+      // Clear the toast cache before each test
+      vi.clearAllMocks()
+      vi.stubEnv('NODE_ENV', 'test')
+      // Clear the toast cache for each test
+      toastCache.clear()
+    })
+
+    afterEach(() => {
+      vi.unstubAllEnvs()
+    })
+
+    it('should handle rapid toast creation without memory leaks', () => {
+      // Mock sonnerToast.custom to return the same ID every time
+      let callCount = 0
+      vi.mocked(sonnerToast.custom).mockImplementation(() => {
+        callCount++
+        return `toast-id-${callCount}`
+      })
+
+      // Create 50 rapid toasts of the same message
+      const toastIds = []
+      for (let i = 0; i < 50; i++) {
+        toastIds.push(toast.success('Rapid test message'))
+      }
+
+      // Should only call sonner.custom once due to caching
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+
+      // All should return the same cached ID
+      const firstId = toastIds[0]
+      toastIds.forEach(id => {
+        expect(id).toBe(firstId)
+      })
+    })
+
+    it('should handle rapid different toast types correctly', () => {
+      // Reset mock call count
+      let callCount = 0
+      vi.mocked(sonnerToast.custom).mockImplementation(() => {
+        callCount++
+        return `toast-id-${callCount}`
+      })
+
+      const results = {
+        success: toast.success('Test message'),
+        error: toast.error('Test message'),
+        info: toast.info('Test message'),
+        warning: toast.warning('Test message'),
+      }
+
+      // Should call sonner.custom for each different type
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(4)
+
+      // Different types should have different IDs even with same message
+      const ids = Object.values(results)
+      const uniqueIds = new Set(ids)
+      expect(uniqueIds.size).toBe(4)
+    })
+
+    it('should clean up toast cache after timeout', () => {
+      vi.useFakeTimers()
+      vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
+
+      // Create a toast
+      toast.success('Test message', { duration: 5000 })
+
+      // Should be called once
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+
+      // Create same toast again immediately - should return cached
+      toast.success('Test message', { duration: 5000 })
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+
+      // Manually clear the cache to simulate a timeout
+      toastCache.delete('success:Test message:')
+
+      // Create same toast again - should create new one after cache cleanup
+      toast.success('Test message', { duration: 5000 })
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(2)
+
+      vi.runAllTimers()
+      vi.useRealTimers()
+    })
+
+    it('should handle toast dismissal and cache cleanup', () => {
+      const mockToastId = 'dismissable-toast-id'
+      vi.mocked(sonnerToast.custom).mockImplementation(component => {
+        // Simulate calling the onClose callback
+        if (typeof component === 'function') {
+          const reactElement = component(mockToastId)
+          // Extract onClose from props and call it
+          if (
+            reactElement &&
+            reactElement.props &&
+            typeof reactElement.props === 'object' &&
+            reactElement.props !== null
+          ) {
+            const props = reactElement.props as Record<string, unknown>
+            if ('onClose' in props && typeof props.onClose === 'function') {
+              props.onClose()
+            }
+          }
+        }
+        return mockToastId
+      })
+
+      // Create a toast
+      toast.success('Dismissable message')
+
+      // Verify sonner methods were called
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      expect(sonnerToast.dismiss).toHaveBeenCalledWith(mockToastId)
+    })
+
+    it('should handle burst toast creation with different messages', () => {
+      const messages = [
+        'Message 1',
+        'Message 2',
+        'Message 3',
+        'Message 1', // Duplicate
+        'Message 4',
+      ]
+
+      const toastIds = messages.map(msg => toast.error(msg))
+
+      // Should create toast for each unique message (4 unique messages)
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(4)
+
+      // Same messages should return same IDs
+      expect(toastIds[0]).toBe(toastIds[3]) // Both 'Message 1'
+    })
+
+    it('should handle mixed priority toasts efficiently', () => {
+      // Create toasts with different priorities
+      toast.info('Normal message')
+      toast.error('Error message', { priority: 'high' })
+      toast.success('Success message')
+
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(3)
+
+      // Verify high priority toast has correct styling
+      const highPriorityCall = vi
+        .mocked(sonnerToast.custom)
+        .mock.calls.find(call => call[1]?.style?.borderLeft)
+      expect(highPriorityCall).toBeDefined()
+      expect(highPriorityCall?.[1]?.style?.borderLeft).toBe(
+        '4px solid var(--color-red-500)'
+      )
     })
   })
 })

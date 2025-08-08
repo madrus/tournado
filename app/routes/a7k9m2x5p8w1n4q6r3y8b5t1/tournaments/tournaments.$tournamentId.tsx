@@ -208,6 +208,8 @@ export default function EditTournamentPage(): JSX.Element {
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
+      // Smooth scroll to top for better UX after successful create
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('tournaments.form.notifications.registrationSuccess'), {
         description: t('tournaments.form.notifications.registrationSuccessDesc'),
       })
@@ -216,6 +218,8 @@ export default function EditTournamentPage(): JSX.Element {
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
     } else if (success === 'updated') {
+      // Smooth scroll to top for better UX after successful update
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('tournaments.form.notifications.updateSuccess'), {
         description: t('tournaments.form.notifications.updateSuccessDesc'),
       })

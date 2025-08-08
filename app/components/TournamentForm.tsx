@@ -1,6 +1,6 @@
 import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, useNavigation } from 'react-router'
+import { Form, useNavigation, useSubmit } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
@@ -36,6 +36,7 @@ export function TournamentForm({
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
+  const submit = useSubmit()
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -179,11 +180,41 @@ export function TournamentForm({
   }, [errors, isSuccess, variant])
 
   // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
     if (!isValid) {
       formEvent.preventDefault()
+      return
+    }
+
+    // Smooth-scroll to top first, then submit to allow UX to finish before redirect
+    formEvent.preventDefault()
+
+    const waitForTop = (): Promise<void> =>
+      new Promise(resolve => {
+        if (window.scrollY <= 4) {
+          resolve()
+          return
+        }
+        const onScroll = () => {
+          if (window.scrollY <= 4) {
+            window.removeEventListener('scroll', onScroll)
+            resolve()
+          }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true })
+        // fail-safe timeout in case scroll event is throttled or interrupted
+        window.setTimeout(() => {
+          window.removeEventListener('scroll', onScroll)
+          resolve()
+        }, 800)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+
+    await waitForTop()
+    if (formRef.current) {
+      submit(formRef.current)
     }
   }
 

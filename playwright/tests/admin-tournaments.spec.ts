@@ -258,17 +258,48 @@ test.describe('Tournament-Team Integration', () => {
     })
     await expect(tournamentCombo).toBeVisible()
 
-    // Open combo and wait for Radix content to be visible
-    await tournamentCombo.click()
-    const tournamentDropdown = page.locator('[data-radix-select-content]').last()
-    await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+    // Try to open dropdown and find tournament, with one retry if it fails
+    let tournamentFound = false
 
-    // Select the tournament from the visible dropdown
-    const tournamentOption = tournamentDropdown.getByRole('option', {
-      name: /Test Tournament E2E - Test Location/i,
-    })
-    await expect(tournamentOption).toBeVisible({ timeout: 10000 })
-    await tournamentOption.click()
+    try {
+      // First attempt: Open dropdown and wait for tournament option
+      await tournamentCombo.click()
+      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+
+      const tournamentOption = tournamentDropdown.getByRole('option', {
+        name: /Test Tournament E2E - Test Location/i,
+      })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
+
+      // Tournament found, select it
+      await tournamentOption.click()
+      tournamentFound = true
+    } catch (error) {
+      console.log('First attempt failed, closing and reopening dropdown...')
+
+      // Close dropdown and try once more to give database more time
+      await page.keyboard.press('Escape')
+      await page.waitForTimeout(1000)
+
+      // Second attempt: Reopen dropdown
+      await tournamentCombo.click()
+      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+
+      const tournamentOption = tournamentDropdown.getByRole('option', {
+        name: /Test Tournament E2E - Test Location/i,
+      })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
+
+      // Tournament found on retry, select it
+      await tournamentOption.click()
+      tournamentFound = true
+    }
+
+    if (!tournamentFound) {
+      throw new Error('Tournament option not found after retry')
+    }
 
     // Step 5: Open divisions combo, verify list, and select first division
     const divisionCombo = page.getByRole('combobox', {

@@ -29,7 +29,7 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock ActionLinkButton component
+// Mock ActionLinkButton and ActionButton components
 vi.mock('~/components/buttons', () => ({
   ActionLinkButton: ({
     to,
@@ -51,6 +51,14 @@ vi.mock('~/components/buttons', () => ({
     >
       {label || children}
     </a>
+  ),
+  ActionButton: ({ children }: { children?: React.ReactNode }) => (
+    <button
+      type='button'
+      className='inline-flex items-center justify-center rounded-lg border font-semibold'
+    >
+      {children}
+    </button>
   ),
 }))
 

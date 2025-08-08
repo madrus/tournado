@@ -49,10 +49,10 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:run": "playwright test teams.spec.ts --reporter=html",
     "test:e2e": "PLAYWRIGHT_TEST=true playwright test",
+    "test:run": "vitest run",
     "test:watch": "vitest",
-    "test": "vitest run",
     "typecheck": "react-router typegen && tsc",
-    "validate": "npm-run-all2 --parallel lint typecheck test"
+    "validate": "npm-run-all2 --parallel lint typecheck test:run"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",

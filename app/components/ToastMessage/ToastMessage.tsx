@@ -69,9 +69,7 @@ export const ToastMessage = ({
       <ToastIcon type={type} />
       <div className='min-w-0 flex-1'>
         <p className='font-medium'>{title}</p>
-        {description ? (
-          <p className={cn('mt-1 text-sm opacity-90')}>{description}</p>
-        ) : null}
+        {description ? <p className={cn('mt-1 text-sm')}>{description}</p> : null}
       </div>
       <ToastCloseButton type={type} onClose={onClose} />
     </div>

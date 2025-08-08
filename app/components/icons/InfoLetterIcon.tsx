@@ -26,7 +26,7 @@ export function InfoLetterIcon({
       width={size}
       height={size}
       viewBox='0 0 24 24'
-      fill='white'
+      fill='none'
       strokeWidth={strokeWidth}
       strokeLinecap='round'
       strokeLinejoin='round'
@@ -34,7 +34,6 @@ export function InfoLetterIcon({
       role='img'
       aria-label={ariaLabel}
     >
-      <circle cx='12' cy='12' r='10' stroke='white' />
       {paths.map((path, index) => (
         <path key={index} d={path} stroke='currentColor' />
       ))}

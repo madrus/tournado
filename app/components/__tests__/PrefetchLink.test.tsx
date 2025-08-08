@@ -16,7 +16,7 @@ import {
 
 // Mock the prefetch-types module
 vi.mock('~/utils/prefetch-types', () => ({
-  getPrefetchStrategy: vi.fn((route: string, context: string) => {
+  getPrefetchStrategy: vi.fn((_route: string, context: string) => {
     // Mock implementation for different contexts
     if (context === 'actionButtons') return 'render'
     if (context === 'primaryNavigation') return 'intent'

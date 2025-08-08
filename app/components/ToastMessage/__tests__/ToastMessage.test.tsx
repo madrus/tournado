@@ -175,7 +175,7 @@ describe('ToastMessage Component', () => {
 
       // Check description styling
       const description = screen.getByText('Warning description')
-      expect(description).toHaveClass('mt-1', 'text-sm', 'opacity-90')
+      expect(description).toHaveClass('mt-1', 'text-sm')
     })
   })
 

@@ -39,7 +39,7 @@ export const ToastCloseButton = ({
   return (
     <button
       onClick={onClose}
-      className={toastCloseButtonVariants({ type })}
+      className={toastCloseButtonVariants()}
       aria-label={ariaLabel}
     >
       <CloseIcon className='h-4 w-4' size={TOAST_CLOSE_ICON_SIZE} />

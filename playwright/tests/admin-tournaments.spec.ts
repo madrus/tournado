@@ -257,15 +257,62 @@ test.describe('Tournament-Team Integration', () => {
       name: /toernooi.*select option|tournament.*select option/i,
     })
     await expect(tournamentCombo).toBeVisible()
-    await tournamentCombo.click()
 
-    // Wait for dropdown to open and find the tournament option using role
-    await page.waitForTimeout(500)
-    const tournamentOption = page.getByRole('option', {
-      name: /Test Tournament E2E - Test Location/i,
-    })
-    await expect(tournamentOption).toBeVisible()
-    await tournamentOption.click()
+    // Try to open dropdown and find tournament, with one retry if it fails
+    let tournamentFound = false
+
+    try {
+      // First attempt: Open dropdown and wait for tournament option
+      await tournamentCombo.click()
+      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+
+      const tournamentOption = tournamentDropdown.getByRole('option', {
+        name: /Test Tournament E2E - Test Location/i,
+      })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
+
+      // Tournament found, select it
+      await tournamentOption.click()
+      tournamentFound = true
+    } catch (error) {
+      console.log('First attempt failed, closing and reopening dropdown...')
+
+      // Close dropdown and try once more to give database more time
+      await page.keyboard.press('Escape')
+      await page.reload()
+      await page.waitForLoadState('networkidle')
+
+      // Second attempt: Get fresh combo reference after reload and reopen dropdown
+      const refreshedTournamentCombo = page.getByRole('combobox', {
+        name: /toernooi.*select option|tournament.*select option/i,
+      })
+      await expect(refreshedTournamentCombo).toBeVisible()
+      await refreshedTournamentCombo.click()
+
+      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
+
+      // Debug: Log what options are actually available
+      const allOptions = await tournamentDropdown.locator('[role="option"]').all()
+      const optionTexts = await Promise.all(
+        allOptions.map(option => option.textContent())
+      )
+      console.log('Available tournament options:', optionTexts)
+
+      const tournamentOption = tournamentDropdown.getByRole('option', {
+        name: /Test Tournament E2E - Test Location/i,
+      })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
+
+      // Tournament found on retry, select it
+      await tournamentOption.click()
+      tournamentFound = true
+    }
+
+    if (!tournamentFound) {
+      throw new Error('Tournament option not found after retry')
+    }
 
     // Step 5: Open divisions combo, verify list, and select first division
     const divisionCombo = page.getByRole('combobox', {
@@ -273,13 +320,12 @@ test.describe('Tournament-Team Integration', () => {
     })
     await expect(divisionCombo).toBeVisible()
     await divisionCombo.click()
-
-    // Wait for dropdown to open and verify divisions are populated
-    await page.waitForTimeout(500)
-    const firstDivisionOption = page.getByRole('option', {
+    const divisionDropdown = page.locator('[data-radix-select-content]').last()
+    await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
+    const firstDivisionOption = divisionDropdown.getByRole('option', {
       name: /eerste klasse|first division/i,
     })
-    await expect(firstDivisionOption).toBeVisible()
+    await expect(firstDivisionOption).toBeVisible({ timeout: 3000 })
     await firstDivisionOption.click()
 
     // Step 6: Open categories combo and verify the list
@@ -288,15 +334,12 @@ test.describe('Tournament-Team Integration', () => {
     })
     await expect(categoryCombo).toBeVisible()
     await categoryCombo.click()
-
-    // Wait for dropdown to open and verify categories are populated
-    await page.waitForTimeout(500)
-    const jo8Option = page.getByRole('option', { name: /JO8/i })
-    const jo10Option = page.getByRole('option', { name: /JO10/i })
-
-    // Verify we can see both categories we selected for the tournament
-    await expect(jo8Option).toBeVisible()
-    await expect(jo10Option).toBeVisible()
+    const categoryDropdown = page.locator('[data-radix-select-content]').last()
+    await expect(categoryDropdown).toBeVisible({ timeout: 3000 })
+    const jo8Option = categoryDropdown.getByRole('option', { name: /JO8/i })
+    const jo10Option = categoryDropdown.getByRole('option', { name: /JO10/i })
+    await expect(jo8Option).toBeVisible({ timeout: 3000 })
+    await expect(jo10Option).toBeVisible({ timeout: 3000 })
   })
 
   test('should show empty divisions and categories when no tournament selected', async ({

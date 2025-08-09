@@ -39,3 +39,5 @@ The database seed script creates a default user with the following credentials:
 - Password: `racheliscool`
 
 You can use these credentials to sign in and explore the application.
+
+#project #reference

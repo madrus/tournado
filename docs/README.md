@@ -4,10 +4,10 @@ Welcome to the Tournado documentation! This guide will help you understand and w
 
 ## Quick Navigation
 
-- [Getting Started](getting_started.md) - Set up your development environment
+- [Getting Started](getting-started.md) - Set up your development environment
 - [Development](development.md) - Development guidelines and practices
 - [Database Schema Changes](development/database-schema-changes.md) - Schema modifications and migrations
-- [Cursor Rules](development/cursor_rules.md) - AI-assisted development with Cursor
+- [Cursor Rules](cursor-rules.md) - AI-assisted development with Cursor
 - [Testing](testing.md) - Testing practices and guidelines
 - [Deployment](deployment.md) - Deployment procedures and environments
 

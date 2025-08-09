@@ -1,6 +1,6 @@
 - Home
    - [Overview](README.md)
-   - [Getting Started](getting_started.md)
+   - [Getting Started](getting-started.md)
 - Work in Progress
    - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
    - [Claude Code Analysis](wip/claude-20250717.md)
@@ -43,8 +43,8 @@
 - Guides
    - [RTL Implementation](guides/rtl-implementation-guide.md)
 - Reference
-   - [Cursor Rules](development/cursor_rules.md)
-   - [Fly.io vs Vercel](fly_vs_vercel.md)
-   - [Markdown Tips](markdown_tips.md)
-   - [React Router v7 Stack](remix_stack.md)
-   - [Prefetching Strategy](prefetching_strategy.md)
+   - [Cursor Rules](cursor-rules.md)
+   - [Fly.io vs Vercel](fly-vs-vercel.md)
+   - [Markdown Tips](markdown-tips.md)
+   - [React Router v7 Stack](remix-stack.md)
+   - [Prefetching Strategy](prefetching-strategy.md)

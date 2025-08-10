@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 
+import { AdminTeamsPage } from '../pages/AdminTeamsPage'
+
 // Tournament E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Tournaments', () => {
   test.beforeEach(async ({ page }) => {
@@ -190,36 +192,6 @@ test.describe('Tournament-Team Integration', () => {
     await page.setViewportSize({ width: 375, height: 812 })
   })
 
-  async function selectTournamentWithRetry(page, tournamentName, maxRetries = 3) {
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-        await page.reload() // Trigger fresh data fetch from root loader
-        await page.waitForLoadState('networkidle')
-
-        const combo = page.getByRole('combobox', { name: /tournament/i })
-        await combo.click()
-
-        const option = page.getByRole('option', {
-          name: new RegExp(tournamentName, 'i'),
-        })
-        await expect(option).toBeVisible({ timeout: 2000 })
-
-        await option.click()
-        return // Success!
-      } catch (error) {
-        if (attempt === maxRetries) {
-          throw new Error(
-            `Tournament "${tournamentName}" not found after ${maxRetries} attempts. This may indicate a database consistency issue.`
-          )
-        }
-        console.log(
-          `Attempt ${attempt} failed to find tournament, retrying in 500ms...`
-        )
-        await page.waitForTimeout(500)
-      }
-    }
-  }
-
   test('should create tournament and verify combo field integration in team creation', async ({
     page,
   }) => {
@@ -288,8 +260,9 @@ test.describe('Tournament-Team Integration', () => {
     })
     await expect(tournamentCombo).toBeVisible()
 
-    // Use the retry helper instead of the complex try-catch logic
-    await selectTournamentWithRetry(page, 'Test Tournament E2E - Test Location')
+    // Use the page object method instead of inline function
+    const teamsPage = new AdminTeamsPage(page)
+    await teamsPage.selectTournamentWithRetry('Test Tournament E2E - Test Location')
 
     // Verify tournament was selected
     const selectedTournament = page.getByRole('combobox', { name: /tournament/i })

@@ -169,3 +169,31 @@ export const waitForTournamentInDatabase = async (
     `Tournament "${tournamentName}" not found in database after ${maxAttempts} attempts`
   )
 }
+
+// Create a test tournament directly in the database (bypasses UI creation issues)
+export const createTestTournament = async (
+  name: string,
+  location: string
+): Promise<{ id: string; name: string; location: string }> => {
+  console.log(`- creating test tournament "${name}" in database...`)
+
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() + 7) // Start date 7 days from now
+
+  const endDate = new Date()
+  endDate.setDate(endDate.getDate() + 10) // End date 10 days from now
+
+  const tournament = await prisma.tournament.create({
+    data: {
+      name,
+      location,
+      startDate,
+      endDate,
+      divisions: JSON.stringify(['Eerste klasse', 'Tweede klasse']),
+      categories: JSON.stringify(['JO8', 'JO10']),
+    },
+  })
+
+  console.log(`- test tournament "${name}" created with ID ${tournament.id}`)
+  return tournament
+}

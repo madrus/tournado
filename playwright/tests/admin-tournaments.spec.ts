@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 
+import { waitForTournamentInDatabase } from '../helpers/database'
 import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 
 // Tournament E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
@@ -240,11 +241,34 @@ test.describe('Tournament-Team Integration', () => {
     await jo10Label.click()
 
     // Submit form - should redirect to tournament edit page
+    console.log('Submitting tournament creation form...')
     await page.getByRole('button', { name: 'Opslaan' }).click()
     await page.waitForLoadState('networkidle')
 
+    // Check for any error messages first
+    const errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
+    if (await errorMessage.isVisible()) {
+      const errorText = await errorMessage.textContent()
+      throw new Error(`Tournament creation failed with error: ${errorText}`)
+    }
+
     // Verify we're on the tournament edit page (not the list)
-    await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/) // Should be /tournaments/{id}
+    // This confirms the tournament was actually created
+    await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/, { timeout: 10000 }) // Should be /tournaments/{id}
+
+    // Additional verification: check that the tournament form shows the created data
+    await expect(page.getByRole('textbox', { name: /name|naam/i })).toHaveValue(
+      'Test Tournament E2E'
+    )
+    await expect(page.getByRole('textbox', { name: /location|locatie/i })).toHaveValue(
+      'Test Location'
+    )
+
+    console.log('Tournament creation confirmed - proceeding to team creation test')
+
+    // Additional safety check: verify tournament exists in database
+    await waitForTournamentInDatabase('Test Tournament E2E', 5, 1000)
+    console.log('Tournament verified in database')
 
     // Step 2: Navigate to teams route
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')

@@ -29,7 +29,7 @@ Add to your Cursor MCP config (`~/.cursor/mcp.json`):
 }
 ```
 
-[📚 Full MCP Documentation →](docs/testing/vitest_mcp.md)
+[📚 Full MCP Documentation →](docs/testing/vitest-mcp.md)
 
 ## Quick Start
 

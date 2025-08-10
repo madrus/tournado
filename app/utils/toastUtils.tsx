@@ -131,7 +131,7 @@ export const createToast = (
     // Auto-cleanup cache after toast duration
     // In test environments we won't actually run this timer
     // but in production it ensures the cache gets cleaned up
-    if (process.env.NODE_ENV !== 'test') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
       setTimeout(
         () => {
           toastCache.delete(cacheKey)

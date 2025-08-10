@@ -1,4 +1,4 @@
-import { forwardRef, type JSX, useState } from 'react'
+import { forwardRef, type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import * as Popover from '@radix-ui/react-popover'
@@ -219,6 +219,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       : internalSelectedDate
     const [isOpen, setIsOpen] = useState(false)
     const [hasInteracted, setHasInteracted] = useState(false)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     const handleDateSelect = (date: Date) => {
       // Update internal state only for uncontrolled mode
@@ -243,14 +244,23 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
     }
 
     // Handle blur events
-    const handleBlur = () => {
+    const handleBlur = (event: React.FocusEvent) => {
       // Mark as interacted
       setHasInteracted(true)
-      // If user never opened the calendar and then blurs, validate now.
-      // When the calendar was opened, handleOpenChange(false) will handle validation.
-      if (!isOpen && !hasInteracted) {
-        onBlur?.()
+
+      // Check if the focus is moving to an element inside our container
+      const relatedTarget = event.relatedTarget as Element | null
+      if (
+        containerRef.current &&
+        relatedTarget &&
+        containerRef.current.contains(relatedTarget)
+      ) {
+        // Focus is moving within the component, don't trigger blur validation
+        return
       }
+
+      // Focus is moving outside the component, trigger validation
+      onBlur?.()
     }
 
     // Handle calendar open/close state changes
@@ -263,11 +273,21 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
       }
 
       // If user closes calendar without selecting anything and has interacted,
-      // trigger validation after a brief delay to allow blur to happen
+      // check if focus has truly left the component before triggering validation
       if (!open && hasInteracted && !selectedDate) {
-        setTimeout(() => {
-          onBlur?.()
-        }, 10)
+        // Use requestAnimationFrame to check focus after the DOM updates
+        requestAnimationFrame(() => {
+          const activeElement = document.activeElement
+          const focusIsWithinContainer =
+            containerRef.current &&
+            activeElement &&
+            containerRef.current.contains(activeElement)
+
+          // Only trigger validation if focus has truly left the component
+          if (!focusIsWithinContainer) {
+            onBlur?.()
+          }
+        })
       }
     }
 
@@ -292,48 +312,50 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
           </div>
 
           <div className='relative'>
-            <Popover.Root open={isOpen} onOpenChange={handleOpenChange}>
-              <Popover.Trigger asChild>
-                <button
-                  type='button'
-                  disabled={readOnly}
-                  aria-label={`${label} - select date`}
-                  onBlur={handleBlur}
-                  className={cn(
-                    datePickerButtonVariants({
-                      color,
-                      disabled: readOnly ? true : undefined,
-                      error: error ? true : undefined,
-                    }),
-                    !readOnly && 'cursor-pointer'
-                  )}
-                  aria-invalid={error ? true : undefined}
-                  aria-errormessage={error ? `${name}-error` : undefined}
-                >
-                  <span
-                    className={datePickerTextVariants({
-                      state: displayValue ? 'selected' : 'placeholder',
-                    })}
+            <div ref={containerRef}>
+              <Popover.Root open={isOpen} onOpenChange={handleOpenChange}>
+                <Popover.Trigger asChild>
+                  <button
+                    type='button'
+                    disabled={readOnly}
+                    aria-label={`${label} - select date`}
+                    onBlur={handleBlur}
+                    className={cn(
+                      datePickerButtonVariants({
+                        color,
+                        disabled: readOnly ? true : undefined,
+                        error: error ? true : undefined,
+                      }),
+                      !readOnly && 'cursor-pointer'
+                    )}
+                    aria-invalid={error ? true : undefined}
+                    aria-errormessage={error ? `${name}-error` : undefined}
                   >
-                    {displayValue || placeholder || 'Select date'}
-                  </span>
-                  <CalendarIcon className={datePickerIconVariants()} size={20} />
-                </button>
-              </Popover.Trigger>
+                    <span
+                      className={datePickerTextVariants({
+                        state: displayValue ? 'selected' : 'placeholder',
+                      })}
+                    >
+                      {displayValue || placeholder || 'Select date'}
+                    </span>
+                    <CalendarIcon className={datePickerIconVariants()} size={20} />
+                  </button>
+                </Popover.Trigger>
 
-              <Popover.Portal>
-                <Popover.Content align='start' sideOffset={4} className='z-[9999]'>
-                  <Calendar
-                    selectedDate={selectedDate}
-                    onSelect={handleDateSelect}
-                    locale={i18n.language}
-                    minDate={min ? new Date(min) : undefined}
-                    maxDate={max ? new Date(max) : undefined}
-                    noPast={noPast}
-                  />
-                </Popover.Content>
-              </Popover.Portal>
-            </Popover.Root>
+                <Popover.Portal>
+                  <Popover.Content align='start' sideOffset={4} className='z-[9999]'>
+                    <Calendar
+                      selectedDate={selectedDate}
+                      onSelect={handleDateSelect}
+                      locale={i18n.language}
+                      minDate={min ? new Date(min) : undefined}
+                      maxDate={max ? new Date(max) : undefined}
+                      noPast={noPast}
+                    />
+                  </Popover.Content>
+                </Popover.Portal>
+              </Popover.Root>
+            </div>
           </div>
 
           {/* Hidden input for form submission */}

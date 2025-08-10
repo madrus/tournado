@@ -59,8 +59,14 @@ Zero configuration for many use cases
 
 #### Fly.io:
 
-- Free tier: 3 shared-cpu-1x VMs (256MB RAM each, 768MB total), 3GB persistent volume, 160GB outbound data transfer
-  • Included in the $5/month Hobby plan (comes with $5 usage credit)
+As of August 2025:
+• New accounts (Pay As You Go): no guaranteed free resources—charges are typically waived if monthly spend stays under ~$5.
+• Legacy Hobby accounts (pre-Fall 2024) receive:
+– 3 × shared-cpu-1x VMs (256 MB RAM each)
+– 3 GB total persistent volume (encrypted, per-volume max 1 GB, up to 500 GB)
+– Outbound transfer: 100 GB/mo in NA & EU; 30 GB/mo elsewhere
+• Any usage above these allowances is billed at standard rates.
+
 - Pricing scales with resource usage (CPU, RAM, storage)
 - Your current setup (small VM + 1GB volume) likely costs ~$5-10/month if beyond free tier
 

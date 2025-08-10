@@ -4,6 +4,8 @@ description: Generate a structured plan for a new product based on provided cont
 inputs:
    - name: context
      type: string
+     description: The user-provided background and requirements for the product
+     required: true
 ---
 
 # Plan New Product

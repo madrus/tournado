@@ -215,8 +215,9 @@ export default function EditTournamentPage(): JSX.Element {
       })
 
       // Remove the success parameter from URL
-      searchParams.delete('success')
-      setSearchParams(searchParams, { replace: true })
+      const next = new URLSearchParams(searchParams)
+      next.delete('success')
+      setSearchParams(next, { replace: true })
     } else if (success === 'updated') {
       // Smooth scroll to top for better UX after successful update
       window.scrollTo({ top: 0, behavior: 'smooth' })

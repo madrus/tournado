@@ -40,6 +40,8 @@ export function TournamentForm({
   // Refs to track scroll listener and timeout for cleanup on unmount
   const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
   const scrollTimeoutRef = useRef<number | undefined>(undefined)
+  // Re-entrancy guard for submit during scroll-to-top
+  const isSubmittingRef = useRef(false)
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -181,8 +183,6 @@ export function TournamentForm({
       formRef.current?.reset()
     }
   }, [errors, isSuccess, variant])
-
-  // Handle client-side form submission and validation
   const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
@@ -193,6 +193,10 @@ export function TournamentForm({
 
     // Smooth-scroll to top first, then submit to allow UX to finish before redirect
     formEvent.preventDefault()
+    if (isSubmittingRef.current) {
+      return
+    }
+    isSubmittingRef.current = true
 
     const waitForTop = (): Promise<void> =>
       new Promise(resolve => {
@@ -231,10 +235,14 @@ export function TournamentForm({
         window.scrollTo({ top: 0, behavior: 'smooth' })
       })
 
-    await waitForTop()
-    // Fallback to the event target form if ref is not available
-    const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
-    submit(formEl)
+    try {
+      await waitForTop()
+      // Fallback to the event target form if ref is not available
+      const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+      submit(formEl)
+    } finally {
+      isSubmittingRef.current = false
+    }
   }
 
   // Memoized toast callbacks for performance optimization

@@ -44,14 +44,18 @@ This document defines the hashtag tagging system for our Obsidian vault to ensur
 
 ## Tagging Rules
 
+## Tagging Rules
+
 1. **Use lowercase** for all tags
 2. **Use hyphens** instead of spaces (e.g., `#in-progress` not `#in progress`)
-3. **Be specific but not overly granular** - avoid creating too many similar tags
+3. **Be specific but not overly granular** – avoid creating too many similar tags
 4. **Combine multiple tags** when appropriate (e.g., `#project #obsidian #in-progress`)
 5. **Always place new tags or move the existing tags to the bottom of notes** for consistency.
 6. **Review and clean up unused tags** periodically
-7. **Avoid using numbers in tags**
-8. **Do NOT add tags to ALL CAPS system files** (e.g., `CLAUDE.md`, `TAGS.md`, `README.md`) - these are configuration files and should remain untagged
+7. **Avoid using numbers in tags** (exception: approved year or version tags if formally added to this document)
+8. **Do NOT add tags to ALL CAPS system files** (e.g., `CLAUDE.md`, `TAGS.md`, `README.md`) – these are configuration files and should remain untagged
+9. **Prefer singular (or plural) consistently** across tags (pick one convention here and stick to it)
+10.   **Avoid synonyms**; prefer the canonical tag listed in this document (e.g., use `#in-progress`, not `#wip`)
 
 ## Tag Maintenance
 

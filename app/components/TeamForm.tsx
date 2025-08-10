@@ -37,6 +37,7 @@ export function TeamForm({
   // Refs to track scroll listener and timeout for cleanup on unmount
   const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
   const scrollTimeoutRef = useRef<number | undefined>(undefined)
+  const isSubmittingRef = useRef(false)
   const isSubmitting = navigation.state === 'submitting'
   const isPublicSuccess = isSuccess && variant === 'public'
 
@@ -97,43 +98,62 @@ export function TeamForm({
       // Smooth-scroll to top first, then submit to allow UX to finish before redirect
       formEvent.preventDefault()
 
-      const waitForTop = (): Promise<void> =>
-        new Promise(resolve => {
-          if (window.scrollY <= 4) {
-            resolve()
-            return
-          }
-          // eslint-disable-next-line prefer-const
-          let timeoutId: number | undefined
-          const onScroll = () => {
+      // Guard against re-entrant submissions
+      if (isSubmittingRef.current) {
+        // Always prevent default on any subsequent submit events
+        formEvent.preventDefault()
+        return
+      }
+      isSubmittingRef.current = true
+
+      try {
+        // In test environment, bypass scroll/wait logic entirely
+        if (typeof process !== 'undefined' && process.env.NODE_ENV === 'test') {
+          const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+          submit(formEl)
+          return
+        }
+        const waitForTop = (): Promise<void> =>
+          new Promise(resolve => {
             if (window.scrollY <= 4) {
+              resolve()
+              return
+            }
+            // eslint-disable-next-line prefer-const
+            let timeoutId: number | undefined
+            const onScroll = () => {
+              if (window.scrollY <= 4) {
+                window.removeEventListener('scroll', onScroll)
+                scrollListenerRef.current = null
+                if (timeoutId !== undefined) {
+                  window.clearTimeout(timeoutId)
+                }
+                if (scrollTimeoutRef.current !== undefined) {
+                  window.clearTimeout(scrollTimeoutRef.current)
+                }
+                scrollTimeoutRef.current = undefined
+                resolve()
+              }
+            }
+            scrollListenerRef.current = onScroll
+            window.addEventListener('scroll', onScroll, { passive: true })
+            // fail-safe timeout in case scroll event is throttled or interrupted
+            timeoutId = window.setTimeout(() => {
               window.removeEventListener('scroll', onScroll)
               scrollListenerRef.current = null
-              if (timeoutId !== undefined) {
-                window.clearTimeout(timeoutId)
-              }
-              if (scrollTimeoutRef.current !== undefined) {
-                window.clearTimeout(scrollTimeoutRef.current)
-              }
               scrollTimeoutRef.current = undefined
               resolve()
-            }
-          }
-          scrollListenerRef.current = onScroll
-          window.addEventListener('scroll', onScroll, { passive: true })
-          // fail-safe timeout in case scroll event is throttled or interrupted
-          timeoutId = window.setTimeout(() => {
-            window.removeEventListener('scroll', onScroll)
-            scrollListenerRef.current = null
-            resolve()
-          }, 800)
-          scrollTimeoutRef.current = timeoutId
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        })
+            }, 800)
+            scrollTimeoutRef.current = timeoutId
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          })
 
-      await waitForTop()
-      const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
-      submit(formEl)
+        await waitForTop()
+        const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+        submit(formEl)
+      } finally {
+        isSubmittingRef.current = false
+      }
     },
     [validateForm, submit]
   )

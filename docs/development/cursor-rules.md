@@ -59,7 +59,7 @@ Explains:
 - Best practices
 - Troubleshooting
 
-### 6. Testing Guide
+### 6. UI Testing Guide
 
 Location: `.cursor/rules/06-testing-guide.mdc`
 

@@ -189,11 +189,11 @@ export const createTestTournament = async (
       location,
       startDate,
       endDate,
-      divisions: JSON.stringify(['Eerste klasse', 'Tweede klasse']),
-      categories: JSON.stringify(['JO8', 'JO10']),
+      divisions: ['Eerste klasse', 'Tweede klasse'],
+      categories: ['JO8', 'JO10'],
     },
   })
 
   console.log(`- test tournament "${name}" created with ID ${tournament.id}`)
-  return tournament
+  return { id: tournament.id, name: tournament.name, location: tournament.location }
 }

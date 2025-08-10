@@ -121,3 +121,51 @@ export const cleanupUser = async (email: string): Promise<void> => {
     console.log(`- test user ${email} cleanup skipped (not found)`)
   }
 }
+
+// Wait for tournament to exist in database (for E2E test synchronization)
+export const waitForTournamentInDatabase = async (
+  tournamentName: string,
+  maxAttempts = 10,
+  delayMs = 500
+): Promise<void> => {
+  let attempts = 0
+
+  while (attempts < maxAttempts) {
+    try {
+      const tournament = await prisma.tournament.findFirst({
+        where: {
+          name: {
+            contains: tournamentName,
+          },
+        },
+      })
+
+      if (tournament) {
+        console.log(
+          `- tournament "${tournamentName}" found in database after ${attempts + 1} attempts`
+        )
+        return
+      }
+
+      attempts++
+      console.log(
+        `- tournament "${tournamentName}" not found, attempt ${attempts}/${maxAttempts}`
+      )
+
+      if (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, delayMs))
+      }
+    } catch (error) {
+      console.error(`- database query failed on attempt ${attempts + 1}:`, error)
+      attempts++
+
+      if (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, delayMs))
+      }
+    }
+  }
+
+  throw new Error(
+    `Tournament "${tournamentName}" not found in database after ${maxAttempts} attempts`
+  )
+}

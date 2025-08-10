@@ -244,13 +244,11 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
     // Handle blur events
     const handleBlur = () => {
-      // Mark as interacted when user blurs the field
+      // Mark as interacted
       setHasInteracted(true)
-
-      // Only call onBlur validation if calendar is closed
-      // This prevents validation when user clicks to open calendar,
-      // but allows validation when they actually leave the field
-      if (!isOpen) {
+      // If user never opened the calendar and then blurs, validate now.
+      // When the calendar was opened, handleOpenChange(false) will handle validation.
+      if (!isOpen && !hasInteracted) {
         onBlur?.()
       }
     }

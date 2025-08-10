@@ -81,7 +81,8 @@ export class AdminTeamsPage extends BasePage {
         await combo.click()
 
         const option = this.page.getByRole('option', {
-          name: new RegExp(tournamentName, 'i'),
+          // Playwright string name matching is substring & case-insensitive by default.
+          name: tournamentName,
         })
         await expect(option).toBeVisible({ timeout: 2000 })
 

@@ -86,6 +86,26 @@ type LoaderData = {
   }
 }
 
+function parseTeamLeaderName(fullName: string): {
+  firstName: string
+  lastName: string
+} {
+  const trimmed = fullName.trim()
+  if (trimmed.length === 0) {
+    return { firstName: '', lastName: '' }
+  }
+
+  const parts = trimmed.split(/\s+/).filter(Boolean)
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '' }
+  }
+
+  return {
+    firstName: parts[0],
+    lastName: parts.slice(1).join(' '),
+  }
+}
+
 export const loader = async ({
   request,
   params,
@@ -202,8 +222,7 @@ export async function action({
                 update: {
                   ...(teamLeaderName
                     ? {
-                        firstName: teamLeaderName.split(' ')[0] || '',
-                        lastName: teamLeaderName.split(' ').slice(1).join(' ') || '',
+                        ...parseTeamLeaderName(teamLeaderName),
                       }
                     : {}),
                   ...(teamLeaderEmail ? { email: teamLeaderEmail } : {}),

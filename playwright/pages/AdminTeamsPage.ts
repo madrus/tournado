@@ -56,6 +56,42 @@ export class AdminTeamsPage extends BasePage {
     await this.page.waitForLoadState('networkidle')
   }
 
+  // Tournament selection helper - handles database consistency timing
+  async selectTournamentWithRetry(
+    tournamentName: string,
+    maxRetries = 3
+  ): Promise<void> {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await this.page.reload() // Trigger fresh data fetch from root loader
+        await this.page.waitForLoadState('networkidle')
+
+        const combo = this.page.getByRole('combobox', {
+          name: /toernooi.*select option|tournament.*select option/i,
+        })
+        await combo.click()
+
+        const option = this.page.getByRole('option', {
+          name: new RegExp(tournamentName, 'i'),
+        })
+        await expect(option).toBeVisible({ timeout: 2000 })
+
+        await option.click()
+        return // Success!
+      } catch (error) {
+        if (attempt === maxRetries) {
+          throw new Error(
+            `Tournament "${tournamentName}" not found after ${maxRetries} attempts. This may indicate a database consistency issue.`
+          )
+        }
+        console.log(
+          `Attempt ${attempt} failed to find tournament, retrying in 500ms...`
+        )
+        await this.page.waitForTimeout(500)
+      }
+    }
+  }
+
   // Verification methods
   async expectToBeOnAdminTeamsPage(): Promise<void> {
     await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams$/)

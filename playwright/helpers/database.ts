@@ -122,6 +122,33 @@ export const cleanupUser = async (email: string): Promise<void> => {
   }
 }
 
+// Check if tournament exists in database (for debugging)
+export const checkTournamentExists = async (namePattern: string) => {
+  try {
+    const tournaments = await prisma.tournament.findMany({
+      where: namePattern
+        ? {
+            name: {
+              contains: namePattern,
+            },
+          }
+        : {},
+      select: {
+        id: true,
+        name: true,
+        location: true,
+        createdAt: true,
+      },
+    })
+
+    console.log(`Found ${tournaments.length} tournaments matching "${namePattern}"`)
+    return tournaments
+  } catch (error) {
+    console.error('Error checking tournaments:', error)
+    return []
+  }
+}
+
 // Wait for tournament to exist in database (for E2E test synchronization)
 export const waitForTournamentInDatabase = async (
   tournamentName: string,

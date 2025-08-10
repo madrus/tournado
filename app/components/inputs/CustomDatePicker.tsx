@@ -218,6 +218,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
         : undefined
       : internalSelectedDate
     const [isOpen, setIsOpen] = useState(false)
+    const [hasInteracted, setHasInteracted] = useState(false)
 
     const handleDateSelect = (date: Date) => {
       // Update internal state only for uncontrolled mode
@@ -238,6 +239,37 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
           currentTarget: { name, value: formattedDate },
         } as React.ChangeEvent<HTMLInputElement>
         onChange(syntheticEvent)
+      }
+    }
+
+    // Handle blur events
+    const handleBlur = () => {
+      // Mark as interacted when user blurs the field
+      setHasInteracted(true)
+
+      // Only call onBlur validation if calendar is closed
+      // This prevents validation when user clicks to open calendar,
+      // but allows validation when they actually leave the field
+      if (!isOpen) {
+        onBlur?.()
+      }
+    }
+
+    // Handle calendar open/close state changes
+    const handleOpenChange = (open: boolean) => {
+      setIsOpen(open)
+
+      // Mark as interacted when user opens the calendar
+      if (open) {
+        setHasInteracted(true)
+      }
+
+      // If user closes calendar without selecting anything and has interacted,
+      // trigger validation after a brief delay to allow blur to happen
+      if (!open && hasInteracted && !selectedDate) {
+        setTimeout(() => {
+          onBlur?.()
+        }, 10)
       }
     }
 
@@ -262,13 +294,13 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
           </div>
 
           <div className='relative'>
-            <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
+            <Popover.Root open={isOpen} onOpenChange={handleOpenChange}>
               <Popover.Trigger asChild>
                 <button
                   type='button'
                   disabled={readOnly}
                   aria-label={`${label} - select date`}
-                  onBlur={onBlur}
+                  onBlur={handleBlur}
                   className={cn(
                     datePickerButtonVariants({
                       color,

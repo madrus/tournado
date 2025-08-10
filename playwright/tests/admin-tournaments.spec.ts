@@ -190,6 +190,36 @@ test.describe('Tournament-Team Integration', () => {
     await page.setViewportSize({ width: 375, height: 812 })
   })
 
+  async function selectTournamentWithRetry(page, tournamentName, maxRetries = 3) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await page.reload() // Trigger fresh data fetch from root loader
+        await page.waitForLoadState('networkidle')
+
+        const combo = page.getByRole('combobox', { name: /tournament/i })
+        await combo.click()
+
+        const option = page.getByRole('option', {
+          name: new RegExp(tournamentName, 'i'),
+        })
+        await expect(option).toBeVisible({ timeout: 2000 })
+
+        await option.click()
+        return // Success!
+      } catch (error) {
+        if (attempt === maxRetries) {
+          throw new Error(
+            `Tournament "${tournamentName}" not found after ${maxRetries} attempts. This may indicate a database consistency issue.`
+          )
+        }
+        console.log(
+          `Attempt ${attempt} failed to find tournament, retrying in 500ms...`
+        )
+        await page.waitForTimeout(500)
+      }
+    }
+  }
+
   test('should create tournament and verify combo field integration in team creation', async ({
     page,
   }) => {
@@ -258,61 +288,14 @@ test.describe('Tournament-Team Integration', () => {
     })
     await expect(tournamentCombo).toBeVisible()
 
-    // Try to open dropdown and find tournament, with one retry if it fails
-    let tournamentFound = false
+    // Use the retry helper instead of the complex try-catch logic
+    await selectTournamentWithRetry(page, 'Test Tournament E2E - Test Location')
 
-    try {
-      // First attempt: Open dropdown and wait for tournament option
-      await tournamentCombo.click()
-      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
-      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
-
-      const tournamentOption = tournamentDropdown.getByRole('option', {
-        name: /Test Tournament E2E - Test Location/i,
-      })
-      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
-
-      // Tournament found, select it
-      await tournamentOption.click()
-      tournamentFound = true
-    } catch (error) {
-      console.log('First attempt failed, closing and reopening dropdown...')
-
-      // Close dropdown and try once more to give database more time
-      await page.keyboard.press('Escape')
-      await page.reload()
-      await page.waitForLoadState('networkidle')
-
-      // Second attempt: Get fresh combo reference after reload and reopen dropdown
-      const refreshedTournamentCombo = page.getByRole('combobox', {
-        name: /toernooi.*select option|tournament.*select option/i,
-      })
-      await expect(refreshedTournamentCombo).toBeVisible()
-      await refreshedTournamentCombo.click()
-
-      const tournamentDropdown = page.locator('[data-radix-select-content]').last()
-      await expect(tournamentDropdown).toBeVisible({ timeout: 3000 })
-
-      // Debug: Log what options are actually available
-      const allOptions = await tournamentDropdown.locator('[role="option"]').all()
-      const optionTexts = await Promise.all(
-        allOptions.map(option => option.textContent())
-      )
-      console.log('Available tournament options:', optionTexts)
-
-      const tournamentOption = tournamentDropdown.getByRole('option', {
-        name: /Test Tournament E2E - Test Location/i,
-      })
-      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
-
-      // Tournament found on retry, select it
-      await tournamentOption.click()
-      tournamentFound = true
-    }
-
-    if (!tournamentFound) {
-      throw new Error('Tournament option not found after retry')
-    }
+    // Verify tournament was selected
+    const selectedTournament = page.getByRole('combobox', { name: /tournament/i })
+    await expect(selectedTournament).toContainText(
+      'Test Tournament E2E - Test Location'
+    )
 
     // Step 5: Open divisions combo, verify list, and select first division
     const divisionCombo = page.getByRole('combobox', {

@@ -12,6 +12,16 @@
     appearance: none;
   }
 
+  /* Override browser autofill styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color-input) inset !important;
+    -webkit-text-fill-color: var(--color-input-foreground) !important;
+    background-color: var(--color-input) !important;
+  }
+
   /* Ensure headings use the title color */
   h1,
   h2,

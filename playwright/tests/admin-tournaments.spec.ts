@@ -267,8 +267,23 @@ test.describe('Tournament-Team Integration', () => {
     console.log('Tournament creation confirmed - proceeding to team creation test')
 
     // Additional safety check: verify tournament exists in database
-    await waitForTournamentInDatabase('Test Tournament E2E', 5, 1000)
-    console.log('Tournament verified in database')
+    try {
+      await waitForTournamentInDatabase('Test Tournament E2E', 5, 1000)
+      console.log('Tournament verified in database')
+    } catch (error) {
+      console.error('Database verification failed:', error.message)
+
+      // Try direct database query to see what tournaments exist
+      const { checkTournamentExists } = await import('../helpers/database')
+      const tournamentExists = await checkTournamentExists('Test Tournament E2E')
+      console.log('Direct database check result:', tournamentExists)
+
+      // Also check if any tournaments exist at all
+      const allTournaments = await checkTournamentExists('')
+      console.log('All tournaments in database:', allTournaments)
+
+      throw error
+    }
 
     // Step 2: Navigate to teams route
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')

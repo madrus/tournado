@@ -30,8 +30,8 @@ import {
 export const buttonVariants = cva(
   // Base classes - all the common button styling
   [
-    'inline-flex items-center justify-center rounded-lg font-semibold gap-2',
-    'min-h-12 min-w-32 py-2.5 px-4 text-sm uppercase',
+    'inline-flex items-center justify-center rounded-lg font-bold gap-2',
+    'min-h-12 min-w-32 py-2.5 px-4 text-base uppercase',
     'relative transition-all duration-300 ease-out whitespace-nowrap',
     'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
     'hover:scale-103 active:scale-95 disabled:hover:scale-100',
@@ -64,7 +64,7 @@ export const buttonVariants = cva(
        * - md: Default size for standard use cases
        */
       size: {
-        sm: 'min-h-10 min-w-24 py-2 px-3 text-xs',
+        sm: 'min-h-10 min-w-24 py-2 px-3 text-sm',
         md: '', // Default size, no additional classes needed
       },
     },
@@ -105,7 +105,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'brand',
         class: [
-          'bg-brand-50',
+          'bg-white',
           'text-brand-600',
           'border-brand-600',
           'hover:bg-white focus-visible:bg-white',
@@ -124,7 +124,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'primary',
         class: [
-          'bg-primary-50',
+          'bg-white',
           'text-primary-600',
           'border-primary-600',
           'hover:bg-white focus-visible:bg-white',
@@ -140,7 +140,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'emerald',
         class: [
-          'bg-emerald-50',
+          'bg-white',
           'text-emerald-600',
           'border-emerald-600',
           'hover:bg-white focus-visible:bg-white',
@@ -155,7 +155,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'red',
         class: [
-          'bg-red-50',
+          'bg-white',
           'text-red-600',
           'border-red-600',
           'hover:bg-white focus-visible:bg-white',
@@ -170,7 +170,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'teal',
         class: [
-          'bg-teal-50',
+          'bg-white',
           'text-teal-600',
           'border-teal-600',
           'hover:bg-white focus-visible:bg-white',
@@ -185,7 +185,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'cyan',
         class: [
-          'bg-cyan-50',
+          'bg-white',
           'text-cyan-600',
           'border-cyan-600',
           'hover:bg-white focus-visible:bg-white',
@@ -200,7 +200,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'yellow',
         class: [
-          'bg-yellow-50',
+          'bg-white',
           'text-yellow-600',
           'border-yellow-600',
           'hover:bg-white focus-visible:bg-white',
@@ -215,7 +215,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'green',
         class: [
-          'bg-green-50',
+          'bg-white',
           'text-green-600',
           'border-green-600',
           'hover:bg-white focus-visible:bg-white',
@@ -230,7 +230,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'violet',
         class: [
-          'bg-violet-50',
+          'bg-white',
           'text-violet-600',
           'border-violet-600',
           'hover:bg-white focus-visible:bg-white',
@@ -245,7 +245,7 @@ export const buttonVariants = cva(
         variant: 'secondary',
         color: 'slate',
         class: [
-          'bg-slate-50',
+          'bg-white',
           'text-slate-600',
           'border-slate-600',
           'hover:bg-white focus-visible:bg-white',

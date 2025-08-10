@@ -92,15 +92,15 @@ export const createToast = (
       priority?: 'low' | 'normal' | 'high'
     }
   ) => {
-    // Create cache key to prevent duplicate rapid toasts
-    const cacheKey = `${type}:${message}:${options?.description || ''}`
+    // Create cache key to prevent duplicate rapid toasts (account for priority)
+    const priorityPart = options?.priority ?? config.priority
+    const cacheKey = `${type}:${priorityPart}:${message}:${options?.description || ''}`
 
     // Check if identical toast is already showing (prevent spam)
     if (toastCache.has(cacheKey)) {
       const cachedToast = toastCache.get(cacheKey)
       if (cachedToast) return cachedToast
     }
-
     const toastOptions = {
       duration: options?.duration ?? config.duration,
       ...(options?.priority === 'high' && {

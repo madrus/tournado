@@ -38,6 +38,7 @@
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",
     "start": "react-router-serve ./build/server/index.js",
     "sync": "git fetch madrus main && git merge madrus/main",
+    "test": "pnpm test:run",
     "test:coverage": "vitest run --coverage",
     "test:e2e:all": "PLAYWRIGHT_TEST=true start-server-and-test dev http://localhost:5173 'playwright test'",
     "test:e2e:built:debug": "pnpm build && PLAYWRIGHT_TEST=true PORT=3000 start-server-and-test start http://localhost:3000 'playwright test --debug'",
@@ -49,10 +50,11 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:run": "playwright test teams.spec.ts --reporter=html",
     "test:e2e": "PLAYWRIGHT_TEST=true playwright test",
+    "pretest:run": "prisma generate",
     "test:run": "vitest run",
     "test:watch": "vitest",
     "typecheck": "react-router typegen && tsc",
-    "validate": "npm-run-all2 --parallel lint typecheck test:run"
+    "validate": "pnpm lint && pnpm typecheck && pnpm test"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",

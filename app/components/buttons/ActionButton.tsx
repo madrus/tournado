@@ -80,7 +80,8 @@ export function ActionButton({
     iconNeedsCircle ? (
       <span
         className={cn(
-          'mr-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-transparent',
+          'me-1.5 flex items-center justify-center rounded-full border-2 bg-transparent',
+          size === 'sm' ? 'h-5 w-5' : 'h-6 w-6',
           color === 'emerald' && 'border-emerald-600/70',
           color === 'red' && 'border-red-600/70',
           color === 'yellow' && 'border-yellow-600/70',
@@ -97,7 +98,7 @@ export function ActionButton({
         {rawIcon}
       </span>
     ) : (
-      <span className='mr-1.5' aria-hidden='true'>
+      <span className='me-1.5' aria-hidden='true'>
         {rawIcon}
       </span>
     )

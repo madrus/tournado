@@ -9,7 +9,7 @@ Use [flexible alerts](https://github.com/fzankl/docsify-plugin-flexible-alerts) 
 Modify or add a new blockquote so it matches required syntax with default style **"callout"** like shown in the following examples:
 
 > [!NOTE]
-> An alert of type 'team' using global style 'callout'.
+> An alert of type 'note' using global style 'callout'.
 > Sample alert using type TIP
 
 > [!TIP]
@@ -26,7 +26,7 @@ Modify or add a new blockquote so it matches required syntax with default style 
 Same alerts using style **"flat"** look like this:
 
 > [!NOTE|style:flat]
-> An alert of type 'team' using global style 'callout'.
+> An alert of type 'note' using global style 'callout'.
 > Sample alert using type TIP
 
 > [!TIP|style:flat]

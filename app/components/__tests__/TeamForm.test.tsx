@@ -1352,30 +1352,35 @@ describe('TeamForm Cancel Button Functionality', () => {
   })
 
   describe('Memory Leak Prevention', () => {
+    let addEventListenerSpy: ReturnType<typeof vi.spyOn>
+    let removeEventListenerSpy: ReturnType<typeof vi.spyOn>
+    let scrollToSpy: ReturnType<typeof vi.spyOn>
+    let originalScrollYDescriptor: PropertyDescriptor | undefined
+
     beforeEach(() => {
       // Use fake timers to control timing
       vi.useFakeTimers()
 
-      // Mock window scroll properties and methods
-      Object.defineProperty(global, 'scrollY', {
-        value: 0,
-        writable: true,
-        configurable: true,
-      })
-      global.scrollTo = vi.fn()
-      global.addEventListener = vi.fn()
-      global.removeEventListener = vi.fn()
+      // Spy on window methods to avoid reassigning globals
+      originalScrollYDescriptor = Object.getOwnPropertyDescriptor(window, 'scrollY')
+      scrollToSpy = vi.spyOn(window, 'scrollTo')
+      addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+      removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
     })
 
     afterEach(() => {
       vi.runAllTimers()
       vi.useRealTimers()
-      vi.restoreAllMocks()
+      // Restore spied methods and any scrollY descriptor
+      scrollToSpy?.mockRestore()
+      addEventListenerSpy?.mockRestore()
+      removeEventListenerSpy?.mockRestore()
+      if (originalScrollYDescriptor) {
+        Object.defineProperty(window, 'scrollY', originalScrollYDescriptor)
+      }
     })
 
     it('should not throw errors during form submission', async () => {
-      const user = userEvent.setup()
-
       renderTeamForm('create', 'public', ALL_PANELS_FORMDATA)
 
       // This test just ensures form submission doesn't crash
@@ -1383,13 +1388,18 @@ describe('TeamForm Cancel Button Functionality', () => {
         name: /common\.actions\.save/i,
       })
 
-      // Should not throw any errors
-      expect(() => user.click(submitButton)).not.toThrow()
+      // Should not throw any errors when clicking submit button
+      expect(() => {
+        userEvent.click(submitButton)
+      }).not.toThrow()
+
+      // Advance timers to complete any pending operations
+      vi.runAllTimers()
     })
 
     it('should handle form submission without timing out', async () => {
-      // Set up basic scroll mocking
-      global.scrollTo = vi.fn()
+      // Ensure scrollTo has a minimal implementation if needed
+      scrollToSpy.mockImplementation(() => undefined)
 
       renderTeamForm('create', 'admin', ALL_PANELS_FORMDATA)
 

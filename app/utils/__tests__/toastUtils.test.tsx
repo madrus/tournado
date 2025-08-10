@@ -377,7 +377,8 @@ describe('toastUtils', () => {
       expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 
       // Manually clear the cache to simulate a timeout
-      toastCache.delete('success:Test message:')
+      // Clear entire cache to avoid coupling to internal cache key format
+      toastCache.clear()
 
       // Create same toast again - should create new one after cache cleanup
       toast.success('Test message', { duration: 5000 })

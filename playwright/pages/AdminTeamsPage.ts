@@ -64,7 +64,9 @@ export class AdminTeamsPage extends BasePage {
   ): Promise<void> {
     // Step 1: Wait for tournament to exist in database (critical for CI consistency)
     console.log(`Waiting for tournament "${tournamentName}" to exist in database...`)
-    await waitForTournamentInDatabase(tournamentName, 10, 500)
+    // Extract just the tournament name part (before " - ") for database search
+    const nameForDbSearch = tournamentName.split(' - ')[0]
+    await waitForTournamentInDatabase(nameForDbSearch, 10, 500)
     console.log(
       `Tournament "${tournamentName}" confirmed in database, proceeding with UI selection...`
     )
@@ -72,8 +74,9 @@ export class AdminTeamsPage extends BasePage {
     // Step 2: Now that we know the tournament exists in DB, try to select it in UI
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        await this.page.reload() // Trigger fresh data fetch from root loader
-        await this.page.waitForLoadState('networkidle')
+        // Force a navigation to refresh the root loader and get fresh tournament data
+        await this.page.goto(this.page.url(), { waitUntil: 'networkidle' })
+        await this.page.waitForTimeout(500) // Additional wait for React to render
 
         const combo = this.page.getByRole('combobox', {
           name: /toernooi.*select option|tournament.*select option/i,

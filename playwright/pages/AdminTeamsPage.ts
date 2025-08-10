@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
 export class AdminTeamsPage extends BasePage {
@@ -56,11 +57,19 @@ export class AdminTeamsPage extends BasePage {
     await this.page.waitForLoadState('networkidle')
   }
 
-  // Tournament selection helper - handles database consistency timing
+  // Tournament selection helper - ensures database consistency before UI interaction
   async selectTournamentWithRetry(
     tournamentName: string,
     maxRetries = 3
   ): Promise<void> {
+    // Step 1: Wait for tournament to exist in database (critical for CI consistency)
+    console.log(`Waiting for tournament "${tournamentName}" to exist in database...`)
+    await waitForTournamentInDatabase(tournamentName, 10, 500)
+    console.log(
+      `Tournament "${tournamentName}" confirmed in database, proceeding with UI selection...`
+    )
+
+    // Step 2: Now that we know the tournament exists in DB, try to select it in UI
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         await this.page.reload() // Trigger fresh data fetch from root loader
@@ -77,15 +86,16 @@ export class AdminTeamsPage extends BasePage {
         await expect(option).toBeVisible({ timeout: 2000 })
 
         await option.click()
+        console.log(`Tournament "${tournamentName}" successfully selected in UI`)
         return // Success!
       } catch (error) {
         if (attempt === maxRetries) {
           throw new Error(
-            `Tournament "${tournamentName}" not found after ${maxRetries} attempts. This may indicate a database consistency issue.`
+            `Tournament "${tournamentName}" exists in database but not found in UI after ${maxRetries} attempts. This indicates a data loading issue between database and UI.`
           )
         }
         console.log(
-          `Attempt ${attempt} failed to find tournament, retrying in 500ms...`
+          `UI selection attempt ${attempt} failed for tournament "${tournamentName}", retrying in 500ms...`
         )
         await this.page.waitForTimeout(500)
       }

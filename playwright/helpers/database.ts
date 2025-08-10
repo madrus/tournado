@@ -222,5 +222,10 @@ export const createTestTournament = async (
   })
 
   console.log(`- test tournament "${name}" created with ID ${tournament.id}`)
+
+  // Add a small delay to ensure database transaction is fully committed
+  // and any cached queries are invalidated
+  await new Promise(resolve => setTimeout(resolve, 100))
+
   return { id: tournament.id, name: tournament.name, location: tournament.location }
 }

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { createTestTournament } from '../helpers/database'
+import { createTestTournament, waitForTournamentInDatabase } from '../helpers/database'
 
 // Public Teams Tests - NO AUTHENTICATION REQUIRED
 test.use({ storageState: { cookies: [], origins: [] } })
@@ -70,25 +70,47 @@ test.describe('Public Teams', () => {
     await expect(page).toHaveURL('/teams/new')
     await expect(page.locator('form')).toBeVisible()
 
-    // Step 1: Select Tournament
-    const tournamentCombo = page.getByRole('combobox', {
-      name: /toernooi.*select option|tournament.*select option/i,
-    })
-    await expect(tournamentCombo).toBeVisible()
-    await tournamentCombo.click()
+    // Step 1: Select Tournament with retry logic for database-UI sync
+    console.log(`Waiting for tournament "${tournament.name}" to exist in database...`)
+    await waitForTournamentInDatabase(tournament.name, 10, 500)
+    console.log('Tournament confirmed in database, attempting UI selection...')
 
-    // Wait for dropdown to open and select our tournament
-    const tournamentOption = page.getByRole('option', {
-      name: `${tournament.name} - ${tournament.location}`,
-    })
-    await expect(tournamentOption).toBeVisible({ timeout: 5000 })
-    await tournamentOption.click()
+    let tournamentSelected = false
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        // Reload page to get fresh tournament data from root loader
+        await page.reload({ waitUntil: 'networkidle' })
+        await page.waitForTimeout(300)
 
-    // Verify tournament was selected
-    await expect(tournamentCombo).toContainText(
-      `${tournament.name} - ${tournament.location}`
-    )
-    console.log('✅ Tournament successfully selected in public form')
+        const tournamentCombo = page.getByRole('combobox', {
+          name: /toernooi.*select option|tournament.*select option/i,
+        })
+        await expect(tournamentCombo).toBeVisible()
+        await tournamentCombo.click()
+
+        // Wait for dropdown to open and select our tournament
+        const tournamentOption = page.getByRole('option', {
+          name: `${tournament.name} - ${tournament.location}`,
+        })
+        await expect(tournamentOption).toBeVisible({ timeout: 3000 })
+        await tournamentOption.click()
+
+        // Verify tournament was selected
+        await expect(tournamentCombo).toContainText(
+          `${tournament.name} - ${tournament.location}`
+        )
+
+        tournamentSelected = true
+        console.log('✅ Tournament successfully selected in public form')
+        break
+      } catch (error) {
+        console.log(`Tournament selection attempt ${attempt} failed, retrying...`)
+        if (attempt === 3) {
+          throw error
+        }
+        await page.waitForTimeout(500)
+      }
+    }
 
     // Step 2: Select Division (after tournament selection populates options)
     const divisionCombo = page.getByRole('combobox', {

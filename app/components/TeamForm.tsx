@@ -152,7 +152,10 @@ export function TeamForm({
         const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
         submit(formEl)
       } finally {
-        isSubmittingRef.current = false
+        // Defer to next task to avoid a tiny race with router state update
+        setTimeout(() => {
+          isSubmittingRef.current = false
+        }, 0)
       }
     },
     [validateForm, submit]

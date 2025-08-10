@@ -45,7 +45,7 @@ const COMMON_STYLES = {
 export const toastMessageVariants = cva(
   // Base classes for all toast messages
   [
-    'pointer-events-auto flex w-full max-w-sm min-w-sm items-start gap-3 rounded-lg p-4',
+    'pointer-events-auto flex w-full max-w-sm min-w-[16rem] items-start gap-3 rounded-lg p-4',
     // Enable glossy overlays and separate stacking context
     'relative overflow-hidden isolate',
     // Lucid glass effect

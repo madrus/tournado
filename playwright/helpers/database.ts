@@ -6,10 +6,30 @@ import bcrypt from 'bcryptjs'
 
 import { prisma } from '../../app/db.server'
 
-// Clean database for tests - removes all test data
+// Clean database for tests - removes test data but preserves auth users
 export const cleanDatabase = async (): Promise<void> => {
   try {
     console.log('- cleaning database for tests...')
+
+    // Delete in correct order to respect foreign key constraints
+    // NOTE: We preserve users and passwords to maintain authentication sessions
+    await prisma.matchScore.deleteMany()
+    await prisma.match.deleteMany()
+    await prisma.team.deleteMany()
+    await prisma.tournament.deleteMany()
+    await prisma.teamLeader.deleteMany()
+
+    console.log('- database cleaned successfully')
+  } catch (error) {
+    console.error('❌ error cleaning database:', error)
+    throw error
+  }
+}
+
+// Full clean database for global setup/teardown - removes everything including auth users
+export const cleanDatabaseCompletely = async (): Promise<void> => {
+  try {
+    console.log('- completely cleaning database for tests...')
 
     // Delete in correct order to respect foreign key constraints
     await prisma.matchScore.deleteMany()
@@ -20,9 +40,9 @@ export const cleanDatabase = async (): Promise<void> => {
     await prisma.password.deleteMany()
     await prisma.user.deleteMany()
 
-    console.log('- database cleaned successfully')
+    console.log('- database completely cleaned successfully')
   } catch (error) {
-    console.error('❌ error cleaning database:', error)
+    console.error('❌ error completely cleaning database:', error)
     throw error
   }
 }

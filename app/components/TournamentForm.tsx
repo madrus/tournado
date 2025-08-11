@@ -241,7 +241,7 @@ export function TournamentForm({
       const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
       submit(formEl)
     } finally {
-      isSubmittingRef.current = false
+      // no-op; guard reset happens when navigation becomes idle
     }
   }
 
@@ -289,6 +289,13 @@ export function TournamentForm({
       showErrorToast()
     }
   }, [navigation.state, errors, showErrorToast])
+
+  // Reset duplicate-submission guard only after navigation completes
+  useEffect(() => {
+    if (navigation.state === 'idle') {
+      isSubmittingRef.current = false
+    }
+  }, [navigation.state])
 
   // Cleanup any lingering scroll listeners/timeouts on unmount to avoid leaks
   useEffect(

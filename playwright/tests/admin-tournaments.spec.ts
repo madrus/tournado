@@ -207,193 +207,232 @@ test.describe('Tournament-Team Integration', () => {
 
   // TEST 1: Tournament Creation and Database Verification (Focused)
   test('should create tournament and verify database persistence', async ({ page }) => {
-    // Navigate to tournament creation page
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
-    await page.waitForLoadState('networkidle')
+    let tournamentId: string | undefined
 
-    // Fill tournament form
-    await page.getByRole('textbox', { name: /name|naam/i }).fill('E2ETourney')
-    await page.getByRole('textbox', { name: /location|locatie/i }).fill('Aalsmeer')
-
-    // Select start date using date picker
-    await page
-      .getByRole('button', { name: /startdatum.*select date|start date.*select date/i })
-      .click()
-    await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
-    await page.getByRole('button', { name: /^15 / }).click()
-
-    // Select end date using date picker
-    await page
-      .getByRole('button', { name: /einddatum.*select date|end date.*select date/i })
-      .click()
-    await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
-    await page.getByRole('button', { name: /^20 / }).click()
-
-    // Select divisions
-    const firstDivisionLabel = page
-      .locator('label')
-      .filter({ hasText: /eerste klasse/i })
-    await expect(firstDivisionLabel).toBeVisible({ timeout: 10000 })
-    await firstDivisionLabel.click()
-
-    const secondDivisionLabel = page
-      .locator('label')
-      .filter({ hasText: /tweede klasse/i })
-    await expect(secondDivisionLabel).toBeVisible()
-    await secondDivisionLabel.click()
-
-    // Select categories
-    const jo8Label = page.locator('label').filter({ hasText: /JO8/i })
-    await expect(jo8Label).toBeVisible()
-    await jo8Label.click()
-
-    const jo10Label = page.locator('label').filter({ hasText: /JO10/i })
-    await expect(jo10Label).toBeVisible()
-    await jo10Label.click()
-
-    // Submit form - should redirect to tournament edit page
-    console.log('Submitting tournament creation form...')
-    await page.getByRole('button', { name: 'Opslaan' }).click()
-    await page.waitForLoadState('networkidle')
-
-    // Check for any error messages first
-    const errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
-    if (await errorMessage.isVisible()) {
-      const errorText = await errorMessage.textContent()
-      throw new Error(`Tournament creation failed with error: ${errorText}`)
-    }
-
-    // Verify we're on the tournament edit page (not the list)
-    // This confirms the tournament was actually created via UI
-    await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/, { timeout: 10000 })
-
-    // Additional verification: check that the tournament form shows the created data
-    await expect(page.getByRole('textbox', { name: /name|naam/i })).toHaveValue(
-      'E2ETourney'
-    )
-    await expect(page.getByRole('textbox', { name: /location|locatie/i })).toHaveValue(
-      'Aalsmeer'
-    )
-
-    console.log('Tournament creation UI confirmed - verifying database persistence')
-
-    // CRITICAL: Verify tournament exists in database with full data structure
     try {
-      await waitForTournamentInDatabase('E2ETourney', 10, 1000)
-      console.log('✅ Tournament successfully verified in database')
+      // Navigate to tournament creation page
+      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+      await page.waitForLoadState('networkidle')
 
-      // Additional comprehensive verification
-      const tournaments = await checkTournamentExists('E2ETourney')
-      console.log('Database verification result:', tournaments)
+      // Fill tournament form
+      await page.getByRole('textbox', { name: /name|naam/i }).fill('E2ETourney')
+      await page.getByRole('textbox', { name: /location|locatie/i }).fill('Aalsmeer')
 
-      if (tournaments.length === 0) {
-        throw new Error('Tournament not found in database despite UI success')
+      // Select start date using date picker
+      await page
+        .getByRole('button', {
+          name: /startdatum.*select date|start date.*select date/i,
+        })
+        .click()
+      await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
+      await page.getByRole('button', { name: /^15 / }).click()
+
+      // Select end date using date picker
+      await page
+        .getByRole('button', { name: /einddatum.*select date|end date.*select date/i })
+        .click()
+      await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
+      await page.getByRole('button', { name: /^20 / }).click()
+
+      // Select divisions
+      const firstDivisionLabel = page
+        .locator('label')
+        .filter({ hasText: /eerste klasse/i })
+      await expect(firstDivisionLabel).toBeVisible({ timeout: 10000 })
+      await firstDivisionLabel.click()
+
+      const secondDivisionLabel = page
+        .locator('label')
+        .filter({ hasText: /tweede klasse/i })
+      await expect(secondDivisionLabel).toBeVisible()
+      await secondDivisionLabel.click()
+
+      // Select categories
+      const jo8Label = page.locator('label').filter({ hasText: /JO8/i })
+      await expect(jo8Label).toBeVisible()
+      await jo8Label.click()
+
+      const jo10Label = page.locator('label').filter({ hasText: /JO10/i })
+      await expect(jo10Label).toBeVisible()
+      await jo10Label.click()
+
+      // Submit form - should redirect to tournament edit page
+      console.log('Submitting tournament creation form...')
+      await page.getByRole('button', { name: 'Opslaan' }).click()
+      await page.waitForLoadState('networkidle')
+
+      // Check for any error messages first
+      const errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
+      if (await errorMessage.isVisible()) {
+        const errorText = await errorMessage.textContent()
+        throw new Error(`Tournament creation failed with error: ${errorText}`)
       }
 
-      // Verify tournament has expected structure
-      const tournament = tournaments[0]
-      if (!tournament.name || !tournament.location) {
-        throw new Error('Tournament missing required fields in database')
-      }
+      // Verify we're on the tournament edit page (not the list)
+      // This confirms the tournament was actually created via UI
+      await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/, { timeout: 10000 })
 
-      console.log(
-        `✅ Tournament properly persisted: ${tournament.name} - ${tournament.location}`
+      // Additional verification: check that the tournament form shows the created data
+      await expect(page.getByRole('textbox', { name: /name|naam/i })).toHaveValue(
+        'E2ETourney'
       )
-    } catch (error) {
-      console.error('❌ Database verification failed:', error.message)
+      await expect(
+        page.getByRole('textbox', { name: /location|locatie/i })
+      ).toHaveValue('Aalsmeer')
 
-      // Enhanced debugging for failure analysis
-      const allTournaments = await checkTournamentExists('')
-      console.log('All tournaments in database:', allTournaments)
+      console.log('Tournament creation UI confirmed - verifying database persistence')
 
-      throw new Error(`Tournament creation test failed: ${error.message}`)
+      // CRITICAL: Verify tournament exists in database with full data structure
+      try {
+        await waitForTournamentInDatabase('E2ETourney', 10, 1000)
+        console.log('✅ Tournament successfully verified in database')
+
+        // Additional comprehensive verification
+        const tournaments = await checkTournamentExists('E2ETourney')
+        console.log('Database verification result:', tournaments)
+
+        if (tournaments.length === 0) {
+          throw new Error('Tournament not found in database despite UI success')
+        }
+
+        // Verify tournament has expected structure
+        const tournament = tournaments[0]
+        if (!tournament.name || !tournament.location) {
+          throw new Error('Tournament missing required fields in database')
+        }
+
+        console.log(
+          `✅ Tournament properly persisted: ${tournament.name} - ${tournament.location}`
+        )
+      } catch (error) {
+        console.error('❌ Database verification failed:', error.message)
+
+        // Enhanced debugging for failure analysis
+        const allTournaments = await checkTournamentExists('')
+        console.log('All tournaments in database:', allTournaments)
+
+        throw new Error(`Tournament creation test failed: ${error.message}`)
+      }
+
+      // Extract tournament ID for cleanup
+      const tournaments = await checkTournamentExists('E2ETourney')
+      if (tournaments.length > 0) {
+        tournamentId = tournaments[0].id
+      }
+    } finally {
+      // Clean up test data
+      if (tournamentId) {
+        const { deleteTournamentById } = await import('../helpers/database')
+        try {
+          await deleteTournamentById(tournamentId)
+        } catch (error) {
+          console.error('Failed to cleanup tournament:', error)
+        }
+      }
     }
   })
 
   // TEST 2: Team Creation with Tournament Selection (Uses pre-existing tournament)
   test('should select tournament and create team in admin area', async ({ page }) => {
-    // Pre-create tournament using database-direct approach to avoid timing issues
-    console.log('Creating test tournament directly in database...')
-    const tournament = await createTestTournament('AdminTourney', 'Amsterdam')
-    console.log(
-      `✅ Pre-created tournament: ${tournament.name} - ${tournament.location}`
-    )
+    let tournamentId: string | undefined
+    let teamId: string | undefined
 
-    // Navigate to admin team creation form
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-    await page.waitForLoadState('networkidle')
+    try {
+      // Pre-create tournament using database-direct approach to avoid timing issues
+      console.log('Creating test tournament directly in database...')
+      const tournament = await createTestTournament('AdminTourney', 'Amsterdam')
+      console.log(
+        `✅ Pre-created tournament: ${tournament.name} - ${tournament.location}`
+      )
 
-    // Verify we're on the admin team creation form
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-    await expect(page.locator('form')).toBeVisible()
+      // Navigate to admin team creation form
+      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+      await page.waitForLoadState('networkidle')
 
-    // Step 1: Select Tournament using page object for reliability
-    const tournamentCombo = page.getByRole('combobox', {
-      name: /toernooi.*select option|tournament.*select option/i,
-    })
-    await expect(tournamentCombo).toBeVisible()
+      // Verify we're on the admin team creation form
+      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+      await expect(page.locator('form')).toBeVisible()
 
-    const teamsPage = new AdminTeamsPage(page)
-    await teamsPage.selectTournamentWithRetry(
-      `${tournament.name} - ${tournament.location}`
-    )
+      // Step 1: Select Tournament using page object for reliability
+      const tournamentCombo = page.getByRole('combobox', {
+        name: /toernooi.*select option|tournament.*select option/i,
+      })
+      await expect(tournamentCombo).toBeVisible()
 
-    // Verify tournament was selected
-    await expect(tournamentCombo).toContainText(
-      `${tournament.name} - ${tournament.location}`
-    )
-    console.log('✅ Tournament successfully selected in combo')
+      const teamsPage = new AdminTeamsPage(page)
+      await teamsPage.selectTournamentWithRetry(
+        `${tournament.name} - ${tournament.location}`
+      )
 
-    // Step 2: Select Division (after tournament selection populates options)
-    const divisionCombo = page.getByRole('combobox', {
-      name: /teamklasse.*select option|division.*select option/i,
-    })
-    await expect(divisionCombo).toBeVisible()
-    await divisionCombo.click()
+      // Verify tournament was selected
+      await expect(tournamentCombo).toContainText(
+        `${tournament.name} - ${tournament.location}`
+      )
+      console.log('✅ Tournament successfully selected in combo')
 
-    const divisionDropdown = page.locator('[data-radix-select-content]').last()
-    await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
+      // Step 2: Select Division (after tournament selection populates options)
+      const divisionCombo = page.getByRole('combobox', {
+        name: /teamklasse.*select option|division.*select option/i,
+      })
+      await expect(divisionCombo).toBeVisible()
+      await divisionCombo.click()
 
-    const firstDivisionOption = divisionDropdown.getByRole('option', {
-      name: /eerste klasse|first division/i,
-    })
-    await expect(firstDivisionOption).toBeVisible({ timeout: 3000 })
-    await firstDivisionOption.click()
-    console.log('✅ Division successfully selected')
+      const divisionDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
 
-    // Step 3: Select Category
-    const categoryCombo = page.getByRole('combobox', {
-      name: /categorie.*select option|category.*select option/i,
-    })
-    await expect(categoryCombo).toBeVisible()
-    await categoryCombo.click()
+      const firstDivisionOption = divisionDropdown.getByRole('option', {
+        name: /eerste klasse|first division/i,
+      })
+      await expect(firstDivisionOption).toBeVisible({ timeout: 3000 })
+      await firstDivisionOption.click()
+      console.log('✅ Division successfully selected')
 
-    const categoryDropdown = page.locator('[data-radix-select-content]').last()
-    await expect(categoryDropdown).toBeVisible({ timeout: 3000 })
+      // Step 3: Select Category
+      const categoryCombo = page.getByRole('combobox', {
+        name: /categorie.*select option|category.*select option/i,
+      })
+      await expect(categoryCombo).toBeVisible()
+      await categoryCombo.click()
 
-    const jo8Option = categoryDropdown.getByRole('option', { name: /JO8/i })
-    const jo10Option = categoryDropdown.getByRole('option', { name: /JO10/i })
-    await expect(jo8Option).toBeVisible({ timeout: 3000 })
-    await expect(jo10Option).toBeVisible({ timeout: 3000 })
+      const categoryDropdown = page.locator('[data-radix-select-content]').last()
+      await expect(categoryDropdown).toBeVisible({ timeout: 3000 })
 
-    // Select the first available category
-    await jo8Option.click()
-    console.log('✅ Category successfully selected')
+      const jo8Option = categoryDropdown.getByRole('option', { name: /JO8/i })
+      const jo10Option = categoryDropdown.getByRole('option', { name: /JO10/i })
+      await expect(jo8Option).toBeVisible({ timeout: 3000 })
+      await expect(jo10Option).toBeVisible({ timeout: 3000 })
 
-    // Step 4: Fill team information to complete the test
-    await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Admin')
-    await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
-    await page
-      .getByRole('textbox', { name: /naam teamleider/i })
-      .fill('Test Leader Admin')
-    await page
-      .getByRole('textbox', { name: /e-mail teamleider/i })
-      .fill('admin@test.com')
-    await page.getByRole('textbox', { name: /telefoon teamleider/i }).fill('0123456789')
+      // Select the first available category
+      await jo8Option.click()
+      console.log('✅ Category successfully selected')
 
-    console.log(
-      '✅ Team creation flow with tournament selection completed successfully'
-    )
+      // Step 4: Fill team information to complete the test
+      await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Admin')
+      await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
+      await page
+        .getByRole('textbox', { name: /naam teamleider/i })
+        .fill('Test Leader Admin')
+      await page
+        .getByRole('textbox', { name: /e-mail teamleider/i })
+        .fill('admin@test.com')
+      await page
+        .getByRole('textbox', { name: /telefoon teamleider/i })
+        .fill('0123456789')
+
+      console.log(
+        '✅ Team creation flow with tournament selection completed successfully'
+      )
+    } finally {
+      // Clean up test data
+      if (tournamentId) {
+        const { deleteTournamentById } = await import('../helpers/database')
+        try {
+          await deleteTournamentById(tournamentId)
+        } catch (error) {
+          console.error('Failed to cleanup tournament:', error)
+        }
+      }
+    }
   })
 
   test('should show empty divisions and categories when no tournament selected', async ({

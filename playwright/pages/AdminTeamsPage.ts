@@ -60,13 +60,13 @@ export class AdminTeamsPage extends BasePage {
   // Tournament selection helper - ensures database consistency before UI interaction
   async selectTournamentWithRetry(
     tournamentName: string,
-    maxRetries = 3
+    maxRetries = 5 // Increased for CI
   ): Promise<void> {
     // Step 1: Wait for tournament to exist in database (critical for CI consistency)
     console.log(`Waiting for tournament "${tournamentName}" to exist in database...`)
     // Extract just the tournament name part (before " - ") for database search
     const nameForDbSearch = tournamentName.split(' - ')[0]
-    await waitForTournamentInDatabase(nameForDbSearch, 10, 500)
+    await waitForTournamentInDatabase(nameForDbSearch, 20, 1000) // More CI-friendly params
     console.log(
       `Tournament "${tournamentName}" confirmed in database, proceeding with UI selection...`
     )
@@ -76,7 +76,7 @@ export class AdminTeamsPage extends BasePage {
       try {
         // Force a navigation to refresh the root loader and get fresh tournament data
         await this.page.goto(this.page.url(), { waitUntil: 'networkidle' })
-        await this.page.waitForTimeout(500) // Additional wait for React to render
+        await this.page.waitForTimeout(1000) // Longer wait for CI
 
         const combo = this.page.getByRole('combobox', {
           name: /toernooi.*select option|tournament.*select option/i,
@@ -87,7 +87,7 @@ export class AdminTeamsPage extends BasePage {
           // Playwright string name matching is substring & case-insensitive by default.
           name: tournamentName,
         })
-        await expect(option).toBeVisible({ timeout: 2000 })
+        await expect(option).toBeVisible({ timeout: 5000 }) // Increased timeout
 
         await option.click()
         console.log(`Tournament "${tournamentName}" successfully selected in UI`)
@@ -99,9 +99,9 @@ export class AdminTeamsPage extends BasePage {
           )
         }
         console.log(
-          `UI selection attempt ${attempt} failed for tournament "${tournamentName}", retrying in 500ms...`
+          `UI selection attempt ${attempt} failed for tournament "${tournamentName}", retrying in 1000ms...`
         )
-        await this.page.waitForTimeout(500)
+        await this.page.waitForTimeout(1000) // Longer retry delay for CI
       }
     }
   }

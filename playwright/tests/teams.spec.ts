@@ -54,10 +54,7 @@ test.describe('Public Teams', () => {
   }) => {
     // Pre-create a tournament to ensure reliable test data
     console.log('Creating test tournament directly in database...')
-    const tournament = await createTestTournament(
-      'Public Test Tournament',
-      'Public Test Location'
-    )
+    const tournament = await createTestTournament('PubTourney', 'Utrecht')
     console.log(
       `✅ Pre-created tournament: ${tournament.name} - ${tournament.location}`
     )
@@ -72,15 +69,16 @@ test.describe('Public Teams', () => {
 
     // Step 1: Select Tournament with retry logic for database-UI sync
     console.log(`Waiting for tournament "${tournament.name}" to exist in database...`)
-    await waitForTournamentInDatabase(tournament.name, 10, 500)
+    await waitForTournamentInDatabase(tournament.name, 20, 1000) // More CI-friendly params
     console.log('Tournament confirmed in database, attempting UI selection...')
 
     let tournamentSelected = false
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      // Increased retries for CI
       try {
         // Reload page to get fresh tournament data from root loader
         await page.reload({ waitUntil: 'networkidle' })
-        await page.waitForTimeout(300)
+        await page.waitForTimeout(1000) // Longer wait for CI
 
         const tournamentCombo = page.getByRole('combobox', {
           name: /toernooi.*select option|tournament.*select option/i,
@@ -92,7 +90,7 @@ test.describe('Public Teams', () => {
         const tournamentOption = page.getByRole('option', {
           name: `${tournament.name} - ${tournament.location}`,
         })
-        await expect(tournamentOption).toBeVisible({ timeout: 3000 })
+        await expect(tournamentOption).toBeVisible({ timeout: 5000 }) // Increased timeout for CI
         await tournamentOption.click()
 
         // Verify tournament was selected
@@ -105,10 +103,10 @@ test.describe('Public Teams', () => {
         break
       } catch (error) {
         console.log(`Tournament selection attempt ${attempt} failed, retrying...`)
-        if (attempt === 3) {
+        if (attempt === 5) {
           throw error
         }
-        await page.waitForTimeout(500)
+        await page.waitForTimeout(1000) // Longer retry delay for CI
       }
     }
 
@@ -139,12 +137,8 @@ test.describe('Public Teams', () => {
     console.log('✅ Category successfully selected')
 
     // Step 4: Fill Team Information
-    await page
-      .getByRole('textbox', { name: /clubnaam|club.*name/i })
-      .fill('Test Club Public')
-    await page
-      .getByRole('textbox', { name: /teamnaam|team.*name/i })
-      .fill('Test Team Public')
+    await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Public')
+    await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
 
     // Step 5: Fill Team Leader Information
     await page.getByRole('textbox', { name: /naam teamleider/i }).fill('Test Leader')
@@ -169,12 +163,9 @@ test.describe('Public Teams', () => {
     await expect(page).toHaveURL(/\/teams\/[^\/]+$/, { timeout: 10000 })
 
     // The page shows team details with our created team data
-    await expect(page.locator('body')).toContainText(
-      /Test Team Public|Test Club Public/i,
-      {
-        timeout: 5000,
-      }
-    )
+    await expect(page.locator('body')).toContainText(/J08-1|TC Public/i, {
+      timeout: 5000,
+    })
 
     // Optional: Try to catch the success toast if it's still visible
     // The toast appears and disappears quickly when the success parameter is processed

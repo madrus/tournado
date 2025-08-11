@@ -10,14 +10,15 @@ import {
   useSearchParams,
 } from 'react-router'
 
-import { Division } from '@prisma/client'
+import { Category, Division } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Panel } from '~/components/Panel'
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
-import { getDivisionLabel, stringToDivision } from '~/lib/lib.helpers'
+import { getDivisionLabel, stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import type { TeamCreateActionData } from '~/lib/lib.types'
+import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -85,6 +86,26 @@ type LoaderData = {
   }
 }
 
+function parseTeamLeaderName(fullName: string): {
+  firstName: string
+  lastName: string
+} {
+  const trimmed = fullName.trim()
+  if (trimmed.length === 0) {
+    return { firstName: '', lastName: '' }
+  }
+
+  const parts = trimmed.split(/\s+/).filter(Boolean)
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '' }
+  }
+
+  return {
+    firstName: parts[0],
+    lastName: parts.slice(1).join(' '),
+  }
+}
+
 export const loader = async ({
   request,
   params,
@@ -149,6 +170,10 @@ export async function action({
     const clubName = formData.get('clubName') as string | null
     const name = formData.get('name') as string | null
     const division = formData.get('division') as string | null
+    const category = formData.get('category') as string | null
+    const teamLeaderName = formData.get('teamLeaderName') as string | null
+    const teamLeaderPhone = formData.get('teamLeaderPhone') as string | null
+    const teamLeaderEmail = formData.get('teamLeaderEmail') as string | null
 
     const errors: TeamCreateActionData['errors'] = {}
 
@@ -171,6 +196,12 @@ export async function action({
       errors.division = 'invalidDivision'
     }
 
+    // Validate category is a valid enum value
+    const validCategory = stringToCategory(category)
+    if (category && !validCategory) {
+      errors.category = 'invalidCategory'
+    }
+
     if (Object.keys(errors).length > 0) {
       return Response.json({ errors }, { status: 400 })
     }
@@ -183,10 +214,27 @@ export async function action({
         clubName: clubName as string,
         name: name as string,
         division: validDivision as Division,
+        ...(validCategory ? { category: validCategory as Category } : {}),
+        // Update team leader nested (firstName/lastName split from teamLeaderName)
+        ...(teamLeaderName || teamLeaderEmail || teamLeaderPhone
+          ? {
+              teamLeader: {
+                update: {
+                  ...(teamLeaderName
+                    ? {
+                        ...parseTeamLeaderName(teamLeaderName),
+                      }
+                    : {}),
+                  ...(teamLeaderEmail ? { email: teamLeaderEmail } : {}),
+                  ...(teamLeaderPhone ? { phone: teamLeaderPhone } : {}),
+                },
+              },
+            }
+          : {}),
       },
     })
 
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`)
+    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}?success=updated`)
   }
 
   if (intent === 'delete') {
@@ -205,11 +253,20 @@ export default function AdminTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { i18n, t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
+  const setFormData = useTeamFormStore(state => state.setFormData)
+
+  // Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
+  const isValidTeamName = (
+    value: string
+  ): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
+    /^(?:J|M|JM)O\d+-\d+$/.test(value)
 
   // Check for success parameter and show toast
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
+      // Smooth scroll to top for better UX after successful create
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('teams.notifications.registrationSuccess'), {
         description: t('teams.notifications.registrationSuccessDesc'),
       })
@@ -217,15 +274,38 @@ export default function AdminTeamPage(): JSX.Element {
       // Remove the success parameter from URL
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
+    } else if (success === 'updated') {
+      // Smooth scroll to top for better UX after successful update
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      toast.success(t('teams.notifications.updateSuccess'), {
+        description: t('teams.notifications.updateSuccessDesc'),
+      })
+
+      // Sync the store with the latest loader data so UI reflects persisted update
+      setFormData({
+        tournamentId: team.tournament.id,
+        clubName: team.clubName,
+        name: isValidTeamName(team.name) ? team.name : String(team.name),
+        division: team.division,
+        category: team.category,
+        teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,
+        teamLeaderPhone: team.teamLeader.phone,
+        teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
+        privacyAgreement: true,
+      })
+
+      // Remove the success parameter from URL
+      searchParams.delete('success')
+      setSearchParams(searchParams, { replace: true })
     }
-  }, [searchParams, setSearchParams, t])
+  }, [searchParams, setSearchParams, t, setFormData, team])
 
   // Prepare the initial team data for reset functionality - memoized to prevent infinite loops
   const initialTeamData = useMemo(
     () => ({
       tournamentId: team.tournament.id,
       clubName: team.clubName,
-      name: team.name as `${'J' | 'M' | 'JM'}O${number}-${number}`,
+      name: isValidTeamName(team.name) ? team.name : String(team.name),
       division: team.division,
       category: team.category,
       teamLeaderName: `${team.teamLeader.firstName} ${team.teamLeader.lastName}`,

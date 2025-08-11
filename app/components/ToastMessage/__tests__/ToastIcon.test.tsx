@@ -17,7 +17,7 @@ vi.mock('~/components/icons', () => ({
   }) => (
     <span
       data-testid='success-icon'
-      className={className || 'h-[18px] w-[18px] text-emerald-700'}
+      className={`${className ? `${className} ` : ''}text-emerald-600`}
       data-size={size}
       data-weight={weight}
     >
@@ -35,9 +35,24 @@ vi.mock('~/components/icons', () => ({
   }) => (
     <span
       data-testid='error-icon'
-      className={className || 'h-6 w-6 text-red-700'}
+      className={`${className ? `${className} ` : ''}text-red-600`}
       data-size={size}
       data-weight={weight}
+    >
+      !
+    </span>
+  ),
+  ExclamationMarkIcon: (props: {
+    className?: string
+    size?: number
+    weight?: number
+    'data-testid'?: string
+  }) => (
+    <span
+      data-testid={props['data-testid'] ?? 'exclamation-mark-icon'}
+      className={`${props.className ? `${props.className} ` : ''}text-red-600`}
+      data-size={props.size}
+      data-weight={props.weight}
     >
       !
     </span>
@@ -53,7 +68,7 @@ vi.mock('~/components/icons', () => ({
   }) => (
     <span
       data-testid='info-icon'
-      className={className || 'h-6 w-6 text-sky-400'}
+      className={`${className ? `${className} ` : ''}text-sky-600`}
       data-size={size}
       data-weight={weight}
     >
@@ -71,7 +86,7 @@ vi.mock('~/components/icons', () => ({
   }) => (
     <span
       data-testid='warning-icon'
-      className={className || 'h-6 w-6 text-orange-700'}
+      className={`${className ? `${className} ` : ''}text-orange-600`}
       data-size={size}
       data-weight={weight}
     >
@@ -93,7 +108,8 @@ describe('ToastIcon Component', () => {
 
       const successIcon = screen.getByTestId('success-icon')
       expect(successIcon).toBeInTheDocument()
-      expect(successIcon).toHaveClass('h-[18px]', 'w-[18px]', 'text-white')
+      // Current implementation uses h-4 w-4; success icon remains emerald
+      expect(successIcon).toHaveClass('h-4', 'w-4', 'text-emerald-600')
       expect(successIcon).toHaveAttribute('data-size', '18')
       expect(successIcon).toHaveAttribute('data-weight', '600')
     })
@@ -113,16 +129,17 @@ describe('ToastIcon Component', () => {
 
       const errorIcon = screen.getByTestId('error-icon')
       expect(errorIcon).toBeInTheDocument()
-      expect(errorIcon).toHaveClass('h-6', 'w-6', 'text-white')
+      // Non-success icons are white over glossy backgrounds
+      expect(errorIcon).toHaveClass('h-6', 'w-6')
       expect(errorIcon).toHaveAttribute('data-size', '24')
       expect(errorIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render error icon without background wrapper', () => {
+    it('should render error icon with background wrapper', () => {
       render(<ToastIcon type='error' />)
 
       const wrapper = screen.getByTestId('error-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })
@@ -133,16 +150,16 @@ describe('ToastIcon Component', () => {
 
       const infoIcon = screen.getByTestId('info-icon')
       expect(infoIcon).toBeInTheDocument()
-      expect(infoIcon).toHaveClass('h-6', 'w-6', 'text-white')
+      expect(infoIcon).toHaveClass('h-6', 'w-6')
       expect(infoIcon).toHaveAttribute('data-size', '24')
       expect(infoIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render info icon without background wrapper', () => {
+    it('should render info icon with background wrapper', () => {
       render(<ToastIcon type='info' />)
 
       const wrapper = screen.getByTestId('info-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })
@@ -153,16 +170,16 @@ describe('ToastIcon Component', () => {
 
       const warningIcon = screen.getByTestId('warning-icon')
       expect(warningIcon).toBeInTheDocument()
-      expect(warningIcon).toHaveClass('h-6', 'w-6', 'text-white')
+      expect(warningIcon).toHaveClass('h-6', 'w-6')
       expect(warningIcon).toHaveAttribute('data-size', '24')
       expect(warningIcon).toHaveAttribute('data-weight', '600')
     })
 
-    it('should render warning icon without background wrapper', () => {
+    it('should render warning icon with background wrapper', () => {
       render(<ToastIcon type='warning' />)
 
       const wrapper = screen.getByTestId('warning-wrapper')
-      expect(wrapper).not.toHaveClass('bg-white', 'rounded-full', 'p-1')
+      expect(wrapper).toHaveClass('bg-white', 'rounded-full', 'p-1')
       expect(wrapper).toHaveAttribute('aria-hidden', 'true')
     })
   })

@@ -15,6 +15,7 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
+import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -184,10 +185,9 @@ export async function action({
       categories,
     })
 
-    return {
-      success: true,
-      message: 'Tournament updated successfully',
-    }
+    return redirect(
+      `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}?success=updated`
+    )
   } catch (_error) {
     return {
       errors: {
@@ -202,20 +202,51 @@ export default function EditTournamentPage(): JSX.Element {
   const { tournament, divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
   const [searchParams, setSearchParams] = useSearchParams()
+  const setFormData = useTournamentFormStore(state => state.setFormData)
 
   // Check for success parameter and show toast
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
+      // Smooth scroll to top for better UX after successful create
+      window.scrollTo({ top: 0, behavior: 'smooth' })
       toast.success(t('tournaments.form.notifications.registrationSuccess'), {
         description: t('tournaments.form.notifications.registrationSuccessDesc'),
+      })
+
+      // Remove the success parameter from URL
+      const next = new URLSearchParams(searchParams)
+      next.delete('success')
+      setSearchParams(next, { replace: true })
+    } else if (success === 'updated') {
+      // Smooth scroll to top for better UX after successful update
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      toast.success(t('tournaments.form.notifications.updateSuccess'), {
+        description: t('tournaments.form.notifications.updateSuccessDesc'),
+      })
+
+      // Sync the store with latest loader data so UI reflects persisted update
+      if (!tournament) return
+      setFormData({
+        name: tournament.name,
+        location: tournament.location,
+        startDate: new Date(tournament.startDate).toISOString().split('T')[0],
+        endDate: tournament.endDate
+          ? new Date(tournament.endDate).toISOString().split('T')[0]
+          : '',
+        divisions: Array.isArray(tournament.divisions)
+          ? (tournament.divisions as string[])
+          : JSON.parse(String(tournament.divisions || '[]')),
+        categories: Array.isArray(tournament.categories)
+          ? (tournament.categories as string[])
+          : JSON.parse(String(tournament.categories || '[]')),
       })
 
       // Remove the success parameter from URL
       searchParams.delete('success')
       setSearchParams(searchParams, { replace: true })
     }
-  }, [searchParams, setSearchParams, t])
+  }, [searchParams, setSearchParams, t, setFormData, tournament])
 
   if (!tournament) {
     return (

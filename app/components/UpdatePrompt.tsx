@@ -2,6 +2,7 @@ import { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { updateServiceWorker } from '~/utils/serviceWorkerRegistration'
+import { toast } from '~/utils/toastUtils'
 
 export function UpdatePrompt(): JSX.Element | null {
   const { t } = useTranslation()
@@ -18,6 +19,11 @@ export function UpdatePrompt(): JSX.Element | null {
 
     const handleUpdateFound = () => {
       setShowUpdatePrompt(true)
+      // Also show toast using the new toast system
+      toast.info(t('pwa.update.title'), {
+        description: t('pwa.update.instruction'),
+        duration: 7500,
+      })
     }
 
     window.addEventListener('serviceWorkerUpdateReady', handleUpdateFound)
@@ -25,7 +31,7 @@ export function UpdatePrompt(): JSX.Element | null {
     return () => {
       window.removeEventListener('serviceWorkerUpdateReady', handleUpdateFound)
     }
-  }, [isClient])
+  }, [isClient, t])
 
   // Don't render anything during SSR
   if (!isClient) return null

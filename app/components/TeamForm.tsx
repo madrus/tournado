@@ -66,6 +66,7 @@ export function TeamForm({
       teamLeaderEmail,
       privacyAgreement,
     },
+    oldFormFields,
     validation: { displayErrors, blurredFields, forceShowAllErrors, submitAttempted },
     formMeta: { mode },
     availableOptions: {
@@ -82,7 +83,6 @@ export function TeamForm({
     updateAvailableOptions,
     validateFieldOnBlur,
     validateForm,
-    resetForm,
   } = useTeamFormStore()
 
   // Handle client-side form submission and validation
@@ -159,9 +159,10 @@ export function TeamForm({
   )
 
   const handleReset = useCallback(() => {
-    resetForm()
+    // In edit mode, restore to original cached state instead of clearing
+    setFormData(oldFormFields)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [resetForm])
+  }, [setFormData, oldFormFields])
 
   // --- Panel Validity Logic ---
   // Panel enabling is handled directly in the JSX using isPanelEnabled() calls

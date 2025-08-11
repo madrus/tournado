@@ -1193,11 +1193,11 @@ describe('TeamForm Cancel Button Functionality', () => {
       })
       await user.click(cancelButton)
 
-      // Verify form state has been reset (fields are cleared)
+      // Verify form state has been restored to original values (not cleared)
       await waitFor(() => {
-        expect(clubNameInput).toHaveValue('')
-        expect(nameInput).toHaveValue('')
-        expect(teamLeaderNameInput).toHaveValue('')
+        expect(clubNameInput).toHaveValue('Original Club')
+        expect(nameInput).toHaveValue('Original Team')
+        expect(teamLeaderNameInput).toHaveValue('Original Leader')
       })
     })
 
@@ -1282,11 +1282,11 @@ describe('TeamForm Cancel Button Functionality', () => {
       })
       await user.click(cancelButton)
 
-      // Verify form state has been reset (fields are cleared)
+      // Verify form state has been restored to original values (not cleared)
       await waitFor(() => {
-        expect(clubNameInput).toHaveValue('')
-        expect(nameInput).toHaveValue('')
-        expect(teamLeaderEmailInput).toHaveValue('')
+        expect(clubNameInput).toHaveValue('Original Club')
+        expect(nameInput).toHaveValue('Original Team')
+        expect(teamLeaderEmailInput).toHaveValue('original@example.com')
       })
     })
   })

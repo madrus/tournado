@@ -97,7 +97,8 @@ export const createToast = (
     const cacheKey = `${type}:${priorityPart}:${message}:${options?.description || ''}`
 
     // Check if identical toast is already showing (prevent spam)
-    if (toastCache.has(cacheKey)) {
+    // Skip caching for success toasts to always show them
+    if (type !== 'success' && toastCache.has(cacheKey)) {
       const cachedToast = toastCache.get(cacheKey)
       if (cachedToast) return cachedToast
     }
@@ -125,13 +126,19 @@ export const createToast = (
       toastOptions
     )
 
-    // Cache the toast briefly to prevent duplicates
-    toastCache.set(cacheKey, toastId)
+    // Cache the toast briefly to prevent duplicates (skip caching success toasts)
+    if (type !== 'success') {
+      toastCache.set(cacheKey, toastId)
+    }
 
-    // Auto-cleanup cache after toast duration
+    // Auto-cleanup cache after toast duration (only for cached toasts)
     // In test environments we won't actually run this timer
     // but in production it ensures the cache gets cleaned up
-    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
+    if (
+      type !== 'success' &&
+      typeof process !== 'undefined' &&
+      process.env.NODE_ENV !== 'test'
+    ) {
       setTimeout(
         () => {
           toastCache.delete(cacheKey)

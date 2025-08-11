@@ -23,10 +23,12 @@ export const authTest = base.extend({
   page: async ({ context }, use) => {
     const page = await context.newPage()
 
-    // Set language properly to prevent switching during tests
+    // Set language to Dutch for consistent testing across environments
     await page.addInitScript(() => {
-      window.localStorage.setItem('i18nextLng', 'test')
+      window.localStorage.setItem('i18nextLng', 'nl')
       window.localStorage.setItem('playwrightTest', 'true')
+      // Also set the lang cookie which is used by the root loader
+      document.cookie = 'lang=nl; path=/'
     })
 
     // Override page.goto to add automatic waiting

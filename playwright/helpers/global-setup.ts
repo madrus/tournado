@@ -47,8 +47,25 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     viewport: { width: 375, height: 812 }, // Mobile viewport
     baseURL: serverUrl,
     extraHTTPHeaders: {
-      'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for Playwright tests
+      'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for consistent testing
       'x-test-bypass': 'true', // Bypass rate limiting in tests
+    },
+    // Set language cookie for all tests to ensure consistent Dutch language
+    locale: 'nl-NL',
+    // Set cookies to force Dutch language in the app
+    storageState: {
+      cookies: [
+        {
+          name: 'lang',
+          value: 'nl',
+          domain: 'localhost',
+          path: '/',
+          httpOnly: false,
+          secure: false,
+          sameSite: 'Lax',
+        },
+      ],
+      origins: [],
     },
   }
 

@@ -141,20 +141,32 @@ test.describe('Public Teams', () => {
     await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
 
     // Step 5: Fill Team Leader Information
-    await page.getByRole('textbox', { name: /naam teamleider/i }).fill('Test Leader')
     await page
-      .getByRole('textbox', { name: /e-mail teamleider/i })
+      .getByRole('textbox', { name: /naam teamleider|team.*leader.*name/i })
+      .fill('Test Leader')
+    await page
+      .getByRole('textbox', { name: /e-mail teamleider|team.*leader.*email/i })
       .fill('test@example.com')
-    await page.getByRole('textbox', { name: /telefoon teamleider/i }).fill('0123456789')
+    await page
+      .getByRole('textbox', { name: /telefoon teamleider|team.*leader.*phone/i })
+      .fill('0123456789')
 
     // Step 6: Accept Privacy Agreement
-    const privacyCheckbox = page.getByRole('checkbox', { name: /privacy/i })
+    const privacyCheckbox = page.getByRole('checkbox', {
+      name: /privacy|privacybeleid/i,
+    })
     await expect(privacyCheckbox).toBeVisible()
     await privacyCheckbox.check()
     console.log('✅ Privacy agreement accepted')
 
     // Step 7: Submit Form
-    const submitButton = page.getByRole('button', { name: 'Opslaan' })
+    // Debug: Check tournament ID value in the hidden select
+    const hiddenSelect = page.locator('select[name="tournamentId"]')
+    const tournamentIdValue = await hiddenSelect.inputValue()
+    console.log(`🔍 Tournament ID value before submission: "${tournamentIdValue}"`)
+
+    // Look for Save button in both Dutch and English
+    const submitButton = page.getByRole('button', { name: /^(Opslaan|Save)$/i })
     await expect(submitButton).toBeVisible()
     await expect(submitButton).toBeEnabled()
     await submitButton.click()

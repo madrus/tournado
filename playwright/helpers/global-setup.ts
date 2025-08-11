@@ -2,7 +2,7 @@
 import { chromium, FullConfig } from '@playwright/test'
 
 import {
-  cleanDatabase,
+  cleanDatabaseCompletely,
   createAdminUser,
   createManagerUser,
   createRefereeUser,
@@ -40,8 +40,8 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     : 'http://localhost:5173'
   await waitForServer(serverUrl)
 
-  // Clean database before starting tests
-  await cleanDatabase()
+  // Clean database completely before starting tests
+  await cleanDatabaseCompletely()
 
   const browserConfig = {
     viewport: { width: 375, height: 812 }, // Mobile viewport

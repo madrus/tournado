@@ -10,6 +10,10 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 // Tournament E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Tournaments', () => {
   test.beforeEach(async ({ page }) => {
+    // Clean database before each test to ensure proper test isolation
+    const { cleanDatabase } = await import('../helpers/database')
+    await cleanDatabase()
+
     // Set mobile viewport for consistent testing
     await page.setViewportSize({ width: 375, height: 812 })
   })
@@ -193,6 +197,10 @@ test.describe('Admin Tournaments', () => {
 // Special Integration Test: Tournament Creation → Team Creation
 test.describe('Tournament-Team Integration', () => {
   test.beforeEach(async ({ page }) => {
+    // Clean database before each test to ensure proper test isolation
+    const { cleanDatabase } = await import('../helpers/database')
+    await cleanDatabase()
+
     // Set mobile viewport for consistent testing
     await page.setViewportSize({ width: 375, height: 812 })
   })

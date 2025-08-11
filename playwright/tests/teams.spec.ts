@@ -7,6 +7,10 @@ test.use({ storageState: { cookies: [], origins: [] } })
 
 test.describe('Public Teams', () => {
   test.beforeEach(async ({ page }) => {
+    // Clean database before each test to ensure proper test isolation
+    const { cleanDatabase } = await import('../helpers/database')
+    await cleanDatabase()
+
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 812 })
 
@@ -25,6 +29,15 @@ test.describe('Public Teams', () => {
     await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
   })
 
+  test('should display existing teams publicly', async ({ page }) => {
+    await page.goto('/teams')
+
+    // Should show teams list or empty state message
+    // This is public viewing of teams
+    const teamsContainer = page.locator('[data-testid="teams-layout"]')
+    await expect(teamsContainer).toBeVisible()
+  })
+
   test('should allow public team registration', async ({ page }) => {
     await page.goto('/teams')
 
@@ -38,15 +51,6 @@ test.describe('Public Teams', () => {
     await expect(page.locator('form')).toBeVisible()
     await expect(page.locator('[name="clubName"]')).toBeVisible()
     await expect(page.locator('[name="name"]')).toBeVisible()
-  })
-
-  test('should display existing teams publicly', async ({ page }) => {
-    await page.goto('/teams')
-
-    // Should show teams list or empty state message
-    // This is public viewing of teams
-    const teamsContainer = page.locator('[data-testid="teams-layout"]')
-    await expect(teamsContainer).toBeVisible()
   })
 
   test('should create team with tournament selection in public area', async ({
@@ -201,6 +205,34 @@ test.describe('Public Teams', () => {
     const tournamentIdValue = await hiddenSelect.inputValue()
     console.log(`🔍 Tournament ID value before submission: "${tournamentIdValue}"`)
 
+    // Set up network interception to debug server response
+    let serverResponse: any = null
+    let serverError: any = null
+
+    page.on('response', async response => {
+      if (
+        response.url().includes('/teams/new') &&
+        response.request().method() === 'POST'
+      ) {
+        console.log(`🔍 Server response status: ${response.status()}`)
+        console.log(`🔍 Server response headers:`, await response.allHeaders())
+
+        try {
+          if (response.status() >= 400) {
+            const responseText = await response.text()
+            console.log(`🔍 Server error response:`, responseText)
+            serverError = responseText
+          } else {
+            const responseBody = await response.text()
+            console.log(`🔍 Server success response:`, responseBody)
+            serverResponse = responseBody
+          }
+        } catch (e) {
+          console.log(`🔍 Could not read response body:`, e)
+        }
+      }
+    })
+
     // Look for Save button in both Dutch and English
     const submitButton = page.getByRole('button', { name: /^(Opslaan|Save)$/i })
     await expect(submitButton).toBeVisible()
@@ -208,7 +240,7 @@ test.describe('Public Teams', () => {
     await submitButton.click()
 
     // Wait for form submission to start processing
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(2000) // Increased wait to capture response
 
     // Step 8: Verify Success
     // Should redirect to team details page (the success parameter gets removed immediately by the page)

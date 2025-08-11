@@ -73,7 +73,6 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   const browser = await chromium.launch()
 
   try {
-    // Create admin user and save admin auth state
     const adminUser = await createAdminUser()
     await createAuthState(
       browser,
@@ -83,8 +82,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       'admin'
     )
 
-    // Create regular user and save user auth state
-    const regularUser = await createManagerUser() // Use manager as regular user for tests
+    const regularUser = await createManagerUser()
     await createAuthState(
       browser,
       browserConfig,
@@ -92,10 +90,8 @@ async function globalSetup(_config: FullConfig): Promise<void> {
       './playwright/.auth/user-auth.json',
       'regular user'
     )
-
-    console.log('- all authentication contexts created successfully')
   } catch (error) {
-    console.error('- global setup failed:', error)
+    console.error('Global setup failed:', error)
     throw error
   } finally {
     await browser.close()
@@ -113,40 +109,27 @@ async function createAuthState(
   const page = await context.newPage()
 
   try {
-    console.log(`- creating ${userType} authentication context for ${email}`)
-
-    // Navigate to signin page
     await page.goto('/auth/signin')
-
-    // Wait for page to load
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
 
-    // Fill out login form
     await page.locator('#email').fill(email)
     await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
 
-    // Wait for and click the Sign In button
     const signInButton = page.locator('button[type="submit"]')
     await signInButton.waitFor({ state: 'visible', timeout: 30000 })
     await signInButton.click()
 
-    // Wait for successful login redirect based on user type
     if (userType === 'admin') {
       await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
     } else {
-      // Regular user (manager used as regular user) should go to admin panel
       await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
     }
 
-    // Save authentication state
     await context.storageState({ path: authFilePath })
-
-    console.log(`- ${userType} authentication state saved to ${authFilePath}`)
   } catch (error) {
-    console.error(`- ${userType} authentication setup failed:`, error)
+    console.error(`${userType} authentication setup failed:`, error)
 
-    // Take a debug screenshot
     await page.screenshot({
       path: `./playwright/.auth/${userType}-setup-error.png`,
       fullPage: true,

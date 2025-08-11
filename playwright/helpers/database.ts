@@ -236,7 +236,7 @@ export const createTestTournament = async (
       location,
       startDate,
       endDate,
-      divisions: ['Eerste klasse', 'Tweede klasse'],
+      divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
       categories: ['JO8', 'JO10'],
     },
   })

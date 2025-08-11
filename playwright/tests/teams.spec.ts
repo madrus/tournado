@@ -14,8 +14,7 @@ test.describe('Public Teams', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 812 })
 
-    // Language is handled by global config - no need to override here
-    // The i18n config will use Dutch for Playwright tests
+    // Language is now set globally to Dutch via cookies in global-setup.ts
   })
 
   test('should display teams page publicly', async ({ page }) => {
@@ -127,7 +126,7 @@ test.describe('Public Teams', () => {
     await expect(divisionCombo).toBeVisible()
     await divisionCombo.click()
 
-    // Select first available division
+    // Select first available division (now in Dutch for consistency)
     const firstDivision = page.getByRole('option', { name: /eerste klasse/i })
     await expect(firstDivision).toBeVisible({ timeout: 3000 })
     await firstDivision.click()

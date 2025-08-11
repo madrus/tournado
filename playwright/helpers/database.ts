@@ -9,8 +9,6 @@ import { prisma } from '../../app/db.server'
 // Clean database for tests - removes test data but preserves auth users
 export const cleanDatabase = async (): Promise<void> => {
   try {
-    console.log('- cleaning database for tests...')
-
     // Delete in correct order to respect foreign key constraints
     // NOTE: We preserve users and passwords to maintain authentication sessions
     await prisma.matchScore.deleteMany()
@@ -18,10 +16,8 @@ export const cleanDatabase = async (): Promise<void> => {
     await prisma.team.deleteMany()
     await prisma.tournament.deleteMany()
     await prisma.teamLeader.deleteMany()
-
-    console.log('- database cleaned successfully')
   } catch (error) {
-    console.error('❌ error cleaning database:', error)
+    console.error('Error cleaning database:', error)
     throw error
   }
 }
@@ -29,8 +25,6 @@ export const cleanDatabase = async (): Promise<void> => {
 // Full clean database for global setup/teardown - removes everything including auth users
 export const cleanDatabaseCompletely = async (): Promise<void> => {
   try {
-    console.log('- completely cleaning database for tests...')
-
     // Delete in correct order to respect foreign key constraints
     await prisma.matchScore.deleteMany()
     await prisma.match.deleteMany()
@@ -39,10 +33,8 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
     await prisma.teamLeader.deleteMany()
     await prisma.password.deleteMany()
     await prisma.user.deleteMany()
-
-    console.log('- database completely cleaned successfully')
   } catch (error) {
-    console.error('❌ error completely cleaning database:', error)
+    console.error('Error completely cleaning database:', error)
     throw error
   }
 }
@@ -83,7 +75,6 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-// Create manager user for tests (manager role authenticated user)
 export const createManagerUser = async (): Promise<{ email: string; role: string }> => {
   const email = `manager-${faker.string.alphanumeric(8)}@test.com`
 
@@ -101,26 +92,20 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
   }
 }
 
-// Create admin user for tests with unique email
 export async function createAdminUser(): Promise<User> {
   const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
-
-  console.log(`- creating admin user ${adminEmail}`)
 
   return await createUser({
     firstName: 'Test',
     lastName: 'Admin',
     email: adminEmail,
-    role: 'ADMIN', // Ensure this is set to ADMIN role
+    role: 'ADMIN',
     password: 'MyReallyStr0ngPassw0rd!!!',
   })
 }
 
-// Create referee user for tests with unique email
 export async function createRefereeUser(): Promise<User> {
   const refereeEmail = `referee-${faker.string.alphanumeric(8)}@test.com`
-
-  console.log(`- creating referee user ${refereeEmail}`)
 
   return await createUser({
     firstName: 'Test',
@@ -131,18 +116,14 @@ export async function createRefereeUser(): Promise<User> {
   })
 }
 
-// Cleanup user by email (for test cleanup)
 export const cleanupUser = async (email: string): Promise<void> => {
   try {
     await deleteUserByEmail(email)
-    console.log(`- test user ${email} cleaned up`)
   } catch (_error) {
     // User might not exist, which is fine
-    console.log(`- test user ${email} cleanup skipped (not found)`)
   }
 }
 
-// Check if tournament exists in database (for debugging)
 export const checkTournamentExists = async (namePattern: string) => {
   try {
     const tournaments = await prisma.tournament.findMany({
@@ -161,19 +142,16 @@ export const checkTournamentExists = async (namePattern: string) => {
       },
     })
 
-    console.log(`Found ${tournaments.length} tournaments matching "${namePattern}"`)
     return tournaments
   } catch (error) {
-    console.error('Error checking tournaments:', error)
     return []
   }
 }
 
-// Wait for tournament to exist in database (for E2E test synchronization)
 export const waitForTournamentInDatabase = async (
   tournamentName: string,
-  maxAttempts = 20, // Increased for CI
-  delayMs = 1000 // Increased for CI
+  maxAttempts = 20,
+  delayMs = 1000
 ): Promise<void> => {
   let attempts = 0
 
@@ -188,22 +166,15 @@ export const waitForTournamentInDatabase = async (
       })
 
       if (tournament) {
-        console.log(
-          `- tournament "${tournamentName}" found in database after ${attempts + 1} attempts`
-        )
         return
       }
 
       attempts++
-      console.log(
-        `- tournament "${tournamentName}" not found, attempt ${attempts}/${maxAttempts}`
-      )
 
       if (attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, delayMs))
       }
     } catch (error) {
-      console.error(`- database query failed on attempt ${attempts + 1}:`, error)
       attempts++
 
       if (attempts < maxAttempts) {
@@ -217,18 +188,15 @@ export const waitForTournamentInDatabase = async (
   )
 }
 
-// Create a test tournament directly in the database (bypasses UI creation issues)
 export const createTestTournament = async (
   name: string,
   location: string
 ): Promise<{ id: string; name: string; location: string }> => {
-  console.log(`- creating test tournament "${name}" in database...`)
-
   const startDate = new Date()
-  startDate.setDate(startDate.getDate() + 7) // Start date 7 days from now
+  startDate.setDate(startDate.getDate() + 7)
 
   const endDate = new Date()
-  endDate.setDate(endDate.getDate() + 10) // End date 10 days from now
+  endDate.setDate(endDate.getDate() + 10)
 
   const tournament = await prisma.tournament.create({
     data: {
@@ -241,9 +209,6 @@ export const createTestTournament = async (
     },
   })
 
-  console.log(`- test tournament "${name}" created with ID ${tournament.id}`)
-
-  // Longer delay for CI environments - database replication/caching can be slower
   await new Promise(resolve => setTimeout(resolve, 500))
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }

@@ -3,6 +3,8 @@ import { expect, test } from '@playwright/test'
 import {
   checkTournamentExists,
   createTestTournament,
+  deleteTestTeam,
+  deleteTestTournament,
   waitForTournamentInDatabase,
 } from '../helpers/database'
 import { AdminTeamsPage } from '../pages/AdminTeamsPage'
@@ -344,6 +346,7 @@ test.describe('Tournament-Team Integration', () => {
       console.log(
         `✅ Pre-created tournament: ${tournament.name} - ${tournament.location}`
       )
+      tournamentId = tournament.id
 
       // Navigate to admin team creation form
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
@@ -419,17 +422,29 @@ test.describe('Tournament-Team Integration', () => {
         .getByRole('textbox', { name: /telefoon teamleider/i })
         .fill('0123456789')
 
+      // If URL indicates a created team, capture team id
+      const urlMatch = page.url().match(/\/teams\/([^\/]+)$/)
+      if (urlMatch) {
+        teamId = urlMatch[1]
+      }
+
       console.log(
         '✅ Team creation flow with tournament selection completed successfully'
       )
     } finally {
       // Clean up test data
-      if (tournamentId) {
-        const { deleteTournamentById } = await import('../helpers/database')
+      if (teamId) {
         try {
-          await deleteTournamentById(tournamentId)
-        } catch (error) {
-          console.error('Failed to cleanup tournament:', error)
+          await deleteTestTeam({ id: teamId })
+        } catch (e) {
+          console.error('Failed to cleanup team:', e)
+        }
+      }
+      if (tournamentId) {
+        try {
+          await deleteTestTournament({ id: tournamentId })
+        } catch (e) {
+          console.error('Failed to cleanup tournament:', e)
         }
       }
     }

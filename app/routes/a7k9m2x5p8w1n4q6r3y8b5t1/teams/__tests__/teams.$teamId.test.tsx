@@ -27,8 +27,9 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock getDivisionLabel helper
+// Mock helpers (include isBrowser for store persistence logic)
 vi.mock('~/lib/lib.helpers', () => ({
+  isBrowser: false,
   getDivisionLabel: (division: string) => {
     const labels: Record<string, string> = {
       PREMIER_DIVISION: 'Premier League',

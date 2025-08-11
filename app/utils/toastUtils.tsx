@@ -1,5 +1,8 @@
+import { memo } from 'react'
+
 import { toast as sonnerToast } from 'sonner'
 
+import { ToastMessage as ToastMessageBase } from '~/components/ToastMessage'
 import type { ToastConfig, ToastErrorType, ToastType } from '~/lib/lib.types'
 
 // Default toast duration constant
@@ -59,8 +62,15 @@ const TOAST_CONFIGS: Record<ToastType, ToastConfig> = {
   },
 }
 
+// Global memoized ToastMessage to avoid re-creating components
+const MemoizedToastMessage = memo(ToastMessageBase)
+
+// Toast cache for performance optimization with rapid toasts
+// The cacheKeys are in the format: `${type}:${message}:${options?.description || ''}`
+export const toastCache = new Map<string, ReturnType<typeof sonnerToast.custom>>()
+
 /**
- * Enhanced toast function with better error handling
+ * Enhanced toast function with better error handling and performance optimizations
  */
 export const createToast = (
   type: ToastType
@@ -82,6 +92,15 @@ export const createToast = (
       priority?: 'low' | 'normal' | 'high'
     }
   ) => {
+    // Create cache key to prevent duplicate rapid toasts (account for priority)
+    const priorityPart = options?.priority ?? config.priority
+    const cacheKey = `${type}:${priorityPart}:${message}:${options?.description || ''}`
+
+    // Check if identical toast is already showing (prevent spam)
+    if (toastCache.has(cacheKey)) {
+      const cachedToast = toastCache.get(cacheKey)
+      if (cachedToast) return cachedToast
+    }
     const toastOptions = {
       duration: options?.duration ?? config.duration,
       ...(options?.priority === 'high' && {
@@ -89,39 +108,39 @@ export const createToast = (
       }),
     }
 
-    switch (type) {
-      case 'success':
-        return sonnerToast.success(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'error':
-      case 'network':
-      case 'permission':
-      case 'server':
-      case 'client':
-      case 'unknown':
-        return sonnerToast.error(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'warning':
-      case 'validation':
-        return sonnerToast.warning(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      case 'info':
-        return sonnerToast.info(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
-      default:
-        return sonnerToast(message, {
-          description: options?.description,
-          ...toastOptions,
-        })
+    const toastId = sonnerToast.custom(
+      id => (
+        <MemoizedToastMessage
+          type={type}
+          title={message}
+          description={options?.description}
+          onClose={() => {
+            if (typeof id === 'string' || typeof id === 'number') {
+              toastCache.delete(cacheKey) // Clean up cache
+              sonnerToast.dismiss(id)
+            }
+          }}
+        />
+      ),
+      toastOptions
+    )
+
+    // Cache the toast briefly to prevent duplicates
+    toastCache.set(cacheKey, toastId)
+
+    // Auto-cleanup cache after toast duration
+    // In test environments we won't actually run this timer
+    // but in production it ensures the cache gets cleaned up
+    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
+      setTimeout(
+        () => {
+          toastCache.delete(cacheKey)
+        },
+        (options?.duration ?? config.duration ?? DEFAULT_TOAST_DURATION) + 1000
+      )
     }
+
+    return toastId
   }
 }
 

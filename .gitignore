@@ -1,4 +1,5 @@
 .env
+**/.obsidian
 .prisma
 .react-router
 **/.cache

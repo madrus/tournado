@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { waitForTournamentInDatabase } from '../helpers/database'
 import { BasePage } from './BasePage'
 
 export class AdminTeamsPage extends BasePage {
@@ -54,6 +55,55 @@ export class AdminTeamsPage extends BasePage {
   async clickCreateTeam(): Promise<void> {
     await this.createTeamButton.click()
     await this.page.waitForLoadState('networkidle')
+  }
+
+  // Tournament selection helper - ensures database consistency before UI interaction
+  async selectTournamentWithRetry(
+    tournamentName: string,
+    maxRetries = 5 // Increased for CI
+  ): Promise<void> {
+    // Step 1: Wait for tournament to exist in database (critical for CI consistency)
+    console.log(`Waiting for tournament "${tournamentName}" to exist in database...`)
+    // Extract just the tournament name part (before " - ") for database search
+    const nameForDbSearch = tournamentName.split(' - ')[0]
+    await waitForTournamentInDatabase(nameForDbSearch, 20, 1000) // More CI-friendly params
+    console.log(
+      `Tournament "${tournamentName}" confirmed in database, proceeding with UI selection...`
+    )
+
+    // Step 2: Now that we know the tournament exists in DB, try to select it in UI
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        // Force a navigation to refresh the root loader and get fresh tournament data
+        await this.page.goto(this.page.url(), { waitUntil: 'networkidle' })
+        await this.page.waitForTimeout(1000) // Longer wait for CI
+
+        const combo = this.page.getByRole('combobox', {
+          name: /toernooi.*select option|tournament.*select option/i,
+        })
+        await combo.click()
+
+        const option = this.page.getByRole('option', {
+          // Playwright string name matching is substring & case-insensitive by default.
+          name: tournamentName,
+        })
+        await expect(option).toBeVisible({ timeout: 5000 }) // Increased timeout
+
+        await option.click()
+        console.log(`Tournament "${tournamentName}" successfully selected in UI`)
+        return // Success!
+      } catch (error) {
+        if (attempt === maxRetries) {
+          throw new Error(
+            `Tournament "${tournamentName}" exists in database but not found in UI after ${maxRetries} attempts. This indicates a data loading issue between database and UI.`
+          )
+        }
+        console.log(
+          `UI selection attempt ${attempt} failed for tournament "${tournamentName}", retrying in 1000ms...`
+        )
+        await this.page.waitForTimeout(1000) // Longer retry delay for CI
+      }
+    }
   }
 
   // Verification methods

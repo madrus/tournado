@@ -4,12 +4,12 @@ Welcome to the Tournado documentation! This guide will help you understand and w
 
 ## Quick Navigation
 
-- [Getting Started](getting_started.md) - Set up your development environment
-- [Development](development.md) - Development guidelines and practices
+- [Getting Started](getting-started.md) - Set up your development environment
+- [Development](development/overview.md) - Development guidelines and practices
 - [Database Schema Changes](development/database-schema-changes.md) - Schema modifications and migrations
-- [Cursor Rules](development/cursor_rules.md) - AI-assisted development with Cursor
-- [Testing](testing.md) - Testing practices and guidelines
-- [Deployment](deployment.md) - Deployment procedures and environments
+- [Cursor Rules](development/cursor-rules.md) - AI-assisted development with Cursor
+- [Testing](testing/overview.md) - Testing practices and guidelines
+- [Deployment](deployment/overview.md) - Deployment procedures and environments
 
 ## 🚀 Featured: Vitest MCP Server
 
@@ -21,7 +21,7 @@ This project features a **production-ready MCP server** for AI-assisted testing:
 - **Coverage**: 584 tests across 24 test suites with comprehensive coverage analysis
 - **Environment**: Requires `SESSION_SECRET` for authentication module compatibility
 
-[Learn more about the Vitest MCP Server →](testing/vitest_mcp.md)
+[Learn more about the Vitest MCP Server →](testing/vitest-mcp.md)
 
 ## About Tournado
 
@@ -51,4 +51,4 @@ The application follows the React Router v7 project structure with some addition
 
 ## Contributing
 
-See our [Development Guide](development.md) for contribution guidelines and best practices.
+See our [Development Guide](development/overview.md) for contribution guidelines and best practices.

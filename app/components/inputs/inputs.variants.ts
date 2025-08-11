@@ -322,7 +322,7 @@ export const textInputLabelTextVariants = cva(['font-medium text-foreground'])
 // Calendar container variants
 export const calendarContainerVariants = cva([
   'p-4 rounded-lg shadow-lg border',
-  'bg-input border-input-border',
+  'bg-background border-input-border',
 ])
 
 // Calendar header variants

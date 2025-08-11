@@ -1,6 +1,6 @@
 import { type FormEvent, JSX, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, useNavigation } from 'react-router'
+import { Form, useNavigation, useSubmit } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
 import { CheckIcon, RestorePageIcon } from '~/components/icons'
@@ -36,6 +36,12 @@ export function TournamentForm({
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
+  const submit = useSubmit()
+  // Refs to track scroll listener and timeout for cleanup on unmount
+  const scrollListenerRef = useRef<((this: Window, ev: Event) => void) | null>(null)
+  const scrollTimeoutRef = useRef<number | undefined>(undefined)
+  // Re-entrancy guard for submit during scroll-to-top
+  const isSubmittingRef = useRef(false)
   const isPublicSuccess = isSuccess && variant === 'public'
   // Panel color constants - single source of truth
   const PANEL_COLORS = {
@@ -177,13 +183,65 @@ export function TournamentForm({
       formRef.current?.reset()
     }
   }, [errors, isSuccess, variant])
-
-  // Handle client-side form submission and validation
-  const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (formEvent: FormEvent<HTMLFormElement>) => {
     const isValid = validateForm()
 
     if (!isValid) {
       formEvent.preventDefault()
+      return
+    }
+
+    // Smooth-scroll to top first, then submit to allow UX to finish before redirect
+    formEvent.preventDefault()
+    if (isSubmittingRef.current) {
+      return
+    }
+    isSubmittingRef.current = true
+
+    const waitForTop = (): Promise<void> =>
+      new Promise(resolve => {
+        // If already near the top, resolve immediately
+        if (window.scrollY <= 4) {
+          resolve()
+          return
+        }
+
+        let resolved = false
+        // eslint-disable-next-line prefer-const
+        let timeoutId: number | undefined
+        const onResolve = () => {
+          if (resolved) return
+          resolved = true
+          window.removeEventListener('scroll', onScroll)
+          scrollListenerRef.current = null
+          if (timeoutId !== undefined) {
+            window.clearTimeout(timeoutId)
+          }
+          if (scrollTimeoutRef.current !== undefined) {
+            window.clearTimeout(scrollTimeoutRef.current)
+          }
+          scrollTimeoutRef.current = undefined
+          resolve()
+        }
+
+        const onScroll = () => {
+          if (window.scrollY <= 4) onResolve()
+        }
+
+        timeoutId = window.setTimeout(onResolve, 800)
+        scrollTimeoutRef.current = timeoutId
+        scrollListenerRef.current = onScroll
+        window.addEventListener('scroll', onScroll, { passive: true })
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+
+    try {
+      await waitForTop()
+      // Fallback to the event target form if ref is not available
+      const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
+      submit(formEl)
+    } finally {
+      // no-op; guard reset happens when navigation becomes idle
     }
   }
 
@@ -192,12 +250,12 @@ export function TournamentForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.success(t('tournaments.notifications.registrationSuccess'), {
-        description: t('tournaments.notifications.registrationSuccessDesc'),
+      toast.success(t('tournaments.form.notifications.registrationSuccess'), {
+        description: t('tournaments.form.notifications.registrationSuccessDesc'),
       })
     } else {
-      toast.success(t('tournaments.notifications.updateSuccess'), {
-        description: t('tournaments.notifications.updateSuccessDesc'),
+      toast.success(t('tournaments.form.notifications.updateSuccess'), {
+        description: t('tournaments.form.notifications.updateSuccessDesc'),
       })
     }
   }, [formMode, t])
@@ -215,12 +273,12 @@ export function TournamentForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.error(t('tournaments.notifications.registrationError'), {
-        description: t('tournaments.notifications.registrationErrorDesc'),
+      toast.error(t('tournaments.form.notifications.registrationError'), {
+        description: t('tournaments.form.notifications.registrationErrorDesc'),
       })
     } else {
-      toast.error(t('tournaments.notifications.updateError'), {
-        description: t('tournaments.notifications.updateErrorDesc'),
+      toast.error(t('tournaments.form.notifications.updateError'), {
+        description: t('tournaments.form.notifications.updateErrorDesc'),
       })
     }
   }, [formMode, t])
@@ -231,6 +289,28 @@ export function TournamentForm({
       showErrorToast()
     }
   }, [navigation.state, errors, showErrorToast])
+
+  // Reset duplicate-submission guard only after navigation completes
+  useEffect(() => {
+    if (navigation.state === 'idle') {
+      isSubmittingRef.current = false
+    }
+  }, [navigation.state])
+
+  // Cleanup any lingering scroll listeners/timeouts on unmount to avoid leaks
+  useEffect(
+    () => () => {
+      if (scrollListenerRef.current) {
+        window.removeEventListener('scroll', scrollListenerRef.current)
+        scrollListenerRef.current = null
+      }
+      if (scrollTimeoutRef.current !== undefined) {
+        window.clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = undefined
+      }
+    },
+    []
+  )
 
   return (
     <div className={cn('w-full', className)}>

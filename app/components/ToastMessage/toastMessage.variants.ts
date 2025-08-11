@@ -26,10 +26,39 @@ import type { ToastType } from '~/lib/lib.types'
  * </div>
  * ```
  */
+// Common styling patterns for toast types
+const COMMON_STYLES = {
+  errorStyles: [
+    'bg-gradient-to-br from-red-600/75 via-red-600/55 to-red-600/45',
+    'dark:from-red-700/55 dark:via-red-700/45 dark:to-red-700/40',
+    'text-white',
+    'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
+  ],
+  warningStyles: [
+    'bg-gradient-to-br from-orange-600/75 via-orange-600/55 to-orange-600/45',
+    'dark:from-orange-700/55 dark:via-orange-700/45 dark:to-orange-700/40',
+    'text-white',
+    'shadow-xl shadow-orange-950/30 dark:shadow-md dark:shadow-white/20',
+  ],
+} as const
+
 export const toastMessageVariants = cva(
   // Base classes for all toast messages
   [
-    'pointer-events-auto flex w-full max-w-sm min-w-sm items-start gap-3 rounded-lg p-4',
+    'pointer-events-auto flex w-full max-w-sm min-w-[16rem] items-start gap-3 rounded-lg p-4',
+    // Enable glossy overlays and separate stacking context
+    'relative overflow-hidden isolate',
+    // Lucid glass effect
+    'backdrop-blur-lg backdrop-saturate-150',
+    // Subtle edge definition
+    'ring-1 ring-inset ring-white/15 dark:ring-white/10',
+    // Top glossy highlight (pseudo-element overlay)
+    'before:content-[""] before:absolute before:inset-x-0 before:top-0 before:h-[56%] before:rounded-[inherit] before:pointer-events-none before:-z-10',
+    'before:bg-gradient-to-b before:from-white/55 before:via-white/20 before:to-transparent before:opacity-60 before:mix-blend-screen',
+    'dark:before:from-white/35 dark:before:via-white/15 dark:before:opacity-50',
+    // Re-introduce subtle underlay in light mode to boost internal contrast
+    'after:content-[" "] after:absolute after:inset-0 after:rounded-[inherit] after:pointer-events-none after:-z-10',
+    'after:bg-slate-900/15 after:mix-blend-multiply dark:after:bg-transparent',
   ],
   {
     variants: {
@@ -43,55 +72,27 @@ export const toastMessageVariants = cva(
        */
       type: {
         success: [
-          'bg-emerald-600',
+          // Return to 600 with light-mode underlay for contrast
+          'bg-gradient-to-br from-emerald-600/75 via-emerald-600/55 to-emerald-600/45',
+          'dark:from-emerald-700/55 dark:via-emerald-700/45 dark:to-emerald-700/40',
+          // Text and definition
           'text-white',
-          'shadow-lg shadow-emerald-900/40 dark:shadow-md dark:shadow-white/20',
+          'shadow-xl shadow-emerald-950/30 dark:shadow-md dark:shadow-white/20',
         ],
-        error: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        network: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        permission: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        server: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        client: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        unknown: [
-          'bg-red-600',
-          'text-white',
-          'shadow-lg shadow-red-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
+        error: COMMON_STYLES.errorStyles,
+        network: COMMON_STYLES.errorStyles,
+        permission: COMMON_STYLES.errorStyles,
+        server: COMMON_STYLES.errorStyles,
+        client: COMMON_STYLES.errorStyles,
+        unknown: COMMON_STYLES.errorStyles,
         info: [
-          'bg-sky-600',
+          'bg-gradient-to-br from-sky-600/75 via-sky-600/55 to-sky-600/45',
+          'dark:from-sky-700/55 dark:via-sky-700/45 dark:to-sky-700/40',
           'text-white',
-          'shadow-lg shadow-sky-900/40 dark:shadow-md dark:shadow-white/20',
+          'shadow-xl shadow-sky-950/30 dark:shadow-md dark:shadow-white/20',
         ],
-        warning: [
-          'bg-orange-600',
-          'text-white',
-          'shadow-lg shadow-orange-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
-        validation: [
-          'bg-orange-600',
-          'text-white',
-          'shadow-lg shadow-orange-900/40 dark:shadow-md dark:shadow-white/20',
-        ],
+        warning: COMMON_STYLES.warningStyles,
+        validation: COMMON_STYLES.warningStyles,
       },
     },
     defaultVariants: {
@@ -115,16 +116,29 @@ export const toastMessageVariants = cva(
  */
 export const toastIconVariants = cva(
   // Base classes for all toast icons
-  ['flex h-6 w-6 items-center justify-center'],
+  ['flex h-5 w-5 items-center justify-center'],
   {
     variants: {
       hasBackground: {
-        true: 'rounded-full bg-white',
+        true: 'rounded-full bg-white ring-2 ring-white/70',
         false: '',
+      },
+      type: {
+        success: 'text-emerald-600',
+        error: 'text-red-600',
+        network: 'text-red-600',
+        permission: 'text-red-600',
+        server: 'text-red-600',
+        client: 'text-red-600',
+        unknown: 'text-red-600',
+        info: 'text-sky-600',
+        warning: 'text-orange-600',
+        validation: 'text-orange-600',
       },
     },
     defaultVariants: {
       hasBackground: false,
+      type: 'info',
     },
   }
 )
@@ -143,28 +157,13 @@ export const toastIconVariants = cva(
  * ```
  */
 export const toastCloseButtonVariants = cva(
-  // Base classes for all close buttons
-  [
-    'flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full opacity-70 hover:opacity-100',
-  ],
+  // Base classes for all close buttons - all toast types use white text
+  ['flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-white'],
   {
     variants: {
-      type: {
-        success: 'text-white',
-        error: 'text-white',
-        network: 'text-white',
-        permission: 'text-white',
-        server: 'text-white',
-        client: 'text-white',
-        unknown: 'text-white',
-        info: 'text-white',
-        warning: 'text-white',
-        validation: 'text-white',
-      },
+      // All types use the same white text styling, so no type variants needed
     },
-    defaultVariants: {
-      type: 'info',
-    },
+    defaultVariants: {},
   }
 )
 

@@ -131,8 +131,6 @@ describe('ToastCloseButton Component', () => {
 
         const closeButton = screen.getByRole('button')
         expect(closeButton).toHaveClass('text-white')
-        expect(closeButton).toHaveClass('opacity-70')
-        expect(closeButton).toHaveClass('hover:opacity-100')
 
         unmount()
       })

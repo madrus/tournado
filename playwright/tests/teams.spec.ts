@@ -98,6 +98,12 @@ test.describe('Public Teams', () => {
           `${tournament.name} - ${tournament.location}`
         )
 
+        // Debug: Check tournament selection value
+        const tournamentSelectValue = await page
+          .locator('select[name="tournamentId"]')
+          .inputValue()
+        console.log(`🔍 Selected tournament ID: "${tournamentSelectValue}"`)
+
         tournamentSelected = true
         console.log('✅ Tournament successfully selected in public form')
         break
@@ -137,19 +143,49 @@ test.describe('Public Teams', () => {
     console.log('✅ Category successfully selected')
 
     // Step 4: Fill Team Information
-    await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Public')
-    await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
+    const clubNameInput = page.getByRole('textbox', { name: /clubnaam|club.*name/i })
+    const teamNameInput = page.getByRole('textbox', { name: /teamnaam|team.*name/i })
+
+    // Debug: Check if inputs are enabled
+    const clubNameEnabled = await clubNameInput.isEnabled()
+    const teamNameEnabled = await teamNameInput.isEnabled()
+    console.log(`🔍 Club name input enabled: ${clubNameEnabled}`)
+    console.log(`🔍 Team name input enabled: ${teamNameEnabled}`)
+
+    await expect(clubNameInput).toBeEnabled()
+    await expect(teamNameInput).toBeEnabled()
+
+    await clubNameInput.fill('TC Public')
+    await teamNameInput.fill('J08-1')
+
+    // Debug: Verify values were set
+    const clubNameValue = await clubNameInput.inputValue()
+    const teamNameValue = await teamNameInput.inputValue()
+    console.log(`🔍 Club name value: "${clubNameValue}"`)
+    console.log(`🔍 Team name value: "${teamNameValue}"`)
 
     // Step 5: Fill Team Leader Information
-    await page
-      .getByRole('textbox', { name: /naam teamleider|team.*leader.*name/i })
-      .fill('Test Leader')
-    await page
-      .getByRole('textbox', { name: /e-mail teamleider|team.*leader.*email/i })
-      .fill('test@example.com')
-    await page
-      .getByRole('textbox', { name: /telefoon teamleider|team.*leader.*phone/i })
-      .fill('0123456789')
+    const leaderNameInput = page.getByRole('textbox', {
+      name: /naam teamleider|team.*leader.*name/i,
+    })
+    const leaderEmailInput = page.getByRole('textbox', {
+      name: /e-mail teamleider|team.*leader.*email/i,
+    })
+    const leaderPhoneInput = page.getByRole('textbox', {
+      name: /telefoon teamleider|team.*leader.*phone/i,
+    })
+
+    await leaderNameInput.fill('Test Leader')
+    await leaderEmailInput.fill('test@example.com')
+    await leaderPhoneInput.fill('0123456789')
+
+    // Debug: Verify team leader values were set
+    const leaderNameValue = await leaderNameInput.inputValue()
+    const leaderEmailValue = await leaderEmailInput.inputValue()
+    const leaderPhoneValue = await leaderPhoneInput.inputValue()
+    console.log(`🔍 Leader name value: "${leaderNameValue}"`)
+    console.log(`🔍 Leader email value: "${leaderEmailValue}"`)
+    console.log(`🔍 Leader phone value: "${leaderPhoneValue}"`)
 
     // Step 6: Accept Privacy Agreement
     const privacyCheckbox = page.getByRole('checkbox', {

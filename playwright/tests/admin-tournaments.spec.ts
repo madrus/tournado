@@ -204,8 +204,8 @@ test.describe('Tournament-Team Integration', () => {
     await page.waitForLoadState('networkidle')
 
     // Fill tournament form
-    await page.getByRole('textbox', { name: /name|naam/i }).fill('Test Tournament E2E')
-    await page.getByRole('textbox', { name: /location|locatie/i }).fill('Test Location')
+    await page.getByRole('textbox', { name: /name|naam/i }).fill('E2ETourney')
+    await page.getByRole('textbox', { name: /location|locatie/i }).fill('Aalsmeer')
 
     // Select start date using date picker
     await page
@@ -261,21 +261,21 @@ test.describe('Tournament-Team Integration', () => {
 
     // Additional verification: check that the tournament form shows the created data
     await expect(page.getByRole('textbox', { name: /name|naam/i })).toHaveValue(
-      'Test Tournament E2E'
+      'E2ETourney'
     )
     await expect(page.getByRole('textbox', { name: /location|locatie/i })).toHaveValue(
-      'Test Location'
+      'Aalsmeer'
     )
 
     console.log('Tournament creation UI confirmed - verifying database persistence')
 
     // CRITICAL: Verify tournament exists in database with full data structure
     try {
-      await waitForTournamentInDatabase('Test Tournament E2E', 10, 1000)
+      await waitForTournamentInDatabase('E2ETourney', 10, 1000)
       console.log('✅ Tournament successfully verified in database')
 
       // Additional comprehensive verification
-      const tournaments = await checkTournamentExists('Test Tournament E2E')
+      const tournaments = await checkTournamentExists('E2ETourney')
       console.log('Database verification result:', tournaments)
 
       if (tournaments.length === 0) {
@@ -306,10 +306,7 @@ test.describe('Tournament-Team Integration', () => {
   test('should select tournament and create team in admin area', async ({ page }) => {
     // Pre-create tournament using database-direct approach to avoid timing issues
     console.log('Creating test tournament directly in database...')
-    const tournament = await createTestTournament(
-      'Admin Test Tournament',
-      'Admin Test Location'
-    )
+    const tournament = await createTestTournament('AdminTourney', 'Amsterdam')
     console.log(
       `✅ Pre-created tournament: ${tournament.name} - ${tournament.location}`
     )
@@ -376,12 +373,8 @@ test.describe('Tournament-Team Integration', () => {
     console.log('✅ Category successfully selected')
 
     // Step 4: Fill team information to complete the test
-    await page
-      .getByRole('textbox', { name: /clubnaam|club.*name/i })
-      .fill('Test Club Admin')
-    await page
-      .getByRole('textbox', { name: /teamnaam|team.*name/i })
-      .fill('Test Team Admin')
+    await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Admin')
+    await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
     await page
       .getByRole('textbox', { name: /naam teamleider/i })
       .fill('Test Leader Admin')

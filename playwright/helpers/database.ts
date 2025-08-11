@@ -152,8 +152,8 @@ export const checkTournamentExists = async (namePattern: string) => {
 // Wait for tournament to exist in database (for E2E test synchronization)
 export const waitForTournamentInDatabase = async (
   tournamentName: string,
-  maxAttempts = 10,
-  delayMs = 500
+  maxAttempts = 20, // Increased for CI
+  delayMs = 1000 // Increased for CI
 ): Promise<void> => {
   let attempts = 0
 
@@ -223,9 +223,8 @@ export const createTestTournament = async (
 
   console.log(`- test tournament "${name}" created with ID ${tournament.id}`)
 
-  // Add a small delay to ensure database transaction is fully committed
-  // and any cached queries are invalidated
-  await new Promise(resolve => setTimeout(resolve, 100))
+  // Longer delay for CI environments - database replication/caching can be slower
+  await new Promise(resolve => setTimeout(resolve, 500))
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }
 }

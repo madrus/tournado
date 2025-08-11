@@ -152,10 +152,7 @@ export function TeamForm({
         const formEl = formRef.current ?? (formEvent.currentTarget as HTMLFormElement)
         submit(formEl)
       } finally {
-        // Defer to next task to avoid a tiny race with router state update
-        setTimeout(() => {
-          isSubmittingRef.current = false
-        }, 0)
+        // no-op; guard reset happens when navigation becomes idle
       }
     },
     [validateForm, submit]
@@ -315,6 +312,13 @@ export function TeamForm({
       showErrorToast()
     }
   }, [navigation.state, errors, showErrorToast])
+
+  // Reset duplicate-submission guard only after navigation completes
+  useEffect(() => {
+    if (navigation.state === 'idle') {
+      isSubmittingRef.current = false
+    }
+  }, [navigation.state])
 
   // Cleanup any lingering scroll listeners/timeouts on unmount to avoid leaks
   useEffect(

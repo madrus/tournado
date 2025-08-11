@@ -213,3 +213,59 @@ export const createTestTournament = async (
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }
 }
+
+// Symmetric delete helpers for cleanup in specs
+// These ensure test data is properly cleaned up to keep the database clean during test runs
+
+export const deleteTournamentById = async (id: string): Promise<void> => {
+  try {
+    // Delete dependent records first (children before parent)
+    // Delete matches that reference this tournament
+    await prisma.match.deleteMany({ where: { tournamentId: id } })
+
+    // Delete teams that reference this tournament
+    await prisma.team.deleteMany({ where: { tournamentId: id } })
+
+    // Finally delete the tournament itself
+    // Use deleteMany to be idempotent (avoid P2025 if already deleted)
+    await prisma.tournament.deleteMany({ where: { id } })
+  } catch (error) {
+    console.error(`Error deleting tournament ${id}:`, error)
+    throw error
+  }
+}
+
+export const deleteTeamById = async (id: string): Promise<void> => {
+  try {
+    // Delete dependent records first (children before parent)
+    // Delete matches that reference this team (as home or away team)
+    await prisma.match.deleteMany({
+      where: {
+        OR: [{ homeTeamId: id }, { awayTeamId: id }],
+      },
+    })
+    // Fetch leader id before deleting team
+    const current = await prisma.team.findUnique({
+      where: { id },
+      select: { teamLeaderId: true },
+    })
+    const leaderId = current?.teamLeaderId
+
+    // Finally delete the team itself
+    // Use deleteMany to be idempotent (avoid P2025 if already deleted)
+    await prisma.team.deleteMany({ where: { id } })
+
+    // Optionally delete the team leader if no other teams reference it
+    if (leaderId) {
+      const remainingTeams = await prisma.team.count({
+        where: { teamLeaderId: leaderId },
+      })
+      if (remainingTeams === 0) {
+        await prisma.teamLeader.deleteMany({ where: { id: leaderId } })
+      }
+    }
+  } catch (error) {
+    console.error(`Error deleting team ${id}:`, error)
+    throw error
+  }
+}

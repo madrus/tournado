@@ -156,7 +156,11 @@ test.describe('Public Teams', () => {
     // Step 7: Submit Form
     const submitButton = page.getByRole('button', { name: 'Opslaan' })
     await expect(submitButton).toBeVisible()
+    await expect(submitButton).toBeEnabled()
     await submitButton.click()
+
+    // Wait for form submission to start processing
+    await page.waitForTimeout(1000)
 
     // Step 8: Verify Success
     // Should redirect to team details page (the success parameter gets removed immediately by the page)

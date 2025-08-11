@@ -269,3 +269,12 @@ export const deleteTeamById = async (id: string): Promise<void> => {
     throw error
   }
 }
+
+// Thin wrappers for tests to use a stable API name
+export const deleteTestTournament = async ({ id }: { id: string }): Promise<void> => {
+  await deleteTournamentById(id)
+}
+
+export const deleteTestTeam = async ({ id }: { id: string }): Promise<void> => {
+  await deleteTeamById(id)
+}

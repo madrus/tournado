@@ -17,7 +17,7 @@ import { useIsClient } from './useIsomorphicWindow'
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const SHOW_THRESHOLD = 10 // Lower threshold for showing header (more sensitive)
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
-const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
+// const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -171,11 +171,11 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     //   }
     // }
 
-    // More lenient overscroll handling - allow slight overscroll
-    if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
-      lastY.current = y
-      return
-    }
+    // Disable overscroll handling to test
+    // if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
+    //   lastY.current = y
+    //   return
+    // }
 
     // Check if movement is significant enough
     const absDiff = Math.abs(diff)

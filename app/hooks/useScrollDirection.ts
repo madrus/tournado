@@ -39,8 +39,8 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const rafRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
   const [isIOS, setIsIOS] = useState<boolean>(false)
-  const wasBouncingRef = useRef<boolean>(false)
-  const iosPostBounceCooldownUntilRef = useRef<number>(0)
+  // const wasBouncingRef = useRef<boolean>(false)
+  // const iosPostBounceCooldownUntilRef = useRef<number>(0)
   const lastDirectionChangeRef = useRef<number>(0)
 
   // Use the bounce detection hook
@@ -131,52 +131,45 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     }
 
     // iOS-specific: avoid flicker near the bottom and ensure bounce resets when leaving bottom
-    const NEAR_BOTTOM_THRESHOLD = 24
+    // const NEAR_BOTTOM_THRESHOLD = 24
 
-    // Track bounce transitions to start cooldown when bouncing ends
-    if (isIOS) {
-      if (wasBouncingRef.current && !bounceDetection.isBouncingBottom) {
-        iosPostBounceCooldownUntilRef.current = now + 200
-      }
-      wasBouncingRef.current = bounceDetection.isBouncingBottom
-    }
+    // Disable bounce cooldown tracking to test
+    // if (isIOS) {
+    //   if (wasBouncingRef.current && !bounceDetection.isBouncingBottom) {
+    //     iosPostBounceCooldownUntilRef.current = now + 200
+    //   }
+    //   wasBouncingRef.current = bounceDetection.isBouncingBottom
+    // }
     // Removed unconditional near-bottom freeze; handled later with direction-aware logic
 
-    // If we're bouncing at the bottom, ignore scroll direction changes
-    if (bounceDetection.isBouncingBottom) {
-      // If user is scrolling down (towards bottom), immediately clear bounce and proceed
-      if (diff > 0) {
-        bounceDetection.resetBounceState()
-      } else {
-        // Reset bounce when we've scrolled away from bottom area
-        if (y < maxScrollY - NEAR_BOTTOM_THRESHOLD) {
-          bounceDetection.resetBounceState()
-        } else {
-          lastY.current = y
-          return
-        }
-      }
-    }
+    // Disable bounce detection completely to test
+    // if (bounceDetection.isBouncingBottom) {
+    //   if (diff > 0) {
+    //     bounceDetection.resetBounceState()
+    //   } else {
+    //     if (y < maxScrollY - NEAR_BOTTOM_THRESHOLD) {
+    //       bounceDetection.resetBounceState()
+    //     } else {
+    //       lastY.current = y
+    //       return
+    //     }
+    //   }
+    // }
 
-    // iOS bounce handling - smarter bounce state management
-    if (isIOS && isMobile) {
-      // During active bounce, only maintain state if we were already hiding
-      // This prevents bars from showing during downward scroll bounces
-      if (bounceDetection.isBouncingBottom) {
-        // If we're scrolling down (diff > 0) and bouncing, bars should stay hidden
-        if (diff > 0 && !showHeader) {
-          lastY.current = y
-          return
-        }
-        // If we're scrolling up during bounce, allow normal behavior
-      }
-
-      // Minimal post-bounce cooldown to prevent immediate flicker
-      if (now < iosPostBounceCooldownUntilRef.current) {
-        lastY.current = y
-        return
-      }
-    }
+    // Disable all iOS bounce handling to test
+    // if (isIOS && isMobile) {
+    //   if (bounceDetection.isBouncingBottom) {
+    //     if (diff > 0 && !showHeader) {
+    //       lastY.current = y
+    //       return
+    //     }
+    //   }
+    //
+    //   if (now < iosPostBounceCooldownUntilRef.current) {
+    //     lastY.current = y
+    //     return
+    //   }
+    // }
 
     // More lenient overscroll handling - allow slight overscroll
     if (y > maxScrollY + OVERSCROLL_TOLERANCE) {

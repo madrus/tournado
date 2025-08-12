@@ -17,7 +17,6 @@ import { useIsClient } from './useIsomorphicWindow'
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const SHOW_THRESHOLD = 10 // Lower threshold for showing header (more sensitive)
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
-const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -39,8 +38,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const rafRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
   const [isIOS, setIsIOS] = useState<boolean>(false)
+  const lastDirectionChangeRef = useRef<number>(0)
 
-  // Use the bounce detection hook
+  // Initialize bounce detection hook
   const bounceDetection = useBounceDetection(
     isIOS,
     isMobile,
@@ -108,14 +108,17 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     const y = getScrollY()
     const diff = y - lastY.current
+    const now = Date.now()
 
     // Simple boundary check - don't process negative scroll positions
     if (y < 0) {
       return
     }
 
-    // Use cached document and window heights for performance
-    const maxScrollY = Math.max(0, documentHeightRef.current - windowHeightRef.current)
+    // Use cached heights for performance; on iOS recalc to account for toolbar resize
+    const maxScrollY = isIOS
+      ? Math.max(0, getDocumentHeight() - (window?.innerHeight || 0))
+      : Math.max(0, documentHeightRef.current - windowHeightRef.current)
 
     // If there's not enough content to scroll, always show header
     if (maxScrollY <= 0) {
@@ -124,21 +127,32 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
-    // If we're bouncing at the bottom, ignore scroll direction changes
-    if (bounceDetection.isBouncingBottom) {
-      lastY.current = y
-      return
-    }
-
-    // More lenient overscroll handling - allow slight overscroll
-    if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
-      lastY.current = y
-      return
-    }
-
     // Check if movement is significant enough
     const absDiff = Math.abs(diff)
     const currentlyVisible = showHeader
+
+    // Detect unrealistic scroll jumps (likely browser overscroll behavior)
+    const isNearBottom = y >= maxScrollY - 50
+    const isUnrealisticJump = absDiff > 50 // More than 50px in one frame
+
+    if (isNearBottom && isUnrealisticJump) {
+      lastY.current = y
+      return
+    }
+
+    // At exact bottom, prevent all state changes to avoid flicker
+    const isAtExactBottom = y >= maxScrollY - 60
+    if (isAtExactBottom) {
+      // When near bottom, maintain current state to prevent bounce-induced flicker
+      // Only allow bars to hide (not show) when bouncing near bottom
+      if (showHeader && diff > 0) {
+        // Allow hiding when scrolling down near bottom
+        setShowHeader(false)
+      }
+      // Prevent showing bars when bouncing near bottom
+      lastY.current = y
+      return
+    }
 
     // Use different thresholds for hiding vs showing
     const activeThreshold = currentlyVisible && diff > 0 ? threshold : SHOW_THRESHOLD
@@ -146,11 +160,33 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // Update header visibility based on scroll direction
     const shouldShow = diff <= 0 // up = show, down = hide
+
+    // iOS-specific: Light anti-flicker throttling
+    if (isIOS && isMobile && shouldShow !== showHeader) {
+      const timeSinceLastChange = now - lastDirectionChangeRef.current
+
+      // Only throttle if changes are happening too rapidly (< 100ms apart)
+      if (timeSinceLastChange < 100) {
+        lastY.current = y
+        return
+      }
+
+      lastDirectionChangeRef.current = now
+    }
+
     setShowHeader(shouldShow)
 
     // Always update lastY to prevent state getting stuck
     lastY.current = y
-  }, [isMobile, setShowHeader, bounceDetection.isBouncingBottom, threshold])
+  }, [
+    isMobile,
+    setShowHeader,
+    bounceDetection.isBouncingBottom,
+    bounceDetection.resetBounceState,
+    threshold,
+    isIOS,
+    showHeader,
+  ])
 
   /**
    * Throttled scroll handler using requestAnimationFrame

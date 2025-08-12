@@ -10,13 +10,14 @@ import {
 import { breakpoints } from '~/utils/breakpoints'
 import { debounce, getDocumentHeight, getScrollY } from '~/utils/domUtils'
 
+import { useBounceDetection } from './useBounceDetection'
 import { useIsClient } from './useIsomorphicWindow'
 
 // Constants for scroll direction detection
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
+const SHOW_THRESHOLD = 10 // Lower threshold for showing header (more sensitive)
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
 const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
-const BOUNCE_SAFETY_TIMEOUT = 5000 // Max time to keep bounce state active (ms)
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -36,11 +37,16 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const documentHeightRef = useRef<number>(0)
   const windowHeightRef = useRef<number>(0)
   const rafRef = useRef<number | null>(null)
-  const lastTouchY = useRef<number | null>(null)
-  const isTouching = useRef<boolean>(false)
-  const isBouncingBottom = useRef<boolean>(false)
-  const bounceTimeoutRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
+  const [isIOS, setIsIOS] = useState<boolean>(false)
+
+  // Use the bounce detection hook
+  const bounceDetection = useBounceDetection(
+    isIOS,
+    isMobile,
+    documentHeightRef,
+    windowHeightRef
+  )
 
   // Synchronous mobile detection to minimize flash
   useLayoutEffect(() => {
@@ -48,6 +54,20 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     const checkMobile = () => {
       setIsMobile(breakpoints.isMobile())
+      // Detect iOS for bounce behavior handling
+      // Note: User agent detection can be unreliable due to spoofing
+      // Fallback: iOS devices typically have touch support and webkit
+      const hasIOSUserAgent = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      const hasWebkitTouch =
+        'ontouchstart' in window && /webkit/i.test(navigator.userAgent)
+      const hasMacOSUserAgent =
+        /Macintosh/.test(navigator.userAgent) && 'ontouchstart' in window
+
+      setIsIOS(
+        hasIOSUserAgent ||
+          hasMacOSUserAgent ||
+          (hasWebkitTouch && breakpoints.isMobile())
+      )
     }
 
     // Set initial state synchronously before paint
@@ -105,7 +125,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     }
 
     // If we're bouncing at the bottom, ignore scroll direction changes
-    if (isBouncingBottom.current) {
+    if (bounceDetection.isBouncingBottom) {
       lastY.current = y
       return
     }
@@ -118,7 +138,11 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // Check if movement is significant enough
     const absDiff = Math.abs(diff)
-    if (absDiff < threshold) return
+    const currentlyVisible = showHeader
+
+    // Use different thresholds for hiding vs showing
+    const activeThreshold = currentlyVisible && diff > 0 ? threshold : SHOW_THRESHOLD
+    if (absDiff < activeThreshold) return
 
     // Update header visibility based on scroll direction
     const shouldShow = diff <= 0 // up = show, down = hide
@@ -126,7 +150,7 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // Always update lastY to prevent state getting stuck
     lastY.current = y
-  }, [threshold, isMobile])
+  }, [isMobile, setShowHeader, bounceDetection.isBouncingBottom, threshold])
 
   /**
    * Throttled scroll handler using requestAnimationFrame
@@ -140,71 +164,6 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       rafRef.current = null
     })
   }, [handleScrollDirection])
-
-  // Touch event handlers for bounce detection
-  // Shared function to reset bounce state
-  const resetBounceState = useCallback(() => {
-    isBouncingBottom.current = false
-    if (bounceTimeoutRef.current) {
-      clearTimeout(bounceTimeoutRef.current)
-      bounceTimeoutRef.current = null
-    }
-  }, [])
-
-  const handleTouchStart = useCallback((event: TouchEvent) => {
-    if (event.touches.length === 0) return
-
-    isTouching.current = true
-    lastTouchY.current = event.touches[0].clientY
-  }, [])
-
-  const handleTouchMove = useCallback(
-    (event: TouchEvent) => {
-      if (!isMobile || lastTouchY.current === null || event.touches.length === 0) return
-
-      const currentY = event.touches[0].clientY
-      const deltaY = currentY - lastTouchY.current
-      lastTouchY.current = currentY
-
-      const y = getScrollY()
-      const maxScrollY = Math.max(
-        0,
-        documentHeightRef.current - windowHeightRef.current
-      )
-
-      // At bottom and dragging up (deltaY < 0 means dragging up)
-      if (y >= maxScrollY - 5 && deltaY < 0) {
-        isBouncingBottom.current = true
-
-        // Clear any existing timeout
-        if (bounceTimeoutRef.current) {
-          clearTimeout(bounceTimeoutRef.current)
-        }
-
-        // Set safety timeout to prevent stuck bounce state
-        bounceTimeoutRef.current = window.setTimeout(() => {
-          isBouncingBottom.current = false
-          bounceTimeoutRef.current = null
-        }, BOUNCE_SAFETY_TIMEOUT)
-      } else {
-        resetBounceState()
-      }
-    },
-    [isMobile, resetBounceState]
-  )
-
-  const handleTouchEnd = useCallback(() => {
-    isTouching.current = false
-    lastTouchY.current = null
-    resetBounceState()
-  }, [resetBounceState])
-
-  // Reset bounce state when page loses focus to prevent stuck state
-  const handleVisibilityChange = useCallback(() => {
-    if (document.hidden) {
-      resetBounceState()
-    }
-  }, [resetBounceState])
 
   // Initialize document height calculation synchronously to avoid layout shifts
   useLayoutEffect(() => {
@@ -223,15 +182,25 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     window.addEventListener('scroll', onScroll, { passive: true })
 
     // Add touch event listeners for bounce detection
-    window.addEventListener('touchstart', handleTouchStart, { passive: true })
-    window.addEventListener('touchmove', handleTouchMove, { passive: true })
-    window.addEventListener('touchend', handleTouchEnd, { passive: true })
-
-    // Add listeners to reset bounce state when interaction is interrupted
-    document.addEventListener('visibilitychange', handleVisibilityChange, {
+    window.addEventListener('touchstart', bounceDetection.handleTouchStart, {
       passive: true,
     })
-    window.addEventListener('blur', resetBounceState, { passive: true })
+    window.addEventListener('touchmove', bounceDetection.handleTouchMove, {
+      passive: true,
+    })
+    window.addEventListener('touchend', bounceDetection.handleTouchEnd, {
+      passive: true,
+    })
+
+    // Add listeners to reset bounce state when interaction is interrupted
+    document.addEventListener(
+      'visibilitychange',
+      bounceDetection.handleVisibilityChange,
+      {
+        passive: true,
+      }
+    )
+    window.addEventListener('blur', bounceDetection.resetBounceState, { passive: true })
 
     return () => {
       // Mark component as unmounted to prevent memory leaks
@@ -241,11 +210,14 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       debouncedUpdateDocumentHeight.cancel()
       window.removeEventListener('resize', debouncedUpdateDocumentHeight)
       window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('touchstart', handleTouchStart)
-      window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchend', handleTouchEnd)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      window.removeEventListener('blur', resetBounceState)
+      window.removeEventListener('touchstart', bounceDetection.handleTouchStart)
+      window.removeEventListener('touchmove', bounceDetection.handleTouchMove)
+      window.removeEventListener('touchend', bounceDetection.handleTouchEnd)
+      document.removeEventListener(
+        'visibilitychange',
+        bounceDetection.handleVisibilityChange
+      )
+      window.removeEventListener('blur', bounceDetection.resetBounceState)
 
       // Cancel any pending animation frame
       if (rafRef.current) {
@@ -253,20 +225,18 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
         rafRef.current = null
       }
 
-      // Clear bounce timeout
-      if (bounceTimeoutRef.current) {
-        clearTimeout(bounceTimeoutRef.current)
-        bounceTimeoutRef.current = null
-      }
+      // Clear bounce timeouts
+      bounceDetection.cleanup()
     }
   }, [
     debouncedUpdateDocumentHeight,
     onScroll,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleVisibilityChange,
-    resetBounceState,
+    bounceDetection.handleTouchStart,
+    bounceDetection.handleTouchMove,
+    bounceDetection.handleTouchEnd,
+    bounceDetection.handleVisibilityChange,
+    bounceDetection.resetBounceState,
+    bounceDetection.cleanup,
     isClient,
   ])
 

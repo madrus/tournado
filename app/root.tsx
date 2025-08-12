@@ -1,7 +1,6 @@
 // Remove the OS import since we're no longer using it
 // import os from 'node:os'
 import React, { JSX, useEffect, useState } from 'react'
-import { I18nextProvider } from 'react-i18next'
 import {
   Links,
   LinksFunction,
@@ -13,15 +12,10 @@ import {
 } from 'react-router'
 
 import type { User } from '@prisma/client'
-import { Theme } from '@radix-ui/themes'
 import '@radix-ui/themes/styles.css'
 
-import { Toaster } from 'sonner'
-
-import { AppBar } from '~/components/AppBar'
-import DesktopFooter from '~/components/desktopFooter/DesktopFooter'
+import { AppLayout } from '~/components/AppLayout'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
-import BottomNavigation from '~/components/mobileNavigation/BottomNavigation'
 import { PWAElements } from '~/components/PWAElements'
 import { prisma } from '~/db.server'
 import { initI18n, Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
@@ -29,7 +23,7 @@ import type { TournamentData } from '~/lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from '~/stores/useAuthStore'
 import { useSettingsStore, useSettingsStoreHydration } from '~/stores/useSettingsStore'
 import { useTeamFormStore } from '~/stores/useTeamFormStore'
-import { CONTENT_CONTAINER_CLASSES, CONTENT_PX } from '~/styles/constants'
+import { CONTENT_CONTAINER_CLASSES } from '~/styles/constants'
 import layoutStylesheetUrl from '~/styles/layout.css?url'
 import safeAreasStylesheetUrl from '~/styles/safe-areas.css?url'
 import tailwindStylesheetUrl from '~/styles/tailwind.css?url'
@@ -268,56 +262,16 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
   return (
     <Document language={serverLanguage} theme={serverTheme}>
-      <I18nextProvider i18n={i18n}>
-        <Theme
-          accentColor='teal'
-          grayColor='slate'
-          radius='medium'
-          scaling='100%'
-          appearance={currentTheme}
-        >
-          <div
-            className='flex min-h-screen flex-col'
-            style={{ paddingTop: 'var(--header-padding, 62px)' }}
-          >
-            <div className='relative' style={{ zIndex: 50 }}>
-              <AppBar authenticated={authenticated} username={username} user={user} />
-            </div>
-            <div
-              className='flex-1 overflow-visible pb-16 md:pb-0'
-              style={{
-                background:
-                  'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
-                position: 'relative',
-                zIndex: 1,
-              }}
-            >
-              <div className={`${CONTENT_PX} pt-8 md:pb-8`}>
-                <Outlet />
-              </div>
-            </div>
-            {/* Desktop Footer - positioned at bottom of viewport */}
-            <DesktopFooter />
-            {/* Mobile Navigation - positioned at bottom of viewport */}
-            <BottomNavigation />
-          </div>
-          <Toaster
-            position='top-center'
-            toastOptions={{
-              duration: 7500,
-              unstyled: true,
-            }}
-            visibleToasts={10}
-            closeButton
-            expand={true}
-          />
-        </Theme>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)}`,
-          }}
-        />
-      </I18nextProvider>
+      <AppLayout
+        authenticated={authenticated}
+        username={username}
+        user={user}
+        theme={currentTheme}
+        i18n={i18n}
+        env={ENV}
+      >
+        <Outlet />
+      </AppLayout>
     </Document>
   )
 }
@@ -332,53 +286,18 @@ export function ErrorBoundary(): JSX.Element {
 
   // Use Dutch for error boundary fallback
   const i18n = initI18n('nl')
+
   return (
     <Document language='nl' theme={theme}>
-      <I18nextProvider i18n={i18n}>
-        <Theme
-          accentColor='teal'
-          grayColor='slate'
-          radius='medium'
-          scaling='100%'
-          appearance={theme}
-        >
-          <div
-            className='flex min-h-screen flex-col'
-            style={{ paddingTop: 'var(--header-padding, 62px)' }}
-          >
-            <div className='relative' style={{ zIndex: 50 }}>
-              <AppBar authenticated={authenticated} username={username} />
-            </div>
-            <div
-              className='flex-1 overflow-visible pb-16 md:pb-0'
-              style={{
-                background:
-                  'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
-                position: 'relative',
-                zIndex: 1,
-              }}
-            >
-              <div className={cn('pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}>
-                <GeneralErrorBoundary />
-              </div>
-            </div>
-            {/* Desktop Footer - positioned at bottom of viewport */}
-            <DesktopFooter />
-            {/* Mobile Navigation - positioned at bottom of viewport */}
-            <BottomNavigation />
-          </div>
-          <Toaster
-            position='top-center'
-            toastOptions={{
-              duration: 7500,
-              unstyled: true,
-            }}
-            visibleToasts={10}
-            closeButton
-            expand={true}
-          />
-        </Theme>
-      </I18nextProvider>
+      <AppLayout
+        authenticated={authenticated}
+        username={username}
+        theme={theme}
+        i18n={i18n}
+        contentClassName={cn('pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}
+      >
+        <GeneralErrorBoundary />
+      </AppLayout>
     </Document>
   )
 }

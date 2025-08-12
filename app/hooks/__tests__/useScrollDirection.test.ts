@@ -38,6 +38,37 @@ vi.mock('../useIsomorphicWindow', () => ({
   useIsClient: () => true,
 }))
 
+// Test helper functions for consistent device mocking
+const mockDevice = {
+  iOS: () => {
+    const originalUserAgent = navigator.userAgent
+    Object.defineProperty(navigator, 'userAgent', {
+      writable: true,
+      value:
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
+    })
+    return () => {
+      Object.defineProperty(navigator, 'userAgent', {
+        writable: true,
+        value: originalUserAgent,
+      })
+    }
+  },
+  android: () => {
+    const originalUserAgent = navigator.userAgent
+    Object.defineProperty(navigator, 'userAgent', {
+      writable: true,
+      value: 'Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36',
+    })
+    return () => {
+      Object.defineProperty(navigator, 'userAgent', {
+        writable: true,
+        value: originalUserAgent,
+      })
+    }
+  },
+}
+
 describe('useScrollDirection', () => {
   let mockGetScrollY: MockedFunction<typeof domUtils.getScrollY>
   let mockIsMobile: MockedFunction<typeof breakpointsUtils.breakpoints.isMobile>
@@ -550,31 +581,15 @@ describe('useScrollDirection', () => {
     })
 
     it('should detect iOS devices correctly', () => {
-      // Mock iOS user agent
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
-      })
+      const restoreUserAgent = mockDevice.iOS()
 
       renderHook(() => useScrollDirection(20))
 
-      // Restore original user agent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
     })
 
     it('should NOT trigger bounce on iOS without sufficient velocity and drag', () => {
-      // Mock iOS
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
-      })
+      const restoreUserAgent = mockDevice.iOS()
 
       mockGetScrollY.mockReturnValue(1195) // At bottom
       const { result } = renderHook(() => useScrollDirection(20))
@@ -607,21 +622,11 @@ describe('useScrollDirection', () => {
       // Header should remain in its current state (not bouncing)
       expect(result.current.showHeader).toBe(true)
 
-      // Restore
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
     })
 
     it('should trigger bounce on iOS with high velocity and sufficient drag', async () => {
-      // Mock iOS
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
-      })
+      const restoreUserAgent = mockDevice.iOS()
 
       vi.useFakeTimers()
       mockGetScrollY.mockReturnValue(1195) // At bottom
@@ -664,20 +669,11 @@ describe('useScrollDirection', () => {
       expect(result.current.showHeader).toBe(true)
 
       vi.useRealTimers()
-      // Restore
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
     })
 
     it('should not trigger bounce on non-iOS devices', () => {
-      // Mock Android
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: 'Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36',
-      })
+      const restoreUserAgent = mockDevice.android()
 
       mockGetScrollY.mockReturnValue(1195) // At bottom
       const { result } = renderHook(() => useScrollDirection(20))
@@ -709,11 +705,7 @@ describe('useScrollDirection', () => {
       // On non-iOS, should not enter bounce state even with large drag
       expect(result.current.showHeader).toBe(true) // Normal behavior
 
-      // Restore
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
     })
   })
 
@@ -770,13 +762,7 @@ describe('useScrollDirection', () => {
     })
 
     it('should use shorter bounce safety timeout (800ms instead of 5000ms)', async () => {
-      // Mock iOS
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
-      })
+      const restoreUserAgent = mockDevice.iOS()
 
       vi.useFakeTimers()
       mockGetScrollY.mockReturnValue(1195) // At bottom
@@ -816,21 +802,11 @@ describe('useScrollDirection', () => {
       expect(typeof result.current.showHeader).toBe('boolean')
 
       vi.useRealTimers()
-      // Restore
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
     })
 
     it('should wait for iOS momentum to settle before resetting bounce state', async () => {
-      // Mock iOS
-      const originalUserAgent = navigator.userAgent
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15',
-      })
+      const restoreUserAgent = mockDevice.iOS()
 
       vi.useFakeTimers()
       mockGetScrollY.mockReturnValue(1195) // At bottom
@@ -879,11 +855,148 @@ describe('useScrollDirection', () => {
       expect(true).toBe(true) // Test passes if no errors thrown
 
       vi.useRealTimers()
-      // Restore
-      Object.defineProperty(navigator, 'userAgent', {
-        writable: true,
-        value: originalUserAgent,
-      })
+      restoreUserAgent()
+    })
+  })
+
+  describe('iOS bounce detection bug fixes', () => {
+    beforeEach(() => {
+      mockIsMobile.mockReturnValue(true)
+      ;(
+        domUtils.getDocumentHeight as MockedFunction<typeof domUtils.getDocumentHeight>
+      ).mockReturnValue(2000)
+    })
+
+    it('should fix totalDragDistance calculation when touchStartY is null', () => {
+      const restoreUserAgent = mockDevice.iOS()
+
+      vi.useFakeTimers()
+      mockGetScrollY.mockReturnValue(1995) // Near bottom
+
+      const { result } = renderHook(() => useScrollDirection())
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      const touchMoveHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )?.[1] as EventListener
+
+      // Simulate a touch move without touchstart (touchStartY should be null)
+      // This tests the scenario where touchStartY.current is null
+      touchMoveHandler(
+        new TouchEvent('touchmove', {
+          touches: [{ clientY: 400 } as Touch],
+        })
+      )
+
+      // Should not crash and should handle null touchStartY gracefully
+      expect(result.current.showHeader).toBeDefined()
+      expect(typeof result.current.showHeader).toBe('boolean')
+
+      vi.useRealTimers()
+      restoreUserAgent()
+    })
+
+    it('should reset stuck bounce state when thresholds are not met on iOS', () => {
+      const restoreUserAgent = mockDevice.iOS()
+
+      vi.useFakeTimers()
+      mockGetScrollY.mockReturnValue(1995) // Near bottom
+
+      const { result } = renderHook(() => useScrollDirection())
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      const touchStartHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchstart'
+      )?.[1] as EventListener
+      const touchMoveHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )?.[1] as EventListener
+
+      // First, simulate a high velocity touch that would trigger bounce
+      touchStartHandler(
+        new TouchEvent('touchstart', {
+          touches: [{ clientY: 500 } as Touch],
+        })
+      )
+
+      vi.advanceTimersByTime(10) // Short time for high velocity
+      touchMoveHandler(
+        new TouchEvent('touchmove', {
+          touches: [{ clientY: 400 } as Touch], // 100px drag
+        })
+      )
+
+      // Now simulate a low velocity drag that should reset bounce state
+      vi.advanceTimersByTime(100) // Longer time for low velocity
+      touchMoveHandler(
+        new TouchEvent('touchmove', {
+          touches: [{ clientY: 399 } as Touch], // Very small movement (1px)
+        })
+      )
+
+      // The bounce state should be handled gracefully
+      expect(result.current.showHeader).toBeDefined()
+      expect(typeof result.current.showHeader).toBe('boolean')
+
+      vi.useRealTimers()
+      restoreUserAgent()
+    })
+
+    it('should handle edge case where touchStartY becomes null during interaction', () => {
+      const restoreUserAgent = mockDevice.iOS()
+
+      vi.useFakeTimers()
+      mockGetScrollY.mockReturnValue(1995) // Near bottom
+
+      const { result } = renderHook(() => useScrollDirection())
+
+      const addEventListenerMock = window.addEventListener as MockedFunction<
+        typeof window.addEventListener
+      >
+
+      const touchStartHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchstart'
+      )?.[1] as EventListener
+      const touchEndHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchend'
+      )?.[1] as EventListener
+      const touchMoveHandler = addEventListenerMock.mock.calls.find(
+        call => call[0] === 'touchmove'
+      )?.[1] as EventListener
+
+      // Start a touch interaction
+      touchStartHandler(
+        new TouchEvent('touchstart', {
+          touches: [{ clientY: 500 } as Touch],
+        })
+      )
+
+      // Simulate touchend (which sets touchStartY to null)
+      touchEndHandler(
+        new TouchEvent('touchend', {
+          touches: [],
+        })
+      )
+
+      // Now try a touchmove after touchend (touchStartY should be null)
+      touchMoveHandler(
+        new TouchEvent('touchmove', {
+          touches: [{ clientY: 400 } as Touch],
+        })
+      )
+
+      // Should handle gracefully without crashing
+      expect(result.current.showHeader).toBeDefined()
+      expect(typeof result.current.showHeader).toBe('boolean')
+
+      vi.useRealTimers()
+      restoreUserAgent()
     })
   })
 })

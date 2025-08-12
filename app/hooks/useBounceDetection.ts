@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { getScrollY } from '~/utils/domUtils'
 
@@ -40,6 +40,7 @@ export const useBounceDetection = (
   const lastTouchTime = useRef<number>(0)
   const isTouching = useRef<boolean>(false)
   const isBouncingBottom = useRef<boolean>(false)
+  const [isBouncingBottomState, setIsBouncingBottomState] = useState<boolean>(false)
   const bounceTimeoutRef = useRef<number | null>(null)
   const bounceSettleTimeoutRef = useRef<number | null>(null)
 
@@ -82,6 +83,7 @@ export const useBounceDetection = (
   // Shared function to reset bounce state
   const resetBounceState = useCallback(() => {
     isBouncingBottom.current = false
+    setIsBouncingBottomState(false)
     if (bounceTimeoutRef.current) {
       clearTimeout(bounceTimeoutRef.current)
       bounceTimeoutRef.current = null
@@ -128,6 +130,7 @@ export const useBounceDetection = (
       // Check if this interaction should trigger bounce detection
       if (shouldTriggerBounce(currentY, deltaY, y, maxScrollY)) {
         isBouncingBottom.current = true
+        setIsBouncingBottomState(true)
 
         // Clear any existing timeout
         if (bounceTimeoutRef.current) {
@@ -137,6 +140,7 @@ export const useBounceDetection = (
         // Set safety timeout to prevent stuck bounce state
         bounceTimeoutRef.current = window.setTimeout(() => {
           isBouncingBottom.current = false
+          setIsBouncingBottomState(false)
           bounceTimeoutRef.current = null
         }, BOUNCE_SAFETY_TIMEOUT)
       } else {
@@ -222,7 +226,7 @@ export const useBounceDetection = (
   }, [])
 
   return {
-    isBouncingBottom: isBouncingBottom.current,
+    isBouncingBottom: isBouncingBottomState,
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,

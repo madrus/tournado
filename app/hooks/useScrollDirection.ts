@@ -38,11 +38,11 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const windowHeightRef = useRef<number>(0)
   const rafRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
-  const isIOS = useRef<boolean>(false)
+  const [isIOS, setIsIOS] = useState<boolean>(false)
 
   // Use the bounce detection hook
   const bounceDetection = useBounceDetection(
-    isIOS.current,
+    isIOS,
     isMobile,
     documentHeightRef,
     windowHeightRef
@@ -63,10 +63,11 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       const hasMacOSUserAgent =
         /Macintosh/.test(navigator.userAgent) && 'ontouchstart' in window
 
-      isIOS.current =
+      setIsIOS(
         hasIOSUserAgent ||
-        hasMacOSUserAgent ||
-        (hasWebkitTouch && breakpoints.isMobile())
+          hasMacOSUserAgent ||
+          (hasWebkitTouch && breakpoints.isMobile())
+      )
     }
 
     // Set initial state synchronously before paint

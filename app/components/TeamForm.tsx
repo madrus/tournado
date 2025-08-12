@@ -159,7 +159,7 @@ export function TeamForm({
   )
 
   const handleReset = useCallback(() => {
-    // In edit mode, restore to original cached state instead of clearing
+    // Restore to original cached state
     setFormData(oldFormFields)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [setFormData, oldFormFields])

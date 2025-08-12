@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from 'vitest'
+import { act, renderHook } from '@testing-library/react'
+
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock DOM utilities before importing the hook
 vi.mock('~/utils/domUtils', () => ({
@@ -103,6 +105,157 @@ describe('useBounceDetection', () => {
 
       // TypeScript compilation validates this
       expect(true).toBe(true)
+    })
+  })
+
+  describe('functional behavior', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('should set bouncing state true on iOS when near bottom with sufficient velocity and drag', async () => {
+      const { useBounceDetection } = await import('../useBounceDetection')
+
+      // Arrange document/window sizes for bottom proximity calculation
+      const documentHeightRef = { current: 2000 } as React.MutableRefObject<number>
+      const windowHeightRef = { current: 800 } as React.MutableRefObject<number>
+
+      // Near bottom: maxScrollY = 1200, threshold = 5 -> 1195
+      ;(await import('~/utils/domUtils')).getScrollY = vi.fn(() => 1195)
+
+      // Render hook with iOS + mobile
+      const { result } = renderHook(() =>
+        useBounceDetection(true, true, documentHeightRef, windowHeightRef)
+      )
+
+      // Start touch at Y=400 at t=1000
+      const nowSpy = vi.spyOn(Date, 'now')
+      nowSpy.mockReturnValue(1000)
+
+      act(() => {
+        result.current.handleTouchStart({
+          touches: [{ clientY: 400 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+
+      // Move to Y=350 at t=1001 -> deltaY=-50, timeDiff=1 -> velocity=50 (>15), drag=50 (>30)
+      nowSpy.mockReturnValue(1001)
+      act(() => {
+        result.current.handleTouchMove({
+          touches: [{ clientY: 350 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+
+      expect(result.current.isBouncingBottom).toBe(true)
+
+      nowSpy.mockRestore()
+    })
+
+    it('should reset bounce state on visibility change when document becomes hidden', async () => {
+      const { useBounceDetection } = await import('../useBounceDetection')
+      const documentHeightRef = { current: 2000 } as React.MutableRefObject<number>
+      const windowHeightRef = { current: 800 } as React.MutableRefObject<number>
+
+      ;(await import('~/utils/domUtils')).getScrollY = vi.fn(() => 1195)
+
+      const { result } = renderHook(() =>
+        useBounceDetection(true, true, documentHeightRef, windowHeightRef)
+      )
+
+      // Put hook into bouncing state
+      const nowSpy = vi.spyOn(Date, 'now')
+      nowSpy.mockReturnValue(1000)
+      act(() => {
+        result.current.handleTouchStart({
+          touches: [{ clientY: 400 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+      nowSpy.mockReturnValue(1001)
+      act(() => {
+        result.current.handleTouchMove({
+          touches: [{ clientY: 350 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+      expect(result.current.isBouncingBottom).toBe(true)
+
+      // Simulate document becoming hidden
+      const originalHidden = Object.getOwnPropertyDescriptor(document, 'hidden')
+      Object.defineProperty(document, 'hidden', { configurable: true, value: true })
+
+      act(() => {
+        result.current.handleVisibilityChange()
+      })
+
+      expect(result.current.isBouncingBottom).toBe(false)
+
+      // Restore document.hidden
+      if (originalHidden) Object.defineProperty(document, 'hidden', originalHidden)
+      nowSpy.mockRestore()
+    })
+
+    it('should reset bounce state on touch end for non-iOS or after momentum settles', async () => {
+      const { useBounceDetection } = await import('../useBounceDetection')
+      const documentHeightRef = { current: 2000 } as React.MutableRefObject<number>
+      const windowHeightRef = { current: 800 } as React.MutableRefObject<number>
+
+      ;(await import('~/utils/domUtils')).getScrollY = vi.fn(() => 1195)
+
+      // First: non-iOS -> immediate reset on touch end
+      const nonIOS = renderHook(() =>
+        useBounceDetection(false, true, documentHeightRef, windowHeightRef)
+      )
+
+      act(() => {
+        nonIOS.result.current.handleTouchStart({
+          touches: [{ clientY: 400 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+        nonIOS.result.current.handleTouchMove({
+          touches: [{ clientY: 350 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+      // Even if it tried to set, non-iOS path aggressively resets on move/end
+      act(() => {
+        nonIOS.result.current.handleTouchEnd()
+      })
+      expect(nonIOS.result.current.isBouncingBottom).toBe(false)
+
+      // Second: iOS -> reset after momentum settle timeout if not at bottom
+      const ios = renderHook(() =>
+        useBounceDetection(true, true, documentHeightRef, windowHeightRef)
+      )
+
+      const nowSpy = vi.spyOn(Date, 'now')
+      nowSpy.mockReturnValue(1000)
+      act(() => {
+        ios.result.current.handleTouchStart({
+          touches: [{ clientY: 400 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+      nowSpy.mockReturnValue(1001)
+      act(() => {
+        ios.result.current.handleTouchMove({
+          touches: [{ clientY: 350 }] as unknown as TouchList,
+        } as unknown as TouchEvent)
+      })
+      expect(ios.result.current.isBouncingBottom).toBe(true)
+
+      // After touch end, momentum settle timer starts; move scrollY to not-at-bottom
+      ;(await import('~/utils/domUtils')).getScrollY = vi.fn(() => 1100)
+      act(() => {
+        ios.result.current.handleTouchEnd()
+      })
+
+      // Advance timers to trigger momentum settle check (>= 300ms)
+      await act(async () => {
+        vi.advanceTimersByTime(350)
+      })
+
+      expect(ios.result.current.isBouncingBottom).toBe(false)
+      nowSpy.mockRestore()
     })
   })
 })

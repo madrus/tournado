@@ -87,6 +87,28 @@ These rules ensure consistent coding style and standards across the project.
 2. Maintain consistent header hierarchy
 3. Follow markdown best practices for readability
 
+### Code comment policy
+
+Rule: Comments must describe only the current behavior (status quo). Do not narrate history or describe what changed.
+
+- Focus comments on what the code does now, the intent, constraints, invariants, and reasons
+- Do not write change logs in comments (avoid phrases like "changed from", "previously", "now we", "used to")
+- If historical context is needed, put it in commit messages or documentation, not inline code comments
+- Keep comments concise and specific; avoid duplicating the code in prose
+
+Examples
+
+```ts
+// ✅ Good: states current condition and intent
+// Delete the team leader only when no teams reference it
+if (remainingTeams === 0) {
+  await prisma.teamLeader.deleteMany({ where: { id: leaderId } })
+}
+
+// ❌ Bad: narrates historical changes
+// We used to delete unconditionally, but now we delete only if no teams reference it
+```
+
 ## Examples in Practice
 
 ### Translation Keys

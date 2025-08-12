@@ -5,11 +5,13 @@ import { toast as sonnerToast } from 'sonner'
 
 import {
   createErrorToast,
+  createToast,
   showNetworkError,
   showPermissionError,
   showServerError,
   showValidationError,
   toast,
+  toastAdvanced,
   toastCache,
 } from '../toastUtils'
 
@@ -450,6 +452,73 @@ describe('toastUtils', () => {
       expect(highPriorityCall?.[1]?.style?.borderLeft).toBe(
         '4px solid var(--color-red-500)'
       )
+    })
+  })
+
+  describe('Advanced Toast with Cleanup', () => {
+    beforeEach(() => {
+      vi.clearAllMocks()
+      // Clear the toast cache for each test
+      toastCache.clear()
+    })
+
+    it('should return ToastResult with cleanup function', () => {
+      vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
+
+      const result = createToast('error')('Test message')
+
+      expect(result).toHaveProperty('id')
+      expect(result).toHaveProperty('cleanup')
+      expect(typeof result.cleanup).toBe('function')
+      expect(result.id).toBe('test-toast-id')
+    })
+
+    it('should cleanup cache and clear timeout on manual cleanup', () => {
+      vi.useFakeTimers()
+      vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
+      const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout')
+
+      // Temporarily change NODE_ENV to non-test to enable timeout creation
+      const originalNodeEnv = process.env.NODE_ENV
+      vi.stubEnv('NODE_ENV', 'development')
+
+      const result = createToast('error')('Test message')
+
+      // Verify cache was set
+      expect(toastCache.size).toBe(1)
+
+      // Call cleanup
+      result.cleanup()
+
+      // Verify cache was cleared
+      expect(toastCache.size).toBe(0)
+
+      // Verify timeout was cleared
+      expect(clearTimeoutSpy).toHaveBeenCalled()
+
+      // Restore environment
+      vi.stubEnv('NODE_ENV', originalNodeEnv)
+      clearTimeoutSpy.mockRestore()
+      vi.useRealTimers()
+    })
+
+    it('should maintain backward compatibility with regular toast object', () => {
+      vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
+
+      const result = toast.success('Test message')
+
+      expect(typeof result).toBe('string')
+      expect(result).toBe('test-toast-id')
+    })
+
+    it('should provide advanced toast object with cleanup capability', () => {
+      vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
+
+      const result = toastAdvanced.success('Test message')
+
+      expect(result).toHaveProperty('id')
+      expect(result).toHaveProperty('cleanup')
+      expect(result.id).toBe('test-toast-id')
     })
   })
 })

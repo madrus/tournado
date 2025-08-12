@@ -69,8 +69,15 @@ const MemoizedToastMessage = memo(ToastMessageBase)
 // The cacheKeys are in the format: `${type}:${message}:${options?.description || ''}`
 export const toastCache = new Map<string, ReturnType<typeof sonnerToast.custom>>()
 
+// Toast result with cleanup capability
+export type ToastResult = {
+  id: string | number
+  cleanup: () => void
+}
+
 /**
  * Enhanced toast function with better error handling and performance optimizations
+ * Returns a result object with toast ID and cleanup function
  */
 export const createToast = (
   type: ToastType
@@ -81,7 +88,7 @@ export const createToast = (
     duration?: number
     priority?: 'low' | 'normal' | 'high'
   }
-) => string | number) => {
+) => ToastResult) => {
   const config = TOAST_CONFIGS[type]
 
   return (
@@ -100,7 +107,14 @@ export const createToast = (
     // Skip caching for success toasts to always show them
     if (type !== 'success' && toastCache.has(cacheKey)) {
       const cachedToast = toastCache.get(cacheKey)
-      if (cachedToast) return cachedToast
+      if (cachedToast) {
+        return {
+          id: cachedToast,
+          cleanup: () => {
+            toastCache.delete(cacheKey)
+          },
+        }
+      }
     }
     const toastOptions = {
       duration: options?.duration ?? config.duration,
@@ -134,12 +148,13 @@ export const createToast = (
     // Auto-cleanup cache after toast duration (only for cached toasts)
     // In test environments we won't actually run this timer
     // but in production it ensures the cache gets cleaned up
+    let timeoutId: NodeJS.Timeout | undefined
     if (
       type !== 'success' &&
       typeof process !== 'undefined' &&
       process.env.NODE_ENV !== 'test'
     ) {
-      setTimeout(
+      timeoutId = setTimeout(
         () => {
           toastCache.delete(cacheKey)
         },
@@ -147,14 +162,58 @@ export const createToast = (
       )
     }
 
-    return toastId
+    // Return toast result with cleanup function
+    return {
+      id: toastId,
+      cleanup: () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = undefined
+        }
+        toastCache.delete(cacheKey)
+      },
+    }
+  }
+}
+
+// Create wrapper functions that return just the ID for backward compatibility
+const createSimpleToast = (type: ToastType) => {
+  const toastFn = createToast(type)
+  return (
+    message: string,
+    options?: {
+      description?: string
+      duration?: number
+      priority?: 'low' | 'normal' | 'high'
+    }
+  ): string | number => {
+    const result = toastFn(message, options)
+    return result.id
   }
 }
 
 /**
  * Enhanced toast object with specific error types
+ * Returns toast IDs for backward compatibility
  */
 export const toast = {
+  success: createSimpleToast('success'),
+  error: createSimpleToast('error'),
+  info: createSimpleToast('info'),
+  warning: createSimpleToast('warning'),
+  validation: createSimpleToast('validation'),
+  network: createSimpleToast('network'),
+  permission: createSimpleToast('permission'),
+  server: createSimpleToast('server'),
+  client: createSimpleToast('client'),
+  unknown: createSimpleToast('unknown'),
+}
+
+/**
+ * Advanced toast object that returns ToastResult with cleanup capability
+ * Use this when you need manual cleanup control
+ */
+export const toastAdvanced = {
   success: createToast('success'),
   error: createToast('error'),
   info: createToast('info'),
@@ -178,6 +237,23 @@ export const createErrorToast = (
   const type = errorType ?? 'unknown'
 
   return toast[type](message, {
+    description:
+      typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
+    priority: 'high',
+  })
+}
+
+/**
+ * Advanced helper function to create error toasts with cleanup capability
+ */
+export const createErrorToastAdvanced = (
+  error: Error | string,
+  errorType?: ToastErrorType
+): ToastResult => {
+  const message = typeof error === 'string' ? error : error.message
+  const type = errorType ?? 'unknown'
+
+  return toastAdvanced[type](message, {
     description:
       typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
     priority: 'high',
@@ -213,5 +289,29 @@ export const showPermissionError = (message?: string): string | number =>
  */
 export const showServerError = (message?: string): string | number =>
   toast.server(message ?? 'Server error occurred', {
+    description: 'Please try again later or contact support if the problem persists.',
+  })
+
+// Advanced helper functions with cleanup capability
+export const showValidationErrorAdvanced = (
+  field: string,
+  message: string
+): ToastResult =>
+  toastAdvanced.validation(`${field}: ${message}`, {
+    description: 'Please check your input and try again.',
+  })
+
+export const showNetworkErrorAdvanced = (message?: string): ToastResult =>
+  toastAdvanced.network(message ?? 'Network error occurred', {
+    description: 'Please check your connection and try again.',
+  })
+
+export const showPermissionErrorAdvanced = (message?: string): ToastResult =>
+  toastAdvanced.permission(message ?? 'Access denied', {
+    description: 'You do not have permission to perform this action.',
+  })
+
+export const showServerErrorAdvanced = (message?: string): ToastResult =>
+  toastAdvanced.server(message ?? 'Server error occurred', {
     description: 'Please try again later or contact support if the problem persists.',
   })

@@ -39,6 +39,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const rafRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
   const [isIOS, setIsIOS] = useState<boolean>(false)
+  const wasBouncingRef = useRef<boolean>(false)
+  const iosPostBounceCooldownUntilRef = useRef<number>(0)
+  const lastDirectionChangeRef = useRef<number>(0)
 
   // Use the bounce detection hook
   const bounceDetection = useBounceDetection(
@@ -108,14 +111,17 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     const y = getScrollY()
     const diff = y - lastY.current
+    const now = Date.now()
 
     // Simple boundary check - don't process negative scroll positions
     if (y < 0) {
       return
     }
 
-    // Use cached document and window heights for performance
-    const maxScrollY = Math.max(0, documentHeightRef.current - windowHeightRef.current)
+    // Use cached heights for performance; on iOS recalc to account for toolbar resize
+    const maxScrollY = isIOS
+      ? Math.max(0, getDocumentHeight() - (window?.innerHeight || 0))
+      : Math.max(0, documentHeightRef.current - windowHeightRef.current)
 
     // If there's not enough content to scroll, always show header
     if (maxScrollY <= 0) {
@@ -124,10 +130,47 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
+    // iOS-specific: avoid flicker near the bottom and ensure bounce resets when leaving bottom
+    const NEAR_BOTTOM_THRESHOLD = 24
+
+    // Track bounce transitions to start cooldown when bouncing ends
+    if (isIOS) {
+      if (wasBouncingRef.current && !bounceDetection.isBouncingBottom) {
+        iosPostBounceCooldownUntilRef.current = now + 200
+      }
+      wasBouncingRef.current = bounceDetection.isBouncingBottom
+    }
+    // Removed unconditional near-bottom freeze; handled later with direction-aware logic
+
     // If we're bouncing at the bottom, ignore scroll direction changes
     if (bounceDetection.isBouncingBottom) {
-      lastY.current = y
-      return
+      // If user is scrolling down (towards bottom), immediately clear bounce and proceed
+      if (diff > 0) {
+        bounceDetection.resetBounceState()
+      } else {
+        // Reset bounce when we've scrolled away from bottom area
+        if (y < maxScrollY - NEAR_BOTTOM_THRESHOLD) {
+          bounceDetection.resetBounceState()
+        } else {
+          lastY.current = y
+          return
+        }
+      }
+    }
+
+    // iOS bounce handling - prevent state changes during active bounce
+    if (isIOS && isMobile) {
+      // During active bounce, maintain current state to prevent flickering
+      if (bounceDetection.isBouncingBottom) {
+        lastY.current = y
+        return
+      }
+
+      // Post-bounce cooldown period to prevent immediate state changes
+      if (now < iosPostBounceCooldownUntilRef.current) {
+        lastY.current = y
+        return
+      }
     }
 
     // More lenient overscroll handling - allow slight overscroll
@@ -146,11 +189,33 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // Update header visibility based on scroll direction
     const shouldShow = diff <= 0 // up = show, down = hide
+
+    // iOS-specific: Light anti-flicker throttling
+    if (isIOS && isMobile && shouldShow !== showHeader) {
+      const timeSinceLastChange = now - lastDirectionChangeRef.current
+
+      // Only throttle if changes are happening too rapidly (< 100ms apart)
+      if (timeSinceLastChange < 100) {
+        lastY.current = y
+        return
+      }
+
+      lastDirectionChangeRef.current = now
+    }
+
     setShowHeader(shouldShow)
 
     // Always update lastY to prevent state getting stuck
     lastY.current = y
-  }, [isMobile, setShowHeader, bounceDetection.isBouncingBottom, threshold])
+  }, [
+    isMobile,
+    setShowHeader,
+    bounceDetection.isBouncingBottom,
+    bounceDetection.resetBounceState,
+    threshold,
+    isIOS,
+    showHeader,
+  ])
 
   /**
    * Throttled scroll handler using requestAnimationFrame

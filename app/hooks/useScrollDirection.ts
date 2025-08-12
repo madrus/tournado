@@ -181,12 +181,43 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     const absDiff = Math.abs(diff)
     const currentlyVisible = showHeader
 
+    // Detect unrealistic scroll jumps (likely browser overscroll behavior)
+    const isNearBottom = y >= maxScrollY - 50
+    const isUnrealisticJump = absDiff > 50 // More than 50px in one frame
+
+    if (isNearBottom && isUnrealisticJump) {
+      console.log(`Ignoring unrealistic scroll jump at bottom - diff: ${diff}`)
+      lastY.current = y
+      return
+    }
+
+    // At exact bottom, prevent all state changes to avoid flicker
+    const isAtExactBottom = y >= maxScrollY - 60
+    if (isAtExactBottom) {
+      // When near bottom, maintain current state to prevent bounce-induced flicker
+      // Only allow bars to hide (not show) when bouncing near bottom
+      if (showHeader && diff > 0) {
+        // Allow hiding when scrolling down near bottom
+        setShowHeader(false)
+      }
+      // Prevent showing bars when bouncing near bottom
+      lastY.current = y
+      return
+    }
+
     // Use different thresholds for hiding vs showing
     const activeThreshold = currentlyVisible && diff > 0 ? threshold : SHOW_THRESHOLD
     if (absDiff < activeThreshold) return
 
     // Update header visibility based on scroll direction
     const shouldShow = diff <= 0 // up = show, down = hide
+
+    // Debug: Log scroll behavior at bottom
+    if (isNearBottom) {
+      console.log(
+        `Near bottom - y: ${y}, maxScrollY: ${maxScrollY}, diff: ${diff}, shouldShow: ${shouldShow}, currentlyVisible: ${showHeader}`
+      )
+    }
 
     // iOS-specific: Light anti-flicker throttling
     if (isIOS && isMobile && shouldShow !== showHeader) {

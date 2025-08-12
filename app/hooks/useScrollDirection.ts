@@ -17,7 +17,6 @@ import { useIsClient } from './useIsomorphicWindow'
 const DEFAULT_SCROLL_THRESHOLD = 20 // Minimum pixels to trigger direction change
 const SHOW_THRESHOLD = 10 // Lower threshold for showing header (more sensitive)
 const DEBOUNCE_DELAY = 100 // Milliseconds to debounce resize events
-// const OVERSCROLL_TOLERANCE = 50 // Max pixels beyond content to allow
 
 /**
  * Hook to detect scroll direction and control header visibility
@@ -39,11 +38,9 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
   const rafRef = useRef<number | null>(null)
   const isMountedRef = useRef<boolean>(true)
   const [isIOS, setIsIOS] = useState<boolean>(false)
-  // const wasBouncingRef = useRef<boolean>(false)
-  // const iosPostBounceCooldownUntilRef = useRef<number>(0)
   const lastDirectionChangeRef = useRef<number>(0)
 
-  // Use the bounce detection hook
+  // Initialize bounce detection hook
   const bounceDetection = useBounceDetection(
     isIOS,
     isMobile,
@@ -130,53 +127,6 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       return
     }
 
-    // iOS-specific: avoid flicker near the bottom and ensure bounce resets when leaving bottom
-    // const NEAR_BOTTOM_THRESHOLD = 24
-
-    // Disable bounce cooldown tracking to test
-    // if (isIOS) {
-    //   if (wasBouncingRef.current && !bounceDetection.isBouncingBottom) {
-    //     iosPostBounceCooldownUntilRef.current = now + 200
-    //   }
-    //   wasBouncingRef.current = bounceDetection.isBouncingBottom
-    // }
-    // Removed unconditional near-bottom freeze; handled later with direction-aware logic
-
-    // Disable bounce detection completely to test
-    // if (bounceDetection.isBouncingBottom) {
-    //   if (diff > 0) {
-    //     bounceDetection.resetBounceState()
-    //   } else {
-    //     if (y < maxScrollY - NEAR_BOTTOM_THRESHOLD) {
-    //       bounceDetection.resetBounceState()
-    //     } else {
-    //       lastY.current = y
-    //       return
-    //     }
-    //   }
-    // }
-
-    // Disable all iOS bounce handling to test
-    // if (isIOS && isMobile) {
-    //   if (bounceDetection.isBouncingBottom) {
-    //     if (diff > 0 && !showHeader) {
-    //       lastY.current = y
-    //       return
-    //     }
-    //   }
-    //
-    //   if (now < iosPostBounceCooldownUntilRef.current) {
-    //     lastY.current = y
-    //     return
-    //   }
-    // }
-
-    // Disable overscroll handling to test
-    // if (y > maxScrollY + OVERSCROLL_TOLERANCE) {
-    //   lastY.current = y
-    //   return
-    // }
-
     // Check if movement is significant enough
     const absDiff = Math.abs(diff)
     const currentlyVisible = showHeader
@@ -186,7 +136,6 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
     const isUnrealisticJump = absDiff > 50 // More than 50px in one frame
 
     if (isNearBottom && isUnrealisticJump) {
-      console.log(`Ignoring unrealistic scroll jump at bottom - diff: ${diff}`)
       lastY.current = y
       return
     }
@@ -211,13 +160,6 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
 
     // Update header visibility based on scroll direction
     const shouldShow = diff <= 0 // up = show, down = hide
-
-    // Debug: Log scroll behavior at bottom
-    if (isNearBottom) {
-      console.log(
-        `Near bottom - y: ${y}, maxScrollY: ${maxScrollY}, diff: ${diff}, shouldShow: ${shouldShow}, currentlyVisible: ${showHeader}`
-      )
-    }
 
     // iOS-specific: Light anti-flicker throttling
     if (isIOS && isMobile && shouldShow !== showHeader) {

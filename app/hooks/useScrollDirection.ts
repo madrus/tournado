@@ -158,15 +158,20 @@ export function useScrollDirection(threshold = DEFAULT_SCROLL_THRESHOLD): {
       }
     }
 
-    // iOS bounce handling - prevent state changes during active bounce
+    // iOS bounce handling - smarter bounce state management
     if (isIOS && isMobile) {
-      // During active bounce, maintain current state to prevent flickering
+      // During active bounce, only maintain state if we were already hiding
+      // This prevents bars from showing during downward scroll bounces
       if (bounceDetection.isBouncingBottom) {
-        lastY.current = y
-        return
+        // If we're scrolling down (diff > 0) and bouncing, bars should stay hidden
+        if (diff > 0 && !showHeader) {
+          lastY.current = y
+          return
+        }
+        // If we're scrolling up during bounce, allow normal behavior
       }
 
-      // Post-bounce cooldown period to prevent immediate state changes
+      // Minimal post-bounce cooldown to prevent immediate flicker
       if (now < iosPostBounceCooldownUntilRef.current) {
         lastY.current = y
         return

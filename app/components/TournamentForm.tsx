@@ -61,6 +61,7 @@ export function TournamentForm({
       divisions: selectedDivisions,
       categories: selectedCategories,
     },
+    oldFormFields,
     validation: { displayErrors, blurredFields, forceShowAllErrors, submitAttempted },
     formMeta: { mode },
     setFormField,
@@ -72,7 +73,6 @@ export function TournamentForm({
     isPanelEnabled,
     isFormReadyForSubmission,
     isDirty,
-    resetForm,
   } = useTournamentFormStore()
 
   // Ensure the tournament form store is properly hydrated
@@ -114,9 +114,10 @@ export function TournamentForm({
   )
 
   const handleReset = useCallback(() => {
-    resetForm()
+    // In edit mode, restore to original cached state instead of clearing
+    setFormData(oldFormFields)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [resetForm])
+  }, [setFormData, oldFormFields])
 
   const handleDivisionToggle = (division: string) => {
     const newDivisions = selectedDivisions.includes(division)

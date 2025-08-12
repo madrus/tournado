@@ -328,14 +328,12 @@ describe('toastUtils', () => {
         toastIds.push(toast.success('Rapid test message'))
       }
 
-      // Should only call sonner.custom once due to caching
-      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
+      // Success toasts are no longer cached, so each call should create a new toast
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(50)
 
-      // All should return the same cached ID
-      const firstId = toastIds[0]
-      toastIds.forEach(id => {
-        expect(id).toBe(firstId)
-      })
+      // All should return unique IDs since success toasts aren't cached
+      const uniqueIds = new Set(toastIds)
+      expect(uniqueIds.size).toBe(50)
     })
 
     it('should handle rapid different toast types correctly', () => {
@@ -366,23 +364,23 @@ describe('toastUtils', () => {
       vi.useFakeTimers()
       vi.mocked(sonnerToast.custom).mockReturnValue('test-toast-id')
 
-      // Create a toast
+      // Create a toast (success toasts are not cached)
       toast.success('Test message', { duration: 5000 })
 
       // Should be called once
       expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
 
-      // Create same toast again immediately - should return cached
-      toast.success('Test message', { duration: 5000 })
-      expect(sonnerToast.custom).toHaveBeenCalledTimes(1)
-
-      // Manually clear the cache to simulate a timeout
-      // Clear entire cache to avoid coupling to internal cache key format
-      toastCache.clear()
-
-      // Create same toast again - should create new one after cache cleanup
+      // Create same toast again immediately - should create new toast since success isn't cached
       toast.success('Test message', { duration: 5000 })
       expect(sonnerToast.custom).toHaveBeenCalledTimes(2)
+
+      // Test with error toast which is cached
+      toast.error('Error message', { duration: 5000 })
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(3)
+
+      // Create same error toast again immediately - should return cached
+      toast.error('Error message', { duration: 5000 })
+      expect(sonnerToast.custom).toHaveBeenCalledTimes(3)
 
       vi.runAllTimers()
       vi.useRealTimers()

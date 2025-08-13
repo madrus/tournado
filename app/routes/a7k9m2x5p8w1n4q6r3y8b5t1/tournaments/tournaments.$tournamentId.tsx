@@ -2,7 +2,13 @@
 import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useActionData, useLoaderData, useSearchParams } from 'react-router'
+import {
+  redirect,
+  useActionData,
+  useLoaderData,
+  useSearchParams,
+  useSubmit,
+} from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
@@ -203,6 +209,7 @@ export default function EditTournamentPage(): JSX.Element {
   const { tournament, divisions, categories } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
   const [searchParams, setSearchParams] = useSearchParams()
+  const submit = useSubmit()
   const setFormData = useTournamentFormStore(state => state.setFormData)
 
   // Check for success parameter and show toast
@@ -261,18 +268,9 @@ export default function EditTournamentPage(): JSX.Element {
   }
 
   const submitDelete = () => {
-    const form = document.createElement('form')
-    form.method = 'post'
-    form.style.display = 'none'
-
-    const intentInput = document.createElement('input')
-    intentInput.type = 'hidden'
-    intentInput.name = 'intent'
-    intentInput.value = 'delete'
-
-    form.appendChild(intentInput)
-    document.body.appendChild(form)
-    form.submit()
+    const fd = new FormData()
+    fd.set('intent', 'delete')
+    submit(fd, { method: 'post' })
   }
 
   // Format dates for form inputs (YYYY-MM-DD format)

@@ -153,6 +153,7 @@ vi.mock('react-router', async () => {
     })),
     useActionData: vi.fn(() => ({})),
     useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
+    useSubmit: vi.fn(),
   }
 })
 

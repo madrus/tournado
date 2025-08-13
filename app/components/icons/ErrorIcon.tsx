@@ -12,7 +12,7 @@ type ErrorIconProps = {
 export function ErrorIcon({
   className = '',
   size = 24,
-  weight: _weight = 400,
+  weight = 400,
   'aria-label': ariaLabel = 'Error',
 }: Readonly<ErrorIconProps>): JSX.Element {
   // Circle error icon paths
@@ -21,8 +21,15 @@ export function ErrorIcon({
   const linePath = 'M12 7v6'
   const dotPath = 'M12 17h.01'
 
-  // Error icon with weight 600 exclamation
-  const exclamationStrokeWidth = 2.5 // weight 600
+  // Calculate stroke width based on weight parameter
+  // Weight 100-300: thin (1.5), 400-500: normal (2.5), 600-900: bold (3.0)
+  const getStrokeWidth = (weight: number): number => {
+    if (weight <= 300) return 1.5
+    if (weight <= 500) return 2.5
+    return 3.0
+  }
+
+  const exclamationStrokeWidth = getStrokeWidth(weight)
 
   return (
     <svg

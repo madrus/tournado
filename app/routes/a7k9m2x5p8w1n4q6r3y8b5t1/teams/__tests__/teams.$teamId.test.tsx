@@ -9,6 +9,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 // Mock the route component
 import AdminTeamPage from '../teams.$teamId'
 
+// Mock submit function for useSubmit hook
+const mockSubmit = vi.fn()
+
 // Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -140,6 +143,7 @@ vi.mock('react-router', async () => {
     })),
     useActionData: vi.fn(() => ({})),
     useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
+    useSubmit: vi.fn(() => mockSubmit),
   }
 })
 

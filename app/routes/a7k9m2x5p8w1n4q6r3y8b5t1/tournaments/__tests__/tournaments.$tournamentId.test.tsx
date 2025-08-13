@@ -9,6 +9,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 // Mock the route component
 import EditTournamentPage from '../tournaments.$tournamentId'
 
+// Mock submit function for useSubmit hook
+const mockSubmit = vi.fn()
+
 // Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -153,7 +156,7 @@ vi.mock('react-router', async () => {
     })),
     useActionData: vi.fn(() => ({})),
     useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
-    useSubmit: vi.fn(),
+    useSubmit: vi.fn(() => mockSubmit),
   }
 })
 
@@ -209,6 +212,7 @@ describe('EditTournamentPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockOnConfirm.mockClear()
+    mockSubmit.mockClear()
   })
 
   describe('Header Display', () => {
@@ -262,7 +266,7 @@ describe('EditTournamentPage', () => {
       )
     })
 
-    it('should show confirmation dialog when confirmed', async () => {
+    it('should show confirmation dialog when confirmed and call submit with delete intent', async () => {
       const user = userEvent.setup()
 
       renderTournamentPage()
@@ -273,9 +277,15 @@ describe('EditTournamentPage', () => {
       expect(mockOnConfirm).toHaveBeenCalledWith(
         'tournaments.confirmations.deleteDescription'
       )
+
+      // Verify submit was called with correct parameters
+      expect(mockSubmit).toHaveBeenCalledTimes(1)
+      const [fd, opts] = mockSubmit.mock.calls[0]
+      expect(opts?.method).toBe('post')
+      expect((fd as FormData).get('intent')).toBe('delete')
     })
 
-    it('should not show confirmation when cancelled', async () => {
+    it('should request confirmation on delete button click (auto-confirm in mock)', async () => {
       const user = userEvent.setup()
 
       renderTournamentPage()

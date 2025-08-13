@@ -8,6 +8,7 @@ import {
   useActionData,
   useLoaderData,
   useSearchParams,
+  useSubmit,
 } from 'react-router'
 
 import { Category, Division } from '@prisma/client'
@@ -254,6 +255,7 @@ export default function AdminTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { i18n, t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
+  const submit = useSubmit()
   const setFormData = useTeamFormStore(state => state.setFormData)
 
   // Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
@@ -318,15 +320,9 @@ export default function AdminTeamPage(): JSX.Element {
   )
 
   const submitDelete = () => {
-    const form = document.createElement('form')
-    form.method = 'post'
-    const input = document.createElement('input')
-    input.type = 'hidden'
-    input.name = 'intent'
-    input.value = 'delete'
-    form.appendChild(input)
-    document.body.appendChild(form)
-    form.submit()
+    const fd = new FormData()
+    fd.set('intent', 'delete')
+    submit(fd, { method: 'post' })
   }
 
   return (

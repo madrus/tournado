@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { getChipClasses, getLatinTextClass, isRTL } from '~/utils/rtlUtils'
@@ -34,7 +35,7 @@ export function TeamChip({
   color = 'brand',
   className = '',
 }: TeamChipProps): JSX.Element {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const chipClasses = getChipClasses(i18n.language)
   const isRtl = isRTL(i18n.language)
 
@@ -51,16 +52,31 @@ export function TeamChip({
   // For RTL, we need to explicitly control the order
   const deleteButton =
     showActions && onDelete ? (
-      <button
-        onClick={event => {
-          event.stopPropagation()
+      <ConfirmDialog
+        intent='danger'
+        trigger={
+          <button
+            onClick={event => {
+              event.stopPropagation()
+            }}
+            className={deleteButtonVariants()}
+            aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.name}`}
+          >
+            {renderIcon('close', { className: 'h-4 w-4' })}
+          </button>
+        }
+        title={t('teams.confirmations.deleteTitle', 'Delete team')}
+        description={t(
+          'teams.confirmations.deleteDescription',
+          `Are you sure you want to delete ${team.clubName} ${team.name}? This action cannot be undone.`
+        )}
+        confirmLabel={t('common.actions.confirm', 'Yes, delete')}
+        cancelLabel={t('common.actions.cancel', 'Cancel')}
+        destructive
+        onConfirm={() => {
           onDelete()
         }}
-        className={deleteButtonVariants()}
-        aria-label={deleteAriaLabel || `Delete team ${team.clubName} ${team.name}`}
-      >
-        {renderIcon('close', { className: 'h-4 w-4' })}
-      </button>
+      />
     ) : null
 
   const teamText = (

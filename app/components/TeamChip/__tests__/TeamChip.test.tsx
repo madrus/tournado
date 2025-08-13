@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
@@ -38,6 +40,25 @@ vi.mock('~/utils/iconUtils', () => ({
 vi.mock('~/utils/misc', () => ({
   cn: (...classes: (string | boolean | undefined)[]) =>
     classes.filter(Boolean).join(' '),
+}))
+
+// Mock ConfirmDialog - simulate immediate confirmation
+vi.mock('~/components/ConfirmDialog', () => ({
+  ConfirmDialog: ({
+    trigger,
+    onConfirm,
+  }: {
+    trigger: React.ReactElement<{ onClick?: (event: React.MouseEvent) => void }>
+    onConfirm: () => void
+  }) =>
+    React.cloneElement(trigger, {
+      onClick: (event: React.MouseEvent) => {
+        // Call original onClick first (for stopPropagation)
+        trigger.props.onClick?.(event)
+        // Then call onConfirm to simulate immediate confirmation
+        onConfirm()
+      },
+    }),
 }))
 
 const mockTeam = {

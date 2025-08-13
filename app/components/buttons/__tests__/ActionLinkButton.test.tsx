@@ -82,7 +82,7 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-white/60')
+    expect(link).toHaveClass('bg-brand-50')
     expect(link).toHaveClass('text-brand-600')
     expect(link).toHaveClass('border')
     expect(link).toHaveClass('border-brand-600')
@@ -300,7 +300,7 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-white/60')
+    expect(link).toHaveClass('bg-brand-50')
     expect(link).toHaveClass('text-brand-600')
     expect(link).toHaveClass('border')
     expect(link).toHaveClass('border-brand-600')

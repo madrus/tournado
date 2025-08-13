@@ -12,35 +12,49 @@ type WarningIconProps = {
 export function WarningIcon({
   className = '',
   size = 24,
-  weight = 400,
+  weight: _weight = 400,
   'aria-label': ariaLabel = 'Warning',
 }: Readonly<WarningIconProps>): JSX.Element {
-  // Lucide triangle-alert SVG paths with fill
-  const paths = [
-    'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3',
-    'M12 9v4',
-    'M12 17h.01',
-  ]
+  // Lucide triangle-alert SVG paths
+  const trianglePath =
+    'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'
+  const linePath = 'M12 9v4'
+  const dotPath = 'M12 17h.01'
 
-  // Convert weight to stroke-width for Lucide style
-  const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2.25 : 2
+  // Triangle should match dialog background, exclamation should be weight 600
+  const exclamationStrokeWidth = 2.5 // weight 600
 
   return (
     <svg
       width={size}
       height={size}
       viewBox='0 0 24 24'
-      fill='white'
-      strokeWidth={strokeWidth}
       strokeLinecap='round'
       strokeLinejoin='round'
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
     >
-      <path d={paths[0]} stroke='white' />
-      <path d={paths[1]} stroke='currentColor' />
-      <path d={paths[2]} stroke='currentColor' />
+      {/* Triangle background matches dialog background (transparent, inherited from parent) */}
+      <path
+        d={trianglePath}
+        fill='currentColor'
+        stroke='currentColor'
+        strokeWidth='0'
+      />
+      {/* Exclamation mark in white with weight 600 */}
+      <path
+        d={linePath}
+        stroke='white'
+        strokeWidth={exclamationStrokeWidth}
+        fill='none'
+      />
+      <path
+        d={dotPath}
+        stroke='white'
+        strokeWidth={exclamationStrokeWidth}
+        fill='none'
+      />
     </svg>
   )
 }

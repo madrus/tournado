@@ -5,6 +5,7 @@ import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData, useSearchParams } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { TournamentForm } from '~/components/TournamentForm'
 import type { Tournament } from '~/models/tournament.server'
@@ -259,21 +260,19 @@ export default function EditTournamentPage(): JSX.Element {
     )
   }
 
-  const handleDelete = () => {
-    if (confirm(t('admin.tournaments.confirmDelete'))) {
-      const form = document.createElement('form')
-      form.method = 'post'
-      form.style.display = 'none'
+  const submitDelete = () => {
+    const form = document.createElement('form')
+    form.method = 'post'
+    form.style.display = 'none'
 
-      const intentInput = document.createElement('input')
-      intentInput.type = 'hidden'
-      intentInput.name = 'intent'
-      intentInput.value = 'delete'
+    const intentInput = document.createElement('input')
+    intentInput.type = 'hidden'
+    intentInput.name = 'intent'
+    intentInput.value = 'delete'
 
-      form.appendChild(intentInput)
-      document.body.appendChild(form)
-      form.submit()
-    }
+    form.appendChild(intentInput)
+    document.body.appendChild(form)
+    form.submit()
   }
 
   // Format dates for form inputs (YYYY-MM-DD format)
@@ -322,14 +321,23 @@ export default function EditTournamentPage(): JSX.Element {
           </div>
           {/* Delete Button */}
           <div className='flex-shrink-0'>
-            <ActionButton
-              onClick={handleDelete}
-              icon='delete'
-              variant='secondary'
-              color='brand'
-            >
-              {t('common.actions.delete')}
-            </ActionButton>
+            <ConfirmDialog
+              intent='danger'
+              trigger={
+                <ActionButton icon='delete' variant='secondary'>
+                  {t('common.actions.delete')}
+                </ActionButton>
+              }
+              title={t('tournaments.confirmations.deleteTitle', 'Delete tournament')}
+              description={t(
+                'tournaments.confirmations.deleteDescription',
+                'Are you sure you want to delete this tournament? This action cannot be undone.'
+              )}
+              confirmLabel={t('common.actions.confirm', 'Yes, delete')}
+              cancelLabel={t('common.actions.cancel', 'Cancel')}
+              destructive
+              onConfirm={submitDelete}
+            />
           </div>
         </div>
       </Panel>

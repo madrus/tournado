@@ -349,7 +349,7 @@ export default function AdminTeamPage(): JSX.Element {
           {/* Delete Button */}
           <div className='flex-shrink-0'>
             <ConfirmDialog
-              intent='warning'
+              intent='success'
               trigger={
                 <ActionButton icon='delete' variant='secondary'>
                   {t('common.actions.delete')}

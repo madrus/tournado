@@ -99,7 +99,7 @@ describe('ActionButton', () => {
       </I18nextProvider>
     )
     const secondaryButton = screen.getByRole('button')
-    expect(secondaryButton).toHaveClass('bg-white/60')
+    expect(secondaryButton).toHaveClass('bg-primary-50')
     expect(secondaryButton).toHaveClass('text-primary-600')
     expect(secondaryButton).toHaveClass('border')
     expect(secondaryButton).toHaveClass('border-primary-700')

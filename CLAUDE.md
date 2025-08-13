@@ -126,6 +126,12 @@ pnpm docs           # Start Docsify documentation server on port 3030
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
 
+### Claude Behavior Rules
+
+- **Do NOT run lint or typecheck** unless explicitly requested by the user
+- **Do NOT run unit tests** unless explicitly requested by the user
+- **You may proactively verify code quality** and tell me about them asking if I want them fixed
+
 ### Database Schema
 
 Key entities: User, Team, Tournament, Match with relationships and enums for sports categories, divisions, and match statuses.

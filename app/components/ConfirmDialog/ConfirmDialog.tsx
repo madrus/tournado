@@ -76,10 +76,10 @@ export function ConfirmDialog({
               : confirmContainerRef.current
             const button = target?.querySelector('button') as HTMLButtonElement | null
 
-            // Add delay for smoother animation
-            setTimeout(() => {
+            // Defer focus to next frame to avoid relying on magic numbers
+            requestAnimationFrame(() => {
               button?.focus()
-            }, 200)
+            })
           }}
         >
           <div className='flex items-start gap-5'>

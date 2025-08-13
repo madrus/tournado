@@ -1,6 +1,7 @@
 - Home
    - [Overview](README.md)
    - [Getting Started](getting-started.md)
+   - [Cursor Rules](cursor-rules.md)
 - Work in Progress
    - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
    - [Claude Code Analysis](wip/claude-20250717.md)
@@ -12,7 +13,7 @@
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
    - [Icon Guidelines](development/icon-guidelines.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
-   - [Mobile Web App Configuration](development/mobile.md)
+   - [Mobile Web App Configuration](development/mobile-webapp-config.md)
    - [Routing](development/routing.md)
    - [State Management](development/state-management.md)
    - [Multi-Language Support](development/multi-language-support.md)

@@ -1,38 +1,51 @@
 import { JSX } from 'react'
 
-import type { IconProps } from '~/lib/lib.types'
+import type { IconWeight } from '~/lib/lib.types'
 
-type SuccessIconProps = IconProps
+type SuccessIconProps = {
+  className?: string
+  size?: number
+  weight?: IconWeight
+  'aria-label'?: string
+}
 
 export function SuccessIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Success',
-  'aria-hidden': ariaHidden,
 }: Readonly<SuccessIconProps>): JSX.Element {
-  // Lucide check SVG path
-  const path = 'M20 6 9 17l-5-5'
+  // Circle success icon paths
+  const circlePath =
+    'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'
+  // Longer, thinner checkmark similar to CheckCircleIcon
+  const checkPath = 'M8.5 12.5l2.5 2.5 4.5-4.5'
 
-  // Convert weight to stroke-width for Lucide style
-  const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2.25 : 2
+  // Calculate stroke width based on weight parameter
+  // Weight 100-300: thin (1.2), 400-500: normal (1.8), 600-900: bold (2.4)
+  const getStrokeWidth = (weight: number): number => {
+    if (weight <= 300) return 1.2
+    if (weight <= 500) return 1.8
+    return 2.4
+  }
+
+  const checkStrokeWidth = getStrokeWidth(weight)
 
   return (
     <svg
       width={size}
       height={size}
       viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth={strokeWidth}
       strokeLinecap='round'
       strokeLinejoin='round'
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      aria-hidden={ariaHidden}
     >
-      <path d={path} />
+      {/* Circle background uses currentColor (intent color) */}
+      <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
+      {/* Checkmark in white with weight 600 */}
+      <path d={checkPath} stroke='white' strokeWidth={checkStrokeWidth} fill='none' />
     </svg>
   )
 }

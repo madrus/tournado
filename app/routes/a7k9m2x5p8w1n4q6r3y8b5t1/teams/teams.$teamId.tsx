@@ -8,11 +8,13 @@ import {
   useActionData,
   useLoaderData,
   useSearchParams,
+  useSubmit,
 } from 'react-router'
 
 import { Category, Division } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { TeamForm } from '~/components/TeamForm'
 import { prisma } from '~/db.server'
@@ -253,6 +255,7 @@ export default function AdminTeamPage(): JSX.Element {
   const actionData = useActionData<TeamCreateActionData>()
   const { i18n, t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
+  const submit = useSubmit()
   const setFormData = useTeamFormStore(state => state.setFormData)
 
   // Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
@@ -316,19 +319,10 @@ export default function AdminTeamPage(): JSX.Element {
     [team]
   )
 
-  const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this team?')) {
-      // Create a form and submit it with delete intent
-      const form = document.createElement('form')
-      form.method = 'post'
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = 'intent'
-      input.value = 'delete'
-      form.appendChild(input)
-      document.body.appendChild(form)
-      form.submit()
-    }
+  const submitDelete = () => {
+    const fd = new FormData()
+    fd.set('intent', 'delete')
+    submit(fd, { method: 'post' })
   }
 
   return (
@@ -350,14 +344,24 @@ export default function AdminTeamPage(): JSX.Element {
           </div>
           {/* Delete Button */}
           <div className='flex-shrink-0'>
-            <ActionButton
-              onClick={handleDelete}
-              icon='delete'
-              variant='secondary'
-              color='brand'
-            >
-              {t('common.actions.delete')}
-            </ActionButton>
+            <ConfirmDialog
+              intent='success'
+              trigger={
+                <ActionButton icon='delete' variant='secondary'>
+                  {t('common.actions.delete')}
+                </ActionButton>
+              }
+              title={t('teams.confirmations.deleteTitle', 'Delete team')}
+              description={t(
+                'teams.confirmations.deleteDescription',
+                'Are you sure you want to delete this team? This action cannot be undone.'
+              )}
+              confirmLabel={t('common.actions.confirm', 'Yes, delete')}
+              cancelLabel={t('common.actions.cancel', 'Cancel')}
+              // Destructive: focus cancel first per request
+              destructive
+              onConfirm={submitDelete}
+            />
           </div>
         </div>
       </Panel>

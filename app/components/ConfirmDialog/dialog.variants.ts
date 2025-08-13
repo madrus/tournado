@@ -38,11 +38,11 @@ export const dialogContentVariants = cva(
           'dark:bg-slate-700/60 dark:border-slate-700',
         ],
         info: [
-          'bg-cyan-50 border border-red-600',
+          'bg-cyan-50 border border-white',
           'dark:bg-slate-700/60 dark:border-slate-700',
         ],
         success: [
-          'bg-primary-50 border border-red-600',
+          'bg-emerald-50 border border-white',
           'dark:bg-slate-700/60 dark:border-slate-700',
         ],
       },
@@ -94,7 +94,7 @@ export const iconColorVariants = cva('h-14 w-14', {
   variants: {
     intent: {
       warning: 'text-amber-600 dark:text-amber-600',
-      danger: 'text-red-600 dark:text-red-600',
+      danger: 'text-brand-600 dark:text-brand-600',
       info: 'text-cyan-600 dark:text-cyan-600',
       success: 'text-emerald-600 dark:text-emerald-600',
     },
@@ -111,7 +111,7 @@ export const titleColorVariants = cva('', {
   variants: {
     intent: {
       warning: 'text-amber-600 dark:text-amber-600',
-      danger: 'text-red-600 dark:text-red-600',
+      danger: 'text-brand-600 dark:text-brand-600',
       info: 'text-cyan-600 dark:text-cyan-600',
       success: 'text-emerald-600 dark:text-emerald-600',
     },

@@ -16,7 +16,7 @@ export const getIconForIntent = (
     warning: 'warning',
     danger: 'error',
     info: 'info',
-    success: 'check_circle',
+    success: 'success',
   }
 
   return iconMap[intent]
@@ -28,13 +28,14 @@ export const getIconForIntent = (
 export const getDefaultColorsForIntent = (
   intent: DialogIntent
 ): { confirm: ButtonColor; cancel: ButtonColor } => {
-  const colorMap: Record<DialogIntent, { confirm: ButtonColor; cancel: ButtonColor }> = {
-    warning: { confirm: 'amber', cancel: 'amber' },
-    danger: { confirm: 'brand', cancel: 'brand' },
-    info: { confirm: 'cyan', cancel: 'cyan' },
-    success: { confirm: 'primary', cancel: 'primary' }
-  }
-  
+  const colorMap: Record<DialogIntent, { confirm: ButtonColor; cancel: ButtonColor }> =
+    {
+      warning: { confirm: 'amber', cancel: 'amber' },
+      danger: { confirm: 'brand', cancel: 'brand' },
+      info: { confirm: 'cyan', cancel: 'cyan' },
+      success: { confirm: 'emerald', cancel: 'emerald' },
+    }
+
   return colorMap[intent]
 }
 

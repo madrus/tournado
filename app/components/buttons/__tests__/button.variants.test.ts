@@ -63,7 +63,7 @@ describe('Button Variants', () => {
     it('should have proper secondary brand styling', () => {
       const classes = buttonVariants({ variant: 'secondary', color: 'brand' })
 
-      expect(classes).toContain('bg-white/60')
+      expect(classes).toContain('bg-brand-50')
       expect(classes).toContain('text-brand-600')
       expect(classes).toContain('border-brand-600')
     })

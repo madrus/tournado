@@ -27,6 +27,7 @@ import {
   PendingIcon,
   PersonIcon,
   SettingsIcon,
+  SuccessIcon,
   TrophyIcon,
   TuneIcon,
   UnfoldLessIcon,
@@ -62,6 +63,7 @@ export type IconName =
   | 'pending'
   | 'person'
   | 'settings'
+  | 'success'
   | 'trophy'
   | 'tune'
   | 'unfold_less'
@@ -95,6 +97,7 @@ export const iconMap = {
   pending: PendingIcon,
   person: PersonIcon,
   settings: SettingsIcon,
+  success: SuccessIcon,
   trophy: TrophyIcon,
   tune: TuneIcon,
   unfold_less: UnfoldLessIcon,

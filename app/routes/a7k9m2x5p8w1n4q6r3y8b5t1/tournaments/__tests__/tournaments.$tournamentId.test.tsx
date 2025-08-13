@@ -260,6 +260,10 @@ describe('EditTournamentPage', () => {
       expect(mockOnConfirm).toHaveBeenCalledWith(
         'tournaments.confirmations.deleteDescription'
       )
+      expect(mockSubmit).toHaveBeenCalledTimes(1)
+      const [fd, opts] = mockSubmit.mock.calls[0]
+      expect(opts?.method).toBe('post')
+      expect((fd as FormData).get('intent')).toBe('delete')
     })
 
     it('should show confirmation dialog when confirmed', async () => {

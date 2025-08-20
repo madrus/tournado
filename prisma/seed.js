@@ -216,6 +216,52 @@ async function seed() {
       },
     })
 
+    // Create 23 JO8 teams from different clubs for testing pools feature
+    const clubNames = [
+      'Arsenal',
+      'Wolves',
+      'Phoenix',
+      'Thunder',
+      'Lightning',
+      'Eagles',
+      'Lions',
+      'Tigers',
+      'Dragons',
+      'Hawks',
+      'Falcons',
+      'Panthers',
+      'Sharks',
+      'Bulls',
+      'Rams',
+      'Bears',
+      'Cobras',
+      'Vipers',
+      'Stallions',
+      'Mustangs',
+      'Cheetahs',
+      'Leopards',
+      'Jaguars',
+    ]
+
+    const jo8Teams = []
+    for (let i = 0; i < 23; i++) {
+      const clubName = clubNames[i]
+      // Each club can have JO8-1, JO8-2, etc. independently
+      const teamName = i < 12 ? 'JO8-1' : i < 18 ? 'JO8-2' : 'JO8-3'
+
+      const jo8Team = await prisma.team.create({
+        data: {
+          clubName: clubName,
+          name: teamName,
+          category: 'JO8',
+          division: 'PREMIER_DIVISION',
+          teamLeaderId: teamLeader.id,
+          tournamentId: tournament1.id,
+        },
+      })
+      jo8Teams.push(jo8Team)
+    }
+
     // Minimal two dummy matches
     await prisma.match.create({
       data: {

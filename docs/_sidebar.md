@@ -26,6 +26,8 @@
 - Features
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
+- Prompts
+   - [Create Pools Feature](prompts/pools-feature-prompt.md)
 - Security
    - [Overview](security/overview.md)
    - [Role-Based Access Control (RBAC)](security/rbac.md)

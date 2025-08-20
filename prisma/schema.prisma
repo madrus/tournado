@@ -101,6 +101,7 @@ model Team {
   updatedAt     DateTime   @updatedAt
   homeMatches   Match[]    @relation("Match_homeTeam")
   awayMatches   Match[]    @relation("Match_awayTeam")
+  poolSlot      PoolSlot? @relation("TeamPoolSlot")
 }
 
 model Tournament {
@@ -115,6 +116,7 @@ model Tournament {
   updatedAt  DateTime   @updatedAt
   teams      Team[]
   matches    Match[]
+  poolSets   PoolSet[]
 }
 
 model Match {
@@ -143,4 +145,53 @@ model MatchScore {
   match      Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
   homeTeamScore Int
   awayTeamScore Int
+}
+
+model PoolSet {
+  id            String     @id @default(cuid())
+  tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  tournamentId  String
+  name          String
+  categories    Json       // array of Category enum values as JSON (SQLite limitation)
+  pools         Pool[]
+  configPools   Int
+  configSlots   Int
+  autoFill      Boolean @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  poolSlots     PoolSlot[]
+
+  @@unique([tournamentId, name])
+  @@index([tournamentId])
+}
+
+model Pool {
+  id        String   @id @default(cuid())
+  poolSet   PoolSet  @relation(fields: [poolSetId], references: [id], onDelete: Cascade)
+  poolSetId String
+  name      String   // e.g. "Pool A"
+  order     Int
+  slots     PoolSlot[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([poolSetId, name])
+  @@unique([poolSetId, order])
+  @@index([poolSetId])
+}
+
+model PoolSlot {
+  id        String  @id @default(cuid())
+  poolSet   PoolSet @relation(fields: [poolSetId], references: [id], onDelete: Cascade)
+  poolSetId String
+  pool      Pool?   @relation(fields: [poolId], references: [id], onDelete: SetNull)
+  poolId    String?         // null ⇒ Reserve
+  slotIndex Int              // 0..N-1 inside pool
+  team      Team?   @relation("TeamPoolSlot", fields: [teamId], references: [id], onDelete: SetNull)
+  teamId    String?  @unique // null ⇒ placeholder
+
+  @@unique([poolId, slotIndex]) // each slot unique inside a pool
+  @@unique([poolSetId, teamId]) // team only once in a set
+  @@index([poolSetId])
+  @@index([teamId])
 }

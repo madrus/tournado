@@ -5,7 +5,7 @@ import { Category } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { createGroupSet, getTeamsByCategories } from '~/models/group.server-only'
+import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { invariant } from '~/utils/misc'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'

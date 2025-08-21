@@ -1,5 +1,6 @@
 import React from 'react'
 import * as ReactRouter from 'react-router'
+import { createMemoryRouter, RouterProvider } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -59,6 +60,44 @@ vi.mock('~/components/buttons/ActionButton', () => ({
     >
       {children}
     </button>
+  ),
+}))
+
+// Mock ActionLinkButton component
+vi.mock('~/components/buttons/ActionLinkButton', () => ({
+  ActionLinkButton: ({
+    to,
+    label,
+    icon,
+    variant,
+  }: {
+    to: string
+    label: string
+    icon: string
+    variant?: string
+  }) => (
+    <a href={to} data-icon={icon} data-variant={variant}>
+      {label}
+    </a>
+  ),
+}))
+
+// Mock PrefetchLink component
+vi.mock('~/components/PrefetchLink', () => ({
+  ActionLink: ({
+    to,
+    children,
+    className,
+    'aria-label': ariaLabel,
+  }: {
+    to: string
+    children: React.ReactNode
+    className?: string
+    'aria-label'?: string
+  }) => (
+    <a href={to} className={className} aria-label={ariaLabel}>
+      {children}
+    </a>
   ),
 }))
 
@@ -136,6 +175,40 @@ vi.mock('~/utils/route-utils.server', () => ({
   requireUserWithMetadata: vi.fn(),
 }))
 
+// Mock user utilities for permission checking in ActionLinkButton
+vi.mock('~/utils/routeUtils', () => ({
+  useUser: () => ({
+    id: 'test-user-id',
+    email: 'test@example.com',
+    role: 'ADMIN',
+  }),
+}))
+
+// Mock RBAC utilities
+vi.mock('~/utils/rbac', () => ({
+  canAccess: vi.fn().mockReturnValue(true),
+}))
+
+// Mock RTL utilities
+vi.mock('~/utils/rtlUtils', () => ({
+  isRTL: vi.fn().mockReturnValue(false),
+}))
+
+// Mock icon utilities
+vi.mock('~/utils/iconUtils', () => ({
+  renderIcon: vi
+    .fn()
+    .mockImplementation((iconName: string) => (
+      <span data-icon={iconName}>{iconName}</span>
+    )),
+}))
+
+// Mock misc utilities
+vi.mock('~/utils/misc', () => ({
+  cn: (...classes: (string | boolean | undefined)[]) =>
+    classes.filter(Boolean).join(' '),
+}))
+
 vi.mock('react-router', async () => {
   const actual = await vi.importActual('react-router')
   return {
@@ -206,7 +279,22 @@ vi.mock('~/components/ConfirmDialog', () => ({
     }),
 }))
 
-const renderTournamentPage = () => render(<EditTournamentPage />)
+const renderTournamentPage = () => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: <EditTournamentPage />,
+      },
+    ],
+    {
+      initialEntries: ['/'],
+      initialIndex: 0,
+    }
+  )
+
+  return render(<RouterProvider router={router} />)
+}
 
 describe('EditTournamentPage', () => {
   beforeEach(() => {

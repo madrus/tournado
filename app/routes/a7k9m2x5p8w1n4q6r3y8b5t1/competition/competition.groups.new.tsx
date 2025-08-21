@@ -5,13 +5,13 @@ import { Category } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { createPoolSet, getTeamsByCategories } from '~/models/pool.server'
+import { createGroupSet, getTeamsByCategories } from '~/models/group.server-only'
 import { getTournamentById } from '~/models/tournament.server'
 import { invariant } from '~/utils/misc'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
-import type { Route } from './+types/tournaments.$tournamentId.competition.pools.new'
+import type { Route } from './+types/competition.groups.new'
 
 type LoaderData = {
   readonly tournament: {
@@ -26,14 +26,14 @@ type ActionData = {
   readonly errors?: {
     name?: string
     categories?: string
-    configPools?: string
+    configGroups?: string
     configSlots?: string
     general?: string
   }
   readonly fieldValues?: {
     name: string
     categories: string[]
-    configPools: string
+    configGroups: string
     configSlots: string
     autoFill: boolean
   }
@@ -41,7 +41,7 @@ type ActionData = {
 
 export const handle: RouteMetadata = {
   isPublic: false,
-  title: 'Create Pool Set',
+  title: 'Create Group Set',
   auth: {
     required: true,
     redirectTo: '/auth/signin',
@@ -55,11 +55,13 @@ export const handle: RouteMetadata = {
 
 export async function loader({
   request,
-  params,
+  params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
   await requireAdminUser(request)
 
-  const { tournamentId } = params as { tournamentId: string }
+  // Get tournament ID from search params since competition is now top-level
+  const url = new URL(request.url)
+  const tournamentId = url.searchParams.get('tournament')
   invariant(tournamentId, 'Tournament ID is required')
 
   const tournament = await getTournamentById({ id: tournamentId })
@@ -87,17 +89,18 @@ export async function loader({
 
 export async function action({
   request,
-  params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
   await requireAdminUser(request)
 
-  const { tournamentId } = params as { tournamentId: string }
+  // Get tournament ID from search params since competition is now top-level
+  const url = new URL(request.url)
+  const tournamentId = url.searchParams.get('tournament')
   invariant(tournamentId, 'Tournament ID is required')
 
   const formData = await request.formData()
   const name = formData.get('name')?.toString() || ''
   const selectedCategories = formData.getAll('categories') as string[]
-  const configPools = formData.get('configPools')?.toString() || ''
+  const configGroups = formData.get('configGroups')?.toString() || ''
   const configSlots = formData.get('configSlots')?.toString() || ''
   const autoFill = formData.get('autoFill') === 'on'
 
@@ -105,21 +108,21 @@ export async function action({
   const errors = {} as NonNullable<ActionData['errors']>
 
   if (!name.trim()) {
-    errors.name = 'Pool set name is required'
+    errors.name = 'Group set name is required'
   }
 
   if (selectedCategories.length === 0) {
     errors.categories = 'At least one category must be selected'
   }
 
-  const poolsNum = parseInt(configPools, 10)
-  if (!configPools || isNaN(poolsNum) || poolsNum < 2 || poolsNum > 8) {
-    errors.configPools = 'Number of pools must be between 2 and 8'
+  const groupsNum = parseInt(configGroups, 10)
+  if (!configGroups || isNaN(groupsNum) || groupsNum < 2 || groupsNum > 8) {
+    errors.configGroups = 'Number of groups must be between 2 and 8'
   }
 
   const slotsNum = parseInt(configSlots, 10)
   if (!configSlots || isNaN(slotsNum) || slotsNum < 3 || slotsNum > 10) {
-    errors.configSlots = 'Teams per pool must be between 3 and 10'
+    errors.configSlots = 'Teams per group must be between 3 and 10'
   }
 
   if (Object.keys(errors).length > 0) {
@@ -128,7 +131,7 @@ export async function action({
       fieldValues: {
         name,
         categories: selectedCategories,
-        configPools,
+        configGroups,
         configSlots,
         autoFill,
       },
@@ -136,25 +139,25 @@ export async function action({
   }
 
   try {
-    const poolSetId = await createPoolSet({
+    const groupSetId = await createGroupSet({
       tournamentId,
       name: name.trim(),
       categories: selectedCategories as Category[],
-      configPools: poolsNum,
+      configGroups: groupsNum,
       configSlots: slotsNum,
       autoFill,
     })
 
     return redirect(
-      `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}/competition/pools/${poolSetId}`
+      `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupSetId}?tournament=${tournamentId}`
     )
   } catch (_error) {
     return {
-      errors: { general: 'Failed to create pool set. Please try again.' },
+      errors: { general: 'Failed to create group set. Please try again.' },
       fieldValues: {
         name,
         categories: selectedCategories,
-        configPools,
+        configGroups,
         configSlots,
         autoFill,
       },
@@ -162,7 +165,7 @@ export async function action({
   }
 }
 
-export default function CreatePoolSet(): JSX.Element {
+export default function CreateGroupSet(): JSX.Element {
   const { tournament, availableTeamsCount } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
   const navigation = useNavigation()
@@ -179,9 +182,9 @@ export default function CreatePoolSet(): JSX.Element {
   return (
     <div className='space-y-8'>
       <div>
-        <h2 className='text-2xl font-bold'>Create Pool Set</h2>
+        <h2 className='text-2xl font-bold'>Create Group Set</h2>
         <p className='mt-2 text-gray-600'>
-          Set up round-robin pools for {tournament.name}
+          Set up round-robin groups for {tournament.name}
         </p>
       </div>
 
@@ -193,10 +196,10 @@ export default function CreatePoolSet(): JSX.Element {
             </div>
           ) : null}
 
-          {/* Pool Set Name */}
+          {/* Group Set Name */}
           <TextInputField
             name='name'
-            label='Pool Set Name'
+            label='Group Set Name'
             placeholder='e.g., Group Stage, Qualifiers'
             defaultValue={actionData?.fieldValues?.name || ''}
             error={actionData?.errors?.name}
@@ -209,7 +212,7 @@ export default function CreatePoolSet(): JSX.Element {
               Age Categories
             </label>
             <p className='mb-3 text-sm text-gray-500'>
-              Select which age categories will participate in this pool set
+              Select which age categories will participate in this group set
             </p>
             <div className='space-y-2'>
               {tournament.categories.map(category => (
@@ -240,18 +243,18 @@ export default function CreatePoolSet(): JSX.Element {
           {/* Configuration */}
           <div className='grid grid-cols-2 gap-4'>
             <TextInputField
-              name='configPools'
-              label='Number of Pools'
+              name='configGroups'
+              label='Number of Groups'
               type='text'
               placeholder='4'
-              defaultValue={actionData?.fieldValues?.configPools || ''}
-              error={actionData?.errors?.configPools}
+              defaultValue={actionData?.fieldValues?.configGroups || ''}
+              error={actionData?.errors?.configGroups}
               required
             />
 
             <TextInputField
               name='configSlots'
-              label='Teams per Pool'
+              label='Teams per Group'
               type='text'
               placeholder='6'
               defaultValue={actionData?.fieldValues?.configSlots || ''}
@@ -270,9 +273,9 @@ export default function CreatePoolSet(): JSX.Element {
                 className='mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
               />
               <div>
-                <span className='text-sm font-medium'>Auto-fill pools</span>
+                <span className='text-sm font-medium'>Auto-fill groups</span>
                 <p className='text-xs text-gray-500'>
-                  Automatically assign teams to Reserve and distribute them to pools
+                  Automatically assign teams to Reserve and distribute them to groups
                   round-robin
                 </p>
               </div>
@@ -286,12 +289,12 @@ export default function CreatePoolSet(): JSX.Element {
               <p className='mt-1 text-xs text-blue-700'>
                 {totalSelectedTeams} teams available in selected categories
               </p>
-              {actionData?.fieldValues?.configPools &&
+              {actionData?.fieldValues?.configGroups &&
               actionData?.fieldValues?.configSlots ? (
                 <p className='text-xs text-blue-700'>
-                  Will create {actionData.fieldValues.configPools} pools with{' '}
+                  Will create {actionData.fieldValues.configGroups} groups with{' '}
                   {actionData.fieldValues.configSlots} slots each (
-                  {parseInt(actionData.fieldValues.configPools, 10) *
+                  {parseInt(actionData.fieldValues.configGroups, 10) *
                     parseInt(actionData.fieldValues.configSlots, 10)}{' '}
                   total slots)
                 </p>
@@ -309,7 +312,7 @@ export default function CreatePoolSet(): JSX.Element {
               Cancel
             </ActionButton>
             <ActionButton type='submit' variant='primary' disabled={isSubmitting}>
-              {isSubmitting ? 'Creating...' : 'Create Pool Set'}
+              {isSubmitting ? 'Creating...' : 'Create Group Set'}
             </ActionButton>
           </div>
         </form>

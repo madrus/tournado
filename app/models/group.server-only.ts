@@ -1,51 +1,50 @@
-/* eslint-disable id-blacklist */
 import { type Category } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 
-export type PoolSlotTeam = {
+export type GroupSlotTeam = {
   readonly id: string
   readonly name: string
   readonly clubName: string
   readonly category: Category
 }
 
-export type PoolSlotWithTeam = {
+export type GroupSlotWithTeam = {
   readonly id: string
   readonly slotIndex: number
-  readonly team: PoolSlotTeam | null
+  readonly team: GroupSlotTeam | null
 }
 
 export type ReserveSlotWithTeam = {
   readonly id: string
-  readonly team: PoolSlotTeam | null
+  readonly team: GroupSlotTeam | null
 }
 
-export type PoolWithSlots = {
+export type GroupWithSlots = {
   readonly id: string
   readonly name: string
   readonly order: number
-  readonly slots: readonly PoolSlotWithTeam[]
+  readonly slots: readonly GroupSlotWithTeam[]
 }
 
-export type PoolSetWithDetails = {
+export type GroupSetWithDetails = {
   readonly id: string
   readonly name: string
   readonly categories: readonly Category[]
-  readonly configPools: number
+  readonly configGroups: number
   readonly configSlots: number
   readonly autoFill: boolean
   readonly createdAt: Date
   readonly updatedAt: Date
-  readonly pools: readonly PoolWithSlots[]
+  readonly groups: readonly GroupWithSlots[]
   readonly reserveSlots: readonly ReserveSlotWithTeam[]
 }
 
-export type PoolSetListItem = {
+export type GroupSetListItem = {
   readonly id: string
   readonly name: string
   readonly categories: readonly Category[]
-  readonly configPools: number
+  readonly configGroups: number
   readonly configSlots: number
   readonly autoFill: boolean
   readonly createdAt: Date
@@ -59,54 +58,54 @@ export type UnassignedTeam = {
   readonly category: Category
 }
 
-export type CreatePoolSetParams = {
+export type CreateGroupSetParams = {
   readonly tournamentId: string
   readonly name: string
   readonly categories: readonly Category[]
-  readonly configPools: number
+  readonly configGroups: number
   readonly configSlots: number
   readonly autoFill?: boolean
 }
 
-export async function createPoolSet({
+export async function createGroupSet({
   tournamentId,
   name,
   categories,
-  configPools,
+  configGroups,
   configSlots,
   autoFill = true,
-}: CreatePoolSetParams): Promise<string> {
-  // Create the PoolSet
-  const poolSet = await prisma.poolSet.create({
+}: CreateGroupSetParams): Promise<string> {
+  // Create the GroupSet
+  const groupSet = await prisma.groupSet.create({
     data: {
       tournamentId,
       name,
       categories: categories as Category[], // JSON field
-      configPools,
+      configGroups,
       configSlots,
       autoFill,
     },
   })
 
-  // Create pools (Pool A, Pool B, etc.)
-  const pools = []
-  for (let i = 0; i < configPools; i++) {
-    const poolName = `Pool ${String.fromCharCode(65 + i)}` // A, B, C, etc.
-    const pool = await prisma.pool.create({
+  // Create groups (Group A, Group B, etc.)
+  const groups = []
+  for (let i = 0; i < configGroups; i++) {
+    const groupName = `Group ${String.fromCharCode(65 + i)}` // A, B, C, etc.
+    const group = await prisma.group.create({
       data: {
-        poolSetId: poolSet.id,
-        name: poolName,
+        groupSetId: groupSet.id,
+        name: groupName,
         order: i,
       },
     })
-    pools.push(pool)
+    groups.push(group)
 
-    // Create slots for this pool
+    // Create slots for this group
     for (let slotIndex = 0; slotIndex < configSlots; slotIndex++) {
-      await prisma.poolSlot.create({
+      await prisma.groupSlot.create({
         data: {
-          poolSetId: poolSet.id,
-          poolId: pool.id,
+          groupSetId: groupSet.id,
+          groupId: group.id,
           slotIndex,
         },
       })
@@ -119,16 +118,16 @@ export async function createPoolSet({
       where: {
         tournamentId,
         category: { in: [...categories] },
-        poolSlot: null, // Only teams not already assigned to any pool
+        groupSlot: null, // Only teams not already assigned to any group
       },
     })
 
     // Create reserve slots for matching teams
     for (const team of matchingTeams) {
-      await prisma.poolSlot.create({
+      await prisma.groupSlot.create({
         data: {
-          poolSetId: poolSet.id,
-          poolId: null, // Reserve slot
+          groupSetId: groupSet.id,
+          groupId: null, // Reserve slot
           slotIndex: 0, // Reserve doesn't need ordering
           teamId: team.id,
         },
@@ -136,16 +135,16 @@ export async function createPoolSet({
     }
   }
 
-  return poolSet.id
+  return groupSet.id
 }
 
-export async function getPoolSetWithDetails(
-  poolSetId: string
-): Promise<PoolSetWithDetails | null> {
-  const poolSet = await prisma.poolSet.findUnique({
-    where: { id: poolSetId },
+export async function getGroupSetWithDetails(
+  groupSetId: string
+): Promise<GroupSetWithDetails | null> {
+  const groupSet = await prisma.groupSet.findUnique({
+    where: { id: groupSetId },
     include: {
-      pools: {
+      groups: {
         include: {
           slots: {
             include: {
@@ -163,8 +162,8 @@ export async function getPoolSetWithDetails(
         },
         orderBy: { order: 'asc' },
       },
-      poolSlots: {
-        where: { poolId: null }, // Reserve slots
+      groupSlots: {
+        where: { groupId: null }, // Reserve slots
         include: {
           team: {
             select: {
@@ -179,32 +178,32 @@ export async function getPoolSetWithDetails(
     },
   })
 
-  if (!poolSet) return null
+  if (!groupSet) return null
 
   return {
-    id: poolSet.id,
-    name: poolSet.name,
-    categories: poolSet.categories as Category[],
-    configPools: poolSet.configPools,
-    configSlots: poolSet.configSlots,
-    autoFill: poolSet.autoFill,
-    createdAt: poolSet.createdAt,
-    updatedAt: poolSet.updatedAt,
-    pools: poolSet.pools,
-    reserveSlots: poolSet.poolSlots,
+    id: groupSet.id,
+    name: groupSet.name,
+    categories: groupSet.categories as Category[],
+    configGroups: groupSet.configGroups,
+    configSlots: groupSet.configSlots,
+    autoFill: groupSet.autoFill,
+    createdAt: groupSet.createdAt,
+    updatedAt: groupSet.updatedAt,
+    groups: groupSet.groups,
+    reserveSlots: groupSet.groupSlots,
   }
 }
 
-export async function getTournamentPoolSets(
+export async function getTournamentGroupSets(
   tournamentId: string
-): Promise<readonly PoolSetListItem[]> {
-  const poolSets = await prisma.poolSet.findMany({
+): Promise<readonly GroupSetListItem[]> {
+  const groupSets = await prisma.groupSet.findMany({
     where: { tournamentId },
     select: {
       id: true,
       name: true,
       categories: true,
-      configPools: true,
+      configGroups: true,
       configSlots: true,
       autoFill: true,
       createdAt: true,
@@ -213,9 +212,9 @@ export async function getTournamentPoolSets(
     orderBy: { createdAt: 'desc' },
   })
 
-  return poolSets.map(poolSet => ({
-    ...poolSet,
-    categories: poolSet.categories as Category[],
+  return groupSets.map(groupSet => ({
+    ...groupSet,
+    categories: groupSet.categories as Category[],
   }))
 }
 
@@ -227,7 +226,7 @@ export const getTeamsByCategories = async (
     where: {
       tournamentId,
       category: { in: [...categories] },
-      poolSlot: null, // Only unassigned teams
+      groupSlot: null, // Only unassigned teams
     },
     select: {
       id: true,

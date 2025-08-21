@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router'
 import type { TournamentListItem } from '~/lib/lib.types'
 
 type UseTournamentFilterProps = {
-  tournamentListItems: TournamentListItem[]
+  tournamentListItems: readonly TournamentListItem[]
   selectedTournamentId?: string
 }
 

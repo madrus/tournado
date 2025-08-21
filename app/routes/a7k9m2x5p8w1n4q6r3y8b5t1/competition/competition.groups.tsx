@@ -3,10 +3,10 @@ import { Link, type MetaFunction, useLoaderData } from 'react-router'
 
 import type { Category } from '@prisma/client'
 
-import { ActionButton } from '~/components/buttons/ActionButton'
+import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SportsIcon } from '~/components/icons'
-import { getTournamentGroupSets } from '~/models/group.server-only'
-import type { GroupSetListItem } from '~/models/group.types'
+import type { GroupSetListItem } from '~/models/group.server'
+import { getTournamentGroupSets } from '~/models/group.server'
 import { invariant } from '~/utils/misc'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 
@@ -67,11 +67,12 @@ export default function GroupsTab(): JSX.Element {
           </p>
         </div>
 
-        <Link to={`groups/new?tournament=${tournamentId}`}>
-          <ActionButton variant='primary' icon='add'>
-            Create Group Set
-          </ActionButton>
-        </Link>
+        <ActionLinkButton
+          to={`groups/new?tournament=${tournamentId}`}
+          label='Create Group Set'
+          variant='primary'
+          icon='add'
+        />
       </div>
 
       {/* Group Sets Grid */}
@@ -86,11 +87,12 @@ export default function GroupsTab(): JSX.Element {
               Get started by creating your first group set for round-robin group play.
             </p>
             <div className='mt-6'>
-              <Link to={`groups/new?tournament=${tournamentId}`}>
-                <ActionButton variant='primary' icon='add'>
-                  Create Your First Group Set
-                </ActionButton>
-              </Link>
+              <ActionLinkButton
+                to={`groups/new?tournament=${tournamentId}`}
+                label='Create Your First Group Set'
+                variant='primary'
+                icon='add'
+              />
             </div>
           </div>
         </div>

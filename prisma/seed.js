@@ -251,7 +251,7 @@ async function seed() {
 
       const jo8Team = await prisma.team.create({
         data: {
-          clubName: clubName,
+          clubName,
           name: teamName,
           category: 'JO8',
           division: 'PREMIER_DIVISION',

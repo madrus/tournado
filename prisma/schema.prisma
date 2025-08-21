@@ -101,7 +101,7 @@ model Team {
   updatedAt     DateTime   @updatedAt
   homeMatches   Match[]    @relation("Match_homeTeam")
   awayMatches   Match[]    @relation("Match_awayTeam")
-  poolSlot      PoolSlot? @relation("TeamPoolSlot")
+  groupSlot     GroupSlot? @relation("TeamGroupSlot")
 }
 
 model Tournament {
@@ -116,7 +116,7 @@ model Tournament {
   updatedAt  DateTime   @updatedAt
   teams      Team[]
   matches    Match[]
-  poolSets   PoolSet[]
+  groupSets  GroupSet[]
 }
 
 model Match {
@@ -147,51 +147,51 @@ model MatchScore {
   awayTeamScore Int
 }
 
-model PoolSet {
+model GroupSet {
   id            String     @id @default(cuid())
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   tournamentId  String
   name          String
   categories    Json       // array of Category enum values as JSON (SQLite limitation)
-  pools         Pool[]
-  configPools   Int
+  groups        Group[]
+  configGroups  Int
   configSlots   Int
   autoFill      Boolean @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  poolSlots     PoolSlot[]
+  groupSlots    GroupSlot[]
 
   @@unique([tournamentId, name])
   @@index([tournamentId])
 }
 
-model Pool {
-  id        String   @id @default(cuid())
-  poolSet   PoolSet  @relation(fields: [poolSetId], references: [id], onDelete: Cascade)
-  poolSetId String
-  name      String   // e.g. "Pool A"
-  order     Int
-  slots     PoolSlot[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Group {
+  id          String   @id @default(cuid())
+  groupSet    GroupSet @relation(fields: [groupSetId], references: [id], onDelete: Cascade)
+  groupSetId  String
+  name        String   // e.g. "Group A"
+  order       Int
+  slots       GroupSlot[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@unique([poolSetId, name])
-  @@unique([poolSetId, order])
-  @@index([poolSetId])
+  @@unique([groupSetId, name])
+  @@unique([groupSetId, order])
+  @@index([groupSetId])
 }
 
-model PoolSlot {
-  id        String  @id @default(cuid())
-  poolSet   PoolSet @relation(fields: [poolSetId], references: [id], onDelete: Cascade)
-  poolSetId String
-  pool      Pool?   @relation(fields: [poolId], references: [id], onDelete: SetNull)
-  poolId    String?         // null ⇒ Reserve
-  slotIndex Int              // 0..N-1 inside pool
-  team      Team?   @relation("TeamPoolSlot", fields: [teamId], references: [id], onDelete: SetNull)
-  teamId    String?  @unique // null ⇒ placeholder
+model GroupSlot {
+  id          String   @id @default(cuid())
+  groupSet    GroupSet @relation(fields: [groupSetId], references: [id], onDelete: Cascade)
+  groupSetId  String
+  group       Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  groupId     String?         // null ⇒ Reserve
+  slotIndex   Int              // 0..N-1 inside group
+  team        Team?    @relation("TeamGroupSlot", fields: [teamId], references: [id], onDelete: SetNull)
+  teamId      String?  @unique // null ⇒ placeholder
 
-  @@unique([poolId, slotIndex]) // each slot unique inside a pool
-  @@unique([poolSetId, teamId]) // team only once in a set
-  @@index([poolSetId])
+  @@unique([groupId, slotIndex]) // each slot unique inside a group
+  @@unique([groupSetId, teamId]) // team only once in a set
+  @@index([groupSetId])
   @@index([teamId])
 }

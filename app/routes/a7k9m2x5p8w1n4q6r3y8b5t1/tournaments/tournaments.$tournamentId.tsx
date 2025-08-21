@@ -321,7 +321,7 @@ export default function EditTournamentPage(): JSX.Element {
           <div className='flex items-center gap-3'>
             {/* Manage Competition Button */}
             <ActionLinkButton
-              to={`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}/competition`}
+              to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition?tournament=${tournament.id}`}
               label='Manage Competition'
               icon='trophy'
               variant='primary'

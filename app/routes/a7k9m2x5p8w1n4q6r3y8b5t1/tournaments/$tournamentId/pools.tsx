@@ -4,10 +4,10 @@ import { Outlet } from 'react-router'
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 
 /**
- * Pools layout route for tournament pool management.
- * Provides consistent styling and behavior for all pool-related child routes.
+ * Groups layout route for tournament group management.
+ * Provides consistent styling and behavior for all group-related child routes.
  */
-export default function PoolsLayout(): JSX.Element {
+export default function GroupsLayout(): JSX.Element {
   return <Outlet />
 }
 

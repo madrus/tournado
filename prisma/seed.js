@@ -216,7 +216,7 @@ async function seed() {
       },
     })
 
-    // Create 23 JO8 teams from different clubs for testing pools feature
+    // Create 23 JO8 teams from different clubs for testing groups feature
     const clubNames = [
       'Arsenal',
       'Wolves',

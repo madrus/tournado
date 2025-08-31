@@ -20,6 +20,7 @@
     "docs": "docsify serve docs -o -p 3030",
     "format-ci": "pretty-quick --staged",
     "format": "prettier --write .",
+    "knip": "knip",
     "lint": "pnpm format && eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "mcp:inspect": "npx @modelcontextprotocol/inspector node mcp-servers/vitest/dist/index.js",
     "mcp:vitest": "node mcp-servers/vitest/dist/index.js",
@@ -73,6 +74,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.1",
+    "firebase": "^12.2.1",
     "glob": "^11.0.3",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
@@ -110,7 +112,6 @@
     "@vitejs/plugin-react": "^4.7.0",
     "@vitest/coverage-v8": "3.2.4",
     "commitizen": "^4.3.1",
-    "cookie": "^1.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "docsify-cli": "^4.4.4",
     "eslint": "^9.32.0",
@@ -129,7 +130,6 @@
     "husky": "^9.1.7",
     "memfs": "^4.24.0",
     "msw": "^2.10.4",
-    "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "pretty-quick": "^4.2.2",
@@ -153,6 +153,8 @@
     "seed": "node prisma/seed.js"
   },
   "engines": {
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm",
     "node": ">=22",
     "pnpm": ">=10"
   },

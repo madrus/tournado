@@ -122,19 +122,19 @@ export default function GroupsTab(): JSX.Element {
             <Link
               key={groupSet.id}
               to={`${groupSet.id}?tournament=${selectedTournamentId}`}
-              className='group border-border bg-background relative rounded-lg border p-4 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none'
+              className='group border-border bg-background relative rounded-lg border p-4 shadow-sm transition-all hover:shadow-md focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:outline-none'
             >
               {/* Header with icon and badge */}
               <div className='flex items-start justify-between'>
                 <div className='flex items-center'>
-                  <div className='rounded-lg bg-emerald-50 p-2 transition-colors group-hover:bg-emerald-100'>
-                    <SportsIcon className='h-5 w-5 text-emerald-600' />
+                  <div className='rounded-lg bg-fuchsia-50 p-2 transition-colors group-hover:bg-fuchsia-100'>
+                    <SportsIcon className='h-5 w-5 text-fuchsia-600' />
                   </div>
-                  <h3 className='text-foreground ml-3 text-base font-semibold transition-colors group-hover:text-emerald-600'>
+                  <h3 className='text-foreground ml-3 text-base font-semibold transition-colors group-hover:text-fuchsia-600'>
                     {groupSet.name}
                   </h3>
                 </div>
-                <div className='rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700'>
+                <div className='rounded-full bg-fuchsia-50 px-2 py-1 text-xs font-medium text-fuchsia-700'>
                   {groupSet.configGroups} groups
                 </div>
               </div>

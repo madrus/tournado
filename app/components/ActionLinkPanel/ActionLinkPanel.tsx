@@ -105,5 +105,3 @@ export function ActionLinkPanel({
   }
   return panel
 }
-
-export default ActionLinkPanel

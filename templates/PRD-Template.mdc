@@ -1,0 +1,327 @@
+---
+description: Template — Product Requirements Document for Tournado (FRONTEND TEMPLATE)
+globs:
+alwaysApply: false
+---
+
+# <Product / Feature Name>
+
+NOTE: This is a template file. Use it to author concrete PRDs under .cursor/rules or docs once scoped. This template is written for a frontend-first React Router v7 + TypeScript + Vite application (server runtime: React Router SSR). It mentions Prisma/SQLite as part of the same mono-repo application where applicable (no separate backend project implied).
+
+## Executive Summary
+
+<TL;DR: 1–2 sentences: For [target user], build [capability] so they can [value].>
+
+### Product Vision
+
+**Vision Statement**: <Inspirational statement of what the product aspires to become>
+
+**Mission**: <Practical statement of how the product serves users day-to-day>
+
+---
+
+## Current State Analysis
+
+### ✅ Implemented Features
+
+**<Category Name>**
+- [x] **<Feature Name>**: <Brief description of current capability>
+
+### 🔄 In Progress Features
+
+- [ ] **<Feature Name>**: <Brief description>
+
+### 📋 Planned Features (PRD Scope)
+
+**<Phase Name>**
+- [ ] **<Feature Name>**: <Brief description>
+
+---
+
+## User Personas & Use Cases
+
+### <Persona Name> (<Role Name>)
+
+**Authentication**: <Required/Not required>
+**Primary Goals**: <High-level objectives>
+**Key Features Needed**:
+- [ ] **<Feature Name>**: <Brief description>
+- [ ] **<Feature Name>**: <Brief description>
+
+**Jobs-to-be-done**:
+- When <situation>, I want <capability>, so I can <value>
+- When <situation>, I want <capability>, so I can <value>
+
+---
+
+## Feature Roadmap
+
+### Phase <N>: <Phase Name> (<Timeline>)
+
+**Priority**: <Critical/High/Medium/Low>
+**Timeline**: <Duration estimate>
+
+#### <N.1> <Sub-phase Name>
+- [ ] **<Feature Name>**: <Brief description>
+- [ ] **<Feature Name>**: <Brief description>
+
+---
+
+## Success Metrics
+
+### User Engagement Metrics
+- **<Metric Name>**: <Description> (Target: <value>)
+- **<Metric Name>**: <Description> (Target: <value>)
+
+### Performance Metrics
+- **<Metric Name>**: <Description> (Target: <value>)
+- **<Metric Name>**: <Description> (Target: <value>)
+
+### Business Metrics
+- **<Metric Name>**: <Description> (Target: <value>)
+- **<Metric Name>**: <Description> (Target: <value>)
+
+**Guardrails**: <Non-regression constraints, e.g., TTI < 2s, CLS < 0.1>
+
+---
+
+## Scope
+
+| Must-have (MVP) | Nice-to-have (Later) | Explicitly out (Not now) |
+| --------------- | -------------------- | ------------------------ |
+|                 |                      |                          |
+
+Definition of done (MVP)
+
+- [ ] User workflow is fully navigable on mobile first, desktop with lg: enhancements
+- [ ] All new strings added to app/i18n/locales with correct locale keys and Dutch sentence case
+- [ ] Unit tests (Vitest) cover core logic and rendering states
+- [ ] E2E happy path (Playwright) validated
+- [ ] Lint, typecheck, and build pass: pnpm validate
+- [ ] Performance budget respected on targeted routes (Lighthouse mobile ≥ 90)
+- [ ] Accessibility basics: roles, labels, keyboard nav
+- [ ] No remaining references to unrelated stacks (Next.js/Python) in derived PRD
+
+---
+
+## Technical Requirements
+
+### Current Technical Architecture
+
+#### <System Component>
+- **Current State**: <Brief description of what exists>
+- **Limitations**: <What needs to be addressed>
+- **Requirements**: <What needs to be built>
+
+### Architecture Requirements
+- [ ] **<Requirement>**: <Description and target metrics>
+- [ ] **<Requirement>**: <Description and target metrics>
+
+---
+
+## Architecture overview
+
+### Frontend
+
+- Core stack:
+  - React Router v7 + TypeScript + Vite (client + SSR entry where applicable)
+  - Tailwind CSS (mobile-first with lg: desktop)
+  - Zustand for view/form state
+  - i18next for internationalization (includes RTL support)
+  - Vitest for unit tests, Playwright for E2E tests
+- Patterns:
+  - Mobile-first layout and touch targets by default
+  - Routes colocated with layouts; lazy loading where appropriate
+  - Collocate query/mutation logic with components/hooks where feasible
+
+### Server runtime (monolithic app)
+
+- The application is a frontend-first app using React Router SSR for server rendering when needed (single monorepo).
+- Prisma ORM is used as the local data modeling tool and may persist to SQLite during development.
+- Database: SQLite by default (persisted to the Fly volume at /data). No Postgres mention in this template (Postgres can be added in environment-specific docs later).
+- Note: This template assumes the runtime is the same repository; there is no separate Next.js/Python backend implied.
+
+### PWA
+
+- Service worker, offline caching, add-to-home-screen
+- Update prompts and background sync where applicable
+- Ensure PWA integration follows privacy and storage best practices
+
+### Testing
+
+- Vitest for unit/component tests (happy-dom or jsdom as configured)
+- Playwright for E2E tests (playwright/tests)
+- Tests should be colocated as per project standards and cover accessibility and integration points
+
+### Deployment
+
+- Primary deployment target (project default): Fly.io containerized app server (see fly.toml)
+  - App process runs via start.sh (or configured start command)
+  - Internal port: 8080 (container), routed to 80/443 externally (see fly.toml)
+  - Persistent volume mounted at /data (used for SQLite persistence)
+  - Healthcheck endpoint example: /resources/healthcheck
+- Alternative hosting approaches (document specifics separately): static hosting (Vercel/Netlify) only if app built and run as a static client (note: SSR and SQLite persistence require a server runtime)
+- Build: pnpm build; Start via configured entrypoint (start.sh or process manager)
+- Rollbacks and release procedures should be documented in release plan section
+
+---
+
+## External services / integrations
+
+- Authentication: Direction: Google Authentication via Firebase Authentication (mention only here; implementation details go in the implementation PRD)
+- Analytics: (e.g., optional) analytics provider placeholder
+- Email/Notifications: (placeholder for later choices)
+- Any third-party SDKs must be documented with required environment variables and privacy considerations
+
+---
+
+## Data model touchpoints (if applicable)
+
+- If the feature introduces or changes models, document changes in prisma/schema.prisma
+- Migration strategy (development):
+  - pnpm prisma generate
+  - pnpm prisma migrate dev --name <descriptive_name>
+  - pnpm db:reset to reset & seed during dev if needed
+- Seed data updates: prisma/seed.js (or seed.ts)
+
+> Note: Keep schema changes minimal for frontend-only feature templates; treat migrations as implementation details documented in the implementation PRD.
+
+---
+
+## Routing and navigation
+
+- Routes affected: app/routes/*.tsx
+- Access control:
+  - Public:
+  - Authenticated:
+  - Role-guarded:
+- Client-side data flows and navigation:
+  - Loader-like client fetch contracts: describe request/response shapes
+  - Mutation contracts: describe payloads, optimistic updates, error handling
+  - Error boundaries & UI fallback behavior
+
+---
+
+## Internationalization
+
+- Languages: nl, en, fr, ar (RTL), tr
+- Translation keys to add:
+- RTL impact:
+- Dutch capitalization rule: Only capitalize first word of titles/labels (sentence case)
+
+---
+
+## Design System & UI Guidelines
+
+### Standard UI Patterns
+- **Actionable Panels**: Use actionable panels with clear CTAs for user interactions across all features where users need to take actions
+- **Panel Hierarchy**: <Define when to use different panel types (info, action, warning, success)>
+- **Component Consistency**: Follow established component library patterns and variants
+- **Navigation Patterns**: <Consistent navigation behavior and visual cues>
+
+### Visual Design Standards
+- **Color System**: Use semantic color classes from app/styles/tailwind.css for ColorAccent types
+- **Typography**: <Consistent heading hierarchy and text styling>
+- **Spacing**: <Standard spacing patterns and grid system>
+- **Iconography**: <Consistent icon usage and styling>
+
+### Interaction Patterns
+- **Loading States**: <Standard loading indicators and skeleton screens>
+- **Error States**: <Consistent error messaging and recovery patterns>
+- **Success States**: <Standard confirmation and success feedback>
+- **Empty States**: <Helpful empty state designs with clear next actions>
+
+---
+
+## Accessibility and mobile-first
+
+- Default to mobile; augment desktop with lg:
+- Touch targets and spacing (minimum 44px for actionable elements)
+- Keyboard focus order and navigation
+- Screen reader labels and ARIA roles
+- WCAG checkpoints to validate during review
+- Color contrast requirements (AA standard minimum)
+
+---
+
+## Security and privacy
+
+- Authentication:
+  - Direction: Google Authentication via Firebase Authentication is the chosen provider (document flow in implementation PRD)
+  - Local session handling and route guards to be specified in implementation PRD
+- Authorization: client-side role-based guards with server-side verification pattern described in ADRs (where applicable)
+- Sensitive data handling: local storage/IndexedDB usage and encryption, privacy constraints
+- Error messages sanitized for public routes
+
+---
+
+## Risk Assessment
+
+### Technical Risks
+- **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
+- **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
+
+### Business Risks
+- **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
+- **<Risk Name>**: <Description> → **Mitigation**: <Strategy>
+
+### Mitigation Strategies
+- **<Strategy Name>**: <Description of overall approach>
+- **<Strategy Name>**: <Description of overall approach>
+
+---
+
+## Implementation Timeline
+
+### <Quarter/Phase>: <Name>
+- **<Time Period>**: <Milestone description>
+- **<Time Period>**: <Milestone description>
+
+---
+
+## Release plan
+
+- Phase alignment: <Phase 1/2/3/4>
+- Milestones:
+  - M1: <Description>
+  - M2: <Description>
+- Rollout and fallback:
+  - Feature flag or config switch
+  - Rollback via previous release tag or Fly rollback procedures
+
+---
+
+## Conclusion
+
+<Summary of the PRD key points>
+
+**Key Architectural Principles**:
+- **<Principle 1>**: <Description>
+- **<Principle 2>**: <Description>
+
+**Critical First Steps**:
+1. <Step 1>
+2. <Step 2>
+3. <Step 3>
+
+**Next Steps**:
+1. <Action item>
+2. <Action item>
+3. <Action item>
+
+---
+
+## Open questions
+
+- <question 1>
+- <question 2>
+
+---
+
+## Links
+
+- Related ADRs: .cursor/rules/ (add ADR IDs once created)
+- Tasks: tasks/ (link to task files)
+- Routes: app/routes/*.tsx
+- Models: prisma/schema.prisma
+- Tests: app/**/*/__tests__/*.test.tsx, playwright/tests/*

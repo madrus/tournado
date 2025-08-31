@@ -48,15 +48,25 @@ export async function loader({
 }: Route.LoaderArgs): Promise<LoaderData> {
   await requireAdminUser(request)
 
-  // Get tournament ID from search params
   const url = new URL(request.url)
   const tournamentId = url.searchParams.get('tournament')
 
-  // Load tournament list and current tournament in parallel
   const [tournamentListItems, tournament] = await Promise.all([
     getAllTournamentListItems(),
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
+
+  // Debug logging
+  console.log(
+    'Competition loader - tournamentListItems:',
+    tournamentListItems?.length || 0,
+    'items'
+  )
+  console.log('Competition loader - tournamentId:', tournamentId)
+  console.log(
+    'Competition loader - tournament found:',
+    tournament ? tournament.name : 'none'
+  )
 
   return {
     tournament: tournament
@@ -112,7 +122,6 @@ export default function CompetitionLayout(): JSX.Element {
             tournamentListItems={tournamentListItems}
             selectedTournamentId={selectedTournamentId}
             className='min-w-64'
-            color='emerald'
             label='Tournament'
             placeholder='Choose tournament'
             showAllOption={false}
@@ -132,11 +141,11 @@ export default function CompetitionLayout(): JSX.Element {
               className={cn(
                 'relative flex items-center space-x-2 px-6 py-4 text-sm font-medium transition-all duration-200',
                 'border-t border-r border-b-2 border-l first:border-l last:border-r',
-                '-mb-px rounded-t-lg focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none',
+                '-mb-px rounded-t-lg focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:outline-none',
                 activeTab === tab.href
                   ? [
-                      'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300',
-                      'border-emerald-300 border-b-emerald-50 dark:border-emerald-700 dark:border-b-emerald-950/50',
+                      'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950/50 dark:text-fuchsia-300',
+                      'border-fuchsia-300 border-b-fuchsia-50 dark:border-fuchsia-700 dark:border-b-fuchsia-950/50',
                       'z-10 shadow-lg',
                     ]
                   : tab.disabled
@@ -146,14 +155,14 @@ export default function CompetitionLayout(): JSX.Element {
                       ]
                     : [
                         'bg-background hover:bg-accent text-foreground-light hover:text-foreground',
-                        'border-border border-b-border hover:border-emerald-200 dark:hover:border-emerald-800',
+                        'border-border border-b-border hover:border-fuchsia-200 dark:hover:border-fuchsia-800',
                       ]
               )}
             >
               <tab.icon
                 className={cn(
                   'h-4 w-4',
-                  activeTab === tab.href ? 'text-emerald-600 dark:text-emerald-400' : ''
+                  activeTab === tab.href ? 'text-fuchsia-600 dark:text-fuchsia-400' : ''
                 )}
               />
               <span>{tab.name}</span>
@@ -168,7 +177,7 @@ export default function CompetitionLayout(): JSX.Element {
 
         {/* Tab Content - Render nested routes */}
         <div className='relative'>
-          <Panel color='emerald' className='rounded-t-none border-t-0 shadow-lg'>
+          <Panel color='fuchsia' className='rounded-t-none border-t-0 shadow-lg'>
             <Outlet />
           </Panel>
         </div>

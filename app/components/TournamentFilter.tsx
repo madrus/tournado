@@ -19,7 +19,7 @@ export function TournamentFilter({
   tournamentListItems,
   selectedTournamentId,
   className = 'max-w-md',
-  color = 'emerald',
+  color = 'primary',
   label,
   placeholder,
   showAllOption = true,
@@ -38,6 +38,18 @@ export function TournamentFilter({
   // Adjust selected value if we're not showing "all" option and no tournament is selected
   const adjustedSelectedValue =
     !showAllOption && selectedValue === 'all' ? '' : selectedValue
+
+  // Debug logging
+  console.log('TournamentFilter:', {
+    tournamentListItemsLength: tournamentListItems.length,
+    selectedTournamentId,
+    selectedValue,
+    adjustedSelectedValue,
+    filteredOptionsLength: filteredOptions.length,
+    showAllOption,
+    tournamentOptions, // Show all tournament options
+    filteredOptions, // Show all filtered options
+  })
 
   return (
     <ComboField

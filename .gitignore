@@ -22,3 +22,4 @@ playwright-results
 playwright/.auth
 playwright/.cache
 test-results
+.vscode/project.mcp.json

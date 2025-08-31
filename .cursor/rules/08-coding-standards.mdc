@@ -141,6 +141,53 @@ if (remainingTeams === 0) {
 #### **Admin Permissions**
 ```
 
+### Function Arguments Typing
+
+✅ Correct
+
+```ts
+export type UserForm = {
+  name: string
+  email: string
+}
+
+export function createUser(input: Readonly<UserForm>) {
+  // ...
+}
+```
+
+❌ Incorrect (inline object type)
+
+```ts
+export function createUser(input: { name: string; email: string }) {
+  // ...
+}
+```
+
+
+---
+
+# Various Rules
+
+- React 18+, React Router v7+, TypeScript strict mode, ESM
+- No `any` unless safely narrowed
+- Prefer inference but always keep **strong typing** (never drop types entirely)
+- Function declarations over expressions
+- Function arguments having complex types
+- No classes, no default exports, favor pure functions
+- Single quotes, spaces, **no semicolons**
+- Use **Zustand** for view + form state (reset/partial prefill)
+- Use **native fetch** only, small typed API helpers
+- Keep code minimal, no extra dependencies
+- Match existing folder layout and naming
+- When asked for code, output **code blocks only**
+- If info is missing, ask 3 concise questions at the end
+- **Function arguments with complex types must be typed as `Readonly<ComplexType>`**, where:
+  - `ComplexType` is a separate exported type (not an inline object literal)
+  - This enforces immutability and improves reuse across files
+
+---
+
 ## Enforcement
 
 These rules should be:

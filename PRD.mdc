@@ -122,18 +122,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Quick match status updates (postponed, cancelled)
 - [ ] Offline score entry with sync capabilities
 
-### 4. Registered Public Users (PUBLIC Role)
-
-**Authentication**: Required
-**Primary Goals**: Enhanced tournament following
-**Key Features Needed**:
-
-- [ ] Personalized tournament dashboard
-- [ ] Favorite team tracking
-- [ ] Notification preferences
-- [ ] Match alerts and updates
-
-### 5. Team Leaders (Unauthenticated Public)
+### 4. Team Leaders (Unauthenticated Public)
 
 **Authentication**: Not required
 **Primary Goals**: Team registration and basic tournament information
@@ -144,7 +133,7 @@ Tournado is a comprehensive tournament management system designed to streamline 
 - [ ] Basic tournament schedule viewing
 - [ ] Contact tournament officials
 
-### 6. General Public/Spectators (Unauthenticated)
+### 5. General Public/Spectators (Unauthenticated)
 
 **Authentication**: Not required
 **Primary Goals**: Following tournament progress and results
@@ -163,6 +152,8 @@ Tournado is a comprehensive tournament management system designed to streamline 
 
 **Priority**: Critical
 **Timeline**: 3-4 weeks
+
+NOTE TO AGENT: here we need to add the possibility for users to use Google account for authentication in Google Firebase and also normal user/password if they prefer, also in Google Firebase and of course with encripted passwords. The second option should replace the cookie way we use now.
 
 #### 1.1 Authentication System Implementation
 

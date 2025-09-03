@@ -6,7 +6,7 @@ alwaysApply: false
 
 # <Product / Feature Name>
 
-NOTE: This is a template file. Use it to author concrete PRDs under .cursor/rules or docs once scoped. This template is written for a frontend-first React Router v7 + TypeScript + Vite application (server runtime: React Router SSR). It mentions Prisma/SQLite as part of the same mono-repo application where applicable (no separate backend project implied).
+NOTE: This is a template file. Use it to author concrete PRDs under .cursor/rules or docs once scoped. This template is written for a frontend-first React + React Router v7 + TypeScript + Vite application (server runtime: React Router SSR). It mentions Prisma/SQLite as part of the same mono-repo application where applicable (no separate backend project implied).
 
 ## Executive Summary
 

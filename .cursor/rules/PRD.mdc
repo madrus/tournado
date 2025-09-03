@@ -52,6 +52,12 @@ Internationalization
 - [x] i18next with RTL support
 - [x] Dutch sentence case for titles/labels
 
+Design & Theming
+
+- [x] Dark/light theme with system detection and manual toggle
+- [x] Semantic color tokens (no hard-coded colors); 20+ accent palettes
+- [x] Icon system audited for theme compatibility (31 SVGs, currentColor)
+
 State Management
 
 - [x] Zustand stores with SSR‑safe hydration and persistence
@@ -60,6 +66,12 @@ PWA & Error Handling
 
 - [x] Manifest and service worker
 - [x] General error boundaries and auth‑specific error boundary
+
+Security & RBAC
+
+- [x] Role-based access control middleware and route guards
+- [x] Role-based landing pages after login
+- [x] Rate limiting for auth and admin actions
 
 Testing & Tooling
 
@@ -126,6 +138,8 @@ Database & Data Model
 
 **Authentication**: Required
 
+RBAC note: Manager inherits all Referee permissions; Admin Panel access with manager‑scoped features.
+
 **Primary Goals**: Create and operate tournaments; manage teams, groups, and match calendars
 
 **Key Features Needed**:
@@ -143,6 +157,8 @@ Database & Data Model
 
 **Authentication**: Required (admin role)
 
+RBAC note: Admin inherits Manager/Referee/Public permissions; full Admin Panel access including user authorization.
+
 **Primary Goals**: Governing access and platform configuration
 
 **Key Features Needed**:
@@ -158,6 +174,8 @@ Database & Data Model
 ### Referee
 
 **Authentication**: Pre‑authenticated link (no account required initially)
+
+RBAC note: Inherits Public permissions; scoped access to assigned matches via pre‑auth link or panel; no data governance capabilities.
 
 **Primary Goals**: Submit scores and manage assigned match times within constraints
 
@@ -175,6 +193,8 @@ Database & Data Model
 ### Public
 
 **Authentication**: Not required
+
+RBAC note: Read‑only public access; no Admin Panel access.
 
 **Primary Goals**: Explore tournaments, teams, groups, matches, and results
 
@@ -195,6 +215,8 @@ Database & Data Model
 
 **Authentication**: Required (editor role)
 
+RBAC note: Future role; permissions and Admin Panel access TBD.
+
 **Primary Goals**: Publish application‑wide and tournament‑related content
 
 **Key Features Needed**:
@@ -204,6 +226,8 @@ Database & Data Model
 ### Billing (future)
 
 **Authentication**: Required (billing/admin role)
+
+RBAC note: Future role; permissions and Admin Panel access TBD.
 
 **Primary Goals**: Understand subscription revenue and contribution flow
 
@@ -297,13 +321,13 @@ Database & Data Model
 
 ### Features
 
-| Must-have (MVP)                                                | Nice-to-have (Later)                | Explicitly out (Not now)                   |
-| -------------------------------------------------------------- | ----------------------------------- | ------------------------------------------ |
+| Must-have (MVP)                                                | Nice-to-have (Later)            | Explicitly out (Not now)                   |
+| -------------------------------------------------------------- | ------------------------------- | ------------------------------------------ |
 | Groups and playoffs (schema + UX for groups; playoffs design)  | Payments (contributions)        | CMS + media uploads                        |
-| Google Auth (Google account or username/password via Firebase) | Cookie acceptance               | Subscriptions for managers               |
+| Google Auth (Google account or username/password via Firebase) | Cookie acceptance               | Subscriptions for managers                 |
 | Fetch team club icons via API                                  | Install PWA on (mobile) desktop | Chat                                       |
 | Matches planning & calendar                                    | Feedback loop for user feedback | Voting and totalisator (betting, no money) |
-| Match scores and standings                                     |                                     |                                            |
+| Match scores and standings                                     |                                 |                                            |
 
 ### Definition of done (MVP)
 
@@ -360,6 +384,27 @@ Database & Data Model
 - [ ] Avoid code duplication; refactor large components into dedicated folders as needed
 - [ ] CVA variants for colors; follow existing naming conventions
 - [ ] Keep bundles lean; lazy load route segments where appropriate
+- [ ] Centralized type system (`app/lib/lib.types.ts` + helpers); convert DB strings to strict types at route boundaries
+
+---
+
+## Performance & Data Loading
+
+### Prefetching Strategy (React Router v7)
+
+- Use route-level prefetching: `intent` (hover/focus), `render` (on render), and `viewport` (when visible)
+- Default contexts: primary navigation = `intent`, action buttons/CTAs = `render`, list items = `intent`
+- Adaptive prefetching: reduce aggressiveness on slow connections, data-saver, and mobile; disable `viewport` on poor networks
+
+### Data Freshness on Back/Forward
+
+- Add `popstate` listener on list pages (teams, tournaments) to revalidate data when navigating back/forward
+- Use `useRevalidator()` to trigger refetch; navigation via in-app links fetches fresh data by default
+
+### Targets
+
+- Navigation latency budget: sub-500ms for prefetched routes
+- Keep prefetch overhead minimal (2–5 KB typical) and measurable via analytics
 
 ---
 
@@ -377,6 +422,7 @@ Database & Data Model
   - [ ] Mobile‑first layout and touch targets by default
   - [ ] Routes colocated with layouts; lazy loading where appropriate
   - [ ] Collocate query/mutation logic with components/hooks where feasible
+  - [ ] Route prefetching per context (`intent`, `render`, `viewport`) with adaptive behavior
 
 ### Server runtime (monolithic app)
 
@@ -389,12 +435,14 @@ Database & Data Model
 - [ ] Service worker, offline caching, add‑to‑home‑screen
 - [ ] Update prompts and background sync where applicable
 - [ ] Follow privacy and storage best practices
+- [ ] `SW_DEBUG` toggle in `public/sw.js` for controlled logging (disable in prod)
 
 ### Testing
 
 - [ ] Vitest for unit/component tests
 - [ ] Playwright for E2E tests (`playwright/tests`)
 - [ ] Tests colocated per project standards; include accessibility states
+- [ ] MCP Vitest server for AI‑assisted testing (tools, resources, coverage)
 
 ### Deployment
 
@@ -414,6 +462,7 @@ Database & Data Model
 - [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
 - [ ] Email/Notifications: placeholder (future)
 - [ ] Third‑party SDKs documented with env vars and privacy considerations
+- [ ] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
 
 ---
 
@@ -437,10 +486,10 @@ Database & Data Model
 ## Routing and navigation
 
 - **Routes affected**: `app/routes/*.tsx`
-- **Access control**:
+- **Role-based access control**:
   - Public: `/`, `/teams`, `/auth/*`, error routes
-  - Authenticated: manager workflows (partially implemented, more in future)
-  - Admin: Admin Panel under obfuscated base path (current)
+  - Staff: Admin Panel under obfuscated base path for `ADMIN`, `MANAGER`, `REFEREE` (scoped features per role). Inheritance: `ADMIN` ⊇ `MANAGER` ⊇ `REFEREE` ⊇ `PUBLIC`.
+  - `EDITOR` / `BILLING` (future): access details TBD (anticipated panel sections limited to content/billing domains)
 - **Client‑side data flows and navigation**:
   - Loaders/actions define contracts; loaders produce typed data
   - Mutations with optimistic UI where appropriate
@@ -455,6 +504,7 @@ Database & Data Model
 - **RTL impact**: maintain Arabic legibility and text sizing; ensure Latin text sizing also blends visually with Amiri
 - **Dutch capitalization rule**: Capitalize only the first word of titles/labels (sentence case); English titles may use title case
 - **Fallback language**: `nl`
+- **Persistence**: Persist language in cookie + localStorage; detect language on server during SSR
 
 ---
 
@@ -472,6 +522,16 @@ Database & Data Model
 - Color Hygiene: Replace cyan with sky where cyan appears in components (legacy to be removed)
 - Typography: System‑UI for Latin; Amiri for Arabic with visual text size balance utilities
 - Spacing: Standard spacing patterns; responsive grid
+
+### Theme & Dark Mode
+
+- Semantic tokens only: use `bg-background`, `text-foreground`, `border-border` (never hard-coded colors)
+- Theme-agnostic components: no conditional `dark ? ... : ...`; tokens adapt automatically
+- Contrast: meet WCAG 2.1 AA (4.5:1 text, 3:1 large/UI); visible focus rings in both themes
+- Accents: 20+ color accents via CVA variants; panel backgrounds adapt per theme
+- Icons: SVGs inherit `currentColor`; no hard-coded fills
+- Toggle: Provide ThemeToggle in AppBar; persist preference; respect `prefers-color-scheme`
+- Testing: verify light/dark rendering and contrast before merge
 
 ### Interaction Patterns
 
@@ -500,6 +560,32 @@ Database & Data Model
   - Logout invalidates Firebase session cookies and client state
 - **Authorization**: Role‑based guards on client with server verification in loaders/actions
 - **Sensitive data**: Minimize PII; document analytics configuration; sanitize public error messages
+
+### RBAC (Role-Based Access Control)
+
+- Roles (schema): `PUBLIC`, `REFEREE`, `MANAGER`, `ADMIN`, `EDITOR` (future), `BILLING` (future)
+- Permission matrix (initial baseline):
+  - PUBLIC: `teams:read`, `tournaments:read`, `matches:read`
+  - REFEREE: PUBLIC + `matches:referee`, `matches:edit` (assigned)
+  - MANAGER: PUBLIC + `teams:{create,edit,delete}`, `tournaments:{create,edit}`, `matches:{create,edit}`, `groups:manage`
+  - ADMIN: all permissions (`*`)
+  - EDITOR (future): `content:{create,edit,delete}`, `media:upload`
+  - BILLING (future): `billing:{read,manage}`, `subscriptions:{read,manage}`
+- Middleware: use `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions
+- Param handling: use React Router `params` for self‑access checks (never parse URL segments manually)
+- Post‑login redirects: role‑based landing pages; public → `/`, staff → Admin Panel (obfuscated base path)
+
+**Role hierarchy and panel access**
+
+- Hierarchy: `PUBLIC` < `REFEREE` < `MANAGER` < `ADMIN` (each role inherits all permissions of the previous)
+- Manager inherits all Referee permissions; Admin inherits all Manager/Referee/Public permissions
+- Admin Panel access: allowed for `ADMIN`, `MANAGER`, and `REFEREE` (scoped views per role)
+- EDITOR and BILLING: future roles; detailed permissions and panel access TBD
+
+### Rate limiting
+
+- Protect `/auth/signin` and sensitive admin actions; include `X‑RateLimit‑*` headers
+- Memory‑safe in‑memory store with cleanup; strict IP header validation; localhost‑only bypass in tests
 
 ---
 
@@ -545,7 +631,7 @@ Database & Data Model
 
 ## Release plan
 
-- **Phase alignment**: 
+- **Phase alignment**:
     1. Auth
     2. Matches
     3. Groups/Playoffs

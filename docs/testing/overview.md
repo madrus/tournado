@@ -62,14 +62,13 @@ E2E tests use a completely separate SQLite database to ensure isolation from dev
 
 ### Automatic Test Database Setup
 
-When running E2E tests via `pnpm test:e2e:all` or `pnpm test:e2e:dev`, the system automatically:
+When running E2E tests via `pnpm test:e2e:*`, the system automatically:
 
-1. Removes any existing test database
-2. Creates a fresh test database using `prisma migrate deploy`
-3. Seeds the test database with initial data
-4. Sets `DATABASE_URL` environment variable to point to the test database
+1. Applies pending migrations to `prisma/data-test.db` using `prisma migrate deploy`
+2. Starts the server with `DATABASE_URL` pointing to the test database
+3. Executes Playwright global setup which wipes test data and seeds required auth users
 
-This ensures every test run starts with a clean, predictable database state without affecting your development data.
+This ensures each run uses the dedicated test database and a predictable schema and data state — without affecting your development database.
 
 ## Environment Requirements
 

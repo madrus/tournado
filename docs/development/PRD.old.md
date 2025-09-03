@@ -1,5 +1,7 @@
 # Product Requirements Document (PRD)
 
+This document was one of the inputs for the `.cursor/rules/PRD.mdc` document, which forms now the base of this project's roadmap. The current file is kept here purely for history.
+
 ## Tournament Management System - Tournado
 
 ### Executive Summary

@@ -677,6 +677,8 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - Are additional manager workflows needed (e.g., field assignment, blackout times)?
 - Research: migration from GitHub to GitLab — effort, pros/cons, and the effect of GitLab’s feature flags compared to alternatives
 - Should we add optional chats, voting, and totalisator (non‑monetary score predictions) as future social features? If yes, how do we moderate and scope them?
+- PWA-related offline caching: scope route/data caching via service worker; define cache strategies per route type and revalidation rules
+- Push notifications: evaluate use cases (match alerts, schedule changes), permissions flow, and privacy implications; implement via service worker with clear opt-in
 
 ---
 

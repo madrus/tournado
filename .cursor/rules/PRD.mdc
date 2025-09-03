@@ -1,7 +1,615 @@
 ---
-description:
+description: Product Requirements Document — Tournado Tournament Management
 globs:
 alwaysApply: false
 ---
 
-add text here
+# Tournado Tournament Management
+
+NOTE: This PRD defines the product requirements for Tournado. The application is a frontend-first React Router v7 + TypeScript + Vite app with SSR, Prisma/SQLite, and a mobile‑first UI.
+
+## Executive Summary
+
+For public visitors and competition stakeholders, build a modern tournament management platform that makes it simple to explore tournaments, teams, groups, and matches, and to register teams for participation. For managers and staff, provide a secure, role‑based workspace to manage tournaments end‑to‑end (tournaments, teams, groups, matches, assignments, and results) with a clear, mobile‑first experience.
+
+### Product Vision and Mission
+
+Vision Statement: Become the most intuitive, mobile‑first platform for organizing and following amateur and youth football tournaments, delivering clarity for the public and control for managers.
+
+Mission: Empower managers to run tournaments efficiently and empower audiences to follow them effortlessly by combining a focused UI, strong role‑based access control, and reliable data modeling for teams, groups, matches, and standings.
+
+---
+
+## Current State Analysis
+
+### ✅ Implemented Features
+
+Authentication
+
+- [x] Email/password authentication with secure cookie sessions
+- [x] Sign‑in, sign‑up, and sign‑out routes
+- [x] Role‑based guards and unauthorized handling
+- [x] Smart redirects based on role and requested path
+
+Teams
+
+- [x] Public teams section with team creation and listing
+- [x] Admin teams section with full CRUD
+- [x] Reusable `TeamChip` and `TeamList` components
+
+Tournaments
+
+- [x] Admin‑only tournaments section with full CRUD
+- [x] Mobile‑optimized swipe‑to‑delete interactions
+
+Routing & Structure
+
+- [x] React Router v7 with nested layouts and flat‑routes discovery
+- [x] Public routes: `/teams`, auth; Admin routes under obfuscated base path (Admin Panel)
+
+Internationalization
+
+- [x] i18next with RTL support
+- [x] Dutch sentence case for titles/labels
+
+State Management
+
+- [x] Zustand stores with SSR‑safe hydration and persistence
+
+PWA & Error Handling
+
+- [x] Manifest and service worker
+- [x] General error boundaries and auth‑specific error boundary
+
+Testing & Tooling
+
+- [x] Vitest for unit/integration; Playwright for E2E
+- [x] Documented dev/test workflows and MCP integration
+
+Database & Data Model
+
+- [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupSet`, `Group`, `GroupSlot`, `MatchScore`
+
+### 🔄 In Progress Features
+
+- [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
+
+### 📋 Planned Features (PRD Scope)
+
+**Phase 1 — Authentication Modernization (Top Priority)**
+
+- [ ] Google Authentication via Firebase (Google account or username/password)
+- [ ] Replace cookie session auth with Firebase‑backed flow (see Security & privacy)
+- [ ] Post‑login redirects, logout, and credential persistence
+- [ ] Visible auth status indicator
+
+**Phase 2 — Matches & Scoring**
+
+- [ ] Match schedule planning (date/time/location) for tournaments
+- [ ] Score registration by referees
+- [ ] Live/near‑real‑time standings and basic statistics
+
+
+**Phase 3 — Groups & Playoffs**
+
+- [ ] Groups and seeding workflows
+- [ ] Playoff structures (knockout, placement matches); schema design
+- [ ] Competition status: standings and placements
+
+**Phase 4 — Subscriptions & Billing (future)**
+
+- [ ] Subscriptions for managers to organize tournaments
+- [ ] Payments (Stripe) for subscriptions and voluntary contributions
+- [ ] Financial dashboard (ADMIN/BILLING) with totals and drill‑down
+
+**Phase 5 — Content Management (future)**
+
+- [ ] Articles (text/images/video) for home, tournament, team and match pages via a headless CMS
+
+---
+
+## User Personas & Use Cases
+
+**Primary personas for MVP**
+
+- [ ] Manager
+- [ ] Admin
+- [ ] Public
+
+**Secondary personas**
+
+- [ ] Referee
+- [ ] Editor (future)
+- [ ] Billing (future)
+
+### Manager
+
+**Authentication**: Required
+
+**Primary Goals**: Create and operate tournaments; manage teams, groups, and match calendars
+
+**Key Features Needed**:
+
+- [ ] Tournament CRUD, team registration and management
+- [ ] Group assignments and match scheduling
+- [ ] Assign referees via pre‑authenticated links
+
+**Jobs‑to‑be‑done**:
+
+- [ ] When preparing a tournament, I want to register teams and allocate them to groups so I can generate balanced schedules
+- [ ] When running the tournament, I want to update the schedule and see standings so I can keep everyone informed
+
+### Admin
+
+**Authentication**: Required (admin role)
+
+**Primary Goals**: Governing access and platform configuration
+
+**Key Features Needed**:
+
+- [ ] Approve/reject user registrations; assign roles
+- [ ] Oversee tournaments and user activity; manage data integrity
+
+**Jobs‑to‑be‑done**:
+
+- [ ] When a new manager applies, I want to review and assign a role so I can maintain platform safety
+- [ ] When issues arise, I want admin dashboards to intervene and correct data quickly
+
+### Referee
+
+**Authentication**: Pre‑authenticated link (no account required initially)
+
+**Primary Goals**: Submit scores and manage assigned match times within constraints
+
+**Key Features Needed**:
+
+- [ ] Secure, scoped access to their assigned matches
+- [ ] Score entry and permitted scheduling adjustments
+
+**Jobs‑to‑be‑done**:
+
+- [ ] When a match ends, I want to submit the score immediately so standings stay current
+- [ ] When a conflict arises, I want to propose a new time within allowed rules so scheduling remains valid
+- [ ] When a team fails to participate in a match, I want to be able to mark the match as cancelled
+
+### Public
+
+**Authentication**: Not required
+
+**Primary Goals**: Explore tournaments, teams, groups, matches, and results
+
+**Key Features Needed**:
+
+- [ ] Tournaments and teams browsing
+- [ ] Matches information (date/time/location), standings, and results
+- [ ] Team registration for public tournaments
+
+**Jobs‑to‑be‑done**:
+
+- When I follow a tournament, I want to quickly find my team’s group and matches so I can plan attendance
+- When checking results, I want up‑to‑date scores and standings so I can see who advances
+- When appropriate, I want to register teams for selected tournaments and specify the contact details for the Team Leader
+
+
+### Editor (future)
+
+**Authentication**: Required (editor role)
+
+**Primary Goals**: Publish application‑wide and tournament‑related content
+
+**Key Features Needed**:
+
+- [ ] CMS integration; create/edit/delete articles on home/tournament/match pages
+
+### Billing (future)
+
+**Authentication**: Required (billing/admin role)
+
+**Primary Goals**: Understand subscription revenue and contribution flow
+
+**Key Features Needed**:
+
+- [ ] Totals and trends; drill down into transactions and payment delays
+
+---
+
+## Feature Roadmap
+
+### Phase 1: Authentication Modernization (2 weeks)
+
+- [ ] Priority: Critical
+- [ ] Timeline: 2 weeks
+
+#### 1.1 Google Auth + Session Bridging
+
+- [ ] Implement Firebase Google Auth (and email/password via Firebase if required)
+- [ ] Bridge to server via Firebase session cookies; preserve SSR compatibility
+
+#### 1.2 UX & Migration
+
+- [ ] Replace cookie session auth in UI flows; maintain role checks
+- [ ] Logout invalidation; visible auth status; redirects
+
+### Phase 2: Matches & Scoring (3–4 weeks)
+
+- [ ] Priority: High
+- [ ] Timeline: 3–4 weeks
+
+#### 2.1 Scheduling
+
+- [ ] Match calendar (date/time/location); constraints by category/division
+
+#### 2.2 Scoring & Standings
+
+- [ ] Referee score entry; standings update; basic stats
+
+### Phase 3: Groups & Playoffs (3–4 weeks)
+
+- [ ] Priority: High
+- [ ] Timeline: 3–4 weeks
+
+#### 3.1 Group Workflows
+
+- [ ] Group allocation UX over `GroupSet`/`Group`/`GroupSlot`
+
+#### 3.2 Playoff Structures
+
+- [ ] Knockout and placement matches; schema and UI
+
+### Phase 4: Subscriptions & Billing (future, scoped later)
+
+- [ ] Priority: Medium
+- [ ] Timeline: TBD
+
+### Phase 5: Content Management (future, scoped later)
+
+- [ ] Priority: Low
+- [ ] Timeline: TBD
+
+---
+
+## Success Metrics
+
+### User Engagement Metrics
+
+- [ ] Manager activation: manager that creates ≥1 tournament within 7 days (Target: baseline + TBD)
+- [ ] Referee flow completion: scores submitted within 10 minutes after match end (Target: ≥80%)
+
+### Performance Metrics
+
+- [ ] Mobile Lighthouse performance: ≥ 90 on targeted routes
+- [ ] TTI < 2s on median mobile for primary pages (cache warmed)
+
+### Business Metrics
+
+- [ ] Teams created per week (Target: baseline + TBD)
+- [ ] Tournaments created per month (Target: baseline + TBD)
+- [ ] Subscription totals and monthly payments (Target: baseline + TBD)
+
+**Guardrails**:
+
+- [ ] CLS < 0.1
+- [ ] Input latency under 100ms for key interactions
+
+---
+
+## Scope
+
+### Features
+
+| Must-have (MVP)                                                | Nice-to-have (Later)                | Explicitly out (Not now)                   |
+| -------------------------------------------------------------- | ----------------------------------- | ------------------------------------------ |
+| Groups and playoffs (schema + UX for groups; playoffs design)  | Payments (contributions)        | CMS + media uploads                        |
+| Google Auth (Google account or username/password via Firebase) | Cookie acceptance               | Subscriptions for managers               |
+| Fetch team club icons via API                                  | Install PWA on (mobile) desktop | Chat                                       |
+| Matches planning & calendar                                    | Feedback loop for user feedback | Voting and totalisator (betting, no money) |
+| Match scores and standings                                     |                                     |                                            |
+
+### Definition of done (MVP)
+
+- [ ] User workflow is fully navigable on mobile first, desktop with lg (>= md?): enhancements
+- [ ] All new strings added to `app/i18n/locales` with correct locale keys and Dutch sentence case (except English)
+- [ ] Unit tests (Vitest) cover core logic and rendering states
+- [ ] E2E happy path (Playwright) validated
+- [ ] Lint, typecheck, and build pass: `pnpm validate`
+- [ ] Performance budget respected on targeted routes (Lighthouse mobile ≥ 90)
+- [ ] Accessibility basics: roles, labels, keyboard nav
+- [ ] No remaining references to unrelated stacks (Next.js/Python) in this PRD
+
+---
+
+## Technical Requirements
+
+### Current Technical Architecture
+
+#### Authentication
+
+- Current State: Email/password auth with server‑side cookie sessions; routes for sign‑in/sign‑up/sign‑out; role‑guarded loaders; smart redirects
+- Limitations: No Google SSO; session cookies tied to bespoke auth; client auth store not the source of truth
+- Requirements: Introduce Firebase Google Auth (and optional email/password via Firebase). Bridge to server using Firebase session cookies to keep SSR secure. Preserve role checks and redirects
+
+#### Teams & Tournaments
+
+- Current State: Public teams listing + creation; Admin teams CRUD; Admin tournaments CRUD; mobile swipe‑to‑delete
+- Limitations: Public team detail still in progress; club icon not modeled
+- Requirements: Team club icon via API (and `Team.clubIcon` field); complete public team detail; extend admin dashboards as needed
+
+#### Groups & Matches
+
+- **Current State**: Data models for `GroupSet`/`Group`/`GroupSlot`; `Match` and `MatchScore` exist but not used yet
+- **Limitations**: Group allocation workflows mid‑implementation; playoffs not yet modeled; match calendar UX not complete
+- **Requirements**: CRUD UX for group allocation; playoff schema (knockout/placement); scheduling tooling; referee flows
+
+#### Internationalization
+
+- **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English)
+- **Limitations**: Language registration not centralized; fallback behavior implicit
+- **Requirements**: Centralize supported languages in a single enum/object used by i18n config; fallback language: `nl`; adding a language should require adding one enum value and one translation file only -- this is actually already so but I am not sure if adding a new language in ONE place is implemented yet
+
+#### Deployment
+
+- **Current State**: Fly.io deployment via container; SQLite volume mounted at `/data`; SSR enabled
+- **Limitations**: Cold‑start snappiness may vary
+- **Requirements**: Keep startup snappy; profile startup path and cache hot routes
+
+### Architecture Requirements
+
+- [ ] Authentication bridged via Firebase session cookies; SSR‑compatible and role‑aware
+- [ ] Mobile‑first layouts; desktop enhancements via `lg:`; min 44px touch targets
+- [ ] i18n languages centralized; RTL support maintained; fallback to `nl`
+- [ ] Avoid code duplication; refactor large components into dedicated folders as needed
+- [ ] CVA variants for colors; follow existing naming conventions
+- [ ] Keep bundles lean; lazy load route segments where appropriate
+
+---
+
+## Architecture overview
+
+### Frontend
+
+- **Core stack**:
+  - [ ] React Router v7 + TypeScript + Vite (client + SSR entry where applicable)
+  - [ ] Tailwind CSS (mobile‑first with `lg:` desktop)
+  - [ ] Zustand for view/form state
+  - [ ] i18next for internationalization (includes RTL support)
+  - [ ] Vitest for unit tests, Playwright for E2E tests
+- **Patterns**:
+  - [ ] Mobile‑first layout and touch targets by default
+  - [ ] Routes colocated with layouts; lazy loading where appropriate
+  - [ ] Collocate query/mutation logic with components/hooks where feasible
+
+### Server runtime (monolithic app)
+
+- [ ] Frontend‑first app using React Router SSR when needed (single repo)
+- [ ] Prisma ORM; SQLite database persisted on Fly volume `/data`
+- [ ] No separate backend project implied
+
+### PWA
+
+- [ ] Service worker, offline caching, add‑to‑home‑screen
+- [ ] Update prompts and background sync where applicable
+- [ ] Follow privacy and storage best practices
+
+### Testing
+
+- [ ] Vitest for unit/component tests
+- [ ] Playwright for E2E tests (`playwright/tests`)
+- [ ] Tests colocated per project standards; include accessibility states
+
+### Deployment
+
+- [ ] Primary deployment target: Fly.io (see `fly.toml`)
+  - [ ] Process via `start.sh` or configured entrypoint
+  - [ ] Internal port 8080; healthcheck endpoint example: `/resources/healthcheck`
+  - [ ] Persistent volume at `/data` for SQLite
+- [ ] Alternative hosting documented separately if SSR is removed
+- [ ] Build: `pnpm build`; Start via entrypoint
+- [ ] Rollbacks documented in Release plan
+
+---
+
+## External services / integrations
+
+- [ ] Authentication: Google Authentication via Firebase Authentication (implementation details in auth PRD)
+- [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
+- [ ] Email/Notifications: placeholder (future)
+- [ ] Third‑party SDKs documented with env vars and privacy considerations
+
+---
+
+## Data model touchpoints (if applicable)
+
+- **Anticipated changes**:
+  - [ ] `Team.clubIcon: String?` (URL to an icon)
+  - [ ] Playoffs: new models for brackets/rounds (TBD after design)
+  - [ ] Subscriptions and Payments/Transactions (Stripe)
+  - [ ] Referee pre‑auth tokens (scoped, expiring) for match access
+- **Migration strategy (development)**:
+  - [ ] `pnpm prisma generate`
+  - [ ] `pnpm prisma migrate dev --name <descriptive_name>`
+  - [ ] `pnpm prisma migrate reset` as needed
+- Seed data updates: `prisma/seed.ts` (or `seed.js`)
+
+**NOTE**: Keep schema changes minimal per iteration. Document details in implementation PRDs.
+
+---
+
+## Routing and navigation
+
+- **Routes affected**: `app/routes/*.tsx`
+- **Access control**:
+  - Public: `/`, `/teams`, `/auth/*`, error routes
+  - Authenticated: manager workflows (partially implemented, more in future)
+  - Admin: Admin Panel under obfuscated base path (current)
+- **Client‑side data flows and navigation**:
+  - Loaders/actions define contracts; loaders produce typed data
+  - Mutations with optimistic UI where appropriate
+  - Error boundaries: general and auth‑specific already present
+
+---
+
+## Internationalization
+
+- **Languages**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de`
+- **Translation keys to add**: added per feature; finalize across all languages at feature completion
+- **RTL impact**: maintain Arabic legibility and text sizing; ensure Latin text sizing also blends visually with Amiri
+- **Dutch capitalization rule**: Capitalize only the first word of titles/labels (sentence case); English titles may use title case
+- **Fallback language**: `nl`
+
+---
+
+## Design System & UI Guidelines
+
+### Standard UI Patterns
+
+- Actionable Panels: Use `Panel` and `ActionLinkPanel` for key flows and menus where appropriate
+- Component Consistency: Follow component library patterns and variants
+- Navigation Patterns: Consistent visual cues and mobile‑first navigation
+
+### Visual Design Standards
+
+- Color System: Use semantic color classes and CVA variants; brand = red; primary = emerald; also sky, teal, fuchsia, indigo, amber, slate
+- Color Hygiene: Replace cyan with sky where cyan appears in components (legacy to be removed)
+- Typography: System‑UI for Latin; Amiri for Arabic with visual text size balance utilities
+- Spacing: Standard spacing patterns; responsive grid
+
+### Interaction Patterns
+
+- Loading States: No spinners/skeletons by default, only on a per case basis
+- Error States: Clear error messages and recovery actions
+- Success States: Confirmations and toasts
+- Empty States: Helpful guidance and next actions
+
+---
+
+## Accessibility and mobile-first
+
+- Default to mobile; enhance with `lg:` (and `md:` where appropriate) for desktop
+- Touch targets ≥ 44px
+- Keyboard focus order and navigation
+- Screen reader labels and ARIA roles
+- WCAG AA minimum; color contrast verified
+
+---
+
+## Security and privacy
+
+- **Authentication (direction)**: Google Authentication via Firebase. Recommended approach:
+  - Use Firebase ID tokens to mint HTTP‑only session cookies on the server (session cookie bridging) to retain SSR security and role checks
+  - Avoid storing long‑lived tokens in `localStorage`; prefer HTTP‑only cookies + short‑lived in‑memory tokens when needed
+  - Logout invalidates Firebase session cookies and client state
+- **Authorization**: Role‑based guards on client with server verification in loaders/actions
+- **Sensitive data**: Minimize PII; document analytics configuration; sanitize public error messages
+
+---
+
+## Risk Assessment
+
+### Technical Risks
+
+- **Authentication migration complexity → Mitigation**: parallel login flows behind a config switch; staged rollout; comprehensive E2E tests (note: not in production yet)
+- **Role mapping and SSR loaders with Firebase sessions → Mitigation**: adopt session cookie bridging; adapt `requireUser*` utilities; add regression tests
+- **Playoff modeling scope creep → Mitigation**: start with single‑elimination; design extension points; incremental schema migrations
+
+### Business Risks
+
+- **Adoption uncertainty (early stage) → Mitigation**: prioritize manager value (scheduling, scoring, standings); instrument analytics; collect feedback (requires a feedback loop feature)
+- **Payment integration complexity → Mitigation**: start with minimal subscription tiers; postpone advanced billing to a separate phase
+
+### Mitigation Strategies
+
+- Ship in small, testable phases; maintain rollback path per release plan
+- Keep documentation and PRDs in sync with migrations and route changes
+
+---
+
+## Implementation Timeline
+
+### Phase 1: Authentication Modernization
+
+- Weeks 1–2: Firebase auth, session cookie bridging, redirects, logout
+
+### Phase 2: Matches & Scoring
+
+- Weeks 3–6: Scheduling UI and referee scoring flows; standings updates
+
+### Phase 3: Groups & Playoffs
+
+- Weeks 7–10: Group allocation UX; knockout/placement schema and UI
+
+### Phase 4+: Subscriptions/Billing & Content
+
+- Scoped and scheduled after core tournament operations stabilize
+
+---
+
+## Release plan
+
+- **Phase alignment**: 
+    1. Auth
+    2. Matches
+    3. Groups/Playoffs
+    4. Billing
+    5. CMS
+- **Milestones**:
+  - **M1**: Firebase auth live for admin/manager/referee behind config switch
+  - **M2**: Scheduling and scoring in production for a pilot tournament
+- **Rollout and fallback**:
+  - Config switch to swap auth providers during migration
+  - Rollback by redeploying previous container image on Fly.io
+
+---
+
+## Conclusion
+
+Tournado focuses on clarity for the public and control for managers. With a mobile‑first UI, solid role‑based security, and reliable data modeling for teams, groups, matches, and standings, it provides a practical foundation for real tournaments and room to grow into playoffs, subscriptions, and content.
+
+**Key Architectural Principles**:
+
+- Favor server‑verified auth and role checks during SSR
+- Keep routes fast and simple; mobile‑first with clear states
+
+**Critical First Steps**:
+
+1. Implement Firebase auth with session cookie bridging
+2. Finish group allocation CRUD
+3. Add `Team.clubIcon` support and fetching strategy
+4. Define playoff schema (start with single‑elimination)
+
+**Next Steps**:
+
+1. Deliver scheduling and scoring with live standings
+2. Finalize language enumeration centralization and fallback to `nl` (confirm single‑place registration)
+
+---
+
+## Open questions
+
+- Public area: should we add tournament pages with groups and standings summaries for faster discovery?
+- Referee pre‑auth: expiry rules and scope; what adjustments to match times are permitted?
+- Domain accuracy: per age category match duration and scheduling constraints; tie‑breakers and standings rules
+- Are additional manager workflows needed (e.g., field assignment, blackout times)?
+- Research: migration from GitHub to GitLab — effort, pros/cons, and the effect of GitLab’s feature flags compared to alternatives
+- Should we add optional chats, voting, and totalisator (non‑monetary score predictions) as future social features? If yes, how do we moderate and scope them?
+
+---
+
+## Links
+
+- Related ADRs: `.cursor/rules/` (add ADR IDs once created)
+- Documentation: `docs/development/*` (routing, teams, tournaments, state management)
+- Routes: `app/routes/*.tsx`
+- Models: `prisma/schema.prisma`
+- Tests: `app/**/*/__tests__/*.test.tsx`, `playwright/tests/*`
+
+---
+
+## Notes
+
+**Collocation of query/mutation logic with components/hooks**
+
+Rationale: colocating data‑fetching and mutation logic near the components that consume them improves readability and local reasoning. It reduces indirection for maintainers and helps keep feature code self‑contained. Use small, typed helpers and hooks colocated with the route/component when they are only used there. Promote to shared utils only when there is demonstrable reuse.
+
+**Alternative hosting if SSR is removed**
+
+Meaning: if we ever remove server‑side rendering and SQLite persistence, the app could be built as a purely client‑side SPA and hosted on static platforms (e.g., Vercel/Netlify static, Cloudflare Pages). This is not the current architecture. Such a change would require removing SSR dependencies and replacing server‑persisted data with APIs or static data sources. Document specifics separately if we decide to explore this.

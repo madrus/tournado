@@ -11,14 +11,56 @@ import 'dotenv/config'
 
 // Ensure DATABASE_URL is set for local dev if not already present
 if (!process.env.DATABASE_URL) {
+  const isTest =
+    process.env.NODE_ENV === 'test' ||
+    process.env.PLAYWRIGHT === 'true' ||
+    process.env.PLAYWRIGHT_TEST === 'true'
   if (process.env.NODE_ENV !== 'production') {
-    process.env.DATABASE_URL = 'file:./prisma/data.db?connection_limit=1'
+    process.env.DATABASE_URL = isTest
+      ? 'file:./prisma/data-test.db?connection_limit=1'
+      : 'file:./prisma/data.db?connection_limit=1'
   } else {
     throw new Error('DATABASE_URL must be set in production environment!')
   }
 }
 
 const ABORT_DELAY = 5_000
+
+function applySecurityHeaders(headers: Headers): void {
+  const isDev = process.env.NODE_ENV !== 'production'
+
+  // Note: We currently allow 'unsafe-inline' to support the small inline
+  // SSR script in root.tsx. We can migrate to nonces later.
+  const csp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    // Dev allowances include localhost and unsafe-eval for Vite HMR
+    `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com${isDev ? " 'unsafe-eval' http://localhost:* http://127.0.0.1:*" : ''}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "img-src 'self' data: blob: https://www.google-analytics.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    `connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com${isDev ? ' http://localhost:* ws://localhost:* ws://127.0.0.1:*' : ''}`,
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "form-action 'self'",
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    'upgrade-insecure-requests',
+  ].join('; ')
+
+  headers.set('Content-Security-Policy', csp)
+  headers.set('X-Frame-Options', 'DENY')
+  headers.set('X-Content-Type-Options', 'nosniff')
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
+
+  if (!isDev) {
+    headers.set(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains; preload'
+    )
+  }
+}
 
 export default function handleRequest(
   request: Request,
@@ -50,6 +92,7 @@ const handleBotRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
+          applySecurityHeaders(responseHeaders)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {
@@ -88,6 +131,7 @@ const handleBrowserRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
+          applySecurityHeaders(responseHeaders)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {

@@ -1,0 +1,580 @@
+---
+description: Architectural Decision Records
+globs:
+alwaysApply: false
+---
+
+# Architecture Decision Records
+
+<!--
+ADR_AGENT_PROTOCOL v1.0
+
+You (the agent) manage this file as the single source of truth for all ADRs.
+
+INVARIANTS
+- Keep this exact file structure and headings.
+- All ADR entries use H2 headings: "## ADR-XXXX — <Title>" (4-digit zero-padded ID).
+- Allowed Status values: Proposed | Accepted | Superseded
+- Date format: YYYY-MM-DD
+- New entries must be appended to the END of the file.
+- The Index table between the INDEX markers must always reflect the latest state and be sorted by ID desc (newest on top).
+- Each ADR MUST contain: Date, Status, Owner, Context, Decision, Consequences.
+- Each ADR must include an explicit anchor `<a id="adr-XXXX"></a>` so links remain stable.
+
+HOW TO ADD A NEW ADR
+1) Read the whole file.
+2) Compute next ID:
+   - Scan for headings matching: ^## ADR-(\d{4}) — .+$
+   - next_id = (max captured number) + 1, left-pad to 4 digits.
+3) Create a new ADR section using the “New ADR Entry Template” below.
+   - Place it AFTER the last ADR section in the file.
+   - Add an `<a id="adr-XXXX"></a>` line immediately below the heading.
+4) Update the Index (between the INDEX markers):
+   - Insert/replace the row for this ADR keeping the table sorted by ID descending.
+   - Title in the Index MUST link to the anchor: [<Title>](#adr-XXXX)
+   - If this ADR supersedes another: set “Supersedes” in this row, and update that older ADR:
+       a) Change its Status to “Superseded”
+       b) Add “Superseded by: ADR-XXXX” in its Consequences block
+       c) Update the older ADR’s Index row “Superseded by” column to ADR-XXXX
+5) Validate before saving:
+   - Exactly one heading exists for ADR-XXXX
+   - All required fields are present and non-empty
+   - Index contains a row for ADR-XXXX and remains properly sorted
+6) Concurrency resolution:
+   - If a merge conflict or duplicate ID is detected after reading: recompute next_id from the current file state, rename your heading, anchor, and Index row accordingly, and retry once.
+
+COMMIT MESSAGE SUGGESTION
+- "ADR-XXXX: <Short Title> — <Status>"
+
+END ADR_AGENT_PROTOCOL
+-->
+
+## Index
+
+<!-- BEGIN:ADR_INDEX -->
+
+| ID   | Title                                                                                 | Date       | Status   | Supersedes | Superseded by |
+| ---- | ------------------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                                        | 2025-09-03 | Proposed | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                                        | 2025-09-03 | Proposed | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                                     | 2025-09-03 | Proposed | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)                       | 2025-09-03 | Accepted | —          | —             |
+| 0008 | [Service Worker Logging and Minimal PWA Scope](#adr-0008)                             | 2025-09-03 | Accepted | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)                   | 2025-09-03 | Accepted | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                             | 2025-09-03 | Accepted | —          | —             |
+| 0005 | [Role-Based Access Control and Panel Access](#adr-0005)                               | 2025-09-03 | Accepted | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)                 | 2025-09-03 | Accepted | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)                   | 2025-08-27 | Accepted | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                             | 2025-08-27 | Accepted | —          | —             |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                                    | 2025-08-27 | Accepted | —          | —             |
+
+<!-- END:ADR_INDEX -->
+
+---
+
+## New ADR Entry Template (copy for each new decision)
+
+> Replace placeholders, keep section headers. Keep prose concise.
+
+```
+
+## ADR-XXXX — \<Short, specific title>
+
+<a id="adr-XXXX"></a>
+**Date**: YYYY-MM-DD
+**Status**: Proposed | Accepted | Superseded
+**Owner**: <Name>
+
+### Context
+
+<1–3 sentences: what changed or what forces drive this decision now>
+
+### Alternatives
+
+<Quick bullet list of alternatives considered, and why they were rejected.>
+
+### Decision
+
+\<Single clear decision in active voice; make it testable/verifiable>
+
+### Consequences
+
+* **Pros**: \<benefit 1>, \<benefit 2>
+* **Cons / risks**: \<cost 1>, \<risk 1>
+* **Supersedes**: ADR-NNNN (if any)
+* **Superseded by**: ADR-MMMM (filled later if replaced)
+
+### (Optional) Compliance / Verification
+
+\<How we’ll check this is honored: tests, checks, fitness functions, runbooks>
+
+```
+
+---
+
+## ADR-0001 — React Router v7 Frontend Architecture
+
+<a id="adr-0001"></a>
+**Date**: 2025-08-27
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+Modern tournament management applications require responsive, offline-capable frontend experiences with efficient data management. React Router v7 provides full-stack capabilities with SSR, while Prisma and SQLite offer robust data persistence without backend complexity.
+
+### Alternatives
+
+- **Create React App**: Basic setup but lacks SSR and advanced routing capabilities
+- **Next.js**: Full-stack but adds unnecessary complexity for frontend-focused applications
+- **Vite + React Router (classic)**: Client-side only, missing SSR benefits
+- **React Router v7**: Modern full-stack React framework with file-based routing and SSR
+
+### Decision
+
+Create a comprehensive React Router v7 frontend architecture with:
+
+- React Router v7 with file-based routing and SSR
+- TypeScript for type safety throughout the application
+- Prisma ORM with SQLite for data persistence
+- Tailwind CSS for responsive, mobile-first design
+- Vite as build tool for optimal performance
+- Zustand for client-side state management
+
+### Consequences
+
+- **Pros**: Modern React patterns, excellent performance, simplified architecture, type-safe development
+- **Cons / risks**: Relatively new framework, fewer third-party integrations, learning curve for team
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+Template includes working examples for routing, data loading, and state management. Development workflow optimized for React Router v7 patterns. Testing strategy covers both unit and E2E scenarios.
+
+---
+
+## ADR-0002 — Single Repository Frontend-Only Architecture
+
+<a id="adr-0002"></a>
+**Date**: 2025-08-27
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+Tournament management applications can be effectively built as frontend-only applications using React Router v7's full-stack capabilities. The decision was how to structure the codebase to maximize development efficiency while maintaining clear organization.
+
+### Alternatives
+
+- **Monorepo with separate frontend/backend**: Unnecessary complexity for frontend-only architecture
+- **Nested component directories**: Harder to navigate and maintain as application grows
+- **Single repository with feature-based organization**: Clean structure optimized for React Router v7
+
+### Decision
+
+Implement single repository structure optimized for React Router v7:
+
+- `/app/` - Main application code with routes, components, and utilities
+- `/app/routes/` - File-based routing structure following React Router v7 conventions
+- `/app/components/` - Reusable UI components organized by domain
+- `/prisma/` - Database schema and migrations
+- Root-level configuration files (Vite, Tailwind, TypeScript, etc.)
+- `/docs/` - Comprehensive documentation system
+
+### Consequences
+
+- **Pros**: Simplified development workflow, single deployment target, clear React Router patterns, easier maintenance
+- **Cons / risks**: All code in single repository, potential for large bundle sizes without proper code splitting
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+Directory structure follows React Router v7 conventions. Build system optimized for single-page application deployment. Documentation covers development patterns and best practices.
+
+---
+
+## ADR-0003 — State Management with Zustand and React Router Loaders
+
+<a id="adr-0003"></a>
+**Date**: 2025-08-27
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+Frontend applications need efficient state management that works well with React Router v7's data loading patterns. The challenge is balancing server-side data loading with client-side state management while maintaining type safety and performance.
+
+### Alternatives
+
+- **Redux Toolkit**: Comprehensive but adds complexity and boilerplate for frontend-only applications
+- **React Context only**: Simple but can cause performance issues with large state trees
+- **SWR/React Query**: Great for server state but requires separate client state solution
+- **Zustand with React Router loaders**: Lightweight client state with built-in server data management
+
+### Decision
+
+Implement hybrid state management combining Zustand for client state with React Router loaders for server data:
+
+- React Router loaders handle all server data fetching and caching
+- Zustand stores manage client-only state (UI state, user preferences, temporary data)
+- Server state flows through React Router's built-in data loading mechanisms
+- Client state persists using Zustand's persistence middleware where appropriate
+- Type-safe state management throughout the application
+
+### Consequences
+
+- **Pros**: Optimal performance, minimal boilerplate, leverages React Router's caching, type-safe state management, clear separation between server and client state
+- **Cons / risks**: Learning curve for developers familiar with Redux, need to understand React Router data patterns, potential over-fetching without careful loader design
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+Server data must flow through React Router loaders and actions. Client state management uses Zustand with proper TypeScript interfaces. No direct API calls from components except through loader/action patterns. State persistence configured only for appropriate client state.
+
+---
+
+## ADR-0004 — Authentication via Firebase with Session Cookie Bridging
+
+<a id="adr-0004"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+We are replacing bespoke cookie-based authentication with Firebase Authentication to support Google SSO and optional email/password while maintaining SSR and role checks.
+
+### Alternatives
+
+- Continue bespoke auth with session cookies (no SSO, more maintenance)
+- Store Firebase ID tokens in localStorage (security risk, no SSR integration)
+- OAuth-only (no email/password option)
+
+### Decision
+
+Adopt Firebase Authentication and mint HTTP-only session cookies on the server from Firebase ID tokens (session cookie bridging). Maintain SSR-friendly role checks and post-login role-based redirects. Avoid long-lived tokens in localStorage; use short-lived in-memory tokens where necessary.
+
+### Consequences
+
+* Pros: Strong security posture, SSO support, SSR compatibility, unified auth flows
+* Cons / risks: Migration effort, bridging complexity, dual-mode support during rollout
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+End-to-end tests cover sign-in/out, redirects, and loader-based role verification. Logout invalidates Firebase session cookies and client state.
+
+---
+
+## ADR-0005 — Role-Based Access Control and Panel Access
+
+<a id="adr-0005"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+We need a clear role hierarchy, permission matrix, and secure middleware for route protection, including panel access scoping.
+
+### Alternatives
+
+- Coarse admin/non-admin split (insufficient granularity)
+- Client-only role checks (not secure)
+- Manual URL parsing for self-access (vulnerable)
+
+### Decision
+
+Define roles: PUBLIC, REFEREE, MANAGER, ADMIN, EDITOR (future), BILLING (future). Inheritance: PUBLIC < REFEREE < MANAGER < ADMIN. Use permission-based middleware `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions. Admin Panel access for ADMIN, MANAGER, REFEREE with scoped features. Use route `params` for self-access checks (no manual URL parsing).
+
+### Consequences
+
+* Pros: Granular access, defense-in-depth, testable server-side enforcement
+* Cons / risks: Matrix maintenance, migration from legacy checks
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Playwright role projects test panel access and feature visibility. Unit tests validate permission matrix and self-access logic.
+
+---
+
+## ADR-0006 — Design System: Semantic Tokens and Dark Mode
+
+<a id="adr-0006"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+We need consistent theming with light/dark modes, 20+ color accents, and accessible contrast, while avoiding hard-coded colors.
+
+### Alternatives
+
+- Hard-coded Tailwind colors per component (duplication, inconsistency)
+- Conditional theme logic in components (fragile, hard to maintain)
+- Minimal token usage (insufficient coverage)
+
+### Decision
+
+Adopt semantic CSS tokens mapped in Tailwind, CVA-based component variants for accents, and a ThemeToggle. Icons inherit `currentColor`. Enforce WCAG 2.1 AA contrast and visible focus rings. No hard-coded colors; components remain theme-agnostic.
+
+### Consequences
+
+* Pros: Consistency, accessibility, easy theming, smaller duplication
+* Cons / risks: Initial refactor effort, need for contributor discipline
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Visual checks for light/dark, linting/guidelines, and tests for theme states on critical components.
+
+---
+
+## ADR-0007 — Navigation Performance: Prefetching and Data Freshness
+
+<a id="adr-0007"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+We want fast navigation without bandwidth waste and must avoid stale lists when using browser back/forward.
+
+### Alternatives
+
+- No prefetching (slower navigation)
+- Always prefetch aggressively (wasted bandwidth, battery)
+- Custom caching logic (complexity)
+
+### Decision
+
+Use context-based prefetching: `intent` for navigation links, `render` for CTAs/pagination, `viewport` selectively. Enable adaptive behavior on slow/data-saver/mobile. On teams/tournaments list pages, revalidate on `popstate` using `useRevalidator()`.
+
+### Consequences
+
+* Pros: Snappy UX, controlled overhead, better mobile performance
+* Cons / risks: More configuration surface, need to monitor analytics
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Track cache hit rates and navigation timings. Verify revalidation triggers on back/forward in tests.
+
+---
+
+## ADR-0008 — Service Worker Logging and Minimal PWA Scope
+
+<a id="adr-0008"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+We use a minimal service worker and need toggleable logging for debugging without polluting production consoles.
+
+### Alternatives
+
+- Full offline caching now (scope creep)
+- No service worker (lose PWA features)
+- Always-on verbose logging (noisy, risky)
+
+### Decision
+
+Add `SW_DEBUG` flag at the top of `public/sw.js` to control logging. Keep service worker minimal (install/activate/fetch) until we scope offline caching/push. Ensure `SW_DEBUG` is disabled in production.
+
+### Consequences
+
+* Pros: Easier troubleshooting, safe production defaults, clear evolution path
+* Cons / risks: Limited offline capability until scoped later
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+CI/runtime checks for `SW_DEBUG` in production builds. Document toggle in docs.
+
+---
+
+## ADR-0009 — Internationalization Persistence and SSR Detection
+
+<a id="adr-0009"></a>
+**Date**: 2025-09-03
+**Status**: Accepted
+**Owner**: AI Agent
+
+### Context
+
+The app supports multiple languages (nl, en, fr, ar, tr, de). We need SSR-aware language detection and reliable persistence.
+
+### Alternatives
+
+- LocalStorage-only persistence (not SSR-aware)
+- Query param only (fragile)
+- Browser default only (no explicit persistence)
+
+### Decision
+
+Persist language in cookie + localStorage reactively. Read language from cookie on the server during initial request. Use `nl` as fallback. Centralize supported language enumeration for easier maintenance.
+
+### Consequences
+
+* Pros: SSR compatibility, consistent UX across sessions, easy language management
+* Cons / risks: Keep enum and translation files in sync, cookie handling
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Loader reads cookie; root updates cookie/localStorage on change. Tests verify SSR language and client persistence.
+
+---
+
+## ADR-0010 — CI/CD and Fly.io Deployment Strategy
+
+<a id="adr-0010"></a>
+**Date**: 2025-09-03
+**Status**: Proposed
+**Owner**: AI Agent
+
+### Context
+
+We deploy via Fly.io with GitHub Actions and notify via Slack. We want a clear branch→environment mapping, rollback strategy, and secrets management.
+
+### Alternatives
+
+- Manual deploys only (inconsistent)
+- Single environment (no staging)
+- Multiple cloud targets (complexity)
+
+### Decision
+
+Define CI/CD workflow with branch→app mapping and explicit secrets:
+
+- Branch mapping: `dev` → staging app, `main` → production app
+- Fly apps:
+  - Staging: `tournado-staging` (host: `tournado-staging.fly.io`)
+  - Production: `tournado` (host: `tournado.fly.io`)
+- GitHub Actions:
+  - Deploy on push to `dev` and `main`
+  - Secrets in GitHub: `FLY_API_TOKEN` (required), `SLACK_WEBHOOK_URL` (optional)
+  - CI runs lint, typecheck, unit, and E2E before deploy
+- Fly app secrets (per environment):
+  - `SESSION_SECRET` (required)
+  - `DATABASE_URL` (SQLite volume): `file:/data/sqlite.db?connection_limit=1`
+    - Local dev default: `file:./prisma/data.db?connection_limit=1`
+    - Test DB (E2E/local tests): `file:./prisma/data-test.db?connection_limit=1`
+  - `RESEND_API_KEY` (email)
+  - `EMAIL_FROM` (e.g., `Team Registration <onboarding@resend.dev>`) — not secret but set per env
+  - `BASE_URL` (email link base)
+    - Local dev: `http://localhost:5173`
+    - Staging: `https://tournado-staging.fly.io`
+    - Production: `https://tournado.fly.io`
+  - Firebase web config for client (Vite):
+    - `VITE_FIREBASE_API_KEY`
+    - `VITE_FIREBASE_AUTH_DOMAIN`
+    - `VITE_FIREBASE_PROJECT_ID`
+    - `VITE_FIREBASE_STORAGE_BUCKET`
+    - `VITE_FIREBASE_MESSAGING_SENDER_ID`
+    - `VITE_FIREBASE_APP_ID`
+    - `VITE_FIREBASE_MEASUREMENT_ID` (if using Firebase Analytics)
+  - (Optional) `TRUSTED_PROXIES` (comma‑separated) when running behind known proxies/CDN
+  - (Future) `VITE_GA_MEASUREMENT_ID` if GA4 is added
+- Slack notifications: on dev and main after workflow run
+- Rollback: use Fly’s release history to re‑deploy the previous image
+
+Environment‑specific values differ (e.g., `EMAIL_FROM`, `BASE_URL`, Firebase project IDs); keep staging and production secrets separate in each Fly app.
+
+### Consequences
+
+* Pros: Predictable releases, quick rollback, environment isolation, visibility via Slack
+* Cons / risks: Requires branch hygiene, secret rotation, and per‑env configuration discipline
+* Supersedes: —
+* Superseded by: —
+
+---
+
+## ADR-0011 — Security Headers and CSP Baseline
+
+<a id="adr-0011"></a>
+**Date**: 2025-09-03
+**Status**: Proposed
+**Owner**: AI Agent
+
+### Context
+
+We need a default set of security headers (HSTS, X-Frame-Options, CSP) appropriate for an SSR React Router app.
+
+### Alternatives
+
+- No CSP (higher XSS risk)
+- Overly strict CSP (breaks features)
+- Ad-hoc headers per route (inconsistent)
+
+### Decision
+
+Adopt a baseline header set (HSTS, frame options, referrer policy, permissions policy) and define a CSP pattern (script-src 'self' plus hashed inline where needed, connect-src for APIs, img-src data: as needed). Exact directives to be finalized after asset inventory.
+
+#### Current Implementation (Interim)
+
+- Implemented minimal CSP and security headers in SSR response construction (`app/entry.server.tsx`).
+- Allows `'unsafe-inline'` in `script-src` temporarily to support the small inline SSR snippet in `app/root.tsx`.
+- Dev mode adds allowances for Vite HMR (`unsafe-eval`, localhost HTTP/WS). Production enables HSTS.
+
+#### Nonce Migration Plan (Tightening CSP)
+
+1) Generate a per-request nonce in `app/entry.server.tsx` and make it available to rendering (via context/props).
+2) Attach the nonce to all inline/script tags:
+   - Add `nonce` to the inline SSR script in `app/root.tsx`.
+   - Pass the same `nonce` to `<Scripts />` so framework-generated script tags include it (or configure equivalent if required).
+3) Update CSP `script-src` to replace `'unsafe-inline'` with `'nonce-<value>'` (keep `'self'`; keep dev HMR allowances in development).
+4) Verify no other inline scripts/styles remain; move any remaining inline code to external files.
+5) Run with `Content-Security-Policy-Report-Only` first to catch violations; switch to enforcing once clean.
+
+### Consequences
+
+* Pros: Defense-in-depth, consistent security posture
+* Cons / risks: Initial tuning needed to avoid breakage
+* Supersedes: —
+* Superseded by: —
+
+---
+
+## ADR-0012 — Analytics and Privacy (GA4 Scope)
+
+<a id="adr-0012"></a>
+**Date**: 2025-09-03
+**Status**: Proposed
+**Owner**: AI Agent
+
+### Context
+
+We plan to use GA4 for analytics with privacy considerations (anonymization, consent, retention).
+
+### Alternatives
+
+- No analytics (reduced insight)
+- Self-hosted analytics (higher maintenance)
+
+### Decision
+
+Define GA4 scope: basic page/navigation events, anonymize IP where applicable, document consent/opt-out, and retention defaults. Avoid PII and ensure configuration is documented.
+
+### Consequences
+
+* Pros: Insight into usage with defined privacy boundaries
+* Cons / risks: Compliance obligations and configuration diligence
+* Supersedes: —
+* Superseded by: —
+
+---

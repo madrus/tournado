@@ -380,17 +380,17 @@ export const RATE_LIMITS = {
   ADMIN_LOGIN: {
     maxAttempts: 5,
     windowMs: 15 * 60 * 1000, // 15 minutes
-    blockDurationMs: 30 * 60 * 1000, // 30 minutes block after limit
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block after limit
   },
   ADMIN_ACTIONS: {
-    maxAttempts: 30,
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    blockDurationMs: 10 * 60 * 1000, // 10 minutes block
+    maxAttempts: 5,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block
   },
   USER_REGISTRATION: {
     maxAttempts: 5, // Allow for form validation errors
-    windowMs: 30 * 60 * 1000, // 30 minutes
-    blockDurationMs: 60 * 60 * 1000, // 1 hour block
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes block
   },
 } as const
 

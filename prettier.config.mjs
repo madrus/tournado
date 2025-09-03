@@ -4,7 +4,7 @@ import prettierConfig from '@madrus/configs/prettier.config.mjs'
 prettierConfig.overrides = [
   ...prettierConfig.overrides,
   {
-    files: ['*.md', '*.mdx'],
+    files: ['*.md', '*.mdc', '*.mdx'],
     options: {
       tabWidth: 3,
       proseWrap: 'preserve',

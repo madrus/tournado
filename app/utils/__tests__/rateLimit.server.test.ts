@@ -260,19 +260,19 @@ describe('rateLimit.server', () => {
     test('should have proper admin login limits', () => {
       expect(RATE_LIMITS.ADMIN_LOGIN.maxAttempts).toBe(5)
       expect(RATE_LIMITS.ADMIN_LOGIN.windowMs).toBe(15 * 60 * 1000) // 15 minutes
-      expect(RATE_LIMITS.ADMIN_LOGIN.blockDurationMs).toBe(30 * 60 * 1000) // 30 minutes
+      expect(RATE_LIMITS.ADMIN_LOGIN.blockDurationMs).toBe(15 * 60 * 1000) // 15 minutes
     })
 
     test('should have proper admin actions limits', () => {
-      expect(RATE_LIMITS.ADMIN_ACTIONS.maxAttempts).toBe(30)
-      expect(RATE_LIMITS.ADMIN_ACTIONS.windowMs).toBe(5 * 60 * 1000) // 5 minutes
-      expect(RATE_LIMITS.ADMIN_ACTIONS.blockDurationMs).toBe(10 * 60 * 1000) // 10 minutes
+      expect(RATE_LIMITS.ADMIN_ACTIONS.maxAttempts).toBe(5)
+      expect(RATE_LIMITS.ADMIN_ACTIONS.windowMs).toBe(15 * 60 * 1000) // 15 minutes
+      expect(RATE_LIMITS.ADMIN_ACTIONS.blockDurationMs).toBe(15 * 60 * 1000) // 15 minutes
     })
 
     test('should have proper user registration limits', () => {
       expect(RATE_LIMITS.USER_REGISTRATION.maxAttempts).toBe(5)
-      expect(RATE_LIMITS.USER_REGISTRATION.windowMs).toBe(30 * 60 * 1000) // 30 minutes
-      expect(RATE_LIMITS.USER_REGISTRATION.blockDurationMs).toBe(60 * 60 * 1000) // 1 hour
+      expect(RATE_LIMITS.USER_REGISTRATION.windowMs).toBe(15 * 60 * 1000) // 15 minutes
+      expect(RATE_LIMITS.USER_REGISTRATION.blockDurationMs).toBe(15 * 60 * 1000) // 15 minutes
     })
   })
 

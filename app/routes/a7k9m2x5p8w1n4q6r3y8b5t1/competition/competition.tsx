@@ -56,18 +56,6 @@ export async function loader({
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
 
-  // Debug logging
-  console.log(
-    'Competition loader - tournamentListItems:',
-    tournamentListItems?.length || 0,
-    'items'
-  )
-  console.log('Competition loader - tournamentId:', tournamentId)
-  console.log(
-    'Competition loader - tournament found:',
-    tournament ? tournament.name : 'none'
-  )
-
   return {
     tournament: tournament
       ? {

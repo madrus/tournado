@@ -7,6 +7,9 @@ import { afterEach, beforeEach, vi } from 'vitest'
 
 // Set up required environment variables for tests
 process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
+// Ensure unit tests point to the test database (even though Prisma is mocked)
+process.env.DATABASE_URL =
+  process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1'
 
 // Mock Prisma Client to prevent database initialization during tests
 vi.mock('~/db.server.ts', () => ({

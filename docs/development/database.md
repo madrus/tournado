@@ -12,13 +12,13 @@ This project uses a dual database setup to ensure separation between development
 
 ### E2E Test Database
 
-- **Location**: `prisma/prisma/data.db`
-- **Purpose**: Dedicated database for end-to-end (e2e) tests using Playwright
-- **Usage**: Used automatically when running e2e tests with `pnpm test:e2e:all`
+- **Location**: `prisma/data-test.db`
+- **Purpose**: Dedicated database for end-to-end (E2E) tests using Playwright (and available for unit tests if needed)
+- **Usage**: Used automatically when running E2E tests via `pnpm test:e2e:*` scripts. Migrations are applied to this database before the test server starts.
 
 ### Critical Requirement for E2E Tests
 
-!> For e2e tests to run without Prisma connection issues, it is essential that the main database (`prisma/data.db`) is 100% in order. The e2e test setup depends on the main database being properly configured and migrated.
+!> For E2E tests we now run against the dedicated test database (`prisma/data-test.db`). The test runner applies migrations automatically before starting the server to ensure schema consistency.
 
 **Before running e2e tests, ensure:**
 

@@ -39,18 +39,6 @@ export function TournamentFilter({
   const adjustedSelectedValue =
     !showAllOption && selectedValue === 'all' ? '' : selectedValue
 
-  // Debug logging
-  console.log('TournamentFilter:', {
-    tournamentListItemsLength: tournamentListItems.length,
-    selectedTournamentId,
-    selectedValue,
-    adjustedSelectedValue,
-    filteredOptionsLength: filteredOptions.length,
-    showAllOption,
-    tournamentOptions, // Show all tournament options
-    filteredOptions, // Show all filtered options
-  })
-
   return (
     <ComboField
       name='tournamentFilter'

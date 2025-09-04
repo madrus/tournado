@@ -16,6 +16,7 @@
    - [Database](development/database.md)
    - [Design System](development/design-system.md)
    - [Icon Guidelines](development/icon-guidelines.md)
+   - [RBAC Hardening (Phase 2)](development/RBAC.hardening.md)
    - [Mobile Web App Configuration](development/mobile-webapp-config.md)
    - [Multi-Language Support](development/multi-language-support.md)
    - [Routing](development/routing.md)

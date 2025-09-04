@@ -332,7 +332,7 @@ it('should show Admin Panel for admin users', () => {
 
 // Test non-admin authenticated users
 const regularUser: User = {
-  role: 'PUBLIC', // or 'TOURNAMENT_MANAGER', 'REFEREE', etc.
+  role: 'PUBLIC', // or 'MANAGER', 'REFEREE', 'ADMIN'
   // ... other properties
 }
 

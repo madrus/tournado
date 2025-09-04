@@ -32,7 +32,7 @@ The application supports three distinct user contexts:
 ##### 2. **Authenticated Non-Admin Users**
 
 - **Status**: `authenticated = true`
-- **Roles**: `PUBLIC`, `TOURNAMENT_MANAGER`, `REFEREE_COORDINATOR`, `REFEREE`
+- **Roles**: `PUBLIC`, `MANAGER`, `REFEREE`, `ADMIN`
 - **Visible Menu Items**:
    - Teams (public access)
    - Profile (authenticated only)

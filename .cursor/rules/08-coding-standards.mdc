@@ -75,6 +75,29 @@ These rules ensure consistent coding style and standards across the project.
 - **Consistency** - Follows Dutch language conventions
 - **User Experience** - Feels natural to Dutch speakers
 
+### Dash Usage (no em dashes)
+
+**Rule:** Never use em dashes (—) in documentation. Use a spaced hyphen instead: ` - ` (one space on each side).
+
+#### ✅ Correct
+```markdown
+Phase 1 - Authentication Modernization
+Real-time score updates - scope TBD
+This decision - while optional - improves readability.
+```
+
+#### ❌ Incorrect
+```markdown
+Phase 1 — Authentication Modernization
+Real-time score updates — scope TBD
+This decision—while optional—improves readability.
+```
+
+#### Why This Rule?
+- **Consistency** - Uniform punctuation across docs and UIs
+- **Readability** - Spaced hyphens are clearer in many fonts and locales
+- **Cross-platform** - Avoids encoding/typographic issues in tooling
+
 ## Implementation Guidelines
 
 ### When Adding Dutch Translations

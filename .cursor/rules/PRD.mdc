@@ -1,5 +1,5 @@
 ---
-description: Product Requirements Document — Tournado Tournament Management
+description: Product Requirements Document - Tournado Tournament Management
 globs:
 alwaysApply: false
 ---
@@ -88,33 +88,44 @@ Database & Data Model
 
 ### 📋 Planned Features (PRD Scope)
 
-**Phase 1 — Authentication Modernization (Top Priority)**
+**Phase 1 - Authentication Modernization (Top Priority)**
 
 - [ ] Google Authentication via Firebase (Google account or username/password)
 - [ ] Replace cookie session auth with Firebase‑backed flow (see Security & privacy)
 - [ ] Post‑login redirects, logout, and credential persistence
 - [ ] Visible auth status indicator
 
-**Phase 2 — Matches & Scoring**
+**Phase 2 - Groups & Playoffs (MVP)**
+
+- [ ] Groups and seeding workflows
+- [ ] Playoffs: single‑elimination bracket (simplest bracket)
+- [ ] Competition status: standings and placements
+
+**Phase 3 - Matches & Scoring**
 
 - [ ] Match schedule planning (date/time/location) for tournaments
 - [ ] Score registration by referees
 - [ ] Live/near‑real‑time standings and basic statistics
 
 
-**Phase 3 — Groups & Playoffs**
+**Phase 4 - Public Engagement**
 
-- [ ] Groups and seeding workflows
-- [ ] Playoff structures (knockout, placement matches); schema design
-- [ ] Competition status: standings and placements
+- [ ] Public tournament dashboard and live updates
+- [ ] Standings and classifications
+- [ ] Notifications (opt‑in)
 
-**Phase 4 — Subscriptions & Billing (future)**
+**Phase 5 - Advanced Brackets (post-MVP)**
+
+- [ ] Bracket types beyond single-elimination: double-elimination, placement matches, Swiss system; multi-stage (group -> knockout)
+- [ ] Schema and visual UI; seeding and byes
+
+**Phase 6 - Subscriptions & Billing (future)**
 
 - [ ] Subscriptions for managers to organize tournaments
 - [ ] Payments (Stripe) for subscriptions and voluntary contributions
 - [ ] Financial dashboard (ADMIN/BILLING) with totals and drill‑down
 
-**Phase 5 — Content Management (future)**
+**Phase 7 - Content Management (future)**
 
 - [ ] Articles (text/images/video) for home, tournament, team and match pages via a headless CMS
 
@@ -124,34 +135,15 @@ Database & Data Model
 
 **Primary personas for MVP**
 
-- [ ] Manager
 - [ ] Admin
+- [ ] Manager
+- [ ] Referee
 - [ ] Public
 
 **Secondary personas**
 
-- [ ] Referee
 - [ ] Editor (future)
 - [ ] Billing (future)
-
-### Manager
-
-**Authentication**: Required
-
-RBAC note: Manager inherits all Referee permissions; Admin Panel access with manager‑scoped features.
-
-**Primary Goals**: Create and operate tournaments; manage teams, groups, and match calendars
-
-**Key Features Needed**:
-
-- [ ] Tournament CRUD, team registration and management
-- [ ] Group assignments and match scheduling
-- [ ] Assign referees via pre‑authenticated links
-
-**Jobs‑to‑be‑done**:
-
-- [ ] When preparing a tournament, I want to register teams and allocate them to groups so I can generate balanced schedules
-- [ ] When running the tournament, I want to update the schedule and see standings so I can keep everyone informed
 
 ### Admin
 
@@ -171,18 +163,42 @@ RBAC note: Admin inherits Manager/Referee/Public permissions; full Admin Panel a
 - [ ] When a new manager applies, I want to review and assign a role so I can maintain platform safety
 - [ ] When issues arise, I want admin dashboards to intervene and correct data quickly
 
+### Manager
+
+**Authentication**: Required
+
+RBAC note: Manager inherits all Referee permissions; Admin Panel access with manager‑scoped features.
+
+**Primary Goals**: Create and operate tournaments; manage teams, groups, and match calendars
+
+**Key Features Needed**:
+
+- [ ] Tournament CRUD, team registration and management
+- [ ] Group assignments and match scheduling
+- [ ] Referee scheduling and assignment; match assignment dashboard (permissions: `referees:assign`, `assignments:manage`)
+- [ ] Manage referee pre‑auth links (issue/revoke) scoped to assigned matches; no general user role management (admin approves users/roles)
+- [ ] Team coordination and communication; results publication workflow
+- [ ] Configuration assistance (divisions, categories, tie‑breakers)
+- [ ] Assign referees via pre‑authenticated links
+
+**Jobs‑to‑be‑done**:
+
+- [ ] When preparing a tournament, I want to register teams and allocate them to groups so I can generate balanced schedules
+- [ ] When running the tournament, I want to update the schedule and see standings so I can keep everyone informed
+
 ### Referee
 
-**Authentication**: Pre‑authenticated link (no account required initially)
+**Authentication**: Pre‑authenticated link only (no registered user account); a virtual referee user may be created by the system for auditing
 
-RBAC note: Inherits Public permissions; scoped access to assigned matches via pre‑auth link or panel; no data governance capabilities.
+RBAC note: Referees are temporary, token‑based access holders for a specific tournament. Access is limited to assigned matches via pre‑validated, expiring links (revocable). No general Admin Panel login or navigation. Details: See `docs/development/PRD.details.md#referee-access-model`
 
 **Primary Goals**: Submit scores and manage assigned match times within constraints
 
 **Key Features Needed**:
 
-- [ ] Secure, scoped access to their assigned matches
+- [ ] Secure, scoped access to their assigned matches (dashboard)
 - [ ] Score entry and permitted scheduling adjustments
+- [ ] Offline score entry with background sync and conflict handling
 
 **Jobs‑to‑be‑done**:
 
@@ -200,8 +216,10 @@ RBAC note: Read‑only public access; no Admin Panel access.
 
 **Key Features Needed**:
 
-- [ ] Tournaments and teams browsing
-- [ ] Matches information (date/time/location), standings, and results
+- [ ] Tournaments and teams browsing; search and filters
+- [ ] Live tournament dashboard (live scores, by‑field/by‑group views)
+- [ ] Real‑time match results; standings and classifications
+- [ ] Match schedules and field information
 - [ ] Team registration for public tournaments
 
 **Jobs‑to‑be‑done**:
@@ -209,6 +227,7 @@ RBAC note: Read‑only public access; no Admin Panel access.
 - When I follow a tournament, I want to quickly find my team’s group and matches so I can plan attendance
 - When checking results, I want up‑to‑date scores and standings so I can see who advances
 - When appropriate, I want to register teams for selected tournaments and specify the contact details for the Team Leader
+- I want optional live alerts when my team is about to play or when goals are scored (frequency configurable)
 
 
 ### Editor (future)
@@ -239,10 +258,10 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 ## Feature Roadmap
 
-### Phase 1: Authentication Modernization (2 weeks)
+### Phase 1: Authentication Modernization (1 week)
 
 - [ ] Priority: Critical
-- [ ] Timeline: 2 weeks
+- [ ] Timeline: 1 week
 
 #### 1.1 Google Auth + Session Bridging
 
@@ -254,41 +273,84 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - [ ] Replace cookie session auth in UI flows; maintain role checks
 - [ ] Logout invalidation; visible auth status; redirects
 
-### Phase 2: Matches & Scoring (3–4 weeks)
+### Phase 2: Groups & Playoffs (MVP) (3 - 4 weeks)
 
 - [ ] Priority: High
-- [ ] Timeline: 3–4 weeks
+- [ ] Timeline: 3 - 4 weeks
 
-#### 2.1 Scheduling
-
-- [ ] Match calendar (date/time/location); constraints by category/division
-
-#### 2.2 Scoring & Standings
-
-- [ ] Referee score entry; standings update; basic stats
-
-### Phase 3: Groups & Playoffs (3–4 weeks)
-
-- [ ] Priority: High
-- [ ] Timeline: 3–4 weeks
-
-#### 3.1 Group Workflows
+#### 2.1 Group Workflows
 
 - [ ] Group allocation UX over `GroupSet`/`Group`/`GroupSlot`
 
-#### 3.2 Playoff Structures
+#### 2.2 Playoff Structures (MVP)
 
-- [ ] Knockout and placement matches; schema and UI
+- [ ] Bracket: single‑elimination only (simplest path)
+- [ ] Schema + visual UI; basic seeding and byes
 
-### Phase 4: Subscriptions & Billing (future, scoped later)
+#### 2.3 RBAC Hardening
+
+- [ ] Align implementation with PRD RBAC matrix (permissions and scopes)
+- [ ] Admin approves users and assigns roles (`ADMIN`, `MANAGER`); no manager role assignment
+- [ ] Managers can issue and revoke pre‑auth referee links scoped to a tournament and assigned matches (no registered referee accounts)
+- [ ] Restrict Referee access to own referee dashboard only; no general Admin Panel navigation
+Details: See `docs/development/RBAC.hardening.md`
+
+### Phase 3: Scheduling & Scoring (3 - 4 weeks)
+
+- [ ] Priority: High
+- [ ] Timeline: 3 - 4 weeks
+
+#### 3.1 Scheduling
+
+- [ ] Match calendar (date/time/location); constraints by category/division
+- [ ] Automatic conflict detection and resolution suggestions (fields/teams/referees)
+
+#### 3.2 Referee Experience
+
+- [ ] Referee dashboard (assignments, statuses, quick actions)
+- [ ] Mobile scoring with validation; offline entry with background sync
+- [ ] Standings update; basic stats
+
+#### 3.3 Live Updates (baseline)
+
+- [ ] Real‑time score/status broadcasting (WebSocket/SSE) - scope TBD
+- [ ] Push notifications for critical events (opt‑in)
+Details: See `docs/development/PRD.details.md#live-updates` and `#notifications`
+
+### Phase 4: Public Engagement (4 - 5 weeks)
+
+- [ ] Priority: High
+- [ ] Timeline: 4 - 5 weeks
+
+#### 4.1 Public Tournament Dashboard
+
+- [ ] Live tournament overview; by‑field and by‑group views
+- [ ] Live match progress indicators and results
+- [ ] Team pages with performance and history
+- [ ] Search and filtering
+Details: See `docs/development/PRD.details.md#public-dashboard`
+
+#### 4.2 Standings & Classifications
+
+- [ ] Real‑time pool standings; transparent tie‑breakers
+Details: See `docs/development/PRD.details.md#standings-tie-breakers`
+
+#### 4.3 Notifications (opt‑in)
+
+- [ ] Team/match alerts (kickoff, final, optional goal alerts); permissioned
+
+### Phase 5: Advanced Brackets (2 - 3 weeks)
+
+- [ ] Bracket types beyond single-elimination: double-elimination, placement matches, Swiss system; multi-stage (group -> knockout)
+Details: See `docs/development/PRD.details.md#bracket-formats`
+
+### Phase 6: Subscriptions, Communications & Extended (future)
 
 - [ ] Priority: Medium
-- [ ] Timeline: TBD
-
-### Phase 5: Content Management (future, scoped later)
-
-- [ ] Priority: Low
-- [ ] Timeline: TBD
+- [ ] Subscriptions/Billing (Stripe): tiers, payments, billing dashboard
+- [ ] Email integration: registration confirmations, match reminders, schedule changes, results
+- [ ] Integrations (API, calendar export, social sharing)
+- [ ] Extended admin features: multi‑tournament series, referee scheduling automation, equipment/field inventory, advanced search, favorites
 
 ---
 
@@ -348,33 +410,33 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### Authentication
 
-- Current State: Email/password auth with server‑side cookie sessions; routes for sign‑in/sign‑up/sign‑out; role‑guarded loaders; smart redirects
-- Limitations: No Google SSO; session cookies tied to bespoke auth; client auth store not the source of truth
-- Requirements: Introduce Firebase Google Auth (and optional email/password via Firebase). Bridge to server using Firebase session cookies to keep SSR secure. Preserve role checks and redirects
+- Current State: Email/password auth with server‑side cookie sessions; role‑guarded routes and smart redirects
+- Requirements (high‑level): Modernize auth with Google and email/password via Firebase; SSR‑compatible session bridging; preserve role checks and redirects
+- Details: See `docs/development/PRD.details.md#authentication-bridging` (authentication bridging, tokens, redirects)
 
 #### Teams & Tournaments
 
 - Current State: Public teams listing + creation; Admin teams CRUD; Admin tournaments CRUD; mobile swipe‑to‑delete
-- Limitations: Public team detail still in progress; club icon not modeled
-- Requirements: Team club icon via API (and `Team.clubIcon` field); complete public team detail; extend admin dashboards as needed
+- Requirements (high‑level): Complete public team detail; support club icon; extend admin dashboards as needed
 
 #### Groups & Matches
 
 - **Current State**: Data models for `GroupSet`/`Group`/`GroupSlot`; `Match` and `MatchScore` exist but not used yet
 - **Limitations**: Group allocation workflows mid‑implementation; playoffs not yet modeled; match calendar UX not complete
-- **Requirements**: CRUD UX for group allocation; playoff schema (knockout/placement); scheduling tooling; referee flows
+- **Requirements**: CRUD UX for group allocation; playoff schema (knockout/placement); scheduling tooling with automatic conflict detection/resolution; referee flows
+- Details: See `docs/development/PRD.details.md#scheduling-conflicts`, `#referee-experience`, and `#bracket-formats`
 
 #### Internationalization
 
 - **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English)
-- **Limitations**: Language registration not centralized; fallback behavior implicit
-- **Requirements**: Centralize supported languages in a single enum/object used by i18n config; fallback language: `nl`; adding a language should require adding one enum value and one translation file only -- this is actually already so but I am not sure if adding a new language in ONE place is implemented yet
+- **Requirements (high‑level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`
+- Details: See `docs/development/PRD.details.md#i18n-details` (i18n centralization and locale handling)
 
 #### Deployment
 
-- **Current State**: Fly.io deployment via container; SQLite volume mounted at `/data`; SSR enabled
-- **Limitations**: Cold‑start snappiness may vary
-- **Requirements**: Keep startup snappy; profile startup path and cache hot routes
+- **Current State**: Fly.io deployment via container; SQLite volume; SSR enabled
+- **Requirements (high‑level)**: Keep startup snappy; profile startup path and cache hot routes
+- Details: See `docs/development/PRD.details.md#deployment-details` (hosting, ports/healthchecks, build/start)
 
 ### Architecture Requirements
 
@@ -390,21 +452,9 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 ## Performance & Data Loading
 
-### Prefetching Strategy (React Router v7)
-
-- Use route-level prefetching: `intent` (hover/focus), `render` (on render), and `viewport` (when visible)
-- Default contexts: primary navigation = `intent`, action buttons/CTAs = `render`, list items = `intent`
-- Adaptive prefetching: reduce aggressiveness on slow connections, data-saver, and mobile; disable `viewport` on poor networks
-
-### Data Freshness on Back/Forward
-
-- Add `popstate` listener on list pages (teams, tournaments) to revalidate data when navigating back/forward
-- Use `useRevalidator()` to trigger refetch; navigation via in-app links fetches fresh data by default
-
-### Targets
-
-- Navigation latency budget: sub-500ms for prefetched routes
-- Keep prefetch overhead minimal (2–5 KB typical) and measurable via analytics
+- High‑level: Use context‑appropriate prefetching and lightweight revalidation to keep navigation responsive.
+- Targets: Sub‑500ms for prefetched navigations; minimal prefetch overhead.
+- Details: See `docs/development/PRD.details.md#performance-data-loading` (Prefetching, data freshness strategies).
 
 ---
 
@@ -422,7 +472,6 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
   - [ ] Mobile‑first layout and touch targets by default
   - [ ] Routes colocated with layouts; lazy loading where appropriate
   - [ ] Collocate query/mutation logic with components/hooks where feasible
-  - [ ] Route prefetching per context (`intent`, `render`, `viewport`) with adaptive behavior
 
 ### Server runtime (monolithic app)
 
@@ -434,25 +483,25 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 - [ ] Service worker, offline caching, add‑to‑home‑screen
 - [ ] Update prompts and background sync where applicable
+- [ ] Offline scoring queues with background sync; visible pending state and conflict handling
 - [ ] Follow privacy and storage best practices
-- [ ] `SW_DEBUG` toggle in `public/sw.js` for controlled logging (disable in prod)
+Details: See `docs/development/PRD.details.md#pwa-details` (offline queues, update prompts, SW debug)
+Mobile wrapper: See `docs/development/PRD.details.md#mobile-wrapper` for Capacitor plan (Android/iOS)
 
 ### Testing
 
 - [ ] Vitest for unit/component tests
 - [ ] Playwright for E2E tests (`playwright/tests`)
 - [ ] Tests colocated per project standards; include accessibility states
-- [ ] MCP Vitest server for AI‑assisted testing (tools, resources, coverage)
+Details: See `docs/development/PRD.details.md#testing-tooling` (test placement, MCP Vitest server)
 
 ### Deployment
 
 - [ ] Primary deployment target: Fly.io (see `fly.toml`)
-  - [ ] Process via `start.sh` or configured entrypoint
-  - [ ] Internal port 8080; healthcheck endpoint example: `/resources/healthcheck`
-  - [ ] Persistent volume at `/data` for SQLite
+  - [ ] Persistent volume for SQLite; SSR enabled
 - [ ] Alternative hosting documented separately if SSR is removed
-- [ ] Build: `pnpm build`; Start via entrypoint
 - [ ] Rollbacks documented in Release plan
+Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, port, healthcheck, build/start)
 
 ---
 
@@ -460,26 +509,16 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 - [ ] Authentication: Google Authentication via Firebase Authentication (implementation details in auth PRD)
 - [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
-- [ ] Email/Notifications: placeholder (future)
+- [ ] Email/Notifications: integrate provider (TBD) for registration confirmations, match reminders, schedule changes, and final results; outbox + retries (see `docs/development/PRD.details.md#email-integration`)
 - [ ] Third‑party SDKs documented with env vars and privacy considerations
 - [ ] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
 
 ---
 
-## Data model touchpoints (if applicable)
+## Data Model
 
-- **Anticipated changes**:
-  - [ ] `Team.clubIcon: String?` (URL to an icon)
-  - [ ] Playoffs: new models for brackets/rounds (TBD after design)
-  - [ ] Subscriptions and Payments/Transactions (Stripe)
-  - [ ] Referee pre‑auth tokens (scoped, expiring) for match access
-- **Migration strategy (development)**:
-  - [ ] `pnpm prisma generate`
-  - [ ] `pnpm prisma migrate dev --name <descriptive_name>`
-  - [ ] `pnpm prisma migrate reset` as needed
-- Seed data updates: `prisma/seed.ts` (or `seed.js`)
-
-**NOTE**: Keep schema changes minimal per iteration. Document details in implementation PRDs.
+- High‑level: Minimize schema churn per iteration; document changes alongside implementation.
+- Details: See `docs/development/PRD.details.md#data-model-migrations` for anticipated changes and migration workflow.
 
 ---
 
@@ -488,12 +527,13 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - **Routes affected**: `app/routes/*.tsx`
 - **Role-based access control**:
   - Public: `/`, `/teams`, `/auth/*`, error routes
-  - Staff: Admin Panel under obfuscated base path for `ADMIN`, `MANAGER`, `REFEREE` (scoped features per role). Inheritance: `ADMIN` ⊇ `MANAGER` ⊇ `REFEREE` ⊇ `PUBLIC`.
+  - Staff: Admin Panel under obfuscated base path for `ADMIN` and `MANAGER`. `REFEREE` has access only to their own referee dashboard (assigned matches) and cannot navigate the general Admin Panel. Inheritance: `ADMIN` ⊇ `MANAGER` ⊇ `REFEREE` ⊇ `PUBLIC`.
   - `EDITOR` / `BILLING` (future): access details TBD (anticipated panel sections limited to content/billing domains)
 - **Client‑side data flows and navigation**:
   - Loaders/actions define contracts; loaders produce typed data
   - Mutations with optimistic UI where appropriate
   - Error boundaries: general and auth‑specific already present
+Details: See `docs/development/PRD.details.md#routing-map`
 
 ---
 
@@ -505,6 +545,7 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - **Dutch capitalization rule**: Capitalize only the first word of titles/labels (sentence case); English titles may use title case
 - **Fallback language**: `nl`
 - **Persistence**: Persist language in cookie + localStorage; detect language on server during SSR
+Details: See `docs/development/PRD.details.md#i18n-details`
 
 ---
 
@@ -565,12 +606,13 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 - Roles (schema): `PUBLIC`, `REFEREE`, `MANAGER`, `ADMIN`, `EDITOR` (future), `BILLING` (future)
 - Permission matrix (initial baseline):
-  - PUBLIC: `teams:read`, `tournaments:read`, `matches:read`
+  - PUBLIC: `teams:read`, `tournaments:read`, `matches:read`, `teams:create` (public team registration)
   - REFEREE: PUBLIC + `matches:referee`, `matches:edit` (assigned)
-  - MANAGER: PUBLIC + `teams:{create,edit,delete}`, `tournaments:{create,edit}`, `matches:{create,edit}`, `groups:manage`
-  - ADMIN: all permissions (`*`)
+  - MANAGER: PUBLIC + `teams:{create,edit,delete}`, `tournaments:{create,edit}`, `matches:{create,edit,delete}`, `groups:manage`, `referees:assign`, `assignments:manage`, `refereeTokens:manage`
+  - ADMIN: all permissions (`*`) including `users:approve`, `roles:assign`
   - EDITOR (future): `content:{create,edit,delete}`, `media:upload`
   - BILLING (future): `billing:{read,manage}`, `subscriptions:{read,manage}`
+  - Details: See `docs/development/PRD.details.md#permissions-glossary`
 - Middleware: use `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions
 - Param handling: use React Router `params` for self‑access checks (never parse URL segments manually)
 - Post‑login redirects: role‑based landing pages; public → `/`, staff → Admin Panel (obfuscated base path)
@@ -579,7 +621,7 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 - Hierarchy: `PUBLIC` < `REFEREE` < `MANAGER` < `ADMIN` (each role inherits all permissions of the previous)
 - Manager inherits all Referee permissions; Admin inherits all Manager/Referee/Public permissions
-- Admin Panel access: allowed for `ADMIN`, `MANAGER`, and `REFEREE` (scoped views per role)
+- Admin Panel access: allowed for `ADMIN` and `MANAGER`. `REFEREE` access is limited to their own referee dashboard (assigned matches only); no general Admin Panel navigation
 - EDITOR and BILLING: future roles; detailed permissions and panel access TBD
 
 ### Rate limiting
@@ -613,19 +655,27 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 ### Phase 1: Authentication Modernization
 
-- Weeks 1–2: Firebase auth, session cookie bridging, redirects, logout
+- Week 1: Firebase auth, session cookie bridging, redirects, logout
 
-### Phase 2: Matches & Scoring
+### Phase 2: Groups & Playoffs (MVP)
 
-- Weeks 3–6: Scheduling UI and referee scoring flows; standings updates
+- Weeks 2 - 4: Group allocation UX; single‑elimination bracket and basic UI
 
-### Phase 3: Groups & Playoffs
+### Phase 3: Scheduling & Scoring
 
-- Weeks 7–10: Group allocation UX; knockout/placement schema and UI
+- Weeks 5 - 8: Scheduler with conflict detection; referee dashboard; offline scoring; live updates baseline
 
-### Phase 4+: Subscriptions/Billing & Content
+### Phase 4: Public Engagement
 
-- Scoped and scheduled after core tournament operations stabilize
+- Weeks 9 - 11: Live dashboard, standings, notifications opt‑in
+
+### Phase 5: Advanced Brackets
+
+- Weeks 12 - 14: Advanced bracket formats (post‑MVP)
+
+### Phase 6+: Subscriptions/Communications/Extended
+
+- Scoped after core tournament operations stabilize
 
 ---
 
@@ -633,10 +683,12 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 - **Phase alignment**:
     1. Auth
-    2. Matches
-    3. Groups/Playoffs
-    4. Billing
-    5. CMS
+    2. Groups & Playoffs (MVP)
+    3. Scheduling & Scoring
+    4. Public Engagement
+    5. Advanced Brackets
+    6. Subscriptions, Communications & Extended
+    7. Content Management (future)
 - **Milestones**:
   - **M1**: Firebase auth live for admin/manager/referee behind config switch
   - **M2**: Scheduling and scoring in production for a pilot tournament
@@ -675,10 +727,16 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - Referee pre‑auth: expiry rules and scope; what adjustments to match times are permitted?
 - Domain accuracy: per age category match duration and scheduling constraints; tie‑breakers and standings rules
 - Are additional manager workflows needed (e.g., field assignment, blackout times)?
-- Research: migration from GitHub to GitLab — effort, pros/cons, and the effect of GitLab’s feature flags compared to alternatives
+- Research: migration from GitHub to GitLab - effort, pros/cons, and the effect of GitLab’s feature flags compared to alternatives
 - Should we add optional chats, voting, and totalisator (non‑monetary score predictions) as future social features? If yes, how do we moderate and scope them?
 - PWA-related offline caching: scope route/data caching via service worker; define cache strategies per route type and revalidation rules
-- Push notifications: evaluate use cases (match alerts, schedule changes), permissions flow, and privacy implications; implement via service worker with clear opt-in
+- Push notifications: evaluate use cases (team/match alerts, schedule changes, optional goal alerts), permissions flow, and privacy implications; implement via service worker with clear opt-in
+- Live transport: WebSocket vs SSE vs polling fallback - choose per complexity/hosting constraints
+- Bracket generation: MVP = single‑elimination. Evaluate advanced formats (double‑elimination, Swiss, placement) in Phase 4; ensure transparent tie‑breaker configuration
+- Offline sync: how to handle conflicts when server state changes between offline entry and sync
+- Artificial intelligence: explore useful AI features (e.g., schedule optimization, conflict resolution suggestions, bracket predictions, performance/anomaly reports, fairness checks, natural‑language queries over tournaments, auto‑generated match summaries)
+- Animations: identify micro‑interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)
+- Mobile app wrapper: assess packaging the web app for Android/iOS via Capacitor. Validate SSR vs client-only build strategy, service worker support under app schemes, and push notification integration for store compliance
 
 ---
 
@@ -686,6 +744,7 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 
 - Related ADRs: `.cursor/rules/` (add ADR IDs once created)
 - Documentation: `docs/development/*` (routing, teams, tournaments, state management)
+- Feature details: `docs/development/PRD.details.md`
 - Routes: `app/routes/*.tsx`
 - Models: `prisma/schema.prisma`
 - Tests: `app/**/*/__tests__/*.test.tsx`, `playwright/tests/*`
@@ -697,7 +756,3 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 **Collocation of query/mutation logic with components/hooks**
 
 Rationale: colocating data‑fetching and mutation logic near the components that consume them improves readability and local reasoning. It reduces indirection for maintainers and helps keep feature code self‑contained. Use small, typed helpers and hooks colocated with the route/component when they are only used there. Promote to shared utils only when there is demonstrable reuse.
-
-**Alternative hosting if SSR is removed**
-
-Meaning: if we ever remove server‑side rendering and SQLite persistence, the app could be built as a purely client‑side SPA and hosted on static platforms (e.g., Vercel/Netlify static, Cloudflare Pages). This is not the current architecture. Such a change would require removing SSR dependencies and replacing server‑persisted data with APIs or static data sources. Document specifics separately if we decide to explore this.

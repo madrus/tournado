@@ -106,6 +106,15 @@ pnpm format
 pnpm typecheck
 ```
 
+## Current Tasks
+
+- RBAC Hardening (Phase 2): see `docs/development/RBAC.hardening.md`
+- Mobile Wrapper (Capacitor): see `docs/development/PRD.details.md#mobile-wrapper`
+
+## Session Notes
+
+- 2025-09-04: `docs/development/session-notes/2025-09-04.md`
+
 ## Code Style
 
 - Use Prettier for code formatting

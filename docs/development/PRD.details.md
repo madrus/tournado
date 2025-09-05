@@ -157,7 +157,7 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 
 - Vitest for unit/component tests; Playwright for E2E tests (`playwright/tests`).
 - Tests colocated per project standards; include accessibility states.
-- MCP Vitest server for AI‑assisted testing (tools, resources, coverage).
+- Comprehensive test coverage with automated quality gates.
 
 <a id="deployment-details"></a>
 

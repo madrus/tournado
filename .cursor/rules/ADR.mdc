@@ -6,118 +6,42 @@ alwaysApply: false
 
 # Architecture Decision Records
 
-<!--
-ADR_AGENT_PROTOCOL v1.0
-
-You (the agent) manage this file as the single source of truth for all ADRs.
-
-INVARIANTS
-- Keep this exact file structure and headings.
-- All ADR entries use H2 headings: "## ADR-XXXX — <Title>" (4-digit zero-padded ID).
-- Allowed Status values: Proposed | Accepted | Superseded
-- Date format: YYYY-MM-DD
-- New entries must be appended to the END of the file.
-- The Index table between the INDEX markers must always reflect the latest state and be sorted by ID desc (newest on top).
-- Each ADR MUST contain: Date, Status, Owner, Context, Decision, Consequences.
-- Each ADR must include an explicit anchor `<a id="adr-XXXX"></a>` so links remain stable.
-
-HOW TO ADD A NEW ADR
-1) Read the whole file.
-2) Compute next ID:
-   - Scan for headings matching: ^## ADR-(\d{4}) — .+$
-   - next_id = (max captured number) + 1, left-pad to 4 digits.
-3) Create a new ADR section using the “New ADR Entry Template” below.
-   - Place it AFTER the last ADR section in the file.
-   - Add an `<a id="adr-XXXX"></a>` line immediately below the heading.
-4) Update the Index (between the INDEX markers):
-   - Insert/replace the row for this ADR keeping the table sorted by ID descending.
-   - Title in the Index MUST link to the anchor: [<Title>](#adr-XXXX)
-   - If this ADR supersedes another: set “Supersedes” in this row, and update that older ADR:
-       a) Change its Status to “Superseded”
-       b) Add “Superseded by: ADR-XXXX” in its Consequences block
-       c) Update the older ADR’s Index row “Superseded by” column to ADR-XXXX
-5) Validate before saving:
-   - Exactly one heading exists for ADR-XXXX
-   - All required fields are present and non-empty
-   - Index contains a row for ADR-XXXX and remains properly sorted
-6) Concurrency resolution:
-   - If a merge conflict or duplicate ID is detected after reading: recompute next_id from the current file state, rename your heading, anchor, and Index row accordingly, and retry once.
-
-COMMIT MESSAGE SUGGESTION
-- "ADR-XXXX: <Short Title> — <Status>"
-
-END ADR_AGENT_PROTOCOL
--->
-
-## Index
+## Decision Registry
 
 <!-- BEGIN:ADR_INDEX -->
 
-| ID   | Title                                                                                 | Date       | Status   | Supersedes | Superseded by |
-| ---- | ------------------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
-| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                                        | 2025-09-03 | Proposed | —          | —             |
-| 0011 | [Security Headers and CSP Baseline](#adr-0011)                                        | 2025-09-03 | Proposed | —          | —             |
-| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                                     | 2025-09-03 | Proposed | —          | —             |
-| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)                       | 2025-09-03 | Accepted | —          | —             |
-| 0008 | [Service Worker Logging and Minimal PWA Scope](#adr-0008)                             | 2025-09-03 | Accepted | —          | —             |
-| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)                   | 2025-09-03 | Accepted | —          | —             |
-| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                             | 2025-09-03 | Accepted | —          | —             |
-| 0005 | [Role-Based Access Control and Panel Access](#adr-0005)                               | 2025-09-03 | Accepted | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)                 | 2025-09-03 | Accepted | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)                   | 2025-08-27 | Accepted | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                             | 2025-08-27 | Accepted | —          | —             |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                                    | 2025-08-27 | Accepted | —          | —             |
+| ID   | Title                                                                       | Date       | Status   | Supersedes | Superseded by |
+| ---- | --------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Proposed | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Proposed | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Proposed | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Proposed | —          | —             |
+| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed | —          | —             |
+| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Proposed | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Proposed | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Proposed | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Proposed | —          | —             |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Proposed | —          | —             |
+| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Proposed | —          | —             |
+| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Proposed | —          | —             |
+| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Proposed | —          | —             |
+| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Proposed | —          | —             |
+| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Proposed | —          | —             |
+| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Proposed | —          | —             |
+| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Proposed | —          | —             |
+| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Proposed | —          | —             |
+| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Proposed | —          | —             |
 
 <!-- END:ADR_INDEX -->
-
----
-
-## New ADR Entry Template (copy for each new decision)
-
-> Replace placeholders, keep section headers. Keep prose concise.
-
-```
-
-## ADR-XXXX — \<Short, specific title>
-
-<a id="adr-XXXX"></a>
-**Date**: YYYY-MM-DD
-**Status**: Proposed | Accepted | Superseded
-**Owner**: <Name>
-
-### Context
-
-<1–3 sentences: what changed or what forces drive this decision now>
-
-### Alternatives
-
-<Quick bullet list of alternatives considered, and why they were rejected.>
-
-### Decision
-
-\<Single clear decision in active voice; make it testable/verifiable>
-
-### Consequences
-
-* **Pros**: \<benefit 1>, \<benefit 2>
-* **Cons / risks**: \<cost 1>, \<risk 1>
-* **Supersedes**: ADR-NNNN (if any)
-* **Superseded by**: ADR-MMMM (filled later if replaced)
-
-### (Optional) Compliance / Verification
-
-\<How we’ll check this is honored: tests, checks, fitness functions, runbooks>
-
-```
-
----
 
 ## ADR-0001 — React Router v7 Frontend Architecture
 
 <a id="adr-0001"></a>
 **Date**: 2025-08-27
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -152,14 +76,12 @@ Create a comprehensive React Router v7 frontend architecture with:
 
 Template includes working examples for routing, data loading, and state management. Development workflow optimized for React Router v7 patterns. Testing strategy covers both unit and E2E scenarios.
 
----
-
 ## ADR-0002 — Single Repository Frontend-Only Architecture
 
 <a id="adr-0002"></a>
 **Date**: 2025-08-27
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -193,14 +115,12 @@ Implement single repository structure optimized for React Router v7:
 
 Directory structure follows React Router v7 conventions. Build system optimized for single-page application deployment. Documentation covers development patterns and best practices.
 
----
-
 ## ADR-0003 — State Management with Zustand and React Router Loaders
 
 <a id="adr-0003"></a>
 **Date**: 2025-08-27
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -234,14 +154,12 @@ Implement hybrid state management combining Zustand for client state with React 
 
 Server data must flow through React Router loaders and actions. Client state management uses Zustand with proper TypeScript interfaces. No direct API calls from components except through loader/action patterns. State persistence configured only for appropriate client state.
 
----
-
 ## ADR-0004 — Authentication via Firebase with Session Cookie Bridging
 
 <a id="adr-0004"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -268,48 +186,55 @@ Adopt Firebase Authentication and mint HTTP-only session cookies on the server f
 
 End-to-end tests cover sign-in/out, redirects, and loader-based role verification. Logout invalidates Firebase session cookies and client state.
 
----
-
-## ADR-0005 — Role-Based Access Control and Panel Access
+## ADR-0005 — Role-Based Access Control and Referee Token System
 
 <a id="adr-0005"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
-We need a clear role hierarchy, permission matrix, and secure middleware for route protection, including panel access scoping.
+We need a comprehensive RBAC system with role hierarchy, permission matrix, secure middleware for route protection, and a referee token system for match-scoped access without user accounts.
 
 ### Alternatives
 
 - Coarse admin/non-admin split (insufficient granularity)
 - Client-only role checks (not secure)
 - Manual URL parsing for self-access (vulnerable)
+- Regular user accounts for referees (unnecessary complexity)
 
 ### Decision
 
-Define roles: PUBLIC, REFEREE, MANAGER, ADMIN, EDITOR (future), BILLING (future). Inheritance: PUBLIC < REFEREE < MANAGER < ADMIN. Use permission-based middleware `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions. Admin Panel access for ADMIN, MANAGER, REFEREE with scoped features. Use route `params` for self-access checks (no manual URL parsing).
+Define roles: PUBLIC, REFEREE, MANAGER, ADMIN, EDITOR (future), BILLING (future). Inheritance: PUBLIC < REFEREE < MANAGER < ADMIN. Use permission-based middleware `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions.
+
+**RBAC Matrix**:
+- PUBLIC: teams:read, tournaments:read, matches:read, teams:create (public registration)
+- REFEREE: PUBLIC + matches:referee, matches:edit (assigned only)
+- MANAGER: PUBLIC + teams:*, tournaments:*, matches:*, groups:manage, referees:assign, assignments:manage, refereeTokens:manage
+- ADMIN: all permissions (*) including users:approve, roles:assign
+
+**Referee Token System**: Managers issue pre-authenticated, expiring links scoped to tournament and assigned matches. Referees access dedicated dashboard via tokens without user accounts. Tokens are revocable and include tournamentId, matchIds scope, expiry, and issuer tracking.
+
+**Panel Access**: Admin Panel access for ADMIN/MANAGER (full), REFEREE (scoped dashboard only, no general navigation). Use route `params` for self-access checks.
 
 ### Consequences
 
-* Pros: Granular access, defense-in-depth, testable server-side enforcement
-* Cons / risks: Matrix maintenance, migration from legacy checks
+* Pros: Granular access, defense-in-depth, testable enforcement, simplified referee workflow, admin control over user approval/roles
+* Cons / risks: Matrix maintenance, token management complexity, migration effort
 * Supersedes: —
 * Superseded by: —
 
 ### Compliance / Verification
 
-Playwright role projects test panel access and feature visibility. Unit tests validate permission matrix and self-access logic.
-
----
+Playwright role projects test panel access and feature visibility. Unit tests validate permission matrix, self-access logic, and token scoping. E2E tests verify referee dashboard isolation and token lifecycle.
 
 ## ADR-0006 — Design System: Semantic Tokens and Dark Mode
 
 <a id="adr-0006"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -336,14 +261,12 @@ Adopt semantic CSS tokens mapped in Tailwind, CVA-based component variants for a
 
 Visual checks for light/dark, linting/guidelines, and tests for theme states on critical components.
 
----
-
 ## ADR-0007 — Navigation Performance: Prefetching and Data Freshness
 
 <a id="adr-0007"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -370,48 +293,63 @@ Use context-based prefetching: `intent` for navigation links, `render` for CTAs/
 
 Track cache hit rates and navigation timings. Verify revalidation triggers on back/forward in tests.
 
----
-
-## ADR-0008 — Service Worker Logging and Minimal PWA Scope
+## ADR-0008 — Service Worker and PWA Capabilities
 
 <a id="adr-0008"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
-We use a minimal service worker and need toggleable logging for debugging without polluting production consoles.
+We need PWA capabilities including offline scoring for referees, background sync, update prompts, and controlled logging for debugging production issues.
 
 ### Alternatives
 
-- Full offline caching now (scope creep)
-- No service worker (lose PWA features)
+- No service worker (lose offline capabilities)
+- Full offline-first architecture (scope creep, complexity)
 - Always-on verbose logging (noisy, risky)
+- Manual refresh prompts (poor UX)
 
 ### Decision
 
-Add `SW_DEBUG` flag at the top of `public/sw.js` to control logging. Keep service worker minimal (install/activate/fetch) until we scope offline caching/push. Ensure `SW_DEBUG` is disabled in production.
+Implement comprehensive PWA capabilities with:
+
+**Service Worker Features**:
+- `SW_DEBUG` flag for controlled logging (disabled in production)
+- Offline scoring queues with background sync for referee score submission
+- Update prompts and background sync for app updates
+- Selective route/data caching with cache strategies per route type
+- Add-to-home-screen prompts with proper manifest configuration
+
+**Offline Strategy**:
+- Critical referee flows work offline with visible pending state
+- Background sync with exponential backoff retry logic
+- Conflict resolution UI when server state changes during offline period
+- IndexedDB for persistent offline data storage
+
+**Update Management**:
+- Background app updates with user-friendly update prompts
+- Service worker lifecycle management with proper activation
+- Cache invalidation strategies for schema/API changes
 
 ### Consequences
 
-* Pros: Easier troubleshooting, safe production defaults, clear evolution path
-* Cons / risks: Limited offline capability until scoped later
+* Pros: Reliable referee scoring offline, better mobile experience, professional PWA features, controlled debugging
+* Cons / risks: Service worker complexity, offline sync conflict handling, testing complexity
 * Supersedes: —
 * Superseded by: —
 
 ### Compliance / Verification
 
-CI/runtime checks for `SW_DEBUG` in production builds. Document toggle in docs.
-
----
+E2E tests verify offline scoring workflow and conflict resolution. Service worker update flow tested across versions. CI checks ensure `SW_DEBUG` disabled in production builds.
 
 ## ADR-0009 — Internationalization Persistence and SSR Detection
 
 <a id="adr-0009"></a>
 **Date**: 2025-09-03
-**Status**: Accepted
-**Owner**: AI Agent
+**Status**: Proposed
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -438,18 +376,16 @@ Persist language in cookie + localStorage reactively. Read language from cookie 
 
 Loader reads cookie; root updates cookie/localStorage on change. Tests verify SSR language and client persistence.
 
----
-
 ## ADR-0010 — CI/CD and Fly.io Deployment Strategy
 
 <a id="adr-0010"></a>
 **Date**: 2025-09-03
 **Status**: Proposed
-**Owner**: AI Agent
+**Owner**: André Roussakoff
 
 ### Context
 
-We deploy via Fly.io with GitHub Actions and notify via Slack. We want a clear branch→environment mapping, rollback strategy, and secrets management.
+We deploy via Fly.io with GitHub Actions and notify via Slack. We want a clear branch→environment mapping, rollback strategy, and comprehensive secrets management.
 
 ### Alternatives
 
@@ -461,55 +397,66 @@ We deploy via Fly.io with GitHub Actions and notify via Slack. We want a clear b
 
 Define CI/CD workflow with branch→app mapping and explicit secrets:
 
-- Branch mapping: `dev` → staging app, `main` → production app
-- Fly apps:
-  - Staging: `tournado-staging` (host: `tournado-staging.fly.io`)
-  - Production: `tournado` (host: `tournado.fly.io`)
-- GitHub Actions:
-  - Deploy on push to `dev` and `main`
-  - Secrets in GitHub: `FLY_API_TOKEN` (required), `SLACK_WEBHOOK_URL` (optional)
-  - CI runs lint, typecheck, unit, and E2E before deploy
-- Fly app secrets (per environment):
-  - `SESSION_SECRET` (required)
-  - `DATABASE_URL` (SQLite volume): `file:/data/sqlite.db?connection_limit=1`
-    - Local dev default: `file:./prisma/data.db?connection_limit=1`
-    - Test DB (E2E/local tests): `file:./prisma/data-test.db?connection_limit=1`
-  - `RESEND_API_KEY` (email)
-  - `EMAIL_FROM` (e.g., `Team Registration <onboarding@resend.dev>`) — not secret but set per env
-  - `BASE_URL` (email link base)
-    - Local dev: `http://localhost:5173`
-    - Staging: `https://tournado-staging.fly.io`
-    - Production: `https://tournado.fly.io`
-  - Firebase web config for client (Vite):
-    - `VITE_FIREBASE_API_KEY`
-    - `VITE_FIREBASE_AUTH_DOMAIN`
-    - `VITE_FIREBASE_PROJECT_ID`
-    - `VITE_FIREBASE_STORAGE_BUCKET`
-    - `VITE_FIREBASE_MESSAGING_SENDER_ID`
-    - `VITE_FIREBASE_APP_ID`
-    - `VITE_FIREBASE_MEASUREMENT_ID` (if using Firebase Analytics)
-  - (Optional) `TRUSTED_PROXIES` (comma‑separated) when running behind known proxies/CDN
-  - (Future) `VITE_GA_MEASUREMENT_ID` if GA4 is added
-- Slack notifications: on dev and main after workflow run
-- Rollback: use Fly’s release history to re‑deploy the previous image
+**Branch Mapping**:
+- `dev` → staging app, `main` → production app
 
-Environment‑specific values differ (e.g., `EMAIL_FROM`, `BASE_URL`, Firebase project IDs); keep staging and production secrets separate in each Fly app.
+**Fly Apps**:
+- Staging: `tournado-staging` (host: `tournado-staging.fly.io`)
+- Production: `tournado` (host: `tournado.fly.io`)
+
+**GitHub Actions**:
+- Deploy on push to `dev` and `main`
+- Secrets in GitHub: `FLY_API_TOKEN` (required), `SLACK_WEBHOOK_URL` (optional)
+- CI runs lint, typecheck, unit, and E2E before deploy
+
+**Fly App Secrets (per environment)**:
+- `SESSION_SECRET` (required for cookie sessions)
+- `DATABASE_URL`:
+  - Local dev: `file:./prisma/data.db?connection_limit=1`
+  - Test DB: `file:./prisma/data-test.db?connection_limit=1`
+  - Production: `file:/data/sqlite.db?connection_limit=1`
+- `RESEND_API_KEY` (email integration)
+- `EMAIL_FROM` (e.g., `Team Registration <onboarding@resend.dev>`)
+- `BASE_URL` (environment-specific email link base)
+  - Local dev: `http://localhost:5173`
+  - Staging: `https://tournado-staging.fly.io`
+  - Production: `https://tournado.fly.io`
+
+**Firebase Configuration (Vite environment)**:
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- `VITE_FIREBASE_MEASUREMENT_ID` (if using Firebase Analytics)
+
+**Optional Configuration**:
+- `TRUSTED_PROXIES` (comma-separated) for proxy/CDN deployments
+- `VITE_GA_MEASUREMENT_ID` (future GA4 integration)
+
+**Deployment Process**:
+- Slack notifications after workflow completion
+- Rollback via Fly's release history
+- Environment-specific values separated per Fly app
 
 ### Consequences
 
-* Pros: Predictable releases, quick rollback, environment isolation, visibility via Slack
-* Cons / risks: Requires branch hygiene, secret rotation, and per‑env configuration discipline
+* Pros: Predictable releases, quick rollback, environment isolation, comprehensive secret management, visibility via Slack
+* Cons / risks: Requires branch hygiene, secret rotation discipline, per-environment configuration maintenance
 * Supersedes: —
 * Superseded by: —
 
----
+### Compliance / Verification
+
+Secrets audit per environment. Deployment smoke tests verify environment-specific configuration. Rollback procedures tested and documented.
 
 ## ADR-0011 — Security Headers and CSP Baseline
 
 <a id="adr-0011"></a>
 **Date**: 2025-09-03
 **Status**: Proposed
-**Owner**: AI Agent
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -548,14 +495,12 @@ Adopt a baseline header set (HSTS, frame options, referrer policy, permissions p
 * Supersedes: —
 * Superseded by: —
 
----
-
 ## ADR-0012 — Analytics and Privacy (GA4 Scope)
 
 <a id="adr-0012"></a>
 **Date**: 2025-09-03
 **Status**: Proposed
-**Owner**: AI Agent
+**Owner**: André Roussakoff
 
 ### Context
 
@@ -577,4 +522,563 @@ Define GA4 scope: basic page/navigation events, anonymize IP where applicable, d
 * Supersedes: —
 * Superseded by: —
 
----
+## ADR-0013 — Testing Strategy and Comprehensive Coverage
+
+<a id="adr-0013"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+We need a comprehensive testing strategy covering unit, integration, and E2E testing with robust coverage requirements and quality gates.
+
+### Alternatives
+
+- Jest + React Testing Library only (limited E2E coverage)
+- Cypress for E2E (heavier, less modern than Playwright)
+- Manual testing only (error-prone, slow feedback)
+- No coverage requirements (inconsistent quality)
+
+### Decision
+
+Implement comprehensive testing architecture with:
+
+**Testing Frameworks**:
+- Vitest for unit/component tests with React Testing Library
+- Playwright for E2E tests with role-based test organization
+- Coverage thresholds: 70% across all metrics (lines, functions, branches, statements)
+
+**Test Organization**:
+- Unit tests: `*.test.ts/tsx` files colocated with components
+- E2E tests: `playwright/tests/*.spec.ts` with clear separation
+- Role-based E2E projects for testing RBAC scenarios
+
+**Quality Assurance**:
+- Automated test execution in CI/CD pipeline
+- Coverage reporting and enforcement
+- Performance regression testing
+- Cross-browser compatibility testing
+
+**Testing Standards**:
+- Accessibility testing in critical flows
+- Mobile-first responsive testing
+- Authentication and role-based access testing
+- Error boundary and fallback state testing
+
+### Consequences
+
+* Pros: High confidence in deployments, comprehensive coverage, automated quality gates, consistent testing standards
+* Cons / risks: Test maintenance overhead, longer CI runs, initial setup complexity
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+CI enforces coverage thresholds. E2E tests run on built artifacts. Cross-browser testing verified. Test-driven development practices documented.
+
+## ADR-0014 — Mobile-First Responsive Design Strategy
+
+<a id="adr-0014"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management requires excellent mobile UX for referees on the field, managers during events, and public users following tournaments. We need a clear mobile-first strategy with desktop enhancement.
+
+### Alternatives
+
+- Desktop-first with mobile adaptations (poor mobile UX)
+- Separate mobile app (development overhead)
+- Responsive without mobile priority (inconsistent experience)
+- Fixed layouts (poor accessibility)
+
+### Decision
+
+Implement mobile-first responsive design with:
+
+**Breakpoint Strategy**:
+- Default styles: mobile-first (320px+)
+- Desktop enhancements: `lg:` breakpoint (1024px+) with selective `md:` (768px+)
+- Touch targets: minimum 44px for interactive elements
+- Safe area handling for notched devices
+
+**Layout Principles**:
+- Bottom navigation on mobile for primary sections
+- Swipe gestures for secondary actions (delete, edit)
+- Thumb-friendly interaction zones
+- Vertical scrolling priority over horizontal
+
+**Typography & Spacing**:
+- System-UI for Latin text with readable mobile scales
+- Amiri for Arabic with visual balance utilities
+- Responsive spacing scales with consistent rhythm
+- Adequate line height for mobile reading
+
+**Performance Considerations**:
+- Mobile-first asset loading
+- Responsive images with appropriate densities
+- Touch-optimized interaction delays
+- Battery-conscious animations and transitions
+
+### Consequences
+
+* Pros: Excellent mobile UX, progressive enhancement, accessibility compliance, unified codebase
+* Cons / risks: Desktop layouts require more consideration, larger CSS bundle, mobile testing complexity
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Lighthouse mobile performance ≥90 on critical routes. Touch target audit in accessibility testing. Mobile-first development workflow documented.
+
+## ADR-0015 — Error Handling and Boundaries Architecture
+
+<a id="adr-0015"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management applications require robust error handling for live events where failures could impact ongoing competitions. We need layered error boundaries with appropriate fallback UIs.
+
+### Alternatives
+
+- Global error boundary only (poor UX granularity)
+- Component-level try/catch everywhere (boilerplate, inconsistent)
+- No error boundaries (poor user experience)
+- Client-only error handling (loses SSR errors)
+
+### Decision
+
+Implement layered error boundary architecture:
+
+**Error Boundary Layers**:
+- Global error boundary: catches all unhandled errors with full-page fallback
+- Auth-specific error boundary: handles authentication failures with retry/sign-out options
+- Route-level boundaries: feature-specific error handling with context-appropriate fallbacks
+- Component boundaries: for complex components with their own error states
+
+**Error Handling Strategy**:
+- SSR-compatible error boundaries that work with React Router
+- Graceful degradation with actionable error messages
+- Error logging with sanitized public error messages
+- Recovery actions where appropriate (retry, refresh, navigate)
+
+**Error Types & Responses**:
+- Network errors: retry mechanisms with exponential backoff
+- Authentication errors: redirect to sign-in with return path
+- Authorization errors: clear permission messaging with contact info
+- Data validation errors: inline field-level feedback
+- Server errors: friendly messaging with support contact
+
+**Monitoring & Recovery**:
+- Error boundary render counts tracked for monitoring
+- Automatic error reporting with privacy-safe details
+- Clear escalation paths for critical tournament errors
+- Admin notifications for system-level failures
+
+### Consequences
+
+* Pros: Resilient user experience, context-appropriate error handling, better debugging, graceful degradation
+* Cons / risks: Error boundary maintenance, potential over-engineering, logging overhead
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Error boundary coverage tested with deliberate error injection. SSR error handling verified. Error message clarity and actionability reviewed.
+
+## ADR-0016 — Performance Architecture: Bundle Management and Code Splitting
+
+<a id="adr-0016"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament applications need fast loading for mobile users with potentially limited connectivity, while maintaining rich functionality for desktop admin users.
+
+### Alternatives
+
+- Single large bundle (slow initial load, good caching)
+- Aggressive micro-splitting (many requests, complexity)
+- Route-level splitting only (suboptimal granularity)
+- No optimization (poor mobile performance)
+
+### Decision
+
+Implement strategic performance architecture:
+
+**Bundle Strategy**:
+- Route-level code splitting for major sections (public, auth, admin)
+- Lazy loading for heavy components (charts, rich editors, complex forms)
+- Shared chunk optimization for common dependencies
+- Critical CSS inlined, non-critical CSS lazy-loaded
+
+**Asset Optimization**:
+- Image optimization with responsive sizes and WebP
+- Icon system with SVG sprites and currentColor inheritance
+- Font loading strategy with fallbacks and font-display: swap
+- Service worker caching for static assets
+
+**Loading Strategies**:
+- Route prefetching based on user context (intent, render, viewport)
+- Component lazy loading with appropriate loading states
+- Progressive hydration for heavy interactive components
+- Background asset preloading for likely next actions
+
+**Performance Budgets**:
+- Initial bundle < 150KB gzipped
+- Route chunks < 50KB gzipped
+- TTI < 2s on median mobile (cache warmed)
+- LCP < 2.5s on slow 3G
+
+**Monitoring**:
+- Real User Monitoring for Core Web Vitals
+- Bundle size tracking in CI
+- Performance regression detection
+- Mobile-specific performance metrics
+
+### Consequences
+
+* Pros: Fast mobile loading, efficient caching, scalable architecture, performance visibility
+* Cons / risks: Build complexity, lazy loading UX considerations, cache invalidation complexity
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Lighthouse CI enforces performance budgets. Bundle analyzer reports monitored. Real user performance metrics tracked.
+
+## ADR-0017 — Email Integration via Resend
+
+<a id="adr-0017"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management requires reliable email delivery for team registration confirmations, match reminders, schedule changes, and final results. We need a robust email system with good deliverability.
+
+### Alternatives
+
+- SMTP-only solution (deliverability challenges)
+- SendGrid or Mailgun (more complex pricing/setup)
+- Built-in Node.js SMTP (reliability issues)
+- No email integration (poor user experience)
+
+### Decision
+
+Implement email integration via Resend with:
+
+**Email Provider**:
+- Resend as primary provider for modern API and good deliverability
+- Domain authentication (SPF/DKIM/DMARC) for trust
+- Per-environment sender configuration
+
+**Email Templates & Content**:
+- Team registration confirmations with tournament details
+- Match reminders with time/location/referee information
+- Schedule changes with clear before/after details
+- Final results wrap-ups with standings and highlights
+- Multi-language template support matching app localization
+
+**Delivery Architecture**:
+- Outbox pattern for reliable delivery with retry logic
+- Background job processing for email sending
+- Exponential backoff retry with failure alerts
+- Admin dashboard for email delivery monitoring
+- Failed email recovery and manual retry capability
+
+**Email Configuration**:
+- Environment-specific `EMAIL_FROM` addresses
+- `BASE_URL` configuration for email links
+- Rate limiting to prevent spam/abuse
+- Unsubscribe handling for notification preferences
+
+**Privacy & Compliance**:
+- Opt-in only for non-essential communications
+- Clear unsubscribe mechanisms
+- GDPR-compliant data handling
+- Email content sanitization
+
+### Consequences
+
+* Pros: Reliable delivery, professional presentation, automated communication, multi-language support
+* Cons / risks: Email deliverability dependency, template maintenance, compliance overhead
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Email delivery rates monitored. Template rendering tested across clients. Unsubscribe flows verified. DMARC alignment confirmed.
+
+## ADR-0018 — Rate Limiting and Security Middleware
+
+<a id="adr-0018"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management platforms are targets for abuse, especially around authentication and sensitive admin actions. We need comprehensive rate limiting without impacting legitimate users.
+
+### Alternatives
+
+- No rate limiting (vulnerable to abuse)
+- Basic IP-only limiting (can block legitimate users)
+- Third-party service dependency (cost, latency)
+- Overly restrictive limits (poor UX)
+
+### Decision
+
+Implement comprehensive rate limiting middleware:
+
+**Rate Limiting Strategy**:
+- Memory-safe in-memory store with automatic cleanup
+- Multiple rate limit buckets: auth, admin actions, API, public forms
+- Sliding window with burst capacity for legitimate traffic
+- IP-based with X-Forwarded-For header validation
+
+**Rate Limit Configuration**:
+- Auth endpoints (`/auth/signin`): 5 attempts per minute per IP
+- Admin actions: 30 requests per minute per authenticated user
+- Public team registration: 3 attempts per hour per IP
+- General API: 100 requests per minute per IP/user
+- Referee score submission: 10 per minute per token
+
+**Security Features**:
+- `X-RateLimit-*` headers for client visibility
+- Proper IP detection with trusted proxy handling
+- Localhost bypass for development and testing
+- Rate limit logging and monitoring
+- Gradual backoff responses vs hard blocks
+
+**Abuse Prevention**:
+- Suspicious pattern detection (rapid requests, failed auth)
+- Temporary blocks with automatic expiry
+- Admin tools for manual IP blocking/unblocking
+- Integration with error logging for attack pattern analysis
+
+**Development & Testing**:
+- Rate limits disabled or relaxed in test environments
+- Development bypass mechanisms
+- Load testing exemption handling
+
+### Consequences
+
+* Pros: Protection against abuse, fair resource usage, attack visibility, configurable per use case
+* Cons / risks: Legitimate user blocking, configuration complexity, memory usage for tracking
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Load testing verifies rate limit behavior. Legitimate usage patterns tested. Rate limit bypass mechanisms documented and tested.
+
+## ADR-0019 — Data Model and Migration Strategy
+
+<a id="adr-0019"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management requires a robust data model supporting teams, tournaments, matches, groups, and standings with a clear migration strategy for schema evolution.
+
+### Alternatives
+
+- Schema-less database (lacks data integrity)
+- Manual SQL migrations (error-prone)
+- ORM with auto-migrations (dangerous in production)
+- Separate migration tooling (complexity)
+
+### Decision
+
+Implement Prisma-based data model with controlled migrations:
+
+**Core Data Models**:
+- `User`: authentication, roles (ADMIN, MANAGER, REFEREE, PUBLIC)
+- `Team`: registration, club information, contact details
+- `Tournament`: configuration, categories, divisions, rules
+- `Match`: scheduling, scores, referee assignments, status
+- `GroupSet`/`Group`/`GroupSlot`: group phase organization
+- `MatchScore`: detailed scoring with validation
+
+**Extended Models** (planned):
+- `RefereePreAuthToken`: scoped access tokens for referees
+- `TeamLeader`: non-authenticated contact for public registration
+- `NotificationSubscription`: user alert preferences
+- `AuditLog`: system action tracking
+
+**Migration Strategy**:
+- Development: `prisma migrate dev` with descriptive names
+- Production: explicit `prisma migrate deploy` in CI/CD
+- Schema changes minimized per iteration with documentation
+- Rollback strategy via migration history and data backups
+- Seed data management with `prisma/seed.ts`
+
+**Data Integrity**:
+- Foreign key constraints with appropriate cascade rules
+- Enum types for status fields and categories
+- Unique constraints for business logic (team names per tournament)
+- Validation at database and application levels
+- Soft deletes for audit trail preservation
+
+**Performance Considerations**:
+- Strategic indexes for query patterns
+- Connection pooling with appropriate limits
+- Query optimization monitoring
+- Database size monitoring and archival strategy
+
+### Consequences
+
+* Pros: Strong data integrity, controlled schema evolution, comprehensive audit trail, development productivity
+* Cons / risks: Migration complexity, schema lock-in, potential downtime during migrations
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Migration testing in staging environment. Data model validation via integration tests. Performance benchmarking for query patterns.
+
+## ADR-0020 — Offline Capabilities and Background Sync
+
+<a id="adr-0020"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Referees need to submit scores reliably even with poor connectivity at tournament venues. We need offline-capable score submission with conflict resolution.
+
+### Alternatives
+
+- Online-only (fails in poor connectivity)
+- Full offline-first app (complexity, sync challenges)
+- Local storage only (data loss risk)
+- Manual sync (poor UX)
+
+### Decision
+
+Implement targeted offline capabilities for critical workflows:
+
+**Offline Scoring System**:
+- IndexedDB for persistent score storage when offline
+- Background sync queue with automatic retry logic
+- Visible pending state indicators for users
+- Exponential backoff with jitter for sync attempts
+- Conflict resolution UI when server state changes
+
+**Sync Strategy**:
+- Service Worker Background Sync API where supported
+- Polling fallback for unsupported browsers/contexts
+- Last-write-wins with user override for conflicts
+- Optimistic updates with rollback on conflict
+- Batch sync for efficiency when connectivity returns
+
+**Data Management**:
+- Critical data cached in IndexedDB (match assignments, basic info)
+- Non-critical data gracefully degraded when offline
+- Cache invalidation strategy aligned with server updates
+- Storage quota management with cleanup policies
+- Secure token storage for offline auth verification
+
+**User Experience**:
+- Clear online/offline status indicators
+- Offline capability badges for supported features
+- Queue status with pending action counts
+- Manual sync trigger for user control
+- Graceful error handling with actionable messages
+
+**Conflict Resolution**:
+- Server-wins vs client-wins options for users
+- Detailed diff display for conflicting changes
+- Merge assistance for compatible changes
+- Escalation to admin for complex conflicts
+- Audit trail for conflict resolution decisions
+
+### Consequences
+
+* Pros: Reliable score submission, works in poor connectivity, professional mobile experience, data integrity preserved
+* Cons / risks: Complexity in sync logic, storage management overhead, conflict resolution UX challenges
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Offline scenario testing with network simulation. Conflict resolution workflows tested. Storage quota and cleanup verified. Sync performance benchmarked.
+
+## ADR-0021 — Live Updates Transport Architecture
+
+<a id="adr-0021"></a>
+**Date**: 2025-09-05
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management requires real-time updates for live scores, standings changes, and schedule updates to keep all stakeholders informed during active competitions.
+
+### Alternatives
+
+- Polling only (higher bandwidth, delay)
+- WebSocket only (complexity, fallback needed)
+- Server-Sent Events only (uni-directional)
+- No real-time updates (poor live tournament experience)
+
+### Decision
+
+Implement progressive live updates transport:
+
+**Transport Strategy**:
+- WebSocket primary for bi-directional, low-latency updates
+- Server-Sent Events (SSE) fallback for simpler uni-directional streaming
+- HTTP polling as final fallback with intelligent intervals
+- Connection health monitoring with automatic failover
+
+**Event Architecture**:
+- Event-driven updates for scores, standings, schedules
+- Scoped subscriptions (tournament, team, match level)
+- Event batching and coalescing for high-frequency updates
+- Back-pressure handling with queue management
+
+**Delivery Scopes**:
+- Public dashboard: tournament-wide score/schedule updates
+- Team followers: team-specific match and result notifications
+- Staff interfaces: role-appropriate operational updates
+- Referee dashboard: assignment and match status updates
+
+**Performance & Scalability**:
+- Connection pooling and load balancing
+- Event compression for large payload optimization
+- Selective updates (deltas vs full state)
+- Rate limiting on subscription changes
+- Graceful degradation under load
+
+**Reliability Features**:
+- Automatic reconnection with exponential backoff
+- Message ordering and deduplication
+- Offline queue integration with sync reconciliation
+- Connection state management and user feedback
+- Fallback to polling during transport failures
+
+### Consequences
+
+* Pros: Engaging live experience, efficient bandwidth usage, robust failover, scalable architecture
+* Cons / risks: Infrastructure complexity, connection management overhead, testing complexity across transports
+* Supersedes: —
+* Superseded by: —
+
+### Compliance / Verification
+
+Load testing across transport methods. Connection recovery scenarios tested. Event delivery reliability verified. Performance benchmarking under various network conditions.

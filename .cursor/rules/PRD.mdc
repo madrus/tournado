@@ -4,19 +4,19 @@ globs:
 alwaysApply: false
 ---
 
-# Tournado Tournament Management
+# Product Requirements Document
 
-NOTE: This PRD defines the product requirements for Tournado. The application is a frontend-first React Router v7 + TypeScript + Vite app with SSR, Prisma/SQLite, and a mobile‑first UI.
+NOTE: This **PRD** defines the product requirements for **Tournado Tounament Management** project. The application is a frontend-first React Router v7 + TypeScript + Vite app with SSR, Prisma/SQLite, and a mobile-first UI.
 
 ## Executive Summary
 
-For public visitors and competition stakeholders, build a modern tournament management platform that makes it simple to explore tournaments, teams, groups, and matches, and to register teams for participation. For managers and staff, provide a secure, role‑based workspace to manage tournaments end‑to‑end (tournaments, teams, groups, matches, assignments, and results) with a clear, mobile‑first experience.
+For public visitors and competition stakeholders, build a modern tournament management platform that makes it simple to explore tournaments, teams, groups, and matches, and to register teams for participation. For managers and staff, provide a secure, role-based workspace to manage tournaments end-to-end (tournaments, teams, groups, matches, assignments, and results) with a clear, mobile-first experience.
 
-### Product Vision and Mission
+## Product Vision and Mission
 
-Vision Statement: Become the most intuitive, mobile‑first platform for organizing and following amateur and youth football tournaments, delivering clarity for the public and control for managers.
+**Vision Statement**: Become the most intuitive, mobile-first platform for organizing and following amateur and youth football tournaments, delivering clarity for the public and control for managers.
 
-Mission: Empower managers to run tournaments efficiently and empower audiences to follow them effortlessly by combining a focused UI, strong role‑based access control, and reliable data modeling for teams, groups, matches, and standings.
+**Mission**: Empower managers to run tournaments efficiently and empower audiences to follow them effortlessly by combining a focused UI, strong role-based access control, and reliable data modeling for teams, groups, matches, and standings.
 
 ---
 
@@ -27,8 +27,8 @@ Mission: Empower managers to run tournaments efficiently and empower audiences t
 Authentication
 
 - [x] Email/password authentication with secure cookie sessions
-- [x] Sign‑in, sign‑up, and sign‑out routes
-- [x] Role‑based guards and unauthorized handling
+- [x] Sign-in, sign-up, and sign-out routes
+- [x] Role-based guards and unauthorized handling
 - [x] Smart redirects based on role and requested path
 
 Teams
@@ -39,13 +39,13 @@ Teams
 
 Tournaments
 
-- [x] Admin‑only tournaments section with full CRUD
-- [x] Mobile‑optimized swipe‑to‑delete interactions
+- [x] Admin-only tournaments section with full CRUD
+- [x] Mobile-optimized swipe-to-delete interactions
 
 Routing & Structure
 
-- [x] React Router v7 with nested layouts and flat‑routes discovery
-- [x] Public routes: `/teams`, auth; Admin routes under obfuscated base path (Admin Panel)
+- [x] React Router v7 with nested layouts and flat-routes discovery
+- [x] **Public routes**: `/teams`, **Auth routes**; Admin routes under obfuscated base path (Admin Panel)
 
 Internationalization
 
@@ -60,12 +60,12 @@ Design & Theming
 
 State Management
 
-- [x] Zustand stores with SSR‑safe hydration and persistence
+- [x] Zustand stores with SSR-safe hydration and persistence
 
 PWA & Error Handling
 
 - [x] Manifest and service worker
-- [x] General error boundaries and auth‑specific error boundary
+- [x] General error boundaries and auth-specific error boundary
 
 Security & RBAC
 
@@ -76,7 +76,7 @@ Security & RBAC
 Testing & Tooling
 
 - [x] Vitest for unit/integration; Playwright for E2E
-- [x] Documented dev/test workflows and MCP integration
+- [x] Documented dev/test workflows
 
 Database & Data Model
 
@@ -91,28 +91,28 @@ Database & Data Model
 **Phase 1 - Authentication Modernization (Top Priority)**
 
 - [ ] Google Authentication via Firebase (Google account or username/password)
-- [ ] Replace cookie session auth with Firebase‑backed flow (see Security & privacy)
-- [ ] Post‑login redirects, logout, and credential persistence
+- [ ] Replace cookie session auth with Firebase-backed flow (see Security & privacy)
+- [ ] Post-login redirects, logout, and credential persistence
 - [ ] Visible auth status indicator
 
 **Phase 2 - Groups & Playoffs (MVP)**
 
 - [ ] Groups and seeding workflows
-- [ ] Playoffs: single‑elimination bracket (simplest bracket)
+- [ ] Playoffs: single-elimination bracket (simplest bracket)
 - [ ] Competition status: standings and placements
 
 **Phase 3 - Matches & Scoring**
 
 - [ ] Match schedule planning (date/time/location) for tournaments
 - [ ] Score registration by referees
-- [ ] Live/near‑real‑time standings and basic statistics
+- [ ] Live/near-real-time standings and basic statistics
 
 
 **Phase 4 - Public Engagement**
 
 - [ ] Public tournament dashboard and live updates
 - [ ] Standings and classifications
-- [ ] Notifications (opt‑in)
+- [ ] Notifications (opt-in)
 
 **Phase 5 - Advanced Brackets (post-MVP)**
 
@@ -123,7 +123,7 @@ Database & Data Model
 
 - [ ] Subscriptions for managers to organize tournaments
 - [ ] Payments (Stripe) for subscriptions and voluntary contributions
-- [ ] Financial dashboard (ADMIN/BILLING) with totals and drill‑down
+- [ ] Financial dashboard (ADMIN/BILLING) with totals and drill-down
 
 **Phase 7 - Content Management (future)**
 
@@ -147,7 +147,7 @@ Database & Data Model
 
 ### Admin
 
-**Authentication**: Required (admin role)
+#### **Authentication**: Required (admin role)
 
 RBAC note: Admin inherits Manager/Referee/Public permissions; full Admin Panel access including user authorization.
 
@@ -158,7 +158,7 @@ RBAC note: Admin inherits Manager/Referee/Public permissions; full Admin Panel a
 - [ ] Approve/reject user registrations; assign roles
 - [ ] Oversee tournaments and user activity; manage data integrity
 
-**Jobs‑to‑be‑done**:
+**Use Cases**:
 
 - [ ] When a new manager applies, I want to review and assign a role so I can maintain platform safety
 - [ ] When issues arise, I want admin dashboards to intervene and correct data quickly
@@ -167,7 +167,7 @@ RBAC note: Admin inherits Manager/Referee/Public permissions; full Admin Panel a
 
 **Authentication**: Required
 
-RBAC note: Manager inherits all Referee permissions; Admin Panel access with manager‑scoped features.
+RBAC note: Manager inherits all Referee permissions; Admin Panel access with manager-scoped features.
 
 **Primary Goals**: Create and operate tournaments; manage teams, groups, and match calendars
 
@@ -176,21 +176,21 @@ RBAC note: Manager inherits all Referee permissions; Admin Panel access with man
 - [ ] Tournament CRUD, team registration and management
 - [ ] Group assignments and match scheduling
 - [ ] Referee scheduling and assignment; match assignment dashboard (permissions: `referees:assign`, `assignments:manage`)
-- [ ] Manage referee pre‑auth links (issue/revoke) scoped to assigned matches; no general user role management (admin approves users/roles)
+- [ ] Manage referee pre-auth links (issue/revoke) scoped to assigned matches; no general user role management (admin approves users/roles)
 - [ ] Team coordination and communication; results publication workflow
-- [ ] Configuration assistance (divisions, categories, tie‑breakers)
-- [ ] Assign referees via pre‑authenticated links
+- [ ] Configuration assistance (divisions, categories, tie-breakers)
+- [ ] Assign referees via pre-authenticated links
 
-**Jobs‑to‑be‑done**:
+**Use Cases**:
 
 - [ ] When preparing a tournament, I want to register teams and allocate them to groups so I can generate balanced schedules
 - [ ] When running the tournament, I want to update the schedule and see standings so I can keep everyone informed
 
 ### Referee
 
-**Authentication**: Pre‑authenticated link only (no registered user account); a virtual referee user may be created by the system for auditing
+**Authentication**: Pre-authenticated link only (no registered user account); a virtual referee user may be created by the system for auditing
 
-RBAC note: Referees are temporary, token‑based access holders for a specific tournament. Access is limited to assigned matches via pre‑validated, expiring links (revocable). No general Admin Panel login or navigation. Details: See `docs/development/PRD.details.md#referee-access-model`
+RBAC note: Referees are temporary, token-based access holders for a specific tournament. Access is limited to assigned matches via pre-validated, expiring links (revocable). No general Admin Panel login or navigation. Details: See `docs/development/PRD.details.md#referee-access-model`
 
 **Primary Goals**: Submit scores and manage assigned match times within constraints
 
@@ -200,7 +200,7 @@ RBAC note: Referees are temporary, token‑based access holders for a specific t
 - [ ] Score entry and permitted scheduling adjustments
 - [ ] Offline score entry with background sync and conflict handling
 
-**Jobs‑to‑be‑done**:
+**Use Cases**:
 
 - [ ] When a match ends, I want to submit the score immediately so standings stay current
 - [ ] When a conflict arises, I want to propose a new time within allowed rules so scheduling remains valid
@@ -210,22 +210,22 @@ RBAC note: Referees are temporary, token‑based access holders for a specific t
 
 **Authentication**: Not required
 
-RBAC note: Read‑only public access; no Admin Panel access.
+RBAC note: Read-only public access; no Admin Panel access.
 
 **Primary Goals**: Explore tournaments, teams, groups, matches, and results
 
 **Key Features Needed**:
 
 - [ ] Tournaments and teams browsing; search and filters
-- [ ] Live tournament dashboard (live scores, by‑field/by‑group views)
-- [ ] Real‑time match results; standings and classifications
+- [ ] Live tournament dashboard (live scores, by-field/by-group views)
+- [ ] Real-time match results; standings and classifications
 - [ ] Match schedules and field information
 - [ ] Team registration for public tournaments
 
-**Jobs‑to‑be‑done**:
+**Use Cases**:
 
 - When I follow a tournament, I want to quickly find my team’s group and matches so I can plan attendance
-- When checking results, I want up‑to‑date scores and standings so I can see who advances
+- When checking results, I want up-to-date scores and standings so I can see who advances
 - When appropriate, I want to register teams for selected tournaments and specify the contact details for the Team Leader
 - I want optional live alerts when my team is about to play or when goals are scored (frequency configurable)
 
@@ -236,7 +236,7 @@ RBAC note: Read‑only public access; no Admin Panel access.
 
 RBAC note: Future role; permissions and Admin Panel access TBD.
 
-**Primary Goals**: Publish application‑wide and tournament‑related content
+**Primary Goals**: Publish application-wide and tournament-related content
 
 **Key Features Needed**:
 
@@ -284,14 +284,14 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### 2.2 Playoff Structures (MVP)
 
-- [ ] Bracket: single‑elimination only (simplest path)
+- [ ] Bracket: single-elimination only (simplest path)
 - [ ] Schema + visual UI; basic seeding and byes
 
 #### 2.3 RBAC Hardening
 
 - [ ] Align implementation with PRD RBAC matrix (permissions and scopes)
 - [ ] Admin approves users and assigns roles (`ADMIN`, `MANAGER`); no manager role assignment
-- [ ] Managers can issue and revoke pre‑auth referee links scoped to a tournament and assigned matches (no registered referee accounts)
+- [ ] Managers can issue and revoke pre-auth referee links scoped to a tournament and assigned matches (no registered referee accounts)
 - [ ] Restrict Referee access to own referee dashboard only; no general Admin Panel navigation
 Details: See `docs/development/RBAC.hardening.md`
 
@@ -313,8 +313,8 @@ Details: See `docs/development/RBAC.hardening.md`
 
 #### 3.3 Live Updates (baseline)
 
-- [ ] Real‑time score/status broadcasting (WebSocket/SSE) - scope TBD
-- [ ] Push notifications for critical events (opt‑in)
+- [ ] Real-time score/status broadcasting (WebSocket/SSE) - scope TBD
+- [ ] Push notifications for critical events (opt-in)
 Details: See `docs/development/PRD.details.md#live-updates` and `#notifications`
 
 ### Phase 4: Public Engagement (4 - 5 weeks)
@@ -324,7 +324,7 @@ Details: See `docs/development/PRD.details.md#live-updates` and `#notifications`
 
 #### 4.1 Public Tournament Dashboard
 
-- [ ] Live tournament overview; by‑field and by‑group views
+- [ ] Live tournament overview; by-field and by-group views
 - [ ] Live match progress indicators and results
 - [ ] Team pages with performance and history
 - [ ] Search and filtering
@@ -332,10 +332,10 @@ Details: See `docs/development/PRD.details.md#public-dashboard`
 
 #### 4.2 Standings & Classifications
 
-- [ ] Real‑time pool standings; transparent tie‑breakers
+- [ ] Real-time pool standings; transparent tie-breakers
 Details: See `docs/development/PRD.details.md#standings-tie-breakers`
 
-#### 4.3 Notifications (opt‑in)
+#### 4.3 Notifications (opt-in)
 
 - [ ] Team/match alerts (kickoff, final, optional goal alerts); permissioned
 
@@ -350,7 +350,7 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 - [ ] Subscriptions/Billing (Stripe): tiers, payments, billing dashboard
 - [ ] Email integration: registration confirmations, match reminders, schedule changes, results
 - [ ] Integrations (API, calendar export, social sharing)
-- [ ] Extended admin features: multi‑tournament series, referee scheduling automation, equipment/field inventory, advanced search, favorites
+- [ ] Extended admin features: multi-tournament series, referee scheduling automation, equipment/field inventory, advanced search, favorites
 
 ---
 
@@ -410,38 +410,38 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Authentication
 
-- Current State: Email/password auth with server‑side cookie sessions; role‑guarded routes and smart redirects
-- Requirements (high‑level): Modernize auth with Google and email/password via Firebase; SSR‑compatible session bridging; preserve role checks and redirects
+- Current State: Email/password auth with server-side cookie sessions; role-guarded routes and smart redirects
+- Requirements (high-level): Modernize auth with Google and email/password via Firebase; SSR-compatible session bridging; preserve role checks and redirects
 - Details: See `docs/development/PRD.details.md#authentication-bridging` (authentication bridging, tokens, redirects)
 
 #### Teams & Tournaments
 
-- Current State: Public teams listing + creation; Admin teams CRUD; Admin tournaments CRUD; mobile swipe‑to‑delete
-- Requirements (high‑level): Complete public team detail; support club icon; extend admin dashboards as needed
+- Current State: Public teams listing + creation; Admin teams CRUD; Admin tournaments CRUD; mobile swipe-to-delete
+- Requirements (high-level): Complete public team detail; support club icon; extend admin dashboards as needed
 
 #### Groups & Matches
 
 - **Current State**: Data models for `GroupSet`/`Group`/`GroupSlot`; `Match` and `MatchScore` exist but not used yet
-- **Limitations**: Group allocation workflows mid‑implementation; playoffs not yet modeled; match calendar UX not complete
+- **Limitations**: Group allocation workflows mid-implementation; playoffs not yet modeled; match calendar UX not complete
 - **Requirements**: CRUD UX for group allocation; playoff schema (knockout/placement); scheduling tooling with automatic conflict detection/resolution; referee flows
 - Details: See `docs/development/PRD.details.md#scheduling-conflicts`, `#referee-experience`, and `#bracket-formats`
 
 #### Internationalization
 
 - **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English)
-- **Requirements (high‑level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`
+- **Requirements (high-level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`
 - Details: See `docs/development/PRD.details.md#i18n-details` (i18n centralization and locale handling)
 
 #### Deployment
 
 - **Current State**: Fly.io deployment via container; SQLite volume; SSR enabled
-- **Requirements (high‑level)**: Keep startup snappy; profile startup path and cache hot routes
+- **Requirements (high-level)**: Keep startup snappy; profile startup path and cache hot routes
 - Details: See `docs/development/PRD.details.md#deployment-details` (hosting, ports/healthchecks, build/start)
 
 ### Architecture Requirements
 
-- [ ] Authentication bridged via Firebase session cookies; SSR‑compatible and role‑aware
-- [ ] Mobile‑first layouts; desktop enhancements via `lg:`; min 44px touch targets
+- [ ] Authentication bridged via Firebase session cookies; SSR-compatible and role-aware
+- [ ] Mobile-first layouts; desktop enhancements via `lg:`; min 44px touch targets
 - [ ] i18n languages centralized; RTL support maintained; fallback to `nl`
 - [ ] Avoid code duplication; refactor large components into dedicated folders as needed
 - [ ] CVA variants for colors; follow existing naming conventions
@@ -452,8 +452,8 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 ## Performance & Data Loading
 
-- High‑level: Use context‑appropriate prefetching and lightweight revalidation to keep navigation responsive.
-- Targets: Sub‑500ms for prefetched navigations; minimal prefetch overhead.
+- High-level: Use context-appropriate prefetching and lightweight revalidation to keep navigation responsive.
+- Targets: Sub-500ms for prefetched navigations; minimal prefetch overhead.
 - Details: See `docs/development/PRD.details.md#performance-data-loading` (Prefetching, data freshness strategies).
 
 ---
@@ -464,24 +464,24 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 - **Core stack**:
   - [ ] React Router v7 + TypeScript + Vite (client + SSR entry where applicable)
-  - [ ] Tailwind CSS (mobile‑first with `lg:` desktop)
+  - [ ] Tailwind CSS (mobile-first with `lg:` desktop)
   - [ ] Zustand for view/form state
   - [ ] i18next for internationalization (includes RTL support)
   - [ ] Vitest for unit tests, Playwright for E2E tests
 - **Patterns**:
-  - [ ] Mobile‑first layout and touch targets by default
+  - [ ] Mobile-first layout and touch targets by default
   - [ ] Routes colocated with layouts; lazy loading where appropriate
   - [ ] Collocate query/mutation logic with components/hooks where feasible
 
 ### Server runtime (monolithic app)
 
-- [ ] Frontend‑first app using React Router SSR when needed (single repo)
+- [ ] Frontend-first app using React Router SSR when needed (single repo)
 - [ ] Prisma ORM; SQLite database persisted on Fly volume `/data`
 - [ ] No separate backend project implied
 
 ### PWA
 
-- [ ] Service worker, offline caching, add‑to‑home‑screen
+- [ ] Service worker, offline caching, add-to-home-screen
 - [ ] Update prompts and background sync where applicable
 - [ ] Offline scoring queues with background sync; visible pending state and conflict handling
 - [ ] Follow privacy and storage best practices
@@ -510,14 +510,14 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
 - [ ] Authentication: Google Authentication via Firebase Authentication (implementation details in auth PRD)
 - [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
 - [ ] Email/Notifications: integrate provider (TBD) for registration confirmations, match reminders, schedule changes, and final results; outbox + retries (see `docs/development/PRD.details.md#email-integration`)
-- [ ] Third‑party SDKs documented with env vars and privacy considerations
+- [ ] Third-party SDKs documented with env vars and privacy considerations
 - [ ] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
 
 ---
 
 ## Data Model
 
-- High‑level: Minimize schema churn per iteration; document changes alongside implementation.
+- High-level: Minimize schema churn per iteration; document changes alongside implementation.
 - Details: See `docs/development/PRD.details.md#data-model-migrations` for anticipated changes and migration workflow.
 
 ---
@@ -529,11 +529,11 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
   - Public: `/`, `/teams`, `/auth/*`, error routes
   - Staff: Admin Panel under obfuscated base path for `ADMIN` and `MANAGER`. `REFEREE` has access only to their own referee dashboard (assigned matches) and cannot navigate the general Admin Panel. Inheritance: `ADMIN` ⊇ `MANAGER` ⊇ `REFEREE` ⊇ `PUBLIC`.
   - `EDITOR` / `BILLING` (future): access details TBD (anticipated panel sections limited to content/billing domains)
-- **Client‑side data flows and navigation**:
+- **Client-side data flows and navigation**:
   - Loaders/actions define contracts; loaders produce typed data
   - Mutations with optimistic UI where appropriate
-  - Error boundaries: general and auth‑specific already present
-Details: See `docs/development/PRD.details.md#routing-map`
+  - Error boundaries: general and auth-specific already present
+  Details: See `docs/development/PRD.details.md#routing-map`
 
 ---
 
@@ -555,13 +555,13 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - Actionable Panels: Use `Panel` and `ActionLinkPanel` for key flows and menus where appropriate
 - Component Consistency: Follow component library patterns and variants
-- Navigation Patterns: Consistent visual cues and mobile‑first navigation
+- Navigation Patterns: Consistent visual cues and mobile-first navigation
 
 ### Visual Design Standards
 
 - Color System: Use semantic color classes and CVA variants; brand = red; primary = emerald; also sky, teal, fuchsia, indigo, amber, slate
 - Color Hygiene: Replace cyan with sky where cyan appears in components (legacy to be removed)
-- Typography: System‑UI for Latin; Amiri for Arabic with visual text size balance utilities
+- Typography: System-UI for Latin; Amiri for Arabic with visual text size balance utilities
 - Spacing: Standard spacing patterns; responsive grid
 
 ### Theme & Dark Mode
@@ -596,10 +596,10 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 ## Security and privacy
 
 - **Authentication (direction)**: Google Authentication via Firebase. Recommended approach:
-  - Use Firebase ID tokens to mint HTTP‑only session cookies on the server (session cookie bridging) to retain SSR security and role checks
-  - Avoid storing long‑lived tokens in `localStorage`; prefer HTTP‑only cookies + short‑lived in‑memory tokens when needed
+  - Use Firebase ID tokens to mint HTTP-only session cookies on the server (session cookie bridging) to retain SSR security and role checks
+  - Avoid storing long-lived tokens in `localStorage`; prefer HTTP-only cookies + short-lived in-memory tokens when needed
   - Logout invalidates Firebase session cookies and client state
-- **Authorization**: Role‑based guards on client with server verification in loaders/actions
+- **Authorization**: Role-based guards on client with server verification in loaders/actions
 - **Sensitive data**: Minimize PII; document analytics configuration; sanitize public error messages
 
 ### RBAC (Role-Based Access Control)
@@ -614,8 +614,8 @@ Details: See `docs/development/PRD.details.md#i18n-details`
   - BILLING (future): `billing:{read,manage}`, `subscriptions:{read,manage}`
   - Details: See `docs/development/PRD.details.md#permissions-glossary`
 - Middleware: use `requireUserWithPermission(request, permission, { allowSelfAccess, userIdParam, params })` in loaders/actions
-- Param handling: use React Router `params` for self‑access checks (never parse URL segments manually)
-- Post‑login redirects: role‑based landing pages; public → `/`, staff → Admin Panel (obfuscated base path)
+- Param handling: use React Router `params` for self-access checks (never parse URL segments manually)
+- Post-login redirects: role-based landing pages; public → `/`, staff → Admin Panel (obfuscated base path)
 
 **Role hierarchy and panel access**
 
@@ -626,8 +626,8 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ### Rate limiting
 
-- Protect `/auth/signin` and sensitive admin actions; include `X‑RateLimit‑*` headers
-- Memory‑safe in‑memory store with cleanup; strict IP header validation; localhost‑only bypass in tests
+- Protect `/auth/signin` and sensitive admin actions; include `X-RateLimit-*` headers
+- Memory-safe in-memory store with cleanup; strict IP header validation; localhost-only bypass in tests
 
 ---
 
@@ -637,7 +637,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - **Authentication migration complexity → Mitigation**: parallel login flows behind a config switch; staged rollout; comprehensive E2E tests (note: not in production yet)
 - **Role mapping and SSR loaders with Firebase sessions → Mitigation**: adopt session cookie bridging; adapt `requireUser*` utilities; add regression tests
-- **Playoff modeling scope creep → Mitigation**: start with single‑elimination; design extension points; incremental schema migrations
+- **Playoff modeling scope creep → Mitigation**: start with single-elimination; design extension points; incremental schema migrations
 
 ### Business Risks
 
@@ -659,7 +659,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ### Phase 2: Groups & Playoffs (MVP)
 
-- Weeks 2 - 4: Group allocation UX; single‑elimination bracket and basic UI
+- Weeks 2 - 4: Group allocation UX; single-elimination bracket and basic UI
 
 ### Phase 3: Scheduling & Scoring
 
@@ -667,11 +667,11 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ### Phase 4: Public Engagement
 
-- Weeks 9 - 11: Live dashboard, standings, notifications opt‑in
+- Weeks 9 - 11: Live dashboard, standings, notifications opt-in
 
 ### Phase 5: Advanced Brackets
 
-- Weeks 12 - 14: Advanced bracket formats (post‑MVP)
+- Weeks 12 - 14: Advanced bracket formats (post-MVP)
 
 ### Phase 6+: Subscriptions/Communications/Extended
 
@@ -700,42 +700,42 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ## Conclusion
 
-Tournado focuses on clarity for the public and control for managers. With a mobile‑first UI, solid role‑based security, and reliable data modeling for teams, groups, matches, and standings, it provides a practical foundation for real tournaments and room to grow into playoffs, subscriptions, and content.
+Tournado focuses on clarity for the public and control for managers. With a mobile-first UI, solid role-based security, and reliable data modeling for teams, groups, matches, and standings, it provides a practical foundation for real tournaments and room to grow into playoffs, subscriptions, and content.
 
 **Key Architectural Principles**:
 
-- Favor server‑verified auth and role checks during SSR
-- Keep routes fast and simple; mobile‑first with clear states
+- Favor server-verified auth and role checks during SSR
+- Keep routes fast and simple; mobile-first with clear states
 
 **Critical First Steps**:
 
 1. Implement Firebase auth with session cookie bridging
 2. Finish group allocation CRUD
 3. Add `Team.clubIcon` support and fetching strategy
-4. Define playoff schema (start with single‑elimination)
+4. Define playoff schema (start with single-elimination)
 
 **Next Steps**:
 
 1. Deliver scheduling and scoring with live standings
-2. Finalize language enumeration centralization and fallback to `nl` (confirm single‑place registration)
+2. Finalize language enumeration centralization and fallback to `nl` (confirm single-place registration)
 
 ---
 
 ## Open questions
 
 - Public area: should we add tournament pages with groups and standings summaries for faster discovery?
-- Referee pre‑auth: expiry rules and scope; what adjustments to match times are permitted?
-- Domain accuracy: per age category match duration and scheduling constraints; tie‑breakers and standings rules
+- Referee pre-auth: expiry rules and scope; what adjustments to match times are permitted?
+- Domain accuracy: per age category match duration and scheduling constraints; tie-breakers and standings rules
 - Are additional manager workflows needed (e.g., field assignment, blackout times)?
 - Research: migration from GitHub to GitLab - effort, pros/cons, and the effect of GitLab’s feature flags compared to alternatives
-- Should we add optional chats, voting, and totalisator (non‑monetary score predictions) as future social features? If yes, how do we moderate and scope them?
+- Should we add optional chats, voting, and totalisator (non-monetary score predictions) as future social features? If yes, how do we moderate and scope them?
 - PWA-related offline caching: scope route/data caching via service worker; define cache strategies per route type and revalidation rules
 - Push notifications: evaluate use cases (team/match alerts, schedule changes, optional goal alerts), permissions flow, and privacy implications; implement via service worker with clear opt-in
 - Live transport: WebSocket vs SSE vs polling fallback - choose per complexity/hosting constraints
-- Bracket generation: MVP = single‑elimination. Evaluate advanced formats (double‑elimination, Swiss, placement) in Phase 4; ensure transparent tie‑breaker configuration
+- Bracket generation: MVP = single-elimination. Evaluate advanced formats (double-elimination, Swiss, placement) in Phase 4; ensure transparent tie-breaker configuration
 - Offline sync: how to handle conflicts when server state changes between offline entry and sync
-- Artificial intelligence: explore useful AI features (e.g., schedule optimization, conflict resolution suggestions, bracket predictions, performance/anomaly reports, fairness checks, natural‑language queries over tournaments, auto‑generated match summaries)
-- Animations: identify micro‑interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)
+- Artificial intelligence: explore useful AI features (e.g., schedule optimization, conflict resolution suggestions, bracket predictions, performance/anomaly reports, fairness checks, natural-language queries over tournaments, auto-generated match summaries)
+- Animations: identify micro-interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)
 - Mobile app wrapper: assess packaging the web app for Android/iOS via Capacitor. Validate SSR vs client-only build strategy, service worker support under app schemes, and push notification integration for store compliance
 
 ---
@@ -755,4 +755,4 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 
 **Collocation of query/mutation logic with components/hooks**
 
-Rationale: colocating data‑fetching and mutation logic near the components that consume them improves readability and local reasoning. It reduces indirection for maintainers and helps keep feature code self‑contained. Use small, typed helpers and hooks colocated with the route/component when they are only used there. Promote to shared utils only when there is demonstrable reuse.
+Rationale: colocating data-fetching and mutation logic near the components that consume them improves readability and local reasoning. It reduces indirection for maintainers and helps keep feature code self-contained. Use small, typed helpers and hooks colocated with the route/component when they are only used there. Promote to shared utils only when there is demonstrable reuse.

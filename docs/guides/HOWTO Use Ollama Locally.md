@@ -663,22 +663,161 @@ curl http://localhost:11434/api/tags
 3. Ensure no firewall blocking port 11434
 4. Note: Continue now uses YAML format, not JSON
 
+## Step 7: Set Up AIChat for Interactive Terminal Conversations
+
+While Continue provides excellent IDE integration, you might want an interactive chat interface similar to Claude CLI for terminal-based conversations. AIChat offers exactly this experience with your local Ollama models.
+
+### **Installing AIChat**
+
+```bash
+brew install aichat
+```
+
+### **Initial Configuration**
+
+Run the interactive setup:
+
+```bash
+aichat --info
+```
+
+When prompted, configure as follows:
+
+1. **API Provider:** Select `openai-compatible` (not "openai")
+2. **Provider Name:** `ollama` (or any name you prefer)
+3. **API Base:** `http://localhost:11434/v1`
+4. **API Key:** Leave empty (press Enter - Ollama doesn't need one)
+5. **Default Model:** `llama3.1:8b`
+
+### **Using AIChat Interactively**
+
+#### **Start Interactive Chat Session:**
+
+```bash
+# Start with default model (llama3.1:8b)
+aichat
+
+# Start with specific model
+aichat -m starcoder2:instruct
+
+# Start and continue named session (with conversation history)
+aichat -s my-coding-session
+```
+
+#### **Interactive Commands (Inside AIChat):**
+
+```bash
+> Hello! Can you explain React hooks?          # Normal conversation
+> .model starcoder2:instruct                   # Switch to coding model
+> Can you write a code example now?            # Continue conversation
+> .models                                      # List all available models
+> .save important-conversation                 # Save current chat
+> .load important-conversation                 # Load saved chat
+> .clear                                       # Clear conversation history
+> .help                                        # Show all commands
+> .exit                                        # Quit (or Ctrl+C)
+```
+
+#### **Model Switching Examples:**
+
+```bash
+> .model llama3.1:8b                          # General conversations
+> .model starcoder2:instruct                  # Code generation
+> .model codellama:13b-instruct               # Code analysis
+> .model deepseek-coder-v2:16b                # Advanced coding tasks
+> .model qwen2.5-coder:1.5b-base              # Quick/light tasks
+```
+
+#### **Session Management:**
+
+```bash
+# From terminal - start/resume sessions
+aichat -s project-alpha                       # Start named session
+aichat -s debugging-session                   # Different session for debugging
+aichat                                        # Continue last session
+```
+
+### **AIChat vs Other CLI Tools**
+
+| Tool           | Interface        | Best For                                |
+| -------------- | ---------------- | --------------------------------------- |
+| **AIChat**     | Interactive REPL | Conversational AI (like Claude CLI)     |
+| **Continue**   | IDE Integration  | Code editing, autocomplete, analysis    |
+| **Claude CLI** | Interactive REPL | Research, latest info (internet access) |
+
+### **Practical AIChat Workflow:**
+
+```bash
+# Start coding session
+aichat -s my-project
+
+# Inside AIChat:
+> I'm building a React app. Can you help me design the component structure?
+[AI responds with architecture suggestions]
+
+> .model starcoder2:instruct
+> Now generate the UserProfile component code
+[AI generates React component]
+
+> .model llama3.1:8b
+> Explain this component's lifecycle in simple terms
+[AI explains the code]
+
+> .save react-components
+> .exit
+```
+
+### **Quick Command Examples:**
+
+```bash
+# One-off questions
+aichat "What's the difference between SQL JOIN types?"
+
+# File analysis
+cat script.js | aichat "optimize this code"
+
+# With specific model
+aichat -m deepseek-coder-v2:16b "help me refactor this complex algorithm"
+```
+
 ## Recommended Workflow & Usage Patterns
 
-### Dual AI Setup (Recommended)
+### Triple AI Setup (Recommended)
 
-**Yes, you can use both simultaneously!** Here's the optimal workflow:
+**Yes, you can use all three simultaneously!** Here's the optimal workflow:
 
-#### **Claude (this chat) + Continue (local models)**
+#### **Claude + Continue + AIChat (Best of All Worlds)**
 
-- **Claude (via Cursor chat):** General discussions, planning, architecture, explanations
-- **Continue (local models):** Code generation, refactoring, debugging, code-specific tasks
+- **Claude (via Cursor chat):** General discussions, planning, architecture, latest information
+- **Continue (local models):** Code editing, autocomplete, refactoring, IDE-integrated assistance
+- **AIChat (local models):** Terminal conversations, quick questions, interactive coding sessions
 
 #### **Practical Usage:**
 
 1. **Start with Claude** for project planning and high-level discussions
-2. **Switch to Continue** when you need to write/modify actual code
-3. **Use both in parallel** - each has different strengths
+2. **Switch to Continue** when you need to write/modify actual code in your editor
+3. **Use AIChat** for terminal-based conversations and quick questions
+4. **Use all three in parallel** - each has different strengths
+
+#### **Example Workflow:**
+
+```bash
+# 1. Research with Claude (this chat)
+"What are the latest React 18 patterns for state management?"
+
+# 2. Quick discussion with AIChat (terminal)
+aichat -s react-project
+> Based on what I learned, help me plan a component structure
+
+# 3. Code generation with Continue (in editor)
+# Use Cmd+I in VS Code/Cursor to generate actual components
+
+# 4. Back to AIChat for quick questions
+> .model starcoder2:instruct
+> How do I test this component?
+
+# 5. Continue the cycle as needed
+```
 
 ### How to Access Each AI System
 
@@ -695,6 +834,13 @@ curl http://localhost:11434/api/tags
 - **Models:** Your 7 local Ollama models
 - **Best for:** Code generation, refactoring, debugging
 - **Usage:** Opens a separate chat interface for coding tasks
+
+#### **AIChat (Local Models - Terminal):**
+
+- **Access:** `aichat` command in terminal
+- **Models:** Your 9 local Ollama models (same as Continue)
+- **Best for:** Interactive conversations, quick questions, terminal workflow
+- **Usage:** Interactive REPL like Claude CLI but with local models
 
 ### Optional: Disable Cursor's Built-in AI (To Avoid Confusion)
 

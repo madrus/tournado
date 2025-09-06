@@ -1,0 +1,203 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN CREATING NEW TASKS
+
+This file is a single, self-contained TASK for an AI agent. **One task = one file.**
+Follow the steps below when creating new tasks.
+
+1. **Name your file**: place under `.cursor/tasks/` and use kebab-case, e.g., `tasks/add-tournament-bracket.mdc`.
+2. **Fill the frontmatter** (above) completely. Keep `title`, `status`, and `owner` accurate.
+3. **Use information-dense keywords** throughout (exact file paths, function signatures, type names, constants, route patterns).
+4. **Define types first** if adding new data structures. Reference those types by exact name in later steps.
+5. **Order your steps** so later steps explicitly reference earlier artifacts by name (files, types, functions, routes).
+6. **Keep scope tight**: this task should be completable independently. If it's large, split into multiple task files and add them to `dependencies`.
+7. **Acceptance criteria** must be testable and unambiguous. Include file paths for tests and example route/API usage.
+8. **Context plan** must list the files to add to the model's context at the start (mark dep files read-only) and which files must exist at the end.
+9. **Testing strategy** use primarily integration tests with Vitest and E2E tests with Playwright using Page Object Model. Include database seeding for tests.
+
+---
+
+id: "<unique-id-or-ticket>" # e.g., TASK-0123
+title: "<short, action-oriented task title>" # e.g., "Add tournament bracket visualization"
+status: "planned" # planned, in-progress, blocked, done
+priority: "P1" # P0, P1, P2
+labels: ["feature", "ui", "tournament"] # free-form tags (feature, ui, database, api, tournament, team, match)
+dependencies: ["<other-task-file>"] # list other task files that must be completed first
+created: "YYYY-MM-DD"
+
+# 1) High-Level Objective
+
+<One sentence that describes the user-facing end state. Avoid technical jargon.>
+
+# 2) Background / Context (Optional but recommended)
+
+<Short rationale or business context for why this task exists. Link any tickets/PRDs.>
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: <If any info is missing, state the pragmatic assumption here.>
+- Constraint: <e.g., "Use only dependencies listed in package.json".>
+- Constraint: <e.g., "Follow existing CVA patterns for component styling".>
+- Constraint: <e.g., "Use Prisma for all database operations".>
+- Constraint: <e.g., "Maintain compatibility with existing tournament data structure".>
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- .cursor/tasks/<other-task-file>.mdc
+- prisma/schema.prisma _(required existing schema)_
+- app/lib/lib.types.ts _(existing types)_
+
+# 5) Context Plan
+
+**Beginning (add to model context):**
+
+- app/routes/tournaments._index.tsx
+- app/models/tournament.server.ts
+- app/lib/lib.types.ts
+- prisma/schema.prisma _(read-only)_
+- package.json _(read-only)_
+
+**End state (must exist after completion):**
+
+- app/components/<ComponentName>/<ComponentName>.tsx
+- app/components/<ComponentName>/<componentName>.variants.ts
+- app/components/<ComponentName>/index.ts
+- app/routes/<resource>.<action>.tsx
+- app/components/__tests__/<ComponentName>.test.tsx
+- playwright/tests/<featureName>.spec.ts
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+> Write concrete, atomic steps. Include **file paths, exact names, signatures, params with defaults, return types**.
+
+1. **Create new component**
+
+   - File: `app/components/<ComponentName>/<ComponentName>.tsx`
+   - Exported API:
+     ```tsx
+     export type <DataType> = {
+       id: string;
+       name: string;
+       status: <StatusEnum>;
+     };
+     export function <ComponentName>({
+       data,
+       onAction,
+       className,
+     }: {
+       data: <DataType>[];
+       onAction?: (item: <DataType>) => void;
+       className?: string;
+     }): JSX.Element;
+     ```
+   - Details:
+     - Use existing design system components
+     - Support internationalization with `useTranslation`
+     - Follow accessibility best practices
+     - Use semantic HTML and proper ARIA attributes
+
+2. **Create component variants**
+
+   - File: `app/components/<ComponentName>/<componentName>.variants.ts`
+   - Use CVA pattern:
+     ```ts
+     export const <componentName>Variants = cva(
+       ['base-classes-here'],
+       {
+         variants: {
+           variant: { default: 'classes', primary: 'classes' },
+           size: { sm: 'classes', md: 'classes', lg: 'classes' }
+         }
+       }
+     );
+     ```
+
+3. **Create/update route**
+
+   - File: `app/routes/<resource>.<action>.tsx` or `app/routes/<resource>.$id.tsx`
+   - Add loader/action:
+     ```ts
+     export async function loader({ params, request }: LoaderFunctionArgs) {
+       const data = await get<Resource>({ id: params.id });
+       return { data };
+     }
+     export async function action({ request, params }: ActionFunctionArgs) {
+       // Handle form submission
+       return redirect('/success-path');
+     }
+     ```
+
+4. **Update database model**
+
+   - File: `app/models/<resource>.server.ts`
+   - Add function:
+     ```ts
+     export async function <operationName>({
+       id,
+       data,
+     }: {
+       id: string;
+       data: <InputType>;
+     }): Promise<<ReturnType>>
+     ```
+
+5. **Tests**
+   - File: `app/components/__tests__/<ComponentName>.test.tsx` (Vitest)
+   - Cases:
+     - Renders with required props
+     - Handles user interactions correctly
+     - Applies custom className and variants
+   - File: `playwright/tests/<featureName>.spec.ts` (E2E with Page Object Model)
+   - Cases:
+     - Navigate to feature and verify functionality
+     - Test form submission and data persistence
+     - Test responsive behavior
+
+# 7) Types & Interfaces (if applicable)
+
+> Define or reference types here so the model has a stable contract.
+
+```ts
+// app/lib/lib.types.ts or app/@types/<feature>.ts
+export interface <FeatureData> {
+  id: string;
+  name: string;
+  status: <StatusEnum>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type <ComponentProps> = {
+  data: <FeatureData>[];
+  onAction?: (item: <FeatureData>) => void;
+  className?: string;
+};
+```
+
+# 8) Acceptance Criteria
+
+- `app/components/<ComponentName>/<ComponentName>.tsx` exports `<ComponentName>(...)` with the exact signature above.
+- Route `app/routes/<resource>.<action>.tsx` loads data and renders component successfully.
+- Navigation to `/route-path` displays the feature correctly.
+- All tests in `app/components/__tests__/<ComponentName>.test.tsx` pass locally.
+- All E2E tests in `playwright/tests/<featureName>.spec.ts` pass locally.
+
+# 9) Testing Strategy
+
+- Create unit tests with Vitest that verify component behavior and rendering.
+- Create E2E tests with Playwright using Page Object Model pattern.
+- Include database seeding for realistic test data.
+- Test responsive design on different screen sizes.
+- Test accessibility with screen reader navigation.
+- Avoid testing implementation details - focus on user-facing behavior.
+
+# 10) Notes / Links
+
+- Reference PRD/ADR section: <docs/prd/section-name.md or docs/adr/ADR-XXX.md>
+- Related tasks: <list other .cursor/tasks/ files>
+- Design mockups: <link to figma or design files>
+- API documentation: <link to API specs if applicable>

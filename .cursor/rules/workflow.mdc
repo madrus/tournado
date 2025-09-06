@@ -1,5 +1,863 @@
 ---
-description:
-globs:
 alwaysApply: true
 ---
+
+# Tournado Development Workflows
+
+## Architecture
+
+This project uses React Router v7 with Prisma ORM, SQLite database, and Radix UI components. The architecture follows a modular pattern with clear separation between presentation components, server-side data access, client-side state management, and database operations.
+
+## Primary Rules
+
+Below are the rules that you must follow when developing functionality:
+
+### Components and UI
+
+- Use Radix UI components as accessible primitives
+- Style with Tailwind CSS v4 using semantic color classes
+- Use CVA (Class Variance Authority) for component variants
+- Follow the established component structure with dedicated folders
+- Make components reusable, accessible, and maintainable
+- Support internationalization (i18n) and RTL languages
+
+### Styling and Theming
+
+- Use Tailwind CSS v4 with semantic color classes from `app/styles/tailwind.css`
+- Follow CVA patterns for component styling variants
+- Maintain consistent spacing with Tailwind spacing scale
+- Use responsive design principles with mobile-first approach
+- Support both light and dark themes
+- Use `cn()` utility for conditional classes
+
+### User Experience (UX)
+
+- **Always** adopt the perspective of a critical user
+- Implement proper loading states (skeletons, spinners)
+- Show empty states with helpful messaging
+- Use `ActionButton` with loading states for forms
+- Provide informative error messages with toast notifications
+- Ensure accessibility with proper ARIA attributes
+- Test on various devices and screen sizes
+- Support keyboard navigation and screen readers
+
+### Code Quality
+
+- Balance code quality with development speed
+- Add JSDoc comments for complex functions and components
+- Use strict TypeScript - avoid 'any' type
+- Keep functions and components focused (single responsibility)
+- Implement proper error boundaries and error handling
+- Follow established file naming conventions
+
+### State Management
+
+- Use React Router loaders/actions for server state
+- Use Zustand stores for complex client state with persistence
+- Use local component state for simple UI state
+- Implement optimistic UI updates where appropriate
+- Use proper cleanup in useEffect hooks
+
+### Performance Optimization
+
+- Use `useCallback` and `useMemo` efficiently
+- Pay attention to dependency arrays in hooks
+- Implement code splitting with React Router v7
+- Optimize database queries in loaders
+- Use proper caching strategies
+
+### Authentication & Authorization
+
+- Use session-based authentication with bcrypt
+- Implement role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Use route metadata for public/protected routes
+- Handle auth state with proper loading indicators
+- Implement proper logout and session management
+
+### Email Communication
+
+- Use Resend for transactional email delivery
+- Create email templates with React Email components
+- Handle email errors gracefully with proper fallbacks
+- Follow email best practices for deliverability and accessibility
+
+## Development Workflows
+
+When building new features, follow these systematic workflows based on the type of work:
+
+### 0. Planning Phase
+
+Before starting, create a comprehensive to-do list following this exact process:
+
+- Understand the feature requirements
+- Identify affected components, routes, and data models
+- Plan the database schema changes (if needed)
+- List necessary UI components and their variants
+- Plan the data flow between server and client
+- Consider edge cases, error states, and accessibility
+
+## 1. Component Development Workflow
+
+Use this workflow when creating new UI components:
+
+### 1.1. Component Structure
+
+```tsx
+// app/components/NewFeature/NewFeature.tsx
+import { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { cn } from '~/utils/misc'
+import { renderIcon } from '~/utils/iconUtils'
+
+import { newFeatureVariants, type NewFeatureVariants } from './newFeature.variants'
+
+type NewFeatureProps = {
+  // Define props with proper TypeScript
+  title: string
+  children: React.ReactNode
+  variant?: NewFeatureVariants['variant']
+  className?: string
+}
+
+export function NewFeature({
+  title,
+  children,
+  variant = 'default',
+  className,
+}: NewFeatureProps): JSX.Element {
+  const { t } = useTranslation()
+
+  return (
+    <div 
+      className={cn(newFeatureVariants({ variant }), className)}
+      data-testid="new-feature"
+    >
+      <h2 className="text-lg font-semibold">{title}</h2>
+      {children}
+    </div>
+  )
+}
+```
+
+### 1.2. Component Variants (CVA Pattern)
+
+```tsx
+// app/components/NewFeature/newFeature.variants.ts
+import { cva, type VariantProps } from 'class-variance-authority'
+
+export const newFeatureVariants = cva(
+  // Base classes
+  [
+    'p-4 rounded-lg border transition-all duration-200',
+    'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+  ],
+  {
+    variants: {
+      variant: {
+        default: 'bg-background border-border',
+        primary: 'bg-brand text-brand-foreground border-brand',
+        secondary: 'bg-accent text-accent-foreground border-accent',
+      },
+      size: {
+        sm: 'p-2 text-sm',
+        md: 'p-4',
+        lg: 'p-6 text-lg',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
+  }
+)
+
+export type NewFeatureVariants = VariantProps<typeof newFeatureVariants>
+```
+
+## 2. Route Development Workflow
+
+Use this workflow when creating new pages or routes:
+
+### 2.1. Route File Structure
+
+```tsx
+// app/routes/teams.new.tsx
+import { JSX } from 'react'
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from 'react-router'
+import { Form, redirect, useActionData, useLoaderData } from 'react-router'
+
+import { createTeam } from '~/models/team.server'
+import { requireUserId } from '~/session.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+
+import type { Route } from './+types/teams.new'
+
+// Route metadata for authorization
+export const handle: RouteMetadata = {
+  isPublic: false, // Protected route
+}
+
+// SEO and meta information
+export const meta: MetaFunction = () => [
+  { title: 'Create Team | Tournado' },
+  { name: 'description', content: 'Create a new tournament team' },
+]
+
+// Server-side data loading
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserId(request) // Ensure user is authenticated
+  
+  // Load any required data
+  const tournaments = await getTournaments()
+  
+  return { tournaments }
+}
+
+// Server-side form handling
+export async function action({ request }: ActionFunctionArgs) {
+  const userId = await requireUserId(request)
+  const formData = await request.formData()
+  
+  const teamData = {
+    name: formData.get('name') as string,
+    clubName: formData.get('clubName') as string,
+    // ... other fields
+  }
+  
+  try {
+    const team = await createTeam(teamData)
+    return redirect(`/teams/${team.id}`)
+  } catch (error) {
+    return { errors: { general: 'Failed to create team' } }
+  }
+}
+
+// React component
+export default function NewTeamPage(): JSX.Element {
+  const { tournaments } = useLoaderData<typeof loader>()
+  const actionData = useActionData<typeof action>()
+  
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Create New Team</h1>
+      
+      <Form method="post" className="space-y-4">
+        {/* Form fields */}
+      </Form>
+    </div>
+  )
+}
+```
+
+## 3. Database Model Workflow
+
+Use this workflow when working with database operations:
+
+### 3.1. Model Pattern
+
+```tsx
+// app/models/tournament.server.ts
+import type { Tournament, Prisma } from '@prisma/client'
+
+import { prisma } from '~/db.server'
+import type { TournamentWithTeams } from '~/lib/lib.types'
+
+export type { Tournament } from '@prisma/client'
+
+// Get single tournament
+export async function getTournament({
+  id,
+}: {
+  id: string
+}): Promise<Tournament | null> {
+  return await prisma.tournament.findUnique({
+    where: { id },
+    include: {
+      teams: {
+        select: {
+          id: true,
+          name: true,
+          clubName: true,
+        },
+      },
+    },
+  })
+}
+
+// Create tournament
+export async function createTournament(
+  tournament: Pick<Tournament, 'name' | 'location' | 'startDate'>
+): Promise<Tournament> {
+  return await prisma.tournament.create({
+    data: tournament,
+  })
+}
+
+// Update tournament
+export async function updateTournament({
+  id,
+  ...data
+}: Pick<Tournament, 'id'> & Partial<Tournament>): Promise<Tournament> {
+  return await prisma.tournament.update({
+    where: { id },
+    data,
+  })
+}
+
+// Delete tournament
+export async function deleteTournament({ id }: { id: string }): Promise<Tournament> {
+  return await prisma.tournament.delete({
+    where: { id },
+  })
+}
+```
+
+## 4. Form with Zustand Store Workflow
+
+Use this workflow for complex forms with persistent state:
+
+### 4.1. Store Definition
+
+```tsx
+// app/stores/useNewFeatureStore.ts
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+
+type FormState = {
+  // Form fields
+  name: string
+  description: string
+  
+  // Validation state
+  errors: Record<string, string>
+  touched: Record<string, boolean>
+  
+  // UI state
+  isSubmitting: boolean
+}
+
+type FormActions = {
+  setField: (field: string, value: string) => void
+  setError: (field: string, error: string) => void
+  clearError: (field: string) => void
+  setTouched: (field: string) => void
+  resetForm: () => void
+  
+  // Validation
+  validateField: (field: string) => boolean
+  validateForm: () => boolean
+}
+
+const initialState: FormState = {
+  name: '',
+  description: '',
+  errors: {},
+  touched: {},
+  isSubmitting: false,
+}
+
+export const useNewFeatureStore = create<FormState & FormActions>()(
+  persist(
+    (set, get) => ({
+      ...initialState,
+      
+      setField: (field, value) => 
+        set((state) => ({ [field]: value })),
+        
+      setError: (field, error) => 
+        set((state) => ({ 
+          errors: { ...state.errors, [field]: error } 
+        })),
+        
+      clearError: (field) => 
+        set((state) => ({ 
+          errors: { ...state.errors, [field]: undefined } 
+        })),
+        
+      validateField: (field) => {
+        const state = get()
+        const value = state[field as keyof FormState] as string
+        
+        if (!value?.trim()) {
+          state.setError(field, 'This field is required')
+          return false
+        }
+        
+        state.clearError(field)
+        return true
+      },
+      
+      validateForm: () => {
+        const state = get()
+        return state.validateField('name') && state.validateField('description')
+      },
+      
+      resetForm: () => set(initialState),
+    }),
+    {
+      name: 'new-feature-form',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
+```
+
+### 4.2. Form Component with Store
+
+```tsx
+// app/components/NewFeatureForm.tsx
+import { JSX } from 'react'
+import { Form, useSubmit } from 'react-router'
+
+import { ActionButton } from '~/components/buttons/ActionButton'
+import { TextInputField } from '~/components/inputs/TextInputField'
+import { useNewFeatureStore } from '~/stores/useNewFeatureStore'
+
+export function NewFeatureForm(): JSX.Element {
+  const submit = useSubmit()
+  
+  const {
+    name,
+    description,
+    errors,
+    touched,
+    isSubmitting,
+    setField,
+    setTouched,
+    validateForm,
+  } = useNewFeatureStore()
+  
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    
+    if (!validateForm()) return
+    
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('description', description)
+    
+    submit(formData, { method: 'post' })
+  }
+  
+  return (
+    <Form onSubmit={handleSubmit} className="space-y-4">
+      <TextInputField
+        label="Name"
+        value={name}
+        onChange={(value) => setField('name', value)}
+        onBlur={() => setTouched('name')}
+        error={touched.name ? errors.name : undefined}
+        required
+      />
+      
+      <TextInputField
+        label="Description"
+        value={description}
+        onChange={(value) => setField('description', value)}
+        onBlur={() => setTouched('description')}
+        error={touched.description ? errors.description : undefined}
+        multiline
+        rows={3}
+      />
+      
+      <ActionButton
+        type="submit"
+        variant="primary"
+        loading={isSubmitting}
+        className="w-full"
+      >
+        Create Feature
+      </ActionButton>
+    </Form>
+  )
+}
+```
+
+## 5. Testing Workflow
+
+### 5.1. Unit Testing with Vitest
+
+```tsx
+// app/components/__tests__/NewFeature.test.tsx
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+
+import { NewFeature } from '../NewFeature'
+
+describe('NewFeature', () => {
+  it('renders correctly', () => {
+    render(
+      <NewFeature title="Test Feature">
+        <p>Test content</p>
+      </NewFeature>
+    )
+    
+    expect(screen.getByText('Test Feature')).toBeInTheDocument()
+    expect(screen.getByText('Test content')).toBeInTheDocument()
+  })
+  
+  it('applies custom className', () => {
+    render(
+      <NewFeature title="Test" className="custom-class">
+        Content
+      </NewFeature>
+    )
+    
+    expect(screen.getByTestId('new-feature')).toHaveClass('custom-class')
+  })
+})
+```
+
+### 5.2. E2E Testing with Playwright (Page Object Model)
+
+**IMPORTANT**: Always use Page Object Model pattern - never use direct DOM manipulations in tests.
+
+```typescript
+// playwright/pages/TeamsPage.ts - Define page interactions
+export class TeamsPage {
+  async fillTeamForm(teamName: string, clubName: string) { /* implementation */ }
+  async submitForm() { /* implementation */ }
+  async waitForTeamCreated() { /* implementation */ }
+}
+
+// playwright/tests/teams.spec.ts - Use page objects in tests
+test('should create a new team', async ({ page }) => {
+  const teamsPage = new TeamsPage(page)
+  
+  await teamsPage.goto()
+  await teamsPage.fillTeamForm('Test Team', 'Test Club')
+  await teamsPage.submitForm()
+  await teamsPage.waitForTeamCreated()
+  
+  const title = await teamsPage.getTeamTitle()
+  expect(title).toContain('Test Team')
+})
+```
+
+## 6. Email Communication Workflow
+
+### Email Implementation Pattern
+
+- **Templates**: Use React Email components in `app/components/emails/`
+- **Service**: Implement email sending with Resend in `app/lib/email.server.ts`
+- **Integration**: Queue emails in route actions (non-blocking)
+- **Error Handling**: Log email failures but don't block user operations
+- **Accessibility**: Follow [React Email accessibility guidelines](https://react.email/docs/components/html#accessibility) for proper semantic HTML and screen reader support
+
+See existing email implementations in the codebase for detailed patterns.
+
+## Common Patterns
+
+### Toast Notification Pattern
+
+```tsx
+// app/utils/toastUtils.ts
+import { toast } from 'sonner'
+
+// Success notification
+toast.success('Team created successfully!')
+
+// Error notification
+toast.error('Failed to create team. Please try again.')
+
+// Info notification
+toast.info('Tournament registration opens soon.')
+
+// Loading notification with promise
+toast.promise(
+  createTeam(teamData),
+  {
+    loading: 'Creating team...',
+    success: 'Team created successfully!',
+    error: 'Failed to create team',
+  }
+)
+```
+
+### Protected Route Pattern
+
+```tsx
+// Route metadata approach
+export const handle: RouteMetadata = {
+  isPublic: false, // Requires authentication
+}
+
+// Server-side protection in loader
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserId(request) // Throws redirect if not authenticated
+  // ... rest of loader
+}
+
+// Role-based protection
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserRole(request, ['ADMIN', 'MANAGER']) // Admin/Manager only
+  // ... rest of loader
+}
+```
+
+### Data Loading Pattern
+
+```tsx
+// Type-safe loader with error handling
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  const { teamId } = params
+  
+  if (!teamId) {
+    throw new Response('Team ID is required', { status: 400 })
+  }
+  
+  try {
+    const team = await getTeamById({ id: teamId })
+    
+    if (!team) {
+      throw new Response('Team not found', { status: 404 })
+    }
+    
+    return { team }
+  } catch (error) {
+    throw new Response('Failed to load team', { status: 500 })
+  }
+}
+```
+
+### Internationalization Pattern
+
+```tsx
+// Using translations with interpolation
+const { t } = useTranslation()
+
+// Simple translation
+const title = t('teams.title', 'Teams')
+
+// Translation with count
+const teamCount = t('teams.count', 'Found {{count}} teams', { count: teams.length })
+
+// Translation with interpolation
+const welcome = t('welcome.message', 'Welcome, {{name}}!', { name: user.name })
+
+// RTL support
+const { i18n } = useTranslation()
+const isRTL = isRTL(i18n.language)
+const textClass = getLatinTextClass(i18n.language)
+```
+
+## Navigation Rules
+
+### React Router Links
+
+```tsx
+import { Link, useNavigate } from 'react-router'
+
+// Declarative navigation
+<Link to="/teams" className="btn-primary">
+  View Teams
+</Link>
+
+// Programmatic navigation
+const navigate = useNavigate()
+const handleSuccess = () => {
+  navigate(`/teams/${team.id}`)
+}
+
+// With state
+navigate('/teams/new', { 
+  state: { preselectedTournament: tournament.id } 
+})
+```
+
+### Form Navigation
+
+```tsx
+// React Router Form with navigation after success
+import { Form, redirect } from 'react-router'
+
+// In action function
+export async function action({ request }: ActionFunctionArgs) {
+  // ... form processing
+  return redirect('/teams') // Navigate after successful submission
+}
+
+// In component
+<Form method="post" action="/teams/new">
+  {/* Form fields */}
+</Form>
+```
+
+## Authentication Workflow
+
+### Session-based Authentication
+
+```tsx
+// Server-side session utilities
+// app/session.server.ts
+
+export async function requireUserId(request: Request): Promise<string> {
+  const userId = await getUserId(request)
+  if (!userId) {
+    throw redirect('/auth/signin')
+  }
+  return userId
+}
+
+export async function requireUserRole(
+  request: Request, 
+  roles: Role[]
+): Promise<User> {
+  const user = await requireUser(request)
+  if (!roles.includes(user.role)) {
+    throw new Response('Unauthorized', { status: 403 })
+  }
+  return user
+}
+```
+
+### Client-side Auth State
+
+```tsx
+// Using auth store
+const { user, isAuthenticated } = useAuthStore()
+
+// Conditional rendering based on auth state
+{isAuthenticated ? (
+  <UserDashboard user={user} />
+) : (
+  <SignInPrompt />
+)}
+
+// Role-based UI
+{user?.role === 'ADMIN' && (
+  <AdminPanel />
+)}
+```
+
+## Error Handling Patterns
+
+### Route Error Boundaries
+
+```tsx
+// app/routes/teams.$teamId.tsx
+export function ErrorBoundary() {
+  const error = useRouteError()
+  
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div className="error-container">
+        <h1>{error.status} {error.statusText}</h1>
+        <p>{error.data}</p>
+      </div>
+    )
+  }
+  
+  return <GenericErrorFallback />
+}
+```
+
+### Database Error Handling
+
+```tsx
+// app/models/team.server.ts
+export async function createTeam(teamData: CreateTeamData) {
+  try {
+    return await prisma.team.create({
+      data: teamData,
+    })
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        throw new Error('A team with this name already exists')
+      }
+    }
+    throw new Error('Failed to create team')
+  }
+}
+```
+
+## Performance Patterns
+
+### Optimistic Updates
+
+```tsx
+// Using Zustand store with optimistic updates
+const { addTeam, removeTeam } = useTeamsStore()
+
+const handleDeleteTeam = async (teamId: string) => {
+  // Optimistically remove from UI
+  removeTeam(teamId)
+  
+  try {
+    await deleteTeam(teamId)
+    toast.success('Team deleted successfully')
+  } catch (error) {
+    // Revert on error
+    addTeam(originalTeam)
+    toast.error('Failed to delete team')
+  }
+}
+```
+
+### Database Query Optimization
+
+```tsx
+// Selective field loading
+const teams = await prisma.team.findMany({
+  select: {
+    id: true,
+    name: true,
+    clubName: true,
+    // Don't load heavy fields unless needed
+  },
+})
+
+// Pagination
+const teams = await prisma.team.findMany({
+  take: 20,
+  skip: page * 20,
+  orderBy: { createdAt: 'desc' },
+})
+```
+
+## Debugging Checklist
+
+When something doesn't work:
+
+1. **Check browser console** for JavaScript errors and warnings
+2. **Verify database connection** and check Prisma logs
+3. **Check network tab** for failed API requests and responses
+4. **Verify authentication state** in browser dev tools
+5. **Check component props and state** with React DevTools
+6. **Verify TypeScript compilation** with `pnpm typecheck`
+7. **Check for race conditions** in useEffect hooks
+8. **Verify data types** match Prisma schema and TypeScript interfaces
+9. **Check route params** and query strings in React Router
+10. **Verify environment variables** are properly loaded
+
+## Development Best Practices
+
+### File Organization
+
+```
+app/
+├── components/
+│   └── TeamChip/
+│       ├── TeamChip.tsx          # Main component
+│       ├── teamChip.variants.ts  # CVA variants
+│       ├── index.ts              # Clean exports
+│       └── __tests__/            # Tests
+├── routes/
+│   └── teams.new.tsx             # Route with loader/action
+├── models/
+│   └── team.server.ts            # Database operations
+└── stores/
+    └── useTeamStore.ts           # Client state management
+```
+
+### Code Quality
+
+- **Write JSDoc comments** for complex functions
+- **Use TypeScript strict mode** - avoid `any` types
+- **Follow naming conventions** consistently
+- **Keep functions small** and focused
+- **Write tests** for critical functionality
+- **Use proper error handling** throughout the application
+- **Follow accessibility best practices** with ARIA attributes

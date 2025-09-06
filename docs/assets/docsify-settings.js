@@ -14,6 +14,15 @@ const getDocsifySettings = () => ({
   markdown: {
     smartypants: true,
   },
+  plugins: [
+    // Plugin to suppress showing YAML frontmatter in the rendered markdown
+    function (hook) {
+      hook.beforeEach(function (content) {
+        // Remove YAML frontmatter (content between --- markers)
+        return content.replace(/^---[\s\S]*?---\s*/m, '')
+      })
+    },
+  ],
   search: 'auto',
   themeColor: 'rgb(3, 201, 137)',
   // Sidebar Collapse Plugin Settings

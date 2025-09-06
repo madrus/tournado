@@ -799,6 +799,71 @@ Add to your `.cursor/settings.json`:
 4. All 7 models available in both editors
 5. Same autocomplete, chat, and editing capabilities
 
+## Local Models vs Cloud Models: Key Differences
+
+### Internet Access Limitations
+
+**❌ Local models (Ollama) CANNOT:**
+
+- Access the internet or browse the web
+- Perform real-time research or get current information
+- Access online databases, APIs, or live data
+- Get the latest news, stock prices, or current events
+- Look up recent documentation or updates
+
+**✅ Local models (Ollama) CAN:**
+
+- Work completely offline once downloaded
+- Process your code and local files
+- Generate code based on their training data
+- Analyze and explain existing code
+- Provide programming guidance and best practices
+- Work without internet connectivity
+
+### Hybrid Approach Benefits
+
+This is why the **Claude + Continue** dual setup is so powerful:
+
+**🌐 Claude (Internet-Connected):**
+
+- Real-time research and current information
+- Latest technology updates and best practices
+- Access to recent documentation and tutorials
+- Current market trends and technology decisions
+- Live troubleshooting with latest solutions
+
+**💻 Continue (Local & Private):**
+
+- Code generation and analysis
+- Work with sensitive/proprietary code
+- No rate limits or connectivity dependence
+- Complete privacy - code never leaves your machine
+- Consistent performance regardless of internet
+
+### Practical Example Workflow:
+
+1. **Research with Claude:** "What are the latest React 18 best practices for state management?"
+2. **Implement with Continue:** Use local models to generate the actual React code
+3. **Verify with Claude:** Ask about potential issues or improvements
+4. **Refine with Continue:** Make code adjustments locally
+
+### When to Use Which:
+
+**Use Claude when you need:**
+
+- Current information or recent updates
+- Research on new technologies or approaches
+- Troubleshooting with latest solutions
+- Market research or technology comparisons
+
+**Use Continue when you need:**
+
+- Code generation and modification
+- Analysis of existing code
+- Privacy for sensitive projects
+- Offline development work
+- High-volume coding assistance
+
 ### Current Optimized Model Collection
 
 After cleanup and Continue optimization (January 2025), the installed models are:

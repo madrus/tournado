@@ -15,6 +15,10 @@ tags:
    - cursor
    - vscode
    - ide-integration
+   - intellisense
+   - autocomplete
+   - limitations
+   - performance
 ---
 
 # Use Ollama Locally With Continue Extension in Cursor & VS Code
@@ -52,38 +56,24 @@ ollama serve &
 2. **Started Ollama Server**
    Ran `ollama serve` to start the local Ollama server enabling communication.
 
-## Step 3: Install Optimized Models for Continue
+## Step 3: Install Core Models for Continue
 
-For the best Continue integration experience, install these carefully selected models. Each serves a specific purpose:
+Install these 5 carefully selected models for optimal IntelliSense and coding assistance:
 
-### Core Coding Models (Main Chat/Assistance)
+### Core Models (5 Total - ~35GB)
 
 ```shell
-# Best general purpose model
+# General purpose model (good baseline)
 ollama pull llama3.1:8b
 
-# Instruction-tuned coding models (excellent for explanations)
-ollama pull codellama:13b-instruct
-ollama pull starcoder2:instruct
-
-# DeepSeek family (strong coding capabilities)
-ollama pull deepseek-coder:6.7b-instruct
-ollama pull deepseek-coder-v2:16b
-
-# Qwen models (well-balanced coding models)
-ollama pull qwen2.5-coder:7b-instruct
-ollama pull qwen2.5-coder:14b
+# Specialized coding models
+ollama pull starcoder2:instruct      # Code generation
+ollama pull codellama:13b-instruct   # Code analysis
+ollama pull qwen2.5-coder:14b        # Large model for complex tasks
+ollama pull deepseek-coder-v2:16b    # Most advanced (currently used for IntelliSense)
 ```
 
-### Specialized Models for Performance
-
-```shell
-# Ultra-fast autocomplete model
-ollama pull qwen2.5-coder:1.5b-base
-
-# Dedicated embedding model for code context
-ollama pull nomic-embed-text
-```
+**Note:** This streamlined setup focuses on the most effective models for IntelliSense testing while saving ~10GB compared to the full setup.
 
 Check what you have installed:
 
@@ -94,16 +84,12 @@ ollama list
 Example output of optimized setup:
 
 ```shell
-NAME                            ID              SIZE      MODIFIED
-llama3.1:8b                     46e0c10c039e    4.9 GB    2 hours ago
-starcoder2:instruct             432973cfbc4c    9.1 GB    2 hours ago
-codellama:13b-instruct          9f438cb9cd58    7.4 GB    2 hours ago
-qwen2.5-coder:7b-instruct       dae161e27b0e    4.7 GB    2 weeks ago
-deepseek-coder:6.7b-instruct    ce298d984115    3.8 GB    2 weeks ago
-qwen2.5-coder:14b               9ec8897f747e    9.0 GB    2 weeks ago
-deepseek-coder-v2:16b           63fb193b3a9b    8.9 GB    2 weeks ago
-qwen2.5-coder:1.5b-base         a1b2c3d4e5f6    986 MB    1 hour ago
-nomic-embed-text                f6e5d4c3b2a1    274 MB    1 hour ago
+NAME                            ID              SIZE
+llama3.1:8b                     46e0c10c039e    4.9 GB
+starcoder2:instruct             432973cfbc4c    9.1 GB
+codellama:13b-instruct          9f438cb9cd58    7.4 GB
+qwen2.5-coder:14b               9ec8897f747e    9.0 GB
+deepseek-coder-v2:16b           63fb193b3a9b    8.9 GB
 ```
 
 ## Step 4: Run the model(s)
@@ -663,141 +649,63 @@ curl http://localhost:11434/api/tags
 3. Ensure no firewall blocking port 11434
 4. Note: Continue now uses YAML format, not JSON
 
-## Step 7: Set Up AIChat for Interactive Terminal Conversations
+## Continue Usage & Testing
 
-While Continue provides excellent IDE integration, you might want an interactive chat interface similar to Claude CLI for terminal-based conversations. AIChat offers exactly this experience with your local Ollama models.
+After configuration, you can use Continue in your IDE for various AI-assisted coding tasks:
 
-### **Installing AIChat**
+### **Basic Continue Functions**
 
-```bash
-brew install aichat
+- **Chat:** Select any of your 5 models from the dropdown for conversations
+- **Edit:** Uses DeepSeek Coder V2 16B for code modifications
+- **Apply:** Uses StarCoder2 Instruct for applying suggestions
+- **IntelliSense:** Currently uses DeepSeek Coder V2 16B for autocomplete
+- **Rerank:** Uses Qwen 2.5 Coder 14B for ranking suggestions
+
+### **Testing IntelliSense Performance**
+
+Start with DeepSeek Coder V2 16B for autocomplete. If too slow, modify `~/.continue/config.yaml` and change the autocomplete model:
+
+#### **Performance Testing Order:**
+
+1. **DeepSeek Coder V2 16B** (current) - Test first
+2. **Qwen 2.5 Coder 14B** - If DeepSeek is too slow
+3. **StarCoder2 Instruct** - Alternative if Qwen is slow
+4. **CodeLlama 13B Instruct** - Faster alternative
+5. **Llama 3.1 8B** - Fastest fallback
+
+#### **To Change Autocomplete Model:**
+
+Edit line 69 in `~/.continue/config.yaml`:
+
+```yaml
+# Change this line:
+model: deepseek-coder-v2:16b
+
+# To one of:
+model: qwen2.5-coder:14b          # Try this second
+model: starcoder2:instruct        # Try this third
+model: codellama:13b-instruct     # Try this fourth
+model: llama3.1:8b                # Fastest option
 ```
 
-### **Initial Configuration**
-
-Run the interactive setup:
-
-```bash
-aichat --info
-```
-
-When prompted, configure as follows:
-
-1. **API Provider:** Select `openai-compatible` (not "openai")
-2. **Provider Name:** `ollama` (or any name you prefer)
-3. **API Base:** `http://localhost:11434/v1`
-4. **API Key:** Leave empty (press Enter - Ollama doesn't need one)
-5. **Default Model:** `llama3.1:8b`
-
-### **Using AIChat Interactively**
-
-#### **Start Interactive Chat Session:**
-
-```bash
-# Start with default model (llama3.1:8b)
-aichat
-
-# Start with specific model
-aichat -m starcoder2:instruct
-
-# Start and continue named session (with conversation history)
-aichat -s my-coding-session
-```
-
-#### **Interactive Commands (Inside AIChat):**
-
-```bash
-> Hello! Can you explain React hooks?          # Normal conversation
-> .model starcoder2:instruct                   # Switch to coding model
-> Can you write a code example now?            # Continue conversation
-> .models                                      # List all available models
-> .save important-conversation                 # Save current chat
-> .load important-conversation                 # Load saved chat
-> .clear                                       # Clear conversation history
-> .help                                        # Show all commands
-> .exit                                        # Quit (or Ctrl+C)
-```
-
-#### **Model Switching Examples:**
-
-```bash
-> .model llama3.1:8b                          # General conversations
-> .model starcoder2:instruct                  # Code generation
-> .model codellama:13b-instruct               # Code analysis
-> .model deepseek-coder-v2:16b                # Advanced coding tasks
-> .model qwen2.5-coder:1.5b-base              # Quick/light tasks
-```
-
-#### **Session Management:**
-
-```bash
-# From terminal - start/resume sessions
-aichat -s project-alpha                       # Start named session
-aichat -s debugging-session                   # Different session for debugging
-aichat                                        # Continue last session
-```
-
-### **AIChat vs Other CLI Tools**
-
-| Tool           | Interface        | Best For                                |
-| -------------- | ---------------- | --------------------------------------- |
-| **AIChat**     | Interactive REPL | Conversational AI (like Claude CLI)     |
-| **Continue**   | IDE Integration  | Code editing, autocomplete, analysis    |
-| **Claude CLI** | Interactive REPL | Research, latest info (internet access) |
-
-### **Practical AIChat Workflow:**
-
-```bash
-# Start coding session
-aichat -s my-project
-
-# Inside AIChat:
-> I'm building a React app. Can you help me design the component structure?
-[AI responds with architecture suggestions]
-
-> .model starcoder2:instruct
-> Now generate the UserProfile component code
-[AI generates React component]
-
-> .model llama3.1:8b
-> Explain this component's lifecycle in simple terms
-[AI explains the code]
-
-> .save react-components
-> .exit
-```
-
-### **Quick Command Examples:**
-
-```bash
-# One-off questions
-aichat "What's the difference between SQL JOIN types?"
-
-# File analysis
-cat script.js | aichat "optimize this code"
-
-# With specific model
-aichat -m deepseek-coder-v2:16b "help me refactor this complex algorithm"
-```
+**Remember:** Restart VS Code/Cursor after each change to test performance.
 
 ## Recommended Workflow & Usage Patterns
 
-### Triple AI Setup (Recommended)
+### Dual AI Setup (Recommended)
 
-**Yes, you can use all three simultaneously!** Here's the optimal workflow:
+**Use both cloud and local AI for optimal development workflow:**
 
-#### **Claude + Continue + AIChat (Best of All Worlds)**
+#### **Claude + Continue (Best of Both Worlds)**
 
 - **Claude (via Cursor chat):** General discussions, planning, architecture, latest information
 - **Continue (local models):** Code editing, autocomplete, refactoring, IDE-integrated assistance
-- **AIChat (local models):** Terminal conversations, quick questions, interactive coding sessions
 
 #### **Practical Usage:**
 
 1. **Start with Claude** for project planning and high-level discussions
 2. **Switch to Continue** when you need to write/modify actual code in your editor
-3. **Use AIChat** for terminal-based conversations and quick questions
-4. **Use all three in parallel** - each has different strengths
+3. **Use both in parallel** - each has different strengths
 
 #### **Example Workflow:**
 
@@ -805,18 +713,13 @@ aichat -m deepseek-coder-v2:16b "help me refactor this complex algorithm"
 # 1. Research with Claude (this chat)
 "What are the latest React 18 patterns for state management?"
 
-# 2. Quick discussion with AIChat (terminal)
-aichat -s react-project
-> Based on what I learned, help me plan a component structure
-
-# 3. Code generation with Continue (in editor)
+# 2. Code generation with Continue (in editor)
 # Use Cmd+I in VS Code/Cursor to generate actual components
 
-# 4. Back to AIChat for quick questions
-> .model starcoder2:instruct
-> How do I test this component?
+# 3. Back to Claude for architectural questions
+"How should I structure these components for testing?"
 
-# 5. Continue the cycle as needed
+# 4. Continue the cycle as needed
 ```
 
 ### How to Access Each AI System
@@ -834,13 +737,6 @@ aichat -s react-project
 - **Models:** Your 7 local Ollama models
 - **Best for:** Code generation, refactoring, debugging
 - **Usage:** Opens a separate chat interface for coding tasks
-
-#### **AIChat (Local Models - Terminal):**
-
-- **Access:** `aichat` command in terminal
-- **Models:** Your 9 local Ollama models (same as Continue)
-- **Best for:** Interactive conversations, quick questions, terminal workflow
-- **Usage:** Interactive REPL like Claude CLI but with local models
 
 ### Optional: Disable Cursor's Built-in AI (To Avoid Confusion)
 
@@ -1020,12 +916,8 @@ NAME                            ID              SIZE
 llama3.1:8b                     46e0c10c039e    4.9 GB
 starcoder2:instruct             432973cfbc4c    9.1 GB
 codellama:13b-instruct          9f438cb9cd58    7.4 GB
-qwen2.5-coder:7b-instruct       dae161e27b0e    4.7 GB
-deepseek-coder:6.7b-instruct    ce298d984115    3.8 GB
 qwen2.5-coder:14b               9ec8897f747e    9.0 GB
 deepseek-coder-v2:16b           63fb193b3a9b    8.9 GB
-qwen2.5-coder:1.5b-base         a1b2c3d4e5f6    986 MB
-nomic-embed-text                f6e5d4c3b2a1    274 MB
 ```
 
 #### What Changed:
@@ -1082,3 +974,90 @@ After following this guide, you'll have a complete local AI coding setup that wo
 - **Editor-specific optimizations** provided for each platform
 - **Conflict resolution** guidance for existing AI extensions
 - **Flexible usage patterns** - use the same setup across different editors
+
+## Local Model Limitations: Reality Check for Professional Development
+
+After extensive testing with local Ollama models in real development scenarios, several significant limitations became apparent that impact their practical utility for professional coding work.
+
+### **Performance Issues**
+
+#### **IntelliSense/Autocomplete Speed**
+
+- **DeepSeek Coder V2 16B:** 3-5 seconds per suggestion (too slow for real-time coding)
+- **Qwen 2.5 Coder 14B:** 2-4 seconds per suggestion (still interrupts flow)
+- **Even smaller models:** 1-3 seconds (Microsoft's IntelliCode is instant)
+
+**Result:** Local models break coding flow due to response latency, making them impractical for real-time autocomplete compared to cloud-based solutions or traditional IntelliSense.
+
+#### **Resource Consumption**
+
+- **RAM Usage:** Each model consumes 8-16GB when active
+- **CPU Usage:** High during inference, affecting system performance
+- **Model Switching:** Takes 10-30 seconds to load different models
+- **Concurrent Usage:** Multiple models can overwhelm 24GB RAM systems
+
+### **Functional Limitations**
+
+#### **No Tool Calling or File System Access**
+
+Local models cannot:
+
+- **Execute commands** or interact with the file system
+- **Read/write files** beyond what's explicitly provided
+- **Browse internet** for current information or documentation
+- **Use external APIs** or integrate with development tools
+- **Perform complex multi-step operations** requiring tool orchestration
+
+#### **Limited Context and Analysis**
+
+- **No workspace awareness** beyond manually provided context
+- **Cannot analyze entire codebases** efficiently
+- **No real-time error checking** or integrated debugging
+- **Limited understanding** of project structure and dependencies
+
+### **Professional Development Impact**
+
+#### **Why Cloud AI (Claude, Cursor's AI) Remains Superior**
+
+**For Complex Tasks:**
+
+- **Multi-file refactoring:** Cloud AI can analyze entire projects
+- **Architecture decisions:** Access to latest patterns and best practices
+- **Debugging:** Can integrate with error logs, stack traces, and external documentation
+- **Code reviews:** Understands broader context and industry standards
+
+**For Real-time Development:**
+
+- **Instant responses:** Cloud autocomplete is sub-second
+- **Tool integration:** Can execute commands, read files, run tests
+- **Internet access:** Can look up documentation, libraries, and solutions
+- **Continuous learning:** Models are updated with latest programming knowledge
+
+### **When Local Models Might Still Be Useful**
+
+#### **Limited Use Cases:**
+
+- **Privacy-sensitive projects:** When code cannot leave your machine
+- **Offline development:** When internet connectivity is unreliable
+- **Learning/experimentation:** For understanding model capabilities
+- **Basic code completion:** For simple, non-time-sensitive suggestions
+
+#### **Recommended Approach:**
+
+1. **Use Cursor's built-in AI** or **Claude** for primary development work
+2. **Keep local models** only if they provide better IntelliSense than Microsoft's default
+3. **Test thoroughly** before relying on local models for productivity
+4. **Consider hybrid approach** only if specific privacy requirements justify the performance trade-offs
+
+### **The Bottom Line**
+
+For professional development work requiring:
+
+- **Fast, responsive autocomplete**
+- **Complex file analysis and refactoring**
+- **Integration with development tools**
+- **Access to current programming knowledge**
+
+**Cloud-based AI solutions remain significantly more practical and effective** than local models, despite privacy and cost considerations.
+
+Local models are currently best suited for **learning, experimentation, and specific privacy-constrained scenarios** rather than replacing cloud AI for primary development workflows.

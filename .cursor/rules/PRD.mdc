@@ -100,7 +100,7 @@ Database & Data Model [Implemented]
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**
 
 - [ ] Groups and seeding workflows
-- [ ] Playoffs: multi-stage via groups
+- [ ] Playoffs: multi-stage with knockout via groups
 - [ ] Competition status: standings and placements
 
 **Phase 3 - Matches & Scoring [Planned]**
@@ -108,7 +108,6 @@ Database & Data Model [Implemented]
 - [ ] Match schedule planning (date/time/location) for tournaments
 - [ ] Score registration by referees
 - [ ] Live/near-real-time standings and basic statistics
-
 
 **Phase 4 - Public Engagement [Planned]**
 
@@ -118,8 +117,7 @@ Database & Data Model [Implemented]
 
 **Phase 5 - Advanced Brackets (post-MVP) [Planned]**
 
-- [ ] Bracket types: single-elimination, double-elimination, placement matches, Swiss system
-- [ ] Multi-stage: dedicated knockout UI
+- [ ] Playoffs via different bracket formats: s: single-elimination, double-elimination, placement matches, Swiss system, and multi-stage using dedicated knockout UI
 - [ ] Schema and visual UI; seeding and byes
 
 **Phase 6 - Subscriptions & Billing (future) [Planned]**
@@ -344,7 +342,7 @@ Details: See `docs/development/PRD.details.md#standings-tie-breakers`
 
 ### Phase 5: Advanced Brackets (2 - 3 weeks)
 
-- [ ] Bracket types: single-elimination, double-elimination, placement matches, Swiss system
+- [ ] Bracket types: single-elimination, double-elimination, placement matches, Swiss system, and multi-stage with full knockout UI
 Details: See `docs/development/PRD.details.md#bracket-formats`
 
 ### Phase 6: Subscriptions, Communications & Extended (future)
@@ -641,7 +639,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - **Authentication migration complexity → Mitigation**: parallel login flows behind a config switch; staged rollout; comprehensive E2E tests (note: not in production yet)
 - **Role mapping and SSR loaders with Firebase sessions → Mitigation**: adopt session cookie bridging; adapt `requireUser*` utilities; add regression tests
-- **Playoff modeling scope creep → Mitigation**: start with multi-stage (group -> knockout); design extension points; incremental schema migrations
+- **Playoff modeling scope creep → Mitigation**: start with multi-stage via groups; design extension points; incremental schema migrations
 
 ### Business Risks
 
@@ -716,7 +714,7 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 1. Implement Firebase auth with session cookie bridging
 2. Finish group allocation CRUD
 3. Add `Team.clubIcon` support and fetching strategy
-4. Define playoff schema (start with multi-stage group -> knockout)
+4. Define playoff schema (start with multi-stage via groups)
 
 **Next Steps**:
 
@@ -736,7 +734,7 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - PWA-related offline caching: scope route/data caching via service worker; define cache strategies per route type and revalidation rules
 - Push notifications: evaluate use cases (team/match alerts, schedule changes, optional goal alerts), permissions flow, and privacy implications; implement via service worker with clear opt-in
 - Live transport: WebSocket vs SSE vs polling fallback - choose per complexity/hosting constraints
-- Bracket generation: MVP = multi-stage (group -> knockout). Evaluate single-elimination and other advanced formats (double-elimination, Swiss, placement) in Phase 5; ensure transparent tie-breaker configuration
+- Bracket generation: MVP = multi-stage via groups. Evaluate single-elimination and other advanced formats (double-elimination, Swiss, placement) in Phase 5; ensure transparent tie-breaker configuration
 - Offline sync: how to handle conflicts when server state changes between offline entry and sync
 - Artificial intelligence: explore useful AI features (e.g., schedule optimization, conflict resolution suggestions, bracket predictions, performance/anomaly reports, fairness checks, natural-language queries over tournaments, auto-generated match summaries)
 - Animations: identify micro-interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)

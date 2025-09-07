@@ -85,6 +85,12 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 ## Bracket & Tournament Formats
 
 - Round‑robin (single/double), knockout (single/double elimination), placement matches, Swiss system, group‑to‑knockout pipelines.
+- Round-robin (single/double): teams in a group play each other once (single) or twice (double). Standings are based on points with tie-breakers; top teams advance or win on points.
+- Knockout (single-elimination): teams are seeded in a bracket; a single loss eliminates a team. Winners advance each round until a final determines the champion.
+- Knockout (double-elimination): teams must lose twice to be eliminated. A losers bracket provides a second chance; finals may include a bracket reset if the winners and losers bracket champions split results.
+- Placement matches: additional classification matches to determine precise final positions for teams eliminated from title contention. Ensures a fixed number of matches and clear placement beyond the champion.
+- Swiss system: multiple rounds where teams are paired against opponents with similar records. No eliminations; after a fixed number of rounds, standings determine placements or advancement.
+- Group-to-knockout (multi-stage): a group phase (often round-robin) followed by a seeded knockout bracket. Group standings seed the bracket; byes may apply for top group finishers.
 - Model: Bracket, Round, MatchNode, Seeding; support byes and reseeding.
 - Generation: pluggable generators per format; deterministic seeds; reproducible with input hash.
 - UI: visual bracket with drag‑to‑adjust seeds (permission‑gated).
@@ -188,15 +194,15 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'com.example.tournado',
-  appName: 'Tournado',
-  webDir: 'dist',
-  server: {
-    // Point to your SSR origin to preserve SSR in WebView
-    url: 'https://tournado.fly.io',
-    cleartext: false,
-    allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
-  },
+   appId: 'com.example.tournado',
+   appName: 'Tournado',
+   webDir: 'dist',
+   server: {
+      // Point to your SSR origin to preserve SSR in WebView
+      url: 'https://tournado.fly.io',
+      cleartext: false,
+      allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
+   },
 }
 
 export default config

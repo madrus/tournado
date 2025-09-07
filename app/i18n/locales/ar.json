@@ -34,6 +34,11 @@
     "createAccount": "إنشاء حساب",
     "dontHaveAccount": "ليس لديك حساب؟",
     "emailAddress": "عنوان البريد الإلكتروني",
+    "firebase": {
+      "signInWithGoogle": "تسجيل الدخول بواسطة Google",
+      "signingIn": "جاري تسجيل الدخول...",
+      "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى."
+    },
     "errors": {
       "emailExists": "يوجد مستخدم بالفعل بهذا البريد الإلكتروني",
       "emailInvalid": "البريد الإلكتروني غير صالح",

@@ -2,12 +2,25 @@ import { z } from 'zod'
 
 const schema = z.object({
   NODE_ENV: z.enum(['production', 'development', 'test'] as const),
+  // Firebase client environment variables (VITE_ prefixed for client-side access)
+  VITE_FIREBASE_API_KEY: z.string().optional(),
+  VITE_FIREBASE_AUTH_DOMAIN: z.string().optional(),
+  VITE_FIREBASE_PROJECT_ID: z.string().optional(),
+  VITE_FIREBASE_STORAGE_BUCKET: z.string().optional(),
+  VITE_FIREBASE_MESSAGING_SENDER_ID: z.string().optional(),
+  VITE_FIREBASE_APP_ID: z.string().optional(),
 })
 
 type ProcessEnv = z.infer<typeof schema>
 
 type PublicEnv = {
   MODE: ProcessEnv['NODE_ENV']
+  VITE_FIREBASE_API_KEY?: string
+  VITE_FIREBASE_AUTH_DOMAIN?: string
+  VITE_FIREBASE_PROJECT_ID?: string
+  VITE_FIREBASE_STORAGE_BUCKET?: string
+  VITE_FIREBASE_MESSAGING_SENDER_ID?: string
+  VITE_FIREBASE_APP_ID?: string
 }
 
 export function init(): void {
@@ -38,6 +51,12 @@ export const getEnv = (): PublicEnv => ({
     | 'test'
     | 'production'
     | 'development',
+  VITE_FIREBASE_API_KEY: process.env.VITE_FIREBASE_API_KEY,
+  VITE_FIREBASE_AUTH_DOMAIN: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+  VITE_FIREBASE_PROJECT_ID: process.env.VITE_FIREBASE_PROJECT_ID,
+  VITE_FIREBASE_STORAGE_BUCKET: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+  VITE_FIREBASE_MESSAGING_SENDER_ID: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID,
 })
 
 type ENV = ReturnType<typeof getEnv>

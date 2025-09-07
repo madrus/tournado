@@ -19,6 +19,7 @@ Follow the steps below when creating new tasks.
 8. **Context plan** must list the files to add to the model's context at the start (mark dep files read-only) and which files must exist at the end.
 9. **Testing strategy** use primarily integration tests with Vitest and E2E tests with Playwright using Page Object Model. Include database seeding for tests.
 10. **TypeScript conventions**: Use `type` instead of `interface` unless interfaces are required for extending. All code snippets must be TypeScript without semicolons.
+11. **File creation safety**: Before creating any new file, check if a file with that name already exists. If it exists, analyze its content to determine: (a) if it's the same file that needs minor updates/enhancements, (b) if it's a completely different file with different structure/purpose. For case (a), update/merge carefully preserving existing functionality. For case (b), ask the user for guidance on how to proceed. Never overwrite existing code without analysis and consideration.
 
 ---
 

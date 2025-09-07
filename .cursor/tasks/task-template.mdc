@@ -185,6 +185,8 @@ export type <ComponentProps> = {
 - Navigation to `/route-path` displays the feature correctly.
 - All tests in `app/components/__tests__/<ComponentName>.test.tsx` pass locally.
 - All E2E tests in `playwright/tests/<featureName>.spec.ts` pass locally.
+// Note: Commit message format is enforced by repository tooling; no action required here
+- New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
 
 # 9) Testing Strategy
 

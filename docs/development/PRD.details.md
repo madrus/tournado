@@ -95,6 +95,11 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 - Generation: pluggable generators per format; deterministic seeds; reproducible with input hash.
 - UI: visual bracket with drag‑to‑adjust seeds (permission‑gated).
 
+### Multi-stage Scope Split (Phases)
+
+- Phase 2 (MVP): multi-stage via groups only. After initial group play, managers can form a new “knockout group” composed of champions (one or two per group) and configure how they play each other using the existing group interface; no dedicated knockout UI yet.
+- Phase 5: full multi-stage with a dedicated knockout UI. Introduces visual bracket creation, seeding, byes, and progression management integrated with group results.
+
 <a id="email-integration"></a>
 
 ## Email Integration

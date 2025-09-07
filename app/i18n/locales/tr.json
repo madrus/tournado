@@ -34,6 +34,11 @@
     "createAccount": "Hesap oluştur",
     "dontHaveAccount": "Henüz hesabınız yok mu?",
     "emailAddress": "E-posta adresi",
+    "firebase": {
+      "signInWithGoogle": "Google ile giriş yap",
+      "signingIn": "Giriş yapılıyor...",
+      "error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin."
+    },
     "errors": {
       "emailExists": "Bu e-posta adresiyle zaten bir kullanıcı var",
       "emailInvalid": "E-posta adresi geçersiz",

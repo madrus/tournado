@@ -34,6 +34,11 @@
     "createAccount": "Account aanmaken",
     "dontHaveAccount": "Nog geen account?",
     "emailAddress": "E-mailadres",
+    "firebase": {
+      "signInWithGoogle": "Inloggen met Google",
+      "signingIn": "Bezig met inloggen...",
+      "error": "Authenticatie mislukt. Probeer het opnieuw."
+    },
     "errors": {
       "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
       "emailInvalid": "E-mailadres is ongeldig",

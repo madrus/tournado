@@ -34,6 +34,11 @@
     "createAccount": "Créer un compte",
     "dontHaveAccount": "Vous n'avez pas de compte ?",
     "emailAddress": "Adresse e-mail",
+    "firebase": {
+      "signInWithGoogle": "Se connecter avec Google",
+      "signingIn": "Connexion en cours...",
+      "error": "Échec de l'authentification. Veuillez réessayer."
+    },
     "errors": {
       "emailExists": "Un utilisateur existe déjà avec cette adresse e-mail",
       "emailInvalid": "L'adresse e-mail est invalide",

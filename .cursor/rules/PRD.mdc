@@ -100,7 +100,7 @@ Database & Data Model [Implemented]
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**
 
 - [ ] Groups and seeding workflows
-- [ ] Playoffs: multi-stage (group -> knockout) bracket
+- [ ] Playoffs: multi-stage via groups
 - [ ] Competition status: standings and placements
 
 **Phase 3 - Matches & Scoring [Planned]**
@@ -119,6 +119,7 @@ Database & Data Model [Implemented]
 **Phase 5 - Advanced Brackets (post-MVP) [Planned]**
 
 - [ ] Bracket types: single-elimination, double-elimination, placement matches, Swiss system
+- [ ] Multi-stage: dedicated knockout UI
 - [ ] Schema and visual UI; seeding and byes
 
 **Phase 6 - Subscriptions & Billing (future) [Planned]**
@@ -286,7 +287,7 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### 2.2 Playoff Structures (MVP)
 
-- [ ] Bracket: multi-stage (group -> knockout) (MVP)
+- [ ] Bracket: multi-stage via groups (MVP)
 - [ ] Schema + visual UI; basic seeding and byes
 
 #### 2.3 RBAC Hardening
@@ -662,7 +663,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ### Phase 2: Groups & Playoffs (MVP)
 
-- Weeks 2 - 4: Group allocation UX; multi-stage (group -> knockout) bracket and basic UI
+- Weeks 2 - 4: Group allocation UX; multi-stage via groups and basic UI
 
 ### Phase 3: Scheduling & Scoring
 

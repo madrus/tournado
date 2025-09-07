@@ -6,9 +6,11 @@ alwaysApply: false
 
 # Product Requirements Document
 
-NOTE: This **PRD** defines the product requirements for **Tournado Tounament Management** project. The application is a frontend-first React Router v7 + TypeScript + Vite app with SSR, Prisma/SQLite, and a mobile-first UI.
+NOTE: This **PRD** defines the product requirements for **Tournado Tournament Management** project. The application is a frontend-first React Router v7 + TypeScript + Vite app with SSR, Prisma/SQLite, and a mobile-first UI.
 
 ## Executive Summary
+
+Status legend: [Implemented], [In Progress], [Planned]
 
 For public visitors and competition stakeholders, build a modern tournament management platform that makes it simple to explore tournaments, teams, groups, and matches, and to register teams for participation. For managers and staff, provide a secure, role-based workspace to manage tournaments end-to-end (tournaments, teams, groups, matches, assignments, and results) with a clear, mobile-first experience.
 
@@ -24,61 +26,61 @@ For public visitors and competition stakeholders, build a modern tournament mana
 
 ### ✅ Implemented Features
 
-Authentication
+Authentication [Implemented]
 
 - [x] Email/password authentication with secure cookie sessions
 - [x] Sign-in, sign-up, and sign-out routes
 - [x] Role-based guards and unauthorized handling
 - [x] Smart redirects based on role and requested path
 
-Teams
+Teams [Implemented]
 
 - [x] Public teams section with team creation and listing
 - [x] Admin teams section with full CRUD
 - [x] Reusable `TeamChip` and `TeamList` components
 
-Tournaments
+Tournaments [Implemented]
 
 - [x] Admin-only tournaments section with full CRUD
 - [x] Mobile-optimized swipe-to-delete interactions
 
-Routing & Structure
+Routing & Structure [Implemented]
 
 - [x] React Router v7 with nested layouts and flat-routes discovery
 - [x] **Public routes**: `/teams`, **Auth routes**; Admin routes under obfuscated base path (Admin Panel)
 
-Internationalization
+Internationalization [Implemented]
 
 - [x] i18next with RTL support
 - [x] Dutch sentence case for titles/labels
 
-Design & Theming
+Design & Theming [Implemented]
 
 - [x] Dark/light theme with system detection and manual toggle
 - [x] Semantic color tokens (no hard-coded colors); 20+ accent palettes
 - [x] Icon system audited for theme compatibility (31 SVGs, currentColor)
 
-State Management
+State Management [Implemented]
 
 - [x] Zustand stores with SSR-safe hydration and persistence
 
-PWA & Error Handling
+PWA & Error Handling [Implemented]
 
 - [x] Manifest and service worker
 - [x] General error boundaries and auth-specific error boundary
 
-Security & RBAC
+Security & RBAC [Implemented]
 
 - [x] Role-based access control middleware and route guards
 - [x] Role-based landing pages after login
 - [x] Rate limiting for auth and admin actions
 
-Testing & Tooling
+Testing & Tooling [Implemented]
 
 - [x] Vitest for unit/integration; Playwright for E2E
 - [x] Documented dev/test workflows
 
-Database & Data Model
+Database & Data Model [Implemented]
 
 - [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupSet`, `Group`, `GroupSlot`, `MatchScore`
 
@@ -88,44 +90,44 @@ Database & Data Model
 
 ### 📋 Planned Features (PRD Scope)
 
-**Phase 1 - Authentication Modernization (Top Priority)**
+**Phase 1 - Authentication Modernization (Top Priority) [Planned]**
 
 - [ ] Google Authentication via Firebase (Google account or username/password)
-- [ ] Replace cookie session auth with Firebase-backed flow (see Security & privacy)
+- [ ] Migrate from cookie sessions to Firebase-backed session cookie bridging (see ADR-0004 and Security & privacy)
 - [ ] Post-login redirects, logout, and credential persistence
 - [ ] Visible auth status indicator
 
-**Phase 2 - Groups & Playoffs (MVP)**
+**Phase 2 - Groups & Playoffs (MVP) [Planned]**
 
 - [ ] Groups and seeding workflows
 - [ ] Playoffs: single-elimination bracket (simplest bracket)
 - [ ] Competition status: standings and placements
 
-**Phase 3 - Matches & Scoring**
+**Phase 3 - Matches & Scoring [Planned]**
 
 - [ ] Match schedule planning (date/time/location) for tournaments
 - [ ] Score registration by referees
 - [ ] Live/near-real-time standings and basic statistics
 
 
-**Phase 4 - Public Engagement**
+**Phase 4 - Public Engagement [Planned]**
 
 - [ ] Public tournament dashboard and live updates
 - [ ] Standings and classifications
 - [ ] Notifications (opt-in)
 
-**Phase 5 - Advanced Brackets (post-MVP)**
+**Phase 5 - Advanced Brackets (post-MVP) [Planned]**
 
 - [ ] Bracket types beyond single-elimination: double-elimination, placement matches, Swiss system; multi-stage (group -> knockout)
 - [ ] Schema and visual UI; seeding and byes
 
-**Phase 6 - Subscriptions & Billing (future)**
+**Phase 6 - Subscriptions & Billing (future) [Planned]**
 
 - [ ] Subscriptions for managers to organize tournaments
 - [ ] Payments (Stripe) for subscriptions and voluntary contributions
 - [ ] Financial dashboard (ADMIN/BILLING) with totals and drill-down
 
-**Phase 7 - Content Management (future)**
+**Phase 7 - Content Management (future) [Planned]**
 
 - [ ] Articles (text/images/video) for home, tournament, team and match pages via a headless CMS
 
@@ -410,7 +412,7 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Authentication
 
-- Current State: Email/password auth with server-side cookie sessions; role-guarded routes and smart redirects
+- Current State: Email/password auth with server-side cookie sessions; role-guarded routes and smart redirects (implementation: `app/utils/session.server.ts`)
 - Requirements (high-level): Modernize auth with Google and email/password via Firebase; SSR-compatible session bridging; preserve role checks and redirects
 - Details: See `docs/development/PRD.details.md#authentication-bridging` (authentication bridging, tokens, redirects)
 
@@ -509,7 +511,7 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
 
 - [ ] Authentication: Google Authentication via Firebase Authentication (implementation details in auth PRD)
 - [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
-- [ ] Email/Notifications: integrate provider (TBD) for registration confirmations, match reminders, schedule changes, and final results; outbox + retries (see `docs/development/PRD.details.md#email-integration`)
+- [ ] Email/Notifications: Resend as provider for registration confirmations, match reminders, schedule changes, and final results; outbox + retries (see `docs/development/PRD.details.md#email-integration` and implementation in `app/utils/email.server.tsx`, ADR-0017)
 - [ ] Third-party SDKs documented with env vars and privacy considerations
 - [ ] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
 
@@ -628,6 +630,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - Protect `/auth/signin` and sensitive admin actions; include `X-RateLimit-*` headers
 - Memory-safe in-memory store with cleanup; strict IP header validation; localhost-only bypass in tests
+- Implementation references: `app/utils/rateLimit.server.ts`, `app/utils/adminMiddleware.server.ts`, and `docs/security/overview.md`
 
 ---
 
@@ -736,7 +739,7 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - Offline sync: how to handle conflicts when server state changes between offline entry and sync
 - Artificial intelligence: explore useful AI features (e.g., schedule optimization, conflict resolution suggestions, bracket predictions, performance/anomaly reports, fairness checks, natural-language queries over tournaments, auto-generated match summaries)
 - Animations: identify micro-interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)
-- Mobile app wrapper: assess packaging the web app for Android/iOS via Capacitor. Validate SSR vs client-only build strategy, service worker support under app schemes, and push notification integration for store compliance
+- Mobile app wrapper: assess packaging the web app for Android/iOS via Capacitor. Validate service worker support under app schemes and push notification integration for store compliance (SSR is required)
 
 ---
 

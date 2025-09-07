@@ -181,20 +181,62 @@ This addendum complements `.cursor/rules/PRD.mdc` with deeper implementation not
 - Sync after builds: `npx cap sync`
 - Open projects: `npx cap open ios` / `npx cap open android`
 
+#### Minimal Capacitor config (SSR via server.url)
+
+```ts
+// capacitor.config.ts
+import type { CapacitorConfig } from '@capacitor/cli'
+
+const config: CapacitorConfig = {
+  appId: 'com.example.tournado',
+  appName: 'Tournado',
+  webDir: 'dist',
+  server: {
+    // Point to your SSR origin to preserve SSR in WebView
+    url: 'https://tournado.fly.io',
+    cleartext: false,
+    allowNavigation: ['tournado.fly.io', 'tournado-staging.fly.io'],
+  },
+}
+
+export default config
+```
+
 ### Build strategy
 
-- Client-only bundle for native apps: produce a static SPA build for Capacitor (SSR stays for the web). Guard SSR-only code with environment flags.
-- Network access: app consumes the same backend APIs as the web; ensure CORS/HTTPS and env configuration for API base URL.
+- SSR-first: load the web app from the production/staging HTTPS origin via Capacitor `server.url` (e.g., `https://tournado.fly.io`). This preserves SSR semantics and role checks in WebViews.
+- Offline support: rely on the origin’s service worker for caching/queueing where supported; keep background sync logic aligned with ADR-0008.
+- Environment: configure `server.url` and `allowNavigation` for the target domain(s). Keep API base URLs consistent with web.
+
+### SSR integration (required)
+
+- Boot path: ensure the HTTPS origin is reachable on app start; display an offline screen if the origin is unavailable and provide retry.
+- Service worker: register from the HTTPS origin (not app scheme). Test SW registration and background sync in iOS (WKWebView) and Android.
+- Cookies/session: verify HttpOnly/Lax/Secure cookie persistence across suspend/resume and app relaunch on iOS/Android WebViews.
+- CSP: if any plugin uses a custom scheme, extend CSP (e.g., include `capacitor:` in `connect-src` when needed). Migrate to nonce-based scripts per ADR-0011.
+- OAuth (Firebase/Google): prefer system browser (SFSafariViewController / Custom Tabs) with a custom URL scheme or universal link back to the app; whitelist redirect URIs and confirm SSR endpoint handles return paths.
 
 ### Offline and background
 
-- Service workers in WebViews: support varies, especially on iOS. Do not rely on service workers for native apps; assets are bundled. Implement offline queues and background sync via in-app logic or native background tasks if required.
+- Service workers in WebViews: support varies, especially on iOS. When using `server.url` (HTTPS origin), register the SW from the origin and verify behavior on both platforms. For app-scheme fallbacks, do not rely on SW; use in-app queues/native background tasks instead.
 - Storage: persist pending actions (e.g., offline scoring) using IndexedDB or a lightweight SQLite plugin if needed.
 
 ### Push notifications
 
 - Use Capacitor Push Notifications: APNs on iOS and FCM on Android. For iOS, configure APNs keys/certs; for Android, FCM sender ID and JSON config.
 - Topics/targeting: subscribe users to team/tournament topics when they opt-in; respect privacy and granular unsubscribe.
+
+### Risks & mitigations
+
+- Service worker behavior in WebViews: test on iOS and Android; provide graceful offline UI if SW is unavailable.
+- Cookie/session persistence: run suspend/resume and relaunch tests; adjust cookie attributes if needed.
+- OAuth redirects: validate deep link/universal link flows and server handling of redirect completion.
+- CSP allowances: add any required schemes (e.g., `capacitor:`) while keeping the policy strict; migrate to nonces.
+- Storage/offline data: verify IndexedDB/caches availability and quotas; fall back to SQLite plugin if required.
+
+### Recommendation
+
+- Serve the app via `server.url` from the HTTPS SSR origin to retain SSR across routes. Use the origin’s SW for offline where supported. Monitor iOS/Android differences for SW, cookies, and OAuth.
 
 ### Review checklist (Apple/Google)
 

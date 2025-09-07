@@ -41,12 +41,14 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - **match.server.ts** - Match/competition operations
   - Server-side only data access using Prisma
 
-- **lib/** - Core Libraries & Services
-  - **auth.server.ts** - Authentication utilities
+- **utils/** - Core Utilities & Services
   - **session.server.ts** - Session management
+  - **rbacMiddleware.server.ts** - RBAC wrappers and permission checks
+  - **rateLimit.server.ts** - Rate limiting utilities
+  - **adminMiddleware.server.ts** - Admin-specific rate limiting wrappers
   - **db.server.ts** - Database connection and utilities
   - **validation.ts** - Schema validation with Zod
-  - **email.server.ts** - Email sending utilities
+  - **email.server.tsx** - Email sending utilities (Resend)
 
 - **stores/** - Client-side State Management
   - **authStore.ts** - Authentication state (Zustand)
@@ -72,7 +74,9 @@ This project follows a modular architecture pattern for React Router v7 applicat
 
 - **i18n/** - Internationalization
   - **locales/** - Translation files
-  - **i18next.ts** - i18n configuration
+  - **config.ts** - Eager i18n configuration
+  - **config.lazy.ts** - Lazy-loaded i18n configuration
+  - **cache.ts** - Translation caching utilities
   - Multi-language support with react-i18next
 
 - **@types/** - TypeScript Definitions
@@ -91,6 +95,7 @@ This project follows a modular architecture pattern for React Router v7 applicat
 - **images/** - Static images and logos
 - **icons/** - PWA icons and favicons
 - **manifest.json** - PWA manifest
+- **sw.js** - Service worker (built or custom)
 
 ### `mocks/` - Mock Service Worker
 
@@ -98,6 +103,9 @@ This project follows a modular architecture pattern for React Router v7 applicat
 - **handlers/** - API mock handlers
 
 ### `playwright/` - End-to-End Testing
+### Build & PWA Integration
+
+- Vite plugin configuration: `vite.config.ts` (includes PWA via `vite-plugin-pwa`)
 
 - **tests/** - E2E test files (*.spec.ts)
 - **playwright.config.ts** - Playwright configuration

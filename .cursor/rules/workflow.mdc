@@ -74,6 +74,33 @@ Below are the rules that you must follow when developing functionality:
 - Handle auth state with proper loading indicators
 - Implement proper logout and session management
 
+### Permission Middleware & Rate Limiting
+
+- Protect loaders/actions with permission checks and role-aware rate limits where appropriate
+
+```ts
+// Permission-based loader/action
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  await requireUserWithPermission(request, 'tournaments:read', { params })
+  // ...load data
+}
+
+// Rate limiting example for sensitive actions
+import {
+  checkRateLimit,
+  createRateLimitResponse,
+  RATE_LIMITS,
+} from '~/utils/rateLimit.server'
+
+export async function action({ request }: ActionFunctionArgs) {
+  const result = checkRateLimit('auth:signin', RATE_LIMITS.ADMIN_LOGIN, request)
+  if (!result.allowed) return createRateLimitResponse(result, RATE_LIMITS.ADMIN_LOGIN)
+  // ...handle form
+}
+```
+
 ### Email Communication
 
 - Use Resend for transactional email delivery
@@ -129,7 +156,7 @@ export function NewFeature({
   const { t } = useTranslation()
 
   return (
-    <div 
+    <div
       className={cn(newFeatureVariants({ variant }), className)}
       data-testid="new-feature"
     >
@@ -207,10 +234,10 @@ export const meta: MetaFunction = () => [
 // Server-side data loading
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserId(request) // Ensure user is authenticated
-  
+
   // Load any required data
   const tournaments = await getTournaments()
-  
+
   return { tournaments }
 }
 
@@ -218,13 +245,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request)
   const formData = await request.formData()
-  
+
   const teamData = {
     name: formData.get('name') as string,
     clubName: formData.get('clubName') as string,
     // ... other fields
   }
-  
+
   try {
     const team = await createTeam(teamData)
     return redirect(`/teams/${team.id}`)
@@ -237,11 +264,11 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function NewTeamPage(): JSX.Element {
   const { tournaments } = useLoaderData<typeof loader>()
   const actionData = useActionData<typeof action>()
-  
+
   return (
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Create New Team</h1>
-      
+
       <Form method="post" className="space-y-4">
         {/* Form fields */}
       </Form>
@@ -328,11 +355,11 @@ type FormState = {
   // Form fields
   name: string
   description: string
-  
+
   // Validation state
   errors: Record<string, string>
   touched: Record<string, boolean>
-  
+
   // UI state
   isSubmitting: boolean
 }
@@ -343,7 +370,7 @@ type FormActions = {
   clearError: (field: string) => void
   setTouched: (field: string) => void
   resetForm: () => void
-  
+
   // Validation
   validateField: (field: string) => boolean
   validateForm: () => boolean
@@ -361,38 +388,38 @@ export const useNewFeatureStore = create<FormState & FormActions>()(
   persist(
     (set, get) => ({
       ...initialState,
-      
-      setField: (field, value) => 
+
+      setField: (field, value) =>
         set((state) => ({ [field]: value })),
-        
-      setError: (field, error) => 
-        set((state) => ({ 
-          errors: { ...state.errors, [field]: error } 
+
+      setError: (field, error) =>
+        set((state) => ({
+          errors: { ...state.errors, [field]: error }
         })),
-        
-      clearError: (field) => 
-        set((state) => ({ 
-          errors: { ...state.errors, [field]: undefined } 
+
+      clearError: (field) =>
+        set((state) => ({
+          errors: { ...state.errors, [field]: undefined }
         })),
-        
+
       validateField: (field) => {
         const state = get()
         const value = state[field as keyof FormState] as string
-        
+
         if (!value?.trim()) {
           state.setError(field, 'This field is required')
           return false
         }
-        
+
         state.clearError(field)
         return true
       },
-      
+
       validateForm: () => {
         const state = get()
         return state.validateField('name') && state.validateField('description')
       },
-      
+
       resetForm: () => set(initialState),
     }),
     {
@@ -416,7 +443,7 @@ import { useNewFeatureStore } from '~/stores/useNewFeatureStore'
 
 export function NewFeatureForm(): JSX.Element {
   const submit = useSubmit()
-  
+
   const {
     name,
     description,
@@ -427,19 +454,19 @@ export function NewFeatureForm(): JSX.Element {
     setTouched,
     validateForm,
   } = useNewFeatureStore()
-  
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    
+
     if (!validateForm()) return
-    
+
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description', description)
-    
+
     submit(formData, { method: 'post' })
   }
-  
+
   return (
     <Form onSubmit={handleSubmit} className="space-y-4">
       <TextInputField
@@ -450,7 +477,7 @@ export function NewFeatureForm(): JSX.Element {
         error={touched.name ? errors.name : undefined}
         required
       />
-      
+
       <TextInputField
         label="Description"
         value={description}
@@ -460,7 +487,7 @@ export function NewFeatureForm(): JSX.Element {
         multiline
         rows={3}
       />
-      
+
       <ActionButton
         type="submit"
         variant="primary"
@@ -492,18 +519,18 @@ describe('NewFeature', () => {
         <p>Test content</p>
       </NewFeature>
     )
-    
+
     expect(screen.getByText('Test Feature')).toBeInTheDocument()
     expect(screen.getByText('Test content')).toBeInTheDocument()
   })
-  
+
   it('applies custom className', () => {
     render(
       <NewFeature title="Test" className="custom-class">
         Content
       </NewFeature>
     )
-    
+
     expect(screen.getByTestId('new-feature')).toHaveClass('custom-class')
   })
 })
@@ -524,12 +551,12 @@ export class TeamsPage {
 // playwright/tests/teams.spec.ts - Use page objects in tests
 test('should create a new team', async ({ page }) => {
   const teamsPage = new TeamsPage(page)
-  
+
   await teamsPage.goto()
   await teamsPage.fillTeamForm('Test Team', 'Test Club')
   await teamsPage.submitForm()
   await teamsPage.waitForTeamCreated()
-  
+
   const title = await teamsPage.getTeamTitle()
   expect(title).toContain('Test Team')
 })
@@ -541,6 +568,7 @@ test('should create a new team', async ({ page }) => {
 
 - **Templates**: Use React Email components in `app/components/emails/`
 - **Service**: Implement email sending with Resend in `app/lib/email.server.ts`
+  - Implementation: `app/utils/email.server.tsx` (Resend client setup and helpers)
 - **Integration**: Queue emails in route actions (non-blocking)
 - **Error Handling**: Log email failures but don't block user operations
 - **Accessibility**: Follow [React Email accessibility guidelines](https://react.email/docs/components/html#accessibility) for proper semantic HTML and screen reader support
@@ -602,18 +630,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
 // Type-safe loader with error handling
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { teamId } = params
-  
+
   if (!teamId) {
     throw new Response('Team ID is required', { status: 400 })
   }
-  
+
   try {
     const team = await getTeamById({ id: teamId })
-    
+
     if (!team) {
       throw new Response('Team not found', { status: 404 })
     }
-    
+
     return { team }
   } catch (error) {
     throw new Response('Failed to load team', { status: 500 })
@@ -661,8 +689,8 @@ const handleSuccess = () => {
 }
 
 // With state
-navigate('/teams/new', { 
-  state: { preselectedTournament: tournament.id } 
+navigate('/teams/new', {
+  state: { preselectedTournament: tournament.id }
 })
 ```
 
@@ -701,7 +729,7 @@ export async function requireUserId(request: Request): Promise<string> {
 }
 
 export async function requireUserRole(
-  request: Request, 
+  request: Request,
   roles: Role[]
 ): Promise<User> {
   const user = await requireUser(request)
@@ -739,7 +767,7 @@ const { user, isAuthenticated } = useAuthStore()
 // app/routes/teams.$teamId.tsx
 export function ErrorBoundary() {
   const error = useRouteError()
-  
+
   if (isRouteErrorResponse(error)) {
     return (
       <div className="error-container">
@@ -748,7 +776,7 @@ export function ErrorBoundary() {
       </div>
     )
   }
-  
+
   return <GenericErrorFallback />
 }
 ```
@@ -774,6 +802,21 @@ export async function createTeam(teamData: CreateTeamData) {
 ```
 
 ## Performance Patterns
+## SSR Security Headers
+
+- Security headers (including CSP) are applied in `app/entry.server.tsx`
+- Current interim CSP allows `'unsafe-inline'` for a small SSR snippet; see ADR-0011 for nonce migration plan
+
+## PWA and Mobile Wrapper Notes
+
+- PWA:
+  - Service worker and manifest are in `public/` (e.g., `public/manifest.json`, `public/sw.js`)
+  - Vite PWA integration configured in `vite.config.ts` via `vite-plugin-pwa`
+  - Offline queues and background sync planned/implemented per ADR-0008
+- Capacitor (mobile):
+  - When packaging as a mobile app, verify service worker support under app schemes
+  - Confirm push notifications and background sync behavior
+  - SSR is required; ensure compatibility with the mobile wrapper
 
 ### Optimistic Updates
 
@@ -784,7 +827,7 @@ const { addTeam, removeTeam } = useTeamsStore()
 const handleDeleteTeam = async (teamId: string) => {
   // Optimistically remove from UI
   removeTeam(teamId)
-  
+
   try {
     await deleteTeam(teamId)
     toast.success('Team deleted successfully')

@@ -10,29 +10,30 @@ alwaysApply: false
 
 <!-- BEGIN:ADR_INDEX -->
 
-| ID   | Title                                                                       | Date       | Status   | Supersedes | Superseded by |
-| ---- | --------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Proposed | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Proposed | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Proposed | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Proposed | —          | —             |
-| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed | —          | —             |
-| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed | —          | —             |
-| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed | —          | —             |
-| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Proposed | —          | —             |
-| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Proposed | —          | —             |
-| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Proposed | —          | —             |
-| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Proposed | —          | —             |
-| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Proposed | —          | —             |
-| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Proposed | —          | —             |
-| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Proposed | —          | —             |
-| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Proposed | —          | —             |
-| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Proposed | —          | —             |
-| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Proposed | —          | —             |
-| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Proposed | —          | —             |
-| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Proposed | —          | —             |
-| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Proposed | —          | —             |
-| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Proposed | —          | —             |
+| ID   | Title                                                                       | Date       | Status      | Supersedes | Superseded by |
+| ---- | --------------------------------------------------------------------------- | ---------- | ----------- | ---------- | ------------- |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Proposed    | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Proposed    | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Proposed    | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Proposed    | —          | —             |
+| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed    | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed    | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed    | —          | —             |
+| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Proposed    | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Proposed    | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Proposed    | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Implemented | —          | —             |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Proposed    | —          | —             |
+| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Proposed    | —          | —             |
+| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Proposed    | —          | —             |
+| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Proposed    | —          | —             |
+| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Proposed    | —          | —             |
+| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Implemented | —          | —             |
+| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Implemented | —          | —             |
+| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Proposed    | —          | —             |
+| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Proposed    | —          | —             |
+| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Proposed    | —          | —             |
+| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Proposed    | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -40,7 +41,7 @@ alwaysApply: false
 
 <a id="adr-0001"></a>
 **Date**: 2025-08-27
-**Status**: Proposed
+**Status**: Implemented
 **Owner**: André Roussakoff
 
 ### Context
@@ -80,7 +81,7 @@ Template includes working examples for routing, data loading, and state manageme
 
 <a id="adr-0002"></a>
 **Date**: 2025-08-27
-**Status**: Proposed
+**Status**: Implemented
 **Owner**: André Roussakoff
 
 ### Context
@@ -119,7 +120,7 @@ Directory structure follows React Router v7 conventions. Build system optimized 
 
 <a id="adr-0003"></a>
 **Date**: 2025-08-27
-**Status**: Proposed
+**Status**: Implemented
 **Owner**: André Roussakoff
 
 ### Context
@@ -365,6 +366,11 @@ The app supports multiple languages (nl, en, fr, ar, tr, de). We need SSR-aware 
 
 Persist language in cookie + localStorage reactively. Read language from cookie on the server during initial request. Use `nl` as fallback. Centralize supported language enumeration for easier maintenance.
 
+Implementation references:
+- Eager config: `app/i18n/config.ts` (fallbackLng: `nl`, `SUPPORTED_LANGUAGES`)
+- Lazy config: `app/i18n/config.lazy.ts` (on-demand locale loading, caching)
+- Cache utilities: `app/i18n/cache.ts`
+
 ### Consequences
 
 * Pros: SSR compatibility, consistent UX across sessions, easy language management
@@ -439,6 +445,9 @@ Define CI/CD workflow with branch→app mapping and explicit secrets:
 - Slack notifications after workflow completion
 - Rollback via Fly's release history
 - Environment-specific values separated per Fly app
+
+Implementation references:
+- Build/start scripts in `package.json` (`build`, `start`, `validate`)
 
 ### Consequences
 
@@ -691,6 +700,10 @@ Implement layered error boundary architecture:
 ### Compliance / Verification
 
 Error boundary coverage tested with deliberate error injection. SSR error handling verified. Error message clarity and actionability reviewed.
+
+Implementation references:
+- Global/auth error boundaries in `app/components/*ErrorBoundary*.tsx`
+- SSR header application in `app/entry.server.tsx`
 
 ## ADR-0016 — Performance Architecture: Bundle Management and Code Splitting
 
@@ -1082,3 +1095,45 @@ Implement progressive live updates transport:
 ### Compliance / Verification
 
 Load testing across transport methods. Connection recovery scenarios tested. Event delivery reliability verified. Performance benchmarking under various network conditions.
+
+## ADR-0022 — RBAC Middleware and Permission Utilities
+
+<a id="adr-0022"></a>
+**Date**: 2025-09-07
+**Status**: Proposed
+**Owner**: André Roussakoff
+
+### Context
+
+The application enforces a permission matrix across roles (PUBLIC, REFEREE, MANAGER, ADMIN). We need consistent middleware utilities that protect loaders/actions, support self-access where appropriate, and integrate with rate limiting.
+
+### Alternatives
+
+- Route-local checks in each loader/action (repetition, inconsistency)
+- Client-only checks (insufficient for SSR security)
+
+### Decision
+
+Adopt centralized RBAC utilities:
+
+- `requireUserWithPermission(request, permission, options)` for permission checks with optional self-access (`allowSelfAccess`, `userIdParam`, and route `params`).
+- `requireAdminUser(request)` for admin panel gating (ADMIN/MANAGER/REFEREE access to panel; navigation filtered elsewhere).
+- Role-based rate limiting helper `checkRoleBasedRateLimit(request, action)` to apply stricter limits for sensitive operations.
+
+### Implementation References
+
+- Middleware: `app/utils/rbacMiddleware.server.ts`
+- Permissions and role helpers: `app/utils/rbac`
+- Session utilities: `app/utils/session.server.ts`
+- Rate limiting: `app/utils/rateLimit.server.ts`, `app/utils/adminMiddleware.server.ts`
+
+### Consequences
+
+* Pros: Consistency, fewer security footguns, testable contracts, SSR alignment
+* Cons / risks: Requires team familiarity with utilities, central updates affect many routes
+
+### Compliance / Verification
+
+- Unit tests for permission paths and self-access conditions
+- Route tests for unauthorized/forbidden flows
+- Playwright projects for role-based access to admin panel

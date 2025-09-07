@@ -6,169 +6,200 @@ alwaysApply: false
 
 # INSTRUCTIONS — READ THIS FIRST WHEN CREATING NEW TASKS
 
-This file describes a single, self-contained task for an AI agent. One task = one file.
+This file is a single, self-contained TASK for an AI agent. **One task = one file.**
+Follow the steps below when creating new tasks.
 
-- Name your file under ./tasks/ using kebab-case, e.g., tasks/add-role-guard-to-routes.md
-- Keep title, status, and owner accurate
-- Use information-dense keywords (file paths, function signatures, zod schemas, Prisma model names)
-- Define types first if adding data structures and reference them by exact name
-- Order steps so later steps explicitly reference earlier artifacts by name
-- Keep scope tight; split large efforts into multiple task files and list them under dependencies
-- Acceptance criteria must be testable and unambiguous
-- Context plan must list files to load at start (mark deps read-only) and which files must exist at the end
-- Testing: focus unit tests on meaningful behavior; create integration/E2E for complex workflows
+1. **Name your file**: place under `.cursor/tasks/` and use kebab-case, e.g., `tasks/add-tournament-bracket.mdc`.
+2. **Fill the frontmatter** (above) completely. Keep `title`, `status`, and `owner` accurate.
+3. **Use information-dense keywords** throughout (exact file paths, function signatures, type names, constants, route patterns).
+4. **Define types first** if adding new data structures. Reference those types by exact name in later steps.
+5. **Order your steps** so later steps explicitly reference earlier artifacts by name (files, types, functions, routes).
+6. **Keep scope tight**: this task should be completable independently. If it's large, split into multiple task files and add them to `dependencies`.
+7. **Acceptance criteria** must be testable and unambiguous. Include file paths for tests and example route/API usage.
+8. **Context plan** must list the files to add to the model's context at the start (mark dep files read-only) and which files must exist at the end.
+9. **Testing strategy** use primarily integration tests with Vitest and E2E tests with Playwright using Page Object Model. Include database seeding for tests.
 
 ---
 
-id: "" # e.g., TASK-0123 title: "" status: "planned" # planned, in-progress, blocked, done priority: "P1" # P0, P1, P2 owner: "" labels: ["feature", "routes", "models"] # free-form tags dependencies: [""] # list other task files that must be completed first created: "YYYY-MM-DD" due: "YYYY-MM-DD" relatedPRD: "" relatedADR: ""
+id: "<unique-id-or-ticket>" # e.g., TASK-0123
+title: "<short, action-oriented task title>" # e.g., "Add tournament bracket visualization"
+status: "planned" # planned, in-progress, blocked, done
+priority: "P1" # P0, P1, P2
+labels: ["feature", "ui", "tournament"] # free-form tags (feature, ui, database, api, tournament, team, match)
+dependencies: ["<other-task-file>"] # list other task files that must be completed first
+created: "YYYY-MM-DD"
 
-# 1) High-level objective
+# 1) High-Level Objective
 
-# 2) Background / context
+<One sentence that describes the user-facing end state. Avoid technical jargon.>
 
-<Short rationale or business context for why this task exists. Link PRD/ADR.>
+# 2) Background / Context (Optional but recommended)
 
-# 3) Assumptions and constraints
+<Short rationale or business context for why this task exists. Link any tickets/PRDs.>
 
-- ASSUMPTION:
-- Constraint: Use pnpm scripts defined in package.json
-- Constraint: React Router v7 + TypeScript + Vite + Prisma + SQLite
-- Constraint: Tailwind mobile-first layout, lg: for desktop
-- Constraint: Prisma migrations via pnpm prisma migrate dev --name
-- Constraint: Tests colocated next to code under **tests** with .test.ts(x)
-- Constraint: E2E tests in playwright/tests
-- Constraint: No new dependencies unless explicitly approved
-- Constraint: Authentication via Google Auth (Firebase Authentication) when applicable
+# 3) Assumptions & Constraints
 
-# 4) Dependencies (tasks and artifacts)
+- ASSUMPTION: <If any info is missing, state the pragmatic assumption here.>
+- Constraint: <e.g., "Use only dependencies listed in package.json".>
+- Constraint: <e.g., "Follow existing CVA patterns for component styling".>
+- Constraint: <e.g., "Use Prisma for all database operations".>
+- Constraint: <e.g., "Maintain compatibility with existing tournament data structure".>
 
-- tasks/.md
-- prisma/schema.prisma
-- app/routes/.tsx
-- app/components/.tsx
+# 4) Dependencies (Other Tasks or Artifacts)
 
-# 5) Context plan
+- .cursor/tasks/<other-task-file>.mdc
+- prisma/schema.prisma _(required existing schema)_
+- app/lib/lib.types.ts _(existing types)_
 
-Beginning (add to model context)
+# 5) Context Plan
 
-- app/routes/.tsx
-- app/components/.tsx
-- app/stores/.ts
-- prisma/schema.prisma
-- package.json (read-only)
-- vitest.config.ts (read-only)
+**Beginning (add to model context):**
 
-End state (must exist after completion)
+- app/routes/tournaments._index.tsx
+- app/models/tournament.server.ts
+- app/lib/lib.types.ts
+- prisma/schema.prisma _(read-only)_
+- package.json _(read-only)_
 
-- app/routes/.tsx
-- app/components/.tsx
-- app/components/**tests**/.test.tsx
-- playwright/tests/.spec.ts
+**End state (must exist after completion):**
 
-# 6) Low-level steps (ordered, information-dense)
+- app/components/<ComponentName>/<ComponentName>.tsx
+- app/components/<ComponentName>/<componentName>.variants.ts
+- app/components/<ComponentName>/index.ts
+- app/routes/<resource>.<action>.tsx
+- app/components/__tests__/<ComponentName>.test.tsx
+- playwright/tests/<featureName>.spec.ts
 
-1. Route and UI
-   - File: app/routes/.tsx
+# 6) Low-Level Steps (Ordered, information-dense)
 
+> Write concrete, atomic steps. Include **file paths, exact names, signatures, params with defaults, return types**.
+
+1. **Create new component**
+
+   - File: `app/components/<ComponentName>/<ComponentName>.tsx`
    - Exported API:
+     ```tsx
+     export type <DataType> = {
+       id: string;
+       name: string;
+       status: <StatusEnum>;
+     };
+     export function <ComponentName>({
+       data,
+       onAction,
+       className,
+     }: {
+       data: <DataType>[];
+       onAction?: (item: <DataType>) => void;
+       className?: string;
+     }): JSX.Element;
+     ```
+   - Details:
+     - Use existing design system components
+     - Support internationalization with `useTranslation`
+     - Follow accessibility best practices
+     - Use semantic HTML and proper ARIA attributes
 
-      ```ts
-      export async function loader({ request }: LoaderFunctionArgs)
-      export async function action({ request }: ActionFunctionArgs)
-      export default function <ComponentName>(): JSX.Element
-      ```
+2. **Create component variants**
 
-   - Behavior:
-      - Validate inputs with zod schema validation
-      - Use React Router v7 navigation patterns
-      - Mobile-first styles; lg: for desktop
-      - Implement proper error boundaries and loading states
+   - File: `app/components/<ComponentName>/<componentName>.variants.ts`
+   - Use CVA pattern:
+     ```ts
+     export const <componentName>Variants = cva(
+       ['base-classes-here'],
+       {
+         variants: {
+           variant: { default: 'classes', primary: 'classes' },
+           size: { sm: 'classes', md: 'classes', lg: 'classes' }
+         }
+       }
+     );
+     ```
 
-2. Data layer
-   - prisma/schema.prisma: Define data models with proper relationships
+3. **Create/update route**
 
-   - Migration:
+   - File: `app/routes/<resource>.<action>.tsx` or `app/routes/<resource>.$id.tsx`
+   - Add loader/action:
+     ```ts
+     export async function loader({ params, request }: LoaderFunctionArgs) {
+       const data = await get<Resource>({ id: params.id });
+       return { data };
+     }
+     export async function action({ request, params }: ActionFunctionArgs) {
+       // Handle form submission
+       return redirect('/success-path');
+     }
+     ```
 
-      ```bash
-      pnpm prisma migrate dev --name <name>
-      pnpm prisma generate
-      ```
+4. **Update database model**
 
-   - Seed: update prisma/seed.ts if needed
-   - Models: use app/models/*.server.ts for database operations
+   - File: `app/models/<resource>.server.ts`
+   - Add function:
+     ```ts
+     export async function <operationName>({
+       id,
+       data,
+     }: {
+       id: string;
+       data: <InputType>;
+     }): Promise<<ReturnType>>
+     ```
 
-3. State and i18n
-   - Store slice: app/stores/*.ts (Zustand) for client-side state only
-   - Server state: use React Router loaders/actions
-   - Translations: app/i18n/locales/[locale]/*.json
-   - Dutch sentence case for titles/labels
+5. **Tests**
+   - File: `app/components/__tests__/<ComponentName>.test.tsx` (Vitest)
+   - Cases:
+     - Renders with required props
+     - Handles user interactions correctly
+     - Applies custom className and variants
+   - File: `playwright/tests/<featureName>.spec.ts` (E2E with Page Object Model)
+   - Cases:
+     - Navigate to feature and verify functionality
+     - Test form submission and data persistence
+     - Test responsive behavior
 
-4. Tests
-   - Unit test: app/components/**tests**/*.test.tsx
-      - Render states, validation, and user interactions
-      - Use Vitest with @testing-library/react
-   - E2E test: playwright/tests/*.spec.ts
-      - Happy path navigating to and performing core actions
-      - Test authentication flows when applicable
+# 7) Types & Interfaces (if applicable)
 
-5. Docs and scripts
-   - Update docs/development/.md if applicable
-
-   - Ensure pnpm validate passes:
-
-      ```bash
-      pnpm validate  # Runs lint, typecheck, and test in parallel
-      ```
-
-# 7) Types and interfaces
+> Define or reference types here so the model has a stable contract.
 
 ```ts
-// Example
-export type <TypeName> = {
-  id: string
-  name: string
+// app/lib/lib.types.ts or app/@types/<feature>.ts
+export interface <FeatureData> {
+  id: string;
+  name: string;
+  status: <StatusEnum>;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+export type <ComponentProps> = {
+  data: <FeatureData>[];
+  onAction?: (item: <FeatureData>) => void;
+  className?: string;
+};
 ```
 
-# 8) Acceptance criteria
+# 8) Acceptance Criteria
 
-- Route app/routes/*.tsx loads without console errors
-- All new strings added to app/i18n/locales with correct keys and Dutch sentence case
-- Unit tests under app/components/**tests**/*.test.tsx pass locally (Vitest)
-- E2E test playwright/tests/*.spec.ts passes locally (Playwright)
-- Database migration applied; seed adjusted if required
-- pnpm validate passes (lint + typecheck + test)
-- TypeScript compilation succeeds without errors
-- Commit follows Conventional Commits format
+- `app/components/<ComponentName>/<ComponentName>.tsx` exports `<ComponentName>(...)` with the exact signature above.
+- Route `app/routes/<resource>.<action>.tsx` loads data and renders component successfully.
+- Navigation to `/route-path` displays the feature correctly.
+- All tests in `app/components/__tests__/<ComponentName>.test.tsx` pass locally.
+- All E2E tests in `playwright/tests/<featureName>.spec.ts` pass locally.
+// Note: Commit message format is enforced by repository tooling; no action required here
+- New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
 
-# 9) Testing strategy
+# 9) Testing Strategy
 
-- Unit: focus on behavior and rendering states, mock React Router loaders and Zustand stores where needed
-- E2E: verify real user workflow for happy path and key edge conditions using Playwright
+- Create unit tests with Vitest that verify component behavior and rendering.
+- Create E2E tests with Playwright using Page Object Model pattern.
+- Include database seeding for realistic test data.
+- Test responsive design on different screen sizes.
+- Test accessibility with screen reader navigation.
+- Avoid testing implementation details - focus on user-facing behavior.
 
-# 10) Rollback plan
+# 10) Notes / Links
 
-- Revert route and component files
-- Revert Prisma migration using `pnpm prisma migrate reset` or manual down-migration
-- Remove added translation keys if obsolete
-- Restore previous Zustand store state if applicable
-
-# 11) Out of scope
-
--
-
-# 12) Notes / links
-
-- <references to PRs, a11y notes, performance budgets, designs>
-
----
-
-Rationale for changes
-
-- Removed all Next.js, Python, and Firebase backend-specific assumptions. The server runtime is React Router v7's SSR with Prisma and SQLite.
-- Updated all technology references to match React Router v7, TypeScript, Vite, and Zustand stack.
-- Aligned data layer patterns with Prisma ORM and server-side model patterns.
-- Updated state management to reflect Zustand for client state and React Router loaders/actions for server state.
-- Strengthened mobile-first, i18n (including Dutch capitalization and RTL), accessibility, and testing sections to reflect Vitest and Playwright.
-- Acceptance criteria align with pnpm validate script and existing project structure.
-- Added Google Authentication constraint for future implementation phases.
+- Reference PRD/ADR section: <docs/prd/section-name.md or docs/adr/ADR-XXX.md>
+- Related tasks: <list other .cursor/tasks/ files>
+- Design mockups: <link to figma or design files>
+- API documentation: <link to API specs if applicable>

@@ -1,0 +1,233 @@
+---
+description: Implement Firebase session cookie bridging for SSR compatibility
+globs:
+alwaysApply: false
+---
+
+id: "TASK-0002"
+title: "Implement Firebase session cookie bridging for SSR compatibility"
+status: "planned"
+priority: "P0"
+labels: ["auth", "firebase", "ssr", "session"]
+dependencies: ["firebase-auth-setup.mdc"]
+created: "2025-01-09"
+
+# 1) High-Level Objective
+
+Bridge Firebase authentication with server-side session management to maintain SSR compatibility and existing route protection patterns.
+
+# 2) Background / Context
+
+Phase 1 of authentication modernization requires seamless integration between Firebase client authentication and existing server-side session management. This task implements session cookie bridging that allows Firebase ID tokens to be converted to server sessions while preserving existing role-based access control and SSR functionality.
+
+Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: Firebase setup from TASK-0001 is complete and functional
+- Constraint: Must preserve existing session.server.ts API for backward compatibility
+- Constraint: Maintain existing role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Constraint: No breaking changes to existing route loaders that use requireUserId/getUserId
+- Constraint: Session cookies must work with existing commitSession/getSession patterns
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- .cursor/tasks/firebase-auth-setup.mdc (Firebase configuration must be complete)
+- app/utils/session.server.ts (existing session utilities)
+- app/utils/rbacMiddleware.server.ts (existing RBAC middleware)
+- app/models/user.server.ts (existing User model operations)
+
+# 5) Context Plan
+
+**Beginning (add to model context):**
+
+- app/lib/firebase.server.ts _(from TASK-0001)_
+- app/utils/session.server.ts _(read-only)_
+- app/utils/rbacMiddleware.server.ts _(read-only)_
+- app/models/user.server.ts _(read-only)_
+- prisma/schema.prisma _(read-only)_
+
+**End state (must exist after completion):**
+
+- app/lib/auth.server.ts
+- app/utils/firebase-session.server.ts
+- Updated app/utils/session.server.ts with Firebase integration
+- app/lib/__tests__/firebase-session.test.ts
+- app/utils/__tests__/session.server.test.ts (updated)
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+1. **Create Firebase session bridge utilities**
+
+   - File: `app/utils/firebase-session.server.ts`
+   - Exported API:
+     ```ts
+     export async function createSessionFromFirebaseToken(
+       idToken: string,
+       request: Request
+     ): Promise<{ session: Session; user: User } | null>
+
+     export async function syncFirebaseUserToDatabase(
+       firebaseUser: DecodedIdToken
+     ): Promise<User>
+
+     export async function validateFirebaseSession(
+       request: Request
+     ): Promise<{ user: User; session: Session } | null>
+     ```
+   - Details:
+     - Verify Firebase ID token using admin SDK
+     - Create or update User record in database
+     - Generate session cookie with user data
+     - Handle Firebase user email/displayName sync
+
+2. **Create auth server utilities**
+
+   - File: `app/lib/auth.server.ts`
+   - Exported API:
+     ```ts
+     export async function authenticateFirebaseUser(
+       request: Request
+     ): Promise<User | null>
+
+     export async function requireFirebaseAuth(
+       request: Request,
+       redirectTo?: string
+     ): Promise<User>
+
+     export async function getFirebaseUser(
+       request: Request
+     ): Promise<User | null>
+     ```
+   - Details:
+     - High-level authentication functions
+     - Integrate with existing session patterns
+     - Maintain backward compatibility with existing auth functions
+     - Handle redirect logic for unauthenticated users
+
+3. **Update existing session utilities**
+
+   - File: `app/utils/session.server.ts`
+   - Update functions:
+     ```ts
+     // Enhanced to support Firebase sessions
+     export async function getUserId(request: Request): Promise<string | undefined>
+     export async function requireUserId(request: Request, redirectTo?: string): Promise<string>
+     export async function getUser(request: Request): Promise<User | null>
+     export async function requireUser(request: Request, redirectTo?: string): Promise<User>
+
+     // New Firebase-specific functions
+     export async function createFirebaseUserSession({
+       request,
+       userId,
+       remember,
+       redirectTo,
+     }: CreateUserSessionProps): Promise<Response>
+     ```
+   - Details:
+     - Extend existing functions to check both legacy and Firebase sessions
+     - Maintain API compatibility
+     - Add Firebase session creation function
+     - Handle session migration scenarios
+
+4. **Update User model for Firebase integration**
+
+   - File: `app/models/user.server.ts`
+   - Add functions:
+     ```ts
+     export async function createUserFromFirebase({
+       firebaseUid,
+       email,
+       displayName,
+     }: {
+       firebaseUid: string
+       email: string
+       displayName?: string | null
+     }): Promise<User>
+
+     export async function getUserByFirebaseUid(
+       firebaseUid: string
+     ): Promise<User | null>
+
+     export async function updateUserFirebaseData({
+       userId,
+       firebaseUid,
+       email,
+       displayName,
+     }: {
+       userId: string
+       firebaseUid?: string
+       email?: string
+       displayName?: string | null
+     }): Promise<User>
+     ```
+
+5. **Tests**
+   - File: `app/utils/__tests__/firebase-session.server.test.ts` (Vitest)
+   - Cases:
+     - Valid Firebase token creates proper session
+     - Invalid Firebase token returns null
+     - User synchronization works correctly
+     - Session validation handles edge cases
+   - File: `app/lib/__tests__/auth.server.test.ts` (Vitest)
+   - Cases:
+     - Authentication functions work with Firebase sessions
+     - Backward compatibility with legacy sessions
+     - Redirect logic functions properly
+   - File: `app/utils/__tests__/session.server.test.ts` (Vitest - update existing)
+   - Cases:
+     - Enhanced functions support both session types
+     - Session creation works for Firebase users
+     - Migration between session types
+
+# 7) Types & Interfaces (if applicable)
+
+```ts
+// app/@types/firebase-session.ts
+export type FirebaseSessionData = {
+  firebaseUid: string
+  userId: string
+  email: string
+  displayName?: string | null
+}
+
+export type SessionBridgeResult = {
+  user: User
+  session: Session
+  isNewUser: boolean
+}
+
+export type CreateUserSessionProps = {
+  request: Request
+  userId: string
+  remember?: boolean
+  redirectTo?: string
+}
+```
+
+# 8) Acceptance Criteria
+
+- Firebase ID tokens can be exchanged for server sessions maintaining SSR compatibility
+- Existing route loaders using `requireUserId`/`getUser` work unchanged
+- New users from Firebase are automatically created in database with PUBLIC role
+- Existing users can be linked with Firebase UIDs
+- Session cookies work with both legacy and Firebase authentication
+- All tests in `app/utils/__tests__/firebase-session.server.test.ts` pass locally
+- Updated tests in `app/utils/__tests__/session.server.test.ts` pass locally
+- No breaking changes to existing authentication flows
+
+# 9) Testing Strategy
+
+- Mock Firebase Admin SDK for isolated unit testing
+- Test session creation and validation with various token states
+- Verify database user synchronization with Firebase user data
+- Test backward compatibility with existing session-based authentication
+- Include edge cases: expired tokens, invalid tokens, network failures
+- Test user role assignment and RBAC integration
+
+# 10) Notes / Links
+
+- Reference PRD section: Phase 1 - Authentication Modernization
+- Firebase Auth documentation: https://firebase.google.com/docs/auth/admin/verify-id-tokens
+- Next task: TASK-0003 (authentication UX migration)
+- Critical: Maintain zero downtime during migration by supporting both session types

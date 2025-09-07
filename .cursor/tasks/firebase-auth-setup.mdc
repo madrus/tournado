@@ -1,0 +1,188 @@
+---
+description: Set up Firebase project and Google Authentication configuration
+globs:
+alwaysApply: false
+---
+
+id: "TASK-0001"
+title: "Set up Firebase project with Google Authentication"
+status: "planned"
+priority: "P0"
+labels: ["auth", "firebase", "setup"]
+dependencies: []
+created: "2025-01-09"
+
+# 1) High-Level Objective
+
+Configure Firebase project with Google Authentication to replace current cookie-based auth system.
+
+# 2) Background / Context
+
+Phase 1 of authentication modernization requires migrating from cookie sessions to Firebase-backed authentication with Google sign-in. This task sets up the foundational Firebase configuration and environment setup needed for subsequent authentication implementation tasks.
+
+Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: Google Cloud project will be created for Firebase hosting
+- Constraint: Must maintain SSR compatibility for session bridging
+- Constraint: Use existing role-based access control structure (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Constraint: Preserve current redirect behavior and route protection
+- Constraint: No breaking changes to existing user data model
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- prisma/schema.prisma (existing User model with role field)
+- app/utils/session.server.ts (current session utilities)
+
+# 5) Context Plan
+
+**Beginning (add to model context):**
+
+- prisma/schema.prisma _(read-only)_
+- app/utils/session.server.ts _(read-only)_
+- package.json _(read-only)_
+- .env.example _(read-only)_
+
+**End state (must exist after completion):**
+
+- Firebase project configured with Authentication enabled
+- app/lib/firebase.client.ts
+- app/lib/firebase.server.ts
+- Updated .env.example with Firebase environment variables
+- Updated package.json with Firebase dependencies
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+1. **Create Firebase project and enable Authentication**
+
+   - Create new Firebase project in Google Cloud Console
+   - Enable Authentication service
+   - Configure Google sign-in provider
+   - Add authorized domains for development and production
+   - Generate Firebase config object and service account key
+
+2. **Install Firebase dependencies**
+
+   - File: `package.json`
+   - Add dependencies:
+     ```json
+     {
+       "firebase": "^10.7.1",
+       "firebase-admin": "^11.11.1"
+     }
+     ```
+
+3. **Create Firebase client configuration**
+
+   - File: `app/lib/firebase.client.ts`
+   - Exported API:
+     ```ts
+     import { initializeApp } from 'firebase/app'
+     import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+
+     export const firebaseApp: FirebaseApp
+     export const auth: Auth
+     export const googleProvider: GoogleAuthProvider
+     export const isFirebaseConfigured: boolean
+     ```
+   - Details:
+     - Initialize Firebase app with client config
+     - Set up Google Auth provider
+     - Export auth instance for use in components
+     - Include configuration validation
+
+4. **Create Firebase server configuration**
+
+   - File: `app/lib/firebase.server.ts`
+   - Exported API:
+     ```ts
+     import { App } from 'firebase-admin/app'
+     import { Auth } from 'firebase-admin/auth'
+
+     export const adminApp: App
+     export const adminAuth: Auth
+     export async function verifyIdToken(idToken: string): Promise<DecodedIdToken>
+     ```
+   - Details:
+     - Initialize Firebase Admin SDK
+     - Set up service account authentication
+     - Export token verification function
+     - Include error handling for invalid tokens
+
+5. **Update environment configuration**
+
+   - File: `.env.example`
+   - Add Firebase environment variables:
+     ```env
+     # Firebase Configuration
+     FIREBASE_API_KEY=
+     FIREBASE_AUTH_DOMAIN=
+     FIREBASE_PROJECT_ID=
+     FIREBASE_STORAGE_BUCKET=
+     FIREBASE_MESSAGING_SENDER_ID=
+     FIREBASE_APP_ID=
+
+     # Firebase Admin (Server)
+     FIREBASE_ADMIN_PROJECT_ID=
+     FIREBASE_ADMIN_CLIENT_EMAIL=
+     FIREBASE_ADMIN_PRIVATE_KEY=
+     ```
+
+6. **Tests**
+   - File: `app/lib/__tests__/firebase.client.test.ts` (Vitest)
+   - Cases:
+     - Firebase app initializes without error
+     - Auth instance is properly configured
+     - GoogleAuthProvider is set up correctly
+   - File: `app/lib/__tests__/firebase.server.test.ts` (Vitest)
+   - Cases:
+     - Admin SDK initializes properly
+     - Token verification works with valid tokens
+     - Token verification rejects invalid tokens
+
+# 7) Types & Interfaces (if applicable)
+
+```ts
+// app/@types/firebase.ts
+export type FirebaseConfig = {
+  apiKey: string
+  authDomain: string
+  projectId: string
+  storageBucket: string
+  messagingSenderId: string
+  appId: string
+}
+
+export type FirebaseUser = {
+  uid: string
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+}
+```
+
+# 8) Acceptance Criteria
+
+- Firebase project is created and configured with Google Authentication
+- `app/lib/firebase.client.ts` exports working Firebase client configuration
+- `app/lib/firebase.server.ts` exports working Firebase admin configuration
+- Environment variables are documented in `.env.example`
+- Firebase dependencies are added to `package.json`
+- All tests in `app/lib/__tests__/firebase.*.test.ts` pass locally
+- New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
+
+# 9) Testing Strategy
+
+- Create unit tests with Vitest to verify Firebase configuration loading
+- Test Firebase client initialization in browser environment
+- Test Firebase admin SDK initialization on server
+- Mock Firebase services for test isolation
+- Include error cases for missing environment variables
+
+# 10) Notes / Links
+
+- Reference PRD section: Phase 1 - Authentication Modernization
+- Firebase Auth documentation: https://firebase.google.com/docs/auth
+- Next task: TASK-0002 (session bridging implementation)
+- Security consideration: Store service account key securely in production

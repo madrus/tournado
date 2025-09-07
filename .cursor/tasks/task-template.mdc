@@ -18,6 +18,7 @@ Follow the steps below when creating new tasks.
 7. **Acceptance criteria** must be testable and unambiguous. Include file paths for tests and example route/API usage.
 8. **Context plan** must list the files to add to the model's context at the start (mark dep files read-only) and which files must exist at the end.
 9. **Testing strategy** use primarily integration tests with Vitest and E2E tests with Playwright using Page Object Model. Include database seeding for tests.
+10. **TypeScript conventions**: Use `type` instead of `interface` unless interfaces are required for extending. All code snippets must be TypeScript without semicolons.
 
 ---
 
@@ -80,19 +81,20 @@ created: "YYYY-MM-DD"
    - Exported API:
      ```tsx
      export type <DataType> = {
-       id: string;
-       name: string;
-       status: <StatusEnum>;
-     };
+       id: string
+       name: string
+       status: <StatusEnum>
+     }
+     
      export function <ComponentName>({
        data,
        onAction,
        className,
      }: {
-       data: <DataType>[];
-       onAction?: (item: <DataType>) => void;
-       className?: string;
-     }): JSX.Element;
+       data: <DataType>[]
+       onAction?: (item: <DataType>) => void
+       className?: string
+     }): JSX.Element
      ```
    - Details:
      - Use existing design system components
@@ -105,15 +107,14 @@ created: "YYYY-MM-DD"
    - File: `app/components/<ComponentName>/<componentName>.variants.ts`
    - Use CVA pattern:
      ```ts
-     export const <componentName>Variants = cva(
-       ['base-classes-here'],
-       {
-         variants: {
-           variant: { default: 'classes', primary: 'classes' },
-           size: { sm: 'classes', md: 'classes', lg: 'classes' }
-         }
+     export const <componentName>Variants = cva([
+       'base-classes-here'
+     ], {
+       variants: {
+         variant: { default: 'classes', primary: 'classes' },
+         size: { sm: 'classes', md: 'classes', lg: 'classes' }
        }
-     );
+     })
      ```
 
 3. **Create/update route**
@@ -122,12 +123,13 @@ created: "YYYY-MM-DD"
    - Add loader/action:
      ```ts
      export async function loader({ params, request }: LoaderFunctionArgs) {
-       const data = await get<Resource>({ id: params.id });
-       return { data };
+       const data = await get<Resource>({ id: params.id })
+       return { data }
      }
+     
      export async function action({ request, params }: ActionFunctionArgs) {
        // Handle form submission
-       return redirect('/success-path');
+       return redirect('/success-path')
      }
      ```
 
@@ -140,8 +142,8 @@ created: "YYYY-MM-DD"
        id,
        data,
      }: {
-       id: string;
-       data: <InputType>;
+       id: string
+       data: <InputType>
      }): Promise<<ReturnType>>
      ```
 
@@ -159,23 +161,23 @@ created: "YYYY-MM-DD"
 
 # 7) Types & Interfaces (if applicable)
 
-> Define or reference types here so the model has a stable contract.
+> Define or reference types here so the model has a stable contract. Use `type` instead of `interface` unless extending is required.
 
 ```ts
 // app/lib/lib.types.ts or app/@types/<feature>.ts
-export interface <FeatureData> {
-  id: string;
-  name: string;
-  status: <StatusEnum>;
-  createdAt: Date;
-  updatedAt: Date;
+export type <FeatureData> = {
+  id: string
+  name: string
+  status: <StatusEnum>
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type <ComponentProps> = {
-  data: <FeatureData>[];
-  onAction?: (item: <FeatureData>) => void;
-  className?: string;
-};
+  data: <FeatureData>[]
+  onAction?: (item: <FeatureData>) => void
+  className?: string
+}
 ```
 
 # 8) Acceptance Criteria

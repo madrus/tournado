@@ -79,10 +79,12 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - **cache.ts** - Translation caching utilities
   - Multi-language support with react-i18next
 
-- **@types/** - TypeScript Definitions
-  - **prisma.ts** - Prisma-generated types extensions
-  - **auth.ts** - Authentication types
-  - **tournament.ts** - Tournament-related types
+- **lib/** - Core Library Functions & Types
+  - **lib.types.ts** - Centralized application types and interfaces (primary location for all app types)
+
+- **@types/** - Global Type Declarations & External Library Extensions
+  - **declarations.d.ts** - Global module declarations (e.g., *.png, *.svg imports)
+  - Used only for extending external libraries and global type declarations that aren't available as npm @types packages
 
 ### `prisma/` - Database Schema & Migrations
 

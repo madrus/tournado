@@ -1,25 +1,6 @@
 {
-  // Workspace color theme
-  "workbench.colorCustomizations": {
-    "editorGroup.border": "#e204d5",
-    "panel.border": "#e204d5",
-    "sash.hoverBorder": "#e204d5",
-    "sideBar.border": "#e204d5",
-    "statusBar.background": "#b003a6",
-    "statusBar.border": "#b003a6",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#e204d5",
-    "statusBarItem.remoteBackground": "#b003a6",
-    "statusBarItem.remoteForeground": "#e7e7e7",
-    "tab.activeBorder": "#e204d5"
-  },
-  "peacock.color": "#b003a6",
-  // Auto-formatting and whitespace management
-  "editor.formatOnSave": true,
-  "editor.trimAutoWhitespace": true,
-  "files.trimTrailingWhitespace": true,
-  "files.trimFinalNewlines": true,
-  "files.insertFinalNewline": true
-  // Note: Agent/MCP confirmation settings need to be found in Cursor UI
-  // The exact setting names are not documented yet
+  "json.schemaDownload.enable": true,
+  "json.schemaDownload.timeout": 10000,
+  "json.schemaDownload.retry": 3,
+  "json.schemaDownload.cache": true
 }

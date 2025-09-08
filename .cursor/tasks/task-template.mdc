@@ -9,7 +9,7 @@ alwaysApply: false
 This file is a single, self-contained TASK for an AI agent. **One task = one file.**
 Follow the steps below when creating new tasks.
 
-1. **Name your file**: place under `.cursor/tasks/` and use kebab-case, e.g., `tasks/add-tournament-bracket.mdc`.
+1. **Name your file**: place under `.cursor/tasks/` using the task ID as prefix followed by kebab-case description, e.g., `tasks/TASK-0123-add-tournament-bracket.mdc`.
 2. **Fill the frontmatter** (above) completely. Keep `title`, `status`, and `owner` accurate.
 3. **Use information-dense keywords** throughout (exact file paths, function signatures, type names, constants, route patterns).
 4. **Define types first** if adding new data structures. Reference those types by exact name in later steps.

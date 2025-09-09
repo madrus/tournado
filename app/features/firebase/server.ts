@@ -1,4 +1,4 @@
-import { credential } from 'firebase-admin'
+import admin from 'firebase-admin'
 import { type App, getApps, initializeApp } from 'firebase-admin/app'
 import { type Auth, type DecodedIdToken, getAuth } from 'firebase-admin/auth'
 
@@ -24,7 +24,7 @@ if (getApps().length === 0) {
       console.warn('Firebase Admin SDK: Missing required environment variables')
     } else {
       adminApp = initializeApp({
-        credential: credential.cert(serviceAccount),
+        credential: admin.credential.cert(serviceAccount),
         projectId: serviceAccount.projectId,
       })
 

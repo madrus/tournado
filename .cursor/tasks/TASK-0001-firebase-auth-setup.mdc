@@ -109,8 +109,9 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
    - File: `app/features/firebase/server.ts`
    - Exported API:
      ```ts
-     import { App } from 'firebase-admin/app'
-     import { Auth } from 'firebase-admin/auth'
+     import admin from 'firebase-admin'
+     import { type App } from 'firebase-admin/app'
+     import { type Auth, type DecodedIdToken } from 'firebase-admin/auth'
 
      type VerifyIdTokenProps = {
        idToken: string
@@ -123,7 +124,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      ): Promise<DecodedIdToken>
      ```
    - Details:
-     - Initialize Firebase Admin SDK
+     - Initialize Firebase Admin SDK using `admin.credential.cert()` for service account authentication
      - Set up service account authentication
      - Export token verification function
      - Include error handling for invalid tokens

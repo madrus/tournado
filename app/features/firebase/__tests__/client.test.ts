@@ -34,7 +34,7 @@ describe('firebase.client', () => {
 
   test('should initialize Firebase app when configuration is valid', async () => {
     const { initializeApp } = await import('firebase/app')
-    const { firebaseApp, isFirebaseConfigured } = await import('~/lib/firebase.client')
+    const { firebaseApp, isFirebaseConfigured } = await import('../client')
 
     expect(isFirebaseConfigured).toBe(true)
     expect(initializeApp).toHaveBeenCalledWith({
@@ -50,7 +50,7 @@ describe('firebase.client', () => {
 
   test('should initialize auth when Firebase is configured', async () => {
     const { getAuth } = await import('firebase/auth')
-    const { auth } = await import('~/lib/firebase.client')
+    const { auth } = await import('../client')
 
     expect(getAuth).toHaveBeenCalled()
     expect(auth).toBeDefined()
@@ -67,7 +67,7 @@ describe('firebase.client', () => {
         }) as unknown as InstanceType<typeof GoogleAuthProvider>
     )
 
-    const { googleProvider } = await import('~/lib/firebase.client')
+    const { googleProvider } = await import('../client')
 
     expect(GoogleAuthProvider).toHaveBeenCalled()
     expect(mockAddScope).toHaveBeenCalledWith('email')
@@ -90,7 +90,7 @@ describe('firebase.client', () => {
     })
 
     vi.resetModules()
-    const { isFirebaseConfigured } = await import('~/lib/firebase.client')
+    const { isFirebaseConfigured } = await import('../client')
 
     expect(isFirebaseConfigured).toBe(false)
   })
@@ -128,7 +128,7 @@ describe('firebase.client', () => {
     vi.resetModules()
 
     // Import should trigger the error handling
-    const { firebaseApp } = await import('~/lib/firebase.client')
+    const { firebaseApp } = await import('../client')
 
     expect(consoleSpy).toHaveBeenCalledWith(
       'Firebase initialization failed:',

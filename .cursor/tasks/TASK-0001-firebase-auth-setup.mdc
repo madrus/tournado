@@ -47,8 +47,9 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 **End state (must exist after completion):**
 
 - Firebase project configured with Authentication enabled
-- app/lib/firebase.client.ts
-- app/lib/firebase.server.ts
+- app/features/firebase/client.ts
+- app/features/firebase/server.ts
+- app/features/firebase/types.ts
 - Updated .env.example with Firebase environment variables
 - Updated package.json with Firebase dependencies
 
@@ -75,7 +76,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 3. **Create Firebase client configuration**
 
-   - File: `app/lib/firebase.client.ts`
+   - File: `app/features/firebase/client.ts`
    - Exported API:
      ```ts
      import { initializeApp } from 'firebase/app'
@@ -94,7 +95,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 4. **Create Firebase server configuration**
 
-   - File: `app/lib/firebase.server.ts`
+   - File: `app/features/firebase/server.ts`
    - Exported API:
      ```ts
      import { App } from 'firebase-admin/app'
@@ -130,12 +131,12 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      ```
 
 6. **Tests**
-   - File: `app/lib/__tests__/firebase.client.test.ts` (Vitest)
+   - File: `app/features/firebase/__tests__/client.test.ts` (Vitest)
    - Cases:
      - Firebase app initializes without error
      - Auth instance is properly configured
      - GoogleAuthProvider is set up correctly
-   - File: `app/lib/__tests__/firebase.server.test.ts` (Vitest)
+   - File: `app/features/firebase/__tests__/server.test.ts` (Vitest)
    - Cases:
      - Admin SDK initializes properly
      - Token verification works with valid tokens
@@ -144,7 +145,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 7) Types & Interfaces (if applicable)
 
 ```ts
-// app/@types/firebase.ts
+// app/features/firebase/types.ts
 export type FirebaseConfig = {
   apiKey: string
   authDomain: string
@@ -165,11 +166,11 @@ export type FirebaseUser = {
 # 8) Acceptance Criteria
 
 - Firebase project is created and configured with Google Authentication
-- `app/lib/firebase.client.ts` exports working Firebase client configuration
-- `app/lib/firebase.server.ts` exports working Firebase admin configuration
+- `app/features/firebase/client.ts` exports working Firebase client configuration
+- `app/features/firebase/server.ts` exports working Firebase admin configuration
 - Environment variables are documented in `.env.example`
 - Firebase dependencies are added to `package.json`
-- All tests in `app/lib/__tests__/firebase.*.test.ts` pass locally
+- All tests in `app/features/firebase/__tests__/*.test.ts` pass locally
 - New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
 
 # 9) Testing Strategy
@@ -186,3 +187,4 @@ export type FirebaseUser = {
 - Firebase Auth documentation: https://firebase.google.com/docs/auth
 - Next task: TASK-0002 (session bridging implementation)
 - Security consideration: Store service account key securely in production
+- **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

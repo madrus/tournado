@@ -209,7 +209,17 @@ export const createTestTournament = async (
     },
   })
 
+  // Ensure the tournament is committed to database
   await new Promise(resolve => setTimeout(resolve, 500))
+
+  // Verify the tournament was created by reading it back
+  const createdTournament = await prisma.tournament.findUnique({
+    where: { id: tournament.id },
+  })
+
+  if (!createdTournament) {
+    throw new Error(`Failed to create tournament "${name}" - not found after creation`)
+  }
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }
 }

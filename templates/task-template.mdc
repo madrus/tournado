@@ -185,6 +185,11 @@ All code must follow these TypeScript conventions:
    - Create a type named `<FunctionName>Props` for the parameters
    - Type the props parameter as `Readonly<FunctionNameProps>`
    - Use object destructuring in the function signature
+9. **Module Import Patterns**:
+   - Use named imports for ESM modules: `import { function } from 'module'`
+   - Use default imports for CommonJS modules: `import pkg from 'commonjs-module'`
+   - Firebase Admin SDK: Use `import admin from 'firebase-admin'` for main module access (e.g., `admin.credential.cert()`), submodule imports like `firebase-admin/app` and `firebase-admin/auth` are fine as named imports
+   - When unsure, check if error mentions "CommonJS module, which may not support all module.exports as named exports"
 
 Example:
 ```ts

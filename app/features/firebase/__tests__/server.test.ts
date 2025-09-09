@@ -36,10 +36,10 @@ describe('firebase.server', () => {
 
   test('should initialize Firebase Admin SDK with correct configuration', async () => {
     const { initializeApp } = await import('firebase-admin/app')
-    const { credential } = await import('firebase-admin')
+    const admin = await import('firebase-admin')
     const { adminApp } = await import('../server')
 
-    expect(credential.cert).toHaveBeenCalledWith({
+    expect(admin.default.credential.cert).toHaveBeenCalledWith({
       projectId: 'test-project',
       clientEmail: 'test@test-project.iam.gserviceaccount.com',
       privateKey: 'test-private-key',

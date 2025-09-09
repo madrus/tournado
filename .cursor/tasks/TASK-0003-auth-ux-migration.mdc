@@ -1,16 +1,26 @@
 ---
 description: Migrate authentication UX to Firebase Google Sign-in while preserving existing flows
-globs:
-alwaysApply: false
----
-
 id: "TASK-0003"
 title: "Migrate authentication UX to Firebase Google Sign-in"
 status: "planned"
 priority: "P0"
 labels: ["auth", "firebase", "ui", "ux"]
-dependencies: ["firebase-session-bridge.mdc"]
+dependencies: ["./TASK-0002-firebase-session-bridge.mdc"]
 created: "2025-01-09"
+globs:
+alwaysApply: false
+---
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
+**Decision**: This task combines updates to shared authentication components with new Firebase-specific UI components. Updates existing shared auth routes while creating new Firebase feature components.
+
+**Rationale**: 
+- Auth routes are shared infrastructure used across the application
+- Firebase components are feature-specific and belong in the Firebase domain
+- UX migration requires both shared route updates and new Firebase UI components
+- Maintains clean separation between shared auth infrastructure and Firebase-specific implementations
 
 # 1) High-Level Objective
 
@@ -30,10 +40,11 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 - Constraint: Support internationalization with existing locales
 - Constraint: Follow existing CVA component styling patterns
 - Constraint: No breaking changes to protected route access
+- Constraint: **File creation safety**: Before creating any new file, check if a file with that name already exists. If it exists, analyze its content to determine: (a) if it's the same file that needs minor updates/enhancements, (b) if it's a completely different file with different structure/purpose. For case (a), update/merge carefully preserving existing functionality. For case (b), ask the user for guidance on how to proceed. Never overwrite existing code without analysis and consideration.
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- .cursor/tasks/firebase-session-bridge.mdc (session bridging must be complete)
+- ./TASK-0002-firebase-session-bridge.mdc (session bridging must be complete)
 - app/features/firebase/client.ts _(from TASK-0001)_
 - app/features/firebase/auth.server.ts _(from TASK-0002)_
 - app/components/auth/ (existing auth components)
@@ -41,31 +52,29 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 5) Context Plan
 
+## 🔗 HYBRID Task Pattern
 **Beginning (add to model context):**
-
-- app/components/auth/ _(read-only existing components)_
-- app/routes/auth/ _(read-only existing routes)_
+- app/components/auth/ _(read-only existing shared components)_
+- app/routes/auth/ _(read-only existing shared routes)_
 - app/features/firebase/client.ts _(from TASK-0001)_
 - app/features/firebase/auth.server.ts _(from TASK-0002)_
 - app/stores/authStore.ts _(read-only)_
 
-**End state (must exist after completion):**
-
-- app/components/auth/FirebaseSignIn/FirebaseSignIn.tsx
-- app/components/auth/FirebaseSignIn/firebaseSignIn.variants.ts
-- app/components/auth/FirebaseSignIn/index.ts
-- app/routes/auth.signin.tsx (updated)
-- app/routes/auth.callback.tsx (new)
-- app/hooks/useFirebaseAuth.ts
-- Updated app/stores/authStore.ts
-- app/components/auth/__tests__/FirebaseSignIn.test.tsx
-- playwright/tests/firebase-auth.spec.ts
+**End state (files that will be created/modified):**
+> Mix of shared and feature files - updating shared auth routes and creating Firebase-specific components:
+- app/routes/auth.signin.tsx _(updated shared route)_
+- app/routes/auth.callback.tsx _(new shared route)_
+- app/stores/authStore.ts _(updated shared state)_
+- app/features/firebase/components/FirebaseSignIn/ _(new feature components)_
+- app/hooks/useFirebaseAuth.ts _(new shared hook)_
+- app/features/firebase/__tests__/ _(feature tests)_
+- playwright/tests/firebase-auth.spec.ts _(E2E tests)_
 
 # 6) Low-Level Steps (Ordered, information-dense)
 
 1. **Create Firebase Sign-in component**
 
-   - File: `app/components/auth/FirebaseSignIn/FirebaseSignIn.tsx`
+   - File: `app/features/firebase/components/FirebaseSignIn/FirebaseSignIn.tsx`
    - Exported API:
      ```tsx
      export type FirebaseSignInProps = {
@@ -91,7 +100,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 2. **Create component variants**
 
-   - File: `app/components/auth/FirebaseSignIn/firebaseSignIn.variants.ts`
+   - File: `app/features/firebase/components/FirebaseSignIn/firebaseSignIn.variants.ts`
    - Use CVA pattern:
      ```ts
      export const firebaseSignInVariants = cva([
@@ -193,7 +202,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      ```
 
 6. **Tests**
-   - File: `app/components/auth/__tests__/FirebaseSignIn.test.tsx` (Vitest)
+   - File: `app/features/firebase/__tests__/components/FirebaseSignIn.test.tsx` (Vitest)
    - Cases:
      - Renders sign-in button correctly
      - Handles Google sign-in flow
@@ -238,6 +247,23 @@ export type SignInFlowState = {
 
 # 8) Acceptance Criteria
 
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🔗 Hybrid Task Criteria
+- Shared components maintain backward compatibility
+- Feature-specific components integrate properly with shared components
+- Clear separation between shared and feature-specific concerns
 - Users can sign in using Google authentication through Firebase
 - Sign-in component follows existing CVA styling patterns
 - Authentication redirects work as expected (preserve `redirectTo` parameter)
@@ -245,9 +271,6 @@ export type SignInFlowState = {
 - Error handling displays user-friendly messages
 - Loading states provide clear feedback during authentication
 - Internationalization works with existing locale setup
-- All tests in `app/components/auth/__tests__/FirebaseSignIn.test.tsx` pass locally
-- All E2E tests in `playwright/tests/firebase-auth.spec.ts` pass locally
-- New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
 
 # 9) Testing Strategy
 

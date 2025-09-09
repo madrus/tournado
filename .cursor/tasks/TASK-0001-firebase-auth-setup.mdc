@@ -1,9 +1,5 @@
 ---
 description: Set up Firebase project and Google Authentication configuration
-globs:
-alwaysApply: false
----
-
 id: "TASK-0001"
 title: "Set up Firebase project with Google Authentication"
 status: "planned"
@@ -11,6 +7,20 @@ priority: "P0"
 labels: ["auth", "firebase", "setup"]
 dependencies: []
 created: "2025-01-09"
+globs:
+alwaysApply: false
+---
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🎯 **FEATURE Task** - Self-contained business domain
+**Decision**: Firebase authentication is a distinct business domain with its own data models, business rules, and workflows that could be extracted as a separate service. All Firebase-related functionality will be organized in `app/features/firebase/` for better code organization and maintainability.
+
+**Rationale**: 
+- Firebase auth has its own configuration, types, and server/client logic
+- Can be developed and tested independently 
+- Clear feature boundary that doesn't overlap with other domains
+- Future scalability if Firebase functionality expands
 
 # 1) High-Level Objective
 
@@ -29,6 +39,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 - Constraint: Use existing role-based access control structure (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Constraint: Preserve current redirect behavior and route protection
 - Constraint: No breaking changes to existing user data model
+- Constraint: **File creation safety**: Before creating any new file, check if a file with that name already exists. If it exists, analyze its content to determine: (a) if it's the same file that needs minor updates/enhancements, (b) if it's a completely different file with different structure/purpose. For case (a), update/merge carefully preserving existing functionality. For case (b), ask the user for guidance on how to proceed. Never overwrite existing code without analysis and consideration.
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
@@ -37,19 +48,19 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 5) Context Plan
 
+## 🎯 FEATURE Task Pattern
 **Beginning (add to model context):**
-
 - prisma/schema.prisma _(read-only)_
 - app/utils/session.server.ts _(read-only)_
 - package.json _(read-only)_
 - .env.example _(read-only)_
 
-**End state (must exist after completion):**
-
-- Firebase project configured with Authentication enabled
+**End state (files that will be created/modified):**
+- app/features/firebase/index.ts _(feature public API)_
 - app/features/firebase/client.ts
 - app/features/firebase/server.ts
 - app/features/firebase/types.ts
+- app/features/firebase/__tests__/ _(test files as needed)_
 - Updated .env.example with Firebase environment variables
 - Updated package.json with Firebase dependencies
 
@@ -101,9 +112,15 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      import { App } from 'firebase-admin/app'
      import { Auth } from 'firebase-admin/auth'
 
+     type VerifyIdTokenProps = {
+       idToken: string
+     }
+
      export const adminApp: App
      export const adminAuth: Auth
-     export async function verifyIdToken(idToken: string): Promise<DecodedIdToken>
+     export async function verifyIdToken(
+       props: Readonly<VerifyIdTokenProps>
+     ): Promise<DecodedIdToken>
      ```
    - Details:
      - Initialize Firebase Admin SDK
@@ -165,13 +182,26 @@ export type FirebaseUser = {
 
 # 8) Acceptance Criteria
 
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🎯 Feature Task Criteria
+- Feature exports clean public API via `app/features/firebase/index.ts`
 - Firebase project is created and configured with Google Authentication
 - `app/features/firebase/client.ts` exports working Firebase client configuration
 - `app/features/firebase/server.ts` exports working Firebase admin configuration
 - Environment variables are documented in `.env.example`
 - Firebase dependencies are added to `package.json`
-- All tests in `app/features/firebase/__tests__/*.test.ts` pass locally
-- New strings are added to all locales in `app/i18n/locales`; Dutch uses sentence case
 
 # 9) Testing Strategy
 

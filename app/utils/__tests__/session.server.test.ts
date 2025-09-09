@@ -18,7 +18,7 @@ import {
 } from '../session.server'
 
 // Mock Firebase session utilities
-vi.mock('../firebaseSession.server', () => ({
+vi.mock('~/features/firebase/session.server', () => ({
   validateFirebaseSession: vi.fn(),
   clearFirebaseSession: vi.fn(),
 }))
@@ -89,12 +89,15 @@ describe('session.server', () => {
   describe('getSession', () => {
     it('should return session from cookie', async () => {
       const requestWithCookie = new Request('http://localhost:3000', {
-        headers: { Cookie: 'session-cookie' },
+        headers: { Cookie: '__session=session-cookie' },
       })
+
+      // Verify the cookie header is set correctly
+      const cookieHeader = requestWithCookie.headers.get('Cookie')
 
       await getSession(requestWithCookie)
 
-      expect(mockSessionStorage.getSession).toHaveBeenCalledWith('session-cookie')
+      expect(mockSessionStorage.getSession).toHaveBeenCalledWith(cookieHeader)
     })
 
     it('should handle request without cookie', async () => {
@@ -114,7 +117,7 @@ describe('session.server', () => {
       const result = await getUserId(mockRequest)
 
       expect(result).toBe('user-123')
-      expect(validateFirebaseSession).toHaveBeenCalledWith(mockRequest)
+      expect(validateFirebaseSession).toHaveBeenCalledWith({ request: mockRequest })
     })
 
     it('should return user ID from legacy session when Firebase unavailable', async () => {
@@ -147,7 +150,7 @@ describe('session.server', () => {
       const result = await getUser(mockRequest)
 
       expect(result).toEqual(mockUser)
-      expect(validateFirebaseSession).toHaveBeenCalledWith(mockRequest)
+      expect(validateFirebaseSession).toHaveBeenCalledWith({ request: mockRequest })
     })
 
     it('should return user from legacy session when Firebase unavailable', async () => {
@@ -227,6 +230,7 @@ describe('session.server', () => {
         user: mockUser,
         session: mockSession,
       })
+      vi.mocked(getUserById).mockResolvedValue(mockUser)
 
       const result = await requireUser(mockRequest)
 

@@ -58,7 +58,7 @@ describe('auth.server', () => {
       const result = await authenticateFirebaseUser(mockRequest)
 
       expect(result).toEqual(mockUser)
-      expect(validateFirebaseSession).toHaveBeenCalledWith(mockRequest)
+      expect(validateFirebaseSession).toHaveBeenCalledWith({ request: mockRequest })
       expect(getUser).not.toHaveBeenCalled()
     })
 
@@ -69,7 +69,7 @@ describe('auth.server', () => {
       const result = await authenticateFirebaseUser(mockRequest)
 
       expect(result).toEqual(mockUser)
-      expect(validateFirebaseSession).toHaveBeenCalledWith(mockRequest)
+      expect(validateFirebaseSession).toHaveBeenCalledWith({ request: mockRequest })
       expect(getUser).toHaveBeenCalledWith(mockRequest)
     })
 
@@ -80,7 +80,7 @@ describe('auth.server', () => {
       const result = await authenticateFirebaseUser(mockRequest)
 
       expect(result).toBeNull()
-      expect(validateFirebaseSession).toHaveBeenCalledWith(mockRequest)
+      expect(validateFirebaseSession).toHaveBeenCalledWith({ request: mockRequest })
       expect(getUser).toHaveBeenCalledWith(mockRequest)
     })
 

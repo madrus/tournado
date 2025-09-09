@@ -164,6 +164,7 @@ describe('AppBar Context Menu', () => {
       firstName: 'John',
       lastName: 'Doe',
       role: 'PUBLIC',
+      firebaseUid: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -228,6 +229,7 @@ describe('AppBar Context Menu', () => {
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
+      firebaseUid: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -337,6 +339,7 @@ describe('AppBar Context Menu', () => {
         firstName: 'Admin',
         lastName: 'User',
         role: 'ADMIN',
+        firebaseUid: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -368,6 +371,7 @@ describe('AppBar Context Menu', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
+          firebaseUid: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -394,6 +398,7 @@ describe('AppBar Context Menu', () => {
         firstName: 'Admin',
         lastName: 'User',
         role: 'ADMIN',
+        firebaseUid: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -433,6 +438,7 @@ describe('AppBar Context Menu', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
+          firebaseUid: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -539,6 +545,7 @@ describe('AppBar Context Menu', () => {
             firstName: 'Admin',
             lastName: 'User',
             role: 'ADMIN' as const,
+            firebaseUid: null,
             createdAt: new Date(),
             updatedAt: new Date(),
           },

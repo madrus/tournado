@@ -37,7 +37,7 @@ describe('firebase.server', () => {
   test('should initialize Firebase Admin SDK with correct configuration', async () => {
     const { initializeApp } = await import('firebase-admin/app')
     const { credential } = await import('firebase-admin')
-    const { adminApp } = await import('~/lib/firebase.server')
+    const { adminApp } = await import('../server')
 
     expect(credential.cert).toHaveBeenCalledWith({
       projectId: 'test-project',
@@ -54,7 +54,7 @@ describe('firebase.server', () => {
   })
 
   test('should initialize auth service', async () => {
-    const { adminAuth } = await import('~/lib/firebase.server')
+    const { adminAuth } = await import('../server')
 
     expect(mockGetAuth).toHaveBeenCalled()
     expect(adminAuth).toBeDefined()
@@ -70,7 +70,7 @@ describe('firebase.server', () => {
 
     mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
 
-    const { verifyIdToken } = await import('~/lib/firebase.server')
+    const { verifyIdToken } = await import('../server')
     const result = await verifyIdToken('valid-token')
 
     expect(mockVerifyIdToken).toHaveBeenCalledWith('valid-token')
@@ -80,7 +80,7 @@ describe('firebase.server', () => {
   test('should reject invalid ID token', async () => {
     mockVerifyIdToken.mockRejectedValue(new Error('Invalid token'))
 
-    const { verifyIdToken } = await import('~/lib/firebase.server')
+    const { verifyIdToken } = await import('../server')
 
     await expect(verifyIdToken('invalid-token')).rejects.toThrow(
       'Invalid Firebase ID token: Invalid token'
@@ -94,7 +94,7 @@ describe('firebase.server', () => {
     process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
 
     vi.resetModules()
-    const { verifyIdToken } = await import('~/lib/firebase.server')
+    const { verifyIdToken } = await import('../server')
 
     await expect(verifyIdToken('some-token')).rejects.toThrow(
       'Firebase Admin SDK not initialized'
@@ -110,7 +110,7 @@ describe('firebase.server', () => {
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
 
     vi.resetModules()
-    await import('~/lib/firebase.server')
+    await import('../server')
 
     expect(consoleSpy).toHaveBeenCalledWith(
       'Firebase Admin SDK: Missing required environment variables'
@@ -128,7 +128,7 @@ describe('firebase.server', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
 
     vi.resetModules()
-    await import('~/lib/firebase.server')
+    await import('../server')
 
     expect(consoleSpy).toHaveBeenCalledWith(
       'Firebase Admin SDK initialization failed:',

@@ -41,7 +41,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 **Beginning (add to model context):**
 
-- app/lib/firebase.server.ts _(from TASK-0001)_
+- app/features/firebase/server.ts _(from TASK-0001)_
 - app/utils/session.server.ts _(read-only)_
 - app/utils/rbacMiddleware.server.ts _(read-only)_
 - app/models/user.server.ts _(read-only)_
@@ -49,17 +49,17 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 **End state (must exist after completion):**
 
-- app/lib/auth.server.ts
-- app/utils/firebase-session.server.ts
+- app/features/firebase/auth.server.ts
+- app/features/firebase/session.server.ts
 - Updated app/utils/session.server.ts with Firebase integration
-- app/lib/__tests__/firebase-session.test.ts
+- app/features/firebase/__tests__/session.server.test.ts
 - app/utils/__tests__/session.server.test.ts (updated)
 
 # 6) Low-Level Steps (Ordered, information-dense)
 
 1. **Create Firebase session bridge utilities**
 
-   - File: `app/utils/firebase-session.server.ts`
+   - File: `app/features/firebase/session.server.ts`
    - Exported API:
      ```ts
      export async function createSessionFromFirebaseToken(
@@ -83,7 +83,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 2. **Create auth server utilities**
 
-   - File: `app/lib/auth.server.ts`
+   - File: `app/features/firebase/auth.server.ts`
    - Exported API:
      ```ts
      export async function authenticateFirebaseUser(
@@ -163,13 +163,13 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      ```
 
 5. **Tests**
-   - File: `app/utils/__tests__/firebase-session.server.test.ts` (Vitest)
+   - File: `app/features/firebase/__tests__/session.server.test.ts` (Vitest)
    - Cases:
      - Valid Firebase token creates proper session
      - Invalid Firebase token returns null
      - User synchronization works correctly
      - Session validation handles edge cases
-   - File: `app/lib/__tests__/auth.server.test.ts` (Vitest)
+   - File: `app/features/firebase/__tests__/auth.server.test.ts` (Vitest)
    - Cases:
      - Authentication functions work with Firebase sessions
      - Backward compatibility with legacy sessions
@@ -183,7 +183,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 7) Types & Interfaces (if applicable)
 
 ```ts
-// app/@types/firebase-session.ts
+// app/features/firebase/types.ts
 export type FirebaseSessionData = {
   firebaseUid: string
   userId: string
@@ -212,7 +212,7 @@ export type CreateUserSessionProps = {
 - New users from Firebase are automatically created in database with PUBLIC role
 - Existing users can be linked with Firebase UIDs
 - Session cookies work with both legacy and Firebase authentication
-- All tests in `app/utils/__tests__/firebase-session.server.test.ts` pass locally
+- All tests in `app/features/firebase/__tests__/session.server.test.ts` pass locally
 - Updated tests in `app/utils/__tests__/session.server.test.ts` pass locally
 - No breaking changes to existing authentication flows
 
@@ -231,3 +231,4 @@ export type CreateUserSessionProps = {
 - Firebase Auth documentation: https://firebase.google.com/docs/auth/admin/verify-id-tokens
 - Next task: TASK-0003 (authentication UX migration)
 - Critical: Maintain zero downtime during migration by supporting both session types
+- **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

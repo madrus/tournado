@@ -34,8 +34,8 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 # 4) Dependencies (Other Tasks or Artifacts)
 
 - .cursor/tasks/firebase-session-bridge.mdc (session bridging must be complete)
-- app/lib/firebase.client.ts _(from TASK-0001)_
-- app/lib/auth.server.ts _(from TASK-0002)_
+- app/features/firebase/client.ts _(from TASK-0001)_
+- app/features/firebase/auth.server.ts _(from TASK-0002)_
 - app/components/auth/ (existing auth components)
 - app/routes/auth/ (existing auth routes)
 
@@ -45,8 +45,8 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 - app/components/auth/ _(read-only existing components)_
 - app/routes/auth/ _(read-only existing routes)_
-- app/lib/firebase.client.ts _(from TASK-0001)_
-- app/lib/auth.server.ts _(from TASK-0002)_
+- app/features/firebase/client.ts _(from TASK-0001)_
+- app/features/firebase/auth.server.ts _(from TASK-0002)_
 - app/stores/authStore.ts _(read-only)_
 
 **End state (must exist after completion):**
@@ -266,3 +266,4 @@ export type SignInFlowState = {
 - Google Sign-In branding guidelines: https://developers.google.com/identity/branding-guidelines
 - Existing auth components for styling reference: `app/components/auth/`
 - Phase 1 completion depends on successful integration testing
+- **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

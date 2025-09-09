@@ -1,7 +1,7 @@
 import { type FirebaseApp, initializeApp } from 'firebase/app'
 import { type Auth, getAuth, GoogleAuthProvider } from 'firebase/auth'
 
-import type { FirebaseConfig } from '~/lib/lib.types'
+import type { FirebaseConfig } from './types'
 
 const firebaseConfig: FirebaseConfig = {
   apiKey: typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_API_KEY || '' : '',

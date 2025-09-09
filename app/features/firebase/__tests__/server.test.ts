@@ -16,8 +16,10 @@ vi.mock('firebase-admin/auth', () => ({
 }))
 
 vi.mock('firebase-admin', () => ({
-  credential: {
-    cert: vi.fn(() => ({ name: 'mock-credential' })),
+  default: {
+    credential: {
+      cert: vi.fn(() => ({ name: 'mock-credential' })),
+    },
   },
 }))
 
@@ -35,17 +37,19 @@ describe('firebase.server', () => {
   })
 
   test('should initialize Firebase Admin SDK with correct configuration', async () => {
-    const { initializeApp } = await import('firebase-admin/app')
-    const admin = await import('firebase-admin')
+    const mockFirebaseAdmin = vi.mocked(await import('firebase-admin'))
+    const mockFirebaseApp = vi.mocked(await import('firebase-admin/app'))
+
+    // Import the server module to trigger initialization
     const { adminApp } = await import('../server')
 
-    expect(admin.default.credential.cert).toHaveBeenCalledWith({
+    expect(mockFirebaseAdmin.default.credential.cert).toHaveBeenCalledWith({
       projectId: 'test-project',
       clientEmail: 'test@test-project.iam.gserviceaccount.com',
       privateKey: 'test-private-key',
     })
 
-    expect(initializeApp).toHaveBeenCalledWith({
+    expect(mockFirebaseApp.initializeApp).toHaveBeenCalledWith({
       credential: { name: 'mock-credential' },
       projectId: 'test-project',
     })

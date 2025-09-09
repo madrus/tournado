@@ -139,7 +139,8 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
      export function useFirebaseAuth(): UseFirebaseAuthReturn
      ```
    - Details:
-     - Handle Google sign-in flow
+     - Handle Google sign-in flow using Firebase client SDK
+     - Import Firebase client using: `import { auth, googleProvider } from '~/features/firebase/client'`
      - Manage authentication state
      - Handle errors gracefully
      - Integrate with existing authStore patterns
@@ -224,8 +225,9 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 7) Types & Interfaces (if applicable)
 
+## 🔗 Hybrid Types (mix of both)
 ```ts
-// app/@types/firebase-auth.ts
+// app/features/firebase/types.ts (extend existing)
 export type FirebaseUser = {
   uid: string
   email: string | null
@@ -274,7 +276,8 @@ export type SignInFlowState = {
 
 # 9) Testing Strategy
 
-- Mock Firebase Auth for isolated component testing
+- Mock Firebase Auth for isolated component testing using proper ESM patterns
+- **Mock patterns**: When mocking Firebase client SDK, use named export mocks: `vi.mock('firebase/auth', () => ({ ... }))`
 - Test component variants and styling with different props
 - Verify authentication flow integration with session bridging
 - Test redirect behavior with various `redirectTo` values

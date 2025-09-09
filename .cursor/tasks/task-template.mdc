@@ -363,6 +363,7 @@ export type <FeatureComponentProps> = {
 - Test responsive design on different screen sizes
 - Test accessibility with screen reader navigation
 - Avoid testing implementation details - focus on user-facing behavior
+- **Mock patterns**: When mocking CommonJS modules (like Firebase Admin), ensure mock structure matches import pattern (e.g., `{ default: { ... } }` for default imports)
 
 ## Architecture-Specific Testing
 

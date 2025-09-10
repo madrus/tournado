@@ -717,6 +717,19 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ---
 
+## Open Questions & Future Considerations
+
+### Authentication Evolution
+
+**Phone Number Authentication (Future Enhancement):**
+- **Potential benefits**: Quick referee access, international market preference, SMS-based emergency communications
+- **Implementation challenges**: SMS costs, regional reliability, privacy concerns, security risks (SIM swapping)
+- **Current decision**: Postponed pending user demand and international expansion requirements
+- **Technical readiness**: Complete implementation documentation available (`docs/development/authentication.md`)
+- **Priority**: Medium - evaluate after core tournament management features stabilize
+
+---
+
 ## Release plan
 
 - **Phase alignment**:

@@ -68,7 +68,7 @@ Below are the rules that you must follow when developing functionality:
 
 ### Authentication & Authorization
 
-- Use session-based authentication with bcrypt
+- Use Firebase Authentication with session cookie bridging
 - Implement role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Use route metadata for public/protected routes
 - Handle auth state with proper loading indicators
@@ -714,11 +714,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
 ## Authentication Workflow
 
-### Session-based Authentication
+### Firebase Authentication with Session Bridging
 
 ```tsx
-// Server-side session utilities
-// app/session.server.ts
+// Server-side Firebase session utilities
+// app/features/firebase/auth.server.ts
 
 export async function requireUserId(request: Request): Promise<string> {
   const userId = await getUserId(request)
@@ -738,23 +738,42 @@ export async function requireUserRole(
   }
   return user
 }
+
+// Firebase session cookie validation
+export async function validateFirebaseSession(request: Request) {
+  const session = await getSession(request.headers.get('Cookie'))
+  const sessionCookie = session.get('session')
+  
+  if (!sessionCookie) return null
+  
+  try {
+    const decodedClaims = await adminAuth?.verifySessionCookie(sessionCookie, true)
+    return decodedClaims?.uid || null
+  } catch {
+    return null
+  }
+}
 ```
 
-### Client-side Auth State
+### Client-side Firebase Auth State
 
 ```tsx
-// Using auth store
-const { user, isAuthenticated } = useAuthStore()
+// Using Firebase auth hook
+const { user, loading, signInWithGoogle, signOut } = useFirebaseAuth()
 
 // Conditional rendering based on auth state
-{isAuthenticated ? (
+{user ? (
   <UserDashboard user={user} />
 ) : (
-  <SignInPrompt />
+  <div>
+    <FirebaseSignIn />
+    <FirebaseEmailSignIn mode="signin" />
+  </div>
 )}
 
-// Role-based UI
-{user?.role === 'ADMIN' && (
+// Role-based UI (requires server-side user data)
+const { user: serverUser } = useLoaderData<typeof loader>()
+{serverUser?.role === 'ADMIN' && (
   <AdminPanel />
 )}
 ```

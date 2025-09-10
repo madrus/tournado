@@ -21,6 +21,7 @@ vi.mock('../server', () => ({
 // Mock user model
 vi.mock('~/models/user.server', () => ({
   createUserFromFirebase: vi.fn(),
+  getUserByEmail: vi.fn(),
   getUserByFirebaseUid: vi.fn(),
   updateUserFirebaseData: vi.fn(),
 }))

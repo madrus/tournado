@@ -111,16 +111,16 @@ describe('firebase.server', () => {
     delete process.env.FIREBASE_ADMIN_CLIENT_EMAIL
     delete process.env.FIREBASE_ADMIN_PRIVATE_KEY
 
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
-
     vi.resetModules()
-    await import('../server')
+    const { adminAuth, verifyIdToken } = await import('../server')
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Firebase Admin SDK: Missing required environment variables'
+    // Test functionality: adminAuth should be null when env vars are missing
+    expect(adminAuth).toBeNull()
+
+    // Verify that verifyIdToken throws when adminAuth is not initialized
+    await expect(verifyIdToken('some-token')).rejects.toThrow(
+      'Firebase Admin SDK not initialized'
     )
-
-    consoleSpy.mockRestore()
   })
 
   test('should handle initialization errors gracefully', async () => {
@@ -129,16 +129,15 @@ describe('firebase.server', () => {
       throw new Error('Admin SDK initialization failed')
     })
 
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
-
     vi.resetModules()
-    await import('../server')
+    const { adminAuth, verifyIdToken } = await import('../server')
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Firebase Admin SDK initialization failed:',
-      expect.any(Error)
+    // Test functionality: adminAuth should be null when initialization fails
+    expect(adminAuth).toBeNull()
+
+    // Verify that verifyIdToken throws when adminAuth is not initialized
+    await expect(verifyIdToken('some-token')).rejects.toThrow(
+      'Firebase Admin SDK not initialized'
     )
-
-    consoleSpy.mockRestore()
   })
 })

@@ -3,15 +3,26 @@ import { useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 
+import type { FirebaseUser } from '~/features/firebase/types'
 import { isBrowser } from '~/lib/lib.helpers'
+import type { User } from '~/models/user.server'
 
 type StoreState = {
   authenticated: boolean
   username: string
+  user: User | null
+  firebaseUser: FirebaseUser | null
+  loading: boolean
+  error: string | null
 }
 
 type Actions = {
   setAuth: (authenticated: boolean, username: string) => void
+  setUser: (user: User | null) => void
+  setFirebaseUser: (user: FirebaseUser | null) => void
+  setLoading: (loading: boolean) => void
+  setError: (error: string | null) => void
+  clearError: () => void
   resetStoreState: () => void
 }
 
@@ -20,6 +31,10 @@ const storeName = 'AuthStore'
 const initialStoreState: StoreState = {
   authenticated: false,
   username: '',
+  user: null,
+  firebaseUser: null,
+  loading: false,
+  error: null,
 }
 
 // Server-side storage mock for when sessionStorage is not available
@@ -43,6 +58,12 @@ export const useAuthStore = create<StoreState & Actions>()(
         },
         setAuth: (authenticated, username) =>
           set({ authenticated, username }, false, 'setAuth'),
+        setUser: user => set({ user }, false, 'setUser'),
+        setFirebaseUser: firebaseUser =>
+          set({ firebaseUser }, false, 'setFirebaseUser'),
+        setLoading: loading => set({ loading }, false, 'setLoading'),
+        setError: error => set({ error }, false, 'setError'),
+        clearError: () => set({ error: null }, false, 'clearError'),
       }),
       {
         name: 'auth-storage',

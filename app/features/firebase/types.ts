@@ -52,3 +52,18 @@ export type CreateUserSessionProps = {
   remember?: boolean
   redirectTo?: string
 }
+
+// ============================================================================
+// Firebase Authentication UX Types
+// ============================================================================
+
+export type AuthCallbackData = {
+  idToken: string
+  redirectTo: string
+}
+
+export type SignInFlowState = {
+  loading: boolean
+  error: string | null
+  redirectTo: string
+}

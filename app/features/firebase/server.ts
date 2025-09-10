@@ -20,8 +20,7 @@ if (getApps().length === 0) {
       !serviceAccount.clientEmail ||
       !serviceAccount.privateKey
     ) {
-      // eslint-disable-next-line no-console
-      console.warn('Firebase Admin SDK: Missing required environment variables')
+      // Missing required environment variables - adminAuth will remain null
     } else {
       adminApp = initializeApp({
         credential: admin.credential.cert(serviceAccount),
@@ -30,10 +29,11 @@ if (getApps().length === 0) {
 
       adminAuth = getAuth(adminApp)
     }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Firebase Admin SDK initialization failed:', error)
+  } catch (_error) {
+    // Firebase Admin SDK initialization failed - adminAuth will remain null
   }
+} else {
+  adminAuth = getAuth(getApps()[0])
 }
 
 /**

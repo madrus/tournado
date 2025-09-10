@@ -187,6 +187,10 @@ Adopt Firebase Authentication and mint HTTP-only session cookies on the server f
 
 End-to-end tests cover sign-in/out, redirects, and loader-based role verification. Logout invalidates Firebase session cookies and client state.
 
+**Implementation Status**: Firebase Authentication partially implemented via TASK-0001 (Firebase setup), TASK-0002 (session bridging), and TASK-0003 (Google OAuth UX). Session cookie bridging operational with SSR compatibility. TASK-0004 will complete email/password authentication and legacy system removal.
+
+**Future Consideration**: Phone number authentication evaluated but postponed due to SMS costs, regional reliability concerns, and security risks. Complete technical implementation documented in `docs/development/authentication.md` for future evaluation pending user demand or international expansion requirements.
+
 ## ADR-0005 — Role-Based Access Control and Referee Token System
 
 <a id="adr-0005"></a>

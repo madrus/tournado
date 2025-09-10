@@ -12,10 +12,10 @@ alwaysApply: false
 
 | ID   | Title                                                                       | Date       | Status      | Supersedes | Superseded by |
 | ---- | --------------------------------------------------------------------------- | ---------- | ----------- | ---------- | ------------- |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Proposed    | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Proposed    | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Proposed    | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Proposed    | —          | —             |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Completed   | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Completed   | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Completed   | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | In Progress | —          | —             |
 | 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed    | —          | —             |
 | 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed    | —          | —             |
 | 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed    | —          | —             |
@@ -41,7 +41,7 @@ alwaysApply: false
 
 <a id="adr-0001"></a>
 **Date**: 2025-08-27
-**Status**: Implemented
+**Status**: Completed
 **Owner**: André Roussakoff
 
 ### Context
@@ -81,7 +81,7 @@ Template includes working examples for routing, data loading, and state manageme
 
 <a id="adr-0002"></a>
 **Date**: 2025-08-27
-**Status**: Implemented
+**Status**: Completed
 **Owner**: André Roussakoff
 
 ### Context
@@ -120,7 +120,7 @@ Directory structure follows React Router v7 conventions. Build system optimized 
 
 <a id="adr-0003"></a>
 **Date**: 2025-08-27
-**Status**: Implemented
+**Status**: Completed
 **Owner**: André Roussakoff
 
 ### Context
@@ -159,7 +159,7 @@ Server data must flow through React Router loaders and actions. Client state man
 
 <a id="adr-0004"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: In Progress
 **Owner**: André Roussakoff
 
 ### Context

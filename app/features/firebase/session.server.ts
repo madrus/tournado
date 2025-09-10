@@ -3,6 +3,7 @@ import type { Session } from 'react-router'
 import type { User } from '~/models/user.server'
 import {
   createUserFromFirebase,
+  getUserByEmail,
   getUserByFirebaseUid,
   updateUserFirebaseData,
 } from '~/models/user.server'
@@ -23,6 +24,7 @@ export const createSessionFromFirebaseToken = async (
   props: Readonly<CreateSessionFromFirebaseTokenProps>
 ): Promise<SessionBridgeResult | null> => {
   const { idToken, request } = props
+
   try {
     const decodedToken = await verifyIdToken(idToken)
     const { user, isNewUser } = await syncFirebaseUserToDatabase({
@@ -75,7 +77,22 @@ export const syncFirebaseUserToDatabase = async (
     return { user, isNewUser: false }
   }
 
-  // If no user found by Firebase UID, create new user
+  // If no user found by Firebase UID, check if user exists by email
+  // This handles the case where an existing user is linking their Firebase account
+  const existingUserByEmail = await getUserByEmail(firebaseUser.email)
+
+  if (existingUserByEmail) {
+    // Link existing user account to Firebase
+    user = await updateUserFirebaseData({
+      userId: existingUserByEmail.id,
+      firebaseUid: firebaseUser.uid,
+      email: firebaseUser.email,
+      displayName: firebaseUser.name,
+    })
+    return { user, isNewUser: false }
+  }
+
+  // If no user found by Firebase UID or email, create new user
   user = await createUserFromFirebase({
     firebaseUid: firebaseUser.uid,
     email: firebaseUser.email,

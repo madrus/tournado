@@ -96,8 +96,6 @@ describe('firebase.client', () => {
   })
 
   test('should handle initialization errors gracefully', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
-
     // Ensure proper window environment for Firebase initialization
     Object.defineProperty(window, 'ENV', {
       value: {
@@ -128,15 +126,13 @@ describe('firebase.client', () => {
     vi.resetModules()
 
     // Import should trigger the error handling
-    const { firebaseApp } = await import('../client')
+    const { firebaseApp, auth, googleProvider } = await import('../client')
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Firebase initialization failed:',
-      expect.any(Error)
-    )
+    // Test functionality: Firebase components should be null when initialization fails
     expect(firebaseApp).toBeNull()
+    expect(auth).toBeNull()
+    expect(googleProvider).toBeNull()
 
-    consoleSpy.mockRestore()
     vi.doUnmock('firebase/app')
     vi.doUnmock('firebase/auth')
   })

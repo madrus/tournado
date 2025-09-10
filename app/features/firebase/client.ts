@@ -27,18 +27,24 @@ let firebaseApp: FirebaseApp | null = null
 let auth: Auth | null = null
 let googleProvider: GoogleAuthProvider | null = null
 
-if (typeof window !== 'undefined' && isFirebaseConfigured) {
-  try {
-    firebaseApp = initializeApp(firebaseConfig)
-    auth = getAuth(firebaseApp)
-    googleProvider = new GoogleAuthProvider()
+if (typeof window !== 'undefined') {
+  if (isFirebaseConfigured) {
+    try {
+      firebaseApp = initializeApp(firebaseConfig)
+      auth = getAuth(firebaseApp)
+      googleProvider = new GoogleAuthProvider()
 
-    // Configure Google Auth Provider
-    googleProvider.addScope('email')
-    googleProvider.addScope('profile')
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Firebase initialization failed:', error)
+      // Configure Google Auth Provider
+      googleProvider.addScope('email')
+      googleProvider.addScope('profile')
+
+      // Force account selection for testing different users
+      googleProvider.setCustomParameters({
+        prompt: 'select_account',
+      })
+    } catch (_error) {
+      // Firebase initialization failed - auth and googleProvider will remain null
+    }
   }
 }
 

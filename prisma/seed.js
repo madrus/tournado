@@ -2,8 +2,6 @@
 /* eslint-disable id-blacklist */
 import { PrismaClient } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
-
 // Retry mechanism for Prisma Client initialization
 async function createPrismaClient(maxRetries = 5, delay = 1000) {
   for (let i = 0; i < maxRetries; i++) {

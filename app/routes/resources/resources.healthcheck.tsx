@@ -263,7 +263,7 @@ export default function HealthcheckPage(): JSX.Element | null {
           />
           <button
             type='submit'
-            className='bg-brand-600 text-white hover:bg-brand-700 w-fit rounded-md px-3 py-2 text-sm font-medium'
+            className='bg-brand-600 hover:bg-brand-700 w-fit rounded-md px-3 py-2 text-sm font-medium text-white'
           >
             Verify
           </button>

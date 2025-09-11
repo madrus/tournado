@@ -1,36 +1,19 @@
 import { type JSX } from 'react'
-import { type MetaFunction, redirect, useActionData, useLoaderData } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
-import { SignIn } from '~/components/auth'
+import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseEmailSignIn'
 import { FirebaseSignIn } from '~/features/firebase/components/FirebaseSignIn'
-import { verifySignin } from '~/models/user.server'
-import {
-  checkRateLimit,
-  createRateLimitResponse,
-  getClientIP,
-  RATE_LIMITS,
-} from '~/utils/rateLimit.server'
-import {
-  getPostSignInRedirect,
-  shouldRedirectAuthenticatedUser,
-} from '~/utils/roleBasedRedirects'
+import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { validateEmail } from '~/utils/routeUtils'
-import { createUserSession, getUser } from '~/utils/session.server'
+import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/auth.signin'
-
-type ActionData = {
-  errors?: {
-    email: string | null
-    password: string | null
-  }
-}
 
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
-  title: 'common.titles.signIn',
+  title: 'common.auth.signIn',
 }
 
 export const loader = async ({
@@ -47,76 +30,13 @@ export const loader = async ({
 
   // Get the redirect destination for Firebase sign-in
   const url = new URL(request.url)
-  const redirectTo = url.searchParams.get('redirectTo') || null
+  const redirectTo = url.searchParams.get('redirectTo')
 
   return { redirectTo }
 }
 
-export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
-  // Rate limiting - check before processing any form data
-  const clientIP = getClientIP(request)
-  const rateLimitResult = checkRateLimit(
-    `login:${clientIP}`,
-    RATE_LIMITS.ADMIN_LOGIN,
-    request
-  )
-
-  if (!rateLimitResult.allowed) {
-    return createRateLimitResponse(rateLimitResult, RATE_LIMITS.ADMIN_LOGIN)
-  }
-
-  const formData = await request.formData()
-  const email = formData.get('email')
-  const password = formData.get('password')
-  const remember = formData.get('remember')
-
-  if (!validateEmail(email)) {
-    return Response.json(
-      { errors: { email: 'Email is invalid', password: null } },
-      { status: 400 }
-    )
-  }
-
-  if (typeof password !== 'string' || password.length === 0) {
-    return Response.json(
-      { errors: { email: null, password: 'passwordRequired' } },
-      { status: 400 }
-    )
-  }
-
-  if (password.length < 8) {
-    return Response.json(
-      { errors: { email: null, password: 'passwordTooShort' } },
-      { status: 400 }
-    )
-  }
-
-  const user = await verifySignin(email, password)
-
-  if (!user) {
-    return Response.json(
-      {
-        errors: {
-          email: 'invalidCredentials',
-          password: 'invalidCredentials',
-        },
-      },
-      { status: 400 }
-    )
-  }
-
-  // Get role-based redirect destination
-  const url = new URL(request.url)
-  const requestedPath = url.searchParams.get('redirectTo')
-  const redirectTo = getPostSignInRedirect(user, requestedPath || undefined)
-
-  return createUserSession({
-    redirectTo,
-    remember: remember === 'on' ? true : false,
-    request,
-    userId: user.id,
-  })
-}
+// No action needed since Firebase handles authentication client-side
+// The Firebase callback route handles creating the user session
 
 export const meta: MetaFunction = () => [
   { title: 'Sign In | Tournado' },
@@ -133,14 +53,14 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function SigninPage(): JSX.Element {
-  const actionData = useActionData<ActionData>()
   const { redirectTo } = useLoaderData<typeof loader>()
+  const { t } = useTranslation()
 
   return (
     <div className='mx-auto max-w-md space-y-6'>
       <div className='space-y-2 text-center'>
-        <h1 className='text-2xl font-bold'>Sign In</h1>
-        <p className='text-muted-foreground'>Sign in to your Tournado account</p>
+        <h1 className='text-2xl font-bold'>{t('common.auth.signIn')}</h1>
+        <p className='text-muted-foreground'>{t('auth.signInPage.description')}</p>
       </div>
 
       {/* Firebase Google Sign-in */}
@@ -152,13 +72,20 @@ export default function SigninPage(): JSX.Element {
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
           <span className='bg-background text-muted-foreground px-2'>
-            Or continue with email
+            {t('auth.continueWithEmail')}
           </span>
         </div>
       </div>
 
-      {/* Legacy email/password sign-in */}
-      <SignIn actionData={actionData} />
+      {/* Firebase email/password sign-in */}
+      <FirebaseEmailSignIn mode='signin' redirectTo={redirectTo ?? undefined} />
+
+      <p className='text-muted-foreground text-center text-sm'>
+        {t('auth.signInPage.noAccount')}{' '}
+        <Link to='/auth/signup' className='hover:text-primary underline'>
+          {t('auth.signInPage.signUpLink')}
+        </Link>
+      </p>
     </div>
   )
 }

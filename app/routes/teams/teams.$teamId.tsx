@@ -91,8 +91,8 @@ export default function TeamDetailsPage(): JSX.Element {
   useEffect(() => {
     const success = searchParams.get('success')
     if (success === 'created') {
-      toast.success(t('teams.notifications.registrationSuccess'), {
-        description: t('teams.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.team.registrationSuccess'), {
+        description: t('messages.team.registrationSuccessDesc'),
       })
 
       // Remove the success parameter from URL

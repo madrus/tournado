@@ -43,10 +43,10 @@ test.describe('Firebase Authentication Flow', () => {
       page.getByRole('button', { name: /continue with google/i })
     ).toBeVisible()
 
-    // Should see separator and legacy email form
+    // Should see separator and Firebase email form
     await expect(page.getByText(/or continue with email/i)).toBeVisible()
-    await expect(page.locator('input[name="email"]')).toBeVisible()
-    await expect(page.locator('input[name="password"]')).toBeVisible()
+    await expect(page.locator('input[id="email"]')).toBeVisible()
+    await expect(page.locator('input[id="password"]')).toBeVisible()
   })
 
   test('should handle Firebase sign-in button click', async ({ page }) => {
@@ -98,12 +98,12 @@ test.describe('Firebase Authentication Flow', () => {
     // Should see Google icon in the button
     await expect(firebaseButton.locator('svg')).toBeVisible()
 
-    // Legacy email/password form should be available
+    // Firebase email/password form should be available
     await expect(page.getByText(/or continue with email/i)).toBeVisible()
-    await expect(page.locator('input[name="email"]')).toBeVisible()
-    await expect(page.locator('input[name="password"]')).toBeVisible()
+    await expect(page.locator('input[id="email"]')).toBeVisible()
+    await expect(page.locator('input[id="password"]')).toBeVisible()
 
-    // Should have a submit button for legacy form
+    // Should have a submit button for Firebase email form
     await expect(page.getByRole('button', { name: /sign in/i })).toBeVisible()
   })
 
@@ -167,5 +167,117 @@ test.describe('Firebase Authentication Flow', () => {
     await expect(
       page.getByRole('button', { name: /continue with google/i })
     ).toBeVisible()
+  })
+
+  test('should validate email input in Firebase email form', async ({ page }) => {
+    await page.goto('/auth/signin')
+
+    const emailInput = page.locator('input[id="email"]')
+    const passwordInput = page.locator('input[id="password"]')
+    const signInButton = page.getByRole('button', { name: /^sign in$/i })
+
+    // Fill in invalid email
+    await emailInput.fill('invalid-email')
+    await passwordInput.fill('somepassword')
+
+    // Try to submit - the form should prevent submission with invalid email
+    await signInButton.click()
+
+    // Should still be on the sign-in page (form validation prevented submission)
+    await expect(page).toHaveURL(/\/auth\/signin/)
+  })
+
+  test('should require both email and password for Firebase email sign-in', async ({
+    page,
+  }) => {
+    await page.goto('/auth/signin')
+
+    const emailInput = page.locator('input[id="email"]')
+    const passwordInput = page.locator('input[id="password"]')
+    const signInButton = page.getByRole('button', { name: /^sign in$/i })
+
+    // Test with empty fields
+    await signInButton.click()
+    await expect(page).toHaveURL(/\/auth\/signin/)
+
+    // Test with only email
+    await emailInput.fill('test@example.com')
+    await signInButton.click()
+    await expect(page).toHaveURL(/\/auth\/signin/)
+
+    // Test with both fields (but short password)
+    await passwordInput.fill('123')
+    await signInButton.click()
+    await expect(page).toHaveURL(/\/auth\/signin/)
+  })
+
+  test('should display Firebase signup form correctly', async ({ page }) => {
+    await page.goto('/auth/signup')
+
+    // Should see page title
+    await expect(page).toHaveTitle(/Sign Up/)
+
+    // Should see Firebase Google sign-in button
+    await expect(
+      page.getByRole('button', { name: /continue with google/i })
+    ).toBeVisible()
+
+    // Should see separator and Firebase email signup form
+    await expect(page.getByText(/or continue with email/i)).toBeVisible()
+    await expect(page.locator('input[id="email"]')).toBeVisible()
+    await expect(page.locator('input[id="password"]')).toBeVisible()
+    await expect(page.locator('input[id="confirmPassword"]')).toBeVisible()
+
+    // Should show password requirements
+    await expect(page.getByText(/password must be at least/i)).toBeVisible()
+
+    // Should have signup button
+    await expect(page.getByRole('button', { name: /sign up/i })).toBeVisible()
+
+    // Should have link to sign-in page
+    await expect(page.getByRole('link', { name: /sign in/i })).toBeVisible()
+  })
+
+  test('should validate password confirmation in signup form', async ({ page }) => {
+    await page.goto('/auth/signup')
+
+    const emailInput = page.locator('input[id="email"]')
+    const passwordInput = page.locator('input[id="password"]')
+    const confirmPasswordInput = page.locator('input[id="confirmPassword"]')
+    const signUpButton = page.getByRole('button', { name: /sign up/i })
+
+    // Fill form with mismatched passwords
+    await emailInput.fill('test@example.com')
+    await passwordInput.fill('Password123')
+    await confirmPasswordInput.fill('Different123')
+
+    // Try to submit
+    await signUpButton.click()
+
+    // Should still be on the signup page (validation prevented submission)
+    await expect(page).toHaveURL(/\/auth\/signup/)
+  })
+
+  test('should show loading states during Firebase authentication', async ({
+    page,
+  }) => {
+    await page.goto('/auth/signin')
+
+    const emailInput = page.locator('input[id="email"]')
+    const passwordInput = page.locator('input[id="password"]')
+    const signInButton = page.getByRole('button', { name: /^sign in$/i })
+
+    // Fill in valid-looking credentials
+    await emailInput.fill('test@example.com')
+    await passwordInput.fill('Password123')
+
+    // Click sign in - this will attempt Firebase authentication
+    await signInButton.click()
+
+    // Should show loading state (inputs disabled, button shows signing in)
+    await expect(signInButton).toHaveText(/signing in/i)
+    await expect(emailInput).toBeDisabled()
+    await expect(passwordInput).toBeDisabled()
+    await expect(signInButton).toBeDisabled()
   })
 })

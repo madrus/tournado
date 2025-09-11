@@ -16,6 +16,7 @@ import {
 // Mock Firebase server
 vi.mock('../server', () => ({
   verifyIdToken: vi.fn(),
+  createOrUpdateUser: vi.fn(),
 }))
 
 // Mock user model
@@ -34,9 +35,10 @@ vi.mock('~/utils/session.server', () => ({
   },
 }))
 
-const { verifyIdToken } = await import('../server')
-const { createUserFromFirebase, getUserByFirebaseUid, updateUserFirebaseData } =
-  await import('~/models/user.server')
+const { verifyIdToken, createOrUpdateUser } = await import('../server')
+const { getUserByFirebaseUid, updateUserFirebaseData } = await import(
+  '~/models/user.server'
+)
 const { getSession } = await import('~/utils/session.server')
 
 describe('firebaseSession.server', () => {
@@ -90,7 +92,7 @@ describe('firebaseSession.server', () => {
 
       vi.mocked(verifyIdToken).mockResolvedValue(mockDecodedToken)
       vi.mocked(getUserByFirebaseUid).mockResolvedValue(mockUser)
-      vi.mocked(updateUserFirebaseData).mockResolvedValue(mockUser)
+      vi.mocked(createOrUpdateUser).mockResolvedValue(mockUser)
 
       const result = await createSessionFromFirebaseToken({
         idToken: validToken,
@@ -116,7 +118,7 @@ describe('firebaseSession.server', () => {
 
       vi.mocked(verifyIdToken).mockResolvedValue(mockDecodedToken)
       vi.mocked(getUserByFirebaseUid).mockResolvedValue(null)
-      vi.mocked(createUserFromFirebase).mockResolvedValue(mockUser)
+      vi.mocked(createOrUpdateUser).mockResolvedValue(mockUser)
 
       const result = await createSessionFromFirebaseToken({
         idToken: validToken,
@@ -128,10 +130,13 @@ describe('firebaseSession.server', () => {
         session: mockSession,
         isNewUser: true,
       })
-      expect(createUserFromFirebase).toHaveBeenCalledWith({
-        firebaseUid: 'firebase-uid-123',
-        email: 'test@example.com',
-        displayName: 'Test User',
+      expect(createOrUpdateUser).toHaveBeenCalledWith({
+        firebaseUser: {
+          uid: 'firebase-uid-123',
+          email: 'test@example.com',
+          displayName: 'Test User',
+          photoURL: null,
+        },
       })
     })
 
@@ -173,33 +178,39 @@ describe('firebaseSession.server', () => {
       const updatedUser = { ...mockUser, email: 'updated@example.com' }
 
       vi.mocked(getUserByFirebaseUid).mockResolvedValue(mockUser)
-      vi.mocked(updateUserFirebaseData).mockResolvedValue(updatedUser)
+      vi.mocked(createOrUpdateUser).mockResolvedValue(updatedUser)
 
       const result = await syncFirebaseUserToDatabase({
         firebaseUser: mockDecodedToken,
       })
 
       expect(result).toEqual({ user: updatedUser, isNewUser: false })
-      expect(updateUserFirebaseData).toHaveBeenCalledWith({
-        userId: 'user-123',
-        email: 'test@example.com',
-        displayName: 'Test User',
+      expect(createOrUpdateUser).toHaveBeenCalledWith({
+        firebaseUser: {
+          uid: 'firebase-uid-123',
+          email: 'test@example.com',
+          displayName: 'Test User',
+          photoURL: null,
+        },
       })
     })
 
     it('should create new user when not found by Firebase UID', async () => {
       vi.mocked(getUserByFirebaseUid).mockResolvedValue(null)
-      vi.mocked(createUserFromFirebase).mockResolvedValue(mockUser)
+      vi.mocked(createOrUpdateUser).mockResolvedValue(mockUser)
 
       const result = await syncFirebaseUserToDatabase({
         firebaseUser: mockDecodedToken,
       })
 
       expect(result).toEqual({ user: mockUser, isNewUser: true })
-      expect(createUserFromFirebase).toHaveBeenCalledWith({
-        firebaseUid: 'firebase-uid-123',
-        email: 'test@example.com',
-        displayName: 'Test User',
+      expect(createOrUpdateUser).toHaveBeenCalledWith({
+        firebaseUser: {
+          uid: 'firebase-uid-123',
+          email: 'test@example.com',
+          displayName: 'Test User',
+          photoURL: null,
+        },
       })
     })
 
@@ -216,16 +227,19 @@ describe('firebaseSession.server', () => {
     it('should handle Firebase user without displayName', async () => {
       const tokenWithoutName = { ...mockDecodedToken, name: undefined }
       vi.mocked(getUserByFirebaseUid).mockResolvedValue(null)
-      vi.mocked(createUserFromFirebase).mockResolvedValue(mockUser)
+      vi.mocked(createOrUpdateUser).mockResolvedValue(mockUser)
 
       await syncFirebaseUserToDatabase({
         firebaseUser: tokenWithoutName,
       })
 
-      expect(createUserFromFirebase).toHaveBeenCalledWith({
-        firebaseUid: 'firebase-uid-123',
-        email: 'test@example.com',
-        displayName: undefined,
+      expect(createOrUpdateUser).toHaveBeenCalledWith({
+        firebaseUser: {
+          uid: 'firebase-uid-123',
+          email: 'test@example.com',
+          displayName: undefined,
+          photoURL: null,
+        },
       })
     })
   })

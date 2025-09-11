@@ -64,11 +64,11 @@ model User {
   firstName   String
   lastName    String
   email       String    @unique
-  password    Password?
   firebaseUid String?   @unique
   role        Role
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  password    Password?
 }
 
 model Password {

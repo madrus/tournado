@@ -40,7 +40,11 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
       // For error translation keys, return the actual message from TEST_TRANSLATIONS
-      if (key.startsWith('teams.form.errors.')) {
+      if (
+        key.startsWith('messages.team.') ||
+        key.startsWith('messages.validation.') ||
+        key.startsWith('messages.tournament.')
+      ) {
         return TEST_TRANSLATIONS[key as keyof typeof TEST_TRANSLATIONS] || key
       }
       // For all other keys, return the key as-is
@@ -246,21 +250,19 @@ describe('TeamForm Component - filling the form', () => {
 
       // Should not show any error messages initially
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.nameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(
-          TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
-        )
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.teamLeaderNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.phoneNumberRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.emailRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.validation.emailRequired'])
       ).not.toBeInTheDocument()
     })
 
@@ -273,7 +275,7 @@ describe('TeamForm Component - filling the form', () => {
 
       // Should not show error messages while focused
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
       ).not.toBeInTheDocument()
     })
 
@@ -287,7 +289,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.click(nameInput)
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
           ).toBeInTheDocument()
         })
       })
@@ -298,7 +300,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.type(clubNameInput, 'Valid Club Name')
         await userEvent.tab()
         expect(
-          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).not.toBeInTheDocument()
       })
 
@@ -315,7 +317,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.emailInvalid'])
+            screen.getByText(TEST_TRANSLATIONS['messages.validation.emailInvalid'])
           ).toBeInTheDocument()
         })
       })
@@ -330,7 +332,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameTooLong'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameTooLong'])
           ).toBeInTheDocument()
         })
       })
@@ -343,13 +345,13 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
           ).toBeInTheDocument()
         })
         await user.type(clubNameInput, 'Valid Club Name')
         await userEvent.tab()
         expect(
-          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).not.toBeInTheDocument()
       })
 
@@ -366,7 +368,9 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.phoneNumberInvalid'])
+            screen.getByText(
+              TEST_TRANSLATIONS['messages.validation.phoneNumberInvalid']
+            )
           ).toBeInTheDocument()
         })
       })
@@ -381,7 +385,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameTooLong'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.nameTooLong'])
           ).toBeInTheDocument()
         })
       })
@@ -395,7 +399,7 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
           ).toBeInTheDocument()
         })
         const longName = 'a'.repeat(51)
@@ -404,10 +408,10 @@ describe('TeamForm Component - filling the form', () => {
         await userEvent.tab()
         await waitFor(() => {
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
           ).toBeInTheDocument()
           expect(
-            screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameTooLong'])
+            screen.getByText(TEST_TRANSLATIONS['messages.team.nameTooLong'])
           ).toBeInTheDocument()
         })
       })
@@ -418,25 +422,25 @@ describe('TeamForm Component - filling the form', () => {
     it('should hide server-side errors for disabled fields', async () => {
       // Server errors for disabled fields should NOT be visible
       const serverErrors = {
-        clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
-        name: TEST_TRANSLATIONS['teams.form.errors.nameRequired'],
+        clubName: TEST_TRANSLATIONS['messages.team.clubNameRequired'],
+        name: TEST_TRANSLATIONS['messages.team.nameRequired'],
       }
 
       renderTeamForm('create', 'public', undefined, serverErrors)
 
       // These errors should NOT appear because the fields are disabled (panel 2)
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.nameRequired'])
       ).not.toBeInTheDocument()
     })
 
     it('should show server-side errors when fields become enabled and are interacted with', async () => {
       const serverErrors = {
-        clubName: TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'],
-        name: TEST_TRANSLATIONS['teams.form.errors.nameRequired'],
+        clubName: TEST_TRANSLATIONS['messages.team.clubNameRequired'],
+        name: TEST_TRANSLATIONS['messages.team.nameRequired'],
       }
 
       // Start with panel 1 filled so panel 2 is enabled
@@ -444,10 +448,10 @@ describe('TeamForm Component - filling the form', () => {
 
       // Server errors should NOT be visible initially (fields are not blurred yet)
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.nameRequired'])
       ).not.toBeInTheDocument()
 
       // Interact with the fields (blur them) to trigger server error display
@@ -462,10 +466,10 @@ describe('TeamForm Component - filling the form', () => {
       // Now server errors should be visible for the blurred fields
       await waitFor(() => {
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).toBeInTheDocument()
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.nameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['messages.team.nameRequired'])
         ).toBeInTheDocument()
       })
     })
@@ -646,7 +650,7 @@ describe('TeamForm Component - filling the form', () => {
       // Check that the error appears in the DOM (panel 2 is enabled)
       await waitFor(() => {
         const errorText = screen.queryByText(
-          TEST_TRANSLATIONS['teams.form.errors.clubNameRequired']
+          TEST_TRANSLATIONS['messages.team.clubNameRequired']
         )
         expect(errorText).toBeInTheDocument()
       })
@@ -670,7 +674,7 @@ describe('TeamForm Component - filling the form', () => {
 
       await waitFor(() => {
         const emailErrorText = screen.queryByText(
-          TEST_TRANSLATIONS['teams.form.errors.emailInvalid']
+          TEST_TRANSLATIONS['messages.validation.emailInvalid']
         )
         expect(emailErrorText).toBeInTheDocument()
       })
@@ -695,10 +699,10 @@ describe('TeamForm Component - filling the form', () => {
 
       // Validation errors should not appear until fields are touched
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.tournamentRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.tournamentRequired'])
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
       ).not.toBeInTheDocument()
     })
 
@@ -715,14 +719,12 @@ describe('TeamForm Component - filling the form', () => {
 
       // Privacy agreement error should NOT appear in edit mode (not even in the DOM)
       expect(
-        screen.queryByText(
-          TEST_TRANSLATIONS['teams.form.errors.privacyAgreementRequired']
-        )
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.privacyAgreementRequired'])
       ).not.toBeInTheDocument()
 
       // Other validation errors should not appear until fields are touched
       expect(
-        screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.tournamentRequired'])
+        screen.queryByText(TEST_TRANSLATIONS['messages.team.tournamentRequired'])
       ).not.toBeInTheDocument()
     })
   })
@@ -1018,7 +1020,7 @@ describe('TeamForm Category Field', () => {
     // Wait for error to appear
     await waitFor(() => {
       expect(
-        screen.getByText(TEST_TRANSLATIONS['teams.form.errors.categoryRequired'])
+        screen.getByText(TEST_TRANSLATIONS['messages.team.categoryRequired'])
       ).toBeInTheDocument()
     })
   })
@@ -1111,12 +1113,10 @@ describe('TeamForm Cancel Button Functionality', () => {
       // After reset, errors should be cleared
       await waitFor(() => {
         expect(
-          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).not.toBeInTheDocument()
         expect(
-          screen.queryByText(
-            TEST_TRANSLATIONS['teams.form.errors.teamLeaderNameRequired']
-          )
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.teamLeaderNameRequired'])
         ).not.toBeInTheDocument()
       })
     })
@@ -1138,7 +1138,7 @@ describe('TeamForm Cancel Button Functionality', () => {
       // Wait for validation error to appear
       await waitFor(() => {
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).toBeInTheDocument()
       })
 
@@ -1151,7 +1151,7 @@ describe('TeamForm Cancel Button Functionality', () => {
       // Verify validation errors are cleared after reset
       await waitFor(() => {
         expect(
-          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).not.toBeInTheDocument()
       })
     })
@@ -1221,7 +1221,7 @@ describe('TeamForm Cancel Button Functionality', () => {
       // Wait for validation error
       await waitFor(() => {
         expect(
-          screen.getByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).toBeInTheDocument()
       })
 
@@ -1234,7 +1234,7 @@ describe('TeamForm Cancel Button Functionality', () => {
       // Verify validation errors are cleared after reset
       await waitFor(() => {
         expect(
-          screen.queryByText(TEST_TRANSLATIONS['teams.form.errors.clubNameRequired'])
+          screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
         ).not.toBeInTheDocument()
       })
     })

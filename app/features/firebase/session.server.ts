@@ -1,16 +1,11 @@
 import type { Session } from 'react-router'
 
 import type { User } from '~/models/user.server'
-import {
-  createUserFromFirebase,
-  getUserByEmail,
-  getUserByFirebaseUid,
-  updateUserFirebaseData,
-} from '~/models/user.server'
+import { getUserByFirebaseUid } from '~/models/user.server'
 import { getSession } from '~/utils/session.server'
 
 import type { DecodedIdToken } from './server'
-import { verifyIdToken } from './server'
+import { createOrUpdateUser, verifyIdToken } from './server'
 import type { FirebaseSessionData, SessionBridgeResult } from './types'
 
 const FIREBASE_SESSION_KEY = 'firebaseSession'
@@ -64,42 +59,21 @@ export const syncFirebaseUserToDatabase = async (
     throw new Error('Firebase user must have an email address')
   }
 
-  // First, try to find existing user by Firebase UID
-  let user = await getUserByFirebaseUid(firebaseUser.uid)
+  // Check if user already exists by Firebase UID
+  const existingUser = await getUserByFirebaseUid(firebaseUser.uid)
+  const isNewUser = !existingUser
 
-  if (user) {
-    // Update existing user with latest Firebase data
-    user = await updateUserFirebaseData({
-      userId: user.id,
+  // Use our new createOrUpdateUser function with role assignment
+  const user = await createOrUpdateUser({
+    firebaseUser: {
+      uid: firebaseUser.uid,
       email: firebaseUser.email,
       displayName: firebaseUser.name,
-    })
-    return { user, isNewUser: false }
-  }
-
-  // If no user found by Firebase UID, check if user exists by email
-  // This handles the case where an existing user is linking their Firebase account
-  const existingUserByEmail = await getUserByEmail(firebaseUser.email)
-
-  if (existingUserByEmail) {
-    // Link existing user account to Firebase
-    user = await updateUserFirebaseData({
-      userId: existingUserByEmail.id,
-      firebaseUid: firebaseUser.uid,
-      email: firebaseUser.email,
-      displayName: firebaseUser.name,
-    })
-    return { user, isNewUser: false }
-  }
-
-  // If no user found by Firebase UID or email, create new user
-  user = await createUserFromFirebase({
-    firebaseUid: firebaseUser.uid,
-    email: firebaseUser.email,
-    displayName: firebaseUser.name,
+      photoURL: null, // DecodedIdToken doesn't include photoURL
+    },
   })
 
-  return { user, isNewUser: true }
+  return { user, isNewUser }
 }
 
 type ValidateFirebaseSessionProps = {

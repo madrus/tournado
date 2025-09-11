@@ -1,5 +1,7 @@
 import { createCookieSessionStorage, redirect, type Session } from 'react-router'
 
+import { Role } from '@prisma/client'
+
 import invariant from 'tiny-invariant'
 
 import {
@@ -82,6 +84,19 @@ export async function requireUser(request: Request): Promise<User> {
   if (user) return user
 
   throw await signout(request)
+}
+
+export async function requireUserWithRole(
+  request: Request,
+  allowedRoles: Role[]
+): Promise<User> {
+  const user = await requireUser(request)
+
+  if (!allowedRoles.includes(user.role)) {
+    throw redirect('/unauthorized')
+  }
+
+  return user
 }
 
 export async function createUserSession({

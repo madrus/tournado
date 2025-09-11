@@ -52,8 +52,8 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.notFoundTitle')).toBeInTheDocument()
-    expect(screen.getByText('auth.errors.notFound')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.notFoundTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.notFound')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
 
@@ -76,8 +76,8 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.unauthorizedTitle')).toBeInTheDocument()
-    expect(screen.getByText('auth.errors.unauthorized')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.unauthorizedTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.unauthorized')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
 
@@ -100,8 +100,8 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('auth.errors.forbiddenTitle')).toBeInTheDocument()
-    expect(screen.getByText('auth.errors.forbidden')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.forbiddenTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.forbidden')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
 
@@ -124,8 +124,8 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
-    expect(screen.getByText('auth.errors.unexpectedError')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.errorTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.unexpectedError')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
 
@@ -144,11 +144,11 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
     const errorParagraph = screen.getByTestId('error-paragraph')
-    expect(errorParagraph).toHaveTextContent('auth.errors.unexpectedError')
+    expect(errorParagraph).toHaveTextContent('messages.common.unexpectedError')
     expect(errorParagraph).toHaveTextContent('Test JavaScript error')
 
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
@@ -169,12 +169,12 @@ describe('AuthErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.errorTitle')).toBeInTheDocument()
 
     // For text content that contains multiple pieces, use contains.text
     const errorParagraph = screen.getByTestId('error-paragraph')
-    expect(errorParagraph).toHaveTextContent('auth.errors.unexpectedError')
-    expect(errorParagraph).toHaveTextContent('auth.errors.unknownError')
+    expect(errorParagraph).toHaveTextContent('messages.common.unexpectedError')
+    expect(errorParagraph).toHaveTextContent('messages.common.unknownError')
 
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })

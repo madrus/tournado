@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-const { spawnSync, spawn } = require('node:child_process')
+import { spawn, spawnSync } from 'node:child_process'
 
 // Force test DB for built e2e server
 process.env.DATABASE_URL =

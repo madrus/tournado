@@ -106,7 +106,7 @@ describe('Critical Key Verification', () => {
     'auth.password',
     'auth.signin',
     'auth.signup',
-    'auth.errors.invalidCredentials',
+    'messages.auth.invalidCredentials',
   ]
 
   it('should have all critical keys in every locale', () => {
@@ -148,11 +148,11 @@ describe('Critical Key Verification', () => {
 
 describe('Form Validation Coverage', () => {
   const formErrorKeys = [
-    'auth.errors.emailRequired',
-    'auth.errors.emailInvalid',
-    'auth.errors.passwordRequired',
-    'auth.errors.passwordTooShort',
-    'auth.errors.invalidCredentials',
+    'messages.auth.emailRequired',
+    'messages.auth.emailInvalid',
+    'messages.auth.passwordRequired',
+    'messages.auth.passwordTooShort',
+    'messages.auth.invalidCredentials',
   ]
 
   it('should have all form error messages in every locale', () => {

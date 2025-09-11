@@ -8,8 +8,6 @@ import { isBrowser } from '~/lib/lib.helpers'
 import type { User } from '~/models/user.server'
 
 type StoreState = {
-  authenticated: boolean
-  username: string
   user: User | null
   firebaseUser: FirebaseUser | null
   loading: boolean
@@ -17,7 +15,6 @@ type StoreState = {
 }
 
 type Actions = {
-  setAuth: (authenticated: boolean, username: string) => void
   setUser: (user: User | null) => void
   setFirebaseUser: (user: FirebaseUser | null) => void
   setLoading: (loading: boolean) => void
@@ -29,8 +26,6 @@ type Actions = {
 const storeName = 'AuthStore'
 
 const initialStoreState: StoreState = {
-  authenticated: false,
-  username: '',
   user: null,
   firebaseUser: null,
   loading: false,
@@ -56,8 +51,6 @@ export const useAuthStore = create<StoreState & Actions>()(
         resetStoreState: () => {
           set(initialStoreState, false, 'resetStoreState')
         },
-        setAuth: (authenticated, username) =>
-          set({ authenticated, username }, false, 'setAuth'),
         setUser: user => set({ user }, false, 'setUser'),
         setFirebaseUser: firebaseUser =>
           set({ firebaseUser }, false, 'setFirebaseUser'),

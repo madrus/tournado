@@ -270,8 +270,8 @@ export default function AdminTeamPage(): JSX.Element {
     if (success === 'created') {
       // Smooth scroll to top for better UX after successful create
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('teams.notifications.registrationSuccess'), {
-        description: t('teams.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.team.registrationSuccess'), {
+        description: t('messages.team.registrationSuccessDesc'),
       })
 
       // Remove the success parameter from URL
@@ -280,8 +280,8 @@ export default function AdminTeamPage(): JSX.Element {
     } else if (success === 'updated') {
       // Smooth scroll to top for better UX after successful update
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('teams.notifications.updateSuccess'), {
-        description: t('teams.notifications.updateSuccessDesc'),
+      toast.success(t('messages.team.updateSuccess'), {
+        description: t('messages.team.updateSuccessDesc'),
       })
 
       // Sync the store with the latest loader data so UI reflects persisted update

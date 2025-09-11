@@ -13,7 +13,7 @@ export const loader = async ({ request }: Route.LoaderArgs): Promise<Response> =
     '/auth/signin',
     `${url.protocol}//${url.host}`
   ).toString()
-  return redirect(absoluteSigninUrl)
+  return redirect(absoluteSigninUrl, { status: 302 })
 }
 
 export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
@@ -27,7 +27,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
       '/auth/signin?error=missing-token',
       `${url.protocol}//${url.host}`
     ).toString()
-    return redirect(absoluteErrorUrl)
+    return redirect(absoluteErrorUrl, { status: 303 })
   }
 
   try {
@@ -43,7 +43,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
         '/auth/signin?error=invalid-token',
         `${url.protocol}//${url.host}`
       ).toString()
-      return redirect(absoluteErrorUrl)
+      return redirect(absoluteErrorUrl, { status: 303 })
     }
 
     const { user } = sessionResult
@@ -59,6 +59,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     ).toString()
 
     return redirect(absoluteRedirectUrl, {
+      status: 303,
       headers: {
         'Set-Cookie': await sessionStorage.commitSession(sessionResult.session),
       },
@@ -70,6 +71,6 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
       '/auth/signin?error=auth-failed',
       `${url.protocol}//${url.host}`
     ).toString()
-    return redirect(absoluteErrorUrl)
+    return redirect(absoluteErrorUrl, { status: 303 })
   }
 }

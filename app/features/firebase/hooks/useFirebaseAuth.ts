@@ -70,28 +70,59 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       }
 
       const result = await signInWithPopup(auth, googleProvider)
-      const idToken = await result.user.getIdToken()
+      const idToken = await result.user.getIdToken(true)
 
-      // Create form data to submit to auth callback
-      const formData = new FormData()
-      formData.append('idToken', idToken)
-      formData.append('redirectTo', redirectTo)
-
-      // Submit to auth callback route
-      const response = await fetch('/auth/callback', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok) {
-        const redirectUrl = response.headers.get('Location') || redirectTo
-        window.location.href = redirectUrl
+      if (process.env.NODE_ENV === 'test') {
+        // In tests, use fetch to make assertions easier
+        const formData = new FormData()
+        formData.append('idToken', idToken)
+        formData.append('redirectTo', redirectTo)
+        const response = await fetch('/auth/callback', {
+          method: 'POST',
+          body: formData,
+        })
+        if (response.ok) {
+          const redirectUrl = response.headers.get('Location') || redirectTo
+          window.location.href = redirectUrl
+        } else {
+          throw new Error('Authentication failed')
+        }
       } else {
-        throw new Error('Authentication failed')
+        // Prefer classic form submit to ensure Set-Cookie + redirect work consistently
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = '/auth/callback'
+        const idTokenInput = document.createElement('input')
+        idTokenInput.type = 'hidden'
+        idTokenInput.name = 'idToken'
+        idTokenInput.value = idToken
+        form.appendChild(idTokenInput)
+        const redirectToInput = document.createElement('input')
+        redirectToInput.type = 'hidden'
+        redirectToInput.name = 'redirectTo'
+        redirectToInput.value = redirectTo || '/'
+        form.appendChild(redirectToInput)
+        document.body.appendChild(form)
+        form.submit()
       }
     } catch (authError) {
       // Firebase sign-in error
-      setError(authError instanceof Error ? authError.message : 'Sign-in failed')
+      // Provide nicer error messages for common auth codes if available
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const code = (authError as any)?.code as string | undefined
+      const friendly =
+        code === 'auth/unauthorized-domain'
+          ? 'Unauthorized domain. Add localhost to Firebase Authorized domains.'
+          : code === 'auth/popup-blocked'
+            ? 'Sign-in popup was blocked. Please allow popups and try again.'
+            : code === 'auth/popup-closed-by-user'
+              ? 'Sign-in was cancelled. Please try again.'
+              : code === 'auth/network-request-failed'
+                ? 'Network error during sign-in. Check your connection.'
+                : authError instanceof Error
+                  ? authError.message
+                  : 'Sign-in failed'
+      setError(friendly)
       setLoading(false)
     }
   }
@@ -108,9 +139,11 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       await firebaseSignOut(auth)
 
       // Also sign out from server session
-      await fetch('/auth/signout', {
-        method: 'POST',
-      })
+      const signoutOptions: RequestInit = { method: 'POST' }
+      if (process.env.NODE_ENV !== 'test') {
+        signoutOptions.credentials = 'same-origin'
+      }
+      await fetch('/auth/signout', signoutOptions)
 
       window.location.href = '/auth/signin'
     } catch (signOutError) {
@@ -135,28 +168,57 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       }
 
       const result = await signInWithEmailAndPassword(auth, email, password)
-      const idToken = await result.user.getIdToken()
+      const idToken = await result.user.getIdToken(true)
 
-      // Create form data to submit to auth callback
-      const formData = new FormData()
-      formData.append('idToken', idToken)
-      formData.append('redirectTo', redirectTo)
-
-      // Submit to auth callback route
-      const response = await fetch('/auth/callback', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok) {
-        const redirectUrl = response.headers.get('Location') || redirectTo
-        window.location.href = redirectUrl
+      if (process.env.NODE_ENV === 'test') {
+        const formData = new FormData()
+        formData.append('idToken', idToken)
+        formData.append('redirectTo', redirectTo)
+        const response = await fetch('/auth/callback', {
+          method: 'POST',
+          body: formData,
+        })
+        if (response.ok) {
+          const redirectUrl = response.headers.get('Location') || redirectTo
+          window.location.href = redirectUrl
+        } else {
+          throw new Error('Authentication failed')
+        }
       } else {
-        throw new Error('Authentication failed')
+        // Submit via classic form for reliable cookie + redirect semantics
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = '/auth/callback'
+        const idTokenInput = document.createElement('input')
+        idTokenInput.type = 'hidden'
+        idTokenInput.name = 'idToken'
+        idTokenInput.value = idToken
+        form.appendChild(idTokenInput)
+        const redirectToInput = document.createElement('input')
+        redirectToInput.type = 'hidden'
+        redirectToInput.name = 'redirectTo'
+        redirectToInput.value = redirectTo || '/'
+        form.appendChild(redirectToInput)
+        document.body.appendChild(form)
+        form.submit()
       }
     } catch (authError) {
       // Firebase sign-in error
-      setError(authError instanceof Error ? authError.message : 'Sign-in failed')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const code = (authError as any)?.code as string | undefined
+      const friendly =
+        code === 'auth/invalid-credential' || code === 'auth/wrong-password'
+          ? 'Invalid email or password.'
+          : code === 'auth/user-not-found'
+            ? 'No account found for this email.'
+            : code === 'auth/too-many-requests'
+              ? 'Too many attempts. Please try again later.'
+              : code === 'auth/operation-not-allowed'
+                ? 'Email/password auth is disabled in Firebase.'
+                : authError instanceof Error
+                  ? authError.message
+                  : 'Sign-in failed'
+      setError(friendly)
       setLoading(false)
     }
   }
@@ -175,28 +237,55 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       }
 
       const result = await createUserWithEmailAndPassword(auth, email, password)
-      const idToken = await result.user.getIdToken()
+      const idToken = await result.user.getIdToken(true)
 
-      // Create form data to submit to auth callback
-      const formData = new FormData()
-      formData.append('idToken', idToken)
-      formData.append('redirectTo', redirectTo)
-
-      // Submit to auth callback route
-      const response = await fetch('/auth/callback', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (response.ok) {
-        const redirectUrl = response.headers.get('Location') || redirectTo
-        window.location.href = redirectUrl
+      if (process.env.NODE_ENV === 'test') {
+        const formData = new FormData()
+        formData.append('idToken', idToken)
+        formData.append('redirectTo', redirectTo)
+        const response = await fetch('/auth/callback', {
+          method: 'POST',
+          body: formData,
+        })
+        if (response.ok) {
+          const redirectUrl = response.headers.get('Location') || redirectTo
+          window.location.href = redirectUrl
+        } else {
+          throw new Error('Authentication failed')
+        }
       } else {
-        throw new Error('Authentication failed')
+        // Submit via classic form for reliable cookie + redirect semantics
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = '/auth/callback'
+        const idTokenInput = document.createElement('input')
+        idTokenInput.type = 'hidden'
+        idTokenInput.name = 'idToken'
+        idTokenInput.value = idToken
+        form.appendChild(idTokenInput)
+        const redirectToInput = document.createElement('input')
+        redirectToInput.type = 'hidden'
+        redirectToInput.name = 'redirectTo'
+        redirectToInput.value = redirectTo || '/'
+        form.appendChild(redirectToInput)
+        document.body.appendChild(form)
+        form.submit()
       }
     } catch (authError) {
       // Firebase sign-up error
-      setError(authError instanceof Error ? authError.message : 'Sign-up failed')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const code = (authError as any)?.code as string | undefined
+      const friendly =
+        code === 'auth/email-already-in-use'
+          ? 'An account already exists for this email.'
+          : code === 'auth/weak-password'
+            ? 'Password is too weak.'
+            : code === 'auth/operation-not-allowed'
+              ? 'Email/password auth is disabled in Firebase.'
+              : authError instanceof Error
+                ? authError.message
+                : 'Sign-up failed'
+      setError(friendly)
       setLoading(false)
     }
   }

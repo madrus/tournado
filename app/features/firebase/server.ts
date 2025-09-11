@@ -27,6 +27,12 @@ if (getApps().length === 0) {
       !serviceAccount.privateKey
     ) {
       // Missing required environment variables - adminAuth will remain null
+      if (process.env.NODE_ENV !== 'test') {
+        // eslint-disable-next-line no-console
+        console.warn(
+          '[firebase-admin] Missing FIREBASE_ADMIN_* env vars; Admin SDK not initialized.'
+        )
+      }
     } else {
       adminApp = initializeApp({
         credential: admin.credential.cert(serviceAccount),
@@ -37,6 +43,10 @@ if (getApps().length === 0) {
     }
   } catch (_error) {
     // Firebase Admin SDK initialization failed - adminAuth will remain null
+    if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line no-console
+      console.error('[firebase-admin] Initialization failed:', _error)
+    }
   }
 } else {
   adminAuth = getAuth(getApps()[0])
@@ -84,7 +94,7 @@ export const createOrUpdateUser = async (
     throw new Error('Firebase user must have an email address')
   }
 
-  // Check if user already exists
+  // Check if user already exists by firebaseUid
   const existingUser = await prisma.user.findUnique({
     where: { firebaseUid: firebaseUser.uid },
   })
@@ -95,6 +105,26 @@ export const createOrUpdateUser = async (
       where: { firebaseUid: firebaseUser.uid },
       // eslint-disable-next-line id-blacklist
       data: {
+        email: firebaseUser.email,
+        firstName:
+          firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+        lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+      },
+    })
+  }
+
+  // If not found by Firebase UID, attempt to link existing user by email
+  const existingByEmail = await prisma.user.findUnique({
+    where: { email: firebaseUser.email },
+  })
+
+  if (existingByEmail) {
+    // Link firebaseUid to existing user and update profile fields, preserve role
+    return await prisma.user.update({
+      where: { id: existingByEmail.id },
+      // eslint-disable-next-line id-blacklist
+      data: {
+        firebaseUid: firebaseUser.uid,
         email: firebaseUser.email,
         firstName:
           firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
@@ -137,9 +167,13 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
     const decodedToken = await adminAuth.verifyIdToken(idToken)
     return decodedToken
   } catch (error) {
-    throw new Error(
-      `Invalid Firebase ID token: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+    const message =
+      error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
+    if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line no-console
+      console.error('[firebase-admin] verifyIdToken error:', message)
+    }
+    throw new Error(`Invalid Firebase ID token: ${message}`)
   }
 }
 

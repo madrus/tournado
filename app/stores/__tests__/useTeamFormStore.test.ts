@@ -197,7 +197,7 @@ describe('useTeamFormStore', () => {
 
       // Since clubName is empty and now touched, should show error
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
       expect(state().validation.blurredFields.clubName).toBe(true)
     })
@@ -217,7 +217,7 @@ describe('useTeamFormStore', () => {
       // Now validation should work even for untouched fields
       state().validateField('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
     })
 
@@ -228,7 +228,7 @@ describe('useTeamFormStore', () => {
       // Now validation should work even for untouched fields
       state().validateField('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
     })
 
@@ -236,7 +236,7 @@ describe('useTeamFormStore', () => {
       // Touch field and trigger error
       state().setFieldBlurred('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
 
       // Set valid value and validate again
@@ -260,13 +260,11 @@ describe('useTeamFormStore', () => {
 
       // All touched fields should show errors
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
-      expect(state().validation.displayErrors.name).toBe(
-        'teams.form.errors.nameRequired'
-      )
+      expect(state().validation.displayErrors.name).toBe('messages.team.nameRequired')
       expect(state().validation.displayErrors.teamLeaderName).toBe(
-        'teams.form.errors.teamLeaderNameRequired'
+        'messages.team.teamLeaderNameRequired'
       )
 
       // Untouched fields should not show errors
@@ -285,31 +283,29 @@ describe('useTeamFormStore', () => {
 
       // All required fields should show errors
       expect(state().validation.displayErrors.tournamentId).toBe(
-        'teams.form.errors.tournamentRequired'
+        'messages.team.tournamentRequired'
       )
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
-      expect(state().validation.displayErrors.name).toBe(
-        'teams.form.errors.nameRequired'
-      )
+      expect(state().validation.displayErrors.name).toBe('messages.team.nameRequired')
       expect(state().validation.displayErrors.division).toBe(
-        'teams.form.errors.divisionRequired'
+        'messages.team.divisionRequired'
       )
       expect(state().validation.displayErrors.category).toBe(
-        'teams.form.errors.categoryRequired'
+        'messages.team.categoryRequired'
       )
       expect(state().validation.displayErrors.teamLeaderName).toBe(
-        'teams.form.errors.teamLeaderNameRequired'
+        'messages.team.teamLeaderNameRequired'
       )
       expect(state().validation.displayErrors.teamLeaderPhone).toBe(
-        'teams.form.errors.phoneNumberRequired'
+        'messages.team.phoneNumberRequired'
       )
       expect(state().validation.displayErrors.teamLeaderEmail).toBe(
-        'teams.form.errors.emailRequired'
+        'messages.validation.emailRequired'
       )
       expect(state().validation.displayErrors.privacyAgreement).toBe(
-        'teams.form.errors.privacyAgreementRequired'
+        'messages.team.privacyAgreementRequired'
       )
     })
 
@@ -358,9 +354,9 @@ describe('useTeamFormStore', () => {
 
   describe('Field Error Management', () => {
     it('should set and clear field errors', () => {
-      state().setFieldError('clubName', 'teams.form.errors.clubNameRequired')
+      state().setFieldError('clubName', 'messages.team.clubNameRequired')
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
 
       state().clearFieldError('clubName')
@@ -379,8 +375,8 @@ describe('useTeamFormStore', () => {
 
     it('should set display errors in bulk', () => {
       const errors = {
-        clubName: 'teams.form.errors.clubNameRequired',
-        name: 'teams.form.errors.nameRequired',
+        clubName: 'messages.team.clubNameRequired',
+        name: 'messages.team.nameRequired',
       }
 
       state().setValidationField('displayErrors', errors)
@@ -482,7 +478,7 @@ describe('useTeamFormStore', () => {
       // User clicks on club name field and tabs away empty - should show error
       state().setFieldBlurred('clubName')
       expect(state().validation.displayErrors.clubName).toBe(
-        'teams.form.errors.clubNameRequired'
+        'messages.team.clubNameRequired'
       )
 
       // User types in club name - error should clear
@@ -492,9 +488,7 @@ describe('useTeamFormStore', () => {
 
       // User touches team name but leaves empty - should show error
       state().setFieldBlurred('name')
-      expect(state().validation.displayErrors.name).toBe(
-        'teams.form.errors.nameRequired'
-      )
+      expect(state().validation.displayErrors.name).toBe('messages.team.nameRequired')
 
       // Other untouched fields should still not show errors
       expect(state().validation.displayErrors.tournamentId).toBeUndefined()
@@ -519,7 +513,7 @@ describe('useTeamFormStore', () => {
       // Since division field was previously touched, it should show error now that it's empty
       state().validateField('division')
       expect(state().validation.displayErrors.division).toBe(
-        'teams.form.errors.divisionRequired'
+        'messages.team.divisionRequired'
       )
     })
 
@@ -541,13 +535,13 @@ describe('useTeamFormStore', () => {
 
       // Now ALL required fields should show errors
       expect(state().validation.displayErrors.tournamentId).toBe(
-        'teams.form.errors.tournamentRequired'
+        'messages.team.tournamentRequired'
       )
       expect(state().validation.displayErrors.division).toBe(
-        'teams.form.errors.divisionRequired'
+        'messages.team.divisionRequired'
       )
       expect(state().validation.displayErrors.privacyAgreement).toBe(
-        'teams.form.errors.privacyAgreementRequired'
+        'messages.team.privacyAgreementRequired'
       )
 
       // Previously valid touched fields should remain valid

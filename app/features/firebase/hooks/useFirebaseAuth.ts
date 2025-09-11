@@ -6,11 +6,26 @@ import {
   signInWithPopup,
 } from 'firebase/auth'
 
-import { auth, googleProvider } from '~/features/firebase/client'
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  googleProvider,
+  signInWithEmailAndPassword,
+} from '~/features/firebase/client'
 import type { FirebaseUser } from '~/features/firebase/types'
 
 export type UseFirebaseAuthReturn = {
   signInWithGoogle: (redirectTo?: string) => Promise<void>
+  signInWithEmail: (
+    email: string,
+    password: string,
+    redirectTo?: string
+  ) => Promise<void>
+  signUpWithEmail: (
+    email: string,
+    password: string,
+    redirectTo?: string
+  ) => Promise<void>
   signOut: () => Promise<void>
   user: FirebaseUser | null
   loading: boolean
@@ -106,12 +121,94 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
     }
   }
 
+  const signInWithEmail = async (
+    email: string,
+    password: string,
+    redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1'
+  ): Promise<void> => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      if (!auth) {
+        throw new Error('Firebase is not properly configured')
+      }
+
+      const result = await signInWithEmailAndPassword(auth, email, password)
+      const idToken = await result.user.getIdToken()
+
+      // Create form data to submit to auth callback
+      const formData = new FormData()
+      formData.append('idToken', idToken)
+      formData.append('redirectTo', redirectTo)
+
+      // Submit to auth callback route
+      const response = await fetch('/auth/callback', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const redirectUrl = response.headers.get('Location') || redirectTo
+        window.location.href = redirectUrl
+      } else {
+        throw new Error('Authentication failed')
+      }
+    } catch (authError) {
+      // Firebase sign-in error
+      setError(authError instanceof Error ? authError.message : 'Sign-in failed')
+      setLoading(false)
+    }
+  }
+
+  const signUpWithEmail = async (
+    email: string,
+    password: string,
+    redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1'
+  ): Promise<void> => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      if (!auth) {
+        throw new Error('Firebase is not properly configured')
+      }
+
+      const result = await createUserWithEmailAndPassword(auth, email, password)
+      const idToken = await result.user.getIdToken()
+
+      // Create form data to submit to auth callback
+      const formData = new FormData()
+      formData.append('idToken', idToken)
+      formData.append('redirectTo', redirectTo)
+
+      // Submit to auth callback route
+      const response = await fetch('/auth/callback', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const redirectUrl = response.headers.get('Location') || redirectTo
+        window.location.href = redirectUrl
+      } else {
+        throw new Error('Authentication failed')
+      }
+    } catch (authError) {
+      // Firebase sign-up error
+      setError(authError instanceof Error ? authError.message : 'Sign-up failed')
+      setLoading(false)
+    }
+  }
+
   const clearError = (): void => {
     setError(null)
   }
 
   return {
     signInWithGoogle,
+    signInWithEmail,
+    signUpWithEmail,
     signOut,
     user,
     loading,

@@ -53,41 +53,41 @@ const editTeamSchema = baseTeamSchema.omit({ privacyAgreement: true })
 const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
   z.object({
     // Tournament selection (required for create mode)
-    tournamentId: z.string().min(1, t('teams.form.errors.tournamentRequired')),
+    tournamentId: z.string().min(1, t('messages.team.tournamentRequired')),
 
     // Basic team information
     name: z
       .string()
-      .min(1, t('teams.form.errors.nameRequired'))
-      .max(50, t('teams.form.errors.nameTooLong')),
+      .min(1, t('messages.team.nameRequired'))
+      .max(50, t('messages.team.nameTooLong')),
     clubName: z
       .string()
-      .min(1, t('teams.form.errors.clubNameRequired'))
-      .max(100, t('teams.form.errors.clubNameTooLong')),
-    division: z.string().min(1, t('teams.form.errors.divisionRequired')),
-    category: z.string().min(1, t('teams.form.errors.categoryRequired')),
+      .min(1, t('messages.team.clubNameRequired'))
+      .max(100, t('messages.team.clubNameTooLong')),
+    division: z.string().min(1, t('messages.team.divisionRequired')),
+    category: z.string().min(1, t('messages.team.categoryRequired')),
 
     // Team leader information (required for create mode)
     teamLeaderName: z
       .string()
-      .min(1, t('teams.form.errors.teamLeaderNameRequired'))
-      .max(100, t('teams.form.errors.teamLeaderNameTooLong')),
+      .min(1, t('messages.team.teamLeaderNameRequired'))
+      .max(100, t('messages.team.teamLeaderNameTooLong')),
     teamLeaderPhone: z
       .string()
-      .min(1, t('teams.form.errors.phoneNumberRequired'))
+      .min(1, t('messages.team.phoneNumberRequired'))
       .refine(val => val.length === 0 || /^[\+]?[0-9\s\-\(\)]+$/.test(val), {
-        message: t('teams.form.errors.phoneNumberInvalid'),
+        message: t('messages.team.phoneNumberInvalid'),
       }),
     teamLeaderEmail: z
       .string()
-      .min(1, t('teams.form.errors.emailRequired'))
+      .min(1, t('messages.validation.emailRequired'))
       .refine(val => val.length === 0 || EMAIL_REGEX.test(val), {
-        message: t('teams.form.errors.emailInvalid'),
+        message: t('messages.validation.emailInvalid'),
       }),
 
     // Privacy agreement (required for public create mode)
     privacyAgreement: z.boolean().refine(val => val, {
-      message: t('teams.form.errors.privacyAgreementRequired'),
+      message: t('messages.team.privacyAgreementRequired'),
     }),
   })
 
@@ -158,20 +158,16 @@ const createTournamentFormSchema = (t: TFunction) =>
   z.object({
     name: z
       .string()
-      .min(1, t('tournaments.form.errors.nameRequired'))
-      .max(100, t('tournaments.form.errors.nameTooLong')),
+      .min(1, t('messages.tournament.nameRequired'))
+      .max(100, t('messages.tournament.nameTooLong')),
     location: z
       .string()
-      .min(1, t('tournaments.form.errors.locationRequired'))
-      .max(100, t('tournaments.form.errors.locationTooLong')),
-    startDate: z.string().min(1, t('tournaments.form.errors.startDateRequired')),
-    endDate: z.string().min(1, t('tournaments.form.errors.endDateRequired')),
-    divisions: z
-      .array(z.string())
-      .min(1, t('tournaments.form.errors.divisionsRequired')),
-    categories: z
-      .array(z.string())
-      .min(1, t('tournaments.form.errors.categoriesRequired')),
+      .min(1, t('messages.tournament.locationRequired'))
+      .max(100, t('messages.tournament.locationTooLong')),
+    startDate: z.string().min(1, t('messages.tournament.startDateRequired')),
+    endDate: z.string().min(1, t('messages.tournament.endDateRequired')),
+    divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
+    categories: z.array(z.string()).min(1, t('messages.tournament.categoriesRequired')),
   })
 
 // Factory for getting appropriate tournament schema based on mode

@@ -11,24 +11,6 @@ globs:
 alwaysApply: false
 ---
 
-# ⚠️ MANDATORY PRE-TASK CHECKLIST - COMPLETE BEFORE PROCEEDING
-
-- [ ] **Dependency Check**: Use Read tool to check each dependency file and verify `status: "done"`
-  - If any dependency has different status: STOP and present user with options [1], [2], or [3]
-- [ ] **File Safety Check**: Use Read tool to check if target files/directories already exist
-  - If exists: analyze content and determine update vs overwrite strategy  
-- [ ] **Architecture Confirmation**: Review decision criteria and confirm SHARED/FEATURE/HYBRID/MIGRATION pattern
-- [ ] **Existing Patterns**: Use Read tool to examine 2-3 similar files in codebase for consistency
-
-# 🛡️ FILE CREATION SAFETY - CRITICAL RULE
-
-**BEFORE creating ANY file**: Use Read tool to check if it exists
-- **If exists + similar purpose**: Update/merge preserving existing functionality
-- **If exists + different purpose**: Ask user for guidance  
-- **If doesn't exist**: Proceed with creation
-
-**This applies to**: Files, directories, components, tests - everything
-
 # INSTRUCTIONS — READ THIS FIRST WHEN CREATING NEW TASKS
 
 This file is a single, self-contained TASK for an AI agent. **One task = one file.**
@@ -76,28 +58,9 @@ Choose your task pattern based on the scope and reusability of the work:
 **When to use**: Feature work that also requires updates to shared components/utilities
 **File locations**: Mix of both patterns with clear rationale for each
 
-### 📦 **MIGRATION Task** - Replace/modernize existing code
-**When to use**: Replacing legacy systems (e.g., username/password → Firebase auth)
-**Special considerations**: 
-- Plan transition strategy for existing users
-- Maintain backward compatibility during migration
-- Update ALL dependent code paths
-- Consider feature flags for gradual rollout
-
-### 🧭 **Architecture Decision Matrix**
-
-| Component Type | Reusable Across Features? | Domain-Specific? | Location |
-|----------------|---------------------------|------------------|----------|
-| Hook | No | Yes (Firebase-only) | `app/features/[feature]/hooks/` |
-| Hook | Yes | No (cross-feature) | `app/hooks/` |
-| Component | No | Yes | `app/features/[feature]/components/` |
-| Component | Yes | No | `app/components/` |
-| Store | No | Yes | `app/features/[feature]/stores/` |
-| Store | Yes | No | `app/stores/` |
-| Utility | No | Yes | `app/features/[feature]/utils.ts` |
-| Utility | Yes | No | `app/utils/` or `app/lib/` |
-
-**Decision Rule**: If it's only used by ONE feature → FEATURE. If used by multiple → SHARED.
+### 📦 **MIGRATION Task** - Refactoring existing code into feature structure
+**When to use**: Moving scattered code into a cohesive feature module
+**Special considerations**: Maintain backward compatibility, update all imports
 
 ### 🧭 **Decision Criteria**
 - **Shared**: Used by multiple features OR core infrastructure
@@ -163,53 +126,6 @@ Choose your task pattern based on the scope and reusability of the work:
 > - utils.ts _(feature utilities)_
 > - types.ts _(feature types)_
 
-## 📁 Test File Organization (Simple Rule)
-
-### 🎯 **Universal Test Rule**: 
-**Tests go in `__tests__/` folder directly inside the folder containing the code being tested**
-
-### ✅ CORRECT Patterns:
-```
-app/features/firebase/
-├── components/
-│   ├── FirebaseSignIn/
-│   │   ├── __tests__/               ← Tests for FirebaseSignIn component
-│   │   │   └── FirebaseSignIn.test.tsx
-│   │   ├── FirebaseSignIn.tsx
-│   │   └── index.ts
-│   └── FirebaseButton/
-│       ├── __tests__/               ← Tests for FirebaseButton component
-│       │   └── FirebaseButton.test.tsx
-│       └── FirebaseButton.tsx
-├── __tests__/                       ← Tests for feature-level files
-│   ├── auth.server.test.ts          ← Tests auth.server.ts
-│   ├── client.test.ts               ← Tests client.ts
-│   └── utils.test.ts                ← Tests utils.ts
-├── auth.server.ts
-├── client.ts
-└── utils.ts
-
-app/components/
-├── TeamForm/
-│   ├── __tests__/                   ← Tests for TeamForm component
-│   │   └── TeamForm.test.tsx
-│   └── TeamForm.tsx
-└── UserMenu/
-    ├── __tests__/                   ← Tests for UserMenu component
-    │   └── UserMenu.test.tsx
-    └── UserMenu.tsx
-```
-
-### 📍 Test Location Rules:
-- **Component tests**: `[component-folder]/__tests__/[Component].test.tsx`
-- **Feature-level tests**: `app/features/[feature]/__tests__/[file].test.ts`
-- **Shared component tests**: `app/components/[Component]/__tests__/[Component].test.tsx`
-- **Utility tests**: `[folder-with-utils]/__tests__/[util-file].test.ts`
-- **E2E tests**: `playwright/tests/[feature-name].spec.ts`
-
-### 🔄 **Migration Note**: 
-If you find existing tests in different locations during implementation, move them to follow this consistent pattern.
-
 ## 🔗 HYBRID Task Pattern
 **Beginning (add to model context):**
 - app/components/<SharedComponent>/ _(read-only)_
@@ -263,8 +179,8 @@ All code must follow these TypeScript conventions:
 3. **No `any` type**: Always use strong typing instead of `any`
 4. **Return types**: All functions must have explicit return types
 5. **Arrow functions**: If a function only returns something (single expression), use arrow function syntax
-6. **Semantic variable names**: Avoid generic identifiers like `data`, `info`, `result` - use descriptive names that indicate the content (e.g., `userData`, `teamInfo`, `validationResult`, `onSubmit`, `onUserSelect`). Exception: when variable comes from third-party libraries. Note: `handler` and `callback` are acceptable parameter names.
-7. **Callback naming**: Use descriptive callback names with `on` prefix (e.g., `onSubmit`, `onUserSelect`, `onTeamCreate`) or descriptive handlers (e.g., `handleClick`, `handleSubmit`)
+6. **Semantic variable names**: Avoid generic identifiers like `data`, `info`, `result`, `callback`, `handler` - use descriptive names that indicate the content (e.g., `userData`, `teamInfo`, `validationResult`, `onSubmit`, `onUserSelect`). Exception: when variable comes from third-party libraries
+7. **Callback naming**: Use descriptive callback names with `on` prefix (e.g., `onSubmit`, `onUserSelect`, `onTeamCreate`) rather than generic names like `callback` or `handler`
 8. **Props objects**: Functions with parameter objects should follow this pattern:
    - Create a type named `<FunctionName>Props` for the parameters
    - Type the props parameter as `Readonly<FunctionNameProps>`
@@ -272,8 +188,6 @@ All code must follow these TypeScript conventions:
 9. **Module Import Patterns**:
    - Use named imports for ESM modules: `import { function } from 'module'`
    - Use default imports for CommonJS modules: `import pkg from 'commonjs-module'`
-   - React types: `import type { JSX } from 'react'` for JSX.Element type
-   - Firebase Client SDK: `import { signInWithPopup } from 'firebase/auth'` (named imports for ESM)
    - Firebase Admin SDK: Use `import admin from 'firebase-admin'` for main module access (e.g., `admin.credential.cert()`), submodule imports like `firebase-admin/app` and `firebase-admin/auth` are fine as named imports
    - When unsure, check if error mentions "CommonJS module, which may not support all module.exports as named exports"
 
@@ -356,8 +270,8 @@ export const createSessionFromFirebaseToken = async (
 - Add functions for data operations
 
 **Tests** (required for all tasks):
-- Unit tests: `[code-folder]/__tests__/[filename].test.tsx` (Vitest) - tests go directly inside the folder with the code being tested
-- E2E tests: `playwright/tests/[featureName].spec.ts` (Playwright with Page Object Model)
+- Unit tests: `<component-path>/__tests__/<ComponentName>.test.tsx` (Vitest)
+- E2E tests: `playwright/tests/<featureName>.spec.ts` (Playwright with Page Object Model)
 - Test cases should focus on user-facing behavior, not implementation details
 
 # 7) Types & Interfaces (if applicable)
@@ -408,17 +322,6 @@ export type <FeatureComponentProps> = {
 - All unit tests pass locally with `pnpm test:run`
 - All E2E tests pass locally with `pnpm test:e2e:run`
 - New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
-
-# ✅ MANDATORY VALIDATION CHECKLIST - COMPLETE IN ORDER
-
-**After each code change, restart from step 1:**
-
-- [ ] **Step 1**: `pnpm validate` passes (lint + typecheck)
-- [ ] **Step 2**: `pnpm test:run` passes (unit tests)  
-- [ ] **Step 3**: `pnpm test:e2e:run` passes (E2E tests)
-- [ ] **Step 4**: All acceptance criteria verified
-
-**If any step fails**: Fix issues and restart from Step 1
 
 **Testing Workflow**: Follow this cycle strictly:
 1. **Validation first** (`pnpm validate`) - must pass before proceeding

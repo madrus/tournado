@@ -23,11 +23,13 @@ export function GeneralErrorBoundary({
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-          {error.status === 404 ? t('errors.notFoundTitle') : t('errors.errorTitle')}
+          {error.status === 404
+            ? t('messages.common.notFoundTitle')
+            : t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>
           {error.status === 404
-            ? t('auth.errors.notFound')
+            ? t('messages.auth.notFound')
             : `${error.status} ${error.data}`}
         </p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
@@ -42,7 +44,7 @@ export function GeneralErrorBoundary({
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-          {t('errors.errorTitle')}
+          {t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>

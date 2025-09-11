@@ -1,6 +1,12 @@
+import { Role, type User } from '@prisma/client'
+
 import admin from 'firebase-admin'
 import { type App, getApps, initializeApp } from 'firebase-admin/app'
 import { type Auth, type DecodedIdToken, getAuth } from 'firebase-admin/auth'
+
+import { prisma } from '~/db.server'
+
+import type { FirebaseUser } from './types'
 
 let adminApp: App | null = null
 let adminAuth: Auth | null = null
@@ -34,6 +40,86 @@ if (getApps().length === 0) {
   }
 } else {
   adminAuth = getAuth(getApps()[0])
+}
+
+type AssignUserRoleProps = {
+  firebaseUid: string
+  email: string
+}
+
+/**
+ * Assigns a role to a user based on their email address
+ * @param props - The Firebase user properties
+ * @returns Promise<Role> - The assigned role
+ */
+export const assignUserRole = async (
+  props: Readonly<AssignUserRoleProps>
+): Promise<Role> => {
+  const { email } = props
+  const superAdminEmails =
+    process.env.SUPER_ADMIN_EMAILS?.split(',').map(emailItem => emailItem.trim()) || []
+
+  if (superAdminEmails.includes(email)) {
+    return Role.ADMIN
+  }
+
+  return Role.PUBLIC // Default role for new users
+}
+
+type CreateOrUpdateUserProps = {
+  firebaseUser: FirebaseUser
+}
+
+/**
+ * Creates or updates a user in the database based on Firebase authentication
+ * @param props - The Firebase user data
+ * @returns Promise<User> - The created or updated user
+ */
+export const createOrUpdateUser = async (
+  props: Readonly<CreateOrUpdateUserProps>
+): Promise<User> => {
+  const { firebaseUser } = props
+
+  if (!firebaseUser.email) {
+    throw new Error('Firebase user must have an email address')
+  }
+
+  // Check if user already exists
+  const existingUser = await prisma.user.findUnique({
+    where: { firebaseUid: firebaseUser.uid },
+  })
+
+  if (existingUser) {
+    // Update existing user
+    return await prisma.user.update({
+      where: { firebaseUid: firebaseUser.uid },
+      // eslint-disable-next-line id-blacklist
+      data: {
+        email: firebaseUser.email,
+        firstName:
+          firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+        lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+      },
+    })
+  }
+
+  // Create new user with role assignment
+  const assignedRole = await assignUserRole({
+    firebaseUid: firebaseUser.uid,
+    email: firebaseUser.email,
+  })
+
+  return await prisma.user.create({
+    // eslint-disable-next-line id-blacklist
+    data: {
+      firebaseUid: firebaseUser.uid,
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+      role: assignedRole,
+    },
+  })
 }
 
 /**

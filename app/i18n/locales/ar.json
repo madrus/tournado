@@ -1,45 +1,150 @@
 {
   "admin": {
     "panel": {
-      "title": "لوحة الإدارة",
-      "description": "أهلاً بك مرة أخرى، <email>{{email}}</email>. أدر منصة البطولات الخاصة بك من هنا."
+      "description": "أهلاً بك مرة أخرى، <email>{{email}}</email>. أدر منصة البطولات الخاصة بك من هنا.",
+      "title": "لوحة الإدارة"
     },
-    "teams": {
+    "team": {
       "allTeams": "جميع الفرق",
       "allTeamsDescription": "إدارة جميع الفرق في النظام. انقر على فريق لتحرير التفاصيل أو حذفه.",
       "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
+      "createNewTeamDescription": "إنشاء فريق جديد مع تفاصيل البطولة ومعلومات الاتصال.",
       "createTeam": "إنشاء فريق",
       "createTeamDescription": "إضافة فريق جديد إلى النظام مع جميع التفاصيل الضرورية.",
-      "newTeam": "فريق جديد",
-      "createNewTeamDescription": "إنشاء فريق جديد مع تفاصيل البطولة ومعلومات الاتصال.",
       "description": "إدارة جميع الفرق عبر جميع البطولات. عرض أو تحرير أو حذف معلومات الفريق.",
       "editTeam": "تحرير تفاصيل الفريق",
+      "newTeam": "فريق جديد",
       "saveChanges": "حفظ التغييرات",
       "teamNotFound": "الفريق غير موجود",
       "teamNotFoundDescription": "الفريق الذي تبحث عنه لم يتم العثور عليه أو ربما تم حذفه.",
       "title": "إدارة الفرق",
       "totalTeams": "إجمالي الفرق"
     },
-    "tournaments": {
-      "totalTournaments": "إجمالي البطولات",
-      "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
-      "title": "إدارة البطولات",
-      "description": "إدارة جميع البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
+    "tournament": {
       "allTournaments": "جميع البطولات",
-      "allTournamentsDescription": "عرض وإدارة جميع البطولات في النظام"
+      "allTournamentsDescription": "عرض وإدارة جميع البطولات في النظام",
+      "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "description": "إدارة جميع البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
+      "title": "إدارة البطولات",
+      "totalTournaments": "إجمالي البطولات"
     }
   },
   "auth": {
     "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "buttons": {
+      "signingIn": "جاري تسجيل الدخول..."
+    },
+    "continueWithEmail": "أو تابع بالبريد الإلكتروني",
     "createAccount": "إنشاء حساب",
     "dontHaveAccount": "ليس لديك حساب؟",
     "emailAddress": "عنوان البريد الإلكتروني",
     "firebase": {
+      "continueWithGoogle": "المتابعة مع Google",
+      "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
       "signInWithGoogle": "تسجيل الدخول بواسطة Google",
-      "signingIn": "جاري تسجيل الدخول...",
-      "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى."
+      "signingIn": "جاري تسجيل الدخول..."
     },
-    "errors": {
+    "firstName": "الاسم الأول",
+    "labels": {
+      "confirmPassword": "تأكيد كلمة المرور",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    },
+    "lastName": "اسم العائلة",
+    "notSignedIn": "غير مسجل الدخول",
+    "or": "أو",
+    "password": "كلمة المرور",
+    "placeholders": {
+      "confirmPassword": "أكد كلمة المرور",
+      "email": "أدخل بريدك الإلكتروني",
+      "password": "أدخل كلمة المرور"
+    },
+    "pleaseSignIn": "يرجى تسجيل الدخول بحسابك الجديد",
+    "registrationSuccess": "تم إنشاء الحساب بنجاح",
+    "rememberMe": "تذكرني",
+    "signInPage": {
+      "description": "سجل الدخول إلى حساب Tournado الخاص بك",
+      "noAccount": "ليس لديك حساب؟",
+      "signUpLink": "التسجيل"
+    },
+    "signInRequiredToCreateTeam": "تحتاج إلى تسجيل الدخول لإنشاء فريق.",
+    "signUpPage": {
+      "description": "أنشئ حساب Tournado الخاص بك",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signInLink": "تسجيل الدخول"
+    },
+    "signin": "تسجيل الدخول",
+    "signout": "تسجيل الخروج",
+    "signup": "التسجيل",
+    "validation": {
+      "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "passwordRequirements": "يجب أن تكون كلمة المرور 8 أحرف على الأقل مع أحرف كبيرة وصغيرة وأرقام",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "passwordWeak": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام"
+    },
+    "viewTeams": "عرض الفرق",
+    "viewTeamsFor": "عرض الفرق لـ"
+  },
+  "common": {
+    "actions": {
+      "add": "إضافة",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "save": "حفظ",
+      "saving": "جاري الحفظ...",
+      "update": "تحديث"
+    },
+    "appName": "Tournado",
+    "auth": {
+      "signIn": "تسجيل الدخول",
+      "signUp": "التسجيل"
+    },
+    "backToHome": "العودة إلى الرئيسية",
+    "darkMode": "المظهر الداكن",
+    "error": "خطأ",
+    "guest": "ضيف",
+    "language": "اللغة",
+    "lightMode": "المظهر الفاتح",
+    "loading": "جاري التحميل...",
+    "signedInAs": "مسجل الدخول كـ",
+    "titles": {
+      "about": "حول",
+      "addTeam": "إضافة فريق",
+      "adminPanel": "لوحة الإدارة",
+      "more": "المزيد",
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات",
+      "teams": "الفرق",
+      "tournaments": "البطولات",
+      "welcome": "أهلاً وسهلاً"
+    },
+    "toggleMenu": "فتح/إغلاق القائمة",
+    "toggleTheme": "تبديل المظهر",
+    "welcome": "أهلاً وسهلاً"
+  },
+  "divisions": {
+    "FIFTH_DIVISION": "الدرجة السادسة",
+    "FIRST_DIVISION": "الدرجة الثانية",
+    "FOURTH_DIVISION": "الدرجة الخامسة",
+    "PREMIER_DIVISION": "الدرجة الأولى",
+    "SECOND_DIVISION": "الدرجة الثالثة",
+    "THIRD_DIVISION": "الدرجة الرابعة"
+  },
+  "landing": {
+    "features": {
+      "description": "يوفر تورنادو جميع الأدوات التي تحتاجها لإدارة بطولاتك الرياضية بكفاءة. من تسجيل الفرق إلى جدولة المباريات، لدينا كل ما تحتاجه.",
+      "subtitle": "كل ما تحتاجه لإدارة بطولاتك",
+      "title": "إدارة البطولات أصبحت سهلة"
+    },
+    "hero": {
+      "description": "أدر بطولاتك الرياضية بسهولة. أنشئ ونظم وتتبع فرقك ومبارياتك في مكان واحد.",
+      "signup": "اشترك مجاناً",
+      "viewTeams": "عرض الفرق"
+    }
+  },
+  "messages": {
+    "auth": {
       "emailExists": "يوجد مستخدم بالفعل بهذا البريد الإلكتروني",
       "emailInvalid": "البريد الإلكتروني غير صالح",
       "emailRequired": "البريد الإلكتروني مطلوب",
@@ -52,84 +157,73 @@
       "serverError": "خطأ في الخادم، يرجى المحاولة مرة أخرى لاحقاً",
       "title": "خطأ في المصادقة",
       "unauthorized": "تحتاج إلى تسجيل الدخول للوصول إلى هذه الصفحة",
-      "unauthorizedTitle": "تسجيل الدخول مطلوب",
-      "unauthorizedDefault": "ليس لديك إذن للوصول إلى هذه الصفحة. اتصل بالمسؤول إذا كنت تعتقد أن هذا خطأ.",
-      "unauthorizedDefaultTitle": "تم رفض الوصول",
-      "unauthorizedSignInRequired": "تحتاج إلى تسجيل الدخول للوصول إلى هذا المورد.",
-      "unauthorizedSignInRequiredTitle": "المصادقة مطلوبة",
       "unauthorizedAdminRequired": "هذه المنطقة مقتصرة على مدراء البطولات والمسؤولين.",
       "unauthorizedAdminRequiredTitle": "وصول المسؤول مطلوب",
+      "unauthorizedDefault": "ليس لديك إذن للوصول إلى هذه الصفحة. اتصل بالمسؤول إذا كنت تعتقد أن هذا خطأ.",
+      "unauthorizedDefaultTitle": "تم رفض الوصول",
       "unauthorizedManagerRequired": "هذه المنطقة مقتصرة على مدراء البطولات والمسؤولين.",
       "unauthorizedManagerRequiredTitle": "وصول المدير مطلوب",
+      "unauthorizedSignInRequired": "تحتاج إلى تسجيل الدخول للوصول إلى هذا المورد.",
+      "unauthorizedSignInRequiredTitle": "المصادقة مطلوبة",
       "unauthorizedSuperAdminRequired": "هذه المنطقة المحددة مقتصرة على مسؤولي النظام.",
       "unauthorizedSuperAdminRequiredTitle": "وصول المسؤول مطلوب",
+      "unauthorizedTitle": "تسجيل الدخول مطلوب"
+    },
+    "common": {
+      "accessDenied": "ليس لديك إذن للوصول إلى هذا المورد",
+      "errorTitle": "خطأ في التطبيق",
+      "itemNotFound": "{{item}} غير موجود",
+      "notFoundTitle": "الصفحة غير موجودة",
       "unexpectedError": "حدث خطأ غير متوقع",
-      "unknownError": "خطأ غير معروف"
+      "unknownError": "حدث خطأ غير معروف"
     },
-    "firstName": "الاسم الأول",
-    "lastName": "اسم العائلة",
-    "notSignedIn": "غير مسجل الدخول",
-    "password": "كلمة المرور",
-    "pleaseSignIn": "يرجى تسجيل الدخول بحسابك الجديد",
-    "registrationSuccess": "تم إنشاء الحساب بنجاح",
-    "rememberMe": "تذكرني",
-    "signInRequiredToCreateTeam": "تحتاج إلى تسجيل الدخول لإنشاء فريق.",
-    "signin": "تسجيل الدخول",
-    "signout": "تسجيل الخروج",
-    "signup": "التسجيل",
-    "viewTeams": "عرض الفرق",
-    "viewTeamsFor": "عرض الفرق لـ"
-  },
-  "common": {
-    "actions": {
-      "add": "إضافة",
-      "save": "حفظ",
-      "saving": "جاري الحفظ...",
-      "update": "تحديث",
-      "cancel": "إلغاء",
-      "delete": "حذف"
+    "team": {
+      "categoryRequired": "التصنيف مطلوب",
+      "clubNameRequired": "اسم النادي مطلوب",
+      "clubNameTooLong": "يجب أن يكون اسم النادي أقل من 100 حرف",
+      "divisionRequired": "الفئة مطلوبة",
+      "nameRequired": "اسم الفريق مطلوب",
+      "nameTooLong": "يجب أن يكون اسم الفريق أقل من 50 حرف",
+      "notFound": "الفريق غير موجود",
+      "phoneNumberInvalid": "يرجى إدخال رقم هاتف صالح",
+      "phoneNumberRequired": "رقم الهاتف مطلوب",
+      "privacyAgreementRequired": "يجب الموافقة على سياسة الخصوصية",
+      "registrationError": "فشل في تسجيل الفريق",
+      "registrationErrorDesc": "حدث خطأ أثناء تسجيل فريقك. يرجى المحاولة مرة أخرى.",
+      "registrationSuccess": "تم تسجيل الفريق بنجاح",
+      "registrationSuccessDesc": "تم تسجيل فريقك بنجاح.",
+      "teamLeaderNameRequired": "اسم قائد الفريق مطلوب",
+      "teamLeaderNameTooLong": "يجب أن يكون الاسم أقل من 100 حرف",
+      "tournamentRequired": "البطولة مطلوبة",
+      "updateError": "فشل في تحديث الفريق",
+      "updateErrorDesc": "حدث خطأ أثناء تحديث فريقك. يرجى المحاولة مرة أخرى.",
+      "updateSuccess": "تم تحديث الفريق بنجاح",
+      "updateSuccessDesc": "تم تحديث فريقك بنجاح."
     },
-    "appName": "Tournado",
-    "backToHome": "العودة إلى الرئيسية",
-    "error": "خطأ",
-    "guest": "ضيف",
-    "language": "اللغة",
-    "loading": "جاري التحميل...",
-    "signedInAs": "مسجل الدخول كـ",
-    "toggleMenu": "فتح/إغلاق القائمة",
-    "toggleTheme": "تبديل المظهر",
-    "lightMode": "المظهر الفاتح",
-    "darkMode": "المظهر الداكن",
-    "titles": {
-      "about": "حول",
-      "addTeam": "إضافة فريق",
-      "adminPanel": "لوحة الإدارة",
-      "more": "المزيد",
-      "profile": "الملف الشخصي",
-      "settings": "الإعدادات",
-      "signIn": "تسجيل الدخول",
-      "signUp": "التسجيل",
-      "teams": "الفرق",
-      "tournaments": "البطولات",
-      "welcome": "أهلاً وسهلاً"
+    "tournament": {
+      "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
+      "divisionsRequired": "مطلوب درجة واحدة على الأقل",
+      "endDateRequired": "تاريخ النهاية مطلوب",
+      "locationRequired": "الموقع مطلوب",
+      "locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",
+      "nameRequired": "اسم البطولة مطلوب",
+      "nameTooLong": "يجب أن يكون اسم البطولة أقل من 100 حرف",
+      "registrationError": "فشل في تسجيل البطولة",
+      "registrationErrorDesc": "حدث خطأ أثناء تسجيل البطولة. يرجى المحاولة مرة أخرى.",
+      "registrationSuccess": "تم تسجيل البطولة بنجاح",
+      "registrationSuccessDesc": "تم تسجيل البطولة بنجاح.",
+      "startDateRequired": "تاريخ البداية مطلوب",
+      "updateError": "فشل في تحديث البطولة",
+      "updateErrorDesc": "حدث خطأ أثناء تحديث البطولة. يرجى المحاولة مرة أخرى.",
+      "updateSuccess": "تم تحديث البطولة بنجاح",
+      "updateSuccessDesc": "تم تحديث البطولة بنجاح."
     },
-    "unknownError": "حدث خطأ غير معروف",
-    "welcome": "أهلاً وسهلاً"
-  },
-  "errors": {
-    "errorTitle": "خطأ في التطبيق",
-    "notFoundTitle": "الصفحة غير موجودة"
-  },
-  "landing": {
-    "features": {
-      "description": "يوفر تورنادو جميع الأدوات التي تحتاجها لإدارة بطولاتك الرياضية بكفاءة. من تسجيل الفرق إلى جدولة المباريات، لدينا كل ما تحتاجه.",
-      "subtitle": "كل ما تحتاجه لإدارة بطولاتك",
-      "title": "إدارة البطولات أصبحت سهلة"
-    },
-    "hero": {
-      "description": "أدر بطولاتك الرياضية بسهولة. أنشئ ونظم وتتبع فرقك ومبارياتك في مكان واحد.",
-      "signup": "اشترك مجاناً",
-      "viewTeams": "عرض الفرق"
+    "validation": {
+      "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "fieldRequired": "هذا الحقل مطلوب",
+      "phoneNumberInvalid": "يرجى إدخال رقم هاتف صالح",
+      "phoneNumberRequired": "رقم الهاتف مطلوب"
     }
   },
   "pwa": {
@@ -158,139 +252,78 @@
     }
   },
   "teams": {
+    "allTournaments": "جميع البطولات",
     "count": "{{count}} فريق مسجل",
     "count_other": "{{count}} فريق مسجل",
     "createNewTeam": "إنشاء فريق جديد",
     "deleteTeam": "حذف الفريق",
     "description": "سجل فريقك (فرقك) لبطولة واحدة أو أكثر",
     "filterByTournament": "تصفية حسب البطولة",
-    "allTournaments": "جميع البطولات",
-    "errors": {
-      "notFound": "الفريق غير موجود",
-      "unexpectedError": "حدث خطأ غير متوقع:",
-      "unknownError": "خطأ غير معروف"
-    },
     "form": {
+      "agreeToPrivacyPolicy": "أوافق على سياسة الخصوصية",
+      "category": "الفئة",
       "clubName": "اسم النادي",
+      "completeAllThreeFields": "يرجى إكمال جميع الحقول الثلاثة أدناه للمتابعة",
       "division": "الفئة",
-      "errors": {
-        "clubNameRequired": "اسم النادي مطلوب",
-        "clubNameTooLong": "يجب أن يكون اسم النادي أقل من 100 حرف",
-        "divisionRequired": "الفئة مطلوبة",
-        "categoryRequired": "التصنيف مطلوب",
-        "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
-        "emailRequired": "البريد الإلكتروني مطلوب",
-        "phoneNumberInvalid": "يرجى إدخال رقم هاتف صالح",
-        "phoneNumberRequired": "رقم الهاتف مطلوب",
-        "privacyAgreementRequired": "يجب الموافقة على سياسة الخصوصية",
-        "teamLeaderNameRequired": "اسم قائد الفريق مطلوب",
-        "teamLeaderNameTooLong": "يجب أن يكون الاسم أقل من 100 حرف",
-        "nameRequired": "اسم الفريق مطلوب",
-        "nameTooLong": "يجب أن يكون اسم الفريق أقل من 50 حرف",
-        "tournamentRequired": "البطولة مطلوبة",
-        "fieldRequired": "هذا الحقل مطلوب"
-      },
+      "enterContactDetails": "أدخل تفاصيل الاتصال لقائد الفريق",
+      "enterTeamDetails": "أدخل معلومات فريقك",
+      "fillOutForm": "املأ النموذج أدناه لتسجيل فريقك",
+      "name": "اسم الفريق",
       "placeholders": {
         "clubName": "أدخل اسم ناديك",
+        "name": "أدخل اسم فريقك",
         "teamLeaderEmail": "أدخل عنوان البريد الإلكتروني",
         "teamLeaderName": "أدخل الاسم الكامل لقائد الفريق",
-        "teamLeaderPhone": "أدخل رقم الهاتف",
-        "name": "أدخل اسم فريقك"
+        "teamLeaderPhone": "أدخل رقم الهاتف"
       },
       "privacyAgreement": "أوافق على سياسة الخصوصية وشروط الخدمة",
       "privacyPolicy": "سياسة الخصوصية",
-      "agreeToPrivacyPolicy": "أوافق على سياسة الخصوصية",
       "readAndAccept": "يرجى قراءة وقبول سياسة الخصوصية للمتابعة",
+      "selectCategory": "اختر فئة",
       "selectDivision": "اختر فئة",
       "selectTournament": "اختر بطولة",
+      "selectTournamentDetails": "اختر تفاصيل البطولة",
       "teamInfo": "الفريق",
       "teamLeaderEmail": "بريد قائد الفريق الإلكتروني",
       "teamLeaderInfo": "قائد الفريق",
       "teamLeaderName": "اسم قائد الفريق",
       "teamLeaderPhone": "هاتف قائد الفريق",
-      "name": "اسم الفريق",
-      "tournament": "البطولة",
-      "category": "الفئة",
-      "selectCategory": "اختر فئة",
       "teamRegistration": "تسجيل الفريق",
-      "fillOutForm": "املأ النموذج أدناه لتسجيل فريقك",
-      "selectTournamentDetails": "اختر تفاصيل البطولة",
-      "completeAllThreeFields": "يرجى إكمال جميع الحقول الثلاثة أدناه للمتابعة",
-      "enterTeamDetails": "أدخل معلومات فريقك",
-      "enterContactDetails": "أدخل تفاصيل الاتصال لقائد الفريق"
+      "tournament": "البطولة"
     },
     "getStarted": {
-      "description": "مستعد للانضمام إلى بطولة؟ انقر على زر 'إضافة فريق' أعلاه لتسجيل فريقك وابدأ المنافسة!",
+      "description": "مستعد للانضمام إلى بطولة؟ انقر على زر 'إضافة' أعلاه لتسجيل فريقك وابدأ اللعب!",
       "title": "ابدأ بتسجيل الفريق"
     },
     "noTeamSelected": "لم يتم اختيار فريق. اختر فريقاً على اليسار، أو",
     "noTeams": "لم يتم تسجيل أي فرق بعد. كن أول من يسجل فريقك للبطولات القادمة!",
-    "notifications": {
-      "registrationError": "فشل في تسجيل الفريق",
-      "registrationErrorDesc": "حدث خطأ أثناء تسجيل فريقك. يرجى المحاولة مرة أخرى.",
-      "registrationSuccess": "تم تسجيل الفريق بنجاح",
-      "registrationSuccessDesc": "تم تسجيل فريقك بنجاح.",
-      "updateError": "فشل في تحديث الفريق",
-      "updateErrorDesc": "حدث خطأ أثناء تحديث فريقك. يرجى المحاولة مرة أخرى.",
-      "updateSuccess": "تم تحديث الفريق بنجاح",
-      "updateSuccessDesc": "تم تحديث فريقك بنجاح."
-    },
     "title": "الفرق"
   },
   "tournaments": {
     "deleteTournament": "حذف البطولة",
-    "title": "البطولات",
-    "name": "الاسم",
-    "location": "الموقع",
-    "startDate": "تاريخ البداية",
     "endDate": "تاريخ النهاية",
+    "form": {
+      "basicInformation": "المعلومات الأساسية",
+      "categories": "الفئات",
+      "dates": "تواريخ البطولة",
+      "divisions": "الدرجات",
+      "endDate": "تاريخ النهاية",
+      "enterBasicDetails": "أدخل اسم البطولة والموقع",
+      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة",
+      "location": "الموقع",
+      "name": "اسم البطولة",
+      "selectCategories": "حدد الفئات العمرية التي ستشارك",
+      "selectDates": "حدد تاريخ البداية والنهاية للبطولة",
+      "selectDivisions": "حدد الدرجات التي ستشارك",
+      "selected": "محدد",
+      "startDate": "تاريخ البداية",
+      "tournamentRegistration": "تسجيل البطولة"
+    },
+    "location": "الموقع",
+    "name": "الاسم",
     "noTournaments": "لا توجد بطولات",
     "noTournamentsDescription": "لم يتم إنشاء أي بطولات بعد. أنشئ بطولتك الأولى للبدء!",
-    "form": {
-      "name": "اسم البطولة",
-      "location": "الموقع",
-      "startDate": "تاريخ البداية",
-      "endDate": "تاريخ النهاية",
-      "basicInformation": "المعلومات الأساسية",
-      "enterBasicDetails": "أدخل اسم البطولة والموقع",
-      "dates": "تواريخ البطولة",
-      "selectDates": "حدد تاريخ البداية والنهاية للبطولة",
-      "divisions": "الدرجات",
-      "selectDivisions": "حدد الدرجات التي ستشارك",
-      "categories": "الفئات",
-      "selectCategories": "حدد الفئات العمرية التي ستشارك",
-      "selected": "محدد",
-      "tournamentRegistration": "تسجيل البطولة",
-      "fillOutForm": "املأ النموذج أدناه لإنشاء بطولة جديدة",
-      "errors": {
-        "nameRequired": "اسم البطولة مطلوب",
-        "nameTooLong": "يجب أن يكون اسم البطولة أقل من 100 حرف",
-        "locationRequired": "الموقع مطلوب",
-        "locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",
-        "startDateRequired": "تاريخ البداية مطلوب",
-        "endDateRequired": "تاريخ النهاية مطلوب",
-        "divisionsRequired": "مطلوب درجة واحدة على الأقل",
-        "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
-        "fieldRequired": "هذا الحقل مطلوب"
-      },
-      "notifications": {
-        "registrationError": "فشل في تسجيل البطولة",
-        "registrationErrorDesc": "حدث خطأ أثناء تسجيل البطولة. يرجى المحاولة مرة أخرى.",
-        "registrationSuccess": "تم تسجيل البطولة بنجاح",
-        "registrationSuccessDesc": "تم تسجيل البطولة بنجاح.",
-        "updateError": "فشل في تحديث البطولة",
-        "updateErrorDesc": "حدث خطأ أثناء تحديث البطولة. يرجى المحاولة مرة أخرى.",
-        "updateSuccess": "تم تحديث البطولة بنجاح",
-        "updateSuccessDesc": "تم تحديث البطولة بنجاح."
-      }
-    }
-  },
-  "divisions": {
-    "PREMIER_DIVISION": "الدرجة الأولى",
-    "FIRST_DIVISION": "الدرجة الثانية",
-    "SECOND_DIVISION": "الدرجة الثالثة",
-    "THIRD_DIVISION": "الدرجة الرابعة",
-    "FOURTH_DIVISION": "الدرجة الخامسة",
-    "FIFTH_DIVISION": "الدرجة السادسة"
+    "startDate": "تاريخ البداية",
+    "title": "البطولات"
   }
 }

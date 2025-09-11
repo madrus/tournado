@@ -1,5 +1,12 @@
 import { type FirebaseApp, initializeApp } from 'firebase/app'
-import { type Auth, getAuth, GoogleAuthProvider } from 'firebase/auth'
+import {
+  type Auth,
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  type UserCredential,
+} from 'firebase/auth'
 
 import type { FirebaseConfig } from './types'
 
@@ -48,5 +55,11 @@ if (typeof window !== 'undefined') {
   }
 }
 
-export { auth, firebaseApp, googleProvider }
-export type { Auth, FirebaseApp, GoogleAuthProvider }
+export {
+  auth,
+  firebaseApp,
+  googleProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+}
+export type { Auth, FirebaseApp, GoogleAuthProvider, UserCredential }

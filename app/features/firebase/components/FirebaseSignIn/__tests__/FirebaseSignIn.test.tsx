@@ -80,9 +80,9 @@ describe('FirebaseSignIn', () => {
     render(<FirebaseSignIn />)
 
     expect(
-      screen.getByRole('button', { name: /continue with google/i })
+      screen.getByRole('button', { name: 'auth.firebase.continueWithGoogle' })
     ).toBeInTheDocument()
-    expect(screen.getByText('Continue with Google')).toBeInTheDocument()
+    expect(screen.getByText('auth.firebase.continueWithGoogle')).toBeInTheDocument()
   })
 
   test('displays loading state during authentication', async () => {
@@ -93,11 +93,13 @@ describe('FirebaseSignIn', () => {
 
     render(<FirebaseSignIn />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     fireEvent.click(button)
 
     // Should show loading state
-    expect(screen.getByText('Signing in...')).toBeInTheDocument()
+    expect(screen.getByText('auth.firebase.signingIn')).toBeInTheDocument()
     expect(button).toBeDisabled()
   })
 
@@ -112,7 +114,9 @@ describe('FirebaseSignIn', () => {
 
     render(<FirebaseSignIn redirectTo='/custom-redirect' />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     fireEvent.click(button)
 
     await waitFor(() => {
@@ -138,7 +142,9 @@ describe('FirebaseSignIn', () => {
 
     render(<FirebaseSignIn />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     fireEvent.click(button)
 
     await waitFor(() => {
@@ -152,7 +158,9 @@ describe('FirebaseSignIn', () => {
   test('applies variants and custom className correctly', () => {
     render(<FirebaseSignIn variant='outline' size='lg' className='custom-class' />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     expect(button).toHaveClass('custom-class')
   })
 
@@ -167,7 +175,9 @@ describe('FirebaseSignIn', () => {
 
     render(<FirebaseSignIn />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     fireEvent.click(button)
 
     // Should create form with default redirect value
@@ -187,7 +197,9 @@ describe('FirebaseSignIn', () => {
 
     render(<FirebaseSignIn />)
 
-    const button = screen.getByRole('button', { name: /continue with google/i })
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
     fireEvent.click(button)
 
     // Should create and submit form without client-side error

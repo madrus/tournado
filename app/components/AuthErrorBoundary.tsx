@@ -11,13 +11,13 @@ import { ErrorRecoveryLink } from './PrefetchLink'
 function getErrorMessageKey(error: ErrorResponse): string {
   switch (error.status) {
     case 404:
-      return 'auth.errors.notFound'
+      return 'messages.auth.notFound'
     case 401:
-      return 'auth.errors.unauthorized'
+      return 'messages.auth.unauthorized'
     case 403:
-      return 'auth.errors.forbidden'
+      return 'messages.auth.forbidden'
     default:
-      return 'auth.errors.unexpectedError'
+      return 'messages.common.unexpectedError'
   }
 }
 
@@ -25,13 +25,13 @@ function getErrorMessageKey(error: ErrorResponse): string {
 function getErrorTitleKey(error: ErrorResponse): string {
   switch (error.status) {
     case 404:
-      return 'errors.notFoundTitle'
+      return 'messages.common.notFoundTitle'
     case 401:
-      return 'auth.errors.unauthorizedTitle'
+      return 'messages.auth.unauthorizedTitle'
     case 403:
-      return 'auth.errors.forbiddenTitle'
+      return 'messages.auth.forbiddenTitle'
     default:
-      return 'errors.errorTitle'
+      return 'messages.common.errorTitle'
   }
 }
 
@@ -70,11 +70,11 @@ export function AuthErrorBoundary(): JSX.Element {
     <div className='flex h-full items-center justify-center'>
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-          {t('errors.errorTitle')}
+          {t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter' data-testid='error-paragraph'>
-          {t('auth.errors.unexpectedError')}{' '}
-          {error instanceof Error ? error.message : t('auth.errors.unknownError')}
+          {t('messages.common.unexpectedError')}{' '}
+          {error instanceof Error ? error.message : t('messages.common.unknownError')}
         </p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
           {t('common.backToHome')}

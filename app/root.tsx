@@ -216,7 +216,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   useAuthStoreHydration()
   useSettingsStoreHydration()
 
-  const { setAuth } = useAuthStore()
+  const { setUser, setFirebaseUser } = useAuthStore()
   const { setAvailableOptionsField } = useTeamFormStore()
   const {
     setTheme,
@@ -238,8 +238,15 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
   // Update auth store only on client-side after hydration
   useEffect(() => {
-    setAuth(authenticated, username)
-  }, [authenticated, username, setAuth])
+    if (user) {
+      setUser(user)
+      // We don't have Firebase user data in the loader, so we set it to null
+      setFirebaseUser(null)
+    } else {
+      setUser(null)
+      setFirebaseUser(null)
+    }
+  }, [user, setUser, setFirebaseUser])
 
   // Initialize theme store with server-side values
   useEffect(() => {
@@ -281,7 +288,9 @@ export function ErrorBoundary(): JSX.Element {
   useAuthStoreHydration()
   useSettingsStoreHydration()
 
-  const { authenticated, username } = useAuthStore()
+  const { user } = useAuthStore()
+  const authenticated = !!user
+  const username = user?.email ?? ''
   const { theme } = useSettingsStore()
 
   // Use Dutch for error boundary fallback

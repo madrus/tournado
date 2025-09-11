@@ -85,7 +85,7 @@ describe('i18n React Integration', () => {
 
       render(
         <I18nextProvider i18n={i18n}>
-          <SimpleTranslationTest translationKey='auth.errors.passwordRequired' />
+          <SimpleTranslationTest translationKey='messages.auth.passwordRequired' />
         </I18nextProvider>
       )
 

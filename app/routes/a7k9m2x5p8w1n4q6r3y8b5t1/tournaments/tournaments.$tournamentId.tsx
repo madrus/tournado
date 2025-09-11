@@ -218,8 +218,8 @@ export default function EditTournamentPage(): JSX.Element {
     if (success === 'created') {
       // Smooth scroll to top for better UX after successful create
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('tournaments.form.notifications.registrationSuccess'), {
-        description: t('tournaments.form.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.tournament.registrationSuccess'), {
+        description: t('messages.tournament.registrationSuccessDesc'),
       })
 
       // Remove the success parameter from URL
@@ -229,8 +229,8 @@ export default function EditTournamentPage(): JSX.Element {
     } else if (success === 'updated') {
       // Smooth scroll to top for better UX after successful update
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('tournaments.form.notifications.updateSuccess'), {
-        description: t('tournaments.form.notifications.updateSuccessDesc'),
+      toast.success(t('messages.tournament.updateSuccess'), {
+        description: t('messages.tournament.updateSuccessDesc'),
       })
 
       // Sync the store with latest loader data so UI reflects persisted update

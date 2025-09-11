@@ -2,8 +2,6 @@
 import { faker } from '@faker-js/faker'
 import type { User } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
-
 import { prisma } from '../../app/db.server'
 
 // Clean database for tests - removes test data but preserves auth users
@@ -31,7 +29,6 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
     await prisma.team.deleteMany()
     await prisma.tournament.deleteMany()
     await prisma.teamLeader.deleteMany()
-    await prisma.password.deleteMany()
     await prisma.user.deleteMany()
   } catch (error) {
     console.error('Error completely cleaning database:', error)
@@ -41,11 +38,9 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
 
 export async function createUser(
   userData: Pick<User, 'firstName' | 'lastName' | 'email' | 'role'> & {
-    password: string
+    firebaseUid?: string
   }
 ): Promise<User> {
-  const hashedPassword = await bcrypt.hash(userData.password, 10)
-
   return prisma.user.create({
     // eslint-disable-next-line id-blacklist
     data: {
@@ -53,11 +48,8 @@ export async function createUser(
       lastName: userData.lastName,
       email: userData.email,
       role: userData.role,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
+      firebaseUid:
+        userData.firebaseUid || `test-firebase-${faker.string.alphanumeric(8)}`,
     },
   })
 }
@@ -83,7 +75,6 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
     lastName: 'Manager',
     email,
     role: 'MANAGER',
-    password: 'MyReallyStr0ngPassw0rd!!!',
   })
 
   return {
@@ -100,7 +91,6 @@ export async function createAdminUser(): Promise<User> {
     lastName: 'Admin',
     email: adminEmail,
     role: 'ADMIN',
-    password: 'MyReallyStr0ngPassw0rd!!!',
   })
 }
 
@@ -112,7 +102,6 @@ export async function createRefereeUser(): Promise<User> {
     lastName: 'Referee',
     email: refereeEmail,
     role: 'REFEREE',
-    password: 'MyReallyStr0ngPassw0rd!!!',
   })
 }
 

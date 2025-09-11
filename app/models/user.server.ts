@@ -1,7 +1,5 @@
 import type { User } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
-
 import { prisma } from '~/db.server'
 
 export type { User } from '@prisma/client'
@@ -12,59 +10,12 @@ export const getUserById = async (id: User['id']): Promise<User | null> =>
 export const getUserByEmail = async (email: User['email']): Promise<User | null> =>
   prisma.user.findUnique({ where: { email } })
 
-export async function createUser(
-  email: User['email'],
-  password: string,
-  firstName: User['firstName'],
-  lastName: User['lastName'],
-  role: User['role']
-): Promise<User> {
-  const hashedPassword = await bcrypt.hash(password, 10)
-
-  return prisma.user.create({
-    // eslint-disable-next-line id-blacklist
-    data: {
-      email,
-      firstName,
-      lastName,
-      role,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
-    },
-  })
-}
+// Legacy createUser function removed - use Firebase authentication instead
 
 export const deleteUserByEmail = async (email: User['email']): Promise<User> =>
   prisma.user.delete({ where: { email } })
 
-export async function verifySignin(
-  email: User['email'],
-  password: string
-): Promise<Omit<User & { password: { hash: string } }, 'password'> | null> {
-  const userWithPassword = await prisma.user.findUnique({
-    where: { email },
-    include: {
-      password: true,
-    },
-  })
-
-  if (!userWithPassword || !userWithPassword.password) {
-    return null
-  }
-
-  const isValid = await bcrypt.compare(password, userWithPassword.password.hash)
-
-  if (!isValid) {
-    return null
-  }
-
-  const { password: _password, ...userWithoutPassword } = userWithPassword
-
-  return userWithoutPassword
-}
+// Legacy verifySignin function removed - use Firebase authentication instead
 
 export async function createUserFromFirebase({
   firebaseUid,
@@ -81,7 +32,7 @@ export async function createUserFromFirebase({
   return prisma.user.create({
     // eslint-disable-next-line id-blacklist
     data: {
-      firebaseUid,
+      firebaseUid, // Now required field
       email,
       firstName: firstName || 'User',
       lastName: lastName || '',
@@ -122,3 +73,18 @@ export async function updateUserFirebaseData({
     data: updateData,
   })
 }
+
+export const getAllUsers = async (): Promise<User[]> =>
+  prisma.user.findMany({
+    orderBy: { createdAt: 'desc' },
+  })
+
+export const updateUserRole = async (
+  userId: User['id'],
+  role: User['role']
+): Promise<User> =>
+  prisma.user.update({
+    where: { id: userId },
+    // eslint-disable-next-line id-blacklist
+    data: { role },
+  })

@@ -15,7 +15,7 @@ const mockUser: User = {
   firstName: 'Admin',
   lastName: 'User',
   role: 'ADMIN',
-  firebaseUid: null,
+  firebaseUid: 'test-firebase-uid',
   createdAt: new Date(),
   updatedAt: new Date(),
 }

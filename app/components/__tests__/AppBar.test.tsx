@@ -113,7 +113,7 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.titles.teams')
       expect(menuLabels).toContain('common.titles.about')
       expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
-      expect(menuLabels).toContain('auth.signin')
+      expect(menuLabels).toContain('common.auth.signIn')
 
       // Should NOT see admin or authenticated-only items (they get filtered out)
       expect(menuLabels).not.toContain('common.titles.adminPanel')
@@ -164,7 +164,7 @@ describe('AppBar Context Menu', () => {
       firstName: 'John',
       lastName: 'Doe',
       role: 'PUBLIC',
-      firebaseUid: null,
+      firebaseUid: 'test-firebase-uid',
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -229,7 +229,7 @@ describe('AppBar Context Menu', () => {
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
-      firebaseUid: null,
+      firebaseUid: 'test-firebase-uid',
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -339,7 +339,7 @@ describe('AppBar Context Menu', () => {
         firstName: 'Admin',
         lastName: 'User',
         role: 'ADMIN',
-        firebaseUid: null,
+        firebaseUid: 'test-firebase-uid',
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -371,7 +371,7 @@ describe('AppBar Context Menu', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
-          firebaseUid: null,
+          firebaseUid: 'test-firebase-uid',
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -398,7 +398,7 @@ describe('AppBar Context Menu', () => {
         firstName: 'Admin',
         lastName: 'User',
         role: 'ADMIN',
-        firebaseUid: null,
+        firebaseUid: 'test-firebase-uid',
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -438,7 +438,7 @@ describe('AppBar Context Menu', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
-          firebaseUid: null,
+          firebaseUid: 'test-firebase-uid',
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -508,7 +508,7 @@ describe('AppBar Context Menu', () => {
       const menuLabels = Array.from(menuItems).map(item => item.textContent)
 
       const aboutIndex = menuLabels.indexOf('common.titles.about')
-      const signInIndex = menuLabels.indexOf('auth.signin')
+      const signInIndex = menuLabels.indexOf('common.auth.signIn')
       const languageIndex = menuLabels.indexOf('common.language') // Generic language menu, not individual language name
 
       // About should come before Sign In and Language
@@ -545,7 +545,7 @@ describe('AppBar Context Menu', () => {
             firstName: 'Admin',
             lastName: 'User',
             role: 'ADMIN' as const,
-            firebaseUid: null,
+            firebaseUid: 'test-firebase-uid',
             createdAt: new Date(),
             updatedAt: new Date(),
           },

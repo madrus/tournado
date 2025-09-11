@@ -1,4 +1,5 @@
 import { type JSX, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { signInWithPopup } from 'firebase/auth'
 
@@ -19,6 +20,7 @@ export function FirebaseSignIn({
   variant = 'default',
   size = 'md',
 }: FirebaseSignInProps): JSX.Element {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -96,7 +98,7 @@ export function FirebaseSignIn({
             />
           </svg>
         )}
-        {loading ? 'Signing in...' : 'Continue with Google'}
+        {loading ? t('auth.firebase.signingIn') : t('auth.firebase.continueWithGoogle')}
       </button>
       {error ? (
         <div className='text-sm text-red-600 dark:text-red-400'>{error}</div>

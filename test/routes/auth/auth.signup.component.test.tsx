@@ -17,12 +17,30 @@ type ActionData = {
   [key: string]: unknown
 }
 
-// Mock the SignUp component
-vi.mock('~/components/auth', () => ({
-  SignUp: ({ actionData }: { actionData?: ActionData }) => (
-    <div data-testid='signup-component'>
-      <div data-testid='signup-action-data'>
-        {actionData === undefined ? 'null' : JSON.stringify(actionData)}
+// Mock the FirebaseSignIn component (Google OAuth)
+vi.mock('~/features/firebase/components/FirebaseSignIn', () => ({
+  FirebaseSignIn: ({ redirectTo }: { redirectTo?: string }) => (
+    <div data-testid='firebase-signin-component'>
+      <div data-testid='firebase-redirect-data'>
+        {redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
+      </div>
+    </div>
+  ),
+}))
+
+// Mock the FirebaseEmailSignIn component (Email/Password)
+vi.mock('~/features/firebase/components/FirebaseEmailSignIn', () => ({
+  FirebaseEmailSignIn: ({
+    mode,
+    redirectTo,
+  }: {
+    mode: string
+    redirectTo?: string
+  }) => (
+    <div data-testid='firebase-email-signin-component'>
+      <div data-testid='firebase-email-mode'>{mode}</div>
+      <div data-testid='firebase-email-redirect-data'>
+        {redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
       </div>
     </div>
   ),
@@ -34,6 +52,7 @@ vi.mock('react-router', async () => {
   return {
     ...actualRouter,
     useActionData: vi.fn(),
+    useLoaderData: vi.fn(),
   }
 })
 
@@ -52,8 +71,11 @@ describe('Auth SignUp Route Component', () => {
   })
 
   const renderSignupRoute = async (actionData?: ActionData) => {
-    const { useActionData } = await import('react-router')
+    const { useActionData, useLoaderData } = await import('react-router')
     vi.mocked(useActionData).mockReturnValue(actionData)
+    vi.mocked(useLoaderData).mockReturnValue({
+      redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+    })
 
     const router = createMemoryRouter(
       [
@@ -70,64 +92,67 @@ describe('Auth SignUp Route Component', () => {
     return render(<RouterProvider router={router} />)
   }
 
-  it('renders SignUp component', async () => {
+  it('renders Firebase SignUp components', async () => {
     cleanup()
     await renderSignupRoute()
 
-    expect(screen.getByTestId('signup-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-mode')).toHaveTextContent('signup')
   })
 
-  it('passes actionData to SignUp component', async () => {
+  it('passes redirectTo to Firebase components', async () => {
     cleanup()
-    const testActionData = {
-      errors: {
-        email: 'Email already exists',
-        password: 'Password too short',
-        firstName: null,
-        lastName: null,
-      },
-    }
+    await renderSignupRoute()
 
-    await renderSignupRoute(testActionData)
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    )
 
-    expect(screen.getByTestId('signup-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signup-action-data')).toHaveTextContent(
-      JSON.stringify(testActionData)
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-mode')).toHaveTextContent('signup')
+    expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
     )
   })
 
-  it('handles undefined actionData gracefully', async () => {
-    await renderSignupRoute(undefined)
+  it('handles null redirectTo gracefully', async () => {
+    cleanup()
+    const { useActionData, useLoaderData } = await import('react-router')
+    vi.mocked(useActionData).mockReturnValue(undefined)
+    vi.mocked(useLoaderData).mockReturnValue({
+      redirectTo: null,
+    })
 
-    expect(screen.getByTestId('signup-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signup-action-data')).toHaveTextContent('null')
+    const router = createMemoryRouter(
+      [
+        {
+          path: '/',
+          Component: SignupRoute,
+        },
+      ],
+      {
+        initialEntries: ['/'],
+      }
+    )
+
+    render(<RouterProvider router={router} />)
+
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-mode')).toHaveTextContent('signup')
   })
 
-  it('handles empty actionData', async () => {
-    await renderSignupRoute({})
+  it('renders with default redirect paths when no redirectTo provided', async () => {
+    cleanup()
+    await renderSignupRoute()
 
-    expect(screen.getByTestId('signup-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signup-action-data')).toHaveTextContent('{}')
-  })
-
-  it('passes complex actionData correctly', async () => {
-    const complexActionData = {
-      errors: {
-        firstName: 'firstNameRequired',
-        lastName: 'lastNameRequired',
-        email: 'invalidEmail',
-        password: 'passwordTooShort',
-      },
-      someOtherData: {
-        nested: 'value',
-      },
-    }
-
-    await renderSignupRoute(complexActionData)
-
-    expect(screen.getByTestId('signup-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signup-action-data')).toHaveTextContent(
-      JSON.stringify(complexActionData)
+    expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    )
+    expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
     )
   })
 })

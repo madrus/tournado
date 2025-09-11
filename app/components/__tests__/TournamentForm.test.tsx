@@ -35,7 +35,7 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => {
       // For error translation keys, return the actual message from TEST_TRANSLATIONS
-      if (key.startsWith('tournaments.form.errors.')) {
+      if (key.startsWith('messages.tournament.')) {
         return TEST_TRANSLATIONS[key as keyof typeof TEST_TRANSLATIONS] || key
       }
 
@@ -615,12 +615,12 @@ describe('TournamentForm Component', () => {
       // Wait for validation errors to appear (as actual translated messages from TEST_TRANSLATIONS)
       await waitFor(() => {
         expect(
-          screen.getByText(TEST_TRANSLATIONS['tournaments.form.errors.nameRequired'])
+          screen.getByText(TEST_TRANSLATIONS['messages.tournament.nameRequired'])
         ).toBeInTheDocument()
       })
 
       expect(
-        screen.getByText(TEST_TRANSLATIONS['tournaments.form.errors.locationRequired'])
+        screen.getByText(TEST_TRANSLATIONS['messages.tournament.locationRequired'])
       ).toBeInTheDocument()
     })
 

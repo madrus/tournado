@@ -1,12 +1,13 @@
 /* eslint-disable id-blacklist */
 /* eslint-disable no-console */
 // learn more: https://fly.io/docs/reference/configuration/#services-http_checks
-import type { JSX } from 'react'
+import { type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
   useActionData,
+  useFetcher,
   useLoaderData,
 } from 'react-router'
 
@@ -193,6 +194,49 @@ export default function HealthcheckPage(): JSX.Element | null {
     | { ok: boolean; decoded?: unknown; error?: string }
     | undefined
   const { i18n } = useTranslation()
+  const fetcher = useFetcher<{ ok: boolean; decoded?: unknown; error?: string }>()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [helper, setHelper] = useState<string | null>(null)
+
+  const isLocalDev =
+    data.serverEnv === 'development' &&
+    (data.requestHost?.startsWith('localhost') ||
+      data.requestHost?.startsWith('127.0.0.1'))
+
+  const handleUseCurrentUserToken = async (): Promise<void> => {
+    try {
+      setHelper(null)
+      const mod = await import('~/features/firebase/client')
+      const auth = mod.auth as import('firebase/auth').Auth | null
+      if (!auth) {
+        setHelper('Firebase client not configured')
+        return
+      }
+      let user = auth.currentUser
+      if (!user) {
+        // Wait briefly for auth state to restore
+        const authMod = await import('firebase/auth')
+        const { onAuthStateChanged } = authMod
+        user = await new Promise<import('firebase/auth').User | null>(resolve => {
+          const timeout = setTimeout(() => resolve(null), 2000)
+          const unsub = onAuthStateChanged(auth, u => {
+            clearTimeout(timeout)
+            unsub()
+            resolve(u)
+          })
+        })
+      }
+      if (!user) {
+        setHelper('No signed-in user found')
+        return
+      }
+      const token = await user.getIdToken(true)
+      if (inputRef.current) inputRef.current.value = token
+      setHelper('Filled token from current user')
+    } catch (err) {
+      setHelper(err instanceof Error ? err.message : 'Failed to get ID token')
+    }
+  }
 
   // Only dev/test should render this page
   if (data.serverEnv === 'production') return null
@@ -243,7 +287,7 @@ export default function HealthcheckPage(): JSX.Element | null {
 
       <div className='mt-6'>
         <h2 className='mb-2 text-lg font-semibold'>Env Presence</h2>
-        <pre className='bg-background text-foreground border-border overflow-auto rounded-md border p-3 text-sm'>
+        <pre className='text-foreground border-border overflow-auto rounded-md border bg-white p-3 text-sm dark:bg-slate-950'>
           {JSON.stringify(
             { adminEnv: data.adminEnv, clientEnv: data.clientEnv },
             null,
@@ -254,23 +298,37 @@ export default function HealthcheckPage(): JSX.Element | null {
 
       <div className='mt-6'>
         <h2 className='mb-2 text-lg font-semibold'>Verify ID Token</h2>
-        <form method='post' className='flex flex-col gap-2'>
+        <fetcher.Form method='post' className='flex flex-col gap-2'>
           <input
             name='idToken'
             type='text'
             placeholder='Paste Firebase ID token'
+            ref={inputRef}
             className='bg-background text-foreground border-border focus:ring-primary/50 w-full flex-1 rounded-md border px-3 py-2 shadow-sm outline-none focus:ring-2'
           />
-          <button
-            type='submit'
-            className='bg-brand-600 hover:bg-brand-700 w-fit rounded-md px-3 py-2 text-sm font-medium text-white'
-          >
-            Verify
-          </button>
-        </form>
-        {actionData ? (
-          <pre className='bg-background text-foreground border-border mt-4 w-fit overflow-auto rounded-md border p-3 text-sm'>
-            {JSON.stringify(actionData, null, 2)}
+          <div className='flex items-center gap-2'>
+            {isLocalDev ? (
+              <button
+                type='button'
+                onClick={handleUseCurrentUserToken}
+                className='bg-brand-50 text-brand-700 border-brand-600 hover:bg-brand-100 w-fit rounded-md border px-3 py-2 text-sm font-medium'
+                title='Fill with current user ID token'
+              >
+                Use current user token
+              </button>
+            ) : null}
+            <button
+              type='submit'
+              className='bg-brand-600 hover:bg-brand-700 w-fit rounded-md px-3 py-2 text-sm font-medium text-white'
+            >
+              Verify
+            </button>
+          </div>
+          {helper ? <p className='text-foreground/70 text-xs'>{helper}</p> : null}
+        </fetcher.Form>
+        {fetcher.data || actionData ? (
+          <pre className='text-foreground border-border mt-4 w-fit overflow-auto rounded-md border bg-white p-3 text-sm dark:bg-slate-950'>
+            {JSON.stringify(fetcher.data ?? actionData, null, 2)}
           </pre>
         ) : null}
       </div>

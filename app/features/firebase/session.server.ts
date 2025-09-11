@@ -43,6 +43,10 @@ export const createSessionFromFirebaseToken = async (
       isNewUser,
     }
   } catch (_error) {
+    if (process.env.NODE_ENV !== 'test') {
+      // eslint-disable-next-line no-console
+      console.error('[firebase-session] Failed to create session from token:', _error)
+    }
     return null
   }
 }

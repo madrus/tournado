@@ -10,19 +10,26 @@ import {
 
 import type { FirebaseConfig } from './types'
 
+// Prefer window.ENV (injected from server). Fallback to Vite's import.meta.env
+const getEnv = (key: keyof ReturnType<typeof import('~/utils/env.server').getEnv>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const w: any = typeof window !== 'undefined' ? window : undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const viteEnv: any = typeof import.meta !== 'undefined' ? import.meta.env : {}
+  return (
+    (w?.ENV?.[key] as string | undefined) ??
+    (viteEnv?.[key] as string | undefined) ??
+    ''
+  )
+}
+
 const firebaseConfig: FirebaseConfig = {
-  apiKey: typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_API_KEY || '' : '',
-  authDomain:
-    typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_AUTH_DOMAIN || '' : '',
-  projectId:
-    typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_PROJECT_ID || '' : '',
-  storageBucket:
-    typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_STORAGE_BUCKET || '' : '',
-  messagingSenderId:
-    typeof window !== 'undefined'
-      ? window.ENV?.VITE_FIREBASE_MESSAGING_SENDER_ID || ''
-      : '',
-  appId: typeof window !== 'undefined' ? window.ENV?.VITE_FIREBASE_APP_ID || '' : '',
+  apiKey: getEnv('VITE_FIREBASE_API_KEY' as never),
+  authDomain: getEnv('VITE_FIREBASE_AUTH_DOMAIN' as never),
+  projectId: getEnv('VITE_FIREBASE_PROJECT_ID' as never),
+  storageBucket: getEnv('VITE_FIREBASE_STORAGE_BUCKET' as never),
+  messagingSenderId: getEnv('VITE_FIREBASE_MESSAGING_SENDER_ID' as never),
+  appId: getEnv('VITE_FIREBASE_APP_ID' as never),
 }
 
 // Validate that all required config values are present
@@ -50,7 +57,7 @@ if (typeof window !== 'undefined') {
         prompt: 'select_account',
       })
     } catch (_error) {
-      // Firebase initialization failed - auth and googleProvider will remain null
+      // Firebase initialization failed - keep auth and googleProvider null
     }
   }
 }

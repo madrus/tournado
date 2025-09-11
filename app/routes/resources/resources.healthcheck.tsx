@@ -1,25 +1,279 @@
+/* eslint-disable id-blacklist */
 /* eslint-disable no-console */
 // learn more: https://fly.io/docs/reference/configuration/#services-http_checks
-import { type LoaderFunctionArgs } from 'react-router'
+import type { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import {
+  type ActionFunctionArgs,
+  type LoaderFunctionArgs,
+  useActionData,
+  useLoaderData,
+} from 'react-router'
 
 import { prisma } from '~/db.server'
+import { adminAuth, verifyIdToken } from '~/features/firebase/server'
+import { cn } from '~/utils/misc'
+import { getLatinTitleClass } from '~/utils/rtlUtils'
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response> => {
+type HealthData = {
+  serverEnv: string
+  initialized: boolean
+  projectId: string | null
+  adminEnv: {
+    FIREBASE_ADMIN_PROJECT_ID: boolean
+    FIREBASE_ADMIN_CLIENT_EMAIL: boolean
+    FIREBASE_ADMIN_PRIVATE_KEY: boolean
+  }
+  clientEnv: {
+    VITE_FIREBASE_API_KEY: boolean
+    VITE_FIREBASE_AUTH_DOMAIN: boolean
+    VITE_FIREBASE_PROJECT_ID: boolean
+    VITE_FIREBASE_APP_ID: boolean
+  }
+  infra: {
+    dbOk: boolean
+    selfOk: boolean
+  }
+  overallOk: boolean
+  timestamp: string
+  requestHost: string | null
+}
+
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<Response | HealthData> => {
+  const env = process.env.NODE_ENV || 'development'
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
+  const url = new URL('/', `http://${host}`)
+
+  // Production: keep fast plain probe for platform health checks
+  if (env === 'production') {
+    try {
+      await Promise.all([
+        prisma.user.count(),
+        fetch(url.toString(), { method: 'HEAD' }).then(r => {
+          if (!r.ok) return Promise.reject(r)
+        }),
+      ])
+      return new Response('OK')
+    } catch (error: unknown) {
+      console.log('healthcheck ❌', { error })
+      return new Response('ERROR', { status: 500 })
+    }
+  }
+
+  // Dev/Test: return combined app + Firebase health (HTML by default, JSON if requested)
+  let dbOk = false
+  let selfOk = false
+  try {
+    await prisma.user.count()
+    dbOk = true
+  } catch {
+    dbOk = false
+  }
+  try {
+    const r = await fetch(url.toString(), { method: 'HEAD' })
+    selfOk = r.ok
+  } catch {
+    selfOk = false
+  }
+
+  const data: HealthData = {
+    serverEnv: env,
+    initialized: Boolean(adminAuth),
+    projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || null,
+    adminEnv: {
+      FIREBASE_ADMIN_PROJECT_ID: Boolean(process.env.FIREBASE_ADMIN_PROJECT_ID),
+      FIREBASE_ADMIN_CLIENT_EMAIL: Boolean(process.env.FIREBASE_ADMIN_CLIENT_EMAIL),
+      FIREBASE_ADMIN_PRIVATE_KEY: Boolean(process.env.FIREBASE_ADMIN_PRIVATE_KEY),
+    },
+    clientEnv: {
+      VITE_FIREBASE_API_KEY: Boolean(process.env.VITE_FIREBASE_API_KEY),
+      VITE_FIREBASE_AUTH_DOMAIN: Boolean(process.env.VITE_FIREBASE_AUTH_DOMAIN),
+      VITE_FIREBASE_PROJECT_ID: Boolean(process.env.VITE_FIREBASE_PROJECT_ID),
+      VITE_FIREBASE_APP_ID: Boolean(process.env.VITE_FIREBASE_APP_ID),
+    },
+    infra: { dbOk, selfOk },
+    overallOk: Boolean(adminAuth) && dbOk && selfOk,
+    timestamp: new Date().toISOString(),
+    requestHost: host ?? null,
+  }
+
+  const accept = request.headers.get('accept') || ''
+  const wantsJson =
+    accept.includes('application/json') ||
+    new URL(request.url).searchParams.get('json') === '1'
+  if (wantsJson) return Response.json(data, { status: data.overallOk ? 200 : 500 })
+  return data
+}
+
+export const action = async ({
+  request,
+}: ActionFunctionArgs): Promise<
+  Response | { ok: boolean; decoded?: unknown; error?: string }
+> => {
+  const env = process.env.NODE_ENV || 'development'
+  if (env === 'production') return new Response('Not Found', { status: 404 })
+
+  if (!adminAuth) {
+    const payload = { ok: false, error: 'admin-not-initialized' }
+    const accept = request.headers.get('accept') || ''
+    if (accept.includes('application/json')) {
+      return Response.json(payload, { status: 500 })
+    }
+    return payload
+  }
+
+  let idToken: string | undefined
+  const contentType = request.headers.get('content-type') || ''
+  try {
+    if (contentType.includes('application/json')) {
+      const body = (await request.json()) as { idToken?: string }
+      idToken = body.idToken
+    } else {
+      const form = await request.formData()
+      idToken = (form.get('idToken') as string) || undefined
+    }
+  } catch {
+    /* ignore body parsing errors */
+  }
+
+  if (!idToken) {
+    const payload = { ok: false, error: 'missing-idToken' }
+    const accept = request.headers.get('accept') || ''
+    if (accept.includes('application/json')) {
+      return Response.json(payload, { status: 400 })
+    }
+    return payload
+  }
 
   try {
-    const url = new URL('/', `http://${host}`)
-    // if we can connect to the database and make a simple query
-    // and make a HEAD request to ourselves, then we're good.
-    await Promise.all([
-      prisma.user.count(),
-      fetch(url.toString(), { method: 'HEAD' }).then(r => {
-        if (!r.ok) return Promise.reject(r)
-      }),
-    ])
-    return new Response('OK')
-  } catch (error: unknown) {
-    console.log('healthcheck ❌', { error })
-    return new Response('ERROR', { status: 500 })
+    const decoded = await verifyIdToken(idToken)
+    const sanitized = {
+      uid: decoded.uid ?? null,
+      email: typeof decoded.email === 'string' ? decoded.email : null,
+      email_verified:
+        typeof decoded.email_verified === 'boolean' ? decoded.email_verified : null,
+      aud: typeof decoded.aud === 'string' ? decoded.aud : null,
+      iss: typeof decoded.iss === 'string' ? decoded.iss : null,
+      auth_time: typeof decoded.auth_time === 'number' ? decoded.auth_time : null,
+      iat: typeof decoded.iat === 'number' ? decoded.iat : null,
+      exp: typeof decoded.exp === 'number' ? decoded.exp : null,
+      sub: typeof decoded.sub === 'string' ? decoded.sub : null,
+      firebase:
+        decoded && decoded.firebase && typeof decoded.firebase === 'object'
+          ? {
+              sign_in_provider:
+                typeof decoded.firebase.sign_in_provider === 'string'
+                  ? decoded.firebase.sign_in_provider
+                  : null,
+            }
+          : null,
+    }
+    const payload = { ok: true, decoded: sanitized } as const
+    const accept = request.headers.get('accept') || ''
+    if (accept.includes('application/json')) {
+      return Response.json(payload, { status: 200 })
+    }
+    return payload
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'invalid-token'
+    const payload = { ok: false, error: message }
+    const accept = request.headers.get('accept') || ''
+    if (accept.includes('application/json')) {
+      return Response.json(payload, { status: 400 })
+    }
+    return payload
   }
+}
+
+export default function HealthcheckPage(): JSX.Element | null {
+  const data = useLoaderData() as HealthData
+  const actionData = useActionData() as
+    | { ok: boolean; decoded?: unknown; error?: string }
+    | undefined
+  const { i18n } = useTranslation()
+
+  // Only dev/test should render this page
+  if (data.serverEnv === 'production') return null
+
+  return (
+    <div className='text-foreground space-y-4 p-4 sm:p-6'>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+        App & Firebase Health (dev)
+      </h1>
+
+      <div className='flex items-center gap-3'>
+        <span>Overall:</span>
+        <span
+          className={cn(
+            'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
+            data.overallOk
+              ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+              : 'bg-red-500/10 text-red-600 dark:text-red-400'
+          )}
+        >
+          {data.overallOk ? 'OK' : 'ISSUES'}
+        </span>
+      </div>
+
+      <ul className='text-sm leading-6'>
+        <li>
+          <strong>Server env:</strong> {data.serverEnv}
+        </li>
+        <li>
+          <strong>Admin initialized:</strong> {String(data.initialized)}
+        </li>
+        <li>
+          <strong>Project ID:</strong> {data.projectId ?? 'null'}
+        </li>
+        <li>
+          <strong>DB reachable:</strong> {String(data.infra.dbOk)}
+        </li>
+        <li>
+          <strong>Self HEAD OK:</strong> {String(data.infra.selfOk)}
+        </li>
+        <li>
+          <strong>Timestamp:</strong> {data.timestamp}
+        </li>
+        <li>
+          <strong>Host:</strong> {data.requestHost ?? 'null'}
+        </li>
+      </ul>
+
+      <div className='mt-6'>
+        <h2 className='mb-2 text-lg font-semibold'>Env Presence</h2>
+        <pre className='bg-background text-foreground border-border overflow-auto rounded-md border p-3 text-sm'>
+          {JSON.stringify(
+            { adminEnv: data.adminEnv, clientEnv: data.clientEnv },
+            null,
+            2
+          )}
+        </pre>
+      </div>
+
+      <div className='mt-6'>
+        <h2 className='mb-2 text-lg font-semibold'>Verify ID Token</h2>
+        <form method='post' className='flex flex-col gap-2'>
+          <input
+            name='idToken'
+            type='text'
+            placeholder='Paste Firebase ID token'
+            className='bg-background text-foreground border-border focus:ring-primary/50 w-full flex-1 rounded-md border px-3 py-2 shadow-sm outline-none focus:ring-2'
+          />
+          <button
+            type='submit'
+            className='bg-brand-600 text-white hover:bg-brand-700 w-fit rounded-md px-3 py-2 text-sm font-medium'
+          >
+            Verify
+          </button>
+        </form>
+        {actionData ? (
+          <pre className='bg-background text-foreground border-border mt-4 w-fit overflow-auto rounded-md border p-3 text-sm'>
+            {JSON.stringify(actionData, null, 2)}
+          </pre>
+        ) : null}
+      </div>
+    </div>
+  )
 }

@@ -16,10 +16,11 @@ declare module '*.svg' {
   export default value
 }
 
-type OnAuthStateChanged = (
+type OnAuthStateChangedDual = ((
   auth: Auth,
   nextOrObserver: (user: FirebaseAuthUser | null) => unknown
-) => () => void
+) => () => void) &
+  ((nextOrObserver: (user: FirebaseAuthUser | null) => unknown) => () => void)
 
 type SignInWithPopup = (
   auth: Auth,
@@ -44,7 +45,7 @@ declare global {
   interface Window {
     playwrightTest?: boolean
     mockFirebaseAuth?: {
-      onAuthStateChanged?: OnAuthStateChanged
+      onAuthStateChanged?: OnAuthStateChangedDual
       signInWithPopup?: SignInWithPopup
       signOut?: SignOut
       signInWithEmailAndPassword?: SignInWithEmailAndPassword

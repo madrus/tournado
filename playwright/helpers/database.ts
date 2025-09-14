@@ -1,8 +1,16 @@
 /* eslint-disable no-console */
 import { faker } from '@faker-js/faker'
-import type { User } from '@prisma/client'
+import { PrismaClient, type User } from '@prisma/client'
 
-import { prisma } from '../../app/db.server'
+// Ensure Playwright helpers use the same DB as the E2E server
+// Fall back to the test DB path used by e2e-server.js
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1',
+    },
+  },
+})
 
 // Clean database for tests - removes test data but preserves auth users
 export const cleanDatabase = async (): Promise<void> => {

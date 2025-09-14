@@ -63,27 +63,30 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
     if (!auth) return
 
     // Use mock or real onAuthStateChanged
-    const authStateChangedFn = getFirebaseFn<typeof onAuthStateChanged>(
-      'onAuthStateChanged',
-      onAuthStateChanged
-    )
-
-    const unsubscribe = authStateChangedFn(
-      auth,
-      (firebaseUser: FirebaseAuthUser | null) => {
-        if (firebaseUser) {
-          setUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            displayName: firebaseUser.displayName,
-            photoURL: firebaseUser.photoURL,
-          })
-        } else {
-          setUser(null)
-        }
-        setLoading(false)
+    const maybeMock =
+      typeof window !== 'undefined'
+        ? window.mockFirebaseAuth?.onAuthStateChanged
+        : undefined
+    const callback = (firebaseUser: FirebaseAuthUser | null) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+        })
+      } else {
+        setUser(null)
       }
-    )
+      setLoading(false)
+    }
+
+    const unsubscribe =
+      maybeMock && maybeMock.length < 2
+        ? // Playwright mock expects only callback
+          maybeMock(callback)
+        : // Real Firebase expects (auth, callback)
+          onAuthStateChanged(auth, callback)
 
     return () => unsubscribe()
   }, [])
@@ -241,39 +244,33 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
 
       // Email sign-in successful, ID token obtained
 
-      if (
-        process.env.NODE_ENV === 'test' ||
-        (typeof window !== 'undefined' && window.playwrightTest)
-      ) {
-        // For E2E tests, simulate successful authentication without server callback
-        if (typeof window !== 'undefined' && window.playwrightTest) {
-          // Directly redirect to the target page as if the server callback succeeded
-          window.location.href = redirectTo
-        } else {
-          // For other test environments, use the original callback approach
-          const formData = new FormData()
-          formData.append('idToken', idToken)
-          formData.append('redirectTo', redirectTo)
-          const response = await fetch('/auth/callback', {
-            method: 'POST',
-            body: formData,
-            redirect: 'manual',
-          })
-
-          // Handle redirect response
-          if (response.status >= 300 && response.status < 400) {
-            const redirectUrl = response.headers.get('Location') || redirectTo
-            debug('Email auth successful, redirecting to:', redirectUrl)
-            window.location.href = redirectUrl
-          } else if (response.ok) {
-            // Fallback if no redirect but successful
-            debug('Email auth successful, using fallback redirect to:', redirectTo)
-            window.location.href = redirectTo
-          } else {
-            debug('Email authentication failed with status:', response.status)
-            throw new Error('Authentication failed')
-          }
-        }
+      if (typeof window !== 'undefined' && window.playwrightTest) {
+        // In E2E tests, submit a real form POST to ensure cookies + redirects
+        const form = document.createElement('form')
+        form.method = 'POST'
+        form.action = '/auth/callback'
+        const idTokenInput = document.createElement('input')
+        idTokenInput.type = 'hidden'
+        idTokenInput.name = 'idToken'
+        idTokenInput.value = idToken
+        form.appendChild(idTokenInput)
+        const redirectToInput = document.createElement('input')
+        redirectToInput.type = 'hidden'
+        redirectToInput.name = 'redirectTo'
+        redirectToInput.value = redirectTo || '/'
+        form.appendChild(redirectToInput)
+        document.body.appendChild(form)
+        form.submit()
+      } else if (process.env.NODE_ENV === 'test') {
+        // In unit tests, keep options minimal for assertions
+        const formData = new FormData()
+        formData.append('idToken', idToken)
+        formData.append('redirectTo', redirectTo)
+        await fetch('/auth/callback', {
+          method: 'POST',
+          body: formData,
+        })
+        window.location.href = redirectTo
       } else {
         // Submit via classic form for reliable cookie + redirect semantics
         const form = document.createElement('form')

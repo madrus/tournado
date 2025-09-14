@@ -47,23 +47,7 @@ let googleProvider: GoogleAuthProvider | null = null
 function ensureFirebaseInitialized(): void {
   if (typeof window === 'undefined') return
 
-  // Check if we're in a test environment with mocks
-  if (window.playwrightTest) {
-    debug('Playwright test detected, checking for mocks...')
-    debug('mockFirebaseAuth available:', Boolean(window.mockFirebaseAuth))
-
-    if (window.mockFirebaseAuth && !auth) {
-      debug('Using Firebase mocks for testing')
-      auth = window.mockFirebaseAuth as unknown as Auth
-      googleProvider = window.mockFirebaseModule?.GoogleAuthProvider
-        ? new window.mockFirebaseModule.GoogleAuthProvider()
-        : null
-      firebaseApp = null // Mock doesn't need a real app
-      return
-    }
-  }
-
-  // Initialize real Firebase if not in test mode and not already initialized
+  // Initialize real Firebase if not already initialized
   if (!auth && isFirebaseConfigured) {
     try {
       firebaseApp = initializeApp(firebaseConfig)
@@ -104,10 +88,3 @@ export {
   signInWithEmailAndPassword,
 }
 export type { Auth, FirebaseApp, GoogleAuthProvider, UserCredential }
-
-function debug(...args: unknown[]): void {
-  if (typeof window !== 'undefined' && window.playwrightTest) {
-    // eslint-disable-next-line no-console
-    console.log(...args)
-  }
-}

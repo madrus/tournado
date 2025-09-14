@@ -1,33 +1,19 @@
 import { useEffect, useState } from 'react'
 
-import {
-  type User as FirebaseAuthUser,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  signInWithPopup,
-  type UserCredential,
-} from 'firebase/auth'
+import { type User as FirebaseAuthUser, type UserCredential } from 'firebase/auth'
 
 import {
-  auth as clientAuth,
-  createUserWithEmailAndPassword,
-  googleProvider,
-  signInWithEmailAndPassword,
-} from '~/features/firebase/client'
+  getAuthAndProvider,
+  getEmailAuthFns,
+  getOnAuthStateChanged,
+  getSignInWithPopup,
+  getSignOut,
+} from '~/features/firebase/adapters/clientAuth'
 import type { FirebaseUser } from '~/features/firebase/types'
+import { debug } from '~/features/firebase/utils/env'
+import { buildFriendlyMessage } from '~/features/firebase/utils/errors'
 
-// Helper to get the correct function - either mock or real
-const getFirebaseFn = <T>(fnName: string, fallback: T): T => {
-  if (
-    typeof window !== 'undefined' &&
-    window.playwrightTest &&
-    window.mockFirebaseAuth
-  ) {
-    const mock = (window.mockFirebaseAuth as Record<string, unknown>)[fnName]
-    return (mock as T) || fallback
-  }
-  return fallback
-}
+import { postSignOut, submitAuthCallback } from '../adapters/redirect'
 
 export type UseFirebaseAuthReturn = {
   signInWithGoogle: (redirectTo?: string) => Promise<void>
@@ -59,14 +45,11 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
   }
 
   useEffect(() => {
-    const auth = clientAuth
+    const { auth } = getAuthAndProvider()
     if (!auth) return
 
-    // Use mock or real onAuthStateChanged
-    const maybeMock =
-      typeof window !== 'undefined'
-        ? window.mockFirebaseAuth?.onAuthStateChanged
-        : undefined
+    // Use mock-aware or real onAuthStateChanged
+    const onAuthStateChanged = getOnAuthStateChanged()
     const handleAuthStateChanged = (firebaseUser: FirebaseAuthUser | null) => {
       if (firebaseUser) {
         setUser({
@@ -81,12 +64,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       setLoading(false)
     }
 
-    const unsubscribe =
-      maybeMock && maybeMock.length < 2
-        ? // Playwright mock expects only callback
-          maybeMock(handleAuthStateChanged)
-        : // Real Firebase expects (auth, callback)
-          onAuthStateChanged(auth, handleAuthStateChanged)
+    const unsubscribe = onAuthStateChanged(auth, handleAuthStateChanged)
 
     return () => unsubscribe()
   }, [])
@@ -98,90 +76,30 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       setLoading(true)
       setError(null)
 
-      const auth = clientAuth
-      const provider = googleProvider
+      const { auth, provider } = getAuthAndProvider()
       if (!auth || !provider) {
         throw new Error('Firebase is not properly configured')
       }
 
-      const signInWithPopupFn = getFirebaseFn<typeof signInWithPopup>(
-        'signInWithPopup',
-        signInWithPopup
-      )
-      const result: UserCredential = await signInWithPopupFn(auth, provider)
+      const signInWithPopup = getSignInWithPopup()
+      const result: UserCredential = await signInWithPopup(auth, provider)
       const idToken = await result.user.getIdToken(true)
 
-      if (typeof window !== 'undefined' && window.playwrightTest) {
-        // In E2E tests, use redirect: 'manual' to capture Location header
-        const formData = new FormData()
-        formData.append('idToken', idToken)
-        formData.append('redirectTo', redirectTo)
-        const response = await fetch('/auth/callback', {
-          method: 'POST',
-          body: formData,
-          redirect: 'manual',
-        })
-
-        // Handle redirect response
-        if (response.status >= 300 && response.status < 400) {
-          const redirectUrl = response.headers.get('Location') || redirectTo
-          debug('Authentication successful, redirecting to:', redirectUrl)
-          window.location.href = redirectUrl
-        } else if (response.ok) {
-          // Fallback if no redirect but successful
-          debug('Authentication successful, using fallback redirect to:', redirectTo)
-          window.location.href = redirectTo
-        } else {
-          debug('Authentication failed with status:', response.status)
-          throw new Error('Authentication failed')
-        }
-      } else if (process.env.NODE_ENV === 'test') {
-        // In unit tests, keep options minimal for assertions
-        const formData = new FormData()
-        formData.append('idToken', idToken)
-        formData.append('redirectTo', redirectTo)
-        await fetch('/auth/callback', {
-          method: 'POST',
-          body: formData,
-        })
-        // Simulate redirect side-effect
-        window.location.href = redirectTo
-      } else {
-        // Prefer classic form submit to ensure Set-Cookie + redirect work consistently
-        const form = document.createElement('form')
-        form.method = 'POST'
-        form.action = '/auth/callback'
-        const idTokenInput = document.createElement('input')
-        idTokenInput.type = 'hidden'
-        idTokenInput.name = 'idToken'
-        idTokenInput.value = idToken
-        form.appendChild(idTokenInput)
-        const redirectToInput = document.createElement('input')
-        redirectToInput.type = 'hidden'
-        redirectToInput.name = 'redirectTo'
-        redirectToInput.value = redirectTo || '/'
-        form.appendChild(redirectToInput)
-        document.body.appendChild(form)
-        form.submit()
-      }
-    } catch (authError) {
+      await submitAuthCallback(idToken, redirectTo)
+    } catch (signInError) {
       // Firebase sign-in error
-      // Provide nicer error messages for common auth codes if available
       type FirebaseErrorLike = { code?: string }
-      const code = (authError as FirebaseErrorLike)?.code
-      const friendly =
-        code === 'auth/unauthorized-domain'
-          ? 'Unauthorized domain. Add localhost to Firebase Authorized domains.'
-          : code === 'auth/popup-blocked'
-            ? 'Sign-in popup was blocked. Please allow popups and try again.'
-            : code === 'auth/popup-closed-by-user'
-              ? 'Sign-in was cancelled. Please try again.'
-              : code === 'auth/network-request-failed'
-                ? 'Network error during sign-in. Check your connection.'
-                : authError instanceof Error
-                  ? authError.message
-                  : 'Sign-in failed'
-      setError(friendly)
+      const code = (signInError as FirebaseErrorLike)?.code
+      const messages = {
+        'auth/unauthorized-domain':
+          'Unauthorized domain. Add localhost to Firebase Authorized domains.',
+        'auth/popup-blocked':
+          'Sign-in popup was blocked. Please allow popups and try again.',
+        'auth/popup-closed-by-user': 'Sign-in was cancelled. Please try again.',
+        'auth/network-request-failed':
+          'Network error during sign-in. Check your connection.',
+      } as const
+      setError(buildFriendlyMessage(code, signInError, messages, 'Sign-in failed'))
       setLoading(false)
     }
   }
@@ -191,28 +109,14 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       setLoading(true)
       setError(null)
 
-      const auth = clientAuth
+      const { auth } = getAuthAndProvider()
       if (!auth) {
         throw new Error('Firebase is not properly configured')
       }
 
-      const signOutFn = getFirebaseFn<typeof firebaseSignOut>(
-        'signOut',
-        firebaseSignOut
-      )
-      await signOutFn(auth)
-
-      // Also sign out from server session
-      const signoutOptions: RequestInit = { method: 'POST' }
-      if (
-        process.env.NODE_ENV !== 'test' &&
-        !(typeof window !== 'undefined' && window.playwrightTest)
-      ) {
-        signoutOptions.credentials = 'same-origin'
-      }
-      await fetch('/auth/signout', signoutOptions)
-
-      window.location.href = '/auth/signin'
+      const signOutAction = getSignOut()
+      await signOutAction(auth)
+      await postSignOut()
     } catch (signOutError) {
       // Firebase sign-out error
       setError(signOutError instanceof Error ? signOutError.message : 'Sign-out failed')
@@ -230,82 +134,30 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       setLoading(true)
       setError(null)
 
-      const auth = clientAuth
+      const { auth } = getAuthAndProvider()
       if (!auth) {
         throw new Error('Firebase is not properly configured')
       }
 
-      const signInWithEmailFn = getFirebaseFn<typeof signInWithEmailAndPassword>(
-        'signInWithEmailAndPassword',
-        signInWithEmailAndPassword
-      )
-      const result: UserCredential = await signInWithEmailFn(auth, email, password)
+      const { signIn } = getEmailAuthFns()
+      const result: UserCredential = await signIn(auth, email, password)
       const idToken = await result.user.getIdToken(true)
 
       // Email sign-in successful, ID token obtained
 
-      if (typeof window !== 'undefined' && window.playwrightTest) {
-        // In E2E tests, submit a real form POST to ensure cookies + redirects
-        const form = document.createElement('form')
-        form.method = 'POST'
-        form.action = '/auth/callback'
-        const idTokenInput = document.createElement('input')
-        idTokenInput.type = 'hidden'
-        idTokenInput.name = 'idToken'
-        idTokenInput.value = idToken
-        form.appendChild(idTokenInput)
-        const redirectToInput = document.createElement('input')
-        redirectToInput.type = 'hidden'
-        redirectToInput.name = 'redirectTo'
-        redirectToInput.value = redirectTo || '/'
-        form.appendChild(redirectToInput)
-        document.body.appendChild(form)
-        form.submit()
-      } else if (process.env.NODE_ENV === 'test') {
-        // In unit tests, keep options minimal for assertions
-        const formData = new FormData()
-        formData.append('idToken', idToken)
-        formData.append('redirectTo', redirectTo)
-        await fetch('/auth/callback', {
-          method: 'POST',
-          body: formData,
-        })
-        window.location.href = redirectTo
-      } else {
-        // Submit via classic form for reliable cookie + redirect semantics
-        const form = document.createElement('form')
-        form.method = 'POST'
-        form.action = '/auth/callback'
-        const idTokenInput = document.createElement('input')
-        idTokenInput.type = 'hidden'
-        idTokenInput.name = 'idToken'
-        idTokenInput.value = idToken
-        form.appendChild(idTokenInput)
-        const redirectToInput = document.createElement('input')
-        redirectToInput.type = 'hidden'
-        redirectToInput.name = 'redirectTo'
-        redirectToInput.value = redirectTo || '/'
-        form.appendChild(redirectToInput)
-        document.body.appendChild(form)
-        form.submit()
-      }
-    } catch (authError) {
+      await submitAuthCallback(idToken, redirectTo)
+    } catch (emailSignInError) {
       // Firebase sign-in error
       type FirebaseErrorLike = { code?: string }
-      const code = (authError as FirebaseErrorLike)?.code
-      const friendly =
-        code === 'auth/invalid-credential' || code === 'auth/wrong-password'
-          ? 'Invalid email or password.'
-          : code === 'auth/user-not-found'
-            ? 'No account found for this email.'
-            : code === 'auth/too-many-requests'
-              ? 'Too many attempts. Please try again later.'
-              : code === 'auth/operation-not-allowed'
-                ? 'Email/password auth is disabled in Firebase.'
-                : authError instanceof Error
-                  ? authError.message
-                  : 'Sign-in failed'
-      setError(friendly)
+      const code = (emailSignInError as FirebaseErrorLike)?.code
+      const messages = {
+        'auth/invalid-credential': 'Invalid email or password.',
+        'auth/wrong-password': 'Invalid email or password.',
+        'auth/user-not-found': 'No account found for this email.',
+        'auth/too-many-requests': 'Too many attempts. Please try again later.',
+        'auth/operation-not-allowed': 'Email/password auth is disabled in Firebase.',
+      } as const
+      setError(buildFriendlyMessage(code, emailSignInError, messages, 'Sign-in failed'))
       setLoading(false)
     }
   }
@@ -319,77 +171,26 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       setLoading(true)
       setError(null)
 
-      const auth = clientAuth
+      const { auth } = getAuthAndProvider()
       if (!auth) {
         throw new Error('Firebase is not properly configured')
       }
 
-      const createUserFn = getFirebaseFn<typeof createUserWithEmailAndPassword>(
-        'createUserWithEmailAndPassword',
-        createUserWithEmailAndPassword
-      )
-      const result: UserCredential = await createUserFn(auth, email, password)
+      const { signUp } = getEmailAuthFns()
+      const result: UserCredential = await signUp(auth, email, password)
       const idToken = await result.user.getIdToken(true)
 
-      if (
-        process.env.NODE_ENV === 'test' ||
-        (typeof window !== 'undefined' && window.playwrightTest)
-      ) {
-        const formData = new FormData()
-        formData.append('idToken', idToken)
-        formData.append('redirectTo', redirectTo)
-        const response = await fetch('/auth/callback', {
-          method: 'POST',
-          body: formData,
-          redirect: 'manual',
-        })
-
-        // Handle redirect response
-        if (response.status >= 300 && response.status < 400) {
-          const redirectUrl = response.headers.get('Location') || redirectTo
-          debug('Email signup successful, redirecting to:', redirectUrl)
-          window.location.href = redirectUrl
-        } else if (response.ok) {
-          // Fallback if no redirect but successful
-          debug('Email signup successful, using fallback redirect to:', redirectTo)
-          window.location.href = redirectTo
-        } else {
-          debug('Email signup failed with status:', response.status)
-          throw new Error('Authentication failed')
-        }
-      } else {
-        // Submit via classic form for reliable cookie + redirect semantics
-        const form = document.createElement('form')
-        form.method = 'POST'
-        form.action = '/auth/callback'
-        const idTokenInput = document.createElement('input')
-        idTokenInput.type = 'hidden'
-        idTokenInput.name = 'idToken'
-        idTokenInput.value = idToken
-        form.appendChild(idTokenInput)
-        const redirectToInput = document.createElement('input')
-        redirectToInput.type = 'hidden'
-        redirectToInput.name = 'redirectTo'
-        redirectToInput.value = redirectTo || '/'
-        form.appendChild(redirectToInput)
-        document.body.appendChild(form)
-        form.submit()
-      }
-    } catch (authError) {
+      await submitAuthCallback(idToken, redirectTo)
+    } catch (signUpError) {
       // Firebase sign-up error
       type FirebaseErrorLike = { code?: string }
-      const code = (authError as FirebaseErrorLike)?.code
-      const friendly =
-        code === 'auth/email-already-in-use'
-          ? 'An account already exists for this email.'
-          : code === 'auth/weak-password'
-            ? 'Password is too weak.'
-            : code === 'auth/operation-not-allowed'
-              ? 'Email/password auth is disabled in Firebase.'
-              : authError instanceof Error
-                ? authError.message
-                : 'Sign-up failed'
-      setError(friendly)
+      const code = (signUpError as FirebaseErrorLike)?.code
+      const messages = {
+        'auth/email-already-in-use': 'An account already exists for this email.',
+        'auth/weak-password': 'Password is too weak.',
+        'auth/operation-not-allowed': 'Email/password auth is disabled in Firebase.',
+      } as const
+      setError(buildFriendlyMessage(code, signUpError, messages, 'Sign-up failed'))
       setLoading(false)
     }
   }
@@ -407,12 +208,5 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
     loading,
     error,
     clearError,
-  }
-}
-
-function debug(...args: unknown[]): void {
-  if (typeof window !== 'undefined' && window.playwrightTest) {
-    // eslint-disable-next-line no-console
-    console.log(...args)
   }
 }

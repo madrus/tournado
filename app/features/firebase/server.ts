@@ -161,7 +161,10 @@ export const createOrUpdateUser = async (
 export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
   // Handle mock tokens in test environment
   if (process.env.PLAYWRIGHT_TEST === 'true' && idToken.startsWith('mock-jwt-')) {
-    const email = idToken.split('-').pop() || 'test@example.com'
+    const prefix = 'mock-jwt-header.payload.signature-'
+    const email = idToken.startsWith(prefix)
+      ? idToken.slice(prefix.length)
+      : idToken.split('-').pop() || 'test@example.com'
 
     // Create a mock decoded token matching Firebase's DecodedIdToken format
     const mockDecodedToken: DecodedIdToken = {

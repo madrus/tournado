@@ -133,7 +133,7 @@ export default function AdminDashboard(): JSX.Element {
           >
             <div className='space-y-2'>
               <p>
-                <strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
+                <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
                 {teams.length}
               </p>
             </div>
@@ -155,7 +155,7 @@ export default function AdminDashboard(): JSX.Element {
             <div className='space-y-2'>
               <p>
                 <strong className='me-1'>
-                  {t('admin.tournaments.totalTournaments')}:
+                  {t('admin.tournament.totalTournaments')}:
                 </strong>
                 {tournaments.length}
               </p>

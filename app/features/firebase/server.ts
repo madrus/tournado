@@ -159,6 +159,36 @@ export const createOrUpdateUser = async (
  * @throws Error if token is invalid or verification fails
  */
 export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
+  // Handle mock tokens in test environment
+  if (process.env.PLAYWRIGHT_TEST === 'true' && idToken.startsWith('mock-jwt-')) {
+    const email = idToken.split('-').pop() || 'test@example.com'
+
+    // Create a mock decoded token matching Firebase's DecodedIdToken format
+    const mockDecodedToken: DecodedIdToken = {
+      iss: 'https://securetoken.google.com/mock-project',
+      aud: 'mock-project',
+      auth_time: Math.floor(Date.now() / 1000),
+      user_id: email.includes('admin') ? 'admin-user-id' : 'regular-user-id',
+      sub: email.includes('admin') ? 'admin-user-id' : 'regular-user-id',
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 3600,
+      email,
+      email_verified: true,
+      firebase: {
+        identities: {
+          'google.com': ['google-user-id'],
+          email: [email],
+        },
+        sign_in_provider: 'google.com',
+      },
+      uid: email.includes('admin') ? 'admin-user-id' : 'regular-user-id',
+      name: email.includes('admin') ? 'Test Admin' : 'Test Manager',
+      picture: undefined,
+    }
+
+    return mockDecodedToken
+  }
+
   if (!adminAuth) {
     throw new Error('Firebase Admin SDK not initialized')
   }

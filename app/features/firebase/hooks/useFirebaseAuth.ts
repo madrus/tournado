@@ -67,7 +67,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       typeof window !== 'undefined'
         ? window.mockFirebaseAuth?.onAuthStateChanged
         : undefined
-    const callback = (firebaseUser: FirebaseAuthUser | null) => {
+    const handleAuthStateChanged = (firebaseUser: FirebaseAuthUser | null) => {
       if (firebaseUser) {
         setUser({
           uid: firebaseUser.uid,
@@ -84,9 +84,9 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
     const unsubscribe =
       maybeMock && maybeMock.length < 2
         ? // Playwright mock expects only callback
-          maybeMock(callback)
+          maybeMock(handleAuthStateChanged)
         : // Real Firebase expects (auth, callback)
-          onAuthStateChanged(auth, callback)
+          onAuthStateChanged(auth, handleAuthStateChanged)
 
     return () => unsubscribe()
   }, [])

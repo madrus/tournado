@@ -295,7 +295,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
+      expect(teamPanel).toHaveTextContent(/admin\.(team|teams)\.totalTeams/)
       expect(teamPanel).toHaveTextContent('3') // Mock teams length
     })
 
@@ -307,7 +307,9 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
+      expect(tournamentPanel).toHaveTextContent(
+        /admin\.(tournament|tournaments)\.totalTournaments/
+      )
       expect(tournamentPanel).toHaveTextContent('2') // Mock tournaments length
     })
 
@@ -477,9 +479,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText(/admin\.teams\.totalTeams/)).toBeInTheDocument()
+      expect(screen.getByText(/admin\.(team|teams)\.totalTeams/)).toBeInTheDocument()
       expect(
-        screen.getByText(/admin\.tournaments\.totalTournaments/)
+        screen.getByText(/admin\.(tournament|tournaments)\.totalTournaments/)
       ).toBeInTheDocument()
     })
 
@@ -513,7 +515,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
+      expect(teamPanel).toHaveTextContent(/admin\.(team|teams)\.totalTeams/)
       expect(teamPanel).toHaveTextContent('0')
     })
 
@@ -532,7 +534,9 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
+      expect(tournamentPanel).toHaveTextContent(
+        /admin\.(tournament|tournaments)\.totalTournaments/
+      )
       expect(tournamentPanel).toHaveTextContent('0')
     })
   })

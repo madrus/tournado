@@ -9,8 +9,11 @@ import { TeamsLayoutHeader } from '../TeamsLayoutHeader'
 // Mock react-i18next
 const mockT = (key: string) => {
   const translations: Record<string, string> = {
+    // Support both legacy and current keys
     'admin.teams.title': 'Admin Teams',
     'admin.teams.description': 'Manage teams in the admin panel',
+    'admin.team.title': 'Admin Teams',
+    'admin.team.description': 'Manage teams in the admin panel',
     'common.titles.teams': 'Teams',
     'teams.description': 'Register your team(s) for one or more tournaments',
     'common.actions.add': 'ADD',

@@ -24,11 +24,11 @@ test.describe('Admin Tournaments', () => {
     // Navigate to admin tournaments
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
 
-    // Should see page content indicating tournaments (checking Dutch content since interface is in Dutch)
+    // Should see page content indicating tournaments (checking English content since interface is in English)
     await expect(page.locator('body')).toContainText(/toernooi/i, { timeout: 15000 })
 
-    // Should see the Add button (it's an ActionLinkButton, which renders as a link)
-    await expect(page.getByRole('link', { name: /^toevoegen$|^add$/i })).toBeVisible()
+    // Should see the Toevoegen button (it's an ActionLinkButton, which renders as a link)
+    await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
   })
 
   test('should access tournaments via context menu', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('Admin Tournaments', () => {
     // await page.waitForTimeout(700)
 
     // Open user menu by clicking hamburger menu
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
+    await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
 
     // Wait for the dropdown menu to be visible
     await expect(page.getByTestId('user-menu-dropdown')).toBeVisible()
@@ -77,9 +77,9 @@ test.describe('Admin Tournaments', () => {
     // Wait for content to actually appear
     await page.waitForFunction(() => document.body.children.length > 0)
 
-    // Should see "Tournament Management" panel in admin panel
+    // Should see "Toernooien beheer" panel in admin panel
     const manageTournamentsPanel = page.getByRole('link', {
-      name: 'Tournament Management',
+      name: 'Toernooien beheer',
     })
     await expect(manageTournamentsPanel).toBeVisible({ timeout: 15000 })
 
@@ -108,12 +108,7 @@ test.describe('Admin Tournaments', () => {
     await expect(page.locator('[name="location"]')).toBeVisible()
 
     // Date picker components render as buttons or special components, not simple inputs
-    await expect(
-      page
-        .locator('text=Start Date')
-        .or(page.locator('text=startDate'))
-        .or(page.locator('text=Startdatum'))
-    ).toBeVisible()
+    await expect(page.locator('text=Startdatum')).toBeVisible()
   })
 
   test('should show tournament creation form with all required fields', async ({
@@ -126,30 +121,26 @@ test.describe('Admin Tournaments', () => {
     await page.waitForLoadState('networkidle')
 
     // Step 1: Basic Info - Look for specific input fields
-    await expect(page.getByRole('textbox', { name: /name|naam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /location|locatie/i })).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /locatie/i })).toBeVisible()
 
     // Step 2: Dates - Look for date picker buttons
     await expect(
       page.getByRole('button', {
-        name: /startdatum.*select date|start date.*select date/i,
+        name: /startdatum.*select date/i,
       })
     ).toBeVisible()
     await expect(
       page.getByRole('button', {
-        name: /einddatum.*select date|end date.*select date/i,
+        name: /einddatum.*select date/i,
       })
     ).toBeVisible()
 
     // Step 3: Divisions (checkboxes) - Look for the section heading
-    await expect(
-      page.getByRole('heading', { name: /divisions|divisies/i })
-    ).toBeVisible()
+    await expect(page.getByRole('heading', { name: /divisies/i })).toBeVisible()
 
     // Step 4: Categories (checkboxes) - Look for the section heading
-    await expect(
-      page.getByRole('heading', { name: /categories|categorieën/i })
-    ).toBeVisible()
+    await expect(page.getByRole('heading', { name: /categorieën/i })).toBeVisible()
 
     // Submit button
     await expect(page.getByRole('button', { name: 'Opslaan' })).toBeVisible()
@@ -164,8 +155,8 @@ test.describe('Admin Tournaments', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(2000)
 
-    // Look for "Add" button (simplified since it's now just "Add")
-    const addButton = page.getByRole('link', { name: /^toevoegen$|^add$/i })
+    // Look for "Toevoegen" button (simplified since it's now just "Toevoegen")
+    const addButton = page.getByRole('link', { name: 'Toevoegen' })
     await expect(addButton).toBeVisible({ timeout: 15000 })
 
     // Click the add button
@@ -217,26 +208,24 @@ test.describe('Tournament-Team Integration', () => {
       await page.waitForLoadState('networkidle')
 
       // Fill tournament form
-      await page.getByRole('textbox', { name: /name|naam/i }).fill('E2ETourney')
-      await page.getByRole('textbox', { name: /location|locatie/i }).fill('Aalsmeer')
+      await page.getByRole('textbox', { name: /naam/i }).fill('E2ETourney')
+      await page.getByRole('textbox', { name: /locatie/i }).fill('Aalsmeer')
 
       // Select start date using date picker
       await page
         .getByRole('button', {
-          name: /startdatum.*select date|start date.*select date/i,
+          name: /startdatum.*select date/i,
         })
         .click()
       await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
       await page.getByRole('button', { name: /^15 / }).click()
 
       // Select end date using date picker
-      await page
-        .getByRole('button', { name: /einddatum.*select date|end date.*select date/i })
-        .click()
+      await page.getByRole('button', { name: /einddatum.*select date/i }).click()
       await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
       await page.getByRole('button', { name: /^20 / }).click()
 
-      // Select divisions
+      // Select divisies
       const firstDivisionLabel = page
         .locator('label')
         .filter({ hasText: /eerste klasse/i })
@@ -249,7 +238,7 @@ test.describe('Tournament-Team Integration', () => {
       await expect(secondDivisionLabel).toBeVisible()
       await secondDivisionLabel.click()
 
-      // Select categories
+      // Select categorieën
       const jo8Label = page.locator('label').filter({ hasText: /JO8/i })
       await expect(jo8Label).toBeVisible()
       await jo8Label.click()
@@ -275,12 +264,12 @@ test.describe('Tournament-Team Integration', () => {
       await expect(page).toHaveURL(/\/tournaments\/[^\/]+$/, { timeout: 10000 })
 
       // Additional verification: check that the tournament form shows the created data
-      await expect(page.getByRole('textbox', { name: /name|naam/i })).toHaveValue(
+      await expect(page.getByRole('textbox', { name: /naam/i })).toHaveValue(
         'E2ETourney'
       )
-      await expect(
-        page.getByRole('textbox', { name: /location|locatie/i })
-      ).toHaveValue('Aalsmeer')
+      await expect(page.getByRole('textbox', { name: /locatie/i })).toHaveValue(
+        'Aalsmeer'
+      )
 
       console.log('Tournament creation UI confirmed - verifying database persistence')
 
@@ -358,7 +347,7 @@ test.describe('Tournament-Team Integration', () => {
 
       // Step 1: Select Tournament using page object for reliability
       const tournamentCombo = page.getByRole('combobox', {
-        name: /toernooi.*select option|tournament.*select option/i,
+        name: /toernooi.*select option/i,
       })
       await expect(tournamentCombo).toBeVisible()
 
@@ -375,7 +364,7 @@ test.describe('Tournament-Team Integration', () => {
 
       // Step 2: Select Division (after tournament selection populates options)
       const divisionCombo = page.getByRole('combobox', {
-        name: /teamklasse.*select option|division.*select option/i,
+        name: /teamklasse.*select option/i,
       })
       await expect(divisionCombo).toBeVisible()
       await divisionCombo.click()
@@ -384,7 +373,7 @@ test.describe('Tournament-Team Integration', () => {
       await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
 
       const firstDivisionOption = divisionDropdown.getByRole('option', {
-        name: /eerste klasse|first division/i,
+        name: /eerste klasse/i,
       })
       await expect(firstDivisionOption).toBeVisible({ timeout: 3000 })
       await firstDivisionOption.click()
@@ -392,7 +381,7 @@ test.describe('Tournament-Team Integration', () => {
 
       // Step 3: Select Category
       const categoryCombo = page.getByRole('combobox', {
-        name: /categorie.*select option|category.*select option/i,
+        name: /categorie.*select option/i,
       })
       await expect(categoryCombo).toBeVisible()
       await categoryCombo.click()
@@ -410,8 +399,8 @@ test.describe('Tournament-Team Integration', () => {
       console.log('✅ Category successfully selected')
 
       // Step 4: Fill team information to complete the test
-      await page.getByRole('textbox', { name: /clubnaam|club.*name/i }).fill('TC Admin')
-      await page.getByRole('textbox', { name: /teamnaam|team.*name/i }).fill('J08-1')
+      await page.getByRole('textbox', { name: /clubnaam/i }).fill('TC Admin')
+      await page.getByRole('textbox', { name: /teamnaam/i }).fill('J08-1')
       await page
         .getByRole('textbox', { name: /naam teamleider/i })
         .fill('Test Leader Admin')
@@ -450,37 +439,33 @@ test.describe('Tournament-Team Integration', () => {
     }
   })
 
-  test('should show empty divisions and categories when no tournament selected', async ({
+  test('should show empty divisies and categorieën when no tournament selected', async ({
     page,
   }) => {
     // Navigate to team creation form
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
     await page.waitForLoadState('networkidle')
 
-    // Look for form fields using the correct Dutch translations
+    // Look for form fields using the correct English translations
     await expect(
       page.getByRole('combobox', {
-        name: /toernooi.*select option|tournament.*select option/i,
+        name: /toernooi.*select option/i,
       })
     ).toBeVisible()
     await expect(
       page.getByRole('combobox', {
-        name: /teamklasse.*select option|division.*select option/i,
+        name: /teamklasse.*select option/i,
       })
     ).toBeVisible()
     await expect(
       page.getByRole('combobox', {
-        name: /categorie.*select option|category.*select option/i,
+        name: /categorie.*select option/i,
       })
     ).toBeVisible()
 
     // Verify team form fields with more specific selectors
-    await expect(
-      page.getByRole('textbox', { name: /clubnaam|club.*name/i })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('textbox', { name: /teamnaam|team.*name/i })
-    ).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /clubnaam/i })).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /teamnaam/i })).toBeVisible()
     await expect(page.getByRole('textbox', { name: /naam teamleider/i })).toBeVisible()
   })
 
@@ -491,30 +476,26 @@ test.describe('Tournament-Team Integration', () => {
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
     await page.waitForLoadState('networkidle')
 
-    // Verify form structure using the correct Dutch translations
+    // Verify form structure using the correct English translations
     await expect(
       page.getByRole('combobox', {
-        name: /toernooi.*select option|tournament.*select option/i,
+        name: /toernooi.*select option/i,
       })
     ).toBeVisible()
     await expect(
       page.getByRole('combobox', {
-        name: /teamklasse.*select option|division.*select option/i,
+        name: /teamklasse.*select option/i,
       })
     ).toBeVisible()
     await expect(
       page.getByRole('combobox', {
-        name: /categorie.*select option|category.*select option/i,
+        name: /categorie.*select option/i,
       })
     ).toBeVisible()
 
     // Check team information fields with more specific selectors
-    await expect(
-      page.getByRole('textbox', { name: /clubnaam|club.*name/i })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('textbox', { name: /teamnaam|team.*name/i })
-    ).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /clubnaam/i })).toBeVisible()
+    await expect(page.getByRole('textbox', { name: /teamnaam/i })).toBeVisible()
     await expect(page.getByRole('textbox', { name: /naam teamleider/i })).toBeVisible()
     await expect(
       page.getByRole('textbox', { name: /e-mail teamleider/i })

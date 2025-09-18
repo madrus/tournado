@@ -79,7 +79,11 @@ export async function requireAdminUser(
 
   const role = getUserRole(user)
   const canAccessAdminPanel =
-    role === 'ADMIN' || role === 'MANAGER' || role === 'REFEREE'
+    role === 'ADMIN' ||
+    role === 'MANAGER' ||
+    role === 'EDITOR' ||
+    role === 'BILLING' ||
+    role === 'REFEREE'
 
   if (!canAccessAdminPanel) {
     throw redirect(redirectTo)
@@ -124,8 +128,10 @@ export function getPostAuthRedirect(
   switch (role) {
     case 'ADMIN':
     case 'MANAGER':
+    case 'EDITOR':
+    case 'BILLING':
     case 'REFEREE':
-      // Admin panel access for ADMIN, MANAGER, and REFEREE users
+      // Admin panel access for ADMIN, MANAGER, EDITOR, BILLING, and REFEREE users
       return '/a7k9m2x5p8w1n4q6r3y8b5t1'
 
     case 'PUBLIC':

@@ -33,7 +33,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   // Wait for server to be ready - use the configured baseURL
   const serverUrl = process.env.PORT
     ? `http://localhost:${process.env.PORT}`
-    : 'http://localhost:5173'
+    : 'http://localhost:5174'
   await waitForServer(serverUrl)
 
   // Clean database completely before starting tests
@@ -43,12 +43,12 @@ async function globalSetup(_config: FullConfig): Promise<void> {
     viewport: { width: 375, height: 812 }, // Mobile viewport
     baseURL: serverUrl,
     extraHTTPHeaders: {
-      'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for consistent testing
+      'Accept-Language': 'nl-NL,nl;q=0.9', // Use Dutch for consistent locators
       'x-test-bypass': 'true', // Bypass rate limiting in tests
     },
     // Set language cookie for all tests to ensure consistent Dutch language
     locale: 'nl-NL',
-    // Set cookies to force Dutch language in the app
+    // Set cookies to use Dutch language in the app (natural default)
     storageState: {
       cookies: [
         {
@@ -56,6 +56,7 @@ async function globalSetup(_config: FullConfig): Promise<void> {
           value: 'nl',
           domain: 'localhost',
           path: '/',
+          expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365, // 1 year
           httpOnly: false,
           secure: false,
           sameSite: 'Lax',
@@ -114,10 +115,15 @@ async function createAuthState(
       }
     })
 
-    // Set the test flag first
+    // Set the test flag and use Dutch language (natural default)
     await page.addInitScript(() => {
       window.playwrightTest = true
       window.localStorage.setItem('playwrightTest', 'true')
+      // Use Dutch language in localStorage (app's natural default)
+      window.localStorage.setItem('i18nextLng', 'nl')
+      window.localStorage.setItem('language', 'nl')
+      // Set Dutch language cookie
+      document.cookie = 'lang=nl; path=/; domain=localhost'
     })
 
     // Inject Firebase mocks before navigation
@@ -173,24 +179,26 @@ async function createAuthState(
         .locator('button[type="submit"]')
         .filter({ hasText: /(sign in|inloggen)/i })
       await signInButton.waitFor({ state: 'visible', timeout: 30000, enable: true })
+
+      // Use Promise.race to either wait for navigation or timeout
+      const navigationPromise = page
+        .waitForNavigation({ timeout: 15000 })
+        .catch(() => null)
       await signInButton.click()
 
-      // Wait a moment and check what happened after the click
-      await page.waitForTimeout(5000)
-      console.log(`${userType} auth: URL after button click: ${page.url()}`)
+      // Wait for either navigation to complete or timeout
+      const navigationResult = await navigationPromise
+      if (navigationResult) {
+        console.log(`${userType} auth: Navigation completed to: ${page.url()}`)
+      } else {
+        console.log(
+          `${userType} auth: No navigation detected after button click: ${page.url()}`
+        )
 
-      // Get more detailed debugging info
-      const pageContent = await page.content()
-      if (pageContent.includes('Invalid email or password')) {
-        console.log(`${userType} auth: Authentication failed - invalid credentials`)
+        // Wait a bit more for potential delayed navigation
+        await page.waitForTimeout(3000)
+        console.log(`${userType} auth: URL after additional wait: ${page.url()}`)
       }
-
-      // Console messages are already being captured above
-
-      // Wait a bit more and check for any error messages or redirects
-      await page.waitForTimeout(3000)
-      console.log(`${userType} auth: Current URL after additional wait: ${page.url()}`)
-      console.log(`${userType} auth: Console messages:`, consoleMessages.slice(-10))
     } else {
       console.log(`Attempting Google sign-in for ${userType}`)
 

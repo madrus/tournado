@@ -97,8 +97,8 @@ Database & Data Model [Implemented]
 - [x] Google Authentication via Firebase (TASK-0003 completed)
 - [x] Post-login redirects, logout, and credential persistence (TASK-0003 completed)
 - [x] Visible auth status indicator (TASK-0003 completed)
-- [ ] Firebase Email/Password Authentication (TASK-0004 planned)
-- [ ] Multi-super-admin role assignment system (TASK-0004 planned)
+- [x] Firebase Email/Password Authentication (TASK-0004 implemented)
+- [x] Multi-super-admin role assignment system (TASK-0004 implemented)
 - [ ] Complete legacy authentication removal (TASK-0004 planned)
 
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**

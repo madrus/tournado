@@ -15,7 +15,7 @@ alwaysApply: false
 | 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Completed   | —          | —             |
 | 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Completed   | —          | —             |
 | 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Completed   | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | In Progress | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Completed   | —          | —             |
 | 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed    | —          | —             |
 | 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed    | —          | —             |
 | 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed    | —          | —             |
@@ -159,7 +159,7 @@ Server data must flow through React Router loaders and actions. Client state man
 
 <a id="adr-0004"></a>
 **Date**: 2025-09-03
-**Status**: In Progress
+**Status**: Completed
 **Owner**: André Roussakoff
 
 ### Context
@@ -187,7 +187,20 @@ Adopt Firebase Authentication and mint HTTP-only session cookies on the server f
 
 End-to-end tests cover sign-in/out, redirects, and loader-based role verification. Logout invalidates Firebase session cookies and client state.
 
-**Implementation Status**: Firebase Authentication partially implemented via TASK-0001 (Firebase setup), TASK-0002 (session bridging), and TASK-0003 (Google OAuth UX). Session cookie bridging operational with SSR compatibility. TASK-0004 will complete email/password authentication and legacy system removal.
+**Implementation Status**: Firebase Authentication is implemented end-to-end:
+
+- TASK-0001: Firebase setup — done
+- TASK-0002: Session bridging — done (SSR-compatible session cookies)
+- TASK-0003: Google OAuth UX — done
+- TASK-0004: Email/Password authentication — done
+
+Production code is kept clean while tests and E2E run via adapters:
+
+- Client adapters encapsulate mock-aware auth functions (no Playwright checks in hooks/components)
+- Redirect adapter submits form in E2E to ensure cookie + redirect semantics
+- Server token verification supports mock tokens behind `x-test-bypass` header only (no production paths affected)
+
+Legacy authentication removal (bcrypt/Password table) is tracked as a separate follow-up task.
 
 **Future Consideration**: Phone number authentication evaluated but postponed due to SMS costs, regional reliability concerns, and security risks. Complete technical implementation documented in `docs/development/authentication.md` for future evaluation pending user demand or international expansion requirements.
 

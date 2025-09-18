@@ -1,0 +1,112 @@
+---
+description: Remove legacy bcrypt/password-based auth and fully finalize Firebase-only authentication
+id: "TASK-0005"
+title: "Remove legacy auth (bcrypt/Password table) and finalize Firebase-only auth"
+status: "planned"
+priority: "P0"
+labels: ["auth", "firebase", "migration", "cleanup"]
+dependencies: ["./TASK-0004-complete-firebase-auth.mdc"]
+created: "2025-09-14"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🧹 MIGRATION Task — Remove legacy auth
+**Decision**: Remove all legacy password-based authentication (bcrypt, `Password` table, any cookie/session code not part of Firebase session bridging) and leave the application Firebase-only.
+
+**Rationale**:
+- Firebase auth (Google + Email/Password) with session cookie bridging is fully implemented (TASK-0004)
+- Keeping legacy auth introduces maintenance/security overhead and confusion
+- Cleaning schema and code reduces complexity and avoids dead paths
+
+# 1) High-Level Objective
+
+Remove the legacy bcrypt/password-based authentication system and associated schema, leaving a Firebase-only authentication stack.
+
+# 2) Background / Context
+
+TASK-0004 completed Firebase auth (Google + Email/Password), and refactored E2E/test helpers behind adapters. The legacy password table and bcrypt code paths are still present in places (schema, seeding, and possibly models). We need to eliminate those remnants and align seeds/tests.
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: No production users to migrate (development environment)
+- Constraint: Maintain all Firebase flows and current routes/guards
+- Constraint: Keep test/E2E green
+- Constraint: Follow file creation safety and TypeScript conventions (no `any`, no `data`/`callback` param names)
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- ./TASK-0004-complete-firebase-auth.mdc — Completed
+- app/features/firebase/server.ts, session.server.ts — Firebase-only paths must remain intact
+- prisma/schema.prisma — contains legacy `Password` model/coupling
+
+# 5) Context Plan
+
+## MIGRATION Task Pattern
+**Beginning (add to model context):**
+- prisma/schema.prisma _(read-only)_
+- prisma/seed.js _(read-only)_
+- app/models/user.server.ts _(read-only)_
+- app/utils/session.server.ts _(read-only)_
+- app/features/firebase/** _(read-only)_
+- app/routes/auth/** _(read-only)_
+
+**End state (files that will be created/modified):**
+- prisma/schema.prisma _(Password model removed, firebaseUid required where applicable)_
+- prisma/migrations/** _(generated migration removing Password)_
+- prisma/seed.js _(remove bcrypt/password seed logic)_
+- app/models/user.server.ts _(remove any hash/compare paths)_
+- app/routes/auth/** _(verify no legacy codepaths)_
+- tests referencing legacy auth _(updated/removed)_
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+## File Creation Safety Check
+Before every new/modified file, check if it exists and merge carefully without breaking unrelated code.
+
+1. Schema cleanup (Prisma)
+   - File: `prisma/schema.prisma`
+   - Remove `model Password` (and any relation fields on `User`)
+   - Ensure `User` has `firebaseUid String @unique` (already present) and required where intended
+   - Create a migration: `npx prisma migrate dev -n remove-legacy-password` (not executed in this task; just staged)
+
+2. Seed cleanup
+   - File: `prisma/seed.js`
+   - Remove bcrypt imports and password seeding blocks (e.g., `password: { create: { hash: ... } }`)
+   - Keep user creation with `role`, `email`, names, and optional `firebaseUid` if desired for testing
+
+3. Model cleanup
+   - File: `app/models/user.server.ts`
+   - Remove any functions/utilities referencing password hashes or legacy login
+   - Ensure any usages are redirected to Firebase session / `getUserByFirebaseUid`
+
+4. Route/utility cleanup
+   - Files: `app/routes/auth/*.tsx`, `app/utils/session.server.ts`
+   - Verify no remnants of legacy auth (cookie-only login or password compare)
+   - Confirm Firebase callback/session bridge flows remain intact
+
+5. Test updates
+   - Remove/adjust any unit tests that depended on legacy password auth
+   - Ensure `pnpm test:run` and Playwright e2e remain green
+
+6. Verification
+   - Run: `pnpm lint` — no linting errors
+   - Run: `pnpm typecheck` — no type errors
+   - Run: `pnpm test:run` — green
+   - Run: `pnpm test:e2e:run` — green
+
+# 7) Acceptance Criteria
+
+- Prisma schema contains no `Password` model and no `User`-Password relation
+- `prisma/seed.js` no longer imports or uses bcrypt or creates password rows
+- `app/models/user.server.ts` contains no password hash/compare logic
+- All routes and auth flows operate via Firebase (Google + Email/Password) with session cookie bridging
+- `pnpm typecheck`, unit tests, and E2E tests pass green
+- No `any` types or forbidden callback/data identifier names introduced
+

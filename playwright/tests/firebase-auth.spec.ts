@@ -7,6 +7,13 @@ import {
   deleteTestUser,
 } from '../helpers/database'
 
+/**
+ * Dedicated Firebase Authentication Tests
+ *
+ * These tests specifically verify Firebase authentication integration and UI flows.
+ * For business logic tests that need authenticated users, use the createTestSession helper
+ * from test-auth.ts instead of going through the Firebase authentication flow.
+ */
 test.describe('Firebase Authentication Flow', () => {
   let tournamentId: string | undefined
   let adminUserId: string | undefined

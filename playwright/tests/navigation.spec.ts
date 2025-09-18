@@ -7,7 +7,7 @@ test.describe('Navigation', () => {
     await page.setViewportSize({ width: 375, height: 812 })
 
     // Language is handled by global config - no need to override here
-    // The i18n config will use Dutch for Playwright tests
+    // The i18n config will use English for Playwright tests
   })
 
   test.describe('Bottom Navigation - Public', () => {
@@ -63,7 +63,7 @@ test.describe('Navigation', () => {
     test('should navigate via homepage view teams button', async ({ page }) => {
       await page.goto('/')
 
-      // Use the homepage "Teams bekijken" button (Dutch for "View Teams")
+      // Use the homepage "Teams bekijken" button (Dutch interface)
       await page.getByRole('link', { name: 'Teams bekijken' }).click()
 
       await expect(page).toHaveURL('/teams')

@@ -18,9 +18,11 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Test structure - look for the main tournaments heading
       await expect(
-        page.getByRole('heading', { name: 'Toernooien beheer' })
+        page.getByRole('heading', {
+          name: 'Toernooien beheer',
+        })
       ).toBeVisible()
-      await expect(page.getByRole('link', { name: /toevoegen|add/i })).toBeVisible()
+      await expect(page.getByRole('link', { name: /toevoegen/i })).toBeVisible()
 
       // Check that the main content area exists
       await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
@@ -117,15 +119,11 @@ test.describe('UI Structure and Theme Tests', () => {
       await expect(page.locator('form')).toBeVisible()
 
       // Check basic form fields
-      await expect(page.getByRole('textbox', { name: /name|naam/i })).toBeVisible()
-      await expect(
-        page.getByRole('textbox', { name: /location|locatie/i })
-      ).toBeVisible()
+      await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()
+      await expect(page.getByRole('textbox', { name: /locatie/i })).toBeVisible()
 
       // Check date picker buttons exist
-      await expect(
-        page.getByRole('button', { name: /startdatum|start date/i })
-      ).toBeVisible()
+      await expect(page.getByRole('button', { name: /startdatum/i })).toBeVisible()
     })
 
     test('should enable date picker after filling basic info', async ({ page }) => {
@@ -134,17 +132,15 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForTimeout(2000)
 
       // Fill basic info
-      await page.getByRole('textbox', { name: /name|naam/i }).fill('Test Tournament')
-      await page
-        .getByRole('textbox', { name: /location|locatie/i })
-        .fill('Test Location')
+      await page.getByRole('textbox', { name: /naam/i }).fill('Test Tournament')
+      await page.getByRole('textbox', { name: /locatie/i }).fill('Test Location')
 
       // Wait for form validation
       await page.waitForTimeout(1000)
 
       // Date picker should be clickable
       const startDateButton = page.getByRole('button', {
-        name: /startdatum|start date/i,
+        name: /startdatum/i,
       })
       await expect(startDateButton).toBeEnabled()
 
@@ -176,9 +172,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForTimeout(2000)
 
       // Should see action panels
-      await expect(
-        page.getByRole('link', { name: /teams bekijken|view teams/i })
-      ).toBeVisible()
+      await expect(page.getByRole('link', { name: /teams bekijken/i })).toBeVisible()
 
       // Should have multiple action panels
       const actionLinks = page.locator('a[href*="/teams"], a[href*="/about"]')
@@ -190,7 +184,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForLoadState('networkidle')
 
       // Click teams link and verify navigation
-      await page.getByRole('link', { name: /teams bekijken|view teams/i }).click()
+      await page.getByRole('link', { name: /teams bekijken/i }).click()
       // The link goes to admin teams page when authenticated
       await expect(page).toHaveURL(/\/teams/)
     })
@@ -206,7 +200,9 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Page should still load and be functional on mobile
       await expect(
-        page.getByRole('heading', { name: 'Toernooien beheer' })
+        page.getByRole('heading', {
+          name: 'Toernooien beheer',
+        })
       ).toBeVisible()
       await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
     })

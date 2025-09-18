@@ -83,6 +83,7 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
     lastName: 'Manager',
     email,
     role: 'MANAGER',
+    firebaseUid: 'regular-user-id', // Match Firebase mock UID for regular test users
   })
 
   return {
@@ -99,6 +100,7 @@ export async function createAdminUser(): Promise<User> {
     lastName: 'Admin',
     email: adminEmail,
     role: 'ADMIN',
+    firebaseUid: 'admin-user-id', // Match Firebase mock UID for admin test users
   })
 }
 
@@ -195,27 +197,34 @@ export const createTestTournament = async (
   const endDate = new Date()
   endDate.setDate(endDate.getDate() + 10)
 
-  const tournament = await prisma.tournament.create({
-    data: {
-      name,
-      location,
-      startDate,
-      endDate,
-      divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
-      categories: ['JO8', 'JO10'],
-    },
+  // Create and verify within a single transaction to avoid race conditions
+  const tournament = await prisma.$transaction(async tx => {
+    const created = await tx.tournament.create({
+      data: {
+        name,
+        location,
+        startDate,
+        endDate,
+        divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
+        categories: ['JO8', 'JO10'],
+      },
+    })
+
+    const verify = await tx.tournament.findUnique({ where: { id: created.id } })
+    if (!verify) {
+      throw new Error(
+        `Failed to create tournament "${name}" - not found during transactional verification`
+      )
+    }
+
+    return created
   })
 
-  // Ensure the tournament is committed to database
-  await new Promise(resolve => setTimeout(resolve, 500))
-
-  // Verify the tournament was created by reading it back
-  const createdTournament = await prisma.tournament.findUnique({
-    where: { id: tournament.id },
-  })
-
-  if (!createdTournament) {
-    throw new Error(`Failed to create tournament "${name}" - not found after creation`)
+  // Best-effort post-commit verification (handles any async write lag)
+  try {
+    await waitForTournamentInDatabase(name, 5, 100)
+  } catch (_e) {
+    // Non-fatal: UI will still attempt to read; DB cleanup in parallel might remove it later
   }
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }

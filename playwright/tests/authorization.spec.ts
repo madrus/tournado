@@ -36,6 +36,6 @@ test.describe('Authorization - Public Access', () => {
 
     await page.goto('/auth/signup')
     await expect(page).toHaveURL('/auth/signup')
-    await expect(page.getByRole('button', { name: 'Account aanmaken' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Registreren' })).toBeVisible()
   })
 })

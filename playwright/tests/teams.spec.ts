@@ -20,7 +20,7 @@ test.describe('Public Teams', () => {
     // Should be able to view teams page without authentication
     await expect(page).toHaveURL('/teams')
 
-    // Should see the "Toevoegen" button (new simplified text)
+    // Should see the "Toevoegen" button
     await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
   })
 
@@ -76,7 +76,7 @@ test.describe('Public Teams', () => {
           await page.waitForTimeout(1000)
 
           const tournamentCombo = page.getByRole('combobox', {
-            name: /toernooi.*select option|tournament.*select option/i,
+            name: /toernooi.*select option/i,
           })
           await expect(tournamentCombo).toBeVisible()
           await tournamentCombo.click()
@@ -103,7 +103,7 @@ test.describe('Public Teams', () => {
 
       // Step 2: Select Division (after tournament selection populates options)
       const divisionCombo = page.getByRole('combobox', {
-        name: /teamklasse.*select option|division.*select option/i,
+        name: /teamklasse.*select option/i,
       })
       await expect(divisionCombo).toBeVisible()
       await divisionCombo.click()
@@ -114,7 +114,7 @@ test.describe('Public Teams', () => {
 
       // Step 3: Select Category
       const categoryCombo = page.getByRole('combobox', {
-        name: /categorie.*select option|category.*select option/i,
+        name: /categorie.*select option/i,
       })
       await expect(categoryCombo).toBeVisible()
       await categoryCombo.click()
@@ -124,8 +124,8 @@ test.describe('Public Teams', () => {
       await firstCategory.click()
 
       // Step 4: Fill Team Information
-      const clubNameInput = page.getByRole('textbox', { name: /clubnaam|club.*name/i })
-      const teamNameInput = page.getByRole('textbox', { name: /teamnaam|team.*name/i })
+      const clubNameInput = page.getByRole('textbox', { name: /clubnaam/i })
+      const teamNameInput = page.getByRole('textbox', { name: /teamnaam/i })
 
       await expect(clubNameInput).toBeEnabled()
       await expect(teamNameInput).toBeEnabled()
@@ -135,13 +135,13 @@ test.describe('Public Teams', () => {
 
       // Step 5: Fill Team Leader Information
       const leaderNameInput = page.getByRole('textbox', {
-        name: /naam teamleider|team.*leader.*name/i,
+        name: /naam teamleider/i,
       })
       const leaderEmailInput = page.getByRole('textbox', {
-        name: /e-mail teamleider|team.*leader.*email/i,
+        name: /e-mail teamleider/i,
       })
       const leaderPhoneInput = page.getByRole('textbox', {
-        name: /telefoon teamleider|team.*leader.*phone/i,
+        name: /telefoon teamleider/i,
       })
 
       await leaderNameInput.fill('Test Leader')
@@ -150,13 +150,13 @@ test.describe('Public Teams', () => {
 
       // Step 6: Accept Privacy Agreement
       const privacyCheckbox = page.getByRole('checkbox', {
-        name: /privacy|privacybeleid/i,
+        name: /privacybeleid/i,
       })
       await expect(privacyCheckbox).toBeVisible()
       await privacyCheckbox.check()
 
       // Step 7: Submit Form
-      const submitButton = page.getByRole('button', { name: /^(Opslaan|Save)$/i })
+      const submitButton = page.getByRole('button', { name: 'Opslaan' })
       await expect(submitButton).toBeVisible()
       await expect(submitButton).toBeEnabled()
       await Promise.all([

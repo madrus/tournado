@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { redirect } from 'react-router'
 
 import { createSessionFromFirebaseToken } from '~/features/firebase/session.server'
@@ -38,6 +39,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     })
 
     if (!sessionResult) {
+      console.log('[auth-callback] Session creation failed - invalid token')
       const url = new URL(request.url)
       const absoluteErrorUrl = new URL(
         '/auth/signin?error=invalid-token',
@@ -47,9 +49,15 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     }
 
     const { user } = sessionResult
+    console.log(
+      `[auth-callback] User found: ${user.email}, role: ${user.role}, id: ${user.id}`
+    )
 
     // Get role-based redirect destination
     const finalRedirectTo = getPostSignInRedirect(user, redirectTo || undefined)
+    console.log(
+      `[auth-callback] Redirecting to: ${finalRedirectTo} (requested: ${redirectTo})`
+    )
 
     // Create absolute URL to avoid protocol issues
     const url = new URL(request.url)

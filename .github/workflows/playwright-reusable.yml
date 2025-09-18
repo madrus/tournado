@@ -79,7 +79,7 @@ jobs:
       - name: 🎭 Run Playwright tests with built app
         run: |
           set +e  # Don't exit on error
-          pnpm exec start-server-and-test 'pnpm start:mocks' http://localhost:8811 'playwright test'
+          pnpm test:e2e:built
           TEST_EXIT_CODE=$?
           if [ $TEST_EXIT_CODE -eq 0 ]; then
             echo "✅ All tests passed successfully"
@@ -89,7 +89,6 @@ jobs:
             exit $TEST_EXIT_CODE
           fi
         env:
-          PORT: 8811
           PLAYWRIGHT: true
 
       - name: Upload Playwright Report

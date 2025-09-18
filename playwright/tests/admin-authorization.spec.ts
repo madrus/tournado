@@ -22,7 +22,7 @@ test.describe('Admin Authorization', () => {
       // Should not be redirected away
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1/)
 
-      // Should see specific admin content (correct heading text) - use the h1 specifically
+      // Should see specific admin content (Beheerpaneel heading)
       await expect(page.locator('h1').filter({ hasText: 'Beheerpaneel' })).toBeVisible({
         timeout: 15000,
       })
@@ -42,7 +42,7 @@ test.describe('Admin Authorization', () => {
       // Admin should see team management interface
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams/)
 
-      // Should see teams management heading (Dutch text)
+      // Should see teams management heading
       await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible({
         timeout: 15000,
       })

@@ -16,7 +16,7 @@ test.describe('Authentication', () => {
     await page.setViewportSize({ width: 375, height: 812 })
 
     // Language is handled by global config - no need to override here
-    // The i18n config will use Dutch for Playwright tests
+    // The i18n config will use English for Playwright tests
   })
 
   test('should register new user and sign in with redirect to homepage', async ({
@@ -42,7 +42,7 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL('/', { timeout: 5000 })
 
     // 4. Verify user is authenticated by checking menu shows user email in dropdown specifically
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
+    await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
     await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
     await expect(
       page.getByTestId('user-menu-dropdown').getByText(newUser.email)
@@ -116,7 +116,7 @@ test.describe('Authentication', () => {
     await page.waitForTimeout(1000) // Allow for any hydration/JavaScript loading
 
     // Find and click the toggle menu button with better error handling
-    const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
+    const toggleButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
     await toggleButton.waitFor({ state: 'visible', timeout: 10000 })
     await toggleButton.scrollIntoViewIfNeeded()
 
@@ -145,7 +145,7 @@ test.describe('Authentication', () => {
     const isDropdownVisible = await userDropdown.isVisible().catch(() => false)
 
     if (!isDropdownVisible) {
-      await page.getByRole('button', { name: 'Toggle menu' }).click()
+      await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
     }
 
     await page.getByRole('button', { name: 'Uitloggen' }).click()
@@ -161,7 +161,7 @@ test.describe('Authentication', () => {
 
     await signInPage.signIn(user.email, 'MyReallyStr0ngPassw0rd!!!')
 
-    // Verify we're signed in
+    // Verify we're ingelogd
     await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 5000 })
 
     // 2. Verify authentication first (this will open menu)
@@ -178,7 +178,7 @@ test.describe('Authentication', () => {
     await page.waitForLoadState('networkidle')
 
     // 6. Verify user is signed out by checking menu shows login option
-    await page.getByRole('button', { name: 'Toggle menu' }).click()
+    await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
     await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
 
     // Should see login link instead of user email

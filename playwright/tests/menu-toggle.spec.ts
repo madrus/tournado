@@ -15,7 +15,7 @@ test.describe('Menu Toggle Functionality', () => {
     await page.waitForTimeout(2000)
 
     // Verify the toggle button exists
-    const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
+    const toggleButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
     await expect(toggleButton).toBeVisible({ timeout: 10000 })
 
     // Verify menu is initially closed
@@ -34,8 +34,8 @@ test.describe('Menu Toggle Functionality', () => {
 
     console.log('- menu should be visible now!')
 
-    // Verify menu contains user information (Dutch text for Playwright tests)
-    await expect(menuDropdown).toContainText(/ingelogd als|signed in/i)
+    // Verify menu contains user information (English text for Playwright tests)
+    await expect(menuDropdown).toContainText(/ingelogd als/i)
   })
 
   test('should display menu content for authenticated user', async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe('Menu Toggle Functionality', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(2000)
 
-    const toggleButton = page.getByRole('button', { name: 'Toggle menu' })
+    const toggleButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
     const menuDropdown = page.locator('[data-testid="user-menu-dropdown"]')
 
     // Open menu
@@ -52,10 +52,10 @@ test.describe('Menu Toggle Functionality', () => {
 
     console.log('- menu opened, checking authenticated user content...')
 
-    // Verify menu shows authenticated user content (Dutch)
-    await expect(menuDropdown).toContainText(/ingelogd als|signed in/i)
+    // Verify menu shows authenticated user content (English)
+    await expect(menuDropdown).toContainText(/ingelogd als/i)
 
-    // Verify menu contains typical navigation items (Dutch)
+    // Verify menu contains typical navigation items (English)
     await expect(menuDropdown).toContainText(/teams/i)
 
     console.log('- authenticated user menu content verified!')

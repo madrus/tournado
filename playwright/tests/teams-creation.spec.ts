@@ -8,9 +8,6 @@ test.use({ storageState: { cookies: [], origins: [] } })
 
 test.describe('Public Teams - Creation', () => {
   test.beforeEach(async ({ page }) => {
-    const { cleanDatabase } = await import('../helpers/database')
-    await cleanDatabase()
-
     await page.setViewportSize({ width: 375, height: 812 })
   })
 
@@ -23,8 +20,12 @@ test.describe('Public Teams - Creation', () => {
     try {
       // Use unique names to prevent conflicts during concurrent test execution
       const uniqueId = Math.random().toString(36).substring(2, 8)
-      const tournament = await createTestTournament(`PubTourney-${uniqueId}`, 'Utrecht')
-      tournamentId = tournament.id
+
+      // Use well-known seeded tournament instead of creating one
+      const tournament = {
+        name: 'Spring Cup',
+        location: 'Amsterdam',
+      }
 
       // Navigate to public team creation form
       await page.goto('/teams/new')
@@ -34,39 +35,25 @@ test.describe('Public Teams - Creation', () => {
       await expect(page).toHaveURL('/teams/new')
       await expect(page.locator('form')).toBeVisible()
 
-      // Step 1: Select Tournament (tournament already verified to exist)
+      // Step 1: Select Tournament (tournaments are seeded in global setup)
+      const tournamentCombo = page.getByRole('combobox', {
+        name: /toernooi.*select option/i,
+      })
+      await expect(tournamentCombo).toBeVisible()
+      await tournamentCombo.click()
 
-      let tournamentSelected = false
-      for (let attempt = 1; attempt <= 5; attempt++) {
-        try {
-          await page.reload({ waitUntil: 'networkidle' })
-          await page.waitForTimeout(1000)
+      // Wait for tournament options to load
+      await page.waitForTimeout(2000)
 
-          const tournamentCombo = page.getByRole('combobox', {
-            name: /toernooi.*select option/i,
-          })
-          await expect(tournamentCombo).toBeVisible()
-          await tournamentCombo.click()
+      const tournamentOption = page.getByRole('option', {
+        name: `${tournament.name} - ${tournament.location}`,
+      })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
+      await tournamentOption.click()
 
-          const tournamentOption = page.getByRole('option', {
-            name: `${tournament.name} - ${tournament.location}`,
-          })
-          await expect(tournamentOption).toBeVisible({ timeout: 5000 })
-          await tournamentOption.click()
-
-          await expect(tournamentCombo).toContainText(
-            `${tournament.name} - ${tournament.location}`
-          )
-
-          tournamentSelected = true
-          break
-        } catch (error) {
-          if (attempt === 5) {
-            throw error
-          }
-          await page.waitForTimeout(1000)
-        }
-      }
+      await expect(tournamentCombo).toContainText(
+        `${tournament.name} - ${tournament.location}`
+      )
 
       // Step 2: Select Division (after tournament selection populates options)
       const divisionCombo = page.getByRole('combobox', {
@@ -158,14 +145,7 @@ test.describe('Public Teams - Creation', () => {
           console.error('Failed to cleanup team:', error)
         }
       }
-      if (tournamentId) {
-        const { deleteTournamentById } = await import('../helpers/database')
-        try {
-          await deleteTournamentById(tournamentId)
-        } catch (error) {
-          console.error('Failed to cleanup tournament:', error)
-        }
-      }
+      // No tournament cleanup needed since we use seeded data
     }
   })
 })

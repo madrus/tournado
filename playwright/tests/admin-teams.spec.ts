@@ -6,10 +6,6 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 // Admin Teams Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Teams', () => {
   test.beforeEach(async ({ page }) => {
-    // Clean database before each test to ensure proper test isolation
-    const { cleanDatabase } = await import('../helpers/database')
-    await cleanDatabase()
-
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   })
 

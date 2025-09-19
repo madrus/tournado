@@ -5,9 +5,6 @@ test.use({ storageState: { cookies: [], origins: [] } })
 
 test.describe('Public Teams - Basic UI', () => {
   test.beforeEach(async ({ page }) => {
-    const { cleanDatabase } = await import('../helpers/database')
-    await cleanDatabase()
-
     await page.setViewportSize({ width: 375, height: 812 })
   })
 

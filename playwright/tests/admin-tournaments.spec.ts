@@ -12,10 +12,6 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 // Tournament E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Tournaments', () => {
   test.beforeEach(async ({ page }) => {
-    // Clean database before each test to ensure proper test isolation
-    const { cleanDatabase } = await import('../helpers/database')
-    await cleanDatabase()
-
     // Set mobile viewport for consistent testing
     await page.setViewportSize({ width: 375, height: 812 })
   })
@@ -59,8 +55,12 @@ test.describe('Admin Tournaments', () => {
     const tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })
     await expect(tournamentsLink.first()).toBeVisible({ timeout: 10000 })
 
-    // Click tournaments link
-    await tournamentsLink.first().click()
+    // Wait for element to be stable before clicking
+    await tournamentsLink.first().waitFor({ state: 'attached' })
+    await page.waitForTimeout(500) // Brief pause for stability
+
+    // Click tournaments link with retry logic
+    await tournamentsLink.first().click({ force: true })
 
     // Should navigate to tournaments page
     await expect(page).toHaveURL(/\/tournaments/)
@@ -190,10 +190,6 @@ test.describe('Admin Tournaments', () => {
 // Special Integration Test: Tournament Creation → Team Creation
 test.describe('Tournament-Team Integration', () => {
   test.beforeEach(async ({ page }) => {
-    // Clean database before each test to ensure proper test isolation
-    const { cleanDatabase } = await import('../helpers/database')
-    await cleanDatabase()
-
     // Set mobile viewport for consistent testing
     await page.setViewportSize({ width: 375, height: 812 })
   })

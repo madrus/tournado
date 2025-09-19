@@ -73,9 +73,10 @@ export function createSessionCookie(cookieValue: string) {
     value: cookieValue,
     domain: 'localhost',
     path: '/',
-    httpOnly: true,
+    expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
+    httpOnly: false,
     secure: false,
-    sameSite: 'lax' as const,
+    sameSite: 'Lax' as const,
   }
 }
 

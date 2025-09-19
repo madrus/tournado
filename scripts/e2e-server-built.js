@@ -7,7 +7,7 @@ import { checkDevServer } from './utils/port-utils.js'
 // Force test DB for built e2e server
 process.env.DATABASE_URL =
   process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1'
-process.env.PLAYWRIGHT_TEST = process.env.PLAYWRIGHT_TEST || 'true'
+process.env.PLAYWRIGHT = process.env.PLAYWRIGHT || 'true'
 
 const PORT = 5174
 process.env.PORT = PORT.toString() // Ensure consistent port for built server

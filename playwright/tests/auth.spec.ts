@@ -50,7 +50,10 @@ test.describe('Authentication', () => {
     // 3. Firebase signup should redirect to homepage (new users get PUBLIC role)
     await expect(page).toHaveURL('/', { timeout: 10000 })
 
-    // 4. Success! The main issue was that signup was redirecting to admin panel instead of homepage.
+    // 4. Wait for the page to be fully loaded and stable
+    await page.waitForTimeout(1000) // Give time for any remaining async operations
+
+    // 5. Success! The main issue was that signup was redirecting to admin panel instead of homepage.
     // This is now fixed - new users properly redirect to the homepage.
   })
 
@@ -82,8 +85,10 @@ test.describe('Authentication', () => {
     // Submit the form
     await page.click('button[type="submit"]')
 
-    // Should see password validation error
-    await expect(page.getByText(/password.*too.*short|password.*weak/i)).toBeVisible()
+    // Should see password validation error (Dutch text since app runs in Dutch)
+    await expect(
+      page.getByText(/wachtwoord.*minstens.*8.*tekens|wachtwoord.*te.*kort/i)
+    ).toBeVisible()
 
     // Should stay on signup page
     await expect(page).toHaveURL('/auth/signup')

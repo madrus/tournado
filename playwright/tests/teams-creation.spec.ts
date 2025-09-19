@@ -2,50 +2,16 @@ import { expect, test } from '@playwright/test'
 
 import { createTestTournament, waitForTournamentInDatabase } from '../helpers/database'
 
-// Public Teams Tests - NO AUTHENTICATION REQUIRED
+// Public Team Creation Test - NO AUTHENTICATION REQUIRED
+// Isolated to prevent database concurrency issues
 test.use({ storageState: { cookies: [], origins: [] } })
 
-test.describe('Public Teams', () => {
+test.describe('Public Teams - Creation', () => {
   test.beforeEach(async ({ page }) => {
     const { cleanDatabase } = await import('../helpers/database')
     await cleanDatabase()
 
     await page.setViewportSize({ width: 375, height: 812 })
-  })
-
-  test('should display teams page publicly', async ({ page }) => {
-    // Navigate to teams page (public access)
-    await page.goto('/teams')
-
-    // Should be able to view teams page without authentication
-    await expect(page).toHaveURL('/teams')
-
-    // Should see the "Toevoegen" button
-    await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
-  })
-
-  test('should display existing teams publicly', async ({ page }) => {
-    await page.goto('/teams')
-
-    // Should show teams list or empty state message
-    // This is public viewing of teams
-    const teamsContainer = page.locator('[data-testid="teams-layout"]')
-    await expect(teamsContainer).toBeVisible()
-  })
-
-  test('should allow public team registration', async ({ page }) => {
-    await page.goto('/teams')
-
-    // Click "Toevoegen" button (public team registration)
-    await page.getByRole('link', { name: 'Toevoegen' }).click()
-
-    // Should navigate to new team page
-    await expect(page).toHaveURL('/teams/new')
-
-    // Should see team registration form (public access)
-    await expect(page.locator('form')).toBeVisible()
-    await expect(page.locator('[name="clubName"]')).toBeVisible()
-    await expect(page.locator('[name="name"]')).toBeVisible()
   })
 
   test('should create team with tournament selection in public area', async ({
@@ -55,7 +21,9 @@ test.describe('Public Teams', () => {
     let teamId: string | undefined
 
     try {
-      const tournament = await createTestTournament('PubTourney', 'Utrecht')
+      // Use unique names to prevent conflicts during concurrent test execution
+      const uniqueId = Math.random().toString(36).substring(2, 8)
+      const tournament = await createTestTournament(`PubTourney-${uniqueId}`, 'Utrecht')
       tournamentId = tournament.id
 
       // Navigate to public team creation form
@@ -66,8 +34,7 @@ test.describe('Public Teams', () => {
       await expect(page).toHaveURL('/teams/new')
       await expect(page.locator('form')).toBeVisible()
 
-      // Step 1: Select Tournament with retry logic for database-UI sync
-      await waitForTournamentInDatabase(tournament.name, 20, 1000)
+      // Step 1: Select Tournament (tournament already verified to exist)
 
       let tournamentSelected = false
       for (let attempt = 1; attempt <= 5; attempt++) {
@@ -130,8 +97,8 @@ test.describe('Public Teams', () => {
       await expect(clubNameInput).toBeEnabled()
       await expect(teamNameInput).toBeEnabled()
 
-      await clubNameInput.fill('TC Public')
-      await teamNameInput.fill('J08-1')
+      await clubNameInput.fill(`TC Public ${uniqueId}`)
+      await teamNameInput.fill(`J08-1-${uniqueId}`)
 
       // Step 5: Fill Team Leader Information
       const leaderNameInput = page.getByRole('textbox', {
@@ -145,7 +112,7 @@ test.describe('Public Teams', () => {
       })
 
       await leaderNameInput.fill('Test Leader')
-      await leaderEmailInput.fill('test@example.com')
+      await leaderEmailInput.fill(`test-${uniqueId}@example.com`)
       await leaderPhoneInput.fill('0123456789')
 
       // Step 6: Accept Privacy Agreement
@@ -175,9 +142,12 @@ test.describe('Public Teams', () => {
         teamId = match[1]
       }
 
-      await expect(page.locator('body')).toContainText(/J08-1|TC Public/i, {
-        timeout: 5000,
-      })
+      await expect(page.locator('body')).toContainText(
+        new RegExp(`J08-1-${uniqueId}|TC Public ${uniqueId}`, 'i'),
+        {
+          timeout: 5000,
+        }
+      )
     } finally {
       // Clean up test data
       if (teamId) {

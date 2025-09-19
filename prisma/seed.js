@@ -28,7 +28,7 @@ async function createPrismaClient(maxRetries = 5, delay = 1000) {
  */
 async function seed() {
   // Skip seeding during E2E tests to avoid conflicts with test data
-  if (process.env.PLAYWRIGHT_TEST === 'true' || process.env.PLAYWRIGHT === 'true') {
+  if (process.env.PLAYWRIGHT === 'true' || process.env.PLAYWRIGHT === 'true') {
     console.log('Skipping database seeding during E2E tests')
     return
   }

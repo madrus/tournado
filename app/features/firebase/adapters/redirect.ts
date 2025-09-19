@@ -30,21 +30,11 @@ export async function submitAuthCallback(
           'x-test-bypass': 'true',
         },
       })
-        .then(async response => {
-          console.log(
-            'E2E auth callback response:',
-            response.status,
-            response.statusText
-          )
-          if (!response.ok) {
-            const text = await response.text()
-            console.log('E2E auth callback response body:', text)
-          }
+        .then(() => {
           // After server authenticates, redirect to the intended destination
           window.location.href = redirectTo || '/'
         })
-        .catch(error => {
-          console.error('E2E auth callback error:', error)
+        .catch(() => {
           // Fall back to client-side redirect even if server auth fails
           window.location.href = redirectTo || '/'
         })

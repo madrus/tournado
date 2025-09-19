@@ -7,7 +7,9 @@ import { checkDevServer } from './utils/port-utils.js'
 // Force test DB for e2e server
 process.env.DATABASE_URL =
   process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1'
-process.env.PLAYWRIGHT_TEST = process.env.PLAYWRIGHT_TEST || 'true'
+process.env.PLAYWRIGHT = process.env.PLAYWRIGHT || 'true'
+// Disable React Router DevTools during E2E tests to prevent overlay interference
+process.env.ENABLE_REACT_ROUTER_DEVTOOLS = 'false'
 
 const PORT = 5174
 const DEV_SERVER_URL = `http://localhost:${PORT}`

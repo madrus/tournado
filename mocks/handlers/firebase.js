@@ -15,7 +15,8 @@ export const firebaseHandlers = [
 
     // Validate mock token
     if (idToken && idToken.startsWith('mock-jwt-header.payload.signature-')) {
-      const redirectUrl = redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'
+      // For new users (signup), always redirect to homepage
+      const redirectUrl = redirectTo || '/'
       console.log('MSW auth callback successful, redirecting to:', redirectUrl)
 
       // Return redirect response
@@ -101,6 +102,44 @@ export const firebaseHandlers = [
     }
   ),
 
+  // Mock Firebase Auth email/password sign up
+  http.post(
+    'https://identitytoolkit.googleapis.com/v1/accounts:signUp',
+    async ({ request }) => {
+      const body = await request.json()
+      const { email, password } = body
+
+      console.log('MSW: Firebase signup request intercepted:', { email, password })
+
+      // For E2E tests, accept any email with the expected password
+      if (email && password === 'MyReallyStr0ngPassw0rd!!!') {
+        const response = {
+          kind: 'identitytoolkit#SignupNewUserResponse',
+          localId: `new-user-${Date.now()}`,
+          email,
+          displayName: email.split('@')[0], // Use part before @ as display name
+          idToken: generateMockIdToken(email),
+          refreshToken: 'mock-refresh-token',
+          expiresIn: '3600',
+        }
+        console.log('MSW: Firebase signup successful, returning:', response)
+        return HttpResponse.json(response)
+      }
+
+      // Invalid signup
+      console.log('MSW: Firebase signup failed - weak password')
+      return HttpResponse.json(
+        {
+          error: {
+            code: 400,
+            message: 'WEAK_PASSWORD',
+          },
+        },
+        { status: 400 }
+      )
+    }
+  ),
+
   // Mock Firebase Auth token refresh
   http.post('https://securetoken.googleapis.com/v1/token', () => {
     return HttpResponse.json({
@@ -115,29 +154,33 @@ export const firebaseHandlers = [
   }),
 
   // Mock our app's auth callback endpoint behavior
-  http.post('http://localhost:5173/auth/callback', async ({ request }) => {
+  http.post('http://localhost:5174/auth/callback', async ({ request }) => {
     const formData = await request.formData()
     const idToken = formData.get('idToken')
     const redirectTo = formData.get('redirectTo')
+
+    console.log('MSW: Auth callback intercepted:', {
+      idToken: idToken?.substring(0, 20) + '...',
+      redirectTo,
+    })
 
     // Verify we received a mock token
     if (idToken && idToken.startsWith('mock-jwt-')) {
       // Extract email from mock token
       const email = idToken.split('-').pop()
+      console.log('MSW: Extracted email from token:', email)
 
-      // Determine redirect based on user role
-      const isAdmin = email.includes('admin')
-      const defaultRedirect = isAdmin
-        ? '/a7k9m2x5p8w1n4q6r3y8b5t1'
-        : '/a7k9m2x5p8w1n4q6r3y8b5t1'
-      const finalRedirect = redirectTo || defaultRedirect
+      // For new users (signup), always redirect to homepage regardless of admin status
+      const finalRedirect = redirectTo || '/'
 
-      return HttpResponse.redirect(`http://localhost:5173${finalRedirect}`, 303)
+      console.log('MSW: Redirecting to:', finalRedirect)
+      return HttpResponse.redirect(`http://localhost:5174${finalRedirect}`, 303)
     }
 
     // Invalid token
+    console.log('MSW: Invalid token, redirecting to signin')
     return HttpResponse.redirect(
-      'http://localhost:5173/auth/signin?error=invalid-token',
+      'http://localhost:5174/auth/signin?error=invalid-token',
       303
     )
   }),

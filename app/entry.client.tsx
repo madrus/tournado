@@ -3,11 +3,13 @@ import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
 
 import { initI18n } from '~/i18n/config'
+import { setupMSWBrowser } from '~/utils/msw-browser'
 
 declare global {
   interface Window {
     __SSR_LANGUAGE__?: string
     __SSR_THEME__?: string
+    playwrightTest?: boolean
   }
 }
 
@@ -40,6 +42,9 @@ if (isDevelopment) {
 // Use the SSR-injected language and theme
 const lang = window.__SSR_LANGUAGE__ || 'nl'
 initI18n(lang)
+
+// Initialize MSW browser worker for E2E tests
+setupMSWBrowser()
 
 hydrateRoot(
   document,

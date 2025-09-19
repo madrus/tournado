@@ -67,7 +67,7 @@ export default function SignUpPage(): JSX.Element {
       </div>
 
       {/* Firebase Google Sign-up */}
-      <FirebaseSignIn redirectTo={redirectTo} />
+      <FirebaseSignIn redirectTo={redirectTo ?? '/'} />
 
       <div className='relative'>
         <div className='absolute inset-0 flex items-center'>
@@ -81,7 +81,7 @@ export default function SignUpPage(): JSX.Element {
       </div>
 
       {/* Firebase email/password sign-up */}
-      <FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? undefined} />
+      <FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? '/'} />
 
       <p className='text-muted-foreground text-center text-sm'>
         {t('auth.signUpPage.hasAccount')}{' '}

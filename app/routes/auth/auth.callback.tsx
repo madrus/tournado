@@ -56,7 +56,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     // Get role-based redirect destination
     const finalRedirectTo = getPostSignInRedirect(user, redirectTo || undefined)
     console.log(
-      `[auth-callback] Redirecting to: ${finalRedirectTo} (requested: ${redirectTo})`
+      `[auth-callback] Redirecting to: ${finalRedirectTo} (requested: ${redirectTo}, user role: ${user.role})`
     )
 
     // Create absolute URL to avoid protocol issues
@@ -73,6 +73,7 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
       },
     })
   } catch (_error) {
+    console.log('[auth-callback] Error:', _error)
     // Firebase auth callback error
     const url = new URL(request.url)
     const absoluteErrorUrl = new URL(

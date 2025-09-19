@@ -68,7 +68,7 @@ export function getPostSignInRedirect(
     // If they can't access the requested path, fall through to role-based default
   }
 
-  // Get role-based landing page
+  // Get role-based landing page - default to homepage for any unknown roles
   const role = getUserRole(user)
   return ROLE_LANDING_PAGES[role] || '/'
 }

@@ -194,7 +194,7 @@ describe('useFirebaseAuth', () => {
     expect(result.current.loading).toBeFalsy()
   })
 
-  test('uses default redirectTo when none provided', async () => {
+  test('lets server handle redirectTo when none provided', async () => {
     const mockUser = {
       getIdToken: mockGetIdToken,
     }
@@ -220,6 +220,10 @@ describe('useFirebaseAuth', () => {
       await result.current.signInWithGoogle()
     })
 
-    expect(window.location.href).toBe('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    // Verify fetch was called with undefined redirectTo (lets server decide based on role)
+    expect(mockFetch).toHaveBeenCalledWith('/auth/callback', {
+      method: 'POST',
+      body: expect.any(FormData),
+    })
   })
 })

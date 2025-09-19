@@ -65,5 +65,26 @@ test.describe('Admin Authorization', () => {
       await expect(page.locator('form')).toBeVisible({ timeout: 15000 })
       await expect(page.locator('[name="clubName"]')).toBeVisible({ timeout: 15000 })
     })
+
+    test('should have admin menu options in user dropdown', async ({ page }) => {
+      // Navigate to admin panel
+      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+
+      // Wait for page to load and content to render
+      await page.waitForLoadState('networkidle')
+      await page.waitForTimeout(2000) // Wait for hydration/rendering
+
+      // Open user menu
+      await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
+      await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({
+        timeout: 5000,
+      })
+
+      // Admin menu should have tournaments management option
+      await expect(
+        page.getByTestId('user-menu-dropdown').getByText('Toernooien')
+      ).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Uitloggen' })).toBeVisible()
+    })
   })
 })

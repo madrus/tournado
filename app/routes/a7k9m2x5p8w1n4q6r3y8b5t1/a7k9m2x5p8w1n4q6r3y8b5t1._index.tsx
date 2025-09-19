@@ -122,14 +122,15 @@ export default function AdminDashboard(): JSX.Element {
         {/* Panel 1 - Team Management (only for ADMIN and MANAGER) */}
         {canManageTeams ? (
           <ActionLinkPanel
-            title='Team Management'
-            description='Manage team registrations and memberships.'
+            title={t('admin.team.title')}
+            description={t('admin.team.description')}
             icon={<ApparelIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='green'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
             language={i18n.language}
+            testId='admin-panel-team-management'
           >
             <div className='space-y-2'>
               <p>
@@ -143,14 +144,15 @@ export default function AdminDashboard(): JSX.Element {
         {/* Panel 2 - Tournament Management (only for ADMIN and MANAGER) */}
         {canManageTournaments ? (
           <ActionLinkPanel
-            title='Tournament Management'
-            description='Create and manage tournaments and competitions.'
+            title={t('admin.tournament.title')}
+            description={t('admin.tournament.description')}
             icon={<TrophyIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='cyan'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
             language={i18n.language}
+            testId='admin-panel-tournament-management'
           >
             <div className='space-y-2'>
               <p>
@@ -166,14 +168,15 @@ export default function AdminDashboard(): JSX.Element {
         {/* Panel 3 - Match Management (for REFEREE, MANAGER, and ADMIN) */}
         {canRefereeMatches ? (
           <ActionLinkPanel
-            title='Match Management'
-            description='Manage match scores and referee assignments.'
+            title={t('admin.match.title')}
+            description={t('admin.match.description')}
             icon={<SportsIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='lime'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/matches'
             language={i18n.language}
+            testId='admin-panel-match-management'
           >
             <div className='space-y-2'>
               <p>
@@ -186,13 +189,14 @@ export default function AdminDashboard(): JSX.Element {
 
         {/* Panel 4 - User Management (for ADMIN and MANAGER) */}
         <ActionLinkPanel
-          title='User Management'
-          description='Manage user accounts and permissions.'
+          title={t('admin.user.title')}
+          description={t('admin.user.description')}
           icon={<PersonIcon className='h-5 w-5' />}
           mainColor='teal'
           hoverColor='brand'
           iconColor='yellow'
           language={i18n.language}
+          testId='admin-panel-user-management'
         >
           <div className='space-y-2'>
             <p className='break-all'>
@@ -207,26 +211,28 @@ export default function AdminDashboard(): JSX.Element {
         {/* Panel 5 - System Settings (for ADMIN only) */}
         {canAccessSystemSettings ? (
           <ActionLinkPanel
-            title='System Settings'
-            description='Configure application settings and preferences.'
+            title={t('admin.settings.title')}
+            description={t('admin.settings.description')}
             icon={<SettingsIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='brand'
             language={i18n.language}
+            testId='admin-panel-system-settings'
           />
         ) : null}
 
         {/* Panel 6 - Reports & Analytics (for ADMIN and MANAGER) */}
         {canViewReports ? (
           <ActionLinkPanel
-            title='Reports & Analytics'
-            description='View platform usage and tournament statistics.'
+            title={t('admin.reports.title')}
+            description={t('admin.reports.description')}
             icon={<TuneIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='violet'
             language={i18n.language}
+            testId='admin-panel-reports-&-analytics'
           />
         ) : null}
       </div>

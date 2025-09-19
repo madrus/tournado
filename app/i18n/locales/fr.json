@@ -27,6 +27,22 @@
       "description": "Gérer tous les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
       "title": "Gestion des tournois",
       "totalTournaments": "Nombre total de tournois"
+    },
+    "match": {
+      "title": "Gestion des matchs",
+      "description": "Gérer les scores des matchs et les affectations d'arbitres."
+    },
+    "user": {
+      "title": "Gestion des utilisateurs",
+      "description": "Gérer les comptes utilisateur et les permissions."
+    },
+    "settings": {
+      "title": "Paramètres système",
+      "description": "Configurer les paramètres et préférences de l'application."
+    },
+    "reports": {
+      "title": "Rapports et analyses",
+      "description": "Voir l'utilisation de la plateforme et les statistiques des tournois."
     }
   },
   "auth": {

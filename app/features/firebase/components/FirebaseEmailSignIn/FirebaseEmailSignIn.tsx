@@ -20,7 +20,7 @@ export type FirebaseEmailSignInProps = {
 
 export const FirebaseEmailSignIn = ({
   mode,
-  redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1',
+  redirectTo,
   className,
   variant = 'default',
   size = 'md',
@@ -69,9 +69,9 @@ export const FirebaseEmailSignIn = ({
 
     // Use the hook methods which handle loading, errors, and navigation
     if (mode === 'signin') {
-      await signInWithEmail(email, password, redirectTo)
+      await signInWithEmail(email, password, redirectTo) // No default, let server decide based on role
     } else {
-      await signUpWithEmail(email, password, redirectTo)
+      await signUpWithEmail(email, password, redirectTo || '/') // Default to homepage for new users
     }
   }
 

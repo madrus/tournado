@@ -27,6 +27,22 @@
       "description": "Sistemdeki tüm turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
       "title": "Turnuva yönetimi",
       "totalTournaments": "Toplam turnuva sayısı"
+    },
+    "match": {
+      "title": "Maç yönetimi",
+      "description": "Maç skorlarını ve hakem atamalarını yönetin."
+    },
+    "user": {
+      "title": "Kullanıcı yönetimi",
+      "description": "Kullanıcı hesaplarını ve izinlerini yönetin."
+    },
+    "settings": {
+      "title": "Sistem ayarları",
+      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın."
+    },
+    "reports": {
+      "title": "Raporlar ve analitik",
+      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin."
     }
   },
   "auth": {

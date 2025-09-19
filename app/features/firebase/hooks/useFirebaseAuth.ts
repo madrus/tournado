@@ -69,9 +69,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
     return () => unsubscribe()
   }, [])
 
-  const signInWithGoogle = async (
-    redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1'
-  ): Promise<void> => {
+  const signInWithGoogle = async (redirectTo?: string): Promise<void> => {
     try {
       setLoading(true)
       setError(null)
@@ -128,7 +126,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
   const signInWithEmail = async (
     email: string,
     password: string,
-    redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    redirectTo?: string
   ): Promise<void> => {
     try {
       setLoading(true)
@@ -150,14 +148,25 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
       // Firebase sign-in error
       type FirebaseErrorLike = { code?: string }
       const code = (emailSignInError as FirebaseErrorLike)?.code
+      // Normalize security-sensitive errors to prevent user enumeration
+      const normalizedCode =
+        code && ['auth/wrong-password', 'auth/user-not-found'].includes(code)
+          ? 'auth/invalid-credential'
+          : code
+
       const messages = {
         'auth/invalid-credential': 'Invalid email or password.',
-        'auth/wrong-password': 'Invalid email or password.',
-        'auth/user-not-found': 'No account found for this email.',
         'auth/too-many-requests': 'Too many attempts. Please try again later.',
         'auth/operation-not-allowed': 'Email/password auth is disabled in Firebase.',
       } as const
-      setError(buildFriendlyMessage(code, emailSignInError, messages, 'Sign-in failed'))
+      setError(
+        buildFriendlyMessage(
+          normalizedCode,
+          emailSignInError,
+          messages,
+          'Sign-in failed'
+        )
+      )
       setLoading(false)
     }
   }
@@ -165,7 +174,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
   const signUpWithEmail = async (
     email: string,
     password: string,
-    redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    redirectTo = '/'
   ): Promise<void> => {
     try {
       setLoading(true)

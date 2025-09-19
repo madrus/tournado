@@ -86,7 +86,7 @@ export async function isTestServer(url, timeout = 5000) {
     // Look for test database indicators in the HTML
     const hasTestIndicators =
       html.includes('data-test.db') ||
-      html.includes('PLAYWRIGHT_TEST') ||
+      html.includes('PLAYWRIGHT') ||
       html.includes('test-environment') ||
       html.includes('firebase-mock')
 

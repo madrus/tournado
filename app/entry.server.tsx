@@ -14,7 +14,7 @@ if (!process.env.DATABASE_URL) {
   const isTest =
     process.env.NODE_ENV === 'test' ||
     process.env.PLAYWRIGHT === 'true' ||
-    process.env.PLAYWRIGHT_TEST === 'true'
+    process.env.PLAYWRIGHT === 'true'
   if (process.env.NODE_ENV !== 'production') {
     process.env.DATABASE_URL = isTest
       ? 'file:./prisma/data-test.db?connection_limit=1'

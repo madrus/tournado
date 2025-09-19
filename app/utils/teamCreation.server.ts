@@ -1,5 +1,5 @@
 /* eslint-disable id-blacklist */
-import { Category, Division } from '@prisma/client'
+import { Category, Division, Team } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
@@ -96,54 +96,65 @@ export async function createTeamFromFormData(
     return { success: false, errors: fieldErrors }
   }
 
-  // Find or create team leader
-  const teamLeader = await findOrCreateTeamLeader({
-    name: teamData.teamLeaderName,
-    email: teamData.teamLeaderEmail,
-    phone: teamData.teamLeaderPhone,
-  })
+  let team: Team
 
-  // Verify tournament exists
-  const tournamentExists = await verifyTournamentExists(teamData.tournamentId)
-  if (!tournamentExists) {
+  try {
+    // Find or create team leader
+    const teamLeader = await findOrCreateTeamLeader({
+      name: teamData.teamLeaderName,
+      email: teamData.teamLeaderEmail,
+      phone: teamData.teamLeaderPhone,
+    })
+
+    // Verify tournament exists
+    const tournamentExists = await verifyTournamentExists(teamData.tournamentId)
+    if (!tournamentExists) {
+      return {
+        success: false,
+        errors: { tournamentId: 'Tournament not found' },
+      }
+    }
+
+    // Create the team
+    team = await createTeam({
+      clubName: teamData.clubName,
+      name: teamData.name,
+      division: validDivision as Division,
+      category: validCategory as Category,
+      teamLeaderId: teamLeader.id,
+      tournamentId: teamData.tournamentId,
+    })
+
+    // Get tournament details for email
+    const tournament = await getTournamentById({ id: teamData.tournamentId })
+
+    // Send confirmation email (don't block team creation if email fails)
+    if (tournament) {
+      try {
+        // eslint-disable-next-line no-console
+        console.log('About to send confirmation email for team:', team.name)
+        await sendConfirmationEmail(team, tournament)
+        // eslint-disable-next-line no-console
+        console.log('Confirmation email sent successfully for team:', team.name)
+      } catch (emailError) {
+        // Log the error but don't fail the team creation
+        // eslint-disable-next-line no-console
+        console.error('Failed to send confirmation email:', emailError)
+      }
+    } else {
+      // eslint-disable-next-line no-console
+      console.error(
+        'Tournament not found for email sending, tournament ID:',
+        teamData.tournamentId
+      )
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Team creation failed with error:', error)
     return {
       success: false,
-      errors: { tournamentId: 'Tournament not found' },
+      errors: { general: 'Team creation failed: ' + (error as Error).message },
     }
-  }
-
-  // Create the team
-  const team = await createTeam({
-    clubName: teamData.clubName,
-    name: teamData.name,
-    division: validDivision as Division,
-    category: validCategory as Category,
-    teamLeaderId: teamLeader.id,
-    tournamentId: teamData.tournamentId,
-  })
-
-  // Get tournament details for email
-  const tournament = await getTournamentById({ id: teamData.tournamentId })
-
-  // Send confirmation email (don't block team creation if email fails)
-  if (tournament) {
-    try {
-      // eslint-disable-next-line no-console
-      console.log('About to send confirmation email for team:', team.name)
-      await sendConfirmationEmail(team, tournament)
-      // eslint-disable-next-line no-console
-      console.log('Confirmation email sent successfully for team:', team.name)
-    } catch (emailError) {
-      // Log the error but don't fail the team creation
-      // eslint-disable-next-line no-console
-      console.error('Failed to send confirmation email:', emailError)
-    }
-  } else {
-    // eslint-disable-next-line no-console
-    console.error(
-      'Tournament not found for email sending, tournament ID:',
-      teamData.tournamentId
-    )
   }
 
   return {

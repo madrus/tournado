@@ -50,7 +50,7 @@ function isTestEnvironment(): boolean {
     if (process.env.NODE_ENV === 'test') return true
 
     // Playwright tests run with custom headers
-    if (process.env.PLAYWRIGHT_TEST === 'true') return true
+    if (process.env.PLAYWRIGHT === 'true') return true
 
     // MSW mock server indicates test environment
     if (process.env.MSW_MODE === 'test') return true

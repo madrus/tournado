@@ -21,7 +21,7 @@ const miscHandlers = [
 
 // Include Firebase handlers only in test environment
 const allHandlers =
-  process.env.PLAYWRIGHT_TEST === 'true'
+  process.env.PLAYWRIGHT === 'true'
     ? [...firebaseHandlers, ...miscHandlers]
     : miscHandlers
 

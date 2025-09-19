@@ -4,7 +4,7 @@ import {
   createAdminUser,
   createTestTournament,
   deleteTestTournament,
-  deleteTestUser,
+  deleteUserByEmail,
 } from '../helpers/database'
 
 /**
@@ -16,7 +16,7 @@ import {
  */
 test.describe('Firebase Authentication Flow', () => {
   let tournamentId: string | undefined
-  let adminUserId: string | undefined
+  let adminUserEmail: string | undefined
 
   test.beforeEach(async () => {
     // Create test data for authentication flow
@@ -24,16 +24,20 @@ test.describe('Firebase Authentication Flow', () => {
     tournamentId = tournament.id
 
     const adminUser = await createAdminUser()
-    adminUserId = adminUser.id
+    adminUserEmail = adminUser.email
   })
 
   test.afterEach(async () => {
     // Cleanup test data
     if (tournamentId) {
-      await deleteTestTournament(tournamentId)
+      await deleteTestTournament({ id: tournamentId })
     }
-    if (adminUserId) {
-      await deleteTestUser(adminUserId)
+    if (adminUserEmail) {
+      try {
+        await deleteUserByEmail(adminUserEmail)
+      } catch (error) {
+        // User might not exist, which is fine
+      }
     }
   })
 

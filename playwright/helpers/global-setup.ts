@@ -39,6 +39,11 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   // Clean database completely before starting tests
   await cleanDatabaseCompletely()
 
+  // Seed essential test data - create tournaments for team creation tests
+  const { createTestTournament } = await import('./database')
+  await createTestTournament('Spring Cup', 'Amsterdam')
+  await createTestTournament('Summer Cup', 'Aalsmeer')
+
   const browserConfig = {
     viewport: { width: 375, height: 812 }, // Mobile viewport
     baseURL: serverUrl,

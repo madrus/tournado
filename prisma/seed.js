@@ -27,11 +27,11 @@ async function createPrismaClient(maxRetries = 5, delay = 1000) {
  * Keep this file as .js for manual seeding on remote
  */
 async function seed() {
-  // Skip seeding during E2E tests to avoid conflicts with test data
-  if (process.env.PLAYWRIGHT === 'true' || process.env.PLAYWRIGHT === 'true') {
-    console.log('Skipping database seeding during E2E tests')
-    return
-  }
+  // Allow seeding during E2E tests - they need tournaments to test against
+  // if (process.env.PLAYWRIGHT === 'true') {
+  //   console.log('Skipping database seeding during E2E tests')
+  //   return
+  // }
 
   // Initialize Prisma Client with retry logic
   const prisma = await createPrismaClient()

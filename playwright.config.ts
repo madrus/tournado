@@ -106,9 +106,6 @@ export default defineConfig({
         '**/teams-*.spec.ts',
         '**/navigation.spec.ts',
         '**/authorization.spec.ts',
-        '**/firebase-auth.spec.ts',
-        '**/business-logic-auth-example.spec.ts',
-        '**/role-based-redirects.spec.ts',
       ],
     },
 

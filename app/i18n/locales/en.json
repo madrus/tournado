@@ -27,6 +27,22 @@
       "description": "Manage all tournaments in the system. Create, edit, or delete tournament information.",
       "title": "Tournament Management",
       "totalTournaments": "Total Tournaments"
+    },
+    "match": {
+      "title": "Match Management",
+      "description": "Manage match scores and referee assignments."
+    },
+    "user": {
+      "title": "User Management",
+      "description": "Manage user accounts and permissions."
+    },
+    "settings": {
+      "title": "System Settings",
+      "description": "Configure application settings and preferences."
+    },
+    "reports": {
+      "title": "Reports & Analytics",
+      "description": "View platform usage and tournament statistics."
     }
   },
   "auth": {

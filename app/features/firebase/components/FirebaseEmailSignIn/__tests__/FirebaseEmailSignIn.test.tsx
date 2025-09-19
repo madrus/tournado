@@ -284,7 +284,7 @@ describe('FirebaseEmailSignIn', () => {
   })
 
   describe('Default Props and RedirectTo', () => {
-    test('uses default redirectTo when none provided', async () => {
+    test('lets server handle redirectTo when none provided for sign-in', async () => {
       render(<FirebaseEmailSignIn mode='signin' />)
 
       const emailInput = screen.getByLabelText('auth.labels.email')
@@ -300,10 +300,11 @@ describe('FirebaseEmailSignIn', () => {
         fireEvent.click(submitButton)
       })
 
+      // Sign-in should let server decide redirect based on user role
       expect(mockSignInWithEmail).toHaveBeenCalledWith(
         'test@example.com',
         'Password123',
-        '/a7k9m2x5p8w1n4q6r3y8b5t1'
+        undefined
       )
     })
 

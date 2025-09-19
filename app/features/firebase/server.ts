@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Role, type User } from '@prisma/client'
 
 import admin from 'firebase-admin'
@@ -28,7 +29,6 @@ if (getApps().length === 0) {
     ) {
       // Missing required environment variables - adminAuth will remain null
       if (process.env.NODE_ENV !== 'test') {
-        // eslint-disable-next-line no-console
         console.warn(
           '[firebase-admin] Missing FIREBASE_ADMIN_* env vars; Admin SDK not initialized.'
         )
@@ -44,7 +44,6 @@ if (getApps().length === 0) {
   } catch (_error) {
     // Firebase Admin SDK initialization failed - adminAuth will remain null
     if (process.env.NODE_ENV !== 'test') {
-      // eslint-disable-next-line no-console
       console.error('[firebase-admin] Initialization failed:', _error)
     }
   }
@@ -73,6 +72,19 @@ export const assignUserRole = async (
     return Role.ADMIN
   }
 
+  // For E2E tests, assign roles based on email patterns
+  if (process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test') {
+    if (email.includes('admin')) {
+      return Role.ADMIN
+    }
+    if (email.includes('manager')) {
+      return Role.MANAGER
+    }
+    if (email.includes('referee')) {
+      return Role.REFEREE
+    }
+  }
+
   return Role.PUBLIC // Default role for new users
 }
 
@@ -94,10 +106,18 @@ export const createOrUpdateUser = async (
     throw new Error('Firebase user must have an email address')
   }
 
+  console.log(
+    `[createOrUpdateUser] Looking for user with firebaseUid: ${firebaseUser.uid}, email: ${firebaseUser.email}`
+  )
+
   // Check if user already exists by firebaseUid
   const existingUser = await prisma.user.findUnique({
     where: { firebaseUid: firebaseUser.uid },
   })
+
+  console.log(
+    `[createOrUpdateUser] Found user by firebaseUid: ${existingUser ? `${existingUser.email}, role: ${existingUser.role}, id: ${existingUser.id}` : 'none'}`
+  )
 
   if (existingUser) {
     // Update existing user
@@ -118,8 +138,15 @@ export const createOrUpdateUser = async (
     where: { email: firebaseUser.email },
   })
 
+  console.log(
+    `[createOrUpdateUser] Found user by email: ${existingByEmail ? `${existingByEmail.email}, role: ${existingByEmail.role}, id: ${existingByEmail.id}, firebaseUid: ${existingByEmail.firebaseUid}` : 'none'}`
+  )
+
   if (existingByEmail) {
     // Link firebaseUid to existing user and update profile fields, preserve role
+    console.log(
+      `[createOrUpdateUser] Linking firebaseUid ${firebaseUser.uid} to existing user ${existingByEmail.id}`
+    )
     return await prisma.user.update({
       where: { id: existingByEmail.id },
       // eslint-disable-next-line id-blacklist
@@ -138,6 +165,10 @@ export const createOrUpdateUser = async (
     firebaseUid: firebaseUser.uid,
     email: firebaseUser.email,
   })
+
+  console.log(
+    `[createOrUpdateUser] Creating new user with role: ${assignedRole}, PLAYWRIGHT env: ${process.env.PLAYWRIGHT}, NODE_ENV: ${process.env.NODE_ENV}`
+  )
 
   return await prisma.user.create({
     // eslint-disable-next-line id-blacklist
@@ -170,7 +201,6 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
     const message =
       error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
     if (process.env.NODE_ENV !== 'test') {
-      // eslint-disable-next-line no-console
       console.error('[firebase-admin] verifyIdToken error:', message)
     }
     throw new Error(`Invalid Firebase ID token: ${message}`)

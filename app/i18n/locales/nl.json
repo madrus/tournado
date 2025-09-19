@@ -27,6 +27,22 @@
       "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
       "title": "Toernooien beheer",
       "totalTournaments": "Totaal aantal toernooien"
+    },
+    "match": {
+      "title": "Wedstrijden beheer",
+      "description": "Beheer wedstrijdscores en scheidsrechter toewijzingen."
+    },
+    "user": {
+      "title": "Gebruikers beheer",
+      "description": "Beheer gebruikersaccounts en machtigingen."
+    },
+    "settings": {
+      "title": "Systeeminstellingen",
+      "description": "Configureer applicatie-instellingen en voorkeuren."
+    },
+    "reports": {
+      "title": "Rapporten & Analytics",
+      "description": "Bekijk platformgebruik en toernooistatistieken."
     }
   },
   "auth": {

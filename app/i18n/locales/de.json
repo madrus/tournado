@@ -27,6 +27,22 @@
       "description": "Verwalten Sie alle Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
       "title": "Turnier-Verwaltung",
       "totalTournaments": "Turniere insgesamt"
+    },
+    "match": {
+      "title": "Spiel-Verwaltung",
+      "description": "Spielergebnisse und Schiedsrichter-Zuordnungen verwalten."
+    },
+    "user": {
+      "title": "Benutzer-Verwaltung",
+      "description": "Benutzerkonten und Berechtigungen verwalten."
+    },
+    "settings": {
+      "title": "Systemeinstellungen",
+      "description": "Anwendungseinstellungen und Präferenzen konfigurieren."
+    },
+    "reports": {
+      "title": "Berichte & Analytics",
+      "description": "Plattformnutzung und Turnierstatistiken anzeigen."
     }
   },
   "auth": {

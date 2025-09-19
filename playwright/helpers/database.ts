@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { faker } from '@faker-js/faker'
-import { PrismaClient, type User } from '@prisma/client'
+import { PrismaClient, Role, type User } from '@prisma/client'
 
 // Ensure Playwright helpers use the same DB as the E2E server
 // Fall back to the test DB path used by e2e-server.js
@@ -82,7 +82,7 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
     firstName: 'Test',
     lastName: 'Manager',
     email,
-    role: 'MANAGER',
+    role: Role.MANAGER,
     firebaseUid: 'regular-user-id', // Match Firebase mock UID for regular test users
   })
 
@@ -92,16 +92,29 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
   }
 }
 
-export async function createAdminUser(): Promise<User> {
+export async function createAdminUser(
+  options: { uniqueFirebaseUid?: boolean } = {}
+): Promise<User> {
   const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
+  const firebaseUid = options.uniqueFirebaseUid
+    ? `admin-user-${faker.string.alphanumeric(8)}`
+    : 'admin-user-id' // Default UID for global setup
 
-  return await createUser({
+  console.log(
+    `[createAdminUser] Creating admin user with email: ${adminEmail}, role: ADMIN, firebaseUid: ${firebaseUid}`
+  )
+  const user = await createUser({
     firstName: 'Test',
     lastName: 'Admin',
     email: adminEmail,
-    role: 'ADMIN',
-    firebaseUid: 'admin-user-id', // Match Firebase mock UID for admin test users
+    role: Role.ADMIN,
+    firebaseUid,
   })
+
+  console.log(
+    `[createAdminUser] Created admin user: ${user.email}, role: ${user.role}, id: ${user.id}`
+  )
+  return user
 }
 
 export async function createRefereeUser(): Promise<User> {
@@ -111,7 +124,7 @@ export async function createRefereeUser(): Promise<User> {
     firstName: 'Test',
     lastName: 'Referee',
     email: refereeEmail,
-    role: 'REFEREE',
+    role: Role.REFEREE,
   })
 }
 

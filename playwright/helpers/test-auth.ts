@@ -30,12 +30,6 @@ export async function createTestSession(userRole: UserRole): Promise<{
   // Create session directly (bypass Firebase)
   const session = await sessionStorage.getSession()
   session.set('userId', user.id)
-  session.set('firebaseSessionKey', {
-    firebaseUid: user.firebaseUid,
-    userId: user.id,
-    email: user.email,
-    displayName: `${user.firstName} ${user.lastName}`,
-  })
 
   const cookie = await sessionStorage.commitSession(session)
 

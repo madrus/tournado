@@ -13,12 +13,6 @@ let adminApp: App | null = null
 let adminAuth: Auth | null = null
 
 function initializeFirebaseAdmin(): void {
-  // Skip Firebase Admin initialization during E2E tests
-  if (process.env.PLAYWRIGHT === 'true') {
-    console.log('[firebase-admin] Skipping initialization during E2E tests')
-    return
-  }
-
   // Use existing Firebase app if available
   if (getApps().length > 0) {
     adminAuth = getAuth(getApps()[0])
@@ -86,8 +80,8 @@ export const assignUserRole = async (
     return Role.ADMIN
   }
 
-  // For E2E tests, assign roles based on email patterns
-  if (process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test') {
+  // For tests, assign roles based on email patterns
+  if (process.env.NODE_ENV === 'test') {
     if (email.includes('admin')) {
       return Role.ADMIN
     }
@@ -181,7 +175,7 @@ export const createOrUpdateUser = async (
   })
 
   console.log(
-    `[createOrUpdateUser] Creating new user with role: ${assignedRole}, PLAYWRIGHT env: ${process.env.PLAYWRIGHT}, NODE_ENV: ${process.env.NODE_ENV}`
+    `[createOrUpdateUser] Creating new user with role: ${assignedRole}, NODE_ENV: ${process.env.NODE_ENV}`
   )
 
   return await prisma.user.create({

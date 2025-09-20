@@ -75,7 +75,7 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-export const createManagerUser = async (): Promise<{ email: string; role: string }> => {
+export const createManagerUser = async (): Promise<User> => {
   const email = `manager-${faker.string.alphanumeric(8)}@test.com`
 
   const user = await createUser({
@@ -83,13 +83,10 @@ export const createManagerUser = async (): Promise<{ email: string; role: string
     lastName: 'Manager',
     email,
     role: Role.MANAGER,
-    firebaseUid: 'regular-user-id', // Match Firebase mock UID for regular test users
+    firebaseUid: 'regular-user-id',
   })
 
-  return {
-    email: user.email,
-    role: 'MANAGER',
-  }
+  return user
 }
 
 export async function createAdminUser(

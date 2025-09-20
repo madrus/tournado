@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
-import { chromium, FullConfig } from '@playwright/test'
+import { FullConfig } from '@playwright/test'
+
+import fs from 'fs'
+import path from 'path'
 
 import { cleanDatabaseCompletely, createAdminUser, createManagerUser } from './database'
-import { getFirebaseMockScript } from './firebase-mock'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
@@ -44,18 +46,50 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   await createTestTournament('Spring Cup', 'Amsterdam')
   await createTestTournament('Summer Cup', 'Aalsmeer')
 
-  const browserConfig = {
-    viewport: { width: 375, height: 812 }, // Mobile viewport
-    baseURL: serverUrl,
-    extraHTTPHeaders: {
-      'Accept-Language': 'nl-NL,nl;q=0.9', // Use Dutch for consistent locators
-      'x-test-bypass': 'true', // Bypass rate limiting in tests
-    },
-    // Set language cookie for all tests to ensure consistent Dutch language
-    locale: 'nl-NL',
-    // Set cookies to use Dutch language in the app (natural default)
-    storageState: {
+  // Create users for testing
+  const adminUser = await createAdminUser()
+  const regularUser = await createManagerUser()
+
+  // Create simple auth state files with session cookies
+  await createSimpleAuthState(
+    adminUser.id,
+    './playwright/.auth/admin-auth.json',
+    'admin'
+  )
+  await createSimpleAuthState(
+    regularUser.id,
+    './playwright/.auth/user-auth.json',
+    'regular user'
+  )
+}
+
+async function createSimpleAuthState(
+  userId: string,
+  authFilePath: string,
+  userType: string
+): Promise<void> {
+  try {
+    // Import session storage dynamically to avoid Node.js module issues
+    const { sessionStorage } = await import('../../app/utils/session.server.js')
+
+    // Create a session cookie with the user ID
+    const session = await sessionStorage.getSession()
+    session.set('userId', userId)
+    const sessionCookie = await sessionStorage.commitSession(session)
+
+    // Create a simple storage state file with just the session cookie
+    const storageState = {
       cookies: [
+        {
+          name: '__session',
+          value: sessionCookie.split('=')[1].split(';')[0], // Extract cookie value
+          domain: 'localhost',
+          path: '/',
+          expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 7 days
+          httpOnly: true,
+          secure: false,
+          sameSite: 'Lax' as const,
+        },
         {
           name: 'lang',
           value: 'nl',
@@ -64,190 +98,26 @@ async function globalSetup(_config: FullConfig): Promise<void> {
           expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365, // 1 year
           httpOnly: false,
           secure: false,
-          sameSite: 'Lax',
+          sameSite: 'Lax' as const,
         },
       ],
       origins: [],
-    },
-  }
-
-  // Create browser instance for authentication
-  const browser = await chromium.launch()
-
-  try {
-    const adminUser = await createAdminUser()
-    await createAuthState(
-      browser,
-      browserConfig,
-      adminUser.email,
-      './playwright/.auth/admin-auth.json',
-      'admin'
-    )
-
-    const regularUser = await createManagerUser()
-    await createAuthState(
-      browser,
-      browserConfig,
-      regularUser.email,
-      './playwright/.auth/user-auth.json',
-      'regular user'
-    )
-  } catch (error) {
-    console.error('Global setup failed:', error)
-    throw error
-  } finally {
-    await browser.close()
-  }
-}
-
-async function createAuthState(
-  browser: any,
-  browserConfig: any,
-  email: string,
-  authFilePath: string,
-  userType: string
-): Promise<void> {
-  const context = await browser.newContext(browserConfig)
-  const page = await context.newPage()
-
-  try {
-    // Capture console messages from the start
-    const consoleMessages = []
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
-        console.log(`${userType} browser console error: ${msg.text()}`)
-        consoleMessages.push(`${msg.type()}: ${msg.text()}`)
-      }
-    })
-
-    // Set the test flag and use Dutch language (natural default)
-    await page.addInitScript(() => {
-      window.playwrightTest = true
-      window.localStorage.setItem('playwrightTest', 'true')
-      // Use Dutch language in localStorage (app's natural default)
-      window.localStorage.setItem('i18nextLng', 'nl')
-      window.localStorage.setItem('language', 'nl')
-      // Set Dutch language cookie
-      document.cookie = 'lang=nl; path=/; domain=localhost'
-    })
-
-    // Inject Firebase mocks before navigation
-    await page.addInitScript(getFirebaseMockScript())
-
-    await page.goto('/auth/signin')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(1000)
-
-    // Check if Firebase email sign-in form is available
-    const emailInput = page.locator('#email')
-    const passwordInput = page.locator('#password')
-
-    if (await emailInput.isVisible({ timeout: 5000 })) {
-      console.log(`Using Firebase email sign-in for ${userType}`)
-
-      // Wait for the form to be enabled (Firebase to finish loading)
-      console.log(`Waiting for email input to be enabled for ${userType}`)
-      await emailInput.waitFor({ state: 'attached' })
-
-      try {
-        await page.waitForFunction(
-          () => {
-            const emailInput = document.getElementById('email')
-            return emailInput && !emailInput.disabled
-          },
-          { timeout: 30000 }
-        )
-        console.log(`Email input is now enabled for ${userType}`)
-      } catch (waitError) {
-        console.log(
-          `Failed to wait for email input to be enabled for ${userType}:`,
-          waitError.message
-        )
-        // Try to force enable it by evaluating JavaScript
-        await page.evaluate(() => {
-          const emailInput = document.getElementById('email')
-          const passwordInput = document.getElementById('password')
-          const submitButton = document.querySelector('button[type="submit"]')
-          if (emailInput) emailInput.disabled = false
-          if (passwordInput) passwordInput.disabled = false
-          if (submitButton) submitButton.disabled = false
-          console.log('Force enabled form inputs and submit button')
-        })
-      }
-
-      await emailInput.fill(email)
-      await passwordInput.fill('MyReallyStr0ngPassw0rd!!!')
-
-      // Look for the Firebase email sign-in button (not the Google button)
-      // Handle both Dutch "Inloggen" and English "Sign In"
-      const signInButton = page
-        .locator('button[type="submit"]')
-        .filter({ hasText: /(sign in|inloggen)/i })
-      await signInButton.waitFor({ state: 'visible', timeout: 30000, enable: true })
-
-      // Use Promise.race to either wait for navigation or timeout
-      const navigationPromise = page
-        .waitForNavigation({ timeout: 15000 })
-        .catch(() => null)
-      await signInButton.click()
-
-      // Wait for either navigation to complete or timeout
-      const navigationResult = await navigationPromise
-      if (navigationResult) {
-        console.log(`${userType} auth: Navigation completed to: ${page.url()}`)
-      } else {
-        console.log(
-          `${userType} auth: No navigation detected after button click: ${page.url()}`
-        )
-
-        // Wait a bit more for potential delayed navigation
-        await page.waitForTimeout(3000)
-        console.log(`${userType} auth: URL after additional wait: ${page.url()}`)
-      }
-    } else {
-      console.log(`Attempting Google sign-in for ${userType}`)
-
-      // Try Google sign-in button
-      const googleSignInButton = page.locator('button', {
-        hasText: /continue with google/i,
-      })
-      await googleSignInButton.waitFor({ state: 'visible', timeout: 30000 })
-      await googleSignInButton.click()
     }
 
-    // Wait for successful authentication redirect
-    try {
-      if (userType === 'admin') {
-        await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
-      } else {
-        await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
-      }
-    } catch (urlError) {
-      const currentUrl = page.url()
-      console.log(
-        `${userType} authentication redirect failed. Current URL: ${currentUrl}`
-      )
-      throw urlError
+    // Ensure the .auth directory exists
+    const authDir = path.dirname(authFilePath)
+    if (!fs.existsSync(authDir)) {
+      fs.mkdirSync(authDir, { recursive: true })
     }
 
-    await context.storageState({ path: authFilePath })
-    console.log(`Successfully created ${userType} auth state`)
+    // Write the storage state file
+    fs.writeFileSync(authFilePath, JSON.stringify(storageState, null, 2))
+    console.log(
+      `Successfully created ${userType} auth state with direct session cookie`
+    )
   } catch (error) {
-    console.error(`${userType} authentication setup failed:`, error)
-
-    // Take screenshot for debugging
-    await page.screenshot({
-      path: `./playwright/.auth/${userType}-setup-error.png`,
-      fullPage: true,
-    })
-
-    // Get page content for debugging
-    const content = await page.content()
-    console.log(`Page content for ${userType} auth failure:`, content.slice(0, 500))
-
+    console.error(`${userType} auth state creation failed:`, error)
     throw error
-  } finally {
-    await context.close()
   }
 }
 

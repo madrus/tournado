@@ -125,6 +125,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
+- **No semicolons**. Follow the codebase convention of omitting semicolons in JavaScript/TypeScript code
 
 ### Claude Behavior Rules
 

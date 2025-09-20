@@ -77,12 +77,20 @@ async function createSimpleAuthState(
     session.set('userId', userId)
     const sessionCookie = await sessionStorage.commitSession(session)
 
-    // Create a simple storage state file with just the session cookie
+    // Parse the Set-Cookie header to extract just the cookie value
+    // sessionCookie format: "__session=encrypted_value; Path=/; HttpOnly; SameSite=Lax"
+    const cookieMatch = sessionCookie.match(/__session=([^;]+)/)
+    if (!cookieMatch) {
+      throw new Error(`Failed to parse session cookie: ${sessionCookie}`)
+    }
+    const cookieValue = cookieMatch[1]
+
+    // Create a simple storage state file with the properly extracted session cookie
     const storageState = {
       cookies: [
         {
           name: '__session',
-          value: sessionCookie.split('=')[1].split(';')[0], // Extract cookie value
+          value: cookieValue,
           domain: 'localhost',
           path: '/',
           expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 7 days

@@ -19,12 +19,14 @@ export async function createTestSession(userRole: UserRole): Promise<{
   cookie: string
 }> {
   // Create user in database with the specified role
+  // Add timestamp to ensure unique firebaseUid and email
+  const timestamp = Date.now()
   const user = await createUser({
     firstName: 'Test',
     lastName: getLastNameForRole(userRole),
-    email: `test-${userRole.toLowerCase()}@test.com`,
+    email: `test-${userRole.toLowerCase()}-${timestamp}@test.com`,
     role: userRole,
-    firebaseUid: `test-${userRole.toLowerCase()}-uid`,
+    firebaseUid: `test-${userRole.toLowerCase()}-${timestamp}-uid`,
   })
 
   // Create session directly (bypass Firebase)

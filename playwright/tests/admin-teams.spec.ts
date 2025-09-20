@@ -6,6 +6,7 @@ import { AdminTeamsPage } from '../pages/AdminTeamsPage'
 // Admin Teams Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Teams', () => {
   test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   })
 

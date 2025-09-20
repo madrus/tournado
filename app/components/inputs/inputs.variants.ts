@@ -315,10 +315,6 @@ export const textInputLabelVariants = cva(['flex w-full flex-col'])
 
 // Text input label text variants
 export const textInputLabelTextVariants = cva(['font-medium text-foreground'])
-
-// Text input error variants - DEPRECATED: Use ErrorMessage component instead
-// export const textInputErrorVariants = cva(['mt-2 text-sm text-brand'])
-
 // Calendar container variants
 export const calendarContainerVariants = cva([
   'p-4 rounded-lg shadow-lg border',

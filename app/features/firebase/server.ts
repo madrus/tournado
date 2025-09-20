@@ -12,8 +12,20 @@ import type { FirebaseUser } from './types'
 let adminApp: App | null = null
 let adminAuth: Auth | null = null
 
-// Initialize Firebase Admin SDK
-if (getApps().length === 0) {
+function initializeFirebaseAdmin(): void {
+  // Skip Firebase Admin initialization during E2E tests
+  if (process.env.PLAYWRIGHT === 'true') {
+    console.log('[firebase-admin] Skipping initialization during E2E tests')
+    return
+  }
+
+  // Use existing Firebase app if available
+  if (getApps().length > 0) {
+    adminAuth = getAuth(getApps()[0])
+    return
+  }
+
+  // Initialize Firebase Admin SDK
   try {
     const serviceAccount = {
       projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
@@ -33,23 +45,25 @@ if (getApps().length === 0) {
           '[firebase-admin] Missing FIREBASE_ADMIN_* env vars; Admin SDK not initialized.'
         )
       }
-    } else {
-      adminApp = initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        projectId: serviceAccount.projectId,
-      })
-
-      adminAuth = getAuth(adminApp)
+      return
     }
+
+    adminApp = initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      projectId: serviceAccount.projectId,
+    })
+
+    adminAuth = getAuth(adminApp)
   } catch (_error) {
     // Firebase Admin SDK initialization failed - adminAuth will remain null
     if (process.env.NODE_ENV !== 'test') {
       console.error('[firebase-admin] Initialization failed:', _error)
     }
   }
-} else {
-  adminAuth = getAuth(getApps()[0])
 }
+
+// Initialize Firebase Admin on module load
+initializeFirebaseAdmin()
 
 type AssignUserRoleProps = {
   firebaseUid: string

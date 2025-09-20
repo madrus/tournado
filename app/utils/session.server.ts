@@ -23,7 +23,7 @@ export const sessionStorage = createCookieSessionStorage({
     path: '/',
     sameSite: 'lax',
     secrets: [process.env.SESSION_SECRET],
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' && !process.env.PLAYWRIGHT,
     maxAge: undefined, // Default to session cookie, will be overridden when remember is true
   },
 })

@@ -283,7 +283,7 @@ export const datePickerButtonVariants = cva(
 
 // Date picker text variants
 export const datePickerTextVariants = cva(
-  ['flex-1 truncate text-left transition-colors duration-200'],
+  ['flex-1 truncate text-start transition-colors duration-200'],
   {
     variants: {
       state: {

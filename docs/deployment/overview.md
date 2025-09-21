@@ -40,18 +40,17 @@ fly apps create tournado
 fly apps create tournado-staging
 ```
 
-2. Set up secrets using automated scripts:
+2. Set up secrets:
 
 ```sh
-# For GitHub Actions (CI) - dummy Firebase values
+# For GitHub Actions (CI) - automated with dummy Firebase values
 ./setup-github-secrets.sh
 
-# For Fly.io staging
-./setup-flyio-secrets.sh tournado-staging
-
-# For Fly.io production
-./setup-flyio-secrets.sh tournado-production
+# For Fly.io environments - run individual commands (see troubleshooting below)
+# Use the template script as reference: docs/templates/setup-flyio-secrets.sh.template
 ```
+
+**Important**: Due to Fly.io authentication token issues and deployment timeouts, running individual `flyctl secrets set` commands is more reliable than the automated script. **No web UI required** - everything is done via terminal commands. See [Environment Variables Guide](../environment-variables.md#setup-instructions) for detailed command-by-command instructions.
 
 **Manual secret setup** (if needed):
 
@@ -119,3 +118,66 @@ Connect to the staging environment:
 fly ssh console -a tournado-staging
 fly ssh console --app tournado-staging
 ```
+
+## Troubleshooting
+
+### Fly.io Secret Setup Issues
+
+**Problem**: Authentication errors (401 unauthorized) when setting secrets
+
+**Solution**:
+
+1. Re-authenticate with fresh token:
+
+   ```sh
+   fly auth logout
+   fly auth login
+   ```
+
+2. Run `flyctl secrets set` commands individually in terminal instead of using the batch script
+3. If timeouts occur, wait for deployment to complete before running the next `flyctl secrets set` command
+
+**Problem**: Script timeouts during secret setup
+
+**Cause**: Each `flyctl secrets set` triggers a deployment restart, and many secrets can cause cumulative timeouts
+
+**Solution**: Use manual secret setup as documented in [Environment Variables Guide](../environment-variables.md#setup-instructions)
+
+### Authentication Token Refresh
+
+Fly.io authentication tokens can expire. If you encounter authentication issues:
+
+```sh
+# Check current authentication
+fly auth whoami
+
+# Re-authenticate if needed
+fly auth login
+
+# Alternative: Create new deploy token
+fly tokens create deploy
+```
+
+### Secret Verification
+
+After setting up secrets, verify they are configured correctly:
+
+```sh
+# List all secrets for staging
+fly secrets list --app tournado-staging
+
+# List all secrets for production
+fly secrets list --app tournado-production
+
+# Check app status
+fly status --app tournado-staging
+fly status --app tournado-production
+```
+
+**Expected secrets count**: You should see 15 secrets total for each app:
+
+- 3 Core secrets (SESSION_SECRET, SUPER_ADMIN_EMAILS, BASE_URL)
+- 6 Firebase Client secrets (VITE*FIREBASE*\*)
+- 3 Firebase Admin secrets (FIREBASE*ADMIN*\*)
+- 2 Email secrets (RESEND_API_KEY, EMAIL_FROM)
+- 1 Legacy secret (EMAIL_BASE_URL - can be same as BASE_URL)

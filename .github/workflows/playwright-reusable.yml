@@ -69,6 +69,8 @@ jobs:
           pnpm exec prisma generate
           # Wait for the client to be fully ready
           sleep 3
+        env:
+          DATABASE_URL: "file:./prisma/data.db?connection_limit=1"
 
       - name: ⚙️ Build
         run: pnpm build
@@ -88,6 +90,7 @@ jobs:
           fi
         env:
           PLAYWRIGHT: true
+          DATABASE_URL: "file:./prisma/data.db?connection_limit=1"
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

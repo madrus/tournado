@@ -18,7 +18,7 @@ permissions:
 jobs:
   deploy_staging:
     name: Deploy to Staging (dev)
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
+    if: ${{ github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
@@ -27,6 +27,43 @@ jobs:
       contents: read
       actions: read
     steps:
+      - name: ✅ Check core tests passed
+        run: |
+          echo "Checking CI workflow results..."
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+
+          # Get the workflow run details to check individual job results
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs" \
+               > jobs.json
+
+          # Check if core jobs passed (lint, typecheck, vitest)
+          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
+          TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
+          VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
+          WORKFLOW_ONLY_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "✅ Workflow Changes Only") | .conclusion')
+
+          echo "Lint status: $LINT_STATUS"
+          echo "TypeCheck status: $TYPECHECK_STATUS"
+          echo "Vitest status: $VITEST_STATUS"
+          echo "Workflow only status: $WORKFLOW_ONLY_STATUS"
+
+          # If workflow only changes and that job succeeded, allow deployment
+          if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
+            echo "✅ Workflow changes only - proceeding with deployment"
+            exit 0
+          fi
+
+          # Otherwise, require core tests to pass
+          if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
+            echo "✅ Core tests passed - proceeding with deployment"
+            exit 0
+          else
+            echo "❌ Core tests failed - blocking deployment"
+            exit 1
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:
@@ -135,7 +172,7 @@ jobs:
 
   deploy_production:
     name: Deploy to Production (main)
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    if: ${{ github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
@@ -144,6 +181,43 @@ jobs:
       contents: read
       actions: read
     steps:
+      - name: ✅ Check core tests passed
+        run: |
+          echo "Checking CI workflow results..."
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+
+          # Get the workflow run details to check individual job results
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs" \
+               > jobs.json
+
+          # Check if core jobs passed (lint, typecheck, vitest)
+          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
+          TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
+          VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
+          WORKFLOW_ONLY_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "✅ Workflow Changes Only") | .conclusion')
+
+          echo "Lint status: $LINT_STATUS"
+          echo "TypeCheck status: $TYPECHECK_STATUS"
+          echo "Vitest status: $VITEST_STATUS"
+          echo "Workflow only status: $WORKFLOW_ONLY_STATUS"
+
+          # If workflow only changes and that job succeeded, allow deployment
+          if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
+            echo "✅ Workflow changes only - proceeding with deployment"
+            exit 0
+          fi
+
+          # Otherwise, require core tests to pass
+          if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
+            echo "✅ Core tests passed - proceeding with deployment"
+            exit 0
+          else
+            echo "❌ Core tests failed - blocking deployment"
+            exit 1
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:

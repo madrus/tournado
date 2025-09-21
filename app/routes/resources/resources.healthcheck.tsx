@@ -18,6 +18,7 @@ import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type HealthData = {
   serverEnv: string
+  commitSha: string | null
   initialized: boolean
   projectId: string | null
   adminEnv: {
@@ -81,6 +82,7 @@ export const loader = async ({
 
   const data: HealthData = {
     serverEnv: env,
+    commitSha: process.env.COMMIT_SHA || null,
     initialized: Boolean(adminAuth),
     projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || null,
     adminEnv: {
@@ -264,6 +266,9 @@ export default function HealthcheckPage(): JSX.Element | null {
       <ul className='text-sm leading-6'>
         <li>
           <strong>Server env:</strong> {data.serverEnv}
+        </li>
+        <li>
+          <strong>Commit SHA:</strong> {data.commitSha ?? 'local-dev'}
         </li>
         <li>
           <strong>Admin initialized:</strong> {String(data.initialized)}

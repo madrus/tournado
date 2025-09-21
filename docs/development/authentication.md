@@ -213,6 +213,128 @@ export const usePhoneAuth = () => {
 
 **Current decision**: Postponed in favor of focusing on core tournament management features. Can be added incrementally if user demand or international expansion requires it.
 
+## Environment Separation Strategy
+
+### Firebase Project Architecture
+
+**Environment-specific Firebase projects:**
+
+Tournado maintains separate Firebase projects for each environment to ensure proper isolation, security, and testing:
+
+| Deployment Context      | Firebase Project   | Purpose                | Authentication Strategy                   |
+| ----------------------- | ------------------ | ---------------------- | ----------------------------------------- |
+| **CI (GitHub Actions)** | `ci-dummy-project` | E2E testing            | Dummy values, no real Firebase connection |
+| **Development (Local)** | `tournado-dev`     | Local development      | Real Firebase, shared config with Staging |
+| **Staging**             | `tournado-dev`     | Testing and acceptance | Real Firebase, shared config with Local   |
+| **Production**          | `tournado-prod`    | Live application       | Real Firebase with production users       |
+
+### Environment-Specific Configuration
+
+**CI Environment (Testing)**:
+
+```bash
+# Dummy Firebase configuration for testing
+VITE_FIREBASE_API_KEY="ci-dummy-api-key"
+VITE_FIREBASE_AUTH_DOMAIN="ci-dummy.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID="ci-dummy-project"
+VITE_FIREBASE_STORAGE_BUCKET="ci-dummy-project.appspot.com"
+
+# Firebase Admin (bypassed in tests)
+FIREBASE_ADMIN_PROJECT_ID="ci-dummy-project"
+FIREBASE_ADMIN_CLIENT_EMAIL="ci-dummy@ci-dummy-project.iam.gserviceaccount.com"
+FIREBASE_ADMIN_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nCI_DUMMY_PRIVATE_KEY_FOR_TESTING_ONLY\n-----END PRIVATE KEY-----"
+```
+
+**Development and Staging Environments**:
+
+```bash
+# Real Firebase configuration (shared by Local development and Staging deployment)
+VITE_FIREBASE_PROJECT_ID="tournado-dev"
+VITE_FIREBASE_AUTH_DOMAIN="tournado-dev.firebaseapp.com"
+VITE_FIREBASE_STORAGE_BUCKET="tournado-dev.firebasestorage.app"
+
+# Real Firebase Admin credentials (shared by Local development and Staging deployment)
+FIREBASE_ADMIN_PROJECT_ID="tournado-dev"
+FIREBASE_ADMIN_CLIENT_EMAIL="[service-account]@tournado-dev.iam.gserviceaccount.com"
+FIREBASE_ADMIN_PRIVATE_KEY="[real-private-key]"
+
+# Note: Only DATABASE_URL, BASE_URL, and configuration method differ between Local and Staging
+```
+
+**Production Environment**:
+
+```bash
+# Real Firebase configuration for production
+VITE_FIREBASE_PROJECT_ID="tournado-prod"
+VITE_FIREBASE_AUTH_DOMAIN="tournado-prod.firebaseapp.com"
+VITE_FIREBASE_STORAGE_BUCKET="tournado-prod.firebasestorage.app"
+
+# Real Firebase Admin credentials
+FIREBASE_ADMIN_PROJECT_ID="tournado-prod"
+FIREBASE_ADMIN_CLIENT_EMAIL="[service-account]@tournado-prod.iam.gserviceaccount.com"
+FIREBASE_ADMIN_PRIVATE_KEY="[real-private-key]"
+```
+
+### Environment Setup Process
+
+**Automated Setup Scripts**:
+
+1. **CI Environment Setup** (`setup-github-secrets.sh`):
+   - Sets dummy Firebase values in GitHub Actions secrets
+   - Configures testing environment with non-functional Firebase config
+   - Enables E2E tests to bypass Firebase entirely
+
+2. **Staging/Production Setup** (`setup-flyio-secrets.sh`):
+   - Configures real Firebase credentials for Fly.io environments
+   - Sets up proper service account authentication
+   - Manages environment-specific database URLs and email configuration
+
+**Firebase Project Setup**:
+
+```bash
+# Initial Firebase project creation and configuration
+firebase projects:create tournado-dev
+firebase projects:create tournado-prod
+
+# Enable Authentication and required services
+firebase use tournado-dev
+firebase auth:enable email-password google.com
+
+firebase use tournado-prod
+firebase auth:enable email-password google.com
+```
+
+### Testing Environment Strategy
+
+**E2E Testing Approach**:
+
+Our E2E tests follow the principle "Test your code, not third-party services":
+
+- **Firebase Authentication Bypass**: Tests use session cookies directly, bypassing Firebase entirely
+- **Dummy Firebase Configuration**: CI environment uses non-functional Firebase values
+- **Session Cookie Testing**: Authentication state managed via server-side sessions
+- **Database Isolation**: Separate test database (`prisma/data-test.db`) for all E2E tests
+
+**Benefits of Environment Separation**:
+
+✅ **Security**: Production Firebase never exposed to CI/testing
+✅ **Reliability**: Tests don't depend on external Firebase service availability
+✅ **Speed**: No network calls to Firebase during testing
+✅ **Isolation**: Each environment has dedicated Firebase project and data
+
+**See detailed testing strategy**: [E2E Firebase Strategy Guide](../testing/e2e-firebase-strategy.md)
+
+### Environment Variable Management
+
+**Complete environment variable reference**: [Environment Variables Documentation](../environment-variables.md)
+
+**Key principles**:
+
+- Never share secrets between environments
+- Use environment-specific Firebase projects
+- Rotate secrets regularly, especially for production
+- Use minimum required permissions for service accounts
+
 ## Architecture & Session Management
 
 ### Firebase Session Cookie Bridging

@@ -18,6 +18,7 @@ import { AppLayout } from '~/components/AppLayout'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { PWAElements } from '~/components/PWAElements'
 import { prisma } from '~/db.server'
+import { authenticateFirebaseUser } from '~/features/firebase/auth.server'
 import { initI18n, Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
 import type { TournamentData } from '~/lib/lib.types'
 import { useAuthStore, useAuthStoreHydration } from '~/stores/useAuthStore'
@@ -30,7 +31,6 @@ import tailwindStylesheetUrl from '~/styles/tailwind.css?url'
 import { getEnv } from '~/utils/env.server'
 import { cn } from '~/utils/misc'
 import { getDirection, getTypographyClass } from '~/utils/rtlUtils'
-import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/root'
 
@@ -70,7 +70,7 @@ type LoaderData = {
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  const user = await getUser(request)
+  const user = await authenticateFirebaseUser(request)
   // Read 'lang' and 'theme' cookies from request
   const cookieHeader = request.headers.get('Cookie') || ''
   const langMatch = cookieHeader.match(/lang=([^;]+)/)

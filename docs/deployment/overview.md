@@ -2,10 +2,18 @@
 
 ## Overview
 
-The application is deployed using Fly.io with automatic deployments through GitHub Actions. We maintain two environments:
+The application is deployed using Fly.io with automatic deployments through GitHub Actions. We maintain four distinct contexts:
 
-- Production (main branch)
-- Staging (dev branch)
+| Context                 | Purpose                | Firebase Project | Configuration Method   |
+| ----------------------- | ---------------------- | ---------------- | ---------------------- |
+| **CI (GitHub Actions)** | E2E testing            | Dummy values     | GitHub Actions secrets |
+| **Development (Local)** | Local development      | `tournado-dev`   | `.env` file            |
+| **Staging**             | Testing and acceptance | `tournado-dev`   | Fly.io secrets         |
+| **Production**          | Live application       | `tournado-prod`  | Fly.io secrets         |
+
+**Key principle**: Local development and Staging share the same Firebase project (`tournado-dev`) but serve different purposes - Local for development, Staging for deployed testing - with different databases and URLs.
+
+See [Environment Variables Reference](../environment-variables.md) for complete setup details.
 
 ## Prerequisites
 
@@ -32,7 +40,20 @@ fly apps create tournado
 fly apps create tournado-staging
 ```
 
-2. Set up secrets:
+2. Set up secrets using automated scripts:
+
+```sh
+# For GitHub Actions (CI) - dummy Firebase values
+./setup-github-secrets.sh
+
+# For Fly.io staging
+./setup-flyio-secrets.sh tournado-staging
+
+# For Fly.io production
+./setup-flyio-secrets.sh tournado-production
+```
+
+**Manual secret setup** (if needed):
 
 ```sh
 # Generate and set session secret

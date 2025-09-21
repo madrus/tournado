@@ -21,6 +21,17 @@ The project includes a sophisticated **Model Context Protocol (MCP) server** tha
 
 [📖 **Detailed MCP Documentation**](vitest-mcp.md) - Complete guide to AI-assisted testing capabilities
 
+### 🎯 E2E Testing Strategy
+
+Our E2E tests follow the principle **"Test your code, not third-party services"**:
+
+- **Firebase Authentication Bypass**: E2E tests bypass Firebase authentication entirely using session cookies
+- **Environment Isolation**: CI uses dummy Firebase values, actual authentication is mocked
+- **Session Cookie Testing**: Tests authenticate via direct session creation in global setup
+- **Focus on Application Logic**: Tests verify our code behavior, not Firebase service functionality
+
+[📖 **Detailed E2E Strategy Guide**](e2e-firebase-strategy.md) - Complete testing approach and implementation details
+
 ## Running Tests
 
 ### All Tests

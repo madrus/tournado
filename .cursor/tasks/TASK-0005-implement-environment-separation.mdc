@@ -1,0 +1,196 @@
+---
+description: Implement environment variable separation and Firebase project isolation for CI/staging/production
+id: "TASK-0005"
+title: "Implement environment variable separation and Firebase project isolation"
+status: "completed"
+priority: "P1"
+labels: ["environment", "firebase", "ci", "deployment", "security"]
+dependencies: ["./TASK-0004-complete-firebase-auth.mdc"]
+created: "2025-09-21"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🚀 IMPLEMENTATION Task — Environment Variable Separation
+**Decision**: Implement separate Firebase projects and environment variable strategies for local, staging, production, and CI to improve security, reliability, and testing independence.
+
+**Rationale**:
+- CI tests failing due to Firebase dependencies and authentication conflicts
+- Security risk of using production Firebase credentials in CI/testing
+- Need for reliable E2E testing without external service dependencies
+- Environment isolation for better development workflow
+
+# 1) High-Level Objective
+
+Implement comprehensive environment variable separation with Firebase project isolation across local/staging (shared tournado-dev), production (tournado-prod), and CI (dummy values) environments.
+
+# 2) Background / Context
+
+During CI testing cleanup and E2E test reliability improvements, we identified several issues:
+
+1. **CI Environment**: Using real Firebase credentials caused unnecessary dependencies and potential security risks
+2. **Testing Strategy**: E2E tests should focus on application logic, not third-party service functionality
+3. **Environment Isolation**: Single Firebase project posed security and data contamination risks
+4. **Deployment Complexity**: Manual environment variable management was error-prone
+
+The solution involves creating separate Firebase projects and implementing automated environment setup with appropriate isolation.
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: Firebase projects can be created and managed independently
+- Constraint: Maintain backward compatibility with existing authentication flows
+- Constraint: Keep E2E tests reliable and fast
+- Constraint: Follow security best practices for credential management
+- Constraint: Automated setup scripts should be idempotent and safe
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- ./TASK-0004-complete-firebase-auth.mdc — Firebase authentication must be working
+- Firebase CLI access and authentication
+- GitHub repository secrets management
+- Fly.io deployment access
+- Existing environment variable structure
+
+# 5) Context Plan
+
+## IMPLEMENTATION Task Pattern
+**Beginning (add to model context):**
+- Firebase console access for project creation
+- setup-github-secrets.sh _(existing script)_
+- setup-flyio-secrets.sh _(existing script)_
+- .github/workflows/** _(CI configuration)_
+- fly.toml _(deployment configuration)_
+
+**End state (files that will be created/modified):**
+- Firebase projects: `tournado-dev`, `tournado-prod`, `ci-dummy-project` (conceptual)
+- setup-github-secrets.sh _(updated with dummy Firebase values)_
+- setup-flyio-secrets.sh _(updated for real Firebase projects)_
+- .env.example _(updated with environment separation examples)_
+- GitHub Actions secrets _(configured with dummy values)_
+- Fly.io secrets _(configured with real values per environment)_
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+## File Creation Safety Check
+Before every new/modified file, check if it exists and merge carefully without breaking existing functionality.
+
+1. **Firebase Project Creation**
+   - Create `tournado-dev` Firebase project for staging/development
+   - Create `tournado-prod` Firebase project for production
+   - Enable Authentication (Google OAuth + Email/Password) on both projects
+   - Create service accounts for each project with minimal required permissions
+   - Generate service account keys and extract credentials
+
+2. **CI Environment Setup (Dummy Values)**
+   - File: `setup-github-secrets.sh`
+   - Update script to set dummy Firebase configuration values
+   - Ensure dummy values never connect to real Firebase services
+   - Configure `PLAYWRIGHT=true` and other CI-specific variables
+   - Test that CI runs with dummy values without Firebase dependencies
+
+3. **Local & Staging Environment Setup**
+   - File: `setup-flyio-secrets.sh` (for Staging deployment)
+   - File: `.env` (for Local development)
+   - Both Local and Staging share `tournado-dev` Firebase project configuration
+   - Set real Firebase client configuration from `tournado-dev` project
+   - Set Firebase Admin credentials from `tournado-dev` service account
+   - Configure environment-specific email and database settings (different URLs/databases)
+
+4. **Production Environment Setup**
+   - File: `setup-flyio-secrets.sh`
+   - Configure script for `tournado-production` app with `tournado-prod` Firebase project
+   - Set real Firebase client configuration from `tournado-prod` project
+   - Set Firebase Admin credentials from `tournado-prod` service account
+   - Configure production-specific email and database settings
+
+5. **Environment Variable Documentation**
+   - File: `.env.example`
+   - Update with clear examples for each environment type
+   - Add comments explaining CI vs staging vs production strategies
+   - Include Firebase service account setup instructions
+
+6. **Testing Environment Isolation**
+   - Verify E2E tests run with dummy Firebase values in CI
+   - Ensure test database (`prisma/data-test.db`) isolation
+   - Confirm authentication bypass works correctly with session cookies
+   - Test that no real Firebase calls are made during CI
+
+7. **Deployment Script Testing**
+   - Run setup scripts for each environment to verify they work
+   - Test CI deployment with dummy values
+   - Test staging deployment with `tournado-dev` Firebase
+   - Verify environment isolation and security
+
+# 7) Types & Interfaces (if applicable)
+
+No new types needed for environment separation task.
+
+# 8) Acceptance Criteria
+
+## Environment Separation Criteria
+- Three distinct deployment contexts with appropriate Firebase projects:
+  - CI: Uses dummy Firebase values, no real connections
+  - Local & Staging: Both share `tournado-dev` Firebase project (different deployment contexts)
+  - Production: Uses `tournado-prod` Firebase project
+- Each environment has appropriate service account permissions
+
+## Security Criteria
+- No production secrets exposed in CI environment
+- Firebase service accounts have minimal required permissions
+- Environment variables properly isolated between deployments
+- Session secrets unique per environment
+
+## Automation Criteria
+- `setup-github-secrets.sh` configures CI with dummy values
+- `setup-flyio-secrets.sh` configures Fly.io environments with real values
+- Scripts are idempotent and safe to run multiple times
+- Clear error messages if prerequisites are missing
+
+## Testing Criteria
+- E2E tests run reliably in CI without Firebase dependencies
+- Authentication bypass works correctly with session cookies
+- Test database completely isolated from development/production
+- No real Firebase API calls during testing
+
+## Deployment Criteria
+- Local development uses `tournado-dev` Firebase (via `.env`)
+- Staging deploys successfully with `tournado-dev` Firebase (shared Firebase project)
+- Production deploys successfully with `tournado-prod` Firebase
+- Environment-specific configurations work correctly
+- Firebase authentication flows work in each deployment context
+
+# 9) Testing Strategy
+
+## Environment Testing
+- Verify each environment can be set up from scratch using setup scripts
+- Test that dummy Firebase values prevent real service connections in CI
+- Confirm real Firebase authentication works in local, staging, and production
+- Validate environment variable isolation
+
+## Security Testing
+- Audit that no production credentials are accessible from CI
+- Verify service account permissions are minimal
+- Test that environment variables cannot leak between deployments
+- Confirm session cookie security settings per environment
+
+## Integration Testing
+- Test complete authentication flows in local and staging environments
+- Verify E2E tests run without Firebase dependencies
+- Confirm deployment processes work for each deployment context
+- Validate database connections and configurations
+
+# 10) Notes / Links
+
+- **Firebase Console**: https://console.firebase.google.com
+- **Security Principle**: Environment isolation for credential protection
+- **Testing Principle**: "Test your code, not third-party services"
+- **Automation Goal**: Reduce manual environment setup errors
+- **Related Task**: TASK-0004 (Firebase Authentication) - prerequisite
+- **Related Task**: TASK-0006 (Legacy Auth Cleanup) - follow-up cleanup work
+- **Implementation Status**: Completed - all environments successfully separated and automated setup scripts working

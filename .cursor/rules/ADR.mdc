@@ -34,6 +34,8 @@ alwaysApply: false
 | 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Proposed    | —          | —             |
 | 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Proposed    | —          | —             |
 | 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Proposed    | —          | —             |
+| 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | In Progress | —          | —             |
+| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                          | 2025-09-21 | In Progress | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -175,6 +177,12 @@ We are replacing bespoke cookie-based authentication with Firebase Authenticatio
 ### Decision
 
 Adopt Firebase Authentication and mint HTTP-only session cookies on the server from Firebase ID tokens (session cookie bridging). Maintain SSR-friendly role checks and post-login role-based redirects. Avoid long-lived tokens in localStorage; use short-lived in-memory tokens where necessary.
+
+**Environment Separation Strategy** (Updated 2025-09-21):
+- **CI Environment**: Uses dummy Firebase values (`ci-dummy-project`) for E2E testing with authentication bypass
+- **Staging Environment**: Uses dedicated `tournado-dev` Firebase project for development and testing
+- **Production Environment**: Uses dedicated `tournado-prod` Firebase project for live application
+- **Security Isolation**: Each environment has separate Firebase service accounts with minimal required permissions
 
 ### Consequences
 
@@ -1154,3 +1162,106 @@ Adopt centralized RBAC utilities:
 - Unit tests for permission paths and self-access conditions
 - Route tests for unauthorized/forbidden flows
 - Playwright projects for role-based access to admin panel
+
+## ADR-0023 — Environment Variable Management Strategy
+
+<a id="adr-0023"></a>
+**Date**: 2025-09-21
+**Status**: Implemented
+**Owner**: André Roussakoff
+
+### Context
+
+Managing environment variables across multiple deployment environments (CI, staging, production) while maintaining security and avoiding Firebase authentication conflicts in testing required a comprehensive strategy. The challenge was to enable reliable E2E testing without exposing production credentials or creating unnecessary dependencies on external services.
+
+### Alternatives
+
+- **Single Firebase project for all environments**: Security risk, production data exposed to testing
+- **Manual environment variable management**: Error-prone, inconsistent across environments
+- **Real Firebase authentication in CI**: Slow, unreliable, unnecessary network dependencies
+- **Environment separation with automated setup**: Secure, reliable, maintainable
+
+### Decision
+
+Implement comprehensive environment variable management with Firebase project separation:
+
+**Environment Architecture**:
+- **CI (GitHub Actions)**: Uses dummy Firebase values for E2E testing, no real Firebase connection
+- **Staging (dev branch)**: Uses `tournado-dev` Firebase project for development and testing
+- **Production (main branch)**: Uses `tournado-prod` Firebase project for live application
+
+**Automated Setup**:
+- `setup-github-secrets.sh`: Configures CI environment with dummy values
+- `setup-flyio-secrets.sh`: Configures Fly.io environments with real credentials
+- Environment-specific Firebase service accounts with minimal required permissions
+
+**Security Principles**:
+- Never share secrets between environments
+- Use environment-specific Firebase projects
+- Rotate secrets regularly, especially for production
+- Use minimum required permissions for service accounts
+
+### Consequences
+
+- **Pros**: Complete environment isolation, automated setup, secure credential management, reliable CI testing
+- **Cons / risks**: Additional Firebase project costs, complexity of managing multiple environments
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+- Environment variables documented in comprehensive reference guide
+- Setup scripts tested and validated across all environments
+- Firebase projects properly isolated with appropriate access controls
+- E2E tests run reliably in CI without Firebase dependencies
+
+## ADR-0024 — E2E Testing Firebase Bypass Strategy
+
+<a id="adr-0024"></a>
+**Date**: 2025-09-21
+**Status**: Implemented
+**Owner**: André Roussakoff
+
+### Context
+
+E2E testing with Firebase authentication introduced reliability issues, slow test execution, and unnecessary dependencies on external services. The principle "Test your code, not third-party services" guided the decision to bypass Firebase authentication entirely in favor of session cookie-based testing.
+
+### Alternatives
+
+- **Real Firebase authentication in E2E tests**: Slow, unreliable, tests third-party service functionality
+- **Mocked Firebase authentication**: Complex mocking, still tests Firebase integration rather than application logic
+- **Session cookie authentication bypass**: Fast, reliable, focuses on application logic
+- **Hybrid approach**: Complexity without clear benefits
+
+### Decision
+
+Implement E2E testing strategy that bypasses Firebase authentication entirely:
+
+**Authentication Bypass Mechanism**:
+- Create session cookies directly in test setup
+- Use separate test database (`prisma/data-test.db`) for complete isolation
+- Pre-authenticated test contexts (admin, user, public) for different test scenarios
+- Dummy Firebase configuration values that never connect to real services
+
+**Test Architecture**:
+- **No Authentication** (`no-auth` project): Test authentication flows and public access
+- **User Authentication** (`user-authenticated` project): Test user-level features with pre-authenticated context
+- **Admin Authentication** (`admin-authenticated` project): Test admin features with pre-authenticated context
+
+**What IS tested**: Application logic, routing, UI interactions, form validation, authorization (RBAC), database operations, session management
+
+**What is NOT tested**: Firebase sign-in/sign-up/sign-out flows, Google OAuth integration, Firebase security rules, Firebase token validation
+
+### Consequences
+
+- **Pros**: Fast test execution, reliable tests, no external dependencies, environment isolation, easier debugging
+- **Cons / risks**: Firebase integration must be tested manually, authentication complexity not fully exercised
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+- E2E tests run reliably in CI without Firebase service dependencies
+- Authentication contexts work correctly for role-based testing
+- Manual testing procedures documented for Firebase integration validation
+- Test database properly isolated from development and production data

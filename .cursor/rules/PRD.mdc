@@ -28,8 +28,10 @@ For public visitors and competition stakeholders, build a modern tournament mana
 
 Authentication [Implemented]
 
-- [x] Email/password authentication with secure cookie sessions
-- [x] Sign-in, sign-up, and sign-out routes
+- [x] Firebase Authentication with Google OAuth and Email/Password
+- [x] Session cookie bridging for SSR compatibility
+- [x] Environment separation (CI/staging/production Firebase projects)
+- [x] E2E testing strategy with Firebase authentication bypass
 - [x] Role-based guards and unauthorized handling
 - [x] Smart redirects based on role and requested path
 
@@ -90,16 +92,17 @@ Database & Data Model [Implemented]
 
 ### 📋 Planned Features (PRD Scope)
 
-**Phase 1 - Authentication Modernization (Top Priority) [In Progress]**
+**Phase 1 - Authentication Modernization [In Progress]**
 
 - [x] Firebase project setup and configuration (TASK-0001 completed)
 - [x] Firebase-backed session cookie bridging (TASK-0002 completed)
 - [x] Google Authentication via Firebase (TASK-0003 completed)
 - [x] Post-login redirects, logout, and credential persistence (TASK-0003 completed)
 - [x] Visible auth status indicator (TASK-0003 completed)
-- [x] Firebase Email/Password Authentication (TASK-0004 implemented)
-- [x] Multi-super-admin role assignment system (TASK-0004 implemented)
-- [ ] Complete legacy authentication removal (TASK-0004 planned)
+- [x] Firebase Email/Password Authentication (TASK-0004 completed)
+- [x] Multi-super-admin role assignment system (TASK-0004 completed)
+- [ ] Environment variable separation and Firebase project isolation (TASK-0005 in progress)
+- [ ] Complete legacy authentication removal (TASK-0006 planned cleanup - depends on TASK-0004 + TASK-0005)
 
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**
 

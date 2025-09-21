@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 const schema = z.object({
   NODE_ENV: z.enum(['production', 'development', 'test'] as const),
+  COMMIT_SHA: z.string().optional(),
   // Firebase client environment variables (VITE_ prefixed for client-side access)
   VITE_FIREBASE_API_KEY: z.string().optional(),
   VITE_FIREBASE_AUTH_DOMAIN: z.string().optional(),
@@ -15,6 +16,7 @@ type ProcessEnv = z.infer<typeof schema>
 
 type PublicEnv = {
   MODE: ProcessEnv['NODE_ENV']
+  COMMIT_SHA?: string
   VITE_FIREBASE_API_KEY?: string
   VITE_FIREBASE_AUTH_DOMAIN?: string
   VITE_FIREBASE_PROJECT_ID?: string
@@ -51,6 +53,7 @@ export const getEnv = (): PublicEnv => ({
     | 'test'
     | 'production'
     | 'development',
+  COMMIT_SHA: process.env.COMMIT_SHA,
   VITE_FIREBASE_API_KEY: process.env.VITE_FIREBASE_API_KEY,
   VITE_FIREBASE_AUTH_DOMAIN: process.env.VITE_FIREBASE_AUTH_DOMAIN,
   VITE_FIREBASE_PROJECT_ID: process.env.VITE_FIREBASE_PROJECT_ID,

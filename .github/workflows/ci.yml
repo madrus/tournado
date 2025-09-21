@@ -250,10 +250,11 @@ jobs:
                 (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
                   && format('CI was skipped for the {0} environment because there were no new changes in the code.',
                     github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
-                  || format('GitHub Action build result: {0} on branch {1} by {2}\n{3}/{4}/commit/{5}',
-                    (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
+                  || format('GitHub Action build result: {0} on branch {1} by {2} (E2E: {3})\n{4}/{5}/commit/{6}',
+                    (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                     steps.sanitize.outputs.sanitized_branch,
                     steps.sanitize.outputs.sanitized_actor,
+                    needs.e2e-tests.result == 'success' && 'passed' || needs.e2e-tests.result == 'failure' && 'failed' || 'skipped',
                     github.server_url,
                     github.repository,
                     github.sha
@@ -268,11 +269,12 @@ jobs:
                       (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
                         && format('CI was skipped for the {0} environment because there were no new changes in the code.',
                           github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
-                        || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
-                          (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success' && needs.e2e-tests.result == 'success') && 'success' || 'failure',
+                        || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* {4} (non-blocking)\n*Commit message:* {5}\n<{6}/{7}/commit/{8}|View Commit> | <{6}/{7}/actions/runs/{9}|View Workflow Run>',
+                          (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                           steps.sanitize.outputs.sanitized_branch,
                           steps.sanitize.outputs.sanitized_actor,
                           needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
+                          needs.e2e-tests.result == 'success' && '✅ passed' || needs.e2e-tests.result == 'failure' && '❌ failed' || '⏭️ skipped',
                           steps.sanitize.outputs.sanitized_commit_message,
                           github.server_url,
                           github.repository,

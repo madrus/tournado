@@ -190,18 +190,27 @@ fly auth login
 **Setup Scripts**:
 
 ```bash
-# Make scripts executable
-chmod +x setup-github-secrets.sh setup-flyio-secrets.sh
-
-# Configure CI environment (dummy Firebase values)
+# Configure CI environment (automated - dummy Firebase values)
+chmod +x setup-github-secrets.sh
 ./setup-github-secrets.sh
 
-# Configure staging environment (real Firebase)
-./setup-flyio-secrets.sh tournado-staging
+# Configure Fly.io environments (run individual commands due to auth/timeout issues)
+# Use template as reference: docs/templates/setup-flyio-secrets.sh.template
+# See docs/environment-variables.md for complete command-by-command instructions
 
-# Configure production environment (real Firebase)
-./setup-flyio-secrets.sh tournado-production
+# For staging (run each command individually in terminal):
+fly auth login
+flyctl secrets set SESSION_SECRET="$(openssl rand -hex 32)" --app tournado-staging
+flyctl secrets set SUPER_ADMIN_EMAILS="your-email@domain.com" --app tournado-staging
+# ... (continue with other secrets one-by-one via flyctl commands)
+
+# Verify all secrets are configured
+fly secrets list --app tournado-staging
 ```
+
+**Important**: Fly.io script automation can fail due to authentication token expiration and deployment timeouts. Individual command execution is more reliable for Fly.io environments.
+
+**Verification**: Use `fly secrets list --app [app-name]` to verify all 15 expected environment variables are set.
 
 ### Local Development Setup
 

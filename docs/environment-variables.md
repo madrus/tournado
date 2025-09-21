@@ -214,21 +214,82 @@ These variables configure the Firebase Admin SDK for server-side operations.
    gh auth login
    ```
 
-2. **Run setup scripts**:
+2. **Set up CI environment (automated)**:
 
    ```bash
-   # Make scripts executable
-   chmod +x setup-github-secrets.sh setup-flyio-secrets.sh
-
-   # Set up CI environment
+   # Make script executable and run
+   chmod +x setup-github-secrets.sh
    ./setup-github-secrets.sh
-
-   # Set up staging
-   ./setup-flyio-secrets.sh tournado-staging
-
-   # Set up production (when ready)
-   ./setup-flyio-secrets.sh tournado-production
    ```
+
+3. **Set up Fly.io environments (manual command-line process recommended)**:
+
+   Due to Fly.io authentication token issues and deployment restarts, **running individual `flyctl` commands is more reliable** than using the automated script.
+
+   **Note**: "Manual setup" means running these terminal commands one-by-one, **NOT** using the Fly.io web dashboard UI:
+
+   ```bash
+   # First, ensure you're authenticated (may need to re-login)
+   fly auth login
+
+   # Then set secrets one by one for staging
+   flyctl secrets set SESSION_SECRET="$(openssl rand -hex 32)" --app tournado-staging
+   flyctl secrets set SUPER_ADMIN_EMAILS="your-email@domain.com" --app tournado-staging
+
+   # Firebase Client secrets (for staging - using tournado-dev project)
+   flyctl secrets set VITE_FIREBASE_API_KEY="AIzaSyBIZVQlh4hbauqErOgp-qmeuBDhMfw6QrQ" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_AUTH_DOMAIN="tournado-dev.firebaseapp.com" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_PROJECT_ID="tournado-dev" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_STORAGE_BUCKET="tournado-dev.firebasestorage.app" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_MESSAGING_SENDER_ID="795732059131" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_APP_ID="1:795732059131:web:7b27328b7ac7736ea2615e" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_MEASUREMENT_ID="" --app tournado-staging
+
+   # Firebase Admin secrets (copy from your .env file)
+   flyctl secrets set FIREBASE_ADMIN_PROJECT_ID="tournado-dev" --app tournado-staging
+   flyctl secrets set FIREBASE_ADMIN_CLIENT_EMAIL="your-service-account@tournado-dev.iam.gserviceaccount.com" --app tournado-staging
+   flyctl secrets set FIREBASE_ADMIN_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
+   [your-private-key]
+   -----END PRIVATE KEY-----" --app tournado-staging
+
+   # Email and other config
+   flyctl secrets set RESEND_API_KEY="your-resend-key" --app tournado-staging
+   flyctl secrets set EMAIL_FROM="Team Registration <staging@resend.dev>" --app tournado-staging
+   flyctl secrets set BASE_URL="https://tournado-staging.fly.dev" --app tournado-staging
+
+   # Verify all secrets are set correctly
+   fly secrets list --app tournado-staging
+   ```
+
+   **Why individual command execution is recommended:**
+   - Fly.io authentication tokens can expire during script execution
+   - Each secret update triggers a deployment restart (can timeout with many secrets)
+   - Running commands individually allows you to handle authentication issues per command
+   - You can verify each secret is set correctly before proceeding to the next
+   - No need to use web UI - everything is done via terminal commands
+
+   **Verification Commands**:
+
+   After setting up secrets, verify they are all configured correctly:
+
+   ```bash
+   # Check all secrets for staging
+   fly secrets list --app tournado-staging
+
+   # Check all secrets for production
+   fly secrets list --app tournado-production
+
+   # Expected secrets for staging/production:
+   # SESSION_SECRET, SUPER_ADMIN_EMAILS, BASE_URL
+   # VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID
+   # VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID
+   # VITE_FIREBASE_APP_ID, VITE_FIREBASE_MEASUREMENT_ID
+   # FIREBASE_ADMIN_PROJECT_ID, FIREBASE_ADMIN_CLIENT_EMAIL, FIREBASE_ADMIN_PRIVATE_KEY
+   # RESEND_API_KEY, EMAIL_FROM
+   ```
+
+   **Alternative: Use the script as reference**:
+   The `setup-flyio-secrets.sh` script is provided as a template in `docs/templates/setup-flyio-secrets.sh.template`, but manual execution of individual commands is more reliable.
 
 ### Development Environment (Local)
 

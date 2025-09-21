@@ -200,7 +200,6 @@ jobs:
     with:
       environment: "local"
       upload_artifact_suffix: "-ci"
-    continue-on-error: true # Allow CI to succeed even if E2E tests fail
 
   workflow_only_success:
     name: ✅ Workflow Changes Only

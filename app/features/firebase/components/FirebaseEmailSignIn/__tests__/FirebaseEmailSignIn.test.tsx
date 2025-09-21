@@ -14,7 +14,29 @@ vi.mock('../../../hooks/useFirebaseAuth', () => ({
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    i18n: {
+      language: 'en',
+    },
   }),
+}))
+
+// Mock ActionButton component
+vi.mock('~/components/buttons/ActionButton', () => ({
+  ActionButton: ({
+    children,
+    onClick,
+    type,
+    disabled,
+  }: {
+    children: React.ReactNode
+    onClick?: () => void
+    type?: 'button' | 'submit' | 'reset'
+    disabled?: boolean
+  }) => (
+    <button onClick={onClick} type={type} disabled={disabled}>
+      {children}
+    </button>
+  ),
 }))
 
 describe('FirebaseEmailSignIn', () => {

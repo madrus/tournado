@@ -1,12 +1,12 @@
 import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ActionButton } from '~/components/buttons/ActionButton'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
 import {
   firebaseEmailSignInVariants,
-  formButtonVariants,
   inputVariants,
 } from './firebaseEmailSignIn.variants'
 
@@ -153,10 +153,12 @@ export const FirebaseEmailSignIn = ({
         </div>
       ) : null}
 
-      <button
+      <ActionButton
         type='submit'
         disabled={loading}
-        className={cn(formButtonVariants({ variant, size }))}
+        variant='primary'
+        color='brand'
+        size='md'
       >
         {loading ? (
           <div className='flex items-center justify-center gap-2'>
@@ -169,7 +171,7 @@ export const FirebaseEmailSignIn = ({
         ) : (
           t(mode === 'signin' ? 'common.auth.signIn' : 'common.auth.signUp')
         )}
-      </button>
+      </ActionButton>
     </form>
   )
 }

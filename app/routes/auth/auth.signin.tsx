@@ -82,7 +82,7 @@ export default function SigninPage(): JSX.Element {
 
       <p className='text-muted-foreground text-center text-sm'>
         {t('auth.signInPage.noAccount')}{' '}
-        <Link to='/auth/signup' className='hover:text-primary underline'>
+        <Link to='/auth/signup' className='text-brand hover:text-brand/80 underline'>
           {t('auth.signInPage.signUpLink')}
         </Link>
       </p>

@@ -185,13 +185,16 @@ jobs:
       - name: 🛠 Setup Test Database
         run: pnpm exec prisma migrate reset --force
         env:
-          DATABASE_URL: "file:./prisma/data.db?connection_limit=1"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: ⚡ Run vitest
         run: pnpm test:coverage
         env:
-          DATABASE_URL: "file:./prisma/data.db?connection_limit=1"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
+          FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
+          FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
   e2e-tests:
     needs: check_changes
@@ -200,6 +203,11 @@ jobs:
     with:
       environment: "local"
       upload_artifact_suffix: "-ci"
+    secrets:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
+      FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
+      FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
   workflow_only_success:
     name: ✅ Workflow Changes Only

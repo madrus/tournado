@@ -39,6 +39,13 @@ This document provides a complete reference for all environment variables used i
 - **Format**: `email1@domain.com,email2@domain.com`
 - **Example**: `madrusnl@hotmail.com,otmanabdel@hotmail.com`
 
+#### `SUPER_ADMIN_PASSWORD`
+
+- **Purpose**: Password used when creating seed admin users in the database
+- **Required**: Yes (required by `prisma/seed.js`)
+- **Format**: Strong password string (12+ characters recommended)
+- **Behavior**: Seeding fails if this variable is not set
+
 ### Firebase Client Configuration (VITE\_\*)
 
 These variables configure the Firebase client SDK and are exposed to the browser.
@@ -234,7 +241,8 @@ These variables configure the Firebase Admin SDK for server-side operations.
 
    # Then set secrets one by one for staging
    flyctl secrets set SESSION_SECRET="$(openssl rand -hex 32)" --app tournado-staging
-   flyctl secrets set SUPER_ADMIN_EMAILS="your-email@domain.com" --app tournado-staging
+   flyctl secrets set SUPER_ADMIN_EMAILS="admin1@domain1.com,admin2@domain2.com" --app tournado-staging
+   flyctl secrets set SUPER_ADMIN_PASSWORD="your-strong-password" --app tournado-staging
 
    # Firebase Client secrets (for staging - using tournado-dev project)
    flyctl secrets set VITE_FIREBASE_API_KEY="AIzaSyBIZVQlh4hbauqErOgp-qmeuBDhMfw6QrQ" --app tournado-staging
@@ -256,6 +264,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
    flyctl secrets set RESEND_API_KEY="your-resend-key" --app tournado-staging
    flyctl secrets set EMAIL_FROM="Team Registration <staging@resend.dev>" --app tournado-staging
    flyctl secrets set BASE_URL="https://tournado-staging.fly.dev" --app tournado-staging
+   flyctl secrets set DATABASE_URL="file:/data/sqlite.db?connection_limit=1" --app tournado-staging
 
    # Verify all secrets are set correctly
    fly secrets list --app tournado-staging
@@ -280,7 +289,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
    fly secrets list --app tournado-production
 
    # Expected secrets for staging/production:
-   # SESSION_SECRET, SUPER_ADMIN_EMAILS, BASE_URL
+   # SESSION_SECRET, SUPER_ADMIN_EMAILS, SUPER_ADMIN_PASSWORD, BASE_URL, DATABASE_URL
    # VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID
    # VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID
    # VITE_FIREBASE_APP_ID, VITE_FIREBASE_MEASUREMENT_ID
@@ -304,6 +313,7 @@ Ensure your `.env` file has the required variables for local development:
 # Core
 SESSION_SECRET="your-local-session-secret"
 SUPER_ADMIN_EMAILS="your-email@domain.com"
+SUPER_ADMIN_PASSWORD="your-strong-password"
 
 # Firebase Client (shared with Staging deployment context)
 VITE_FIREBASE_API_KEY="AIzaSyBIZVQlh4hbauqErOgp-qmeuBDhMfw6QrQ"

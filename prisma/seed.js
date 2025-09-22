@@ -34,6 +34,9 @@ async function seed() {
   // }
 
   // Initialize Prisma Client with retry logic
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required for seeding')
+  }
   const prisma = await createPrismaClient()
 
   try {
@@ -66,7 +69,11 @@ async function seed() {
       },
     })
 
-    const hashedInitialPassword = await bcrypt.hash('Tournado@2025', 10)
+    const adminPlainPassword = process.env.SUPER_ADMIN_PASSWORD
+    if (!adminPlainPassword) {
+      throw new Error('SUPER_ADMIN_PASSWORD is required for seeding')
+    }
+    const hashedInitialPassword = await bcrypt.hash(adminPlainPassword, 10)
 
     // Create admin users
     await Promise.all(

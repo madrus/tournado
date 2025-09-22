@@ -35,6 +35,7 @@
     "push": "git push --follow-tags",
     "reinstall": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "release": "standard-version",
+    "seed:superadmins": "node prisma/seedSuperAdmins.js",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start:mocks": "NODE_OPTIONS=\"--import ./mocks/index.js\" react-router-serve ./build/server/index.js",
     "start": "react-router-serve ./build/server/index.js",

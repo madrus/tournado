@@ -65,13 +65,14 @@ export const loader = async ({
 
   // Dev/Test: return combined app + Firebase health (HTML by default, JSON if requested)
   let dbOk = false
-  let selfOk = false
   try {
     await prisma.user.count()
     dbOk = true
   } catch {
     dbOk = false
   }
+
+  let selfOk = false
   try {
     const r = await fetch(url.toString(), { method: 'HEAD' })
     selfOk = r.ok

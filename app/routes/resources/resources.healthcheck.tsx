@@ -57,11 +57,12 @@ export const loader = async ({
   request,
 }: LoaderFunctionArgs): Promise<Response | HealthData> => {
   const env = process.env.NODE_ENV || 'development'
+  const appEnv = process.env.APP_ENV || 'development'
   const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
   const url = new URL('/', `http://${host}`)
 
   // Production: keep fast plain probe for platform health checks
-  if (env === 'production') {
+  if (env === 'production' && appEnv !== 'staging') {
     try {
       await Promise.all([
         prisma.user.count(),
@@ -69,7 +70,7 @@ export const loader = async ({
           if (!r.ok) return Promise.reject(r)
         }),
       ])
-      return new Response('OK')
+      return new Response('OK', { headers: { 'Content-Type': 'text/plain' } })
     } catch (error: unknown) {
       console.log('healthcheck ❌', { error })
       return new Response('ERROR', { status: 500 })
@@ -275,7 +276,7 @@ export default function HealthcheckPage(): JSX.Element | null {
   }
 
   // Only dev/test should render this page
-  if (data.serverEnv === 'production') return null
+  if (data.serverEnv === 'production' && process.env.APP_ENV !== 'staging') return null
 
   return (
     <div className='text-foreground space-y-4 p-4 sm:p-6'>

@@ -308,14 +308,8 @@ jobs:
             echo "❌ No image found for commit ${{ steps.prepare_deployment.outputs.head_sha }}"
           fi
 
-      - name: 🚫 Abort when no deployable image is available
-        if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true'
-        run: |
-          echo "❌ No prebuilt image available for commit ${{ steps.prepare_deployment.outputs.head_sha }}; skipping deploy." >&2
-          exit 1
-
       - name: 🚀 Deploy to Production (Build & Deploy)
-        if: steps.check_changes.outputs.code_changed == 'true'
+        if: steps.check_changes.outputs.code_changed == 'true' || (steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true')
         run: |
           echo "🔨 Building and deploying new code changes..."
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token

@@ -155,7 +155,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
 
 - **Purpose**: Base URL for email links
 - **Required**: Yes
-- **CI Value**: `"http://localhost:5174"`
+- **CI Value**: `"http://localhost:8811"`
 - **Staging**: `"https://tournado-staging.fly.dev"`
 - **Production**: `"https://tournado-production.fly.dev"`
 

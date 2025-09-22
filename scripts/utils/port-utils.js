@@ -98,10 +98,10 @@ export async function isTestServer(url, timeout = 5000) {
 
 /**
  * Check if the development server is running and responding
- * @param {number} port - Port to check (default: 5174)
+ * @param {number} port - Port to check (default: 8811)
  * @returns {Promise<{port: number, isRunning: boolean, isResponding: boolean, isTestServer: boolean, url: string}>}
  */
-export async function checkDevServer(port = 5174) {
+export async function checkDevServer(port = 8811) {
   const url = `http://localhost:${port}`
 
   const isRunning = await isPortInUse(port)

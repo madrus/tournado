@@ -5,6 +5,11 @@ on:
     workflows: ["CI"]
     types:
       - completed
+  workflow_dispatch:
+    inputs:
+      workflow_run_id:
+        description: "Optional CI workflow_run id to validate before deploying to production"
+        required: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,7 +23,7 @@ permissions:
 jobs:
   deploy_staging:
     name: Deploy to Staging (dev)
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
@@ -135,7 +140,7 @@ jobs:
 
   deploy_production:
     name: Deploy to Production (main)
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref_name == 'main' }}
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
@@ -144,10 +149,115 @@ jobs:
       contents: read
       actions: read
     steps:
+      - name: 🔧 Prepare deployment context
+        id: prepare_deployment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MANUAL_WORKFLOW_RUN_ID: ${{ github.event.inputs.workflow_run_id }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          # Prefer an explicit workflow_run id supplied via the manual dispatch payload
+          if [[ -n "$MANUAL_WORKFLOW_RUN_ID" ]]; then
+            RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
+            echo "Using workflow_run id provided via manual trigger: $RUN_ID"
+          else
+            # Fall back to locating the latest successful CI run for the same commit on the target branch
+            echo "Looking up latest successful CI run for branch $TARGET_BRANCH"
+            curl -H "Authorization: token $GITHUB_TOKEN" \
+                 -H "Accept: application/vnd.github.v3+json" \
+                 "https://api.github.com/repos/${{ github.repository }}/actions/workflows/ci.yml/runs?branch=$TARGET_BRANCH&status=success&per_page=20" \
+                 > runs.json
+
+            RUN_ID=$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .id' runs.json | head -n 1)
+
+            if [[ -z "$RUN_ID" || "$RUN_ID" == "null" ]]; then
+              echo "❌ Unable to locate a successful CI run for commit $TARGET_SHA on branch $TARGET_BRANCH" >&2
+              exit 1
+            fi
+            echo "✅ Found CI workflow run: $RUN_ID"
+          fi
+
+          # Pull commit metadata from the CI run so downstream steps can behave exactly like the auto path
+          curl -H "Authorization: token $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               "https://api.github.com/repos/${{ github.repository }}/actions/runs/$RUN_ID" \
+               > run.json
+
+          HEAD_SHA=$(jq -r '.head_sha' run.json)
+          HEAD_BRANCH=$(jq -r '.head_branch' run.json)
+          ACTOR=$(jq -r '.actor.login' run.json)
+          CONCLUSION=$(jq -r '.conclusion' run.json)
+
+          if [[ -z "$HEAD_SHA" || "$HEAD_SHA" == "null" ]]; then
+            echo "❌ Unable to read commit SHA from workflow run $RUN_ID" >&2
+            exit 1
+          fi
+
+          # Guard against accidentally deploying a run from a different branch than the manual trigger
+          if [[ "$HEAD_BRANCH" != "$TARGET_BRANCH" ]]; then
+            echo "❌ CI workflow run branch ($HEAD_BRANCH) does not match manual trigger branch ($TARGET_BRANCH)" >&2
+            exit 1
+          fi
+
+          echo "workflow_run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "actor=$ACTOR" >> "$GITHUB_OUTPUT"
+          echo "workflow_run_conclusion=$CONCLUSION" >> "$GITHUB_OUTPUT"
+
+          rm -f runs.json run.json
+
+      - name: ✅ Check core tests passed
+        env:
+          WORKFLOW_RUN_ID: ${{ steps.prepare_deployment.outputs.workflow_run_id }}
+          WORKFLOW_RUN_CONCLUSION: ${{ steps.prepare_deployment.outputs.workflow_run_conclusion }}
+        run: |
+          echo "Checking CI workflow results..."
+          echo "Workflow conclusion: $WORKFLOW_RUN_CONCLUSION"
+
+          # Get the workflow run details to check individual job results
+          curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               "https://api.github.com/repos/${{ github.repository }}/actions/runs/$WORKFLOW_RUN_ID/jobs" \
+               > jobs.json
+
+          # Debug: Show all jobs and their status
+          echo "=== All jobs and their status ==="
+          cat jobs.json | jq -r '.jobs[] | "\(.name): \(.conclusion)"'
+          echo "================================="
+
+          # Check if core jobs passed (lint, typecheck, vitest)
+          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
+          TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
+          VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
+          WORKFLOW_ONLY_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "✅ Workflow Changes Only") | .conclusion')
+
+          echo "Lint status: $LINT_STATUS"
+          echo "TypeCheck status: $TYPECHECK_STATUS"
+          echo "Vitest status: $VITEST_STATUS"
+          echo "Workflow only status: $WORKFLOW_ONLY_STATUS"
+
+          # If workflow only changes and that job succeeded, allow deployment
+          if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
+            echo "✅ Workflow changes only - proceeding with deployment"
+            exit 0
+          fi
+
+          # Otherwise, require core tests to pass
+          if [[ "$LINT_STATUS" == "success" && "$TYPECHECK_STATUS" == "success" && "$VITEST_STATUS" == "success" ]]; then
+            echo "✅ Core tests passed - proceeding with deployment"
+            exit 0
+          else
+            echo "❌ Core tests failed - blocking deployment"
+            exit 1
+          fi
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ steps.prepare_deployment.outputs.head_sha }}
           fetch-depth: 2 # Need 2 commits to compare
 
       - name: 🔍 Check for code changes
@@ -184,12 +294,12 @@ jobs:
         run: |
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Check if an image with this commit SHA already exists
-          if flyctl image show --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "${{ github.event.workflow_run.head_sha }}"; then
+          if flyctl image show --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "${{ steps.prepare_deployment.outputs.head_sha }}"; then
             echo "image_exists=true" >> $GITHUB_OUTPUT
-            echo "✅ Image already exists for commit ${{ github.event.workflow_run.head_sha }}"
+            echo "✅ Image already exists for commit ${{ steps.prepare_deployment.outputs.head_sha }}"
           else
             echo "image_exists=false" >> $GITHUB_OUTPUT
-            echo "❌ No image found for commit ${{ github.event.workflow_run.head_sha }}"
+            echo "❌ No image found for commit ${{ steps.prepare_deployment.outputs.head_sha }}"
           fi
 
       - name: 🚀 Deploy to Production (Build & Deploy)
@@ -198,7 +308,7 @@ jobs:
           echo "🔨 Building and deploying new code changes..."
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           flyctl deploy --remote-only \
-            --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
+            --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
@@ -212,7 +322,7 @@ jobs:
           echo "📦 Deploying existing image (no code changes)..."
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy the existing image without rebuilding
-          flyctl deploy --image-label ${{ github.event.workflow_run.head_sha }} \
+          flyctl deploy --image-label ${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
             --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
@@ -238,13 +348,13 @@ jobs:
           webhook-type: incoming-webhook
           payload: |
             {
-              "text": "Deployment successful: main deployed to production by ${{ github.event.workflow_run.actor.login }}\nApp: ${{ steps.app_name.outputs.value }}\nCommit: ${{ github.event.workflow_run.head_sha }}",
+              "text": "Deployment successful: main deployed to production by ${{ steps.prepare_deployment.outputs.actor }}\nApp: ${{ steps.app_name.outputs.value }}\nCommit: ${{ steps.prepare_deployment.outputs.head_sha }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Deployment successful*: `main` deployed to production by `${{ github.event.workflow_run.actor.login }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Deployment Run>"
+                    "text": "*Deployment successful*: `main` deployed to production by `${{ steps.prepare_deployment.outputs.actor }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.prepare_deployment.outputs.head_sha }}|${{ steps.prepare_deployment.outputs.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.prepare_deployment.outputs.workflow_run_id }}|View CI Run>"
                   }
                 }
               ]

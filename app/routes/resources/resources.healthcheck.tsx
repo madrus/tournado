@@ -240,10 +240,7 @@ export default function HealthcheckPage(): JSX.Element | null {
 
   const data = loaderData as HealthData
 
-  const isLocalDev =
-    data.serverEnv === 'development' &&
-    (data.requestHost?.startsWith('localhost') ||
-      data.requestHost?.startsWith('127.0.0.1'))
+  const isDevOrStaging = data.serverEnv === 'development' || data.appEnv === 'staging'
 
   const handleUseCurrentUserToken = async (): Promise<void> => {
     try {
@@ -353,7 +350,7 @@ export default function HealthcheckPage(): JSX.Element | null {
             className='bg-background text-foreground border-border focus:ring-primary/50 w-full flex-1 rounded-md border px-3 py-2 shadow-sm outline-none focus:ring-2'
           />
           <div className='flex items-center gap-2'>
-            {isLocalDev ? (
+            {isDevOrStaging ? (
               <button
                 type='button'
                 onClick={handleUseCurrentUserToken}

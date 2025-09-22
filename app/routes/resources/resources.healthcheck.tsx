@@ -18,7 +18,6 @@ import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type HealthData = {
   serverEnv: string
-  commitSha: string | null
   initialized: boolean
   projectId: string | null
   adminEnv: {
@@ -82,7 +81,6 @@ export const loader = async ({
 
   const data: HealthData = {
     serverEnv: env,
-    commitSha: process.env.COMMIT_SHA || null,
     initialized: Boolean(adminAuth),
     projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || null,
     adminEnv: {
@@ -191,7 +189,7 @@ export const action = async ({
 }
 
 export default function HealthcheckPage(): JSX.Element | null {
-  const data = useLoaderData() as HealthData
+  const loaderData = useLoaderData()
   const actionData = useActionData() as
     | { ok: boolean; decoded?: unknown; error?: string }
     | undefined
@@ -199,6 +197,13 @@ export default function HealthcheckPage(): JSX.Element | null {
   const fetcher = useFetcher<{ ok: boolean; decoded?: unknown; error?: string }>()
   const inputRef = useRef<HTMLInputElement>(null)
   const [helper, setHelper] = useState<string | null>(null)
+
+  // In production, loader returns Response, not HealthData
+  if (!loaderData || typeof loaderData === 'string' || loaderData instanceof Response) {
+    return null
+  }
+
+  const data = loaderData as HealthData
 
   const isLocalDev =
     data.serverEnv === 'development' &&
@@ -266,9 +271,6 @@ export default function HealthcheckPage(): JSX.Element | null {
       <ul className='text-sm leading-6'>
         <li>
           <strong>Server env:</strong> {data.serverEnv}
-        </li>
-        <li>
-          <strong>Commit SHA:</strong> {data.commitSha ?? 'local-dev'}
         </li>
         <li>
           <strong>Admin initialized:</strong> {String(data.initialized)}

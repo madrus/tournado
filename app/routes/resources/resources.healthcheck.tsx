@@ -18,6 +18,7 @@ import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type HealthData = {
   serverEnv: string
+  appEnv: string
   initialized: boolean
   projectId: string | null
   adminEnv: {
@@ -96,6 +97,7 @@ export const loader = async ({
 
   const data: HealthData = {
     serverEnv: env,
+    appEnv,
     initialized: Boolean(adminAuth),
     projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || null,
     adminEnv: {
@@ -275,8 +277,8 @@ export default function HealthcheckPage(): JSX.Element | null {
     }
   }
 
-  // Only dev/test should render this page
-  if (data.serverEnv === 'production' && process.env.APP_ENV !== 'staging') return null
+  // Production should not render this page, only staging and dev/test
+  if (data.serverEnv === 'production' && data.appEnv !== 'staging') return null
 
   return (
     <div className='text-foreground space-y-4 p-4 sm:p-6'>

@@ -23,13 +23,13 @@ export function SuccessIcon({
 
   // Calculate stroke width based on weight parameter
   // Weight 100-300: thin (1.2), 400-500: normal (1.8), 600-900: bold (2.4)
-  const getStrokeWidth = (weight: number): number => {
+  const getStrokeWidth = (): number => {
     if (weight <= 300) return 1.2
     if (weight <= 500) return 1.8
     return 2.4
   }
 
-  const checkStrokeWidth = getStrokeWidth(weight)
+  const checkStrokeWidth = getStrokeWidth()
 
   return (
     <svg

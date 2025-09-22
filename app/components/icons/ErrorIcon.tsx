@@ -23,13 +23,13 @@ export function ErrorIcon({
 
   // Calculate stroke width based on weight parameter
   // Weight 100-300: thin (1.5), 400-500: normal (2.5), 600-900: bold (3.0)
-  const getStrokeWidth = (weight: number): number => {
+  const getStrokeWidth = (): number => {
     if (weight <= 300) return 1.5
     if (weight <= 500) return 2.5
     return 3.0
   }
 
-  const exclamationStrokeWidth = getStrokeWidth(weight)
+  const exclamationStrokeWidth = getStrokeWidth()
 
   return (
     <svg

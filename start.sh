@@ -12,5 +12,8 @@ chmod 777 /data
 # Run migrations
 npx prisma migrate deploy
 
+# Ensure super admin users exist in DB (idempotent)
+node prisma/seedSuperAdmins.js || true
+
 # Start the server
 NODE_ENV=production PORT=8080 HOST=0.0.0.0 pnpm run start

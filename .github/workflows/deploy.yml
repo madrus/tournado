@@ -5,6 +5,8 @@ on:
     workflows: ["CI"]
     types:
       - completed
+    branches:
+      - dev
   workflow_dispatch:
     inputs:
       workflow_run_id:
@@ -123,6 +125,12 @@ jobs:
             echo "❌ No image found for commit ${{ github.event.workflow_run.head_sha }}"
           fi
 
+      - name: 🚫 Abort when no deployable image is available
+        if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true'
+        run: |
+          echo "❌ No prebuilt image available for commit ${{ github.event.workflow_run.head_sha }}; skipping deploy." >&2
+          exit 1
+
       - name: 🚀 Deploy to Staging (Build & Deploy)
         if: steps.check_changes.outputs.code_changed == 'true'
         run: |
@@ -207,17 +215,17 @@ jobs:
             RUN_ID="$MANUAL_WORKFLOW_RUN_ID"
             echo "Using workflow_run id provided via manual trigger: $RUN_ID"
           else
-            # Fall back to locating the latest successful CI run for the same commit on the target branch
-            echo "Looking up latest successful CI run for branch $TARGET_BRANCH"
+            # Fall back to locating the latest completed CI run for the same commit on the target branch
+            echo "Looking up latest completed CI run for branch $TARGET_BRANCH"
             curl -H "Authorization: token $GITHUB_TOKEN" \
                  -H "Accept: application/vnd.github.v3+json" \
-                 "https://api.github.com/repos/${{ github.repository }}/actions/workflows/ci.yml/runs?branch=$TARGET_BRANCH&status=success&per_page=20" \
+                 "https://api.github.com/repos/${{ github.repository }}/actions/workflows/ci.yml/runs?branch=$TARGET_BRANCH&status=completed&per_page=20" \
                  > runs.json
 
             RUN_ID=$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .id' runs.json | head -n 1)
 
             if [[ -z "$RUN_ID" || "$RUN_ID" == "null" ]]; then
-              echo "❌ Unable to locate a successful CI run for commit $TARGET_SHA on branch $TARGET_BRANCH" >&2
+              echo "❌ Unable to locate a completed CI run for commit $TARGET_SHA on branch $TARGET_BRANCH" >&2
               exit 1
             fi
             echo "✅ Found CI workflow run: $RUN_ID"
@@ -346,7 +354,7 @@ jobs:
           fi
 
       - name: 🚀 Deploy to Production (Build & Deploy)
-        if: steps.check_changes.outputs.code_changed == 'true'
+        if: steps.check_changes.outputs.code_changed == 'true' || (steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true')
         run: |
           echo "🔨 Building and deploying new code changes..."
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token

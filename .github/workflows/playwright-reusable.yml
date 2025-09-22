@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      test_status: ${{ steps.run_tests.outputs.status }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -64,7 +66,7 @@ jobs:
 
       - uses: ./.github/actions/prisma-generate
         with:
-          database_url: "file:./prisma/data.db"
+          database_url: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db', github.workspace, github.run_id) }}
 
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
@@ -79,19 +81,34 @@ jobs:
           # Wait for the client to be fully ready
           sleep 3
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD || format('super-admin-{0}', github.run_id) }}
 
       - name: ⚙️ Build
         run: pnpm build
 
       - name: 🎭 Run Playwright tests with built app
-        run: pnpm test:e2e:built
+        id: run_tests
+        run: |
+          set +e  # Don't exit on error
+          pnpm exec start-server-and-test 'pnpm start:mocks' http://localhost:8811 'playwright test'
+          TEST_EXIT_CODE=$?
+
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "✅ All tests passed successfully"
+            echo "status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "❌ Tests failed with exit code $TEST_EXIT_CODE"
+            echo "status=failure" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "exit_code=$TEST_EXIT_CODE" >> "$GITHUB_OUTPUT"
+          exit $TEST_EXIT_CODE
         env:
           PLAYWRIGHT: true
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
-          FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
-          FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD || format('super-admin-{0}', github.run_id) }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

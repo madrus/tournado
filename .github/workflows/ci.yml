@@ -47,14 +47,13 @@ jobs:
             echo "📝 Code changes detected - running full CI"
           else
             echo "code_changed=false" >> $GITHUB_OUTPUT
-            echo "🚫 Only workflow changes detected - skipping CI jobs"
+            echo "ℹ️ Only workflow changes detected - still running full CI"
           fi
 
   lint:
     name: ⬣ ESLint
     runs-on: ubuntu-latest
     needs: check_changes
-    if: needs.check_changes.outputs.code_changed == 'true'
     permissions:
       contents: read
     steps:
@@ -99,7 +98,6 @@ jobs:
     name: ʦ TypeScript
     runs-on: ubuntu-latest
     needs: check_changes
-    if: needs.check_changes.outputs.code_changed == 'true'
     permissions:
       contents: read
     steps:
@@ -144,7 +142,6 @@ jobs:
     name: ⚡ Vitest
     runs-on: ubuntu-latest
     needs: check_changes
-    if: needs.check_changes.outputs.code_changed == 'true'
     permissions:
       contents: read
     steps:
@@ -198,19 +195,6 @@ jobs:
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
           FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
-  e2e-tests:
-    needs: check_changes
-    if: needs.check_changes.outputs.code_changed == 'true'
-    uses: ./.github/workflows/playwright-reusable.yml
-    with:
-      environment: "local"
-      upload_artifact_suffix: "-ci"
-    secrets:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
-      FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
-      FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
-
   workflow_only_success:
     name: ✅ Workflow Changes Only
     runs-on: ubuntu-latest
@@ -219,8 +203,7 @@ jobs:
     steps:
       - name: ✅ Workflow validation passed
         run: |
-          echo "🚀 Only workflow files changed - CI checks skipped"
-          echo "This job ensures the deploy workflow can still trigger successfully"
+          echo "🚀 Only workflow files changed - notifying deployment pipeline"
 
   notify_slack:
     name: Notify Slack
@@ -230,7 +213,6 @@ jobs:
       - lint
       - typecheck
       - vitest
-      - e2e-tests
       - workflow_only_success
     if: always()
     steps:
@@ -257,18 +239,14 @@ jobs:
           payload: |
             {
               "text": "${{
-                (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
-                  && format('CI was skipped for the {0} environment because there were no new changes in the code.',
-                    github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
-                  || format('GitHub Action build result: {0} on branch {1} by {2} (E2E: {3})\n{4}/{5}/commit/{6}',
-                    (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
-                    steps.sanitize.outputs.sanitized_branch,
-                    steps.sanitize.outputs.sanitized_actor,
-                    needs.e2e-tests.result == 'success' && 'passed' || needs.e2e-tests.result == 'failure' && 'failed' || 'skipped',
-                    github.server_url,
-                    github.repository,
-                    github.sha
-                  )
+                format('GitHub Action build result: {0} on branch {1} by {2}\nE2E suite runs separately after CI.\n{3}/{4}/commit/{5}',
+                  (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
+                  steps.sanitize.outputs.sanitized_branch,
+                  steps.sanitize.outputs.sanitized_actor,
+                  github.server_url,
+                  github.repository,
+                  github.sha
+                )
               }}",
               "blocks": [
                 {
@@ -276,21 +254,17 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "${{
-                      (needs.check_changes.outputs.code_changed == 'false' && needs.workflow_only_success.result == 'success')
-                        && format('CI was skipped for the {0} environment because there were no new changes in the code.',
-                          github.ref_name == 'main' && 'production' || github.ref_name == 'dev' && 'staging' || github.ref_name)
-                        || format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* {4} (non-blocking)\n*Commit message:* {5}\n<{6}/{7}/commit/{8}|View Commit> | <{6}/{7}/actions/runs/{9}|View Workflow Run>',
-                          (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
-                          steps.sanitize.outputs.sanitized_branch,
-                          steps.sanitize.outputs.sanitized_actor,
-                          needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
-                          needs.e2e-tests.result == 'success' && '✅ passed' || needs.e2e-tests.result == 'failure' && '❌ failed' || '⏭️ skipped',
-                          steps.sanitize.outputs.sanitized_commit_message,
-                          github.server_url,
-                          github.repository,
-                          github.sha,
-                          github.run_id
-                        )
+                      format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* tracked via the `E2E` workflow\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
+                        (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
+                        steps.sanitize.outputs.sanitized_branch,
+                        steps.sanitize.outputs.sanitized_actor,
+                        needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
+                        steps.sanitize.outputs.sanitized_commit_message,
+                        github.server_url,
+                        github.repository,
+                        github.sha,
+                        github.run_id
+                      )
                     }}"
                   }
                 }

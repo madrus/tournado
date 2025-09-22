@@ -77,7 +77,6 @@ jobs:
 
       - name: 🎭 Run Playwright tests with built app
         id: run_tests
-        continue-on-error: true
         run: |
           set +e  # Don't exit on error
           pnpm exec start-server-and-test 'pnpm start:mocks' http://localhost:8811 'playwright test'

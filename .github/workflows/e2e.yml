@@ -1,0 +1,209 @@
+name: E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or tag to test"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Prepare E2E context
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.context.outputs.ref }}
+      branch: ${{ steps.context.outputs.branch }}
+      sha: ${{ steps.record_sha.outputs.sha }}
+      actor: ${{ steps.context.outputs.actor }}
+      workflow_run_id: ${{ steps.context.outputs.workflow_run_id }}
+      code_changed: ${{ steps.changes.outputs.code_changed }}
+      should_run: ${{ steps.changes.outputs.should_run }}
+    steps:
+      - name: Resolve target ref
+        id: context
+        env:
+          DISPATCH_REF: ${{ github.event.inputs.ref }}
+          DEFAULT_ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+
+          TARGET_REF="$DISPATCH_REF"
+
+          if [[ "$TARGET_REF" == refs/heads/* ]]; then
+            TARGET_BRANCH="${TARGET_REF#refs/heads/}"
+          elif [[ "$TARGET_REF" == refs/tags/* ]]; then
+            TARGET_BRANCH="${TARGET_REF#refs/tags/}"
+          else
+            TARGET_BRANCH="$TARGET_REF"
+          fi
+
+          ACTOR="$DEFAULT_ACTOR"
+          CI_RUN_ID=""
+
+          if [[ -z "$TARGET_BRANCH" ]]; then
+            echo "❌ Missing target context; cannot run E2E tests" >&2
+            exit 1
+          fi
+
+          echo "ref=$TARGET_REF" >> "$GITHUB_OUTPUT"
+          echo "branch=$TARGET_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "actor=$ACTOR" >> "$GITHUB_OUTPUT"
+          echo "workflow_run_id=$CI_RUN_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.context.outputs.ref }}
+          fetch-depth: 0
+
+      - name: Record checkout commit
+        id: record_sha
+        run: |
+          set -euo pipefail
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Detect code changes
+        id: changes
+        run: |
+          set -euo pipefail
+
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --name-only HEAD^ HEAD > changed_files.txt
+          else
+            git ls-tree --full-tree --name-only HEAD > changed_files.txt
+          fi
+
+          echo "Changed files:" && cat changed_files.txt
+
+          if grep -v "^\\.github/workflows/" changed_files.txt | grep -q .; then
+            CODE_CHANGED=true
+          else
+            CODE_CHANGED=false
+          fi
+
+          SHOULD_RUN=true
+
+          echo "code_changed=$CODE_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+
+  playwright:
+    name: 🎭 Playwright E2E
+    needs: prepare
+    if: ${{ needs.prepare.outputs.should_run == 'true' }}
+    uses: ./.github/workflows/playwright-reusable.yml
+    with:
+      environment: "local"
+      upload_artifact_suffix: "-e2e"
+    secrets: inherit
+
+  notify:
+    name: Notify Slack
+    needs:
+      - prepare
+      - playwright
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.prepare.result == 'success' }}
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: ⬇️ Checkout commit
+        if: ${{ needs.prepare.outputs.sha != '' }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+          fetch-depth: 1
+
+      - name: Prepare message
+        id: format
+        env:
+          BRANCH: ${{ needs.prepare.outputs.branch }}
+          ACTOR: ${{ needs.prepare.outputs.actor }}
+          SHA: ${{ needs.prepare.outputs.sha }}
+          SHOULD_RUN: ${{ needs.prepare.outputs.should_run }}
+          PLAYWRIGHT_RESULT: ${{ needs.playwright.result }}
+          CI_RUN_ID: ${{ needs.prepare.outputs.workflow_run_id }}
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          if git rev-parse HEAD >/dev/null 2>&1; then
+            COMMIT_MESSAGE=$(git log -1 --pretty=%B | tr '\n\r' ' ')
+          else
+            COMMIT_MESSAGE="(commit metadata unavailable)"
+          fi
+
+          if [[ "$SHOULD_RUN" != "true" ]]; then
+            STATUS_RESULT="skipped"
+            STATUS_TEXT="⏭️ skipped (workflow changes only)"
+          elif [[ "$PLAYWRIGHT_RESULT" == "success" ]]; then
+            STATUS_RESULT="passed"
+            STATUS_TEXT="✅ passed"
+          elif [[ "$PLAYWRIGHT_RESULT" == "failure" ]]; then
+            STATUS_RESULT="failed"
+            STATUS_TEXT="❌ failed"
+          else
+            STATUS_RESULT="skipped"
+            STATUS_TEXT="⏭️ skipped"
+          fi
+
+          COMMIT_LINK="<${SERVER_URL}/${REPOSITORY}/commit/${SHA}|View Commit>"
+          if [[ -n "$CI_RUN_ID" ]]; then
+            RUN_LINK="<${SERVER_URL}/${REPOSITORY}/actions/runs/${CI_RUN_ID}|View CI Run>"
+            LINKS="$COMMIT_LINK | $RUN_LINK"
+          else
+            LINKS="$COMMIT_LINK"
+          fi
+
+          PLAIN_TEXT="Playwright E2E tests ${STATUS_RESULT} on branch ${BRANCH} by ${ACTOR}\n${SERVER_URL}/${REPOSITORY}/commit/${SHA}"
+          if [[ "$STATUS_RESULT" == "skipped" ]]; then
+            PLAIN_TEXT="Playwright E2E tests were skipped on branch ${BRANCH}.\n${SERVER_URL}/${REPOSITORY}/commit/${SHA}"
+          fi
+
+          BLOCK_TEXT="*Playwright E2E*: ${STATUS_TEXT}\n*Branch:* \`${BRANCH}\`\n*Triggered by:* ${ACTOR}\n*Commit message:* ${COMMIT_MESSAGE}\n*Links:* ${LINKS}"
+
+          PLAIN_TEXT_JSON=$(jq -Rn --arg text "$PLAIN_TEXT" '$text')
+          BLOCK_TEXT_JSON=$(jq -Rn --arg text "$BLOCK_TEXT" '$text')
+
+          SANITIZED_BRANCH=$(jq -Rn --arg text "$BRANCH" '$text')
+          SANITIZED_ACTOR=$(jq -Rn --arg text "$ACTOR" '$text')
+          SANITIZED_STATUS=$(jq -Rn --arg text "$STATUS_TEXT" '$text')
+
+          echo "plain_text=$PLAIN_TEXT_JSON" >> "$GITHUB_OUTPUT"
+          echo "block_text=$BLOCK_TEXT_JSON" >> "$GITHUB_OUTPUT"
+          echo "sanitized_branch=$SANITIZED_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "sanitized_actor=$SANITIZED_ACTOR" >> "$GITHUB_OUTPUT"
+          echo "sanitized_status=$SANITIZED_STATUS" >> "$GITHUB_OUTPUT"
+
+      - name: Notify Slack
+        if: ${{ env.SLACK_WEBHOOK_URL != '' }}
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ env.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": ${{ steps.format.outputs.plain_text }},
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ steps.format.outputs.block_text }}
+                  }
+                }
+              ]
+            }
+
+      - name: Log summary
+        if: ${{ env.SLACK_WEBHOOK_URL == '' }}
+        run: |
+          echo "Slack webhook not configured. Summary:"
+          STATUS="${{ fromJson(steps.format.outputs.sanitized_status) }}"
+          BRANCH="${{ fromJson(steps.format.outputs.sanitized_branch) }}"
+          ACTOR="${{ fromJson(steps.format.outputs.sanitized_actor) }}"
+          echo "$STATUS for branch $BRANCH by $ACTOR"

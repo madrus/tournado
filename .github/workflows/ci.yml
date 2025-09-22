@@ -195,15 +195,6 @@ jobs:
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
           FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
-  e2e-tests:
-    needs: check_changes
-    continue-on-error: true
-    uses: ./.github/workflows/playwright-reusable.yml
-    with:
-      environment: "local"
-      upload_artifact_suffix: "-ci"
-    secrets: inherit
-
   workflow_only_success:
     name: ✅ Workflow Changes Only
     runs-on: ubuntu-latest
@@ -222,7 +213,6 @@ jobs:
       - lint
       - typecheck
       - vitest
-      - e2e-tests
       - workflow_only_success
     if: always()
     steps:
@@ -249,11 +239,10 @@ jobs:
           payload: |
             {
               "text": "${{
-                format('GitHub Action build result: {0} on branch {1} by {2} (E2E: {3})\n{4}/{5}/commit/{6}',
+                format('GitHub Action build result: {0} on branch {1} by {2}\nE2E suite runs separately after CI.\n{3}/{4}/commit/{5}',
                   (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                   steps.sanitize.outputs.sanitized_branch,
                   steps.sanitize.outputs.sanitized_actor,
-                  needs.e2e-tests.outputs.test_status == 'success' && 'passed' || needs.e2e-tests.outputs.test_status == 'failure' && 'failed' || 'skipped',
                   github.server_url,
                   github.repository,
                   github.sha
@@ -265,12 +254,11 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "${{
-                      format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* {4} (non-blocking)\n*Commit message:* {5}\n<{6}/{7}/commit/{8}|View Commit> | <{6}/{7}/actions/runs/{9}|View Workflow Run>',
+                      format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* tracked via the `E2E` workflow\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
                         (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                         steps.sanitize.outputs.sanitized_branch,
                         steps.sanitize.outputs.sanitized_actor,
                         needs.check_changes.outputs.code_changed == 'true' && 'Code changes' || 'Workflow changes only',
-                        needs.e2e-tests.outputs.test_status == 'success' && '✅ passed' || needs.e2e-tests.outputs.test_status == 'failure' && '❌ failed' || '⏭️ skipped',
                         steps.sanitize.outputs.sanitized_commit_message,
                         github.server_url,
                         github.repository,

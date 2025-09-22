@@ -132,7 +132,7 @@ jobs:
           exit 1
 
       - name: 🚀 Deploy to Staging (Build & Deploy)
-        if: steps.check_changes.outputs.code_changed == 'true'
+        if: steps.check_changes.outputs.code_changed == 'true' || (steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true')
         run: |
           echo "🔨 Building and deploying new code changes..."
           echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token

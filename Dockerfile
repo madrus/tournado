@@ -38,9 +38,6 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
 # Build the app
 FROM base AS build
 
-ARG COMMIT_SHA
-ENV COMMIT_SHA=$COMMIT_SHA
-
 WORKDIR /workdir
 
 # Copy all files needed for the build
@@ -53,8 +50,6 @@ RUN pnpm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ARG COMMIT_SHA
-ENV COMMIT_SHA=$COMMIT_SHA
 ENV DATABASE_URL=file:/data/sqlite.db
 ENV PORT="8080"
 

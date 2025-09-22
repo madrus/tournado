@@ -146,7 +146,10 @@ export const action = async ({
   Response | { ok: boolean; decoded?: unknown; error?: string }
 > => {
   const env = process.env.NODE_ENV || 'development'
-  if (env === 'production') return new Response('Not Found', { status: 404 })
+  const appEnv = process.env.APP_ENV || 'development'
+  if (env === 'production' && appEnv !== 'staging') {
+    return new Response('Not Found', { status: 404 })
+  }
 
   if (!adminAuth) {
     const payload = { ok: false, error: 'admin-not-initialized' }

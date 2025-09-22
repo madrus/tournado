@@ -35,6 +35,7 @@
 - Security
    - [Overview](security/overview.md)
    - [Role-Based Access Control (RBAC)](security/rbac.md)
+   - [Removing Secrets from Git History](security/removing-secrets-from-git-history.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing-guide.md)

@@ -30,6 +30,19 @@ type HealthData = {
     VITE_FIREBASE_AUTH_DOMAIN: boolean
     VITE_FIREBASE_PROJECT_ID: boolean
     VITE_FIREBASE_APP_ID: boolean
+    VITE_FIREBASE_STORAGE_BUCKET: boolean
+    VITE_FIREBASE_MESSAGING_SENDER_ID: boolean
+    VITE_FIREBASE_MEASUREMENT_ID: boolean
+  }
+  serverVars: {
+    SESSION_SECRET: boolean
+    SUPER_ADMIN_EMAILS: boolean
+    SUPER_ADMIN_PASSWORD: boolean
+    DATABASE_URL: boolean
+    BASE_URL: boolean
+    RESEND_API_KEY: boolean
+    EMAIL_FROM: boolean
+    PLAYWRIGHT: boolean
   }
   infra: {
     dbOk: boolean
@@ -94,6 +107,21 @@ export const loader = async ({
       VITE_FIREBASE_AUTH_DOMAIN: Boolean(process.env.VITE_FIREBASE_AUTH_DOMAIN),
       VITE_FIREBASE_PROJECT_ID: Boolean(process.env.VITE_FIREBASE_PROJECT_ID),
       VITE_FIREBASE_APP_ID: Boolean(process.env.VITE_FIREBASE_APP_ID),
+      VITE_FIREBASE_STORAGE_BUCKET: Boolean(process.env.VITE_FIREBASE_STORAGE_BUCKET),
+      VITE_FIREBASE_MESSAGING_SENDER_ID: Boolean(
+        process.env.VITE_FIREBASE_MESSAGING_SENDER_ID
+      ),
+      VITE_FIREBASE_MEASUREMENT_ID: Boolean(process.env.VITE_FIREBASE_MEASUREMENT_ID),
+    },
+    serverVars: {
+      SESSION_SECRET: Boolean(process.env.SESSION_SECRET),
+      SUPER_ADMIN_EMAILS: Boolean(process.env.SUPER_ADMIN_EMAILS),
+      SUPER_ADMIN_PASSWORD: Boolean(process.env.SUPER_ADMIN_PASSWORD),
+      DATABASE_URL: Boolean(process.env.DATABASE_URL),
+      BASE_URL: Boolean(process.env.BASE_URL),
+      RESEND_API_KEY: Boolean(process.env.RESEND_API_KEY),
+      EMAIL_FROM: Boolean(process.env.EMAIL_FROM),
+      PLAYWRIGHT: Boolean(process.env.PLAYWRIGHT),
     },
     infra: { dbOk, selfOk },
     overallOk: Boolean(adminAuth) && dbOk && selfOk,
@@ -297,7 +325,11 @@ export default function HealthcheckPage(): JSX.Element | null {
         <h2 className='mb-2 text-lg font-semibold'>Env Presence</h2>
         <pre className='text-foreground border-border overflow-auto rounded-md border bg-white p-3 text-sm dark:bg-slate-950'>
           {JSON.stringify(
-            { adminEnv: data.adminEnv, clientEnv: data.clientEnv },
+            {
+              adminEnv: data.adminEnv,
+              clientEnv: data.clientEnv,
+              serverVars: data.serverVars,
+            },
             null,
             2
           )}

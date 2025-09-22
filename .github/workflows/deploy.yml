@@ -23,7 +23,7 @@ permissions:
 jobs:
   deploy_staging:
     name: Deploy to Staging (dev)
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' }}
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' && github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}

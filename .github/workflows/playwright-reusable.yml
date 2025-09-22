@@ -57,7 +57,7 @@ jobs:
 
       - uses: ./.github/actions/prisma-generate
         with:
-          database_url: "file:./prisma/data.db"
+          database_url: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db', github.workspace, github.run_id) }}
 
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
@@ -71,6 +71,9 @@ jobs:
           pnpm exec prisma generate
           # Wait for the client to be fully ready
           sleep 3
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD || format('super-admin-{0}', github.run_id) }}
 
       - name: ⚙️ Build
         run: pnpm build
@@ -95,6 +98,9 @@ jobs:
         env:
           PORT: 8811
           PLAYWRIGHT: true
+          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+          SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD || format('super-admin-{0}', github.run_id) }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

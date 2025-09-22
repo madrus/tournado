@@ -26,8 +26,36 @@ if (!process.env.DATABASE_URL) {
 
 const ABORT_DELAY = 5_000
 
-function applySecurityHeaders(headers: Headers): void {
+function applySecurityHeaders(headers: Headers, request: Request): void {
   const isDev = process.env.NODE_ENV !== 'production'
+
+  const formActionSources = new Set(["'self'"])
+
+  const addFormActionSource = (value: string | undefined): void => {
+    if (!value) return
+    try {
+      const origin = new URL(value).origin
+      if (origin && !formActionSources.has(origin)) {
+        formActionSources.add(origin)
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.warn('Ignoring invalid form-action origin', value, error)
+      }
+    }
+  }
+
+  addFormActionSource(process.env.BASE_URL)
+  addFormActionSource(process.env.EMAIL_BASE_URL)
+  addFormActionSource(request.url)
+
+  const extraFormActions = process.env.CSP_FORM_ACTION_ALLOWLIST
+  if (extraFormActions) {
+    for (const entry of extraFormActions.split(/[\s,]+/)) {
+      addFormActionSource(entry)
+    }
+  }
 
   // Note: We currently allow 'unsafe-inline' to support the small inline
   // SSR script in root.tsx. We can migrate to nonces later.
@@ -44,7 +72,7 @@ function applySecurityHeaders(headers: Headers): void {
     'frame-src https://accounts.google.com https://*.firebaseapp.com',
     "frame-ancestors 'none'",
     "object-src 'none'",
-    "form-action 'self'",
+    `form-action ${Array.from(formActionSources).join(' ')}`,
     "worker-src 'self'",
     "manifest-src 'self'",
     'upgrade-insecure-requests',
@@ -94,7 +122,7 @@ const handleBotRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
-          applySecurityHeaders(responseHeaders)
+          applySecurityHeaders(responseHeaders, request)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {
@@ -133,7 +161,7 @@ const handleBrowserRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
-          applySecurityHeaders(responseHeaders)
+          applySecurityHeaders(responseHeaders, request)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {

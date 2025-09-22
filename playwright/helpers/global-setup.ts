@@ -4,10 +4,12 @@ import { FullConfig } from '@playwright/test'
 import fs from 'fs'
 import path from 'path'
 
+import { checkDevServer } from '../../scripts/utils/port-utils.js'
 import { cleanDatabaseCompletely, createAdminUser, createManagerUser } from './database'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
+const DEV_SERVER_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8811'
 
 // Wait for server to be ready
 async function waitForServer(url: string, timeout = 60000): Promise<void> {
@@ -33,10 +35,9 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   process.env.PLAYWRIGHT_GLOBAL_SETUP = 'true'
 
   // Wait for server to be ready - use the configured baseURL
-  const serverUrl = process.env.PORT
-    ? `http://localhost:${process.env.PORT}`
-    : 'http://localhost:5174'
-  await waitForServer(serverUrl)
+  const url = new URL(DEV_SERVER_URL)
+  const port = Number(url.port)
+  await checkDevServer(port)
 
   // Clean database completely before starting tests
   await cleanDatabaseCompletely()

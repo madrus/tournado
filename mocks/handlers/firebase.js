@@ -154,7 +154,7 @@ export const firebaseHandlers = [
   }),
 
   // Mock our app's auth callback endpoint behavior
-  http.post('http://localhost:5174/auth/callback', async ({ request }) => {
+  http.post('http://localhost:8811/auth/callback', async ({ request }) => {
     const formData = await request.formData()
     const idToken = formData.get('idToken')
     const redirectTo = formData.get('redirectTo')
@@ -174,13 +174,13 @@ export const firebaseHandlers = [
       const finalRedirect = redirectTo || '/'
 
       console.log('MSW: Redirecting to:', finalRedirect)
-      return HttpResponse.redirect(`http://localhost:5174${finalRedirect}`, 303)
+      return HttpResponse.redirect(`http://localhost:8811${finalRedirect}`, 303)
     }
 
     // Invalid token
     console.log('MSW: Invalid token, redirecting to signin')
     return HttpResponse.redirect(
-      'http://localhost:5174/auth/signin?error=invalid-token',
+      'http://localhost:8811/auth/signin?error=invalid-token',
       303
     )
   }),

@@ -11,7 +11,7 @@ process.env.PLAYWRIGHT = process.env.PLAYWRIGHT || 'true'
 // Disable React Router DevTools during E2E tests to prevent overlay interference
 process.env.ENABLE_REACT_ROUTER_DEVTOOLS = 'false'
 
-const PORT = 5174
+const PORT = 8811
 const DEV_SERVER_URL = `http://localhost:${PORT}`
 
 console.log('[e2e-server] Using DATABASE_URL=', process.env.DATABASE_URL)

@@ -9,7 +9,7 @@ process.env.DATABASE_URL =
   process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = process.env.PLAYWRIGHT || 'true'
 
-const PORT = 5174
+const PORT = 8811
 process.env.PORT = PORT.toString() // Ensure consistent port for built server
 
 console.log('[e2e-server-built] Using DATABASE_URL=', process.env.DATABASE_URL)

@@ -91,7 +91,7 @@ jobs:
         id: run_tests
         run: |
           set +e  # Don't exit on error
-          pnpm exec start-server-and-test 'pnpm start:mocks' http://localhost:8811 'playwright test'
+          pnpm exec start-server-and-test 'PORT=8811 pnpm start:mocks' http://localhost:8811 'playwright test'
           TEST_EXIT_CODE=$?
 
           if [ $TEST_EXIT_CODE -eq 0 ]; then
@@ -109,6 +109,9 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
           SUPER_ADMIN_PASSWORD: ${{ secrets.SUPER_ADMIN_PASSWORD || format('super-admin-{0}', github.run_id) }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
+          FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
+          FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
+          FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

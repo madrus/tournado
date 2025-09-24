@@ -144,6 +144,11 @@ jobs:
     needs: check_changes
     permissions:
       contents: read
+    outputs:
+      coverage_lines: ${{ steps.coverage_summary.outputs.lines }}
+      coverage_statements: ${{ steps.coverage_summary.outputs.statements }}
+      coverage_functions: ${{ steps.coverage_summary.outputs.functions }}
+      coverage_branches: ${{ steps.coverage_summary.outputs.branches }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -195,6 +200,42 @@ jobs:
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
           FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
 
+      - name: 🧮 Collect coverage summary
+        id: coverage_summary
+        run: |
+          summary_file=coverage/coverage-summary.json
+
+          if [ ! -f "$summary_file" ]; then
+            echo "Coverage summary file not found at $summary_file"
+            exit 1
+          fi
+
+          lines=$(jq '.total.lines.pct' "$summary_file")
+          statements=$(jq '.total.statements.pct' "$summary_file")
+          functions=$(jq '.total.functions.pct' "$summary_file")
+          branches=$(jq '.total.branches.pct' "$summary_file")
+
+          lines_fmt=$(LC_ALL=C printf '%.2f' "$lines")
+          statements_fmt=$(LC_ALL=C printf '%.2f' "$statements")
+          functions_fmt=$(LC_ALL=C printf '%.2f' "$functions")
+          branches_fmt=$(LC_ALL=C printf '%.2f' "$branches")
+
+          {
+            echo "### Vitest Coverage" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Metric | Percentage |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+            printf '| Lines | %s%% |\n' "$lines_fmt" >> "$GITHUB_STEP_SUMMARY"
+            printf '| Statements | %s%% |\n' "$statements_fmt" >> "$GITHUB_STEP_SUMMARY"
+            printf '| Functions | %s%% |\n' "$functions_fmt" >> "$GITHUB_STEP_SUMMARY"
+            printf '| Branches | %s%% |\n' "$branches_fmt" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          echo "lines=$lines_fmt" >> "$GITHUB_OUTPUT"
+          echo "statements=$statements_fmt" >> "$GITHUB_OUTPUT"
+          echo "functions=$functions_fmt" >> "$GITHUB_OUTPUT"
+          echo "branches=$branches_fmt" >> "$GITHUB_OUTPUT"
+
   workflow_only_success:
     name: ✅ Workflow Changes Only
     runs-on: ubuntu-latest
@@ -239,13 +280,17 @@ jobs:
           payload: |
             {
               "text": "${{
-                format('GitHub Action build result: {0} on branch {1} by {2}\nE2E suite runs separately after CI.\n{3}/{4}/commit/{5}',
+                format('GitHub Action build result: {0} on branch {1} by {2}\nCoverage — L:{6}% S:{7}% F:{8}% B:{9}%\nE2E suite runs separately after CI.\n{3}/{4}/commit/{5}',
                   (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                   steps.sanitize.outputs.sanitized_branch,
                   steps.sanitize.outputs.sanitized_actor,
                   github.server_url,
                   github.repository,
-                  github.sha
+                  github.sha,
+                  needs.vitest.outputs.coverage_lines || 'n/a',
+                  needs.vitest.outputs.coverage_statements || 'n/a',
+                  needs.vitest.outputs.coverage_functions || 'n/a',
+                  needs.vitest.outputs.coverage_branches || 'n/a'
                 )
               }}",
               "blocks": [
@@ -254,7 +299,7 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "${{
-                      format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*E2E Tests:* tracked via the `E2E` workflow\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
+                      format('GitHub Action build result: {0} on branch `{1}`\n*Triggered by:* {2}\n*Change type:* {3}\n*Coverage:* Lines {9}% | Statements {10}% | Functions {11}% | Branches {12}%\n*E2E Tests:* tracked via the `E2E` workflow\n*Commit message:* {4}\n<{5}/{6}/commit/{7}|View Commit> | <{5}/{6}/actions/runs/{8}|View Workflow Run>',
                         (needs.lint.result == 'success' && needs.typecheck.result == 'success' && needs.vitest.result == 'success') && 'success' || 'failure',
                         steps.sanitize.outputs.sanitized_branch,
                         steps.sanitize.outputs.sanitized_actor,
@@ -263,7 +308,11 @@ jobs:
                         github.server_url,
                         github.repository,
                         github.sha,
-                        github.run_id
+                        github.run_id,
+                        needs.vitest.outputs.coverage_lines || 'n/a',
+                        needs.vitest.outputs.coverage_statements || 'n/a',
+                        needs.vitest.outputs.coverage_functions || 'n/a',
+                        needs.vitest.outputs.coverage_branches || 'n/a'
                       )
                     }}"
                   }

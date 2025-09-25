@@ -43,6 +43,11 @@ if (isDevelopment) {
 const lang = window.__SSR_LANGUAGE__ || 'nl'
 initI18n(lang)
 
+// Flag Playwright runtime globally so client code can detect mocks
+if (window.ENV?.PLAYWRIGHT === 'true') {
+  window.playwrightTest = true
+}
+
 // Initialize MSW browser worker for E2E tests
 setupMSWBrowser()
 

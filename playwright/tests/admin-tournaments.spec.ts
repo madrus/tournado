@@ -204,15 +204,30 @@ test.describe('Tournament-Team Integration', () => {
       await page.waitForLoadState('networkidle')
 
       // Fill tournament form
+      console.log('Filling tournament name and location...')
       await page.getByRole('textbox', { name: /naam/i }).fill('E2ETourney')
       await page.getByRole('textbox', { name: /locatie/i }).fill('Aalsmeer')
 
+      // Wait for form validation to complete
+      await page.waitForTimeout(1000)
+
+      // Check if start date button is enabled
+      const startDateButton = page.getByRole('button', {
+        name: /startdatum.*select date/i,
+      })
+      console.log('Checking if start date button is enabled...')
+      await expect(startDateButton).toBeVisible()
+
+      // Wait for the button to be enabled
+      const startDateEnabled = await startDateButton.isEnabled()
+      if (!startDateEnabled) {
+        console.log('Start date button is disabled, waiting for form validation...')
+        await page.waitForTimeout(3000)
+      }
+
       // Select start date using date picker
-      await page
-        .getByRole('button', {
-          name: /startdatum.*select date/i,
-        })
-        .click()
+      await expect(startDateButton).toBeEnabled({ timeout: 10000 })
+      await startDateButton.click()
       await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
       await page.getByRole('button', { name: /^15 / }).click()
 
@@ -234,13 +249,44 @@ test.describe('Tournament-Team Integration', () => {
       await expect(secondDivisionLabel).toBeVisible()
       await secondDivisionLabel.click()
 
+      // Wait for form to be fully updated after division selections
+      await page.waitForTimeout(1000)
+
       // Select categorieën
+      console.log('Selecting JO8 category...')
       const jo8Label = page.locator('label').filter({ hasText: /JO8/i })
       await expect(jo8Label).toBeVisible()
+
+      // Check if JO8 is enabled before clicking
+      const jo8Disabled = await jo8Label.evaluate(
+        el =>
+          el.classList.contains('cursor-not-allowed') ||
+          el.classList.contains('opacity-50')
+      )
+      if (jo8Disabled) {
+        console.log('JO8 category is disabled, waiting for form validation...')
+        await page.waitForTimeout(2000)
+      }
+
       await jo8Label.click()
 
+      console.log('Selecting JO10 category...')
       const jo10Label = page.locator('label').filter({ hasText: /JO10/i })
       await expect(jo10Label).toBeVisible()
+
+      // Check if JO10 is enabled before clicking
+      const jo10Disabled = await jo10Label.evaluate(
+        el =>
+          el.classList.contains('cursor-not-allowed') ||
+          el.classList.contains('opacity-50')
+      )
+      if (jo10Disabled) {
+        console.log('JO10 category is disabled, waiting for form validation...')
+        await page.waitForTimeout(2000)
+      }
+
+      // Ensure element is enabled before clicking
+      await expect(jo10Label).not.toHaveClass(/cursor-not-allowed|opacity-50/)
       await jo10Label.click()
 
       // Submit form - should redirect to tournament edit page

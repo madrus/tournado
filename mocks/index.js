@@ -1,6 +1,7 @@
 import { http, passthrough } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { emailHandlers } from './handlers/emails.js'
 import { firebaseHandlers } from './handlers/firebase.js'
 
 // put one-off handlers that don't really need an entire file to themselves here
@@ -19,10 +20,10 @@ const miscHandlers = [
   }),
 ]
 
-// Include Firebase handlers only in test environment
+// Include test handlers only in test environment
 const allHandlers =
   process.env.PLAYWRIGHT === 'true'
-    ? [...firebaseHandlers, ...miscHandlers]
+    ? [...firebaseHandlers, ...emailHandlers, ...miscHandlers]
     : miscHandlers
 
 const server = setupServer(...allHandlers)

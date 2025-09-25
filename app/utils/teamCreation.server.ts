@@ -131,11 +131,7 @@ export async function createTeamFromFormData(
     // Send confirmation email (don't block team creation if email fails)
     if (tournament) {
       try {
-        // eslint-disable-next-line no-console
-        console.log('About to send confirmation email for team:', team.name)
         await sendConfirmationEmail(team, tournament)
-        // eslint-disable-next-line no-console
-        console.log('Confirmation email sent successfully for team:', team.name)
       } catch (emailError) {
         // Log the error but don't fail the team creation
         // eslint-disable-next-line no-console

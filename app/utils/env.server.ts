@@ -10,6 +10,7 @@ const schema = z.object({
   VITE_FIREBASE_STORAGE_BUCKET: z.string().optional(),
   VITE_FIREBASE_MESSAGING_SENDER_ID: z.string().optional(),
   VITE_FIREBASE_APP_ID: z.string().optional(),
+  PLAYWRIGHT: z.string().optional(),
 })
 
 type ProcessEnv = z.infer<typeof schema>
@@ -23,6 +24,7 @@ type PublicEnv = {
   VITE_FIREBASE_STORAGE_BUCKET?: string
   VITE_FIREBASE_MESSAGING_SENDER_ID?: string
   VITE_FIREBASE_APP_ID?: string
+  PLAYWRIGHT?: string
 }
 
 export function init(): void {
@@ -63,6 +65,7 @@ export const getEnv = (): PublicEnv => ({
   VITE_FIREBASE_STORAGE_BUCKET: process.env.VITE_FIREBASE_STORAGE_BUCKET,
   VITE_FIREBASE_MESSAGING_SENDER_ID: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID,
+  PLAYWRIGHT: process.env.PLAYWRIGHT,
 })
 
 type ENV = ReturnType<typeof getEnv>

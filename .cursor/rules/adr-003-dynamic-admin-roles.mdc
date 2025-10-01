@@ -1,0 +1,161 @@
+# ADR-003: Dynamic Admin Role Assignment
+
+## Status
+Accepted
+
+## Date
+2025-01-10
+
+## Context
+
+### Problem
+The initial implementation of admin role management had several issues:
+
+1. **Static Role Assignment**: Admin roles were only assigned when users were created. Once set, roles never changed even if `SUPER_ADMIN_EMAILS` was updated.
+
+2. **Manual Database Updates**: Granting or revoking admin access required manual database updates via Prisma Studio or SQL, which is error-prone and requires database access.
+
+3. **Inconsistent State**: Adding an email to `SUPER_ADMIN_EMAILS` didn't grant admin access to existing users - only new users got the admin role.
+
+4. **Security Risk**: Removing an email from `SUPER_ADMIN_EMAILS` didn't revoke admin access - users remained admins indefinitely.
+
+### Example Scenario
+- User `alice@example.com` signs up → gets PUBLIC role
+- Admin adds `alice@example.com` to `SUPER_ADMIN_EMAILS`
+- Alice logs in again → **still has PUBLIC role** ❌
+- Admin must manually update database to grant admin access
+
+## Decision
+
+We implement **dynamic role assignment on every login** by modifying the `createOrUpdateUser` function in `app/features/firebase/server.ts`.
+
+### Implementation Details
+
+1. **Role Check on Every Login**
+   - When a user logs in, `assignUserRole()` is called with their current role
+   - Function checks if email is in `SUPER_ADMIN_EMAILS`
+   - Role is updated if it differs from the assigned role
+
+2. **Promotion Logic**
+   - Email added to `SUPER_ADMIN_EMAILS` → user promoted to ADMIN on next login
+   - Applies to all users regardless of current role
+
+3. **Demotion Logic**
+   - Email removed from `SUPER_ADMIN_EMAILS` → admin demoted to MANAGER on next login
+   - Non-admin users (MANAGER, REFEREE, PUBLIC) keep their existing roles
+
+4. **Performance Optimization**
+   - Role is only updated in database if it has changed
+   - Avoids unnecessary database writes on every login
+   - Logs role changes for audit trail
+
+### Code Changes
+
+**Modified `assignUserRole()` function:**
+```typescript
+export const assignUserRole = async (
+  props: Readonly<AssignUserRoleProps>
+): Promise<Role> => {
+  const { email, currentRole } = props
+  const superAdminEmails = process.env.SUPER_ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
+
+  // Promote to ADMIN if in super admin list
+  if (superAdminEmails.includes(email)) {
+    return Role.ADMIN
+  }
+
+  // Demote from ADMIN to MANAGER if removed from super admin list
+  if (currentRole === Role.ADMIN) {
+    return Role.MANAGER
+  }
+
+  // Preserve existing role for non-admin users, or default to PUBLIC for new users
+  return currentRole || Role.PUBLIC
+}
+```
+
+**Modified `createOrUpdateUser()` function:**
+```typescript
+if (existingUser) {
+  const assignedRole = await assignUserRole({
+    firebaseUid: existingUser.firebaseUid,
+    email: existingUser.email,
+    currentRole: existingUser.role, // Pass current role for smart demotion
+  })
+
+  // Only update role if it has changed
+  if (existingUser.role !== assignedRole) {
+    updateData.role = assignedRole
+    console.log(`Role changed: ${existingUser.role} → ${assignedRole}`)
+  }
+
+  return await prisma.user.update({ where: { ... }, data: updateData })
+}
+```
+
+## Consequences
+
+### Positive
+
+✅ **Zero-Touch Admin Management**: Add/remove emails from `SUPER_ADMIN_EMAILS` environment variable - roles update automatically on next login
+
+✅ **Security**: Admin access can be revoked instantly by updating environment variable (takes effect on next login)
+
+✅ **Consistency**: No manual database updates needed - system state always matches configuration
+
+✅ **Auditability**: Role changes are logged with console.log for debugging and audit trails
+
+✅ **Performance**: Database only updated when role actually changes, not on every login
+
+✅ **Role Preservation**: Non-admin users (MANAGER, REFEREE, PUBLIC) keep their roles when not affected by admin changes
+
+### Negative
+
+⚠️ **Slight Performance Overhead**: `assignUserRole()` is called on every login to check current state (mitigated by conditional DB write)
+
+⚠️ **Login Required**: Role changes don't take effect until user logs in again (acceptable for admin role changes)
+
+⚠️ **Demotion Default**: Admins removed from list are demoted to MANAGER (not configurable per-user)
+
+### Migration Requirements
+
+For existing deployments, a one-time migration is needed:
+
+```bash
+# Run migration script to sync existing users with SUPER_ADMIN_EMAILS
+pnpm migrate:admin-roles
+```
+
+**Note**: Migration script demotes removed admins to MANAGER. Manual role adjustment may be needed for specific users.
+
+## Alternatives Considered
+
+### Alternative 1: Database-Driven Admin List
+Store admin emails in database table instead of environment variable.
+
+**Rejected because**:
+- Requires admin UI to manage admins
+- More complex implementation
+- Environment variables are simpler for ops teams
+
+### Alternative 2: Role Update API Endpoint
+Create API endpoint to manually update user roles.
+
+**Rejected because**:
+- Requires authentication/authorization for the endpoint
+- Manual process, not automatic
+- Doesn't solve the consistency problem
+
+### Alternative 3: Background Job
+Run periodic job to sync roles with `SUPER_ADMIN_EMAILS`.
+
+**Rejected because**:
+- Adds infrastructure complexity
+- Delayed role changes (not immediate on next login)
+- Login-time check is simpler and sufficient
+
+## Related
+
+- See `MIGRATION.md` for deployment steps
+- See `docs/environment-variables.md` for admin management guide
+- Related to Firebase authentication in `app/features/firebase/server.ts`

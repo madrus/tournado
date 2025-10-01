@@ -60,24 +60,31 @@ function initializeFirebaseAdmin(): void {
 initializeFirebaseAdmin()
 
 type AssignUserRoleProps = {
-  firebaseUid: string
   email: string
+  currentRole?: Role
 }
 
 /**
- * Assigns a role to a user based on their email address
- * @param props - The Firebase user properties
+ * Assigns a role to a user based on their email address and super admin configuration
+ * Handles both promotion to ADMIN and demotion from ADMIN to MANAGER
+ * @param props - The user identification props (email and optional currentRole)
  * @returns Promise<Role> - The assigned role
  */
 export const assignUserRole = async (
   props: Readonly<AssignUserRoleProps>
 ): Promise<Role> => {
-  const { email } = props
+  const { email, currentRole } = props
   const superAdminEmails =
     process.env.SUPER_ADMIN_EMAILS?.split(',').map(emailItem => emailItem.trim()) || []
 
+  // Promote to ADMIN if in super admin list
   if (superAdminEmails.includes(email)) {
     return Role.ADMIN
+  }
+
+  // Demote from ADMIN to MANAGER if removed from super admin list
+  if (currentRole === Role.ADMIN) {
+    return Role.MANAGER
   }
 
   // For tests, assign roles based on email patterns
@@ -93,7 +100,8 @@ export const assignUserRole = async (
     }
   }
 
-  return Role.PUBLIC // Default role for new users
+  // Preserve existing role for non-admin users, or default to PUBLIC for new users
+  return currentRole || Role.PUBLIC
 }
 
 type CreateOrUpdateUserProps = {
@@ -128,16 +136,37 @@ export const createOrUpdateUser = async (
   )
 
   if (existingUser) {
-    // Update existing user
+    // Re-check role assignment on every login based on current SUPER_ADMIN_EMAILS
+    const assignedRole = await assignUserRole({
+      email: existingUser.email,
+      currentRole: existingUser.role,
+    })
+
+    // Prepare update data
+    const updateData: {
+      email: string
+      firstName: string
+      lastName: string
+      role?: Role
+    } = {
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+    }
+
+    // Only update role if it has changed
+    if (existingUser.role !== assignedRole) {
+      updateData.role = assignedRole
+      console.log(
+        `[createOrUpdateUser] Role changed for ${existingUser.email}: ${existingUser.role} → ${assignedRole}`
+      )
+    }
+
     return await prisma.user.update({
       where: { firebaseUid: firebaseUser.uid },
       // eslint-disable-next-line id-blacklist
-      data: {
-        email: firebaseUser.email,
-        firstName:
-          firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
-        lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
-      },
+      data: updateData,
     })
   }
 
@@ -151,26 +180,48 @@ export const createOrUpdateUser = async (
   )
 
   if (existingByEmail) {
-    // Link firebaseUid to existing user and update profile fields, preserve role
+    // Link firebaseUid to existing user and update profile fields
+    // Re-check role assignment based on current SUPER_ADMIN_EMAILS
+    const assignedRole = await assignUserRole({
+      email: existingByEmail.email,
+      currentRole: existingByEmail.role,
+    })
+
+    // Prepare update data
+    const updateData: {
+      firebaseUid: string
+      email: string
+      firstName: string
+      lastName: string
+      role?: Role
+    } = {
+      firebaseUid: firebaseUser.uid,
+      email: firebaseUser.email,
+      firstName:
+        firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+      lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
+    }
+
+    // Only update role if it has changed
+    if (existingByEmail.role !== assignedRole) {
+      updateData.role = assignedRole
+      console.log(
+        `[createOrUpdateUser] Role changed for ${existingByEmail.email}: ${existingByEmail.role} → ${assignedRole}`
+      )
+    }
+
     console.log(
       `[createOrUpdateUser] Linking firebaseUid ${firebaseUser.uid} to existing user ${existingByEmail.id}`
     )
     return await prisma.user.update({
       where: { id: existingByEmail.id },
       // eslint-disable-next-line id-blacklist
-      data: {
-        firebaseUid: firebaseUser.uid,
-        email: firebaseUser.email,
-        firstName:
-          firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
-        lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
-      },
+      data: updateData,
     })
   }
 
   // Create new user with role assignment
   const assignedRole = await assignUserRole({
-    firebaseUid: firebaseUser.uid,
     email: firebaseUser.email,
   })
 

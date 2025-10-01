@@ -40,20 +40,20 @@ async function seed() {
   const prisma = await createPrismaClient()
 
   try {
-    const admins = ['user@example.com', 'admin2@example.com']
-    const users = ['admin1@example.com']
+    // Get admin emails from environment variable (dynamic role assignment)
+    const superAdminEmails =
+      process.env.SUPER_ADMIN_EMAILS?.split(',').map(email => email.trim()) || []
+
+    // All users to seed with their emails
+    const allUsers = [
+      'user@example.com',
+      'admin2@example.com',
+      'admin1@example.com',
+    ]
+
     // cleanup the existing database
     await Promise.all(
-      admins.map(email =>
-        prisma.user.delete({ where: { email } }).catch(() => {
-          // no worries if it doesn't exist yet
-        })
-      )
-    )
-
-    // Cleanup users as well
-    await Promise.all(
-      users.map(email =>
+      allUsers.map(email =>
         prisma.user.delete({ where: { email } }).catch(() => {
           // no worries if it doesn't exist yet
         })
@@ -75,38 +75,24 @@ async function seed() {
     }
     const hashedInitialPassword = await bcrypt.hash(adminPlainPassword, 10)
 
-    // Create admin users
+    // Create users with roles based on SUPER_ADMIN_EMAILS
     await Promise.all(
-      admins.map(async email =>
-        prisma.user.create({
-          data: {
-            email,
-            firstName:
-              email.split('@')[0].charAt(0).toUpperCase() +
-              email.split('@')[0].slice(1),
-            lastName: 'Admin',
-            role: 'ADMIN',
-            password: { create: { hash: hashedInitialPassword } },
-          },
-        })
-      )
-    )
+      allUsers.map(async email => {
+        const role = superAdminEmails.includes(email) ? 'ADMIN' : 'MANAGER'
+        const lastName = role === 'ADMIN' ? 'Admin' : 'User'
 
-    // Create MANAGER users
-    await Promise.all(
-      users.map(async email =>
-        prisma.user.create({
+        return prisma.user.create({
           data: {
             email,
             firstName:
               email.split('@')[0].charAt(0).toUpperCase() +
               email.split('@')[0].slice(1),
-            lastName: 'User',
-            role: 'MANAGER',
+            lastName,
+            role,
             password: { create: { hash: hashedInitialPassword } },
           },
         })
-      )
+      })
     )
 
     const team1 = {

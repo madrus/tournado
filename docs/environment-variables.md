@@ -34,10 +34,11 @@ This document provides a complete reference for all environment variables used i
 
 #### `SUPER_ADMIN_EMAILS`
 
-- **Purpose**: Comma-separated list of admin email addresses
+- **Purpose**: Comma-separated list of admin email addresses with dynamic role assignment
 - **Required**: Yes
 - **Format**: `email1@domain.com,email2@domain.com`
-- **Example**: `user@example.com,admin2@example.com`
+- **Example**: `admin1@example.com,admin2@example.com`
+- **Behavior**: See [Admin Role Management](#admin-role-management) section for details on dynamic role assignment
 
 #### `SUPER_ADMIN_PASSWORD`
 
@@ -391,11 +392,139 @@ For each Firebase project, create a service account:
 - Check Firebase project permissions for `tournado-prod`
 - Monitor logs for authentication errors: `fly logs --app tournado-production`
 
+## Admin Role Management
+
+### Overview
+
+Tournado implements **dynamic admin role assignment** that updates user roles on every login based on the `SUPER_ADMIN_EMAILS` environment variable. This provides zero-touch admin management without requiring manual database updates.
+
+See [ADR-003: Dynamic Admin Role Assignment](../.cursor/rules/adr-003-dynamic-admin-roles.mdc) for the full architectural decision.
+
+### How It Works
+
+1. **On Every Login**: The system checks if the user's email is in `SUPER_ADMIN_EMAILS`
+2. **Promotion**: If email is added to the list → user promoted to ADMIN on next login
+3. **Demotion**: If email is removed from the list → admin demoted to MANAGER on next login
+4. **Role Preservation**: Non-admin users (MANAGER, REFEREE, PUBLIC) keep their existing roles
+
+### Granting Admin Access
+
+To grant admin access to a user:
+
+1. **Update environment variable** for the target environment:
+
+   ```bash
+   # Local development (.env file)
+   SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com"
+
+   # Staging (Fly.io)
+   flyctl secrets set SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com" --app tournado-staging
+
+   # Production (Fly.io)
+   flyctl secrets set SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com" --app tournado-production
+   ```
+
+2. **User logs in again** → automatically promoted to ADMIN role
+
+**Notes**:
+
+- No database migration needed for new admins
+- User must log in after the change for promotion to take effect
+- If user doesn't exist yet, they'll be created with ADMIN role on first login
+
+### Revoking Admin Access
+
+To revoke admin access from a user:
+
+1. **Remove email from environment variable**:
+
+   ```bash
+   # Local development (.env file)
+   SUPER_ADMIN_EMAILS="remaining-admin@domain.com"
+
+   # Staging (Fly.io)
+   flyctl secrets set SUPER_ADMIN_EMAILS="remaining-admin@domain.com" --app tournado-staging
+
+   # Production (Fly.io)
+   flyctl secrets set SUPER_ADMIN_EMAILS="remaining-admin@domain.com" --app tournado-production
+   ```
+
+2. **User logs in again** → automatically demoted from ADMIN to MANAGER
+
+**Important**:
+
+- Admin users are demoted to MANAGER (not PUBLIC)
+- This preserves their ability to manage teams/tournaments
+- If you need complete access removal, manually update role to PUBLIC via database
+
+### One-Time Migration for Existing Users
+
+When deploying the dynamic role assignment feature, run the migration script once to sync existing users:
+
+```bash
+# Local development
+pnpm migrate:admin-roles
+
+# Staging
+fly ssh console --app tournado-staging -C "pnpm migrate:admin-roles"
+
+# Production
+fly ssh console --app tournado-production -C "pnpm migrate:admin-roles"
+```
+
+**What the migration does**:
+
+- Promotes users in `SUPER_ADMIN_EMAILS` to ADMIN
+- Demotes admins not in `SUPER_ADMIN_EMAILS` to MANAGER
+- Shows summary of all changes
+
+**Note**: This is a one-time operation. After initial deployment, role changes happen automatically on login.
+
+### Environment-Specific Behavior
+
+| Environment    | Configuration Method | When Changes Take Effect     |
+| -------------- | -------------------- | ---------------------------- |
+| **Local**      | `.env` file          | Next login after dev restart |
+| **Staging**    | Fly.io secrets       | Next login after deploy      |
+| **Production** | Fly.io secrets       | Next login after deploy      |
+
+**Important for Local Development**:
+
+- After updating `.env`, completely restart the dev server
+- Kill existing processes: `lsof -ti:5173 | xargs kill -9`
+- Then start fresh: `pnpm dev`
+
+### Admin Role Matrix
+
+Current admin configuration:
+
+| Email                    | Auth Method    | Role    | Environment              |
+| ------------------------ | -------------- | ------- | ------------------------ |
+| `admin1@example.com`       | Google OAuth   | ADMIN   | All                      |
+| `admin2@example.com` | Email/Password | ADMIN   | All                      |
+| `user@example.com`   | Email/Password | MANAGER | All (demoted from ADMIN) |
+
+### Security Considerations
+
+✅ **Benefits**:
+
+- Admin access can be revoked instantly (takes effect on next login)
+- No manual database access needed
+- Consistent state across environments
+- Audit trail via console logs
+
+⚠️ **Limitations**:
+
+- Role changes don't take effect until user logs in
+- Demoted users retain MANAGER role (not PUBLIC)
+- No email notification when roles change
+
 ## Related Documentation
 
 - [Deployment Overview](deployment/overview.md) - Environment setup and deployment process
 - [Authentication Guide](development/authentication.md) - Firebase authentication implementation
 - [E2E Testing Strategy](testing/e2e-firebase-strategy.md) - Testing approach and rationale
+- [ADR-003: Dynamic Admin Role Assignment](../.cursor/rules/adr-003-dynamic-admin-roles.mdc) - Architectural decision
 - [Setup Scripts](../setup-github-secrets.sh) - Automated CI setup
 - [Setup Scripts](../setup-flyio-secrets.sh) - Automated Fly.io setup
 

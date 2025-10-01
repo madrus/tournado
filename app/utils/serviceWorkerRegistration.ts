@@ -2,6 +2,12 @@
 import { PWA_UPDATE_INTERVAL } from '~/lib/lib.constants'
 
 export function registerServiceWorker(): void {
+  // Skip service worker registration entirely during Playwright tests
+  if (typeof window !== 'undefined' && window.playwrightTest) {
+    console.log('Skipping service worker registration in Playwright test environment')
+    return
+  }
+
   if ('serviceWorker' in navigator) {
     // Check if we're in development
     const isDev = window.location.hostname === 'localhost'

@@ -28,42 +28,57 @@ test.describe('Admin Tournaments', () => {
   })
 
   test('should access tournaments via context menu', async ({ page }) => {
+    // Block React Router manifest requests to prevent prefetch-induced page reloads
+    await page.route('**/__manifest**', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ patches: [] }),
+      })
+    })
+
     // Navigate to home first
     await page.goto('/')
-
-    // Wait for navigation to settle completely to avoid interference
-    // with the dropdown's navigation state effect
     await page.waitForLoadState('networkidle')
-    await page.waitForLoadState('domcontentloaded')
 
-    // Give React a moment to finish any hydration/navigation state updates
-    await page.waitForTimeout(100)
-
-    // Ensure we are at top so AppBar is visible (header may auto-hide in CI)
-    await page.evaluate(() => window.scrollTo(0, 0))
-
-    // Wait for potential header bounce animation (600ms) to complete
-    // await page.waitForTimeout(700)
+    // Wait for any client-side hydration
+    await page.waitForTimeout(2000)
 
     // Open user menu by clicking hamburger menu
-    await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()
+    const menuButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
+    await expect(menuButton).toBeVisible()
+    await menuButton.click()
 
-    // Wait for the dropdown menu to be visible
+    // Wait for menu to be fully open
     await expect(page.getByTestId('user-menu-dropdown')).toBeVisible()
+    await page.waitForTimeout(500)
 
-    // Look for tournaments link using text content (more flexible)
+    // Look for tournaments link with more specific targeting
     const tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })
     await expect(tournamentsLink.first()).toBeVisible({ timeout: 10000 })
 
-    // Wait for element to be stable before clicking
-    await tournamentsLink.first().waitFor({ state: 'attached' })
-    await page.waitForTimeout(500) // Brief pause for stability
+    // Ensure the link is ready for interaction
+    await expect(tournamentsLink.first()).toBeEnabled()
 
-    // Click tournaments link with retry logic
-    await tournamentsLink.first().click({ force: true })
+    // Get the href to verify it's the correct link
+    const href = await tournamentsLink.first().getAttribute('href')
+    console.log('Tournaments link href:', href)
+
+    // Remove manifest blocking before navigation and wait for a cleaner navigation
+    await page.unroute('**/__manifest__')
+
+    // Use Promise.all to wait for navigation to complete
+    await Promise.all([
+      page.waitForURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments/, { timeout: 15000 }),
+      tournamentsLink.first().click(),
+    ])
 
     // Should navigate to tournaments page
-    await expect(page).toHaveURL(/\/tournaments/)
+    const currentUrl = page.url()
+    console.log('Current URL after navigation:', currentUrl)
+
+    // Verify we're on the correct page
+    await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments/)
     await expect(page.locator('body')).toContainText(/toernooi/i)
   })
 
@@ -203,13 +218,25 @@ test.describe('Tournament-Team Integration', () => {
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
       await page.waitForLoadState('networkidle')
 
+      // Wait for page hydration and form to be fully loaded
+      await page.waitForTimeout(3000)
+
       // Fill tournament form
       console.log('Filling tournament name and location...')
-      await page.getByRole('textbox', { name: /naam/i }).fill('E2ETourney')
-      await page.getByRole('textbox', { name: /locatie/i }).fill('Aalsmeer')
+      const nameField = page.getByRole('textbox', { name: /naam/i })
+      const locationField = page.getByRole('textbox', { name: /locatie/i })
 
-      // Wait for form validation to complete
-      await page.waitForTimeout(1000)
+      // Ensure form fields are visible and interactable
+      await expect(nameField).toBeVisible()
+      await expect(locationField).toBeVisible()
+
+      await nameField.fill('E2ETourney')
+      await nameField.blur() // Trigger validation
+      await locationField.fill('Aalsmeer')
+      await locationField.blur() // Trigger validation
+
+      // Wait longer for form validation to complete after blur events
+      await page.waitForTimeout(3000)
 
       // Check if start date button is enabled
       const startDateButton = page.getByRole('button', {
@@ -218,15 +245,25 @@ test.describe('Tournament-Team Integration', () => {
       console.log('Checking if start date button is enabled...')
       await expect(startDateButton).toBeVisible()
 
-      // Wait for the button to be enabled
-      const startDateEnabled = await startDateButton.isEnabled()
-      if (!startDateEnabled) {
-        console.log('Start date button is disabled, waiting for form validation...')
-        await page.waitForTimeout(3000)
+      // Wait for the start date button to become enabled with a longer timeout
+      // and more attempts to handle race conditions
+      let attempts = 0
+      const maxAttempts = 10
+      while (attempts < maxAttempts) {
+        const isEnabled = await startDateButton.isEnabled()
+        if (isEnabled) {
+          console.log(`Start date button enabled after ${attempts + 1} attempts`)
+          break
+        }
+        console.log(
+          `Start date button still disabled, attempt ${attempts + 1}/${maxAttempts}`
+        )
+        await page.waitForTimeout(1000)
+        attempts++
       }
 
-      // Select start date using date picker
-      await expect(startDateButton).toBeEnabled({ timeout: 10000 })
+      // Final check with assertion
+      await expect(startDateButton).toBeEnabled({ timeout: 5000 })
       await startDateButton.click()
       await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
       await page.getByRole('button', { name: /^15 / }).click()

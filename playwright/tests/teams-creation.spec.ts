@@ -39,118 +39,119 @@ test.describe('Public Teams - Creation', () => {
       await page.goto('/teams/new')
       await page.waitForLoadState('networkidle')
 
+      // Wait for any client-side stores to hydrate properly and form to be ready
+      await page.waitForTimeout(3000)
+
       // Verify we're on the public team creation form
       await expect(page).toHaveURL('/teams/new')
       await expect(page.locator('form')).toBeVisible()
 
-      // Step 1: Select Tournament (tournaments are seeded in global setup)
-      const tournamentCombo = page.getByRole('combobox', {
-        name: /toernooi.*select option/i,
-      })
-      await expect(tournamentCombo).toBeVisible()
+      // === PANEL 1: Tournament Selection (tournamentId, division, category) ===
+
+      // Step 1a: Select Tournament
+      const tournamentField = page.locator('[data-testid="tournamentId-combo-field"]')
+      await expect(tournamentField).toBeVisible({ timeout: 10000 })
+
+      const tournamentCombo = tournamentField.locator('button[role="combobox"]')
+      await expect(tournamentCombo).toBeVisible({ timeout: 5000 })
+      await expect(tournamentCombo).toBeEnabled()
+
       await tournamentCombo.click()
+      await page.waitForTimeout(1500)
 
-      // Wait for dropdown to open
-      await page.waitForTimeout(1000)
-      const triggerState = await tournamentCombo.getAttribute('data-state')
-
-      // Try clicking again if it didn't open
-      if (triggerState !== 'open') {
-        await tournamentCombo.click()
-        await page.waitForTimeout(500)
-      }
-
-      // Find the visible Radix Select item (not the hidden native option)
       const tournamentOption = page
         .locator('[data-radix-select-content]')
         .locator('text="Spring Cup - Amsterdam"')
         .first()
-      await expect(tournamentOption).toBeVisible({ timeout: 5000 })
+      await expect(tournamentOption).toBeVisible({ timeout: 10000 })
       await tournamentOption.click()
 
       await expect(tournamentCombo).toContainText(
         `${tournament.name} - ${tournament.location}`
       )
 
-      // Step 2: Select Division (after tournament selection populates options)
-      const divisionCombo = page.getByRole('combobox', {
-        name: /teamklasse.*select option/i,
-      })
-      await expect(divisionCombo).toBeVisible()
+      // Step 1b: Select Division (should now be enabled)
+      const divisionField = page.locator('[data-testid="division-combo-field"]')
+      const divisionCombo = divisionField.locator('button[role="combobox"]')
+
+      await expect(divisionCombo).toBeEnabled({ timeout: 5000 })
       await divisionCombo.click()
 
       const firstDivision = page.getByRole('option', { name: /eerste klasse/i })
       await expect(firstDivision).toBeVisible({ timeout: 3000 })
       await firstDivision.click()
 
-      // Step 3: Select Category
-      const categoryCombo = page.getByRole('combobox', {
-        name: /categorie.*select option/i,
-      })
-      await expect(categoryCombo).toBeVisible()
+      // Step 1c: Select Category (should now be enabled)
+      const categoryField = page.locator('[data-testid="category-combo-field"]')
+      const categoryCombo = categoryField.locator('button[role="combobox"]')
+
+      await expect(categoryCombo).toBeEnabled({ timeout: 5000 })
       await categoryCombo.click()
 
       const firstCategory = page.getByRole('option', { name: /JO8/i })
       await expect(firstCategory).toBeVisible({ timeout: 3000 })
       await firstCategory.click()
 
-      // Step 4: Fill Team Information
-      const clubNameInput = page.getByRole('textbox', { name: /clubnaam/i })
-      const teamNameInput = page.getByRole('textbox', { name: /teamnaam/i })
+      // Wait for Panel 1 to be completed and Panel 2 to become enabled
+      await page.waitForTimeout(2000)
 
-      await expect(clubNameInput).toBeEnabled()
-      await expect(teamNameInput).toBeEnabled()
+      // === PANEL 2: Team Information (clubName, name) ===
 
+      // Scroll to ensure the next section is visible
+      await page.locator('form').scrollIntoViewIfNeeded()
+
+      // Find Panel 2 fields using different selectors since role-based might not work
+      const clubNameInput = page.locator('[name="clubName"]')
+      const teamNameInput = page.locator('[name="name"]')
+
+      // Wait for Panel 2 fields to become enabled (they should be enabled now that Panel 1 is complete)
+      await expect(clubNameInput).toBeEnabled({ timeout: 10000 })
+      await expect(teamNameInput).toBeEnabled({ timeout: 5000 })
+
+      await clubNameInput.scrollIntoViewIfNeeded()
       await clubNameInput.fill(`TC Public ${uniqueId}`)
       await teamNameInput.fill(`J08-1-${uniqueId}`)
 
-      // Step 5: Fill Team Leader Information
-      const leaderNameInput = page.getByRole('textbox', {
-        name: /naam teamleider/i,
-      })
-      const leaderEmailInput = page.getByRole('textbox', {
-        name: /e-mail teamleider/i,
-      })
-      const leaderPhoneInput = page.getByRole('textbox', {
-        name: /telefoon teamleider/i,
-      })
+      // Wait for Panel 2 to be completed and Panel 3 to become enabled
+      await page.waitForTimeout(1000)
 
+      // === PANEL 3: Team Leader Information (teamLeaderName, teamLeaderPhone, teamLeaderEmail) ===
+
+      const leaderNameInput = page.locator('[name="teamLeaderName"]')
+      const leaderEmailInput = page.locator('[name="teamLeaderEmail"]')
+      const leaderPhoneInput = page.locator('[name="teamLeaderPhone"]')
+
+      // Wait for Panel 3 fields to become enabled
+      await expect(leaderNameInput).toBeEnabled({ timeout: 10000 })
+      await expect(leaderEmailInput).toBeEnabled({ timeout: 5000 })
+      await expect(leaderPhoneInput).toBeEnabled({ timeout: 5000 })
+
+      await leaderNameInput.scrollIntoViewIfNeeded()
       await leaderNameInput.fill('Test Leader')
       const leaderEmail = `test-${uniqueId}@example.com`
       await leaderEmailInput.fill(leaderEmail)
       await leaderPhoneInput.fill('0123456789')
 
-      // Step 6: Accept Privacy Agreement
-      const privacyCheckbox = page.getByRole('checkbox', {
-        name: /privacybeleid/i,
-      })
+      // === PANEL 4: Privacy Agreement (privacyAgreement) ===
+
+      const privacyCheckbox = page.locator('[name="privacyAgreement"]')
       await expect(privacyCheckbox).toBeVisible()
+      await privacyCheckbox.scrollIntoViewIfNeeded()
       await privacyCheckbox.check()
 
-      // Step 7: Handle PWA prompts that might interfere with form submission
-      const pwaPrompt = page.locator('#pwa-prompts .bg-accent.fixed')
-      const pwaPromptVisible = await pwaPrompt.isVisible().catch(() => false)
-      if (pwaPromptVisible) {
-        // Click the dismiss button or outside the prompt to close it
-        const dismissButton = pwaPrompt.locator('button').last()
-        if (await dismissButton.isVisible().catch(() => false)) {
-          await dismissButton.click()
-        }
-        // Wait for prompt to disappear
-        await expect(pwaPrompt).not.toBeVisible()
-      }
+      // === FORM SUBMISSION ===
 
-      // Step 8: Submit Form
       const submitButton = page.getByRole('button', { name: 'Opslaan' })
       await expect(submitButton).toBeVisible()
       await expect(submitButton).toBeEnabled()
+
       await Promise.all([
-        // Wait for redirect to the team detail page
         page.waitForURL(/\/teams\/[^\/]+$/, { timeout: 15000 }),
         submitButton.click(),
       ])
 
-      // Step 9: Verify Success
+      // === VERIFICATION ===
+
       await expect(page).toHaveURL(/\/teams\/[^\/]+$/, { timeout: 10000 })
 
       // Extract team ID from URL for cleanup
@@ -167,16 +168,8 @@ test.describe('Public Teams - Creation', () => {
         }
       )
 
-      // TODO: Fix email verification - temporarily skipped due to routing issues
       // Add some time for server-side email processing
       await page.waitForTimeout(2000)
-
-      // // Wait for email to be captured by MSW
-      // const emails = await waitForEmailsCount(1, 3000)
-      // expect(emails).toHaveLength(1)
-      // expect(emails[0].to).toBe(leaderEmail)
-      // expect(emails[0].subject).toContain(tournament.name)
-      // expect(emails[0].html).toContain(`J08-1-${uniqueId}`)
     } finally {
       // Clean up test data
       if (teamId) {

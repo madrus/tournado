@@ -15,6 +15,19 @@ test.describe('Navigation', () => {
       // Start from homepage
       await page.goto('/')
 
+      // Handle PWA update prompts that might interfere with navigation
+      const pwaUpdatePrompt = page.locator('#pwa-prompts .bg-accent.fixed')
+      const pwaUpdateVisible = await pwaUpdatePrompt.isVisible().catch(() => false)
+      if (pwaUpdateVisible) {
+        // Click the dismiss button (X) to close the prompt
+        const dismissButton = pwaUpdatePrompt.locator('button').first()
+        if (await dismissButton.isVisible().catch(() => false)) {
+          await dismissButton.click()
+        }
+        // Wait for prompt to disappear
+        await expect(pwaUpdatePrompt).not.toBeVisible()
+      }
+
       // Navigate to teams using bottom navigation
       const bottomNav = page.locator('[data-testid="bottom-navigation"]')
       await expect(bottomNav).toBeVisible({ timeout: 10000 })
@@ -37,6 +50,19 @@ test.describe('Navigation', () => {
 
     test('should show all navigation items are functional', async ({ page }) => {
       await page.goto('/')
+
+      // Handle PWA update prompts that might interfere with navigation
+      const pwaUpdatePrompt = page.locator('#pwa-prompts .bg-accent.fixed')
+      const pwaUpdateVisible = await pwaUpdatePrompt.isVisible().catch(() => false)
+      if (pwaUpdateVisible) {
+        // Click the dismiss button (X) to close the prompt
+        const dismissButton = pwaUpdatePrompt.locator('button').first()
+        if (await dismissButton.isVisible().catch(() => false)) {
+          await dismissButton.click()
+        }
+        // Wait for prompt to disappear
+        await expect(pwaUpdatePrompt).not.toBeVisible()
+      }
 
       // Test that all navigation items exist and are clickable
       const bottomNav = page.locator('[data-testid="bottom-navigation"]')

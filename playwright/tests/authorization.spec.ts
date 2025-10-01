@@ -31,10 +31,14 @@ test.describe('Authorization - Public Access', () => {
 
   test('should allow access to signup and signin pages', async ({ page }) => {
     await page.goto('/auth/signin')
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(2000) // Wait for hydration/rendering
     await expect(page).toHaveURL('/auth/signin')
     await expect(page.getByRole('button', { name: 'Inloggen' })).toBeVisible()
 
     await page.goto('/auth/signup')
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(2000) // Wait for hydration/rendering
     await expect(page).toHaveURL('/auth/signup')
     await expect(page.getByRole('button', { name: 'Registreren' })).toBeVisible()
   })

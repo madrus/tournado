@@ -201,6 +201,8 @@ End-to-end tests cover sign-in/out, redirects, and loader-based role verificatio
 - TASK-0002: Session bridging — done (SSR-compatible session cookies)
 - TASK-0003: Google OAuth UX — done
 - TASK-0004: Email/Password authentication — done
+- TASK-0005: Environment separation — done (CI/staging/production isolation)
+- TASK-0006: Legacy authentication removal — done (bcrypt/Password table removed)
 
 Production code is kept clean while tests and E2E run via adapters:
 
@@ -208,7 +210,7 @@ Production code is kept clean while tests and E2E run via adapters:
 - Redirect adapter submits form in E2E to ensure cookie + redirect semantics
 - Server token verification supports mock tokens behind `x-test-bypass` header only (no production paths affected)
 
-Legacy authentication removal (bcrypt/Password table) is tracked as a separate follow-up task.
+The application is now Firebase-only with no legacy authentication dependencies.
 
 **Future Consideration**: Phone number authentication evaluated but postponed due to SMS costs, regional reliability concerns, and security risks. Complete technical implementation documented in `docs/development/authentication.md` for future evaluation pending user demand or international expansion requirements.
 

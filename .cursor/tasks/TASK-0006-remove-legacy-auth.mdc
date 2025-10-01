@@ -2,11 +2,12 @@
 description: Remove legacy bcrypt/password-based auth and fully finalize Firebase-only authentication
 id: "TASK-0006"
 title: "Remove legacy auth (bcrypt/Password table) and finalize Firebase-only auth"
-status: "planned"
+status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "migration", "cleanup"]
 dependencies: ["./TASK-0004-complete-firebase-auth.mdc", "./TASK-0005-implement-environment-separation.mdc"]
 created: "2025-09-14"
+completed: "2025-10-01"
 globs:
 alwaysApply: false
 ---

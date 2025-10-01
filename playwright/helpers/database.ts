@@ -3,11 +3,18 @@ import { faker } from '@faker-js/faker'
 import { PrismaClient, Role, type User } from '@prisma/client'
 
 // Ensure Playwright helpers use the same DB as the E2E server
+// When PLAYWRIGHT=true, always use test database regardless of DATABASE_URL in .env
 // Fall back to the test DB path used by e2e-server.js
+const testDbPath = 'file:./prisma/data-test.db?connection_limit=1'
+const dbUrl =
+  process.env.PLAYWRIGHT === 'true'
+    ? testDbPath
+    : process.env.DATABASE_URL || testDbPath
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.DATABASE_URL || 'file:./prisma/data-test.db?connection_limit=1',
+      url: dbUrl,
     },
   },
 })
@@ -16,7 +23,7 @@ const prisma = new PrismaClient({
 export const cleanDatabase = async (): Promise<void> => {
   try {
     // Delete in correct order to respect foreign key constraints
-    // NOTE: We preserve users and passwords to maintain authentication sessions
+    // NOTE: We preserve users to maintain authentication sessions
     await prisma.matchScore.deleteMany()
     await prisma.match.deleteMany()
     await prisma.team.deleteMany()
@@ -39,6 +46,13 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
     await prisma.teamLeader.deleteMany()
     await prisma.user.deleteMany()
   } catch (error) {
+    // During Playwright tests, ignore all database errors during cleanup
+    // The database might not exist yet (e2e-server creates it) or might be empty
+    if (process.env.PLAYWRIGHT === 'true') {
+      // Silently ignore - database will be created by e2e-server if needed
+      return
+    }
+    // In non-test environments, report errors
     console.error('Error completely cleaning database:', error)
     throw error
   }

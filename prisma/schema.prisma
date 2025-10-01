@@ -62,21 +62,14 @@ enum Category {
 }
 
 model User {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   firstName   String
   lastName    String
-  email       String    @unique
-  firebaseUid String?   @unique
+  email       String   @unique
+  firebaseUid String   @unique
   role        Role
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  password    Password?
-}
-
-model Password {
-  hash   String
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model TeamLeader { // contact person

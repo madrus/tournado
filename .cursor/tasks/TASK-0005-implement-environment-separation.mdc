@@ -2,7 +2,7 @@
 description: Implement environment variable separation and Firebase project isolation for CI/staging/production
 id: "TASK-0005"
 title: "Implement environment variable separation and Firebase project isolation"
-status: "completed"
+status: "done"
 priority: "P1"
 labels: ["environment", "firebase", "ci", "deployment", "security"]
 dependencies: ["./TASK-0004-complete-firebase-auth.mdc"]

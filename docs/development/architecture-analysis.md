@@ -549,8 +549,8 @@ graph TD
 ```mermaid
 graph TD
     subgraph "Authentication Security"
-        BCrypt[bcrypt Password Hashing]
-        Sessions[Secure Session Cookies]
+        Firebase[Firebase Authentication]
+        Sessions[Firebase Session Cookie Bridging]
         CSRF[CSRF Protection]
     end
 
@@ -569,8 +569,8 @@ graph TD
 
 ### Security Best Practices
 
-- **Password Security**: bcrypt with salt rounds for password hashing
-- **Session Management**: HttpOnly, Secure, SameSite cookie attributes
+- **Authentication**: Firebase Authentication with Google OAuth and Email/Password
+- **Session Management**: Firebase session cookie bridging with HttpOnly, Secure, SameSite attributes
 - **Input Validation**: Zod schema validation for all user inputs
 - **SQL Injection Prevention**: Prisma ORM with parameterized queries
 - **XSS Prevention**: React's built-in XSS protection + CSP headers

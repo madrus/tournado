@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
-    "buttons": {
+    "common": {
       "signingIn": "Inloggen..."
     },
     "continueWithEmail": "Of ga verder met e-mail",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "Doorgaan met Google",
       "error": "Authenticatie mislukt. Probeer het opnieuw.",
-      "signInWithGoogle": "Inloggen met Google",
-      "signingIn": "Bezig met inloggen..."
+      "signInWithGoogle": "Inloggen met Google"
     },
     "firstName": "Voornaam",
     "labels": {

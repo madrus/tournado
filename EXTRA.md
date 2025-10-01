@@ -1,6 +1,6 @@
 # Extra bits & pieces
 
-## ADD Google Auth
+## Google Authentication Features
 
 - Google Authentication — Allow users to authenticate using their Google accounts via the Firebase SDK.
 - Email/Password Authentication — Enable users to register and login using their email and password; passwords will be securely stored in Firebase Authentication.

@@ -49,6 +49,10 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - **db.server.ts** - Database connection and utilities
   - **validation.ts** - Schema validation with Zod
   - **email.server.tsx** - Email sending utilities (Resend)
+  - **format.ts** - Data formatting utilities
+  - **constants.ts** - App constants
+  - **misc.ts** - Miscellaneous utilities
+  - **env.server.ts** - Environment variable validation
 
 - **stores/** - Client-side State Management
   - **authStore.ts** - Authentication state (Zustand)
@@ -60,12 +64,6 @@ This project follows a modular architecture pattern for React Router v7 applicat
   - **useLocalStorage.ts** - Local storage utilities
   - **useDebounce.ts** - Debouncing utilities
   - **usePrevious.ts** - Previous value tracking
-
-- **utils/** - Utility Functions
-  - **format.ts** - Data formatting utilities
-  - **constants.ts** - App constants
-  - **misc.ts** - Miscellaneous utilities
-  - **env.server.ts** - Environment variable validation
 
 - **styles/** - Styling Configuration
   - **tailwind.css** - Tailwind CSS configuration and custom classes

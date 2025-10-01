@@ -50,21 +50,21 @@ export function useTournamentFilter({
   }, [selectedTournamentId, tournamentListItems])
 
   const onChange = (value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams)
+
+    if (value === 'all') {
+      newSearchParams.delete('tournament')
+    } else {
+      newSearchParams.set('tournament', value)
+    }
+
     try {
-      const newSearchParams = new URLSearchParams(searchParams)
-
-      if (value === 'all') {
-        newSearchParams.delete('tournament')
-      } else {
-        newSearchParams.set('tournament', value)
-      }
-
       const queryString = newSearchParams.toString()
       navigate(queryString ? `?${queryString}` : '')
     } catch (error) {
+      //TODO: Show user-facing error (e.g., toast/notification)
       // eslint-disable-next-line no-console
       console.error('Navigation failed:', error)
-      // Navigation errors should be handled gracefully without crashing the component
     }
   }
 

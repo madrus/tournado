@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { act, fireEvent, renderHook, waitFor } from '@testing-library/react'
 
 import {
@@ -100,8 +101,8 @@ describe('useScrollDirection', () => {
           const handler = call[1] as EventListener
           try {
             handler?.(event)
-          } catch (_e) {
-            /* ignore handler errors in tests */
+          } catch (_err) {
+            console.warn('Handler error in test (suppressed):', _err)
           }
         }
         return true
@@ -346,11 +347,6 @@ describe('useScrollDirection', () => {
       expect(touchStartCall).toBeDefined()
       expect(touchMoveCall).toBeDefined()
       expect(touchEndCall).toBeDefined()
-
-      // Verify touch handlers can be called without throwing
-      const _touchStartHandler = touchStartCall?.[1] as EventListener
-      const _touchMoveHandler = touchMoveCall?.[1] as EventListener
-      const _touchEndHandler = touchEndCall?.[1] as EventListener
 
       fireEvent(
         window,
@@ -770,8 +766,6 @@ describe('useScrollDirection', () => {
       mockGetScrollY.mockReturnValue(1195) // At bottom
 
       renderHook(() => useScrollDirection(20))
-
-      // Touch listeners registered on window
 
       // Trigger bounce
       fireEvent(

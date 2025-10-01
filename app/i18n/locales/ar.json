@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
-    "buttons": {
+    "common": {
       "signingIn": "جاري تسجيل الدخول..."
     },
     "continueWithEmail": "أو تابع بالبريد الإلكتروني",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "المتابعة مع Google",
       "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
-      "signInWithGoogle": "تسجيل الدخول بواسطة Google",
-      "signingIn": "جاري تسجيل الدخول..."
+      "signInWithGoogle": "تسجيل الدخول بواسطة Google"
     },
     "firstName": "الاسم الأول",
     "labels": {

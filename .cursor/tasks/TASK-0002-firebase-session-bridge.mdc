@@ -11,6 +11,10 @@ globs:
 alwaysApply: false
 ---
 
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
 ## ARCHITECTURE DECISION RECORDS
 
 ### 🎯 **FEATURE Task** - Self-contained business domain
@@ -39,7 +43,6 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 - Constraint: Maintain existing role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Constraint: No breaking changes to existing route loaders that use requireUserId/getUserId
 - Constraint: Session cookies must work with existing commitSession/getSession patterns
-- Constraint: **File creation safety**: Before creating any new file, check if a file with that name already exists. If it exists, analyze its content to determine: (a) if it's the same file that needs minor updates/enhancements, (b) if it's a completely different file with different structure/purpose. For case (a), update/merge carefully preserving existing functionality. For case (b), ask the user for guidance on how to proceed. Never overwrite existing code without analysis and consideration.
 
 # 4) Dependencies (Other Tasks or Artifacts)
 

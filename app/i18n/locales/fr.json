@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
-    "buttons": {
+    "common": {
       "signingIn": "Connexion..."
     },
     "continueWithEmail": "Ou continuez avec l'email",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "Continuer avec Google",
       "error": "Échec de l'authentification. Veuillez réessayer.",
-      "signInWithGoogle": "Se connecter avec Google",
-      "signingIn": "Connexion en cours..."
+      "signInWithGoogle": "Se connecter avec Google"
     },
     "firstName": "Prénom",
     "labels": {

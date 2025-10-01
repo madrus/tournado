@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
-    "buttons": {
+    "common": {
       "signingIn": "Anmelden..."
     },
     "continueWithEmail": "Oder mit E-Mail fortfahren",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "Mit Google fortfahren",
       "error": "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-      "signInWithGoogle": "Mit Google anmelden",
-      "signingIn": "Anmeldung läuft..."
+      "signInWithGoogle": "Mit Google anmelden"
     },
     "firstName": "Vorname",
     "labels": {

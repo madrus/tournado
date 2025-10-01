@@ -19,5 +19,9 @@ export const firebaseSignInVariants = cva(
         lg: 'h-11 px-8',
       },
     },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
   }
 )

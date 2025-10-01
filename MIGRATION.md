@@ -61,20 +61,20 @@ This migration addresses two critical issues:
 
 ### 2.1: Create ADR
 
-- [ ] Create `.cursor/rules/adr-003-dynamic-admin-roles.mdc`
-- [ ] Document architectural decision for dynamic role assignment
-- [ ] Explain why roles update on every login
+- [x] Create `.cursor/rules/adr-003-dynamic-admin-roles.mdc`
+- [x] Document architectural decision for dynamic role assignment
+- [x] Explain why roles update on every login
 
 ### 2.2: Update Environment Documentation
 
-- [ ] Update `docs/environment-variables.md`
-   - [ ] Add admin role management section
-   - [ ] Document `SUPER_ADMIN_EMAILS` behavior per environment
+- [x] Update `docs/environment-variables.md`
+   - [x] Add admin role management section
+   - [x] Document `SUPER_ADMIN_EMAILS` behavior per environment
 
 ### 2.3: Update Project Instructions
 
-- [ ] Update `CLAUDE.md` if needed
-   - [ ] Add note about dynamic admin role assignment
+- [x] Update `CLAUDE.md` if needed
+   - [x] Add note about dynamic admin role assignment (not needed - well documented in ADR and env docs)
 
 ---
 
@@ -82,38 +82,44 @@ This migration addresses two critical issues:
 
 ### 3.1: Update Staging Secrets
 
-- [ ] Update Fly.io secrets:
+- [x] Update Fly.io secrets:
    ```bash
    fly secrets set SUPER_ADMIN_EMAILS="madrus@gmail.com,otmanabdel@hotmail.com" --app tournado-staging
    ```
 
 ### 3.2: Deploy to Staging
 
-- [ ] Deploy code to staging (push to staging branch or manual deploy)
-- [ ] Run migration on staging:
+- [x] Deploy code to staging (deployed from dev branch via CI)
+- [x] Run migration on staging:
    ```bash
    fly ssh console --app tournado-staging -C "pnpm migrate:admin-roles"
    ```
 
 ### 3.3: Test on Staging
 
-- [ ] Login with `madrus@gmail.com` → verify ADMIN role
-- [ ] Login with `madrusnl@hotmail.com` → verify MANAGER role (demoted)
-- [ ] Login with `otmanabdel@hotmail.com` → verify ADMIN role
-- [ ] Test admin panel access
-- [ ] Test team management features
-- [ ] Test tournament creation
+- [x] Login with `madrus@gmail.com` → verify ADMIN role
+- [x] Login with `madrusnl@hotmail.com` → verify MANAGER role (demoted)
+- [x] Login with `otmanabdel@hotmail.com` → verify ADMIN role
+- [x] Test admin panel access
+- [x] Test team management features
+- [x] Test tournament creation
 
 ### 3.4: Validate Environment
 
-- [ ] Run environment validation:
-   ```bash
-   fly ssh console --app tournado-staging -C "pnpm env:check:prod"
-   ```
+- [x] Environment validated via manual testing (scripts not deployed to production environment)
 
 ---
 
 ## Phase 4: Production Deployment
+
+**⚠️ Prerequisites: Merge PR to `main` branch first**
+
+### 4.0: Merge to Main
+
+- [ ] Create PR from `dev` to `main` with all changes
+- [ ] Review and approve PR
+- [ ] Merge PR to `main`
+- [ ] Wait for CI deployment to production to complete
 
 ### 4.1: Update Production Secrets
 
@@ -122,10 +128,10 @@ This migration addresses two critical issues:
    fly secrets set SUPER_ADMIN_EMAILS="madrus@gmail.com,otmanabdel@hotmail.com" --app tournado
    ```
 
-### 4.2: Deploy to Production
+### 4.2: Verify Production Deployment
 
-- [ ] Deploy from main branch (after PR merge)
-- [ ] Or trigger via GitHub Actions deployment workflow
+- [ ] Confirm deployment from main branch completed successfully
+- [ ] Check deployment status: `fly status --app tournado`
 
 ### 4.3: Run Migration
 

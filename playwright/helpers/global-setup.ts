@@ -39,6 +39,19 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   const port = Number(url.port)
   await checkDevServer(port)
 
+  // Delete old auth state files to ensure fresh session cookies
+  const authDir = './playwright/.auth'
+  const adminAuthFile = path.join(authDir, 'admin-auth.json')
+  const userAuthFile = path.join(authDir, 'user-auth.json')
+
+  try {
+    if (fs.existsSync(adminAuthFile)) fs.unlinkSync(adminAuthFile)
+    if (fs.existsSync(userAuthFile)) fs.unlinkSync(userAuthFile)
+    console.log('Deleted old auth state files for fresh test run')
+  } catch (error) {
+    console.warn('Warning: Could not delete old auth files:', error)
+  }
+
   // Clean database completely before starting tests
   await cleanDatabaseCompletely()
 

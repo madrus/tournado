@@ -2,8 +2,6 @@
 /* eslint-disable id-blacklist */
 import { PrismaClient } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
-
 // Retry mechanism for Prisma Client initialization
 async function createPrismaClient(maxRetries = 5, delay = 1000) {
   for (let i = 0; i < maxRetries; i++) {
@@ -69,13 +67,9 @@ async function seed() {
       },
     })
 
-    const adminPlainPassword = process.env.SUPER_ADMIN_PASSWORD
-    if (!adminPlainPassword) {
-      throw new Error('SUPER_ADMIN_PASSWORD is required for seeding')
-    }
-    const hashedInitialPassword = await bcrypt.hash(adminPlainPassword, 10)
-
     // Create users with roles based on SUPER_ADMIN_EMAILS
+    // Note: These are test/seed users with placeholder firebaseUids
+    // Actual authentication happens via Firebase (Google OAuth or Email/Password)
     await Promise.all(
       allUsers.map(async email => {
         const role = superAdminEmails.includes(email) ? 'ADMIN' : 'MANAGER'
@@ -89,7 +83,7 @@ async function seed() {
               email.split('@')[0].slice(1),
             lastName,
             role,
-            password: { create: { hash: hashedInitialPassword } },
+            firebaseUid: `seed-${email.replace(/[@.]/g, '-')}`, // Placeholder for seeded test users
           },
         })
       })

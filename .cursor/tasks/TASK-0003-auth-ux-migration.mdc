@@ -2,7 +2,7 @@
 description: Migrate authentication UX to Firebase Google Sign-in while preserving existing flows
 id: "TASK-0003"
 title: "Migrate authentication UX to Firebase Google Sign-in"
-status: "planned"
+status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "ui", "ux"]
 dependencies: ["./TASK-0002-firebase-session-bridge.mdc"]
@@ -16,7 +16,7 @@ alwaysApply: false
 ### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
 **Decision**: This task combines updates to shared authentication components with new Firebase-specific UI components. Updates existing shared auth routes while creating new Firebase feature components.
 
-**Rationale**: 
+**Rationale**:
 - Auth routes are shared infrastructure used across the application
 - Firebase components are feature-specific and belong in the Firebase domain
 - UX migration requires both shared route updates and new Firebase UI components

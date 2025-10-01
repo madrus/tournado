@@ -92,17 +92,17 @@ Database & Data Model [Implemented]
 
 ### 📋 Planned Features (PRD Scope)
 
-**Phase 1 - Authentication Modernization [In Progress]**
+**Phase 1 - Authentication Modernization [Completed]**
 
-- [x] Firebase project setup and configuration (TASK-0001 completed)
-- [x] Firebase-backed session cookie bridging (TASK-0002 completed)
-- [x] Google Authentication via Firebase (TASK-0003 completed)
-- [x] Post-login redirects, logout, and credential persistence (TASK-0003 completed)
-- [x] Visible auth status indicator (TASK-0003 completed)
-- [x] Firebase Email/Password Authentication (TASK-0004 completed)
-- [x] Multi-super-admin role assignment system (TASK-0004 completed)
-- [ ] Environment variable separation and Firebase project isolation (TASK-0005 in progress)
-- [ ] Complete legacy authentication removal (TASK-0006 planned cleanup - depends on TASK-0004 + TASK-0005)
+- [x] Firebase project setup and configuration (TASK-0001 done)
+- [x] Firebase-backed session cookie bridging (TASK-0002 done)
+- [x] Google Authentication via Firebase (TASK-0003 done)
+- [x] Post-login redirects, logout, and credential persistence (TASK-0003 done)
+- [x] Visible auth status indicator (TASK-0003 done)
+- [x] Firebase Email/Password Authentication (TASK-0004 done)
+- [x] Multi-super-admin role assignment system (TASK-0004 done)
+- [x] Environment variable separation and Firebase project isolation (TASK-0005 done)
+- [x] Complete legacy authentication removal (TASK-0006 done - bcrypt/Password table removed)
 
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**
 
@@ -266,23 +266,23 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 ## Feature Roadmap
 
-### Phase 1: Authentication Modernization (1-2 weeks)
+### Phase 1: Authentication Modernization [COMPLETED]
 
 - [x] Priority: Critical
-- [x] Timeline: 1-2 weeks (extended for complete implementation)
+- [x] Timeline: Completed
 
 #### 1.1 Google Auth + Session Bridging [COMPLETED]
 
 - [x] Implement Firebase Google Auth (TASK-0003)
 - [x] Bridge to server via Firebase session cookies; preserve SSR compatibility (TASK-0002)
 
-#### 1.2 Firebase Email/Password + Legacy Removal [TASK-0004]
+#### 1.2 Firebase Email/Password + Legacy Removal [COMPLETED]
 
-- [ ] Implement Firebase email/password authentication
-- [ ] Multi-super-admin role assignment (environment-based)
-- [ ] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions)
-- [ ] Admin panel user role management
-- [ ] Development database reset (clean slate approach)
+- [x] Implement Firebase email/password authentication (TASK-0004)
+- [x] Multi-super-admin role assignment (environment-based) (TASK-0004)
+- [x] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions) (TASK-0006)
+- [x] Admin panel user role management (TASK-0004)
+- [x] Environment separation (CI/staging/production) (TASK-0005)
 
 #### 1.3 UX & Migration [COMPLETED]
 
@@ -426,18 +426,14 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Authentication
 
-- **Current State**: Firebase-based authentication with dual method support (TASK-0002, TASK-0003 implemented)
+- **Current State**: Firebase-only authentication with dual method support (fully implemented)
   - ✅ Google OAuth via Firebase
+  - ✅ Firebase Email/Password authentication
   - ✅ Firebase session cookie bridging for SSR compatibility
-  - ✅ Role-guarded routes and smart redirects preserved
-  - ❌ Legacy email/password auth still present (pending removal in TASK-0004)
-- **Requirements (TASK-0004)**: Complete Firebase authentication implementation
-  - Firebase email/password authentication for users without Google accounts
-  - Multi-super-admin role assignment via `SUPER_ADMIN_EMAILS` environment variable
-  - Complete removal of legacy authentication (bcrypt, Password table, cookie sessions)
-  - Admin panel for role management by super admins
-  - Development database reset (clean slate migration)
-- **Implementation Strategy**: Hard reset approach suitable for development phase (no production users to migrate)
+  - ✅ Multi-super-admin role assignment via `SUPER_ADMIN_EMAILS` environment variable
+  - ✅ Role-guarded routes and smart redirects
+  - ✅ Environment separation (CI/staging/production Firebase projects)
+  - ✅ Legacy authentication completely removed (no bcrypt, Password table, or cookie sessions)
 - Details: See `docs/development/PRD.details.md#authentication-bridging` (authentication bridging, tokens, redirects)
 
 #### Teams & Tournaments
@@ -694,9 +690,9 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ## Implementation Timeline
 
-### Phase 1: Authentication Modernization
+### Phase 1: Authentication Modernization [COMPLETED]
 
-- Week 1: Firebase auth, session cookie bridging, redirects, logout
+- ✅ Firebase auth, session cookie bridging, redirects, logout, environment separation, legacy removal
 
 ### Phase 2: Groups & Playoffs (MVP)
 

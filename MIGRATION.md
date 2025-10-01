@@ -167,7 +167,6 @@ This migration addresses two critical issues:
    - [ ] `FIREBASE_ADMIN_CLIENT_EMAIL`
    - [ ] `FIREBASE_ADMIN_PRIVATE_KEY`
    - [ ] `SUPER_ADMIN_EMAILS` (can be dummy value like "test@example.com")
-   - [ ] `SUPER_ADMIN_PASSWORD`
 
 ### 5.2: Add Environment Validation to Workflows
 
@@ -200,7 +199,6 @@ This migration addresses two critical issues:
 | `FIREBASE_ADMIN_CLIENT_EMAIL`       | ✅   | ✅   | ✅    | ✅      | ✅         |
 | `FIREBASE_ADMIN_PRIVATE_KEY`        | ✅   | ✅   | ✅    | ✅      | ✅         |
 | `SUPER_ADMIN_EMAILS`                | ✅\* | ✅\* | ✅    | ✅      | ✅         |
-| `SUPER_ADMIN_PASSWORD`              | ✅   | ✅   | ✅    | ✅      | ✅         |
 | `VITE_FIREBASE_API_KEY`             | ❌   | ❌   | ✅    | ✅      | ✅         |
 | `VITE_FIREBASE_AUTH_DOMAIN`         | ❌   | ❌   | ✅    | ✅      | ✅         |
 | `VITE_FIREBASE_PROJECT_ID`          | ❌   | ❌   | ✅    | ✅      | ✅         |

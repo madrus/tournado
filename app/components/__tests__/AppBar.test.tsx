@@ -119,7 +119,7 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).not.toContain('common.titles.adminPanel')
       expect(menuLabels).not.toContain('common.titles.profile')
       expect(menuLabels).not.toContain('common.titles.settings')
-      expect(menuLabels).not.toContain('auth.signout')
+      expect(menuLabels).not.toContain('common.auth.signOut')
     })
 
     it('should show divider after Teams', () => {
@@ -185,11 +185,11 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.titles.settings')
       expect(menuLabels).toContain('common.titles.about')
       expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
-      expect(menuLabels).toContain('auth.signout')
+      expect(menuLabels).toContain('common.auth.signOut')
 
       // Should NOT see admin items or sign in
       expect(menuLabels).not.toContain('common.titles.adminPanel')
-      expect(menuLabels).not.toContain('auth.signin')
+      expect(menuLabels).not.toContain('common.auth.signIn')
     })
 
     it('should show authentication status as true', () => {
@@ -251,10 +251,10 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.titles.settings')
       expect(menuLabels).toContain('common.titles.about')
       expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
-      expect(menuLabels).toContain('auth.signout')
+      expect(menuLabels).toContain('common.auth.signOut')
 
       // Should NOT see sign in
-      expect(menuLabels).not.toContain('auth.signin')
+      expect(menuLabels).not.toContain('common.auth.signIn')
     })
 
     it('should have Teams link pointing to admin teams route', () => {

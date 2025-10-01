@@ -47,9 +47,6 @@
   },
   "auth": {
     "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
-    "common": {
-      "signingIn": "جاري تسجيل الدخول..."
-    },
     "continueWithEmail": "أو تابع بالبريد الإلكتروني",
     "createAccount": "إنشاء حساب",
     "dontHaveAccount": "ليس لديك حساب؟",
@@ -113,6 +110,8 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "تسجيل الدخول",
+      "signingIn": "جاري تسجيل الدخول...",
+      "signOut": "تسجيل الخروج",
       "signUp": "التسجيل"
     },
     "backToHome": "العودة إلى الرئيسية",

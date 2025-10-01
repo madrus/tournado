@@ -54,14 +54,6 @@ const ENV_VARS: EnvVar[] = [
       'Comma-separated list of super admin email addresses (can be empty in CI/E2E)',
     example: 'admin@example.com,other@example.com',
   },
-  {
-    name: 'SUPER_ADMIN_PASSWORD',
-    required: true,
-    contexts: ['ci', 'local', 'e2e', 'production'],
-    description: 'Password for seeding admin accounts (dev/test/staging)',
-    example: 'secure-password-123',
-    sensitive: true,
-  },
 
   // Firebase Client (Browser) - NOT needed in CI/E2E (no browser)
   {

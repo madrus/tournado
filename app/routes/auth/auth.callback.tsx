@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { redirect } from 'react-router'
 
-import { createSessionFromFirebaseToken } from '~/features/firebase/session.server'
+import { createSessionFromFirebaseToken } from '~/features/firebase/index.server'
 import { getPostSignInRedirect } from '~/utils/roleBasedRedirects'
 import { sessionStorage } from '~/utils/session.server'
 

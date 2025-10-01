@@ -203,7 +203,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 ```tsx
 // app/models/team.server.ts
-import { db } from "~/lib/db.server";
+import { db } from "~/db.server";
 
 export async function getTeams() {
   return await db.team.findMany({

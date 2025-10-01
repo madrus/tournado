@@ -2,10 +2,6 @@ import { cva } from 'class-variance-authority'
 
 export const firebaseEmailSignInVariants = cva('flex flex-col gap-4 w-full', {
   variants: {
-    variant: {
-      default: '',
-      outline: '',
-    },
     size: {
       sm: 'text-sm',
       md: 'text-base',
@@ -13,7 +9,6 @@ export const firebaseEmailSignInVariants = cva('flex flex-col gap-4 w-full', {
     },
   },
   defaultVariants: {
-    variant: 'default',
     size: 'md',
   },
 })

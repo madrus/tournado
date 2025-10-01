@@ -81,7 +81,7 @@ export function FirebaseSignIn({
             />
           </svg>
         )}
-        {loading ? t('auth.common.signingIn') : t('auth.firebase.continueWithGoogle')}
+        {loading ? t('common.auth.signingIn') : t('auth.firebase.continueWithGoogle')}
       </button>
       {error ? (
         <div className='text-sm text-red-600 dark:text-red-400'>{error}</div>

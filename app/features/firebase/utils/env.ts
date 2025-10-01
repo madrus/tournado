@@ -8,7 +8,7 @@ export const isUnitTestRuntime = (): boolean =>
   typeof process !== 'undefined' && process.env.NODE_ENV === 'test'
 
 export const isE2EServer = (request: Request): boolean =>
-  request.headers.get(TEST_BYPASS_HEADER) === 'true'
+  process.env.NODE_ENV === 'test' && request.headers.get(TEST_BYPASS_HEADER) === 'true'
 
 export const isMockToken = (token: string): boolean =>
   token.startsWith(MOCK_TOKEN_PREFIX)

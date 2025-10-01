@@ -47,9 +47,6 @@
   },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
-    "common": {
-      "signingIn": "Inloggen..."
-    },
     "continueWithEmail": "Of ga verder met e-mail",
     "createAccount": "Account aanmaken",
     "dontHaveAccount": "Nog geen account?",
@@ -113,6 +110,8 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Inloggen",
+      "signingIn": "Inloggen...",
+      "signOut": "Uitloggen",
       "signUp": "Registreren"
     },
     "backToHome": "Terug naar home",

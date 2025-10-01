@@ -189,9 +189,9 @@ Refactor / new adapters and utils:
        // Create or update user with assigned role
        // Handle first-time user creation with role assignment
      }
+     ```
 
    - Add token verifier wrapper to support test bypass only under `x-test-bypass` header
-     ```
 
 5. **Update authentication routes**
 

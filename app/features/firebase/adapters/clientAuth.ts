@@ -22,11 +22,11 @@ export function getOnAuthStateChanged(): (
   if (isE2EClient() && window.mockFirebaseAuth?.onAuthStateChanged) {
     const mockFn = window.mockFirebaseAuth.onAuthStateChanged
     return (auth: Auth, next: (user: FirebaseAuthUser | null) => unknown) => {
-      // Playwright mock can accept callback-only
+      // Playwright mock can accept callback-only or (auth, callback)
       if (mockFn.length < 2) {
         return mockFn(next)
       }
-      return onAuthStateChangedSdk(auth, next)
+      return mockFn(auth, next)
     }
   }
   return onAuthStateChangedSdk

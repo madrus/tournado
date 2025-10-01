@@ -58,20 +58,9 @@ export function GeneralErrorBoundary({
   statusHandlers?: Record<number, StatusHandler>
   unexpectedErrorHandler?: (error: unknown) => JSX.Element | null
 }): JSX.Element {
-  // Try to read router hooks; fall back gracefully when not in a Router
-  let error: unknown = null
-  let params: Record<string, string | undefined> = {}
-  try {
-    // The test suite often mocks this hook; calling it is safe even without Router
-    error = useRouteError()
-  } catch {
-    error = null
-  }
-  try {
-    params = useParams()
-  } catch {
-    params = {}
-  }
+  // Call hooks unconditionally at top level (required by React rules)
+  const error = useRouteError()
+  const params = useParams()
 
   if (typeof document !== 'undefined') {
     // eslint-disable-next-line no-console

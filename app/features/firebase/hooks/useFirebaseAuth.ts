@@ -40,7 +40,7 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
   const [error, setError] = useState<string | null>(null)
 
   // Debug logging for E2E tests - only log errors
-  if (typeof window !== 'undefined' && window.playwrightTest && error) {
+  if (error) {
     debug('useFirebaseAuth error:', error)
   }
 

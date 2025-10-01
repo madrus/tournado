@@ -15,7 +15,8 @@ let adminAuth: Auth | null = null
 function initializeFirebaseAdmin(): void {
   // Use existing Firebase app if available
   if (getApps().length > 0) {
-    adminAuth = getAuth(getApps()[0])
+    adminApp = getApps()[0]
+    adminAuth = getAuth(adminApp)
     return
   }
 
@@ -138,7 +139,7 @@ export const createOrUpdateUser = async (
   if (existingUser) {
     // Re-check role assignment on every login based on current SUPER_ADMIN_EMAILS
     const assignedRole = await assignUserRole({
-      email: existingUser.email,
+      email: firebaseUser.email,
       currentRole: existingUser.role,
     })
 

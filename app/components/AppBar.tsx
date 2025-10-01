@@ -142,7 +142,7 @@ export function AppBar({
       authenticated: false,
     },
     {
-      label: isAuthenticated ? t('auth.signout') : t('common.auth.signIn'),
+      label: isAuthenticated ? t('common.auth.signOut') : t('common.auth.signIn'),
       icon: (isAuthenticated ? 'logout' : 'login') as IconName,
       action: isAuthenticated ? (
         <button
@@ -152,7 +152,7 @@ export function AppBar({
           <span className={menuClasses.iconContainer}>
             {renderIcon('logout', { className: 'w-5 h-5' })}
           </span>
-          <span className={menuClasses.textContainer}>{t('auth.signout')}</span>
+          <span className={menuClasses.textContainer}>{t('common.auth.signOut')}</span>
         </button>
       ) : (
         <PrimaryNavLink

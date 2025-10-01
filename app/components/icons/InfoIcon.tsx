@@ -49,7 +49,7 @@ export function InfoIcon({
         stroke='currentColor'
         strokeWidth={contentStrokeWidth - 0.5}
       />
-      {/* Info content in white with weight 600 */}
+      {/* Info content paths with currentColor */}
       <path
         d={linePath}
         stroke='currentColor'

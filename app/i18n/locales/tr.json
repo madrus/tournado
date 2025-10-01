@@ -47,9 +47,6 @@
   },
   "auth": {
     "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
-    "common": {
-      "signingIn": "Giriş yapılıyor..."
-    },
     "continueWithEmail": "Veya e-posta ile devam edin",
     "createAccount": "Hesap oluştur",
     "dontHaveAccount": "Henüz hesabınız yok mu?",
@@ -113,6 +110,8 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Giriş yap",
+      "signingIn": "Giriş yapılıyor...",
+      "signOut": "Çıkış yap",
       "signUp": "Kayıt ol"
     },
     "backToHome": "Ana sayfaya dön",

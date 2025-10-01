@@ -112,7 +112,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 
 - Firebase Authentication with Google OAuth and Email/Password
 - Session cookie bridging for SSR compatibility
-- Environment separation (CI/staging/production Firebase projects)
+- Environment separation (CI uses dummy values, development/staging share `tournado-dev`, production uses `tournado-prod`)
 - Role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Auth state managed via React Router loaders
 

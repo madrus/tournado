@@ -47,9 +47,6 @@
   },
   "auth": {
     "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
-    "common": {
-      "signingIn": "Anmelden..."
-    },
     "continueWithEmail": "Oder mit E-Mail fortfahren",
     "createAccount": "Konto erstellen",
     "dontHaveAccount": "Haben Sie noch kein Konto?",
@@ -113,6 +110,8 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Anmelden",
+      "signingIn": "Anmelden...",
+      "signOut": "Abmelden",
       "signUp": "Registrieren"
     },
     "backToHome": "Zurück zur Startseite",

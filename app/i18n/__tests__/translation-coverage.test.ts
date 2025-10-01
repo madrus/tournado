@@ -104,8 +104,8 @@ describe('Critical Key Verification', () => {
     'common.titles.tournaments',
     'auth.emailAddress',
     'auth.password',
-    'auth.signin',
-    'auth.signup',
+    'common.auth.signIn',
+    'common.auth.signUp',
     'messages.auth.invalidCredentials',
   ]
 
@@ -178,7 +178,7 @@ describe('Navigation Coverage', () => {
     'common.titles.tournaments',
     'common.titles.profile',
     'common.titles.settings',
-    'auth.signout',
+    'common.auth.signOut',
   ]
 
   it('should have all navigation keys in every locale', () => {

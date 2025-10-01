@@ -5,14 +5,6 @@ import { HydratedRouter } from 'react-router/dom'
 import { initI18n } from '~/i18n/config'
 import { setupMSWBrowser } from '~/utils/msw-browser'
 
-declare global {
-  interface Window {
-    __SSR_LANGUAGE__?: string
-    __SSR_THEME__?: string
-    playwrightTest?: boolean
-  }
-}
-
 // Simple conditional logic - avoiding hydration mismatch
 const isDevelopment = import.meta.env.DEV
 const strictModeDisabled = import.meta.env.VITE_DISABLE_STRICT_MODE === 'true'

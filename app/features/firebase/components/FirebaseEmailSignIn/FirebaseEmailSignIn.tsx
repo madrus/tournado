@@ -14,17 +14,15 @@ export type FirebaseEmailSignInProps = {
   mode: 'signin' | 'signup'
   redirectTo?: string
   className?: string
-  variant?: 'default' | 'outline'
   size?: 'sm' | 'md' | 'lg'
 }
 
-export const FirebaseEmailSignIn = ({
+export function FirebaseEmailSignIn({
   mode,
   redirectTo,
   className,
-  variant = 'default',
   size = 'md',
-}: FirebaseEmailSignInProps): JSX.Element => {
+}: FirebaseEmailSignInProps): JSX.Element {
   const { t } = useTranslation()
   const { signInWithEmail, signUpWithEmail, loading, error, clearError } =
     useFirebaseAuth()
@@ -32,6 +30,7 @@ export const FirebaseEmailSignIn = ({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   const validateEmail = (emailValue: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -51,19 +50,22 @@ export const FirebaseEmailSignIn = ({
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault()
     clearError()
+    setValidationError(null)
 
-    // Validation - since we're not using local state for errors,
-    // we'll let the hook handle the error state
+    // Client-side validation with user feedback
     if (!validateEmail(email)) {
+      setValidationError(t('auth.validation.emailInvalid'))
       return
     }
 
     const passwordError = validatePassword(password)
     if (passwordError) {
+      setValidationError(passwordError)
       return
     }
 
     if (mode === 'signup' && password !== confirmPassword) {
+      setValidationError(t('auth.validation.passwordMismatch'))
       return
     }
 
@@ -78,7 +80,7 @@ export const FirebaseEmailSignIn = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn(firebaseEmailSignInVariants({ variant, size }), className)}
+      className={cn(firebaseEmailSignInVariants({ size }), className)}
     >
       <div className='space-y-2'>
         <label htmlFor='email' className='text-sm font-medium'>
@@ -88,10 +90,16 @@ export const FirebaseEmailSignIn = ({
           id='email'
           type='email'
           value={email}
-          onChange={event => setEmail(event.target.value)}
+          onChange={event => {
+            setEmail(event.target.value)
+            setValidationError(null)
+          }}
           className={cn(
             inputVariants({
-              variant: error && !validateEmail(email) ? 'error' : 'default',
+              variant:
+                (error || validationError) && !validateEmail(email)
+                  ? 'error'
+                  : 'default',
             })
           )}
           placeholder={t('auth.placeholders.email')}
@@ -108,10 +116,16 @@ export const FirebaseEmailSignIn = ({
           id='password'
           type='password'
           value={password}
-          onChange={event => setPassword(event.target.value)}
+          onChange={event => {
+            setPassword(event.target.value)
+            setValidationError(null)
+          }}
           className={cn(
             inputVariants({
-              variant: error && validatePassword(password) ? 'error' : 'default',
+              variant:
+                (error || validationError) && validatePassword(password)
+                  ? 'error'
+                  : 'default',
             })
           )}
           placeholder={t('auth.placeholders.password')}
@@ -134,16 +148,28 @@ export const FirebaseEmailSignIn = ({
             id='confirmPassword'
             type='password'
             value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
+            onChange={event => {
+              setConfirmPassword(event.target.value)
+              setValidationError(null)
+            }}
             className={cn(
               inputVariants({
-                variant: error && password !== confirmPassword ? 'error' : 'default',
+                variant:
+                  (error || validationError) && password !== confirmPassword
+                    ? 'error'
+                    : 'default',
               })
             )}
             placeholder={t('auth.placeholders.confirmPassword')}
             required
             disabled={loading}
           />
+        </div>
+      ) : null}
+
+      {validationError ? (
+        <div className='text-destructive bg-destructive/10 rounded-md p-3 text-sm'>
+          {validationError}
         </div>
       ) : null}
 
@@ -166,7 +192,7 @@ export const FirebaseEmailSignIn = ({
               data-testid='loading-spinner'
               className='h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent'
             />
-            {t('auth.common.signingIn')}
+            {t('common.auth.signingIn')}
           </div>
         ) : (
           t(mode === 'signin' ? 'common.auth.signIn' : 'common.auth.signUp')

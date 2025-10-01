@@ -235,8 +235,10 @@ describe('FirebaseEmailSignIn', () => {
 
   describe('Loading and Error States', () => {
     test('shows loading state during authentication', async () => {
-      const { useFirebaseAuth } = await import('../../../hooks/useFirebaseAuth')
-      vi.mocked(useFirebaseAuth).mockReturnValue({
+      const { useFirebaseAuth: useAuth } = await import(
+        '../../../hooks/useFirebaseAuth'
+      )
+      vi.mocked(useAuth).mockReturnValue({
         ...defaultHookReturn,
         loading: true,
         signInWithEmail: mockSignInWithEmail,
@@ -247,13 +249,15 @@ describe('FirebaseEmailSignIn', () => {
 
       const submitButton = screen.getByRole('button')
       expect(submitButton).toBeDisabled()
-      expect(screen.getByText('auth.common.signingIn')).toBeInTheDocument()
+      expect(screen.getByText('common.auth.signingIn')).toBeInTheDocument()
       expect(screen.getByTestId('loading-spinner')).toHaveClass('animate-spin')
     })
 
     test('displays error message when authentication fails', async () => {
-      const { useFirebaseAuth } = await import('../../../hooks/useFirebaseAuth')
-      vi.mocked(useFirebaseAuth).mockReturnValue({
+      const { useFirebaseAuth: useAuth } = await import(
+        '../../../hooks/useFirebaseAuth'
+      )
+      vi.mocked(useAuth).mockReturnValue({
         ...defaultHookReturn,
         error: 'Authentication failed',
         signInWithEmail: mockSignInWithEmail,
@@ -267,8 +271,10 @@ describe('FirebaseEmailSignIn', () => {
     })
 
     test('disables inputs during loading', async () => {
-      const { useFirebaseAuth } = await import('../../../hooks/useFirebaseAuth')
-      vi.mocked(useFirebaseAuth).mockReturnValue({
+      const { useFirebaseAuth: useAuth } = await import(
+        '../../../hooks/useFirebaseAuth'
+      )
+      vi.mocked(useAuth).mockReturnValue({
         ...defaultHookReturn,
         loading: true,
         signInWithEmail: mockSignInWithEmail,
@@ -283,8 +289,10 @@ describe('FirebaseEmailSignIn', () => {
     })
 
     test('shows error styling for invalid email', async () => {
-      const { useFirebaseAuth } = await import('../../../hooks/useFirebaseAuth')
-      vi.mocked(useFirebaseAuth).mockReturnValue({
+      const { useFirebaseAuth: useAuth } = await import(
+        '../../../hooks/useFirebaseAuth'
+      )
+      vi.mocked(useAuth).mockReturnValue({
         ...defaultHookReturn,
         error: 'Invalid email',
         signInWithEmail: mockSignInWithEmail,
@@ -331,15 +339,8 @@ describe('FirebaseEmailSignIn', () => {
       )
     })
 
-    test('applies custom className and variant props', () => {
-      render(
-        <FirebaseEmailSignIn
-          mode='signin'
-          className='custom-class'
-          variant='outline'
-          size='lg'
-        />
-      )
+    test('applies custom className and size props', () => {
+      render(<FirebaseEmailSignIn mode='signin' className='custom-class' size='lg' />)
 
       // Test that the component renders with the props (custom styling is applied internally)
       expect(screen.getByLabelText('auth.labels.email')).toBeInTheDocument()

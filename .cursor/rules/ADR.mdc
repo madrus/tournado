@@ -10,32 +10,32 @@ alwaysApply: false
 
 <!-- BEGIN:ADR_INDEX -->
 
-| ID   | Title                                                                       | Date       | Status      | Supersedes | Superseded by |
-| ---- | --------------------------------------------------------------------------- | ---------- | ----------- | ---------- | ------------- |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Completed   | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Completed   | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Completed   | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Completed   | —          | —             |
-| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Proposed    | —          | —             |
-| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Proposed    | —          | —             |
-| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Proposed    | —          | —             |
-| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Proposed    | —          | —             |
-| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Proposed    | —          | —             |
-| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Proposed    | —          | —             |
-| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Implemented | —          | —             |
-| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Proposed    | —          | —             |
-| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Proposed    | —          | —             |
-| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Proposed    | —          | —             |
-| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Proposed    | —          | —             |
-| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Proposed    | —          | —             |
-| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Implemented | —          | —             |
-| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Implemented | —          | —             |
-| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Proposed    | —          | —             |
-| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Proposed    | —          | —             |
-| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Proposed    | —          | —             |
-| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Proposed    | —          | —             |
-| 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | In Progress | —          | —             |
-| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                          | 2025-09-21 | In Progress | —          | —             |
+| ID   | Title                                                                       | Date       | Status   | Supersedes | Superseded by |
+| ---- | --------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Accepted | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Accepted | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Accepted | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Accepted | —          | —             |
+| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Accepted | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Accepted | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Accepted | —          | —             |
+| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Accepted | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Accepted | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Accepted | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Accepted | —          | —             |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Accepted | —          | —             |
+| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Accepted | —          | —             |
+| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Accepted | —          | —             |
+| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Accepted | —          | —             |
+| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Accepted | —          | —             |
+| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Accepted | —          | —             |
+| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Accepted | —          | —             |
+| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Accepted | —          | —             |
+| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Accepted | —          | —             |
+| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Accepted | —          | —             |
+| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Accepted | —          | —             |
+| 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
+| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -43,7 +43,7 @@ alwaysApply: false
 
 <a id="adr-0001"></a>
 **Date**: 2025-08-27
-**Status**: Completed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -83,7 +83,7 @@ Template includes working examples for routing, data loading, and state manageme
 
 <a id="adr-0002"></a>
 **Date**: 2025-08-27
-**Status**: Completed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -122,7 +122,7 @@ Directory structure follows React Router v7 conventions. Build system optimized 
 
 <a id="adr-0003"></a>
 **Date**: 2025-08-27
-**Status**: Completed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -161,7 +161,7 @@ Server data must flow through React Router loaders and actions. Client state man
 
 <a id="adr-0004"></a>
 **Date**: 2025-09-03
-**Status**: Completed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -218,7 +218,7 @@ The application is now Firebase-only with no legacy authentication dependencies.
 
 <a id="adr-0005"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -261,7 +261,7 @@ Playwright role projects test panel access and feature visibility. Unit tests va
 
 <a id="adr-0006"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -293,7 +293,7 @@ Visual checks for light/dark, linting/guidelines, and tests for theme states on 
 
 <a id="adr-0007"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -325,7 +325,7 @@ Track cache hit rates and navigation timings. Verify revalidation triggers on ba
 
 <a id="adr-0008"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -376,7 +376,7 @@ E2E tests verify offline scoring workflow and conflict resolution. Service worke
 
 <a id="adr-0009"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -413,7 +413,7 @@ Loader reads cookie; root updates cookie/localStorage on change. Tests verify SS
 
 <a id="adr-0010"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -491,7 +491,7 @@ Secrets audit per environment. Deployment smoke tests verify environment-specifi
 
 <a id="adr-0011"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Implemented
 **Owner**: André Roussakoff
 
 ### Context
@@ -535,7 +535,7 @@ Adopt a baseline header set (HSTS, frame options, referrer policy, permissions p
 
 <a id="adr-0012"></a>
 **Date**: 2025-09-03
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -562,7 +562,7 @@ Define GA4 scope: basic page/navigation events, anonymize IP where applicable, d
 
 <a id="adr-0013"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -617,7 +617,7 @@ CI enforces coverage thresholds. E2E tests run on built artifacts. Cross-browser
 
 <a id="adr-0014"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -674,7 +674,7 @@ Lighthouse mobile performance ≥90 on critical routes. Touch target audit in ac
 
 <a id="adr-0015"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -736,7 +736,7 @@ Implementation references:
 
 <a id="adr-0016"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -799,7 +799,7 @@ Lighthouse CI enforces performance budgets. Bundle analyzer reports monitored. R
 
 <a id="adr-0017"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -863,7 +863,7 @@ Email delivery rates monitored. Template rendering tested across clients. Unsubs
 
 <a id="adr-0018"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -927,7 +927,7 @@ Load testing verifies rate limit behavior. Legitimate usage patterns tested. Rat
 
 <a id="adr-0019"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -994,7 +994,7 @@ Migration testing in staging environment. Data model validation via integration 
 
 <a id="adr-0020"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -1062,7 +1062,7 @@ Offline scenario testing with network simulation. Conflict resolution workflows 
 
 <a id="adr-0021"></a>
 **Date**: 2025-09-05
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -1127,7 +1127,7 @@ Load testing across transport methods. Connection recovery scenarios tested. Eve
 
 <a id="adr-0022"></a>
 **Date**: 2025-09-07
-**Status**: Proposed
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -1169,7 +1169,7 @@ Adopt centralized RBAC utilities:
 
 <a id="adr-0023"></a>
 **Date**: 2025-09-21
-**Status**: Implemented
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context
@@ -1221,7 +1221,7 @@ Implement comprehensive environment variable management with Firebase project se
 
 <a id="adr-0024"></a>
 **Date**: 2025-09-21
-**Status**: Implemented
+**Status**: Accepted
 **Owner**: André Roussakoff
 
 ### Context

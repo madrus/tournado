@@ -1,8 +1,8 @@
 /**
- * @fileoverview Firebase feature module exports
+ * @fileoverview Firebase feature module exports (client-safe)
  *
- * This index file provides a clean API for importing Firebase functionality
- * from other parts of the application.
+ * This index file provides client-safe Firebase functionality.
+ * For server-side Firebase functionality, import from './index.server.ts' instead.
  */
 
 // Client-side Firebase exports
@@ -10,12 +10,5 @@ export { auth, firebaseApp, googleProvider, isFirebaseConfigured } from './clien
 export type { FirebaseApp, GoogleAuthProvider } from './client'
 export type { Auth as ClientAuth } from './client'
 
-// Server-side Firebase exports
-export { adminApp, adminAuth, verifyIdToken } from './server'
-export type { App, DecodedIdToken } from './server'
-export type { Auth as AdminAuth } from './server'
-export * from './session.server'
-export * from './auth.server'
-
-// Types
+// Types (safe to export as they are type-only)
 export * from './types'

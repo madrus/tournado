@@ -58,7 +58,7 @@ describe('FirebaseSignIn', () => {
     fireEvent.click(button)
 
     // Should show loading state
-    expect(screen.getByText('auth.common.signingIn')).toBeInTheDocument()
+    expect(screen.getByText('common.auth.signingIn')).toBeInTheDocument()
     expect(button).toBeDisabled()
   })
 
@@ -78,16 +78,10 @@ describe('FirebaseSignIn', () => {
     })
     fireEvent.click(button)
 
+    // Should complete the full authentication flow
     await waitFor(() => {
       expect(mockSignInWithPopup).toHaveBeenCalledWith({}, {})
-    })
-
-    await waitFor(() => {
       expect(mockGetIdToken).toHaveBeenCalled()
-    })
-
-    // Should call the adapter with the token and redirect URL
-    await waitFor(() => {
       expect(mockSubmitAuthCallback).toHaveBeenCalledWith(
         'mock-id-token',
         '/custom-redirect'

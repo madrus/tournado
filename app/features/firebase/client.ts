@@ -1,4 +1,4 @@
-import { type FirebaseApp, initializeApp } from 'firebase/app'
+import { type FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app'
 import {
   type Auth,
   createUserWithEmailAndPassword,
@@ -50,7 +50,8 @@ function ensureFirebaseInitialized(): void {
   // Initialize real Firebase if not already initialized
   if (!auth && isFirebaseConfigured) {
     try {
-      firebaseApp = initializeApp(firebaseConfig)
+      // Reuse existing Firebase app if available (HMR, test reruns)
+      firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig)
       auth = getAuth(firebaseApp)
       googleProvider = new GoogleAuthProvider()
 
@@ -62,8 +63,11 @@ function ensureFirebaseInitialized(): void {
       googleProvider.setCustomParameters({
         prompt: 'select_account',
       })
-    } catch (_error) {
-      // Firebase initialization failed - keep auth and googleProvider null
+    } catch (error) {
+      // Log initialization errors so consumers don't incorrectly assume Firebase is unconfigured
+      // eslint-disable-next-line no-console
+      console.error('Firebase initialization failed:', error)
+      // Keep auth and googleProvider null so consumers know Firebase is unavailable
     }
   }
 }

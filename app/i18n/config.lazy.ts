@@ -21,8 +21,6 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
 ] as const
 
-export type Language = (typeof SUPPORTED_LANGUAGES)[number]['code']
-
 /**
  * Load only the requested language translation with caching
  */

@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import type { ENV } from '~/@types/declarations'
+
 const schema = z.object({
   NODE_ENV: z.enum(['production', 'development', 'test'] as const),
   APP_ENV: z.enum(['production', 'staging', 'development'] as const).optional(),
@@ -12,20 +14,6 @@ const schema = z.object({
   VITE_FIREBASE_APP_ID: z.string().optional(),
   PLAYWRIGHT: z.string().optional(),
 })
-
-type ProcessEnv = z.infer<typeof schema>
-
-type PublicEnv = {
-  MODE: ProcessEnv['NODE_ENV']
-  APP_ENV?: ProcessEnv['APP_ENV']
-  VITE_FIREBASE_API_KEY?: string
-  VITE_FIREBASE_AUTH_DOMAIN?: string
-  VITE_FIREBASE_PROJECT_ID?: string
-  VITE_FIREBASE_STORAGE_BUCKET?: string
-  VITE_FIREBASE_MESSAGING_SENDER_ID?: string
-  VITE_FIREBASE_APP_ID?: string
-  PLAYWRIGHT?: string
-}
 
 export function init(): void {
   const parsed = schema.safeParse(process.env)
@@ -46,11 +34,10 @@ export function init(): void {
  * the environment variables are set and globally available before the app is
  * started.
  *
- * NOTE: Do *not* add any environment variables in here that you do not wish to
- * be included in the client.
+ * NOTE: Do *not* add any environment variables in here that you do not wish to be included in the client
  * @returns all public ENV variables
  */
-export const getEnv = (): PublicEnv => ({
+export const getEnv = (): ENV => ({
   MODE: (process.env.NODE_ENV || 'development') as
     | 'test'
     | 'production'
@@ -67,12 +54,3 @@ export const getEnv = (): PublicEnv => ({
   VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID,
   PLAYWRIGHT: process.env.PLAYWRIGHT,
 })
-
-type ENV = ReturnType<typeof getEnv>
-
-declare global {
-  let ENV: ENV
-  interface Window {
-    ENV: ENV
-  }
-}

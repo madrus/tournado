@@ -12,7 +12,7 @@ import {
 } from 'react-router'
 
 import { prisma } from '~/db.server'
-import { adminAuth, verifyIdToken } from '~/features/firebase/server'
+import { adminAuth, verifyIdToken } from '~/features/firebase/index.server'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
@@ -38,7 +38,6 @@ type HealthData = {
   serverVars: {
     SESSION_SECRET: boolean
     SUPER_ADMIN_EMAILS: boolean
-    SUPER_ADMIN_PASSWORD: boolean
     DATABASE_URL: boolean
     BASE_URL: boolean
     RESEND_API_KEY: boolean
@@ -119,7 +118,6 @@ export const loader = async ({
     serverVars: {
       SESSION_SECRET: Boolean(process.env.SESSION_SECRET),
       SUPER_ADMIN_EMAILS: Boolean(process.env.SUPER_ADMIN_EMAILS),
-      SUPER_ADMIN_PASSWORD: Boolean(process.env.SUPER_ADMIN_PASSWORD),
       DATABASE_URL: Boolean(process.env.DATABASE_URL),
       BASE_URL: Boolean(process.env.BASE_URL),
       RESEND_API_KEY: Boolean(process.env.RESEND_API_KEY),

@@ -183,11 +183,11 @@ RBAC note: Manager inherits all Referee permissions; Admin Panel access with man
 
 - [ ] Tournament CRUD, team registration and management
 - [ ] Group assignments and match scheduling
-- [ ] Referee scheduling and assignment; match assignment dashboard (permissions: `referees:assign`, `assignments:manage`)
-- [ ] Manage referee pre-auth links (issue/revoke) scoped to assigned matches; no general user role management (admin approves users/roles)
+- [ ] Referee management with two distinct workflows:
+  - **Match-Referee Assignment**: Assign human referees (by name/contact) to specific matches in the tournament schedule (permissions: `referees:assign`, `assignments:manage`)
+  - **Referee System Access**: Issue/revoke pre-authenticated links that grant assigned referees scoped access to submit scores for their matches; no general user role management (admin approves users/roles)
 - [ ] Team coordination and communication; results publication workflow
 - [ ] Configuration assistance (divisions, categories, tie-breakers)
-- [ ] Assign referees via pre-authenticated links
 
 **Use Cases**:
 

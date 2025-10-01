@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction } from 'react-router'
 import { redirect, useLoaderData } from 'react-router'
 
-import { authenticateFirebaseUser } from '~/features/firebase/auth.server'
 import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseEmailSignIn'
 import { FirebaseSignIn } from '~/features/firebase/components/FirebaseSignIn'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/auth.signup'
 
@@ -20,7 +20,7 @@ export const handle: RouteMetadata = {
 export const loader = async ({
   request,
 }: Route.LoaderArgs): Promise<Response | { redirectTo: string | null }> => {
-  const user = await authenticateFirebaseUser(request)
+  const user = await getUser(request)
   if (user) {
     // Use role-based redirect instead of always going to homepage
     const redirectTo = shouldRedirectAuthenticatedUser(user, '/auth/signup')

@@ -9,13 +9,15 @@ export async function verifyIdTokenWithEnv(
   if (isE2EServer(request) && isMockToken(idToken)) {
     const email = extractEmailFromMockToken(idToken)
     const isAdmin = email.includes('admin')
+    const userId = isAdmin ? 'admin-user-id' : 'regular-user-id'
 
+    // Mock E2E token simulating Google OAuth sign-in
     const decoded: DecodedIdToken = {
       iss: 'https://securetoken.google.com/mock-project',
       aud: 'mock-project',
       auth_time: Math.floor(Date.now() / 1000),
-      user_id: isAdmin ? 'admin-user-id' : 'regular-user-id',
-      sub: isAdmin ? 'admin-user-id' : 'regular-user-id',
+      user_id: userId, // Both user_id and uid are required by DecodedIdToken
+      sub: userId,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 3600,
       email,
@@ -25,9 +27,9 @@ export async function verifyIdTokenWithEnv(
           'google.com': ['google-user-id'],
           email: [email],
         },
-        sign_in_provider: 'password',
+        sign_in_provider: 'google.com', // Match identities provider
       },
-      uid: isAdmin ? 'admin-user-id' : 'regular-user-id',
+      uid: userId, // Both user_id and uid are required by DecodedIdToken
       name: isAdmin ? 'Test Admin' : 'Test Manager',
       picture: undefined,
     }

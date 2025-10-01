@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
-    "buttons": {
+    "common": {
       "signingIn": "Giriş yapılıyor..."
     },
     "continueWithEmail": "Veya e-posta ile devam edin",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "Google ile devam et",
       "error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
-      "signInWithGoogle": "Google ile giriş yap",
-      "signingIn": "Giriş yapılıyor..."
+      "signInWithGoogle": "Google ile giriş yap"
     },
     "firstName": "Ad",
     "labels": {

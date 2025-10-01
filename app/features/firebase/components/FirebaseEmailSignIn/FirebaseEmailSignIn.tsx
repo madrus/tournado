@@ -166,7 +166,7 @@ export const FirebaseEmailSignIn = ({
               data-testid='loading-spinner'
               className='h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent'
             />
-            {t('auth.buttons.signingIn')}
+            {t('auth.common.signingIn')}
           </div>
         ) : (
           t(mode === 'signin' ? 'common.auth.signIn' : 'common.auth.signUp')

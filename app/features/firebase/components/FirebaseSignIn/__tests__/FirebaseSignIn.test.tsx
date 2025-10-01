@@ -14,65 +14,24 @@ vi.mock('~/features/firebase/client', () => ({
   googleProvider: {},
 }))
 
-// Mock form submission
-const mockSubmit = vi.fn()
-let mockFormElement: HTMLFormElement
-
-// Store original createElement
-const originalCreateElement = document.createElement.bind(document)
-
-// Mock document.createElement for forms only
-Object.defineProperty(document, 'createElement', {
-  value: vi.fn((tagName: string) => {
-    if (tagName === 'form') {
-      mockFormElement = {
-        tagName: 'FORM',
-        method: '',
-        action: '',
-        appendChild: vi.fn(),
-        submit: mockSubmit,
-      } as unknown as HTMLFormElement
-      return mockFormElement
-    }
-    if (tagName === 'input') {
-      return {
-        tagName: 'INPUT',
-        type: '',
-        name: '',
-        value: '',
-      }
-    }
-    // Use original createElement for all other elements
-    return originalCreateElement(tagName)
-  }),
-  writable: true,
-  configurable: true,
-})
-
-// Mock appendChild only when called with our mock form
-const originalAppendChild = document.body.appendChild.bind(document.body)
-Object.defineProperty(document.body, 'appendChild', {
-  value: vi.fn((element: Node) => {
-    if (element === mockFormElement) {
-      return element
-    }
-    return originalAppendChild(element)
-  }),
-  writable: true,
-  configurable: true,
-})
+vi.mock('~/features/firebase/adapters/redirect', () => ({
+  submitAuthCallback: vi.fn(),
+}))
 
 describe('FirebaseSignIn', () => {
   let mockSignInWithPopup: Mock
   let mockGetIdToken: Mock
+  let mockSubmitAuthCallback: Mock
 
   beforeEach(async () => {
     vi.clearAllMocks()
-    mockSubmit.mockClear()
 
     // Get the mocked functions
     const { signInWithPopup } = await import('firebase/auth')
+    const { submitAuthCallback } = await import('~/features/firebase/adapters/redirect')
+
     mockSignInWithPopup = vi.mocked(signInWithPopup)
+    mockSubmitAuthCallback = vi.mocked(submitAuthCallback)
     mockGetIdToken = vi.fn()
   })
 
@@ -99,7 +58,7 @@ describe('FirebaseSignIn', () => {
     fireEvent.click(button)
 
     // Should show loading state
-    expect(screen.getByText('auth.firebase.signingIn')).toBeInTheDocument()
+    expect(screen.getByText('auth.common.signingIn')).toBeInTheDocument()
     expect(button).toBeDisabled()
   })
 
@@ -127,12 +86,12 @@ describe('FirebaseSignIn', () => {
       expect(mockGetIdToken).toHaveBeenCalled()
     })
 
-    // Should create and submit a form
+    // Should call the adapter with the token and redirect URL
     await waitFor(() => {
-      expect(document.createElement).toHaveBeenCalledWith('form')
-      expect(document.createElement).toHaveBeenCalledWith('input')
-      expect(document.body.appendChild).toHaveBeenCalled()
-      expect(mockSubmit).toHaveBeenCalled()
+      expect(mockSubmitAuthCallback).toHaveBeenCalledWith(
+        'mock-id-token',
+        '/custom-redirect'
+      )
     })
   })
 
@@ -180,13 +139,13 @@ describe('FirebaseSignIn', () => {
     })
     fireEvent.click(button)
 
-    // Should create form with default redirect value
+    // Should call adapter with default redirect value
     await waitFor(() => {
-      expect(mockSubmit).toHaveBeenCalled()
+      expect(mockSubmitAuthCallback).toHaveBeenCalledWith('mock-id-token', '/')
     })
   })
 
-  test('handles successful form submission', async () => {
+  test('handles successful authentication callback', async () => {
     const mockUser = {
       getIdToken: mockGetIdToken,
     }
@@ -202,9 +161,9 @@ describe('FirebaseSignIn', () => {
     })
     fireEvent.click(button)
 
-    // Should create and submit form without client-side error
+    // Should call adapter without client-side error
     await waitFor(() => {
-      expect(mockSubmit).toHaveBeenCalled()
+      expect(mockSubmitAuthCallback).toHaveBeenCalled()
     })
 
     // Should not show error message

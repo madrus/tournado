@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { signInWithPopup } from 'firebase/auth'
 
+import { submitAuthCallback } from '~/features/firebase/adapters/redirect'
 import { auth, googleProvider } from '~/features/firebase/client'
 
 import { firebaseSignInVariants } from './firebaseSignIn.variants'
@@ -40,26 +41,8 @@ export function FirebaseSignIn({
       const result = await signInWithPopup(auth, googleProvider)
       const idToken = await result.user.getIdToken()
 
-      // Create form data to submit to auth callback
-      // Create a form and submit it traditionally to handle the redirect properly
-      const form = document.createElement('form')
-      form.method = 'POST'
-      form.action = '/auth/callback'
-
-      const idTokenInput = document.createElement('input')
-      idTokenInput.type = 'hidden'
-      idTokenInput.name = 'idToken'
-      idTokenInput.value = idToken
-      form.appendChild(idTokenInput)
-
-      const redirectToInput = document.createElement('input')
-      redirectToInput.type = 'hidden'
-      redirectToInput.name = 'redirectTo'
-      redirectToInput.value = redirectTo || '/'
-      form.appendChild(redirectToInput)
-
-      document.body.appendChild(form)
-      form.submit()
+      // Submit to auth callback using adapter (handles test/E2E/production scenarios)
+      await submitAuthCallback(idToken, redirectTo || '/')
     } catch (authError) {
       // Firebase sign-in error
       setError(authError instanceof Error ? authError.message : 'Sign-in failed')
@@ -98,7 +81,7 @@ export function FirebaseSignIn({
             />
           </svg>
         )}
-        {loading ? t('auth.firebase.signingIn') : t('auth.firebase.continueWithGoogle')}
+        {loading ? t('auth.common.signingIn') : t('auth.firebase.continueWithGoogle')}
       </button>
       {error ? (
         <div className='text-sm text-red-600 dark:text-red-400'>{error}</div>

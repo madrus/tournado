@@ -11,10 +11,7 @@ import 'dotenv/config'
 
 // Ensure DATABASE_URL is set for local dev if not already present
 if (!process.env.DATABASE_URL) {
-  const isTest =
-    process.env.NODE_ENV === 'test' ||
-    process.env.PLAYWRIGHT === 'true' ||
-    process.env.PLAYWRIGHT === 'true'
+  const isTest = process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT === 'true'
   if (process.env.NODE_ENV !== 'production') {
     process.env.DATABASE_URL = isTest
       ? 'file:./prisma/data-test.db?connection_limit=1'

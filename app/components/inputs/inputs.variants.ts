@@ -607,8 +607,6 @@ export type TextInputLabelVariants = VariantProps<typeof textInputLabelVariants>
  */
 export type TextInputLabelTextVariants = VariantProps<typeof textInputLabelTextVariants>
 
-// export type TextInputErrorVariants = VariantProps<typeof textInputErrorVariants> // DEPRECATED: Now using ErrorMessage component
-
 /**
  * Type definition for calendarContainerVariants props.
  */

@@ -3,10 +3,12 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import type { Mock } from 'vitest'
 
+import { useFirebaseAuth } from '~/features/firebase/hooks/useFirebaseAuth'
+
 import { FirebaseEmailSignIn } from '../FirebaseEmailSignIn'
 
 // Mock the useFirebaseAuth hook
-vi.mock('../../../hooks/useFirebaseAuth', () => ({
+vi.mock('~/features/firebase/hooks/useFirebaseAuth', () => ({
   useFirebaseAuth: vi.fn(),
 }))
 
@@ -55,10 +57,9 @@ describe('FirebaseEmailSignIn', () => {
     user: null,
   }
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllMocks()
 
-    const { useFirebaseAuth } = await import('../../../hooks/useFirebaseAuth')
     mockSignInWithEmail = vi.fn()
     mockSignUpWithEmail = vi.fn()
     mockClearError = vi.fn()
@@ -246,7 +247,7 @@ describe('FirebaseEmailSignIn', () => {
 
       const submitButton = screen.getByRole('button')
       expect(submitButton).toBeDisabled()
-      expect(screen.getByText('auth.buttons.signingIn')).toBeInTheDocument()
+      expect(screen.getByText('auth.common.signingIn')).toBeInTheDocument()
       expect(screen.getByTestId('loading-spinner')).toHaveClass('animate-spin')
     })
 

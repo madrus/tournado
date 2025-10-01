@@ -47,7 +47,7 @@
   },
   "auth": {
     "alreadyHaveAccount": "Already have an account?",
-    "buttons": {
+    "common": {
       "signingIn": "Signing in..."
     },
     "continueWithEmail": "Or continue with email",
@@ -57,8 +57,7 @@
     "firebase": {
       "continueWithGoogle": "Continue with Google",
       "error": "Authentication failed. Please try again.",
-      "signInWithGoogle": "Sign in with Google",
-      "signingIn": "Signing in..."
+      "signInWithGoogle": "Sign in with Google"
     },
     "firstName": "First name",
     "labels": {

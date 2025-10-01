@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { render } from '@react-email/render'
 
 import { Resend } from 'resend'
@@ -90,7 +91,7 @@ export async function sendConfirmationEmail(
     if (process.env.PLAYWRIGHT === 'true') {
       try {
         const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')
-        const capturedEmail = addEmailToOutbox(emailPayload)
+        addEmailToOutbox(emailPayload)
 
         console.info(`[E2E] Email stored for testing - to: ${emailPayload.to}`)
         return
@@ -103,7 +104,6 @@ export async function sendConfirmationEmail(
     const resend = getResendClient()
     await resend.emails.send(emailPayload)
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Failed to send confirmation email:', error)
 
     // Re-throw configuration errors as-is for better debugging

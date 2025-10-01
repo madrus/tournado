@@ -70,16 +70,44 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Dark Mode Theme Functionality', () => {
     test('should apply dark theme correctly on tournaments page', async ({ page }) => {
+      // Block React Router manifest requests to prevent prefetch-induced page reloads
+      await page.route('**/__manifest**', route => {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ patches: [] }),
+        })
+      })
+
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
       await page.waitForLoadState('networkidle')
 
-      // Apply dark theme
+      // Apply dark theme by removing light and adding dark
       await page.evaluate(() => {
+        document.documentElement.classList.remove('light')
         document.documentElement.classList.add('dark')
       })
 
       // Wait for theme application
       await page.waitForTimeout(500)
+
+      // Check if theme was overridden
+      const currentClass = await page.locator('html').getAttribute('class')
+      console.log(`HTML class after dark theme application: ${currentClass}`)
+
+      // If theme was reset, try using the theme store directly
+      if (!currentClass?.includes('dark')) {
+        await page.evaluate(() => {
+          // Try to access theme store or settings
+          if ((window as any).useSettingsStore) {
+            ;(window as any).useSettingsStore.getState().setTheme('dark')
+          }
+          // Force dark theme application
+          document.documentElement.classList.remove('light')
+          document.documentElement.classList.add('dark')
+        })
+        await page.waitForTimeout(500)
+      }
 
       // Verify dark class is applied
       await expect(page.locator('html')).toHaveClass(/dark/)

@@ -251,12 +251,12 @@ export function TournamentForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.success(t('tournaments.form.notifications.registrationSuccess'), {
-        description: t('tournaments.form.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.tournament.registrationSuccess'), {
+        description: t('messages.tournament.registrationSuccessDesc'),
       })
     } else {
-      toast.success(t('tournaments.form.notifications.updateSuccess'), {
-        description: t('tournaments.form.notifications.updateSuccessDesc'),
+      toast.success(t('messages.tournament.updateSuccess'), {
+        description: t('messages.tournament.updateSuccessDesc'),
       })
     }
   }, [formMode, t])
@@ -274,12 +274,12 @@ export function TournamentForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.error(t('tournaments.form.notifications.registrationError'), {
-        description: t('tournaments.form.notifications.registrationErrorDesc'),
+      toast.error(t('messages.tournament.registrationError'), {
+        description: t('messages.tournament.registrationErrorDesc'),
       })
     } else {
-      toast.error(t('tournaments.form.notifications.updateError'), {
-        description: t('tournaments.form.notifications.updateErrorDesc'),
+      toast.error(t('messages.tournament.updateError'), {
+        description: t('messages.tournament.updateErrorDesc'),
       })
     }
   }, [formMode, t])

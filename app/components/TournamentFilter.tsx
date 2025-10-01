@@ -6,17 +6,23 @@ import { useTournamentFilter } from '~/hooks/useTournamentFilter'
 import type { ColorAccent, TournamentListItem } from '~/lib/lib.types'
 
 type TournamentFilterProps = {
-  tournamentListItems: TournamentListItem[]
+  tournamentListItems: readonly TournamentListItem[]
   selectedTournamentId?: string
   className?: string
   color?: ColorAccent
+  label?: string
+  placeholder?: string
+  showAllOption?: boolean
 }
 
 export function TournamentFilter({
   tournamentListItems,
   selectedTournamentId,
   className = 'max-w-md',
-  color = 'emerald',
+  color = 'primary',
+  label,
+  placeholder,
+  showAllOption = true,
 }: TournamentFilterProps): ReactElement {
   const { t } = useTranslation()
   const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
@@ -24,14 +30,23 @@ export function TournamentFilter({
     selectedTournamentId,
   })
 
+  // For competition page, filter out the "all" option if showAllOption is false
+  const filteredOptions = showAllOption
+    ? tournamentOptions
+    : tournamentOptions.filter(option => option.value !== 'all')
+
+  // Adjust selected value if we're not showing "all" option and no tournament is selected
+  const adjustedSelectedValue =
+    !showAllOption && selectedValue === 'all' ? '' : selectedValue
+
   return (
     <ComboField
       name='tournamentFilter'
-      label={t('teams.filterByTournament')}
-      value={selectedValue}
+      label={label || t('teams.filterByTournament')}
+      value={adjustedSelectedValue}
       onChange={onChange}
-      options={tournamentOptions}
-      placeholder={t('teams.allTournaments')}
+      options={filteredOptions}
+      placeholder={placeholder || t('teams.allTournaments')}
       className={className}
       color={color}
     />

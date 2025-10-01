@@ -28,6 +28,26 @@ export function getErrorMessage(error: unknown): string {
 export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs))
 
 /**
+ * A simple assertion function that throws an error if the condition is false.
+ * Inspired by tiny-invariant.
+ *
+ * @example
+ * invariant(typeof value === 'string', `Expected string, got ${typeof value}`)
+ *
+ * @param condition The condition to check
+ * @param message The message to throw if condition is false
+ * @throws {Error} if condition is falsey
+ */
+export function invariant(
+  condition: unknown,
+  message: string | (() => string)
+): asserts condition {
+  if (!condition) {
+    throw new Error(typeof message === 'function' ? message() : message)
+  }
+}
+
+/**
  * Provide a condition and if that condition is falsey, this throws a 400
  * Response with the given message.
  *

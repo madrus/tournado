@@ -2,6 +2,8 @@ import { test as base } from '@playwright/test'
 
 import * as path from 'path'
 
+import { getFirebaseMockScript } from '../helpers/firebase-mock'
+
 const AUTH_FILE = path.join(process.cwd(), 'playwright', '.auth', 'auth.json')
 
 // Extend base test with our fixtures
@@ -22,6 +24,9 @@ export const authTest = base.extend({
   // Add page fixture with automatic waiting and language setup
   page: async ({ context }, use) => {
     const page = await context.newPage()
+
+    // Inject Firebase mocks for all test pages
+    await page.addInitScript(getFirebaseMockScript())
 
     // Set language to Dutch for consistent testing across environments
     await page.addInitScript(() => {

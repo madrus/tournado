@@ -20,45 +20,45 @@ export const getFieldErrorTranslationKey = (
   if (zodIssue?.code === 'custom') {
     // Handle email validation errors
     if (fieldName === 'teamLeaderEmail') {
-      return 'teams.form.errors.emailInvalid'
+      return 'messages.validation.emailInvalid'
     }
     // Handle phone validation errors
     if (fieldName === 'teamLeaderPhone') {
-      return 'teams.form.errors.phoneNumberInvalid'
+      return 'messages.validation.phoneNumberInvalid'
     }
   }
 
   // Handle string too long errors
   if (zodIssue?.code === 'too_big') {
     if (fieldName === 'name') {
-      return 'teams.form.errors.nameTooLong'
+      return 'messages.team.nameTooLong'
     }
     if (fieldName === 'clubName') {
-      return 'teams.form.errors.clubNameTooLong'
+      return 'messages.team.clubNameTooLong'
     }
     if (fieldName === 'teamLeaderName') {
-      return 'teams.form.errors.teamLeaderNameTooLong'
+      return 'messages.team.teamLeaderNameTooLong'
     }
   }
 
   // Default required field translation keys
   const errorKeyMap: Record<string, string> = {
     // Zod field names
-    tournamentId: 'teams.form.errors.tournamentRequired',
-    clubName: 'teams.form.errors.clubNameRequired',
-    name: 'teams.form.errors.nameRequired',
-    division: 'teams.form.errors.divisionRequired',
-    category: 'teams.form.errors.categoryRequired',
-    teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
-    teamLeaderPhone: 'teams.form.errors.phoneNumberRequired',
-    teamLeaderEmail: 'teams.form.errors.emailRequired',
-    privacyAgreement: 'teams.form.errors.privacyAgreementRequired',
+    tournamentId: 'messages.team.tournamentRequired',
+    clubName: 'messages.team.clubNameRequired',
+    name: 'messages.team.nameRequired',
+    division: 'messages.team.divisionRequired',
+    category: 'messages.team.categoryRequired',
+    teamLeaderName: 'messages.team.teamLeaderNameRequired',
+    teamLeaderPhone: 'messages.team.phoneNumberRequired',
+    teamLeaderEmail: 'messages.validation.emailRequired',
+    privacyAgreement: 'messages.team.privacyAgreementRequired',
     // Store field names (for consistency)
-    selectedTournamentId: 'teams.form.errors.tournamentRequired',
-    selectedDivision: 'teams.form.errors.divisionRequired',
-    selectedCategory: 'teams.form.errors.categoryRequired',
+    selectedTournamentId: 'messages.team.tournamentRequired',
+    selectedDivision: 'messages.team.divisionRequired',
+    selectedCategory: 'messages.team.categoryRequired',
   }
-  return errorKeyMap[fieldName] || 'teams.form.errors.fieldRequired'
+  return errorKeyMap[fieldName] || 'messages.validation.fieldRequired'
 }
 
 // Validate a single field and return translation key if any
@@ -137,23 +137,23 @@ export const getTournamentFieldErrorTranslationKey = (
   // Handle string too long errors
   if (zodIssue?.code === 'too_big') {
     if (fieldName === 'name') {
-      return 'tournaments.form.errors.nameTooLong'
+      return 'messages.tournament.nameTooLong'
     }
     if (fieldName === 'location') {
-      return 'tournaments.form.errors.locationTooLong'
+      return 'messages.tournament.locationTooLong'
     }
   }
 
   // Default required field translation keys
   const errorKeyMap: Record<string, string> = {
-    name: 'tournaments.form.errors.nameRequired',
-    location: 'tournaments.form.errors.locationRequired',
-    startDate: 'tournaments.form.errors.startDateRequired',
-    endDate: 'tournaments.form.errors.endDateRequired',
-    divisions: 'tournaments.form.errors.divisionsRequired',
-    categories: 'tournaments.form.errors.categoriesRequired',
+    name: 'messages.tournament.nameRequired',
+    location: 'messages.tournament.locationRequired',
+    startDate: 'messages.tournament.startDateRequired',
+    endDate: 'messages.tournament.endDateRequired',
+    divisions: 'messages.tournament.divisionsRequired',
+    categories: 'messages.tournament.categoriesRequired',
   }
-  return errorKeyMap[fieldName] || 'tournaments.form.errors.fieldRequired'
+  return errorKeyMap[fieldName] || 'messages.validation.fieldRequired'
 }
 
 // Validate a single tournament field and return translation key if any

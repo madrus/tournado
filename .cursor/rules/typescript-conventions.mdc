@@ -1,0 +1,263 @@
+# TypeScript Conventions
+
+This document defines TypeScript coding conventions for the Tournado project to ensure consistency, type safety, and maintainability.
+
+## Core Rules
+
+### 1. No `any` Return Types
+**Rule**: All functions must have explicit return types. Never use `any` as a return type.
+
+#### ✅ Correct
+```typescript
+function getUser(id: string): User | null {
+  return users.find(u => u.id === id) || null
+}
+
+function processData(input: string): ProcessedData {
+  return { processed: input.toUpperCase() }
+}
+```
+
+#### ❌ Incorrect
+```typescript
+function getUser(id: string): any {
+  return users.find(u => u.id === id)
+}
+
+function processData(input: string) { // Missing return type
+  return { processed: input.toUpperCase() }
+}
+```
+
+### 2. Lambda Functions for Simple Returns
+**Rule**: If a function only returns something and that's its only purpose, use a lambda function.
+
+#### ✅ Correct
+```typescript
+// Simple return function - use lambda
+const getUserName = (user: User): string => user.name
+
+// Complex logic - use function declaration
+function validateUser(user: User): ValidationResult {
+  if (!user.email) {
+    return { valid: false, error: 'Email required' }
+  }
+  // ... more validation logic
+  return { valid: true }
+}
+```
+
+#### ❌ Incorrect
+```typescript
+// Don't use function declaration for simple returns
+function getUserName(user: User): string {
+  return user.name
+}
+
+// Don't use lambda for complex logic
+const validateUser = (user: User): ValidationResult => {
+  if (!user.email) {
+    return { valid: false, error: 'Email required' }
+  }
+  // ... more validation logic
+  return { valid: true }
+}
+```
+
+### 3. Props Object Naming Convention
+**Rule**: Functions with props objects must follow this pattern:
+- Props type: `{FunctionName}Props`
+- Props parameter: `Readonly<{FunctionName}Props>`
+
+#### ✅ Correct
+```typescript
+type CreateUserProps = {
+  name: string
+  email: string
+  role: UserRole
+}
+
+const createUser = (props: Readonly<CreateUserProps>): User => {
+  return {
+    id: generateId(),
+    ...props,
+    createdAt: new Date()
+  }
+}
+
+type ValidateEmailProps = {
+  email: string
+  domain?: string
+}
+
+const validateEmail = (props: Readonly<ValidateEmailProps>): boolean => {
+  const { email, domain } = props
+  return email.includes('@') && (!domain || email.endsWith(domain))
+}
+```
+
+#### ❌ Incorrect
+```typescript
+// Wrong props type naming
+type UserCreationData = {
+  name: string
+  email: string
+}
+
+const createUser = (data: UserCreationData): User => {
+  // ...
+}
+
+// Missing Readonly wrapper
+const createUser = (props: CreateUserProps): User => {
+  // ...
+}
+
+// Wrong parameter naming
+const createUser = (userData: CreateUserProps): User => {
+  // ...
+}
+```
+
+## Implementation Guidelines
+
+### When to Use Each Pattern
+
+#### Use Lambda Functions When:
+- Function only returns a value
+- No complex logic or side effects
+- Single expression
+- Used as callbacks or simple transformations
+
+```typescript
+// Good lambda examples
+const getFullName = (user: User): string => `${user.firstName} ${user.lastName}`
+const isActive = (user: User): boolean => user.status === 'active'
+const formatDate = (date: Date): string => date.toISOString().split('T')[0]
+```
+
+#### Use Function Declarations When:
+- Complex logic with multiple statements
+- Error handling
+- Multiple return paths
+- Side effects beyond returning a value
+- Need hoisting
+
+```typescript
+// Good function declaration examples
+function processUserData(user: User): ProcessedUser {
+  if (!user.email) {
+    throw new Error('User must have email')
+  }
+
+  const processed = {
+    ...user,
+    email: user.email.toLowerCase(),
+    lastProcessed: new Date()
+  }
+
+  return processed
+}
+
+function validateUserInput(input: unknown): ValidationResult {
+  if (typeof input !== 'object' || input === null) {
+    return { valid: false, error: 'Input must be an object' }
+  }
+
+  // ... more validation logic
+
+  return { valid: true }
+}
+```
+
+### Props Object Guidelines
+
+#### When to Use Props Objects:
+- Function has 3+ parameters
+- Parameters are logically related
+- Function might need additional parameters in the future
+- Parameters are optional or have defaults
+
+```typescript
+// Good props object usage
+type CreateTeamProps = {
+  name: string
+  tournamentId: string
+  category: string
+  division: string
+  teamLeader: TeamLeaderData
+  options?: TeamOptions
+}
+
+const createTeam = (props: Readonly<CreateTeamProps>): Team => {
+  // Implementation
+}
+```
+
+#### When NOT to Use Props Objects:
+- Function has 1-2 simple parameters
+- Parameters are unrelated
+- Function is unlikely to change
+
+```typescript
+// Good direct parameters
+const getUserById = (id: string): User | null => {
+  return users.find(u => u.id === id) || null
+}
+
+const formatCurrency = (amount: number, currency: string): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency
+  }).format(amount)
+}
+```
+
+## Examples from Codebase
+
+### Before (Current)
+```typescript
+export async function getFirebaseSessionData(request: Request) {
+  const session = await getSession(request)
+  return session.get(FIREBASE_SESSION_KEY) || null
+}
+```
+
+### After (Following Conventions)
+```typescript
+export const getFirebaseSessionData = async (request: Request): Promise<FirebaseSessionData | null> => {
+  const session = await getSession(request)
+  return session.get(FIREBASE_SESSION_KEY) || null
+}
+```
+
+### Props Object Example
+```typescript
+type CreateSessionFromFirebaseTokenProps = {
+  idToken: string
+  request: Request
+}
+
+export const createSessionFromFirebaseToken = async (
+  props: Readonly<CreateSessionFromFirebaseTokenProps>
+): Promise<SessionBridgeResult | null> => {
+  const { idToken, request } = props
+  // ... implementation
+}
+```
+
+## Enforcement
+
+These conventions should be:
+- ✅ **Applied to all new code**
+- ✅ **Gradually refactored in existing code**
+- ✅ **Checked during code reviews**
+- ✅ **Enforced by ESLint rules where possible**
+
+## Benefits
+
+1. **Type Safety**: Explicit return types prevent runtime errors
+2. **Readability**: Lambda functions make simple operations clear
+3. **Maintainability**: Props objects make functions easier to extend
+4. **Consistency**: Uniform patterns across the codebase
+5. **Documentation**: Types serve as inline documentation

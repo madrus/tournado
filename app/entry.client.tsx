@@ -3,13 +3,7 @@ import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
 
 import { initI18n } from '~/i18n/config'
-
-declare global {
-  interface Window {
-    __SSR_LANGUAGE__?: string
-    __SSR_THEME__?: string
-  }
-}
+import { setupMSWBrowser } from '~/utils/msw-browser'
 
 // Simple conditional logic - avoiding hydration mismatch
 const isDevelopment = import.meta.env.DEV
@@ -40,6 +34,14 @@ if (isDevelopment) {
 // Use the SSR-injected language and theme
 const lang = window.__SSR_LANGUAGE__ || 'nl'
 initI18n(lang)
+
+// Flag Playwright runtime globally so client code can detect mocks
+if (window.ENV?.PLAYWRIGHT === 'true') {
+  window.playwrightTest = true
+}
+
+// Initialize MSW browser worker for E2E tests
+setupMSWBrowser()
 
 hydrateRoot(
   document,

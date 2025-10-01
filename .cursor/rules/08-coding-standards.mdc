@@ -75,6 +75,29 @@ These rules ensure consistent coding style and standards across the project.
 - **Consistency** - Follows Dutch language conventions
 - **User Experience** - Feels natural to Dutch speakers
 
+### Dash Usage (no em dashes)
+
+**Rule:** Never use em dashes (—) in documentation. Use a spaced hyphen instead: ` - ` (one space on each side).
+
+#### ✅ Correct
+```markdown
+Phase 1 - Authentication Modernization
+Real-time score updates - scope TBD
+This decision - while optional - improves readability.
+```
+
+#### ❌ Incorrect
+```markdown
+Phase 1 — Authentication Modernization
+Real-time score updates — scope TBD
+This decision—while optional—improves readability.
+```
+
+#### Why This Rule?
+- **Consistency** - Uniform punctuation across docs and UIs
+- **Readability** - Spaced hyphens are clearer in many fonts and locales
+- **Cross-platform** - Avoids encoding/typographic issues in tooling
+
 ## Implementation Guidelines
 
 ### When Adding Dutch Translations
@@ -140,6 +163,61 @@ if (remainingTeams === 0) {
 ### **User Roles**
 #### **Admin Permissions**
 ```
+
+### Function Arguments Typing
+
+✅ Correct
+
+```ts
+export type UserForm = {
+  name: string
+  email: string
+}
+
+export function createUser(input: Readonly<UserForm>) {
+  // ...
+}
+```
+
+❌ Incorrect (inline object type)
+
+```ts
+export function createUser(input: { name: string; email: string }) {
+  // ...
+}
+```
+
+
+---
+
+## TypeScript & React Standards
+
+### Language & Framework Versions
+- React 18+, React Router v7+
+- TypeScript strict mode with ESM modules
+
+### Type Safety
+- No `any` type unless safely narrowed with type guards
+- Prefer type inference but always maintain **strong typing** (never drop types entirely)
+- Complex function arguments must use `Readonly<ComplexType>` with separate exported types (see Function Arguments Typing section above)
+
+### Code Style
+- Function declarations over expressions
+- No classes, no default exports
+- Favor pure functions
+- Single quotes, spaces, **no semicolons**
+
+### State Management & Data Fetching
+- Use **Zustand** for client-side state (view + form state with reset/partial prefill)
+- Use **native fetch** only with small typed API helpers
+
+### Project Guidelines
+- Keep code minimal, avoid extra dependencies
+- Match existing folder layout and naming conventions
+- When asked for code, output **code blocks only**
+- If information is missing, ask 3 concise questions at the end
+
+---
 
 ## Enforcement
 

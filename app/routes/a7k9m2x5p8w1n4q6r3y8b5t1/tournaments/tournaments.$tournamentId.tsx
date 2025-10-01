@@ -11,6 +11,7 @@ import {
 } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { TournamentForm } from '~/components/TournamentForm'
@@ -29,7 +30,6 @@ import { toast } from '~/utils/toastUtils'
 
 import type { Route } from './+types/tournaments.$tournamentId'
 
-// Route metadata - admin only
 export const handle: RouteMetadata = {
   isPublic: false,
   auth: {
@@ -218,8 +218,8 @@ export default function EditTournamentPage(): JSX.Element {
     if (success === 'created') {
       // Smooth scroll to top for better UX after successful create
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('tournaments.form.notifications.registrationSuccess'), {
-        description: t('tournaments.form.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.tournament.registrationSuccess'), {
+        description: t('messages.tournament.registrationSuccessDesc'),
       })
 
       // Remove the success parameter from URL
@@ -229,8 +229,8 @@ export default function EditTournamentPage(): JSX.Element {
     } else if (success === 'updated') {
       // Smooth scroll to top for better UX after successful update
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      toast.success(t('tournaments.form.notifications.updateSuccess'), {
-        description: t('tournaments.form.notifications.updateSuccessDesc'),
+      toast.success(t('messages.tournament.updateSuccess'), {
+        description: t('messages.tournament.updateSuccessDesc'),
       })
 
       // Sync the store with latest loader data so UI reflects persisted update
@@ -304,7 +304,7 @@ export default function EditTournamentPage(): JSX.Element {
 
   return (
     <div className='w-full'>
-      {/* Admin Header with Delete Button */}
+      {/* Admin Header with Action Buttons */}
       <Panel color='sky' className='mb-8'>
         <div className='flex items-center justify-between gap-4'>
           <div className='flex-1'>
@@ -317,8 +317,17 @@ export default function EditTournamentPage(): JSX.Element {
                 : t('tournaments.form.fillOutForm')}
             </p>
           </div>
-          {/* Delete Button */}
-          <div className='flex-shrink-0'>
+          {/* Action Buttons */}
+          <div className='flex items-center gap-3'>
+            {/* Manage Competition Button */}
+            <ActionLinkButton
+              to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition?tournament=${tournament.id}`}
+              label='Manage Competition'
+              icon='trophy'
+              variant='primary'
+            />
+
+            {/* Delete Button */}
             <ConfirmDialog
               intent='danger'
               trigger={

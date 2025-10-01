@@ -36,6 +36,7 @@ export type Permission =
   | 'matches:referee' // Referee match actions
   | 'system:settings' // System settings configuration
   | 'system:reports' // View reports and analytics
+  | 'system:billing' // Billing and payment management
 
 // Role permission matrix based on actual Prisma roles
 // Note: Unauthenticated users are treated as PUBLIC users
@@ -47,6 +48,14 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:read',
     'matches:edit',
     'matches:referee',
+  ],
+  EDITOR: ['teams:read', 'tournaments:read', 'matches:read', 'system:reports'],
+  BILLING: [
+    'teams:read',
+    'tournaments:read',
+    'matches:read',
+    'system:reports',
+    'system:billing',
   ],
   MANAGER: [
     'teams:read',
@@ -81,6 +90,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:referee',
     'system:settings',
     'system:reports',
+    'system:billing',
   ],
 }
 
@@ -135,7 +145,7 @@ export function isAdmin(user: User | null): boolean {
  */
 export function hasAdminPanelAccess(user: User | null): boolean {
   const role = getUserRole(user)
-  return ['ADMIN', 'MANAGER', 'REFEREE'].includes(role)
+  return ['ADMIN', 'MANAGER', 'EDITOR', 'BILLING', 'REFEREE'].includes(role)
 }
 
 /**
@@ -161,8 +171,10 @@ export function getRoleLevel(role: Role): number {
   const levels = {
     PUBLIC: 0,
     REFEREE: 1,
-    MANAGER: 2,
-    ADMIN: 3,
+    EDITOR: 2,
+    BILLING: 3,
+    MANAGER: 4,
+    ADMIN: 5,
   }
   return levels[role] ?? 0
 }

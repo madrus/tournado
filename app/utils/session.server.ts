@@ -1,7 +1,14 @@
 import { createCookieSessionStorage, redirect, type Session } from 'react-router'
 
+import { Role } from '@prisma/client'
+
 import invariant from 'tiny-invariant'
 
+import {
+  clearFirebaseSession,
+  validateFirebaseSession,
+} from '~/features/firebase/session.server'
+import type { CreateUserSessionProps } from '~/features/firebase/types'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
 
@@ -16,7 +23,7 @@ export const sessionStorage = createCookieSessionStorage({
     path: '/',
     sameSite: 'lax',
     secrets: [process.env.SESSION_SECRET],
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' && !process.env.PLAYWRIGHT,
     maxAge: undefined, // Default to session cookie, will be overridden when remember is true
   },
 })
@@ -29,12 +36,26 @@ export async function getSession(request: Request): Promise<Session> {
 }
 
 export async function getUserId(request: Request): Promise<User['id'] | undefined> {
+  // First, try to get user from Firebase session
+  const firebaseResult = await validateFirebaseSession({ request })
+  if (firebaseResult) {
+    return firebaseResult.user.id
+  }
+
+  // Fall back to legacy session
   const session = await getSession(request)
   const userId = session.get(USER_SESSION_KEY)
   return userId
 }
 
 export async function getUser(request: Request): Promise<User | null> {
+  // First, try to get user from Firebase session
+  const firebaseResult = await validateFirebaseSession({ request })
+  if (firebaseResult) {
+    return firebaseResult.user
+  }
+
+  // Fall back to legacy session
   const userId = await getUserId(request)
   if (userId === undefined) return null
 
@@ -65,6 +86,19 @@ export async function requireUser(request: Request): Promise<User> {
   throw await signout(request)
 }
 
+export async function requireUserWithRole(
+  request: Request,
+  allowedRoles: Role[]
+): Promise<User> {
+  const user = await requireUser(request)
+
+  if (!allowedRoles.includes(user.role)) {
+    throw redirect('/unauthorized')
+  }
+
+  return user
+}
+
 export async function createUserSession({
   request,
   userId,
@@ -91,8 +125,32 @@ export async function createUserSession({
   })
 }
 
+export async function createFirebaseUserSession({
+  request,
+  userId,
+  remember,
+  redirectTo,
+}: CreateUserSessionProps): Promise<Response> {
+  const session = await getSession(request)
+  session.set('userId', userId)
+
+  const cookieOptions = {
+    maxAge: remember ? 60 * 60 * 24 * 7 : undefined, // 7 days if remember, otherwise session cookie
+  }
+
+  return redirect(redirectTo || '/', {
+    headers: {
+      'Set-Cookie': await sessionStorage.commitSession(session, cookieOptions),
+      'Cache-Control': 'no-store',
+    },
+  })
+}
+
 export async function signout(request: Request, returnUrl?: string): Promise<Response> {
   const session = await getSession(request)
+
+  // Clear Firebase session data if present
+  await clearFirebaseSession(session)
 
   // Force the cookie to be cleared
   const cookieValue = await sessionStorage.destroySession(session)

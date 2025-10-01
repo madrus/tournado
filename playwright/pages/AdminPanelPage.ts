@@ -9,11 +9,11 @@ export class AdminPanelPage extends BasePage {
 
   // Locators
   get teamManagementPanel(): Locator {
-    return this.page.getByRole('link', { name: 'Team Management' })
+    return this.page.getByRole('link', { name: 'Teams beheer' })
   }
 
   get tournamentManagementPanel(): Locator {
-    return this.page.getByRole('link', { name: 'Tournament Management' })
+    return this.page.getByRole('link', { name: 'Toernooien beheer' })
   }
 
   get bodyContent(): Locator {

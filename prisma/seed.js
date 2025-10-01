@@ -2,8 +2,6 @@
 /* eslint-disable id-blacklist */
 import { PrismaClient } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
-
 // Retry mechanism for Prisma Client initialization
 async function createPrismaClient(maxRetries = 5, delay = 1000) {
   for (let i = 0; i < maxRetries; i++) {
@@ -27,24 +25,33 @@ async function createPrismaClient(maxRetries = 5, delay = 1000) {
  * Keep this file as .js for manual seeding on remote
  */
 async function seed() {
+  // Allow seeding during E2E tests - they need tournaments to test against
+  // if (process.env.PLAYWRIGHT === 'true') {
+  //   console.log('Skipping database seeding during E2E tests')
+  //   return
+  // }
+
   // Initialize Prisma Client with retry logic
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is required for seeding')
+  }
   const prisma = await createPrismaClient()
 
   try {
-    const admins = ['user@example.com', 'admin2@example.com']
-    const users = ['admin1@example.com']
+    // Get admin emails from environment variable (dynamic role assignment)
+    const superAdminEmails =
+      process.env.SUPER_ADMIN_EMAILS?.split(',').map(email => email.trim()) || []
+
+    // All users to seed with their emails
+    const allUsers = [
+      'user@example.com',
+      'admin2@example.com',
+      'admin1@example.com',
+    ]
+
     // cleanup the existing database
     await Promise.all(
-      admins.map(email =>
-        prisma.user.delete({ where: { email } }).catch(() => {
-          // no worries if it doesn't exist yet
-        })
-      )
-    )
-
-    // Cleanup users as well
-    await Promise.all(
-      users.map(email =>
+      allUsers.map(email =>
         prisma.user.delete({ where: { email } }).catch(() => {
           // no worries if it doesn't exist yet
         })
@@ -60,40 +67,26 @@ async function seed() {
       },
     })
 
-    const hashedInitialPassword = await bcrypt.hash('Tournado@2025', 10)
-
-    // Create admin users
+    // Create users with roles based on SUPER_ADMIN_EMAILS
+    // Note: These are test/seed users with placeholder firebaseUids
+    // Actual authentication happens via Firebase (Google OAuth or Email/Password)
     await Promise.all(
-      admins.map(async email =>
-        prisma.user.create({
+      allUsers.map(async email => {
+        const role = superAdminEmails.includes(email) ? 'ADMIN' : 'MANAGER'
+        const lastName = role === 'ADMIN' ? 'Admin' : 'User'
+
+        return prisma.user.create({
           data: {
             email,
             firstName:
               email.split('@')[0].charAt(0).toUpperCase() +
               email.split('@')[0].slice(1),
-            lastName: 'Admin',
-            role: 'ADMIN',
-            password: { create: { hash: hashedInitialPassword } },
+            lastName,
+            role,
+            firebaseUid: `seed-${email.replace(/[@.]/g, '-')}`, // Placeholder for seeded test users
           },
         })
-      )
-    )
-
-    // Create MANAGER users
-    await Promise.all(
-      users.map(async email =>
-        prisma.user.create({
-          data: {
-            email,
-            firstName:
-              email.split('@')[0].charAt(0).toUpperCase() +
-              email.split('@')[0].slice(1),
-            lastName: 'User',
-            role: 'MANAGER',
-            password: { create: { hash: hashedInitialPassword } },
-          },
-        })
-      )
+      })
     )
 
     const team1 = {
@@ -215,6 +208,52 @@ async function seed() {
         tournamentId: tournament2.id,
       },
     })
+
+    // Create 23 JO8 teams from different clubs for testing groups feature
+    const clubNames = [
+      'Arsenal',
+      'Wolves',
+      'Phoenix',
+      'Thunder',
+      'Lightning',
+      'Eagles',
+      'Lions',
+      'Tigers',
+      'Dragons',
+      'Hawks',
+      'Falcons',
+      'Panthers',
+      'Sharks',
+      'Bulls',
+      'Rams',
+      'Bears',
+      'Cobras',
+      'Vipers',
+      'Stallions',
+      'Mustangs',
+      'Cheetahs',
+      'Leopards',
+      'Jaguars',
+    ]
+
+    const jo8Teams = []
+    for (let i = 0; i < 23; i++) {
+      const clubName = clubNames[i]
+      // Each club can have JO8-1, JO8-2, etc. independently
+      const teamName = i < 12 ? 'JO8-1' : i < 18 ? 'JO8-2' : 'JO8-3'
+
+      const jo8Team = await prisma.team.create({
+        data: {
+          clubName,
+          name: teamName,
+          category: 'JO8',
+          division: 'PREMIER_DIVISION',
+          teamLeaderId: teamLeader.id,
+          tournamentId: tournament1.id,
+        },
+      })
+      jo8Teams.push(jo8Team)
+    }
 
     // Minimal two dummy matches
     await prisma.match.create({

@@ -1,40 +1,164 @@
 {
   "admin": {
     "panel": {
-      "title": "Beheerpaneel",
-      "description": "Welkom terug, <email>{{email}}</email>. Beheer je toernooiplatform vanaf hier."
+      "description": "Welkom terug, <email>{{email}}</email>. Beheer je toernooiplatform vanaf hier.",
+      "title": "Beheerpaneel"
     },
-    "teams": {
+    "team": {
       "allTeams": "Alle teams",
       "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om details te bewerken of te verwijderen.",
       "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
+      "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "createTeam": "Team aanmaken",
       "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde details.",
-      "newTeam": "Nieuw team",
-      "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "description": "Beheer alle teams voor alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
       "editTeam": "Team bewerken",
+      "newTeam": "Nieuw team",
       "saveChanges": "Wijzigingen opslaan",
       "teamNotFound": "Team niet gevonden",
       "teamNotFoundDescription": "Het team dat je zoekt kon niet worden gevonden of is mogelijk verwijderd.",
       "title": "Teams beheer",
       "totalTeams": "Totaal aantal teams"
     },
-    "tournaments": {
-      "totalTournaments": "Totaal aantal toernooien",
-      "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "title": "Toernooien beheer",
-      "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
+    "tournament": {
       "allTournaments": "Alle toernooien",
-      "allTournamentsDescription": "Bekijk en beheer alle toernooien in het systeem"
+      "allTournamentsDescription": "Bekijk en beheer alle toernooien in het systeem",
+      "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
+      "title": "Toernooien beheer",
+      "totalTournaments": "Totaal aantal toernooien"
+    },
+    "match": {
+      "title": "Wedstrijden beheer",
+      "description": "Beheer wedstrijdscores en scheidsrechter toewijzingen."
+    },
+    "user": {
+      "title": "Gebruikers beheer",
+      "description": "Beheer gebruikersaccounts en machtigingen."
+    },
+    "settings": {
+      "title": "Systeeminstellingen",
+      "description": "Configureer applicatie-instellingen en voorkeuren."
+    },
+    "reports": {
+      "title": "Rapporten & Analytics",
+      "description": "Bekijk platformgebruik en toernooistatistieken."
     }
   },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
+    "continueWithEmail": "Of ga verder met e-mail",
     "createAccount": "Account aanmaken",
     "dontHaveAccount": "Nog geen account?",
     "emailAddress": "E-mailadres",
-    "errors": {
+    "firebase": {
+      "continueWithGoogle": "Doorgaan met Google",
+      "error": "Authenticatie mislukt. Probeer het opnieuw.",
+      "signInWithGoogle": "Inloggen met Google"
+    },
+    "firstName": "Voornaam",
+    "labels": {
+      "confirmPassword": "Bevestig wachtwoord",
+      "email": "E-mail",
+      "password": "Wachtwoord"
+    },
+    "lastName": "Achternaam",
+    "notSignedIn": "Niet ingelogd",
+    "or": "of",
+    "password": "Wachtwoord",
+    "placeholders": {
+      "confirmPassword": "Bevestig uw wachtwoord",
+      "email": "Voer uw e-mail in",
+      "password": "Voer uw wachtwoord in"
+    },
+    "pleaseSignIn": "Log in met uw nieuwe account",
+    "registrationSuccess": "Account succesvol aangemaakt",
+    "rememberMe": "Onthoud mij",
+    "signInPage": {
+      "description": "Log in op uw Tournado account",
+      "noAccount": "Heeft u nog geen account?",
+      "signUpLink": "Registreren"
+    },
+    "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
+    "signUpPage": {
+      "description": "Maak uw Tournado account aan",
+      "hasAccount": "Heeft u al een account?",
+      "signInLink": "Inloggen"
+    },
+    "signin": "Inloggen",
+    "signout": "Uitloggen",
+    "signup": "Registreren",
+    "validation": {
+      "emailInvalid": "Voer een geldig e-mailadres in",
+      "passwordMismatch": "Wachtwoorden komen niet overeen",
+      "passwordRequirements": "Wachtwoord moet minstens 8 tekens lang zijn met hoofdletters, kleine letters en cijfers",
+      "passwordTooShort": "Wachtwoord moet minstens 8 tekens lang zijn",
+      "passwordWeak": "Wachtwoord moet hoofdletters, kleine letters en cijfers bevatten"
+    },
+    "viewTeams": "Teams bekijken",
+    "viewTeamsFor": "Teams bekijken voor"
+  },
+  "common": {
+    "actions": {
+      "add": "Toevoegen",
+      "cancel": "Annuleren",
+      "delete": "Verwijderen",
+      "save": "Opslaan",
+      "saving": "Opslaan...",
+      "update": "Bijwerken"
+    },
+    "appName": "Tournado",
+    "auth": {
+      "signIn": "Inloggen",
+      "signingIn": "Inloggen...",
+      "signOut": "Uitloggen",
+      "signUp": "Registreren"
+    },
+    "backToHome": "Terug naar home",
+    "darkMode": "Donkere modus",
+    "error": "Fout",
+    "guest": "Bezoeker",
+    "language": "Taal",
+    "lightMode": "Lichte modus",
+    "loading": "Laden...",
+    "signedInAs": "Ingelogd als",
+    "titles": {
+      "about": "Over ons",
+      "addTeam": "Team toevoegen",
+      "adminPanel": "Beheerpaneel",
+      "more": "Meer",
+      "profile": "Profiel",
+      "settings": "Instellingen",
+      "teams": "Teams",
+      "tournaments": "Toernooien",
+      "welcome": "Welkom"
+    },
+    "toggleMenu": "Menu openen/sluiten",
+    "toggleTheme": "Thema wisselen",
+    "welcome": "Welkom"
+  },
+  "divisions": {
+    "FIFTH_DIVISION": "Vijfde klasse",
+    "FIRST_DIVISION": "Eerste klasse",
+    "FOURTH_DIVISION": "Vierde klasse",
+    "PREMIER_DIVISION": "Hoofdklasse",
+    "SECOND_DIVISION": "Tweede klasse",
+    "THIRD_DIVISION": "Derde klasse"
+  },
+  "landing": {
+    "features": {
+      "description": "Tournado biedt alle tools die je nodig hebt om je sporttoernooien efficiënt te beheren. Van teamregistratie tot wedstrijdplanning, we hebben alles voor je.",
+      "subtitle": "Alles wat je nodig hebt om je toernooien te beheren",
+      "title": "Toernooibeheer wordt eenvoudig"
+    },
+    "hero": {
+      "description": "Beheer je sporttoernooien eenvoudig. Maak, organiseer en volg je teams en wedstrijden op één plek.",
+      "signup": "Gratis registreren",
+      "viewTeams": "Teams bekijken"
+    }
+  },
+  "messages": {
+    "auth": {
       "emailExists": "Er bestaat al een gebruiker met dit e-mailadres",
       "emailInvalid": "E-mailadres is ongeldig",
       "emailRequired": "E-mailadres is verplicht",
@@ -47,84 +171,73 @@
       "serverError": "Serverfout, probeer het later opnieuw",
       "title": "Authenticatiefout",
       "unauthorized": "Je moet inloggen om deze pagina te bekijken",
-      "unauthorizedTitle": "Inloggen vereist",
-      "unauthorizedDefault": "Je hebt geen toestemming om deze pagina te bekijken. Neem contact op met je beheerder als je denkt dat dit een fout is.",
-      "unauthorizedDefaultTitle": "Toegang geweigerd",
-      "unauthorizedSignInRequired": "Je moet inloggen om toegang te krijgen tot deze bron.",
-      "unauthorizedSignInRequiredTitle": "Authenticatie vereist",
       "unauthorizedAdminRequired": "Dit gebied is beperkt tot toernooibeheerders en administrators.",
       "unauthorizedAdminRequiredTitle": "Beheerderstoegang vereist",
+      "unauthorizedDefault": "Je hebt geen toestemming om deze pagina te bekijken. Neem contact op met je beheerder als je denkt dat dit een fout is.",
+      "unauthorizedDefaultTitle": "Toegang geweigerd",
       "unauthorizedManagerRequired": "Dit gebied is beperkt tot toernooibeheerders en administrators.",
       "unauthorizedManagerRequiredTitle": "Beheerderstoegang vereist",
+      "unauthorizedSignInRequired": "Je moet inloggen om toegang te krijgen tot deze bron.",
+      "unauthorizedSignInRequiredTitle": "Authenticatie vereist",
       "unauthorizedSuperAdminRequired": "Dit specifieke gebied is beperkt tot systeembeheerders.",
       "unauthorizedSuperAdminRequiredTitle": "Beheerderstoegang vereist",
+      "unauthorizedTitle": "Inloggen vereist"
+    },
+    "common": {
+      "accessDenied": "Je hebt geen toegang tot deze bron",
+      "errorTitle": "Applicatiefout",
+      "itemNotFound": "{{item}} niet gevonden",
+      "notFoundTitle": "Pagina niet gevonden",
       "unexpectedError": "Er is een onverwachte fout opgetreden",
-      "unknownError": "Onbekende fout"
+      "unknownError": "Er is een onbekende fout opgetreden"
     },
-    "firstName": "Voornaam",
-    "lastName": "Achternaam",
-    "notSignedIn": "Niet ingelogd",
-    "password": "Wachtwoord",
-    "pleaseSignIn": "Log in met uw nieuwe account",
-    "registrationSuccess": "Account succesvol aangemaakt",
-    "rememberMe": "Onthoud mij",
-    "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
-    "signin": "Inloggen",
-    "signout": "Uitloggen",
-    "signup": "Registreren",
-    "viewTeams": "Teams bekijken",
-    "viewTeamsFor": "Teams bekijken voor"
-  },
-  "common": {
-    "actions": {
-      "add": "Toevoegen",
-      "save": "Opslaan",
-      "saving": "Opslaan...",
-      "update": "Bijwerken",
-      "cancel": "Annuleren",
-      "delete": "Verwijderen"
+    "team": {
+      "categoryRequired": "Categorie is verplicht",
+      "clubNameRequired": "Clubnaam is verplicht",
+      "clubNameTooLong": "Clubnaam mag niet langer zijn dan 100 tekens",
+      "divisionRequired": "Divisie is verplicht",
+      "nameRequired": "Teamnaam is verplicht",
+      "nameTooLong": "Teamnaam mag niet langer zijn dan 50 tekens",
+      "notFound": "Team niet gevonden",
+      "phoneNumberInvalid": "Voer een geldig telefoonnummer in",
+      "phoneNumberRequired": "Telefoonnummer is verplicht",
+      "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
+      "registrationError": "Team registreren mislukt",
+      "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van je team. Probeer het opnieuw.",
+      "registrationSuccess": "Team succesvol geregistreerd",
+      "registrationSuccessDesc": "Je team is succesvol geregistreerd.",
+      "teamLeaderNameRequired": "Naam teamleider is verplicht",
+      "teamLeaderNameTooLong": "Naam mag niet langer zijn dan 100 tekens",
+      "tournamentRequired": "Toernooi is verplicht",
+      "updateError": "Team bijwerken mislukt",
+      "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van je team. Probeer het opnieuw.",
+      "updateSuccess": "Team succesvol bijgewerkt",
+      "updateSuccessDesc": "Je team is succesvol bijgewerkt."
     },
-    "appName": "Tournado",
-    "backToHome": "Terug naar home",
-    "error": "Fout",
-    "guest": "Bezoeker",
-    "language": "Taal",
-    "loading": "Laden...",
-    "signedInAs": "Ingelogd als",
-    "toggleMenu": "Menu openen/sluiten",
-    "toggleTheme": "Thema wisselen",
-    "lightMode": "Lichte modus",
-    "darkMode": "Donkere modus",
-    "titles": {
-      "about": "Over ons",
-      "addTeam": "Team toevoegen",
-      "adminPanel": "Beheerpaneel",
-      "more": "Meer",
-      "profile": "Profiel",
-      "settings": "Instellingen",
-      "signIn": "Inloggen",
-      "signUp": "Registreren",
-      "teams": "Teams",
-      "tournaments": "Toernooien",
-      "welcome": "Welkom"
+    "tournament": {
+      "categoriesRequired": "Minstens één categorie is verplicht",
+      "divisionsRequired": "Minstens één divisie is verplicht",
+      "endDateRequired": "Einddatum is verplicht",
+      "locationRequired": "Locatie is verplicht",
+      "locationTooLong": "Locatie moet minder dan 100 karakters zijn",
+      "nameRequired": "Toernooi naam is verplicht",
+      "nameTooLong": "Toernooi naam moet minder dan 100 karakters zijn",
+      "registrationError": "Toernooi registreren mislukt",
+      "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van het toernooi. Probeer het opnieuw.",
+      "registrationSuccess": "Toernooi succesvol geregistreerd",
+      "registrationSuccessDesc": "Het toernooi is succesvol geregistreerd.",
+      "startDateRequired": "Startdatum is verplicht",
+      "updateError": "Toernooi bijwerken mislukt",
+      "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van het toernooi. Probeer het opnieuw.",
+      "updateSuccess": "Toernooi succesvol bijgewerkt",
+      "updateSuccessDesc": "Het toernooi is succesvol bijgewerkt."
     },
-    "unknownError": "Er is een onbekende fout opgetreden",
-    "welcome": "Welkom"
-  },
-  "errors": {
-    "errorTitle": "Applicatiefout",
-    "notFoundTitle": "Pagina niet gevonden"
-  },
-  "landing": {
-    "features": {
-      "description": "Tournado biedt alle tools die je nodig hebt om je sporttoernooien efficiënt te beheren. Van teamregistratie tot wedstrijdplanning, we hebben alles voor je.",
-      "subtitle": "Alles wat je nodig hebt om je toernooien te beheren",
-      "title": "Toernooibeheer wordt eenvoudig"
-    },
-    "hero": {
-      "description": "Beheer je sporttoernooien eenvoudig. Maak, organiseer en volg je teams en wedstrijden op één plek.",
-      "signup": "Gratis registreren",
-      "viewTeams": "Teams bekijken"
+    "validation": {
+      "emailInvalid": "Voer een geldig e-mailadres in",
+      "emailRequired": "E-mailadres is verplicht",
+      "fieldRequired": "Dit veld is verplicht",
+      "phoneNumberInvalid": "Voer een geldig telefoonnummer in",
+      "phoneNumberRequired": "Telefoonnummer is verplicht"
     }
   },
   "pwa": {
@@ -153,66 +266,44 @@
     }
   },
   "teams": {
+    "allTournaments": "Alle toernooien",
     "count": "{{count}} team geregistreerd",
     "count_other": "{{count}} teams geregistreerd",
     "createNewTeam": "Maak een nieuw team aan",
     "deleteTeam": "Team verwijderen",
     "description": "Registreer je team(s) voor een of meer toernooien",
     "filterByTournament": "Filter op toernooi",
-    "allTournaments": "Alle toernooien",
-    "errors": {
-      "notFound": "Team niet gevonden",
-      "unexpectedError": "Er is een onverwachte fout opgetreden:",
-      "unknownError": "Onbekende fout"
-    },
     "form": {
+      "agreeToPrivacyPolicy": "Ik ga akkoord met het privacybeleid",
+      "category": "Categorie",
       "clubName": "Clubnaam",
+      "completeAllThreeFields": "Vul alle drie de velden hieronder in om door te gaan",
       "division": "Teamklasse",
-      "errors": {
-        "clubNameRequired": "Clubnaam is verplicht",
-        "clubNameTooLong": "Clubnaam mag niet langer zijn dan 100 tekens",
-        "divisionRequired": "Divisie is verplicht",
-        "categoryRequired": "Categorie is verplicht",
-        "emailInvalid": "Voer een geldig e-mailadres in",
-        "emailRequired": "E-mailadres is verplicht",
-        "phoneNumberInvalid": "Voer een geldig telefoonnummer in",
-        "phoneNumberRequired": "Telefoonnummer is verplicht",
-        "privacyAgreementRequired": "Je moet akkoord gaan met het privacybeleid",
-        "teamLeaderNameRequired": "Naam teamleider is verplicht",
-        "teamLeaderNameTooLong": "Naam mag niet langer zijn dan 100 tekens",
-        "nameRequired": "Teamnaam is verplicht",
-        "nameTooLong": "Teamnaam mag niet langer zijn dan 50 tekens",
-        "tournamentRequired": "Toernooi is verplicht",
-        "fieldRequired": "Dit veld is verplicht"
-      },
+      "enterContactDetails": "Voer contactgegevens in voor de teamleider",
+      "enterTeamDetails": "Voer je team informatie in",
+      "fillOutForm": "Vul het formulier hieronder in om je team te registreren",
+      "name": "Teamnaam",
       "placeholders": {
         "clubName": "Voer je clubnaam in",
+        "name": "Voer je teamnaam in",
         "teamLeaderEmail": "Voer e-mailadres in",
         "teamLeaderName": "Voer volledige naam teamleider in",
-        "teamLeaderPhone": "Voer telefoonnummer in",
-        "name": "Voer je teamnaam in"
+        "teamLeaderPhone": "Voer telefoonnummer in"
       },
       "privacyAgreement": "Ik ga akkoord met het privacybeleid en de servicevoorwaarden",
       "privacyPolicy": "Privacybeleid",
-      "agreeToPrivacyPolicy": "Ik ga akkoord met het privacybeleid",
       "readAndAccept": "Lees en accepteer het privacybeleid om door te gaan",
+      "selectCategory": "Selecteer een categorie",
       "selectDivision": "Selecteer een klasse",
       "selectTournament": "Selecteer een toernooi",
+      "selectTournamentDetails": "Selecteer toernooi details",
       "teamInfo": "Team",
       "teamLeaderEmail": "E-mail teamleider",
       "teamLeaderInfo": "Teamleider",
       "teamLeaderName": "Naam teamleider",
       "teamLeaderPhone": "Telefoon teamleider",
-      "name": "Teamnaam",
-      "tournament": "Toernooi",
-      "category": "Categorie",
-      "selectCategory": "Selecteer een categorie",
       "teamRegistration": "Team registratie",
-      "fillOutForm": "Vul het formulier hieronder in om je team te registreren",
-      "selectTournamentDetails": "Selecteer toernooi details",
-      "completeAllThreeFields": "Vul alle drie de velden hieronder in om door te gaan",
-      "enterTeamDetails": "Voer je team informatie in",
-      "enterContactDetails": "Voer contactgegevens in voor de teamleider"
+      "tournament": "Toernooi"
     },
     "getStarted": {
       "description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",
@@ -220,72 +311,33 @@
     },
     "noTeamSelected": "Geen team geselecteerd. Selecteer een team aan de linkerkant, of",
     "noTeams": "Er zijn nog geen teams geregistreerd. Wees de eerste die je team registreert voor aankomende toernooien!",
-    "notifications": {
-      "registrationError": "Team registreren mislukt",
-      "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van je team. Probeer het opnieuw.",
-      "registrationSuccess": "Team succesvol geregistreerd",
-      "registrationSuccessDesc": "Je team is succesvol geregistreerd.",
-      "updateError": "Team bijwerken mislukt",
-      "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van je team. Probeer het opnieuw.",
-      "updateSuccess": "Team succesvol bijgewerkt",
-      "updateSuccessDesc": "Je team is succesvol bijgewerkt."
-    },
     "title": "Teams"
   },
   "tournaments": {
     "deleteTournament": "Toernooi verwijderen",
-    "title": "Toernooien",
-    "name": "Naam",
-    "location": "Locatie",
-    "startDate": "Startdatum",
     "endDate": "Einddatum",
+    "form": {
+      "basicInformation": "Basis informatie",
+      "categories": "Categorieën",
+      "dates": "Toernooi data",
+      "divisions": "Divisies",
+      "endDate": "Einddatum",
+      "enterBasicDetails": "Voer toernooi naam en locatie in",
+      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
+      "location": "Locatie",
+      "name": "Toernooi naam",
+      "selectCategories": "Selecteer de leeftijdscategorieën die zullen deelnemen",
+      "selectDates": "Selecteer start- en einddatum voor het toernooi",
+      "selectDivisions": "Selecteer de divisies die zullen deelnemen",
+      "selected": "geselecteerd",
+      "startDate": "Startdatum",
+      "tournamentRegistration": "Toernooi registratie"
+    },
+    "location": "Locatie",
+    "name": "Naam",
     "noTournaments": "Geen toernooien",
     "noTournamentsDescription": "Er zijn nog geen toernooien aangemaakt. Maak je eerste toernooi aan om te beginnen!",
-    "form": {
-      "name": "Toernooi naam",
-      "location": "Locatie",
-      "startDate": "Startdatum",
-      "endDate": "Einddatum",
-      "basicInformation": "Basis informatie",
-      "enterBasicDetails": "Voer toernooi naam en locatie in",
-      "dates": "Toernooi data",
-      "selectDates": "Selecteer start- en einddatum voor het toernooi",
-      "divisions": "Divisies",
-      "selectDivisions": "Selecteer de divisies die zullen deelnemen",
-      "categories": "Categorieën",
-      "selectCategories": "Selecteer de leeftijdscategorieën die zullen deelnemen",
-      "selected": "geselecteerd",
-      "tournamentRegistration": "Toernooi registratie",
-      "fillOutForm": "Vul het formulier hieronder in om een nieuw toernooi aan te maken",
-      "errors": {
-        "nameRequired": "Toernooi naam is verplicht",
-        "nameTooLong": "Toernooi naam moet minder dan 100 karakters zijn",
-        "locationRequired": "Locatie is verplicht",
-        "locationTooLong": "Locatie moet minder dan 100 karakters zijn",
-        "startDateRequired": "Startdatum is verplicht",
-        "endDateRequired": "Einddatum is verplicht",
-        "divisionsRequired": "Minstens één divisie is verplicht",
-        "categoriesRequired": "Minstens één categorie is verplicht",
-        "fieldRequired": "Dit veld is verplicht"
-      },
-      "notifications": {
-        "registrationError": "Toernooi registreren mislukt",
-        "registrationErrorDesc": "Er is een fout opgetreden bij het registreren van het toernooi. Probeer het opnieuw.",
-        "registrationSuccess": "Toernooi succesvol geregistreerd",
-        "registrationSuccessDesc": "Het toernooi is succesvol geregistreerd.",
-        "updateError": "Toernooi bijwerken mislukt",
-        "updateErrorDesc": "Er is een fout opgetreden bij het bijwerken van het toernooi. Probeer het opnieuw.",
-        "updateSuccess": "Toernooi succesvol bijgewerkt",
-        "updateSuccessDesc": "Het toernooi is succesvol bijgewerkt."
-      }
-    }
-  },
-  "divisions": {
-    "PREMIER_DIVISION": "Hoofdklasse",
-    "FIRST_DIVISION": "Eerste klasse",
-    "SECOND_DIVISION": "Tweede klasse",
-    "THIRD_DIVISION": "Derde klasse",
-    "FOURTH_DIVISION": "Vierde klasse",
-    "FIFTH_DIVISION": "Vijfde klasse"
+    "startDate": "Startdatum",
+    "title": "Toernooien"
   }
 }

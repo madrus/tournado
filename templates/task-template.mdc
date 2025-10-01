@@ -1,0 +1,397 @@
+---
+description:
+id: "<unique-id-or-ticket>" # e.g., TASK-0123
+title: "<short, action-oriented task title>" # e.g., "Add tournament bracket visualization"
+status: "planned" # planned, in-progress, blocked, done
+priority: "P1" # P0, P1, P2
+labels: ["feature", "ui", "tournament"] # free-form tags (feature, ui, database, api, tournament, team, match)
+dependencies: ["<other-task-file>"] # list other task files that must be completed first
+created: "YYYY-MM-DD"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN CREATING NEW TASKS
+
+This file is a single, self-contained TASK for an AI agent. **One task = one file.**
+Follow the steps below when creating new tasks.
+
+1. **Name your file**: place under `.cursor/tasks/` using the task ID as prefix followed by kebab-case description, e.g., `tasks/TASK-0123-add-tournament-bracket.mdc`.
+2. **Fill the frontmatter** (above) completely. All metadata should be in the YAML frontmatter section.
+3. **Dependency validation**: Before starting any task, check that all dependencies have `status: "done"`. If not, present user with three options:
+   - **[1] Stop** - I need to complete dependencies first
+   - **[2] Continue anyway** - I know these are ready despite status
+   - **[3] Cancel** - Let me choose a different task
+4. **Use information-dense keywords** throughout (exact file paths, function signatures, type names, constants, route patterns).
+5. **Define types first** if adding new data structures. Reference those types by exact name in later steps.
+6. **Order your steps** so later steps explicitly reference earlier artifacts by name (files, types, functions, routes).
+7. **Keep scope tight**: this task should be completable independently. If it's large, split into multiple task files and add them to `dependencies`.
+8. **Acceptance criteria** must be testable and unambiguous. Include file paths for tests and example route/API usage.
+9. **Context plan** must list the files to add to the model's context at the start (mark dep files read-only) and which files must exist at the end.
+10. **Testing strategy** use primarily integration tests with Vitest and E2E tests with Playwright using Page Object Model. Include database seeding for tests.
+11. **TypeScript conventions**: Follow TypeScript conventions from the dedicated section below.
+12. **File creation safety**: Before creating any new file, check if a file with that name already exists. If it exists, analyze its content to determine: (a) if it's the same file that needs minor updates/enhancements, (b) if it's a completely different file with different structure/purpose. For case (a), update/merge carefully preserving existing functionality. For case (b), ask the user for guidance on how to proceed. Never overwrite existing code without analysis and consideration.
+
+## ARCHITECTURE DECISION RECORDS
+
+Choose your task pattern based on the scope and reusability of the work:
+
+### 🌍 **SHARED Task** - Updates shared/global code
+**When to use**: Updating reusable components, core utilities, global stores, database models
+**File locations**:
+- `app/components/` - Reusable UI components across features
+- `app/utils/` - Cross-cutting utilities (session, validation, etc.)
+- `app/lib/` - Core business logic and shared libraries
+- `app/models/` - Database access layer (shared across features)
+- `app/stores/` - **Global stores only** (cross-feature state management)
+
+### 🎯 **FEATURE Task** - Self-contained business domain
+**When to use**: Distinct business domain with its own data models, business rules, workflows
+**File locations**:
+- `app/features/[feature]/` - All feature-specific code
+- `app/features/[feature]/stores/` - **Feature-specific stores** (co-located)
+- `app/features/[feature]/components/` - Feature-internal components
+- `app/features/[feature]/utils.ts` - Feature-specific utilities
+- `app/features/[feature]/types.ts` - Feature-specific types
+
+### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
+**When to use**: Feature work that also requires updates to shared components/utilities
+**File locations**: Mix of both patterns with clear rationale for each
+
+### 📦 **MIGRATION Task** - Refactoring existing code into feature structure
+**When to use**: Moving scattered code into a cohesive feature module
+**Special considerations**: Maintain backward compatibility, update all imports
+
+### 🧭 **Decision Criteria**
+- **Shared**: Used by multiple features OR core infrastructure
+- **Feature**: Belongs to single business domain AND could be extracted as separate service
+- **Store placement**: Global = cross-feature state, Feature = domain-specific state
+- **Component placement**: Shared = reusable UI, Feature = domain-specific components
+
+# 1) High-Level Objective
+
+<One sentence that describes the user-facing end state. Avoid technical jargon.>
+
+# 2) Background / Context (Optional but recommended)
+
+<Short rationale or business context for why this task exists. Link any tickets/PRDs.>
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: <If any info is missing, state the pragmatic assumption here.>
+- Constraint: <e.g., "Use only dependencies listed in package.json".>
+- Constraint: <e.g., "Follow existing CVA patterns for component styling".>
+- Constraint: <e.g., "Use Prisma for all database operations".>
+- Constraint: <e.g., "Maintain compatibility with existing tournament data structure".>
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- .cursor/tasks/<other-task-file>.mdc
+- prisma/schema.prisma _(required existing schema)_
+- app/lib/lib.types.ts _(existing types)_
+
+# 5) Context Plan
+
+> Choose the appropriate pattern based on your Architecture Decision from above
+
+## 🌍 SHARED Task Pattern
+**Beginning (add to model context):**
+- app/components/<ExistingComponent>/ _(read-only)_
+- app/utils/<existingUtil>.server.ts _(read-only)_
+- app/lib/lib.types.ts _(read-only)_
+- prisma/schema.prisma _(read-only)_
+
+**End state (files that will be created/modified):**
+> List only the specific files your task will create or modify. Common examples:
+- app/components/<ComponentName>/<ComponentName>.tsx _(if creating shared component)_
+- app/utils/<utilName>.server.ts _(if adding shared utility)_
+- app/stores/<storeName>.ts _(if adding global state)_
+- app/routes/<route>.tsx _(if adding/modifying routes)_
+
+## 🎯 FEATURE Task Pattern
+**Beginning (add to model context):**
+- app/features/<feature>/types.ts _(read-only if exists)_
+- app/models/<resource>.server.ts _(read-only)_
+- prisma/schema.prisma _(read-only)_
+
+**End state (files that will be created/modified):**
+> List only what this specific task will create. Feature structure is flexible:
+- app/features/<feature>/index.ts _(feature public API)_
+- app/features/<feature>/<specific-files-for-this-task>
+- app/features/<feature>/__tests__/ _(test files as needed)_
+
+> Common feature files (create only if needed for your task):
+> - components/<Component>/ _(feature-specific UI)_
+> - stores/<store>.ts _(feature-specific state)_
+> - utils.ts _(feature utilities)_
+> - types.ts _(feature types)_
+
+## 🔗 HYBRID Task Pattern
+**Beginning (add to model context):**
+- app/components/<SharedComponent>/ _(read-only)_
+- app/features/<feature>/ _(read-only if exists)_
+- app/lib/lib.types.ts _(read-only)_
+
+**End state (files that will be created/modified):**
+> Mix of shared and feature files - list only what this task actually needs:
+- app/components/<SharedComponent>/ _(if updating shared component)_
+- app/features/<feature>/<specific-files> _(if creating feature-specific code)_
+
+## 📦 MIGRATION Task Pattern
+**Beginning (add to model context):**
+- app/<scattered-files>/ _(files to be migrated)_
+- app/components/<related-components>/ _(read-only)_
+- All files importing the scattered functionality
+
+**End state (files that will be created/modified):**
+> Migration creates new structure and updates existing dependencies:
+- app/features/<feature>/ _(new feature structure)_
+- All files that import the migrated functionality _(updated imports)_
+- Old scattered files _(removed after migration)_
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+> Write concrete, atomic steps specific to your task. Include **file paths, exact names, signatures, params with defaults, return types**.
+> Use the patterns below as reference, but create only what your task actually needs.
+
+## File Naming Conventions
+
+**Server-only files** (`.server.ts`):
+- Cannot be imported by client-side code
+- Use for database operations, authentication, server-side utilities
+- Examples: `session.server.ts`, `auth.server.ts`, `user.server.ts`
+
+**Universal files** (`.ts`):
+- Can be imported by both client and server
+- Use for types, pure functions, utilities that work everywhere
+- Examples: `types.ts`, `utils.ts`, `constants.ts`
+
+**Client-focused files** (`.tsx`, `.ts` in stores/):
+- Primarily used by client-side code
+- Examples: components, stores, client-side utilities
+
+## TypeScript Conventions
+
+All code must follow these TypeScript conventions:
+
+1. **Use `type` instead of `interface`**: Unless interfaces are required for extending
+2. **No semicolons**: All code snippets must be TypeScript without semicolons
+3. **No `any` type**: Always use strong typing instead of `any`
+4. **Return types**: All functions must have explicit return types
+5. **Arrow functions**: If a function only returns something (single expression), use arrow function syntax
+6. **Semantic variable names**: Avoid generic identifiers like `data`, `info`, `result`, `callback`, `handler` - use descriptive names that indicate the content (e.g., `userData`, `teamInfo`, `validationResult`, `onSubmit`, `onUserSelect`). Exception: when variable comes from third-party libraries
+7. **Callback naming**: Use descriptive callback names with `on` prefix (e.g., `onSubmit`, `onUserSelect`, `onTeamCreate`) rather than generic names like `callback` or `handler`
+8. **Props objects**: Functions with parameter objects should follow this pattern:
+   - Create a type named `<FunctionName>Props` for the parameters
+   - Type the props parameter as `Readonly<FunctionNameProps>`
+   - Use object destructuring in the function signature
+9. **Module Import Patterns**:
+   - Use named imports for ESM modules: `import { function } from 'module'`
+   - Use default imports for CommonJS modules: `import pkg from 'commonjs-module'`
+   - Firebase Admin SDK: Use `import admin from 'firebase-admin'` for main module access (e.g., `admin.credential.cert()`), submodule imports like `firebase-admin/app` and `firebase-admin/auth` are fine as named imports
+   - When unsure, check if error mentions "CommonJS module, which may not support all module.exports as named exports"
+
+Example:
+```ts
+type CreateSessionFromFirebaseTokenProps = {
+  idToken: string
+  request: Request
+}
+
+export const createSessionFromFirebaseToken = async (
+  props: Readonly<CreateSessionFromFirebaseTokenProps>
+): Promise<SessionBridgeResult | null> => {
+  const { idToken, request } = props
+  // function body
+}
+```
+
+## Step Guidelines by Architecture Pattern
+
+### 🌍 SHARED Task - Common step types:
+- **Shared components**: `app/components/<Name>/` - reusable across features (client + SSR)
+- **Server-only utilities**: `app/utils/<name>.server.ts` - server-side functions (database, auth, etc.)
+- **Universal utilities**: `app/lib/<name>.ts` - functions usable by both client and server
+- **Global stores**: `app/stores/<name>.ts` - cross-feature state management (client-side)
+- **Database models**: `app/models/<resource>.server.ts` - data access layer (server-only)
+- **Routes**: `app/routes/<route>.tsx` - application pages/endpoints (SSR + client)
+
+### 🎯 FEATURE Task - Common step types:
+- **Feature structure**: `app/features/<feature>/index.ts` - public API exports (universal)
+- **Feature components**: `app/features/<feature>/components/<Name>/` - domain-specific UI (client + SSR)
+- **Feature stores**: `app/features/<feature>/stores/<name>.ts` - domain-specific state (client-side)
+- **Feature utilities**: `app/features/<feature>/utils.ts` - feature-specific helpers (universal)
+- **Feature server utilities**: `app/features/<feature>/server.ts` - server-only functions (if needed)
+- **Feature types**: `app/features/<feature>/types.ts` - domain-specific types (universal)
+
+### 🔗 HYBRID Task - Mix as needed:
+- Combine shared and feature patterns based on requirements
+- Update shared components for reusability
+- Create feature-specific implementations
+- Maintain clear boundaries between shared and feature code
+
+### 📦 MIGRATION Task - Common step types:
+- **Analysis**: Map existing scattered files and dependencies
+- **Feature structure**: Create new organized feature directory
+- **File migration**: Move and refactor existing code
+- **Import updates**: Update all dependent files to use new structure
+- **Cleanup**: Remove old scattered files after successful migration
+
+## Example Step Structure
+
+**Write your specific steps here.** For example:
+
+1. **Create [specific thing needed for your task]**
+   - File: `[exact path]`
+   - Exported API: `[exact function signatures]`
+   - Details: [what it does, how it integrates]
+
+2. **Update [specific existing file]**
+   - File: `[exact path]`
+   - Changes: [what gets modified]
+   - Preserve: [what stays the same]
+
+3. **Add tests**
+   - Files: `[exact test file paths]`
+   - Cases: [specific test scenarios]
+
+## Additional Common Steps (use as needed)
+
+**Component Variants** (for any UI component):
+- File: `<component-path>/<componentName>.variants.ts`
+- Use CVA pattern for consistent styling
+
+**Routes** (if task involves routing):
+- File: `app/routes/<resource>.<action>.tsx`
+- Add loaders/actions as needed
+
+**Database Models** (if task involves data operations):
+- File: `app/models/<resource>.server.ts`
+- Add functions for data operations
+
+**Tests** (required for all tasks):
+- Unit tests: `<component-path>/__tests__/<ComponentName>.test.tsx` (Vitest)
+- E2E tests: `playwright/tests/<featureName>.spec.ts` (Playwright with Page Object Model)
+- Test cases should focus on user-facing behavior, not implementation details
+
+# 7) Types & Interfaces (if applicable)
+
+> Define or reference types here so the model has a stable contract. Use `type` instead of `interface` unless extending is required.
+> Choose location based on your Architecture Decision.
+
+## 🌍 Shared Types (reusable across features)
+```ts
+// app/lib/lib.types.ts
+export type <SharedDataType> = {
+  id: string
+  name: string
+  status: <StatusEnum>
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+## 🎯 Feature Types (domain-specific)
+```ts
+// app/features/<feature>/types.ts
+export type <FeatureDataType> = {
+  id: string
+  featureSpecificField: string
+  // Can extend shared types if needed
+} & SharedDataType
+
+export type <FeatureComponentProps> = {
+  data: <FeatureDataType>[]
+  onAction?: (item: <FeatureDataType>) => void
+  className?: string
+}
+```
+
+## 🔗 Hybrid Types (mix of both)
+- Shared types in `app/lib/lib.types.ts`
+- Feature-specific extensions in `app/features/<feature>/types.ts`
+- Import shared types into feature types as needed
+
+# 8) Acceptance Criteria
+
+> Write specific, testable criteria based on your Architecture Decision and end state files.
+
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## Architecture-Specific Criteria
+
+### 🌍 Shared Task Criteria
+- Components are reusable and don't contain feature-specific logic
+- Shared utilities can be imported by multiple features
+- Global stores manage cross-feature state appropriately
+- No breaking changes to existing feature imports
+
+### 🎯 Feature Task Criteria
+- Feature exports clean public API via `app/features/<feature>/index.ts`
+- Feature components use shared components as building blocks
+- Feature-specific stores manage domain state appropriately
+- Feature can be developed/tested independently
+
+### 🔗 Hybrid Task Criteria
+- Shared components maintain backward compatibility
+- Feature-specific components integrate properly with shared components
+- Clear separation between shared and feature-specific concerns
+
+### 📦 Migration Task Criteria
+- All external imports updated to use new feature structure
+- No breaking changes to public APIs during migration
+- Old scattered files successfully removed after migration
+- Feature boundary is clearly defined and cohesive
+
+# 9) Testing Strategy
+
+## Common Testing Approach (all tasks)
+- Create unit tests with Vitest that verify component behavior and rendering
+- Create E2E tests with Playwright using Page Object Model pattern
+- Include database seeding for realistic test data
+- Test responsive design on different screen sizes
+- Test accessibility with screen reader navigation
+- Avoid testing implementation details - focus on user-facing behavior
+- **Mock patterns**: When mocking CommonJS modules (like Firebase Admin), ensure mock structure matches import pattern (e.g., `{ default: { ... } }` for default imports)
+
+## Architecture-Specific Testing
+
+### 🌍 Shared Task Testing
+- Test component reusability across different contexts
+- Mock external dependencies to ensure pure functionality
+- Verify global stores don't leak state between tests
+
+### 🎯 Feature Task Testing
+- Test feature in isolation with minimal external dependencies
+- Use feature's public API for integration tests
+- Mock shared dependencies consistently
+
+### 🔗 Hybrid Task Testing
+- Test both shared and feature-specific functionality
+- Verify integration between shared and feature components
+- Test backward compatibility when updating shared components
+
+### 📦 Migration Task Testing
+- Test that all external imports still work after migration
+- Verify no functionality was lost during migration
+- Test new feature structure works as expected
+
+# 10) Notes / Links
+
+- **Architecture Reference**: See Firebase feature in `app/features/firebase/` as example
+- Reference PRD/ADR section: <docs/prd/section-name.md or docs/adr/ADR-XXX.md>
+- Related tasks: <list other .cursor/tasks/ files>
+- Design mockups: <link to figma or design files>
+- API documentation: <link to API specs if applicable>
+- **Decision History**: Document architectural decisions made during task creation

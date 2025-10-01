@@ -17,3 +17,4 @@ jobs:
     with:
       environment: ${{ inputs.environment || 'local' }}
       upload_artifact_suffix: "-manual"
+    secrets: inherit

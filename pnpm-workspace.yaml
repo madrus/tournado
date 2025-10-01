@@ -1,11 +1,14 @@
 ignoredBuiltDependencies:
   - '@tailwindcss/oxide'
+
 onlyBuiltDependencies:
+  - '@firebase/util'
+  - '@playwright/test'
   - '@prisma/client'
   - '@prisma/engines'
-  - '@playwright/test'
   - docsify
   - esbuild
   - msw
   - prisma
+  - protobufjs
   - unrs-resolver

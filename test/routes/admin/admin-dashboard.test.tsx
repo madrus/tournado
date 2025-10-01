@@ -15,6 +15,7 @@ const mockUser: User = {
   firstName: 'Admin',
   lastName: 'User',
   role: 'ADMIN',
+  firebaseUid: 'test-firebase-uid',
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -109,6 +110,7 @@ vi.mock('~/components/ActionLinkPanel', () => ({
     to,
     icon,
     children,
+    testId,
   }: {
     title: string
     description: string
@@ -116,9 +118,10 @@ vi.mock('~/components/ActionLinkPanel', () => ({
     to?: string
     icon?: React.ReactNode
     children?: React.ReactNode
+    testId?: string
   }) => (
     <div
-      data-testid={`admin-panel-${title.toLowerCase().replace(/\s+/g, '-')}`}
+      data-testid={testId || `admin-panel-${title.toLowerCase().replace(/\s+/g, '-')}`}
       data-color-scheme={colorAccent}
       data-link-to={to}
     >
@@ -219,8 +222,8 @@ describe('Admin Dashboard', () => {
         'data-link-to',
         '/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
       )
-      expect(teamPanel).toHaveTextContent('Team Management')
-      expect(teamPanel).toHaveTextContent('Manage team registrations and memberships.')
+      expect(teamPanel).toHaveTextContent('admin.team.title')
+      expect(teamPanel).toHaveTextContent('admin.team.description')
     })
 
     test('should configure Tournament Management panel correctly', () => {
@@ -235,10 +238,8 @@ describe('Admin Dashboard', () => {
         'data-link-to',
         '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
       )
-      expect(tournamentPanel).toHaveTextContent('Tournament Management')
-      expect(tournamentPanel).toHaveTextContent(
-        'Create and manage tournaments and competitions.'
-      )
+      expect(tournamentPanel).toHaveTextContent('admin.tournament.title')
+      expect(tournamentPanel).toHaveTextContent('admin.tournament.description')
     })
 
     test('should configure User Management panel correctly', () => {
@@ -250,8 +251,8 @@ describe('Admin Dashboard', () => {
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
       expect(userPanel).not.toHaveAttribute('data-link-to') // No navigation
-      expect(userPanel).toHaveTextContent('User Management')
-      expect(userPanel).toHaveTextContent('Manage user accounts and permissions.')
+      expect(userPanel).toHaveTextContent('admin.user.title')
+      expect(userPanel).toHaveTextContent('admin.user.description')
     })
 
     test('should configure System Settings panel correctly', () => {
@@ -263,10 +264,8 @@ describe('Admin Dashboard', () => {
 
       const settingsPanel = screen.getByTestId('admin-panel-system-settings')
       expect(settingsPanel).not.toHaveAttribute('data-link-to') // No navigation
-      expect(settingsPanel).toHaveTextContent('System Settings')
-      expect(settingsPanel).toHaveTextContent(
-        'Configure application settings and preferences.'
-      )
+      expect(settingsPanel).toHaveTextContent('admin.settings.title')
+      expect(settingsPanel).toHaveTextContent('admin.settings.description')
     })
 
     test('should configure Reports & Analytics panel correctly', () => {
@@ -278,10 +277,8 @@ describe('Admin Dashboard', () => {
 
       const reportsPanel = screen.getByTestId('admin-panel-reports-&-analytics')
       expect(reportsPanel).not.toHaveAttribute('data-link-to') // No navigation
-      expect(reportsPanel).toHaveTextContent('Reports & Analytics')
-      expect(reportsPanel).toHaveTextContent(
-        'View platform usage and tournament statistics.'
-      )
+      expect(reportsPanel).toHaveTextContent('admin.reports.title')
+      expect(reportsPanel).toHaveTextContent('admin.reports.description')
     })
   })
 
@@ -294,7 +291,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
+      expect(teamPanel).toHaveTextContent(/admin\.(team|teams)\.totalTeams/)
       expect(teamPanel).toHaveTextContent('3') // Mock teams length
     })
 
@@ -306,7 +303,9 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
+      expect(tournamentPanel).toHaveTextContent(
+        /admin\.(tournament|tournaments)\.totalTournaments/
+      )
       expect(tournamentPanel).toHaveTextContent('2') // Mock tournaments length
     })
 
@@ -460,11 +459,11 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Team Management')).toBeInTheDocument()
-      expect(screen.getByText('Tournament Management')).toBeInTheDocument()
-      expect(screen.getByText('User Management')).toBeInTheDocument()
-      expect(screen.getByText('System Settings')).toBeInTheDocument()
-      expect(screen.getByText('Reports & Analytics')).toBeInTheDocument()
+      expect(screen.getByText('admin.team.title')).toBeInTheDocument()
+      expect(screen.getByText('admin.tournament.title')).toBeInTheDocument()
+      expect(screen.getByText('admin.user.title')).toBeInTheDocument()
+      expect(screen.getByText('admin.settings.title')).toBeInTheDocument()
+      expect(screen.getByText('admin.reports.title')).toBeInTheDocument()
     })
   })
 
@@ -476,9 +475,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText(/admin\.teams\.totalTeams/)).toBeInTheDocument()
+      expect(screen.getByText(/admin\.(team|teams)\.totalTeams/)).toBeInTheDocument()
       expect(
-        screen.getByText(/admin\.tournaments\.totalTournaments/)
+        screen.getByText(/admin\.(tournament|tournaments)\.totalTournaments/)
       ).toBeInTheDocument()
     })
 
@@ -512,7 +511,7 @@ describe('Admin Dashboard', () => {
       )
 
       const teamPanel = screen.getByTestId('admin-panel-team-management')
-      expect(teamPanel).toHaveTextContent('admin.teams.totalTeams')
+      expect(teamPanel).toHaveTextContent(/admin\.(team|teams)\.totalTeams/)
       expect(teamPanel).toHaveTextContent('0')
     })
 
@@ -531,7 +530,9 @@ describe('Admin Dashboard', () => {
       )
 
       const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-      expect(tournamentPanel).toHaveTextContent('admin.tournaments.totalTournaments')
+      expect(tournamentPanel).toHaveTextContent(
+        /admin\.(tournament|tournaments)\.totalTournaments/
+      )
       expect(tournamentPanel).toHaveTextContent('0')
     })
   })

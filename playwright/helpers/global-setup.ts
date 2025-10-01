@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
-import { chromium, FullConfig } from '@playwright/test'
+import { FullConfig } from '@playwright/test'
 
-import {
-  cleanDatabaseCompletely,
-  createAdminUser,
-  createManagerUser,
-  createRefereeUser,
-} from './database'
+import fs from 'fs'
+import path from 'path'
+
+import { checkDevServer } from '../../scripts/utils/port-utils.js'
+import { cleanDatabaseCompletely, createAdminUser, createManagerUser } from './database'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
+const DEV_SERVER_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8811'
 
 // Wait for server to be ready
 async function waitForServer(url: string, timeout = 60000): Promise<void> {
@@ -35,109 +35,111 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   process.env.PLAYWRIGHT_GLOBAL_SETUP = 'true'
 
   // Wait for server to be ready - use the configured baseURL
-  const serverUrl = process.env.PORT
-    ? `http://localhost:${process.env.PORT}`
-    : 'http://localhost:5173'
-  await waitForServer(serverUrl)
+  const url = new URL(DEV_SERVER_URL)
+  const port = Number(url.port)
+  await checkDevServer(port)
+
+  // Delete old auth state files to ensure fresh session cookies
+  const authDir = './playwright/.auth'
+  const adminAuthFile = path.join(authDir, 'admin-auth.json')
+  const userAuthFile = path.join(authDir, 'user-auth.json')
+
+  try {
+    if (fs.existsSync(adminAuthFile)) fs.unlinkSync(adminAuthFile)
+    if (fs.existsSync(userAuthFile)) fs.unlinkSync(userAuthFile)
+    console.log('Deleted old auth state files for fresh test run')
+  } catch (error) {
+    console.warn('Warning: Could not delete old auth files:', error)
+  }
 
   // Clean database completely before starting tests
   await cleanDatabaseCompletely()
 
-  const browserConfig = {
-    viewport: { width: 375, height: 812 }, // Mobile viewport
-    baseURL: serverUrl,
-    extraHTTPHeaders: {
-      'Accept-Language': 'nl,en;q=0.9', // Use Dutch with English fallback for consistent testing
-      'x-test-bypass': 'true', // Bypass rate limiting in tests
-    },
-    // Set language cookie for all tests to ensure consistent Dutch language
-    locale: 'nl-NL',
-    // Set cookies to force Dutch language in the app
-    storageState: {
+  // Seed essential test data - create tournaments for team creation tests
+  const { createTestTournament } = await import('./database')
+  await createTestTournament('Spring Cup', 'Amsterdam')
+  await createTestTournament('Summer Cup', 'Aalsmeer')
+
+  // Create users for testing
+  const adminUser = await createAdminUser()
+  const regularUser = await createManagerUser()
+
+  // Create simple auth state files with session cookies
+  await createSimpleAuthState(
+    adminUser.id,
+    './playwright/.auth/admin-auth.json',
+    'admin'
+  )
+  await createSimpleAuthState(
+    regularUser.id,
+    './playwright/.auth/user-auth.json',
+    'regular user'
+  )
+}
+
+async function createSimpleAuthState(
+  userId: string,
+  authFilePath: string,
+  userType: string
+): Promise<void> {
+  try {
+    // Import session storage dynamically to avoid Node.js module issues
+    const { sessionStorage } = await import('../../app/utils/session.server.js')
+
+    // Create a session cookie with the user ID
+    const session = await sessionStorage.getSession()
+    session.set('userId', userId)
+    const sessionCookie = await sessionStorage.commitSession(session)
+
+    // Parse the Set-Cookie header to extract just the cookie value
+    // sessionCookie format: "__session=encrypted_value; Path=/; HttpOnly; SameSite=Lax"
+    const cookieMatch = sessionCookie.match(/__session=([^;]+)/)
+    if (!cookieMatch) {
+      throw new Error(`Failed to parse session cookie: ${sessionCookie}`)
+    }
+    const cookieValue = cookieMatch[1]
+
+    // Create a simple storage state file with the properly extracted session cookie
+    const storageState = {
       cookies: [
+        {
+          name: '__session',
+          value: cookieValue,
+          domain: 'localhost',
+          path: '/',
+          expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 7 days
+          httpOnly: true,
+          secure: false,
+          sameSite: 'Lax' as const,
+        },
         {
           name: 'lang',
           value: 'nl',
           domain: 'localhost',
           path: '/',
+          expires: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365, // 1 year
           httpOnly: false,
           secure: false,
-          sameSite: 'Lax',
+          sameSite: 'Lax' as const,
         },
       ],
       origins: [],
-    },
-  }
-
-  // Create browser instance for authentication
-  const browser = await chromium.launch()
-
-  try {
-    const adminUser = await createAdminUser()
-    await createAuthState(
-      browser,
-      browserConfig,
-      adminUser.email,
-      './playwright/.auth/admin-auth.json',
-      'admin'
-    )
-
-    const regularUser = await createManagerUser()
-    await createAuthState(
-      browser,
-      browserConfig,
-      regularUser.email,
-      './playwright/.auth/user-auth.json',
-      'regular user'
-    )
-  } catch (error) {
-    console.error('Global setup failed:', error)
-    throw error
-  } finally {
-    await browser.close()
-  }
-}
-
-async function createAuthState(
-  browser: any,
-  browserConfig: any,
-  email: string,
-  authFilePath: string,
-  userType: string
-): Promise<void> {
-  const context = await browser.newContext(browserConfig)
-  const page = await context.newPage()
-
-  try {
-    await page.goto('/auth/signin')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(1000)
-
-    await page.locator('#email').fill(email)
-    await page.locator('#password').fill('MyReallyStr0ngPassw0rd!!!')
-
-    const signInButton = page.locator('button[type="submit"]')
-    await signInButton.waitFor({ state: 'visible', timeout: 30000 })
-    await signInButton.click()
-
-    if (userType === 'admin') {
-      await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
-    } else {
-      await page.waitForURL('/a7k9m2x5p8w1n4q6r3y8b5t1', { timeout: 30000 })
     }
 
-    await context.storageState({ path: authFilePath })
+    // Ensure the .auth directory exists
+    const authDir = path.dirname(authFilePath)
+    if (!fs.existsSync(authDir)) {
+      fs.mkdirSync(authDir, { recursive: true })
+    }
+
+    // Write the storage state file
+    fs.writeFileSync(authFilePath, JSON.stringify(storageState, null, 2))
+    console.log(
+      `Successfully created ${userType} auth state with direct session cookie`
+    )
   } catch (error) {
-    console.error(`${userType} authentication setup failed:`, error)
-
-    await page.screenshot({
-      path: `./playwright/.auth/${userType}-setup-error.png`,
-      fullPage: true,
-    })
-
+    console.error(`${userType} auth state creation failed:`, error)
     throw error
-  } finally {
-    await context.close()
   }
 }
 

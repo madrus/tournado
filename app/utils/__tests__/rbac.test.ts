@@ -23,6 +23,7 @@ const mockUsers: Record<string, User> = {
     lastName: 'User',
     email: 'admin@test.com',
     role: 'ADMIN',
+    firebaseUid: 'firebase-admin-uid',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -32,24 +33,47 @@ const mockUsers: Record<string, User> = {
     lastName: 'User',
     email: 'manager@test.com',
     role: 'MANAGER',
+    firebaseUid: 'firebase-manager-uid',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  editor: {
+    id: '3',
+    firstName: 'Editor',
+    lastName: 'User',
+    email: 'editor@test.com',
+    role: 'EDITOR',
+    firebaseUid: 'firebase-editor-uid',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  billing: {
+    id: '4',
+    firstName: 'Billing',
+    lastName: 'User',
+    email: 'billing@test.com',
+    role: 'BILLING',
+    firebaseUid: 'firebase-billing-uid',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   referee: {
-    id: '3',
+    id: '5',
     firstName: 'Referee',
     lastName: 'User',
     email: 'referee@test.com',
     role: 'REFEREE',
+    firebaseUid: 'firebase-referee-uid',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   public: {
-    id: '4',
+    id: '6',
     firstName: 'Public',
     lastName: 'User',
     email: 'public@test.com',
     role: 'PUBLIC',
+    firebaseUid: 'firebase-public-uid',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -117,6 +141,45 @@ describe('RBAC', () => {
       expect(hasPermission(referee, 'matches:referee')).toBe(true)
     })
 
+    it('should grant read-only permissions to EDITOR', () => {
+      const editor = mockUsers.editor
+
+      // EDITOR should have read-only permissions
+      expect(hasPermission(editor, 'teams:read')).toBe(true)
+      expect(hasPermission(editor, 'teams:create')).toBe(false)
+      expect(hasPermission(editor, 'teams:edit')).toBe(false)
+      expect(hasPermission(editor, 'teams:delete')).toBe(false)
+      expect(hasPermission(editor, 'tournaments:read')).toBe(true)
+      expect(hasPermission(editor, 'tournaments:create')).toBe(false)
+      expect(hasPermission(editor, 'tournaments:edit')).toBe(false)
+      expect(hasPermission(editor, 'matches:read')).toBe(true)
+      expect(hasPermission(editor, 'matches:create')).toBe(false)
+      expect(hasPermission(editor, 'matches:edit')).toBe(false)
+      expect(hasPermission(editor, 'matches:delete')).toBe(false)
+      expect(hasPermission(editor, 'matches:referee')).toBe(false)
+      expect(hasPermission(editor, 'system:reports')).toBe(true)
+    })
+
+    it('should grant read-only permissions to BILLING', () => {
+      const billing = mockUsers.billing
+
+      // BILLING should have read-only permissions plus billing
+      expect(hasPermission(billing, 'teams:read')).toBe(true)
+      expect(hasPermission(billing, 'teams:create')).toBe(false)
+      expect(hasPermission(billing, 'teams:edit')).toBe(false)
+      expect(hasPermission(billing, 'teams:delete')).toBe(false)
+      expect(hasPermission(billing, 'tournaments:read')).toBe(true)
+      expect(hasPermission(billing, 'tournaments:create')).toBe(false)
+      expect(hasPermission(billing, 'tournaments:edit')).toBe(false)
+      expect(hasPermission(billing, 'matches:read')).toBe(true)
+      expect(hasPermission(billing, 'matches:create')).toBe(false)
+      expect(hasPermission(billing, 'matches:edit')).toBe(false)
+      expect(hasPermission(billing, 'matches:delete')).toBe(false)
+      expect(hasPermission(billing, 'matches:referee')).toBe(false)
+      expect(hasPermission(billing, 'system:reports')).toBe(true)
+      expect(hasPermission(billing, 'system:billing')).toBe(true)
+    })
+
     it('should grant read and team creation permissions to PUBLIC', () => {
       const publicUser = mockUsers.public
 
@@ -152,7 +215,9 @@ describe('RBAC', () => {
       expect(getUIContext(mockUsers.manager)).toBe('admin')
     })
 
-    it('should return public context for REFEREE and PUBLIC', () => {
+    it('should return public context for EDITOR, BILLING, REFEREE and PUBLIC', () => {
+      expect(getUIContext(mockUsers.editor)).toBe('public')
+      expect(getUIContext(mockUsers.billing)).toBe('public')
       expect(getUIContext(mockUsers.referee)).toBe('public')
       expect(getUIContext(mockUsers.public)).toBe('public')
       expect(getUIContext(null)).toBe('public')
@@ -165,7 +230,9 @@ describe('RBAC', () => {
       expect(isAdmin(mockUsers.manager)).toBe(true)
     })
 
-    it('should not identify REFEREE and PUBLIC as admin users', () => {
+    it('should not identify EDITOR, BILLING, REFEREE and PUBLIC as admin users', () => {
+      expect(isAdmin(mockUsers.editor)).toBe(false)
+      expect(isAdmin(mockUsers.billing)).toBe(false)
       expect(isAdmin(mockUsers.referee)).toBe(false)
       expect(isAdmin(mockUsers.public)).toBe(false)
       expect(isAdmin(null)).toBe(false)
@@ -176,30 +243,60 @@ describe('RBAC', () => {
     it('should return correct hierarchy levels', () => {
       expect(getRoleLevel('PUBLIC')).toBe(0)
       expect(getRoleLevel('REFEREE')).toBe(1)
-      expect(getRoleLevel('MANAGER')).toBe(2)
-      expect(getRoleLevel('ADMIN')).toBe(3)
+      expect(getRoleLevel('EDITOR')).toBe(2)
+      expect(getRoleLevel('BILLING')).toBe(3)
+      expect(getRoleLevel('MANAGER')).toBe(4)
+      expect(getRoleLevel('ADMIN')).toBe(5)
     })
   })
 
   describe('hasRoleLevel', () => {
     it('should correctly compare role levels', () => {
+      // ADMIN (level 5) should have all levels
       expect(hasRoleLevel(mockUsers.admin, 'PUBLIC')).toBe(true)
       expect(hasRoleLevel(mockUsers.admin, 'REFEREE')).toBe(true)
+      expect(hasRoleLevel(mockUsers.admin, 'EDITOR')).toBe(true)
+      expect(hasRoleLevel(mockUsers.admin, 'BILLING')).toBe(true)
       expect(hasRoleLevel(mockUsers.admin, 'MANAGER')).toBe(true)
       expect(hasRoleLevel(mockUsers.admin, 'ADMIN')).toBe(true)
 
+      // MANAGER (level 4) should not have ADMIN level
       expect(hasRoleLevel(mockUsers.manager, 'PUBLIC')).toBe(true)
       expect(hasRoleLevel(mockUsers.manager, 'REFEREE')).toBe(true)
+      expect(hasRoleLevel(mockUsers.manager, 'EDITOR')).toBe(true)
+      expect(hasRoleLevel(mockUsers.manager, 'BILLING')).toBe(true)
       expect(hasRoleLevel(mockUsers.manager, 'MANAGER')).toBe(true)
       expect(hasRoleLevel(mockUsers.manager, 'ADMIN')).toBe(false)
 
+      // BILLING (level 3) should not have MANAGER or ADMIN levels
+      expect(hasRoleLevel(mockUsers.billing, 'PUBLIC')).toBe(true)
+      expect(hasRoleLevel(mockUsers.billing, 'REFEREE')).toBe(true)
+      expect(hasRoleLevel(mockUsers.billing, 'EDITOR')).toBe(true)
+      expect(hasRoleLevel(mockUsers.billing, 'BILLING')).toBe(true)
+      expect(hasRoleLevel(mockUsers.billing, 'MANAGER')).toBe(false)
+      expect(hasRoleLevel(mockUsers.billing, 'ADMIN')).toBe(false)
+
+      // EDITOR (level 2) should not have BILLING, MANAGER or ADMIN levels
+      expect(hasRoleLevel(mockUsers.editor, 'PUBLIC')).toBe(true)
+      expect(hasRoleLevel(mockUsers.editor, 'REFEREE')).toBe(true)
+      expect(hasRoleLevel(mockUsers.editor, 'EDITOR')).toBe(true)
+      expect(hasRoleLevel(mockUsers.editor, 'BILLING')).toBe(false)
+      expect(hasRoleLevel(mockUsers.editor, 'MANAGER')).toBe(false)
+      expect(hasRoleLevel(mockUsers.editor, 'ADMIN')).toBe(false)
+
+      // REFEREE (level 1) should only have PUBLIC and REFEREE levels
       expect(hasRoleLevel(mockUsers.referee, 'PUBLIC')).toBe(true)
       expect(hasRoleLevel(mockUsers.referee, 'REFEREE')).toBe(true)
+      expect(hasRoleLevel(mockUsers.referee, 'EDITOR')).toBe(false)
+      expect(hasRoleLevel(mockUsers.referee, 'BILLING')).toBe(false)
       expect(hasRoleLevel(mockUsers.referee, 'MANAGER')).toBe(false)
       expect(hasRoleLevel(mockUsers.referee, 'ADMIN')).toBe(false)
 
+      // PUBLIC (level 0) should only have PUBLIC level
       expect(hasRoleLevel(mockUsers.public, 'PUBLIC')).toBe(true)
       expect(hasRoleLevel(mockUsers.public, 'REFEREE')).toBe(false)
+      expect(hasRoleLevel(mockUsers.public, 'EDITOR')).toBe(false)
+      expect(hasRoleLevel(mockUsers.public, 'BILLING')).toBe(false)
       expect(hasRoleLevel(mockUsers.public, 'MANAGER')).toBe(false)
       expect(hasRoleLevel(mockUsers.public, 'ADMIN')).toBe(false)
     })

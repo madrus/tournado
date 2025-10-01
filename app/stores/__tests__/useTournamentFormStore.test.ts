@@ -137,16 +137,14 @@ describe('useTournamentFormStore', () => {
       // Mock validation to return error for empty field
       const validateSingleTournamentField =
         formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
-      validateSingleTournamentField.mockReturnValue(
-        'tournaments.form.errors.nameRequired'
-      )
+      validateSingleTournamentField.mockReturnValue('messages.tournament.nameRequired')
 
       // Mark field as touched - should trigger validation immediately
       state().validateFieldOnBlur('name')
 
       // Since name is empty and now touched, should show error
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
       expect(state().validation.blurredFields.name).toBe(true)
     })
@@ -163,9 +161,7 @@ describe('useTournamentFormStore', () => {
       // Mock validation to return error
       const validateSingleTournamentField =
         formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
-      validateSingleTournamentField.mockReturnValue(
-        'tournaments.form.errors.nameRequired'
-      )
+      validateSingleTournamentField.mockReturnValue('messages.tournament.nameRequired')
 
       // Set force show all errors
       state().setValidationField('forceShowAllErrors', true)
@@ -173,7 +169,7 @@ describe('useTournamentFormStore', () => {
       // Now validation should work even for untouched fields
       state().validateField('name')
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
     })
 
@@ -181,9 +177,7 @@ describe('useTournamentFormStore', () => {
       // Mock validation to return error
       const validateSingleTournamentField =
         formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
-      validateSingleTournamentField.mockReturnValue(
-        'tournaments.form.errors.nameRequired'
-      )
+      validateSingleTournamentField.mockReturnValue('messages.tournament.nameRequired')
 
       // Set submit attempted
       state().setValidationField('submitAttempted', true)
@@ -191,7 +185,7 @@ describe('useTournamentFormStore', () => {
       // Now validation should work even for untouched fields
       state().validateField('name')
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
     })
 
@@ -200,13 +194,13 @@ describe('useTournamentFormStore', () => {
       const validateSingleTournamentField =
         formValidation.validateSingleTournamentField as ReturnType<typeof vi.fn>
       validateSingleTournamentField.mockReturnValueOnce(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
 
       // Touch field and trigger error
       state().validateFieldOnBlur('name')
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
 
       // Mock validation to return null for valid value
@@ -227,11 +221,11 @@ describe('useTournamentFormStore', () => {
       const validateEntireTournamentForm =
         formValidation.validateEntireTournamentForm as ReturnType<typeof vi.fn>
       const mockErrors = {
-        name: 'tournaments.form.errors.nameRequired',
-        location: 'tournaments.form.errors.locationRequired',
-        startDate: 'tournaments.form.errors.startDateRequired',
-        divisions: 'tournaments.form.errors.divisionsRequired',
-        categories: 'tournaments.form.errors.categoriesRequired',
+        name: 'messages.tournament.nameRequired',
+        location: 'messages.tournament.locationRequired',
+        startDate: 'messages.tournament.startDateRequired',
+        divisions: 'messages.tournament.divisionsRequired',
+        categories: 'messages.tournament.categoriesRequired',
       }
       validateEntireTournamentForm.mockReturnValue(mockErrors)
 
@@ -244,19 +238,19 @@ describe('useTournamentFormStore', () => {
 
       // All required fields should show errors
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
       expect(state().validation.displayErrors.location).toBe(
-        'tournaments.form.errors.locationRequired'
+        'messages.tournament.locationRequired'
       )
       expect(state().validation.displayErrors.startDate).toBe(
-        'tournaments.form.errors.startDateRequired'
+        'messages.tournament.startDateRequired'
       )
       expect(state().validation.displayErrors.divisions).toBe(
-        'tournaments.form.errors.divisionsRequired'
+        'messages.tournament.divisionsRequired'
       )
       expect(state().validation.displayErrors.categories).toBe(
-        'tournaments.form.errors.categoriesRequired'
+        'messages.tournament.categoriesRequired'
       )
     })
 
@@ -284,9 +278,9 @@ describe('useTournamentFormStore', () => {
 
   describe('Field Error Management', () => {
     it('should set and clear field errors', () => {
-      state().setFieldError('name', 'tournaments.form.errors.nameRequired')
+      state().setFieldError('name', 'messages.tournament.nameRequired')
       expect(state().validation.displayErrors.name).toBe(
-        'tournaments.form.errors.nameRequired'
+        'messages.tournament.nameRequired'
       )
 
       state().clearFieldError('name')
@@ -305,8 +299,8 @@ describe('useTournamentFormStore', () => {
 
     it('should set display errors in bulk', () => {
       const errors = {
-        name: 'tournaments.form.errors.nameRequired',
-        location: 'tournaments.form.errors.locationRequired',
+        name: 'messages.tournament.nameRequired',
+        location: 'messages.tournament.locationRequired',
       }
 
       state().setValidationField('displayErrors', errors)

@@ -1,0 +1,463 @@
+---
+description: Complete Firebase authentication with email/password and remove legacy auth system
+id: "TASK-0004"
+title: "Complete Firebase authentication with email/password and remove legacy auth system"
+status: "done"
+priority: "P0"
+labels: ["auth", "firebase", "migration", "cleanup"]
+dependencies: ["./TASK-0003-auth-ux-migration.mdc"]
+created: "2025-01-09"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🧹 **MIGRATION Task** - Complete Firebase Authentication
+**Decision**: This task completes the Firebase authentication migration by implementing email/password authentication and establishing a clean separation between production code and Playwright/test code via adapters and utilities. Legacy bcrypt/cookie-based authentication removal is deferred to a follow-up task.
+
+**Rationale**:
+- Firebase is now the single authentication provider with Google OAuth already implemented
+- Legacy system creates maintenance burden and security complexity
+- Development phase allows for clean database reset without user migration concerns
+- Multi-super-admin system provides role assignment capability for new Firebase users
+- Complete migration ensures consistent authentication flow across all user types
+
+# 1) High-Level Objective
+
+Complete Firebase authentication implementation by adding email/password authentication, implementing multi-super-admin role assignment system, and refactoring E2E/test-only code behind adapters to keep production code clean. Legacy bcrypt/cookie-based authentication removal will be handled in a separate task.
+
+# 2) Background / Context
+
+Final phase of authentication modernization requires completing Firebase email/password authentication to support users without Google accounts, implementing environment-based super admin role assignment for new Firebase users, and removing all legacy authentication code including bcrypt password handling, Password table, and cookie-based sessions.
+
+Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: TASK-0003 Firebase Google authentication is complete and working
+- ASSUMPTION: Development environment with no production users (allows database reset)
+- Constraint: Maintain existing route protection patterns during migration
+- Constraint: Support internationalization with existing locales
+- Constraint: Follow existing CVA component styling patterns
+- Constraint: No breaking changes to protected route functionality
+- Constraint: No Playwright/test-specific checks in production hooks/components; use adapters/utils for E2E detection and mocking.
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- ./TASK-0003-auth-ux-migration.mdc (Firebase Google authentication must be complete)
+- app/features/firebase/client.ts _(from TASK-0001)_
+- app/features/firebase/server.ts _(from TASK-0002)_
+- app/features/firebase/session.server.ts _(from TASK-0002)_
+- app/features/firebase/components/FirebaseSignIn/ _(from TASK-0003)_
+- Environment variable setup for SUPER_ADMIN_EMAILS
+
+# 5) Context Plan
+
+## 🧹 MIGRATION Task Pattern
+**Beginning (add to model context):**
+- app/features/firebase/ _(complete Firebase module)_
+- app/routes/auth/ _(existing auth routes to be updated)_
+- app/models/user.server.ts _(user model with legacy auth code)_
+- app/components/auth/ _(legacy auth components to be removed)_
+- app/stores/authStore.ts _(auth state management)_
+- prisma/schema.prisma _(database schema with Password table)_
+
+**End state (files that will be created/modified):**
+
+Complete Firebase authentication (legacy removal follow-up):
+- app/features/firebase/components/FirebaseEmailSignIn/ _(new email/password component)_
+- app/features/firebase/server.ts _(enhanced with role assignment)_
+- app/hooks/useFirebaseAuth.ts _(enhanced with email/password methods; production-only)_
+- app/routes/auth.signin.tsx _(updated with both Google and email/password options)_
+- app/routes/auth.signup.tsx _(new Firebase-based signup)_
+- app/routes/admin.users.tsx _(new admin user management)_
+- app/models/user.server.ts _(cleaned, Firebase-only)_
+- prisma/schema.prisma _(Password table removed, firebaseUid required)_
+- app/stores/authStore.ts _(simplified, Firebase-only)_
+- **Removed files**: app/components/auth/ _(legacy components)_
+- **Database migration**: Reset development database with clean Firebase-only schema
+
+Refactor / new adapters and utils:
+- app/features/firebase/adapters/clientAuth.ts _(mock-aware client auth adapters)_
+- app/features/firebase/adapters/redirect.ts _(E2E-safe redirect handling)_
+- app/features/firebase/server/tokenVerifier.ts _(server-side mock token verifier behind header guard)_
+- app/features/firebase/utils/env.ts _(E2E detection helpers and debug)_
+- app/features/firebase/utils/errors.ts _(friendly error mapping)_
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+## File Creation Safety Check
+**CRITICAL**: Before creating any new file, you MUST:
+1. Check if a file with that name already exists using Read/Glob tools
+2. If exists, analyze its content and purpose
+3. If same purpose: update/merge carefully preserving existing functionality
+4. If different purpose: ask user for guidance
+5. Never overwrite existing code without analysis
+
+1. **Create Firebase email/password authentication component**
+
+   - File: `app/features/firebase/components/FirebaseEmailSignIn/FirebaseEmailSignIn.tsx`
+   - Exported API:
+     ```tsx
+     export type FirebaseEmailSignInProps = {
+       mode: 'signin' | 'signup'
+       redirectTo?: string
+       className?: string
+       variant?: 'default' | 'outline'
+       size?: 'sm' | 'md' | 'lg'
+     }
+
+     export const FirebaseEmailSignIn = ({
+       mode,
+       redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1',
+       className,
+       variant = 'default',
+       size = 'md',
+     }: FirebaseEmailSignInProps): JSX.Element
+     ```
+   - Details:
+     - Use Firebase Auth with email/password provider
+     - Handle both signin and signup modes in single component
+     - Form validation with email format checking
+     - Password strength requirements for signup
+     - Loading states and error handling
+     - Support internationalization with useTranslation
+     - Follow existing CVA styling patterns
+
+2. **Create component variants**
+
+   - File: `app/features/firebase/components/FirebaseEmailSignIn/firebaseEmailSignIn.variants.ts`
+   - Use CVA pattern matching existing Firebase components
+   - Support form styling with input fields and submit buttons
+
+3. **Enhance Firebase authentication hook**
+
+   - File: `app/hooks/useFirebaseAuth.ts` (update existing)
+   - Add email/password methods:
+     ```ts
+     export type UseFirebaseAuthReturn = {
+       signInWithGoogle: (redirectTo?: string) => Promise<void>
+       signInWithEmail: (email: string, password: string, redirectTo?: string) => Promise<void>
+       signUpWithEmail: (email: string, password: string, redirectTo?: string) => Promise<void>
+       signOut: () => Promise<void>
+       user: FirebaseUser | null
+       loading: boolean
+       error: string | null
+       clearError: () => void
+     }
+     ```
+   - Details:
+     - Import auth methods via adapters; keep production code clean (no Playwright checks)
+     - Handle email/password signup with automatic role assignment
+     - Integrate with existing session bridge for server-side sessions
+
+4. **Enhance Firebase server-side authentication**
+
+   - File: `app/features/firebase/server.ts` (update existing)
+   - Add role assignment logic:
+     ```ts
+     type AssignUserRoleProps = {
+       firebaseUid: string
+       email: string
+     }
+
+     export const assignUserRole = async (
+       props: Readonly<AssignUserRoleProps>
+     ): Promise<Role> => {
+       const { firebaseUid, email } = props
+       const superAdminEmails = process.env.SUPER_ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
+
+       if (superAdminEmails.includes(email)) {
+         return Role.ADMIN
+       }
+
+       return Role.PUBLIC // Default role for new users
+     }
+
+     type CreateOrUpdateUserProps = {
+       firebaseUser: FirebaseUser
+     }
+
+     export const createOrUpdateUser = async (
+       props: Readonly<CreateOrUpdateUserProps>
+     ): Promise<User> => {
+       // Create or update user with assigned role
+       // Handle first-time user creation with role assignment
+     }
+     ```
+
+   - Add token verifier wrapper to support test bypass only under `x-test-bypass` header
+
+5. **Update authentication routes**
+
+   - File: `app/routes/auth.signin.tsx` (update existing)
+   - Add email/password option alongside Google authentication:
+     ```tsx
+     export default function SignIn(): JSX.Element {
+       const { redirectTo } = useLoaderData<typeof loader>()
+
+       return (
+         <div className="mx-auto max-w-md space-y-6">
+           <div className="space-y-2 text-center">
+             <h1 className="text-2xl font-bold">{t('auth.signin.title')}</h1>
+             <p className="text-muted-foreground">{t('auth.signin.description')}</p>
+           </div>
+
+           <FirebaseSignIn redirectTo={redirectTo} />
+
+           <div className="relative">
+             <div className="absolute inset-0 flex items-center">
+               <span className="w-full border-t" />
+             </div>
+             <div className="relative flex justify-center text-xs uppercase">
+               <span className="bg-background px-2 text-muted-foreground">{t('auth.or')}</span>
+             </div>
+           </div>
+
+           <FirebaseEmailSignIn mode="signin" redirectTo={redirectTo} />
+
+           <p className="text-center text-sm text-muted-foreground">
+             {t('auth.signin.noAccount')}{' '}
+             <Link to="/auth/signup" className="underline hover:text-primary">
+               {t('auth.signin.signUpLink')}
+             </Link>
+           </p>
+         </div>
+       )
+     }
+     ```
+
+   - File: `app/routes/auth.signup.tsx` (new)
+   - Create Firebase-based signup route:
+     ```tsx
+     export default function SignUp(): JSX.Element {
+       const { redirectTo } = useLoaderData<typeof loader>()
+
+       return (
+         <div className="mx-auto max-w-md space-y-6">
+           <div className="space-y-2 text-center">
+             <h1 className="text-2xl font-bold">{t('auth.signup.title')}</h1>
+             <p className="text-muted-foreground">{t('auth.signup.description')}</p>
+           </div>
+
+           <FirebaseSignIn redirectTo={redirectTo} />
+
+           <div className="relative">
+             <div className="absolute inset-0 flex items-center">
+               <span className="w-full border-t" />
+             </div>
+             <div className="relative flex justify-center text-xs uppercase">
+               <span className="bg-background px-2 text-muted-foreground">{t('auth.or')}</span>
+             </div>
+           </div>
+
+           <FirebaseEmailSignIn mode="signup" redirectTo={redirectTo} />
+
+           <p className="text-center text-sm text-muted-foreground">
+             {t('auth.signup.hasAccount')}{' '}
+             <Link to="/auth/signin" className="underline hover:text-primary">
+               {t('auth.signup.signInLink')}
+             </Link>
+           </p>
+         </div>
+       )
+     }
+     ```
+
+6. **Create admin user management interface**
+
+   - File: `app/routes/admin.users.tsx` (new)
+   - Admin-only interface for user role management:
+     ```tsx
+     export async function loader({ request }: LoaderFunctionArgs): LoaderData {
+       const user = await requireUserWithRole(request, [Role.ADMIN])
+       const users = await getAllUsers()
+       return json({ users })
+     }
+
+     export async function action({ request }: ActionFunctionArgs): ActionData {
+       await requireUserWithRole(request, [Role.ADMIN])
+       const formData = await request.formData()
+       const userId = formData.get('userId') as string
+       const newRole = formData.get('role') as Role
+
+       await updateUserRole(userId, newRole)
+       return redirect('/admin/users')
+     }
+
+     export default function AdminUsers(): JSX.Element {
+       // Admin interface for viewing and managing user roles
+       // Table with user info and role assignment dropdowns
+       // Only accessible to ADMIN users
+     }
+     ```
+
+7. **Remove legacy authentication system**
+
+   - **Database schema update**:
+     - File: `prisma/schema.prisma` (update existing)
+     - Remove Password model completely
+     - Make firebaseUid required and remove password field from User
+     - Create migration to reset development database
+
+   - **User model cleanup**:
+     - File: `app/models/user.server.ts` (update existing)
+     - Remove all bcrypt-related functions
+     - Remove legacy password verification
+     - Remove cookie-based session creation
+     - Keep only Firebase-based user operations
+
+   - **Auth store simplification**:
+     - File: `app/stores/authStore.ts` (update existing)
+     - Remove legacy authentication state
+     - Keep only Firebase user and authentication state
+
+   - **Remove legacy auth components**:
+     - Remove: `app/components/auth/` directory entirely
+     - Update any imports to use new Firebase components
+
+8. **Database migration and cleanup**
+
+   - Create development database reset script
+   - File: `scripts/reset-dev-db.sh` (new)
+   - Reset development database with clean Firebase-only schema
+   - Seed with test users using Firebase UIDs
+
+9. **Tests**
+   - File: `app/features/firebase/__tests__/components/FirebaseEmailSignIn.test.tsx` (Vitest)
+   - Cases:
+     - Renders signup form correctly
+     - Renders signin form correctly
+     - Handles email/password signup flow
+     - Handles email/password signin flow
+     - Validates email format
+     - Validates password strength for signup
+     - Displays loading states appropriately
+     - Shows error messages for authentication failures
+   - File: `app/hooks/__tests__/useFirebaseAuth.test.tsx` (update existing)
+   - Add cases for email/password authentication methods
+   - File: `app/routes/__tests__/admin.users.test.tsx` (Vitest)
+   - Cases:
+     - Requires ADMIN role access
+     - Displays user list correctly
+     - Handles role assignment updates
+     - Shows proper error states
+   - File: `playwright/tests/complete-firebase-auth.spec.ts` (E2E)
+   - Cases:
+     - Complete email/password signup flow
+     - Complete email/password signin flow
+     - Admin user role management functionality
+     - Mixed authentication (Google + email/password) scenarios
+     - Role-based access control verification
+
+# 7) Types & Interfaces (if applicable)
+
+## 🧹 Migration Types (legacy removal + Firebase completion)
+```ts
+// app/features/firebase/types.ts (extend existing)
+export type AuthMode = 'signin' | 'signup'
+
+export type EmailPasswordAuthData = {
+  email: string
+  password: string
+  confirmPassword?: string // Only for signup
+}
+
+export type UserRoleAssignment = {
+  userId: string
+  currentRole: Role
+  newRole: Role
+  assignedBy: string
+  assignedAt: Date
+}
+
+export type SuperAdminConfig = {
+  emails: string[]
+  defaultRole: Role
+}
+
+// Remove legacy types from app/lib/lib.types.ts
+// ❌ Remove: PasswordData, LegacySession, CookieAuth, etc.
+```
+
+# 8) Acceptance Criteria
+
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🧹 Migration Task Criteria
+- Firebase authentication supports both Google OAuth and email/password signin/signup
+- Multi-super-admin role assignment works via SUPER_ADMIN_EMAILS environment variable
+- New Firebase users are automatically assigned appropriate roles (ADMIN for super admins, PUBLIC for others)
+- Admin interface allows ADMIN users to manage user roles (change PUBLIC ↔ MANAGER ↔ REFEREE)
+- All legacy authentication code is completely removed (bcrypt, Password table, cookie sessions)
+- Development database is reset with clean Firebase-only schema
+- No legacy authentication artifacts remain in codebase
+- Route protection continues to work with Firebase-based sessions
+- User experience is seamless across Google OAuth and email/password authentication
+- Error handling provides clear feedback for authentication failures
+- Password validation enforces security requirements for email/password signup
+- Internationalization works for all new authentication flows
+
+# 9) Testing Strategy
+
+- Mock Firebase Auth for isolated component testing using proper ESM patterns
+- **Mock patterns**: When mocking Firebase client SDK, use named export mocks: `vi.mock('firebase/auth', () => ({ ... }))`
+- Test email/password authentication flows with various validation scenarios
+- Test role assignment logic with different super admin email configurations
+- Verify admin user management interface with proper access control
+- Test migration from legacy system (ensure no legacy artifacts remain)
+- Include accessibility testing for new authentication forms
+- Test responsive design for signup/signin forms on different screen sizes
+- Verify complete authentication flow integration end-to-end
+- Test error scenarios: invalid emails, weak passwords, authentication failures
+- Verify environment variable configuration for super admin assignment
+
+# 10) Notes / Links
+
+- Reference PRD section: Phase 1 - Authentication Modernization (Complete)
+- Firebase Auth Web documentation: https://firebase.google.com/docs/auth/web/password-auth
+- Firebase Admin SDK documentation: https://firebase.google.com/docs/auth/admin/manage-users
+- Email/password authentication security best practices
+- Role-based access control (RBAC) patterns
+- **Migration Note**: Complete removal of legacy system ensures no technical debt and simplified maintenance
+- **Architecture Note**: Single authentication provider (Firebase) reduces complexity and improves security
+- **Development Note**: Database reset approach is safe for development phase with no production users
+- **Environment Note**: Multi-super-admin configuration provides flexibility for team access in different environments
+- **Decision History**: Phone number authentication evaluated but postponed due to SMS costs and complexity considerations (documented in `docs/development/authentication.md`)
+6. **Refactor for E2E/Test isolation**
+
+   - Create adapters for mock-aware client auth and redirect handling
+   - Create tokenVerifier that gates mock token decoding behind `x-test-bypass` header
+   - Remove Playwright/test checks from production hook and client initializer
+   - Add feature-local Window typings for Playwright mocks
+
+7. **Follow-up (separate task)**
+
+   - Remove legacy bcrypt/password auth, Password table, and legacy components
+   - Update prisma schema and remove seed password hashing
+   - Migrate any residual references
+
+# 7) Acceptance Criteria
+
+- Google and Email/Password sign-in/sign-up flows work end-to-end
+- Server sets HTTP-only session cookie via `/auth/callback`
+- Role assignment via `SUPER_ADMIN_EMAILS` works on first sign-in
+- Admin route guards and redirects pass
+- Unit tests (Vitest) and E2E tests (Playwright) pass green
+- No Playwright/test-specific checks in production hook; all E2E logic behind adapters/utils

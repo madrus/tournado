@@ -66,5 +66,10 @@ export function initI18n(language: string): I18nType {
 }
 
 // At the bottom of the file
+// At the bottom of the file
 export const i18n = initI18n('nl') // Default to Dutch (fallback language)
-export default i18n
+
+// Function to change the language
+export const changeLanguage = (lng: Language): void => {
+  i18n.changeLanguage(lng)
+}

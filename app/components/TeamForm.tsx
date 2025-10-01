@@ -274,12 +274,12 @@ export function TeamForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.success(t('teams.notifications.registrationSuccess'), {
-        description: t('teams.notifications.registrationSuccessDesc'),
+      toast.success(t('messages.team.registrationSuccess'), {
+        description: t('messages.team.registrationSuccessDesc'),
       })
     } else {
-      toast.success(t('teams.notifications.updateSuccess'), {
-        description: t('teams.notifications.updateSuccessDesc'),
+      toast.success(t('messages.team.updateSuccess'), {
+        description: t('messages.team.updateSuccessDesc'),
       })
     }
   }, [formMode, t])
@@ -297,12 +297,12 @@ export function TeamForm({
     const isCreating = formMode === 'create'
 
     if (isCreating) {
-      toast.error(t('teams.notifications.registrationError'), {
-        description: t('teams.notifications.registrationErrorDesc'),
+      toast.error(t('messages.team.registrationError'), {
+        description: t('messages.team.registrationErrorDesc'),
       })
     } else {
-      toast.error(t('teams.notifications.updateError'), {
-        description: t('teams.notifications.updateErrorDesc'),
+      toast.error(t('messages.team.updateError'), {
+        description: t('messages.team.updateErrorDesc'),
       })
     }
   }, [formMode, t])

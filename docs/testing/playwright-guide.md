@@ -269,12 +269,13 @@ async function globalSetup() {
 ```typescript
 export async function createAdminUser() {
    const email = `admin-${randomString()}@test.com`
-   const hashedPassword = await bcrypt.hash('MyReallyStr0ngPassw0rd!!!', 12)
 
    return await prisma.user.create({
       data: {
          email,
-         password: { create: { hash: hashedPassword } },
+         firebaseUid: `test-admin-${randomString()}`,
+         firstName: 'Admin',
+         lastName: 'User',
          role: 'ADMIN',
       },
    })
@@ -282,12 +283,13 @@ export async function createAdminUser() {
 
 export async function createRegularUser() {
    const email = `user-${randomString()}@example.com`
-   const hashedPassword = await bcrypt.hash('MyReallyStr0ngPassw0rd!!!', 12)
 
    return await prisma.user.create({
       data: {
          email,
-         password: { create: { hash: hashedPassword } },
+         firebaseUid: `test-user-${randomString()}`,
+         firstName: 'Regular',
+         lastName: 'User',
          role: 'PUBLIC',
       },
    })

@@ -22,3 +22,6 @@ playwright-results
 playwright/.auth
 playwright/.cache
 test-results
+.vscode/project.mcp.json
+setup-flyio-secrets.sh
+setup-github-secrets.sh

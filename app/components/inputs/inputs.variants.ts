@@ -283,7 +283,7 @@ export const datePickerButtonVariants = cva(
 
 // Date picker text variants
 export const datePickerTextVariants = cva(
-  ['flex-1 truncate text-left transition-colors duration-200'],
+  ['flex-1 truncate text-start transition-colors duration-200'],
   {
     variants: {
       state: {
@@ -315,10 +315,6 @@ export const textInputLabelVariants = cva(['flex w-full flex-col'])
 
 // Text input label text variants
 export const textInputLabelTextVariants = cva(['font-medium text-foreground'])
-
-// Text input error variants - DEPRECATED: Use ErrorMessage component instead
-// export const textInputErrorVariants = cva(['mt-2 text-sm text-brand'])
-
 // Calendar container variants
 export const calendarContainerVariants = cva([
   'p-4 rounded-lg shadow-lg border',
@@ -610,8 +606,6 @@ export type TextInputLabelVariants = VariantProps<typeof textInputLabelVariants>
  * Type definition for textInputLabelTextVariants props.
  */
 export type TextInputLabelTextVariants = VariantProps<typeof textInputLabelTextVariants>
-
-// export type TextInputErrorVariants = VariantProps<typeof textInputErrorVariants> // DEPRECATED: Now using ErrorMessage component
 
 /**
  * Type definition for calendarContainerVariants props.

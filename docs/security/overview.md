@@ -28,7 +28,7 @@ Rate limiting is implemented using an in-memory store with automatic cleanup, me
 #### Admin Login (`/auth/signin`)
 
 - **Limit**: 5 attempts per 15 minutes
-- **Block Duration**: 30 minutes after limit exceeded
+- **Block Duration**: 15 minutes after limit exceeded
 - **Purpose**: Prevent brute force password attacks
 
 ```ts
@@ -38,8 +38,8 @@ const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.ADMIN_LO
 
 #### Admin Actions (General)
 
-- **Limit**: 30 requests per 5 minutes
-- **Block Duration**: 10 minutes after limit exceeded
+- **Limit**: 5 requests per 15 minutes
+- **Block Duration**: 15 minutes after limit exceeded
 - **Purpose**: Prevent admin panel abuse and automated attacks
 
 ```ts
@@ -157,17 +157,17 @@ export const RATE_LIMITS = {
    ADMIN_LOGIN: {
       maxAttempts: 5,
       windowMs: 15 * 60 * 1000, // 15 minutes
-      blockDurationMs: 30 * 60 * 1000, // 30 minutes block
+      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
    },
    ADMIN_ACTIONS: {
-      maxAttempts: 30,
-      windowMs: 5 * 60 * 1000, // 5 minutes
-      blockDurationMs: 10 * 60 * 1000, // 10 minutes block
+      maxAttempts: 5,
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
    },
    USER_REGISTRATION: {
       maxAttempts: 5, // Allow for form validation errors
-      windowMs: 30 * 60 * 1000, // 30 minutes
-      blockDurationMs: 60 * 60 * 1000, // 1 hour block
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      blockDurationMs: 15 * 60 * 1000, // 15 minutes block
    },
 }
 ```

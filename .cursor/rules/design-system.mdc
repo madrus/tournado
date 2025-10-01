@@ -1,0 +1,52 @@
+---
+description: Design System Guidelines for Tournado UI/UX consistency
+globs:
+alwaysApply: true
+---
+
+# Design System Guidelines
+
+## UI Patterns
+
+### Actionable Panels
+- Use actionable panels with clear CTAs for user interactions across all features where users need to take actions
+- Panel types: info, action, warning, success
+- Always include clear next steps or primary actions
+- Maintain consistent spacing and visual hierarchy
+
+### Background Gradients
+- Apply consistent background gradients across all pages using Tailwind classes
+- Use established gradient patterns for visual consistency
+- Ensure gradients work in both light and dark modes
+
+## Color System
+
+### Semantic Colors
+- Always use semantic color classes from `app/styles/tailwind.css` for ColorAccent types
+- Maintain color consistency across components
+- Ensure sufficient contrast for accessibility (WCAG AA standard)
+
+## Component Standards
+
+### Touch Targets
+- Minimum 44px touch targets for all actionable elements
+- Adequate spacing between interactive elements
+- Mobile-first approach with `lg:` enhancements for desktop
+
+### Loading States
+- Consistent loading indicators and skeleton screens
+- Provide feedback for all async operations
+- Use established loading component patterns
+
+### Error Handling
+- Consistent error messaging patterns
+- Clear recovery actions for users
+- Sanitized error messages for public routes
+
+## Layout Principles
+
+### Mobile-First Design
+- Default to mobile layout
+- Enhance with `lg:` prefixes for desktop
+- Responsive spacing and typography scales
+- Touch-optimized navigation and interactions

@@ -1,0 +1,224 @@
+---
+description: Set up Firebase project and Google Authentication configuration
+id: "TASK-0001"
+title: "Set up Firebase project with Google Authentication"
+status: "done"
+priority: "P0"
+labels: ["auth", "firebase", "setup"]
+dependencies: []
+created: "2025-01-09"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🎯 **FEATURE Task** - Self-contained business domain
+**Decision**: Firebase authentication is a distinct business domain with its own data models, business rules, and workflows that could be extracted as a separate service. All Firebase-related functionality will be organized in `app/features/firebase/` for better code organization and maintainability.
+
+**Rationale**:
+- Firebase auth has its own configuration, types, and server/client logic
+- Can be developed and tested independently
+- Clear feature boundary that doesn't overlap with other domains
+- Future scalability if Firebase functionality expands
+
+# 1) High-Level Objective
+
+Configure Firebase project with Google Authentication to replace current cookie-based auth system.
+
+# 2) Background / Context
+
+Phase 1 of authentication modernization requires migrating from cookie sessions to Firebase-backed authentication with Google sign-in. This task sets up the foundational Firebase configuration and environment setup needed for subsequent authentication implementation tasks.
+
+Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: Google Cloud project will be created for Firebase hosting
+- Constraint: Must maintain SSR compatibility for session bridging
+- Constraint: Use existing role-based access control structure (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Constraint: Preserve current redirect behavior and route protection
+- Constraint: No breaking changes to existing user data model
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- prisma/schema.prisma (existing User model with role field)
+- app/utils/session.server.ts (current session utilities)
+
+# 5) Context Plan
+
+## 🎯 FEATURE Task Pattern
+**Beginning (add to model context):**
+- prisma/schema.prisma _(read-only)_
+- app/utils/session.server.ts _(read-only)_
+- package.json _(read-only)_
+- .env.example _(read-only)_
+
+**End state (files that will be created/modified):**
+- app/features/firebase/index.ts _(feature public API)_
+- app/features/firebase/client.ts
+- app/features/firebase/server.ts
+- app/features/firebase/types.ts
+- app/features/firebase/__tests__/ _(test files as needed)_
+- Updated .env.example with Firebase environment variables
+- Updated package.json with Firebase dependencies
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+1. **Create Firebase project and enable Authentication**
+
+   - Create new Firebase project in Google Cloud Console
+   - Enable Authentication service
+   - Configure Google sign-in provider
+   - Add authorized domains for development and production
+   - Generate Firebase config object and service account key
+
+2. **Install Firebase dependencies**
+
+   - File: `package.json`
+   - Add dependencies:
+     ```json
+     {
+       "firebase": "^10.7.1",
+       "firebase-admin": "^11.11.1"
+     }
+     ```
+
+3. **Create Firebase client configuration**
+
+   - File: `app/features/firebase/client.ts`
+   - Exported API:
+     ```ts
+     import { initializeApp } from 'firebase/app'
+     import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+
+     export const firebaseApp: FirebaseApp
+     export const auth: Auth
+     export const googleProvider: GoogleAuthProvider
+     export const isFirebaseConfigured: boolean
+     ```
+   - Details:
+     - Initialize Firebase app with client config
+     - Set up Google Auth provider
+     - Export auth instance for use in components
+     - Include configuration validation
+
+4. **Create Firebase server configuration**
+
+   - File: `app/features/firebase/server.ts`
+   - Exported API:
+     ```ts
+     import admin from 'firebase-admin'
+     import { type App } from 'firebase-admin/app'
+     import { type Auth, type DecodedIdToken } from 'firebase-admin/auth'
+
+     type VerifyIdTokenProps = {
+       idToken: string
+     }
+
+     export const adminApp: App
+     export const adminAuth: Auth
+     export async function verifyIdToken(
+       props: Readonly<VerifyIdTokenProps>
+     ): Promise<DecodedIdToken>
+     ```
+   - Details:
+     - Initialize Firebase Admin SDK using `admin.credential.cert()` for service account authentication
+     - Set up service account authentication
+     - Export token verification function
+     - Include error handling for invalid tokens
+
+5. **Update environment configuration**
+
+   - File: `.env.example`
+   - Add Firebase environment variables:
+     ```env
+     # Firebase Configuration
+     FIREBASE_API_KEY=
+     FIREBASE_AUTH_DOMAIN=
+     FIREBASE_PROJECT_ID=
+     FIREBASE_STORAGE_BUCKET=
+     FIREBASE_MESSAGING_SENDER_ID=
+     FIREBASE_APP_ID=
+
+     # Firebase Admin (Server)
+     FIREBASE_ADMIN_PROJECT_ID=
+     FIREBASE_ADMIN_CLIENT_EMAIL=
+     FIREBASE_ADMIN_PRIVATE_KEY=
+     ```
+
+6. **Tests**
+   - File: `app/features/firebase/__tests__/client.test.ts` (Vitest)
+   - Cases:
+     - Firebase app initializes without error
+     - Auth instance is properly configured
+     - GoogleAuthProvider is set up correctly
+   - File: `app/features/firebase/__tests__/server.test.ts` (Vitest)
+   - Cases:
+     - Admin SDK initializes properly
+     - Token verification works with valid tokens
+     - Token verification rejects invalid tokens
+
+# 7) Types & Interfaces (if applicable)
+
+```ts
+// app/features/firebase/types.ts
+export type FirebaseConfig = {
+  apiKey: string
+  authDomain: string
+  projectId: string
+  storageBucket: string
+  messagingSenderId: string
+  appId: string
+}
+
+export type FirebaseUser = {
+  uid: string
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+}
+```
+
+# 8) Acceptance Criteria
+
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🎯 Feature Task Criteria
+- Feature exports clean public API via `app/features/firebase/index.ts`
+- Firebase project is created and configured with Google Authentication
+- `app/features/firebase/client.ts` exports working Firebase client configuration
+- `app/features/firebase/server.ts` exports working Firebase admin configuration
+- Environment variables are documented in `.env.example`
+- Firebase dependencies are added to `package.json`
+
+# 9) Testing Strategy
+
+- Create unit tests with Vitest to verify Firebase configuration loading
+- Test Firebase client initialization in browser environment
+- Test Firebase admin SDK initialization on server
+- Mock Firebase services for test isolation
+- Include error cases for missing environment variables
+
+# 10) Notes / Links
+
+- Reference PRD section: Phase 1 - Authentication Modernization
+- Firebase Auth documentation: https://firebase.google.com/docs/auth
+- Next task: TASK-0002 (session bridging implementation)
+- Security consideration: Store service account key securely in production
+- **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

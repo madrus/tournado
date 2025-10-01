@@ -25,6 +25,7 @@ type ActionLinkPanelProps = {
   children?: ReactNode
   language: string
   className?: string
+  testId?: string
 }
 
 export function ActionLinkPanel({
@@ -39,6 +40,7 @@ export function ActionLinkPanel({
   children,
   language,
   className,
+  testId,
 }: ActionLinkPanelProps): JSX.Element {
   const typographyClasses = getTypographyClasses(language)
 
@@ -55,6 +57,7 @@ export function ActionLinkPanel({
         role={onClick ? 'button' : undefined}
         tabIndex={onClick ? 0 : undefined}
         aria-label={`${title} panel`}
+        data-testid={testId}
       >
         {/* Stable background layer */}
         <PanelBackground
@@ -105,5 +108,3 @@ export function ActionLinkPanel({
   }
   return panel
 }
-
-export default ActionLinkPanel

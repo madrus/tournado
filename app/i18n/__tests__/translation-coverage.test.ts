@@ -104,9 +104,9 @@ describe('Critical Key Verification', () => {
     'common.titles.tournaments',
     'auth.emailAddress',
     'auth.password',
-    'auth.signin',
-    'auth.signup',
-    'auth.errors.invalidCredentials',
+    'common.auth.signIn',
+    'common.auth.signUp',
+    'messages.auth.invalidCredentials',
   ]
 
   it('should have all critical keys in every locale', () => {
@@ -148,11 +148,11 @@ describe('Critical Key Verification', () => {
 
 describe('Form Validation Coverage', () => {
   const formErrorKeys = [
-    'auth.errors.emailRequired',
-    'auth.errors.emailInvalid',
-    'auth.errors.passwordRequired',
-    'auth.errors.passwordTooShort',
-    'auth.errors.invalidCredentials',
+    'messages.auth.emailRequired',
+    'messages.auth.emailInvalid',
+    'messages.auth.passwordRequired',
+    'messages.auth.passwordTooShort',
+    'messages.auth.invalidCredentials',
   ]
 
   it('should have all form error messages in every locale', () => {
@@ -178,7 +178,7 @@ describe('Navigation Coverage', () => {
     'common.titles.tournaments',
     'common.titles.profile',
     'common.titles.settings',
-    'auth.signout',
+    'common.auth.signOut',
   ]
 
   it('should have all navigation keys in every locale', () => {

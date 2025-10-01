@@ -88,7 +88,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
   }
 
   const handleTeamDelete = (teamId: string) => {
-    if (confirm(t('admin.teams.confirmDelete'))) {
+    if (confirm(t('admin.team.confirmDelete'))) {
       const formData = new FormData()
       formData.append('intent', 'delete')
       formData.append('teamId', teamId)
@@ -105,7 +105,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
           variant='dashboard-panel'
           icon={<ApparelIcon size={24} variant='outlined' />}
           iconColor='brand'
-          title={t('admin.teams.totalTeams')}
+          title={t('admin.team.totalTeams')}
           showGlow
           data-testid='teams-total-stat'
         >
@@ -117,10 +117,10 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       <Panel color={PANEL_COLOR} variant='content-panel'>
         <div className='mb-6'>
           <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
-            {t('admin.teams.allTeams')}
+            {t('admin.team.allTeams')}
           </h3>
           <p className='mt-1 text-sm opacity-75'>
-            {t('admin.teams.allTeamsDescription')}
+            {t('admin.team.allTeamsDescription')}
           </p>
         </div>
 

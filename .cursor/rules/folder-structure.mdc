@@ -1,0 +1,249 @@
+---
+alwaysApply: true
+---
+
+# Tournado - Tournament Management System Project Structure
+
+This project follows a modular architecture pattern for React Router v7 applications with Prisma ORM, SQLite database, and Radix UI components for tournament management.
+
+## Folder Structure
+
+### `app/` - Source Code
+
+#### Core Directories
+
+- **routes/** - React Router v7 File-based Routing
+  - **_index.tsx** - Home page
+  - **auth/** - Authentication routes (signin, signup, etc.)
+  - **teams/** - Team management routes
+  - **a7k9m2x5p8w1n4q6r3y8b5t1/** - Protected routes (requires auth)
+    - **teams/** - Protected team operations
+    - **tournaments/** - Tournament management
+    - **competition/** - Competition/match management
+  - **resources/** - API resource routes
+  - **$.tsx** - Catch-all route for 404s
+
+- **components/** - Reusable UI Components
+  - **auth/** - Authentication components (SignIn, SignUp forms)
+  - **buttons/** - Custom button components
+  - **inputs/** - Form input components
+  - **layouts/** - Layout components and structures
+  - **navigation/** - Navigation components (mobile/desktop)
+  - **shared/** - Shared utility components
+  - **icons/** - Custom icon components
+  - **emails/** - Email template components
+  - Component-specific folders (ConfirmDialog, Panel, TeamChip, etc.)
+
+- **models/** - Data Access Layer
+  - **user.server.ts** - User-related database operations
+  - **team.server.ts** - Team management operations
+  - **tournament.server.ts** - Tournament operations
+  - **match.server.ts** - Match/competition operations
+  - Server-side only data access using Prisma
+
+- **utils/** - Core Utilities & Services
+  - **session.server.ts** - Session management
+  - **rbacMiddleware.server.ts** - RBAC wrappers and permission checks
+  - **rateLimit.server.ts** - Rate limiting utilities
+  - **adminMiddleware.server.ts** - Admin-specific rate limiting wrappers
+  - **db.server.ts** - Database connection and utilities
+  - **validation.ts** - Schema validation with Zod
+  - **email.server.tsx** - Email sending utilities (Resend)
+  - **format.ts** - Data formatting utilities
+  - **constants.ts** - App constants
+  - **misc.ts** - Miscellaneous utilities
+  - **env.server.ts** - Environment variable validation
+
+- **stores/** - Client-side State Management
+  - **authStore.ts** - Authentication state (Zustand)
+  - **helpers/** - Store helper functions
+  - Global state management with Zustand
+
+- **hooks/** - Custom React Hooks
+  - **useFirebaseAuth.ts** - Firebase authentication hook
+  - **useLocalStorage.ts** - Local storage utilities
+  - **useDebounce.ts** - Debouncing utilities
+  - **usePrevious.ts** - Previous value tracking
+
+- **styles/** - Styling Configuration
+  - **tailwind.css** - Tailwind CSS configuration and custom classes
+  - **globals.css** - Global styles
+  - Tailwind CSS v4 with semantic color classes
+
+- **i18n/** - Internationalization
+  - **locales/** - Translation files
+  - **config.ts** - Eager i18n configuration
+  - **config.lazy.ts** - Lazy-loaded i18n configuration
+  - **cache.ts** - Translation caching utilities
+  - Multi-language support with react-i18next
+
+- **features/** - Feature Modules
+  - **firebase/** - Firebase Authentication Feature Module
+    - **client.ts** - Firebase client SDK setup (browser)
+    - **server.ts** - Firebase Admin SDK setup (server)  
+    - **session.server.ts** - Firebase session cookie bridging
+    - **components/** - Firebase-specific components (FirebaseSignIn, etc.)
+    - **types.ts** - Firebase-related types and interfaces
+    - **__tests__/** - Firebase feature tests
+
+- **lib/** - Core Library Functions & Types
+  - **lib.types.ts** - Centralized application types and interfaces (primary location for all app types)
+
+- **@types/** - Global Type Declarations & External Library Extensions
+  - **declarations.d.ts** - Global module declarations (e.g., *.png, *.svg imports)
+  - Used only for extending external libraries and global type declarations that aren't available as npm @types packages
+
+### `prisma/` - Database Schema & Migrations
+
+- **schema.prisma** - Database schema definition
+- **migrations/** - Database migration files
+- **seed.js** - Database seeding script
+
+### `public/` - Static Assets
+
+- **images/** - Static images and logos
+- **icons/** - PWA icons and favicons
+- **manifest.json** - PWA manifest
+- **sw.js** - Service worker (built or custom)
+
+### `mocks/` - Mock Service Worker
+
+- **index.js** - MSW setup for testing
+- **handlers/** - API mock handlers
+
+### `playwright/` - End-to-End Testing
+### Build & PWA Integration
+
+- Vite plugin configuration: `vite.config.ts` (includes PWA via `vite-plugin-pwa`)
+
+- **tests/** - E2E test files (*.spec.ts)
+- **playwright.config.ts** - Playwright configuration
+
+## Development Rules
+
+### 1. Component Organization
+
+- Keep components small and focused on single responsibility
+- Use composition over inheritance
+- Separate server and client components clearly
+- Always use TypeScript for type safety
+- Use CVA (Class Variance Authority) for component variants
+
+### 2. State Management
+
+- Use React Router loaders/actions for server state
+- Use Zustand for complex client state
+- Keep local state for component-specific data
+- Leverage Prisma real-time capabilities where needed
+
+### 3. Database Integration
+
+- All database operations through models/ directory
+- Use Prisma ORM for type-safe database access
+- Define proper TypeScript interfaces for all entities
+- Implement proper error handling for all database operations
+- Use transactions for complex operations
+
+### 4. Routing & Navigation
+
+- Use React Router v7 file-based routing conventions
+- Implement proper loading states with React Router
+- Use nested layouts for consistent UI structure
+- Protected routes use authentication middleware
+- Handle errors with proper error boundaries
+
+### 5. Styling & UI
+
+- Use Tailwind CSS v4 with semantic color classes
+- Use Radix UI for accessible component primitives
+- Maintain consistent spacing with Tailwind spacing scale
+- Use CVA for component variant management
+- Follow responsive design principles
+
+### 6. Type Safety
+
+- Define all data types using Prisma schema
+- Use strict TypeScript configuration
+- Avoid 'any' type - use proper typing
+- Create proper interfaces for all API responses
+- Use Zod for runtime validation
+
+### 7. Authentication & Authorization
+
+- Firebase Authentication with session cookie bridging
+- Support for Google OAuth and email/password authentication  
+- Role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Server-side Firebase session validation
+- Protected route middleware
+
+## Common Patterns
+
+### Route with Loader
+
+```tsx
+// app/routes/teams._index.tsx
+import type { LoaderFunctionArgs } from "react-router";
+import { getTeams } from "~/models/team.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  return { teams: await getTeams() };
+}
+```
+
+### Protected Route Layout
+
+```tsx
+// app/routes/a7k9m2x5p8w1n4q6r3y8b5t1.tsx
+export async function loader({ request }: LoaderFunctionArgs) {
+  return await requireUserId(request); // Auth middleware
+}
+```
+
+### Database Model Pattern
+
+```tsx
+// app/models/team.server.ts
+import { db } from "~/db.server";
+
+export async function getTeams() {
+  return await db.team.findMany({
+    include: {
+      tournament: true,
+      teamLeader: true,
+    },
+  });
+}
+```
+
+### Zustand Store Pattern
+
+```tsx
+// app/stores/authStore.ts
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
+}));
+```
+
+## File Naming Conventions
+
+- Components: PascalCase (e.g., `TeamChip.tsx`)
+- Hooks: camelCase with 'use' prefix (e.g., `useAuth.ts`)
+- Utils: camelCase (e.g., `formatDate.ts`)
+- Server files: kebab-case with '.server.ts' suffix (e.g., `auth.server.ts`)
+- Types: PascalCase for interfaces/types (e.g., `Tournament`)
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_TEAMS_PER_TOURNAMENT`)
+
+## Folder Naming Conventions
+
+- Dedicated component folder: PascalCase (e.g., `ConfirmDialog/`)
+- All other folders: camelCase (e.g., `auth/`, `models/`)
+- Test folders: `__tests__` within each directory
+
+## Testing Strategy
+
+- **Unit tests**: Vitest with React Testing Library (*.test.ts/tsx)
+- **E2E tests**: Playwright (*.spec.ts in playwright/tests/)
+- **Coverage**: 70% threshold across all metrics
+- **Mocking**: MSW for API mocking in tests

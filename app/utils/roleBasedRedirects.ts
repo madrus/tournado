@@ -14,6 +14,8 @@ import { getUserRole, isAdmin } from './rbac'
 const ROLE_LANDING_PAGES = {
   ADMIN: '/a7k9m2x5p8w1n4q6r3y8b5t1',
   MANAGER: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+  EDITOR: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Editors need admin panel for content management
+  BILLING: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Billing users need admin panel for billing management
   REFEREE: '/a7k9m2x5p8w1n4q6r3y8b5t1', // Referees need admin panel for match management
   PUBLIC: '/',
 } as const
@@ -51,7 +53,9 @@ export function getPostSignInRedirect(
     } else if (canUserAccessPath(user, requestedPath)) {
       // For admin users, prioritize admin panel unless they specifically requested an admin route
       const role = getUserRole(user)
-      const isAdminUser = ['ADMIN', 'MANAGER', 'REFEREE'].includes(role)
+      const isAdminUser = ['ADMIN', 'MANAGER', 'EDITOR', 'BILLING', 'REFEREE'].includes(
+        role
+      )
       const requestedAdminRoute = requestedPath.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
       // If admin user requested a non-admin route, redirect to admin panel instead
@@ -64,7 +68,7 @@ export function getPostSignInRedirect(
     // If they can't access the requested path, fall through to role-based default
   }
 
-  // Get role-based landing page
+  // Get role-based landing page - default to homepage for any unknown roles
   const role = getUserRole(user)
   return ROLE_LANDING_PAGES[role] || '/'
 }
@@ -89,7 +93,13 @@ export function canUserAccessPath(user: User | null, path: string): boolean {
   if (path.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')) {
     if (!user) return false
     const role = getUserRole(user)
-    return role === 'ADMIN' || role === 'MANAGER' || role === 'REFEREE'
+    return (
+      role === 'ADMIN' ||
+      role === 'MANAGER' ||
+      role === 'EDITOR' ||
+      role === 'BILLING' ||
+      role === 'REFEREE'
+    )
   }
 
   // Teams creation is public but might be rate-limited

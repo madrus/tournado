@@ -1,6 +1,6 @@
-import { JSX, useEffect, useState } from 'react'
+import { JSX, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigation } from 'react-router'
+import { Link, useLocation, useNavigate, useNavigation } from 'react-router'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
@@ -54,14 +54,56 @@ export function UserMenu({
   // Use translated guest name when user is not authenticated or username is empty
   const displayName = authenticated && username ? username : t('common.guest')
 
+  const location = useLocation()
+  const navigate = useNavigate()
+
   // Close menu when navigation starts (Fix #1) - but only for actual navigation
   useEffect(() => {
-    if (navigation.state === 'loading' && navigation.location) {
+    const nextLocation = navigation.location
+    const isNavigatingToDifferentRoute = Boolean(
+      nextLocation &&
+        (nextLocation.pathname !== location.pathname ||
+          nextLocation.search !== location.search ||
+          nextLocation.hash !== location.hash)
+    )
+
+    if (navigation.state === 'loading' && isNavigatingToDifferentRoute) {
       onOpenChange?.(false)
       setLanguageMenuOpen(false)
       setActiveSubmenu(null)
     }
-  }, [navigation.state, navigation.location, onOpenChange])
+  }, [
+    navigation.state,
+    navigation.location,
+    location.pathname,
+    location.search,
+    location.hash,
+    onOpenChange,
+  ])
+
+  const handleMenuNavigation = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, href?: string) => {
+      if (!href) return
+
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.altKey ||
+        event.ctrlKey ||
+        event.shiftKey
+      ) {
+        return
+      }
+
+      event.preventDefault()
+      onOpenChange?.(false)
+      setLanguageMenuOpen(false)
+      setActiveSubmenu(null)
+      navigate(href)
+    },
+    [navigate, onOpenChange]
+  )
 
   // Handler for clicking language menu toggle
   const handleLanguageToggle = (event: React.MouseEvent, index: number) => {
@@ -77,7 +119,7 @@ export function UserMenu({
         <DropdownMenu.Trigger asChild>
           <button
             className='text-primary-foreground relative inline-flex h-8 w-8 translate-y-0.25 items-center justify-center focus:outline-none'
-            aria-label='Toggle menu'
+            aria-label={t('common.toggleMenu')}
           >
             <AnimatedHamburgerIcon
               isOpen={!!isOpen}
@@ -241,6 +283,7 @@ export function UserMenu({
                 <DropdownMenu.Item key={index} asChild>
                   <Link
                     to={item.href || '#'}
+                    onClick={event => handleMenuNavigation(event, item.href)}
                     className={cn(
                       'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
                       menuClasses.menuItem

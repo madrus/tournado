@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { render } from '@react-email/render'
 
 import { Resend } from 'resend'
@@ -53,7 +54,7 @@ export async function sendConfirmationEmail(
           : 'https://tournado.fly.dev' // fallback for production
         : 'http://localhost:5173') // local development
   const emailFrom = isRealDomainRegistered
-    ? process.env.EMAIL_FROM
+    ? process.env.EMAIL_FROM || 'pending-email-from@localhost'
     : 'onboarding@resend.dev'
 
   // Logo should always come from the actual running website
@@ -78,16 +79,31 @@ export async function sendConfirmationEmail(
     />
   )
 
+  const emailPayload = {
+    from: emailFrom,
+    to: teamLeader.email,
+    subject: `Team ${team.name} registered for ${tournament.name}`,
+    html: emailHtml,
+  }
+
   try {
+    // In E2E test environment, store the email in MSW outbox instead of sending
+    if (process.env.PLAYWRIGHT === 'true') {
+      try {
+        const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')
+        addEmailToOutbox(emailPayload)
+
+        console.info(`[E2E] Email stored for testing - to: ${emailPayload.to}`)
+        return
+      } catch (importError) {
+        console.error('Failed to import MSW email handlers for testing:', importError)
+        // Fall through to regular email sending
+      }
+    }
+
     const resend = getResendClient()
-    await resend.emails.send({
-      from: emailFrom,
-      to: teamLeader.email,
-      subject: `Team ${team.name} registered for ${tournament.name}`,
-      html: emailHtml,
-    })
+    await resend.emails.send(emailPayload)
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Failed to send confirmation email:', error)
 
     // Re-throw configuration errors as-is for better debugging

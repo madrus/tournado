@@ -1,6 +1,9 @@
 - Home
    - [Overview](README.md)
    - [Getting Started](getting-started.md)
+   - [Cursor Rules](cursor-rules.md)
+- Costs
+   - [Costs](costs/costs.md)
 - Work in Progress
    - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
    - [Claude Code Analysis](wip/claude-20250717.md)
@@ -8,26 +11,31 @@
 - Development
    - [Overview](development/overview.md)
    - [Architecture Analysis](development/architecture-analysis.md)
-   - [Design System](development/design-system.md)
+   - [Authentication](development/authentication.md)
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
-   - [Icon Guidelines](development/icon-guidelines.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
-   - [Mobile Web App Configuration](development/mobile.md)
-   - [Routing](development/routing.md)
-   - [State Management](development/state-management.md)
-   - [Multi-Language Support](development/multi-language-support.md)
    - [Data Freshness](development/data-freshness.md)
-   - [UI Components](development/ui-components.md)
-   - [Type System](development/type-system.md)
-   - [Database](development/database.md)
    - [Database Schema Changes](development/database-schema-changes.md)
+   - [Database](development/database.md)
+   - [Design System](development/design-system.md)
+   - [Icon Guidelines](development/icon-guidelines.md)
+   - [RBAC Hardening (Phase 2)](development/RBAC.hardening.md)
+   - [Mobile Web App Configuration](development/mobile-webapp-config.md)
+   - [Multi-Language Support](development/multi-language-support.md)
+   - [Routing](development/routing.md)
    - [Service Worker](service-worker.md)
+   - [State Management](development/state-management.md)
+   - [Type System](development/type-system.md)
+   - [UI Components](development/ui-components.md)
 - Features
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
+- Prompts
+   - [Create Pools Feature](prompts/pools-feature-prompt.md)
 - Security
    - [Overview](security/overview.md)
    - [Role-Based Access Control (RBAC)](security/rbac.md)
+   - [Removing Secrets from Git History](security/removing-secrets-from-git-history.md)
 - Testing
    - [Overview](testing/overview.md)
    - [Testing Guide](testing/testing-guide.md)
@@ -42,7 +50,8 @@
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)
 - Guides
-   - [RTL Implementation](guides/rtl-implementation-guide.md)
+   - [HOWTO: Implement RTL](<guides/HOWTO Implement RTL.md>)
+   - [HOWTO: Use Ollama Locally](<guides/HOWTO Use Ollama Locally.md>)
 - Reference
    - [Cursor Rules](cursor-rules.md)
    - [Fly.io vs Vercel](fly-vs-vercel.md)

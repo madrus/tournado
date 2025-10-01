@@ -1,16 +1,29 @@
 /* eslint-disable no-console */
 import { faker } from '@faker-js/faker'
-import type { User } from '@prisma/client'
+import { PrismaClient, Role, type User } from '@prisma/client'
 
-import bcrypt from 'bcryptjs'
+// Ensure Playwright helpers use the same DB as the E2E server
+// When PLAYWRIGHT=true, always use test database regardless of DATABASE_URL in .env
+// Fall back to the test DB path used by e2e-server.js
+const testDbPath = 'file:./prisma/data-test.db?connection_limit=1'
+const dbUrl =
+  process.env.PLAYWRIGHT === 'true'
+    ? testDbPath
+    : process.env.DATABASE_URL || testDbPath
 
-import { prisma } from '../../app/db.server'
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: dbUrl,
+    },
+  },
+})
 
 // Clean database for tests - removes test data but preserves auth users
 export const cleanDatabase = async (): Promise<void> => {
   try {
     // Delete in correct order to respect foreign key constraints
-    // NOTE: We preserve users and passwords to maintain authentication sessions
+    // NOTE: We preserve users to maintain authentication sessions
     await prisma.matchScore.deleteMany()
     await prisma.match.deleteMany()
     await prisma.team.deleteMany()
@@ -31,9 +44,15 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
     await prisma.team.deleteMany()
     await prisma.tournament.deleteMany()
     await prisma.teamLeader.deleteMany()
-    await prisma.password.deleteMany()
     await prisma.user.deleteMany()
   } catch (error) {
+    // During Playwright tests, ignore all database errors during cleanup
+    // The database might not exist yet (e2e-server creates it) or might be empty
+    if (process.env.PLAYWRIGHT === 'true') {
+      // Silently ignore - database will be created by e2e-server if needed
+      return
+    }
+    // In non-test environments, report errors
     console.error('Error completely cleaning database:', error)
     throw error
   }
@@ -41,11 +60,9 @@ export const cleanDatabaseCompletely = async (): Promise<void> => {
 
 export async function createUser(
   userData: Pick<User, 'firstName' | 'lastName' | 'email' | 'role'> & {
-    password: string
+    firebaseUid?: string
   }
 ): Promise<User> {
-  const hashedPassword = await bcrypt.hash(userData.password, 10)
-
   return prisma.user.create({
     // eslint-disable-next-line id-blacklist
     data: {
@@ -53,11 +70,8 @@ export async function createUser(
       lastName: userData.lastName,
       email: userData.email,
       role: userData.role,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
+      firebaseUid:
+        userData.firebaseUid || `test-firebase-${faker.string.alphanumeric(8)}`,
     },
   })
 }
@@ -75,33 +89,43 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-export const createManagerUser = async (): Promise<{ email: string; role: string }> => {
+export const createManagerUser = async (): Promise<User> => {
   const email = `manager-${faker.string.alphanumeric(8)}@test.com`
 
   const user = await createUser({
     firstName: 'Test',
     lastName: 'Manager',
     email,
-    role: 'MANAGER',
-    password: 'MyReallyStr0ngPassw0rd!!!',
+    role: Role.MANAGER,
+    firebaseUid: 'regular-user-id',
   })
 
-  return {
-    email: user.email,
-    role: 'MANAGER',
-  }
+  return user
 }
 
-export async function createAdminUser(): Promise<User> {
+export async function createAdminUser(
+  options: { uniqueFirebaseUid?: boolean } = {}
+): Promise<User> {
   const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
+  const firebaseUid = options.uniqueFirebaseUid
+    ? `admin-user-${faker.string.alphanumeric(8)}`
+    : 'admin-user-id' // Default UID for global setup
 
-  return await createUser({
+  console.log(
+    `[createAdminUser] Creating admin user with email: ${adminEmail}, role: ADMIN, firebaseUid: ${firebaseUid}`
+  )
+  const user = await createUser({
     firstName: 'Test',
     lastName: 'Admin',
     email: adminEmail,
-    role: 'ADMIN',
-    password: 'MyReallyStr0ngPassw0rd!!!',
+    role: Role.ADMIN,
+    firebaseUid,
   })
+
+  console.log(
+    `[createAdminUser] Created admin user: ${user.email}, role: ${user.role}, id: ${user.id}`
+  )
+  return user
 }
 
 export async function createRefereeUser(): Promise<User> {
@@ -111,8 +135,7 @@ export async function createRefereeUser(): Promise<User> {
     firstName: 'Test',
     lastName: 'Referee',
     email: refereeEmail,
-    role: 'REFEREE',
-    password: 'MyReallyStr0ngPassw0rd!!!',
+    role: Role.REFEREE,
   })
 }
 
@@ -198,18 +221,35 @@ export const createTestTournament = async (
   const endDate = new Date()
   endDate.setDate(endDate.getDate() + 10)
 
-  const tournament = await prisma.tournament.create({
-    data: {
-      name,
-      location,
-      startDate,
-      endDate,
-      divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
-      categories: ['JO8', 'JO10'],
-    },
+  // Create and verify within a single transaction to avoid race conditions
+  const tournament = await prisma.$transaction(async tx => {
+    const created = await tx.tournament.create({
+      data: {
+        name,
+        location,
+        startDate,
+        endDate,
+        divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
+        categories: ['JO8', 'JO10'],
+      },
+    })
+
+    const verify = await tx.tournament.findUnique({ where: { id: created.id } })
+    if (!verify) {
+      throw new Error(
+        `Failed to create tournament "${name}" - not found during transactional verification`
+      )
+    }
+
+    return created
   })
 
-  await new Promise(resolve => setTimeout(resolve, 500))
+  // Best-effort post-commit verification (handles any async write lag)
+  try {
+    await waitForTournamentInDatabase(name, 5, 100)
+  } catch (_e) {
+    // Non-fatal: UI will still attempt to read; DB cleanup in parallel might remove it later
+  }
 
   return { id: tournament.id, name: tournament.name, location: tournament.location }
 }

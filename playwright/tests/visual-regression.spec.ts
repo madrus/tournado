@@ -18,9 +18,11 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Test structure - look for the main tournaments heading
       await expect(
-        page.getByRole('heading', { name: 'Toernooien beheer' })
+        page.getByRole('heading', {
+          name: 'Toernooien beheer',
+        })
       ).toBeVisible()
-      await expect(page.getByRole('link', { name: /toevoegen|add/i })).toBeVisible()
+      await expect(page.getByRole('link', { name: /toevoegen/i })).toBeVisible()
 
       // Check that the main content area exists
       await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
@@ -68,16 +70,44 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Dark Mode Theme Functionality', () => {
     test('should apply dark theme correctly on tournaments page', async ({ page }) => {
+      // Block React Router manifest requests to prevent prefetch-induced page reloads
+      await page.route('**/__manifest**', route => {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ patches: [] }),
+        })
+      })
+
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
       await page.waitForLoadState('networkidle')
 
-      // Apply dark theme
+      // Apply dark theme by removing light and adding dark
       await page.evaluate(() => {
+        document.documentElement.classList.remove('light')
         document.documentElement.classList.add('dark')
       })
 
       // Wait for theme application
       await page.waitForTimeout(500)
+
+      // Check if theme was overridden
+      const currentClass = await page.locator('html').getAttribute('class')
+      console.log(`HTML class after dark theme application: ${currentClass}`)
+
+      // If theme was reset, try using the theme store directly
+      if (!currentClass?.includes('dark')) {
+        await page.evaluate(() => {
+          // Try to access theme store or settings
+          if ((window as any).useSettingsStore) {
+            ;(window as any).useSettingsStore.getState().setTheme('dark')
+          }
+          // Force dark theme application
+          document.documentElement.classList.remove('light')
+          document.documentElement.classList.add('dark')
+        })
+        await page.waitForTimeout(500)
+      }
 
       // Verify dark class is applied
       await expect(page.locator('html')).toHaveClass(/dark/)
@@ -117,15 +147,11 @@ test.describe('UI Structure and Theme Tests', () => {
       await expect(page.locator('form')).toBeVisible()
 
       // Check basic form fields
-      await expect(page.getByRole('textbox', { name: /name|naam/i })).toBeVisible()
-      await expect(
-        page.getByRole('textbox', { name: /location|locatie/i })
-      ).toBeVisible()
+      await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()
+      await expect(page.getByRole('textbox', { name: /locatie/i })).toBeVisible()
 
       // Check date picker buttons exist
-      await expect(
-        page.getByRole('button', { name: /startdatum|start date/i })
-      ).toBeVisible()
+      await expect(page.getByRole('button', { name: /startdatum/i })).toBeVisible()
     })
 
     test('should enable date picker after filling basic info', async ({ page }) => {
@@ -134,17 +160,15 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForTimeout(2000)
 
       // Fill basic info
-      await page.getByRole('textbox', { name: /name|naam/i }).fill('Test Tournament')
-      await page
-        .getByRole('textbox', { name: /location|locatie/i })
-        .fill('Test Location')
+      await page.getByRole('textbox', { name: /naam/i }).fill('Test Tournament')
+      await page.getByRole('textbox', { name: /locatie/i }).fill('Test Location')
 
       // Wait for form validation
       await page.waitForTimeout(1000)
 
       // Date picker should be clickable
       const startDateButton = page.getByRole('button', {
-        name: /startdatum|start date/i,
+        name: /startdatum/i,
       })
       await expect(startDateButton).toBeEnabled()
 
@@ -176,9 +200,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForTimeout(2000)
 
       // Should see action panels
-      await expect(
-        page.getByRole('link', { name: /teams bekijken|view teams/i })
-      ).toBeVisible()
+      await expect(page.getByRole('link', { name: /teams bekijken/i })).toBeVisible()
 
       // Should have multiple action panels
       const actionLinks = page.locator('a[href*="/teams"], a[href*="/about"]')
@@ -190,7 +212,7 @@ test.describe('UI Structure and Theme Tests', () => {
       await page.waitForLoadState('networkidle')
 
       // Click teams link and verify navigation
-      await page.getByRole('link', { name: /teams bekijken|view teams/i }).click()
+      await page.getByRole('link', { name: /teams bekijken/i }).click()
       // The link goes to admin teams page when authenticated
       await expect(page).toHaveURL(/\/teams/)
     })
@@ -206,7 +228,9 @@ test.describe('UI Structure and Theme Tests', () => {
 
       // Page should still load and be functional on mobile
       await expect(
-        page.getByRole('heading', { name: 'Toernooien beheer' })
+        page.getByRole('heading', {
+          name: 'Toernooien beheer',
+        })
       ).toBeVisible()
       await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
     })

@@ -20,8 +20,8 @@ export function TeamsLayoutHeader({
 
   const isAdmin = variant === 'admin'
 
-  const title = isAdmin ? t('admin.teams.title') : t('common.titles.teams')
-  const description = isAdmin ? t('admin.teams.description') : t('teams.description')
+  const title = isAdmin ? t('admin.team.title') : t('common.titles.teams')
+  const description = isAdmin ? t('admin.team.description') : t('teams.description')
 
   if (isAdmin) {
     return (

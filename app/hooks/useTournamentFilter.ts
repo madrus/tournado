@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router'
 import type { TournamentListItem } from '~/lib/lib.types'
 
 type UseTournamentFilterProps = {
-  tournamentListItems: TournamentListItem[]
+  tournamentListItems: readonly TournamentListItem[]
   selectedTournamentId?: string
 }
 
@@ -58,8 +58,14 @@ export function useTournamentFilter({
       newSearchParams.set('tournament', value)
     }
 
-    const queryString = newSearchParams.toString()
-    navigate(queryString ? `?${queryString}` : '')
+    try {
+      const queryString = newSearchParams.toString()
+      navigate(queryString ? `?${queryString}` : '')
+    } catch (error) {
+      //TODO: Show user-facing error (e.g., toast/notification)
+      // eslint-disable-next-line no-console
+      console.error('Navigation failed:', error)
+    }
   }
 
   return {

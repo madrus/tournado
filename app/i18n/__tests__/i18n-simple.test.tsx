@@ -16,7 +16,7 @@ describe('i18n Basic Functionality', () => {
       expect(i18n.t('common.appName')).toBe('Tournado')
       expect(i18n.t('auth.emailAddress')).toBe('E-Mail-Adresse')
       expect(i18n.t('common.titles.teams')).toBe('Teams')
-      expect(i18n.t('auth.errors.passwordRequired')).toBe('Passwort ist erforderlich')
+      expect(i18n.t('messages.auth.passwordRequired')).toBe('Passwort ist erforderlich')
     })
 
     it('should load Dutch translations correctly', () => {
@@ -26,7 +26,7 @@ describe('i18n Basic Functionality', () => {
       expect(i18n.t('common.appName')).toBe('Tournado')
       expect(i18n.t('auth.emailAddress')).toBe('E-mailadres')
       expect(i18n.t('common.titles.teams')).toBe('Teams')
-      expect(i18n.t('auth.errors.passwordRequired')).toBe('Wachtwoord is verplicht')
+      expect(i18n.t('messages.auth.passwordRequired')).toBe('Wachtwoord is verplicht')
     })
 
     it('should load English translations correctly', () => {
@@ -36,7 +36,7 @@ describe('i18n Basic Functionality', () => {
       expect(i18n.t('common.appName')).toBe('Tournado')
       expect(i18n.t('auth.emailAddress')).toBe('Email address')
       expect(i18n.t('common.titles.teams')).toBe('Teams')
-      expect(i18n.t('auth.errors.passwordRequired')).toBe('Password is required')
+      expect(i18n.t('messages.auth.passwordRequired')).toBe('Password is required')
     })
 
     it('should handle translation interpolation', () => {

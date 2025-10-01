@@ -305,7 +305,7 @@ it('should show correct menu items for public user', () => {
   // Should see public items only
   expect(menuLabels).toContain('common.titles.teams')
   expect(menuLabels).toContain('common.titles.about')
-  expect(menuLabels).toContain('auth.signin')
+  expect(menuLabels).toContain('common.auth.signIn')
 
   // Should NOT see admin or authenticated-only items
   expect(menuLabels).not.toContain('common.titles.adminPanel')
@@ -332,7 +332,7 @@ it('should show Admin Panel for admin users', () => {
 
 // Test non-admin authenticated users
 const regularUser: User = {
-  role: 'PUBLIC', // or 'TOURNAMENT_MANAGER', 'REFEREE', etc.
+  role: 'PUBLIC', // or 'MANAGER', 'REFEREE', 'ADMIN'
   // ... other properties
 }
 

@@ -11,14 +11,83 @@ import 'dotenv/config'
 
 // Ensure DATABASE_URL is set for local dev if not already present
 if (!process.env.DATABASE_URL) {
+  const isTest = process.env.NODE_ENV === 'test' || process.env.PLAYWRIGHT === 'true'
   if (process.env.NODE_ENV !== 'production') {
-    process.env.DATABASE_URL = 'file:./prisma/data.db?connection_limit=1'
+    process.env.DATABASE_URL = isTest
+      ? 'file:./prisma/data-test.db?connection_limit=1'
+      : 'file:./prisma/data.db?connection_limit=1'
   } else {
     throw new Error('DATABASE_URL must be set in production environment!')
   }
 }
 
 const ABORT_DELAY = 5_000
+
+function applySecurityHeaders(headers: Headers, request: Request): void {
+  const isDev = process.env.NODE_ENV !== 'production'
+
+  const formActionSources = new Set(["'self'"])
+
+  const addFormActionSource = (value: string | undefined): void => {
+    if (!value) return
+    try {
+      const origin = new URL(value).origin
+      if (origin && !formActionSources.has(origin)) {
+        formActionSources.add(origin)
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.warn('Ignoring invalid form-action origin', value, error)
+      }
+    }
+  }
+
+  addFormActionSource(process.env.BASE_URL)
+  addFormActionSource(process.env.EMAIL_BASE_URL)
+  addFormActionSource(request.url)
+
+  const extraFormActions = process.env.CSP_FORM_ACTION_ALLOWLIST
+  if (extraFormActions) {
+    for (const entry of extraFormActions.split(/[\s,]+/)) {
+      addFormActionSource(entry)
+    }
+  }
+
+  // Note: We currently allow 'unsafe-inline' to support the small inline
+  // SSR script in root.tsx. We can migrate to nonces later.
+  const csp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    // Dev allowances include localhost and unsafe-eval for Vite HMR
+    // Firebase Auth requires Google APIs and Firebase domains
+    `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://*.firebaseapp.com https://*.googleapis.com${isDev ? " 'unsafe-eval' http://localhost:* http://127.0.0.1:*" : ''}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "img-src 'self' data: blob: https://www.google-analytics.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    `connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com${isDev ? ' http://localhost:* ws://localhost:* ws://127.0.0.1:*' : ''}`,
+    'frame-src https://accounts.google.com https://*.firebaseapp.com',
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    `form-action ${Array.from(formActionSources).join(' ')}`,
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    'upgrade-insecure-requests',
+  ].join('; ')
+
+  headers.set('Content-Security-Policy', csp)
+  headers.set('X-Frame-Options', 'DENY')
+  headers.set('X-Content-Type-Options', 'nosniff')
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
+
+  if (!isDev) {
+    headers.set(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains; preload'
+    )
+  }
+}
 
 export default function handleRequest(
   request: Request,
@@ -50,6 +119,7 @@ const handleBotRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
+          applySecurityHeaders(responseHeaders, request)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {
@@ -88,6 +158,7 @@ const handleBrowserRequest = (
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
+          applySecurityHeaders(responseHeaders, request)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {

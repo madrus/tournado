@@ -7,13 +7,26 @@ test.describe('Navigation', () => {
     await page.setViewportSize({ width: 375, height: 812 })
 
     // Language is handled by global config - no need to override here
-    // The i18n config will use Dutch for Playwright tests
+    // The i18n config will use English for Playwright tests
   })
 
   test.describe('Bottom Navigation - Public', () => {
     test('should allow navigation via bottom navigation', async ({ page }) => {
       // Start from homepage
       await page.goto('/')
+
+      // Handle PWA update prompts that might interfere with navigation
+      const pwaUpdatePrompt = page.locator('#pwa-prompts .bg-accent.fixed')
+      const pwaUpdateVisible = await pwaUpdatePrompt.isVisible().catch(() => false)
+      if (pwaUpdateVisible) {
+        // Click the dismiss button (X) to close the prompt
+        const dismissButton = pwaUpdatePrompt.locator('button').first()
+        if (await dismissButton.isVisible().catch(() => false)) {
+          await dismissButton.click()
+        }
+        // Wait for prompt to disappear
+        await expect(pwaUpdatePrompt).not.toBeVisible()
+      }
 
       // Navigate to teams using bottom navigation
       const bottomNav = page.locator('[data-testid="bottom-navigation"]')
@@ -37,6 +50,19 @@ test.describe('Navigation', () => {
 
     test('should show all navigation items are functional', async ({ page }) => {
       await page.goto('/')
+
+      // Handle PWA update prompts that might interfere with navigation
+      const pwaUpdatePrompt = page.locator('#pwa-prompts .bg-accent.fixed')
+      const pwaUpdateVisible = await pwaUpdatePrompt.isVisible().catch(() => false)
+      if (pwaUpdateVisible) {
+        // Click the dismiss button (X) to close the prompt
+        const dismissButton = pwaUpdatePrompt.locator('button').first()
+        if (await dismissButton.isVisible().catch(() => false)) {
+          await dismissButton.click()
+        }
+        // Wait for prompt to disappear
+        await expect(pwaUpdatePrompt).not.toBeVisible()
+      }
 
       // Test that all navigation items exist and are clickable
       const bottomNav = page.locator('[data-testid="bottom-navigation"]')
@@ -63,7 +89,7 @@ test.describe('Navigation', () => {
     test('should navigate via homepage view teams button', async ({ page }) => {
       await page.goto('/')
 
-      // Use the homepage "Teams bekijken" button (Dutch for "View Teams")
+      // Use the homepage "Teams bekijken" button (Dutch interface)
       await page.getByRole('link', { name: 'Teams bekijken' }).click()
 
       await expect(page).toHaveURL('/teams')

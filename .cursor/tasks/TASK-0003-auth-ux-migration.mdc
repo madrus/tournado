@@ -1,0 +1,298 @@
+---
+description: Migrate authentication UX to Firebase Google Sign-in while preserving existing flows
+id: "TASK-0003"
+title: "Migrate authentication UX to Firebase Google Sign-in"
+status: "done"
+priority: "P0"
+labels: ["auth", "firebase", "ui", "ux"]
+dependencies: ["./TASK-0002-firebase-session-bridge.mdc"]
+created: "2025-01-09"
+globs:
+alwaysApply: false
+---
+
+# INSTRUCTIONS — READ THIS FIRST WHEN STARTING THE TASK
+
+Follow the file creation safety and TypeScript conventions in `.cursor/tasks/task-template.mdc`.
+
+## ARCHITECTURE DECISION RECORDS
+
+### 🔗 **HYBRID Task** - Mix of shared and feature-specific work
+**Decision**: This task combines updates to shared authentication components with new Firebase-specific UI components. Updates existing shared auth routes while creating new Firebase feature components.
+
+**Rationale**:
+- Auth routes are shared infrastructure used across the application
+- Firebase components are feature-specific and belong in the Firebase domain
+- UX migration requires both shared route updates and new Firebase UI components
+- Maintains clean separation between shared auth infrastructure and Firebase-specific implementations
+
+# 1) High-Level Objective
+
+Replace existing authentication UI with Firebase Google Sign-in while maintaining existing route protection, redirect behavior, and user experience patterns.
+
+# 2) Background / Context
+
+Phase 1 of authentication modernization requires updating the user-facing authentication components to use Firebase Google Sign-in instead of email/password forms. This task focuses on UI/UX migration while preserving existing redirect logic, route protection, and user flow patterns.
+
+Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: Firebase setup (TASK-0001) and session bridging (TASK-0002) are complete
+- Constraint: Preserve existing redirect behavior after authentication
+- Constraint: Maintain existing route protection patterns
+- Constraint: Support internationalization with existing locales
+- Constraint: Follow existing CVA component styling patterns
+- Constraint: No breaking changes to protected route access
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- ./TASK-0002-firebase-session-bridge.mdc (session bridging must be complete)
+- app/features/firebase/client.ts _(from TASK-0001)_
+- app/features/firebase/auth.server.ts _(from TASK-0002)_
+- app/components/auth/ (existing auth components)
+- app/routes/auth/ (existing auth routes)
+
+# 5) Context Plan
+
+## 🔗 HYBRID Task Pattern
+**Beginning (add to model context):**
+- app/components/auth/ _(read-only existing shared components)_
+- app/routes/auth/ _(read-only existing shared routes)_
+- app/features/firebase/client.ts _(from TASK-0001)_
+- app/features/firebase/auth.server.ts _(from TASK-0002)_
+- app/stores/authStore.ts _(read-only)_
+
+**End state (files that will be created/modified):**
+> Mix of shared and feature files - updating shared auth routes and creating Firebase-specific components:
+- app/routes/auth.signin.tsx _(updated shared route)_
+- app/routes/auth.callback.tsx _(new shared route)_
+- app/stores/authStore.ts _(updated shared state)_
+- app/features/firebase/components/FirebaseSignIn/ _(new feature components)_
+- app/hooks/useFirebaseAuth.ts _(new shared hook)_
+- app/features/firebase/__tests__/ _(feature tests)_
+- playwright/tests/firebase-auth.spec.ts _(E2E tests)_
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+1. **Create Firebase Sign-in component**
+
+   - File: `app/features/firebase/components/FirebaseSignIn/FirebaseSignIn.tsx`
+   - Exported API:
+     ```tsx
+     export type FirebaseSignInProps = {
+       redirectTo?: string
+       className?: string
+       variant?: 'default' | 'outline'
+       size?: 'sm' | 'md' | 'lg'
+     }
+
+     export function FirebaseSignIn({
+       redirectTo = '/a7k9m2x5p8w1n4q6r3y8b5t1',
+       className,
+       variant = 'default',
+       size = 'md',
+     }: FirebaseSignInProps): JSX.Element
+     ```
+   - Details:
+     - Use Firebase Auth with Google provider
+     - Handle loading states during authentication
+     - Display user-friendly error messages
+     - Support internationalization with useTranslation
+     - Follow existing button styling patterns
+
+2. **Create component variants**
+
+   - File: `app/features/firebase/components/FirebaseSignIn/firebaseSignIn.variants.ts`
+   - Use CVA pattern:
+     ```ts
+     export const firebaseSignInVariants = cva([
+       'inline-flex items-center justify-center rounded-md font-medium transition-colors',
+       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+       'disabled:pointer-events-none disabled:opacity-50'
+     ], {
+       variants: {
+         variant: {
+           default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+           outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'
+         },
+         size: {
+           sm: 'h-9 px-3 text-sm',
+           md: 'h-10 px-4 py-2',
+           lg: 'h-11 px-8'
+         }
+       }
+     })
+     ```
+
+3. **Create Firebase authentication hook**
+
+   - File: `app/hooks/useFirebaseAuth.ts`
+   - Exported API:
+     ```ts
+     export type UseFirebaseAuthReturn = {
+       signInWithGoogle: (redirectTo?: string) => Promise<void>
+       signOut: () => Promise<void>
+       user: FirebaseUser | null
+       loading: boolean
+       error: string | null
+       clearError: () => void
+     }
+
+     export function useFirebaseAuth(): UseFirebaseAuthReturn
+     ```
+   - Details:
+     - Handle Google sign-in flow using Firebase client SDK
+     - Import Firebase client using: `import { auth, googleProvider } from '~/features/firebase/client'`
+     - Manage authentication state
+     - Handle errors gracefully
+     - Integrate with existing authStore patterns
+
+4. **Update authentication routes**
+
+   - File: `app/routes/auth.signin.tsx` (update existing)
+   - Update to use FirebaseSignIn component:
+     ```tsx
+     export default function SignIn() {
+       const { redirectTo } = useLoaderData<typeof loader>()
+
+       return (
+         <div className="mx-auto max-w-md space-y-6">
+           <div className="space-y-2 text-center">
+             <h1 className="text-2xl font-bold">{t('auth.signin.title')}</h1>
+             <p className="text-muted-foreground">{t('auth.signin.description')}</p>
+           </div>
+           <FirebaseSignIn redirectTo={redirectTo} />
+         </div>
+       )
+     }
+     ```
+
+   - File: `app/routes/auth.callback.tsx` (new)
+   - Handle Firebase authentication callback:
+     ```tsx
+     export async function loader({ request }: LoaderFunctionArgs) {
+       // Handle Firebase ID token from client
+       // Create server session via firebase-session bridge
+       // Redirect to intended destination
+     }
+
+     export async function action({ request }: ActionFunctionArgs) {
+       const formData = await request.formData()
+       const idToken = formData.get('idToken') as string
+       const redirectTo = formData.get('redirectTo') as string
+
+       // Use session bridge to create server session
+       // Redirect user to intended destination
+     }
+     ```
+
+5. **Update authentication store**
+
+   - File: `app/stores/authStore.ts` (update existing)
+   - Add Firebase integration:
+     ```ts
+     type AuthState = {
+       user: User | null
+       firebaseUser: FirebaseUser | null
+       loading: boolean
+       error: string | null
+       setUser: (user: User | null) => void
+       setFirebaseUser: (user: FirebaseUser | null) => void
+       setLoading: (loading: boolean) => void
+       setError: (error: string | null) => void
+       clearError: () => void
+     }
+     ```
+
+6. **Tests**
+   - File: `app/features/firebase/__tests__/components/FirebaseSignIn.test.tsx` (Vitest)
+   - Cases:
+     - Renders sign-in button correctly
+     - Handles Google sign-in flow
+     - Displays loading states appropriately
+     - Shows error messages when authentication fails
+     - Applies variants and custom className correctly
+   - File: `app/hooks/__tests__/useFirebaseAuth.test.tsx` (Vitest)
+   - Cases:
+     - Hook manages authentication state correctly
+     - Handles successful sign-in flow
+     - Handles sign-in errors gracefully
+     - Clears errors when requested
+   - File: `playwright/tests/firebase-auth.spec.ts` (E2E)
+   - Cases:
+     - Complete sign-in flow from sign-in page
+     - Redirect behavior after authentication
+     - Protected route access after sign-in
+     - Sign-out functionality
+
+# 7) Types & Interfaces (if applicable)
+
+## 🔗 Hybrid Types (mix of both)
+```ts
+// app/features/firebase/types.ts (extend existing)
+export type FirebaseUser = {
+  uid: string
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+}
+
+export type AuthCallbackData = {
+  idToken: string
+  redirectTo: string
+}
+
+export type SignInFlowState = {
+  loading: boolean
+  error: string | null
+  redirectTo: string
+}
+```
+
+# 8) Acceptance Criteria
+
+## Common Criteria (all tasks)
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New strings added to all locales in `app/i18n/locales`; English uses title case, all other languages use sentence case following their respective grammar rules
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🔗 Hybrid Task Criteria
+- Shared components maintain backward compatibility
+- Feature-specific components integrate properly with shared components
+- Clear separation between shared and feature-specific concerns
+- Users can sign in using Google authentication through Firebase
+- Sign-in component follows existing CVA styling patterns
+- Authentication redirects work as expected (preserve `redirectTo` parameter)
+- Protected routes remain accessible after Firebase sign-in
+- Error handling displays user-friendly messages
+- Loading states provide clear feedback during authentication
+- Internationalization works with existing locale setup
+
+# 9) Testing Strategy
+
+- Mock Firebase Auth for isolated component testing using proper ESM patterns
+- **Mock patterns**: When mocking Firebase client SDK, use named export mocks: `vi.mock('firebase/auth', () => ({ ... }))`
+- Test component variants and styling with different props
+- Verify authentication flow integration with session bridging
+- Test redirect behavior with various `redirectTo` values
+- Include accessibility testing with screen reader navigation
+- Test responsive design on different screen sizes
+- Verify internationalization with different locales
+
+# 10) Notes / Links
+
+- Reference PRD section: Phase 1 - Authentication Modernization
+- Firebase Auth Web documentation: https://firebase.google.com/docs/auth/web/google-signin
+- Google Sign-In branding guidelines: https://developers.google.com/identity/branding-guidelines
+- Existing auth components for styling reference: `app/components/auth/`
+- Phase 1 completion depends on successful integration testing
+- **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

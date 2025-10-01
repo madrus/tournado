@@ -93,7 +93,7 @@ describe('i18n Integration Tests', () => {
 
       render(
         <I18nextProvider i18n={i18n}>
-          <TestTranslationComponent tKey='auth.errors.passwordRequired' />
+          <TestTranslationComponent tKey='messages.auth.passwordRequired' />
         </I18nextProvider>
       )
 

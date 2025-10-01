@@ -28,9 +28,9 @@ export default function AdminTournamentsLayout(): JSX.Element {
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
           <div>
             <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-              {t('admin.tournaments.title')}
+              {t('admin.tournament.title')}
             </h1>
-            <p className='text-foreground mt-1'>{t('admin.tournaments.description')}</p>
+            <p className='text-foreground mt-1'>{t('admin.tournament.description')}</p>
           </div>
 
           {/* Add Tournament Button */}

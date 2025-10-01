@@ -86,6 +86,7 @@ describe('Home Page (_index)', () => {
         firstName: 'Test',
         lastName: 'User',
         role: 'PUBLIC',
+        firebaseUid: 'test-firebase-uid',
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -112,6 +113,7 @@ describe('Home Page (_index)', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
+          firebaseUid: 'test-firebase-uid',
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -139,6 +141,7 @@ describe('Home Page (_index)', () => {
         firstName: 'Admin',
         lastName: 'User',
         role: 'ADMIN',
+        firebaseUid: 'test-firebase-uid',
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -172,6 +175,7 @@ describe('Home Page (_index)', () => {
             firstName: 'Test',
             lastName: 'User',
             role: 'PUBLIC',
+            firebaseUid: 'test-firebase-uid',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -185,6 +189,7 @@ describe('Home Page (_index)', () => {
             firstName: 'Tournament',
             lastName: 'Manager',
             role: 'MANAGER',
+            firebaseUid: 'test-firebase-uid',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -198,6 +203,7 @@ describe('Home Page (_index)', () => {
             firstName: 'Test',
             lastName: 'Referee',
             role: 'REFEREE',
+            firebaseUid: 'test-firebase-uid',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -211,6 +217,7 @@ describe('Home Page (_index)', () => {
             firstName: 'Admin',
             lastName: 'User',
             role: 'ADMIN',
+            firebaseUid: 'test-firebase-uid',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -309,6 +316,7 @@ describe('Home Page (_index)', () => {
           firstName: 'Test',
           lastName: 'User',
           role,
+          firebaseUid: 'test-firebase-uid',
           createdAt: new Date(),
           updatedAt: new Date(),
         }

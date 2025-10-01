@@ -54,8 +54,8 @@ describe('GeneralErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.notFoundTitle')).toBeInTheDocument()
-    expect(screen.getByText('auth.errors.notFound')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.notFoundTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.auth.notFound')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
   })
 
@@ -81,7 +81,7 @@ describe('GeneralErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.errorTitle')).toBeInTheDocument()
     // This one will still show the combined status and error text since it's constructed in the component
     expect(screen.getByText('500 Internal Server Error')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()
@@ -126,7 +126,7 @@ describe('GeneralErrorBoundary', () => {
     )
 
     // Assert
-    expect(screen.getByText('errors.errorTitle')).toBeInTheDocument()
+    expect(screen.getByText('messages.common.errorTitle')).toBeInTheDocument()
     // The error message will be the actual error message from the Error object
     expect(screen.getByText('Test error')).toBeInTheDocument()
     expect(screen.getByText('common.backToHome')).toBeInTheDocument()

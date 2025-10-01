@@ -41,58 +41,58 @@ describe('form-validation', () => {
         const result = getFieldErrorTranslationKey('teamLeaderEmail', {
           code: 'custom',
         })
-        expect(result).toBe('teams.form.errors.emailInvalid')
+        expect(result).toBe('messages.validation.emailInvalid')
       })
 
       it('should return phone invalid key for teamLeaderPhone custom errors', () => {
         const result = getFieldErrorTranslationKey('teamLeaderPhone', {
           code: 'custom',
         })
-        expect(result).toBe('teams.form.errors.phoneNumberInvalid')
+        expect(result).toBe('messages.validation.phoneNumberInvalid')
       })
 
       it('should fallback to default for other fields with custom errors', () => {
         const result = getFieldErrorTranslationKey('clubName', { code: 'custom' })
-        expect(result).toBe('teams.form.errors.clubNameRequired')
+        expect(result).toBe('messages.team.clubNameRequired')
       })
     })
 
     describe('too_big validation errors', () => {
       it('should return name too long key for name too_big errors', () => {
         const result = getFieldErrorTranslationKey('name', { code: 'too_big' })
-        expect(result).toBe('teams.form.errors.nameTooLong')
+        expect(result).toBe('messages.team.nameTooLong')
       })
 
       it('should return clubName too long key for clubName too_big errors', () => {
         const result = getFieldErrorTranslationKey('clubName', { code: 'too_big' })
-        expect(result).toBe('teams.form.errors.clubNameTooLong')
+        expect(result).toBe('messages.team.clubNameTooLong')
       })
 
       it('should return teamLeaderName too long key for teamLeaderName too_big errors', () => {
         const result = getFieldErrorTranslationKey('teamLeaderName', {
           code: 'too_big',
         })
-        expect(result).toBe('teams.form.errors.teamLeaderNameTooLong')
+        expect(result).toBe('messages.team.teamLeaderNameTooLong')
       })
 
       it('should fallback to default for other fields with too_big errors', () => {
         const result = getFieldErrorTranslationKey('division', { code: 'too_big' })
-        expect(result).toBe('teams.form.errors.divisionRequired')
+        expect(result).toBe('messages.team.divisionRequired')
       })
     })
 
     describe('default required field errors', () => {
       it('should return correct translation keys for standard fields', () => {
         const expectedMappings = {
-          tournamentId: 'teams.form.errors.tournamentRequired',
-          clubName: 'teams.form.errors.clubNameRequired',
-          name: 'teams.form.errors.nameRequired',
-          division: 'teams.form.errors.divisionRequired',
-          category: 'teams.form.errors.categoryRequired',
-          teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
-          teamLeaderPhone: 'teams.form.errors.phoneNumberRequired',
-          teamLeaderEmail: 'teams.form.errors.emailRequired',
-          privacyAgreement: 'teams.form.errors.privacyAgreementRequired',
+          tournamentId: 'messages.team.tournamentRequired',
+          clubName: 'messages.team.clubNameRequired',
+          name: 'messages.team.nameRequired',
+          division: 'messages.team.divisionRequired',
+          category: 'messages.team.categoryRequired',
+          teamLeaderName: 'messages.team.teamLeaderNameRequired',
+          teamLeaderPhone: 'messages.team.phoneNumberRequired',
+          teamLeaderEmail: 'messages.validation.emailRequired',
+          privacyAgreement: 'messages.team.privacyAgreementRequired',
         }
 
         Object.entries(expectedMappings).forEach(([fieldName, expectedKey]) => {
@@ -102,9 +102,9 @@ describe('form-validation', () => {
 
       it('should return correct translation keys for legacy store field names', () => {
         const legacyMappings = {
-          selectedTournamentId: 'teams.form.errors.tournamentRequired',
-          selectedDivision: 'teams.form.errors.divisionRequired',
-          selectedCategory: 'teams.form.errors.categoryRequired',
+          selectedTournamentId: 'messages.team.tournamentRequired',
+          selectedDivision: 'messages.team.divisionRequired',
+          selectedCategory: 'messages.team.categoryRequired',
         }
 
         Object.entries(legacyMappings).forEach(([fieldName, expectedKey]) => {
@@ -114,28 +114,30 @@ describe('form-validation', () => {
 
       it('should return default key for unknown fields', () => {
         expect(getFieldErrorTranslationKey('unknownField')).toBe(
-          'teams.form.errors.fieldRequired'
+          'messages.validation.fieldRequired'
         )
-        expect(getFieldErrorTranslationKey('')).toBe('teams.form.errors.fieldRequired')
+        expect(getFieldErrorTranslationKey('')).toBe(
+          'messages.validation.fieldRequired'
+        )
       })
     })
 
     describe('with zodIssue parameter', () => {
       it('should handle undefined zodIssue', () => {
         expect(getFieldErrorTranslationKey('clubName', undefined)).toBe(
-          'teams.form.errors.clubNameRequired'
+          'messages.team.clubNameRequired'
         )
       })
 
       it('should handle zodIssue without code', () => {
         expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
-          'teams.form.errors.clubNameRequired'
+          'messages.team.clubNameRequired'
         )
       })
 
       it('should handle unknown zodIssue codes', () => {
         expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
-          'teams.form.errors.clubNameRequired'
+          'messages.team.clubNameRequired'
         )
       })
     })
@@ -183,13 +185,13 @@ describe('form-validation', () => {
         }
 
         expect(validateSingleTeamField('tournamentId', emptyFormData, 'create')).toBe(
-          'teams.form.errors.tournamentRequired'
+          'messages.team.tournamentRequired'
         )
         expect(validateSingleTeamField('clubName', emptyFormData, 'create')).toBe(
-          'teams.form.errors.clubNameRequired'
+          'messages.team.clubNameRequired'
         )
         expect(validateSingleTeamField('name', emptyFormData, 'create')).toBe(
-          'teams.form.errors.nameRequired'
+          'messages.team.nameRequired'
         )
       })
 
@@ -200,7 +202,7 @@ describe('form-validation', () => {
           invalidFormData,
           'create'
         )
-        expect(result).toBe('teams.form.errors.privacyAgreementRequired')
+        expect(result).toBe('messages.team.privacyAgreementRequired')
       })
 
       it('should return error key for invalid email format', () => {
@@ -213,7 +215,7 @@ describe('form-validation', () => {
           invalidFormData,
           'create'
         )
-        expect(result).toBe('teams.form.errors.emailInvalid')
+        expect(result).toBe('messages.validation.emailInvalid')
       })
 
       it('should return error key for invalid phone format', () => {
@@ -223,7 +225,7 @@ describe('form-validation', () => {
           invalidFormData,
           'create'
         )
-        expect(result).toBe('teams.form.errors.phoneNumberInvalid')
+        expect(result).toBe('messages.validation.phoneNumberInvalid')
       })
 
       it('should return error key for too long team name', () => {
@@ -232,7 +234,7 @@ describe('form-validation', () => {
           name: 'This is a very long team name that exceeds the maximum allowed length' as TeamName,
         }
         const result = validateSingleTeamField('name', invalidFormData, 'create')
-        expect(result).toBe('teams.form.errors.nameTooLong')
+        expect(result).toBe('messages.team.nameTooLong')
       })
     })
 
@@ -274,13 +276,13 @@ describe('form-validation', () => {
         }
 
         expect(validateSingleTeamField('tournamentId', emptyFormData, 'edit')).toBe(
-          'teams.form.errors.tournamentRequired'
+          'messages.team.tournamentRequired'
         )
         expect(validateSingleTeamField('clubName', emptyFormData, 'edit')).toBe(
-          'teams.form.errors.clubNameRequired'
+          'messages.team.clubNameRequired'
         )
         expect(validateSingleTeamField('name', emptyFormData, 'edit')).toBe(
-          'teams.form.errors.nameRequired'
+          'messages.team.nameRequired'
         )
       })
     })
@@ -290,7 +292,7 @@ describe('form-validation', () => {
         // Test with invalid form data that might cause validation to throw
         const invalidFormData = {} as TeamFormData
         const result = validateSingleTeamField('clubName', invalidFormData, 'create')
-        expect(result).toBe('teams.form.errors.clubNameRequired')
+        expect(result).toBe('messages.team.clubNameRequired')
       })
 
       it('should handle unknown field names', () => {
@@ -335,15 +337,15 @@ describe('form-validation', () => {
         const result = validateEntireTeamForm(emptyFormData, 'create')
 
         expect(result).toEqual({
-          tournamentId: 'teams.form.errors.tournamentRequired',
-          clubName: 'teams.form.errors.clubNameRequired',
-          name: 'teams.form.errors.nameRequired',
-          division: 'teams.form.errors.divisionRequired',
-          category: 'teams.form.errors.categoryRequired',
-          teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
-          teamLeaderPhone: 'teams.form.errors.phoneNumberRequired',
-          teamLeaderEmail: 'teams.form.errors.emailRequired',
-          privacyAgreement: 'teams.form.errors.privacyAgreementRequired',
+          tournamentId: 'messages.team.tournamentRequired',
+          clubName: 'messages.team.clubNameRequired',
+          name: 'messages.team.nameRequired',
+          division: 'messages.team.divisionRequired',
+          category: 'messages.team.categoryRequired',
+          teamLeaderName: 'messages.team.teamLeaderNameRequired',
+          teamLeaderPhone: 'messages.team.phoneNumberRequired',
+          teamLeaderEmail: 'messages.validation.emailRequired',
+          privacyAgreement: 'messages.team.privacyAgreementRequired',
         })
       })
 
@@ -357,9 +359,9 @@ describe('form-validation', () => {
 
         const result = validateEntireTeamForm(invalidFormData, 'create')
 
-        expect(result.teamLeaderEmail).toBe('teams.form.errors.emailInvalid')
-        expect(result.teamLeaderPhone).toBe('teams.form.errors.phoneNumberInvalid')
-        expect(result.name).toBe('teams.form.errors.nameTooLong')
+        expect(result.teamLeaderEmail).toBe('messages.validation.emailInvalid')
+        expect(result.teamLeaderPhone).toBe('messages.validation.phoneNumberInvalid')
+        expect(result.name).toBe('messages.team.nameTooLong')
       })
     })
 
@@ -395,14 +397,14 @@ describe('form-validation', () => {
         const result = validateEntireTeamForm(emptyFormData, 'edit')
 
         expect(result).toEqual({
-          tournamentId: 'teams.form.errors.tournamentRequired',
-          clubName: 'teams.form.errors.clubNameRequired',
-          name: 'teams.form.errors.nameRequired',
-          division: 'teams.form.errors.divisionRequired',
-          category: 'teams.form.errors.categoryRequired',
-          teamLeaderName: 'teams.form.errors.teamLeaderNameRequired',
-          teamLeaderPhone: 'teams.form.errors.phoneNumberRequired',
-          teamLeaderEmail: 'teams.form.errors.emailRequired',
+          tournamentId: 'messages.team.tournamentRequired',
+          clubName: 'messages.team.clubNameRequired',
+          name: 'messages.team.nameRequired',
+          division: 'messages.team.divisionRequired',
+          category: 'messages.team.categoryRequired',
+          teamLeaderName: 'messages.team.teamLeaderNameRequired',
+          teamLeaderPhone: 'messages.team.phoneNumberRequired',
+          teamLeaderEmail: 'messages.validation.emailRequired',
         })
       })
     })
@@ -414,7 +416,7 @@ describe('form-validation', () => {
         const result = validateEntireTeamForm(invalidFormData, 'create')
         // Empty form data should still return validation errors for required fields
         expect(Object.keys(result).length).toBeGreaterThan(0)
-        expect(result.tournamentId).toBe('teams.form.errors.tournamentRequired')
+        expect(result.tournamentId).toBe('messages.team.tournamentRequired')
       })
 
       it('should return empty object for unexpected errors', () => {

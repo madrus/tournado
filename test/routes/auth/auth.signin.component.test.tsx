@@ -14,12 +14,30 @@ type ActionData = {
   }
 }
 
-// Mock the SignIn component
-vi.mock('~/components/auth', () => ({
-  SignIn: ({ actionData }: { actionData?: ActionData }) => (
-    <div data-testid='signin-component'>
-      <div data-testid='signin-action-data'>
-        {actionData === undefined ? 'null' : JSON.stringify(actionData)}
+// Mock the FirebaseSignIn component (Google OAuth)
+vi.mock('~/features/firebase/components/FirebaseSignIn', () => ({
+  FirebaseSignIn: ({ redirectTo }: { redirectTo?: string }) => (
+    <div data-testid='firebase-signin-component'>
+      <div data-testid='firebase-redirect-data'>
+        {redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
+      </div>
+    </div>
+  ),
+}))
+
+// Mock the FirebaseEmailSignIn component (Email/Password)
+vi.mock('~/features/firebase/components/FirebaseEmailSignIn', () => ({
+  FirebaseEmailSignIn: ({
+    mode,
+    redirectTo,
+  }: {
+    mode: string
+    redirectTo?: string
+  }) => (
+    <div data-testid='firebase-email-signin-component'>
+      <div data-testid='firebase-email-mode'>{mode}</div>
+      <div data-testid='firebase-email-redirect-data'>
+        {redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
       </div>
     </div>
   ),
@@ -31,6 +49,7 @@ vi.mock('react-router', async () => {
   return {
     ...actualRouter,
     useActionData: vi.fn(),
+    useLoaderData: vi.fn(),
   }
 })
 
@@ -44,8 +63,11 @@ describe('Auth SignIn Route Component', () => {
   })
 
   const renderSigninRoute = async (actionData?: ActionData) => {
-    const { useActionData } = await import('react-router')
+    const { useActionData, useLoaderData } = await import('react-router')
     vi.mocked(useActionData).mockReturnValue(actionData)
+    vi.mocked(useLoaderData).mockReturnValue({
+      redirectTo: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+    })
 
     const router = createMemoryRouter(
       [
@@ -62,39 +84,61 @@ describe('Auth SignIn Route Component', () => {
     return render(<RouterProvider router={router} />)
   }
 
-  it('renders SignIn component', async () => {
+  it('renders Firebase SignIn components', async () => {
     await renderSigninRoute()
 
-    expect(screen.getByTestId('signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
   })
 
-  it('passes actionData to SignIn component', async () => {
-    const testActionData = {
-      errors: {
-        email: 'Invalid email',
-        password: null,
-      },
-    }
+  it('passes redirectTo to Firebase components', async () => {
+    await renderSigninRoute()
 
-    await renderSigninRoute(testActionData)
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    )
 
-    expect(screen.getByTestId('signin-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signin-action-data')).toHaveTextContent(
-      JSON.stringify(testActionData)
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-mode')).toHaveTextContent('signin')
+    expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
     )
   })
 
-  it('handles undefined actionData gracefully', async () => {
-    await renderSigninRoute(undefined)
+  it('handles null redirectTo gracefully', async () => {
+    const { useActionData, useLoaderData } = await import('react-router')
+    vi.mocked(useActionData).mockReturnValue(undefined)
+    vi.mocked(useLoaderData).mockReturnValue({
+      redirectTo: null,
+    })
 
-    expect(screen.getByTestId('signin-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signin-action-data')).toHaveTextContent('null')
+    const router = createMemoryRouter(
+      [
+        {
+          path: '/',
+          Component: SigninRoute,
+        },
+      ],
+      {
+        initialEntries: ['/'],
+      }
+    )
+
+    render(<RouterProvider router={router} />)
+
+    expect(screen.getByTestId('firebase-signin-component')).toBeInTheDocument()
+    expect(screen.getByTestId('firebase-email-signin-component')).toBeInTheDocument()
   })
 
-  it('handles empty actionData', async () => {
-    await renderSigninRoute({})
+  it('renders with default redirect paths when no redirectTo provided', async () => {
+    await renderSigninRoute()
 
-    expect(screen.getByTestId('signin-component')).toBeInTheDocument()
-    expect(screen.getByTestId('signin-action-data')).toHaveTextContent('{}')
+    expect(screen.getByTestId('firebase-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    )
+    expect(screen.getByTestId('firebase-email-redirect-data')).toHaveTextContent(
+      '/a7k9m2x5p8w1n4q6r3y8b5t1'
+    )
   })
 })

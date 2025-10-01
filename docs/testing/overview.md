@@ -21,6 +21,17 @@ The project includes a sophisticated **Model Context Protocol (MCP) server** tha
 
 [📖 **Detailed MCP Documentation**](vitest-mcp.md) - Complete guide to AI-assisted testing capabilities
 
+### 🎯 E2E Testing Strategy
+
+Our E2E tests follow the principle **"Test your code, not third-party services"**:
+
+- **Firebase Authentication Bypass**: E2E tests bypass Firebase authentication entirely using session cookies
+- **Environment Isolation**: CI uses dummy Firebase values, actual authentication is mocked
+- **Session Cookie Testing**: Tests authenticate via direct session creation in global setup
+- **Focus on Application Logic**: Tests verify our code behavior, not Firebase service functionality
+
+[📖 **Detailed E2E Strategy Guide**](e2e-firebase-strategy.md) - Complete testing approach and implementation details
+
 ## Running Tests
 
 ### All Tests
@@ -62,14 +73,13 @@ E2E tests use a completely separate SQLite database to ensure isolation from dev
 
 ### Automatic Test Database Setup
 
-When running E2E tests via `pnpm test:e2e:all` or `pnpm test:e2e:dev`, the system automatically:
+When running E2E tests via `pnpm test:e2e:*`, the system automatically:
 
-1. Removes any existing test database
-2. Creates a fresh test database using `prisma migrate deploy`
-3. Seeds the test database with initial data
-4. Sets `DATABASE_URL` environment variable to point to the test database
+1. Applies pending migrations to `prisma/data-test.db` using `prisma migrate deploy`
+2. Starts the server with `DATABASE_URL` pointing to the test database
+3. Executes Playwright global setup which wipes test data and seeds required auth users
 
-This ensures every test run starts with a clean, predictable database state without affecting your development data.
+This ensures each run uses the dedicated test database and a predictable schema and data state — without affecting your development database.
 
 ## Environment Requirements
 
@@ -208,58 +218,6 @@ test('admin feature', async ({ page }) => {
 // - user-authenticated: Uses user-auth.json (for user permissions)
 // - no-auth: No authentication (for auth flows & public access)
 ```
-
-## CodeRabbit Testing Analysis
-
-### Test Coverage Assessment
-
-CodeRabbit identified comprehensive testing coverage across the application:
-
-- **Overall Quality Score**: 8.5/10
-- **Unit Test Coverage**: Component-level testing with React Testing Library
-- **E2E Test Coverage**: Playwright tests covering critical user flows
-- **Type Safety**: 100% TypeScript coverage prevents runtime errors
-- **Test Organization**: Well-structured test hierarchy with proper isolation
-
-### Testing Architecture Strengths
-
-1. **Comprehensive Test Suite**: Multiple testing layers (unit, integration, E2E)
-2. **Authentication Testing**: Pre-authenticated contexts for efficient testing
-3. **Database Isolation**: Separate test databases prevent data conflicts
-4. **Page Object Model**: Reusable, maintainable test components
-5. **Mobile-First Testing**: Consistent mobile viewport coverage
-
-### Testing Quality Pipeline
-
-```mermaid
-graph TD
-    subgraph "Code Quality Pipeline"
-        ESLint[ESLint]
-        Prettier[Prettier]
-        TypeScript[TypeScript]
-        Husky[Git Hooks]
-    end
-
-    subgraph "Testing Quality"
-        Coverage[Test Coverage]
-        E2EValidation[E2E Validation]
-        VisualRegression[Visual Testing]
-    end
-
-    subgraph "Build Quality"
-        TypeGen[Type Generation]
-        BuildValidation[Build Validation]
-        BundleAnalysis[Bundle Analysis]
-    end
-```
-
-### Quality Metrics
-
-- **Test Coverage**: 70% minimum across all metrics
-- **Type Safety**: 100% TypeScript coverage, no `any` types
-- **Code Style**: Automated formatting with Prettier
-- **Linting**: Comprehensive ESLint rules with error prevention
-- **Bundle Size**: Optimized with tree shaking and code splitting
 
 ## Best Practices
 

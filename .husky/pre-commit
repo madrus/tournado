@@ -1,3 +1,7 @@
-pretty-quick --staged
-eslint --cache --cache-location ./node_modules/.cache/eslint --fix
+# Add Homebrew to PATH if it exists
+[ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
+[ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
+
+pnpm format
+pnpm lint
 pnpm typecheck

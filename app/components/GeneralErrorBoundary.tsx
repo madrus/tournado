@@ -23,11 +23,13 @@ export function GeneralErrorBoundary({
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-          {error.status === 404 ? t('errors.notFoundTitle') : t('errors.errorTitle')}
+          {error.status === 404
+            ? t('messages.common.notFoundTitle')
+            : t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>
           {error.status === 404
-            ? t('auth.errors.notFound')
+            ? t('messages.auth.notFound')
             : `${error.status} ${error.data}`}
         </p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
@@ -42,7 +44,7 @@ export function GeneralErrorBoundary({
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
         <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-          {t('errors.errorTitle')}
+          {t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
         <ErrorRecoveryLink to='/' className='text-body-md underline'>
@@ -56,6 +58,7 @@ export function GeneralErrorBoundary({
   statusHandlers?: Record<number, StatusHandler>
   unexpectedErrorHandler?: (error: unknown) => JSX.Element | null
 }): JSX.Element {
+  // Call hooks unconditionally at top level (required by React rules)
   const error = useRouteError()
   const params = useParams()
 
@@ -66,10 +69,10 @@ export function GeneralErrorBoundary({
 
   return (
     <div className='container mx-auto flex h-full w-full items-center justify-center p-20'>
-      {isRouteErrorResponse(error)
-        ? (statusHandlers?.[error.status] ?? defaultStatusHandler)({
-            error,
-            params,
+      {isRouteErrorResponse(error as unknown)
+        ? (statusHandlers?.[(error as ErrorResponse).status] ?? defaultStatusHandler)({
+            error: error as ErrorResponse,
+            params: params as Record<string, string | undefined>,
           })
         : unexpectedErrorHandler(error)}
     </div>

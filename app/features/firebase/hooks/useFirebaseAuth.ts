@@ -46,7 +46,11 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
 
   useEffect(() => {
     const { auth } = getAuthAndProvider()
-    if (!auth) return
+    if (!auth) {
+      // Firebase is not configured - set loading to false
+      setLoading(false)
+      return
+    }
 
     // Use mock-aware or real onAuthStateChanged
     const onAuthStateChanged = getOnAuthStateChanged()

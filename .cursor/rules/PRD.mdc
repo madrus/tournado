@@ -103,6 +103,10 @@ Database & Data Model [Implemented]
 - [x] Multi-super-admin role assignment system (TASK-0004 done)
 - [x] Environment variable separation and Firebase project isolation (TASK-0005 done)
 - [x] Complete legacy authentication removal (TASK-0006 done - bcrypt/Password table removed)
+- [x] Dynamic admin role assignment (ADR-003 - roles update on login based on SUPER_ADMIN_EMAILS)
+- [x] Production deployment with all Firebase environment variables configured
+- [x] Database schema migration (firebaseUid column added to User table)
+- [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
 **Phase 2 - Groups & Playoffs (MVP) [Planned]**
 
@@ -692,7 +696,11 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 ### Phase 1: Authentication Modernization [COMPLETED]
 
-- ✅ Firebase auth, session cookie bridging, redirects, logout, environment separation, legacy removal
+- ✅ Firebase auth (Google OAuth + Email/Password), session cookie bridging
+- ✅ Dynamic admin role assignment (ADR-003)
+- ✅ Production deployment with environment configuration
+- ✅ Database migration and CI/E2E validation
+- ✅ Complete legacy authentication removal
 
 ### Phase 2: Groups & Playoffs (MVP)
 

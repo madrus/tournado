@@ -46,6 +46,7 @@
    - [Overview](deployment/overview.md)
    - [CI/CD Pipeline](deployment/cicd-pipeline.md)
    - [Mobile Deployment](deployment/mobile.md)
+   - [Production Migration Oct 2025](deployment/production-migration-2025-10.md)
 - Maintenance
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)

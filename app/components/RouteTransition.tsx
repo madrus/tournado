@@ -4,12 +4,39 @@ import { Outlet, useLocation } from 'react-router'
 type RouteTransitionProps = {
   duration?: number // in milliseconds
   className?: string
+  minOpacity?: number
+}
+
+// Ultra-simple: Just a subtle slide-in effect on route changes
+export function SubtleRouteTransition({
+  className = '',
+  duration = 300,
+}: {
+  className?: string
+  duration?: number
+}): JSX.Element {
+  const location = useLocation()
+
+  return (
+    <div
+      className={`animate-slideIn ${className}`}
+      key={location.pathname} // This triggers the CSS animation on route changes
+      style={{
+        animationDuration: `${duration}ms`,
+        animationTimingFunction: 'ease-out',
+        animationFillMode: 'both',
+      }}
+    >
+      <Outlet />
+    </div>
+  )
 }
 
 // Simple and effective transition for React Router 7
 export function RouteTransition({
   duration = 300,
   className = '',
+  minOpacity = 0.6,
 }: RouteTransitionProps): JSX.Element {
   const location = useLocation()
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -30,7 +57,7 @@ export function RouteTransition({
     <div
       className={`transition-opacity duration-300 ease-in-out ${className}`}
       style={{
-        opacity: isTransitioning ? 0.3 : 1,
+        opacity: isTransitioning ? minOpacity : 1,
       }}
     >
       <Outlet />
@@ -207,24 +234,6 @@ export function RouteTransitionAdvanced({
       key={displayLocation.key}
     >
       <Outlet context={{ location: displayLocation }} />
-    </div>
-  )
-}
-
-// Ultra-simple: Just a subtle slide-in effect on route changes
-export function SubtleRouteTransition({
-  className = '',
-}: {
-  className?: string
-}): JSX.Element {
-  const location = useLocation()
-
-  return (
-    <div
-      className={`animate-slideIn ${className}`}
-      key={location.pathname} // This triggers the CSS animation on route changes
-    >
-      <Outlet />
     </div>
   )
 }

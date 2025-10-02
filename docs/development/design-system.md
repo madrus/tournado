@@ -287,6 +287,7 @@ The design system provides:
 - **WCAG 2.1 AA compliance** - All color combinations meet contrast requirements
 - **High contrast ratios** - Text remains readable in both themes
 - **Focus indicators** - Visible focus rings on all interactive elements
+- **Reduced motion support** - Global route transitions and component animations honor the user's `prefers-reduced-motion` setting
 
 ## 🎯 Advanced Features
 

@@ -6,7 +6,6 @@ import {
   LinksFunction,
   Meta,
   MetaFunction,
-  Outlet,
   Scripts,
   ScrollRestoration,
 } from 'react-router'
@@ -17,6 +16,7 @@ import '@radix-ui/themes/styles.css'
 import { AppLayout } from '~/components/AppLayout'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
 import { PWAElements } from '~/components/PWAElements'
+import { SubtleRouteTransition } from '~/components/RouteTransition'
 import { prisma } from '~/db.server'
 import { initI18n, Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
 import type { TournamentData } from '~/lib/lib.types'
@@ -277,7 +277,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         i18n={i18n}
         env={ENV}
       >
-        <Outlet />
+        <SubtleRouteTransition duration={500} />
       </AppLayout>
     </Document>
   )

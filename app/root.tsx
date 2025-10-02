@@ -67,9 +67,15 @@ type LoaderData = {
   language: string
   theme: 'light' | 'dark'
   tournaments: TournamentData[]
+  nonce: string
 }
 
-export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+  request,
+  context,
+}: Route.LoaderArgs): Promise<LoaderData> {
+  // Extract nonce from context (set in entry.server.tsx)
+  const nonce = (context as { nonce?: string })?.nonce || ''
   const user = await getUser(request)
   // Read 'lang' and 'theme' cookies from request
   const cookieHeader = request.headers.get('Cookie') || ''
@@ -125,6 +131,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
     language,
     theme,
     tournaments,
+    nonce,
   }
 }
 
@@ -132,9 +139,10 @@ type DocumentProps = {
   children: React.ReactNode
   language: string
   theme: 'light' | 'dark'
+  nonce?: string
 }
 
-const Document = ({ children, language, theme: serverTheme }: DocumentProps) => {
+const Document = ({ children, language, theme: serverTheme, nonce }: DocumentProps) => {
   // Get current theme and language from store (reactive to changes)
   const { theme: storeTheme, language: storeLanguage } = useSettingsStore()
 
@@ -189,6 +197,7 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
         <ScrollRestoration />
         {/* Inject the SSR language and theme for client-side hydration */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
           }}
@@ -210,6 +219,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
     language: serverLanguage,
     theme: serverTheme,
     tournaments,
+    nonce,
   } = loaderData
 
   // Handle store rehydration FIRST, before accessing store values
@@ -268,7 +278,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   }, [currentLanguage, isHydrated])
 
   return (
-    <Document language={serverLanguage} theme={serverTheme}>
+    <Document language={serverLanguage} theme={serverTheme} nonce={nonce}>
       <AppLayout
         authenticated={authenticated}
         username={username}
@@ -276,6 +286,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         theme={currentTheme}
         i18n={i18n}
         env={ENV}
+        nonce={nonce}
       >
         <SubtleRouteTransition duration={500} />
       </AppLayout>
@@ -295,6 +306,9 @@ export function ErrorBoundary(): JSX.Element {
 
   // Use Dutch for error boundary fallback
   const i18n = initI18n('nl')
+
+  // Note: nonce is not available in error boundaries since they don't have access to loader data
+  // Error boundaries will not have inline scripts that require nonces
 
   return (
     <Document language='nl' theme={theme}>

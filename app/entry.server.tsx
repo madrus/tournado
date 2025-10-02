@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto'
 import { PassThrough } from 'node:stream'
 
 import { createReadableStreamFromReadable } from '@react-router/node'
@@ -23,7 +24,13 @@ if (!process.env.DATABASE_URL) {
 
 const ABORT_DELAY = 5_000
 
-function applySecurityHeaders(headers: Headers, request: Request): void {
+export const generateNonce = (): string => randomBytes(16).toString('base64')
+
+export function applySecurityHeaders(
+  headers: Headers,
+  request: Request,
+  nonce: string
+): void {
   const isDev = process.env.NODE_ENV !== 'production'
 
   const formActionSources = new Set(["'self'"])
@@ -54,15 +61,14 @@ function applySecurityHeaders(headers: Headers, request: Request): void {
     }
   }
 
-  // Note: We currently allow 'unsafe-inline' to support the small inline
-  // SSR script in root.tsx. We can migrate to nonces later.
+  // Use nonce for inline scripts instead of 'unsafe-inline'
   const csp = [
     "default-src 'self'",
     "base-uri 'self'",
     // Dev allowances include localhost and unsafe-eval for Vite HMR
     // Firebase Auth requires Google APIs and Firebase domains
-    `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://*.firebaseapp.com https://*.googleapis.com${isDev ? " 'unsafe-eval' http://localhost:* http://127.0.0.1:*" : ''}`,
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    `script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://*.firebaseapp.com https://*.googleapis.com${isDev ? " 'unsafe-eval' http://localhost:* http://127.0.0.1:*" : ''}`,
+    "style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https://www.google-analytics.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     `connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com${isDev ? ' http://localhost:* ws://localhost:* ws://127.0.0.1:*' : ''}`,
@@ -112,14 +118,18 @@ const handleBotRequest = (
   reactRouterContext: EntryContext
 ): Promise<Response> =>
   new Promise((resolve, reject) => {
+    const nonce = generateNonce()
+    // Make nonce available to loaders via serverHandoffString
+    reactRouterContext.serverHandoffString = JSON.stringify({ nonce })
+
     const { abort, pipe } = renderToPipeableStream(
-      <ServerRouter context={reactRouterContext} url={request.url} />,
+      <ServerRouter context={reactRouterContext} url={request.url} nonce={nonce} />,
       {
         onAllReady() {
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
-          applySecurityHeaders(responseHeaders, request)
+          applySecurityHeaders(responseHeaders, request, nonce)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {
@@ -151,14 +161,18 @@ const handleBrowserRequest = (
   reactRouterContext: EntryContext
 ): Promise<Response> =>
   new Promise((resolve, reject) => {
+    const nonce = generateNonce()
+    // Make nonce available to loaders via serverHandoffString
+    reactRouterContext.serverHandoffString = JSON.stringify({ nonce })
+
     const { abort, pipe } = renderToPipeableStream(
-      <ServerRouter context={reactRouterContext} url={request.url} />,
+      <ServerRouter context={reactRouterContext} url={request.url} nonce={nonce} />,
       {
         onShellReady() {
           const body = new PassThrough()
 
           responseHeaders.set('Content-Type', 'text/html')
-          applySecurityHeaders(responseHeaders, request)
+          applySecurityHeaders(responseHeaders, request, nonce)
 
           resolve(
             new Response(createReadableStreamFromReadable(body), {

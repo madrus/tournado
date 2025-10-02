@@ -743,9 +743,9 @@ export async function requireUserRole(
 export async function validateFirebaseSession(request: Request) {
   const session = await getSession(request.headers.get('Cookie'))
   const sessionCookie = session.get('session')
-  
+
   if (!sessionCookie) return null
-  
+
   try {
     const decodedClaims = await adminAuth?.verifySessionCookie(sessionCookie, true)
     return decodedClaims?.uid || null
@@ -824,7 +824,11 @@ export async function createTeam(teamData: CreateTeamData) {
 ## SSR Security Headers
 
 - Security headers (including CSP) are applied in `app/entry.server.tsx`
-- Current interim CSP allows `'unsafe-inline'` for a small SSR snippet; see ADR-0011 for nonce migration plan
+- **CSP Nonce Implementation**: Per-request nonce generation and application to all inline scripts
+- **Script Security**: `script-src 'self' 'nonce-<value>'` with Firebase/analytics domains and dev HMR allowances
+- **Style Security**: `style-src 'self' 'nonce-<value>'` with Google Fonts support
+- **Form Security**: Dynamic `form-action` directive with environment-specific origins
+- **Testing**: Comprehensive unit tests for nonce generation and CSP header application
 
 ## PWA and Mobile Wrapper Notes
 

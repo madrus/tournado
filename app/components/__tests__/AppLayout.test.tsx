@@ -197,6 +197,17 @@ describe('AppLayout', () => {
       expect(script?.innerHTML).toContain('"API_URL":"http://localhost"')
     })
 
+    it('should render environment script with nonce when provided', () => {
+      const env = { NODE_ENV: 'test' }
+      const nonce = 'test-nonce-123'
+      render(<AppLayout {...defaultProps} env={env} nonce={nonce} />)
+
+      // eslint-disable-next-line testing-library/no-node-access
+      const script = document.querySelector('script')
+      expect(script).toBeTruthy()
+      expect(script?.getAttribute('nonce')).toBe(nonce)
+    })
+
     it('should not render environment script when env prop is not provided', () => {
       render(<AppLayout {...defaultProps} />)
 

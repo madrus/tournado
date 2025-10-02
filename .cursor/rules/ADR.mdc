@@ -509,26 +509,32 @@ We need a default set of security headers (HSTS, X-Frame-Options, CSP) appropria
 
 Adopt a baseline header set (HSTS, frame options, referrer policy, permissions policy) and define a CSP pattern (script-src 'self' plus hashed inline where needed, connect-src for APIs, img-src data: as needed). Exact directives to be finalized after asset inventory.
 
-#### Current Implementation (Interim)
+#### Current Implementation (Complete)
 
-- Implemented minimal CSP and security headers in SSR response construction (`app/entry.server.tsx`).
-- Allows `'unsafe-inline'` in `script-src` temporarily to support the small inline SSR snippet in `app/root.tsx`.
-- Dev mode adds allowances for Vite HMR (`unsafe-eval`, localhost HTTP/WS). Production enables HSTS.
+- Implemented comprehensive CSP and security headers in SSR response construction (`app/entry.server.tsx`).
+- **CSP Nonce Implementation**: Per-request nonce generation and application to all inline scripts
+- **Script Security**: `script-src 'self' 'nonce-<value>'` with Firebase/analytics domains and dev HMR allowances
+- **Style Security**: `style-src 'self' 'nonce-<value>'` with Google Fonts support
+- **Form Security**: Dynamic `form-action` directive with environment-specific origins
+- **Production Security**: HSTS enabled in production with proper headers
 
-#### Nonce Migration Plan (Tightening CSP)
+#### Nonce Implementation Details
 
-1) Generate a per-request nonce in `app/entry.server.tsx` and make it available to rendering (via context/props).
-2) Attach the nonce to all inline/script tags:
-   - Add `nonce` to the inline SSR script in `app/root.tsx`.
-   - Pass the same `nonce` to `<Scripts />` so framework-generated script tags include it (or configure equivalent if required).
-3) Update CSP `script-src` to replace `'unsafe-inline'` with `'nonce-<value>'` (keep `'self'`; keep dev HMR allowances in development).
-4) Verify no other inline scripts/styles remain; move any remaining inline code to external files.
-5) Run with `Content-Security-Policy-Report-Only` first to catch violations; switch to enforcing once clean.
+**Nonce Generation**: `generateNonce()` function creates cryptographically secure 16-byte nonces per request
+**Nonce Application**: All inline scripts in `app/root.tsx` and `app/components/AppLayout.tsx` include `nonce` attribute
+**CSP Integration**: Nonce passed through React Router context and applied to CSP `script-src` and `style-src` directives
+**Security Headers**: Complete set including HSTS, X-Frame-Options, Referrer-Policy, and Permissions-Policy
+
+#### Testing Coverage
+
+- Unit tests for nonce generation and CSP header application
+- Integration tests for nonce flow through React Router context
+- E2E tests verify CSP compliance in browser environment
 
 ### Consequences
 
-* Pros: Defense-in-depth, consistent security posture
-* Cons / risks: Initial tuning needed to avoid breakage
+* Pros: Defense-in-depth, consistent security posture, CSP nonce protection against XSS
+* Cons / risks: Initial implementation complexity, nonce management overhead
 * Supersedes: —
 * Superseded by: —
 

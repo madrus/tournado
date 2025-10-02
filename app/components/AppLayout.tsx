@@ -28,6 +28,7 @@ type AppLayoutProps = {
   children: ReactNode
   contentClassName?: string
   env?: Record<string, string>
+  nonce?: string
 }
 
 export const AppLayout = ({
@@ -39,6 +40,7 @@ export const AppLayout = ({
   children,
   contentClassName = `${CONTENT_PX} pt-8 md:pb-8`,
   env,
+  nonce,
 }: AppLayoutProps): JSX.Element => {
   const transitionComponents = useMemo(
     () =>
@@ -116,6 +118,7 @@ export const AppLayout = ({
       </Theme>
       {env ? (
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(env)}`,
           }}

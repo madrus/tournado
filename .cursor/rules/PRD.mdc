@@ -61,6 +61,7 @@ Design & Theming [Implemented]
 - [x] Dark/light theme with system detection and manual toggle
 - [x] Semantic color tokens (no hard-coded colors); 20+ accent palettes
 - [x] Icon system audited for theme compatibility (31 SVGs, currentColor)
+- [x] Motion accessibility: global route transitions respect `prefers-reduced-motion` and fall back to static rendering when requested
 
 State Management [Implemented]
 

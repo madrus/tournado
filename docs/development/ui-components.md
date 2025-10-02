@@ -250,7 +250,7 @@ All components automatically support light and dark themes through semantic toke
 
 - **Panel**: Container component with gradient backgrounds
 - **SidebarLayout**: Admin layout with theme support
-- **RouteTransition**: Animated transitions respecting theme
+- **RouteTransition**: Animated transitions respecting theme and reduced motion preferences
 
 ### Implementation Guidelines
 
@@ -278,6 +278,7 @@ All components include:
 - **Screen reader support** - Proper ARIA labels and semantic markup
 - **Keyboard navigation** - Full keyboard accessibility for all interactions
 - **RTL support** - Right-to-left language compatibility
+- **Reduced motion compliance** - `RouteTransition` uses `useReducedMotion` to disable animations when users request it
 
 ### Performance Considerations
 

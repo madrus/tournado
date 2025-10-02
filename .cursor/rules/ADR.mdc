@@ -287,7 +287,8 @@ Adopt semantic CSS tokens mapped in Tailwind, CVA-based component variants for a
 
 ### Compliance / Verification
 
-Visual checks for light/dark, linting/guidelines, and tests for theme states on critical components.
+- Visual checks for light/dark, linting/guidelines, and tests for theme states on critical components
+- Accessibility checks ensure animations stay comfortable for people who choose reduced motion settings
 
 ## ADR-0007 — Navigation Performance: Prefetching and Data Freshness
 

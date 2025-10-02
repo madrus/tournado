@@ -25,3 +25,31 @@ export const INPUT_LABEL_SPACING = 'mb-2' as const
  * Ensures consistent alignment and prevents layout shifts
  */
 export const STATUS_ICON_CONTAINER_WIDTH = 'w-6 flex-shrink-0' as const
+
+/**
+ * Tailwind breakpoints (matching Tailwind's default breakpoints)
+ * Use these constants to ensure JavaScript breakpoint checks match CSS media queries
+ */
+export const BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+} as const
+
+export type Breakpoint = keyof typeof BREAKPOINTS
+
+/**
+ * Check if current viewport matches or exceeds a Tailwind breakpoint
+ * @param breakpoint - The breakpoint to check (e.g., 'lg')
+ * @returns true if viewport width >= breakpoint width
+ * @example
+ * if (isBreakpoint('lg')) {
+ *   // Desktop logic (>= 1024px)
+ * }
+ */
+export function isBreakpoint(breakpoint: Breakpoint): boolean {
+  if (typeof window === 'undefined') return false
+  return window.innerWidth >= BREAKPOINTS[breakpoint]
+}

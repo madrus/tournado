@@ -1,4 +1,4 @@
-# Production Migration - October 2025
+# Google Firebase - Production Migration
 
 ## Overview
 

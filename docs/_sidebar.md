@@ -20,7 +20,7 @@
    - [Design System](development/design-system.md)
    - [Icon Guidelines](development/icon-guidelines.md)
    - [RBAC Hardening (Phase 2)](development/RBAC.hardening.md)
-   - [Mobile Web App Configuration](development/mobile-webapp-config.md)
+   - [Mobile Web App Configuration](development/mobile.md)
    - [Multi-Language Support](development/multi-language-support.md)
    - [Routing](development/routing.md)
    - [Service Worker](service-worker.md)
@@ -46,7 +46,7 @@
    - [Overview](deployment/overview.md)
    - [CI/CD Pipeline](deployment/cicd-pipeline.md)
    - [Mobile Deployment](deployment/mobile.md)
-   - [Production Migration Oct 2025](deployment/production-migration-2025-10.md)
+   - [Google Firebase](deployment/google-firebase.md)
 - Maintenance
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)

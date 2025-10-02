@@ -1,6 +1,8 @@
 import { JSX, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
 
+import { useReducedMotion } from '~/hooks/useReducedMotion'
+
 type RouteTransitionProps = {
   duration?: number // in milliseconds
   className?: string
@@ -16,6 +18,15 @@ export function SubtleRouteTransition({
   duration?: number
 }): JSX.Element {
   const location = useLocation()
+  const prefersReducedMotion = useReducedMotion()
+
+  if (prefersReducedMotion) {
+    return (
+      <div className={className} key={location.pathname}>
+        <Outlet />
+      </div>
+    )
+  }
 
   return (
     <div

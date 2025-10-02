@@ -826,9 +826,24 @@ export async function createTeam(teamData: CreateTeamData) {
 - Security headers (including CSP) are applied in `app/entry.server.tsx`
 - **CSP Nonce Implementation**: Per-request nonce generation and application to all inline scripts
 - **Script Security**: `script-src 'self' 'nonce-<value>'` with Firebase/analytics domains and dev HMR allowances
-- **Style Security**: `style-src 'self' 'nonce-<value>'` with Google Fonts support
+- **Style Security**: `style-src 'self' 'unsafe-inline' 'nonce-<value>'` with Google Fonts support
 - **Form Security**: Dynamic `form-action` directive with environment-specific origins
 - **Testing**: Comprehensive unit tests for nonce generation and CSP header application
+
+### Style Security Strategy
+
+**Current Implementation**: `style-src 'self' 'unsafe-inline' 'nonce-<value>'`
+
+**Rationale**:
+- **Backward Compatibility**: Preserves existing inline styles throughout the application
+- **Nonce Protection**: Enables secure inline styles using nonce attributes
+- **Migration Path**: Allows gradual transition from inline styles to nonce-protected styles
+- **Development Efficiency**: Prevents breaking existing UI components
+
+**Future Refactor** (Scheduled):
+- Audit and eliminate inline `style` attributes across the application
+- Replace with CSS classes, external stylesheets, or nonce-protected `<style>` blocks
+- Remove `'unsafe-inline'` from `style-src` directive once migration is complete
 
 ## PWA and Mobile Wrapper Notes
 

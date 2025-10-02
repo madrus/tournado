@@ -224,7 +224,7 @@ export default config
 - Boot path: ensure the HTTPS origin is reachable on app start; display an offline screen if the origin is unavailable and provide retry.
 - Service worker: register from the HTTPS origin (not app scheme). Test SW registration and background sync in iOS (WKWebView) and Android.
 - Cookies/session: verify HttpOnly/Lax/Secure cookie persistence across suspend/resume and app relaunch on iOS/Android WebViews.
-- CSP: if any plugin uses a custom scheme, extend CSP (e.g., include `capacitor:` in `connect-src` when needed). Migrate to nonce-based scripts per ADR-0011.
+- CSP: if any plugin uses a custom scheme, extend CSP (e.g., include `capacitor:` in `connect-src` when needed). ✅ **Nonce-based scripts implemented per ADR-0011** with `'unsafe-inline'` for styles during migration period.
 - OAuth (Firebase/Google): prefer system browser (SFSafariViewController / Custom Tabs) with a custom URL scheme or universal link back to the app; whitelist redirect URIs and confirm SSR endpoint handles return paths.
 
 ### Offline and background
@@ -242,7 +242,7 @@ export default config
 - Service worker behavior in WebViews: test on iOS and Android; provide graceful offline UI if SW is unavailable.
 - Cookie/session persistence: run suspend/resume and relaunch tests; adjust cookie attributes if needed.
 - OAuth redirects: validate deep link/universal link flows and server handling of redirect completion.
-- CSP allowances: add any required schemes (e.g., `capacitor:`) while keeping the policy strict; migrate to nonces.
+- CSP allowances: add any required schemes (e.g., `capacitor:`) while keeping the policy strict; ✅ **Nonce migration completed** with `'unsafe-inline'` for styles during transition.
 - Storage/offline data: verify IndexedDB/caches availability and quotas; fall back to SQLite plugin if required.
 
 ### Recommendation

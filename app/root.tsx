@@ -196,12 +196,14 @@ const Document = ({ children, language, theme: serverTheme, nonce }: DocumentPro
         <PWAElements />
         <ScrollRestoration />
         {/* Inject the SSR language and theme for client-side hydration */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
-          }}
-        />
+        {nonce ? (
+          <script
+            nonce={nonce}
+            dangerouslySetInnerHTML={{
+              __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
+            }}
+          />
+        ) : null}
         <Scripts />
       </body>
     </html>

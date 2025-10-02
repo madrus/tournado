@@ -27,7 +27,10 @@ describe('entry.server.tsx', () => {
 
       const csp = headers.get('Content-Security-Policy')
       expect(csp).toContain(`script-src 'self' 'nonce-${nonce}' `)
-      expect(csp).not.toContain("'unsafe-inline'")
+      expect(csp).toContain(`style-src 'self' 'unsafe-inline' 'nonce-${nonce}'`)
+      // script-src should not contain unsafe-inline
+      const scriptSrcDirective = csp?.split('; ').find(d => d.startsWith('script-src'))
+      expect(scriptSrcDirective).not.toContain("'unsafe-inline'")
     })
 
     it('should set X-Frame-Options to DENY', () => {

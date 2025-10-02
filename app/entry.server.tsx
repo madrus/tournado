@@ -68,7 +68,7 @@ export function applySecurityHeaders(
     // Dev allowances include localhost and unsafe-eval for Vite HMR
     // Firebase Auth requires Google APIs and Firebase domains
     `script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://*.firebaseapp.com https://*.googleapis.com${isDev ? " 'unsafe-eval' http://localhost:* http://127.0.0.1:*" : ''}`,
-    "style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com",
+    `style-src 'self' 'unsafe-inline' 'nonce-${nonce}' https://fonts.googleapis.com`,
     "img-src 'self' data: blob: https://www.google-analytics.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     `connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com${isDev ? ' http://localhost:* ws://localhost:* ws://127.0.0.1:*' : ''}`,

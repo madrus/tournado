@@ -514,7 +514,7 @@ Adopt a baseline header set (HSTS, frame options, referrer policy, permissions p
 - Implemented comprehensive CSP and security headers in SSR response construction (`app/entry.server.tsx`).
 - **CSP Nonce Implementation**: Per-request nonce generation and application to all inline scripts
 - **Script Security**: `script-src 'self' 'nonce-<value>'` with Firebase/analytics domains and dev HMR allowances
-- **Style Security**: `style-src 'self' 'nonce-<value>'` with Google Fonts support
+- **Style Security**: `style-src 'self' 'unsafe-inline' 'nonce-<value>'` with Google Fonts support
 - **Form Security**: Dynamic `form-action` directive with environment-specific origins
 - **Production Security**: HSTS enabled in production with proper headers
 
@@ -524,6 +524,21 @@ Adopt a baseline header set (HSTS, frame options, referrer policy, permissions p
 **Nonce Application**: All inline scripts in `app/root.tsx` and `app/components/AppLayout.tsx` include `nonce` attribute
 **CSP Integration**: Nonce passed through React Router context and applied to CSP `script-src` and `style-src` directives
 **Security Headers**: Complete set including HSTS, X-Frame-Options, Referrer-Policy, and Permissions-Policy
+
+#### Style Security Strategy
+
+**Current Approach**: `style-src 'self' 'unsafe-inline' 'nonce-<value>'`
+
+**Rationale**:
+- **Backward Compatibility**: Existing inline styles across the application continue to work
+- **Nonce Protection**: New inline styles can use nonce for enhanced security
+- **Migration Path**: Allows gradual migration from inline styles to nonce-protected styles
+- **Development Efficiency**: Prevents breaking existing UI components during transition
+
+**Future Refactor** (Scheduled):
+- Audit and eliminate inline `style` attributes across the application
+- Replace with CSS classes, external stylesheets, or nonce-protected `<style>` blocks
+- Remove `'unsafe-inline'` from `style-src` directive once migration is complete
 
 #### Testing Coverage
 

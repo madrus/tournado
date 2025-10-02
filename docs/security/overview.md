@@ -241,7 +241,7 @@ All form inputs are validated both client-side and server-side:
 
 - Use of `JSON.stringify()` for safe data serialization to client
 - Proper HTML escaping in templates
-- CSP headers recommended for additional protection
+- CSP headers implemented with nonce-based script protection and style security strategy
 
 ```ts
 // Safe data passing to client
@@ -249,6 +249,31 @@ dangerouslySetInnerHTML={{
   __html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)};`
 }}
 ```
+
+### Content Security Policy (CSP)
+
+**Implementation**: Comprehensive CSP headers applied in `app/entry.server.tsx`
+
+**Script Security**:
+
+- `script-src 'self' 'nonce-<value>'` with Firebase/analytics domains
+- All inline scripts use cryptographically secure nonces
+- Development allowances for Vite HMR (`'unsafe-eval'` in dev only)
+
+**Style Security**:
+
+- `style-src 'self' 'unsafe-inline' 'nonce-<value>'` with Google Fonts support
+- **Current Strategy**: Maintains backward compatibility with existing inline styles
+- **Nonce Protection**: New inline styles can use nonce for enhanced security
+- **Future Refactor**: Scheduled migration to eliminate inline styles
+
+**Additional Directives**:
+
+- `img-src 'self' data: blob:` for images and analytics
+- `font-src 'self' data:` with Google Fonts support
+- `connect-src` for API endpoints and Firebase services
+- `form-action` with environment-specific origins
+- `frame-ancestors 'none'` to prevent clickjacking
 
 ## Database Security
 
@@ -277,9 +302,9 @@ SESSION_SECRET=random-secret-key
 
 ### Additional Recommended Measures
 
-1. **Content Security Policy (CSP)** headers
+1. **Content Security Policy (CSP)** headers ✅ **Implemented**
 2. **HTTPS** enforcement in production
-3. **Security headers** (HSTS, X-Frame-Options, etc.)
+3. **Security headers** (HSTS, X-Frame-Options, etc.) ✅ **Implemented**
 4. **Regular dependency updates** to patch vulnerabilities
 5. **Database connection encryption**
 6. **API rate limiting** at infrastructure level (Cloudflare, etc.)

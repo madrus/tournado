@@ -26,9 +26,9 @@ Configured all 16 required environment variables in production (`tournado` Fly.i
 **Firebase Client (7 variables):**
 
 - `VITE_FIREBASE_API_KEY`
-- `VITE_FIREBASE_AUTH_DOMAIN` = "tournado-prod.firebaseapp.com"
+- `VITE_FIREBASE_AUTH_DOMAIN` = "<tournado-prod.firebaseapp.com>"
 - `VITE_FIREBASE_PROJECT_ID` = "tournado-prod"
-- `VITE_FIREBASE_STORAGE_BUCKET` = "tournado-prod.firebasestorage.app"
+- `VITE_FIREBASE_STORAGE_BUCKET` = "<tournado-prod.firebasestorage.app>"
 - `VITE_FIREBASE_MESSAGING_SENDER_ID`
 - `VITE_FIREBASE_APP_ID`
 - `VITE_FIREBASE_MEASUREMENT_ID` = "G-S337BW4VYB"
@@ -42,7 +42,7 @@ Configured all 16 required environment variables in production (`tournado` Fly.i
 **Email Configuration (2 variables):**
 
 - `RESEND_API_KEY`
-- `EMAIL_FROM` = "Team Registration <onboarding@resend.dev>"
+- `EMAIL_FROM` = "Team Registration <<onboarding@resend.dev>>"
 
 ### 2. Database Schema Migration ✅
 
@@ -157,7 +157,7 @@ CREATE UNIQUE INDEX User_firebaseUid_key ON User(firebaseUid);
 
 ## Production Status
 
-**Production URL**: https://tournado.fly.dev
+**Production URL**: <https://tournado.fly.dev>
 
 **Deployment**:
 
@@ -181,3 +181,7 @@ CREATE UNIQUE INDEX User_firebaseUid_key ON User(firebaseUid);
 ---
 
 **Migration completed successfully on October 2, 2025** 🎉
+
+---
+
+#deployment #firebase #migration #production #authentication #environment-configuration #database-migration #fly-io #documentation

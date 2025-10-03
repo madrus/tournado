@@ -94,7 +94,6 @@ export default function PublicTeamsIndexPage(): JSX.Element {
       {/* Teams Grid */}
       <TeamList
         teams={teamListItems}
-        context='public'
         onTeamClick={handleTeamClick}
         emptyMessage={t('teams.noTeams')}
         className='min-h-[200px]'

@@ -1,14 +1,13 @@
 import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
+import { useLoaderData, useRevalidator } from 'react-router'
 
 import { ApparelIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
 import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
-import { deleteTeamById } from '~/models/team.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import { cn } from '~/utils/misc'
@@ -53,26 +52,10 @@ export async function loader({ request }: Route.LoaderArgs): Promise<TeamsLoader
   return loadTeamsAndTournamentsData(request)
 }
 
-export async function action({ request }: Route.ActionArgs): Promise<Response> {
-  await requireUserWithMetadata(request, handle)
-
-  const formData = await request.formData()
-  const intent = formData.get('intent')
-  const teamId = formData.get('teamId')
-
-  if (intent === 'delete' && typeof teamId === 'string') {
-    await deleteTeamById({ id: teamId })
-    return redirect('.')
-  }
-
-  throw new Response('Bad Request', { status: 400 })
-}
-
 export default function AdminTeamsIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { teamListItems, tournamentListItems, selectedTournamentId } =
     useLoaderData<TeamsLoaderData>()
-  const submit = useSubmit()
   const revalidator = useRevalidator()
 
   useEffect(() => {
@@ -86,15 +69,6 @@ export default function AdminTeamsIndexPage(): JSX.Element {
   const handleTeamClick = (teamId: string) => {
     // Navigate to team details/edit page
     window.location.href = `/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`
-  }
-
-  const handleTeamDelete = (teamId: string) => {
-    if (confirm(t('admin.team.confirmDelete'))) {
-      const formData = new FormData()
-      formData.append('intent', 'delete')
-      formData.append('teamId', teamId)
-      submit(formData, { method: 'post' })
-    }
   }
 
   return (
@@ -139,9 +113,7 @@ export default function AdminTeamsIndexPage(): JSX.Element {
 
         <TeamList
           teams={teamListItems}
-          context='admin'
           onTeamClick={handleTeamClick}
-          onTeamDelete={handleTeamDelete}
           emptyMessage={t('teams.noTeams')}
         />
       </Panel>

@@ -47,11 +47,25 @@ test.describe('Admin Tournaments', () => {
     // Open user menu by clicking hamburger menu
     const menuButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
     await expect(menuButton).toBeVisible()
-    await menuButton.click()
 
-    // Wait for menu to be fully open
-    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible()
-    await page.waitForTimeout(500)
+    // Click and wait for menu with navigation guard
+    await Promise.all([
+      page
+        .waitForResponse(
+          response => response.url().includes('/') && response.status() === 200,
+          { timeout: 1000 }
+        )
+        .catch(() => {}), // Ignore timeout
+      menuButton.click(),
+    ])
+
+    // Wait for menu to be fully open and stable (data-state="open")
+    const menuDropdown = page.getByTestId('user-menu-dropdown')
+    await expect(menuDropdown).toBeVisible({ timeout: 5000 })
+    await expect(menuDropdown).toHaveAttribute('data-state', 'open')
+
+    // Additional stability wait for any animations/transitions
+    await page.waitForTimeout(300)
 
     // Look for tournaments link with more specific targeting
     const tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })

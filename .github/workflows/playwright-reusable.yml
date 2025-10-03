@@ -66,7 +66,7 @@ jobs:
 
       - uses: ./.github/actions/prisma-generate
         with:
-          database_url: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db', github.workspace, github.run_id) }}
+          database_url: "file:./prisma/data-test.db?connection_limit=1"
 
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
@@ -81,30 +81,10 @@ jobs:
           # Wait for the client to be fully ready
           sleep 3
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
 
       - name: ⚙️ Build
         run: pnpm build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
-
-      - name: 🔍 Verify database exists
-        run: |
-          DB_PATH="${GITHUB_WORKSPACE}/prisma/e2e-${GITHUB_RUN_ID}.db"
-          echo "Checking for database at: $DB_PATH"
-          if [ -f "$DB_PATH" ]; then
-            echo "✅ Database file exists"
-            ls -lh "$DB_PATH"
-            # Check if tables exist
-            sqlite3 "$DB_PATH" ".tables" || echo "Failed to query tables"
-          else
-            echo "❌ Database file NOT found!"
-            echo "Looking for any .db files in prisma directory:"
-            ls -lah "${GITHUB_WORKSPACE}/prisma/"
-          fi
-        env:
-          GITHUB_WORKSPACE: ${{ github.workspace }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
 
       - name: 🎭 Run Playwright tests with built app
         id: run_tests
@@ -124,9 +104,9 @@ jobs:
           echo "exit_code=$TEST_EXIT_CODE" >> "$GITHUB_OUTPUT"
           exit $TEST_EXIT_CODE
         env:
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
           PLAYWRIGHT: true
           PLAYWRIGHT_BASE_URL: "http://localhost:8811"
-          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
           FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}

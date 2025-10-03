@@ -18,7 +18,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
  *
  * @example
  * ```tsx
- * <div className={teamChipVariants({ color: 'brand', interactive: true, hasActions: false })}>
+ * <div className={teamChipVariants({ color: 'brand', interactive: true })}>
  *   Team Amsterdam
  * </div>
  * ```
@@ -26,7 +26,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const teamChipVariants = cva(
   // Base classes for all team chips
   [
-    'inline-flex h-10 items-center rounded-lg border',
+    'inline-flex h-10 items-center rounded-lg border px-2',
     'font-semibold transition-all duration-300 ease-out relative overflow-hidden',
     'shadow-lg hover:shadow-xl',
     // Team chip ring system - matches getTeamChipRingClasses()
@@ -45,10 +45,6 @@ export const teamChipVariants = cva(
       interactive: {
         true: ['cursor-pointer', 'hover:scale-105 active:scale-95'],
         false: [],
-      },
-      hasActions: {
-        true: [], // padding handled by chipClasses.container
-        false: 'px-2',
       },
       /**
        * Color variants optimized for team display context.
@@ -77,29 +73,10 @@ export const teamChipVariants = cva(
     },
     defaultVariants: {
       interactive: false,
-      hasActions: false,
       color: 'brand',
     },
   }
 )
-
-/**
- * Delete button variants for team chip removal functionality.
- *
- * Provides styling for small delete/remove buttons within team chips.
- * Uses brand colors to maintain visual consistency with team chip theming.
- *
- * @example
- * ```tsx
- * <button className={deleteButtonVariants()}>
- *   <XIcon />
- * </button>
- * ```
- */
-export const deleteButtonVariants = cva([
-  'text-brand hover:bg-accent hover:text-brand-accent dark:hover:bg-brand-700',
-  'flex-shrink-0 rounded-full p-1',
-])
 
 // TypeScript type exports for component prop typing
 
@@ -108,12 +85,6 @@ export const deleteButtonVariants = cva([
  * Use this when defining component props that accept team chip styling options.
  */
 export type TeamChipVariants = VariantProps<typeof teamChipVariants>
-
-/**
- * Type definition for deleteButtonVariants props.
- * Use this for delete button styling within team chips.
- */
-export type DeleteButtonVariants = VariantProps<typeof deleteButtonVariants>
 
 /**
  * Team chip color variant type (limited to brand/neutral for tournament context).

@@ -86,6 +86,11 @@ jobs:
       - name: ⚙️ Build
         run: pnpm build
 
+      - name: 🔄 Regenerate Prisma Client for runtime
+        run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+
       - name: 🎭 Run Playwright tests with built app
         id: run_tests
         run: |

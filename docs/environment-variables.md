@@ -37,7 +37,7 @@ This document provides a complete reference for all environment variables used i
 - **Purpose**: Comma-separated list of admin email addresses with dynamic role assignment
 - **Required**: Yes
 - **Format**: `email1@domain.com,email2@domain.com`
-- **Example**: `admin1@example.com,admin2@example.com`
+- **Example**: `madrus@gmail.com,otmanabdel@hotmail.com`
 - **Behavior**: See [Admin Role Management](#admin-role-management) section for details on dynamic role assignment
 
 ### Firebase Client Configuration (VITE\_\*)
@@ -135,7 +135,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
 
 - **Purpose**: Resend email service API key
 - **Required**: Yes
-- **Example**: `"re_abc123def456_YourResendKeyHere"`
+- **Example**: `"re_KkAyxbkm_CDrhg4JZ82S4NdHYTxiueZ7z"`
 
 #### `EMAIL_FROM`
 
@@ -238,12 +238,12 @@ These variables configure the Firebase Admin SDK for server-side operations.
    flyctl secrets set SUPER_ADMIN_EMAILS="admin1@domain1.com,admin2@domain2.com" --app tournado-staging
 
    # Firebase Client secrets (for staging - using tournado-dev project)
-   flyctl secrets set VITE_FIREBASE_API_KEY="YOUR_FIREBASE_API_KEY" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_API_KEY="AIzaSyBIZVQlh4hbauqErOgp-qmeuBDhMfw6QrQ" --app tournado-staging
    flyctl secrets set VITE_FIREBASE_AUTH_DOMAIN="tournado-dev.firebaseapp.com" --app tournado-staging
    flyctl secrets set VITE_FIREBASE_PROJECT_ID="tournado-dev" --app tournado-staging
    flyctl secrets set VITE_FIREBASE_STORAGE_BUCKET="tournado-dev.firebasestorage.app" --app tournado-staging
-   flyctl secrets set VITE_FIREBASE_MESSAGING_SENDER_ID="YOUR_SENDER_ID" --app tournado-staging
-   flyctl secrets set VITE_FIREBASE_APP_ID="YOUR_FIREBASE_APP_ID" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_MESSAGING_SENDER_ID="795732059131" --app tournado-staging
+   flyctl secrets set VITE_FIREBASE_APP_ID="1:795732059131:web:7b27328b7ac7736ea2615e" --app tournado-staging
    flyctl secrets set VITE_FIREBASE_MEASUREMENT_ID="" --app tournado-staging
 
    # Firebase Admin secrets (copy from your .env file)
@@ -308,12 +308,12 @@ SESSION_SECRET="your-local-session-secret"
 SUPER_ADMIN_EMAILS="your-email@domain.com"
 
 # Firebase Client (shared with Staging deployment context)
-VITE_FIREBASE_API_KEY="YOUR_FIREBASE_API_KEY"
+VITE_FIREBASE_API_KEY="AIzaSyBIZVQlh4hbauqErOgp-qmeuBDhMfw6QrQ"
 VITE_FIREBASE_AUTH_DOMAIN="tournado-dev.firebaseapp.com"
 VITE_FIREBASE_PROJECT_ID="tournado-dev"
 VITE_FIREBASE_STORAGE_BUCKET="tournado-dev.firebasestorage.app"
-VITE_FIREBASE_MESSAGING_SENDER_ID="YOUR_SENDER_ID"
-VITE_FIREBASE_APP_ID="YOUR_FIREBASE_APP_ID"
+VITE_FIREBASE_MESSAGING_SENDER_ID="795732059131"
+VITE_FIREBASE_APP_ID="1:795732059131:web:7b27328b7ac7736ea2615e"
 VITE_FIREBASE_MEASUREMENT_ID=""
 
 # Firebase Admin (shared with Staging deployment context)
@@ -491,9 +491,9 @@ Current admin configuration:
 
 | Email                    | Auth Method    | Role    | Environment              |
 | ------------------------ | -------------- | ------- | ------------------------ |
-| `admin1@example.com`       | Google OAuth   | ADMIN   | All                      |
-| `admin2@example.com` | Email/Password | ADMIN   | All                      |
-| `user@example.com`   | Email/Password | MANAGER | All (demoted from ADMIN) |
+| `madrus@gmail.com`       | Google OAuth   | ADMIN   | All                      |
+| `otmanabdel@hotmail.com` | Email/Password | ADMIN   | All                      |
+| `madrusnl@hotmail.com`   | Email/Password | MANAGER | All (demoted from ADMIN) |
 
 ### Security Considerations
 

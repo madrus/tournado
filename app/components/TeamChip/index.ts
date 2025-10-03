@@ -1,2 +1,2 @@
 export { TeamChip } from './TeamChip'
-export type { DeleteButtonVariants, TeamChipVariants } from './teamChip.variants'
+export type { TeamChipVariants } from './teamChip.variants'

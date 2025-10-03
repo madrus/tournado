@@ -21,7 +21,7 @@ import {
   deleteTournamentById,
   getAllTournamentListItems,
 } from '~/models/tournament.server'
-import { isBreakpoint } from '~/styles/constants'
+import { isBreakpoint, STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -286,9 +286,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className={cn('w-full space-y-6 lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
       {/* Stats using optimized dashboard panels */}
-      <Grid columns={{ initial: '1', sm: '3' }} gap='5' width='auto'>
+      <Grid columns='1' gap='5'>
         <Panel
           color='teal'
           variant='dashboard-panel'
@@ -305,7 +305,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       </Grid>
 
       {/* Tournaments List */}
-      <Panel color='teal' variant='content-panel' className='w-full lg:w-fit'>
+      <Panel color='teal' variant='content-panel'>
         <Box className='mb-6'>
           <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
             {t('admin.tournament.allTournaments')}

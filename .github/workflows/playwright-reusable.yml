@@ -85,11 +85,26 @@ jobs:
 
       - name: ⚙️ Build
         run: pnpm build
-
-      - name: 🔄 Regenerate Prisma Client for runtime
-        run: pnpm exec prisma generate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || format('file:{0}/prisma/e2e-{1}.db?connection_limit=1', github.workspace, github.run_id) }}
+
+      - name: 🔍 Verify database exists
+        run: |
+          DB_PATH="${GITHUB_WORKSPACE}/prisma/e2e-${GITHUB_RUN_ID}.db"
+          echo "Checking for database at: $DB_PATH"
+          if [ -f "$DB_PATH" ]; then
+            echo "✅ Database file exists"
+            ls -lh "$DB_PATH"
+            # Check if tables exist
+            sqlite3 "$DB_PATH" ".tables" || echo "Failed to query tables"
+          else
+            echo "❌ Database file NOT found!"
+            echo "Looking for any .db files in prisma directory:"
+            ls -lah "${GITHUB_WORKSPACE}/prisma/"
+          fi
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
 
       - name: 🎭 Run Playwright tests with built app
         id: run_tests

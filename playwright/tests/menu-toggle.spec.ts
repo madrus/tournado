@@ -12,7 +12,9 @@ test.describe('Menu Toggle Functionality', () => {
 
     // Wait for page to load completely
     await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000)
+
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     // Verify the toggle button exists
     const toggleButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
@@ -41,7 +43,9 @@ test.describe('Menu Toggle Functionality', () => {
   test('should display menu content for authenticated user', async ({ page }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000)
+
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     const toggleButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
     const menuDropdown = page.locator('[data-testid="user-menu-dropdown"]')

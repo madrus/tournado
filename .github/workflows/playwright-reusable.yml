@@ -104,6 +104,7 @@ jobs:
           echo "exit_code=$TEST_EXIT_CODE" >> "$GITHUB_OUTPUT"
           exit $TEST_EXIT_CODE
         env:
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
           PLAYWRIGHT: true
           PLAYWRIGHT_BASE_URL: "http://localhost:8811"
           SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}

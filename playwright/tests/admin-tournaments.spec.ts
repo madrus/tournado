@@ -41,8 +41,8 @@ test.describe('Admin Tournaments', () => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
 
-    // Wait for any client-side hydration
-    await page.waitForTimeout(2000)
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     // Open user menu by clicking hamburger menu
     const menuButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
@@ -87,7 +87,9 @@ test.describe('Admin Tournaments', () => {
 
     // Wait for page to load and content to render
     await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000)
+
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     // Wait for content to actually appear
     await page.waitForFunction(() => document.body.children.length > 0)
@@ -110,7 +112,9 @@ test.describe('Admin Tournaments', () => {
 
     // Wait for page to load and content to render
     await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // Wait for hydration/rendering
+
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     // Wait for content to actually appear
     await page.waitForFunction(() => document.body.children.length > 0)
@@ -134,6 +138,9 @@ test.describe('Admin Tournaments', () => {
 
     // Wait for form to load
     await page.waitForLoadState('networkidle')
+
+    // Wait for route transition animation to complete (500ms duration + buffer)
+    await page.waitForTimeout(600)
 
     // Step 1: Basic Info - Look for specific input fields
     await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()

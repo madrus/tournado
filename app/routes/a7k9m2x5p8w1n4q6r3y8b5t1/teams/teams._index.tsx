@@ -9,6 +9,7 @@ import { TeamList } from '~/components/TeamList'
 import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TeamsLoaderData } from '~/lib/lib.types'
 import { deleteTeamById } from '~/models/team.server'
+import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -99,7 +100,9 @@ export default function AdminTeamsIndexPage(): JSX.Element {
   return (
     <div className='space-y-6' data-testid='admin-teams-page-content'>
       {/* Stats using optimized dashboard panels */}
-      <div className='grid grid-cols-1 gap-5 sm:grid-cols-3'>
+      <div
+        className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}
+      >
         <Panel
           color={PANEL_COLOR}
           variant='dashboard-panel'

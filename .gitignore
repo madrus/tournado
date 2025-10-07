@@ -1,4 +1,11 @@
+# Environment variables and secrets
 .env
+.env.*
+!.env.example
+secrets.txt
+
+# BFG cleanup reports
+.git.bfg-report
 **/.obsidian
 .prisma
 .react-router

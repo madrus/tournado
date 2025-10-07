@@ -489,11 +489,11 @@ fly ssh console --app tournado-production -C "pnpm migrate:admin-roles"
 
 Current admin configuration:
 
-| Email                    | Auth Method    | Role    | Environment              |
-| ------------------------ | -------------- | ------- | ------------------------ |
-| `admin1@example.com`     | Google OAuth   | ADMIN   | All                      |
-| `admin2@example.com`     | Email/Password | ADMIN   | All                      |
-| `user@example.com`       | Email/Password | MANAGER | All (demoted from ADMIN) |
+| Email                | Auth Method    | Role    | Environment              |
+| -------------------- | -------------- | ------- | ------------------------ |
+| `admin1@example.com` | Google OAuth   | ADMIN   | All                      |
+| `admin2@example.com` | Email/Password | ADMIN   | All                      |
+| `user@example.com`   | Email/Password | MANAGER | All (demoted from ADMIN) |
 
 ### Security Considerations
 

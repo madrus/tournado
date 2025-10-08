@@ -1,6 +1,6 @@
 ---
 description: Set up Firebase project and Google Authentication configuration
-id: "TASK-0001"
+id: "TASK-0101"
 title: "Set up Firebase project with Google Authentication"
 status: "done"
 priority: "P0"
@@ -219,6 +219,6 @@ export type FirebaseUser = {
 
 - Reference PRD section: Phase 1 - Authentication Modernization
 - Firebase Auth documentation: https://firebase.google.com/docs/auth
-- Next task: TASK-0002 (session bridging implementation)
+- Next task: TASK-0102 (session bridging implementation)
 - Security consideration: Store service account key securely in production
 - **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

@@ -1,11 +1,11 @@
 ---
 description: Remove legacy bcrypt/password-based auth and fully finalize Firebase-only authentication
-id: "TASK-0006"
+id: "TASK-0106"
 title: "Remove legacy auth (bcrypt/Password table) and finalize Firebase-only auth"
 status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "migration", "cleanup"]
-dependencies: ["./TASK-0004-complete-firebase-auth.mdc", "./TASK-0005-implement-environment-separation.mdc"]
+dependencies: ["./TASK-0104-complete-firebase-auth.mdc", "./TASK-0105-implement-environment-separation.mdc"]
 created: "2025-09-14"
 completed: "2025-10-01"
 globs:
@@ -22,7 +22,7 @@ Follow the file creation safety and TypeScript conventions in `.cursor/tasks/tas
 **Decision**: Remove all legacy password-based authentication (bcrypt, `Password` table, any cookie/session code not part of Firebase session bridging) and leave the application Firebase-only.
 
 **Rationale**:
-- Firebase auth (Google + Email/Password) with session cookie bridging is fully implemented (TASK-0004)
+- Firebase auth (Google + Email/Password) with session cookie bridging is fully implemented (TASK-0104)
 - Keeping legacy auth introduces maintenance/security overhead and confusion
 - Cleaning schema and code reduces complexity and avoids dead paths
 
@@ -32,7 +32,7 @@ Remove the legacy bcrypt/password-based authentication system and associated sch
 
 # 2) Background / Context
 
-TASK-0004 completed Firebase auth (Google + Email/Password), and refactored E2E/test helpers behind adapters. The legacy password table and bcrypt code paths are still present in places (schema, seeding, and possibly models). We need to eliminate those remnants and align seeds/tests.
+TASK-0104 completed Firebase auth (Google + Email/Password), and refactored E2E/test helpers behind adapters. The legacy password table and bcrypt code paths are still present in places (schema, seeding, and possibly models). We need to eliminate those remnants and align seeds/tests.
 
 # 3) Assumptions & Constraints
 
@@ -43,7 +43,7 @@ TASK-0004 completed Firebase auth (Google + Email/Password), and refactored E2E/
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- ./TASK-0004-complete-firebase-auth.mdc — Completed
+- ./TASK-0104-complete-firebase-auth.mdc — Completed
 - app/features/firebase/server.ts, session.server.ts — Firebase-only paths must remain intact
 - prisma/schema.prisma — contains legacy `Password` model/coupling
 

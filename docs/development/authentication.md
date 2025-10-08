@@ -492,7 +492,7 @@ export default function SignIn() {
 - ✅ Server-side authentication validation
 - ✅ Role-based access control middleware
 
-**Current (TASK-0004):**
+**Current (TASK-0104):**
 
 - 🔄 Email/password authentication implementation
 - 🔄 Legacy authentication system removal

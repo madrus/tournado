@@ -87,31 +87,28 @@ Database & Data Model [Implemented]
 
 - [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupSet`, `Group`, `GroupSlot`, `MatchScore`
 
-### 🔄 In Progress Features
-
-- [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
-
 ### 📋 Planned Features (PRD Scope)
 
 **Phase 1 - Authentication Modernization [Completed]**
 
-- [x] Firebase project setup and configuration (TASK-0001 done)
-- [x] Firebase-backed session cookie bridging (TASK-0002 done)
-- [x] Google Authentication via Firebase (TASK-0003 done)
-- [x] Post-login redirects, logout, and credential persistence (TASK-0003 done)
-- [x] Visible auth status indicator (TASK-0003 done)
-- [x] Firebase Email/Password Authentication (TASK-0004 done)
-- [x] Multi-super-admin role assignment system (TASK-0004 done)
-- [x] Environment variable separation and Firebase project isolation (TASK-0005 done)
-- [x] Complete legacy authentication removal (TASK-0006 done - bcrypt/Password table removed)
+- [x] Firebase project setup and configuration (TASK-0101 done)
+- [x] Firebase-backed session cookie bridging (TASK-0102 done)
+- [x] Google Authentication via Firebase (TASK-0103 done)
+- [x] Post-login redirects, logout, and credential persistence (TASK-0103 done)
+- [x] Visible auth status indicator (TASK-0103 done)
+- [x] Firebase Email/Password Authentication (TASK-0104 done)
+- [x] Multi-super-admin role assignment system (TASK-0104 done)
+- [x] Environment variable separation and Firebase project isolation (TASK-0105 done)
+- [x] Complete legacy authentication removal (TASK-0106 done - bcrypt/Password table removed)
 - [x] Dynamic admin role assignment (ADR-003 - roles update on login based on SUPER_ADMIN_EMAILS)
 - [x] Production deployment with all Firebase environment variables configured
 - [x] Database schema migration (firebaseUid column added to User table)
 - [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
-**Phase 2 - Groups & Playoffs (MVP) [Planned]**
+**Phase 2 - Groups & Playoffs (MVP) [In Progress]**
 
 - [ ] Groups and seeding workflows
+  - [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
 - [ ] Playoffs: multi-stage with knockout via groups
 - [ ] Competition status: standings and placements
 
@@ -278,21 +275,21 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### 1.1 Google Auth + Session Bridging [COMPLETED]
 
-- [x] Implement Firebase Google Auth (TASK-0003)
-- [x] Bridge to server via Firebase session cookies; preserve SSR compatibility (TASK-0002)
+- [x] Implement Firebase Google Auth (TASK-0103)
+- [x] Bridge to server via Firebase session cookies; preserve SSR compatibility (TASK-0102)
 
 #### 1.2 Firebase Email/Password + Legacy Removal [COMPLETED]
 
-- [x] Implement Firebase email/password authentication (TASK-0004)
-- [x] Multi-super-admin role assignment (environment-based) (TASK-0004)
-- [x] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions) (TASK-0006)
-- [x] Admin panel user role management (TASK-0004)
-- [x] Environment separation (CI/staging/production) (TASK-0005)
+- [x] Implement Firebase email/password authentication (TASK-0104)
+- [x] Multi-super-admin role assignment (environment-based) (TASK-0104)
+- [x] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions) (TASK-0106)
+- [x] Admin panel user role management (TASK-0104)
+- [x] Environment separation (CI/staging/production) (TASK-0105)
 
 #### 1.3 UX & Migration [COMPLETED]
 
-- [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0003)
-- [x] Logout invalidation; visible auth status; redirects (TASK-0003)
+- [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0103)
+- [x] Logout invalidation; visible auth status; redirects (TASK-0103)
 
 ### Phase 2: Groups & Playoffs (MVP) (3 - 4 weeks)
 
@@ -624,7 +621,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - **Authentication (current)**: Dual-method Firebase Authentication with session cookie bridging:
   - Google OAuth and email/password authentication via Firebase
-  - Firebase ID tokens mint HTTP-only session cookies on server (session cookie bridging) 
+  - Firebase ID tokens mint HTTP-only session cookies on server (session cookie bridging)
   - SSR security and role checks preserved
   - Avoid storing long-lived tokens in `localStorage`; use HTTP-only cookies + short-lived in-memory tokens
   - Logout invalidates Firebase session cookies and client state
@@ -653,12 +650,12 @@ Details: See `docs/development/PRD.details.md#i18n-details`
   - Multiple email addresses supported (comma-separated)
   - Users with super admin emails automatically receive ADMIN role on first Firebase sign-up
   - All other users receive PUBLIC role by default
-- **Role Management Access**: 
+- **Role Management Access**:
   - ADMIN: Can assign/change user roles via Admin Panel user management
   - MANAGER: Cannot assign user roles; can only issue pre-authenticated referee links
   - REFEREE/PUBLIC: No role management capabilities
 - **Hierarchy**: `PUBLIC` < `REFEREE` < `MANAGER` < `ADMIN` (each role inherits all permissions of the previous)
-- **Admin Panel Access**: 
+- **Admin Panel Access**:
   - ADMIN: Full Admin Panel access including user role management
   - MANAGER: Admin Panel access excluding user role management (referee links only)
   - REFEREE: Limited to own referee dashboard (assigned matches only)

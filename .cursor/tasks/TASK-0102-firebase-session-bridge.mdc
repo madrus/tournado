@@ -1,11 +1,11 @@
 ---
 description: Implement Firebase session cookie bridging for SSR compatibility
-id: "TASK-0002"
+id: "TASK-0102"
 title: "Implement Firebase session cookie bridging for SSR compatibility"
 status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "ssr", "session"]
-dependencies: ["./TASK-0001-firebase-auth-setup.mdc"]
+dependencies: ["./TASK-0101-firebase-auth-setup.mdc"]
 created: "2025-01-09"
 globs:
 alwaysApply: false
@@ -38,7 +38,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 3) Assumptions & Constraints
 
-- ASSUMPTION: Firebase setup from TASK-0001 is complete and functional
+- ASSUMPTION: Firebase setup from TASK-0101 is complete and functional
 - Constraint: Must preserve existing session.server.ts API for backward compatibility
 - Constraint: Maintain existing role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
 - Constraint: No breaking changes to existing route loaders that use requireUserId/getUserId
@@ -46,7 +46,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- ./TASK-0001-firebase-auth-setup.mdc (Firebase configuration must be complete)
+- ./TASK-0101-firebase-auth-setup.mdc (Firebase configuration must be complete)
 - app/utils/session.server.ts (existing session utilities)
 - app/utils/rbacMiddleware.server.ts (existing RBAC middleware)
 - app/models/user.server.ts (existing User model operations)
@@ -55,7 +55,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 ## 🎯 FEATURE Task Pattern
 **Beginning (add to model context):**
-- app/features/firebase/server.ts _(from TASK-0001, read-only)_
+- app/features/firebase/server.ts _(from TASK-0101, read-only)_
 - app/utils/session.server.ts _(read-only)_
 - app/utils/rbacMiddleware.server.ts _(read-only)_
 - app/models/user.server.ts _(read-only)_
@@ -283,6 +283,6 @@ export type CreateUserSessionProps = {
 
 - Reference PRD section: Phase 1 - Authentication Modernization
 - Firebase Auth documentation: https://firebase.google.com/docs/auth/admin/verify-id-tokens
-- Next task: TASK-0003 (authentication UX migration)
+- Next task: TASK-0103 (authentication UX migration)
 - Critical: Maintain zero downtime during migration by supporting both session types
 - **Architecture Note**: Firebase functionality organized as feature module in `app/features/firebase/` for better code organization and maintainability

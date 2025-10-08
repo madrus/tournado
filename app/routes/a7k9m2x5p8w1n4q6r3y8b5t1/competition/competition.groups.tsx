@@ -9,7 +9,7 @@ import type { TournamentListItem } from '~/lib/lib.types'
 import type { GroupSetListItem } from '~/models/group.server'
 import { getTournamentGroupSets } from '~/models/group.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
-import { requireAdminUser } from '~/utils/rbacMiddleware.server'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 import type { Route } from './+types/competition.groups'
 
@@ -28,7 +28,7 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireAdminUser(request)
+  await requireUserWithPermission(request, 'groups:manage')
 
   // Get tournament ID from search params
   const url = new URL(request.url)

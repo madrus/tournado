@@ -28,9 +28,9 @@
       "title": "Turnuva yönetimi",
       "totalTournaments": "Toplam turnuva sayısı"
     },
-    "match": {
-      "title": "Maç yönetimi",
-      "description": "Maç skorlarını ve hakem atamalarını yönetin."
+    "competition": {
+      "title": "Yarışma yönetimi",
+      "description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin."
     },
     "user": {
       "title": "Kullanıcı yönetimi",

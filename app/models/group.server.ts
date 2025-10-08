@@ -240,3 +240,165 @@ export const getTeamsByCategories = async (
     },
     orderBy: [{ category: 'asc' }, { clubName: 'asc' }, { name: 'asc' }],
   })
+
+// --------------------------------------------------------------------------------------
+// Group assignment utilities
+// --------------------------------------------------------------------------------------
+
+type AssignTeamToGroupSlotProps = {
+  readonly groupSetId: string
+  readonly groupId: string
+  readonly slotIndex: number
+  readonly teamId: string
+}
+
+/**
+ * Assign a team to a specific group slot
+ * - Validates the slot belongs to the given group and group set
+ * - Ensures slot is empty (use clear or swap for occupied slots)
+ * - Clears any previous assignment for teamId across the same group set
+ */
+export async function assignTeamToGroupSlot(
+  props: Readonly<AssignTeamToGroupSlotProps>
+): Promise<void> {
+  const { groupSetId, groupId, slotIndex, teamId } = props
+
+  await prisma.$transaction(async tx => {
+    const slot = await tx.groupSlot.findFirst({
+      where: { groupSetId, groupId, slotIndex },
+      select: { id: true, teamId: true },
+    })
+
+    if (!slot) {
+      throw new Error('Target slot not found for provided group')
+    }
+
+    if (slot.teamId) {
+      throw new Error('Slot is occupied, clear or swap before assigning')
+    }
+
+    // Clear any previous assignment of this team within the group set (including reserve)
+    await tx.groupSlot.updateMany({
+      where: { groupSetId, teamId },
+      data: { teamId: null },
+    })
+
+    // Assign the team to the target slot
+    await tx.groupSlot.update({
+      where: { id: slot.id },
+      data: { teamId },
+    })
+  })
+}
+
+type ClearGroupSlotProps = {
+  readonly groupSlotId: string
+}
+
+/** Clear a specific group slot (set teamId to null) */
+export async function clearGroupSlot(
+  props: Readonly<ClearGroupSlotProps>
+): Promise<void> {
+  const { groupSlotId } = props
+  await prisma.groupSlot.update({
+    where: { id: groupSlotId },
+    data: { teamId: null },
+  })
+}
+
+type MoveTeamToReserveProps = {
+  readonly groupSetId: string
+  readonly teamId: string
+}
+
+/**
+ * Move a team to reserve within a group set
+ * - Clears any existing group assignment
+ * - Creates a reserve slot (groupId null) for that team if not present
+ */
+export async function moveTeamToReserve(
+  props: Readonly<MoveTeamToReserveProps>
+): Promise<void> {
+  const { groupSetId, teamId } = props
+
+  await prisma.$transaction(async tx => {
+    // Clear any existing assignment (group or reserve)
+    await tx.groupSlot.updateMany({
+      where: { groupSetId, teamId },
+      data: { teamId: null },
+    })
+
+    // Ensure a reserve slot exists for this team
+    const existingReserve = await tx.groupSlot.findFirst({
+      where: { groupSetId, teamId, groupId: null },
+      select: { id: true },
+    })
+
+    if (existingReserve) {
+      // Already exists (but cleared above), simply set teamId again
+      await tx.groupSlot.update({
+        where: { id: existingReserve.id },
+        data: { teamId },
+      })
+    } else {
+      await tx.groupSlot.create({
+        data: {
+          groupSetId,
+          groupId: null,
+          slotIndex: 0,
+          teamId,
+        },
+      })
+    }
+  })
+}
+
+type SwapGroupSlotsProps = {
+  readonly sourceSlotId: string
+  readonly targetSlotId: string
+}
+
+/** Swap teams assigned between two slots atomically */
+export async function swapGroupSlots(
+  props: Readonly<SwapGroupSlotsProps>
+): Promise<void> {
+  const { sourceSlotId, targetSlotId } = props
+
+  if (sourceSlotId === targetSlotId) return
+
+  await prisma.$transaction(async tx => {
+    const [source, target] = await Promise.all([
+      tx.groupSlot.findUnique({
+        where: { id: sourceSlotId },
+        select: { teamId: true },
+      }),
+      tx.groupSlot.findUnique({
+        where: { id: targetSlotId },
+        select: { teamId: true },
+      }),
+    ])
+
+    if (!source || !target) throw new Error('One of the slots was not found')
+
+    const sourceTeamId = source.teamId
+    const targetTeamId = target.teamId
+
+    // Clear source first to satisfy unique(teamId) constraint when re-assigning
+    await tx.groupSlot.update({
+      where: { id: sourceSlotId },
+      data: { teamId: null },
+    })
+
+    // Assign source team to target
+    await tx.groupSlot.update({
+      where: { id: targetSlotId },
+      data: { teamId: sourceTeamId },
+    })
+
+    // Assign target team to source
+    await tx.groupSlot.update({
+      where: { id: sourceSlotId },
+      data: { teamId: targetTeamId },
+    })
+  })
+}

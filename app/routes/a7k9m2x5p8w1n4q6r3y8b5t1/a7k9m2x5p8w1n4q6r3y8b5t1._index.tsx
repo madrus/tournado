@@ -165,18 +165,18 @@ export default function AdminDashboard(): JSX.Element {
           </ActionLinkPanel>
         ) : null}
 
-        {/* Panel 3 - Match Management (for REFEREE, MANAGER, and ADMIN) */}
+        {/* Panel 3 - Competition Management (for REFEREE, MANAGER, and ADMIN) */}
         {canRefereeMatches ? (
           <ActionLinkPanel
-            title={t('admin.match.title')}
-            description={t('admin.match.description')}
+            title={t('admin.competition.title')}
+            description={t('admin.competition.description')}
             icon={<SportsIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='lime'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/matches'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/competition'
             language={i18n.language}
-            testId='admin-panel-match-management'
+            testId='admin-panel-competition-management'
           >
             <div className='space-y-2'>
               <p>

@@ -28,9 +28,9 @@
       "title": "Turnier-Verwaltung",
       "totalTournaments": "Turniere insgesamt"
     },
-    "match": {
-      "title": "Spiel-Verwaltung",
-      "description": "Spielergebnisse und Schiedsrichter-Zuordnungen verwalten."
+    "competition": {
+      "title": "Wettbewerbsverwaltung",
+      "description": "Gruppen, Spiele und Tabellen für Turniere verwalten."
     },
     "user": {
       "title": "Benutzer-Verwaltung",

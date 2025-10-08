@@ -1,0 +1,490 @@
+---
+description: "Complete group set management (view + assign/move/clear/swap) with tests"
+id: "TASK-0201"
+title: "Complete group set management with assignment operations and tests"
+status: "in-progress"
+priority: "P1"
+labels: ["feature", "ui", "groups", "tournament", "tests", "rbac", "i18n"]
+dependencies: []
+created: "2025-10-08"
+updated: "2025-10-08"
+globs:
+alwaysApply: false
+---
+
+# Architecture Decision
+
+**Pattern**: 🌍 **SHARED Task** - Updates shared/global code
+
+**Rationale**: This task modifies shared database models (`app/models/group.server.ts`), creates routes under the admin competition section, and adds i18n strings that are reusable across the application. The group management functionality is a core feature accessible to multiple user roles (ADMIN, MANAGER) and could be used across different parts of the application.
+
+# 1) High-Level Objective
+
+Deliver a complete group set management capability where authorized staff can
+view groups and reserve lists for a selected tournament, assign/unassign/move
+teams between slots/reserve, and validate behavior with unit and E2E tests.
+
+# 2) Background / Context
+
+**Phase 2 - Groups & Playoffs (MVP)**: This task completes team allocation into
+groups for selected tournaments, which is the core "in progress" feature per PRD.
+Schema and list/create flows exist, but details management (assignments) and tests
+were incomplete. This task fully specifies the implementation and testing to complete
+Phase 2's group allocation requirement.
+
+**Competition Section Context**: The Admin Panel includes a "Competition Management"
+section at `/a7k9m2x5p8w1n4q6r3y8b5t1/competition` which serves as the hub for
+running tournaments. This section currently contains:
+- **Groups** (this task) - Team allocation into groups
+- **Matches** (Phase 3 - planned) - Match scheduling and scoring
+- **Standings** (Phase 3 - planned) - Results and rankings
+
+Already present (baseline):
+- Prisma schema for `GroupSet` / `Group` / `GroupSlot` with relations and
+  constraints (unique per slot, unique team per set)
+- Routes for create/list group sets: `competition.groups.new` and
+  `competition.groups`
+- Models: `createGroupSet`, `getTournamentGroupSets`,
+  `getGroupSetWithDetails`, `getTeamsByCategories`
+- Admin Panel link to Competition section (renamed from "Match Management")
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: RBAC allows MANAGER and ADMIN to manage groups
+- Constraint: Use `requireUserWithPermission(request, 'groups:manage')` in
+  loaders/actions (align with ADR-0022)
+- Constraint: React Router v7 file-based routes; SSR-compatible loaders/actions
+- Constraint: Mobile-first UI; desktop via `lg:` breakpoint; min 44px touch
+  targets; accessible labels
+- Constraint: TypeScript strict, no `any`; follow code style guide
+- Constraint: i18n: all new strings added to all locales; Dutch sentence case
+- Constraint: Conventional Commits enforced
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- prisma/schema.prisma
+- app/models/group.server.ts
+- app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.tsx
+- app/components/buttons/ActionButton.tsx
+- app/components/inputs/TextInputField.tsx
+- app/utils/rbacMiddleware.server.ts (reference for permission wrappers)
+- app/i18n/locales/*.json (for new strings)
+
+# 5) Context Plan
+
+## 🌍 SHARED Task Pattern
+
+**Beginning (add to model context, read-only):**
+- `prisma/schema.prisma` - Database schema for GroupSet, Group, GroupSlot
+- `app/models/group.server.ts` - Existing model functions
+- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.tsx` - List view
+- `app/utils/rbacMiddleware.server.ts` - Permission utilities
+- `app/components/buttons/ActionButton.tsx` - Reusable button component
+- `app/components/inputs/TextInputField.tsx` - Reusable input component
+- `app/i18n/locales/*.json` - Existing translation files
+
+**End state (files that will be created/modified):**
+- `app/models/group.server.ts` - Add 4 transactional assignment helpers (`.server.ts` = server-only)
+- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupSetId.tsx` - New details route with loader/action/UI
+- `prisma/seed.js` - Add JO8 group set seed data for Spring Cup
+- `app/i18n/locales/*.json` - Add groups-related translation keys (all 6 locales)
+- `app/models/__tests__/group.server.test.ts` - New unit tests for assignment functions
+- `playwright/pages/GroupsPage.ts` - New Page Object Model
+- `playwright/tests/competition.groups.spec.ts` - New E2E test spec
+- `docs/development/database.md` - Update with seeded groups documentation (already done)
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+1) Model functions — `app/models/group.server.ts`
+   - Add transactional helpers (exported):
+     - `assignTeamToGroupSlot(props: Readonly<{ groupSetId: string; groupId:
+       string; slotIndex: number; teamId: string }>): Promise<void>`
+       - Validate slot existence: belongs to `groupSetId` + `groupId` at
+         `slotIndex`
+       - If occupied, throw; caller must clear/swap first
+       - Clear any previous assignment of `teamId` in same `groupSetId` (group
+         or reserve), then set on target slot
+     - `clearGroupSlot(props: Readonly<{ groupSlotId: string }>): Promise<void>`
+       - Set `teamId: null`
+     - `moveTeamToReserve(props: Readonly<{ groupSetId: string; teamId:
+       string }>): Promise<void>`
+       - Clear any assignment; ensure/create reserve slot (groupId null) and set
+         `teamId`
+     - `swapGroupSlots(props: Readonly<{ sourceSlotId: string; targetSlotId:
+       string }>): Promise<void>`
+       - Swap teamIds atomically, respecting unique constraints
+
+2) Details route —
+   `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupSetId.tsx`
+   - Loader signature: `export async function loader({ request, params }:
+     Route.LoaderArgs)`
+     - `await requireUserWithPermission(request, 'groups:manage')`
+     - Require `params.groupSetId`, `?tournament=<id>`
+     - Fetch `groupSet = getGroupSetWithDetails(groupSetId)`
+     - Fetch `availableTeams = getTeamsByCategories(tournamentId,
+       groupSet.categories)`
+     - Return `{ groupSet, availableTeams, tournamentId }`
+   - Action signature: `export async function action({ request, params }:
+     Route.ActionArgs)`
+     - Same permission check
+     - Parse `intent` from FormData: `assign | clear | reserve | swap`
+       - `assign`: needs `groupId`, `slotIndex` (number), `teamId`
+       - `clear`: needs `groupSlotId`
+       - `reserve`: needs `teamId`
+       - `swap`: needs `sourceSlotId`, `targetSlotId`
+     - Call corresponding model helper; redirect back to same URL
+   - Component UI:
+     - Header with title and back link to `competition/groups?tournament=<id>`
+     - Left column: groups list → slots cards; each slot shows assigned team or
+       an Assign form (TextInputField for `teamId` or a simple select in future)
+     - For assigned slots: show Clear button (posts `intent=clear`)
+     - Right column: Reserve list and Available teams list with Move-to-reserve
+       action
+     - Mobile-first layout; `lg:` for 2-column
+     - Add i18n keys for headings/buttons/text
+
+3) Seeding — `prisma/seed.js`
+   - Create a `Group Stage (JO8)` group set for the `Spring Cup` tournament
+     - Configuration: 4 groups × 5 slots each (20 empty group slots)
+     - Reserve list: pre-filled with 20+ available JO8 teams (enough to fill all groups)
+     - All group slots initially empty to demonstrate assignment workflow
+     - Idempotent checks to avoid duplicates
+
+4) i18n — add translation keys in all locales under `app/i18n/locales/`
+   - Suggested keys (examples; Dutch sentence case):
+     - `groups.title`: "Groepenbeheer"
+     - `groups.subtitle`: "Beheer teamindelingen"
+     - `groups.selectTournament`: "Selecteer een toernooi"
+     - `groups.noGroupSets`: "Nog geen groepssets"
+     - `groups.createGroupSet`: "Groepsset aanmaken"
+     - `groups.categories`: "Categorieën"
+     - `groups.setup`: "Instellingen"
+     - `groups.autofill`: "Automatisch vullen"
+     - `groups.created`: "Aangemaakt"
+     - `groups.assign`: "Toewijzen"
+     - `groups.clear`: "Leegmaken"
+     - `groups.reserve`: "Naar reserve"
+     - `groups.available`: "Beschikbare teams"
+
+5) RBAC — enforce permission checks (server)
+   - Replace `requireAdminUser` with `requireUserWithPermission(request,
+     'groups:manage')` in loader/action for details route
+   - Keep existing admin-only check on listing if required by product policy
+
+6) Unit tests — `app/models/__tests__/group.server.test.ts`
+   - Setup test DB (existing project harness)
+   - Cases:
+     - Assign team into empty slot
+     - Reassign same team to different slot (clears previous)
+     - Clear a slot
+     - Move team to reserve when previously assigned
+     - Swap two occupied slots
+     - Constraint violation paths raise errors
+
+7) E2E tests — Playwright
+   - POM: `playwright/pages/GroupsPage.ts`
+     - Methods: `goto(tournamentId)`, `openGroupSet(name)`,
+       `assignTeam(slotLabelOrIndex, teamId)`, `clearSlot(slotLabelOrIndex)`,
+       `moveTeamToReserve(teamName)`, `assertAssignment(...)`, etc.
+   - Spec: `playwright/tests/competition.groups.spec.ts`
+     - Auth bypass per E2E strategy
+     - Navigate to Competition → Groups, select tournament
+     - Open `Group Stage (JO8)`
+     - Assign one JO8 team to Group A slot 0; verify
+     - Move another JO8 team to Reserve; assign to Group A slot 1; verify
+     - Clear a slot; verify
+     - Swap two occupied slots; verify
+     - Reload and verify persistence
+
+8) Performance & UX
+   - Keep forms simple; no DnD for MVP
+   - Consider prefetching details route on hover/intent from cards
+   - Ensure focus states and keyboard navigation
+
+9) Accessibility
+   - Labels for controls; ARIA where needed
+   - Buttons reachable by keyboard; visible focus ring
+
+10) Commit & PR guidelines
+   - Use Conventional Commits (e.g., `feat(groups): add assignment actions`)
+   - Include screenshots of details page in PR description
+
+# 7) Types & Interfaces
+
+## Existing Types (from `app/models/group.server.ts`)
+
+Reuse these existing types - no modifications needed:
+
+```ts
+// Already defined in app/models/group.server.ts
+type GroupSetWithDetails = {
+  id: string
+  name: string
+  categories: Category[]
+  configGroups: number
+  configSlots: number
+  autoFill: boolean
+  createdAt: Date
+  groups: GroupWithSlots[]
+  reserveSlots: GroupSlotWithTeam[]
+}
+
+type GroupWithSlots = {
+  id: string
+  name: string
+  order: number
+  slots: GroupSlotWithTeam[]
+}
+
+type GroupSlotWithTeam = {
+  id: string
+  slotIndex: number
+  team: {
+    id: string
+    name: string
+    clubName: string
+    category: Category
+  } | null
+}
+
+type UnassignedTeam = {
+  id: string
+  name: string
+  clubName: string
+  category: Category
+}
+```
+
+## New Function Props Types (to be added in `app/models/group.server.ts`)
+
+Follow TypeScript conventions - use `type` instead of `interface`, `Readonly<>` for props:
+
+```ts
+type AssignTeamToGroupSlotProps = {
+  readonly groupSetId: string
+  readonly groupId: string
+  readonly slotIndex: number
+  readonly teamId: string
+}
+
+type ClearGroupSlotProps = {
+  readonly groupSlotId: string
+}
+
+type MoveTeamToReserveProps = {
+  readonly groupSetId: string
+  readonly teamId: string
+}
+
+type SwapGroupSlotsProps = {
+  readonly sourceSlotId: string
+  readonly targetSlotId: string
+}
+```
+
+## Route Types
+
+```ts
+// Loader data type for details route
+type LoaderData = {
+  readonly groupSet: GroupSetWithDetails
+  readonly availableTeams: readonly UnassignedTeam[]
+  readonly tournamentId: string
+}
+
+// Action data type for error handling
+type ActionData = {
+  readonly error?: string
+}
+```
+
+## FormData Keys
+
+Action FormData keys (all strings):
+- `intent`: `"assign" | "clear" | "reserve" | "swap"`
+- `groupId`: string (group ID for assign intent)
+- `slotIndex`: string (number as string for assign intent)
+- `teamId`: string (team ID for assign/reserve intents)
+- `groupSlotId`: string (slot ID for clear intent)
+- `sourceSlotId`: string (source slot ID for swap intent)
+- `targetSlotId`: string (target slot ID for swap intent)
+
+# 8) Acceptance Criteria
+
+## Common Criteria (Required for all tasks)
+
+- All files listed in "End state" section exist and export expected APIs
+- **Validation passes**: Run `pnpm validate` and fix all errors before completion
+  - TypeScript compilation succeeds with no errors
+  - ESLint passes with no errors
+  - Prettier formatting is correct
+- All unit tests pass locally with `pnpm test:run`
+- All E2E tests pass locally with `pnpm test:e2e:run`
+- New i18n strings added to **all 6 locales** in `app/i18n/locales/`:
+  - English (`en.json`) - uses title case
+  - Dutch (`nl.json`) - uses sentence case
+  - German (`de.json`) - uses sentence case
+  - French (`fr.json`) - uses sentence case
+  - Turkish (`tr.json`) - uses sentence case
+  - Arabic (`ar.json`) - uses sentence case
+
+**Testing Workflow**: Follow this cycle strictly:
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+3. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 2
+4. Any code changes require restarting from step 1
+
+## 🌍 Shared Task Criteria
+
+- Components are reusable and don't contain feature-specific logic
+- Shared utilities can be imported by multiple features
+- No breaking changes to existing feature imports
+- TypeScript conventions followed (use `type`, no semicolons, no `any`)
+
+## Feature-Specific Criteria
+
+- Details page reachable at `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/:groupSetId?tournament=<id>`
+- Loader and action enforce `groups:manage` permission; unauthorized users get 403
+- UI displays:
+  - Groups with ordered slots (4 groups × 5 slots = 20 total)
+  - Reserve list with assigned teams
+  - Available teams list (unassigned teams)
+- All 4 operations work correctly:
+  - **Assign**: Move team from available/reserve to group slot
+  - **Clear**: Remove team from group slot back to available
+  - **Reserve**: Move team to reserve list
+  - **Swap**: Exchange teams between two slots
+- Operations persist to database and reflect immediately after redirect
+- Mobile-first responsive layout works on small screens
+- Desktop layout (≥1024px) shows 3-column grid (`lg:grid-cols-3`)
+- All interactive elements meet 44px minimum touch target size
+- Keyboard navigation works for all forms and buttons
+- Focus states visible with proper focus rings
+- Model functions are transactional (use `prisma.$transaction`)
+- Seeded data includes JO8 group set with empty slots and filled reserve
+- Unit test coverage ≥70% for new model functions
+- E2E tests cover full user workflows with auth bypass
+- Page Object Model pattern used for E2E tests
+
+# 9) Testing Strategy
+
+## Common Testing Approach
+
+- Create unit tests with Vitest that verify component behavior and rendering
+- Create E2E tests with Playwright using Page Object Model pattern
+- Include database seeding for realistic test data
+- Test responsive design on different screen sizes
+- Test accessibility with keyboard navigation
+- Avoid testing implementation details - focus on user-facing behavior
+- Follow the testing workflow cycle: validation → unit → E2E → repeat if fixes needed
+
+## 🌍 Shared Task Testing
+
+- Test component reusability across different contexts
+- Mock external dependencies to ensure pure functionality
+- Verify no state leakage between tests (reset database between tests)
+
+## Unit Tests (`app/models/__tests__/group.server.test.ts`)
+
+**Setup:**
+- Use existing Vitest test harness
+- Set up test database with in-memory SQLite
+- Seed minimal test data (tournament, teams, group set)
+
+**Test Cases:**
+1. **Assign team to empty slot**
+   - Create group set with empty slots
+   - Assign team to specific slot
+   - Verify team is assigned and previous assignment cleared
+2. **Reassign team to different slot**
+   - Assign team to slot A
+   - Reassign same team to slot B
+   - Verify team moved from A to B (A is now empty)
+3. **Clear a slot**
+   - Assign team to slot
+   - Clear the slot
+   - Verify slot is empty and team is unassigned
+4. **Move team to reserve**
+   - Assign team to group slot
+   - Move team to reserve
+   - Verify team is in reserve and group slot is empty
+5. **Swap two occupied slots**
+   - Assign team A to slot 1
+   - Assign team B to slot 2
+   - Swap slots 1 and 2
+   - Verify team A is in slot 2 and team B is in slot 1
+6. **Error: assign to occupied slot**
+   - Assign team A to slot
+   - Attempt to assign team B to same slot
+   - Verify error is thrown
+7. **Error: slot not found**
+   - Attempt to assign team to non-existent slot
+   - Verify error is thrown
+
+## E2E Tests (`playwright/tests/competition.groups.spec.ts`)
+
+**Setup:**
+- Use auth bypass per E2E strategy
+- Use seeded JO8 group set from seed.js
+- Create Page Object Model (`playwright/pages/GroupsPage.ts`)
+
+**Page Object Model Methods:**
+```ts
+class GroupsPage {
+  async goto(tournamentId: string): Promise<void>
+  async selectTournament(tournamentName: string): Promise<void>
+  async openGroupSet(name: string): Promise<void>
+  async assignTeamToSlot(groupName: string, slotIndex: number, teamId: string): Promise<void>
+  async clearSlot(groupName: string, slotIndex: number): Promise<void>
+  async moveTeamToReserve(teamId: string): Promise<void>
+  async getSlotTeamName(groupName: string, slotIndex: number): Promise<string | null>
+  async getReserveTeams(): Promise<string[]>
+  async getAvailableTeams(): Promise<string[]>
+}
+```
+
+**Test Scenarios:**
+1. **Navigate to groups page**
+   - Visit admin dashboard
+   - Click Competition → Groups
+   - Select Spring Cup tournament
+   - Verify group sets list appears
+2. **Open group set details**
+   - Click "Group Stage (JO8)"
+   - Verify 4 groups displayed
+   - Verify reserve list has teams
+   - Verify available teams list exists
+3. **Assign team to group slot**
+   - Select team from available list
+   - Assign to Group A, slot 0
+   - Verify team appears in slot
+   - Verify team removed from available list
+4. **Clear slot**
+   - Click Clear button on assigned slot
+   - Verify slot is empty
+   - Verify team returns to available list
+5. **Move team to reserve**
+   - Click "Move to reserve" on available team
+   - Verify team appears in reserve list
+   - Verify team removed from available list
+6. **Assign from reserve to group**
+   - Take team from reserve
+   - Assign to Group B, slot 0
+   - Verify team in group slot
+   - Verify team removed from reserve
+7. **Persistence check**
+   - Perform assignment
+   - Reload page
+   - Verify assignment persists
+
+## Coverage Target
+
+- Maintain project threshold: ≥70% code coverage
+- Focus on critical paths: assignment operations and error handling
+- All model functions must have unit tests
+- All user-facing workflows must have E2E tests
+
+# 10) Notes / Links
+
+- See ADR-0022 (RBAC) and PRD Phase 2 (Groups & Playoffs)
+- Consider future enhancement: DnD UI and auto-seeding algorithms

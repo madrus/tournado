@@ -28,9 +28,9 @@
       "title": "Tournament Management",
       "totalTournaments": "Total Tournaments"
     },
-    "match": {
-      "title": "Match Management",
-      "description": "Manage match scores and referee assignments."
+    "competition": {
+      "title": "Competition Management",
+      "description": "Manage groups, matches, and standings for tournaments."
     },
     "user": {
       "title": "User Management",

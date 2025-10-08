@@ -36,6 +36,7 @@ alwaysApply: false
 | 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Accepted | —          | —             |
 | 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
 | 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
+| 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -197,12 +198,12 @@ End-to-end tests cover sign-in/out, redirects, and loader-based role verificatio
 
 **Implementation Status**: Firebase Authentication is implemented end-to-end:
 
-- TASK-0001: Firebase setup — done
-- TASK-0002: Session bridging — done (SSR-compatible session cookies)
-- TASK-0003: Google OAuth UX — done
-- TASK-0004: Email/Password authentication — done
-- TASK-0005: Environment separation — done (CI/staging/production isolation)
-- TASK-0006: Legacy authentication removal — done (bcrypt/Password table removed)
+- TASK-0101: Firebase setup — done
+- TASK-0102: Session bridging — done (SSR-compatible session cookies)
+- TASK-0103: Google OAuth UX — done
+- TASK-0104: Email/Password authentication — done
+- TASK-0105: Environment separation — done (CI/staging/production isolation)
+- TASK-0106: Legacy authentication removal — done (bcrypt/Password table removed)
 
 Production code is kept clean while tests and E2E run via adapters:
 
@@ -1268,3 +1269,70 @@ Implement E2E testing strategy that bypasses Firebase authentication entirely:
 - Authentication contexts work correctly for role-based testing
 - Manual testing procedures documented for Firebase integration validation
 - Test database properly isolated from development and production data
+
+## ADR-0025 — Competition Section Structure and Group Management
+
+<a id="adr-0025"></a>
+**Date**: 2025-10-08
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+Tournament management requires organized workflows for different phases of competition management. We need a clear structure for managing groups, matches, and standings while providing intuitive access to team allocation and match scheduling features.
+
+### Alternatives
+
+- **Flat navigation structure**: All features at same level (poor organization, confusing navigation)
+- **Feature-specific pages without grouping**: Scattered functionality, no clear workflow progression
+- **Groups under Teams section**: Logically incorrect, groups are competition artifacts not team properties
+- **Competition section with Groups → Matches → Standings workflow**: Clear progression, intuitive organization
+
+### Decision
+
+Implement Competition section as central hub for tournament operations with structured workflow:
+
+**Competition Section Structure**:
+- **Location**: `/a7k9m2x5p8w1n4q6r3y8b5t1/competition`
+- **Phase progression**: Groups (setup) → Matches (play) → Standings (results)
+- **Navigation**: Admin Panel → Competition Management
+
+**Group Management Workflow** (TASK-0201):
+- View group sets for selected tournaments
+- Assign teams from reserve to group slots
+- Move teams between groups and reserve
+- Swap teams between slots
+- Clear slots to return teams to reserve
+- Transactional operations ensuring data consistency
+
+**Permission Model**:
+- `groups:manage` permission required (ADMIN and MANAGER roles)
+- RBAC enforcement at route loader/action level
+- Self-service team management separate from competition administration
+
+**Database Operations**:
+- Atomic transactions for multi-step assignments
+- Unique constraints: one team per slot, team appears once per group set
+- Cascade handling for team/tournament deletions
+- Optimistic locking for concurrent operations
+
+### Implementation References
+
+- Group models: `app/models/group.server.ts`
+- Competition routes: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/**`
+- RBAC middleware: `app/utils/rbacMiddleware.server.ts`
+- Database schema: `prisma/schema.prisma` (GroupSet, Group, GroupSlot)
+
+### Consequences
+
+- **Pros**: Clear workflow progression, intuitive navigation, data integrity, role-based access, organized tournament management
+- **Cons / risks**: Competition section grows with features, need to maintain consistent navigation UX, transaction complexity
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+- Unit tests verify transactional group assignment operations
+- E2E tests confirm RBAC enforcement and workflow completion
+- Database constraints prevent invalid team assignments
+- UI clearly indicates workflow progression and current phase

@@ -28,9 +28,9 @@
       "title": "Gestion des tournois",
       "totalTournaments": "Nombre total de tournois"
     },
-    "match": {
-      "title": "Gestion des matchs",
-      "description": "Gérer les scores des matchs et les affectations d'arbitres."
+    "competition": {
+      "title": "Gestion de la compétition",
+      "description": "Gérer les groupes, les matchs et les classements des tournois."
     },
     "user": {
       "title": "Gestion des utilisateurs",

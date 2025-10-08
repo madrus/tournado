@@ -28,9 +28,9 @@
       "title": "Toernooien beheer",
       "totalTournaments": "Totaal aantal toernooien"
     },
-    "match": {
-      "title": "Wedstrijden beheer",
-      "description": "Beheer wedstrijdscores en scheidsrechter toewijzingen."
+    "competition": {
+      "title": "Competitiebeheer",
+      "description": "Beheer groepen, wedstrijden en standen voor toernooien."
     },
     "user": {
       "title": "Gebruikers beheer",

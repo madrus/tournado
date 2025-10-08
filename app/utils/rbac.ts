@@ -29,6 +29,7 @@ export type Permission =
   | 'tournaments:edit'
   | 'tournaments:delete'
   | 'tournaments:manage'
+  | 'groups:manage' // Manage groups and assignments
   | 'matches:read'
   | 'matches:create'
   | 'matches:edit'
@@ -66,6 +67,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'tournaments:read',
     'tournaments:create',
     'tournaments:edit',
+    'groups:manage',
     'matches:read',
     'matches:create',
     'matches:edit',
@@ -83,6 +85,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'tournaments:edit',
     'tournaments:delete',
     'tournaments:manage',
+    'groups:manage',
     'matches:read',
     'matches:create',
     'matches:edit',

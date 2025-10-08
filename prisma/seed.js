@@ -251,53 +251,9 @@ async function seed() {
       jo8Teams.push(jo8Team)
     }
 
-    // Create a JO8 Group Set for tournament1 to review the UI
-    const existingGroupSet = await prisma.groupSet.findFirst({
-      where: { tournamentId: tournament1.id, name: 'Group Stage (JO8)' },
-      select: { id: true },
-    })
-    if (!existingGroupSet) {
-      const groupSet = await prisma.groupSet.create({
-        data: {
-          tournamentId: tournament1.id,
-          name: 'Group Stage (JO8)',
-          categories: ['JO8'],
-          configGroups: 4,
-          configSlots: 5,
-          autoFill: true,
-        },
-      })
-
-      // Create groups A-D with 5 slots each
-      for (let i = 0; i < 4; i++) {
-        const groupName = 'Group ' + String.fromCharCode(65 + i)
-        const group = await prisma.group.create({
-          data: { groupSetId: groupSet.id, name: groupName, order: i },
-        })
-        for (let slotIndex = 0; slotIndex < 5; slotIndex++) {
-          await prisma.groupSlot.create({
-            data: { groupSetId: groupSet.id, groupId: group.id, slotIndex },
-          })
-        }
-      }
-
-      // Auto-fill reserve with available JO8 teams (limit to 24 to keep DB small)
-      const reserveTeams = await prisma.team.findMany({
-        where: { tournamentId: tournament1.id, category: 'JO8', groupSlot: null },
-        take: 24,
-        orderBy: [{ clubName: 'asc' }, { name: 'asc' }],
-      })
-      for (const team of reserveTeams) {
-        await prisma.groupSlot.create({
-          data: {
-            groupSetId: groupSet.id,
-            groupId: null,
-            slotIndex: 0,
-            teamId: team.id,
-          },
-        })
-      }
-    }
+    // Note: GroupSets are NOT pre-created in seed data
+    // Users create GroupSets via Competition → Groups → "Create Group Set" UI
+    // This ensures all tournaments start with consistent empty state
 
     // Minimal two dummy matches
     await prisma.match.create({

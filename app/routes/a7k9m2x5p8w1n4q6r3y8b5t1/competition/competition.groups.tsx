@@ -106,14 +106,6 @@ export default function GroupsTab(): JSX.Element {
             <p className='text-foreground-light mt-2'>
               Get started by creating your first group set for round-robin group play.
             </p>
-            <div className='mt-6'>
-              <ActionLinkButton
-                to={`new?tournament=${selectedTournamentId}`}
-                label='Create Your First Group Set'
-                variant='primary'
-                icon='add'
-              />
-            </div>
           </div>
         </div>
       ) : (

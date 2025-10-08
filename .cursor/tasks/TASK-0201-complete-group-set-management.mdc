@@ -144,11 +144,11 @@ Already present (baseline):
      - Add i18n keys for headings/buttons/text
 
 3) Seeding — `prisma/seed.js`
-   - Create a `Group Stage (JO8)` group set for the `Spring Cup` tournament
-     - Configuration: 4 groups × 5 slots each (20 empty group slots)
-     - Reserve list: pre-filled with 20+ available JO8 teams (enough to fill all groups)
-     - All group slots initially empty to demonstrate assignment workflow
-     - Idempotent checks to avoid duplicates
+   - **NO GroupSets created in seed** - All tournaments start with empty state
+   - Spring Cup tournament has 20+ JO8 teams seeded (for testing)
+   - GroupSets are created by users via Competition → Groups → "Create Group Set" UI
+   - This ensures consistent empty state and allows testing the full workflow
+   - E2E tests will create GroupSet as part of test scenario (see step 7)
 
 4) i18n — add translation keys in all locales under `app/i18n/locales/`
    - Suggested keys (examples; Dutch sentence case):
@@ -183,13 +183,21 @@ Already present (baseline):
 
 7) E2E tests — Playwright
    - POM: `playwright/pages/GroupsPage.ts`
-     - Methods: `goto(tournamentId)`, `openGroupSet(name)`,
-       `assignTeam(slotLabelOrIndex, teamId)`, `clearSlot(slotLabelOrIndex)`,
-       `moveTeamToReserve(teamName)`, `assertAssignment(...)`, etc.
+     - Methods: `goto(tournamentId)`, `createGroupSet(name, config)`,
+       `openGroupSet(name)`, `assignTeam(slotLabelOrIndex, teamId)`,
+       `clearSlot(slotLabelOrIndex)`, `moveTeamToReserve(teamName)`,
+       `assertAssignment(...)`, etc.
    - Spec: `playwright/tests/competition.groups.spec.ts`
      - Auth bypass per E2E strategy
-     - Navigate to Competition → Groups, select tournament
-     - Open `Group Stage (JO8)`
+     - Navigate to Competition → Groups, select Spring Cup tournament
+     - **Create GroupSet**: Click "Create Group Set", fill form:
+       - Name: "Group Stage (JO8)"
+       - Categories: JO8
+       - Groups: 4, Slots: 5
+       - Auto-fill: enabled
+     - Verify GroupSet created and appears in list
+     - Open `Group Stage (JO8)` details
+     - Verify 4 groups × 5 empty slots, reserve has teams
      - Assign one JO8 team to Group A slot 0; verify
      - Move another JO8 team to Reserve; assign to Group A slot 1; verify
      - Clear a slot; verify
@@ -448,31 +456,38 @@ class GroupsPage {
    - Visit admin dashboard
    - Click Competition → Groups
    - Select Spring Cup tournament
-   - Verify group sets list appears
-2. **Open group set details**
+   - Verify empty state: "No group sets yet"
+2. **Create group set**
+   - Click "Create Group Set" button (top-right)
+   - Fill form: Name "Group Stage (JO8)", Categories: JO8, Groups: 4, Slots: 5, Auto-fill: enabled
+   - Submit form
+   - Verify redirect to groups list
+   - Verify "Group Stage (JO8)" appears in list
+3. **Open group set details**
    - Click "Group Stage (JO8)"
-   - Verify 4 groups displayed
-   - Verify reserve list has teams
+   - Verify 4 groups displayed (A, B, C, D)
+   - Verify each group has 5 empty slots
+   - Verify reserve list has JO8 teams (from auto-fill)
    - Verify available teams list exists
-3. **Assign team to group slot**
+4. **Assign team to group slot**
    - Select team from available list
    - Assign to Group A, slot 0
    - Verify team appears in slot
    - Verify team removed from available list
-4. **Clear slot**
+5. **Clear slot**
    - Click Clear button on assigned slot
    - Verify slot is empty
    - Verify team returns to available list
-5. **Move team to reserve**
+6. **Move team to reserve**
    - Click "Move to reserve" on available team
    - Verify team appears in reserve list
    - Verify team removed from available list
-6. **Assign from reserve to group**
+7. **Assign from reserve to group**
    - Take team from reserve
    - Assign to Group B, slot 0
    - Verify team in group slot
    - Verify team removed from reserve
-7. **Persistence check**
+8. **Persistence check**
    - Perform assignment
    - Reload page
    - Verify assignment persists

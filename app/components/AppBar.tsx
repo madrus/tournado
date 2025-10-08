@@ -54,6 +54,7 @@ export function AppBar({
   // Check user permissions using RBAC utilities
   const canManageTournaments = canAccess(user || null, 'tournaments:manage')
   const canManageTeams = canAccess(user || null, 'teams:manage')
+  const canManageGroups = canAccess(user || null, 'groups:manage')
   const userHasAdminPanelAccess = hasAdminPanelAccess(user || null)
 
   // Handle sign-in
@@ -90,7 +91,18 @@ export function AppBar({
       href: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
       authenticated: false,
     },
-    // Divider after Teams
+    // Competition - only show for users who can manage groups (ADMIN, MANAGER)
+    ...(canManageGroups
+      ? [
+          {
+            label: t('common.titles.competition'),
+            icon: 'sports' as IconName,
+            href: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition',
+            authenticated: true,
+          },
+        ]
+      : []),
+    // Divider after Competition
     {
       label: '',
       icon: '' as IconName,

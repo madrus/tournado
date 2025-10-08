@@ -311,7 +311,7 @@ describe('AppBar Context Menu', () => {
 
       expect(tournamentsIndex).toBe(0) // Tournaments should be first for admin
       expect(teamsIndex).toBe(1) // Teams should be second for admin
-      expect(adminPanelIndex).toBe(2) // Admin Panel should be after Teams (divider is not counted in labels)
+      expect(adminPanelIndex).toBe(3) // Admin Panel should be after Competition (divider is not counted in labels)
     })
   })
 

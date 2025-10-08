@@ -119,29 +119,7 @@ export default function AdminDashboard(): JSX.Element {
 
       {/* Dashboard Grid */}
       <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Panel 1 - Team Management (only for ADMIN and MANAGER) */}
-        {canManageTeams ? (
-          <ActionLinkPanel
-            title={t('admin.team.title')}
-            description={t('admin.team.description')}
-            icon={<ApparelIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='green'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-            language={i18n.language}
-            testId='admin-panel-team-management'
-          >
-            <div className='space-y-2'>
-              <p>
-                <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
-                {teams.length}
-              </p>
-            </div>
-          </ActionLinkPanel>
-        ) : null}
-
-        {/* Panel 2 - Tournament Management (only for ADMIN and MANAGER) */}
+        {/* Panel 1 - Tournament Management (only for ADMIN and MANAGER) */}
         {canManageTournaments ? (
           <ActionLinkPanel
             title={t('admin.tournament.title')}
@@ -160,6 +138,28 @@ export default function AdminDashboard(): JSX.Element {
                   {t('admin.tournament.totalTournaments')}:
                 </strong>
                 {tournaments.length}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
+
+        {/* Panel 2 - Team Management (only for ADMIN and MANAGER) */}
+        {canManageTeams ? (
+          <ActionLinkPanel
+            title={t('admin.team.title')}
+            description={t('admin.team.description')}
+            icon={<ApparelIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='green'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+            language={i18n.language}
+            testId='admin-panel-team-management'
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
+                {teams.length}
               </p>
             </div>
           </ActionLinkPanel>

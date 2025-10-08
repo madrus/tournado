@@ -6,8 +6,6 @@ import userEvent from '@testing-library/user-event'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { TEST_TRANSLATIONS } from 'test/helpers/constants'
-
 import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 
 import { TournamentForm } from '../TournamentForm'
@@ -30,44 +28,10 @@ Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
   writable: true,
 })
 
-// Mock i18n - translate error keys to actual messages for testing (like TeamForm)
+// Mock i18n - return translation keys as values (unit test principle)
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      // For error translation keys, return the actual message from TEST_TRANSLATIONS
-      if (key.startsWith('messages.tournament.')) {
-        return TEST_TRANSLATIONS[key as keyof typeof TEST_TRANSLATIONS] || key
-      }
-
-      // For regular form translations
-      const translations: Record<string, string> = {
-        'tournaments.form.tournamentRegistration': 'Tournament Registration',
-        'tournaments.form.location': 'Location',
-        'tournaments.form.fillOutForm':
-          'Fill out the form below to create a new tournament',
-        'tournaments.deleteTournament': 'Delete Tournament',
-        'tournaments.form.basicInformation': 'Basic Information',
-        'tournaments.form.enterBasicDetails': 'Enter tournament name and location',
-        'tournaments.form.name': 'Tournament Name',
-        'tournaments.form.dates': 'Tournament Dates',
-        'tournaments.form.selectDates': 'Select start and end dates for the tournament',
-        'tournaments.form.startDate': 'Start Date',
-        'tournaments.form.endDate': 'End Date',
-        'tournaments.form.divisions': 'Divisions',
-        'tournaments.form.selectDivisions':
-          'Select the divisions that will participate',
-        'tournaments.form.selected': 'selected',
-        'tournaments.form.categories': 'Categories',
-        'tournaments.form.selectCategories':
-          'Select the age categories that will participate',
-        'common.actions.save': 'Save',
-        'common.actions.cancel': 'Cancel',
-        'common.actions.delete': 'Delete',
-      }
-
-      // For all other keys, return the key as-is
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: {
       language: 'en',
       changeLanguage: vi.fn(),
@@ -182,6 +146,7 @@ vi.mock('../icons', () => {
     PersonIcon: createMockIcon('person-icon', '👤'),
     RestorePageIcon: createMockIcon('restore-page-icon', '↻'),
     SettingsIcon: createMockIcon('settings-icon', '⚙'),
+    SportsIcon: createMockIcon('sports-icon', '⚽'),
     SuccessIcon: createMockIcon('success-icon', '✓'),
     TrophyIcon: createMockIcon('trophy-icon', '🏆'),
     TuneIcon: createMockIcon('tune-icon', '🎛'),
@@ -421,20 +386,21 @@ describe('TournamentForm Component', () => {
     it('should render form with all basic elements', () => {
       renderTournamentForm()
 
-      expect(screen.getByText('Basic Information')).toBeInTheDocument()
-      expect(screen.getByText('Tournament Dates')).toBeInTheDocument()
-      expect(screen.getByText('Divisions')).toBeInTheDocument()
-      expect(screen.getByText('Categories')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.basicInformation')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.dates')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.divisions')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.categories')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
     })
 
     it('should render all form fields correctly', () => {
       renderTournamentForm()
 
-      expect(screen.getByText('Tournament Name')).toBeInTheDocument()
-      expect(screen.getByText('Location')).toBeInTheDocument()
-      expect(screen.getByText('Start Date *')).toBeInTheDocument()
-      expect(screen.getByText('End Date')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.name')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.location')).toBeInTheDocument()
+      // startDate label has required asterisk in separate element, use regex
+      expect(screen.getByText(/tournaments\.form\.startDate/)).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.endDate')).toBeInTheDocument()
     })
 
     it('should render step numbers correctly', () => {
@@ -523,7 +489,8 @@ describe('TournamentForm Component', () => {
         formData: { divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'] },
       })
 
-      expect(screen.getByText(/2 selected/)).toBeInTheDocument()
+      // With i18n mock returning keys, the label will contain "2 tournaments.form.selected"
+      expect(screen.getByText(/2 tournaments\.form\.selected/)).toBeInTheDocument()
     })
 
     it('should pre-select divisions from form data', () => {
@@ -540,10 +507,10 @@ describe('TournamentForm Component', () => {
 
     it('should display division errors', () => {
       renderTournamentForm({
-        errors: { divisions: 'At least one division is required' },
+        errors: { divisions: 'messages.tournament.divisionsRequired' },
       })
 
-      expect(screen.getByText('At least one division is required')).toBeInTheDocument()
+      expect(screen.getByText('messages.tournament.divisionsRequired')).toBeInTheDocument()
     })
   })
 
@@ -572,7 +539,8 @@ describe('TournamentForm Component', () => {
         formData: { categories: ['JO8', 'JO9', 'JO10'] },
       })
 
-      expect(screen.getByText(/3 selected/)).toBeInTheDocument()
+      // With i18n mock returning keys, the label will contain "3 tournaments.form.selected"
+      expect(screen.getByText(/3 tournaments\.form\.selected/)).toBeInTheDocument()
     })
 
     it('should pre-select categories from form data', () => {
@@ -589,10 +557,10 @@ describe('TournamentForm Component', () => {
 
     it('should display category errors', () => {
       renderTournamentForm({
-        errors: { categories: 'At least one category is required' },
+        errors: { categories: 'messages.tournament.categoriesRequired' },
       })
 
-      expect(screen.getByText('At least one category is required')).toBeInTheDocument()
+      expect(screen.getByText('messages.tournament.categoriesRequired')).toBeInTheDocument()
     })
   })
 
@@ -601,9 +569,9 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      // Get the form fields
-      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
-      const locationInput = screen.getByRole('textbox', { name: /location/i })
+      // Get the form fields (labels are now translation keys)
+      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
+      const locationInput = screen.getByRole('textbox', { name: /tournaments\.form\.location/i })
 
       // Focus and then blur fields to trigger validation - using user.tab() like TeamForm
       await user.click(nameInput)
@@ -612,15 +580,15 @@ describe('TournamentForm Component', () => {
       await user.click(locationInput)
       await user.tab() // This will blur the current field
 
-      // Wait for validation errors to appear (as actual translated messages from TEST_TRANSLATIONS)
+      // Wait for validation errors to appear (as translation keys)
       await waitFor(() => {
         expect(
-          screen.getByText(TEST_TRANSLATIONS['messages.tournament.nameRequired'])
+          screen.getByText('messages.tournament.nameRequired')
         ).toBeInTheDocument()
       })
 
       expect(
-        screen.getByText(TEST_TRANSLATIONS['messages.tournament.locationRequired'])
+        screen.getByText('messages.tournament.locationRequired')
       ).toBeInTheDocument()
     })
 
@@ -628,7 +596,7 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
+      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
 
       // Trigger validation error by blurring empty field
       await user.click(nameInput)
@@ -636,7 +604,7 @@ describe('TournamentForm Component', () => {
 
       // The field should remain focused or the error should be visible
       await waitFor(() => {
-        expect(screen.getByText('Tournament name is required')).toBeInTheDocument()
+        expect(screen.getByText('messages.tournament.nameRequired')).toBeInTheDocument()
       })
     })
   })
@@ -645,21 +613,22 @@ describe('TournamentForm Component', () => {
     it('should render submit button with default text', () => {
       renderTournamentForm()
 
-      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
     })
 
     it('should render submit button with custom text', () => {
       renderTournamentForm({
-        submitButtonText: 'Save',
+        submitButtonText: 'common.actions.save',
       })
 
-      expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
     })
 
     it('should always render reset button', () => {
       renderTournamentForm()
 
-      const resetButton = screen.getByRole('button', { name: '↻ Cancel' })
+      // Cancel button uses translation key now
+      const resetButton = screen.getByRole('button', { name: /common\.actions\.cancel/i })
       expect(resetButton).toBeInTheDocument()
     })
 
@@ -668,7 +637,8 @@ describe('TournamentForm Component', () => {
 
       renderTournamentForm()
 
-      const resetButton = screen.getByRole('button', { name: '↻ Cancel' })
+      // Cancel button uses translation key now
+      const resetButton = screen.getByRole('button', { name: /common\.actions\.cancel/i })
       await user.click(resetButton)
 
       // Verify no error is thrown and reset button is still functional
@@ -738,16 +708,16 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Check for responsive grid classes by verifying form structure
-      expect(screen.getByText('Tournament Name')).toBeInTheDocument()
-      expect(screen.getByText('Location')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.name')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.location')).toBeInTheDocument()
     })
 
     it('should apply mobile-first responsive classes', () => {
       renderTournamentForm()
 
       // Basic information grid should be responsive - verify form layout
-      const nameInput = screen.getByRole('textbox', { name: /tournament name/i })
-      const locationInput = screen.getByRole('textbox', { name: /location/i })
+      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
+      const locationInput = screen.getByRole('textbox', { name: /tournaments\.form\.location/i })
       expect(nameInput).toBeInTheDocument()
       expect(locationInput).toBeInTheDocument()
     })
@@ -758,11 +728,12 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       expect(
-        screen.getByRole('textbox', { name: /tournament name/i })
+        screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
       ).toBeInTheDocument()
-      expect(screen.getByRole('textbox', { name: /location/i })).toBeInTheDocument()
-      expect(screen.getByText('Start Date *')).toBeInTheDocument()
-      expect(screen.getByText('End Date')).toBeInTheDocument()
+      expect(screen.getByRole('textbox', { name: /tournaments\.form\.location/i })).toBeInTheDocument()
+      // startDate label has required asterisk in separate element, use regex
+      expect(screen.getByText(/tournaments\.form\.startDate/)).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.endDate')).toBeInTheDocument()
     })
 
     it('should have proper heading structure', () => {
@@ -790,17 +761,17 @@ describe('TournamentForm Component', () => {
       })
 
       // Check that the form renders with the custom class by verifying form elements exist
-      expect(screen.getByText('Basic Information')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.basicInformation')).toBeInTheDocument()
     })
 
     it('should have step-specific color themes', () => {
       renderTournamentForm()
 
       // Each step should have its own color theme - check sections exist
-      expect(screen.getByText('Basic Information')).toBeInTheDocument()
-      expect(screen.getByText('Tournament Dates')).toBeInTheDocument()
-      expect(screen.getByText('Divisions')).toBeInTheDocument()
-      expect(screen.getByText('Categories')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.basicInformation')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.dates')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.divisions')).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.categories')).toBeInTheDocument()
     })
   })
 
@@ -809,8 +780,8 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      // Initially no divisions selected - the first "0 selected" text belongs to divisions
-      expect(screen.getAllByText(/0 selected/)[0]).toBeInTheDocument()
+      // Initially no divisions selected - with i18n mock, text is "0 tournaments.form.selected"
+      expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
 
       // Select first division
       const firstDivisionLabel = screen.getByTestId('division-first_division')
@@ -818,7 +789,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(screen.getAllByText(/1 selected/)[0]).toBeInTheDocument()
+        expect(screen.getAllByText(/1 tournaments\.form\.selected/)[0]).toBeInTheDocument()
       })
     })
 
@@ -826,8 +797,8 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      // Initially no categories selected - the second "0 selected" text belongs to categories
-      expect(screen.getAllByText(/0 selected/)[1]).toBeInTheDocument()
+      // Initially no categories selected - with i18n mock, text is "0 tournaments.form.selected"
+      expect(screen.getAllByText(/0 tournaments\.form\.selected/)[1]).toBeInTheDocument()
 
       // Select first category
       const jo8Label = screen.getByTestId('category-jo8')
@@ -835,9 +806,9 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected for categories
       await waitFor(() => {
-        const selectedTexts = screen.getAllByText(/1 selected/)
+        const selectedTexts = screen.getAllByText(/1 tournaments\.form\.selected/)
         expect(selectedTexts.length).toBeGreaterThan(0)
-        // If there are multiple "1 selected" texts, check the second one (categories)
+        // If there are multiple "1 tournaments.form.selected" texts, check the second one (categories)
         // If there's only one, it should be the categories since we selected a category
         const categoriesSelectedText =
           selectedTexts.length > 1 ? selectedTexts[1] : selectedTexts[0]
@@ -851,8 +822,8 @@ describe('TournamentForm Component', () => {
         formData: { divisions: ['FIRST_DIVISION'] },
       })
 
-      // Initially 1 selected - check count text
-      expect(screen.getByText(/1 selected/)).toBeInTheDocument()
+      // Initially 1 selected - with i18n mock, text is "1 tournaments.form.selected"
+      expect(screen.getByText(/1 tournaments\.form\.selected/)).toBeInTheDocument()
 
       // Deselect the division
       const firstDivisionLabel = screen.getByTestId('division-first_division')
@@ -860,7 +831,7 @@ describe('TournamentForm Component', () => {
 
       // Should show 0 selected for divisions
       await waitFor(() => {
-        expect(screen.getAllByText(/0 selected/)[0]).toBeInTheDocument()
+        expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
       })
     })
   })

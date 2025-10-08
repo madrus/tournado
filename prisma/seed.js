@@ -44,9 +44,9 @@ async function seed() {
 
     // All users to seed with their emails
     const allUsers = [
-      'madrusnl@hotmail.com',
-      'otmanabdel@hotmail.com',
-      'madrus@gmail.com',
+      'user@example.com',
+      'admin2@example.com',
+      'admin1@example.com',
     ]
 
     // cleanup the existing database
@@ -115,7 +115,7 @@ async function seed() {
 
     // Find or create a default team leader
     let teamLeader = await prisma.teamLeader.findFirst({
-      where: { email: 'madrusnl@hotmail.com' },
+      where: { email: 'user@example.com' },
     })
 
     if (!teamLeader) {
@@ -124,14 +124,14 @@ async function seed() {
           data: {
             firstName: 'Madrusnl',
             lastName: 'Admin',
-            email: 'madrusnl@hotmail.com',
+            email: 'user@example.com',
             phone: '+31 6 1234 5678',
           },
         })
       } catch (error) {
         // If creation fails due to unique constraint, try to find it again
         teamLeader = await prisma.teamLeader.findFirst({
-          where: { email: 'madrusnl@hotmail.com' },
+          where: { email: 'user@example.com' },
         })
 
         if (!teamLeader) {

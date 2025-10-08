@@ -20,7 +20,7 @@ Configured all 16 required environment variables in production (`tournado` Fly.i
 
 - `SESSION_SECRET` (already configured)
 - `BASE_URL` (already configured)
-- `SUPER_ADMIN_EMAILS` = "madrus@gmail.com,otmanabdel@hotmail.com"
+- `SUPER_ADMIN_EMAILS` = "admin1@example.com,admin2@example.com"
 - `DATABASE_URL` = "file:/data/sqlite.db?connection_limit=1"
 
 **Firebase Client (7 variables):**
@@ -72,8 +72,8 @@ CREATE UNIQUE INDEX User_firebaseUid_key ON User(firebaseUid);
 
 **Current Admin Users:**
 
-- `madrus@gmail.com` - ADMIN (Google OAuth)
-- `otmanabdel@hotmail.com` - ADMIN (Email/Password)
+- `admin1@example.com` - ADMIN (Google OAuth)
+- `admin2@example.com` - ADMIN (Email/Password)
 
 **How It Works:**
 

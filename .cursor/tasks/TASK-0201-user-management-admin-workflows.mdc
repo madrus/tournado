@@ -1,0 +1,1925 @@
+---
+description: "Admin-only user management with approval workflows, role assignment, and audit logs"
+id: "TASK-0201"
+title: "Implement admin-controlled user management workflows"
+status: "planned"
+priority: "P1"
+labels: ["feature", "ui", "users", "rbac", "admin", "tests", "i18n", "audit"]
+dependencies: []
+created: "2025-10-08"
+updated: "2025-10-08"
+globs:
+alwaysApply: false
+---
+
+# Architecture Decision
+
+**Pattern**: 🌍 **SHARED Task** - Updates shared/global code
+
+**Rationale**: This task creates admin-only user management functionality that is core platform infrastructure. It modifies shared database models (`app/models/user.server.ts`), creates routes under the admin panel, adds reusable components that could be used across different admin contexts, and implements RBAC permissions that are foundational to the application. The user management functionality is accessed by ADMIN role users only and manages the central User entity that affects all other features.
+
+# 1) High-Level Objective
+
+Deliver a complete admin-controlled user management system where admins can review new user registrations, approve/reject users, assign roles (ADMIN or MANAGER), view user lists with filtering, edit user profiles, and track all role changes through audit logs.
+
+# 2) Background / Context
+
+**Phase 2 - User Management**: This task implements the foundational user administration capability that must be completed before tournament operations (Phase 3+). With Firebase authentication (Phase 1) completed, users can now sign up via Google OAuth or Email/Password. However, all new users receive PUBLIC role by default and require admin approval to gain elevated privileges.
+
+**Why Before Tournament Operations**:
+- Managers need to be properly authorized before they can manage tournaments (Phase 3+)
+- Clear separation between user administration (Phase 2) and tournament operations (Phase 3+)
+- Establishes proper RBAC foundation for all subsequent features
+- Referee token management (Phase 4) depends on properly authorized managers
+
+**Security Context**: Only users with ADMIN role can access user management features. The permissions `users:approve` and `roles:assign` are restricted to ADMIN role only. This task enforces these permissions at all route loaders and actions.
+
+**Current State**:
+- Firebase Authentication implemented with Google OAuth and Email/Password
+- User model exists with `role` field (PUBLIC, REFEREE, MANAGER, ADMIN)
+- RBAC middleware exists (`requireUserWithPermission`)
+- Super admin assignment via `SUPER_ADMIN_EMAILS` environment variable
+- Admin Panel structure exists at `/a7k9m2x5p8w1n4q6r3y8b5t1/`
+
+# 3) Assumptions & Constraints
+
+- ASSUMPTION: New users sign up via Firebase auth and automatically receive PUBLIC role
+- ASSUMPTION: User "approval" means changing role from PUBLIC to MANAGER (or ADMIN in special cases)
+- ASSUMPTION: Audit logs are stored in database for compliance and security tracking
+- Constraint: Use `requireUserWithPermission(request, 'users:approve')` for all user management routes
+- Constraint: React Router v7 file-based routes with SSR-compatible loaders/actions
+- Constraint: Mobile-first UI with desktop enhancements via `lg:` breakpoint
+- Constraint: Minimum 44px touch targets for interactive elements
+- Constraint: TypeScript strict mode, no `any` type allowed
+- Constraint: Follow existing CVA patterns for component styling
+- Constraint: i18n: all new strings added to all locales (nl, en, fr, ar, tr, de); English uses title case, other languages use sentence case
+- Constraint: All database operations use Prisma
+- Constraint: Maintain compatibility with existing User model structure
+
+# 4) Dependencies (Other Tasks or Artifacts)
+
+- Firebase Authentication (Phase 1) - completed
+- prisma/schema.prisma (User model with role field)
+- app/utils/rbacMiddleware.server.ts (permission checking)
+- app/models/user.server.ts (existing user data access)
+- app/components/AppBar.tsx (for adding Users menu item)
+
+# 5) Context Plan
+
+## 🌍 SHARED Task Pattern
+
+**Beginning (add to model context):**
+- app/models/user.server.ts (read-only - existing user data access)
+- app/utils/rbacMiddleware.server.ts (read-only - RBAC middleware)
+- app/utils/rbac/permissions.ts (read-only - permission definitions)
+- app/components/AppBar.tsx (read-only - for menu structure)
+- prisma/schema.prisma (read-only - User model structure)
+
+**End state (files that will be created/modified):**
+- prisma/schema.prisma (add UserAuditLog model for audit trail)
+- app/models/user.server.ts (add user management functions)
+- app/models/userAuditLog.server.ts (new - audit log data access)
+- app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users._index.tsx (new - user list)
+- app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users.$userId.tsx (new - user detail/edit)
+- app/components/AppBar.tsx (modified - add Users menu item for ADMIN)
+- app/components/users/ (new directory - reusable user management components)
+- app/i18n/locales/*.json (add user management translation strings)
+- app/models/user.server.ts (__tests__/user.server.test.ts for new functions)
+- playwright/tests/users.spec.ts (new - E2E tests for user management)
+
+# 6) Low-Level Steps (Ordered, information-dense)
+
+## Step 1: Database Schema - Add UserAuditLog Model and User.active Field
+
+- [ ] Add `active` field to User model in prisma/schema.prisma
+- [ ] Add UserAuditLog model to prisma/schema.prisma
+- [ ] Update User model with audit log relations
+- [ ] Run migration: `pnpm prisma migrate dev --name add-user-active-and-audit-logs`
+
+File: `prisma/schema.prisma`
+
+Update User model to add `active` field and audit log relations:
+
+```prisma
+model User {
+  // ... existing fields ...
+  active           Boolean        @default(true)  // Soft delete: false = deactivated
+  auditLogs        UserAuditLog[] @relation("UserAuditLogs")
+  performedAudits  UserAuditLog[] @relation("PerformedAudits")
+}
+```
+
+Add new model after the User model:
+
+```prisma
+model UserAuditLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  performedBy String
+  admin       User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Cascade)
+  action      String   // "role_change", "approval", "rejection", "profile_update", "deactivate", "reactivate"
+  previousValue String?
+  newValue      String?
+  reason        String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([performedBy])
+  @@index([createdAt])
+}
+```
+
+Run migration:
+```bash
+pnpm prisma migrate dev --name add-user-active-and-audit-logs
+```
+
+## Step 2: Audit Log Data Access Layer
+
+- [ ] Create app/models/userAuditLog.server.ts
+- [ ] Implement createAuditLog function
+- [ ] Implement getUserAuditLogs function
+- [ ] Implement getRecentAuditLogs function
+
+File: `app/models/userAuditLog.server.ts` (new)
+
+```ts
+import { type Prisma, type UserAuditLog } from '@prisma/client'
+import { prisma } from '~/db.server'
+
+export type { UserAuditLog }
+
+type CreateAuditLogProps = {
+  userId: string
+  performedBy: string
+  action: 'role_change' | 'approval' | 'rejection' | 'profile_update' | 'deactivate' | 'reactivate'
+  previousValue?: string
+  newValue?: string
+  reason?: string
+}
+
+export const createAuditLog = async (
+  props: Readonly<CreateAuditLogProps>
+): Promise<UserAuditLog> => {
+  const { userId, performedBy, action, previousValue, newValue, reason } = props
+
+  return prisma.userAuditLog.create({
+    data: {
+      userId,
+      performedBy,
+      action,
+      previousValue,
+      newValue,
+      reason,
+    },
+  })
+}
+
+type GetUserAuditLogsProps = {
+  userId: string
+  limit?: number
+}
+
+export const getUserAuditLogs = async (
+  props: Readonly<GetUserAuditLogsProps>
+): Promise<readonly UserAuditLog[]> => {
+  const { userId, limit = 50 } = props
+
+  return prisma.userAuditLog.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    include: {
+      admin: {
+        select: {
+          id: true,
+          email: true,
+          displayName: true,
+        },
+      },
+    },
+  })
+}
+
+type GetRecentAuditLogsProps = {
+  limit?: number
+}
+
+export const getRecentAuditLogs = async (
+  props: Readonly<GetRecentAuditLogsProps> = {}
+): Promise<readonly UserAuditLog[]> => {
+  const { limit = 100 } = props
+
+  return prisma.userAuditLog.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    include: {
+      user: {
+        select: {
+          id: true,
+          email: true,
+          displayName: true,
+          role: true,
+        },
+      },
+      admin: {
+        select: {
+          id: true,
+          email: true,
+          displayName: true,
+        },
+      },
+    },
+  })
+}
+```
+
+## Step 3: User Model - Add Management Functions
+
+- [ ] Add updateUserRole function to user.server.ts
+- [ ] Add deactivateUser function
+- [ ] Add reactivateUser function
+- [ ] Add getUsersByRole function
+- [ ] Add searchUsers function
+- [ ] Add getPendingApprovalUsers function
+- [ ] Add getAllUsersWithPagination function
+
+File: `app/models/user.server.ts`
+
+Add these functions to existing file:
+
+```ts
+import { createAuditLog } from './userAuditLog.server'
+
+type UpdateUserRoleProps = {
+  userId: string
+  newRole: Role
+  performedBy: string
+  reason?: string
+}
+
+export const updateUserRole = async (
+  props: Readonly<UpdateUserRoleProps>
+): Promise<User> => {
+  const { userId, newRole, performedBy, reason } = props
+
+  // Get current user to capture previous role
+  const currentUser = await getUserById(userId)
+  if (!currentUser) {
+    throw new Error('User not found')
+  }
+
+  // Update role in transaction with audit log
+  const [updatedUser] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: { role: newRole },
+    }),
+    createAuditLog({
+      userId,
+      performedBy,
+      action: 'role_change',
+      previousValue: currentUser.role,
+      newValue: newRole,
+      reason,
+    }),
+  ])
+
+  return updatedUser
+}
+
+type DeactivateUserProps = {
+  userId: string
+  performedBy: string
+  reason?: string
+}
+
+export const deactivateUser = async (
+  props: Readonly<DeactivateUserProps>
+): Promise<User> => {
+  const { userId, performedBy, reason } = props
+
+  const [updatedUser] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: { active: false },
+    }),
+    createAuditLog({
+      userId,
+      performedBy,
+      action: 'deactivate',
+      previousValue: 'true',
+      newValue: 'false',
+      reason,
+    }),
+  ])
+
+  return updatedUser
+}
+
+type ReactivateUserProps = {
+  userId: string
+  performedBy: string
+  reason?: string
+}
+
+export const reactivateUser = async (
+  props: Readonly<ReactivateUserProps>
+): Promise<User> => {
+  const { userId, performedBy, reason } = props
+
+  const [updatedUser] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: { active: true },
+    }),
+    createAuditLog({
+      userId,
+      performedBy,
+      action: 'reactivate',
+      previousValue: 'false',
+      newValue: 'true',
+      reason,
+    }),
+  ])
+
+  return updatedUser
+}
+
+type GetUsersByRoleProps = {
+  role: Role
+}
+
+export const getUsersByRole = async (
+  props: Readonly<GetUsersByRoleProps>
+): Promise<readonly User[]> => {
+  const { role } = props
+
+  return prisma.user.findMany({
+    where: { role },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+type SearchUsersProps = {
+  query: string
+  role?: Role
+  limit?: number
+}
+
+export const searchUsers = async (
+  props: Readonly<SearchUsersProps>
+): Promise<readonly User[]> => {
+  const { query, role, limit = 50 } = props
+
+  return prisma.user.findMany({
+    where: {
+      AND: [
+        role ? { role } : {},
+        {
+          OR: [
+            { email: { contains: query, mode: 'insensitive' } },
+            { displayName: { contains: query, mode: 'insensitive' } },
+          ],
+        },
+      ],
+    },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+  })
+}
+
+type GetPendingApprovalUsersProps = Record<string, never>
+
+export const getPendingApprovalUsers = async (
+  _props: Readonly<GetPendingApprovalUsersProps> = {}
+): Promise<readonly User[]> => {
+  return prisma.user.findMany({
+    where: { role: 'PUBLIC' },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+type GetAllUsersWithPaginationProps = {
+  page?: number
+  pageSize?: number
+  role?: Role
+}
+
+export const getAllUsersWithPagination = async (
+  props: Readonly<GetAllUsersWithPaginationProps>
+): Promise<{ users: readonly User[]; total: number; totalPages: number }> => {
+  const { page = 1, pageSize = 20, role } = props
+
+  const where = role ? { role } : {}
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.user.count({ where }),
+  ])
+
+  return {
+    users,
+    total,
+    totalPages: Math.ceil(total / pageSize),
+  }
+}
+```
+
+## Step 4: User List Route
+
+- [ ] Create users._index.tsx route
+- [ ] Implement loader with permission check and pagination
+- [ ] Implement user list UI with UserListTable component
+- [ ] Add role filtering support
+
+File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users._index.tsx` (new)
+
+```ts
+import { type JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { json, type LoaderFunctionArgs } from 'react-router'
+import { useLoaderData } from 'react-router'
+
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import { getAllUsersWithPagination } from '~/models/user.server'
+import type { User } from '@prisma/client'
+import { UserListTable } from '~/components/users/UserListTable'
+import { roleColors } from '~/utils/roleUtils'
+
+type LoaderData = {
+  users: readonly User[]
+  total: number
+  totalPages: number
+  currentPage: number
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  // Require users:approve permission (ADMIN only)
+  await requireUserWithPermission(request, 'users:approve')
+
+  // Get pagination params from URL
+  const url = new URL(request.url)
+  const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const role = url.searchParams.get('role') || undefined
+
+  const { users, total, totalPages } = await getAllUsersWithPagination({
+    page,
+    pageSize: 20,
+    role: role as Role | undefined,
+  })
+
+  return json<LoaderData>({
+    users,
+    total,
+    totalPages,
+    currentPage: page,
+  })
+}
+
+export default function UsersIndexRoute(): JSX.Element {
+  const { t } = useTranslation()
+  const { users, total, totalPages, currentPage } = useLoaderData<typeof loader>()
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">{t('users.titles.userManagement')}</h1>
+        <p className="text-foreground/60 mt-2">{t('users.descriptions.manageUsersAndRoles')}</p>
+      </div>
+
+      <UserListTable
+        users={users}
+        total={total}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
+    </div>
+  )
+}
+```
+
+## Step 5: User Detail/Edit Route
+
+- [ ] Create users.$userId.tsx route
+- [ ] Implement loader with permission check
+- [ ] Implement action for role updates
+- [ ] Implement action for deactivating users
+- [ ] Implement action for reactivating users
+- [ ] Integrate UserDetailCard and UserAuditLogList components
+
+File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users.$userId.tsx` (new)
+
+```ts
+import { type JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from 'react-router'
+import { useLoaderData, Form, useActionData, useNavigation } from 'react-router'
+
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import { getUserById, updateUserRole, deactivateUser, reactivateUser } from '~/models/user.server'
+import { getUserAuditLogs } from '~/models/userAuditLog.server'
+import type { User, UserAuditLog } from '@prisma/client'
+import { UserDetailCard } from '~/components/users/UserDetailCard'
+import { UserAuditLogList } from '~/components/users/UserAuditLogList'
+
+type LoaderData = {
+  targetUser: User
+  auditLogs: readonly UserAuditLog[]
+}
+
+type ActionData = {
+  error?: string
+  success?: boolean
+}
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  await requireUserWithPermission(request, 'users:approve')
+
+  const { userId } = params
+  if (!userId) {
+    throw new Response('User ID required', { status: 400 })
+  }
+
+  const [targetUser, auditLogs] = await Promise.all([
+    getUserById(userId),
+    getUserAuditLogs({ userId, limit: 50 }),
+  ])
+
+  if (!targetUser) {
+    throw new Response('User not found', { status: 404 })
+  }
+
+  return json<LoaderData>({ targetUser, auditLogs })
+}
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const currentUser = await requireUserWithPermission(request, 'roles:assign')
+
+  const { userId } = params
+  if (!userId) {
+    return json<ActionData>({ error: 'User ID required' }, { status: 400 })
+  }
+
+  const formData = await request.formData()
+  const intent = formData.get('intent')
+  const newRole = formData.get('role') as Role
+  const reason = formData.get('reason') as string | undefined
+
+  try {
+    if (intent === 'updateRole') {
+      await updateUserRole({
+        userId,
+        newRole,
+        performedBy: currentUser.id,
+        reason,
+      })
+
+      return json<ActionData>({ success: true })
+    }
+
+    if (intent === 'deactivate') {
+      await deactivateUser({
+        userId,
+        performedBy: currentUser.id,
+        reason,
+      })
+
+      return json<ActionData>({ success: true })
+    }
+
+    if (intent === 'reactivate') {
+      await reactivateUser({
+        userId,
+        performedBy: currentUser.id,
+        reason,
+      })
+
+      return json<ActionData>({ success: true })
+    }
+
+    return json<ActionData>({ error: 'Invalid intent' }, { status: 400 })
+  } catch (error) {
+    return json<ActionData>({
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
+  }
+}
+
+export default function UserDetailRoute(): JSX.Element {
+  const { t } = useTranslation()
+  const { targetUser, auditLogs } = useLoaderData<typeof loader>()
+  const actionData = useActionData<typeof action>()
+  const navigation = useNavigation()
+
+  const isSubmitting = navigation.state === 'submitting'
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">{t('users.titles.userDetail')}</h1>
+      </div>
+
+      {actionData?.error && (
+        <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-md">
+          {actionData.error}
+        </div>
+      )}
+
+      {actionData?.success && (
+        <div className="mb-4 p-4 bg-success/10 text-success rounded-md">
+          {t('users.messages.roleUpdatedSuccessfully')}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
+        <UserAuditLogList auditLogs={auditLogs} />
+      </div>
+    </div>
+  )
+}
+```
+
+## Step 6: User Management Components
+
+- [ ] Create components/users/ directory
+- [ ] Create UserListTable.tsx component
+- [ ] Create UserDetailCard.tsx component with deactivation/reactivation actions
+- [ ] Create UserAuditLogList.tsx component
+
+File: `app/components/users/UserListTable.tsx` (new)
+
+```ts
+import { type JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
+import type { User } from '@prisma/client'
+import { getRoleBadgeVariant } from '~/utils/roleUtils'
+
+type UserListTableProps = {
+  users: readonly User[]
+  total: number
+  totalPages: number
+  currentPage: number
+}
+
+export const UserListTable = (props: Readonly<UserListTableProps>): JSX.Element => {
+  const { users, total, totalPages, currentPage } = props
+  const { t } = useTranslation()
+
+  return (
+    <div className="bg-card rounded-lg shadow">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-muted">
+            <tr>
+              <th className="px-4 py-3 text-left">{t('users.fields.email')}</th>
+              <th className="px-4 py-3 text-left">{t('users.fields.displayName')}</th>
+              <th className="px-4 py-3 text-left">{t('users.fields.role')}</th>
+              <th className="px-4 py-3 text-left">{t('users.fields.createdAt')}</th>
+              <th className="px-4 py-3 text-right">{t('common.actions.actions')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id} className="border-t border-border hover:bg-muted/50">
+                <td className="px-4 py-3">{user.email}</td>
+                <td className="px-4 py-3">{user.displayName || '-'}</td>
+                <td className="px-4 py-3">
+                  <span className={getRoleBadgeVariant(user.role)}>
+                    {t(`roles.${user.role.toLowerCase()}`)}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    to={`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${user.id}`}
+                    className="text-primary hover:underline"
+                  >
+                    {t('common.actions.view')}
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination controls */}
+      <div className="px-4 py-3 border-t border-border flex justify-between items-center">
+        <div className="text-sm text-foreground/60">
+          {t('common.pagination.showing', { count: users.length, total })}
+        </div>
+        <div className="flex gap-2">
+          {currentPage > 1 && (
+            <Link
+              to={`?page=${currentPage - 1}`}
+              className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90"
+            >
+              {t('common.pagination.previous')}
+            </Link>
+          )}
+          {currentPage < totalPages && (
+            <Link
+              to={`?page=${currentPage + 1}`}
+              className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90"
+            >
+              {t('common.pagination.next')}
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+File: `app/components/users/UserDetailCard.tsx` (new)
+
+```ts
+import { type JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Form } from 'react-router'
+import type { User } from '@prisma/client'
+import { getRoleBadgeVariant } from '~/utils/roleUtils'
+
+type UserDetailCardProps = {
+  user: User
+  isSubmitting: boolean
+}
+
+export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Element => {
+  const { user, isSubmitting } = props
+  const { t } = useTranslation()
+
+  return (
+    <div className="bg-card rounded-lg shadow p-6">
+      <h2 className="text-xl font-semibold mb-4">{t('users.titles.userInformation')}</h2>
+
+      <div className="space-y-4">
+        <div>
+          <label className="text-sm font-medium text-foreground/60">
+            {t('users.fields.email')}
+          </label>
+          <div className="mt-1 text-foreground">{user.email}</div>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium text-foreground/60">
+            {t('users.fields.displayName')}
+          </label>
+          <div className="mt-1 text-foreground">{user.displayName || '-'}</div>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium text-foreground/60">
+            {t('users.fields.currentRole')}
+          </label>
+          <div className="mt-1">
+            <span className={getRoleBadgeVariant(user.role)}>
+              {t(`roles.${user.role.toLowerCase()}`)}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label className="text-sm font-medium text-foreground/60">
+            {t('users.fields.createdAt')}
+          </label>
+          <div className="mt-1 text-foreground">
+            {new Date(user.createdAt).toLocaleString()}
+          </div>
+        </div>
+      </div>
+
+      {/* Role Update Form */}
+      <Form method="post" className="mt-6">
+        <input type="hidden" name="intent" value="updateRole" />
+
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium mb-2">
+              {t('users.fields.assignRole')}
+            </label>
+            <select
+              id="role"
+              name="role"
+              defaultValue={user.role}
+              className="w-full px-3 py-2 bg-background border border-border rounded-md"
+              disabled={isSubmitting}
+            >
+              <option value="PUBLIC">{t('roles.public')}</option>
+              <option value="MANAGER">{t('roles.manager')}</option>
+              <option value="ADMIN">{t('roles.admin')}</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="reason" className="block text-sm font-medium mb-2">
+              {t('users.fields.reason')} {t('common.optional')}
+            </label>
+            <textarea
+              id="reason"
+              name="reason"
+              rows={3}
+              className="w-full px-3 py-2 bg-background border border-border rounded-md"
+              placeholder={t('users.placeholders.reasonForChange')}
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+          >
+            {isSubmitting ? t('common.actions.saving') : t('users.actions.updateRole')}
+          </button>
+        </div>
+      </Form>
+
+      {/* User Deactivation/Reactivation */}
+      <div className="mt-6 pt-6 border-t border-border">
+        <h3 className="text-lg font-semibold mb-4">
+          {user.active ? t('users.titles.deactivateUser') : t('users.titles.reactivateUser')}
+        </h3>
+
+        <Form method="post">
+          <input type="hidden" name="intent" value={user.active ? 'deactivate' : 'reactivate'} />
+
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="deactivate-reason" className="block text-sm font-medium mb-2">
+                {t('users.fields.reason')} {t('common.optional')}
+              </label>
+              <textarea
+                id="deactivate-reason"
+                name="reason"
+                rows={3}
+                className="w-full px-3 py-2 bg-background border border-border rounded-md"
+                placeholder={
+                  user.active
+                    ? t('users.placeholders.reasonForDeactivation')
+                    : t('users.placeholders.reasonForReactivation')
+                }
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full px-4 py-2 rounded-md disabled:opacity-50 ${
+                user.active
+                  ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                  : 'bg-success text-success-foreground hover:bg-success/90'
+              }`}
+            >
+              {isSubmitting
+                ? t('common.actions.saving')
+                : user.active
+                  ? t('users.actions.deactivateUser')
+                  : t('users.actions.reactivateUser')
+              }
+            </button>
+          </div>
+        </Form>
+
+        {!user.active && (
+          <div className="mt-4 p-3 bg-warning/10 text-warning rounded-md text-sm">
+            {t('users.messages.userIsDeactivated')}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+File: `app/components/users/UserAuditLogList.tsx` (new)
+
+```ts
+import { type JSX } from 'react'
+import { useTranslation } from 'react-i18next'
+import type { UserAuditLog } from '@prisma/client'
+
+type UserAuditLogListProps = {
+  auditLogs: readonly (UserAuditLog & {
+    admin: { email: string; displayName: string | null }
+  })[]
+}
+
+export const UserAuditLogList = (props: Readonly<UserAuditLogListProps>): JSX.Element => {
+  const { auditLogs } = props
+  const { t } = useTranslation()
+
+  return (
+    <div className="bg-card rounded-lg shadow p-6">
+      <h2 className="text-xl font-semibold mb-4">{t('users.titles.auditLog')}</h2>
+
+      {auditLogs.length === 0 ? (
+        <p className="text-foreground/60 text-center py-8">
+          {t('users.messages.noAuditLogs')}
+        </p>
+      ) : (
+        <div className="space-y-4">
+          {auditLogs.map((log) => (
+            <div key={log.id} className="border-l-2 border-primary pl-4 py-2">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="font-medium">
+                    {t(`users.auditActions.${log.action}`)}
+                  </div>
+                  {log.previousValue && log.newValue && (
+                    <div className="text-sm text-foreground/60 mt-1">
+                      {log.previousValue} → {log.newValue}
+                    </div>
+                  )}
+                  {log.reason && (
+                    <div className="text-sm text-foreground/60 mt-1">
+                      {log.reason}
+                    </div>
+                  )}
+                </div>
+                <div className="text-xs text-foreground/40">
+                  {new Date(log.createdAt).toLocaleString()}
+                </div>
+              </div>
+              <div className="text-xs text-foreground/40 mt-2">
+                {t('users.fields.performedBy')}: {log.admin.displayName || log.admin.email}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Step 7: AppBar - Add Users Menu Item
+
+- [ ] Update AppBar.tsx to add Users menu item
+- [ ] Add permission check using canAccess for 'users:approve'
+- [ ] Verify menu item only visible to ADMIN role
+
+File: `app/components/AppBar.tsx`
+
+Add to the `menuItems` array after the Competition menu item (around line 96-105):
+
+```ts
+// Users - only show for ADMIN users
+...(canAccess(user || null, 'users:approve')
+  ? [
+      {
+        label: t('common.titles.users'),
+        icon: 'people' as IconName,
+        href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+        authenticated: true,
+      },
+    ]
+  : []),
+```
+
+## Step 8: Utility Functions
+
+- [ ] Create utils/roleUtils.ts
+- [ ] Implement getRoleBadgeVariant function
+- [ ] Define roleColors constant
+
+File: `app/utils/roleUtils.ts` (new)
+
+```ts
+import type { Role } from '@prisma/client'
+
+export const getRoleBadgeVariant = (role: Role): string => {
+  const variants = {
+    PUBLIC: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100',
+    MANAGER: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+    ADMIN: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+    REFEREE: 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
+  }
+
+  return variants[role] || variants.PUBLIC
+}
+
+export const roleColors = {
+  PUBLIC: 'gray',
+  MANAGER: 'blue',
+  ADMIN: 'red',
+  REFEREE: 'green',
+} as const
+```
+
+## Step 9: Internationalization Strings
+
+- [ ] Add user management strings to en.json
+- [ ] Add user management strings to nl.json
+- [ ] Add user management strings to fr.json
+- [ ] Add user management strings to ar.json
+- [ ] Add user management strings to tr.json
+- [ ] Add user management strings to de.json
+
+Add to all locale files (`app/i18n/locales/*.json`):
+
+**English (en.json)** - Title case:
+```json
+{
+  "users": {
+    "titles": {
+      "userManagement": "User Management",
+      "userDetail": "User Details",
+      "userInformation": "User Information",
+      "auditLog": "Audit Log",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Manage user accounts and assign roles"
+    },
+    "fields": {
+      "email": "Email",
+      "displayName": "Display Name",
+      "role": "Role",
+      "currentRole": "Current Role",
+      "assignRole": "Assign Role",
+      "reason": "Reason",
+      "performedBy": "Performed by",
+      "createdAt": "Created At"
+    },
+    "actions": {
+      "updateRole": "Update Role",
+      "viewDetails": "View Details",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User"
+    },
+    "placeholders": {
+      "reasonForChange": "Enter reason for role change (optional)",
+      "reasonForDeactivation": "Enter reason for deactivation (optional)",
+      "reasonForReactivation": "Enter reason for reactivation (optional)"
+    },
+    "messages": {
+      "roleUpdatedSuccessfully": "User role updated successfully",
+      "noAuditLogs": "No audit log entries found",
+      "userIsDeactivated": "This user is currently deactivated"
+    },
+    "auditActions": {
+      "role_change": "Role Changed",
+      "approval": "User Approved",
+      "rejection": "User Rejected",
+      "profile_update": "Profile Updated",
+      "deactivate": "User Deactivated",
+      "reactivate": "User Reactivated"
+    }
+  },
+  "roles": {
+    "public": "Public",
+    "manager": "Manager",
+    "admin": "Admin",
+    "referee": "Referee"
+  },
+  "common": {
+    "titles": {
+      "users": "Users"
+    },
+    "optional": "(optional)",
+    "actions": {
+      "view": "View",
+      "saving": "Saving..."
+    },
+    "pagination": {
+      "showing": "Showing {{count}} of {{total}} users",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  }
+}
+```
+
+**Dutch (nl.json)** - Sentence case:
+```json
+{
+  "users": {
+    "titles": {
+      "userManagement": "Gebruikersbeheer",
+      "userDetail": "Gebruikersdetails",
+      "userInformation": "Gebruikersinformatie",
+      "auditLog": "Auditlog",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
+    },
+    "fields": {
+      "email": "E-mail",
+      "displayName": "Weergavenaam",
+      "role": "Rol",
+      "currentRole": "Huidige rol",
+      "assignRole": "Rol toewijzen",
+      "reason": "Reden",
+      "performedBy": "Uitgevoerd door",
+      "createdAt": "Aangemaakt op"
+    },
+    "actions": {
+      "updateRole": "Rol bijwerken",
+      "viewDetails": "Details bekijken",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren"
+    },
+    "placeholders": {
+      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
+      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
+      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+    },
+    "messages": {
+      "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
+      "noAuditLogs": "Geen auditlog-vermeldingen gevonden",
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
+    },
+    "auditActions": {
+      "role_change": "Rol gewijzigd",
+      "approval": "Gebruiker goedgekeurd",
+      "rejection": "Gebruiker afgewezen",
+      "profile_update": "Profiel bijgewerkt",
+      "deactivate": "Gebruiker gedeactiveerd",
+      "reactivate": "Gebruiker gereactiveerd"
+    }
+  },
+  "roles": {
+    "public": "Publiek",
+    "manager": "Manager",
+    "admin": "Beheerder",
+    "referee": "Scheidsrechter"
+  }
+}
+```
+
+(Similar translations for fr.json, ar.json, tr.json, de.json following sentence case)
+
+## Step 10: Unit Tests
+
+- [ ] Create or update app/models/__tests__/user.server.test.ts
+- [ ] Add test for updateUserRole with audit log
+- [ ] Add test for deactivateUser with audit log
+- [ ] Add test for reactivateUser with audit log
+- [ ] Add test for getUsersByRole
+- [ ] Add test for searchUsers
+- [ ] Add test for getPendingApprovalUsers
+- [ ] Add test for getAllUsersWithPagination
+- [ ] Run tests: `pnpm test:run`
+
+File: `app/models/__tests__/user.server.test.ts`
+
+Add test cases for new user management functions:
+
+```ts
+import { describe, it, expect, beforeEach } from 'vitest'
+import { updateUserRole, deactivateUser, reactivateUser, getUsersByRole, searchUsers, getPendingApprovalUsers, getAllUsersWithPagination } from '../user.server'
+import { createUser } from '../user.server'
+import { getUserAuditLogs } from '../userAuditLog.server'
+
+describe('User Management Functions', () => {
+  describe('updateUserRole', () => {
+    it('should update user role and create audit log', async () => {
+      // Create test users
+      const admin = await createUser({ email: 'admin@test.com', role: 'ADMIN' })
+      const targetUser = await createUser({ email: 'user@test.com', role: 'PUBLIC' })
+
+      // Update role
+      const updatedUser = await updateUserRole({
+        userId: targetUser.id,
+        newRole: 'MANAGER',
+        performedBy: admin.id,
+        reason: 'Promoted to manager',
+      })
+
+      expect(updatedUser.role).toBe('MANAGER')
+
+      // Verify audit log was created
+      const auditLogs = await getUserAuditLogs({ userId: targetUser.id })
+      expect(auditLogs).toHaveLength(1)
+      expect(auditLogs[0].action).toBe('role_change')
+      expect(auditLogs[0].previousValue).toBe('PUBLIC')
+      expect(auditLogs[0].newValue).toBe('MANAGER')
+    })
+  })
+
+  describe('deactivateUser', () => {
+    it('should deactivate user and create audit log', async () => {
+      const admin = await createUser({ email: 'admin@test.com', role: 'ADMIN' })
+      const targetUser = await createUser({ email: 'user@test.com', role: 'PUBLIC' })
+
+      const deactivatedUser = await deactivateUser({
+        userId: targetUser.id,
+        performedBy: admin.id,
+        reason: 'User violated terms of service',
+      })
+
+      expect(deactivatedUser.active).toBe(false)
+
+      // Verify audit log was created
+      const auditLogs = await getUserAuditLogs({ userId: targetUser.id })
+      expect(auditLogs).toHaveLength(1)
+      expect(auditLogs[0].action).toBe('deactivate')
+      expect(auditLogs[0].previousValue).toBe('true')
+      expect(auditLogs[0].newValue).toBe('false')
+    })
+  })
+
+  describe('reactivateUser', () => {
+    it('should reactivate user and create audit log', async () => {
+      const admin = await createUser({ email: 'admin@test.com', role: 'ADMIN' })
+      const targetUser = await createUser({ email: 'user@test.com', role: 'PUBLIC', active: false })
+
+      const reactivatedUser = await reactivateUser({
+        userId: targetUser.id,
+        performedBy: admin.id,
+        reason: 'User appeal accepted',
+      })
+
+      expect(reactivatedUser.active).toBe(true)
+
+      // Verify audit log was created
+      const auditLogs = await getUserAuditLogs({ userId: targetUser.id })
+      expect(auditLogs).toHaveLength(1)
+      expect(auditLogs[0].action).toBe('reactivate')
+      expect(auditLogs[0].previousValue).toBe('false')
+      expect(auditLogs[0].newValue).toBe('true')
+    })
+  })
+
+  describe('getUsersByRole', () => {
+    it('should return users with specific role', async () => {
+      await createUser({ email: 'manager1@test.com', role: 'MANAGER' })
+      await createUser({ email: 'manager2@test.com', role: 'MANAGER' })
+      await createUser({ email: 'public@test.com', role: 'PUBLIC' })
+
+      const managers = await getUsersByRole({ role: 'MANAGER' })
+      expect(managers).toHaveLength(2)
+      expect(managers.every(u => u.role === 'MANAGER')).toBe(true)
+    })
+  })
+
+  describe('searchUsers', () => {
+    it('should search users by email or display name', async () => {
+      await createUser({ email: 'john.doe@test.com', displayName: 'John Doe', role: 'PUBLIC' })
+      await createUser({ email: 'jane.smith@test.com', displayName: 'Jane Smith', role: 'PUBLIC' })
+
+      const results = await searchUsers({ query: 'john' })
+      expect(results).toHaveLength(1)
+      expect(results[0].email).toBe('john.doe@test.com')
+    })
+  })
+
+  describe('getPendingApprovalUsers', () => {
+    it('should return only PUBLIC role users', async () => {
+      await createUser({ email: 'pending1@test.com', role: 'PUBLIC' })
+      await createUser({ email: 'pending2@test.com', role: 'PUBLIC' })
+      await createUser({ email: 'manager@test.com', role: 'MANAGER' })
+
+      const pending = await getPendingApprovalUsers()
+      expect(pending).toHaveLength(2)
+      expect(pending.every(u => u.role === 'PUBLIC')).toBe(true)
+    })
+  })
+
+  describe('getAllUsersWithPagination', () => {
+    it('should paginate users correctly', async () => {
+      // Create 25 test users
+      for (let i = 0; i < 25; i++) {
+        await createUser({ email: `user${i}@test.com`, role: 'PUBLIC' })
+      }
+
+      const page1 = await getAllUsersWithPagination({ page: 1, pageSize: 20 })
+      expect(page1.users).toHaveLength(20)
+      expect(page1.total).toBe(25)
+      expect(page1.totalPages).toBe(2)
+
+      const page2 = await getAllUsersWithPagination({ page: 2, pageSize: 20 })
+      expect(page2.users).toHaveLength(5)
+    })
+  })
+})
+```
+
+## Step 11: E2E Tests
+
+- [ ] Create playwright/tests/users.spec.ts
+- [ ] Add test for ADMIN seeing users menu item
+- [ ] Add test for user list display
+- [ ] Add test for viewing user details
+- [ ] Add test for updating user role
+- [ ] Add test for deactivating user
+- [ ] Add test for reactivating user
+- [ ] Add test for audit log display (including deactivation/reactivation)
+- [ ] Add test for non-ADMIN blocked access
+- [ ] Run E2E tests: `pnpm test:e2e:run`
+
+## Step 12: Integrate User Deactivation with Firebase Authentication
+
+This step ensures that deactivated users cannot sign in and that active sessions are invalidated when a user is deactivated.
+
+- [ ] Update syncFirebaseUserToDatabase to block deactivated users
+- [ ] Update validateFirebaseSession to check active status
+- [ ] Update getUser in session.server.ts to sign out deactivated users
+- [ ] Update auth.callback.tsx to handle ACCOUNT_DEACTIVATED error
+- [ ] Add i18n strings for account deactivation error
+- [ ] Add E2E test for deactivated user sign-in attempt
+- [ ] Add E2E test for active user getting deactivated during session
+
+File: `playwright/tests/users.spec.ts` (new)
+
+```ts
+import { test, expect } from '@playwright/test'
+
+test.describe('User Management (Admin)', () => {
+  test.use({ storageState: 'playwright/.auth/admin.json' })
+
+  test('should display users menu item for admin', async ({ page }) => {
+    await page.goto('/')
+
+    // Open mobile menu
+    await page.click('[aria-label="Open menu"]')
+
+    // Check for Users menu item
+    await expect(page.locator('text=Users')).toBeVisible()
+  })
+
+  test('should list all users', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+
+    // Should show user management heading
+    await expect(page.locator('h1:has-text("User Management")')).toBeVisible()
+
+    // Should show user table
+    await expect(page.locator('table')).toBeVisible()
+    await expect(page.locator('th:has-text("Email")')).toBeVisible()
+    await expect(page.locator('th:has-text("Role")')).toBeVisible()
+  })
+
+  test('should view user details', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+
+    // Click on first user's view link
+    await page.click('a:has-text("View")').first()
+
+    // Should show user detail page
+    await expect(page.locator('h1:has-text("User Details")')).toBeVisible()
+    await expect(page.locator('text=User Information')).toBeVisible()
+    await expect(page.locator('text=Audit Log')).toBeVisible()
+  })
+
+  test('should update user role', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+    await page.click('a:has-text("View")').first()
+
+    // Select new role
+    await page.selectOption('select[name="role"]', 'MANAGER')
+
+    // Add reason
+    await page.fill('textarea[name="reason"]', 'Promoting to manager for tournament management')
+
+    // Submit form
+    await page.click('button[type="submit"]')
+
+    // Should show success message
+    await expect(page.locator('text=User role updated successfully')).toBeVisible()
+
+    // Should show MANAGER badge
+    await expect(page.locator('text=Manager')).toBeVisible()
+  })
+
+  test('should display audit log after role change', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+    await page.click('a:has-text("View")').first()
+
+    // Update role
+    await page.selectOption('select[name="role"]', 'MANAGER')
+    await page.fill('textarea[name="reason"]', 'Test promotion')
+    await page.click('button[type="submit"]')
+
+    // Wait for success
+    await expect(page.locator('text=User role updated successfully')).toBeVisible()
+
+    // Check audit log
+    await expect(page.locator('text=Role Changed')).toBeVisible()
+    await expect(page.locator('text=PUBLIC → MANAGER')).toBeVisible()
+    await expect(page.locator('text=Test promotion')).toBeVisible()
+  })
+
+  test('should deactivate user', async ({ page }) => {
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+    await page.click('a:has-text("View")').first()
+
+    // Scroll to deactivation section
+    await page.locator('text=Deactivate User').scrollIntoViewIfNeeded()
+
+    // Fill in reason
+    await page.fill('textarea[name="reason"]', 'Policy violation')
+
+    // Click deactivate button
+    await page.click('button:has-text("Deactivate User")')
+
+    // Should show success message
+    await expect(page.locator('text=User role updated successfully')).toBeVisible()
+
+    // Should show deactivated warning
+    await expect(page.locator('text=This user is currently deactivated')).toBeVisible()
+
+    // Check audit log
+    await expect(page.locator('text=User Deactivated')).toBeVisible()
+  })
+
+  test('should reactivate user', async ({ page }) => {
+    // First, deactivate a user
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+    await page.click('a:has-text("View")').first()
+    await page.locator('text=Deactivate User').scrollIntoViewIfNeeded()
+    await page.fill('textarea[name="reason"]', 'Test deactivation')
+    await page.click('button:has-text("Deactivate User")')
+    await expect(page.locator('text=This user is currently deactivated')).toBeVisible()
+
+    // Now reactivate
+    await page.fill('textarea[name="reason"]', 'Appeal approved')
+    await page.click('button:has-text("Reactivate User")')
+
+    // Should show success message
+    await expect(page.locator('text=User role updated successfully')).toBeVisible()
+
+    // Warning should be gone
+    await expect(page.locator('text=This user is currently deactivated')).not.toBeVisible()
+
+    // Check audit log for both actions
+    await expect(page.locator('text=User Deactivated')).toBeVisible()
+    await expect(page.locator('text=User Reactivated')).toBeVisible()
+  })
+})
+
+test.describe('User Management (Non-Admin)', () => {
+  test.use({ storageState: 'playwright/.auth/user.json' })
+
+  test('should not display users menu item for non-admin', async ({ page }) => {
+    await page.goto('/')
+
+    // Open mobile menu
+    await page.click('[aria-label="Open menu"]')
+
+    // Should NOT see Users menu item
+    await expect(page.locator('text=Users')).not.toBeVisible()
+  })
+
+  test('should block access to users route for non-admin', async ({ page }) => {
+    const response = await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+
+    // Should return 403 or redirect
+    expect([403, 302]).toContain(response?.status() || 0)
+  })
+})
+```
+
+### Step 12 Implementation Details
+
+**File: `app/features/firebase/session.server.ts`**
+
+Update `syncFirebaseUserToDatabase` function (around line 59):
+
+```ts
+export const syncFirebaseUserToDatabase = async (
+  props: Readonly<SyncFirebaseUserToDatabaseProps>
+): Promise<{ user: User; isNewUser: boolean }> => {
+  const { firebaseUser } = props
+  if (!firebaseUser.email) {
+    throw new Error('Firebase user must have an email address')
+  }
+
+  // Check if user already exists by Firebase UID
+  const existingUser = await getUserByFirebaseUid(firebaseUser.uid)
+  const isNewUser = !existingUser
+
+  // Check if existing user is deactivated
+  if (existingUser && !existingUser.active) {
+    throw new Error('ACCOUNT_DEACTIVATED')
+  }
+
+  // Use our createOrUpdateUser function with role assignment
+  const user = await createOrUpdateUser({
+    firebaseUser: {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      displayName: firebaseUser.name,
+      photoURL: null,
+    },
+  })
+
+  return { user, isNewUser }
+}
+```
+
+Update `validateFirebaseSession` function (around line 88):
+
+```ts
+export const validateFirebaseSession = async (
+  props: Readonly<ValidateFirebaseSessionProps>
+): Promise<{ user: User; session: Session } | null> => {
+  const { request } = props
+  try {
+    const session = await getSession(request)
+    const firebaseSessionData = session.get(FIREBASE_SESSION_KEY)
+
+    if (!firebaseSessionData || !firebaseSessionData.userId) {
+      return null
+    }
+
+    const userId = session.get('userId')
+    if (!userId || userId !== firebaseSessionData.userId) {
+      return null
+    }
+
+    // Get user from database to ensure they still exist
+    const user = await getUserByFirebaseUid(firebaseSessionData.firebaseUid)
+    if (!user || user.id !== userId) {
+      return null
+    }
+
+    // Check if user is deactivated
+    if (!user.active) {
+      return null
+    }
+
+    return { user, session }
+  } catch (_error) {
+    return null
+  }
+}
+```
+
+**File: `app/utils/session.server.ts`**
+
+Update `getUser` function (around line 51):
+
+```ts
+export async function getUser(request: Request): Promise<User | null> {
+  // First, try to get user from Firebase session
+  const firebaseResult = await validateFirebaseSession({ request })
+  if (firebaseResult) {
+    return firebaseResult.user
+  }
+
+  // Fall back to legacy session
+  const userId = await getUserId(request)
+  if (userId === undefined) return null
+
+  const user = await getUserById(userId)
+
+  // Check if user is deactivated
+  if (user && !user.active) {
+    throw await signout(request)
+  }
+
+  if (user) return user
+
+  throw await signout(request)
+}
+```
+
+**File: `app/routes/auth/auth.callback.tsx`**
+
+Update the action function error handling (around line 75):
+
+```ts
+export const action = async ({ request }: Route.ActionArgs): Promise<Response> => {
+  const formData = await request.formData()
+  const idToken = formData.get('idToken') as string
+  const redirectTo = formData.get('redirectTo') as string
+
+  if (!idToken) {
+    const url = new URL(request.url)
+    const absoluteErrorUrl = new URL(
+      '/auth/signin?error=missing-token',
+      `${url.protocol}//${url.host}`
+    ).toString()
+    return redirect(absoluteErrorUrl, { status: 303 })
+  }
+
+  try {
+    // Use session bridge to create server session from Firebase token
+    const sessionResult = await createSessionFromFirebaseToken({
+      idToken,
+      request,
+    })
+
+    if (!sessionResult) {
+      console.log('[auth-callback] Session creation failed - invalid token')
+      const url = new URL(request.url)
+      const absoluteErrorUrl = new URL(
+        '/auth/signin?error=invalid-token',
+        `${url.protocol}//${url.host}`
+      ).toString()
+      return redirect(absoluteErrorUrl, { status: 303 })
+    }
+
+    const { user } = sessionResult
+    console.log(
+      `[auth-callback] User found: ${user.email}, role: ${user.role}, id: ${user.id}`
+    )
+
+    // Get role-based redirect destination
+    const finalRedirectTo = getPostSignInRedirect(user, redirectTo || undefined)
+    console.log(
+      `[auth-callback] Redirecting to: ${finalRedirectTo} (requested: ${redirectTo}, user role: ${user.role})`
+    )
+
+    // Create absolute URL to avoid protocol issues
+    const url = new URL(request.url)
+    const absoluteRedirectUrl = new URL(
+      finalRedirectTo,
+      `${url.protocol}//${url.host}`
+    ).toString()
+
+    return redirect(absoluteRedirectUrl, {
+      status: 303,
+      headers: {
+        'Set-Cookie': await sessionStorage.commitSession(sessionResult.session),
+      },
+    })
+  } catch (error) {
+    console.log('[auth-callback] Error:', error)
+
+    // Handle deactivated account error
+    if (error instanceof Error && error.message === 'ACCOUNT_DEACTIVATED') {
+      const url = new URL(request.url)
+      const absoluteErrorUrl = new URL(
+        '/auth/signin?error=account-deactivated',
+        `${url.protocol}//${url.host}`
+      ).toString()
+      return redirect(absoluteErrorUrl, { status: 303 })
+    }
+
+    // Firebase auth callback error
+    const url = new URL(request.url)
+    const absoluteErrorUrl = new URL(
+      '/auth/signin?error=auth-failed',
+      `${url.protocol}//${url.host}`
+    ).toString()
+    return redirect(absoluteErrorUrl, { status: 303 })
+  }
+}
+```
+
+**File: `app/routes/auth/auth.signin.tsx`**
+
+Add error display for deactivated accounts. Find the existing error handling section and add:
+
+```tsx
+// In the component, add to error handling
+const url = new URL(request.url)
+const error = url.searchParams.get('error')
+
+// In the JSX, add this error message display
+{error === 'account-deactivated' && (
+  <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-md border border-destructive/20">
+    <p className="font-semibold">{t('auth.errors.accountDeactivatedTitle')}</p>
+    <p className="text-sm mt-1">{t('auth.errors.accountDeactivatedMessage')}</p>
+  </div>
+)}
+```
+
+**i18n Translations:**
+
+Add to all locale files (en.json, nl.json, fr.json, ar.json, tr.json, de.json):
+
+```json
+{
+  "auth": {
+    "errors": {
+      "accountDeactivatedTitle": "Account Deactivated",
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance."
+    }
+  }
+}
+```
+
+**Dutch (nl.json):**
+```json
+{
+  "auth": {
+    "errors": {
+      "accountDeactivatedTitle": "Account gedeactiveerd",
+      "accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp."
+    }
+  }
+}
+```
+
+**E2E Tests for Deactivation + Auth:**
+
+Add to `playwright/tests/users.spec.ts`:
+
+```ts
+test.describe('User Deactivation - Authentication Integration', () => {
+  test('should prevent deactivated user from signing in', async ({ page, context }) => {
+    // First, admin deactivates a user
+    await context.addCookies([/* admin cookie */])
+    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+
+    // Find and deactivate test user
+    await page.click('a:has-text("View")').first()
+    await page.locator('text=Deactivate User').scrollIntoViewIfNeeded()
+    await page.fill('textarea[name="reason"]', 'Test deactivation for auth')
+    await page.click('button:has-text("Deactivate User")')
+
+    // Sign out admin
+    await page.goto('/auth/signout')
+
+    // Try to sign in as deactivated user
+    await page.goto('/auth/signin')
+    // ... perform sign-in with deactivated user credentials
+
+    // Should see deactivation error
+    await expect(page.locator('text=Account Deactivated')).toBeVisible()
+    await expect(page.locator('text=contact support')).toBeVisible()
+  })
+
+  test('should automatically sign out user when deactivated during active session', async ({ page, browser }) => {
+    // Create two contexts: one for regular user, one for admin
+    const userContext = await browser.newContext({ storageState: 'playwright/.auth/user.json' })
+    const adminContext = await browser.newContext({ storageState: 'playwright/.auth/admin.json' })
+
+    const userPage = await userContext.newPage()
+    const adminPage = await adminContext.newPage()
+
+    // User is signed in and browsing
+    await userPage.goto('/profile')
+    await expect(userPage.locator('h1:has-text("Profile")')).toBeVisible()
+
+    // Admin deactivates this user
+    await adminPage.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+    // Find user by email and deactivate
+    await adminPage.click(`a:has-text("${testUserEmail}")`)
+    await adminPage.locator('text=Deactivate User').scrollIntoViewIfNeeded()
+    await adminPage.fill('textarea[name="reason"]', 'Immediate suspension')
+    await adminPage.click('button:has-text("Deactivate User")')
+
+    // User tries to navigate to another page
+    await userPage.goto('/teams')
+
+    // Should be redirected to sign-in page
+    await expect(userPage).toHaveURL(/\/auth\/signin/)
+
+    // Clean up
+    await userContext.close()
+    await adminContext.close()
+  })
+})
+```
+
+# 7) Types & Interfaces
+
+## Shared Types (in existing files)
+
+```ts
+// Already exists in @prisma/client
+import type { User, Role, UserAuditLog } from '@prisma/client'
+
+// app/models/userAuditLog.server.ts - new types
+export type AuditAction = 'role_change' | 'approval' | 'rejection' | 'profile_update' | 'deactivate' | 'reactivate'
+
+export type UserWithAuditLogs = User & {
+  auditLogs: UserAuditLog[]
+}
+
+export type AuditLogWithAdmin = UserAuditLog & {
+  admin: {
+    id: string
+    email: string
+    displayName: string | null
+  }
+}
+
+// app/components/users/ - component prop types
+export type UserListTableProps = {
+  users: readonly User[]
+  total: number
+  totalPages: number
+  currentPage: number
+}
+
+export type UserDetailCardProps = {
+  user: User
+  isSubmitting: boolean
+}
+
+export type UserAuditLogListProps = {
+  auditLogs: readonly AuditLogWithAdmin[]
+}
+```
+
+# 8) Acceptance Criteria
+
+## Common Criteria
+- ✅ All files listed in "End state" section exist and export expected APIs
+- ✅ Run `pnpm validate` - must pass with no errors
+- ✅ All unit tests pass: `pnpm test:run`
+- ✅ All E2E tests pass: `pnpm test:e2e:run`
+- ✅ New strings added to all 6 locales (nl, en, fr, ar, tr, de)
+- ✅ English uses title case, all other languages use sentence case
+- ✅ Database migration runs successfully without errors
+- ✅ No TypeScript `any` types used anywhere in the code
+- ✅ All functions have explicit return types
+- ✅ No semicolons in TypeScript code
+
+## Feature-Specific Criteria
+- ✅ Users menu item appears in AppBar for ADMIN users only
+- ✅ Users menu item does NOT appear for PUBLIC, MANAGER, or REFEREE users
+- ✅ User list displays all users with correct roles and pagination
+- ✅ User detail page shows user information and audit log
+- ✅ Role change form works correctly and creates audit log entry
+- ✅ User deactivation form works correctly and creates audit log entry
+- ✅ User reactivation form works correctly and creates audit log entry
+- ✅ Deactivated users cannot sign in with Firebase authentication
+- ✅ Active sessions are invalidated when user is deactivated
+- ✅ Deactivation error message displays on sign-in page
+- ✅ Audit logs display in reverse chronological order
+- ✅ Permission checks block non-ADMIN users from accessing routes
+- ✅ Database transactions ensure audit logs are created with role changes
+- ✅ Search functionality filters users by email or display name
+- ✅ Role filter works on user list page
+- ✅ Pagination controls navigate correctly between pages
+
+## Testing Workflow
+1. **Validation first** (`pnpm validate`) - must pass before proceeding
+2. **Database migration** (`pnpm prisma migrate dev`) - verify schema changes
+3. **Unit tests** (`pnpm test:run`) - if fixes needed, return to step 1
+4. **E2E tests** (`pnpm test:e2e:run`) - if fixes needed, return to step 1, then step 3
+5. Any code changes require restarting from step 1
+
+# 9) Testing Strategy
+
+## Unit Testing (Vitest)
+- Test all new user management functions in `user.server.ts`
+- Test audit log creation and retrieval functions
+- Mock Prisma client for database operations
+- Test edge cases: user not found, invalid role, transaction failures
+- Test pagination logic with various page sizes
+- Test search functionality with partial matches
+
+## Integration Testing
+- Test role update with audit log creation in single transaction
+- Test that failed role updates don't create audit logs
+- Test concurrent role updates (optimistic locking)
+
+## E2E Testing (Playwright)
+- Test complete user approval workflow from admin perspective
+- Test that non-admin users cannot access user management
+- Test mobile and desktop layouts
+- Test pagination navigation
+- Test role update form submission and validation
+- Test audit log display after role changes
+- Use Page Object Model for maintainable tests
+- Include database seeding for consistent test data
+
+## Accessibility Testing
+- Verify keyboard navigation works for all forms and tables
+- Test screen reader labels for form fields
+- Verify adequate color contrast for role badges
+- Test focus management after form submissions
+
+## Responsive Design Testing
+- Mobile-first layout (320px+)
+- Tablet view (768px+)
+- Desktop view (1024px+)
+- Touch targets minimum 44px
+- Table responsive behavior on mobile
+
+# 10) Notes / Links
+
+- **PRD Reference**: Phase 2 (User Management) - `.cursor/rules/PRD.mdc`
+- **ADR Reference**: ADR-0026 (User Management Workflows) - `.cursor/rules/ADR.mdc`
+- **RBAC Reference**: ADR-0022 (RBAC Middleware) - `.cursor/rules/ADR.mdc`
+- **Related Route**: Admin Panel base at `/a7k9m2x5p8w1n4q6r3y8b5t1/`
+- **Permissions**: `users:approve`, `roles:assign` (ADMIN role only)
+
+**Design Decisions**:
+- Chose database audit logs over file-based logs for queryability and reliability
+- Used Prisma transactions to ensure audit logs are created atomically with role changes
+- Separated "approval" from "role assignment" - approval is implicit when changing from PUBLIC role
+- Included reason field for audit trail compliance and administrative context
+- Limited roles to ADMIN and MANAGER assignment (REFEREE uses token-based access, not account-based)
+
+**Future Enhancements** (out of scope for this task):
+- Bulk user operations (approve multiple users at once)
+- Advanced filtering (by date range, multiple roles, etc.)
+- Export audit logs to CSV for compliance reporting
+- Email notifications to users when role changes or account is deactivated
+- Profile photo upload and management
+- Self-service account reactivation requests

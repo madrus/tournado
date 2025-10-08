@@ -390,7 +390,9 @@ describe('TournamentForm Component', () => {
       expect(screen.getByText('tournaments.form.dates')).toBeInTheDocument()
       expect(screen.getByText('tournaments.form.divisions')).toBeInTheDocument()
       expect(screen.getByText('tournaments.form.categories')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'common.actions.save' })
+      ).toBeInTheDocument()
     })
 
     it('should render all form fields correctly', () => {
@@ -510,7 +512,9 @@ describe('TournamentForm Component', () => {
         errors: { divisions: 'messages.tournament.divisionsRequired' },
       })
 
-      expect(screen.getByText('messages.tournament.divisionsRequired')).toBeInTheDocument()
+      expect(
+        screen.getByText('messages.tournament.divisionsRequired')
+      ).toBeInTheDocument()
     })
   })
 
@@ -560,7 +564,9 @@ describe('TournamentForm Component', () => {
         errors: { categories: 'messages.tournament.categoriesRequired' },
       })
 
-      expect(screen.getByText('messages.tournament.categoriesRequired')).toBeInTheDocument()
+      expect(
+        screen.getByText('messages.tournament.categoriesRequired')
+      ).toBeInTheDocument()
     })
   })
 
@@ -570,8 +576,12 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Get the form fields (labels are now translation keys)
-      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
-      const locationInput = screen.getByRole('textbox', { name: /tournaments\.form\.location/i })
+      const nameInput = screen.getByRole('textbox', {
+        name: /tournaments\.form\.name/i,
+      })
+      const locationInput = screen.getByRole('textbox', {
+        name: /tournaments\.form\.location/i,
+      })
 
       // Focus and then blur fields to trigger validation - using user.tab() like TeamForm
       await user.click(nameInput)
@@ -582,9 +592,7 @@ describe('TournamentForm Component', () => {
 
       // Wait for validation errors to appear (as translation keys)
       await waitFor(() => {
-        expect(
-          screen.getByText('messages.tournament.nameRequired')
-        ).toBeInTheDocument()
+        expect(screen.getByText('messages.tournament.nameRequired')).toBeInTheDocument()
       })
 
       expect(
@@ -596,7 +604,9 @@ describe('TournamentForm Component', () => {
       const user = userEvent.setup()
       renderTournamentForm()
 
-      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
+      const nameInput = screen.getByRole('textbox', {
+        name: /tournaments\.form\.name/i,
+      })
 
       // Trigger validation error by blurring empty field
       await user.click(nameInput)
@@ -613,7 +623,9 @@ describe('TournamentForm Component', () => {
     it('should render submit button with default text', () => {
       renderTournamentForm()
 
-      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'common.actions.save' })
+      ).toBeInTheDocument()
     })
 
     it('should render submit button with custom text', () => {
@@ -621,14 +633,18 @@ describe('TournamentForm Component', () => {
         submitButtonText: 'common.actions.save',
       })
 
-      expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'common.actions.save' })
+      ).toBeInTheDocument()
     })
 
     it('should always render reset button', () => {
       renderTournamentForm()
 
       // Cancel button uses translation key now
-      const resetButton = screen.getByRole('button', { name: /common\.actions\.cancel/i })
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
+      })
       expect(resetButton).toBeInTheDocument()
     })
 
@@ -638,7 +654,9 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Cancel button uses translation key now
-      const resetButton = screen.getByRole('button', { name: /common\.actions\.cancel/i })
+      const resetButton = screen.getByRole('button', {
+        name: /common\.actions\.cancel/i,
+      })
       await user.click(resetButton)
 
       // Verify no error is thrown and reset button is still functional
@@ -716,8 +734,12 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Basic information grid should be responsive - verify form layout
-      const nameInput = screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
-      const locationInput = screen.getByRole('textbox', { name: /tournaments\.form\.location/i })
+      const nameInput = screen.getByRole('textbox', {
+        name: /tournaments\.form\.name/i,
+      })
+      const locationInput = screen.getByRole('textbox', {
+        name: /tournaments\.form\.location/i,
+      })
       expect(nameInput).toBeInTheDocument()
       expect(locationInput).toBeInTheDocument()
     })
@@ -730,7 +752,9 @@ describe('TournamentForm Component', () => {
       expect(
         screen.getByRole('textbox', { name: /tournaments\.form\.name/i })
       ).toBeInTheDocument()
-      expect(screen.getByRole('textbox', { name: /tournaments\.form\.location/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('textbox', { name: /tournaments\.form\.location/i })
+      ).toBeInTheDocument()
       // startDate label has required asterisk in separate element, use regex
       expect(screen.getByText(/tournaments\.form\.startDate/)).toBeInTheDocument()
       expect(screen.getByText('tournaments.form.endDate')).toBeInTheDocument()
@@ -781,7 +805,9 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Initially no divisions selected - with i18n mock, text is "0 tournaments.form.selected"
-      expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+      expect(
+        screen.getAllByText(/0 tournaments\.form\.selected/)[0]
+      ).toBeInTheDocument()
 
       // Select first division
       const firstDivisionLabel = screen.getByTestId('division-first_division')
@@ -789,7 +815,9 @@ describe('TournamentForm Component', () => {
 
       // Should show 1 selected
       await waitFor(() => {
-        expect(screen.getAllByText(/1 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+        expect(
+          screen.getAllByText(/1 tournaments\.form\.selected/)[0]
+        ).toBeInTheDocument()
       })
     })
 
@@ -798,7 +826,9 @@ describe('TournamentForm Component', () => {
       renderTournamentForm()
 
       // Initially no categories selected - with i18n mock, text is "0 tournaments.form.selected"
-      expect(screen.getAllByText(/0 tournaments\.form\.selected/)[1]).toBeInTheDocument()
+      expect(
+        screen.getAllByText(/0 tournaments\.form\.selected/)[1]
+      ).toBeInTheDocument()
 
       // Select first category
       const jo8Label = screen.getByTestId('category-jo8')
@@ -831,7 +861,9 @@ describe('TournamentForm Component', () => {
 
       // Should show 0 selected for divisions
       await waitFor(() => {
-        expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+        expect(
+          screen.getAllByText(/0 tournaments\.form\.selected/)[0]
+        ).toBeInTheDocument()
       })
     })
   })

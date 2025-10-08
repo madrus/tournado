@@ -37,6 +37,7 @@ alwaysApply: false
 | 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
 | 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
 | 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
+| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -1297,7 +1298,7 @@ Implement Competition section as central hub for tournament operations with stru
 - **Phase progression**: Groups (setup) → Matches (play) → Standings (results)
 - **Navigation**: Admin Panel → Competition Management
 
-**Group Management Workflow** (TASK-0201):
+**Group Management Workflow** (TASK-0301):
 - View group sets for selected tournaments
 - Assign teams from reserve to group slots
 - Move teams between groups and reserve
@@ -1336,3 +1337,88 @@ Implement Competition section as central hub for tournament operations with stru
 - E2E tests confirm RBAC enforcement and workflow completion
 - Database constraints prevent invalid team assignments
 - UI clearly indicates workflow progression and current phase
+
+**PRD Phase Alignment**: This ADR supports Phase 3 (Groups & Playoffs MVP) implementation.
+
+## ADR-0026 — User Management Workflows and Admin Controls
+
+<a id="adr-0026"></a>
+**Date**: 2025-10-08
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+With Firebase authentication established (Phase 1), we need a comprehensive user management system that allows administrators to control user access and roles. This is a foundational requirement before implementing tournament operations (groups, matches, scoring) since those features depend on proper role assignment and user approval workflows.
+
+### Alternatives
+
+- **No explicit user management**: Rely only on environment-based super admin assignment (insufficient for scale)
+- **Automatic role assignment**: All authenticated users get default roles (security risk, no approval workflow)
+- **Manager-controlled role assignment**: Violates principle of least privilege (only ADMIN should assign roles)
+- **Admin-controlled user management with approval workflows**: Secure, scalable, follows RBAC principles
+
+### Decision
+
+Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
+
+**User Management Features**:
+- **User Approval System**: Admin reviews and approves/rejects new user registrations
+- **Role Assignment**: Admin assigns ADMIN or MANAGER roles (REFEREE uses pre-auth tokens, not registered accounts)
+- **User List**: Searchable, filterable list of all users with role and status indicators
+- **User Profiles**: View and edit user profile information
+- **Activity Monitoring**: Audit logs for role changes and significant user actions
+
+**Access Control**:
+- **Permission**: `users:approve`, `roles:assign` (ADMIN role only)
+- **Panel Location**: Admin Panel → User Management section
+- **RBAC Enforcement**: Route-level permission checks via `requireUserWithPermission`
+
+**User Lifecycle**:
+1. User signs up via Firebase Authentication (Google OAuth or Email/Password)
+2. User account created with PUBLIC role by default
+3. Admin reviews pending user in User Management panel
+4. Admin approves user and optionally assigns MANAGER role
+5. User gains access to role-appropriate features
+6. Admin can modify roles or revoke access as needed
+
+**Audit Trail**:
+- Log all role assignments and changes
+- Track approval/rejection decisions with timestamps and admin identifiers
+- Maintain user activity history for security and compliance
+
+**Why Before Groups/Matches**:
+- Managers need to be properly authorized before they can manage tournaments
+- Clear separation between user administration (Phase 2) and tournament operations (Phase 3+)
+- Establishes proper RBAC foundation for all subsequent features
+- Referee token management (Phase 4) depends on properly authorized managers
+
+### Implementation References
+
+- **Implementation Task**: TASK-0201 (User Management Admin Workflows)
+- User models: `app/models/user.server.ts`
+- User audit log model: `app/models/userAuditLog.server.ts` (new)
+- User management routes: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/**` (planned)
+- User management components: `app/components/users/**` (new)
+- RBAC middleware: `app/utils/rbacMiddleware.server.ts`
+- Permissions: `app/utils/rbac/permissions.ts`
+- Database schema: `prisma/schema.prisma` (User model with role field, UserAuditLog model)
+
+### Consequences
+
+- **Pros**: Controlled user access, proper RBAC foundation, security compliance, scalable user management, audit trail for accountability
+- **Cons / risks**: Additional admin overhead for user approval, need for clear approval criteria/documentation, potential user registration friction
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+- Unit tests verify permission enforcement for user management operations
+- E2E tests confirm only ADMIN can access user management features
+- Audit logs properly record all role changes
+- User approval workflow prevents unauthorized access to manager features
+- Database constraints ensure valid role transitions
+
+**PRD Phase Alignment**: This ADR defines Phase 2 (User Management) implementation requirements.
+
+**Implementation Task**: See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for detailed implementation steps.

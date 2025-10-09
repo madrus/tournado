@@ -96,16 +96,27 @@
       "passwordWeak": "Le mot de passe doit contenir des majuscules, minuscules et chiffres"
     },
     "viewTeams": "Voir les équipes",
-    "viewTeamsFor": "Voir les équipes pour"
+    "viewTeamsFor": "Voir les équipes pour",
+    "errors": {
+      "accountDeactivatedTitle": "Compte désactivé",
+      "accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide."
+    }
   },
   "common": {
+    "optional": "(optionnel)",
+    "pagination": {
+      "showing": "Affichage de {{count}} sur {{total}} utilisateurs",
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
     "actions": {
       "add": "Ajouter",
       "cancel": "Annuler",
       "delete": "Supprimer",
       "save": "Enregistrer",
       "saving": "Enregistrement...",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "view": "Voir"
     },
     "appName": "Tournado",
     "auth": {
@@ -132,11 +143,68 @@
       "settings": "Paramètres",
       "teams": "Équipes",
       "tournaments": "Tournois",
+      "users": "Utilisateurs",
       "welcome": "Bienvenue"
     },
     "toggleMenu": "Basculer le menu",
     "toggleTheme": "Changer de thème",
     "welcome": "Bienvenue"
+  },
+  "roles": {
+    "public": "Public",
+    "manager": "Gestionnaire",
+    "admin": "Administrateur",
+    "referee": "Arbitre",
+    "editor": "Éditeur",
+    "billing": "Facturation"
+  },
+  "users": {
+    "titles": {
+      "userManagement": "Gestion des utilisateurs",
+      "userDetail": "Détails de l'utilisateur",
+      "userInformation": "Informations utilisateur",
+      "auditLog": "Journal d'audit",
+      "deactivateUser": "Désactiver l'utilisateur",
+      "reactivateUser": "Réactiver l'utilisateur"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Gérer les comptes utilisateurs et attribuer des rôles"
+    },
+    "fields": {
+      "email": "E-mail",
+      "displayName": "Nom d'affichage",
+      "role": "Rôle",
+      "currentRole": "Rôle actuel",
+      "assignRole": "Attribuer un rôle",
+      "reason": "Raison",
+      "performedBy": "Effectué par",
+      "createdAt": "Créé le"
+    },
+    "actions": {
+      "updateRole": "Mettre à jour le rôle",
+      "viewDetails": "Voir les détails",
+      "deactivateUser": "Désactiver l'utilisateur",
+      "reactivateUser": "Réactiver l'utilisateur"
+    },
+    "placeholders": {
+      "reasonForChange": "Entrez la raison du changement de rôle (optionnel)",
+      "reasonForDeactivation": "Entrez la raison de la désactivation (optionnel)",
+      "reasonForReactivation": "Entrez la raison de la réactivation (optionnel)"
+    },
+    "messages": {
+      "roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
+      "noAuditLogs": "Aucune entrée de journal d'audit trouvée",
+      "userIsDeactivated": "Cet utilisateur est actuellement désactivé",
+      "deactivated": "Désactivé"
+    },
+    "auditActions": {
+      "role_change": "Rôle modifié",
+      "approval": "Utilisateur approuvé",
+      "rejection": "Utilisateur rejeté",
+      "profile_update": "Profil mis à jour",
+      "deactivate": "Utilisateur désactivé",
+      "reactivate": "Utilisateur réactivé"
+    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Cinquième Division",

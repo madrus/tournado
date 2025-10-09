@@ -96,16 +96,27 @@
       "passwordWeak": "Şifre büyük harf, küçük harf ve rakam içermelidir"
     },
     "viewTeams": "Takımları görüntüle",
-    "viewTeamsFor": "Takımları görüntüle:"
+    "viewTeamsFor": "Takımları görüntüle:",
+    "errors": {
+      "accountDeactivatedTitle": "Account Deactivated",
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance."
+    }
   },
   "common": {
+    "optional": "(optional)",
+    "pagination": {
+      "showing": "Showing {{count}} of {{total}} users",
+      "previous": "Previous",
+      "next": "Next"
+    },
     "actions": {
       "add": "Ekle",
       "cancel": "İptal",
       "delete": "Sil",
       "save": "Kaydet",
       "saving": "Kaydediliyor...",
-      "update": "Güncelle"
+      "update": "Güncelle",
+      "view": "View"
     },
     "appName": "Tournado",
     "auth": {
@@ -132,11 +143,68 @@
       "settings": "Ayarlar",
       "teams": "Takımlar",
       "tournaments": "Turnuvalar",
+      "users": "Users",
       "welcome": "Hoş geldiniz"
     },
     "toggleMenu": "Menüyü aç/kapat",
     "toggleTheme": "Temayı değiştir",
     "welcome": "Hoş geldiniz"
+  },
+  "roles": {
+    "public": "Public",
+    "manager": "Manager",
+    "admin": "Admin",
+    "referee": "Referee",
+    "editor": "Editor",
+    "billing": "Billing"
+  },
+  "users": {
+    "titles": {
+      "userManagement": "User Management",
+      "userDetail": "User Details",
+      "userInformation": "User Information",
+      "auditLog": "Audit Log",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Manage user accounts and assign roles"
+    },
+    "fields": {
+      "email": "Email",
+      "displayName": "Display Name",
+      "role": "Role",
+      "currentRole": "Current Role",
+      "assignRole": "Assign Role",
+      "reason": "Reason",
+      "performedBy": "Performed by",
+      "createdAt": "Created At"
+    },
+    "actions": {
+      "updateRole": "Update Role",
+      "viewDetails": "View Details",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User"
+    },
+    "placeholders": {
+      "reasonForChange": "Enter reason for role change (optional)",
+      "reasonForDeactivation": "Enter reason for deactivation (optional)",
+      "reasonForReactivation": "Enter reason for reactivation (optional)"
+    },
+    "messages": {
+      "roleUpdatedSuccessfully": "User role updated successfully",
+      "noAuditLogs": "No audit log entries found",
+      "userIsDeactivated": "This user is currently deactivated",
+      "deactivated": "Deactivated"
+    },
+    "auditActions": {
+      "role_change": "Role Changed",
+      "approval": "User Approved",
+      "rejection": "User Rejected",
+      "profile_update": "Profile Updated",
+      "deactivate": "User Deactivated",
+      "reactivate": "User Reactivated"
+    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Beşinci Lig",

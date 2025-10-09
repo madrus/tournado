@@ -132,6 +132,7 @@ vi.mock('../icons', () => {
     ExclamationIcon: createMockIcon('exclamation-icon', '!'),
     ExclamationMarkIcon: createMockIcon('exclamation-mark-icon', '!'),
     ExpandMoreIcon: createMockIcon('expand-more-icon', '▼'),
+    GroupIcon: createMockIcon('group-icon', '👥'),
     HomeIcon: createMockIcon('home-icon', '🏠'),
     InfoIcon: createMockIcon('info-icon', 'ℹ'),
     InfoLetterIcon: createMockIcon('info-letter-icon', 'i'),

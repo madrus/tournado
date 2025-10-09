@@ -146,6 +146,9 @@ vi.mock('~/components/icons', () => ({
   PersonIcon: ({ className }: { className?: string }) => (
     <div data-testid='person-icon' className={className} />
   ),
+  GroupIcon: ({ className }: { className?: string }) => (
+    <div data-testid='group-icon' className={className} />
+  ),
   SettingsIcon: ({ className }: { className?: string }) => (
     <div data-testid='settings-icon' className={className} />
   ),
@@ -252,7 +255,10 @@ describe('Admin Dashboard', () => {
       )
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).not.toHaveAttribute('data-link-to') // No navigation
+      expect(userPanel).toHaveAttribute(
+        'data-link-to',
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users'
+      )
       expect(userPanel).toHaveTextContent('admin.user.title')
       expect(userPanel).toHaveTextContent('admin.user.description')
     })
@@ -319,8 +325,8 @@ describe('Admin Dashboard', () => {
       )
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: admin@example.com')
-      expect(userPanel).toHaveTextContent('User ID: admin-1')
+      expect(userPanel).toHaveTextContent('User Roles:')
+      expect(userPanel).toHaveTextContent('Manage and assign roles')
     })
   })
 
@@ -334,7 +340,7 @@ describe('Admin Dashboard', () => {
 
       expect(screen.getByTestId('apparel-icon')).toBeInTheDocument()
       expect(screen.getByTestId('trophy-icon')).toBeInTheDocument()
-      expect(screen.getByTestId('person-icon')).toBeInTheDocument()
+      expect(screen.getByTestId('group-icon')).toBeInTheDocument()
       expect(screen.getByTestId('settings-icon')).toBeInTheDocument()
       expect(screen.getByTestId('tune-icon')).toBeInTheDocument()
     })
@@ -429,11 +435,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      const userPanel = screen.getByTestId('admin-panel-user-management')
       const settingsPanel = screen.getByTestId('admin-panel-system-settings')
       const reportsPanel = screen.getByTestId('admin-panel-reports-&-analytics')
 
-      expect(userPanel).not.toHaveAttribute('data-link-to')
       expect(settingsPanel).not.toHaveAttribute('data-link-to')
       expect(reportsPanel).not.toHaveAttribute('data-link-to')
     })
@@ -550,8 +554,8 @@ describe('Admin Dashboard', () => {
       expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: admin@example.com')
-      expect(userPanel).toHaveTextContent('User ID: admin-1')
+      expect(userPanel).toHaveTextContent('User Roles:')
+      expect(userPanel).toHaveTextContent('Manage and assign roles')
     })
 
     test('should handle different user data', () => {
@@ -575,8 +579,8 @@ describe('Admin Dashboard', () => {
       expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: different@example.com')
-      expect(userPanel).toHaveTextContent('User ID: user-999')
+      expect(userPanel).toHaveTextContent('User Roles:')
+      expect(userPanel).toHaveTextContent('Manage and assign roles')
     })
   })
 })

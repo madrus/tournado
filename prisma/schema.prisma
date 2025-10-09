@@ -62,14 +62,35 @@ enum Category {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  firstName   String
-  lastName    String
-  email       String   @unique
-  firebaseUid String   @unique
-  role        Role
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String         @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String         @unique
+  firebaseUid     String         @unique
+  displayName     String?
+  role            Role
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  auditLogs       UserAuditLog[] @relation("UserAuditLogs")
+  performedAudits UserAuditLog[] @relation("PerformedAudits")
+}
+
+model UserAuditLog {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
+  performedBy   String
+  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Cascade)
+  action        String   // "role_change", "approval", "rejection", "profile_update", "deactivate", "reactivate"
+  previousValue String?
+  newValue      String?
+  reason        String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([performedBy])
+  @@index([createdAt])
 }
 
 model TeamLeader { // contact person

@@ -1,17 +1,14 @@
 # Environment variables and secrets
+!.env.example
+**/.DS_Store
+**/.cache
+**/.obsidian
+**/cache
+--help
 .env
 .env.*
-!.env.example
-secrets.txt
-
-# BFG cleanup reports
-.git.bfg-report
-**/.obsidian
 .prisma
 .react-router
-**/.cache
-**/.DS_Store
-**/cache
 /prisma/data.db
 /prisma/data.db-journal
 /prisma/prisma
@@ -20,15 +17,13 @@ coverage
 dist
 mcp-servers/vitest/dist
 node_modules
-vitest-results.json
+secrets.txt
 
 # Playwright
+.vscode/project.mcp.json
 blob-report
 playwright-report
 playwright-results
 playwright/.auth
 playwright/.cache
 test-results
-.vscode/project.mcp.json
-setup-flyio-secrets.sh
-setup-github-secrets.sh

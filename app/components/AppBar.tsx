@@ -102,6 +102,17 @@ export function AppBar({
           },
         ]
       : []),
+    // Users - only show for ADMIN users
+    ...(canAccess(user || null, 'users:approve')
+      ? [
+          {
+            label: t('common.titles.users'),
+            icon: 'people' as IconName,
+            href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+            authenticated: true,
+          },
+        ]
+      : []),
     // Divider after Competition
     {
       label: '',

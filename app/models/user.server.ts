@@ -1,4 +1,5 @@
-import type { User } from '@prisma/client'
+/* eslint-disable id-blacklist */
+import type { Role, User } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 
@@ -30,7 +31,6 @@ export async function createUserFromFirebase({
   const lastName = lastNameParts.join(' ') || ''
 
   return prisma.user.create({
-    // eslint-disable-next-line id-blacklist
     data: {
       firebaseUid, // Now required field
       email,
@@ -69,7 +69,6 @@ export async function updateUserFirebaseData({
 
   return prisma.user.update({
     where: { id: userId },
-    // eslint-disable-next-line id-blacklist
     data: updateData,
   })
 }
@@ -79,12 +78,188 @@ export const getAllUsers = async (): Promise<User[]> =>
     orderBy: { createdAt: 'desc' },
   })
 
+type UpdateUserRoleProps = {
+  userId: string
+  newRole: Role
+  performedBy: string
+  reason?: string
+}
+
 export const updateUserRole = async (
-  userId: User['id'],
-  role: User['role']
-): Promise<User> =>
-  prisma.user.update({
-    where: { id: userId },
-    // eslint-disable-next-line id-blacklist
-    data: { role },
+  props: Readonly<UpdateUserRoleProps>
+): Promise<User> => {
+  const { userId, newRole, performedBy, reason } = props
+
+  // Get current user to capture previous role
+  const currentUser = await getUserById(userId)
+  if (!currentUser) {
+    throw new Error('User not found')
+  }
+
+  // Update role in transaction with audit log
+  return await prisma.$transaction(async tx => {
+    const updatedUser = await tx.user.update({
+      where: { id: userId },
+      data: { role: newRole },
+    })
+
+    await tx.userAuditLog.create({
+      data: {
+        userId,
+        performedBy,
+        action: 'role_change',
+        previousValue: currentUser.role,
+        newValue: newRole,
+        reason,
+      },
+    })
+
+    return updatedUser
   })
+}
+
+type DeactivateUserProps = {
+  userId: string
+  performedBy: string
+  reason?: string
+}
+
+export const deactivateUser = async (
+  props: Readonly<DeactivateUserProps>
+): Promise<User> => {
+  const { userId, performedBy, reason } = props
+
+  return await prisma.$transaction(async tx => {
+    const updatedUser = await tx.user.update({
+      where: { id: userId },
+      data: { active: false },
+    })
+
+    await tx.userAuditLog.create({
+      data: {
+        userId,
+        performedBy,
+        action: 'deactivate',
+        previousValue: 'true',
+        newValue: 'false',
+        reason,
+      },
+    })
+
+    return updatedUser
+  })
+}
+
+type ReactivateUserProps = {
+  userId: string
+  performedBy: string
+  reason?: string
+}
+
+export const reactivateUser = async (
+  props: Readonly<ReactivateUserProps>
+): Promise<User> => {
+  const { userId, performedBy, reason } = props
+
+  return await prisma.$transaction(async tx => {
+    const updatedUser = await tx.user.update({
+      where: { id: userId },
+      data: { active: true },
+    })
+
+    await tx.userAuditLog.create({
+      data: {
+        userId,
+        performedBy,
+        action: 'reactivate',
+        previousValue: 'false',
+        newValue: 'true',
+        reason,
+      },
+    })
+
+    return updatedUser
+  })
+}
+
+type GetUsersByRoleProps = {
+  role: Role
+}
+
+export const getUsersByRole = async (
+  props: Readonly<GetUsersByRoleProps>
+): Promise<readonly User[]> => {
+  const { role } = props
+
+  return prisma.user.findMany({
+    where: { role },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+type SearchUsersProps = {
+  query: string
+  role?: Role
+  limit?: number
+}
+
+export const searchUsers = async (
+  props: Readonly<SearchUsersProps>
+): Promise<readonly User[]> => {
+  const { query, role, limit = 50 } = props
+
+  // Note: SQLite doesn't support mode: 'insensitive' for case-insensitive search
+  // Search is case-sensitive on SQLite, case-insensitive on PostgreSQL/MySQL
+  return prisma.user.findMany({
+    where: {
+      AND: [
+        role ? { role } : {},
+        {
+          OR: [{ email: { contains: query } }, { displayName: { contains: query } }],
+        },
+      ],
+    },
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+  })
+}
+
+type GetPendingApprovalUsersProps = Record<string, never>
+
+export const getPendingApprovalUsers = async (
+  _props: Readonly<GetPendingApprovalUsersProps> = {}
+): Promise<readonly User[]> =>
+  prisma.user.findMany({
+    where: { role: 'PUBLIC' },
+    orderBy: { createdAt: 'desc' },
+  })
+
+type GetAllUsersWithPaginationProps = {
+  page?: number
+  pageSize?: number
+  role?: Role
+}
+
+export const getAllUsersWithPagination = async (
+  props: Readonly<GetAllUsersWithPaginationProps>
+): Promise<{ users: readonly User[]; total: number; totalPages: number }> => {
+  const { page = 1, pageSize = 20, role } = props
+
+  const where = role ? { role } : {}
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.user.count({ where }),
+  ])
+
+  return {
+    users,
+    total,
+    totalPages: Math.ceil(total / pageSize),
+  }
+}

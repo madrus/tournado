@@ -14,6 +14,7 @@ import {
   ExclamationIcon,
   ExclamationMarkIcon,
   ExpandMoreIcon,
+  GroupIcon,
   HomeIcon,
   InfoIcon,
   InfoLetterIcon,
@@ -51,6 +52,8 @@ export type IconName =
   | 'error'
   | 'exclamation'
   | 'exclamation_mark'
+  | 'expand_more'
+  | 'group'
   | 'home'
   | 'info'
   | 'info_letter'
@@ -62,6 +65,7 @@ export type IconName =
   | 'more_vert'
   | 'newWindow'
   | 'pending'
+  | 'people'
   | 'person'
   | 'settings'
   | 'sports'
@@ -71,9 +75,8 @@ export type IconName =
   | 'unfold_less'
   | 'unfold_more'
   | 'warning'
-  | 'expand_more'
 
-export const iconMap = {
+export const iconMap: Record<IconName, React.ComponentType<IconProps>> = {
   add: AddIcon,
   admin_panel_settings: AdminPanelSettingsIcon,
   apparel: ApparelIcon,
@@ -87,6 +90,8 @@ export const iconMap = {
   error: ErrorIcon,
   exclamation: ExclamationIcon,
   exclamation_mark: ExclamationMarkIcon,
+  expand_more: ExpandMoreIcon,
+  group: GroupIcon,
   home: HomeIcon,
   info: InfoIcon,
   info_letter: InfoLetterIcon,
@@ -97,6 +102,7 @@ export const iconMap = {
   more_horiz: MoreHorizIcon,
   more_vert: MoreVertIcon,
   pending: PendingIcon,
+  people: GroupIcon,
   person: PersonIcon,
   settings: SettingsIcon,
   sports: SportsIcon,
@@ -106,8 +112,7 @@ export const iconMap = {
   unfold_less: UnfoldLessIcon,
   unfold_more: UnfoldMoreIcon,
   warning: WarningIcon,
-  expand_more: ExpandMoreIcon,
-}
+} as const
 
 // IconProps that match what our icon components actually accept
 export type IconProps = {

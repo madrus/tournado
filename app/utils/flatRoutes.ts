@@ -99,6 +99,13 @@ export function scanFlatRoutes(): RouteEntry[] {
             parentPath = parentDirPath
           }
         }
+      } else if (fileName === '_index') {
+        // Handle folder-based routing: users/_index.tsx -> /users (index)
+        routePath = '/' + dirName
+      } else if (fileName.startsWith('$')) {
+        // Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
+        const paramName = fileName.substring(1) // Remove the $
+        routePath = '/' + dirName + '/:' + paramName
       } else {
         // Simple file in subdirectory: resources/somefile -> /resources/somefile
         routePath = '/' + dirName + '/' + fileName

@@ -14,9 +14,9 @@ alwaysApply: false
 
 # Architecture Decision
 
-**Pattern**: 🌍 **SHARED Task** - Updates shared/global code
+**Pattern**: 🎯 **FEATURE Task** - Creates isolated feature module
 
-**Rationale**: This task creates admin-only user management functionality that is core platform infrastructure. It modifies shared database models (`app/models/user.server.ts`), creates routes under the admin panel, adds reusable components that could be used across different admin contexts, and implements RBAC permissions that are foundational to the application. The user management functionality is accessed by ADMIN role users only and manages the central User entity that affects all other features.
+**Rationale**: This task creates a user management feature following the established pattern (similar to features/firebase/). Feature-specific components, utilities, and types are organized under app/features/users/, while data access models remain centralized in app/models/ and routes stay in app/routes/ per project conventions.
 
 # 1) High-Level Objective
 
@@ -69,32 +69,76 @@ Deliver a complete admin-controlled user management system where admins can revi
 ## 🌍 SHARED Task Pattern
 
 **Beginning (add to model context):**
-- app/models/user.server.ts (read-only - existing user data access)
-- app/utils/rbacMiddleware.server.ts (read-only - RBAC middleware)
-- app/utils/rbac/permissions.ts (read-only - permission definitions)
-- app/components/AppBar.tsx (read-only - for menu structure)
-- prisma/schema.prisma (read-only - User model structure)
+- [x] app/models/user.server.ts (read-only - existing user data access)
+- [x] app/utils/rbacMiddleware.server.ts (read-only - RBAC middleware)
+- [x] app/utils/rbac/permissions.ts (read-only - permission definitions)
+- [x] app/components/AppBar.tsx (read-only - for menu structure)
+- [x] prisma/schema.prisma (read-only - User model structure)
 
 **End state (files that will be created/modified):**
-- prisma/schema.prisma (add UserAuditLog model for audit trail)
-- app/models/user.server.ts (add user management functions)
-- app/models/userAuditLog.server.ts (new - audit log data access)
-- app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users._index.tsx (new - user list)
-- app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users.$userId.tsx (new - user detail/edit)
-- app/components/AppBar.tsx (modified - add Users menu item for ADMIN)
-- app/components/users/ (new directory - reusable user management components)
-- app/i18n/locales/*.json (add user management translation strings)
-- app/models/user.server.ts (__tests__/user.server.test.ts for new functions)
-- playwright/tests/users.spec.ts (new - E2E tests for user management)
+- [x] prisma/schema.prisma (User.active, User.displayName, UserAuditLog model)
+- [x] app/models/user.server.ts (added management functions)
+- [x] app/models/userAuditLog.server.ts (new - audit log data access)
+- [x] app/utils/rbac.ts (modified - add user management permissions)
+- [x] app/components/icons/GroupIcon.tsx (new - group icon for users)
+- [x] app/utils/iconUtils.ts (modified - add GroupIcon to icon map)
+- [x] app/features/users/components/UserListTable.tsx (new - user list component)
+- [x] app/features/users/components/UserDetailCard.tsx (new - user detail/edit)
+- [x] app/features/users/components/UserAuditLogList.tsx (new - audit log display)
+- [x] app/features/users/components/UserDeactivationForm.tsx (new - deactivation UI)
+- [x] app/features/users/utils/roleUtils.ts (new - role badge utilities)
+- [x] app/features/users/types.ts (new - feature type definitions)
+- [x] app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/_index.tsx (new - user list route, folder-based)
+- [x] app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/$userId.tsx (new - user detail route, folder-based)
+- [x] app/components/AppBar.tsx (modified - add Users menu item for ADMIN)
+- [x] app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx (modified - add User Management tile)
+- [x] app/i18n/locales/*.json (add user management translation strings)
+- [ ] app/models/__tests__/user.server.test.ts (tests for new functions)
+- [ ] playwright/tests/users.spec.ts (new - E2E tests for user management)
 
 # 6) Low-Level Steps (Ordered, information-dense)
 
+**Implementation Status**: Steps 0-9 completed. Steps 10-11 pending (Unit Tests, Firebase Integration).
+
+## Step 0: RBAC Permissions Setup - Add User Management Permissions
+
+- [x] Add `users:read`, `users:approve`, `roles:assign` to Permission type
+- [x] Add permissions to ADMIN role in ROLE_PERMISSIONS
+- [x] Verify permissions work with hasPermission utility
+
+File: `app/utils/rbac.ts` (modified - ✅ completed)
+
+Add user management permissions to the Permission type:
+
+```ts
+export type Permission =
+  // ... existing permissions ...
+  | 'users:read' // View user list
+  | 'users:approve' // Approve/manage users
+  | 'roles:assign' // Assign roles to users
+  // ... rest of permissions ...
+```
+
+Add to ADMIN role in ROLE_PERMISSIONS:
+
+```ts
+ADMIN: [
+  // ... existing permissions ...
+  'users:read',
+  'users:approve',
+  'roles:assign',
+  // ... rest of permissions ...
+]
+```
+
+**Rationale**: These permissions control access to user management features. Only ADMIN role gets these permissions to ensure proper security boundaries.
+
 ## Step 1: Database Schema - Add UserAuditLog Model and User.active Field
 
-- [ ] Add `active` field to User model in prisma/schema.prisma
-- [ ] Add UserAuditLog model to prisma/schema.prisma
-- [ ] Update User model with audit log relations
-- [ ] Run migration: `pnpm prisma migrate dev --name add-user-active-and-audit-logs`
+- [x] Add `active` field to User model in prisma/schema.prisma
+- [x] Add UserAuditLog model to prisma/schema.prisma
+- [x] Update User model with audit log relations
+- [x] Run migration: `pnpm prisma migrate dev --name add-user-active-and-audit-logs`
 
 File: `prisma/schema.prisma`
 
@@ -137,12 +181,12 @@ pnpm prisma migrate dev --name add-user-active-and-audit-logs
 
 ## Step 2: Audit Log Data Access Layer
 
-- [ ] Create app/models/userAuditLog.server.ts
-- [ ] Implement createAuditLog function
-- [ ] Implement getUserAuditLogs function
-- [ ] Implement getRecentAuditLogs function
+- [x] Create app/models/userAuditLog.server.ts
+- [x] Implement createAuditLog function
+- [x] Implement getUserAuditLogs function
+- [x] Implement getRecentAuditLogs function
 
-File: `app/models/userAuditLog.server.ts` (new)
+File: `app/models/userAuditLog.server.ts` (✅ completed - stays in app/models/)
 
 ```ts
 import { type Prisma, type UserAuditLog } from '@prisma/client'
@@ -237,13 +281,13 @@ export const getRecentAuditLogs = async (
 
 ## Step 3: User Model - Add Management Functions
 
-- [ ] Add updateUserRole function to user.server.ts
-- [ ] Add deactivateUser function
-- [ ] Add reactivateUser function
-- [ ] Add getUsersByRole function
-- [ ] Add searchUsers function
-- [ ] Add getPendingApprovalUsers function
-- [ ] Add getAllUsersWithPagination function
+- [x] Add updateUserRole function to user.server.ts
+- [x] Add deactivateUser function
+- [x] Add reactivateUser function
+- [x] Add getUsersByRole function
+- [x] Add searchUsers function
+- [x] Add getPendingApprovalUsers function
+- [x] Add getAllUsersWithPagination function
 
 File: `app/models/user.server.ts`
 
@@ -434,12 +478,12 @@ export const getAllUsersWithPagination = async (
 
 ## Step 4: User List Route
 
-- [ ] Create users._index.tsx route
-- [ ] Implement loader with permission check and pagination
-- [ ] Implement user list UI with UserListTable component
-- [ ] Add role filtering support
+- [x] Create users/_index.tsx route (folder-based routing)
+- [x] Implement loader with permission check and pagination
+- [x] Implement user list UI with UserListTable component
+- [x] Add role filtering support
 
-File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users._index.tsx` (new)
+File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/_index.tsx` (new)
 
 ```ts
 import { type JSX } from 'react'
@@ -507,14 +551,14 @@ export default function UsersIndexRoute(): JSX.Element {
 
 ## Step 5: User Detail/Edit Route
 
-- [ ] Create users.$userId.tsx route
-- [ ] Implement loader with permission check
-- [ ] Implement action for role updates
-- [ ] Implement action for deactivating users
-- [ ] Implement action for reactivating users
-- [ ] Integrate UserDetailCard and UserAuditLogList components
+- [x] Create users/$userId.tsx route (folder-based routing)
+- [x] Implement loader with permission check
+- [x] Implement action for role updates
+- [x] Implement action for deactivating users
+- [x] Implement action for reactivating users
+- [x] Integrate UserDetailCard and UserAuditLogList components
 
-File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users.$userId.tsx` (new)
+File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/$userId.tsx` (new)
 
 ```ts
 import { type JSX } from 'react'
@@ -649,10 +693,11 @@ export default function UserDetailRoute(): JSX.Element {
 
 ## Step 6: User Management Components
 
-- [ ] Create components/users/ directory
-- [ ] Create UserListTable.tsx component
-- [ ] Create UserDetailCard.tsx component with deactivation/reactivation actions
-- [ ] Create UserAuditLogList.tsx component
+- [x] Create features/users/components/ directory
+- [x] Create UserListTable.tsx component
+- [x] Create UserDetailCard.tsx component with deactivation/reactivation actions
+- [x] Create UserAuditLogList.tsx component
+- [x] Create UserDeactivationForm.tsx component
 
 File: `app/components/users/UserListTable.tsx` (new)
 
@@ -966,11 +1011,15 @@ export const UserAuditLogList = (props: Readonly<UserAuditLogListProps>): JSX.El
 }
 ```
 
-## Step 7: AppBar - Add Users Menu Item
+## Step 7: UI Integration - AppBar, Admin Dashboard, and Icons
 
-- [ ] Update AppBar.tsx to add Users menu item
-- [ ] Add permission check using canAccess for 'users:approve'
-- [ ] Verify menu item only visible to ADMIN role
+- [x] Create GroupIcon.tsx from Google Material Symbols (group icon)
+- [x] Add GroupIcon to app/components/icons/index.ts
+- [x] Update iconUtils.ts to add GroupIcon ('group' and 'people' mappings)
+- [x] Update AppBar.tsx to add Users menu item (uses 'people' icon → GroupIcon)
+- [x] Update Admin Dashboard (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx) to add User Management tile
+- [x] Add permission check using canAccess for 'users:approve'
+- [x] Verify menu item and tile only visible to ADMIN role
 
 File: `app/components/AppBar.tsx`
 
@@ -992,11 +1041,11 @@ Add to the `menuItems` array after the Competition menu item (around line 96-105
 
 ## Step 8: Utility Functions
 
-- [ ] Create utils/roleUtils.ts
-- [ ] Implement getRoleBadgeVariant function
-- [ ] Define roleColors constant
+- [x] Create features/users/utils/roleUtils.ts
+- [x] Implement getRoleBadgeVariant function
+- [x] Define roleColors constant
 
-File: `app/utils/roleUtils.ts` (new)
+File: `app/features/users/utils/roleUtils.ts` (new)
 
 ```ts
 import type { Role } from '@prisma/client'
@@ -1022,10 +1071,11 @@ export const roleColors = {
 
 ## Step 9: Internationalization Strings
 
-- [ ] Add user management strings to en.json
-- [ ] Add user management strings to nl.json
-- [ ] Add user management strings to fr.json
-- [ ] Add user management strings to ar.json
+- [x] Add user management strings to en.json
+- [x] Add user management strings to nl.json
+- [ ] Add user management strings to fr.json (not needed yet)
+- [ ] Add user management strings to ar.json (not needed yet)
+- [x] Add role translations (public, manager, admin, referee, editor, billing)
 - [ ] Add user management strings to tr.json
 - [ ] Add user management strings to de.json
 

@@ -29,6 +29,8 @@ describe('useAuthStore', () => {
       lastName: 'User',
       role: 'PUBLIC' as const,
       firebaseUid: 'firebase-uid-123',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -76,6 +78,8 @@ describe('useAuthStore', () => {
       lastName: 'User',
       role: 'PUBLIC' as const,
       firebaseUid: 'firebase-uid-123',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -111,6 +115,8 @@ describe('useAuthStore', () => {
       lastName: 'One',
       role: 'PUBLIC' as const,
       firebaseUid: 'firebase-uid-1',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -122,6 +128,8 @@ describe('useAuthStore', () => {
       lastName: 'Two',
       role: 'MANAGER' as const,
       firebaseUid: 'firebase-uid-2',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -144,6 +152,8 @@ describe('useAuthStore', () => {
       lastName: 'User',
       role: 'PUBLIC' as const,
       firebaseUid: 'firebase-uid-123',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }

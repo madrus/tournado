@@ -165,6 +165,8 @@ describe('AppBar Context Menu', () => {
       lastName: 'Doe',
       role: 'PUBLIC',
       firebaseUid: 'test-firebase-uid',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -230,6 +232,8 @@ describe('AppBar Context Menu', () => {
       lastName: 'User',
       role: 'ADMIN',
       firebaseUid: 'test-firebase-uid',
+      displayName: null,
+      active: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -311,7 +315,7 @@ describe('AppBar Context Menu', () => {
 
       expect(tournamentsIndex).toBe(0) // Tournaments should be first for admin
       expect(teamsIndex).toBe(1) // Teams should be second for admin
-      expect(adminPanelIndex).toBe(3) // Admin Panel should be after Competition (divider is not counted in labels)
+      expect(adminPanelIndex).toBe(4) // Admin Panel should be after Users (divider is not counted in labels)
     })
   })
 
@@ -340,6 +344,8 @@ describe('AppBar Context Menu', () => {
         lastName: 'User',
         role: 'ADMIN',
         firebaseUid: 'test-firebase-uid',
+        displayName: null,
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -372,6 +378,8 @@ describe('AppBar Context Menu', () => {
           lastName: 'User',
           role,
           firebaseUid: 'test-firebase-uid',
+          displayName: null,
+          active: true,
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -399,6 +407,8 @@ describe('AppBar Context Menu', () => {
         lastName: 'User',
         role: 'ADMIN',
         firebaseUid: 'test-firebase-uid',
+        displayName: null,
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -439,6 +449,8 @@ describe('AppBar Context Menu', () => {
           lastName: 'User',
           role,
           firebaseUid: 'test-firebase-uid',
+          displayName: null,
+          active: true,
           createdAt: new Date(),
           updatedAt: new Date(),
         }
@@ -546,6 +558,8 @@ describe('AppBar Context Menu', () => {
             lastName: 'User',
             role: 'ADMIN' as const,
             firebaseUid: 'test-firebase-uid',
+            displayName: null,
+            active: true,
             createdAt: new Date(),
             updatedAt: new Date(),
           },

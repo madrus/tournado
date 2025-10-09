@@ -96,16 +96,27 @@
       "passwordWeak": "Wachtwoord moet hoofdletters, kleine letters en cijfers bevatten"
     },
     "viewTeams": "Teams bekijken",
-    "viewTeamsFor": "Teams bekijken voor"
+    "viewTeamsFor": "Teams bekijken voor",
+    "errors": {
+      "accountDeactivatedTitle": "Account gedeactiveerd",
+      "accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp."
+    }
   },
   "common": {
+    "optional": "(optioneel)",
+    "pagination": {
+      "showing": "{{count}} van {{total}} gebruikers worden weergegeven",
+      "previous": "Vorige",
+      "next": "Volgende"
+    },
     "actions": {
       "add": "Toevoegen",
       "cancel": "Annuleren",
       "delete": "Verwijderen",
       "save": "Opslaan",
       "saving": "Opslaan...",
-      "update": "Bijwerken"
+      "update": "Bijwerken",
+      "view": "Bekijken"
     },
     "appName": "Tournado",
     "auth": {
@@ -132,11 +143,68 @@
       "settings": "Instellingen",
       "teams": "Teams",
       "tournaments": "Toernooien",
+      "users": "Gebruikers",
       "welcome": "Welkom"
     },
     "toggleMenu": "Menu openen/sluiten",
     "toggleTheme": "Thema wisselen",
     "welcome": "Welkom"
+  },
+  "roles": {
+    "public": "Publiek",
+    "manager": "Manager",
+    "admin": "Beheerder",
+    "referee": "Scheidsrechter",
+    "editor": "Redacteur",
+    "billing": "Facturatie"
+  },
+  "users": {
+    "titles": {
+      "userManagement": "Gebruikersbeheer",
+      "userDetail": "Gebruikersdetails",
+      "userInformation": "Gebruikersinformatie",
+      "auditLog": "Auditlog",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
+    },
+    "fields": {
+      "email": "E-mail",
+      "displayName": "Weergavenaam",
+      "role": "Rol",
+      "currentRole": "Huidige rol",
+      "assignRole": "Rol toewijzen",
+      "reason": "Reden",
+      "performedBy": "Uitgevoerd door",
+      "createdAt": "Aangemaakt op"
+    },
+    "actions": {
+      "updateRole": "Rol bijwerken",
+      "viewDetails": "Details bekijken",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren"
+    },
+    "placeholders": {
+      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
+      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
+      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+    },
+    "messages": {
+      "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
+      "noAuditLogs": "Geen auditlog-vermeldingen gevonden",
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd",
+      "deactivated": "Gedeactiveerd"
+    },
+    "auditActions": {
+      "role_change": "Rol gewijzigd",
+      "approval": "Gebruiker goedgekeurd",
+      "rejection": "Gebruiker afgewezen",
+      "profile_update": "Profiel bijgewerkt",
+      "deactivate": "Gebruiker gedeactiveerd",
+      "reactivate": "Gebruiker gereactiveerd"
+    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Vijfde klasse",

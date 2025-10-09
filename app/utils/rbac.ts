@@ -35,6 +35,9 @@ export type Permission =
   | 'matches:edit'
   | 'matches:delete'
   | 'matches:referee' // Referee match actions
+  | 'users:read' // View user list
+  | 'users:approve' // Approve/manage users
+  | 'roles:assign' // Assign roles to users
   | 'system:settings' // System settings configuration
   | 'system:reports' // View reports and analytics
   | 'system:billing' // Billing and payment management
@@ -91,6 +94,9 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'matches:edit',
     'matches:delete',
     'matches:referee',
+    'users:read',
+    'users:approve',
+    'roles:assign',
     'system:settings',
     'system:reports',
     'system:billing',

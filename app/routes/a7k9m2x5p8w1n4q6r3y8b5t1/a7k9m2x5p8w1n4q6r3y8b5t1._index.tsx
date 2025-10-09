@@ -7,7 +7,7 @@ import type { User } from '@prisma/client'
 import { ActionLinkPanel } from '~/components/ActionLinkPanel'
 import {
   ApparelIcon,
-  PersonIcon,
+  GroupIcon,
   SettingsIcon,
   SportsIcon,
   TrophyIcon,
@@ -89,6 +89,7 @@ export default function AdminDashboard(): JSX.Element {
   const canManageTeams = hasPermission(user, 'teams:manage')
   const canManageTournaments = hasPermission(user, 'tournaments:manage')
   const canRefereeMatches = hasPermission(user, 'matches:referee')
+  const canManageUsers = hasPermission(user, 'users:approve')
   const canAccessSystemSettings = hasPermission(user, 'system:settings')
   const canViewReports = hasPermission(user, 'system:reports')
 
@@ -187,26 +188,27 @@ export default function AdminDashboard(): JSX.Element {
           </ActionLinkPanel>
         ) : null}
 
-        {/* Panel 4 - User Management (for ADMIN and MANAGER) */}
-        <ActionLinkPanel
-          title={t('admin.user.title')}
-          description={t('admin.user.description')}
-          icon={<PersonIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='yellow'
-          language={i18n.language}
-          testId='admin-panel-user-management'
-        >
-          <div className='space-y-2'>
-            <p className='break-all'>
-              <strong data-color='action'>Current User:</strong> {user.email}
-            </p>
-            <p className='break-all'>
-              <strong data-color='action'>User ID:</strong> {user.id}
-            </p>
-          </div>
-        </ActionLinkPanel>
+        {/* Panel 4 - User Management (only for ADMIN) */}
+        {canManageUsers ? (
+          <ActionLinkPanel
+            title={t('admin.user.title')}
+            description={t('admin.user.description')}
+            icon={<GroupIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='yellow'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/users'
+            language={i18n.language}
+            testId='admin-panel-user-management'
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>User Roles:</strong>
+                Manage and assign roles
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
 
         {/* Panel 5 - System Settings (for ADMIN only) */}
         {canAccessSystemSettings ? (

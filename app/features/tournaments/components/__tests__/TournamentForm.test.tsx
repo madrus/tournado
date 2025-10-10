@@ -55,6 +55,7 @@ vi.mock('~/utils/rtlUtils', () => ({
   getArabicTextClass: () => 'arabic-text',
   getLatinTextClass: () => 'latin-text',
   getLatinTitleClass: () => 'latin-title',
+  isRTL: () => false,
 }))
 
 // Mock division and category helpers

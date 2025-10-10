@@ -34,6 +34,15 @@ vi.mock('react-router', async () => {
       revalidate: vi.fn(),
       state: 'idle',
     }),
+    useNavigate: () => vi.fn(),
+    useLocation: () => ({
+      pathname: '/teams',
+      search: '',
+      hash: '',
+      state: null,
+      key: 'default',
+    }),
+    useSearchParams: () => [new URLSearchParams(), vi.fn()],
   }
 })
 
@@ -81,7 +90,7 @@ vi.mock('~/components/TeamList', () => ({
 }))
 
 // Mock TournamentFilter component
-vi.mock('~/components/TournamentFilter', () => ({
+vi.mock('~/features/tournaments/components/TournamentFilter', () => ({
   TournamentFilter: ({
     selectedTournamentId,
   }: {
@@ -92,7 +101,7 @@ vi.mock('~/components/TournamentFilter', () => ({
 }))
 
 // Mock icons - use importOriginal to keep all real icons
-vi.mock('~/components/icons', async (importOriginal) => {
+vi.mock('~/components/icons', async importOriginal => {
   const actual = (await importOriginal()) as Record<string, unknown>
   return {
     ...actual,

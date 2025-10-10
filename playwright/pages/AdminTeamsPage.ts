@@ -18,7 +18,7 @@ export class AdminTeamsPage extends BasePage {
   }
 
   get pageTitle(): Locator {
-    return this.page.getByRole('heading', { name: /^(All Teams|Alle teams)$/i })
+    return this.page.getByRole('heading', { name: /^Teams beheer$/i })
   }
 
   get createTeamButton(): Locator {

@@ -21,7 +21,7 @@
       "createNewTeamDescription": "Erstellen Sie ein neues Team mit Turnierdaten und Kontaktinformationen.",
       "createTeam": "Team erstellen",
       "createTeamDescription": "Fügen Sie ein neues Team mit allen erforderlichen Details zum System hinzu.",
-      "description": "Verwalten Sie alle Teams aller Turniere. Teaminformationen anzeigen, bearbeiten oder löschen.",
+      "description": "Verwalten Sie Teams für Turniere. Teaminformationen anzeigen, bearbeiten oder löschen.",
       "editTeam": "Team-Details bearbeiten",
       "newTeam": "Neues Team",
       "saveChanges": "Änderungen speichern",
@@ -32,13 +32,14 @@
     },
     "tournament": {
       "confirmDelete": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-      "description": "Verwalten Sie alle Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
+      "description": "Verwalten Sie Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
       "title": "Turnier-Verwaltung",
       "totalTournaments": "Turniere insgesamt"
     },
     "user": {
       "description": "Benutzerkonten und Berechtigungen verwalten.",
-      "title": "Benutzer-Verwaltung"
+      "title": "Benutzer-Verwaltung",
+      "totalUsers": "Gesamtbenutzer"
     }
   },
   "auth": {

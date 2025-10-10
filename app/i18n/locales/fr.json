@@ -21,7 +21,7 @@
       "createNewTeamDescription": "Créer une nouvelle équipe avec les détails du tournoi et les informations de contact.",
       "createTeam": "Créer une équipe",
       "createTeamDescription": "Ajouter une nouvelle équipe au système avec tous les détails nécessaires.",
-      "description": "Gérer toutes les équipes pour tous les tournois. Voir, modifier ou supprimer les informations d'équipe.",
+      "description": "Gérer les équipes pour les tournois. Voir, modifier ou supprimer les informations d'équipe.",
       "editTeam": "Modifier l'équipe",
       "newTeam": "Nouvelle équipe",
       "saveChanges": "Enregistrer les modifications",
@@ -32,13 +32,14 @@
     },
     "tournament": {
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action ne peut pas être annulée.",
-      "description": "Gérer tous les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
+      "description": "Gérer les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
       "title": "Gestion des tournois",
       "totalTournaments": "Nombre total de tournois"
     },
     "user": {
       "description": "Gérer les comptes utilisateur et les permissions.",
-      "title": "Gestion des utilisateurs"
+      "title": "Gestion des utilisateurs",
+      "totalUsers": "Total utilisateurs"
     }
   },
   "auth": {

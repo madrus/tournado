@@ -21,7 +21,7 @@
       "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "createTeam": "Team aanmaken",
       "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde details.",
-      "description": "Beheer alle teams voor alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
+      "description": "Beheer teams voor toernooien. Bekijk, bewerk of verwijder teaminformatie.",
       "editTeam": "Team bewerken",
       "newTeam": "Nieuw team",
       "saveChanges": "Wijzigingen opslaan",
@@ -32,13 +32,14 @@
     },
     "tournament": {
       "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
+      "description": "Beheer toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
       "title": "Toernooien beheer",
       "totalTournaments": "Totaal aantal toernooien"
     },
     "user": {
       "description": "Beheer gebruikersaccounts en machtigingen.",
-      "title": "Gebruikers beheer"
+      "title": "Gebruikers beheer",
+      "totalUsers": "Totaal gebruikers"
     }
   },
   "auth": {

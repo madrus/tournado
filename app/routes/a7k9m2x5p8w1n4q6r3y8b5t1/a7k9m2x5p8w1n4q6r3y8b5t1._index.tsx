@@ -15,6 +15,7 @@ import {
 } from '~/components/icons'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getActiveUsersCount } from '~/models/user.server'
 import { cn } from '~/utils/misc'
 import { hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
@@ -37,6 +38,7 @@ type LoaderData = {
     startDate: Date
     endDate: Date | null
   }>
+  activeUsersCount: number
 }
 
 export const meta: MetaFunction = () => [
@@ -74,12 +76,13 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Load teams and tournaments data for the overview tiles
   const teams = await getAllTeamListItems()
   const tournaments = await getAllTournamentListItems()
+  const activeUsersCount = await getActiveUsersCount()
 
-  return { user, teams, tournaments }
+  return { user, teams, tournaments, activeUsersCount }
 }
 
 export default function AdminDashboard(): JSX.Element {
-  const { user, teams, tournaments } = useLoaderData<LoaderData>()
+  const { user, teams, tournaments, activeUsersCount } = useLoaderData<LoaderData>()
   const { t, i18n } = useTranslation()
 
   // Get typography classes for Arabic support
@@ -203,8 +206,8 @@ export default function AdminDashboard(): JSX.Element {
           >
             <div className='space-y-2'>
               <p>
-                <strong className='me-1'>User Roles:</strong>
-                Manage and assign roles
+                <strong className='me-1'>{t('admin.user.totalUsers')}:</strong>
+                {activeUsersCount}
               </p>
             </div>
           </ActionLinkPanel>

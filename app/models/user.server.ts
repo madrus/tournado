@@ -263,3 +263,8 @@ export const getAllUsersWithPagination = async (
     totalPages: Math.ceil(total / pageSize),
   }
 }
+
+export const getActiveUsersCount = async (): Promise<number> =>
+  prisma.user.count({
+    where: { active: true },
+  })

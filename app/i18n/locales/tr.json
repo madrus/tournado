@@ -21,7 +21,7 @@
       "createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
       "createTeam": "Takım oluştur",
       "createTeamDescription": "Gerekli tüm ayrıntılarla sisteme yeni bir takım ekleyin.",
-      "description": "Tüm turnuvalardaki tüm takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
+      "description": "Turnuvalardaki takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
       "editTeam": "Takım detaylarını düzenle",
       "newTeam": "Yeni takım",
       "saveChanges": "Değişiklikleri kaydet",
@@ -32,13 +32,14 @@
     },
     "tournament": {
       "confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "description": "Sistemdeki tüm turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
+      "description": "Sistemdeki turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
       "title": "Turnuva yönetimi",
       "totalTournaments": "Toplam turnuva sayısı"
     },
     "user": {
       "description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
-      "title": "Kullanıcı yönetimi"
+      "title": "Kullanıcı yönetimi",
+      "totalUsers": "Toplam kullanıcılar"
     }
   },
   "auth": {

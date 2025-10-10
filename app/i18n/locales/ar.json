@@ -1,12 +1,22 @@
 {
   "admin": {
+    "competition": {
+      "description": "إدارة المجموعات والمباريات والترتيب للبطولات.",
+      "title": "إدارة المسابقة"
+    },
     "panel": {
       "description": "أهلاً بك مرة أخرى، <email>{{email}}</email>. أدر منصة البطولات الخاصة بك من هنا.",
       "title": "لوحة الإدارة"
     },
+    "reports": {
+      "description": "عرض إحصائيات استخدام المنصة والبطولات.",
+      "title": "التقارير والإحصائيات"
+    },
+    "settings": {
+      "description": "تكوين إعدادات التطبيق والتفضيلات.",
+      "title": "إعدادات النظام"
+    },
     "team": {
-      "allTeams": "جميع الفرق",
-      "allTeamsDescription": "إدارة جميع الفرق في النظام. انقر على فريق لتحرير التفاصيل أو حذفه.",
       "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
       "createNewTeamDescription": "إنشاء فريق جديد مع تفاصيل البطولة ومعلومات الاتصال.",
       "createTeam": "إنشاء فريق",
@@ -21,28 +31,14 @@
       "totalTeams": "إجمالي الفرق"
     },
     "tournament": {
-      "allTournaments": "جميع البطولات",
-      "allTournamentsDescription": "عرض وإدارة جميع البطولات في النظام",
       "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
       "description": "إدارة جميع البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
       "title": "إدارة البطولات",
       "totalTournaments": "إجمالي البطولات"
     },
-    "competition": {
-      "title": "إدارة المسابقة",
-      "description": "إدارة المجموعات والمباريات والترتيب للبطولات."
-    },
     "user": {
-      "title": "إدارة المستخدمين",
-      "description": "إدارة حسابات المستخدمين والصلاحيات."
-    },
-    "settings": {
-      "title": "إعدادات النظام",
-      "description": "تكوين إعدادات التطبيق والتفضيلات."
-    },
-    "reports": {
-      "title": "التقارير والإحصائيات",
-      "description": "عرض إحصائيات استخدام المنصة والبطولات."
+      "description": "إدارة حسابات المستخدمين والصلاحيات.",
+      "title": "إدارة المستخدمين"
     }
   },
   "auth": {
@@ -51,6 +47,10 @@
     "createAccount": "إنشاء حساب",
     "dontHaveAccount": "ليس لديك حساب؟",
     "emailAddress": "عنوان البريد الإلكتروني",
+    "errors": {
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
+      "accountDeactivatedTitle": "Account Deactivated"
+    },
     "firebase": {
       "continueWithGoogle": "المتابعة مع Google",
       "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
@@ -96,19 +96,9 @@
       "passwordWeak": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام"
     },
     "viewTeams": "عرض الفرق",
-    "viewTeamsFor": "عرض الفرق لـ",
-    "errors": {
-      "accountDeactivatedTitle": "Account Deactivated",
-      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance."
-    }
+    "viewTeamsFor": "عرض الفرق لـ"
   },
   "common": {
-    "optional": "(optional)",
-    "pagination": {
-      "showing": "Showing {{count}} of {{total}} users",
-      "previous": "Previous",
-      "next": "Next"
-    },
     "actions": {
       "add": "إضافة",
       "cancel": "إلغاء",
@@ -121,9 +111,9 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "تسجيل الدخول",
-      "signingIn": "جاري تسجيل الدخول...",
       "signOut": "تسجيل الخروج",
-      "signUp": "التسجيل"
+      "signUp": "التسجيل",
+      "signingIn": "جاري تسجيل الدخول..."
     },
     "backToHome": "العودة إلى الرئيسية",
     "darkMode": "المظهر الداكن",
@@ -132,6 +122,12 @@
     "language": "اللغة",
     "lightMode": "المظهر الفاتح",
     "loading": "جاري التحميل...",
+    "optional": "(optional)",
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous",
+      "showing": "Showing {{count}} of {{total}} users"
+    },
     "signedInAs": "مسجل الدخول كـ",
     "titles": {
       "about": "حول",
@@ -149,62 +145,6 @@
     "toggleMenu": "فتح/إغلاق القائمة",
     "toggleTheme": "تبديل المظهر",
     "welcome": "أهلاً وسهلاً"
-  },
-  "roles": {
-    "public": "Public",
-    "manager": "Manager",
-    "admin": "Admin",
-    "referee": "Referee",
-    "editor": "Editor",
-    "billing": "Billing"
-  },
-  "users": {
-    "titles": {
-      "userManagement": "User Management",
-      "userDetail": "User Details",
-      "userInformation": "User Information",
-      "auditLog": "Audit Log",
-      "deactivateUser": "Deactivate User",
-      "reactivateUser": "Reactivate User"
-    },
-    "descriptions": {
-      "manageUsersAndRoles": "Manage user accounts and assign roles"
-    },
-    "fields": {
-      "email": "Email",
-      "displayName": "Display Name",
-      "role": "Role",
-      "currentRole": "Current Role",
-      "assignRole": "Assign Role",
-      "reason": "Reason",
-      "performedBy": "Performed by",
-      "createdAt": "Created At"
-    },
-    "actions": {
-      "updateRole": "Update Role",
-      "viewDetails": "View Details",
-      "deactivateUser": "Deactivate User",
-      "reactivateUser": "Reactivate User"
-    },
-    "placeholders": {
-      "reasonForChange": "Enter reason for role change (optional)",
-      "reasonForDeactivation": "Enter reason for deactivation (optional)",
-      "reasonForReactivation": "Enter reason for reactivation (optional)"
-    },
-    "messages": {
-      "roleUpdatedSuccessfully": "User role updated successfully",
-      "noAuditLogs": "No audit log entries found",
-      "userIsDeactivated": "This user is currently deactivated",
-      "deactivated": "Deactivated"
-    },
-    "auditActions": {
-      "role_change": "Role Changed",
-      "approval": "User Approved",
-      "rejection": "User Rejected",
-      "profile_update": "Profile Updated",
-      "deactivate": "User Deactivated",
-      "reactivate": "User Reactivated"
-    }
   },
   "divisions": {
     "FIFTH_DIVISION": "الدرجة السادسة",
@@ -334,6 +274,14 @@
       "title": "نسخة جديدة متاحة"
     }
   },
+  "roles": {
+    "admin": "مسؤول",
+    "billing": "فواتير",
+    "editor": "محرر",
+    "manager": "مدير",
+    "public": "عام",
+    "referee": "حكم"
+  },
   "teams": {
     "allTournaments": "جميع البطولات",
     "count": "{{count}} فريق مسجل",
@@ -408,5 +356,57 @@
     "noTournamentsDescription": "لم يتم إنشاء أي بطولات بعد. أنشئ بطولتك الأولى للبدء!",
     "startDate": "تاريخ البداية",
     "title": "البطولات"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "إلغاء تنشيط المستخدم",
+      "reactivateUser": "إعادة تنشيط المستخدم",
+      "updateRole": "تحديث الدور",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "auditActions": {
+      "approval": "تمت الموافقة على المستخدم",
+      "deactivate": "تم إلغاء تنشيط المستخدم",
+      "profile_update": "تم تحديث الملف الشخصي",
+      "reactivate": "تمت إعادة تنشيط المستخدم",
+      "rejection": "تم رفض المستخدم",
+      "role_change": "تم تغيير الدور"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "إدارة حسابات المستخدمين وتعيين الأدوار"
+    },
+    "fields": {
+      "assignRole": "تعيين الدور",
+      "createdAt": "تاريخ الإنشاء",
+      "currentRole": "الدور الحالي",
+      "displayName": "اسم العرض",
+      "email": "البريد الإلكتروني",
+      "performedBy": "تم بواسطة",
+      "reason": "السبب",
+      "role": "الدور"
+    },
+    "messages": {
+      "deactivated": "غير نشط",
+      "noAuditLogs": "لم يتم العثور على إدخالات سجل التدقيق",
+      "noUsers": "لم يتم العثور على مستخدمين",
+      "noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
+      "roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
+      "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
+    },
+    "placeholders": {
+      "reasonForChange": "أدخل سبب تغيير الدور (اختياري)",
+      "reasonForDeactivation": "أدخل سبب إلغاء التنشيط (اختياري)",
+      "reasonForReactivation": "أدخل سبب إعادة التنشيط (اختياري)"
+    },
+    "titles": {
+      "allUsers": "جميع المستخدمين",
+      "auditLog": "سجل التدقيق",
+      "deactivateUser": "إلغاء تنشيط المستخدم",
+      "reactivateUser": "إعادة تنشيط المستخدم",
+      "totalUsers": "إجمالي المستخدمين",
+      "userDetail": "تفاصيل المستخدم",
+      "userInformation": "معلومات المستخدم",
+      "userManagement": "إدارة المستخدمين"
+    }
   }
 }

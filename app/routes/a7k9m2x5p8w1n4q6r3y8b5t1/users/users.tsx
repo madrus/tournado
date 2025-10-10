@@ -1,10 +1,10 @@
 import { JSX } from 'react'
 import { Outlet } from 'react-router'
 
-import { TournamentsLayoutHeader } from '~/components/layouts'
+import { UsersLayoutHeader } from '~/components/layouts'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
-// Route metadata - requires tournaments read permission
+// Route metadata - requires user management permissions
 export const handle: RouteMetadata = {
   isPublic: false,
   auth: {
@@ -13,15 +13,15 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin', 'manager'],
+    requiredRoles: ['admin'],
     redirectTo: '/unauthorized',
   },
 }
 
-export default function AdminTournamentsLayout(): JSX.Element {
+export default function AdminUsersLayout(): JSX.Element {
   return (
-    <div className='space-y-8' data-testid='admin-tournaments-layout-container'>
-      <TournamentsLayoutHeader variant='admin' />
+    <div className='space-y-8' data-testid='admin-users-layout-container'>
+      <UsersLayoutHeader variant='admin' />
       <Outlet />
     </div>
   )

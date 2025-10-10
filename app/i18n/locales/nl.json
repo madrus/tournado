@@ -1,12 +1,22 @@
 {
   "admin": {
+    "competition": {
+      "description": "Beheer groepen, wedstrijden en standen voor toernooien.",
+      "title": "Competitiebeheer"
+    },
     "panel": {
       "description": "Welkom terug, <email>{{email}}</email>. Beheer je toernooiplatform vanaf hier.",
       "title": "Beheerpaneel"
     },
+    "reports": {
+      "description": "Bekijk platformgebruik en toernooistatistieken.",
+      "title": "Rapporten & Analytics"
+    },
+    "settings": {
+      "description": "Configureer applicatie-instellingen en voorkeuren.",
+      "title": "Systeeminstellingen"
+    },
     "team": {
-      "allTeams": "Alle teams",
-      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om details te bewerken of te verwijderen.",
       "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
       "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "createTeam": "Team aanmaken",
@@ -21,28 +31,14 @@
       "totalTeams": "Totaal aantal teams"
     },
     "tournament": {
-      "allTournaments": "Alle toernooien",
-      "allTournamentsDescription": "Bekijk en beheer alle toernooien in het systeem",
       "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
       "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
       "title": "Toernooien beheer",
       "totalTournaments": "Totaal aantal toernooien"
     },
-    "competition": {
-      "title": "Competitiebeheer",
-      "description": "Beheer groepen, wedstrijden en standen voor toernooien."
-    },
     "user": {
-      "title": "Gebruikers beheer",
-      "description": "Beheer gebruikersaccounts en machtigingen."
-    },
-    "settings": {
-      "title": "Systeeminstellingen",
-      "description": "Configureer applicatie-instellingen en voorkeuren."
-    },
-    "reports": {
-      "title": "Rapporten & Analytics",
-      "description": "Bekijk platformgebruik en toernooistatistieken."
+      "description": "Beheer gebruikersaccounts en machtigingen.",
+      "title": "Gebruikers beheer"
     }
   },
   "auth": {
@@ -51,6 +47,10 @@
     "createAccount": "Account aanmaken",
     "dontHaveAccount": "Nog geen account?",
     "emailAddress": "E-mailadres",
+    "errors": {
+      "accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp.",
+      "accountDeactivatedTitle": "Account gedeactiveerd"
+    },
     "firebase": {
       "continueWithGoogle": "Doorgaan met Google",
       "error": "Authenticatie mislukt. Probeer het opnieuw.",
@@ -96,19 +96,9 @@
       "passwordWeak": "Wachtwoord moet hoofdletters, kleine letters en cijfers bevatten"
     },
     "viewTeams": "Teams bekijken",
-    "viewTeamsFor": "Teams bekijken voor",
-    "errors": {
-      "accountDeactivatedTitle": "Account gedeactiveerd",
-      "accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp."
-    }
+    "viewTeamsFor": "Teams bekijken voor"
   },
   "common": {
-    "optional": "(optioneel)",
-    "pagination": {
-      "showing": "{{count}} van {{total}} gebruikers worden weergegeven",
-      "previous": "Vorige",
-      "next": "Volgende"
-    },
     "actions": {
       "add": "Toevoegen",
       "cancel": "Annuleren",
@@ -121,9 +111,9 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Inloggen",
-      "signingIn": "Inloggen...",
       "signOut": "Uitloggen",
-      "signUp": "Registreren"
+      "signUp": "Registreren",
+      "signingIn": "Inloggen..."
     },
     "backToHome": "Terug naar home",
     "darkMode": "Donkere modus",
@@ -132,6 +122,12 @@
     "language": "Taal",
     "lightMode": "Lichte modus",
     "loading": "Laden...",
+    "optional": "(optioneel)",
+    "pagination": {
+      "next": "Volgende",
+      "previous": "Vorige",
+      "showing": "{{count}} van {{total}} gebruikers worden weergegeven"
+    },
     "signedInAs": "Ingelogd als",
     "titles": {
       "about": "Over ons",
@@ -149,62 +145,6 @@
     "toggleMenu": "Menu openen/sluiten",
     "toggleTheme": "Thema wisselen",
     "welcome": "Welkom"
-  },
-  "roles": {
-    "public": "Publiek",
-    "manager": "Manager",
-    "admin": "Beheerder",
-    "referee": "Scheidsrechter",
-    "editor": "Redacteur",
-    "billing": "Facturatie"
-  },
-  "users": {
-    "titles": {
-      "userManagement": "Gebruikersbeheer",
-      "userDetail": "Gebruikersdetails",
-      "userInformation": "Gebruikersinformatie",
-      "auditLog": "Auditlog",
-      "deactivateUser": "Gebruiker deactiveren",
-      "reactivateUser": "Gebruiker reactiveren"
-    },
-    "descriptions": {
-      "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
-    },
-    "fields": {
-      "email": "E-mail",
-      "displayName": "Weergavenaam",
-      "role": "Rol",
-      "currentRole": "Huidige rol",
-      "assignRole": "Rol toewijzen",
-      "reason": "Reden",
-      "performedBy": "Uitgevoerd door",
-      "createdAt": "Aangemaakt op"
-    },
-    "actions": {
-      "updateRole": "Rol bijwerken",
-      "viewDetails": "Details bekijken",
-      "deactivateUser": "Gebruiker deactiveren",
-      "reactivateUser": "Gebruiker reactiveren"
-    },
-    "placeholders": {
-      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
-      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
-      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
-    },
-    "messages": {
-      "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
-      "noAuditLogs": "Geen auditlog-vermeldingen gevonden",
-      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd",
-      "deactivated": "Gedeactiveerd"
-    },
-    "auditActions": {
-      "role_change": "Rol gewijzigd",
-      "approval": "Gebruiker goedgekeurd",
-      "rejection": "Gebruiker afgewezen",
-      "profile_update": "Profiel bijgewerkt",
-      "deactivate": "Gebruiker gedeactiveerd",
-      "reactivate": "Gebruiker gereactiveerd"
-    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Vijfde klasse",
@@ -334,6 +274,14 @@
       "title": "Er is een nieuwe versie beschikbaar"
     }
   },
+  "roles": {
+    "admin": "Beheerder",
+    "billing": "Facturatie",
+    "editor": "Redacteur",
+    "manager": "Manager",
+    "public": "Publiek",
+    "referee": "Scheidsrechter"
+  },
   "teams": {
     "allTournaments": "Alle toernooien",
     "count": "{{count}} team geregistreerd",
@@ -408,5 +356,57 @@
     "noTournamentsDescription": "Er zijn nog geen toernooien aangemaakt. Maak je eerste toernooi aan om te beginnen!",
     "startDate": "Startdatum",
     "title": "Toernooien"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren",
+      "updateRole": "Rol bijwerken",
+      "viewDetails": "Details bekijken"
+    },
+    "auditActions": {
+      "approval": "Gebruiker goedgekeurd",
+      "deactivate": "Gebruiker gedeactiveerd",
+      "profile_update": "Profiel bijgewerkt",
+      "reactivate": "Gebruiker gereactiveerd",
+      "rejection": "Gebruiker afgewezen",
+      "role_change": "Rol gewijzigd"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
+    },
+    "fields": {
+      "assignRole": "Rol toewijzen",
+      "createdAt": "Aangemaakt op",
+      "currentRole": "Huidige rol",
+      "displayName": "Weergavenaam",
+      "email": "E-mail",
+      "performedBy": "Uitgevoerd door",
+      "reason": "Reden",
+      "role": "Rol"
+    },
+    "messages": {
+      "deactivated": "Gedeactiveerd",
+      "noAuditLogs": "Geen auditlog-vermeldingen gevonden",
+      "noUsers": "Geen gebruikers gevonden",
+      "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
+      "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
+    },
+    "placeholders": {
+      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
+      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
+      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+    },
+    "titles": {
+      "allUsers": "Alle gebruikers",
+      "auditLog": "Auditlog",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren",
+      "totalUsers": "Totaal aantal gebruikers",
+      "userDetail": "Gebruikersdetails",
+      "userInformation": "Gebruikersinformatie",
+      "userManagement": "Gebruikersbeheer"
+    }
   }
 }

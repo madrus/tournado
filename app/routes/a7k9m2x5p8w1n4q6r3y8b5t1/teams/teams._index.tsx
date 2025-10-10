@@ -13,7 +13,6 @@ import { loadTeamsAndTournamentsData } from '~/utils/dataLoaders'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/teams._index'
 
@@ -53,7 +52,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<TeamsLoader
 }
 
 export default function AdminTeamsIndexPage(): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { teamListItems, tournamentListItems, selectedTournamentId } =
     useLoaderData<TeamsLoaderData>()
   const revalidator = useRevalidator()
@@ -92,15 +91,6 @@ export default function AdminTeamsIndexPage(): JSX.Element {
 
       {/* Teams List */}
       <Panel color={PANEL_COLOR} variant='content-panel'>
-        <div className='mb-6'>
-          <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
-            {t('admin.team.allTeams')}
-          </h3>
-          <p className='mt-1 text-sm opacity-75'>
-            {t('admin.team.allTeamsDescription')}
-          </p>
-        </div>
-
         {/* Tournament Filter */}
         <div className='mb-6'>
           <TournamentFilter

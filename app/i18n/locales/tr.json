@@ -1,12 +1,22 @@
 {
   "admin": {
+    "competition": {
+      "description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
+      "title": "Yarışma yönetimi"
+    },
     "panel": {
       "description": "Tekrar hoş geldiniz, <email>{{email}}</email>. Turnuva platformunuzu buradan yönetin.",
       "title": "Yönetici Paneli"
     },
+    "reports": {
+      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin.",
+      "title": "Raporlar ve analitik"
+    },
+    "settings": {
+      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın.",
+      "title": "Sistem ayarları"
+    },
     "team": {
-      "allTeams": "Tüm takımlar",
-      "allTeamsDescription": "Sistemdeki tüm takımları yönetin. Detayları düzenlemek veya silmek için bir takıma tıklayın.",
       "confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
       "createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
       "createTeam": "Takım oluştur",
@@ -21,28 +31,14 @@
       "totalTeams": "Toplam takım"
     },
     "tournament": {
-      "allTournaments": "Tüm turnuvalar",
-      "allTournamentsDescription": "Sistemdeki tüm turnuvaları görüntüleyin ve yönetin",
       "confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
       "description": "Sistemdeki tüm turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
       "title": "Turnuva yönetimi",
       "totalTournaments": "Toplam turnuva sayısı"
     },
-    "competition": {
-      "title": "Yarışma yönetimi",
-      "description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin."
-    },
     "user": {
-      "title": "Kullanıcı yönetimi",
-      "description": "Kullanıcı hesaplarını ve izinlerini yönetin."
-    },
-    "settings": {
-      "title": "Sistem ayarları",
-      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın."
-    },
-    "reports": {
-      "title": "Raporlar ve analitik",
-      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin."
+      "description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
+      "title": "Kullanıcı yönetimi"
     }
   },
   "auth": {
@@ -51,6 +47,10 @@
     "createAccount": "Hesap oluştur",
     "dontHaveAccount": "Henüz hesabınız yok mu?",
     "emailAddress": "E-posta adresi",
+    "errors": {
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
+      "accountDeactivatedTitle": "Account Deactivated"
+    },
     "firebase": {
       "continueWithGoogle": "Google ile devam et",
       "error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
@@ -96,19 +96,9 @@
       "passwordWeak": "Şifre büyük harf, küçük harf ve rakam içermelidir"
     },
     "viewTeams": "Takımları görüntüle",
-    "viewTeamsFor": "Takımları görüntüle:",
-    "errors": {
-      "accountDeactivatedTitle": "Account Deactivated",
-      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance."
-    }
+    "viewTeamsFor": "Takımları görüntüle:"
   },
   "common": {
-    "optional": "(optional)",
-    "pagination": {
-      "showing": "Showing {{count}} of {{total}} users",
-      "previous": "Previous",
-      "next": "Next"
-    },
     "actions": {
       "add": "Ekle",
       "cancel": "İptal",
@@ -121,9 +111,9 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Giriş yap",
-      "signingIn": "Giriş yapılıyor...",
       "signOut": "Çıkış yap",
-      "signUp": "Kayıt ol"
+      "signUp": "Kayıt ol",
+      "signingIn": "Giriş yapılıyor..."
     },
     "backToHome": "Ana sayfaya dön",
     "darkMode": "Koyu mod",
@@ -132,6 +122,12 @@
     "language": "Dil",
     "lightMode": "Açık mod",
     "loading": "Yükleniyor...",
+    "optional": "(optional)",
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous",
+      "showing": "Showing {{count}} of {{total}} users"
+    },
     "signedInAs": "Giriş yapıldı: ",
     "titles": {
       "about": "Hakkımızda",
@@ -149,62 +145,6 @@
     "toggleMenu": "Menüyü aç/kapat",
     "toggleTheme": "Temayı değiştir",
     "welcome": "Hoş geldiniz"
-  },
-  "roles": {
-    "public": "Public",
-    "manager": "Manager",
-    "admin": "Admin",
-    "referee": "Referee",
-    "editor": "Editor",
-    "billing": "Billing"
-  },
-  "users": {
-    "titles": {
-      "userManagement": "User Management",
-      "userDetail": "User Details",
-      "userInformation": "User Information",
-      "auditLog": "Audit Log",
-      "deactivateUser": "Deactivate User",
-      "reactivateUser": "Reactivate User"
-    },
-    "descriptions": {
-      "manageUsersAndRoles": "Manage user accounts and assign roles"
-    },
-    "fields": {
-      "email": "Email",
-      "displayName": "Display Name",
-      "role": "Role",
-      "currentRole": "Current Role",
-      "assignRole": "Assign Role",
-      "reason": "Reason",
-      "performedBy": "Performed by",
-      "createdAt": "Created At"
-    },
-    "actions": {
-      "updateRole": "Update Role",
-      "viewDetails": "View Details",
-      "deactivateUser": "Deactivate User",
-      "reactivateUser": "Reactivate User"
-    },
-    "placeholders": {
-      "reasonForChange": "Enter reason for role change (optional)",
-      "reasonForDeactivation": "Enter reason for deactivation (optional)",
-      "reasonForReactivation": "Enter reason for reactivation (optional)"
-    },
-    "messages": {
-      "roleUpdatedSuccessfully": "User role updated successfully",
-      "noAuditLogs": "No audit log entries found",
-      "userIsDeactivated": "This user is currently deactivated",
-      "deactivated": "Deactivated"
-    },
-    "auditActions": {
-      "role_change": "Role Changed",
-      "approval": "User Approved",
-      "rejection": "User Rejected",
-      "profile_update": "Profile Updated",
-      "deactivate": "User Deactivated",
-      "reactivate": "User Reactivated"
-    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Beşinci Lig",
@@ -334,6 +274,14 @@
       "title": "Yeni bir sürüm mevcut"
     }
   },
+  "roles": {
+    "admin": "Admin",
+    "billing": "Faturalama",
+    "editor": "Editör",
+    "manager": "Yönetici",
+    "public": "Herkese Açık",
+    "referee": "Hakem"
+  },
   "teams": {
     "allTournaments": "Tüm turnuvalar",
     "count": "{{count}} takım kaydedildi",
@@ -408,5 +356,57 @@
     "noTournamentsDescription": "Henüz hiç turnuva oluşturulmamış. Başlamak için ilk turnuvanızı oluşturun!",
     "startDate": "Başlangıç tarihi",
     "title": "Turnuvalar"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Kullanıcıyı Devre Dışı Bırak",
+      "reactivateUser": "Kullanıcıyı Yeniden Etkinleştir",
+      "updateRole": "Rolü Güncelle",
+      "viewDetails": "Detayları Görüntüle"
+    },
+    "auditActions": {
+      "approval": "Kullanıcı Onaylandı",
+      "deactivate": "Kullanıcı Devre Dışı Bırakıldı",
+      "profile_update": "Profil Güncellendi",
+      "reactivate": "Kullanıcı Yeniden Etkinleştirildi",
+      "rejection": "Kullanıcı Reddedildi",
+      "role_change": "Rol Değiştirildi"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
+    },
+    "fields": {
+      "assignRole": "Rol Ata",
+      "createdAt": "Oluşturulma Tarihi",
+      "currentRole": "Mevcut Rol",
+      "displayName": "Görünen Ad",
+      "email": "E-posta",
+      "performedBy": "Gerçekleştiren",
+      "reason": "Sebep",
+      "role": "Rol"
+    },
+    "messages": {
+      "deactivated": "Devre Dışı",
+      "noAuditLogs": "Denetim kaydı girişi bulunamadı",
+      "noUsers": "Kullanıcı bulunamadı",
+      "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
+      "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
+      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
+    },
+    "placeholders": {
+      "reasonForChange": "Rol değişikliği sebebini girin (isteğe bağlı)",
+      "reasonForDeactivation": "Devre dışı bırakma sebebini girin (isteğe bağlı)",
+      "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
+    },
+    "titles": {
+      "allUsers": "Tüm Kullanıcılar",
+      "auditLog": "Denetim Kaydı",
+      "deactivateUser": "Kullanıcıyı Devre Dışı Bırak",
+      "reactivateUser": "Kullanıcıyı Yeniden Etkinleştir",
+      "totalUsers": "Toplam Kullanıcılar",
+      "userDetail": "Kullanıcı Detayları",
+      "userInformation": "Kullanıcı Bilgileri",
+      "userManagement": "Kullanıcı Yönetimi"
+    }
   }
 }

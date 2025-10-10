@@ -1,12 +1,22 @@
 {
   "admin": {
+    "competition": {
+      "description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
+      "title": "Wettbewerbsverwaltung"
+    },
     "panel": {
       "description": "Willkommen zurück, <email>{{email}}</email>. Verwalten Sie Ihre Turnierplattform von hier aus.",
       "title": "Admin-Panel"
     },
+    "reports": {
+      "description": "Plattformnutzung und Turnierstatistiken anzeigen.",
+      "title": "Berichte & Analytics"
+    },
+    "settings": {
+      "description": "Anwendungseinstellungen und Präferenzen konfigurieren.",
+      "title": "Systemeinstellungen"
+    },
     "team": {
-      "allTeams": "Alle Teams",
-      "allTeamsDescription": "Verwalten Sie alle Teams im System. Klicken Sie auf ein Team, um Details zu bearbeiten oder es zu löschen.",
       "confirmDelete": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
       "createNewTeamDescription": "Erstellen Sie ein neues Team mit Turnierdaten und Kontaktinformationen.",
       "createTeam": "Team erstellen",
@@ -21,28 +31,14 @@
       "totalTeams": "Teams insgesamt"
     },
     "tournament": {
-      "allTournaments": "Alle Turniere",
-      "allTournamentsDescription": "Alle Turniere im System anzeigen und verwalten",
       "confirmDelete": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
       "description": "Verwalten Sie alle Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
       "title": "Turnier-Verwaltung",
       "totalTournaments": "Turniere insgesamt"
     },
-    "competition": {
-      "title": "Wettbewerbsverwaltung",
-      "description": "Gruppen, Spiele und Tabellen für Turniere verwalten."
-    },
     "user": {
-      "title": "Benutzer-Verwaltung",
-      "description": "Benutzerkonten und Berechtigungen verwalten."
-    },
-    "settings": {
-      "title": "Systemeinstellungen",
-      "description": "Anwendungseinstellungen und Präferenzen konfigurieren."
-    },
-    "reports": {
-      "title": "Berichte & Analytics",
-      "description": "Plattformnutzung und Turnierstatistiken anzeigen."
+      "description": "Benutzerkonten und Berechtigungen verwalten.",
+      "title": "Benutzer-Verwaltung"
     }
   },
   "auth": {
@@ -51,6 +47,10 @@
     "createAccount": "Konto erstellen",
     "dontHaveAccount": "Haben Sie noch kein Konto?",
     "emailAddress": "E-Mail-Adresse",
+    "errors": {
+      "accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung.",
+      "accountDeactivatedTitle": "Konto deaktiviert"
+    },
     "firebase": {
       "continueWithGoogle": "Mit Google fortfahren",
       "error": "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -96,19 +96,9 @@
       "passwordWeak": "Passwort muss Groß-, Kleinbuchstaben und Zahlen enthalten"
     },
     "viewTeams": "Teams anzeigen",
-    "viewTeamsFor": "Teams anzeigen für",
-    "errors": {
-      "accountDeactivatedTitle": "Konto deaktiviert",
-      "accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung."
-    }
+    "viewTeamsFor": "Teams anzeigen für"
   },
   "common": {
-    "optional": "(optional)",
-    "pagination": {
-      "showing": "Zeige {{count}} von {{total}} Benutzern",
-      "previous": "Zurück",
-      "next": "Weiter"
-    },
     "actions": {
       "add": "Hinzufügen",
       "cancel": "Abbrechen",
@@ -121,9 +111,9 @@
     "appName": "Tournado",
     "auth": {
       "signIn": "Anmelden",
-      "signingIn": "Anmelden...",
       "signOut": "Abmelden",
-      "signUp": "Registrieren"
+      "signUp": "Registrieren",
+      "signingIn": "Anmelden..."
     },
     "backToHome": "Zurück zur Startseite",
     "darkMode": "Dunkler Modus",
@@ -132,6 +122,12 @@
     "language": "Sprache",
     "lightMode": "Heller Modus",
     "loading": "Laden...",
+    "optional": "(optional)",
+    "pagination": {
+      "next": "Weiter",
+      "previous": "Zurück",
+      "showing": "Zeige {{count}} von {{total}} Benutzern"
+    },
     "signedInAs": "Angemeldet als",
     "titles": {
       "about": "Über",
@@ -149,62 +145,6 @@
     "toggleMenu": "Menü umschalten",
     "toggleTheme": "Design umschalten",
     "welcome": "Willkommen"
-  },
-  "roles": {
-    "public": "Öffentlich",
-    "manager": "Manager",
-    "admin": "Administrator",
-    "referee": "Schiedsrichter",
-    "editor": "Redakteur",
-    "billing": "Abrechnung"
-  },
-  "users": {
-    "titles": {
-      "userManagement": "Benutzerverwaltung",
-      "userDetail": "Benutzerdetails",
-      "userInformation": "Benutzerinformationen",
-      "auditLog": "Audit-Protokoll",
-      "deactivateUser": "Benutzer deaktivieren",
-      "reactivateUser": "Benutzer reaktivieren"
-    },
-    "descriptions": {
-      "manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
-    },
-    "fields": {
-      "email": "E-Mail",
-      "displayName": "Anzeigename",
-      "role": "Rolle",
-      "currentRole": "Aktuelle Rolle",
-      "assignRole": "Rolle zuweisen",
-      "reason": "Grund",
-      "performedBy": "Durchgeführt von",
-      "createdAt": "Erstellt am"
-    },
-    "actions": {
-      "updateRole": "Rolle aktualisieren",
-      "viewDetails": "Details ansehen",
-      "deactivateUser": "Benutzer deaktivieren",
-      "reactivateUser": "Benutzer reaktivieren"
-    },
-    "placeholders": {
-      "reasonForChange": "Grund für Rollenänderung eingeben (optional)",
-      "reasonForDeactivation": "Grund für Deaktivierung eingeben (optional)",
-      "reasonForReactivation": "Grund für Reaktivierung eingeben (optional)"
-    },
-    "messages": {
-      "roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
-      "noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
-      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
-      "deactivated": "Deaktiviert"
-    },
-    "auditActions": {
-      "role_change": "Rolle geändert",
-      "approval": "Benutzer genehmigt",
-      "rejection": "Benutzer abgelehnt",
-      "profile_update": "Profil aktualisiert",
-      "deactivate": "Benutzer deaktiviert",
-      "reactivate": "Benutzer reaktiviert"
-    }
   },
   "divisions": {
     "FIFTH_DIVISION": "Fünfte Division",
@@ -334,6 +274,14 @@
       "title": "Eine neue Version ist verfügbar"
     }
   },
+  "roles": {
+    "admin": "Administrator",
+    "billing": "Abrechnung",
+    "editor": "Redakteur",
+    "manager": "Manager",
+    "public": "Öffentlich",
+    "referee": "Schiedsrichter"
+  },
   "teams": {
     "allTournaments": "Alle Turniere",
     "count": "{{count}} Team registriert",
@@ -408,5 +356,57 @@
     "noTournamentsDescription": "Es wurden noch keine Turniere erstellt. Erstellen Sie Ihr erstes Turnier, um loszulegen!",
     "startDate": "Startdatum",
     "title": "Turniere"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Benutzer deaktivieren",
+      "reactivateUser": "Benutzer reaktivieren",
+      "updateRole": "Rolle aktualisieren",
+      "viewDetails": "Details ansehen"
+    },
+    "auditActions": {
+      "approval": "Benutzer genehmigt",
+      "deactivate": "Benutzer deaktiviert",
+      "profile_update": "Profil aktualisiert",
+      "reactivate": "Benutzer reaktiviert",
+      "rejection": "Benutzer abgelehnt",
+      "role_change": "Rolle geändert"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
+    },
+    "fields": {
+      "assignRole": "Rolle zuweisen",
+      "createdAt": "Erstellt am",
+      "currentRole": "Aktuelle Rolle",
+      "displayName": "Anzeigename",
+      "email": "E-Mail",
+      "performedBy": "Durchgeführt von",
+      "reason": "Grund",
+      "role": "Rolle"
+    },
+    "messages": {
+      "deactivated": "Deaktiviert",
+      "noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
+      "noUsers": "Keine Benutzer gefunden",
+      "noUsersDescription": "Es wurden noch keine Benutzer erstellt.",
+      "roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
+      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert"
+    },
+    "placeholders": {
+      "reasonForChange": "Grund für Rollenänderung eingeben (optional)",
+      "reasonForDeactivation": "Grund für Deaktivierung eingeben (optional)",
+      "reasonForReactivation": "Grund für Reaktivierung eingeben (optional)"
+    },
+    "titles": {
+      "allUsers": "Alle Benutzer",
+      "auditLog": "Audit-Protokoll",
+      "deactivateUser": "Benutzer deaktivieren",
+      "reactivateUser": "Benutzer reaktivieren",
+      "totalUsers": "Benutzer gesamt",
+      "userDetail": "Benutzerdetails",
+      "userInformation": "Benutzerinformationen",
+      "userManagement": "Benutzerverwaltung"
+    }
   }
 }

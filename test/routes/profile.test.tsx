@@ -51,7 +51,9 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Profile')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'Profile Information'
+      )
     })
 
     test('should render profile information section', () => {
@@ -145,7 +147,7 @@ describe('Profile Page', () => {
         </MemoryRouter>
       )
       const heading = screen.getByRole('heading', { level: 1 })
-      expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
+      expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
     test('should apply correct styling to section headings', () => {
@@ -171,7 +173,7 @@ describe('Profile Page', () => {
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3)
+      expect(h2Elements).toHaveLength(2)
     })
 
     test('should render sections in correct order', () => {
@@ -182,10 +184,9 @@ describe('Profile Page', () => {
       )
       const headings = screen.getAllByRole('heading')
       const headingTexts = headings.map(h => h.textContent)
-      expect(headingTexts[0]).toBe('Profile') // h1
-      expect(headingTexts[1]).toBe('Profile Information') // h2
-      expect(headingTexts[2]).toBe('Account Settings') // h2
-      expect(headingTexts[3]).toBe('Tournament Access') // h2
+      expect(headingTexts[0]).toBe('Profile Information') // h1
+      expect(headingTexts[1]).toBe('Account Settings') // h2
+      expect(headingTexts[2]).toBe('Tournament Access') // h2
     })
   })
 
@@ -199,7 +200,7 @@ describe('Profile Page', () => {
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3)
+      expect(h2Elements).toHaveLength(2)
     })
   })
 
@@ -210,7 +211,9 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Profile')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'Profile Information'
+      )
     })
   })
 })

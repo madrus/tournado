@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -13,14 +13,13 @@ import {
   TrophyIcon,
   TuneIcon,
 } from '~/components/icons'
+import { AdminPanelLayoutHeader } from '~/components/layouts'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
-import { cn } from '~/utils/misc'
 import { hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
 
@@ -83,10 +82,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 
 export default function AdminDashboard(): JSX.Element {
   const { user, teams, tournaments, activeUsersCount } = useLoaderData<LoaderData>()
-  const { t, i18n } = useTranslation()
-
-  // Get typography classes for Arabic support
-  const typography = getTypographyClasses(i18n.language)
+  const { i18n, t } = useTranslation()
 
   // Check user permissions for conditional rendering
   const canManageTeams = hasPermission(user, 'teams:manage')
@@ -98,28 +94,7 @@ export default function AdminDashboard(): JSX.Element {
 
   return (
     <div className='space-y-8' data-testid='admin-dashboard-container'>
-      <div>
-        <h1
-          className={cn(
-            'mb-8 text-3xl font-bold',
-            typography.title,
-            typography.textAlign
-          )}
-        >
-          {t('common.titles.adminPanel')}
-        </h1>
-        <p
-          className={cn('text-foreground mb-8 text-lg leading-7', typography.textAlign)}
-        >
-          <Trans
-            i18nKey='admin.panel.description'
-            values={{ email: user.email }}
-            components={{
-              email: <span className={getLatinTitleClass(i18n.language)} />,
-            }}
-          />
-        </p>
-      </div>
+      <AdminPanelLayoutHeader userEmail={user.email} />
 
       {/* Dashboard Grid */}
       <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>

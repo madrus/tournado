@@ -5,6 +5,7 @@ import type { MetaFunction } from 'react-router'
 import type { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import { ProfileLayoutHeader } from '~/components/layouts'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
@@ -62,29 +63,12 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export default function ProfilePage(): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
 
   return (
     <div data-testid='profile-container'>
-      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-        {t('common.titles.profile')}
-      </h1>
-      <div className='space-y-6'>
-        <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
-            Profile Information
-          </h2>
-          <p className='text-foreground'>
-            Manage your profile settings and account information for tournament
-            management.
-          </p>
-        </section>
-
+      <ProfileLayoutHeader />
+      <div className='mt-8 space-y-6'>
         <section>
           <h2
             className={cn(

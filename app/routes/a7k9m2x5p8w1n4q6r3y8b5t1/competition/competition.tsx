@@ -1,11 +1,10 @@
 import { JSX, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Outlet, useLoaderData } from 'react-router'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { SportsIcon, TrophyIcon } from '~/components/icons'
+import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
-import { TournamentFilter } from '~/components/TournamentFilter'
 import type { TournamentListItem } from '~/lib/lib.types'
 import {
   getAllTournamentListItems,
@@ -14,7 +13,6 @@ import {
 import { cn } from '~/utils/misc'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/competition'
 
@@ -88,34 +86,16 @@ const tabs = [
 
 export default function CompetitionLayout(): JSX.Element {
   const { tournamentListItems, selectedTournamentId } = useLoaderData<LoaderData>()
-  const { i18n } = useTranslation()
   const [activeTab, setActiveTab] = useState<'groups' | 'playoffs'>('groups')
 
   return (
     <div className='w-full space-y-8'>
       {/* Page Header */}
-      <div className='flex items-center justify-between'>
-        <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            Competition Management
-          </h1>
-          <p className='text-foreground-light mt-2'>
-            Manage groups and playoffs for tournaments
-          </p>
-        </div>
-
-        {/* Tournament Selector */}
-        <div className='flex items-center'>
-          <TournamentFilter
-            tournamentListItems={tournamentListItems}
-            selectedTournamentId={selectedTournamentId}
-            className='min-w-64'
-            label='Tournament'
-            placeholder='Choose tournament'
-            showAllOption={false}
-          />
-        </div>
-      </div>
+      <CompetitionLayoutHeader
+        variant='admin'
+        tournamentListItems={tournamentListItems}
+        selectedTournamentId={selectedTournamentId}
+      />
 
       {/* Tab Navigation & Content */}
       <div className='space-y-0'>

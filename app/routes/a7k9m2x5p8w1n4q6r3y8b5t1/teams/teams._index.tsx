@@ -90,23 +90,25 @@ export default function AdminTeamsIndexPage(): JSX.Element {
       </div>
 
       {/* Teams List */}
-      <Panel color={PANEL_COLOR} variant='content-panel'>
-        {/* Tournament Filter */}
-        <div className='mb-6'>
-          <TournamentFilter
-            tournamentListItems={tournamentListItems}
-            selectedTournamentId={selectedTournamentId}
-            className='max-w-md'
-            color={PANEL_COLOR}
-          />
-        </div>
+      <div className={cn('w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+        <Panel color={PANEL_COLOR} variant='content-panel'>
+          {/* Tournament Filter */}
+          <div className='mb-6'>
+            <TournamentFilter
+              tournamentListItems={tournamentListItems}
+              selectedTournamentId={selectedTournamentId}
+              className='max-w-md'
+              color={PANEL_COLOR}
+            />
+          </div>
 
-        <TeamList
-          teams={teamListItems}
-          onTeamClick={handleTeamClick}
-          emptyMessage={t('teams.noTeams')}
-        />
-      </Panel>
+          <TeamList
+            teams={teamListItems}
+            onTeamClick={handleTeamClick}
+            emptyMessage={t('teams.noTeams')}
+          />
+        </Panel>
+      </div>
     </div>
   )
 }

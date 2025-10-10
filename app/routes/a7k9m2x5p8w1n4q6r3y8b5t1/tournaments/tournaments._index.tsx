@@ -28,6 +28,9 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 
 import type { Route } from './+types/tournaments._index'
 
+// Local constants
+const PANEL_COLOR = 'teal' as const
+
 // Route metadata - requires tournaments read permission
 export const handle: RouteMetadata = {
   isPublic: false,
@@ -291,7 +294,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
         className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}
       >
         <Panel
-          color='teal'
+          color={PANEL_COLOR}
           variant='dashboard-panel'
           icon={<TrophyIcon size={24} variant='outlined' />}
           iconColor='brand'
@@ -305,7 +308,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
       {/* Tournaments List */}
       <div className={cn('w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
-        <Panel color='teal' variant='content-panel'>
+        <Panel color={PANEL_COLOR} variant='content-panel'>
           {tournamentListItems.length === 0 ? (
             <div className='py-12 text-center'>
               <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>

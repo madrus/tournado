@@ -91,10 +91,15 @@ vi.mock('~/components/TournamentFilter', () => ({
   ),
 }))
 
-// Mock icons
-vi.mock('~/components/icons', () => ({
-  ApparelIcon: () => <div data-testid='apparel-icon'>Icon</div>,
-}))
+// Mock icons - use importOriginal to keep all real icons
+vi.mock('~/components/icons', async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>
+  return {
+    ...actual,
+    // Override specific icons if needed for testing
+    ApparelIcon: () => <div data-testid='apparel-icon'>Icon</div>,
+  }
+})
 
 describe('TeamsPageContent', () => {
   const mockTeams = [
@@ -115,8 +120,20 @@ describe('TeamsPageContent', () => {
   ]
 
   const mockTournaments = [
-    { id: 't1', name: 'Tournament 1', location: 'Location 1', startDate: new Date() },
-    { id: 't2', name: 'Tournament 2', location: 'Location 2', startDate: new Date() },
+    {
+      id: 't1',
+      name: 'Tournament 1',
+      location: 'Location 1',
+      startDate: new Date(),
+      endDate: new Date(),
+    },
+    {
+      id: 't2',
+      name: 'Tournament 2',
+      location: 'Location 2',
+      startDate: new Date(),
+      endDate: new Date(),
+    },
   ]
 
   const mockOnTeamClick = vi.fn()

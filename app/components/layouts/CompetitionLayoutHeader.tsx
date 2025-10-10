@@ -1,8 +1,8 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { TournamentFilter } from '~/components/TournamentFilter'
-import type { TournamentListItem } from '~/lib/lib.types'
+import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 

@@ -14,7 +14,8 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
-import { TournamentForm } from '~/components/TournamentForm'
+import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Tournament } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -23,7 +24,6 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'

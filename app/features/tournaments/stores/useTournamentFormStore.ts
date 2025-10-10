@@ -8,8 +8,8 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
+import type { TournamentFormData } from '~/features/tournaments/validation'
 import { isBrowser } from '~/lib/lib.helpers'
-import type { TournamentFormData } from '~/lib/lib.zod'
 import {
   validateEntireTournamentForm,
   validateSingleTournamentField,

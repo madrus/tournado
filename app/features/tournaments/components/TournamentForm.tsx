@@ -9,12 +9,12 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { ToggleChipsField } from '~/components/ToggleChip'
-import { getFieldStatus } from '~/lib/lib.helpers'
-import type { TournamentFormProps } from '~/lib/lib.types'
 import {
   useTournamentFormStore,
   useTournamentFormStoreHydration,
-} from '~/stores/useTournamentFormStore'
+} from '~/features/tournaments/stores/useTournamentFormStore'
+import type { TournamentFormProps } from '~/features/tournaments/types'
+import { getFieldStatus } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'

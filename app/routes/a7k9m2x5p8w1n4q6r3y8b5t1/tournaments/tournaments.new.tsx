@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 
-import { TournamentForm } from '~/components/TournamentForm'
+import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import {
   createTournament,
   getAllCategories,
   getAllDivisions,
 } from '~/models/tournament.server'
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 

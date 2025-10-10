@@ -1,7 +1,7 @@
 import { JSX } from 'react'
 import { Outlet } from 'react-router'
 
-import { TournamentsLayoutHeader } from '~/components/layouts'
+import { TournamentsLayoutHeader } from '~/features/tournaments/components/TournamentsLayoutHeader'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
 // Route metadata - requires tournaments read permission

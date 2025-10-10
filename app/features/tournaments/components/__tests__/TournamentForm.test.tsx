@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 
 import { TournamentForm } from '../TournamentForm'
 
@@ -104,7 +104,7 @@ vi.mock('~/utils/misc', () => ({
 }))
 
 // Mock icons
-vi.mock('../icons', () => {
+vi.mock('~/components/icons', () => {
   const createMockIcon =
     (testId: string, symbol: string) =>
     ({ className, size }: { className?: string; size?: number }) => (

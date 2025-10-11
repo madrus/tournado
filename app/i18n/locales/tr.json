@@ -49,8 +49,8 @@
     "dontHaveAccount": "Henüz hesabınız yok mu?",
     "emailAddress": "E-posta adresi",
     "errors": {
-      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
-      "accountDeactivatedTitle": "Account Deactivated"
+      "accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
+      "accountDeactivatedTitle": "Hesap devre dışı bırakıldı"
     },
     "firebase": {
       "continueWithGoogle": "Google ile devam et",
@@ -107,7 +107,7 @@
       "save": "Kaydet",
       "saving": "Kaydediliyor...",
       "update": "Güncelle",
-      "view": "View"
+      "view": "Görüntüle"
     },
     "appName": "Tournado",
     "auth": {
@@ -123,11 +123,11 @@
     "language": "Dil",
     "lightMode": "Açık mod",
     "loading": "Yükleniyor...",
-    "optional": "(optional)",
+    "optional": "(isteğe bağlı)",
     "pagination": {
-      "next": "Next",
-      "previous": "Previous",
-      "showing": "Showing {{count}} of {{total}} users"
+      "next": "İleri",
+      "previous": "Geri",
+      "showing": "{{total}} kullanıcıdan {{count}} tanesi gösteriliyor"
     },
     "signedInAs": "Giriş yapıldı: ",
     "titles": {
@@ -140,7 +140,7 @@
       "settings": "Ayarlar",
       "teams": "Takımlar",
       "tournaments": "Turnuvalar",
-      "users": "Users",
+      "users": "Kullanıcılar",
       "welcome": "Hoş geldiniz"
     },
     "toggleMenu": "Menüyü aç/kapat",

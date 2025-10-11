@@ -8,11 +8,12 @@ import {
   useNavigation,
 } from 'react-router'
 
-import type { Role, User, UserAuditLog } from '@prisma/client'
+import type { User, UserAuditLog } from '@prisma/client'
 
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDeactivationForm } from '~/features/users/components/UserDeactivationForm'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
+import { validateRole } from '~/features/users/utils/roleUtils'
 import {
   deactivateUser,
   getUserById,
@@ -74,11 +75,13 @@ export const action = async ({
 
   const formData = await request.formData()
   const intent = formData.get('intent')
-  const newRole = formData.get('role') as Role
+  const roleValue = formData.get('role')
   const reason = (formData.get('reason') as string | null) || undefined
 
   try {
     if (intent === 'updateRole') {
+      const newRole = validateRole(roleValue)
+
       await updateUserRole({
         userId,
         newRole,

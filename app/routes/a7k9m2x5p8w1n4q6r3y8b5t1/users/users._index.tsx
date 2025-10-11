@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { Form, useActionData, useLoaderData, useSubmit } from 'react-router'
 
-import type { Role, User } from '@prisma/client'
+import type { User } from '@prisma/client'
 import { Text } from '@radix-ui/themes'
 
 import { EditIcon, GroupIcon } from '~/components/icons'
@@ -16,7 +16,7 @@ import {
   datatableHeaderVariants,
   datatableRowVariants,
 } from '~/components/shared/datatable.variants'
-import { getRoleBadgeVariant } from '~/features/users/utils/roleUtils'
+import { getRoleBadgeVariant, validateRole } from '~/features/users/utils/roleUtils'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
@@ -89,13 +89,15 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
 
   if (intent === 'updateRole') {
     const userId = formData.get('userId') as string
-    const newRole = formData.get('role') as Role
+    const roleValue = formData.get('role')
 
-    if (!userId || !newRole) {
-      return { error: 'Missing required fields' }
+    if (!userId) {
+      return { error: 'Missing user ID' }
     }
 
     try {
+      const newRole = validateRole(roleValue)
+
       await updateUserRole({
         userId,
         newRole,
@@ -104,6 +106,9 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
       })
       return { success: true }
     } catch (error) {
+      if (error instanceof Response) {
+        throw error
+      }
       return {
         error: error instanceof Error ? error.message : 'Failed to update role',
       }

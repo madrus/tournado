@@ -49,8 +49,8 @@
     "dontHaveAccount": "ليس لديك حساب؟",
     "emailAddress": "عنوان البريد الإلكتروني",
     "errors": {
-      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
-      "accountDeactivatedTitle": "Account Deactivated"
+      "accountDeactivatedMessage": "تم إلغاء تنشيط حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.",
+      "accountDeactivatedTitle": "تم إلغاء تنشيط الحساب"
     },
     "firebase": {
       "continueWithGoogle": "المتابعة مع Google",
@@ -107,7 +107,7 @@
       "save": "حفظ",
       "saving": "جاري الحفظ...",
       "update": "تحديث",
-      "view": "View"
+      "view": "عرض"
     },
     "appName": "Tournado",
     "auth": {
@@ -123,11 +123,11 @@
     "language": "اللغة",
     "lightMode": "المظهر الفاتح",
     "loading": "جاري التحميل...",
-    "optional": "(optional)",
+    "optional": "(اختياري)",
     "pagination": {
-      "next": "Next",
-      "previous": "Previous",
-      "showing": "Showing {{count}} of {{total}} users"
+      "next": "التالي",
+      "previous": "السابق",
+      "showing": "عرض {{count}} من {{total}} مستخدم"
     },
     "signedInAs": "مسجل الدخول كـ",
     "titles": {
@@ -140,7 +140,7 @@
       "settings": "الإعدادات",
       "teams": "الفرق",
       "tournaments": "البطولات",
-      "users": "Users",
+      "users": "المستخدمون",
       "welcome": "أهلاً وسهلاً"
     },
     "toggleMenu": "فتح/إغلاق القائمة",

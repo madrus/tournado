@@ -231,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
       "divisionsRequired": "مطلوب درجة واحدة على الأقل",
+      "endDateBeforeStartDate": "يجب أن يكون تاريخ الانتهاء في تاريخ البدء أو بعده",
       "endDateRequired": "تاريخ النهاية مطلوب",
       "locationRequired": "الموقع مطلوب",
       "locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",

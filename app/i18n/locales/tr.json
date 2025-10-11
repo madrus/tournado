@@ -231,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "En az bir kategori zorunludur",
       "divisionsRequired": "En az bir lig zorunludur",
+      "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinde veya sonrasında olmalıdır",
       "endDateRequired": "Bitiş tarihi zorunludur",
       "locationRequired": "Konum zorunludur",
       "locationTooLong": "Konum 100 karakterden kısa olmalıdır",

@@ -231,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "Mindestens eine Kategorie ist erforderlich",
       "divisionsRequired": "Mindestens eine Liga ist erforderlich",
+      "endDateBeforeStartDate": "Enddatum muss am oder nach dem Startdatum liegen",
       "endDateRequired": "Enddatum ist erforderlich",
       "locationRequired": "Ort ist erforderlich",
       "locationTooLong": "Ort darf maximal 100 Zeichen lang sein",

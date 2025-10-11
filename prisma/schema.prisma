@@ -128,7 +128,7 @@ model Tournament {
   divisions  Json       // array of Division enum values as JSON (SQLite limitation)
   categories Json       // array of category strings (as JSON in SQLite)
   startDate  DateTime
-  endDate    DateTime?
+  endDate    DateTime
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   teams      Team[]

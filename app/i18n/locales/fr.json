@@ -231,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "Au moins une catégorie est obligatoire",
       "divisionsRequired": "Au moins une division est obligatoire",
+      "endDateBeforeStartDate": "La date de fin doit être le jour du début ou après",
       "endDateRequired": "La date de fin est obligatoire",
       "locationRequired": "Le lieu est obligatoire",
       "locationTooLong": "Le lieu doit contenir moins de 100 caractères",

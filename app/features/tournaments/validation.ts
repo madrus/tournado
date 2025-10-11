@@ -3,14 +3,28 @@ import { z } from 'zod'
 import type { TFunction } from 'i18next'
 
 // Base tournament schema without translations (for server-side validation)
-const baseTournamentSchema = z.object({
-  name: z.string().min(1).max(100),
-  location: z.string().min(1).max(100),
-  startDate: z.string().min(1),
-  endDate: z.string().min(1),
-  divisions: z.array(z.string()).min(1),
-  categories: z.array(z.string()).min(1),
-})
+const baseTournamentSchema = z
+  .object({
+    name: z.string().min(1).max(100),
+    location: z.string().min(1).max(100),
+    startDate: z.string().min(1),
+    endDate: z.string().min(1),
+    divisions: z.array(z.string()).min(1),
+    categories: z.array(z.string()).min(1),
+  })
+  .refine(
+    formData => {
+      // Validate that endDate >= startDate
+      if (formData.startDate && formData.endDate) {
+        return formData.endDate >= formData.startDate
+      }
+      return true
+    },
+    {
+      message: 'End date must be on or after start date',
+      path: ['endDate'],
+    }
+  )
 
 // Schema for create mode
 const createTournamentSchema = baseTournamentSchema
@@ -20,20 +34,27 @@ const editTournamentSchema = baseTournamentSchema
 
 // Factory function for creating schemas with translated error messages (internal use only)
 const createTournamentFormSchema = (t: TFunction) =>
-  z.object({
-    name: z
-      .string()
-      .min(1, t('messages.tournament.nameRequired'))
-      .max(100, t('messages.tournament.nameTooLong')),
-    location: z
-      .string()
-      .min(1, t('messages.tournament.locationRequired'))
-      .max(100, t('messages.tournament.locationTooLong')),
-    startDate: z.string().min(1, t('messages.tournament.startDateRequired')),
-    endDate: z.string().min(1, t('messages.tournament.endDateRequired')),
-    divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
-    categories: z.array(z.string()).min(1, t('messages.tournament.categoriesRequired')),
-  })
+  z
+    .object({
+      name: z
+        .string()
+        .min(1, t('messages.tournament.nameRequired'))
+        .max(100, t('messages.tournament.nameTooLong')),
+      location: z
+        .string()
+        .min(1, t('messages.tournament.locationRequired'))
+        .max(100, t('messages.tournament.locationTooLong')),
+      startDate: z.string().min(1, t('messages.tournament.startDateRequired')),
+      endDate: z.string().min(1, t('messages.tournament.endDateRequired')),
+      divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
+      categories: z
+        .array(z.string())
+        .min(1, t('messages.tournament.categoriesRequired')),
+    })
+    .refine(formData => formData.endDate >= formData.startDate, {
+      message: t('messages.tournament.endDateBeforeStartDate'),
+      path: ['endDate'],
+    })
 
 // Factory for getting appropriate tournament schema based on mode
 export function getTournamentValidationSchema(

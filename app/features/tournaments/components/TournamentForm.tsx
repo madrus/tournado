@@ -162,7 +162,7 @@ export function TournamentForm({
         name: formData.name || '',
         location: formData.location || '',
         startDate: formData.startDate || '',
-        endDate: formData.endDate || '',
+        endDate: formData.endDate || formData.startDate || '',
         divisions: formData.divisions || [],
         categories: formData.categories || [],
       })
@@ -437,7 +437,13 @@ export function TournamentForm({
               label={t('tournaments.form.startDate')}
               value={startDate}
               onChange={event => setFormField('startDate', event.target.value)}
-              onBlur={() => validateFieldOnBlur('startDate')}
+              onBlur={() => {
+                validateFieldOnBlur('startDate')
+                // Auto-fill endDate if empty
+                if (startDate && !endDate) {
+                  setFormField('endDate', startDate)
+                }
+              }}
               error={getTranslatedError(
                 'startDate',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))

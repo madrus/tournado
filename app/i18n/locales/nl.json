@@ -231,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "Minstens één categorie is verplicht",
       "divisionsRequired": "Minstens één divisie is verplicht",
+      "endDateBeforeStartDate": "Einddatum moet op of na de startdatum zijn",
       "endDateRequired": "Einddatum is verplicht",
       "locationRequired": "Locatie is verplicht",
       "locationTooLong": "Locatie moet minder dan 100 karakters zijn",

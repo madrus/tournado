@@ -182,12 +182,16 @@ export async function action({
   }
 
   try {
+    // Default endDate to startDate if not provided
+    const finalEndDate =
+      endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+
     await updateTournament({
       id: tournamentId,
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),
-      endDate: endDate && typeof endDate === 'string' ? new Date(endDate) : null,
+      endDate: new Date(finalEndDate),
       divisions,
       categories,
     })

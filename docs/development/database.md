@@ -111,6 +111,18 @@ We can hold off on actually running migrations while we iterate on our schema. P
    ```
    This will drop the DB, apply all pending migrations from scratch, and re-seed.
 
+### Seeded Groups (for review)
+
+The seed script creates a sample JO8 group set for the `Spring Cup` tournament to
+facilitate manual review of the groups UI:
+
+- Name: `Group Stage (JO8)`
+- Configuration: **4 groups × 5 slots** per group
+- Reserve: auto-filled with available JO8 teams (up to 24)
+
+You can modify this in `prisma/seed.js` by changing `configGroups` and
+`configSlots`.
+
 ---
 
 ## Schema Changes Documentation

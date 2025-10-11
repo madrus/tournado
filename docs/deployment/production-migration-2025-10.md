@@ -175,7 +175,8 @@ CREATE UNIQUE INDEX User_firebaseUid_key ON User(firebaseUid);
 **Next Steps**:
 
 - Monitor production for any issues
-- Begin Phase 2: Groups & Playoffs (MVP)
+- Begin Phase 2: User Management (admin-controlled user approval and role assignment)
+- Implement Phase 3: Groups & Playoffs (MVP)
 - Consider implementing proper database migration workflow to prevent future schema issues
 
 ---

@@ -8,7 +8,7 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { invariant } from '~/utils/misc'
-import { requireAdminUser } from '~/utils/rbacMiddleware.server'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
 import type { Route } from './+types/competition.groups.new'
@@ -57,7 +57,7 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireAdminUser(request)
+  await requireUserWithPermission(request, 'groups:manage')
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)
@@ -90,7 +90,7 @@ export async function loader({
 export async function action({
   request,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireAdminUser(request)
+  await requireUserWithPermission(request, 'groups:manage')
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)
@@ -256,7 +256,7 @@ export default function CreateGroupSet(): JSX.Element {
               name='configSlots'
               label='Teams per Group'
               type='text'
-              placeholder='6'
+              placeholder='5'
               defaultValue={actionData?.fieldValues?.configSlots || ''}
               error={actionData?.errors?.configSlots}
               required

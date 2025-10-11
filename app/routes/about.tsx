@@ -4,6 +4,7 @@ import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
 
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'
+import { AboutLayoutHeader } from '~/components/layouts'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -46,15 +47,13 @@ export async function loader({
 }
 
 export default function AboutPage(): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const { version } = useLoaderData<LoaderData>()
 
   return (
     <div data-testid='about-container'>
-      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-        {t('common.titles.about')}
-      </h1>
-      <div className='space-y-6'>
+      <AboutLayoutHeader />
+      <div className='mt-8 space-y-6'>
         <section>
           <h2
             className={cn(
@@ -62,16 +61,9 @@ export default function AboutPage(): JSX.Element {
               getLatinTitleClass(i18n.language)
             )}
           >
-            About Tournado
+            Version
           </h2>
-          <p className='text-foreground'>
-            Tournado is a comprehensive tournament management platform designed to
-            streamline the organization and management of sports tournaments for
-            organizations and teams.
-          </p>
-          <p className='text-foreground-lighter mt-2 text-sm'>
-            Version: <span className='font-mono font-semibold'>{version}</span>
-          </p>
+          <p className='text-foreground'>{version}</p>
         </section>
 
         <section>

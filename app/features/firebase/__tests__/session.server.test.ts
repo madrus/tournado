@@ -65,6 +65,8 @@ describe('firebaseSession.server', () => {
     lastName: 'User',
     email: 'test@example.com',
     firebaseUid: 'firebase-uid-123',
+    displayName: null,
+    active: true,
     role: 'PUBLIC',
     createdAt: new Date(),
     updatedAt: new Date(),

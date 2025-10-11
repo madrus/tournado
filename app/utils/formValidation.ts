@@ -1,11 +1,9 @@
 import { z } from 'zod'
 
+import type { TournamentFormData } from '~/features/tournaments/validation'
+import { validateTournamentData } from '~/features/tournaments/validation'
 import type { TeamFormData } from '~/lib/lib.types'
-import {
-  type TournamentFormData,
-  validateTeamData,
-  validateTournamentData,
-} from '~/lib/lib.zod'
+import { validateTeamData } from '~/lib/lib.zod'
 
 // Map store field names to Zod schema field names
 export const mapStoreFieldToZodField = (storeFieldName: string): string =>

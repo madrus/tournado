@@ -28,6 +28,9 @@ vi.mock('react-i18next', () => ({
     t: (key: string) => {
       const translations: Record<string, string> = {
         'common.titles.about': 'About',
+        'about.title': 'About Tournado',
+        'about.description':
+          'Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.',
       }
       return translations[key] || key
     },
@@ -44,7 +47,9 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('About')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'About Tournado'
+      )
     })
 
     test('should render all main sections', () => {
@@ -56,6 +61,7 @@ describe('About Page', () => {
 
       // Check main sections are present
       expect(screen.getByText('About Tournado')).toBeInTheDocument()
+      expect(screen.getByText('Version')).toBeInTheDocument()
       expect(screen.getByText('Features')).toBeInTheDocument()
       expect(screen.getByText('Technology Stack')).toBeInTheDocument()
     })
@@ -67,7 +73,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByText('Version:')).toBeInTheDocument()
+      expect(screen.getByText('Version')).toBeInTheDocument()
       expect(screen.getByText('1.2.3')).toBeInTheDocument()
     })
   })
@@ -139,7 +145,7 @@ describe('About Page', () => {
       )
 
       const heading = screen.getByRole('heading', { level: 1 })
-      expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
+      expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
     test('should apply correct styling to section headings', () => {
@@ -155,7 +161,7 @@ describe('About Page', () => {
       })
     })
 
-    test('should format version number with monospace font', () => {
+    test('should display version number as regular text', () => {
       render(
         <MemoryRouter>
           <AboutPage />
@@ -163,7 +169,7 @@ describe('About Page', () => {
       )
 
       const versionElement = screen.getByText('1.2.3')
-      expect(versionElement).toHaveClass('font-mono', 'font-semibold')
+      expect(versionElement).toHaveClass('text-foreground')
     })
   })
 
@@ -179,7 +185,7 @@ describe('About Page', () => {
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
 
       expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3) // About Tournado, Features, Technology Stack
+      expect(h2Elements).toHaveLength(3) // Version, Features, Technology Stack
     })
 
     test('should have semantic HTML structure', () => {
@@ -208,7 +214,9 @@ describe('About Page', () => {
       )
 
       // Verify the heading is rendered (translation is mocked at module level)
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('About')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'About Tournado'
+      )
     })
   })
 })

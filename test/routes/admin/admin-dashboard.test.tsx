@@ -16,6 +16,8 @@ const mockUser: User = {
   lastName: 'User',
   role: 'ADMIN',
   firebaseUid: 'test-firebase-uid',
+  displayName: null,
+  active: true,
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -133,30 +135,37 @@ vi.mock('~/components/ActionLinkPanel', () => ({
   ),
 }))
 
-// Mock icons
-vi.mock('~/components/icons', () => ({
-  ApparelIcon: ({ className }: { className?: string }) => (
-    <div data-testid='apparel-icon' className={className} />
-  ),
-  TrophyIcon: ({ className }: { className?: string }) => (
-    <div data-testid='trophy-icon' className={className} />
-  ),
-  PersonIcon: ({ className }: { className?: string }) => (
-    <div data-testid='person-icon' className={className} />
-  ),
-  SettingsIcon: ({ className }: { className?: string }) => (
-    <div data-testid='settings-icon' className={className} />
-  ),
-  TuneIcon: ({ className }: { className?: string }) => (
-    <div data-testid='tune-icon' className={className} />
-  ),
-  SportsIcon: ({ className }: { className?: string }) => (
-    <div data-testid='sports-icon' className={className} />
-  ),
-  ScoreboardIcon: ({ className }: { className?: string }) => (
-    <div data-testid='scoreboard-icon' className={className} />
-  ),
-}))
+// Mock icons - use importOriginal to get all icons and override specific ones for testing
+vi.mock('~/components/icons', async importOriginal => {
+  const actual = await importOriginal<typeof import('~/components/icons')>()
+  return {
+    ...actual,
+    ApparelIcon: ({ className }: { className?: string }) => (
+      <div data-testid='apparel-icon' className={className} />
+    ),
+    TrophyIcon: ({ className }: { className?: string }) => (
+      <div data-testid='trophy-icon' className={className} />
+    ),
+    PersonIcon: ({ className }: { className?: string }) => (
+      <div data-testid='person-icon' className={className} />
+    ),
+    GroupIcon: ({ className }: { className?: string }) => (
+      <div data-testid='group-icon' className={className} />
+    ),
+    SettingsIcon: ({ className }: { className?: string }) => (
+      <div data-testid='settings-icon' className={className} />
+    ),
+    TuneIcon: ({ className }: { className?: string }) => (
+      <div data-testid='tune-icon' className={className} />
+    ),
+    SportsIcon: ({ className }: { className?: string }) => (
+      <div data-testid='sports-icon' className={className} />
+    ),
+    ScoreboardIcon: ({ className }: { className?: string }) => (
+      <div data-testid='scoreboard-icon' className={className} />
+    ),
+  }
+})
 
 describe('Admin Dashboard', () => {
   beforeEach(() => {
@@ -166,6 +175,7 @@ describe('Admin Dashboard', () => {
       user: mockUser,
       teams: mockTeams,
       tournaments: mockTournaments,
+      activeUsersCount: 5,
     })
   })
 
@@ -192,7 +202,7 @@ describe('Admin Dashboard', () => {
       expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
     })
 
-    test('should render all five admin panels', () => {
+    test('should render all admin panels', () => {
       render(
         <MemoryRouter>
           <AdminDashboard />
@@ -202,6 +212,9 @@ describe('Admin Dashboard', () => {
       expect(screen.getByTestId('admin-panel-team-management')).toBeInTheDocument()
       expect(
         screen.getByTestId('admin-panel-tournament-management')
+      ).toBeInTheDocument()
+      expect(
+        screen.getByTestId('admin-panel-competition-management')
       ).toBeInTheDocument()
       expect(screen.getByTestId('admin-panel-user-management')).toBeInTheDocument()
       expect(screen.getByTestId('admin-panel-system-settings')).toBeInTheDocument()
@@ -250,7 +263,10 @@ describe('Admin Dashboard', () => {
       )
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).not.toHaveAttribute('data-link-to') // No navigation
+      expect(userPanel).toHaveAttribute(
+        'data-link-to',
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users'
+      )
       expect(userPanel).toHaveTextContent('admin.user.title')
       expect(userPanel).toHaveTextContent('admin.user.description')
     })
@@ -309,7 +325,7 @@ describe('Admin Dashboard', () => {
       expect(tournamentPanel).toHaveTextContent('2') // Mock tournaments length
     })
 
-    test('should display current user information', () => {
+    test('should display total active users count', () => {
       render(
         <MemoryRouter>
           <AdminDashboard />
@@ -317,8 +333,8 @@ describe('Admin Dashboard', () => {
       )
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: admin@example.com')
-      expect(userPanel).toHaveTextContent('User ID: admin-1')
+      expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+      expect(userPanel).toHaveTextContent('5')
     })
   })
 
@@ -332,7 +348,7 @@ describe('Admin Dashboard', () => {
 
       expect(screen.getByTestId('apparel-icon')).toBeInTheDocument()
       expect(screen.getByTestId('trophy-icon')).toBeInTheDocument()
-      expect(screen.getByTestId('person-icon')).toBeInTheDocument()
+      expect(screen.getByTestId('group-icon')).toBeInTheDocument()
       expect(screen.getByTestId('settings-icon')).toBeInTheDocument()
       expect(screen.getByTestId('tune-icon')).toBeInTheDocument()
     })
@@ -361,7 +377,7 @@ describe('Admin Dashboard', () => {
       )
 
       const heading = screen.getByRole('heading', { level: 1 })
-      expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
+      expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
     test('should apply correct styling to welcome message', () => {
@@ -372,7 +388,7 @@ describe('Admin Dashboard', () => {
       )
 
       const description = screen.getByText(/admin.panel.description/)
-      expect(description).toHaveClass('text-foreground', 'mb-8')
+      expect(description).toHaveClass('text-foreground', 'mt-1')
     })
 
     test('should organize content in proper structure', () => {
@@ -386,8 +402,11 @@ describe('Admin Dashboard', () => {
       const heading = screen.getByRole('heading', { level: 1 })
       expect(heading).toBeInTheDocument()
 
-      // All panels should be present
-      expect(screen.getAllByTestId(/^admin-panel-/)).toHaveLength(6)
+      // Count only the actual menu panels (excluding the header)
+      const panels = screen
+        .getAllByTestId(/^admin-panel-/)
+        .filter(element => element.getAttribute('data-testid') !== 'admin-panel-header')
+      expect(panels).toHaveLength(6)
     })
   })
 
@@ -427,11 +446,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      const userPanel = screen.getByTestId('admin-panel-user-management')
       const settingsPanel = screen.getByTestId('admin-panel-system-settings')
       const reportsPanel = screen.getByTestId('admin-panel-reports-&-analytics')
 
-      expect(userPanel).not.toHaveAttribute('data-link-to')
       expect(settingsPanel).not.toHaveAttribute('data-link-to')
       expect(reportsPanel).not.toHaveAttribute('data-link-to')
     })
@@ -502,6 +519,7 @@ describe('Admin Dashboard', () => {
         user: mockUser,
         teams: [],
         tournaments: mockTournaments,
+        activeUsersCount: 5,
       })
 
       render(
@@ -521,6 +539,7 @@ describe('Admin Dashboard', () => {
         user: mockUser,
         teams: mockTeams,
         tournaments: [],
+        activeUsersCount: 5,
       })
 
       render(
@@ -548,8 +567,8 @@ describe('Admin Dashboard', () => {
       expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: admin@example.com')
-      expect(userPanel).toHaveTextContent('User ID: admin-1')
+      expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+      expect(userPanel).toHaveTextContent('5')
     })
 
     test('should handle different user data', () => {
@@ -562,6 +581,7 @@ describe('Admin Dashboard', () => {
         },
         teams: mockTeams,
         tournaments: mockTournaments,
+        activeUsersCount: 10,
       })
 
       render(
@@ -573,8 +593,8 @@ describe('Admin Dashboard', () => {
       expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
       const userPanel = screen.getByTestId('admin-panel-user-management')
-      expect(userPanel).toHaveTextContent('Current User: different@example.com')
-      expect(userPanel).toHaveTextContent('User ID: user-999')
+      expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+      expect(userPanel).toHaveTextContent('10')
     })
   })
 })

@@ -5,6 +5,7 @@ import type { MetaFunction } from 'react-router'
 import { User } from '@prisma/client'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
+import { SettingsLayoutHeader } from '~/components/layouts'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -46,29 +47,12 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export default function SettingsPage(): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
 
   return (
     <div data-testid='settings-container'>
-      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-        {t('common.titles.settings')}
-      </h1>
-      <div className='space-y-6'>
-        <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
-            Application Settings
-          </h2>
-          <p className='text-foreground'>
-            Configure your tournament settings, preferences, and account options for
-            optimal experience.
-          </p>
-        </section>
-
+      <SettingsLayoutHeader />
+      <div className='mt-8 space-y-6'>
         <section>
           <h2
             className={cn(

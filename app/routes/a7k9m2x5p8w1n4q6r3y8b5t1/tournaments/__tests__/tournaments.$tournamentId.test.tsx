@@ -119,7 +119,7 @@ vi.mock('~/components/Panel', () => ({
 }))
 
 // Mock TournamentForm component
-vi.mock('~/components/TournamentForm', () => ({
+vi.mock('~/features/tournaments/components/TournamentForm', () => ({
   TournamentForm: ({
     mode,
     variant,

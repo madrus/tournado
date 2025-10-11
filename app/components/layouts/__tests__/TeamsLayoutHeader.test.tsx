@@ -81,4 +81,32 @@ describe('TeamsLayoutHeader', () => {
     expect(screen.getByTestId('teams-header-admin')).toBeInTheDocument()
     expect(screen.queryByTestId('teams-header-public')).not.toBeInTheDocument()
   })
+
+  it('should have divider for both variants', () => {
+    const { rerender } = renderWithRouter(<TeamsLayoutHeader variant='public' />)
+    expect(screen.getByTestId('teams-header-public')).toHaveClass('border-b')
+
+    rerender(
+      <MemoryRouter>
+        <TeamsLayoutHeader variant='admin' />
+      </MemoryRouter>
+    )
+    expect(screen.getByTestId('teams-header-admin')).toHaveClass('border-b')
+  })
+
+  it('should use same layout structure for both variants', () => {
+    const { rerender } = renderWithRouter(<TeamsLayoutHeader variant='public' />)
+    const publicHeader = screen.getByTestId('teams-header-public')
+    expect(publicHeader).toHaveClass('border-button-neutral-secondary-border')
+    expect(publicHeader).toHaveClass('pb-6')
+
+    rerender(
+      <MemoryRouter>
+        <TeamsLayoutHeader variant='admin' />
+      </MemoryRouter>
+    )
+    const adminHeader = screen.getByTestId('teams-header-admin')
+    expect(adminHeader).toHaveClass('border-button-neutral-secondary-border')
+    expect(adminHeader).toHaveClass('pb-6')
+  })
 })

@@ -19,6 +19,7 @@ export default function AdminTeamsLayout(): JSX.Element {
   return (
     <div className='space-y-8' data-testid='admin-teams-layout-container'>
       <TeamsLayoutHeader variant='admin' />
+      {/* Main Content */}
       <Outlet />
     </div>
   )

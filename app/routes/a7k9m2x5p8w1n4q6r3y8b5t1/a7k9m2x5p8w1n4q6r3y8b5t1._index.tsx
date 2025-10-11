@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { type MetaFunction, useLoaderData } from 'react-router'
 
 import type { User } from '@prisma/client'
@@ -7,19 +7,19 @@ import type { User } from '@prisma/client'
 import { ActionLinkPanel } from '~/components/ActionLinkPanel'
 import {
   ApparelIcon,
-  PersonIcon,
+  GroupIcon,
   SettingsIcon,
   SportsIcon,
   TrophyIcon,
   TuneIcon,
 } from '~/components/icons'
+import { AdminPanelLayoutHeader } from '~/components/layouts'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
-import { cn } from '~/utils/misc'
+import { getActiveUsersCount } from '~/models/user.server'
 import { hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinTitleClass, getTypographyClasses } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/a7k9m2x5p8w1n4q6r3y8b5t1._index'
 
@@ -37,6 +37,7 @@ type LoaderData = {
     startDate: Date
     endDate: Date | null
   }>
+  activeUsersCount: number
 }
 
 export const meta: MetaFunction = () => [
@@ -71,77 +72,35 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Require admin panel access (ADMIN, MANAGER, or REFEREE roles)
   const user = await requireAdminUser(request)
 
-  // Load teams and tournaments data for the overview tiles
-  const teams = await getAllTeamListItems()
-  const tournaments = await getAllTournamentListItems()
+  // Load teams, tournaments, and active users count data for the overview tiles
+  const [teams, tournaments, activeUsersCount] = await Promise.all([
+    getAllTeamListItems(),
+    getAllTournamentListItems(),
+    getActiveUsersCount(),
+  ])
 
-  return { user, teams, tournaments }
+  return { user, teams, tournaments, activeUsersCount }
 }
 
 export default function AdminDashboard(): JSX.Element {
-  const { user, teams, tournaments } = useLoaderData<LoaderData>()
-  const { t, i18n } = useTranslation()
-
-  // Get typography classes for Arabic support
-  const typography = getTypographyClasses(i18n.language)
+  const { user, teams, tournaments, activeUsersCount } = useLoaderData<LoaderData>()
+  const { i18n, t } = useTranslation()
 
   // Check user permissions for conditional rendering
   const canManageTeams = hasPermission(user, 'teams:manage')
   const canManageTournaments = hasPermission(user, 'tournaments:manage')
   const canRefereeMatches = hasPermission(user, 'matches:referee')
+  const canManageUsers = hasPermission(user, 'users:approve')
   const canAccessSystemSettings = hasPermission(user, 'system:settings')
   const canViewReports = hasPermission(user, 'system:reports')
 
   return (
     <div className='space-y-8' data-testid='admin-dashboard-container'>
-      <div>
-        <h1
-          className={cn(
-            'mb-8 text-3xl font-bold',
-            typography.title,
-            typography.textAlign
-          )}
-        >
-          {t('common.titles.adminPanel')}
-        </h1>
-        <p
-          className={cn('text-foreground mb-8 text-lg leading-7', typography.textAlign)}
-        >
-          <Trans
-            i18nKey='admin.panel.description'
-            values={{ email: user.email }}
-            components={{
-              email: <span className={getLatinTitleClass(i18n.language)} />,
-            }}
-          />
-        </p>
-      </div>
+      <AdminPanelLayoutHeader userEmail={user.email} />
 
       {/* Dashboard Grid */}
       <div className='grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Panel 1 - Team Management (only for ADMIN and MANAGER) */}
-        {canManageTeams ? (
-          <ActionLinkPanel
-            title={t('admin.team.title')}
-            description={t('admin.team.description')}
-            icon={<ApparelIcon className='h-5 w-5' />}
-            mainColor='teal'
-            hoverColor='brand'
-            iconColor='green'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-            language={i18n.language}
-            testId='admin-panel-team-management'
-          >
-            <div className='space-y-2'>
-              <p>
-                <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
-                {teams.length}
-              </p>
-            </div>
-          </ActionLinkPanel>
-        ) : null}
-
-        {/* Panel 2 - Tournament Management (only for ADMIN and MANAGER) */}
+        {/* Panel 1 - Tournament Management (only for ADMIN and MANAGER) */}
         {canManageTournaments ? (
           <ActionLinkPanel
             title={t('admin.tournament.title')}
@@ -165,18 +124,40 @@ export default function AdminDashboard(): JSX.Element {
           </ActionLinkPanel>
         ) : null}
 
-        {/* Panel 3 - Match Management (for REFEREE, MANAGER, and ADMIN) */}
+        {/* Panel 2 - Team Management (only for ADMIN and MANAGER) */}
+        {canManageTeams ? (
+          <ActionLinkPanel
+            title={t('admin.team.title')}
+            description={t('admin.team.description')}
+            icon={<ApparelIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='green'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+            language={i18n.language}
+            testId='admin-panel-team-management'
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
+                {teams.length}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
+
+        {/* Panel 3 - Competition Management (for REFEREE, MANAGER, and ADMIN) */}
         {canRefereeMatches ? (
           <ActionLinkPanel
-            title={t('admin.match.title')}
-            description={t('admin.match.description')}
+            title={t('admin.competition.title')}
+            description={t('admin.competition.description')}
             icon={<SportsIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
             iconColor='lime'
-            to='/a7k9m2x5p8w1n4q6r3y8b5t1/matches'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/competition'
             language={i18n.language}
-            testId='admin-panel-match-management'
+            testId='admin-panel-competition-management'
           >
             <div className='space-y-2'>
               <p>
@@ -187,26 +168,27 @@ export default function AdminDashboard(): JSX.Element {
           </ActionLinkPanel>
         ) : null}
 
-        {/* Panel 4 - User Management (for ADMIN and MANAGER) */}
-        <ActionLinkPanel
-          title={t('admin.user.title')}
-          description={t('admin.user.description')}
-          icon={<PersonIcon className='h-5 w-5' />}
-          mainColor='teal'
-          hoverColor='brand'
-          iconColor='yellow'
-          language={i18n.language}
-          testId='admin-panel-user-management'
-        >
-          <div className='space-y-2'>
-            <p className='break-all'>
-              <strong data-color='action'>Current User:</strong> {user.email}
-            </p>
-            <p className='break-all'>
-              <strong data-color='action'>User ID:</strong> {user.id}
-            </p>
-          </div>
-        </ActionLinkPanel>
+        {/* Panel 4 - User Management (only for ADMIN) */}
+        {canManageUsers ? (
+          <ActionLinkPanel
+            title={t('admin.user.title')}
+            description={t('admin.user.description')}
+            icon={<GroupIcon className='h-5 w-5' />}
+            mainColor='teal'
+            hoverColor='brand'
+            iconColor='yellow'
+            to='/a7k9m2x5p8w1n4q6r3y8b5t1/users'
+            language={i18n.language}
+            testId='admin-panel-user-management'
+          >
+            <div className='space-y-2'>
+              <p>
+                <strong className='me-1'>{t('admin.user.totalUsers')}:</strong>
+                {activeUsersCount}
+              </p>
+            </div>
+          </ActionLinkPanel>
+        ) : null}
 
         {/* Panel 5 - System Settings (for ADMIN only) */}
         {canAccessSystemSettings ? (

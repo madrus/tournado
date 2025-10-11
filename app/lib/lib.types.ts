@@ -3,6 +3,12 @@
 // ============================================================================
 import type { Team as PrismaTeam } from '@prisma/client'
 
+// ============================================================================
+
+// ============================================================================
+
+import type { TournamentListItem } from '~/models/tournament.server'
+
 /**
  * @fileoverview Centralized Type System for Tournado Application
  *
@@ -35,9 +41,7 @@ export type Email = string & { readonly brand: unique symbol }
  */
 export type TeamClass = string
 
-// ============================================================================
 // Icon Types
-// ============================================================================
 
 export type IconVariant = 'outlined' | 'filled'
 export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
@@ -129,21 +133,14 @@ export type ColorAccent =
 
 export type TeamListItem = Pick<PrismaTeam, 'id' | 'name' | 'clubName' | 'category'>
 
-export type TournamentListItem = {
-  id: string
-  name: string
-  location: string
-}
+// Re-export tournament types from feature module
+export type { TournamentData } from '~/features/tournaments/types'
+export type { TournamentListItem } from '~/models/tournament.server'
 
 export type TeamsLoaderData = {
   teamListItems: TeamListItem[]
   tournamentListItems: TournamentListItem[]
   selectedTournamentId?: string
-}
-
-export type TournamentFilterOption = {
-  value: string
-  label: string
 }
 
 // ============================================================================
@@ -189,27 +186,6 @@ export type CategoryObject = {
     max: number
   }
   gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
-}
-
-// ============================================================================
-// Tournament Types
-// ============================================================================
-
-export type Tournament = {
-  id: string
-  name: string
-  location: string
-  date: Date
-}
-
-export type TournamentData = {
-  id: string
-  name: string
-  location: string
-  startDate: string
-  endDate: string | null
-  divisions: string[]
-  categories: string[]
 }
 
 // ============================================================================
@@ -277,31 +253,6 @@ export type TeamFormProps = {
   availableDivisions?: string[]
   availableCategories?: string[]
   tournamentId?: string | null
-}
-
-/**
- * Props for TournamentForm component
- */
-export type TournamentFormProps = {
-  mode?: 'create' | 'edit'
-  variant?: 'admin' | 'public'
-  formData?: {
-    id?: string
-    name?: string
-    location?: string
-    divisions?: string[]
-    categories?: string[]
-    startDate?: string
-    endDate?: string
-  }
-  divisions?: string[]
-  categories?: string[]
-  errors?: Record<string, string>
-  isSuccess?: boolean
-  successMessage?: string
-  submitButtonText?: string
-  className?: string
-  intent?: string
 }
 
 // ============================================================================

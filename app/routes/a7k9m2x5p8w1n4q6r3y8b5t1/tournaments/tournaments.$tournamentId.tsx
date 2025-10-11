@@ -14,7 +14,8 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
-import { TournamentForm } from '~/components/TournamentForm'
+import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Tournament } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -23,7 +24,6 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -182,12 +182,16 @@ export async function action({
   }
 
   try {
+    // Default endDate to startDate if not provided
+    const finalEndDate =
+      endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+
     await updateTournament({
       id: tournamentId,
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),
-      endDate: endDate && typeof endDate === 'string' ? new Date(endDate) : null,
+      endDate: new Date(finalEndDate),
       divisions,
       categories,
     })

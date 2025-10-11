@@ -27,9 +27,27 @@ const mockUseSearchParams = useSearchParams as ReturnType<typeof vi.fn>
 
 describe('useTournamentFilter', () => {
   const mockTournamentListItems = [
-    { id: 'tournament-1', name: 'Spring Tournament 2024', location: 'Amsterdam' },
-    { id: 'tournament-2', name: 'Summer Cup 2024', location: 'Rotterdam' },
-    { id: 'tournament-3', name: 'Winter League 2024', location: 'Utrecht' },
+    {
+      id: 'tournament-1',
+      name: 'Spring Tournament 2024',
+      location: 'Amsterdam',
+      startDate: new Date('2024-03-01'),
+      endDate: new Date('2024-03-03'),
+    },
+    {
+      id: 'tournament-2',
+      name: 'Summer Cup 2024',
+      location: 'Rotterdam',
+      startDate: new Date('2024-06-15'),
+      endDate: new Date('2024-06-16'),
+    },
+    {
+      id: 'tournament-3',
+      name: 'Winter League 2024',
+      location: 'Utrecht',
+      startDate: new Date('2024-12-10'),
+      endDate: new Date('2024-12-12'),
+    },
   ]
 
   beforeEach(() => {
@@ -71,11 +89,19 @@ describe('useTournamentFilter', () => {
 
     it('should handle tournaments with special characters in names', () => {
       const specialTournaments = [
-        { id: 'tournament-1', name: 'Tournament & Cup 2024', location: 'Amsterdam' },
+        {
+          id: 'tournament-1',
+          name: 'Tournament & Cup 2024',
+          location: 'Amsterdam',
+          startDate: new Date('2024-03-01'),
+          endDate: new Date('2024-03-03'),
+        },
         {
           id: 'tournament-2',
           name: 'Youth League "Special Edition"',
           location: 'Rotterdam',
+          startDate: new Date('2024-06-15'),
+          endDate: new Date('2024-06-16'),
         },
       ]
 
@@ -364,6 +390,8 @@ describe('useTournamentFilter', () => {
         id: `tournament-${i}`,
         name: `Tournament ${i}`,
         location: `Location ${i}`,
+        startDate: new Date(`2024-${(i % 12) + 1}-01`),
+        endDate: new Date(`2024-${(i % 12) + 1}-03`),
       }))
 
       const { result } = renderHook(() =>

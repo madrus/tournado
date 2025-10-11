@@ -9,7 +9,7 @@ type AboutLayoutHeaderProps = {
 }
 
 export function AboutLayoutHeader({ className }: AboutLayoutHeaderProps): JSX.Element {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div
@@ -19,13 +19,9 @@ export function AboutLayoutHeader({ className }: AboutLayoutHeaderProps): JSX.El
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
           <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            About Tournado
+            {t('about.title')}
           </h1>
-          <p className='text-foreground mt-1'>
-            Tournado is a comprehensive tournament management platform designed to
-            streamline the organization and management of sports tournaments for
-            organizations and teams.
-          </p>
+          <p className='text-foreground mt-1'>{t('about.description')}</p>
         </div>
       </div>
     </div>

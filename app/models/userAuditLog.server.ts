@@ -77,7 +77,21 @@ type GetRecentAuditLogsProps = {
 
 export const getRecentAuditLogs = async (
   props: Readonly<GetRecentAuditLogsProps> = {}
-): Promise<readonly UserAuditLog[]> => {
+): Promise<
+  readonly (UserAuditLog & {
+    user: {
+      id: string
+      email: string
+      displayName: string | null
+      role: string
+    }
+    admin: {
+      id: string
+      email: string
+      displayName: string | null
+    }
+  })[]
+> => {
   const { limit = 100 } = props
 
   return prisma.userAuditLog.findMany({

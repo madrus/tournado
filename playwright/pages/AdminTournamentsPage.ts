@@ -17,7 +17,7 @@ export class AdminTournamentsPage extends BasePage {
   }
 
   get createTournamentButton(): Locator {
-    return this.page.getByRole('link', { name: /toevoegen|add/i })
+    return this.page.getByRole('link', { name: /toevoegen/i })
   }
 
   get tournamentsTable(): Locator {

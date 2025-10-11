@@ -28,7 +28,9 @@ export const UserAuditLogList = (
               <div className='flex items-start justify-between'>
                 <div>
                   <div className='font-medium'>
-                    {t(`users.auditActions.${log.action}`)}
+                    {t(`users.auditActions.${log.action}`, {
+                      defaultValue: log.action,
+                    })}
                   </div>
                   {log.previousValue && log.newValue ? (
                     <div className='text-foreground/60 mt-1 text-sm'>

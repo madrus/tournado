@@ -5,21 +5,14 @@ import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type UsersLayoutHeaderProps = {
-  variant: 'admin'
   className?: string
 }
 
-export function UsersLayoutHeader({
-  variant,
-  className,
-}: UsersLayoutHeaderProps): JSX.Element {
+export function UsersLayoutHeader({ className }: UsersLayoutHeaderProps): JSX.Element {
   const { t, i18n } = useTranslation()
 
-  const isAdmin = variant === 'admin'
-  const title = isAdmin ? t('users.titles.userManagement') : t('common.titles.users')
-  const description = isAdmin
-    ? t('users.descriptions.manageUsersAndRoles')
-    : t('users.description')
+  const title = t('users.titles.userManagement')
+  const description = t('users.descriptions.manageUsersAndRoles')
 
   return (
     <div

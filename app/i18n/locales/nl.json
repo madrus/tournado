@@ -42,6 +42,10 @@
       "totalUsers": "Totaal gebruikers"
     }
   },
+  "about": {
+    "title": "Over Tournado",
+    "description": "Tournado is een uitgebreid platform voor toernooibeheer, ontworpen om de organisatie en het beheer van sporttoernooien voor organisaties en teams te stroomlijnen."
+  },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
     "continueWithEmail": "Of ga verder met e-mail",
@@ -275,6 +279,10 @@
       "title": "Er is een nieuwe versie beschikbaar"
     }
   },
+  "profile": {
+    "title": "Profielinformatie",
+    "description": "Beheer uw profielinstellingen en accountinformatie voor toernooibeheer."
+  },
   "roles": {
     "admin": "Beheerder",
     "billing": "Facturatie",
@@ -282,6 +290,10 @@
     "manager": "Manager",
     "public": "Publiek",
     "referee": "Scheidsrechter"
+  },
+  "settings": {
+    "title": "Applicatie-instellingen",
+    "description": "Configureer uw toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring."
   },
   "teams": {
     "allTournaments": "Alle toernooien",

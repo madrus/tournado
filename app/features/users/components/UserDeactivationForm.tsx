@@ -1,10 +1,11 @@
-import { type JSX } from 'react'
+import { type JSX, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
 import type { User } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { ConfirmDialog } from '~/components/ConfirmDialog'
 
 type UserDeactivationFormProps = {
   user: User
@@ -16,6 +17,25 @@ export const UserDeactivationForm = (
 ): JSX.Element => {
   const { user, isSubmitting } = props
   const { t } = useTranslation()
+  const formRef = useRef<HTMLFormElement | null>(null)
+
+  const submitForm = useCallback(() => {
+    if (isSubmitting) {
+      return
+    }
+
+    const form = formRef.current
+    if (!form) {
+      return
+    }
+
+    if (typeof form.requestSubmit === 'function') {
+      form.requestSubmit()
+      return
+    }
+
+    form.submit()
+  }, [isSubmitting])
 
   return (
     <div className='border-border mt-6 border-t pt-6'>
@@ -24,8 +44,7 @@ export const UserDeactivationForm = (
           ? t('users.titles.deactivateUser')
           : t('users.titles.reactivateUser')}
       </h3>
-
-      <Form method='post'>
+      <Form method='post' ref={formRef}>
         <input
           type='hidden'
           name='intent'
@@ -44,6 +63,7 @@ export const UserDeactivationForm = (
               id='deactivate-reason'
               name='reason'
               rows={3}
+              maxLength={200}
               className='bg-background border-border w-full rounded-md border px-3 py-2'
               placeholder={
                 user.active
@@ -54,20 +74,39 @@ export const UserDeactivationForm = (
             />
           </div>
 
-          <ActionButton
-            type='submit'
-            variant='primary'
-            color={user.active ? 'red' : 'emerald'}
-            disabled={isSubmitting}
-            className='w-full'
-          >
-            {user.active
-              ? t('users.actions.deactivateUser')
-              : t('users.actions.reactivateUser')}
-          </ActionButton>
+          {user.active ? (
+            <ConfirmDialog
+              intent='danger'
+              destructive
+              title={t('users.titles.deactivateUser')}
+              confirmLabel={t('users.actions.deactivateUser')}
+              cancelLabel={t('common.actions.cancel')}
+              onConfirm={submitForm}
+              trigger={
+                <ActionButton
+                  type='button'
+                  variant='primary'
+                  color='red'
+                  disabled={isSubmitting}
+                  className='w-full'
+                >
+                  {t('users.actions.deactivateUser')}
+                </ActionButton>
+              }
+            />
+          ) : (
+            <ActionButton
+              type='submit'
+              variant='primary'
+              color='emerald'
+              disabled={isSubmitting}
+              className='w-full'
+            >
+              {t('users.actions.reactivateUser')}
+            </ActionButton>
+          )}
         </div>
       </Form>
-
       {!user.active ? (
         <div className='bg-warning/10 text-warning border-warning/20 mt-4 rounded-md border p-3 text-sm'>
           {t('users.messages.userIsDeactivated')}

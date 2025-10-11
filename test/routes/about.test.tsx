@@ -28,6 +28,9 @@ vi.mock('react-i18next', () => ({
     t: (key: string) => {
       const translations: Record<string, string> = {
         'common.titles.about': 'About',
+        'about.title': 'About Tournado',
+        'about.description':
+          'Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.',
       }
       return translations[key] || key
     },

@@ -42,6 +42,10 @@
       "totalUsers": "Toplam kullanıcılar"
     }
   },
+  "about": {
+    "title": "Tournado hakkında",
+    "description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur."
+  },
   "auth": {
     "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
     "continueWithEmail": "Veya e-posta ile devam edin",
@@ -275,6 +279,10 @@
       "title": "Yeni bir sürüm mevcut"
     }
   },
+  "profile": {
+    "title": "Profil bilgileri",
+    "description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin."
+  },
   "roles": {
     "admin": "Admin",
     "billing": "Faturalama",
@@ -282,6 +290,10 @@
     "manager": "Yönetici",
     "public": "Herkese Açık",
     "referee": "Hakem"
+  },
+  "settings": {
+    "title": "Uygulama ayarları",
+    "description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın."
   },
   "teams": {
     "allTournaments": "Tüm turnuvalar",

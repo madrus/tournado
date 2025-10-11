@@ -11,7 +11,7 @@ type SettingsLayoutHeaderProps = {
 export function SettingsLayoutHeader({
   className,
 }: SettingsLayoutHeaderProps): JSX.Element {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <div
@@ -21,12 +21,9 @@ export function SettingsLayoutHeader({
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
           <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            Application Settings
+            {t('settings.title')}
           </h1>
-          <p className='text-foreground mt-1'>
-            Configure your tournament settings, preferences, and account options for
-            optimal experience.
-          </p>
+          <p className='text-foreground mt-1'>{t('settings.description')}</p>
         </div>
       </div>
     </div>

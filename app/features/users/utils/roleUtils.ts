@@ -17,9 +17,8 @@ export const VALID_ROLES = [
  * @param value - The value to validate
  * @returns True if the value is a valid Role
  */
-export function isValidRole(value: unknown): value is Role {
-  return typeof value === 'string' && VALID_ROLES.includes(value as Role)
-}
+export const isValidRole = (value: unknown): value is Role =>
+  typeof value === 'string' && VALID_ROLES.includes(value as Role)
 
 /**
  * Validates and returns a Role value from form data

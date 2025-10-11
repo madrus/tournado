@@ -36,6 +36,9 @@ vi.mock('react-i18next', () => ({
     t: (key: string) => {
       const translations: Record<string, string> = {
         'common.titles.profile': 'Profile',
+        'profile.title': 'Profile Information',
+        'profile.description':
+          'Manage your profile settings and account information for tournament management.',
       }
       return translations[key] || key
     },

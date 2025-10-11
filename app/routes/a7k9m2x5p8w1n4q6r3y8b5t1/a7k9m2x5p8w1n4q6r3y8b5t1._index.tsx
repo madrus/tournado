@@ -72,10 +72,12 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Require admin panel access (ADMIN, MANAGER, or REFEREE roles)
   const user = await requireAdminUser(request)
 
-  // Load teams and tournaments data for the overview tiles
-  const teams = await getAllTeamListItems()
-  const tournaments = await getAllTournamentListItems()
-  const activeUsersCount = await getActiveUsersCount()
+  // Load teams, tournaments, and active users count data for the overview tiles
+  const [teams, tournaments, activeUsersCount] = await Promise.all([
+    getAllTeamListItems(),
+    getAllTournamentListItems(),
+    getActiveUsersCount(),
+  ])
 
   return { user, teams, tournaments, activeUsersCount }
 }

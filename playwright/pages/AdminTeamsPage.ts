@@ -22,7 +22,7 @@ export class AdminTeamsPage extends BasePage {
   }
 
   get createTeamButton(): Locator {
-    return this.page.getByRole('link', { name: /toevoegen|add/i })
+    return this.page.getByRole('link', { name: /toevoegen/i })
   }
 
   get teamsTable(): Locator {
@@ -79,7 +79,7 @@ export class AdminTeamsPage extends BasePage {
         await this.page.waitForTimeout(1000) // Longer wait for CI
 
         const combo = this.page.getByRole('combobox', {
-          name: /toernooi.*select option|tournament.*select option/i,
+          name: /toernooi.*select option/i,
         })
         await combo.click()
 

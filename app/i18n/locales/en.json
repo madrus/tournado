@@ -42,6 +42,10 @@
       "totalUsers": "Total Users"
     }
   },
+  "about": {
+    "title": "About Tournado",
+    "description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams."
+  },
   "auth": {
     "alreadyHaveAccount": "Already have an account?",
     "continueWithEmail": "Or continue with email",
@@ -275,6 +279,10 @@
       "title": "A new version is available"
     }
   },
+  "profile": {
+    "title": "Profile Information",
+    "description": "Manage your profile settings and account information for tournament management."
+  },
   "roles": {
     "admin": "Admin",
     "billing": "Billing",
@@ -282,6 +290,10 @@
     "manager": "Manager",
     "public": "Public",
     "referee": "Referee"
+  },
+  "settings": {
+    "title": "Application Settings",
+    "description": "Configure your tournament settings, preferences, and account options for optimal experience."
   },
   "teams": {
     "allTournaments": "All tournaments",

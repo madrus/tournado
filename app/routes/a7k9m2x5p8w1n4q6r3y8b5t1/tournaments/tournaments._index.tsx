@@ -1,7 +1,13 @@
 import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
+import {
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useRevalidator,
+  useSubmit,
+} from 'react-router'
 
 import { Text } from '@radix-ui/themes'
 
@@ -83,6 +89,9 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
   const tournamentId = formData.get('tournamentId')
 
   if (intent === 'delete' && typeof tournamentId === 'string') {
+    if (!tournamentId.trim()) {
+      throw new Response('Tournament ID is required', { status: 400 })
+    }
     await deleteTournamentById({ id: tournamentId })
     return redirect('.')
   }
@@ -95,6 +104,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const { tournamentListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
   const revalidator = useRevalidator()
+  const navigate = useNavigate()
 
   // Track swipe state
   const [swipeStates, setSwipeStates] = useState<
@@ -134,7 +144,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     }
 
     // Navigate to tournament details/edit page
-    window.location.href = `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}`
+    navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}`)
   }
 
   const handleTournamentDelete = (tournamentId: string) => {
@@ -152,6 +162,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     if (isBreakpoint('lg')) return
 
     const touch = event.touches[0]
+    if (!touch) return
     const startX = touch.clientX
 
     // Check if we're starting from a delete state
@@ -175,6 +186,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
     const handleTouchMove = (moveEvent: TouchEvent) => {
       const currentTouch = moveEvent.touches[0]
+      if (!currentTouch) return
       const deltaX = currentTouch.clientX - startX
 
       let finalX: number

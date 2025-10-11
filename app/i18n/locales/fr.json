@@ -42,6 +42,10 @@
       "totalUsers": "Total utilisateurs"
     }
   },
+  "about": {
+    "title": "À propos de Tournado",
+    "description": "Tournado est une plateforme complète de gestion de tournois conçue pour rationaliser l'organisation et la gestion des tournois sportifs pour les organisations et les équipes."
+  },
   "auth": {
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "continueWithEmail": "Ou continuez avec l'email",
@@ -275,6 +279,10 @@
       "title": "Une nouvelle version est disponible"
     }
   },
+  "profile": {
+    "title": "Informations du profil",
+    "description": "Gérez les paramètres de votre profil et les informations de compte pour la gestion des tournois."
+  },
   "roles": {
     "admin": "Administrateur",
     "billing": "Facturation",
@@ -282,6 +290,10 @@
     "manager": "Gestionnaire",
     "public": "Public",
     "referee": "Arbitre"
+  },
+  "settings": {
+    "title": "Paramètres de l'application",
+    "description": "Configurez vos paramètres de tournoi, préférences et options de compte pour une expérience optimale."
   },
   "teams": {
     "allTournaments": "Tous les tournois",

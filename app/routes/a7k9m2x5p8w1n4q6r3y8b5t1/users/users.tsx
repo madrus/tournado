@@ -21,7 +21,7 @@ export const handle: RouteMetadata = {
 export default function AdminUsersLayout(): JSX.Element {
   return (
     <div className='space-y-8' data-testid='admin-users-layout-container'>
-      <UsersLayoutHeader variant='admin' />
+      <UsersLayoutHeader />
       <Outlet />
     </div>
   )

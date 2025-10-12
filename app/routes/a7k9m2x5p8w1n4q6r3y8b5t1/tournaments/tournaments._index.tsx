@@ -516,7 +516,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                       className='hidden grid-cols-[2fr_1fr_1fr_auto] gap-6 px-3 py-4 lg:grid'
                       onClick={() => handleTournamentClick(tournament.id)}
                     >
-                      <div className='flex items-start'>
+                      <div className='flex items-start justify-start'>
                         <div>
                           <Text
                             size='2'
@@ -539,7 +539,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                           </div>
                         </div>
                       </div>
-                      <div className='flex items-start'>
+                      <div className='flex items-start justify-start'>
                         <Text
                           size='2'
                           className={datatableCellTextVariants({
@@ -549,7 +549,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                           {formatDate(tournament.startDate)}
                         </Text>
                       </div>
-                      <div className='flex items-start'>
+                      <div className='flex items-start justify-start'>
                         <Text
                           size='2'
                           className={datatableCellTextVariants({
@@ -559,7 +559,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                           {tournament.endDate ? formatDate(tournament.endDate) : '-'}
                         </Text>
                       </div>
-                      <div className='flex w-6 items-start justify-center'>
+                      <div className='flex w-6 items-start justify-start'>
                         <button
                           onClick={event => {
                             event.stopPropagation()

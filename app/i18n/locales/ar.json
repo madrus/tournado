@@ -131,7 +131,7 @@
     "pagination": {
       "next": "التالي",
       "previous": "السابق",
-      "showing": "عرض {{count}} من {{total}} مستخدم"
+      "showing": "عرض {{count}} من {{total}} صف"
     },
     "signedInAs": "مسجل الدخول كـ",
     "titles": {

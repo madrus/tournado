@@ -303,7 +303,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                       className='cursor-pointer px-6 py-4'
                       onClick={() => handleUserClick(user.id)}
                     >
-                      <div className='flex items-start justify-between'>
+                      <div className='flex items-start justify-start'>
                         <div className='min-w-0 flex-1'>
                           <Text
                             size='2'
@@ -337,7 +337,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                   {/* Desktop: Table-like grid layout */}
                   <div className='hidden grid-cols-[2fr_1.5fr_1fr_1fr_1.5fr_auto] gap-4 px-3 py-4 lg:grid'>
                     <div
-                      className='flex cursor-pointer items-start'
+                      className='flex cursor-pointer items-start justify-start'
                       onClick={() => handleUserClick(user.id)}
                     >
                       <div>
@@ -367,7 +367,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                         ) : null}
                       </div>
                     </div>
-                    <div className='flex items-start'>
+                    <div className='flex items-start justify-start'>
                       <Text
                         size='2'
                         className={datatableCellTextVariants({
@@ -377,12 +377,12 @@ export function AdminUsersIndexPage(): JSX.Element {
                         {user.displayName || '-'}
                       </Text>
                     </div>
-                    <div className='flex items-start'>
+                    <div className='flex items-start justify-center'>
                       <span className={getRoleBadgeVariant(user.role)}>
                         {t(`roles.${user.role.toLowerCase()}`)}
                       </span>
                     </div>
-                    <div className='flex items-start'>
+                    <div className='flex items-start justify-center'>
                       <Text
                         size='2'
                         className={datatableCellTextVariants({
@@ -392,7 +392,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                         {formatDate(user.createdAt)}
                       </Text>
                     </div>
-                    <div className='flex items-start'>
+                    <div className='flex items-start justify-center'>
                       <Form
                         method='post'
                         onChange={event => {

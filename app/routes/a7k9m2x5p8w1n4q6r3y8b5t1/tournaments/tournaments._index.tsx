@@ -189,6 +189,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       if (!currentTouch) return
       const deltaX = currentTouch.clientX - startX
 
+      // Prevent vertical scroll during meaningful horizontal swipe
+      if (Math.abs(deltaX) > 10) moveEvent.preventDefault()
+
       let finalX: number
       let showDelete: boolean
       let isSwiping: boolean
@@ -284,10 +287,12 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       // Clean up listeners
       document.removeEventListener('touchmove', handleTouchMove)
       document.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener('touchcancel', handleTouchEnd)
     }
 
     document.addEventListener('touchmove', handleTouchMove, { passive: false })
     document.addEventListener('touchend', handleTouchEnd)
+    document.addEventListener('touchcancel', handleTouchEnd)
   }
 
   const formatDate = (date: Date | string): string => {
@@ -421,7 +426,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                     {/* Mobile: Swipeable layout - hide on desktop */}
                     <div
                       className='flex transition-transform duration-200 lg:hidden'
-                      style={{ transform }}
+                      style={{ transform, willChange: 'transform' }}
                       onTouchStart={event => handleTouchStart(event, tournament.id)}
                     >
                       {/* Main content - fixed width */}

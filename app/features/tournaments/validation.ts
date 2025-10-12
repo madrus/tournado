@@ -7,24 +7,15 @@ const baseTournamentSchema = z
   .object({
     name: z.string().min(1).max(100),
     location: z.string().min(1).max(100),
-    startDate: z.string().min(1),
-    endDate: z.string().min(1),
+    startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+    endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
     divisions: z.array(z.string()).min(1),
     categories: z.array(z.string()).min(1),
   })
-  .refine(
-    formData => {
-      // Validate that endDate >= startDate
-      if (formData.startDate && formData.endDate) {
-        return formData.endDate >= formData.startDate
-      }
-      return true
-    },
-    {
-      message: 'End date must be on or after start date',
-      path: ['endDate'],
-    }
-  )
+  .refine(formData => formData.endDate >= formData.startDate, {
+    message: 'End date must be on or after start date',
+    path: ['endDate'],
+  })
 
 // Schema for create mode
 const createTournamentSchema = baseTournamentSchema
@@ -44,8 +35,14 @@ const createTournamentFormSchema = (t: TFunction) =>
         .string()
         .min(1, t('messages.tournament.locationRequired'))
         .max(100, t('messages.tournament.locationTooLong')),
-      startDate: z.string().min(1, t('messages.tournament.startDateRequired')),
-      endDate: z.string().min(1, t('messages.tournament.endDateRequired')),
+      startDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
+        .min(1, t('messages.tournament.startDateRequired')),
+      endDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
+        .min(1, t('messages.tournament.endDateRequired')),
       divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
       categories: z
         .array(z.string())

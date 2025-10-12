@@ -16,7 +16,7 @@ export function AboutLayoutHeader({ className }: AboutLayoutHeaderProps): JSX.El
       className={cn('border-button-neutral-secondary-border border-b pb-6', className)}
       data-testid='about-header'
     >
-      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+      <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
         <div>
           <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
             {t('about.title')}

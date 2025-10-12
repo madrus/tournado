@@ -105,7 +105,19 @@ export function scanFlatRoutes(): RouteEntry[] {
       } else if (fileName.startsWith('$')) {
         // Handle folder-based dynamic routes: users/$userId.tsx -> /users/:userId
         const paramName = fileName.substring(1) // Remove the $
-        routePath = '/' + dirName + '/:' + paramName
+
+        // Validate parameter name to prevent invalid routes
+        if (!paramName) {
+          // Handle $.tsx as a catch-all route (consistent with root-level behavior)
+          routePath = '/' + dirName + '/*'
+        } else if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(paramName)) {
+          throw new Error(
+            `Invalid dynamic route parameter name "${paramName}" in file: ${file}. ` +
+              'Parameter names must start with a letter or underscore, and contain only alphanumeric characters and underscores.'
+          )
+        } else {
+          routePath = '/' + dirName + '/:' + paramName
+        }
       } else {
         // Simple file in subdirectory: resources/somefile -> /resources/somefile
         routePath = '/' + dirName + '/' + fileName

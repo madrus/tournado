@@ -639,8 +639,9 @@ Tournament management requires excellent mobile UX for referees on the field, ma
 Implement mobile-first responsive design with:
 
 **Breakpoint Strategy**:
-- Default styles: mobile-first (320px+)
-- Desktop enhancements: `lg:` breakpoint (1024px+) with selective `md:` (768px+)
+- Default styles: mobile-first for phones (320px-767px, unprefixed base classes)
+- Tablet/Desktop enhancements: Use `md:` (768px+) when tablets should share desktop layout, or `lg:` (1024px+) for desktop-only styles
+- **Guideline**: Prefer `md:` over `sm:` to group tablets with desktop unless explicit phone/tablet/desktop differentiation is needed
 - Touch targets: minimum 44px for interactive elements
 - Safe area handling for notched devices
 

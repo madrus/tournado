@@ -33,16 +33,8 @@ vi.mock('react-router', async () => {
 // Mock useTranslation
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'common.titles.settings': 'Settings',
-        'settings.title': 'Application Settings',
-        'settings.description':
-          'Configure your tournament settings, preferences, and account options for optimal experience.',
-      }
-      return translations[key] || key
-    },
-    i18n: { language: 'en' },
+    t: (key: string) => key,
+    i18n: { language: 'nl' },
   }),
 }))
 
@@ -55,7 +47,7 @@ describe('Settings Page', () => {
         </MemoryRouter>
       )
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'Application Settings'
+        'settings.title'
       )
     })
 
@@ -65,7 +57,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByText('Application Settings')).toBeInTheDocument()
+      expect(screen.getByText('settings.title')).toBeInTheDocument()
     })
 
     test('should render preferences section', () => {
@@ -94,11 +86,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(
-        screen.getByText(
-          /Configure your tournament settings, preferences, and account options/
-        )
-      ).toBeInTheDocument()
+      expect(screen.getByText('settings.description')).toBeInTheDocument()
     })
 
     test('should render preferences list', () => {
@@ -189,7 +177,7 @@ describe('Settings Page', () => {
       )
       const headings = screen.getAllByRole('heading')
       const headingTexts = headings.map(h => h.textContent)
-      expect(headingTexts[0]).toBe('Application Settings') // h1
+      expect(headingTexts[0]).toBe('settings.title') // h1
       expect(headingTexts[1]).toBe('Preferences') // h2
       expect(headingTexts[2]).toBe('Tournament Configuration') // h2
     })
@@ -217,7 +205,7 @@ describe('Settings Page', () => {
         </MemoryRouter>
       )
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'Application Settings'
+        'settings.title'
       )
     })
   })

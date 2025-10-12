@@ -139,7 +139,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
                   const currentEndDate = state.formFields.endDate
 
                   // If endDate is empty or startDate is later than endDate, update endDate to match startDate
-                  if (!currentEndDate || value > currentEndDate) {
+                  if (
+                    !currentEndDate ||
+                    Date.parse(value) > Date.parse(currentEndDate)
+                  ) {
                     newFormFields.endDate = value
                   }
                 }

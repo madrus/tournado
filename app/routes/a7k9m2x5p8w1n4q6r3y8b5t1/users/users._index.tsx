@@ -1,11 +1,13 @@
-import { JSX } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import {
   Form,
+  Link,
   useActionData,
   useLoaderData,
   useNavigate,
+  useSearchParams,
   useSubmit,
 } from 'react-router'
 
@@ -73,10 +75,14 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Require permission to read users
   await requireUserWithPermission(request, 'users:approve')
 
-  // Get all users for now (we can add pagination later if needed)
+  // Get pagination parameters from URL search params
+  const url = new URL(request.url)
+  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10))
+  const pageSize = 50 // Reasonable page size for performance
+
   const { users, total } = await getAllUsersWithPagination({
-    page: 1,
-    pageSize: 1000,
+    page,
+    pageSize,
   })
 
   return { users, total }
@@ -108,7 +114,8 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
         userId,
         newRole,
         performedBy: currentUser.id,
-        reason: 'Quick role update from user list',
+        // No reason provided for quick role updates from user list
+        // Admin can view full audit trail on user detail page
       })
       return { success: true }
     } catch (error) {
@@ -128,12 +135,30 @@ export function AdminUsersIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { users, total } = useLoaderData<LoaderData>()
   const actionData = useActionData<typeof action>()
+  const [searchParams] = useSearchParams()
   const submit = useSubmit()
   const navigate = useNavigate()
+
+  // Track which user's role is currently being updated
+  const [updatingUserId, setUpdatingUserId] = useState<string | null>(null)
+
+  // Clear loading state when action completes
+  useEffect(() => {
+    if (actionData) {
+      setUpdatingUserId(null)
+    }
+  }, [actionData])
 
   const handleUserClick = (userId: string) => {
     navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
   }
+
+  // Pagination calculations
+  const pageSize = 50
+  const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10))
+  const totalPages = Math.ceil(total / pageSize)
+  const hasNextPage = currentPage < totalPages
+  const hasPrevPage = currentPage > 1
 
   const formatDate = (date: Date | string): string => {
     const dateObj = typeof date === 'string' ? new Date(date) : date
@@ -374,6 +399,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                           const formData = new FormData(event.currentTarget)
                           const newRole = formData.get('role') as string
                           if (newRole !== user.role) {
+                            setUpdatingUserId(user.id)
                             submit(event.currentTarget)
                           }
                         }}
@@ -383,8 +409,10 @@ export function AdminUsersIndexPage(): JSX.Element {
                         <select
                           name='role'
                           defaultValue={user.role}
-                          className='bg-background border-border rounded border px-2 py-1 text-sm'
+                          className='bg-background border-border rounded border px-2 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50'
                           onClick={event => event.stopPropagation()}
+                          disabled={updatingUserId === user.id}
+                          aria-busy={updatingUserId === user.id}
                         >
                           <option value='PUBLIC'>{t('roles.public')}</option>
                           <option value='MANAGER'>{t('roles.manager')}</option>
@@ -414,6 +442,53 @@ export function AdminUsersIndexPage(): JSX.Element {
               ))}
             </div>
           )}
+
+          {/* Pagination Controls */}
+          {totalPages > 1 ? (
+            <div className='border-border flex items-center justify-between border-t px-6 py-4'>
+              <div className='text-sm text-slate-600'>
+                {t('common.pagination.showing', {
+                  count: users.length,
+                  total,
+                })}
+              </div>
+              <div className='flex gap-2'>
+                {hasPrevPage ? (
+                  <Link
+                    to={`?page=${currentPage - 1}`}
+                    className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors'
+                  >
+                    {t('common.pagination.previous')}
+                  </Link>
+                ) : (
+                  <button
+                    disabled
+                    className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400'
+                  >
+                    {t('common.pagination.previous')}
+                  </button>
+                )}
+                <span className='flex items-center px-3 py-1 text-sm text-slate-700'>
+                  Page {currentPage} of {totalPages}
+                </span>
+                {hasNextPage ? (
+                  <Link
+                    to={`?page=${currentPage + 1}`}
+                    className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors'
+                  >
+                    {t('common.pagination.next')}
+                  </Link>
+                ) : (
+                  <button
+                    disabled
+                    className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400'
+                  >
+                    {t('common.pagination.next')}
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : null}
         </Panel>
       </div>
     </div>

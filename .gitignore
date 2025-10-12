@@ -1,11 +1,11 @@
 # Environment variables and secrets
-!.env.example
 **/.DS_Store
 **/.cache
 **/.obsidian
 **/cache
 .env
 .env.*
+!.env.example
 .prisma
 .react-router
 /prisma/data.db
@@ -24,5 +24,4 @@ blob-report
 playwright-report
 playwright-results
 playwright/.auth
-playwright/.cache
 test-results

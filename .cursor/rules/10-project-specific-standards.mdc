@@ -111,15 +111,22 @@ Group classes in this order: **layout → spacing → color → typography → e
 ```
 
 ### Responsive Design
-- **Mobile-First**: Default styling for mobile (< 1024px)
-- **Desktop**: Add `lg:` prefix for desktop (1024px+)
+- **Mobile-First**: Default styling for phones (320px-767px, unprefixed base classes)
+- **Tablet/Desktop**: Use `md:` (768px+) to group tablets with desktop, or `lg:` (1024px+) for desktop-only styles
+- **Guideline**: Prefer `md:` over `sm:` to avoid unnecessary intermediate breakpoints
 - **Avoid Hardcoded Values**: Use Tailwind's spacing scale over manual values
 
 ```tsx
-// ✅ Good
+// ✅ Good - tablets share desktop layout
+<div className="w-full p-4 md:w-1/2 md:p-8">
+
+// ✅ Good - desktop-only styling
 <div className="w-full p-4 lg:w-1/2 lg:p-8">
 
-// ❌ Bad
+// ❌ Bad - avoid sm: breakpoint
+<div className="w-full p-4 sm:w-1/2 sm:p-8">
+
+// ❌ Bad - hardcoded values
 <div className="w-[100%] p-[16px] lg:w-[50%] lg:p-[32px]">
 ```
 

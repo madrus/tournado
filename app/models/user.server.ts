@@ -104,7 +104,7 @@ export const updateUserRole = async (
 
     // Short-circuit if role is already the desired value
     if (currentUser.role === newRole) {
-      return await tx.user.findUnique({ where: { id: userId } }) as User
+      return (await tx.user.findUnique({ where: { id: userId } })) as User
     }
 
     const updatedUser = await tx.user.update({
@@ -151,7 +151,7 @@ export const deactivateUser = async (
 
     // Short-circuit if already inactive
     if (!currentUser.active) {
-      return await tx.user.findUnique({ where: { id: userId } }) as User
+      return (await tx.user.findUnique({ where: { id: userId } })) as User
     }
 
     const updatedUser = await tx.user.update({
@@ -198,7 +198,7 @@ export const reactivateUser = async (
 
     // Short-circuit if already active
     if (currentUser.active) {
-      return await tx.user.findUnique({ where: { id: userId } }) as User
+      return (await tx.user.findUnique({ where: { id: userId } })) as User
     }
 
     const updatedUser = await tx.user.update({

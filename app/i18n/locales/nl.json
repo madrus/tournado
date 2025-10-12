@@ -72,21 +72,21 @@
     "or": "of",
     "password": "Wachtwoord",
     "placeholders": {
-      "confirmPassword": "Bevestig uw wachtwoord",
-      "email": "Voer uw e-mail in",
-      "password": "Voer uw wachtwoord in"
+      "confirmPassword": "Bevestig je wachtwoord",
+      "email": "Voer je e-mail in",
+      "password": "Voer je wachtwoord in"
     },
-    "pleaseSignIn": "Log in met uw nieuwe account",
+    "pleaseSignIn": "Log in met je nieuwe account",
     "registrationSuccess": "Account succesvol aangemaakt",
     "rememberMe": "Onthoud mij",
     "signInPage": {
-      "description": "Log in op uw Tournado account",
+      "description": "Log in op je Tournado account",
       "noAccount": "Heeft u nog geen account?",
       "signUpLink": "Registreren"
     },
     "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
     "signUpPage": {
-      "description": "Maak uw Tournado account aan",
+      "description": "Maak je Tournado account aan",
       "hasAccount": "Heeft u al een account?",
       "signInLink": "Inloggen"
     },
@@ -282,7 +282,7 @@
   },
   "profile": {
     "title": "Profielinformatie",
-    "description": "Beheer uw profielinstellingen en accountinformatie voor toernooibeheer."
+    "description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer."
   },
   "roles": {
     "admin": "Beheerder",
@@ -294,7 +294,7 @@
   },
   "settings": {
     "title": "Applicatie-instellingen",
-    "description": "Configureer uw toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring."
+    "description": "Configureer je toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring."
   },
   "teams": {
     "allTournaments": "Alle toernooien",

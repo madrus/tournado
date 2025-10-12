@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import type { JSX } from 'react'
 import { Outlet } from 'react-router'
 
 import { UsersLayoutHeader } from '~/components/layouts'

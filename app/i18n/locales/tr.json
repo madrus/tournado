@@ -63,7 +63,7 @@
     },
     "firstName": "Ad",
     "labels": {
-      "confirmPassword": "Şifreyi Onayla",
+      "confirmPassword": "Şifreyi onayla",
       "email": "E-posta",
       "password": "Şifre"
     },
@@ -129,8 +129,8 @@
     "loading": "Yükleniyor...",
     "optional": "(isteğe bağlı)",
     "pagination": {
-      "next": "İleri",
-      "previous": "Geri",
+      "next": "Sonraki",
+      "previous": "Önceki",
       "showing": "{{total}} kullanıcıdan {{count}} tanesi gösteriliyor"
     },
     "signedInAs": "Giriş yapıldı: ",
@@ -152,12 +152,12 @@
     "welcome": "Hoş geldiniz"
   },
   "divisions": {
-    "FIFTH_DIVISION": "Beşinci Lig",
-    "FIRST_DIVISION": "Birinci Lig",
-    "FOURTH_DIVISION": "Dördüncü Lig",
-    "PREMIER_DIVISION": "Premier Lig",
-    "SECOND_DIVISION": "İkinci Lig",
-    "THIRD_DIVISION": "Üçüncü Lig"
+    "FIFTH_DIVISION": "Beşinci lig",
+    "FIRST_DIVISION": "Birinci lig",
+    "FOURTH_DIVISION": "Dördüncü lig",
+    "PREMIER_DIVISION": "Premier lig",
+    "SECOND_DIVISION": "İkinci lig",
+    "THIRD_DIVISION": "Üçüncü lig"
   },
   "landing": {
     "features": {
@@ -289,7 +289,7 @@
     "billing": "Faturalama",
     "editor": "Editör",
     "manager": "Yönetici",
-    "public": "Herkese Açık",
+    "public": "Herkese açık",
     "referee": "Hakem"
   },
   "settings": {
@@ -373,34 +373,34 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Kullanıcıyı Devre Dışı Bırak",
-      "reactivateUser": "Kullanıcıyı Yeniden Etkinleştir",
-      "updateRole": "Rolü Güncelle",
-      "viewDetails": "Detayları Görüntüle"
+      "deactivateUser": "Kullanıcıyı devre dışı bırak",
+      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "updateRole": "Rolü güncelle",
+      "viewDetails": "Detayları görüntüle"
     },
     "auditActions": {
-      "approval": "Kullanıcı Onaylandı",
-      "deactivate": "Kullanıcı Devre Dışı Bırakıldı",
-      "profile_update": "Profil Güncellendi",
-      "reactivate": "Kullanıcı Yeniden Etkinleştirildi",
-      "rejection": "Kullanıcı Reddedildi",
-      "role_change": "Rol Değiştirildi"
+      "approval": "Kullanıcı onaylandı",
+      "deactivate": "Kullanıcı devre dışı bırakıldı",
+      "profile_update": "Profil güncellendi",
+      "reactivate": "Kullanıcı yeniden etkinleştirildi",
+      "rejection": "Kullanıcı reddedildi",
+      "role_change": "Rol değiştirildi"
     },
     "descriptions": {
       "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
     },
     "fields": {
-      "assignRole": "Rol Ata",
-      "createdAt": "Oluşturulma Tarihi",
-      "currentRole": "Mevcut Rol",
-      "displayName": "Görünen Ad",
+      "assignRole": "Rol ata",
+      "createdAt": "Oluşturulma tarihi",
+      "currentRole": "Mevcut rol",
+      "displayName": "Görünen ad",
       "email": "E-posta",
       "performedBy": "Gerçekleştiren",
       "reason": "Sebep",
       "role": "Rol"
     },
     "messages": {
-      "deactivated": "Devre Dışı",
+      "deactivated": "Devre dışı",
       "noAuditLogs": "Denetim kaydı girişi bulunamadı",
       "noUsers": "Kullanıcı bulunamadı",
       "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
@@ -415,14 +415,14 @@
       "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
     },
     "titles": {
-      "allUsers": "Tüm Kullanıcılar",
-      "auditLog": "Denetim Kaydı",
-      "deactivateUser": "Kullanıcıyı Devre Dışı Bırak",
-      "reactivateUser": "Kullanıcıyı Yeniden Etkinleştir",
-      "totalUsers": "Toplam Kullanıcılar",
-      "userDetail": "Kullanıcı Detayları",
-      "userInformation": "Kullanıcı Bilgileri",
-      "userManagement": "Kullanıcı Yönetimi"
+      "allUsers": "Tüm kullanıcılar",
+      "auditLog": "Denetim kaydı",
+      "deactivateUser": "Kullanıcıyı devre dışı bırak",
+      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "totalUsers": "Toplam kullanıcılar",
+      "userDetail": "Kullanıcı detayları",
+      "userInformation": "Kullanıcı bilgileri",
+      "userManagement": "Kullanıcı yönetimi"
     }
   }
 }

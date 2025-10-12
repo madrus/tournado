@@ -74,6 +74,8 @@ model User {
   updatedAt       DateTime       @updatedAt
   auditLogs       UserAuditLog[] @relation("UserAuditLogs")
   performedAudits UserAuditLog[] @relation("PerformedAudits")
+
+  @@index([active, createdAt])
 }
 
 model UserAuditLog {
@@ -81,7 +83,7 @@ model UserAuditLog {
   userId        String
   user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
   performedBy   String
-  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Cascade)
+  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Restrict)
   action        String   // "role_change", "approval", "rejection", "profile_update", "deactivate", "reactivate"
   previousValue String?
   newValue      String?

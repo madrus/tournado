@@ -12,17 +12,13 @@ test.describe('Admin Authorization', () => {
       // Admin users should be able to access the admin panel
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
-      // Wait for page to load and content to render
+      // Wait for page to load
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-      // Wait for content to actually appear
-      await page.waitForFunction(() => document.body.children.length > 0)
 
       // Should not be redirected away
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1/)
 
-      // Should see specific admin content (Beheerpaneel heading)
+      // Should see specific admin content (this already waits up to 15s)
       await expect(page.locator('h1').filter({ hasText: 'Beheerpaneel' })).toBeVisible({
         timeout: 15000,
       })
@@ -32,12 +28,8 @@ test.describe('Admin Authorization', () => {
       // Navigate to admin teams page
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
 
-      // Wait for page to load and content to render
+      // Wait for page to load
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-      // Wait for content to actually appear
-      await page.waitForFunction(() => document.body.children.length > 0)
 
       // Admin should see team management interface
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams/)
@@ -51,12 +43,8 @@ test.describe('Admin Authorization', () => {
     test('should be able to access admin team creation', async ({ page }) => {
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
 
-      // Wait for page to load and content to render
+      // Wait for page to load
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Wait for hydration/rendering
-
-      // Wait for content to actually appear
-      await page.waitForFunction(() => document.body.children.length > 0)
 
       // Should see admin team creation form
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new/)
@@ -70,9 +58,8 @@ test.describe('Admin Authorization', () => {
       // Navigate to admin panel
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
-      // Wait for page to load and content to render
+      // Wait for page to load
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Wait for hydration/rendering
 
       // Open user menu
       await page.getByRole('button', { name: /menu openen\/sluiten/i }).click()

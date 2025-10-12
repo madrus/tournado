@@ -2,6 +2,7 @@
 import { type Category } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import { safeParseJSON } from '~/utils/json'
 
 // Re-export types for client-side usage
 export type GroupSlotTeam = {
@@ -189,7 +190,11 @@ export async function getGroupSetWithDetails(
     id: groupSet.id,
     name: groupSet.name,
     tournamentId: groupSet.tournamentId,
-    categories: JSON.parse(groupSet.categories) as Category[],
+    categories: safeParseJSON<Category[]>(
+      groupSet.categories,
+      `getGroupSetById(${groupSetId})`,
+      []
+    ),
     configGroups: groupSet.configGroups,
     configSlots: groupSet.configSlots,
     autoFill: groupSet.autoFill,
@@ -220,7 +225,11 @@ export async function getTournamentGroupSets(
 
   return groupSets.map(groupSet => ({
     ...groupSet,
-    categories: JSON.parse(groupSet.categories) as Category[],
+    categories: safeParseJSON<Category[]>(
+      groupSet.categories,
+      `getTournamentGroupSets(${tournamentId}) - groupSet ${groupSet.id}`,
+      []
+    ),
   }))
 }
 

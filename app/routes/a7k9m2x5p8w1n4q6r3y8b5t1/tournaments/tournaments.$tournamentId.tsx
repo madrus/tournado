@@ -24,6 +24,7 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
+import { safeParseJSON } from '~/utils/json'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -248,10 +249,18 @@ export default function EditTournamentPage(): JSX.Element {
           : '',
         divisions: Array.isArray(tournament.divisions)
           ? (tournament.divisions as string[])
-          : JSON.parse(String(tournament.divisions || '[]')),
+          : safeParseJSON<string[]>(
+              String(tournament.divisions || '[]'),
+              `useEffect - tournament ${tournament.id} divisions`,
+              []
+            ),
         categories: Array.isArray(tournament.categories)
           ? (tournament.categories as string[])
-          : JSON.parse(String(tournament.categories || '[]')),
+          : safeParseJSON<string[]>(
+              String(tournament.categories || '[]'),
+              `useEffect - tournament ${tournament.id} categories`,
+              []
+            ),
       })
 
       // Remove the success parameter from URL
@@ -283,16 +292,24 @@ export default function EditTournamentPage(): JSX.Element {
     return dateObj.toISOString().split('T')[0]
   }
 
-  // Parse JSON fields
+  // Parse JSON fields safely
   const parsedDivisions = tournament.divisions
     ? typeof tournament.divisions === 'string'
-      ? JSON.parse(tournament.divisions)
+      ? safeParseJSON<string[]>(
+          tournament.divisions,
+          `TournamentDetailPage - tournament ${tournament.id} divisions`,
+          []
+        )
       : tournament.divisions
     : []
 
   const parsedCategories = tournament.categories
     ? typeof tournament.categories === 'string'
-      ? JSON.parse(tournament.categories)
+      ? safeParseJSON<string[]>(
+          tournament.categories,
+          `TournamentDetailPage - tournament ${tournament.id} categories`,
+          []
+        )
       : tournament.categories
     : []
 

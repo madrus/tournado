@@ -7,6 +7,7 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
+import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -71,7 +72,11 @@ export async function loader({
 
   // Count available teams by category
   const availableTeamsCount = {} as Record<Category, number>
-  const categories = JSON.parse(tournament.categories) as Category[]
+  const categories = safeParseJSON<Category[]>(
+    tournament.categories,
+    `competition.groups.new - tournament ${tournamentId}`,
+    []
+  )
 
   for (const category of categories) {
     const teams = await getTeamsByCategories(tournamentId, [category])

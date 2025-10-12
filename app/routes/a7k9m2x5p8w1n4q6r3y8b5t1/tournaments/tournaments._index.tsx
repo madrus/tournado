@@ -569,8 +569,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                             action: 'delete',
                           })}
                           title={t('tournaments.deleteTournament')}
+                          aria-label={t('tournaments.deleteTournament')}
                         >
-                          <DeleteIcon className='h-4 w-4' />
+                          <DeleteIcon className='h-4 w-4' aria-hidden='true' />
                         </button>
                       </div>
                     </div>

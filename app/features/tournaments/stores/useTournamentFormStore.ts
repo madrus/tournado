@@ -8,8 +8,8 @@ import {
   subscribeWithSelector,
 } from 'zustand/middleware'
 
+import type { TournamentFormData } from '~/features/tournaments/validation'
 import { isBrowser } from '~/lib/lib.helpers'
-import type { TournamentFormData } from '~/lib/lib.zod'
 import {
   validateEntireTournamentForm,
   validateSingleTournamentField,
@@ -134,6 +134,19 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
                   [fieldName]: value,
                 }
 
+                // Auto-fill/correct endDate when startDate changes
+                if (fieldName === 'startDate' && typeof value === 'string') {
+                  const currentEndDate = state.formFields.endDate
+
+                  // If endDate is empty or startDate is later than endDate, update endDate to match startDate
+                  if (
+                    !currentEndDate ||
+                    Date.parse(value) > Date.parse(currentEndDate)
+                  ) {
+                    newFormFields.endDate = value
+                  }
+                }
+
                 return {
                   ...state,
                   formFields: newFormFields,
@@ -146,6 +159,11 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
             // When a user types, immediately clear any existing error for that field.
             // Validation will be re-triggered on blur.
             get().clearFieldError(fieldName)
+
+            // If startDate changed and endDate was auto-updated, clear endDate errors too
+            if (fieldName === 'startDate') {
+              get().clearFieldError('endDate')
+            }
           },
 
           // Universal validation field setter

@@ -17,7 +17,7 @@ export class AdminTournamentsPage extends BasePage {
   }
 
   get createTournamentButton(): Locator {
-    return this.page.getByRole('link', { name: /toevoegen|add/i })
+    return this.page.getByRole('link', { name: 'toevoegen' })
   }
 
   get tournamentsTable(): Locator {
@@ -38,8 +38,7 @@ export class AdminTournamentsPage extends BasePage {
       waitUntil: 'networkidle',
       timeout: 30000,
     })
-    await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-    await this.page.waitForFunction(() => document.body.children.length > 0)
+    await this.layoutContainer.waitFor({ state: 'visible', timeout: 15000 })
   }
 
   async gotoCreateTournament(): Promise<void> {
@@ -47,8 +46,7 @@ export class AdminTournamentsPage extends BasePage {
       waitUntil: 'networkidle',
       timeout: 30000,
     })
-    await this.page.waitForTimeout(2000) // Wait for hydration/rendering
-    await this.page.waitForFunction(() => document.body.children.length > 0)
+    await this.layoutContainer.waitFor({ state: 'visible', timeout: 15000 })
   }
 
   async clickCreateTournament(): Promise<void> {

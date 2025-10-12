@@ -1,11 +1,11 @@
 ---
 description: Migrate authentication UX to Firebase Google Sign-in while preserving existing flows
-id: "TASK-0003"
+id: "TASK-0103"
 title: "Migrate authentication UX to Firebase Google Sign-in"
 status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "ui", "ux"]
-dependencies: ["./TASK-0002-firebase-session-bridge.mdc"]
+dependencies: ["./TASK-0102-firebase-session-bridge.mdc"]
 created: "2025-01-09"
 globs:
 alwaysApply: false
@@ -38,7 +38,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 3) Assumptions & Constraints
 
-- ASSUMPTION: Firebase setup (TASK-0001) and session bridging (TASK-0002) are complete
+- ASSUMPTION: Firebase setup (TASK-0101) and session bridging (TASK-0102) are complete
 - Constraint: Preserve existing redirect behavior after authentication
 - Constraint: Maintain existing route protection patterns
 - Constraint: Support internationalization with existing locales
@@ -47,9 +47,9 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- ./TASK-0002-firebase-session-bridge.mdc (session bridging must be complete)
-- app/features/firebase/client.ts _(from TASK-0001)_
-- app/features/firebase/auth.server.ts _(from TASK-0002)_
+- ./TASK-0102-firebase-session-bridge.mdc (session bridging must be complete)
+- app/features/firebase/client.ts _(from TASK-0101)_
+- app/features/firebase/auth.server.ts _(from TASK-0102)_
 - app/components/auth/ (existing auth components)
 - app/routes/auth/ (existing auth routes)
 
@@ -59,8 +59,8 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 **Beginning (add to model context):**
 - app/components/auth/ _(read-only existing shared components)_
 - app/routes/auth/ _(read-only existing shared routes)_
-- app/features/firebase/client.ts _(from TASK-0001)_
-- app/features/firebase/auth.server.ts _(from TASK-0002)_
+- app/features/firebase/client.ts _(from TASK-0101)_
+- app/features/firebase/auth.server.ts _(from TASK-0102)_
 - app/stores/authStore.ts _(read-only)_
 
 **End state (files that will be created/modified):**

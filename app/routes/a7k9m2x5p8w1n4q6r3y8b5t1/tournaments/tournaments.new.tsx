@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { redirect, useActionData, useLoaderData } from 'react-router'
 
-import { TournamentForm } from '~/components/TournamentForm'
+import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import {
   createTournament,
   getAllCategories,
   getAllDivisions,
 } from '~/models/tournament.server'
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
@@ -133,11 +133,15 @@ export async function action({
   }
 
   try {
+    // Default endDate to startDate if not provided
+    const finalEndDate =
+      endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+
     const tournament = await createTournament({
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),
-      endDate: endDate && typeof endDate === 'string' ? new Date(endDate) : null,
+      endDate: new Date(finalEndDate),
       divisions,
       categories,
     })

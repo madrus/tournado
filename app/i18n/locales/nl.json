@@ -1,17 +1,27 @@
 {
   "admin": {
+    "competition": {
+      "description": "Beheer groepen, wedstrijden en standen voor toernooien.",
+      "title": "Competitiebeheer"
+    },
     "panel": {
       "description": "Welkom terug, <email>{{email}}</email>. Beheer je toernooiplatform vanaf hier.",
       "title": "Beheerpaneel"
     },
+    "reports": {
+      "description": "Bekijk platformgebruik en toernooistatistieken.",
+      "title": "Rapporten & Analyse"
+    },
+    "settings": {
+      "description": "Configureer applicatie-instellingen en voorkeuren.",
+      "title": "Systeeminstellingen"
+    },
     "team": {
-      "allTeams": "Alle teams",
-      "allTeamsDescription": "Beheer alle teams in het systeem. Klik op een team om details te bewerken of te verwijderen.",
       "confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
       "createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
       "createTeam": "Team aanmaken",
       "createTeamDescription": "Voeg een nieuw team toe aan het systeem met alle benodigde details.",
-      "description": "Beheer alle teams voor alle toernooien. Bekijk, bewerk of verwijder teaminformatie.",
+      "description": "Beheer teams voor toernooien. Bekijk, bewerk of verwijder teaminformatie.",
       "editTeam": "Team bewerken",
       "newTeam": "Nieuw team",
       "saveChanges": "Wijzigingen opslaan",
@@ -21,29 +31,20 @@
       "totalTeams": "Totaal aantal teams"
     },
     "tournament": {
-      "allTournaments": "Alle toernooien",
-      "allTournamentsDescription": "Bekijk en beheer alle toernooien in het systeem",
       "confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "description": "Beheer alle toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
+      "description": "Beheer toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
       "title": "Toernooien beheer",
       "totalTournaments": "Totaal aantal toernooien"
     },
-    "match": {
-      "title": "Wedstrijden beheer",
-      "description": "Beheer wedstrijdscores en scheidsrechter toewijzingen."
-    },
     "user": {
+      "description": "Beheer gebruikersaccounts en machtigingen.",
       "title": "Gebruikers beheer",
-      "description": "Beheer gebruikersaccounts en machtigingen."
-    },
-    "settings": {
-      "title": "Systeeminstellingen",
-      "description": "Configureer applicatie-instellingen en voorkeuren."
-    },
-    "reports": {
-      "title": "Rapporten & Analytics",
-      "description": "Bekijk platformgebruik en toernooistatistieken."
+      "totalUsers": "Totaal aantal gebruikers"
     }
+  },
+  "about": {
+    "title": "Over Tournado",
+    "description": "Tournado is een uitgebreid platform voor toernooibeheer, ontworpen om de organisatie en het beheer van sporttoernooien voor organisaties en teams te stroomlijnen."
   },
   "auth": {
     "alreadyHaveAccount": "Heb je al een account?",
@@ -51,6 +52,10 @@
     "createAccount": "Account aanmaken",
     "dontHaveAccount": "Nog geen account?",
     "emailAddress": "E-mailadres",
+    "errors": {
+      "accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp.",
+      "accountDeactivatedTitle": "Account gedeactiveerd"
+    },
     "firebase": {
       "continueWithGoogle": "Doorgaan met Google",
       "error": "Authenticatie mislukt. Probeer het opnieuw.",
@@ -67,21 +72,21 @@
     "or": "of",
     "password": "Wachtwoord",
     "placeholders": {
-      "confirmPassword": "Bevestig uw wachtwoord",
-      "email": "Voer uw e-mail in",
-      "password": "Voer uw wachtwoord in"
+      "confirmPassword": "Bevestig je wachtwoord",
+      "email": "Voer je e-mail in",
+      "password": "Voer je wachtwoord in"
     },
-    "pleaseSignIn": "Log in met uw nieuwe account",
+    "pleaseSignIn": "Log in met je nieuwe account",
     "registrationSuccess": "Account succesvol aangemaakt",
     "rememberMe": "Onthoud mij",
     "signInPage": {
-      "description": "Log in op uw Tournado account",
+      "description": "Log in op je Tournado account",
       "noAccount": "Heeft u nog geen account?",
       "signUpLink": "Registreren"
     },
     "signInRequiredToCreateTeam": "Je moet inloggen om een team aan te maken.",
     "signUpPage": {
-      "description": "Maak uw Tournado account aan",
+      "description": "Maak je Tournado account aan",
       "hasAccount": "Heeft u al een account?",
       "signInLink": "Inloggen"
     },
@@ -105,14 +110,15 @@
       "delete": "Verwijderen",
       "save": "Opslaan",
       "saving": "Opslaan...",
-      "update": "Bijwerken"
+      "update": "Bijwerken",
+      "view": "Bekijken"
     },
     "appName": "Tournado",
     "auth": {
       "signIn": "Inloggen",
-      "signingIn": "Inloggen...",
       "signOut": "Uitloggen",
-      "signUp": "Registreren"
+      "signUp": "Registreren",
+      "signingIn": "Inloggen..."
     },
     "backToHome": "Terug naar home",
     "darkMode": "Donkere modus",
@@ -121,16 +127,24 @@
     "language": "Taal",
     "lightMode": "Lichte modus",
     "loading": "Laden...",
+    "optional": "(optioneel)",
+    "pagination": {
+      "next": "Volgende",
+      "previous": "Vorige",
+      "showing": "{{count}} van {{total}} rijen worden weergegeven"
+    },
     "signedInAs": "Ingelogd als",
     "titles": {
       "about": "Over ons",
       "addTeam": "Team toevoegen",
       "adminPanel": "Beheerpaneel",
+      "competition": "Competitie",
       "more": "Meer",
       "profile": "Profiel",
       "settings": "Instellingen",
       "teams": "Teams",
       "tournaments": "Toernooien",
+      "users": "Gebruikers",
       "welcome": "Welkom"
     },
     "toggleMenu": "Menu openen/sluiten",
@@ -217,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "Minstens één categorie is verplicht",
       "divisionsRequired": "Minstens één divisie is verplicht",
+      "endDateBeforeStartDate": "Einddatum moet op of na de startdatum zijn",
       "endDateRequired": "Einddatum is verplicht",
       "locationRequired": "Locatie is verplicht",
       "locationTooLong": "Locatie moet minder dan 100 karakters zijn",
@@ -264,6 +279,22 @@
       "instruction": "Ververs om de app bij te werken",
       "title": "Er is een nieuwe versie beschikbaar"
     }
+  },
+  "profile": {
+    "title": "Profielinformatie",
+    "description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer."
+  },
+  "roles": {
+    "admin": "Beheerder",
+    "billing": "Facturatie",
+    "editor": "Redacteur",
+    "manager": "Manager",
+    "public": "Publiek",
+    "referee": "Scheidsrechter"
+  },
+  "settings": {
+    "title": "Applicatie-instellingen",
+    "description": "Configureer je toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring."
   },
   "teams": {
     "allTournaments": "Alle toernooien",
@@ -339,5 +370,59 @@
     "noTournamentsDescription": "Er zijn nog geen toernooien aangemaakt. Maak je eerste toernooi aan om te beginnen!",
     "startDate": "Startdatum",
     "title": "Toernooien"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren",
+      "updateRole": "Rol bijwerken",
+      "viewDetails": "Details bekijken"
+    },
+    "auditActions": {
+      "approval": "Gebruiker goedgekeurd",
+      "deactivate": "Gebruiker gedeactiveerd",
+      "profile_update": "Profiel bijgewerkt",
+      "reactivate": "Gebruiker gereactiveerd",
+      "rejection": "Gebruiker afgewezen",
+      "role_change": "Rol gewijzigd"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
+    },
+    "fields": {
+      "assignRole": "Rol toewijzen",
+      "createdAt": "Aangemaakt op",
+      "currentRole": "Huidige rol",
+      "displayName": "Weergavenaam",
+      "email": "E-mail",
+      "performedBy": "Uitgevoerd door",
+      "reason": "Reden",
+      "role": "Rol"
+    },
+    "messages": {
+      "deactivated": "Gedeactiveerd",
+      "noAuditLogs": "Geen auditlogvermeldingen gevonden",
+      "noUsers": "Geen gebruikers gevonden",
+      "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
+      "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
+      "userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
+      "userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
+    },
+    "placeholders": {
+      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
+      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
+      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+    },
+    "titles": {
+      "allUsers": "Alle gebruikers",
+      "auditLog": "Auditlog",
+      "deactivateUser": "Gebruiker deactiveren",
+      "reactivateUser": "Gebruiker reactiveren",
+      "totalUsers": "Totaal aantal gebruikers",
+      "userDetail": "Gebruikersdetails",
+      "userInformation": "Gebruikersinformatie",
+      "userManagement": "Gebruikersbeheer"
+    }
   }
 }

@@ -7,8 +7,9 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
+import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
-import { requireAdminUser } from '~/utils/rbacMiddleware.server'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
 import type { Route } from './+types/competition.groups.new'
@@ -57,7 +58,7 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireAdminUser(request)
+  await requireUserWithPermission(request, 'groups:manage')
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)
@@ -71,8 +72,13 @@ export async function loader({
 
   // Count available teams by category
   const availableTeamsCount = {} as Record<Category, number>
+  const categories = safeParseJSON<Category[]>(
+    tournament.categories,
+    `competition.groups.new - tournament ${tournamentId}`,
+    []
+  )
 
-  for (const category of tournament.categories as Category[]) {
+  for (const category of categories) {
     const teams = await getTeamsByCategories(tournamentId, [category])
     availableTeamsCount[category] = teams.length
   }
@@ -81,7 +87,7 @@ export async function loader({
     tournament: {
       id: tournament.id,
       name: tournament.name,
-      categories: tournament.categories as Category[],
+      categories,
     },
     availableTeamsCount,
   }
@@ -90,7 +96,7 @@ export async function loader({
 export async function action({
   request,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireAdminUser(request)
+  await requireUserWithPermission(request, 'groups:manage')
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)
@@ -256,7 +262,7 @@ export default function CreateGroupSet(): JSX.Element {
               name='configSlots'
               label='Teams per Group'
               type='text'
-              placeholder='6'
+              placeholder='5'
               defaultValue={actionData?.fieldValues?.configSlots || ''}
               error={actionData?.errors?.configSlots}
               required

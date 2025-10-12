@@ -1,17 +1,27 @@
 {
   "admin": {
+    "competition": {
+      "description": "إدارة المجموعات والمباريات والترتيب للبطولات.",
+      "title": "إدارة المسابقة"
+    },
     "panel": {
       "description": "أهلاً بك مرة أخرى، <email>{{email}}</email>. أدر منصة البطولات الخاصة بك من هنا.",
       "title": "لوحة الإدارة"
     },
+    "reports": {
+      "description": "عرض إحصائيات استخدام المنصة والبطولات.",
+      "title": "التقارير والإحصائيات"
+    },
+    "settings": {
+      "description": "تكوين إعدادات التطبيق والتفضيلات.",
+      "title": "إعدادات النظام"
+    },
     "team": {
-      "allTeams": "جميع الفرق",
-      "allTeamsDescription": "إدارة جميع الفرق في النظام. انقر على فريق لتحرير التفاصيل أو حذفه.",
       "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
       "createNewTeamDescription": "إنشاء فريق جديد مع تفاصيل البطولة ومعلومات الاتصال.",
       "createTeam": "إنشاء فريق",
       "createTeamDescription": "إضافة فريق جديد إلى النظام مع جميع التفاصيل الضرورية.",
-      "description": "إدارة جميع الفرق عبر جميع البطولات. عرض أو تحرير أو حذف معلومات الفريق.",
+      "description": "إدارة الفرق عبر البطولات. عرض أو تحرير أو حذف معلومات الفريق.",
       "editTeam": "تحرير تفاصيل الفريق",
       "newTeam": "فريق جديد",
       "saveChanges": "حفظ التغييرات",
@@ -21,29 +31,20 @@
       "totalTeams": "إجمالي الفرق"
     },
     "tournament": {
-      "allTournaments": "جميع البطولات",
-      "allTournamentsDescription": "عرض وإدارة جميع البطولات في النظام",
       "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
-      "description": "إدارة جميع البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
+      "description": "إدارة البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
       "title": "إدارة البطولات",
       "totalTournaments": "إجمالي البطولات"
     },
-    "match": {
-      "title": "إدارة المباريات",
-      "description": "إدارة نتائج المباريات وتعيين الحكام."
-    },
     "user": {
+      "description": "إدارة حسابات المستخدمين والصلاحيات.",
       "title": "إدارة المستخدمين",
-      "description": "إدارة حسابات المستخدمين والصلاحيات."
-    },
-    "settings": {
-      "title": "إعدادات النظام",
-      "description": "تكوين إعدادات التطبيق والتفضيلات."
-    },
-    "reports": {
-      "title": "التقارير والإحصائيات",
-      "description": "عرض إحصائيات استخدام المنصة والبطولات."
+      "totalUsers": "إجمالي المستخدمين"
     }
+  },
+  "about": {
+    "title": "عن Tournado",
+    "description": "Tournado هي منصة شاملة لإدارة البطولات مصممة لتبسيط تنظيم وإدارة البطولات الرياضية للمنظمات والفرق."
   },
   "auth": {
     "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
@@ -51,6 +52,10 @@
     "createAccount": "إنشاء حساب",
     "dontHaveAccount": "ليس لديك حساب؟",
     "emailAddress": "عنوان البريد الإلكتروني",
+    "errors": {
+      "accountDeactivatedMessage": "تم إلغاء تنشيط حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.",
+      "accountDeactivatedTitle": "تم إلغاء تنشيط الحساب"
+    },
     "firebase": {
       "continueWithGoogle": "المتابعة مع Google",
       "error": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
@@ -105,14 +110,15 @@
       "delete": "حذف",
       "save": "حفظ",
       "saving": "جاري الحفظ...",
-      "update": "تحديث"
+      "update": "تحديث",
+      "view": "عرض"
     },
     "appName": "Tournado",
     "auth": {
       "signIn": "تسجيل الدخول",
-      "signingIn": "جاري تسجيل الدخول...",
       "signOut": "تسجيل الخروج",
-      "signUp": "التسجيل"
+      "signUp": "التسجيل",
+      "signingIn": "جاري تسجيل الدخول..."
     },
     "backToHome": "العودة إلى الرئيسية",
     "darkMode": "المظهر الداكن",
@@ -121,16 +127,24 @@
     "language": "اللغة",
     "lightMode": "المظهر الفاتح",
     "loading": "جاري التحميل...",
+    "optional": "(اختياري)",
+    "pagination": {
+      "next": "التالي",
+      "previous": "السابق",
+      "showing": "عرض {{count}} من {{total}} مستخدم"
+    },
     "signedInAs": "مسجل الدخول كـ",
     "titles": {
       "about": "حول",
       "addTeam": "إضافة فريق",
       "adminPanel": "لوحة الإدارة",
+      "competition": "المنافسة",
       "more": "المزيد",
       "profile": "الملف الشخصي",
       "settings": "الإعدادات",
       "teams": "الفرق",
       "tournaments": "البطولات",
+      "users": "المستخدمون",
       "welcome": "أهلاً وسهلاً"
     },
     "toggleMenu": "فتح/إغلاق القائمة",
@@ -217,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "مطلوبة فئة واحدة على الأقل",
       "divisionsRequired": "مطلوب درجة واحدة على الأقل",
+      "endDateBeforeStartDate": "يجب أن يكون تاريخ الانتهاء في تاريخ البدء أو بعده",
       "endDateRequired": "تاريخ النهاية مطلوب",
       "locationRequired": "الموقع مطلوب",
       "locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",
@@ -264,6 +279,22 @@
       "instruction": "أعد تحميل الصفحة لتحديث التطبيق",
       "title": "نسخة جديدة متاحة"
     }
+  },
+  "profile": {
+    "title": "معلومات الملف الشخصي",
+    "description": "إدارة إعدادات ملفك الشخصي ومعلومات الحساب لإدارة البطولات."
+  },
+  "roles": {
+    "admin": "مسؤول",
+    "billing": "فواتير",
+    "editor": "محرر",
+    "manager": "مدير",
+    "public": "عام",
+    "referee": "حكم"
+  },
+  "settings": {
+    "title": "إعدادات التطبيق",
+    "description": "قم بتكوين إعدادات البطولة والتفضيلات وخيارات الحساب للحصول على تجربة مثالية."
   },
   "teams": {
     "allTournaments": "جميع البطولات",
@@ -339,5 +370,59 @@
     "noTournamentsDescription": "لم يتم إنشاء أي بطولات بعد. أنشئ بطولتك الأولى للبدء!",
     "startDate": "تاريخ البداية",
     "title": "البطولات"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "إلغاء تنشيط المستخدم",
+      "reactivateUser": "إعادة تنشيط المستخدم",
+      "updateRole": "تحديث الدور",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "auditActions": {
+      "approval": "تمت الموافقة على المستخدم",
+      "deactivate": "تم إلغاء تنشيط المستخدم",
+      "profile_update": "تم تحديث الملف الشخصي",
+      "reactivate": "تمت إعادة تنشيط المستخدم",
+      "rejection": "تم رفض المستخدم",
+      "role_change": "تم تغيير الدور"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "إدارة حسابات المستخدمين وتعيين الأدوار"
+    },
+    "fields": {
+      "assignRole": "تعيين الدور",
+      "createdAt": "تاريخ الإنشاء",
+      "currentRole": "الدور الحالي",
+      "displayName": "اسم العرض",
+      "email": "البريد الإلكتروني",
+      "performedBy": "تم بواسطة",
+      "reason": "السبب",
+      "role": "الدور"
+    },
+    "messages": {
+      "deactivated": "غير نشط",
+      "noAuditLogs": "لم يتم العثور على إدخالات سجل التدقيق",
+      "noUsers": "لم يتم العثور على مستخدمين",
+      "noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
+      "roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
+      "userDeactivatedSuccessfully": "تم إلغاء تنشيط المستخدم بنجاح",
+      "userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح",
+      "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
+    },
+    "placeholders": {
+      "reasonForChange": "أدخل سبب تغيير الدور (اختياري)",
+      "reasonForDeactivation": "أدخل سبب إلغاء التنشيط (اختياري)",
+      "reasonForReactivation": "أدخل سبب إعادة التنشيط (اختياري)"
+    },
+    "titles": {
+      "allUsers": "جميع المستخدمين",
+      "auditLog": "سجل التدقيق",
+      "deactivateUser": "إلغاء تنشيط المستخدم",
+      "reactivateUser": "إعادة تنشيط المستخدم",
+      "totalUsers": "إجمالي المستخدمين",
+      "userDetail": "تفاصيل المستخدم",
+      "userInformation": "معلومات المستخدم",
+      "userManagement": "إدارة المستخدمين"
+    }
   }
 }

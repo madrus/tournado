@@ -1,17 +1,27 @@
 {
   "admin": {
+    "competition": {
+      "description": "Manage groups, matches, and standings for tournaments.",
+      "title": "Competition Management"
+    },
     "panel": {
       "description": "Welcome back, <email>{{email}}</email>. Manage your tournament platform from here.",
       "title": "Admin Panel"
     },
+    "reports": {
+      "description": "View platform usage and tournament statistics.",
+      "title": "Reports & Analytics"
+    },
+    "settings": {
+      "description": "Configure application settings and preferences.",
+      "title": "System Settings"
+    },
     "team": {
-      "allTeams": "All Teams",
-      "allTeamsDescription": "Manage all teams in the system. Click on a team to edit details or delete it.",
       "confirmDelete": "Are you sure you want to delete this team? This action cannot be undone.",
       "createNewTeamDescription": "Create a new team with tournament details and contact information.",
       "createTeam": "Create Team",
       "createTeamDescription": "Add a new team to the system with all necessary details.",
-      "description": "Manage all teams across all tournaments. View, edit, or delete team information.",
+      "description": "Manage teams across tournaments. View, edit, or delete team information.",
       "editTeam": "Edit Team Details",
       "newTeam": "New Team",
       "saveChanges": "Save Changes",
@@ -21,29 +31,20 @@
       "totalTeams": "Total Teams"
     },
     "tournament": {
-      "allTournaments": "All Tournaments",
-      "allTournamentsDescription": "View and manage all tournaments in the system",
       "confirmDelete": "Are you sure you want to delete this tournament? This action cannot be undone.",
-      "description": "Manage all tournaments in the system. Create, edit, or delete tournament information.",
+      "description": "Manage tournaments in the system. Create, edit, or delete tournament information.",
       "title": "Tournament Management",
       "totalTournaments": "Total Tournaments"
     },
-    "match": {
-      "title": "Match Management",
-      "description": "Manage match scores and referee assignments."
-    },
     "user": {
+      "description": "Manage user accounts and permissions.",
       "title": "User Management",
-      "description": "Manage user accounts and permissions."
-    },
-    "settings": {
-      "title": "System Settings",
-      "description": "Configure application settings and preferences."
-    },
-    "reports": {
-      "title": "Reports & Analytics",
-      "description": "View platform usage and tournament statistics."
+      "totalUsers": "Total Users"
     }
+  },
+  "about": {
+    "title": "About Tournado",
+    "description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams."
   },
   "auth": {
     "alreadyHaveAccount": "Already have an account?",
@@ -51,6 +52,10 @@
     "createAccount": "Create Account",
     "dontHaveAccount": "Don't have an account?",
     "emailAddress": "Email address",
+    "errors": {
+      "accountDeactivatedMessage": "Your account has been deactivated. Please contact support for assistance.",
+      "accountDeactivatedTitle": "Account Deactivated"
+    },
     "firebase": {
       "continueWithGoogle": "Continue with Google",
       "error": "Authentication failed. Please try again.",
@@ -105,14 +110,15 @@
       "delete": "Delete",
       "save": "Save",
       "saving": "Saving...",
-      "update": "Update"
+      "update": "Update",
+      "view": "View"
     },
     "appName": "Tournado",
     "auth": {
       "signIn": "Sign In",
-      "signingIn": "Signing in...",
       "signOut": "Sign Out",
-      "signUp": "Sign Up"
+      "signUp": "Sign Up",
+      "signingIn": "Signing in..."
     },
     "backToHome": "Back to home",
     "darkMode": "Dark mode",
@@ -121,16 +127,24 @@
     "language": "Language",
     "lightMode": "Light mode",
     "loading": "Loading...",
+    "optional": "(optional)",
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous",
+      "showing": "Showing {{count}} of {{total}} rows"
+    },
     "signedInAs": "Signed in as",
     "titles": {
       "about": "About",
       "addTeam": "Add Team",
       "adminPanel": "Admin Panel",
+      "competition": "Competition",
       "more": "More",
       "profile": "Profile",
       "settings": "Settings",
       "teams": "Teams",
       "tournaments": "Tournaments",
+      "users": "Users",
       "welcome": "Welcome"
     },
     "toggleMenu": "Toggle menu",
@@ -217,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "At least one category is required",
       "divisionsRequired": "At least one division is required",
+      "endDateBeforeStartDate": "End date must be on or after start date",
       "endDateRequired": "End date is required",
       "locationRequired": "Location is required",
       "locationTooLong": "Location must be less than 100 characters",
@@ -264,6 +279,22 @@
       "instruction": "Refresh to update the app",
       "title": "A new version is available"
     }
+  },
+  "profile": {
+    "title": "Profile Information",
+    "description": "Manage your profile settings and account information for tournament management."
+  },
+  "roles": {
+    "admin": "Admin",
+    "billing": "Billing",
+    "editor": "Editor",
+    "manager": "Manager",
+    "public": "Public",
+    "referee": "Referee"
+  },
+  "settings": {
+    "title": "Application Settings",
+    "description": "Configure your tournament settings, preferences, and account options for optimal experience."
   },
   "teams": {
     "allTournaments": "All tournaments",
@@ -339,5 +370,59 @@
     "noTournamentsDescription": "No tournaments have been created yet. Create your first tournament to get started!",
     "startDate": "Start Date",
     "title": "Tournaments"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User",
+      "updateRole": "Update Role",
+      "viewDetails": "View Details"
+    },
+    "auditActions": {
+      "approval": "User Approved",
+      "deactivate": "User Deactivated",
+      "profile_update": "Profile Updated",
+      "reactivate": "User Reactivated",
+      "rejection": "User Rejected",
+      "role_change": "Role Changed"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Manage user accounts and assign roles"
+    },
+    "fields": {
+      "assignRole": "Assign Role",
+      "createdAt": "Created At",
+      "currentRole": "Current Role",
+      "displayName": "Display Name",
+      "email": "Email",
+      "performedBy": "Performed by",
+      "reason": "Reason",
+      "role": "Role"
+    },
+    "messages": {
+      "deactivated": "Deactivated",
+      "noAuditLogs": "No audit log entries found",
+      "noUsers": "No users found",
+      "noUsersDescription": "No users have been created yet.",
+      "roleUpdatedSuccessfully": "User role updated successfully",
+      "userDeactivatedSuccessfully": "User deactivated successfully",
+      "userReactivatedSuccessfully": "User reactivated successfully",
+      "userIsDeactivated": "This user is currently deactivated"
+    },
+    "placeholders": {
+      "reasonForChange": "Enter reason for role change (optional)",
+      "reasonForDeactivation": "Enter reason for deactivation (optional)",
+      "reasonForReactivation": "Enter reason for reactivation (optional)"
+    },
+    "titles": {
+      "allUsers": "All Users",
+      "auditLog": "Audit Log",
+      "deactivateUser": "Deactivate User",
+      "reactivateUser": "Reactivate User",
+      "totalUsers": "Total Users",
+      "userDetail": "User Details",
+      "userInformation": "User Information",
+      "userManagement": "User Management"
+    }
   }
 }

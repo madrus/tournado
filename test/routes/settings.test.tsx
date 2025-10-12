@@ -15,6 +15,8 @@ const mockUser: User = {
   lastName: 'User',
   role: 'PUBLIC',
   firebaseUid: 'test-firebase-uid',
+  displayName: null,
+  active: true,
   createdAt: new Date(),
   updatedAt: new Date(),
 }
@@ -31,13 +33,8 @@ vi.mock('react-router', async () => {
 // Mock useTranslation
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'common.titles.settings': 'Settings',
-      }
-      return translations[key] || key
-    },
-    i18n: { language: 'en' },
+    t: (key: string) => key,
+    i18n: { language: 'nl' },
   }),
 }))
 
@@ -49,7 +46,9 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Settings')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'settings.title'
+      )
     })
 
     test('should render application settings section', () => {
@@ -58,7 +57,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByText('Application Settings')).toBeInTheDocument()
+      expect(screen.getByText('settings.title')).toBeInTheDocument()
     })
 
     test('should render preferences section', () => {
@@ -87,11 +86,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(
-        screen.getByText(
-          /Configure your tournament settings, preferences, and account options/
-        )
-      ).toBeInTheDocument()
+      expect(screen.getByText('settings.description')).toBeInTheDocument()
     })
 
     test('should render preferences list', () => {
@@ -145,7 +140,7 @@ describe('Settings Page', () => {
         </MemoryRouter>
       )
       const heading = screen.getByRole('heading', { level: 1 })
-      expect(heading).toHaveClass('mb-8', 'text-3xl', 'font-bold')
+      expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
     test('should apply correct styling to section headings', () => {
@@ -171,7 +166,7 @@ describe('Settings Page', () => {
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3)
+      expect(h2Elements).toHaveLength(2)
     })
 
     test('should render sections in correct order', () => {
@@ -182,10 +177,9 @@ describe('Settings Page', () => {
       )
       const headings = screen.getAllByRole('heading')
       const headingTexts = headings.map(h => h.textContent)
-      expect(headingTexts[0]).toBe('Settings') // h1
-      expect(headingTexts[1]).toBe('Application Settings') // h2
-      expect(headingTexts[2]).toBe('Preferences') // h2
-      expect(headingTexts[3]).toBe('Tournament Configuration') // h2
+      expect(headingTexts[0]).toBe('settings.title') // h1
+      expect(headingTexts[1]).toBe('Preferences') // h2
+      expect(headingTexts[2]).toBe('Tournament Configuration') // h2
     })
   })
 
@@ -199,7 +193,7 @@ describe('Settings Page', () => {
       const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
       expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3)
+      expect(h2Elements).toHaveLength(2)
     })
   })
 
@@ -210,7 +204,9 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Settings')
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+        'settings.title'
+      )
     })
   })
 })

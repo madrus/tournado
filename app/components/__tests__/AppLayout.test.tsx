@@ -133,6 +133,8 @@ describe('AppLayout', () => {
         lastName: 'Doe',
         role: 'PUBLIC' as const,
         firebaseUid: 'test-firebase-uid',
+        displayName: null,
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -319,6 +321,8 @@ describe('AppLayout', () => {
         lastName: 'User',
         role: 'PUBLIC' as const,
         firebaseUid: 'test-firebase-uid',
+        displayName: null,
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       }

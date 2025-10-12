@@ -87,58 +87,69 @@ Database & Data Model [Implemented]
 
 - [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupSet`, `Group`, `GroupSlot`, `MatchScore`
 
-### 🔄 In Progress Features
-
-- [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
-
 ### 📋 Planned Features (PRD Scope)
 
 **Phase 1 - Authentication Modernization [Completed]**
 
-- [x] Firebase project setup and configuration (TASK-0001 done)
-- [x] Firebase-backed session cookie bridging (TASK-0002 done)
-- [x] Google Authentication via Firebase (TASK-0003 done)
-- [x] Post-login redirects, logout, and credential persistence (TASK-0003 done)
-- [x] Visible auth status indicator (TASK-0003 done)
-- [x] Firebase Email/Password Authentication (TASK-0004 done)
-- [x] Multi-super-admin role assignment system (TASK-0004 done)
-- [x] Environment variable separation and Firebase project isolation (TASK-0005 done)
-- [x] Complete legacy authentication removal (TASK-0006 done - bcrypt/Password table removed)
+- [x] Firebase project setup and configuration (TASK-0101 done)
+- [x] Firebase-backed session cookie bridging (TASK-0102 done)
+- [x] Google Authentication via Firebase (TASK-0103 done)
+- [x] Post-login redirects, logout, and credential persistence (TASK-0103 done)
+- [x] Visible auth status indicator (TASK-0103 done)
+- [x] Firebase Email/Password Authentication (TASK-0104 done)
+- [x] Multi-super-admin role assignment system (TASK-0104 done)
+- [x] Environment variable separation and Firebase project isolation (TASK-0105 done)
+- [x] Complete legacy authentication removal (TASK-0106 done - bcrypt/Password table removed)
 - [x] Dynamic admin role assignment (ADR-003 - roles update on login based on SUPER_ADMIN_EMAILS)
 - [x] Production deployment with all Firebase environment variables configured
 - [x] Database schema migration (firebaseUid column added to User table)
 - [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
-**Phase 2 - Groups & Playoffs (MVP) [Planned]**
+**Phase 2 - User Management [Planned]** (TASK-0201)
+
+- [ ] Admin-only user management workflows
+  - [ ] User approval/rejection system for new registrations
+  - [ ] Role assignment (ADMIN, MANAGER only)
+  - [ ] User list with filtering and search capabilities
+  - [ ] User profile viewing and editing
+  - [ ] Activity monitoring and audit logs for role changes
+  - [ ] Users menu item in AppBar (ADMIN only)
+
+**Phase 3 - Groups & Playoffs (MVP) [In Progress]**
 
 - [ ] Groups and seeding workflows
+  - [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
 - [ ] Playoffs: multi-stage with knockout via groups
 - [ ] Competition status: standings and placements
 
-**Phase 3 - Matches & Scoring [Planned]**
+**Phase 4 - Matches & Scoring [Planned]**
 
 - [ ] Match schedule planning (date/time/location) for tournaments
+- [ ] Referee assignment workflows
+  - [ ] Manager-created referee link system (pre-authenticated access)
+  - [ ] Match-scoped referee access tokens
+  - [ ] Referee link revocation and management
 - [ ] Score registration by referees
 - [ ] Live/near-real-time standings and basic statistics
 
-**Phase 4 - Public Engagement [Planned]**
+**Phase 5 - Public Engagement [Planned]**
 
 - [ ] Public tournament dashboard and live updates
 - [ ] Standings and classifications
 - [ ] Notifications (opt-in)
 
-**Phase 5 - Advanced Brackets (post-MVP) [Planned]**
+**Phase 6 - Advanced Brackets (post-MVP) [Planned]**
 
 - [ ] Playoffs via different bracket formats: s: single-elimination, double-elimination, placement matches, Swiss system, and multi-stage using dedicated knockout UI
 - [ ] Schema and visual UI; seeding and byes
 
-**Phase 6 - Subscriptions & Billing (future) [Planned]**
+**Phase 7 - Subscriptions & Billing (future) [Planned]**
 
 - [ ] Subscriptions for managers to organize tournaments
 - [ ] Payments (Stripe) for subscriptions and voluntary contributions
 - [ ] Financial dashboard (ADMIN/BILLING) with totals and drill-down
 
-**Phase 7 - Content Management (future) [Planned]**
+**Phase 8 - Content Management (future) [Planned]**
 
 - [ ] Articles (text/images/video) for home, tournament, team and match pages via a headless CMS
 
@@ -278,72 +289,95 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### 1.1 Google Auth + Session Bridging [COMPLETED]
 
-- [x] Implement Firebase Google Auth (TASK-0003)
-- [x] Bridge to server via Firebase session cookies; preserve SSR compatibility (TASK-0002)
+- [x] Implement Firebase Google Auth (TASK-0103)
+- [x] Bridge to server via Firebase session cookies; preserve SSR compatibility (TASK-0102)
 
 #### 1.2 Firebase Email/Password + Legacy Removal [COMPLETED]
 
-- [x] Implement Firebase email/password authentication (TASK-0004)
-- [x] Multi-super-admin role assignment (environment-based) (TASK-0004)
-- [x] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions) (TASK-0006)
-- [x] Admin panel user role management (TASK-0004)
-- [x] Environment separation (CI/staging/production) (TASK-0005)
+- [x] Implement Firebase email/password authentication (TASK-0104)
+- [x] Multi-super-admin role assignment (environment-based) (TASK-0104)
+- [x] Complete removal of legacy authentication (bcrypt, Password table, cookie sessions) (TASK-0106)
+- [x] Admin panel user role management (TASK-0104)
+- [x] Environment separation (CI/staging/production) (TASK-0105)
 
 #### 1.3 UX & Migration [COMPLETED]
 
-- [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0003)
-- [x] Logout invalidation; visible auth status; redirects (TASK-0003)
+- [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0103)
+- [x] Logout invalidation; visible auth status; redirects (TASK-0103)
 
-### Phase 2: Groups & Playoffs (MVP) (3 - 4 weeks)
+### Phase 2: User Management (2 - 3 weeks)
+
+- [ ] Priority: High
+- [ ] Timeline: 2 - 3 weeks
+- [ ] Task: TASK-0201
+
+#### 2.1 User Approval Workflows
+
+- [ ] User registration approval/rejection system
+- [ ] Admin-only user list with filtering and search
+- [ ] User profile viewing and editing capabilities
+
+#### 2.2 Role Assignment
+
+- [ ] Role assignment UI (ADMIN, MANAGER only)
+- [ ] Activity monitoring and audit logs for role changes
+- [ ] Enforce RBAC: only ADMIN can approve users and assign roles
+
+#### 2.3 Admin Panel Integration
+
+- [ ] Users menu item in AppBar (visible to ADMIN only)
+- [ ] User management routes under Admin Panel
+- [ ] Permission enforcement using `users:approve` and `roles:assign`
+
+### Phase 3: Groups & Playoffs (MVP) (3 - 4 weeks)
 
 - [ ] Priority: High
 - [ ] Timeline: 3 - 4 weeks
 
-#### 2.1 Group Workflows
+#### 3.1 Group Workflows
 
 - [ ] Group allocation UX over `GroupSet`/`Group`/`GroupSlot`
 
-#### 2.2 Playoff Structures (MVP)
+#### 3.2 Playoff Structures (MVP)
 
 - [ ] Bracket: multi-stage via groups (MVP)
 - [ ] Schema + visual UI; basic seeding and byes
 
-#### 2.3 RBAC Hardening
-
-- [ ] Align implementation with PRD RBAC matrix (permissions and scopes)
-- [ ] Admin approves users and assigns roles (`ADMIN`, `MANAGER`); no manager role assignment
-- [ ] Managers can issue and revoke pre-auth referee links scoped to a tournament and assigned matches (no registered referee accounts)
-- [ ] Restrict Referee access to own referee dashboard only; no general Admin Panel navigation
-Details: See `docs/development/RBAC.hardening.md`
-
-### Phase 3: Scheduling & Scoring (3 - 4 weeks)
+### Phase 4: Matches & Scoring (3 - 4 weeks)
 
 - [ ] Priority: High
 - [ ] Timeline: 3 - 4 weeks
 
-#### 3.1 Scheduling
+#### 4.1 Scheduling
 
 - [ ] Match calendar (date/time/location); constraints by category/division
 - [ ] Automatic conflict detection and resolution suggestions (fields/teams/referees)
 
-#### 3.2 Referee Experience
+#### 4.2 Referee Management
+
+- [ ] Manager-created referee link system (pre-authenticated access)
+- [ ] Match-scoped referee access tokens with expiry and revocation
+- [ ] Referee link management UI for managers
+- [ ] Restrict Referee access to own referee dashboard only; no general Admin Panel navigation
+
+#### 4.3 Referee Experience
 
 - [ ] Referee dashboard (assignments, statuses, quick actions)
 - [ ] Mobile scoring with validation; offline entry with background sync
 - [ ] Standings update; basic stats
 
-#### 3.3 Live Updates (baseline)
+#### 4.4 Live Updates (baseline)
 
 - [ ] Real-time score/status broadcasting (WebSocket/SSE) - scope TBD
 - [ ] Push notifications for critical events (opt-in)
 Details: See `docs/development/PRD.details.md#live-updates` and `#notifications`
 
-### Phase 4: Public Engagement (4 - 5 weeks)
+### Phase 5: Public Engagement (4 - 5 weeks)
 
 - [ ] Priority: High
 - [ ] Timeline: 4 - 5 weeks
 
-#### 4.1 Public Tournament Dashboard
+#### 5.1 Public Tournament Dashboard
 
 - [ ] Live tournament overview; by-field and by-group views
 - [ ] Live match progress indicators and results
@@ -351,27 +385,31 @@ Details: See `docs/development/PRD.details.md#live-updates` and `#notifications`
 - [ ] Search and filtering
 Details: See `docs/development/PRD.details.md#public-dashboard`
 
-#### 4.2 Standings & Classifications
+#### 5.2 Standings & Classifications
 
 - [ ] Real-time pool standings; transparent tie-breakers
 Details: See `docs/development/PRD.details.md#standings-tie-breakers`
 
-#### 4.3 Notifications (opt-in)
+#### 5.3 Notifications (opt-in)
 
 - [ ] Team/match alerts (kickoff, final, optional goal alerts); permissioned
 
-### Phase 5: Advanced Brackets (2 - 3 weeks)
+### Phase 6: Advanced Brackets (2 - 3 weeks)
 
 - [ ] Bracket types: single-elimination, double-elimination, placement matches, Swiss system, and multi-stage with full knockout UI
 Details: See `docs/development/PRD.details.md#bracket-formats`
 
-### Phase 6: Subscriptions, Communications & Extended (future)
+### Phase 7: Subscriptions, Communications & Extended (future)
 
 - [ ] Priority: Medium
 - [ ] Subscriptions/Billing (Stripe): tiers, payments, billing dashboard
 - [ ] Email integration: registration confirmations, match reminders, schedule changes, results
 - [ ] Integrations (API, calendar export, social sharing)
 - [ ] Extended admin features: multi-tournament series, referee scheduling automation, equipment/field inventory, advanced search, favorites
+
+### Phase 8: Content Management (future)
+
+- [ ] Articles (text/images/video) for home, tournament, team and match pages via a headless CMS
 
 ---
 
@@ -624,7 +662,7 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - **Authentication (current)**: Dual-method Firebase Authentication with session cookie bridging:
   - Google OAuth and email/password authentication via Firebase
-  - Firebase ID tokens mint HTTP-only session cookies on server (session cookie bridging) 
+  - Firebase ID tokens mint HTTP-only session cookies on server (session cookie bridging)
   - SSR security and role checks preserved
   - Avoid storing long-lived tokens in `localStorage`; use HTTP-only cookies + short-lived in-memory tokens
   - Logout invalidates Firebase session cookies and client state
@@ -653,12 +691,12 @@ Details: See `docs/development/PRD.details.md#i18n-details`
   - Multiple email addresses supported (comma-separated)
   - Users with super admin emails automatically receive ADMIN role on first Firebase sign-up
   - All other users receive PUBLIC role by default
-- **Role Management Access**: 
+- **Role Management Access**:
   - ADMIN: Can assign/change user roles via Admin Panel user management
   - MANAGER: Cannot assign user roles; can only issue pre-authenticated referee links
   - REFEREE/PUBLIC: No role management capabilities
 - **Hierarchy**: `PUBLIC` < `REFEREE` < `MANAGER` < `ADMIN` (each role inherits all permissions of the previous)
-- **Admin Panel Access**: 
+- **Admin Panel Access**:
   - ADMIN: Full Admin Panel access including user role management
   - MANAGER: Admin Panel access excluding user role management (referee links only)
   - REFEREE: Limited to own referee dashboard (assigned matches only)
@@ -703,25 +741,33 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 - ✅ Database migration and CI/E2E validation
 - ✅ Complete legacy authentication removal
 
-### Phase 2: Groups & Playoffs (MVP)
+### Phase 2: User Management
 
-- Weeks 2 - 4: Group allocation UX; multi-stage via groups and basic UI
+- Weeks 2 - 3: User approval workflows; role assignment UI; activity monitoring (TASK-0201)
 
-### Phase 3: Scheduling & Scoring
+### Phase 3: Groups & Playoffs (MVP)
 
-- Weeks 5 - 8: Scheduler with conflict detection; referee dashboard; offline scoring; live updates baseline
+- Weeks 4 - 7: Group allocation UX; multi-stage via groups and basic UI
 
-### Phase 4: Public Engagement
+### Phase 4: Matches & Scoring
 
-- Weeks 9 - 11: Live dashboard, standings, notifications opt-in
+- Weeks 8 - 11: Scheduler with conflict detection; referee link system; referee dashboard; offline scoring; live updates baseline
 
-### Phase 5: Advanced Brackets
+### Phase 5: Public Engagement
 
-- Weeks 12 - 14: Advanced bracket formats (post-MVP)
+- Weeks 12 - 16: Live dashboard, standings, notifications opt-in
 
-### Phase 6+: Subscriptions/Communications/Extended
+### Phase 6: Advanced Brackets
+
+- Weeks 17 - 19: Advanced bracket formats (post-MVP)
+
+### Phase 7: Subscriptions/Communications/Extended
 
 - Scoped after core tournament operations stabilize
+
+### Phase 8: Content Management
+
+- Future consideration after Phase 7
 
 ---
 
@@ -742,15 +788,17 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 
 - **Phase alignment**:
     1. Auth
-    2. Groups & Playoffs (MVP)
-    3. Scheduling & Scoring
-    4. Public Engagement
-    5. Advanced Brackets
-    6. Subscriptions, Communications & Extended
-    7. Content Management (future)
+    2. User Management
+    3. Groups & Playoffs (MVP)
+    4. Matches & Scoring
+    5. Public Engagement
+    6. Advanced Brackets
+    7. Subscriptions, Communications & Extended
+    8. Content Management (future)
 - **Milestones**:
   - **M1**: Firebase auth live for admin/manager/referee behind config switch
-  - **M2**: Scheduling and scoring in production for a pilot tournament
+  - **M2**: User management workflows operational for admins
+  - **M3**: Scheduling and scoring in production for a pilot tournament
 - **Rollout and fallback**:
   - Config switch to swap auth providers during migration
   - Rollback by redeploying previous container image on Fly.io

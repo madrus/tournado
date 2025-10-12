@@ -4,12 +4,12 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Import the mocked hook
-import { useTournamentFilter } from '~/hooks/useTournamentFilter'
+import { useTournamentFilter } from '~/features/tournaments/hooks/useTournamentFilter'
 
 import { TournamentFilter } from '../TournamentFilter'
 
 // Mock the useTournamentFilter hook
-vi.mock('~/hooks/useTournamentFilter', () => ({
+vi.mock('~/features/tournaments/hooks/useTournamentFilter', () => ({
   useTournamentFilter: vi.fn(),
 }))
 
@@ -32,9 +32,27 @@ vi.mocked(useTournamentFilter).mockImplementation(mockUseTournamentFilter)
 
 describe('TournamentFilter', () => {
   const mockTournamentListItems = [
-    { id: 'tournament-1', name: 'Spring Tournament 2024', location: 'Amsterdam' },
-    { id: 'tournament-2', name: 'Summer Cup 2024', location: 'Rotterdam' },
-    { id: 'tournament-3', name: 'Winter League 2024', location: 'Utrecht' },
+    {
+      id: 'tournament-1',
+      name: 'Spring Tournament 2024',
+      location: 'Amsterdam',
+      startDate: new Date('2024-03-01'),
+      endDate: new Date('2024-03-03'),
+    },
+    {
+      id: 'tournament-2',
+      name: 'Summer Cup 2024',
+      location: 'Rotterdam',
+      startDate: new Date('2024-06-15'),
+      endDate: new Date('2024-06-16'),
+    },
+    {
+      id: 'tournament-3',
+      name: 'Winter League 2024',
+      location: 'Utrecht',
+      startDate: new Date('2024-12-10'),
+      endDate: new Date('2024-12-12'),
+    },
   ]
 
   const mockOnChange = vi.fn()

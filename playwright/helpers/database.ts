@@ -229,8 +229,8 @@ export const createTestTournament = async (
         location,
         startDate,
         endDate,
-        divisions: ['FIRST_DIVISION', 'SECOND_DIVISION'],
-        categories: ['JO8', 'JO10'],
+        divisions: JSON.stringify(['FIRST_DIVISION', 'SECOND_DIVISION']),
+        categories: JSON.stringify(['JO8', 'JO10']),
       },
     })
 

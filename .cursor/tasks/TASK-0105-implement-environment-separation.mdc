@@ -1,11 +1,11 @@
 ---
 description: Implement environment variable separation and Firebase project isolation for CI/staging/production
-id: "TASK-0005"
+id: "TASK-0105"
 title: "Implement environment variable separation and Firebase project isolation"
 status: "done"
 priority: "P1"
 labels: ["environment", "firebase", "ci", "deployment", "security"]
-dependencies: ["./TASK-0004-complete-firebase-auth.mdc"]
+dependencies: ["./TASK-0104-complete-firebase-auth.mdc"]
 created: "2025-09-21"
 globs:
 alwaysApply: false
@@ -51,7 +51,7 @@ The solution involves creating separate Firebase projects and implementing autom
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- ./TASK-0004-complete-firebase-auth.mdc — Firebase authentication must be working
+- ./TASK-0104-complete-firebase-auth.mdc — Firebase authentication must be working
 - Firebase CLI access and authentication
 - GitHub repository secrets management
 - Fly.io deployment access
@@ -191,6 +191,6 @@ No new types needed for environment separation task.
 - **Security Principle**: Environment isolation for credential protection
 - **Testing Principle**: "Test your code, not third-party services"
 - **Automation Goal**: Reduce manual environment setup errors
-- **Related Task**: TASK-0004 (Firebase Authentication) - prerequisite
-- **Related Task**: TASK-0006 (Legacy Auth Cleanup) - follow-up cleanup work
+- **Related Task**: TASK-0104 (Firebase Authentication) - prerequisite
+- **Related Task**: TASK-0106 (Legacy Auth Cleanup) - follow-up cleanup work
 - **Implementation Status**: Completed - all environments successfully separated and automated setup scripts working

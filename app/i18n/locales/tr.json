@@ -1,17 +1,27 @@
 {
   "admin": {
+    "competition": {
+      "description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
+      "title": "Yarışma yönetimi"
+    },
     "panel": {
       "description": "Tekrar hoş geldiniz, <email>{{email}}</email>. Turnuva platformunuzu buradan yönetin.",
       "title": "Yönetici Paneli"
     },
+    "reports": {
+      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin.",
+      "title": "Raporlar ve analitik"
+    },
+    "settings": {
+      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın.",
+      "title": "Sistem ayarları"
+    },
     "team": {
-      "allTeams": "Tüm takımlar",
-      "allTeamsDescription": "Sistemdeki tüm takımları yönetin. Detayları düzenlemek veya silmek için bir takıma tıklayın.",
       "confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
       "createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
       "createTeam": "Takım oluştur",
       "createTeamDescription": "Gerekli tüm ayrıntılarla sisteme yeni bir takım ekleyin.",
-      "description": "Tüm turnuvalardaki tüm takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
+      "description": "Turnuvalardaki takımları yönetin. Takım bilgilerini görüntüleyin, düzenleyin veya silin.",
       "editTeam": "Takım detaylarını düzenle",
       "newTeam": "Yeni takım",
       "saveChanges": "Değişiklikleri kaydet",
@@ -21,29 +31,20 @@
       "totalTeams": "Toplam takım"
     },
     "tournament": {
-      "allTournaments": "Tüm turnuvalar",
-      "allTournamentsDescription": "Sistemdeki tüm turnuvaları görüntüleyin ve yönetin",
       "confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-      "description": "Sistemdeki tüm turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
+      "description": "Sistemdeki turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
       "title": "Turnuva yönetimi",
       "totalTournaments": "Toplam turnuva sayısı"
     },
-    "match": {
-      "title": "Maç yönetimi",
-      "description": "Maç skorlarını ve hakem atamalarını yönetin."
-    },
     "user": {
+      "description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
       "title": "Kullanıcı yönetimi",
-      "description": "Kullanıcı hesaplarını ve izinlerini yönetin."
-    },
-    "settings": {
-      "title": "Sistem ayarları",
-      "description": "Uygulama ayarlarını ve tercihlerini yapılandırın."
-    },
-    "reports": {
-      "title": "Raporlar ve analitik",
-      "description": "Platform kullanımını ve turnuva istatistiklerini görüntüleyin."
+      "totalUsers": "Toplam kullanıcılar"
     }
+  },
+  "about": {
+    "title": "Tournado hakkında",
+    "description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur."
   },
   "auth": {
     "alreadyHaveAccount": "Zaten bir hesabınız var mı?",
@@ -51,6 +52,10 @@
     "createAccount": "Hesap oluştur",
     "dontHaveAccount": "Henüz hesabınız yok mu?",
     "emailAddress": "E-posta adresi",
+    "errors": {
+      "accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
+      "accountDeactivatedTitle": "Hesap devre dışı bırakıldı"
+    },
     "firebase": {
       "continueWithGoogle": "Google ile devam et",
       "error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
@@ -58,7 +63,7 @@
     },
     "firstName": "Ad",
     "labels": {
-      "confirmPassword": "Şifreyi Onayla",
+      "confirmPassword": "Şifreyi onayla",
       "email": "E-posta",
       "password": "Şifre"
     },
@@ -105,14 +110,15 @@
       "delete": "Sil",
       "save": "Kaydet",
       "saving": "Kaydediliyor...",
-      "update": "Güncelle"
+      "update": "Güncelle",
+      "view": "Görüntüle"
     },
     "appName": "Tournado",
     "auth": {
       "signIn": "Giriş yap",
-      "signingIn": "Giriş yapılıyor...",
       "signOut": "Çıkış yap",
-      "signUp": "Kayıt ol"
+      "signUp": "Kayıt ol",
+      "signingIn": "Giriş yapılıyor..."
     },
     "backToHome": "Ana sayfaya dön",
     "darkMode": "Koyu mod",
@@ -121,16 +127,24 @@
     "language": "Dil",
     "lightMode": "Açık mod",
     "loading": "Yükleniyor...",
+    "optional": "(isteğe bağlı)",
+    "pagination": {
+      "next": "Sonraki",
+      "previous": "Önceki",
+      "showing": "{{total}} satırdan {{count}} tanesi gösteriliyor"
+    },
     "signedInAs": "Giriş yapıldı: ",
     "titles": {
       "about": "Hakkımızda",
       "addTeam": "Takım ekle",
       "adminPanel": "Yönetici paneli",
+      "competition": "Yarışma",
       "more": "Daha fazla",
       "profile": "Profil",
       "settings": "Ayarlar",
       "teams": "Takımlar",
       "tournaments": "Turnuvalar",
+      "users": "Kullanıcılar",
       "welcome": "Hoş geldiniz"
     },
     "toggleMenu": "Menüyü aç/kapat",
@@ -138,12 +152,12 @@
     "welcome": "Hoş geldiniz"
   },
   "divisions": {
-    "FIFTH_DIVISION": "Beşinci Lig",
-    "FIRST_DIVISION": "Birinci Lig",
-    "FOURTH_DIVISION": "Dördüncü Lig",
-    "PREMIER_DIVISION": "Premier Lig",
-    "SECOND_DIVISION": "İkinci Lig",
-    "THIRD_DIVISION": "Üçüncü Lig"
+    "FIFTH_DIVISION": "Beşinci lig",
+    "FIRST_DIVISION": "Birinci lig",
+    "FOURTH_DIVISION": "Dördüncü lig",
+    "PREMIER_DIVISION": "Premier lig",
+    "SECOND_DIVISION": "İkinci lig",
+    "THIRD_DIVISION": "Üçüncü lig"
   },
   "landing": {
     "features": {
@@ -217,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "En az bir kategori zorunludur",
       "divisionsRequired": "En az bir lig zorunludur",
+      "endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinde veya sonrasında olmalıdır",
       "endDateRequired": "Bitiş tarihi zorunludur",
       "locationRequired": "Konum zorunludur",
       "locationTooLong": "Konum 100 karakterden kısa olmalıdır",
@@ -264,6 +279,22 @@
       "instruction": "Uygulamayı güncellemek için yenileyin",
       "title": "Yeni bir sürüm mevcut"
     }
+  },
+  "profile": {
+    "title": "Profil bilgileri",
+    "description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin."
+  },
+  "roles": {
+    "admin": "Admin",
+    "billing": "Faturalama",
+    "editor": "Editör",
+    "manager": "Yönetici",
+    "public": "Herkese açık",
+    "referee": "Hakem"
+  },
+  "settings": {
+    "title": "Uygulama ayarları",
+    "description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın."
   },
   "teams": {
     "allTournaments": "Tüm turnuvalar",
@@ -339,5 +370,59 @@
     "noTournamentsDescription": "Henüz hiç turnuva oluşturulmamış. Başlamak için ilk turnuvanızı oluşturun!",
     "startDate": "Başlangıç tarihi",
     "title": "Turnuvalar"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Kullanıcıyı devre dışı bırak",
+      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "updateRole": "Rolü güncelle",
+      "viewDetails": "Detayları görüntüle"
+    },
+    "auditActions": {
+      "approval": "Kullanıcı onaylandı",
+      "deactivate": "Kullanıcı devre dışı bırakıldı",
+      "profile_update": "Profil güncellendi",
+      "reactivate": "Kullanıcı yeniden etkinleştirildi",
+      "rejection": "Kullanıcı reddedildi",
+      "role_change": "Rol değiştirildi"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
+    },
+    "fields": {
+      "assignRole": "Rol ata",
+      "createdAt": "Oluşturulma tarihi",
+      "currentRole": "Mevcut rol",
+      "displayName": "Görünen ad",
+      "email": "E-posta",
+      "performedBy": "Gerçekleştiren",
+      "reason": "Sebep",
+      "role": "Rol"
+    },
+    "messages": {
+      "deactivated": "Devre dışı",
+      "noAuditLogs": "Denetim kaydı girişi bulunamadı",
+      "noUsers": "Kullanıcı bulunamadı",
+      "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
+      "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
+      "userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
+      "userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi",
+      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
+    },
+    "placeholders": {
+      "reasonForChange": "Rol değişikliği sebebini girin (isteğe bağlı)",
+      "reasonForDeactivation": "Devre dışı bırakma sebebini girin (isteğe bağlı)",
+      "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
+    },
+    "titles": {
+      "allUsers": "Tüm kullanıcılar",
+      "auditLog": "Denetim kaydı",
+      "deactivateUser": "Kullanıcıyı devre dışı bırak",
+      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "totalUsers": "Toplam kullanıcılar",
+      "userDetail": "Kullanıcı detayları",
+      "userInformation": "Kullanıcı bilgileri",
+      "userManagement": "Kullanıcı yönetimi"
+    }
   }
 }

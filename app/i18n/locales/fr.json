@@ -1,17 +1,27 @@
 {
   "admin": {
+    "competition": {
+      "description": "Gérer les groupes, les matchs et les classements des tournois.",
+      "title": "Gestion de la compétition"
+    },
     "panel": {
       "description": "Bienvenue, <email>{{email}}</email>. Gérez votre plateforme de tournois ici.",
       "title": "Panneau d'administration"
     },
+    "reports": {
+      "description": "Voir l'utilisation de la plateforme et les statistiques des tournois.",
+      "title": "Rapports et analyses"
+    },
+    "settings": {
+      "description": "Configurer les paramètres et préférences de l'application.",
+      "title": "Paramètres système"
+    },
     "team": {
-      "allTeams": "Toutes les équipes",
-      "allTeamsDescription": "Gérer toutes les équipes du système. Cliquez sur une équipe pour modifier les détails ou la supprimer.",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action ne peut pas être annulée.",
       "createNewTeamDescription": "Créer une nouvelle équipe avec les détails du tournoi et les informations de contact.",
       "createTeam": "Créer une équipe",
       "createTeamDescription": "Ajouter une nouvelle équipe au système avec tous les détails nécessaires.",
-      "description": "Gérer toutes les équipes pour tous les tournois. Voir, modifier ou supprimer les informations d'équipe.",
+      "description": "Gérer les équipes pour les tournois. Voir, modifier ou supprimer les informations d'équipe.",
       "editTeam": "Modifier l'équipe",
       "newTeam": "Nouvelle équipe",
       "saveChanges": "Enregistrer les modifications",
@@ -21,29 +31,20 @@
       "totalTeams": "Nombre total d'équipes"
     },
     "tournament": {
-      "allTournaments": "Tous les tournois",
-      "allTournamentsDescription": "Voir et gérer tous les tournois du système",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action ne peut pas être annulée.",
-      "description": "Gérer tous les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
+      "description": "Gérer les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
       "title": "Gestion des tournois",
       "totalTournaments": "Nombre total de tournois"
     },
-    "match": {
-      "title": "Gestion des matchs",
-      "description": "Gérer les scores des matchs et les affectations d'arbitres."
-    },
     "user": {
+      "description": "Gérer les comptes utilisateur et les permissions.",
       "title": "Gestion des utilisateurs",
-      "description": "Gérer les comptes utilisateur et les permissions."
-    },
-    "settings": {
-      "title": "Paramètres système",
-      "description": "Configurer les paramètres et préférences de l'application."
-    },
-    "reports": {
-      "title": "Rapports et analyses",
-      "description": "Voir l'utilisation de la plateforme et les statistiques des tournois."
+      "totalUsers": "Total utilisateurs"
     }
+  },
+  "about": {
+    "title": "À propos de Tournado",
+    "description": "Tournado est une plateforme complète de gestion de tournois conçue pour rationaliser l'organisation et la gestion des tournois sportifs pour les organisations et les équipes."
   },
   "auth": {
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
@@ -51,6 +52,10 @@
     "createAccount": "Créer un compte",
     "dontHaveAccount": "Vous n'avez pas de compte ?",
     "emailAddress": "Adresse e-mail",
+    "errors": {
+      "accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide.",
+      "accountDeactivatedTitle": "Compte désactivé"
+    },
     "firebase": {
       "continueWithGoogle": "Continuer avec Google",
       "error": "Échec de l'authentification. Veuillez réessayer.",
@@ -105,14 +110,15 @@
       "delete": "Supprimer",
       "save": "Enregistrer",
       "saving": "Enregistrement...",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "view": "Voir"
     },
     "appName": "Tournado",
     "auth": {
       "signIn": "Se connecter",
-      "signingIn": "Connexion...",
       "signOut": "Se déconnecter",
-      "signUp": "S'inscrire"
+      "signUp": "S'inscrire",
+      "signingIn": "Connexion..."
     },
     "backToHome": "Retour à l'accueil",
     "darkMode": "Mode sombre",
@@ -121,16 +127,24 @@
     "language": "Langue",
     "lightMode": "Mode clair",
     "loading": "Chargement...",
+    "optional": "(optionnel)",
+    "pagination": {
+      "next": "Suivant",
+      "previous": "Précédent",
+      "showing": "Affichage de {{count}} sur {{total}} lignes"
+    },
     "signedInAs": "Connecté en tant que",
     "titles": {
       "about": "À propos",
       "addTeam": "Ajouter une équipe",
       "adminPanel": "Panneau d'administration",
+      "competition": "Compétition",
       "more": "Plus",
       "profile": "Profil",
       "settings": "Paramètres",
       "teams": "Équipes",
       "tournaments": "Tournois",
+      "users": "Utilisateurs",
       "welcome": "Bienvenue"
     },
     "toggleMenu": "Basculer le menu",
@@ -141,7 +155,7 @@
     "FIFTH_DIVISION": "Cinquième Division",
     "FIRST_DIVISION": "Première Division",
     "FOURTH_DIVISION": "Quatrième Division",
-    "PREMIER_DIVISION": "Division Première",
+    "PREMIER_DIVISION": "Division première",
     "SECOND_DIVISION": "Deuxième Division",
     "THIRD_DIVISION": "Troisième Division"
   },
@@ -217,6 +231,7 @@
     "tournament": {
       "categoriesRequired": "Au moins une catégorie est obligatoire",
       "divisionsRequired": "Au moins une division est obligatoire",
+      "endDateBeforeStartDate": "La date de fin doit être le jour du début ou après",
       "endDateRequired": "La date de fin est obligatoire",
       "locationRequired": "Le lieu est obligatoire",
       "locationTooLong": "Le lieu doit contenir moins de 100 caractères",
@@ -264,6 +279,22 @@
       "instruction": "Actualisez pour mettre à jour l'application",
       "title": "Une nouvelle version est disponible"
     }
+  },
+  "profile": {
+    "title": "Informations du profil",
+    "description": "Gérez les paramètres de votre profil et les informations de compte pour la gestion des tournois."
+  },
+  "roles": {
+    "admin": "Administrateur",
+    "billing": "Facturation",
+    "editor": "Éditeur",
+    "manager": "Gestionnaire",
+    "public": "Public",
+    "referee": "Arbitre"
+  },
+  "settings": {
+    "title": "Paramètres de l'application",
+    "description": "Configurez vos paramètres de tournoi, préférences et options de compte pour une expérience optimale."
   },
   "teams": {
     "allTournaments": "Tous les tournois",
@@ -339,5 +370,59 @@
     "noTournamentsDescription": "Aucun tournoi n'a encore été créé. Créez votre premier tournoi pour commencer !",
     "startDate": "Date de début",
     "title": "Tournois"
+  },
+  "users": {
+    "actions": {
+      "deactivateUser": "Désactiver l'utilisateur",
+      "reactivateUser": "Réactiver l'utilisateur",
+      "updateRole": "Mettre à jour le rôle",
+      "viewDetails": "Voir les détails"
+    },
+    "auditActions": {
+      "approval": "Utilisateur approuvé",
+      "deactivate": "Utilisateur désactivé",
+      "profile_update": "Profil mis à jour",
+      "reactivate": "Utilisateur réactivé",
+      "rejection": "Utilisateur rejeté",
+      "role_change": "Rôle modifié"
+    },
+    "descriptions": {
+      "manageUsersAndRoles": "Gérer les comptes utilisateurs et attribuer des rôles"
+    },
+    "fields": {
+      "assignRole": "Attribuer un rôle",
+      "createdAt": "Créé le",
+      "currentRole": "Rôle actuel",
+      "displayName": "Nom d'affichage",
+      "email": "E-mail",
+      "performedBy": "Effectué par",
+      "reason": "Raison",
+      "role": "Rôle"
+    },
+    "messages": {
+      "deactivated": "Désactivé",
+      "noAuditLogs": "Aucune entrée de journal d'audit trouvée",
+      "noUsers": "Aucun utilisateur trouvé",
+      "noUsersDescription": "Aucun utilisateur n'a encore été créé.",
+      "roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
+      "userDeactivatedSuccessfully": "Utilisateur désactivé avec succès",
+      "userReactivatedSuccessfully": "Utilisateur réactivé avec succès",
+      "userIsDeactivated": "Cet utilisateur est actuellement désactivé"
+    },
+    "placeholders": {
+      "reasonForChange": "Entrez la raison du changement de rôle (optionnel)",
+      "reasonForDeactivation": "Entrez la raison de la désactivation (optionnel)",
+      "reasonForReactivation": "Entrez la raison de la réactivation (optionnel)"
+    },
+    "titles": {
+      "allUsers": "Tous les utilisateurs",
+      "auditLog": "Journal d'audit",
+      "deactivateUser": "Désactiver l'utilisateur",
+      "reactivateUser": "Réactiver l'utilisateur",
+      "totalUsers": "Total des utilisateurs",
+      "userDetail": "Détails de l'utilisateur",
+      "userInformation": "Informations utilisateur",
+      "userManagement": "Gestion des utilisateurs"
+    }
   }
 }

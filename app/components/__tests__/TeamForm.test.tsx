@@ -930,7 +930,7 @@ describe('TeamForm Category Field', () => {
 
     // Wait for dropdown to open and check that all options are available
     await waitFor(() => {
-      categoryTournaments[0].categories!.forEach(option => {
+      categoryTournaments[0].categories!.forEach((option: string) => {
         expect(screen.getByRole('option', { name: option })).toBeInTheDocument()
       })
     })

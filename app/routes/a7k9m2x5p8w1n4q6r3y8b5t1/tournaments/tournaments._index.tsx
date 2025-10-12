@@ -1,9 +1,15 @@
 import { JSX, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useLoaderData, useRevalidator, useSubmit } from 'react-router'
+import {
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useRevalidator,
+  useSubmit,
+} from 'react-router'
 
-import { Box, Grid, Heading, Text } from '@radix-ui/themes'
+import { Text } from '@radix-ui/themes'
 
 import { DeleteIcon, TrophyIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
@@ -25,9 +31,11 @@ import { isBreakpoint, STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/tournaments._index'
+
+// Local constants
+const PANEL_COLOR = 'teal' as const
 
 // Route metadata - requires tournaments read permission
 export const handle: RouteMetadata = {
@@ -81,6 +89,9 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
   const tournamentId = formData.get('tournamentId')
 
   if (intent === 'delete' && typeof tournamentId === 'string') {
+    if (!tournamentId.trim()) {
+      throw new Response('Tournament ID is required', { status: 400 })
+    }
     await deleteTournamentById({ id: tournamentId })
     return redirect('.')
   }
@@ -93,6 +104,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const { tournamentListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
   const revalidator = useRevalidator()
+  const navigate = useNavigate()
 
   // Track swipe state
   const [swipeStates, setSwipeStates] = useState<
@@ -132,7 +144,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     }
 
     // Navigate to tournament details/edit page
-    window.location.href = `/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}`
+    navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}`)
   }
 
   const handleTournamentDelete = (tournamentId: string) => {
@@ -150,6 +162,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
     if (isBreakpoint('lg')) return
 
     const touch = event.touches[0]
+    if (!touch) return
     const startX = touch.clientX
 
     // Check if we're starting from a delete state
@@ -173,7 +186,11 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
     const handleTouchMove = (moveEvent: TouchEvent) => {
       const currentTouch = moveEvent.touches[0]
+      if (!currentTouch) return
       const deltaX = currentTouch.clientX - startX
+
+      // Prevent vertical scroll during meaningful horizontal swipe
+      if (Math.abs(deltaX) > 10) moveEvent.preventDefault()
 
       let finalX: number
       let showDelete: boolean
@@ -270,10 +287,12 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       // Clean up listeners
       document.removeEventListener('touchmove', handleTouchMove)
       document.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener('touchcancel', handleTouchEnd)
     }
 
     document.addEventListener('touchmove', handleTouchMove, { passive: false })
     document.addEventListener('touchend', handleTouchEnd)
+    document.addEventListener('touchcancel', handleTouchEnd)
   }
 
   const formatDate = (date: Date | string): string => {
@@ -286,177 +305,148 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   }
 
   return (
-    <div className={cn('w-full space-y-6 lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+    <div className='space-y-6' data-testid='admin-tournaments-page-content'>
       {/* Stats using optimized dashboard panels */}
-      <Grid columns='1' gap='5'>
+      <div
+        className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}
+      >
         <Panel
-          color='teal'
+          color={PANEL_COLOR}
           variant='dashboard-panel'
-          icon={<TrophyIcon size={26} variant='outlined' />}
+          icon={<TrophyIcon size={24} variant='outlined' />}
           iconColor='brand'
           title={t('admin.tournament.totalTournaments')}
           showGlow
           data-testid='tournaments-total-stat'
         >
-          <Text size='4' weight='medium'>
-            {tournamentListItems.length}
-          </Text>
+          {tournamentListItems.length}
         </Panel>
-      </Grid>
+      </div>
 
       {/* Tournaments List */}
-      <Panel color='teal' variant='content-panel'>
-        <Box className='mb-6'>
-          <Heading as='h2' size='6' className={cn(getLatinTitleClass(i18n.language))}>
-            {t('admin.tournament.allTournaments')}
-          </Heading>
-          <Text size='2' className='mt-1 opacity-75'>
-            {t('admin.tournament.allTournamentsDescription')}
-          </Text>
-        </Box>
-
-        {tournamentListItems.length === 0 ? (
-          <Box className='py-12 text-center'>
-            <Box className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>
-              <TrophyIcon className='text-slate-400' size={24} variant='outlined' />
-            </Box>
-            <Text size='4' weight='medium' className='mb-2 text-slate-900'>
-              {t('tournaments.noTournaments')}
-            </Text>
-            <Text size='2' className='mb-6 text-slate-600'>
-              {t('tournaments.noTournamentsDescription')}
-            </Text>
-          </Box>
-        ) : (
-          <div className={datatableContainerVariants({ color: 'slate' })}>
-            {/* Header - only show on desktop using CSS */}
-            <div
-              className={cn(
-                datatableHeaderVariants({ color: 'slate' }),
-                'hidden lg:block'
-              )}
-            >
-              <div className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6'>
-                <div className='flex items-start'>
-                  <Text
-                    size='1'
-                    weight='medium'
-                    className={datatableHeaderTextVariants({ color: 'slate' })}
-                  >
-                    {t('tournaments.name')}
-                  </Text>
-                </div>
-                <div className='flex items-start'>
-                  <Text
-                    size='1'
-                    weight='medium'
-                    className={datatableHeaderTextVariants({ color: 'slate' })}
-                  >
-                    {t('tournaments.startDate')}
-                  </Text>
-                </div>
-                <div className='flex items-start'>
-                  <Text
-                    size='1'
-                    weight='medium'
-                    className={datatableHeaderTextVariants({ color: 'slate' })}
-                  >
-                    {t('tournaments.endDate')}
-                  </Text>
-                </div>
-                <div className='flex w-6 items-start justify-center'>
-                  <span className='sr-only'>{t('common.actions')}</span>
-                  <DeleteIcon
-                    className={cn(
-                      'h-4 w-4',
-                      datatableHeaderTextVariants({ color: 'slate' })
-                    )}
-                  />
+      <div className={cn('w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+        <Panel color={PANEL_COLOR} variant='content-panel'>
+          {tournamentListItems.length === 0 ? (
+            <div className='py-12 text-center'>
+              <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>
+                <TrophyIcon className='text-slate-400' size={24} variant='outlined' />
+              </div>
+              <p className='mb-2 text-base font-medium text-slate-900'>
+                {t('tournaments.noTournaments')}
+              </p>
+              <p className='mb-6 text-sm text-slate-600'>
+                {t('tournaments.noTournamentsDescription')}
+              </p>
+            </div>
+          ) : (
+            <div className={datatableContainerVariants({ color: 'slate' })}>
+              {/* Header - only show on desktop using CSS */}
+              <div
+                className={cn(
+                  datatableHeaderVariants({ color: 'slate' }),
+                  'hidden lg:block'
+                )}
+              >
+                <div className='grid grid-cols-[2fr_1fr_1fr_auto] gap-6'>
+                  <div className='flex items-start'>
+                    <Text
+                      size='1'
+                      weight='medium'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
+                    >
+                      {t('tournaments.name')}
+                    </Text>
+                  </div>
+                  <div className='flex items-start'>
+                    <Text
+                      size='1'
+                      weight='medium'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
+                    >
+                      {t('tournaments.startDate')}
+                    </Text>
+                  </div>
+                  <div className='flex items-start'>
+                    <Text
+                      size='1'
+                      weight='medium'
+                      className={datatableHeaderTextVariants({ color: 'slate' })}
+                    >
+                      {t('tournaments.endDate')}
+                    </Text>
+                  </div>
+                  <div className='flex w-6 items-start justify-center'>
+                    <span className='sr-only'>{t('common.actions')}</span>
+                    <DeleteIcon
+                      className={cn(
+                        'h-4 w-4',
+                        datatableHeaderTextVariants({ color: 'slate' })
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Tournament Items */}
-            {tournamentListItems.map((tournament, index) => {
-              const swipeState = swipeStates[tournament.id] || {
-                x: 0,
-                swiping: false,
-                showDelete: false,
-              }
+              {/* Tournament Items */}
+              {tournamentListItems.map((tournament, index) => {
+                const swipeState = swipeStates[tournament.id] || {
+                  x: 0,
+                  swiping: false,
+                  showDelete: false,
+                }
 
-              // Transform logic:
-              // - When swiping: use current x position
-              // - When in persistent delete state: keep at swiped position
-              // - When not in delete state and not swiping: always at position 0
-              let transform: string
-              if (swipeState.swiping) {
-                // During active swipe - use current position
-                transform = `translateX(${swipeState.x}px)`
-              } else if (swipeState.showDelete) {
-                // In persistent delete state - use stored position
-                transform = `translateX(${swipeState.x}px)`
-              } else {
-                // Normal state - always at position 0
-                transform = 'translateX(0px)'
-              }
+                // Transform logic:
+                // - When swiping: use current x position
+                // - When in persistent delete state: keep at swiped position
+                // - When not in delete state and not swiping: always at position 0
+                let transform: string
+                if (swipeState.swiping) {
+                  // During active swipe - use current position
+                  transform = `translateX(${swipeState.x}px)`
+                } else if (swipeState.showDelete) {
+                  // In persistent delete state - use stored position
+                  transform = `translateX(${swipeState.x}px)`
+                } else {
+                  // Normal state - always at position 0
+                  transform = 'translateX(0px)'
+                }
 
-              return (
-                <div
-                  key={tournament.id}
-                  className={cn(
-                    'relative overflow-hidden',
-                    datatableRowVariants({
-                      color: 'slate',
-                      variant:
-                        index === tournamentListItems.length - 1 ? 'last' : 'default',
-                    })
-                  )}
-                >
-                  {/* Mobile: Swipeable layout - hide on desktop */}
+                return (
                   <div
-                    className='flex transition-transform duration-200 lg:hidden'
-                    style={{ transform }}
-                    onTouchStart={event => handleTouchStart(event, tournament.id)}
+                    key={tournament.id}
+                    className={cn(
+                      'relative overflow-hidden',
+                      datatableRowVariants({
+                        color: 'slate',
+                        variant:
+                          index === tournamentListItems.length - 1 ? 'last' : 'default',
+                      })
+                    )}
                   >
-                    {/* Main content - fixed width */}
+                    {/* Mobile: Swipeable layout - hide on desktop */}
                     <div
-                      className='w-full flex-shrink-0'
-                      onClick={() => handleTournamentClick(tournament.id)}
+                      className='flex transition-transform duration-200 lg:hidden'
+                      style={{ transform, willChange: 'transform' }}
+                      onTouchStart={event => handleTouchStart(event, tournament.id)}
                     >
-                      <div className='px-6 py-4'>
-                        <div className='flex items-start justify-between'>
-                          <div className='min-w-0 flex-1'>
-                            <Text
-                              size='2'
-                              weight='medium'
-                              className={cn(
-                                'block',
-                                datatableCellTextVariants({ variant: 'primary' })
-                              )}
-                            >
-                              {tournament.name}
-                            </Text>
-                            <Text
-                              size='1'
-                              className={cn(
-                                'mt-1 block',
-                                datatableCellTextVariants({ variant: 'secondary' })
-                              )}
-                            >
-                              {tournament.location}
-                            </Text>
-                          </div>
-                          <div className='ml-4 flex-shrink-0 text-right'>
-                            <Text
-                              size='2'
-                              className={cn(
-                                'block font-medium',
-                                datatableCellTextVariants({ variant: 'primary' })
-                              )}
-                            >
-                              {formatDate(tournament.startDate)}
-                            </Text>
-                            {tournament.endDate ? (
+                      {/* Main content - fixed width */}
+                      <div
+                        className='w-full flex-shrink-0'
+                        onClick={() => handleTournamentClick(tournament.id)}
+                      >
+                        <div className='px-6 py-4'>
+                          <div className='flex items-start justify-between'>
+                            <div className='min-w-0 flex-1'>
+                              <Text
+                                size='2'
+                                weight='medium'
+                                className={cn(
+                                  'block',
+                                  datatableCellTextVariants({ variant: 'primary' })
+                                )}
+                              >
+                                {tournament.name}
+                              </Text>
                               <Text
                                 size='1'
                                 className={cn(
@@ -464,110 +454,134 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                                   datatableCellTextVariants({ variant: 'secondary' })
                                 )}
                               >
-                                {formatDate(tournament.endDate)}
+                                {tournament.location}
                               </Text>
-                            ) : (
+                            </div>
+                            <div className='ml-4 flex-shrink-0 text-right'>
                               <Text
-                                size='1'
+                                size='2'
                                 className={cn(
-                                  'mt-1 block',
-                                  datatableCellTextVariants({ variant: 'muted' })
+                                  'block font-medium',
+                                  datatableCellTextVariants({ variant: 'primary' })
                                 )}
                               >
-                                -
+                                {formatDate(tournament.startDate)}
                               </Text>
-                            )}
+                              {tournament.endDate ? (
+                                <Text
+                                  size='1'
+                                  className={cn(
+                                    'mt-1 block',
+                                    datatableCellTextVariants({ variant: 'secondary' })
+                                  )}
+                                >
+                                  {formatDate(tournament.endDate)}
+                                </Text>
+                              ) : (
+                                <Text
+                                  size='1'
+                                  className={cn(
+                                    'mt-1 block',
+                                    datatableCellTextVariants({ variant: 'muted' })
+                                  )}
+                                >
+                                  -
+                                </Text>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Red delete area - fixed width */}
-                    <div className={datatableDeleteAreaVariants({ color: 'red' })}>
-                      <div
-                        className='flex cursor-pointer items-center space-x-2 text-white'
-                        onClick={event => {
-                          event.stopPropagation()
-                          handleTournamentDelete(tournament.id)
-                        }}
-                      >
-                        <DeleteIcon className='h-5 w-5' />
-                        <Text size='2' weight='medium'>
-                          {t('tournaments.deleteTournament')}
-                        </Text>
+                      {/* Red delete area - fixed width */}
+                      <div className={datatableDeleteAreaVariants({ color: 'red' })}>
+                        <button
+                          type='button'
+                          className='flex cursor-pointer items-center space-x-2 text-white'
+                          onClick={event => {
+                            event.stopPropagation()
+                            handleTournamentDelete(tournament.id)
+                          }}
+                        >
+                          <DeleteIcon className='h-5 w-5' />
+                          <Text size='2' weight='medium'>
+                            {t('tournaments.deleteTournament')}
+                          </Text>
+                        </button>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Desktop: Table-like grid layout - hide on mobile */}
-                  <div
-                    className='hidden grid-cols-[2fr_1fr_1fr_auto] gap-6 px-3 py-4 lg:grid'
-                    onClick={() => handleTournamentClick(tournament.id)}
-                  >
-                    <div className='flex items-start'>
-                      <div>
-                        <Text
-                          size='2'
-                          weight='medium'
-                          className={datatableCellTextVariants({
-                            variant: 'primary',
-                          })}
-                        >
-                          {tournament.name}
-                        </Text>
-                        <div className='mt-1'>
+                    {/* Desktop: Table-like grid layout - hide on mobile */}
+                    <div
+                      className='hidden grid-cols-[2fr_1fr_1fr_auto] gap-6 px-3 py-4 lg:grid'
+                      onClick={() => handleTournamentClick(tournament.id)}
+                    >
+                      <div className='flex items-start'>
+                        <div>
                           <Text
-                            size='1'
+                            size='2'
+                            weight='medium'
                             className={datatableCellTextVariants({
-                              variant: 'secondary',
+                              variant: 'primary',
                             })}
                           >
-                            {tournament.location}
+                            {tournament.name}
                           </Text>
+                          <div className='mt-1'>
+                            <Text
+                              size='1'
+                              className={datatableCellTextVariants({
+                                variant: 'secondary',
+                              })}
+                            >
+                              {tournament.location}
+                            </Text>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className='flex items-start'>
-                      <Text
-                        size='2'
-                        className={datatableCellTextVariants({
-                          variant: 'secondary',
-                        })}
-                      >
-                        {formatDate(tournament.startDate)}
-                      </Text>
-                    </div>
-                    <div className='flex items-start'>
-                      <Text
-                        size='2'
-                        className={datatableCellTextVariants({
-                          variant: 'secondary',
-                        })}
-                      >
-                        {tournament.endDate ? formatDate(tournament.endDate) : '-'}
-                      </Text>
-                    </div>
-                    <div className='flex w-6 items-start justify-center'>
-                      <button
-                        onClick={event => {
-                          event.stopPropagation()
-                          handleTournamentDelete(tournament.id)
-                        }}
-                        className={datatableActionButtonVariants({
-                          action: 'delete',
-                        })}
-                        title={t('tournaments.deleteTournament')}
-                      >
-                        <DeleteIcon className='h-4 w-4' />
-                      </button>
+                      <div className='flex items-start'>
+                        <Text
+                          size='2'
+                          className={datatableCellTextVariants({
+                            variant: 'secondary',
+                          })}
+                        >
+                          {formatDate(tournament.startDate)}
+                        </Text>
+                      </div>
+                      <div className='flex items-start'>
+                        <Text
+                          size='2'
+                          className={datatableCellTextVariants({
+                            variant: 'secondary',
+                          })}
+                        >
+                          {tournament.endDate ? formatDate(tournament.endDate) : '-'}
+                        </Text>
+                      </div>
+                      <div className='flex w-6 items-start justify-center'>
+                        <button
+                          onClick={event => {
+                            event.stopPropagation()
+                            handleTournamentDelete(tournament.id)
+                          }}
+                          className={datatableActionButtonVariants({
+                            action: 'delete',
+                          })}
+                          title={t('tournaments.deleteTournament')}
+                          aria-label={t('tournaments.deleteTournament')}
+                        >
+                          <DeleteIcon className='h-4 w-4' aria-hidden='true' />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </Panel>
+                )
+              })}
+            </div>
+          )}
+        </Panel>
+      </div>
     </div>
   )
 }

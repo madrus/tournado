@@ -62,14 +62,37 @@ enum Category {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  firstName   String
-  lastName    String
-  email       String   @unique
-  firebaseUid String   @unique
-  role        Role
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String         @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String         @unique
+  firebaseUid     String         @unique
+  displayName     String?
+  role            Role
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  auditLogs       UserAuditLog[] @relation("UserAuditLogs")
+  performedAudits UserAuditLog[] @relation("PerformedAudits")
+
+  @@index([active, createdAt])
+}
+
+model UserAuditLog {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation("UserAuditLogs", fields: [userId], references: [id], onDelete: Cascade)
+  performedBy   String
+  admin         User     @relation("PerformedAudits", fields: [performedBy], references: [id], onDelete: Restrict)
+  action        String   // "role_change", "approval", "rejection", "profile_update", "deactivate", "reactivate"
+  previousValue String?
+  newValue      String?
+  reason        String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([performedBy])
+  @@index([createdAt])
 }
 
 model TeamLeader { // contact person
@@ -104,10 +127,10 @@ model Tournament {
   id         String     @id @default(cuid())
   name       String
   location   String
-  divisions  Json       // array of Division enum values as JSON (SQLite limitation)
-  categories Json       // array of category strings (as JSON in SQLite)
+  divisions  String     // array of Division enum values as JSON (SQLite stores as TEXT)
+  categories String     // array of category strings (as JSON, SQLite stores as TEXT)
   startDate  DateTime
-  endDate    DateTime?
+  endDate    DateTime
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   teams      Team[]
@@ -148,7 +171,7 @@ model GroupSet {
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   tournamentId  String
   name          String
-  categories    Json       // array of Category enum values as JSON (SQLite limitation)
+  categories    String     // array of Category enum values as JSON (SQLite stores as TEXT)
   groups        Group[]
   configGroups  Int
   configSlots   Int

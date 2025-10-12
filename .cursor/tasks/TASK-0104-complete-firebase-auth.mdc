@@ -1,11 +1,11 @@
 ---
 description: Complete Firebase authentication with email/password and remove legacy auth system
-id: "TASK-0004"
+id: "TASK-0104"
 title: "Complete Firebase authentication with email/password and remove legacy auth system"
 status: "done"
 priority: "P0"
 labels: ["auth", "firebase", "migration", "cleanup"]
-dependencies: ["./TASK-0003-auth-ux-migration.mdc"]
+dependencies: ["./TASK-0103-auth-ux-migration.mdc"]
 created: "2025-01-09"
 globs:
 alwaysApply: false
@@ -39,7 +39,7 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 3) Assumptions & Constraints
 
-- ASSUMPTION: TASK-0003 Firebase Google authentication is complete and working
+- ASSUMPTION: TASK-0103 Firebase Google authentication is complete and working
 - ASSUMPTION: Development environment with no production users (allows database reset)
 - Constraint: Maintain existing route protection patterns during migration
 - Constraint: Support internationalization with existing locales
@@ -49,11 +49,11 @@ Reference: PRD Phase 1 - Authentication Modernization (Critical Priority)
 
 # 4) Dependencies (Other Tasks or Artifacts)
 
-- ./TASK-0003-auth-ux-migration.mdc (Firebase Google authentication must be complete)
-- app/features/firebase/client.ts _(from TASK-0001)_
-- app/features/firebase/server.ts _(from TASK-0002)_
-- app/features/firebase/session.server.ts _(from TASK-0002)_
-- app/features/firebase/components/FirebaseSignIn/ _(from TASK-0003)_
+- ./TASK-0103-auth-ux-migration.mdc (Firebase Google authentication must be complete)
+- app/features/firebase/client.ts _(from TASK-0101)_
+- app/features/firebase/server.ts _(from TASK-0102)_
+- app/features/firebase/session.server.ts _(from TASK-0102)_
+- app/features/firebase/components/FirebaseSignIn/ _(from TASK-0103)_
 - Environment variable setup for SUPER_ADMIN_EMAILS
 
 # 5) Context Plan

@@ -125,6 +125,8 @@ Choose your task pattern based on the scope and reusability of the work:
 > - stores/<store>.ts _(feature-specific state)_
 > - utils.ts _(feature utilities)_
 > - types.ts _(feature types)_
+> - Routes: `app/routes/<admin-path>/<feature>/` _(folder-based, not flat files)_
+> - Models: Keep in `app/models/<resource>.server.ts` _(centralized data access)_
 
 ## 🔗 HYBRID Task Pattern
 **Beginning (add to model context):**
@@ -169,6 +171,40 @@ Choose your task pattern based on the scope and reusability of the work:
 **Client-focused files** (`.tsx`, `.ts` in stores/):
 - Primarily used by client-side code
 - Examples: components, stores, client-side utilities
+
+## Routing Conventions
+
+**IMPORTANT**: Always use **folder-based routing**, not flat file with dot notation.
+
+### ✅ Correct Pattern (Folder-based)
+```
+app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/
+└── users/                    ← FOLDER
+    ├── _index.tsx            → /users/
+    ├── $userId.tsx           → /users/:userId
+    ├── $userId.edit.tsx      → /users/:userId/edit
+    └── new.tsx               → /users/new
+```
+
+### ❌ Incorrect Pattern (Flat file with dot notation)
+```
+app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/
+├── users._index.tsx          ← AVOID THIS
+└── users.$userId.tsx         ← AVOID THIS
+```
+
+### Why Folder-based Routing?
+1. **Better organization**: Related routes grouped together
+2. **Scalability**: Easy to add more routes without cluttering parent directory
+3. **Consistency**: Matches existing patterns (tournaments/, teams/, competition/)
+4. **Maintainability**: Clear structure as features grow
+
+### Route Structure Guidelines
+- Use folders for resource collections (users/, tournaments/, teams/)
+- `_index.tsx` for list/overview pages
+- `$param.tsx` for detail pages with dynamic parameters
+- `new.tsx` for creation pages
+- Nested routes go inside the resource folder
 
 ## TypeScript Conventions
 
@@ -223,6 +259,8 @@ export const createSessionFromFirebaseToken = async (
 - **Feature utilities**: `app/features/<feature>/utils.ts` - feature-specific helpers (universal)
 - **Feature server utilities**: `app/features/<feature>/server.ts` - server-only functions (if needed)
 - **Feature types**: `app/features/<feature>/types.ts` - domain-specific types (universal)
+- **Feature routes**: `app/routes/<admin-path>/<feature>/` - folder-based routing (NOT flat files with dots)
+- **Database models**: Keep centralized in `app/models/<resource>.server.ts` - shared data access layer
 
 ### 🔗 HYBRID Task - Mix as needed:
 - Combine shared and feature patterns based on requirements

@@ -14,7 +14,8 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
-import { TournamentForm } from '~/components/TournamentForm'
+import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
+import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
 import type { Tournament } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -23,7 +24,7 @@ import {
   getTournamentById,
   updateTournament,
 } from '~/models/tournament.server'
-import { useTournamentFormStore } from '~/stores/useTournamentFormStore'
+import { safeParseJSON } from '~/utils/json'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 import { toast } from '~/utils/toastUtils'
@@ -182,12 +183,16 @@ export async function action({
   }
 
   try {
+    // Default endDate to startDate if not provided
+    const finalEndDate =
+      endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+
     await updateTournament({
       id: tournamentId,
       name: name as string,
       location: location as string,
       startDate: new Date(startDate as string),
-      endDate: endDate && typeof endDate === 'string' ? new Date(endDate) : null,
+      endDate: new Date(finalEndDate),
       divisions,
       categories,
     })
@@ -244,10 +249,18 @@ export default function EditTournamentPage(): JSX.Element {
           : '',
         divisions: Array.isArray(tournament.divisions)
           ? (tournament.divisions as string[])
-          : JSON.parse(String(tournament.divisions || '[]')),
+          : safeParseJSON<string[]>(
+              String(tournament.divisions || '[]'),
+              `useEffect - tournament ${tournament.id} divisions`,
+              []
+            ),
         categories: Array.isArray(tournament.categories)
           ? (tournament.categories as string[])
-          : JSON.parse(String(tournament.categories || '[]')),
+          : safeParseJSON<string[]>(
+              String(tournament.categories || '[]'),
+              `useEffect - tournament ${tournament.id} categories`,
+              []
+            ),
       })
 
       // Remove the success parameter from URL
@@ -279,16 +292,24 @@ export default function EditTournamentPage(): JSX.Element {
     return dateObj.toISOString().split('T')[0]
   }
 
-  // Parse JSON fields
+  // Parse JSON fields safely
   const parsedDivisions = tournament.divisions
     ? typeof tournament.divisions === 'string'
-      ? JSON.parse(tournament.divisions)
+      ? safeParseJSON<string[]>(
+          tournament.divisions,
+          `TournamentDetailPage - tournament ${tournament.id} divisions`,
+          []
+        )
       : tournament.divisions
     : []
 
   const parsedCategories = tournament.categories
     ? typeof tournament.categories === 'string'
-      ? JSON.parse(tournament.categories)
+      ? safeParseJSON<string[]>(
+          tournament.categories,
+          `TournamentDetailPage - tournament ${tournament.id} categories`,
+          []
+        )
       : tournament.categories
     : []
 

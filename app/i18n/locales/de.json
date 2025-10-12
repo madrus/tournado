@@ -130,8 +130,9 @@
     "optional": "(optional)",
     "pagination": {
       "next": "Weiter",
+      "pageInfo": "Seite {{current}} von {{total}}",
       "previous": "Zurück",
-      "showing": "Zeige {{count}} von {{total}} Zeilen"
+      "showing": "{{from}}-{{to}} von {{total}} angezeigt"
     },
     "signedInAs": "Angemeldet als",
     "titles": {
@@ -150,6 +151,13 @@
     "toggleMenu": "Menü umschalten",
     "toggleTheme": "Design umschalten",
     "welcome": "Willkommen"
+  },
+  "datatable": {
+    "clearSearch": "Suche löschen",
+    "resetFilters": "Zurücksetzen",
+    "search": "Suchen...",
+    "toggleColumns": "Spalten umschalten",
+    "view": "Ansicht"
   },
   "divisions": {
     "FIFTH_DIVISION": "Fünfte Division",

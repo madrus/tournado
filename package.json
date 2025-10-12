@@ -74,6 +74,7 @@
     "@react-router/fs-routes": "^7.8.2",
     "@react-router/node": "^7.8.2",
     "@react-router/serve": "^7.8.2",
+    "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.2",

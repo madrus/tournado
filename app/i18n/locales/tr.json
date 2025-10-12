@@ -130,8 +130,9 @@
     "optional": "(isteğe bağlı)",
     "pagination": {
       "next": "Sonraki",
+      "pageInfo": "Sayfa {{current}} / {{total}}",
       "previous": "Önceki",
-      "showing": "{{total}} satırdan {{count}} tanesi gösteriliyor"
+      "showing": "{{total}} satırdan {{from}}-{{to}} gösteriliyor"
     },
     "signedInAs": "Giriş yapıldı: ",
     "titles": {
@@ -150,6 +151,13 @@
     "toggleMenu": "Menüyü aç/kapat",
     "toggleTheme": "Temayı değiştir",
     "welcome": "Hoş geldiniz"
+  },
+  "datatable": {
+    "clearSearch": "Aramayı temizle",
+    "resetFilters": "Sıfırla",
+    "search": "Ara...",
+    "toggleColumns": "Sütunları değiştir",
+    "view": "Görünüm"
   },
   "divisions": {
     "FIFTH_DIVISION": "Beşinci lig",

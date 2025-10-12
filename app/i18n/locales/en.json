@@ -130,8 +130,9 @@
     "optional": "(optional)",
     "pagination": {
       "next": "Next",
+      "pageInfo": "Page {{current}} of {{total}}",
       "previous": "Previous",
-      "showing": "Showing {{count}} of {{total}} rows"
+      "showing": "Showing {{from}}-{{to}} of {{total}}"
     },
     "signedInAs": "Signed in as",
     "titles": {
@@ -150,6 +151,13 @@
     "toggleMenu": "Toggle menu",
     "toggleTheme": "Toggle theme",
     "welcome": "Welcome"
+  },
+  "datatable": {
+    "clearSearch": "Clear search",
+    "resetFilters": "Reset",
+    "search": "Search...",
+    "toggleColumns": "Toggle columns",
+    "view": "View"
   },
   "divisions": {
     "FIFTH_DIVISION": "Fifth Division",

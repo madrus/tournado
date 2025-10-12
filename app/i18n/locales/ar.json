@@ -405,6 +405,8 @@
       "noUsers": "لم يتم العثور على مستخدمين",
       "noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
       "roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
+      "userDeactivatedSuccessfully": "تم إلغاء تنشيط المستخدم بنجاح",
+      "userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح",
       "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
     },
     "placeholders": {

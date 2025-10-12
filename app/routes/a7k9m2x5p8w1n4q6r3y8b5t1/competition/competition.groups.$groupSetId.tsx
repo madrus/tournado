@@ -1,6 +1,7 @@
 import { JSX } from 'react'
 import {
   Form,
+  Link,
   redirect,
   useActionData,
   useLoaderData,
@@ -50,12 +51,21 @@ export async function loader({
   const { groupSetId } = params
   invariant(groupSetId, 'groupSetId is required')
 
-  const url = new URL(request.url)
-  const tournamentId = url.searchParams.get('tournament')
-  invariant(tournamentId, 'Tournament ID is required')
-
   const groupSet = await getGroupSetWithDetails(groupSetId)
   if (!groupSet) throw new Response('Group set not found', { status: 404 })
+
+  // Derive tournamentId from groupSet - this is the source of truth
+  const tournamentId = groupSet.tournamentId
+
+  // Validate query param if provided
+  const url = new URL(request.url)
+  const queryTournamentId = url.searchParams.get('tournament')
+  if (queryTournamentId && queryTournamentId !== tournamentId) {
+    throw new Response(
+      'Tournament ID mismatch: query parameter does not match group set tournament',
+      { status: 400 }
+    )
+  }
 
   const tournament = await getTournamentById({ id: tournamentId })
   if (!tournament) throw new Response('Tournament not found', { status: 404 })
@@ -75,9 +85,22 @@ export async function action({
   const { groupSetId } = params
   invariant(groupSetId, 'groupSetId is required')
 
+  // Fetch groupSet to derive tournamentId - don't trust query params
+  const groupSet = await getGroupSetWithDetails(groupSetId)
+  if (!groupSet) throw new Response('Group set not found', { status: 404 })
+
+  // Derive tournamentId from groupSet - this is the source of truth
+  const tournamentId = groupSet.tournamentId
+
+  // Validate query param if provided (optional validation)
   const url = new URL(request.url)
-  const tournamentId = url.searchParams.get('tournament')
-  invariant(tournamentId, 'Tournament ID is required')
+  const queryTournamentId = url.searchParams.get('tournament')
+  if (queryTournamentId && queryTournamentId !== tournamentId) {
+    throw new Response(
+      'Tournament ID mismatch: query parameter does not match group set tournament',
+      { status: 400 }
+    )
+  }
 
   const formData = await request.formData()
   const intent = formData.get('intent')?.toString()
@@ -88,6 +111,7 @@ export async function action({
       const slotIndex = Number(formData.get('slotIndex'))
       const teamId = formData.get('teamId')?.toString() || ''
       invariant(groupId && !Number.isNaN(slotIndex) && teamId, 'Invalid assign payload')
+      // assignTeamToGroupSlot now validates tournament consistency internally
       await assignTeamToGroupSlot({ groupSetId, groupId, slotIndex, teamId })
     } else if (intent === 'clear') {
       const groupSlotId = formData.get('groupSlotId')?.toString() || ''
@@ -96,6 +120,7 @@ export async function action({
     } else if (intent === 'reserve') {
       const teamId = formData.get('teamId')?.toString() || ''
       invariant(teamId, 'Invalid reserve payload')
+      // moveTeamToReserve now validates tournament consistency internally
       await moveTeamToReserve({ groupSetId, teamId })
     } else if (intent === 'swap') {
       const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
@@ -104,6 +129,7 @@ export async function action({
       await swapGroupSlots({ sourceSlotId, targetSlotId })
     }
 
+    // Use derived tournamentId in redirect
     return redirect(
       `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupSetId}?tournament=${tournamentId}`
     )
@@ -112,7 +138,7 @@ export async function action({
   }
 }
 
-export default function GroupSetDetails(): JSX.Element {
+export function GroupSetDetails(): JSX.Element {
   const { groupSet, availableTeams, tournamentId } = useLoaderData<LoaderData>()
   const actionData = useActionData<ActionData>()
   const navigation = useNavigation()
@@ -126,12 +152,12 @@ export default function GroupSetDetails(): JSX.Element {
           <h2 className='text-2xl font-bold'>{groupSet.name}</h2>
           <p className='text-foreground-light mt-1'>Manage team assignments</p>
         </div>
-        <a
-          href={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups?tournament=${tournamentId}`}
+        <Link
+          to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups?tournament=${tournamentId}`}
           className='text-primary-600 underline'
         >
           Back to Groups
-        </a>
+        </Link>
       </div>
 
       {actionData?.error ? (
@@ -261,3 +287,6 @@ export default function GroupSetDetails(): JSX.Element {
     </div>
   )
 }
+
+// Default export for React Router
+export default GroupSetDetails

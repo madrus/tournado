@@ -405,6 +405,8 @@
       "noUsers": "No users found",
       "noUsersDescription": "No users have been created yet.",
       "roleUpdatedSuccessfully": "User role updated successfully",
+      "userDeactivatedSuccessfully": "User deactivated successfully",
+      "userReactivatedSuccessfully": "User reactivated successfully",
       "userIsDeactivated": "This user is currently deactivated"
     },
     "placeholders": {

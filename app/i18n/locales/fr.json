@@ -405,6 +405,8 @@
       "noUsers": "Aucun utilisateur trouvé",
       "noUsersDescription": "Aucun utilisateur n'a encore été créé.",
       "roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
+      "userDeactivatedSuccessfully": "Utilisateur désactivé avec succès",
+      "userReactivatedSuccessfully": "Utilisateur réactivé avec succès",
       "userIsDeactivated": "Cet utilisateur est actuellement désactivé"
     },
     "placeholders": {

@@ -36,7 +36,7 @@ type LoaderData = {
 
 type ActionData = {
   error?: string
-  success?: boolean
+  success?: 'role' | 'deactivate' | 'reactivate'
 }
 
 export const loader = async ({
@@ -89,7 +89,7 @@ export const action = async ({
         reason,
       })
 
-      return { success: true }
+      return { success: 'role' }
     }
 
     if (intent === 'deactivate') {
@@ -99,7 +99,7 @@ export const action = async ({
         reason,
       })
 
-      return { success: true }
+      return { success: 'deactivate' }
     }
 
     if (intent === 'reactivate') {
@@ -109,7 +109,7 @@ export const action = async ({
         reason,
       })
 
-      return { success: true }
+      return { success: 'reactivate' }
     }
 
     throw new Response('Invalid intent', { status: 400 })
@@ -145,7 +145,13 @@ export default function UserDetailRoute(): JSX.Element {
 
       {actionData?.success ? (
         <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
-          {t('users.messages.roleUpdatedSuccessfully')}
+          {t(
+            actionData.success === 'role'
+              ? 'users.messages.roleUpdatedSuccessfully'
+              : actionData.success === 'deactivate'
+                ? 'users.messages.userDeactivatedSuccessfully'
+                : 'users.messages.userReactivatedSuccessfully'
+          )}
         </div>
       ) : null}
 

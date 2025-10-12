@@ -10,7 +10,7 @@
     },
     "reports": {
       "description": "Bekijk platformgebruik en toernooistatistieken.",
-      "title": "Rapporten & Analytics"
+      "title": "Rapporten & Analyse"
     },
     "settings": {
       "description": "Configureer applicatie-instellingen en voorkeuren.",
@@ -405,6 +405,8 @@
       "noUsers": "Geen gebruikers gevonden",
       "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
       "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
+      "userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
+      "userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
       "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
     },
     "placeholders": {

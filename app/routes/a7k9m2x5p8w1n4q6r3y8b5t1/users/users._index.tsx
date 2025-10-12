@@ -1,7 +1,13 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { Form, useActionData, useLoaderData, useSubmit } from 'react-router'
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useSubmit,
+} from 'react-router'
 
 import type { User } from '@prisma/client'
 import { Text } from '@radix-ui/themes'
@@ -118,15 +124,15 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
   return { error: 'Invalid action' }
 }
 
-export default function AdminUsersIndexPage(): JSX.Element {
+export function AdminUsersIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { users, total } = useLoaderData<LoaderData>()
   const actionData = useActionData<typeof action>()
   const submit = useSubmit()
+  const navigate = useNavigate()
 
   const handleUserClick = (userId: string) => {
-    // Navigate to user details/edit page
-    window.location.href = `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`
+    navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
   }
 
   const formatDate = (date: Date | string): string => {
@@ -413,3 +419,6 @@ export default function AdminUsersIndexPage(): JSX.Element {
     </div>
   )
 }
+
+// Default export for React Router
+export default AdminUsersIndexPage

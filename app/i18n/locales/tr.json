@@ -405,6 +405,8 @@
       "noUsers": "Kullanıcı bulunamadı",
       "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
       "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
+      "userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
+      "userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi",
       "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
     },
     "placeholders": {

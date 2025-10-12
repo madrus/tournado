@@ -90,14 +90,23 @@ export const updateUserRole = async (
 ): Promise<User> => {
   const { userId, newRole, performedBy, reason } = props
 
-  // Get current user to capture previous role
-  const currentUser = await getUserById(userId)
-  if (!currentUser) {
-    throw new Error('User not found')
-  }
-
   // Update role in transaction with audit log
   return await prisma.$transaction(async tx => {
+    // Fetch current user state inside transaction
+    const currentUser = await tx.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, role: true },
+    })
+
+    if (!currentUser) {
+      throw new Error('User not found')
+    }
+
+    // Short-circuit if role is already the desired value
+    if (currentUser.role === newRole) {
+      return await tx.user.findUnique({ where: { id: userId } }) as User
+    }
+
     const updatedUser = await tx.user.update({
       where: { id: userId },
       data: { role: newRole },
@@ -130,6 +139,21 @@ export const deactivateUser = async (
   const { userId, performedBy, reason } = props
 
   return await prisma.$transaction(async tx => {
+    // Fetch current user state inside transaction
+    const currentUser = await tx.user.findUnique({
+      where: { id: userId },
+      select: { id: true, active: true },
+    })
+
+    if (!currentUser) {
+      throw new Error('User not found')
+    }
+
+    // Short-circuit if already inactive
+    if (!currentUser.active) {
+      return await tx.user.findUnique({ where: { id: userId } }) as User
+    }
+
     const updatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: false },
@@ -140,7 +164,7 @@ export const deactivateUser = async (
         userId,
         performedBy,
         action: 'deactivate',
-        previousValue: 'true',
+        previousValue: String(currentUser.active),
         newValue: 'false',
         reason,
       },
@@ -162,6 +186,21 @@ export const reactivateUser = async (
   const { userId, performedBy, reason } = props
 
   return await prisma.$transaction(async tx => {
+    // Fetch current user state inside transaction
+    const currentUser = await tx.user.findUnique({
+      where: { id: userId },
+      select: { id: true, active: true },
+    })
+
+    if (!currentUser) {
+      throw new Error('User not found')
+    }
+
+    // Short-circuit if already active
+    if (currentUser.active) {
+      return await tx.user.findUnique({ where: { id: userId } }) as User
+    }
+
     const updatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: true },
@@ -172,7 +211,7 @@ export const reactivateUser = async (
         userId,
         performedBy,
         action: 'reactivate',
-        previousValue: 'false',
+        previousValue: String(currentUser.active),
         newValue: 'true',
         reason,
       },

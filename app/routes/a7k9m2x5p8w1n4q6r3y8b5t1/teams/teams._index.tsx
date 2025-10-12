@@ -1,6 +1,6 @@
 import { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
-import { useLoaderData } from 'react-router'
+import { useLoaderData, useNavigate } from 'react-router'
 
 import { TeamsPageContent } from '~/components/TeamsPageContent'
 import type { TeamsLoaderData } from '~/lib/lib.types'
@@ -45,10 +45,10 @@ export async function loader({ request }: Route.LoaderArgs): Promise<TeamsLoader
 export default function AdminTeamsIndexPage(): JSX.Element {
   const { teamListItems, tournamentListItems, selectedTournamentId } =
     useLoaderData<TeamsLoaderData>()
+  const navigate = useNavigate()
 
   const handleTeamClick = (teamId: string) => {
-    // Navigate to team details/edit page
-    window.location.href = `/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`
+    navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${teamId}`)
   }
 
   return (

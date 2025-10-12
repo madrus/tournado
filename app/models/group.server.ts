@@ -32,6 +32,7 @@ export type GroupWithSlots = {
 export type GroupSetWithDetails = {
   readonly id: string
   readonly name: string
+  readonly tournamentId: string
   readonly categories: readonly Category[]
   readonly configGroups: number
   readonly configSlots: number
@@ -187,6 +188,7 @@ export async function getGroupSetWithDetails(
   return {
     id: groupSet.id,
     name: groupSet.name,
+    tournamentId: groupSet.tournamentId,
     categories: groupSet.categories as Category[],
     configGroups: groupSet.configGroups,
     configSlots: groupSet.configSlots,
@@ -277,6 +279,30 @@ export async function assignTeamToGroupSlot(
       throw new Error('Slot is occupied, clear or swap before assigning')
     }
 
+    // Validate team and group set belong to the same tournament
+    const [groupSet, team] = await Promise.all([
+      tx.groupSet.findUnique({
+        where: { id: groupSetId },
+        select: { tournamentId: true },
+      }),
+      tx.team.findUnique({
+        where: { id: teamId },
+        select: { tournamentId: true },
+      }),
+    ])
+
+    if (!groupSet) {
+      throw new Error('Group set not found')
+    }
+
+    if (!team) {
+      throw new Error('Team not found')
+    }
+
+    if (groupSet.tournamentId !== team.tournamentId) {
+      throw new Error('Team and group set must belong to the same tournament')
+    }
+
     // Clear any previous assignment of this team within the group set (including reserve)
     await tx.groupSlot.updateMany({
       where: { groupSetId, teamId },
@@ -322,6 +348,30 @@ export async function moveTeamToReserve(
   const { groupSetId, teamId } = props
 
   await prisma.$transaction(async tx => {
+    // Validate team and group set belong to the same tournament
+    const [groupSet, team] = await Promise.all([
+      tx.groupSet.findUnique({
+        where: { id: groupSetId },
+        select: { tournamentId: true },
+      }),
+      tx.team.findUnique({
+        where: { id: teamId },
+        select: { tournamentId: true },
+      }),
+    ])
+
+    if (!groupSet) {
+      throw new Error('Group set not found')
+    }
+
+    if (!team) {
+      throw new Error('Team not found')
+    }
+
+    if (groupSet.tournamentId !== team.tournamentId) {
+      throw new Error('Team and group set must belong to the same tournament')
+    }
+
     // Clear any existing assignment (group or reserve)
     await tx.groupSlot.updateMany({
       where: { groupSetId, teamId },

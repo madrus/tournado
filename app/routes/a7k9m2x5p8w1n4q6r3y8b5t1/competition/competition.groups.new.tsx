@@ -71,8 +71,9 @@ export async function loader({
 
   // Count available teams by category
   const availableTeamsCount = {} as Record<Category, number>
+  const categories = JSON.parse(tournament.categories) as Category[]
 
-  for (const category of tournament.categories as Category[]) {
+  for (const category of categories) {
     const teams = await getTeamsByCategories(tournamentId, [category])
     availableTeamsCount[category] = teams.length
   }
@@ -81,7 +82,7 @@ export async function loader({
     tournament: {
       id: tournament.id,
       name: tournament.name,
-      categories: tournament.categories as Category[],
+      categories,
     },
     availableTeamsCount,
   }

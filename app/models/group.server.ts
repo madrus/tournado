@@ -84,7 +84,7 @@ export async function createGroupSet({
     data: {
       tournamentId,
       name,
-      categories: categories as Category[], // JSON field
+      categories: JSON.stringify(categories), // Store as JSON string
       configGroups,
       configSlots,
       autoFill,
@@ -189,7 +189,7 @@ export async function getGroupSetWithDetails(
     id: groupSet.id,
     name: groupSet.name,
     tournamentId: groupSet.tournamentId,
-    categories: groupSet.categories as Category[],
+    categories: JSON.parse(groupSet.categories) as Category[],
     configGroups: groupSet.configGroups,
     configSlots: groupSet.configSlots,
     autoFill: groupSet.autoFill,
@@ -220,7 +220,7 @@ export async function getTournamentGroupSets(
 
   return groupSets.map(groupSet => ({
     ...groupSet,
-    categories: groupSet.categories as Category[],
+    categories: JSON.parse(groupSet.categories) as Category[],
   }))
 }
 

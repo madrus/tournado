@@ -495,7 +495,8 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
                       {/* Red delete area - fixed width */}
                       <div className={datatableDeleteAreaVariants({ color: 'red' })}>
-                        <div
+                        <button
+                          type='button'
                           className='flex cursor-pointer items-center space-x-2 text-white'
                           onClick={event => {
                             event.stopPropagation()
@@ -506,7 +507,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                           <Text size='2' weight='medium'>
                             {t('tournaments.deleteTournament')}
                           </Text>
-                        </div>
+                        </button>
                       </div>
                     </div>
 

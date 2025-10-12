@@ -131,7 +131,7 @@
     "pagination": {
       "next": "Sonraki",
       "previous": "Önceki",
-      "showing": "{{total}} kullanıcıdan {{count}} tanesi gösteriliyor"
+      "showing": "{{total}} satırdan {{count}} tanesi gösteriliyor"
     },
     "signedInAs": "Giriş yapıldı: ",
     "titles": {

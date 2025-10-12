@@ -39,7 +39,7 @@
     "user": {
       "description": "Beheer gebruikersaccounts en machtigingen.",
       "title": "Gebruikers beheer",
-      "totalUsers": "Totaal gebruikers"
+      "totalUsers": "Totaal aantal gebruikers"
     }
   },
   "about": {
@@ -131,7 +131,7 @@
     "pagination": {
       "next": "Volgende",
       "previous": "Vorige",
-      "showing": "{{count}} van {{total}} gebruikers worden weergegeven"
+      "showing": "{{count}} van {{total}} rijen worden weergegeven"
     },
     "signedInAs": "Ingelogd als",
     "titles": {
@@ -401,7 +401,7 @@
     },
     "messages": {
       "deactivated": "Gedeactiveerd",
-      "noAuditLogs": "Geen auditlog-vermeldingen gevonden",
+      "noAuditLogs": "Geen auditlogvermeldingen gevonden",
       "noUsers": "Geen gebruikers gevonden",
       "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
       "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",

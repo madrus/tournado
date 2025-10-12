@@ -7,9 +7,7 @@ type UserAuditLogListProps = {
   auditLogs: readonly AuditLogWithAdmin[]
 }
 
-export const UserAuditLogList = (
-  props: Readonly<UserAuditLogListProps>
-): JSX.Element => {
+export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.Element {
   const { auditLogs } = props
   const { t } = useTranslation()
 

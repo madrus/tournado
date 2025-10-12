@@ -131,7 +131,7 @@
     "pagination": {
       "next": "Next",
       "previous": "Previous",
-      "showing": "Showing {{count}} of {{total}} users"
+      "showing": "Showing {{count}} of {{total}} rows"
     },
     "signedInAs": "Signed in as",
     "titles": {

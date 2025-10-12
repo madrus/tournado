@@ -127,8 +127,8 @@ model Tournament {
   id         String     @id @default(cuid())
   name       String
   location   String
-  divisions  Json       // array of Division enum values as JSON (SQLite limitation)
-  categories Json       // array of category strings (as JSON in SQLite)
+  divisions  String     // array of Division enum values as JSON (SQLite stores as TEXT)
+  categories String     // array of category strings (as JSON, SQLite stores as TEXT)
   startDate  DateTime
   endDate    DateTime
   createdAt  DateTime   @default(now())
@@ -171,7 +171,7 @@ model GroupSet {
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   tournamentId  String
   name          String
-  categories    Json       // array of Category enum values as JSON (SQLite limitation)
+  categories    String     // array of Category enum values as JSON (SQLite stores as TEXT)
   groups        Group[]
   configGroups  Int
   configSlots   Int

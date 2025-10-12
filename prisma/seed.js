@@ -141,8 +141,12 @@ async function seed() {
       data: {
         name: 'Spring Cup',
         location: 'Amsterdam',
-        divisions: ['PREMIER_DIVISION', 'FIRST_DIVISION', 'SECOND_DIVISION'],
-        categories: ['JO8', 'JO9', 'JO10', 'JO11'],
+        divisions: JSON.stringify([
+          'PREMIER_DIVISION',
+          'FIRST_DIVISION',
+          'SECOND_DIVISION',
+        ]),
+        categories: JSON.stringify(['JO8', 'JO9', 'JO10', 'JO11']),
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-02'),
       },
@@ -152,8 +156,12 @@ async function seed() {
       data: {
         name: 'Summer Cup',
         location: 'Aalsmeer',
-        divisions: ['FIRST_DIVISION', 'SECOND_DIVISION', 'THIRD_DIVISION'],
-        categories: ['JO9', 'JO10', 'JO11', 'JO12'],
+        divisions: JSON.stringify([
+          'FIRST_DIVISION',
+          'SECOND_DIVISION',
+          'THIRD_DIVISION',
+        ]),
+        categories: JSON.stringify(['JO9', 'JO10', 'JO11', 'JO12']),
         startDate: new Date('2025-06-01'),
         endDate: new Date('2025-06-02'),
       },

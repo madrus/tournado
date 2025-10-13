@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "الإجراءات",
       "add": "إضافة",
       "cancel": "إلغاء",
       "delete": "حذف",
+      "edit": "تعديل",
       "save": "حفظ",
       "saving": "جاري الحفظ...",
       "update": "تحديث",
@@ -130,8 +132,9 @@
     "optional": "(اختياري)",
     "pagination": {
       "next": "التالي",
+      "pageInfo": "صفحة {{current}} من {{total}}",
       "previous": "السابق",
-      "showing": "عرض {{count}} من {{total}} صف"
+      "showing": "عرض {{from}}-{{to}} من {{total}}"
     },
     "signedInAs": "مسجل الدخول كـ",
     "titles": {
@@ -150,6 +153,13 @@
     "toggleMenu": "فتح/إغلاق القائمة",
     "toggleTheme": "تبديل المظهر",
     "welcome": "أهلاً وسهلاً"
+  },
+  "datatable": {
+    "clearSearch": "مسح البحث",
+    "resetFilters": "إعادة تعيين",
+    "search": "بحث...",
+    "toggleColumns": "تبديل الأعمدة",
+    "view": "عرض"
   },
   "divisions": {
     "FIFTH_DIVISION": "الدرجة السادسة",

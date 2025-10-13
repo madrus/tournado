@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "Acties",
       "add": "Toevoegen",
       "cancel": "Annuleren",
       "delete": "Verwijderen",
+      "edit": "Bewerken",
       "save": "Opslaan",
       "saving": "Opslaan...",
       "update": "Bijwerken",
@@ -130,8 +132,9 @@
     "optional": "(optioneel)",
     "pagination": {
       "next": "Volgende",
+      "pageInfo": "Pagina {{current}} van {{total}}",
       "previous": "Vorige",
-      "showing": "{{count}} van {{total}} rijen worden weergegeven"
+      "showing": "{{from}}-{{to}} van {{total}} weergegeven"
     },
     "signedInAs": "Ingelogd als",
     "titles": {
@@ -150,6 +153,13 @@
     "toggleMenu": "Menu openen/sluiten",
     "toggleTheme": "Thema wisselen",
     "welcome": "Welkom"
+  },
+  "datatable": {
+    "clearSearch": "Zoekopdracht wissen",
+    "resetFilters": "Reset",
+    "search": "Zoeken...",
+    "toggleColumns": "Kolommen weergeven",
+    "view": "Weergave"
   },
   "divisions": {
     "FIFTH_DIVISION": "Vijfde klasse",

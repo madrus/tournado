@@ -97,7 +97,7 @@ export function Panel({
           <div className='dashboard-stats'>
             <dl>
               {title ? (
-                <dt className='truncate text-sm font-medium opacity-75'>{title}</dt>
+                <dt className='truncate text-base font-medium opacity-75'>{title}</dt>
               ) : null}
               {children ? <dd className='text-lg font-medium'>{children}</dd> : null}
             </dl>

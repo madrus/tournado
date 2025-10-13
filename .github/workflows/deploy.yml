@@ -115,9 +115,8 @@ jobs:
         id: check_image
         if: steps.check_changes.outputs.code_changed == 'false'
         run: |
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Check if an image with this commit SHA already exists
-          if flyctl image show --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" | grep -q "${{ github.event.workflow_run.head_sha }}"; then
+          if flyctl image show --app ${{ steps.app_name.outputs.value }}-staging --access-token "${{ secrets.FLY_API_TOKEN }}" | grep -q "${{ github.event.workflow_run.head_sha }}"; then
             echo "image_exists=true" >> $GITHUB_OUTPUT
             echo "✅ Image already exists for commit ${{ github.event.workflow_run.head_sha }}"
           else
@@ -135,11 +134,10 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'true'
         run: |
           echo "🔨 Building and deploying new code changes..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
-            --access-token "$(cat /tmp/fly_token)" \
+            --access-token "${{ secrets.FLY_API_TOKEN }}" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
@@ -149,11 +147,10 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists == 'true'
         run: |
           echo "📦 Deploying existing image (no code changes)..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy the existing image without rebuilding
           flyctl deploy --image-label ${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
-            --access-token "$(cat /tmp/fly_token)" \
+            --access-token "${{ secrets.FLY_API_TOKEN }}" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 2m \
@@ -343,9 +340,8 @@ jobs:
         id: check_image
         if: steps.check_changes.outputs.code_changed == 'false'
         run: |
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Check if an image with this commit SHA already exists
-          if flyctl image show --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "${{ steps.prepare_deployment.outputs.head_sha }}"; then
+          if flyctl image show --app ${{ steps.app_name.outputs.value }} --access-token "${{ secrets.FLY_API_TOKEN }}" | grep -q "${{ steps.prepare_deployment.outputs.head_sha }}"; then
             echo "image_exists=true" >> $GITHUB_OUTPUT
             echo "✅ Image already exists for commit ${{ steps.prepare_deployment.outputs.head_sha }}"
           else
@@ -357,11 +353,10 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'true' || (steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true')
         run: |
           echo "🔨 Building and deploying new code changes..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
-            --access-token "$(cat /tmp/fly_token)" \
+            --access-token "${{ secrets.FLY_API_TOKEN }}" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
@@ -371,11 +366,10 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists == 'true'
         run: |
           echo "📦 Deploying existing image (no code changes)..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy the existing image without rebuilding
           flyctl deploy --image-label ${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
-            --access-token "$(cat /tmp/fly_token)" \
+            --access-token "${{ secrets.FLY_API_TOKEN }}" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 2m \

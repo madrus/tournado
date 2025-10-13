@@ -107,9 +107,18 @@ describe('datatable.variants', () => {
 
     it('should include base row classes', () => {
       const result = datatableRowVariants()
-      expect(result).toContain('cursor-pointer')
       expect(result).toContain('border-b')
       expect(result).toContain('transition-colors')
+    })
+
+    it('should apply clickable interaction variant by default', () => {
+      const result = datatableRowVariants()
+      expect(result).toContain('cursor-pointer')
+    })
+
+    it('should apply static interaction variant when specified', () => {
+      const result = datatableRowVariants({ interaction: 'static' })
+      expect(result).not.toContain('cursor-pointer')
     })
   })
 

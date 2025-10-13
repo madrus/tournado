@@ -134,9 +134,8 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
         t,
         formatDate,
         onDelete: handleTournamentDelete,
-        i18nLanguage: i18n.language,
       }),
-    [t, i18n.language, formatDate, handleTournamentDelete]
+    [t, formatDate, handleTournamentDelete]
   )
 
   // Empty state component

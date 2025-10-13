@@ -248,9 +248,9 @@ export function DataTable<TData, TValue>({
                     datatableRowVariants({
                       color,
                       variant: isLast ? 'last' : 'default',
+                      interaction: onRowClick ? 'clickable' : 'static',
                     }),
                     getStripeClasses(color, isEven), // First row (0) gets false = odd (-50)
-                    onRowClick && 'cursor-pointer',
                     typeof rowClassName === 'function'
                       ? rowClassName(row.original, index)
                       : rowClassName

@@ -2,7 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import { Table } from '@tanstack/react-table'
+import type { Table } from '@tanstack/react-table'
 
 import { cn } from '~/utils/misc'
 
@@ -31,7 +31,7 @@ export function DataTablePagination<TData>({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-between gap-3 px-3.5 pt-4 sm:flex-row',
+        'flex flex-col items-center justify-between gap-3 px-3.5 pt-4 md:flex-row',
         className
       )}
     >
@@ -46,7 +46,7 @@ export function DataTablePagination<TData>({
 
       {/* Pagination controls */}
       {totalPages > 1 ? (
-        <div className='flex items-center gap-2 self-end sm:self-auto'>
+        <div className='flex items-center gap-2 self-end md:self-auto'>
           {hasPrevPage ? (
             <Link
               to={`?page=${currentPage - 1}`}

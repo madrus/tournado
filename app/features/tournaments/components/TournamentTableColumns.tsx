@@ -15,7 +15,6 @@ type ColumnContext = {
   t: (key: string) => string
   formatDate: (date: Date | string) => string
   onDelete: (id: string) => void
-  i18nLanguage: string
 }
 
 export function createTournamentColumns(

@@ -159,9 +159,8 @@ export function AdminUsersIndexPage(): JSX.Element {
         t,
         formatDate,
         onEdit: handleUserClick,
-        i18nLanguage: i18n.language,
       }),
-    [t, formatDate, i18n.language]
+    [t, formatDate]
   )
 
   return (

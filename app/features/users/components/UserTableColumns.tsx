@@ -19,7 +19,6 @@ type ColumnContext = {
   t: (key: string, options?: Record<string, unknown>) => string
   formatDate: (date: Date | string) => string
   onEdit: (id: string) => void
-  i18nLanguage: string
 }
 
 export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {

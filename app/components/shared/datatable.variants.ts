@@ -120,7 +120,7 @@ export const datatableHeaderTextVariants = cva(
  */
 export const datatableRowVariants = cva(
   // Base classes for data rows
-  ['cursor-pointer border-b transition-colors'],
+  ['border-b transition-colors'],
   {
     variants: {
       /**
@@ -137,10 +137,19 @@ export const datatableRowVariants = cva(
         default: '',
         last: 'border-b-0 rounded-b-lg',
       },
+      /**
+       * Interaction variants for row clickability.
+       * Controls cursor style based on whether the row is interactive.
+       */
+      interaction: {
+        clickable: 'cursor-pointer',
+        static: '',
+      },
     },
     defaultVariants: {
       color: 'slate',
       variant: 'default',
+      interaction: 'clickable',
     },
   }
 )

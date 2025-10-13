@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "Acties",
       "add": "Toevoegen",
       "cancel": "Annuleren",
       "delete": "Verwijderen",
+      "edit": "Bewerken",
       "save": "Opslaan",
       "saving": "Opslaan...",
       "update": "Bijwerken",

@@ -17,7 +17,7 @@ export function DataTableColumnHeader<TData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>): JSX.Element {
   if (!column.getCanSort()) {
-    return <span className={className}>{title}</span>
+    return <span className={cn('font-semibold', className)}>{title}</span>
   }
 
   const isSorted = column.getIsSorted()
@@ -25,9 +25,18 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <button
       type='button'
-      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      onClick={() => {
+        // Cycle through: unsorted -> asc -> desc -> unsorted
+        if (!isSorted) {
+          column.toggleSorting(false) // Set to asc
+        } else if (isSorted === 'asc') {
+          column.toggleSorting(true) // Set to desc
+        } else {
+          column.clearSorting() // Clear sorting (back to unsorted)
+        }
+      }}
       className={cn(
-        'hover:text-foreground flex items-center gap-2 transition-colors',
+        'hover:text-foreground flex items-center gap-2 font-semibold transition-colors',
         'focus-visible:ring-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         className
       )}

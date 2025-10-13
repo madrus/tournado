@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "Eylemler",
       "add": "Ekle",
       "cancel": "İptal",
       "delete": "Sil",
+      "edit": "Düzenle",
       "save": "Kaydet",
       "saving": "Kaydediliyor...",
       "update": "Güncelle",

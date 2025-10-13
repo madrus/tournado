@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "الإجراءات",
       "add": "إضافة",
       "cancel": "إلغاء",
       "delete": "حذف",
+      "edit": "تعديل",
       "save": "حفظ",
       "saving": "جاري الحفظ...",
       "update": "تحديث",

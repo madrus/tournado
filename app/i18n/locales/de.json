@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "Aktionen",
       "add": "Hinzufügen",
       "cancel": "Abbrechen",
       "delete": "Löschen",
+      "edit": "Bearbeiten",
       "save": "Speichern",
       "saving": "Speichern...",
       "update": "Aktualisieren",

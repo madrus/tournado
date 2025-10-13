@@ -1,30 +1,22 @@
-import { JSX, useEffect, useState } from 'react'
+import { JSX, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import {
-  Form,
-  Link,
   useActionData,
   useLoaderData,
   useNavigate,
   useSearchParams,
-  useSubmit,
 } from 'react-router'
 
 import type { User } from '@prisma/client'
-import { Text } from '@radix-ui/themes'
+import type { SortingState } from '@tanstack/react-table'
 
-import { EditIcon, GroupIcon } from '~/components/icons'
+import { DataTableNew as DataTable } from '~/components/DataTable/DataTableNew'
+import { DataTablePaginationNew } from '~/components/DataTable/DataTablePaginationNew'
+import { GroupIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
-import {
-  datatableActionButtonVariants,
-  datatableCellTextVariants,
-  datatableContainerVariants,
-  datatableHeaderTextVariants,
-  datatableHeaderVariants,
-  datatableRowVariants,
-} from '~/components/shared/datatable.variants'
-import { getRoleBadgeVariant, validateRole } from '~/features/users/utils/roleUtils'
+import { createUserColumns, UserMobileRow } from '~/features/users/components'
+import { validateRole } from '~/features/users/utils/roleUtils'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
@@ -136,18 +128,10 @@ export function AdminUsersIndexPage(): JSX.Element {
   const { users, total } = useLoaderData<LoaderData>()
   const actionData = useActionData<typeof action>()
   const [searchParams] = useSearchParams()
-  const submit = useSubmit()
   const navigate = useNavigate()
 
-  // Track which user's role is currently being updated
-  const [updatingUserId, setUpdatingUserId] = useState<string | null>(null)
-
-  // Clear loading state when action completes
-  useEffect(() => {
-    if (actionData) {
-      setUpdatingUserId(null)
-    }
-  }, [actionData])
+  // Sorting state
+  const [sorting, setSorting] = useState<SortingState>([])
 
   const handleUserClick = (userId: string) => {
     navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
@@ -168,6 +152,18 @@ export function AdminUsersIndexPage(): JSX.Element {
       day: 'numeric',
     })
   }
+
+  // Create columns with memoization to prevent unnecessary re-renders
+  const columns = useMemo(
+    () =>
+      createUserColumns({
+        t,
+        formatDate,
+        onEdit: handleUserClick,
+        i18nLanguage: i18n.language,
+      }),
+    [t, formatDate, i18n.language]
+  )
 
   return (
     <div className='space-y-6' data-testid='admin-users-page-content'>
@@ -202,292 +198,51 @@ export function AdminUsersIndexPage(): JSX.Element {
       ) : null}
 
       {/* Users List */}
-      <div className={cn('w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+      <div className={cn('mb-6 w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
         <Panel color={PANEL_COLOR} variant='content-panel'>
-          {users.length === 0 ? (
-            <div className='py-12 text-center'>
-              <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>
-                <GroupIcon className='text-slate-400' size={24} />
-              </div>
-              <p className='mb-2 text-base font-medium text-slate-900'>
-                {t('users.messages.noUsers', 'No users found')}
-              </p>
-              <p className='mb-6 text-sm text-slate-600'>
-                {t(
-                  'users.messages.noUsersDescription',
-                  'No users have been created yet.'
-                )}
-              </p>
-            </div>
-          ) : (
-            <div className={datatableContainerVariants({ color: 'slate' })}>
-              {/* Header - only show on desktop using CSS */}
-              <div
-                className={cn(
-                  datatableHeaderVariants({ color: 'slate' }),
-                  'hidden lg:block'
-                )}
-              >
-                <div className='grid grid-cols-[2fr_1.5fr_1fr_1fr_1.5fr_auto] gap-4'>
-                  <div className='flex items-start'>
-                    <Text
-                      size='1'
-                      weight='medium'
-                      className={datatableHeaderTextVariants({ color: 'slate' })}
-                    >
-                      {t('users.fields.email')}
-                    </Text>
+          <DataTable
+            data={[...users]}
+            columns={columns}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            onRowClick={row => handleUserClick(row.id)}
+            renderMobileRow={row => (
+              <UserMobileRow
+                key={row.id}
+                user={row}
+                onClick={() => handleUserClick(row.id)}
+              />
+            )}
+            emptyState={
+              users.length === 0 ? (
+                <div className='py-12 text-center'>
+                  <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100'>
+                    <GroupIcon className='text-slate-400' size={24} />
                   </div>
-                  <div className='flex items-start'>
-                    <Text
-                      size='1'
-                      weight='medium'
-                      className={datatableHeaderTextVariants({ color: 'slate' })}
-                    >
-                      {t('users.fields.displayName')}
-                    </Text>
-                  </div>
-                  <div className='flex items-start'>
-                    <Text
-                      size='1'
-                      weight='medium'
-                      className={datatableHeaderTextVariants({ color: 'slate' })}
-                    >
-                      {t('users.fields.currentRole')}
-                    </Text>
-                  </div>
-                  <div className='flex items-start'>
-                    <Text
-                      size='1'
-                      weight='medium'
-                      className={datatableHeaderTextVariants({ color: 'slate' })}
-                    >
-                      {t('users.fields.createdAt')}
-                    </Text>
-                  </div>
-                  <div className='flex items-start'>
-                    <Text
-                      size='1'
-                      weight='medium'
-                      className={datatableHeaderTextVariants({ color: 'slate' })}
-                    >
-                      {t('users.fields.assignRole')}
-                    </Text>
-                  </div>
-                  <div className='flex w-6 items-start justify-center'>
-                    <span className='sr-only'>{t('common.actions.actions')}</span>
-                    <EditIcon
-                      className={cn(
-                        'h-4 w-4',
-                        datatableHeaderTextVariants({ color: 'slate' })
-                      )}
-                    />
-                  </div>
+                  <p className='mb-2 text-base font-medium text-slate-900'>
+                    {t('users.messages.noUsers', 'No users found')}
+                  </p>
+                  <p className='mb-6 text-sm text-slate-600'>
+                    {t(
+                      'users.messages.noUsersDescription',
+                      'No users have been created yet.'
+                    )}
+                  </p>
                 </div>
-              </div>
+              ) : undefined
+            }
+          />
 
-              {/* User Items */}
-              {users.map((user, index) => (
-                <div
-                  key={user.id}
-                  className={cn(
-                    datatableRowVariants({
-                      color: 'slate',
-                      variant: index === users.length - 1 ? 'last' : 'default',
-                    })
-                  )}
-                >
-                  {/* Mobile: Stacked layout */}
-                  <div className='lg:hidden'>
-                    <div
-                      className='cursor-pointer px-6 py-4'
-                      onClick={() => handleUserClick(user.id)}
-                    >
-                      <div className='flex items-start justify-start'>
-                        <div className='min-w-0 flex-1'>
-                          <Text
-                            size='2'
-                            weight='medium'
-                            className={cn(
-                              'block',
-                              datatableCellTextVariants({ variant: 'primary' })
-                            )}
-                          >
-                            {user.email}
-                          </Text>
-                          <Text
-                            size='1'
-                            className={cn(
-                              'mt-1 block',
-                              datatableCellTextVariants({ variant: 'secondary' })
-                            )}
-                          >
-                            {user.displayName || '-'}
-                          </Text>
-                        </div>
-                        <div className='ml-4 flex-shrink-0 text-right'>
-                          <span className={getRoleBadgeVariant(user.role)}>
-                            {t(`roles.${user.role.toLowerCase()}`)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Desktop: Table-like grid layout */}
-                  <div className='hidden grid-cols-[2fr_1.5fr_1fr_1fr_1.5fr_auto] gap-4 px-3 py-4 lg:grid'>
-                    <div
-                      className='flex cursor-pointer items-start justify-start'
-                      onClick={() => handleUserClick(user.id)}
-                    >
-                      <div>
-                        <Text
-                          size='2'
-                          weight='medium'
-                          className={datatableCellTextVariants({
-                            variant: 'primary',
-                          })}
-                        >
-                          {user.email}
-                        </Text>
-                        {!user.active ? (
-                          <div className='mt-1'>
-                            <Text
-                              size='1'
-                              className={cn(
-                                'text-destructive',
-                                datatableCellTextVariants({
-                                  variant: 'secondary',
-                                })
-                              )}
-                            >
-                              {t('users.messages.deactivated')}
-                            </Text>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className='flex items-start justify-start'>
-                      <Text
-                        size='2'
-                        className={datatableCellTextVariants({
-                          variant: 'secondary',
-                        })}
-                      >
-                        {user.displayName || '-'}
-                      </Text>
-                    </div>
-                    <div className='flex items-start justify-center'>
-                      <span className={getRoleBadgeVariant(user.role)}>
-                        {t(`roles.${user.role.toLowerCase()}`)}
-                      </span>
-                    </div>
-                    <div className='flex items-start justify-center'>
-                      <Text
-                        size='2'
-                        className={datatableCellTextVariants({
-                          variant: 'secondary',
-                        })}
-                      >
-                        {formatDate(user.createdAt)}
-                      </Text>
-                    </div>
-                    <div className='flex items-start justify-center'>
-                      <Form
-                        method='post'
-                        onChange={event => {
-                          const formData = new FormData(event.currentTarget)
-                          const newRole = formData.get('role') as string
-                          if (newRole !== user.role) {
-                            setUpdatingUserId(user.id)
-                            submit(event.currentTarget)
-                          }
-                        }}
-                      >
-                        <input type='hidden' name='intent' value='updateRole' />
-                        <input type='hidden' name='userId' value={user.id} />
-                        <select
-                          name='role'
-                          defaultValue={user.role}
-                          className='bg-background border-border rounded border px-2 py-1 text-sm disabled:cursor-not-allowed disabled:opacity-50'
-                          onClick={event => event.stopPropagation()}
-                          disabled={updatingUserId === user.id}
-                          aria-busy={updatingUserId === user.id}
-                        >
-                          <option value='PUBLIC'>{t('roles.public')}</option>
-                          <option value='MANAGER'>{t('roles.manager')}</option>
-                          <option value='ADMIN'>{t('roles.admin')}</option>
-                          <option value='REFEREE'>{t('roles.referee')}</option>
-                          <option value='EDITOR'>{t('roles.editor')}</option>
-                          <option value='BILLING'>{t('roles.billing')}</option>
-                        </select>
-                      </Form>
-                    </div>
-                    <div className='flex w-6 items-start justify-center'>
-                      <button
-                        onClick={event => {
-                          event.stopPropagation()
-                          handleUserClick(user.id)
-                        }}
-                        className={datatableActionButtonVariants({
-                          action: 'edit',
-                        })}
-                        title={t('common.actions.edit')}
-                      >
-                        <EditIcon className='h-4 w-4' />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Pagination Controls */}
-          {totalPages > 1 ? (
-            <div className='border-border flex items-center justify-between border-t px-6 py-4'>
-              <div className='text-sm text-slate-600'>
-                {t('common.pagination.showing', {
-                  count: users.length,
-                  total,
-                })}
-              </div>
-              <div className='flex gap-2'>
-                {hasPrevPage ? (
-                  <Link
-                    to={`?page=${currentPage - 1}`}
-                    className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors'
-                  >
-                    {t('common.pagination.previous')}
-                  </Link>
-                ) : (
-                  <button
-                    disabled
-                    className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400'
-                  >
-                    {t('common.pagination.previous')}
-                  </button>
-                )}
-                <span className='flex items-center px-3 py-1 text-sm text-slate-700'>
-                  Page {currentPage} of {totalPages}
-                </span>
-                {hasNextPage ? (
-                  <Link
-                    to={`?page=${currentPage + 1}`}
-                    className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors'
-                  >
-                    {t('common.pagination.next')}
-                  </Link>
-                ) : (
-                  <button
-                    disabled
-                    className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400'
-                  >
-                    {t('common.pagination.next')}
-                  </button>
-                )}
-              </div>
-            </div>
+          {/* Pagination Controls - Using ShadCN pattern */}
+          {users.length > 0 ? (
+            <DataTablePaginationNew
+              currentPage={currentPage}
+              totalPages={totalPages}
+              pageSize={pageSize}
+              total={total}
+              hasPrevPage={hasPrevPage}
+              hasNextPage={hasNextPage}
+            />
           ) : null}
         </Panel>
       </div>

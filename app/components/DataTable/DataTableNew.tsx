@@ -21,6 +21,7 @@ import {
   datatableRowVariants,
 } from '../shared/datatable.variants'
 import { type DataTableColorVariant } from './dataTable.variants'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table'
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
@@ -59,7 +60,7 @@ type DataTableProps<TData, TValue> = {
   emptyState?: ReactNode
 }
 
-export function DataTable<TData, TValue>({
+export function DataTableNew<TData, TValue>({
   columns,
   // eslint-disable-next-line id-blacklist
   data,
@@ -112,31 +113,28 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className={cn(datatableContainerVariants({ color }), className)}>
-      {/* Desktop table */}
-      <div className='hidden lg:block'>
-        <table className='w-full'>
-          <thead className={cn('border-b', headerClassName)}>
+      {/* Desktop table - using ShadCN Table primitives */}
+      <div className='hidden overflow-hidden rounded-lg md:block'>
+        <Table>
+          <TableHeader className={headerClassName}>
             {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <th
-                    key={header.id}
-                    className='px-3 py-3 text-left align-top text-sm font-bold tracking-wider'
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
+                  </TableHead>
                 ))}
-              </tr>
+              </TableRow>
             ))}
-          </thead>
-          <tbody>
+          </TableHeader>
+          <TableBody>
             {rows.map((row, index) => {
               const isLast = index === rows.length - 1
 
               return (
-                <tr
+                <TableRow
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
                   className={cn(
@@ -151,19 +149,19 @@ export function DataTable<TData, TValue>({
                   )}
                 >
                   {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} className='px-3 py-2 align-top'>
+                    <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
+                    </TableCell>
                   ))}
-                </tr>
+                </TableRow>
               )
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
-      {/* Mobile view */}
-      <div className='lg:hidden'>
+      {/* Mobile view - custom component */}
+      <div className='md:hidden'>
         {rows.map((row, index) => {
           const isLast = index === rows.length - 1
 

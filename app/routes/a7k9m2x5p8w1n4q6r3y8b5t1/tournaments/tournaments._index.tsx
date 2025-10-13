@@ -174,25 +174,36 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
       </div>
 
       {/* Tournaments List */}
-      <div className={cn('w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+      <div className={cn('mb-6 w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
         <Panel color={PANEL_COLOR} variant='content-panel'>
           <DataTable
+            data={[...tournamentListItems]}
             columns={columns}
-            data={tournamentListItems}
-            color='slate'
             sorting={sorting}
             onSortingChange={setSorting}
-            onRowClick={tournament => handleTournamentClick(tournament.id)}
-            emptyState={emptyState}
-            renderMobileRow={tournament => (
+            onRowClick={row => handleTournamentClick(row.id)}
+            renderMobileRow={row => (
               <TournamentMobileRow
-                tournament={tournament}
+                key={row.id}
+                tournament={row}
                 onDelete={handleTournamentDelete}
-                onClick={handleTournamentClick}
+                onClick={() => handleTournamentClick(row.id)}
                 formatDate={formatDate}
               />
             )}
+            emptyState={tournamentListItems.length === 0 ? emptyState : undefined}
           />
+
+          {/* Pagination - future enhancement when implementing server-side pagination */}
+          {tournamentListItems.length > 0 && (
+            <div className='text-foreground px-3.5 pt-4 text-sm'>
+              {t('common.pagination.showing', {
+                from: 1,
+                to: tournamentListItems.length,
+                total: tournamentListItems.length,
+              })}
+            </div>
+          )}
         </Panel>
       </div>
     </div>

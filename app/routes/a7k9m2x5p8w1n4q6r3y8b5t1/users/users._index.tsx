@@ -11,8 +11,7 @@ import {
 import type { User } from '@prisma/client'
 import type { SortingState } from '@tanstack/react-table'
 
-import { DataTableNew as DataTable } from '~/components/DataTable/DataTableNew'
-import { DataTablePaginationNew } from '~/components/DataTable/DataTablePaginationNew'
+import { DataTable, DataTablePagination } from '~/components/DataTable'
 import { GroupIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
 import { createUserColumns, UserMobileRow } from '~/features/users/components'
@@ -235,7 +234,7 @@ export function AdminUsersIndexPage(): JSX.Element {
 
           {/* Pagination Controls - Using ShadCN pattern */}
           {users.length > 0 ? (
-            <DataTablePaginationNew
+            <DataTablePagination
               currentPage={currentPage}
               totalPages={totalPages}
               pageSize={pageSize}

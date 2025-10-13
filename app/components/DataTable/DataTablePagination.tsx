@@ -1,87 +1,92 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 
 import { Table } from '@tanstack/react-table'
 
-import { ChevronLeftIcon, ChevronRightIcon } from '~/components/icons'
 import { cn } from '~/utils/misc'
 
 type DataTablePaginationProps<TData> = {
-  table: Table<TData>
-  totalCount?: number
+  table?: Table<TData>
+  currentPage: number
+  totalPages: number
+  pageSize: number
+  total: number
+  hasPrevPage: boolean
+  hasNextPage: boolean
   className?: string
 }
 
 export function DataTablePagination<TData>({
-  table,
-  totalCount,
+  currentPage,
+  totalPages,
+  pageSize,
+  total,
+  hasPrevPage,
+  hasNextPage,
   className,
 }: DataTablePaginationProps<TData>): JSX.Element {
   const { t } = useTranslation()
 
-  const currentPage = table.getState().pagination.pageIndex + 1
-  const pageCount = table.getPageCount()
-  const pageSize = table.getState().pagination.pageSize
-  const rowCount = totalCount ?? table.getFilteredRowModel().rows.length
-
-  const showingFrom = (currentPage - 1) * pageSize + 1
-  const showingTo = Math.min(currentPage * pageSize, rowCount)
-
   return (
     <div
       className={cn(
-        'border-border flex items-center justify-between border-t px-6 py-4',
+        'flex flex-col items-center justify-between gap-3 px-3.5 pt-4 sm:flex-row',
         className
       )}
     >
-      <div className='text-foreground-light text-sm'>
+      {/* Row count info */}
+      <div className='text-foreground text-base'>
         {t('common.pagination.showing', {
-          from: showingFrom,
-          to: showingTo,
-          total: rowCount,
+          from: (currentPage - 1) * pageSize + 1,
+          to: Math.min(currentPage * pageSize, total),
+          total,
         })}
       </div>
-      <div className='flex items-center gap-2'>
-        <button
-          type='button'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className={cn(
-            'rounded border px-3 py-1 text-sm transition-colors',
-            'focus-visible:ring-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-            table.getCanPreviousPage()
-              ? 'bg-background border-border hover:bg-accent cursor-pointer'
-              : 'border-border/50 bg-muted text-foreground-lighter cursor-not-allowed'
+
+      {/* Pagination controls */}
+      {totalPages > 1 ? (
+        <div className='flex items-center gap-2 self-end sm:self-auto'>
+          {hasPrevPage ? (
+            <Link
+              to={`?page=${currentPage - 1}`}
+              className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors dark:border-slate-700'
+            >
+              {t('common.pagination.previous')}
+            </Link>
+          ) : (
+            <button
+              disabled
+              className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600'
+            >
+              {t('common.pagination.previous')}
+            </button>
           )}
-          aria-label={t('common.pagination.previous')}
-        >
-          <span className='flex items-center gap-1'>
-            <ChevronLeftIcon className='h-4 w-4' aria-hidden='true' />
-            <span>{t('common.pagination.previous')}</span>
+
+          <span className='text-foreground flex items-center px-3 py-1 text-sm'>
+            {t('common.pagination.pageInfo', {
+              current: currentPage,
+              total: totalPages,
+            })}
           </span>
-        </button>
-        <span className='text-foreground flex items-center px-3 py-1 text-sm'>
-          {t('common.pagination.pageInfo', { current: currentPage, total: pageCount })}
-        </span>
-        <button
-          type='button'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className={cn(
-            'rounded border px-3 py-1 text-sm transition-colors',
-            'focus-visible:ring-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-            table.getCanNextPage()
-              ? 'bg-background border-border hover:bg-accent cursor-pointer'
-              : 'border-border/50 bg-muted text-foreground-lighter cursor-not-allowed'
+
+          {hasNextPage ? (
+            <Link
+              to={`?page=${currentPage + 1}`}
+              className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors dark:border-slate-700'
+            >
+              {t('common.pagination.next')}
+            </Link>
+          ) : (
+            <button
+              disabled
+              className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600'
+            >
+              {t('common.pagination.next')}
+            </button>
           )}
-          aria-label={t('common.pagination.next')}
-        >
-          <span className='flex items-center gap-1'>
-            <span>{t('common.pagination.next')}</span>
-            <ChevronRightIcon className='h-4 w-4' aria-hidden='true' />
-          </span>
-        </button>
-      </div>
+        </div>
+      ) : null}
     </div>
   )
 }

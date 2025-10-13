@@ -1,7 +1,4 @@
 export { DataTable } from './DataTable'
 export { DataTableColumnHeader } from './DataTableColumnHeader'
 export { DataTablePagination } from './DataTablePagination'
-export { DataTableToolbar } from './DataTableToolbar'
-export { DataTableViewOptions } from './DataTableViewOptions'
-
-export * from './dataTable.variants'
+export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table'

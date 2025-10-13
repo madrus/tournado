@@ -36,7 +36,7 @@ export function DataTablePaginationNew<TData>({
       )}
     >
       {/* Row count info */}
-      <div className='text-foreground text-sm'>
+      <div className='text-foreground text-base'>
         {t('common.pagination.showing', {
           from: (currentPage - 1) * pageSize + 1,
           to: Math.min(currentPage * pageSize, total),

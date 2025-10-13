@@ -120,7 +120,7 @@ export const datatableHeaderTextVariants = cva(
  */
 export const datatableRowVariants = cva(
   // Base classes for data rows
-  ['cursor-pointer border-b bg-white transition-colors dark:bg-slate-950'],
+  ['cursor-pointer border-b transition-colors'],
   {
     variants: {
       /**
@@ -128,11 +128,10 @@ export const datatableRowVariants = cva(
        * Uses subtle colors for non-intrusive row highlighting.
        */
       color: createColorVariantMapping(
-        color =>
-          `border-${color}-100 hover:bg-${color}-50 dark:border-${color}-800 dark:hover:bg-${color}-900/50`
+        color => `border-${color}-100 dark:border-${color}-800`
       ),
       /**
-       * Row layout variants for special positioning.
+       * Row layout variants for special positioning and alternating colors.
        */
       variant: {
         default: '',

@@ -2,12 +2,9 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import type { Table } from '@tanstack/react-table'
-
 import { cn } from '~/utils/misc'
 
-type DataTablePaginationProps<TData> = {
-  table?: Table<TData>
+type DataTablePaginationProps = {
   currentPage: number
   totalPages: number
   pageSize: number
@@ -17,7 +14,7 @@ type DataTablePaginationProps<TData> = {
   className?: string
 }
 
-export function DataTablePagination<TData>({
+export function DataTablePagination({
   currentPage,
   totalPages,
   pageSize,
@@ -25,8 +22,12 @@ export function DataTablePagination<TData>({
   hasPrevPage,
   hasNextPage,
   className,
-}: DataTablePaginationProps<TData>): JSX.Element {
+}: DataTablePaginationProps): JSX.Element {
   const { t } = useTranslation()
+
+  // Handle empty results: show "0–0 of 0" instead of "1–0 of 0"
+  const from = total === 0 ? 0 : (currentPage - 1) * pageSize + 1
+  const to = total === 0 ? 0 : Math.min(currentPage * pageSize, total)
 
   return (
     <div
@@ -38,8 +39,8 @@ export function DataTablePagination<TData>({
       {/* Row count info */}
       <div className='text-foreground text-base'>
         {t('common.pagination.showing', {
-          from: (currentPage - 1) * pageSize + 1,
-          to: Math.min(currentPage * pageSize, total),
+          from,
+          to,
           total,
         })}
       </div>

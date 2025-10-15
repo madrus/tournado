@@ -194,7 +194,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           />
 
           {/* Pagination - future enhancement when implementing server-side pagination */}
-          {tournamentListItems.length > 0 && (
+          {tournamentListItems.length > 0 ? (
             <div className='text-foreground px-3.5 pt-4 text-sm'>
               {t('common.pagination.showing', {
                 from: 1,
@@ -202,7 +202,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                 total: tournamentListItems.length,
               })}
             </div>
-          )}
+          ) : null}
         </Panel>
       </div>
     </div>

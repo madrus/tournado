@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Text } from '@radix-ui/themes'
 
+import { IconLabelButton } from '~/components/buttons/IconLabelButton'
 import { DeleteIcon } from '~/components/icons'
 import {
   datatableCellTextVariants,
@@ -263,20 +264,19 @@ export function TournamentMobileRow({
         </div>
 
         {/* Red delete area - fixed width */}
-        <div className={datatableDeleteAreaVariants({ color: 'red' })}>
-          <button
-            type='button'
-            className='flex cursor-pointer items-center space-x-2 text-white'
+        <div
+          className={datatableDeleteAreaVariants({ color: 'red', justify: 'start' })}
+        >
+          <IconLabelButton
+            icon={<DeleteIcon className='h-6 w-6 text-white' />}
+            label={t('common.actions.delete')}
             onClick={event => {
               event.stopPropagation()
               onDelete(tournament.id)
             }}
-          >
-            <DeleteIcon className='h-5 w-5' />
-            <Text size='2' weight='medium'>
-              {t('tournaments.deleteTournament')}
-            </Text>
-          </button>
+            aria-label={t('tournaments.deleteTournament')}
+            className='pl-3'
+          />
         </div>
       </div>
     </div>

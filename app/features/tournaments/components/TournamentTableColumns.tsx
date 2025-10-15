@@ -10,17 +10,19 @@ import {
   datatableCellTextVariants,
 } from '~/components/shared/datatable.variants'
 import type { TournamentListItem } from '~/models/tournament.server'
+import { cn } from '~/utils/misc'
 
 type ColumnContext = {
   t: (key: string) => string
   formatDate: (date: Date | string) => string
   onDelete: (id: string) => void
+  latinFontClass: string
 }
 
 export function createTournamentColumns(
   context: ColumnContext
 ): ColumnDef<TournamentListItem>[] {
-  const { t, formatDate, onDelete } = context
+  const { t, formatDate, onDelete, latinFontClass } = context
 
   return [
     {
@@ -33,18 +35,24 @@ export function createTournamentColumns(
           <Text
             size='2'
             weight='medium'
-            className={datatableCellTextVariants({
-              variant: 'primary',
-            })}
+            className={cn(
+              datatableCellTextVariants({
+                variant: 'primary',
+              }),
+              latinFontClass
+            )}
           >
             {row.original.name}
           </Text>
           <div className='mt-1'>
             <Text
               size='1'
-              className={datatableCellTextVariants({
-                variant: 'secondary',
-              })}
+              className={cn(
+                datatableCellTextVariants({
+                  variant: 'secondary',
+                }),
+                latinFontClass
+              )}
             >
               {row.original.location}
             </Text>
@@ -62,9 +70,12 @@ export function createTournamentColumns(
       cell: ({ row }) => (
         <Text
           size='2'
-          className={datatableCellTextVariants({
-            variant: 'secondary',
-          })}
+          className={cn(
+            datatableCellTextVariants({
+              variant: 'secondary',
+            }),
+            latinFontClass
+          )}
         >
           {formatDate(row.original.startDate)}
         </Text>
@@ -84,9 +95,12 @@ export function createTournamentColumns(
       cell: ({ row }) => (
         <Text
           size='2'
-          className={datatableCellTextVariants({
-            variant: 'secondary',
-          })}
+          className={cn(
+            datatableCellTextVariants({
+              variant: 'secondary',
+            }),
+            latinFontClass
+          )}
         >
           {row.original.endDate ? formatDate(row.original.endDate) : '-'}
         </Text>

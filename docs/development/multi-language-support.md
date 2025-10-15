@@ -270,10 +270,14 @@ For large titles (like the homepage "Tournado"), special CSS rules prevent the A
 
 ### RTL (Right-to-Left) Support
 
-RTL support is enabled for Arabic using utility functions and Tailwind classes:
+RTL support is enabled for Arabic using utility functions and Tailwind classes. The system provides comprehensive helpers for RTL-aware layouts, interactions, and typography.
+
+#### Core RTL Utilities
 
 ```ts
 // app/utils/rtlUtils.ts
+
+// Basic RTL detection
 export function isRTL(lang: string) {
    return lang === 'ar'
 }
@@ -281,9 +285,139 @@ export function isRTL(lang: string) {
 export function getDirection(lang: string) {
    return isRTL(lang) ? 'rtl' : 'ltr'
 }
+
+// Typography helpers
+export function getTypographyClass(languageCode: string): string {
+   return isRTL(languageCode) ? 'arabic-text' : ''
+}
+
+export function getLatinTextClass(languageCode: string): string {
+   return isRTL(languageCode) ? 'latin-text' : ''
+}
+
+// NEW: Latin font family for numbers and Latin content in RTL
+export function getLatinFontFamily(languageCode: string): string {
+   return isRTL(languageCode) ? '!font-sans' : ''
+}
 ```
 
 The root HTML element sets the `dir` attribute based on the current language.
+
+#### Latin Font in RTL Context
+
+When displaying Latin content (names, numbers, dates) in Arabic mode, use `getLatinFontFamily()` to ensure proper font rendering:
+
+```tsx
+import { getLatinFontFamily } from '~/utils/rtlUtils'
+
+function Component() {
+   const { i18n } = useTranslation()
+   const latinFontClass = getLatinFontFamily(i18n.language)
+
+   return (
+      <div>
+         {/* Numbers and Latin text use system font in Arabic mode */}
+         <span className={latinFontClass}>42</span>
+         <span className={latinFontClass}>Tournament Name</span>
+      </div>
+   )
+}
+```
+
+**Why `!font-sans` instead of hardcoded fonts:**
+
+- Uses Tailwind's `font-sans` utility class for consistency
+- Respects your configured default font
+- Centralized configuration - change once, apply everywhere
+- `!important` override to supersede Arabic font cascade
+
+**When to use:**
+
+- ✅ Numbers and dates in RTL context
+- ✅ Tournament/team names (Latin script content)
+- ✅ Locations and proper nouns
+- ❌ Arabic text content (use default font)
+- ❌ Translated UI labels (use default font)
+
+#### RTL-Aware Interactive Components
+
+For touch interactions like swipeable rows, the system provides direction-aware helpers:
+
+```ts
+// Direction multiplier for swipe calculations
+export type SwipeRowConfig = {
+   directionMultiplier: 1 | -1 // 1 for LTR, -1 for RTL
+}
+
+export function getSwipeRowConfig(languageCode: string): SwipeRowConfig {
+   return {
+      directionMultiplier: isRTL(languageCode) ? -1 : 1,
+   }
+}
+```
+
+**Usage in swipeable components:**
+
+```tsx
+import { getSwipeRowConfig } from '~/utils/rtlUtils'
+
+function SwipeableRow() {
+   const { i18n } = useTranslation()
+   const { directionMultiplier } = getSwipeRowConfig(i18n.language)
+
+   const handleTouchMove = (event: TouchEvent) => {
+      const deltaX = (currentTouch.clientX - startX) * directionMultiplier
+      // LTR: left swipe = negative deltaX
+      // RTL: right swipe = negative deltaX (inverted by multiplier)
+   }
+
+   const transform = `translateX(${position * directionMultiplier}px)`
+   // LTR: negative position moves left
+   // RTL: negative position moves right (inverted by multiplier)
+}
+```
+
+**CSS Logical Properties:**
+
+Always use logical properties for RTL-aware layout:
+
+```tsx
+// ✅ Correct: Logical properties (auto-adapt to direction)
+<div className="ps-3 pe-2 ms-4 me-1 text-end">
+
+// ❌ Incorrect: Physical properties (fixed direction)
+<div className="pl-3 pr-2 ml-4 mr-1 text-right">
+```
+
+**Logical Property Reference:**
+
+- `ps-*` / `pe-*` = padding-inline-start / padding-inline-end
+- `ms-*` / `me-*` = margin-inline-start / margin-inline-end
+- `text-start` / `text-end` = text alignment (adapts to direction)
+- `start-*` / `end-*` = positioning (adapts to direction)
+
+#### RTL Typography Helpers
+
+Additional typography helpers for specific use cases:
+
+```ts
+// Layout helpers
+export function getChipClasses(languageCode: string) {
+   // Returns RTL-aware chip container classes with flex-row-reverse
+}
+
+export function getMenuClasses(languageCode: string) {
+   // Returns RTL-aware menu spacing and alignment
+}
+
+export function getDropdownProps(languageCode: string) {
+   // Returns Radix UI dropdown positioning for RTL
+}
+
+export function getTypographyClasses(languageCode: string) {
+   // Returns typography-specific classes for titles, headings, etc.
+}
+```
 
 ### Setting the `dir` Property on the Top-Level HTML Tag
 
@@ -380,12 +514,37 @@ Language switching was consolidated into the UserMenu for several reasons:
 
 ## Summary
 
-- Five languages are supported with separate JSON files and constants
-- Language switching uses a custom hook with reactive persistence
-- Font management automatically handles Arabic (Amiri) and Latin (Inter) scripts
-- Mobile-first design consolidates language switching into UserMenu
-- i18n is initialized with the correct language on both server and client
-- Language is detected server-side and passed to the client, eliminating FOUC
-- RTL support is handled via utility functions and Tailwind classes
+### Core Features
+
+- **Five languages** supported with separate JSON files and constants (Dutch, English, French, Arabic, Turkish)
+- **Language switching** uses custom hook with reactive persistence in localStorage and cookies
+- **Font management** automatically handles Arabic (Amiri) and Latin (Inter) scripts with proper scaling
+- **Mobile-first design** consolidates language switching into UserMenu for optimal mobile UX
+
+### i18n Architecture
+
+- **Server-side detection** with client-side initialization prevents FOUC
+- **Centralized i18n instance** in `app/i18n/config.ts` ensures consistency
+- **Cookie-based persistence** enables proper SSR language detection
+- **Reactive language updates** handled automatically in root component
+
+### RTL Support
+
+- **Comprehensive RTL helpers** in `app/utils/rtlUtils.ts` for layout and interactions
+- **Direction multiplier pattern** for touch interactions (swipeable rows, gestures)
+- **Logical CSS properties** (`ps-*`, `ms-*`, `text-end`) for automatic RTL adaptation
+- **Latin font helper** (`getLatinFontFamily`) for numbers and Latin content in Arabic mode
+- **Typography utilities** for dropdowns, menus, chips, and complex layouts
+
+### Best Practices
+
+- ✅ Always use `getLatinFontFamily()` for Latin content in RTL context (numbers, dates, names)
+- ✅ Use logical properties (`ps-*`, `ms-*`) instead of physical (`pl-*`, `ml-*`)
+- ✅ Use `!font-sans` via helper for centralized font configuration
+- ✅ Multiply touch deltas and transforms by `directionMultiplier` for RTL-aware interactions
+- ✅ Import i18n utilities only from central `app/i18n/config.ts`
+- ❌ Don't hardcode fonts - use Tailwind utility classes
+- ❌ Don't use physical directional properties in new components
+- ❌ Don't create multiple i18n instances
 
 For more troubleshooting, see [docs/testing/troubleshooting.md](../testing/troubleshooting.md#language-flash-of-unstyledincorrect-content-fouc).

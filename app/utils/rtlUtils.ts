@@ -22,10 +22,11 @@ export const getLatinTitleClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'latin-title' : ''
 
 // Helper for Latin content that needs font-family change only (no size override)
-// Use this for elements where you want system font but need to preserve responsive sizing
+// Use this for elements where you want default Latin font but need to preserve responsive sizing
 // Uses !important to override arabic-text parent selector
+// Uses Tailwind's font-sans which respects your configured default font
 export const getLatinFontFamily = (languageCode: string): string =>
-  isRTL(languageCode) ? '!font-[system-ui]' : ''
+  isRTL(languageCode) ? '!font-sans' : ''
 
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {

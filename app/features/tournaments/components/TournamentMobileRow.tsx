@@ -12,7 +12,7 @@ import {
 import type { TournamentListItem } from '~/models/tournament.server'
 import { isBreakpoint } from '~/styles/constants'
 import { cn } from '~/utils/misc'
-import { getSwipeRowConfig } from '~/utils/rtlUtils'
+import { getLatinFontFamily, getSwipeRowConfig } from '~/utils/rtlUtils'
 
 type TournamentMobileRowProps = {
   tournament: TournamentListItem
@@ -35,6 +35,7 @@ export function TournamentMobileRow({
 }: Readonly<TournamentMobileRowProps>): JSX.Element {
   const { t, i18n } = useTranslation()
   const { directionMultiplier } = getSwipeRowConfig(i18n.language)
+  const latinFontClass = getLatinFontFamily(i18n.language)
   const [swipeState, setSwipeState] = useState<SwipeState>({
     x: 0,
     swiping: false,
@@ -215,7 +216,8 @@ export function TournamentMobileRow({
                   weight='medium'
                   className={cn(
                     'block',
-                    datatableCellTextVariants({ variant: 'primary' })
+                    datatableCellTextVariants({ variant: 'primary' }),
+                    latinFontClass
                   )}
                 >
                   {tournament.name}
@@ -224,7 +226,8 @@ export function TournamentMobileRow({
                   size='1'
                   className={cn(
                     'mt-1 block',
-                    datatableCellTextVariants({ variant: 'secondary' })
+                    datatableCellTextVariants({ variant: 'secondary' }),
+                    latinFontClass
                   )}
                 >
                   {tournament.location}
@@ -235,7 +238,8 @@ export function TournamentMobileRow({
                   size='2'
                   className={cn(
                     'block font-medium',
-                    datatableCellTextVariants({ variant: 'primary' })
+                    datatableCellTextVariants({ variant: 'primary' }),
+                    latinFontClass
                   )}
                 >
                   {formatDate(tournament.startDate)}
@@ -245,7 +249,8 @@ export function TournamentMobileRow({
                     size='1'
                     className={cn(
                       'mt-1 block',
-                      datatableCellTextVariants({ variant: 'secondary' })
+                      datatableCellTextVariants({ variant: 'secondary' }),
+                      latinFontClass
                     )}
                   >
                     {formatDate(tournament.endDate)}
@@ -255,7 +260,8 @@ export function TournamentMobileRow({
                     size='1'
                     className={cn(
                       'mt-1 block',
-                      datatableCellTextVariants({ variant: 'muted' })
+                      datatableCellTextVariants({ variant: 'muted' }),
+                      latinFontClass
                     )}
                   >
                     -

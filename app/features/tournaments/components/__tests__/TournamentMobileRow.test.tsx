@@ -3,13 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { TournamentListItem } from '~/models/tournament.server'
-import { getSwipeRowConfig } from '~/utils/rtlUtils'
+import { getLatinFontFamily, getSwipeRowConfig } from '~/utils/rtlUtils'
 
 import { TournamentMobileRow } from '../TournamentMobileRow'
 
 // Mock rtlUtils
 vi.mock('~/utils/rtlUtils', () => ({
   getSwipeRowConfig: vi.fn(),
+  getLatinFontFamily: vi.fn(),
 }))
 
 // Mock i18next
@@ -29,8 +30,10 @@ vi.mock('react-i18next', () => ({
 }))
 
 const mockGetSwipeRowConfig = vi.hoisted(() => vi.fn())
+const mockGetLatinFontFamily = vi.hoisted(() => vi.fn())
 
 vi.mocked(getSwipeRowConfig).mockImplementation(mockGetSwipeRowConfig)
+vi.mocked(getLatinFontFamily).mockImplementation(mockGetLatinFontFamily)
 
 // Mock isBreakpoint
 vi.mock('~/styles/constants', () => ({
@@ -64,6 +67,9 @@ describe('TournamentMobileRow', () => {
     mockGetSwipeRowConfig.mockReturnValue({
       directionMultiplier: 1, // LTR by default
     })
+
+    // Default mock return for getLatinFontFamily
+    mockGetLatinFontFamily.mockReturnValue('') // Empty string for LTR (no font change needed)
   })
 
   describe('Rendering', () => {

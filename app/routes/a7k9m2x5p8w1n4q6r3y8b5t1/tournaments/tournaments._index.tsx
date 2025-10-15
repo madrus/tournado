@@ -19,6 +19,7 @@ import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { getLatinFontFamily } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/tournaments._index'
 
@@ -92,6 +93,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const { tournamentListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
   const navigate = useNavigate()
+  const latinFontClass = getLatinFontFamily(i18n.language)
 
   // Table state
   const [sorting, setSorting] = useState<SortingState>([])
@@ -168,7 +170,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
           showGlow
           data-testid='tournaments-total-stat'
         >
-          {tournamentListItems.length}
+          <span className={latinFontClass}>{tournamentListItems.length}</span>
         </Panel>
       </div>
 
@@ -200,7 +202,17 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
                 from: 1,
                 to: tournamentListItems.length,
                 total: tournamentListItems.length,
-              })}
+              })
+                .split(/(\d+)/)
+                .map((part, index) =>
+                  /^\d+$/.test(part) ? (
+                    <span key={index} className={latinFontClass}>
+                      {part}
+                    </span>
+                  ) : (
+                    part
+                  )
+                )}
             </div>
           ) : null}
         </Panel>

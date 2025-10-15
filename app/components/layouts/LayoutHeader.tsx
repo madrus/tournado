@@ -2,7 +2,7 @@ import { JSX, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
+import { getArabicTextClass, isRTL } from '~/utils/rtlUtils'
 
 type LayoutHeaderProps = {
   /** Title text or translation key */
@@ -35,6 +35,8 @@ export function LayoutHeader({
     lg: 'lg:flex-row lg:items-center lg:justify-between',
   }
 
+  const arabicClass = isRTL(i18n.language) ? getArabicTextClass() : ''
+
   return (
     <div
       className={cn('border-button-neutral-secondary-border border-b pb-6', className)}
@@ -42,13 +44,9 @@ export function LayoutHeader({
     >
       <div className={cn('flex flex-col gap-4', breakpointClasses[breakpoint])}>
         <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            {title}
-          </h1>
+          <h1 className={cn('text-3xl font-bold', arabicClass)}>{title}</h1>
           {typeof description === 'string' ? (
-            <p className={cn('text-foreground mt-1', getLatinTextClass(i18n.language))}>
-              {description}
-            </p>
+            <p className={cn('text-foreground mt-1', arabicClass)}>{description}</p>
           ) : (
             <div className='text-foreground mt-1'>{description}</div>
           )}

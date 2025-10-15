@@ -120,3 +120,15 @@ export function getTypographyClasses(languageCode: string): TypographyClasses {
     appName: 'leading-normal text-center font-bold', // Force normal leading for app name
   }
 }
+
+// Type for swipe row configuration
+export type SwipeRowConfig = {
+  directionMultiplier: 1 | -1 // For inverting touch calculations in RTL
+}
+
+// Helper for swipeable row RTL support
+export const getSwipeRowConfig = (languageCode: string): SwipeRowConfig => ({
+  // RTL: multiply by -1 to invert swipe direction
+  // LTR: multiply by 1 (no change)
+  directionMultiplier: isRTL(languageCode) ? -1 : 1,
+})

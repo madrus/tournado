@@ -12,6 +12,7 @@ import {
 import type { TournamentListItem } from '~/models/tournament.server'
 import { isBreakpoint } from '~/styles/constants'
 import { cn } from '~/utils/misc'
+import { getSwipeRowConfig } from '~/utils/rtlUtils'
 
 type TournamentMobileRowProps = {
   tournament: TournamentListItem
@@ -32,7 +33,8 @@ export function TournamentMobileRow({
   onClick,
   formatDate,
 }: Readonly<TournamentMobileRowProps>): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { directionMultiplier } = getSwipeRowConfig(i18n.language)
   const [swipeState, setSwipeState] = useState<SwipeState>({
     x: 0,
     swiping: false,
@@ -73,7 +75,7 @@ export function TournamentMobileRow({
     const handleTouchMove = (moveEvent: TouchEvent) => {
       const currentTouch = moveEvent.touches[0]
       if (!currentTouch) return
-      const deltaX = currentTouch.clientX - startX
+      const deltaX = (currentTouch.clientX - startX) * directionMultiplier
 
       // Prevent vertical scroll during meaningful horizontal swipe
       if (Math.abs(deltaX) > 10) moveEvent.preventDefault()
@@ -180,16 +182,17 @@ export function TournamentMobileRow({
   }
 
   // Transform logic:
-  // - When swiping: use current x position
-  // - When in persistent delete state: keep at swiped position
+  // - When swiping: use current x position multiplied by directionMultiplier
+  // - When in persistent delete state: keep at swiped position multiplied by directionMultiplier
   // - When not in delete state and not swiping: always at position 0
+  // directionMultiplier: 1 for LTR (left swipe), -1 for RTL (right swipe)
   let transform: string
   if (swipeState.swiping) {
     // During active swipe - use current position
-    transform = `translateX(${swipeState.x}px)`
+    transform = `translateX(${swipeState.x * directionMultiplier}px)`
   } else if (swipeState.showDelete) {
     // In persistent delete state - use stored position
-    transform = `translateX(${swipeState.x}px)`
+    transform = `translateX(${swipeState.x * directionMultiplier}px)`
   } else {
     // Normal state - always at position 0
     transform = 'translateX(0px)'
@@ -227,7 +230,7 @@ export function TournamentMobileRow({
                   {tournament.location}
                 </Text>
               </div>
-              <div className='ml-4 flex-shrink-0 text-right'>
+              <div className='ms-4 flex-shrink-0 text-end'>
                 <Text
                   size='2'
                   className={cn(
@@ -275,7 +278,7 @@ export function TournamentMobileRow({
               onDelete(tournament.id)
             }}
             aria-label={t('tournaments.deleteTournament')}
-            className='pl-3'
+            className='ps-3'
           />
         </div>
       </div>

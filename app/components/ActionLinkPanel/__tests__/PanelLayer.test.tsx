@@ -10,7 +10,13 @@ import { PanelLayer } from '../PanelLayer'
 
 // Mock RTL utilities
 vi.mock('~/utils/rtlUtils', () => ({
+  getArabicTextClass: () => 'arabic-text',
+  getLatinTextClass: () => 'latin-text',
   getLatinTitleClass: (language: string) => (language === 'ar' ? 'latin-title' : ''),
+  getDirection: () => 'ltr',
+  getLatinFontFamily: () => '',
+  getSwipeRowConfig: () => ({ directionMultiplier: 1 }),
+  isRTL: () => false,
 }))
 
 // Mock the language hook

@@ -19,10 +19,11 @@ type ColumnContext = {
   t: (key: string, options?: Record<string, unknown>) => string
   formatDate: (date: Date | string) => string
   onEdit: (id: string) => void
+  latinFontClass: string
 }
 
 export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
-  const { t, formatDate, onEdit } = context
+  const { t, formatDate, onEdit, latinFontClass } = context
 
   return [
     {
@@ -34,9 +35,12 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
         <div>
           <Text
             size='3'
-            className={datatableCellTextVariants({
-              variant: 'secondary',
-            })}
+            className={cn(
+              datatableCellTextVariants({
+                variant: 'secondary',
+              }),
+              latinFontClass
+            )}
           >
             {row.original.email}
           </Text>
@@ -68,9 +72,12 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
       cell: ({ row }) => (
         <Text
           size='3'
-          className={datatableCellTextVariants({
-            variant: 'secondary',
-          })}
+          className={cn(
+            datatableCellTextVariants({
+              variant: 'secondary',
+            }),
+            latinFontClass
+          )}
         >
           {row.original.displayName || '-'}
         </Text>
@@ -111,7 +118,17 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
               variant: 'secondary',
             })}
           >
-            {formatDate(row.original.createdAt)}
+            {formatDate(row.original.createdAt)
+              .split(/(\d+)/)
+              .map((part, index) =>
+                /^\d+$/.test(part) ? (
+                  <span key={index} className={latinFontClass}>
+                    {part}
+                  </span>
+                ) : (
+                  part
+                )
+              )}
           </Text>
         </div>
       ),

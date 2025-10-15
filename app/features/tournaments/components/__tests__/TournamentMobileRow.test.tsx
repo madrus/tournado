@@ -3,14 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { TournamentListItem } from '~/models/tournament.server'
-import { getLatinFontFamily, getSwipeRowConfig } from '~/utils/rtlUtils'
 
 import { TournamentMobileRow } from '../TournamentMobileRow'
 
-// Mock rtlUtils
-vi.mock('~/utils/rtlUtils', () => ({
-  getSwipeRowConfig: vi.fn(),
-  getLatinFontFamily: vi.fn(),
+// Mock useLanguageDirection hook
+vi.mock('~/hooks/useLanguageDirection', () => ({
+  useLanguageDirection: vi.fn(),
 }))
 
 // Mock i18next
@@ -23,17 +21,14 @@ vi.mock('react-i18next', () => ({
       }
       return translations[key] || key
     },
-    i18n: {
-      language: 'en',
-    },
   }),
 }))
 
-const mockGetSwipeRowConfig = vi.hoisted(() => vi.fn())
-const mockGetLatinFontFamily = vi.hoisted(() => vi.fn())
+const mockUseLanguageDirection = vi.hoisted(() => vi.fn())
 
-vi.mocked(getSwipeRowConfig).mockImplementation(mockGetSwipeRowConfig)
-vi.mocked(getLatinFontFamily).mockImplementation(mockGetLatinFontFamily)
+// Get the mocked function
+const { useLanguageDirection } = await import('~/hooks/useLanguageDirection')
+vi.mocked(useLanguageDirection).mockImplementation(mockUseLanguageDirection)
 
 // Mock isBreakpoint
 vi.mock('~/styles/constants', () => ({
@@ -63,13 +58,14 @@ describe('TournamentMobileRow', () => {
   beforeEach(() => {
     vi.clearAllMocks()
 
-    // Default mock return for getSwipeRowConfig
-    mockGetSwipeRowConfig.mockReturnValue({
-      directionMultiplier: 1, // LTR by default
+    // Default mock return for useLanguageDirection
+    mockUseLanguageDirection.mockReturnValue({
+      latinFontClass: '', // Empty string for LTR
+      swipeConfig: {
+        directionMultiplier: 1, // LTR by default
+      },
+      direction: 'ltr',
     })
-
-    // Default mock return for getLatinFontFamily
-    mockGetLatinFontFamily.mockReturnValue('') // Empty string for LTR (no font change needed)
   })
 
   describe('Rendering', () => {
@@ -186,7 +182,7 @@ describe('TournamentMobileRow', () => {
   })
 
   describe('RTL Support', () => {
-    it('should use directionMultiplier from getSwipeRowConfig for LTR', () => {
+    it('should use directionMultiplier from useLanguageDirection for LTR', () => {
       render(
         <TournamentMobileRow
           tournament={mockTournament}
@@ -196,7 +192,7 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      expect(getSwipeRowConfig).toHaveBeenCalledWith('en')
+      expect(mockUseLanguageDirection).toHaveBeenCalled()
     })
 
     it('should use logical properties for layout (ps-3 for padding)', () => {

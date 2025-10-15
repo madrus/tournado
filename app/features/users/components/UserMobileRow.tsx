@@ -5,6 +5,7 @@ import type { User } from '@prisma/client'
 import { Text } from '@radix-ui/themes'
 
 import { datatableCellTextVariants } from '~/components/shared/datatable.variants'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
 
 import { getRoleBadgeVariant } from '../utils/roleUtils'
@@ -20,6 +21,7 @@ export function UserMobileRow({
   onClick,
 }: Readonly<UserMobileRowProps>): JSX.Element {
   const { t } = useTranslation()
+  const { latinFontClass } = useLanguageDirection()
 
   return (
     <div className='cursor-pointer px-6 py-4' onClick={onClick}>
@@ -28,7 +30,11 @@ export function UserMobileRow({
           <Text
             size='2'
             weight='medium'
-            className={cn('block', datatableCellTextVariants({ variant: 'primary' }))}
+            className={cn(
+              'block',
+              datatableCellTextVariants({ variant: 'primary' }),
+              latinFontClass
+            )}
           >
             {user.displayName || user.email}
           </Text>
@@ -37,7 +43,8 @@ export function UserMobileRow({
               size='1'
               className={cn(
                 'mt-1 block',
-                datatableCellTextVariants({ variant: 'secondary' })
+                datatableCellTextVariants({ variant: 'secondary' }),
+                latinFontClass
               )}
             >
               {user.email}

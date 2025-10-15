@@ -70,14 +70,21 @@ export function createTournamentColumns(
       cell: ({ row }) => (
         <Text
           size='2'
-          className={cn(
-            datatableCellTextVariants({
-              variant: 'secondary',
-            }),
-            latinFontClass
-          )}
+          className={datatableCellTextVariants({
+            variant: 'secondary',
+          })}
         >
-          {formatDate(row.original.startDate)}
+          {formatDate(row.original.startDate)
+            .split(/(\d+)/)
+            .map((part, index) =>
+              /^\d+$/.test(part) ? (
+                <span key={index} className={latinFontClass}>
+                  {part}
+                </span>
+              ) : (
+                part
+              )
+            )}
         </Text>
       ),
       enableSorting: true,
@@ -95,14 +102,23 @@ export function createTournamentColumns(
       cell: ({ row }) => (
         <Text
           size='2'
-          className={cn(
-            datatableCellTextVariants({
-              variant: 'secondary',
-            }),
-            latinFontClass
-          )}
+          className={datatableCellTextVariants({
+            variant: 'secondary',
+          })}
         >
-          {row.original.endDate ? formatDate(row.original.endDate) : '-'}
+          {row.original.endDate
+            ? formatDate(row.original.endDate)
+                .split(/(\d+)/)
+                .map((part, index) =>
+                  /^\d+$/.test(part) ? (
+                    <span key={index} className={latinFontClass}>
+                      {part}
+                    </span>
+                  ) : (
+                    part
+                  )
+                )
+            : '-'}
         </Text>
       ),
       enableSorting: true,

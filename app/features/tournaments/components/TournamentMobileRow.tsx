@@ -9,10 +9,10 @@ import {
   datatableCellTextVariants,
   datatableDeleteAreaVariants,
 } from '~/components/shared/datatable.variants'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import type { TournamentListItem } from '~/models/tournament.server'
 import { isBreakpoint } from '~/styles/constants'
 import { cn } from '~/utils/misc'
-import { getLatinFontFamily, getSwipeRowConfig } from '~/utils/rtlUtils'
 
 type TournamentMobileRowProps = {
   tournament: TournamentListItem
@@ -33,9 +33,9 @@ export function TournamentMobileRow({
   onClick,
   formatDate,
 }: Readonly<TournamentMobileRowProps>): JSX.Element {
-  const { t, i18n } = useTranslation()
-  const { directionMultiplier } = getSwipeRowConfig(i18n.language)
-  const latinFontClass = getLatinFontFamily(i18n.language)
+  const { t } = useTranslation()
+  const { latinFontClass, swipeConfig } = useLanguageDirection()
+  const { directionMultiplier } = swipeConfig
   const [swipeState, setSwipeState] = useState<SwipeState>({
     x: 0,
     swiping: false,

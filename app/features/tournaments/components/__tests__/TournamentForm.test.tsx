@@ -55,6 +55,9 @@ vi.mock('~/utils/rtlUtils', () => ({
   getArabicTextClass: () => 'arabic-text',
   getLatinTextClass: () => 'latin-text',
   getLatinTitleClass: () => 'latin-title',
+  getDirection: () => 'ltr',
+  getLatinFontFamily: () => '',
+  getSwipeRowConfig: () => ({ directionMultiplier: 1 }),
   isRTL: () => false,
 }))
 

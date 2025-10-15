@@ -16,6 +16,7 @@ import { GroupIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
 import { createUserColumns, UserMobileRow } from '~/features/users/components'
 import { validateRole } from '~/features/users/utils/roleUtils'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
@@ -128,6 +129,7 @@ export function AdminUsersIndexPage(): JSX.Element {
   const actionData = useActionData<typeof action>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { latinFontClass } = useLanguageDirection()
 
   // Sorting state
   const [sorting, setSorting] = useState<SortingState>([])
@@ -159,8 +161,9 @@ export function AdminUsersIndexPage(): JSX.Element {
         t,
         formatDate,
         onEdit: handleUserClick,
+        latinFontClass,
       }),
-    [t, formatDate]
+    [t, formatDate, latinFontClass]
   )
 
   return (

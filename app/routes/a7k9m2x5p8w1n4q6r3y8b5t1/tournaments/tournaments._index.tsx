@@ -10,6 +10,7 @@ import { TrophyIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
 import { TournamentMobileRow } from '~/features/tournaments/components/TournamentMobileRow'
 import { createTournamentColumns } from '~/features/tournaments/components/TournamentTableColumns'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import type { TournamentListItem } from '~/models/tournament.server'
 import {
   deleteTournamentById,
@@ -19,7 +20,6 @@ import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { getLatinFontFamily } from '~/utils/rtlUtils'
 
 import type { Route } from './+types/tournaments._index'
 
@@ -93,7 +93,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
   const { tournamentListItems } = useLoaderData<LoaderData>()
   const submit = useSubmit()
   const navigate = useNavigate()
-  const latinFontClass = getLatinFontFamily(i18n.language)
+  const { latinFontClass } = useLanguageDirection()
 
   // Table state
   const [sorting, setSorting] = useState<SortingState>([])

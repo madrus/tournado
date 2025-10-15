@@ -2,6 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
 
 type DataTablePaginationProps = {
@@ -24,6 +25,7 @@ export function DataTablePagination({
   className,
 }: DataTablePaginationProps): JSX.Element {
   const { t } = useTranslation()
+  const { latinFontClass } = useLanguageDirection()
 
   // Handle empty results: show "0–0 of 0" instead of "1–0 of 0"
   const from = total === 0 ? 0 : (currentPage - 1) * pageSize + 1
@@ -42,7 +44,17 @@ export function DataTablePagination({
           from,
           to,
           total,
-        })}
+        })
+          .split(/(\d+)/)
+          .map((part, index) =>
+            /^\d+$/.test(part) ? (
+              <span key={index} className={latinFontClass}>
+                {part}
+              </span>
+            ) : (
+              part
+            )
+          )}
       </div>
 
       {/* Pagination controls */}
@@ -68,7 +80,17 @@ export function DataTablePagination({
             {t('common.pagination.pageInfo', {
               current: currentPage,
               total: totalPages,
-            })}
+            })
+              .split(/(\d+)/)
+              .map((part, index) =>
+                /^\d+$/.test(part) ? (
+                  <span key={index} className={latinFontClass}>
+                    {part}
+                  </span>
+                ) : (
+                  part
+                )
+              )}
           </span>
 
           {hasNextPage ? (

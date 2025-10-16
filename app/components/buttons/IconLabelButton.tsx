@@ -1,11 +1,11 @@
-import type { JSX, ReactNode } from 'react'
+import type { JSX, MouseEvent, ReactNode } from 'react'
 
 import { Text } from '@radix-ui/themes'
 
 type IconLabelButtonProps = {
   icon: ReactNode
   label: string
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void
   className?: string
   'aria-label'?: string
 }

@@ -186,10 +186,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
             onRowClick={row => handleTournamentClick(row.id)}
             renderMobileRow={row => (
               <TournamentMobileRow
-                key={row.id}
                 tournament={row}
                 onDelete={handleTournamentDelete}
-                onClick={() => handleTournamentClick(row.id)}
+                onClick={handleTournamentClick}
                 formatDate={formatDate}
               />
             )}

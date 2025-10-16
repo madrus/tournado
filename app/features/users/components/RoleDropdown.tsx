@@ -1,6 +1,6 @@
-import { JSX, useState } from 'react'
+import { JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSubmit } from 'react-router'
+import { useFetcher } from 'react-router'
 
 import type { Role, User } from '@prisma/client'
 import * as Select from '@radix-ui/react-select'
@@ -21,20 +21,25 @@ export function RoleDropdown({
   onSubmitting,
 }: Readonly<RoleDropdownProps>): JSX.Element {
   const { t } = useTranslation()
-  const submit = useSubmit()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const fetcher = useFetcher()
+
+  // Derive submitting state from fetcher - only for this specific user
+  const isSubmitting =
+    fetcher.state !== 'idle' && fetcher.formData?.get('userId') === user.id
+
+  // Notify parent component of submitting state changes
+  useEffect(() => {
+    onSubmitting?.(isSubmitting)
+  }, [isSubmitting, onSubmitting])
 
   const handleValueChange = (newRole: string) => {
     if (newRole !== user.role) {
-      setIsSubmitting(true)
-      onSubmitting?.(true)
-
       const formData = new FormData()
       formData.set('intent', 'updateRole')
       formData.set('userId', user.id)
       formData.set('role', newRole)
 
-      submit(formData, { method: 'post' })
+      fetcher.submit(formData, { method: 'post' })
     }
   }
 
@@ -46,8 +51,8 @@ export function RoleDropdown({
         disabled={disabled || isSubmitting}
       >
         <Select.Trigger
-          className='bg-background border-border inline-flex w-[120px] items-center justify-between gap-2 rounded border px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-50'
-          aria-label='Select role'
+          className='bg-background border-border inline-flex w-32 items-center justify-between gap-2 rounded border px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-50'
+          aria-label={t('users.selectRole')}
         >
           <Select.Value />
           <Select.Icon>

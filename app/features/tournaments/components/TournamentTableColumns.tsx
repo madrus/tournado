@@ -136,7 +136,7 @@ export function createTournamentColumns(
       id: 'actions',
       header: () => (
         <div className='flex w-6 items-center justify-center'>
-          <span className='sr-only'>{t('common.actions')}</span>
+          <span className='sr-only'>{t('common.actions.actions')}</span>
           <DeleteIcon className='h-4 w-4' aria-hidden='true' />
         </div>
       ),

@@ -23,8 +23,39 @@ export function UserMobileRow({
   const { t } = useTranslation()
   const { latinFontClass } = useLanguageDirection()
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // Only trigger if Enter or Space is pressed
+    if (event.key === 'Enter' || event.key === ' ') {
+      // Prevent default to avoid scrolling on Space
+      event.preventDefault()
+      // Don't trigger if the event came from the RoleDropdown or its children
+      if (
+        event.target === event.currentTarget ||
+        !(event.target as HTMLElement).closest('[role="combobox"]')
+      ) {
+        onClick()
+      }
+    }
+  }
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Don't trigger onClick if clicking on the RoleDropdown
+    if (!(event.target as HTMLElement).closest('[role="combobox"]')) {
+      onClick()
+    }
+  }
+
   return (
-    <div className='cursor-pointer px-6 py-4' onClick={onClick}>
+    <div
+      className='focus-visible:ring-primary-500 cursor-pointer px-6 py-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role='button'
+      tabIndex={0}
+      aria-label={t('users.viewUserDetails', {
+        name: user.displayName || user.email,
+      })}
+    >
       <div className='flex items-start justify-between gap-4'>
         <div className='min-w-0 flex-1'>
           <Text

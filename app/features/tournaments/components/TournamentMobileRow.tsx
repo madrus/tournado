@@ -42,6 +42,9 @@ export function TournamentMobileRow({
     showDelete: false,
   })
 
+  // Ref to track the container element for computing swipe distances
+  const containerRef = useRef<HTMLDivElement>(null)
+
   // Ref to track current swipe state for touch events (avoids closure issues)
   const currentSwipeRef = useRef<SwipeState & { startingFromDelete: boolean }>({
     x: 0,
@@ -86,18 +89,20 @@ export function TournamentMobileRow({
       let isSwiping: boolean
 
       if (startingFromDelete) {
-        // If we started from delete state, right swipe should cancel
+        // If we started from delete state, positive normalized deltaX cancels the delete
         if (Math.abs(deltaX) > 10) {
           // Only start swiping if moved more than 10px
           isSwiping = true
 
-          // Calculate progressive position: start from -400, move toward 0 based on deltaX
-          const maxRightSwipe = 400 // How far right you can swipe to fully cancel
-          const progress = Math.min(Math.max(deltaX, 0), maxRightSwipe) / maxRightSwipe // 0 to 1
-          finalX = -400 + 400 * progress // Move from -400 to 0 progressively
+          // Calculate progressive position based on container width
+          const containerWidth = containerRef.current?.clientWidth || 400
+          const maxCancelSwipe = containerWidth // How far to swipe to fully cancel
+          const progress =
+            Math.min(Math.max(deltaX, 0), maxCancelSwipe) / maxCancelSwipe // 0 to 1
+          finalX = -containerWidth + containerWidth * progress // Move from -containerWidth to 0 progressively
 
           // Show delete state until we cross the 50% threshold
-          showDelete = finalX < -200 // 50% threshold
+          showDelete = finalX < -containerWidth / 2 // 50% threshold
         } else {
           // No significant movement - keep current state
           finalX = swipeState.x
@@ -107,7 +112,8 @@ export function TournamentMobileRow({
       } else {
         // Normal swipe logic
         isSwiping = true
-        const maxSwipeLeft = -400
+        const containerWidth = containerRef.current?.clientWidth || 400
+        const maxSwipeLeft = -containerWidth
         const maxSwipeRight = 50
 
         let clampedX = deltaX
@@ -147,11 +153,12 @@ export function TournamentMobileRow({
         }
       } else {
         // Normal swipe logic
-        const snapThreshold = -200 // 50% threshold
+        const containerWidth = containerRef.current?.clientWidth || 400
+        const snapThreshold = -containerWidth / 2 // 50% threshold
 
         if (endState.x < snapThreshold) {
           // Crossed 50% threshold - snap to delete state
-          setSwipeState({ x: -400, swiping: false, showDelete: true })
+          setSwipeState({ x: -containerWidth, swiping: false, showDelete: true })
         } else {
           // Under 50% threshold - snap back to normal
           setSwipeState({ x: 0, swiping: false, showDelete: false })
@@ -183,17 +190,17 @@ export function TournamentMobileRow({
   }
 
   // Transform logic:
-  // - When swiping: use current x position multiplied by directionMultiplier
-  // - When in persistent delete state: keep at swiped position multiplied by directionMultiplier
+  // - When swiping: use current x position (already normalized with directionMultiplier in handleTouchMove)
+  // - When in persistent delete state: keep at swiped position (already normalized)
   // - When not in delete state and not swiping: always at position 0
-  // directionMultiplier: 1 for LTR (left swipe), -1 for RTL (right swipe)
+  // Note: directionMultiplier is applied once during deltaX calculation (line 82), not here
   let transform: string
   if (swipeState.swiping) {
     // During active swipe - use current position
-    transform = `translateX(${swipeState.x * directionMultiplier}px)`
+    transform = `translateX(${swipeState.x}px)`
   } else if (swipeState.showDelete) {
     // In persistent delete state - use stored position
-    transform = `translateX(${swipeState.x * directionMultiplier}px)`
+    transform = `translateX(${swipeState.x}px)`
   } else {
     // Normal state - always at position 0
     transform = 'translateX(0px)'
@@ -202,6 +209,7 @@ export function TournamentMobileRow({
   return (
     <div className='relative overflow-hidden'>
       <div
+        ref={containerRef}
         className='flex transition-transform duration-200'
         style={{ transform, willChange: 'transform' }}
         onTouchStart={handleTouchStart}

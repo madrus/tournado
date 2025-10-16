@@ -1,4 +1,4 @@
-import { JSX, useMemo, useState } from 'react'
+import { JSX, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import {
@@ -145,14 +145,17 @@ export function AdminUsersIndexPage(): JSX.Element {
   const hasNextPage = currentPage < totalPages
   const hasPrevPage = currentPage > 1
 
-  const formatDate = (date: Date | string): string => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date
-    return dateObj.toLocaleDateString(i18n.language, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  }
+  const formatDate = useCallback(
+    (date: Date | string): string => {
+      const dateObj = typeof date === 'string' ? new Date(date) : date
+      return dateObj.toLocaleDateString(i18n.language, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    },
+    [i18n.language]
+  )
 
   // Create columns with memoization to prevent unnecessary re-renders
   const columns = useMemo(

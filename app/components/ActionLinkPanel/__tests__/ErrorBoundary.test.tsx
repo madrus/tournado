@@ -4,6 +4,14 @@ import { vi } from 'vitest'
 
 import ErrorBoundary from '../ErrorBoundary'
 
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en' },
+  }),
+}))
+
 describe('ErrorBoundary', () => {
   const ProblemChild = () => {
     throw new Error('Test error')

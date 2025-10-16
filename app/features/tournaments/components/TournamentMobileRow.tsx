@@ -10,6 +10,7 @@ import {
   datatableDeleteAreaVariants,
 } from '~/components/shared/datatable.variants'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
+import { DEFAULT_CONTAINER_WIDTH, SWIPE_START_THRESHOLD } from '~/lib/lib.constants'
 import type { TournamentListItem } from '~/models/tournament.server'
 import { isBreakpoint } from '~/styles/constants'
 import { cn } from '~/utils/misc'
@@ -53,6 +54,12 @@ export function TournamentMobileRow({
     startingFromDelete: false,
   })
 
+  /**
+   * Handles touch-based swipe-to-delete gesture on mobile.
+   * - Left swipe reveals delete area; crossing 50% threshold snaps to delete state
+   * - Right swipe from delete state progressively cancels and returns to normal
+   * - Prevents navigation clicks during active swipes
+   */
   const handleTouchStart = (event: React.TouchEvent) => {
     // Only enable swipe on mobile (below lg breakpoint)
     if (isBreakpoint('lg')) return
@@ -82,7 +89,7 @@ export function TournamentMobileRow({
       const deltaX = (currentTouch.clientX - startX) * directionMultiplier
 
       // Prevent vertical scroll during meaningful horizontal swipe
-      if (Math.abs(deltaX) > 10) moveEvent.preventDefault()
+      if (Math.abs(deltaX) > SWIPE_START_THRESHOLD) moveEvent.preventDefault()
 
       let finalX: number
       let showDelete: boolean
@@ -90,12 +97,13 @@ export function TournamentMobileRow({
 
       if (startingFromDelete) {
         // If we started from delete state, positive normalized deltaX cancels the delete
-        if (Math.abs(deltaX) > 10) {
-          // Only start swiping if moved more than 10px
+        if (Math.abs(deltaX) > SWIPE_START_THRESHOLD) {
+          // Only start swiping if moved more than SWIPE_START_THRESHOLD px
           isSwiping = true
 
           // Calculate progressive position based on container width
-          const containerWidth = containerRef.current?.clientWidth || 400
+          const containerWidth =
+            containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
           const maxCancelSwipe = containerWidth // How far to swipe to fully cancel
           const progress =
             Math.min(Math.max(deltaX, 0), maxCancelSwipe) / maxCancelSwipe // 0 to 1
@@ -112,7 +120,8 @@ export function TournamentMobileRow({
       } else {
         // Normal swipe logic
         isSwiping = true
-        const containerWidth = containerRef.current?.clientWidth || 400
+        const containerWidth =
+          containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
         const maxSwipeLeft = -containerWidth
         const maxSwipeRight = 50
 
@@ -153,7 +162,8 @@ export function TournamentMobileRow({
         }
       } else {
         // Normal swipe logic
-        const containerWidth = containerRef.current?.clientWidth || 400
+        const containerWidth =
+          containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
         const snapThreshold = -containerWidth / 2 // 50% threshold
 
         if (endState.x < snapThreshold) {
@@ -181,7 +191,7 @@ export function TournamentMobileRow({
     if (
       swipeState.swiping ||
       swipeState.showDelete ||
-      Math.abs(swipeState.x || 0) > 10
+      Math.abs(swipeState.x || 0) > SWIPE_START_THRESHOLD
     ) {
       return
     }
@@ -215,7 +225,12 @@ export function TournamentMobileRow({
         onTouchStart={handleTouchStart}
       >
         {/* Main content - fixed width */}
-        <div className='w-full flex-shrink-0' onClick={handleClick}>
+        <div
+          className='w-full flex-shrink-0'
+          onClick={handleClick}
+          role='button'
+          tabIndex={0}
+        >
           <div className='px-6 py-4'>
             <div className='flex items-start justify-between'>
               <div className='min-w-0 flex-1'>

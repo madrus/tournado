@@ -8,7 +8,7 @@ import { datatableCellTextVariants } from '~/components/shared/datatable.variant
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
 
-import { getRoleBadgeVariant } from '../utils/roleUtils'
+import { RoleBadge } from './RoleBadge'
 import { RoleDropdown } from './RoleDropdown'
 
 type UserMobileRowProps = {
@@ -59,7 +59,6 @@ export function UserMobileRow({
       <div className='flex items-start justify-between gap-4'>
         <div className='min-w-0 flex-1'>
           <Text
-            size='2'
             weight='medium'
             className={cn(
               'block',
@@ -71,7 +70,6 @@ export function UserMobileRow({
           </Text>
           {user.displayName ? (
             <Text
-              size='1'
               className={cn(
                 'mt-1 block',
                 datatableCellTextVariants({ variant: 'secondary' }),
@@ -82,9 +80,7 @@ export function UserMobileRow({
             </Text>
           ) : null}
           <div className='mt-2'>
-            <span className={getRoleBadgeVariant(user.role)}>
-              {t(`roles.${user.role.toLowerCase()}`)}
-            </span>
+            <RoleBadge role={user.role} />
           </div>
         </div>
         <div className='flex-shrink-0'>

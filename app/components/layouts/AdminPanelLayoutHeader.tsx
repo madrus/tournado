@@ -30,6 +30,7 @@ export function AdminPanelLayoutHeader({
       }
       className={className}
       testId='admin-panel-header'
+      breakpoint='md'
     />
   )
 }

@@ -18,6 +18,7 @@ export function SettingsLayoutHeader({
       description={t('settings.description')}
       className={className}
       testId='settings-header'
+      breakpoint='md'
     />
   )
 }

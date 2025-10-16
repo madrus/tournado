@@ -12,12 +12,26 @@ describe('isRTL', () => {
     expect(isRTL('ar')).toBe(true)
   })
 
+  test('returns true for Arabic subtags (BCP47 format)', () => {
+    expect(isRTL('ar-SA')).toBe(true) // Saudi Arabia
+    expect(isRTL('ar-EG')).toBe(true) // Egypt
+    expect(isRTL('ar-AE')).toBe(true) // United Arab Emirates
+    expect(isRTL('ar-MA')).toBe(true) // Morocco
+  })
+
   test('returns false for LTR language codes', () => {
     expect(isRTL('en')).toBe(false)
     expect(isRTL('fr')).toBe(false)
     expect(isRTL('de')).toBe(false)
     expect(isRTL('nl')).toBe(false)
     expect(isRTL('tr')).toBe(false)
+  })
+
+  test('returns false for LTR language subtags (BCP47 format)', () => {
+    expect(isRTL('en-US')).toBe(false)
+    expect(isRTL('en-GB')).toBe(false)
+    expect(isRTL('fr-FR')).toBe(false)
+    expect(isRTL('nl-NL')).toBe(false)
   })
 
   test('returns false for empty or invalid codes', () => {
@@ -31,12 +45,22 @@ describe('getDirection', () => {
     expect(getDirection('ar')).toBe('rtl')
   })
 
+  test('returns "rtl" for Arabic subtags (BCP47 format)', () => {
+    expect(getDirection('ar-SA')).toBe('rtl')
+    expect(getDirection('ar-EG')).toBe('rtl')
+  })
+
   test('returns "ltr" for LTR languages', () => {
     expect(getDirection('en')).toBe('ltr')
     expect(getDirection('fr')).toBe('ltr')
     expect(getDirection('de')).toBe('ltr')
     expect(getDirection('nl')).toBe('ltr')
     expect(getDirection('tr')).toBe('ltr')
+  })
+
+  test('returns "ltr" for LTR language subtags (BCP47 format)', () => {
+    expect(getDirection('en-US')).toBe('ltr')
+    expect(getDirection('en-GB')).toBe('ltr')
   })
 
   test('returns "ltr" for unknown language codes', () => {
@@ -46,10 +70,12 @@ describe('getDirection', () => {
 })
 
 describe('getSwipeRowConfig', () => {
-  test('returns correct type structure', () => {
+  test('returns correct type structure with valid domain', () => {
     const config: SwipeRowConfig = getSwipeRowConfig('en')
     expect(config).toHaveProperty('directionMultiplier')
     expect(typeof config.directionMultiplier).toBe('number')
+    // directionMultiplier must be exactly 1 or -1
+    expect([1, -1]).toContain(config.directionMultiplier)
   })
 
   test('returns directionMultiplier of 1 for LTR languages', () => {
@@ -62,6 +88,11 @@ describe('getSwipeRowConfig', () => {
 
   test('returns directionMultiplier of -1 for RTL languages', () => {
     expect(getSwipeRowConfig('ar').directionMultiplier).toBe(-1)
+  })
+
+  test('returns directionMultiplier of -1 for Arabic subtags (BCP47 format)', () => {
+    expect(getSwipeRowConfig('ar-SA').directionMultiplier).toBe(-1)
+    expect(getSwipeRowConfig('ar-EG').directionMultiplier).toBe(-1)
   })
 
   test('handles empty or invalid language codes as LTR', () => {

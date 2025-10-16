@@ -244,6 +244,14 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
+                  onKeyDown={e => {
+                    if ((e.key === 'Enter' || e.key === ' ') && onRowClick) {
+                      e.preventDefault()
+                      onRowClick(row.original)
+                    }
+                  }}
+                  tabIndex={onRowClick ? 0 : -1}
+                  role={onRowClick ? 'button' : undefined}
                   className={cn(
                     datatableRowVariants({
                       color,
@@ -251,6 +259,8 @@ export function DataTable<TData, TValue>({
                       interaction: onRowClick ? 'clickable' : 'static',
                     }),
                     getStripeClasses(color, isEven), // First row (0) gets false = odd (-50)
+                    onRowClick &&
+                      'focus-visible:ring-primary-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
                     typeof rowClassName === 'function'
                       ? rowClassName(row.original, index)
                       : rowClassName

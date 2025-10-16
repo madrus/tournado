@@ -10,19 +10,21 @@ type IconLabelButtonProps = {
   'aria-label'?: string
 }
 
-export const IconLabelButton = ({
-  icon,
-  label,
-  onClick,
-  className,
-  'aria-label': ariaLabel,
-}: Readonly<IconLabelButtonProps>): JSX.Element => (
-  <button type='button' className={className} onClick={onClick} aria-label={ariaLabel}>
-    <div className='flex flex-col items-center justify-center gap-1'>
-      {icon}
-      <Text size='2' weight='bold' className='text-white'>
-        {label}
-      </Text>
-    </div>
-  </button>
-)
+export function IconLabelButton(props: Readonly<IconLabelButtonProps>): JSX.Element {
+  const { icon, label, onClick, className, 'aria-label': ariaLabel } = props
+  return (
+    <button
+      type='button'
+      className={className}
+      onClick={onClick}
+      aria-label={ariaLabel}
+    >
+      <div className='flex flex-col items-center justify-center gap-1'>
+        {icon}
+        <Text size='2' weight='bold' className='text-white'>
+          {label}
+        </Text>
+      </div>
+    </button>
+  )
+}

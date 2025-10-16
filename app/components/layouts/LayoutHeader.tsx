@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '~/utils/misc'
 import { getArabicTextClass, isRTL } from '~/utils/rtlUtils'
 
+/**
++ * Reusable layout header component with RTL support and responsive breakpoints.
++ * Renders a title, description, and optional action buttons.
++ */
 type LayoutHeaderProps = {
   /** Title text or translation key */
   title: string

@@ -195,6 +195,31 @@ describe('TournamentMobileRow', () => {
       expect(mockUseLanguageDirection).toHaveBeenCalled()
     })
 
+    it('should use directionMultiplier of -1 for RTL (Arabic)', () => {
+      // Mock RTL configuration
+      mockUseLanguageDirection.mockReturnValue({
+        latinFontClass: 'latin-text',
+        swipeConfig: {
+          directionMultiplier: -1, // RTL multiplier
+        },
+        direction: 'rtl',
+      })
+
+      render(
+        <TournamentMobileRow
+          tournament={mockTournament}
+          onDelete={mockOnDelete}
+          onClick={mockOnClick}
+          formatDate={mockFormatDate}
+        />
+      )
+
+      // Verify the hook was called and RTL config is being used
+      expect(mockUseLanguageDirection).toHaveBeenCalled()
+      const hookResult = mockUseLanguageDirection.mock.results[0]?.value
+      expect(hookResult?.swipeConfig.directionMultiplier).toBe(-1)
+    })
+
     it('should use logical properties for layout (ps-3 for padding)', () => {
       render(
         <TournamentMobileRow

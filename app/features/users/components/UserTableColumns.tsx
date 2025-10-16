@@ -34,7 +34,6 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
       cell: ({ row }) => (
         <div>
           <Text
-            size='3'
             className={cn(
               datatableCellTextVariants({
                 variant: 'secondary',
@@ -47,7 +46,6 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
           {!row.original.active ? (
             <div className='mt-1'>
               <Text
-                size='1'
                 className={cn(
                   'text-destructive',
                   datatableCellTextVariants({
@@ -71,7 +69,6 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
       ),
       cell: ({ row }) => (
         <Text
-          size='3'
           className={cn(
             datatableCellTextVariants({
               variant: 'secondary',
@@ -113,7 +110,6 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
       cell: ({ row }) => (
         <div className='text-center'>
           <Text
-            size='3'
             className={datatableCellTextVariants({
               variant: 'secondary',
             })}

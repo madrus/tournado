@@ -59,18 +59,23 @@ export function DataTablePagination({
 
       {/* Pagination controls */}
       {totalPages > 1 ? (
-        <div className='flex items-center gap-2 self-end md:self-auto'>
+        <nav
+          className='flex items-center gap-2 self-end md:self-auto'
+          aria-label={t('common.pagination.ariaLabel', {
+            defaultValue: 'Pagination',
+          })}
+        >
           {hasPrevPage ? (
             <Link
               to={`?page=${currentPage - 1}`}
-              className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors dark:border-slate-700'
+              className='bg-background hover:bg-accent border-border rounded border px-3 py-1 text-sm transition-colors'
             >
               {t('common.pagination.previous')}
             </Link>
           ) : (
             <button
               disabled
-              className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600'
+              className='bg-muted text-muted-foreground border-border cursor-not-allowed rounded border px-3 py-1 text-sm'
             >
               {t('common.pagination.previous')}
             </button>
@@ -96,19 +101,19 @@ export function DataTablePagination({
           {hasNextPage ? (
             <Link
               to={`?page=${currentPage + 1}`}
-              className='bg-background hover:bg-accent rounded border border-slate-300 px-3 py-1 text-sm transition-colors dark:border-slate-700'
+              className='bg-background hover:bg-accent border-border rounded border px-3 py-1 text-sm transition-colors'
             >
               {t('common.pagination.next')}
             </Link>
           ) : (
             <button
               disabled
-              className='cursor-not-allowed rounded border border-slate-200 bg-slate-100 px-3 py-1 text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600'
+              className='bg-muted text-muted-foreground border-border cursor-not-allowed rounded border px-3 py-1 text-sm'
             >
               {t('common.pagination.next')}
             </button>
           )}
-        </div>
+        </nav>
       ) : null}
     </div>
   )

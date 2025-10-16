@@ -1,6 +1,8 @@
 // RTL (Right-to-Left) language utilities
 // Check if a language is RTL (only Arabic for the moment)
-export const isRTL = (languageCode: string): boolean => ['ar'].includes(languageCode)
+// Supports BCP47 language tags (e.g., 'ar', 'ar-SA', 'ar-EG')
+export const isRTL = (languageCode: string): boolean =>
+  ['ar'].includes(languageCode.split('-')[0])
 
 // Get direction attribute for HTML
 export const getDirection = (languageCode: string): 'ltr' | 'rtl' =>

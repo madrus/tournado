@@ -105,9 +105,11 @@
   },
   "common": {
     "actions": {
+      "actions": "Actions",
       "add": "Ajouter",
       "cancel": "Annuler",
       "delete": "Supprimer",
+      "edit": "Modifier",
       "save": "Enregistrer",
       "saving": "Enregistrement...",
       "update": "Mettre à jour",
@@ -130,8 +132,9 @@
     "optional": "(optionnel)",
     "pagination": {
       "next": "Suivant",
+      "pageInfo": "Page {{current}} sur {{total}}",
       "previous": "Précédent",
-      "showing": "Affichage de {{count}} sur {{total}} lignes"
+      "showing": "Affichage de {{from}}-{{to}} sur {{total}}"
     },
     "signedInAs": "Connecté en tant que",
     "titles": {
@@ -150,6 +153,13 @@
     "toggleMenu": "Basculer le menu",
     "toggleTheme": "Changer de thème",
     "welcome": "Bienvenue"
+  },
+  "datatable": {
+    "clearSearch": "Effacer la recherche",
+    "resetFilters": "Réinitialiser",
+    "search": "Rechercher...",
+    "toggleColumns": "Basculer les colonnes",
+    "view": "Vue"
   },
   "divisions": {
     "FIFTH_DIVISION": "Cinquième Division",

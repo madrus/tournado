@@ -6,6 +6,14 @@ import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 
 import { Panel } from '../Panel'
 
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en' },
+  }),
+}))
+
 // Mock the language switcher hook
 vi.mock('~/hooks/useLanguageSwitcher', () => ({
   useLanguageSwitcher: vi.fn(() => ({

@@ -14,7 +14,7 @@ on:
         required: false
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref_name }}
   cancel-in-progress: true # Cancel similar active workflows
 
 permissions:
@@ -27,6 +27,8 @@ jobs:
     name: Deploy to Staging (dev)
     if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' && github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -51,6 +53,9 @@ jobs:
           echo "================================="
 
           # Check if core jobs passed (lint, typecheck, vitest) - IGNORE E2E
+          # DEPLOYMENT POLICY EXCEPTION: E2E tests are intentionally excluded from staging deployment gate
+          # Rationale: E2E tests are flaky and time-consuming; staging serves as the E2E validation environment
+          # Core quality gates (lint, typecheck, unit tests) still enforced per CI/CD policy
           LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
           TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
           VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
@@ -60,7 +65,7 @@ jobs:
           echo "TypeCheck status: $TYPECHECK_STATUS"
           echo "Vitest status: $VITEST_STATUS"
           echo "Workflow only status: $WORKFLOW_ONLY_STATUS"
-          echo "Note: E2E test results are ignored for deployment decisions"
+          echo "Note: E2E test results are ignored for deployment decisions (see policy exception above)"
 
           # If workflow only changes and that job succeeded, allow deployment
           if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
@@ -108,16 +113,13 @@ jobs:
 
       - name: 🎈 Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@v1
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: 🔍 Check if image exists for this commit
         id: check_image
         if: steps.check_changes.outputs.code_changed == 'false'
         run: |
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Check if an image with this commit SHA already exists
-          if flyctl image show --app ${{ steps.app_name.outputs.value }}-staging --access-token "$(cat /tmp/fly_token)" | grep -q "${{ github.event.workflow_run.head_sha }}"; then
+          if flyctl image show --app ${{ steps.app_name.outputs.value }}-staging | grep -q "${{ github.event.workflow_run.head_sha }}"; then
             echo "image_exists=true" >> $GITHUB_OUTPUT
             echo "✅ Image already exists for commit ${{ github.event.workflow_run.head_sha }}"
           else
@@ -135,11 +137,9 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'true'
         run: |
           echo "🔨 Building and deploying new code changes..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
-            --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
@@ -149,11 +149,9 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists == 'true'
         run: |
           echo "📦 Deploying existing image (no code changes)..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy the existing image without rebuilding
           flyctl deploy --image-label ${{ github.event.workflow_run.head_sha }} \
             --app ${{ steps.app_name.outputs.value }}-staging \
-            --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 2m \
@@ -170,7 +168,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack of successful deployment to Staging
-        if: always()
+        if: ${{ success() }}
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -189,10 +187,32 @@ jobs:
               ]
             }
 
+      - name: Notify Slack of failed deployment to Staging
+        if: ${{ failure() }}
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "Deployment failed: dev deployment to staging failed\nCommit: ${{ github.event.workflow_run.head_sha }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Deployment failed*: `dev` deployment to staging failed\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.event.workflow_run.head_sha }}|${{ github.event.workflow_run.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Deployment Run>"
+                  }
+                }
+              ]
+            }
+
   deploy_production:
     name: Deploy to Production (main)
     if: ${{ github.event_name == 'workflow_dispatch' && github.ref_name == 'main' }}
     runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     outputs:
       code_changed: ${{ steps.check_changes.outputs.code_changed }}
       image_exists: ${{ steps.check_image.outputs.image_exists }}
@@ -280,6 +300,9 @@ jobs:
           echo "================================="
 
           # Check if core jobs passed (lint, typecheck, vitest)
+          # DEPLOYMENT POLICY EXCEPTION: E2E tests are intentionally excluded from production deployment gate
+          # Rationale: E2E tests are flaky and time-consuming; manual verification on staging required before production deploy
+          # Core quality gates (lint, typecheck, unit tests) still enforced per CI/CD policy
           LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
           TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
           VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
@@ -289,6 +312,7 @@ jobs:
           echo "TypeCheck status: $TYPECHECK_STATUS"
           echo "Vitest status: $VITEST_STATUS"
           echo "Workflow only status: $WORKFLOW_ONLY_STATUS"
+          echo "Note: E2E test results are not checked for production deployment (see policy exception above)"
 
           # If workflow only changes and that job succeeded, allow deployment
           if [[ "$WORKFLOW_ONLY_STATUS" == "success" ]]; then
@@ -336,16 +360,13 @@ jobs:
 
       - name: 🎈 Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@v1
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: 🔍 Check if image exists for this commit
         id: check_image
         if: steps.check_changes.outputs.code_changed == 'false'
         run: |
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Check if an image with this commit SHA already exists
-          if flyctl image show --app ${{ steps.app_name.outputs.value }} --access-token "$(cat /tmp/fly_token)" | grep -q "${{ steps.prepare_deployment.outputs.head_sha }}"; then
+          if flyctl image show --app ${{ steps.app_name.outputs.value }} | grep -q "${{ steps.prepare_deployment.outputs.head_sha }}"; then
             echo "image_exists=true" >> $GITHUB_OUTPUT
             echo "✅ Image already exists for commit ${{ steps.prepare_deployment.outputs.head_sha }}"
           else
@@ -357,11 +378,9 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'true' || (steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists != 'true')
         run: |
           echo "🔨 Building and deploying new code changes..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           flyctl deploy --remote-only \
             --build-arg COMMIT_SHA=${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
-            --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 5m \
@@ -371,11 +390,9 @@ jobs:
         if: steps.check_changes.outputs.code_changed == 'false' && steps.check_image.outputs.image_exists == 'true'
         run: |
           echo "📦 Deploying existing image (no code changes)..."
-          echo "${{ secrets.FLY_API_TOKEN }}" > /tmp/fly_token
           # Deploy the existing image without rebuilding
           flyctl deploy --image-label ${{ steps.prepare_deployment.outputs.head_sha }} \
             --app ${{ steps.app_name.outputs.value }} \
-            --access-token "$(cat /tmp/fly_token)" \
             --strategy rolling \
             --max-unavailable 0.33 \
             --wait-timeout 2m \
@@ -392,7 +409,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack of successful deployment to Production
-        if: always()
+        if: ${{ success() }}
         uses: slackapi/slack-github-action@v2.1.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -406,6 +423,26 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "*Deployment successful*: `main` deployed to production by `${{ steps.prepare_deployment.outputs.actor }}`\n*App:* `${{ steps.app_name.outputs.value }}`\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.prepare_deployment.outputs.head_sha }}|${{ steps.prepare_deployment.outputs.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ steps.prepare_deployment.outputs.workflow_run_id }}|View CI Run>"
+                  }
+                }
+              ]
+            }
+
+      - name: Notify Slack of failed deployment to Production
+        if: ${{ failure() }}
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "Deployment failed: main deployment to production failed\nCommit: ${{ steps.prepare_deployment.outputs.head_sha }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Deployment failed*: `main` deployment to production failed\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.prepare_deployment.outputs.head_sha }}|${{ steps.prepare_deployment.outputs.head_sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Deployment Run>"
                   }
                 }
               ]

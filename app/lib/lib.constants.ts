@@ -1,7 +1,8 @@
 // Division constants
 
 export const PWA_UPDATE_INTERVAL = 60 * 60 * 1000
-
+export const SWIPE_START_THRESHOLD = 10
+export const DEFAULT_CONTAINER_WIDTH = 400
 /**
  * Division display labels for internationalization
  * Currently supports: Dutch (nl), English (en), German (de), French (fr), Arabic (ar), Turkish (tr)

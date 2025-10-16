@@ -1,5 +1,6 @@
 import { type JSX, ReactNode } from 'react'
 
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { type ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
@@ -59,6 +60,7 @@ export function Panel({
   isHover = false,
   'data-testid': testId,
 }: PanelProps): JSX.Element {
+  const { latinFontClass } = useLanguageDirection()
   const { currentLanguage } = useLanguageSwitcher()
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
@@ -97,9 +99,13 @@ export function Panel({
           <div className='dashboard-stats'>
             <dl>
               {title ? (
-                <dt className='truncate text-sm font-medium opacity-75'>{title}</dt>
+                <dt className='truncate text-base font-medium opacity-75'>{title}</dt>
               ) : null}
-              {children ? <dd className='text-lg font-medium'>{children}</dd> : null}
+              {children ? (
+                <dd className={cn('text-lg font-medium', latinFontClass)}>
+                  {children}
+                </dd>
+              ) : null}
             </dl>
           </div>
         </div>

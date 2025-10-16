@@ -90,17 +90,13 @@ describe('datatable.variants', () => {
     it('should apply default slate color and default variant', () => {
       const result = datatableRowVariants()
       expect(result).toContain('border-slate-100')
-      expect(result).toContain('hover:bg-slate-50')
       expect(result).toContain('dark:border-slate-800')
-      expect(result).toContain('dark:hover:bg-slate-900/50')
     })
 
     it('should apply blue color variant', () => {
       const result = datatableRowVariants({ color: 'blue' })
       expect(result).toContain('border-blue-100')
-      expect(result).toContain('hover:bg-blue-50')
       expect(result).toContain('dark:border-blue-800')
-      expect(result).toContain('dark:hover:bg-blue-900/50')
     })
 
     it('should apply last variant for row styling', () => {
@@ -111,11 +107,18 @@ describe('datatable.variants', () => {
 
     it('should include base row classes', () => {
       const result = datatableRowVariants()
-      expect(result).toContain('cursor-pointer')
       expect(result).toContain('border-b')
-      expect(result).toContain('bg-white')
       expect(result).toContain('transition-colors')
-      expect(result).toContain('dark:bg-slate-950')
+    })
+
+    it('should apply clickable interaction variant by default', () => {
+      const result = datatableRowVariants()
+      expect(result).toContain('cursor-pointer')
+    })
+
+    it('should apply static interaction variant when specified', () => {
+      const result = datatableRowVariants({ interaction: 'static' })
+      expect(result).not.toContain('cursor-pointer')
     })
   })
 
@@ -259,7 +262,6 @@ describe('datatable.variants', () => {
     it('should handle multiple variant combinations for rows', () => {
       const result = datatableRowVariants({ color: 'teal', variant: 'last' })
       expect(result).toContain('border-teal-100')
-      expect(result).toContain('hover:bg-teal-50')
       expect(result).toContain('border-b-0')
       expect(result).toContain('rounded-b-lg')
     })
@@ -271,7 +273,7 @@ describe('datatable.variants', () => {
 
       expect(containerResult).toContain('dark:border-emerald-800')
       expect(headerResult).toContain('dark:bg-emerald-900')
-      expect(rowResult).toContain('dark:hover:bg-emerald-900/50')
+      expect(rowResult).toContain('dark:border-emerald-800')
     })
   })
 })

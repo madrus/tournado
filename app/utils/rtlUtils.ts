@@ -1,6 +1,8 @@
 // RTL (Right-to-Left) language utilities
 // Check if a language is RTL (only Arabic for the moment)
-export const isRTL = (languageCode: string): boolean => ['ar'].includes(languageCode)
+// Supports BCP47 language tags (e.g., 'ar', 'ar-SA', 'ar-EG')
+export const isRTL = (languageCode: string): boolean =>
+  ['ar'].includes(languageCode.split('-')[0])
 
 // Get direction attribute for HTML
 export const getDirection = (languageCode: string): 'ltr' | 'rtl' =>
@@ -20,6 +22,13 @@ export const getLatinTextClass = (languageCode: string): string =>
 // Helper to mark Latin titles that should use Inter font without scaling (when app is in Arabic mode)
 export const getLatinTitleClass = (languageCode: string): string =>
   isRTL(languageCode) ? 'latin-title' : ''
+
+// Helper for Latin content that needs font-family change only (no size override)
+// Use this for elements where you want default Latin font but need to preserve responsive sizing
+// Uses !important to override arabic-text parent selector
+// Uses Tailwind's font-sans which respects your configured default font
+export const getLatinFontFamily = (languageCode: string): string =>
+  isRTL(languageCode) ? '!font-sans' : ''
 
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(languageCode: string): { container: string } {
@@ -120,3 +129,15 @@ export function getTypographyClasses(languageCode: string): TypographyClasses {
     appName: 'leading-normal text-center font-bold', // Force normal leading for app name
   }
 }
+
+// Type for swipe row configuration
+export type SwipeRowConfig = {
+  directionMultiplier: 1 | -1 // For inverting touch calculations in RTL
+}
+
+// Helper for swipeable row RTL support
+export const getSwipeRowConfig = (languageCode: string): SwipeRowConfig => ({
+  // RTL: multiply by -1 to invert swipe direction
+  // LTR: multiply by 1 (no change)
+  directionMultiplier: isRTL(languageCode) ? -1 : 1,
+})

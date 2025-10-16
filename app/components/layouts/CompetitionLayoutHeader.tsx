@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'
-import { cn } from '~/utils/misc'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
+
+import { LayoutHeader } from './LayoutHeader'
 
 type CompetitionLayoutHeaderProps = {
   variant: 'admin'
@@ -19,7 +19,7 @@ export function CompetitionLayoutHeader({
   selectedTournamentId,
   className,
 }: CompetitionLayoutHeaderProps): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const isAdmin = variant === 'admin'
   const title = isAdmin ? t('admin.competition.title') : t('common.titles.competition')
@@ -28,28 +28,18 @@ export function CompetitionLayoutHeader({
     : t('competition.description')
 
   return (
-    <div
-      className={cn('border-button-neutral-secondary-border border-b pb-6', className)}
-      data-testid='competition-header-admin'
-    >
-      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            {title}
-          </h1>
-          <p className='text-foreground mt-1'>{description}</p>
-        </div>
-
-        {/* Tournament Selector */}
-        <div className='flex justify-end gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          <TournamentFilter
-            tournamentListItems={tournamentListItems}
-            selectedTournamentId={selectedTournamentId}
-            className='min-w-64'
-            showAllOption={false}
-          />
-        </div>
-      </div>
-    </div>
+    <LayoutHeader
+      title={title}
+      description={description}
+      actions={
+        <TournamentFilter
+          tournamentListItems={tournamentListItems}
+          selectedTournamentId={selectedTournamentId}
+          showAllOption={false}
+        />
+      }
+      className={className}
+      testId='competition-header-admin'
+    />
   )
 }

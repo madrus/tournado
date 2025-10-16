@@ -120,7 +120,7 @@ export const datatableHeaderTextVariants = cva(
  */
 export const datatableRowVariants = cva(
   // Base classes for data rows
-  ['cursor-pointer border-b bg-white transition-colors dark:bg-slate-950'],
+  ['border-b transition-colors'],
   {
     variants: {
       /**
@@ -128,20 +128,28 @@ export const datatableRowVariants = cva(
        * Uses subtle colors for non-intrusive row highlighting.
        */
       color: createColorVariantMapping(
-        color =>
-          `border-${color}-100 hover:bg-${color}-50 dark:border-${color}-800 dark:hover:bg-${color}-900/50`
+        color => `border-${color}-100 dark:border-${color}-800`
       ),
       /**
-       * Row layout variants for special positioning.
+       * Row layout variants for special positioning and alternating colors.
        */
       variant: {
         default: '',
         last: 'border-b-0 rounded-b-lg',
       },
+      /**
+       * Interaction variants for row clickability.
+       * Controls cursor style based on whether the row is interactive.
+       */
+      interaction: {
+        clickable: 'cursor-pointer',
+        static: '',
+      },
     },
     defaultVariants: {
       color: 'slate',
       variant: 'default',
+      interaction: 'clickable',
     },
   }
 )
@@ -203,7 +211,7 @@ export const datatableActionButtonVariants = cva(
  */
 export const datatableDeleteAreaVariants = cva(
   // Base classes for delete area
-  ['flex w-screen flex-shrink-0 items-center justify-center'],
+  ['flex w-screen flex-shrink-0 items-center'],
   {
     variants: {
       /**
@@ -214,9 +222,17 @@ export const datatableDeleteAreaVariants = cva(
         red: 'bg-red-500 dark:bg-red-600',
         brand: 'bg-brand-500 dark:bg-brand-600',
       },
+      /**
+       * Justify variants for delete area content alignment.
+       */
+      justify: {
+        center: 'justify-center',
+        start: 'justify-start',
+      },
     },
     defaultVariants: {
       color: 'red',
+      justify: 'center',
     },
   }
 )

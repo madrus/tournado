@@ -2,9 +2,17 @@ import { MemoryRouter } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import DesktopFooter from '../DesktopFooter'
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en' },
+  }),
+}))
 
 describe('DesktopFooter', () => {
   describe('Basic Rendering', () => {

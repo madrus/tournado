@@ -1,7 +1,7 @@
 export { AboutLayoutHeader } from './AboutLayoutHeader'
 export { AdminPanelLayoutHeader } from './AdminPanelLayoutHeader'
 export { CompetitionLayoutHeader } from './CompetitionLayoutHeader'
+export { LayoutHeader } from './LayoutHeader'
 export { ProfileLayoutHeader } from './ProfileLayoutHeader'
 export { SettingsLayoutHeader } from './SettingsLayoutHeader'
 export { TeamsLayoutHeader } from './TeamsLayoutHeader'
-export { UsersLayoutHeader } from './UsersLayoutHeader'

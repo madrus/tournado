@@ -23,6 +23,9 @@ vi.mock('react-i18next', () => ({
       }
       return translations[key] || key
     },
+    i18n: {
+      language: 'en',
+    },
   }),
 }))
 
@@ -156,7 +159,7 @@ describe('TournamentFilter', () => {
 
     // Check that default class is applied to the ComboField container
     const comboFieldContainer = screen.getByTestId('tournamentFilter-combo-field')
-    expect(comboFieldContainer).toHaveClass('max-w-md')
+    expect(comboFieldContainer).toHaveClass('w-60')
   })
 
   it('should pass correct props to useTournamentFilter hook', () => {

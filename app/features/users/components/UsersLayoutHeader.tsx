@@ -1,15 +1,16 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 type UsersLayoutHeaderProps = {
   className?: string
 }
 
 export function UsersLayoutHeader({ className }: UsersLayoutHeaderProps): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
+  const { latinFontClass } = useLanguageDirection()
 
   const title = t('users.titles.userManagement')
   const description = t('users.descriptions.manageUsersAndRoles')
@@ -19,12 +20,10 @@ export function UsersLayoutHeader({ className }: UsersLayoutHeaderProps): JSX.El
       className={cn('border-button-neutral-secondary-border border-b pb-6', className)}
       data-testid='users-header-admin'
     >
-      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+      <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
         <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            {title}
-          </h1>
-          <p className='text-foreground mt-1'>{description}</p>
+          <h1 className={cn('text-3xl font-bold', latinFontClass)}>{title}</h1>
+          <p className={cn('text-foreground mt-1', latinFontClass)}>{description}</p>
         </div>
       </div>
     </div>

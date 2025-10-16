@@ -19,7 +19,7 @@ type TournamentFilterProps = {
 export function TournamentFilter({
   tournamentListItems,
   selectedTournamentId,
-  className = 'max-w-md',
+  className = 'w-60',
   color = 'primary',
   label,
   placeholder,

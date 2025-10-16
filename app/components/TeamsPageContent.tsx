@@ -74,7 +74,6 @@ export function TeamsPageContent({
               <TournamentFilter
                 tournamentListItems={tournamentListItems}
                 selectedTournamentId={selectedTournamentId ?? undefined}
-                className='max-w-md'
                 color={PANEL_COLOR}
               />
             </div>
@@ -98,7 +97,6 @@ export function TeamsPageContent({
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId ?? undefined}
-          className='max-w-md'
           color={PANEL_COLOR}
         />
       </Panel>

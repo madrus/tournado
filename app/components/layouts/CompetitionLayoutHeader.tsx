@@ -35,7 +35,6 @@ export function CompetitionLayoutHeader({
         <TournamentFilter
           tournamentListItems={tournamentListItems}
           selectedTournamentId={selectedTournamentId}
-          className='min-w-64'
           showAllOption={false}
         />
       }

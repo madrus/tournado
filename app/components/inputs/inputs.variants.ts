@@ -214,7 +214,7 @@ export const comboFieldItemVariants = cva(
 )
 
 // ComboField value (selected or placeholder) variants
-export const comboFieldValueVariants = cva(['flex-1 truncate text-left'], {
+export const comboFieldValueVariants = cva(['flex-1 truncate text-start'], {
   variants: {
     state: {
       value: 'text-foreground',

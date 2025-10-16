@@ -1,4 +1,5 @@
 import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import * as Select from '@radix-ui/react-select'
 
@@ -8,6 +9,7 @@ import { type ColorAccent } from '~/lib/lib.types'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
+import { getDirection } from '~/utils/rtlUtils'
 
 import {
   comboFieldContentVariants,
@@ -67,12 +69,14 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
     },
     selectRef
   ): JSX.Element => {
+    const { i18n } = useTranslation()
     const triggerRef = useRef<HTMLButtonElement>(null)
     const justSelectedRef = useRef(false)
     const [isOpen, setIsOpen] = useState(false)
 
     // Ensure value is always a string
     const safeValue = value || ''
+    const direction = getDirection(i18n.language)
 
     // Handle blur when dropdown closes
     const handleCloseAutoFocus = (event: Event) => {
@@ -114,6 +118,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               }}
               onOpenChange={setIsOpen}
               disabled={disabled}
+              dir={direction}
             >
               <Select.Trigger
                 ref={node => {
@@ -144,7 +149,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                 >
                   <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
                 </div>
-                <Select.Icon className='text-foreground ml-1'>
+                <Select.Icon className='text-foreground ms-1'>
                   <AnimatedUnfoldIcon
                     isOpen={isOpen}
                     className='h-6 w-6'
@@ -170,7 +175,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                         className={comboFieldItemVariants({ color })}
                       >
                         <Select.ItemText>{opt.label}</Select.ItemText>
-                        <Select.ItemIndicator className='absolute right-2 flex h-3.5 w-3.5 items-center justify-center'>
+                        <Select.ItemIndicator className='absolute end-2 flex h-3.5 w-3.5 items-center justify-center'>
                           {renderIcon('check', { className: 'w-4 h-4' })}
                         </Select.ItemIndicator>
                       </Select.Item>

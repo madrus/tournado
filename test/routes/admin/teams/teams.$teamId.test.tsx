@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock the route component
-import AdminTeamPage from '../teams.$teamId'
+import AdminTeamPage from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId'
 
 // Mock submit function for useSubmit hook
 const mockSubmit = vi.fn()

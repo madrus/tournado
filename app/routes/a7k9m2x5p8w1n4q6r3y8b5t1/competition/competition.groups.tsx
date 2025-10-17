@@ -5,7 +5,7 @@ import type { Category } from '@prisma/client'
 
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SportsIcon } from '~/components/icons'
-import type { TournamentListItem } from '~/lib/lib.types'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import type { GroupSetListItem } from '~/models/group.server'
 import { getTournamentGroupSets } from '~/models/group.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'

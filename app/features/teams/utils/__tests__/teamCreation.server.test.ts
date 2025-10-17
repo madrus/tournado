@@ -13,11 +13,8 @@ vi.mock('~/models/team.server', () => ({
   createTeam: vi.fn(),
 }))
 
-vi.mock('~/lib/lib.zod', () => ({
+vi.mock('~/features/teams/validation', () => ({
   extractTeamDataFromFormData: vi.fn(),
-}))
-
-vi.mock('~/utils/formValidation', () => ({
   validateEntireTeamForm: vi.fn(),
 }))
 
@@ -42,8 +39,9 @@ const { createTeamFromFormData } = await import('../teamCreation.server')
 const { sendConfirmationEmail } = await import('~/utils/email.server')
 const { getTournamentById } = await import('~/models/tournament.server')
 const { createTeam } = await import('~/models/team.server')
-const { extractTeamDataFromFormData } = await import('~/lib/lib.zod')
-const { validateEntireTeamForm } = await import('~/utils/formValidation')
+const { extractTeamDataFromFormData, validateEntireTeamForm } = await import(
+  '~/features/teams/validation'
+)
 const { stringToDivision, stringToCategory } = await import('~/lib/lib.helpers')
 const { prisma } = await import('~/db.server')
 

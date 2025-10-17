@@ -28,7 +28,7 @@ const mockFormFields: FormFields = {
   privacyAgreement: true,
 }
 
-const mockTournament: import('~/lib/lib.types').TournamentData = {
+const mockTournament: import('~/features/tournaments/types').TournamentData = {
   id: 't1',
   name: 'Tournament 1',
   location: 'Loc',

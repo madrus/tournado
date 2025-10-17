@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next'
 
 import type { Division } from '@prisma/client'
 
+import { TeamChip } from '~/features/teams/components/TeamChip'
 import { getDivisionLabel } from '~/lib/lib.helpers'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass, getLatinTitleClass } from '~/utils/rtlUtils'
 
-import { SidebarLayout } from './SidebarLayout'
-import { TeamChip } from './TeamChip'
+import { SidebarLayout } from '../SidebarLayout'
 
 type Team = {
   id: string

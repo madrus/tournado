@@ -4,7 +4,7 @@ import { render } from '@react-email/render'
 import { Resend } from 'resend'
 
 import TeamRegisteredEmail from '~/components/emails/TeamRegisteredEmail'
-import type { Team } from '~/lib/lib.types'
+import type { Team } from '~/features/teams/types'
 import { getTeamLeader } from '~/models/team.server'
 import type { Tournament } from '~/models/tournament.server'
 

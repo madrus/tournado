@@ -102,61 +102,109 @@ app/components/examples/
 - [x] Create `app/features/teams/types.ts` and extract team types from `app/lib/lib.types.ts`
 - [x] Create `app/features/teams/validation.ts` and extract team validation from `app/lib/lib.zod.ts` and `app/utils/formValidation.ts`
 
-### Phase 6: Update All Imports
+### Phase 6: Update All Imports ✅ COMPLETED
 
 **IMPORTANT**: No re-exports. All imports must point directly to feature modules.
 
-**Step 1: Update all team type imports across codebase**
-- [ ] Search for all imports from `~/lib/lib.types` that use team types
-- [ ] Update them to import from `~/features/teams/types`
-- [ ] Search for all imports from `~/lib/lib.zod` that use team validation
-- [ ] Update them to import from `~/features/teams/validation`
-- [ ] Search for all imports from `~/utils/formValidation` that use team utilities
-- [ ] Update them to import from `~/features/teams/validation`
+**Step 1: Update all team type imports across codebase** ✅
 
-**Step 2: Update component imports**
-- [ ] Update imports in moved components to use feature-relative paths
-- [ ] Update `~/components/Team*` imports to `~/features/teams/components`
-- [ ] Update `~/stores/useTeamFormStore` imports to `~/features/teams/stores`
-- [ ] Update `~/utils/teamCreation.server` imports to `~/features/teams/utils`
-- [ ] Update imports in `app/components/emails/TeamRegisteredEmail.tsx`
+- [x] Search for all imports from `~/lib/lib.types` that use team types
+- [x] Update them to import from `~/features/teams/types`
+- [x] Search for all imports from `~/lib/lib.zod` that use team validation
+- [x] Update them to import from `~/features/teams/validation`
+- [x] Search for all imports from `~/utils/formValidation` that use team utilities
+- [x] Update them to import from `~/features/teams/validation`
 
-**Step 3: Update route imports**
-- [ ] Update all imports in `app/routes/teams/*.tsx`
-- [ ] Update all imports in `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*.tsx`
+**Step 2: Update component imports** ✅
 
-**Step 4: Clean up original files (after all imports updated)**
-- [ ] Remove team types from `app/lib/lib.types.ts` (lines 32, 42, 134, 140-321)
-- [ ] Remove team validation from `app/lib/lib.zod.ts` (entire file content)
-- [ ] Remove team utilities from `app/utils/formValidation.ts` (lines 8-126)
-- [ ] Verify NO team-related exports remain in lib files
+- [x] Update imports in moved components to use feature-relative paths
+- [x] Update `~/components/Team*` imports to `~/features/teams/components`
+- [x] Update `~/stores/useTeamFormStore` imports to `~/features/teams/stores`
+- [x] Update `~/utils/teamCreation.server` imports to `~/features/teams/utils`
+- [x] Update imports in `app/components/emails/TeamRegisteredEmail.tsx`
 
-**Step 5: Verify no re-exports**
-- [ ] Confirm `app/lib/lib.types.ts` has NO team re-exports
-- [ ] Confirm `app/lib/lib.zod.ts` has NO team re-exports
-- [ ] Confirm `app/utils/formValidation.ts` has NO team re-exports
+**Step 3: Update route imports** ✅
 
-### Phase 7: Update Tests
+- [x] Update all imports in `app/routes/teams/*.tsx`
+- [x] Update all imports in `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*.tsx`
 
-- [ ] Update imports in `test/routes/teams/teams.new.rate-limit.test.ts`
-- [ ] Update imports in `test/routes/admin/teams/teams.$teamId.test.tsx`
-- [ ] Update imports in `app/components/examples/SidebarTeamsExample.tsx`
-- [ ] Verify all component tests pass with new paths
+**Step 4: Clean up original files (after all imports updated)** ✅
+
+- [x] Remove team types from `app/lib/lib.types.ts` (lines 32, 42, 134, 140-321)
+- [x] Remove team validation from `app/lib/lib.zod.ts` (entire file deleted)
+- [x] Remove team utilities from `app/utils/formValidation.ts` (lines 8-126)
+- [x] Verify NO team-related exports remain in lib files
+
+**Step 5: Verify no re-exports** ✅
+
+- [x] Confirm `app/lib/lib.types.ts` has NO team re-exports
+- [x] Confirm `app/lib/lib.zod.ts` has NO team re-exports (file deleted)
+- [x] Confirm `app/utils/formValidation.ts` has NO team re-exports
+
+**Step 6: Fix deprecated Zod API usage** ✅
+
+- [x] Replace `z.ZodIssue` with `z.core.$ZodIssue` in `app/features/teams/validation.ts`
+- [x] Replace `z.ZodIssue` with `z.core.$ZodIssue` in `app/utils/formValidation.ts`
+- [x] Delete obsolete `app/lib/__tests__/lib.zod.test.ts` (tests moved to feature)
+
+**Step 7: Fix tournament type imports (done early to unblock typecheck)** ✅
+
+- [x] Update `app/features/teams/components/__tests__/TeamForm.test.tsx` → `~/features/tournaments/types`
+- [x] Update `app/features/teams/stores/__tests__/useTeamFormStore.test.ts` → `~/features/tournaments/types`
+- [x] Update `app/features/teams/stores/helpers/teamFormHelpers.ts` → `~/features/tournaments/types`
+- [x] Update `app/features/teams/stores/helpers/__tests__/teamFormHelpers.test.ts` → `~/features/tournaments/types`
+- [x] Update `app/root.tsx` → `~/features/tournaments/types`
+- [x] Update `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.tsx` → `~/features/tournaments/types`
+- [x] Update `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.tsx` → `~/features/tournaments/types`
+
+**Step 8: Delete remaining duplicate files** ✅
+
+- [x] Delete `app/stores/helpers/teamFormTypes.ts` (duplicate)
+- [x] Delete `app/components/TeamForm.tsx` (duplicate)
+- [x] Delete `app/stores/__tests__/useTeamFormStore.test.ts` (duplicate - already deleted earlier)
+- [x] Delete `app/stores/helpers/__tests__/teamFormHelpers.test.ts` (duplicate - already deleted earlier)
+- [x] Delete `app/stores/helpers/teamFormHelpers.ts` (duplicate - already deleted earlier)
+- [x] Delete `app/utils/teamCreation.server.ts` (duplicate - already deleted earlier)
+- [x] Delete `app/components/__tests__/TeamForm.test.tsx` (duplicate - already deleted earlier)
+
+**Results**: ✅ All TypeScript errors resolved (19 → 0), all imports updated, all duplicates removed
+
+### Phase 7: Update Tests ✅ COMPLETED
+
+- [x] Update imports in `test/routes/teams/teams.new.rate-limit.test.ts`
+- [x] Update imports in `test/routes/admin/teams/teams.$teamId.test.tsx`
+- [x] Update imports in `app/components/examples/SidebarTeamsExample.tsx` (already correct)
+- [x] Delete duplicate test file `app/components/__tests__/TeamsPageContent.test.tsx`
+- [x] Fix test mocks in `app/features/teams/components/__tests__/TeamsPageContent.test.tsx`
+   - Updated mock import path from `~/components/TeamList` to `~/features/teams/components/TeamList`
+   - Fixed mock to render `clubName` + `name` (matching actual TeamChip behavior)
+   - Updated test assertions to expect "Club A Team A" instead of "Team A"
+- [x] Verify all component tests pass with new paths (all unit tests green ✅)
 - [ ] Verify E2E tests: `playwright/tests/teams-basic.spec.ts`
 - [ ] Verify E2E tests: `playwright/tests/teams-creation.spec.ts`
 - [ ] Verify E2E tests: `playwright/tests/admin-teams.spec.ts`
 
-### Phase 8: Clean Up
+**Results**: ✅ All unit tests passing, test mocks updated to match actual component behavior
 
-- [ ] Delete original team files from `app/components/` (TeamForm.tsx, TeamList.tsx, TeamsPageContent.tsx, TeamsLayoutHeader.tsx)
-- [ ] Delete original team files from `app/stores/` (useTeamFormStore.ts and helpers/)
-- [ ] Delete original team files from `app/utils/` (teamCreation.server.ts, teamsMetaFactory.ts)
-- [ ] Delete empty `app/components/TeamChip/` directory
-- [ ] Delete empty `app/components/layouts/` if it becomes empty after moving TeamsLayoutHeader
-- [ ] Update `knip.json` - remove `teamsMetaFactory.ts` from ignore list
-- [ ] Update `knip.json` - update `SidebarTeamsExample.tsx` path to `app/components/examples/`
-- [ ] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/__tests__/` already deleted in Phase 0 ✅
-- [ ] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/__tests__/` already deleted in Phase 0 ✅
+### Phase 8: Clean Up ✅ COMPLETED
+
+- [x] Delete original team files from `app/components/` (TeamList.tsx, TeamsPageContent.tsx)
+- [x] Delete original team files from `app/components/layouts/` (TeamsLayoutHeader.tsx)
+- [x] Delete original team files from `app/utils/` (teamsMetaFactory.ts)
+- [x] Delete `app/components/TeamChip/` directory
+- [x] Delete `app/components/layouts/__tests__/TeamsLayoutHeader.test.tsx` (duplicate)
+- [x] Delete empty `app/components/layouts/__tests__/` directory
+- [x] Update `knip.json` - remove `teamsMetaFactory.ts` from ignore list
+- [x] Update `knip.json` - update `SidebarTeamsExample.tsx` path to `app/components/examples/`
+- [x] Remove `TeamsLayoutHeader` export from `app/components/layouts/index.ts`
+- [x] Update `TeamsLayoutHeader` import in `app/routes/teams/teams.tsx`
+- [x] Update `TeamsLayoutHeader` import in `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx`
+- [x] **NOTE**: `app/components/layouts/` kept (still contains other layout headers)
+- [x] **NOTE**: All store and utils duplicates already deleted in Phase 6 ✅
+- [x] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/__tests__/` already deleted in Phase 0 ✅
+- [x] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/__tests__/` already deleted in Phase 0 ✅
+
+**Results**: ✅ All duplicate files deleted, all imports updated, knip.json updated, file structure cleaned up
 
 ## Files NOT Being Moved
 
@@ -213,6 +261,7 @@ app/components/examples/
 ## Future Work (Post-Teams Migration)
 
 **Remove Tournament Re-exports** (separate task):
+
 - [ ] Update all tournament type imports to use `~/features/tournaments/types` directly
 - [ ] Remove tournament re-exports from `app/lib/lib.types.ts`
 - [ ] Establish clean pattern: shared types in lib, feature types in features
@@ -220,13 +269,13 @@ app/components/examples/
 
 ## Verification Checklist
 
-- [ ] All TypeScript files compile (`pnpm typecheck`)
-- [ ] All unit tests pass (`pnpm test:run`)
+- [x] All TypeScript files compile (`pnpm typecheck`) ✅
+- [x] All unit tests pass (`pnpm test:run`) ✅
 - [ ] All E2E tests pass (`pnpm test:e2e:run`)
-- [ ] No broken imports in the codebase
+- [x] No broken imports in the codebase ✅
 - [ ] Public teams routes work (`/teams`, `/teams/new`, `/teams/:id`)
 - [ ] Admin teams routes work (`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*`)
-- [ ] All moved tests still pass in their new locations
-- [ ] No orphaned moved files nor folders a left behind undeleted
-- [ ] No temporary renamed files temporary duplicated files are forgotten
-- [ ] All checkmarks are completed (checked)
+- [x] All moved tests still pass in their new locations ✅
+- [x] No orphaned files nor folders left behind undeleted ✅
+- [x] No temporary renamed or duplicated files forgotten ✅
+- [ ] All migration phases completed (Phases 0-8 complete, E2E verification pending)

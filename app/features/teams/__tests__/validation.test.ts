@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
-import type { Email, TeamFormData, TeamName } from '~/lib/lib.types'
+import type { Email } from '~/lib/lib.types'
 
+import type { TeamFormData, TeamName } from '../types'
 import {
   getFieldErrorTranslationKey,
   mapStoreFieldToZodField,
   validateEntireTeamForm,
   validateSingleTeamField,
-} from '../formValidation'
+} from '../validation'
 
 describe('form-validation', () => {
   describe('mapStoreFieldToZodField', () => {

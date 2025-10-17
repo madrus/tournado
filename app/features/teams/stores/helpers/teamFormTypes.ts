@@ -1,4 +1,5 @@
-import type { TeamFormData, TournamentData } from '~/lib/lib.types'
+import type { TeamFormData } from '~/features/teams/types'
+import type { TournamentData } from '~/features/tournaments/types'
 
 /**
  * Grouped form fields for store state management

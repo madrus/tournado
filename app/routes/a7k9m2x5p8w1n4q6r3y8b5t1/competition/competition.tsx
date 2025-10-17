@@ -5,7 +5,7 @@ import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { SportsIcon, TrophyIcon } from '~/components/icons'
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
-import type { TournamentListItem } from '~/lib/lib.types'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import {
   getAllTournamentListItems,
   getTournamentById,

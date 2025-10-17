@@ -191,7 +191,8 @@ export const extractTeamDataFromFormData = (formData: FormData): ExtractedTeamDa
  * @param storeFieldName - Field name from store
  * @returns Corresponding Zod schema field name
  */
-export const mapStoreFieldToZodField = (storeFieldName: string): string => storeFieldName
+export const mapStoreFieldToZodField = (storeFieldName: string): string =>
+  storeFieldName
 
 /**
  * Get translation key for field error
@@ -201,7 +202,7 @@ export const mapStoreFieldToZodField = (storeFieldName: string): string => store
  */
 export const getFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: Pick<z.ZodIssue, 'code'>
+  zodIssue?: Pick<z.core.$ZodIssue, 'code'>
 ): string => {
   // Handle custom validation errors
   if (zodIssue?.code === 'custom') {
@@ -267,7 +268,7 @@ export const validateSingleTeamField = (
     if (!result.success) {
       // Find the error for this specific field
       const zodFieldName = mapStoreFieldToZodField(fieldName)
-      const fieldError = result.error.issues.find((error: z.ZodIssue) => {
+      const fieldError = result.error.issues.find((error: z.core.$ZodIssue) => {
         const path = error.path[0]
         return path === zodFieldName
       })
@@ -308,7 +309,7 @@ export const validateEntireTeamForm = (
         : validateTeamData(formData, 'edit')
 
     if (!result.success) {
-      result.error.issues.forEach((error: z.ZodIssue) => {
+      result.error.issues.forEach((error: z.core.$ZodIssue) => {
         const zodFieldName = error.path[0] as string
         if (zodFieldName) {
           // Store field names are now the same as Zod field names
@@ -322,19 +323,3 @@ export const validateEntireTeamForm = (
 
   return errors
 }
-
-// ============================================================================
-// Type Exports
-// ============================================================================
-
-export type { TeamFormData, CreateTeamData, EditTeamData }
-
-/**
- * Type for team data in create mode
- */
-export type CreateTeamData = z.infer<typeof createTeamSchema>
-
-/**
- * Type for team data in edit mode
- */
-export type EditTeamData = z.infer<typeof editTeamSchema>

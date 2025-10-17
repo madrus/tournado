@@ -89,7 +89,7 @@ vi.mock('~/components/Panel', () => ({
 }))
 
 // Mock TeamForm component
-vi.mock('~/components/TeamForm', () => ({
+vi.mock('~/features/teams/components/TeamForm', () => ({
   TeamForm: ({
     mode,
     variant,

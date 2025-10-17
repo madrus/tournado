@@ -82,20 +82,20 @@ app/components/examples/
 - [x] Move `SidebarTeamsExample.tsx` from `app/components/` to `app/components/examples/`
 - [x] Create `app/features/teams/components/index.ts` with exports
 
-### Phase 3: Move Stores (with helpers and tests)
+### Phase 3: Move Stores (with helpers and tests) ✅ COMPLETED
 
-- [ ] Move `useTeamFormStore.ts` from `app/stores/` to `app/features/teams/stores/`
-- [ ] Move `app/stores/__tests__/useTeamFormStore.test.ts` to `app/features/teams/stores/__tests__/`
-- [ ] Move `teamFormTypes.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
-- [ ] Move `teamFormHelpers.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
-- [ ] Move `teamFormConstants.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
-- [ ] Move `app/stores/helpers/__tests__/teamFormHelpers.test.ts` to `app/features/teams/stores/helpers/__tests__/`
+- [x] Move `useTeamFormStore.ts` from `app/stores/` to `app/features/teams/stores/`
+- [x] Move `app/stores/__tests__/useTeamFormStore.test.ts` to `app/features/teams/stores/__tests__/`
+- [x] Move `teamFormTypes.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
+- [x] Move `teamFormHelpers.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
+- [x] Move `teamFormConstants.ts` from `app/stores/helpers/` to `app/features/teams/stores/helpers/`
+- [x] Move `app/stores/helpers/__tests__/teamFormHelpers.test.ts` to `app/features/teams/stores/helpers/__tests__/`
 
-### Phase 4: Move Utils (with tests)
+### Phase 4: Move Utils (with tests) ✅ COMPLETED
 
-- [ ] Move `teamCreation.server.ts` from `app/utils/` to `app/features/teams/utils/`
-- [ ] Move `app/utils/__tests__/teamCreation.server.test.ts` to `app/features/teams/utils/__tests__/`
-- [ ] Evaluate `teamsMetaFactory.ts` - keep in app/utils if shared, otherwise move
+- [x] Move `teamCreation.server.ts` from `app/utils/` to `app/features/teams/utils/`
+- [x] Move `app/utils/__tests__/teamCreation.server.test.ts` to `app/features/teams/utils/__tests__/`
+- [x] Evaluate `teamsMetaFactory.ts` - **DECISION: DELETE** (premature abstraction, only 2 use cases, inline meta is more idiomatic for React Router v7)
 
 ### Phase 5: Create Types and Validation
 
@@ -121,11 +121,13 @@ app/components/examples/
 
 ### Phase 8: Clean Up
 
-- [ ] Delete original team files from `app/components/` (TeamForm.tsx, TeamList.tsx, TeamsPageContent.tsx)
+- [ ] Delete original team files from `app/components/` (TeamForm.tsx, TeamList.tsx, TeamsPageContent.tsx, TeamsLayoutHeader.tsx)
 - [ ] Delete original team files from `app/stores/` (useTeamFormStore.ts and helpers/)
-- [ ] Delete original team files from `app/utils/` (teamCreation.server.ts)
+- [ ] Delete original team files from `app/utils/` (teamCreation.server.ts, teamsMetaFactory.ts)
 - [ ] Delete empty `app/components/TeamChip/` directory
 - [ ] Delete empty `app/components/layouts/` if it becomes empty after moving TeamsLayoutHeader
+- [ ] Update `knip.json` - remove `teamsMetaFactory.ts` from ignore list
+- [ ] Update `knip.json` - update `SidebarTeamsExample.tsx` path to `app/components/examples/`
 - [ ] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/__tests__/` already deleted in Phase 0 ✅
 - [ ] **NOTE**: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/__tests__/` already deleted in Phase 0 ✅
 

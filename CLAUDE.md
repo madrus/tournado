@@ -108,6 +108,48 @@ pnpm docs           # Start Docsify documentation server on port 3030
 - `~/` maps to `app/` directory
 - Use `~/components/`, `~/models/`, `~/utils/` for imports
 
+### Module Organization & Import Patterns
+
+**NO RE-EXPORTS PRINCIPLE**: Feature-specific types, components, and utilities must be imported directly from their feature modules. Do not create re-export convenience layers.
+
+**Type Organization**:
+
+- **Shared types**: Generic, reusable types in `~/lib/lib.types` (IconProps, ColorAccent, Email, etc.)
+- **Feature types**: Domain-specific types in feature modules (e.g., `~/features/teams/types`, `~/features/tournaments/types`)
+- **Rule**: If a type is used ONLY within a feature, it belongs in that feature's types file
+
+**Import Pattern Examples**:
+
+```typescript
+// ✅ CORRECT - Direct feature imports
+import { Team, TeamFormData } from '~/features/teams/types'
+import { Tournament } from '~/features/tournaments/types'
+import { IconProps, ColorAccent } from '~/lib/lib.types'
+
+// ❌ WRONG - Do not re-export feature types from lib
+import { Team, Tournament } from '~/lib/lib.types'
+```
+
+**Benefits of Direct Imports**:
+
+- **Explicit dependencies**: Import paths clearly show where code comes from
+- **True isolation**: Features are self-contained and independently maintainable
+- **No hidden coupling**: Re-exports hide actual dependencies between modules
+- **Better IDE support**: Jump-to-definition takes you directly to the source
+- **Easier refactoring**: Clear boundaries make changes safer and more predictable
+
+**Feature Module Structure**:
+
+```
+app/features/{feature}/
+├── components/     # Feature-specific components
+├── stores/         # Feature-specific state management
+├── utils/          # Feature-specific utilities
+├── hooks/          # Feature-specific React hooks
+├── types.ts        # Feature-specific TypeScript types
+└── validation.ts   # Feature-specific validation schemas
+```
+
 ### Authentication
 
 - Firebase Authentication with Google OAuth and Email/Password

@@ -7,13 +7,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { TEST_TRANSLATIONS } from 'test/helpers/constants'
 
-import type {
-  FormMode,
-  FormVariant,
-  TeamFormData,
-  TournamentData,
-} from '~/lib/lib.types'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import type { FormMode, FormVariant, TeamFormData } from '~/features/teams/types'
+import type { TournamentData } from '~/features/tournaments/types'
 
 import { TeamForm } from '../TeamForm'
 

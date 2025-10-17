@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest'
 
-import type { TeamListItem } from '~/lib/lib.types'
+import type { TeamListItem } from '~/features/teams/types'
 import { getFilteredTeamListItems } from '~/models/team.server'
 import {
   getAllTournamentListItems,

@@ -7,12 +7,12 @@ import {
   useActionData,
 } from 'react-router'
 
-import { TeamForm } from '~/components/TeamForm'
-import type { TeamCreateActionData } from '~/lib/lib.types'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
+import { TeamForm } from '~/features/teams/components/TeamForm'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import type { TeamCreateActionData } from '~/features/teams/types'
+import { createTeamFromFormData } from '~/features/teams/utils/teamCreation.server'
 import { isRateLimitResponse, withAdminRateLimit } from '~/utils/adminMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 export const meta: MetaFunction = () => [
   { title: 'New Team | Tournado' },

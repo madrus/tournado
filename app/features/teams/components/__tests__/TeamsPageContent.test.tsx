@@ -65,23 +65,23 @@ vi.mock('~/components/Panel', () => ({
 }))
 
 // Mock TeamList component
-vi.mock('~/components/TeamList', () => ({
+vi.mock('~/features/teams/components/TeamList', () => ({
   TeamList: ({
     teams,
     onTeamClick,
     emptyMessage,
   }: {
-    teams: Array<{ id: string; name: string }>
-    onTeamClick: (id: string) => void
-    emptyMessage: string
+    teams: Array<{ id: string; clubName: string; name: string }>
+    onTeamClick?: (id: string) => void
+    emptyMessage?: string
   }) => (
-    <div data-testid='team-list'>
+    <div>
       {teams.length === 0 ? (
         <div>{emptyMessage}</div>
       ) : (
         teams.map(team => (
-          <button key={team.id} onClick={() => onTeamClick(team.id)}>
-            {team.name}
+          <button key={team.id} onClick={() => onTeamClick?.(team.id)}>
+            {team.clubName} {team.name}
           </button>
         ))
       )}
@@ -223,9 +223,8 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      expect(screen.getByTestId('team-list')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Team A' })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Team B' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Club A Team A' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Club B Team B' })).toBeInTheDocument()
     })
 
     it('should call onTeamClick when team is clicked', async () => {
@@ -240,7 +239,7 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      await user.click(screen.getByRole('button', { name: 'Team A' }))
+      await user.click(screen.getByRole('button', { name: 'Club A Team A' }))
       expect(mockOnTeamClick).toHaveBeenCalledWith('1')
     })
 

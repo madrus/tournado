@@ -3,7 +3,7 @@
    - [Getting Started](getting-started.md)
    - [Cursor Rules](cursor-rules.md)
 - Costs
-   - [Costs](costs/costs.md)
+   - [Costs](costs/ai-usage-costs.md)
 - Work in Progress
    - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
    - [Claude Code Analysis](wip/claude-20250717.md)

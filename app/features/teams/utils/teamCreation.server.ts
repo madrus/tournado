@@ -2,13 +2,15 @@
 import { Category, Division, Team } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import type { TeamFormData } from '~/features/teams/types'
+import {
+  extractTeamDataFromFormData,
+  validateEntireTeamForm,
+} from '~/features/teams/validation'
 import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
-import type { TeamFormData } from '~/lib/lib.types'
-import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { sendConfirmationEmail } from '~/utils/email.server'
-import { validateEntireTeamForm } from '~/utils/formValidation'
 
 type TeamCreationSuccess = {
   success: true

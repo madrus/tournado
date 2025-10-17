@@ -8,13 +8,13 @@ import {
   useActionData,
 } from 'react-router'
 
-import { TeamForm } from '~/components/TeamForm'
-import type { TeamCreateActionData } from '~/lib/lib.types'
+import { TeamForm } from '~/features/teams/components/TeamForm'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import type { TeamCreateActionData } from '~/features/teams/types'
+import { createTeamFromFormData } from '~/features/teams/utils/teamCreation.server'
 import type { User } from '~/models/user.server'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 // Route metadata - authenticated users can access (team creation is also public via /teams/new)
 export const handle: RouteMetadata = {

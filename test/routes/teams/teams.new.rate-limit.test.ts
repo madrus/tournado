@@ -12,7 +12,7 @@ vi.mock('~/utils/adminMiddleware.server', () => ({
 }))
 
 // Mock team creation utilities
-vi.mock('~/utils/team-creation.server', () => ({
+vi.mock('~/features/teams/utils/teamCreation.server', () => ({
   createTeamFromFormData: vi.fn(),
 }))
 

@@ -1,4 +1,4 @@
-import type { TournamentData } from '~/lib/lib.types'
+import type { TournamentData } from '~/features/tournaments/types'
 
 import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './teamFormConstants'
 import type {

@@ -70,21 +70,40 @@ graph TB
 
 ```mermaid
 graph TD
-    subgraph "User Interface Layer"
+    subgraph "Shared UI Layer"
         AppBar[AppBar Component]
-        TeamForm[TeamForm Component]
-        TournamentForm[TournamentForm Component]
         Toast[ToastMessage Component]
+        Inputs[Input Components]
     end
 
-    subgraph "State Management Layer"
+    subgraph "Features Layer"
+        subgraph "Teams Feature"
+            TeamForm[TeamForm]
+            TeamList[TeamList]
+            TeamFormStore[useTeamFormStore]
+            TeamTypes[Team Types]
+            TeamValidation[Team Validation]
+        end
+
+        subgraph "Tournaments Feature"
+            TournamentForm[TournamentForm]
+            TournamentFilter[TournamentFilter]
+            TournamentFormStore[useTournamentFormStore]
+            TournamentTypes[Tournament Types]
+        end
+
+        subgraph "Users Feature"
+            UserDetailCard[UserDetailCard]
+            UserTypes[User Types]
+        end
+    end
+
+    subgraph "Global State"
         AuthStore[useAuthStore]
-        TeamFormStore[useTeamFormStore]
         SettingsStore[useSettingsStore]
-        ToastState[Toast State]
     end
 
-    subgraph "Data Layer"
+    subgraph "Routes Layer"
         RootLoader[Root Loader]
         TeamLoader[Team Loader]
         TournamentLoader[Tournament Loader]
@@ -92,45 +111,50 @@ graph TD
         TournamentAction[Tournament Action]
     end
 
-    subgraph "Database Layer"
+    subgraph "Models Layer (Data Access)"
         UserModel[user.server.ts]
         TeamModel[team.server.ts]
         TournamentModel[tournament.server.ts]
+    end
+
+    subgraph "Database Layer"
         PrismaDB[(Prisma Database)]
     end
 
-    %% User interactions
+    %% Shared components to global state
     AppBar --> AuthStore
+
+    %% Feature components to feature stores
     TeamForm --> TeamFormStore
-    TournamentForm --> TeamFormStore
+    TeamForm --> Inputs
+    TournamentForm --> TournamentFormStore
+    TournamentForm --> Inputs
 
-    %% Data flow
-    AuthStore --> RootLoader
+    %% Feature stores to routes
     TeamFormStore --> TeamAction
-    TeamFormStore --> TournamentAction
+    TournamentFormStore --> TournamentAction
 
-    %% Loader connections
+    %% Routes to models
     RootLoader --> UserModel
     TeamLoader --> TeamModel
     TournamentLoader --> TournamentModel
-
-    %% Actions to models
     TeamAction --> TeamModel
     TournamentAction --> TournamentModel
 
-    %% Database connections
+    %% Models to database
     UserModel --> PrismaDB
     TeamModel --> PrismaDB
     TournamentModel --> PrismaDB
 
-    %% Feedback loop
+    %% Feedback loops
     TeamAction --> Toast
     TournamentAction --> Toast
-    Toast --> ToastState
 
-    %% Store synchronization
-    RootLoader --> TeamFormStore
-    TeamLoader --> TeamFormStore
+    %% Type dependencies (dashed - compile time only)
+    TeamForm -.->|imports| TeamTypes
+    TeamForm -.->|imports| TeamValidation
+    TournamentForm -.->|imports| TournamentTypes
+    UserDetailCard -.->|imports| UserTypes
 ```
 
 ### Request-Response Flow Diagram
@@ -185,34 +209,140 @@ sequenceDiagram
 
 ### Component Hierarchy and Organization
 
-The application follows a well-structured component hierarchy:
+The application follows a modular feature-based architecture with clear separation between shared components and feature-specific code:
 
 ```
-app/components/
-├── buttons/              # Action components
-│   ├── ActionButton.tsx
-│   └── ActionLinkButton.tsx
-├── inputs/              # Form input components
-│   ├── ComboField.tsx
-│   ├── TextInputField.tsx
-│   └── CheckboxAgreementField.tsx
-├── navigation/          # Navigation components
-│   ├── AppBar.tsx
-│   ├── BottomNavigation.tsx
-│   └── mobileNavigation/
-├── layouts/             # Layout components
-│   └── TeamsLayoutHeader.tsx
-├── auth/               # Authentication components
-│   ├── SignIn.tsx
-│   └── SignUp.tsx
-├── shared/             # Shared utilities
-│   ├── colorVariants.ts
-│   └── field.variants.ts
-└── domain-specific/    # Feature-specific components
-    ├── teams/
-    ├── tournaments/
-    └── ToastMessage/
+app/
+├── features/           # Feature modules (self-contained domains)
+│   ├── teams/
+│   │   ├── components/     # Team-specific components
+│   │   │   ├── TeamForm.tsx
+│   │   │   ├── TeamList.tsx
+│   │   │   ├── TeamsPageContent.tsx
+│   │   │   ├── TeamsLayoutHeader.tsx
+│   │   │   ├── TeamChip/
+│   │   │   │   ├── TeamChip.tsx
+│   │   │   │   ├── teamChip.variants.ts
+│   │   │   │   └── __tests__/
+│   │   │   └── __tests__/
+│   │   ├── stores/         # Team-specific state management
+│   │   │   ├── useTeamFormStore.ts
+│   │   │   ├── helpers/
+│   │   │   │   ├── teamFormTypes.ts
+│   │   │   │   ├── teamFormHelpers.ts
+│   │   │   │   ├── teamFormConstants.ts
+│   │   │   │   └── __tests__/
+│   │   │   └── __tests__/
+│   │   ├── utils/          # Team-specific utilities
+│   │   │   ├── teamCreation.server.ts
+│   │   │   └── __tests__/
+│   │   ├── hooks/          # Team-specific React hooks
+│   │   ├── types.ts        # Team-specific TypeScript types
+│   │   └── validation.ts   # Team-specific Zod schemas
+│   │
+│   ├── tournaments/
+│   │   ├── components/     # Tournament-specific components
+│   │   │   ├── TournamentForm.tsx
+│   │   │   ├── TournamentFilter.tsx
+│   │   │   ├── TournamentTableColumns.tsx
+│   │   │   └── __tests__/
+│   │   ├── stores/         # Tournament state management
+│   │   │   └── useTournamentFormStore.ts
+│   │   ├── hooks/          # Tournament hooks
+│   │   │   └── useTournamentFilter.ts
+│   │   ├── types.ts        # Tournament types
+│   │   └── validation.ts   # Tournament validation
+│   │
+│   ├── users/
+│   │   ├── components/     # User management components
+│   │   │   ├── UserDetailCard.tsx
+│   │   │   ├── UserAuditLogList.tsx
+│   │   │   └── __tests__/
+│   │   ├── types.ts        # User types
+│   │   └── validation.ts   # User validation
+│   │
+│   └── firebase/
+│       ├── client.ts       # Firebase client SDK (browser)
+│       ├── server.ts       # Firebase Admin SDK (server)
+│       ├── session.server.ts
+│       ├── components/     # Firebase auth components
+│       │   ├── FirebaseSignIn/
+│       │   └── FirebaseEmailSignIn/
+│       ├── adapters/       # Firebase adapters
+│       └── __tests__/
+│
+├── components/         # Shared/reusable components
+│   ├── buttons/            # Action components
+│   │   ├── ActionButton.tsx
+│   │   └── ActionLinkButton.tsx
+│   ├── inputs/             # Form input components
+│   │   ├── ComboField.tsx
+│   │   ├── TextInputField.tsx
+│   │   └── CheckboxAgreementField.tsx
+│   ├── navigation/         # Navigation components
+│   │   ├── AppBar.tsx
+│   │   ├── BottomNavigation.tsx
+│   │   └── mobileNavigation/
+│   ├── layouts/            # Layout components
+│   │   └── CompetitionLayoutHeader.tsx
+│   ├── icons/              # Icon components
+│   ├── shared/             # Shared utilities
+│   │   ├── colorVariants.ts
+│   │   └── field.variants.ts
+│   ├── Panel/              # Panel component system
+│   ├── ToastMessage/       # Toast notification system
+│   ├── emails/             # Email templates
+│   └── examples/           # Example/demo components
+│
+├── routes/             # React Router v7 file-based routing
+│   ├── teams/              # Public team routes
+│   ├── a7k9m2x5p8w1n4q6r3y8b5t1/  # Protected admin routes
+│   │   ├── teams/
+│   │   ├── tournaments/
+│   │   ├── users/
+│   │   └── competition/
+│   └── auth/
+│
+├── models/             # Data access layer (server-only)
+│   ├── team.server.ts
+│   ├── tournament.server.ts
+│   └── user.server.ts
+│
+├── stores/             # Global client state
+│   ├── useAuthStore.ts
+│   └── useSettingsStore.ts
+│
+└── lib/                # Shared utilities and types
+    ├── lib.types.ts        # Shared types only (NO feature re-exports)
+    └── theme.types.ts
 ```
+
+### Feature Module Architecture
+
+**Key Principles:**
+
+1. **Self-Contained Features**: Each feature is a complete, independent module
+2. **No Re-Exports**: Feature types imported directly from `~/features/{feature}/types`
+3. **Co-located Tests**: Tests live next to source code in `__tests__/` folders
+4. **Clear Boundaries**: Features don't import from each other (use shared lib when needed)
+
+**Feature Module Structure:**
+
+```typescript
+// ✅ CORRECT - Direct feature imports
+import { Team, TeamFormData } from '~/features/teams/types'
+import { Tournament } from '~/features/tournaments/types'
+
+// ❌ WRONG - No re-exports from lib
+import { Team } from '~/lib/lib.types'  // Feature types don't belong in lib
+```
+
+**Shared vs. Feature-Specific:**
+
+- **Shared components** (`app/components/`): Reusable across features (buttons, inputs, navigation)
+- **Feature components** (`app/features/{feature}/components/`): Domain-specific, used only within one feature
+- **Shared types** (`app/lib/lib.types.ts`): Generic types (IconProps, ColorAccent, Email)
+- **Feature types** (`app/features/{feature}/types.ts`): Domain models (Team, Tournament, User)
 
 ### Component Design Patterns
 
@@ -228,21 +358,64 @@ The application uses Class Variance Authority (CVA) for consistent styling:
 
 ```mermaid
 graph TD
+    subgraph "Features Layer"
+        subgraph "Teams Feature"
+            TeamForm[TeamForm Component]
+            TeamFormStore[useTeamFormStore]
+            TeamTypes[Team Types]
+            TeamValidation[Team Validation]
+        end
+
+        subgraph "Tournaments Feature"
+            TournamentForm[TournamentForm Component]
+            TournamentFormStore[useTournamentFormStore]
+            TournamentTypes[Tournament Types]
+        end
+    end
+
+    subgraph "Shared Components"
+        ComboField[ComboField]
+        TextInputField[TextInputField]
+        CheckboxField[CheckboxAgreementField]
+        FieldStatusIcon[FieldStatusIcon]
+    end
+
+    subgraph "State Management"
+        Zustand[Zustand Core]
+        SessionStorage[Session Storage]
+    end
+
+    %% Team form connections
     TeamForm --> ComboField
     TeamForm --> TextInputField
-    TeamForm --> CheckboxAgreementField
+    TeamForm --> CheckboxField
+    TeamForm --> TeamFormStore
+    TeamFormStore --> Zustand
+    TeamFormStore --> SessionStorage
+    TeamForm -.->|imports| TeamTypes
+    TeamForm -.->|imports| TeamValidation
+
+    %% Tournament form connections
+    TournamentForm --> ComboField
+    TournamentForm --> TextInputField
+    TournamentForm --> TournamentFormStore
+    TournamentFormStore --> Zustand
+    TournamentForm -.->|imports| TournamentTypes
+
+    %% Shared component connections
     ComboField --> FieldStatusIcon
     TextInputField --> FieldStatusIcon
-    TeamForm --> useTeamFormStore
-    useTeamFormStore --> Zustand
 ```
 
 **Key Patterns:**
 
-- **Controlled components** with centralized state management
-- **Form validation** with field-level and form-level validation
-- **Status indicators** for real-time feedback
-- **Store integration** for complex form state
+- **Feature Isolation**: Forms and stores live within feature modules
+- **Shared Components**: Reusable input components in `~/components/inputs/`
+- **Controlled Components**: Centralized state management via Zustand
+- **Form Validation**: Field-level and form-level validation with Zod
+- **Status Indicators**: Real-time feedback via shared FieldStatusIcon
+- **Store Integration**: Complex form state with persistence (sessionStorage)
+- **Type Safety**: Direct imports from feature types (no re-exports)
 
 #### 3. Navigation Component Pattern
 
@@ -260,6 +433,110 @@ graph LR
 - **Role-based rendering**: Different menu items based on user permissions
 - **Responsive navigation**: Desktop AppBar + Mobile BottomNavigation
 - **Authentication awareness**: Dynamic content based on auth state
+
+### Architectural Benefits of Feature Modules
+
+The feature-based architecture provides significant advantages over traditional flat component structures:
+
+#### 1. **Scalability & Maintainability**
+
+```typescript
+// Before: Scattered files across multiple directories
+app/components/TeamForm.tsx
+app/components/TeamList.tsx
+app/stores/useTeamFormStore.ts
+app/lib/lib.types.ts (with re-exported Team types)
+
+// After: Self-contained feature module
+app/features/teams/
+├── components/TeamForm.tsx
+├── components/TeamList.tsx
+├── stores/useTeamFormStore.ts
+└── types.ts (Team types defined here)
+```
+
+**Benefits:**
+
+- All team-related code in one place
+- Easy to find and modify functionality
+- Clear feature boundaries
+- Reduced cognitive load when working on a feature
+
+#### 2. **True Feature Isolation**
+
+```typescript
+// ✅ Good: Clear, explicit dependencies
+import { Team } from '~/features/teams/types'
+import { Tournament } from '~/features/tournaments/types'
+import { IconProps } from '~/lib/lib.types'  // Shared type
+
+// ❌ Bad: Hidden dependencies via re-exports
+import { Team, Tournament, IconProps } from '~/lib/lib.types'
+```
+
+**Benefits:**
+
+- Explicit import paths show actual dependencies
+- No hidden coupling between features
+- Better IDE support (jump-to-definition works correctly)
+- Easier to refactor individual features
+
+#### 3. **Independent Testing**
+
+```bash
+# Test a single feature in isolation
+app/features/teams/
+├── components/__tests__/
+├── stores/__tests__/
+└── utils/__tests__/
+```
+
+**Benefits:**
+
+- Co-located tests with source code
+- Feature-specific test utilities
+- Independent test execution
+- Clear test organization
+
+#### 4. **Team Collaboration**
+
+Different developers can work on different features with minimal merge conflicts:
+
+```
+Developer A: app/features/teams/
+Developer B: app/features/tournaments/
+Developer C: app/features/users/
+```
+
+**Benefits:**
+
+- Reduced merge conflicts
+- Clear code ownership
+- Parallel development
+- Feature-based pull requests
+
+#### 5. **Type Safety Without Re-Exports**
+
+```typescript
+// Each feature owns its types
+// ~/features/teams/types.ts
+export type Team = { ... }
+export type TeamFormData = { ... }
+
+// ~/features/tournaments/types.ts
+export type Tournament = { ... }
+
+// ~/lib/lib.types.ts (only shared types)
+export type IconProps = { ... }
+export type ColorAccent = 'red' | 'blue' | ...
+```
+
+**Benefits:**
+
+- Single source of truth per feature
+- No duplicate type definitions
+- Clear separation: shared vs. feature-specific
+- Type changes isolated to feature scope
 
 ## Data Flow Architecture
 

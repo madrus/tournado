@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { Team } from '~/lib/lib.types'
+import type { Team } from '~/features/teams/types'
 import type { Tournament } from '~/models/tournament.server'
 
 // Mock dependencies

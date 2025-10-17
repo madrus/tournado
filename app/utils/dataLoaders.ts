@@ -1,4 +1,4 @@
-import type { TeamsLoaderData } from '~/lib/lib.types'
+import type { TeamsLoaderData } from '~/features/teams/types'
 import { getFilteredTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 

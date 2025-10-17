@@ -61,26 +61,26 @@ app/components/examples/
 - [x] **BONUS**: Update imports in moved tournament test
 - [x] **BONUS**: Verify tournament test still passes (16 tests passed)
 
-### Phase 1: Create Feature Structure
+### Phase 1: Create Feature Structure ✅ COMPLETED
 
-- [ ] Create `app/features/teams/components/` directory
-- [ ] Create `app/features/teams/stores/helpers/` directory
-- [ ] Create `app/features/teams/utils/` directory
-- [ ] Create `app/features/teams/hooks/` directory
-- [ ] Create `app/components/examples/` directory
+- [x] Create `app/features/teams/components/` directory
+- [x] Create `app/features/teams/stores/helpers/` directory
+- [x] Create `app/features/teams/utils/` directory
+- [x] Create `app/features/teams/hooks/` directory
+- [x] Create `app/components/examples/` directory
 
-### Phase 2: Move Components (with tests)
+### Phase 2: Move Components (with tests) ✅ COMPLETED
 
-- [ ] Move `TeamForm.tsx` from `app/components/` to `app/features/teams/components/`
-- [ ] Move `TeamList.tsx` from `app/components/` to `app/features/teams/components/`
-- [ ] Move `TeamsPageContent.tsx` from `app/components/` to `app/features/teams/components/`
-- [ ] Move `app/components/__tests__/TeamForm.test.tsx` to `app/features/teams/components/__tests__/`
-- [ ] Move `app/components/__tests__/TeamsPageContent.test.tsx` to `app/features/teams/components/__tests__/`
-- [ ] Move `TeamsLayoutHeader.tsx` from `app/components/layouts/` to `app/features/teams/components/`
-- [ ] Move `app/components/layouts/__tests__/TeamsLayoutHeader.test.tsx` to `app/features/teams/components/__tests__/`
-- [ ] Move entire `TeamChip/` folder from `app/components/` to `app/features/teams/components/`
-- [ ] Move `SidebarTeamsExample.tsx` from `app/components/` to `app/components/examples/`
-- [ ] Create `app/features/teams/components/index.ts` with exports
+- [x] Move `TeamForm.tsx` from `app/components/` to `app/features/teams/components/`
+- [x] Move `TeamList.tsx` from `app/components/` to `app/features/teams/components/`
+- [x] Move `TeamsPageContent.tsx` from `app/components/` to `app/features/teams/components/`
+- [x] Move `app/components/__tests__/TeamForm.test.tsx` to `app/features/teams/components/__tests__/`
+- [x] Move `app/components/__tests__/TeamsPageContent.test.tsx` to `app/features/teams/components/__tests__/`
+- [x] Move `TeamsLayoutHeader.tsx` from `app/components/layouts/` to `app/features/teams/components/`
+- [x] Move `app/components/layouts/__tests__/TeamsLayoutHeader.test.tsx` to `app/features/teams/components/__tests__/`
+- [x] Move entire `TeamChip/` folder from `app/components/` to `app/features/teams/components/`
+- [x] Move `SidebarTeamsExample.tsx` from `app/components/` to `app/components/examples/`
+- [x] Create `app/features/teams/components/index.ts` with exports
 
 ### Phase 3: Move Stores (with helpers and tests)
 
@@ -189,3 +189,6 @@ app/components/examples/
 - [ ] Public teams routes work (`/teams`, `/teams/new`, `/teams/:id`)
 - [ ] Admin teams routes work (`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*`)
 - [ ] All moved tests still pass in their new locations
+- [ ] No orphaned moved files nor folders a left behind undeleted
+- [ ] No temporary renamed files temporary duplicated files are forgotten
+- [ ] All checkmarks are completed (checked)

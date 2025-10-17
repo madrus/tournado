@@ -97,17 +97,44 @@ app/components/examples/
 - [x] Move `app/utils/__tests__/teamCreation.server.test.ts` to `app/features/teams/utils/__tests__/`
 - [x] Evaluate `teamsMetaFactory.ts` - **DECISION: DELETE** (premature abstraction, only 2 use cases, inline meta is more idiomatic for React Router v7)
 
-### Phase 5: Create Types and Validation
+### Phase 5: Create Types and Validation ✅ COMPLETED
 
-- [ ] Create `app/features/teams/types.ts` and extract team types from `app/lib/lib.types.ts`
-- [ ] Create `app/features/teams/validation.ts` and extract team validation from `app/utils/formValidation.ts`
+- [x] Create `app/features/teams/types.ts` and extract team types from `app/lib/lib.types.ts`
+- [x] Create `app/features/teams/validation.ts` and extract team validation from `app/lib/lib.zod.ts` and `app/utils/formValidation.ts`
 
 ### Phase 6: Update All Imports
 
-- [ ] Update imports in `app/routes/teams/*.tsx`
-- [ ] Update imports in `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*.tsx`
-- [ ] Update store imports across codebase
-- [ ] Update utility imports across codebase
+**IMPORTANT**: No re-exports. All imports must point directly to feature modules.
+
+**Step 1: Update all team type imports across codebase**
+- [ ] Search for all imports from `~/lib/lib.types` that use team types
+- [ ] Update them to import from `~/features/teams/types`
+- [ ] Search for all imports from `~/lib/lib.zod` that use team validation
+- [ ] Update them to import from `~/features/teams/validation`
+- [ ] Search for all imports from `~/utils/formValidation` that use team utilities
+- [ ] Update them to import from `~/features/teams/validation`
+
+**Step 2: Update component imports**
+- [ ] Update imports in moved components to use feature-relative paths
+- [ ] Update `~/components/Team*` imports to `~/features/teams/components`
+- [ ] Update `~/stores/useTeamFormStore` imports to `~/features/teams/stores`
+- [ ] Update `~/utils/teamCreation.server` imports to `~/features/teams/utils`
+- [ ] Update imports in `app/components/emails/TeamRegisteredEmail.tsx`
+
+**Step 3: Update route imports**
+- [ ] Update all imports in `app/routes/teams/*.tsx`
+- [ ] Update all imports in `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/*.tsx`
+
+**Step 4: Clean up original files (after all imports updated)**
+- [ ] Remove team types from `app/lib/lib.types.ts` (lines 32, 42, 134, 140-321)
+- [ ] Remove team validation from `app/lib/lib.zod.ts` (entire file content)
+- [ ] Remove team utilities from `app/utils/formValidation.ts` (lines 8-126)
+- [ ] Verify NO team-related exports remain in lib files
+
+**Step 5: Verify no re-exports**
+- [ ] Confirm `app/lib/lib.types.ts` has NO team re-exports
+- [ ] Confirm `app/lib/lib.zod.ts` has NO team re-exports
+- [ ] Confirm `app/utils/formValidation.ts` has NO team re-exports
 
 ### Phase 7: Update Tests
 
@@ -176,11 +203,20 @@ app/components/examples/
 ## Expected Benefits
 
 1. **Code Organization**: All team-related code in one feature folder
-2. **Consistency**: Matches tournaments feature pattern
+2. **True Feature Isolation**: Direct imports show clear dependencies
 3. **Maintainability**: Easier to find and modify team functionality
-4. **Scalability**: Clear pattern for future features
+4. **Scalability**: Clean pattern for future features (no re-exports)
 5. **No Duplication**: Single implementation with variant support
 6. **Test Co-location**: Tests live next to their source files (except route tests)
+7. **Explicit Dependencies**: Import paths clearly show where code comes from
+
+## Future Work (Post-Teams Migration)
+
+**Remove Tournament Re-exports** (separate task):
+- [ ] Update all tournament type imports to use `~/features/tournaments/types` directly
+- [ ] Remove tournament re-exports from `app/lib/lib.types.ts`
+- [ ] Establish clean pattern: shared types in lib, feature types in features
+- [ ] Document the "no re-exports" principle in CLAUDE.md
 
 ## Verification Checklist
 

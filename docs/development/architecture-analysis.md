@@ -327,6 +327,7 @@ app/
 4. **Clear Boundaries**: Features don't import from each other (use shared lib when needed)
 
 **Feature Module Structure:**
+
 ```typescript
 // ✅ CORRECT - Direct feature imports
 import { Team, TeamFormData } from '~/features/teams/types'
@@ -337,6 +338,7 @@ import { Team } from '~/lib/lib.types'  // Feature types don't belong in lib
 ```
 
 **Shared vs. Feature-Specific:**
+
 - **Shared components** (`app/components/`): Reusable across features (buttons, inputs, navigation)
 - **Feature components** (`app/features/{feature}/components/`): Domain-specific, used only within one feature
 - **Shared types** (`app/lib/lib.types.ts`): Generic types (IconProps, ColorAccent, Email)
@@ -454,6 +456,7 @@ app/features/teams/
 ```
 
 **Benefits:**
+
 - All team-related code in one place
 - Easy to find and modify functionality
 - Clear feature boundaries
@@ -472,6 +475,7 @@ import { Team, Tournament, IconProps } from '~/lib/lib.types'
 ```
 
 **Benefits:**
+
 - Explicit import paths show actual dependencies
 - No hidden coupling between features
 - Better IDE support (jump-to-definition works correctly)
@@ -488,6 +492,7 @@ app/features/teams/
 ```
 
 **Benefits:**
+
 - Co-located tests with source code
 - Feature-specific test utilities
 - Independent test execution
@@ -504,6 +509,7 @@ Developer C: app/features/users/
 ```
 
 **Benefits:**
+
 - Reduced merge conflicts
 - Clear code ownership
 - Parallel development
@@ -526,6 +532,7 @@ export type ColorAccent = 'red' | 'blue' | ...
 ```
 
 **Benefits:**
+
 - Single source of truth per feature
 - No duplicate type definitions
 - Clear separation: shared vs. feature-specific

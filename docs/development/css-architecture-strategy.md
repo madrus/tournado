@@ -419,6 +419,7 @@ Tailwind CSS v4 provides the `@source` directive to explicitly include classes i
 #### Pattern 1: External Safelist File (Recommended for Production)
 
 **File: `app/styles/safelist.txt`**
+
 ```txt
 # =============================================================================
 # Ring Utilities - Focus States
@@ -436,11 +437,13 @@ ring-emerald-600
 ```
 
 **File: `app/styles/safe-lists.css`**
+
 ```css
 @source './safelist.txt';
 ```
 
 **Benefits:**
+
 - ✅ Works in both dev and production builds
 - ✅ Easy to read and maintain (one class per line)
 - ✅ Supports comments with `#`
@@ -456,11 +459,13 @@ ring-emerald-600
 ```
 
 **Use Cases:**
+
 - Quick prototyping
 - Pattern-based generation
 - When you need variant combinations
 
 **Limitations:**
+
 - May have parsing issues in some build tools (Vite + PWA plugin)
 - Less readable for large safelists
 - Harder to organize and comment
@@ -468,12 +473,14 @@ ring-emerald-600
 ### When to Use Safelist
 
 **Always safelist:**
+
 1. **Dynamic variant combinations** - `{focus-visible:,hover:,}ring-red-600`
 2. **Color-based classes from props** - Panel colors, chip variants
 3. **Custom background classes** - `panel-teal-bg`, `panel-red-bg`
 4. **Complex gradient combinations** - Multi-class gradient patterns
 
 **Example from Tournado:**
+
 ```typescript
 // Panel.tsx - Dynamic color prop
 export function Panel({ color = 'emerald' }: PanelProps) {
@@ -539,11 +546,13 @@ panel-red-bg
 **Error:** "`@source` paths must be quoted."
 
 **Solution:** Use external file approach with quoted path:
+
 ```css
-@source './safelist.txt';  /* ✅ Works in all build modes */
+@source './safelist.txt'; /* ✅ Works in all build modes */
 ```
 
 **When to Use Each:**
+
 - **External file**: Production applications, large safelists (50+ classes)
 - **Inline source**: Quick prototypes, small safelists (< 20 classes), pattern-based generation
 

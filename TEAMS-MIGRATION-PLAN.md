@@ -268,6 +268,7 @@ app/components/examples/
 - [x] Document the "no re-exports" principle in CLAUDE.md ✅
 
 **Results**:
+
 - ✅ All tournament types are imported directly from `~/features/tournaments/types`
 - ✅ `app/lib/lib.types.ts` contains ONLY shared types (no feature re-exports)
 - ✅ Clean pattern established: shared types in `~/lib/lib.types`, feature types in `~/features/{feature}/types`

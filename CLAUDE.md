@@ -113,6 +113,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 **NO RE-EXPORTS PRINCIPLE**: Feature-specific types, components, and utilities must be imported directly from their feature modules. Do not create re-export convenience layers.
 
 **Type Organization**:
+
 - **Shared types**: Generic, reusable types in `~/lib/lib.types` (IconProps, ColorAccent, Email, etc.)
 - **Feature types**: Domain-specific types in feature modules (e.g., `~/features/teams/types`, `~/features/tournaments/types`)
 - **Rule**: If a type is used ONLY within a feature, it belongs in that feature's types file
@@ -130,6 +131,7 @@ import { Team, Tournament } from '~/lib/lib.types'
 ```
 
 **Benefits of Direct Imports**:
+
 - **Explicit dependencies**: Import paths clearly show where code comes from
 - **True isolation**: Features are self-contained and independently maintainable
 - **No hidden coupling**: Re-exports hide actual dependencies between modules
@@ -137,6 +139,7 @@ import { Team, Tournament } from '~/lib/lib.types'
 - **Easier refactoring**: Clear boundaries make changes safer and more predictable
 
 **Feature Module Structure**:
+
 ```
 app/features/{feature}/
 ├── components/     # Feature-specific components

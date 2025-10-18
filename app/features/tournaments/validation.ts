@@ -7,8 +7,8 @@ const baseTournamentSchema = z
   .object({
     name: z.string().min(1).max(100),
     location: z.string().min(1).max(100),
-    startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
-    endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
+    startDate: z.iso.date(),
+    endDate: z.iso.date(),
     divisions: z.array(z.string()).min(1),
     categories: z.array(z.string()).min(1),
   })
@@ -35,14 +35,12 @@ const createTournamentFormSchema = (t: TFunction) =>
         .string()
         .min(1, t('messages.tournament.locationRequired'))
         .max(100, t('messages.tournament.locationTooLong')),
-      startDate: z
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
-        .min(1, t('messages.tournament.startDateRequired')),
-      endDate: z
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
-        .min(1, t('messages.tournament.endDateRequired')),
+      startDate: z.iso.date({
+        error: t('messages.tournament.invalidDateFormat'),
+      }),
+      endDate: z.iso.date({
+        error: t('messages.tournament.invalidDateFormat'),
+      }),
       divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
       categories: z
         .array(z.string())

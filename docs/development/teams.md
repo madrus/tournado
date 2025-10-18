@@ -40,9 +40,10 @@ app/
 │           ├── teams.$teamId.tsx  # Admin team details
 │           ├── teams.new.tsx      # Admin team creation
 │           └── teams.tsx          # Admin team layout
-└── lib/
-    ├── lib.types.ts               # Team type definitions
-    └── lib.zod.ts                 # Team validation schemas
+└── features/
+    └── teams/
+        ├── types.ts               # Team type definitions
+        └── validation.ts          # Team validation schemas
 ```
 
 ### Database Schema
@@ -170,23 +171,30 @@ const {
 ### Validation Rules
 
 ```typescript
-export const TeamSchema = z.object({
-   name: z
+const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
+
+export const baseTeamSchema = z.object({
+   tournamentId: z.string().min(1),
+   name: z.string().min(1).max(50),
+   clubName: z.string().min(1).max(100),
+   division: z.string().min(1),
+   category: z.string().min(1),
+   teamLeaderName: z.string().min(1).max(100),
+   teamLeaderPhone: z
       .string()
-      .min(1, 'Team name is required')
-      .max(50, 'Team name must be 50 characters or less'),
-   clubName: z.string().max(50, 'Club name must be 50 characters or less').optional(),
-   captainName: z
+      .min(1)
+      .pipe(
+         z.string().refine(val => PHONE_REGEX.test(val), {
+            error: 'Invalid phone number format',
+         })
+      ),
+   teamLeaderEmail: z
       .string()
-      .min(1, 'Captain name is required')
-      .max(100, 'Captain name must be 100 characters or less'),
-   captainEmail: z.string().email('Please enter a valid email address'),
-   captainPhone: z
-      .string()
-      .regex(/^[+]?[\d\s\-\(\)]+$/, 'Please enter a valid phone number')
-      .optional(),
-   division: z.nativeEnum(Division),
-   tournamentId: z.string().optional(),
+      .min(1)
+      .pipe(z.email({ error: 'Invalid email address' })),
+   privacyAgreement: z.boolean().refine(val => val, {
+      error: 'Privacy agreement is required',
+   }),
 })
 
 // Additional validation for team name uniqueness

@@ -3,26 +3,11 @@ import { z } from 'zod'
 
 import type { TFunction } from 'i18next'
 
-import type {
-  TeamFormData,
-  TeamValidationInput,
-  TeamValidationSafeParseResult,
-} from './types'
+import type { TeamFormData, TeamValidationInput } from './types'
 
 // ============================================================================
 // Validation Patterns
 // ============================================================================
-
-/**
- * Comprehensive email validation regex
- * Validates:
- * - Local part: alphanumeric, dots, hyphens, underscores, plus signs
- * - @ symbol (required)
- * - Domain: alphanumeric with hyphens (but not at start/end)
- * - At least one dot in domain
- * - TLD: at least 2 characters, letters only
- */
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 /**
  * Phone number validation regex
@@ -55,11 +40,7 @@ const baseTeamSchema = z.object({
   teamLeaderEmail: z
     .string()
     .min(1)
-    .pipe(
-      z.string().refine(val => EMAIL_REGEX.test(val), {
-        error: 'Invalid email address',
-      })
-    ),
+    .pipe(z.email({ error: 'Invalid email address' })),
   privacyAgreement: z.boolean().refine(val => val, {
     error: 'Privacy agreement is required',
   }),
@@ -116,11 +97,7 @@ const createTeamFormSchema = (t: TFunction) =>
     teamLeaderEmail: z
       .string()
       .min(1, t('messages.validation.emailRequired'))
-      .pipe(
-        z.string().refine(val => EMAIL_REGEX.test(val), {
-          error: t('messages.validation.emailInvalid'),
-        })
-      ),
+      .pipe(z.email({ error: t('messages.validation.emailInvalid') })),
 
     // Privacy agreement (required for public create mode)
     privacyAgreement: z.boolean().refine(val => val, {
@@ -156,16 +133,10 @@ export function getTeamValidationSchema(
  */
 export function validateTeamData(
   teamData: TeamValidationInput,
-  mode: 'create'
-): TeamValidationSafeParseResult<'create'>
-export function validateTeamData(
-  teamData: TeamValidationInput,
-  mode: 'edit'
-): TeamValidationSafeParseResult<'edit'>
-export function validateTeamData(
-  teamData: TeamValidationInput,
   mode: 'create' | 'edit'
-): TeamValidationSafeParseResult<'create'> | TeamValidationSafeParseResult<'edit'> {
+):
+  | ReturnType<typeof createTeamSchema.safeParse>
+  | ReturnType<typeof editTeamSchema.safeParse> {
   const schema = mode === 'create' ? createTeamSchema : editTeamSchema
   return schema.safeParse(teamData)
 }
@@ -213,8 +184,20 @@ export const getFieldErrorTranslationKey = (
   fieldName: string,
   zodIssue?: Pick<ZodIssue, 'code'>
 ): string => {
-  // Handle custom validation errors (format validation)
-  if (zodIssue?.code === 'custom') {
+  // Handle empty/too small errors (required field validation from .min())
+  // This takes precedence over format validation
+  if (zodIssue?.code === 'too_small') {
+    // Use the default required field error mapping below
+  }
+
+  // Handle email format validation errors (from Zod's .email())
+  // Only for invalid format, not for empty strings (which are handled by too_small)
+  else if (fieldName === 'teamLeaderEmail' && zodIssue?.code === 'invalid_format') {
+    return 'messages.validation.emailInvalid'
+  }
+
+  // Handle custom validation errors (format validation for phone)
+  else if (zodIssue?.code === 'custom') {
     if (fieldName === 'teamLeaderEmail') {
       return 'messages.validation.emailInvalid'
     }
@@ -224,7 +207,7 @@ export const getFieldErrorTranslationKey = (
   }
 
   // Handle string too long errors
-  if (zodIssue?.code === 'too_big') {
+  else if (zodIssue?.code === 'too_big') {
     if (fieldName === 'name') {
       return 'messages.team.nameTooLong'
     }
@@ -277,12 +260,15 @@ export const validateSingleTeamField = (
     if (!result.success) {
       // Find the error for this specific field
       const zodFieldName = mapStoreFieldToZodField(fieldName)
-      const fieldError = result.error.issues.find((error: ZodIssue) => {
+      const fieldErrors = result.error.issues.filter((error: ZodIssue) => {
         const path = error.path[0]
         return path === zodFieldName
       })
 
-      if (fieldError) {
+      if (fieldErrors.length > 0) {
+        // Prioritize 'too_small' errors (empty/required fields) over format errors
+        const fieldError =
+          fieldErrors.find(err => err.code === 'too_small') || fieldErrors[0]
         return getFieldErrorTranslationKey(zodFieldName, fieldError)
       }
     }
@@ -318,12 +304,24 @@ export const validateEntireTeamForm = (
         : validateTeamData(formData, 'edit')
 
     if (!result.success) {
+      // Group errors by field
+      const errorsByField: Record<string, ZodIssue[]> = {}
       result.error.issues.forEach((error: ZodIssue) => {
         const zodFieldName = error.path[0] as string
         if (zodFieldName) {
-          // Store field names are now the same as Zod field names
-          errors[zodFieldName] = getFieldErrorTranslationKey(zodFieldName, error)
+          if (!errorsByField[zodFieldName]) {
+            errorsByField[zodFieldName] = []
+          }
+          errorsByField[zodFieldName].push(error)
         }
+      })
+
+      // For each field, prioritize 'too_small' errors (empty/required fields)
+      Object.keys(errorsByField).forEach(fieldName => {
+        const fieldErrors = errorsByField[fieldName]
+        const prioritizedError =
+          fieldErrors.find(err => err.code === 'too_small') || fieldErrors[0]
+        errors[fieldName] = getFieldErrorTranslationKey(fieldName, prioritizedError)
       })
     }
   } catch (_error: unknown) {

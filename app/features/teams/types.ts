@@ -1,5 +1,3 @@
-import type { ZodBoolean, ZodError, ZodObject, ZodString } from 'zod'
-
 import type { Team as PrismaTeam } from '@prisma/client'
 
 // ============================================================================
@@ -145,40 +143,6 @@ export type TeamCreateActionData = {
  * Team validation input (generic record for flexibility)
  */
 export type TeamValidationInput = Record<string, unknown>
-
-/**
- * Team form schema type (using Zod)
- * Note: We can't precisely type this because teamLeaderPhone and teamLeaderEmail
- * use .pipe() which creates complex internal Zod types not exported from the package.
- * The schema is created by the createTeamFormSchema factory function.
- */
-export type TeamFormSchemaType = ZodObject<{
-  tournamentId: ZodString
-  clubName: ZodString
-  name: ZodString
-  division: ZodString
-  category: ZodString
-  teamLeaderName: ZodString
-  teamLeaderPhone: ZodString
-  teamLeaderEmail: ZodString
-  privacyAgreement: ZodBoolean
-}>
-
-/**
- * Team validation schema alias
- */
-export type TeamValidationSchema = TeamFormSchemaType
-
-/**
- * Type-safe validation result based on mode
- */
-export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
-  T extends 'create'
-    ? // eslint-disable-next-line id-blacklist
-      { success: true; data: TeamFormData } | { success: false; error: ZodError }
-    : // eslint-disable-next-line id-blacklist
-      | { success: true; data: Omit<TeamFormData, 'privacyAgreement'> }
-        | { success: false; error: ZodError }
 
 // ============================================================================
 // Loader Data Types

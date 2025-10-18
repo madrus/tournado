@@ -1,3 +1,5 @@
+import type { ZodIssue } from 'zod'
+
 import { describe, expect, it } from 'vitest'
 
 import type { Email } from '~/lib/lib.types'
@@ -37,47 +39,84 @@ describe('form-validation', () => {
   })
 
   describe('getFieldErrorTranslationKey', () => {
-    describe('custom validation errors', () => {
-      it('should return email invalid key for teamLeaderEmail custom errors', () => {
+    describe('email validation errors', () => {
+      it('should return email invalid key for teamLeaderEmail invalid_format errors', () => {
         const result = getFieldErrorTranslationKey('teamLeaderEmail', {
-          code: 'custom',
+          code: 'invalid_format',
+          format: 'email',
+          path: ['teamLeaderEmail'],
+          message: 'Invalid email address',
         })
         expect(result).toBe('messages.validation.emailInvalid')
       })
+    })
 
+    describe('custom validation errors', () => {
       it('should return phone invalid key for teamLeaderPhone custom errors', () => {
         const result = getFieldErrorTranslationKey('teamLeaderPhone', {
           code: 'custom',
+          path: ['teamLeaderPhone'],
+          message: 'Invalid phone number format',
         })
         expect(result).toBe('messages.validation.phoneNumberInvalid')
       })
 
       it('should fallback to default for other fields with custom errors', () => {
-        const result = getFieldErrorTranslationKey('clubName', { code: 'custom' })
+        const result = getFieldErrorTranslationKey('clubName', {
+          code: 'custom',
+          path: ['clubName'],
+          message: 'Custom error',
+        })
         expect(result).toBe('messages.team.clubNameRequired')
       })
     })
 
     describe('too_big validation errors', () => {
       it('should return name too long key for name too_big errors', () => {
-        const result = getFieldErrorTranslationKey('name', { code: 'too_big' })
+        const issue: Partial<ZodIssue> = {
+          code: 'too_big',
+          maximum: 50,
+          inclusive: true,
+          path: ['name'],
+          message: 'String must contain at most 50 character(s)',
+        }
+        const result = getFieldErrorTranslationKey('name', issue as ZodIssue)
         expect(result).toBe('messages.team.nameTooLong')
       })
 
       it('should return clubName too long key for clubName too_big errors', () => {
-        const result = getFieldErrorTranslationKey('clubName', { code: 'too_big' })
+        const issue: Partial<ZodIssue> = {
+          code: 'too_big',
+          maximum: 100,
+          inclusive: true,
+          path: ['clubName'],
+          message: 'String must contain at most 100 character(s)',
+        }
+        const result = getFieldErrorTranslationKey('clubName', issue as ZodIssue)
         expect(result).toBe('messages.team.clubNameTooLong')
       })
 
       it('should return teamLeaderName too long key for teamLeaderName too_big errors', () => {
-        const result = getFieldErrorTranslationKey('teamLeaderName', {
+        const issue: Partial<ZodIssue> = {
           code: 'too_big',
-        })
+          maximum: 100,
+          inclusive: true,
+          path: ['teamLeaderName'],
+          message: 'String must contain at most 100 character(s)',
+        }
+        const result = getFieldErrorTranslationKey('teamLeaderName', issue as ZodIssue)
         expect(result).toBe('messages.team.teamLeaderNameTooLong')
       })
 
       it('should fallback to default for other fields with too_big errors', () => {
-        const result = getFieldErrorTranslationKey('division', { code: 'too_big' })
+        const issue: Partial<ZodIssue> = {
+          code: 'too_big',
+          maximum: 100,
+          inclusive: true,
+          path: ['division'],
+          message: 'String must contain at most 100 character(s)',
+        }
+        const result = getFieldErrorTranslationKey('division', issue as ZodIssue)
         expect(result).toBe('messages.team.divisionRequired')
       })
     })
@@ -131,13 +170,25 @@ describe('form-validation', () => {
       })
 
       it('should handle zodIssue without code', () => {
-        expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
+        const issue: Partial<ZodIssue> = {
+          code: 'invalid_type',
+          expected: 'string',
+          path: ['clubName'],
+          message: 'Required',
+        }
+        expect(getFieldErrorTranslationKey('clubName', issue as ZodIssue)).toBe(
           'messages.team.clubNameRequired'
         )
       })
 
       it('should handle unknown zodIssue codes', () => {
-        expect(getFieldErrorTranslationKey('clubName', { code: 'invalid_type' })).toBe(
+        const issue: Partial<ZodIssue> = {
+          code: 'invalid_type',
+          expected: 'string',
+          path: ['clubName'],
+          message: 'Expected string, received number',
+        }
+        expect(getFieldErrorTranslationKey('clubName', issue as ZodIssue)).toBe(
           'messages.team.clubNameRequired'
         )
       })

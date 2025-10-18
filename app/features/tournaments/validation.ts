@@ -2,15 +2,21 @@ import { z } from 'zod'
 
 import type { TFunction } from 'i18next'
 
+import {
+  createIsoDateSchema,
+  createRequiredStringArraySchema,
+  createRequiredStringSchema,
+} from '~/lib/validation'
+
 // Base tournament schema without translations (for server-side validation)
 const baseTournamentSchema = z
   .object({
-    name: z.string().min(1).max(100),
-    location: z.string().min(1).max(100),
-    startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
-    endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
-    divisions: z.array(z.string()).min(1),
-    categories: z.array(z.string()).min(1),
+    name: createRequiredStringSchema(100),
+    location: createRequiredStringSchema(100),
+    startDate: createIsoDateSchema(),
+    endDate: createIsoDateSchema(),
+    divisions: createRequiredStringArraySchema(),
+    categories: createRequiredStringArraySchema(),
   })
   .refine(formData => formData.endDate >= formData.startDate, {
     error: 'End date must be on or after start date',
@@ -27,26 +33,24 @@ const editTournamentSchema = baseTournamentSchema
 const createTournamentFormSchema = (t: TFunction) =>
   z
     .object({
-      name: z
-        .string()
-        .min(1, t('messages.tournament.nameRequired'))
-        .max(100, t('messages.tournament.nameTooLong')),
-      location: z
-        .string()
-        .min(1, t('messages.tournament.locationRequired'))
-        .max(100, t('messages.tournament.locationTooLong')),
-      startDate: z
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
-        .min(1, t('messages.tournament.startDateRequired')),
-      endDate: z
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/, t('messages.tournament.invalidDateFormat'))
-        .min(1, t('messages.tournament.endDateRequired')),
-      divisions: z.array(z.string()).min(1, t('messages.tournament.divisionsRequired')),
-      categories: z
-        .array(z.string())
-        .min(1, t('messages.tournament.categoriesRequired')),
+      name: createRequiredStringSchema(
+        100,
+        t('messages.tournament.nameRequired'),
+        t('messages.tournament.nameTooLong')
+      ),
+      location: createRequiredStringSchema(
+        100,
+        t('messages.tournament.locationRequired'),
+        t('messages.tournament.locationTooLong')
+      ),
+      startDate: createIsoDateSchema(t('messages.tournament.invalidDateFormat')),
+      endDate: createIsoDateSchema(t('messages.tournament.invalidDateFormat')),
+      divisions: createRequiredStringArraySchema(
+        t('messages.tournament.divisionsRequired')
+      ),
+      categories: createRequiredStringArraySchema(
+        t('messages.tournament.categoriesRequired')
+      ),
     })
     .refine(formData => formData.endDate >= formData.startDate, {
       error: t('messages.tournament.endDateBeforeStartDate'),

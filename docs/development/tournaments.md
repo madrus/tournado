@@ -98,9 +98,10 @@ app/
 │           ├── tournaments.$tournamentId.tsx  # Tournament details/edit
 │           ├── tournaments.new.tsx       # New tournament creation
 │           └── tournaments.tsx          # Tournament layout
-└── lib/
-    ├── lib.types.ts                # Tournament type definitions
-    └── lib.zod.ts                  # Tournament validation schemas
+└── features/
+    └── tournaments/
+        ├── types.ts                # Tournament type definitions
+        └── validation.ts           # Tournament validation schemas
 ```
 
 ### Database Schema
@@ -331,21 +332,50 @@ type TournamentListItem = Pick<
 ### Zod Schemas
 
 ```typescript
-export const TournamentSchema = z.object({
-   name: z.string().min(1, 'Tournament name is required').max(100),
-   location: z.string().min(1, 'Location is required').max(100),
-   startDate: z.coerce.date(),
-   endDate: z.coerce.date().optional(),
-   categories: z.unknown().optional(),
-})
-
-export const TournamentFormSchema = TournamentSchema.refine(
-   data => !data.endDate || data.endDate >= data.startDate,
-   {
-      message: 'End date must be after start date',
+// Base tournament schema without translations (for server-side validation)
+const baseTournamentSchema = z
+   .object({
+      name: z.string().min(1).max(100),
+      location: z.string().min(1).max(100),
+      startDate: z.iso.date(),
+      endDate: z.iso.date(),
+      divisions: z.array(z.string()).min(1),
+      categories: z.array(z.string()).min(1),
+   })
+   .refine(formData => formData.endDate >= formData.startDate, {
+      error: 'End date must be on or after start date',
       path: ['endDate'],
-   }
-)
+   })
+
+// Factory function for creating schemas with translated error messages
+const createTournamentFormSchema = (t: TFunction) =>
+   z
+      .object({
+         name: z
+            .string()
+            .min(1, t('messages.tournament.nameRequired'))
+            .max(100, t('messages.tournament.nameTooLong')),
+         location: z
+            .string()
+            .min(1, t('messages.tournament.locationRequired'))
+            .max(100, t('messages.tournament.locationTooLong')),
+         startDate: z.iso.date({
+            error: t('messages.tournament.invalidDateFormat'),
+         }),
+         endDate: z.iso.date({
+            error: t('messages.tournament.invalidDateFormat'),
+         }),
+         divisions: z
+            .array(z.string())
+            .min(1, t('messages.tournament.divisionsRequired')),
+         categories: z
+            .array(z.string())
+            .min(1, t('messages.tournament.categoriesRequired')),
+      })
+      .refine(formData => formData.endDate >= formData.startDate, {
+         error: t('messages.tournament.endDateBeforeStartDate'),
+         path: ['endDate'],
+      })
 ```
 
 ## Internationalization

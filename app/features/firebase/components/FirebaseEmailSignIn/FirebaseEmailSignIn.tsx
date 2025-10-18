@@ -2,6 +2,7 @@ import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
@@ -31,11 +32,6 @@ export function FirebaseEmailSignIn({
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [validationError, setValidationError] = useState<string | null>(null)
-
-  const validateEmail = (emailValue: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(emailValue)
-  }
 
   const validatePassword = (passwordValue: string): string | null => {
     if (passwordValue.length < 8) {

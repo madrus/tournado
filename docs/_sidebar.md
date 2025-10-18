@@ -27,6 +27,7 @@
    - [State Management](development/state-management.md)
    - [Type System](development/type-system.md)
    - [UI Components](development/ui-components.md)
+   - [Validation](development/validation.md)
 - Features
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)

@@ -6,7 +6,6 @@ import {
   normalizePathname,
   safeRedirect,
   usePageTitle,
-  validateEmail,
 } from '../routeUtils'
 
 // Mock react-router hooks
@@ -480,32 +479,6 @@ describe('route-utils', () => {
           expect(result2).toBe(result3)
         })
       })
-    })
-  })
-
-  describe('validateEmail', () => {
-    test('returns false for non-emails', () => {
-      expect(validateEmail(undefined)).toBe(false)
-      expect(validateEmail(null)).toBe(false)
-      expect(validateEmail('')).toBe(false)
-      expect(validateEmail('not-an-email')).toBe(false)
-      expect(validateEmail('n@')).toBe(false)
-    })
-
-    test('returns true for emails', () => {
-      expect(validateEmail('kody@example.com')).toBe(true)
-    })
-
-    test('returns false for short strings', () => {
-      expect(validateEmail('a@')).toBe(false)
-      expect(validateEmail('ab')).toBe(false)
-      expect(validateEmail('a@b')).toBe(false)
-    })
-
-    test('returns true for valid email formats', () => {
-      expect(validateEmail('test@example.com')).toBe(true)
-      expect(validateEmail('user.name@domain.co.uk')).toBe(true)
-      expect(validateEmail('name+tag@example.org')).toBe(true)
     })
   })
 

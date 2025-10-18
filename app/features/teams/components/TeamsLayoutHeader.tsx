@@ -2,8 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
-
-import { LayoutHeader } from './LayoutHeader'
+import { LayoutHeader } from '~/components/layouts/LayoutHeader'
 
 type TeamsLayoutHeaderProps = {
   variant: 'public' | 'admin'

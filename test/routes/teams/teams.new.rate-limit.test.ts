@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from 'react-router'
 
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 
+import * as teamActions from '~/features/teams/utils/teamActions.server'
 import { action } from '~/routes/teams/teams.new'
 import * as adminMiddleware from '~/utils/adminMiddleware.server'
 
@@ -11,13 +12,14 @@ vi.mock('~/utils/adminMiddleware.server', () => ({
   isRateLimitResponse: vi.fn(),
 }))
 
-// Mock team creation utilities
-vi.mock('~/utils/team-creation.server', () => ({
-  createTeamFromFormData: vi.fn(),
+// Mock team action handlers
+vi.mock('~/features/teams/utils/teamActions.server', () => ({
+  handleTeamCreation: vi.fn(),
 }))
 
 const mockWithAdminRateLimit = vi.mocked(adminMiddleware.withAdminRateLimit)
 const mockIsRateLimitResponse = vi.mocked(adminMiddleware.isRateLimitResponse)
+const mockHandleTeamCreation = vi.mocked(teamActions.handleTeamCreation)
 
 describe('teams.new rate limiting integration', () => {
   beforeEach(() => {
@@ -42,12 +44,9 @@ describe('teams.new rate limiting integration', () => {
       { status: 200 }
     )
 
-    // Mock successful rate limiting
-    mockWithAdminRateLimit.mockImplementation(async (_req, handler) => handler())
-    mockIsRateLimitResponse.mockReturnValue(false)
-
-    // Mock the handler to return success
+    // Mock rate limiting to short-circuit and return response directly
     mockWithAdminRateLimit.mockResolvedValue(mockSuccessResponse)
+    mockIsRateLimitResponse.mockReturnValue(false)
 
     const response = await action({ request } as ActionFunctionArgs)
 
@@ -105,8 +104,7 @@ describe('teams.new rate limiting integration', () => {
       { status: 400 }
     )
 
-    // Mock rate limiting to allow request but handler returns validation error
-    mockWithAdminRateLimit.mockImplementation(async (_req, handler) => handler())
+    // Mock rate limiting to return validation error response
     mockWithAdminRateLimit.mockResolvedValue(mockValidationErrorResponse)
     mockIsRateLimitResponse.mockReturnValue(false)
 
@@ -126,28 +124,33 @@ describe('teams.new rate limiting integration', () => {
       body: formData,
     })
 
-    // Mock rate limiting to call the actual handler
-    mockWithAdminRateLimit.mockImplementation(async (_req, handler) => {
-      // Simulate the actual handler being called
-      const result = await handler()
-      return result
-    })
-
     const mockTeamResponse = new Response(
       JSON.stringify({
         success: true,
         team: { id: 'async-123', name: 'Async Team' },
       }),
-      { status: 200 }
+      { status: 302, headers: { Location: '/teams/async-123?success=created' } }
     )
 
-    mockWithAdminRateLimit.mockResolvedValue(mockTeamResponse)
+    // Mock team creation handler to return redirect response
+    mockHandleTeamCreation.mockResolvedValue(mockTeamResponse)
+
+    // Mock rate limiting to exercise the handler and return response
+    mockWithAdminRateLimit.mockImplementation(async (_req, handler) => {
+      // Simulate the actual handler being called and returning the response
+      const result = await handler()
+      return result
+    })
     mockIsRateLimitResponse.mockReturnValue(false)
 
     const response = await action({ request } as ActionFunctionArgs)
 
     expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
-    expect(response).toBe(mockTeamResponse)
+    expect(mockHandleTeamCreation).toHaveBeenCalledWith(
+      expect.any(FormData),
+      '/teams/{teamId}'
+    )
+    expect(response).toBeInstanceOf(Response)
   })
 
   test('should handle different HTTP methods appropriately', async () => {
@@ -158,9 +161,7 @@ describe('teams.new rate limiting integration', () => {
     const request = new Request('http://localhost/teams/new', {
       method: 'POST', // Team creation is POST
       body: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      // Let Request/FormData set content-type with proper boundary
     })
 
     const mockResponse = new Response(JSON.stringify({ success: true }), {

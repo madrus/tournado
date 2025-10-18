@@ -3,16 +3,15 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
   type MetaFunction,
-  redirect,
   useActionData,
 } from 'react-router'
 
-import { TeamForm } from '~/components/TeamForm'
-import type { TeamCreateActionData } from '~/lib/lib.types'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
+import { TeamForm } from '~/features/teams/components/TeamForm'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import type { TeamCreateActionData } from '~/features/teams/types'
+import { handleTeamCreation } from '~/features/teams/utils/teamActions.server'
 import { isRateLimitResponse, withAdminRateLimit } from '~/utils/adminMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
-import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 export const meta: MetaFunction = () => [
   { title: 'New Team | Tournado' },
@@ -42,22 +41,8 @@ export const loader = async ({ request: _ }: LoaderFunctionArgs): Promise<void> 
 
 export const action = async ({ request }: ActionFunctionArgs): Promise<Response> => {
   const response = await withAdminRateLimit(request, async () => {
-    const result = await createTeamFromFormData(await request.formData())
-
-    if (!result.success) {
-      return Response.json({ errors: result.errors }, { status: 400 })
-    }
-
-    // Ensure we have a valid team with an ID before redirecting
-    if (!result?.team?.id) {
-      return Response.json(
-        { errors: { general: 'Team creation failed - invalid team data' } },
-        { status: 500 }
-      )
-    }
-
-    // Redirect to team details page with success parameter
-    return redirect(`/teams/${result.team.id}?success=created`)
+    const formData = await request.formData()
+    return handleTeamCreation(formData, '/teams/{teamId}')
   })
 
   if (isRateLimitResponse(response)) {

@@ -10,8 +10,8 @@ import { TrophyIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
 import { TournamentMobileRow } from '~/features/tournaments/components/TournamentMobileRow'
 import { createTournamentColumns } from '~/features/tournaments/components/TournamentTableColumns'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
-import type { TournamentListItem } from '~/models/tournament.server'
 import {
   deleteTournamentById,
   getAllTournamentListItems,
@@ -64,7 +64,14 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Require permission to read tournaments
   await requireUserWithPermission(request, 'tournaments:read')
 
-  const tournamentListItems = await getAllTournamentListItems()
+  const tournamentListItemsRaw = await getAllTournamentListItems()
+
+  // Serialize dates to strings for JSON transport
+  const tournamentListItems = tournamentListItemsRaw.map(tournament => ({
+    ...tournament,
+    startDate: tournament.startDate.toISOString().split('T')[0],
+    endDate: tournament.endDate.toISOString().split('T')[0],
+  }))
 
   return { tournamentListItems }
 }

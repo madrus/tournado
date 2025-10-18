@@ -1,7 +1,7 @@
 # CSS Architecture Strategy: Component-to-Infrastructure Promotion
 
-> **Owner:** Frontend Team  
-> **Status:** Architectural Guidelines  
+> **Owner:** Frontend Team
+> **Status:** Architectural Guidelines
 > **Last Updated:** 2025-01-20
 
 ---
@@ -401,6 +401,163 @@ The key is **gradual adoption** - promote patterns as they prove themselves wort
 
 ---
 
+## Dynamic Class Generation & Safelist Management
+
+### The Problem: Dynamically Generated Classes
+
+When using CVA or other dynamic class generation patterns, Tailwind CSS may not detect all classes that need to be included in the production build. This happens when:
+
+1. **Conditional class names** are computed at runtime
+2. **Variant combinations** create classes dynamically
+3. **Color-based utilities** are generated from props
+4. **Focus states** with multiple variants need explicit inclusion
+
+### Solution: Tailwind v4 @source Directive
+
+Tailwind CSS v4 provides the `@source` directive to explicitly include classes in the build:
+
+#### Pattern 1: External Safelist File (Recommended for Production)
+
+**File: `app/styles/safelist.txt`**
+
+```txt
+# =============================================================================
+# Ring Utilities - Focus States
+# =============================================================================
+
+focus-visible:ring-2
+hover:ring-2
+focus:ring-2
+ring-2
+
+focus-visible:ring-emerald-600
+hover:ring-emerald-600
+focus:ring-emerald-600
+ring-emerald-600
+```
+
+**File: `app/styles/safe-lists.css`**
+
+```css
+@source './safelist.txt';
+```
+
+**Benefits:**
+
+- ✅ Works in both dev and production builds
+- ✅ Easy to read and maintain (one class per line)
+- ✅ Supports comments with `#`
+- ✅ Allows logical grouping with empty lines
+- ✅ Clear separation between classes and build configuration
+
+#### Pattern 2: Inline Source (Tailwind v4.1+)
+
+```css
+/* For simple cases with patterns */
+@source inline('{focus-visible:,hover:,focus:,}ring-2');
+@source inline('{sm:,md:,lg:,xl:,}grid-cols-{{1..12}}');
+```
+
+**Use Cases:**
+
+- Quick prototyping
+- Pattern-based generation
+- When you need variant combinations
+
+**Limitations:**
+
+- May have parsing issues in some build tools (Vite + PWA plugin)
+- Less readable for large safelists
+- Harder to organize and comment
+
+### When to Use Safelist
+
+**Always safelist:**
+
+1. **Dynamic variant combinations** - `{focus-visible:,hover:,}ring-red-600`
+2. **Color-based classes from props** - Panel colors, chip variants
+3. **Custom background classes** - `panel-teal-bg`, `panel-red-bg`
+4. **Complex gradient combinations** - Multi-class gradient patterns
+
+**Example from Tournado:**
+
+```typescript
+// Panel.tsx - Dynamic color prop
+export function Panel({ color = 'emerald' }: PanelProps) {
+  // These classes need safelisting:
+  // - border-red-400, border-blue-400, etc.
+  // - bg-gradient-to-br, from-red-50, via-red-100, to-red-50
+  // - dark:from-red-950, dark:via-red-900, dark:to-red-900
+  return <div className={panelVariants({ color })} />
+}
+```
+
+### Safelist Organization Best Practices
+
+#### 1. Group by Feature
+
+```txt
+# =============================================================================
+# Panel Component - Gradient Backgrounds
+# =============================================================================
+
+# Red variant
+border-red-400
+from-red-50
+via-red-100
+to-red-50
+dark:from-red-950
+
+# Blue variant
+border-blue-400
+from-blue-50
+```
+
+#### 2. Add Context Comments
+
+```txt
+# Ring colors - Light mode
+# Used in: ActionButton, Panel, TextInputField
+focus-visible:ring-emerald-600
+hover:ring-emerald-600
+```
+
+#### 3. Reference Source Components
+
+```txt
+# Panel Component - Custom Background Classes
+# Generated dynamically via CVA in panel.variants.ts
+panel-teal-bg
+panel-emerald-bg
+panel-red-bg
+```
+
+### Maintenance Strategy
+
+1. **Regular Audits**: Review safelist quarterly to remove unused classes
+2. **Component Comments**: Document which components use safelisted classes
+3. **Bundle Analysis**: Monitor CSS size to detect bloat
+4. **Automated Detection**: Consider tooling to detect missing classes in build
+
+### Build Compatibility Notes
+
+**Issue Discovered:** The `@source inline()` syntax works in dev mode but may fail during production builds with certain Vite plugins (e.g., vite-plugin-pwa).
+
+**Error:** "`@source` paths must be quoted."
+
+**Solution:** Use external file approach with quoted path:
+
+```css
+@source './safelist.txt'; /* ✅ Works in all build modes */
+```
+
+**When to Use Each:**
+
+- **External file**: Production applications, large safelists (50+ classes)
+- **Inline source**: Quick prototypes, small safelists (< 20 classes), pattern-based generation
+
+---
+
 ## Examples from Tournado Codebase
 
 ### Current Duplication
@@ -424,3 +581,5 @@ emerald: 'text-emerald-600 dark:text-emerald-400',
 1. **High Impact**: Text colors (used in 8+ files)
 2. **Medium Impact**: Panel backgrounds (used in 4 files)
 3. **Low Impact**: Component-specific hover states
+
+**Status**: These patterns are documented for future optimization. The refactoring work to consolidate these duplications into Tailwind utilities or CVA variants is not part of the current implementation and should be addressed in follow-up PRs as needed

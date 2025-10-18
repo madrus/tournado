@@ -5,7 +5,7 @@ import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
 import { SportsIcon, TrophyIcon } from '~/components/icons'
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
-import type { TournamentListItem } from '~/lib/lib.types'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import {
   getAllTournamentListItems,
   getTournamentById,
@@ -49,10 +49,17 @@ export async function loader({
   const url = new URL(request.url)
   const tournamentId = url.searchParams.get('tournament')
 
-  const [tournamentListItems, tournament] = await Promise.all([
+  const [tournamentListItemsRaw, tournament] = await Promise.all([
     getAllTournamentListItems(),
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
+
+  // Serialize dates to strings for JSON transport
+  const tournamentListItems = tournamentListItemsRaw.map(item => ({
+    ...item,
+    startDate: item.startDate.toISOString().split('T')[0],
+    endDate: item.endDate.toISOString().split('T')[0],
+  }))
 
   return {
     tournament: tournament

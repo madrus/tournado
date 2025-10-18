@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock the route component
-import AdminTeamPage from '../teams.$teamId'
+import AdminTeamPage from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.$teamId'
 
 // Mock submit function for useSubmit hook
 const mockSubmit = vi.fn()
@@ -89,7 +89,7 @@ vi.mock('~/components/Panel', () => ({
 }))
 
 // Mock TeamForm component
-vi.mock('~/components/TeamForm', () => ({
+vi.mock('~/features/teams/components/TeamForm', () => ({
   TeamForm: ({
     mode,
     variant,
@@ -171,28 +171,36 @@ const mockTeam = {
 const mockUseLoaderData = vi.mocked(ReactRouter.useLoaderData)
 const mockUseActionData = vi.mocked(ReactRouter.useActionData)
 
-// Mock ConfirmDialog - simulate user confirmation
+// Mock ConfirmDialog - allow tests to control confirm/cancel behavior
 const mockOnConfirm = vi.fn()
+let triggerConfirm: (() => void) | null = null
+let triggerCancel: (() => void) | null = null
+
 vi.mock('~/components/ConfirmDialog', () => ({
   ConfirmDialog: ({
     trigger,
     onConfirm,
+    onCancel,
     description,
   }: {
     trigger: React.ReactElement<{ onClick?: (event: React.MouseEvent) => void }>
     onConfirm: () => void
+    onCancel?: () => void
     description: string
-  }) =>
-    React.cloneElement(trigger, {
+  }) => {
+    // Expose functions for tests to trigger confirm/cancel
+    triggerConfirm = onConfirm
+    triggerCancel = onCancel || null
+
+    return React.cloneElement(trigger, {
       onClick: (event: React.MouseEvent) => {
         // Call original onClick first
         trigger.props.onClick?.(event)
-        // Track that confirmation was requested with description
+        // Track that confirmation dialog was opened with description
         mockOnConfirm(description)
-        // Simulate immediate confirmation
-        onConfirm()
       },
-    }),
+    })
+  },
 }))
 
 const renderTeamPage = () => render(<AdminTeamPage />)
@@ -201,6 +209,8 @@ describe('AdminTeamPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockOnConfirm.mockClear()
+    triggerConfirm = null
+    triggerCancel = null
   })
 
   describe('Header Display', () => {
@@ -239,42 +249,49 @@ describe('AdminTeamPage', () => {
       // No color prop specified in actual component, so no data-color attribute
     })
 
-    it('should show confirmation dialog when delete button is clicked', async () => {
+    it('should show confirmation dialog and submit when confirmed', async () => {
       const user = userEvent.setup()
       renderTeamPage()
 
       const deleteButton = screen.getByRole('button', { name: 'Delete' })
       await user.click(deleteButton)
 
+      // Verify confirmation dialog was opened
       expect(mockOnConfirm).toHaveBeenCalledWith(
         'teams.confirmations.deleteDescription'
       )
+
+      // Simulate user confirming the dialog
+      expect(triggerConfirm).not.toBeNull()
+      triggerConfirm!()
+
+      // Verify submit was called with FormData containing delete intent
+      expect(mockSubmit).toHaveBeenCalledTimes(1)
+      const [formData, options] = mockSubmit.mock.calls[0]
+      expect(formData).toBeInstanceOf(FormData)
+      expect(formData.get('intent')).toBe('delete')
+      expect(options).toEqual({ method: 'post' })
     })
 
-    it('should show confirmation dialog when confirmed', async () => {
+    it('should not submit when confirmation is cancelled', async () => {
       const user = userEvent.setup()
-
       renderTeamPage()
 
       const deleteButton = screen.getByRole('button', { name: 'Delete' })
       await user.click(deleteButton)
 
+      // Verify confirmation dialog was opened
       expect(mockOnConfirm).toHaveBeenCalledWith(
         'teams.confirmations.deleteDescription'
       )
-    })
 
-    it('should not show confirmation when cancelled', async () => {
-      const user = userEvent.setup()
+      // Simulate user cancelling the dialog
+      if (triggerCancel) {
+        triggerCancel()
+      }
 
-      renderTeamPage()
-
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
-      await user.click(deleteButton)
-
-      expect(mockOnConfirm).toHaveBeenCalledWith(
-        'teams.confirmations.deleteDescription'
-      )
+      // Verify submit was NOT called
+      expect(mockSubmit).not.toHaveBeenCalled()
     })
   })
 

@@ -4,10 +4,9 @@
   "ignore": [
     "app/routes.ts",
     "app/components/SidebarLayout.tsx",
-    "app/components/SidebarTeamsExample.tsx",
+    "app/components/examples/SidebarTeamsExample.tsx",
     "app/hooks/useTeamsNavigation.ts",
     "app/utils/clientOnly.tsx",
-    "app/utils/teamsMetaFactory.ts",
     "docs/assets/docsify-settings.js",
     "memories/notes/toast-examples-section.tsx",
     "playwright/fixtures/auth.fixture.ts",

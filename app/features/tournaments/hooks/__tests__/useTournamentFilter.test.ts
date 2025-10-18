@@ -31,22 +31,22 @@ describe('useTournamentFilter', () => {
       id: 'tournament-1',
       name: 'Spring Tournament 2024',
       location: 'Amsterdam',
-      startDate: new Date('2024-03-01'),
-      endDate: new Date('2024-03-03'),
+      startDate: '2024-03-01T00:00:00.000Z',
+      endDate: '2024-03-03T00:00:00.000Z',
     },
     {
       id: 'tournament-2',
       name: 'Summer Cup 2024',
       location: 'Rotterdam',
-      startDate: new Date('2024-06-15'),
-      endDate: new Date('2024-06-16'),
+      startDate: '2024-06-15T00:00:00.000Z',
+      endDate: '2024-06-16T00:00:00.000Z',
     },
     {
       id: 'tournament-3',
       name: 'Winter League 2024',
       location: 'Utrecht',
-      startDate: new Date('2024-12-10'),
-      endDate: new Date('2024-12-12'),
+      startDate: '2024-12-10T00:00:00.000Z',
+      endDate: '2024-12-12T00:00:00.000Z',
     },
   ]
 
@@ -93,15 +93,15 @@ describe('useTournamentFilter', () => {
           id: 'tournament-1',
           name: 'Tournament & Cup 2024',
           location: 'Amsterdam',
-          startDate: new Date('2024-03-01'),
-          endDate: new Date('2024-03-03'),
+          startDate: '2024-03-01T00:00:00.000Z',
+          endDate: '2024-03-03T00:00:00.000Z',
         },
         {
           id: 'tournament-2',
           name: 'Youth League "Special Edition"',
           location: 'Rotterdam',
-          startDate: new Date('2024-06-15'),
-          endDate: new Date('2024-06-16'),
+          startDate: '2024-06-15T00:00:00.000Z',
+          endDate: '2024-06-16T00:00:00.000Z',
         },
       ]
 
@@ -390,8 +390,8 @@ describe('useTournamentFilter', () => {
         id: `tournament-${i}`,
         name: `Tournament ${i}`,
         location: `Location ${i}`,
-        startDate: new Date(`2024-${(i % 12) + 1}-01`),
-        endDate: new Date(`2024-${(i % 12) + 1}-03`),
+        startDate: `2024-${String((i % 12) + 1).padStart(2, '0')}-01T00:00:00.000Z`,
+        endDate: `2024-${String((i % 12) + 1).padStart(2, '0')}-03T00:00:00.000Z`,
       }))
 
       const { result } = renderHook(() =>

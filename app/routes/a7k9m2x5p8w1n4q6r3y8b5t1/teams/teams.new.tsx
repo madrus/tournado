@@ -1,20 +1,15 @@
 import type { JSX } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useActionData,
-} from 'react-router'
+import { ActionFunctionArgs, LoaderFunctionArgs, useActionData } from 'react-router'
 
-import { TeamForm } from '~/components/TeamForm'
-import type { TeamCreateActionData } from '~/lib/lib.types'
+import { TeamForm } from '~/features/teams/components/TeamForm'
+import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import type { TeamCreateActionData } from '~/features/teams/types'
+import { handleTeamCreation } from '~/features/teams/utils/teamActions.server'
 import type { User } from '~/models/user.server'
-import { useTeamFormStore } from '~/stores/useTeamFormStore'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-import { createTeamFromFormData } from '~/utils/teamCreation.server'
 
 // Route metadata - authenticated users can access (team creation is also public via /teams/new)
 export const handle: RouteMetadata = {
@@ -41,22 +36,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   const intent = formData.get('intent')
 
   if (intent === 'create') {
-    const result = await createTeamFromFormData(formData)
-
-    if (!result.success) {
-      return Response.json({ errors: result.errors }, { status: 400 })
-    }
-
-    // Ensure we have a valid team with an ID before redirecting
-    if (!result?.team?.id) {
-      return Response.json(
-        { errors: { general: 'Team creation failed - invalid team data' } },
-        { status: 500 }
-      )
-    }
-
-    // Redirect to admin team detail page with success parameter
-    return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/teams/${result.team.id}?success=created`)
+    return handleTeamCreation(formData, '/a7k9m2x5p8w1n4q6r3y8b5t1/teams/{teamId}')
   }
 
   return Response.json({ errors: {} })

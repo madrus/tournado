@@ -13,11 +13,8 @@ vi.mock('~/models/team.server', () => ({
   createTeam: vi.fn(),
 }))
 
-vi.mock('~/lib/lib.zod', () => ({
+vi.mock('~/features/teams/validation', () => ({
   extractTeamDataFromFormData: vi.fn(),
-}))
-
-vi.mock('~/utils/formValidation', () => ({
   validateEntireTeamForm: vi.fn(),
 }))
 
@@ -31,6 +28,7 @@ vi.mock('~/db.server', () => ({
     teamLeader: {
       findUnique: vi.fn(),
       create: vi.fn(),
+      upsert: vi.fn(),
     },
     tournament: {
       findUnique: vi.fn(),
@@ -42,8 +40,9 @@ const { createTeamFromFormData } = await import('../teamCreation.server')
 const { sendConfirmationEmail } = await import('~/utils/email.server')
 const { getTournamentById } = await import('~/models/tournament.server')
 const { createTeam } = await import('~/models/team.server')
-const { extractTeamDataFromFormData } = await import('~/lib/lib.zod')
-const { validateEntireTeamForm } = await import('~/utils/formValidation')
+const { extractTeamDataFromFormData, validateEntireTeamForm } = await import(
+  '~/features/teams/validation'
+)
 const { stringToDivision, stringToCategory } = await import('~/lib/lib.helpers')
 const { prisma } = await import('~/db.server')
 
@@ -113,7 +112,7 @@ describe('teamCreation.server - createTeamFromFormData', () => {
     vi.mocked(validateEntireTeamForm).mockReturnValue({})
     vi.mocked(stringToDivision).mockReturnValue('FIRST_DIVISION' as const)
     vi.mocked(stringToCategory).mockReturnValue('JO12' as const)
-    vi.mocked(prisma.teamLeader.findUnique).mockResolvedValue(mockTeamLeader)
+    vi.mocked(prisma.teamLeader.upsert).mockResolvedValue(mockTeamLeader)
     vi.mocked(prisma.tournament.findUnique).mockResolvedValue(mockTournament)
     vi.mocked(createTeam).mockResolvedValue(mockCreatedTeam)
     vi.mocked(getTournamentById).mockResolvedValue(mockTournament)
@@ -141,6 +140,8 @@ describe('teamCreation.server - createTeamFromFormData', () => {
       tournamentId: 'tournament-123',
     })
 
+    // Email is fire-and-forget, so we need to wait for microtasks
+    await Promise.resolve()
     expect(sendConfirmationEmail).toHaveBeenCalledWith(mockCreatedTeam, mockTournament)
   })
 
@@ -198,21 +199,25 @@ describe('teamCreation.server - createTeamFromFormData', () => {
     expect(createTeam).not.toHaveBeenCalled()
   })
 
-  it('should create new team leader when not found', async () => {
-    vi.mocked(prisma.teamLeader.findUnique).mockResolvedValue(null)
+  it('should upsert team leader (create when not found)', async () => {
     const newTeamLeader = {
       ...mockTeamLeader,
       id: 'new-leader-123',
       createdAt: new Date(),
       updatedAt: new Date(),
     }
-    vi.mocked(prisma.teamLeader.create).mockResolvedValue(newTeamLeader)
+    vi.mocked(prisma.teamLeader.upsert).mockResolvedValue(newTeamLeader)
 
     const result = await createTeamFromFormData(mockFormData)
 
-    expect(prisma.teamLeader.create).toHaveBeenCalledWith({
-      // eslint-disable-next-line id-blacklist
-      data: {
+    expect(prisma.teamLeader.upsert).toHaveBeenCalledWith({
+      where: { email: 'john@example.com' },
+      update: {
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: '+31612345678',
+      },
+      create: {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@example.com',
@@ -238,6 +243,8 @@ describe('teamCreation.server - createTeamFromFormData', () => {
       },
     })
 
+    // Email is fire-and-forget, so we need to wait for the promise to reject
+    await Promise.resolve()
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Failed to send confirmation email:',
       expect.any(Error)
@@ -268,8 +275,7 @@ describe('teamCreation.server - createTeamFromFormData', () => {
       teamLeaderName: 'John van der Berg',
     }
     vi.mocked(extractTeamDataFromFormData).mockReturnValue(teamDataWithLongName)
-    vi.mocked(prisma.teamLeader.findUnique).mockResolvedValue(null)
-    vi.mocked(prisma.teamLeader.create).mockResolvedValue({
+    vi.mocked(prisma.teamLeader.upsert).mockResolvedValue({
       ...mockTeamLeader,
       firstName: 'John',
       lastName: 'van der Berg',
@@ -279,9 +285,14 @@ describe('teamCreation.server - createTeamFromFormData', () => {
 
     await createTeamFromFormData(mockFormData)
 
-    expect(prisma.teamLeader.create).toHaveBeenCalledWith({
-      // eslint-disable-next-line id-blacklist
-      data: {
+    expect(prisma.teamLeader.upsert).toHaveBeenCalledWith({
+      where: { email: 'john@example.com' },
+      update: {
+        firstName: 'John',
+        lastName: 'van der Berg',
+        phone: '+31612345678',
+      },
+      create: {
         firstName: 'John',
         lastName: 'van der Berg',
         email: 'john@example.com',

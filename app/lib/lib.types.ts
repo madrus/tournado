@@ -1,45 +1,26 @@
-// ============================================================================
-// Team Types (moved from teams.types.ts)
-// ============================================================================
-import type { Team as PrismaTeam } from '@prisma/client'
-
-// ============================================================================
-
-// ============================================================================
-
-import type { TournamentListItem } from '~/models/tournament.server'
-
 /**
- * @fileoverview Centralized Type System for Tournado Application
+ * @fileoverview Shared Type System for Tournado Application
  *
- * This file contains all custom type definitions for the Tournado application,
- * focusing on strict type safety and controlled database-to-type conversions.
+ * This file contains ONLY shared/generic type definitions used across the application.
+ * Feature-specific types live in their respective feature modules (e.g., ~/features/teams/types).
  *
  * Key principles:
  * - Prefer branded types for domain-specific values
  * - Use union types for controlled sets of values
  * - Maintain database compatibility through helper functions
- * - Future-ready design for validation enhancements
+ * - NO re-exports - import directly from feature modules
  *
  * For detailed documentation, see: docs/development/type-system.md
  */
 
-// Foundation Types
-
-/**
- * Branded type for team names with validation potential
- */
-export type TeamName = string & { readonly brand: unique symbol }
+// ============================================================================
+// Foundation Types (Shared)
+// ============================================================================
 
 /**
  * Branded type for email addresses with validation potential
  */
 export type Email = string & { readonly brand: unique symbol }
-
-/**
- * Team class/category (flexible string for now)
- */
-export type TeamClass = string
 
 // Icon Types
 
@@ -99,14 +80,23 @@ export type ToastConfig = {
 }
 
 /**
- * Color accent options for UI components
- * Includes all official Tailwind CSS color names, plus:
+ * Semantic color accents for UI components
+ * Prefer these in component props to ensure consistency with design system
+ * @see app/styles/tailwind.css for semantic class definitions
+ */
+export type SemanticAccent = 'brand' | 'primary'
+
+/**
+ * Full color accent palette including raw Tailwind colors
+ * Includes all official Tailwind CSS color names, plus semantic accents:
  * - 'brand' (maps to 'red')
  * - 'primary' (maps to 'emerald')
+ *
+ * Note: Prefer SemanticAccent for component props. Raw colors should be
+ * mapped to semantic tokens in CVA/theme layer for consistency.
  */
 export type ColorAccent =
-  | 'brand' // special: maps to 'red'
-  | 'primary' // special: maps to 'emerald'
+  | SemanticAccent
   | 'slate'
   | 'zinc'
   | 'red'
@@ -128,39 +118,26 @@ export type ColorAccent =
   | 'rose'
 
 // ============================================================================
-
+// Division & Category System (Shared)
 // ============================================================================
 
-export type TeamListItem = Pick<PrismaTeam, 'id' | 'name' | 'clubName' | 'category'>
+/**
+ * Supported locales across the application
+ */
+export type Locale = 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
 
-// Re-export tournament types from feature module
-export type { TournamentData } from '~/features/tournaments/types'
-export type { TournamentListItem } from '~/models/tournament.server'
-
-export type TeamsLoaderData = {
-  teamListItems: TeamListItem[]
-  tournamentListItems: TournamentListItem[]
-  selectedTournamentId?: string
-}
-
-// ============================================================================
-// Division System
-// ============================================================================
+/**
+ * Immutable localized labels for divisions, categories, and other i18n content
+ */
+export type LocalizedLabels = Readonly<Record<Locale, string>>
 
 /**
  * Division configuration object for localization and metadata
  */
 export type DivisionObject = {
-  value: string
-  labels: {
-    nl: string
-    en: string
-    de: string
-    fr: string
-    ar: string
-    tr: string
-  }
-  order: number
+  readonly value: string
+  readonly labels: LocalizedLabels
+  readonly order: number
 }
 
 // ============================================================================
@@ -171,173 +148,12 @@ export type DivisionObject = {
  * Category configuration object for localization and metadata
  */
 export type CategoryObject = {
-  value: string
-  labels: {
-    nl: string
-    en: string
-    de: string
-    fr: string
-    ar: string
-    tr: string
+  readonly value: string
+  readonly labels: LocalizedLabels
+  readonly order: number
+  readonly ageGroup?: {
+    readonly min: number
+    readonly max: number
   }
-  order: number
-  ageGroup?: {
-    min: number
-    max: number
-  }
-  gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
-}
-
-// ============================================================================
-// Team Types
-// ============================================================================
-
-export type Team = {
-  id: string
-  name: string
-  tournamentId: string
-  category: string
-  division: string
-  clubName: string
-  teamLeaderId: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-export type TeamFormData = {
-  tournamentId: string
-  clubName: string
-  name: string
-  division: string
-  category: string
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  privacyAgreement: boolean
-}
-
-export type TeamLeaderFull = {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  phone: string
-}
-
-export type TeamWithLeaderFull = Team & {
-  tournamentId: string
-  teamLeader: TeamLeaderFull
-}
-
-// ============================================================================
-// Form Integration Types
-// ============================================================================
-
-export type FormMode = 'create' | 'edit'
-export type FormVariant = 'public' | 'admin'
-
-/**
- * Props for TeamForm component - maintains backward compatibility
- */
-export type TeamFormProps = {
-  mode?: FormMode
-  variant?: FormVariant
-  formData?: Partial<TeamFormData>
-  errors?: Record<string, string>
-  isSuccess?: boolean
-  successMessage?: string
-  submitButtonText?: string
-  className?: string
-  intent?: string
-  // Optional props for providing data directly (can be undefined for backward compatibility)
-  availableDivisions?: string[]
-  availableCategories?: string[]
-  tournamentId?: string | null
-}
-
-// ============================================================================
-// Action Data Types
-// ============================================================================
-
-export type TeamCreateActionData = {
-  success?: boolean
-  team?: {
-    id: string
-    name: string
-    division: string
-  }
-  errors?: {
-    tournamentId?: string
-    clubName?: string
-    name?: string
-    division?: string
-    category?: string
-    teamLeaderName?: string
-    teamLeaderPhone?: string
-    teamLeaderEmail?: string
-    privacyAgreement?: string
-    teamLeader?: string
-    tournament?: string
-  }
-}
-
-// ============================================================================
-// Validation Types
-// ============================================================================
-
-export type TeamFormSchemaType = import('zod').ZodObject<{
-  tournamentId: import('zod').ZodString
-  clubName: import('zod').ZodString
-  name: import('zod').ZodString
-  division: import('zod').ZodString
-  category: import('zod').ZodString
-  teamLeaderName: import('zod').ZodString
-  teamLeaderPhone: import('zod').ZodSchema<string>
-  teamLeaderEmail: import('zod').ZodSchema<string>
-  privacyAgreement: import('zod').ZodSchema<boolean>
-}>
-
-export type TeamValidationInput = Record<string, unknown>
-export type TeamValidationSchema = TeamFormSchemaType
-export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
-  T extends 'create'
-    ? // eslint-disable-next-line id-blacklist
-      | { success: true; data: TeamFormData }
-        | { success: false; error: import('zod').ZodError }
-    : // eslint-disable-next-line id-blacklist
-      | { success: true; data: Omit<TeamFormData, 'privacyAgreement'> }
-        | { success: false; error: import('zod').ZodError }
-
-export type ExtractedTeamData = {
-  tournamentId: string
-  clubName: string
-  name: string
-  division: string
-  category: string
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  privacyAgreement: boolean
-}
-
-// ============================================================================
-// Future Enhancement Placeholders
-// ============================================================================
-
-/**
- * Placeholder for future validation rules
- */
-export type ValidationRule = {
-  field: string
-  rule: string
-  message: string
-}
-
-/**
- * Placeholder for future form validation
- */
-export type FormValidation = {
-  rules: ValidationRule[]
-  isValid: boolean
-  errors: string[]
+  readonly gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
 }

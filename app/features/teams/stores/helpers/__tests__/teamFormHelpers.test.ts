@@ -28,7 +28,7 @@ const mockFormFields: FormFields = {
   privacyAgreement: true,
 }
 
-const mockTournament: import('~/lib/lib.types').TournamentData = {
+const mockTournament: import('~/features/tournaments/types').TournamentData = {
   id: 't1',
   name: 'Tournament 1',
   location: 'Loc',
@@ -104,7 +104,12 @@ describe('lib.store', () => {
     expect(getDependentFieldResets('clubName')).toEqual({})
   })
   it('mergeErrors merges and prioritizes server errors', () => {
-    expect(mergeErrors({ a: 'x' }, { a: 'y', b: 'z' })).toEqual({ a: 'y', b: 'z' })
+    expect(
+      mergeErrors(
+        { name: 'client error' },
+        { name: 'server error', clubName: 'another error' }
+      )
+    ).toEqual({ name: 'server error', clubName: 'another error' })
   })
   it('isPanelComplete returns true if all fields are blurred and valid', () => {
     const blurred = Object.fromEntries(TEAM_PANELS_FIELD_MAP[1].map(f => [f, true]))

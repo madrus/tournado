@@ -15,14 +15,10 @@
  */
 import { Category, Division } from '@prisma/client'
 
+import type { TeamClass, TeamName } from '~/features/teams/types'
+
 import { CATEGORIES, DIVISIONS } from './lib.constants'
-import type {
-  CategoryObject,
-  DivisionObject,
-  Email,
-  TeamClass,
-  TeamName,
-} from './lib.types'
+import type { CategoryObject, DivisionObject, Email } from './lib.types'
 
 // Check if we're in a browser environment
 export const isBrowser = typeof window !== 'undefined'

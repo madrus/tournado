@@ -9,7 +9,7 @@ import {
   datatableActionButtonVariants,
   datatableCellTextVariants,
 } from '~/components/shared/datatable.variants'
-import type { TournamentListItem } from '~/models/tournament.server'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import { cn } from '~/utils/misc'
 
 type ColumnContext = {

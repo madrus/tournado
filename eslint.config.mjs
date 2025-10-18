@@ -11,7 +11,6 @@ import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
 import jestDomPlugin from 'eslint-plugin-jest-dom'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
-import markdownPlugin from 'eslint-plugin-markdown'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import testingLibraryPlugin from 'eslint-plugin-testing-library'
@@ -37,6 +36,7 @@ export default [
       'node_modules/**',
       'public/**',
       'scripts/**',
+      '*.md*',
     ],
   },
 
@@ -153,15 +153,6 @@ export default [
       globals: {
         node: true,
       },
-    },
-  },
-
-  // Markdown configuration
-  {
-    files: ['**/*.md'],
-    ignores: ['**/*.md'],
-    plugins: {
-      markdown: markdownPlugin,
     },
   },
 ]

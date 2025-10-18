@@ -65,23 +65,23 @@ vi.mock('~/components/Panel', () => ({
 }))
 
 // Mock TeamList component
-vi.mock('~/components/TeamList', () => ({
+vi.mock('~/features/teams/components/TeamList', () => ({
   TeamList: ({
     teams,
     onTeamClick,
-    emptyMessage,
+    emptyMessage = 'No teams available',
   }: {
-    teams: Array<{ id: string; name: string }>
-    onTeamClick: (id: string) => void
-    emptyMessage: string
+    teams: Array<{ id: string; clubName: string; name: string }>
+    onTeamClick?: (id: string) => void
+    emptyMessage?: string
   }) => (
-    <div data-testid='team-list'>
+    <div>
       {teams.length === 0 ? (
         <div>{emptyMessage}</div>
       ) : (
         teams.map(team => (
-          <button key={team.id} onClick={() => onTeamClick(team.id)}>
-            {team.name}
+          <button key={team.id} onClick={() => onTeamClick?.(team.id)}>
+            {team.clubName} {team.name}
           </button>
         ))
       )}
@@ -133,15 +133,15 @@ describe('TeamsPageContent', () => {
       id: 't1',
       name: 'Tournament 1',
       location: 'Location 1',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: '2024-01-01T00:00:00.000Z',
+      endDate: '2024-01-03T00:00:00.000Z',
     },
     {
       id: 't2',
       name: 'Tournament 2',
       location: 'Location 2',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: '2024-02-01T00:00:00.000Z',
+      endDate: '2024-02-03T00:00:00.000Z',
     },
   ]
 
@@ -223,9 +223,8 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      expect(screen.getByTestId('team-list')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Team A' })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Team B' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Club A Team A' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Club B Team B' })).toBeInTheDocument()
     })
 
     it('should call onTeamClick when team is clicked', async () => {
@@ -240,7 +239,7 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      await user.click(screen.getByRole('button', { name: 'Team A' }))
+      await user.click(screen.getByRole('button', { name: 'Club A Team A' }))
       expect(mockOnTeamClick).toHaveBeenCalledWith('1')
     })
 

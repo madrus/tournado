@@ -4,10 +4,10 @@ import { useRevalidator } from 'react-router'
 
 import { ApparelIcon } from '~/components/icons'
 import { Panel } from '~/components/Panel'
-import { TeamList } from '~/components/TeamList'
+import { TeamList } from '~/features/teams/components/TeamList'
+import type { TeamListItem } from '~/features/teams/types'
 import { TournamentFilter } from '~/features/tournaments/components/TournamentFilter'
 import type { TournamentListItem } from '~/features/tournaments/types'
-import type { TeamListItem } from '~/lib/lib.types'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -21,6 +21,7 @@ type TeamsPageContentProps = {
   testId?: string
 }
 
+// Teal is a valid ColorAccent token from the project's semantic palette
 const PANEL_COLOR = 'teal' as const
 
 export function TeamsPageContent({
@@ -125,7 +126,7 @@ export function TeamsPageContent({
         teams={teamListItems}
         onTeamClick={onTeamClick}
         emptyMessage={t('teams.noTeams')}
-        className='min-h-[200px]'
+        className='min-h-52'
       />
 
       {/* Info Section */}

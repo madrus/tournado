@@ -1,21 +1,21 @@
-/* eslint-disable id-blacklist */
-import { Category, Division, Team } from '@prisma/client'
+import { Division, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import {
+  extractTeamDataFromFormData,
+  validateEntireTeamForm,
+} from '~/features/teams/validation'
 import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
-import type { TeamFormData } from '~/lib/lib.types'
-import { extractTeamDataFromFormData } from '~/lib/lib.zod'
 import { createTeam } from '~/models/team.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { sendConfirmationEmail } from '~/utils/email.server'
-import { validateEntireTeamForm } from '~/utils/formValidation'
 
 type TeamCreationSuccess = {
   success: true
   team: {
     name: string
     id: string
-    division: string
+    division: Division
   }
 }
 
@@ -27,34 +27,26 @@ type TeamCreationError = {
 type TeamCreationResult = TeamCreationSuccess | TeamCreationError
 
 /**
- * Find or create a team leader based on email
+ * Find or create a team leader based on email using upsert to avoid race conditions
  */
-async function findOrCreateTeamLeader(data: {
+async function findOrCreateTeamLeader(teamLeaderData: {
   name: string
   email: string
   phone: string
-}) {
-  // Try to find existing team leader by email
-  let teamLeader = await prisma.teamLeader.findUnique({
-    where: { email: data.email },
+}): Promise<TeamLeader> {
+  const [firstName, ...lastNameParts] = teamLeaderData.name.split(' ')
+  const lastName = lastNameParts.join(' ') || ''
+
+  return prisma.teamLeader.upsert({
+    where: { email: teamLeaderData.email },
+    update: { firstName, lastName, phone: teamLeaderData.phone },
+    create: {
+      firstName,
+      lastName,
+      email: teamLeaderData.email,
+      phone: teamLeaderData.phone,
+    },
   })
-
-  // If not found, create new team leader
-  if (!teamLeader) {
-    const [firstName, ...lastNameParts] = data.name.split(' ')
-    const lastName = lastNameParts.join(' ') || ''
-
-    teamLeader = await prisma.teamLeader.create({
-      data: {
-        firstName,
-        lastName,
-        email: data.email,
-        phone: data.phone,
-      },
-    })
-  }
-
-  return teamLeader
 }
 
 /**
@@ -75,20 +67,23 @@ export async function createTeamFromFormData(
   formData: FormData
 ): Promise<TeamCreationResult> {
   // Extract form data using shared utility
-  const teamData = extractTeamDataFromFormData(formData)
-  const teamFormData = teamData as TeamFormData
+  const teamFormData = extractTeamDataFromFormData(formData)
 
   // Validate using the form validation system
   const fieldErrors = validateEntireTeamForm(teamFormData, 'create')
 
   // Additional business logic validation
-  const validDivision = teamData.division ? stringToDivision(teamData.division) : null
-  if (teamData.division && !validDivision) {
+  const validDivision = teamFormData.division
+    ? stringToDivision(teamFormData.division)
+    : null
+  if (teamFormData.division && !validDivision) {
     fieldErrors.division = 'Invalid division'
   }
 
-  const validCategory = teamData.category ? stringToCategory(teamData.category) : null
-  if (teamData.category && !validCategory) {
+  const validCategory = teamFormData.category
+    ? stringToCategory(teamFormData.category)
+    : null
+  if (teamFormData.category && !validCategory) {
     fieldErrors.category = 'Invalid category'
   }
 
@@ -96,18 +91,26 @@ export async function createTeamFromFormData(
     return { success: false, errors: fieldErrors }
   }
 
+  // Type narrowing: ensure division and category are valid after validation
+  if (!validDivision) {
+    return { success: false, errors: { division: 'Division is required' } }
+  }
+  if (!validCategory) {
+    return { success: false, errors: { category: 'Category is required' } }
+  }
+
   let team: Team
 
   try {
     // Find or create team leader
     const teamLeader = await findOrCreateTeamLeader({
-      name: teamData.teamLeaderName,
-      email: teamData.teamLeaderEmail,
-      phone: teamData.teamLeaderPhone,
+      name: teamFormData.teamLeaderName,
+      email: teamFormData.teamLeaderEmail,
+      phone: teamFormData.teamLeaderPhone,
     })
 
     // Verify tournament exists
-    const tournamentExists = await verifyTournamentExists(teamData.tournamentId)
+    const tournamentExists = await verifyTournamentExists(teamFormData.tournamentId)
     if (!tournamentExists) {
       return {
         success: false,
@@ -115,33 +118,30 @@ export async function createTeamFromFormData(
       }
     }
 
-    // Create the team
+    // Create the team (no type assertions needed - validDivision/validCategory are guaranteed non-null)
     team = await createTeam({
-      clubName: teamData.clubName,
-      name: teamData.name,
-      division: validDivision as Division,
-      category: validCategory as Category,
+      clubName: teamFormData.clubName,
+      name: teamFormData.name,
+      division: validDivision,
+      category: validCategory,
       teamLeaderId: teamLeader.id,
-      tournamentId: teamData.tournamentId,
+      tournamentId: teamFormData.tournamentId,
     })
 
     // Get tournament details for email
-    const tournament = await getTournamentById({ id: teamData.tournamentId })
+    const tournament = await getTournamentById({ id: teamFormData.tournamentId })
 
-    // Send confirmation email (don't block team creation if email fails)
+    // Send confirmation email (fire-and-forget - don't block team creation)
     if (tournament) {
-      try {
-        await sendConfirmationEmail(team, tournament)
-      } catch (emailError) {
-        // Log the error but don't fail the team creation
+      void sendConfirmationEmail(team, tournament).catch(emailError => {
         // eslint-disable-next-line no-console
         console.error('Failed to send confirmation email:', emailError)
-      }
+      })
     } else {
       // eslint-disable-next-line no-console
       console.error(
         'Tournament not found for email sending, tournament ID:',
-        teamData.tournamentId
+        teamFormData.tournamentId
       )
     }
   } catch (error) {

@@ -10,9 +10,12 @@ import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import type { Division } from '~/db.server'
+import {
+  useTeamFormStore,
+  useTeamFormStoreHydration,
+} from '~/features/teams/stores/useTeamFormStore'
+import type { TeamFormProps } from '~/features/teams/types'
 import { getDivisionLabel } from '~/lib/lib.helpers'
-import type { TeamFormProps } from '~/lib/lib.types'
-import { useTeamFormStore, useTeamFormStoreHydration } from '~/stores/useTeamFormStore'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 import { toast } from '~/utils/toastUtils'

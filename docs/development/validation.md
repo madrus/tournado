@@ -87,17 +87,19 @@ Without `.pipe()`, using just `z.email()` would show "invalid email" for both em
 
 **Shared Email Validation:**
 
+For reusable email validation, use the factory from `app/lib/validation.ts`:
+
 ```typescript
-// app/lib/validation.ts
-import { z } from 'zod'
+import { createEmailSchema } from '~/lib/validation'
 
-export const emailSchema = z.string().email()
+// In your schemas
+teamLeaderEmail: createEmailSchema('Invalid email address')
 
-export const validateEmail = (email: unknown): email is string => {
-   const result = emailSchema.safeParse(email)
-   return result.success
-}
+// With translations
+teamLeaderEmail: createEmailSchema(t('messages.validation.emailInvalid'))
 ```
+
+The factory includes `.min(1)` internally, so "required" errors are handled separately from "invalid format" errors.
 
 ### Date Validation
 
@@ -128,29 +130,25 @@ endDate: z.iso
 
 ### Phone Number Validation
 
-Phone numbers use custom regex validation with `.refine()`:
+Phone numbers use custom regex validation. Use the shared factory from `app/lib/validation.ts`:
 
 ```typescript
-const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
+import { createPhoneSchema } from '~/lib/validation'
 
 // Base schema
-teamLeaderPhone: z.string()
-   .min(1)
-   .pipe(
-      z.string().refine(val => PHONE_REGEX.test(val), {
-         error: 'Invalid phone number format',
-      })
-   )
+teamLeaderPhone: createPhoneSchema('Invalid phone number format')
 
 // With translations
-teamLeaderPhone: z.string()
-   .min(1, t('messages.team.phoneNumberRequired'))
-   .pipe(
-      z.string().refine(val => PHONE_REGEX.test(val), {
-         error: t('messages.team.phoneNumberInvalid'),
-      })
-   )
+teamLeaderPhone: createPhoneSchema(t('messages.team.phoneNumberInvalid'))
 ```
+
+The factory uses this regex pattern internally:
+
+```typescript
+export const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
+```
+
+The factory includes `.min(1)` and `.pipe()` to handle "required" vs "invalid format" errors separately.
 
 ### Boolean Validation (Checkboxes)
 
@@ -246,13 +244,102 @@ Cross-feature validation utilities live in `app/lib/validation.ts`:
 // app/lib/validation.ts
 import { z } from 'zod'
 
-// Shared email validation
-export const emailSchema = z.string().email()
+// ============================================================================
+// Regex Patterns
+// ============================================================================
+
+export const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
+
+// ============================================================================
+// Schema Factories
+// ============================================================================
+
+/**
+ * Email with separate required/invalid errors
+ */
+export const createEmailSchema = (errorMsg = 'Invalid email address') =>
+   z
+      .string()
+      .min(1)
+      .pipe(z.email({ error: errorMsg }))
+
+/**
+ * Phone with regex validation
+ */
+export const createPhoneSchema = (errorMsg = 'Invalid phone number format') =>
+   z
+      .string()
+      .min(1)
+      .pipe(z.string().refine(val => PHONE_REGEX.test(val), { error: errorMsg }))
+
+/**
+ * Required string with max length
+ */
+export const createRequiredStringSchema = (
+   maxLength: number,
+   requiredMsg = 'This field is required',
+   tooLongMsg?: string
+) => {
+   const schema = z.string().min(1, requiredMsg)
+   return tooLongMsg ? schema.max(maxLength, tooLongMsg) : schema.max(maxLength)
+}
+
+/**
+ * ISO date (YYYY-MM-DD)
+ */
+export const createIsoDateSchema = (errorMsg?: string) =>
+   errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
+
+/**
+ * Required array of strings
+ */
+export const createRequiredStringArraySchema = (
+   errorMsg = 'At least one item is required'
+) => z.array(z.string()).min(1, errorMsg)
+
+// ============================================================================
+// Type Guards
+// ============================================================================
+
+export const emailSchema = z.email()
 
 export const validateEmail = (email: unknown): email is string => {
    const result = emailSchema.safeParse(email)
    return result.success
 }
+
+export const validatePhone = (phone: unknown): phone is string => {
+   return typeof phone === 'string' && PHONE_REGEX.test(phone)
+}
+```
+
+**Usage Examples:**
+
+```typescript
+import {
+   createEmailSchema,
+   createIsoDateSchema,
+   createPhoneSchema,
+   createRequiredStringArraySchema,
+   createRequiredStringSchema,
+} from '~/lib/validation'
+
+// Teams validation
+const baseTeamSchema = z.object({
+   name: createRequiredStringSchema(50),
+   teamLeaderEmail: createEmailSchema('Invalid email'),
+   teamLeaderPhone: createPhoneSchema('Invalid phone'),
+})
+
+// Tournaments validation
+const baseTournamentSchema = z.object({
+   name: createRequiredStringSchema(100),
+   location: createRequiredStringSchema(100),
+   startDate: createIsoDateSchema(),
+   endDate: createIsoDateSchema(),
+   divisions: createRequiredStringArraySchema(),
+   categories: createRequiredStringArraySchema(),
+})
 ```
 
 ## Type Inference

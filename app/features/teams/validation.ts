@@ -3,17 +3,9 @@ import { z } from 'zod'
 
 import type { TFunction } from 'i18next'
 
+import { createEmailSchema, createPhoneSchema } from '~/lib/validation'
+
 import type { TeamFormData, TeamValidationInput } from './types'
-
-// ============================================================================
-// Validation Patterns
-// ============================================================================
-
-/**
- * Phone number validation regex
- * Allows: +, digits, spaces, hyphens, parentheses
- */
-const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
 
 // ============================================================================
 // Zod Schemas
@@ -29,18 +21,8 @@ const baseTeamSchema = z.object({
   division: z.string().min(1),
   category: z.string().min(1),
   teamLeaderName: z.string().min(1).max(100),
-  teamLeaderPhone: z
-    .string()
-    .min(1)
-    .pipe(
-      z.string().refine(val => PHONE_REGEX.test(val), {
-        error: 'Invalid phone number format',
-      })
-    ),
-  teamLeaderEmail: z
-    .string()
-    .min(1)
-    .pipe(z.email({ error: 'Invalid email address' })),
+  teamLeaderPhone: createPhoneSchema('Invalid phone number format'),
+  teamLeaderEmail: createEmailSchema('Invalid email address'),
   privacyAgreement: z.boolean().refine(val => val, {
     error: 'Privacy agreement is required',
   }),
@@ -86,18 +68,8 @@ const createTeamFormSchema = (t: TFunction) =>
       .string()
       .min(1, t('messages.team.teamLeaderNameRequired'))
       .max(100, t('messages.team.teamLeaderNameTooLong')),
-    teamLeaderPhone: z
-      .string()
-      .min(1, t('messages.team.phoneNumberRequired'))
-      .pipe(
-        z.string().refine(val => PHONE_REGEX.test(val), {
-          error: t('messages.team.phoneNumberInvalid'),
-        })
-      ),
-    teamLeaderEmail: z
-      .string()
-      .min(1, t('messages.validation.emailRequired'))
-      .pipe(z.email({ error: t('messages.validation.emailInvalid') })),
+    teamLeaderPhone: createPhoneSchema(t('messages.team.phoneNumberInvalid')),
+    teamLeaderEmail: createEmailSchema(t('messages.validation.emailInvalid')),
 
     // Privacy agreement (required for public create mode)
     privacyAgreement: z.boolean().refine(val => val, {
@@ -182,7 +154,7 @@ export const mapStoreFieldToZodField = (storeFieldName: string): string =>
  */
 export const getFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: Pick<ZodIssue, 'code'>
+  zodIssue?: ZodIssue
 ): string => {
   // Handle empty/too small errors (required field validation from .min())
   // This takes precedence over format validation
@@ -191,16 +163,18 @@ export const getFieldErrorTranslationKey = (
   }
 
   // Handle email format validation errors (from Zod's .email())
-  // Only for invalid format, not for empty strings (which are handled by too_small)
-  else if (fieldName === 'teamLeaderEmail' && zodIssue?.code === 'invalid_format') {
+  // Zod v4 emits 'invalid_format' with format: 'email' for email format errors
+  else if (
+    fieldName === 'teamLeaderEmail' &&
+    zodIssue?.code === 'invalid_format' &&
+    'format' in zodIssue &&
+    (zodIssue as { format?: string }).format === 'email'
+  ) {
     return 'messages.validation.emailInvalid'
   }
 
   // Handle custom validation errors (format validation for phone)
   else if (zodIssue?.code === 'custom') {
-    if (fieldName === 'teamLeaderEmail') {
-      return 'messages.validation.emailInvalid'
-    }
     if (fieldName === 'teamLeaderPhone') {
       return 'messages.validation.phoneNumberInvalid'
     }

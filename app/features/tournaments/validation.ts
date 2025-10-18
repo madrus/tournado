@@ -13,7 +13,7 @@ const baseTournamentSchema = z
     categories: z.array(z.string()).min(1),
   })
   .refine(formData => formData.endDate >= formData.startDate, {
-    message: 'End date must be on or after start date',
+    error: 'End date must be on or after start date',
     path: ['endDate'],
   })
 
@@ -49,7 +49,7 @@ const createTournamentFormSchema = (t: TFunction) =>
         .min(1, t('messages.tournament.categoriesRequired')),
     })
     .refine(formData => formData.endDate >= formData.startDate, {
-      message: t('messages.tournament.endDateBeforeStartDate'),
+      error: t('messages.tournament.endDateBeforeStartDate'),
       path: ['endDate'],
     })
 
@@ -65,11 +65,16 @@ export function getTournamentValidationSchema(
 export function validateTournamentData(
   tournamentData: z.infer<typeof baseTournamentSchema>,
   mode: 'create' | 'edit'
-): // eslint-disable-next-line id-blacklist
-| { success: true; data: z.infer<typeof baseTournamentSchema> }
+):
+  | { success: true; result: z.infer<typeof baseTournamentSchema> }
   | { success: false; error: z.ZodError } {
   const schema = mode === 'create' ? createTournamentSchema : editTournamentSchema
-  return schema.safeParse(tournamentData)
+  const parseResult = schema.safeParse(tournamentData)
+
+  if (parseResult.success) {
+    return { success: true, result: parseResult.data }
+  }
+  return { success: false, error: parseResult.error }
 }
 
 // Tournament type exports

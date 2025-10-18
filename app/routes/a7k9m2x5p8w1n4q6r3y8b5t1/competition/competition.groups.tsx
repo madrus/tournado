@@ -35,10 +35,17 @@ export async function loader({
   const tournamentId = url.searchParams.get('tournament')
 
   // Load tournament list and group sets in parallel
-  const [tournamentListItems, groupSets] = await Promise.all([
+  const [tournamentListItemsRaw, groupSets] = await Promise.all([
     getAllTournamentListItems(),
     tournamentId ? getTournamentGroupSets(tournamentId) : Promise.resolve([]),
   ])
+
+  // Serialize dates to strings for JSON transport
+  const tournamentListItems = tournamentListItemsRaw.map(tournament => ({
+    ...tournament,
+    startDate: tournament.startDate.toISOString().split('T')[0],
+    endDate: tournament.endDate.toISOString().split('T')[0],
+  }))
 
   return {
     groupSets,

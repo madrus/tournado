@@ -1,5 +1,14 @@
-// Re-export Tournament and TournamentListItem types from model
-export type { Tournament, TournamentListItem } from '~/models/tournament.server'
+// Re-export Tournament type from model
+export type { Tournament } from '~/models/tournament.server'
+
+// Client-side tournament list item (dates are ISO strings after JSON serialization)
+export type TournamentListItem = {
+  id: string
+  name: string
+  location: string
+  startDate: string
+  endDate: string
+}
 
 // Tournament data types
 export type TournamentData = {

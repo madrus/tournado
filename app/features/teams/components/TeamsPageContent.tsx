@@ -21,6 +21,7 @@ type TeamsPageContentProps = {
   testId?: string
 }
 
+// Teal is a valid ColorAccent token from the project's semantic palette
 const PANEL_COLOR = 'teal' as const
 
 export function TeamsPageContent({
@@ -125,7 +126,7 @@ export function TeamsPageContent({
         teams={teamListItems}
         onTeamClick={onTeamClick}
         emptyMessage={t('teams.noTeams')}
-        className='min-h-[200px]'
+        className='min-h-52'
       />
 
       {/* Info Section */}

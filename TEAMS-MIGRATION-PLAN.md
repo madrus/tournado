@@ -6,7 +6,7 @@ Migrate teams functionality to `app/features/teams/` following the single-featur
 
 ## Target Structure
 
-```
+```text
 app/features/teams/
 ├── components/
 │   ├── __tests__/

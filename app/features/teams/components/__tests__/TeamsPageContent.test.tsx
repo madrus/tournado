@@ -69,7 +69,7 @@ vi.mock('~/features/teams/components/TeamList', () => ({
   TeamList: ({
     teams,
     onTeamClick,
-    emptyMessage,
+    emptyMessage = 'No teams available',
   }: {
     teams: Array<{ id: string; clubName: string; name: string }>
     onTeamClick?: (id: string) => void
@@ -133,15 +133,15 @@ describe('TeamsPageContent', () => {
       id: 't1',
       name: 'Tournament 1',
       location: 'Location 1',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: '2024-01-01T00:00:00.000Z',
+      endDate: '2024-01-03T00:00:00.000Z',
     },
     {
       id: 't2',
       name: 'Tournament 2',
       location: 'Location 2',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: '2024-02-01T00:00:00.000Z',
+      endDate: '2024-02-03T00:00:00.000Z',
     },
   ]
 

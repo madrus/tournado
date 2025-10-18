@@ -1,3 +1,5 @@
+import type { ZodBoolean, ZodError, ZodObject, ZodString } from 'zod'
+
 import type { Team as PrismaTeam } from '@prisma/client'
 
 // ============================================================================
@@ -16,18 +18,9 @@ export type TeamClass = string
 
 /**
  * Core team type matching database schema
+ * Uses Prisma type directly to avoid schema drift
  */
-export type Team = {
-  id: string
-  name: string
-  tournamentId: string
-  category: string
-  division: string
-  clubName: string
-  teamLeaderId: string
-  createdAt: Date
-  updatedAt: Date
-}
+export type Team = PrismaTeam
 
 /**
  * Team list item for display in lists and grids
@@ -49,7 +42,6 @@ export type TeamLeaderFull = {
  * Team with full team leader information
  */
 export type TeamWithLeaderFull = Team & {
-  tournamentId: string
   teamLeader: TeamLeaderFull
 }
 
@@ -156,17 +148,20 @@ export type TeamValidationInput = Record<string, unknown>
 
 /**
  * Team form schema type (using Zod)
+ * Note: We can't precisely type this because teamLeaderPhone and teamLeaderEmail
+ * use .pipe() which creates complex internal Zod types not exported from the package.
+ * The schema is created by the createTeamFormSchema factory function.
  */
-export type TeamFormSchemaType = import('zod').ZodObject<{
-  tournamentId: import('zod').ZodString
-  clubName: import('zod').ZodString
-  name: import('zod').ZodString
-  division: import('zod').ZodString
-  category: import('zod').ZodString
-  teamLeaderName: import('zod').ZodString
-  teamLeaderPhone: import('zod').ZodSchema<string>
-  teamLeaderEmail: import('zod').ZodSchema<string>
-  privacyAgreement: import('zod').ZodSchema<boolean>
+export type TeamFormSchemaType = ZodObject<{
+  tournamentId: ZodString
+  clubName: ZodString
+  name: ZodString
+  division: ZodString
+  category: ZodString
+  teamLeaderName: ZodString
+  teamLeaderPhone: ZodString
+  teamLeaderEmail: ZodString
+  privacyAgreement: ZodBoolean
 }>
 
 /**
@@ -180,11 +175,10 @@ export type TeamValidationSchema = TeamFormSchemaType
 export type TeamValidationSafeParseResult<T extends 'create' | 'edit'> =
   T extends 'create'
     ? // eslint-disable-next-line id-blacklist
-      | { success: true; data: TeamFormData }
-        | { success: false; error: import('zod').ZodError }
+      { success: true; data: TeamFormData } | { success: false; error: ZodError }
     : // eslint-disable-next-line id-blacklist
       | { success: true; data: Omit<TeamFormData, 'privacyAgreement'> }
-        | { success: false; error: import('zod').ZodError }
+        | { success: false; error: ZodError }
 
 // ============================================================================
 // Loader Data Types
@@ -199,8 +193,8 @@ export type TeamsLoaderData = {
     id: string
     name: string
     location: string
-    startDate: Date
-    endDate: Date
+    startDate: string
+    endDate: string
   }>
   selectedTournamentId?: string
 }

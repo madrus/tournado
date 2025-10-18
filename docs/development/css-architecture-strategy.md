@@ -581,3 +581,5 @@ emerald: 'text-emerald-600 dark:text-emerald-400',
 1. **High Impact**: Text colors (used in 8+ files)
 2. **Medium Impact**: Panel backgrounds (used in 4 files)
 3. **Low Impact**: Component-specific hover states
+
+**Status**: These patterns are documented for future optimization. The refactoring work to consolidate these duplications into Tailwind utilities or CVA variants is not part of the current implementation and should be addressed in follow-up PRs as needed

@@ -245,7 +245,13 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
                   onKeyDown={event => {
-                    if ((event.key === 'Enter' || event.key === ' ') && onRowClick) {
+                    if (event.key === 'Enter' && onRowClick) {
+                      event.preventDefault()
+                      onRowClick(row.original)
+                    }
+                  }}
+                  onKeyUp={event => {
+                    if ((event.key === ' ' || event.key === 'Spacebar') && onRowClick) {
                       event.preventDefault()
                       onRowClick(row.original)
                     }

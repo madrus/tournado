@@ -9,9 +9,9 @@ import {
   datatableCellTextVariants,
   datatableDeleteAreaVariants,
 } from '~/components/shared/datatable.variants'
+import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { DEFAULT_CONTAINER_WIDTH, SWIPE_START_THRESHOLD } from '~/lib/lib.constants'
-import type { TournamentListItem } from '~/models/tournament.server'
 import { isBreakpoint } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 

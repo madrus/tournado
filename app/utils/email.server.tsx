@@ -30,6 +30,29 @@ export function resetResendClient(): void {
   resendClient = null
 }
 
+/**
+ * Masks email addresses to protect PII in logs
+ * @param email - Email address to mask
+ * @returns Masked email (e.g., "jo***@example.com")
+ * @example
+ * maskEmail("john@example.com") // "jo***@example.com"
+ * maskEmail("ab@test.org")      // "**@test.org"
+ */
+function maskEmail(email: string): string {
+  const [name, domain] = email.split('@')
+  if (!name || !domain) return '***@***' // Malformed email
+  const safeName = name.length <= 2 ? '*'.repeat(name.length) : `${name.slice(0, 2)}***`
+  return `${safeName}@${domain}`
+}
+
+/**
+ * Masks multiple email addresses
+ * @param emails - Array of email addresses or single email
+ * @returns Masked emails as comma-separated string
+ */
+const maskEmails = (emails: string | string[]): string =>
+  Array.isArray(emails) ? emails.map(maskEmail).join(', ') : maskEmail(emails)
+
 export async function sendConfirmationEmail(
   team: Team,
   tournament: Tournament
@@ -93,7 +116,9 @@ export async function sendConfirmationEmail(
         const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')
         addEmailToOutbox(emailPayload)
 
-        console.info(`[E2E] Email stored for testing - to: ${emailPayload.to}`)
+        console.info(
+          `[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`
+        )
         return
       } catch (importError) {
         console.error('Failed to import MSW email handlers for testing:', importError)

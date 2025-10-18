@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { TournamentListItem } from '~/models/tournament.server'
+import type { TournamentListItem } from '~/features/tournaments/types'
 
 import { TournamentMobileRow } from '../TournamentMobileRow'
 
@@ -40,8 +40,8 @@ describe('TournamentMobileRow', () => {
     id: 'tournament-1',
     name: 'Spring Tournament 2024',
     location: 'Amsterdam',
-    startDate: new Date('2024-03-01'),
-    endDate: new Date('2024-03-03'),
+    startDate: '2024-03-01T00:00:00.000Z',
+    endDate: '2024-03-03T00:00:00.000Z',
   }
 
   const mockOnDelete = vi.fn()
@@ -358,8 +358,8 @@ describe('TournamentMobileRow', () => {
     it('should handle tournament dates correctly', () => {
       const tournamentWithDates = {
         ...mockTournament,
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2024-01-03'),
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2024-01-03T00:00:00.000Z',
       }
 
       render(

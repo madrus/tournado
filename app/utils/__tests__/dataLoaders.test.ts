@@ -26,7 +26,8 @@ describe('dataLoaders', () => {
   })
 
   describe('loadTeamsAndTournamentsData', () => {
-    const mockTournamentListItems: TournamentListItem[] = [
+    // Mock data from server (with Date objects)
+    const mockTournamentListItemsRaw: TournamentListItem[] = [
       {
         id: 'tournament-1',
         name: 'Spring Tournament 2024',
@@ -40,6 +41,24 @@ describe('dataLoaders', () => {
         location: 'Rotterdam',
         startDate: new Date('2024-06-15'),
         endDate: new Date('2024-06-17'),
+      },
+    ]
+
+    // Expected data after serialization (with string dates)
+    const mockTournamentListItems = [
+      {
+        id: 'tournament-1',
+        name: 'Spring Tournament 2024',
+        location: 'Amsterdam',
+        startDate: '2024-03-01',
+        endDate: '2024-03-03',
+      },
+      {
+        id: 'tournament-2',
+        name: 'Summer Cup 2024',
+        location: 'Rotterdam',
+        startDate: '2024-06-15',
+        endDate: '2024-06-17',
       },
     ]
 
@@ -72,7 +91,7 @@ describe('dataLoaders', () => {
     }
 
     it('should load all data when no tournamentId filter is provided', async () => {
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
       mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
 
       const request = createMockRequest()
@@ -93,7 +112,7 @@ describe('dataLoaders', () => {
       const tournamentId = 'tournament-1'
       const filteredTeams = mockTeamListItems.filter((_, index) => index < 2) // First 2 teams
 
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
       mockGetFilteredTeamListItems.mockResolvedValue(filteredTeams)
 
       const request = createMockRequest(tournamentId)
@@ -133,7 +152,7 @@ describe('dataLoaders', () => {
     })
 
     it('should handle team loading errors gracefully', async () => {
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
       const teamError = new Error('Failed to load teams')
       mockGetFilteredTeamListItems.mockRejectedValue(teamError)
 
@@ -150,7 +169,7 @@ describe('dataLoaders', () => {
       mockGetAllTournamentListItems.mockImplementation(async () => {
         tournamentsCallTime = Date.now()
         await new Promise(resolve => setTimeout(resolve, 10))
-        return mockTournamentListItems
+        return mockTournamentListItemsRaw
       })
 
       mockGetFilteredTeamListItems.mockImplementation(async () => {
@@ -181,7 +200,7 @@ describe('dataLoaders', () => {
       })
 
       it('should handle null team data', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
         mockGetFilteredTeamListItems.mockResolvedValue(
           null as unknown as TeamListItem[]
         )
@@ -194,7 +213,7 @@ describe('dataLoaders', () => {
       })
 
       it('should handle empty string tournamentId', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
         mockGetFilteredTeamListItems.mockResolvedValue([])
 
         const request = createMockRequest('')
@@ -211,7 +230,7 @@ describe('dataLoaders', () => {
       })
 
       it('should handle malformed URLs gracefully', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItems)
+        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
         mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
 
         // Test with multiple tournament parameters

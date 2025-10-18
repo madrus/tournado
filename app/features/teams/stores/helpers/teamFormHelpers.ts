@@ -24,7 +24,7 @@ import type {
 export function isPanelValid(
   panelNumber: 1 | 2 | 3 | 4,
   formFields: FormFields,
-  displayErrors: Record<string, string>,
+  displayErrors: Partial<Record<FormFieldName, string>>,
   mode: 'create' | 'edit'
 ): boolean {
   const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
@@ -86,8 +86,10 @@ export function computeAvailableOptions(
 ): { divisions: string[]; categories: string[] } {
   const selectedTournament = tournaments.find(t => t.id === tournamentId)
   return {
-    divisions: selectedTournament?.divisions || [],
-    categories: selectedTournament?.categories || [],
+    divisions: selectedTournament?.divisions ? [...selectedTournament.divisions] : [],
+    categories: selectedTournament?.categories
+      ? [...selectedTournament.categories]
+      : [],
   }
 }
 
@@ -95,7 +97,9 @@ export function computeAvailableOptions(
  * Determines which dependent fields should be reset when a field changes.
  * Used to clear division/category when tournament or division changes.
  */
-export function getDependentFieldResets(fieldName: string): Partial<FormFields> {
+export function getDependentFieldResets(
+  fieldName: keyof FormFields
+): Partial<FormFields> {
   if (fieldName === 'tournamentId') {
     return { division: '', category: '' }
   }
@@ -109,9 +113,9 @@ export function getDependentFieldResets(fieldName: string): Partial<FormFields> 
  * Merges display and server errors, with server errors taking priority.
  */
 export const mergeErrors = (
-  displayErrors: Record<string, string>,
-  serverErrors: Record<string, string>
-): Record<string, string> => ({
+  displayErrors: Partial<Record<FormFieldName, string>>,
+  serverErrors: Partial<Record<FormFieldName, string>>
+): Partial<Record<FormFieldName, string>> => ({
   ...displayErrors,
   ...serverErrors,
 })
@@ -123,8 +127,8 @@ export const mergeErrors = (
 export function isPanelComplete(
   panelNumber: 1 | 2 | 3 | 4,
   formFields: FormFields,
-  blurredFields: Record<string, boolean>,
-  displayErrors: Record<string, string>
+  blurredFields: Partial<Record<FormFieldName, boolean>>,
+  displayErrors: Partial<Record<FormFieldName, string>>
 ): boolean {
   const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
   if (!panelFields) return false
@@ -200,8 +204,9 @@ export function resetStatePreserving<T extends keyof StoreState>(
   get: () => StoreState
 ): StoreState {
   const preserved: Partial<StoreState> = {}
+  const current = get()
   for (const key of preserveKeys) {
-    preserved[key] = get()[key]
+    preserved[key] = current[key]
   }
   return { ...initialStoreState, ...preserved } as StoreState
 }

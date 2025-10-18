@@ -12,10 +12,19 @@ export async function loadTeamsAndTournamentsData(
   const url = new URL(request.url)
   const tournamentId = url.searchParams.get('tournament')
 
-  const [teamListItems, tournamentListItems] = await Promise.all([
+  const [teamListItems, tournamentListItemsRaw] = await Promise.all([
     getFilteredTeamListItems({ tournamentId: tournamentId || undefined }),
     getAllTournamentListItems(),
   ])
+
+  // Serialize dates to strings for JSON transport
+  const tournamentListItems = tournamentListItemsRaw
+    ? tournamentListItemsRaw.map(tournament => ({
+        ...tournament,
+        startDate: tournament.startDate.toISOString().split('T')[0],
+        endDate: tournament.endDate.toISOString().split('T')[0],
+      }))
+    : tournamentListItemsRaw
 
   return {
     teamListItems,

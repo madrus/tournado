@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import type { ZodIssue } from 'zod'
 
 import type { TournamentFormData } from '~/features/tournaments/validation'
 import { validateTournamentData } from '~/features/tournaments/validation'
@@ -8,7 +8,7 @@ import { validateTournamentData } from '~/features/tournaments/validation'
 // Map tournament field names to translation keys
 export const getTournamentFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: Pick<z.core.$ZodIssue, 'code'>
+  zodIssue?: Pick<ZodIssue, 'code'>
 ): string => {
   // Handle string too long errors
   if (zodIssue?.code === 'too_big') {
@@ -43,7 +43,7 @@ export const validateSingleTournamentField = (
 
     if (!result.success) {
       // Find the error for this specific field
-      const fieldError = result.error.issues.find((error: z.core.$ZodIssue) => {
+      const fieldError = result.error.issues.find((error: ZodIssue) => {
         const path = error.path[0]
         return path === fieldName
       })
@@ -80,7 +80,7 @@ export const validateEntireTournamentForm = (
     const result = validateTournamentData(formData, mode)
 
     if (!result.success) {
-      result.error.issues.forEach((error: z.core.$ZodIssue) => {
+      result.error.issues.forEach((error: ZodIssue) => {
         const fieldName = error.path[0] as string
         if (fieldName) {
           errors[fieldName] = getTournamentFieldErrorTranslationKey(fieldName, error)

@@ -1,11 +1,10 @@
+import type { ZodIssue } from 'zod'
 import { z } from 'zod'
 
 import type { TFunction } from 'i18next'
 
 import type {
-  ExtractedTeamData,
   TeamFormData,
-  TeamFormSchemaType,
   TeamValidationInput,
   TeamValidationSafeParseResult,
 } from './types'
@@ -48,17 +47,21 @@ const baseTeamSchema = z.object({
   teamLeaderPhone: z
     .string()
     .min(1)
-    .refine(val => val.length === 0 || PHONE_REGEX.test(val), {
-      message: 'Invalid phone number format',
-    }),
+    .pipe(
+      z.string().refine(val => PHONE_REGEX.test(val), {
+        error: 'Invalid phone number format',
+      })
+    ),
   teamLeaderEmail: z
     .string()
     .min(1)
-    .refine(val => val.length === 0 || EMAIL_REGEX.test(val), {
-      message: 'Invalid email address',
-    }),
+    .pipe(
+      z.string().refine(val => EMAIL_REGEX.test(val), {
+        error: 'Invalid email address',
+      })
+    ),
   privacyAgreement: z.boolean().refine(val => val, {
-    message: 'Privacy agreement is required',
+    error: 'Privacy agreement is required',
   }),
 })
 
@@ -80,7 +83,7 @@ const editTeamSchema = baseTeamSchema.omit({ privacyAgreement: true })
  * Factory function for creating schemas with translated error messages
  * @internal Use getTeamValidationSchema instead
  */
-const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
+const createTeamFormSchema = (t: TFunction) =>
   z.object({
     // Tournament selection (required for create mode)
     tournamentId: z.string().min(1, t('messages.team.tournamentRequired')),
@@ -105,19 +108,23 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
     teamLeaderPhone: z
       .string()
       .min(1, t('messages.team.phoneNumberRequired'))
-      .refine(val => val.length === 0 || PHONE_REGEX.test(val), {
-        message: t('messages.team.phoneNumberInvalid'),
-      }),
+      .pipe(
+        z.string().refine(val => PHONE_REGEX.test(val), {
+          error: t('messages.team.phoneNumberInvalid'),
+        })
+      ),
     teamLeaderEmail: z
       .string()
       .min(1, t('messages.validation.emailRequired'))
-      .refine(val => val.length === 0 || EMAIL_REGEX.test(val), {
-        message: t('messages.validation.emailInvalid'),
-      }),
+      .pipe(
+        z.string().refine(val => EMAIL_REGEX.test(val), {
+          error: t('messages.validation.emailInvalid'),
+        })
+      ),
 
     // Privacy agreement (required for public create mode)
     privacyAgreement: z.boolean().refine(val => val, {
-      message: t('messages.team.privacyAgreementRequired'),
+      error: t('messages.team.privacyAgreementRequired'),
     }),
   })
 
@@ -130,7 +137,9 @@ const createTeamFormSchema = (t: TFunction): TeamFormSchemaType =>
 export function getTeamValidationSchema(
   mode: 'create' | 'edit',
   t: TFunction
-): TeamFormSchemaType | ReturnType<TeamFormSchemaType['omit']> {
+):
+  | ReturnType<typeof createTeamFormSchema>
+  | ReturnType<ReturnType<typeof createTeamFormSchema>['omit']> {
   const schema = createTeamFormSchema(t)
   return mode === 'create' ? schema : schema.omit({ privacyAgreement: true })
 }
@@ -170,7 +179,7 @@ export function validateTeamData(
  * @param formData - FormData from form submission
  * @returns Extracted team data object
  */
-export const extractTeamDataFromFormData = (formData: FormData): ExtractedTeamData => ({
+export const extractTeamDataFromFormData = (formData: FormData): TeamFormData => ({
   tournamentId: (formData.get('tournamentId') as string) || '',
   clubName: (formData.get('clubName') as string) || '',
   name: (formData.get('name') as string) || '',
@@ -202,9 +211,9 @@ export const mapStoreFieldToZodField = (storeFieldName: string): string =>
  */
 export const getFieldErrorTranslationKey = (
   fieldName: string,
-  zodIssue?: Pick<z.core.$ZodIssue, 'code'>
+  zodIssue?: Pick<ZodIssue, 'code'>
 ): string => {
-  // Handle custom validation errors
+  // Handle custom validation errors (format validation)
   if (zodIssue?.code === 'custom') {
     if (fieldName === 'teamLeaderEmail') {
       return 'messages.validation.emailInvalid'
@@ -268,7 +277,7 @@ export const validateSingleTeamField = (
     if (!result.success) {
       // Find the error for this specific field
       const zodFieldName = mapStoreFieldToZodField(fieldName)
-      const fieldError = result.error.issues.find((error: z.core.$ZodIssue) => {
+      const fieldError = result.error.issues.find((error: ZodIssue) => {
         const path = error.path[0]
         return path === zodFieldName
       })
@@ -309,7 +318,7 @@ export const validateEntireTeamForm = (
         : validateTeamData(formData, 'edit')
 
     if (!result.success) {
-      result.error.issues.forEach((error: z.core.$ZodIssue) => {
+      result.error.issues.forEach((error: ZodIssue) => {
         const zodFieldName = error.path[0] as string
         if (zodFieldName) {
           // Store field names are now the same as Zod field names

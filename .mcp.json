@@ -10,8 +10,12 @@
         "--context",
         "ide-assistant",
         "--project",
-        "/Users/madrus/dev/biz/toernooien/tournado"
+        "."
       ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     }
   }
 }

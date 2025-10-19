@@ -13,7 +13,7 @@ export function ThemeToggle(): JSX.Element {
     <button
       type='button'
       onClick={toggleTheme}
-      className='relative flex h-8 w-8 items-center justify-center rounded-full pb-0.5 focus:outline-none'
+      className='relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full pb-0.5 focus:outline-none'
       aria-label={t('common.toggleTheme')}
       title={theme === 'light' ? t('common.darkMode') : t('common.lightMode')}
     >

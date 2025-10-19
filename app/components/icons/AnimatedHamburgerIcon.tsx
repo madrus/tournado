@@ -23,6 +23,7 @@ export const AnimatedHamburgerIcon = ({
   >
     {/* Top line */}
     <line
+      data-testid='hamburger-top-line'
       x1='3'
       y1='6'
       x2='21'
@@ -42,6 +43,7 @@ export const AnimatedHamburgerIcon = ({
 
     {/* Middle line */}
     <line
+      data-testid='hamburger-middle-line'
       x1='3'
       y1='12'
       x2='21'
@@ -56,6 +58,7 @@ export const AnimatedHamburgerIcon = ({
 
     {/* Bottom line */}
     <line
+      data-testid='hamburger-bottom-line'
       x1='3'
       y1='18'
       x2='21'

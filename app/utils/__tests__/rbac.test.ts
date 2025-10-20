@@ -146,6 +146,7 @@ describe('RBAC', () => {
       expect(hasPermission(referee, 'tournaments:read')).toBe(true)
       expect(hasPermission(referee, 'tournaments:create')).toBe(false)
       expect(hasPermission(referee, 'tournaments:edit')).toBe(false)
+      expect(hasPermission(referee, 'groups:manage')).toBe(true) // Referees need to manage competition/groups
       expect(hasPermission(referee, 'matches:read')).toBe(true)
       expect(hasPermission(referee, 'matches:create')).toBe(false)
       expect(hasPermission(referee, 'matches:edit')).toBe(true)

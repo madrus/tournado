@@ -74,6 +74,17 @@ export function AppBar({
   const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
+    // Admin Panel - show for admin panel access (admin, manager, referee)
+    ...(userHasAdminPanelAccess
+      ? [
+          {
+            label: t('common.titles.adminPanel'),
+            icon: 'admin_panel_settings' as IconName,
+            href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+            authenticated: true,
+          },
+        ]
+      : []),
     // Tournaments - only show for users who can manage tournaments (ADMIN, MANAGER)
     ...(canManageTournaments
       ? [
@@ -113,29 +124,18 @@ export function AppBar({
           },
         ]
       : []),
-    // Divider after Competition
+    // Divider after Users
     {
       label: '',
       icon: '' as IconName,
       divider: true,
       authenticated: false,
     },
-    // Admin Panel - show for admin panel access (admin, manager, referee)
-    ...(userHasAdminPanelAccess
-      ? [
-          {
-            label: t('common.titles.adminPanel'),
-            icon: 'admin_panel_settings' as IconName,
-            href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-            authenticated: true,
-          },
-        ]
-      : []),
     {
-      label: t('common.titles.profile'),
-      href: '/profile',
-      icon: 'person' as IconName,
-      authenticated: true,
+      label: t('common.titles.about'),
+      icon: 'info' as IconName,
+      href: '/about',
+      authenticated: false,
     },
     {
       label: t('common.titles.settings'),
@@ -144,10 +144,10 @@ export function AppBar({
       authenticated: true,
     },
     {
-      label: t('common.titles.about'),
-      icon: 'info' as IconName,
-      href: '/about',
-      authenticated: false,
+      label: t('common.titles.profile'),
+      href: '/profile',
+      icon: 'person' as IconName,
+      authenticated: true,
     },
     {
       label: t('common.language'),

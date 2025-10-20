@@ -49,6 +49,7 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   REFEREE: [
     'teams:read',
     'tournaments:read',
+    'groups:manage', // Referees need access to competition/groups to update scores and calendar
     'matches:read',
     'matches:edit',
     'matches:referee',

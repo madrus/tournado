@@ -96,62 +96,67 @@ describe('RBAC', () => {
     it('should grant correct permissions to ADMIN', () => {
       const admin = mockUsers.admin
 
-      // ADMIN should have all permissions
-      expect(hasPermission(admin, 'teams:read')).toBe(true)
+      // ADMIN should have all CRUD permissions
       expect(hasPermission(admin, 'teams:create')).toBe(true)
-      expect(hasPermission(admin, 'teams:edit')).toBe(true)
+      expect(hasPermission(admin, 'teams:read')).toBe(true)
+      expect(hasPermission(admin, 'teams:update')).toBe(true)
       expect(hasPermission(admin, 'teams:delete')).toBe(true)
-      expect(hasPermission(admin, 'teams:manage')).toBe(true)
-      expect(hasPermission(admin, 'tournaments:read')).toBe(true)
       expect(hasPermission(admin, 'tournaments:create')).toBe(true)
-      expect(hasPermission(admin, 'tournaments:edit')).toBe(true)
+      expect(hasPermission(admin, 'tournaments:read')).toBe(true)
+      expect(hasPermission(admin, 'tournaments:update')).toBe(true)
       expect(hasPermission(admin, 'tournaments:delete')).toBe(true)
-      expect(hasPermission(admin, 'tournaments:manage')).toBe(true)
-      expect(hasPermission(admin, 'matches:read')).toBe(true)
+      expect(hasPermission(admin, 'groups:manage')).toBe(true)
       expect(hasPermission(admin, 'matches:create')).toBe(true)
-      expect(hasPermission(admin, 'matches:edit')).toBe(true)
+      expect(hasPermission(admin, 'matches:read')).toBe(true)
+      expect(hasPermission(admin, 'matches:update')).toBe(true)
       expect(hasPermission(admin, 'matches:delete')).toBe(true)
       expect(hasPermission(admin, 'matches:referee')).toBe(true)
+      expect(hasPermission(admin, 'system:reports')).toBe(true)
+      expect(hasPermission(admin, 'system:billing')).toBe(true)
     })
 
     it('should grant correct permissions to MANAGER', () => {
       const manager = mockUsers.manager
 
-      // MANAGER should have team and tournament management permissions
-      expect(hasPermission(manager, 'teams:read')).toBe(true)
+      // MANAGER should have full CRUD permissions for teams, tournaments, and matches
       expect(hasPermission(manager, 'teams:create')).toBe(true)
-      expect(hasPermission(manager, 'teams:edit')).toBe(true)
+      expect(hasPermission(manager, 'teams:read')).toBe(true)
+      expect(hasPermission(manager, 'teams:update')).toBe(true)
       expect(hasPermission(manager, 'teams:delete')).toBe(true)
-      expect(hasPermission(manager, 'teams:manage')).toBe(true)
-      expect(hasPermission(manager, 'tournaments:read')).toBe(true)
       expect(hasPermission(manager, 'tournaments:create')).toBe(true)
-      expect(hasPermission(manager, 'tournaments:edit')).toBe(true)
-      expect(hasPermission(manager, 'tournaments:delete')).toBe(false) // Only ADMIN
-      expect(hasPermission(manager, 'tournaments:manage')).toBe(false) // Only ADMIN
-      expect(hasPermission(manager, 'matches:read')).toBe(true)
+      expect(hasPermission(manager, 'tournaments:read')).toBe(true)
+      expect(hasPermission(manager, 'tournaments:update')).toBe(true)
+      expect(hasPermission(manager, 'tournaments:delete')).toBe(true)
+      expect(hasPermission(manager, 'groups:manage')).toBe(true)
       expect(hasPermission(manager, 'matches:create')).toBe(true)
-      expect(hasPermission(manager, 'matches:edit')).toBe(true)
+      expect(hasPermission(manager, 'matches:read')).toBe(true)
+      expect(hasPermission(manager, 'matches:update')).toBe(true)
       expect(hasPermission(manager, 'matches:delete')).toBe(true)
-      expect(hasPermission(manager, 'matches:referee')).toBe(false) // Only ADMIN and REFEREE
+      expect(hasPermission(manager, 'matches:referee')).toBe(true)
+      expect(hasPermission(manager, 'system:reports')).toBe(true)
+      expect(hasPermission(manager, 'system:billing')).toBe(false)
     })
 
-    it('should grant correct permissions to REFEREE (including matches:edit)', () => {
+    it('should grant correct permissions to REFEREE (including matches:update)', () => {
       const referee = mockUsers.referee
 
-      // REFEREE should have read permissions and match management
+      // REFEREE should have read permissions and match update capabilities
       expect(hasPermission(referee, 'teams:read')).toBe(true)
       expect(hasPermission(referee, 'teams:create')).toBe(false)
-      expect(hasPermission(referee, 'teams:edit')).toBe(false)
+      expect(hasPermission(referee, 'teams:update')).toBe(false)
       expect(hasPermission(referee, 'teams:delete')).toBe(false)
       expect(hasPermission(referee, 'tournaments:read')).toBe(true)
       expect(hasPermission(referee, 'tournaments:create')).toBe(false)
-      expect(hasPermission(referee, 'tournaments:edit')).toBe(false)
-      expect(hasPermission(referee, 'groups:manage')).toBe(true) // Referees need to manage competition/groups
+      expect(hasPermission(referee, 'tournaments:update')).toBe(false)
+      expect(hasPermission(referee, 'tournaments:delete')).toBe(false)
+      expect(hasPermission(referee, 'groups:manage')).toBe(true)
       expect(hasPermission(referee, 'matches:read')).toBe(true)
       expect(hasPermission(referee, 'matches:create')).toBe(false)
-      expect(hasPermission(referee, 'matches:edit')).toBe(true)
+      expect(hasPermission(referee, 'matches:update')).toBe(true)
       expect(hasPermission(referee, 'matches:delete')).toBe(false)
       expect(hasPermission(referee, 'matches:referee')).toBe(true)
+      expect(hasPermission(referee, 'system:reports')).toBe(false)
+      expect(hasPermission(referee, 'system:billing')).toBe(false)
     })
 
     it('should grant read-only permissions to EDITOR', () => {
@@ -160,17 +165,20 @@ describe('RBAC', () => {
       // EDITOR should have read-only permissions
       expect(hasPermission(editor, 'teams:read')).toBe(true)
       expect(hasPermission(editor, 'teams:create')).toBe(false)
-      expect(hasPermission(editor, 'teams:edit')).toBe(false)
+      expect(hasPermission(editor, 'teams:update')).toBe(false)
       expect(hasPermission(editor, 'teams:delete')).toBe(false)
       expect(hasPermission(editor, 'tournaments:read')).toBe(true)
       expect(hasPermission(editor, 'tournaments:create')).toBe(false)
-      expect(hasPermission(editor, 'tournaments:edit')).toBe(false)
+      expect(hasPermission(editor, 'tournaments:update')).toBe(false)
+      expect(hasPermission(editor, 'tournaments:delete')).toBe(false)
+      expect(hasPermission(editor, 'groups:manage')).toBe(false)
       expect(hasPermission(editor, 'matches:read')).toBe(true)
       expect(hasPermission(editor, 'matches:create')).toBe(false)
-      expect(hasPermission(editor, 'matches:edit')).toBe(false)
+      expect(hasPermission(editor, 'matches:update')).toBe(false)
       expect(hasPermission(editor, 'matches:delete')).toBe(false)
       expect(hasPermission(editor, 'matches:referee')).toBe(false)
       expect(hasPermission(editor, 'system:reports')).toBe(true)
+      expect(hasPermission(editor, 'system:billing')).toBe(false)
     })
 
     it('should grant read-only permissions to BILLING', () => {
@@ -179,14 +187,16 @@ describe('RBAC', () => {
       // BILLING should have read-only permissions plus billing
       expect(hasPermission(billing, 'teams:read')).toBe(true)
       expect(hasPermission(billing, 'teams:create')).toBe(false)
-      expect(hasPermission(billing, 'teams:edit')).toBe(false)
+      expect(hasPermission(billing, 'teams:update')).toBe(false)
       expect(hasPermission(billing, 'teams:delete')).toBe(false)
       expect(hasPermission(billing, 'tournaments:read')).toBe(true)
       expect(hasPermission(billing, 'tournaments:create')).toBe(false)
-      expect(hasPermission(billing, 'tournaments:edit')).toBe(false)
+      expect(hasPermission(billing, 'tournaments:update')).toBe(false)
+      expect(hasPermission(billing, 'tournaments:delete')).toBe(false)
+      expect(hasPermission(billing, 'groups:manage')).toBe(false)
       expect(hasPermission(billing, 'matches:read')).toBe(true)
       expect(hasPermission(billing, 'matches:create')).toBe(false)
-      expect(hasPermission(billing, 'matches:edit')).toBe(false)
+      expect(hasPermission(billing, 'matches:update')).toBe(false)
       expect(hasPermission(billing, 'matches:delete')).toBe(false)
       expect(hasPermission(billing, 'matches:referee')).toBe(false)
       expect(hasPermission(billing, 'system:reports')).toBe(true)
@@ -197,26 +207,26 @@ describe('RBAC', () => {
       const publicUser = mockUsers.public
 
       // PUBLIC should have read permissions and team creation for public registration
-      expect(hasPermission(publicUser, 'teams:read')).toBe(true)
       expect(hasPermission(publicUser, 'teams:create')).toBe(true)
+      expect(hasPermission(publicUser, 'teams:read')).toBe(true)
       expect(hasPermission(publicUser, 'tournaments:read')).toBe(true)
       expect(hasPermission(publicUser, 'tournaments:create')).toBe(false)
       expect(hasPermission(publicUser, 'matches:read')).toBe(true)
       expect(hasPermission(publicUser, 'matches:create')).toBe(false)
-      expect(hasPermission(publicUser, 'matches:edit')).toBe(false)
+      expect(hasPermission(publicUser, 'matches:update')).toBe(false)
       expect(hasPermission(publicUser, 'matches:delete')).toBe(false)
       expect(hasPermission(publicUser, 'matches:referee')).toBe(false)
     })
 
     it('should handle unauthenticated users', () => {
       // Unauthenticated users get PUBLIC permissions (including team creation)
-      expect(hasPermission(null, 'teams:read')).toBe(true)
       expect(hasPermission(null, 'teams:create')).toBe(true)
+      expect(hasPermission(null, 'teams:read')).toBe(true)
       expect(hasPermission(null, 'tournaments:read')).toBe(true)
       expect(hasPermission(null, 'tournaments:create')).toBe(false)
       expect(hasPermission(null, 'matches:read')).toBe(true)
       expect(hasPermission(null, 'matches:create')).toBe(false)
-      expect(hasPermission(null, 'matches:edit')).toBe(false)
+      expect(hasPermission(null, 'matches:update')).toBe(false)
       expect(hasPermission(null, 'matches:delete')).toBe(false)
       expect(hasPermission(null, 'matches:referee')).toBe(false)
     })
@@ -324,41 +334,58 @@ describe('RBAC', () => {
       expect(hasAnyPermission(manager, ['teams:read', 'teams:create'])).toBe(true)
       expect(hasAllPermissions(manager, ['teams:read', 'teams:create'])).toBe(true)
 
-      // Manager doesn't have teams:manage
-      expect(hasAllPermissions(manager, ['teams:read', 'teams:manage'])).toBe(true)
-      expect(hasAnyPermission(manager, ['teams:read', 'teams:manage'])).toBe(true)
+      // Manager has all team CRUD permissions
+      expect(
+        hasAllPermissions(manager, [
+          'teams:create',
+          'teams:read',
+          'teams:update',
+          'teams:delete',
+        ])
+      ).toBe(true)
+      expect(
+        hasAnyPermission(manager, [
+          'teams:create',
+          'teams:read',
+          'teams:update',
+          'teams:delete',
+        ])
+      ).toBe(true)
 
-      // Referee has matches:edit but not matches:create
-      expect(hasAnyPermission(referee, ['matches:edit', 'matches:create'])).toBe(true)
-      expect(hasAllPermissions(referee, ['matches:edit', 'matches:create'])).toBe(false)
+      // Referee has matches:update but not matches:create
+      expect(hasAnyPermission(referee, ['matches:update', 'matches:create'])).toBe(true)
+      expect(hasAllPermissions(referee, ['matches:update', 'matches:create'])).toBe(
+        false
+      )
     })
   })
 
   describe('requirePermission', () => {
     it('should not throw for users with permission', () => {
       expect(() => requirePermission(mockUsers.admin, 'teams:read')).not.toThrow()
-      expect(() => requirePermission(mockUsers.manager, 'teams:manage')).not.toThrow()
+      expect(() => requirePermission(mockUsers.manager, 'teams:create')).not.toThrow()
+      expect(() => requirePermission(mockUsers.manager, 'teams:delete')).not.toThrow()
       expect(() =>
-        requirePermission(mockUsers.admin, 'tournaments:manage')
+        requirePermission(mockUsers.admin, 'tournaments:create')
       ).not.toThrow()
       expect(() =>
-        requirePermission(mockUsers.manager, 'tournaments:create')
+        requirePermission(mockUsers.manager, 'tournaments:update')
       ).not.toThrow()
-      expect(() => requirePermission(mockUsers.referee, 'matches:edit')).not.toThrow()
+      expect(() => requirePermission(mockUsers.referee, 'matches:update')).not.toThrow()
       expect(() => requirePermission(mockUsers.public, 'teams:read')).not.toThrow()
     })
 
     it('should throw 403 for users without permission', () => {
-      // PUBLIC users can now create teams, so test a different permission they don't have
-      expect(() => requirePermission(mockUsers.public, 'teams:edit')).toThrow(
+      // PUBLIC users can create teams, but not update them
+      expect(() => requirePermission(mockUsers.public, 'teams:update')).toThrow(
         ForbiddenError
       )
       expect(() => requirePermission(mockUsers.referee, 'tournaments:create')).toThrow(
         ForbiddenError
       )
 
-      // Unauthenticated users (null) now have teams:create permission, test teams:edit instead
-      expect(() => requirePermission(null, 'teams:edit')).toThrow(ForbiddenError)
+      // Unauthenticated users (null) have teams:create permission, but not teams:update
+      expect(() => requirePermission(null, 'teams:update')).toThrow(ForbiddenError)
     })
   })
 

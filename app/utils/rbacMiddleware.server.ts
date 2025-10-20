@@ -188,9 +188,10 @@ export const withPermissionCheck =
 /**
  * Legacy compatibility wrapper
  * Gradually replace withAdminRateLimit calls with this
+ * @deprecated Use withPermissionCheck directly with explicit permission
  */
 export const withAdminPermissionCheck = (
   handler: (args: { request: Request }, user: { user: User }) => unknown,
-  permission: Permission = 'tournaments:manage' // Default to high-level admin permission
+  permission: Permission = 'users:approve' // Default to admin-only permission
 ): ((args: { request: Request }) => Promise<unknown>) =>
   withPermissionCheck(handler, permission)

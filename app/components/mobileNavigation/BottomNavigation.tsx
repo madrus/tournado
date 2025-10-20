@@ -35,8 +35,8 @@ function BottomNavigation(): JSX.Element {
   // Get current user with fallback handling
   const user = useUser()
 
-  // Check user permissions
-  const canManageTeams = canAccess(user, 'teams:manage')
+  // Check user permissions - delete permission implies full admin access
+  const canManageTeams = canAccess(user, 'teams:delete')
 
   // Define navigation items with role-based URLs
   const navigationItems: Array<{ to: string; icon: IconName; label: string }> = [

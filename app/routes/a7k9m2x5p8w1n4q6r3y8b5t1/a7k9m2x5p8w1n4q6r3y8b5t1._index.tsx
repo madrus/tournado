@@ -17,7 +17,7 @@ import { AdminPanelLayoutHeader } from '~/components/layouts'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
-import { hasPermission } from '~/utils/rbac'
+import { canAccess, hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 
@@ -87,8 +87,9 @@ export default function AdminDashboard(): JSX.Element {
   const { i18n, t } = useTranslation()
 
   // Check user permissions for conditional rendering
-  const canManageTeams = hasPermission(user, 'teams:manage')
-  const canManageTournaments = hasPermission(user, 'tournaments:manage')
+  // Admin tiles: delete permission implies full admin access (create, read, update, delete)
+  const canManageTeams = canAccess(user, 'teams:delete')
+  const canManageTournaments = canAccess(user, 'tournaments:delete')
   const canRefereeMatches = hasPermission(user, 'matches:referee')
   const canManageUsers = hasPermission(user, 'users:approve')
   const canAccessSystemSettings = hasPermission(user, 'system:settings')

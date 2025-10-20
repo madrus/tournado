@@ -441,8 +441,8 @@ describe('AppBar Context Menu', () => {
         {
           role: 'MANAGER',
           expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
-          teamsMenuItemIndex: 1,
-        }, // Teams is 2nd for manager (after Admin Panel, before Competition)
+          teamsMenuItemIndex: 2,
+        }, // Teams is 3rd for manager (after Admin Panel, Tournaments)
         {
           role: 'REFEREE',
           expectedHref: '/teams',

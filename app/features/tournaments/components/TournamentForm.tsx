@@ -567,7 +567,9 @@ export function TournamentForm({
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
-            permission={formMode === 'edit' ? 'tournaments:edit' : 'tournaments:create'}
+            permission={
+              formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+            }
           >
             <RestorePageIcon className='mr-2 h-6 w-6' size={24} />
             {t('common.actions.cancel')}
@@ -579,7 +581,9 @@ export function TournamentForm({
             color='brand'
             icon='check_circle'
             aria-label={t('common.actions.save')}
-            permission={formMode === 'edit' ? 'tournaments:edit' : 'tournaments:create'}
+            permission={
+              formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+            }
             disabled={
               isPublicSuccess ||
               !isFormReadyForSubmission() ||

@@ -52,8 +52,9 @@ export function AppBar({
     signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
   // Check user permissions using RBAC utilities
-  const canManageTournaments = canAccess(user || null, 'tournaments:manage')
-  const canManageTeams = canAccess(user || null, 'teams:manage')
+  // Menu visibility: delete permission implies full admin access (create, read, update, delete)
+  const canManageTournaments = canAccess(user || null, 'tournaments:delete')
+  const canManageTeams = canAccess(user || null, 'teams:delete')
   const canManageGroups = canAccess(user || null, 'groups:manage')
   const userHasAdminPanelAccess = hasAdminPanelAccess(user || null)
 

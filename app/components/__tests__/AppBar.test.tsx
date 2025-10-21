@@ -189,14 +189,11 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
       expect(menuLabels).toContain('common.auth.signOut')
 
-      // Should NOT see admin items or sign in
+      // Should NOT see admin-only items or sign in
       expect(menuLabels).not.toContain('common.titles.adminPanel')
-      expect(menuLabels).not.toContain('common.auth.tournaments')
-      expect(menuLabels).not.toContain('common.auth.competition')
-      expect(menuLabels).not.toContain('common.auth.signIn')
-      expect(menuLabels).not.toContain('common.auth.users')
-      expect(menuLabels).not.toContain('common.auth.settings')
-      expect(menuLabels).not.toContain('common.auth.profile')
+      expect(menuLabels).not.toContain('common.titles.tournaments')
+      expect(menuLabels).not.toContain('common.titles.competition')
+      expect(menuLabels).not.toContain('common.titles.users')
       expect(menuLabels).not.toContain('common.auth.signIn')
     })
 

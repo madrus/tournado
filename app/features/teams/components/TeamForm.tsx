@@ -748,7 +748,7 @@ export function TeamForm({
               color='brand'
               icon='check_circle'
               aria-label={t('common.actions.save')}
-              permission={formMode === 'edit' ? 'teams:edit' : 'teams:create'}
+              permission={formMode === 'edit' ? 'teams:update' : 'teams:create'}
               disabled={
                 isSubmitting ||
                 isPublicSuccess ||

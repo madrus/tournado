@@ -189,8 +189,11 @@ describe('AppBar Context Menu', () => {
       expect(menuLabels).toContain('common.language') // Generic language menu, not individual language name
       expect(menuLabels).toContain('common.auth.signOut')
 
-      // Should NOT see admin items or sign in
+      // Should NOT see admin-only items or sign in
       expect(menuLabels).not.toContain('common.titles.adminPanel')
+      expect(menuLabels).not.toContain('common.titles.tournaments')
+      expect(menuLabels).not.toContain('common.titles.competition')
+      expect(menuLabels).not.toContain('common.titles.users')
       expect(menuLabels).not.toContain('common.auth.signIn')
     })
 
@@ -271,8 +274,8 @@ describe('AppBar Context Menu', () => {
       const desktopMenu = screen.getByTestId('user-menu-desktop')
       const menuItems = within(desktopMenu).getAllByTestId(/^menu-item-\d+$/)
 
-      // Find the Teams menu item (should be second for admin, after Tournaments)
-      const teamsMenuItem = menuItems[1]
+      // Find the Teams menu item (should be third for admin, after Admin Panel and Tournaments)
+      const teamsMenuItem = menuItems[2]
       const teamsHref = within(teamsMenuItem).getByTestId('menu-href')
 
       expect(teamsHref).toHaveTextContent('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
@@ -298,7 +301,7 @@ describe('AppBar Context Menu', () => {
       )
     })
 
-    it('should position Admin Panel after Teams and divider', () => {
+    it('should position Admin Panel after the first divider', () => {
       render(
         <MemoryRouter>
           <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
@@ -313,9 +316,9 @@ describe('AppBar Context Menu', () => {
       const teamsIndex = menuLabels.indexOf('common.titles.teams')
       const adminPanelIndex = menuLabels.indexOf('common.titles.adminPanel')
 
-      expect(tournamentsIndex).toBe(0) // Tournaments should be first for admin
-      expect(teamsIndex).toBe(1) // Teams should be second for admin
-      expect(adminPanelIndex).toBe(4) // Admin Panel should be after Users (divider is not counted in labels)
+      expect(adminPanelIndex).toBe(0) // Admin Panel should be after the 1st divider
+      expect(tournamentsIndex).toBe(1) // Tournaments should be after Admin Panel
+      expect(teamsIndex).toBe(2) // Teams should be after Tournaments
     })
   })
 
@@ -432,13 +435,21 @@ describe('AppBar Context Menu', () => {
         teamsMenuItemIndex: number // Index where Teams appears in menu
       }> = [
         { role: 'PUBLIC', expectedHref: '/teams', teamsMenuItemIndex: 0 },
-        { role: 'MANAGER', expectedHref: '/teams', teamsMenuItemIndex: 0 },
-        { role: 'REFEREE', expectedHref: '/teams', teamsMenuItemIndex: 0 },
+        {
+          role: 'MANAGER',
+          expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+          teamsMenuItemIndex: 2,
+        }, // Teams is 3rd for manager (after Admin Panel, Tournaments)
+        {
+          role: 'REFEREE',
+          expectedHref: '/teams',
+          teamsMenuItemIndex: 1,
+        }, // Teams is 2nd for referee (after Admin Panel, before Competition)
         {
           role: 'ADMIN',
           expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
-          teamsMenuItemIndex: 1,
-        }, // Teams is 2nd for admin (after Tournaments)
+          teamsMenuItemIndex: 2,
+        }, // Teams is 3rd for admin (after Admin Panel, Tournaments)
       ]
 
       roles.forEach(({ role, expectedHref, teamsMenuItemIndex }) => {
@@ -487,7 +498,7 @@ describe('AppBar Context Menu', () => {
         {
           authenticated: true,
           user: { role: 'ADMIN' } as User,
-          expectedFirstItem: 'common.titles.tournaments', // Admin users see Tournaments first
+          expectedFirstItem: 'common.titles.adminPanel', // Admin users see Admin Panel first
         },
       ]
 

@@ -38,16 +38,23 @@ async function seed() {
   const prisma = await createPrismaClient()
 
   try {
-    // Get admin emails from environment variable (dynamic role assignment)
-    const superAdminEmails =
-      process.env.SUPER_ADMIN_EMAILS?.split(',').map(email => email.trim()) || []
+    // Detect test environment (E2E tests or unit tests)
+    const isTestEnv =
+      process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test'
 
-    // All users to seed with their emails
-    const allUsers = ['user@example.com', 'admin2@example.com', 'admin1@example.com']
+    // Test fixture users - ONLY created during test runs, NOT in regular development
+    // In development, users authenticate via Firebase and are created that way
+    const testFixtureUsers = isTestEnv
+      ? [
+          { email: 'user@example.com', role: 'PUBLIC' },
+          { email: 'admin1@example.com', role: 'MANAGER' },
+          { email: 'admin2@example.com', role: 'MANAGER' },
+        ]
+      : []
 
-    // cleanup the existing database
+    // Cleanup test fixture users
     await Promise.all(
-      allUsers.map(email =>
+      testFixtureUsers.map(({ email }) =>
         prisma.user.delete({ where: { email } }).catch(() => {
           // no worries if it doesn't exist yet
         })
@@ -63,27 +70,28 @@ async function seed() {
       },
     })
 
-    // Create users with roles based on SUPER_ADMIN_EMAILS
-    // Note: These are test/seed users with placeholder firebaseUids
-    // Actual authentication happens via Firebase (Google OAuth or Email/Password)
-    await Promise.all(
-      allUsers.map(async email => {
-        const role = superAdminEmails.includes(email) ? 'ADMIN' : 'MANAGER'
-        const lastName = role === 'ADMIN' ? 'Admin' : 'User'
+    // Create test fixture users (only during test runs)
+    if (testFixtureUsers.length > 0) {
+      console.log('Creating test fixture users for test environment...')
+      await Promise.all(
+        testFixtureUsers.map(async ({ email, role }) => {
+          const lastName =
+            role === 'ADMIN' ? 'Admin' : role === 'MANAGER' ? 'Manager' : 'User'
 
-        return prisma.user.create({
-          data: {
-            email,
-            firstName:
-              email.split('@')[0].charAt(0).toUpperCase() +
-              email.split('@')[0].slice(1),
-            lastName,
-            role,
-            firebaseUid: `seed-${email.replace(/[@.]/g, '-')}`, // Placeholder for seeded test users
-          },
+          return prisma.user.create({
+            data: {
+              email,
+              firstName:
+                email.split('@')[0].charAt(0).toUpperCase() +
+                email.split('@')[0].slice(1),
+              lastName,
+              role,
+              firebaseUid: `seed-${email.replace(/[@.]/g, '-')}`, // Placeholder for test fixture users
+            },
+          })
         })
-      })
-    )
+      )
+    }
 
     const team1 = {
       name: 'JO8-1',

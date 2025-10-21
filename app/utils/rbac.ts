@@ -17,23 +17,25 @@ export class ForbiddenError extends Error {
   }
 }
 
-// Define available permissions
+// Define available permissions using standard CRUD conventions (Create, Read, Update, Delete)
 export type Permission =
-  | 'teams:read' // View teams
+  // Teams CRUD
   | 'teams:create' // Create new teams
-  | 'teams:edit' // Edit team details
+  | 'teams:read' // View teams
+  | 'teams:update' // Update team details
   | 'teams:delete' // Delete teams
-  | 'teams:manage' // Full team management
+  // Tournaments CRUD
+  | 'tournaments:create' // Create new tournaments
   | 'tournaments:read' // View tournaments
-  | 'tournaments:create'
-  | 'tournaments:edit'
-  | 'tournaments:delete'
-  | 'tournaments:manage'
-  | 'groups:manage' // Manage groups and assignments
-  | 'matches:read'
-  | 'matches:create'
-  | 'matches:edit'
-  | 'matches:delete'
+  | 'tournaments:update' // Update tournament details
+  | 'tournaments:delete' // Delete tournaments
+  // Matches CRUD
+  | 'matches:create' // Create new matches
+  | 'matches:read' // View matches
+  | 'matches:update' // Update match details
+  | 'matches:delete' // Delete matches
+  // Special permissions (not standard CRUD)
+  | 'groups:manage' // Manage groups and assignments (no individual CRUD operations)
   | 'matches:referee' // Referee match actions
   | 'users:read' // View user list
   | 'users:approve' // Approve/manage users
@@ -45,13 +47,19 @@ export type Permission =
 // Role permission matrix based on actual Prisma roles
 // Note: Unauthenticated users are treated as PUBLIC users
 const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
-  PUBLIC: ['teams:read', 'teams:create', 'tournaments:read', 'matches:read'],
-  REFEREE: [
+  PUBLIC: [
+    'teams:create', // Public users can create teams (self-registration)
     'teams:read',
     'tournaments:read',
     'matches:read',
-    'matches:edit',
-    'matches:referee',
+  ],
+  REFEREE: [
+    'teams:read',
+    'tournaments:read',
+    'groups:manage', // Referees need access to competition/groups to update scores and calendar
+    'matches:read',
+    'matches:update', // Referees can update match details
+    'matches:referee', // Special referee actions
   ],
   EDITOR: ['teams:read', 'tournaments:read', 'matches:read', 'system:reports'],
   BILLING: [
@@ -62,38 +70,37 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'system:billing',
   ],
   MANAGER: [
-    'teams:read',
     'teams:create',
-    'teams:edit',
+    'teams:read',
+    'teams:update',
     'teams:delete',
-    'teams:manage',
-    'tournaments:read',
     'tournaments:create',
-    'tournaments:edit',
-    'groups:manage',
-    'matches:read',
+    'tournaments:read',
+    'tournaments:update',
+    'tournaments:delete',
+    'groups:manage', // Full competition/groups management
     'matches:create',
-    'matches:edit',
+    'matches:read',
+    'matches:update',
     'matches:delete',
+    'matches:referee', // Referee actions for full competition control
     'system:reports',
   ],
   ADMIN: [
-    'teams:read',
     'teams:create',
-    'teams:edit',
+    'teams:read',
+    'teams:update',
     'teams:delete',
-    'teams:manage',
-    'tournaments:read',
     'tournaments:create',
-    'tournaments:edit',
+    'tournaments:read',
+    'tournaments:update',
     'tournaments:delete',
-    'tournaments:manage',
     'groups:manage',
-    'matches:read',
     'matches:create',
-    'matches:edit',
+    'matches:read',
+    'matches:update',
     'matches:delete',
-    'matches:referee',
+    'matches:referee', // Admins can also perform referee actions
     'users:read',
     'users:approve',
     'roles:assign',

@@ -44,21 +44,21 @@ describe('dataLoaders', () => {
       },
     ]
 
-    // Expected data after serialization (with string dates)
+    // Expected data after serialization (with ISO string dates)
     const mockTournamentListItems = [
       {
         id: 'tournament-1',
         name: 'Spring Tournament 2024',
         location: 'Amsterdam',
-        startDate: '2024-03-01',
-        endDate: '2024-03-03',
+        startDate: '2024-03-01T00:00:00.000Z',
+        endDate: '2024-03-03T00:00:00.000Z',
       },
       {
         id: 'tournament-2',
         name: 'Summer Cup 2024',
         location: 'Rotterdam',
-        startDate: '2024-06-15',
-        endDate: '2024-06-17',
+        startDate: '2024-06-15T00:00:00.000Z',
+        endDate: '2024-06-17T00:00:00.000Z',
       },
     ]
 

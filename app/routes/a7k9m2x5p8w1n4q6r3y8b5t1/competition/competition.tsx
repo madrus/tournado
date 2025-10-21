@@ -54,11 +54,11 @@ export async function loader({
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
 
-  // Serialize dates to strings for JSON transport
+  // Serialize dates to ISO strings for JSON transport
   const tournamentListItems = tournamentListItemsRaw.map(item => ({
     ...item,
-    startDate: item.startDate.toISOString().split('T')[0],
-    endDate: item.endDate.toISOString().split('T')[0],
+    startDate: item.startDate.toISOString(),
+    endDate: item.endDate.toISOString(),
   }))
 
   return {

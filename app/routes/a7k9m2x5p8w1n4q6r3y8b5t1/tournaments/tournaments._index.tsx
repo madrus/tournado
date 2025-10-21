@@ -66,11 +66,11 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 
   const tournamentListItemsRaw = await getAllTournamentListItems()
 
-  // Serialize dates to strings for JSON transport
+  // Serialize dates to ISO strings for JSON transport
   const tournamentListItems = tournamentListItemsRaw.map(tournament => ({
     ...tournament,
-    startDate: tournament.startDate.toISOString().split('T')[0],
-    endDate: tournament.endDate.toISOString().split('T')[0],
+    startDate: tournament.startDate.toISOString(),
+    endDate: tournament.endDate.toISOString(),
   }))
 
   return { tournamentListItems }

@@ -20,7 +20,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
   const isRoleUnchanged = selectedRole === user.role
 
   return (
-    <div className='bg-card rounded-lg p-6 shadow'>
+    <div className='bg-card rounded-lg shadow'>
       <h2 className='mb-4 text-xl font-semibold'>
         {t('users.titles.userInformation')}
       </h2>

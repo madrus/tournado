@@ -132,19 +132,15 @@ export default function UserDetailRoute(): JSX.Element {
   const isSubmitting = navigation.state === 'submitting'
 
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <div className='mb-6'>
-        <h1 className='text-3xl font-bold'>{t('users.titles.userDetail')}</h1>
-      </div>
-
+    <>
       {actionData?.error ? (
-        <div className='bg-destructive/10 text-destructive mb-4 rounded-md p-4'>
+        <div className='bg-destructive/10 text-destructive mb-4 rounded-md'>
           {actionData.error}
         </div>
       ) : null}
 
       {actionData?.success ? (
-        <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
+        <div className='bg-success/10 text-success mb-4 rounded-md'>
           {t(
             actionData.success === 'role'
               ? 'users.messages.roleUpdatedSuccessfully'
@@ -155,13 +151,13 @@ export default function UserDetailRoute(): JSX.Element {
         </div>
       ) : null}
 
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+      <div className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
         <div>
           <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
           <UserDeactivationForm user={targetUser} isSubmitting={isSubmitting} />
         </div>
         <UserAuditLogList auditLogs={auditLogs} />
       </div>
-    </div>
+    </>
   )
 }

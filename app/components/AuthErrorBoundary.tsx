@@ -37,7 +37,7 @@ function getErrorTitleKey(error: ErrorResponse): string {
 
 export function AuthErrorBoundary(): JSX.Element {
   const error = useRouteError()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   if (typeof document !== 'undefined') {
     // eslint-disable-next-line no-console
@@ -48,7 +48,7 @@ export function AuthErrorBoundary(): JSX.Element {
     return (
       <div className='flex h-full items-center justify-center'>
         <div className='flex w-full max-w-md flex-col gap-6'>
-          <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+          <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
             {t(getErrorTitleKey(error))}
           </h1>
           <p className='text-foreground-lighter' data-testid='error-paragraph'>
@@ -69,7 +69,7 @@ export function AuthErrorBoundary(): JSX.Element {
   return (
     <div className='flex h-full items-center justify-center'>
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
           {t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter' data-testid='error-paragraph'>

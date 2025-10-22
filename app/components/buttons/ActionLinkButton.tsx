@@ -1,13 +1,13 @@
 import type { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { ActionLink } from '~/components/PrefetchLink'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { canAccess, type Permission } from '~/utils/rbac'
 import { useUser } from '~/utils/routeUtils'
-import { isRTL } from '~/utils/rtlUtils'
 
+import { ActionButton } from './ActionButton'
 import { buttonVariants, type ButtonVariants } from './button.variants'
 
 type ActionLinkButtonProps = {
@@ -43,8 +43,7 @@ export function ActionLinkButton({
   permission,
   hideWhenDisabled = false,
 }: Readonly<ActionLinkButtonProps>): JSX.Element | null {
-  const { i18n } = useTranslation()
-  const rtl = isRTL(i18n.language)
+  const { isRTL } = useSettingsStore()
 
   // Get current user with fallback handling
   const user = useUser()
@@ -65,37 +64,26 @@ export function ActionLinkButton({
 
   // Disable button if user lacks permission
   const isDisabled = permission && !hasRequiredPermission
-  const buttonClasses = cn(
-    buttonVariants({ variant, color, size }),
-    isDisabled && 'pointer-events-none', // Only add pointer-events-none, other disabled styles handled by buttonVariants
-    className
-  )
 
-  // Render as button when disabled for better UX and semantics
+  // Render as ActionButton when disabled for better UX and semantics
   if (isDisabled) {
     return (
-      <button
-        type='button'
-        className={buttonClasses}
+      <ActionButton
+        variant={variant}
+        color={color}
+        size={size}
+        className={className}
         aria-label={label}
-        aria-disabled={true}
         disabled={true}
+        icon={icon}
         data-testid={testId}
       >
-        {rtl ? (
-          <>
-            {labelText}
-            {iconElement}
-          </>
-        ) : (
-          <>
-            {iconElement}
-            {labelText}
-          </>
-        )}
-      </button>
+        {label}
+      </ActionButton>
     )
   }
+
+  const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   // Render as link when enabled
   return (
@@ -105,7 +93,7 @@ export function ActionLinkButton({
       aria-label={label}
       data-testid={testId}
     >
-      {rtl ? (
+      {isRTL ? (
         <>
           {labelText}
           {iconElement}

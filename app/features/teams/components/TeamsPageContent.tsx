@@ -32,7 +32,7 @@ export function TeamsPageContent({
   showStats = false,
   testId = 'teams-layout',
 }: TeamsPageContentProps): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const revalidator = useRevalidator()
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export function TeamsPageContent({
       {/* Info Section */}
       {teamListItems.length === 0 ? (
         <Panel color={PANEL_COLOR} className='mt-8'>
-          <h3 className={cn('text-lg font-medium', getLatinTitleClass(i18n.language))}>
+          <h3 className={cn('text-lg font-medium', getLatinTitleClass())}>
             {t('teams.getStarted.title')}
           </h3>
           <p className='text-foreground mt-2'>{t('teams.getStarted.description')}</p>

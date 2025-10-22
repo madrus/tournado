@@ -46,12 +46,12 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderDat
 }
 
 export default function IndexPage(): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { user } = useLoaderData<LoaderData>()
   const { theme, getThemeColor } = useTheme()
 
   // Get RTL-aware typography classes
-  const typography = getTypographyClasses(i18n.language)
+  const typography = getTypographyClasses()
 
   // Determine the correct teams route based on user permissions
   const teamsRoute = hasAdminPanelAccess(user)
@@ -68,7 +68,7 @@ export default function IndexPage(): JSX.Element {
               className={cn(
                 'text-4xl sm:text-6xl',
                 typography.appName,
-                getLatinTitleClass(i18n.language),
+                getLatinTitleClass(),
                 getThemeColor('title')
               )}
             >

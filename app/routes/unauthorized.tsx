@@ -61,7 +61,7 @@ export default function UnauthorizedPage(): JSX.Element {
     // Tests don't have loader data, use defaults
   }
 
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const getRoleBasedMessage = () => {
     if (!user) {
@@ -116,9 +116,7 @@ export default function UnauthorizedPage(): JSX.Element {
           </div>
 
           {/* Title */}
-          <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
-            {title}
-          </h1>
+          <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>{title}</h1>
 
           {/* Description */}
           <p className='text-foreground text-center'>{message}</p>

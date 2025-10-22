@@ -2,6 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import type { Category, Division } from '~/db.server'
+import { type Language } from '~/i18n/config'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 
 import { ToggleChip } from './ToggleChip'
@@ -63,15 +64,9 @@ export function ToggleChipGroup({
   // Helper functions for label and test-id generation
   const getLabel = (item: string): string => {
     if (type === 'divisions') {
-      return getDivisionLabelByValue(
-        item as Division,
-        i18n.language as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getDivisionLabelByValue(item as Division, i18n.language as Language)
     } else {
-      return getCategoryLabelByValue(
-        item as Category,
-        i18n.language as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getCategoryLabelByValue(item as Category, i18n.language as Language)
     }
   }
 

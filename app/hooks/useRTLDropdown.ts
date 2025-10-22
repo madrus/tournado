@@ -1,7 +1,6 @@
-import { useTranslation } from 'react-i18next'
-
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import type { DropdownProps, MenuClasses } from '~/utils/rtlUtils'
-import { getDropdownProps, getMenuClasses, isRTL } from '~/utils/rtlUtils'
+import { getDropdownProps, getMenuClasses } from '~/utils/rtlUtils'
 
 // React hook for RTL dropdown support
 export function useRTLDropdown(): {
@@ -9,11 +8,11 @@ export function useRTLDropdown(): {
   menuClasses: MenuClasses
   isRTL: boolean
 } {
-  const { i18n } = useTranslation()
+  const { isRTL } = useSettingsStore()
 
   return {
-    dropdownProps: getDropdownProps(i18n.language),
-    menuClasses: getMenuClasses(i18n.language),
-    isRTL: isRTL(i18n.language),
+    dropdownProps: getDropdownProps(),
+    menuClasses: getMenuClasses(),
+    isRTL,
   }
 }

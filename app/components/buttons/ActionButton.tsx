@@ -1,11 +1,10 @@
 import type { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { canAccess, type Permission } from '~/utils/rbac'
 import { useUser } from '~/utils/routeUtils'
-import { isRTL } from '~/utils/rtlUtils'
 
 import { buttonVariants, type ButtonVariants } from './button.variants'
 
@@ -21,6 +20,7 @@ type ActionButtonProps = {
   className?: string
   'aria-label'?: string
   'aria-describedby'?: string
+  'data-testid'?: string
   /**
    * Required permission to access this action.
    * If provided, the button will be disabled if user lacks this permission.
@@ -45,11 +45,11 @@ export function ActionButton({
   className,
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
+  'data-testid': testId,
   permission,
   hideWhenDisabled = false,
 }: Readonly<ActionButtonProps>): JSX.Element | null {
-  const { i18n } = useTranslation()
-  const rtl = isRTL(i18n.language)
+  const { isRTL } = useSettingsStore()
 
   // Get current user with fallback handling
   const user = useUser()
@@ -117,8 +117,9 @@ export function ActionButton({
       className={buttonClasses}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
+      data-testid={testId}
     >
-      {rtl ? (
+      {isRTL ? (
         <>
           {children}
           {iconElement}

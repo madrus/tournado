@@ -15,6 +15,7 @@ vi.mock('react-i18next', () => ({
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: vi.fn(division => `Division ${division}`),
   getCategoryLabelByValue: vi.fn(category => `Category ${category}`),
+  isBrowser: true,
 }))
 
 describe('ToggleChipsField', () => {
@@ -148,7 +149,7 @@ describe('ToggleChipsField', () => {
   })
 
   it('uses correct language for label generation', () => {
-    render(<ToggleChipsField {...defaultProps} language='nl' />)
+    render(<ToggleChipsField {...defaultProps} />)
 
     // The component should pass the language to the helper functions
     expect(screen.getByText('Division item1')).toBeInTheDocument()

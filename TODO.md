@@ -27,3 +27,12 @@ So the essential data structure would be:
    }
 }
 ```
+
+```
+@app/components/buttons/ActionButton.tsx (AB)  @app/components/buttons/IconLabelButton.tsx
+  (ILB) I want to do some refactorings of these 2 buttons in such a way that there are visually
+  no changes on the screen.
+
+  1. AB should get an optional icon parameter like ILB
+  2.
+```

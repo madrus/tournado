@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import {
   getDirection,
   getLatinFontFamily,
@@ -40,14 +40,14 @@ export type LanguageDirection = {
  * ```
  */
 export function useLanguageDirection(): LanguageDirection {
-  const { i18n } = useTranslation()
+  const { language } = useSettingsStore()
 
   return useMemo(
     () => ({
-      direction: getDirection(i18n.language),
-      latinFontClass: getLatinFontFamily(i18n.language),
-      swipeConfig: getSwipeRowConfig(i18n.language),
+      direction: getDirection(),
+      latinFontClass: getLatinFontFamily(),
+      swipeConfig: getSwipeRowConfig(),
     }),
-    [i18n.language]
+    [language]
   )
 }

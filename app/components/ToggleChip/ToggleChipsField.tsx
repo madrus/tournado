@@ -5,6 +5,7 @@ import { ErrorMessage } from '~/components/ErrorMessage'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import type { Category, Division } from '~/db.server'
+import { type Language } from '~/i18n/config'
 import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
 
 import { ToggleChip } from './ToggleChip'
@@ -48,10 +49,6 @@ export type ToggleChipsFieldProps = {
    */
   color: ToggleChipColorVariant
   /**
-   * Language for RTL text handling
-   */
-  language?: string
-  /**
    * Additional className for the container
    */
   className?: string
@@ -78,11 +75,9 @@ export function ToggleChipsField({
   required = false,
   disabled = false,
   color,
-  language,
   className,
 }: ToggleChipsFieldProps): JSX.Element {
   const { i18n } = useTranslation()
-  const effectiveLanguage = language || i18n.language
 
   // Grid layout constant
   const GRID_LAYOUT = 'grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'
@@ -108,15 +103,9 @@ export function ToggleChipsField({
   // Helper functions for label and test-id generation
   const getItemLabel = (item: string): string => {
     if (type === 'divisions') {
-      return getDivisionLabelByValue(
-        item as Division,
-        effectiveLanguage as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getDivisionLabelByValue(item as Division, i18n.language as Language)
     } else {
-      return getCategoryLabelByValue(
-        item as Category,
-        effectiveLanguage as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getCategoryLabelByValue(item as Category, i18n.language as Language)
     }
   }
 
@@ -133,7 +122,6 @@ export function ToggleChipsField({
       <LabelWithStatusIcon
         label={label}
         statusIcon={<FieldStatusIcon status={getFieldStatus()} />}
-        language={effectiveLanguage}
       />
 
       {/* Toggle Chips Grid */}

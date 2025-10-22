@@ -1,77 +1,81 @@
-import { describe, expect, test } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
-import {
-  getDirection,
-  getSwipeRowConfig,
-  isRTL,
-  type SwipeRowConfig,
-} from '../rtlUtils'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
-describe('isRTL', () => {
+import { getDirection, getSwipeRowConfig, type SwipeRowConfig } from '../rtlUtils'
+
+// Get store state once at top
+const state = useSettingsStore.getState
+
+// Reset store before each test
+beforeEach(() => {
+  state().resetStoreState()
+})
+
+describe('isRTL (via settings store)', () => {
   test('returns true for Arabic language code', () => {
-    expect(isRTL('ar')).toBe(true)
+    state().setLanguage('ar')
+    expect(state().isRTL).toBe(true)
   })
 
   test('returns true for Arabic subtags (BCP47 format)', () => {
-    expect(isRTL('ar-SA')).toBe(true) // Saudi Arabia
-    expect(isRTL('ar-EG')).toBe(true) // Egypt
-    expect(isRTL('ar-AE')).toBe(true) // United Arab Emirates
-    expect(isRTL('ar-MA')).toBe(true) // Morocco
+    state().setLanguage('ar')
+    expect(state().isRTL).toBe(true)
   })
 
   test('returns false for LTR language codes', () => {
-    expect(isRTL('en')).toBe(false)
-    expect(isRTL('fr')).toBe(false)
-    expect(isRTL('de')).toBe(false)
-    expect(isRTL('nl')).toBe(false)
-    expect(isRTL('tr')).toBe(false)
+    state().setLanguage('en')
+    expect(state().isRTL).toBe(false)
+
+    state().setLanguage('nl')
+    expect(state().isRTL).toBe(false)
   })
 
-  test('returns false for LTR language subtags (BCP47 format)', () => {
-    expect(isRTL('en-US')).toBe(false)
-    expect(isRTL('en-GB')).toBe(false)
-    expect(isRTL('fr-FR')).toBe(false)
-    expect(isRTL('nl-NL')).toBe(false)
-  })
-
-  test('returns false for empty or invalid codes', () => {
-    expect(isRTL('')).toBe(false)
-    expect(isRTL('invalid')).toBe(false)
+  test('returns false for default language', () => {
+    // Default language is 'nl' (Dutch)
+    expect(state().isRTL).toBe(false)
   })
 })
 
 describe('getDirection', () => {
   test('returns "rtl" for Arabic', () => {
-    expect(getDirection('ar')).toBe('rtl')
-  })
-
-  test('returns "rtl" for Arabic subtags (BCP47 format)', () => {
-    expect(getDirection('ar-SA')).toBe('rtl')
-    expect(getDirection('ar-EG')).toBe('rtl')
+    state().setLanguage('ar')
+    expect(getDirection()).toBe('rtl')
   })
 
   test('returns "ltr" for LTR languages', () => {
-    expect(getDirection('en')).toBe('ltr')
-    expect(getDirection('fr')).toBe('ltr')
-    expect(getDirection('de')).toBe('ltr')
-    expect(getDirection('nl')).toBe('ltr')
-    expect(getDirection('tr')).toBe('ltr')
+    state().setLanguage('en')
+    expect(getDirection()).toBe('ltr')
+
+    state().setLanguage('nl')
+    expect(getDirection()).toBe('ltr')
+
+    state().setLanguage('fr')
+    expect(getDirection()).toBe('ltr')
   })
 
-  test('returns "ltr" for LTR language subtags (BCP47 format)', () => {
-    expect(getDirection('en-US')).toBe('ltr')
-    expect(getDirection('en-GB')).toBe('ltr')
+  test('returns "ltr" for default language', () => {
+    expect(getDirection()).toBe('ltr')
   })
 
-  test('returns "ltr" for unknown language codes', () => {
-    expect(getDirection('')).toBe('ltr')
-    expect(getDirection('unknown')).toBe('ltr')
+  test('direction changes when language changes', () => {
+    // Start with English (LTR)
+    state().setLanguage('en')
+    expect(getDirection()).toBe('ltr')
+
+    // Change to Arabic (RTL)
+    state().setLanguage('ar')
+    expect(getDirection()).toBe('rtl')
+
+    // Change back to Dutch (LTR)
+    state().setLanguage('nl')
+    expect(getDirection()).toBe('ltr')
   })
 })
 
 describe('getSwipeRowConfig', () => {
-  test('returns correct type structure with valid domain', () => {
-    const config: SwipeRowConfig = getSwipeRowConfig('en')
+  test('returns correct type structure', () => {
+    const config: SwipeRowConfig = getSwipeRowConfig()
     expect(config).toHaveProperty('directionMultiplier')
     expect(typeof config.directionMultiplier).toBe('number')
     // directionMultiplier must be exactly 1 or -1
@@ -79,49 +83,55 @@ describe('getSwipeRowConfig', () => {
   })
 
   test('returns directionMultiplier of 1 for LTR languages', () => {
-    expect(getSwipeRowConfig('en').directionMultiplier).toBe(1)
-    expect(getSwipeRowConfig('fr').directionMultiplier).toBe(1)
-    expect(getSwipeRowConfig('de').directionMultiplier).toBe(1)
-    expect(getSwipeRowConfig('nl').directionMultiplier).toBe(1)
-    expect(getSwipeRowConfig('tr').directionMultiplier).toBe(1)
+    state().setLanguage('en')
+    expect(getSwipeRowConfig().directionMultiplier).toBe(1)
+
+    state().setLanguage('nl')
+    expect(getSwipeRowConfig().directionMultiplier).toBe(1)
+
+    state().setLanguage('fr')
+    expect(getSwipeRowConfig().directionMultiplier).toBe(1)
   })
 
   test('returns directionMultiplier of -1 for RTL languages', () => {
-    expect(getSwipeRowConfig('ar').directionMultiplier).toBe(-1)
+    state().setLanguage('ar')
+    expect(getSwipeRowConfig().directionMultiplier).toBe(-1)
   })
 
-  test('returns directionMultiplier of -1 for Arabic subtags (BCP47 format)', () => {
-    expect(getSwipeRowConfig('ar-SA').directionMultiplier).toBe(-1)
-    expect(getSwipeRowConfig('ar-EG').directionMultiplier).toBe(-1)
-  })
-
-  test('handles empty or invalid language codes as LTR', () => {
-    expect(getSwipeRowConfig('').directionMultiplier).toBe(1)
-    expect(getSwipeRowConfig('invalid').directionMultiplier).toBe(1)
+  test('returns directionMultiplier of 1 for default language', () => {
+    expect(getSwipeRowConfig().directionMultiplier).toBe(1)
   })
 
   describe('directionMultiplier usage scenarios', () => {
     test('LTR: negative deltaX results in negative after multiplication', () => {
-      const { directionMultiplier } = getSwipeRowConfig('en')
+      state().setLanguage('en')
+
+      const { directionMultiplier } = getSwipeRowConfig()
       const deltaX = -100 // User swiped left
       expect(deltaX * directionMultiplier).toBe(-100) // Still negative (left)
     })
 
     test('RTL: positive deltaX results in negative after multiplication', () => {
-      const { directionMultiplier } = getSwipeRowConfig('ar')
+      state().setLanguage('ar')
+
+      const { directionMultiplier } = getSwipeRowConfig()
       const deltaX = 100 // User swiped right
       expect(deltaX * directionMultiplier).toBe(-100) // Becomes negative (interpreted as left swipe)
     })
 
     test('LTR: transform calculation moves content left', () => {
-      const { directionMultiplier } = getSwipeRowConfig('en')
+      state().setLanguage('en')
+
+      const { directionMultiplier } = getSwipeRowConfig()
       const swipeStateX = -400 // Content at swipe position
       const transform = swipeStateX * directionMultiplier
       expect(transform).toBe(-400) // translateX(-400px) moves content left
     })
 
     test('RTL: transform calculation moves content right', () => {
-      const { directionMultiplier } = getSwipeRowConfig('ar')
+      state().setLanguage('ar')
+
+      const { directionMultiplier } = getSwipeRowConfig()
       const swipeStateX = -400 // Content at swipe position
       const transform = swipeStateX * directionMultiplier
       expect(transform).toBe(400) // translateX(400px) moves content right

@@ -1,5 +1,4 @@
 import { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
@@ -23,8 +22,6 @@ export function TeamChip({
   color = 'brand',
   className = '',
 }: TeamChipProps): JSX.Element {
-  const { i18n } = useTranslation()
-
   const baseClasses = cn(
     teamChipVariants({
       interactive: !!onClick,
@@ -34,7 +31,7 @@ export function TeamChip({
   )
 
   const teamText = (
-    <span className={cn('truncate', getLatinTextClass(i18n.language))}>
+    <span className={cn('truncate', getLatinTextClass())}>
       {`${team.clubName} ${team.name}`}
     </span>
   )

@@ -59,7 +59,6 @@ const ErrorFallback = ({
   error,
   errorTitle,
   errorMessage,
-  language,
 }: {
   error: Error | null
   errorTitle: string
@@ -71,12 +70,7 @@ const ErrorFallback = ({
     className='border-destructive bg-destructive/10 flex h-full items-center justify-center rounded-lg border p-4'
   >
     <div className='flex w-full max-w-md flex-col gap-6'>
-      <h1
-        className={cn(
-          'text-destructive text-xl font-bold',
-          getLatinTitleClass(language)
-        )}
-      >
+      <h1 className={cn('text-destructive text-xl font-bold', getLatinTitleClass())}>
         {errorTitle}
       </h1>
       <p className='text-destructive/80' data-testid='error-paragraph'>

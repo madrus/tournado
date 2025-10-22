@@ -2,7 +2,6 @@
 /* eslint-disable no-console */
 // learn more: https://fly.io/docs/reference/configuration/#services-http_checks
 import { type JSX, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -226,7 +225,6 @@ export default function HealthcheckPage(): JSX.Element | null {
   const actionData = useActionData() as
     | { ok: boolean; decoded?: unknown; error?: string }
     | undefined
-  const { i18n } = useTranslation()
   const fetcher = useFetcher<{ ok: boolean; decoded?: unknown; error?: string }>()
   const inputRef = useRef<HTMLInputElement>(null)
   const [helper, setHelper] = useState<string | null>(null)
@@ -280,7 +278,7 @@ export default function HealthcheckPage(): JSX.Element | null {
 
   return (
     <div className='text-foreground space-y-4 p-4 sm:p-6'>
-      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+      <h1 className={cn('mb-8 text-3xl font-bold', getLatinTitleClass())}>
         App & Firebase Health (dev)
       </h1>
 

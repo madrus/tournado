@@ -151,15 +151,13 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
   const currentLanguage = isHydrated ? storeLanguage : language
 
   // Use useState for reactive values that depend on language
-  const [direction, setDirection] = useState(getDirection(currentLanguage))
-  const [typographyClass, setTypographyClass] = useState(
-    getTypographyClass(currentLanguage)
-  )
+  const [direction, setDirection] = useState(getDirection())
+  const [typographyClass, setTypographyClass] = useState(getTypographyClass())
 
   // Update direction and typography when language changes
   useEffect(() => {
-    setDirection(getDirection(currentLanguage))
-    setTypographyClass(getTypographyClass(currentLanguage))
+    setDirection(getDirection())
+    setTypographyClass(getTypographyClass())
   }, [currentLanguage])
 
   return (

@@ -158,10 +158,7 @@ export function AppBar({
         customIcon: lang.flag,
         onClick: () => switchLanguage(lang.code),
         active: lang.code === currentLanguage,
-        className:
-          lang.code === 'ar'
-            ? getArabicTextClass()
-            : getLatinTextClass(currentLanguage),
+        className: lang.code === 'ar' ? getArabicTextClass() : getLatinTextClass(),
       })),
       authenticated: false,
     },
@@ -269,7 +266,7 @@ export function AppBar({
               />
               {/* Show Tournado text next to logo only on desktop */}
               <span
-                className={`text-primary-foreground hidden text-xl font-bold lg:inline-block ${getLatinTitleClass(currentLanguage)}`}
+                className={`text-primary-foreground hidden text-xl font-bold lg:inline-block ${getLatinTitleClass()}`}
               >
                 Tournado
               </span>
@@ -279,7 +276,7 @@ export function AppBar({
           {/* Page title in center */}
           <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
             <h2
-              className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass(currentLanguage)}`}
+              className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass()}`}
             >
               {pageTitle}
             </h2>

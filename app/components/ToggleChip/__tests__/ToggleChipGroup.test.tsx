@@ -15,6 +15,7 @@ vi.mock('react-i18next', () => ({
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: vi.fn(division => `Division ${division}`),
   getCategoryLabelByValue: vi.fn(category => `Category ${category}`),
+  isBrowser: true,
 }))
 
 describe('ToggleChipGroup', () => {

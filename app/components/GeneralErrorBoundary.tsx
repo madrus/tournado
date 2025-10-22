@@ -19,10 +19,10 @@ type StatusHandler = (info: {
 
 export function GeneralErrorBoundary({
   defaultStatusHandler = ({ error }) => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
           {error.status === 404
             ? t('messages.common.notFoundTitle')
             : t('messages.common.errorTitle')}
@@ -40,10 +40,10 @@ export function GeneralErrorBoundary({
   },
   statusHandlers,
   unexpectedErrorHandler = error => {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
     return (
       <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className={cn('text-2xl font-bold', getLatinTitleClass(i18n.language))}>
+        <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
           {t('messages.common.errorTitle')}
         </h1>
         <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>

@@ -18,7 +18,7 @@ function TranslationComponent({ translationKey }: { translationKey: string }) {
 }
 
 // Language display component
-function LanguageDisplay() {
+const LanguageDisplay = () => {
   const { i18n } = useTranslation()
   return <div data-testid='current-language'>{i18n.language}</div>
 }

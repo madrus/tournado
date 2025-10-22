@@ -3,10 +3,10 @@ import type { JSX } from 'react'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { canAccess, type Permission } from '~/utils/rbac'
-import { useUser } from '~/utils/routeUtils'
+import { type Permission } from '~/utils/rbac'
 
 import { buttonVariants, type ButtonVariants } from './button.variants'
+import { useActionButton } from './useActionButton'
 
 type ActionButtonProps = {
   onClick?: () => void
@@ -50,15 +50,14 @@ export function ActionButton({
   hideWhenDisabled = false,
 }: Readonly<ActionButtonProps>): JSX.Element | null {
   const { isRTL } = useSettingsStore()
-
-  // Get current user with fallback handling
-  const user = useUser()
-
-  // Check if user has required permission
-  const hasRequiredPermission = permission ? canAccess(user, permission) : true
+  const { isHidden, isDisabled } = useActionButton({
+    permission,
+    hideWhenDisabled,
+    disabled,
+  })
 
   // Hide button if user lacks permission and hideWhenDisabled is true
-  if (permission && !hasRequiredPermission && hideWhenDisabled) {
+  if (isHidden) {
     return null
   }
 
@@ -82,16 +81,27 @@ export function ActionButton({
         className={cn(
           'me-1.5 flex items-center justify-center rounded-full border-2 bg-transparent',
           size === 'sm' ? 'h-5 w-5' : 'h-6 w-6',
-          color === 'emerald' && 'border-emerald-600/70',
-          color === 'red' && 'border-red-600/70',
-          color === 'yellow' && 'border-yellow-600/70',
-          color === 'cyan' && 'border-cyan-600/70',
-          color === 'green' && 'border-green-600/70',
-          color === 'teal' && 'border-teal-600/70',
-          color === 'violet' && 'border-violet-600/70',
-          color === 'slate' && 'border-slate-600/70',
+          color === 'brand' && 'border-brand-600/70',
           color === 'primary' && 'border-primary-600/70',
-          color === 'brand' && 'border-brand-600/70'
+          color === 'emerald' && 'border-emerald-600/70',
+          color === 'blue' && 'border-blue-600/70',
+          color === 'slate' && 'border-slate-600/70',
+          color === 'teal' && 'border-teal-600/70',
+          color === 'red' && 'border-red-600/70',
+          color === 'cyan' && 'border-cyan-600/70',
+          color === 'yellow' && 'border-yellow-600/70',
+          color === 'green' && 'border-green-600/70',
+          color === 'violet' && 'border-violet-600/70',
+          color === 'zinc' && 'border-zinc-600/70',
+          color === 'orange' && 'border-orange-600/70',
+          color === 'amber' && 'border-amber-600/70',
+          color === 'lime' && 'border-lime-600/70',
+          color === 'sky' && 'border-sky-600/70',
+          color === 'indigo' && 'border-indigo-600/70',
+          color === 'purple' && 'border-purple-600/70',
+          color === 'fuchsia' && 'border-fuchsia-600/70',
+          color === 'pink' && 'border-pink-600/70',
+          color === 'rose' && 'border-rose-600/70'
         )}
         aria-hidden='true'
       >
@@ -104,8 +114,6 @@ export function ActionButton({
     )
   ) : null
 
-  // Combine permission-based disabled state with explicit disabled prop
-  const isDisabled = disabled || (permission && !hasRequiredPermission)
   const buttonClasses = cn(buttonVariants({ variant, color, size }), className)
 
   return (

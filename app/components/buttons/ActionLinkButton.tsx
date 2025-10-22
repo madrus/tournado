@@ -4,11 +4,11 @@ import { ActionLink } from '~/components/PrefetchLink'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { canAccess, type Permission } from '~/utils/rbac'
-import { useUser } from '~/utils/routeUtils'
+import { type Permission } from '~/utils/rbac'
 
 import { ActionButton } from './ActionButton'
 import { buttonVariants, type ButtonVariants } from './button.variants'
+import { useActionButton } from './useActionButton'
 
 type ActionLinkButtonProps = {
   to: string
@@ -44,15 +44,13 @@ export function ActionLinkButton({
   hideWhenDisabled = false,
 }: Readonly<ActionLinkButtonProps>): JSX.Element | null {
   const { isRTL } = useSettingsStore()
-
-  // Get current user with fallback handling
-  const user = useUser()
-
-  // Check if user has required permission
-  const hasRequiredPermission = permission ? canAccess(user, permission) : true
+  const { isHidden, isDisabled } = useActionButton({
+    permission,
+    hideWhenDisabled,
+  })
 
   // Hide button if user lacks permission and hideWhenDisabled is true
-  if (permission && !hasRequiredPermission && hideWhenDisabled) {
+  if (isHidden) {
     return null
   }
 
@@ -61,9 +59,6 @@ export function ActionLinkButton({
   })
 
   const labelText = <span>{label}</span>
-
-  // Disable button if user lacks permission
-  const isDisabled = permission && !hasRequiredPermission
 
   // Render as ActionButton when disabled for better UX and semantics
   if (isDisabled) {

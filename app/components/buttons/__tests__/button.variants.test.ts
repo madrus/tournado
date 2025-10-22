@@ -21,7 +21,7 @@ describe('Button Variants', () => {
 
       expect(classes).toContain('bg-brand-600')
       expect(classes).toContain('border-brand-600')
-      expect(classes).toContain('text-brand-50')
+      expect(classes).toContain('text-white')
     })
   })
 
@@ -43,7 +43,7 @@ describe('Button Variants', () => {
 
       expect(classes).toContain('bg-primary-600')
       expect(classes).toContain('border-primary-600')
-      expect(classes).toContain('text-primary-50')
+      expect(classes).toContain('text-white')
     })
   })
 
@@ -106,8 +106,7 @@ describe('Button Variants', () => {
       expect(classes).toContain('hover:shadow-xl')
       expect(classes).toContain('transition-all')
       expect(classes).toContain('duration-300')
-      expect(classes).toContain('hover:scale-103')
-      expect(classes).toContain('active:scale-95')
+      expect(classes).toContain('hover:scale-105')
     })
 
     it('should include disabled state styling', () => {
@@ -138,7 +137,7 @@ describe('Button Variants', () => {
       // Should include primary brand button styling
       expect(classes).toContain('bg-brand-600')
       expect(classes).toContain('border-brand-600')
-      expect(classes).toContain('text-brand-50')
+      expect(classes).toContain('text-white')
       expect(classes).toContain('shadow-brand-700/40')
       expect(classes).toContain('dark:shadow-slate-100/20')
     })

@@ -68,7 +68,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand-600')
-    expect(link).toHaveClass('text-brand-50')
+    expect(link).toHaveClass('text-white')
     expect(link).toHaveClass('border-brand-600')
     expect(link).toHaveClass('focus-visible:ring-brand-600')
     expect(link).toHaveClass('hover:ring-brand-600')
@@ -99,7 +99,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-primary-600')
-    expect(link).toHaveClass('text-primary-50')
+    expect(link).toHaveClass('text-white')
     expect(link).toHaveClass('border-primary-600')
     expect(link).toHaveClass('focus-visible:ring-primary-600')
     expect(link).toHaveClass('hover:ring-primary-600')
@@ -167,7 +167,7 @@ describe('ActionLinkButton', () => {
     expect(link).toHaveClass('py-2.5')
     expect(link).toHaveClass('text-base')
     expect(link).toHaveClass('font-bold')
-    expect(link).toHaveClass('hover:scale-103')
+    expect(link).toHaveClass('hover:scale-105')
     expect(link).toHaveClass('active:scale-95')
   })
 
@@ -181,7 +181,7 @@ describe('ActionLinkButton', () => {
     const link = screen.getByRole('link')
 
     // Verify link buttons have animations (unlike disabled action buttons)
-    expect(link).toHaveClass('hover:scale-103') // Scale animation on hover
+    expect(link).toHaveClass('hover:scale-105') // Scale animation on hover
     expect(link).toHaveClass('active:scale-95') // Scale animation on active
     expect(link).toHaveClass('hover:shadow-xl') // Shadow animation on hover
     expect(link).toHaveClass('hover:ring-2') // Ring animation on hover
@@ -285,7 +285,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand-600')
-    expect(link).toHaveClass('text-brand-50')
+    expect(link).toHaveClass('text-white')
     expect(link).toHaveClass('border-brand-600')
     expect(link).toHaveClass('focus-visible:ring-brand-600')
     expect(link).toHaveClass('hover:ring-brand-600')

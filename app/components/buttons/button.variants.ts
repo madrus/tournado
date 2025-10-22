@@ -32,7 +32,7 @@ import {
 /**
  * Helper function to generate primary button variant classes for a given color.
  * Reduces code duplication by templating the color-specific classes.
- * All colors uniformly use -600 weight and -50 text for consistency.
+ * All colors uniformly use -600 weight with white text for consistency.
  */
 function createPrimaryVariant(color: ColorVariantKey) {
   const weight = '600'
@@ -41,7 +41,7 @@ function createPrimaryVariant(color: ColorVariantKey) {
     variant: 'primary' as const,
     color,
     class: [
-      `text-${color}-50`,
+      'text-white',
       `bg-${color}-${weight}`,
       `border border-${color}-${weight}`,
       `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-${color}-${weight} focus-visible:ring-offset-slate-50`,
@@ -86,7 +86,7 @@ export const buttonVariants = cva(
     'min-h-12 min-w-32 py-2.5 px-4 text-base uppercase',
     'relative transition-all duration-300 ease-out whitespace-nowrap',
     'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
-    'hover:scale-103 active:scale-95 disabled:hover:scale-100',
+    'hover:scale-105 active:scale-95 disabled:hover:scale-100',
     'disabled:cursor-not-allowed disabled:opacity-50',
     'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border',
     'focus:outline-none',

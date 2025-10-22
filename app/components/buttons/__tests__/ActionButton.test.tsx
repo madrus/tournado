@@ -85,7 +85,7 @@ describe('ActionButton', () => {
     )
     const primaryButton = screen.getByRole('button')
     expect(primaryButton).toHaveClass('bg-primary-600')
-    expect(primaryButton).toHaveClass('text-primary-50')
+    expect(primaryButton).toHaveClass('text-white')
     expect(primaryButton).toHaveClass('border-primary-600')
     expect(primaryButton).toHaveClass('focus-visible:ring-primary-600')
     expect(primaryButton).toHaveClass('hover:ring-primary-600')

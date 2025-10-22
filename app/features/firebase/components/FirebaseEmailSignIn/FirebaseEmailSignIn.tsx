@@ -179,7 +179,7 @@ export function FirebaseEmailSignIn({
         type='submit'
         disabled={loading}
         variant='primary'
-        color='violet'
+        color='cyan'
         size='md'
       >
         {loading ? (

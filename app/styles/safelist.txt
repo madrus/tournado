@@ -142,6 +142,33 @@ focus:dark:ring-offset-primary-600
 dark:ring-offset-primary-600
 
 # =============================================================================
+# Text Colors - Button Variants
+# =============================================================================
+# Light text colors for primary buttons (used with colored backgrounds)
+
+text-brand-50
+text-primary-50
+text-emerald-50
+text-blue-50
+text-slate-50
+text-teal-50
+text-red-50
+text-cyan-50
+text-yellow-50
+text-green-50
+text-violet-50
+text-zinc-50
+text-orange-50
+text-amber-50
+text-lime-50
+text-sky-50
+text-indigo-50
+text-purple-50
+text-fuchsia-50
+text-pink-50
+text-rose-50
+
+# =============================================================================
 # Panel Component - Gradient Backgrounds
 # =============================================================================
 # Dynamically generated in Panel.tsx based on color prop

@@ -68,7 +68,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand-600')
-    expect(link).toHaveClass('text-white')
+    expect(link).toHaveClass('text-brand-50')
     expect(link).toHaveClass('border-brand-600')
     expect(link).toHaveClass('focus-visible:ring-brand-600')
     expect(link).toHaveClass('hover:ring-brand-600')
@@ -98,11 +98,11 @@ describe('ActionLinkButton', () => {
     )
 
     const link = screen.getByRole('link')
-    expect(link).toHaveClass('bg-primary-700')
-    expect(link).toHaveClass('text-white')
-    expect(link).toHaveClass('border-primary-700')
-    expect(link).toHaveClass('focus-visible:ring-primary-700')
-    expect(link).toHaveClass('hover:ring-primary-700')
+    expect(link).toHaveClass('bg-primary-600')
+    expect(link).toHaveClass('text-primary-50')
+    expect(link).toHaveClass('border-primary-600')
+    expect(link).toHaveClass('focus-visible:ring-primary-600')
+    expect(link).toHaveClass('hover:ring-primary-600')
   })
 
   it('applies custom className', () => {
@@ -285,7 +285,7 @@ describe('ActionLinkButton', () => {
 
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-brand-600')
-    expect(link).toHaveClass('text-white')
+    expect(link).toHaveClass('text-brand-50')
     expect(link).toHaveClass('border-brand-600')
     expect(link).toHaveClass('focus-visible:ring-brand-600')
     expect(link).toHaveClass('hover:ring-brand-600')

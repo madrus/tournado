@@ -21,7 +21,7 @@ describe('Button Variants', () => {
 
       expect(classes).toContain('bg-brand-600')
       expect(classes).toContain('border-brand-600')
-      expect(classes).toContain('text-white')
+      expect(classes).toContain('text-brand-50')
     })
   })
 
@@ -41,9 +41,9 @@ describe('Button Variants', () => {
     it('should have proper primary styling', () => {
       const classes = buttonVariants({ variant: 'primary', color: 'primary' })
 
-      expect(classes).toContain('bg-primary-700')
-      expect(classes).toContain('border-primary-700')
-      expect(classes).toContain('text-white')
+      expect(classes).toContain('bg-primary-600')
+      expect(classes).toContain('border-primary-600')
+      expect(classes).toContain('text-primary-50')
     })
   })
 
@@ -87,7 +87,7 @@ describe('Button Variants', () => {
 
       expect(classes).toContain('bg-primary-50')
       expect(classes).toContain('text-primary-600')
-      expect(classes).toContain('border-primary-700')
+      expect(classes).toContain('border-primary-600')
     })
   })
 
@@ -138,7 +138,7 @@ describe('Button Variants', () => {
       // Should include primary brand button styling
       expect(classes).toContain('bg-brand-600')
       expect(classes).toContain('border-brand-600')
-      expect(classes).toContain('text-white')
+      expect(classes).toContain('text-brand-50')
       expect(classes).toContain('shadow-brand-700/40')
       expect(classes).toContain('dark:shadow-slate-100/20')
     })

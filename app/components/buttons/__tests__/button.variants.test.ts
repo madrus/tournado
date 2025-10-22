@@ -168,28 +168,20 @@ describe('Button Variants', () => {
     it('should include proper focus ring styles for brand buttons', () => {
       const classes = buttonVariants({ variant: 'primary', color: 'brand' })
 
-      // Light mode focus rings
+      // Ring styles (same for light and dark mode)
       expect(classes).toContain('focus-visible:ring-brand-600')
       expect(classes).toContain('focus-visible:ring-offset-slate-50')
       expect(classes).toContain('hover:ring-brand-600')
       expect(classes).toContain('hover:ring-offset-slate-50')
       expect(classes).toContain('focus:ring-brand-600')
       expect(classes).toContain('focus:ring-offset-slate-50')
-
-      // Dark mode focus rings
-      expect(classes).toContain('focus-visible:dark:ring-slate-50')
-      expect(classes).toContain('focus-visible:dark:ring-offset-brand-600')
-      expect(classes).toContain('hover:dark:ring-slate-50')
-      expect(classes).toContain('hover:dark:ring-offset-brand-600')
-      expect(classes).toContain('focus:dark:ring-slate-50')
-      expect(classes).toContain('focus:dark:ring-offset-brand-600')
     })
 
     it('should include proper border hover states for primary buttons', () => {
       const classes = buttonVariants({ variant: 'primary', color: 'brand' })
 
-      expect(classes).toContain('hover:dark:border-slate-50')
-      expect(classes).toContain('focus-visible:dark:border-slate-50')
+      // Option 1: No dark mode border overrides, uses colored borders in both modes
+      expect(classes).toContain('border-brand-600')
     })
   })
 })

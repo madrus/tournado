@@ -60,10 +60,9 @@ export default function SigninPage(): JSX.Element {
 
   return (
     <div className='mx-auto max-w-md space-y-6'>
-      <div className='space-y-2 text-center'>
-        <h1 className='text-2xl font-bold'>{t('common.auth.signIn')}</h1>
-        <p className='text-muted-foreground'>{t('auth.signInPage.description')}</p>
-      </div>
+      <h2 className='text-center text-2xl font-bold'>
+        {t('auth.signInPage.description')}
+      </h2>
 
       {/* Firebase Google Sign-in */}
       <FirebaseSignIn redirectTo={redirectTo} />
@@ -84,7 +83,10 @@ export default function SigninPage(): JSX.Element {
 
       <p className='text-muted-foreground text-center text-sm'>
         {t('auth.signInPage.noAccount')}{' '}
-        <Link to='/auth/signup' className='text-brand hover:text-brand/80 underline'>
+        <Link
+          to='/auth/signup'
+          className='text-amber-600 underline hover:text-amber-600/80'
+        >
           {t('auth.signInPage.signUpLink')}
         </Link>
       </p>

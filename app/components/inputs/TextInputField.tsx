@@ -23,7 +23,7 @@ import {
 type InputFieldProps = {
   name: string
   label: string
-  type?: 'text' | 'email' | 'tel'
+  type?: 'text' | 'email' | 'tel' | 'password'
   readOnly?: boolean
   disabled?: boolean
   error?: string

@@ -44,11 +44,10 @@ describe('FirebaseSignIn', () => {
     expect(button).toBeInTheDocument()
     expect(screen.getByText('auth.firebase.continueWithGoogle')).toBeInTheDocument()
 
-    // Verify cyan primary button styling
-    expect(button).toHaveClass('bg-cyan-600')
+    // Verify teal primary button styling
+    expect(button).toHaveClass('bg-teal-600')
     expect(button).toHaveClass('text-white')
-    expect(button).toHaveClass('border-cyan-600')
-    expect(button).toHaveClass('normal-case')
+    expect(button).toHaveClass('border-teal-600')
 
     // Verify button has standard animations
     expect(button).toHaveClass('hover:scale-105')
@@ -127,9 +126,8 @@ describe('FirebaseSignIn', () => {
       name: 'auth.firebase.continueWithGoogle',
     })
     expect(button).toHaveClass('custom-class')
-    // Should still have cyan button styling
-    expect(button).toHaveClass('bg-cyan-600')
-    expect(button).toHaveClass('normal-case')
+    // Should still have teal button styling
+    expect(button).toHaveClass('bg-teal-600')
   })
 
   test('uses default redirectTo when none provided', async () => {

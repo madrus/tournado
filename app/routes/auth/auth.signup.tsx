@@ -1,7 +1,6 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, type MetaFunction } from 'react-router'
-import { redirect, useLoaderData } from 'react-router'
+import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
 import {
   FirebaseEmailSignIn,
@@ -63,10 +62,9 @@ export default function SignUpPage(): JSX.Element {
 
   return (
     <div className='mx-auto max-w-md space-y-6'>
-      <div className='space-y-2 text-center'>
-        <h1 className='text-2xl font-bold'>{t('common.auth.signUp')}</h1>
-        <p className='text-muted-foreground'>{t('auth.signUpPage.description')}</p>
-      </div>
+      <h2 className='text-center text-2xl font-bold'>
+        {t('auth.signUpPage.description')}
+      </h2>
 
       {/* Firebase Google Sign-up */}
       <FirebaseSignIn redirectTo={redirectTo ?? '/'} />
@@ -87,7 +85,10 @@ export default function SignUpPage(): JSX.Element {
 
       <p className='text-muted-foreground text-center text-sm'>
         {t('auth.signUpPage.hasAccount')}{' '}
-        <Link to='/auth/signin' className='text-brand hover:text-brand/80 underline'>
+        <Link
+          to='/auth/signin'
+          className='text-amber-600 underline hover:text-amber-600/80'
+        >
           {t('auth.signUpPage.signInLink')}
         </Link>
       </p>

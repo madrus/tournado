@@ -95,6 +95,13 @@ describe('TextInputField', () => {
     expect(input).toHaveAttribute('type', 'tel')
   })
 
+  it('should handle password input type', () => {
+    render(<TextInputField {...defaultProps} type='password' />)
+
+    const input = screen.getByLabelText('Test Label')
+    expect(input).toHaveAttribute('type', 'password')
+  })
+
   it('should apply custom className', () => {
     render(<TextInputField {...defaultProps} className='custom-class' />)
 

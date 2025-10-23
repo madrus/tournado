@@ -2,11 +2,12 @@ import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { TextInputField } from '~/components/inputs/TextInputField'
 import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
-import { firebaseAuthFormVariants, inputVariants } from './firebaseAuth.variants'
+import { firebaseAuthFormVariants } from './firebaseAuth.variants'
 
 export type FirebaseEmailSignInProps = {
   mode: 'signin' | 'signup'
@@ -75,98 +76,76 @@ export function FirebaseEmailSignIn({
       onSubmit={handleSubmit}
       className={cn(firebaseAuthFormVariants({ size }), className)}
     >
-      <div className='space-y-2'>
-        <label htmlFor='email' className='text-sm font-medium'>
-          {t('auth.labels.email')}
-        </label>
-        <input
-          id='email'
-          type='email'
-          value={email}
-          onChange={event => {
-            setEmail(event.target.value)
-            setValidationError(null)
-          }}
-          className={cn(
-            inputVariants({
-              variant:
-                (error || validationError) && !validateEmail(email)
-                  ? 'error'
-                  : 'default',
-            })
-          )}
-          placeholder={t('auth.placeholders.email')}
-          required
-          disabled={loading}
-        />
-      </div>
+      <TextInputField
+        name='email'
+        label={t('auth.labels.email')}
+        type='email'
+        value={email}
+        onChange={value => {
+          setEmail(value)
+          setValidationError(null)
+        }}
+        placeholder={t('auth.placeholders.email')}
+        error={
+          (error || validationError) && !validateEmail(email)
+            ? t('auth.validation.emailInvalid')
+            : undefined
+        }
+        required
+        disabled={loading}
+        color='teal'
+      />
 
-      <div className='space-y-2'>
-        <label htmlFor='password' className='text-sm font-medium'>
-          {t('auth.labels.password')}
-        </label>
-        <input
-          id='password'
+      <div>
+        <TextInputField
+          name='password'
+          label={t('auth.labels.password')}
           type='password'
           value={password}
-          onChange={event => {
-            setPassword(event.target.value)
+          onChange={value => {
+            setPassword(value)
             setValidationError(null)
           }}
-          className={cn(
-            inputVariants({
-              variant:
-                (error || validationError) && validatePassword(password)
-                  ? 'error'
-                  : 'default',
-            })
-          )}
           placeholder={t('auth.placeholders.password')}
+          error={
+            (error || validationError) && validatePassword(password)
+              ? validatePassword(password) || undefined
+              : undefined
+          }
           required
           disabled={loading}
+          color='teal'
         />
         {mode === 'signup' ? (
-          <p className='text-muted-foreground text-xs'>
+          <p className='text-muted-foreground mt-1 text-xs opacity-60'>
             {t('auth.validation.passwordRequirements')}
           </p>
         ) : null}
       </div>
 
       {mode === 'signup' ? (
-        <div className='space-y-2'>
-          <label htmlFor='confirmPassword' className='text-sm font-medium'>
-            {t('auth.labels.confirmPassword')}
-          </label>
-          <input
-            id='confirmPassword'
-            type='password'
-            value={confirmPassword}
-            onChange={event => {
-              setConfirmPassword(event.target.value)
-              setValidationError(null)
-            }}
-            className={cn(
-              inputVariants({
-                variant:
-                  (error || validationError) && password !== confirmPassword
-                    ? 'error'
-                    : 'default',
-              })
-            )}
-            placeholder={t('auth.placeholders.confirmPassword')}
-            required
-            disabled={loading}
-          />
-        </div>
+        <TextInputField
+          name='confirmPassword'
+          label={t('auth.labels.confirmPassword')}
+          type='password'
+          value={confirmPassword}
+          onChange={value => {
+            setConfirmPassword(value)
+            setValidationError(null)
+          }}
+          placeholder={t('auth.placeholders.confirmPassword')}
+          error={
+            (error || validationError) && password !== confirmPassword
+              ? t('auth.validation.passwordMismatch')
+              : undefined
+          }
+          required
+          disabled={loading}
+          color='teal'
+        />
       ) : null}
 
-      {validationError ? (
-        <div className='text-destructive bg-destructive/10 rounded-md p-3 text-sm'>
-          {validationError}
-        </div>
-      ) : null}
-
-      {error ? (
+      {error && !validationError ? (
         <div className='text-destructive bg-destructive/10 rounded-md p-3 text-sm'>
           {error}
         </div>
@@ -175,7 +154,7 @@ export function FirebaseEmailSignIn({
       <ActionButton
         type='submit'
         disabled={loading}
-        variant='secondary'
+        variant='primary'
         color='teal'
         size='md'
       >

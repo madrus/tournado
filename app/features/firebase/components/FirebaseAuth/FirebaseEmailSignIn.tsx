@@ -163,6 +163,7 @@ export function FirebaseEmailSignIn({
         variant='primary'
         color='teal'
         size='md'
+        className='w-full md:w-fit md:self-center'
       >
         {loading ? (
           <div className='flex items-center justify-center gap-2'>

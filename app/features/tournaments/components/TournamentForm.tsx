@@ -559,12 +559,13 @@ export function TournamentForm({
         </Panel>
 
         {/* Submit Button */}
-        <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+        <div className='flex flex-col gap-4 md:flex-row md:justify-end rtl:md:justify-start'>
           <ActionButton
             type='button'
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
+            className='w-full md:w-fit'
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
             }
@@ -578,6 +579,7 @@ export function TournamentForm({
             variant='primary'
             color='brand'
             icon='check_circle'
+            className='w-full md:w-fit'
             aria-label={t('common.actions.save')}
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'

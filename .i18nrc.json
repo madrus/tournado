@@ -1,10 +1,9 @@
 {
   "localesPaths": ["app/i18n/locales"],
-  "keystyle": "nested",
+  "keystyle": "flat",
   "sourceLanguage": "nl",
   "enabledFrameworks": ["react-i18next"],
-  "namespace": true,
-  "defaultNamespace": "root",
+  "namespace": false,
   "pathMatcher": "{locale}.json",
   "sortKeys": true,
   "keepFulfilled": true,

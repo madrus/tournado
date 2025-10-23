@@ -10,13 +10,9 @@ import { auth, googleProvider } from '~/features/firebase/client'
 
 export type FirebaseSignInProps = {
   redirectTo?: string | null
-  className?: string
 }
 
-export function FirebaseSignIn({
-  redirectTo = '/',
-  className,
-}: FirebaseSignInProps): JSX.Element {
+export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.Element {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +51,7 @@ export function FirebaseSignIn({
         disabled={loading}
         variant='primary'
         color='teal'
-        className={className}
+        className='w-full md:w-fit md:self-center'
       >
         <span className='flex items-center justify-center gap-2 normal-case'>
           {loading ? (

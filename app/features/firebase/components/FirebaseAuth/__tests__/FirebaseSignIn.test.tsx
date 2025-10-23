@@ -119,13 +119,16 @@ describe('FirebaseSignIn', () => {
     expect(button).toBeEnabled()
   })
 
-  test('applies custom className correctly', () => {
-    render(<FirebaseSignIn className='custom-class' />)
+  test('applies responsive width styling correctly', () => {
+    render(<FirebaseSignIn />)
 
     const button = screen.getByRole('button', {
       name: 'auth.firebase.continueWithGoogle',
     })
-    expect(button).toHaveClass('custom-class')
+    // Should have responsive width classes
+    expect(button).toHaveClass('w-full')
+    expect(button).toHaveClass('md:w-fit')
+    expect(button).toHaveClass('md:self-center')
     // Should still have teal button styling
     expect(button).toHaveClass('bg-teal-600')
   })

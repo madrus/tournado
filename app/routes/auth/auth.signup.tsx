@@ -11,6 +11,18 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/auth.signup'
+import {
+  authContainerVariants,
+  authDividerContainerVariants,
+  authDividerLineContainerVariants,
+  authDividerLineVariants,
+  authDividerTextContainerVariants,
+  authDividerTextVariants,
+  authFooterTextVariants,
+  authHeadingVariants,
+  authLinkVariants,
+  authTextSpacingVariants,
+} from './auth.variants'
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -61,20 +73,18 @@ export default function SignUpPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='mx-auto max-w-md space-y-6'>
-      <h2 className='text-center text-2xl font-bold text-teal-700 dark:text-teal-50/80'>
-        {t('auth.signUpPage.description')}
-      </h2>
+    <div className={authContainerVariants()}>
+      <h2 className={authHeadingVariants()}>{t('auth.signUpPage.description')}</h2>
 
       {/* Firebase Google Sign-up */}
       <FirebaseSignIn redirectTo={redirectTo ?? '/'} />
 
-      <div className='relative'>
-        <div className='absolute inset-0 flex items-center'>
-          <span className='w-full border-t' />
+      <div className={authDividerContainerVariants()}>
+        <div className={authDividerLineContainerVariants()}>
+          <span className={authDividerLineVariants()} />
         </div>
-        <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background text-muted-foreground px-2'>
+        <div className={authDividerTextContainerVariants()}>
+          <span className={authDividerTextVariants()}>
             {t('auth.continueWithEmail')}
           </span>
         </div>
@@ -83,12 +93,11 @@ export default function SignUpPage(): JSX.Element {
       {/* Firebase email/password sign-up */}
       <FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? '/'} />
 
-      <p className='text-center text-sm text-teal-700 dark:text-teal-50/80'>
-        {t('auth.signUpPage.hasAccount')}{' '}
-        <Link
-          to='/auth/signin'
-          className='text-teal-700 underline hover:text-teal-600/80 dark:text-teal-50/80 dark:hover:text-teal-400/80'
-        >
+      <p className={authFooterTextVariants()}>
+        <span className={authTextSpacingVariants()}>
+          {t('auth.signUpPage.hasAccount')}
+        </span>
+        <Link to='/auth/signin' className={authLinkVariants()}>
           {t('auth.signUpPage.signInLink')}
         </Link>
       </p>

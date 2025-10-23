@@ -7,6 +7,7 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 // Route metadata - requires user management permissions
 export const handle: RouteMetadata = {
   isPublic: false,
+  title: 'common.titles.users',
   auth: {
     required: true,
     redirectTo: '/auth/signin',

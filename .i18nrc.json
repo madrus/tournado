@@ -4,7 +4,7 @@
   "sourceLanguage": "nl",
   "enabledFrameworks": ["react-i18next"],
   "namespace": true,
-  "defaultNamespace": "common",
+  "defaultNamespace": "root",
   "pathMatcher": "{locale}.json",
   "sortKeys": true,
   "keepFulfilled": true,
@@ -14,7 +14,7 @@
   "extract": {
     "autoDetect": {
       "sourceLanguage": "nl",
-      "targetLanguages": ["en", "test"]
+      "targetLanguages": ["en", "ar", "de", "fr", "tr"]
     }
   }
 }

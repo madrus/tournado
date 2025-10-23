@@ -7,6 +7,7 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 // Route metadata - authenticated users can access
 export const handle: RouteMetadata = {
   isPublic: false,
+  title: 'common.titles.teams',
   auth: {
     required: true,
     redirectTo: '/auth/signin',

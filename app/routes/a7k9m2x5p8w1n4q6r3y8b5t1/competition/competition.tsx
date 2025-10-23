@@ -28,7 +28,7 @@ type LoaderData = {
 
 export const handle: RouteMetadata = {
   isPublic: false,
-  title: 'Competition Management',
+  title: 'common.titles.competition',
   auth: {
     required: true,
     redirectTo: '/auth/signin',

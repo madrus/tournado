@@ -7,6 +7,7 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
+  title: 'common.titles.teams',
 }
 
 export default function PublicTeamsLayout(): JSX.Element {

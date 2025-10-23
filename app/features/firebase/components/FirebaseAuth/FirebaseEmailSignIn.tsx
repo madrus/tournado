@@ -7,7 +7,10 @@ import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
-import { firebaseAuthFormVariants } from './firebaseAuth.variants'
+import {
+  firebaseAuthFormVariants,
+  firebaseAuthLabelVariants,
+} from './firebaseAuth.variants'
 
 export type FirebaseEmailSignInProps = {
   mode: 'signin' | 'signup'
@@ -94,6 +97,7 @@ export function FirebaseEmailSignIn({
         required
         disabled={loading}
         color='teal'
+        labelClassName={firebaseAuthLabelVariants()}
       />
 
       <div>
@@ -115,6 +119,7 @@ export function FirebaseEmailSignIn({
           required
           disabled={loading}
           color='teal'
+          labelClassName={firebaseAuthLabelVariants()}
         />
         {mode === 'signup' ? (
           <p className='text-muted-foreground mt-1 text-xs opacity-60'>
@@ -142,6 +147,7 @@ export function FirebaseEmailSignIn({
           required
           disabled={loading}
           color='teal'
+          labelClassName={firebaseAuthLabelVariants()}
         />
       ) : null}
 

@@ -15,3 +15,8 @@ export const firebaseAuthFormVariants = cva('flex flex-col gap-4 w-full', {
     size: 'md',
   },
 })
+
+/**
+ * Label text variants for Firebase authentication form inputs
+ */
+export const firebaseAuthLabelVariants = cva('text-teal-700 dark:text-teal-50/80')

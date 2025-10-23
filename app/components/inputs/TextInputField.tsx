@@ -29,6 +29,7 @@ type InputFieldProps = {
   error?: string
   required?: boolean
   className?: string
+  labelClassName?: string
   value?: string
   defaultValue?: string
   placeholder?: string
@@ -50,6 +51,7 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
       error,
       required = false,
       className = '',
+      labelClassName,
       value,
       defaultValue,
       placeholder,
@@ -66,7 +68,9 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
         <div
           className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
         >
-          <span className={textInputLabelTextVariants()}>{label}</span>
+          <span className={cn(textInputLabelTextVariants(), labelClassName)}>
+            {label}
+          </span>
           {/* Status icon container with fixed width to prevent layout shifts */}
           <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
         </div>

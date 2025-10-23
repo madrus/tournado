@@ -346,6 +346,21 @@ text-fuchsia-600
 text-pink-600
 text-rose-600
 
+# Text Colors - Firebase Auth Labels and Links
+# =============================================================================
+# Teal text colors for Firebase authentication forms
+text-teal-700
+text-teal-50/80
+text-teal-100/80
+text-teal-200/80
+text-teal-300/90
+text-teal-600/80
+dark:text-teal-50/80
+dark:text-teal-100/80
+dark:text-teal-200/80
+dark:text-teal-300/90
+dark:text-teal-400/80
+
 # Shadow colors - Button variants (all 21 colors with -700 weight)
 shadow-brand-700/40
 hover:shadow-brand-700/60

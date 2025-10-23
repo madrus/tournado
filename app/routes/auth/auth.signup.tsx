@@ -62,7 +62,7 @@ export default function SignUpPage(): JSX.Element {
 
   return (
     <div className='mx-auto max-w-md space-y-6'>
-      <h2 className='text-center text-2xl font-bold'>
+      <h2 className='text-center text-2xl font-bold text-teal-700 dark:text-teal-50/80'>
         {t('auth.signUpPage.description')}
       </h2>
 
@@ -83,11 +83,11 @@ export default function SignUpPage(): JSX.Element {
       {/* Firebase email/password sign-up */}
       <FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? '/'} />
 
-      <p className='text-muted-foreground text-center text-sm'>
+      <p className='text-center text-sm text-teal-700 dark:text-teal-50/80'>
         {t('auth.signUpPage.hasAccount')}{' '}
         <Link
           to='/auth/signin'
-          className='text-amber-600 underline hover:text-amber-600/80'
+          className='text-teal-700 underline hover:text-teal-600/80 dark:text-teal-50/80 dark:hover:text-teal-400/80'
         >
           {t('auth.signUpPage.signInLink')}
         </Link>

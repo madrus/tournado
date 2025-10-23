@@ -38,10 +38,22 @@ describe('FirebaseSignIn', () => {
   test('renders sign-in button correctly', () => {
     render(<FirebaseSignIn />)
 
-    expect(
-      screen.getByRole('button', { name: 'auth.firebase.continueWithGoogle' })
-    ).toBeInTheDocument()
+    const button = screen.getByRole('button', {
+      name: 'auth.firebase.continueWithGoogle',
+    })
+    expect(button).toBeInTheDocument()
     expect(screen.getByText('auth.firebase.continueWithGoogle')).toBeInTheDocument()
+
+    // Verify cyan primary button styling
+    expect(button).toHaveClass('bg-cyan-600')
+    expect(button).toHaveClass('text-white')
+    expect(button).toHaveClass('border-cyan-600')
+    expect(button).toHaveClass('normal-case')
+
+    // Verify button has standard animations
+    expect(button).toHaveClass('hover:scale-105')
+    expect(button).toHaveClass('hover:shadow-xl')
+    expect(button).toHaveClass('hover:ring-2')
   })
 
   test('displays loading state during authentication', async () => {
@@ -108,13 +120,16 @@ describe('FirebaseSignIn', () => {
     expect(button).toBeEnabled()
   })
 
-  test('applies variants and custom className correctly', () => {
-    render(<FirebaseSignIn variant='outline' size='lg' className='custom-class' />)
+  test('applies custom className correctly', () => {
+    render(<FirebaseSignIn className='custom-class' />)
 
     const button = screen.getByRole('button', {
       name: 'auth.firebase.continueWithGoogle',
     })
     expect(button).toHaveClass('custom-class')
+    // Should still have cyan button styling
+    expect(button).toHaveClass('bg-cyan-600')
+    expect(button).toHaveClass('normal-case')
   })
 
   test('uses default redirectTo when none provided', async () => {

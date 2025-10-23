@@ -2,8 +2,10 @@ import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
-import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseEmailSignIn'
-import { FirebaseSignIn } from '~/features/firebase/components/FirebaseSignIn'
+import {
+  FirebaseEmailSignIn,
+  FirebaseSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'

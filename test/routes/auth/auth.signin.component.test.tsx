@@ -14,8 +14,8 @@ type ActionData = {
   }
 }
 
-// Mock the FirebaseSignIn component (Google OAuth)
-vi.mock('~/features/firebase/components/FirebaseSignIn', () => ({
+// Mock the FirebaseAuth components (Google OAuth and Email/Password)
+vi.mock('~/features/firebase/components/FirebaseAuth', () => ({
   FirebaseSignIn: ({ redirectTo }: { redirectTo?: string }) => (
     <div data-testid='firebase-signin-component'>
       <div data-testid='firebase-redirect-data'>
@@ -23,10 +23,6 @@ vi.mock('~/features/firebase/components/FirebaseSignIn', () => ({
       </div>
     </div>
   ),
-}))
-
-// Mock the FirebaseEmailSignIn component (Email/Password)
-vi.mock('~/features/firebase/components/FirebaseEmailSignIn', () => ({
   FirebaseEmailSignIn: ({
     mode,
     redirectTo,

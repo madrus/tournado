@@ -3,23 +3,19 @@ import { useTranslation } from 'react-i18next'
 
 import { signInWithPopup } from 'firebase/auth'
 
+import { buttonVariants } from '~/components/buttons/button.variants'
 import { submitAuthCallback } from '~/features/firebase/adapters/redirect'
 import { auth, googleProvider } from '~/features/firebase/client'
-
-import { firebaseSignInVariants } from './firebaseSignIn.variants'
+import { cn } from '~/utils/misc'
 
 export type FirebaseSignInProps = {
   redirectTo?: string | null
   className?: string
-  variant?: 'default' | 'outline'
-  size?: 'sm' | 'md' | 'lg'
 }
 
 export function FirebaseSignIn({
   redirectTo = '/',
   className,
-  variant = 'default',
-  size = 'md',
 }: FirebaseSignInProps): JSX.Element {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
@@ -57,12 +53,16 @@ export function FirebaseSignIn({
         type='button'
         onClick={handleGoogleSignIn}
         disabled={loading}
-        className={firebaseSignInVariants({ variant, size, className })}
+        className={cn(
+          buttonVariants({ variant: 'primary', color: 'cyan' }),
+          'normal-case',
+          className
+        )}
       >
         {loading ? (
-          <div className='mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent' />
+          <div className='h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent' />
         ) : (
-          <svg className='mr-2 h-4 w-4' viewBox='0 0 24 24'>
+          <svg className='h-5 w-5' viewBox='0 0 24 24'>
             <path
               fill='currentColor'
               d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'

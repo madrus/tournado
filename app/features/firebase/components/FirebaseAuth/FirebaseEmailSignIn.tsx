@@ -6,10 +6,7 @@ import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
-import {
-  firebaseEmailSignInVariants,
-  inputVariants,
-} from './firebaseEmailSignIn.variants'
+import { firebaseAuthFormVariants, inputVariants } from './firebaseAuth.variants'
 
 export type FirebaseEmailSignInProps = {
   mode: 'signin' | 'signup'
@@ -76,7 +73,7 @@ export function FirebaseEmailSignIn({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn(firebaseEmailSignInVariants({ size }), className)}
+      className={cn(firebaseAuthFormVariants({ size }), className)}
     >
       <div className='space-y-2'>
         <label htmlFor='email' className='text-sm font-medium'>
@@ -178,8 +175,8 @@ export function FirebaseEmailSignIn({
       <ActionButton
         type='submit'
         disabled={loading}
-        variant='primary'
-        color='cyan'
+        variant='secondary'
+        color='teal'
         size='md'
       >
         {loading ? (

@@ -51,9 +51,9 @@ export default function SettingsPage(): JSX.Element {
       <SettingsLayoutHeader />
       <div className='mt-8 space-y-6'>
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Preferences
-          </h2>
+          </h3>
           <ul className='text-foreground space-y-2'>
             <li>• Language and regional settings</li>
             <li>• Theme and appearance options</li>
@@ -64,9 +64,9 @@ export default function SettingsPage(): JSX.Element {
         </section>
 
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Tournament Configuration
-          </h2>
+          </h3>
           <p className='text-foreground'>
             Customize tournament management settings and default configurations for your
             organization.

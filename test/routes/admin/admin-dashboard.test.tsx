@@ -187,9 +187,9 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'common.titles.adminPanel'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
+      ).toHaveTextContent('common.titles.adminPanel')
     })
 
     test('should render welcome message with user email', () => {
@@ -376,7 +376,10 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      const heading = screen.getByRole('heading', { level: 1 })
+      const heading = screen.getByRole('heading', {
+        level: 2,
+        name: 'common.titles.adminPanel',
+      })
       expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
@@ -399,7 +402,10 @@ describe('Admin Dashboard', () => {
       )
 
       // Check main structure exists
-      const heading = screen.getByRole('heading', { level: 1 })
+      const heading = screen.getByRole('heading', {
+        level: 2,
+        name: 'common.titles.adminPanel',
+      })
       expect(heading).toBeInTheDocument()
 
       // Count only the actual menu panels (excluding the header)
@@ -462,7 +468,7 @@ describe('Admin Dashboard', () => {
         </MemoryRouter>
       )
 
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
+      const h1Elements = screen.getAllByRole('heading', { level: 2 })
       const h3Elements = screen.getAllByRole('heading', { level: 3 })
 
       expect(h1Elements).toHaveLength(1)
@@ -506,9 +512,9 @@ describe('Admin Dashboard', () => {
       )
 
       // Verify main heading renders correctly
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'common.titles.adminPanel'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
+      ).toHaveTextContent('common.titles.adminPanel')
     })
   })
 

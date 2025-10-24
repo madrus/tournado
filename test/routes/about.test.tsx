@@ -47,9 +47,9 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'About Tournado'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'About Tournado' })
+      ).toHaveTextContent('About Tournado')
     })
 
     test('should render all main sections', () => {
@@ -144,7 +144,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      const heading = screen.getByRole('heading', { level: 1 })
+      const heading = screen.getByRole('heading', { level: 2, name: 'About Tournado' })
       expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
@@ -155,7 +155,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      const sectionHeadings = screen.getAllByRole('heading', { level: 2 })
+      const sectionHeadings = screen.getAllByRole('heading', { level: 3 })
       sectionHeadings.forEach(heading => {
         expect(heading).toHaveClass('mb-4', 'text-2xl', 'font-semibold')
       })
@@ -181,11 +181,11 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
+      const h3Elements = screen.getAllByRole('heading', { level: 3 })
 
-      expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(3) // Version, Features, Technology Stack
+      expect(h2Elements).toHaveLength(1) // About Tournado (from LayoutHeader)
+      expect(h3Elements).toHaveLength(3) // Version, Features, Technology Stack
     })
 
     test('should have semantic HTML structure', () => {
@@ -196,7 +196,7 @@ describe('About Page', () => {
       )
 
       // Check for semantic sections
-      const headings = screen.getAllByRole('heading', { level: 2 })
+      const headings = screen.getAllByRole('heading', { level: 3 })
 
       // All section headings should be within proper structure
       headings.forEach(heading => {
@@ -214,9 +214,9 @@ describe('About Page', () => {
       )
 
       // Verify the heading is rendered (translation is mocked at module level)
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'About Tournado'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'About Tournado' })
+      ).toHaveTextContent('About Tournado')
     })
   })
 })

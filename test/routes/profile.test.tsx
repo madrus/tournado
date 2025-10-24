@@ -30,18 +30,10 @@ vi.mock('react-router', async () => {
   }
 })
 
-// Mock useTranslation
+// Mock useTranslation - returns keys as values for testing
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'common.titles.profile': 'Profile',
-        'profile.title': 'Profile Information',
-        'profile.description':
-          'Manage your profile settings and account information for tournament management.',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: { language: 'en' },
   }),
 }))
@@ -54,9 +46,9 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'Profile Information'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'profile.title' })
+      ).toHaveTextContent('profile.title')
     })
 
     test('should render profile information section', () => {
@@ -65,7 +57,7 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(screen.getByText('Profile Information')).toBeInTheDocument()
+      expect(screen.getByText('profile.title')).toBeInTheDocument()
     })
 
     test('should render account settings section', () => {
@@ -94,9 +86,7 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(
-        screen.getByText(/Manage your profile settings and account information/)
-      ).toBeInTheDocument()
+      expect(screen.getByText(/profile.description/)).toBeInTheDocument()
     })
 
     test('should render account settings list', () => {
@@ -149,7 +139,7 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      const heading = screen.getByRole('heading', { level: 1 })
+      const heading = screen.getByRole('heading', { level: 2, name: 'profile.title' })
       expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
@@ -159,7 +149,7 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      const sectionHeadings = screen.getAllByRole('heading', { level: 2 })
+      const sectionHeadings = screen.getAllByRole('heading', { level: 3 })
       sectionHeadings.forEach(heading => {
         expect(heading).toHaveClass('mb-4', 'text-2xl', 'font-semibold')
       })
@@ -173,10 +163,10 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
-      expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(2)
+      const h3Elements = screen.getAllByRole('heading', { level: 3 })
+      expect(h2Elements).toHaveLength(1) // profile.title from LayoutHeader
+      expect(h3Elements).toHaveLength(2) // Account Settings, Tournament Access
     })
 
     test('should render sections in correct order', () => {
@@ -187,7 +177,7 @@ describe('Profile Page', () => {
       )
       const headings = screen.getAllByRole('heading')
       const headingTexts = headings.map(h => h.textContent)
-      expect(headingTexts[0]).toBe('Profile Information') // h1
+      expect(headingTexts[0]).toBe('profile.title') // h1
       expect(headingTexts[1]).toBe('Account Settings') // h2
       expect(headingTexts[2]).toBe('Tournament Access') // h2
     })
@@ -200,10 +190,10 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
-      expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(2)
+      const h3Elements = screen.getAllByRole('heading', { level: 3 })
+      expect(h2Elements).toHaveLength(1) // profile.title from LayoutHeader
+      expect(h3Elements).toHaveLength(2) // Account Settings, Tournament Access
     })
   })
 
@@ -214,9 +204,9 @@ describe('Profile Page', () => {
           <ProfilePage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'Profile Information'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'profile.title' })
+      ).toHaveTextContent('profile.title')
     })
   })
 })

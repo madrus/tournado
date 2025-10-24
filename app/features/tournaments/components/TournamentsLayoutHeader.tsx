@@ -2,8 +2,7 @@ import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
-import { cn } from '~/utils/misc'
-import { getLatinTitleClass } from '~/utils/rtlUtils'
+import { LayoutHeader } from '~/components/layouts/LayoutHeader'
 
 type TournamentsLayoutHeaderProps = {
   variant: 'admin'
@@ -25,28 +24,21 @@ export function TournamentsLayoutHeader({
     : t('tournaments.description')
 
   return (
-    <div
-      className={cn('border-button-neutral-secondary-border border-b pb-6', className)}
-      data-testid='tournaments-header-admin'
-    >
-      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass())}>{title}</h1>
-          <p className='text-foreground mt-1'>{description}</p>
-        </div>
-
-        {/* Add Tournament Button */}
-        <div className='flex justify-end gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
-          <ActionLinkButton
-            to={addButtonTo}
-            icon='newWindow'
-            label={t('common.actions.add')}
-            variant='primary'
-            color='brand'
-            permission='tournaments:create'
-          />
-        </div>
-      </div>
-    </div>
+    <LayoutHeader
+      title={title}
+      description={description}
+      actions={
+        <ActionLinkButton
+          to={addButtonTo}
+          icon='newWindow'
+          label={t('common.actions.add')}
+          variant='primary'
+          color='brand'
+          permission='tournaments:create'
+        />
+      }
+      className={className}
+      testId='tournaments-header-admin'
+    />
   )
 }

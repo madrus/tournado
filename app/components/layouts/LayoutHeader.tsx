@@ -7,6 +7,9 @@ import { getArabicTextClass } from '~/utils/rtlUtils'
 /**
 + * Reusable layout header component with RTL support and responsive breakpoints.
 + * Renders a title, description, and optional action buttons.
++ *
++ * Note: Uses <h2> for the title because the primary <h1> is in the AppBar navigation.
++ * This follows SPA best practices where the persistent navigation contains the main heading.
 + */
 type LayoutHeaderProps = {
   /** Title text or translation key */
@@ -48,7 +51,7 @@ export function LayoutHeader({
     >
       <div className={cn('flex flex-col gap-4', breakpointClasses[breakpoint])}>
         <div>
-          <h1 className={cn('text-3xl font-bold', arabicClass)}>{title}</h1>
+          <h2 className={cn('text-3xl font-bold', arabicClass)}>{title}</h2>
           {typeof description === 'string' ? (
             <p className={cn('text-foreground mt-1', arabicClass)}>{description}</p>
           ) : (

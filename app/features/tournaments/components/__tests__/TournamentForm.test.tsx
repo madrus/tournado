@@ -73,6 +73,15 @@ vi.mock('~/lib/lib.helpers', () => ({
     }
     return labels[division] || division
   },
+  getCurrentDivisionLabel: (division: string) => {
+    const labels: Record<string, string> = {
+      PREMIER_DIVISION: 'Premier Division',
+      FIRST_DIVISION: 'First Division',
+      SECOND_DIVISION: 'Second Division',
+      THIRD_DIVISION: 'Third Division',
+    }
+    return labels[division] || division
+  },
   getCategoryLabelByValue: (category: string, language: string) => {
     const labels: Record<string, Record<string, string>> = {
       JO8: { en: 'JO8', nl: 'JO8', ar: 'JO8', tr: 'JO8' },
@@ -97,6 +106,21 @@ vi.mock('~/lib/lib.helpers', () => ({
       },
     }
     return labels[category]?.[language] || category
+  },
+  getCurrentCategoryLabel: (category: string) => {
+    const labels: Record<string, string> = {
+      JO8: 'JO8',
+      JO9: 'JO9',
+      JO10: 'JO10',
+      JO11: 'JO11',
+      JO12: 'JO12',
+      MO8: 'MO8',
+      MO9: 'MO9',
+      MO10: 'MO10',
+      VETERANEN_35_PLUS: 'Veterans 35+',
+      VETERANEN_40_PLUS: 'Veterans 40+',
+    }
+    return labels[category] || category
   },
   getFieldStatus: vi.fn().mockReturnValue('success'),
 }))

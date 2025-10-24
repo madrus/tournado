@@ -11,7 +11,7 @@ const state = useSettingsStore.getState
 
 // Reset store before each test
 beforeEach(() => {
-  state().resetStoreState()
+  state().resetSettingsStoreState()
 })
 
 describe('LabelWithStatusIcon', () => {

@@ -42,6 +42,15 @@ vi.mock('~/lib/lib.helpers', () => ({
     }
     return labels[division] || division
   },
+  getCurrentDivisionLabel: (division: string) => {
+    const labels: Record<string, string> = {
+      PREMIER_DIVISION: 'Premier League',
+      FIRST_DIVISION: 'First Division',
+      SECOND_DIVISION: 'Second Division',
+    }
+    return labels[division] || division
+  },
+  getCurrentCategoryLabel: vi.fn(category => category),
   stringToDivision: vi.fn(),
 }))
 

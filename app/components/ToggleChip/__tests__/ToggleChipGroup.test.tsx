@@ -2,23 +2,22 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { ToggleChipGroup } from '../ToggleChipGroup'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
-// Mock the translation hook
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    i18n: { language: 'en' },
-  }),
-}))
+import { ToggleChipGroup } from '../ToggleChipGroup'
 
 // Mock the helper functions
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: vi.fn(division => `Division ${division}`),
   getCategoryLabelByValue: vi.fn(category => `Category ${category}`),
+  getCurrentDivisionLabel: vi.fn(division => `Division ${division}`),
+  getCurrentCategoryLabel: vi.fn(category => `Category ${category}`),
   isBrowser: true,
 }))
 
 describe('ToggleChipGroup', () => {
+  const state = useSettingsStore.getState
+
   const defaultProps = {
     items: ['item1', 'item2', 'item3'],
     type: 'divisions' as const,
@@ -29,6 +28,7 @@ describe('ToggleChipGroup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    state().resetSettingsStoreState()
   })
 
   it('renders all toggle chips', () => {

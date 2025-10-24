@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import type { JSX, ReactNode } from 'react'
 
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
@@ -10,7 +10,7 @@ import { useActionButton } from './useActionButton'
 
 type ActionButtonProps = {
   onClick?: () => void
-  children: React.ReactNode
+  children: ReactNode
   icon?: IconName
   variant?: ButtonVariants['variant']
   color?: ButtonVariants['color']
@@ -49,7 +49,7 @@ export function ActionButton({
   permission,
   hideWhenDisabled = false,
 }: Readonly<ActionButtonProps>): JSX.Element | null {
-  const { isRTL } = useSettingsStore()
+  const isRTL = useSettingsStore(state => state.isRTL)
   const { isHidden, isDisabled } = useActionButton({
     permission,
     hideWhenDisabled,
@@ -119,8 +119,7 @@ export function ActionButton({
   return (
     <button
       type={type}
-      role='button'
-      onClick={isDisabled ? void 0 : onClick}
+      onClick={onClick}
       disabled={isDisabled}
       className={buttonClasses}
       aria-label={ariaLabel}

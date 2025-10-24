@@ -46,7 +46,6 @@ class InternalErrorBoundary extends Component<InternalErrorBoundaryProps, State>
           error={this.state.error}
           errorTitle={this.props.errorTitle}
           errorMessage={this.props.errorMessage}
-          language={this.props.language}
         />
       )
     }
@@ -63,7 +62,6 @@ const ErrorFallback = ({
   error: Error | null
   errorTitle: string
   errorMessage: string
-  language: string
 }): JSX.Element => (
   <div
     role='alert'

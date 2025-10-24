@@ -273,7 +273,11 @@ export function AppBar({
             </PrimaryNavLink>
           </div>
 
-          {/* Page title in center */}
+          {/*
+            Page title in center - uses h1 as this IS the primary page heading
+            Set via handle.pageTitle in each route. Page content uses h2/h3 for structure.
+            This pattern is standard for SPAs with persistent navigation.
+          */}
           <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
             <h1
               className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass()}`}

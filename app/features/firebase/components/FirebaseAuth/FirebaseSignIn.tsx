@@ -9,15 +9,13 @@ import { submitAuthCallback } from '~/features/firebase/adapters/redirect'
 import { auth, googleProvider } from '~/features/firebase/client'
 
 export type FirebaseSignInProps = {
-  redirectTo?: string | null
+  redirectTo?: string
 }
 
 export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.Element {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  // Check if Firebase is properly configured
 
   const handleGoogleSignIn = async (): Promise<void> => {
     try {

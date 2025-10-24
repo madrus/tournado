@@ -21,6 +21,8 @@ vi.mock('~/features/teams/validation', () => ({
 vi.mock('~/lib/lib.helpers', () => ({
   stringToDivision: vi.fn(),
   stringToCategory: vi.fn(),
+  getCurrentDivisionLabel: vi.fn(division => division),
+  getCurrentCategoryLabel: vi.fn(category => category),
 }))
 
 vi.mock('~/db.server', () => ({

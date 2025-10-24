@@ -19,4 +19,20 @@ export const firebaseAuthFormVariants = cva('flex flex-col gap-4 w-full', {
 /**
  * Label text variants for Firebase authentication form inputs
  */
-export const firebaseAuthLabelVariants = cva('text-teal-700 dark:text-teal-50/80')
+export const firebaseAuthLabelVariants = cva('', {
+  variants: {
+    color: {
+      brand: 'text-red-700 dark:text-red-50/80',
+      primary: 'text-emerald-700 dark:text-emerald-50/80',
+      teal: 'text-teal-700 dark:text-teal-50/80',
+      blue: 'text-blue-700 dark:text-blue-50/80',
+      slate: 'text-slate-700 dark:text-slate-50/80',
+      cyan: 'text-cyan-700 dark:text-cyan-50/80',
+      indigo: 'text-indigo-700 dark:text-indigo-50/80',
+      violet: 'text-violet-700 dark:text-violet-50/80',
+    },
+  },
+  defaultVariants: {
+    color: 'teal',
+  },
+})

@@ -19,7 +19,7 @@ type Actions = {
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
-  resetStoreState: () => void
+  resetSettingsStoreState: () => void
   detectSystemTheme: () => void
 }
 
@@ -51,7 +51,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (set, get) => ({
         ...initialStoreState,
-        resetStoreState: () => {
+        resetSettingsStoreState: () => {
           set(initialStoreState, false, 'resetStoreState')
         },
         setTheme: theme => {

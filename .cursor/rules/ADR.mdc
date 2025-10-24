@@ -38,6 +38,7 @@ alwaysApply: false
 | 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
 | 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
 | 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Accepted | —          | —             |
+| 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                     | 2025-10-24 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -1423,3 +1424,73 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 **PRD Phase Alignment**: This ADR defines Phase 2 (User Management) implementation requirements.
 
 **Implementation Task**: See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for detailed implementation steps.
+
+## ADR-0027 — Semantic Heading Hierarchy with AppBar h1
+
+<a id="adr-0027"></a>
+**Date**: 2025-10-24
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+Modern single-page applications with persistent navigation chrome (AppBar/Header) face a decision about semantic heading hierarchy. The question is whether the app title shown in the persistent AppBar should be an `h1` or secondary heading (`h2`), and how this affects the document outline and accessibility.
+
+### Alternatives
+
+- **AppBar uses h2**: Requires every page to provide its own `h1`, leading to redundant headings that duplicate the AppBar title with no value to users
+- **AppBar uses h1**: Follows SPA pattern where persistent chrome provides the primary heading, page content uses `h2`/`h3` for structure
+- **Mixed approach**: Some pages use `h1`, others don't (inconsistent, confusing)
+- **No semantic headings**: Use divs with heading styles (poor accessibility)
+
+### Decision
+
+Implement semantic heading hierarchy where AppBar's `pageTitle` serves as the primary `h1` heading:
+
+**Heading Architecture**:
+- **AppBar h1**: Primary page heading set via `handle.pageTitle` in each route file
+- **Page content**: Uses `h2` for major sections, `h3` for subsections
+- **Dynamic per route**: The `h1` content changes for each route, making it semantically meaningful
+- **Single h1 per page**: Each route has exactly one `h1`, maintaining proper document structure
+
+**Route Pattern**:
+```tsx
+// Route file example
+export const handle: RouteMetadata = {
+  pageTitle: 'Teams'  // → Becomes h1 in AppBar
+}
+
+// Page content structure
+<div>
+  <h2>Active Teams</h2>      // Major section
+  <h3>Division A</h3>         // Subsection
+  <h2>Archived Teams</h2>     // Major section
+</div>
+```
+
+**Why This Works**:
+- Follows modern SPA pattern used by Gmail, GitHub, and many professional web apps
+- Screen readers get clear, consistent primary heading that updates on navigation
+- Eliminates redundant headings that would just duplicate the AppBar title
+- Maintains proper semantic hierarchy for accessibility
+- Reduces maintenance overhead (no need to add h1 to every page)
+
+### Implementation References
+
+- AppBar component: `app/components/AppBar.tsx` (h1 with explanatory comment)
+- Route metadata: `app/lib/lib.types.ts` (RouteMetadata type with pageTitle)
+- Architecture documentation: `CLAUDE.md` (Component Architecture section)
+
+### Consequences
+
+- **Pros**: Proper semantic structure, consistent accessibility, less redundancy, follows modern SPA patterns, clear document outline
+- **Cons / risks**: Differs from traditional multi-page website patterns, requires team understanding of SPA heading hierarchy
+- **Supersedes**: —
+- **Superseded by**: —
+
+### Compliance / Verification
+
+- Accessibility audit confirms single h1 per route with proper hierarchy
+- Screen reader testing validates heading navigation experience
+- Documentation clearly explains heading pattern for contributors
+- All routes define `pageTitle` in their handle export for consistency

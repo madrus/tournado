@@ -31,7 +31,7 @@ import {
 
 /**
  * Helper function to generate primary button variant classes for a given color.
- * Reduces code duplication by templating the color-specific classes.
+ * Primary buttons are filled with colored backgrounds and white text.
  * All colors uniformly use -600 weight with white text for consistency.
  */
 function createPrimaryVariant(color: ColorVariantKey) {
@@ -56,7 +56,8 @@ function createPrimaryVariant(color: ColorVariantKey) {
 
 /**
  * Helper function to generate secondary button variant classes for a given color.
- * All colors uniformly use -600 weight and slate-50 ring offset for consistency.
+ * Secondary buttons have light colored backgrounds with colored text and borders.
+ * All colors uniformly use -50 backgrounds, -600 text/borders, and slate-50 ring offset for consistency.
  */
 function createSecondaryVariant(color: ColorVariantKey) {
   const borderWeight = '600'
@@ -83,7 +84,7 @@ export const buttonVariants = cva(
   // Base classes - all the common button styling
   [
     'inline-flex items-center justify-center rounded-lg font-bold gap-2',
-    'min-h-12 min-w-32 py-2.5 px-4 text-base uppercase',
+    'min-h-12 min-w-32 py-2.5 px-4 text-base ltr:uppercase rtl:normal-case',
     'relative transition-all duration-300 ease-out whitespace-nowrap',
     'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
     'hover:scale-105 active:scale-95 disabled:hover:scale-100',
@@ -97,8 +98,8 @@ export const buttonVariants = cva(
     variants: {
       /**
        * Visual style variants affecting button appearance.
-       * - primary: Filled buttons with colored text (default)
-       * - secondary: Outlined buttons with transparent background
+       * - primary: Filled buttons with white text (default)
+       * - secondary: Light colored backgrounds with colored text and borders
        */
       variant: {
         primary: [],

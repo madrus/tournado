@@ -67,9 +67,10 @@ const validateUser = (user: User): ValidationResult => {
 ### 3. Props Object Naming Convention
 **Rule**: Functions with props objects must follow this pattern:
 - Props type: `{FunctionName}Props`
-- Props parameter: `Readonly<{FunctionName}Props>`
+- Props parameter type: `Readonly<{FunctionName}Props>`
+- **Inline destructuring is allowed and preferred** for cleaner code
 
-#### ✅ Correct
+#### ✅ Correct (Both Styles)
 ```typescript
 type CreateUserProps = {
   name: string
@@ -77,7 +78,23 @@ type CreateUserProps = {
   role: UserRole
 }
 
-const createUser = (props: Readonly<CreateUserProps>): User => {
+// Style 1: Inline destructuring (preferred for React components and most functions)
+const createUser = ({
+  name,
+  email,
+  role
+}: Readonly<CreateUserProps>): User => {
+  return {
+    id: generateId(),
+    name,
+    email,
+    role,
+    createdAt: new Date()
+  }
+}
+
+// Style 2: Props parameter (useful when spreading or passing props)
+const createUserAlt = (props: Readonly<CreateUserProps>): User => {
   return {
     id: generateId(),
     ...props,
@@ -90,8 +107,11 @@ type ValidateEmailProps = {
   domain?: string
 }
 
-const validateEmail = (props: Readonly<ValidateEmailProps>): boolean => {
-  const { email, domain } = props
+// Inline destructuring with defaults
+const validateEmail = ({
+  email,
+  domain
+}: Readonly<ValidateEmailProps>): boolean => {
   return email.includes('@') && (!domain || email.endsWith(domain))
 }
 ```
@@ -113,11 +133,62 @@ const createUser = (props: CreateUserProps): User => {
   // ...
 }
 
-// Wrong parameter naming
-const createUser = (userData: CreateUserProps): User => {
+// Missing Readonly wrapper (inline destructuring)
+const createUser = ({ name, email }: CreateUserProps): User => {
+  // ...
+}
+
+// Wrong parameter naming (not props or destructured)
+const createUser = (userData: Readonly<CreateUserProps>): User => {
   // ...
 }
 ```
+
+### React Components - Inline Destructuring Preferred
+
+For React components, **always use inline destructuring** in the function signature for better readability and ergonomics:
+
+#### ✅ Correct
+```typescript
+type ActionButtonProps = {
+  onClick?: () => void
+  children: React.ReactNode
+  variant?: 'primary' | 'secondary'
+  disabled?: boolean
+}
+
+export function ActionButton({
+  onClick,
+  children,
+  variant = 'primary',
+  disabled = false,
+}: Readonly<ActionButtonProps>): JSX.Element {
+  return (
+    <button onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  )
+}
+```
+
+#### ❌ Incorrect
+```typescript
+// Don't use props parameter for React components
+export function ActionButton(props: Readonly<ActionButtonProps>): JSX.Element {
+  const { onClick, children, variant = 'primary', disabled = false } = props
+  return (
+    <button onClick={props.onClick} disabled={props.disabled}>
+      {props.children}
+    </button>
+  )
+}
+```
+
+**Why inline destructuring for React components:**
+- More readable and idiomatic React code
+- Default values are visible in the signature
+- No need for repetitive `props.` prefix
+- Easier to see what props the component accepts
 
 ## Implementation Guidelines
 

@@ -1,4 +1,4 @@
-import { type JSX } from 'react'
+import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
@@ -134,13 +134,13 @@ export default function UserDetailRoute(): JSX.Element {
   return (
     <>
       {actionData?.error ? (
-        <div className='bg-destructive/10 text-destructive mb-4 rounded-md'>
+        <div className='bg-destructive/10 text-destructive mb-4 rounded-md p-4'>
           {actionData.error}
         </div>
       ) : null}
 
       {actionData?.success ? (
-        <div className='bg-success/10 text-success mb-4 rounded-md'>
+        <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
           {t(
             actionData.success === 'role'
               ? 'users.messages.roleUpdatedSuccessfully'

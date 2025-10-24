@@ -32,7 +32,7 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({
   request,
-}: Route.LoaderArgs): Promise<Response | { redirectTo: string | null }> => {
+}: Route.LoaderArgs): Promise<Response | { redirectTo: string | undefined }> => {
   const user = await getUser(request)
   if (user) {
     // Use role-based redirect instead of always going to admin panel
@@ -44,7 +44,7 @@ export const loader = async ({
 
   // Get the redirect destination for Firebase sign-in
   const url = new URL(request.url)
-  const redirectTo = url.searchParams.get('redirectTo')
+  const redirectTo = url.searchParams.get('redirectTo') ?? undefined
 
   return { redirectTo }
 }
@@ -89,7 +89,7 @@ export default function SigninPage(): JSX.Element {
       </div>
 
       {/* Firebase email/password sign-in */}
-      <FirebaseEmailSignIn mode='signin' redirectTo={redirectTo ?? undefined} />
+      <FirebaseEmailSignIn mode='signin' redirectTo={redirectTo} />
 
       <p className={authFooterTextVariants()}>
         <span className={authTextSpacingVariants()}>

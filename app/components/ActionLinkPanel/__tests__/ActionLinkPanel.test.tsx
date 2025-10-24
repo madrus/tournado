@@ -280,7 +280,6 @@ describe('ActionLinkPanel Component Integration', () => {
         icon: <MockIcon />,
         mainColor: 'blue' as ColorAccent,
         iconColor: 'blue' as ColorAccent,
-        language: 'en',
       }
 
       expect(() => render(<ActionLinkPanel {...minimalProps} />)).not.toThrow()

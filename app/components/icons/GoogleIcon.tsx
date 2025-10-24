@@ -1,13 +1,15 @@
-import { JSX } from 'react'
+import type { JSX, SVGProps } from 'react'
 
 import { cn } from '~/utils/misc'
 
-type GoogleIconProps = {
+type GoogleIconProps = Omit<
+  SVGProps<SVGSVGElement>,
+  'children' | 'width' | 'height' | 'className' | 'color'
+> & {
   className?: string
   size?: number
   'data-testid'?: string
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
 }
 
 export const GoogleIcon = ({

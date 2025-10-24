@@ -1,8 +1,8 @@
 import type { JSX } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData, useSearchParams } from 'react-router'
 import type { MetaFunction } from 'react-router'
+import { useLoaderData, useSearchParams } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
@@ -222,7 +222,7 @@ export default function TeamDetailsPage(): JSX.Element {
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Club
                     </dt>
-                    <dd className={`text-sm ${getLatinTextClass()}`}>
+                    <dd className={cn('text-sm', getLatinTextClass())}>
                       {team.clubName}
                     </dd>
                   </div>
@@ -230,13 +230,13 @@ export default function TeamDetailsPage(): JSX.Element {
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Team
                     </dt>
-                    <dd className={`text-sm ${getLatinTextClass()}`}>{team.name}</dd>
+                    <dd className={cn('text-sm', getLatinTextClass())}>{team.name}</dd>
                   </div>
                   <div>
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Class
                     </dt>
-                    <dd className='text-sm'>
+                    <dd className={cn('text-sm', getLatinTextClass())}>
                       {getDivisionLabel(team.division, i18n.language)}
                     </dd>
                   </div>

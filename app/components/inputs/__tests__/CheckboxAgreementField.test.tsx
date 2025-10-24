@@ -10,7 +10,7 @@ import { CheckboxAgreementField } from '../CheckboxAgreementField'
 const state = useSettingsStore.getState
 
 beforeEach(() => {
-  state().resetStoreState()
+  state().resetSettingsStoreState()
 })
 
 describe('CheckboxAgreementField', () => {

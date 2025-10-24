@@ -149,6 +149,29 @@ border-fuchsia-600
 border-pink-600
 border-rose-600
 
+# Border colors with opacity - Icon circle borders (all 21 colors with -600/70)
+border-brand-600/70
+border-primary-600/70
+border-emerald-600/70
+border-blue-600/70
+border-slate-600/70
+border-teal-600/70
+border-red-600/70
+border-cyan-600/70
+border-yellow-600/70
+border-green-600/70
+border-violet-600/70
+border-zinc-600/70
+border-orange-600/70
+border-amber-600/70
+border-lime-600/70
+border-sky-600/70
+border-indigo-600/70
+border-purple-600/70
+border-fuchsia-600/70
+border-pink-600/70
+border-rose-600/70
+
 # Ring colors - Light mode
 focus-visible:ring-emerald-600
 hover:ring-emerald-600

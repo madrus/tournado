@@ -17,42 +17,46 @@ type StatusHandler = (info: {
   params: Record<string, string | undefined>
 }) => JSX.Element | null
 
+function DefaultStatusContent({ error }: { error: ErrorResponse }): JSX.Element {
+  const { t } = useTranslation()
+  return (
+    <div className='flex w-full max-w-md flex-col gap-6'>
+      <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
+        {error.status === 404
+          ? t('messages.common.notFoundTitle')
+          : t('messages.common.errorTitle')}
+      </h1>
+      <p className='text-foreground-lighter'>
+        {error.status === 404
+          ? t('messages.auth.notFound')
+          : `${error.status} ${error.data}`}
+      </p>
+      <ErrorRecoveryLink to='/' className='text-body-md underline'>
+        {t('common.backToHome')}
+      </ErrorRecoveryLink>
+    </div>
+  )
+}
+
+function DefaultUnexpectedErrorContent({ error }: { error: unknown }): JSX.Element {
+  const { t } = useTranslation()
+  return (
+    <div className='flex w-full max-w-md flex-col gap-6'>
+      <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
+        {t('messages.common.errorTitle')}
+      </h1>
+      <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
+      <ErrorRecoveryLink to='/' className='text-body-md underline'>
+        {t('common.backToHome')}
+      </ErrorRecoveryLink>
+    </div>
+  )
+}
+
 export function GeneralErrorBoundary({
-  defaultStatusHandler = ({ error }) => {
-    const { t } = useTranslation()
-    return (
-      <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
-          {error.status === 404
-            ? t('messages.common.notFoundTitle')
-            : t('messages.common.errorTitle')}
-        </h1>
-        <p className='text-foreground-lighter'>
-          {error.status === 404
-            ? t('messages.auth.notFound')
-            : `${error.status} ${error.data}`}
-        </p>
-        <ErrorRecoveryLink to='/' className='text-body-md underline'>
-          {t('common.backToHome')}
-        </ErrorRecoveryLink>
-      </div>
-    )
-  },
+  defaultStatusHandler,
   statusHandlers,
-  unexpectedErrorHandler = error => {
-    const { t } = useTranslation()
-    return (
-      <div className='flex w-full max-w-md flex-col gap-6'>
-        <h1 className={cn('text-2xl font-bold', getLatinTitleClass())}>
-          {t('messages.common.errorTitle')}
-        </h1>
-        <p className='text-foreground-lighter'>{getErrorMessage(error)}</p>
-        <ErrorRecoveryLink to='/' className='text-body-md underline'>
-          {t('common.backToHome')}
-        </ErrorRecoveryLink>
-      </div>
-    )
-  },
+  unexpectedErrorHandler,
 }: {
   defaultStatusHandler?: StatusHandler
   statusHandlers?: Record<number, StatusHandler>
@@ -67,14 +71,32 @@ export function GeneralErrorBoundary({
     console.error(error)
   }
 
+  let content: JSX.Element | null = null
+
+  if (isRouteErrorResponse(error)) {
+    const routeError = error as ErrorResponse
+    const statusCode = routeError.status
+    const handler = statusHandlers?.[statusCode] ?? defaultStatusHandler
+
+    content = handler ? (
+      handler({
+        error: routeError,
+        params: params as Record<string, string | undefined>,
+      })
+    ) : (
+      <DefaultStatusContent error={routeError} />
+    )
+  } else {
+    content = unexpectedErrorHandler ? (
+      unexpectedErrorHandler(error)
+    ) : (
+      <DefaultUnexpectedErrorContent error={error} />
+    )
+  }
+
   return (
     <div className='container mx-auto flex h-full w-full items-center justify-center p-20'>
-      {isRouteErrorResponse(error as unknown)
-        ? (statusHandlers?.[(error as ErrorResponse).status] ?? defaultStatusHandler)({
-            error: error as ErrorResponse,
-            params: params as Record<string, string | undefined>,
-          })
-        : unexpectedErrorHandler(error)}
+      {content}
     </div>
   )
 }

@@ -205,6 +205,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
     ref
   ): JSX.Element => {
     const { i18n } = useTranslation()
+
     // Use controlled value if provided, otherwise fall back to defaultValue for uncontrolled mode
     const isControlled = value !== undefined
     const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(

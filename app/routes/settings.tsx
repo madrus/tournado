@@ -1,5 +1,4 @@
 import { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 
 import { User } from '@prisma/client'
@@ -47,19 +46,12 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export default function SettingsPage(): JSX.Element {
-  const { i18n } = useTranslation()
-
   return (
     <div data-testid='settings-container'>
       <SettingsLayoutHeader />
       <div className='mt-8 space-y-6'>
         <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Preferences
           </h2>
           <ul className='text-foreground space-y-2'>
@@ -72,12 +64,7 @@ export default function SettingsPage(): JSX.Element {
         </section>
 
         <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Tournament Configuration
           </h2>
           <p className='text-foreground'>

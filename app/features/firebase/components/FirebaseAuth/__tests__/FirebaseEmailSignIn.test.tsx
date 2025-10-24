@@ -309,7 +309,8 @@ describe('FirebaseEmailSignIn', () => {
       })
 
       await waitFor(() => {
-        expect(emailInput).toHaveClass('border-destructive')
+        // TextInputField uses border-error/30 for error state
+        expect(emailInput).toHaveClass('border-error/30')
       })
     })
   })

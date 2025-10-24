@@ -7,6 +7,7 @@ import type { RouteMetadata } from '~/utils/routeTypes'
 // Route metadata - requires tournaments read permission
 export const handle: RouteMetadata = {
   isPublic: false,
+  title: 'common.titles.tournaments',
   auth: {
     required: true,
     redirectTo: '/auth/signin',

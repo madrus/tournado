@@ -1,0 +1,15 @@
+{
+  "annotationInPlace": true,
+  "enabledFrameworks": ["react-i18next"],
+  "enabledParsers": ["json"],
+  "extract.autoDetect": true,
+  "keepFulfilled": true,
+  "keystyle": "nested",
+  "namespace": false,
+  "pathMatcher": "{locale}.json",
+  "preferredDelimiter": ".",
+  "projectType": "react-i18next",
+  "sortKeys": true,
+  "sourceLanguage": "nl",
+  "targetLanguages": ["en", "ar", "de", "fr", "tr"],
+}

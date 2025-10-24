@@ -1,5 +1,4 @@
 import type { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLoaderData } from 'react-router'
 
@@ -47,7 +46,6 @@ export async function loader({
 }
 
 export default function AboutPage(): JSX.Element {
-  const { i18n } = useTranslation()
   const { version } = useLoaderData<LoaderData>()
 
   return (
@@ -55,24 +53,14 @@ export default function AboutPage(): JSX.Element {
       <AboutLayoutHeader />
       <div className='mt-8 space-y-6'>
         <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Version
           </h2>
           <p className='text-foreground'>{version}</p>
         </section>
 
         <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Features
           </h2>
           <ul className='text-foreground space-y-2'>
@@ -85,12 +73,7 @@ export default function AboutPage(): JSX.Element {
         </section>
 
         <section>
-          <h2
-            className={cn(
-              'mb-4 text-2xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Technology Stack
           </h2>
           <p className='text-foreground'>

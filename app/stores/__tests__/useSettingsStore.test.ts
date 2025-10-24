@@ -14,7 +14,7 @@ const state = useSettingsStore.getState
 describe('useSettingsStore', () => {
   beforeEach(() => {
     // Reset store to initial state
-    state().resetStoreState()
+    state().resetSettingsStoreState()
 
     // Clear document.cookie
     document.cookie = ''
@@ -136,7 +136,7 @@ describe('useSettingsStore', () => {
     expect(state().language).toBe('en')
 
     // Reset
-    state().resetStoreState()
+    state().resetSettingsStoreState()
 
     expect(state().theme).toBe('light')
     expect(state().language).toBe('nl')

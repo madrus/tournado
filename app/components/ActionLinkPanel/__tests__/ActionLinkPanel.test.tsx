@@ -29,10 +29,10 @@ vi.mock('~/utils/misc', () => ({
 
 // Mock RTL utilities
 vi.mock('~/utils/rtlUtils', () => ({
-  getTypographyClasses: (language: string) => ({
-    textAlign: language === 'ar' ? 'text-right' : 'text-left',
+  getTypographyClasses: () => ({
+    textAlign: 'text-left',
   }),
-  getLatinTitleClass: (language: string) => (language === 'ar' ? 'latin-title' : ''),
+  getLatinTitleClass: () => '',
 }))
 
 // Mock child components
@@ -91,7 +91,6 @@ describe('ActionLinkPanel Component Integration', () => {
     icon: <MockIcon className='test-icon' />,
     mainColor: 'emerald' as ColorAccent,
     iconColor: 'emerald' as ColorAccent,
-    language: 'en',
   }
 
   beforeEach(() => {
@@ -281,7 +280,6 @@ describe('ActionLinkPanel Component Integration', () => {
         icon: <MockIcon />,
         mainColor: 'blue' as ColorAccent,
         iconColor: 'blue' as ColorAccent,
-        language: 'en',
       }
 
       expect(() => render(<ActionLinkPanel {...minimalProps} />)).not.toThrow()

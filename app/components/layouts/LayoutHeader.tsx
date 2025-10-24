@@ -1,8 +1,8 @@
 import { JSX, ReactNode } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
-import { getArabicTextClass, isRTL } from '~/utils/rtlUtils'
+import { getArabicTextClass } from '~/utils/rtlUtils'
 
 /**
 + * Reusable layout header component with RTL support and responsive breakpoints.
@@ -31,7 +31,7 @@ export function LayoutHeader({
   testId,
   breakpoint = 'sm',
 }: LayoutHeaderProps): JSX.Element {
-  const { i18n } = useTranslation()
+  const { isRTL } = useSettingsStore()
 
   const breakpointClasses = {
     sm: 'sm:flex-row sm:items-center sm:justify-between',
@@ -39,7 +39,7 @@ export function LayoutHeader({
     lg: 'lg:flex-row lg:items-center lg:justify-between',
   }
 
-  const arabicClass = isRTL(i18n.language) ? getArabicTextClass() : ''
+  const arabicClass = isRTL ? getArabicTextClass() : ''
 
   return (
     <div

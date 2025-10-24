@@ -16,7 +16,7 @@ export function TournamentsLayoutHeader({
   addButtonTo = 'new',
   className,
 }: TournamentsLayoutHeaderProps): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const isAdmin = variant === 'admin'
   const title = isAdmin ? t('admin.tournament.title') : t('common.titles.tournaments')
@@ -31,9 +31,7 @@ export function TournamentsLayoutHeader({
     >
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
-            {title}
-          </h1>
+          <h1 className={cn('text-3xl font-bold', getLatinTitleClass())}>{title}</h1>
           <p className='text-foreground mt-1'>{description}</p>
         </div>
 

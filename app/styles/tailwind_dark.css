@@ -53,6 +53,9 @@
   --color-adaptive-cell-secondary: var(--color-slate-400);
   --color-adaptive-cell-muted: var(--color-slate-500);
 
+  /* Destructive Colors - Dark Mode Override */
+  --color-destructive: var(--color-red-400);
+
   /* Panel Background Dark Mode Overrides */
   --panel-bg-red: var(--color-red-800);
   /* Input backgrounds - consistent across all input types */

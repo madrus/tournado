@@ -43,7 +43,7 @@ export function UserMenu({
   isOpen,
   onOpenChange,
 }: Readonly<UserMenuProps>): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
   const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
   const navigation = useNavigation()
@@ -149,13 +149,13 @@ export function UserMenu({
           <div className='px-4 py-3'>
             {authenticated ? (
               <div className={cn('text-foreground-darker', menuClasses.textContainer)}>
-                <p className={`break-words ${getTypographyClass(i18n.language)}`}>
+                <p className={`break-words ${getTypographyClass()}`}>
                   {t('common.signedInAs')}
                 </p>
                 <p
                   className={cn(
                     'text-foreground-darker font-medium break-words',
-                    getLatinTextClass(i18n.language)
+                    getLatinTextClass()
                   )}
                 >
                   {displayName}
@@ -166,14 +166,14 @@ export function UserMenu({
                 className={cn(
                   'text-foreground-darker break-words',
                   menuClasses.textContainer,
-                  getTypographyClass(i18n.language)
+                  getTypographyClass()
                 )}
               >
                 {t('common.welcome')}{' '}
                 <span
                   className={cn(
                     'text-foreground-darker font-medium',
-                    getLatinTextClass(i18n.language)
+                    getLatinTextClass()
                   )}
                 >
                   {displayName}
@@ -212,10 +212,7 @@ export function UserMenu({
                         ) : null}
                       </span>
                       <span
-                        className={cn(
-                          menuClasses.textContainer,
-                          getTypographyClass(i18n.language)
-                        )}
+                        className={cn(menuClasses.textContainer, getTypographyClass())}
                       >
                         {item.label}
                       </span>
@@ -295,10 +292,7 @@ export function UserMenu({
                         : null}
                     </span>
                     <span
-                      className={cn(
-                        menuClasses.textContainer,
-                        getTypographyClass(i18n.language)
-                      )}
+                      className={cn(menuClasses.textContainer, getTypographyClass())}
                     >
                       {item.label}
                     </span>

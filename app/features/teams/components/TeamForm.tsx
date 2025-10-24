@@ -387,7 +387,7 @@ export function TeamForm({
               error={getTranslatedError('tournamentId', isPublicSuccess)}
               required
               disabled={isPublicSuccess}
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step1}
               statusIcon={
                 <FieldStatusIcon
@@ -418,7 +418,7 @@ export function TeamForm({
               error={getTranslatedError('division', !tournamentId || isPublicSuccess)}
               required
               disabled={!tournamentId || isPublicSuccess}
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step1}
               statusIcon={
                 <FieldStatusIcon
@@ -449,7 +449,7 @@ export function TeamForm({
               )}
               required
               disabled={!tournamentId || !division || isPublicSuccess}
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step1}
               statusIcon={
                 <FieldStatusIcon
@@ -514,7 +514,7 @@ export function TeamForm({
               disabled={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step2}
               statusIcon={
                 <FieldStatusIcon
@@ -543,7 +543,7 @@ export function TeamForm({
               disabled={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               }
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step2}
               statusIcon={
                 <FieldStatusIcon
@@ -608,7 +608,7 @@ export function TeamForm({
               disabled={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               }
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step3}
               statusIcon={
                 <FieldStatusIcon
@@ -638,7 +638,7 @@ export function TeamForm({
               disabled={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               }
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step3}
               statusIcon={
                 <FieldStatusIcon
@@ -668,7 +668,7 @@ export function TeamForm({
               disabled={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
               }
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step3}
               statusIcon={
                 <FieldStatusIcon
@@ -723,7 +723,6 @@ export function TeamForm({
               }
               onChange={(checked: boolean) => setFormField('privacyAgreement', checked)}
               onBlur={() => validateFieldOnBlur('privacyAgreement')}
-              language={i18n.language}
               color={PANEL_COLORS.step4}
             />
           </Panel>

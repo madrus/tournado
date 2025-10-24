@@ -1,9 +1,17 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
 import { CheckboxAgreementField } from '../CheckboxAgreementField'
+
+const state = useSettingsStore.getState
+
+beforeEach(() => {
+  state().resetSettingsStoreState()
+})
 
 describe('CheckboxAgreementField', () => {
   const defaultProps = {
@@ -155,7 +163,8 @@ describe('CheckboxAgreementField', () => {
   })
 
   it('should handle language prop for RTL support', () => {
-    render(<CheckboxAgreementField {...defaultProps} language='ar' />)
+    state().setLanguage('ar')
+    render(<CheckboxAgreementField {...defaultProps} />)
 
     // Should not throw and render properly with RTL language
     expect(screen.getByText('I agree to the terms')).toBeInTheDocument()

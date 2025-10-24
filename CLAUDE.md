@@ -87,6 +87,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 - **Feature components**: Organized by domain (teams, navigation, auth, etc.)
 - **Form handling**: Custom form components with validation
 - **Error boundaries**: Layered error handling with fallback UIs
+- **Heading hierarchy**: AppBar's `pageTitle` serves as the primary `h1` heading (set via `handle.pageTitle` in routes). Page content uses `h2`/`h3` for section structure. This follows the SPA pattern where persistent chrome provides the main heading.
 
 ### State Management
 
@@ -110,7 +111,17 @@ pnpm docs           # Start Docsify documentation server on port 3030
 
 ### Module Organization & Import Patterns
 
-**NO RE-EXPORTS PRINCIPLE**: Feature-specific types, components, and utilities must be imported directly from their feature modules. Do not create re-export convenience layers.
+**NO CROSS-FEATURE RE-EXPORTS**: Do not create central re-export hubs that aggregate exports from multiple features. Each feature should be imported from its own location.
+
+**Barrel Files (index.ts) - ALLOWED WITH CAVEATS**:
+
+- **Component barrel files** within a feature are **allowed** for cleaner production imports
+- **Example**: `~/features/firebase/components/FirebaseAuth/index.ts` can re-export components from the same directory
+- **Benefits**: Shorter import paths, better organization, no tree-shaking issues with modern bundlers
+- **Testing pattern**: Tests should use **direct imports** (e.g., `from '../FirebaseEmailSignIn'`) instead of barrel imports to avoid:
+   - Circular dependency issues in test environments
+   - Difficulty mocking individual exports
+   - Performance overhead from loading unnecessary modules
 
 **Type Organization**:
 
@@ -121,22 +132,32 @@ pnpm docs           # Start Docsify documentation server on port 3030
 **Import Pattern Examples**:
 
 ```typescript
-// ✅ CORRECT - Direct feature imports
+// ✅ CORRECT - Production code: Use barrel files for cleaner imports
+import { FirebaseSignIn, FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
 import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
 import { IconProps, ColorAccent } from '~/lib/lib.types'
 
-// ❌ WRONG - Do not re-export feature types from lib
+// ✅ CORRECT - Test code: Use direct imports for better isolation
+import { FirebaseEmailSignIn } from '../FirebaseEmailSignIn'
+import { firebaseAuthFormVariants } from '../firebaseAuth.variants'
+
+// ❌ WRONG - Cross-feature re-exports from a central location
+// DO NOT create ~/lib/lib.types that re-exports Team, Tournament, etc.
 import { Team, Tournament } from '~/lib/lib.types'
+
+// ❌ WRONG - Test importing from barrel (can cause circular deps)
+import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
 ```
 
-**Benefits of Direct Imports**:
+**Benefits of This Pattern**:
 
-- **Explicit dependencies**: Import paths clearly show where code comes from
+- **Explicit dependencies**: Import paths clearly show which feature code comes from
 - **True isolation**: Features are self-contained and independently maintainable
-- **No hidden coupling**: Re-exports hide actual dependencies between modules
-- **Better IDE support**: Jump-to-definition takes you directly to the source
-- **Easier refactoring**: Clear boundaries make changes safer and more predictable
+- **No hidden coupling**: Prevents a central file from hiding dependencies between features
+- **Better IDE support**: Jump-to-definition takes you to the feature module
+- **Cleaner imports**: Barrel files within features keep imports concise
+- **Easier refactoring**: Clear feature boundaries make changes safer
 
 **Feature Module Structure**:
 

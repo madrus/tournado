@@ -2,13 +2,27 @@ import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
-import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseEmailSignIn'
-import { FirebaseSignIn } from '~/features/firebase/components/FirebaseSignIn'
+import {
+  FirebaseEmailSignIn,
+  FirebaseSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/auth.signin'
+import {
+  authContainerVariants,
+  authDividerContainerVariants,
+  authDividerLineContainerVariants,
+  authDividerLineVariants,
+  authDividerTextContainerVariants,
+  authDividerTextVariants,
+  authFooterTextVariants,
+  authHeadingVariants,
+  authLinkVariants,
+  authTextSpacingVariants,
+} from './auth.variants'
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -18,7 +32,7 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({
   request,
-}: Route.LoaderArgs): Promise<Response | { redirectTo: string | null }> => {
+}: Route.LoaderArgs): Promise<Response | { redirectTo: string | undefined }> => {
   const user = await getUser(request)
   if (user) {
     // Use role-based redirect instead of always going to admin panel
@@ -30,7 +44,7 @@ export const loader = async ({
 
   // Get the redirect destination for Firebase sign-in
   const url = new URL(request.url)
-  const redirectTo = url.searchParams.get('redirectTo')
+  const redirectTo = url.searchParams.get('redirectTo') ?? undefined
 
   return { redirectTo }
 }
@@ -57,32 +71,31 @@ export default function SigninPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='mx-auto max-w-md space-y-6'>
-      <div className='space-y-2 text-center'>
-        <h1 className='text-2xl font-bold'>{t('common.auth.signIn')}</h1>
-        <p className='text-muted-foreground'>{t('auth.signInPage.description')}</p>
-      </div>
+    <div className={authContainerVariants()}>
+      <h2 className={authHeadingVariants()}>{t('auth.signInPage.description')}</h2>
 
       {/* Firebase Google Sign-in */}
       <FirebaseSignIn redirectTo={redirectTo} />
 
-      <div className='relative'>
-        <div className='absolute inset-0 flex items-center'>
-          <span className='w-full border-t' />
+      <div className={authDividerContainerVariants()}>
+        <div className={authDividerLineContainerVariants()}>
+          <span className={authDividerLineVariants()} />
         </div>
-        <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background text-muted-foreground px-2'>
+        <div className={authDividerTextContainerVariants()}>
+          <span className={authDividerTextVariants()}>
             {t('auth.continueWithEmail')}
           </span>
         </div>
       </div>
 
       {/* Firebase email/password sign-in */}
-      <FirebaseEmailSignIn mode='signin' redirectTo={redirectTo ?? undefined} />
+      <FirebaseEmailSignIn mode='signin' redirectTo={redirectTo} />
 
-      <p className='text-muted-foreground text-center text-sm'>
-        {t('auth.signInPage.noAccount')}{' '}
-        <Link to='/auth/signup' className='text-brand hover:text-brand/80 underline'>
+      <p className={authFooterTextVariants()}>
+        <span className={authTextSpacingVariants()}>
+          {t('auth.signInPage.noAccount')}
+        </span>
+        <Link to='/auth/signup' className={authLinkVariants()}>
           {t('auth.signInPage.signUpLink')}
         </Link>
       </p>

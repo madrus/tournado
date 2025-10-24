@@ -149,9 +149,9 @@
   --color-background: var(--color-slate-900);
   --color-input: color-mix(
     in srgb,
-    var(--color-slate-800) 40%,
+    var(--color-cyan-950) 60%,
     transparent
-  ); /* 40% transparent slate-800 for elegant contrast against panels */
+  ); /* 60% transparent cyan-950 for elegant contrast against panels */
   --color-border: var(
     --color-slate-500
   ); /* lighter for better contrast against dark background */

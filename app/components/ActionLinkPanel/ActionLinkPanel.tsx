@@ -23,7 +23,6 @@ type ActionLinkPanelProps = {
   to?: string
   onClick?: () => void
   children?: ReactNode
-  language: string
   className?: string
   testId?: string
 }
@@ -38,11 +37,10 @@ export function ActionLinkPanel({
   to,
   onClick,
   children,
-  language,
   className,
   testId,
 }: ActionLinkPanelProps): JSX.Element {
-  const typographyClasses = getTypographyClasses(language)
+  const typographyClasses = getTypographyClasses()
 
   const panel = (
     <ErrorBoundary>

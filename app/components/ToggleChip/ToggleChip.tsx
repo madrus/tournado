@@ -1,5 +1,4 @@
 import { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
@@ -59,8 +58,6 @@ export function ToggleChip({
   className,
   'data-testid': dataTestId,
 }: ToggleChipProps): JSX.Element {
-  const { i18n } = useTranslation()
-
   const handleToggle = () => {
     if (!disabled) {
       onToggle(value)
@@ -81,10 +78,7 @@ export function ToggleChip({
         aria-label={label}
       />
       <span
-        className={cn(
-          toggleChipTextVariants({ color, selected }),
-          getLatinTextClass(i18n.language)
-        )}
+        className={cn(toggleChipTextVariants({ color, selected }), getLatinTextClass())}
       >
         {label}
       </span>

@@ -1,5 +1,4 @@
 import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import * as Select from '@radix-ui/react-select'
 
@@ -69,14 +68,13 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
     },
     selectRef
   ): JSX.Element => {
-    const { i18n } = useTranslation()
     const triggerRef = useRef<HTMLButtonElement>(null)
     const justSelectedRef = useRef(false)
     const [isOpen, setIsOpen] = useState(false)
 
     // Ensure value is always a string
     const safeValue = value || ''
-    const direction = getDirection(i18n.language)
+    const direction = getDirection()
 
     // Handle blur when dropdown closes
     const handleCloseAutoFocus = (event: Event) => {

@@ -1,6 +1,3 @@
 {
-  "json.schemaDownload.enable": true,
-  "json.schemaDownload.timeout": 10000,
-  "json.schemaDownload.retry": 3,
-  "json.schemaDownload.cache": true
+  "i18n-ally.localesPaths": ["app/i18n/locales"]
 }

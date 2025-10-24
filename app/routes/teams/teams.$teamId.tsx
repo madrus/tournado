@@ -1,8 +1,8 @@
 import type { JSX } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData, useSearchParams } from 'react-router'
 import type { MetaFunction } from 'react-router'
+import { useLoaderData, useSearchParams } from 'react-router'
 
 import invariant from 'tiny-invariant'
 
@@ -106,7 +106,7 @@ export default function TeamDetailsPage(): JSX.Element {
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+          <h1 className={cn('text-3xl font-bold', getLatinTitleClass())}>
             {`${team.clubName} ${team.name}`}
           </h1>
           <p className='mt-2 text-lg'>
@@ -125,7 +125,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <h2
                   className={cn(
                     'mb-4 text-xl font-semibold text-teal-800 dark:text-teal-100',
-                    getLatinTitleClass(i18n.language)
+                    getLatinTitleClass()
                   )}
                 >
                   🏐 Upcoming Games
@@ -188,7 +188,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <h2
                   className={cn(
                     'mb-4 text-xl font-semibold text-teal-800 dark:text-teal-100',
-                    getLatinTitleClass(i18n.language)
+                    getLatinTitleClass()
                   )}
                 >
                   📊 Recent Results
@@ -212,7 +212,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <h3
                   className={cn(
                     'mb-4 text-lg font-semibold text-teal-800 dark:text-teal-100',
-                    getLatinTitleClass(i18n.language)
+                    getLatinTitleClass()
                   )}
                 >
                   Team Information
@@ -222,7 +222,7 @@ export default function TeamDetailsPage(): JSX.Element {
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Club
                     </dt>
-                    <dd className={`text-sm ${getLatinTextClass(i18n.language)}`}>
+                    <dd className={cn('text-sm', getLatinTextClass())}>
                       {team.clubName}
                     </dd>
                   </div>
@@ -230,15 +230,13 @@ export default function TeamDetailsPage(): JSX.Element {
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Team
                     </dt>
-                    <dd className={`text-sm ${getLatinTextClass(i18n.language)}`}>
-                      {team.name}
-                    </dd>
+                    <dd className={cn('text-sm', getLatinTextClass())}>{team.name}</dd>
                   </div>
                   <div>
                     <dt className='text-foreground-lighter text-sm font-medium'>
                       Class
                     </dt>
-                    <dd className='text-sm'>
+                    <dd className={cn('text-sm', getLatinTextClass())}>
                       {getDivisionLabel(team.division, i18n.language)}
                     </dd>
                   </div>
@@ -263,7 +261,7 @@ export default function TeamDetailsPage(): JSX.Element {
                 <h3
                   className={cn(
                     'mb-4 text-lg font-semibold text-teal-800 dark:text-teal-100',
-                    getLatinTitleClass(i18n.language)
+                    getLatinTitleClass()
                   )}
                 >
                   Season Stats
@@ -298,12 +296,7 @@ export default function TeamDetailsPage(): JSX.Element {
             <div className={panelVariants({ color: 'teal' })}>
               <div className={panelGlowVariants({ color: 'teal' })} />
               <div className={panelContentVariants()}>
-                <h3
-                  className={cn(
-                    'mb-4 text-lg font-semibold',
-                    getLatinTitleClass(i18n.language)
-                  )}
-                >
+                <h3 className={cn('mb-4 text-lg font-semibold', getLatinTitleClass())}>
                   Quick Actions
                 </h3>
                 <div className='space-y-3'>

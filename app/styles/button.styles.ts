@@ -10,7 +10,7 @@ export const commonButtonClasses = cn(
   'relative transition-all duration-300 ease-out',
   'whitespace-nowrap',
   'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
-  'hover:scale-103 active:scale-95 disabled:hover:scale-100',
+  'hover:scale-105 active:scale-95 disabled:hover:scale-100',
   'disabled:cursor-not-allowed disabled:opacity-50',
   'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border'
 )
@@ -31,12 +31,6 @@ const getShadowClasses = (color: ColorAccent): string => {
 
 const getBorderClasses = (color: ColorAccent): string => {
   const resolvedColor = resolveColorName(color)
-
-  // For red/brand buttons, use white border in dark mode ONLY on hover/focus for white-red-white pattern
-  if (resolvedColor === 'red' || resolvedColor === 'brand') {
-    return `border border-${resolvedColor}-600 hover:dark:border-slate-50 focus-visible:dark:border-slate-50`
-  }
-
   return `border border-${resolvedColor}-600`
 }
 

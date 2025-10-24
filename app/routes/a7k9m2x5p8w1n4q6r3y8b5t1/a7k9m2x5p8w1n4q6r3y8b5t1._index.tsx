@@ -84,7 +84,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 
 export default function AdminDashboard(): JSX.Element {
   const { user, teams, tournaments, activeUsersCount } = useLoaderData<LoaderData>()
-  const { i18n, t } = useTranslation()
+  const { t } = useTranslation()
 
   // Check user permissions for conditional rendering
   // Admin tiles: delete permission implies full admin access (create, read, update, delete)
@@ -111,7 +111,6 @@ export default function AdminDashboard(): JSX.Element {
             hoverColor='brand'
             iconColor='cyan'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
-            language={i18n.language}
             testId='admin-panel-tournament-management'
           >
             <div className='space-y-2'>
@@ -135,7 +134,6 @@ export default function AdminDashboard(): JSX.Element {
             hoverColor='brand'
             iconColor='green'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-            language={i18n.language}
             testId='admin-panel-team-management'
           >
             <div className='space-y-2'>
@@ -157,7 +155,6 @@ export default function AdminDashboard(): JSX.Element {
             hoverColor='brand'
             iconColor='lime'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/competition'
-            language={i18n.language}
             testId='admin-panel-competition-management'
           >
             <div className='space-y-2'>
@@ -179,7 +176,6 @@ export default function AdminDashboard(): JSX.Element {
             hoverColor='brand'
             iconColor='yellow'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/users'
-            language={i18n.language}
             testId='admin-panel-user-management'
           >
             <div className='space-y-2'>
@@ -200,7 +196,6 @@ export default function AdminDashboard(): JSX.Element {
             mainColor='teal'
             hoverColor='brand'
             iconColor='brand'
-            language={i18n.language}
             testId='admin-panel-system-settings'
           />
         ) : null}
@@ -214,7 +209,6 @@ export default function AdminDashboard(): JSX.Element {
             mainColor='teal'
             hoverColor='brand'
             iconColor='violet'
-            language={i18n.language}
             testId='admin-panel-reports-&-analytics'
           />
         ) : null}

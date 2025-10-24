@@ -16,6 +16,7 @@
 import { Category, Division } from '@prisma/client'
 
 import type { TeamClass, TeamName } from '~/features/teams/types'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
 import { CATEGORIES, DIVISIONS } from './lib.constants'
 import type { CategoryObject, DivisionObject, Email } from './lib.types'
@@ -94,6 +95,17 @@ export const getDivisionLabelByValue = (
   return division ? division.labels[locale] : value
 }
 
+/**
+ * Gets the localized label for a division using the current language from settings store
+ * Follows the same pattern as rtlUtils helpers (parameter-free, reads from store)
+ * @param value - The division value
+ * @returns The localized division label
+ */
+export const getCurrentDivisionLabel = (value: Division): string => {
+  const language = useSettingsStore.getState().language
+  return getDivisionLabelByValue(value, language)
+}
+
 export const getAllDivisions = (): DivisionObject[] => Object.values(DIVISIONS)
 
 export const getDivisionValues = (): Division[] => Object.values(Division)
@@ -130,6 +142,17 @@ export const getCategoryLabelByValue = (
 ): string => {
   const category = getCategoryByValue(value)
   return category ? category.labels[locale] : value
+}
+
+/**
+ * Gets the localized label for a category using the current language from settings store
+ * Follows the same pattern as rtlUtils helpers (parameter-free, reads from store)
+ * @param value - The category value
+ * @returns The localized category label
+ */
+export const getCurrentCategoryLabel = (value: Category): string => {
+  const language = useSettingsStore.getState().language
+  return getCategoryLabelByValue(value, language)
 }
 
 /**

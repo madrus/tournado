@@ -5,7 +5,6 @@
 // ensure the user gets the right status code and we can display a nicer error
 // message for them than the React Router v7 and/or browser default.
 import { JSX } from 'react'
-import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import { useLocation } from 'react-router'
 
@@ -42,7 +41,6 @@ export default function NotFoundPage(): JSX.Element {
 
 export function ErrorBoundary(): JSX.Element {
   const location = useLocation()
-  const { i18n } = useTranslation()
 
   return (
     <GeneralErrorBoundary
@@ -50,9 +48,7 @@ export function ErrorBoundary(): JSX.Element {
         404: () => (
           <div className='flex flex-col gap-6'>
             <div className='flex flex-col gap-3'>
-              <h1 className={cn(getLatinTitleClass(i18n.language))}>
-                We can't find this page:
-              </h1>
+              <h1 className={cn(getLatinTitleClass())}>We can't find this page:</h1>
               <pre className='text-foreground text-lg break-all whitespace-pre-wrap'>
                 {location.pathname}
               </pre>

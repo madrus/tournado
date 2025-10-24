@@ -1,11 +1,10 @@
 import { JSX, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import type { Category, Division } from '~/db.server'
-import { getCategoryLabelByValue, getDivisionLabelByValue } from '~/lib/lib.helpers'
+import { getCurrentCategoryLabel, getCurrentDivisionLabel } from '~/lib/lib.helpers'
 
 import { ToggleChip } from './ToggleChip'
 import { type ToggleChipColorVariant } from './toggleChip.variants'
@@ -48,10 +47,6 @@ export type ToggleChipsFieldProps = {
    */
   color: ToggleChipColorVariant
   /**
-   * Language for RTL text handling
-   */
-  language?: string
-  /**
    * Additional className for the container
    */
   className?: string
@@ -78,12 +73,8 @@ export function ToggleChipsField({
   required = false,
   disabled = false,
   color,
-  language,
   className,
 }: ToggleChipsFieldProps): JSX.Element {
-  const { i18n } = useTranslation()
-  const effectiveLanguage = language || i18n.language
-
   // Grid layout constant
   const GRID_LAYOUT = 'grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'
 
@@ -108,15 +99,9 @@ export function ToggleChipsField({
   // Helper functions for label and test-id generation
   const getItemLabel = (item: string): string => {
     if (type === 'divisions') {
-      return getDivisionLabelByValue(
-        item as Division,
-        effectiveLanguage as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getCurrentDivisionLabel(item as Division)
     } else {
-      return getCategoryLabelByValue(
-        item as Category,
-        effectiveLanguage as 'nl' | 'en' | 'de' | 'fr' | 'ar' | 'tr'
-      )
+      return getCurrentCategoryLabel(item as Category)
     }
   }
 
@@ -133,7 +118,6 @@ export function ToggleChipsField({
       <LabelWithStatusIcon
         label={label}
         statusIcon={<FieldStatusIcon status={getFieldStatus()} />}
-        language={effectiveLanguage}
       />
 
       {/* Toggle Chips Grid */}

@@ -9,16 +9,17 @@ import { isBrowser } from '~/lib/lib.helpers'
 type Theme = 'light' | 'dark'
 
 type StoreState = {
-  theme: Theme
+  isRTL: boolean
   language: Language
   systemThemeDetected: boolean
+  theme: Theme
 }
 
 type Actions = {
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
   setLanguage: (language: Language) => void
-  resetStoreState: () => void
+  resetSettingsStoreState: () => void
   detectSystemTheme: () => void
 }
 
@@ -28,6 +29,7 @@ const storeName = 'UIPreferencesStore'
 
 const initialStoreState: StoreState = {
   theme: 'light',
+  isRTL: false,
   language: 'nl',
   systemThemeDetected: false,
 }
@@ -46,9 +48,10 @@ const createServerSideStorage = () => ({
 export const useSettingsStore = create<StoreState & Actions>()(
   devtools(
     persist(
-      set => ({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (set, get) => ({
         ...initialStoreState,
-        resetStoreState: () => {
+        resetSettingsStoreState: () => {
           set(initialStoreState, false, 'resetStoreState')
         },
         setTheme: theme => {
@@ -79,7 +82,9 @@ export const useSettingsStore = create<StoreState & Actions>()(
           if (isBrowser) {
             document.cookie = `lang=${language}; path=/; max-age=31536000`
           }
-          set({ language }, false, 'setLanguage')
+          // Compute isRTL from language
+          const isRTL = language.split('-')[0] === 'ar'
+          set({ language, isRTL }, false, 'setLanguage')
         },
         detectSystemTheme: () => {
           if (!isBrowser) return

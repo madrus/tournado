@@ -39,7 +39,6 @@ export type CheckboxAgreementFieldProps = {
   className?: string
   labelClassName?: string
   inputClassName?: string
-  language?: string
   color?: ColorAccent
 }
 
@@ -61,7 +60,6 @@ export const CheckboxAgreementField = forwardRef<
       className = '',
       labelClassName = '',
       inputClassName = '',
-      language = 'en',
       color = 'slate',
     },
     ref
@@ -89,11 +87,7 @@ export const CheckboxAgreementField = forwardRef<
     return (
       <div className={className}>
         {description ? (
-          <LabelWithStatusIcon
-            label={description}
-            statusIcon={statusIcon}
-            language={language}
-          />
+          <LabelWithStatusIcon label={description} statusIcon={statusIcon} />
         ) : statusIcon ? (
           // Only render container if there's actually an icon to show
           <div className='mb-2 flex justify-end'>
@@ -137,7 +131,7 @@ export const CheckboxAgreementField = forwardRef<
             htmlFor={name}
             className={cn(
               'text-foreground cursor-pointer text-lg leading-6 font-normal',
-              getLatinTextClass(language)
+              getLatinTextClass()
             )}
           >
             {label}

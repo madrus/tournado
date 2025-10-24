@@ -14,7 +14,7 @@ export function AdminPanelLayoutHeader({
   userEmail,
   className,
 }: AdminPanelLayoutHeaderProps): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <LayoutHeader
@@ -24,7 +24,7 @@ export function AdminPanelLayoutHeader({
           i18nKey='admin.panel.description'
           values={{ email: userEmail }}
           components={{
-            email: <span className={getLatinTitleClass(i18n.language)} />,
+            email: <span className={getLatinTitleClass()} />,
           }}
         />
       }

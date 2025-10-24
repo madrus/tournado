@@ -14,10 +14,6 @@ type LabelWithStatusIconProps = {
    */
   statusIcon?: ReactNode
   /**
-   * Language for RTL text handling
-   */
-  language?: string
-  /**
    * Additional className for the container
    */
   className?: string
@@ -43,7 +39,6 @@ type LabelWithStatusIconProps = {
 export const LabelWithStatusIcon = ({
   label,
   statusIcon,
-  language = 'en',
   className,
   labelClassName,
   includeSpacing = true,
@@ -56,11 +51,7 @@ export const LabelWithStatusIcon = ({
     )}
   >
     <div
-      className={cn(
-        'text-foreground font-medium',
-        getLatinTextClass(language),
-        labelClassName
-      )}
+      className={cn('text-foreground font-medium', getLatinTextClass(), labelClassName)}
     >
       {label}
     </div>

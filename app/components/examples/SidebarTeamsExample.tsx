@@ -90,7 +90,7 @@ export function SidebarTeamsExample({
           >
             <div className='bg-foreground-lighter h-2 w-2 rounded-full' />
             <div className='flex flex-col'>
-              <span className={cn('font-medium', getLatinTextClass(i18n.language))}>
+              <span className={cn('font-medium', getLatinTextClass())}>
                 {`${team.clubName} ${team.name}`}
               </span>
               <span className='text-foreground-lighter text-xs'>
@@ -106,31 +106,26 @@ export function SidebarTeamsExample({
   // Main content - team details or empty state
   const mainContent = selectedTeam ? (
     <div className='max-w-2xl'>
-      <h1 className={cn('mb-6 text-3xl font-bold', getLatinTitleClass(i18n.language))}>
+      <h1 className={cn('mb-6 text-3xl font-bold', getLatinTitleClass())}>
         {`${selectedTeam.clubName} ${selectedTeam.name}`}
       </h1>
 
       <div className='space-y-6'>
         {/* Team Info Card */}
         <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-          <h2
-            className={cn(
-              'mb-4 text-xl font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h2 className={cn('mb-4 text-xl font-semibold', getLatinTitleClass())}>
             Team Information
           </h2>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Club</dt>
-              <dd className={cn('mt-1 text-sm', getLatinTextClass(i18n.language))}>
+              <dd className={cn('mt-1 text-sm', getLatinTextClass())}>
                 {selectedTeam.clubName}
               </dd>
             </div>
             <div>
               <dt className='text-foreground-lighter text-sm font-medium'>Team</dt>
-              <dd className={cn('mt-1 text-sm', getLatinTextClass(i18n.language))}>
+              <dd className={cn('mt-1 text-sm', getLatinTextClass())}>
                 {selectedTeam.name}
               </dd>
             </div>
@@ -153,12 +148,7 @@ export function SidebarTeamsExample({
 
         {/* Team Chip Preview */}
         <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-          <h3
-            className={cn(
-              'mb-4 text-lg font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h3 className={cn('mb-4 text-lg font-semibold', getLatinTitleClass())}>
             Team Chip Preview
           </h3>
           <p className='text-foreground mb-4'>
@@ -174,12 +164,7 @@ export function SidebarTeamsExample({
 
         {/* Actions */}
         <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-          <h3
-            className={cn(
-              'mb-4 text-lg font-semibold',
-              getLatinTitleClass(i18n.language)
-            )}
-          >
+          <h3 className={cn('mb-4 text-lg font-semibold', getLatinTitleClass())}>
             Available Actions
           </h3>
           <div className='flex flex-wrap gap-3'>
@@ -209,9 +194,7 @@ export function SidebarTeamsExample({
             />
           </svg>
         </div>
-        <h3
-          className={cn('mt-2 text-sm font-medium', getLatinTitleClass(i18n.language))}
-        >
+        <h3 className={cn('mt-2 text-sm font-medium', getLatinTitleClass())}>
           No team selected
         </h3>
         <p className='text-foreground-lighter mt-1 text-sm'>
@@ -249,8 +232,6 @@ export function SidebarTeamsExample({
  * This demonstrates the evolution from sidebar to chip-based UI
  */
 export function TeamsLayoutComparison(): JSX.Element {
-  const { t: _t, i18n } = useTranslation()
-
   const exampleTeams: Team[] = [
     { id: '1', clubName: 'sv DIO', name: 'Heren 1', division: 'PREMIER_DIVISION' },
     { id: '2', clubName: 'sv DIO', name: 'Dames 1', division: 'FIRST_DIVISION' },
@@ -261,9 +242,7 @@ export function TeamsLayoutComparison(): JSX.Element {
     <div className='space-y-8 p-6'>
       {/* Header */}
       <div className='text-center'>
-        <h1
-          className={cn('mb-4 text-3xl font-bold', getLatinTitleClass(i18n.language))}
-        >
+        <h1 className={cn('mb-4 text-3xl font-bold', getLatinTitleClass())}>
           Teams Layout Evolution
         </h1>
         <p className='text-foreground mx-auto max-w-2xl'>
@@ -274,12 +253,7 @@ export function TeamsLayoutComparison(): JSX.Element {
 
       {/* New Chip-Based Layout */}
       <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-        <h2
-          className={cn(
-            'mb-4 text-xl font-semibold',
-            getLatinTitleClass(i18n.language)
-          )}
-        >
+        <h2 className={cn('mb-4 text-xl font-semibold', getLatinTitleClass())}>
           ✨ New Chip-Based Layout
         </h2>
         <p className='text-foreground mb-4'>
@@ -300,12 +274,7 @@ export function TeamsLayoutComparison(): JSX.Element {
 
       {/* Original Sidebar Layout */}
       <div className='border-foreground-lighter bg-background rounded-lg border p-6 shadow-sm'>
-        <h2
-          className={cn(
-            'mb-4 text-xl font-semibold',
-            getLatinTitleClass(i18n.language)
-          )}
-        >
+        <h2 className={cn('mb-4 text-xl font-semibold', getLatinTitleClass())}>
           🗂️ Original Sidebar Layout (Preserved)
         </h2>
         <p className='text-foreground mb-4'>
@@ -322,7 +291,7 @@ export function TeamsLayoutComparison(): JSX.Element {
         <h3
           className={cn(
             'text-primary mb-3 text-lg font-semibold',
-            getLatinTitleClass(i18n.language)
+            getLatinTitleClass()
           )}
         >
           📋 Implementation Notes

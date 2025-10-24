@@ -1,8 +1,18 @@
 import { render, screen } from '@testing-library/react'
 
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
+
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
 import { LabelWithStatusIcon } from '../LabelWithStatusIcon'
+
+// Get store state once at top
+const state = useSettingsStore.getState
+
+// Reset store before each test
+beforeEach(() => {
+  state().resetSettingsStoreState()
+})
 
 describe('LabelWithStatusIcon', () => {
   it('renders label text correctly', () => {
@@ -47,7 +57,8 @@ describe('LabelWithStatusIcon', () => {
   })
 
   it('applies RTL text class for Arabic language', () => {
-    render(<LabelWithStatusIcon label='Test Label' language='ar' />)
+    state().setLanguage('ar')
+    render(<LabelWithStatusIcon label='Test Label' />)
 
     expect(screen.getByText('Test Label')).toHaveClass('latin-text')
   })

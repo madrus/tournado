@@ -32,7 +32,7 @@ export function TournamentForm({
   className = '',
   intent,
 }: Readonly<TournamentFormProps>): JSX.Element {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const formRef = useRef<HTMLFormElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const navigation = useNavigation()
@@ -378,7 +378,7 @@ export function TournamentForm({
               onBlur={() => validateFieldOnBlur('name')}
               error={getTranslatedError('name')}
               required
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
               statusIcon={
@@ -402,7 +402,7 @@ export function TournamentForm({
               onBlur={() => validateFieldOnBlur('location')}
               error={getTranslatedError('location')}
               required
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step1}
               disabled={isPublicSuccess}
               statusIcon={
@@ -449,7 +449,7 @@ export function TournamentForm({
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               )}
               required
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step2}
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
@@ -482,7 +482,7 @@ export function TournamentForm({
                 'endDate',
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
               )}
-              className={getLatinTextClass(i18n.language)}
+              className={getLatinTextClass()}
               color={PANEL_COLORS.step2}
               readOnly={
                 isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
@@ -529,7 +529,6 @@ export function TournamentForm({
             required
             disabled={(formMode === 'create' && !isPanelEnabled(3)) || isPublicSuccess}
             color={PANEL_COLORS.step3}
-            language={i18n.language}
           />
         </Panel>
 
@@ -556,17 +555,17 @@ export function TournamentForm({
             required
             disabled={(formMode === 'create' && !isPanelEnabled(4)) || isPublicSuccess}
             color={PANEL_COLORS.step4}
-            language={i18n.language}
           />
         </Panel>
 
         {/* Submit Button */}
-        <div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+        <div className='flex flex-col gap-4 md:flex-row md:justify-end rtl:md:justify-start'>
           <ActionButton
             type='button'
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
+            className='w-full md:w-fit'
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
             }
@@ -580,6 +579,7 @@ export function TournamentForm({
             variant='primary'
             color='brand'
             icon='check_circle'
+            className='w-full md:w-fit'
             aria-label={t('common.actions.save')}
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'

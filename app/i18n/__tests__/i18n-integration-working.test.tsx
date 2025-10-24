@@ -3,6 +3,7 @@
  *
  * Tests that verify i18n works with React components using real translations.
  */
+import type { JSX } from 'react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 
 import { render, screen } from '@testing-library/react'
@@ -18,7 +19,7 @@ function TranslationComponent({ translationKey }: { translationKey: string }) {
 }
 
 // Language display component
-function LanguageDisplay() {
+function LanguageDisplay(): JSX.Element {
   const { i18n } = useTranslation()
   return <div data-testid='current-language'>{i18n.language}</div>
 }

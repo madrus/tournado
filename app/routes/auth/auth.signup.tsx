@@ -1,15 +1,28 @@
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, type MetaFunction } from 'react-router'
-import { redirect, useLoaderData } from 'react-router'
+import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
-import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseEmailSignIn'
-import { FirebaseSignIn } from '~/features/firebase/components/FirebaseSignIn'
+import {
+  FirebaseEmailSignIn,
+  FirebaseSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
 
 import type { Route } from './+types/auth.signup'
+import {
+  authContainerVariants,
+  authDividerContainerVariants,
+  authDividerLineContainerVariants,
+  authDividerLineVariants,
+  authDividerTextContainerVariants,
+  authDividerTextVariants,
+  authFooterTextVariants,
+  authHeadingVariants,
+  authLinkVariants,
+  authTextSpacingVariants,
+} from './auth.variants'
 
 // Route metadata
 export const handle: RouteMetadata = {
@@ -60,21 +73,18 @@ export default function SignUpPage(): JSX.Element {
   const { t } = useTranslation()
 
   return (
-    <div className='mx-auto max-w-md space-y-6'>
-      <div className='space-y-2 text-center'>
-        <h1 className='text-2xl font-bold'>{t('common.auth.signUp')}</h1>
-        <p className='text-muted-foreground'>{t('auth.signUpPage.description')}</p>
-      </div>
+    <div className={authContainerVariants()}>
+      <h2 className={authHeadingVariants()}>{t('auth.signUpPage.description')}</h2>
 
       {/* Firebase Google Sign-up */}
       <FirebaseSignIn redirectTo={redirectTo ?? '/'} />
 
-      <div className='relative'>
-        <div className='absolute inset-0 flex items-center'>
-          <span className='w-full border-t' />
+      <div className={authDividerContainerVariants()}>
+        <div className={authDividerLineContainerVariants()}>
+          <span className={authDividerLineVariants()} />
         </div>
-        <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-background text-muted-foreground px-2'>
+        <div className={authDividerTextContainerVariants()}>
+          <span className={authDividerTextVariants()}>
             {t('auth.continueWithEmail')}
           </span>
         </div>
@@ -83,9 +93,11 @@ export default function SignUpPage(): JSX.Element {
       {/* Firebase email/password sign-up */}
       <FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? '/'} />
 
-      <p className='text-muted-foreground text-center text-sm'>
-        {t('auth.signUpPage.hasAccount')}{' '}
-        <Link to='/auth/signin' className='text-brand hover:text-brand/80 underline'>
+      <p className={authFooterTextVariants()}>
+        <span className={authTextSpacingVariants()}>
+          {t('auth.signUpPage.hasAccount')}
+        </span>
+        <Link to='/auth/signin' className={authLinkVariants()}>
           {t('auth.signUpPage.signInLink')}
         </Link>
       </p>

@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import {
+  COLOR_VARIANT_KEYS,
   type ColorVariantKey,
   createColorVariantObject,
 } from '~/components/shared/colorVariants'
@@ -27,14 +28,66 @@ import {
  * </button>
  * ```
  */
+
+/**
+ * Helper function to generate primary button variant classes for a given color.
+ * Primary buttons are filled with colored backgrounds and white text.
+ * All colors uniformly use -600 weight with white text for consistency.
+ */
+function createPrimaryVariant(color: ColorVariantKey) {
+  const weight = '600'
+
+  return {
+    variant: 'primary' as const,
+    color,
+    class: [
+      'text-white',
+      `bg-${color}-${weight}`,
+      `border border-${color}-${weight}`,
+      `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-${color}-${weight} focus-visible:ring-offset-slate-50`,
+      `hover:ring-2 hover:ring-offset-2 hover:ring-${color}-${weight} hover:ring-offset-slate-50`,
+      `focus:ring-2 focus:ring-offset-2 focus:ring-${color}-${weight} focus:ring-offset-slate-50`,
+      `shadow-${color}-700/40 hover:shadow-${color}-700/60`,
+      'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
+      'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+    ],
+  }
+}
+
+/**
+ * Helper function to generate secondary button variant classes for a given color.
+ * Secondary buttons have light colored backgrounds with colored text and borders.
+ * All colors uniformly use -50 backgrounds, -600 text/borders, and slate-50 ring offset for consistency.
+ */
+function createSecondaryVariant(color: ColorVariantKey) {
+  const borderWeight = '600'
+  const ringOffset = 'slate-50'
+
+  return {
+    variant: 'secondary' as const,
+    color,
+    class: [
+      `bg-${color}-50`,
+      `text-${color}-600`,
+      `border-${color}-${borderWeight}`,
+      `hover:bg-${color}-100 focus-visible:bg-${color}-100`,
+      `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-${color}-${borderWeight} focus-visible:ring-offset-${ringOffset}`,
+      `hover:ring-2 hover:ring-offset-2 hover:ring-${color}-${borderWeight} hover:ring-offset-${ringOffset}`,
+      `focus:ring-2 focus:ring-offset-2 focus:ring-${color}-${borderWeight} focus:ring-offset-${ringOffset}`,
+      `shadow-${color}-700/40 hover:shadow-${color}-700/60`,
+      'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
+      'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
+    ],
+  }
+}
 export const buttonVariants = cva(
   // Base classes - all the common button styling
   [
     'inline-flex items-center justify-center rounded-lg font-bold gap-2',
-    'min-h-12 min-w-32 py-2.5 px-4 text-base uppercase',
+    'min-h-12 min-w-32 py-2.5 px-4 text-base ltr:uppercase rtl:normal-case',
     'relative transition-all duration-300 ease-out whitespace-nowrap',
     'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
-    'hover:scale-103 active:scale-95 disabled:hover:scale-100',
+    'hover:scale-105 active:scale-95 disabled:hover:scale-100',
     'disabled:cursor-not-allowed disabled:opacity-50',
     'disabled:bg-button-neutral-background disabled:text-button-neutral-text disabled:border-button-neutral-secondary-border',
     'focus:outline-none',
@@ -46,10 +99,10 @@ export const buttonVariants = cva(
       /**
        * Visual style variants affecting button appearance.
        * - primary: Filled buttons with white text (default)
-       * - secondary: Outlined buttons with transparent background
+       * - secondary: Light colored backgrounds with colored text and borders
        */
       variant: {
-        primary: ['text-white'],
+        primary: [],
         secondary: ['border'],
       },
       /**
@@ -69,268 +122,14 @@ export const buttonVariants = cva(
       },
     },
     compoundVariants: [
-      // Primary variant + colors
-      {
-        variant: 'primary',
-        color: 'brand',
-        class: [
-          'bg-brand-600',
-          'border border-brand-600',
-          'hover:dark:border-slate-50 focus-visible:dark:border-slate-50',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-600 focus-visible:ring-offset-slate-50',
-          'focus-visible:dark:ring-slate-50 focus-visible:dark:ring-offset-brand-600',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-brand-600 hover:ring-offset-slate-50',
-          'hover:dark:ring-slate-50 hover:dark:ring-offset-brand-600',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-brand-600 focus:ring-offset-slate-50',
-          'focus:dark:ring-slate-50 focus:dark:ring-offset-brand-600',
-          'shadow-brand-700/40 hover:shadow-brand-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'primary',
-        color: 'primary',
-        class: [
-          'bg-primary-700',
-          'border border-primary-700',
-          'hover:dark:border-slate-50 focus-visible:dark:border-slate-50',
-          'focus-visible:dark:ring-slate-50 focus-visible:dark:ring-offset-primary-700',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-primary-700 hover:ring-offset-slate-50',
-          'hover:dark:ring-slate-50 hover:dark:ring-offset-primary-700',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-primary-700 focus:ring-offset-slate-50',
-          'focus:dark:ring-slate-50 focus:dark:ring-offset-primary-700',
-          'shadow-primary-700/40 hover:shadow-primary-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      // Additional primary colors for dialog intents
-      {
-        variant: 'primary',
-        color: 'amber',
-        class: [
-          'bg-amber-600',
-          'border border-amber-600',
-          'hover:dark:border-slate-50 focus-visible:dark:border-slate-50',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-600 focus-visible:ring-offset-slate-50',
-          'focus-visible:dark:ring-slate-50 focus-visible:dark:ring-offset-amber-600',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-amber-600 hover:ring-offset-slate-50',
-          'hover:dark:ring-slate-50 hover:dark:ring-offset-amber-600',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:ring-offset-slate-50',
-          'focus:dark:ring-slate-50 focus:dark:ring-offset-amber-600',
-          'shadow-amber-700/40 hover:shadow-amber-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'primary',
-        color: 'cyan',
-        class: [
-          'bg-cyan-600',
-          'border border-cyan-600',
-          'hover:dark:border-slate-50 focus-visible:dark:border-slate-50',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-slate-50',
-          'focus-visible:dark:ring-slate-50 focus-visible:dark:ring-offset-cyan-600',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-cyan-600 hover:ring-offset-slate-50',
-          'hover:dark:ring-slate-50 hover:dark:ring-offset-cyan-600',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-cyan-600 focus:ring-offset-slate-50',
-          'focus:dark:ring-slate-50 focus:dark:ring-offset-cyan-600',
-          'shadow-cyan-700/40 hover:shadow-cyan-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'primary',
-        color: 'emerald',
-        class: [
-          'bg-emerald-600',
-          'border border-emerald-600',
-          'hover:dark:border-slate-50 focus-visible:dark:border-slate-50',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-slate-50',
-          'focus-visible:dark:ring-slate-50 focus-visible:dark:ring-offset-emerald-600',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-emerald-600 hover:ring-offset-slate-50',
-          'hover:dark:ring-slate-50 hover:dark:ring-offset-emerald-600',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 focus:ring-offset-slate-50',
-          'focus:dark:ring-slate-50 focus:dark:ring-offset-emerald-600',
-          'shadow-emerald-700/40 hover:shadow-emerald-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      // Secondary variant + colors
-      {
-        variant: 'secondary',
-        color: 'brand',
-        class: [
-          'bg-brand-50',
-          'text-brand-600',
-          'border-brand-600',
-          'hover:bg-brand-100 focus-visible:bg-brand-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-600 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-brand-600 hover:ring-offset-slate-50',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-brand-600 focus:ring-offset-slate-50',
-          'shadow-brand-700/40 hover:shadow-brand-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'primary',
-        class: [
-          'bg-primary-50',
-          'text-primary-600',
-          'border-primary-700',
-          'hover:bg-primary-100 focus-visible:bg-primary-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-primary-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-primary-700 focus:ring-offset-white/70',
-          'shadow-primary-700/40 hover:shadow-primary-700/60',
-          'dark:shadow-slate-100/20 dark:hover:shadow-slate-100/30',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      // Additional secondary colors
-      {
-        variant: 'secondary',
-        color: 'emerald',
-        class: [
-          'bg-emerald-50',
-          'text-emerald-600',
-          'border-emerald-600',
-          'hover:bg-emerald-100 focus-visible:bg-emerald-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-emerald-600 hover:ring-offset-slate-50',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 focus:ring-offset-slate-50',
-          'shadow-emerald-700/40 hover:shadow-emerald-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'red',
-        class: [
-          'bg-red-50',
-          'text-red-600',
-          'border-red-700',
-          'hover:bg-red-100 focus-visible:bg-red-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-red-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-red-700 focus:ring-offset-white/70',
-          'shadow-red-700/40 hover:shadow-red-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'teal',
-        class: [
-          'bg-teal-50',
-          'text-teal-600',
-          'border-teal-700',
-          'hover:bg-teal-100 focus-visible:bg-teal-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-teal-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-teal-700 focus:ring-offset-white/70',
-          'shadow-teal-700/40 hover:shadow-teal-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'cyan',
-        class: [
-          'bg-cyan-50',
-          'text-cyan-600',
-          'border-cyan-600',
-          'hover:bg-cyan-100 focus-visible:bg-cyan-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-cyan-600 hover:ring-offset-slate-50',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-cyan-600 focus:ring-offset-slate-50',
-          'shadow-cyan-700/40 hover:shadow-cyan-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'yellow',
-        class: [
-          'bg-yellow-50',
-          'text-yellow-600',
-          'border-yellow-700',
-          'hover:bg-yellow-100 focus-visible:bg-yellow-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-yellow-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-yellow-700 focus:ring-offset-white/70',
-          'shadow-yellow-700/40 hover:shadow-yellow-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'green',
-        class: [
-          'bg-green-50',
-          'text-green-600',
-          'border-green-700',
-          'hover:bg-green-100 focus-visible:bg-green-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-green-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-green-700 focus:ring-offset-white/70',
-          'shadow-green-700/40 hover:shadow-green-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'violet',
-        class: [
-          'bg-violet-50',
-          'text-violet-600',
-          'border-violet-700',
-          'hover:bg-violet-100 focus-visible:bg-violet-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-violet-700 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-violet-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-violet-700 focus:ring-offset-white/70',
-          'shadow-violet-700/40 hover:shadow-violet-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      {
-        variant: 'secondary',
-        color: 'slate',
-        class: [
-          'bg-slate-50',
-          'text-slate-600',
-          'border-slate-700',
-          'hover:bg-slate-100 focus-visible:bg-slate-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-700 focus-visible:ring-offset-white/70',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-slate-700 hover:ring-offset-white/70',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-slate-700 focus:ring-offset-white/70',
-          'shadow-slate-700/40 hover:shadow-slate-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
-      // Additional secondary colors for dialog intents
-      {
-        variant: 'secondary',
-        color: 'amber',
-        class: [
-          'bg-amber-50',
-          'text-amber-600',
-          'border-amber-600',
-          'hover:bg-amber-100 focus-visible:bg-amber-100',
-          'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-600 focus-visible:ring-offset-slate-50',
-          'hover:ring-2 hover:ring-offset-2 hover:ring-amber-600 hover:ring-offset-slate-50',
-          'focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:ring-offset-slate-50',
-          'shadow-amber-700/40 hover:shadow-amber-700/60',
-          'disabled:shadow-button-neutral-background/70 disabled:hover:shadow-button-neutral-background/70',
-        ],
-      },
+      // Generate all primary color variants dynamically (ordered by COLOR_VARIANT_KEYS)
+      ...Object.keys(COLOR_VARIANT_KEYS).map(color =>
+        createPrimaryVariant(color as ColorVariantKey)
+      ),
+      // Generate all secondary color variants dynamically (ordered by COLOR_VARIANT_KEYS)
+      ...Object.keys(COLOR_VARIANT_KEYS).map(color =>
+        createSecondaryVariant(color as ColorVariantKey)
+      ),
     ],
     defaultVariants: {
       variant: 'primary',

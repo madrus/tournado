@@ -2,22 +2,22 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { ToggleChipsField } from '../ToggleChipsField'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 
-// Mock the translation hook
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    i18n: { language: 'en' },
-  }),
-}))
+import { ToggleChipsField } from '../ToggleChipsField'
 
 // Mock the helper functions
 vi.mock('~/lib/lib.helpers', () => ({
   getDivisionLabelByValue: vi.fn(division => `Division ${division}`),
   getCategoryLabelByValue: vi.fn(category => `Category ${category}`),
+  getCurrentDivisionLabel: vi.fn(division => `Division ${division}`),
+  getCurrentCategoryLabel: vi.fn(category => `Category ${category}`),
+  isBrowser: true,
 }))
 
 describe('ToggleChipsField', () => {
+  const state = useSettingsStore.getState
+
   const defaultProps = {
     items: ['item1', 'item2', 'item3'],
     type: 'divisions' as const,
@@ -29,6 +29,7 @@ describe('ToggleChipsField', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    state().resetSettingsStoreState()
   })
 
   it('renders label correctly', () => {
@@ -148,7 +149,7 @@ describe('ToggleChipsField', () => {
   })
 
   it('uses correct language for label generation', () => {
-    render(<ToggleChipsField {...defaultProps} language='nl' />)
+    render(<ToggleChipsField {...defaultProps} />)
 
     // The component should pass the language to the helper functions
     expect(screen.getByText('Division item1')).toBeInTheDocument()

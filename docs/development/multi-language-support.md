@@ -24,10 +24,11 @@ For more details on how this works in practice, see the loader and page componen
 
 ## 1. Supported Languages & Core Setup
 
-We currently support five languages:
+We currently support six languages:
 
 - Dutch (`nl`) - Default language
 - English (`en`)
+- German (`de`)
 - French (`fr`)
 - Arabic (`ar`) - RTL support with Amiri font
 - Turkish (`tr`)
@@ -40,6 +41,7 @@ Supported languages are defined in `app/i18n/config.ts`:
 export const SUPPORTED_LANGUAGES = [
    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
    { code: 'en', name: 'English', flag: '🇬🇧' },
+   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
    { code: 'fr', name: 'Français', flag: '🇫🇷' },
    { code: 'ar', name: 'العربية', flag: '🇲🇦' },
    { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
@@ -51,8 +53,9 @@ export const SUPPORTED_LANGUAGES = [
 Each language has its own JSON file in `app/i18n/locales/`:
 
 ```text
-app/i18n/locales/en.json
 app/i18n/locales/nl.json
+app/i18n/locales/en.json
+app/i18n/locales/de.json
 app/i18n/locales/fr.json
 app/i18n/locales/ar.json
 app/i18n/locales/tr.json
@@ -87,14 +90,16 @@ import { initReactI18next } from 'react-i18next'
 import i18n from 'i18next'
 
 import ar from './locales/ar.json'
+import de from './locales/de.json'
 import en from './locales/en.json'
 import fr from './locales/fr.json'
 import nl from './locales/nl.json'
 import tr from './locales/tr.json'
 
 export const resources = {
-   en: { translation: en },
    nl: { translation: nl },
+   en: { translation: en },
+   de: { translation: de },
    fr: { translation: fr },
    ar: { translation: ar },
    tr: { translation: tr },
@@ -115,6 +120,82 @@ export function initI18n(language: string) {
 ```
 
 !> **Important:** Always import the i18n instance and related utilities (such as `initI18n`, `resources`, etc.) from the central `app/i18n/config.ts` file. Do **not** create or import i18n instances from different places in the codebase. Having multiple i18n instances can cause subtle bugs, including hydration mismatches, language switching issues, and inconsistent translations between server and client. Centralizing all i18n imports ensures a single source of truth and a consistent user experience.
+
+### VS Code i18n Ally Extension Configuration
+
+For developers using VS Code, the **i18n Ally** extension provides inline translation previews, missing key detection, and quick navigation between locale files. The configuration is split across multiple files to ensure proper functionality.
+
+#### 1. Workspace Settings (`.vscode/settings.json`)
+
+Already configured in the project:
+
+```json
+{
+   "i18n-ally.localesPaths": ["app/i18n/locales"]
+}
+```
+
+#### 2. VS Code Workspace File (`tournado.code-workspace`)
+
+If using a VS Code workspace file, add:
+
+```json
+{
+   "settings": {
+      "i18n-ally.sourceLanguage": "nl"
+   }
+}
+```
+
+#### 3. i18n Configuration File (`.i18nrc.jsonc`)
+
+Already configured in the project:
+
+```jsonc
+{
+   "annotationInPlace": true,
+   "enabledFrameworks": ["react-i18next"],
+   "enabledParsers": ["json"],
+   "extract.autoDetect": true,
+   "keepFulfilled": true,
+   "keystyle": "nested",
+   "namespace": false,
+   "pathMatcher": "{locale}.json",
+   "preferredDelimiter": ".",
+   "projectType": "react-i18next",
+   "sortKeys": true,
+   "sourceLanguage": "nl",
+   "targetLanguages": ["en", "ar", "de", "fr", "tr"],
+}
+```
+
+#### 4. User Settings (Global)
+
+**⚠️ Required:** Add these settings to your personal VS Code User Settings:
+
+1. Open Command Palette: `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux)
+2. Type "Preferences: Open User Settings (JSON)"
+3. Add the following configuration:
+
+```json
+{
+   "i18n-ally.dirStructure": "dir",
+   "i18n-ally.displayLanguage": "en",
+   "i18n-ally.localesPaths": ["app/i18n/locales"],
+   "i18n-ally.namespace": false,
+   "i18n-ally.pathMatcher": "{locale}.json"
+}
+```
+
+**Key configuration notes:**
+
+- `dirStructure: "dir"` - Treats each locale file as a separate directory-based structure
+- `displayLanguage: "en"` - Shows English translations inline (can be set to "nl" for Dutch)
+- `namespace: false` - Disables namespace detection (our namespaces are programmatic, not in JSON)
+- `localesPaths` - Must point to `app/i18n/locales` (project-relative path)
+- `pathMatcher` - Matches files like `en.json`, `nl.json`, etc.
+
+After adding user settings, reload VS Code (`Cmd+Shift+P` → "Developer: Reload Window") to activate i18n Ally.
 
 ### Language Switching Architecture
 

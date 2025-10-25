@@ -64,6 +64,7 @@ vi.mock('~/utils/iconUtils', () => ({
 vi.mock('~/utils/rtlUtils', () => ({
   getLatinTextClass: () => '',
   getTypographyClass: () => '',
+  getMenuItemLineHeight: () => '',
 }))
 
 // Mock AnimatedHamburgerIcon

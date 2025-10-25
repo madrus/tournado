@@ -5,6 +5,7 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 import {
   getArabicTextClass,
   getDirection,
+  getMenuItemLineHeight,
   getSwipeRowConfig,
   getTypographyClass,
   getTypographyClasses,
@@ -188,6 +189,31 @@ describe('getSwipeRowConfig', () => {
       const swipeStateX = -400 // Content at swipe position
       const transform = swipeStateX * directionMultiplier
       expect(transform).toBe(400) // translateX(400px) moves content right
+    })
+  })
+
+  describe('getMenuItemLineHeight', () => {
+    test('returns leading-normal for LTR languages', () => {
+      state().setLanguage('en')
+      expect(getMenuItemLineHeight()).toBe('leading-normal')
+
+      state().setLanguage('nl')
+      expect(getMenuItemLineHeight()).toBe('leading-normal')
+    })
+
+    test('returns leading-tight for RTL languages (Arabic)', () => {
+      state().setLanguage('ar')
+      expect(getMenuItemLineHeight()).toBe('leading-tight')
+    })
+
+    test('respects language override parameter', () => {
+      // Store is LTR but override with Arabic
+      state().setLanguage('en')
+      expect(getMenuItemLineHeight('ar')).toBe('leading-tight')
+
+      // Store is RTL but override with English
+      state().setLanguage('ar')
+      expect(getMenuItemLineHeight('en')).toBe('leading-normal')
     })
   })
 })

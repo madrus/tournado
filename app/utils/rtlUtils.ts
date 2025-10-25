@@ -181,3 +181,14 @@ export const getSwipeRowConfig = (): SwipeRowConfig => ({
   // LTR: multiply by 1 (no change)
   directionMultiplier: useSettingsStore.getState().isRTL ? -1 : 1,
 })
+
+// Helper to get compensated line-height for menu items in RTL mode
+// Arabic text uses 1.25rem font (25% larger than 1rem), so we need to reduce
+// line-height proportionally to maintain the same visual height as LTR menu items
+export const getMenuItemLineHeight = (languageOverride?: Language | string): string => {
+  const isRTL = resolveIsRTL(languageOverride)
+  // In RTL (Arabic): use tighter line-height to compensate for 25% larger font
+  // 1.5 / 1.25 = 1.2 (maintains same visual height as LTR's leading-normal)
+  // In LTR: use normal line-height (1.5)
+  return isRTL ? 'leading-tight' : 'leading-normal'
+}

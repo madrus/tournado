@@ -8,7 +8,11 @@ import { AnimatedHamburgerIcon } from '~/components/icons/AnimatedHamburgerIcon'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getTypographyClass } from '~/utils/rtlUtils'
+import {
+  getLatinTextClass,
+  getMenuItemLineHeight,
+  getTypographyClass,
+} from '~/utils/rtlUtils'
 
 export type MenuItemType = {
   label: string
@@ -199,7 +203,8 @@ export function UserMenu({
                   <div key={index} className='relative'>
                     <button
                       className={cn(
-                        'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
+                        'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 focus:outline-none',
+                        getMenuItemLineHeight(),
                         menuClasses.menuItem
                       )}
                       onClick={event => handleLanguageToggle(event, index)}
@@ -230,7 +235,8 @@ export function UserMenu({
                           <button
                             key={subIndex}
                             className={cn(
-                              'w-full items-center px-3 py-2 leading-normal focus:outline-none',
+                              'w-full items-center px-3 py-2 focus:outline-none',
+                              getMenuItemLineHeight(),
                               subItem.active
                                 ? 'bg-accent text-foreground-darker'
                                 : 'text-foreground-darker hover:bg-accent',
@@ -282,7 +288,8 @@ export function UserMenu({
                     to={item.href || '#'}
                     onClick={event => handleMenuNavigation(event, item.href)}
                     className={cn(
-                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 leading-normal focus:outline-none',
+                      'text-foreground-darker hover:bg-accent w-full items-center px-3 py-2 focus:outline-none',
+                      getMenuItemLineHeight(),
                       menuClasses.menuItem
                     )}
                   >

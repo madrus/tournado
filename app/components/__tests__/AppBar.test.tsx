@@ -102,7 +102,7 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for public user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -125,7 +125,7 @@ describe('AppBar Context Menu', () => {
     it('should show divider after Teams', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -142,7 +142,7 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to public teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -174,7 +174,12 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for authenticated user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -200,7 +205,12 @@ describe('AppBar Context Menu', () => {
     it('should show authentication status as true', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -212,7 +222,12 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to public teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -244,7 +259,12 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for admin user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -267,7 +287,12 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to admin teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -284,7 +309,12 @@ describe('AppBar Context Menu', () => {
     it('should show Admin Panel with correct properties', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -304,7 +334,12 @@ describe('AppBar Context Menu', () => {
     it('should position Admin Panel after the first divider', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -326,7 +361,7 @@ describe('AppBar Context Menu', () => {
     it('should filter out authenticated items for non-authenticated users', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -355,7 +390,12 @@ describe('AppBar Context Menu', () => {
 
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -389,7 +429,12 @@ describe('AppBar Context Menu', () => {
 
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={true} username='user@example.com' user={user} />
+            <AppBar
+              authenticated={true}
+              username='user@example.com'
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 
@@ -418,7 +463,12 @@ describe('AppBar Context Menu', () => {
 
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -468,7 +518,12 @@ describe('AppBar Context Menu', () => {
 
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={true} username='user@example.com' user={user} />
+            <AppBar
+              authenticated={true}
+              username='user@example.com'
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 
@@ -509,6 +564,7 @@ describe('AppBar Context Menu', () => {
               authenticated={authenticated}
               username={user?.email || ''}
               user={user}
+              language='en'
             />
           </MemoryRouter>
         )
@@ -523,7 +579,7 @@ describe('AppBar Context Menu', () => {
     it('should always show About before the last items (language and auth)', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -547,7 +603,7 @@ describe('AppBar Context Menu', () => {
     it('should render a single unified UserMenu instance', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -580,7 +636,12 @@ describe('AppBar Context Menu', () => {
       testCases.forEach(({ authenticated, username, user }) => {
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={authenticated} username={username} user={user} />
+            <AppBar
+              authenticated={authenticated}
+              username={username}
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 

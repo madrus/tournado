@@ -64,7 +64,7 @@ type LoaderData = {
   ENV: Record<string, string>
   username: string
   user: User | null
-  language: string
+  language: Language
   theme: 'light' | 'dark'
   tournaments: TournamentData[]
 }
@@ -130,7 +130,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 
 type DocumentProps = {
   children: React.ReactNode
-  language: string
+  language: Language
   theme: 'light' | 'dark'
 }
 
@@ -151,13 +151,13 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
   const currentLanguage = isHydrated ? storeLanguage : language
 
   // Use useState for reactive values that depend on language
-  const [direction, setDirection] = useState(getDirection())
-  const [typographyClass, setTypographyClass] = useState(getTypographyClass())
+  const [direction, setDirection] = useState(getDirection(language))
+  const [typographyClass, setTypographyClass] = useState(getTypographyClass(language))
 
   // Update direction and typography when language changes
   useEffect(() => {
-    setDirection(getDirection())
-    setTypographyClass(getTypographyClass())
+    setDirection(getDirection(currentLanguage))
+    setTypographyClass(getTypographyClass(currentLanguage))
   }, [currentLanguage])
 
   return (
@@ -272,6 +272,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
         username={username}
         user={user}
         theme={currentTheme}
+        language={currentLanguage}
         i18n={i18n}
         env={ENV}
       >
@@ -301,6 +302,7 @@ export function ErrorBoundary(): JSX.Element {
         username={username}
         theme={theme}
         i18n={i18n}
+        language='nl'
         contentClassName={cn('pt-8 md:pb-4', CONTENT_CONTAINER_CLASSES)}
       >
         <GeneralErrorBoundary />

@@ -1,16 +1,15 @@
 import { JSX, ReactNode } from 'react'
 
-import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
 import { getArabicTextClass } from '~/utils/rtlUtils'
 
 /**
-+ * Reusable layout header component with RTL support and responsive breakpoints.
-+ * Renders a title, description, and optional action buttons.
-+ *
-+ * Note: Uses <h2> for the title because the primary <h1> is in the AppBar navigation.
-+ * This follows SPA best practices where the persistent navigation contains the main heading.
-+ */
+ * Reusable layout header component with RTL support and responsive breakpoints.
+ * Renders a title, description, and optional action buttons.
+ *
+ * Note: Uses <h2> for the title because the primary <h1> is in the AppBar navigation.
+ * This follows SPA best practices where the persistent navigation contains the main heading.
+ */
 type LayoutHeaderProps = {
   /** Title text or translation key */
   title: string
@@ -34,15 +33,13 @@ export function LayoutHeader({
   testId,
   breakpoint = 'sm',
 }: LayoutHeaderProps): JSX.Element {
-  const { isRTL } = useSettingsStore()
-
   const breakpointClasses = {
     sm: 'sm:flex-row sm:items-center sm:justify-between',
     md: 'md:flex-row md:items-center md:justify-between',
     lg: 'lg:flex-row lg:items-center lg:justify-between',
   }
 
-  const arabicClass = isRTL ? getArabicTextClass() : ''
+  const arabicClass = getArabicTextClass()
 
   return (
     <div

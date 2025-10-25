@@ -21,13 +21,16 @@ vi.mock('~/components/AppBar', () => ({
     authenticated,
     username,
     user,
+    language,
   }: {
     authenticated: boolean
     username: string
     user?: { email: string; id: string } | null
+    language: string
   }) => (
     <div data-testid='app-bar'>
-      AppBar - authenticated: {String(authenticated)}, username: {username}
+      AppBar - authenticated: {String(authenticated)}, username: {username}, language:{' '}
+      {language}
       {user ? `, user: ${user.email}` : ''}
     </div>
   ),
@@ -77,6 +80,7 @@ describe('AppLayout', () => {
     authenticated: false,
     username: 'testuser',
     theme: 'light' as const,
+    language: 'en' as const,
     i18n: mockI18n,
     children: <div data-testid='test-children'>Test Content</div>,
   }
@@ -387,6 +391,7 @@ describe('AppLayout', () => {
         authenticated: false,
         username: '',
         theme: 'light' as const,
+        language: 'en' as const,
         i18n: mockI18n,
         children: <div>Test</div>,
       }

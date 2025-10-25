@@ -1,18 +1,41 @@
+import type { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
 // RTL (Right-to-Left) language utilities
 // isRTL is now a computed property in useSettingsStore based on the current language
 
+const isLanguageRTL = (language: Language | string): boolean =>
+  language.split('-')[0] === 'ar'
+
+const resolveIsRTL = (languageOverride?: Language | string): boolean => {
+  if (languageOverride) {
+    return isLanguageRTL(languageOverride)
+  }
+
+  return useSettingsStore.getState().isRTL
+}
+
 // Get direction attribute for HTML
-export const getDirection = (): 'ltr' | 'rtl' =>
-  useSettingsStore.getState().isRTL ? 'rtl' : 'ltr'
+export const getDirection = (languageOverride?: Language | string): 'ltr' | 'rtl' =>
+  resolveIsRTL(languageOverride) ? 'rtl' : 'ltr'
 
 // Get typography class for body based on language
-export const getTypographyClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'arabic-text' : ''
+export const getTypographyClass = (languageOverride?: Language | string): string =>
+  resolveIsRTL(languageOverride) ? 'arabic-text' : ''
 
-// Helper to apply arabic-text for Arabic content in any context
-export const getArabicTextClass = (): string => 'arabic-text'
+type ArabicTextClassOptions = {
+  respectDirection?: boolean
+}
+
+// Helper to apply arabic-text when UI runs RTL, with override for explicit Arabic snippets
+export const getArabicTextClass = (options: ArabicTextClassOptions = {}): string => {
+  const { respectDirection = true } = options
+  const isRTL = useSettingsStore.getState().isRTL
+
+  if (!respectDirection) return 'arabic-text'
+
+  return isRTL ? 'arabic-text' : ''
+}
 
 // Helper to apply latin-text in Arabic context for Latin content
 export const getLatinTextClass = (): string =>
@@ -110,8 +133,10 @@ export type TypographyClasses = {
 }
 
 // Arabic typography fixes
-export function getTypographyClasses(): TypographyClasses {
-  const isRTL = useSettingsStore.getState().isRTL
+export function getTypographyClasses(
+  languageOverride?: Language | string
+): TypographyClasses {
+  const isRTL = resolveIsRTL(languageOverride)
 
   return {
     // Better line height and positioning for Arabic text

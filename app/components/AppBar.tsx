@@ -9,6 +9,7 @@ import { navigationVariants } from '~/components/navigation/navigation.variants'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { useScrollDirection } from '~/hooks/useScrollDirection'
+import type { Language } from '~/i18n/config'
 import { SUPPORTED_LANGUAGES } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
 import { breakpoints } from '~/utils/breakpoints'
@@ -31,11 +32,13 @@ export function AppBar({
   authenticated,
   username,
   user,
+  language,
 }: {
   authenticated: boolean
   title?: string
   username?: string
   user?: User | null
+  language: Language
 }): JSX.Element {
   const { t } = useTranslation()
   const location = useLocation()
@@ -72,7 +75,7 @@ export function AppBar({
   }, [signoutFetcher, setMenuOpen])
 
   // Language switching logic
-  const { switchLanguage, currentLanguage } = useLanguageSwitcher()
+  const { switchLanguage } = useLanguageSwitcher()
 
   const menuItems = [
     // Admin Panel - show for admin panel access (admin, manager, referee)
@@ -157,8 +160,11 @@ export function AppBar({
         label: lang.name,
         customIcon: lang.flag,
         onClick: () => switchLanguage(lang.code),
-        active: lang.code === currentLanguage,
-        className: lang.code === 'ar' ? getArabicTextClass() : getLatinTextClass(),
+        active: lang.code === language,
+        className:
+          lang.code === 'ar'
+            ? getArabicTextClass({ respectDirection: false })
+            : getLatinTextClass(),
       })),
       authenticated: false,
     },
@@ -280,7 +286,7 @@ export function AppBar({
           */}
           <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
             <h1
-              className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass()}`}
+              className={`text-primary-foreground text-center text-xl font-bold sm:text-2xl ${getTypographyClass(language)}`}
             >
               {pageTitle}
             </h1>

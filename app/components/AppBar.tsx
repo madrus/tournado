@@ -272,7 +272,7 @@ export function AppBar({
               />
               {/* Show Tournado text next to logo only on desktop */}
               <span
-                className={`text-primary-foreground hidden text-xl font-bold lg:inline-block ${getLatinTitleClass()}`}
+                className={`text-primary-foreground hidden text-xl font-bold lg:inline-block ${getLatinTitleClass(language)}`}
               >
                 Tournado
               </span>

@@ -38,12 +38,28 @@ export const getArabicTextClass = (options: ArabicTextClassOptions = {}): string
 }
 
 // Helper to apply latin-text in Arabic context for Latin content
-export const getLatinTextClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'latin-text' : ''
+export const getLatinTextClass = (languageOverride?: Language | string): string => {
+  if (languageOverride) {
+    return resolveIsRTL(languageOverride) ? 'latin-text' : ''
+  }
+  // On client, check DOM dir attribute for hydration consistency
+  if (typeof document !== 'undefined') {
+    return document.documentElement.getAttribute('dir') === 'rtl' ? 'latin-text' : ''
+  }
+  return resolveIsRTL() ? 'latin-text' : ''
+}
 
 // Helper to mark Latin titles that should use Inter font without scaling (when app is in Arabic mode)
-export const getLatinTitleClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'latin-title' : ''
+export const getLatinTitleClass = (languageOverride?: Language | string): string => {
+  if (languageOverride) {
+    return resolveIsRTL(languageOverride) ? 'latin-title' : ''
+  }
+  // On client, check DOM dir attribute for hydration consistency
+  if (typeof document !== 'undefined') {
+    return document.documentElement.getAttribute('dir') === 'rtl' ? 'latin-title' : ''
+  }
+  return resolveIsRTL() ? 'latin-title' : ''
+}
 
 // Helper for Latin content that needs font-family change only (no size override)
 // Use this for elements where you want default Latin font but need to preserve responsive sizing

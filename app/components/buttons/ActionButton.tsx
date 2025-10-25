@@ -1,6 +1,5 @@
 import type { JSX, ReactNode } from 'react'
 
-import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { type Permission } from '~/utils/rbac'
@@ -49,7 +48,6 @@ export function ActionButton({
   permission,
   hideWhenDisabled = false,
 }: Readonly<ActionButtonProps>): JSX.Element | null {
-  const isRTL = useSettingsStore(state => state.isRTL)
   const { isHidden, isDisabled } = useActionButton({
     permission,
     hideWhenDisabled,
@@ -79,7 +77,7 @@ export function ActionButton({
     iconNeedsCircle ? (
       <span
         className={cn(
-          'me-1.5 flex items-center justify-center rounded-full border-2 bg-transparent',
+          'icon-spacing flex items-center justify-center rounded-full border-2 bg-transparent',
           size === 'sm' ? 'h-5 w-5' : 'h-6 w-6',
           color === 'brand' && 'border-brand-600/70',
           color === 'primary' && 'border-primary-600/70',
@@ -108,7 +106,7 @@ export function ActionButton({
         {rawIcon}
       </span>
     ) : (
-      <span className='me-1.5' aria-hidden='true'>
+      <span className='icon-spacing' aria-hidden='true'>
         {rawIcon}
       </span>
     )
@@ -126,17 +124,8 @@ export function ActionButton({
       aria-describedby={ariaDescribedBy}
       data-testid={testId}
     >
-      {isRTL ? (
-        <>
-          {children}
-          {iconElement}
-        </>
-      ) : (
-        <>
-          {iconElement}
-          {children}
-        </>
-      )}
+      {iconElement}
+      {children}
     </button>
   )
 }

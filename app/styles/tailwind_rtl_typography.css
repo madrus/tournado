@@ -78,3 +78,18 @@
   direction: ltr;
   text-align: left;
 }
+
+/* Button icon spacing - adapts to text direction */
+.icon-spacing {
+  margin-inline-end: 0.375rem; /* 1.5 = 6px */
+}
+
+[dir='rtl'] .icon-spacing {
+  margin-inline-start: 0.375rem; /* 1.5 = 6px */
+  margin-inline-end: 0;
+}
+
+/* Button flex direction - reverse in RTL to maintain icon-text order in DOM but flip visually */
+[dir='rtl'] button {
+  flex-direction: row-reverse !important;
+}

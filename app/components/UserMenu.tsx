@@ -235,7 +235,7 @@ export function UserMenu({
                           <button
                             key={subIndex}
                             className={cn(
-                              'w-full items-center px-3 py-2 focus:outline-none',
+                              'h-10 w-full items-center px-3 py-2 focus:outline-none',
                               getMenuItemLineHeight(),
                               subItem.active
                                 ? 'bg-accent text-foreground-darker'
@@ -249,7 +249,11 @@ export function UserMenu({
                             }}
                           >
                             <span
-                              className={`${menuClasses.iconContainer} text-lg`}
+                              className={cn(
+                                menuClasses.iconContainer,
+                                isRTL ? 'pt-2' : 'pt-0.5',
+                                'text-lg'
+                              )}
                               style={{
                                 fontSize: '1.3rem',
                                 transform: 'scale(1.3)',

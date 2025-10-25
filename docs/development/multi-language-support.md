@@ -243,6 +243,205 @@ This approach ensures:
 
 For more details on the persistence architecture, see [State Management Documentation](state-management.md).
 
+### Language Hydration: SSR to Client Flow
+
+The application uses a three-phase architecture to ensure seamless language switching without hydration mismatches or flash of untranslated content (FOUC).
+
+#### Phase 1: Server-Side Rendering (SSR)
+
+On the initial page load, the server reads the user's language preference from cookies:
+
+```tsx
+// app/root.tsx - loader function
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
+  // Read 'lang' cookie from request
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
+
+  // Validate language
+  const rawLanguage = langMatch ? langMatch[1] : undefined
+  const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
+  const language = supportedLanguageCodes.includes(rawLanguage as Language)
+    ? (rawLanguage as Language)
+    : 'nl'
+
+  return { language, ... }
+}
+```
+
+The server passes this language to the `Document` component, which sets it on the `<html>` tag:
+
+```tsx
+// app/root.tsx - Document component
+const Document = ({ children, language, theme: serverTheme }: DocumentProps) => {
+   const { theme: storeTheme, language: storeLanguage } = useSettingsStore()
+
+   // Use server values for SSR, store values after hydration
+   const [isHydrated, setIsHydrated] = useState(false)
+
+   useEffect(() => {
+      setIsHydrated(true)
+   }, [])
+
+   const currentLanguage = isHydrated ? storeLanguage : language
+
+   return (
+      <html lang={currentLanguage} dir={getDirection(currentLanguage)}>
+         {/* ... */}
+      </html>
+   )
+}
+```
+
+#### Phase 2: Hydration
+
+When the client-side JavaScript loads, the Zustand store rehydrates from localStorage:
+
+```tsx
+// app/root.tsx - App component
+export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
+   const { language: serverLanguage, theme: serverTheme } = loaderData
+
+   // CRITICAL: Rehydrate store FIRST, before accessing store values
+   useAuthStoreHydration()
+   useSettingsStoreHydration()
+
+   const { setLanguage, language: storeLanguage } = useSettingsStore()
+   const [isHydrated, setIsHydrated] = useState(false)
+
+   // Initialize theme and language from server values
+   useEffect(() => {
+      setLanguage(serverLanguage)
+   }, [serverLanguage, setLanguage])
+
+   useEffect(() => {
+      setIsHydrated(true)
+   }, [])
+
+   // Use server language for SSR, store language after hydration
+   const currentLanguage = isHydrated ? storeLanguage : serverLanguage
+}
+```
+
+The `useSettingsStoreHydration()` hook ensures the store properly rehydrates:
+
+```tsx
+// app/stores/useSettingsStore.ts
+export const useSettingsStoreHydration = (): void => {
+   useEffect(() => {
+      if (isBrowser) {
+         useSettingsStore.persist.rehydrate()
+      }
+   }, [])
+}
+```
+
+**Key Configuration:**
+
+```tsx
+// app/stores/useSettingsStore.ts
+export const useSettingsStore = create<StoreState & Actions>()(
+   devtools(
+      persist(
+         // ... state and actions
+         {
+            name: 'settings-storage',
+            storage: isBrowser
+               ? createJSONStorage(() => localStorage)
+               : createJSONStorage(createServerSideStorage),
+            skipHydration: !isBrowser, // Skip on server
+            partialize: state => (isBrowser ? state : {}), // Only persist on client
+         }
+      )
+   )
+)
+```
+
+#### Phase 3: Client-Side Reactivity
+
+After hydration, the Zustand store becomes the single source of truth:
+
+```tsx
+// app/hooks/useLanguageSwitcher.ts
+export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
+   const { language: storeLanguage, setLanguage } = useSettingsStore()
+
+   const switchLanguage = (langCode: Language) => {
+      setLanguage(langCode) // Updates store, cookie, and localStorage
+   }
+
+   return {
+      switchLanguage,
+      currentLanguage: storeLanguage, // Always use store value
+   }
+}
+```
+
+When `setLanguage()` is called:
+
+1. **Updates Zustand store** → triggers React re-renders
+2. **Writes cookie** → ensures SSR uses correct language on next page load
+3. **Writes localStorage** → persists preference across sessions
+
+```tsx
+// app/stores/useSettingsStore.ts
+setLanguage: language => {
+   // Persist to both localStorage and cookies
+   if (isBrowser) {
+      document.cookie = `lang=${language}; path=/; max-age=31536000`
+   }
+   const isRTL = language.split('-')[0] === 'ar'
+   set({ language, isRTL }, false, 'setLanguage')
+}
+```
+
+#### Preventing Hydration Mismatches
+
+To prevent hydration mismatches, components use a special pattern for reactive state:
+
+```tsx
+// CORRECT: Hydration-safe pattern
+const currentLanguage = typeof window !== 'undefined' ? storeLanguage : serverLanguage
+
+// WRONG: Will cause hydration mismatch
+const currentLanguage = storeLanguage // Server and client may differ
+```
+
+This pattern ensures:
+
+- **Server/First render**: Uses `serverLanguage` (from cookie)
+- **After hydration**: Uses `storeLanguage` (from localStorage/cookie)
+- **No mismatch**: Both render the same HTML initially
+
+**Example from AppBar.tsx:**
+
+```tsx
+// app/components/AppBar.tsx
+subMenu: SUPPORTED_LANGUAGES.map(lang => ({
+   label: lang.name,
+   customIcon: lang.flag,
+   onClick: () => switchLanguage(lang.code),
+   // Hydration-safe active state
+   active: lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
+}))
+```
+
+#### Why Both Cookie AND localStorage?
+
+The dual persistence strategy serves different purposes:
+
+- **Cookie (`lang`)**:
+   - Read by server on every request
+   - Enables correct SSR with no FOUC
+   - Survives browser refresh
+
+- **localStorage (`settings-storage`)**:
+   - Persists entire settings object
+   - Faster client-side access
+   - Includes theme, isRTL, and other preferences
+
+This ensures the language is correct from the very first server render, with no flash or layout shift.
+
 #### UserMenu Integration
 
 Language switching is integrated into the UserMenu component as a submenu:
@@ -470,6 +669,79 @@ Always use logical properties for RTL-aware layout:
 <div className="pl-3 pr-2 ml-4 mr-1 text-right">
 ```
 
+#### Menu Line-Height Compensation
+
+When displaying menu items with mixed font sizes (Arabic at 1.25rem vs Latin at 1rem), line-height compensation ensures consistent visual height and vertical alignment.
+
+**The Problem:**
+
+Arabic text uses Amiri font at 1.25rem (25% larger than Latin), which creates taller menu items. Using the same line-height for both creates inconsistent spacing:
+
+```tsx
+// ❌ Without compensation: Inconsistent heights
+<button className="leading-normal"> {/* line-height: 1.5 */}
+  <span className="arabic-text">العربية</span> {/* 1.25rem × 1.5 = 1.875rem total */}
+</button>
+
+<button className="leading-normal"> {/* line-height: 1.5 */}
+  <span className="latin-text">English</span> {/* 1rem × 1.5 = 1.5rem total */}
+</button>
+```
+
+**The Solution:**
+
+The `getMenuItemLineHeight()` utility applies tighter line-height to RTL menus, compensating for the larger font size:
+
+```tsx
+// app/utils/rtlUtils.ts
+export const getMenuItemLineHeight = (languageOverride?: Language | string): string => {
+   const isRTL = resolveIsRTL(languageOverride)
+
+   // In RTL (Arabic): use tighter line-height to compensate for 25% larger font
+   // 1.5 / 1.25 = 1.2 (maintains same visual height as LTR's leading-normal)
+   // In LTR: use normal line-height (1.5)
+   return isRTL ? 'leading-tight' : 'leading-normal'
+}
+```
+
+**Implementation Pattern:**
+
+Apply the line-height class to the **button container**, not individual text spans. Combine with fixed height and vertical centering:
+
+```tsx
+// app/components/UserMenu.tsx
+import { getMenuItemLineHeight } from '~/utils/rtlUtils'
+
+;<button
+   className={cn(
+      'h-10 w-full items-center px-3 py-2 focus:outline-none',
+      getMenuItemLineHeight(), // ← Applied to container, no parameters
+      'hover:bg-accent',
+      menuClasses.menuItem
+   )}
+>
+   <span className={menuClasses.iconContainer}>{subItem.customIcon}</span>
+   <span className={cn(menuClasses.textContainer, subItem.className || '')}>
+      {subItem.label}
+   </span>
+</button>
+```
+
+**Key Principles:**
+
+1. **Apply to container**: Use `getMenuItemLineHeight()` on the button/link, not individual text spans
+2. **No parameters needed**: The function reads current UI language from store to apply same compensation to ALL menu items
+3. **Combine with fixed height**: Use `h-10` (40px minimum) to ensure consistent heights despite font-size differences
+4. **Vertical centering**: Add `items-center` to button and `self-center` to text spans for proper alignment
+5. **Icon padding adjustments**: RTL icons may need extra padding (`pt-2` vs `pt-0.5`) to align with compensated text
+
+**Why This Works:**
+
+- **LTR mode**: 1rem × 1.5 (leading-normal) = 1.5rem total height
+- **RTL mode**: 1.25rem × 1.2 (leading-tight) = 1.5rem total height
+
+Both modes achieve the same visual height, preventing layout shifts and inconsistent spacing in menus.
+
 **Logical Property Reference:**
 
 - `ps-*` / `pe-*` = padding-inline-start / padding-inline-end
@@ -522,52 +794,139 @@ The `getDirection` utility returns `'rtl'` for Arabic and `'ltr'` for all other 
 
 ---
 
-## 2. Language Detection: Server & Client
+## 2. Language State Management Flow
+
+This section documents how language state flows through the application, from the initial server request to client-side navigation.
+
+### Complete Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    1. Initial Page Load (SSR)                   │
+├─────────────────────────────────────────────────────────────────┤
+│  Cookie: lang=ar                                                 │
+│         ↓                                                        │
+│  Loader reads cookie → returns { language: 'ar' }                │
+│         ↓                                                        │
+│  Document renders <html lang="ar" dir="rtl">                     │
+│  AppLayout creates i18n instance with 'ar'                       │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│              2. Client Hydration (JavaScript Loads)              │
+├─────────────────────────────────────────────────────────────────┤
+│  useSettingsStoreHydration() runs                                │
+│         ↓                                                        │
+│  Store rehydrates from localStorage                              │
+│         ↓                                                        │
+│  setLanguage(serverLanguage) syncs store with server             │
+│         ↓                                                        │
+│  isHydrated = true → components switch to store values           │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│               3. User Switches Language (Client-Side)            │
+├─────────────────────────────────────────────────────────────────┤
+│  User clicks language in menu → switchLanguage('nl')             │
+│         ↓                                                        │
+│  Store updates: { language: 'nl', isRTL: false }                 │
+│         ↓                                                        │
+│  Cookie written: lang=nl                                         │
+│  localStorage written: settings-storage                          │
+│         ↓                                                        │
+│  React re-renders with new language                              │
+│  i18n instance updates to 'nl'                                   │
+└─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                  4. Next Navigation/Refresh                      │
+├─────────────────────────────────────────────────────────────────┤
+│  Server reads cookie: lang=nl                                    │
+│  Cycle repeats from step 1 with 'nl'                             │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ### Server-Side Language Detection
 
-The server determines the user's language preference during the initial request. This is done in the root loader or a utility:
+The root loader in `app/root.tsx` reads the `lang` cookie on every server request:
 
-```ts
-// app/root.tsx (simplified)
-export const meta: MetaFunction = () => [ ... ]
+```tsx
+// app/root.tsx
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
+   // Read 'lang' cookie from request headers
+   const cookieHeader = request.headers.get('Cookie') || ''
+   const langMatch = cookieHeader.match(/lang=([^;]+)/)
 
+   // Validate against supported languages
+   const rawLanguage = langMatch ? langMatch[1] : undefined
+   const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
+   const language = supportedLanguageCodes.includes(rawLanguage as Language)
+      ? (rawLanguage as Language)
+      : 'nl' // Default to Dutch
+
+   return {
+      authenticated: !!user,
+      username: user?.email ?? '',
+      user,
+      ENV: getEnv(),
+      language, // ← Passed to client
+      theme,
+      tournaments,
+   }
+}
+```
+
+### Client-Side Hydration
+
+The `App` component receives the server language and initializes the store:
+
+```tsx
+// app/root.tsx
 export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
-  const { language } = loaderData
-  const i18n = initI18n(language)
+  const { language: serverLanguage, theme: serverTheme } = loaderData
+
+  // CRITICAL: Rehydrate store FIRST
+  useAuthStoreHydration()
+  useSettingsStoreHydration()
+
+  const { setLanguage, language: storeLanguage } = useSettingsStore()
+
+  // Sync store with server language on mount
+  useEffect(() => {
+    setLanguage(serverLanguage)
+  }, [serverLanguage, setLanguage])
+
+  // Create reactive i18n instance
+  const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
+
+  // Update i18n when store language changes
+  useEffect(() => {
+    if (isHydrated) {
+      const newI18n = initI18n(currentLanguage)
+      setI18n(newI18n)
+    }
+  }, [currentLanguage, isHydrated])
+
   return (
-    <I18nextProvider i18n={i18n}>
-      {/* ... */}
-    </I18nextProvider>
+    <Document language={serverLanguage} theme={serverTheme}>
+      <AppLayout i18n={i18n} language={currentLanguage} ...>
+        {/* App content */}
+      </AppLayout>
+    </Document>
   )
 }
 ```
 
-The loader reads the language from cookies, headers, or defaults:
+### Preventing FOUC (Flash of Untranslated Content)
 
-```ts
-// app/root.tsx or app/utils/session.server.ts
-export async function loader({ request }: LoaderArgs) {
-  const cookieLang = getCookieLang(request)
-  const headerLang = getHeaderLang(request)
-  const language = cookieLang || headerLang || 'nl'
-  return { language, ... }
-}
-```
+The application prevents FOUC through several mechanisms:
 
-### Client-Side Language Initialization
+1. **Server-side language detection** ensures the correct language from first render
+2. **Hydration-safe patterns** prevent mismatches between server and client HTML
+3. **Cookie + localStorage dual persistence** maintains consistency across page loads
+4. **Synchronous i18n initialization** before any content renders
 
-On the client, the i18n instance is initialized with the same language as the server, preventing mismatches and flashes:
-
-```ts
-// app/root.tsx
-const i18n = initI18n(language)
-<I18nextProvider i18n={i18n}>...</I18nextProvider>
-```
-
-### No Flash of Untranslated Content (FOUC)
-
-Because the server and client both use the same detected language from the very start, the user never sees a flash of the wrong language. The `dir` attribute and RTL/LTR logic are also set server-side, so layout is always correct from the first paint.
+Because the server reads the cookie and renders with the correct language, and the client hydrates with the same language, there is **no flash or layout shift** on initial load.
 
 ---
 

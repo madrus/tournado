@@ -93,3 +93,20 @@
 [dir='rtl'] button {
   flex-direction: row-reverse !important;
 }
+
+/* Menu item font families - for language menu items that need consistent sizing */
+.menu-item-arabic {
+  font-family: 'Amiri', serif !important;
+}
+
+.menu-item-latin {
+  font-family: system-ui, sans-serif !important;
+}
+
+/* Fixed height for language submenu items to ensure consistency despite varying font sizes */
+/* This works with py-2 padding and compensates for 1.25rem Arabic vs 1rem Latin text */
+.language-submenu-item {
+  min-height: 2.75rem; /* 44px - enough for 1.25rem text + py-2 padding */
+  display: flex;
+  align-items: center;
+}

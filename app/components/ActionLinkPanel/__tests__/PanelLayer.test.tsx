@@ -222,7 +222,7 @@ describe('PanelLayer Component', () => {
   })
 
   describe('RTL Support', () => {
-    it('should apply Latin title class for Arabic language', () => {
+    it('should apply arabic-text and text-right classes for Arabic language', () => {
       // Mock Arabic language
       vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'ar',
@@ -232,10 +232,11 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} />)
 
       const title = screen.getByRole('heading', { level: 3 })
-      expect(title).toHaveClass('latin-title')
+      expect(title).toHaveClass('arabic-text')
+      expect(title).toHaveClass('text-right')
     })
 
-    it('should not apply Latin title class for English language', () => {
+    it('should not apply arabic-text class for English language', () => {
       // Mock English language (default)
       vi.mocked(useLanguageSwitcher).mockReturnValue({
         currentLanguage: 'en',
@@ -245,7 +246,8 @@ describe('PanelLayer Component', () => {
       render(<PanelLayer {...defaultProps} />)
 
       const title = screen.getByRole('heading', { level: 3 })
-      expect(title).not.toHaveClass('latin-title')
+      expect(title).not.toHaveClass('arabic-text')
+      expect(title).not.toHaveClass('text-right')
     })
   })
 

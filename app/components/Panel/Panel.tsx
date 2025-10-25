@@ -3,6 +3,7 @@ import { type JSX, ReactNode } from 'react'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { type ColorAccent } from '~/lib/lib.types'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
 
 import {
@@ -62,6 +63,7 @@ export function Panel({
 }: PanelProps): JSX.Element {
   const { latinFontClass } = useLanguageDirection()
   const { currentLanguage } = useLanguageSwitcher()
+  const isRTL = useSettingsStore(state => state.isRTL)
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
@@ -118,7 +120,9 @@ export function Panel({
               ? 'flex flex-col items-start'
               : '',
             'break-words',
-            variant === 'hover' ? 'p-6' : ''
+            variant === 'hover' ? 'p-6' : '',
+            // Text alignment based on direction
+            isRTL ? 'text-right' : 'text-left'
           )}
         >
           {/* Icon */}

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
@@ -58,9 +58,24 @@ describe('LabelWithStatusIcon', () => {
 
   it('applies RTL text class for Arabic language', () => {
     state().setLanguage('ar')
+
+    // Mock only the getAttribute method while preserving the rest of document
+    const originalGetAttribute = document.documentElement.getAttribute
+    const mockGetAttribute = vi.fn((attr: string) => {
+      if (attr === 'dir') return 'rtl'
+      return originalGetAttribute.call(document.documentElement, attr)
+    })
+
+    vi.spyOn(document.documentElement, 'getAttribute').mockImplementation(
+      mockGetAttribute
+    )
+
     render(<LabelWithStatusIcon label='Test Label' />)
 
     expect(screen.getByText('Test Label')).toHaveClass('latin-text')
+
+    // Restore the original method
+    vi.restoreAllMocks()
   })
 
   it('applies default flex layout classes', () => {

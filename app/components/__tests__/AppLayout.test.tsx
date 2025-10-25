@@ -4,6 +4,10 @@ import { render, screen } from '@testing-library/react'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { i18n as I18n } from 'i18next'
+
+import type { Language } from '~/i18n/config'
+
 import { AppLayout } from '../AppLayout'
 
 // Mock the i18n instance
@@ -13,7 +17,7 @@ const mockI18n = {
   t: vi.fn((key: string) => key),
   exists: vi.fn(() => true),
   isLoaded: true,
-}
+} as unknown as I18n
 
 // Mock child components
 vi.mock('~/components/AppBar', () => ({
@@ -21,13 +25,16 @@ vi.mock('~/components/AppBar', () => ({
     authenticated,
     username,
     user,
+    language,
   }: {
     authenticated: boolean
     username: string
     user?: { email: string; id: string } | null
+    language: Language
   }) => (
     <div data-testid='app-bar'>
-      AppBar - authenticated: {String(authenticated)}, username: {username}
+      AppBar - authenticated: {String(authenticated)}, username: {username}, language:{' '}
+      {language}
       {user ? `, user: ${user.email}` : ''}
     </div>
   ),
@@ -77,6 +84,7 @@ describe('AppLayout', () => {
     authenticated: false,
     username: 'testuser',
     theme: 'light' as const,
+    language: 'en' as const,
     i18n: mockI18n,
     children: <div data-testid='test-children'>Test Content</div>,
   }
@@ -203,16 +211,21 @@ describe('AppLayout', () => {
       render(<AppLayout {...defaultProps} />)
 
       // eslint-disable-next-line testing-library/no-node-access
-      const script = document.querySelector('script[dangerouslySetInnerHTML]')
-      expect(script).toBeFalsy()
+      const script = Array.from(document.querySelectorAll('script')).find(s =>
+        s.textContent?.includes('window.ENV')
+      )
+      expect(script).toBeUndefined()
     })
 
-    it('should not render environment script when env is empty object', () => {
+    it('should render environment script with empty object when env is empty object', () => {
       render(<AppLayout {...defaultProps} env={{}} />)
 
       // eslint-disable-next-line testing-library/no-node-access
-      const script = document.querySelector('script[dangerouslySetInnerHTML]')
-      expect(script).toBeFalsy()
+      const script = Array.from(document.querySelectorAll('script')).find(s =>
+        s.textContent?.includes('window.ENV')
+      )
+      expect(script).toBeTruthy()
+      expect(script?.innerHTML).toBe('window.ENV = {}')
     })
 
     it('should handle env with special characters properly', () => {
@@ -387,6 +400,7 @@ describe('AppLayout', () => {
         authenticated: false,
         username: '',
         theme: 'light' as const,
+        language: 'en' as const,
         i18n: mockI18n,
         children: <div>Test</div>,
       }

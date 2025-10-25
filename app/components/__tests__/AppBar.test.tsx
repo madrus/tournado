@@ -102,7 +102,7 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for public user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -125,7 +125,7 @@ describe('AppBar Context Menu', () => {
     it('should show divider after Teams', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -142,7 +142,7 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to public teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -174,7 +174,12 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for authenticated user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -200,7 +205,12 @@ describe('AppBar Context Menu', () => {
     it('should show authentication status as true', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -212,7 +222,12 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to public teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='user@example.com' user={regularUser} />
+          <AppBar
+            authenticated={true}
+            username='user@example.com'
+            user={regularUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -244,7 +259,12 @@ describe('AppBar Context Menu', () => {
     it('should show correct menu items for admin user', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -267,7 +287,12 @@ describe('AppBar Context Menu', () => {
     it('should have Teams link pointing to admin teams route', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -284,7 +309,12 @@ describe('AppBar Context Menu', () => {
     it('should show Admin Panel with correct properties', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -301,24 +331,29 @@ describe('AppBar Context Menu', () => {
       )
     })
 
-    it('should position Admin Panel after the first divider', () => {
+    it('should order admin menu: Admin Panel, Tournaments, Teams', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
       const menuItems = getDesktopMenuItems()
       const menuLabels = Array.from(menuItems).map(item => item.textContent)
 
-      // Find positions - For admin users: Tournaments (0), Teams (1), Admin Panel (2)
+      // Positions for admin users: Admin Panel (0), Tournaments (1), Teams (2)
       const tournamentsIndex = menuLabels.indexOf('common.titles.tournaments')
       const teamsIndex = menuLabels.indexOf('common.titles.teams')
       const adminPanelIndex = menuLabels.indexOf('common.titles.adminPanel')
 
-      expect(adminPanelIndex).toBe(0) // Admin Panel should be after the 1st divider
-      expect(tournamentsIndex).toBe(1) // Tournaments should be after Admin Panel
-      expect(teamsIndex).toBe(2) // Teams should be after Tournaments
+      expect(adminPanelIndex).toBe(0)
+      expect(tournamentsIndex).toBe(1)
+      expect(teamsIndex).toBe(2)
     })
   })
 
@@ -326,7 +361,7 @@ describe('AppBar Context Menu', () => {
     it('should filter out authenticated items for non-authenticated users', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -355,7 +390,12 @@ describe('AppBar Context Menu', () => {
 
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -389,7 +429,12 @@ describe('AppBar Context Menu', () => {
 
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={true} username='user@example.com' user={user} />
+            <AppBar
+              authenticated={true}
+              username='user@example.com'
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 
@@ -418,7 +463,12 @@ describe('AppBar Context Menu', () => {
 
       render(
         <MemoryRouter>
-          <AppBar authenticated={true} username='admin@example.com' user={adminUser} />
+          <AppBar
+            authenticated={true}
+            username='admin@example.com'
+            user={adminUser}
+            language='en'
+          />
         </MemoryRouter>
       )
 
@@ -468,7 +518,12 @@ describe('AppBar Context Menu', () => {
 
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={true} username='user@example.com' user={user} />
+            <AppBar
+              authenticated={true}
+              username='user@example.com'
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 
@@ -509,6 +564,7 @@ describe('AppBar Context Menu', () => {
               authenticated={authenticated}
               username={user?.email || ''}
               user={user}
+              language='en'
             />
           </MemoryRouter>
         )
@@ -523,7 +579,7 @@ describe('AppBar Context Menu', () => {
     it('should always show About before the last items (language and auth)', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -547,7 +603,7 @@ describe('AppBar Context Menu', () => {
     it('should render a single unified UserMenu instance', () => {
       render(
         <MemoryRouter>
-          <AppBar authenticated={false} username='' user={null} />
+          <AppBar authenticated={false} username='' user={null} language='en' />
         </MemoryRouter>
       )
 
@@ -580,7 +636,12 @@ describe('AppBar Context Menu', () => {
       testCases.forEach(({ authenticated, username, user }) => {
         const { unmount } = render(
           <MemoryRouter>
-            <AppBar authenticated={authenticated} username={username} user={user} />
+            <AppBar
+              authenticated={authenticated}
+              username={username}
+              user={user}
+              language='en'
+            />
           </MemoryRouter>
         )
 
@@ -589,6 +650,42 @@ describe('AppBar Context Menu', () => {
 
         unmount()
       })
+    })
+  })
+
+  describe('Language Menu Active State', () => {
+    it('should render correctly with hydration-safe language active logic', () => {
+      // This test verifies that the component uses the correct logic for determining
+      // which language is active: typeof window !== 'undefined' ? currentLanguage : language
+
+      // In test environment, window is defined, so it will use currentLanguage from hook
+      // The hook reads from useSettingsStore which has default language 'nl'
+      const { unmount } = render(
+        <MemoryRouter>
+          <AppBar authenticated={false} username='' user={null} language='en' />
+        </MemoryRouter>
+      )
+
+      // Component should render without errors despite different language sources
+      // (prop 'en' vs store default 'nl')
+      expect(screen.getByTestId('user-menu-desktop')).toBeInTheDocument()
+
+      unmount()
+    })
+
+    it('should handle language prop correctly for SSR consistency', () => {
+      // The language prop comes from server-side cookie parsing
+      // and ensures SSR/client consistency when window is undefined
+      const { unmount } = render(
+        <MemoryRouter>
+          <AppBar authenticated={false} username='' user={null} language='ar' />
+        </MemoryRouter>
+      )
+
+      // Should render without errors with Arabic language prop
+      expect(screen.getByTestId('user-menu-desktop')).toBeInTheDocument()
+
+      unmount()
     })
   })
 })

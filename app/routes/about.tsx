@@ -53,16 +53,16 @@ export default function AboutPage(): JSX.Element {
       <AboutLayoutHeader />
       <div className='mt-8 space-y-6'>
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Version
-          </h2>
+          </h3>
           <p className='text-foreground'>{version}</p>
         </section>
 
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Features
-          </h2>
+          </h3>
           <ul className='text-foreground space-y-2'>
             <li>• Tournament creation and management</li>
             <li>• Team registration and player management</li>
@@ -73,9 +73,9 @@ export default function AboutPage(): JSX.Element {
         </section>
 
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Technology Stack
-          </h2>
+          </h3>
           <p className='text-foreground'>
             Built with modern web technologies including React Router v7, TypeScript,
             Prisma, and SQLite for a robust and scalable solution.

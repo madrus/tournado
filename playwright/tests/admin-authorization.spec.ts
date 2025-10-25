@@ -18,8 +18,10 @@ test.describe('Admin Authorization', () => {
       // Should not be redirected away
       await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1/)
 
-      // Should see specific admin content (this already waits up to 15s)
-      await expect(page.locator('h1').filter({ hasText: 'Beheerpaneel' })).toBeVisible({
+      // Should see specific admin content (h2 since h1 is in AppBar navigation)
+      await expect(
+        page.getByTestId('admin-panel-header').getByRole('heading', { level: 2 })
+      ).toBeVisible({
         timeout: 15000,
       })
     })

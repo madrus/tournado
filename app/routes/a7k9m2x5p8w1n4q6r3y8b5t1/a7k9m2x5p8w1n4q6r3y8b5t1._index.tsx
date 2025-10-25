@@ -17,6 +17,8 @@ import { AdminPanelLayoutHeader } from '~/components/layouts'
 import { getAllTeamListItems } from '~/models/team.server'
 import { getAllTournamentListItems } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
+import { useSettingsStore } from '~/stores/useSettingsStore'
+import { cn } from '~/utils/misc'
 import { canAccess, hasPermission } from '~/utils/rbac'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -85,6 +87,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 export default function AdminDashboard(): JSX.Element {
   const { user, teams, tournaments, activeUsersCount } = useLoaderData<LoaderData>()
   const { t } = useTranslation()
+  const isRTL = useSettingsStore(state => state.isRTL)
 
   // Check user permissions for conditional rendering
   // Admin tiles: delete permission implies full admin access (create, read, update, delete)
@@ -118,7 +121,9 @@ export default function AdminDashboard(): JSX.Element {
                 <strong className='me-1'>
                   {t('admin.tournament.totalTournaments')}:
                 </strong>
-                {tournaments.length}
+                <span className={cn(isRTL ? 'latin-text' : '')}>
+                  {tournaments.length}
+                </span>
               </p>
             </div>
           </ActionLinkPanel>
@@ -139,7 +144,7 @@ export default function AdminDashboard(): JSX.Element {
             <div className='space-y-2'>
               <p>
                 <strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
-                {teams.length}
+                <span className={cn(isRTL ? 'latin-text' : '')}>{teams.length}</span>
               </p>
             </div>
           </ActionLinkPanel>
@@ -159,8 +164,8 @@ export default function AdminDashboard(): JSX.Element {
           >
             <div className='space-y-2'>
               <p>
-                <strong className='me-1'>Role:</strong>
-                {user.role}
+                <strong className='me-1'>{t('users.fields.role')}: </strong>
+                <span className='latin-text'>{user.role}</span>
               </p>
             </div>
           </ActionLinkPanel>
@@ -181,7 +186,9 @@ export default function AdminDashboard(): JSX.Element {
             <div className='space-y-2'>
               <p>
                 <strong className='me-1'>{t('admin.user.totalUsers')}:</strong>
-                {activeUsersCount}
+                <span className={cn(isRTL ? 'latin-text' : '')}>
+                  {activeUsersCount}
+                </span>
               </p>
             </div>
           </ActionLinkPanel>

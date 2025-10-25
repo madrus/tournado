@@ -3,7 +3,9 @@ import { Link, useLocation } from 'react-router'
 
 import { useMediaQuery } from '~/hooks/useMediaQuery'
 import { IconName, renderIcon } from '~/utils/iconUtils'
+import { cn } from '~/utils/misc'
 import { normalizePathname } from '~/utils/routeUtils'
+import { getLatinTextClass } from '~/utils/rtlUtils'
 
 import {
   navigationIconVariants,
@@ -51,7 +53,12 @@ function NavigationItem({
         className: navigationIconVariants({ color, active: isActive }),
         'data-testid': 'nav-icon',
       })}
-      <span className={navigationLabelVariants({ color, active: isActive })}>
+      <span
+        className={cn(
+          navigationLabelVariants({ color, active: isActive }),
+          getLatinTextClass()
+        )}
+      >
         {label}
       </span>
     </Link>

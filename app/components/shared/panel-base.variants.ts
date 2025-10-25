@@ -180,7 +180,7 @@ export const basePanelTitleVariants = cva(['mb-4 font-bold text-title'], {
       en: '', // English LTR - no additional classes needed
       de: '', // German LTR - no additional classes needed
       fr: '', // French LTR - no additional classes needed
-      ar: 'latin-title', // Arabic RTL - requires latin-title class
+      ar: 'arabic-text text-right', // Arabic RTL - uses Arabic (Amiri) font and right alignment
       tr: '', // Turkish LTR - no additional classes needed
     },
   },

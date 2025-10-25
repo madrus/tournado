@@ -1,7 +1,6 @@
 import type { JSX } from 'react'
 
 import { ActionLink } from '~/components/PrefetchLink'
-import { useSettingsStore } from '~/stores/useSettingsStore'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { type Permission } from '~/utils/rbac'
@@ -43,7 +42,6 @@ export function ActionLinkButton({
   permission,
   hideWhenDisabled = false,
 }: Readonly<ActionLinkButtonProps>): JSX.Element | null {
-  const { isRTL } = useSettingsStore()
   const { isHidden, isDisabled } = useActionButton({
     permission,
     hideWhenDisabled,
@@ -88,17 +86,8 @@ export function ActionLinkButton({
       aria-label={label}
       data-testid={testId}
     >
-      {isRTL ? (
-        <>
-          {labelText}
-          {iconElement}
-        </>
-      ) : (
-        <>
-          {iconElement}
-          {labelText}
-        </>
-      )}
+      {iconElement}
+      {labelText}
     </ActionLink>
   )
 }

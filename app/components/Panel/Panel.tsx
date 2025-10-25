@@ -62,6 +62,9 @@ export function Panel({
 }: PanelProps): JSX.Element {
   const { latinFontClass } = useLanguageDirection()
   const { currentLanguage } = useLanguageSwitcher()
+  // Derive RTL state from currentLanguage to avoid unnecessary store dependency
+  // This reduces reactivity overhead since we already have currentLanguage from the hook
+  const isRTL = currentLanguage.startsWith('ar')
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
@@ -118,7 +121,9 @@ export function Panel({
               ? 'flex flex-col items-start'
               : '',
             'break-words',
-            variant === 'hover' ? 'p-6' : ''
+            variant === 'hover' ? 'p-6' : '',
+            // Text alignment based on direction
+            isRTL ? 'text-right' : 'text-left'
           )}
         >
           {/* Icon */}

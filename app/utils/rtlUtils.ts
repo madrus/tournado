@@ -1,26 +1,65 @@
+import type { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
 // RTL (Right-to-Left) language utilities
 // isRTL is now a computed property in useSettingsStore based on the current language
 
+const isLanguageRTL = (language: Language | string): boolean =>
+  language.split('-')[0] === 'ar'
+
+const resolveIsRTL = (languageOverride?: Language | string): boolean => {
+  if (languageOverride) {
+    return isLanguageRTL(languageOverride)
+  }
+
+  return useSettingsStore.getState().isRTL
+}
+
 // Get direction attribute for HTML
-export const getDirection = (): 'ltr' | 'rtl' =>
-  useSettingsStore.getState().isRTL ? 'rtl' : 'ltr'
+export const getDirection = (languageOverride?: Language | string): 'ltr' | 'rtl' =>
+  resolveIsRTL(languageOverride) ? 'rtl' : 'ltr'
 
 // Get typography class for body based on language
-export const getTypographyClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'arabic-text' : ''
+export const getTypographyClass = (languageOverride?: Language | string): string =>
+  resolveIsRTL(languageOverride) ? 'arabic-text' : ''
 
-// Helper to apply arabic-text for Arabic content in any context
-export const getArabicTextClass = (): string => 'arabic-text'
+type ArabicTextClassOptions = {
+  respectDirection?: boolean
+}
+
+// Helper to apply arabic-text when UI runs RTL, with override for explicit Arabic snippets
+export const getArabicTextClass = (options: ArabicTextClassOptions = {}): string => {
+  const { respectDirection = true } = options
+  const isRTL = useSettingsStore.getState().isRTL
+
+  if (!respectDirection) return 'arabic-text'
+
+  return isRTL ? 'arabic-text' : ''
+}
 
 // Helper to apply latin-text in Arabic context for Latin content
-export const getLatinTextClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'latin-text' : ''
+export const getLatinTextClass = (languageOverride?: Language | string): string => {
+  if (languageOverride) {
+    return resolveIsRTL(languageOverride) ? 'latin-text' : ''
+  }
+  // On client, check DOM dir attribute for hydration consistency
+  if (typeof document !== 'undefined') {
+    return document.documentElement.getAttribute('dir') === 'rtl' ? 'latin-text' : ''
+  }
+  return resolveIsRTL() ? 'latin-text' : ''
+}
 
 // Helper to mark Latin titles that should use Inter font without scaling (when app is in Arabic mode)
-export const getLatinTitleClass = (): string =>
-  useSettingsStore.getState().isRTL ? 'latin-title' : ''
+export const getLatinTitleClass = (languageOverride?: Language | string): string => {
+  if (languageOverride) {
+    return resolveIsRTL(languageOverride) ? 'latin-title' : ''
+  }
+  // On client, check DOM dir attribute for hydration consistency
+  if (typeof document !== 'undefined') {
+    return document.documentElement.getAttribute('dir') === 'rtl' ? 'latin-title' : ''
+  }
+  return resolveIsRTL() ? 'latin-title' : ''
+}
 
 // Helper for Latin content that needs font-family change only (no size override)
 // Use this for elements where you want default Latin font but need to preserve responsive sizing
@@ -110,8 +149,10 @@ export type TypographyClasses = {
 }
 
 // Arabic typography fixes
-export function getTypographyClasses(): TypographyClasses {
-  const isRTL = useSettingsStore.getState().isRTL
+export function getTypographyClasses(
+  languageOverride?: Language | string
+): TypographyClasses {
+  const isRTL = resolveIsRTL(languageOverride)
 
   return {
     // Better line height and positioning for Arabic text
@@ -140,3 +181,14 @@ export const getSwipeRowConfig = (): SwipeRowConfig => ({
   // LTR: multiply by 1 (no change)
   directionMultiplier: useSettingsStore.getState().isRTL ? -1 : 1,
 })
+
+// Helper to get compensated line-height for menu items in RTL mode
+// Arabic text uses 1.25rem font (25% larger than 1rem), so we need to reduce
+// line-height proportionally to maintain the same visual height as LTR menu items
+export const getMenuItemLineHeight = (languageOverride?: Language | string): string => {
+  const isRTL = resolveIsRTL(languageOverride)
+  // In RTL (Arabic): use tighter line-height to compensate for 25% larger font
+  // 1.5 / 1.25 = 1.2 (maintains same visual height as LTR's leading-normal)
+  // In LTR: use normal line-height (1.5)
+  return isRTL ? 'leading-tight' : 'leading-normal'
+}

@@ -106,9 +106,9 @@ export default function TeamDetailsPage(): JSX.Element {
       <div className='mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='mb-8'>
-          <h1 className={cn('text-3xl font-bold', getLatinTitleClass())}>
+          <h2 className={cn('text-3xl font-bold', getLatinTitleClass())}>
             {`${team.clubName} ${team.name}`}
-          </h1>
+          </h2>
           <p className='mt-2 text-lg'>
             {getDivisionLabel(team.division, i18n.language)}
           </p>

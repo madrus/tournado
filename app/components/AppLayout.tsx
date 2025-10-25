@@ -1,9 +1,11 @@
-import { cloneElement, isValidElement, type JSX, type ReactNode, useMemo } from 'react'
+import type { ElementType, JSX, ReactElement, ReactNode } from 'react'
+import { cloneElement, isValidElement, useMemo } from 'react'
 import { I18nextProvider } from 'react-i18next'
 
 import type { User } from '@prisma/client'
 import { Theme } from '@radix-ui/themes'
 
+import type { i18n as I18n } from 'i18next'
 import { Toaster } from 'sonner'
 
 import { AppBar } from '~/components/AppBar'
@@ -17,6 +19,7 @@ import {
   SubtleRouteTransition,
   ViewTransition,
 } from '~/components/RouteTransition'
+import type { Language } from '~/i18n/config'
 import { CONTENT_PX } from '~/styles/constants'
 
 type AppLayoutProps = {
@@ -24,7 +27,8 @@ type AppLayoutProps = {
   username: string
   user?: User | null
   theme: 'light' | 'dark'
-  i18n: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  language: Language
+  i18n: I18n
   children: ReactNode
   contentClassName?: string
   env?: Record<string, string>
@@ -35,6 +39,7 @@ export const AppLayout = ({
   username,
   user,
   theme,
+  language,
   i18n,
   children,
   contentClassName = `${CONTENT_PX} pt-8 md:pb-8`,
@@ -42,7 +47,7 @@ export const AppLayout = ({
 }: AppLayoutProps): JSX.Element => {
   const transitionComponents = useMemo(
     () =>
-      new Set<React.ElementType>([
+      new Set<ElementType>([
         CSSRouteTransition,
         RouteTransition,
         RouteTransitionFixed,
@@ -53,12 +58,12 @@ export const AppLayout = ({
     []
   )
 
-  const renderContent = (): React.ReactNode => {
+  const renderContent = (): ReactNode => {
     if (
       isValidElement(children) &&
-      transitionComponents.has(children.type as React.ElementType)
+      transitionComponents.has(children.type as ElementType)
     ) {
-      const transitionChild = children as React.ReactElement<{ className?: string }>
+      const transitionChild = children as ReactElement<{ className?: string }>
       const mergedClassName = [contentClassName, transitionChild.props.className]
         .filter(Boolean)
         .join(' ')
@@ -85,7 +90,12 @@ export const AppLayout = ({
           style={{ paddingTop: 'var(--header-padding, 62px)' }}
         >
           <div className='relative' style={{ zIndex: 50 }}>
-            <AppBar authenticated={authenticated} username={username} user={user} />
+            <AppBar
+              authenticated={authenticated}
+              username={username}
+              user={user}
+              language={language}
+            />
           </div>
           <div
             className='flex-1 overflow-visible pb-16 md:pb-0'

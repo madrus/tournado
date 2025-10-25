@@ -67,9 +67,9 @@ export default function ProfilePage(): JSX.Element {
       <ProfileLayoutHeader />
       <div className='mt-8 space-y-6'>
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Account Settings
-          </h2>
+          </h3>
           <ul className='text-foreground space-y-2'>
             <li>• Personal information management</li>
             <li>• Password and security settings</li>
@@ -80,9 +80,9 @@ export default function ProfilePage(): JSX.Element {
         </section>
 
         <section>
-          <h2 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
+          <h3 className={cn('mb-4 text-2xl font-semibold', getLatinTitleClass())}>
             Tournament Access
-          </h2>
+          </h3>
           <p className='text-foreground'>
             Your profile provides access to tournament management features based on your
             role and permissions.

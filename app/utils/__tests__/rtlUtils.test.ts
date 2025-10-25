@@ -1,8 +1,17 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
+import type { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
-import { getDirection, getSwipeRowConfig, type SwipeRowConfig } from '../rtlUtils'
+import {
+  getArabicTextClass,
+  getDirection,
+  getMenuItemLineHeight,
+  getSwipeRowConfig,
+  getTypographyClass,
+  getTypographyClasses,
+  type SwipeRowConfig,
+} from '../rtlUtils'
 
 // Get store state once at top
 const state = useSettingsStore.getState
@@ -19,7 +28,9 @@ describe('isRTL (via settings store)', () => {
   })
 
   test('returns true for Arabic subtags (BCP47 format)', () => {
-    state().setLanguage('ar')
+    // BCP47 subtags like 'ar-EG' start with 'ar' so are detected as RTL
+    // Using type assertion since the store only accepts base Language types
+    state().setLanguage('ar-EG' as Language)
     expect(state().isRTL).toBe(true)
   })
 
@@ -70,6 +81,52 @@ describe('getDirection', () => {
     // Change back to Dutch (LTR)
     state().setLanguage('nl')
     expect(getDirection()).toBe('ltr')
+  })
+})
+
+describe('getDirection with overrides', () => {
+  test('returns rtl when override language is Arabic even if store is LTR', () => {
+    state().setLanguage('en')
+    expect(getDirection('ar')).toBe('rtl')
+  })
+
+  test('returns ltr when override language is Latin even if store is RTL', () => {
+    state().setLanguage('ar')
+    expect(getDirection('en')).toBe('ltr')
+  })
+})
+
+describe('getArabicTextClass', () => {
+  test('returns class when respectDirection default and RTL language', () => {
+    state().setLanguage('ar')
+    expect(getArabicTextClass()).toBe('arabic-text')
+  })
+
+  test('returns empty string when respectDirection default and LTR language', () => {
+    state().setLanguage('en')
+    expect(getArabicTextClass()).toBe('')
+  })
+
+  test('returns class when respectDirection is disabled for LTR language', () => {
+    state().setLanguage('en')
+    expect(getArabicTextClass({ respectDirection: false })).toBe('arabic-text')
+  })
+})
+
+describe('getTypography helpers with overrides', () => {
+  test('getTypographyClass honors override language', () => {
+    state().setLanguage('en')
+    expect(getTypographyClass('ar')).toBe('arabic-text')
+    expect(getTypographyClass('en')).toBe('')
+  })
+
+  test('getTypographyClasses honors override language', () => {
+    state().setLanguage('en')
+    const arabic = getTypographyClasses('ar')
+    expect(arabic.textAlign).toBe('text-right')
+
+    const latin = getTypographyClasses('en')
+    expect(latin.textAlign).toBe('text-left')
   })
 })
 
@@ -136,5 +193,30 @@ describe('getSwipeRowConfig', () => {
       const transform = swipeStateX * directionMultiplier
       expect(transform).toBe(400) // translateX(400px) moves content right
     })
+  })
+})
+
+describe('getMenuItemLineHeight', () => {
+  test('returns leading-normal for LTR languages', () => {
+    state().setLanguage('en')
+    expect(getMenuItemLineHeight()).toBe('leading-normal')
+
+    state().setLanguage('nl')
+    expect(getMenuItemLineHeight()).toBe('leading-normal')
+  })
+
+  test('returns leading-tight for RTL languages (Arabic)', () => {
+    state().setLanguage('ar')
+    expect(getMenuItemLineHeight()).toBe('leading-tight')
+  })
+
+  test('respects language override parameter', () => {
+    // Store is LTR but override with Arabic
+    state().setLanguage('en')
+    expect(getMenuItemLineHeight('ar')).toBe('leading-tight')
+
+    // Store is RTL but override with English
+    state().setLanguage('ar')
+    expect(getMenuItemLineHeight('en')).toBe('leading-normal')
   })
 })

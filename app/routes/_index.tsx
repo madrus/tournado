@@ -7,6 +7,7 @@ import type { User } from '@prisma/client'
 
 import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
+import { Language } from '~/i18n/config'
 import { cn } from '~/utils/misc'
 import { hasAdminPanelAccess } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -46,12 +47,15 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<LoaderDat
 }
 
 export default function IndexPage(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { user } = useLoaderData<LoaderData>()
   const { theme, getThemeColor } = useTheme()
 
+  // Get current language for RTL utilities
+  const currentLanguage = i18n.language as Language
+
   // Get RTL-aware typography classes
-  const typography = getTypographyClasses()
+  const typography = getTypographyClasses(currentLanguage)
 
   // Determine the correct teams route based on user permissions
   const teamsRoute = hasAdminPanelAccess(user)
@@ -68,7 +72,7 @@ export default function IndexPage(): JSX.Element {
               className={cn(
                 'text-4xl sm:text-6xl',
                 typography.appName,
-                getLatinTitleClass(),
+                getLatinTitleClass(currentLanguage),
                 getThemeColor('title')
               )}
             >

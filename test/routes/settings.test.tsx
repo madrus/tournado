@@ -46,9 +46,9 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'settings.title'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'settings.title' })
+      ).toHaveTextContent('settings.title')
     })
 
     test('should render application settings section', () => {
@@ -139,7 +139,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      const heading = screen.getByRole('heading', { level: 1 })
+      const heading = screen.getByRole('heading', { level: 2, name: 'settings.title' })
       expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
@@ -149,7 +149,7 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      const sectionHeadings = screen.getAllByRole('heading', { level: 2 })
+      const sectionHeadings = screen.getAllByRole('heading', { level: 3 })
       sectionHeadings.forEach(heading => {
         expect(heading).toHaveClass('mb-4', 'text-2xl', 'font-semibold')
       })
@@ -163,10 +163,10 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
-      expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(2)
+      const h3Elements = screen.getAllByRole('heading', { level: 3 })
+      expect(h2Elements).toHaveLength(1) // settings.title from LayoutHeader
+      expect(h3Elements).toHaveLength(2) // Preferences, Tournament Configuration
     })
 
     test('should render sections in correct order', () => {
@@ -190,10 +190,10 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      const h1Elements = screen.getAllByRole('heading', { level: 1 })
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
-      expect(h1Elements).toHaveLength(1)
-      expect(h2Elements).toHaveLength(2)
+      const h3Elements = screen.getAllByRole('heading', { level: 3 })
+      expect(h2Elements).toHaveLength(1) // settings.title from LayoutHeader
+      expect(h3Elements).toHaveLength(2) // Preferences, Tournament Configuration
     })
   })
 
@@ -204,9 +204,9 @@ describe('Settings Page', () => {
           <SettingsPage />
         </MemoryRouter>
       )
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'settings.title'
-      )
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'settings.title' })
+      ).toHaveTextContent('settings.title')
     })
   })
 })

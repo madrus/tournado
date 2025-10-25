@@ -55,7 +55,7 @@ export default function AdminNewTeamPage(): JSX.Element {
   return (
     <div className='space-y-8' data-testid='admin-new-team-container'>
       <div className='mb-8'>
-        <h1 className='text-3xl font-bold'>{t('admin.teams.newTeam')}</h1>
+        <h2 className='text-3xl font-bold'>{t('admin.teams.newTeam')}</h2>
         <p className='text-foreground mt-2'>
           {t('admin.teams.createNewTeamDescription')}
         </p>

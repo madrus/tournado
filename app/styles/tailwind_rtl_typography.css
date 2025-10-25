@@ -48,7 +48,8 @@
 }
 
 /* Latin titles - for Latin headings in Arabic context */
-.latin-title {
+.latin-title,
+.arabic-text .latin-title {
   font-family: system-ui, sans-serif !important;
   /* Fix letter spacing for titles in Arabic mode */
   /* letter-spacing: -0.02em !important; Tighter letter spacing */

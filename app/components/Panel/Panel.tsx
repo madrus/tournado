@@ -3,7 +3,6 @@ import { type JSX, ReactNode } from 'react'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 import { type ColorAccent } from '~/lib/lib.types'
-import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
 
 import {
@@ -63,7 +62,9 @@ export function Panel({
 }: PanelProps): JSX.Element {
   const { latinFontClass } = useLanguageDirection()
   const { currentLanguage } = useLanguageSwitcher()
-  const isRTL = useSettingsStore(state => state.isRTL)
+  // Derive RTL state from currentLanguage to avoid unnecessary store dependency
+  // This reduces reactivity overhead since we already have currentLanguage from the hook
+  const isRTL = currentLanguage.startsWith('ar')
   const effectiveIconColor = iconColor || color
   const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 

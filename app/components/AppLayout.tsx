@@ -5,6 +5,7 @@ import { I18nextProvider } from 'react-i18next'
 import type { User } from '@prisma/client'
 import { Theme } from '@radix-ui/themes'
 
+import type { i18n as I18n } from 'i18next'
 import { Toaster } from 'sonner'
 
 import { AppBar } from '~/components/AppBar'
@@ -27,7 +28,7 @@ type AppLayoutProps = {
   user?: User | null
   theme: 'light' | 'dark'
   language: Language
-  i18n: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  i18n: I18n
   children: ReactNode
   contentClassName?: string
   env?: Record<string, string>

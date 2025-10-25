@@ -177,9 +177,9 @@ describe('Profile Page', () => {
       )
       const headings = screen.getAllByRole('heading')
       const headingTexts = headings.map(h => h.textContent)
-      expect(headingTexts[0]).toBe('profile.title') // h1
-      expect(headingTexts[1]).toBe('Account Settings') // h2
-      expect(headingTexts[2]).toBe('Tournament Access') // h2
+      expect(headingTexts[0]).toBe('profile.title') // h2
+      expect(headingTexts[1]).toBe('Account Settings') // h3
+      expect(headingTexts[2]).toBe('Tournament Access') // h3
     })
   })
 

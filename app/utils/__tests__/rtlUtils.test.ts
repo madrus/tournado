@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
+import type { Language } from '~/i18n/config'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 
 import {
@@ -27,7 +28,9 @@ describe('isRTL (via settings store)', () => {
   })
 
   test('returns true for Arabic subtags (BCP47 format)', () => {
-    state().setLanguage('ar')
+    // BCP47 subtags like 'ar-EG' start with 'ar' so are detected as RTL
+    // Using type assertion since the store only accepts base Language types
+    state().setLanguage('ar-EG' as Language)
     expect(state().isRTL).toBe(true)
   })
 
@@ -191,29 +194,29 @@ describe('getSwipeRowConfig', () => {
       expect(transform).toBe(400) // translateX(400px) moves content right
     })
   })
+})
 
-  describe('getMenuItemLineHeight', () => {
-    test('returns leading-normal for LTR languages', () => {
-      state().setLanguage('en')
-      expect(getMenuItemLineHeight()).toBe('leading-normal')
+describe('getMenuItemLineHeight', () => {
+  test('returns leading-normal for LTR languages', () => {
+    state().setLanguage('en')
+    expect(getMenuItemLineHeight()).toBe('leading-normal')
 
-      state().setLanguage('nl')
-      expect(getMenuItemLineHeight()).toBe('leading-normal')
-    })
+    state().setLanguage('nl')
+    expect(getMenuItemLineHeight()).toBe('leading-normal')
+  })
 
-    test('returns leading-tight for RTL languages (Arabic)', () => {
-      state().setLanguage('ar')
-      expect(getMenuItemLineHeight()).toBe('leading-tight')
-    })
+  test('returns leading-tight for RTL languages (Arabic)', () => {
+    state().setLanguage('ar')
+    expect(getMenuItemLineHeight()).toBe('leading-tight')
+  })
 
-    test('respects language override parameter', () => {
-      // Store is LTR but override with Arabic
-      state().setLanguage('en')
-      expect(getMenuItemLineHeight('ar')).toBe('leading-tight')
+  test('respects language override parameter', () => {
+    // Store is LTR but override with Arabic
+    state().setLanguage('en')
+    expect(getMenuItemLineHeight('ar')).toBe('leading-tight')
 
-      // Store is RTL but override with English
-      state().setLanguage('ar')
-      expect(getMenuItemLineHeight('en')).toBe('leading-normal')
-    })
+    // Store is RTL but override with English
+    state().setLanguage('ar')
+    expect(getMenuItemLineHeight('en')).toBe('leading-normal')
   })
 })

@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
+import type { Language } from '~/i18n/config'
 
 import { TournamentForm } from '../TournamentForm'
 
@@ -82,7 +83,7 @@ vi.mock('~/lib/lib.helpers', () => ({
     }
     return labels[division] || division
   },
-  getCategoryLabelByValue: (category: string, language: string) => {
+  getCategoryLabelByValue: (category: string, language: Language) => {
     const labels: Record<string, Record<string, string>> = {
       JO8: { en: 'JO8', nl: 'JO8', ar: 'JO8', tr: 'JO8' },
       JO9: { en: 'JO9', nl: 'JO9', ar: 'JO9', tr: 'JO9' },

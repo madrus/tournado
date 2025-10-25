@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 // Import the mocked hook to access it in tests
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
+import type { Language } from '~/i18n/config'
 import { type ColorAccent } from '~/lib/lib.types'
 
 import { PanelLayer } from '../PanelLayer'
@@ -12,7 +13,7 @@ import { PanelLayer } from '../PanelLayer'
 vi.mock('~/utils/rtlUtils', () => ({
   getArabicTextClass: () => 'arabic-text',
   getLatinTextClass: () => 'latin-text',
-  getLatinTitleClass: (language: string) => (language === 'ar' ? 'latin-title' : ''),
+  getLatinTitleClass: (language: Language) => (language === 'ar' ? 'latin-title' : ''),
   getDirection: () => 'ltr',
   getLatinFontFamily: () => '',
   getSwipeRowConfig: () => ({ directionMultiplier: 1 }),

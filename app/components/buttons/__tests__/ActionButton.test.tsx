@@ -6,10 +6,12 @@ import { vi } from 'vitest'
 
 import { createInstance } from 'i18next'
 
+import type { Language } from '~/i18n/config'
+
 import { ActionButton } from '../ActionButton'
 
 // Helper to create an i18n instance with a given language
-function createI18n(language: string) {
+function createI18n(language: Language) {
   const instance = createInstance()
   instance.use(initReactI18next).init({
     lng: language,

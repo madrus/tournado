@@ -1,6 +1,7 @@
 import { Component, ErrorInfo, type JSX, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import type { Language } from '~/i18n/config'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
@@ -12,7 +13,7 @@ type ErrorBoundaryProps = {
 type InternalErrorBoundaryProps = ErrorBoundaryProps & {
   errorTitle: string
   errorMessage: string
-  language: string
+  language: Language
 }
 
 interface State {
@@ -87,7 +88,7 @@ export default function ErrorBoundary(props: ErrorBoundaryProps): JSX.Element {
       {...props}
       errorTitle={t('errors.panelErrorTitle')}
       errorMessage={t('errors.panelErrorBody')}
-      language={i18n.language}
+      language={i18n.language as Language}
     />
   )
 }

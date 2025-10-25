@@ -75,7 +75,7 @@ export function AppBar({
   }, [signoutFetcher, setMenuOpen])
 
   // Language switching logic
-  const { switchLanguage } = useLanguageSwitcher()
+  const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
   const menuItems = [
     // Admin Panel - show for admin panel access (admin, manager, referee)
@@ -160,7 +160,10 @@ export function AppBar({
         label: lang.name,
         customIcon: lang.flag,
         onClick: () => switchLanguage(lang.code),
-        active: lang.code === language,
+        // Use currentLanguage from hook for reactive updates on client,
+        // fallback to language prop for server/initial render (avoids hydration mismatch)
+        active:
+          lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
         className:
           lang.code === 'ar'
             ? getArabicTextClass({ respectDirection: false })

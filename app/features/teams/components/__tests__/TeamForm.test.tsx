@@ -5,13 +5,13 @@ import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { TEST_TRANSLATIONS } from 'test/helpers/constants'
-
 import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
 import type { FormMode, FormVariant, TeamFormData } from '~/features/teams/types'
 import type { TournamentData } from '~/features/tournaments/types'
 
 import { TeamForm } from '../TeamForm'
+
+import { TEST_TRANSLATIONS } from '~test/helpers/constants'
 
 const state = useTeamFormStore.getState
 

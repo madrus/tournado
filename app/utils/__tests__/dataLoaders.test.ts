@@ -1,11 +1,8 @@
 import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest'
 
 import type { TeamListItem } from '~/features/teams/types'
-import { getFilteredTeamListItems } from '~/models/team.server'
-import {
-  getAllTournamentListItems,
-  type TournamentListItem,
-} from '~/models/tournament.server'
+import { getFilteredTeams } from '~/models/team.server'
+import { getAllTournaments, type TournamentListItem } from '~/models/tournament.server'
 
 import { loadTeamsAndTournamentsData } from '../dataLoaders'
 
@@ -13,12 +10,10 @@ import { loadTeamsAndTournamentsData } from '../dataLoaders'
 vi.mock('~/models/tournament.server')
 vi.mock('~/models/team.server')
 
-const mockGetAllTournamentListItems = getAllTournamentListItems as MockedFunction<
-  typeof getAllTournamentListItems
+const mockGetAllTournaments = getAllTournaments as MockedFunction<
+  typeof getAllTournaments
 >
-const mockGetFilteredTeamListItems = getFilteredTeamListItems as MockedFunction<
-  typeof getFilteredTeamListItems
->
+const mockGetFilteredTeams = getFilteredTeams as MockedFunction<typeof getFilteredTeams>
 
 describe('dataLoaders', () => {
   beforeEach(() => {
@@ -91,14 +86,14 @@ describe('dataLoaders', () => {
     }
 
     it('should load all data when no tournamentId filter is provided', async () => {
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
-      mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
+      mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
+      mockGetFilteredTeams.mockResolvedValue(mockTeamListItems)
 
       const request = createMockRequest()
       const result = await loadTeamsAndTournamentsData(request)
 
-      expect(mockGetAllTournamentListItems).toHaveBeenCalledTimes(1)
-      expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({
+      expect(mockGetAllTournaments).toHaveBeenCalledTimes(1)
+      expect(mockGetFilteredTeams).toHaveBeenCalledWith({
         tournamentId: undefined,
       })
       expect(result).toEqual({
@@ -112,14 +107,14 @@ describe('dataLoaders', () => {
       const tournamentId = 'tournament-1'
       const filteredTeams = mockTeamListItems.filter((_, index) => index < 2) // First 2 teams
 
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
-      mockGetFilteredTeamListItems.mockResolvedValue(filteredTeams)
+      mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
+      mockGetFilteredTeams.mockResolvedValue(filteredTeams)
 
       const request = createMockRequest(tournamentId)
       const result = await loadTeamsAndTournamentsData(request)
 
-      expect(mockGetAllTournamentListItems).toHaveBeenCalledTimes(1)
-      expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({ tournamentId })
+      expect(mockGetAllTournaments).toHaveBeenCalledTimes(1)
+      expect(mockGetFilteredTeams).toHaveBeenCalledWith({ tournamentId })
       expect(result).toEqual({
         teamListItems: filteredTeams,
         tournamentListItems: mockTournamentListItems,
@@ -128,8 +123,8 @@ describe('dataLoaders', () => {
     })
 
     it('should return empty arrays when no data is found', async () => {
-      mockGetAllTournamentListItems.mockResolvedValue([])
-      mockGetFilteredTeamListItems.mockResolvedValue([])
+      mockGetAllTournaments.mockResolvedValue([])
+      mockGetFilteredTeams.mockResolvedValue([])
 
       const request = createMockRequest()
       const result = await loadTeamsAndTournamentsData(request)
@@ -143,7 +138,7 @@ describe('dataLoaders', () => {
 
     it('should handle database errors gracefully', async () => {
       const dbError = new Error('Database connection failed')
-      mockGetAllTournamentListItems.mockRejectedValue(dbError)
+      mockGetAllTournaments.mockRejectedValue(dbError)
 
       const request = createMockRequest()
       await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow(
@@ -152,9 +147,9 @@ describe('dataLoaders', () => {
     })
 
     it('should handle team loading errors gracefully', async () => {
-      mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
+      mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
       const teamError = new Error('Failed to load teams')
-      mockGetFilteredTeamListItems.mockRejectedValue(teamError)
+      mockGetFilteredTeams.mockRejectedValue(teamError)
 
       const request = createMockRequest()
       await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow(
@@ -166,13 +161,13 @@ describe('dataLoaders', () => {
       let tournamentsCallTime: number
       let teamsCallTime: number
 
-      mockGetAllTournamentListItems.mockImplementation(async () => {
+      mockGetAllTournaments.mockImplementation(async () => {
         tournamentsCallTime = Date.now()
         await new Promise(resolve => setTimeout(resolve, 10))
         return mockTournamentListItemsRaw
       })
 
-      mockGetFilteredTeamListItems.mockImplementation(async () => {
+      mockGetFilteredTeams.mockImplementation(async () => {
         teamsCallTime = Date.now()
         await new Promise(resolve => setTimeout(resolve, 10))
         return mockTeamListItems
@@ -187,10 +182,8 @@ describe('dataLoaders', () => {
 
     describe('edge cases', () => {
       it('should handle null tournament data', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(
-          null as unknown as TournamentListItem[]
-        )
-        mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
+        mockGetAllTournaments.mockResolvedValue(null as unknown as TournamentListItem[])
+        mockGetFilteredTeams.mockResolvedValue(mockTeamListItems)
 
         const request = createMockRequest()
         const result = await loadTeamsAndTournamentsData(request)
@@ -200,10 +193,8 @@ describe('dataLoaders', () => {
       })
 
       it('should handle null team data', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
-        mockGetFilteredTeamListItems.mockResolvedValue(
-          null as unknown as TeamListItem[]
-        )
+        mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
+        mockGetFilteredTeams.mockResolvedValue(null as unknown as TeamListItem[])
 
         const request = createMockRequest()
         const result = await loadTeamsAndTournamentsData(request)
@@ -213,13 +204,13 @@ describe('dataLoaders', () => {
       })
 
       it('should handle empty string tournamentId', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
-        mockGetFilteredTeamListItems.mockResolvedValue([])
+        mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
+        mockGetFilteredTeams.mockResolvedValue([])
 
         const request = createMockRequest('')
         const result = await loadTeamsAndTournamentsData(request)
 
-        expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({
+        expect(mockGetFilteredTeams).toHaveBeenCalledWith({
           tournamentId: undefined,
         })
         expect(result).toEqual({
@@ -230,8 +221,8 @@ describe('dataLoaders', () => {
       })
 
       it('should handle malformed URLs gracefully', async () => {
-        mockGetAllTournamentListItems.mockResolvedValue(mockTournamentListItemsRaw)
-        mockGetFilteredTeamListItems.mockResolvedValue(mockTeamListItems)
+        mockGetAllTournaments.mockResolvedValue(mockTournamentListItemsRaw)
+        mockGetFilteredTeams.mockResolvedValue(mockTeamListItems)
 
         // Test with multiple tournament parameters
         const request = new Request(
@@ -240,7 +231,7 @@ describe('dataLoaders', () => {
         const result = await loadTeamsAndTournamentsData(request)
 
         // Should use the first tournament parameter
-        expect(mockGetFilteredTeamListItems).toHaveBeenCalledWith({ tournamentId: '1' })
+        expect(mockGetFilteredTeams).toHaveBeenCalledWith({ tournamentId: '1' })
         expect(result.selectedTournamentId).toBe('1')
       })
     })

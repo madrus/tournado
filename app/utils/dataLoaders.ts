@@ -1,6 +1,6 @@
 import type { TeamsLoaderData } from '~/features/teams/types'
-import { getFilteredTeamListItems } from '~/models/team.server'
-import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getFilteredTeams } from '~/models/team.server'
+import { getAllTournaments } from '~/models/tournament.server'
 
 /**
  * Shared loader function for both public and admin teams pages
@@ -13,8 +13,8 @@ export async function loadTeamsAndTournamentsData(
   const tournamentId = url.searchParams.get('tournament')
 
   const [teamListItems, tournamentListItemsRaw] = await Promise.all([
-    getFilteredTeamListItems({ tournamentId: tournamentId || undefined }),
-    getAllTournamentListItems(),
+    getFilteredTeams({ tournamentId: tournamentId || undefined }),
+    getAllTournaments(),
   ])
 
   // Serialize dates to ISO strings for JSON transport
@@ -22,7 +22,7 @@ export async function loadTeamsAndTournamentsData(
     ? tournamentListItemsRaw.map(tournament => ({
         ...tournament,
         startDate: tournament.startDate.toISOString(),
-        endDate: tournament.endDate.toISOString(),
+        endDate: tournament.endDate?.toISOString() || null,
       }))
     : tournamentListItemsRaw
 

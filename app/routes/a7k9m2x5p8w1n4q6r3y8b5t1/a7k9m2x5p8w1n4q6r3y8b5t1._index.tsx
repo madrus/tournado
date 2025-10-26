@@ -14,8 +14,8 @@ import {
   TuneIcon,
 } from '~/components/icons'
 import { AdminPanelLayoutHeader } from '~/components/layouts'
-import { getAllTeamListItems } from '~/models/team.server'
-import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getAllTeams } from '~/models/team.server'
+import { getAllTournaments } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
@@ -65,19 +65,19 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin', 'manager', 'referee'],
+    requiredRoles: ['ADMIN', 'MANAGER', 'REFEREE', 'EDITOR', 'BILLING'],
     redirectTo: '/unauthorized',
   },
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Require admin panel access (ADMIN, MANAGER, or REFEREE roles)
+  // Require admin panel access (all non-PUBLIC roles)
   const user = await requireAdminUser(request)
 
   // Load teams, tournaments, and active users count data for the overview tiles
   const [teams, tournaments, activeUsersCount] = await Promise.all([
-    getAllTeamListItems(),
-    getAllTournamentListItems(),
+    getAllTeams(),
+    getAllTournaments(),
     getActiveUsersCount(),
   ])
 

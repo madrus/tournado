@@ -20,8 +20,8 @@ import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/users._index'
 
@@ -37,7 +37,7 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin'],
+    requiredRoles: ['ADMIN'],
     redirectTo: '/unauthorized',
   },
 }
@@ -64,8 +64,8 @@ type LoaderData = {
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Require permission to read users
-  await requireUserWithPermission(request, 'users:approve')
+  // Require user with role-based authorization for UI route access
+  await requireUserWithMetadata(request, handle)
 
   // Get pagination parameters from URL search params
   const url = new URL(request.url)
@@ -86,7 +86,8 @@ type ActionData = {
 }
 
 export async function action({ request }: Route.ActionArgs): Promise<ActionData> {
-  const currentUser = await requireUserWithPermission(request, 'roles:assign')
+  // Require user with role-based authorization for role assignment action
+  const currentUser = await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()
   const intent = formData.get('intent')

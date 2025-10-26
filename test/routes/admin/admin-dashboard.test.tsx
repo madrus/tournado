@@ -603,4 +603,57 @@ describe('Admin Dashboard', () => {
       expect(userPanel).toHaveTextContent('10')
     })
   })
+
+  describe('Role-Based Panel Visibility', () => {
+    test.each(['EDITOR', 'BILLING'] as const)(
+      '%s role users should see dashboard with Reports panel only',
+      role => {
+        vi.mocked(useLoaderData).mockReturnValueOnce({
+          user: {
+            ...mockUser,
+            role,
+          },
+          teams: mockTeams,
+          tournaments: mockTournaments,
+          activeUsersCount: 5,
+        })
+
+        render(
+          <MemoryRouter>
+            <AdminDashboard />
+          </MemoryRouter>
+        )
+
+        // Should see the dashboard container
+        expect(screen.getByTestId('admin-dashboard-container')).toBeInTheDocument()
+
+        // Should see the header
+        expect(
+          screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
+        ).toBeInTheDocument()
+
+        // Should see Reports & Analytics panel (has system:reports permission)
+        expect(
+          screen.getByTestId('admin-panel-reports-&-analytics')
+        ).toBeInTheDocument()
+
+        // Should NOT see management panels (lacks required permissions)
+        expect(
+          screen.queryByTestId('admin-panel-team-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-tournament-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-competition-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-user-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-system-settings')
+        ).not.toBeInTheDocument()
+      }
+    )
+  })
 })

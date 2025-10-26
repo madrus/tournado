@@ -16,7 +16,7 @@ export const getTournamentById = ({ id }: { id: string }): Promise<Tournament | 
     where: { id },
   })
 
-export const getAllTournamentListItems = async (): Promise<TournamentListItem[]> =>
+export const getAllTournaments = async (): Promise<TournamentListItem[]> =>
   prisma.tournament.findMany({
     select: {
       id: true,

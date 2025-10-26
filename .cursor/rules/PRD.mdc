@@ -845,6 +845,28 @@ Tournado focuses on clarity for the public and control for managers. With a mobi
 - Animations: identify micro-interactions and motion (e.g., score update bursts, live ticker transitions, smooth page/bracket transitions, subtle loading shimmers, celebratory confetti on finals/wins; consider tasteful, optional motion settings)
 - Mobile app wrapper: assess packaging the web app for Android/iOS via Capacitor. Validate service worker support under app schemes and push notification integration for store compliance (SSR is required)
 
+### Admin Dashboard URL Configuration (Future Enhancement)
+
+**Current State**: Admin dashboard URL is obfuscated (`/a7k9m2x5p8w1n4q6r3y8b5t1`) with constant fallback in `app/lib/lib.constants.ts`
+
+**Future Consideration**: Environment-configurable URL via `VITE_ADMIN_DASHBOARD_URL`
+
+**Rationale**:
+- **Security rotation**: Change URL without code rebuild if discovered by bots
+- **Environment flexibility**: Different obfuscated URLs per environment (dev/staging/prod)
+- **Zero-downtime updates**: Config change vs code deployment
+
+**Implementation Status**:
+- ✅ Environment variable infrastructure ready (`VITE_ADMIN_DASHBOARD_URL`)
+- ✅ Runtime fallback pattern implemented in `app/lib/lib.constants.ts`
+- ✅ Type definitions and schema validation added
+- ⏳ Pending: Migrate 50+ hardcoded URLs to use constant (gradual migration)
+- ⏳ Pending: Set `VITE_ADMIN_DASHBOARD_URL` in environment configs when needed
+
+**Migration Progress**: E2E tests ✅, `_index` route ✅, remaining routes pending
+
+**Priority**: Low - implement full migration when security rotation needed or per-environment URLs required
+
 ---
 
 ## Links

@@ -7,7 +7,7 @@ export type TournamentListItem = {
   name: string
   location: string
   startDate: string
-  endDate: string
+  endDate: string | null
 }
 
 // Tournament data types

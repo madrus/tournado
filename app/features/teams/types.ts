@@ -1,5 +1,7 @@
 import type { Team as PrismaTeam } from '@prisma/client'
 
+import type { TournamentListItem } from '~/features/tournaments/types'
+
 // ============================================================================
 // Team Types
 // ============================================================================
@@ -153,12 +155,6 @@ export type TeamValidationInput = Record<string, unknown>
  */
 export type TeamsLoaderData = {
   teamListItems: TeamListItem[]
-  tournamentListItems: Array<{
-    id: string
-    name: string
-    location: string
-    startDate: string
-    endDate: string
-  }>
+  tournamentListItems: TournamentListItem[]
   selectedTournamentId?: string
 }

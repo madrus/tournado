@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react'
 
 import { describe, expect, test } from 'vitest'
 
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import IndexPage from '~/routes/_index'
 
 // Mock the loader data
@@ -129,10 +130,7 @@ describe('Home Page (_index)', () => {
         )
 
         const viewTeamsButton = screen.getByTestId('view-teams-button')
-        expect(viewTeamsButton).toHaveAttribute(
-          'href',
-          '/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
-        )
+        expect(viewTeamsButton).toHaveAttribute('href', `${ADMIN_DASHBOARD_URL}/teams`)
 
         unmount()
       })
@@ -159,7 +157,7 @@ describe('Home Page (_index)', () => {
       )
 
       const viewTeamsButton = screen.getByTestId('view-teams-button')
-      expect(viewTeamsButton).toHaveAttribute('href', '/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+      expect(viewTeamsButton).toHaveAttribute('href', `${ADMIN_DASHBOARD_URL}/teams`)
     })
 
     test('should route based on user role with comprehensive test matrix', () => {
@@ -203,7 +201,7 @@ describe('Home Page (_index)', () => {
             createdAt: new Date(),
             updatedAt: new Date(),
           },
-          expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+          expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
         },
         {
           scenario: 'REFEREE role user',
@@ -219,7 +217,7 @@ describe('Home Page (_index)', () => {
             createdAt: new Date(),
             updatedAt: new Date(),
           },
-          expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+          expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
         },
         {
           scenario: 'ADMIN role user',
@@ -235,7 +233,7 @@ describe('Home Page (_index)', () => {
             createdAt: new Date(),
             updatedAt: new Date(),
           },
-          expectedHref: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+          expectedHref: `${ADMIN_DASHBOARD_URL}/teams`,
         },
       ]
 
@@ -318,9 +316,9 @@ describe('Home Page (_index)', () => {
         expectedRoute: string
       }> = [
         { role: 'PUBLIC', expectedRoute: '/teams' },
-        { role: 'MANAGER', expectedRoute: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
-        { role: 'REFEREE', expectedRoute: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
-        { role: 'ADMIN', expectedRoute: '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' },
+        { role: 'MANAGER', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
+        { role: 'REFEREE', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
+        { role: 'ADMIN', expectedRoute: `${ADMIN_DASHBOARD_URL}/teams` },
       ]
 
       roles.forEach(({ role, expectedRoute }) => {

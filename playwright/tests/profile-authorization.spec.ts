@@ -1,0 +1,61 @@
+import { type Page, test } from '@playwright/test'
+import type { Role } from '@prisma/client'
+
+import { loginAsRole } from '../helpers/session'
+import { ProfilePage } from '../pages/ProfilePage'
+
+test.describe('Profile Authorization Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+  })
+
+  // Test unauthenticated access
+  test('should redirect unauthenticated users to signin', async ({ page }) => {
+    const profilePage = new ProfilePage(page)
+
+    // Use empty storage state (no authentication)
+    await page.context().clearCookies()
+
+    await profilePage.goto()
+    await profilePage.expectToBeRedirectedToSignin()
+  })
+
+  // Helper to test role access
+  async function testRoleAccess(page: Page, role: Role, shouldAccess: boolean) {
+    const profilePage = new ProfilePage(page)
+
+    await loginAsRole(page, role)
+    await profilePage.goto()
+
+    if (shouldAccess) {
+      await profilePage.expectToBeOnProfilePage()
+    } else {
+      await profilePage.expectToBeRedirectedToUnauthorized()
+    }
+  }
+
+  // Test all roles - all should have access to their profile
+  test('PUBLIC role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'PUBLIC', true)
+  })
+
+  test('REFEREE role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'REFEREE', true)
+  })
+
+  test('EDITOR role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'EDITOR', true)
+  })
+
+  test('BILLING role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'BILLING', true)
+  })
+
+  test('MANAGER role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'MANAGER', true)
+  })
+
+  test('ADMIN role users should access profile page', async ({ page }) => {
+    await testRoleAccess(page, 'ADMIN', true)
+  })
+})

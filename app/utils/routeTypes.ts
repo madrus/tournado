@@ -1,3 +1,5 @@
+import type { Role } from '@prisma/client'
+
 import type { User } from '~/models/user.server'
 
 /**
@@ -6,13 +8,14 @@ import type { User } from '~/models/user.server'
 export type RouteMetadata = {
   /**
    * Whether this route is accessible without authentication
+   * @default false
    */
-  isPublic: boolean
+  isPublic?: boolean
 
   /**
    * Which roles can access this route (when implemented)
    */
-  roles?: Array<'manager' | 'admin' | 'referee' | 'visitor'>
+  roles?: Role[]
 
   /**
    * The page title to display in the app bar
@@ -49,7 +52,7 @@ export type RouteMetadata = {
     /**
      * Required roles to access this route
      */
-    requiredRoles?: Array<'manager' | 'admin' | 'referee' | 'visitor'>
+    requiredRoles?: Role[]
 
     /**
      * Whether user needs ALL roles or just ONE of the roles

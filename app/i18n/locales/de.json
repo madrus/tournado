@@ -169,6 +169,10 @@
     "SECOND_DIVISION": "Zweite Division",
     "THIRD_DIVISION": "Dritte Division"
   },
+  "errors": {
+    "somethingWentWrong": "Etwas ist schief gelaufen",
+    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+  },
   "landing": {
     "features": {
       "description": "Tournado bietet alle Tools, die Sie für die effiziente Verwaltung Ihrer Sportturniere benötigen. Von der Teamregistrierung bis zur Spielplanung - wir haben alles für Sie.",

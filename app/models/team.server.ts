@@ -52,7 +52,7 @@ export const getTeamById = ({
     },
   })
 
-export const getTeamListItems = async ({
+export const getTeams = async ({
   teamLeaderId,
 }: {
   teamLeaderId: TeamLeader['id']
@@ -67,7 +67,7 @@ export const getTeamListItems = async ({
     orderBy: { updatedAt: 'desc' },
   })
 
-export const getAllTeamListItems = async (): Promise<
+export const getAllTeams = async (): Promise<
   Array<Pick<Team, 'id' | 'name' | 'clubName'>>
 > =>
   prisma.team.findMany({
@@ -79,7 +79,7 @@ export const getAllTeamListItems = async (): Promise<
     orderBy: { updatedAt: 'desc' },
   })
 
-export const getFilteredTeamListItems = async ({
+export const getFilteredTeams = async ({
   tournamentId,
 }: {
   tournamentId?: string

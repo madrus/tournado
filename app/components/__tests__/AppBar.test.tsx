@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router'
 
-import type { User } from '@prisma/client'
+import type { Role, User } from '@prisma/client'
 import { render, screen, within } from '@testing-library/react'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -447,35 +447,41 @@ describe('AppBar Context Menu', () => {
       })
     })
 
-    it('should show Admin Panel for ADMIN, MANAGER, and REFEREE roles', () => {
-      const adminUser: User = {
-        id: 'admin-1',
-        email: 'admin@example.com',
-        firstName: 'Admin',
-        lastName: 'User',
-        role: 'ADMIN',
-        firebaseUid: 'test-firebase-uid',
-        displayName: null,
-        active: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
+    it('should show Admin Panel for ADMIN, MANAGER, REFEREE, EDITOR, and BILLING roles', () => {
+      const roles: Role[] = ['ADMIN', 'MANAGER', 'REFEREE', 'EDITOR', 'BILLING']
 
-      render(
-        <MemoryRouter>
-          <AppBar
-            authenticated={true}
-            username='admin@example.com'
-            user={adminUser}
-            language='en'
-          />
-        </MemoryRouter>
-      )
+      roles.forEach(role => {
+        const user: User = {
+          id: 'admin-1',
+          email: `${role.toLowerCase()}@example.com`,
+          firstName: role,
+          lastName: 'User',
+          role,
+          firebaseUid: 'test-firebase-uid',
+          displayName: null,
+          active: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
 
-      const menuItems = getDesktopMenuItems()
-      const menuLabels = Array.from(menuItems).map(item => item.textContent)
+        const { unmount } = render(
+          <MemoryRouter>
+            <AppBar
+              authenticated={true}
+              username={user.email}
+              user={user}
+              language='en'
+            />
+          </MemoryRouter>
+        )
 
-      expect(menuLabels).toContain('common.titles.adminPanel')
+        const menuItems = getDesktopMenuItems()
+        const menuLabels = Array.from(menuItems).map(item => item.textContent)
+
+        expect(menuLabels).toContain('common.titles.adminPanel')
+
+        unmount()
+      })
     })
 
     it('should route Teams link correctly based on user role', () => {

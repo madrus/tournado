@@ -6,13 +6,10 @@ import { SportsIcon, TrophyIcon } from '~/components/icons'
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
 import type { TournamentListItem } from '~/features/tournaments/types'
-import {
-  getAllTournamentListItems,
-  getTournamentById,
-} from '~/models/tournament.server'
+import { getAllTournaments, getTournamentById } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
-import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/competition'
 
@@ -35,7 +32,7 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin', 'manager'],
+    requiredRoles: ['ADMIN', 'MANAGER'],
     redirectTo: '/unauthorized',
   },
 }
@@ -44,13 +41,13 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireAdminUser(request)
+  await requireUserWithMetadata(request, handle)
 
   const url = new URL(request.url)
   const tournamentId = url.searchParams.get('tournament')
 
   const [tournamentListItemsRaw, tournament] = await Promise.all([
-    getAllTournamentListItems(),
+    getAllTournaments(),
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
 
@@ -58,7 +55,7 @@ export async function loader({
   const tournamentListItems = tournamentListItemsRaw.map(item => ({
     ...item,
     startDate: item.startDate.toISOString(),
-    endDate: item.endDate.toISOString(),
+    endDate: item.endDate?.toISOString() || null,
   }))
 
   return {

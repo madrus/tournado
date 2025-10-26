@@ -9,6 +9,8 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+import { optimizeDepsInclude } from './vite.optimizeDeps'
+
 const enablePwa = process.env.DISABLE_PWA !== 'true' && process.env.NODE_ENV !== 'test'
 
 export default defineConfig({
@@ -101,13 +103,16 @@ export default defineConfig({
       : []),
     tsconfigPaths(),
   ],
+  optimizeDeps: {
+    include: optimizeDepsInclude,
+  },
   server: {
     hmr: true,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './app'),
       '~': path.resolve(__dirname, './app'),
+      '~test': path.resolve(__dirname, './test'),
     },
   },
 })

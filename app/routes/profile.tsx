@@ -42,12 +42,7 @@ export const handle: RouteMetadata = {
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
-  authorization: {
-    // Only authenticated users with roles can access profiles (no visitors)
-    requiredRoles: ['referee', 'manager', 'admin'],
-    roleMatchMode: 'any',
-    redirectTo: '/unauthorized',
-  },
+  // No authorization block - all authenticated users can access their profile
   protection: {
     autoCheck: true,
     // Custom check example: ensure user can only access their own profile

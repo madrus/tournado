@@ -28,13 +28,14 @@ import { toast } from '~/utils/toastUtils'
 // Route metadata - admin only
 export const handle: RouteMetadata = {
   isPublic: false,
+  title: 'Team | Admin',
   auth: {
     required: true,
     redirectTo: '/auth/signin',
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin'],
+    requiredRoles: ['ADMIN'],
     roleMatchMode: 'any',
     redirectTo: '/unauthorized',
   },
@@ -72,8 +73,8 @@ type LoaderData = {
     id: string
     name: string
     clubName: string
-    division: string
-    category: string
+    division: Division
+    category: Category
     teamLeader: {
       firstName: string
       lastName: string
@@ -137,7 +138,7 @@ export const loader = async ({
       clubName: team.clubName,
       name: team.name,
       division: team.division,
-      category: team.category.toString(),
+      category: team.category,
       teamLeader: {
         firstName: team.teamLeader.firstName,
         lastName: team.teamLeader.lastName,
@@ -319,7 +320,7 @@ export default function AdminTeamPage(): JSX.Element {
     [team]
   )
 
-  const submitDelete = () => {
+  const submitDelete = (): void => {
     const fd = new FormData()
     fd.set('intent', 'delete')
     submit(fd, { method: 'post' })
@@ -338,7 +339,7 @@ export default function AdminTeamPage(): JSX.Element {
             </h2>
             <p className='text-foreground mt-2'>
               {team.division
-                ? getDivisionLabel(team.division as Division, i18n.language)
+                ? getDivisionLabel(team.division, i18n.language)
                 : t('teams.form.fillOutForm')}
             </p>
           </div>
@@ -375,5 +376,21 @@ export default function AdminTeamPage(): JSX.Element {
         intent='update'
       />
     </div>
+  )
+}
+
+export function ErrorBoundary(): JSX.Element {
+  const { t } = useTranslation()
+
+  return (
+    <Panel color='red'>
+      <h2 className='mb-4 text-2xl font-bold'>{t('errors.somethingWentWrong')}</h2>
+      <p className='text-foreground'>
+        {t(
+          'errors.teamLoadFailed',
+          'Unable to load team details. Please try again later.'
+        )}
+      </p>
+    </Panel>
   )
 }

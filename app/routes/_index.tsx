@@ -8,6 +8,7 @@ import type { User } from '@prisma/client'
 import { ActionLinkButton } from '~/components/buttons'
 import { useTheme } from '~/hooks/useTheme'
 import { Language } from '~/i18n/config'
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import { cn } from '~/utils/misc'
 import { hasAdminPanelAccess } from '~/utils/rbac'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -59,7 +60,7 @@ export default function IndexPage(): JSX.Element {
 
   // Determine the correct teams route based on user permissions
   const teamsRoute = hasAdminPanelAccess(user)
-    ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams'
+    ? `${ADMIN_DASHBOARD_URL}/teams`
     : '/teams'
 
   return (

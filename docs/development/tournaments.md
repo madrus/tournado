@@ -271,7 +271,7 @@ showDelete = finalX < -200 // 50% threshold
 ```typescript
 export async function loader({ request }: LoaderArgs): Promise<LoaderData> {
    await requireUserWithMetadata(request, handle)
-   const tournamentListItems = await getAllTournamentListItems()
+   const tournamentListItems = await getAllTournaments()
    return { tournamentListItems }
 }
 ```
@@ -301,7 +301,7 @@ export async function action({ request }: ActionArgs): Promise<Response> {
 
 **Core Functions:**
 
-- `getAllTournamentListItems()`: Fetches tournaments for listing
+- `getAllTournaments()`: Fetches tournaments for listing
 - `getTournamentById(id)`: Retrieves single tournament
 - `createTournament(data)`: Creates new tournament
 - `updateTournament(id, data)`: Updates existing tournament

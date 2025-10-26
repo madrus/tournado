@@ -8,8 +8,9 @@ import type { User } from '~/models/user.server'
 export type RouteMetadata = {
   /**
    * Whether this route is accessible without authentication
+   * @default false
    */
-  isPublic: boolean
+  isPublic?: boolean
 
   /**
    * Which roles can access this route (when implemented)

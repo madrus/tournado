@@ -17,7 +17,7 @@ import type { LoaderFunctionArgs } from 'react-router'
 import { getAllTournaments } from '~/models/tournament.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
   // Permission-based authorization - allows multiple roles
   await requireUserWithPermission(request, 'tournaments:read')
 

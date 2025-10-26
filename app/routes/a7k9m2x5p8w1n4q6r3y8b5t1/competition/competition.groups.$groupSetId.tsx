@@ -23,8 +23,8 @@ import {
 } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { invariant } from '~/utils/misc'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/competition.groups.$groupSetId'
 
@@ -39,14 +39,16 @@ type ActionData = {
 }
 
 export const handle: RouteMetadata = {
-  isPublic: false,
+  authorization: {
+    requiredRoles: ['REFEREE', 'MANAGER', 'ADMIN'],
+  },
 }
 
 export async function loader({
   request,
   params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireUserWithPermission(request, 'groups:manage')
+  await requireUserWithMetadata(request, handle)
 
   const { groupSetId } = params
   invariant(groupSetId, 'groupSetId is required')
@@ -80,7 +82,7 @@ export async function action({
   request,
   params,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireUserWithPermission(request, 'groups:manage')
+  await requireUserWithMetadata(request, handle)
 
   const { groupSetId } = params
   invariant(groupSetId, 'groupSetId is required')

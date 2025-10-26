@@ -69,10 +69,10 @@ describe('Resource Route: /api/tournaments', () => {
       const request = new Request('http://localhost/api/tournaments')
 
       const response = await loader({ request, params: {}, context: {} })
-      const data = await response.json()
+      const json = await response.json()
 
-      expect(data).toHaveProperty('tournaments')
-      expect(Array.isArray(data.tournaments)).toBe(true)
+      expect(json).toHaveProperty('tournaments')
+      expect(Array.isArray(json.tournaments)).toBe(true)
     })
   })
 
@@ -92,9 +92,9 @@ describe('Resource Route: /api/tournaments', () => {
     const request = new Request('http://localhost/api/tournaments')
 
     const response = await loader({ request, params: {}, context: {} })
-    const data = await response.json()
+    const json = await response.json()
 
-    expect(data.tournaments[0].startDate).toMatch(/^\d{4}-\d{2}-\d{2}T/)
-    expect(data.tournaments[0].endDate).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+    expect(json.tournaments[0].startDate).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+    expect(json.tournaments[0].endDate).toMatch(/^\d{4}-\d{2}-\d{2}T/)
   })
 })

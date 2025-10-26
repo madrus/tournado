@@ -21,7 +21,14 @@ import {
   updateUserRole,
 } from '~/models/user.server'
 import { getUserAuditLogs } from '~/models/userAuditLog.server'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+
+export const handle: RouteMetadata = {
+  authorization: {
+    requiredRoles: ['ADMIN'],
+  },
+}
 
 type LoaderData = {
   targetUser: User
@@ -43,7 +50,7 @@ export const loader = async ({
   request,
   params,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  await requireUserWithPermission(request, 'users:approve')
+  await requireUserWithMetadata(request, handle)
 
   const { userId } = params
   if (!userId) {
@@ -66,7 +73,7 @@ export const action = async ({
   request,
   params,
 }: ActionFunctionArgs): Promise<ActionData> => {
-  const currentUser = await requireUserWithPermission(request, 'roles:assign')
+  const currentUser = await requireUserWithMetadata(request, handle)
 
   const { userId } = params
   if (!userId) {

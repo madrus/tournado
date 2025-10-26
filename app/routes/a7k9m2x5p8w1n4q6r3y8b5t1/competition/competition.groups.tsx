@@ -9,7 +9,8 @@ import type { TournamentListItem } from '~/features/tournaments/types'
 import type { GroupSetListItem } from '~/models/group.server'
 import { getTournamentGroupSets } from '~/models/group.server'
 import { getAllTournaments } from '~/models/tournament.server'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/competition.groups'
 
@@ -24,11 +25,17 @@ export const meta: MetaFunction<typeof loader> = () => [
   { name: 'description', content: 'Manage tournament groups and team assignments' },
 ]
 
+export const handle: RouteMetadata = {
+  authorization: {
+    requiredRoles: ['REFEREE', 'MANAGER', 'ADMIN'],
+  },
+}
+
 export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireUserWithPermission(request, 'groups:manage')
+  await requireUserWithMetadata(request, handle)
 
   // Get tournament ID from search params
   const url = new URL(request.url)

@@ -8,7 +8,7 @@ import { SportsIcon } from '~/components/icons'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import type { GroupSetListItem } from '~/models/group.server'
 import { getTournamentGroupSets } from '~/models/group.server'
-import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getAllTournaments } from '~/models/tournament.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 import type { Route } from './+types/competition.groups'
@@ -36,7 +36,7 @@ export async function loader({
 
   // Load tournament list and group sets in parallel
   const [tournamentListItemsRaw, groupSets] = await Promise.all([
-    getAllTournamentListItems(),
+    getAllTournaments(),
     tournamentId ? getTournamentGroupSets(tournamentId) : Promise.resolve([]),
   ])
 

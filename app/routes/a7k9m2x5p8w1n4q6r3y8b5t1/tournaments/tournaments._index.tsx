@@ -12,14 +12,11 @@ import { TournamentMobileRow } from '~/features/tournaments/components/Tournamen
 import { createTournamentColumns } from '~/features/tournaments/components/TournamentTableColumns'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
-import {
-  deleteTournamentById,
-  getAllTournamentListItems,
-} from '~/models/tournament.server'
+import { deleteTournamentById, getAllTournaments } from '~/models/tournament.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/tournaments._index'
 
@@ -61,10 +58,10 @@ type LoaderData = {
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Require permission to read tournaments
-  await requireUserWithPermission(request, 'tournaments:read')
+  // Require user with role-based authorization for UI route access
+  await requireUserWithMetadata(request, handle)
 
-  const tournamentListItemsRaw = await getAllTournamentListItems()
+  const tournamentListItemsRaw = await getAllTournaments()
 
   // Serialize dates to ISO strings for JSON transport
   const tournamentListItems = tournamentListItemsRaw.map(tournament => ({
@@ -77,8 +74,8 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export async function action({ request }: Route.ActionArgs): Promise<Response> {
-  // Require permission to delete tournaments
-  await requireUserWithPermission(request, 'tournaments:delete')
+  // Require user with role-based authorization for delete action
+  await requireUserWithMetadata(request, handle)
 
   const formData = await request.formData()
   const intent = formData.get('intent')

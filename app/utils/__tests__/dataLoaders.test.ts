@@ -2,10 +2,7 @@ import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vites
 
 import type { TeamListItem } from '~/features/teams/types'
 import { getFilteredTeamListItems } from '~/models/team.server'
-import {
-  getAllTournamentListItems,
-  type TournamentListItem,
-} from '~/models/tournament.server'
+import { getAllTournaments, type TournamentListItem } from '~/models/tournament.server'
 
 import { loadTeamsAndTournamentsData } from '../dataLoaders'
 
@@ -13,8 +10,8 @@ import { loadTeamsAndTournamentsData } from '../dataLoaders'
 vi.mock('~/models/tournament.server')
 vi.mock('~/models/team.server')
 
-const mockGetAllTournamentListItems = getAllTournamentListItems as MockedFunction<
-  typeof getAllTournamentListItems
+const mockGetAllTournamentListItems = getAllTournaments as MockedFunction<
+  typeof getAllTournaments
 >
 const mockGetFilteredTeamListItems = getFilteredTeamListItems as MockedFunction<
   typeof getFilteredTeamListItems

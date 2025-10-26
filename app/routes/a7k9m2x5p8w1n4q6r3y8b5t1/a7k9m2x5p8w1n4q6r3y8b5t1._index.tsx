@@ -15,7 +15,7 @@ import {
 } from '~/components/icons'
 import { AdminPanelLayoutHeader } from '~/components/layouts'
 import { getAllTeamListItems } from '~/models/team.server'
-import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getAllTournaments } from '~/models/tournament.server'
 import { getActiveUsersCount } from '~/models/user.server'
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import { cn } from '~/utils/misc'
@@ -77,7 +77,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   // Load teams, tournaments, and active users count data for the overview tiles
   const [teams, tournaments, activeUsersCount] = await Promise.all([
     getAllTeamListItems(),
-    getAllTournamentListItems(),
+    getAllTournaments(),
     getActiveUsersCount(),
   ])
 

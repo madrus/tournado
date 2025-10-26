@@ -17,7 +17,7 @@
       "statusBarItem.hoverBackground": "#9c2fba",
       "statusBarItem.remoteBackground": "#7a2591",
       "statusBarItem.remoteForeground": "#e7e7e7",
-      "tab.activeBorder": "#9c2fba"
+      "tab.activeBorder": "#9c2fba",
     },
     "peacock.color": "#7a2591",
   },

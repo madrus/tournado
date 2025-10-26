@@ -9,8 +9,8 @@ import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
-import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/competition.groups.new'
 
@@ -58,7 +58,8 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireUserWithPermission(request, 'groups:manage')
+  // Require user with role-based authorization for UI route access
+  await requireUserWithMetadata(request, handle)
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)
@@ -96,7 +97,8 @@ export async function loader({
 export async function action({
   request,
 }: Route.ActionArgs): Promise<ActionData | Response> {
-  await requireUserWithPermission(request, 'groups:manage')
+  // Require user with role-based authorization for group creation action
+  await requireUserWithMetadata(request, handle)
 
   // Get tournament ID from search params since competition is now top-level
   const url = new URL(request.url)

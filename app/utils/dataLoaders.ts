@@ -1,6 +1,6 @@
 import type { TeamsLoaderData } from '~/features/teams/types'
 import { getFilteredTeamListItems } from '~/models/team.server'
-import { getAllTournamentListItems } from '~/models/tournament.server'
+import { getAllTournaments } from '~/models/tournament.server'
 
 /**
  * Shared loader function for both public and admin teams pages
@@ -14,7 +14,7 @@ export async function loadTeamsAndTournamentsData(
 
   const [teamListItems, tournamentListItemsRaw] = await Promise.all([
     getFilteredTeamListItems({ tournamentId: tournamentId || undefined }),
-    getAllTournamentListItems(),
+    getAllTournaments(),
   ])
 
   // Serialize dates to ISO strings for JSON transport

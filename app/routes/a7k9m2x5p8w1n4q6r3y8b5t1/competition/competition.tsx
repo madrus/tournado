@@ -6,10 +6,7 @@ import { SportsIcon, TrophyIcon } from '~/components/icons'
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
 import type { TournamentListItem } from '~/features/tournaments/types'
-import {
-  getAllTournamentListItems,
-  getTournamentById,
-} from '~/models/tournament.server'
+import { getAllTournaments, getTournamentById } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
@@ -50,7 +47,7 @@ export async function loader({
   const tournamentId = url.searchParams.get('tournament')
 
   const [tournamentListItemsRaw, tournament] = await Promise.all([
-    getAllTournamentListItems(),
+    getAllTournaments(),
     tournamentId ? getTournamentById({ id: tournamentId }) : Promise.resolve(null),
   ])
 

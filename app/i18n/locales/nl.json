@@ -169,6 +169,10 @@
     "SECOND_DIVISION": "Tweede klasse",
     "THIRD_DIVISION": "Derde klasse"
   },
+  "errors": {
+    "somethingWentWrong": "Er is iets misgegaan",
+    "teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
+  },
   "landing": {
     "features": {
       "description": "Tournado biedt alle tools die je nodig hebt om je sporttoernooien efficiënt te beheren. Van teamregistratie tot wedstrijdplanning, we hebben alles voor je.",

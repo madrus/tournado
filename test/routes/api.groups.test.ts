@@ -3,6 +3,10 @@ import type { Role } from '@prisma/client'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { loader } from '~/routes/api.groups'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
+import { getUser } from '~/utils/session.server'
+
+import { createMockUser } from '../utils/loader-authorization.helpers'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({
@@ -32,19 +36,6 @@ vi.mock('~/models/group.server', () => ({
   ]),
 }))
 
-const createMockUser = (role: Role) => ({
-  id: `test-${role}`,
-  email: `test-${role.toLowerCase()}@example.com`,
-  firstName: 'Test',
-  lastName: role,
-  role,
-  firebaseUid: `test-${role.toLowerCase()}-uid`,
-  displayName: null,
-  active: true,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-})
-
 beforeEach(() => {
   vi.clearAllMocks()
 })
@@ -55,7 +46,6 @@ describe('Resource Route: /api/groups', () => {
 
   rolesWithAccess.forEach(role => {
     it(`${role} users should access (has groups:manage permission)`, async () => {
-      const { getUser } = await import('~/utils/session.server')
       const mockUser = createMockUser(role)
       vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -66,6 +56,13 @@ describe('Resource Route: /api/groups', () => {
       const response = await loader({ request, params: {}, context: {} })
       const json = await response.json()
 
+      // Verify RBAC middleware was called with correct permission
+      expect(vi.mocked(requireUserWithPermission)).toHaveBeenCalledWith(
+        expect.any(Request),
+        'groups:manage'
+      )
+
+      expect(response.status).toBe(200)
       expect(json).toHaveProperty('groupSets')
       expect(Array.isArray(json.groupSets)).toBe(true)
     })
@@ -76,7 +73,6 @@ describe('Resource Route: /api/groups', () => {
 
   rolesWithoutAccess.forEach(role => {
     it(`${role} users should be denied (no groups:manage permission)`, async () => {
-      const { getUser } = await import('~/utils/session.server')
       const mockUser = createMockUser(role)
       vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -85,21 +81,41 @@ describe('Resource Route: /api/groups', () => {
       )
 
       await expect(loader({ request, params: {}, context: {} })).rejects.toThrow()
+
+      // Verify RBAC middleware was called with correct permission
+      expect(vi.mocked(requireUserWithPermission)).toHaveBeenCalledWith(
+        expect.any(Request),
+        'groups:manage'
+      )
     })
   })
 
   it('should redirect unauthenticated users to signin', async () => {
-    const { getUser } = await import('~/utils/session.server')
     vi.mocked(getUser).mockResolvedValue(null)
 
     const request = new Request(
       'http://localhost/api/groups?tournament=test-tournament-id'
     )
-    await expect(loader({ request, params: {}, context: {} })).rejects.toThrow()
+
+    try {
+      await loader({ request, params: {}, context: {} })
+      expect.fail('Expected loader to throw redirect')
+    } catch (error) {
+      // React Router redirects are Response objects
+      expect(error).toBeInstanceOf(Response)
+      const response = error as Response
+      expect(response.status).toBeGreaterThanOrEqual(300)
+      expect(response.status).toBeLessThan(400)
+
+      // Verify redirect destination
+      const location = response.headers.get('Location')
+      expect(location).toBeTruthy()
+      expect(location).toContain('/auth/signin')
+      expect(location).toContain('redirectTo=%2Fapi%2Fgroups')
+    }
   })
 
   it('should return 400 if tournament parameter is missing', async () => {
-    const { getUser } = await import('~/utils/session.server')
     const mockUser = createMockUser('MANAGER')
     vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -113,7 +129,6 @@ describe('Resource Route: /api/groups', () => {
   })
 
   it('should return group sets for the specified tournament', async () => {
-    const { getUser } = await import('~/utils/session.server')
     const mockUser = createMockUser('MANAGER')
     vi.mocked(getUser).mockResolvedValue(mockUser)
 

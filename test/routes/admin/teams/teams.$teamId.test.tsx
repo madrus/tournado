@@ -20,6 +20,8 @@ vi.mock('react-i18next', () => ({
         'teams.form.teamRegistration': 'Team Registration',
         'teams.form.fillOutForm': 'Fill out the form below',
         'common.actions.delete': 'Delete',
+        'errors.somethingWentWrong': 'Something went wrong',
+        'errors.teamLoadFailed': 'Unable to load team details. Please try again later.',
       }
       return translations[key] || key
     },

@@ -29,7 +29,7 @@
 ### Code Updates ✅
 
 - Updated `createTeam()` function to save clubName
-- Updated `getAllTeams()` and `getTeamListItems()` to include clubName
+- Updated `getAllTeams()` and `getTeams()` to include clubName
 - Fixed team creation action to handle clubName field
 - Updated seed file to include clubName for new teams
 - Updated all team displays to show `${team.clubName} ${team.teamName}` format

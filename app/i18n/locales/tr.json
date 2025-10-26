@@ -169,6 +169,10 @@
     "SECOND_DIVISION": "İkinci lig",
     "THIRD_DIVISION": "Üçüncü lig"
   },
+  "errors": {
+    "somethingWentWrong": "Bir şeyler ters gitti",
+    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin."
+  },
   "landing": {
     "features": {
       "description": "Tournado, spor turnuvalarınızı verimli bir şekilde yönetmek için ihtiyacınız olan tüm araçları sunar. Takım kaydından maç planlamasına kadar her şey burada.",

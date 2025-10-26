@@ -1,5 +1,5 @@
 import type { TeamsLoaderData } from '~/features/teams/types'
-import { getFilteredTeamListItems } from '~/models/team.server'
+import { getFilteredTeams } from '~/models/team.server'
 import { getAllTournaments } from '~/models/tournament.server'
 
 /**
@@ -13,7 +13,7 @@ export async function loadTeamsAndTournamentsData(
   const tournamentId = url.searchParams.get('tournament')
 
   const [teamListItems, tournamentListItemsRaw] = await Promise.all([
-    getFilteredTeamListItems({ tournamentId: tournamentId || undefined }),
+    getFilteredTeams({ tournamentId: tournamentId || undefined }),
     getAllTournaments(),
   ])
 

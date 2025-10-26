@@ -1,84 +1,52 @@
-import { expect, test } from '@playwright/test'
+import { test } from '@playwright/test'
+
+import { loginAsRole } from '../helpers/session'
+import { HomePage } from '../pages/HomePage'
+import { ProfilePage } from '../pages/ProfilePage'
 
 test.describe('Profile - User Journey (PUBLIC Role)', () => {
   test('PUBLIC user can access profile from menu', async ({ page }) => {
-    const { createTestSession } = await import('../helpers/test-auth')
-    const { cookie } = await createTestSession('PUBLIC')
+    const homePage = new HomePage(page)
+    const profilePage = new ProfilePage(page)
 
-    const cookieMatch = cookie.match(/__session=([^;]+)/)
-    if (!cookieMatch) throw new Error('Failed to parse session cookie')
-
-    await page.context().addCookies([
-      {
-        name: '__session',
-        value: cookieMatch[1],
-        domain: 'localhost',
-        path: '/',
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ])
+    await loginAsRole(page, 'PUBLIC')
 
     // Start at home page
-    await page.goto('/')
+    await homePage.goto()
     await page.waitForLoadState('networkidle')
 
-    // Open user menu
-    await page.getByRole('button', { name: /menu/i }).click()
-    await expect(page.getByTestId('user-menu-dropdown')).toBeVisible({ timeout: 5000 })
-
-    // Click profile link
-    await page.getByRole('link', { name: /profiel/i }).click()
+    // Navigate to profile via menu
+    await profilePage.navigateViaMenu()
 
     // Verify we're on profile page
-    await expect(page).toHaveURL('/profile', { timeout: 5000 })
-    await expect(page.getByText('Account Settings')).toBeVisible()
+    await profilePage.expectToBeOnProfilePage()
   })
 
   test('PUBLIC user can navigate directly to profile URL', async ({ page }) => {
-    const { createTestSession } = await import('../helpers/test-auth')
-    const { cookie } = await createTestSession('PUBLIC')
+    const profilePage = new ProfilePage(page)
 
-    const cookieMatch = cookie.match(/__session=([^;]+)/)
-    if (!cookieMatch) throw new Error('Failed to parse session cookie')
-
-    await page.context().addCookies([
-      {
-        name: '__session',
-        value: cookieMatch[1],
-        domain: 'localhost',
-        path: '/',
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ])
+    await loginAsRole(page, 'PUBLIC')
 
     // Navigate directly to profile
-    await page.goto('/profile')
+    await profilePage.goto()
 
-    // Should stay on profile page
-    await expect(page).toHaveURL('/profile')
-
-    // Verify profile content is visible
-    await expect(page.getByText('Account Settings')).toBeVisible()
-    await expect(page.getByText('Tournament Access')).toBeVisible()
+    // Verify we're on profile page and content is visible
+    await profilePage.expectToBeOnProfilePage()
+    await profilePage.expectProfileContentVisible()
   })
 
   test('Unauthenticated user redirected to signin when accessing profile', async ({
     page,
   }) => {
+    const profilePage = new ProfilePage(page)
+
     // Clear any existing cookies
     await page.context().clearCookies()
 
     // Try to access profile without authentication
-    await page.goto('/profile')
+    await profilePage.goto()
 
-    // Should be redirected to signin page
-    await expect(page).toHaveURL(/\/auth\/signin/)
-
-    // Should have redirectTo parameter
-    await expect(page).toHaveURL(/redirectTo=%2Fprofile/)
+    // Should be redirected to signin with redirectTo parameter
+    await profilePage.expectToBeRedirectedToSignin()
   })
 })

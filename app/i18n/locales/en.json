@@ -169,6 +169,10 @@
     "SECOND_DIVISION": "Second Division",
     "THIRD_DIVISION": "Third Division"
   },
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "teamLoadFailed": "Unable to load team details. Please try again later."
+  },
   "landing": {
     "features": {
       "description": "Tournado provides all the tools you need to manage your sports tournaments efficiently. From team registration to match scheduling, we've got you covered.",

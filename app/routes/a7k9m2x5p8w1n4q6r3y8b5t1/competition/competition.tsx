@@ -8,8 +8,8 @@ import { Panel } from '~/components/Panel'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { getAllTournaments, getTournamentById } from '~/models/tournament.server'
 import { cn } from '~/utils/misc'
-import { requireAdminUser } from '~/utils/rbacMiddleware.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 import type { Route } from './+types/competition'
 
@@ -41,7 +41,7 @@ export async function loader({
   request,
   params: _params,
 }: Route.LoaderArgs): Promise<LoaderData> {
-  await requireAdminUser(request)
+  await requireUserWithMetadata(request, handle)
 
   const url = new URL(request.url)
   const tournamentId = url.searchParams.get('tournament')

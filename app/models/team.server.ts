@@ -52,7 +52,7 @@ export const getTeamById = ({
     },
   })
 
-export const getTeamListItems = async ({
+export const getTeams = async ({
   teamLeaderId,
 }: {
   teamLeaderId: TeamLeader['id']
@@ -79,7 +79,7 @@ export const getAllTeams = async (): Promise<
     orderBy: { updatedAt: 'desc' },
   })
 
-export const getFilteredTeamListItems = async ({
+export const getFilteredTeams = async ({
   tournamentId,
 }: {
   tournamentId?: string

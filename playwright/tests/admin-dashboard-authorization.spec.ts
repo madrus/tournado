@@ -1,5 +1,7 @@
-import { expect, test } from '@playwright/test'
+import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
+
+import { loginAsRole } from '../helpers/session'
 
 test.describe('Admin Dashboard Authorization Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -19,32 +21,19 @@ test.describe('Admin Dashboard Authorization Tests', () => {
   })
 
   // Helper to test role access
-  async function testRoleAccess(page: any, role: Role, shouldAccess: boolean) {
-    const { createTestSession } = await import('../helpers/test-auth')
-    const { cookie } = await createTestSession(role)
-
-    const cookieMatch = cookie.match(/__session=([^;]+)/)
-    if (!cookieMatch) throw new Error(`Failed to parse session cookie`)
-
-    await page.context().addCookies([
-      {
-        name: '__session',
-        value: cookieMatch[1],
-        domain: 'localhost',
-        path: '/',
-        httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ])
-
+  async function testRoleAccess(
+    page: Page,
+    role: Role,
+    shouldAccess: boolean
+  ): Promise<void> {
+    await loginAsRole(page, role)
     await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
     if (shouldAccess) {
       // Should stay on admin dashboard
       await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
       // Verify admin dashboard content renders
-      await expect(page.getByTestId('admin-dashboard-content')).toBeVisible()
+      await expect(page.getByTestId('admin-dashboard-container')).toBeVisible()
     } else {
       // Should redirect to unauthorized
       await expect(page).toHaveURL('/unauthorized')

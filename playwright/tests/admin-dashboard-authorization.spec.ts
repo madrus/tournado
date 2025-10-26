@@ -40,7 +40,7 @@ test.describe('Admin Dashboard Authorization Tests', () => {
     }
   }
 
-  // Test roles with access - ADMIN, MANAGER, REFEREE
+  // Test roles with access - ADMIN, MANAGER, REFEREE, EDITOR, BILLING
   test('ADMIN role users should access admin dashboard', async ({ page }) => {
     await testRoleAccess(page, 'ADMIN', true)
   })
@@ -53,18 +53,16 @@ test.describe('Admin Dashboard Authorization Tests', () => {
     await testRoleAccess(page, 'REFEREE', true)
   })
 
-  // Test roles without access - PUBLIC, EDITOR, BILLING
+  test('EDITOR role users should access admin dashboard', async ({ page }) => {
+    await testRoleAccess(page, 'EDITOR', true)
+  })
+
+  test('BILLING role users should access admin dashboard', async ({ page }) => {
+    await testRoleAccess(page, 'BILLING', true)
+  })
+
+  // Test roles without access - PUBLIC only
   test('PUBLIC role users should be blocked from admin dashboard', async ({ page }) => {
     await testRoleAccess(page, 'PUBLIC', false)
-  })
-
-  test('EDITOR role users should be blocked from admin dashboard', async ({ page }) => {
-    await testRoleAccess(page, 'EDITOR', false)
-  })
-
-  test('BILLING role users should be blocked from admin dashboard', async ({
-    page,
-  }) => {
-    await testRoleAccess(page, 'BILLING', false)
   })
 })

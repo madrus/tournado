@@ -65,13 +65,13 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['ADMIN', 'MANAGER', 'REFEREE'],
+    requiredRoles: ['ADMIN', 'MANAGER', 'REFEREE', 'EDITOR', 'BILLING'],
     redirectTo: '/unauthorized',
   },
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-  // Require admin panel access (ADMIN, MANAGER, or REFEREE roles)
+  // Require admin panel access (all non-PUBLIC roles)
   const user = await requireAdminUser(request)
 
   // Load teams, tournaments, and active users count data for the overview tiles

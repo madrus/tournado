@@ -67,7 +67,7 @@ export const getTeamListItems = async ({
     orderBy: { updatedAt: 'desc' },
   })
 
-export const getAllTeamListItems = async (): Promise<
+export const getAllTeams = async (): Promise<
   Array<Pick<Team, 'id' | 'name' | 'clubName'>>
 > =>
   prisma.team.findMany({

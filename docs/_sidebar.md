@@ -22,6 +22,7 @@
    - [RBAC Hardening (Phase 2)](development/RBAC.hardening.md)
    - [Mobile Web App Configuration](development/mobile-webapp-config.md)
    - [Multi-Language Support](development/multi-language-support.md)
+   - [Resource Routes Architecture](development/resource-routes.md)
    - [Routing](development/routing.md)
    - [Service Worker](service-worker.md)
    - [State Management](development/state-management.md)

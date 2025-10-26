@@ -22,10 +22,10 @@ vi.mock('~/utils/routeUtils.server', async () => {
 
 // Mock user model
 vi.mock('~/models/user.server', () => ({
-  getAllUsersWithPagination: vi.fn(() => ({
+  getAllUsersWithPagination: vi.fn().mockResolvedValue({
     users: [],
     total: 0,
-  })),
+  }),
 }))
 
 beforeEach(() => {

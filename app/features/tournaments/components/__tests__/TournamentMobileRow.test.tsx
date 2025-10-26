@@ -46,7 +46,8 @@ describe('TournamentMobileRow', () => {
 
   const mockOnDelete = vi.fn()
   const mockOnClick = vi.fn()
-  const mockFormatDate = vi.fn((date: Date | string) => {
+  const mockFormatDate = vi.fn((date: Date | string | null) => {
+    if (!date) return ''
     const dateObj = typeof date === 'string' ? new Date(date) : date
     return dateObj.toLocaleDateString('en', {
       year: 'numeric',

@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<Response>
   const tournamentsList = tournaments.map(tournament => ({
     ...tournament,
     startDate: tournament.startDate.toISOString(),
-    endDate: tournament.endDate.toISOString(),
+    endDate: tournament.endDate?.toISOString() || null,
   }))
 
   // Return JSON using native Response.json()

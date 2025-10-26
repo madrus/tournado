@@ -12,20 +12,9 @@ vi.mock('~/utils/session.server', () => ({
   getUser: vi.fn(),
 }))
 
-// Mock route utilities to actually check authorization
-vi.mock('~/utils/routeUtils.server', async () => {
-  const actual = await vi.importActual<typeof import('~/utils/routeUtils.server')>(
-    '~/utils/routeUtils.server'
-  )
-  return {
-    ...actual,
-    requireUserWithMetadata: vi.fn(actual.requireUserWithMetadata),
-  }
-})
-
 // Mock tournament model
 vi.mock('~/models/tournament.server', () => ({
-  getTournamentById: vi.fn(() => ({
+  getTournamentById: vi.fn().mockResolvedValue({
     id: 'test-tournament-id',
     name: 'Test Tournament',
     location: 'Test Location',
@@ -33,7 +22,7 @@ vi.mock('~/models/tournament.server', () => ({
     endDate: new Date(),
     divisions: [],
     categories: [],
-  })),
+  }),
   getAllDivisions: vi.fn(() => ['Boys', 'Girls']),
   getAllCategories: vi.fn(() => ['U12', 'U14', 'U16']),
 }))

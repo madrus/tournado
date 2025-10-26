@@ -12,21 +12,10 @@ vi.mock('~/utils/session.server', () => ({
   getUser: vi.fn(),
 }))
 
-// Mock route utilities to actually check authorization
-vi.mock('~/utils/routeUtils.server', async () => {
-  const actual = await vi.importActual<typeof import('~/utils/routeUtils.server')>(
-    '~/utils/routeUtils.server'
-  )
-  return {
-    ...actual,
-    requireUserWithMetadata: vi.fn(actual.requireUserWithMetadata),
-  }
-})
-
 // Mock tournament model
 vi.mock('~/models/tournament.server', () => ({
-  getAllTournaments: vi.fn(() => []),
-  getTournamentById: vi.fn(() => null),
+  getAllTournaments: vi.fn().mockResolvedValue([]),
+  getTournamentById: vi.fn().mockResolvedValue(null),
 }))
 
 beforeEach(() => {

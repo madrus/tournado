@@ -12,37 +12,26 @@ vi.mock('~/utils/session.server', () => ({
   getUser: vi.fn(),
 }))
 
-// Mock route utilities to actually check authorization
-vi.mock('~/utils/routeUtils.server', async () => {
-  const actual = await vi.importActual<typeof import('~/utils/routeUtils.server')>(
-    '~/utils/routeUtils.server'
-  )
-  return {
-    ...actual,
-    requireUserWithMetadata: vi.fn(actual.requireUserWithMetadata),
-  }
-})
-
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-  getGroupSetWithDetails: vi.fn(() => ({
+  getGroupSetWithDetails: vi.fn().mockResolvedValue({
     id: 'test-group-set-id',
     name: 'Test Group Set',
     tournamentId: 'test-tournament-id',
     categories: ['U12', 'U14'],
     groups: [],
     reserveSlots: [],
-  })),
-  getTeamsByCategories: vi.fn(() => []),
+  }),
+  getTeamsByCategories: vi.fn().mockResolvedValue([]),
 }))
 
 // Mock tournament model
 vi.mock('~/models/tournament.server', () => ({
-  getTournamentById: vi.fn(() => ({
+  getTournamentById: vi.fn().mockResolvedValue({
     id: 'test-tournament-id',
     name: 'Test Tournament',
     categories: ['U12', 'U14'],
-  })),
+  }),
 }))
 
 beforeEach(() => {

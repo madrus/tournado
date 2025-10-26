@@ -22,7 +22,7 @@ export async function loadTeamsAndTournamentsData(
     ? tournamentListItemsRaw.map(tournament => ({
         ...tournament,
         startDate: tournament.startDate.toISOString(),
-        endDate: tournament.endDate.toISOString(),
+        endDate: tournament.endDate?.toISOString() || null,
       }))
     : tournamentListItemsRaw
 

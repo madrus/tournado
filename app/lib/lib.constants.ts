@@ -1,8 +1,31 @@
-// Division constants
+// Application constants
 
 export const PWA_UPDATE_INTERVAL = 60 * 60 * 1000
 export const SWIPE_START_THRESHOLD = 10
 export const DEFAULT_CONTAINER_WIDTH = 400
+
+/**
+ * Admin dashboard base URL (obfuscated for security)
+ *
+ * Can be overridden via VITE_ADMIN_DASHBOARD_URL environment variable
+ * for per-environment customization or security rotation without code changes.
+ *
+ * Priority: Client runtime (window.ENV) > Server runtime (process.env) > Fallback
+ *
+ * @example
+ * // .env or Fly.io secrets
+ * VITE_ADMIN_DASHBOARD_URL="/x9p2m5k8n3w7q1r4y6b8t2a5"
+ *
+ * @todo Hardcoded fallback is temporary until VITE_ADMIN_DASHBOARD_URL is configured in all environments
+ */
+export const ADMIN_DASHBOARD_URL =
+  // Client-side: from window.ENV (runtime)
+  (typeof window !== 'undefined' && window.ENV?.VITE_ADMIN_DASHBOARD_URL) ||
+  // Server-side: from process.env (runtime)
+  (typeof process !== 'undefined' && process.env.VITE_ADMIN_DASHBOARD_URL) ||
+  // Fallback: hardcoded default (temporary until env var is set)
+  '/a7k9m2x5p8w1n4q6r3y8b5t1'
+
 /**
  * Division display labels for internationalization
  * Currently supports: Dutch (nl), English (en), German (de), French (fr), Arabic (ar), Turkish (tr)

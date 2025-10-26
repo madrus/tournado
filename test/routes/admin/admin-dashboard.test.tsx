@@ -605,116 +605,55 @@ describe('Admin Dashboard', () => {
   })
 
   describe('Role-Based Panel Visibility', () => {
-    test('EDITOR role users should see dashboard with Reports panel only', () => {
-      vi.mocked(useLoaderData).mockReturnValueOnce({
-        user: {
-          ...mockUser,
-          role: 'EDITOR',
-        },
-        teams: mockTeams,
-        tournaments: mockTournaments,
-        activeUsersCount: 5,
-      })
+    test.each(['EDITOR', 'BILLING'] as const)(
+      '%s role users should see dashboard with Reports panel only',
+      role => {
+        vi.mocked(useLoaderData).mockReturnValueOnce({
+          user: {
+            ...mockUser,
+            role,
+          },
+          teams: mockTeams,
+          tournaments: mockTournaments,
+          activeUsersCount: 5,
+        })
 
-      render(
-        <MemoryRouter>
-          <AdminDashboard />
-        </MemoryRouter>
-      )
+        render(
+          <MemoryRouter>
+            <AdminDashboard />
+          </MemoryRouter>
+        )
 
-      // Should see the dashboard container
-      expect(screen.getByTestId('admin-dashboard-container')).toBeInTheDocument()
+        // Should see the dashboard container
+        expect(screen.getByTestId('admin-dashboard-container')).toBeInTheDocument()
 
-      // Should see the header
-      expect(
-        screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
-      ).toBeInTheDocument()
+        // Should see the header
+        expect(
+          screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
+        ).toBeInTheDocument()
 
-      // Should see Reports & Analytics panel (has system:reports permission)
-      expect(screen.getByTestId('admin-panel-reports-&-analytics')).toBeInTheDocument()
+        // Should see Reports & Analytics panel (has system:reports permission)
+        expect(
+          screen.getByTestId('admin-panel-reports-&-analytics')
+        ).toBeInTheDocument()
 
-      // Should NOT see management panels (lacks required permissions)
-      expect(
-        screen.queryByTestId('admin-panel-team-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-tournament-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-competition-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-user-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-system-settings')
-      ).not.toBeInTheDocument()
-    })
-
-    test('BILLING role users should see dashboard with Reports panel only', () => {
-      vi.mocked(useLoaderData).mockReturnValueOnce({
-        user: {
-          ...mockUser,
-          role: 'BILLING',
-        },
-        teams: mockTeams,
-        tournaments: mockTournaments,
-        activeUsersCount: 5,
-      })
-
-      render(
-        <MemoryRouter>
-          <AdminDashboard />
-        </MemoryRouter>
-      )
-
-      // Should see the dashboard container
-      expect(screen.getByTestId('admin-dashboard-container')).toBeInTheDocument()
-
-      // Should see the header
-      expect(
-        screen.getByRole('heading', { level: 2, name: 'common.titles.adminPanel' })
-      ).toBeInTheDocument()
-
-      // Should see Reports & Analytics panel (has system:reports permission)
-      expect(screen.getByTestId('admin-panel-reports-&-analytics')).toBeInTheDocument()
-
-      // Should NOT see management panels (lacks required permissions)
-      expect(
-        screen.queryByTestId('admin-panel-team-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-tournament-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-competition-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-user-management')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByTestId('admin-panel-system-settings')
-      ).not.toBeInTheDocument()
-    })
-
-    test('ADMIN role users should see all panels', () => {
-      // This test already exists above, but adding it here for completeness
-      render(
-        <MemoryRouter>
-          <AdminDashboard />
-        </MemoryRouter>
-      )
-
-      expect(screen.getByTestId('admin-panel-team-management')).toBeInTheDocument()
-      expect(
-        screen.getByTestId('admin-panel-tournament-management')
-      ).toBeInTheDocument()
-      expect(
-        screen.getByTestId('admin-panel-competition-management')
-      ).toBeInTheDocument()
-      expect(screen.getByTestId('admin-panel-user-management')).toBeInTheDocument()
-      expect(screen.getByTestId('admin-panel-system-settings')).toBeInTheDocument()
-      expect(screen.getByTestId('admin-panel-reports-&-analytics')).toBeInTheDocument()
-    })
+        // Should NOT see management panels (lacks required permissions)
+        expect(
+          screen.queryByTestId('admin-panel-team-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-tournament-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-competition-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-user-management')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByTestId('admin-panel-system-settings')
+        ).not.toBeInTheDocument()
+      }
+    )
   })
 })

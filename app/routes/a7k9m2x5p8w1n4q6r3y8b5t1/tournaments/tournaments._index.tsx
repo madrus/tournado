@@ -67,7 +67,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   const tournamentListItems = tournamentListItemsRaw.map(tournament => ({
     ...tournament,
     startDate: tournament.startDate.toISOString(),
-    endDate: tournament.endDate.toISOString(),
+    endDate: tournament.endDate?.toISOString() || null,
   }))
 
   return { tournamentListItems }

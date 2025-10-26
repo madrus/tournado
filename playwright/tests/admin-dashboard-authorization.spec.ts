@@ -3,6 +3,8 @@ import type { Role } from '@prisma/client'
 
 import { loginAsRole } from '../helpers/session'
 
+const ADMIN_DASHBOARD_URL = '/a7k9m2x5p8w1n4q6r3y8b5t1'
+
 test.describe('Admin Dashboard Authorization Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 })
@@ -13,7 +15,7 @@ test.describe('Admin Dashboard Authorization Tests', () => {
     // Use empty storage state (no authentication)
     await page.context().clearCookies()
 
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await page.goto(ADMIN_DASHBOARD_URL)
 
     // Should redirect to signin with redirectTo parameter
     await expect(page).toHaveURL(/\/auth\/signin/)
@@ -27,11 +29,11 @@ test.describe('Admin Dashboard Authorization Tests', () => {
     shouldAccess: boolean
   ): Promise<void> {
     await loginAsRole(page, role)
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await page.goto(ADMIN_DASHBOARD_URL)
 
     if (shouldAccess) {
       // Should stay on admin dashboard
-      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+      await expect(page).toHaveURL(ADMIN_DASHBOARD_URL)
       // Verify admin dashboard content renders
       await expect(page.getByTestId('admin-dashboard-container')).toBeVisible()
     } else {

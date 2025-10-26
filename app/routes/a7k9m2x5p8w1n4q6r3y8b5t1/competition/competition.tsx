@@ -55,7 +55,7 @@ export async function loader({
   const tournamentListItems = tournamentListItemsRaw.map(item => ({
     ...item,
     startDate: item.startDate.toISOString(),
-    endDate: item.endDate.toISOString(),
+    endDate: item.endDate?.toISOString() || null,
   }))
 
   return {

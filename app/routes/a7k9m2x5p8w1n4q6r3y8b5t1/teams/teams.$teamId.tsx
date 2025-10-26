@@ -34,7 +34,7 @@ export const handle: RouteMetadata = {
     preserveRedirect: true,
   },
   authorization: {
-    requiredRoles: ['admin'],
+    requiredRoles: ['ADMIN'],
     roleMatchMode: 'any',
     redirectTo: '/unauthorized',
   },

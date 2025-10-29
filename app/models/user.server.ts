@@ -127,6 +127,53 @@ export const updateUserRole = async (
   })
 }
 
+type UpdateUserDisplayNameProps = {
+  userId: string
+  displayName: string
+  performedBy: string
+}
+
+export const updateUserDisplayName = async (
+  props: Readonly<UpdateUserDisplayNameProps>
+): Promise<User> => {
+  const { userId, displayName, performedBy } = props
+
+  // Update display name in transaction with audit log
+  return await prisma.$transaction(async tx => {
+    // Fetch current user state inside transaction
+    const currentUser = await tx.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, displayName: true },
+    })
+
+    if (!currentUser) {
+      throw new Error('User not found')
+    }
+
+    // Short-circuit if display name is already the desired value
+    if (currentUser.displayName === displayName) {
+      return (await tx.user.findUnique({ where: { id: userId } })) as User
+    }
+
+    const updatedUser = await tx.user.update({
+      where: { id: userId },
+      data: { displayName },
+    })
+
+    await tx.userAuditLog.create({
+      data: {
+        userId,
+        performedBy,
+        action: 'display_name_change',
+        previousValue: currentUser.displayName || '',
+        newValue: displayName,
+      },
+    })
+
+    return updatedUser
+  })
+}
+
 type DeactivateUserProps = {
   userId: string
   performedBy: string

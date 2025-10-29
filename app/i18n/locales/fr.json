@@ -389,7 +389,6 @@
     "actions": {
       "deactivateUser": "Désactiver l'utilisateur",
       "reactivateUser": "Réactiver l'utilisateur",
-      "updateRole": "Mettre à jour le rôle",
       "viewDetails": "Voir les détails"
     },
     "auditActions": {
@@ -415,6 +414,7 @@
     },
     "messages": {
       "deactivated": "Désactivé",
+      "displayNameUpdatedSuccessfully": "Nom d'affichage mis à jour avec succès",
       "noAuditLogs": "Aucune entrée de journal d'audit trouvée",
       "noUsers": "Aucun utilisateur trouvé",
       "noUsersDescription": "Aucun utilisateur n'a encore été créé.",
@@ -424,7 +424,7 @@
       "userIsDeactivated": "Cet utilisateur est actuellement désactivé"
     },
     "placeholders": {
-      "reasonForChange": "Entrez la raison du changement de rôle (optionnel)",
+      "displayName": "Entrez le nom d'affichage",
       "reasonForDeactivation": "Entrez la raison de la désactivation (optionnel)",
       "reasonForReactivation": "Entrez la raison de la réactivation (optionnel)"
     },

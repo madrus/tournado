@@ -389,7 +389,6 @@
     "actions": {
       "deactivateUser": "إلغاء تنشيط المستخدم",
       "reactivateUser": "إعادة تنشيط المستخدم",
-      "updateRole": "تحديث الدور",
       "viewDetails": "عرض التفاصيل"
     },
     "auditActions": {
@@ -415,6 +414,7 @@
     },
     "messages": {
       "deactivated": "غير نشط",
+      "displayNameUpdatedSuccessfully": "تم تحديث اسم العرض بنجاح",
       "noAuditLogs": "لم يتم العثور على إدخالات سجل التدقيق",
       "noUsers": "لم يتم العثور على مستخدمين",
       "noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
@@ -424,7 +424,7 @@
       "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
     },
     "placeholders": {
-      "reasonForChange": "أدخل سبب تغيير الدور (اختياري)",
+      "displayName": "أدخل اسم العرض",
       "reasonForDeactivation": "أدخل سبب إلغاء التنشيط (اختياري)",
       "reasonForReactivation": "أدخل سبب إعادة التنشيط (اختياري)"
     },

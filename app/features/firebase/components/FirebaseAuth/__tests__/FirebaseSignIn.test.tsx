@@ -49,8 +49,9 @@ describe('FirebaseSignIn', () => {
     expect(button).toHaveClass('text-white')
     expect(button).toHaveClass('border-teal-600')
 
-    // Verify button has standard animations
-    expect(button).toHaveClass('hover:scale-105')
+    // Verify button has standard animations (responsive scale for mobile/desktop)
+    expect(button).toHaveClass('hover:scale-100')
+    expect(button).toHaveClass('md:hover:scale-105')
     expect(button).toHaveClass('hover:shadow-xl')
     expect(button).toHaveClass('hover:ring-2')
   })

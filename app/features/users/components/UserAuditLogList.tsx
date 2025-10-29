@@ -17,7 +17,7 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
       <h2 className='mb-4 text-xl font-semibold'>{t('users.titles.auditLog')}</h2>
 
       {auditLogs.length === 0 ? (
-        <p className='text-foreground/60 py-8 text-center'>
+        <p className='text-foreground/80 py-8 text-center'>
           {t('users.messages.noAuditLogs')}
         </p>
       ) : (
@@ -32,12 +32,12 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
                     })}
                   </div>
                   {log.previousValue && log.newValue ? (
-                    <div className='text-foreground/60 mt-1 text-sm'>
+                    <div className='text-foreground/80 mt-1 text-sm'>
                       {log.previousValue} → {log.newValue}
                     </div>
                   ) : null}
                   {log.reason ? (
-                    <div className='text-foreground/60 mt-1 text-sm'>{log.reason}</div>
+                    <div className='text-foreground/80 mt-1 text-sm'>{log.reason}</div>
                   ) : null}
                 </div>
                 <div className='text-foreground/40 text-xs md:text-right'>

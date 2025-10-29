@@ -389,7 +389,6 @@
     "actions": {
       "deactivateUser": "Gebruiker deactiveren",
       "reactivateUser": "Gebruiker reactiveren",
-      "updateRole": "Rol bijwerken",
       "viewDetails": "Details bekijken"
     },
     "auditActions": {
@@ -418,13 +417,14 @@
       "noAuditLogs": "Geen auditlogvermeldingen gevonden",
       "noUsers": "Geen gebruikers gevonden",
       "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
+      "displayNameUpdatedSuccessfully": "Weergavenaam succesvol bijgewerkt",
       "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
       "userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
       "userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
       "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
     },
     "placeholders": {
-      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
+      "displayName": "Voer weergavenaam in",
       "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
       "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
     },

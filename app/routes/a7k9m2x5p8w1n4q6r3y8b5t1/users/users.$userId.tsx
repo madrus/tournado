@@ -1,4 +1,5 @@
 import type { JSX } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
@@ -10,15 +11,15 @@ import {
 
 import type { User, UserAuditLog } from '@prisma/client'
 
-import { UserAssignRole } from '~/features/users/components/UserAssignRole'
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
-import { UserDeactivationForm } from '~/features/users/components/UserDeactivationForm'
+import { UserDeactivate } from '~/features/users/components/UserDeactivate'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { validateRole } from '~/features/users/utils/roleUtils'
 import {
   deactivateUser,
   getUserById,
   reactivateUser,
+  updateUserDisplayName,
   updateUserRole,
 } from '~/models/user.server'
 import { getUserAuditLogs } from '~/models/userAuditLog.server'
@@ -46,7 +47,7 @@ type LoaderData = {
 
 type ActionData = {
   error?: string
-  success?: 'role' | 'deactivate' | 'reactivate'
+  success?: 'role' | 'deactivate' | 'reactivate' | 'displayName'
 }
 
 export const loader = async ({
@@ -89,6 +90,18 @@ export const action = async ({
   const reason = (formData.get('reason') as string | null) || undefined
 
   try {
+    if (intent === 'updateDisplayName') {
+      const displayName = (formData.get('displayName') as string) || ''
+
+      await updateUserDisplayName({
+        userId,
+        displayName,
+        performedBy: currentUser.id,
+      })
+
+      return { success: 'displayName' }
+    }
+
     if (intent === 'updateRole') {
       const newRole = validateRole(roleValue)
 
@@ -141,6 +154,33 @@ export default function UserDetailRoute(): JSX.Element {
 
   const isSubmitting = navigation.state === 'submitting'
 
+  // Accumulate success types
+  const successTypesRef = useRef<NonNullable<ActionData['success']>[]>([])
+
+  const getSuccessMessage = (
+    successType: NonNullable<ActionData['success']>
+  ): string => {
+    switch (successType) {
+      case 'role':
+        return t('users.messages.roleUpdatedSuccessfully')
+      case 'deactivate':
+        return t('users.messages.userDeactivatedSuccessfully')
+      case 'reactivate':
+        return t('users.messages.userReactivatedSuccessfully')
+      case 'displayName':
+        return t('users.messages.displayNameUpdatedSuccessfully')
+    }
+  }
+
+  // Add new success types to the accumulated list
+  useEffect(() => {
+    if (actionData?.success && !successTypesRef.current.includes(actionData.success)) {
+      successTypesRef.current.push(actionData.success)
+    }
+  }, [actionData?.success])
+
+  const hasSuccessMessages = successTypesRef.current.length > 0
+
   return (
     <>
       {actionData?.error ? (
@@ -149,22 +189,23 @@ export default function UserDetailRoute(): JSX.Element {
         </div>
       ) : null}
 
-      {actionData?.success ? (
+      {hasSuccessMessages ? (
         <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
-          {t(
-            actionData.success === 'role'
-              ? 'users.messages.roleUpdatedSuccessfully'
-              : actionData.success === 'deactivate'
-                ? 'users.messages.userDeactivatedSuccessfully'
-                : 'users.messages.userReactivatedSuccessfully'
+          {successTypesRef.current.length === 1 ? (
+            <div>{getSuccessMessage(successTypesRef.current[0])}</div>
+          ) : (
+            <ul className='list-inside list-disc space-y-1'>
+              {successTypesRef.current.map((type, index) => (
+                <li key={index}>{getSuccessMessage(type)}</li>
+              ))}
+            </ul>
           )}
         </div>
       ) : null}
 
       <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
-        <UserDetailCard user={targetUser} />
-        <UserAssignRole user={targetUser} isSubmitting={isSubmitting} />
-        <UserDeactivationForm user={targetUser} isSubmitting={isSubmitting} />
+        <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
+        <UserDeactivate user={targetUser} isSubmitting={isSubmitting} />
         <UserAuditLogList auditLogs={auditLogs} />
       </div>
     </>

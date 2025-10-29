@@ -49,7 +49,7 @@ export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.E
         disabled={loading}
         variant='primary'
         color='teal'
-        className='w-full md:w-fit md:self-center'
+        className='w-full hover:scale-100 md:w-fit md:self-center md:hover:scale-105'
       >
         <span className='flex items-center justify-center gap-2 normal-case'>
           {loading ? (

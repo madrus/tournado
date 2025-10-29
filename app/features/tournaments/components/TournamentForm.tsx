@@ -565,7 +565,7 @@ export function TournamentForm({
             onClick={() => handleReset()}
             variant='secondary'
             color='brand'
-            className='w-full md:w-fit'
+            className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
             }
@@ -579,7 +579,7 @@ export function TournamentForm({
             variant='primary'
             color='brand'
             icon='check_circle'
-            className='w-full md:w-fit'
+            className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
             aria-label={t('common.actions.save')}
             permission={
               formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'

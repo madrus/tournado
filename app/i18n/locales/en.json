@@ -389,7 +389,6 @@
     "actions": {
       "deactivateUser": "Deactivate User",
       "reactivateUser": "Reactivate User",
-      "updateRole": "Update Role",
       "viewDetails": "View Details"
     },
     "auditActions": {
@@ -418,13 +417,14 @@
       "noAuditLogs": "No audit log entries found",
       "noUsers": "No users found",
       "noUsersDescription": "No users have been created yet.",
+      "displayNameUpdatedSuccessfully": "Display name updated successfully",
       "roleUpdatedSuccessfully": "User role updated successfully",
       "userDeactivatedSuccessfully": "User deactivated successfully",
       "userReactivatedSuccessfully": "User reactivated successfully",
       "userIsDeactivated": "This user is currently deactivated"
     },
     "placeholders": {
-      "reasonForChange": "Enter reason for role change (optional)",
+      "displayName": "Enter display name",
       "reasonForDeactivation": "Enter reason for deactivation (optional)",
       "reasonForReactivation": "Enter reason for reactivation (optional)"
     },

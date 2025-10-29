@@ -389,7 +389,6 @@
     "actions": {
       "deactivateUser": "Kullanıcıyı devre dışı bırak",
       "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
-      "updateRole": "Rolü güncelle",
       "viewDetails": "Detayları görüntüle"
     },
     "auditActions": {
@@ -415,6 +414,7 @@
     },
     "messages": {
       "deactivated": "Devre dışı",
+      "displayNameUpdatedSuccessfully": "Görünen ad başarıyla güncellendi",
       "noAuditLogs": "Denetim kaydı girişi bulunamadı",
       "noUsers": "Kullanıcı bulunamadı",
       "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
@@ -424,7 +424,7 @@
       "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
     },
     "placeholders": {
-      "reasonForChange": "Rol değişikliği sebebini girin (isteğe bağlı)",
+      "displayName": "Görünen adı girin",
       "reasonForDeactivation": "Devre dışı bırakma sebebini girin (isteğe bağlı)",
       "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
     },

@@ -10,7 +10,9 @@
         "--context",
         "ide-assistant",
         "--project",
-        "."
+        ".",
+        "--enable-web-dashboard",
+        "False"
       ]
     },
     "filesystem": {

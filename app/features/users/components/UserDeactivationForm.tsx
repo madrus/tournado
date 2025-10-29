@@ -6,6 +6,7 @@ import type { User } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { Panel } from '~/components/Panel'
 
 type UserDeactivationFormProps = {
   user: User
@@ -38,7 +39,7 @@ export const UserDeactivationForm = (
   }, [isSubmitting])
 
   return (
-    <div className='border-border mt-6 border-t pt-6'>
+    <Panel color='fuchsia' variant='content-panel'>
       <h3 className='mb-4 text-lg font-semibold'>
         {user.active
           ? t('users.titles.deactivateUser')
@@ -112,6 +113,6 @@ export const UserDeactivationForm = (
           {t('users.messages.userIsDeactivated')}
         </div>
       ) : null}
-    </div>
+    </Panel>
   )
 }

@@ -10,6 +10,7 @@ import {
 
 import type { User, UserAuditLog } from '@prisma/client'
 
+import { UserAssignRole } from '~/features/users/components/UserAssignRole'
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDeactivationForm } from '~/features/users/components/UserDeactivationForm'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
@@ -21,6 +22,8 @@ import {
   updateUserRole,
 } from '~/models/user.server'
 import { getUserAuditLogs } from '~/models/userAuditLog.server'
+import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
@@ -158,11 +161,10 @@ export default function UserDetailRoute(): JSX.Element {
         </div>
       ) : null}
 
-      <div className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
-        <div>
-          <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
-          <UserDeactivationForm user={targetUser} isSubmitting={isSubmitting} />
-        </div>
+      <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
+        <UserDetailCard user={targetUser} />
+        <UserAssignRole user={targetUser} isSubmitting={isSubmitting} />
+        <UserDeactivationForm user={targetUser} isSubmitting={isSubmitting} />
         <UserAuditLogList auditLogs={auditLogs} />
       </div>
     </>

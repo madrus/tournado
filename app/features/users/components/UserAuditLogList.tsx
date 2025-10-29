@@ -1,6 +1,7 @@
 import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Panel } from '~/components/Panel'
 import type { AuditLogWithAdmin } from '~/features/users/types'
 
 type UserAuditLogListProps = {
@@ -12,7 +13,7 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
   const { t } = useTranslation()
 
   return (
-    <div className='bg-card rounded-lg p-6 shadow'>
+    <Panel color='sky' variant='content-panel'>
       <h2 className='mb-4 text-xl font-semibold'>{t('users.titles.auditLog')}</h2>
 
       {auditLogs.length === 0 ? (
@@ -23,7 +24,7 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
         <div className='space-y-4'>
           {auditLogs.map(log => (
             <div key={log.id} className='border-primary border-l-2 py-2 pl-4'>
-              <div className='flex items-start justify-between'>
+              <div className='flex flex-col items-start gap-2 md:flex-row md:justify-between'>
                 <div>
                   <div className='font-medium'>
                     {t(`users.auditActions.${log.action}`, {
@@ -39,18 +40,18 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
                     <div className='text-foreground/60 mt-1 text-sm'>{log.reason}</div>
                   ) : null}
                 </div>
-                <div className='text-foreground/40 text-xs'>
-                  {new Date(log.createdAt).toLocaleString()}
+                <div className='text-foreground/40 text-xs md:text-right'>
+                  <div>{new Date(log.createdAt).toLocaleString()}</div>
+                  <div className='mt-1'>
+                    {t('users.fields.performedBy')}:{' '}
+                    {log.admin.displayName || log.admin.email}
+                  </div>
                 </div>
-              </div>
-              <div className='text-foreground/40 mt-2 text-xs'>
-                {t('users.fields.performedBy')}:{' '}
-                {log.admin.displayName || log.admin.email}
               </div>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </Panel>
   )
 }

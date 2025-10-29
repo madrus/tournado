@@ -174,7 +174,7 @@ export function AdminUsersIndexPage(): JSX.Element {
     <div className='space-y-6' data-testid='admin-users-page-content'>
       {/* Stats using optimized dashboard panels */}
       <div
-        className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}
+        className={cn('grid w-full max-w-4xl grid-cols-1 gap-5', STATS_PANEL_MIN_WIDTH)}
       >
         <Panel
           color={PANEL_COLOR}
@@ -203,7 +203,7 @@ export function AdminUsersIndexPage(): JSX.Element {
       ) : null}
 
       {/* Users List */}
-      <div className={cn('mb-6 w-full lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+      <div className={cn('mb-6 w-full max-w-4xl', STATS_PANEL_MIN_WIDTH)}>
         <Panel color={PANEL_COLOR} variant='content-panel'>
           <DataTable
             data={[...users]}

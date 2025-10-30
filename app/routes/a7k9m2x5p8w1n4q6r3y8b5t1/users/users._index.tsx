@@ -1,8 +1,9 @@
-import { JSX, useCallback, useMemo, useState } from 'react'
+import { JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
 import {
-  useActionData,
+  redirect,
+  useFetcher,
   useLoaderData,
   useNavigate,
   useSearchParams,
@@ -22,6 +23,7 @@ import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { toast } from '~/utils/toastUtils'
 
 import type { Route } from './+types/users._index'
 
@@ -80,12 +82,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
   return { users, total }
 }
 
-type ActionData = {
-  error?: string
-  success?: boolean
-}
-
-export async function action({ request }: Route.ActionArgs): Promise<ActionData> {
+export async function action({ request }: Route.ActionArgs): Promise<Response> {
   // Require user with role-based authorization for role assignment action
   const currentUser = await requireUserWithMetadata(request, handle)
 
@@ -97,7 +94,9 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
     const roleValue = formData.get('role')
 
     if (!userId) {
-      return { error: 'Missing user ID' }
+      return redirect(
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' + encodeURIComponent('Missing user ID')
+      )
     }
 
     try {
@@ -110,30 +109,55 @@ export async function action({ request }: Route.ActionArgs): Promise<ActionData>
         // No reason provided for quick role updates from user list
         // Admin can view full audit trail on user detail page
       })
-      return { success: true }
+      return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/users?success=true')
     } catch (error) {
       if (error instanceof Response) {
         throw error
       }
-      return {
-        error: error instanceof Error ? error.message : 'Failed to update role',
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to update role'
+      return redirect(
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' + encodeURIComponent(errorMessage)
+      )
     }
   }
 
-  return { error: 'Invalid action' }
+  return redirect(
+    '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' + encodeURIComponent('Invalid action')
+  )
 }
 
 export function AdminUsersIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
   const { users, total } = useLoaderData<LoaderData>()
-  const actionData = useActionData<typeof action>()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const { latinFontClass } = useLanguageDirection()
+  const fetcher = useFetcher()
 
   // Sorting state
   const [sorting, setSorting] = useState<SortingState>([])
+
+  // Handle success and error toasts
+  useEffect(() => {
+    const success = searchParams.get('success')
+    const error = searchParams.get('error')
+
+    if (success === 'true') {
+      toast.success(t('users.messages.roleUpdatedSuccessfully'))
+    }
+
+    if (error) {
+      toast.error(decodeURIComponent(error))
+    }
+
+    // Clean up search params after showing toasts
+    if (success || error) {
+      searchParams.delete('success')
+      searchParams.delete('error')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
 
   const handleUserClick = (userId: string) => {
     navigate(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}`)
@@ -166,8 +190,9 @@ export function AdminUsersIndexPage(): JSX.Element {
         formatDate,
         onEdit: handleUserClick,
         latinFontClass,
+        fetcher,
       }),
-    [t, formatDate, latinFontClass]
+    [t, formatDate, latinFontClass, fetcher]
   )
 
   return (
@@ -189,19 +214,6 @@ export function AdminUsersIndexPage(): JSX.Element {
         </Panel>
       </div>
 
-      {/* Success/Error Messages */}
-      {actionData?.error ? (
-        <div className='bg-destructive/10 text-destructive rounded-md p-4'>
-          {actionData.error}
-        </div>
-      ) : null}
-
-      {actionData?.success ? (
-        <div className='rounded-md bg-emerald-500/10 p-4 text-emerald-700 dark:text-emerald-400'>
-          {t('users.messages.roleUpdatedSuccessfully')}
-        </div>
-      ) : null}
-
       {/* Users List */}
       <div className={cn('mb-6 w-full max-w-4xl', STATS_PANEL_MIN_WIDTH)}>
         <Panel color={PANEL_COLOR} variant='content-panel'>
@@ -216,6 +228,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                 key={row.id}
                 user={row}
                 onClick={() => handleUserClick(row.id)}
+                fetcher={fetcher}
               />
             )}
             emptyState={

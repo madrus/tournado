@@ -387,8 +387,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "إلغاء تنشيط المستخدم",
-      "reactivateUser": "إعادة تنشيط المستخدم",
+      "deactivateUser": "إلغاء التنشيط",
+      "reactivateUser": "إعادة التنشيط",
       "viewDetails": "عرض التفاصيل"
     },
     "auditActions": {
@@ -403,13 +403,12 @@
       "manageUsersAndRoles": "إدارة حسابات المستخدمين وتعيين الأدوار"
     },
     "fields": {
-      "assignRole": "تعيين الدور",
+      "assignedRole": "الدور المعين",
       "createdAt": "تاريخ الإنشاء",
       "currentRole": "الدور الحالي",
       "displayName": "اسم العرض",
       "email": "البريد الإلكتروني",
       "performedBy": "تم بواسطة",
-      "reason": "السبب",
       "role": "الدور"
     },
     "messages": {
@@ -424,9 +423,7 @@
       "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
     },
     "placeholders": {
-      "displayName": "أدخل اسم العرض",
-      "reasonForDeactivation": "أدخل سبب إلغاء التنشيط (اختياري)",
-      "reasonForReactivation": "أدخل سبب إعادة التنشيط (اختياري)"
+      "displayName": "أدخل اسم العرض"
     },
     "titles": {
       "allUsers": "جميع المستخدمين",

@@ -1,8 +1,9 @@
 import { MemoryRouter } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { MenuItemType } from '../UserMenu'
 import { UserMenu } from '../UserMenu'
@@ -17,6 +18,10 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
+// Store mock functions for assertions
+const mockNavigate = vi.fn()
+const mockOnOpenChange = vi.fn()
+
 // Mock React Router hooks
 vi.mock('react-router', async () => {
   const actual = await vi.importActual('react-router')
@@ -27,7 +32,7 @@ vi.mock('react-router', async () => {
       search: '',
       hash: '',
     })),
-    useNavigate: vi.fn(() => vi.fn()),
+    useNavigate: vi.fn(() => mockNavigate),
     useNavigation: vi.fn(() => ({
       state: 'idle',
       location: null,
@@ -86,7 +91,22 @@ describe('UserMenu', () => {
       icon: 'info',
       href: '/about',
     },
+    {
+      label: 'Users',
+      icon: 'people',
+      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+    },
+    {
+      label: 'Tournaments',
+      icon: 'trophy',
+      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+    },
   ]
+
+  beforeEach(() => {
+    // Clear all mocks before each test
+    vi.clearAllMocks()
+  })
 
   it('should render trigger button with cursor-pointer class', () => {
     render(
@@ -96,7 +116,7 @@ describe('UserMenu', () => {
           username=''
           menuItems={mockMenuItems}
           isOpen={false}
-          onOpenChange={vi.fn()}
+          onOpenChange={mockOnOpenChange}
         />
       </MemoryRouter>
     )
@@ -114,7 +134,7 @@ describe('UserMenu', () => {
           username=''
           menuItems={mockMenuItems}
           isOpen={false}
-          onOpenChange={vi.fn()}
+          onOpenChange={mockOnOpenChange}
         />
       </MemoryRouter>
     )
@@ -131,7 +151,7 @@ describe('UserMenu', () => {
           username=''
           menuItems={mockMenuItems}
           isOpen={false}
-          onOpenChange={vi.fn()}
+          onOpenChange={mockOnOpenChange}
         />
       </MemoryRouter>
     )
@@ -148,12 +168,177 @@ describe('UserMenu', () => {
           username=''
           menuItems={mockMenuItems}
           isOpen={true}
-          onOpenChange={vi.fn()}
+          onOpenChange={mockOnOpenChange}
         />
       </MemoryRouter>
     )
 
     const hamburgerIcon = screen.getByTestId('hamburger-icon')
     expect(hamburgerIcon).toHaveTextContent('open')
+  })
+
+  describe('Menu item visibility', () => {
+    it('should only render menu items that are provided in menuItems prop', () => {
+      const limitedMenuItems: MenuItemType[] = [
+        {
+          label: 'Teams',
+          icon: 'group',
+          href: '/teams',
+        },
+        {
+          label: 'About',
+          icon: 'info',
+          href: '/about',
+        },
+        // Note: Users menu item is NOT included (simulates non-admin user)
+      ]
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={true}
+            username='user'
+            menuItems={limitedMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      // Should show provided menu items
+      expect(screen.getByText('Teams')).toBeInTheDocument()
+      expect(screen.getByText('About')).toBeInTheDocument()
+
+      // Should NOT show Users menu item since it's not in the menuItems array
+      expect(screen.queryByText('Users')).not.toBeInTheDocument()
+    })
+
+    it('should show Users menu item when included in menuItems prop', () => {
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={true}
+            username='admin'
+            menuItems={mockMenuItems} // includes Users menu item
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      // Should show Users menu item when it's included
+      expect(screen.getByText('Users')).toBeInTheDocument()
+    })
+  })
+
+  describe('Menu item navigation', () => {
+    it('should navigate to Teams route when Teams menu item is clicked', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={false}
+            username=''
+            menuItems={mockMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      const teamsLink = screen.getByText('Teams')
+      await user.click(teamsLink)
+
+      expect(mockNavigate).toHaveBeenCalledWith('/teams')
+      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should navigate to About route when About menu item is clicked', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={false}
+            username=''
+            menuItems={mockMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      const aboutLink = screen.getByText('About')
+      await user.click(aboutLink)
+
+      expect(mockNavigate).toHaveBeenCalledWith('/about')
+      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should navigate to Users route when Users menu item is clicked', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={true}
+            username='admin'
+            menuItems={mockMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      const usersLink = screen.getByText('Users')
+      await user.click(usersLink)
+
+      expect(mockNavigate).toHaveBeenCalledWith('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should navigate to Tournaments route when Tournaments menu item is clicked', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={true}
+            username='admin'
+            menuItems={mockMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      const tournamentsLink = screen.getByText('Tournaments')
+      await user.click(tournamentsLink)
+
+      expect(mockNavigate).toHaveBeenCalledWith('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('should close menu after navigation', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <UserMenu
+            authenticated={false}
+            username=''
+            menuItems={mockMenuItems}
+            isOpen={true}
+            onOpenChange={mockOnOpenChange}
+          />
+        </MemoryRouter>
+      )
+
+      const teamsLink = screen.getByText('Teams')
+      await user.click(teamsLink)
+
+      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+    })
   })
 })

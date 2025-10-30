@@ -105,15 +105,19 @@ Database & Data Model [Implemented]
 - [x] Database schema migration (firebaseUid column added to User table)
 - [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
-**Phase 2 - User Management [Planned]** (TASK-0201)
+**Phase 2 - User Management [In Progress]** (TASK-0201)
 
-- [ ] Admin-only user management workflows
-  - [ ] User approval/rejection system for new registrations
-  - [ ] Role assignment (ADMIN, MANAGER only)
-  - [ ] User list with filtering and search capabilities
-  - [ ] User profile viewing and editing
-  - [ ] Activity monitoring and audit logs for role changes
-  - [ ] Users menu item in AppBar (ADMIN only)
+- [x] Admin-only user management workflows
+  - [x] Role assignment (ADMIN, MANAGER, REFEREE, EDITOR, BILLING roles) via inline ComboField
+  - [x] User list with DataTable (sortable columns, pagination)
+  - [x] User profile viewing with 2 panels: User Information + Audit Log
+  - [x] User profile editing (display name via TextInputField)
+  - [x] Activity monitoring and audit logs for role changes, deactivation, reactivation
+  - [x] Users menu item in AppBar (ADMIN only, uses 'people' icon → GroupIcon)
+  - [x] User Management tile in Admin Dashboard
+  - [x] User deactivation/reactivation with ConfirmDialog modal and audit trail
+- [ ] User approval/rejection system for new registrations (pending)
+- [ ] Advanced filtering and search capabilities (pending)
 
 **Phase 3 - Groups & Playoffs (MVP) [In Progress]**
 
@@ -305,29 +309,35 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0103)
 - [x] Logout invalidation; visible auth status; redirects (TASK-0103)
 
-### Phase 2: User Management (2 - 3 weeks)
+### Phase 2: User Management (2 - 3 weeks) [In Progress]
 
-- [ ] Priority: High
-- [ ] Timeline: 2 - 3 weeks
-- [ ] Task: TASK-0201
+- [x] Priority: High
+- [x] Timeline: 2 - 3 weeks (in progress)
+- [x] Task: TASK-0201
 
-#### 2.1 User Approval Workflows
+#### 2.1 User Approval Workflows [Partial]
 
-- [ ] User registration approval/rejection system
-- [ ] Admin-only user list with filtering and search
-- [ ] User profile viewing and editing capabilities
+- [ ] User registration approval/rejection system (pending)
+- [x] Admin-only user list with DataTable (sortable, paginated)
+- [x] User profile viewing with 2-panel layout (User Information + Audit Log)
+- [x] User profile editing (display name via TextInputField with inline save)
+- [ ] Advanced filtering and search by email/name (pending - basic sorting implemented)
 
-#### 2.2 Role Assignment
+#### 2.2 Role Assignment [Completed]
 
-- [ ] Role assignment UI (ADMIN, MANAGER only)
-- [ ] Activity monitoring and audit logs for role changes
-- [ ] Enforce RBAC: only ADMIN can approve users and assign roles
+- [x] Role assignment UI via ComboField component (ADMIN, MANAGER, REFEREE, EDITOR, BILLING)
+  - [x] Table inline editing: ComboField with compact mode, slate color, auto-submit
+  - [x] User detail page: ComboField with teal color, auto-submit
+- [x] Activity monitoring and audit logs for role changes, deactivation, reactivation
+- [x] Enforce RBAC: only ADMIN can approve users and assign roles (via `users:approve` and `roles:assign` permissions)
+- [x] User deactivation/reactivation via ConfirmDialog modal with audit trail
 
-#### 2.3 Admin Panel Integration
+#### 2.3 Admin Panel Integration [Completed]
 
-- [ ] Users menu item in AppBar (visible to ADMIN only)
-- [ ] User management routes under Admin Panel
-- [ ] Permission enforcement using `users:approve` and `roles:assign`
+- [x] Users menu item in AppBar (visible to ADMIN only, uses 'people' icon → GroupIcon)
+- [x] User Management tile in Admin Dashboard with user count stats
+- [x] User management routes under Admin Panel (`/a7k9m2x5p8w1n4q6r3y8b5t1/users`)
+- [x] Permission enforcement using `users:approve` and `roles:assign` in all loaders/actions
 
 ### Phase 3: Groups & Playoffs (MVP) (3 - 4 weeks)
 
@@ -741,9 +751,11 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 - ✅ Database migration and CI/E2E validation
 - ✅ Complete legacy authentication removal
 
-### Phase 2: User Management
+### Phase 2: User Management [In Progress]
 
 - Weeks 2 - 3: User approval workflows; role assignment UI; activity monitoring (TASK-0201)
+  - ✅ Completed: User list with DataTable, role assignment via ComboField, user deactivation/reactivation, audit logs, Admin Panel integration
+  - ⏳ Pending: User approval/rejection system, advanced search and filtering
 
 ### Phase 3: Groups & Playoffs (MVP)
 

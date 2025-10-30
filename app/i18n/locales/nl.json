@@ -387,8 +387,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Gebruiker deactiveren",
-      "reactivateUser": "Gebruiker reactiveren",
+      "deactivateUser": "Deactiveren",
+      "reactivateUser": "Reactiveren",
       "viewDetails": "Details bekijken"
     },
     "auditActions": {
@@ -403,13 +403,12 @@
       "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
     },
     "fields": {
-      "assignRole": "Rol toewijzen",
+      "assignedRole": "Toegewezen rol",
       "createdAt": "Aangemaakt op",
       "currentRole": "Huidige rol",
       "displayName": "Weergavenaam",
       "email": "E-mail",
       "performedBy": "Uitgevoerd door",
-      "reason": "Reden",
       "role": "Rol"
     },
     "messages": {
@@ -424,9 +423,7 @@
       "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
     },
     "placeholders": {
-      "displayName": "Voer weergavenaam in",
-      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
-      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+      "displayName": "Voer weergavenaam in"
     },
     "titles": {
       "allUsers": "Alle gebruikers",

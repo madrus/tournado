@@ -130,6 +130,28 @@ export const buttonVariants = cva(
       ...Object.keys(COLOR_VARIANT_KEYS).map(color =>
         createSecondaryVariant(color as ColorVariantKey)
       ),
+      // Dark mode text colors for primary buttons
+      { variant: 'primary', color: 'brand', class: 'dark:text-red-50' },
+      { variant: 'primary', color: 'primary', class: 'dark:text-emerald-50' },
+      { variant: 'primary', color: 'emerald', class: 'dark:text-emerald-50' },
+      { variant: 'primary', color: 'blue', class: 'dark:text-blue-50' },
+      { variant: 'primary', color: 'slate', class: 'dark:text-slate-50' },
+      { variant: 'primary', color: 'teal', class: 'dark:text-teal-50' },
+      { variant: 'primary', color: 'red', class: 'dark:text-red-50' },
+      { variant: 'primary', color: 'cyan', class: 'dark:text-cyan-50' },
+      { variant: 'primary', color: 'yellow', class: 'dark:text-yellow-50' },
+      { variant: 'primary', color: 'green', class: 'dark:text-green-50' },
+      { variant: 'primary', color: 'violet', class: 'dark:text-violet-50' },
+      { variant: 'primary', color: 'zinc', class: 'dark:text-zinc-50' },
+      { variant: 'primary', color: 'orange', class: 'dark:text-orange-50' },
+      { variant: 'primary', color: 'amber', class: 'dark:text-amber-50' },
+      { variant: 'primary', color: 'lime', class: 'dark:text-lime-50' },
+      { variant: 'primary', color: 'sky', class: 'dark:text-sky-50' },
+      { variant: 'primary', color: 'indigo', class: 'dark:text-indigo-50' },
+      { variant: 'primary', color: 'purple', class: 'dark:text-purple-50' },
+      { variant: 'primary', color: 'fuchsia', class: 'dark:text-fuchsia-50' },
+      { variant: 'primary', color: 'pink', class: 'dark:text-pink-50' },
+      { variant: 'primary', color: 'rose', class: 'dark:text-rose-50' },
     ],
     defaultVariants: {
       variant: 'primary',

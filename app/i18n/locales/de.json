@@ -387,8 +387,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Benutzer deaktivieren",
-      "reactivateUser": "Benutzer reaktivieren",
+      "deactivateUser": "Deaktivieren",
+      "reactivateUser": "Reaktivieren",
       "viewDetails": "Details ansehen"
     },
     "auditActions": {
@@ -403,13 +403,12 @@
       "manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
     },
     "fields": {
-      "assignRole": "Rolle zuweisen",
+      "assignedRole": "Zugewiesene Rolle",
       "createdAt": "Erstellt am",
       "currentRole": "Aktuelle Rolle",
       "displayName": "Anzeigename",
       "email": "E-Mail",
       "performedBy": "Durchgeführt von",
-      "reason": "Grund",
       "role": "Rolle"
     },
     "messages": {
@@ -424,9 +423,7 @@
       "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert"
     },
     "placeholders": {
-      "displayName": "Anzeigename eingeben",
-      "reasonForDeactivation": "Grund für Deaktivierung eingeben (optional)",
-      "reasonForReactivation": "Grund für Reaktivierung eingeben (optional)"
+      "displayName": "Anzeigename eingeben"
     },
     "titles": {
       "allUsers": "Alle Benutzer",

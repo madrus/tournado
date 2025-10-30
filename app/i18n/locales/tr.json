@@ -387,8 +387,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Kullanıcıyı devre dışı bırak",
-      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
+      "deactivateUser": "Devre dışı bırak",
+      "reactivateUser": "Yeniden etkinleştir",
       "viewDetails": "Detayları görüntüle"
     },
     "auditActions": {
@@ -403,13 +403,12 @@
       "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
     },
     "fields": {
-      "assignRole": "Rol ata",
+      "assignedRole": "Atanmış Rol",
       "createdAt": "Oluşturulma tarihi",
       "currentRole": "Mevcut rol",
       "displayName": "Görünen ad",
       "email": "E-posta",
       "performedBy": "Gerçekleştiren",
-      "reason": "Sebep",
       "role": "Rol"
     },
     "messages": {
@@ -424,9 +423,7 @@
       "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
     },
     "placeholders": {
-      "displayName": "Görünen adı girin",
-      "reasonForDeactivation": "Devre dışı bırakma sebebini girin (isteğe bağlı)",
-      "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
+      "displayName": "Görünen adı girin"
     },
     "titles": {
       "allUsers": "Tüm kullanıcılar",

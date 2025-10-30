@@ -20,5 +20,6 @@
       "tab.activeBorder": "#9c2fba",
     },
     "peacock.color": "#7a2591",
+    "i18n-ally.keystyle": "nested",
   },
 }

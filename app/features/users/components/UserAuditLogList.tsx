@@ -36,11 +36,8 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
                       {log.previousValue} → {log.newValue}
                     </div>
                   ) : null}
-                  {log.reason ? (
-                    <div className='text-foreground/80 mt-1 text-sm'>{log.reason}</div>
-                  ) : null}
                 </div>
-                <div className='text-foreground/40 text-xs md:text-right'>
+                <div className='text-foreground/70 text-xs md:text-right'>
                   <div>{new Date(log.createdAt).toLocaleString()}</div>
                   <div className='mt-1'>
                     {t('users.fields.performedBy')}:{' '}

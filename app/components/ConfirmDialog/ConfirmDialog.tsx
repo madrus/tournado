@@ -36,6 +36,13 @@ type ConfirmDialogProps = {
 
   // Behavior
   destructive?: boolean
+
+  // Optional controlled mode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+
+  // Loading state
+  isLoading?: boolean
 }
 
 export function ConfirmDialog({
@@ -47,6 +54,9 @@ export function ConfirmDialog({
   cancelLabel,
   onConfirm,
   destructive = false,
+  open,
+  onOpenChange,
+  isLoading = false,
 }: Readonly<ConfirmDialogProps>): JSX.Element {
   const cancelContainerRef = useRef<HTMLDivElement | null>(null)
   const confirmContainerRef = useRef<HTMLDivElement | null>(null)
@@ -57,8 +67,13 @@ export function ConfirmDialog({
   const finalConfirmColor = intentColors.confirm
   const finalCancelColor = intentColors.cancel
 
+  const handleConfirm = (): void => {
+    onConfirm?.()
+    // If not in controlled mode or not loading, let Dialog.Close handle closing
+  }
+
   return (
-    <Dialog.Root>
+    <Dialog.Root {...(open !== undefined ? { open, onOpenChange } : {})}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
       <Dialog.Portal>
@@ -109,32 +124,59 @@ export function ConfirmDialog({
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
                 <div ref={cancelContainerRef} className='sm:order-1'>
-                  <Dialog.Close asChild>
+                  {isLoading ? (
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
                       size='md'
                       className='w-full min-w-[120px] sm:w-auto'
                       aria-label={cancelLabel}
+                      disabled={isLoading}
                     >
                       {cancelLabel}
                     </ActionButton>
-                  </Dialog.Close>
+                  ) : (
+                    <Dialog.Close asChild>
+                      <ActionButton
+                        variant='secondary'
+                        color={finalCancelColor}
+                        size='md'
+                        className='w-full min-w-[120px] sm:w-auto'
+                        aria-label={cancelLabel}
+                      >
+                        {cancelLabel}
+                      </ActionButton>
+                    </Dialog.Close>
+                  )}
                 </div>
 
                 <div ref={confirmContainerRef} className='sm:order-2'>
-                  <Dialog.Close asChild>
+                  {isLoading ? (
                     <ActionButton
                       variant='primary'
                       color={finalConfirmColor}
                       size='md'
-                      onClick={onConfirm}
+                      onClick={handleConfirm}
                       className='w-full min-w-[120px] sm:w-auto'
                       aria-label={confirmLabel}
+                      disabled={isLoading}
                     >
                       {confirmLabel}
                     </ActionButton>
-                  </Dialog.Close>
+                  ) : (
+                    <Dialog.Close asChild>
+                      <ActionButton
+                        variant='primary'
+                        color={finalConfirmColor}
+                        size='md'
+                        onClick={handleConfirm}
+                        className='w-full min-w-[120px] sm:w-auto'
+                        aria-label={confirmLabel}
+                      >
+                        {confirmLabel}
+                      </ActionButton>
+                    </Dialog.Close>
+                  )}
                 </div>
               </div>
             </div>

@@ -39,7 +39,7 @@ export function DataTablePagination({
       )}
     >
       {/* Row count info */}
-      <div className='text-foreground text-base'>
+      <div className='text-foreground text-sm'>
         {t('common.pagination.showing', {
           from,
           to,

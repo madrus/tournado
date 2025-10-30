@@ -98,7 +98,14 @@ Deliver a complete admin-controlled user management system where admins can revi
 
 # 6) Low-Level Steps (Ordered, information-dense)
 
-**Implementation Status**: Steps 0-9 completed. Steps 10-11 pending (Unit Tests, Firebase Integration).
+**Implementation Status**: Steps 0-9 completed. Step 10 (Unit Tests) partially completed. Step 11 (E2E Tests) completed. Step 12 (Firebase Integration) pending.
+
+**Current Implementation Notes**:
+- User list table displays users with **single role column** (not two columns - "Current Role" and "Assigned Role" merged)
+- User detail page has **2 panels** (not 4): User Information panel (combines profile + role assignment + deactivation) and Audit Log panel
+- Role assignment uses **ComboField** component (not native select element)
+- Role changes done inline in table via ComboField with auto-submit (no separate forms)
+- Deactivation/Reactivation uses **ConfirmDialog modal** (not inline forms with textareas)
 
 ## Step 0: RBAC Permissions Setup - Add User Management Permissions
 
@@ -551,14 +558,24 @@ export default function UsersIndexRoute(): JSX.Element {
 
 ## Step 5: User Detail/Edit Route
 
-- [x] Create users/$userId.tsx route (folder-based routing)
+- [x] Create users.$userId.tsx route (folder-based routing)
 - [x] Implement loader with permission check
-- [x] Implement action for role updates
-- [x] Implement action for deactivating users
-- [x] Implement action for reactivating users
-- [x] Integrate UserDetailCard and UserAuditLogList components
+- [x] Implement action for role updates (via ComboField with auto-submit)
+- [x] Implement action for updating display name (via TextInputField with auto-submit)
+- [x] Implement action for deactivating users (via ConfirmDialog modal)
+- [x] Implement action for reactivating users (via ConfirmDialog modal)
+- [x] Integrate UserDetailCard (single panel) and UserAuditLogList (separate panel) components
 
-File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/$userId.tsx` (new)
+**Implementation Details**:
+- User detail page has **2 main panels**:
+  - Panel 1 (UserDetailCard): Email, Created At, Display Name (editable via TextInputField), Assigned Role (ComboField), Deactivate/Reactivate button
+  - Panel 2 (UserAuditLogList): Activity history in reverse chronological order
+- Role assignment uses ComboField with `compact` mode disabled and `color='teal'`
+- Display name editing uses TextInputField with inline save
+- Deactivation/Reactivation triggered via ActionButton that opens ConfirmDialog modal
+- All actions auto-submit via useFetcher() with optimistic UI updates
+
+File: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/users.$userId.tsx` (✅ completed)
 
 ```ts
 import { type JSX } from 'react'
@@ -694,12 +711,22 @@ export default function UserDetailRoute(): JSX.Element {
 ## Step 6: User Management Components
 
 - [x] Create features/users/components/ directory
-- [x] Create UserListTable.tsx component
-- [x] Create UserDetailCard.tsx component with deactivation/reactivation actions
+- [x] Create UserTableColumns.tsx component (uses TanStack Table with DataTable)
+- [x] Create UserMobileRow.tsx component (mobile view)
+- [x] Create UserDetailCard.tsx component with inline role assignment and deactivation/reactivation button
 - [x] Create UserAuditLogList.tsx component
-- [x] Create UserDeactivationForm.tsx component
+- [x] Create UserAssignRole.tsx component (wrapped by UserDetailCard)
+- [x] Create UserDeactivationForm.tsx component (removed - replaced by ConfirmDialog modal)
 
-File: `app/components/users/UserListTable.tsx` (new)
+**Implementation Details**:
+- UserTableColumns: Defines table structure with inline ComboField for role changes (compact mode, slate color)
+- UserMobileRow: Mobile-optimized row with ComboField for role changes
+- UserDetailCard: Single panel combining email, created date, display name (editable), role assignment (ComboField), and deactivate/reactivate button
+- UserAssignRole: ComboField component for role selection (teal color, non-compact)
+- UserAuditLogList: Displays audit log entries with action badges
+- Deactivation: Uses shared ConfirmDialog modal with danger/warning intent
+
+File: `app/features/users/components/UserTableColumns.tsx` (✅ completed)
 
 ```ts
 import { type JSX } from 'react'
@@ -853,7 +880,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
         <div className="space-y-4">
           <div>
             <label htmlFor="role" className="block text-sm font-medium mb-2">
-              {t('users.fields.assignRole')}
+              {t('users.fields.assignedRole')}
             </label>
             <select
               id="role"
@@ -1101,7 +1128,7 @@ Add to all locale files (`app/i18n/locales/*.json`):
       "displayName": "Display Name",
       "role": "Role",
       "currentRole": "Current Role",
-      "assignRole": "Assign Role",
+      "assignedRole": "Assign Role",
       "reason": "Reason",
       "performedBy": "Performed by",
       "createdAt": "Created At"
@@ -1175,7 +1202,7 @@ Add to all locale files (`app/i18n/locales/*.json`):
       "displayName": "Weergavenaam",
       "role": "Rol",
       "currentRole": "Huidige rol",
-      "assignRole": "Rol toewijzen",
+      "assignedRole": "Rol toewijzen",
       "reason": "Reden",
       "performedBy": "Uitgevoerd door",
       "createdAt": "Aangemaakt op"

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 
 import type { User } from '@prisma/client'
 
-import { cn } from '~/utils/misc'
+import { Badge } from '~/components/Badge'
 
-import { getRoleBadgeVariant } from '../utils/roleUtils'
+import { roleColors } from '../utils/roleUtils'
 
 type RoleBadgeProps = {
   role: User['role']
@@ -16,8 +16,8 @@ export function RoleBadge({ role, className }: Readonly<RoleBadgeProps>): JSX.El
   const { t } = useTranslation()
 
   return (
-    <span className={cn(getRoleBadgeVariant(role), className)}>
+    <Badge color={roleColors[role]} className={className}>
       {t(`roles.${role.toLowerCase()}`)}
-    </span>
+    </Badge>
   )
 }

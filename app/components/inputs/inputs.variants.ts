@@ -87,13 +87,17 @@ export const textInputFieldVariants = cva(
 // ComboField trigger button variants
 export const comboFieldTriggerVariants = cva(
   [
-    'flex h-12 w-full items-center justify-between rounded-md px-3 py-2 text-lg border-2',
+    'flex w-full items-center justify-between rounded-md px-3 text-lg border-2',
     'bg-input text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
   ],
   {
     variants: {
+      compact: {
+        true: 'py-1.5 text-sm',
+        false: 'h-12 py-2',
+      },
       color: {
         brand:
           'border-brand-700/30 hover:border-brand-700/50 hover:shadow-md hover:shadow-brand-500/20 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 dark:hover:shadow-brand-400/30 dark:focus:ring-brand-400/30 data-[state=open]:border-brand-500 data-[state=open]:ring-4 data-[state=open]:ring-brand-500/20',
@@ -130,11 +134,14 @@ export const comboFieldTriggerVariants = cva(
         rose: 'border-rose-700/30 hover:border-rose-700/50 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30 data-[state=open]:border-rose-500 data-[state=open]:ring-4 data-[state=open]:ring-rose-500/20',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'border-2 border-slate-300 cursor-not-allowed opacity-50 hover:border-slate-300 hover:shadow-none focus:border-slate-300 focus:ring-0 data-[state=open]:border-slate-300 data-[state=open]:ring-0 dark:border-slate-600 dark:hover:border-slate-600 dark:focus:border-slate-600 dark:data-[state=open]:border-slate-600',
       },
       error: {
         true: 'border-destructive hover:border-destructive hover:shadow-md hover:shadow-destructive/20 focus:border-destructive focus:ring-4 focus:ring-destructive/20 dark:hover:shadow-destructive/30 dark:focus:ring-destructive/30 data-[state=open]:border-destructive data-[state=open]:ring-4 data-[state=open]:ring-destructive/20',
       },
+    },
+    defaultVariants: {
+      compact: false,
     },
   }
 )
@@ -165,12 +172,16 @@ export const comboFieldContentVariants = cva(
 // ComboField item variants
 export const comboFieldItemVariants = cva(
   [
-    'relative flex cursor-pointer items-center rounded-sm px-3 py-2 text-lg outline-none select-none',
+    'relative flex cursor-pointer items-center rounded-sm px-3 outline-none select-none',
     'bg-transparent transition-colors duration-200',
     'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
   ],
   {
     variants: {
+      compact: {
+        true: 'py-1.5 text-sm',
+        false: 'py-2 text-lg',
+      },
       color: {
         brand:
           'text-red-800 hover:bg-red-100 focus:bg-red-100 data-[highlighted]:bg-red-100 dark:text-red-50 dark:hover:bg-red-900 dark:focus:bg-red-900 dark:data-[highlighted]:bg-red-900',
@@ -208,6 +219,7 @@ export const comboFieldItemVariants = cva(
       },
     },
     defaultVariants: {
+      compact: false,
       color: 'slate',
     },
   }

@@ -1,18 +1,18 @@
 import type { JSX } from 'react'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
-  useActionData,
+  redirect,
   useLoaderData,
   useNavigation,
+  useSearchParams,
 } from 'react-router'
 
 import type { User, UserAuditLog } from '@prisma/client'
 
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
-import { UserDeactivate } from '~/features/users/components/UserDeactivate'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { validateRole } from '~/features/users/utils/roleUtils'
 import {
@@ -27,6 +27,7 @@ import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { toast } from '~/utils/toastUtils'
 
 export const handle: RouteMetadata = {
   authorization: {
@@ -43,11 +44,6 @@ type LoaderData = {
       displayName: string | null
     }
   })[]
-}
-
-type ActionData = {
-  error?: string
-  success?: 'role' | 'deactivate' | 'reactivate' | 'displayName'
 }
 
 export const loader = async ({
@@ -76,7 +72,7 @@ export const loader = async ({
 export const action = async ({
   request,
   params,
-}: ActionFunctionArgs): Promise<ActionData> => {
+}: ActionFunctionArgs): Promise<Response> => {
   const currentUser = await requireUserWithMetadata(request, handle)
 
   const { userId } = params
@@ -87,7 +83,6 @@ export const action = async ({
   const formData = await request.formData()
   const intent = formData.get('intent')
   const roleValue = formData.get('role')
-  const reason = (formData.get('reason') as string | null) || undefined
 
   try {
     if (intent === 'updateDisplayName') {
@@ -99,7 +94,7 @@ export const action = async ({
         performedBy: currentUser.id,
       })
 
-      return { success: 'displayName' }
+      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=displayName`)
     }
 
     if (intent === 'updateRole') {
@@ -109,30 +104,27 @@ export const action = async ({
         userId,
         newRole,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'role' }
+      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=role`)
     }
 
     if (intent === 'deactivate') {
       await deactivateUser({
         userId,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'deactivate' }
+      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=deactivate`)
     }
 
     if (intent === 'reactivate') {
       await reactivateUser({
         userId,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'reactivate' }
+      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=reactivate`)
     }
 
     throw new Response('Invalid intent', { status: 400 })
@@ -140,74 +132,52 @@ export const action = async ({
     if (error instanceof Response) {
       throw error
     }
-    return {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    return redirect(
+      `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?error=${encodeURIComponent(errorMessage)}`
+    )
   }
 }
 
 export default function UserDetailRoute(): JSX.Element {
   const { t } = useTranslation()
   const { targetUser, auditLogs } = useLoaderData<typeof loader>()
-  const actionData = useActionData<typeof action>()
   const navigation = useNavigation()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const isSubmitting = navigation.state === 'submitting'
 
-  // Accumulate success types
-  const successTypesRef = useRef<NonNullable<ActionData['success']>[]>([])
-
-  const getSuccessMessage = (
-    successType: NonNullable<ActionData['success']>
-  ): string => {
-    switch (successType) {
-      case 'role':
-        return t('users.messages.roleUpdatedSuccessfully')
-      case 'deactivate':
-        return t('users.messages.userDeactivatedSuccessfully')
-      case 'reactivate':
-        return t('users.messages.userReactivatedSuccessfully')
-      case 'displayName':
-        return t('users.messages.displayNameUpdatedSuccessfully')
-    }
-  }
-
-  // Add new success types to the accumulated list
+  // Handle success and error toasts
   useEffect(() => {
-    if (actionData?.success && !successTypesRef.current.includes(actionData.success)) {
-      successTypesRef.current.push(actionData.success)
-    }
-  }, [actionData?.success])
+    const success = searchParams.get('success')
+    const error = searchParams.get('error')
 
-  const hasSuccessMessages = successTypesRef.current.length > 0
+    if (success === 'role') {
+      toast.success(t('users.messages.roleUpdatedSuccessfully'))
+    } else if (success === 'deactivate') {
+      toast.success(t('users.messages.userDeactivatedSuccessfully'))
+    } else if (success === 'reactivate') {
+      toast.success(t('users.messages.userReactivatedSuccessfully'))
+    } else if (success === 'displayName') {
+      toast.success(t('users.messages.displayNameUpdatedSuccessfully'))
+    }
+
+    if (error) {
+      toast.error(decodeURIComponent(error))
+    }
+
+    // Clean up search params after showing toasts
+    if (success || error) {
+      searchParams.delete('success')
+      searchParams.delete('error')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
 
   return (
-    <>
-      {actionData?.error ? (
-        <div className='bg-destructive/10 text-destructive mb-4 rounded-md p-4'>
-          {actionData.error}
-        </div>
-      ) : null}
-
-      {hasSuccessMessages ? (
-        <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
-          {successTypesRef.current.length === 1 ? (
-            <div>{getSuccessMessage(successTypesRef.current[0])}</div>
-          ) : (
-            <ul className='list-inside list-disc space-y-1'>
-              {successTypesRef.current.map((type, index) => (
-                <li key={index}>{getSuccessMessage(type)}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ) : null}
-
-      <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
-        <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
-        <UserDeactivate user={targetUser} isSubmitting={isSubmitting} />
-        <UserAuditLogList auditLogs={auditLogs} />
-      </div>
-    </>
+    <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
+      <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
+      <UserAuditLogList auditLogs={auditLogs} />
+    </div>
   )
 }

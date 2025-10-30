@@ -1,29 +1,32 @@
 import { JSX } from 'react'
+import type { FetcherWithComponents } from 'react-router'
 
-import type { User } from '@prisma/client'
+import type { Role, User } from '@prisma/client'
 import { Text } from '@radix-ui/themes'
 import { ColumnDef } from '@tanstack/react-table'
 
+import { Badge } from '~/components/Badge'
 import { DataTableColumnHeader } from '~/components/DataTable'
 import { EditIcon } from '~/components/icons'
+import { ComboField, type Option } from '~/components/inputs/ComboField'
 import {
   datatableActionButtonVariants,
   datatableCellTextVariants,
 } from '~/components/shared/datatable.variants'
 import { cn } from '~/utils/misc'
 
-import { getRoleBadgeVariant } from '../utils/roleUtils'
-import { RoleDropdown } from './RoleDropdown'
+const ROLES: Role[] = ['PUBLIC', 'MANAGER', 'ADMIN', 'REFEREE', 'EDITOR', 'BILLING']
 
 type ColumnContext = {
   t: (key: string, options?: Record<string, unknown>) => string
   formatDate: (date: Date | string) => string
   onEdit: (id: string) => void
   latinFontClass: string
+  fetcher: FetcherWithComponents<unknown>
 }
 
 export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
-  const { t, formatDate, onEdit, latinFontClass } = context
+  const { t, formatDate, onEdit, latinFontClass, fetcher } = context
 
   return [
     {
@@ -45,16 +48,7 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
           </Text>
           {!row.original.active ? (
             <div className='mt-1'>
-              <Text
-                className={cn(
-                  'text-destructive',
-                  datatableCellTextVariants({
-                    variant: 'secondary',
-                  })
-                )}
-              >
-                {t('users.messages.deactivated')}
-              </Text>
+              <Badge color='red'>{t('users.messages.deactivated')}</Badge>
             </div>
           ) : null}
         </div>
@@ -65,7 +59,13 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
     {
       accessorKey: 'displayName',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('users.fields.displayName')} />
+        <div className='flex w-full justify-start'>
+          <DataTableColumnHeader
+            column={column}
+            title={t('users.fields.displayName')}
+            className='justify-start'
+          />
+        </div>
       ),
       cell: ({ row }) => (
         <Text
@@ -83,32 +83,64 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
     },
     {
       accessorKey: 'role',
+      id: 'assignedRole',
       header: ({ column }) => (
-        <div className='flex justify-center'>
+        <div className='flex justify-start'>
           <DataTableColumnHeader
             column={column}
-            title={t('users.fields.currentRole')}
+            title={t('users.fields.assignedRole')}
+            className='justify-start'
           />
         </div>
       ),
-      cell: ({ row }) => (
-        <div className='flex justify-center pt-0.5'>
-          <span className={getRoleBadgeVariant(row.original.role)}>
-            {t(`roles.${row.original.role.toLowerCase()}`)}
-          </span>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const roleOptions: Option[] = ROLES.map(role => ({
+          value: role,
+          label: t(`roles.${role.toLowerCase()}`),
+        }))
+
+        return (
+          <div
+            className='flex items-center justify-start'
+            onClick={event => event.stopPropagation()}
+          >
+            <ComboField
+              name={`role-${row.original.id}`}
+              options={roleOptions}
+              value={row.original.role}
+              onChange={newRole => {
+                if (newRole !== row.original.role) {
+                  const formData = new FormData()
+                  formData.set('intent', 'updateRole')
+                  formData.set('userId', row.original.id)
+                  formData.set('role', newRole)
+                  fetcher.submit(formData, { method: 'post' })
+                }
+              }}
+              disabled={!row.original.active}
+              compact={true}
+              color='slate'
+              className='w-32'
+            />
+          </div>
+        )
+      },
       enableSorting: true,
+      enableHiding: false,
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => (
-        <div className='flex justify-center'>
-          <DataTableColumnHeader column={column} title={t('users.fields.createdAt')} />
+        <div className='flex justify-start'>
+          <DataTableColumnHeader
+            column={column}
+            title={t('users.fields.createdAt')}
+            className='justify-start'
+          />
         </div>
       ),
       cell: ({ row }) => (
-        <div className='text-center'>
+        <div className='text-start'>
           <Text
             className={datatableCellTextVariants({
               variant: 'secondary',
@@ -134,21 +166,6 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
         const dateB = new Date(rowB.original.createdAt).getTime()
         return dateA - dateB
       },
-    },
-    {
-      id: 'assignRole',
-      header: () => (
-        <div className='flex justify-center'>
-          <span className='font-semibold'>{t('users.fields.assignRole')}</span>
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className='flex items-center justify-center'>
-          <RoleDropdown user={row.original} />
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false,
     },
     {
       id: 'actions',

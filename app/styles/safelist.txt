@@ -172,6 +172,16 @@ border-fuchsia-600/70
 border-pink-600/70
 border-rose-600/70
 
+# Border colors with opacity - Disabled states
+border-border/40
+hover:border-border/40
+focus:border-border/40
+data-[state=open]:border-border/40
+hover:shadow-none
+focus:ring-0
+data-[state=open]:ring-0
+opacity-70
+
 # Ring colors - Light mode
 focus-visible:ring-emerald-600
 hover:ring-emerald-600

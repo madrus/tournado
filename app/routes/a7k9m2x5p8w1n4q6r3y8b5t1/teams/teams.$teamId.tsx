@@ -346,7 +346,7 @@ export default function AdminTeamPage(): JSX.Element {
           {/* Delete Button */}
           <div className='flex-shrink-0'>
             <ConfirmDialog
-              intent='success'
+              intent='danger'
               trigger={
                 <ActionButton icon='delete' variant='secondary'>
                   {t('common.actions.delete')}
@@ -358,7 +358,7 @@ export default function AdminTeamPage(): JSX.Element {
                 'Are you sure you want to delete this team? This action cannot be undone.'
               )}
               confirmLabel={t('common.actions.confirm', 'Yes, delete')}
-              cancelLabel={t('common.actions.cancel', 'Cancel')}
+              cancelLabel={t('common.actions.cancel')}
               // Destructive: focus cancel first per request
               destructive
               onConfirm={submitDelete}

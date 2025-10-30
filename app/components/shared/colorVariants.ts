@@ -41,6 +41,7 @@ export const COLOR_VARIANT_KEYS = {
   fuchsia: 'fuchsia',
   pink: 'pink',
   rose: 'rose',
+  disabled: 'disabled',
 } as const
 
 /**

@@ -571,12 +571,12 @@
     color: var(--color-adaptive-cell-muted);
   }
 
-  /* Nuclear option: completely disable all visual changes on disabled buttons */
-  button:disabled,
-  button:disabled:hover,
-  button:disabled:focus,
-  button:disabled:focus-visible,
-  button:disabled:active {
+  /* Nuclear option: completely disable all visual changes on disabled buttons (except combobox) */
+  button:disabled:not([role='combobox']),
+  button:disabled:not([role='combobox']):hover,
+  button:disabled:not([role='combobox']):focus,
+  button:disabled:not([role='combobox']):focus-visible,
+  button:disabled:not([role='combobox']):active {
     --tw-ring-width: 0px !important;
     --tw-ring-offset-width: 0px !important;
     --tw-ring-color: transparent !important;
@@ -607,20 +607,28 @@
     --tw-ring-offset-width: 2px !important;
   }
 
-  /* Force border color to stay consistent on disabled buttons */
-  button:disabled,
-  button:disabled:hover,
-  button:disabled:focus,
-  button:disabled:focus-visible {
+  /* Force border color to stay consistent on disabled buttons (except combobox) */
+  button:disabled:not([role='combobox']),
+  button:disabled:not([role='combobox']):hover,
+  button:disabled:not([role='combobox']):focus,
+  button:disabled:not([role='combobox']):focus-visible {
     border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
   }
 
-  /* Dark mode disabled button border override */
-  .dark button:disabled,
-  .dark button:disabled:hover,
-  .dark button:disabled:focus,
-  .dark button:disabled:focus-visible {
+  /* Dark mode disabled button border override (except combobox) */
+  .dark button:disabled:not([role='combobox']),
+  .dark button:disabled:not([role='combobox']):hover,
+  .dark button:disabled:not([role='combobox']):focus,
+  .dark button:disabled:not([role='combobox']):focus-visible {
     border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
+  }
+
+  /* ComboField disabled variant - restore border width, allow utility classes to set border color */
+  button[role='combobox']:disabled,
+  button[role='combobox']:disabled:hover,
+  button[role='combobox']:disabled:focus,
+  button[role='combobox']:disabled:focus-visible {
+    border-width: 2px !important;
   }
 
   /* UserMenu light mode - force red colors */

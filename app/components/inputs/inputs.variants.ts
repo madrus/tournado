@@ -73,9 +73,10 @@ export const textInputFieldVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
+        disabled: 'border-slate-200 dark:border-slate-800',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
@@ -87,15 +88,17 @@ export const textInputFieldVariants = cva(
 // ComboField trigger button variants
 export const comboFieldTriggerVariants = cva(
   [
-    'flex w-full items-center justify-between rounded-md px-3 text-lg border-2',
+    'flex w-full items-center gap-1 rounded-md text-lg border-2',
     'bg-input text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
+    'pl-3 pr-1 rtl:pl-1 rtl:pr-3',
+    '[&>div:first-child]:flex-1',
   ],
   {
     variants: {
       compact: {
-        true: 'py-1.5 text-sm',
+        true: 'py-1 text-sm',
         false: 'h-12 py-2',
       },
       color: {
@@ -132,9 +135,8 @@ export const comboFieldTriggerVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-700/50 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30 data-[state=open]:border-fuchsia-500 data-[state=open]:ring-4 data-[state=open]:ring-fuchsia-500/20',
         rose: 'border-rose-700/30 hover:border-rose-700/50 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30 data-[state=open]:border-rose-500 data-[state=open]:ring-4 data-[state=open]:ring-rose-500/20',
-      },
-      disabled: {
-        true: 'border-2 border-slate-300 cursor-not-allowed opacity-50 hover:border-slate-300 hover:shadow-none focus:border-slate-300 focus:ring-0 data-[state=open]:border-slate-300 data-[state=open]:ring-0 dark:border-slate-600 dark:hover:border-slate-600 dark:focus:border-slate-600 dark:data-[state=open]:border-slate-600',
+        disabled:
+          '!outline-none border-2 border-border/20 border-slate-200 cursor-not-allowed opacity-50 dark:!border-slate-800',
       },
       error: {
         true: 'border-destructive hover:border-destructive hover:shadow-md hover:shadow-destructive/20 focus:border-destructive focus:ring-4 focus:ring-destructive/20 dark:hover:shadow-destructive/30 dark:focus:ring-destructive/30 data-[state=open]:border-destructive data-[state=open]:ring-4 data-[state=open]:ring-destructive/20',
@@ -152,15 +154,17 @@ export const comboFieldContentVariants = cva(
   {
     variants: {
       color: createColorVariantMapping(color => {
-        // Special mappings for brand/primary
-        if (color === 'brand') {
-          return 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50'
+        // Special mappings
+        switch (color) {
+          case 'brand':
+            return 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50'
+          case 'primary':
+            return 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50'
+          case 'disabled':
+            return 'bg-slate-50 text-slate-500 combo-content-bg dark:bg-slate-800 dark:text-slate-400'
+          default:
+            return `bg-${color}-50 text-${color}-800 combo-content-bg dark:text-${color}-50`
         }
-        if (color === 'primary') {
-          return 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50'
-        }
-        // Standard pattern for all other colors
-        return `bg-${color}-50 text-${color}-800 combo-content-bg dark:text-${color}-50`
       }),
     },
     defaultVariants: {
@@ -216,6 +220,7 @@ export const comboFieldItemVariants = cva(
         fuchsia:
           'text-fuchsia-800 hover:bg-fuchsia-100 focus:bg-fuchsia-100 data-[highlighted]:bg-fuchsia-100 dark:text-fuchsia-50 dark:hover:bg-fuchsia-900 dark:focus:bg-fuchsia-900 dark:data-[highlighted]:bg-fuchsia-900',
         rose: 'text-rose-800 hover:bg-rose-100 focus:bg-rose-100 data-[highlighted]:bg-rose-100 dark:text-rose-50 dark:hover:bg-rose-900 dark:focus:bg-rose-900 dark:data-[highlighted]:bg-rose-900',
+        disabled: 'text-slate-500 bg-slate-50 dark:text-slate-400 dark:bg-slate-800',
       },
     },
     defaultVariants: {
@@ -282,9 +287,10 @@ export const datePickerButtonVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
+        disabled: 'border-slate-200 dark:border-slate-800',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border-destructive hover:border-destructive hover:shadow-md hover:shadow-destructive/20 focus:border-destructive focus:ring-4 focus:ring-destructive/20 dark:hover:shadow-destructive/30 dark:focus:ring-destructive/30',
@@ -414,9 +420,10 @@ export const dateInputFieldVariants = cva(
         fuchsia:
           'border border-fuchsia-700/30 hover:border-2 hover:border-fuchsia-700/50 focus:border-2 focus:border-fuchsia-200',
         rose: 'border border-rose-700/30 hover:border-2 hover:border-rose-700/50 focus:border-2 focus:border-rose-200',
+        disabled: 'border-slate-200 dark:border-slate-800',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
@@ -470,9 +477,10 @@ export const checkboxAgreementFieldVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
+        disabled: 'border-slate-200 dark:border-slate-800',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',
@@ -524,9 +532,10 @@ export const checkboxAgreementInputVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30 checked:bg-fuchsia-600 checked:border-fuchsia-600',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30 checked:bg-rose-600 checked:border-rose-600',
+        disabled: 'border-slate-200 dark:border-slate-800',
       },
       disabled: {
-        true: 'border-button-neutral-tertiary-border cursor-not-allowed opacity-50',
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border border-error/30 hover:border-2 hover:border-brand-700/50 focus:border-2 focus:border-brand-200',

@@ -11,6 +11,7 @@ import { ComboField, type Option } from '~/components/inputs/ComboField'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
 import { VALID_ROLES } from '~/features/users/utils/roleUtils'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
 const USER_ACTIVE_BUTTON_COLOR = 'red' as const
 const USER_INACTIVE_BUTTON_COLOR = 'amber' as const
@@ -23,6 +24,7 @@ type UserDetailCardProps = {
 export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Element => {
   const { user, isSubmitting = false } = props
   const { t } = useTranslation()
+  const { latinFontClass } = useLanguageDirection()
   const displayNameFormRef = useRef<HTMLFormElement>(null)
   const roleFormRef = useRef<HTMLFormElement>(null)
   const deactivateFormRef = useRef<HTMLFormElement>(null)
@@ -122,14 +124,14 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
           <label className='text-foreground/80 text-sm font-medium'>
             {t('users.fields.email')}
           </label>
-          <div className='text-foreground mt-1'>{user.email}</div>
+          <div className={`text-foreground mt-1 ${latinFontClass}`}>{user.email}</div>
         </div>
 
         <div>
           <label className='text-foreground/80 text-sm font-medium'>
             {t('users.fields.createdAt')}
           </label>
-          <div className='text-foreground mt-1'>
+          <div className={`text-foreground mt-1 ${latinFontClass}`}>
             {new Date(user.createdAt).toLocaleString()}
           </div>
         </div>
@@ -146,6 +148,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
             placeholder={t('users.placeholders.displayName')}
             disabled={isSubmitting}
             color='teal'
+            className={latinFontClass}
             onBlur={event => {
               // Auto-submit on blur if value changed
               if (displayName !== (user.displayName || '')) {

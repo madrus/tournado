@@ -116,6 +116,7 @@ Database & Data Model [Implemented]
   - [x] Users menu item in AppBar (ADMIN only, uses 'people' icon → GroupIcon)
   - [x] User Management tile in Admin Dashboard
   - [x] User deactivation/reactivation with ConfirmDialog modal and audit trail
+  - [x] ComboField styling enhancements (disabled border, RTL icon positioning, animated chevron, compact height, Latin fonts)
 - [ ] User approval/rejection system for new registrations (pending)
 - [ ] Advanced filtering and search capabilities (pending)
 

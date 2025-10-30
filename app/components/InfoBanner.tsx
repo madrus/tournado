@@ -44,12 +44,10 @@ export type InfoBannerProps = {
   className?: string
 }
 
-export function InfoBanner({
+export const InfoBanner = ({
   children,
   variant = 'info',
   className,
-}: InfoBannerProps): JSX.Element {
-  return (
-    <div className={cn(infoBannerVariants({ variant }), className)}>{children}</div>
-  )
-}
+}: InfoBannerProps): JSX.Element => (
+  <div className={cn(infoBannerVariants({ variant }), className)}>{children}</div>
+)

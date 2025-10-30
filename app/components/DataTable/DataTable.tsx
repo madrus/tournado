@@ -53,6 +53,7 @@ function getHeaderClasses(color: DatatableColorVariant): string {
     fuchsia: 'bg-white dark:bg-fuchsia-950',
     pink: 'bg-white dark:bg-pink-950',
     rose: 'bg-white dark:bg-rose-950',
+    disabled: 'bg-white dark:bg-slate-950',
   }
   return headerClasses[color]
 }
@@ -91,6 +92,7 @@ function getStripeClasses(color: DatatableColorVariant, isEven: boolean): string
       'bg-white hover:bg-fuchsia-200 dark:bg-fuchsia-950 dark:hover:bg-fuchsia-800',
     pink: 'bg-white hover:bg-pink-200 dark:bg-pink-950 dark:hover:bg-pink-800',
     rose: 'bg-white hover:bg-rose-200 dark:bg-rose-950 dark:hover:bg-rose-800',
+    disabled: 'bg-white hover:bg-slate-200 dark:bg-slate-950 dark:hover:bg-slate-800',
   }
 
   // isEven=false: darker rows (-100 in light, -900 in dark)
@@ -124,6 +126,8 @@ function getStripeClasses(color: DatatableColorVariant, isEven: boolean): string
       'bg-fuchsia-100 hover:bg-fuchsia-200 dark:bg-fuchsia-900 dark:hover:bg-fuchsia-800',
     pink: 'bg-pink-100 hover:bg-pink-200 dark:bg-pink-900 dark:hover:bg-pink-800',
     rose: 'bg-rose-100 hover:bg-rose-200 dark:bg-rose-900 dark:hover:bg-rose-800',
+    disabled:
+      'bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800',
   }
 
   return isEven ? evenClasses[color] : oddClasses[color]

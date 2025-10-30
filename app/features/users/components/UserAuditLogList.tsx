@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Panel } from '~/components/Panel'
 import type { AuditLogWithAdmin } from '~/features/users/types'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
 type UserAuditLogListProps = {
   auditLogs: readonly AuditLogWithAdmin[]
@@ -11,6 +12,7 @@ type UserAuditLogListProps = {
 export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.Element {
   const { auditLogs } = props
   const { t } = useTranslation()
+  const { latinFontClass } = useLanguageDirection()
 
   return (
     <Panel color='sky' variant='content-panel'>
@@ -32,16 +34,22 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
                     })}
                   </div>
                   {log.previousValue && log.newValue ? (
-                    <div className='text-foreground/80 mt-1 text-sm'>
+                    <div
+                      className={`text-foreground/80 mt-1 text-sm ${latinFontClass}`}
+                    >
                       {log.previousValue} → {log.newValue}
                     </div>
                   ) : null}
                 </div>
                 <div className='text-foreground/70 text-xs md:text-right'>
-                  <div>{new Date(log.createdAt).toLocaleString()}</div>
+                  <div className={latinFontClass}>
+                    {new Date(log.createdAt).toLocaleString()}
+                  </div>
                   <div className='mt-1'>
                     {t('users.fields.performedBy')}:{' '}
-                    {log.admin.displayName || log.admin.email}
+                    <span className={latinFontClass}>
+                      {log.admin.displayName || log.admin.email}
+                    </span>
                   </div>
                 </div>
               </div>

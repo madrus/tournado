@@ -19,12 +19,12 @@ vi.mock('~/utils/iconUtils', () => ({
   renderIcon: vi.fn((name, props) => <span data-testid={`icon-${name}`} {...props} />),
 }))
 
-// Mock the AnimatedUnfoldIcon while preserving other exports
+// Mock the AnimatedArrowIcon while preserving other exports
 vi.mock('~/components/icons', async importOriginal => {
   const actual = (await importOriginal()) as Record<string, unknown>
   return {
     ...actual,
-    AnimatedUnfoldIcon: ({
+    AnimatedArrowIcon: ({
       isOpen,
       className,
       'aria-label': ariaLabel,
@@ -34,13 +34,11 @@ vi.mock('~/components/icons', async importOriginal => {
       'aria-label'?: string
     }) => (
       <div
-        data-testid={
-          isOpen ? 'animated-unfold-icon-open' : 'animated-unfold-icon-closed'
-        }
+        data-testid={isOpen ? 'animated-arrow-open' : 'animated-arrow-closed'}
         className={className}
         aria-label={ariaLabel}
       >
-        {isOpen ? 'unfold_less' : 'unfold_more'}
+        chevron
       </div>
     ),
   }
@@ -196,30 +194,30 @@ describe('ComboField', () => {
     expect(mockOnChange).toHaveBeenCalled()
   })
 
-  it('should display animated unfold icon in closed state', () => {
+  it('should display animated arrow icon in closed state', () => {
     render(<ComboField {...defaultProps} />)
 
-    // Should show the closed state icon
-    expect(screen.getByTestId('animated-unfold-icon-closed')).toBeInTheDocument()
-    expect(screen.getByText('unfold_more')).toBeInTheDocument()
+    // Should show the closed state icon (chevron pointing down)
+    expect(screen.getByTestId('animated-arrow-closed')).toBeInTheDocument()
+    expect(screen.getByText('chevron')).toBeInTheDocument()
   })
 
   it('should animate icon when dropdown opens', async () => {
     const user = userEvent.setup()
     render(<ComboField {...defaultProps} />)
 
-    // Initially closed
-    expect(screen.getByTestId('animated-unfold-icon-closed')).toBeInTheDocument()
+    // Initially closed (chevron pointing down)
+    expect(screen.getByTestId('animated-arrow-closed')).toBeInTheDocument()
 
     // Open the dropdown
     const trigger = screen.getByRole('combobox')
     await user.click(trigger)
 
-    // Wait for the icon to change to open state with crossfade
+    // Wait for the icon to change to open state with rotation
     await waitFor(() => {
-      expect(screen.getByTestId('animated-unfold-icon-open')).toBeInTheDocument()
-      // Should show unfold_less when open
-      expect(screen.getByText('unfold_less')).toBeInTheDocument()
+      expect(screen.getByTestId('animated-arrow-open')).toBeInTheDocument()
+      // Should show chevron rotated 180 degrees (pointing up)
+      expect(screen.getByText('chevron')).toBeInTheDocument()
     })
   })
 

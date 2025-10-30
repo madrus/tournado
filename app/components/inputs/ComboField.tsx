@@ -3,7 +3,7 @@ import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
 import * as Select from '@radix-ui/react-select'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
-import { AnimatedUnfoldIcon } from '~/components/icons'
+import { AnimatedArrowIcon } from '~/components/icons'
 import { type ColorAccent } from '~/lib/lib.types'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
@@ -78,6 +78,9 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
     const safeValue = value || ''
     const direction = getDirection()
 
+    // Map disabled state to color variant
+    const effectiveColor = disabled ? 'disabled' : color
+
     // Handle blur when dropdown closes
     const handleCloseAutoFocus = (event: Event) => {
       // Prevent default auto focus behavior when closing
@@ -123,9 +126,8 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               aria-label={label ? `${label} - select option` : 'Select option'}
               className={cn(
                 comboFieldTriggerVariants({
-                  color,
+                  color: effectiveColor,
                   compact,
-                  disabled: disabled ? true : undefined,
                   error: error ? true : undefined,
                 }),
                 safeValue === '' ? 'text-foreground' : ''
@@ -140,18 +142,22 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               >
                 <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
               </div>
-              <Select.Icon className='text-foreground ms-1'>
-                <AnimatedUnfoldIcon
-                  isOpen={isOpen}
-                  className='h-6 w-6'
-                  aria-label={isOpen ? 'Collapse options' : 'Expand options'}
-                />
-              </Select.Icon>
+              {!disabled ? (
+                <Select.Icon className='text-foreground rtl:order-first'>
+                  <AnimatedArrowIcon
+                    isOpen={isOpen}
+                    className='h-6 w-6'
+                    aria-label={isOpen ? 'Collapse options' : 'Expand options'}
+                  />
+                </Select.Icon>
+              ) : (
+                <div className='h-6 w-6 rtl:order-first' aria-hidden='true' />
+              )}
             </Select.Trigger>
 
             <Select.Portal>
               <Select.Content
-                className={comboFieldContentVariants({ color })}
+                className={comboFieldContentVariants({ color: effectiveColor })}
                 position='popper'
                 sideOffset={4}
                 onCloseAutoFocus={handleCloseAutoFocus}
@@ -163,7 +169,10 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                     <Select.Item
                       key={opt.value}
                       value={opt.value}
-                      className={comboFieldItemVariants({ color, compact })}
+                      className={comboFieldItemVariants({
+                        color: effectiveColor,
+                        compact,
+                      })}
                     >
                       <Select.ItemText>{opt.label}</Select.ItemText>
                       <Select.ItemIndicator className='absolute end-2 flex h-3.5 w-3.5 items-center justify-center'>

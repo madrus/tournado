@@ -116,6 +116,7 @@ export type ColorAccent =
   | 'fuchsia'
   | 'pink'
   | 'rose'
+  | 'disabled'
 
 // ============================================================================
 // Division & Category System (Shared)

@@ -113,15 +113,12 @@ pnpm docs           # Start Docsify documentation server on port 3030
 
 **NO CROSS-FEATURE RE-EXPORTS**: Do not create central re-export hubs that aggregate exports from multiple features. Each feature should be imported from its own location.
 
-**Barrel Files (index.ts) - ALLOWED WITH CAVEATS**:
+**Barrel Files (index.ts) - ENCOURAGED**:
 
-- **Component barrel files** within a feature are **allowed** for cleaner production imports
+- **Barrel files are encouraged** for cleaner imports throughout the codebase
 - **Example**: `~/features/firebase/components/FirebaseAuth/index.ts` can re-export components from the same directory
 - **Benefits**: Shorter import paths, better organization, no tree-shaking issues with modern bundlers
-- **Testing pattern**: Tests should use **direct imports** (e.g., `from '../FirebaseEmailSignIn'`) instead of barrel imports to avoid:
-   - Circular dependency issues in test environments
-   - Difficulty mocking individual exports
-   - Performance overhead from loading unnecessary modules
+- **Note for tests**: If you encounter circular dependency issues in test environments, you can use direct imports (e.g., `from '../FirebaseEmailSignIn'`) as a workaround, but this is not a requirement
 
 **Type Organization**:
 
@@ -132,22 +129,15 @@ pnpm docs           # Start Docsify documentation server on port 3030
 **Import Pattern Examples**:
 
 ```typescript
-// ✅ CORRECT - Production code: Use barrel files for cleaner imports
+// ✅ CORRECT - Use barrel files for cleaner imports
 import { FirebaseSignIn, FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
 import { Team, TeamFormData } from '~/features/teams/types'
 import { Tournament } from '~/features/tournaments/types'
 import { IconProps, ColorAccent } from '~/lib/lib.types'
 
-// ✅ CORRECT - Test code: Use direct imports for better isolation
-import { FirebaseEmailSignIn } from '../FirebaseEmailSignIn'
-import { firebaseAuthFormVariants } from '../firebaseAuth.variants'
-
 // ❌ WRONG - Cross-feature re-exports from a central location
 // DO NOT create ~/lib/lib.types that re-exports Team, Tournament, etc.
 import { Team, Tournament } from '~/lib/lib.types'
-
-// ❌ WRONG - Test importing from barrel (can cause circular deps)
-import { FirebaseEmailSignIn } from '~/features/firebase/components/FirebaseAuth'
 ```
 
 **Benefits of This Pattern**:
@@ -190,7 +180,7 @@ app/features/{feature}/
 
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
-- **No semicolons**. Follow the codebase convention of omitting semicolons in JavaScript/TypeScript code
+- **No semicolons**. Do not add semicolons to new code. Prettier will automatically remove them from existing code during formatting
 
 ### Claude Behavior Rules
 

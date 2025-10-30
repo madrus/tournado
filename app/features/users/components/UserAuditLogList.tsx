@@ -25,7 +25,11 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
       ) : (
         <div className='space-y-4'>
           {auditLogs.map(log => (
-            <div key={log.id} className='border-primary border-l-2 py-2 pl-4'>
+            <div
+              key={log.id}
+              className='border-primary border-l-2 py-2 pl-4'
+              data-testid='audit-log-entry'
+            >
               <div className='flex flex-col items-start gap-2 md:flex-row md:justify-between'>
                 <div>
                   <div className='font-medium'>
@@ -42,7 +46,7 @@ export function UserAuditLogList(props: Readonly<UserAuditLogListProps>): JSX.El
                   ) : null}
                 </div>
                 <div className='text-foreground/70 text-xs md:text-right'>
-                  <div className={latinFontClass}>
+                  <div className={latinFontClass} data-testid='audit-log-timestamp'>
                     {new Date(log.createdAt).toLocaleString()}
                   </div>
                   <div className='mt-1'>

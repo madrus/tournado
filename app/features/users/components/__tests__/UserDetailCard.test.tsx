@@ -1,0 +1,419 @@
+import type { User } from '@prisma/client'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { describe, expect, it, vi } from 'vitest'
+
+import { UserDetailCard } from '../UserDetailCard'
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      if (key.startsWith('roles.')) {
+        const role = key.replace('roles.', '').toUpperCase()
+        return `Role: ${role}`
+      }
+      return key
+    },
+  }),
+}))
+
+// Mock react-router Form component
+vi.mock('react-router', () => ({
+  Form: ({
+    children,
+    method,
+    ...props
+  }: {
+    children: React.ReactNode
+    method?: string
+    ref?: React.Ref<HTMLFormElement>
+  }) => (
+    <form method={method} {...props}>
+      {children}
+    </form>
+  ),
+}))
+
+// Mock useLanguageDirection hook
+vi.mock('~/hooks/useLanguageDirection', () => ({
+  useLanguageDirection: () => ({
+    latinFontClass: 'font-latin',
+  }),
+}))
+
+// Mock Panel component
+vi.mock('~/components/Panel', () => ({
+  Panel: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid='panel'>{children}</div>
+  ),
+}))
+
+// Mock Badge component
+vi.mock('~/components/Badge', () => ({
+  Badge: ({ children, color }: { children: React.ReactNode; color: string }) => (
+    <span data-testid='badge' data-color={color}>
+      {children}
+    </span>
+  ),
+}))
+
+// Mock ActionButton
+vi.mock('~/components/buttons/ActionButton', () => ({
+  ActionButton: ({
+    children,
+    onClick,
+    disabled,
+    type,
+  }: {
+    children: React.ReactNode
+    onClick?: () => void
+    disabled?: boolean
+    type?: 'button' | 'submit'
+  }) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      data-testid='action-button'
+    >
+      {children}
+    </button>
+  ),
+}))
+
+// Mock ConfirmDialog
+vi.mock('~/components/ConfirmDialog', () => ({
+  ConfirmDialog: ({
+    trigger,
+    onConfirm,
+  }: {
+    trigger: React.ReactNode
+    onConfirm: () => void
+  }) => (
+    <div data-testid='confirm-dialog'>
+      {trigger}
+      <button onClick={onConfirm} data-testid='confirm-button'>
+        Confirm
+      </button>
+    </div>
+  ),
+}))
+
+// Mock TextInputField
+vi.mock('~/components/inputs/TextInputField', () => ({
+  TextInputField: ({
+    name,
+    value,
+    onChange,
+    onBlur,
+    disabled,
+  }: {
+    name: string
+    value: string
+    onChange: (value: string) => void
+    onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
+    disabled?: boolean
+  }) => (
+    <input
+      name={name}
+      value={value}
+      onChange={event => onChange(event.target.value)}
+      onBlur={onBlur}
+      disabled={disabled}
+      data-testid={`input-${name}`}
+    />
+  ),
+}))
+
+// Mock ComboField
+vi.mock('~/components/inputs/ComboField', () => ({
+  ComboField: ({
+    name,
+    value,
+    onChange,
+    disabled,
+  }: {
+    name: string
+    value: string
+    onChange: (value: string) => void
+    disabled?: boolean
+  }) => (
+    <select
+      name={name}
+      value={value}
+      onChange={event => onChange(event.target.value)}
+      disabled={disabled}
+      data-testid={`select-${name}`}
+    >
+      <option value='PUBLIC'>Role: PUBLIC</option>
+      <option value='MANAGER'>Role: MANAGER</option>
+      <option value='ADMIN'>Role: ADMIN</option>
+    </select>
+  ),
+}))
+
+describe('UserDetailCard', () => {
+  const mockActiveUser: User = {
+    id: 'user-1',
+    firstName: 'Test',
+    lastName: 'User',
+    email: 'test@example.com',
+    firebaseUid: 'firebase-user-1',
+    displayName: 'Test User',
+    role: 'PUBLIC',
+    active: true,
+    createdAt: new Date('2024-01-15T10:30:00Z'),
+    updatedAt: new Date('2024-01-15T10:30:00Z'),
+  }
+
+  const mockInactiveUser: User = {
+    ...mockActiveUser,
+    active: false,
+  }
+
+  describe('Rendering', () => {
+    it('should render user information correctly', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      expect(screen.getByText('users.titles.userInformation')).toBeInTheDocument()
+      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      expect(screen.getByDisplayValue('Test User')).toBeInTheDocument()
+    })
+
+    it('should display deactivate button for active users', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      expect(screen.getByText('users.actions.deactivateUser')).toBeInTheDocument()
+    })
+
+    it('should display reactivate button for inactive users', () => {
+      render(<UserDetailCard user={mockInactiveUser} />)
+
+      expect(screen.getByText('users.actions.reactivateUser')).toBeInTheDocument()
+    })
+
+    it('should show deactivated badge for inactive users', () => {
+      render(<UserDetailCard user={mockInactiveUser} />)
+
+      const badge = screen.getByTestId('badge')
+      expect(badge).toHaveTextContent('users.messages.deactivated')
+      expect(badge).toHaveAttribute('data-color', 'red')
+    })
+
+    it('should not show deactivated badge for active users', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const badges = screen.queryAllByTestId('badge')
+      expect(badges).toHaveLength(0)
+    })
+
+    it('should display created date', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      expect(screen.getByText('users.fields.createdAt')).toBeInTheDocument()
+    })
+
+    it('should render role combobox with current role', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toHaveValue('PUBLIC')
+    })
+  })
+
+  describe('Display name update', () => {
+    it('should update display name state when typing', async () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const input = screen.getByTestId('input-displayName')
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'New Name' } })
+      })
+
+      expect(input).toHaveValue('New Name')
+    })
+
+    it('should initialize display name with user value', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('Test User')
+    })
+
+    it('should initialize display name with empty string when user has no display name', () => {
+      const userWithoutName = { ...mockActiveUser, displayName: null }
+      render(<UserDetailCard user={userWithoutName} />)
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('')
+    })
+
+    it('should disable display name input when submitting', () => {
+      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toBeDisabled()
+    })
+  })
+
+  describe('Role update', () => {
+    it('should update role state when changed', async () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const roleSelect = screen.getByTestId('select-role')
+
+      await act(async () => {
+        fireEvent.change(roleSelect, { target: { value: 'ADMIN' } })
+      })
+
+      // Need to wait for the setTimeout to complete
+      await waitFor(() => {
+        expect(roleSelect).toHaveValue('ADMIN')
+      })
+    })
+
+    it('should not change role state when selecting the same value', async () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const roleSelect = screen.getByTestId('select-role')
+
+      await act(async () => {
+        fireEvent.change(roleSelect, { target: { value: 'PUBLIC' } })
+      })
+
+      expect(roleSelect).toHaveValue('PUBLIC')
+    })
+
+    it('should disable role select when submitting', () => {
+      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toBeDisabled()
+    })
+  })
+
+  describe('Deactivate/Reactivate functionality', () => {
+    it('should disable action button when submitting', () => {
+      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+
+      const button = screen.getByTestId('action-button')
+      expect(button).toBeDisabled()
+    })
+
+    it('should enable action button when not submitting', () => {
+      render(<UserDetailCard user={mockActiveUser} isSubmitting={false} />)
+
+      const button = screen.getByTestId('action-button')
+      expect(button).toBeEnabled()
+    })
+
+    it('should have correct intent for active user', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const intentInput = screen.getByDisplayValue('deactivate')
+      expect(intentInput).toHaveAttribute('name', 'intent')
+    })
+
+    it('should have correct intent for inactive user', () => {
+      render(<UserDetailCard user={mockInactiveUser} />)
+
+      const intentInput = screen.getByDisplayValue('reactivate')
+      expect(intentInput).toHaveAttribute('name', 'intent')
+    })
+  })
+
+  describe('Form submissions', () => {
+    it('should have hidden input for updateDisplayName intent', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const intentInput = screen.getByDisplayValue('updateDisplayName')
+      expect(intentInput).toHaveAttribute('name', 'intent')
+    })
+
+    it('should have hidden input for updateRole intent', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const intentInput = screen.getByDisplayValue('updateRole')
+      expect(intentInput).toHaveAttribute('name', 'intent')
+    })
+
+    it('should have userId hidden input in display name form', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const userIdInput = screen.getByDisplayValue('user-1')
+      expect(userIdInput).toHaveAttribute('name', 'userId')
+    })
+  })
+
+  describe('Accessibility', () => {
+    it('should use proper heading hierarchy', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const heading = screen.getByRole('heading', { level: 2 })
+      expect(heading).toHaveTextContent('users.titles.userInformation')
+    })
+
+    it('should have proper form structure', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const intentInputs = screen.getAllByDisplayValue(
+        /(updateDisplayName|updateRole|deactivate)/
+      )
+
+      expect(intentInputs).toHaveLength(3)
+    })
+  })
+
+  describe('Edge cases', () => {
+    it('should handle user with null displayName', () => {
+      const userWithNullName = { ...mockActiveUser, displayName: null }
+      render(<UserDetailCard user={userWithNullName} />)
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('')
+    })
+
+    it('should handle different role values', () => {
+      const userWithAdminRole = { ...mockActiveUser, role: 'ADMIN' as const }
+      render(<UserDetailCard user={userWithAdminRole} />)
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toHaveValue('ADMIN')
+    })
+
+    it('should handle very old creation dates', () => {
+      const oldUser = {
+        ...mockActiveUser,
+        createdAt: new Date('2020-01-01T00:00:00Z'),
+      }
+      render(<UserDetailCard user={oldUser} />)
+
+      expect(screen.getByText('users.fields.createdAt')).toBeInTheDocument()
+    })
+
+    it('should handle users with empty string displayName', () => {
+      const userWithEmptyName = { ...mockActiveUser, displayName: '' }
+      render(<UserDetailCard user={userWithEmptyName} />)
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('')
+    })
+  })
+
+  describe('Default props', () => {
+    it('should default isSubmitting to false', () => {
+      render(<UserDetailCard user={mockActiveUser} />)
+
+      const button = screen.getByTestId('action-button')
+      expect(button).toBeEnabled()
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toBeEnabled()
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toBeEnabled()
+    })
+  })
+})

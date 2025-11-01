@@ -54,11 +54,6 @@ The core functionality (Steps 0-9) is complete, but testing and Firebase integra
 3. Implement the Firebase integration (Step 12)?
 4. All of the above?
 
-Before that
-
-1. eliminate TEST_TRANSLATIONS if client side
-2.
-
 ## 2. To show a block with 2 teams that are going to play a match, you need:
 
 - From Match model (schema.prisma:121-137):

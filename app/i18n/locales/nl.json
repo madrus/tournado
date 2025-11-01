@@ -304,10 +304,10 @@
     "description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer."
   },
   "roles": {
-    "admin": "Beheerder",
+    "admin": "Admin",
     "billing": "Facturatie",
     "editor": "Redacteur",
-    "manager": "Manager",
+    "manager": "Beheerder",
     "public": "Publiek",
     "referee": "Scheidsrechter"
   },

@@ -267,5 +267,81 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
   }
 }
 
+/**
+ * Disables a Firebase user account
+ * @param firebaseUid - The Firebase UID of the user to disable
+ * @throws Error if Firebase Admin SDK is not initialized or if disabling fails
+ */
+export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: true,
+    })
+    console.log(`[firebase-admin] Successfully disabled Firebase user: ${firebaseUid}`)
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during disableFirebaseUser'
+    console.error('[firebase-admin] disableFirebaseUser error:', message)
+    throw new Error(`Failed to disable Firebase user: ${message}`)
+  }
+}
+
+/**
+ * Enables a Firebase user account
+ * @param firebaseUid - The Firebase UID of the user to enable
+ * @throws Error if Firebase Admin SDK is not initialized or if enabling fails
+ */
+export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: false,
+    })
+    console.log(`[firebase-admin] Successfully enabled Firebase user: ${firebaseUid}`)
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unknown error during enableFirebaseUser'
+    console.error('[firebase-admin] enableFirebaseUser error:', message)
+    throw new Error(`Failed to enable Firebase user: ${message}`)
+  }
+}
+
+/**
+ * Revokes all refresh tokens for a Firebase user, effectively logging them out from all devices
+ * @param firebaseUid - The Firebase UID of the user to revoke tokens for
+ * @throws Error if Firebase Admin SDK is not initialized or if revoking fails
+ */
+export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.revokeRefreshTokens(firebaseUid)
+    console.log(
+      `[firebase-admin] Successfully revoked refresh tokens for user: ${firebaseUid}`
+    )
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during revokeRefreshTokens'
+    console.error('[firebase-admin] revokeRefreshTokens error:', message)
+    throw new Error(`Failed to revoke refresh tokens: ${message}`)
+  }
+}
+
 export { adminApp, adminAuth }
 export type { App, Auth, DecodedIdToken }

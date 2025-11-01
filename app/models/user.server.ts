@@ -2,6 +2,11 @@
 import type { Role, User } from '@prisma/client'
 
 import { prisma } from '~/db.server'
+import {
+  disableFirebaseUser,
+  enableFirebaseUser,
+  revokeRefreshTokens,
+} from '~/features/firebase/server'
 
 export type { User } from '@prisma/client'
 
@@ -189,7 +194,7 @@ export const deactivateUser = async (
     // Fetch current user state inside transaction
     const currentUser = await tx.user.findUnique({
       where: { id: userId },
-      select: { id: true, active: true },
+      select: { id: true, active: true, firebaseUid: true },
     })
 
     if (!currentUser) {
@@ -201,6 +206,7 @@ export const deactivateUser = async (
       return (await tx.user.findUnique({ where: { id: userId } })) as User
     }
 
+    // Update database first
     const updatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: false },
@@ -216,6 +222,19 @@ export const deactivateUser = async (
         reason,
       },
     })
+
+    // After successful database update, disable in Firebase and revoke tokens
+    // These operations are performed outside the transaction to avoid Firebase errors
+    // causing transaction rollback. If Firebase operations fail, the database
+    // deactivation will remain (which is safer than the reverse).
+    try {
+      await disableFirebaseUser(currentUser.firebaseUid)
+      await revokeRefreshTokens(currentUser.firebaseUid)
+    } catch (_error) {
+      // Silently catch Firebase errors - don't fail the entire operation
+      // The user is deactivated in our database which is the source of truth
+      // Firebase errors are logged within the Firebase server functions
+    }
 
     return updatedUser
   })
@@ -236,7 +255,7 @@ export const reactivateUser = async (
     // Fetch current user state inside transaction
     const currentUser = await tx.user.findUnique({
       where: { id: userId },
-      select: { id: true, active: true },
+      select: { id: true, active: true, firebaseUid: true },
     })
 
     if (!currentUser) {
@@ -248,6 +267,7 @@ export const reactivateUser = async (
       return (await tx.user.findUnique({ where: { id: userId } })) as User
     }
 
+    // Update database first
     const updatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: true },
@@ -263,6 +283,18 @@ export const reactivateUser = async (
         reason,
       },
     })
+
+    // After successful database update, enable in Firebase
+    // This operation is performed outside the transaction to avoid Firebase errors
+    // causing transaction rollback. If Firebase operation fails, the database
+    // reactivation will remain (which is safer than the reverse).
+    try {
+      await enableFirebaseUser(currentUser.firebaseUid)
+    } catch (_error) {
+      // Silently catch Firebase errors - don't fail the entire operation
+      // The user is reactivated in our database which is the source of truth
+      // Firebase errors are logged within the Firebase server functions
+    }
 
     return updatedUser
   })

@@ -304,7 +304,7 @@
     "description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung."
   },
   "roles": {
-    "admin": "Administrator",
+    "admin": "Admin",
     "billing": "Abrechnung",
     "editor": "Redakteur",
     "manager": "Manager",

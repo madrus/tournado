@@ -63,11 +63,12 @@ export const meta: MetaFunction = () => [
 type LoaderData = {
   users: readonly User[]
   total: number
+  currentUserId: string
 }
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
   // Require user with role-based authorization for UI route access
-  await requireUserWithMetadata(request, handle)
+  const currentUser = await requireUserWithMetadata(request, handle)
 
   // Get pagination parameters from URL search params
   const url = new URL(request.url)
@@ -79,7 +80,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
     pageSize,
   })
 
-  return { users, total }
+  return { users, total, currentUserId: currentUser.id }
 }
 
 export async function action({ request }: Route.ActionArgs): Promise<Response> {
@@ -129,7 +130,7 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 
 export function AdminUsersIndexPage(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const { users, total } = useLoaderData<LoaderData>()
+  const { users, total, currentUserId } = useLoaderData<LoaderData>()
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const { latinFontClass } = useLanguageDirection()
@@ -191,8 +192,9 @@ export function AdminUsersIndexPage(): JSX.Element {
         onEdit: handleUserClick,
         latinFontClass,
         fetcher,
+        currentUserId,
       }),
-    [t, formatDate, latinFontClass, fetcher]
+    [t, formatDate, latinFontClass, fetcher, currentUserId]
   )
 
   return (
@@ -229,6 +231,7 @@ export function AdminUsersIndexPage(): JSX.Element {
                 user={row}
                 onClick={() => handleUserClick(row.id)}
                 fetcher={fetcher}
+                currentUserId={currentUserId}
               />
             )}
             emptyState={

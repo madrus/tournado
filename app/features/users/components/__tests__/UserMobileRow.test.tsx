@@ -8,19 +8,12 @@ import type { Mock } from 'vitest'
 
 import { UserMobileRow } from '../UserMobileRow'
 
+const mockT = vi.fn<(key: string, options?: Record<string, unknown>) => string>()
+
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, options?: Record<string, unknown>) => {
-      if (key === 'users.viewUserDetails' && options) {
-        return `View details for ${options.name}`
-      }
-      if (key.startsWith('roles.')) {
-        const role = key.replace('roles.', '').toUpperCase()
-        return `Role: ${role}`
-      }
-      return key
-    },
+    t: mockT,
   }),
 }))
 
@@ -52,9 +45,9 @@ vi.mock('~/components/inputs/ComboField', () => ({
       role='combobox'
       data-testid={`combobox-${name}`}
     >
-      <option value='PUBLIC'>Role: PUBLIC</option>
-      <option value='MANAGER'>Role: MANAGER</option>
-      <option value='ADMIN'>Role: ADMIN</option>
+      <option value='PUBLIC'>roles.public</option>
+      <option value='MANAGER'>roles.manager</option>
+      <option value='ADMIN'>roles.admin</option>
     </select>
   ),
 }))
@@ -81,6 +74,13 @@ vi.mock('~/components/shared/datatable.variants', () => ({
 }))
 
 describe('UserMobileRow', () => {
+  beforeEach(() => {
+    mockT.mockReset()
+    mockT.mockImplementation((key: string) => key)
+  })
+
+  const mockCurrentUserId = 'current-user-id'
+
   const mockUser: User = {
     id: 'user-1',
     firstName: 'Test',
@@ -115,7 +115,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       expect(screen.getByText('Test User')).toBeInTheDocument()
@@ -126,7 +131,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
@@ -140,6 +150,7 @@ describe('UserMobileRow', () => {
       render(
         <UserMobileRow
           user={userWithoutDisplayName}
+          currentUserId={mockCurrentUserId}
           onClick={mockOnClick}
           fetcher={mockFetcher}
         />
@@ -155,7 +166,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const combobox = screen.getByRole('combobox')
@@ -167,12 +183,21 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
       expect(button).toHaveAttribute('tabIndex', '0')
-      expect(button).toHaveAttribute('aria-label', 'View details for Test User')
+      expect(button).toHaveAttribute('aria-label', 'users.viewUserDetails')
+      expect(mockT).toHaveBeenCalledWith(
+        'users.viewUserDetails',
+        expect.objectContaining({ name: 'Test User' })
+      )
     })
   })
 
@@ -182,7 +207,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
@@ -196,7 +226,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const combobox = screen.getByRole('combobox')
@@ -212,7 +247,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
@@ -226,7 +266,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
@@ -240,7 +285,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
@@ -259,7 +309,12 @@ describe('UserMobileRow', () => {
       const mockSubmit = mockFetcher.submit as Mock
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const combobox = screen.getByRole('combobox')
@@ -279,7 +334,12 @@ describe('UserMobileRow', () => {
       const mockSubmit = mockFetcher.submit as Mock
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const combobox = screen.getByRole('combobox')
@@ -296,6 +356,7 @@ describe('UserMobileRow', () => {
       render(
         <UserMobileRow
           user={inactiveUser}
+          currentUserId={mockCurrentUserId}
           onClick={mockOnClick}
           fetcher={mockFetcher}
         />
@@ -310,7 +371,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const combobox = screen.getByRole('combobox')
@@ -324,7 +390,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const displayName = screen.getByText('Test User')
@@ -336,7 +407,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const displayName = screen.getByText('Test User')
@@ -348,7 +424,12 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const email = screen.getByText('test@example.com')
@@ -365,6 +446,7 @@ describe('UserMobileRow', () => {
       render(
         <UserMobileRow
           user={userWithEmptyName}
+          currentUserId={mockCurrentUserId}
           onClick={mockOnClick}
           fetcher={mockFetcher}
         />
@@ -380,11 +462,20 @@ describe('UserMobileRow', () => {
       const mockFetcher = createMockFetcher()
 
       render(
-        <UserMobileRow user={mockUser} onClick={mockOnClick} fetcher={mockFetcher} />
+        <UserMobileRow
+          user={mockUser}
+          currentUserId={mockCurrentUserId}
+          onClick={mockOnClick}
+          fetcher={mockFetcher}
+        />
       )
 
       const button = screen.getByRole('button')
-      expect(button).toHaveAttribute('aria-label', 'View details for Test User')
+      expect(button).toHaveAttribute('aria-label', 'users.viewUserDetails')
+      expect(mockT).toHaveBeenCalledWith(
+        'users.viewUserDetails',
+        expect.objectContaining({ name: 'Test User' })
+      )
     })
 
     it('should use email in aria-label when display name is not available', () => {
@@ -395,13 +486,18 @@ describe('UserMobileRow', () => {
       render(
         <UserMobileRow
           user={userWithoutDisplayName}
+          currentUserId={mockCurrentUserId}
           onClick={mockOnClick}
           fetcher={mockFetcher}
         />
       )
 
       const button = screen.getByRole('button')
-      expect(button).toHaveAttribute('aria-label', 'View details for test@example.com')
+      expect(button).toHaveAttribute('aria-label', 'users.viewUserDetails')
+      expect(mockT).toHaveBeenCalledWith(
+        'users.viewUserDetails',
+        expect.objectContaining({ name: 'test@example.com' })
+      )
     })
   })
 })

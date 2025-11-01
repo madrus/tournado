@@ -261,6 +261,11 @@
       "updateSuccess": "Toernooi succesvol bijgewerkt",
       "updateSuccessDesc": "Het toernooi is succesvol bijgewerkt."
     },
+    "user": {
+      "cannotChangeOwnRole": "Je kunt je eigen rol niet wijzigen",
+      "cannotDeactivateOwnAccount": "Je kunt je eigen account niet deactiveren",
+      "cannotReactivateOwnAccount": "Je kunt je eigen account niet reactiveren"
+    },
     "validation": {
       "emailInvalid": "Voer een geldig e-mailadres in",
       "emailRequired": "E-mailadres is verplicht",

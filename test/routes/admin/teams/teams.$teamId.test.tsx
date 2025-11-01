@@ -15,16 +15,7 @@ const mockSubmit = vi.fn()
 // Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'teams.form.teamRegistration': 'Team Registration',
-        'teams.form.fillOutForm': 'Fill out the form below',
-        'common.actions.delete': 'Delete',
-        'errors.somethingWentWrong': 'Something went wrong',
-        'errors.teamLoadFailed': 'Unable to load team details. Please try again later.',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: {
       language: 'en',
       changeLanguage: vi.fn(),
@@ -244,8 +235,8 @@ describe('AdminTeamPage', () => {
 
       renderTeamPage()
 
-      expect(screen.getByText('Team Registration')).toBeInTheDocument()
-      expect(screen.getByText('Fill out the form below')).toBeInTheDocument()
+      expect(screen.getByText('teams.form.teamRegistration')).toBeInTheDocument()
+      expect(screen.getByText('teams.form.fillOutForm')).toBeInTheDocument()
     })
   })
 
@@ -253,7 +244,7 @@ describe('AdminTeamPage', () => {
     it('should render delete button in header', () => {
       renderTeamPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', { name: 'common.actions.delete' })
       expect(deleteButton).toBeInTheDocument()
       expect(deleteButton).toHaveAttribute('data-icon', 'delete')
       expect(deleteButton).toHaveAttribute('data-variant', 'secondary')
@@ -264,7 +255,7 @@ describe('AdminTeamPage', () => {
       const user = userEvent.setup()
       renderTeamPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', { name: 'common.actions.delete' })
       await user.click(deleteButton)
 
       // Verify confirmation dialog was opened
@@ -288,7 +279,7 @@ describe('AdminTeamPage', () => {
       const user = userEvent.setup()
       renderTeamPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', { name: 'common.actions.delete' })
       await user.click(deleteButton)
 
       // Verify confirmation dialog was opened
@@ -340,7 +331,7 @@ describe('AdminTeamPage', () => {
     it('should position delete button correctly', () => {
       renderTeamPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', { name: 'common.actions.delete' })
       const titleText = screen.getByText('Test Club Test Team')
 
       // Both elements should be rendered

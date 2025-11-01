@@ -18,11 +18,12 @@ const USER_INACTIVE_BUTTON_COLOR = 'amber' as const
 
 type UserDetailCardProps = {
   user: User
+  currentUserId: string
   isSubmitting?: boolean
 }
 
 export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Element => {
-  const { user, isSubmitting = false } = props
+  const { user, currentUserId, isSubmitting = false } = props
   const { t } = useTranslation()
   const { latinFontClass } = useLanguageDirection()
   const displayNameFormRef = useRef<HTMLFormElement>(null)
@@ -30,6 +31,8 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
   const deactivateFormRef = useRef<HTMLFormElement>(null)
   const [displayName, setDisplayName] = useState(user.displayName || '')
   const [selectedRole, setSelectedRole] = useState<Role>(user.role)
+  const isViewingOwnProfile = user.id === currentUserId
+  const isDeactivated = !user.active
   const buttonColor = user.active
     ? USER_ACTIVE_BUTTON_COLOR
     : USER_INACTIVE_BUTTON_COLOR
@@ -91,7 +94,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
                 type='button'
                 color={buttonColor}
                 variant='primary'
-                disabled={isSubmitting}
+                disabled={isSubmitting || isViewingOwnProfile}
               >
                 {user.active
                   ? t('users.actions.deactivateUser')
@@ -146,7 +149,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
             value={displayName}
             onChange={value => setDisplayName(value)}
             placeholder={t('users.placeholders.displayName')}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isDeactivated}
             color='teal'
             className={latinFontClass}
             onBlur={event => {
@@ -170,7 +173,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
             options={roleOptions}
             value={selectedRole}
             onChange={handleRoleChange}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isViewingOwnProfile || isDeactivated}
             color='teal'
           />
         </Form>

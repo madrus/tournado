@@ -37,6 +37,7 @@ export const handle: RouteMetadata = {
 
 type LoaderData = {
   targetUser: User
+  currentUserId: string
   auditLogs: readonly (UserAuditLog & {
     admin: {
       id: string
@@ -50,7 +51,7 @@ export const loader = async ({
   request,
   params,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  await requireUserWithMetadata(request, handle)
+  const currentUser = await requireUserWithMetadata(request, handle)
 
   const { userId } = params
   if (!userId) {
@@ -66,7 +67,7 @@ export const loader = async ({
     throw new Response('User not found', { status: 404 })
   }
 
-  return { targetUser, auditLogs }
+  return { targetUser, currentUserId: currentUser.id, auditLogs }
 }
 
 export const action = async ({
@@ -98,6 +99,14 @@ export const action = async ({
     }
 
     if (intent === 'updateRole') {
+      // Prevent users from changing their own role
+      if (userId === currentUser.id) {
+        return Response.json(
+          { errors: { role: 'cannotChangeOwnRole' } },
+          { status: 400 }
+        )
+      }
+
       const newRole = validateRole(roleValue)
 
       await updateUserRole({
@@ -110,6 +119,14 @@ export const action = async ({
     }
 
     if (intent === 'deactivate') {
+      // Prevent users from deactivating themselves
+      if (userId === currentUser.id) {
+        return Response.json(
+          { errors: { deactivate: 'cannotDeactivateOwnAccount' } },
+          { status: 400 }
+        )
+      }
+
       await deactivateUser({
         userId,
         performedBy: currentUser.id,
@@ -119,6 +136,14 @@ export const action = async ({
     }
 
     if (intent === 'reactivate') {
+      // Prevent users from reactivating themselves (this should never happen since they're active)
+      if (userId === currentUser.id) {
+        return Response.json(
+          { errors: { deactivate: 'cannotReactivateOwnAccount' } },
+          { status: 400 }
+        )
+      }
+
       await reactivateUser({
         userId,
         performedBy: currentUser.id,
@@ -141,7 +166,7 @@ export const action = async ({
 
 export default function UserDetailRoute(): JSX.Element {
   const { t } = useTranslation()
-  const { targetUser, auditLogs } = useLoaderData<typeof loader>()
+  const { targetUser, currentUserId, auditLogs } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -176,7 +201,11 @@ export default function UserDetailRoute(): JSX.Element {
 
   return (
     <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
-      <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
+      <UserDetailCard
+        user={targetUser}
+        currentUserId={currentUserId}
+        isSubmitting={isSubmitting}
+      />
       <UserAuditLogList auditLogs={auditLogs} />
     </div>
   )

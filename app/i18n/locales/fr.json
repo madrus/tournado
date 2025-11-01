@@ -261,6 +261,11 @@
       "updateSuccess": "Tournoi mis à jour avec succès",
       "updateSuccessDesc": "Le tournoi a été mis à jour avec succès."
     },
+    "user": {
+      "cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
+      "cannotDeactivateOwnAccount": "Vous ne pouvez pas désactiver votre propre compte",
+      "cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte"
+    },
     "validation": {
       "emailInvalid": "Veuillez saisir une adresse email valide",
       "emailRequired": "L'adresse e-mail est requise",

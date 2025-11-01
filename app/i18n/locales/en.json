@@ -261,6 +261,11 @@
       "updateSuccess": "Tournament updated successfully",
       "updateSuccessDesc": "The tournament has been updated successfully."
     },
+    "user": {
+      "cannotChangeOwnRole": "You Cannot Change Your Own Role",
+      "cannotDeactivateOwnAccount": "You Cannot Deactivate Your Own Account",
+      "cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account"
+    },
     "validation": {
       "emailInvalid": "Please enter a valid email address",
       "emailRequired": "Email is required",

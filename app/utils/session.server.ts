@@ -60,6 +60,12 @@ export async function getUser(request: Request): Promise<User | null> {
   if (userId === undefined) return null
 
   const user = await getUserById(userId)
+
+  // Check if user is deactivated
+  if (user && !user.active) {
+    throw await signout(request)
+  }
+
   if (user) return user
 
   throw await signout(request)

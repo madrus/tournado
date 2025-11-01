@@ -23,10 +23,11 @@ type ColumnContext = {
   onEdit: (id: string) => void
   latinFontClass: string
   fetcher: FetcherWithComponents<unknown>
+  currentUserId: string
 }
 
 export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
-  const { t, formatDate, onEdit, latinFontClass, fetcher } = context
+  const { t, formatDate, onEdit, latinFontClass, fetcher, currentUserId } = context
 
   return [
     {
@@ -117,7 +118,7 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
                   fetcher.submit(formData, { method: 'post' })
                 }
               }}
-              disabled={!row.original.active}
+              disabled={!row.original.active || row.original.id === currentUserId}
               compact={true}
               color='slate'
               className='w-32'

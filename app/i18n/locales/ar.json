@@ -261,6 +261,11 @@
       "updateSuccess": "تم تحديث البطولة بنجاح",
       "updateSuccessDesc": "تم تحديث البطولة بنجاح."
     },
+    "user": {
+      "cannotChangeOwnRole": "لا يمكنك تغيير دورك الخاص",
+      "cannotDeactivateOwnAccount": "لا يمكنك إلغاء تنشيط حسابك الخاص",
+      "cannotReactivateOwnAccount": "لا يمكنك إعادة تنشيط حسابك الخاص"
+    },
     "validation": {
       "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
       "emailRequired": "البريد الإلكتروني مطلوب",

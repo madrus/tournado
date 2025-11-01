@@ -17,12 +17,14 @@ type UserMobileRowProps = {
   user: User
   onClick: () => void
   fetcher: FetcherWithComponents<unknown>
+  currentUserId: string
 }
 
 export function UserMobileRow({
   user,
   onClick,
   fetcher,
+  currentUserId,
 }: Readonly<UserMobileRowProps>): JSX.Element {
   const { t } = useTranslation()
   const { latinFontClass } = useLanguageDirection()
@@ -103,7 +105,7 @@ export function UserMobileRow({
                 fetcher.submit(formData, { method: 'post' })
               }
             }}
-            disabled={!user.active}
+            disabled={!user.active || user.id === currentUserId}
             compact={true}
             color='slate'
             className='w-32'

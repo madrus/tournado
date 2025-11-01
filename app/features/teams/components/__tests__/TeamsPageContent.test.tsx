@@ -6,21 +6,12 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { TeamsPageContent } from '../TeamsPageContent'
 
-// Mock react-i18next
-const mockT = (key: string, options?: { count?: number }) => {
-  const translations: Record<string, string> = {
-    'admin.team.totalTeams': 'Total Teams',
-    'teams.count': `Found ${options?.count || 0} teams`,
-    'teams.noTeams': 'No teams found',
-    'teams.getStarted.title': 'Get Started',
-    'teams.getStarted.description': 'Create your first team to get started',
-  }
-  return translations[key] || key
-}
-
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: mockT,
+    t: (key: string, options?: { count?: number }) =>
+      options && Object.prototype.hasOwnProperty.call(options, 'count')
+        ? `${key}:${options.count}`
+        : key,
     i18n: { language: 'en' },
   }),
 }))
@@ -254,7 +245,7 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      expect(screen.getByText('No teams found')).toBeInTheDocument()
+      expect(screen.getByText('teams.noTeams')).toBeInTheDocument()
     })
   })
 
@@ -270,10 +261,8 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      expect(screen.getByText('Get Started')).toBeInTheDocument()
-      expect(
-        screen.getByText('Create your first team to get started')
-      ).toBeInTheDocument()
+      expect(screen.getByText('teams.getStarted.title')).toBeInTheDocument()
+      expect(screen.getByText('teams.getStarted.description')).toBeInTheDocument()
     })
 
     it('should not show get started section when showStats is true', () => {
@@ -287,7 +276,7 @@ describe('TeamsPageContent', () => {
         />
       )
 
-      expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
+      expect(screen.queryByText('teams.getStarted.title')).not.toBeInTheDocument()
     })
   })
 

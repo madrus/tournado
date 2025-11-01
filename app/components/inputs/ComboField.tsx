@@ -78,9 +78,6 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
     const safeValue = value || ''
     const direction = getDirection()
 
-    // Map disabled state to color variant
-    const effectiveColor = disabled ? 'disabled' : color
-
     // Handle blur when dropdown closes
     const handleCloseAutoFocus = (event: Event) => {
       // Prevent default auto focus behavior when closing
@@ -126,8 +123,9 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               aria-label={label ? `${label} - select option` : 'Select option'}
               className={cn(
                 comboFieldTriggerVariants({
-                  color: effectiveColor,
+                  color,
                   compact,
+                  disabled: disabled ? true : undefined,
                   error: error ? true : undefined,
                 }),
                 safeValue === '' ? 'text-foreground' : ''
@@ -157,7 +155,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 
             <Select.Portal>
               <Select.Content
-                className={comboFieldContentVariants({ color: effectiveColor })}
+                className={comboFieldContentVariants({ color })}
                 position='popper'
                 sideOffset={4}
                 onCloseAutoFocus={handleCloseAutoFocus}
@@ -170,7 +168,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
                       key={opt.value}
                       value={opt.value}
                       className={comboFieldItemVariants({
-                        color: effectiveColor,
+                        color,
                         compact,
                       })}
                     >

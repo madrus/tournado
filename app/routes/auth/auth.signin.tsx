@@ -2,6 +2,7 @@ import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
+import { InfoBanner } from '~/components/InfoBanner'
 import {
   FirebaseEmailSignIn,
   FirebaseSignIn,
@@ -32,7 +33,9 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({
   request,
-}: Route.LoaderArgs): Promise<Response | { redirectTo: string | undefined }> => {
+}: Route.LoaderArgs): Promise<
+  Response | { redirectTo: string | undefined; error: string | null }
+> => {
   const user = await getUser(request)
   if (user) {
     // Use role-based redirect instead of always going to admin panel
@@ -42,11 +45,12 @@ export const loader = async ({
     }
   }
 
-  // Get the redirect destination for Firebase sign-in
+  // Get the redirect destination and error parameter for Firebase sign-in
   const url = new URL(request.url)
   const redirectTo = url.searchParams.get('redirectTo') ?? undefined
+  const error = url.searchParams.get('error')
 
-  return { redirectTo }
+  return { redirectTo, error }
 }
 
 // No action needed since Firebase handles authentication client-side
@@ -67,12 +71,19 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function SigninPage(): JSX.Element {
-  const { redirectTo } = useLoaderData<typeof loader>()
+  const { redirectTo, error } = useLoaderData<typeof loader>()
   const { t } = useTranslation()
 
   return (
     <div className={authContainerVariants()}>
       <h2 className={authHeadingVariants()}>{t('auth.signInPage.description')}</h2>
+
+      {/* Display error message for deactivated accounts */}
+      {error === 'account-deactivated' ? (
+        <InfoBanner variant='error'>
+          {t('auth.errors.accountDeactivatedMessage')}
+        </InfoBanner>
+      ) : null}
 
       {/* Firebase Google Sign-in */}
       <FirebaseSignIn redirectTo={redirectTo} />

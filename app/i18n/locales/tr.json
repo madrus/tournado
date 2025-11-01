@@ -261,6 +261,11 @@
       "updateSuccess": "Turnuva başarıyla güncellendi",
       "updateSuccessDesc": "Turnuva başarıyla güncellendi."
     },
+    "user": {
+      "cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
+      "cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
+      "cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz"
+    },
     "validation": {
       "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
       "emailRequired": "E-posta adresi gereklidir",

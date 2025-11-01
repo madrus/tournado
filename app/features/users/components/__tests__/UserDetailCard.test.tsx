@@ -154,6 +154,8 @@ vi.mock('~/components/inputs/ComboField', () => ({
 }))
 
 describe('UserDetailCard', () => {
+  const mockCurrentUserId = 'current-user-id'
+
   const mockActiveUser: User = {
     id: 'user-1',
     firstName: 'Test',
@@ -174,7 +176,7 @@ describe('UserDetailCard', () => {
 
   describe('Rendering', () => {
     it('should render user information correctly', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       expect(screen.getByText('users.titles.userInformation')).toBeInTheDocument()
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
@@ -182,19 +184,23 @@ describe('UserDetailCard', () => {
     })
 
     it('should display deactivate button for active users', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       expect(screen.getByText('users.actions.deactivateUser')).toBeInTheDocument()
     })
 
     it('should display reactivate button for inactive users', () => {
-      render(<UserDetailCard user={mockInactiveUser} />)
+      render(
+        <UserDetailCard user={mockInactiveUser} currentUserId={mockCurrentUserId} />
+      )
 
       expect(screen.getByText('users.actions.reactivateUser')).toBeInTheDocument()
     })
 
     it('should show deactivated badge for inactive users', () => {
-      render(<UserDetailCard user={mockInactiveUser} />)
+      render(
+        <UserDetailCard user={mockInactiveUser} currentUserId={mockCurrentUserId} />
+      )
 
       const badge = screen.getByTestId('badge')
       expect(badge).toHaveTextContent('users.messages.deactivated')
@@ -202,20 +208,20 @@ describe('UserDetailCard', () => {
     })
 
     it('should not show deactivated badge for active users', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const badges = screen.queryAllByTestId('badge')
       expect(badges).toHaveLength(0)
     })
 
     it('should display created date', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       expect(screen.getByText('users.fields.createdAt')).toBeInTheDocument()
     })
 
     it('should render role combobox with current role', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const roleSelect = screen.getByTestId('select-role')
       expect(roleSelect).toHaveValue('PUBLIC')
@@ -224,7 +230,7 @@ describe('UserDetailCard', () => {
 
   describe('Display name update', () => {
     it('should update display name state when typing', async () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const input = screen.getByTestId('input-displayName')
 
@@ -236,7 +242,7 @@ describe('UserDetailCard', () => {
     })
 
     it('should initialize display name with user value', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const input = screen.getByTestId('input-displayName')
       expect(input).toHaveValue('Test User')
@@ -244,14 +250,22 @@ describe('UserDetailCard', () => {
 
     it('should initialize display name with empty string when user has no display name', () => {
       const userWithoutName = { ...mockActiveUser, displayName: null }
-      render(<UserDetailCard user={userWithoutName} />)
+      render(
+        <UserDetailCard user={userWithoutName} currentUserId={mockCurrentUserId} />
+      )
 
       const input = screen.getByTestId('input-displayName')
       expect(input).toHaveValue('')
     })
 
     it('should disable display name input when submitting', () => {
-      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+      render(
+        <UserDetailCard
+          user={mockActiveUser}
+          currentUserId={mockCurrentUserId}
+          isSubmitting
+        />
+      )
 
       const input = screen.getByTestId('input-displayName')
       expect(input).toBeDisabled()
@@ -260,7 +274,7 @@ describe('UserDetailCard', () => {
 
   describe('Role update', () => {
     it('should update role state when changed', async () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const roleSelect = screen.getByTestId('select-role')
 
@@ -275,7 +289,7 @@ describe('UserDetailCard', () => {
     })
 
     it('should not change role state when selecting the same value', async () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const roleSelect = screen.getByTestId('select-role')
 
@@ -287,7 +301,13 @@ describe('UserDetailCard', () => {
     })
 
     it('should disable role select when submitting', () => {
-      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+      render(
+        <UserDetailCard
+          user={mockActiveUser}
+          currentUserId={mockCurrentUserId}
+          isSubmitting
+        />
+      )
 
       const roleSelect = screen.getByTestId('select-role')
       expect(roleSelect).toBeDisabled()
@@ -296,28 +316,42 @@ describe('UserDetailCard', () => {
 
   describe('Deactivate/Reactivate functionality', () => {
     it('should disable action button when submitting', () => {
-      render(<UserDetailCard user={mockActiveUser} isSubmitting />)
+      render(
+        <UserDetailCard
+          user={mockActiveUser}
+          currentUserId={mockCurrentUserId}
+          isSubmitting
+        />
+      )
 
       const button = screen.getByTestId('action-button')
       expect(button).toBeDisabled()
     })
 
     it('should enable action button when not submitting', () => {
-      render(<UserDetailCard user={mockActiveUser} isSubmitting={false} />)
+      render(
+        <UserDetailCard
+          user={mockActiveUser}
+          currentUserId={mockCurrentUserId}
+          isSubmitting={false}
+        />
+      )
 
       const button = screen.getByTestId('action-button')
       expect(button).toBeEnabled()
     })
 
     it('should have correct intent for active user', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const intentInput = screen.getByDisplayValue('deactivate')
       expect(intentInput).toHaveAttribute('name', 'intent')
     })
 
     it('should have correct intent for inactive user', () => {
-      render(<UserDetailCard user={mockInactiveUser} />)
+      render(
+        <UserDetailCard user={mockInactiveUser} currentUserId={mockCurrentUserId} />
+      )
 
       const intentInput = screen.getByDisplayValue('reactivate')
       expect(intentInput).toHaveAttribute('name', 'intent')
@@ -326,21 +360,21 @@ describe('UserDetailCard', () => {
 
   describe('Form submissions', () => {
     it('should have hidden input for updateDisplayName intent', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const intentInput = screen.getByDisplayValue('updateDisplayName')
       expect(intentInput).toHaveAttribute('name', 'intent')
     })
 
     it('should have hidden input for updateRole intent', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const intentInput = screen.getByDisplayValue('updateRole')
       expect(intentInput).toHaveAttribute('name', 'intent')
     })
 
     it('should have userId hidden input in display name form', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const userIdInput = screen.getByDisplayValue('user-1')
       expect(userIdInput).toHaveAttribute('name', 'userId')
@@ -349,14 +383,14 @@ describe('UserDetailCard', () => {
 
   describe('Accessibility', () => {
     it('should use proper heading hierarchy', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const heading = screen.getByRole('heading', { level: 2 })
       expect(heading).toHaveTextContent('users.titles.userInformation')
     })
 
     it('should have proper form structure', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const intentInputs = screen.getAllByDisplayValue(
         /(updateDisplayName|updateRole|deactivate)/
@@ -369,7 +403,9 @@ describe('UserDetailCard', () => {
   describe('Edge cases', () => {
     it('should handle user with null displayName', () => {
       const userWithNullName = { ...mockActiveUser, displayName: null }
-      render(<UserDetailCard user={userWithNullName} />)
+      render(
+        <UserDetailCard user={userWithNullName} currentUserId={mockCurrentUserId} />
+      )
 
       const input = screen.getByTestId('input-displayName')
       expect(input).toHaveValue('')
@@ -377,7 +413,9 @@ describe('UserDetailCard', () => {
 
     it('should handle different role values', () => {
       const userWithAdminRole = { ...mockActiveUser, role: 'ADMIN' as const }
-      render(<UserDetailCard user={userWithAdminRole} />)
+      render(
+        <UserDetailCard user={userWithAdminRole} currentUserId={mockCurrentUserId} />
+      )
 
       const roleSelect = screen.getByTestId('select-role')
       expect(roleSelect).toHaveValue('ADMIN')
@@ -388,14 +426,16 @@ describe('UserDetailCard', () => {
         ...mockActiveUser,
         createdAt: new Date('2020-01-01T00:00:00Z'),
       }
-      render(<UserDetailCard user={oldUser} />)
+      render(<UserDetailCard user={oldUser} currentUserId={mockCurrentUserId} />)
 
       expect(screen.getByText('users.fields.createdAt')).toBeInTheDocument()
     })
 
     it('should handle users with empty string displayName', () => {
       const userWithEmptyName = { ...mockActiveUser, displayName: '' }
-      render(<UserDetailCard user={userWithEmptyName} />)
+      render(
+        <UserDetailCard user={userWithEmptyName} currentUserId={mockCurrentUserId} />
+      )
 
       const input = screen.getByTestId('input-displayName')
       expect(input).toHaveValue('')
@@ -404,7 +444,7 @@ describe('UserDetailCard', () => {
 
   describe('Default props', () => {
     it('should default isSubmitting to false', () => {
-      render(<UserDetailCard user={mockActiveUser} />)
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
       const button = screen.getByTestId('action-button')
       expect(button).toBeEnabled()

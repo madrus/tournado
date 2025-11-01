@@ -16,19 +16,7 @@ const mockSubmit = vi.fn()
 // Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'tournaments.form.tournamentRegistration': 'Tournament Registration',
-        'tournaments.form.location': 'Location',
-        'tournaments.form.fillOutForm':
-          'Fill out the form below to create a new tournament',
-        'common.actions.delete': 'Delete',
-        'common.actions.update': 'Update',
-        'admin.tournaments.confirmDelete':
-          'Are you sure you want to delete this tournament?',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: {
       language: 'en',
       changeLanguage: vi.fn(),
@@ -313,7 +301,9 @@ describe('EditTournamentPage', () => {
     it('should display tournament location in header', () => {
       renderTournamentPage()
 
-      expect(screen.getByText('Location Test Stadium')).toBeInTheDocument()
+      expect(
+        screen.getByText('tournaments.form.location Test Stadium')
+      ).toBeInTheDocument()
     })
 
     it('should display fallback text when tournament data is missing', () => {
@@ -324,10 +314,10 @@ describe('EditTournamentPage', () => {
 
       renderTournamentPage()
 
-      expect(screen.getByText('Tournament Registration')).toBeInTheDocument()
       expect(
-        screen.getByText('Fill out the form below to create a new tournament')
+        screen.getByText('tournaments.form.tournamentRegistration')
       ).toBeInTheDocument()
+      expect(screen.getByText('tournaments.form.fillOutForm')).toBeInTheDocument()
     })
   })
 
@@ -335,7 +325,9 @@ describe('EditTournamentPage', () => {
     it('should render delete button in header', () => {
       renderTournamentPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', {
+        name: 'common.actions.delete',
+      })
       expect(deleteButton).toBeInTheDocument()
       expect(deleteButton).toHaveAttribute('data-icon', 'delete')
       expect(deleteButton).toHaveAttribute('data-variant', 'secondary')
@@ -346,7 +338,9 @@ describe('EditTournamentPage', () => {
       const user = userEvent.setup()
       renderTournamentPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', {
+        name: 'common.actions.delete',
+      })
       await user.click(deleteButton)
 
       expect(mockOnConfirm).toHaveBeenCalledWith(
@@ -363,7 +357,9 @@ describe('EditTournamentPage', () => {
 
       renderTournamentPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', {
+        name: 'common.actions.delete',
+      })
       await user.click(deleteButton)
 
       expect(mockOnConfirm).toHaveBeenCalledWith(
@@ -382,7 +378,9 @@ describe('EditTournamentPage', () => {
 
       renderTournamentPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', {
+        name: 'common.actions.delete',
+      })
       await user.click(deleteButton)
 
       expect(mockOnConfirm).toHaveBeenCalledWith(
@@ -418,7 +416,9 @@ describe('EditTournamentPage', () => {
       expect(screen.getByText('Mode: edit')).toBeInTheDocument()
       expect(screen.getByText('Variant: admin')).toBeInTheDocument()
       expect(screen.getByText('Intent: update')).toBeInTheDocument()
-      expect(screen.getByText('Submit Button: Update')).toBeInTheDocument()
+      expect(
+        screen.getByText('Submit Button: common.actions.update')
+      ).toBeInTheDocument()
       expect(
         screen.getByText('Tournament: Test Tournament at Test Stadium')
       ).toBeInTheDocument()
@@ -478,7 +478,9 @@ describe('EditTournamentPage', () => {
     it('should position delete button correctly', () => {
       renderTournamentPage()
 
-      const deleteButton = screen.getByRole('button', { name: 'Delete' })
+      const deleteButton = screen.getByRole('button', {
+        name: 'common.actions.delete',
+      })
       const titleText = screen.getByText('Test Tournament')
 
       // Both elements should be rendered

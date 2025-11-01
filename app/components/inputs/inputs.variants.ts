@@ -32,6 +32,7 @@ export const textInputFieldVariants = cva(
     'placeholder:[color:var(--color-placeholder)] bg-input text-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
+    'disabled:transition-none disabled:transform-none',
   ],
   {
     variants: {
@@ -73,7 +74,8 @@ export const textInputFieldVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
-        disabled: 'border-slate-200 dark:border-slate-800',
+        disabled:
+          'border-slate-200 hover:border-slate-200 dark:border-slate-800 dark:hover:border-slate-800 hover:shadow-none',
       },
       disabled: {
         true: 'cursor-not-allowed opacity-50',
@@ -94,6 +96,7 @@ export const comboFieldTriggerVariants = cva(
     'transform-gpu will-change-transform',
     'pl-3 pr-1 rtl:pl-1 rtl:pr-3',
     '[&>div:first-child]:flex-1',
+    'disabled:transition-none disabled:transform-none',
   ],
   {
     variants: {
@@ -136,7 +139,10 @@ export const comboFieldTriggerVariants = cva(
           'border-fuchsia-700/30 hover:border-fuchsia-700/50 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30 data-[state=open]:border-fuchsia-500 data-[state=open]:ring-4 data-[state=open]:ring-fuchsia-500/20',
         rose: 'border-rose-700/30 hover:border-rose-700/50 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30 data-[state=open]:border-rose-500 data-[state=open]:ring-4 data-[state=open]:ring-rose-500/20',
         disabled:
-          '!outline-none border-2 border-border/20 border-slate-200 cursor-not-allowed opacity-50 dark:!border-slate-800',
+          'border-slate-200 hover:border-slate-200 dark:border-slate-800 dark:hover:border-slate-800 hover:shadow-none',
+      },
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
       },
       error: {
         true: 'border-destructive hover:border-destructive hover:shadow-md hover:shadow-destructive/20 focus:border-destructive focus:ring-4 focus:ring-destructive/20 dark:hover:shadow-destructive/30 dark:focus:ring-destructive/30 data-[state=open]:border-destructive data-[state=open]:ring-4 data-[state=open]:ring-destructive/20',
@@ -250,6 +256,7 @@ export const datePickerButtonVariants = cva(
     'bg-input text-input-foreground placeholder:[color:var(--color-placeholder)]',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
+    'disabled:transition-none disabled:transform-none',
   ],
   {
     variants: {
@@ -287,7 +294,8 @@ export const datePickerButtonVariants = cva(
         fuchsia:
           'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-md hover:shadow-fuchsia-500/20 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:hover:shadow-fuchsia-400/30 dark:focus:ring-fuchsia-400/30',
         rose: 'border-rose-700/30 hover:border-rose-600 hover:shadow-md hover:shadow-rose-500/20 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/20 dark:hover:shadow-rose-400/30 dark:focus:ring-rose-400/30',
-        disabled: 'border-slate-200 dark:border-slate-800',
+        disabled:
+          'border-slate-200 hover:border-slate-200 dark:border-slate-800 dark:hover:border-slate-800 hover:shadow-none',
       },
       disabled: {
         true: 'cursor-not-allowed opacity-50',
@@ -383,6 +391,7 @@ export const dateInputFieldVariants = cva(
     'placeholder:[color:var(--color-placeholder)] bg-input dark:bg-input/40 text-input-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     '[&::-webkit-calendar-picker-indicator]:opacity-70',
+    'disabled:transition-none',
   ],
   {
     variants: {
@@ -440,6 +449,7 @@ export const checkboxAgreementFieldVariants = cva(
   [
     'flex cursor-pointer items-center gap-3 rounded-lg border-2 p-4 transition-all duration-300',
     'bg-input dark:bg-input/40',
+    'disabled:transition-none',
   ],
   {
     variants: {
@@ -495,6 +505,7 @@ export const checkboxAgreementInputVariants = cva(
     'bg-input dark:bg-input/40',
     // Android-specific improvements
     '-webkit-appearance-none -moz-appearance-none',
+    'disabled:transition-none',
   ],
   {
     variants: {

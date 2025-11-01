@@ -68,6 +68,11 @@ export const syncFirebaseUserToDatabase = async (
   const existingUser = await getUserByFirebaseUid(firebaseUser.uid)
   const isNewUser = !existingUser
 
+  // Check if existing user is deactivated
+  if (existingUser && !existingUser.active) {
+    throw new Error('ACCOUNT_DEACTIVATED')
+  }
+
   // Use our new createOrUpdateUser function with role assignment
   const user = await createOrUpdateUser({
     firebaseUser: {
@@ -107,6 +112,11 @@ export const validateFirebaseSession = async (
     // Get user from database to ensure they still exist
     const user = await getUserByFirebaseUid(firebaseSessionData.firebaseUid)
     if (!user || user.id !== userId) {
+      return null
+    }
+
+    // Check if user is deactivated
+    if (!user.active) {
       return null
     }
 

@@ -1,3 +1,15 @@
+/**
+ * Public Teams Basic UI E2E Tests
+ *
+ * Test Scenarios:
+ * - Public teams page access and display
+ * - Viewing teams list without authentication
+ * - Public team registration access
+ * - Team registration form visibility
+ *
+ * Authentication: PUBLIC ACCESS - No authentication required
+ * Viewport: Mobile (375x812)
+ */
 import { expect, test } from '@playwright/test'
 
 // Public Teams Basic UI Tests - NO AUTHENTICATION REQUIRED

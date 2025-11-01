@@ -1,3 +1,16 @@
+/**
+ * Mobile Menu Toggle Functionality E2E Tests
+ *
+ * Test Scenarios:
+ * - Mobile menu toggle button visibility and interaction
+ * - Menu opening and closing functionality
+ * - Menu content display for authenticated users
+ * - User information display in menu
+ * - Navigation items presence in menu
+ *
+ * Authentication: Uses user auth from user-auth.json (regular user)
+ * Viewport: Mobile (375x812)
+ */
 /* eslint-disable no-console */
 import { expect, test } from '@playwright/test'
 

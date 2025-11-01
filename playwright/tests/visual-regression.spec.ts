@@ -1,3 +1,22 @@
+/**
+ * UI Structure and Theme E2E Tests
+ *
+ * Test Scenarios:
+ * - Tournaments list page structure and content
+ * - Teams list page structure and content
+ * - Dark mode theme application and styling
+ * - Light mode theme verification
+ * - Tournament form structure and field validation
+ * - Team form structure
+ * - Date picker enablement after basic info is filled
+ * - ActionLinkPanel components on homepage
+ * - Navigation links functionality
+ * - Responsive design (mobile 375x812 vs desktop 1280x720)
+ *
+ * Authentication: Uses global auth from auth.json
+ * Viewport: Desktop (1280x720) by default, mobile for responsive tests
+ * Note: Uses structural/functional tests instead of pixel-perfect screenshots
+ */
 import { expect, test } from '@playwright/test'
 
 // Structural and Functional Tests - More reliable than pixel-perfect screenshots

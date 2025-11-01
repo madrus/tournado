@@ -1,3 +1,16 @@
+/**
+ * Navigation E2E Tests
+ *
+ * Test Scenarios:
+ * - Bottom navigation functionality (home, teams, more/about)
+ * - PWA update prompt handling during navigation
+ * - Homepage "Teams bekijken" button navigation
+ * - Responsive navigation visibility (mobile vs desktop)
+ * - All navigation items are present and clickable
+ *
+ * Authentication: PUBLIC ACCESS - No authentication required
+ * Viewport: Mobile (375x812) and Desktop (1280x720) for responsive tests
+ */
 import { expect, test } from '@playwright/test'
 
 // Navigation Tests - PUBLIC ACCESS (no authentication needed for bottom navigation)

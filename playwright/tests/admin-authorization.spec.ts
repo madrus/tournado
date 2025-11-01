@@ -1,3 +1,16 @@
+/**
+ * Admin Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Admin panel access for ADMIN users
+ * - Admin teams page access and management interface
+ * - Admin team creation form access
+ * - Admin menu options in user dropdown
+ * - Admin-specific navigation and content visibility
+ *
+ * Authentication: Uses global auth from auth.json (ADMIN role)
+ * Viewport: Mobile (375x812)
+ */
 import { expect, test } from '@playwright/test'
 
 // Admin Authorization Tests - run under admin-authenticated project

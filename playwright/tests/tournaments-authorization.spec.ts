@@ -1,3 +1,19 @@
+/**
+ * Tournaments Management Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Unauthenticated user redirect to signin
+ * - ADMIN role access to tournaments management
+ * - MANAGER role access to tournaments management
+ * - PUBLIC role blocked from tournaments management
+ * - REFEREE role blocked from tournaments management
+ * - EDITOR role blocked from tournaments management
+ * - BILLING role blocked from tournaments management
+ *
+ * Authentication: Tests multiple roles via loginAsRole helper
+ * Viewport: Mobile (375x812)
+ * Note: Only ADMIN and MANAGER roles have tournaments management access
+ */
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 

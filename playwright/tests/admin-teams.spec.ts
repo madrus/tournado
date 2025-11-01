@@ -1,3 +1,17 @@
+/**
+ * Admin Teams Management E2E Tests
+ *
+ * Test Scenarios:
+ * - Admin teams management page access and display
+ * - Admin team creation access
+ * - Teams interface visibility and content
+ * - Team details access via admin view
+ * - Navigation to teams via admin panel button
+ * - Add team button visibility for admin users
+ *
+ * Authentication: Uses global auth from auth.json (ADMIN role)
+ * Viewport: Mobile (375x812)
+ */
 import { expect, test } from '@playwright/test'
 
 import { AdminPanelPage } from '../pages/AdminPanelPage'

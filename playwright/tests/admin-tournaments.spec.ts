@@ -1,3 +1,18 @@
+/**
+ * Admin Tournaments Management E2E Tests
+ *
+ * Test Scenarios:
+ * - Admin tournaments management page access and display
+ * - Tournament creation via admin panel and context menu
+ * - Tournament form validation and field structure
+ * - Tournament database persistence and verification
+ * - Team creation with tournament selection (integration test)
+ * - Division and category selection based on tournament
+ * - Form panel progression and field enablement
+ *
+ * Authentication: Uses global auth from auth.json (ADMIN role)
+ * Viewport: Mobile (375x812)
+ */
 import { expect, test } from '@playwright/test'
 
 import {

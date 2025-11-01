@@ -1,3 +1,24 @@
+/**
+ * User Management Workflow E2E Tests
+ *
+ * Test Scenarios:
+ * - Admin users management page display
+ * - Users list interface and table visibility
+ * - User detail page navigation
+ * - User information display on detail page
+ * - Update user display name
+ * - Change user role (with validation)
+ * - Deactivate and reactivate users
+ * - Audit log list display
+ * - Self-role change prevention
+ * - Self-deactivation prevention
+ * - Direct URL navigation to user details
+ * - Accessibility verification (headings, form structure, ARIA)
+ *
+ * Authentication: Uses global auth from auth.json (ADMIN role)
+ * Viewport: Mobile (375x812)
+ * Note: Comprehensive user management workflow testing
+ */
 import { expect, test } from '@playwright/test'
 
 import { AdminUsersPage } from '../pages/AdminUsersPage'

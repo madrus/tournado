@@ -1,3 +1,17 @@
+/**
+ * General Authorization and Public Access E2E Tests
+ *
+ * Test Scenarios:
+ * - Public access to teams page
+ * - Protected route redirect to signin for unauthenticated users
+ * - Signup and signin page accessibility
+ * - PUBLIC role redirect to unauthorized for admin panels
+ * - PUBLIC role redirect for admin teams access
+ *
+ * Authentication: PUBLIC ACCESS - No authentication required
+ * Viewport: Mobile (375x812)
+ * Note: Tests unauthenticated and PUBLIC role access patterns
+ */
 import { expect, test } from '@playwright/test'
 
 import { loginAsRole } from '../helpers/session'

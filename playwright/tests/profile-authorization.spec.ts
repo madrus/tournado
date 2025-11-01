@@ -1,3 +1,19 @@
+/**
+ * Profile Page Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Unauthenticated user redirect to signin
+ * - PUBLIC role access to profile
+ * - REFEREE role access to profile
+ * - EDITOR role access to profile
+ * - BILLING role access to profile
+ * - MANAGER role access to profile
+ * - ADMIN role access to profile
+ *
+ * Authentication: Tests multiple roles via loginAsRole helper
+ * Viewport: Mobile (375x812)
+ * Note: All authenticated users should have access to their profile
+ */
 import { type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 

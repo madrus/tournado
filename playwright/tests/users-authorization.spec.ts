@@ -1,3 +1,19 @@
+/**
+ * Users Management Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Unauthenticated user redirect to signin
+ * - ADMIN role access to users management
+ * - PUBLIC role blocked from users management
+ * - REFEREE role blocked from users management
+ * - EDITOR role blocked from users management
+ * - BILLING role blocked from users management
+ * - MANAGER role blocked from users management
+ *
+ * Authentication: Tests multiple roles via loginAsRole helper
+ * Viewport: Mobile (375x812)
+ * Note: Only ADMIN role has users management access
+ */
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 

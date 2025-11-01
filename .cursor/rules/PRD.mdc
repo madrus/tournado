@@ -105,7 +105,7 @@ Database & Data Model [Implemented]
 - [x] Database schema migration (firebaseUid column added to User table)
 - [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
-**Phase 2 - User Management [In Progress]** (TASK-0201)
+**Phase 2 - User Management [Completed]** (TASK-0201)
 
 - [x] Admin-only user management workflows
   - [x] Role assignment (ADMIN, MANAGER, REFEREE, EDITOR, BILLING roles) via inline ComboField
@@ -117,8 +117,11 @@ Database & Data Model [Implemented]
   - [x] User Management tile in Admin Dashboard
   - [x] User deactivation/reactivation with ConfirmDialog modal and audit trail
   - [x] ComboField styling enhancements (disabled border, RTL icon positioning, animated chevron, compact height, Latin fonts)
-- [ ] User approval/rejection system for new registrations (pending)
-- [ ] Advanced filtering and search capabilities (pending)
+  - [x] Firebase integration (user deactivation disables Firebase account, revokes tokens, invalidates sessions)
+  - [x] Unit tests (41 comprehensive tests covering all user management functions)
+  - [x] E2E tests (15 scenarios covering complete workflow including self-edit prevention)
+- [ ] User approval/rejection system for new registrations (deferred - out of MVP scope)
+- [ ] Advanced filtering and search capabilities (deferred - basic sorting implemented)
 
 **Phase 3 - Groups & Playoffs (MVP) [In Progress]**
 
@@ -310,19 +313,19 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0103)
 - [x] Logout invalidation; visible auth status; redirects (TASK-0103)
 
-### Phase 2: User Management (2 - 3 weeks) [In Progress]
+### Phase 2: User Management (2 - 3 weeks) [Completed]
 
 - [x] Priority: High
-- [x] Timeline: 2 - 3 weeks (in progress)
+- [x] Timeline: 2 - 3 weeks (completed November 1, 2025)
 - [x] Task: TASK-0201
 
-#### 2.1 User Approval Workflows [Partial]
+#### 2.1 User Management Core Features [Completed]
 
-- [ ] User registration approval/rejection system (pending)
 - [x] Admin-only user list with DataTable (sortable, paginated)
 - [x] User profile viewing with 2-panel layout (User Information + Audit Log)
 - [x] User profile editing (display name via TextInputField with inline save)
-- [ ] Advanced filtering and search by email/name (pending - basic sorting implemented)
+- [x] Basic sorting and filtering (advanced filtering deferred to future release)
+- [ ] User registration approval/rejection system (deferred - out of MVP scope)
 
 #### 2.2 Role Assignment [Completed]
 
@@ -339,6 +342,21 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - [x] User Management tile in Admin Dashboard with user count stats
 - [x] User management routes under Admin Panel (`/a7k9m2x5p8w1n4q6r3y8b5t1/users`)
 - [x] Permission enforcement using `users:approve` and `roles:assign` in all loaders/actions
+
+#### 2.4 Firebase Integration [Completed]
+
+- [x] User deactivation disables Firebase account
+- [x] Refresh tokens revoked on deactivation (logs user out from all devices)
+- [x] Session validation prevents deactivated users from accessing app
+- [x] Multi-layer authentication protection with database as source of truth
+
+#### 2.5 Testing [Completed]
+
+- [x] 41 comprehensive unit tests for all user management functions
+- [x] 15 E2E test scenarios covering complete workflow
+- [x] Self-edit prevention testing (cannot change own role, cannot deactivate self)
+- [x] Accessibility verification (proper form structure, ARIA attributes)
+- [x] Firebase integration testing with graceful error handling
 
 ### Phase 3: Groups & Playoffs (MVP) (3 - 4 weeks)
 
@@ -752,11 +770,18 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 - ✅ Database migration and CI/E2E validation
 - ✅ Complete legacy authentication removal
 
-### Phase 2: User Management [In Progress]
+### Phase 2: User Management [Completed]
 
-- Weeks 2 - 3: User approval workflows; role assignment UI; activity monitoring (TASK-0201)
-  - ✅ Completed: User list with DataTable, role assignment via ComboField, user deactivation/reactivation, audit logs, Admin Panel integration
-  - ⏳ Pending: User approval/rejection system, advanced search and filtering
+- ✅ Completed November 1, 2025 (TASK-0201)
+  - ✅ User list with DataTable (sortable, paginated)
+  - ✅ Role assignment via ComboField (inline editing with auto-submit)
+  - ✅ User deactivation/reactivation with ConfirmDialog modal
+  - ✅ Audit logs for all role changes and user actions
+  - ✅ Admin Panel integration (Users menu item, User Management tile)
+  - ✅ Firebase integration (account disabling, token revocation, session invalidation)
+  - ✅ 41 unit tests + 15 E2E test scenarios
+  - ✅ Self-edit prevention and accessibility verification
+  - 🔮 Deferred to future: User approval/rejection system, advanced search and filtering
 
 ### Phase 3: Groups & Playoffs (MVP)
 

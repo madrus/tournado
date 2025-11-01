@@ -1,3 +1,16 @@
+/**
+ * Profile User Journey E2E Tests
+ *
+ * Test Scenarios:
+ * - PUBLIC user accessing profile from menu navigation
+ * - PUBLIC user direct URL navigation to profile
+ * - Profile content visibility for authenticated users
+ * - Unauthenticated user redirect to signin with redirectTo parameter
+ *
+ * Authentication: Tests PUBLIC role via loginAsRole helper
+ * Viewport: Mobile (375x812) - inherited from page object defaults
+ * Note: Tests complete user journey for profile access
+ */
 import { test } from '@playwright/test'
 
 import { loginAsRole } from '../helpers/session'

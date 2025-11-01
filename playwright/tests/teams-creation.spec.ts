@@ -1,3 +1,19 @@
+/**
+ * Public Team Creation E2E Tests
+ *
+ * Test Scenarios:
+ * - Public team creation with tournament selection
+ * - Multi-panel form progression (tournament, division, category)
+ * - Team information form fields
+ * - Team leader information collection
+ * - Privacy agreement acceptance
+ * - Database persistence verification
+ * - Email notification sending
+ *
+ * Authentication: PUBLIC ACCESS - No authentication required
+ * Viewport: Mobile (375x812)
+ * Note: Uses seeded tournament data to prevent database conflicts
+ */
 import { expect, test } from '@playwright/test'
 
 import { clearCapturedEmails, waitForEmailsCount } from '../helpers/test-emails'

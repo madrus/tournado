@@ -1,3 +1,18 @@
+/**
+ * Regular User Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Regular user access to admin panel (allowed)
+ * - Regular user access to admin teams page (allowed)
+ * - Regular user access to admin team creation (allowed)
+ * - Team editing restriction (admin only)
+ * - Tournament creation restriction (admin only)
+ * - User sign out and redirect behavior
+ *
+ * Authentication: Uses cached user auth (non-admin user)
+ * Viewport: Mobile (375x812)
+ * Note: Tests both allowed and restricted access for regular users
+ */
 import { expect, test } from '@playwright/test'
 
 // User Authorization Tests - USES CACHED USER AUTHENTICATION

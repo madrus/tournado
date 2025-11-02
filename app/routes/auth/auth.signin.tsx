@@ -25,6 +25,17 @@ import {
   authTextSpacingVariants,
 } from './auth.variants'
 
+// Valid error types that can be passed via query parameter
+// These correspond to error redirects in auth.callback.tsx
+const VALID_AUTH_ERRORS = [
+  'account-deactivated',
+  'missing-token',
+  'invalid-token',
+  'auth-failed',
+] as const
+
+type AuthError = (typeof VALID_AUTH_ERRORS)[number]
+
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
@@ -34,7 +45,7 @@ export const handle: RouteMetadata = {
 export const loader = async ({
   request,
 }: Route.LoaderArgs): Promise<
-  Response | { redirectTo: string | undefined; error: string | null }
+  Response | { redirectTo: string | undefined; error: AuthError | null }
 > => {
   const user = await getUser(request)
   if (user) {
@@ -50,7 +61,12 @@ export const loader = async ({
   const redirectTo = url.searchParams.get('redirectTo') ?? undefined
   const error = url.searchParams.get('error')
 
-  return { redirectTo, error }
+  // Validate error parameter against whitelist for defense-in-depth
+  const validError = (
+    error && VALID_AUTH_ERRORS.includes(error as AuthError) ? error : null
+  ) as AuthError | null
+
+  return { redirectTo, error: validError }
 }
 
 // No action needed since Firebase handles authentication client-side

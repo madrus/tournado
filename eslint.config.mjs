@@ -32,7 +32,7 @@ export default [
       'playwright-report/**',
       'playwright-results/**',
       'playwright/**',
-      'mocks/**',
+      'test/mocks/**',
       'node_modules/**',
       'public/**',
       'scripts/**',
@@ -148,7 +148,7 @@ export default [
 
   // Node specific configuration
   {
-    files: ['.eslintrc.js', 'mocks/**/*.js'],
+    files: ['.eslintrc.js', 'test/mocks/**/*.js'],
     languageOptions: {
       globals: {
         node: true,

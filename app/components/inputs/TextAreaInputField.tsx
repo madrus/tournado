@@ -71,13 +71,17 @@ export const TextAreaInputField = forwardRef<
     <div className={className}>
       <label className={textInputLabelVariants()}>
         <div
-          className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+          className={cn(
+            INPUT_LABEL_SPACING,
+            'flex items-center justify-between gap-2',
+            labelClassName
+          )}
         >
-          <span className={cn(textInputLabelTextVariants(), labelClassName)}>
-            {label}
-          </span>
+          <span className={textInputLabelTextVariants()}>{label}</span>
           {/* Status icon container with fixed width to prevent layout shifts */}
-          <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
+          {statusIcon ? (
+            <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
+          ) : null}
         </div>
         <div className='relative'>
           <textarea

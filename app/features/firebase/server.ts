@@ -269,8 +269,14 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
 
 /**
  * Disables a Firebase user account
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level deactivation. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
  * @param firebaseUid - The Firebase UID of the user to disable
- * @throws Error if Firebase Admin SDK is not initialized or if disabling fails
+ * @throws Error if disabling fails (but not if Admin SDK is unavailable)
  */
 export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
   if (!adminAuth) {
@@ -295,8 +301,14 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 
 /**
  * Enables a Firebase user account
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level activation. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
  * @param firebaseUid - The Firebase UID of the user to enable
- * @throws Error if Firebase Admin SDK is not initialized or if enabling fails
+ * @throws Error if enabling fails (but not if Admin SDK is unavailable)
  */
 export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
   if (!adminAuth) {
@@ -319,8 +331,14 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
 
 /**
  * Revokes all refresh tokens for a Firebase user, effectively logging them out from all devices
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level operations. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
  * @param firebaseUid - The Firebase UID of the user to revoke tokens for
- * @throws Error if Firebase Admin SDK is not initialized or if revoking fails
+ * @throws Error if revoking fails (but not if Admin SDK is unavailable)
  */
 export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
   if (!adminAuth) {

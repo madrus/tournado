@@ -4,15 +4,17 @@
  * Test Scenarios:
  * - Bottom navigation functionality (home, teams, more/about)
  * - PWA update prompt handling during navigation
- * - Homepage "Teams bekijken" button navigation
+ * - Homepage view teams button navigation
  * - Responsive navigation visibility (mobile vs desktop)
  * - All navigation items are present and clickable
  *
  * Authentication: PUBLIC ACCESS - No authentication required
  * Viewport: Mobile (375x812) and Desktop (1280x720) for responsive tests
  */
-import { expect, test } from '@playwright/test'
+import { test } from '@playwright/test'
 
+import { HomePage } from '../pages/HomePage'
+import { NavigationPage } from '../pages/NavigationPage'
 import { dismissPwaPromptIfVisible } from '../utils/pwaHelper'
 
 // Navigation Tests - PUBLIC ACCESS (no authentication needed for bottom navigation)
@@ -29,62 +31,45 @@ test.describe('Navigation', () => {
     test('should allow navigation via bottom navigation', async ({ page }) => {
       // Start from homepage
       await page.goto('/')
-
       await dismissPwaPromptIfVisible(page)
-      const bottomNav = page.locator('[data-testid="bottom-navigation"]')
-      await expect(bottomNav).toBeVisible({ timeout: 10000 })
 
-      const teamsNavButton = bottomNav.locator('[data-testid="nav-teams"]')
-      await expect(teamsNavButton).toBeVisible({ timeout: 5000 })
-      await teamsNavButton.click()
+      const nav = new NavigationPage(page)
 
-      // Should navigate to teams page (public view)
-      await expect(page).toHaveURL('/teams')
+      // Navigate to teams
+      await nav.navigateTeams()
 
       // Navigate back to home
-      await bottomNav.locator('[data-testid="nav-home"]').click()
-      await expect(page).toHaveURL('/')
+      await nav.navigateHome()
 
       // Navigate to more/about
-      await bottomNav.locator('[data-testid="nav-more"]').click()
-      await expect(page).toHaveURL('/about')
+      await nav.navigateMore()
     })
 
     test('should show all navigation items are functional', async ({ page }) => {
       await page.goto('/')
-
-      // Handle PWA update prompts that might interfere with navigation
       await dismissPwaPromptIfVisible(page)
 
-      // Test that all navigation items exist and are clickable
-      const bottomNav = page.locator('[data-testid="bottom-navigation"]')
-      await expect(bottomNav).toBeVisible()
+      const nav = new NavigationPage(page)
 
       // Verify all navigation items are present
-      await expect(bottomNav.locator('[data-testid="nav-home"]')).toBeVisible()
-      await expect(bottomNav.locator('[data-testid="nav-teams"]')).toBeVisible()
-      await expect(bottomNav.locator('[data-testid="nav-more"]')).toBeVisible()
+      await nav.expectAllNavigationItemsPresent()
 
       // Test navigation functionality
-      await bottomNav.locator('[data-testid="nav-teams"]').click()
-      await expect(page).toHaveURL('/teams')
-
-      await bottomNav.locator('[data-testid="nav-home"]').click()
-      await expect(page).toHaveURL('/')
-
-      await bottomNav.locator('[data-testid="nav-more"]').click()
-      await expect(page).toHaveURL('/about')
+      await nav.navigateTeams()
+      await nav.navigateHome()
+      await nav.navigateMore()
     })
   })
 
   test.describe('Homepage Navigation - Public', () => {
     test('should navigate via homepage view teams button', async ({ page }) => {
-      await page.goto('/')
+      const homePage = new HomePage(page)
 
-      // Use the homepage "Teams bekijken" button (Dutch interface)
-      await page.getByRole('link', { name: 'Teams bekijken' }).click()
+      await homePage.goto()
+      await dismissPwaPromptIfVisible(page)
 
-      await expect(page).toHaveURL('/teams')
+      // Use the homepage view teams button
+      await homePage.clickViewTeamsButton()
     })
   })
 
@@ -94,8 +79,10 @@ test.describe('Navigation', () => {
       await page.setViewportSize({ width: 1280, height: 720 })
       await page.goto('/')
 
+      const nav = new NavigationPage(page)
+
       // Bottom navigation should be hidden on desktop (has md:hidden class)
-      await expect(page.locator('[data-testid="bottom-navigation"]')).not.toBeVisible()
+      await nav.expectBottomNavigationHidden()
     })
 
     test('should show bottom navigation on mobile', async ({ page }) => {
@@ -103,8 +90,10 @@ test.describe('Navigation', () => {
       await page.setViewportSize({ width: 375, height: 812 })
       await page.goto('/')
 
+      const nav = new NavigationPage(page)
+
       // Bottom navigation should be visible on mobile
-      await expect(page.locator('[data-testid="bottom-navigation"]')).toBeVisible()
+      await nav.expectBottomNavigationVisible()
     })
   })
 })

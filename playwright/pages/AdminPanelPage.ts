@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
 import { BasePage } from './BasePage'
 
 export class AdminPanelPage extends BasePage {
@@ -22,12 +23,28 @@ export class AdminPanelPage extends BasePage {
 
   // Navigation methods
   async goto(): Promise<void> {
-    await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1', {
+    await this.page.goto(ADMIN_DASHBOARD_URL, {
       waitUntil: 'networkidle',
       timeout: 30000,
     })
     await this.page.waitForTimeout(2000) // Wait for hydration/rendering
     await this.page.waitForFunction(() => document.body.children.length > 0)
+  }
+
+  async gotoAdminTeams(): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams`)
+  }
+
+  async gotoAdminTeamNew(): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams/new`)
+  }
+
+  async gotoTeamEdit(teamId: string): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams/${teamId}`)
+  }
+
+  async gotoTournamentNew(): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
   }
 
   async clickTeamManagement(): Promise<void> {
@@ -42,7 +59,19 @@ export class AdminPanelPage extends BasePage {
 
   // Verification methods
   async expectToBeOnAdminPanel(): Promise<void> {
-    await expect(this.page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    await expect(this.page).toHaveURL(ADMIN_DASHBOARD_URL)
+  }
+
+  async expectToBeOnAdminTeams(): Promise<void> {
+    await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/teams`)
+  }
+
+  async expectToBeOnAdminTeamNew(): Promise<void> {
+    await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/teams/new`)
+  }
+
+  async expectToBeOnUnauthorizedPage(): Promise<void> {
+    await expect(this.page).toHaveURL('/unauthorized')
   }
 
   async expectTeamManagementVisible(): Promise<void> {

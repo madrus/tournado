@@ -2,13 +2,14 @@
 
 ## 1. Checks
 
-- non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')`
+- non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('test/mocks/handlers/emails.js')`
 - do we have direct DOM manipulations in our Playwright tests instead of Page Object Model usage?
 - add getServerT() to all modules that deal with server side errors (see users.\_indext.tsx)
    - **Server-Side Translations**: Use `getServerT(request)` in all server
       - actions/loaders for localized error messages and server-generated content;
       - respects user's language preference from cookie
         (see `.cursor/rules/PRD.mdc` around line 643)
+- check all translation strings in t() function calls in the codebase for existence. make a list of missing/wrong. use MCP servers for that
 
 ## 2. To show a block with 2 teams that are going to play a match, you need:
 

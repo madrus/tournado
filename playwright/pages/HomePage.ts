@@ -2,21 +2,26 @@ import { expect, type Locator, type Page } from '@playwright/test'
 
 export class HomePage {
   readonly page: Page
-  readonly viewTeamsLink: Locator
+  readonly viewTeamsButton: Locator
   readonly actionLinks: Locator
 
   constructor(page: Page) {
     this.page = page
-    this.viewTeamsLink = page.getByRole('link', { name: /teams bekijken/i })
+    this.viewTeamsButton = page.getByTestId('view-teams-button')
     this.actionLinks = page.locator('a[href*="/teams"], a[href*="/about"]')
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto('/')
   }
 
-  async waitForPageLoad() {
+  async waitForPageLoad(): Promise<void> {
     await this.page.waitForLoadState('networkidle')
     await this.page.waitForTimeout(2000) // Allow for hydration/rendering
+  }
+
+  async clickViewTeamsButton(): Promise<void> {
+    await this.viewTeamsButton.click()
+    await expect(this.page).toHaveURL('/teams')
   }
 }

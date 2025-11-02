@@ -21,7 +21,7 @@ let mswHandlerLoaded = false
 async function getEmailOutboxHandler(): Promise<typeof mswEmailHandler> {
   if (!mswHandlerLoaded) {
     try {
-      const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')
+      const { addEmailToOutbox } = await import('test/mocks/handlers/emails.js')
       mswEmailHandler = addEmailToOutbox
     } catch (error) {
       console.error('Failed to load MSW email handlers:', error)

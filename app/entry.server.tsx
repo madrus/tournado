@@ -30,8 +30,21 @@ function applySecurityHeaders(headers: Headers, request: Request): void {
 
   const addFormActionSource = (value: string | undefined): void => {
     if (!value) return
+
+    const trimmed = value.trim()
+    if (!trimmed || trimmed === 'self') return
+
     try {
-      const origin = new URL(value).origin
+      // URL.canParse protects against undefined, empty, and other invalid inputs
+      if (!URL.canParse(trimmed)) {
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
+          console.warn('Ignoring invalid form-action entry (not parsable)', value)
+        }
+        return
+      }
+
+      const origin = new URL(trimmed).origin
       if (origin && !formActionSources.has(origin)) {
         formActionSources.add(origin)
       }

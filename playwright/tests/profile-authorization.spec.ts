@@ -37,41 +37,36 @@ test.describe('Profile Authorization Tests', () => {
   })
 
   // Helper to test role access
-  async function testRoleAccess(page: Page, role: Role, shouldAccess: boolean) {
+  async function testRoleAccess(page: Page, role: Role) {
     const profilePage = new ProfilePage(page)
 
     await loginAsRole(page, role)
     await profilePage.goto()
-
-    if (shouldAccess) {
-      await profilePage.expectToBeOnProfilePage()
-    } else {
-      await profilePage.expectToBeRedirectedToUnauthorized()
-    }
+    await profilePage.expectToBeOnProfilePage()
   }
 
   // Test all roles - all should have access to their profile
   test('PUBLIC role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'PUBLIC', true)
+    await testRoleAccess(page, 'PUBLIC')
   })
 
   test('REFEREE role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'REFEREE', true)
+    await testRoleAccess(page, 'REFEREE')
   })
 
   test('EDITOR role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'EDITOR', true)
+    await testRoleAccess(page, 'EDITOR')
   })
 
   test('BILLING role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'BILLING', true)
+    await testRoleAccess(page, 'BILLING')
   })
 
   test('MANAGER role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'MANAGER', true)
+    await testRoleAccess(page, 'MANAGER')
   })
 
   test('ADMIN role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'ADMIN', true)
+    await testRoleAccess(page, 'ADMIN')
   })
 })

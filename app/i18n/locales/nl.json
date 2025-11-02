@@ -264,7 +264,9 @@
     "user": {
       "cannotChangeOwnRole": "Je kunt je eigen rol niet wijzigen",
       "cannotDeactivateOwnAccount": "Je kunt je eigen account niet deactiveren",
-      "cannotReactivateOwnAccount": "Je kunt je eigen account niet reactiveren"
+      "cannotReactivateOwnAccount": "Je kunt je eigen account niet reactiveren",
+      "failedToUpdateRole": "Kon rol niet bijwerken",
+      "missingUserId": "Gebruikers-ID ontbreekt"
     },
     "validation": {
       "emailInvalid": "Voer een geldig e-mailadres in",

@@ -44,6 +44,11 @@ export const SUPPORTED_LANGUAGES = [
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]['code']
 
+// Derived constant for language code validation
+export const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map(
+  lang => lang.code
+) as readonly Language[]
+
 /**
  * Initializes and returns an i18n instance with the given language.
  * @param language The language code to initialize i18n with.

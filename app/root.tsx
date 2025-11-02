@@ -144,7 +144,10 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 
   useEffect(() => {
     setIsHydrated(true)
-  }, [])
+    if (isHydrated) {
+      document.documentElement.setAttribute('data-hydrated', 'true')
+    }
+  }, [isHydrated])
 
   const currentTheme = isHydrated ? storeTheme : serverTheme
   // Use store language after hydration, server language during SSR

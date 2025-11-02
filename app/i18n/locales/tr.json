@@ -264,7 +264,9 @@
     "user": {
       "cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
       "cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
-      "cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz"
+      "cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz",
+      "failedToUpdateRole": "Rol güncellenemedi",
+      "missingUserId": "Kullanıcı kimliği eksik"
     },
     "validation": {
       "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",

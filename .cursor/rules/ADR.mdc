@@ -397,21 +397,28 @@ The app supports multiple languages (nl, en, fr, ar, tr, de). We need SSR-aware 
 
 Persist language in cookie + localStorage reactively. Read language from cookie on the server during initial request. Use `nl` as fallback. Centralize supported language enumeration for easier maintenance.
 
+**Server-Side Translation Support** (Added 2025-11-02):
+- Server actions and loaders can use `getServerT(request)` to get translation function bound to user's language
+- Language detection via `getLanguageFromRequest(request)` extracts language from cookie with fallback to Dutch
+- Enables localized error messages and server-generated content in user's preferred language
+- Uses `SUPPORTED_LANGUAGE_CODES` for validation (derived from `SUPPORTED_LANGUAGES`)
+
 Implementation references:
-- Eager config: `app/i18n/config.ts` (fallbackLng: `nl`, `SUPPORTED_LANGUAGES`)
+- Eager config: `app/i18n/config.ts` (fallbackLng: `nl`, `SUPPORTED_LANGUAGES`, `SUPPORTED_LANGUAGE_CODES`)
+- Server utilities: `app/i18n/i18n.server.ts` (`getLanguageFromRequest`, `getServerT`)
 - Lazy config: `app/i18n/config.lazy.ts` (on-demand locale loading, caching)
 - Cache utilities: `app/i18n/cache.ts`
 
 ### Consequences
 
-* Pros: SSR compatibility, consistent UX across sessions, easy language management
-* Cons / risks: Keep enum and translation files in sync, cookie handling
+* Pros: SSR compatibility, consistent UX across sessions, easy language management, server-side translations in user's language
+* Cons / risks: Keep enum and translation files in sync, cookie handling, server-side translation key maintenance
 * Supersedes: —
 * Superseded by: —
 
 ### Compliance / Verification
 
-Loader reads cookie; root updates cookie/localStorage on change. Tests verify SSR language and client persistence.
+Loader reads cookie; root updates cookie/localStorage on change. Server actions use `getServerT(request)` for localized messages. Tests verify SSR language detection, client persistence, and server-side translation accuracy.
 
 ## ADR-0010 — CI/CD and Fly.io Deployment Strategy
 

@@ -17,9 +17,8 @@
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
 import { loginAsRole } from '../helpers/session'
-
-const ADMIN_DASHBOARD_URL = '/a7k9m2x5p8w1n4q6r3y8b5t1'
 
 test.describe('Admin Dashboard Authorization Tests', () => {
   test.beforeEach(async ({ page }) => {

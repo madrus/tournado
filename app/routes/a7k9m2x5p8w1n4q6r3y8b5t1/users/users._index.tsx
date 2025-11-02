@@ -18,6 +18,7 @@ import { Panel } from '~/components/Panel'
 import { createUserColumns, UserMobileRow } from '~/features/users/components'
 import { validateRole } from '~/features/users/utils/roleUtils'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
+import { getServerT } from '~/i18n/i18n.server'
 import { getAllUsersWithPagination, updateUserRole } from '~/models/user.server'
 import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
@@ -86,6 +87,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 export async function action({ request }: Route.ActionArgs): Promise<Response> {
   // Require user with role-based authorization for role assignment action
   const currentUser = await requireUserWithMetadata(request, handle)
+  const t = getServerT(request) // Get translation function for user's language
 
   const formData = await request.formData()
   const intent = formData.get('intent')
@@ -96,7 +98,16 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 
     if (!userId) {
       return redirect(
-        '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' + encodeURIComponent('Missing user ID')
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' +
+          encodeURIComponent(t('messages.user.missingUserId'))
+      )
+    }
+
+    // Prevent users from changing their own role
+    if (userId === currentUser.id) {
+      return redirect(
+        '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' +
+          encodeURIComponent(t('messages.user.cannotChangeOwnRole'))
       )
     }
 
@@ -116,7 +127,7 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
         throw error
       }
       const errorMessage =
-        error instanceof Error ? error.message : 'Failed to update role'
+        error instanceof Error ? error.message : t('messages.user.failedToUpdateRole')
       return redirect(
         '/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=' + encodeURIComponent(errorMessage)
       )

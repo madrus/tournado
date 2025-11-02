@@ -264,7 +264,9 @@
     "user": {
       "cannotChangeOwnRole": "You Cannot Change Your Own Role",
       "cannotDeactivateOwnAccount": "You Cannot Deactivate Your Own Account",
-      "cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account"
+      "cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account",
+      "failedToUpdateRole": "Failed to Update Role",
+      "missingUserId": "Missing User ID"
     },
     "validation": {
       "emailInvalid": "Please enter a valid email address",

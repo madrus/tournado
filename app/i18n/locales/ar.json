@@ -264,7 +264,9 @@
     "user": {
       "cannotChangeOwnRole": "لا يمكنك تغيير دورك الخاص",
       "cannotDeactivateOwnAccount": "لا يمكنك إلغاء تنشيط حسابك الخاص",
-      "cannotReactivateOwnAccount": "لا يمكنك إعادة تنشيط حسابك الخاص"
+      "cannotReactivateOwnAccount": "لا يمكنك إعادة تنشيط حسابك الخاص",
+      "failedToUpdateRole": "فشل تحديث الدور",
+      "missingUserId": "معرف المستخدم مفقود"
     },
     "validation": {
       "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",

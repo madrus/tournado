@@ -264,7 +264,9 @@
     "user": {
       "cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
       "cannotDeactivateOwnAccount": "Vous ne pouvez pas désactiver votre propre compte",
-      "cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte"
+      "cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte",
+      "failedToUpdateRole": "Échec de la mise à jour du rôle",
+      "missingUserId": "Identifiant d'utilisateur manquant"
     },
     "validation": {
       "emailInvalid": "Veuillez saisir une adresse email valide",

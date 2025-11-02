@@ -19,6 +19,12 @@
  */
 import { expect, test } from '@playwright/test'
 
+import { HomePage } from '../pages/HomePage'
+import { TeamFormPage } from '../pages/TeamFormPage'
+import { TeamsListPage } from '../pages/TeamsListPage'
+import { TournamentFormPage } from '../pages/TournamentFormPage'
+import { TournamentsListPage } from '../pages/TournamentsListPage'
+
 // Structural and Functional Tests - More reliable than pixel-perfect screenshots
 test.describe('UI Structure and Theme Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -28,27 +34,18 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Tournaments List Page Structure', () => {
     test('should have correct structure and elements', async ({ page }) => {
-      // Navigate to tournaments list page
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+      const tournamentsPage = new TournamentsListPage(page)
+      await tournamentsPage.goto()
+      await tournamentsPage.waitForPageLoad()
 
-      // Wait for page to load completely
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Allow for hydration/rendering
-
-      // Test structure - look for the main tournaments heading
-      await expect(
-        page.getByRole('heading', {
-          name: 'Toernooien beheer',
-        })
-      ).toBeVisible()
-      await expect(page.getByRole('link', { name: /toevoegen/i })).toBeVisible()
-
-      // Check that the main content area exists
-      await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
+      await expect(tournamentsPage.heading).toBeVisible()
+      await expect(tournamentsPage.addButton).toBeVisible()
+      await expect(tournamentsPage.container).toBeVisible()
     })
 
     test('should display tournaments content', async ({ page }) => {
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+      const tournamentsPage = new TournamentsListPage(page)
+      await tournamentsPage.goto()
       await page.waitForLoadState('networkidle')
 
       // Should see tournaments-related content
@@ -62,20 +59,17 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Teams List Page Structure', () => {
     test('should have correct structure and elements', async ({ page }) => {
-      // Navigate to teams list page
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+      const teamsPage = new TeamsListPage(page)
+      await teamsPage.goto()
+      await teamsPage.waitForPageLoad()
 
-      // Wait for page to load completely
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000) // Allow for hydration/rendering
-
-      // Test structure - be more specific to avoid multiple matches
-      await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible()
-      await expect(page.getByTestId('admin-teams-layout-container')).toBeVisible()
+      await expect(teamsPage.heading).toBeVisible()
+      await expect(teamsPage.container).toBeVisible()
     })
 
     test('should display teams content', async ({ page }) => {
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+      const teamsPage = new TeamsListPage(page)
+      await teamsPage.goto()
       await page.waitForLoadState('networkidle')
 
       // Should see teams-related content
@@ -158,112 +152,84 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Form Structure and Panel Progression', () => {
     test('should have correct tournament form structure', async ({ page }) => {
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
+      const tournamentFormPage = new TournamentFormPage(page)
+      await tournamentFormPage.goto()
+      await tournamentFormPage.waitForPageLoad()
 
-      // Check form exists
-      await expect(page.locator('form')).toBeVisible()
-
-      // Check basic form fields
-      await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()
-      await expect(page.getByRole('textbox', { name: /locatie/i })).toBeVisible()
-
-      // Check date picker buttons exist
-      await expect(page.getByRole('button', { name: /startdatum/i })).toBeVisible()
+      await expect(tournamentFormPage.form).toBeVisible()
+      await expect(tournamentFormPage.nameInput).toBeVisible()
+      await expect(tournamentFormPage.locationInput).toBeVisible()
+      await expect(tournamentFormPage.startDateButton).toBeVisible()
     })
 
     test('should enable date picker after filling basic info', async ({ page }) => {
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
+      const tournamentFormPage = new TournamentFormPage(page)
+      await tournamentFormPage.goto()
+      await tournamentFormPage.waitForPageLoad()
 
-      // Fill basic info
-      await page.getByRole('textbox', { name: /naam/i }).fill('Test Tournament')
-      await page.getByRole('textbox', { name: /locatie/i }).fill('Test Location')
+      await tournamentFormPage.nameInput.fill('Test Tournament')
+      await tournamentFormPage.locationInput.fill('Test Location')
 
-      // Wait for form validation
       await page.waitForTimeout(1000)
 
-      // Date picker should be clickable
-      const startDateButton = page.getByRole('button', {
-        name: /startdatum/i,
-      })
-      await expect(startDateButton).toBeEnabled()
+      await expect(tournamentFormPage.startDateButton).toBeEnabled()
 
-      // Should be able to open calendar
-      await startDateButton.click()
-      await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible({
+      await tournamentFormPage.startDateButton.click()
+      await expect(tournamentFormPage.calendar).toBeVisible({
         timeout: 5000,
       })
     })
 
     test('should have correct team form structure', async ({ page }) => {
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
+      const teamFormPage = new TeamFormPage(page)
+      await teamFormPage.goto()
+      await teamFormPage.waitForPageLoad()
 
-      // Check form exists
-      await expect(page.locator('form')).toBeVisible()
-
-      // Check that form fields exist (even if disabled initially)
-      await expect(page.locator('[name="clubName"]')).toBeVisible()
-      await expect(page.locator('[name="name"]')).toBeVisible()
+      await expect(teamFormPage.form).toBeVisible()
+      await expect(teamFormPage.clubNameInput).toBeVisible()
+      await expect(teamFormPage.nameInput).toBeVisible()
     })
   })
 
   test.describe('ActionLinkPanel Components', () => {
     test('should display ActionLinkPanel components on homepage', async ({ page }) => {
-      await page.goto('/')
-      await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
+      const homePage = new HomePage(page)
+      await homePage.goto()
+      await homePage.waitForPageLoad()
 
-      // Should see action panels
-      await expect(page.getByRole('link', { name: /teams bekijken/i })).toBeVisible()
-
-      // Should have multiple action panels
-      const actionLinks = page.locator('a[href*="/teams"], a[href*="/about"]')
-      await expect(actionLinks.first()).toBeVisible()
+      await expect(homePage.viewTeamsLink).toBeVisible()
+      await expect(homePage.actionLinks.first()).toBeVisible()
     })
 
     test('should have working navigation links', async ({ page }) => {
-      await page.goto('/')
-      await page.waitForLoadState('networkidle')
+      const homePage = new HomePage(page)
+      await homePage.goto()
+      await homePage.waitForPageLoad()
 
-      // Click teams link and verify navigation
-      await page.getByRole('link', { name: /teams bekijken/i }).click()
-      // The link goes to admin teams page when authenticated
+      await homePage.viewTeamsLink.click()
       await expect(page).toHaveURL(/\/teams/)
     })
   })
 
   test.describe('Responsive Design Structure', () => {
     test('should handle mobile viewport correctly', async ({ page }) => {
-      // Set mobile viewport
       await page.setViewportSize({ width: 375, height: 812 })
+      const tournamentsPage = new TournamentsListPage(page)
+      await tournamentsPage.goto()
+      await tournamentsPage.waitForPageLoad()
 
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
-      await page.waitForLoadState('networkidle')
-
-      // Page should still load and be functional on mobile
-      await expect(
-        page.getByRole('heading', {
-          name: 'Toernooien beheer',
-        })
-      ).toBeVisible()
-      await expect(page.getByTestId('admin-tournaments-layout-container')).toBeVisible()
+      await expect(tournamentsPage.heading).toBeVisible()
+      await expect(tournamentsPage.container).toBeVisible()
     })
 
     test('should handle desktop viewport correctly', async ({ page }) => {
-      // Set desktop viewport
       await page.setViewportSize({ width: 1280, height: 720 })
+      const teamsPage = new TeamsListPage(page)
+      await teamsPage.goto()
+      await teamsPage.waitForPageLoad()
 
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
-      await page.waitForLoadState('networkidle')
-
-      // Page should load and be functional on desktop - be specific to avoid multiple matches
-      await expect(page.getByRole('heading', { name: 'Teams beheer' })).toBeVisible()
-      await expect(page.getByTestId('admin-teams-layout-container')).toBeVisible()
+      await expect(teamsPage.heading).toBeVisible()
+      await expect(teamsPage.container).toBeVisible()
     })
   })
 })

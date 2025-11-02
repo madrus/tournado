@@ -522,8 +522,9 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Internationalization
 
-- **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English)
-- **Requirements (high-level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`
+- **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English); server-side translation support implemented
+- **Server-Side i18n**: Server actions/loaders use `getServerT(request)` for translations in user's language (error messages, server-generated content)
+- **Requirements (high-level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`; use server-side translations for all user-facing server messages
 - Details: See `docs/development/PRD.details.md#i18n-details` (i18n centralization and locale handling)
 
 #### Deployment
@@ -639,6 +640,7 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
 - **Dutch capitalization rule**: Capitalize only the first word of titles/labels (sentence case); English titles may use title case
 - **Fallback language**: `nl`
 - **Persistence**: Persist language in cookie + localStorage; detect language on server during SSR
+- **Server-Side Translations**: Use `getServerT(request)` in all server actions/loaders for localized error messages and server-generated content; respects user's language preference from cookie
 Details: See `docs/development/PRD.details.md#i18n-details`
 
 ---

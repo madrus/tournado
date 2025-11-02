@@ -11,6 +11,10 @@ export class HomePage {
     this.actionLinks = page.locator('a[href*="/teams"], a[href*="/about"]')
   }
 
+  get viewTeamsLink(): Locator {
+    return this.viewTeamsButton
+  }
+
   async goto(): Promise<void> {
     await this.page.goto('/')
   }
@@ -21,7 +25,7 @@ export class HomePage {
   }
 
   async clickViewTeamsButton(): Promise<void> {
-    await this.viewTeamsButton.click()
+    await this.viewTeamsLink.click()
     await expect(this.page).toHaveURL('/teams')
   }
 }

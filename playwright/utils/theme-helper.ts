@@ -75,21 +75,30 @@ export async function verifyThemeStyles(
   page: Page,
   theme: 'dark' | 'light'
 ): Promise<void> {
-  const bgColor = await page.evaluate(() => {
+  const { backgroundColor, htmlClass } = await page.evaluate(() => {
     const bodyColor = window.getComputedStyle(document.body).backgroundColor
+    const htmlColor = window.getComputedStyle(document.documentElement).backgroundColor
 
-    if (bodyColor && bodyColor !== 'rgba(0, 0, 0, 0)' && bodyColor !== 'transparent') {
-      return bodyColor
+    return {
+      backgroundColor:
+        bodyColor && bodyColor !== 'rgba(0, 0, 0, 0)' && bodyColor !== 'transparent'
+          ? bodyColor
+          : htmlColor,
+      htmlClass: document.documentElement.className ?? '',
     }
-
-    return window.getComputedStyle(document.documentElement).backgroundColor
   })
+
+  const hasDarkClass = /\bdark\b/.test(htmlClass)
 
   if (theme === 'dark') {
     // Dark theme should not have white background
-    expect(bgColor).not.toBe('rgb(255, 255, 255)')
+    expect(hasDarkClass).toBeTruthy()
+    expect(backgroundColor).not.toBe('rgb(255, 255, 255)')
   } else {
     // Light theme should have white or very light background
-    expect(bgColor).toMatch(/rgb\((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?),/)
+    expect(hasDarkClass).toBeFalsy()
+    if (backgroundColor !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'transparent') {
+      expect(backgroundColor).toMatch(/rgb\((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?),/)
+    }
   }
 }

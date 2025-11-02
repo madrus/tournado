@@ -456,4 +456,185 @@ describe('UserDetailCard', () => {
       expect(roleSelect).toBeEnabled()
     })
   })
+
+  describe('User prop changes (useEffect synchronization)', () => {
+    it('should update display name when user prop changes', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('Test User')
+
+      // Simulate navigating to a different user (e.g., browser back/forward)
+      const differentUser: User = {
+        ...mockActiveUser,
+        id: 'user-2',
+        displayName: 'Different User',
+      }
+
+      rerender(
+        <UserDetailCard user={differentUser} currentUserId={mockCurrentUserId} />
+      )
+
+      expect(input).toHaveValue('Different User')
+    })
+
+    it('should update role when user prop changes', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toHaveValue('PUBLIC')
+
+      // Simulate navigating to a user with a different role
+      const adminUser: User = {
+        ...mockActiveUser,
+        id: 'user-2',
+        role: 'ADMIN',
+      }
+
+      rerender(<UserDetailCard user={adminUser} currentUserId={mockCurrentUserId} />)
+
+      expect(roleSelect).toHaveValue('ADMIN')
+    })
+
+    it('should update both display name and role when switching users', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+      const roleSelect = screen.getByTestId('select-role')
+
+      expect(input).toHaveValue('Test User')
+      expect(roleSelect).toHaveValue('PUBLIC')
+
+      // Simulate switching to a completely different user
+      const newUser: User = {
+        ...mockActiveUser,
+        id: 'user-3',
+        displayName: 'Admin User',
+        role: 'ADMIN',
+      }
+
+      rerender(<UserDetailCard user={newUser} currentUserId={mockCurrentUserId} />)
+
+      expect(input).toHaveValue('Admin User')
+      expect(roleSelect).toHaveValue('ADMIN')
+    })
+
+    it('should clear display name when new user has null displayName', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('Test User')
+
+      // Simulate switching to a user without a display name
+      const userWithoutName: User = {
+        ...mockActiveUser,
+        id: 'user-4',
+        displayName: null,
+      }
+
+      rerender(
+        <UserDetailCard user={userWithoutName} currentUserId={mockCurrentUserId} />
+      )
+
+      expect(input).toHaveValue('')
+    })
+
+    it('should preserve unsaved changes when user properties do not change', async () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+
+      // Make a local change
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'Unsaved Name' } })
+      })
+
+      expect(input).toHaveValue('Unsaved Name')
+
+      // Re-render with same user (e.g., parent component re-renders)
+      rerender(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      // Unsaved changes should be preserved
+      expect(input).toHaveValue('Unsaved Name')
+    })
+
+    it('should discard unsaved changes when user ID changes', async () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+
+      // Make a local unsaved change
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'Unsaved Name' } })
+      })
+
+      expect(input).toHaveValue('Unsaved Name')
+
+      // Navigate to a different user
+      const differentUser: User = {
+        ...mockActiveUser,
+        id: 'user-5',
+        displayName: 'New User',
+      }
+
+      rerender(
+        <UserDetailCard user={differentUser} currentUserId={mockCurrentUserId} />
+      )
+
+      // Unsaved changes should be discarded, showing new user's data
+      expect(input).toHaveValue('New User')
+    })
+
+    it('should update when only displayName changes for same user', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const input = screen.getByTestId('input-displayName')
+      expect(input).toHaveValue('Test User')
+
+      // Simulate the user's displayName being updated externally (e.g., by another admin)
+      const updatedUser: User = {
+        ...mockActiveUser,
+        displayName: 'Updated Display Name',
+      }
+
+      rerender(<UserDetailCard user={updatedUser} currentUserId={mockCurrentUserId} />)
+
+      expect(input).toHaveValue('Updated Display Name')
+    })
+
+    it('should update when only role changes for same user', () => {
+      const { rerender } = render(
+        <UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />
+      )
+
+      const roleSelect = screen.getByTestId('select-role')
+      expect(roleSelect).toHaveValue('PUBLIC')
+
+      // Simulate the user's role being updated externally
+      const updatedUser: User = {
+        ...mockActiveUser,
+        role: 'MANAGER',
+      }
+
+      rerender(<UserDetailCard user={updatedUser} currentUserId={mockCurrentUserId} />)
+
+      expect(roleSelect).toHaveValue('MANAGER')
+    })
+  })
 })

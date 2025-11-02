@@ -1,6 +1,10 @@
 # What to do next
 
-## 1. To show a block with 2 teams that are going to play a match, you need:
+## 1. Checks
+
+- non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')`
+
+## 2. To show a block with 2 teams that are going to play a match, you need:
 
 - From Match model (schema.prisma:121-137):
    - id, date, time, location, status

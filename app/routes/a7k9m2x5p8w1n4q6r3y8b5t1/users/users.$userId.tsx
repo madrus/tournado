@@ -139,7 +139,7 @@ export const action = async ({
       // Prevent users from reactivating themselves (this should never happen since they're active)
       if (userId === currentUser.id) {
         return Response.json(
-          { errors: { deactivate: 'cannotReactivateOwnAccount' } },
+          { errors: { reactivate: 'cannotReactivateOwnAccount' } },
           { status: 400 }
         )
       }

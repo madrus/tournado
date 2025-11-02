@@ -2,7 +2,6 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import {
   type ColorVariantKey,
-  createColorVariantMapping,
   createColorVariantObject,
 } from '~/components/shared/colorVariants'
 
@@ -159,19 +158,31 @@ export const comboFieldContentVariants = cva(
   ['z-50 overflow-hidden rounded-md border shadow-lg', 'border-input-border'],
   {
     variants: {
-      color: createColorVariantMapping(color => {
-        // Special mappings
-        switch (color) {
-          case 'brand':
-            return 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50'
-          case 'primary':
-            return 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50'
-          case 'disabled':
-            return 'bg-slate-50 text-slate-500 combo-content-bg dark:bg-slate-800 dark:text-slate-400'
-          default:
-            return `bg-${color}-50 text-${color}-800 combo-content-bg dark:text-${color}-50`
-        }
-      }),
+      color: {
+        brand: 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50',
+        primary: 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50',
+        emerald: 'bg-emerald-50 text-emerald-800 combo-content-bg dark:text-emerald-50',
+        red: 'bg-red-50 text-red-800 combo-content-bg dark:text-red-50',
+        blue: 'bg-blue-50 text-blue-800 combo-content-bg dark:text-blue-50',
+        green: 'bg-green-50 text-green-800 combo-content-bg dark:text-green-50',
+        yellow: 'bg-yellow-50 text-yellow-800 combo-content-bg dark:text-yellow-50',
+        purple: 'bg-purple-50 text-purple-800 combo-content-bg dark:text-purple-50',
+        pink: 'bg-pink-50 text-pink-800 combo-content-bg dark:text-pink-50',
+        indigo: 'bg-indigo-50 text-indigo-800 combo-content-bg dark:text-indigo-50',
+        slate: 'bg-slate-50 text-slate-800 combo-content-bg dark:text-slate-50',
+        zinc: 'bg-zinc-50 text-zinc-800 combo-content-bg dark:text-zinc-50',
+        orange: 'bg-orange-50 text-orange-800 combo-content-bg dark:text-orange-50',
+        amber: 'bg-amber-50 text-amber-800 combo-content-bg dark:text-amber-50',
+        lime: 'bg-lime-50 text-lime-800 combo-content-bg dark:text-lime-50',
+        teal: 'bg-teal-50 text-teal-800 combo-content-bg dark:text-teal-50',
+        cyan: 'bg-cyan-50 text-cyan-800 combo-content-bg dark:text-cyan-50',
+        sky: 'bg-sky-50 text-sky-800 combo-content-bg dark:text-sky-50',
+        violet: 'bg-violet-50 text-violet-800 combo-content-bg dark:text-violet-50',
+        fuchsia: 'bg-fuchsia-50 text-fuchsia-800 combo-content-bg dark:text-fuchsia-50',
+        rose: 'bg-rose-50 text-rose-800 combo-content-bg dark:text-rose-50',
+        disabled:
+          'bg-slate-50 text-slate-500 combo-content-bg dark:bg-slate-800 dark:text-slate-400',
+      },
     },
     defaultVariants: {
       color: 'slate',

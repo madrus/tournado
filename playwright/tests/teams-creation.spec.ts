@@ -53,19 +53,16 @@ test.describe('Public Teams - Creation', () => {
 
       // Navigate to public team creation form
       await page.goto('/teams/new')
-      await page.waitForLoadState('networkidle')
 
-      // Wait for any client-side stores to hydrate properly and form to be ready
-      await page.waitForTimeout(3000)
-
-      // Verify we're on the public team creation form
+      // Verify we're on the public team creation form and wait for the form to be ready
       await expect(page).toHaveURL('/teams/new')
-      await expect(page.locator('form')).toBeVisible()
+      const tournamentField = page.locator('[data-testid="tournamentId-combo-field"]')
+      await expect(tournamentField).toBeVisible({ timeout: 15000 }) // Wait longer for the first element
 
       // === PANEL 1: Tournament Selection (tournamentId, division, category) ===
 
       // Step 1a: Select Tournament
-      const tournamentField = page.locator('[data-testid="tournamentId-combo-field"]')
+      await expect(page.locator('form')).toBeVisible()
       await expect(tournamentField).toBeVisible({ timeout: 10000 })
 
       const tournamentCombo = tournamentField.locator('button[role="combobox"]')
@@ -184,8 +181,13 @@ test.describe('Public Teams - Creation', () => {
         }
       )
 
-      // Add some time for server-side email processing
-      await page.waitForTimeout(2000)
+      // Verify email notification was sent to team leader
+      const emails = await waitForEmailsCount(1, 5000)
+
+      // Verify email was sent to the team leader
+      expect(emails).toHaveLength(1)
+      const emailTo = Array.isArray(emails[0].to) ? emails[0].to[0] : emails[0].to
+      expect(emailTo).toBe(leaderEmail)
     } finally {
       // Clean up test data
       if (teamId) {

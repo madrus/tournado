@@ -48,6 +48,17 @@ export const InfoBanner = ({
   children,
   variant = 'info',
   className,
-}: InfoBannerProps): JSX.Element => (
-  <div className={cn(infoBannerVariants({ variant }), className)}>{children}</div>
-)
+}: InfoBannerProps): JSX.Element => {
+  // Use role="alert" for errors (implicit aria-live="assertive")
+  // Use role="status" with aria-live="polite" for other variants
+  const isError = variant === 'error'
+  const ariaProps = isError
+    ? { role: 'alert' as const }
+    : { role: 'status' as const, 'aria-live': 'polite' as const }
+
+  return (
+    <div className={cn(infoBannerVariants({ variant }), className)} {...ariaProps}>
+      {children}
+    </div>
+  )
+}

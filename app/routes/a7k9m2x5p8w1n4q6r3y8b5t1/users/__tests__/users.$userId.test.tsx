@@ -210,7 +210,7 @@ describe('users.$userId route action', () => {
 
       const body = await response.json()
       expect(body).toEqual({
-        errors: { deactivate: 'cannotReactivateOwnAccount' },
+        errors: { reactivate: 'cannotReactivateOwnAccount' },
       })
     })
   })

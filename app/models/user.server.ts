@@ -190,7 +190,8 @@ export const deactivateUser = async (
 ): Promise<User> => {
   const { userId, performedBy, reason } = props
 
-  return await prisma.$transaction(async tx => {
+  // Perform database operations in transaction and extract firebaseUid
+  const { updatedUser, firebaseUid } = await prisma.$transaction(async tx => {
     // Fetch current user state inside transaction
     const currentUser = await tx.user.findUnique({
       where: { id: userId },
@@ -203,11 +204,12 @@ export const deactivateUser = async (
 
     // Short-circuit if already inactive
     if (!currentUser.active) {
-      return (await tx.user.findUnique({ where: { id: userId } })) as User
+      const existingUser = (await tx.user.findUnique({ where: { id: userId } })) as User
+      return { updatedUser: existingUser, firebaseUid: null }
     }
 
     // Update database first
-    const updatedUser = await tx.user.update({
+    const deactivatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: false },
     })
@@ -223,21 +225,23 @@ export const deactivateUser = async (
       },
     })
 
-    // After successful database update, disable in Firebase and revoke tokens
-    // These operations are performed outside the transaction to avoid Firebase errors
-    // causing transaction rollback. If Firebase operations fail, the database
-    // deactivation will remain (which is safer than the reverse).
+    return { updatedUser: deactivatedUser, firebaseUid: currentUser.firebaseUid }
+  })
+
+  // Perform Firebase operations outside the transaction to avoid blocking
+  // the database transaction on external network calls
+  if (firebaseUid) {
     try {
-      await disableFirebaseUser(currentUser.firebaseUid)
-      await revokeRefreshTokens(currentUser.firebaseUid)
+      await disableFirebaseUser(firebaseUid)
+      await revokeRefreshTokens(firebaseUid)
     } catch (_error) {
       // Silently catch Firebase errors - don't fail the entire operation
       // The user is deactivated in our database which is the source of truth
       // Firebase errors are logged within the Firebase server functions
     }
+  }
 
-    return updatedUser
-  })
+  return updatedUser
 }
 
 type ReactivateUserProps = {
@@ -251,7 +255,8 @@ export const reactivateUser = async (
 ): Promise<User> => {
   const { userId, performedBy, reason } = props
 
-  return await prisma.$transaction(async tx => {
+  // Perform database operations in transaction and extract firebaseUid
+  const { updatedUser, firebaseUid } = await prisma.$transaction(async tx => {
     // Fetch current user state inside transaction
     const currentUser = await tx.user.findUnique({
       where: { id: userId },
@@ -264,11 +269,12 @@ export const reactivateUser = async (
 
     // Short-circuit if already active
     if (currentUser.active) {
-      return (await tx.user.findUnique({ where: { id: userId } })) as User
+      const existingUser = (await tx.user.findUnique({ where: { id: userId } })) as User
+      return { updatedUser: existingUser, firebaseUid: null }
     }
 
     // Update database first
-    const updatedUser = await tx.user.update({
+    const reactivatedUser = await tx.user.update({
       where: { id: userId },
       data: { active: true },
     })
@@ -284,20 +290,22 @@ export const reactivateUser = async (
       },
     })
 
-    // After successful database update, enable in Firebase
-    // This operation is performed outside the transaction to avoid Firebase errors
-    // causing transaction rollback. If Firebase operation fails, the database
-    // reactivation will remain (which is safer than the reverse).
+    return { updatedUser: reactivatedUser, firebaseUid: currentUser.firebaseUid }
+  })
+
+  // Perform Firebase operations outside the transaction to avoid blocking
+  // the database transaction on external network calls
+  if (firebaseUid) {
     try {
-      await enableFirebaseUser(currentUser.firebaseUid)
+      await enableFirebaseUser(firebaseUid)
     } catch (_error) {
       // Silently catch Firebase errors - don't fail the entire operation
       // The user is reactivated in our database which is the source of truth
       // Firebase errors are logged within the Firebase server functions
     }
+  }
 
-    return updatedUser
-  })
+  return updatedUser
 }
 
 type GetUsersByRoleProps = {

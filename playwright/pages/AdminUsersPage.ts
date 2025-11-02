@@ -53,6 +53,23 @@ export class AdminUsersPage extends BasePage {
     return this.page.getByTestId('audit-log-list')
   }
 
+  // Table row locators
+  get tableRows(): Locator {
+    return this.page.locator('table tbody tr')
+  }
+
+  getTableRow(index: number): Locator {
+    return this.tableRows.nth(index)
+  }
+
+  getFirstUserRow(): Locator {
+    return this.tableRows.first()
+  }
+
+  getRoleCell(row: Locator): Locator {
+    return row.locator('td').nth(1)
+  }
+
   // Navigation methods
   async goto(): Promise<void> {
     await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users', {
@@ -101,6 +118,76 @@ export class AdminUsersPage extends BasePage {
     await this.reactivateButton.click()
     await this.confirmButton.click()
     await this.page.waitForLoadState('networkidle')
+  }
+
+  // Table row interaction methods
+  async clickFirstUserRow(): Promise<void> {
+    const firstRow = this.getFirstUserRow()
+    await expect(firstRow).toBeVisible()
+    await firstRow.click()
+    await this.page.waitForLoadState('networkidle')
+  }
+
+  async navigateToFirstUser(): Promise<void> {
+    await this.clickFirstUserRow()
+  }
+
+  async getTableRowCount(): Promise<number> {
+    return await this.tableRows.count()
+  }
+
+  async getRoleTextFromRow(row: Locator): Promise<string | null> {
+    const roleCell = this.getRoleCell(row)
+    return await roleCell.textContent()
+  }
+
+  async findNonAdminRow(): Promise<Locator | null> {
+    const rowCount = await this.getTableRowCount()
+
+    for (let i = 0; i < rowCount; i++) {
+      const row = this.getTableRow(i)
+      const roleText = await this.getRoleTextFromRow(row)
+
+      if (!roleText?.includes('ADMIN')) {
+        return row
+      }
+    }
+
+    return null
+  }
+
+  async findAdminRow(): Promise<Locator | null> {
+    const rowCount = await this.getTableRowCount()
+
+    for (let i = 0; i < rowCount; i++) {
+      const row = this.getTableRow(i)
+      const roleText = await this.getRoleTextFromRow(row)
+
+      if (roleText?.includes('ADMIN')) {
+        return row
+      }
+    }
+
+    return null
+  }
+
+  async navigateToRow(row: Locator): Promise<void> {
+    await row.click()
+    await this.page.waitForLoadState('networkidle')
+  }
+
+  async isDeactivateButtonVisible(): Promise<boolean> {
+    return await this.deactivateButton.isVisible()
+  }
+
+  async isReactivateButtonVisible(): Promise<boolean> {
+    return await this.reactivateButton.isVisible()
+  }
+
+  async isEitherDeactivateOrReactivateVisible(): Promise<boolean> {
+    const deactivateVisible = await this.isDeactivateButtonVisible()
+    const reactivateVisible = await this.isReactivateButtonVisible()
+    return deactivateVisible || reactivateVisible
   }
 
   // Verification methods

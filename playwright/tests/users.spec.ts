@@ -73,13 +73,8 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.goto()
     await adminUsersPage.expectPageLoaded()
 
-    // Get the first user row from the table
-    const firstRow = page.locator('table tbody tr').first()
-    await expect(firstRow).toBeVisible()
-
-    // Click on the first user row
-    await firstRow.click()
-    await page.waitForLoadState('networkidle')
+    // Navigate to first user
+    await adminUsersPage.navigateToFirstUser()
 
     // Should navigate to user detail page
     await expect(page.url()).toContain('/a7k9m2x5p8w1n4q6r3y8b5t1/users/')
@@ -95,9 +90,7 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Navigate to first user
-    const firstRow = page.locator('table tbody tr').first()
-    await firstRow.click()
-    await page.waitForLoadState('networkidle')
+    await adminUsersPage.navigateToFirstUser()
 
     // Verify user detail card elements are visible
     await expect(adminUsersPage.userDetailCard).toBeVisible()
@@ -105,9 +98,9 @@ test.describe('User Management Workflow', () => {
     await expect(adminUsersPage.roleCombobox).toBeVisible()
 
     // Either deactivate or reactivate button should be visible depending on user status
-    const deactivateVisible = await adminUsersPage.deactivateButton.isVisible()
-    const reactivateVisible = await adminUsersPage.reactivateButton.isVisible()
-    expect(deactivateVisible || reactivateVisible).toBe(true)
+    const eitherButtonVisible =
+      await adminUsersPage.isEitherDeactivateOrReactivateVisible()
+    expect(eitherButtonVisible).toBe(true)
   })
 
   test('should update user display name', async ({ page }) => {
@@ -117,9 +110,7 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Navigate to first user
-    const firstRow = page.locator('table tbody tr').first()
-    await firstRow.click()
-    await page.waitForLoadState('networkidle')
+    await adminUsersPage.navigateToFirstUser()
 
     // Get current display name
     const currentName = await adminUsersPage.displayNameInput.inputValue()
@@ -153,9 +144,7 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Navigate to first user
-    const firstRow = page.locator('table tbody tr').first()
-    await firstRow.click()
-    await page.waitForLoadState('networkidle')
+    await adminUsersPage.navigateToFirstUser()
 
     // Verify audit log is visible
     await adminUsersPage.expectAuditLogVisible()
@@ -168,25 +157,10 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Find a user who is not the current admin (to avoid self-role change)
-    const rows = page.locator('table tbody tr')
-    const rowCount = await rows.count()
-
-    let targetRow = null
-    for (let i = 0; i < rowCount; i++) {
-      const row = rows.nth(i)
-      const roleCell = row.locator('td').nth(1) // Assuming role is in second column
-      const roleText = await roleCell.textContent()
-
-      // Skip if this is an ADMIN (to avoid testing on current user)
-      if (!roleText?.includes('ADMIN')) {
-        targetRow = row
-        break
-      }
-    }
+    const targetRow = await adminUsersPage.findNonAdminRow()
 
     if (targetRow) {
-      await targetRow.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.navigateToRow(targetRow)
 
       // Get current role
       const currentRole = await adminUsersPage.roleCombobox.inputValue()
@@ -214,27 +188,13 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Find an active user who is not ADMIN (to avoid deactivating current user)
-    const rows = page.locator('table tbody tr')
-    const rowCount = await rows.count()
-
-    let targetRow = null
-    for (let i = 0; i < rowCount; i++) {
-      const row = rows.nth(i)
-      const roleCell = row.locator('td').nth(1)
-      const roleText = await roleCell.textContent()
-
-      if (!roleText?.includes('ADMIN')) {
-        targetRow = row
-        break
-      }
-    }
+    const targetRow = await adminUsersPage.findNonAdminRow()
 
     if (targetRow) {
-      await targetRow.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.navigateToRow(targetRow)
 
       // Check if deactivate button is visible (user is active)
-      const isActive = await adminUsersPage.deactivateButton.isVisible()
+      const isActive = await adminUsersPage.isDeactivateButtonVisible()
 
       if (isActive) {
         // Test deactivation
@@ -302,24 +262,10 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Find the row for the current ADMIN user
-    const rows = page.locator('table tbody tr')
-    const rowCount = await rows.count()
-
-    let adminRow = null
-    for (let i = 0; i < rowCount; i++) {
-      const row = rows.nth(i)
-      const roleCell = row.locator('td').nth(1)
-      const roleText = await roleCell.textContent()
-
-      if (roleText?.includes('ADMIN')) {
-        adminRow = row
-        break
-      }
-    }
+    const adminRow = await adminUsersPage.findAdminRow()
 
     if (adminRow) {
-      await adminRow.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.navigateToRow(adminRow)
 
       // Try to change own role
       const currentRole = await adminUsersPage.roleCombobox.inputValue()
@@ -345,27 +291,13 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Find the current ADMIN user
-    const rows = page.locator('table tbody tr')
-    const rowCount = await rows.count()
-
-    let adminRow = null
-    for (let i = 0; i < rowCount; i++) {
-      const row = rows.nth(i)
-      const roleCell = row.locator('td').nth(1)
-      const roleText = await roleCell.textContent()
-
-      if (roleText?.includes('ADMIN')) {
-        adminRow = row
-        break
-      }
-    }
+    const adminRow = await adminUsersPage.findAdminRow()
 
     if (adminRow) {
-      await adminRow.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.navigateToRow(adminRow)
 
       // Check if user is active
-      const isActive = await adminUsersPage.deactivateButton.isVisible()
+      const isActive = await adminUsersPage.isDeactivateButtonVisible()
 
       if (isActive) {
         // Try to deactivate self
@@ -416,9 +348,7 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Navigate to first user
-    const firstRow = page.locator('table tbody tr').first()
-    await firstRow.click()
-    await page.waitForLoadState('networkidle')
+    await adminUsersPage.navigateToFirstUser()
 
     // Check for proper form structure
     await expect(adminUsersPage.displayNameInput).toHaveAttribute('name', 'displayName')

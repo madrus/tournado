@@ -1,4 +1,4 @@
-import { type JSX, useCallback, useRef, useState } from 'react'
+import { type JSX, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form } from 'react-router'
 
@@ -36,6 +36,12 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
   const buttonColor = user.active
     ? USER_ACTIVE_BUTTON_COLOR
     : USER_INACTIVE_BUTTON_COLOR
+
+  // Sync local state when user prop changes (e.g., browser back/forward navigation)
+  useEffect(() => {
+    setDisplayName(user.displayName || '')
+    setSelectedRole(user.role)
+  }, [user.id, user.displayName, user.role])
 
   // Convert VALID_ROLES to ComboField options format
   const roleOptions: Option[] = VALID_ROLES.map(role => ({

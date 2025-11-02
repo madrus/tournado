@@ -572,11 +572,13 @@
   }
 
   /* Nuclear option: completely disable all visual changes on disabled buttons (except combobox) */
-  button:disabled:not([role='combobox']),
-  button:disabled:not([role='combobox']):hover,
-  button:disabled:not([role='combobox']):focus,
-  button:disabled:not([role='combobox']):focus-visible,
-  button:disabled:not([role='combobox']):active {
+  button:disabled:not([role='combobox']):is(
+      &,
+      :hover,
+      :focus,
+      :focus-visible,
+      :active
+    ) {
     --tw-ring-width: 0px !important;
     --tw-ring-offset-width: 0px !important;
     --tw-ring-color: transparent !important;
@@ -608,26 +610,30 @@
   }
 
   /* Force border color to stay consistent on disabled buttons (except combobox) */
-  button:disabled:not([role='combobox']),
-  button:disabled:not([role='combobox']):hover,
-  button:disabled:not([role='combobox']):focus,
-  button:disabled:not([role='combobox']):focus-visible {
+  button:disabled:not([role='combobox']):is(
+      &,
+      :hover,
+      :focus,
+      :focus-visible,
+      :active
+    ) {
     border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
   }
 
   /* Dark mode disabled button border override (except combobox) */
-  .dark button:disabled:not([role='combobox']),
-  .dark button:disabled:not([role='combobox']):hover,
-  .dark button:disabled:not([role='combobox']):focus,
-  .dark button:disabled:not([role='combobox']):focus-visible {
+  .dark
+    button:disabled:not([role='combobox']):is(
+      &,
+      :hover,
+      :focus,
+      :focus-visible,
+      :active
+    ) {
     border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
   }
 
   /* ComboField disabled variant - restore border width, allow utility classes to set border color */
-  button[role='combobox']:disabled,
-  button[role='combobox']:disabled:hover,
-  button[role='combobox']:disabled:focus,
-  button[role='combobox']:disabled:focus-visible {
+  button[role='combobox']:disabled:is(&, :hover, :focus, :focus-visible, :active) {
     border-width: 2px !important;
   }
 

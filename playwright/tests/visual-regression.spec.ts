@@ -24,6 +24,7 @@ import { TeamFormPage } from '../pages/TeamFormPage'
 import { TeamsListPage } from '../pages/TeamsListPage'
 import { TournamentFormPage } from '../pages/TournamentFormPage'
 import { TournamentsListPage } from '../pages/TournamentsListPage'
+import { setTheme, verifyTheme, verifyThemeStyles } from '../utils/theme-helper'
 
 // Structural and Functional Tests - More reliable than pixel-perfect screenshots
 test.describe('UI Structure and Theme Tests', () => {
@@ -83,70 +84,21 @@ test.describe('UI Structure and Theme Tests', () => {
 
   test.describe('Dark Mode Theme Functionality', () => {
     test('should apply dark theme correctly on tournaments page', async ({ page }) => {
-      // Block React Router manifest requests to prevent prefetch-induced page reloads
-      await page.route('**/__manifest**', route => {
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({ patches: [] }),
-        })
-      })
-
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
       await page.waitForLoadState('networkidle')
 
-      // Apply dark theme by removing light and adding dark
-      await page.evaluate(() => {
-        document.documentElement.classList.remove('light')
-        document.documentElement.classList.add('dark')
-      })
-
-      // Wait for theme application
-      await page.waitForTimeout(500)
-
-      // Check if theme was overridden
-      const currentClass = await page.locator('html').getAttribute('class')
-      console.log(`HTML class after dark theme application: ${currentClass}`)
-
-      // If theme was reset, try using the theme store directly
-      if (!currentClass?.includes('dark')) {
-        await page.evaluate(() => {
-          // Try to access theme store or settings
-          if ((window as any).useSettingsStore) {
-            ;(window as any).useSettingsStore.getState().setTheme('dark')
-          }
-          // Force dark theme application
-          document.documentElement.classList.remove('light')
-          document.documentElement.classList.add('dark')
-        })
-        await page.waitForTimeout(500)
-      }
-
-      // Verify dark class is applied
-      await expect(page.locator('html')).toHaveClass(/dark/)
-
-      // Check that dark mode styles are working (background should be dark)
-      const bgColor = await page.evaluate(() => {
-        return window.getComputedStyle(document.body).backgroundColor
-      })
-
-      // Should not be white/light background
-      expect(bgColor).not.toBe('rgb(255, 255, 255)')
+      await setTheme(page, 'dark')
+      await verifyTheme(page, 'dark')
+      await verifyThemeStyles(page, 'dark')
     })
 
     test('should apply light theme correctly on teams page', async ({ page }) => {
       await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
       await page.waitForLoadState('networkidle')
 
-      // Ensure light theme
-      await page.evaluate(() => {
-        document.documentElement.classList.remove('dark')
-      })
-
-      await page.waitForTimeout(500)
-
-      // Verify dark class is not applied
-      await expect(page.locator('html')).not.toHaveClass(/dark/)
+      await setTheme(page, 'light')
+      await verifyTheme(page, 'light')
+      await verifyThemeStyles(page, 'light')
     })
   })
 

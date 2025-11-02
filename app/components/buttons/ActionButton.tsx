@@ -4,7 +4,11 @@ import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 import { type Permission } from '~/utils/rbac'
 
-import { buttonVariants, type ButtonVariants } from './button.variants'
+import {
+  buttonVariants,
+  type ButtonVariants,
+  DARK_MODE_DARKER_CLASSES,
+} from './button.variants'
 import { useActionButton } from './useActionButton'
 
 type ActionButtonProps = {
@@ -119,32 +123,9 @@ export function ActionButton({
   ) : null
 
   // Apply darker background in dark mode if requested
-  // Must use explicit class names for Tailwind JIT to detect them
-  const darkModeClassMap: Record<string, string> = {
-    brand: 'dark:bg-red-700 dark:border-red-700',
-    primary: 'dark:bg-emerald-700 dark:border-emerald-700',
-    emerald: 'dark:bg-emerald-700 dark:border-emerald-700',
-    blue: 'dark:bg-blue-700 dark:border-blue-700',
-    slate: 'dark:bg-slate-700 dark:border-slate-700',
-    teal: 'dark:bg-teal-700 dark:border-teal-700',
-    red: 'dark:bg-red-700 dark:border-red-700',
-    cyan: 'dark:bg-cyan-700 dark:border-cyan-700',
-    yellow: 'dark:bg-yellow-700 dark:border-yellow-700',
-    green: 'dark:bg-green-700 dark:border-green-700',
-    violet: 'dark:bg-violet-700 dark:border-violet-700',
-    zinc: 'dark:bg-zinc-700 dark:border-zinc-700',
-    orange: 'dark:bg-orange-700 dark:border-orange-700',
-    amber: 'dark:bg-amber-700 dark:border-amber-700',
-    lime: 'dark:bg-lime-700 dark:border-lime-700',
-    sky: 'dark:bg-sky-700 dark:border-sky-700',
-    indigo: 'dark:bg-indigo-700 dark:border-indigo-700',
-    purple: 'dark:bg-purple-700 dark:border-purple-700',
-    fuchsia: 'dark:bg-fuchsia-700 dark:border-fuchsia-700',
-    pink: 'dark:bg-pink-700 dark:border-pink-700',
-    rose: 'dark:bg-rose-700 dark:border-rose-700',
-  }
-
-  const darkModeClasses = darkerInDarkMode && color ? darkModeClassMap[color] || '' : ''
+  // Uses shared constant from button.variants.ts for consistency
+  const darkModeClasses =
+    darkerInDarkMode && color ? DARK_MODE_DARKER_CLASSES[color] || '' : ''
 
   const buttonClasses = cn(
     buttonVariants({ variant, color, size }),

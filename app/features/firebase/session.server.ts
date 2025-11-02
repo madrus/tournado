@@ -11,6 +11,12 @@ import type { FirebaseSessionData, SessionBridgeResult } from './types'
 
 const FIREBASE_SESSION_KEY = 'firebaseSession'
 
+/**
+ * Error constant for deactivated account attempts.
+ * Used by mutation functions to signal exceptional state.
+ */
+export const ACCOUNT_DEACTIVATED_ERROR = 'ACCOUNT_DEACTIVATED'
+
 type CreateSessionFromFirebaseTokenProps = {
   idToken: string
   request: Request
@@ -69,8 +75,11 @@ export const syncFirebaseUserToDatabase = async (
   const isNewUser = !existingUser
 
   // Check if existing user is deactivated
+  // NOTE: This throws an error (exceptional state for mutation function)
+  // while validateFirebaseSession returns null (invalid state for validation function)
+  // Both approaches are semantically appropriate for their use cases
   if (existingUser && !existingUser.active) {
-    throw new Error('ACCOUNT_DEACTIVATED')
+    throw new Error(ACCOUNT_DEACTIVATED_ERROR)
   }
 
   // Use our new createOrUpdateUser function with role assignment
@@ -116,6 +125,9 @@ export const validateFirebaseSession = async (
     }
 
     // Check if user is deactivated
+    // NOTE: This returns null (invalid state for validation function)
+    // while syncFirebaseUserToDatabase throws (exceptional state for mutation function)
+    // Both approaches are semantically appropriate for their use cases
     if (!user.active) {
       return null
     }

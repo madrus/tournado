@@ -16,6 +16,19 @@ import {
   titleColorVariants,
 } from './dialog.variants'
 
+/**
+ * Wrapper component that conditionally wraps children in Dialog.Close
+ * Only wraps when not loading to prevent dialog dismissal during async operations
+ */
+const DialogCloseWrapper = ({
+  isLoading,
+  children,
+}: {
+  isLoading: boolean
+  children: ReactNode
+}): JSX.Element =>
+  isLoading ? <>{children}</> : <Dialog.Close asChild>{children}</Dialog.Close>
+
 type ConfirmDialogProps = {
   // Trigger-based dialog (no open/onOpenChange needed)
   trigger: ReactNode
@@ -124,7 +137,7 @@ export function ConfirmDialog({
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
                 <div ref={cancelContainerRef} className='sm:order-1'>
-                  {isLoading ? (
+                  <DialogCloseWrapper isLoading={isLoading}>
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
@@ -135,23 +148,11 @@ export function ConfirmDialog({
                     >
                       {cancelLabel}
                     </ActionButton>
-                  ) : (
-                    <Dialog.Close asChild>
-                      <ActionButton
-                        variant='secondary'
-                        color={finalCancelColor}
-                        size='md'
-                        className='w-full min-w-[120px] sm:w-auto'
-                        aria-label={cancelLabel}
-                      >
-                        {cancelLabel}
-                      </ActionButton>
-                    </Dialog.Close>
-                  )}
+                  </DialogCloseWrapper>
                 </div>
 
                 <div ref={confirmContainerRef} className='sm:order-2'>
-                  {isLoading ? (
+                  <DialogCloseWrapper isLoading={isLoading}>
                     <ActionButton
                       variant='primary'
                       color={finalConfirmColor}
@@ -163,20 +164,7 @@ export function ConfirmDialog({
                     >
                       {confirmLabel}
                     </ActionButton>
-                  ) : (
-                    <Dialog.Close asChild>
-                      <ActionButton
-                        variant='primary'
-                        color={finalConfirmColor}
-                        size='md'
-                        onClick={handleConfirm}
-                        className='w-full min-w-[120px] sm:w-auto'
-                        aria-label={confirmLabel}
-                      >
-                        {confirmLabel}
-                      </ActionButton>
-                    </Dialog.Close>
-                  )}
+                  </DialogCloseWrapper>
                 </div>
               </div>
             </div>

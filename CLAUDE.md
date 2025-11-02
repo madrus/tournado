@@ -118,7 +118,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 - **Barrel files are encouraged** for cleaner imports throughout the codebase
 - **Example**: `~/features/firebase/components/FirebaseAuth/index.ts` can re-export components from the same directory
 - **Benefits**: Shorter import paths, better organization, no tree-shaking issues with modern bundlers
-- **Note for tests**: If you encounter circular dependency issues in test environments, you can use direct imports (e.g., `from '../FirebaseEmailSignIn'`) as a workaround, but this is not a requirement
+- **Note for tests**: If you encounter circular dependency issues, prefer restructuring to eliminate the cycle. As a pragmatic workaround in tests only, you may use direct imports (e.g., `from '../FirebaseEmailSignIn'`), though this should be rare with properly structured barrel exports
 
 **Type Organization**:
 

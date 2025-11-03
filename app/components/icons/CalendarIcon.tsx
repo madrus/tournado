@@ -19,6 +19,7 @@ export const CalendarIcon = ({
   ...rest
 }: Readonly<CalendarIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const CalendarIcon = ({
     strokeLinejoin='round'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <rect width='18' height='18' x='3' y='4' rx='2' ry='2' />
     <line x1='16' x2='16' y1='2' y2='6' />

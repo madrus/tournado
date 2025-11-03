@@ -1414,8 +1414,8 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 - RBAC middleware: `app/utils/rbacMiddleware.server.ts`
 - Permissions: `app/utils/rbac/permissions.ts`
 - Database schema: `prisma/schema.prisma` (User.active, User.displayName, UserAuditLog model)
-- Unit tests: `app/models/__tests__/user.server.test.ts` (41 comprehensive tests)
-- E2E tests: `playwright/tests/users.spec.ts` (15 scenarios)
+- Unit tests: `app/models/__tests__/user.server.test.ts` (58 comprehensive tests)
+- E2E tests: `playwright/tests/users.spec.ts` (14 scenarios)
 - Page Object Model: `playwright/pages/AdminUsersPage.ts`
 
 ### Consequences
@@ -1429,14 +1429,16 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 
 ✅ **All verification criteria met:**
 
-- ✅ 41 unit tests verify permission enforcement for all user management operations
-- ✅ 15 E2E test scenarios confirm only ADMIN can access user management features
+- ✅ 58 unit tests verify permission enforcement for all user management operations
+- ✅ 14 E2E test scenarios confirm only ADMIN can access user management features
 - ✅ Audit logs properly record all role changes, deactivations, and reactivations
 - ✅ Self-edit prevention: users cannot change their own role or deactivate themselves
 - ✅ Database constraints ensure valid role transitions
 - ✅ Firebase integration: deactivated users cannot sign in, active sessions invalidated
-- ✅ Multi-layer protection: Firebase account disabled, tokens revoked, database as source of truth
-- ✅ Accessibility verification: proper form structure, ARIA attributes, keyboard navigation
+- ✅ Multi-layer deactivation enforcement: Firebase account disabled, authentication callbacks reject inactive users, InfoBanner displays deactivation notice, database as source of truth
+- ✅ Server-side i18n: localized error messages for role change prevention, deactivation errors, and validation failures via `getServerT`
+- ✅ ComboField accessibility: keyboard navigation, screen reader support, and ARIA attributes for role assignment dropdown
+- ✅ Accessibility verification: proper form structure, ARIA attributes, keyboard navigation across all user management interfaces
 
 **PRD Phase Alignment**: This ADR defines Phase 2 (User Management) implementation requirements.
 

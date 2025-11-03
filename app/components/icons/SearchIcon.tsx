@@ -19,6 +19,7 @@ export const SearchIcon = ({
   ...rest
 }: Readonly<SearchIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const SearchIcon = ({
     fill='none'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <circle cx='11' cy='11' r='8' />
     <path d='m21 21-4.35-4.35' />

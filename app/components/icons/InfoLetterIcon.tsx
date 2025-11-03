@@ -24,6 +24,7 @@ export function InfoLetterIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -34,7 +35,6 @@ export function InfoLetterIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       {paths.map((path, index) => (
         <path key={index} d={path} stroke='currentColor' />

@@ -27,6 +27,7 @@ export function WarningIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -35,7 +36,6 @@ export function WarningIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       {/* Triangle background matches dialog background (transparent, inherited from parent) */}
       <path

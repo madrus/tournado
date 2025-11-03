@@ -19,6 +19,7 @@ export const CloseIcon = ({
   ...rest
 }: Readonly<CloseIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const CloseIcon = ({
     strokeLinejoin='round'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <path d='M6 18L18 6M6 6l12 12' />
   </svg>

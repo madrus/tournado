@@ -19,6 +19,7 @@ export const ArrowUpIcon = ({
   ...rest
 }: Readonly<ArrowUpIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const ArrowUpIcon = ({
     fill='none'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <path d='M12 19V5M5 12l7-7 7 7' />
   </svg>

@@ -1,20 +1,17 @@
 import { promises as fs } from 'node:fs'
-import path from 'node:path'
 
 import { http, HttpResponse } from 'msw'
 
 import { createMutex } from '../utils/asyncLock.js'
 
-const OUTBOX_DIR = path.join(process.cwd(), '.tmp')
-const OUTBOX_PATH = path.join(OUTBOX_DIR, 'email-outbox.json')
-
-const ensureOutboxDir = async () => {
-  await fs.mkdir(OUTBOX_DIR, { recursive: true })
-}
+await import('tsx/esm')
+const { OUTBOX_DIR, OUTBOX_PATH, ensureOutboxDirAsync } = await import(
+  '../../../app/utils/email-testing.server.ts'
+)
 
 // Helper to read the outbox file
 async function readOutbox() {
-  await ensureOutboxDir()
+  await ensureOutboxDirAsync()
   try {
     const content = await fs.readFile(OUTBOX_PATH, 'utf-8')
     return JSON.parse(content)
@@ -28,7 +25,7 @@ async function readOutbox() {
 
 // Helper to write to the outbox file
 async function writeOutbox(emails) {
-  await ensureOutboxDir()
+  await ensureOutboxDirAsync()
   try {
     await fs.writeFile(OUTBOX_PATH, JSON.stringify(emails, null, 2))
   } catch (error) {

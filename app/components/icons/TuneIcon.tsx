@@ -28,6 +28,7 @@ export function TuneIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
@@ -35,7 +36,6 @@ export function TuneIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

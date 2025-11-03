@@ -29,6 +29,7 @@ export const NewWindowIcon = ({
 
   return (
     <svg
+      {...restProps}
       className={`inline-block fill-current ${className}`}
       width={size}
       height={size}
@@ -37,7 +38,6 @@ export const NewWindowIcon = ({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

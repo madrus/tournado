@@ -20,7 +20,11 @@ describe('test.emails.server route', () => {
   })
 
   afterEach(() => {
-    process.env.PLAYWRIGHT = originalPlaywright
+    if (originalPlaywright === undefined) {
+      delete process.env.PLAYWRIGHT
+    } else {
+      process.env.PLAYWRIGHT = originalPlaywright
+    }
   })
 
   it('throws a 404 Response when not in Playwright environment', async () => {

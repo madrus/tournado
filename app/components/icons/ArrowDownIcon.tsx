@@ -19,6 +19,7 @@ export const ArrowDownIcon = ({
   ...rest
 }: Readonly<ArrowDownIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const ArrowDownIcon = ({
     fill='none'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <path d='M12 5v14M19 12l-7 7-7-7' />
   </svg>

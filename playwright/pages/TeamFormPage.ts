@@ -1,5 +1,7 @@
 import { type Locator, type Page } from '@playwright/test'
 
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
+
 export class TeamFormPage {
   readonly page: Page
   readonly form: Locator
@@ -14,7 +16,7 @@ export class TeamFormPage {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/teams/new`)
   }
 
   async waitForPageLoad(): Promise<void> {

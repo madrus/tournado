@@ -4,6 +4,8 @@ import type { Role } from '@prisma/client'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
+
 import { action } from '../users.$userId'
 
 // Mock dependencies
@@ -90,7 +92,7 @@ describe('users.$userId route action', () => {
         performedBy: mockCurrentUser.id,
       })
       expect(redirect).toHaveBeenCalledWith(
-        `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${mockTargetUserId}?success=displayName`
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=displayName`
       )
       expect(response.status).toBe(302)
     })
@@ -124,7 +126,7 @@ describe('users.$userId route action', () => {
         performedBy: mockCurrentUser.id,
       })
       expect(redirect).toHaveBeenCalledWith(
-        `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${mockTargetUserId}?success=role`
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=role`
       )
       expect(response.status).toBe(302)
     })
@@ -137,13 +139,10 @@ describe('users.$userId route action', () => {
       const response = await action(createActionArgs(formData, mockCurrentUser.id))
 
       expect(updateUserRole).not.toHaveBeenCalled()
-      expect(redirect).not.toHaveBeenCalled()
-      expect(response.status).toBe(400)
-
-      const body = await response.json()
-      expect(body).toEqual({
-        errors: { role: 'cannotChangeOwnRole' },
-      })
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot change your own role.')}`
+      )
+      expect(response.status).toBe(302)
     })
   })
 
@@ -159,7 +158,7 @@ describe('users.$userId route action', () => {
         performedBy: mockCurrentUser.id,
       })
       expect(redirect).toHaveBeenCalledWith(
-        `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${mockTargetUserId}?success=deactivate`
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=deactivate`
       )
       expect(response.status).toBe(302)
     })
@@ -171,13 +170,10 @@ describe('users.$userId route action', () => {
       const response = await action(createActionArgs(formData, mockCurrentUser.id))
 
       expect(deactivateUser).not.toHaveBeenCalled()
-      expect(redirect).not.toHaveBeenCalled()
-      expect(response.status).toBe(400)
-
-      const body = await response.json()
-      expect(body).toEqual({
-        errors: { deactivate: 'cannotDeactivateOwnAccount' },
-      })
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot deactivate your own account.')}`
+      )
+      expect(response.status).toBe(302)
     })
   })
 
@@ -193,7 +189,7 @@ describe('users.$userId route action', () => {
         performedBy: mockCurrentUser.id,
       })
       expect(redirect).toHaveBeenCalledWith(
-        `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${mockTargetUserId}?success=reactivate`
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?success=reactivate`
       )
       expect(response.status).toBe(302)
     })
@@ -205,13 +201,10 @@ describe('users.$userId route action', () => {
       const response = await action(createActionArgs(formData, mockCurrentUser.id))
 
       expect(reactivateUser).not.toHaveBeenCalled()
-      expect(redirect).not.toHaveBeenCalled()
-      expect(response.status).toBe(400)
-
-      const body = await response.json()
-      expect(body).toEqual({
-        errors: { reactivate: 'cannotReactivateOwnAccount' },
-      })
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot reactivate your own account.')}`
+      )
+      expect(response.status).toBe(302)
     })
   })
 
@@ -261,7 +254,7 @@ describe('users.$userId route action', () => {
 
       expect(response.status).toBe(302)
       expect(response.headers.get('Location')).toBe(
-        `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${mockTargetUserId}?error=${encodeURIComponent(errorMessage)}`
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent(errorMessage)}`
       )
     })
 

@@ -19,6 +19,7 @@ export const VisibilityIcon = ({
   ...rest
 }: Readonly<VisibilityIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -30,7 +31,6 @@ export const VisibilityIcon = ({
     fill='none'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' />
     <circle cx='12' cy='12' r='3' />

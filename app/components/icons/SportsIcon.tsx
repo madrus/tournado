@@ -1,6 +1,7 @@
 import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import { cn } from '~/utils/misc'
 
 type SportsIconProps = {
   className?: string
@@ -39,14 +40,14 @@ export function SportsIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
-      className={`inline-block fill-current ${className}`}
+      className={cn('inline-block fill-current', className)}
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

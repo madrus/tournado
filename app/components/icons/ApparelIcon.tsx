@@ -41,6 +41,7 @@ export function ApparelIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
@@ -48,7 +49,6 @@ export function ApparelIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

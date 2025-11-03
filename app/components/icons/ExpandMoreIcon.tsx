@@ -28,6 +28,7 @@ export function ExpandMoreIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -35,7 +36,6 @@ export function ExpandMoreIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

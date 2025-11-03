@@ -25,6 +25,7 @@ export function UnfoldMoreIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
@@ -32,7 +33,6 @@ export function UnfoldMoreIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d='M480-120 300-300l58-58 122 122 122-122 58 58-180 180ZM358-598l-58-58 180-180 180 180-58 58-122-122-122 122Z' />
     </svg>

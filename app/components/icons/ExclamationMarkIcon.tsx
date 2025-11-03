@@ -1,6 +1,7 @@
 import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
+import { cn } from '~/utils/misc'
 
 type ExclamationMarkIconProps = {
   className?: string
@@ -21,6 +22,8 @@ export function ExclamationMarkIcon({
 
   return (
     <svg
+      {...rest} /* rest props here should be passed before all other props */
+      className={cn('inline-block', className)}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -28,10 +31,8 @@ export function ExclamationMarkIcon({
       strokeWidth={strokeWidth}
       strokeLinecap='round'
       strokeLinejoin='round'
-      className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       {paths.map((d, idx) => (
         <path key={idx} d={d} stroke='currentColor' />

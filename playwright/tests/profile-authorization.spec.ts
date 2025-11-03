@@ -15,7 +15,7 @@
  * Note: All authenticated users should have access to their profile
  */
 import { type Page, test } from '@playwright/test'
-import type { Role } from '@prisma/client'
+import { Role } from '@prisma/client'
 
 import { loginAsRole } from '../helpers/session'
 import { ProfilePage } from '../pages/ProfilePage'
@@ -47,26 +47,26 @@ test.describe('Profile Authorization Tests', () => {
 
   // Test all roles - all should have access to their profile
   test('PUBLIC role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'PUBLIC')
+    await testRoleAccess(page, Role.PUBLIC)
   })
 
   test('REFEREE role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'REFEREE')
+    await testRoleAccess(page, Role.REFEREE)
   })
 
   test('EDITOR role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'EDITOR')
+    await testRoleAccess(page, Role.EDITOR)
   })
 
   test('BILLING role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'BILLING')
+    await testRoleAccess(page, Role.BILLING)
   })
 
   test('MANAGER role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'MANAGER')
+    await testRoleAccess(page, Role.MANAGER)
   })
 
   test('ADMIN role users should access profile page', async ({ page }) => {
-    await testRoleAccess(page, 'ADMIN')
+    await testRoleAccess(page, Role.ADMIN)
   })
 })

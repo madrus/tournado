@@ -34,6 +34,7 @@ export function InfoIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -42,7 +43,6 @@ export function InfoIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       {/* Circle background uses currentColor (intent color) */}
       <path

@@ -31,6 +31,6 @@ export const AnimatedArrowIcon = ({
     data-testid={`animated-arrow-${isOpen ? 'open' : 'closed'}`}
     {...rest}
   >
-    <ExpandMoreIcon className='h-full w-full' size={24} />
+    <ExpandMoreIcon className='h-full w-full' />
   </div>
 )

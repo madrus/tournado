@@ -5,13 +5,17 @@ import { z } from 'zod'
 
 import { i18n } from '~/i18n/config'
 
-const OUTBOX_DIR = path.join(process.cwd(), '.tmp')
-const OUTBOX_PATH = path.join(OUTBOX_DIR, 'email-outbox.json')
+export const OUTBOX_DIR = path.join(process.cwd(), '.tmp')
+export const OUTBOX_PATH = path.join(OUTBOX_DIR, 'email-outbox.json')
 
-const ensureOutboxDir = (): void => {
+export const ensureOutboxDir = (): void => {
   if (!fs.existsSync(OUTBOX_DIR)) {
     fs.mkdirSync(OUTBOX_DIR, { recursive: true })
   }
+}
+
+export const ensureOutboxDirAsync = async (): Promise<void> => {
+  await fs.promises.mkdir(OUTBOX_DIR, { recursive: true })
 }
 
 export type TestEmailOutboxEntry = {

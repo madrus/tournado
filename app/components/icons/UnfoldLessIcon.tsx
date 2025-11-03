@@ -25,6 +25,7 @@ export function UnfoldLessIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
@@ -32,7 +33,6 @@ export function UnfoldLessIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d='m356-160-56-56 180-180 180 180-56 56-124-124-124 124Zm124-404L300-744l56-56 124 124 124-124 56 56-180 180Z' />
     </svg>

@@ -24,6 +24,7 @@ export function CheckIcon({
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -33,7 +34,6 @@ export function CheckIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
     </svg>

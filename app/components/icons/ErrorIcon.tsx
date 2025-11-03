@@ -34,6 +34,7 @@ export function ErrorIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -42,20 +43,19 @@ export function ErrorIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
-      {/* Exclamation mark in white with weight 600 */}
+      {/* Exclamation mark uses background token for contrast */}
       <path
         d={linePath}
-        stroke='white'
+        stroke='var(--color-background)'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
       />
       <path
         d={dotPath}
-        stroke='white'
+        stroke='var(--color-background)'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
       />

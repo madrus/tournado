@@ -23,6 +23,7 @@ export const AddIcon = ({
 
   return (
     <svg
+      {...rest}
       className={`inline-block fill-current ${className}`}
       width={size}
       height={size}
@@ -34,7 +35,6 @@ export const AddIcon = ({
       strokeLinejoin='round'
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       <path d={path} />
     </svg>

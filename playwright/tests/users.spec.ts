@@ -117,12 +117,7 @@ test.describe('User Management Workflow', () => {
 
     // Update display name
     const newName = `Updated Name ${Date.now()}`
-    await adminUsersPage.displayNameInput.clear()
-    await adminUsersPage.displayNameInput.fill(newName)
-    await adminUsersPage.displayNameInput.blur()
-
-    // Wait for the update to complete
-    await page.waitForTimeout(1000)
+    await adminUsersPage.updateDisplayName(newName)
 
     // Verify success redirect or toast message
     const url = page.url()
@@ -132,9 +127,7 @@ test.describe('User Management Workflow', () => {
     await expect(adminUsersPage.displayNameInput).toHaveValue(newName)
 
     // Restore original name
-    await adminUsersPage.displayNameInput.clear()
-    await adminUsersPage.displayNameInput.fill(currentName)
-    await adminUsersPage.displayNameInput.blur()
+    await adminUsersPage.updateDisplayName(currentName)
   })
 
   test('should display audit log list', async ({ page }) => {
@@ -168,17 +161,14 @@ test.describe('User Management Workflow', () => {
 
     // Change role to a different value
     const newRole = currentRole === 'PUBLIC' ? 'MANAGER' : 'PUBLIC'
-    await adminUsersPage.roleCombobox.selectOption(newRole)
-
-    // Wait for the update to complete
-    await page.waitForTimeout(1000)
+    await adminUsersPage.changeUserRole(newRole)
 
     // Verify success redirect
     const url = page.url()
     expect(url).toContain('success=role')
 
     // Restore original role
-    await adminUsersPage.roleCombobox.selectOption(currentRole)
+    await adminUsersPage.changeUserRole(currentRole)
   })
 
   test('should deactivate and reactivate user', async ({ page }) => {

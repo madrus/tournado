@@ -24,6 +24,7 @@ export function ExclamationIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -34,7 +35,6 @@ export function ExclamationIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
-      {...rest}
     >
       <circle cx='12' cy='12' r='10' stroke='currentColor' />
       {paths.map((path, index) => (

@@ -1,11 +1,10 @@
 import { type JSX, type SVGProps } from 'react'
 
-import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import type { IconWeight } from '~/lib/lib.types'
 
 type ChevronLeftIconProps = {
   className?: string
   size?: number
-  variant?: IconVariant
   weight?: IconWeight
   'aria-label'?: string
 } & SVGProps<SVGSVGElement>
@@ -13,12 +12,12 @@ type ChevronLeftIconProps = {
 export const ChevronLeftIcon = ({
   className = '',
   size = 24,
-  variant: _variant = 'outlined',
   weight = 600, // Default to bold
   'aria-label': ariaLabel = 'Chevron left',
   ...rest
 }: Readonly<ChevronLeftIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -29,7 +28,6 @@ export const ChevronLeftIcon = ({
     strokeLinejoin='round'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     <path d='M15 18l-6-6 6-6' />
   </svg>

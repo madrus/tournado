@@ -28,6 +28,7 @@ export function MoreVertIcon({
 
   return (
     <svg
+      {...restProps} /* rest props here should be passed before all other props */
       width={size}
       height={size}
       viewBox='-960 0 960 960'
@@ -35,7 +36,6 @@ export function MoreVertIcon({
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}
-      {...restProps}
     >
       <path d={path} />
     </svg>

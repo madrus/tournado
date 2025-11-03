@@ -186,7 +186,7 @@ export default function UserDetailRoute(): JSX.Element {
     }
 
     if (error) {
-      toast.error(error)
+      toast.error(error) // error is already decoded!
     }
 
     // Clean up search params after showing toasts

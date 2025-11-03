@@ -1,5 +1,13 @@
 import { expect, type Page } from '@playwright/test'
 
+type WindowWithThemeStore = typeof window & {
+  useSettingsStore?: {
+    getState: () => {
+      setTheme: (theme: string) => void
+    }
+  }
+}
+
 /**
  * Sets the theme on the page with fallback mechanisms
  * Handles React Router manifest blocking and theme store manipulation
@@ -37,8 +45,9 @@ export async function setTheme(page: Page, theme: 'dark' | 'light'): Promise<voi
   if (!currentClass?.includes(theme)) {
     await page.evaluate(t => {
       // Try to access theme store or settings
-      if ((window as any).useSettingsStore) {
-        ;(window as any).useSettingsStore.getState().setTheme(t)
+      const w = window as WindowWithThemeStore
+      if (w.useSettingsStore) {
+        w.useSettingsStore.getState().setTheme(t)
       }
       // Force theme application
       document.documentElement.classList.remove('light', 'dark')

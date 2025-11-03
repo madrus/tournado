@@ -15,13 +15,13 @@ export const AnimatedHamburgerIcon = ({
   ...rest
 }: Readonly<AnimatedHamburgerIconProps>): JSX.Element => (
   <svg
+    {...rest} /* rest props here should be passed before all other props */
     className={className}
     viewBox='0 0 24 24'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
     role='img'
     aria-label={ariaLabel}
-    {...rest}
   >
     {/* Top line */}
     <line

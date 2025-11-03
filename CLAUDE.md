@@ -182,6 +182,41 @@ app/features/{feature}/
 - **Avoid "any" as type**. Always use strong typing
 - **No semicolons**. Do not add semicolons to new code. Prettier will automatically remove them from existing code during formatting
 
+### React Component Definitions
+
+- **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic
+
+   ```typescript
+   // ✅ CORRECT - Only a return statement
+   export const Badge = ({ children, color }: Props): JSX.Element => (
+     <span className={cn(badgeVariants({ color }))}>{children}</span>
+   )
+   ```
+
+- **Function declaration**: Use when component has ANY of the following:
+   - React hooks (useState, useEffect, useTranslation, etc.)
+   - Local variables or constants
+   - Conditional logic before return
+   - Multiple statements
+
+   ```typescript
+   // ✅ CORRECT - Has hooks and logic
+   export function UserDetailCard({ user }: Props): JSX.Element {
+     const [isOpen, setIsOpen] = useState(false)
+     const { t } = useTranslation()
+
+     return <div>...</div>
+   }
+
+   // ❌ WRONG - Should use function declaration
+   export const UserDetailCard = ({ user }: Props): JSX.Element => {
+     const [isOpen, setIsOpen] = useState(false)
+     const { t } = useTranslation()
+
+     return <div>...</div>
+   }
+   ```
+
 ### Claude Behavior Rules
 
 - **Do NOT run lint or typecheck** unless explicitly requested by the user

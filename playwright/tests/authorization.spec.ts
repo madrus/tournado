@@ -13,6 +13,7 @@
  * Note: Tests unauthenticated and PUBLIC role access patterns
  */
 import { expect, test } from '@playwright/test'
+import { Role } from '@prisma/client'
 
 import { loginAsRole } from '../helpers/session'
 import { PublicPage } from '../pages/PublicPage'
@@ -62,7 +63,7 @@ test.describe('Authorization - Public Access', () => {
   test('should redirect PUBLIC role users to unauthorized when accessing admin panels', async ({
     page,
   }) => {
-    await loginAsRole(page, 'PUBLIC')
+    await loginAsRole(page, Role.PUBLIC)
     const publicPage = new PublicPage(page)
 
     // Try to access admin panel as PUBLIC user
@@ -75,7 +76,7 @@ test.describe('Authorization - Public Access', () => {
   test('should redirect PUBLIC role users to unauthorized when accessing admin teams', async ({
     page,
   }) => {
-    await loginAsRole(page, 'PUBLIC')
+    await loginAsRole(page, Role.PUBLIC)
     const publicPage = new PublicPage(page)
 
     // Try to access admin teams as PUBLIC user

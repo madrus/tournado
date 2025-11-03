@@ -96,7 +96,6 @@ export function ActionButton({
           color === 'slate' && 'border-slate-600/70',
           color === 'teal' && 'border-teal-600/70',
           color === 'red' && 'border-red-600/70',
-          color === 'cyan' && 'border-cyan-600/70',
           color === 'yellow' && 'border-yellow-600/70',
           color === 'green' && 'border-green-600/70',
           color === 'violet' && 'border-violet-600/70',

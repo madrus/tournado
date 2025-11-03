@@ -82,9 +82,10 @@ test.describe('Authorization - Public Access', () => {
     page,
   }) => {
     await loginAsRole(page, 'PUBLIC')
+    const publicPage = new PublicPage(page)
 
     // Try to access admin teams as PUBLIC user
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+    await publicPage.navigateToAdminTeams()
 
     // Should be redirected to unauthorized page
     await expect(page).toHaveURL('/unauthorized')

@@ -15,6 +15,10 @@ export class PublicPage {
     await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
   }
 
+  async navigateToAdminTeams(): Promise<void> {
+    await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+  }
+
   async getAddTeamButton() {
     return this.page.getByRole('link', { name: 'Toevoegen' })
   }

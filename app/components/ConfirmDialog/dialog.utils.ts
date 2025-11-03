@@ -32,7 +32,7 @@ export const getDefaultColorsForIntent = (
     {
       warning: { confirm: 'amber', cancel: 'amber' },
       danger: { confirm: 'brand', cancel: 'brand' },
-      info: { confirm: 'cyan', cancel: 'cyan' },
+      info: { confirm: 'sky', cancel: 'sky' },
       success: { confirm: 'emerald', cancel: 'emerald' },
     }
 

@@ -62,9 +62,10 @@ export const loader = async ({
   const error = url.searchParams.get('error')
 
   // Validate error parameter against whitelist for defense-in-depth
-  const validError = (
-    error && VALID_AUTH_ERRORS.includes(error as AuthError) ? error : null
-  ) as AuthError | null
+  const validError: AuthError | null =
+    error && VALID_AUTH_ERRORS.includes(error as AuthError)
+      ? (error as AuthError)
+      : null
 
   return { redirectTo, error: validError }
 }

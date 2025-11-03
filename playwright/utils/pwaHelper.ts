@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test'
 
 export async function dismissPwaPromptIfVisible(page: Page): Promise<void> {
-  const pwaUpdatePrompt = page.locator('#pwa-prompts .bg-accent.fixed')
+  const pwaUpdatePrompt = page.locator('[data-testid="pwa-update-prompt"]')
   const pwaUpdateVisible = await pwaUpdatePrompt.isVisible().catch(() => false)
   if (pwaUpdateVisible) {
     const dismissButton = pwaUpdatePrompt.locator('button').first()

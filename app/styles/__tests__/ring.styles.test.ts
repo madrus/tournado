@@ -214,7 +214,7 @@ describe('Ring Styles', () => {
         const colors: ColorAccent[] = [
           'emerald',
           'teal',
-          'cyan',
+          'sky',
           'blue',
           'violet',
           'purple',
@@ -254,7 +254,7 @@ describe('Ring Styles', () => {
       })
 
       it('should work with different colors', () => {
-        const colors: ColorAccent[] = ['brand', 'teal', 'cyan', 'blue']
+        const colors: ColorAccent[] = ['brand', 'teal', 'sky', 'blue']
 
         colors.forEach(color => {
           const config = RING_CONFIGS.chip(color)

@@ -27,7 +27,6 @@ export const COLOR_VARIANT_KEYS = {
   slate: 'slate',
   teal: 'teal',
   red: 'red',
-  cyan: 'cyan',
   yellow: 'yellow',
   green: 'green',
   violet: 'violet',

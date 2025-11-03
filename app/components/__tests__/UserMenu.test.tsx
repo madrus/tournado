@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
+
 import type { MenuItemType } from '../UserMenu'
 import { UserMenu } from '../UserMenu'
 
@@ -94,12 +96,12 @@ describe('UserMenu', () => {
     {
       label: 'Users',
       icon: 'people',
-      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+      href: `${ADMIN_DASHBOARD_URL}/users`,
     },
     {
       label: 'Tournaments',
       icon: 'trophy',
-      href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+      href: `${ADMIN_DASHBOARD_URL}/tournaments`,
     },
   ]
 

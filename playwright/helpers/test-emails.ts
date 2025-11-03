@@ -1,4 +1,4 @@
-import { APIRequestContext, request } from '@playwright/test'
+import { getApiClient } from '../utils/api-client'
 
 const TEST_EMAIL_URL = 'http://localhost:8811/test/emails'
 
@@ -9,10 +9,6 @@ export type CapturedEmail = {
   html: string
   id: string
   timestamp: string
-}
-
-async function getApiClient(): Promise<APIRequestContext> {
-  return request.newContext()
 }
 
 /**

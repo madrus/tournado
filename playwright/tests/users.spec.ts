@@ -158,27 +158,27 @@ test.describe('User Management Workflow', () => {
 
     // Find a user who is not the current admin (to avoid self-role change)
     const targetRow = await adminUsersPage.findNonAdminRow()
+    expect(targetRow, 'Expected seeded non-admin user').not.toBeNull()
+    const nonAdminRow = targetRow!
 
-    if (targetRow) {
-      await adminUsersPage.navigateToRow(targetRow)
+    await adminUsersPage.navigateToRow(nonAdminRow)
 
-      // Get current role
-      const currentRole = await adminUsersPage.roleCombobox.inputValue()
+    // Get current role
+    const currentRole = await adminUsersPage.roleCombobox.inputValue()
 
-      // Change role to a different value
-      const newRole = currentRole === 'PUBLIC' ? 'MANAGER' : 'PUBLIC'
-      await adminUsersPage.roleCombobox.selectOption(newRole)
+    // Change role to a different value
+    const newRole = currentRole === 'PUBLIC' ? 'MANAGER' : 'PUBLIC'
+    await adminUsersPage.roleCombobox.selectOption(newRole)
 
-      // Wait for the update to complete
-      await page.waitForTimeout(1000)
+    // Wait for the update to complete
+    await page.waitForTimeout(1000)
 
-      // Verify success redirect
-      const url = page.url()
-      expect(url).toContain('success=role')
+    // Verify success redirect
+    const url = page.url()
+    expect(url).toContain('success=role')
 
-      // Restore original role
-      await adminUsersPage.roleCombobox.selectOption(currentRole)
-    }
+    // Restore original role
+    await adminUsersPage.roleCombobox.selectOption(currentRole)
   })
 
   test('should deactivate and reactivate user', async ({ page }) => {
@@ -189,66 +189,66 @@ test.describe('User Management Workflow', () => {
 
     // Find an active user who is not ADMIN (to avoid deactivating current user)
     const targetRow = await adminUsersPage.findNonAdminRow()
+    expect(targetRow, 'Expected seeded non-admin user').not.toBeNull()
+    const nonAdminRow = targetRow!
 
-    if (targetRow) {
-      await adminUsersPage.navigateToRow(targetRow)
+    await adminUsersPage.navigateToRow(nonAdminRow)
 
-      // Check if deactivate button is visible (user is active)
-      const isActive = await adminUsersPage.isDeactivateButtonVisible()
+    // Check if deactivate button is visible (user is active)
+    const isActive = await adminUsersPage.isDeactivateButtonVisible()
 
-      if (isActive) {
-        // Test deactivation
-        await adminUsersPage.deactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-        await page.waitForLoadState('networkidle')
+    if (isActive) {
+      // Test deactivation
+      await adminUsersPage.deactivateButton.click()
+      await adminUsersPage.confirmButton.click()
+      await page.waitForLoadState('networkidle')
 
-        // Verify success redirect
-        let url = page.url()
-        expect(url).toContain('success=deactivate')
+      // Verify success redirect
+      let url = page.url()
+      expect(url).toContain('success=deactivate')
 
-        // Verify user is deactivated
-        await adminUsersPage.expectUserDeactivated()
+      // Verify user is deactivated
+      await adminUsersPage.expectUserDeactivated()
 
-        // Test reactivation
-        await adminUsersPage.reactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-        await page.waitForLoadState('networkidle')
+      // Test reactivation
+      await adminUsersPage.reactivateButton.click()
+      await adminUsersPage.confirmButton.click()
+      await page.waitForLoadState('networkidle')
 
-        // Verify success redirect
-        url = page.url()
-        expect(url).toContain('success=reactivate')
+      // Verify success redirect
+      url = page.url()
+      expect(url).toContain('success=reactivate')
 
-        // Verify user is reactivated
-        await adminUsersPage.expectUserActivated()
-      } else {
-        // User is inactive, test reactivation first
-        await adminUsersPage.reactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-        await page.waitForLoadState('networkidle')
+      // Verify user is reactivated
+      await adminUsersPage.expectUserActivated()
+    } else {
+      // User is inactive, test reactivation first
+      await adminUsersPage.reactivateButton.click()
+      await adminUsersPage.confirmButton.click()
+      await page.waitForLoadState('networkidle')
 
-        // Verify success redirect
-        let url = page.url()
-        expect(url).toContain('success=reactivate')
+      // Verify success redirect
+      let url = page.url()
+      expect(url).toContain('success=reactivate')
 
-        // Verify user is reactivated
-        await adminUsersPage.expectUserActivated()
+      // Verify user is reactivated
+      await adminUsersPage.expectUserActivated()
 
-        // Then test deactivation
-        await adminUsersPage.deactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-        await page.waitForLoadState('networkidle')
+      // Then test deactivation
+      await adminUsersPage.deactivateButton.click()
+      await adminUsersPage.confirmButton.click()
+      await page.waitForLoadState('networkidle')
 
-        // Verify success redirect
-        url = page.url()
-        expect(url).toContain('success=deactivate')
+      // Verify success redirect
+      url = page.url()
+      expect(url).toContain('success=deactivate')
 
-        // Verify user is deactivated
-        await adminUsersPage.expectUserDeactivated()
+      // Verify user is deactivated
+      await adminUsersPage.expectUserDeactivated()
 
-        // Restore to active state
-        await adminUsersPage.reactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-      }
+      // Restore to active state
+      await adminUsersPage.reactivateButton.click()
+      await adminUsersPage.confirmButton.click()
     }
   })
 
@@ -263,25 +263,25 @@ test.describe('User Management Workflow', () => {
 
     // Find the row for the current ADMIN user
     const adminRow = await adminUsersPage.findAdminRow()
+    expect(adminRow, 'Expected seeded admin user').not.toBeNull()
+    const seededAdminRow = adminRow!
 
-    if (adminRow) {
-      await adminUsersPage.navigateToRow(adminRow)
+    await adminUsersPage.navigateToRow(seededAdminRow)
 
-      // Try to change own role
-      const currentRole = await adminUsersPage.roleCombobox.inputValue()
-      const newRole = currentRole === 'ADMIN' ? 'PUBLIC' : 'ADMIN'
+    // Try to change own role
+    const currentRole = await adminUsersPage.roleCombobox.inputValue()
+    const newRole = currentRole === 'ADMIN' ? 'PUBLIC' : 'ADMIN'
 
-      await adminUsersPage.roleCombobox.selectOption(newRole)
-      await page.waitForTimeout(1000)
+    await adminUsersPage.roleCombobox.selectOption(newRole)
+    await page.waitForTimeout(1000)
 
-      // Should stay on the same page or show error (not redirect with success)
-      const url = page.url()
-      expect(url).not.toContain('success=role')
+    // Should stay on the same page or show error (not redirect with success)
+    const url = page.url()
+    expect(url).not.toContain('success=role')
 
-      // Role should not have changed
-      const roleAfterAttempt = await adminUsersPage.roleCombobox.inputValue()
-      expect(roleAfterAttempt).toBe(currentRole)
-    }
+    // Role should not have changed
+    const roleAfterAttempt = await adminUsersPage.roleCombobox.inputValue()
+    expect(roleAfterAttempt).toBe(currentRole)
   })
 
   test('should prevent self-deactivation', async ({ page }) => {
@@ -292,26 +292,26 @@ test.describe('User Management Workflow', () => {
 
     // Find the current ADMIN user
     const adminRow = await adminUsersPage.findAdminRow()
+    expect(adminRow, 'Expected seeded admin user').not.toBeNull()
+    const seededAdminRow = adminRow!
 
-    if (adminRow) {
-      await adminUsersPage.navigateToRow(adminRow)
+    await adminUsersPage.navigateToRow(seededAdminRow)
 
-      // Check if user is active
-      const isActive = await adminUsersPage.isDeactivateButtonVisible()
+    // Check if user is active
+    const isActive = await adminUsersPage.isDeactivateButtonVisible()
 
-      if (isActive) {
-        // Try to deactivate self
-        await adminUsersPage.deactivateButton.click()
-        await adminUsersPage.confirmButton.click()
-        await page.waitForTimeout(1000)
+    if (isActive) {
+      // Try to deactivate self
+      await adminUsersPage.deactivateButton.click()
+      await adminUsersPage.confirmButton.click()
+      await page.waitForTimeout(1000)
 
-        // Should not redirect with success
-        const url = page.url()
-        expect(url).not.toContain('success=deactivate')
+      // Should not redirect with success
+      const url = page.url()
+      expect(url).not.toContain('success=deactivate')
 
-        // User should still be active
-        await expect(adminUsersPage.deactivateButton).toBeVisible()
-      }
+      // User should still be active
+      await expect(adminUsersPage.deactivateButton).toBeVisible()
     }
   })
 

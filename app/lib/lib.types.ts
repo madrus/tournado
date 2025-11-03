@@ -107,7 +107,6 @@ export type ColorAccent =
   | 'green'
   | 'emerald'
   | 'teal'
-  | 'cyan'
   | 'sky'
   | 'blue'
   | 'indigo'

@@ -39,7 +39,10 @@ export function UpdatePrompt(): JSX.Element | null {
   if (!showUpdatePrompt) return null
 
   return (
-    <div className='safe-bottom bg-accent fixed right-0 bottom-0 left-0 z-40 p-4 shadow-lg'>
+    <div
+      data-testid='pwa-update-prompt'
+      className='safe-bottom bg-accent fixed right-0 bottom-0 left-0 z-40 p-4 shadow-lg'
+    >
       <div className='flex items-center justify-between gap-4'>
         <div className='flex-1'>
           <p className='text-foreground-darker text-sm font-medium'>

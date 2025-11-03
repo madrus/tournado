@@ -193,9 +193,10 @@ export default function UserDetailRoute(): JSX.Element {
 
     // Clean up search params after showing toasts
     if (success || error) {
-      searchParams.delete('success')
-      searchParams.delete('error')
-      setSearchParams(searchParams, { replace: true })
+      const nextParams = new URLSearchParams(searchParams)
+      nextParams.delete('success')
+      nextParams.delete('error')
+      setSearchParams(nextParams, { replace: true })
     }
   }, [searchParams, setSearchParams, t])
 

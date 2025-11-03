@@ -6,8 +6,8 @@ import type { FetcherWithComponents } from 'react-router'
 import type { Role, User } from '@prisma/client'
 import { Text } from '@radix-ui/themes'
 
+import { datatableCellTextVariants } from '~/components/DataTable/dataTable.variants'
 import { ComboField, type Option } from '~/components/inputs/ComboField'
-import { datatableCellTextVariants } from '~/components/shared/datatable.variants'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { cn } from '~/utils/misc'
 

@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Text } from '@radix-ui/themes'
 
 import { IconLabelButton } from '~/components/buttons/IconLabelButton'
-import { DeleteIcon } from '~/components/icons'
 import {
   datatableCellTextVariants,
   datatableDeleteAreaVariants,
-} from '~/components/shared/datatable.variants'
+} from '~/components/DataTable/dataTable.variants'
+import { DeleteIcon } from '~/components/icons'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { DEFAULT_CONTAINER_WIDTH, SWIPE_START_THRESHOLD } from '~/lib/lib.constants'

@@ -69,7 +69,7 @@ vi.mock('~/utils/misc', () => ({
 }))
 
 // Mock datatable variants
-vi.mock('~/components/shared/datatable.variants', () => ({
+vi.mock('~/components/DataTable/dataTable.variants', () => ({
   datatableCellTextVariants: ({ variant }: { variant: string }) => `text-${variant}`,
 }))
 

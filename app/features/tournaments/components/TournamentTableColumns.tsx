@@ -4,11 +4,11 @@ import { Text } from '@radix-ui/themes'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { DataTableColumnHeader } from '~/components/DataTable'
-import { DeleteIcon } from '~/components/icons'
 import {
   datatableActionButtonVariants,
   datatableCellTextVariants,
-} from '~/components/shared/datatable.variants'
+} from '~/components/DataTable/dataTable.variants'
+import { DeleteIcon } from '~/components/icons'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { cn } from '~/utils/misc'
 

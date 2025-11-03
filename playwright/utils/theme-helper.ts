@@ -95,10 +95,17 @@ export async function verifyThemeStyles(
     expect(hasDarkClass).toBeTruthy()
     expect(backgroundColor).not.toBe('rgb(255, 255, 255)')
   } else {
-    // Light theme should have white or very light background
+    // Light theme should have a bright background
     expect(hasDarkClass).toBeFalsy()
     if (backgroundColor !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'transparent') {
-      expect(backgroundColor).toMatch(/rgb\((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?),/)
+      const match = backgroundColor.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)/)
+      expect(match).not.toBeNull()
+      const [, r, g, b] = match!
+      const channels = [Number(r), Number(g), Number(b)]
+      channels.forEach(channel => {
+        expect(Number.isNaN(channel)).toBeFalsy()
+        expect(channel).toBeGreaterThanOrEqual(220)
+      })
     }
   }
 }

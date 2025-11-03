@@ -7,12 +7,12 @@ import { ColumnDef } from '@tanstack/react-table'
 
 import { Badge } from '~/components/Badge'
 import { DataTableColumnHeader } from '~/components/DataTable'
-import { EditIcon } from '~/components/icons'
-import { ComboField, type Option } from '~/components/inputs/ComboField'
 import {
   datatableActionButtonVariants,
   datatableCellTextVariants,
-} from '~/components/shared/datatable.variants'
+} from '~/components/DataTable/dataTable.variants'
+import { EditIcon } from '~/components/icons'
+import { ComboField, type Option } from '~/components/inputs/ComboField'
 import { cn } from '~/utils/misc'
 
 const ROLES: Role[] = ['PUBLIC', 'MANAGER', 'ADMIN', 'REFEREE', 'EDITOR', 'BILLING']

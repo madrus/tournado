@@ -2,9 +2,9 @@
  * Regular User Authorization E2E Tests
  *
  * Test Scenarios:
- * - Regular user access to admin panel (allowed)
- * - Regular user access to admin teams page (allowed)
- * - Regular user access to admin team creation (allowed)
+ * - Regular user access to admin panel (should be blocked)
+ * - Regular user access to admin teams page (should be blocked)
+ * - Regular user access to admin team creation (should be blocked)
  * - Team editing restriction (admin only)
  * - Tournament creation restriction (admin only)
  * - User sign out and redirect behavior
@@ -20,42 +20,37 @@ import { AdminPanelPage } from '../pages/AdminPanelPage'
 // User Authorization Tests - USES CACHED USER AUTHENTICATION
 // These tests verify what regular (non-admin) users can and cannot access
 test.describe('User Authorization - Regular User Access', () => {
+  let adminPanel: AdminPanelPage
+
   test.beforeEach(async ({ page }) => {
     // Set mobile viewport for consistency
     await page.setViewportSize({ width: 375, height: 812 })
+    adminPanel = new AdminPanelPage(page)
   })
 
-  test('should have access to admin panel', async ({ page }) => {
-    const adminPanel = new AdminPanelPage(page)
-
-    // Regular users can access the admin panel
+  test('should be redirected from admin panel', async ({ page }) => {
+    // Regular users must be redirected when trying to access the admin panel
     await adminPanel.goto()
 
-    // Should stay on admin panel (not be redirected)
-    await adminPanel.expectToBeOnAdminPanel()
+    // Should land on unauthorized page
+    await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
-  test('should have access to admin teams page', async ({ page }) => {
-    const adminPanel = new AdminPanelPage(page)
-
+  test('should be redirected from admin teams page', async ({ page }) => {
     await adminPanel.gotoAdminTeams()
 
-    // Regular user can access admin teams page
-    await adminPanel.expectToBeOnAdminTeams()
+    // Regular users must be redirected when trying to access admin teams
+    await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
-  test('should have access to admin team creation', async ({ page }) => {
-    const adminPanel = new AdminPanelPage(page)
-
+  test('should be redirected from admin team creation', async ({ page }) => {
     await adminPanel.gotoAdminTeamNew()
 
-    // Regular user can access admin team creation page
-    await adminPanel.expectToBeOnAdminTeamNew()
+    // Regular users must be redirected when trying to create admin teams
+    await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
   test('should be redirected from team editing (admin only)', async ({ page }) => {
-    const adminPanel = new AdminPanelPage(page)
-
     await adminPanel.gotoTeamEdit('some-team-id')
 
     // Regular user should be redirected to unauthorized page for team editing
@@ -65,8 +60,6 @@ test.describe('User Authorization - Regular User Access', () => {
   test('should be redirected from tournament creation (admin only)', async ({
     page,
   }) => {
-    const adminPanel = new AdminPanelPage(page)
-
     await adminPanel.gotoTournamentNew()
 
     // Regular user should be redirected to unauthorized page for tournament creation
@@ -74,8 +67,6 @@ test.describe('User Authorization - Regular User Access', () => {
   })
 
   test('should sign out user and redirect to home page', async ({ page }) => {
-    const adminPanel = new AdminPanelPage(page)
-
     // Navigate to admin panel (user can access it)
     await adminPanel.goto()
 

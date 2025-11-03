@@ -50,6 +50,9 @@ export const createSessionFromFirebaseToken = async (
       isNewUser,
     }
   } catch (_error) {
+    if (_error instanceof Error && _error.message === ACCOUNT_DEACTIVATED_ERROR) {
+      throw _error
+    }
     if (process.env.NODE_ENV !== 'test') {
       // eslint-disable-next-line no-console
       console.error('[firebase-session] Failed to create session from token:', _error)

@@ -31,7 +31,7 @@ export const textInputFieldVariants = cva(
     'placeholder:[color:var(--color-placeholder)] bg-input text-foreground',
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
-    'disabled:transition-none disabled:transform-none',
+    'disabled:transition-none disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50',
   ],
   {
     variants: {

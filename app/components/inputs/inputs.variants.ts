@@ -92,7 +92,6 @@ export const comboFieldTriggerVariants = cva(
     'transition-all duration-300 ease-in-out focus:outline-none',
     'transform-gpu will-change-transform',
     'pl-3 pr-1 rtl:pl-1 rtl:pr-3',
-    '[&>div:first-child]:flex-1',
     'disabled:transition-none disabled:transform-none',
   ],
   {

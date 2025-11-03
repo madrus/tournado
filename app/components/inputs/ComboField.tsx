@@ -134,9 +134,12 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
               aria-errormessage={error && name ? `${name}-error` : undefined}
             >
               <div
-                className={comboFieldValueVariants({
-                  state: safeValue === '' ? 'placeholder' : 'value',
-                })}
+                className={cn(
+                  'flex-1',
+                  comboFieldValueVariants({
+                    state: safeValue === '' ? 'placeholder' : 'value',
+                  })
+                )}
               >
                 <Select.Value placeholder={placeholder || 'Selecteer een optie'} />
               </div>

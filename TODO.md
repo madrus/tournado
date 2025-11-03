@@ -47,6 +47,7 @@ So the essential data structure would be:
 
 Two lightweight alternatives that avoid minting hundreds of tokens:
 
-Keep CVA, but have each variant emit a semantic hook (class like info-banner--warning or data-variant="warning"). Then use a shared stylesheet or CSS variables (var(--banner-warning-bg)) to define the palette in one spot. Updating the palette becomes a single change, and tests can just check the hook.
-If the banner variants are few, declare a single semantic utility per variant (e.g., .info-banner--warning { background: … }). That’s still only 3–4 definitions instead of hundreds, yet the component no longer cares about the exact colors.
-So you don’t need thousands of custom tokens—just a thin semantic layer between variants and their actual colors. It keeps things flexible without exploding maintenance.
+- Keep CVA, but have each variant emit a semantic hook (class like info-banner--warning or data-variant="warning"). Then use a shared stylesheet or CSS variables (var(--banner-warning-bg)) to define the palette in one spot. Updating the palette becomes a single change, and tests can just check the hook.
+- If the banner variants are few, declare a single semantic utility per variant (e.g., .info-banner--warning { background: … }). That’s still only 3–4 definitions instead of hundreds, yet the component no longer cares about the exact colors.
+
+So you don’t need thousands of custom tokens - just a thin semantic layer between variants and their actual colors. It keeps things flexible without exploding maintenance.

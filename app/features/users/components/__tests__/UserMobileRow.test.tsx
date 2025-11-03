@@ -241,67 +241,6 @@ describe('UserMobileRow', () => {
     })
   })
 
-  describe('Keyboard interactions', () => {
-    it('should call onClick when Enter key is pressed', () => {
-      const mockOnClick = vi.fn()
-      const mockFetcher = createMockFetcher()
-
-      render(
-        <UserMobileRow
-          user={mockUser}
-          currentUserId={mockCurrentUserId}
-          onClick={mockOnClick}
-          fetcher={mockFetcher}
-        />
-      )
-
-      const button = screen.getByRole('button')
-      fireEvent.keyDown(button, { key: 'Enter' })
-
-      expect(mockOnClick).toHaveBeenCalledTimes(1)
-    })
-
-    it('should call onClick when Space key is pressed', () => {
-      const mockOnClick = vi.fn()
-      const mockFetcher = createMockFetcher()
-
-      render(
-        <UserMobileRow
-          user={mockUser}
-          currentUserId={mockCurrentUserId}
-          onClick={mockOnClick}
-          fetcher={mockFetcher}
-        />
-      )
-
-      const button = screen.getByRole('button')
-      fireEvent.keyDown(button, { key: ' ' })
-
-      expect(mockOnClick).toHaveBeenCalledTimes(1)
-    })
-
-    it('should not call onClick for other keys', () => {
-      const mockOnClick = vi.fn()
-      const mockFetcher = createMockFetcher()
-
-      render(
-        <UserMobileRow
-          user={mockUser}
-          currentUserId={mockCurrentUserId}
-          onClick={mockOnClick}
-          fetcher={mockFetcher}
-        />
-      )
-
-      const button = screen.getByRole('button')
-      fireEvent.keyDown(button, { key: 'a' })
-      fireEvent.keyDown(button, { key: 'Tab' })
-      fireEvent.keyDown(button, { key: 'Escape' })
-
-      expect(mockOnClick).not.toHaveBeenCalled()
-    })
-  })
-
   describe('Role change functionality', () => {
     it('should submit form data when role is changed', () => {
       const mockOnClick = vi.fn()

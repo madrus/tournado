@@ -194,6 +194,49 @@ describe('ComboField', () => {
     expect(mockOnChange).toHaveBeenCalled()
   })
 
+  it('should open dropdown when Space key is pressed', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    const trigger = screen.getByRole('combobox')
+
+    // Focus the trigger
+    await user.click(trigger)
+
+    // Press Space to open (should already be open from click, so close first)
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('option')).not.toBeInTheDocument()
+
+    // Now press Space on the focused trigger
+    await user.keyboard(' ')
+
+    // Verify options are visible
+    await waitFor(() => {
+      const option1Elements = screen.getAllByText('Option 1')
+      expect(option1Elements.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('should open dropdown when Enter key is pressed', async () => {
+    const user = userEvent.setup()
+    render(<ComboField {...defaultProps} />)
+
+    const trigger = screen.getByRole('combobox')
+
+    // Focus the trigger with Tab
+    await user.tab()
+    expect(trigger).toHaveFocus()
+
+    // Press Enter to open
+    await user.keyboard('{Enter}')
+
+    // Verify options are visible
+    await waitFor(() => {
+      const option1Elements = screen.getAllByText('Option 1')
+      expect(option1Elements.length).toBeGreaterThan(0)
+    })
+  })
+
   it('should display animated arrow icon in closed state', () => {
     render(<ComboField {...defaultProps} />)
 

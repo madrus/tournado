@@ -1,4 +1,4 @@
-import type { KeyboardEvent, MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
 import { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { FetcherWithComponents } from 'react-router'
@@ -34,21 +34,6 @@ export function UserMobileRow({
     label: t(`roles.${role.toLowerCase()}`),
   }))
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    // Only trigger if Enter or Space is pressed
-    if (event.key === 'Enter' || event.key === ' ') {
-      // Prevent default to avoid scrolling on Space
-      event.preventDefault()
-      // Don't trigger if the event came from the combo field
-      if (
-        event.target === event.currentTarget ||
-        !(event.target as HTMLElement).closest('[role="combobox"]')
-      ) {
-        onClick()
-      }
-    }
-  }
-
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     // Don't trigger onClick if clicking on the combo field
     if (!(event.target as HTMLElement).closest('[role="combobox"]')) {
@@ -60,7 +45,6 @@ export function UserMobileRow({
     <div
       className='focus-visible:ring-primary-500 cursor-pointer px-6 py-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
       role='button'
       tabIndex={0}
       aria-label={t('users.viewUserDetails', {

@@ -28,7 +28,7 @@ test.describe('User Authorization - Regular User Access', () => {
     adminPanel = new AdminPanelPage(page)
   })
 
-  test('should be redirected from admin panel', async ({ page }) => {
+  test('should be redirected from admin panel', async () => {
     // Regular users must be redirected when trying to access the admin panel
     await adminPanel.goto()
 
@@ -36,14 +36,14 @@ test.describe('User Authorization - Regular User Access', () => {
     await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
-  test('should be redirected from admin teams page', async ({ page }) => {
+  test('should be redirected from admin teams page', async () => {
     await adminPanel.gotoAdminTeams()
 
     // Regular users must be redirected when trying to access admin teams
     await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
-  test('should be redirected from admin team creation', async ({ page }) => {
+  test('should be redirected from admin team creation', async () => {
     await adminPanel.gotoAdminTeamNew()
 
     // Regular users must be redirected when trying to create admin teams
@@ -57,9 +57,7 @@ test.describe('User Authorization - Regular User Access', () => {
     await adminPanel.expectToBeOnUnauthorizedPage()
   })
 
-  test('should be redirected from tournament creation (admin only)', async ({
-    page,
-  }) => {
+  test('should be redirected from tournament creation (admin only)', async () => {
     await adminPanel.gotoTournamentNew()
 
     // Regular user should be redirected to unauthorized page for tournament creation

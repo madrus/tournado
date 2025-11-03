@@ -120,7 +120,6 @@ export async function verifyThemeStyles(
       const [, r, g, b] = match!
       const channels = [Number(r), Number(g), Number(b)]
       channels.forEach(channel => {
-        expect(Number.isNaN(channel)).toBeFalsy()
         expect(channel).toBeGreaterThanOrEqual(220)
       })
     }

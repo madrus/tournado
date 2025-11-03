@@ -144,13 +144,23 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   onClick={() => onRowClick?.(row.original)}
                   onKeyDown={event => {
-                    if (event.key === 'Enter' && onRowClick) {
+                    // Check if event came from an interactive element
+                    const target = event.target as HTMLElement
+                    const isInteractiveElement = target.closest(
+                      'button, input, select, textarea, [role="button"], [role="combobox"], [role="tab"]'
+                    )
+
+                    if (event.key === 'Enter' && onRowClick && !isInteractiveElement) {
                       event.preventDefault()
                       onRowClick(row.original)
                     }
-                  }}
-                  onKeyUp={event => {
-                    if ((event.key === ' ' || event.key === 'Spacebar') && onRowClick) {
+
+                    // Handle Space on keyDown to prevent page scroll
+                    if (
+                      (event.key === ' ' || event.key === 'Spacebar') &&
+                      onRowClick &&
+                      !isInteractiveElement
+                    ) {
                       event.preventDefault()
                       onRowClick(row.original)
                     }

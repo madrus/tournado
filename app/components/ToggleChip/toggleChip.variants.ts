@@ -257,7 +257,6 @@ export const toggleChipTextVariants = cva(
       { color: 'lime', selected: true, className: 'text-adaptive-lime-selected' },
       { color: 'teal', selected: true, className: 'text-adaptive-teal-selected' },
       { color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
-      { color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
       {
         color: 'violet',
         selected: true,

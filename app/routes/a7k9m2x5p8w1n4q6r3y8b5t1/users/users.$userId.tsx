@@ -15,6 +15,7 @@ import type { User, UserAuditLog } from '@prisma/client'
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { validateRole } from '~/features/users/utils/roleUtils'
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import {
   deactivateUser,
   getUserById,
@@ -95,15 +96,14 @@ export const action = async ({
         performedBy: currentUser.id,
       })
 
-      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=displayName`)
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=displayName`)
     }
 
     if (intent === 'updateRole') {
       // Prevent users from changing their own role
       if (userId === currentUser.id) {
-        return Response.json(
-          { errors: { role: 'cannotChangeOwnRole' } },
-          { status: 400 }
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot change your own role.')}`
         )
       }
 
@@ -115,15 +115,14 @@ export const action = async ({
         performedBy: currentUser.id,
       })
 
-      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=role`)
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=role`)
     }
 
     if (intent === 'deactivate') {
       // Prevent users from deactivating themselves
       if (userId === currentUser.id) {
-        return Response.json(
-          { errors: { deactivate: 'cannotDeactivateOwnAccount' } },
-          { status: 400 }
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot deactivate your own account.')}`
         )
       }
 
@@ -132,15 +131,14 @@ export const action = async ({
         performedBy: currentUser.id,
       })
 
-      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=deactivate`)
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=deactivate`)
     }
 
     if (intent === 'reactivate') {
       // Prevent users from reactivating themselves (this should never happen since they're active)
       if (userId === currentUser.id) {
-        return Response.json(
-          { errors: { reactivate: 'cannotReactivateOwnAccount' } },
-          { status: 400 }
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot reactivate your own account.')}`
         )
       }
 
@@ -149,7 +147,7 @@ export const action = async ({
         performedBy: currentUser.id,
       })
 
-      return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?success=reactivate`)
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=reactivate`)
     }
 
     throw new Response('Invalid intent', { status: 400 })
@@ -159,7 +157,7 @@ export const action = async ({
     }
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return redirect(
-      `/a7k9m2x5p8w1n4q6r3y8b5t1/users/${userId}?error=${encodeURIComponent(errorMessage)}`
+      `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent(errorMessage)}`
     )
   }
 }
@@ -188,7 +186,7 @@ export default function UserDetailRoute(): JSX.Element {
     }
 
     if (error) {
-      toast.error(decodeURIComponent(error))
+      toast.error(error)
     }
 
     // Clean up search params after showing toasts

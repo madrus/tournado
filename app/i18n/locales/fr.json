@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Quelque chose s'est mal passé",
-    "teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard."
+    "teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
+    "emailOutboxInvalidFormat": "La boîte d'envoi des e-mails a un format invalide",
+    "emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails"
   },
   "landing": {
     "features": {

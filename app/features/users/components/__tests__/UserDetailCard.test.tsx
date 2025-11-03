@@ -82,22 +82,30 @@ vi.mock('~/components/buttons/ActionButton', () => ({
   ),
 }))
 
-// Mock ConfirmDialog
+// Mock ConfirmDialog - controlled mode
 vi.mock('~/components/ConfirmDialog', () => ({
   ConfirmDialog: ({
-    trigger,
+    open,
+    onOpenChange,
     onConfirm,
   }: {
-    trigger: React.ReactNode
+    open: boolean
+    onOpenChange: (open: boolean) => void
     onConfirm: () => void
-  }) => (
-    <div data-testid='confirm-dialog'>
-      {trigger}
-      <button onClick={onConfirm} data-testid='confirm-button'>
-        Confirm
-      </button>
-    </div>
-  ),
+  }) =>
+    open ? (
+      <div data-testid='confirm-dialog'>
+        <button
+          onClick={() => {
+            onConfirm()
+            onOpenChange(false)
+          }}
+          data-testid='confirm-button'
+        >
+          Confirm
+        </button>
+      </div>
+    ) : null,
 }))
 
 // Mock TextInputField

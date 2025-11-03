@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Er is iets misgegaan",
-    "teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
+    "teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw.",
+    "emailOutboxInvalidFormat": "E-mailoutbox heeft een ongeldig formaat",
+    "emailOutboxReadFailure": "Kan e-mailoutbox niet lezen"
   },
   "landing": {
     "features": {

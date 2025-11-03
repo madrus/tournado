@@ -31,6 +31,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
   const deactivateFormRef = useRef<HTMLFormElement>(null)
   const [displayName, setDisplayName] = useState(user.displayName || '')
   const [selectedRole, setSelectedRole] = useState<Role>(user.role)
+  const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false)
   const isViewingOwnProfile = user.id === currentUserId
   const isDeactivated = !user.active
   const buttonColor = user.active
@@ -42,6 +43,13 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
     setDisplayName(user.displayName || '')
     setSelectedRole(user.role)
   }, [user.id, user.displayName, user.role])
+
+  // Close dialog when submission completes
+  useEffect(() => {
+    if (!isSubmitting && isDeactivateDialogOpen) {
+      setIsDeactivateDialogOpen(false)
+    }
+  }, [isSubmitting, isDeactivateDialogOpen])
 
   // Convert VALID_ROLES to ComboField options format
   const roleOptions: Option[] = VALID_ROLES.map(role => ({
@@ -91,22 +99,20 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
               value={user.active ? 'deactivate' : 'reactivate'}
             />
           </Form>
+          <ActionButton
+            type='button'
+            color={buttonColor}
+            variant='primary'
+            disabled={isSubmitting || isViewingOwnProfile}
+            onClick={() => setIsDeactivateDialogOpen(true)}
+          >
+            {user.active
+              ? t('users.actions.deactivateUser')
+              : t('users.actions.reactivateUser')}
+          </ActionButton>
           <ConfirmDialog
-            intent={user.active ? 'danger' : 'warning'}
-            destructive={user.active}
-            isLoading={isSubmitting}
-            trigger={
-              <ActionButton
-                type='button'
-                color={buttonColor}
-                variant='primary'
-                disabled={isSubmitting || isViewingOwnProfile}
-              >
-                {user.active
-                  ? t('users.actions.deactivateUser')
-                  : t('users.actions.reactivateUser')}
-              </ActionButton>
-            }
+            open={isDeactivateDialogOpen}
+            onOpenChange={setIsDeactivateDialogOpen}
             title={
               user.active
                 ? t('users.titles.deactivateUser')
@@ -117,6 +123,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
                 ? t('users.messages.confirmDeactivate')
                 : t('users.messages.confirmReactivate')
             }
+            intent={user.active ? 'danger' : 'warning'}
             confirmLabel={
               user.active
                 ? t('users.actions.deactivateUser')
@@ -124,6 +131,8 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
             }
             cancelLabel={t('common.actions.cancel')}
             onConfirm={submitDeactivateForm}
+            destructive={user.active}
+            isLoading={isSubmitting}
           />
         </div>
       </div>

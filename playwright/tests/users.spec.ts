@@ -272,8 +272,7 @@ test.describe('User Management Workflow', () => {
     const currentRole = await adminUsersPage.roleCombobox.inputValue()
     const newRole = currentRole === 'ADMIN' ? 'PUBLIC' : 'ADMIN'
 
-    await adminUsersPage.roleCombobox.selectOption(newRole)
-    await page.waitForTimeout(1000)
+    await adminUsersPage.changeUserRole(newRole)
 
     // Should stay on the same page or show error (not redirect with success)
     const url = page.url()
@@ -302,9 +301,7 @@ test.describe('User Management Workflow', () => {
 
     if (isActive) {
       // Try to deactivate self
-      await adminUsersPage.deactivateButton.click()
-      await adminUsersPage.confirmButton.click()
-      await page.waitForTimeout(1000)
+      await adminUsersPage.deactivateUser()
 
       // Should not redirect with success
       const url = page.url()
@@ -317,7 +314,8 @@ test.describe('User Management Workflow', () => {
 
   test('should handle direct URL navigation to user detail', async ({ page }) => {
     // Test accessing a specific user via direct URL
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users/test-user-id')
+    const adminUsersPage = new AdminUsersPage(page)
+    await adminUsersPage.gotoUserDetail('test-user-id')
 
     // Should stay on admin route structure (might show error if user doesn't exist)
     const url = page.url()

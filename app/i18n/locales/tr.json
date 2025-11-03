@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Bir şeyler ters gitti",
-    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin."
+    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+    "emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
+    "emailOutboxReadFailure": "E-posta giden kutusu okunamadı"
   },
   "landing": {
     "features": {

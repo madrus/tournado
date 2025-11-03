@@ -1,6 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
+import { z } from 'zod'
+
+import { i18n } from '~/i18n/config'
+
 const OUTBOX_DIR = path.join(process.cwd(), '.tmp')
 const OUTBOX_PATH = path.join(OUTBOX_DIR, 'email-outbox.json')
 
@@ -19,6 +23,17 @@ export type TestEmailOutboxEntry = {
   timestamp: string
 }
 
+const testEmailOutboxEntrySchema = z.object({
+  from: z.string(),
+  to: z.union([z.string(), z.array(z.string())]),
+  subject: z.string(),
+  html: z.string(),
+  id: z.string(),
+  timestamp: z.string(),
+})
+
+const testEmailOutboxSchema = z.array(testEmailOutboxEntrySchema)
+
 export const getTestEmailOutbox = (): TestEmailOutboxEntry[] => {
   ensureOutboxDir()
   if (!fs.existsSync(OUTBOX_PATH)) {
@@ -26,10 +41,22 @@ export const getTestEmailOutbox = (): TestEmailOutboxEntry[] => {
   }
   try {
     const content = fs.readFileSync(OUTBOX_PATH, 'utf-8')
-    return JSON.parse(content) as TestEmailOutboxEntry[]
+    const parsed = JSON.parse(content)
+    const validationResult = testEmailOutboxSchema.safeParse(parsed)
+
+    if (!validationResult.success) {
+      // eslint-disable-next-line no-console
+      console.error(
+        `${i18n.t('errors.emailOutboxInvalidFormat')}:`,
+        validationResult.error
+      )
+      return []
+    }
+
+    return validationResult.data
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Failed to read email outbox:', error)
+    console.error(`${i18n.t('errors.emailOutboxReadFailure')}:`, error)
     return []
   }
 }

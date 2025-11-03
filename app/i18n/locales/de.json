@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Etwas ist schief gelaufen",
-    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
+    "emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden"
   },
   "landing": {
     "features": {

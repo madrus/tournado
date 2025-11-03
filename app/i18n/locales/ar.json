@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "حدث خطأ ما",
-    "teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً."
+    "teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً.",
+    "emailOutboxInvalidFormat": "تنسيق صندوق الصادر للبريد الإلكتروني غير صالح",
+    "emailOutboxReadFailure": "فشل قراءة صندوق الصادر للبريد الإلكتروني"
   },
   "landing": {
     "features": {

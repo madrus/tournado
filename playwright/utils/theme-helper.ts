@@ -23,8 +23,12 @@ export async function setTheme(page: Page, theme: 'dark' | 'light'): Promise<voi
     document.documentElement.classList.add(t)
   }, theme)
 
-  // Wait for theme application
-  await page.waitForTimeout(500)
+  // Wait for theme class to be applied
+  await page.waitForFunction(
+    t => document.documentElement.classList.contains(t),
+    theme,
+    { timeout: 1000 }
+  )
 
   // Check if theme was overridden by React hydration or theme store
   const currentClass = await page.locator('html').getAttribute('class')
@@ -41,7 +45,11 @@ export async function setTheme(page: Page, theme: 'dark' | 'light'): Promise<voi
       document.documentElement.classList.add(t)
     }, theme)
 
-    await page.waitForTimeout(500)
+    await page.waitForFunction(
+      t => document.documentElement.classList.contains(t),
+      theme,
+      { timeout: 1000 }
+    )
   }
 
   // Wait for html element to be stable

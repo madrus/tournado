@@ -30,101 +30,83 @@ const DialogCloseWrapper = ({
   isLoading ? <>{children}</> : <Dialog.Close asChild>{children}</Dialog.Close>
 
 /**
- * ConfirmDialog component props
+ * ConfirmDialog - Fully controlled confirmation dialog component
  *
- * This component supports two modes:
+ * This component operates in **controlled mode only**:
+ * - Parent component manages dialog state via `open` and `onOpenChange`
+ * - Supports loading states via `isLoading` to prevent premature closure
+ * - Parent must provide trigger button separately
  *
- * **Uncontrolled Mode (default)**:
- * - Only provide `trigger` prop
- * - Dialog manages its own open/close state
- * - Buttons automatically close the dialog
- * - Example: `<ConfirmDialog trigger={<Button />} ... />`
+ * @example
+ * ```tsx
+ * const [open, setOpen] = useState(false)
+ * const [loading, setLoading] = useState(false)
  *
- * **Controlled Mode**:
- * - Provide both `open` AND `onOpenChange` props together
- * - Parent component manages dialog state
- * - Required when using async operations with `isLoading`
- * - Example:
- *   ```tsx
- *   const [open, setOpen] = useState(false)
+ * const handleConfirm = async () => {
+ *   setLoading(true)
+ *   await performAsyncOperation()
+ *   setLoading(false)
+ *   setOpen(false) // Close after completion
+ * }
+ *
+ * <>
+ *   <Button onClick={() => setOpen(true)}>Delete</Button>
  *   <ConfirmDialog
- *     trigger={<Button />}
  *     open={open}
  *     onOpenChange={setOpen}
+ *     intent="danger"
+ *     title="Delete item"
+ *     description="This action cannot be undone."
+ *     confirmLabel="Yes, delete"
+ *     cancelLabel="Cancel"
+ *     onConfirm={handleConfirm}
+ *     destructive
  *     isLoading={loading}
- *     ...
  *   />
- *   ```
+ * </>
+ * ```
  *
- * **IMPORTANT**:
- * - If you provide `open`, you MUST also provide `onOpenChange`
- * - If you use `isLoading={true}`, you MUST use controlled mode (provide both `open` and `onOpenChange`)
- * - Without controlled mode, a loading dialog cannot be closed programmatically and will become stuck
+ * **When to use**:
+ * - Need to prevent dialog from closing during async operations
+ * - Need programmatic control over dialog open/close
+ * - Need loading indicators in the dialog
+ *
+ * **When NOT to use**:
+ * - Simple confirmations without async operations
+ * → Use `SimpleConfirmDialog` (uncontrolled) instead
  */
 type ConfirmDialogProps = {
-  // Trigger-based dialog (no open/onOpenChange needed)
-  trigger: ReactNode
-
-  // Enhanced intent-based theming
-  intent?: DialogIntent
+  // Required controlled mode props
+  open: boolean
+  onOpenChange: (open: boolean) => void
 
   // Content
   title: string
   description?: string
+  intent?: DialogIntent
 
   // Button labels
   confirmLabel: string
   cancelLabel: string
 
-  // Actions
+  // Actions and behavior
   onConfirm?: () => void
-
-  // Behavior
   destructive?: boolean
-
-  // Optional controlled mode (both props required together)
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-
-  // Loading state (requires controlled mode)
   isLoading?: boolean
 }
 
 export function ConfirmDialog({
-  trigger,
-  intent = 'warning',
+  open,
+  onOpenChange,
   title,
   description,
+  intent = 'warning',
   confirmLabel,
   cancelLabel,
   onConfirm,
   destructive = false,
-  open,
-  onOpenChange,
   isLoading = false,
 }: Readonly<ConfirmDialogProps>): JSX.Element {
-  // Validate controlled vs uncontrolled mode usage
-  // Run validation early to catch misconfiguration at component initialization
-  if (open !== undefined && typeof onOpenChange !== 'function') {
-    throw new Error(
-      `[ConfirmDialog] Controlled mode misconfiguration: When providing 'open' prop, you must also provide 'onOpenChange' function. ` +
-        `Correct usage: <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} ... />. ` +
-        `Current state: open=${open}, onOpenChange=${typeof onOpenChange}`
-    )
-  }
-
-  if (isLoading && (open === undefined || typeof onOpenChange !== 'function')) {
-    // eslint-disable-next-line no-console
-    console.error(
-      `[ConfirmDialog] Loading state misconfiguration: When using 'isLoading', you must use controlled mode (provide both 'open' and 'onOpenChange'). ` +
-        `Without controlled mode, the dialog cannot be closed programmatically and will become stuck in loading state. ` +
-        `Correct usage: ` +
-        `const [open, setOpen] = useState(false); ` +
-        `<ConfirmDialog open={open} onOpenChange={setOpen} isLoading={loading} ... />. ` +
-        `Current state: isLoading=${isLoading}, open=${open}, onOpenChange=${typeof onOpenChange}`
-    )
-  }
-
   // Get intent-driven defaults
   const intentColors = getDefaultColorsForIntent(intent)
   const finalIcon = getIconForIntent(intent)
@@ -137,13 +119,11 @@ export function ConfirmDialog({
 
   const handleConfirm = (): void => {
     onConfirm?.()
-    // If not in controlled mode or not loading, let Dialog.Close handle closing
+    // Dialog closing is handled by DialogCloseWrapper based on isLoading state
   }
 
   return (
-    <Dialog.Root {...(open !== undefined ? { open, onOpenChange } : {})}>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className={dialogOverlayVariants()} />
 

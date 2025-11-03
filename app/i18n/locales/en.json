@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Something went wrong",
-    "teamLoadFailed": "Unable to load team details. Please try again later."
+    "teamLoadFailed": "Unable to load team details. Please try again later.",
+    "emailOutboxInvalidFormat": "Email outbox data has an invalid format",
+    "emailOutboxReadFailure": "Failed to read email outbox"
   },
   "landing": {
     "features": {

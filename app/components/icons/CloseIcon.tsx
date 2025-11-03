@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,17 +7,16 @@ type CloseIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const CloseIcon = ({
   className = '',
   size = 24,
   variant: _variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Close',
+  ...rest
 }: Readonly<CloseIconProps>): JSX.Element => (
   <svg
     width={size}
@@ -29,9 +28,9 @@ export const CloseIcon = ({
     strokeWidth={weight / 200}
     strokeLinecap='round'
     strokeLinejoin='round'
-    data-testid={dataTestId}
     role='img'
     aria-label={ariaLabel}
+    {...rest}
   >
     <path d='M6 18L18 6M6 6l12 12' />
   </svg>

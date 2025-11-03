@@ -59,31 +59,31 @@ export class AdminTournamentsPage {
     this.errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
   }
 
-  async navigate() {
+  async navigate(): Promise<void> {
     await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments`)
   }
 
-  async navigateToNew() {
+  async navigateToNew(): Promise<void> {
     await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
   }
 
-  async navigateToAdminHome() {
+  async navigateToAdminHome(): Promise<void> {
     await this.page.goto(ADMIN_DASHBOARD_URL)
   }
 
-  async expectPageToContainTournamentText() {
+  async expectPageToContainTournamentText(): Promise<void> {
     await expect(this.body).toContainText(/toernooi/i, { timeout: 15000 })
   }
 
-  async clickAddButton() {
+  async clickAddButton(): Promise<void> {
     await this.addButton.click()
   }
 
-  async expectToBeOnNewTournamentPage() {
+  async expectToBeOnNewTournamentPage(): Promise<void> {
     await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
   }
 
-  async expectFormIsVisible() {
+  async expectFormIsVisible(): Promise<void> {
     await expect(this.form).toBeVisible({ timeout: 15000 })
   }
 }

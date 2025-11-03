@@ -49,20 +49,14 @@ test.describe('Authorization - Public Access', () => {
   test('should allow access to signup and signin pages', async ({ page }) => {
     const publicPage = new PublicPage(page)
     await publicPage.navigateToSignin()
-    await page.waitForLoadState('networkidle')
-    await page.waitForFunction(
-      () => document.documentElement.getAttribute('data-hydrated') === 'true'
-    )
+    await publicPage.waitForHydration()
     await expect(page).toHaveURL('/auth/signin')
     await expect(await publicPage.getSigninButton()).toBeVisible()
 
-    await page.goto('/auth/signup')
-    await page.waitForLoadState('networkidle')
-    await page.waitForFunction(
-      () => document.documentElement.getAttribute('data-hydrated') === 'true'
-    )
+    await publicPage.navigateToSignup()
+    await publicPage.waitForHydration()
     await expect(page).toHaveURL('/auth/signup')
-    await expect(page.getByRole('button', { name: 'Registreren' })).toBeVisible()
+    await expect(await publicPage.getSignupButton()).toBeVisible()
   })
 
   test('should redirect PUBLIC role users to unauthorized when accessing admin panels', async ({

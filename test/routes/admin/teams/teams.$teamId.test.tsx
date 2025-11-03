@@ -173,13 +173,13 @@ const mockTeam = {
 const mockUseLoaderData = vi.mocked(ReactRouter.useLoaderData)
 const mockUseActionData = vi.mocked(ReactRouter.useActionData)
 
-// Mock ConfirmDialog - allow tests to control confirm/cancel behavior
+// Mock SimpleConfirmDialog - allow tests to control confirm/cancel behavior
 const mockOnConfirm = vi.fn()
 let triggerConfirm: (() => void) | null = null
 let triggerCancel: (() => void) | null = null
 
 vi.mock('~/components/ConfirmDialog', () => ({
-  ConfirmDialog: ({
+  SimpleConfirmDialog: ({
     trigger,
     onConfirm,
     onCancel,

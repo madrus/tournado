@@ -243,10 +243,10 @@ const mockLoaderData = {
 const mockUseLoaderData = vi.mocked(ReactRouter.useLoaderData)
 const mockUseActionData = vi.mocked(ReactRouter.useActionData)
 
-// Mock ConfirmDialog - simulate user confirmation
+// Mock SimpleConfirmDialog - simulate user confirmation
 const mockOnConfirm = vi.fn()
 vi.mock('~/components/ConfirmDialog', () => ({
-  ConfirmDialog: ({
+  SimpleConfirmDialog: ({
     trigger,
     onConfirm,
     description,

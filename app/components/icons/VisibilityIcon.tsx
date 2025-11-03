@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,17 +7,16 @@ type VisibilityIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const VisibilityIcon = ({
   className = '',
   size = 24,
   variant: _variant = 'outlined',
   weight = 600,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Visibility',
+  ...rest
 }: Readonly<VisibilityIconProps>): JSX.Element => (
   <svg
     width={size}
@@ -29,9 +28,9 @@ export const VisibilityIcon = ({
     strokeLinecap='round'
     strokeLinejoin='round'
     fill='none'
-    data-testid={dataTestId}
     role='img'
     aria-label={ariaLabel}
+    {...rest}
   >
     <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z' />
     <circle cx='12' cy='12' r='3' />

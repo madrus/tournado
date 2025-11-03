@@ -71,32 +71,35 @@ export const dialogOverlayVariants = cva([
 ])
 
 /**
- * Icon container variants - no background, just size
+ * Icon container variants - includes intent backgrounds
  */
-export const iconContainerVariants = cva('flex items-center justify-center', {
-  variants: {
-    intent: {
-      warning: '',
-      danger: '',
-      info: '',
-      success: '',
+export const iconContainerVariants = cva(
+  'flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl',
+  {
+    variants: {
+      intent: {
+        warning: 'bg-amber-100 text-amber-600 dark:bg-amber-200/20',
+        danger: 'bg-red-100 text-red-600 dark:bg-red-200/20',
+        info: 'bg-sky-100 text-sky-600 dark:bg-sky-200/20',
+        success: 'bg-green-100 text-green-600 dark:bg-green-200/20',
+      },
     },
-  },
-  defaultVariants: {
-    intent: 'warning',
-  },
-})
+    defaultVariants: {
+      intent: 'warning',
+    },
+  }
+)
 
 /**
  * Icon color variants matching intent theming - larger size without container
  */
-export const iconColorVariants = cva('h-14 w-14', {
+export const iconColorVariants = cva('h-8 w-8', {
   variants: {
     intent: {
-      warning: 'text-amber-600 dark:text-amber-600',
-      danger: 'text-brand-600 dark:text-brand-600',
-      info: 'text-cyan-600 dark:text-cyan-600',
-      success: 'text-emerald-600 dark:text-emerald-600',
+      warning: 'text-amber-600',
+      danger: 'text-red-600',
+      info: 'text-sky-600',
+      success: 'text-green-600',
     },
   },
   defaultVariants: {
@@ -110,10 +113,10 @@ export const iconColorVariants = cva('h-14 w-14', {
 export const titleColorVariants = cva('', {
   variants: {
     intent: {
-      warning: 'text-amber-600 dark:text-amber-600',
-      danger: 'text-brand-600 dark:text-brand-600',
-      info: 'text-cyan-600 dark:text-cyan-600',
-      success: 'text-emerald-600 dark:text-emerald-600',
+      warning: 'text-amber-900 dark:text-amber-200',
+      danger: 'text-red-900 dark:text-red-200',
+      info: 'text-sky-900 dark:text-sky-200',
+      success: 'text-green-900 dark:text-green-200',
     },
   },
   defaultVariants: {

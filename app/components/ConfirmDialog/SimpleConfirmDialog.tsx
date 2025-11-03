@@ -17,52 +17,41 @@ import {
 } from './dialog.variants'
 
 /**
- * Wrapper component that conditionally wraps children in Dialog.Close
- * Only wraps when not loading to prevent dialog dismissal during async operations
+ * SimpleConfirmDialog - Uncontrolled confirmation dialog component
+ *
+ * This component operates in **uncontrolled mode only**:
+ * - Provide a `trigger` element (button, link, etc.)
+ * - Dialog manages its own open/close state internally
+ * - Buttons automatically close the dialog when clicked
+ * - No external state management required
+ *
+ * @example
+ * ```tsx
+ * <SimpleConfirmDialog
+ *   trigger={<Button>Delete</Button>}
+ *   intent="danger"
+ *   title="Delete item"
+ *   description="Are you sure? This action cannot be undone."
+ *   confirmLabel="Yes, delete"
+ *   cancelLabel="Cancel"
+ *   destructive
+ *   onConfirm={handleDelete}
+ * />
+ * ```
+ *
+ * **When to use**:
+ * - Simple confirmation dialogs that don't need loading states
+ * - Quick yes/no confirmations
+ * - Fire-and-forget actions where dialog closes immediately
+ *
+ * **When NOT to use**:
+ * - Need to prevent dialog from closing during async operations
+ * - Need to programmatically control open/close state
+ * - Need loading indicators in the dialog
+ * → Use `ConfirmDialog` (controlled mode) instead
  */
-const DialogCloseWrapper = ({
-  isLoading,
-  children,
-}: {
-  isLoading: boolean
-  children: ReactNode
-}): JSX.Element =>
-  isLoading ? <>{children}</> : <Dialog.Close asChild>{children}</Dialog.Close>
-
-/**
- * ConfirmDialog component props
- *
- * This component supports two modes:
- *
- * **Uncontrolled Mode (default)**:
- * - Only provide `trigger` prop
- * - Dialog manages its own open/close state
- * - Buttons automatically close the dialog
- * - Example: `<ConfirmDialog trigger={<Button />} ... />`
- *
- * **Controlled Mode**:
- * - Provide both `open` AND `onOpenChange` props together
- * - Parent component manages dialog state
- * - Required when using async operations with `isLoading`
- * - Example:
- *   ```tsx
- *   const [open, setOpen] = useState(false)
- *   <ConfirmDialog
- *     trigger={<Button />}
- *     open={open}
- *     onOpenChange={setOpen}
- *     isLoading={loading}
- *     ...
- *   />
- *   ```
- *
- * **IMPORTANT**:
- * - If you provide `open`, you MUST also provide `onOpenChange`
- * - If you use `isLoading={true}`, you MUST use controlled mode (provide both `open` and `onOpenChange`)
- * - Without controlled mode, a loading dialog cannot be closed programmatically and will become stuck
- */
-type ConfirmDialogProps = {
-  // Trigger-based dialog (no open/onOpenChange needed)
+type SimpleConfirmDialogProps = {
+  // Trigger element that opens the dialog
   trigger: ReactNode
 
   // Enhanced intent-based theming
@@ -81,16 +70,9 @@ type ConfirmDialogProps = {
 
   // Behavior
   destructive?: boolean
-
-  // Optional controlled mode (both props required together)
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-
-  // Loading state (requires controlled mode)
-  isLoading?: boolean
 }
 
-export function ConfirmDialog({
+export function SimpleConfirmDialog({
   trigger,
   intent = 'warning',
   title,
@@ -99,32 +81,7 @@ export function ConfirmDialog({
   cancelLabel,
   onConfirm,
   destructive = false,
-  open,
-  onOpenChange,
-  isLoading = false,
-}: Readonly<ConfirmDialogProps>): JSX.Element {
-  // Validate controlled vs uncontrolled mode usage
-  // Run validation early to catch misconfiguration at component initialization
-  if (open !== undefined && typeof onOpenChange !== 'function') {
-    throw new Error(
-      `[ConfirmDialog] Controlled mode misconfiguration: When providing 'open' prop, you must also provide 'onOpenChange' function. ` +
-        `Correct usage: <ConfirmDialog open={isOpen} onOpenChange={setIsOpen} ... />. ` +
-        `Current state: open=${open}, onOpenChange=${typeof onOpenChange}`
-    )
-  }
-
-  if (isLoading && (open === undefined || typeof onOpenChange !== 'function')) {
-    // eslint-disable-next-line no-console
-    console.error(
-      `[ConfirmDialog] Loading state misconfiguration: When using 'isLoading', you must use controlled mode (provide both 'open' and 'onOpenChange'). ` +
-        `Without controlled mode, the dialog cannot be closed programmatically and will become stuck in loading state. ` +
-        `Correct usage: ` +
-        `const [open, setOpen] = useState(false); ` +
-        `<ConfirmDialog open={open} onOpenChange={setOpen} isLoading={loading} ... />. ` +
-        `Current state: isLoading=${isLoading}, open=${open}, onOpenChange=${typeof onOpenChange}`
-    )
-  }
-
+}: Readonly<SimpleConfirmDialogProps>): JSX.Element {
   // Get intent-driven defaults
   const intentColors = getDefaultColorsForIntent(intent)
   const finalIcon = getIconForIntent(intent)
@@ -137,11 +94,11 @@ export function ConfirmDialog({
 
   const handleConfirm = (): void => {
     onConfirm?.()
-    // If not in controlled mode or not loading, let Dialog.Close handle closing
+    // Dialog.Close handles closing the dialog automatically
   }
 
   return (
-    <Dialog.Root {...(open !== undefined ? { open, onOpenChange } : {})}>
+    <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
       <Dialog.Portal>
@@ -156,11 +113,11 @@ export function ConfirmDialog({
             <div
               aria-hidden='true'
               className={iconContainerVariants({ intent })}
-              data-testid='confirm-dialog-icon-container'
+              data-testid='simple-confirm-dialog-icon-container'
             >
               {renderIcon(finalIcon, {
                 className: iconColorVariants({ intent }),
-                'data-testid': 'confirm-dialog-icon',
+                'data-testid': 'simple-confirm-dialog-icon',
               })}
             </div>
 
@@ -184,7 +141,7 @@ export function ConfirmDialog({
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
                 <div className='sm:order-1'>
-                  <DialogCloseWrapper isLoading={isLoading}>
+                  <Dialog.Close asChild>
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
@@ -192,15 +149,14 @@ export function ConfirmDialog({
                       className={cancelButtonClassName}
                       aria-label={cancelLabel}
                       autoFocus={destructive}
-                      disabled={isLoading}
                     >
                       {cancelLabel}
                     </ActionButton>
-                  </DialogCloseWrapper>
+                  </Dialog.Close>
                 </div>
 
                 <div className='sm:order-2'>
-                  <DialogCloseWrapper isLoading={isLoading}>
+                  <Dialog.Close asChild>
                     <ActionButton
                       variant='primary'
                       color={finalConfirmColor}
@@ -209,11 +165,10 @@ export function ConfirmDialog({
                       className='w-full min-w-[120px] sm:w-auto'
                       aria-label={confirmLabel}
                       autoFocus={!destructive}
-                      disabled={isLoading}
                     >
                       {confirmLabel}
                     </ActionButton>
-                  </DialogCloseWrapper>
+                  </Dialog.Close>
                 </div>
               </div>
             </div>

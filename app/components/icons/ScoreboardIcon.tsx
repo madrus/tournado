@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,19 +7,16 @@ type ScoreboardIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
-}
+} & SVGProps<SVGSVGElement>
 
 export function ScoreboardIcon({
   className = '',
   size = 24,
   variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Scoreboard',
-  ...props
+  ...rest
 }: Readonly<ScoreboardIconProps>): JSX.Element {
   // Scoreboard icon path from your SVG file
   const outlinedPath =
@@ -37,6 +34,8 @@ export function ScoreboardIcon({
           ? 1.25
           : 1
       : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
@@ -44,11 +43,10 @@ export function ScoreboardIcon({
       height={size}
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
-      data-testid={dataTestId}
       role='img'
       aria-label={ariaLabel}
-      {...props}
+      style={combinedStyle}
+      {...restProps}
     >
       <path d={path} />
     </svg>

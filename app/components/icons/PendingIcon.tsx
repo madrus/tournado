@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,17 +7,16 @@ type PendingIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function PendingIcon({
   className = '',
   size = 24,
   variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Pending',
+  ...rest
 }: Readonly<PendingIconProps>): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -36,6 +35,8 @@ export function PendingIcon({
           ? 1.25
           : 1
       : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
@@ -43,10 +44,10 @@ export function PendingIcon({
       height={size}
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
-      data-testid={dataTestId}
       role='img'
       aria-label={ariaLabel}
+      style={combinedStyle}
+      {...restProps}
     >
       <path d={path} />
     </svg>

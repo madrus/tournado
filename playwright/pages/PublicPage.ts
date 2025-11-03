@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { type Locator, Page } from '@playwright/test'
 
 export class PublicPage {
   constructor(readonly page: Page) {}
@@ -11,6 +11,10 @@ export class PublicPage {
     await this.page.goto('/auth/signin')
   }
 
+  async navigateToSignup(): Promise<void> {
+    await this.page.goto('/auth/signup')
+  }
+
   async navigateToAdminPanel(): Promise<void> {
     await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
   }
@@ -19,11 +23,22 @@ export class PublicPage {
     await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
   }
 
-  async getAddTeamButton() {
+  async getAddTeamButton(): Promise<Locator> {
     return this.page.getByRole('link', { name: 'Toevoegen' })
   }
 
-  async getSigninButton() {
+  async getSigninButton(): Promise<Locator> {
     return this.page.getByRole('button', { name: 'Inloggen' })
+  }
+
+  async getSignupButton(): Promise<Locator> {
+    return this.page.getByRole('button', { name: 'Registreren' })
+  }
+
+  async waitForHydration(): Promise<void> {
+    await this.page.waitForLoadState('networkidle')
+    await this.page.waitForFunction(
+      () => document.documentElement.getAttribute('data-hydrated') === 'true'
+    )
   }
 }

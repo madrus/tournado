@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type SuccessIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function SuccessIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Success',
+  ...rest
 }: Readonly<SuccessIconProps>): JSX.Element {
   // Circle success icon paths
   const circlePath =
@@ -41,6 +42,7 @@ export function SuccessIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
+      {...rest}
     >
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />

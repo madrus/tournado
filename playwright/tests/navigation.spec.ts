@@ -86,8 +86,6 @@ test.describe('Navigation', () => {
     })
 
     test('should show bottom navigation on mobile', async ({ page }) => {
-      // Test mobile viewport
-      await page.setViewportSize({ width: 375, height: 812 })
       await page.goto('/')
 
       const nav = new NavigationPage(page)

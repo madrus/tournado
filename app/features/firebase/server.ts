@@ -279,6 +279,10 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
  * @throws Error if disabling fails (but not if Admin SDK is unavailable)
  */
 export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
   if (!adminAuth) {
     console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
     return
@@ -311,6 +315,10 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
  * @throws Error if enabling fails (but not if Admin SDK is unavailable)
  */
 export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
   if (!adminAuth) {
     console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
     return
@@ -341,6 +349,10 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
  * @throws Error if revoking fails (but not if Admin SDK is unavailable)
  */
 export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
   if (!adminAuth) {
     console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
     return

@@ -6,6 +6,38 @@ import {
   createColorVariantObject,
 } from '~/components/shared/colorVariants'
 
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for buttonVariants props.
+ * Use this when defining component props that accept button styling options.
+ */
+export type ButtonVariants = VariantProps<typeof buttonVariants>
+
+/**
+ * Type definition for button visual variants.
+ * Ensures type safety when specifying button styles.
+ */
+export type ButtonVariant = NonNullable<ButtonVariants['variant']>
+
+/**
+ * Type definition for button color options.
+ * Aligned with the design system's color palette.
+ */
+export type ButtonColor = NonNullable<ButtonVariants['color']>
+
+/**
+ * Type definition for button size options.
+ * Provides type safety for size-related props.
+ */
+export type ButtonSize = NonNullable<ButtonVariants['size']>
+
+/**
+ * Shared color variant key type for button components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type ButtonColorVariant = ColorVariantKey
+
 /**
  * Button component variants with comprehensive styling and interaction states.
  *
@@ -193,34 +225,26 @@ export const buttonVariants = cva(
   }
 )
 
-// TypeScript type exports for component prop typing
-
-/**
- * Type definition for buttonVariants props.
- * Use this when defining component props that accept button styling options.
- */
-export type ButtonVariants = VariantProps<typeof buttonVariants>
-
-/**
- * Type definition for button visual variants.
- * Ensures type safety when specifying button styles.
- */
-export type ButtonVariant = NonNullable<ButtonVariants['variant']>
-
-/**
- * Type definition for button color options.
- * Aligned with the design system's color palette.
- */
-export type ButtonColor = NonNullable<ButtonVariants['color']>
-
-/**
- * Type definition for button size options.
- * Provides type safety for size-related props.
- */
-export type ButtonSize = NonNullable<ButtonVariants['size']>
-
-/**
- * Shared color variant key type for button components.
- * Ensures consistency with the design system's color palette.
- */
-export type ButtonColorVariant = ColorVariantKey
+export const getIconCircleColorVariants = (): Record<ButtonColor, string> => ({
+  amber: 'border-amber-600/70',
+  blue: 'border-blue-600/70',
+  brand: 'border-brand-600/70',
+  disabled: 'border-button-neutral-secondary-border',
+  emerald: 'border-emerald-600/70',
+  fuchsia: 'border-fuchsia-600/70',
+  green: 'border-green-600/70',
+  indigo: 'border-indigo-600/70',
+  lime: 'border-lime-600/70',
+  orange: 'border-orange-600/70',
+  pink: 'border-pink-600/70',
+  primary: 'border-primary-600/70',
+  purple: 'border-purple-600/70',
+  red: 'border-red-600/70',
+  rose: 'border-rose-600/70',
+  sky: 'border-sky-600/70',
+  slate: 'border-slate-600/70',
+  teal: 'border-teal-600/70',
+  violet: 'border-violet-600/70',
+  yellow: 'border-yellow-600/70',
+  zinc: 'border-zinc-600/70',
+})

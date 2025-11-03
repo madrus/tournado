@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type ExclamationMarkIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function ExclamationMarkIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Exclamation',
+  ...rest
 }: Readonly<ExclamationMarkIconProps>): JSX.Element {
   const paths = ['M12 8v4', 'M12 16h.01']
   const strokeWidth = weight === 600 ? 2.5 : weight === 500 ? 2.25 : 2
@@ -30,6 +31,7 @@ export function ExclamationMarkIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
+      {...rest}
     >
       {paths.map((d, idx) => (
         <path key={idx} d={d} stroke='currentColor' />

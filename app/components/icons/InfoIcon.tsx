@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type InfoIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function InfoIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Info',
+  ...rest
 }: Readonly<InfoIconProps>): JSX.Element {
   // Circle info icon paths
   const circlePath =
@@ -41,6 +42,7 @@ export function InfoIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
+      {...rest}
     >
       {/* Circle background uses currentColor (intent color) */}
       <path

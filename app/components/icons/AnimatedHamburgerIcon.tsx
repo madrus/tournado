@@ -1,17 +1,18 @@
-import { type JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 type AnimatedHamburgerIconProps = {
   isOpen: boolean
   isRTL: boolean
   className?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const AnimatedHamburgerIcon = ({
   isOpen,
   isRTL,
   className = 'w-6 h-6',
   'aria-label': ariaLabel = 'Menu',
+  ...rest
 }: Readonly<AnimatedHamburgerIconProps>): JSX.Element => (
   <svg
     className={className}
@@ -20,6 +21,7 @@ export const AnimatedHamburgerIcon = ({
     xmlns='http://www.w3.org/2000/svg'
     role='img'
     aria-label={ariaLabel}
+    {...rest}
   >
     {/* Top line */}
     <line

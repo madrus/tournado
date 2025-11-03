@@ -1,4 +1,4 @@
-import { type JSX } from 'react'
+import { type HTMLAttributes, type JSX } from 'react'
 
 import { ExpandMoreIcon } from './index'
 
@@ -6,7 +6,7 @@ type AnimatedArrowIconProps = {
   isOpen: boolean
   className?: string
   'aria-label'?: string
-}
+} & HTMLAttributes<HTMLDivElement>
 
 /**
  * AnimatedArrowIcon - rotates chevron 180 degrees between closed and open states
@@ -20,6 +20,7 @@ export const AnimatedArrowIcon = ({
   isOpen,
   className = 'w-6 h-6',
   'aria-label': ariaLabel = isOpen ? 'Collapse options' : 'Expand options',
+  ...rest
 }: Readonly<AnimatedArrowIconProps>): JSX.Element => (
   <div
     className={`transition-transform duration-300 ease-in-out ${className} ${
@@ -28,6 +29,7 @@ export const AnimatedArrowIcon = ({
     role='img'
     aria-label={ariaLabel}
     data-testid={`animated-arrow-${isOpen ? 'open' : 'closed'}`}
+    {...rest}
   >
     <ExpandMoreIcon className='h-full w-full' size={24} />
   </div>

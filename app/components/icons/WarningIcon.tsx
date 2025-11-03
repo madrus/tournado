@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type WarningIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function WarningIcon({
   className = '',
   size = 24,
   weight: _weight = 400,
   'aria-label': ariaLabel = 'Warning',
+  ...rest
 }: Readonly<WarningIconProps>): JSX.Element {
   // Lucide triangle-alert SVG paths
   const trianglePath =
@@ -34,6 +35,7 @@ export function WarningIcon({
       className={`inline-block ${className}`}
       role='img'
       aria-label={ariaLabel}
+      {...rest}
     >
       {/* Triangle background matches dialog background (transparent, inherited from parent) */}
       <path

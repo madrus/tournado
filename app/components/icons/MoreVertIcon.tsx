@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,15 +7,14 @@ type MoreVertIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
-}
+} & SVGProps<SVGSVGElement>
 
 export function MoreVertIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'More vertical options',
-  ...props
+  ...rest
 }: Readonly<MoreVertIconProps>): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
   const path =
@@ -24,6 +23,8 @@ export function MoreVertIcon({
   // Convert weight to stroke-width
   const strokeWidth =
     weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
@@ -31,10 +32,10 @@ export function MoreVertIcon({
       height={size}
       viewBox='-960 0 960 960'
       className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
       role='img'
       aria-label={ariaLabel}
-      {...props}
+      style={combinedStyle}
+      {...restProps}
     >
       <path d={path} />
     </svg>

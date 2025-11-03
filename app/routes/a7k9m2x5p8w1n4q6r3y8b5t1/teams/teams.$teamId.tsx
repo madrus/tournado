@@ -14,7 +14,7 @@ import {
 import { Category, Division } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
-import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
@@ -345,7 +345,7 @@ export default function AdminTeamPage(): JSX.Element {
           </div>
           {/* Delete Button */}
           <div className='flex-shrink-0'>
-            <ConfirmDialog
+            <SimpleConfirmDialog
               intent='danger'
               trigger={
                 <ActionButton icon='delete' variant='secondary'>

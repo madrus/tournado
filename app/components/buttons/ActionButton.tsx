@@ -1,4 +1,6 @@
-import type { JSX, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, JSX, ReactNode } from 'react'
+
+import { cva } from 'class-variance-authority'
 
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
@@ -8,38 +10,22 @@ import {
   buttonVariants,
   type ButtonVariants,
   DARK_MODE_DARKER_CLASSES,
+  getIconCircleColorVariants,
 } from './button.variants'
 import { useActionButton } from './useActionButton'
 
+type NativeButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+
 type ActionButtonProps = {
-  onClick?: () => void
   children: ReactNode
   icon?: IconName
   variant?: ButtonVariants['variant']
   color?: ButtonVariants['color']
   size?: ButtonVariants['size']
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  className?: string
-  'aria-label'?: string
-  'aria-describedby'?: string
-  'data-testid'?: string
-  /**
-   * Required permission to access this action.
-   * If provided, the button will be disabled if user lacks this permission.
-   */
   permission?: Permission
-  /**
-   * Whether to hide the button entirely when user lacks permission (default: false)
-   * If false, the button will be disabled but visible
-   */
   hideWhenDisabled?: boolean
-  /**
-   * Whether to use darker background in dark mode for better contrast (default: false)
-   * When true, uses -800 weight instead of default -600 for backgrounds
-   */
   darkerInDarkMode?: boolean
-}
+} & Omit<NativeButtonProps, 'color'>
 
 export function ActionButton({
   onClick,
@@ -50,13 +36,12 @@ export function ActionButton({
   size = 'md',
   type = 'button',
   disabled = false,
+  autoFocus = false,
   className,
-  'aria-label': ariaLabel,
-  'aria-describedby': ariaDescribedBy,
-  'data-testid': testId,
   permission,
   hideWhenDisabled = false,
   darkerInDarkMode = false,
+  ...rest
 }: Readonly<ActionButtonProps>): JSX.Element | null {
   const { isHidden, isDisabled } = useActionButton({
     permission,
@@ -85,37 +70,11 @@ export function ActionButton({
 
   const iconElement = rawIcon ? (
     iconNeedsCircle ? (
-      <span
-        className={cn(
-          'icon-spacing flex items-center justify-center rounded-full border-2 bg-transparent',
-          size === 'sm' ? 'h-5 w-5' : 'h-6 w-6',
-          color === 'brand' && 'border-brand-600/70',
-          color === 'primary' && 'border-primary-600/70',
-          color === 'emerald' && 'border-emerald-600/70',
-          color === 'blue' && 'border-blue-600/70',
-          color === 'slate' && 'border-slate-600/70',
-          color === 'teal' && 'border-teal-600/70',
-          color === 'red' && 'border-red-600/70',
-          color === 'yellow' && 'border-yellow-600/70',
-          color === 'green' && 'border-green-600/70',
-          color === 'violet' && 'border-violet-600/70',
-          color === 'zinc' && 'border-zinc-600/70',
-          color === 'orange' && 'border-orange-600/70',
-          color === 'amber' && 'border-amber-600/70',
-          color === 'lime' && 'border-lime-600/70',
-          color === 'sky' && 'border-sky-600/70',
-          color === 'indigo' && 'border-indigo-600/70',
-          color === 'purple' && 'border-purple-600/70',
-          color === 'fuchsia' && 'border-fuchsia-600/70',
-          color === 'pink' && 'border-pink-600/70',
-          color === 'rose' && 'border-rose-600/70'
-        )}
-        aria-hidden='true'
-      >
+      <span className={iconCircleVariants({ size, color })} aria-hidden>
         {rawIcon}
       </span>
     ) : (
-      <span className='icon-spacing' aria-hidden='true'>
+      <span className='icon-spacing' aria-hidden>
         {rawIcon}
       </span>
     )
@@ -137,13 +96,29 @@ export function ActionButton({
       type={type}
       onClick={onClick}
       disabled={isDisabled}
+      autoFocus={autoFocus}
       className={buttonClasses}
-      aria-label={ariaLabel}
-      aria-describedby={ariaDescribedBy}
-      data-testid={testId}
+      {...rest}
     >
       {iconElement}
       {children}
     </button>
   )
 }
+
+const iconCircleVariants = cva(
+  'icon-spacing flex items-center justify-center rounded-full border-2 bg-transparent',
+  {
+    variants: {
+      size: {
+        sm: 'h-5 w-5',
+        md: 'h-6 w-6',
+      },
+      color: getIconCircleColorVariants(),
+    },
+    defaultVariants: {
+      size: 'md',
+      color: 'brand',
+    },
+  }
+)

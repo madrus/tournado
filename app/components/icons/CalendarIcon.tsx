@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,17 +7,16 @@ type CalendarIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const CalendarIcon = ({
   className = '',
   size = 24,
   variant: _variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Calendar',
+  ...rest
 }: Readonly<CalendarIconProps>): JSX.Element => (
   <svg
     width={size}
@@ -29,9 +28,9 @@ export const CalendarIcon = ({
     strokeWidth={weight / 200}
     strokeLinecap='round'
     strokeLinejoin='round'
-    data-testid={dataTestId}
     role='img'
     aria-label={ariaLabel}
+    {...rest}
   >
     <rect width='18' height='18' x='3' y='4' rx='2' ry='2' />
     <line x1='16' x2='16' y1='2' y2='6' />

@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
       "userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
       "userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi",
-      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
+      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı",
+      "confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
+      "confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?"
     },
     "placeholders": {
       "displayName": "Görünen adı girin"

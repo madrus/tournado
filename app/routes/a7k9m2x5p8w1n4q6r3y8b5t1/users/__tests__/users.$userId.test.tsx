@@ -150,6 +150,7 @@ describe('users.$userId route action', () => {
     it('should successfully deactivate user when userId !== currentUserId', async () => {
       const formData = new FormData()
       formData.append('intent', 'deactivate')
+      formData.append('userId', mockTargetUserId)
 
       const response = await action(createActionArgs(formData, mockTargetUserId))
 
@@ -166,6 +167,7 @@ describe('users.$userId route action', () => {
     it('should prevent self-deactivation when userId === currentUserId', async () => {
       const formData = new FormData()
       formData.append('intent', 'deactivate')
+      formData.append('userId', mockCurrentUser.id)
 
       const response = await action(createActionArgs(formData, mockCurrentUser.id))
 
@@ -175,12 +177,40 @@ describe('users.$userId route action', () => {
       )
       expect(response.status).toBe(302)
     })
+
+    it('should show friendly error when userId missing from payload', async () => {
+      const formData = new FormData()
+      formData.append('intent', 'deactivate')
+
+      const response = await action(createActionArgs(formData, mockTargetUserId))
+
+      expect(deactivateUser).not.toHaveBeenCalled()
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent("We couldn't process that request. Please try again.")}`
+      )
+      expect(response.status).toBe(302)
+    })
+
+    it('should show friendly error when userId does not match route', async () => {
+      const formData = new FormData()
+      formData.append('intent', 'deactivate')
+      formData.append('userId', 'different-id')
+
+      const response = await action(createActionArgs(formData, mockTargetUserId))
+
+      expect(deactivateUser).not.toHaveBeenCalled()
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent("We couldn't process that request. Please refresh and try again.")}`
+      )
+      expect(response.status).toBe(302)
+    })
   })
 
   describe('reactivate intent', () => {
     it('should successfully reactivate user when userId !== currentUserId', async () => {
       const formData = new FormData()
       formData.append('intent', 'reactivate')
+      formData.append('userId', mockTargetUserId)
 
       const response = await action(createActionArgs(formData, mockTargetUserId))
 
@@ -197,12 +227,35 @@ describe('users.$userId route action', () => {
     it('should prevent self-reactivation when userId === currentUserId', async () => {
       const formData = new FormData()
       formData.append('intent', 'reactivate')
+      formData.append('userId', mockCurrentUser.id)
 
       const response = await action(createActionArgs(formData, mockCurrentUser.id))
 
       expect(reactivateUser).not.toHaveBeenCalled()
       expect(redirect).toHaveBeenCalledWith(
         `${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot reactivate your own account.')}`
+      )
+      expect(response.status).toBe(302)
+    })
+  })
+
+  describe('validation errors', () => {
+    it('should redirect with friendly message when route userId is missing', async () => {
+      const formData = new FormData()
+      formData.append('intent', 'deactivate')
+      formData.append('userId', mockTargetUserId)
+
+      const response = await action({
+        request: new Request('http://localhost', {
+          method: 'POST',
+          body: formData,
+        }),
+        params: {},
+        context: {},
+      } as ActionFunctionArgs)
+
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`
       )
       expect(response.status).toBe(302)
     })
@@ -286,7 +339,7 @@ describe('users.$userId route action', () => {
   })
 
   describe('missing userId parameter', () => {
-    it('should throw 400 error when userId is missing', async () => {
+    it('should redirect with friendly error when userId is missing', async () => {
       const formData = new FormData()
       formData.append('intent', 'updateDisplayName')
 
@@ -299,16 +352,12 @@ describe('users.$userId route action', () => {
         context: {},
       }
 
-      try {
-        await action(args)
-        throw new Error('Expected action to throw')
-      } catch (error: unknown) {
-        expect(error).toBeInstanceOf(Response)
-        const response = error as Response
-        expect(response.status).toBe(400)
-        const text = await response.text()
-        expect(text).toBe('User ID required')
-      }
+      const response = await action(args)
+
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`
+      )
+      expect(response.status).toBe(302)
     })
   })
 })

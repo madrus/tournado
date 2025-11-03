@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
       "userDeactivatedSuccessfully": "Utilisateur désactivé avec succès",
       "userReactivatedSuccessfully": "Utilisateur réactivé avec succès",
-      "userIsDeactivated": "Cet utilisateur est actuellement désactivé"
+      "userIsDeactivated": "Cet utilisateur est actuellement désactivé",
+      "confirmDeactivate": "Voulez-vous vraiment désactiver cet utilisateur ?",
+      "confirmReactivate": "Réactiver cet utilisateur afin qu'il puisse se reconnecter ?"
     },
     "placeholders": {
       "displayName": "Entrez le nom d'affichage"

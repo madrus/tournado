@@ -111,11 +111,8 @@ export function ConfirmDialog({
   const intentColors = getDefaultColorsForIntent(intent)
   const finalIcon = getIconForIntent(intent)
   const finalConfirmColor = intentColors.confirm
-  const finalCancelColor = intentColors.cancel
-  const cancelButtonClassName = cn(
-    'w-full min-w-[120px] sm:w-auto',
-    finalCancelColor === 'sky' ? 'border-sky-300' : 'border-slate-300'
-  )
+  const finalCancelColor = 'brand'
+  const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
 
   const handleConfirm = (): void => {
     onConfirm?.()
@@ -169,7 +166,7 @@ export function ConfirmDialog({
                       variant='secondary'
                       color={finalCancelColor}
                       size='md'
-                      className={cancelButtonClassName}
+                      className={sharedButtonClasses}
                       aria-label={cancelLabel}
                       autoFocus={destructive}
                       disabled={isLoading}
@@ -186,7 +183,7 @@ export function ConfirmDialog({
                       color={finalConfirmColor}
                       size='md'
                       onClick={handleConfirm}
-                      className='w-full min-w-[120px] sm:w-auto'
+                      className={sharedButtonClasses}
                       aria-label={confirmLabel}
                       autoFocus={!destructive}
                       disabled={isLoading}

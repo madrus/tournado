@@ -79,12 +79,30 @@ export const action = async ({
 
   const { userId } = params
   if (!userId) {
-    throw new Response('User ID required', { status: 400 })
+    return redirect(
+      `${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`
+    )
   }
 
   const formData = await request.formData()
   const intent = formData.get('intent')
   const roleValue = formData.get('role')
+  const formUserId = formData.get('userId')
+
+  const requiresUserId = intent === 'deactivate' || intent === 'reactivate'
+  if (requiresUserId) {
+    if (typeof formUserId !== 'string' || !formUserId.trim()) {
+      return redirect(
+        `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please try again.")}`
+      )
+    }
+
+    if (formUserId !== userId) {
+      return redirect(
+        `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please refresh and try again.")}`
+      )
+    }
+  }
 
   try {
     if (intent === 'updateDisplayName') {

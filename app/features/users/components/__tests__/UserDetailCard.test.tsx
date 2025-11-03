@@ -1,5 +1,5 @@
 import type { User } from '@prisma/client'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
 
@@ -384,8 +384,28 @@ describe('UserDetailCard', () => {
     it('should have userId hidden input in display name form', () => {
       render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
 
-      const userIdInput = screen.getByDisplayValue('user-1')
+      const displayNameForm = screen.getByTestId('user-detail-display-name-form')
+      const userIdInput = within(displayNameForm).getByDisplayValue('user-1')
       expect(userIdInput).toHaveAttribute('name', 'userId')
+    })
+
+    it('should include userId hidden input in deactivate form', () => {
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
+
+      const deactivateForm = screen.getByTestId('user-detail-deactivate-form')
+      const userIdInput = within(deactivateForm).getByDisplayValue('user-1')
+      expect(userIdInput).toHaveAttribute('name', 'userId')
+    })
+
+    it('should open confirm dialog when deactivate button clicked', () => {
+      render(<UserDetailCard user={mockActiveUser} currentUserId={mockCurrentUserId} />)
+
+      expect(screen.queryByTestId('confirm-button')).not.toBeInTheDocument()
+
+      const button = screen.getByTestId('action-button')
+      fireEvent.click(button)
+
+      expect(screen.getByTestId('confirm-button')).toBeInTheDocument()
     })
   })
 

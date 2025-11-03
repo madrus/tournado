@@ -45,11 +45,13 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
   }, [user.id, user.displayName, user.role])
 
   // Close dialog when submission completes
+  const wasSubmittingRef = useRef(false)
   useEffect(() => {
-    if (!isSubmitting && isDeactivateDialogOpen) {
+    if (wasSubmittingRef.current && !isSubmitting) {
       setIsDeactivateDialogOpen(false)
     }
-  }, [isSubmitting, isDeactivateDialogOpen])
+    wasSubmittingRef.current = isSubmitting
+  }, [isSubmitting])
 
   // Convert VALID_ROLES to ComboField options format
   const roleOptions: Option[] = VALID_ROLES.map(role => ({
@@ -92,12 +94,17 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
           ) : null}
         </div>
         <div className='flex flex-shrink-0 items-center'>
-          <Form ref={deactivateFormRef} method='post'>
+          <Form
+            ref={deactivateFormRef}
+            method='post'
+            data-testid='user-detail-deactivate-form'
+          >
             <input
               type='hidden'
               name='intent'
               value={user.active ? 'deactivate' : 'reactivate'}
             />
+            <input type='hidden' name='userId' value={user.id} />
           </Form>
           <ActionButton
             type='button'
@@ -154,7 +161,11 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
           </div>
         </div>
 
-        <Form ref={displayNameFormRef} method='post'>
+        <Form
+          ref={displayNameFormRef}
+          method='post'
+          data-testid='user-detail-display-name-form'
+        >
           <input type='hidden' name='intent' value='updateDisplayName' />
           <input type='hidden' name='userId' value={user.id} />
 
@@ -179,7 +190,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
           />
         </Form>
 
-        <Form ref={roleFormRef} method='post'>
+        <Form ref={roleFormRef} method='post' data-testid='user-detail-role-form'>
           <input type='hidden' name='intent' value='updateRole' />
 
           <ComboField

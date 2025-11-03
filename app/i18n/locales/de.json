@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
       "userDeactivatedSuccessfully": "Benutzer erfolgreich deaktiviert",
       "userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert",
-      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert"
+      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
+      "confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
+      "confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?"
     },
     "placeholders": {
       "displayName": "Anzeigename eingeben"

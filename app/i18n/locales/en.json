@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "User role updated successfully",
       "userDeactivatedSuccessfully": "User deactivated successfully",
       "userReactivatedSuccessfully": "User reactivated successfully",
-      "userIsDeactivated": "This user is currently deactivated"
+      "userIsDeactivated": "This user is currently deactivated",
+      "confirmDeactivate": "Are you sure you want to deactivate this user?",
+      "confirmReactivate": "Reactivate this user so they can log in again?"
     },
     "placeholders": {
       "displayName": "Enter display name"

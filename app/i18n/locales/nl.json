@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
       "userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
       "userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
-      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd",
+      "confirmDeactivate": "Weet je zeker dat je deze gebruiker wilt deactiveren?",
+      "confirmReactivate": "Deze gebruiker opnieuw activeren zodat hij weer kan inloggen?"
     },
     "placeholders": {
       "displayName": "Voer weergavenaam in"

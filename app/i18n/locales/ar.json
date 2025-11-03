@@ -429,7 +429,9 @@
       "roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
       "userDeactivatedSuccessfully": "تم إلغاء تنشيط المستخدم بنجاح",
       "userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح",
-      "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
+      "userIsDeactivated": "هذا المستخدم غير نشط حالياً",
+      "confirmDeactivate": "هل أنت متأكد أنك تريد إلغاء تنشيط هذا المستخدم؟",
+      "confirmReactivate": "هل تريد إعادة تنشيط هذا المستخدم حتى يتمكن من تسجيل الدخول مرة أخرى؟"
     },
     "placeholders": {
       "displayName": "أدخل اسم العرض"

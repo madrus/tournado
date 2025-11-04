@@ -439,6 +439,36 @@ describe('SimpleConfirmDialog', () => {
     })
   })
 
+  describe('Icon Contrast', () => {
+    test.each([
+      ['danger', 'Delete'],
+      ['warning', 'Confirm'],
+      ['success', 'Continue'],
+      ['info', 'OK'],
+    ] as const)(
+      'renders white icon details for %s intent',
+      async (intent, confirmLabel) => {
+        const user = userEvent.setup()
+
+        render(
+          <SimpleConfirmDialog
+            trigger={<button>Open Dialog</button>}
+            intent={intent}
+            title='Icon Contrast'
+            confirmLabel={confirmLabel}
+            cancelLabel='Cancel'
+          />
+        )
+
+        await user.click(screen.getByRole('button', { name: 'Open Dialog' }))
+
+        const dialog = await screen.findByRole('alertdialog')
+        const icon = within(dialog).getByTestId('simple-confirm-dialog-icon')
+        expect(icon).toBeInTheDocument()
+      }
+    )
+  })
+
   describe('Focus Management', () => {
     test('focuses confirm button by default when dialog opens', async () => {
       const user = userEvent.setup()

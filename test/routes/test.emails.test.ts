@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { action, loader } from '~/routes/test.emails.server'
+import { action, loader } from '~/routes/test.emails'
 
 const emailTestingMocks = vi.hoisted(() => ({
   getTestEmailOutbox: vi.fn(),
@@ -44,7 +44,7 @@ describe('test.emails.server route', () => {
         timestamp: '2024-01-01T00:00:00.000Z',
       },
     ]
-    emailTestingMocks.getTestEmailOutbox.mockReturnValue(mockEmails)
+    emailTestingMocks.getTestEmailOutbox.mockResolvedValue(mockEmails)
 
     const response = await loader()
 
@@ -65,6 +65,7 @@ describe('test.emails.server route', () => {
 
   it('clears the outbox and returns 204 on DELETE', async () => {
     const request = new Request('http://example.com/test/emails', { method: 'DELETE' })
+    emailTestingMocks.clearTestEmailOutbox.mockResolvedValue(undefined)
 
     const response = await action({ request })
 

@@ -23,7 +23,7 @@ export function LogoutIcon({
   // Convert weight to stroke-width
   const strokeWidth =
     weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
-  const { style, ...restProps } = rest
+  const { style = {}, ...restProps } = rest
   const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (

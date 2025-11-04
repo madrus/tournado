@@ -47,7 +47,13 @@ export function SuccessIcon({
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
       {/* Checkmark in white with weight 600 */}
-      <path d={checkPath} stroke='white' strokeWidth={checkStrokeWidth} fill='none' />
+      <path
+        d={checkPath}
+        stroke='white'
+        strokeWidth={checkStrokeWidth}
+        fill='none'
+        data-testid='success-icon-checkmark'
+      />
     </svg>
   )
 }

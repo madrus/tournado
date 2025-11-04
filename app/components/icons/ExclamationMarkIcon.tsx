@@ -22,7 +22,7 @@ export function ExclamationMarkIcon({
 
   return (
     <svg
-      {...rest} /* rest props here should be passed before all other props */
+      {...rest} /* spread first so explicit props below can override rest props */
       className={cn('inline-block', className)}
       width={size}
       height={size}

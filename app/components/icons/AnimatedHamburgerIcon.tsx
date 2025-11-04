@@ -15,7 +15,7 @@ export const AnimatedHamburgerIcon = ({
   ...rest
 }: Readonly<AnimatedHamburgerIconProps>): JSX.Element => (
   <svg
-    {...rest} /* rest props here should be passed before all other props */
+    {...rest} /* spread first so explicit props below can override rest props */
     className={className}
     viewBox='0 0 24 24'
     fill='none'

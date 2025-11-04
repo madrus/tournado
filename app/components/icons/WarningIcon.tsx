@@ -49,12 +49,14 @@ export function WarningIcon({
         d={linePath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
+        data-testid='warning-icon-line'
         fill='none'
       />
       <path
         d={dotPath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
+        data-testid='warning-icon-dot'
         fill='none'
       />
     </svg>

@@ -3,13 +3,13 @@
  * Ensures callbacks run sequentially in the current process without
  * introducing external dependencies.
  */
-export function createMutex() {
-  let current = Promise.resolve()
+export function createMutex(): <R>(actionToRun: () => Promise<R>) => Promise<R> {
+  let current: Promise<unknown> = Promise.resolve()
 
-  return function runExclusive(actionToRun: () => Promise<unknown>): Promise<void> {
-    const run = (async (): Promise<void> => {
+  return function runExclusive<R>(actionToRun: () => Promise<R>): Promise<R> {
+    const run = (async (): Promise<R> => {
       await current
-      return (await actionToRun()) as Promise<void>
+      return actionToRun()
     })()
 
     // Ensure the chain continues even if the callback rejects.

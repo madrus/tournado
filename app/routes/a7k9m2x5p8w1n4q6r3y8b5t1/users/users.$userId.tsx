@@ -108,6 +108,12 @@ export const action = async ({
     if (intent === 'updateDisplayName') {
       const displayName = (formData.get('displayName') as string) || ''
 
+      if (!displayName.trim()) {
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('Display name cannot be empty.')}`
+        )
+      }
+
       await updateUserDisplayName({
         userId,
         displayName,

@@ -44,7 +44,9 @@ export function PendingIcon({
       width={size}
       height={size}
       viewBox='0 -960 960 960'
-      className={`inline-block fill-current ${className}`}
+      className={`inline-block ${className}`}
+      fill={variant === 'filled' ? 'currentColor' : 'none'}
+      stroke={variant === 'outlined' ? 'currentColor' : 'none'}
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}

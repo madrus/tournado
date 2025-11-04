@@ -28,7 +28,7 @@ export function MoreVertIcon({
 
   return (
     <svg
-      {...restProps} /* rest props here should be passed before all other props */
+      {...restProps} /* spread first so explicit props below can override rest props */
       width={size}
       height={size}
       viewBox='-960 0 960 960'

@@ -65,23 +65,16 @@ test.describe('User Authorization - Regular User Access', () => {
   })
 
   test('should sign out user and redirect to home page', async ({ page }) => {
-    // Navigate to admin panel (user can access it)
-    await adminPanel.goto()
+    // Navigate to a page regular users can access (home) and use the global header menu
+    await page.goto('/', { waitUntil: 'networkidle' })
 
-    // Open user menu and sign out
     await adminPanel.openUserMenu()
     await adminPanel.clickSignOut()
 
-    // Verify redirect to home page (not login page)
+    await page.waitForLoadState('networkidle')
     await adminPanel.expectToBeOnHomePage()
 
-    // Wait for page to settle and verify user is signed out
-    await page.waitForLoadState('networkidle')
-
-    // Verify user is signed out by checking menu shows login option
     await adminPanel.openUserMenu()
-
-    // Should see login link instead of user email
     await adminPanel.expectLoginLinkVisible()
   })
 })

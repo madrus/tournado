@@ -12,7 +12,7 @@ export async function loader(): Promise<Response> {
   if (!isPlaywrightEnv()) {
     throw notFound()
   }
-  const emails = getTestEmailOutbox()
+  const emails = await getTestEmailOutbox()
   return new Response(JSON.stringify(emails), {
     headers: { 'Content-Type': 'application/json' },
   })
@@ -29,6 +29,6 @@ export async function action({ request }: { request: Request }): Promise<Respons
   if (request.method !== 'DELETE') {
     return new Response('Method not allowed', { status: 405 })
   }
-  clearTestEmailOutbox()
+  await clearTestEmailOutbox()
   return new Response(null, { status: 204 })
 }

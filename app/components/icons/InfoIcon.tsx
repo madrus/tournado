@@ -45,24 +45,21 @@ export function InfoIcon({
       aria-label={ariaLabel}
     >
       {/* Circle background uses currentColor (intent color) */}
-      <path
-        d={circlePath}
-        fill='none'
-        stroke='currentColor'
-        strokeWidth={contentStrokeWidth - 0.5}
-      />
-      {/* Info content paths with currentColor */}
+      <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
+      {/* Info content paths in white for contrast */}
       <path
         d={linePath}
-        stroke='currentColor'
+        stroke='white'
         strokeWidth={contentStrokeWidth}
         fill='none'
+        data-testid='info-icon-line'
       />
       <path
         d={dotPath}
-        stroke='currentColor'
+        stroke='white'
         strokeWidth={contentStrokeWidth}
         fill='none'
+        data-testid='info-icon-dot'
       />
     </svg>
   )

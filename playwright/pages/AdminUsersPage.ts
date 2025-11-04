@@ -20,6 +20,14 @@ export class AdminUsersPage extends BasePage {
     return this.page.locator('table')
   }
 
+  get pageHeading(): Locator {
+    return this.page.getByRole('heading', { level: 1, name: /gebruikers beheer/i })
+  }
+
+  get firstActionButton(): Locator {
+    return this.page.getByRole('button').first()
+  }
+
   get bodyContent(): Locator {
     return this.page.locator('body')
   }

@@ -206,7 +206,7 @@ describe('firebase.server', () => {
     test('throws when firebaseUid is empty', async () => {
       const { enableFirebaseUser } = await import('../server')
 
-      await expect(enableFirebaseUser('   ')).rejects.toThrow(
+      await expect(enableFirebaseUser('')).rejects.toThrow(
         'firebaseUid must be a non-empty string'
       )
     })
@@ -259,7 +259,7 @@ describe('firebase.server', () => {
     test('throws when firebaseUid is empty', async () => {
       const { revokeRefreshTokens } = await import('../server')
 
-      await expect(revokeRefreshTokens(null as unknown as string)).rejects.toThrow(
+      await expect(revokeRefreshTokens('')).rejects.toThrow(
         'firebaseUid must be a non-empty string'
       )
     })

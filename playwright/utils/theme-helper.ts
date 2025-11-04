@@ -114,14 +114,15 @@ export async function verifyThemeStyles(
   } else {
     // Light theme should have a bright background
     expect(hasDarkClass).toBeFalsy()
-    if (backgroundColor !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'transparent') {
-      const match = backgroundColor.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)/)
-      expect(match).not.toBeNull()
-      const [, r, g, b] = match!
-      const channels = [Number(r), Number(g), Number(b)]
-      channels.forEach(channel => {
-        expect(channel).toBeGreaterThanOrEqual(220)
-      })
-    }
+    expect(backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
+    expect(backgroundColor).not.toBe('transparent')
+
+    const match = backgroundColor.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)/)
+    expect(match).not.toBeNull()
+    const [, r, g, b] = match!
+    const channels = [Number(r), Number(g), Number(b)]
+    channels.forEach(channel => {
+      expect(channel).toBeGreaterThanOrEqual(220)
+    })
   }
 }

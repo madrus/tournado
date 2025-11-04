@@ -189,9 +189,7 @@ test.describe('User Management Workflow', () => {
 
     if (isActive) {
       // Test deactivation
-      await adminUsersPage.deactivateButton.click()
-      await adminUsersPage.confirmButton.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.deactivateUser()
 
       // Verify success redirect
       let url = page.url()
@@ -201,9 +199,7 @@ test.describe('User Management Workflow', () => {
       await adminUsersPage.expectUserDeactivated()
 
       // Test reactivation
-      await adminUsersPage.reactivateButton.click()
-      await adminUsersPage.confirmButton.click()
-      await page.waitForLoadState('networkidle')
+      await adminUsersPage.reactivateUser()
 
       // Verify success redirect
       url = page.url()
@@ -322,7 +318,7 @@ test.describe('User Management Workflow', () => {
     await adminUsersPage.expectPageLoaded()
 
     // Check for proper heading hierarchy
-    const heading = page.getByRole('heading', { name: /gebruikers beheer/i, level: 1 })
+    const heading = adminUsersPage.pageHeading
     await expect(heading).toBeVisible()
 
     // Verify table has proper ARIA structure
@@ -343,7 +339,7 @@ test.describe('User Management Workflow', () => {
     await expect(adminUsersPage.roleCombobox).toHaveAttribute('name', 'role')
 
     // Verify buttons have proper accessibility
-    const actionButton = page.getByRole('button').first()
+    const actionButton = adminUsersPage.firstActionButton
     await expect(actionButton).toBeVisible()
   })
 })

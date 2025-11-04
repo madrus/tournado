@@ -3,45 +3,9 @@ import { redirect } from 'react-router'
 import type { User } from '~/models/user.server'
 
 import type { RouteMetadata } from './routeTypes'
+import { getUser } from './session.server'
 
-/**
- * A server-side utility to determine if a route is public
- * Note: This is a simplified example and would need additional development
- * to handle nested routes, dynamic route segments, etc.
- */
-export async function isPublicRoute(pathname: string): Promise<boolean> {
-  // Always make these routes public regardless of metadata
-  const alwaysPublicRoutes = [
-    '/auth/signin',
-    '/auth/signup',
-    '/auth/forgot-password',
-    '/auth/reset-password',
-  ]
-
-  // Check if it's in our always-public list
-  if (
-    alwaysPublicRoutes.some(
-      route => pathname === route || pathname.startsWith(`${route}/`)
-    )
-  ) {
-    return true
-  }
-
-  // Additional known public routes (based on existing route metadata)
-  const knownPublicRoutes = ['/', '/teams', '/about']
-
-  // Check known public routes
-  if (
-    knownPublicRoutes.some(
-      route => pathname === route || pathname.startsWith(`${route}/`)
-    )
-  ) {
-    return true
-  }
-
-  // Default to not public for unknown routes
-  return false
-}
+export { isPublicRoute } from './publicRoutes.server'
 
 /**
  * Maps route metadata roles to Prisma Role enum values
@@ -75,7 +39,6 @@ export async function requireUserWithMetadata(
   request: Request,
   routeMetadata?: RouteMetadata
 ): Promise<User> {
-  const { getUser } = await import('./session.server')
   const user = await getUser(request)
 
   // Check authentication

@@ -18,16 +18,17 @@ import {
 
 /**
  * Wrapper component that conditionally wraps children in Dialog.Close
- * Only wraps when not loading to prevent dialog dismissal during async operations
+ * Only wraps when shouldAutoClose is true (for cancel button in controlled mode)
+ * Confirm button should NOT be wrapped so parent can close dialog after async operation
  */
 const DialogCloseWrapper = ({
-  isLoading,
+  shouldAutoClose,
   children,
 }: {
-  isLoading: boolean
+  shouldAutoClose: boolean
   children: ReactNode
 }): JSX.Element =>
-  isLoading ? <>{children}</> : <Dialog.Close asChild>{children}</Dialog.Close>
+  shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : <>{children}</>
 
 /**
  * ConfirmDialog - Fully controlled confirmation dialog component
@@ -116,7 +117,7 @@ export function ConfirmDialog({
 
   const handleConfirm = (): void => {
     onConfirm?.()
-    // Dialog closing is handled by DialogCloseWrapper based on isLoading state
+    // Parent is responsible for calling onOpenChange(false) when async operation completes
   }
 
   return (
@@ -161,7 +162,7 @@ export function ConfirmDialog({
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
                 <div className='sm:order-1'>
-                  <DialogCloseWrapper isLoading={isLoading}>
+                  <DialogCloseWrapper shouldAutoClose={true}>
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
@@ -177,20 +178,18 @@ export function ConfirmDialog({
                 </div>
 
                 <div className='sm:order-2'>
-                  <DialogCloseWrapper isLoading={isLoading}>
-                    <ActionButton
-                      variant='primary'
-                      color={finalConfirmColor}
-                      size='md'
-                      onClick={handleConfirm}
-                      className={sharedButtonClasses}
-                      aria-label={confirmLabel}
-                      autoFocus={!destructive}
-                      disabled={isLoading}
-                    >
-                      {confirmLabel}
-                    </ActionButton>
-                  </DialogCloseWrapper>
+                  <ActionButton
+                    variant='primary'
+                    color={finalConfirmColor}
+                    size='md'
+                    onClick={handleConfirm}
+                    className={sharedButtonClasses}
+                    aria-label={confirmLabel}
+                    autoFocus={!destructive}
+                    disabled={isLoading}
+                  >
+                    {confirmLabel}
+                  </ActionButton>
                 </div>
               </div>
             </div>

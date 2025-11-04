@@ -10,6 +10,7 @@
       - respects user's language preference from cookie
         (see `.cursor/rules/PRD.mdc` around line 643)
 - check all translation strings in t() function calls in the codebase for existence. make a list of missing/wrong. use MCP servers for that
+- check code duplication
 
 ## 2. To show a block with 2 teams that are going to play a match, you need:
 

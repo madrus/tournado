@@ -46,18 +46,20 @@ export function ErrorIcon({
     >
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
-      {/* Exclamation mark uses background token for contrast */}
+      {/* Exclamation mark in white for consistent contrast */}
       <path
         d={linePath}
-        stroke='var(--color-background)'
+        stroke='white'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
+        data-testid='error-icon-line'
       />
       <path
         d={dotPath}
-        stroke='var(--color-background)'
+        stroke='white'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
+        data-testid='error-icon-dot'
       />
     </svg>
   )

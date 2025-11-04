@@ -234,113 +234,34 @@ describe('UserMenu', () => {
   })
 
   describe('Menu item navigation', () => {
-    it('should navigate to Teams route when Teams menu item is clicked', async () => {
-      const user = userEvent.setup()
+    test.each([
+      { label: 'Teams', route: '/teams' },
+      { label: 'About', route: '/about' },
+      { label: 'Users', route: `${ADMIN_DASHBOARD_URL}/users` },
+      { label: 'Tournaments', route: `${ADMIN_DASHBOARD_URL}/tournaments` },
+    ])(
+      'should navigate to $route when $label menu item is clicked',
+      async ({ label, route }) => {
+        const user = userEvent.setup()
 
-      render(
-        <MemoryRouter>
-          <UserMenu
-            authenticated={false}
-            username=''
-            menuItems={mockMenuItems}
-            isOpen={true}
-            onOpenChange={mockOnOpenChange}
-          />
-        </MemoryRouter>
-      )
+        render(
+          <MemoryRouter>
+            <UserMenu
+              authenticated={true}
+              username='admin'
+              menuItems={mockMenuItems}
+              isOpen={true}
+              onOpenChange={mockOnOpenChange}
+            />
+          </MemoryRouter>
+        )
 
-      const teamsLink = screen.getByText('Teams')
-      await user.click(teamsLink)
+        const link = screen.getByText(label)
+        await user.click(link)
 
-      expect(mockNavigate).toHaveBeenCalledWith('/teams')
-      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
-
-    it('should navigate to About route when About menu item is clicked', async () => {
-      const user = userEvent.setup()
-
-      render(
-        <MemoryRouter>
-          <UserMenu
-            authenticated={false}
-            username=''
-            menuItems={mockMenuItems}
-            isOpen={true}
-            onOpenChange={mockOnOpenChange}
-          />
-        </MemoryRouter>
-      )
-
-      const aboutLink = screen.getByText('About')
-      await user.click(aboutLink)
-
-      expect(mockNavigate).toHaveBeenCalledWith('/about')
-      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
-
-    it('should navigate to Users route when Users menu item is clicked', async () => {
-      const user = userEvent.setup()
-
-      render(
-        <MemoryRouter>
-          <UserMenu
-            authenticated={true}
-            username='admin'
-            menuItems={mockMenuItems}
-            isOpen={true}
-            onOpenChange={mockOnOpenChange}
-          />
-        </MemoryRouter>
-      )
-
-      const usersLink = screen.getByText('Users')
-      await user.click(usersLink)
-
-      expect(mockNavigate).toHaveBeenCalledWith(`${ADMIN_DASHBOARD_URL}/users`)
-      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
-
-    it('should navigate to Tournaments route when Tournaments menu item is clicked', async () => {
-      const user = userEvent.setup()
-
-      render(
-        <MemoryRouter>
-          <UserMenu
-            authenticated={true}
-            username='admin'
-            menuItems={mockMenuItems}
-            isOpen={true}
-            onOpenChange={mockOnOpenChange}
-          />
-        </MemoryRouter>
-      )
-
-      const tournamentsLink = screen.getByText('Tournaments')
-      await user.click(tournamentsLink)
-
-      expect(mockNavigate).toHaveBeenCalledWith(`${ADMIN_DASHBOARD_URL}/tournaments`)
-      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
-
-    it('should close menu after navigation', async () => {
-      const user = userEvent.setup()
-
-      render(
-        <MemoryRouter>
-          <UserMenu
-            authenticated={false}
-            username=''
-            menuItems={mockMenuItems}
-            isOpen={true}
-            onOpenChange={mockOnOpenChange}
-          />
-        </MemoryRouter>
-      )
-
-      const teamsLink = screen.getByText('Teams')
-      await user.click(teamsLink)
-
-      expect(mockOnOpenChange).toHaveBeenCalledWith(false)
-    })
+        expect(mockNavigate).toHaveBeenCalledWith(route)
+        expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+      }
+    )
   })
 })

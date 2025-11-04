@@ -43,6 +43,7 @@ vi.mock('react-router', async () => {
 const { requireUserWithMetadata } = await import('~/utils/routeUtils.server')
 const { updateUserDisplayName, updateUserRole, deactivateUser, reactivateUser } =
   await import('~/models/user.server')
+const { validateRole } = await import('~/features/users/utils/roleUtils')
 const { redirect } = await import('react-router')
 
 describe('users.$userId route action', () => {
@@ -97,18 +98,18 @@ describe('users.$userId route action', () => {
       expect(response.status).toBe(302)
     })
 
-    it('should handle empty display name', async () => {
+    it('should reject empty display name', async () => {
       const formData = new FormData()
       formData.append('intent', 'updateDisplayName')
       formData.append('displayName', '')
 
-      await action(createActionArgs(formData, mockTargetUserId))
+      const response = await action(createActionArgs(formData, mockTargetUserId))
 
-      expect(updateUserDisplayName).toHaveBeenCalledWith({
-        userId: mockTargetUserId,
-        displayName: '',
-        performedBy: mockCurrentUser.id,
-      })
+      expect(updateUserDisplayName).not.toHaveBeenCalled()
+      expect(redirect).toHaveBeenCalledWith(
+        `${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent('Display name cannot be empty.')}`
+      )
+      expect(response.status).toBe(302)
     })
   })
 
@@ -143,6 +144,22 @@ describe('users.$userId route action', () => {
         `${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot change your own role.')}`
       )
       expect(response.status).toBe(302)
+    })
+
+    it('should redirect with error when role validation fails', async () => {
+      const formData = new FormData()
+      formData.append('intent', 'updateRole')
+      formData.append('role', 'INVALID_ROLE')
+
+      vi.mocked(validateRole).mockImplementationOnce(() => {
+        throw new Error('Invalid role')
+      })
+
+      const response = await action(createActionArgs(formData, mockTargetUserId))
+
+      expect(updateUserRole).not.toHaveBeenCalled()
+      expect(response.status).toBe(302)
+      expect(response.headers.get('Location')).toContain('error=Invalid%20role')
     })
   })
 

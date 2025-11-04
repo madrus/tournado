@@ -37,7 +37,7 @@ test.describe('Profile Authorization Tests', () => {
   })
 
   // Helper to test role access
-  async function testRoleAccess(page: Page, role: Role) {
+  async function testRoleAccess(page: Page, role: Role): Promise<void> {
     const profilePage = new ProfilePage(page)
 
     await loginAsRole(page, role)

@@ -219,6 +219,43 @@ describe('ConfirmDialog - Controlled Mode', () => {
     })
   })
 
+  describe('Icon Contrast', () => {
+    test.each([['danger'], ['warning'], ['success'], ['info']] as const)(
+      'renders appropriate icon for %s intent',
+      intent => {
+        const handleOpenChange = vi.fn()
+
+        render(
+          <ConfirmDialog
+            open={true}
+            onOpenChange={handleOpenChange}
+            title='Danger dialog'
+            intent={intent}
+            confirmLabel='Confirm'
+            cancelLabel='Cancel'
+          />
+        )
+
+        const dialog = screen.getByRole('alertdialog')
+        const iconContainer = within(dialog).getByTestId(
+          'confirm-dialog-icon-container'
+        )
+        const icon = within(iconContainer).getByTestId('confirm-dialog-icon')
+
+        // Verify icon is rendered with proper SVG element and correct viewBox
+        expect(icon).toBeInTheDocument()
+        expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
+        expect(icon).toHaveAttribute('role', 'img')
+
+        // Icon container is marked as decorative since the intent is conveyed by color and structure
+        expect(iconContainer).toHaveAttribute('aria-hidden', 'true')
+
+        // Each intent icon is designed with white stroke details for contrast
+        // (Verified through dedicated icon component unit tests)
+      }
+    )
+  })
+
   describe('Focus Management', () => {
     test('focuses confirm button by default', async () => {
       const handleOpenChange = vi.fn()

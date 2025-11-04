@@ -2,31 +2,31 @@ import { describe, expect, it } from 'vitest'
 
 import { getLanguageFromRequest, getServerT } from '../i18n.server'
 
+/**
+ * Helper function to create a Request with mocked Cookie header
+ * (Cookie header is forbidden in Fetch API, so we mock it for testing)
+ */
+function createRequestWithCookie(cookieValue: string): Request {
+  const request = new Request('http://localhost')
+  const originalGet = request.headers.get.bind(request.headers)
+  request.headers.get = (name: string) => {
+    if (name === 'Cookie') return cookieValue
+    return originalGet(name)
+  }
+  return request
+}
+
 describe('i18n.server', () => {
   describe('getLanguageFromRequest', () => {
     it('should extract Dutch language from cookie', () => {
-      // Create request and mock headers.get to return cookie value
-      // (Cookie header is forbidden in Request API, so we mock it)
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=nl'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=nl')
 
       const language = getLanguageFromRequest(request)
       expect(language).toBe('nl')
     })
 
     it('should extract English language from cookie', () => {
-      // Create request and mock headers.get to return cookie value
-      // (Cookie header is forbidden in Request API, so we mock it)
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=en'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=en')
 
       const language = getLanguageFromRequest(request)
       expect(language).toBe('en')
@@ -40,36 +40,21 @@ describe('i18n.server', () => {
     })
 
     it('should fallback to Dutch for unsupported language', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=es' // Spanish not supported
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=es') // Spanish not supported
 
       const language = getLanguageFromRequest(request)
       expect(language).toBe('nl')
     })
 
     it('should extract language from cookie with multiple values', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'theme=dark; lang=nl; session=xyz'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('theme=dark; lang=nl; session=xyz')
 
       const language = getLanguageFromRequest(request)
       expect(language).toBe('nl')
     })
 
     it('should handle malformed cookie values', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang='
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=')
 
       const language = getLanguageFromRequest(request)
       expect(language).toBe('nl')
@@ -78,24 +63,14 @@ describe('i18n.server', () => {
 
   describe('getServerT', () => {
     it('should return a translation function', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=nl'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=nl')
 
       const t = getServerT(request)
       expect(typeof t).toBe('function')
     })
 
     it('should return translations for known keys', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=nl'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=nl')
 
       const t = getServerT(request)
 
@@ -125,18 +100,14 @@ describe('i18n.server', () => {
     })
 
     it('should handle non-existent translation keys gracefully', () => {
-      const request = new Request('http://localhost')
-      const originalGet = request.headers.get.bind(request.headers)
-      request.headers.get = (name: string) => {
-        if (name === 'Cookie') return 'lang=nl'
-        return originalGet(name)
-      }
+      const request = createRequestWithCookie('lang=nl')
 
       const t = getServerT(request)
 
       // i18next returns the key itself when translation is missing
-      const result = t('nonexistent.key.that.does.not.exist')
-      expect(typeof result).toBe('string')
+      const nonExistentKey = 'nonexistent.key.that.does.not.exist'
+      const result = t(nonExistentKey)
+      expect(result).toBe(nonExistentKey)
     })
   })
 })

@@ -18,7 +18,7 @@ export const DeleteIcon = ({
   ...rest
 }: Readonly<DeleteIconProps>): JSX.Element => (
   <svg
-    {...rest} /* rest props here should be passed before all other props */
+    {...rest} /* spread first so explicit props below can override rest props */
     width={size}
     height={size}
     viewBox='0 0 24 24'

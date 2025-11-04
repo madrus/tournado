@@ -1442,7 +1442,7 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 
 **PRD Phase Alignment**: This ADR defines Phase 2 (User Management) implementation requirements.
 
-**Implementation Status**: **Completed**: 2025-11-01 - See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for implementation details.
+See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for implementation details.
 
 ## ADR-0027 — Semantic Heading Hierarchy with AppBar h1
 

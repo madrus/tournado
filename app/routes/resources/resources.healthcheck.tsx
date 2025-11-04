@@ -10,7 +10,10 @@ import {
   useLoaderData,
 } from 'react-router'
 
+import { onAuthStateChanged, type User } from 'firebase/auth'
+
 import { prisma } from '~/db.server'
+import { getCurrentAuth } from '~/features/firebase/client'
 import { adminAuth, verifyIdToken } from '~/features/firebase/index.server'
 import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -241,8 +244,7 @@ export default function HealthcheckPage(): JSX.Element | null {
   const handleUseCurrentUserToken = async (): Promise<void> => {
     try {
       setHelper(null)
-      const mod = await import('~/features/firebase/client')
-      const auth = mod.auth as import('firebase/auth').Auth | null
+      const auth = getCurrentAuth()
       if (!auth) {
         setHelper('Firebase client not configured')
         return
@@ -250,9 +252,7 @@ export default function HealthcheckPage(): JSX.Element | null {
       let user = auth.currentUser
       if (!user) {
         // Wait briefly for auth state to restore
-        const authMod = await import('firebase/auth')
-        const { onAuthStateChanged } = authMod
-        user = await new Promise<import('firebase/auth').User | null>(resolve => {
+        user = await new Promise<User | null>(resolve => {
           const timeout = setTimeout(() => resolve(null), 2000)
           const unsub = onAuthStateChanged(auth, u => {
             clearTimeout(timeout)

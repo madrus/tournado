@@ -99,6 +99,7 @@ export const AppLayout = ({
           </div>
           <div
             className='flex-1 overflow-visible pb-16 md:pb-0'
+            data-testid='app-layout-gradient'
             style={{
               background:
                 'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',

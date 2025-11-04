@@ -76,6 +76,55 @@ export async function createUser(
   })
 }
 
+function getSeedEmail(role: Role): string {
+  return `user-${role.toLowerCase()}@test.com`
+}
+
+function getSeedFirebaseUid(role: Role): string {
+  return `seed-${role.toLowerCase()}`
+}
+
+const defaultSeedNames: Record<Role, { firstName: string; lastName: string }> = {
+  PUBLIC: { firstName: 'Test', lastName: 'Public' },
+  REFEREE: { firstName: 'Test', lastName: 'Referee' },
+  EDITOR: { firstName: 'Test', lastName: 'Editor' },
+  BILLING: { firstName: 'Test', lastName: 'Billing' },
+  MANAGER: { firstName: 'Test', lastName: 'Manager' },
+  ADMIN: { firstName: 'Test', lastName: 'Admin' },
+}
+
+type SeedOptions = {
+  firstName?: string
+  lastName?: string
+  firebaseUid?: string
+}
+
+export async function createUserForRole(
+  role: Role,
+  options: SeedOptions = {}
+): Promise<User> {
+  const email = getSeedEmail(role)
+  const names = defaultSeedNames[role]
+  const firebaseUid = options.firebaseUid ?? getSeedFirebaseUid(role)
+
+  return prisma.user.upsert({
+    where: { email },
+    update: {
+      role,
+      firstName: options.firstName ?? names.firstName,
+      lastName: options.lastName ?? names.lastName,
+      firebaseUid,
+    },
+    create: {
+      firstName: options.firstName ?? names.firstName,
+      lastName: options.lastName ?? names.lastName,
+      email,
+      role,
+      firebaseUid,
+    },
+  })
+}
+
 // Find a user by email
 export const findUserByEmail = async (email: string): Promise<User | null> =>
   prisma.user.findUnique({
@@ -89,54 +138,66 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
   })
 }
 
-export const createManagerUser = async (): Promise<User> => {
-  const email = `manager-${faker.string.alphanumeric(8)}@test.com`
-
-  const user = await createUser({
-    firstName: 'Test',
-    lastName: 'Manager',
-    email,
-    role: Role.MANAGER,
-    firebaseUid: 'regular-user-id',
-  })
-
-  return user
-}
+export const createManagerUser = async (): Promise<User> =>
+  createUserForRole(Role.MANAGER)
 
 export async function createAdminUser(
   options: { uniqueFirebaseUid?: boolean } = {}
 ): Promise<User> {
-  const adminEmail = `admin-${faker.string.alphanumeric(8)}@test.com`
   const firebaseUid = options.uniqueFirebaseUid
     ? `admin-user-${faker.string.alphanumeric(8)}`
-    : 'admin-user-id' // Default UID for global setup
+    : getSeedFirebaseUid(Role.ADMIN) // Default UID for global setup
 
   console.log(
-    `[createAdminUser] Creating admin user with email: ${adminEmail}, role: ADMIN, firebaseUid: ${firebaseUid}`
+    `[createAdminUser] Seeding admin user with email: ${getSeedEmail(
+      Role.ADMIN
+    )}, role: ADMIN, firebaseUid: ${firebaseUid}`
   )
-  const user = await createUser({
-    firstName: 'Test',
-    lastName: 'Admin',
-    email: adminEmail,
-    role: Role.ADMIN,
+  const user = await createUserForRole(Role.ADMIN, {
     firebaseUid,
   })
 
   console.log(
-    `[createAdminUser] Created admin user: ${user.email}, role: ${user.role}, id: ${user.id}`
+    `[createAdminUser] Seeded admin user: ${user.email}, role: ${user.role}, id: ${user.id}`
   )
   return user
 }
 
 export async function createRefereeUser(): Promise<User> {
-  const refereeEmail = `referee-${faker.string.alphanumeric(8)}@test.com`
+  return await createUserForRole(Role.REFEREE)
+}
 
-  return await createUser({
-    firstName: 'Test',
-    lastName: 'Referee',
-    email: refereeEmail,
-    role: Role.REFEREE,
-  })
+export async function createEditorUser(): Promise<User> {
+  return createUserForRole(Role.EDITOR)
+}
+
+export async function createBillingUser(): Promise<User> {
+  return createUserForRole(Role.BILLING)
+}
+
+export async function createPublicUser(): Promise<User> {
+  return createUserForRole(Role.PUBLIC)
+}
+
+export async function createUsersForAllRoles(): Promise<Record<Role, User>> {
+  const [publicUser, refereeUser, editorUser, billingUser, managerUser, adminUser] =
+    await Promise.all([
+      createPublicUser(),
+      createRefereeUser(),
+      createEditorUser(),
+      createBillingUser(),
+      createManagerUser(),
+      createAdminUser(),
+    ])
+
+  return {
+    PUBLIC: publicUser,
+    REFEREE: refereeUser,
+    EDITOR: editorUser,
+    BILLING: billingUser,
+    MANAGER: managerUser,
+    ADMIN: adminUser,
+  }
 }
 
 export const cleanupUser = async (email: string): Promise<void> => {

@@ -12,6 +12,7 @@ html {
 body {
   min-height: 100%;
   overflow-x: hidden;
+  background-color: var(--color-background);
   background: linear-gradient(
     to bottom,
     var(--gradient-from) 0%,

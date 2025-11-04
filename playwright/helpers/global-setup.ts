@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { checkDevServer } from '../../scripts/utils/port-utils.js'
-import { cleanDatabaseCompletely, createAdminUser, createManagerUser } from './database'
+import { cleanDatabaseCompletely, createUsersForAllRoles } from './database'
 
 // Set environment variable for test detection
 process.env.PLAYWRIGHT = 'true'
@@ -61,8 +61,9 @@ async function globalSetup(_config: FullConfig): Promise<void> {
   await createTestTournament('Summer Cup', 'Aalsmeer')
 
   // Create users for testing
-  const adminUser = await createAdminUser()
-  const regularUser = await createManagerUser()
+  const seededUsers = await createUsersForAllRoles()
+  const adminUser = seededUsers.ADMIN
+  const regularUser = seededUsers.PUBLIC
 
   // Create simple auth state files with session cookies
   await createSimpleAuthState(

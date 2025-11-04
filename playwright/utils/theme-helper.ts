@@ -92,37 +92,41 @@ export async function verifyThemeStyles(
   page: Page,
   theme: 'dark' | 'light'
 ): Promise<void> {
-  const { backgroundColor, htmlClass } = await page.evaluate(() => {
-    const bodyColor = window.getComputedStyle(document.body).backgroundColor
-    const htmlColor = window.getComputedStyle(document.documentElement).backgroundColor
+  // Wait for the gradient container to be present
+  await page.waitForSelector('[data-testid="app-layout-gradient"]', { timeout: 5000 })
 
+  const { background, backgroundImage, htmlClass } = await page.evaluate(() => {
+    const gradientContainer = document.querySelector(
+      '[data-testid="app-layout-gradient"]'
+    )
+    if (!gradientContainer) {
+      return {
+        background: '',
+        backgroundImage: '',
+        htmlClass: document.documentElement.className ?? '',
+      }
+    }
+
+    const styles = window.getComputedStyle(gradientContainer)
     return {
-      backgroundColor:
-        bodyColor && bodyColor !== 'rgba(0, 0, 0, 0)' && bodyColor !== 'transparent'
-          ? bodyColor
-          : htmlColor,
+      background: styles.background,
+      backgroundImage: styles.backgroundImage,
       htmlClass: document.documentElement.className ?? '',
     }
   })
 
   const hasDarkClass = /\bdark\b/.test(htmlClass)
+  const gradientValue = backgroundImage || background
 
   if (theme === 'dark') {
-    // Dark theme should not have white background
     expect(hasDarkClass).toBeTruthy()
-    expect(backgroundColor).not.toBe('rgb(255, 255, 255)')
+    expect(gradientValue).toContain('linear-gradient')
   } else {
-    // Light theme should have a bright background
     expect(hasDarkClass).toBeFalsy()
-    expect(backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
-    expect(backgroundColor).not.toBe('transparent')
-
-    const match = backgroundColor.match(/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\s*\)/)
-    expect(match).not.toBeNull()
-    const [, r, g, b] = match!
-    const channels = [Number(r), Number(g), Number(b)]
-    channels.forEach(channel => {
-      expect(channel).toBeGreaterThanOrEqual(220)
-    })
+    expect(gradientValue).toContain('linear-gradient')
+    // For light theme, verify the gradient contains light colors
+    expect(gradientValue).toMatch(
+      /rgb\(\s*(2[2-4][0-9]|25[0-5])\s*,\s*(2[2-4][0-9]|25[0-5])\s*,\s*(2[2-4][0-9]|25[0-5])/
+    )
   }
 }

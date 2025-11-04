@@ -22,7 +22,7 @@ export class BasePage {
 
   // User menu locators
   protected get userMenuButton(): Locator {
-    return this.page.locator('button[aria-haspopup="menu"]').first()
+    return this.page.getByRole('button', { name: /menu openen\/sluiten/i })
   }
 
   protected get userMenuDropdown(): Locator {
@@ -39,6 +39,7 @@ export class BasePage {
 
   // User menu interaction methods
   async openUserMenu(): Promise<void> {
+    await this.userMenuButton.waitFor({ state: 'visible' })
     await this.userMenuButton.click()
     await expect(this.userMenuDropdown).toBeVisible({ timeout: 5000 })
   }

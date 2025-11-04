@@ -74,6 +74,17 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
     })
   } catch (_error) {
     console.log('[auth-callback] Error:', _error)
+
+    // Handle deactivated account error
+    if (_error instanceof Error && _error.message === 'ACCOUNT_DEACTIVATED') {
+      const url = new URL(request.url)
+      const absoluteErrorUrl = new URL(
+        '/auth/signin?error=account-deactivated',
+        `${url.protocol}//${url.host}`
+      ).toString()
+      return redirect(absoluteErrorUrl, { status: 303 })
+    }
+
     // Firebase auth callback error
     const url = new URL(request.url)
     const absoluteErrorUrl = new URL(

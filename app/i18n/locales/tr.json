@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Bir şeyler ters gitti",
-    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin."
+    "teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+    "emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
+    "emailOutboxReadFailure": "E-posta giden kutusu okunamadı"
   },
   "landing": {
     "features": {
@@ -260,6 +262,13 @@
       "updateErrorDesc": "Turnuvayı güncellerken bir hata oluştu. Lütfen tekrar deneyin.",
       "updateSuccess": "Turnuva başarıyla güncellendi",
       "updateSuccessDesc": "Turnuva başarıyla güncellendi."
+    },
+    "user": {
+      "cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
+      "cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
+      "cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz",
+      "failedToUpdateRole": "Rol güncellenemedi",
+      "missingUserId": "Kullanıcı kimliği eksik"
     },
     "validation": {
       "emailInvalid": "Lütfen geçerli bir e-posta adresi girin",
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Kullanıcıyı devre dışı bırak",
-      "reactivateUser": "Kullanıcıyı yeniden etkinleştir",
-      "updateRole": "Rolü güncelle",
+      "deactivateUser": "Devre dışı bırak",
+      "reactivateUser": "Yeniden etkinleştir",
       "viewDetails": "Detayları görüntüle"
     },
     "auditActions": {
@@ -404,29 +412,29 @@
       "manageUsersAndRoles": "Kullanıcı hesaplarını yönetin ve roller atayın"
     },
     "fields": {
-      "assignRole": "Rol ata",
+      "assignedRole": "Atanmış Rol",
       "createdAt": "Oluşturulma tarihi",
       "currentRole": "Mevcut rol",
       "displayName": "Görünen ad",
       "email": "E-posta",
       "performedBy": "Gerçekleştiren",
-      "reason": "Sebep",
       "role": "Rol"
     },
     "messages": {
       "deactivated": "Devre dışı",
+      "displayNameUpdatedSuccessfully": "Görünen ad başarıyla güncellendi",
       "noAuditLogs": "Denetim kaydı girişi bulunamadı",
       "noUsers": "Kullanıcı bulunamadı",
       "noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
       "roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
       "userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
       "userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi",
-      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı"
+      "userIsDeactivated": "Bu kullanıcı şu anda devre dışı",
+      "confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
+      "confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?"
     },
     "placeholders": {
-      "reasonForChange": "Rol değişikliği sebebini girin (isteğe bağlı)",
-      "reasonForDeactivation": "Devre dışı bırakma sebebini girin (isteğe bağlı)",
-      "reasonForReactivation": "Yeniden etkinleştirme sebebini girin (isteğe bağlı)"
+      "displayName": "Görünen adı girin"
     },
     "titles": {
       "allUsers": "Tüm kullanıcılar",

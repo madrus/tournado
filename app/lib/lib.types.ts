@@ -107,7 +107,6 @@ export type ColorAccent =
   | 'green'
   | 'emerald'
   | 'teal'
-  | 'cyan'
   | 'sky'
   | 'blue'
   | 'indigo'
@@ -116,6 +115,7 @@ export type ColorAccent =
   | 'fuchsia'
   | 'pink'
   | 'rose'
+  | 'disabled'
 
 // ============================================================================
 // Division & Category System (Shared)

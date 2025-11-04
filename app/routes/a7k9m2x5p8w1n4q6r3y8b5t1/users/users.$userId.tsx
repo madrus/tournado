@@ -1,28 +1,34 @@
 import type { JSX } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
-  useActionData,
+  redirect,
   useLoaderData,
   useNavigation,
+  useSearchParams,
 } from 'react-router'
 
 import type { User, UserAuditLog } from '@prisma/client'
 
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
-import { UserDeactivationForm } from '~/features/users/components/UserDeactivationForm'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
 import { validateRole } from '~/features/users/utils/roleUtils'
+import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import {
   deactivateUser,
   getUserById,
   reactivateUser,
+  updateUserDisplayName,
   updateUserRole,
 } from '~/models/user.server'
 import { getUserAuditLogs } from '~/models/userAuditLog.server'
+import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
+import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { toast } from '~/utils/toastUtils'
 
 export const handle: RouteMetadata = {
   authorization: {
@@ -32,6 +38,7 @@ export const handle: RouteMetadata = {
 
 type LoaderData = {
   targetUser: User
+  currentUserId: string
   auditLogs: readonly (UserAuditLog & {
     admin: {
       id: string
@@ -41,16 +48,11 @@ type LoaderData = {
   })[]
 }
 
-type ActionData = {
-  error?: string
-  success?: 'role' | 'deactivate' | 'reactivate'
-}
-
 export const loader = async ({
   request,
   params,
 }: LoaderFunctionArgs): Promise<LoaderData> => {
-  await requireUserWithMetadata(request, handle)
+  const currentUser = await requireUserWithMetadata(request, handle)
 
   const { userId } = params
   if (!userId) {
@@ -66,57 +68,110 @@ export const loader = async ({
     throw new Response('User not found', { status: 404 })
   }
 
-  return { targetUser, auditLogs }
+  return { targetUser, currentUserId: currentUser.id, auditLogs }
 }
 
 export const action = async ({
   request,
   params,
-}: ActionFunctionArgs): Promise<ActionData> => {
+}: ActionFunctionArgs): Promise<Response> => {
   const currentUser = await requireUserWithMetadata(request, handle)
 
   const { userId } = params
   if (!userId) {
-    throw new Response('User ID required', { status: 400 })
+    return redirect(
+      `${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`
+    )
   }
 
   const formData = await request.formData()
   const intent = formData.get('intent')
   const roleValue = formData.get('role')
-  const reason = (formData.get('reason') as string | null) || undefined
+  const formUserId = formData.get('userId')
+
+  const requiresUserId = intent === 'deactivate' || intent === 'reactivate'
+  if (requiresUserId) {
+    if (typeof formUserId !== 'string' || !formUserId.trim()) {
+      return redirect(
+        `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please try again.")}`
+      )
+    }
+
+    if (formUserId !== userId) {
+      return redirect(
+        `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please refresh and try again.")}`
+      )
+    }
+  }
 
   try {
+    if (intent === 'updateDisplayName') {
+      const displayName = (formData.get('displayName') as string) || ''
+
+      if (!displayName.trim()) {
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('Display name cannot be empty.')}`
+        )
+      }
+
+      await updateUserDisplayName({
+        userId,
+        displayName,
+        performedBy: currentUser.id,
+      })
+
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=displayName`)
+    }
+
     if (intent === 'updateRole') {
+      // Prevent users from changing their own role
+      if (userId === currentUser.id) {
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot change your own role.')}`
+        )
+      }
+
       const newRole = validateRole(roleValue)
 
       await updateUserRole({
         userId,
         newRole,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'role' }
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=role`)
     }
 
     if (intent === 'deactivate') {
+      // Prevent users from deactivating themselves
+      if (userId === currentUser.id) {
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot deactivate your own account.')}`
+        )
+      }
+
       await deactivateUser({
         userId,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'deactivate' }
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=deactivate`)
     }
 
     if (intent === 'reactivate') {
+      // Prevent users from reactivating themselves (this should never happen since they're active)
+      if (userId === currentUser.id) {
+        return redirect(
+          `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot reactivate your own account.')}`
+        )
+      }
+
       await reactivateUser({
         userId,
         performedBy: currentUser.id,
-        reason,
       })
 
-      return { success: 'reactivate' }
+      return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?success=reactivate`)
     }
 
     throw new Response('Invalid intent', { status: 400 })
@@ -124,47 +179,57 @@ export const action = async ({
     if (error instanceof Response) {
       throw error
     }
-    return {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    return redirect(
+      `${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent(errorMessage)}`
+    )
   }
 }
 
 export default function UserDetailRoute(): JSX.Element {
   const { t } = useTranslation()
-  const { targetUser, auditLogs } = useLoaderData<typeof loader>()
-  const actionData = useActionData<typeof action>()
+  const { targetUser, currentUserId, auditLogs } = useLoaderData<typeof loader>()
   const navigation = useNavigation()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const isSubmitting = navigation.state === 'submitting'
 
+  // Handle success and error toasts
+  useEffect(() => {
+    const success = searchParams.get('success')
+    const error = searchParams.get('error')
+
+    if (success === 'role') {
+      toast.success(t('users.messages.roleUpdatedSuccessfully'))
+    } else if (success === 'deactivate') {
+      toast.success(t('users.messages.userDeactivatedSuccessfully'))
+    } else if (success === 'reactivate') {
+      toast.success(t('users.messages.userReactivatedSuccessfully'))
+    } else if (success === 'displayName') {
+      toast.success(t('users.messages.displayNameUpdatedSuccessfully'))
+    }
+
+    if (error) {
+      toast.error(error) // error is already decoded!
+    }
+
+    // Clean up search params after showing toasts
+    if (success || error) {
+      const nextParams = new URLSearchParams(searchParams)
+      nextParams.delete('success')
+      nextParams.delete('error')
+      setSearchParams(nextParams, { replace: true })
+    }
+  }, [searchParams, setSearchParams, t])
+
   return (
-    <>
-      {actionData?.error ? (
-        <div className='bg-destructive/10 text-destructive mb-4 rounded-md p-4'>
-          {actionData.error}
-        </div>
-      ) : null}
-
-      {actionData?.success ? (
-        <div className='bg-success/10 text-success mb-4 rounded-md p-4'>
-          {t(
-            actionData.success === 'role'
-              ? 'users.messages.roleUpdatedSuccessfully'
-              : actionData.success === 'deactivate'
-                ? 'users.messages.userDeactivatedSuccessfully'
-                : 'users.messages.userReactivatedSuccessfully'
-          )}
-        </div>
-      ) : null}
-
-      <div className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
-        <div>
-          <UserDetailCard user={targetUser} isSubmitting={isSubmitting} />
-          <UserDeactivationForm user={targetUser} isSubmitting={isSubmitting} />
-        </div>
-        <UserAuditLogList auditLogs={auditLogs} />
-      </div>
-    </>
+    <div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
+      <UserDetailCard
+        user={targetUser}
+        currentUserId={currentUserId}
+        isSubmitting={isSubmitting}
+      />
+      <UserAuditLogList auditLogs={auditLogs} />
+    </div>
   )
 }

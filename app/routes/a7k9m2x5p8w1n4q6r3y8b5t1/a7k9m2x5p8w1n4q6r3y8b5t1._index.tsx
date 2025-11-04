@@ -112,7 +112,7 @@ export default function AdminDashboard(): JSX.Element {
             icon={<TrophyIcon className='h-5 w-5' />}
             mainColor='teal'
             hoverColor='brand'
-            iconColor='cyan'
+            iconColor='sky'
             to='/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments'
             testId='admin-panel-tournament-management'
           >

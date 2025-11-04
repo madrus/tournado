@@ -12,9 +12,9 @@ import {
   type DatatableHeaderVariants,
   datatableRowVariants,
   type DatatableRowVariants,
-} from '../datatable.variants'
+} from '../dataTable.variants'
 
-describe('datatable.variants', () => {
+describe('dataTable.variants', () => {
   describe('datatableContainerVariants', () => {
     it('should apply default slate color variant', () => {
       const result = datatableContainerVariants()

@@ -1,83 +1,89 @@
-import { expect, Locator, Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 
-import { BasePage } from './BasePage'
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
 
-export class AdminTournamentsPage extends BasePage {
-  constructor(protected override page: Page) {
-    super(page)
-  }
+export class AdminTournamentsPage {
+  readonly page: Page
+  readonly body: Locator
+  readonly addButton: Locator
+  readonly menuButton: Locator
+  readonly menuDropdown: Locator
+  readonly tournamentsLink: Locator
+  readonly manageTournamentsPanel: Locator
+  readonly form: Locator
+  readonly nameInput: Locator
+  readonly locationInput: Locator
+  readonly startDateButton: Locator
+  readonly endDateButton: Locator
+  readonly divisionsHeading: Locator
+  readonly categoriesHeading: Locator
+  readonly saveButton: Locator
+  readonly tournamentsContainer: Locator
+  readonly calendar: Locator
+  readonly firstDivisionLabel: Locator
+  readonly secondDivisionLabel: Locator
+  readonly jo8Label: Locator
+  readonly jo10Label: Locator
+  readonly errorMessage: Locator
 
-  // Locators
-  get layoutContainer(): Locator {
-    return this.page.getByTestId('admin-tournaments-layout-container')
-  }
-
-  get pageTitle(): Locator {
-    return this.page.getByRole('heading', { name: 'Toernooien beheer' })
-  }
-
-  get createTournamentButton(): Locator {
-    return this.page.getByRole('link', { name: 'toevoegen' })
-  }
-
-  get tournamentsTable(): Locator {
-    return this.page.locator('table')
-  }
-
-  get bodyContent(): Locator {
-    return this.page.locator('body')
-  }
-
-  get tournamentForm(): Locator {
-    return this.page.locator('form')
-  }
-
-  // Navigation methods
-  async goto(): Promise<void> {
-    await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+  constructor(page: Page) {
+    this.page = page
+    this.body = page.locator('body')
+    this.addButton = page.getByRole('link', { name: 'Toevoegen' })
+    this.menuButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
+    this.menuDropdown = page.getByTestId('user-menu-dropdown')
+    this.tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })
+    this.manageTournamentsPanel = page.getByRole('link', {
+      name: 'Toernooien beheer',
     })
-    await this.layoutContainer.waitFor({ state: 'visible', timeout: 15000 })
-  }
-
-  async gotoCreateTournament(): Promise<void> {
-    await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+    this.form = page.locator('form')
+    this.nameInput = page.getByRole('textbox', { name: /naam/i })
+    this.locationInput = page.getByRole('textbox', { name: /locatie/i })
+    this.startDateButton = page.getByRole('button', {
+      name: /startdatum.*select date/i,
     })
-    await this.layoutContainer.waitFor({ state: 'visible', timeout: 15000 })
+    this.endDateButton = page.getByRole('button', { name: /einddatum.*select date/i })
+    this.divisionsHeading = page.getByRole('heading', { name: /divisies/i })
+    this.categoriesHeading = page.getByRole('heading', { name: /categorieën/i })
+    this.saveButton = page.getByRole('button', { name: 'Opslaan' })
+    this.tournamentsContainer = page.getByTestId('admin-tournaments-layout-container')
+    this.calendar = page.getByRole('dialog', { name: 'calendar' })
+    this.firstDivisionLabel = page
+      .locator('label')
+      .filter({ hasText: /eerste klasse/i })
+    this.secondDivisionLabel = page
+      .locator('label')
+      .filter({ hasText: /tweede klasse/i })
+    this.jo8Label = page.locator('label').filter({ hasText: /JO8/i })
+    this.jo10Label = page.locator('label').filter({ hasText: /JO10/i })
+    this.errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
   }
 
-  async clickCreateTournament(): Promise<void> {
-    await this.createTournamentButton.click()
-    await this.page.waitForLoadState('networkidle')
+  async navigate(): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments`)
   }
 
-  // Verification methods
-  async expectToBeOnAdminTournamentsPage(): Promise<void> {
-    await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments$/)
-    await expect(this.pageTitle).toBeVisible({ timeout: 15000 })
-    await expect(this.layoutContainer).toBeVisible()
+  async navigateToNew(): Promise<void> {
+    await this.page.goto(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
   }
 
-  async expectToBeOnCreateTournamentPage(): Promise<void> {
-    await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments\/new$/)
-    await expect(this.layoutContainer).toBeVisible()
+  async navigateToAdminHome(): Promise<void> {
+    await this.page.goto(ADMIN_DASHBOARD_URL)
   }
 
-  async expectTournamentsInterface(): Promise<void> {
-    await expect(this.layoutContainer).toBeVisible({ timeout: 15000 })
-    // Check for either tournaments list or empty state message
-    const bodyText = await this.bodyContent.textContent()
-    expect(bodyText).toBeTruthy()
+  async expectPageToContainTournamentText(): Promise<void> {
+    await expect(this.body).toContainText(/toernooi/i, { timeout: 15000 })
   }
 
-  async expectPageLoaded(): Promise<void> {
-    await expect(this.layoutContainer).toBeVisible()
+  async clickAddButton(): Promise<void> {
+    await this.addButton.click()
   }
 
-  async expectTournamentForm(): Promise<void> {
-    await expect(this.tournamentForm).toBeVisible()
+  async expectToBeOnNewTournamentPage(): Promise<void> {
+    await expect(this.page).toHaveURL(`${ADMIN_DASHBOARD_URL}/tournaments/new`)
+  }
+
+  async expectFormIsVisible(): Promise<void> {
+    await expect(this.form).toBeVisible({ timeout: 15000 })
   }
 }

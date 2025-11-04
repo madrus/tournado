@@ -12,7 +12,7 @@ import {
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
-import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
 import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
@@ -349,7 +349,7 @@ export default function EditTournamentPage(): JSX.Element {
             />
 
             {/* Delete Button */}
-            <ConfirmDialog
+            <SimpleConfirmDialog
               intent='danger'
               trigger={
                 <ActionButton icon='delete' variant='secondary'>

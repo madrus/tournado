@@ -1,6 +1,11 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey, createColorVariantMapping } from './colorVariants'
+import {
+  type ColorVariantKey,
+  createColorVariantMapping,
+} from '../shared/colorVariants'
+
+export type DatatableColorVariant = ColorVariantKey
 
 /**
  * Datatable container variants for data table wrapper styling.
@@ -154,6 +159,108 @@ export const datatableRowVariants = cva(
   }
 )
 
+/**
+ * Helper to generate header background classes.
+ * Keeps header lighter than first data row in light mode and darker in dark mode.
+ */
+export function getDatatableHeaderClasses(color: DatatableColorVariant): string {
+  const headerClasses: Record<DatatableColorVariant, string> = {
+    amber: 'bg-white dark:bg-amber-950',
+    blue: 'bg-white dark:bg-blue-950',
+    brand: 'bg-white dark:bg-brand-950',
+    disabled: 'bg-white dark:bg-slate-950',
+    emerald: 'bg-white dark:bg-emerald-950',
+    fuchsia: 'bg-white dark:bg-fuchsia-950',
+    green: 'bg-white dark:bg-green-950',
+    indigo: 'bg-white dark:bg-indigo-950',
+    lime: 'bg-white dark:bg-lime-950',
+    orange: 'bg-white dark:bg-orange-950',
+    pink: 'bg-white dark:bg-pink-950',
+    primary: 'bg-white dark:bg-primary-950',
+    purple: 'bg-white dark:bg-purple-950',
+    red: 'bg-white dark:bg-red-950',
+    rose: 'bg-white dark:bg-rose-950',
+    sky: 'bg-white dark:bg-sky-950',
+    slate: 'bg-white dark:bg-slate-950',
+    teal: 'bg-white dark:bg-teal-950',
+    violet: 'bg-white dark:bg-violet-950',
+    yellow: 'bg-white dark:bg-yellow-950',
+    zinc: 'bg-white dark:bg-zinc-950',
+  }
+  return headerClasses[color]
+}
+
+/**
+ * Helper to generate stripe classes for alternating row colors.
+ * index % 2 === 1 is treated as "even" (lighter stripe in light mode).
+ */
+export function getDatatableStripeClasses(
+  color: DatatableColorVariant,
+  isEven: boolean
+): string {
+  const evenClasses: Record<DatatableColorVariant, string> = {
+    amber: 'bg-white hover:bg-amber-200 dark:bg-amber-950 dark:hover:bg-amber-800',
+    blue: 'bg-white hover:bg-blue-200 dark:bg-blue-950 dark:hover:bg-blue-800',
+    brand: 'bg-white hover:bg-brand-200 dark:bg-brand-950 dark:hover:bg-brand-800',
+    disabled: 'bg-white hover:bg-slate-200 dark:bg-slate-950 dark:hover:bg-slate-800',
+    emerald:
+      'bg-white hover:bg-emerald-200 dark:bg-emerald-950 dark:hover:bg-emerald-800',
+    fuchsia:
+      'bg-white hover:bg-fuchsia-200 dark:bg-fuchsia-950 dark:hover:bg-fuchsia-800',
+    green: 'bg-white hover:bg-green-200 dark:bg-green-950 dark:hover:bg-green-800',
+    indigo: 'bg-white hover:bg-indigo-200 dark:bg-indigo-950 dark:hover:bg-indigo-800',
+    lime: 'bg-white hover:bg-lime-200 dark:bg-lime-950 dark:hover:bg-lime-800',
+    orange: 'bg-white hover:bg-orange-200 dark:bg-orange-950 dark:hover:bg-orange-800',
+    pink: 'bg-white hover:bg-pink-200 dark:bg-pink-950 dark:hover:bg-pink-800',
+    primary:
+      'bg-white hover:bg-primary-200 dark:bg-primary-950 dark:hover:bg-primary-800',
+    purple: 'bg-white hover:bg-purple-200 dark:bg-purple-950 dark:hover:bg-purple-800',
+    red: 'bg-white hover:bg-red-200 dark:bg-red-950 dark:hover:bg-red-800',
+    rose: 'bg-white hover:bg-rose-200 dark:bg-rose-950 dark:hover:bg-rose-800',
+    sky: 'bg-white hover:bg-sky-200 dark:bg-sky-950 dark:hover:bg-sky-800',
+    slate: 'bg-white hover:bg-slate-200 dark:bg-slate-950 dark:hover:bg-slate-800',
+    teal: 'bg-white hover:bg-teal-200 dark:bg-teal-950 dark:hover:bg-teal-800',
+    violet: 'bg-white hover:bg-violet-200 dark:bg-violet-950 dark:hover:bg-violet-800',
+    yellow: 'bg-white hover:bg-yellow-200 dark:bg-yellow-950 dark:hover:bg-yellow-800',
+    zinc: 'bg-white hover:bg-zinc-200 dark:bg-zinc-950 dark:hover:bg-zinc-800',
+  }
+
+  const oddClasses: Record<DatatableColorVariant, string> = {
+    amber: 'bg-amber-100 hover:bg-amber-200 dark:bg-amber-900 dark:hover:bg-amber-800',
+    blue: 'bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800',
+    brand: 'bg-brand-100 hover:bg-brand-200 dark:bg-brand-900 dark:hover:bg-brand-800',
+    disabled:
+      'bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800',
+    emerald:
+      'bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900 dark:hover:bg-emerald-800',
+    fuchsia:
+      'bg-fuchsia-100 hover:bg-fuchsia-200 dark:bg-fuchsia-900 dark:hover:bg-fuchsia-800',
+    green: 'bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800',
+    indigo:
+      'bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800',
+    lime: 'bg-lime-100 hover:bg-lime-200 dark:bg-lime-900 dark:hover:bg-lime-800',
+    orange:
+      'bg-orange-100 hover:bg-orange-200 dark:bg-orange-900 dark:hover:bg-orange-800',
+    pink: 'bg-pink-100 hover:bg-pink-200 dark:bg-pink-900 dark:hover:bg-pink-800',
+    primary:
+      'bg-primary-100 hover:bg-primary-200 dark:bg-primary-900 dark:hover:bg-primary-800',
+    purple:
+      'bg-purple-100 hover:bg-purple-200 dark:bg-purple-900 dark:hover:bg-purple-800',
+    red: 'bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:hover:bg-red-800',
+    rose: 'bg-rose-100 hover:bg-rose-200 dark:bg-rose-900 dark:hover:bg-rose-800',
+    sky: 'bg-sky-100 hover:bg-sky-200 dark:bg-sky-900 dark:hover:bg-sky-800',
+    slate: 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800',
+    teal: 'bg-teal-100 hover:bg-teal-200 dark:bg-teal-900 dark:hover:bg-teal-800',
+    violet:
+      'bg-violet-100 hover:bg-violet-200 dark:bg-violet-900 dark:hover:bg-violet-800',
+    yellow:
+      'bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-900 dark:hover:bg-yellow-800',
+    zinc: 'bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800',
+  }
+
+  return isEven ? evenClasses[color] : oddClasses[color]
+}
+
 // Datatable cell text styling
 export const datatableCellTextVariants = cva(
   // Base classes for cell text
@@ -286,9 +393,3 @@ export type DatatableActionButtonVariants = VariantProps<
 export type DatatableDeleteAreaVariants = VariantProps<
   typeof datatableDeleteAreaVariants
 >
-
-/**
- * Shared color variant key type for datatable components.
- * Ensures consistency with the design system's color palette.
- */
-export type DatatableColorVariant = ColorVariantKey

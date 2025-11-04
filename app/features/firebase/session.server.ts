@@ -11,6 +11,12 @@ import type { FirebaseSessionData, SessionBridgeResult } from './types'
 
 const FIREBASE_SESSION_KEY = 'firebaseSession'
 
+/**
+ * Error constant for deactivated account attempts.
+ * Used by mutation functions to signal exceptional state.
+ */
+export const ACCOUNT_DEACTIVATED_ERROR = 'ACCOUNT_DEACTIVATED'
+
 type CreateSessionFromFirebaseTokenProps = {
   idToken: string
   request: Request
@@ -44,6 +50,9 @@ export const createSessionFromFirebaseToken = async (
       isNewUser,
     }
   } catch (_error) {
+    if (_error instanceof Error && _error.message === ACCOUNT_DEACTIVATED_ERROR) {
+      throw _error
+    }
     if (process.env.NODE_ENV !== 'test') {
       // eslint-disable-next-line no-console
       console.error('[firebase-session] Failed to create session from token:', _error)
@@ -67,6 +76,14 @@ export const syncFirebaseUserToDatabase = async (
   // Check if user already exists by Firebase UID
   const existingUser = await getUserByFirebaseUid(firebaseUser.uid)
   const isNewUser = !existingUser
+
+  // Check if existing user is deactivated
+  // NOTE: This throws an error (exceptional state for mutation function)
+  // while validateFirebaseSession returns null (invalid state for validation function)
+  // Both approaches are semantically appropriate for their use cases
+  if (existingUser && !existingUser.active) {
+    throw new Error(ACCOUNT_DEACTIVATED_ERROR)
+  }
 
   // Use our new createOrUpdateUser function with role assignment
   const user = await createOrUpdateUser({
@@ -107,6 +124,14 @@ export const validateFirebaseSession = async (
     // Get user from database to ensure they still exist
     const user = await getUserByFirebaseUid(firebaseSessionData.firebaseUid)
     if (!user || user.id !== userId) {
+      return null
+    }
+
+    // Check if user is deactivated
+    // NOTE: This returns null (invalid state for validation function)
+    // while syncFirebaseUserToDatabase throws (exceptional state for mutation function)
+    // Both approaches are semantically appropriate for their use cases
+    if (!user.active) {
       return null
     }
 

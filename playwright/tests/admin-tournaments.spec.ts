@@ -1,5 +1,21 @@
+/**
+ * Admin Tournaments Management E2E Tests
+ *
+ * Test Scenarios:
+ * - Admin tournaments management page access and display
+ * - Tournament creation via admin panel and context menu
+ * - Tournament form validation and field structure
+ * - Tournament database persistence and verification
+ * - Team creation with tournament selection (integration test)
+ * - Division and category selection based on tournament
+ * - Form panel progression and field enablement
+ *
+ * Authentication: Uses global auth from auth.json (ADMIN role)
+ * Viewport: Mobile (375x812)
+ */
 import { expect, test } from '@playwright/test'
 
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
 import {
   checkTournamentExists,
   createTestTournament,
@@ -8,6 +24,7 @@ import {
   waitForTournamentInDatabase,
 } from '../helpers/database'
 import { AdminTeamsPage } from '../pages/AdminTeamsPage'
+import { AdminTournamentsPage } from '../pages/AdminTournamentsPage'
 
 // Tournament E2E Tests - USES GLOBAL AUTHENTICATION from auth.json
 test.describe('Admin Tournaments', () => {
@@ -17,17 +34,14 @@ test.describe('Admin Tournaments', () => {
   })
 
   test('should display admin tournaments management page', async ({ page }) => {
-    // Navigate to admin tournaments
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
-
-    // Should see page content indicating tournaments (checking English content since interface is in English)
-    await expect(page.locator('body')).toContainText(/toernooi/i, { timeout: 15000 })
-
-    // Should see the Toevoegen button (it's an ActionLinkButton, which renders as a link)
-    await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
+    const adminTournamentsPage = new AdminTournamentsPage(page)
+    await adminTournamentsPage.navigate()
+    await adminTournamentsPage.expectPageToContainTournamentText()
+    await expect(adminTournamentsPage.addButton).toBeVisible()
   })
 
   test('should access tournaments via context menu', async ({ page }) => {
+    const adminTournamentsPage = new AdminTournamentsPage(page)
     // Block React Router manifest requests to prevent prefetch-induced page reloads
     await page.route('**/__manifest**', route => {
       route.fulfill({
@@ -45,8 +59,7 @@ test.describe('Admin Tournaments', () => {
     await page.waitForTimeout(600)
 
     // Open user menu by clicking hamburger menu
-    const menuButton = page.getByRole('button', { name: /menu openen\/sluiten/i })
-    await expect(menuButton).toBeVisible()
+    await expect(adminTournamentsPage.menuButton).toBeVisible()
 
     // Click and wait for menu with navigation guard
     await Promise.all([
@@ -56,26 +69,29 @@ test.describe('Admin Tournaments', () => {
           { timeout: 1000 }
         )
         .catch(() => {}), // Ignore timeout
-      menuButton.click(),
+      adminTournamentsPage.menuButton.click(),
     ])
 
     // Wait for menu to be fully open and stable (data-state="open")
-    const menuDropdown = page.getByTestId('user-menu-dropdown')
-    await expect(menuDropdown).toBeVisible({ timeout: 5000 })
-    await expect(menuDropdown).toHaveAttribute('data-state', 'open')
+    await expect(adminTournamentsPage.menuDropdown).toBeVisible({ timeout: 5000 })
+    await expect(adminTournamentsPage.menuDropdown).toHaveAttribute(
+      'data-state',
+      'open'
+    )
 
     // Additional stability wait for any animations/transitions
     await page.waitForTimeout(300)
 
     // Look for tournaments link with more specific targeting
-    const tournamentsLink = page.locator('a').filter({ hasText: /toernooien/i })
-    await expect(tournamentsLink.first()).toBeVisible({ timeout: 10000 })
+    await expect(adminTournamentsPage.tournamentsLink.first()).toBeVisible({
+      timeout: 10000,
+    })
 
     // Ensure the link is ready for interaction
-    await expect(tournamentsLink.first()).toBeEnabled()
+    await expect(adminTournamentsPage.tournamentsLink.first()).toBeEnabled()
 
     // Get the href to verify it's the correct link
-    const href = await tournamentsLink.first().getAttribute('href')
+    const href = await adminTournamentsPage.tournamentsLink.first().getAttribute('href')
     console.log('Tournaments link href:', href)
 
     // Remove manifest blocking before navigation and wait for a cleaner navigation
@@ -83,8 +99,10 @@ test.describe('Admin Tournaments', () => {
 
     // Use Promise.all to wait for navigation to complete
     await Promise.all([
-      page.waitForURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments/, { timeout: 15000 }),
-      tournamentsLink.first().click(),
+      page.waitForURL(new RegExp(`${ADMIN_DASHBOARD_URL}/tournaments`), {
+        timeout: 15000,
+      }),
+      adminTournamentsPage.tournamentsLink.first().click(),
     ])
 
     // Should navigate to tournaments page
@@ -92,12 +110,13 @@ test.describe('Admin Tournaments', () => {
     console.log('Current URL after navigation:', currentUrl)
 
     // Verify we're on the correct page
-    await expect(page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/tournaments/)
-    await expect(page.locator('body')).toContainText(/toernooi/i)
+    await expect(page).toHaveURL(new RegExp(`${ADMIN_DASHBOARD_URL}/tournaments`))
+    await adminTournamentsPage.expectPageToContainTournamentText()
   })
 
   test('should access tournaments via admin panel button', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1')
+    const adminTournamentsPage = new AdminTournamentsPage(page)
+    await adminTournamentsPage.navigateToAdminHome()
 
     // Wait for page to load and content to render
     await page.waitForLoadState('networkidle')
@@ -109,20 +128,20 @@ test.describe('Admin Tournaments', () => {
     await page.waitForFunction(() => document.body.children.length > 0)
 
     // Should see "Toernooien beheer" panel in admin panel
-    const manageTournamentsPanel = page.getByRole('link', {
-      name: 'Toernooien beheer',
+    await expect(adminTournamentsPage.manageTournamentsPanel).toBeVisible({
+      timeout: 15000,
     })
-    await expect(manageTournamentsPanel).toBeVisible({ timeout: 15000 })
 
     // Click the panel
-    await manageTournamentsPanel.click()
+    await adminTournamentsPage.manageTournamentsPanel.click()
 
     // Should navigate to tournaments page
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+    await expect(page).toHaveURL(`${ADMIN_DASHBOARD_URL}/tournaments`)
   })
 
   test('should allow admin tournament creation', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+    const adminTournamentsPage = new AdminTournamentsPage(page)
+    await adminTournamentsPage.navigateToNew()
 
     // Wait for page to load and content to render
     await page.waitForLoadState('networkidle')
@@ -134,11 +153,11 @@ test.describe('Admin Tournaments', () => {
     await page.waitForFunction(() => document.body.children.length > 0)
 
     // Should see admin tournament creation form
-    await expect(page.locator('form')).toBeVisible({ timeout: 15000 })
+    await adminTournamentsPage.expectFormIsVisible()
 
     // Should see tournament form fields
-    await expect(page.locator('[name="name"]')).toBeVisible()
-    await expect(page.locator('[name="location"]')).toBeVisible()
+    await expect(adminTournamentsPage.nameInput).toBeVisible()
+    await expect(adminTournamentsPage.locationInput).toBeVisible()
 
     // Date picker components render as buttons or special components, not simple inputs
     await expect(page.locator('text=Startdatum')).toBeVisible()
@@ -147,8 +166,9 @@ test.describe('Admin Tournaments', () => {
   test('should show tournament creation form with all required fields', async ({
     page,
   }) => {
+    const adminTournamentsPage = new AdminTournamentsPage(page)
     // Navigate to tournament creation page
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+    await adminTournamentsPage.navigateToNew()
 
     // Wait for form to load
     await page.waitForLoadState('networkidle')
@@ -157,53 +177,46 @@ test.describe('Admin Tournaments', () => {
     await page.waitForTimeout(600)
 
     // Step 1: Basic Info - Look for specific input fields
-    await expect(page.getByRole('textbox', { name: /naam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /locatie/i })).toBeVisible()
+    await expect(adminTournamentsPage.nameInput).toBeVisible()
+    await expect(adminTournamentsPage.locationInput).toBeVisible()
 
     // Step 2: Dates - Look for date picker buttons
-    await expect(
-      page.getByRole('button', {
-        name: /startdatum.*select date/i,
-      })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('button', {
-        name: /einddatum.*select date/i,
-      })
-    ).toBeVisible()
+    await expect(adminTournamentsPage.startDateButton).toBeVisible()
+    await expect(adminTournamentsPage.endDateButton).toBeVisible()
 
     // Step 3: Divisions (checkboxes) - Look for the section heading
-    await expect(page.getByRole('heading', { name: /divisies/i })).toBeVisible()
+    await expect(adminTournamentsPage.divisionsHeading).toBeVisible()
 
     // Step 4: Categories (checkboxes) - Look for the section heading
-    await expect(page.getByRole('heading', { name: /categorieën/i })).toBeVisible()
+    await expect(adminTournamentsPage.categoriesHeading).toBeVisible()
 
     // Submit button
-    await expect(page.getByRole('button', { name: 'Opslaan' })).toBeVisible()
+    await expect(adminTournamentsPage.saveButton).toBeVisible()
   })
 
   test('should navigate to tournament creation from tournaments list', async ({
     page,
   }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+    const adminTournamentsPage = new AdminTournamentsPage(page)
+    await adminTournamentsPage.navigate()
 
     // Wait for page to load
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(2000)
 
     // Look for "Toevoegen" button (simplified since it's now just "Toevoegen")
-    const addButton = page.getByRole('link', { name: 'Toevoegen' })
-    await expect(addButton).toBeVisible({ timeout: 15000 })
+    await expect(adminTournamentsPage.addButton).toBeVisible({ timeout: 15000 })
 
     // Click the add button
-    await addButton.click()
+    await adminTournamentsPage.clickAddButton()
 
     // Should navigate to new tournament page
-    await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+    await adminTournamentsPage.expectToBeOnNewTournamentPage()
   })
 
   test('should show tournaments list or empty state', async ({ page }) => {
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments')
+    const adminTournamentsPage = new AdminTournamentsPage(page)
+    await adminTournamentsPage.navigate()
 
     // Wait for page to load
     await page.waitForLoadState('networkidle')
@@ -213,11 +226,12 @@ test.describe('Admin Tournaments', () => {
     await page.waitForFunction(() => document.body.children.length > 0)
 
     // Should show tournaments interface
-    const tournamentsContainer = page.getByTestId('admin-tournaments-layout-container')
-    await expect(tournamentsContainer).toBeVisible({ timeout: 15000 })
+    await expect(adminTournamentsPage.tournamentsContainer).toBeVisible({
+      timeout: 15000,
+    })
 
     // Should show either tournaments list or empty state message
-    const bodyText = await page.locator('body').textContent()
+    const bodyText = await adminTournamentsPage.body.textContent()
     expect(bodyText).toBeTruthy()
     expect(bodyText!.length).toBeGreaterThan(50) // Should have substantial content
   })
@@ -233,10 +247,11 @@ test.describe('Tournament-Team Integration', () => {
   // TEST 1: Tournament Creation and Database Verification (Focused)
   test('should create tournament and verify database persistence', async ({ page }) => {
     let tournamentId: string | undefined
+    const adminTournamentsPage = new AdminTournamentsPage(page)
 
     try {
       // Navigate to tournament creation page
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/new')
+      await adminTournamentsPage.navigateToNew()
       await page.waitForLoadState('networkidle')
 
       // Wait for page hydration and form to be fully loaded
@@ -244,34 +259,29 @@ test.describe('Tournament-Team Integration', () => {
 
       // Fill tournament form
       console.log('Filling tournament name and location...')
-      const nameField = page.getByRole('textbox', { name: /naam/i })
-      const locationField = page.getByRole('textbox', { name: /locatie/i })
 
       // Ensure form fields are visible and interactable
-      await expect(nameField).toBeVisible()
-      await expect(locationField).toBeVisible()
+      await expect(adminTournamentsPage.nameInput).toBeVisible()
+      await expect(adminTournamentsPage.locationInput).toBeVisible()
 
-      await nameField.fill('E2ETourney')
-      await nameField.blur() // Trigger validation
-      await locationField.fill('Aalsmeer')
-      await locationField.blur() // Trigger validation
+      await adminTournamentsPage.nameInput.fill('E2ETourney')
+      await adminTournamentsPage.nameInput.blur() // Trigger validation
+      await adminTournamentsPage.locationInput.fill('Aalsmeer')
+      await adminTournamentsPage.locationInput.blur() // Trigger validation
 
       // Wait longer for form validation to complete after blur events
       await page.waitForTimeout(3000)
 
       // Check if start date button is enabled
-      const startDateButton = page.getByRole('button', {
-        name: /startdatum.*select date/i,
-      })
       console.log('Checking if start date button is enabled...')
-      await expect(startDateButton).toBeVisible()
+      await expect(adminTournamentsPage.startDateButton).toBeVisible()
 
       // Wait for the start date button to become enabled with a longer timeout
       // and more attempts to handle race conditions
       let attempts = 0
       const maxAttempts = 10
       while (attempts < maxAttempts) {
-        const isEnabled = await startDateButton.isEnabled()
+        const isEnabled = await adminTournamentsPage.startDateButton.isEnabled()
         if (isEnabled) {
           console.log(`Start date button enabled after ${attempts + 1} attempts`)
           break
@@ -284,39 +294,34 @@ test.describe('Tournament-Team Integration', () => {
       }
 
       // Final check with assertion
-      await expect(startDateButton).toBeEnabled({ timeout: 5000 })
-      await startDateButton.click()
-      await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
+      await expect(adminTournamentsPage.startDateButton).toBeEnabled({ timeout: 5000 })
+      await adminTournamentsPage.startDateButton.click()
+      await expect(adminTournamentsPage.calendar).toBeVisible()
       await page.getByRole('button', { name: /^15 / }).click()
 
       // Select end date using date picker
-      await page.getByRole('button', { name: /einddatum.*select date/i }).click()
-      await expect(page.getByRole('dialog', { name: 'calendar' })).toBeVisible()
+      await adminTournamentsPage.endDateButton.click()
+      await expect(adminTournamentsPage.calendar).toBeVisible()
       await page.getByRole('button', { name: /^20 / }).click()
 
       // Select divisies
-      const firstDivisionLabel = page
-        .locator('label')
-        .filter({ hasText: /eerste klasse/i })
-      await expect(firstDivisionLabel).toBeVisible({ timeout: 10000 })
-      await firstDivisionLabel.click()
+      await expect(adminTournamentsPage.firstDivisionLabel).toBeVisible({
+        timeout: 10000,
+      })
+      await adminTournamentsPage.firstDivisionLabel.click()
 
-      const secondDivisionLabel = page
-        .locator('label')
-        .filter({ hasText: /tweede klasse/i })
-      await expect(secondDivisionLabel).toBeVisible()
-      await secondDivisionLabel.click()
+      await expect(adminTournamentsPage.secondDivisionLabel).toBeVisible()
+      await adminTournamentsPage.secondDivisionLabel.click()
 
       // Wait for form to be fully updated after division selections
       await page.waitForTimeout(1000)
 
       // Select categorieën
       console.log('Selecting JO8 category...')
-      const jo8Label = page.locator('label').filter({ hasText: /JO8/i })
-      await expect(jo8Label).toBeVisible()
+      await expect(adminTournamentsPage.jo8Label).toBeVisible()
 
       // Check if JO8 is enabled before clicking
-      const jo8Disabled = await jo8Label.evaluate(
+      const jo8Disabled = await adminTournamentsPage.jo8Label.evaluate(
         el =>
           el.classList.contains('cursor-not-allowed') ||
           el.classList.contains('opacity-50')
@@ -326,14 +331,13 @@ test.describe('Tournament-Team Integration', () => {
         await page.waitForTimeout(2000)
       }
 
-      await jo8Label.click()
+      await adminTournamentsPage.jo8Label.click()
 
       console.log('Selecting JO10 category...')
-      const jo10Label = page.locator('label').filter({ hasText: /JO10/i })
-      await expect(jo10Label).toBeVisible()
+      await expect(adminTournamentsPage.jo10Label).toBeVisible()
 
       // Check if JO10 is enabled before clicking
-      const jo10Disabled = await jo10Label.evaluate(
+      const jo10Disabled = await adminTournamentsPage.jo10Label.evaluate(
         el =>
           el.classList.contains('cursor-not-allowed') ||
           el.classList.contains('opacity-50')
@@ -344,18 +348,19 @@ test.describe('Tournament-Team Integration', () => {
       }
 
       // Ensure element is enabled before clicking
-      await expect(jo10Label).not.toHaveClass(/cursor-not-allowed|opacity-50/)
-      await jo10Label.click()
+      await expect(adminTournamentsPage.jo10Label).not.toHaveClass(
+        /cursor-not-allowed|opacity-50/
+      )
+      await adminTournamentsPage.jo10Label.click()
 
       // Submit form - should redirect to tournament edit page
       console.log('Submitting tournament creation form...')
-      await page.getByRole('button', { name: 'Opslaan' }).click()
+      await adminTournamentsPage.saveButton.click()
       await page.waitForLoadState('networkidle')
 
       // Check for any error messages first
-      const errorMessage = page.locator('[role="alert"], .error, .toast-error').first()
-      if (await errorMessage.isVisible()) {
-        const errorText = await errorMessage.textContent()
+      if (await adminTournamentsPage.errorMessage.isVisible()) {
+        const errorText = await adminTournamentsPage.errorMessage.textContent()
         throw new Error(`Tournament creation failed with error: ${errorText}`)
       }
 
@@ -437,85 +442,41 @@ test.describe('Tournament-Team Integration', () => {
       )
       tournamentId = tournament.id
 
-      // Navigate to admin team creation form
-      await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-      await page.waitForLoadState('networkidle')
+      const teamsPage = new AdminTeamsPage(page)
+      await teamsPage.gotoCreateTeam()
 
       // Verify we're on the admin team creation form
-      await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-      await expect(page.locator('form')).toBeVisible()
+      await teamsPage.expectToBeOnTeamFormPage()
 
       // Step 1: Select Tournament using page object for reliability
-      const tournamentCombo = page.getByRole('combobox', {
-        name: /toernooi.*select option/i,
-      })
-      await expect(tournamentCombo).toBeVisible()
+      await expect(teamsPage.tournamentCombo).toBeVisible()
 
-      const teamsPage = new AdminTeamsPage(page)
       await teamsPage.selectTournamentWithRetry(
         `${tournament.name} - ${tournament.location}`
       )
 
       // Verify tournament was selected
-      await expect(tournamentCombo).toContainText(
+      await expect(teamsPage.tournamentCombo).toContainText(
         `${tournament.name} - ${tournament.location}`
       )
       console.log('✅ Tournament successfully selected in combo')
 
       // Step 2: Select Division (after tournament selection populates options)
-      const divisionCombo = page.getByRole('combobox', {
-        name: /teamklasse.*select option/i,
-      })
-      await expect(divisionCombo).toBeVisible()
-      await divisionCombo.click()
-
-      const divisionDropdown = page.locator('[data-radix-select-content]').last()
-      await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
-
-      const firstDivisionOption = divisionDropdown.getByRole('option', {
-        name: /eerste klasse/i,
-      })
-      await expect(firstDivisionOption).toBeVisible({ timeout: 3000 })
-      await firstDivisionOption.click()
-      console.log('✅ Division successfully selected')
+      await teamsPage.selectDivision('eerste klasse')
 
       // Step 3: Select Category
-      const categoryCombo = page.getByRole('combobox', {
-        name: /categorie.*select option/i,
+      await teamsPage.selectCategory('JO8')
+
+      // Step 4: Fill team information and submit
+      await teamsPage.fillTeamInformation({
+        clubName: 'TC Admin',
+        teamName: 'J08-1',
+        leaderName: 'Test Leader Admin',
+        leaderEmail: 'admin@test.com',
+        leaderPhone: '0123456789',
       })
-      await expect(categoryCombo).toBeVisible()
-      await categoryCombo.click()
-
-      const categoryDropdown = page.locator('[data-radix-select-content]').last()
-      await expect(categoryDropdown).toBeVisible({ timeout: 3000 })
-
-      const jo8Option = categoryDropdown.getByRole('option', { name: /JO8/i })
-      const jo10Option = categoryDropdown.getByRole('option', { name: /JO10/i })
-      await expect(jo8Option).toBeVisible({ timeout: 3000 })
-      await expect(jo10Option).toBeVisible({ timeout: 3000 })
-
-      // Select the first available category
-      await jo8Option.click()
-      console.log('✅ Category successfully selected')
-
-      // Step 4: Fill team information to complete the test
-      await page.getByRole('textbox', { name: /clubnaam/i }).fill('TC Admin')
-      await page.getByRole('textbox', { name: /teamnaam/i }).fill('J08-1')
-      await page
-        .getByRole('textbox', { name: /naam teamleider/i })
-        .fill('Test Leader Admin')
-      await page
-        .getByRole('textbox', { name: /e-mail teamleider/i })
-        .fill('admin@test.com')
-      await page
-        .getByRole('textbox', { name: /telefoon teamleider/i })
-        .fill('0123456789')
-
-      // If URL indicates a created team, capture team id
-      const urlMatch = page.url().match(/\/teams\/([^\/]+)$/)
-      if (urlMatch) {
-        teamId = urlMatch[1]
-      }
+      await teamsPage.acceptPrivacyPolicy()
+      teamId = await teamsPage.submitTeamForm()
 
       console.log(
         '✅ Team creation flow with tournament selection completed successfully'
@@ -542,69 +503,39 @@ test.describe('Tournament-Team Integration', () => {
   test('should show empty divisies and categorieën when no tournament selected', async ({
     page,
   }) => {
-    // Navigate to team creation form
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-    await page.waitForLoadState('networkidle')
+    const teamsPage = new AdminTeamsPage(page)
+    await teamsPage.gotoCreateTeam()
 
-    // Look for form fields using the correct English translations
-    await expect(
-      page.getByRole('combobox', {
-        name: /toernooi.*select option/i,
-      })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('combobox', {
-        name: /teamklasse.*select option/i,
-      })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('combobox', {
-        name: /categorie.*select option/i,
-      })
-    ).toBeVisible()
+    // Look for form fields
+    await expect(teamsPage.tournamentCombo).toBeVisible()
+    await expect(teamsPage.divisionCombo).toBeVisible()
+    await expect(teamsPage.categoryCombo).toBeVisible()
 
-    // Verify team form fields with more specific selectors
-    await expect(page.getByRole('textbox', { name: /clubnaam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /teamnaam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /naam teamleider/i })).toBeVisible()
+    // Verify team form fields
+    await expect(teamsPage.clubNameInput).toBeVisible()
+    await expect(teamsPage.teamNameInput).toBeVisible()
+    await expect(teamsPage.leaderNameInput).toBeVisible()
   })
 
   test('should verify team form structure and basic functionality', async ({
     page,
   }) => {
-    // Navigate to team creation form
-    await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams/new')
-    await page.waitForLoadState('networkidle')
+    const teamsPage = new AdminTeamsPage(page)
+    await teamsPage.gotoCreateTeam()
 
-    // Verify form structure using the correct English translations
-    await expect(
-      page.getByRole('combobox', {
-        name: /toernooi.*select option/i,
-      })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('combobox', {
-        name: /teamklasse.*select option/i,
-      })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('combobox', {
-        name: /categorie.*select option/i,
-      })
-    ).toBeVisible()
+    // Verify form structure
+    await expect(teamsPage.tournamentCombo).toBeVisible()
+    await expect(teamsPage.divisionCombo).toBeVisible()
+    await expect(teamsPage.categoryCombo).toBeVisible()
 
-    // Check team information fields with more specific selectors
-    await expect(page.getByRole('textbox', { name: /clubnaam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /teamnaam/i })).toBeVisible()
-    await expect(page.getByRole('textbox', { name: /naam teamleider/i })).toBeVisible()
-    await expect(
-      page.getByRole('textbox', { name: /e-mail teamleider/i })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('textbox', { name: /telefoon teamleider/i })
-    ).toBeVisible()
+    // Check team information fields
+    await expect(teamsPage.clubNameInput).toBeVisible()
+    await expect(teamsPage.teamNameInput).toBeVisible()
+    await expect(teamsPage.leaderNameInput).toBeVisible()
+    await expect(teamsPage.leaderEmailInput).toBeVisible()
+    await expect(teamsPage.leaderPhoneInput).toBeVisible()
 
     // Submit button
-    await expect(page.getByRole('button', { name: 'Opslaan' })).toBeVisible()
+    await expect(teamsPage.saveButton).toBeVisible()
   })
 })

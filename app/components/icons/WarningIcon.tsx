@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type WarningIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function WarningIcon({
   className = '',
   size = 24,
   weight: _weight = 400,
   'aria-label': ariaLabel = 'Warning',
+  ...rest
 }: Readonly<WarningIconProps>): JSX.Element {
   // Lucide triangle-alert SVG paths
   const trianglePath =
@@ -26,6 +27,7 @@ export function WarningIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -47,12 +49,14 @@ export function WarningIcon({
         d={linePath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
+        data-testid='warning-icon-line'
         fill='none'
       />
       <path
         d={dotPath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
+        data-testid='warning-icon-dot'
         fill='none'
       />
     </svg>

@@ -1,25 +1,23 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import { cn } from '~/utils/misc'
 
 type SportsIconProps = {
   className?: string
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
-}
+} & SVGProps<SVGSVGElement>
 
 export function SportsIcon({
   className = '',
   size = 24,
   variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Sports',
-  ...props
+  ...rest
 }: Readonly<SportsIconProps>): JSX.Element {
   // Sports icon path from your SVG file
   const outlinedPath =
@@ -37,18 +35,19 @@ export function SportsIcon({
           ? 1.25
           : 1
       : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
-      className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
-      data-testid={dataTestId}
+      className={cn('inline-block fill-current', className)}
       role='img'
       aria-label={ariaLabel}
-      {...props}
+      style={combinedStyle}
     >
       <path d={path} />
     </svg>

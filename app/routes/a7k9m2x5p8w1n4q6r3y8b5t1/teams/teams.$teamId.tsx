@@ -14,7 +14,7 @@ import {
 import { Category, Division } from '@prisma/client'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
-import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { SimpleConfirmDialog } from '~/components/ConfirmDialog'
 import { Panel } from '~/components/Panel'
 import { prisma } from '~/db.server'
 import { TeamForm } from '~/features/teams/components/TeamForm'
@@ -345,8 +345,8 @@ export default function AdminTeamPage(): JSX.Element {
           </div>
           {/* Delete Button */}
           <div className='flex-shrink-0'>
-            <ConfirmDialog
-              intent='success'
+            <SimpleConfirmDialog
+              intent='danger'
               trigger={
                 <ActionButton icon='delete' variant='secondary'>
                   {t('common.actions.delete')}
@@ -358,7 +358,7 @@ export default function AdminTeamPage(): JSX.Element {
                 'Are you sure you want to delete this team? This action cannot be undone.'
               )}
               confirmLabel={t('common.actions.confirm', 'Yes, delete')}
-              cancelLabel={t('common.actions.cancel', 'Cancel')}
+              cancelLabel={t('common.actions.cancel')}
               // Destructive: focus cancel first per request
               destructive
               onConfirm={submitDelete}

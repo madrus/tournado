@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -7,19 +7,19 @@ type ArrowUpDownIconProps = {
   size?: number
   variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const ArrowUpDownIcon = ({
   className = '',
   size = 24,
   variant: _variant = 'outlined',
   weight = 600,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Sort',
+  ...rest
 }: Readonly<ArrowUpDownIconProps>): JSX.Element => (
   <svg
+    {...rest}
     width={size}
     height={size}
     viewBox='0 0 24 24'
@@ -29,7 +29,6 @@ export const ArrowUpDownIcon = ({
     strokeLinecap='round'
     strokeLinejoin='round'
     fill='none'
-    data-testid={dataTestId}
     role='img'
     aria-label={ariaLabel}
   >

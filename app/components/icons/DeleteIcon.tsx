@@ -1,35 +1,33 @@
-import type { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
-import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import type { IconWeight } from '~/lib/lib.types'
+import { cn } from '~/utils/misc'
 
 type DeleteIconProps = {
   className?: string
   size?: number
-  variant?: IconVariant
   weight?: IconWeight
-  'data-testid'?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const DeleteIcon = ({
   className = '',
   size = 24,
-  variant: _variant = 'outlined',
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Delete',
+  ...rest
 }: Readonly<DeleteIconProps>): JSX.Element => (
   <svg
+    {...rest} /* spread first so explicit props below can override rest props */
     width={size}
     height={size}
     viewBox='0 0 24 24'
     fill='none'
-    className={`inline-block ${className}`}
+    className={cn('inline-block', className)}
     stroke='currentColor'
     strokeWidth={weight / 200}
     strokeLinecap='round'
     strokeLinejoin='round'
-    data-testid={dataTestId}
     role='img'
     aria-label={ariaLabel}
   >

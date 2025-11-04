@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type BlockIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function BlockIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Block',
+  ...rest
 }: Readonly<BlockIconProps>): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
   const path =
@@ -22,16 +23,19 @@ export function BlockIcon({
   // Convert weight to stroke-width
   const strokeWidth =
     weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
       role='img'
       aria-label={ariaLabel}
+      style={combinedStyle}
     >
       <path d={path} />
     </svg>

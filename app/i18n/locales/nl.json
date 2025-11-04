@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Er is iets misgegaan",
-    "teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
+    "teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw.",
+    "emailOutboxInvalidFormat": "E-mailoutbox heeft een ongeldig formaat",
+    "emailOutboxReadFailure": "Kan e-mailoutbox niet lezen"
   },
   "landing": {
     "features": {
@@ -261,6 +263,13 @@
       "updateSuccess": "Toernooi succesvol bijgewerkt",
       "updateSuccessDesc": "Het toernooi is succesvol bijgewerkt."
     },
+    "user": {
+      "cannotChangeOwnRole": "Je kunt je eigen rol niet wijzigen",
+      "cannotDeactivateOwnAccount": "Je kunt je eigen account niet deactiveren",
+      "cannotReactivateOwnAccount": "Je kunt je eigen account niet reactiveren",
+      "failedToUpdateRole": "Kon rol niet bijwerken",
+      "missingUserId": "Gebruikers-ID ontbreekt"
+    },
     "validation": {
       "emailInvalid": "Voer een geldig e-mailadres in",
       "emailRequired": "E-mailadres is verplicht",
@@ -299,10 +308,10 @@
     "description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer."
   },
   "roles": {
-    "admin": "Beheerder",
+    "admin": "Admin",
     "billing": "Facturatie",
     "editor": "Redacteur",
-    "manager": "Manager",
+    "manager": "Beheerder",
     "public": "Publiek",
     "referee": "Scheidsrechter"
   },
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Gebruiker deactiveren",
-      "reactivateUser": "Gebruiker reactiveren",
-      "updateRole": "Rol bijwerken",
+      "deactivateUser": "Deactiveren",
+      "reactivateUser": "Reactiveren",
       "viewDetails": "Details bekijken"
     },
     "auditActions": {
@@ -404,13 +412,12 @@
       "manageUsersAndRoles": "Beheer gebruikersaccounts en wijs rollen toe"
     },
     "fields": {
-      "assignRole": "Rol toewijzen",
+      "assignedRole": "Toegewezen rol",
       "createdAt": "Aangemaakt op",
       "currentRole": "Huidige rol",
       "displayName": "Weergavenaam",
       "email": "E-mail",
       "performedBy": "Uitgevoerd door",
-      "reason": "Reden",
       "role": "Rol"
     },
     "messages": {
@@ -418,15 +425,16 @@
       "noAuditLogs": "Geen auditlogvermeldingen gevonden",
       "noUsers": "Geen gebruikers gevonden",
       "noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
+      "displayNameUpdatedSuccessfully": "Weergavenaam succesvol bijgewerkt",
       "roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
       "userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
       "userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
-      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd"
+      "userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd",
+      "confirmDeactivate": "Weet je zeker dat je deze gebruiker wilt deactiveren?",
+      "confirmReactivate": "Deze gebruiker opnieuw activeren zodat hij weer kan inloggen?"
     },
     "placeholders": {
-      "reasonForChange": "Voer reden voor rolwijziging in (optioneel)",
-      "reasonForDeactivation": "Voer reden voor deactivering in (optioneel)",
-      "reasonForReactivation": "Voer reden voor reactivering in (optioneel)"
+      "displayName": "Voer weergavenaam in"
     },
     "titles": {
       "allUsers": "Alle gebruikers",

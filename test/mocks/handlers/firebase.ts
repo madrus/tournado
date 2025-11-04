@@ -8,15 +8,21 @@ export const firebaseHandlers = [
     const idToken = formData.get('idToken')
     const redirectTo = formData.get('redirectTo')
 
+    const idTokenString = typeof idToken === 'string' ? idToken : undefined
+    const redirectToString = typeof redirectTo === 'string' ? redirectTo : undefined
+
     console.log(
       'MSW handling auth callback with idToken:',
-      idToken?.substring(0, 20) + '...'
+      idTokenString?.substring(0, 20) + '...'
     )
 
     // Validate mock token
-    if (idToken && idToken.startsWith('mock-jwt-header.payload.signature-')) {
+    if (
+      idTokenString &&
+      idTokenString.startsWith('mock-jwt-header.payload.signature-')
+    ) {
       // For new users (signup), always redirect to homepage
-      const redirectUrl = redirectTo || '/'
+      const redirectUrl = redirectToString || '/'
       console.log('MSW auth callback successful, redirecting to:', redirectUrl)
 
       // Return redirect response
@@ -48,10 +54,10 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp',
     async ({ request }) => {
-      const body = await request.json()
+      const body = (await request.json()) as unknown as Record<string, unknown>
 
       // Extract email from the mock request to determine test user
-      const email = body.email || 'test-admin@example.com'
+      const email = (body.email as string) || 'test-admin@example.com'
 
       // Return mock Firebase Auth response
       return HttpResponse.json({
@@ -72,7 +78,10 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
     async ({ request }) => {
-      const body = await request.json()
+      const body = (await request.json()) as unknown as {
+        email?: string
+        password?: string
+      }
       const { email, password } = body
 
       // For E2E tests, accept the test users with their expected passwords
@@ -106,7 +115,10 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signUp',
     async ({ request }) => {
-      const body = await request.json()
+      const body = (await request.json()) as unknown as {
+        email?: string
+        password?: string
+      }
       const { email, password } = body
 
       console.log('MSW: Firebase signup request intercepted:', { email, password })
@@ -159,19 +171,22 @@ export const firebaseHandlers = [
     const idToken = formData.get('idToken')
     const redirectTo = formData.get('redirectTo')
 
+    const idTokenString = typeof idToken === 'string' ? idToken : undefined
+    const redirectToString = typeof redirectTo === 'string' ? redirectTo : undefined
+
     console.log('MSW: Auth callback intercepted:', {
-      idToken: idToken?.substring(0, 20) + '...',
-      redirectTo,
+      idToken: idTokenString?.substring(0, 20) + '...',
+      redirectTo: redirectToString,
     })
 
     // Verify we received a mock token
-    if (idToken && idToken.startsWith('mock-jwt-')) {
+    if (idTokenString && idTokenString.startsWith('mock-jwt-')) {
       // Extract email from mock token
-      const email = idToken.split('-').pop()
+      const email = idTokenString.split('-').pop()
       console.log('MSW: Extracted email from token:', email)
 
       // For new users (signup), always redirect to homepage regardless of admin status
-      const finalRedirect = redirectTo || '/'
+      const finalRedirect = redirectToString || '/'
 
       console.log('MSW: Redirecting to:', finalRedirect)
       return HttpResponse.redirect(`http://localhost:8811${finalRedirect}`, 303)
@@ -190,7 +205,7 @@ export const firebaseHandlers = [
  * Generate a mock JWT-like token for testing
  * This is NOT a real JWT, just a mock format that our callback can recognize
  */
-function generateMockIdToken(email) {
+function generateMockIdToken(email: string): string {
   const mockPayload = {
     iss: 'https://securetoken.google.com/mock-project',
     aud: 'mock-project',

@@ -12,4 +12,17 @@ export type AuditLogWithAdmin = UserAuditLog & {
   }
 }
 
+/**
+ * User management action response data
+ */
+export type UserActionData = {
+  success?: boolean
+  errors?: {
+    role?: string
+    displayName?: string
+    deactivate?: string
+    general?: string
+  }
+}
+
 export type { User, UserAuditLog }

@@ -55,7 +55,7 @@ export default defineConfig({
         // Project specific
         'app/entry.{client,server}.tsx',
         'app/root.tsx',
-        'mocks/**',
+        'test/mocks/**',
         'scripts/**',
         'docs/**',
         'prisma/**',

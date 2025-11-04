@@ -16,13 +16,7 @@ vi.mock('~/features/tournaments/hooks/useTournamentFilter', () => ({
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'teams.filterByTournament': 'Filter by tournament',
-        'teams.allTournaments': 'All tournaments',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: {
       language: 'en',
     },
@@ -66,7 +60,7 @@ describe('TournamentFilter', () => {
     // Default mock return for useTournamentFilter
     mockUseTournamentFilter.mockReturnValue({
       tournamentOptions: [
-        { value: 'all', label: 'All tournaments' },
+        { value: 'all', label: 'teams.allTournaments' },
         { value: 'tournament-1', label: 'Spring Tournament 2024' },
         { value: 'tournament-2', label: 'Summer Cup 2024' },
         { value: 'tournament-3', label: 'Winter League 2024' },
@@ -79,7 +73,7 @@ describe('TournamentFilter', () => {
   it('should render tournament filter with all options', () => {
     render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+    const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
     expect(comboFields[0]).toBeInTheDocument()
   })
 
@@ -87,7 +81,7 @@ describe('TournamentFilter', () => {
     render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
     // Since we're using ComboField, check the input value or button text
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+    const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
     const comboField = comboFields[0]
     expect(comboField).toBeInTheDocument()
   })
@@ -95,7 +89,7 @@ describe('TournamentFilter', () => {
   it('should show selected tournament when tournament is pre-selected', () => {
     mockUseTournamentFilter.mockReturnValue({
       tournamentOptions: [
-        { value: 'all', label: 'All tournaments' },
+        { value: 'all', label: 'teams.allTournaments' },
         { value: 'tournament-1', label: 'Spring Tournament 2024' },
         { value: 'tournament-2', label: 'Summer Cup 2024' },
       ],
@@ -132,7 +126,7 @@ describe('TournamentFilter', () => {
   it('should handle empty tournament list items array', () => {
     render(<TournamentFilter tournamentListItems={[]} />)
 
-    const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+    const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
     expect(comboFields[0]).toBeInTheDocument()
     expect(useTournamentFilter).toHaveBeenCalledWith({
       tournamentListItems: [],
@@ -181,7 +175,7 @@ describe('TournamentFilter', () => {
   describe('integration with ComboField', () => {
     it('should pass correct props to ComboField', () => {
       const mockOptions = [
-        { value: 'all', label: 'All tournaments' },
+        { value: 'all', label: 'teams.allTournaments' },
         { value: 'tournament-1', label: 'Spring Tournament 2024' },
       ]
 
@@ -194,7 +188,7 @@ describe('TournamentFilter', () => {
       render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
       // Verify ComboField receives correct props
-      const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+      const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
       const comboField = comboFields[0]
       expect(comboField).toBeInTheDocument()
 
@@ -210,7 +204,7 @@ describe('TournamentFilter', () => {
     it('should have proper labeling', () => {
       render(<TournamentFilter tournamentListItems={mockTournamentListItems} />)
 
-      const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+      const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
       const comboField = comboFields[0]
       expect(comboField).toBeInTheDocument()
     })
@@ -222,7 +216,7 @@ describe('TournamentFilter', () => {
       // Should be able to tab to the component
       await user.tab()
       // Instead of direct node access, use screen.getByLabelText or screen.getByRole
-      const comboFields = screen.getAllByLabelText(/filter by tournament/i)
+      const comboFields = screen.getAllByLabelText(/teams\.filterByTournament/i)
       expect(comboFields[0]).toHaveFocus()
     })
   })

@@ -3,7 +3,7 @@ import { setupWorker } from 'msw/browser'
 
 // Dynamically import the handlers to avoid SSR issues
 async function getFirebaseHandlers() {
-  const { firebaseHandlers } = await import('../../mocks/handlers/firebase.js')
+  const { firebaseHandlers } = await import('test/mocks/handlers/firebase.js')
   return firebaseHandlers
 }
 

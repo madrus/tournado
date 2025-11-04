@@ -1,9 +1,13 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 // Mock Firebase Admin modules
 const mockVerifyIdToken = vi.fn()
+const mockUpdateUser = vi.fn()
+const mockRevokeRefreshTokens = vi.fn()
 const mockGetAuth = vi.fn(() => ({
   verifyIdToken: mockVerifyIdToken,
+  updateUser: mockUpdateUser,
+  revokeRefreshTokens: mockRevokeRefreshTokens,
 }))
 
 vi.mock('firebase-admin/app', () => ({
@@ -26,6 +30,10 @@ vi.mock('firebase-admin', () => ({
 describe('firebase.server', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockVerifyIdToken.mockReset()
+    mockUpdateUser.mockReset()
+    mockRevokeRefreshTokens.mockReset()
+    mockGetAuth.mockClear()
     // Reset modules to ensure fresh imports
     vi.resetModules()
 
@@ -140,4 +148,167 @@ describe('firebase.server', () => {
       'Firebase Admin SDK not initialized'
     )
   })
+
+  describe('disableFirebaseUser', () => {
+    test('throws when firebaseUid is empty', async () => {
+      const { disableFirebaseUser } = await import('../server')
+
+      await expect(disableFirebaseUser('')).rejects.toThrow(
+        'firebaseUid must be a non-empty string'
+      )
+    })
+
+    test('logs warning and returns when admin SDK unavailable', async () => {
+      process.env.FIREBASE_ADMIN_PROJECT_ID = ''
+      process.env.FIREBASE_ADMIN_CLIENT_EMAIL = ''
+      process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
+      vi.resetModules()
+
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
+      const { disableFirebaseUser } = await import('../server')
+
+      await expect(disableFirebaseUser('uid-123')).resolves.toBeUndefined()
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Cannot disable user - Admin SDK not initialized'
+      )
+      expect(mockUpdateUser).not.toHaveBeenCalled()
+    })
+
+    test('disables user when admin SDK available', async () => {
+      mockUpdateUser.mockResolvedValue(undefined)
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
+      const { disableFirebaseUser } = await import('../server')
+
+      await disableFirebaseUser('uid-123')
+
+      expect(mockUpdateUser).toHaveBeenCalledWith('uid-123', { disabled: true })
+      expect(logSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Successfully disabled Firebase user: uid-123'
+      )
+    })
+
+    test('wraps and rethrows errors from Firebase SDK', async () => {
+      mockUpdateUser.mockRejectedValue(new Error('boom'))
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
+      const { disableFirebaseUser } = await import('../server')
+
+      await expect(disableFirebaseUser('uid-123')).rejects.toThrow(
+        'Failed to disable Firebase user: boom'
+      )
+      expect(errorSpy).toHaveBeenCalledWith(
+        '[firebase-admin] disableFirebaseUser error:',
+        'boom'
+      )
+    })
+  })
+
+  describe('enableFirebaseUser', () => {
+    test('throws when firebaseUid is empty', async () => {
+      const { enableFirebaseUser } = await import('../server')
+
+      await expect(enableFirebaseUser('')).rejects.toThrow(
+        'firebaseUid must be a non-empty string'
+      )
+    })
+
+    test('logs warning and returns when admin SDK unavailable', async () => {
+      process.env.FIREBASE_ADMIN_PROJECT_ID = ''
+      process.env.FIREBASE_ADMIN_CLIENT_EMAIL = ''
+      process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
+      vi.resetModules()
+
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
+      const { enableFirebaseUser } = await import('../server')
+
+      await expect(enableFirebaseUser('uid-123')).resolves.toBeUndefined()
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Cannot enable user - Admin SDK not initialized'
+      )
+      expect(mockUpdateUser).not.toHaveBeenCalled()
+    })
+
+    test('enables user when admin SDK available', async () => {
+      mockUpdateUser.mockResolvedValue(undefined)
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
+      const { enableFirebaseUser } = await import('../server')
+
+      await enableFirebaseUser('uid-123')
+
+      expect(mockUpdateUser).toHaveBeenCalledWith('uid-123', { disabled: false })
+      expect(logSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Successfully enabled Firebase user: uid-123'
+      )
+    })
+
+    test('wraps and rethrows errors from Firebase SDK', async () => {
+      mockUpdateUser.mockRejectedValue(new Error('enable-fail'))
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
+      const { enableFirebaseUser } = await import('../server')
+
+      await expect(enableFirebaseUser('uid-123')).rejects.toThrow(
+        'Failed to enable Firebase user: enable-fail'
+      )
+      expect(errorSpy).toHaveBeenCalledWith(
+        '[firebase-admin] enableFirebaseUser error:',
+        'enable-fail'
+      )
+    })
+  })
+
+  describe('revokeRefreshTokens', () => {
+    test('throws when firebaseUid is empty', async () => {
+      const { revokeRefreshTokens } = await import('../server')
+
+      await expect(revokeRefreshTokens('')).rejects.toThrow(
+        'firebaseUid must be a non-empty string'
+      )
+    })
+
+    test('logs warning and returns when admin SDK unavailable', async () => {
+      process.env.FIREBASE_ADMIN_PROJECT_ID = ''
+      process.env.FIREBASE_ADMIN_CLIENT_EMAIL = ''
+      process.env.FIREBASE_ADMIN_PRIVATE_KEY = ''
+      vi.resetModules()
+
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => void 0)
+      const { revokeRefreshTokens } = await import('../server')
+
+      await expect(revokeRefreshTokens('uid-123')).resolves.toBeUndefined()
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Cannot revoke tokens - Admin SDK not initialized'
+      )
+      expect(mockRevokeRefreshTokens).not.toHaveBeenCalled()
+    })
+
+    test('revokes tokens when admin SDK available', async () => {
+      mockRevokeRefreshTokens.mockResolvedValue(undefined)
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
+      const { revokeRefreshTokens } = await import('../server')
+
+      await revokeRefreshTokens('uid-123')
+
+      expect(mockRevokeRefreshTokens).toHaveBeenCalledWith('uid-123')
+      expect(logSpy).toHaveBeenCalledWith(
+        '[firebase-admin] Successfully revoked refresh tokens for user: uid-123'
+      )
+    })
+
+    test('wraps and rethrows errors from Firebase SDK', async () => {
+      mockRevokeRefreshTokens.mockRejectedValue(new Error('revoke-fail'))
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
+      const { revokeRefreshTokens } = await import('../server')
+
+      await expect(revokeRefreshTokens('uid-123')).rejects.toThrow(
+        'Failed to revoke refresh tokens: revoke-fail'
+      )
+      expect(errorSpy).toHaveBeenCalledWith(
+        '[firebase-admin] revokeRefreshTokens error:',
+        'revoke-fail'
+      )
+    })
+  })
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
 })

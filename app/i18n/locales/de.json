@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Etwas ist schief gelaufen",
-    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
+    "emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden"
   },
   "landing": {
     "features": {
@@ -261,6 +263,13 @@
       "updateSuccess": "Turnier erfolgreich aktualisiert",
       "updateSuccessDesc": "Das Turnier wurde erfolgreich aktualisiert."
     },
+    "user": {
+      "cannotChangeOwnRole": "Sie können Ihre eigene Rolle nicht ändern",
+      "cannotDeactivateOwnAccount": "Sie können Ihr eigenes Konto nicht deaktivieren",
+      "cannotReactivateOwnAccount": "Sie können Ihr eigenes Konto nicht reaktivieren",
+      "failedToUpdateRole": "Rolle konnte nicht aktualisiert werden",
+      "missingUserId": "Benutzer-ID fehlt"
+    },
     "validation": {
       "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
       "emailRequired": "E-Mail ist erforderlich",
@@ -299,7 +308,7 @@
     "description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung."
   },
   "roles": {
-    "admin": "Administrator",
+    "admin": "Admin",
     "billing": "Abrechnung",
     "editor": "Redakteur",
     "manager": "Manager",
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Benutzer deaktivieren",
-      "reactivateUser": "Benutzer reaktivieren",
-      "updateRole": "Rolle aktualisieren",
+      "deactivateUser": "Deaktivieren",
+      "reactivateUser": "Reaktivieren",
       "viewDetails": "Details ansehen"
     },
     "auditActions": {
@@ -404,29 +412,29 @@
       "manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
     },
     "fields": {
-      "assignRole": "Rolle zuweisen",
+      "assignedRole": "Zugewiesene Rolle",
       "createdAt": "Erstellt am",
       "currentRole": "Aktuelle Rolle",
       "displayName": "Anzeigename",
       "email": "E-Mail",
       "performedBy": "Durchgeführt von",
-      "reason": "Grund",
       "role": "Rolle"
     },
     "messages": {
       "deactivated": "Deaktiviert",
+      "displayNameUpdatedSuccessfully": "Anzeigename erfolgreich aktualisiert",
       "noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
       "noUsers": "Keine Benutzer gefunden",
       "noUsersDescription": "Es wurden noch keine Benutzer erstellt.",
       "roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
       "userDeactivatedSuccessfully": "Benutzer erfolgreich deaktiviert",
       "userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert",
-      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert"
+      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
+      "confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
+      "confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?"
     },
     "placeholders": {
-      "reasonForChange": "Grund für Rollenänderung eingeben (optional)",
-      "reasonForDeactivation": "Grund für Deaktivierung eingeben (optional)",
-      "reasonForReactivation": "Grund für Reaktivierung eingeben (optional)"
+      "displayName": "Anzeigename eingeben"
     },
     "titles": {
       "allUsers": "Alle Benutzer",

@@ -25,15 +25,7 @@ vi.mock('react-router', async () => {
 // Mock useTranslation
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'common.titles.about': 'About',
-        'about.title': 'About Tournado',
-        'about.description':
-          'Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
     i18n: { language: 'en' },
   }),
 }))
@@ -48,8 +40,8 @@ describe('About Page', () => {
       )
 
       expect(
-        screen.getByRole('heading', { level: 2, name: 'About Tournado' })
-      ).toHaveTextContent('About Tournado')
+        screen.getByRole('heading', { level: 2, name: 'about.title' })
+      ).toHaveTextContent('about.title')
     })
 
     test('should render all main sections', () => {
@@ -60,7 +52,7 @@ describe('About Page', () => {
       )
 
       // Check main sections are present
-      expect(screen.getByText('About Tournado')).toBeInTheDocument()
+      expect(screen.getByText('about.title')).toBeInTheDocument()
       expect(screen.getByText('Version')).toBeInTheDocument()
       expect(screen.getByText('Features')).toBeInTheDocument()
       expect(screen.getByText('Technology Stack')).toBeInTheDocument()
@@ -86,9 +78,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      expect(
-        screen.getByText(/Tournado is a comprehensive tournament management platform/)
-      ).toBeInTheDocument()
+      expect(screen.getByText('about.description')).toBeInTheDocument()
     })
 
     test('should render feature list', () => {
@@ -144,7 +134,7 @@ describe('About Page', () => {
         </MemoryRouter>
       )
 
-      const heading = screen.getByRole('heading', { level: 2, name: 'About Tournado' })
+      const heading = screen.getByRole('heading', { level: 2, name: 'about.title' })
       expect(heading).toHaveClass('text-3xl', 'font-bold')
     })
 
@@ -184,7 +174,7 @@ describe('About Page', () => {
       const h2Elements = screen.getAllByRole('heading', { level: 2 })
       const h3Elements = screen.getAllByRole('heading', { level: 3 })
 
-      expect(h2Elements).toHaveLength(1) // About Tournado (from LayoutHeader)
+      expect(h2Elements).toHaveLength(1) // about.title (from LayoutHeader)
       expect(h3Elements).toHaveLength(3) // Version, Features, Technology Stack
     })
 
@@ -215,8 +205,8 @@ describe('About Page', () => {
 
       // Verify the heading is rendered (translation is mocked at module level)
       expect(
-        screen.getByRole('heading', { level: 2, name: 'About Tournado' })
-      ).toHaveTextContent('About Tournado')
+        screen.getByRole('heading', { level: 2, name: 'about.title' })
+      ).toHaveTextContent('about.title')
     })
   })
 })

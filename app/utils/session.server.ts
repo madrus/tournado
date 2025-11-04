@@ -12,7 +12,7 @@ import type { CreateUserSessionProps } from '~/features/firebase/types'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
 
-import { isPublicRoute } from './routeUtils.server'
+import { isPublicRoute } from './publicRoutes.server'
 
 invariant(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')
 
@@ -60,6 +60,12 @@ export async function getUser(request: Request): Promise<User | null> {
   if (userId === undefined) return null
 
   const user = await getUserById(userId)
+
+  // Check if user is deactivated
+  if (user && !user.active) {
+    throw await signout(request)
+  }
+
   if (user) return user
 
   throw await signout(request)

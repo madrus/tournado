@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconVariant, IconWeight } from '~/lib/lib.types'
 
@@ -8,8 +8,7 @@ type HomeIconProps = {
   variant?: IconVariant
   weight?: IconWeight
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
-}
+} & SVGProps<SVGSVGElement>
 
 export function HomeIcon({
   className = '',
@@ -17,7 +16,7 @@ export function HomeIcon({
   variant = 'outlined',
   weight = 400,
   'aria-label': ariaLabel = 'Home',
-  ...props
+  ...rest
 }: Readonly<HomeIconProps>): JSX.Element {
   // Authentic paths from downloaded Google Material Symbols SVG files
   const outlinedPath =
@@ -35,17 +34,19 @@ export function HomeIcon({
           ? 1.25
           : 1
       : undefined
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
       className={`inline-block fill-current ${className}`}
-      style={{ strokeWidth }}
       role='img'
       aria-label={ariaLabel}
-      {...props}
+      style={combinedStyle}
     >
       <path d={path} />
     </svg>

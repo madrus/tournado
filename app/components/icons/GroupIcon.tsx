@@ -1,24 +1,22 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
-import type { IconWeight } from '~/lib/lib.types'
+import type { IconVariant, IconWeight } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 
 type GroupIconProps = {
   className?: string
   size?: number
   weight?: IconWeight
-  'data-testid'?: string
+  variant?: IconVariant
   'aria-label'?: string
-  [key: string]: unknown // Allow extra props
-}
+} & SVGProps<SVGSVGElement>
 
 export function GroupIcon({
   className = '',
   size = 24,
   weight = 400,
-  'data-testid': dataTestId,
   'aria-label': ariaLabel = 'Group',
-  ...props
+  ...rest
 }: Readonly<GroupIconProps>): JSX.Element {
   // Authentic path from downloaded Google Material Symbols SVG file
   const path =
@@ -34,17 +32,19 @@ export function GroupIcon({
   }
   const strokeWidth = getStrokeWidth(weight)
 
+  const { style, ...restProps } = rest
+  const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
+
   return (
     <svg
+      {...restProps}
       width={size}
       height={size}
       viewBox='0 -960 960 960'
       className={cn('inline-block fill-current', className)}
-      data-testid={dataTestId}
-      style={{ strokeWidth }}
       role='img'
       aria-label={ariaLabel}
-      {...props}
+      style={combinedStyle}
     >
       <path d={path} />
     </svg>

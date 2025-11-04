@@ -6,21 +6,9 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { TeamsLayoutHeader } from '../TeamsLayoutHeader'
 
-// Mock react-i18next
-const mockT = (key: string) => {
-  const translations: Record<string, string> = {
-    'admin.team.title': 'Admin Teams',
-    'admin.team.description': 'Manage teams in the admin panel',
-    'common.titles.teams': 'Teams',
-    'teams.description': 'Register your team(s) for one or more tournaments',
-    'common.actions.add': 'ADD',
-  }
-  return translations[key] || key
-}
-
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: mockT,
+    t: (key: string) => key,
     i18n: { language: 'en' },
   }),
 }))
@@ -42,25 +30,27 @@ describe('TeamsLayoutHeader', () => {
   it('should render public variant correctly', () => {
     renderWithRouter(<TeamsLayoutHeader variant='public' />)
 
-    expect(screen.getByRole('heading', { name: 'Teams' })).toBeInTheDocument()
     expect(
-      screen.getByText('Register your team(s) for one or more tournaments')
+      screen.getByRole('heading', { name: 'common.titles.teams' })
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'ADD' })).toBeInTheDocument()
+    expect(screen.getByText('teams.description')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'common.actions.add' })).toBeInTheDocument()
   })
 
   it('should render admin variant correctly', () => {
     renderWithRouter(<TeamsLayoutHeader variant='admin' />)
 
-    expect(screen.getByRole('heading', { name: 'Admin Teams' })).toBeInTheDocument()
-    expect(screen.getByText('Manage teams in the admin panel')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'ADD' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'admin.team.title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('admin.team.description')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'common.actions.add' })).toBeInTheDocument()
   })
 
   it('should use custom addButtonTo prop', () => {
     renderWithRouter(<TeamsLayoutHeader variant='public' addButtonTo='custom-path' />)
 
-    const addButton = screen.getByRole('link', { name: 'ADD' })
+    const addButton = screen.getByRole('link', { name: 'common.actions.add' })
     expect(addButton).toHaveAttribute('href', '/custom-path')
   })
 

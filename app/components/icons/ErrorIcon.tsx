@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type ErrorIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function ErrorIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Error',
+  ...rest
 }: Readonly<ErrorIconProps>): JSX.Element {
   // Circle error icon paths
   const circlePath =
@@ -33,6 +34,7 @@ export function ErrorIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -44,18 +46,20 @@ export function ErrorIcon({
     >
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
-      {/* Exclamation mark in white with weight 600 */}
+      {/* Exclamation mark in white for consistent contrast */}
       <path
         d={linePath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
+        data-testid='error-icon-line'
       />
       <path
         d={dotPath}
         stroke='white'
         strokeWidth={exclamationStrokeWidth}
         fill='none'
+        data-testid='error-icon-dot'
       />
     </svg>
   )

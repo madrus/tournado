@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "حدث خطأ ما",
-    "teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً."
+    "teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً.",
+    "emailOutboxInvalidFormat": "تنسيق صندوق الصادر للبريد الإلكتروني غير صالح",
+    "emailOutboxReadFailure": "فشل قراءة صندوق الصادر للبريد الإلكتروني"
   },
   "landing": {
     "features": {
@@ -261,6 +263,13 @@
       "updateSuccess": "تم تحديث البطولة بنجاح",
       "updateSuccessDesc": "تم تحديث البطولة بنجاح."
     },
+    "user": {
+      "cannotChangeOwnRole": "لا يمكنك تغيير دورك الخاص",
+      "cannotDeactivateOwnAccount": "لا يمكنك إلغاء تنشيط حسابك الخاص",
+      "cannotReactivateOwnAccount": "لا يمكنك إعادة تنشيط حسابك الخاص",
+      "failedToUpdateRole": "فشل تحديث الدور",
+      "missingUserId": "معرف المستخدم مفقود"
+    },
     "validation": {
       "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
       "emailRequired": "البريد الإلكتروني مطلوب",
@@ -299,7 +308,7 @@
     "description": "إدارة إعدادات ملفك الشخصي ومعلومات الحساب لإدارة البطولات."
   },
   "roles": {
-    "admin": "مسؤول",
+    "admin": "Admin",
     "billing": "فواتير",
     "editor": "محرر",
     "manager": "مدير",
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "إلغاء تنشيط المستخدم",
-      "reactivateUser": "إعادة تنشيط المستخدم",
-      "updateRole": "تحديث الدور",
+      "deactivateUser": "إلغاء التنشيط",
+      "reactivateUser": "إعادة التنشيط",
       "viewDetails": "عرض التفاصيل"
     },
     "auditActions": {
@@ -404,29 +412,29 @@
       "manageUsersAndRoles": "إدارة حسابات المستخدمين وتعيين الأدوار"
     },
     "fields": {
-      "assignRole": "تعيين الدور",
+      "assignedRole": "الدور المعين",
       "createdAt": "تاريخ الإنشاء",
       "currentRole": "الدور الحالي",
       "displayName": "اسم العرض",
       "email": "البريد الإلكتروني",
       "performedBy": "تم بواسطة",
-      "reason": "السبب",
       "role": "الدور"
     },
     "messages": {
       "deactivated": "غير نشط",
+      "displayNameUpdatedSuccessfully": "تم تحديث اسم العرض بنجاح",
       "noAuditLogs": "لم يتم العثور على إدخالات سجل التدقيق",
       "noUsers": "لم يتم العثور على مستخدمين",
       "noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
       "roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
       "userDeactivatedSuccessfully": "تم إلغاء تنشيط المستخدم بنجاح",
       "userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح",
-      "userIsDeactivated": "هذا المستخدم غير نشط حالياً"
+      "userIsDeactivated": "هذا المستخدم غير نشط حالياً",
+      "confirmDeactivate": "هل أنت متأكد أنك تريد إلغاء تنشيط هذا المستخدم؟",
+      "confirmReactivate": "هل تريد إعادة تنشيط هذا المستخدم حتى يتمكن من تسجيل الدخول مرة أخرى؟"
     },
     "placeholders": {
-      "reasonForChange": "أدخل سبب تغيير الدور (اختياري)",
-      "reasonForDeactivation": "أدخل سبب إلغاء التنشيط (اختياري)",
-      "reasonForReactivation": "أدخل سبب إعادة التنشيط (اختياري)"
+      "displayName": "أدخل اسم العرض"
     },
     "titles": {
       "allUsers": "جميع المستخدمين",

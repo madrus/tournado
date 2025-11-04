@@ -33,6 +33,47 @@ export class AdminTeamsPage extends BasePage {
     return this.page.locator('body')
   }
 
+  // Form field locators
+  get tournamentCombo(): Locator {
+    return this.page.getByRole('combobox', { name: /toernooi.*select option/i })
+  }
+
+  get divisionCombo(): Locator {
+    return this.page.getByRole('combobox', { name: /teamklasse.*select option/i })
+  }
+
+  get categoryCombo(): Locator {
+    return this.page.getByRole('combobox', { name: /categorie.*select option/i })
+  }
+
+  get clubNameInput(): Locator {
+    return this.page.getByRole('textbox', { name: /clubnaam/i })
+  }
+
+  get teamNameInput(): Locator {
+    return this.page.getByRole('textbox', { name: /teamnaam/i })
+  }
+
+  get leaderNameInput(): Locator {
+    return this.page.getByRole('textbox', { name: /naam teamleider/i })
+  }
+
+  get leaderEmailInput(): Locator {
+    return this.page.getByRole('textbox', { name: /e-mail teamleider/i })
+  }
+
+  get leaderPhoneInput(): Locator {
+    return this.page.getByRole('textbox', { name: /telefoon teamleider/i })
+  }
+
+  get privacyCheckbox(): Locator {
+    return this.page.getByRole('checkbox', { name: /privacybeleid/i })
+  }
+
+  get saveButton(): Locator {
+    return this.page.getByRole('button', { name: 'Opslaan' })
+  }
+
   // Navigation methods
   async goto(): Promise<void> {
     await this.page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams', {
@@ -125,5 +166,71 @@ export class AdminTeamsPage extends BasePage {
 
   async expectPageLoaded(): Promise<void> {
     await expect(this.layoutContainer).toBeVisible()
+  }
+
+  async expectToBeOnTeamFormPage(): Promise<void> {
+    await expect(this.page).toHaveURL(/\/a7k9m2x5p8w1n4q6r3y8b5t1\/teams\/new/)
+    await expect(this.page.locator('form')).toBeVisible()
+  }
+
+  // Form interaction methods
+  async selectDivision(divisionName: string): Promise<void> {
+    await expect(this.divisionCombo).toBeVisible()
+    await this.divisionCombo.click()
+
+    const divisionDropdown = this.page.locator('[data-radix-select-content]').last()
+    await expect(divisionDropdown).toBeVisible({ timeout: 3000 })
+
+    const divisionOption = divisionDropdown.getByRole('option', {
+      name: new RegExp(divisionName, 'i'),
+    })
+    await expect(divisionOption).toBeVisible({ timeout: 3000 })
+    await divisionOption.click()
+    console.log(`✅ Division "${divisionName}" successfully selected`)
+  }
+
+  async selectCategory(categoryName: string): Promise<void> {
+    await expect(this.categoryCombo).toBeVisible()
+    await this.categoryCombo.click()
+
+    const categoryDropdown = this.page.locator('[data-radix-select-content]').last()
+    await expect(categoryDropdown).toBeVisible({ timeout: 3000 })
+
+    const categoryOption = categoryDropdown.getByRole('option', {
+      name: new RegExp(categoryName, 'i'),
+    })
+    await expect(categoryOption).toBeVisible({ timeout: 3000 })
+    await categoryOption.click()
+    console.log(`✅ Category "${categoryName}" successfully selected`)
+  }
+
+  async fillTeamInformation(data: {
+    clubName: string
+    teamName: string
+    leaderName: string
+    leaderEmail: string
+    leaderPhone: string
+  }): Promise<void> {
+    await this.clubNameInput.fill(data.clubName)
+    await this.teamNameInput.fill(data.teamName)
+    await this.leaderNameInput.fill(data.leaderName)
+    await this.leaderEmailInput.fill(data.leaderEmail)
+    await this.leaderPhoneInput.fill(data.leaderPhone)
+  }
+
+  async acceptPrivacyPolicy(): Promise<void> {
+    await expect(this.privacyCheckbox).toBeVisible()
+    await this.privacyCheckbox.check()
+    await expect(this.privacyCheckbox).toBeChecked()
+  }
+
+  async submitTeamForm(): Promise<string | undefined> {
+    await Promise.all([
+      this.page.waitForURL(/\/teams\/[^/]+$/, { timeout: 15000 }),
+      this.saveButton.click(),
+    ])
+    const urlMatch = this.page.url().match(/\/teams\/([^/]+)$/)
+    expect(urlMatch).not.toBeNull()
+    return urlMatch?.[1]
   }
 }

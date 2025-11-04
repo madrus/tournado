@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Quelque chose s'est mal passé",
-    "teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard."
+    "teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
+    "emailOutboxInvalidFormat": "La boîte d'envoi des e-mails a un format invalide",
+    "emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails"
   },
   "landing": {
     "features": {
@@ -261,6 +263,13 @@
       "updateSuccess": "Tournoi mis à jour avec succès",
       "updateSuccessDesc": "Le tournoi a été mis à jour avec succès."
     },
+    "user": {
+      "cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
+      "cannotDeactivateOwnAccount": "Vous ne pouvez pas désactiver votre propre compte",
+      "cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte",
+      "failedToUpdateRole": "Échec de la mise à jour du rôle",
+      "missingUserId": "Identifiant d'utilisateur manquant"
+    },
     "validation": {
       "emailInvalid": "Veuillez saisir une adresse email valide",
       "emailRequired": "L'adresse e-mail est requise",
@@ -299,7 +308,7 @@
     "description": "Gérez les paramètres de votre profil et les informations de compte pour la gestion des tournois."
   },
   "roles": {
-    "admin": "Administrateur",
+    "admin": "Admin",
     "billing": "Facturation",
     "editor": "Éditeur",
     "manager": "Gestionnaire",
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Désactiver l'utilisateur",
-      "reactivateUser": "Réactiver l'utilisateur",
-      "updateRole": "Mettre à jour le rôle",
+      "deactivateUser": "Désactiver",
+      "reactivateUser": "Réactiver",
       "viewDetails": "Voir les détails"
     },
     "auditActions": {
@@ -404,29 +412,29 @@
       "manageUsersAndRoles": "Gérer les comptes utilisateurs et attribuer des rôles"
     },
     "fields": {
-      "assignRole": "Attribuer un rôle",
+      "assignedRole": "Rôle attribué",
       "createdAt": "Créé le",
       "currentRole": "Rôle actuel",
       "displayName": "Nom d'affichage",
       "email": "E-mail",
       "performedBy": "Effectué par",
-      "reason": "Raison",
       "role": "Rôle"
     },
     "messages": {
       "deactivated": "Désactivé",
+      "displayNameUpdatedSuccessfully": "Nom d'affichage mis à jour avec succès",
       "noAuditLogs": "Aucune entrée de journal d'audit trouvée",
       "noUsers": "Aucun utilisateur trouvé",
       "noUsersDescription": "Aucun utilisateur n'a encore été créé.",
       "roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
       "userDeactivatedSuccessfully": "Utilisateur désactivé avec succès",
       "userReactivatedSuccessfully": "Utilisateur réactivé avec succès",
-      "userIsDeactivated": "Cet utilisateur est actuellement désactivé"
+      "userIsDeactivated": "Cet utilisateur est actuellement désactivé",
+      "confirmDeactivate": "Voulez-vous vraiment désactiver cet utilisateur ?",
+      "confirmReactivate": "Réactiver cet utilisateur afin qu'il puisse se reconnecter ?"
     },
     "placeholders": {
-      "reasonForChange": "Entrez la raison du changement de rôle (optionnel)",
-      "reasonForDeactivation": "Entrez la raison de la désactivation (optionnel)",
-      "reasonForReactivation": "Entrez la raison de la réactivation (optionnel)"
+      "displayName": "Entrez le nom d'affichage"
     },
     "titles": {
       "allUsers": "Tous les utilisateurs",

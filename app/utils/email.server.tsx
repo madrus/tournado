@@ -8,6 +8,43 @@ import type { Team } from '~/features/teams/types'
 import { getTeamLeader } from '~/models/team.server'
 import type { Tournament } from '~/models/tournament.server'
 
+type EmailPayload = {
+  from: string
+  to: string
+  subject: string
+  html: string
+}
+
+type EmailOutboxEntry = EmailPayload & {
+  id: string
+  timestamp: string
+}
+
+type EmailOutboxHandler = (emailData: EmailPayload) => Promise<EmailOutboxEntry>
+
+// Cache for MSW email handler (lazy loaded on first use)
+let mswEmailHandler: EmailOutboxHandler | null = null
+let mswHandlerLoaded = false
+
+/**
+ * Lazy load and cache MSW email handler for E2E testing
+ * Only loads once on first call, subsequent calls use cached handler
+ */
+async function getEmailOutboxHandler(): Promise<EmailOutboxHandler | null> {
+  if (!mswHandlerLoaded) {
+    try {
+      const { addEmailToOutbox } = (await import('test/mocks/handlers/emails.js')) as {
+        addEmailToOutbox: EmailOutboxHandler
+      }
+      mswEmailHandler = addEmailToOutbox
+    } catch (error) {
+      console.error('Failed to load MSW email handlers:', error)
+    }
+    mswHandlerLoaded = true
+  }
+  return mswEmailHandler
+}
+
 // Toggle this to false when using Resend sandbox, true when using your own domain
 const isRealDomainRegistered = false
 
@@ -52,6 +89,19 @@ function maskEmail(email: string): string {
  */
 const maskEmails = (emails: string | string[]): string =>
   Array.isArray(emails) ? emails.map(maskEmail).join(', ') : maskEmail(emails)
+
+/**
+ * Adds email to MSW outbox for E2E testing
+ * Lazy loads the handler on first call and caches it
+ */
+async function storeEmailForTesting(emailPayload: EmailPayload): Promise<void> {
+  const handler = await getEmailOutboxHandler()
+  if (!handler) {
+    throw new Error('MSW email handlers not available in test environment')
+  }
+  await handler(emailPayload)
+  console.info(`[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`)
+}
 
 export async function sendConfirmationEmail(
   team: Team,
@@ -112,18 +162,8 @@ export async function sendConfirmationEmail(
   try {
     // In E2E test environment, store the email in MSW outbox instead of sending
     if (process.env.PLAYWRIGHT === 'true') {
-      try {
-        const { addEmailToOutbox } = await import('../../mocks/handlers/emails.js')
-        addEmailToOutbox(emailPayload)
-
-        console.info(
-          `[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`
-        )
-        return
-      } catch (importError) {
-        console.error('Failed to import MSW email handlers for testing:', importError)
-        // Fall through to regular email sending
-      }
+      await storeEmailForTesting(emailPayload)
+      return
     }
 
     const resend = getResendClient()

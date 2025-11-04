@@ -171,7 +171,9 @@
   },
   "errors": {
     "somethingWentWrong": "Something went wrong",
-    "teamLoadFailed": "Unable to load team details. Please try again later."
+    "teamLoadFailed": "Unable to load team details. Please try again later.",
+    "emailOutboxInvalidFormat": "Email outbox data has an invalid format",
+    "emailOutboxReadFailure": "Failed to read email outbox"
   },
   "landing": {
     "features": {
@@ -260,6 +262,13 @@
       "updateErrorDesc": "There was an error updating the tournament. Please try again.",
       "updateSuccess": "Tournament updated successfully",
       "updateSuccessDesc": "The tournament has been updated successfully."
+    },
+    "user": {
+      "cannotChangeOwnRole": "You Cannot Change Your Own Role",
+      "cannotDeactivateOwnAccount": "You Cannot Deactivate Your Own Account",
+      "cannotReactivateOwnAccount": "You Cannot Reactivate Your Own Account",
+      "failedToUpdateRole": "Failed to Update Role",
+      "missingUserId": "Missing User ID"
     },
     "validation": {
       "emailInvalid": "Please enter a valid email address",
@@ -387,9 +396,8 @@
   },
   "users": {
     "actions": {
-      "deactivateUser": "Deactivate User",
-      "reactivateUser": "Reactivate User",
-      "updateRole": "Update Role",
+      "deactivateUser": "Deactivate",
+      "reactivateUser": "Reactivate",
       "viewDetails": "View Details"
     },
     "auditActions": {
@@ -404,13 +412,12 @@
       "manageUsersAndRoles": "Manage user accounts and assign roles"
     },
     "fields": {
-      "assignRole": "Assign Role",
+      "assignedRole": "Assigned Role",
       "createdAt": "Created At",
       "currentRole": "Current Role",
       "displayName": "Display Name",
       "email": "Email",
       "performedBy": "Performed by",
-      "reason": "Reason",
       "role": "Role"
     },
     "messages": {
@@ -418,15 +425,16 @@
       "noAuditLogs": "No audit log entries found",
       "noUsers": "No users found",
       "noUsersDescription": "No users have been created yet.",
+      "displayNameUpdatedSuccessfully": "Display name updated successfully",
       "roleUpdatedSuccessfully": "User role updated successfully",
       "userDeactivatedSuccessfully": "User deactivated successfully",
       "userReactivatedSuccessfully": "User reactivated successfully",
-      "userIsDeactivated": "This user is currently deactivated"
+      "userIsDeactivated": "This user is currently deactivated",
+      "confirmDeactivate": "Are you sure you want to deactivate this user?",
+      "confirmReactivate": "Reactivate this user so they can log in again?"
     },
     "placeholders": {
-      "reasonForChange": "Enter reason for role change (optional)",
-      "reasonForDeactivation": "Enter reason for deactivation (optional)",
-      "reasonForReactivation": "Enter reason for reactivation (optional)"
+      "displayName": "Enter display name"
     },
     "titles": {
       "allUsers": "All Users",

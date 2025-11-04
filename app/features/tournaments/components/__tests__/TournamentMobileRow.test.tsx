@@ -14,13 +14,7 @@ vi.mock('~/hooks/useLanguageDirection', () => ({
 // Mock i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => {
-      const translations: Record<string, string> = {
-        'common.actions.delete': 'Delete',
-        'tournaments.deleteTournament': 'Delete Tournament',
-      }
-      return translations[key] || key
-    },
+    t: (key: string) => key,
   }),
 }))
 
@@ -124,9 +118,9 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       expect(deleteButton).toBeInTheDocument()
-      expect(screen.getByText('Delete')).toBeInTheDocument()
+      expect(screen.getByText('common.actions.delete')).toBeInTheDocument()
     })
   })
 
@@ -157,7 +151,7 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       fireEvent.click(deleteButton)
 
       expect(mockOnDelete).toHaveBeenCalledWith('tournament-1')
@@ -173,7 +167,7 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       fireEvent.click(deleteButton)
 
       // onClick should not be called when delete button is clicked
@@ -231,7 +225,7 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       expect(deleteButton).toHaveClass('ps-3')
     })
 
@@ -282,7 +276,7 @@ describe('TournamentMobileRow', () => {
       // Verify all elements are present that are part of swipe interaction
       expect(screen.getByText('Spring Tournament 2024')).toBeInTheDocument()
       expect(screen.getByText('Amsterdam')).toBeInTheDocument()
-      expect(screen.getByLabelText('Delete Tournament')).toBeInTheDocument()
+      expect(screen.getByLabelText('tournaments.deleteTournament')).toBeInTheDocument()
       // Actual swipe testing requires more complex setup with touch event simulation
     })
   })
@@ -298,9 +292,9 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       expect(deleteButton).toBeInTheDocument()
-      expect(deleteButton).toHaveAttribute('aria-label', 'Delete Tournament')
+      expect(deleteButton).toHaveAttribute('aria-label', 'tournaments.deleteTournament')
     })
 
     it('should render delete button as button type', () => {
@@ -313,7 +307,7 @@ describe('TournamentMobileRow', () => {
         />
       )
 
-      const deleteButton = screen.getByLabelText('Delete Tournament')
+      const deleteButton = screen.getByLabelText('tournaments.deleteTournament')
       expect(deleteButton).toHaveAttribute('type', 'button')
     })
   })

@@ -28,8 +28,8 @@ vi.mock('~/models/user.server', () => ({
   getUserById: vi.fn(),
 }))
 
-// Mock route utils
-vi.mock('../routeUtils.server', () => ({
+// Mock public route helper
+vi.mock('../publicRoutes.server', () => ({
   isPublicRoute: vi.fn(),
 }))
 
@@ -47,7 +47,7 @@ const { validateFirebaseSession, clearFirebaseSession } = await import(
   '~/features/firebase/session.server'
 )
 const { getUserById } = await import('~/models/user.server')
-const { isPublicRoute } = await import('../routeUtils.server')
+const { isPublicRoute } = await import('../publicRoutes.server')
 
 describe('session.server', () => {
   const mockRequest = new Request('http://localhost:3000/test')

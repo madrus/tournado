@@ -6,6 +6,38 @@ import {
   createColorVariantObject,
 } from '~/components/shared/colorVariants'
 
+// TypeScript type exports for component prop typing
+
+/**
+ * Type definition for buttonVariants props.
+ * Use this when defining component props that accept button styling options.
+ */
+export type ButtonVariants = VariantProps<typeof buttonVariants>
+
+/**
+ * Type definition for button visual variants.
+ * Ensures type safety when specifying button styles.
+ */
+export type ButtonVariant = NonNullable<ButtonVariants['variant']>
+
+/**
+ * Type definition for button color options.
+ * Aligned with the design system's color palette.
+ */
+export type ButtonColor = NonNullable<ButtonVariants['color']>
+
+/**
+ * Type definition for button size options.
+ * Provides type safety for size-related props.
+ */
+export type ButtonSize = NonNullable<ButtonVariants['size']>
+
+/**
+ * Shared color variant key type for button components.
+ * Ensures consistency with the design system's color palette.
+ */
+export type ButtonColorVariant = ColorVariantKey
+
 /**
  * Button component variants with comprehensive styling and interaction states.
  *
@@ -28,6 +60,39 @@ import {
  * </button>
  * ```
  */
+
+/**
+ * Dark mode darker background classes for buttons.
+ * Maps color keys to their darker variants (700 weight) for dark mode.
+ *
+ * IMPORTANT: Must use explicit, complete class names (not template literals)
+ * for Tailwind's static analysis to detect and include them in the CSS bundle.
+ *
+ * Used by components that need darker backgrounds in dark mode (e.g., ActionButton).
+ */
+export const DARK_MODE_DARKER_CLASSES: Record<ColorVariantKey, string> = {
+  amber: 'dark:bg-amber-700 dark:border-amber-700',
+  blue: 'dark:bg-blue-700 dark:border-blue-700',
+  brand: 'dark:bg-red-700 dark:border-red-700',
+  disabled: 'dark:bg-gray-700 dark:border-gray-700',
+  emerald: 'dark:bg-emerald-700 dark:border-emerald-700',
+  fuchsia: 'dark:bg-fuchsia-700 dark:border-fuchsia-700',
+  green: 'dark:bg-green-700 dark:border-green-700',
+  indigo: 'dark:bg-indigo-700 dark:border-indigo-700',
+  lime: 'dark:bg-lime-700 dark:border-lime-700',
+  orange: 'dark:bg-orange-700 dark:border-orange-700',
+  pink: 'dark:bg-pink-700 dark:border-pink-700',
+  primary: 'dark:bg-emerald-700 dark:border-emerald-700',
+  purple: 'dark:bg-purple-700 dark:border-purple-700',
+  red: 'dark:bg-red-700 dark:border-red-700',
+  rose: 'dark:bg-rose-700 dark:border-rose-700',
+  sky: 'dark:bg-sky-700 dark:border-sky-700',
+  slate: 'dark:bg-slate-700 dark:border-slate-700',
+  teal: 'dark:bg-teal-700 dark:border-teal-700',
+  violet: 'dark:bg-violet-700 dark:border-violet-700',
+  yellow: 'dark:bg-yellow-700 dark:border-yellow-700',
+  zinc: 'dark:bg-zinc-700 dark:border-zinc-700',
+}
 
 /**
  * Helper function to generate primary button variant classes for a given color.
@@ -130,6 +195,27 @@ export const buttonVariants = cva(
       ...Object.keys(COLOR_VARIANT_KEYS).map(color =>
         createSecondaryVariant(color as ColorVariantKey)
       ),
+      // Dark mode text colors for primary buttons
+      { variant: 'primary', color: 'amber', class: 'dark:text-amber-50' },
+      { variant: 'primary', color: 'blue', class: 'dark:text-blue-50' },
+      { variant: 'primary', color: 'brand', class: 'dark:text-red-50' },
+      { variant: 'primary', color: 'emerald', class: 'dark:text-emerald-50' },
+      { variant: 'primary', color: 'fuchsia', class: 'dark:text-fuchsia-50' },
+      { variant: 'primary', color: 'green', class: 'dark:text-green-50' },
+      { variant: 'primary', color: 'indigo', class: 'dark:text-indigo-50' },
+      { variant: 'primary', color: 'lime', class: 'dark:text-lime-50' },
+      { variant: 'primary', color: 'orange', class: 'dark:text-orange-50' },
+      { variant: 'primary', color: 'pink', class: 'dark:text-pink-50' },
+      { variant: 'primary', color: 'primary', class: 'dark:text-emerald-50' },
+      { variant: 'primary', color: 'purple', class: 'dark:text-purple-50' },
+      { variant: 'primary', color: 'red', class: 'dark:text-red-50' },
+      { variant: 'primary', color: 'rose', class: 'dark:text-rose-50' },
+      { variant: 'primary', color: 'sky', class: 'dark:text-sky-50' },
+      { variant: 'primary', color: 'slate', class: 'dark:text-slate-50' },
+      { variant: 'primary', color: 'teal', class: 'dark:text-teal-50' },
+      { variant: 'primary', color: 'violet', class: 'dark:text-violet-50' },
+      { variant: 'primary', color: 'yellow', class: 'dark:text-yellow-50' },
+      { variant: 'primary', color: 'zinc', class: 'dark:text-zinc-50' },
     ],
     defaultVariants: {
       variant: 'primary',
@@ -139,34 +225,26 @@ export const buttonVariants = cva(
   }
 )
 
-// TypeScript type exports for component prop typing
-
-/**
- * Type definition for buttonVariants props.
- * Use this when defining component props that accept button styling options.
- */
-export type ButtonVariants = VariantProps<typeof buttonVariants>
-
-/**
- * Type definition for button visual variants.
- * Ensures type safety when specifying button styles.
- */
-export type ButtonVariant = NonNullable<ButtonVariants['variant']>
-
-/**
- * Type definition for button color options.
- * Aligned with the design system's color palette.
- */
-export type ButtonColor = NonNullable<ButtonVariants['color']>
-
-/**
- * Type definition for button size options.
- * Provides type safety for size-related props.
- */
-export type ButtonSize = NonNullable<ButtonVariants['size']>
-
-/**
- * Shared color variant key type for button components.
- * Ensures consistency with the design system's color palette.
- */
-export type ButtonColorVariant = ColorVariantKey
+export const getIconCircleColorVariants = (): Record<ButtonColor, string> => ({
+  amber: 'border-amber-600/70',
+  blue: 'border-blue-600/70',
+  brand: 'border-brand-600/70',
+  disabled: 'border-button-neutral-secondary-border',
+  emerald: 'border-emerald-600/70',
+  fuchsia: 'border-fuchsia-600/70',
+  green: 'border-green-600/70',
+  indigo: 'border-indigo-600/70',
+  lime: 'border-lime-600/70',
+  orange: 'border-orange-600/70',
+  pink: 'border-pink-600/70',
+  primary: 'border-primary-600/70',
+  purple: 'border-purple-600/70',
+  red: 'border-red-600/70',
+  rose: 'border-rose-600/70',
+  sky: 'border-sky-600/70',
+  slate: 'border-slate-600/70',
+  teal: 'border-teal-600/70',
+  violet: 'border-violet-600/70',
+  yellow: 'border-yellow-600/70',
+  zinc: 'border-zinc-600/70',
+})

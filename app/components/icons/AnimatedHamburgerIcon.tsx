@@ -1,19 +1,21 @@
-import { type JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 type AnimatedHamburgerIconProps = {
   isOpen: boolean
   isRTL: boolean
   className?: string
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export const AnimatedHamburgerIcon = ({
   isOpen,
   isRTL,
   className = 'w-6 h-6',
   'aria-label': ariaLabel = 'Menu',
+  ...rest
 }: Readonly<AnimatedHamburgerIconProps>): JSX.Element => (
   <svg
+    {...rest} /* spread first so explicit props below can override rest props */
     className={className}
     viewBox='0 0 24 24'
     fill='none'

@@ -267,5 +267,111 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
   }
 }
 
+/**
+ * Disables a Firebase user account
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level deactivation. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
+ * @param firebaseUid - The Firebase UID of the user to disable
+ * @throws Error if disabling fails (but not if Admin SDK is unavailable)
+ */
+export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: true,
+    })
+    console.log(`[firebase-admin] Successfully disabled Firebase user: ${firebaseUid}`)
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during disableFirebaseUser'
+    console.error('[firebase-admin] disableFirebaseUser error:', message)
+    throw new Error(`Failed to disable Firebase user: ${message}`)
+  }
+}
+
+/**
+ * Enables a Firebase user account
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level activation. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
+ * @param firebaseUid - The Firebase UID of the user to enable
+ * @throws Error if enabling fails (but not if Admin SDK is unavailable)
+ */
+export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.updateUser(firebaseUid, {
+      disabled: false,
+    })
+    console.log(`[firebase-admin] Successfully enabled Firebase user: ${firebaseUid}`)
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Unknown error during enableFirebaseUser'
+    console.error('[firebase-admin] enableFirebaseUser error:', message)
+    throw new Error(`Failed to enable Firebase user: ${message}`)
+  }
+}
+
+/**
+ * Revokes all refresh tokens for a Firebase user, effectively logging them out from all devices
+ *
+ * Note: This is a best-effort operation. If Firebase Admin SDK is not initialized,
+ * the function will log a warning and return without throwing, allowing the application
+ * to proceed with database-level operations. This differs from critical operations
+ * like token verification which must throw if unavailable.
+ *
+ * @param firebaseUid - The Firebase UID of the user to revoke tokens for
+ * @throws Error if revoking fails (but not if Admin SDK is unavailable)
+ */
+export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
+  if (!firebaseUid?.trim()) {
+    throw new Error('firebaseUid must be a non-empty string')
+  }
+
+  if (!adminAuth) {
+    console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+    return
+  }
+
+  try {
+    await adminAuth.revokeRefreshTokens(firebaseUid)
+    console.log(
+      `[firebase-admin] Successfully revoked refresh tokens for user: ${firebaseUid}`
+    )
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Unknown error during revokeRefreshTokens'
+    console.error('[firebase-admin] revokeRefreshTokens error:', message)
+    throw new Error(`Failed to revoke refresh tokens: ${message}`)
+  }
+}
+
 export { adminApp, adminAuth }
 export type { App, Auth, DecodedIdToken }

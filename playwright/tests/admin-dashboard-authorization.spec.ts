@@ -1,9 +1,24 @@
+/**
+ * Admin Dashboard Authorization E2E Tests
+ *
+ * Test Scenarios:
+ * - Unauthenticated user redirect to signin
+ * - ADMIN role access to dashboard
+ * - MANAGER role access to dashboard
+ * - REFEREE role access to dashboard
+ * - EDITOR role access to dashboard
+ * - BILLING role access to dashboard
+ * - PUBLIC role blocked from dashboard
+ *
+ * Authentication: Tests multiple roles via loginAsRole helper
+ * Viewport: Mobile (375x812)
+ * Note: Uses helper to dynamically test all role-based access
+ */
 import { expect, type Page, test } from '@playwright/test'
 import type { Role } from '@prisma/client'
 
+import { ADMIN_DASHBOARD_URL } from '../../app/lib/lib.constants'
 import { loginAsRole } from '../helpers/session'
-
-const ADMIN_DASHBOARD_URL = '/a7k9m2x5p8w1n4q6r3y8b5t1'
 
 test.describe('Admin Dashboard Authorization Tests', () => {
   test.beforeEach(async ({ page }) => {

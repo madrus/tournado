@@ -163,7 +163,7 @@ export function FirebaseEmailSignIn({
         variant='primary'
         color='teal'
         size='md'
-        className='w-full md:w-fit md:self-center'
+        className='w-full hover:scale-100 md:w-fit md:self-center md:hover:scale-105'
       >
         {loading ? (
           <div className='flex items-center justify-center gap-2'>

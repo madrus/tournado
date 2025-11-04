@@ -1,7 +1,7 @@
 export { AddIcon } from './AddIcon'
 export { AdminPanelSettingsIcon } from './AdminPanelSettingsIcon'
+export { AnimatedArrowIcon } from './AnimatedArrowIcon'
 export { AnimatedHamburgerIcon } from './AnimatedHamburgerIcon'
-export { AnimatedUnfoldIcon } from './AnimatedUnfoldIcon'
 export { ApparelIcon } from './ApparelIcon'
 export { ArrowDownIcon } from './ArrowDownIcon'
 export { ArrowUpDownIcon } from './ArrowUpDownIcon'

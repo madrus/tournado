@@ -151,10 +151,10 @@ export const toggleChipVariants = cva(
           'border-teal-500 bg-teal-100 dark:bg-teal-200 text-adaptive-teal-selected',
       },
       {
-        color: 'cyan',
+        color: 'sky',
         selected: true,
         className:
-          'border-cyan-500 bg-cyan-100 dark:bg-cyan-200 text-adaptive-cyan-selected',
+          'border-sky-500 bg-sky-100 dark:bg-sky-200 text-adaptive-sky-selected',
       },
       {
         color: 'sky',
@@ -256,7 +256,6 @@ export const toggleChipTextVariants = cva(
       },
       { color: 'lime', selected: true, className: 'text-adaptive-lime-selected' },
       { color: 'teal', selected: true, className: 'text-adaptive-teal-selected' },
-      { color: 'cyan', selected: true, className: 'text-adaptive-cyan-selected' },
       { color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
       {
         color: 'violet',

@@ -37,7 +37,7 @@ alwaysApply: false
 | 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
 | 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
 | 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
-| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Accepted | —          | —             |
+| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Implemented | —          | —             |
 | 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                     | 2025-10-24 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
@@ -397,21 +397,28 @@ The app supports multiple languages (nl, en, fr, ar, tr, de). We need SSR-aware 
 
 Persist language in cookie + localStorage reactively. Read language from cookie on the server during initial request. Use `nl` as fallback. Centralize supported language enumeration for easier maintenance.
 
+**Server-Side Translation Support** (Added 2025-11-02):
+- Server actions and loaders can use `getServerT(request)` to get translation function bound to user's language
+- Language detection via `getLanguageFromRequest(request)` extracts language from cookie with fallback to Dutch
+- Enables localized error messages and server-generated content in user's preferred language
+- Uses `SUPPORTED_LANGUAGE_CODES` for validation (derived from `SUPPORTED_LANGUAGES`)
+
 Implementation references:
-- Eager config: `app/i18n/config.ts` (fallbackLng: `nl`, `SUPPORTED_LANGUAGES`)
+- Eager config: `app/i18n/config.ts` (fallbackLng: `nl`, `SUPPORTED_LANGUAGES`, `SUPPORTED_LANGUAGE_CODES`)
+- Server utilities: `app/i18n/i18n.server.ts` (`getLanguageFromRequest`, `getServerT`)
 - Lazy config: `app/i18n/config.lazy.ts` (on-demand locale loading, caching)
 - Cache utilities: `app/i18n/cache.ts`
 
 ### Consequences
 
-* Pros: SSR compatibility, consistent UX across sessions, easy language management
-* Cons / risks: Keep enum and translation files in sync, cookie handling
+* Pros: SSR compatibility, consistent UX across sessions, easy language management, server-side translations in user's language
+* Cons / risks: Keep enum and translation files in sync, cookie handling, server-side translation key maintenance
 * Supersedes: —
 * Superseded by: —
 
 ### Compliance / Verification
 
-Loader reads cookie; root updates cookie/localStorage on change. Tests verify SSR language and client persistence.
+Loader reads cookie; root updates cookie/localStorage on change. Server actions use `getServerT(request)` for localized messages. Tests verify SSR language detection, client persistence, and server-side translation accuracy.
 
 ## ADR-0010 — CI/CD and Fly.io Deployment Strategy
 
@@ -1346,8 +1353,9 @@ Implement Competition section as central hub for tournament operations with stru
 
 <a id="adr-0026"></a>
 **Date**: 2025-10-08
-**Status**: Accepted
+**Status**: Implemented
 **Owner**: André Roussakoff
+**Completed**: 2025-11-01
 
 ### Context
 
@@ -1397,14 +1405,18 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 
 ### Implementation References
 
-- **Implementation Task**: TASK-0201 (User Management Admin Workflows)
-- User models: `app/models/user.server.ts`
-- User audit log model: `app/models/userAuditLog.server.ts` (new)
-- User management routes: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/**` (planned)
-- User management components: `app/components/users/**` (new)
+- **Implementation Task**: TASK-0201 (User Management Admin Workflows) - **Completed**: 2025-11-01
+- User models: `app/models/user.server.ts` (implemented with management functions)
+- User audit log model: `app/models/userAuditLog.server.ts` (implemented)
+- User management routes: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/users/**` (implemented)
+- User management components: `app/features/users/components/**` (implemented)
+- Firebase integration: `app/features/firebase/server.ts` (user disable/enable, token revocation)
 - RBAC middleware: `app/utils/rbacMiddleware.server.ts`
 - Permissions: `app/utils/rbac/permissions.ts`
-- Database schema: `prisma/schema.prisma` (User model with role field, UserAuditLog model)
+- Database schema: `prisma/schema.prisma` (User.active, User.displayName, UserAuditLog model)
+- Unit tests: `app/models/__tests__/user.server.test.ts` (58 comprehensive tests)
+- E2E tests: `playwright/tests/users.spec.ts` (14 scenarios)
+- Page Object Model: `playwright/pages/AdminUsersPage.ts`
 
 ### Consequences
 
@@ -1415,15 +1427,22 @@ Implement comprehensive admin-controlled user management as Phase 2 of the PRD:
 
 ### Compliance / Verification
 
-- Unit tests verify permission enforcement for user management operations
-- E2E tests confirm only ADMIN can access user management features
-- Audit logs properly record all role changes
-- User approval workflow prevents unauthorized access to manager features
-- Database constraints ensure valid role transitions
+✅ **All verification criteria met:**
+
+- ✅ 58 unit tests verify permission enforcement for all user management operations
+- ✅ 14 E2E test scenarios confirm only ADMIN can access user management features
+- ✅ Audit logs properly record all role changes, deactivations, and reactivations
+- ✅ Self-edit prevention: users cannot change their own role or deactivate themselves
+- ✅ Database constraints ensure valid role transitions
+- ✅ Firebase integration: deactivated users cannot sign in, active sessions invalidated
+- ✅ Multi-layer deactivation enforcement: Firebase account disabled, authentication callbacks reject inactive users, InfoBanner displays deactivation notice, database as source of truth
+- ✅ Server-side i18n: localized error messages for role change prevention, deactivation errors, and validation failures via `getServerT`
+- ✅ ComboField accessibility: keyboard navigation, screen reader support, and ARIA attributes for role assignment dropdown
+- ✅ Accessibility verification: proper form structure, ARIA attributes, keyboard navigation across all user management interfaces
 
 **PRD Phase Alignment**: This ADR defines Phase 2 (User Management) implementation requirements.
 
-**Implementation Task**: See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for detailed implementation steps.
+See `.cursor/tasks/TASK-0201-user-management-admin-workflows.mdc` for implementation details.
 
 ## ADR-0027 — Semantic Heading Hierarchy with AppBar h1
 

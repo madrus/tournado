@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type ExclamationIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function ExclamationIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Error',
+  ...rest
 }: Readonly<ExclamationIconProps>): JSX.Element {
   // Lucide circle-alert paths (circular version)
   const paths = ['M12 8v4', 'M12 16h.01']
@@ -23,6 +24,7 @@ export function ExclamationIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'

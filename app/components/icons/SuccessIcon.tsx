@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type SuccessIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function SuccessIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Success',
+  ...rest
 }: Readonly<SuccessIconProps>): JSX.Element {
   // Circle success icon paths
   const circlePath =
@@ -33,6 +34,7 @@ export function SuccessIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'
@@ -45,7 +47,13 @@ export function SuccessIcon({
       {/* Circle background uses currentColor (intent color) */}
       <path d={circlePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
       {/* Checkmark in white with weight 600 */}
-      <path d={checkPath} stroke='white' strokeWidth={checkStrokeWidth} fill='none' />
+      <path
+        d={checkPath}
+        stroke='white'
+        strokeWidth={checkStrokeWidth}
+        fill='none'
+        data-testid='success-icon-checkmark'
+      />
     </svg>
   )
 }

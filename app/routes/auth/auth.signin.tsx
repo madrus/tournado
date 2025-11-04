@@ -2,6 +2,7 @@ import { type JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
+import { InfoBanner } from '~/components/InfoBanner'
 import {
   FirebaseEmailSignIn,
   FirebaseSignIn,
@@ -24,6 +25,17 @@ import {
   authTextSpacingVariants,
 } from './auth.variants'
 
+// Valid error types that can be passed via query parameter
+// These correspond to error redirects in auth.callback.tsx
+const VALID_AUTH_ERRORS = [
+  'account-deactivated',
+  'missing-token',
+  'invalid-token',
+  'auth-failed',
+] as const
+
+type AuthError = (typeof VALID_AUTH_ERRORS)[number]
+
 // Route metadata
 export const handle: RouteMetadata = {
   isPublic: true,
@@ -32,7 +44,9 @@ export const handle: RouteMetadata = {
 
 export const loader = async ({
   request,
-}: Route.LoaderArgs): Promise<Response | { redirectTo: string | undefined }> => {
+}: Route.LoaderArgs): Promise<
+  Response | { redirectTo: string | undefined; error: AuthError | null }
+> => {
   const user = await getUser(request)
   if (user) {
     // Use role-based redirect instead of always going to admin panel
@@ -42,11 +56,18 @@ export const loader = async ({
     }
   }
 
-  // Get the redirect destination for Firebase sign-in
+  // Get the redirect destination and error parameter for Firebase sign-in
   const url = new URL(request.url)
   const redirectTo = url.searchParams.get('redirectTo') ?? undefined
+  const error = url.searchParams.get('error')
 
-  return { redirectTo }
+  // Validate error parameter against whitelist for defense-in-depth
+  const validError: AuthError | null =
+    error && VALID_AUTH_ERRORS.includes(error as AuthError)
+      ? (error as AuthError)
+      : null
+
+  return { redirectTo, error: validError }
 }
 
 // No action needed since Firebase handles authentication client-side
@@ -67,12 +88,19 @@ export const meta: MetaFunction = () => [
 ]
 
 export default function SigninPage(): JSX.Element {
-  const { redirectTo } = useLoaderData<typeof loader>()
+  const { redirectTo, error } = useLoaderData<typeof loader>()
   const { t } = useTranslation()
 
   return (
     <div className={authContainerVariants()}>
       <h2 className={authHeadingVariants()}>{t('auth.signInPage.description')}</h2>
+
+      {/* Display error message for deactivated accounts */}
+      {error === 'account-deactivated' ? (
+        <InfoBanner variant='error'>
+          {t('auth.errors.accountDeactivatedMessage')}
+        </InfoBanner>
+      ) : null}
 
       {/* Firebase Google Sign-in */}
       <FirebaseSignIn redirectTo={redirectTo} />

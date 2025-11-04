@@ -32,6 +32,8 @@ describe('route-utils', () => {
     const mockT = vi.fn()
 
     beforeEach(() => {
+      mockT.mockReset()
+      mockT.mockImplementation((key: string) => key)
       mockUseTranslation.mockReturnValue({
         t: mockT,
         i18n: {
@@ -77,15 +79,6 @@ describe('route-utils', () => {
     })
 
     it('should return translated title from most specific route', () => {
-      mockT.mockImplementation((key: string) => {
-        const translations: Record<string, string> = {
-          'pages.team.title': 'Team Details',
-          'pages.teams.title': 'Teams Overview',
-          'pages.home.title': 'Home',
-        }
-        return translations[key] || key
-      })
-
       mockUseMatches.mockReturnValue([
         {
           id: '1',
@@ -112,19 +105,11 @@ describe('route-utils', () => {
 
       const { result } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Team Details')
+      expect(result.current).toBe('pages.team.title')
       expect(mockT).toHaveBeenCalledWith('pages.team.title')
     })
 
     it('should fallback to less specific route when most specific has no title', () => {
-      mockT.mockImplementation((key: string) => {
-        const translations: Record<string, string> = {
-          'pages.teams.title': 'Teams Overview',
-          'pages.home.title': 'Home',
-        }
-        return translations[key] || key
-      })
-
       mockUseMatches.mockReturnValue([
         {
           id: '1',
@@ -151,7 +136,7 @@ describe('route-utils', () => {
 
       const { result } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Teams Overview')
+      expect(result.current).toBe('pages.teams.title')
       expect(mockT).toHaveBeenCalledWith('pages.teams.title')
     })
 
@@ -180,8 +165,6 @@ describe('route-utils', () => {
     })
 
     it('should handle single route with title', () => {
-      mockT.mockReturnValue('Dashboard')
-
       mockUseMatches.mockReturnValue([
         {
           id: '1',
@@ -194,13 +177,11 @@ describe('route-utils', () => {
 
       const { result } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Dashboard')
+      expect(result.current).toBe('pages.dashboard.title')
       expect(mockT).toHaveBeenCalledWith('pages.dashboard.title')
     })
 
     it('should memoize results and only recompute when dependencies change', () => {
-      mockT.mockReturnValue('Teams')
-
       const initialMatches = [
         {
           id: '1',
@@ -215,7 +196,7 @@ describe('route-utils', () => {
 
       const { result, rerender } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Teams')
+      expect(result.current).toBe('pages.teams.title')
       expect(mockT).toHaveBeenCalledTimes(1)
 
       // Rerender with same data - should not call t again due to memoization
@@ -233,17 +214,15 @@ describe('route-utils', () => {
         },
       ] as unknown as ReturnType<typeof mockUseMatches>
       mockUseMatches.mockReturnValue(newMatches)
-      mockT.mockReturnValue('About')
-
       rerender()
       expect(mockT).toHaveBeenCalledTimes(2)
       expect(mockT).toHaveBeenLastCalledWith('pages.about.title')
-      expect(result.current).toBe('About')
+      expect(result.current).toBe('pages.about.title')
     })
 
     it('should handle translation function changes', () => {
-      const initialT = vi.fn().mockReturnValue('Initial Title')
-      const newT = vi.fn().mockReturnValue('Updated Title')
+      const initialT = vi.fn((key: string) => key)
+      const newT = vi.fn((key: string) => key)
 
       mockUseMatches.mockReturnValue([
         {
@@ -264,7 +243,7 @@ describe('route-utils', () => {
 
       const { result, rerender } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Initial Title')
+      expect(result.current).toBe('pages.test.title')
       expect(initialT).toHaveBeenCalledWith('pages.test.title')
 
       // Change translation function
@@ -276,21 +255,11 @@ describe('route-utils', () => {
 
       rerender()
 
-      expect(result.current).toBe('Updated Title')
+      expect(result.current).toBe('pages.test.title')
       expect(newT).toHaveBeenCalledWith('pages.test.title')
     })
 
     it('should handle complex nested route structures', () => {
-      mockT.mockImplementation((key: string) => {
-        const translations: Record<string, string> = {
-          'pages.admin.users.edit.title': 'Edit User',
-          'pages.admin.users.title': 'Manage Users',
-          'pages.admin.title': 'Admin Panel',
-          'pages.home.title': 'Home',
-        }
-        return translations[key] || key
-      })
-
       mockUseMatches.mockReturnValue([
         {
           id: 'root',
@@ -324,7 +293,7 @@ describe('route-utils', () => {
 
       const { result } = renderHook(() => usePageTitle())
 
-      expect(result.current).toBe('Edit User')
+      expect(result.current).toBe('pages.admin.users.edit.title')
       expect(mockT).toHaveBeenCalledWith('pages.admin.users.edit.title')
     })
 

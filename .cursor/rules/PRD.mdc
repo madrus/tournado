@@ -105,15 +105,23 @@ Database & Data Model [Implemented]
 - [x] Database schema migration (firebaseUid column added to User table)
 - [x] CI/E2E environment validation (all secrets configured, workflows verified)
 
-**Phase 2 - User Management [Planned]** (TASK-0201)
+**Phase 2 - User Management [Completed]** (TASK-0201)
 
-- [ ] Admin-only user management workflows
-  - [ ] User approval/rejection system for new registrations
-  - [ ] Role assignment (ADMIN, MANAGER only)
-  - [ ] User list with filtering and search capabilities
-  - [ ] User profile viewing and editing
-  - [ ] Activity monitoring and audit logs for role changes
-  - [ ] Users menu item in AppBar (ADMIN only)
+- [x] Admin-only user management workflows
+  - [x] Role assignment (ADMIN, MANAGER, REFEREE, EDITOR, BILLING roles) via inline ComboField
+  - [x] User list with DataTable (sortable columns, pagination)
+  - [x] User profile viewing with 2 panels: User Information + Audit Log
+  - [x] User profile editing (display name via TextInputField)
+  - [x] Activity monitoring and audit logs for role changes, deactivation, reactivation
+  - [x] Users menu item in AppBar (ADMIN only, uses 'people' icon → GroupIcon)
+  - [x] User Management tile in Admin Dashboard
+  - [x] User deactivation/reactivation with ConfirmDialog modal and audit trail
+  - [x] ComboField styling enhancements (disabled border, RTL icon positioning, animated chevron, compact height, Latin fonts)
+  - [x] Firebase integration (user deactivation disables Firebase account, revokes tokens, invalidates sessions)
+  - [x] Unit tests (41 comprehensive tests covering all user management functions)
+  - [x] E2E tests (15 scenarios covering complete workflow including self-edit prevention)
+- [ ] User approval/rejection system for new registrations (deferred - out of MVP scope)
+- [ ] Advanced filtering and search capabilities (deferred - basic sorting implemented)
 
 **Phase 3 - Groups & Playoffs (MVP) [In Progress]**
 
@@ -305,29 +313,50 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 - [x] Replace cookie session auth in UI flows; maintain role checks (TASK-0103)
 - [x] Logout invalidation; visible auth status; redirects (TASK-0103)
 
-### Phase 2: User Management (2 - 3 weeks)
+### Phase 2: User Management (2 - 3 weeks) [Completed]
 
-- [ ] Priority: High
-- [ ] Timeline: 2 - 3 weeks
-- [ ] Task: TASK-0201
+- [x] Priority: High
+- [x] Timeline: 2 - 3 weeks (completed November 1, 2025)
+- [x] Task: TASK-0201
 
-#### 2.1 User Approval Workflows
+#### 2.1 User Management Core Features [Completed]
 
-- [ ] User registration approval/rejection system
-- [ ] Admin-only user list with filtering and search
-- [ ] User profile viewing and editing capabilities
+- [x] Admin-only user list with DataTable (sortable, paginated)
+- [x] User profile viewing with 2-panel layout (User Information + Audit Log)
+- [x] User profile editing (display name via TextInputField with inline save)
+- [x] Basic sorting and filtering (advanced filtering deferred to future release)
+- [ ] User registration approval/rejection system (deferred - out of MVP scope)
 
-#### 2.2 Role Assignment
+#### 2.2 Role Assignment [Completed]
 
-- [ ] Role assignment UI (ADMIN, MANAGER only)
-- [ ] Activity monitoring and audit logs for role changes
-- [ ] Enforce RBAC: only ADMIN can approve users and assign roles
+- [x] Role assignment UI via ComboField component (ADMIN, MANAGER, REFEREE, EDITOR, BILLING)
+  - [x] Table inline editing: ComboField with compact mode, slate color, auto-submit
+  - [x] User detail page: ComboField with teal color, auto-submit
+- [x] Activity monitoring and audit logs for role changes, deactivation, reactivation
+- [x] Enforce RBAC: only ADMIN can approve users and assign roles (via `users:approve` and `roles:assign` permissions)
+- [x] User deactivation/reactivation via ConfirmDialog modal with audit trail
 
-#### 2.3 Admin Panel Integration
+#### 2.3 Admin Panel Integration [Completed]
 
-- [ ] Users menu item in AppBar (visible to ADMIN only)
-- [ ] User management routes under Admin Panel
-- [ ] Permission enforcement using `users:approve` and `roles:assign`
+- [x] Users menu item in AppBar (visible to ADMIN only, uses 'people' icon → GroupIcon)
+- [x] User Management tile in Admin Dashboard with user count stats
+- [x] User management routes under Admin Panel (`/a7k9m2x5p8w1n4q6r3y8b5t1/users`)
+- [x] Permission enforcement using `users:approve` and `roles:assign` in all loaders/actions
+
+#### 2.4 Firebase Integration [Completed]
+
+- [x] User deactivation disables Firebase account
+- [x] Refresh tokens revoked on deactivation (logs user out from all devices)
+- [x] Session validation prevents deactivated users from accessing app
+- [x] Multi-layer authentication protection with database as source of truth
+
+#### 2.5 Testing [Completed]
+
+- [x] 41 comprehensive unit tests for all user management functions
+- [x] 15 E2E test scenarios covering complete workflow
+- [x] Self-edit prevention testing (cannot change own role, cannot deactivate self)
+- [x] Accessibility verification (proper form structure, ARIA attributes)
+- [x] Firebase integration testing with graceful error handling
 
 ### Phase 3: Groups & Playoffs (MVP) (3 - 4 weeks)
 
@@ -493,8 +522,9 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Internationalization
 
-- **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English)
-- **Requirements (high-level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`
+- **Current State**: `nl`, `en`, `fr`, `ar` (RTL), `tr`, `de` locales present; Dutch sentence case (except English); server-side translation support implemented
+- **Server-Side i18n**: Server actions/loaders use `getServerT(request)` for translations in user's language (error messages, server-generated content)
+- **Requirements (high-level)**: Centralize supported languages in a single config; maintain RTL support; default fallback `nl`; use server-side translations for all user-facing server messages
 - Details: See `docs/development/PRD.details.md#i18n-details` (i18n centralization and locale handling)
 
 #### Deployment
@@ -610,6 +640,7 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
 - **Dutch capitalization rule**: Capitalize only the first word of titles/labels (sentence case); English titles may use title case
 - **Fallback language**: `nl`
 - **Persistence**: Persist language in cookie + localStorage; detect language on server during SSR
+- **Server-Side Translations**: Use `getServerT(request)` in all server actions/loaders for localized error messages and server-generated content; respects user's language preference from cookie
 Details: See `docs/development/PRD.details.md#i18n-details`
 
 ---
@@ -741,9 +772,18 @@ Details: See `docs/development/PRD.details.md#i18n-details`
 - ✅ Database migration and CI/E2E validation
 - ✅ Complete legacy authentication removal
 
-### Phase 2: User Management
+### Phase 2: User Management [Completed]
 
-- Weeks 2 - 3: User approval workflows; role assignment UI; activity monitoring (TASK-0201)
+- ✅ Completed November 1, 2025 (TASK-0201)
+  - ✅ User list with DataTable (sortable, paginated)
+  - ✅ Role assignment via ComboField (inline editing with auto-submit)
+  - ✅ User deactivation/reactivation with ConfirmDialog modal
+  - ✅ Audit logs for all role changes and user actions
+  - ✅ Admin Panel integration (Users menu item, User Management tile)
+  - ✅ Firebase integration (account disabling, token revocation, session invalidation)
+  - ✅ 41 unit tests + 15 E2E test scenarios
+  - ✅ Self-edit prevention and accessibility verification
+  - 🔮 Deferred to future: User approval/rejection system, advanced search and filtering
 
 ### Phase 3: Groups & Playoffs (MVP)
 

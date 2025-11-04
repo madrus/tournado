@@ -1,4 +1,4 @@
-import { type JSX, type ReactNode, useRef } from 'react'
+import { type JSX, type ReactNode } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -16,51 +16,112 @@ import {
   titleColorVariants,
 } from './dialog.variants'
 
-type ConfirmDialogProps = {
-  // Trigger-based dialog (no open/onOpenChange needed)
-  trigger: ReactNode
+/**
+ * Wrapper component that conditionally wraps children in Dialog.Close
+ * Only wraps when shouldAutoClose is true (for cancel button in controlled mode)
+ * Confirm button should NOT be wrapped so parent can close dialog after async operation
+ */
+const DialogCloseWrapper = ({
+  shouldAutoClose,
+  children,
+}: {
+  shouldAutoClose: boolean
+  children: ReactNode
+}): JSX.Element =>
+  shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : <>{children}</>
 
-  // Enhanced intent-based theming
-  intent?: DialogIntent
+/**
+ * ConfirmDialog - Fully controlled confirmation dialog component
+ *
+ * This component operates in **controlled mode only**:
+ * - Parent component manages dialog state via `open` and `onOpenChange`
+ * - Supports loading states via `isLoading` to prevent premature closure
+ * - Parent must provide trigger button separately
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = useState(false)
+ * const [loading, setLoading] = useState(false)
+ *
+ * const handleConfirm = async () => {
+ *   setLoading(true)
+ *   await performAsyncOperation()
+ *   setLoading(false)
+ *   setOpen(false) // Close after completion
+ * }
+ *
+ * <>
+ *   <Button onClick={() => setOpen(true)}>Delete</Button>
+ *   <ConfirmDialog
+ *     open={open}
+ *     onOpenChange={setOpen}
+ *     intent="danger"
+ *     title="Delete item"
+ *     description="This action cannot be undone."
+ *     confirmLabel="Yes, delete"
+ *     cancelLabel="Cancel"
+ *     onConfirm={handleConfirm}
+ *     destructive
+ *     isLoading={loading}
+ *   />
+ * </>
+ * ```
+ *
+ * **When to use**:
+ * - Need to prevent dialog from closing during async operations
+ * - Need programmatic control over dialog open/close
+ * - Need loading indicators in the dialog
+ *
+ * **When NOT to use**:
+ * - Simple confirmations without async operations
+ * → Use `SimpleConfirmDialog` (uncontrolled) instead
+ */
+type ConfirmDialogProps = {
+  // Required controlled mode props
+  open: boolean
+  onOpenChange: (open: boolean) => void
 
   // Content
   title: string
   description?: string
+  intent?: DialogIntent
 
   // Button labels
   confirmLabel: string
   cancelLabel: string
 
-  // Actions
+  // Actions and behavior
   onConfirm?: () => void
-
-  // Behavior
   destructive?: boolean
+  isLoading?: boolean
 }
 
 export function ConfirmDialog({
-  trigger,
-  intent = 'warning',
+  open,
+  onOpenChange,
   title,
   description,
+  intent = 'warning',
   confirmLabel,
   cancelLabel,
   onConfirm,
   destructive = false,
+  isLoading = false,
 }: Readonly<ConfirmDialogProps>): JSX.Element {
-  const cancelContainerRef = useRef<HTMLDivElement | null>(null)
-  const confirmContainerRef = useRef<HTMLDivElement | null>(null)
-
   // Get intent-driven defaults
   const intentColors = getDefaultColorsForIntent(intent)
   const finalIcon = getIconForIntent(intent)
   const finalConfirmColor = intentColors.confirm
-  const finalCancelColor = intentColors.cancel
+  const finalCancelColor = 'brand'
+  const sharedButtonClasses = 'w-full sm:w-auto h-12 px-6'
+
+  const handleConfirm = (): void => {
+    onConfirm?.()
+    // Parent is responsible for calling onOpenChange(false) when async operation completes
+  }
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className={dialogOverlayVariants()} />
 
@@ -68,24 +129,16 @@ export function ConfirmDialog({
           role='alertdialog'
           aria-describedby={description ? 'dialog-description' : undefined}
           className={dialogContentVariants({ intent, size: 'md' })}
-          onOpenAutoFocus={event => {
-            // Prevent default autofocus and set custom focus after a delay
-            event.preventDefault()
-            const target = destructive
-              ? cancelContainerRef.current
-              : confirmContainerRef.current
-            const button = target?.querySelector('button') as HTMLButtonElement | null
-
-            // Defer focus to next frame to avoid relying on magic numbers
-            requestAnimationFrame(() => {
-              button?.focus()
-            })
-          }}
         >
           <div className='flex items-start gap-5'>
-            <div aria-hidden='true' className={iconContainerVariants({ intent })}>
+            <div
+              aria-hidden='true'
+              className={iconContainerVariants({ intent })}
+              data-testid='confirm-dialog-icon-container'
+            >
               {renderIcon(finalIcon, {
                 className: iconColorVariants({ intent }),
+                'data-testid': 'confirm-dialog-icon',
               })}
             </div>
 
@@ -108,33 +161,35 @@ export function ConfirmDialog({
               ) : null}
 
               <div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
-                <div ref={cancelContainerRef} className='sm:order-1'>
-                  <Dialog.Close asChild>
+                <div className='sm:order-1'>
+                  <DialogCloseWrapper shouldAutoClose={true}>
                     <ActionButton
                       variant='secondary'
                       color={finalCancelColor}
                       size='md'
-                      className='w-full min-w-[120px] sm:w-auto'
+                      className={sharedButtonClasses}
                       aria-label={cancelLabel}
+                      autoFocus={destructive}
+                      disabled={isLoading}
                     >
                       {cancelLabel}
                     </ActionButton>
-                  </Dialog.Close>
+                  </DialogCloseWrapper>
                 </div>
 
-                <div ref={confirmContainerRef} className='sm:order-2'>
-                  <Dialog.Close asChild>
-                    <ActionButton
-                      variant='primary'
-                      color={finalConfirmColor}
-                      size='md'
-                      onClick={onConfirm}
-                      className='w-full min-w-[120px] sm:w-auto'
-                      aria-label={confirmLabel}
-                    >
-                      {confirmLabel}
-                    </ActionButton>
-                  </Dialog.Close>
+                <div className='sm:order-2'>
+                  <ActionButton
+                    variant='primary'
+                    color={finalConfirmColor}
+                    size='md'
+                    onClick={handleConfirm}
+                    className={sharedButtonClasses}
+                    aria-label={confirmLabel}
+                    autoFocus={!destructive}
+                    disabled={isLoading}
+                  >
+                    {confirmLabel}
+                  </ActionButton>
                 </div>
               </div>
             </div>

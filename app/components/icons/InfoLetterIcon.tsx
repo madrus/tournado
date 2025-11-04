@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
 
@@ -7,13 +7,14 @@ type InfoLetterIconProps = {
   size?: number
   weight?: IconWeight
   'aria-label'?: string
-}
+} & SVGProps<SVGSVGElement>
 
 export function InfoLetterIcon({
   className = '',
   size = 24,
   weight = 400,
   'aria-label': ariaLabel = 'Info',
+  ...rest
 }: Readonly<InfoLetterIconProps>): JSX.Element {
   // Lucide circle-info paths (circular version)
   const paths = ['M12 16v-4', 'M12 8h.01']
@@ -23,6 +24,7 @@ export function InfoLetterIcon({
 
   return (
     <svg
+      {...rest}
       width={size}
       height={size}
       viewBox='0 0 24 24'

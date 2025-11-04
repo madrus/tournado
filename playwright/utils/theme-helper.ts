@@ -125,6 +125,8 @@ export async function verifyThemeStyles(
     expect(hasDarkClass).toBeFalsy()
     expect(gradientValue).toContain('linear-gradient')
     // For light theme, verify the gradient contains light colors
-    expect(gradientValue).toMatch(/rgb\(\s*2[2-5][0-9]/)
+    expect(gradientValue).toMatch(
+      /rgb\(\s*(2[2-4][0-9]|25[0-5])\s*,\s*(2[2-4][0-9]|25[0-5])\s*,\s*(2[2-4][0-9]|25[0-5])/
+    )
   }
 }

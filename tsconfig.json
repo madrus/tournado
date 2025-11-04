@@ -20,11 +20,13 @@
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "~test/*": ["./test/*"],
-      "@react-router/dev/routes": [".node_modules/@react-router/dev/dist/routes.d.ts"]
+      "@react-router/dev/routes": [
+        "./.node_modules/@react-router/dev/dist/routes.d.ts"
+      ],
+      "*": ["./*"]
     },
     "skipLibCheck": true,
     "noEmit": true,

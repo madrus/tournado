@@ -110,8 +110,41 @@ jobs:
         id: run_tests
         run: |
           set +e  # Don't exit on error
-          pnpm exec start-server-and-test 'PORT=8811 pnpm start:mocks' http://localhost:8811 'playwright test'
+
+          # Start server in background with output logging
+          PORT=8811 pnpm start:mocks > server.log 2>&1 &
+          SERVER_PID=$!
+
+          echo "Server PID: $SERVER_PID"
+
+          # Wait for server with timeout
+          for i in {1..60}; do
+            if curl -s http://localhost:8811 > /dev/null 2>&1; then
+              echo "✅ Server is responding on port 8811"
+              break
+            fi
+            if ! kill -0 $SERVER_PID 2>/dev/null; then
+              echo "❌ Server process died. Logs:"
+              cat server.log
+              exit 1
+            fi
+            echo "Waiting for server... ($i/60)"
+            sleep 2
+          done
+
+          if ! curl -s http://localhost:8811 > /dev/null 2>&1; then
+            echo "❌ Server failed to start. Logs:"
+            cat server.log
+            kill $SERVER_PID 2>/dev/null || true
+            exit 1
+          fi
+
+          # Run tests
+          playwright test
           TEST_EXIT_CODE=$?
+
+          # Cleanup
+          kill $SERVER_PID 2>/dev/null || true
 
           if [ $TEST_EXIT_CODE -eq 0 ]; then
             echo "✅ All tests passed successfully"

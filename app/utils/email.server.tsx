@@ -33,7 +33,7 @@ let mswHandlerLoaded = false
 async function getEmailOutboxHandler(): Promise<EmailOutboxHandler | null> {
   if (!mswHandlerLoaded) {
     try {
-      const { addEmailToOutbox } = (await import('test/mocks/handlers/emails.js')) as {
+      const { addEmailToOutbox } = (await import('test/mocks/handlers/emails')) as {
         addEmailToOutbox: EmailOutboxHandler
       }
       mswEmailHandler = addEmailToOutbox

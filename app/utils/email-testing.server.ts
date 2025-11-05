@@ -68,3 +68,33 @@ export const clearTestEmailOutbox = async (): Promise<void> => {
     console.error('Failed to clear email outbox:', error)
   }
 }
+
+export const addEmailToOutbox = async (emailData: {
+  from?: string
+  to: string | string[]
+  subject?: string
+  html?: string
+}): Promise<TestEmailOutboxEntry> => {
+  await ensureOutboxDirAsync()
+
+  // Read current outbox
+  const outbox = await getTestEmailOutbox()
+
+  // Create new email entry
+  const capturedEmail: TestEmailOutboxEntry = {
+    from: String(emailData.from || ''),
+    to: emailData.to,
+    subject: String(emailData.subject || ''),
+    html: String(emailData.html || ''),
+    id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    timestamp: new Date().toISOString(),
+  }
+
+  // Add to outbox
+  outbox.push(capturedEmail)
+
+  // Write back to file
+  await fs.promises.writeFile(OUTBOX_PATH, JSON.stringify(outbox, null, 2))
+
+  return capturedEmail
+}

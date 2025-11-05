@@ -112,7 +112,7 @@ jobs:
           set +e  # Don't exit on error
 
           # Start server in background with output logging
-          PORT=8811 pnpm start:mocks > server.log 2>&1 &
+          DATABASE_URL="file:./prisma/data-test.db?connection_limit=1" PLAYWRIGHT=true PORT=8811 pnpm start:mocks > server.log 2>&1 &
           SERVER_PID=$!
 
           echo "Server PID: $SERVER_PID"

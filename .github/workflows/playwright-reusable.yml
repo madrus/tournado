@@ -140,7 +140,7 @@ jobs:
           fi
 
           # Run tests
-          playwright test
+          pnpm exec playwright test
           TEST_EXIT_CODE=$?
 
           # Cleanup

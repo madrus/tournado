@@ -2,23 +2,19 @@ import { promises as fs } from 'node:fs'
 
 import { http, HttpResponse } from 'msw'
 
-import {
-  ensureOutboxDirAsync,
-  OUTBOX_PATH,
-  type TestEmailOutboxEntry,
-} from '~/utils/email-testing.server'
+import { ensureOutboxDirAsync, OUTBOX_PATH } from '~/utils/email-testing.server'
 
 import { createMutex } from '~test/utils/asyncLock'
 
 // Helper to read the outbox file
-async function readOutbox(): Promise<TestEmailOutboxEntry[]> {
+async function readOutbox() {
   await ensureOutboxDirAsync()
   try {
     const content = await fs.readFile(OUTBOX_PATH, 'utf-8')
-    return JSON.parse(content) as TestEmailOutboxEntry[]
+    return JSON.parse(content)
   } catch (error) {
     if (error instanceof Error && 'code' in error) {
-      const err = error as { code?: string }
+      const err = error
       if (err.code !== 'ENOENT') {
         console.error('Failed to read email outbox:', error)
       }
@@ -28,7 +24,7 @@ async function readOutbox(): Promise<TestEmailOutboxEntry[]> {
 }
 
 // Helper to write to the outbox file
-async function writeOutbox(emails: TestEmailOutboxEntry[]): Promise<void> {
+async function writeOutbox(emails) {
   await ensureOutboxDirAsync()
   try {
     await fs.writeFile(OUTBOX_PATH, JSON.stringify(emails, null, 2))
@@ -44,13 +40,12 @@ export const emailHandlers = [
   // Intercepts Resend API calls during tests and captures emails to the file-based outbox.
   // This handler enables E2E tests to verify email sending without making real API calls.
   http.post('https://api.resend.com/emails', async ({ request }) => {
-    const emailData = (await request.json()) as unknown
+    const emailData = await request.json()
     try {
-      const capturedEmail = await addEmailToOutbox(emailData as Record<string, unknown>)
+      const capturedEmail = await addEmailToOutbox(emailData)
 
-      const typedEmailData = emailData as Record<string, unknown>
       console.info(
-        `[MSW] Captured email to: ${typedEmailData.to}, subject: ${typedEmailData.subject}`
+        `[MSW] Captured email to: ${emailData.to}, subject: ${emailData.subject}`
       )
 
       return HttpResponse.json({
@@ -76,7 +71,7 @@ export const clearEmailOutbox = () =>
       await fs.unlink(OUTBOX_PATH)
     } catch (error) {
       if (error instanceof Error && 'code' in error) {
-        const err = error as { code?: string }
+        const err = error
         if (err.code === 'ENOENT') {
           return
         }
@@ -87,14 +82,12 @@ export const clearEmailOutbox = () =>
   })
 
 // Add an email to the file system outbox
-export const addEmailToOutbox = async (
-  emailData: Record<string, unknown>
-): Promise<TestEmailOutboxEntry> =>
-  runWithOutboxLock(async (): Promise<TestEmailOutboxEntry> => {
+export const addEmailToOutbox = async emailData =>
+  runWithOutboxLock(async () => {
     const outbox = await readOutbox()
-    const capturedEmail: TestEmailOutboxEntry = {
+    const capturedEmail = {
       from: String(emailData.from || ''),
-      to: emailData.to as string | string[],
+      to: emailData.to,
       subject: String(emailData.subject || ''),
       html: String(emailData.html || ''),
       id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,

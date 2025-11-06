@@ -143,9 +143,9 @@ jobs:
           pnpm exec playwright test
           TEST_EXIT_CODE=$?
 
-          echo "----- server.log (tail) -----"
+          echo "----- server.log -----"
           if [ -f server.log ]; then
-            tail -n 200 server.log || cat server.log
+            cat server.log
           else
             echo "server.log not found"
           fi

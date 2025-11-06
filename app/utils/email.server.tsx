@@ -92,12 +92,20 @@ export async function sendConfirmationEmail(
     throw new Error(`Team leader not found for team ${team.id}`)
   }
 
-  if (!process.env.EMAIL_FROM) {
+  const emailFromEnv =
+    process.env.EMAIL_FROM ||
+    (process.env.PLAYWRIGHT === 'true' ? 'Team Registration <test@tournado.app>' : '')
+
+  if (!emailFromEnv) {
     console.error('[sendConfirmationEmail] EMAIL_FROM missing in environment')
     throw new Error('EMAIL_FROM environment variable is not set')
   }
 
-  console.log('[sendConfirmationEmail] EMAIL_FROM:', process.env.EMAIL_FROM)
+  if (!process.env.EMAIL_FROM) {
+    process.env.EMAIL_FROM = emailFromEnv
+  }
+
+  console.log('[sendConfirmationEmail] EMAIL_FROM:', emailFromEnv)
   console.log('[sendConfirmationEmail] PLAYWRIGHT:', process.env.PLAYWRIGHT)
 
   const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
@@ -109,9 +117,7 @@ export async function sendConfirmationEmail(
           ? `https://${process.env.FLY_APP_NAME}.fly.dev`
           : 'https://tournado.fly.dev' // fallback for production
         : 'http://localhost:5173') // local development
-  const emailFrom = isRealDomainRegistered
-    ? process.env.EMAIL_FROM || 'pending-email-from@localhost'
-    : 'onboarding@resend.dev'
+  const emailFrom = isRealDomainRegistered ? emailFromEnv : 'onboarding@resend.dev'
 
   console.log('[sendConfirmationEmail] Computed baseUrl:', baseUrl)
   console.log('[sendConfirmationEmail] Computed emailFrom:', emailFrom)

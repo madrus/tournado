@@ -9,6 +9,10 @@ process.env.DATABASE_URL = 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = 'true'
 // Disable React Router DevTools during E2E tests to prevent overlay interference
 process.env.ENABLE_REACT_ROUTER_DEVTOOLS = 'false'
+if (!process.env.EMAIL_FROM) {
+  process.env.EMAIL_FROM = 'Team Registration <test@tournado.app>'
+  console.log('[e2e-server] EMAIL_FROM not provided, using default test sender')
+}
 
 const PORT = 8811
 const DEV_SERVER_URL = `http://localhost:${PORT}`

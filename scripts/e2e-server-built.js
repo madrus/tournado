@@ -7,6 +7,10 @@ import { checkDevServer } from './utils/port-utils.js'
 // Force test DB for built e2e server (override any .env setting)
 process.env.DATABASE_URL = 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = 'true'
+if (!process.env.EMAIL_FROM) {
+  process.env.EMAIL_FROM = 'Team Registration <test@tournado.app>'
+  console.log('[e2e-server-built] EMAIL_FROM not provided, using default test sender')
+}
 
 const PORT = 8811
 process.env.PORT = PORT.toString() // Ensure consistent port for built server

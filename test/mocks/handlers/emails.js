@@ -1,48 +1,18 @@
-import { promises as fs } from 'node:fs'
-
 import { http, HttpResponse } from 'msw'
 
-import { ensureOutboxDirAsync, OUTBOX_PATH } from '~/utils/email-testing.server'
-
-import { createMutex } from '~test/utils/asyncLock'
-
-// Helper to read the outbox file
-async function readOutbox() {
-  await ensureOutboxDirAsync()
-  try {
-    const content = await fs.readFile(OUTBOX_PATH, 'utf-8')
-    return JSON.parse(content)
-  } catch (error) {
-    if (error instanceof Error && 'code' in error) {
-      const err = error
-      if (err.code !== 'ENOENT') {
-        console.error('Failed to read email outbox:', error)
-      }
-    }
-    return []
-  }
-}
-
-// Helper to write to the outbox file
-async function writeOutbox(emails) {
-  await ensureOutboxDirAsync()
-  try {
-    await fs.writeFile(OUTBOX_PATH, JSON.stringify(emails, null, 2))
-  } catch (error) {
-    console.error('Failed to write email outbox:', error)
-    throw error
-  }
-}
-
-const runWithOutboxLock = createMutex()
+import {
+  clearTestEmailOutbox,
+  getTestEmailOutbox,
+  addEmailToOutbox as storeEmailInOutbox,
+} from '~/utils/email-testing.server'
 
 export const emailHandlers = [
-  // Intercepts Resend API calls during tests and captures emails to the file-based outbox.
+  // Intercepts Resend API calls during tests and captures emails to the in-memory outbox.
   // This handler enables E2E tests to verify email sending without making real API calls.
   http.post('https://api.resend.com/emails', async ({ request }) => {
     const emailData = await request.json()
     try {
-      const capturedEmail = await addEmailToOutbox(emailData)
+      const capturedEmail = await storeEmailInOutbox(emailData)
 
       console.info(
         `[MSW] Captured email to: ${emailData.to}, subject: ${emailData.subject}`
@@ -61,39 +31,11 @@ export const emailHandlers = [
   }),
 ]
 
-// Get all emails from the file system outbox
-export const getEmailOutbox = () => runWithOutboxLock(() => readOutbox())
+// Get all emails from the in-memory outbox
+export const getEmailOutbox = () => getTestEmailOutbox()
 
-// Clear the file system outbox
-export const clearEmailOutbox = () =>
-  runWithOutboxLock(async () => {
-    try {
-      await fs.unlink(OUTBOX_PATH)
-    } catch (error) {
-      if (error instanceof Error && 'code' in error) {
-        const err = error
-        if (err.code === 'ENOENT') {
-          return
-        }
-      }
-      console.error('Failed to clear email outbox:', error)
-      throw error
-    }
-  })
+// Clear the in-memory outbox
+export const clearEmailOutbox = () => clearTestEmailOutbox()
 
-// Add an email to the file system outbox
-export const addEmailToOutbox = async emailData =>
-  runWithOutboxLock(async () => {
-    const outbox = await readOutbox()
-    const capturedEmail = {
-      from: String(emailData.from || ''),
-      to: emailData.to,
-      subject: String(emailData.subject || ''),
-      html: String(emailData.html || ''),
-      id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      timestamp: new Date().toISOString(),
-    }
-    outbox.push(capturedEmail)
-    await writeOutbox(outbox)
-    return capturedEmail
-  })
+// Add an email to the in-memory outbox
+export const addEmailToOutbox = emailData => storeEmailInOutbox(emailData)

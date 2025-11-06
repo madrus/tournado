@@ -7,44 +7,13 @@ import TeamRegisteredEmail from '~/components/emails/TeamRegisteredEmail'
 import type { Team } from '~/features/teams/types'
 import { getTeamLeader } from '~/models/team.server'
 import type { Tournament } from '~/models/tournament.server'
+import { addEmailToOutbox } from '~/utils/email-testing.server'
 
 type EmailPayload = {
   from: string
   to: string
   subject: string
   html: string
-}
-
-type EmailOutboxEntry = EmailPayload & {
-  id: string
-  timestamp: string
-}
-
-type EmailOutboxHandler = (emailData: EmailPayload) => Promise<EmailOutboxEntry>
-
-// Cache for MSW email handler (lazy loaded on first use)
-let mswEmailHandler: EmailOutboxHandler | null = null
-let mswHandlerLoaded = false
-
-/**
- * Lazy load and cache MSW email handler for E2E testing
- * Only loads once on first call, subsequent calls use cached handler
- */
-async function getEmailOutboxHandler(): Promise<EmailOutboxHandler | null> {
-  if (!mswHandlerLoaded) {
-    try {
-      const { addEmailToOutbox } = (await import(
-        '../../test/mocks/handlers/emails'
-      )) as {
-        addEmailToOutbox: EmailOutboxHandler
-      }
-      mswEmailHandler = addEmailToOutbox
-    } catch (error) {
-      console.error('Failed to load MSW email handlers:', error)
-    }
-    mswHandlerLoaded = true
-  }
-  return mswEmailHandler
 }
 
 // Toggle this to false when using Resend sandbox, true when using your own domain
@@ -93,15 +62,11 @@ const maskEmails = (emails: string | string[]): string =>
   Array.isArray(emails) ? emails.map(maskEmail).join(', ') : maskEmail(emails)
 
 /**
- * Adds email to MSW outbox for E2E testing
- * Lazy loads the handler on first call and caches it
+ * Adds email to outbox for E2E testing
+ * Uses bundled email-testing utilities instead of dynamic imports
  */
 async function storeEmailForTesting(emailPayload: EmailPayload): Promise<void> {
-  const handler = await getEmailOutboxHandler()
-  if (!handler) {
-    throw new Error('MSW email handlers not available in test environment')
-  }
-  await handler(emailPayload)
+  await addEmailToOutbox(emailPayload)
   console.info(`[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`)
 }
 
@@ -112,11 +77,24 @@ export async function sendConfirmationEmail(
   const teamLeader = await getTeamLeader(team.teamLeaderId)
 
   if (!teamLeader) {
+    console.error(
+      '[sendConfirmationEmail] team leader not found for teamLeaderId:',
+      team.teamLeaderId
+    )
     throw new Error(`Team leader not found for team ${team.id}`)
   }
 
-  if (!process.env.EMAIL_FROM) {
+  const emailFromEnv =
+    process.env.EMAIL_FROM ||
+    (process.env.PLAYWRIGHT === 'true' ? 'Team Registration <test@tournado.app>' : '')
+
+  if (!emailFromEnv) {
+    console.error('[sendConfirmationEmail] EMAIL_FROM missing in environment')
     throw new Error('EMAIL_FROM environment variable is not set')
+  }
+
+  if (!process.env.EMAIL_FROM) {
+    process.env.EMAIL_FROM = emailFromEnv
   }
 
   const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
@@ -128,9 +106,7 @@ export async function sendConfirmationEmail(
           ? `https://${process.env.FLY_APP_NAME}.fly.dev`
           : 'https://tournado.fly.dev' // fallback for production
         : 'http://localhost:5173') // local development
-  const emailFrom = isRealDomainRegistered
-    ? process.env.EMAIL_FROM || 'pending-email-from@localhost'
-    : 'onboarding@resend.dev'
+  const emailFrom = isRealDomainRegistered ? emailFromEnv : 'onboarding@resend.dev'
 
   // Logo should always come from the actual running website
   // For localhost development, use staging logo since email clients can't access localhost URLs
@@ -164,12 +140,16 @@ export async function sendConfirmationEmail(
   try {
     // In E2E test environment, store the email in MSW outbox instead of sending
     if (process.env.PLAYWRIGHT === 'true') {
+      console.log('[sendConfirmationEmail] PLAYWRIGHT mode detected, storing email')
       await storeEmailForTesting(emailPayload)
+      console.log('[sendConfirmationEmail] Email stored for testing successfully')
       return
     }
 
+    console.log('[sendConfirmationEmail] Using Resend client to send email')
     const resend = getResendClient()
     await resend.emails.send(emailPayload)
+    console.log('[sendConfirmationEmail] Resend send complete')
   } catch (error) {
     console.error('Failed to send confirmation email:', error)
 

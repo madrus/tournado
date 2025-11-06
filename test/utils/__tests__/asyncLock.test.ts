@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { createMutex } from './asyncLock'
+import { createMutex } from '../asyncLock'
 
 describe('createMutex', () => {
   test('executes actions sequentially in registration order', async () => {

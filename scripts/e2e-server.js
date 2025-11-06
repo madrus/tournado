@@ -9,6 +9,13 @@ process.env.DATABASE_URL = 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = 'true'
 // Disable React Router DevTools during E2E tests to prevent overlay interference
 process.env.ENABLE_REACT_ROUTER_DEVTOOLS = 'false'
+const nodeOptionsExtras = ['--import', 'tsx/esm', '--import', './test/mocks/index.ts']
+const existingNodeOptions = process.env.NODE_OPTIONS
+const mergedNodeOptions = existingNodeOptions
+  ? `${existingNodeOptions} ${nodeOptionsExtras.join(' ')}`
+  : nodeOptionsExtras.join(' ')
+process.env.NODE_OPTIONS = mergedNodeOptions
+console.log('[e2e-server] NODE_OPTIONS =', process.env.NODE_OPTIONS)
 
 const PORT = 8811
 const DEV_SERVER_URL = `http://localhost:${PORT}`

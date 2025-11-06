@@ -54,10 +54,10 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp',
     async ({ request }) => {
-      const body = (await request.json()) as unknown as Record<string, unknown>
+      const body = await request.json()
 
       // Extract email from the mock request to determine test user
-      const email = (body.email as string) || 'test-admin@example.com'
+      const email = body.email || 'test-admin@example.com'
 
       // Return mock Firebase Auth response
       return HttpResponse.json({
@@ -78,10 +78,7 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
     async ({ request }) => {
-      const body = (await request.json()) as unknown as {
-        email?: string
-        password?: string
-      }
+      const body = await request.json()
       const { email, password } = body
 
       // For E2E tests, accept the test users with their expected passwords
@@ -115,10 +112,7 @@ export const firebaseHandlers = [
   http.post(
     'https://identitytoolkit.googleapis.com/v1/accounts:signUp',
     async ({ request }) => {
-      const body = (await request.json()) as unknown as {
-        email?: string
-        password?: string
-      }
+      const body = await request.json()
       const { email, password } = body
 
       console.log('MSW: Firebase signup request intercepted:', { email, password })
@@ -205,7 +199,7 @@ export const firebaseHandlers = [
  * Generate a mock JWT-like token for testing
  * This is NOT a real JWT, just a mock format that our callback can recognize
  */
-function generateMockIdToken(email: string): string {
+function generateMockIdToken(email) {
   const mockPayload = {
     iss: 'https://securetoken.google.com/mock-project',
     aud: 'mock-project',

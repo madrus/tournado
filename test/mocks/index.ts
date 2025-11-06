@@ -1,8 +1,8 @@
 import { http, passthrough } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { emailHandlers } from './handlers/emails'
-import { firebaseHandlers } from './handlers/firebase'
+import { emailHandlers } from './handlers/emails.js'
+import { firebaseHandlers } from './handlers/firebase.js'
 
 // put one-off handlers that don't really need an entire file to themselves here
 const miscHandlers = [
@@ -31,7 +31,7 @@ const server = setupServer(...allHandlers)
 server.listen({
   onUnhandledRequest: 'bypass',
 })
-console.info('Mock server running')
+console.info('[MSW] Mock server running. PLAYWRIGHT=', process.env.PLAYWRIGHT)
 
 process.once('SIGINT', () => server.close())
 process.once('SIGTERM', () => server.close())

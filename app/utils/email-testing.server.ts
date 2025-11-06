@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { z } from 'zod'
 
 export type TestEmailOutboxEntry = {

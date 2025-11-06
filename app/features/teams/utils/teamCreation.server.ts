@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Division, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
@@ -149,18 +150,15 @@ export async function createTeamFromFormData(
     if (tournament) {
       console.log('[createTeamFromFormData] Sending confirmation email')
       void sendConfirmationEmail(team, tournament).catch(emailError => {
-        // eslint-disable-next-line no-console
         console.error('Failed to send confirmation email:', emailError)
       })
     } else {
-      // eslint-disable-next-line no-console
       console.error(
         'Tournament not found for email sending, tournament ID:',
         teamFormData.tournamentId
       )
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Team creation failed with error:', error)
     return {
       success: false,

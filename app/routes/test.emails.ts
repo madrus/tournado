@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { clearTestEmailOutbox, getTestEmailOutbox } from '~/utils/email-testing.server'
 
 const isPlaywrightEnv = (): boolean => process.env.PLAYWRIGHT === 'true'

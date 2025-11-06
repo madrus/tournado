@@ -31,7 +31,7 @@ const server = setupServer(...allHandlers)
 server.listen({
   onUnhandledRequest: 'bypass',
 })
-console.info('Mock server running')
+console.info('[MSW] Mock server running. PLAYWRIGHT=', process.env.PLAYWRIGHT)
 
 process.once('SIGINT', () => server.close())
 process.once('SIGTERM', () => server.close())

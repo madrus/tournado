@@ -182,7 +182,7 @@ test.describe('Public Teams - Creation', () => {
       )
 
       // Verify email notification was sent to team leader
-      const emails = await waitForEmailsCount(1, 5000)
+      const emails = await waitForEmailsCount(1)
 
       // Verify email was sent to the team leader
       expect(emails).toHaveLength(1)

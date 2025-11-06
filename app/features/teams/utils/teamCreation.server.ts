@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Division, Team, TeamLeader } from '@prisma/client'
 
 import { prisma } from '~/db.server'
@@ -67,14 +66,11 @@ async function verifyTournamentExists(tournamentId: string): Promise<boolean> {
 export async function createTeamFromFormData(
   formData: FormData
 ): Promise<TeamCreationResult> {
-  console.log('[createTeamFromFormData] invoked')
   // Extract form data using shared utility
   const teamFormData = extractTeamDataFromFormData(formData)
-  console.log('[createTeamFromFormData] extracted form data:', teamFormData)
 
   // Validate using the form validation system
   const fieldErrors = validateEntireTeamForm(teamFormData, 'create')
-  console.log('[createTeamFromFormData] validation errors:', fieldErrors)
 
   // Additional business logic validation
   const validDivision = teamFormData.division
@@ -107,21 +103,16 @@ export async function createTeamFromFormData(
 
   try {
     // Find or create team leader
-    console.log('[createTeamFromFormData] Finding/creating team leader')
     const teamLeader = await findOrCreateTeamLeader({
       name: teamFormData.teamLeaderName,
       email: teamFormData.teamLeaderEmail,
       phone: teamFormData.teamLeaderPhone,
     })
-    console.log('[createTeamFromFormData] team leader ID:', teamLeader.id)
 
     // Verify tournament exists
-    console.log(
-      '[createTeamFromFormData] Verifying tournament exists:',
-      teamFormData.tournamentId
-    )
     const tournamentExists = await verifyTournamentExists(teamFormData.tournamentId)
     if (!tournamentExists) {
+      // eslint-disable-next-line no-console
       console.error('[createTeamFromFormData] Tournament not found')
       return {
         success: false,
@@ -130,7 +121,6 @@ export async function createTeamFromFormData(
     }
 
     // Create the team (no type assertions needed - validDivision/validCategory are guaranteed non-null)
-    console.log('[createTeamFromFormData] Creating team record')
     team = await createTeam({
       clubName: teamFormData.clubName,
       name: teamFormData.name,
@@ -139,26 +129,25 @@ export async function createTeamFromFormData(
       teamLeaderId: teamLeader.id,
       tournamentId: teamFormData.tournamentId,
     })
-    console.log('[createTeamFromFormData] Team created with id:', team.id)
 
     // Get tournament details for email
-    console.log('[createTeamFromFormData] Fetching tournament for email')
     const tournament = await getTournamentById({ id: teamFormData.tournamentId })
-    console.log('[createTeamFromFormData] Tournament fetched:', tournament?.id)
 
     // Send confirmation email (fire-and-forget - don't block team creation)
     if (tournament) {
-      console.log('[createTeamFromFormData] Sending confirmation email')
       void sendConfirmationEmail(team, tournament).catch(emailError => {
+        // eslint-disable-next-line no-console
         console.error('Failed to send confirmation email:', emailError)
       })
     } else {
+      // eslint-disable-next-line no-console
       console.error(
         'Tournament not found for email sending, tournament ID:',
         teamFormData.tournamentId
       )
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Team creation failed with error:', error)
     return {
       success: false,

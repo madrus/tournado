@@ -66,22 +66,14 @@ const maskEmails = (emails: string | string[]): string =>
  * Uses bundled email-testing utilities instead of dynamic imports
  */
 async function storeEmailForTesting(emailPayload: EmailPayload): Promise<void> {
-  console.log('[storeEmailForTesting] invoked with payload:', {
-    to: emailPayload.to,
-    subject: emailPayload.subject,
-  })
   await addEmailToOutbox(emailPayload)
   console.info(`[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`)
-  console.log('[storeEmailForTesting] current EMAIL_FROM:', process.env.EMAIL_FROM)
 }
 
 export async function sendConfirmationEmail(
   team: Team,
   tournament: Tournament
 ): Promise<void> {
-  console.log('[sendConfirmationEmail] invoked with team:', team.id, team.name)
-  console.log('[sendConfirmationEmail] tournament:', tournament.id, tournament.name)
-
   const teamLeader = await getTeamLeader(team.teamLeaderId)
 
   if (!teamLeader) {
@@ -105,9 +97,6 @@ export async function sendConfirmationEmail(
     process.env.EMAIL_FROM = emailFromEnv
   }
 
-  console.log('[sendConfirmationEmail] EMAIL_FROM:', emailFromEnv)
-  console.log('[sendConfirmationEmail] PLAYWRIGHT:', process.env.PLAYWRIGHT)
-
   const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
   const baseUrl = isRealDomainRegistered
     ? process.env.BASE_URL
@@ -118,11 +107,6 @@ export async function sendConfirmationEmail(
           : 'https://tournado.fly.dev' // fallback for production
         : 'http://localhost:5173') // local development
   const emailFrom = isRealDomainRegistered ? emailFromEnv : 'onboarding@resend.dev'
-
-  console.log('[sendConfirmationEmail] Computed baseUrl:', baseUrl)
-  console.log('[sendConfirmationEmail] Computed emailFrom:', emailFrom)
-  console.log('[sendConfirmationEmail] teamLeader email:', teamLeader.email)
-  console.log('[sendConfirmationEmail] Rendering email template...')
 
   // Logo should always come from the actual running website
   // For localhost development, use staging logo since email clients can't access localhost URLs
@@ -146,20 +130,12 @@ export async function sendConfirmationEmail(
     />
   )
 
-  console.log('[sendConfirmationEmail] Email template rendered successfully')
-
   const emailPayload = {
     from: emailFrom,
     to: teamLeader.email,
     subject: `Team ${team.name} registered for ${tournament.name}`,
     html: emailHtml,
   }
-
-  console.log('[sendConfirmationEmail] Email payload prepared:', {
-    from: emailPayload.from,
-    to: emailPayload.to,
-    subject: emailPayload.subject,
-  })
 
   try {
     // In E2E test environment, store the email in MSW outbox instead of sending

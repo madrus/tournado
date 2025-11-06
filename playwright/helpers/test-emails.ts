@@ -16,6 +16,7 @@ export type CapturedEmail = {
  */
 export async function fetchCapturedEmails(): Promise<CapturedEmail[]> {
   const apiClient = await getApiClient()
+  console.log('[test-emails] fetchCapturedEmails GET', TEST_EMAIL_URL)
   const response = await apiClient.get(TEST_EMAIL_URL)
   if (!response.ok()) {
     const status = response.status()
@@ -25,7 +26,9 @@ export async function fetchCapturedEmails(): Promise<CapturedEmail[]> {
     console.error(message)
     throw new Error(message)
   }
-  return response.json()
+  const payload = await response.json()
+  console.log('[test-emails] fetchCapturedEmails received count:', payload.length)
+  return payload
 }
 
 /**
@@ -33,7 +36,9 @@ export async function fetchCapturedEmails(): Promise<CapturedEmail[]> {
  */
 export async function clearCapturedEmails(): Promise<void> {
   const apiClient = await getApiClient()
+  console.log('[test-emails] clearCapturedEmails DELETE', TEST_EMAIL_URL)
   await apiClient.delete(TEST_EMAIL_URL)
+  console.log('[test-emails] clearCapturedEmails complete')
 }
 
 /**
@@ -45,16 +50,27 @@ export async function waitForEmailsCount(
   timeoutMs: number = 10000 // Increased timeout for network requests
 ): Promise<CapturedEmail[]> {
   const startTime = Date.now()
+  let attempt = 0
 
   while (Date.now() - startTime < timeoutMs) {
+    attempt += 1
+    console.log(
+      `[test-emails] waitForEmailsCount attempt ${attempt}. Expecting >= ${expectedCount}`
+    )
     const emails = await fetchCapturedEmails()
     if (emails.length >= expectedCount) {
+      console.log('[test-emails] waitForEmailsCount success with count:', emails.length)
       return emails
     }
+    console.log(
+      '[test-emails] waitForEmailsCount not enough emails yet. Current count:',
+      emails.length
+    )
     await new Promise(resolve => setTimeout(resolve, 250)) // Poll every 250ms
   }
 
   const emails = await fetchCapturedEmails()
+  console.error('[test-emails] waitForEmailsCount timeout. Final count:', emails.length)
   throw new Error(
     `Timeout waiting for ${expectedCount} emails. Found ${emails.length} emails after ${timeoutMs}ms`
   )

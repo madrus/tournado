@@ -32,10 +32,16 @@ const validateOutbox = (emails: TestEmailOutboxEntry[]): TestEmailOutboxEntry[] 
   return validationResult.data
 }
 
-export const getTestEmailOutbox = async (): Promise<TestEmailOutboxEntry[]> =>
-  validateOutbox(inMemoryOutbox).map(email => ({ ...email }))
+export const getTestEmailOutbox = async (): Promise<TestEmailOutboxEntry[]> => {
+  console.log(
+    '[email-testing] getTestEmailOutbox called. Current count:',
+    inMemoryOutbox.length
+  )
+  return validateOutbox(inMemoryOutbox).map(email => ({ ...email }))
+}
 
 export const clearTestEmailOutbox = async (): Promise<void> => {
+  console.log('[email-testing] clearTestEmailOutbox called')
   inMemoryOutbox = []
 }
 
@@ -45,6 +51,10 @@ export const addEmailToOutbox = async (emailData: {
   subject?: string
   html?: string
 }): Promise<TestEmailOutboxEntry> => {
+  console.log('[email-testing] addEmailToOutbox called with:', {
+    to: emailData.to,
+    subject: emailData.subject,
+  })
   const outbox = [...inMemoryOutbox]
 
   // Create new email entry
@@ -62,6 +72,7 @@ export const addEmailToOutbox = async (emailData: {
 
   // Persist in memory for subsequent requests
   inMemoryOutbox = outbox
+  console.log('[email-testing] Stored email. New outbox length:', inMemoryOutbox.length)
 
   return capturedEmail
 }

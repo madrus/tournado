@@ -66,23 +66,39 @@ const maskEmails = (emails: string | string[]): string =>
  * Uses bundled email-testing utilities instead of dynamic imports
  */
 async function storeEmailForTesting(emailPayload: EmailPayload): Promise<void> {
+  console.log('[storeEmailForTesting] invoked with payload:', {
+    to: emailPayload.to,
+    subject: emailPayload.subject,
+  })
   await addEmailToOutbox(emailPayload)
   console.info(`[E2E] Email stored for testing - to: ${maskEmails(emailPayload.to)}`)
+  console.log('[storeEmailForTesting] current EMAIL_FROM:', process.env.EMAIL_FROM)
 }
 
 export async function sendConfirmationEmail(
   team: Team,
   tournament: Tournament
 ): Promise<void> {
+  console.log('[sendConfirmationEmail] invoked with team:', team.id, team.name)
+  console.log('[sendConfirmationEmail] tournament:', tournament.id, tournament.name)
+
   const teamLeader = await getTeamLeader(team.teamLeaderId)
 
   if (!teamLeader) {
+    console.error(
+      '[sendConfirmationEmail] team leader not found for teamLeaderId:',
+      team.teamLeaderId
+    )
     throw new Error(`Team leader not found for team ${team.id}`)
   }
 
   if (!process.env.EMAIL_FROM) {
+    console.error('[sendConfirmationEmail] EMAIL_FROM missing in environment')
     throw new Error('EMAIL_FROM environment variable is not set')
   }
+
+  console.log('[sendConfirmationEmail] EMAIL_FROM:', process.env.EMAIL_FROM)
+  console.log('[sendConfirmationEmail] PLAYWRIGHT:', process.env.PLAYWRIGHT)
 
   const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
   const baseUrl = isRealDomainRegistered
@@ -96,6 +112,11 @@ export async function sendConfirmationEmail(
   const emailFrom = isRealDomainRegistered
     ? process.env.EMAIL_FROM || 'pending-email-from@localhost'
     : 'onboarding@resend.dev'
+
+  console.log('[sendConfirmationEmail] Computed baseUrl:', baseUrl)
+  console.log('[sendConfirmationEmail] Computed emailFrom:', emailFrom)
+  console.log('[sendConfirmationEmail] teamLeader email:', teamLeader.email)
+  console.log('[sendConfirmationEmail] Rendering email template...')
 
   // Logo should always come from the actual running website
   // For localhost development, use staging logo since email clients can't access localhost URLs
@@ -119,6 +140,8 @@ export async function sendConfirmationEmail(
     />
   )
 
+  console.log('[sendConfirmationEmail] Email template rendered successfully')
+
   const emailPayload = {
     from: emailFrom,
     to: teamLeader.email,
@@ -126,15 +149,25 @@ export async function sendConfirmationEmail(
     html: emailHtml,
   }
 
+  console.log('[sendConfirmationEmail] Email payload prepared:', {
+    from: emailPayload.from,
+    to: emailPayload.to,
+    subject: emailPayload.subject,
+  })
+
   try {
     // In E2E test environment, store the email in MSW outbox instead of sending
     if (process.env.PLAYWRIGHT === 'true') {
+      console.log('[sendConfirmationEmail] PLAYWRIGHT mode detected, storing email')
       await storeEmailForTesting(emailPayload)
+      console.log('[sendConfirmationEmail] Email stored for testing successfully')
       return
     }
 
+    console.log('[sendConfirmationEmail] Using Resend client to send email')
     const resend = getResendClient()
     await resend.emails.send(emailPayload)
+    console.log('[sendConfirmationEmail] Resend send complete')
   } catch (error) {
     console.error('Failed to send confirmation email:', error)
 

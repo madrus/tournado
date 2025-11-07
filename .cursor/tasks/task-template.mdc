@@ -19,7 +19,7 @@ Follow the steps below when creating new tasks.
 1. **Name your file**: place under `.cursor/tasks/` using the task ID as prefix followed by kebab-case description, e.g., `tasks/TASK-0123-add-tournament-bracket.mdc`.
 2. **Fill the frontmatter** (above) completely. All metadata should be in the YAML frontmatter section.
 3. **Dependency validation**: Before starting any task, check that all dependencies have `status: "done"`. If not, present user with three options:
-   - **[1] Stop** - I need to complete dependencies first  
+   - **[1] Stop** - I need to complete dependencies first
    - **[2] Continue anyway** - I know these are ready despite status
    - **[3] Cancel** - Let me choose a different task
 4. **Use information-dense keywords** throughout (exact file paths, function signatures, type names, constants, route patterns).
@@ -394,4 +394,5 @@ export type <FeatureComponentProps> = {
 - Related tasks: <list other .cursor/tasks/ files>
 - Design mockups: <link to figma or design files>
 - API documentation: <link to API specs if applicable>
+- Future Enhancements (out of scope for this task): create a placeholder to be filled in later unless any such enhancements are known at the time of the task creation
 - **Decision History**: Document architectural decisions made during task creation

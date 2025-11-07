@@ -112,6 +112,8 @@ export async function createTeamFromFormData(
     // Verify tournament exists
     const tournamentExists = await verifyTournamentExists(teamFormData.tournamentId)
     if (!tournamentExists) {
+      // eslint-disable-next-line no-console
+      console.error('[createTeamFromFormData] Tournament not found')
       return {
         success: false,
         errors: { tournamentId: 'Tournament not found' },

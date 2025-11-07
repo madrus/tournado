@@ -143,7 +143,7 @@ const ENV_VARS: EnvVar[] = [
   {
     name: 'EMAIL_FROM',
     required: true,
-    contexts: ['local', 'production'],
+    contexts: ['ci', 'local', 'e2e', 'production'],
     description: 'Email sender address',
     example: 'Tournado <noreply@tournado.app>',
   },

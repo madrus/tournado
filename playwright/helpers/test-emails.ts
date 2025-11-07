@@ -18,8 +18,12 @@ export async function fetchCapturedEmails(): Promise<CapturedEmail[]> {
   const apiClient = await getApiClient()
   const response = await apiClient.get(TEST_EMAIL_URL)
   if (!response.ok()) {
-    console.error('Failed to fetch emails:', await response.text())
-    return []
+    const status = response.status()
+    const statusText = response.statusText()
+    const body = await response.text()
+    const message = `Failed to fetch emails (${status} ${statusText}): ${body}`
+    console.error(message)
+    throw new Error(message)
   }
   return response.json()
 }

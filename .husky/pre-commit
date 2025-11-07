@@ -1,7 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 # Add Homebrew to PATH if it exists
 [ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
 [ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
 
-pnpm format
-pnpm lint
+# Format only staged files (faster + ensures only staged files are affected).
+# `pretty-quick --staged` will update and re-stage files it changes, so
+# an explicit `git add` here is not required and can add unrelated changes.
+pnpm format-ci
+
+# Run eslint-only (we run formatting separately for staged files above
+# to avoid running the global formatter twice).
+pnpm eslint
 pnpm typecheck

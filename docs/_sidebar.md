@@ -5,6 +5,7 @@
 - Costs
    - [Costs](costs/ai-usage-costs.md)
 - Work in Progress
+   - [Future Enhancements](wip/future-enhancements.md)
    - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
    - [Claude Code Analysis](wip/claude-20250717.md)
    - [Claude QC PR#154](wip/claude-20250723.md)

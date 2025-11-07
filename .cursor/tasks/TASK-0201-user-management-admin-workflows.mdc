@@ -1113,15 +1113,15 @@ export const roleColors = {
 } as const
 ```
 
-## Step 9: Internationalization Strings
+## Step 9: Internationalization Strings ✅ COMPLETED
 
 - [x] Add user management strings to en.json
 - [x] Add user management strings to nl.json
-- [ ] Add user management strings to fr.json (not needed yet)
-- [ ] Add user management strings to ar.json (not needed yet)
+- [x] Add user management strings to fr.json
+- [x] Add user management strings to ar.json
 - [x] Add role translations (public, manager, admin, referee, editor, billing)
-- [ ] Add user management strings to tr.json
-- [ ] Add user management strings to de.json
+- [x] Add user management strings to tr.json
+- [x] Add user management strings to de.json
 
 Add to all locale files (`app/i18n/locales/*.json`):
 

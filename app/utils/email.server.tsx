@@ -84,29 +84,30 @@ export async function sendConfirmationEmail(
     throw new Error(`Team leader not found for team ${team.id}`)
   }
 
-  const emailFromEnv =
-    process.env.EMAIL_FROM ||
-    (process.env.PLAYWRIGHT === 'true' ? 'Team Registration <test@tournado.app>' : '')
+  const emailFromEnv = process.env.EMAIL_FROM
 
+  const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
+  let baseUrl = 'http://localhost:5173'
+  if (process.env.NODE_ENV === 'production') {
+    baseUrl = process.env.FLY_APP_NAME
+      ? `https://${process.env.FLY_APP_NAME}.fly.dev`
+      : 'https://tournado.fly.dev'
+  }
+  if (process.env.EMAIL_BASE_URL) {
+    baseUrl = process.env.EMAIL_BASE_URL
+  }
+  if (isRealDomainRegistered && process.env.BASE_URL) {
+    baseUrl = process.env.BASE_URL
+  }
   if (!emailFromEnv) {
     console.error('[sendConfirmationEmail] EMAIL_FROM missing in environment')
     throw new Error('EMAIL_FROM environment variable is not set')
   }
 
-  if (!process.env.EMAIL_FROM) {
-    process.env.EMAIL_FROM = emailFromEnv
+  let emailFrom = 'onboarding@resend.dev'
+  if (isRealDomainRegistered && emailFromEnv) {
+    emailFrom = emailFromEnv
   }
-
-  const teamLeaderName = `${teamLeader.firstName} ${teamLeader.lastName}`
-  const baseUrl = isRealDomainRegistered
-    ? process.env.BASE_URL
-    : process.env.EMAIL_BASE_URL || // Allow manual override
-      (process.env.NODE_ENV === 'production'
-        ? process.env.FLY_APP_NAME
-          ? `https://${process.env.FLY_APP_NAME}.fly.dev`
-          : 'https://tournado.fly.dev' // fallback for production
-        : 'http://localhost:5173') // local development
-  const emailFrom = isRealDomainRegistered ? emailFromEnv : 'onboarding@resend.dev'
 
   // Logo should always come from the actual running website
   // For localhost development, use staging logo since email clients can't access localhost URLs

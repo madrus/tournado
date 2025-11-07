@@ -7,12 +7,8 @@ import { checkDevServer } from './utils/port-utils.js'
 // Force test DB for built e2e server (override any .env setting)
 process.env.DATABASE_URL = 'file:./prisma/data-test.db?connection_limit=1'
 process.env.PLAYWRIGHT = 'true'
-const nodeOptionsExtras = ['--import', 'tsx/esm', '--import', './test/mocks/index.ts']
-const existingNodeOptions = process.env.NODE_OPTIONS
-const mergedNodeOptions = existingNodeOptions
-  ? `${existingNodeOptions} ${nodeOptionsExtras.join(' ')}`
-  : nodeOptionsExtras.join(' ')
-process.env.NODE_OPTIONS = mergedNodeOptions
+const { withMockImports } = await import('./utils/node-options.js')
+process.env.NODE_OPTIONS = withMockImports(process.env.NODE_OPTIONS)
 console.log('[e2e-server-built] NODE_OPTIONS =', process.env.NODE_OPTIONS)
 
 const PORT = 8811

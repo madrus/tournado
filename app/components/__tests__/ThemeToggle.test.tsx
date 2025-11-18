@@ -11,14 +11,6 @@ vi.mock('react-i18next', () => ({
   }),
 }))
 
-// Mock settings store
-vi.mock('~/stores/useSettingsStore', () => ({
-  useSettingsStore: () => ({
-    theme: 'light',
-    toggleTheme: vi.fn(),
-  }),
-}))
-
 // Mock icon utils
 vi.mock('~/utils/iconUtils', () => ({
   renderIcon: (name: string) => <span data-testid={`icon-${name}`}>{name}</span>,

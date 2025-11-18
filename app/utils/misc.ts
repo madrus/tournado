@@ -120,4 +120,7 @@ export function useFocusInvalid(
 }
 
 export const isRouteErrorResponse = (error: unknown): error is ErrorResponse =>
-  !!error && typeof error === 'object' && 'status' in error
+  !!error &&
+  typeof error === 'object' &&
+  'status' in error &&
+  typeof error.status === 'number'

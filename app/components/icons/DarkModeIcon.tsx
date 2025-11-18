@@ -1,6 +1,7 @@
 import { type JSX, type SVGProps } from 'react'
 
 import type { IconWeight } from '~/lib/lib.types'
+import { cn } from '~/utils/misc'
 
 type DarkModeIconProps = {
   className?: string
@@ -32,7 +33,7 @@ export function DarkModeIcon({
       width={size}
       height={size}
       viewBox='0 -960 960 960'
-      className={`inline-block fill-current ${className}`}
+      className={cn('inline-block fill-current', className)}
       role='img'
       aria-label={ariaLabel}
       style={combinedStyle}

@@ -21,7 +21,7 @@ if (!process.env.DATABASE_URL) {
   }
 }
 
-const ABORT_DELAY = 5_000
+const ABORT_DELAY = 5000
 
 function applySecurityHeaders(headers: Headers, request: Request): void {
   const isDev = process.env.NODE_ENV !== 'production'

@@ -11,7 +11,7 @@ import type { Language } from '~/i18n/config'
 
 import { TournamentForm } from '../TournamentForm'
 
-const state = useTournamentFormStore.getState
+const getState = useTournamentFormStore.getState
 
 // Mock hasPointerCapture for Radix UI components
 Object.defineProperty(HTMLElement.prototype, 'hasPointerCapture', {
@@ -363,7 +363,7 @@ const mockCategories = ['JO8', 'JO9', 'JO10', 'JO11', 'JO12', 'MO8', 'MO9', 'MO1
 
 const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) => {
   // Reset store first
-  state().resetStoreState()
+  getState().resetStoreState()
 
   // For most tests, use edit mode so all panels are enabled (like TeamForm behavior)
   // Only specific tests should test the progressive panel validation of create mode
@@ -380,15 +380,15 @@ const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) 
   // If formData is provided, set it in the store like TeamForm does
   if (props.formData) {
     const { formData } = props
-    state().setFormField('name', formData.name || '')
-    state().setFormField('location', formData.location || '')
-    state().setFormField('startDate', formData.startDate || '')
-    state().setFormField('endDate', formData.endDate || '')
+    getState().setFormField('name', formData.name || '')
+    getState().setFormField('location', formData.location || '')
+    getState().setFormField('startDate', formData.startDate || '')
+    getState().setFormField('endDate', formData.endDate || '')
     if (formData.divisions) {
-      state().setFormField('divisions', formData.divisions)
+      getState().setFormField('divisions', formData.divisions)
     }
     if (formData.categories) {
-      state().setFormField('categories', formData.categories)
+      getState().setFormField('categories', formData.categories)
     }
   }
 

@@ -1,24 +1,23 @@
+import { type ClassValue, clsx } from 'clsx'
 import { useEffect } from 'react'
 import { type ErrorResponse, useFormAction, useNavigation } from 'react-router'
-
-import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 /**
  * Does its best to get a string error message from an unknown error.
  */
 export function getErrorMessage(error: unknown): string {
-  if (typeof error === 'string') return error
-  if (
-    error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message
-  }
+	if (typeof error === 'string') return error
+	if (
+		error &&
+		typeof error === 'object' &&
+		'message' in error &&
+		typeof error.message === 'string'
+	) {
+		return error.message
+	}
 
-  return 'Unknown Error'
+	return 'Unknown Error'
 }
 
 /**
@@ -38,13 +37,10 @@ export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs))
  * @param message The message to throw if condition is false
  * @throws {Error} if condition is falsey
  */
-export function invariant(
-  condition: unknown,
-  message: string | (() => string)
-): asserts condition {
-  if (!condition) {
-    throw new Error(typeof message === 'function' ? message() : message)
-  }
+export function invariant(condition: unknown, message: string | (() => string)): asserts condition {
+	if (!condition) {
+		throw new Error(typeof message === 'function' ? message() : message)
+	}
 }
 
 /**
@@ -63,18 +59,18 @@ export function invariant(
  * @throws {Response} if condition is falsey
  */
 export function invariantResponse(
-  condition: boolean,
-  message?: string | (() => string),
-  responseInit?: ResponseInit
+	condition: boolean,
+	message?: string | (() => string),
+	responseInit?: ResponseInit,
 ): asserts condition {
-  if (!condition) {
-    throw new Response(
-      typeof message === 'function'
-        ? message()
-        : message || 'An invariant failed, please provide a message to explain why.',
-      { status: 400, ...responseInit }
-    )
-  }
+	if (!condition) {
+		throw new Response(
+			typeof message === 'function'
+				? message()
+				: message || 'An invariant failed, please provide a message to explain why.',
+			{ status: 400, ...responseInit },
+		)
+	}
 }
 
 /**
@@ -82,45 +78,39 @@ export function invariantResponse(
  * form. Defaults to the current route's form action and method POST.
  */
 export function useIsSubmitting({
-  formAction,
-  formMethod = 'POST',
+	formAction,
+	formMethod = 'POST',
 }: {
-  formAction?: string
-  formMethod?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'
+	formAction?: string
+	formMethod?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'
 } = {}): boolean {
-  const contextualFormAction = useFormAction()
-  const navigation = useNavigation()
-  return (
-    navigation.state === 'submitting' &&
-    navigation.formAction === (formAction ?? contextualFormAction) &&
-    navigation.formMethod === formMethod
-  )
+	const contextualFormAction = useFormAction()
+	const navigation = useNavigation()
+	return (
+		navigation.state === 'submitting' &&
+		navigation.formAction === (formAction ?? contextualFormAction) &&
+		navigation.formMethod === formMethod
+	)
 }
 
 /**
  * A hook that focuses the first invalid element in a form.
  */
-export function useFocusInvalid(
-  formEl: HTMLFormElement | null,
-  hasErrors: boolean
-): void {
-  useEffect(() => {
-    if (!formEl) return
-    if (!hasErrors) return
+export function useFocusInvalid(formEl: HTMLFormElement | null, hasErrors: boolean): void {
+	useEffect(() => {
+		if (!formEl) return
+		if (!hasErrors) return
 
-    if (formEl.matches('[aria-invalid="true"]')) {
-      formEl.focus()
-    } else {
-      const firstInvalid = formEl.querySelector('[aria-invalid="true"]')
-      if (firstInvalid instanceof HTMLElement) {
-        firstInvalid.focus()
-      }
-    }
-  }, [formEl, hasErrors])
+		if (formEl.matches('[aria-invalid="true"]')) {
+			formEl.focus()
+		} else {
+			const firstInvalid = formEl.querySelector('[aria-invalid="true"]')
+			if (firstInvalid instanceof HTMLElement) {
+				firstInvalid.focus()
+			}
+		}
+	}, [formEl, hasErrors])
 }
 
 export const isRouteErrorResponse = (error: unknown): error is ErrorResponse =>
-  !!error &&
-  typeof error === 'object' &&
-  'status' in error &&
-  typeof error.status === 'number'
+	!!error && typeof error === 'object' && 'status' in error && typeof error.status === 'number'

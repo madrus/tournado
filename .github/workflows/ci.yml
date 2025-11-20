@@ -51,7 +51,7 @@ jobs:
           fi
 
   lint:
-    name: ⬣ ESLint
+    name: ⬣ Biome
     runs-on: ubuntu-latest
     needs: check_changes
     permissions:
@@ -92,7 +92,7 @@ jobs:
         run: pnpm exec prisma generate
 
       - name: 🔬 Lint
-        run: pnpm lint
+        run: pnpm biome check .
 
   typecheck:
     name: ʦ TypeScript

@@ -6,33 +6,33 @@ import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
 
 // Mock session utilities
 vi.mock('~/utils/session.server', () => ({
-  getUser: vi.fn(),
+	getUser: vi.fn(),
 }))
 
 // Mock user model
 vi.mock('~/models/user.server', () => ({
-  getUserById: vi.fn().mockResolvedValue({
-    id: 'test-user-id',
-    email: 'test@example.com',
-    role: 'PUBLIC',
-    firstName: 'Test',
-    lastName: 'User',
-    active: true,
-  }),
+	getUserById: vi.fn().mockResolvedValue({
+		id: 'test-user-id',
+		email: 'test@example.com',
+		role: 'PUBLIC',
+		firstName: 'Test',
+		lastName: 'User',
+		active: true,
+	}),
 }))
 
 // Mock user audit log model
 vi.mock('~/models/userAuditLog.server', () => ({
-  getUserAuditLogs: vi.fn().mockResolvedValue([]),
+	getUserAuditLogs: vi.fn().mockResolvedValue([]),
 }))
 
 beforeEach(() => {
-  vi.clearAllMocks()
+	vi.clearAllMocks()
 })
 
 // Generate all authorization tests automatically from route metadata
 createLoaderAuthTests({
-  routePath: '/a7k9m2x5p8w1n4q6r3y8b5t1/users/test-id',
-  metadata: handle,
-  loaderFunction: args => loader({ ...args, params: { userId: 'test-id' } }),
+	routePath: '/a7k9m2x5p8w1n4q6r3y8b5t1/users/test-id',
+	metadata: handle,
+	loaderFunction: (args) => loader({ ...args, params: { userId: 'test-id' } }),
 })

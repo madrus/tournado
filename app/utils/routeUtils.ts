@@ -12,23 +12,21 @@ const DEFAULT_REDIRECT = '/'
  * Converts FormData values to strings for redirect purposes.
  * FormData can contain File objects, but redirects should only be strings.
  */
-function toRedirectString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
-  if (value == null) return null
-  if (typeof value === 'string') {
-    const trimmed = value.trim()
-    return trimmed === '' ? null : trimmed
-  }
-  // FormDataEntryValue can be File, but redirects should only be strings
-  return null
+function toRedirectString(value: FormDataEntryValue | string | null | undefined): string | null {
+	if (value == null) return null
+	if (typeof value === 'string') {
+		const trimmed = value.trim()
+		return trimmed === '' ? null : trimmed
+	}
+	// FormDataEntryValue can be File, but redirects should only be strings
+	return null
 }
 
 /**
  * Checks if a redirect path is safe (prevents open-redirect vulnerabilities)
  */
 const isValidRedirectPath = (path: string): boolean =>
-  path.startsWith('/') && !path.startsWith('//')
+	path.startsWith('/') && !path.startsWith('//')
 
 /**
  * This should be used any time the redirect path is user-provided
@@ -38,24 +36,24 @@ const isValidRedirectPath = (path: string): boolean =>
  *       only string or only null
  */
 export function safeRedirect(
-  to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect: null
+	to: FormDataEntryValue | string | null | undefined,
+	defaultRedirect: null,
 ): string | null
 export function safeRedirect(
-  to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect?: string
+	to: FormDataEntryValue | string | null | undefined,
+	defaultRedirect?: string,
 ): string
 export function safeRedirect(
-  to: FormDataEntryValue | string | null | undefined,
-  defaultRedirect: string | null = DEFAULT_REDIRECT
+	to: FormDataEntryValue | string | null | undefined,
+	defaultRedirect: string | null = DEFAULT_REDIRECT,
 ): string | null {
-  const redirectPath = toRedirectString(to)
+	const redirectPath = toRedirectString(to)
 
-  if (!redirectPath || !isValidRedirectPath(redirectPath)) {
-    return defaultRedirect
-  }
+	if (!redirectPath || !isValidRedirectPath(redirectPath)) {
+		return defaultRedirect
+	}
 
-  return redirectPath
+	return redirectPath
 }
 
 /**
@@ -65,42 +63,34 @@ export function safeRedirect(
  * @returns {JSON|undefined} The router data or undefined if not found
  */
 export function useMatchesData(id: string): Record<string, unknown> | undefined {
-  const matchingRoutes = useMatches()
-  const route = useMemo(
-    () => matchingRoutes.find(r => r.id === id),
-    [matchingRoutes, id]
-  )
-  return route?.data as Record<string, unknown>
+	const matchingRoutes = useMatches()
+	const route = useMemo(() => matchingRoutes.find((r) => r.id === id), [matchingRoutes, id])
+	return route?.data as Record<string, unknown>
 }
 
 const isUser = (user: unknown): user is User =>
-  user != null &&
-  typeof user === 'object' &&
-  'email' in user &&
-  typeof user.email === 'string'
+	user != null && typeof user === 'object' && 'email' in user && typeof user.email === 'string'
 
 /**
  * Hook that gets the current user with fallback handling for test environments
  * This reduces code duplication in components that need user data with error handling
  */
 export function useUser(): User | null {
-  try {
-    const useData = useMatchesData('root')
-    if (!useData || !isUser(useData.user)) {
-      return null
-    }
-    return useData.user
-  } catch (_error) {
-    // Fallback for test environments or when router context is not available
-    return null
-  }
+	try {
+		const useData = useMatchesData('root')
+		if (!useData || !isUser(useData.user)) {
+			return null
+		}
+		return useData.user
+	} catch (_error) {
+		// Fallback for test environments or when router context is not available
+		return null
+	}
 }
 
 export const capitalize = <T extends string>(str: T): Capitalize<Lowercase<T>> => {
-  if (!str) return '' as Capitalize<Lowercase<T>>
-  return (str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()) as Capitalize<
-    Lowercase<T>
-  >
+	if (!str) return '' as Capitalize<Lowercase<T>>
+	return (str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()) as Capitalize<Lowercase<T>>
 }
 
 /**
@@ -119,14 +109,14 @@ export const capitalize = <T extends string>(str: T): Capitalize<Lowercase<T>> =
  * ```
  */
 export function normalizePathname(path: string): string {
-  // Handle empty string or whitespace - default to root
-  if (!path || !path.trim()) return '/'
+	// Handle empty string or whitespace - default to root
+	if (!path || !path.trim()) return '/'
 
-  // Remove trailing slash, but preserve root path
-  const normalized = path.replace(/\/$/, '')
+	// Remove trailing slash, but preserve root path
+	const normalized = path.replace(/\/$/, '')
 
-  // If we removed the only slash (root path), return it
-  return normalized || '/'
+	// If we removed the only slash (root path), return it
+	return normalized || '/'
 }
 
 /**
@@ -135,23 +125,23 @@ export function normalizePathname(path: string): string {
  * to find a title in their metadata
  */
 export function usePageTitle(): string {
-  const matches = useMatches()
-  const { t } = useTranslation()
+	const matches = useMatches()
+	const { t } = useTranslation()
 
-  return useMemo(() => {
-    if (!matches.length) return ''
+	return useMemo(() => {
+		if (!matches.length) return ''
 
-    // Find the first match with a title, starting from the most specific (end of array)
-    const matchWithTitle = [...matches]
-      .reverse()
-      .find(match => match.handle && (match.handle as RouteMetadata).title)
+		// Find the first match with a title, starting from the most specific (end of array)
+		const matchWithTitle = [...matches]
+			.reverse()
+			.find((match) => match.handle && (match.handle as RouteMetadata).title)
 
-    if (matchWithTitle?.handle) {
-      const titleKey = (matchWithTitle.handle as RouteMetadata).title as string
-      return t(titleKey)
-    }
+		if (matchWithTitle?.handle) {
+			const titleKey = (matchWithTitle.handle as RouteMetadata).title as string
+			return t(titleKey)
+		}
 
-    // Return empty string if no title is found in any matched route
-    return ''
-  }, [matches, t])
+		// Return empty string if no title is found in any matched route
+		return ''
+	}, [matches, t])
 }

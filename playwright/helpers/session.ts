@@ -7,23 +7,23 @@ import type { Role } from '@prisma/client'
  * @param role - Role to login as (PUBLIC, REFEREE, EDITOR, BILLING, MANAGER, ADMIN)
  */
 export async function loginAsRole(page: Page, role: Role): Promise<void> {
-  const { createTestSession } = await import('./test-auth')
-  const { cookie } = await createTestSession(role)
+	const { createTestSession } = await import('./test-auth')
+	const { cookie } = await createTestSession(role)
 
-  const cookieMatch = cookie.match(/__session=([^;]+)/)
-  if (!cookieMatch) {
-    throw new Error(`Failed to parse session cookie: ${cookie}`)
-  }
+	const cookieMatch = cookie.match(/__session=([^;]+)/)
+	if (!cookieMatch) {
+		throw new Error(`Failed to parse session cookie: ${cookie}`)
+	}
 
-  await page.context().addCookies([
-    {
-      name: '__session',
-      value: cookieMatch[1],
-      domain: 'localhost',
-      path: '/',
-      httpOnly: true,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ])
+	await page.context().addCookies([
+		{
+			name: '__session',
+			value: cookieMatch[1],
+			domain: 'localhost',
+			path: '/',
+			httpOnly: true,
+			secure: false,
+			sameSite: 'Lax',
+		},
+	])
 }

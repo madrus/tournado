@@ -1,12 +1,7 @@
 import type { TournamentData } from '~/features/tournaments/types'
 
 import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './teamFormConstants'
-import type {
-  FormFieldName,
-  FormFields,
-  StoreState,
-  ValidationState,
-} from './teamFormTypes'
+import type { FormFieldName, FormFields, StoreState, ValidationState } from './teamFormTypes'
 
 /**
  * Checks if the specified panel is complete and valid.
@@ -22,20 +17,20 @@ import type {
  * In create mode, checks both field values and display errors.
  */
 export function isPanelValid(
-  panelNumber: 1 | 2 | 3 | 4,
-  formFields: FormFields,
-  displayErrors: Partial<Record<FormFieldName, string>>,
-  mode: 'create' | 'edit'
+	panelNumber: 1 | 2 | 3 | 4,
+	formFields: FormFields,
+	displayErrors: Partial<Record<FormFieldName, string>>,
+	mode: 'create' | 'edit',
 ): boolean {
-  const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
-  if (!panelFields) return false
+	const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
+	if (!panelFields) return false
 
-  if (mode === 'edit') {
-    return panelFields.every(field => !!formFields[field as keyof FormFields])
-  }
-  return panelFields.every(
-    field => !!formFields[field as keyof FormFields] && !displayErrors[field]
-  )
+	if (mode === 'edit') {
+		return panelFields.every((field) => !!formFields[field as keyof FormFields])
+	}
+	return panelFields.every(
+		(field) => !!formFields[field as keyof FormFields] && !displayErrors[field],
+	)
 }
 
 /**
@@ -49,75 +44,69 @@ export function isPanelValid(
  *   - Panel 4 enables when panel 3 is complete
  */
 export function isPanelEnabled(
-  panelNumber: 1 | 2 | 3 | 4,
-  mode: 'create' | 'edit',
-  isPanelValidFn: (panel: 1 | 2 | 3 | 4) => boolean
+	panelNumber: 1 | 2 | 3 | 4,
+	mode: 'create' | 'edit',
+	isPanelValidFn: (panel: 1 | 2 | 3 | 4) => boolean,
 ): boolean {
-  if (mode === 'edit') return true
-  switch (panelNumber) {
-    case 1:
-      return true
-    case 2:
-      return isPanelValidFn(1)
-    case 3:
-      return isPanelValidFn(2)
-    case 4:
-      return isPanelValidFn(3)
-    default:
-      return false
-  }
+	if (mode === 'edit') return true
+	switch (panelNumber) {
+		case 1:
+			return true
+		case 2:
+			return isPanelValidFn(1)
+		case 3:
+			return isPanelValidFn(2)
+		case 4:
+			return isPanelValidFn(3)
+		default:
+			return false
+	}
 }
 
 /**
  * Checks if the form is dirty (has been modified) by comparing current and old form fields.
  */
-export const isFormDirty = (
-  formFields: FormFields,
-  oldFormFields: FormFields
-): boolean => JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
+export const isFormDirty = (formFields: FormFields, oldFormFields: FormFields): boolean =>
+	JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
 
 /**
  * Computes available divisions and categories for the selected tournament.
  * Returns empty arrays if no tournament is selected.
  */
 export function computeAvailableOptions(
-  tournaments: TournamentData[],
-  tournamentId: string
+	tournaments: TournamentData[],
+	tournamentId: string,
 ): { divisions: string[]; categories: string[] } {
-  const selectedTournament = tournaments.find(t => t.id === tournamentId)
-  return {
-    divisions: selectedTournament?.divisions ? [...selectedTournament.divisions] : [],
-    categories: selectedTournament?.categories
-      ? [...selectedTournament.categories]
-      : [],
-  }
+	const selectedTournament = tournaments.find((t) => t.id === tournamentId)
+	return {
+		divisions: selectedTournament?.divisions ? [...selectedTournament.divisions] : [],
+		categories: selectedTournament?.categories ? [...selectedTournament.categories] : [],
+	}
 }
 
 /**
  * Determines which dependent fields should be reset when a field changes.
  * Used to clear division/category when tournament or division changes.
  */
-export function getDependentFieldResets(
-  fieldName: keyof FormFields
-): Partial<FormFields> {
-  if (fieldName === 'tournamentId') {
-    return { division: '', category: '' }
-  }
-  if (fieldName === 'division') {
-    return { category: '' }
-  }
-  return {}
+export function getDependentFieldResets(fieldName: keyof FormFields): Partial<FormFields> {
+	if (fieldName === 'tournamentId') {
+		return { division: '', category: '' }
+	}
+	if (fieldName === 'division') {
+		return { category: '' }
+	}
+	return {}
 }
 
 /**
  * Merges display and server errors, with server errors taking priority.
  */
 export const mergeErrors = (
-  displayErrors: Partial<Record<FormFieldName, string>>,
-  serverErrors: Partial<Record<FormFieldName, string>>
+	displayErrors: Partial<Record<FormFieldName, string>>,
+	serverErrors: Partial<Record<FormFieldName, string>>,
 ): Partial<Record<FormFieldName, string>> => ({
-  ...displayErrors,
-  ...serverErrors,
+	...displayErrors,
+	...serverErrors,
 })
 
 /**
@@ -125,18 +114,18 @@ export const mergeErrors = (
  * Used to determine if a panel is complete for progressive form navigation.
  */
 export function isPanelComplete(
-  panelNumber: 1 | 2 | 3 | 4,
-  formFields: FormFields,
-  blurredFields: Partial<Record<FormFieldName, boolean>>,
-  displayErrors: Partial<Record<FormFieldName, string>>
+	panelNumber: 1 | 2 | 3 | 4,
+	formFields: FormFields,
+	blurredFields: Partial<Record<FormFieldName, boolean>>,
+	displayErrors: Partial<Record<FormFieldName, string>>,
 ): boolean {
-  const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
-  if (!panelFields) return false
-  const allFieldsBlurred = panelFields.every(field => blurredFields[field])
-  const allFieldsValid = panelFields.every(
-    field => !!formFields[field as keyof FormFields] && !displayErrors[field]
-  )
-  return allFieldsBlurred && allFieldsValid
+	const panelFields = TEAM_PANELS_FIELD_MAP[panelNumber]
+	if (!panelFields) return false
+	const allFieldsBlurred = panelFields.every((field) => blurredFields[field])
+	const allFieldsValid = panelFields.every(
+		(field) => !!formFields[field as keyof FormFields] && !displayErrors[field],
+	)
+	return allFieldsBlurred && allFieldsValid
 }
 
 /**
@@ -144,69 +133,67 @@ export function isPanelComplete(
  * Used for bulk form data setting and pre-population.
  */
 export function mapFlexibleToFormData(
-  flexibleData: Partial<{
-    tournamentId?: string
-    division?: string
-    category?: string
-    clubName?: string
-    name?: string
-    teamLeaderName?: string
-    teamLeaderPhone?: string
-    teamLeaderEmail?: string
-    privacyAgreement?: boolean
-  }>
+	flexibleData: Partial<{
+		tournamentId?: string
+		division?: string
+		category?: string
+		clubName?: string
+		name?: string
+		teamLeaderName?: string
+		teamLeaderPhone?: string
+		teamLeaderEmail?: string
+		privacyAgreement?: boolean
+	}>,
 ): Partial<FormFields> {
-  const mappedData: Partial<FormFields> = {}
-  if (flexibleData.tournamentId !== undefined) {
-    mappedData.tournamentId = flexibleData.tournamentId
-  }
-  if (flexibleData.division !== undefined) mappedData.division = flexibleData.division
-  if (flexibleData.category !== undefined) mappedData.category = flexibleData.category
-  if (flexibleData.clubName !== undefined) mappedData.clubName = flexibleData.clubName
-  if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
-  if (flexibleData.teamLeaderName !== undefined) {
-    mappedData.teamLeaderName = flexibleData.teamLeaderName
-  }
-  if (flexibleData.teamLeaderPhone !== undefined) {
-    mappedData.teamLeaderPhone = flexibleData.teamLeaderPhone
-  }
-  if (flexibleData.teamLeaderEmail !== undefined) {
-    mappedData.teamLeaderEmail = flexibleData.teamLeaderEmail
-  }
-  if (flexibleData.privacyAgreement !== undefined) {
-    mappedData.privacyAgreement = flexibleData.privacyAgreement
-  }
-  return mappedData
+	const mappedData: Partial<FormFields> = {}
+	if (flexibleData.tournamentId !== undefined) {
+		mappedData.tournamentId = flexibleData.tournamentId
+	}
+	if (flexibleData.division !== undefined) mappedData.division = flexibleData.division
+	if (flexibleData.category !== undefined) mappedData.category = flexibleData.category
+	if (flexibleData.clubName !== undefined) mappedData.clubName = flexibleData.clubName
+	if (flexibleData.name !== undefined) mappedData.name = flexibleData.name
+	if (flexibleData.teamLeaderName !== undefined) {
+		mappedData.teamLeaderName = flexibleData.teamLeaderName
+	}
+	if (flexibleData.teamLeaderPhone !== undefined) {
+		mappedData.teamLeaderPhone = flexibleData.teamLeaderPhone
+	}
+	if (flexibleData.teamLeaderEmail !== undefined) {
+		mappedData.teamLeaderEmail = flexibleData.teamLeaderEmail
+	}
+	if (flexibleData.privacyAgreement !== undefined) {
+		mappedData.privacyAgreement = flexibleData.privacyAgreement
+	}
+	return mappedData
 }
 
 /**
  * Returns the panel number (1-4) for a given field name, or 0 if not found.
  */
 export const getPanelNumberForField = (fieldName: keyof FormFields): number =>
-  Number(
-    Object.entries(TEAM_PANELS_FIELD_MAP).find(([, fields]) =>
-      (fields as readonly (keyof FormFields)[]).includes(fieldName)
-    )?.[0] ?? 0
-  )
+	Number(
+		Object.entries(TEAM_PANELS_FIELD_MAP).find(([, fields]) =>
+			(fields as readonly (keyof FormFields)[]).includes(fieldName),
+		)?.[0] ?? 0,
+	)
 
 // Helper to determine if a field should be validated
 export const shouldValidateField = (
-  fieldName: FormFieldName,
-  validation: ValidationState
+	fieldName: FormFieldName,
+	validation: ValidationState,
 ): boolean =>
-  validation.blurredFields[fieldName] ||
-  validation.forceShowAllErrors ||
-  validation.submitAttempted
+	validation.blurredFields[fieldName] || validation.forceShowAllErrors || validation.submitAttempted
 
 // Helper to reset state while preserving specified keys
 export function resetStatePreserving<T extends keyof StoreState>(
-  preserveKeys: T[],
-  get: () => StoreState
+	preserveKeys: T[],
+	get: () => StoreState,
 ): StoreState {
-  const preserved: Partial<StoreState> = {}
-  const current = get()
-  for (const key of preserveKeys) {
-    preserved[key] = current[key]
-  }
-  return { ...initialStoreState, ...preserved } as StoreState
+	const preserved: Partial<StoreState> = {}
+	const current = get()
+	for (const key of preserveKeys) {
+		preserved[key] = current[key]
+	}
+	return { ...initialStoreState, ...preserved } as StoreState
 }

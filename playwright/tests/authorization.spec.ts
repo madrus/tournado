@@ -23,66 +23,64 @@ import { PublicPage } from '../pages/PublicPage'
 test.use({ storageState: { cookies: [], origins: [] } })
 
 test.describe('Authorization - Public Access', () => {
-  test.beforeEach(async ({ page }) => {
-    // Set mobile viewport for consistency
-    await page.setViewportSize({ width: 375, height: 812 })
-  })
+	test.beforeEach(async ({ page }) => {
+		// Set mobile viewport for consistency
+		await page.setViewportSize({ width: 375, height: 812 })
+	})
 
-  test('should allow access to public teams page', async ({ page }) => {
-    const publicPage = new PublicPage(page)
-    await publicPage.navigateToTeams()
+	test('should allow access to public teams page', async ({ page }) => {
+		const publicPage = new PublicPage(page)
+		await publicPage.navigateToTeams()
 
-    await expect(page).toHaveURL('/teams')
-    await expect(await publicPage.getAddTeamButton()).toBeVisible()
-  })
+		await expect(page).toHaveURL('/teams')
+		await expect(await publicPage.getAddTeamButton()).toBeVisible()
+	})
 
-  test('should redirect to signin when accessing protected routes', async ({
-    page,
-  }) => {
-    const publicPage = new PublicPage(page)
-    await publicPage.navigateToAdminPanel()
+	test('should redirect to signin when accessing protected routes', async ({ page }) => {
+		const publicPage = new PublicPage(page)
+		await publicPage.navigateToAdminPanel()
 
-    // Should be redirected to signin page
-    await expect(page).toHaveURL(/\/auth\/signin/)
-    await expect(page).toHaveURL(/redirectTo=/)
-  })
+		// Should be redirected to signin page
+		await expect(page).toHaveURL(/\/auth\/signin/)
+		await expect(page).toHaveURL(/redirectTo=/)
+	})
 
-  test('should allow access to signup and signin pages', async ({ page }) => {
-    const publicPage = new PublicPage(page)
-    await publicPage.navigateToSignin()
-    await publicPage.waitForHydration()
-    await expect(page).toHaveURL('/auth/signin')
-    await expect(await publicPage.getSigninButton()).toBeVisible()
+	test('should allow access to signup and signin pages', async ({ page }) => {
+		const publicPage = new PublicPage(page)
+		await publicPage.navigateToSignin()
+		await publicPage.waitForHydration()
+		await expect(page).toHaveURL('/auth/signin')
+		await expect(await publicPage.getSigninButton()).toBeVisible()
 
-    await publicPage.navigateToSignup()
-    await publicPage.waitForHydration()
-    await expect(page).toHaveURL('/auth/signup')
-    await expect(await publicPage.getSignupButton()).toBeVisible()
-  })
+		await publicPage.navigateToSignup()
+		await publicPage.waitForHydration()
+		await expect(page).toHaveURL('/auth/signup')
+		await expect(await publicPage.getSignupButton()).toBeVisible()
+	})
 
-  test('should redirect PUBLIC role users to unauthorized when accessing admin panels', async ({
-    page,
-  }) => {
-    await loginAsRole(page, Role.PUBLIC)
-    const publicPage = new PublicPage(page)
+	test('should redirect PUBLIC role users to unauthorized when accessing admin panels', async ({
+		page,
+	}) => {
+		await loginAsRole(page, Role.PUBLIC)
+		const publicPage = new PublicPage(page)
 
-    // Try to access admin panel as PUBLIC user
-    await publicPage.navigateToAdminPanel()
+		// Try to access admin panel as PUBLIC user
+		await publicPage.navigateToAdminPanel()
 
-    // Should be redirected to unauthorized page
-    await expect(page).toHaveURL('/unauthorized')
-  })
+		// Should be redirected to unauthorized page
+		await expect(page).toHaveURL('/unauthorized')
+	})
 
-  test('should redirect PUBLIC role users to unauthorized when accessing admin teams', async ({
-    page,
-  }) => {
-    await loginAsRole(page, Role.PUBLIC)
-    const publicPage = new PublicPage(page)
+	test('should redirect PUBLIC role users to unauthorized when accessing admin teams', async ({
+		page,
+	}) => {
+		await loginAsRole(page, Role.PUBLIC)
+		const publicPage = new PublicPage(page)
 
-    // Try to access admin teams as PUBLIC user
-    await publicPage.navigateToAdminTeams()
+		// Try to access admin teams as PUBLIC user
+		await publicPage.navigateToAdminTeams()
 
-    // Should be redirected to unauthorized page
-    await expect(page).toHaveURL('/unauthorized')
-  })
+		// Should be redirected to unauthorized page
+		await expect(page).toHaveURL('/unauthorized')
+	})
 })

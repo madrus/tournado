@@ -1,226 +1,214 @@
 /* Centralized color tokens for Tournado app (light and dark mode) */
 
 :root {
-  --color-background: var(--color-white);
-  --color-border: var(--color-slate-200); /* light mode border */
-  /* Brand colors (red-based) - complete number set */
-  --color-brand-50: var(--color-red-50);
-  --color-brand-100: var(--color-red-100);
-  --color-brand-200: var(--color-red-200);
-  --color-brand-300: var(--color-red-300);
-  --color-brand-400: var(--color-red-400);
-  --color-brand-500: var(--color-red-500);
-  --color-brand-600: var(--color-red-600);
-  --color-brand-700: var(--color-red-700);
-  --color-brand-800: var(--color-red-800);
-  --color-brand-900: var(--color-red-900);
-  --color-brand-950: var(--color-red-950);
+	--color-background: var(--color-white);
+	--color-border: var(--color-slate-200); /* light mode border */
+	/* Brand colors (red-based) - complete number set */
+	--color-brand-50: var(--color-red-50);
+	--color-brand-100: var(--color-red-100);
+	--color-brand-200: var(--color-red-200);
+	--color-brand-300: var(--color-red-300);
+	--color-brand-400: var(--color-red-400);
+	--color-brand-500: var(--color-red-500);
+	--color-brand-600: var(--color-red-600);
+	--color-brand-700: var(--color-red-700);
+	--color-brand-800: var(--color-red-800);
+	--color-brand-900: var(--color-red-900);
+	--color-brand-950: var(--color-red-950);
 
-  /* Legacy brand aliases - keep for backward compatibility */
-  --color-brand: var(--color-brand-600);
-  --color-brand-accent: var(--color-brand-500);
-  --color-brand-dark: var(--color-brand-700);
-  --color-brand-darker: var(--color-brand-800);
-  --color-brand-darkest: var(--color-brand-900);
-  --color-brand-light: var(--color-brand-400);
-  --color-main: var(--color-primary-800); /* canonical main accent */
+	/* Legacy brand aliases - keep for backward compatibility */
+	--color-brand: var(--color-brand-600);
+	--color-brand-accent: var(--color-brand-500);
+	--color-brand-dark: var(--color-brand-700);
+	--color-brand-darker: var(--color-brand-800);
+	--color-brand-darkest: var(--color-brand-900);
+	--color-brand-light: var(--color-brand-400);
+	--color-main: var(--color-primary-800); /* canonical main accent */
 
-  /* Primary colors (emerald-based) - complete number set */
-  --color-primary-50: var(--color-emerald-50);
-  --color-primary-100: var(--color-emerald-100);
-  --color-primary-200: var(--color-emerald-200);
-  --color-primary-300: var(--color-emerald-300);
-  --color-primary-400: var(--color-emerald-400);
-  --color-primary-500: var(--color-emerald-500);
-  --color-primary-600: var(--color-emerald-600);
-  --color-primary-700: var(--color-emerald-700);
-  --color-primary-800: var(--color-emerald-800);
-  --color-primary-900: var(--color-emerald-900);
-  --color-primary-950: var(--color-emerald-950);
-  --color-foreground-darker: var(--color-main); /* for emphasis */
-  --color-foreground: var(--color-slate-900); /* default body text (light) */
-  --color-foreground-light: var(--color-slate-600); /* lighter than default */
-  --color-foreground-lighter: var(--color-slate-400); /* even lighter */
-  --color-foreground-lightest: var(
-    --color-slate-400
-  ); /* least prominent, e.g. placeholder */
-  --color-placeholder: var(
-    --color-foreground-lightest
-  ); /* use lightest for placeholder in light mode */
-  --color-foreground-heading: var(--color-main); /* for headings */
-  --color-title: var(--color-main); /* for titles */
-  --color-chip-border: var(--color-red-600); /* chip border color */
-  --color-chip-ring: var(--color-red-600); /* chip focus/hover ring color */
-  --color-chip-ring-offset: var(--color-white); /* chip ring offset color */
-  --color-accent: var(
-    --color-brand-50
-  ); /* lighter brand hover background for light mode */
-  --color-title-accent: var(--color-primary-200); /* for accents */
-  --gradient-from: var(--color-primary-100);
-  --gradient-to: var(--color-white);
+	/* Primary colors (emerald-based) - complete number set */
+	--color-primary-50: var(--color-emerald-50);
+	--color-primary-100: var(--color-emerald-100);
+	--color-primary-200: var(--color-emerald-200);
+	--color-primary-300: var(--color-emerald-300);
+	--color-primary-400: var(--color-emerald-400);
+	--color-primary-500: var(--color-emerald-500);
+	--color-primary-600: var(--color-emerald-600);
+	--color-primary-700: var(--color-emerald-700);
+	--color-primary-800: var(--color-emerald-800);
+	--color-primary-900: var(--color-emerald-900);
+	--color-primary-950: var(--color-emerald-950);
+	--color-foreground-darker: var(--color-main); /* for emphasis */
+	--color-foreground: var(--color-slate-900); /* default body text (light) */
+	--color-foreground-light: var(--color-slate-600); /* lighter than default */
+	--color-foreground-lighter: var(--color-slate-400); /* even lighter */
+	--color-foreground-lightest: var(--color-slate-400); /* least prominent, e.g. placeholder */
+	--color-placeholder: var(
+		--color-foreground-lightest
+	); /* use lightest for placeholder in light mode */
+	--color-foreground-heading: var(--color-main); /* for headings */
+	--color-title: var(--color-main); /* for titles */
+	--color-chip-border: var(--color-red-600); /* chip border color */
+	--color-chip-ring: var(--color-red-600); /* chip focus/hover ring color */
+	--color-chip-ring-offset: var(--color-white); /* chip ring offset color */
+	--color-accent: var(--color-brand-50); /* lighter brand hover background for light mode */
+	--color-title-accent: var(--color-primary-200); /* for accents */
+	--gradient-from: var(--color-primary-100);
+	--gradient-to: var(--color-white);
 
-  --primary-light-from: var(--color-white);
-  --primary-light-via: var(--color-primary-50);
-  --primary-light-to: var(--color-white);
+	--primary-light-from: var(--color-white);
+	--primary-light-via: var(--color-primary-50);
+	--primary-light-to: var(--color-white);
 
-  /* Brand panel gradients - light mode */
-  --brand-light-from: var(--color-white);
-  --brand-light-via: var(--color-red-50);
-  --brand-light-to: var(--color-white);
+	/* Brand panel gradients - light mode */
+	--brand-light-from: var(--color-white);
+	--brand-light-via: var(--color-red-50);
+	--brand-light-to: var(--color-white);
 
-  /* Panel background colors */
-  --panel-bg-primary: var(--color-emerald-100);
-  --panel-bg-brand: var(--color-slate-100);
-  --panel-bg-emerald: var(--color-emerald-100);
-  --panel-bg-teal: var(--color-teal-100);
-  --panel-bg-cyan: var(--color-cyan-100);
-  --panel-bg-blue: var(--color-blue-100);
-  --panel-bg-green: var(--color-green-100);
-  --panel-bg-yellow: var(--color-yellow-100);
-  --panel-bg-violet: var(--color-violet-100);
-  --panel-bg-slate: var(--color-slate-100);
-  --panel-bg-zinc: var(--color-zinc-100);
-  --panel-bg-orange: var(--color-orange-100);
-  --panel-bg-amber: var(--color-amber-100);
-  --panel-bg-lime: var(--color-lime-100);
-  --panel-bg-sky: var(--color-sky-100);
-  --panel-bg-indigo: var(--color-indigo-100);
-  --panel-bg-purple: var(--color-purple-100);
-  --panel-bg-fuchsia: var(--color-fuchsia-100);
-  --panel-bg-pink: var(--color-pink-100);
-  --panel-bg-rose: var(--color-rose-100);
-  --footer-bg: var(--color-white);
-  --footer-text: var(--color-slate-700);
-  --color-background-hover: var(--color-slate-100);
-  --color-button-primary-background: var(--color-primary-700);
-  --color-button-primary-text: var(--color-white);
-  --color-button-primary-hover-background: var(--color-primary-700);
-  --color-button-secondary-background: var(--color-primary-50);
-  --color-button-secondary-text: var(--color-primary-700);
-  --color-button-secondary-border: var(--color-primary-700);
-  --color-button-secondary-hover-background: var(--color-white);
-  --color-button-tertiary-background: var(--color-white);
-  --color-button-tertiary-text: var(--color-primary-700);
-  --color-button-tertiary-border: var(--color-primary-400);
-  --color-button-tertiary-hover-background: var(--color-primary-50);
-  --color-button-tertiary-hover-border: var(--color-primary-500);
-  --color-button-danger-background: var(--color-brand-600);
-  --color-button-danger-text: var(--color-white);
-  --color-button-danger-hover-background: var(--color-brand-500);
-  --color-button-danger-secondary-background: var(--color-brand-100);
-  --color-button-danger-secondary-text: var(--color-brand-700);
-  --color-button-danger-secondary-border: var(--color-brand-700);
-  --color-button-danger-secondary-hover-background: var(--color-white);
-  --color-button-danger-tertiary-background: var(--color-white);
-  --color-button-danger-tertiary-text: var(--color-brand-700);
-  --color-button-danger-tertiary-border: var(--color-brand-400);
-  --color-button-danger-tertiary-hover-background: var(--color-brand-100);
-  --color-button-danger-tertiary-hover-border: var(--color-brand-500);
-  --color-button-brand-background: var(--color-brand);
-  --color-button-brand-text: var(--color-white);
-  --color-button-brand-hover-background: var(--color-brand-700);
-  --color-button-brand-secondary-background: var(--color-brand-400);
-  --color-button-brand-secondary-text: var(--color-brand-700);
-  --color-button-brand-secondary-border: var(--color-brand-700);
-  --color-button-brand-secondary-hover-background: var(--color-white);
-  --color-button-brand-tertiary-background: var(--color-white);
-  --color-button-brand-tertiary-text: var(--color-brand);
-  --color-button-brand-tertiary-border: var(--color-brand-400);
-  --color-button-brand-tertiary-hover-background: var(--color-brand-400);
-  --color-button-brand-tertiary-hover-border: var(--color-brand);
-  --color-button-neutral-background: var(--color-slate-700);
-  --color-button-neutral-text: var(--color-white);
-  --color-button-neutral-hover-background: var(--color-slate-500);
-  --color-button-neutral-secondary-background: var(--color-slate-50);
-  --color-button-neutral-secondary-text: var(--color-slate-700);
-  --color-button-neutral-secondary-border: var(--color-slate-700);
-  --color-button-neutral-secondary-hover-background: var(--color-white);
-  --color-button-neutral-tertiary-background: var(--color-white);
-  --color-button-neutral-tertiary-text: var(--color-slate-700);
-  --color-button-neutral-tertiary-border: var(--color-slate-400);
-  --color-button-neutral-tertiary-hover-background: var(--color-slate-50);
-  --color-button-neutral-tertiary-hover-border: var(--color-slate-500);
-  --color-button-danger-outline-focus-ring-inner: var(--color-white);
-  --color-button-danger-outline-focus-ring-outer: var(--color-brand-600);
-  --color-button-outline-border-red: var(--color-brand-600);
+	/* Panel background colors */
+	--panel-bg-primary: var(--color-emerald-100);
+	--panel-bg-brand: var(--color-slate-100);
+	--panel-bg-emerald: var(--color-emerald-100);
+	--panel-bg-teal: var(--color-teal-100);
+	--panel-bg-cyan: var(--color-cyan-100);
+	--panel-bg-blue: var(--color-blue-100);
+	--panel-bg-green: var(--color-green-100);
+	--panel-bg-yellow: var(--color-yellow-100);
+	--panel-bg-violet: var(--color-violet-100);
+	--panel-bg-slate: var(--color-slate-100);
+	--panel-bg-zinc: var(--color-zinc-100);
+	--panel-bg-orange: var(--color-orange-100);
+	--panel-bg-amber: var(--color-amber-100);
+	--panel-bg-lime: var(--color-lime-100);
+	--panel-bg-sky: var(--color-sky-100);
+	--panel-bg-indigo: var(--color-indigo-100);
+	--panel-bg-purple: var(--color-purple-100);
+	--panel-bg-fuchsia: var(--color-fuchsia-100);
+	--panel-bg-pink: var(--color-pink-100);
+	--panel-bg-rose: var(--color-rose-100);
+	--footer-bg: var(--color-white);
+	--footer-text: var(--color-slate-700);
+	--color-background-hover: var(--color-slate-100);
+	--color-button-primary-background: var(--color-primary-700);
+	--color-button-primary-text: var(--color-white);
+	--color-button-primary-hover-background: var(--color-primary-700);
+	--color-button-secondary-background: var(--color-primary-50);
+	--color-button-secondary-text: var(--color-primary-700);
+	--color-button-secondary-border: var(--color-primary-700);
+	--color-button-secondary-hover-background: var(--color-white);
+	--color-button-tertiary-background: var(--color-white);
+	--color-button-tertiary-text: var(--color-primary-700);
+	--color-button-tertiary-border: var(--color-primary-400);
+	--color-button-tertiary-hover-background: var(--color-primary-50);
+	--color-button-tertiary-hover-border: var(--color-primary-500);
+	--color-button-danger-background: var(--color-brand-600);
+	--color-button-danger-text: var(--color-white);
+	--color-button-danger-hover-background: var(--color-brand-500);
+	--color-button-danger-secondary-background: var(--color-brand-100);
+	--color-button-danger-secondary-text: var(--color-brand-700);
+	--color-button-danger-secondary-border: var(--color-brand-700);
+	--color-button-danger-secondary-hover-background: var(--color-white);
+	--color-button-danger-tertiary-background: var(--color-white);
+	--color-button-danger-tertiary-text: var(--color-brand-700);
+	--color-button-danger-tertiary-border: var(--color-brand-400);
+	--color-button-danger-tertiary-hover-background: var(--color-brand-100);
+	--color-button-danger-tertiary-hover-border: var(--color-brand-500);
+	--color-button-brand-background: var(--color-brand);
+	--color-button-brand-text: var(--color-white);
+	--color-button-brand-hover-background: var(--color-brand-700);
+	--color-button-brand-secondary-background: var(--color-brand-400);
+	--color-button-brand-secondary-text: var(--color-brand-700);
+	--color-button-brand-secondary-border: var(--color-brand-700);
+	--color-button-brand-secondary-hover-background: var(--color-white);
+	--color-button-brand-tertiary-background: var(--color-white);
+	--color-button-brand-tertiary-text: var(--color-brand);
+	--color-button-brand-tertiary-border: var(--color-brand-400);
+	--color-button-brand-tertiary-hover-background: var(--color-brand-400);
+	--color-button-brand-tertiary-hover-border: var(--color-brand);
+	--color-button-neutral-background: var(--color-slate-700);
+	--color-button-neutral-text: var(--color-white);
+	--color-button-neutral-hover-background: var(--color-slate-500);
+	--color-button-neutral-secondary-background: var(--color-slate-50);
+	--color-button-neutral-secondary-text: var(--color-slate-700);
+	--color-button-neutral-secondary-border: var(--color-slate-700);
+	--color-button-neutral-secondary-hover-background: var(--color-white);
+	--color-button-neutral-tertiary-background: var(--color-white);
+	--color-button-neutral-tertiary-text: var(--color-slate-700);
+	--color-button-neutral-tertiary-border: var(--color-slate-400);
+	--color-button-neutral-tertiary-hover-background: var(--color-slate-50);
+	--color-button-neutral-tertiary-hover-border: var(--color-slate-500);
+	--color-button-danger-outline-focus-ring-inner: var(--color-white);
+	--color-button-danger-outline-focus-ring-outer: var(--color-brand-600);
+	--color-button-outline-border-red: var(--color-brand-600);
 }
 
 .dark {
-  --color-background: var(--color-slate-900);
-  --color-input: color-mix(
-    in srgb,
-    var(--color-cyan-950) 60%,
-    transparent
-  ); /* 60% transparent cyan-950 for elegant contrast against panels */
-  --color-border: var(
-    --color-slate-500
-  ); /* lighter for better contrast against dark background */
-  --color-foreground: var(--color-slate-100); /* most prominent, main text */
-  --color-foreground-light: var(--color-slate-300); /* less prominent */
-  --color-foreground-lighter: var(--color-slate-400); /* even less prominent */
-  --color-foreground-lightest: var(
-    --color-slate-500
-  ); /* least prominent, e.g. placeholder */
-  --color-placeholder: var(--color-slate-400); /* balanced placeholder for dark mode */
-  --color-foreground-darker: var(--color-main);
-  --color-foreground-heading: var(--color-main);
-  --color-brand: var(
-    --color-slate-100
-  ); /* for team chips and other brand text in dark mode */
-  --color-chip-border: var(--color-slate-100); /* chip border color */
-  --color-chip-ring: var(--color-slate-100); /* chip ring color */
-  --color-chip-ring-offset: var(--color-red-600); /* chip ring offset color */
-  --color-title: var(--color-title-accent);
-  --color-accent: var(
-    --color-slate-800
-  ); /* subtle dark hover background without borders */
-  --gradient-from: var(--color-primary-950);
-  --gradient-to: var(--color-primary-800);
+	--color-background: var(--color-slate-900);
+	--color-input: color-mix(
+		in srgb,
+		var(--color-cyan-950) 60%,
+		transparent
+	); /* 60% transparent cyan-950 for elegant contrast against panels */
+	--color-border: var(--color-slate-500); /* lighter for better contrast against dark background */
+	--color-foreground: var(--color-slate-100); /* most prominent, main text */
+	--color-foreground-light: var(--color-slate-300); /* less prominent */
+	--color-foreground-lighter: var(--color-slate-400); /* even less prominent */
+	--color-foreground-lightest: var(--color-slate-500); /* least prominent, e.g. placeholder */
+	--color-placeholder: var(--color-slate-400); /* balanced placeholder for dark mode */
+	--color-foreground-darker: var(--color-main);
+	--color-foreground-heading: var(--color-main);
+	--color-brand: var(--color-slate-100); /* for team chips and other brand text in dark mode */
+	--color-chip-border: var(--color-slate-100); /* chip border color */
+	--color-chip-ring: var(--color-slate-100); /* chip ring color */
+	--color-chip-ring-offset: var(--color-red-600); /* chip ring offset color */
+	--color-title: var(--color-title-accent);
+	--color-accent: var(--color-slate-800); /* subtle dark hover background without borders */
+	--gradient-from: var(--color-primary-950);
+	--gradient-to: var(--color-primary-800);
 
-  /* Panel gradient colors for dark mode */
-  --panel-gradient-from: var(--color-slate-900); /* rich, deep */
-  --panel-gradient-via: var(--color-slate-800);
-  --panel-gradient-to: var(--color-slate-800);
+	/* Panel gradient colors for dark mode */
+	--panel-gradient-from: var(--color-slate-900); /* rich, deep */
+	--panel-gradient-via: var(--color-slate-800);
+	--panel-gradient-to: var(--color-slate-800);
 
-  /* Brand panel gradients - dark mode */
-  --brand-dark-from: var(--color-slate-900);
-  --brand-dark-via: var(--color-slate-800);
-  --brand-dark-to: var(--color-slate-800);
+	/* Brand panel gradients - dark mode */
+	--brand-dark-from: var(--color-slate-900);
+	--brand-dark-via: var(--color-slate-800);
+	--brand-dark-to: var(--color-slate-800);
 
-  /* Brand gradient classes - use dark mode values in dark mode */
-  --brand-from: var(--brand-dark-from);
-  --brand-via: var(--brand-dark-via);
-  --brand-to: var(--brand-dark-to);
+	/* Brand gradient classes - use dark mode values in dark mode */
+	--brand-from: var(--brand-dark-from);
+	--brand-via: var(--brand-dark-via);
+	--brand-to: var(--brand-dark-to);
 
-  /* Panel background colors for dark mode */
-  --panel-bg-primary: var(--color-emerald-800);
-  --panel-bg-brand: var(--color-slate-800);
-  --panel-bg-emerald: var(--color-emerald-800);
-  --panel-bg-teal: var(--color-teal-800);
-  --panel-bg-cyan: var(--color-cyan-800);
-  --panel-bg-blue: var(--color-blue-800);
-  --panel-bg-green: var(--color-green-800);
-  --panel-bg-yellow: var(--color-yellow-800);
-  --panel-bg-violet: var(--color-violet-800);
-  --panel-bg-slate: var(--color-slate-800);
-  --panel-bg-zinc: var(--color-zinc-800);
-  --panel-bg-orange: var(--color-orange-800);
-  --panel-bg-amber: var(--color-amber-800);
-  --panel-bg-lime: var(--color-lime-800);
-  --panel-bg-sky: var(--color-sky-800);
-  --panel-bg-indigo: var(--color-indigo-800);
-  --panel-bg-purple: var(--color-purple-800);
-  --panel-bg-fuchsia: var(--color-fuchsia-800);
-  --panel-bg-pink: var(--color-pink-800);
-  --panel-bg-rose: var(--color-rose-800);
-  --footer-bg: var(--color-primary-800); /* in dark mode */
-  --footer-text: var(--color-slate-200);
+	/* Panel background colors for dark mode */
+	--panel-bg-primary: var(--color-emerald-800);
+	--panel-bg-brand: var(--color-slate-800);
+	--panel-bg-emerald: var(--color-emerald-800);
+	--panel-bg-teal: var(--color-teal-800);
+	--panel-bg-cyan: var(--color-cyan-800);
+	--panel-bg-blue: var(--color-blue-800);
+	--panel-bg-green: var(--color-green-800);
+	--panel-bg-yellow: var(--color-yellow-800);
+	--panel-bg-violet: var(--color-violet-800);
+	--panel-bg-slate: var(--color-slate-800);
+	--panel-bg-zinc: var(--color-zinc-800);
+	--panel-bg-orange: var(--color-orange-800);
+	--panel-bg-amber: var(--color-amber-800);
+	--panel-bg-lime: var(--color-lime-800);
+	--panel-bg-sky: var(--color-sky-800);
+	--panel-bg-indigo: var(--color-indigo-800);
+	--panel-bg-purple: var(--color-purple-800);
+	--panel-bg-fuchsia: var(--color-fuchsia-800);
+	--panel-bg-pink: var(--color-pink-800);
+	--panel-bg-rose: var(--color-rose-800);
+	--footer-bg: var(--color-primary-800); /* in dark mode */
+	--footer-text: var(--color-slate-200);
 
-  /* AppBar primary color - match primary-900 */
-  --color-button-primary-background: var(--color-primary-900); /* for dark mode */
+	/* AppBar primary color - match primary-900 */
+	--color-button-primary-background: var(--color-primary-900); /* for dark mode */
 
-  /* UserMenu specific dark mode colors - using primary tints */
-  --color-usermenu-bg: var(--color-primary-900); /* darker emerald background */
-  --color-usermenu-text: var(--color-slate-100); /* for high contrast readability */
-  --color-usermenu-hover-bg: var(--color-primary-800); /* primary tint for hover */
+	/* UserMenu specific dark mode colors - using primary tints */
+	--color-usermenu-bg: var(--color-primary-900); /* darker emerald background */
+	--color-usermenu-text: var(--color-slate-100); /* for high contrast readability */
+	--color-usermenu-hover-bg: var(--color-primary-800); /* primary tint for hover */
 }

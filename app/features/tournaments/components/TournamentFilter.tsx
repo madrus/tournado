@@ -7,49 +7,48 @@ import type { TournamentListItem } from '~/features/tournaments/types'
 import type { ColorAccent } from '~/lib/lib.types'
 
 type TournamentFilterProps = {
-  tournamentListItems: readonly TournamentListItem[]
-  selectedTournamentId?: string
-  className?: string
-  color?: ColorAccent
-  label?: string
-  placeholder?: string
-  showAllOption?: boolean
+	tournamentListItems: readonly TournamentListItem[]
+	selectedTournamentId?: string
+	className?: string
+	color?: ColorAccent
+	label?: string
+	placeholder?: string
+	showAllOption?: boolean
 }
 
 export function TournamentFilter({
-  tournamentListItems,
-  selectedTournamentId,
-  className = 'w-60',
-  color = 'primary',
-  label,
-  placeholder,
-  showAllOption = true,
+	tournamentListItems,
+	selectedTournamentId,
+	className = 'w-60',
+	color = 'primary',
+	label,
+	placeholder,
+	showAllOption = true,
 }: TournamentFilterProps): ReactElement {
-  const { t } = useTranslation()
-  const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
-    tournamentListItems,
-    selectedTournamentId,
-  })
+	const { t } = useTranslation()
+	const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
+		tournamentListItems,
+		selectedTournamentId,
+	})
 
-  // For competition page, filter out the "all" option if showAllOption is false
-  const filteredOptions = showAllOption
-    ? tournamentOptions
-    : tournamentOptions.filter(option => option.value !== 'all')
+	// For competition page, filter out the "all" option if showAllOption is false
+	const filteredOptions = showAllOption
+		? tournamentOptions
+		: tournamentOptions.filter((option) => option.value !== 'all')
 
-  // Adjust selected value if we're not showing "all" option and no tournament is selected
-  const adjustedSelectedValue =
-    !showAllOption && selectedValue === 'all' ? '' : selectedValue
+	// Adjust selected value if we're not showing "all" option and no tournament is selected
+	const adjustedSelectedValue = !showAllOption && selectedValue === 'all' ? '' : selectedValue
 
-  return (
-    <ComboField
-      name='tournamentFilter'
-      label={label || t('teams.filterByTournament')}
-      value={adjustedSelectedValue}
-      onChange={onChange}
-      options={filteredOptions}
-      placeholder={placeholder || t('teams.allTournaments')}
-      className={className}
-      color={color}
-    />
-  )
+	return (
+		<ComboField
+			name='tournamentFilter'
+			label={label || t('teams.filterByTournament')}
+			value={adjustedSelectedValue}
+			onChange={onChange}
+			options={filteredOptions}
+			placeholder={placeholder || t('teams.allTournaments')}
+			className={className}
+			color={color}
+		/>
+	)
 }

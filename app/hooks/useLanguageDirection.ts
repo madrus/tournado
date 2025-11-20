@@ -2,19 +2,19 @@ import { useMemo } from 'react'
 
 import { useSettingsStore } from '~/stores/useSettingsStore'
 import {
-  getDirection,
-  getLatinFontFamily,
-  getSwipeRowConfig,
-  type SwipeRowConfig,
+	getDirection,
+	getLatinFontFamily,
+	getSwipeRowConfig,
+	type SwipeRowConfig,
 } from '~/utils/rtlUtils'
 
 export type LanguageDirection = {
-  /** Direction attribute value: 'rtl' or 'ltr' */
-  direction: 'rtl' | 'ltr'
-  /** Latin font class for overriding Arabic font in RTL context */
-  latinFontClass: string
-  /** Configuration for swipeable rows with direction multiplier */
-  swipeConfig: SwipeRowConfig
+	/** Direction attribute value: 'rtl' or 'ltr' */
+	direction: 'rtl' | 'ltr'
+	/** Latin font class for overriding Arabic font in RTL context */
+	latinFontClass: string
+	/** Configuration for swipeable rows with direction multiplier */
+	swipeConfig: SwipeRowConfig
 }
 
 /**
@@ -40,14 +40,14 @@ export type LanguageDirection = {
  * ```
  */
 export function useLanguageDirection(): LanguageDirection {
-  const { language } = useSettingsStore()
+	const { language } = useSettingsStore()
 
-  return useMemo(
-    () => ({
-      direction: getDirection(),
-      latinFontClass: getLatinFontFamily(),
-      swipeConfig: getSwipeRowConfig(),
-    }),
-    [language]
-  )
+	return useMemo(
+		() => ({
+			direction: getDirection(),
+			latinFontClass: getLatinFontFamily(),
+			swipeConfig: getSwipeRowConfig(),
+		}),
+		[],
+	)
 }

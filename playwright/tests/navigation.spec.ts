@@ -19,79 +19,79 @@ import { dismissPwaPromptIfVisible } from '../utils/pwaHelper'
 
 // Navigation Tests - PUBLIC ACCESS (no authentication needed for bottom navigation)
 test.describe('Navigation', () => {
-  test.beforeEach(async ({ page }) => {
-    // Set mobile viewport for consistent testing
-    await page.setViewportSize({ width: 375, height: 812 })
+	test.beforeEach(async ({ page }) => {
+		// Set mobile viewport for consistent testing
+		await page.setViewportSize({ width: 375, height: 812 })
 
-    // Language is handled by global config - no need to override here
-    // The i18n config will use English for Playwright tests
-  })
+		// Language is handled by global config - no need to override here
+		// The i18n config will use English for Playwright tests
+	})
 
-  test.describe('Bottom Navigation - Public', () => {
-    test('should allow navigation via bottom navigation', async ({ page }) => {
-      // Start from homepage
-      await page.goto('/')
-      await dismissPwaPromptIfVisible(page)
+	test.describe('Bottom Navigation - Public', () => {
+		test('should allow navigation via bottom navigation', async ({ page }) => {
+			// Start from homepage
+			await page.goto('/')
+			await dismissPwaPromptIfVisible(page)
 
-      const nav = new NavigationPage(page)
+			const nav = new NavigationPage(page)
 
-      // Navigate to teams
-      await nav.navigateTeams()
+			// Navigate to teams
+			await nav.navigateTeams()
 
-      // Navigate back to home
-      await nav.navigateHome()
+			// Navigate back to home
+			await nav.navigateHome()
 
-      // Navigate to more/about
-      await nav.navigateMore()
-    })
+			// Navigate to more/about
+			await nav.navigateMore()
+		})
 
-    test('should show all navigation items are functional', async ({ page }) => {
-      await page.goto('/')
-      await dismissPwaPromptIfVisible(page)
+		test('should show all navigation items are functional', async ({ page }) => {
+			await page.goto('/')
+			await dismissPwaPromptIfVisible(page)
 
-      const nav = new NavigationPage(page)
+			const nav = new NavigationPage(page)
 
-      // Verify all navigation items are present
-      await nav.expectAllNavigationItemsPresent()
+			// Verify all navigation items are present
+			await nav.expectAllNavigationItemsPresent()
 
-      // Test navigation functionality
-      await nav.navigateTeams()
-      await nav.navigateHome()
-      await nav.navigateMore()
-    })
-  })
+			// Test navigation functionality
+			await nav.navigateTeams()
+			await nav.navigateHome()
+			await nav.navigateMore()
+		})
+	})
 
-  test.describe('Homepage Navigation - Public', () => {
-    test('should navigate via homepage view teams button', async ({ page }) => {
-      const homePage = new HomePage(page)
+	test.describe('Homepage Navigation - Public', () => {
+		test('should navigate via homepage view teams button', async ({ page }) => {
+			const homePage = new HomePage(page)
 
-      await homePage.goto()
-      await dismissPwaPromptIfVisible(page)
+			await homePage.goto()
+			await dismissPwaPromptIfVisible(page)
 
-      // Use the homepage view teams button
-      await homePage.clickViewTeamsButton()
-    })
-  })
+			// Use the homepage view teams button
+			await homePage.clickViewTeamsButton()
+		})
+	})
 
-  test.describe('Responsive Navigation', () => {
-    test('should hide bottom navigation on desktop', async ({ page }) => {
-      // Test desktop viewport
-      await page.setViewportSize({ width: 1280, height: 720 })
-      await page.goto('/')
+	test.describe('Responsive Navigation', () => {
+		test('should hide bottom navigation on desktop', async ({ page }) => {
+			// Test desktop viewport
+			await page.setViewportSize({ width: 1280, height: 720 })
+			await page.goto('/')
 
-      const nav = new NavigationPage(page)
+			const nav = new NavigationPage(page)
 
-      // Bottom navigation should be hidden on desktop (has md:hidden class)
-      await nav.expectBottomNavigationHidden()
-    })
+			// Bottom navigation should be hidden on desktop (has md:hidden class)
+			await nav.expectBottomNavigationHidden()
+		})
 
-    test('should show bottom navigation on mobile', async ({ page }) => {
-      await page.goto('/')
+		test('should show bottom navigation on mobile', async ({ page }) => {
+			await page.goto('/')
 
-      const nav = new NavigationPage(page)
+			const nav = new NavigationPage(page)
 
-      // Bottom navigation should be visible on mobile
-      await nav.expectBottomNavigationVisible()
-    })
-  })
+			// Bottom navigation should be visible on mobile
+			await nav.expectBottomNavigationVisible()
+		})
+	})
 })

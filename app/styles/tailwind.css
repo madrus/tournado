@@ -1,16 +1,16 @@
-@import 'modern-normalize';
-@import './colors.css';
-@import './safe-lists.css';
-@import 'tailwindcss';
+@import "modern-normalize";
+@import "./colors.css";
+@import "./safe-lists.css";
+@import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import './tailwind_panel.css';
-@import './tailwind_theme.css';
-@import './tailwind_dark.css';
-@import './tailwind_base.css';
-@import './tailwind_components.css';
-@import './tailwind_semantic.css';
-@import './tailwind_rtl_typography.css';
-@import './tailwind_usermenu_animations.css';
-@import './animations.css';
+@import "./tailwind_panel.css";
+@import "./tailwind_theme.css";
+@import "./tailwind_dark.css";
+@import "./tailwind_base.css";
+@import "./tailwind_components.css";
+@import "./tailwind_semantic.css";
+@import "./tailwind_rtl_typography.css";
+@import "./tailwind_usermenu_animations.css";
+@import "./animations.css";

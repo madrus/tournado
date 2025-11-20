@@ -10,7 +10,7 @@ describe('SimpleConfirmDialog', () => {
 		test('renders trigger button', () => {
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -23,7 +23,7 @@ describe('SimpleConfirmDialog', () => {
 		test('does not render dialog content initially', () => {
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -40,7 +40,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -59,7 +59,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Deletion'
 					description='This action cannot be undone'
 					confirmLabel='Delete'
@@ -80,7 +80,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Yes, proceed'
 					cancelLabel='No, go back'
@@ -102,7 +102,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -127,7 +127,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -153,7 +153,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -181,7 +181,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='warning'
 					title='Warning'
 					confirmLabel='Confirm'
@@ -203,7 +203,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='warning'
 					title='Warning'
 					confirmLabel='Confirm'
@@ -248,7 +248,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='danger'
 					title='Danger'
 					confirmLabel='Delete'
@@ -270,7 +270,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='danger'
 					title='Danger'
 					confirmLabel='Delete'
@@ -315,7 +315,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='info'
 					title='Information'
 					confirmLabel='OK'
@@ -337,7 +337,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='info'
 					title='Information'
 					confirmLabel='OK'
@@ -382,7 +382,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='success'
 					title='Success'
 					confirmLabel='Continue'
@@ -404,7 +404,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent='success'
 					title='Success'
 					confirmLabel='Continue'
@@ -454,7 +454,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					intent={intent}
 					title='Icon Contrast'
 					confirmLabel={confirmLabel}
@@ -476,7 +476,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -499,7 +499,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Delete Item'
 					confirmLabel='Delete'
 					cancelLabel='Cancel'
@@ -525,7 +525,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -544,7 +544,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					description='This is important'
 					confirmLabel='Confirm'
@@ -566,7 +566,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -586,7 +586,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm action'
 					cancelLabel='Cancel action'
@@ -613,7 +613,7 @@ describe('SimpleConfirmDialog', () => {
 
 			render(
 				<SimpleConfirmDialog
-					trigger={<button>Open Dialog</button>}
+					trigger={<button type='button'>Open Dialog</button>}
 					title='Confirm Action'
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'

@@ -49,6 +49,7 @@ export function UpdatePrompt(): JSX.Element | null {
 					<p className='mt-1 text-brand text-xs'>{t('pwa.update.instruction')}</p>
 				</div>
 				<button
+					type='button'
 					onClick={() => {
 						updateServiceWorker()
 						setShowUpdatePrompt(false)

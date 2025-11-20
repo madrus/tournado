@@ -1,10 +1,22 @@
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { PrismaClient } from '@prisma/client'
 
 // Retry mechanism for Prisma Client initialization
 async function createPrismaClient(maxRetries = 5, delay = 1000) {
 	for (let i = 0; i < maxRetries; i++) {
 		try {
-			const prisma = new PrismaClient()
+			const databaseUrl = process.env.DATABASE_URL
+			if (!databaseUrl) {
+				throw new Error('DATABASE_URL is required for seeding')
+			}
+
+			// Normalize sqlite URL for the adapter (strip query params, keep file:)
+			const normalizedUrl = databaseUrl.startsWith('file:')
+				? `file:${databaseUrl.replace(/^file:/, '').split('?')[0]}`
+				: databaseUrl
+
+			const adapter = new PrismaBetterSqlite3({ url: normalizedUrl })
+			const prisma = new PrismaClient({ adapter })
 			// Test the connection
 			await prisma.$connect()
 			return prisma
@@ -28,9 +40,6 @@ async function seed() {
 	// }
 
 	// Initialize Prisma Client with retry logic
-	if (!process.env.DATABASE_URL) {
-		throw new Error('DATABASE_URL is required for seeding')
-	}
 	const prisma = await createPrismaClient()
 
 	try {

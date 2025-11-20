@@ -53,7 +53,9 @@ export async function submitAuthCallback(idToken: string, redirectTo?: string): 
 		formData.append('idToken', idToken)
 		formData.append('redirectTo', redirectTo || '/')
 		await fetch('/auth/callback', { method: 'POST', body: formData })
-		window.location.href = redirectTo || '/'
+		if (typeof window !== 'undefined') {
+			window.location.href = redirectTo || '/'
+		}
 		return
 	}
 
@@ -81,5 +83,7 @@ export async function postSignOut(): Promise<void> {
 		init.credentials = 'same-origin'
 	}
 	await fetch('/auth/signout', init)
-	window.location.href = '/auth/signin'
+	if (typeof window !== 'undefined') {
+		window.location.href = '/auth/signin'
+	}
 }

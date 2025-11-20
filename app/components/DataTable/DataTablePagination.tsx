@@ -74,6 +74,7 @@ export function DataTablePagination({
 						</Link>
 					) : (
 						<button
+							type='button'
 							disabled
 							className='cursor-not-allowed rounded border border-border bg-muted px-3 py-1 text-muted-foreground text-sm'
 						>
@@ -107,6 +108,7 @@ export function DataTablePagination({
 						</Link>
 					) : (
 						<button
+							type='button'
 							disabled
 							className='cursor-not-allowed rounded border border-border bg-muted px-3 py-1 text-muted-foreground text-sm'
 						>

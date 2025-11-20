@@ -173,6 +173,7 @@ export function AppBar({
 			icon: (isAuthenticated ? 'logout' : 'login') as IconName,
 			action: isAuthenticated ? (
 				<button
+					type='button'
 					onClick={handleSignOut}
 					className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
 				>

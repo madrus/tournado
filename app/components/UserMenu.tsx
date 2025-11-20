@@ -117,6 +117,7 @@ export function UserMenu({
 			<DropdownMenu.Root open={isOpen} onOpenChange={onOpenChange}>
 				<DropdownMenu.Trigger asChild>
 					<button
+						type='button'
 						className='relative inline-flex h-8 w-8 translate-y-0.25 cursor-pointer items-center justify-center text-primary-foreground focus:outline-none'
 						aria-label={t('common.toggleMenu')}
 					>
@@ -186,6 +187,7 @@ export function UserMenu({
 								return (
 									<div key={index} className='relative'>
 										<button
+											type='button'
 											className={cn(
 												'w-full items-center px-3 py-2 text-foreground-darker hover:bg-accent focus:outline-none',
 												getMenuItemLineHeight(),
@@ -215,6 +217,7 @@ export function UserMenu({
 											>
 												{item.subMenu.map((subItem, subIndex) => (
 													<button
+														type='button'
 														key={subIndex}
 														className={cn(
 															'h-10 w-full items-center px-3 py-2 focus:outline-none',

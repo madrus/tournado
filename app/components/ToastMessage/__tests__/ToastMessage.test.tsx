@@ -20,7 +20,12 @@ vi.mock('../ToastIcon', () => ({
 
 vi.mock('../ToastCloseButton', () => ({
 	ToastCloseButton: ({ type, onClose }: { type: string; onClose?: () => void }) => (
-		<button onClick={onClose} aria-label={`Close ${type} notification`} data-testid='close-button'>
+		<button
+			type='button'
+			onClick={onClose}
+			aria-label={`Close ${type} notification`}
+			data-testid='close-button'
+		>
 			×
 		</button>
 	),

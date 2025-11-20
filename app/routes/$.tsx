@@ -29,7 +29,20 @@ export const meta: MetaFunction = () => [
 	{ property: 'og:type', content: 'website' },
 ]
 
-export async function loader(): Promise<void> {
+export async function loader({ request }: { request: Request }): Promise<void> {
+	const url = new URL(request.url)
+
+	// Chrome devtools pings this well-known path; avoid noisy 404 spam in dev
+	if (
+		process.env.NODE_ENV !== 'production' &&
+		url.pathname === '/.well-known/appspecific/com.chrome.devtools.json'
+	) {
+		return
+	}
+
+	if (process.env.NODE_ENV !== 'production') {
+		console.warn('[catchall 404]', request.method, request.url)
+	}
 	throw new Response('Not found', { status: 404 })
 }
 

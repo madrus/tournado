@@ -188,6 +188,7 @@ export function SidebarLayout({
 
 					{/* Sidebar Toggle Button (for future sliding menu) */}
 					<button
+						type='button'
 						onClick={() => handleSidebarToggle(!isSidebarOpen)}
 						className={cn(
 							'fixed start-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg text-primary-foreground shadow-lg md:hidden',
@@ -222,6 +223,7 @@ export function SidebarLayoutDemo(): JSX.Element {
 			{/* Demo list items */}
 			{['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'].map((item, _index) => (
 				<button
+					type='button'
 					key={item}
 					onClick={() => setSelectedItem(item)}
 					className={cn(

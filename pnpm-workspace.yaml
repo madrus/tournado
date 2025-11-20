@@ -1,11 +1,9 @@
-ignoredBuiltDependencies:
-  - '@tailwindcss/oxide'
-
 onlyBuiltDependencies:
   - '@firebase/util'
   - '@playwright/test'
   - '@prisma/client'
   - '@prisma/engines'
+  - better-sqlite3
   - docsify
   - esbuild
   - msw

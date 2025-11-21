@@ -28,7 +28,7 @@ vi.mock('firebase-admin', () => ({
 }))
 
 describe('firebase.server', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		vi.clearAllMocks()
 		mockVerifyIdToken.mockReset()
 		mockUpdateUser.mockReset()
@@ -36,6 +36,11 @@ describe('firebase.server', () => {
 		mockGetAuth.mockClear()
 		// Reset modules to ensure fresh imports
 		vi.resetModules()
+
+		// Restore default Firebase Admin app mocks after tests override them
+		const firebaseAppModule = vi.mocked(await import('firebase-admin/app'))
+		firebaseAppModule.initializeApp.mockImplementation(() => ({ name: 'mock-admin-app' }))
+		firebaseAppModule.getApps.mockImplementation(() => [])
 
 		// Reset environment variables
 		process.env.FIREBASE_ADMIN_PROJECT_ID = 'test-project'

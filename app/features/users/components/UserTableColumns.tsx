@@ -100,10 +100,7 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
 				}))
 
 				return (
-					<div
-						className='flex items-center justify-start'
-						onClick={(event) => event.stopPropagation()}
-					>
+					<div className='flex items-center justify-start'>
 						<ComboField
 							name={`role-${row.original.id}`}
 							options={roleOptions}

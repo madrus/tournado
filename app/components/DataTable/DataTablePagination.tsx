@@ -1,4 +1,6 @@
+import { nanoid } from 'nanoid'
 import type { JSX } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
@@ -31,6 +33,19 @@ export function DataTablePagination({
 	const from = total === 0 ? 0 : (currentPage - 1) * pageSize + 1
 	const to = total === 0 ? 0 : Math.min(currentPage * pageSize, total)
 
+	// Generate stable keys for text split parts
+	const showingText = t('common.pagination.showing', { from, to, total })
+	const pageInfoText = t('common.pagination.pageInfo', { current: currentPage, total: totalPages })
+
+	const showingTextKeys = useMemo(
+		() => showingText.split(/(\d+)/).map(() => nanoid()),
+		[showingText],
+	)
+	const pageInfoTextKeys = useMemo(
+		() => pageInfoText.split(/(\d+)/).map(() => nanoid()),
+		[pageInfoText],
+	)
+
 	return (
 		<div
 			className={cn(
@@ -40,21 +55,15 @@ export function DataTablePagination({
 		>
 			{/* Row count info */}
 			<div className='text-foreground text-sm'>
-				{t('common.pagination.showing', {
-					from,
-					to,
-					total,
-				})
-					.split(/(\d+)/)
-					.map((part, index) =>
-						/^\d+$/.test(part) ? (
-							<span key={index} className={latinFontClass}>
-								{part}
-							</span>
-						) : (
-							part
-						),
-					)}
+				{showingText.split(/(\d+)/).map((part, index) =>
+					/^\d+$/.test(part) ? (
+						<span key={showingTextKeys[index]} className={latinFontClass}>
+							{part}
+						</span>
+					) : (
+						part
+					),
+				)}
 			</div>
 
 			{/* Pagination controls */}
@@ -83,20 +92,15 @@ export function DataTablePagination({
 					)}
 
 					<span className='flex items-center px-3 py-1 text-foreground text-sm'>
-						{t('common.pagination.pageInfo', {
-							current: currentPage,
-							total: totalPages,
-						})
-							.split(/(\d+)/)
-							.map((part, index) =>
-								/^\d+$/.test(part) ? (
-									<span key={index} className={latinFontClass}>
-										{part}
-									</span>
-								) : (
-									part
-								),
-							)}
+						{pageInfoText.split(/(\d+)/).map((part, index) =>
+							/^\d+$/.test(part) ? (
+								<span key={pageInfoTextKeys[index]} className={latinFontClass}>
+									{part}
+								</span>
+							) : (
+								part
+							),
+						)}
 					</span>
 
 					{hasNextPage ? (

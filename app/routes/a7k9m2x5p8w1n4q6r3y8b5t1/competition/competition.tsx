@@ -104,6 +104,7 @@ export default function CompetitionLayout(): JSX.Element {
 				<div className='flex space-x-0 border-border border-b'>
 					{tabs.map((tab) => (
 						<button
+							type='button'
 							key={tab.href}
 							onClick={() => setActiveTab(tab.href as 'groups' | 'playoffs')}
 							disabled={tab.disabled}

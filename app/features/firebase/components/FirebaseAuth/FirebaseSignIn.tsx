@@ -54,7 +54,7 @@ export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.E
 					{loading ? (
 						<div className='h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent' />
 					) : (
-						<GoogleIcon size={20} aria-label='' />
+						<GoogleIcon size={20} />
 					)}
 					{loading ? t('common.auth.signingIn') : t('auth.firebase.continueWithGoogle')}
 				</span>

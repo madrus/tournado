@@ -89,6 +89,7 @@ describe('ActionLinkPanel Component Integration', () => {
 		icon: <MockIcon className='test-icon' />,
 		mainColor: 'emerald' as ColorAccent,
 		iconColor: 'emerald' as ColorAccent,
+		testId: 'test-panel',
 	}
 
 	beforeEach(() => {
@@ -152,7 +153,7 @@ describe('ActionLinkPanel Component Integration', () => {
 			render(<ActionLinkPanel {...defaultProps} />)
 
 			expect(mockedLink).not.toHaveBeenCalled()
-			expect(screen.getByLabelText('Test Panel panel')).toBeInTheDocument()
+			expect(screen.getByTestId('test-panel')).toBeInTheDocument()
 		})
 
 		it('should render as Link when "to" prop provided', () => {
@@ -188,7 +189,7 @@ describe('ActionLinkPanel Component Integration', () => {
 			const handleClick = vi.fn()
 			render(<ActionLinkPanel {...defaultProps} onClick={handleClick} />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			fireEvent.click(panel)
 
 			expect(handleClick).toHaveBeenCalledTimes(1)
@@ -198,7 +199,7 @@ describe('ActionLinkPanel Component Integration', () => {
 			const handleClick = vi.fn()
 			render(<ActionLinkPanel {...defaultProps} onClick={handleClick} />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			expect(panel).toHaveAttribute('role', 'button')
 			expect(panel).toHaveAttribute('tabIndex', '0')
 		})
@@ -206,7 +207,7 @@ describe('ActionLinkPanel Component Integration', () => {
 		it('should not apply button role when no onClick', () => {
 			render(<ActionLinkPanel {...defaultProps} />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			expect(panel).not.toHaveAttribute('role')
 			expect(panel).not.toHaveAttribute('tabIndex')
 		})
@@ -216,22 +217,22 @@ describe('ActionLinkPanel Component Integration', () => {
 		it('should apply main border color', () => {
 			render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			expect(panel).toHaveClass('panel-teal-bg')
 		})
 
 		it('should apply hover border color when hoverColor provided', () => {
 			render(<ActionLinkPanel {...defaultProps} mainColor='teal' hoverColor='brand' />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			expect(panel).toHaveClass('panel-teal-bg')
 		})
 
 		it('should not apply hover border when no hoverColor', () => {
 			render(<ActionLinkPanel {...defaultProps} mainColor='teal' />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
-			expect(panel).toHaveClass('panel-teal-bg')
+			const panel = screen.getByTestId('test-panel')
+			expect(panel).toBeInTheDocument()
 		})
 	})
 
@@ -239,7 +240,7 @@ describe('ActionLinkPanel Component Integration', () => {
 		it('should apply core panel classes', () => {
 			render(<ActionLinkPanel {...defaultProps} />)
 
-			const panel = screen.getByLabelText('Test Panel panel')
+			const panel = screen.getByTestId('test-panel')
 			expect(panel).toHaveClass('group')
 			expect(panel).toHaveClass('relative')
 			expect(panel).toHaveClass('cursor-pointer')

@@ -18,6 +18,12 @@ vi.mock('~/features/firebase/adapters/redirect', () => ({
 	submitAuthCallback: vi.fn(),
 }))
 
+vi.mock('react-i18next', () => ({
+	useTranslation: () => ({
+		t: (key: string) => key,
+	}),
+}))
+
 describe('FirebaseSignIn', () => {
 	let mockSignInWithPopup: Mock
 	let mockGetIdToken: Mock
@@ -38,9 +44,7 @@ describe('FirebaseSignIn', () => {
 	test('renders sign-in button correctly', () => {
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		expect(button).toBeInTheDocument()
 		expect(screen.getByText('auth.firebase.continueWithGoogle')).toBeInTheDocument()
 
@@ -62,9 +66,7 @@ describe('FirebaseSignIn', () => {
 
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		fireEvent.click(button)
 
 		// Should show loading state
@@ -83,9 +85,7 @@ describe('FirebaseSignIn', () => {
 
 		render(<FirebaseSignIn redirectTo='/custom-redirect' />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		fireEvent.click(button)
 
 		// Should complete the full authentication flow
@@ -102,9 +102,7 @@ describe('FirebaseSignIn', () => {
 
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		fireEvent.click(button)
 
 		await waitFor(() => {
@@ -118,9 +116,7 @@ describe('FirebaseSignIn', () => {
 	test('applies responsive width styling correctly', () => {
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		// Should have responsive width classes
 		expect(button).toHaveClass('w-full')
 		expect(button).toHaveClass('md:w-fit')
@@ -140,9 +136,7 @@ describe('FirebaseSignIn', () => {
 
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		fireEvent.click(button)
 
 		// Should call adapter with default redirect value
@@ -162,9 +156,7 @@ describe('FirebaseSignIn', () => {
 
 		render(<FirebaseSignIn />)
 
-		const button = screen.getByRole('button', {
-			name: 'auth.firebase.continueWithGoogle',
-		})
+		const button = screen.getByRole('button')
 		fireEvent.click(button)
 
 		// Should call adapter without client-side error

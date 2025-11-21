@@ -37,6 +37,7 @@ export function InfoLetterIcon({
 			aria-label={ariaLabel}
 		>
 			{paths.map((path, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: Static const SVG path data that never changes
 				<path key={index} d={path} stroke='currentColor' />
 			))}
 		</svg>

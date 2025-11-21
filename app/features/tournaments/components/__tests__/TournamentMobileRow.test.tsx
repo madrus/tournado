@@ -103,7 +103,8 @@ describe('TournamentMobileRow', () => {
 			)
 
 			const startDate = mockFormatDate(mockTournament.startDate)
-			const endDate = mockFormatDate(mockTournament.endDate!)
+			expect(mockTournament.endDate).toBeTruthy()
+			const endDate = mockFormatDate(mockTournament.endDate)
 			expect(screen.getByText(startDate)).toBeInTheDocument()
 			expect(screen.getByText(endDate)).toBeInTheDocument()
 		})

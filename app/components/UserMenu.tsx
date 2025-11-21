@@ -1,5 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { type JSX, useCallback, useEffect, useState } from 'react'
+import { nanoid } from 'nanoid'
+import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useNavigation } from 'react-router'
 
@@ -55,6 +56,16 @@ export function UserMenu({
 
 	const location = useLocation()
 	const navigate = useNavigate()
+
+	// Generate stable keys for menu items and their submenus
+	const menuItemKeys = useMemo(
+		() =>
+			menuItems.map((item) => ({
+				key: nanoid(),
+				subKeys: item.subMenu ? item.subMenu.map(() => nanoid()) : [],
+			})),
+		[menuItems],
+	)
 
 	// Close menu when navigation starts (Fix #1) - but only for actual navigation
 	useEffect(() => {
@@ -145,10 +156,12 @@ export function UserMenu({
 					<div className='px-4 py-3'>
 						{authenticated ? (
 							<div className={cn('text-foreground-darker', menuClasses.textContainer)}>
-								<p className={`break-words ${getTypographyClass()}`}>{t('common.signedInAs')}</p>
+								<p className={cn(`wrap-break-words`, getTypographyClass())}>
+									{t('common.signedInAs')}
+								</p>
 								<p
 									className={cn(
-										'break-words font-medium text-foreground-darker',
+										'wrap-break-words font-medium text-foreground-darker',
 										getLatinTextClass(),
 									)}
 								>
@@ -158,7 +171,7 @@ export function UserMenu({
 						) : (
 							<p
 								className={cn(
-									'break-words text-foreground-darker',
+									'wrap-break-words text-foreground-darker',
 									menuClasses.textContainer,
 									getTypographyClass(),
 								)}
@@ -176,7 +189,7 @@ export function UserMenu({
 							if (item.divider) {
 								return (
 									<DropdownMenu.Separator
-										key={index}
+										key={menuItemKeys[index].key}
 										className='my-1 h-px bg-red-500 dark:bg-emerald-500'
 									/>
 								)
@@ -185,7 +198,7 @@ export function UserMenu({
 							if ((item.customIcon || item.icon) && item.subMenu) {
 								// This is the language menu
 								return (
-									<div key={index} className='relative'>
+									<div key={menuItemKeys[index].key} className='relative'>
 										<button
 											type='button'
 											className={cn(
@@ -218,7 +231,7 @@ export function UserMenu({
 												{item.subMenu.map((subItem, subIndex) => (
 													<button
 														type='button'
-														key={subIndex}
+														key={menuItemKeys[index].subKeys[subIndex]}
 														className={cn(
 															'h-10 w-full items-center px-3 py-2 focus:outline-none',
 															getMenuItemLineHeight(),
@@ -262,14 +275,14 @@ export function UserMenu({
 
 							if (item.action) {
 								return (
-									<DropdownMenu.Item key={index} asChild>
+									<DropdownMenu.Item key={menuItemKeys[index].key} asChild>
 										<div className='focus:outline-none'>{item.action}</div>
 									</DropdownMenu.Item>
 								)
 							}
 
 							return (
-								<DropdownMenu.Item key={index} asChild>
+								<DropdownMenu.Item key={menuItemKeys[index].key} asChild>
 									<Link
 										to={item.href || '#'}
 										onClick={(event) => handleMenuNavigation(event, item.href)}

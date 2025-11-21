@@ -35,6 +35,7 @@ export function ExclamationMarkIcon({
 			aria-label={ariaLabel}
 		>
 			{paths.map((d, idx) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: Static const SVG path data that never changes
 				<path key={idx} d={d} stroke='currentColor' />
 			))}
 		</svg>

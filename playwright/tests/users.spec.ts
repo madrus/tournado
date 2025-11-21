@@ -151,7 +151,8 @@ test.describe('User Management Workflow', () => {
 		// Find a user who is not the current admin (to avoid self-role change)
 		const targetRow = await adminUsersPage.findNonAdminRow()
 		expect(targetRow, 'Expected seeded non-admin user').not.toBeNull()
-		const nonAdminRow = targetRow!
+		expect(targetRow).toBeTruthy()
+		const nonAdminRow = targetRow
 
 		await adminUsersPage.navigateToRow(nonAdminRow)
 
@@ -179,7 +180,8 @@ test.describe('User Management Workflow', () => {
 		// Find an active user who is not ADMIN (to avoid deactivating current user)
 		const targetRow = await adminUsersPage.findNonAdminRow()
 		expect(targetRow, 'Expected seeded non-admin user').not.toBeNull()
-		const nonAdminRow = targetRow!
+		expect(targetRow).toBeTruthy()
+		const nonAdminRow = targetRow
 
 		await adminUsersPage.navigateToRow(nonAdminRow)
 
@@ -249,7 +251,8 @@ test.describe('User Management Workflow', () => {
 		// Find the row for the current ADMIN user
 		const adminRow = await adminUsersPage.findAdminRow()
 		expect(adminRow, 'Expected seeded admin user').not.toBeNull()
-		const seededAdminRow = adminRow!
+		expect(adminRow).toBeTruthy()
+		const seededAdminRow = adminRow
 
 		await adminUsersPage.navigateToRow(seededAdminRow)
 
@@ -277,7 +280,8 @@ test.describe('User Management Workflow', () => {
 		// Find the current ADMIN user
 		const adminRow = await adminUsersPage.findAdminRow()
 		expect(adminRow, 'Expected seeded admin user').not.toBeNull()
-		const seededAdminRow = adminRow!
+		expect(adminRow).toBeTruthy()
+		const seededAdminRow = adminRow
 
 		await adminUsersPage.navigateToRow(seededAdminRow)
 

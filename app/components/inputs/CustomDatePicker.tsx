@@ -136,8 +136,8 @@ function Calendar({
 
 			{/* Weekday headers */}
 			<div className='mb-2 grid grid-cols-7 gap-1'>
-				{weekdays.map((weekday, index) => (
-					<div key={index} className={calendarWeekdayVariants()}>
+				{weekdays.map((weekday) => (
+					<div key={weekday} className={calendarWeekdayVariants()}>
 						{weekday}
 					</div>
 				))}
@@ -147,7 +147,7 @@ function Calendar({
 			<div className='grid grid-cols-7 gap-1'>
 				{calendarDays.map((date, index) => {
 					if (!date) {
-						return <div key={index} className='p-2' />
+						return <div key={`empty-${index}`} className='p-2' />
 					}
 
 					const disabled = isDisabled(date)
@@ -206,11 +206,10 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
 		// Use controlled value if provided, otherwise fall back to defaultValue for uncontrolled mode
 		const isControlled = value !== undefined
-		const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(
-			(isControlled ? value : defaultValue)
-				? new Date(isControlled ? value! : defaultValue!)
-				: undefined,
-		)
+		const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(() => {
+			const initialValue = isControlled ? value : defaultValue
+			return initialValue ? new Date(initialValue) : undefined
+		})
 		const selectedDate = isControlled ? (value ? new Date(value) : undefined) : internalSelectedDate
 		const [isOpen, setIsOpen] = useState(false)
 		const [hasInteracted, setHasInteracted] = useState(false)

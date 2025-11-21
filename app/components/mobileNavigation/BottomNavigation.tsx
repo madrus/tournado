@@ -59,7 +59,6 @@ function BottomNavigation(): JSX.Element {
 					visible: showHeader,
 				},
 			)}`}
-			role='navigation'
 			aria-label='Bottom navigation'
 			data-testid='bottom-navigation'
 		>

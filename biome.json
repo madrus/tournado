@@ -41,7 +41,18 @@
 			"quoteStyle": "single",
 			"semicolons": "asNeeded",
 			"jsxQuoteStyle": "single"
-		}
+		},
+		"globals": [
+			"vi",
+			"describe",
+			"it",
+			"test",
+			"expect",
+			"beforeEach",
+			"afterEach",
+			"beforeAll",
+			"afterAll"
+		]
 	},
 	"css": {
 		"parser": {

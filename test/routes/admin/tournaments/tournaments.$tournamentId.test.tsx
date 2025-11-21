@@ -39,7 +39,13 @@ vi.mock('~/components/buttons/ActionButton', () => ({
 		variant?: string
 		color?: string
 	}) => (
-		<button onClick={onClick} data-icon={icon} data-variant={variant} data-color={color}>
+		<button
+			type='button'
+			onClick={onClick}
+			data-icon={icon}
+			data-variant={variant}
+			data-color={color}
+		>
 			{children}
 		</button>
 	),

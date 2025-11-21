@@ -208,7 +208,7 @@ export default function CreateGroupSet(): JSX.Element {
 
 					{/* Categories Selection */}
 					<div>
-						<label className='mb-3 block font-medium text-gray-700 text-sm'>Age Categories</label>
+						<h3 className='mb-3 block font-medium text-gray-700 text-sm'>Age Categories</h3>
 						<p className='mb-3 text-gray-500 text-sm'>
 							Select which age categories will participate in this group set
 						</p>

@@ -114,7 +114,7 @@ export function Panel({
 					className={cn(
 						// Only apply structured layout for content-panel with icon/title
 						variant === 'content-panel' && (icon || title) ? 'flex flex-col items-start' : '',
-						'break-words',
+						'wrap-break-words',
 						variant === 'hover' ? 'p-6' : '',
 						// Text alignment based on direction
 						isRTL ? 'text-right' : 'text-left',
@@ -125,6 +125,7 @@ export function Panel({
 						<div
 							className={cn(panelIconVariants({ color: effectiveIconColor }), 'mb-4')}
 							aria-label='panel icon'
+							role='img'
 						>
 							{icon}
 						</div>

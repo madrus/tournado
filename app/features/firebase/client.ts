@@ -48,7 +48,7 @@ function ensureFirebaseInitialized(): void {
 	if (typeof window === 'undefined') return
 
 	// Initialize real Firebase if not already initialized
-	if (!auth && isFirebaseConfigured) {
+	if (isFirebaseConfigured && (!auth || !googleProvider)) {
 		try {
 			// Reuse existing Firebase app if available (HMR, test reruns)
 			firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig)

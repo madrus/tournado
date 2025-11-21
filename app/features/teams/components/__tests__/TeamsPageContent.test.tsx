@@ -69,7 +69,7 @@ vi.mock('~/features/teams/components/TeamList', () => ({
 				<div>{emptyMessage}</div>
 			) : (
 				teams.map((team) => (
-					<button key={team.id} onClick={() => onTeamClick?.(team.id)}>
+					<button type='button' key={team.id} onClick={() => onTeamClick?.(team.id)}>
 						{team.clubName} {team.name}
 					</button>
 				))

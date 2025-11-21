@@ -177,7 +177,8 @@ describe('BottomNavigation', () => {
 			)
 
 			const nav = screen.getByRole('navigation')
-			expect(nav).toHaveAttribute('role', 'navigation')
+			// Semantic <nav> elements have implicit navigation role, no explicit role attribute needed
+			expect(nav).toBeInTheDocument()
 			expect(nav).toHaveAttribute('aria-label', 'Bottom navigation')
 		})
 

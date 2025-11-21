@@ -120,7 +120,8 @@ describe('rateLimit.server', () => {
 			expect(result.allowed).toBe(false)
 
 			// Advance time past block duration
-			vi.advanceTimersByTime(testConfig.blockDurationMs! + 1000)
+			expect(testConfig.blockDurationMs).toBeDefined()
+			vi.advanceTimersByTime(testConfig.blockDurationMs + 1000)
 
 			// Should allow new requests
 			result = checkRateLimit(testId, testConfig)

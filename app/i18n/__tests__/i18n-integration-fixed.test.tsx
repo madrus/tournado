@@ -29,6 +29,7 @@ function WorkingLanguageSwitcher() {
 
 			{SUPPORTED_LANGUAGES.map(({ code, name }) => (
 				<button
+					type='button'
 					key={code}
 					data-testid={`switch-${code}`}
 					onClick={() => {

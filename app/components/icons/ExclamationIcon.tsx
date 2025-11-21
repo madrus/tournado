@@ -38,6 +38,7 @@ export function ExclamationIcon({
 		>
 			<circle cx='12' cy='12' r='10' stroke='currentColor' />
 			{paths.map((path, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: Static const SVG path data that never changes
 				<path key={index} d={path} stroke='currentColor' />
 			))}
 		</svg>

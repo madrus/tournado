@@ -223,14 +223,14 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 		if (label) {
 			return (
 				<div className={cn(className)} data-testid={name ? `${name}-combo-field` : 'combo-field'}>
-					<label className={textInputLabelVariants()}>
+					<div className={textInputLabelVariants()}>
 						<div className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}>
 							<span className={textInputLabelTextVariants()}>{label}</span>
 							{/* Status icon container with fixed width to prevent layout shifts */}
 							<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
 						</div>
 						{selectContent}
-					</label>
+					</div>
 					{error ? (
 						<ErrorMessage panelColor={color} id={name ? `${name}-error` : undefined}>
 							{error}

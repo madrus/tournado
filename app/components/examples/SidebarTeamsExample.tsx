@@ -74,6 +74,7 @@ export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): J
 			) : (
 				exampleTeams.map((team) => (
 					<button
+						type='button'
 						key={team.id}
 						onClick={() => setSelectedTeam(team)}
 						className={cn(
@@ -159,13 +160,22 @@ export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): J
 						Available Actions
 					</h3>
 					<div className='flex flex-wrap gap-3'>
-						<button className='inline-flex items-center rounded-md border border-foreground-lighter bg-background px-3 py-2 font-medium text-foreground text-sm hover:bg-background-hover'>
+						<button
+							type='button'
+							className='inline-flex items-center rounded-md border border-foreground-lighter bg-background px-3 py-2 font-medium text-foreground text-sm hover:bg-background-hover'
+						>
 							Edit Team
 						</button>
-						<button className='inline-flex items-center rounded-md border border-transparent bg-brand px-3 py-2 font-medium text-primary-foreground text-sm hover:bg-brand-accent'>
+						<button
+							type='button'
+							className='inline-flex items-center rounded-md border border-transparent bg-brand px-3 py-2 font-medium text-primary-foreground text-sm hover:bg-brand-accent'
+						>
 							View Matches
 						</button>
-						<button className='inline-flex items-center rounded-md border border-brand bg-background px-3 py-2 font-medium text-brand text-sm hover:bg-accent'>
+						<button
+							type='button'
+							className='inline-flex items-center rounded-md border border-brand bg-background px-3 py-2 font-medium text-brand text-sm hover:bg-accent'
+						>
 							Delete Team
 						</button>
 					</div>
@@ -176,7 +186,13 @@ export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): J
 		<div className='flex h-64 items-center justify-center'>
 			<div className='text-center'>
 				<div className='mx-auto h-12 w-12 text-foreground-lighter'>
-					<svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+					<svg
+						fill='none'
+						stroke='currentColor'
+						viewBox='0 0 24 24'
+						role='img'
+						aria-label='No team selected icon'
+					>
 						<path
 							strokeLinecap='round'
 							strokeLinejoin='round'

@@ -37,6 +37,11 @@ export function resetResendClient(): void {
 	resendClient = null
 }
 
+// For testing: allow injecting a mock Resend client
+export function setResendClient(client: Resend | null): void {
+	resendClient = client
+}
+
 /**
  * Masks email addresses to protect PII in logs
  * @param email - Email address to mask

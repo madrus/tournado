@@ -89,6 +89,7 @@ vi.mock('~/components/ConfirmDialog', () => ({
 		open ? (
 			<div data-testid='confirm-dialog'>
 				<button
+					type='button'
 					onClick={() => {
 						onConfirm()
 						onOpenChange(false)

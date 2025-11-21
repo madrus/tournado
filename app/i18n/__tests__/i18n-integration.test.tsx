@@ -32,6 +32,7 @@ function LanguageSwitcher() {
 			<div data-testid='current-language'>{i18n.language}</div>
 			{SUPPORTED_LANGUAGES.map(({ code, name }) => (
 				<button
+					type='button'
 					key={code}
 					data-testid={`switch-to-${code}`}
 					onClick={() => {

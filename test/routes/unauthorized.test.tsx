@@ -46,7 +46,14 @@ vi.mock('~/components/PrefetchLink', () => ({
 // Mock BlockIcon component
 vi.mock('~/components/icons', () => ({
 	BlockIcon: ({ className, size }: { className?: string; size?: number }) => (
-		<svg className={className} width={size} height={size} data-testid='block-icon'>
+		<svg
+			className={className}
+			width={size}
+			height={size}
+			data-testid='block-icon'
+			role='img'
+			aria-label='Block icon'
+		>
 			<rect />
 		</svg>
 	),

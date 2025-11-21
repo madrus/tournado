@@ -64,6 +64,7 @@ vi.mock('../UserMenu', () => ({
 			<div data-testid='authenticated-status'>{authenticated.toString()}</div>
 			<div data-testid='menu-items'>
 				{menuItems.map((item: MenuItemType, index: number) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: Test mock with static data
 					<div key={index} data-testid={`menu-item-${index}`}>
 						{item.divider ? (
 							<hr data-testid='divider' />

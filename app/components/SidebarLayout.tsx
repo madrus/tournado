@@ -123,9 +123,11 @@ export function SidebarLayout({
 				>
 					{/* Mobile Sidebar Overlay */}
 					{isSidebarOpen ? (
-						<div
+						<button
+							type='button'
 							className='fixed inset-0 z-20 bg-foreground/50 md:hidden'
 							onClick={() => handleSidebarToggle(false)}
+							onKeyDown={(e) => e.key === 'Enter' && handleSidebarToggle(false)}
 							aria-label='Close sidebar'
 						/>
 					) : null}
@@ -160,7 +162,13 @@ export function SidebarLayout({
 
 							{/* Sidebar Content */}
 							<div className='flex-1 overflow-y-auto pb-safe'>
-								<div onClick={() => handleSidebarItemClick()}>{sidebarContent}</div>
+								<button
+									type='button'
+									onClick={() => handleSidebarItemClick()}
+									onKeyDown={(e) => e.key === 'Enter' && handleSidebarItemClick()}
+								>
+									{sidebarContent}
+								</button>
 							</div>
 						</div>
 					</div>
@@ -196,7 +204,14 @@ export function SidebarLayout({
 						)}
 						aria-label='Toggle sidebar'
 					>
-						<svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+						<svg
+							className='h-5 w-5'
+							fill='none'
+							stroke='currentColor'
+							viewBox='0 0 24 24'
+							role='img'
+							aria-label={isSidebarOpen ? 'Close menu icon' : 'Menu icon'}
+						>
 							<path
 								strokeLinecap='round'
 								strokeLinejoin='round'

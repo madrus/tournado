@@ -287,18 +287,21 @@ export default function TeamDetailsPage(): JSX.Element {
 								</h3>
 								<div className='space-y-3'>
 									<button
+										type='button'
 										disabled
 										className='w-full cursor-not-allowed rounded-lg bg-button-neutral-secondary-background px-3 py-2 text-start text-foreground-lighter text-sm'
 									>
 										📅 View Full Schedule
 									</button>
 									<button
+										type='button'
 										disabled
 										className='w-full cursor-not-allowed rounded-lg bg-button-neutral-secondary-background px-3 py-2 text-start text-foreground-lighter text-sm'
 									>
 										📊 View Statistics
 									</button>
 									<button
+										type='button'
 										disabled
 										className='w-full cursor-not-allowed rounded-lg bg-button-neutral-secondary-background px-3 py-2 text-start text-foreground-lighter text-sm'
 									>

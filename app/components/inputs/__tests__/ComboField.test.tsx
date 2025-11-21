@@ -27,7 +27,6 @@ vi.mock('~/components/icons', async (importOriginal) => {
 		AnimatedArrowIcon: ({
 			isOpen,
 			className,
-			'aria-label': ariaLabel,
 		}: {
 			isOpen: boolean
 			className?: string
@@ -36,7 +35,6 @@ vi.mock('~/components/icons', async (importOriginal) => {
 			<div
 				data-testid={isOpen ? 'animated-arrow-open' : 'animated-arrow-closed'}
 				className={className}
-				aria-label={ariaLabel}
 			>
 				chevron
 			</div>

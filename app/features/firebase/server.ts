@@ -11,6 +11,18 @@ import type { FirebaseUser } from './types'
 let adminApp: App | null = null
 let adminAuth: Auth | null = null
 
+function getServiceAccount() {
+	const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID
+	const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL
+	const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n')
+
+	if (!projectId || !clientEmail || !privateKey) {
+		return null
+	}
+
+	return { projectId, clientEmail, privateKey }
+}
+
 function initializeFirebaseAdmin(): void {
 	// Use existing Firebase app if available
 	if (getApps().length > 0) {
@@ -21,14 +33,10 @@ function initializeFirebaseAdmin(): void {
 
 	// Initialize Firebase Admin SDK
 	try {
-		const serviceAccount = {
-			projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-			clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-			privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-		}
+		const serviceAccount = getServiceAccount()
 
 		// Validate that all required environment variables are present
-		if (!serviceAccount.projectId || !serviceAccount.clientEmail || !serviceAccount.privateKey) {
+		if (!serviceAccount) {
 			// Missing required environment variables - adminAuth will remain null
 			if (process.env.NODE_ENV !== 'test') {
 			}
@@ -36,7 +44,11 @@ function initializeFirebaseAdmin(): void {
 		}
 
 		adminApp = initializeApp({
-			credential: admin.credential.cert(serviceAccount),
+			credential: admin.credential.cert({
+				projectId: serviceAccount.projectId,
+				clientEmail: serviceAccount.clientEmail,
+				privateKey: serviceAccount.privateKey,
+			}),
 			projectId: serviceAccount.projectId,
 		})
 
@@ -238,6 +250,21 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 		throw new Error('firebaseUid must be a non-empty string')
 	}
 
+	initializeFirebaseAdmin()
+	if (!adminAuth) {
+		const serviceAccount = getServiceAccount()
+		if (!serviceAccount) {
+			console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
+			return
+		}
+		adminApp =
+			adminApp ??
+			initializeApp({
+				credential: admin.credential.cert(serviceAccount),
+				projectId: serviceAccount.projectId,
+			})
+		adminAuth = getAuth(adminApp)
+	}
 	if (!adminAuth) {
 		console.warn('[firebase-admin] Cannot disable user - Admin SDK not initialized')
 		return
@@ -272,6 +299,21 @@ export async function enableFirebaseUser(firebaseUid: string): Promise<void> {
 		throw new Error('firebaseUid must be a non-empty string')
 	}
 
+	initializeFirebaseAdmin()
+	if (!adminAuth) {
+		const serviceAccount = getServiceAccount()
+		if (!serviceAccount) {
+			console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
+			return
+		}
+		adminApp =
+			adminApp ??
+			initializeApp({
+				credential: admin.credential.cert(serviceAccount),
+				projectId: serviceAccount.projectId,
+			})
+		adminAuth = getAuth(adminApp)
+	}
 	if (!adminAuth) {
 		console.warn('[firebase-admin] Cannot enable user - Admin SDK not initialized')
 		return
@@ -306,6 +348,21 @@ export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
 		throw new Error('firebaseUid must be a non-empty string')
 	}
 
+	initializeFirebaseAdmin()
+	if (!adminAuth) {
+		const serviceAccount = getServiceAccount()
+		if (!serviceAccount) {
+			console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
+			return
+		}
+		adminApp =
+			adminApp ??
+			initializeApp({
+				credential: admin.credential.cert(serviceAccount),
+				projectId: serviceAccount.projectId,
+			})
+		adminAuth = getAuth(adminApp)
+	}
 	if (!adminAuth) {
 		console.warn('[firebase-admin] Cannot revoke tokens - Admin SDK not initialized')
 		return

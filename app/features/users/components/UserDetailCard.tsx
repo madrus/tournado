@@ -127,16 +127,14 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 
 			<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 				<div>
-					<label className='font-medium text-foreground/80 text-sm'>
-						{t('users.fields.email')}
-					</label>
+					<div className='font-medium text-foreground/80 text-sm'>{t('users.fields.email')}</div>
 					<div className={`mt-1 text-foreground ${latinFontClass}`}>{user.email}</div>
 				</div>
 
 				<div>
-					<label className='font-medium text-foreground/80 text-sm'>
+					<div className='font-medium text-foreground/80 text-sm'>
 						{t('users.fields.createdAt')}
-					</label>
+					</div>
 					<div className={`mt-1 text-foreground ${latinFontClass}`}>
 						{new Date(user.createdAt).toLocaleString()}
 					</div>

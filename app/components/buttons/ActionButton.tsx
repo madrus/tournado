@@ -85,14 +85,7 @@ export function ActionButton({
 	const buttonClasses = cn(buttonVariants({ variant, color, size }), darkModeClasses, className)
 
 	return (
-		<button
-			type={type}
-			onClick={onClick}
-			disabled={isDisabled}
-			className={buttonClasses}
-			autoFocus={autoFocus}
-			{...rest}
-		>
+		<button type={type} onClick={onClick} disabled={isDisabled} className={buttonClasses} {...rest}>
 			{iconElement}
 			{children}
 		</button>

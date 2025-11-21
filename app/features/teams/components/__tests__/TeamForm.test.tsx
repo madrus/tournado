@@ -569,7 +569,8 @@ describe('TeamForm Component - filling the form', () => {
 
 			const tournamentDropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
 			const tournamentOption = getFirstVisible(tournamentDropdownOptions)
-			await user.click(tournamentOption!)
+			expect(tournamentOption).toBeTruthy()
+			await user.click(tournamentOption)
 
 			// Wait for divisions to load and select division
 			await waitFor(() => {
@@ -592,7 +593,8 @@ describe('TeamForm Component - filling the form', () => {
 
 			const divisionDropdownOptions = screen.getAllByText('First Division')
 			const divisionOption = getFirstVisible(divisionDropdownOptions)
-			await user.click(divisionOption!)
+			expect(divisionOption).toBeTruthy()
+			await user.click(divisionOption)
 
 			// Wait for categories to load and select category
 			await waitFor(() => {
@@ -615,7 +617,8 @@ describe('TeamForm Component - filling the form', () => {
 
 			const categoryDropdownOptions = screen.getAllByText('JO8')
 			const categoryOption = getFirstVisible(categoryDropdownOptions)
-			await user.click(categoryOption!)
+			expect(categoryOption).toBeTruthy()
+			await user.click(categoryOption)
 
 			// STEP 2: Now test panel 2 (team info) validation
 			// Wait for panel 2 to be enabled

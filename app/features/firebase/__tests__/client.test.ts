@@ -1,6 +1,13 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 // Mock Firebase modules
+const mockGoogleProviderInstance = {
+	addScope: vi.fn(),
+	setCustomParameters: vi.fn(),
+}
+const GoogleAuthProviderMock = vi.fn(function mockProviderConstructor() {
+	return mockGoogleProviderInstance
+})
 vi.mock('firebase/app', () => ({
 	initializeApp: vi.fn(() => ({ name: 'mock-app' })),
 	getApps: vi.fn(() => []),
@@ -9,10 +16,7 @@ vi.mock('firebase/app', () => ({
 
 vi.mock('firebase/auth', () => ({
 	getAuth: vi.fn(() => ({ name: 'mock-auth' })),
-	GoogleAuthProvider: vi.fn(() => ({
-		addScope: vi.fn(),
-		setCustomParameters: vi.fn(),
-	})),
+	GoogleAuthProvider: GoogleAuthProviderMock,
 }))
 
 // Mock window.ENV
@@ -61,15 +65,19 @@ describe('firebase.client', () => {
 
 	test('should initialize Google Auth Provider with correct scopes', async () => {
 		const { GoogleAuthProvider } = await import('firebase/auth')
-		const { googleProvider } = await import('../client')
+		const clientModule = await import('../client')
+
+		clientModule.ensureFirebaseInitialized()
 
 		expect(GoogleAuthProvider).toHaveBeenCalled()
-		expect(googleProvider).toBeDefined()
+		expect(clientModule.isFirebaseConfigured).toBe(true)
+		expect(clientModule.auth).not.toBeNull()
+		expect(clientModule.googleProvider).toBeDefined()
+		expect(clientModule.googleProvider).toBe(mockGoogleProviderInstance)
 
 		// Verify addScope was called on the provider instance
-		const mockProviderInstance = vi.mocked(GoogleAuthProvider).mock.results[0].value
-		expect(mockProviderInstance.addScope).toHaveBeenCalledWith('email')
-		expect(mockProviderInstance.addScope).toHaveBeenCalledWith('profile')
+		expect(mockGoogleProviderInstance.addScope).toHaveBeenCalledWith('email')
+		expect(mockGoogleProviderInstance.addScope).toHaveBeenCalledWith('profile')
 	})
 
 	test('should detect invalid configuration', async () => {

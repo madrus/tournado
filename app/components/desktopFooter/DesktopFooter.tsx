@@ -17,7 +17,6 @@ const DesktopFooter = (): JSX.Element => (
 			<div className='flex items-center justify-end' data-testid='footer-right-section'>
 				<span
 					data-testid='footer-attribution'
-					aria-label='Built with love by Madrus4U'
 					className={cn('m-0 p-0 text-white/90 leading-[1]', getLatinTextClass())}
 				>
 					Built with ♥️ by{' '}

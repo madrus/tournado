@@ -224,7 +224,7 @@ export function TournamentMobileRow({
 				onTouchStart={handleTouchStart}
 			>
 				{/* Main content - fixed width */}
-				<div className='w-full flex-shrink-0' onClick={handleClick} role='button' tabIndex={0}>
+				<button type='button' className='w-full flex-shrink-0 text-start' onClick={handleClick}>
 					<div className='px-6 py-4'>
 						<div className='flex items-start justify-between'>
 							<div className='min-w-0 flex-1'>
@@ -287,7 +287,7 @@ export function TournamentMobileRow({
 							</div>
 						</div>
 					</div>
-				</div>
+				</button>
 
 				{/* Red delete area - fixed width */}
 				<div

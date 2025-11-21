@@ -48,10 +48,13 @@ export function ActionLinkPanel({
 					}),
 					className,
 				)}
-				onClick={onClick}
-				role={onClick ? 'button' : undefined}
-				tabIndex={onClick ? 0 : undefined}
-				aria-label={`${title} panel`}
+				{...(onClick && {
+					onClick,
+					onKeyDown: (e) => e.key === 'Enter' && onClick(e as unknown as React.MouseEvent),
+					role: 'button',
+					tabIndex: 0,
+					'aria-label': `${title} panel`,
+				})}
 				data-testid={testId}
 			>
 				{/* Stable background layer */}

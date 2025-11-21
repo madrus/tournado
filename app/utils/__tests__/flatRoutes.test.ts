@@ -335,11 +335,13 @@ describe('scanFlatRoutes', () => {
 		])
 
 		// Verify admin teams route structure is correct
-		const adminRoute = routes.find((r) => r.path === '/a7k9m2x5p8w1n4q6r3y8b5t1')!
-		const adminTeamsRoute = adminRoute.children?.find((c) => c.path === 'teams')!
+		const adminRoute = routes.find((r) => r.path === '/a7k9m2x5p8w1n4q6r3y8b5t1')
+		expect(adminRoute).toBeDefined()
+		const adminTeamsRoute = adminRoute?.children?.find((c) => c.path === 'teams')
+		expect(adminTeamsRoute).toBeDefined()
 
-		expect(adminTeamsRoute.path).toBe('teams') // Should be relative
-		expect(adminTeamsRoute.children).toHaveLength(3) // _index, new, $teamId
+		expect(adminTeamsRoute?.path).toBe('teams') // Should be relative
+		expect(adminTeamsRoute?.children).toHaveLength(3) // _index, new, $teamId
 	})
 
 	test('edge case: empty file list', async () => {

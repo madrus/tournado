@@ -173,7 +173,9 @@ describe('dataLoaders', () => {
 			await loadTeamsAndTournamentsData(request)
 
 			// Both calls should start roughly at the same time (within 5ms)
-			expect(Math.abs(tournamentsCallTime! - teamsCallTime!)).toBeLessThan(5)
+			expect(tournamentsCallTime).toBeDefined()
+			expect(teamsCallTime).toBeDefined()
+			expect(Math.abs(tournamentsCallTime - teamsCallTime)).toBeLessThan(5)
 		})
 
 		describe('edge cases', () => {

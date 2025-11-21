@@ -50,7 +50,7 @@ test.describe('User Authorization - Regular User Access', () => {
 		await adminPanel.expectToBeOnUnauthorizedPage()
 	})
 
-	test('should be redirected from team editing (admin only)', async ({ page }) => {
+	test('should be redirected from team editing (admin only)', async () => {
 		await adminPanel.gotoTeamEdit('some-team-id')
 
 		// Regular user should be redirected to unauthorized page for team editing

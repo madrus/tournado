@@ -23,17 +23,17 @@
 	margin-top: 0.75em;
 }
 
+/* Logo in the navbar */
+.app-name-link img {
+	height: 72px;
+	width: auto;
+}
+
 /* Logo in the sidebar */
 .sidebar > h1 img {
 	height: 72px;
 	width: auto;
 	border-radius: 0;
-}
-
-/* Logo in the navbar */
-.app-name-link img {
-	height: 72px;
-	width: auto;
 }
 
 .markdown-section .table-wrapper {

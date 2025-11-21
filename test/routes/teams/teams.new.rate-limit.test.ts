@@ -48,7 +48,10 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockSuccessResponse)
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		const response = await action({ request } as ActionFunctionArgs)
+		const response = await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 		expect(response).toBe(mockSuccessResponse)
@@ -81,7 +84,10 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockRateLimitResponse)
 		mockIsRateLimitResponse.mockReturnValue(true)
 
-		const response = await action({ request } as ActionFunctionArgs)
+		const response = await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 		expect(mockIsRateLimitResponse).toHaveBeenCalledWith(mockRateLimitResponse)
@@ -108,7 +114,10 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockValidationErrorResponse)
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		const response = await action({ request } as ActionFunctionArgs)
+		const response = await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 		expect(response).toBe(mockValidationErrorResponse)
@@ -146,7 +155,10 @@ describe('teams.new rate limiting integration', () => {
 		})
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		const response = await action({ request } as ActionFunctionArgs)
+		const response = await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 		expect(mockHandleTeamCreation).toHaveBeenCalledWith(expect.any(FormData), '/teams/{teamId}')
@@ -171,7 +183,7 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockResponse)
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		await action({ request } as ActionFunctionArgs)
+		await action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 	})
@@ -202,7 +214,10 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockResponseWithHeaders)
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		const response = await action({ request } as ActionFunctionArgs)
+		const response = await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(response).toBe(mockResponseWithHeaders)
 		expect(response.status).toBe(201)
@@ -220,9 +235,9 @@ describe('teams.new rate limiting integration', () => {
 			const middlewareError = new Error('Rate limit middleware failed')
 			mockWithAdminRateLimit.mockRejectedValue(middlewareError)
 
-			await expect(action({ request } as ActionFunctionArgs)).rejects.toThrow(
-				'Rate limit middleware failed',
-			)
+			await expect(
+				action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs),
+			).rejects.toThrow('Rate limit middleware failed')
 		})
 
 		test('should handle handler errors within middleware', async () => {
@@ -234,7 +249,9 @@ describe('teams.new rate limiting integration', () => {
 			// Mock middleware to throw error directly
 			mockWithAdminRateLimit.mockRejectedValue(new Error('Handler threw error'))
 
-			await expect(action({ request } as ActionFunctionArgs)).rejects.toThrow('Handler threw error')
+			await expect(
+				action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs),
+			).rejects.toThrow('Handler threw error')
 		})
 	})
 
@@ -249,7 +266,10 @@ describe('teams.new rate limiting integration', () => {
 			mockWithAdminRateLimit.mockResolvedValue(nonResponseResult)
 			mockIsRateLimitResponse.mockReturnValue(false)
 
-			const response = await action({ request } as ActionFunctionArgs)
+			const response = await action({
+				request,
+				unstable_pattern: '/teams/teams.new.rate-limit',
+			} as ActionFunctionArgs)
 
 			expect(mockIsRateLimitResponse).toHaveBeenCalledWith(nonResponseResult)
 			expect(response).toBe(nonResponseResult)

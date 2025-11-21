@@ -3,8 +3,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Team } from '~/features/teams/types'
 import type { Tournament } from '~/models/tournament.server'
 
+// Hoisted mocks - must be defined before vi.mock calls
+const { mockEmailsSend } = vi.hoisted(() => ({
+	mockEmailsSend: vi.fn(),
+}))
+
 // Mock dependencies
-const mockEmailsSend = vi.fn()
 vi.mock('resend', () => {
 	const ResendMock = vi.fn().mockImplementation(() => ({
 		emails: {
@@ -22,13 +26,10 @@ vi.mock('~/models/team.server', () => ({
 	getTeamLeader: vi.fn(),
 }))
 
-// Import the actual implementation and dependencies for testing
-const { sendConfirmationEmail, resetResendClient, setResendClient } = await import(
-	'../email.server'
-)
-const { getTeamLeader } = await import('~/models/team.server')
-const { render } = await import('@react-email/render')
-const { Resend } = await import('resend')
+import { render } from '@react-email/render'
+import { getTeamLeader } from '~/models/team.server'
+// Import the actual implementation and dependencies
+import { resetResendClient, sendConfirmationEmail, setResendClient } from '../email.server'
 
 describe('email.server', () => {
 	const mockTeam: Team = {
@@ -76,7 +77,6 @@ describe('email.server', () => {
 		mockResendInstance = {
 			emails: { send: mockEmailsSend },
 		} as unknown as import('resend').Resend
-		vi.mocked(Resend).mockReturnValue(mockResendInstance)
 		setResendClient(mockResendInstance)
 
 		// Setup other mocks

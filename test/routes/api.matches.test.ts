@@ -39,7 +39,12 @@ describe('Resource Route: /api/matches (PLACEHOLDER)', () => {
 
 			const request = new Request('http://localhost/api/matches')
 
-			const response = await loader({ request, params: {}, context: {} })
+			const response = await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.matches',
+			})
 			const json = await response.json()
 
 			// Verify RBAC middleware was called with correct permission
@@ -60,7 +65,7 @@ describe('Resource Route: /api/matches (PLACEHOLDER)', () => {
 		const request = new Request('http://localhost/api/matches')
 
 		try {
-			await loader({ request, params: {}, context: {} })
+			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.matches' })
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects

@@ -50,7 +50,7 @@ export function ActionLinkPanel({
 				)}
 				{...(onClick && {
 					onClick,
-					onKeyDown: (e) => e.key === 'Enter' && onClick(e as unknown as React.MouseEvent),
+					onKeyDown: (e) => e.key === 'Enter' && onClick(),
 					role: 'button',
 					tabIndex: 0,
 					'aria-label': `${title} panel`,

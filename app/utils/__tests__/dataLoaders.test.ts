@@ -154,8 +154,8 @@ describe('dataLoaders', () => {
 		})
 
 		it('should call functions in parallel for performance', async () => {
-			let tournamentsCallTime: number
-			let teamsCallTime: number
+			let tournamentsCallTime: number = 0
+			let teamsCallTime: number = 0
 
 			mockGetAllTournaments.mockImplementation(async () => {
 				tournamentsCallTime = Date.now()

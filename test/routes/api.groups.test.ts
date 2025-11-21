@@ -51,7 +51,12 @@ describe('Resource Route: /api/groups', () => {
 
 			const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
 
-			const response = await loader({ request, params: {}, context: {} })
+			const response = await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.groups',
+			})
 			const json = await response.json()
 
 			// Verify RBAC middleware was called with correct permission
@@ -76,7 +81,9 @@ describe('Resource Route: /api/groups', () => {
 
 			const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
 
-			await expect(loader({ request, params: {}, context: {} })).rejects.toThrow()
+			await expect(
+				loader({ request, params: {}, context: {}, unstable_pattern: '/api.groups' }),
+			).rejects.toThrow()
 
 			// Verify RBAC middleware was called with correct permission
 			expect(vi.mocked(requireUserWithPermission)).toHaveBeenCalledWith(
@@ -92,7 +99,7 @@ describe('Resource Route: /api/groups', () => {
 		const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
 
 		try {
-			await loader({ request, params: {}, context: {} })
+			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.groups' })
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects
@@ -115,7 +122,12 @@ describe('Resource Route: /api/groups', () => {
 
 		const request = new Request('http://localhost/api/groups')
 
-		const response = await loader({ request, params: {}, context: {} })
+		const response = await loader({
+			request,
+			params: {},
+			context: {},
+			unstable_pattern: '/api.groups',
+		})
 		const json = await response.json()
 
 		expect(response.status).toBe(400)
@@ -128,7 +140,12 @@ describe('Resource Route: /api/groups', () => {
 
 		const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
 
-		const response = await loader({ request, params: {}, context: {} })
+		const response = await loader({
+			request,
+			params: {},
+			context: {},
+			unstable_pattern: '/api.groups',
+		})
 		const json = await response.json()
 
 		expect(json.groupSets).toHaveLength(1)

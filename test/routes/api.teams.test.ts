@@ -50,7 +50,12 @@ describe('Resource Route: /api/teams', () => {
 
 			const request = new Request('http://localhost/api/teams')
 
-			const response = await loader({ request, params: {}, context: {} })
+			const response = await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.teams',
+			})
 			const json = await response.json()
 
 			// Verify RBAC middleware was called with correct permission
@@ -71,7 +76,7 @@ describe('Resource Route: /api/teams', () => {
 		const request = new Request('http://localhost/api/teams')
 
 		try {
-			await loader({ request, params: {}, context: {} })
+			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.teams' })
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects
@@ -94,7 +99,12 @@ describe('Resource Route: /api/teams', () => {
 
 		const request = new Request('http://localhost/api/teams')
 
-		const response = await loader({ request, params: {}, context: {} })
+		const response = await loader({
+			request,
+			params: {},
+			context: {},
+			unstable_pattern: '/api.teams',
+		})
 		const json = await response.json()
 
 		expect(json.teams).toHaveLength(1)

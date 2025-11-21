@@ -74,6 +74,7 @@ export function createLoaderAuthTests<
 		request: Request
 		params: TParams
 		context: TContext
+		unstable_pattern: string
 	}) => Promise<unknown>
 }): void {
 	const { routePath, metadata, loaderFunction } = options
@@ -97,6 +98,7 @@ export function createLoaderAuthTests<
 							request,
 							params: {} as TParams,
 							context: {} as TContext,
+							unstable_pattern: routePath,
 						}),
 					).resolves.toBeDefined()
 				} else {
@@ -106,6 +108,7 @@ export function createLoaderAuthTests<
 							request,
 							params: {} as TParams,
 							context: {} as TContext,
+							unstable_pattern: routePath,
 						}),
 					).rejects.toThrow()
 				}
@@ -123,6 +126,7 @@ export function createLoaderAuthTests<
 					request,
 					params: {} as TParams,
 					context: {} as TContext,
+					unstable_pattern: routePath,
 				}),
 			).rejects.toThrow()
 		})

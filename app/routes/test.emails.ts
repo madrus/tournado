@@ -22,7 +22,12 @@ export async function loader(): Promise<Response> {
  * Handles DELETE requests to /test/emails.
  * Clears the email outbox on the file system.
  */
-export async function action({ request }: { request: Request }): Promise<Response> {
+export async function action({
+	request,
+}: {
+	request: Request
+	unstable_pattern: string
+}): Promise<Response> {
 	if (!isPlaywrightEnv()) {
 		throw notFound()
 	}

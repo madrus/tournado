@@ -570,6 +570,7 @@ describe('TeamForm Component - filling the form', () => {
 			const tournamentDropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
 			const tournamentOption = getFirstVisible(tournamentDropdownOptions)
 			expect(tournamentOption).toBeTruthy()
+			if (!tournamentOption) throw new Error('Tournament option not found')
 			await user.click(tournamentOption)
 
 			// Wait for divisions to load and select division
@@ -594,6 +595,7 @@ describe('TeamForm Component - filling the form', () => {
 			const divisionDropdownOptions = screen.getAllByText('First Division')
 			const divisionOption = getFirstVisible(divisionDropdownOptions)
 			expect(divisionOption).toBeTruthy()
+			if (!divisionOption) throw new Error('Division option not found')
 			await user.click(divisionOption)
 
 			// Wait for categories to load and select category
@@ -618,6 +620,7 @@ describe('TeamForm Component - filling the form', () => {
 			const categoryDropdownOptions = screen.getAllByText('JO8')
 			const categoryOption = getFirstVisible(categoryDropdownOptions)
 			expect(categoryOption).toBeTruthy()
+			if (!categoryOption) throw new Error('Category option not found')
 			await user.click(categoryOption)
 
 			// STEP 2: Now test panel 2 (team info) validation

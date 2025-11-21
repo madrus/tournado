@@ -42,8 +42,9 @@ export async function setupMSWBrowser(): Promise<undefined | null> {
 					} else {
 					}
 				})
+				return undefined
 			})
-			.catch((_error) => {})
+			.catch((_error) => undefined)
 	} catch (_error) {
 		return null
 	}

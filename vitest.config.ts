@@ -20,7 +20,6 @@ export default defineConfig({
 			'dist/**',
 		],
 		coverage: {
-			all: true,
 			provider: 'v8',
 			reporter: ['text', 'json', 'json-summary', 'html', 'lcov'],
 			exclude: [

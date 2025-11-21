@@ -51,7 +51,12 @@ describe('Resource Route: /api/tournaments', () => {
 
 			const request = new Request('http://localhost/api/tournaments')
 
-			const response = await loader({ request, params: {}, context: {} })
+			const response = await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.tournaments',
+			})
 			const json = await response.json()
 
 			// Verify RBAC middleware was called with correct permission
@@ -72,7 +77,7 @@ describe('Resource Route: /api/tournaments', () => {
 		const request = new Request('http://localhost/api/tournaments')
 
 		try {
-			await loader({ request, params: {}, context: {} })
+			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.tournaments' })
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects
@@ -95,7 +100,12 @@ describe('Resource Route: /api/tournaments', () => {
 
 		const request = new Request('http://localhost/api/tournaments')
 
-		const response = await loader({ request, params: {}, context: {} })
+		const response = await loader({
+			request,
+			params: {},
+			context: {},
+			unstable_pattern: '/api.tournaments',
+		})
 		const json = await response.json()
 
 		expect(json.tournaments[0].startDate).toMatch(/^\d{4}-\d{2}-\d{2}T/)

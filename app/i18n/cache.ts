@@ -34,13 +34,6 @@ class TranslationCache<T> {
 	private readonly MAX_SIZE = 10 // Max languages to cache
 	private readonly TTL = 24 * 60 * 60 * 1000 // 24 hours
 
-	constructor() {
-		// Periodic cleanup in production
-		if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
-			setInterval(() => this.cleanup(), this.CLEANUP_INTERVAL)
-		}
-	}
-
 	/**
 	 * Get translation from cache
 	 */

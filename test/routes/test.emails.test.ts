@@ -59,7 +59,7 @@ describe('test.emails.server route', () => {
 			method: 'POST',
 		})
 
-		const response = await action({ request })
+		const response = await action({ request, unstable_pattern: '/test.emails' })
 
 		expect(response.status).toBe(405)
 		expect(emailTestingMocks.clearTestEmailOutbox).not.toHaveBeenCalled()
@@ -71,7 +71,7 @@ describe('test.emails.server route', () => {
 		})
 		emailTestingMocks.clearTestEmailOutbox.mockResolvedValue(undefined)
 
-		const response = await action({ request })
+		const response = await action({ request, unstable_pattern: '/test.emails' })
 
 		expect(response.status).toBe(204)
 		expect(emailTestingMocks.clearTestEmailOutbox).toHaveBeenCalledTimes(1)

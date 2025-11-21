@@ -39,7 +39,10 @@ describe('firebase.server', () => {
 
 		// Restore default Firebase Admin app mocks after tests override them
 		const firebaseAppModule = vi.mocked(await import('firebase-admin/app'))
-		firebaseAppModule.initializeApp.mockImplementation(() => ({ name: 'mock-admin-app' }))
+		firebaseAppModule.initializeApp.mockImplementation(() => ({
+			name: 'mock-admin-app',
+			options: {},
+		}))
 		firebaseAppModule.getApps.mockImplementation(() => [])
 
 		// Reset environment variables

@@ -3,6 +3,7 @@ import type { Role, User } from '@prisma/client'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { RouteMetadata } from '~/utils/routeTypes'
+import { getUser } from '~/utils/session.server'
 
 /**
  * Authorization test case for a specific role
@@ -85,7 +86,6 @@ export function createLoaderAuthTests<
 		testCases.forEach(({ role, shouldAccess, description }) => {
 			it(description, async () => {
 				// Mock getUser to return user with specified role
-				const { getUser } = await import('~/utils/session.server')
 				const mockUser = createMockUser(role)
 				vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -117,7 +117,6 @@ export function createLoaderAuthTests<
 
 		// Test unauthenticated access
 		it('should redirect unauthenticated users to signin', async () => {
-			const { getUser } = await import('~/utils/session.server')
 			vi.mocked(getUser).mockResolvedValue(null)
 
 			const request = new Request(`http://localhost${routePath}`)

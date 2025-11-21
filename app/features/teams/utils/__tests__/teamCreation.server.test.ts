@@ -38,15 +38,13 @@ vi.mock('~/db.server', () => ({
 	},
 }))
 
-const { createTeamFromFormData } = await import('../teamCreation.server')
-const { sendConfirmationEmail } = await import('~/utils/email.server')
-const { getTournamentById } = await import('~/models/tournament.server')
-const { createTeam } = await import('~/models/team.server')
-const { extractTeamDataFromFormData, validateEntireTeamForm } = await import(
-	'~/features/teams/validation'
-)
-const { stringToDivision, stringToCategory } = await import('~/lib/lib.helpers')
-const { prisma } = await import('~/db.server')
+import { prisma } from '~/db.server'
+import { extractTeamDataFromFormData, validateEntireTeamForm } from '~/features/teams/validation'
+import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
+import { createTeam } from '~/models/team.server'
+import { getTournamentById } from '~/models/tournament.server'
+import { sendConfirmationEmail } from '~/utils/email.server'
+import { createTeamFromFormData } from '../teamCreation.server'
 
 describe('teamCreation.server - createTeamFromFormData', () => {
 	const mockFormData = new FormData()

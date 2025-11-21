@@ -16,7 +16,7 @@ vi.mock('react-router', () => ({
 	redirect: vi.fn(),
 }))
 
-const { getUser } = await import('~/utils/session.server')
+import { getUser } from '~/utils/session.server'
 
 describe('auth.server', () => {
 	const mockRequest = new Request('http://localhost:3000/test')

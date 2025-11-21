@@ -39,12 +39,15 @@ vi.mock('react-router', async () => {
 	}
 })
 
-const { requireUserWithMetadata } = await import('~/utils/routeUtils.server')
-const { updateUserDisplayName, updateUserRole, deactivateUser, reactivateUser } = await import(
-	'~/models/user.server'
-)
-const { validateRole } = await import('~/features/users/utils/roleUtils')
-const { redirect } = await import('react-router')
+import { redirect } from 'react-router'
+import { validateRole } from '~/features/users/utils/roleUtils'
+import {
+	deactivateUser,
+	reactivateUser,
+	updateUserDisplayName,
+	updateUserRole,
+} from '~/models/user.server'
+import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
 describe('users.$userId route action', () => {
 	const mockCurrentUser = {

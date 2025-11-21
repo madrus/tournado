@@ -35,9 +35,9 @@ vi.mock('~/utils/session.server', () => ({
 	},
 }))
 
-const { verifyIdToken, createOrUpdateUser } = await import('../server')
-const { getUserByFirebaseUid, updateUserFirebaseData } = await import('~/models/user.server')
-const { getSession } = await import('~/utils/session.server')
+import { getUserByFirebaseUid, updateUserFirebaseData } from '~/models/user.server'
+import { getSession } from '~/utils/session.server'
+import { createOrUpdateUser, verifyIdToken } from '../server'
 
 describe('firebaseSession.server', () => {
 	const mockRequest = new Request('http://localhost:3000')

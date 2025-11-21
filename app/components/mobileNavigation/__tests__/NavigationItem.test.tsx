@@ -17,7 +17,9 @@ vi.mock('react-router', async () => {
 	}
 })
 
-const mockUseLocation = vi.mocked(await import('react-router')).useLocation
+import { useLocation } from 'react-router'
+
+const mockUseLocation = vi.mocked(useLocation)
 
 describe('NavigationItem', () => {
 	const defaultProps: { to: string; icon: IconName; label: string } = {

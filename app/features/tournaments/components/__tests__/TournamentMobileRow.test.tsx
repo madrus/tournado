@@ -21,7 +21,8 @@ vi.mock('react-i18next', () => ({
 const mockUseLanguageDirection = vi.hoisted(() => vi.fn())
 
 // Get the mocked function
-const { useLanguageDirection } = await import('~/hooks/useLanguageDirection')
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
+
 vi.mocked(useLanguageDirection).mockImplementation(mockUseLanguageDirection)
 
 // Mock isBreakpoint

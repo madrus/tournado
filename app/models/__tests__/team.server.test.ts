@@ -1,17 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Mock Prisma
-const mockPrisma = {
-	teamLeader: {
-		findUnique: vi.fn(),
-	},
-}
+// Mock Prisma - use vi.hoisted() for objects referenced in mock factory
+const { mockPrisma } = vi.hoisted(() => {
+	const mockPrisma = {
+		teamLeader: {
+			findUnique: vi.fn(),
+		},
+	}
+	return { mockPrisma }
+})
 
 vi.mock('~/db.server', () => ({
 	prisma: mockPrisma,
 }))
 
-const { getTeamLeader } = await import('../team.server')
+import { getTeamLeader } from '../team.server'
 
 describe('team.server - getTeamLeader', () => {
 	beforeEach(() => {

@@ -18,6 +18,8 @@ vi.mock('path', async () => {
 	}
 })
 
+import { glob } from 'glob'
+
 describe('scanFlatRoutes', () => {
 	beforeEach(() => {
 		// Mock process.cwd to return a predictable path
@@ -28,8 +30,7 @@ describe('scanFlatRoutes', () => {
 		vi.clearAllMocks()
 	})
 
-	test('handles root level files correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles root level files correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		// Mock glob to return root level files
@@ -67,8 +68,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles flat route naming correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles flat route naming correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue(['teams.new.tsx', 'teams.$teamId.tsx', 'auth.signin.tsx'])
@@ -91,8 +91,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles layout files with children correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles layout files with children correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
@@ -126,8 +125,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles nested admin routes correctly (the critical fix)', async () => {
-		const { glob } = await import('glob')
+	test('handles nested admin routes correctly (the critical fix)', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
@@ -173,8 +171,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles mixed public and admin routes correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles mixed public and admin routes correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
@@ -207,8 +204,7 @@ describe('scanFlatRoutes', () => {
 		expect(adminTeamsRoute?.children).toHaveLength(1) // just _index
 	})
 
-	test('handles auth routes correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles auth routes correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
@@ -242,8 +238,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles resource routes correctly', async () => {
-		const { glob } = await import('glob')
+	test('handles resource routes correctly', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue(['resources/resources.healthcheck.tsx'])
@@ -258,8 +253,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('skips underscore files (except _index)', async () => {
-		const { glob } = await import('glob')
+	test('skips underscore files (except _index)', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([
@@ -290,8 +284,7 @@ describe('scanFlatRoutes', () => {
 		])
 	})
 
-	test('handles complex nested structure', async () => {
-		const { glob } = await import('glob')
+	test('handles complex nested structure', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		// Simulate the full current project structure
@@ -344,8 +337,7 @@ describe('scanFlatRoutes', () => {
 		expect(adminTeamsRoute?.children).toHaveLength(3) // _index, new, $teamId
 	})
 
-	test('edge case: empty file list', async () => {
-		const { glob } = await import('glob')
+	test('edge case: empty file list', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([])
@@ -355,8 +347,7 @@ describe('scanFlatRoutes', () => {
 		expect(routes).toEqual([])
 	})
 
-	test('edge case: layout without children', async () => {
-		const { glob } = await import('glob')
+	test('edge case: layout without children', () => {
 		const mockGlob = vi.mocked(glob.sync)
 
 		mockGlob.mockReturnValue([

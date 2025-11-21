@@ -43,11 +43,9 @@ vi.mock('react-router', () => ({
 	}),
 }))
 
-const { validateFirebaseSession, clearFirebaseSession } = await import(
-	'~/features/firebase/session.server'
-)
-const { getUserById } = await import('~/models/user.server')
-const { isPublicRoute } = await import('../publicRoutes.server')
+import { clearFirebaseSession, validateFirebaseSession } from '~/features/firebase/session.server'
+import { getUserById } from '~/models/user.server'
+import { isPublicRoute } from '../publicRoutes.server'
 
 describe('session.server', () => {
 	const mockRequest = new Request('http://localhost:3000/test')

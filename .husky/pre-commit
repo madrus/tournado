@@ -8,5 +8,8 @@ set -euo pipefail
 # Run Biome check with auto-fix on staged files
 pnpm biome check --staged --write --unsafe .
 
+# Re-add formatted files to staging area
+git add -u
+
 # Run typecheck
 pnpm typecheck

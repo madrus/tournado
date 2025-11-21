@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router'
 
 import { describe, expect, it, vi } from 'vitest'
-
+import { renderIcon } from '~/utils/iconUtils'
 import { ActionLinkButton } from '../ActionLinkButton'
 
 // Mock the translation hook
@@ -138,9 +138,7 @@ describe('ActionLinkButton', () => {
 		expect(link).toHaveAttribute('href', '/teams/new')
 	})
 
-	it('renders icon with correct props', async () => {
-		const { renderIcon } = await import('~/utils/iconUtils')
-
+	it('renders icon with correct props', () => {
 		render(
 			<RouterWrapper>
 				<ActionLinkButton {...defaultProps} icon='delete' />

@@ -12,8 +12,11 @@ vi.mock('react-i18next', () => ({
 	useTranslation: vi.fn(),
 }))
 
-const mockUseMatches = vi.mocked(await import('react-router')).useMatches
-const mockUseTranslation = vi.mocked(await import('react-i18next')).useTranslation
+import { useTranslation } from 'react-i18next'
+import { useMatches } from 'react-router'
+
+const mockUseMatches = vi.mocked(useMatches)
+const mockUseTranslation = vi.mocked(useTranslation)
 
 // Simplified mock types using unknown casting
 

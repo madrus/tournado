@@ -2,50 +2,54 @@ import type { Role, User } from '@prisma/client'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Mock Prisma
-const mockUser = {
-	findUnique: vi.fn(),
-	findMany: vi.fn(),
-	update: vi.fn(),
-	count: vi.fn(),
-	create: vi.fn(),
-	delete: vi.fn(),
-}
+// Mock Prisma - use vi.hoisted() for objects referenced in mock factory
+const { mockUser, mockUserAuditLog, mockTransaction, mockPrisma } = vi.hoisted(() => {
+	const mockUser = {
+		findUnique: vi.fn(),
+		findMany: vi.fn(),
+		update: vi.fn(),
+		count: vi.fn(),
+		create: vi.fn(),
+		delete: vi.fn(),
+	}
 
-const mockUserAuditLog = {
-	create: vi.fn(),
-}
+	const mockUserAuditLog = {
+		create: vi.fn(),
+	}
 
-const mockTransaction = vi.fn()
+	const mockTransaction = vi.fn()
 
-const mockPrisma = {
-	user: mockUser,
-	userAuditLog: mockUserAuditLog,
-	$transaction: mockTransaction,
-}
+	const mockPrisma = {
+		user: mockUser,
+		userAuditLog: mockUserAuditLog,
+		$transaction: mockTransaction,
+	}
+
+	return { mockUser, mockUserAuditLog, mockTransaction, mockPrisma }
+})
 
 vi.mock('~/db.server', () => ({
 	prisma: mockPrisma,
 }))
 
-const {
-	getUserById,
-	getUserByEmail,
-	deleteUserByEmail,
+import {
 	createUserFromFirebase,
-	getUserByFirebaseUid,
-	updateUserFirebaseData,
-	getAllUsers,
-	updateUserRole,
-	updateUserDisplayName,
 	deactivateUser,
-	reactivateUser,
-	getUsersByRole,
-	searchUsers,
-	getPendingApprovalUsers,
-	getAllUsersWithPagination,
+	deleteUserByEmail,
 	getActiveUsersCount,
-} = await import('../user.server')
+	getAllUsers,
+	getAllUsersWithPagination,
+	getPendingApprovalUsers,
+	getUserByEmail,
+	getUserByFirebaseUid,
+	getUserById,
+	getUsersByRole,
+	reactivateUser,
+	searchUsers,
+	updateUserDisplayName,
+	updateUserFirebaseData,
+	updateUserRole,
+} from '../user.server'
 
 describe('user.server', () => {
 	const mockUserData: User = {

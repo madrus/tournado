@@ -12,8 +12,8 @@ vi.mock('react-router', () => ({
 	redirect: vi.fn((url: string) => new Response(null, { status: 302, headers: { Location: url } })),
 }))
 
-const { createTeamFromFormData } = await import('../teamCreation.server')
-const { redirect } = await import('react-router')
+import { redirect } from 'react-router'
+import { createTeamFromFormData } from '../teamCreation.server'
 
 describe('teamActions.server - handleTeamCreation', () => {
 	const mockFormData = new FormData()

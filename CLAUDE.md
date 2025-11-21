@@ -12,6 +12,7 @@ Tournado is a modern tournament management system built with React Router v7, Pr
 - **Database**: Prisma ORM with SQLite
 - **UI**: Radix UI components with Tailwind CSS v4
 - **State Management**: Zustand
+- **Code Quality**: Biome (formatting + linting)
 - **Testing**: Vitest (unit) + Playwright (E2E) with custom MCP server
 - **Build**: Vite with PWA support
 - **Deployment**: Fly.io with containerized deployments
@@ -48,7 +49,7 @@ pnpm test:e2e:built # Build and run E2E tests against production build
 ### Code Quality
 
 ```bash
-pnpm lint           # Format with Prettier + run ESLint
+pnpm lint           # Run Biome check with auto-fix (format + lint)
 pnpm typecheck      # Run React Router typegen + TypeScript checking
 pnpm validate       # Run lint, typecheck, and test:run in parallel
 ```
@@ -180,7 +181,7 @@ app/features/{feature}/
 
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
-- **No semicolons**. Do not add semicolons to new code. Prettier will automatically remove them from existing code during formatting
+- **No semicolons**. Do not add semicolons to new code. Biome will automatically remove them from existing code during formatting
 
 ### React Component Definitions
 

@@ -21,32 +21,32 @@ export const DESKTOP_BREAKPOINT = 1024
  * Breakpoint utilities for consistent media query usage
  */
 export const breakpoints = {
-  mobile: MOBILE_BREAKPOINT,
-  desktop: DESKTOP_BREAKPOINT,
+	mobile: MOBILE_BREAKPOINT,
+	desktop: DESKTOP_BREAKPOINT,
 
-  /**
-   * Check if current viewport is mobile
-   */
-  isMobile: () => {
-    if (typeof window === 'undefined') return false
-    return window.innerWidth < DESKTOP_BREAKPOINT
-  },
+	/**
+	 * Check if current viewport is mobile
+	 */
+	isMobile: () => {
+		if (typeof window === 'undefined') return false
+		return window.innerWidth < DESKTOP_BREAKPOINT
+	},
 
-  /**
-   * Check if bottom navigation should be visible
-   */
-  showBottomNav: () => {
-    if (typeof window === 'undefined') return false
-    return window.innerWidth <= MOBILE_BREAKPOINT
-  },
+	/**
+	 * Check if bottom navigation should be visible
+	 */
+	showBottomNav: () => {
+		if (typeof window === 'undefined') return false
+		return window.innerWidth <= MOBILE_BREAKPOINT
+	},
 
-  /**
-   * Media query strings for CSS/JS usage
-   */
-  queries: {
-    mobile: `(max-width: ${MOBILE_BREAKPOINT}px)`,
-    desktop: `(min-width: ${DESKTOP_BREAKPOINT}px)`,
-  },
+	/**
+	 * Media query strings for CSS/JS usage
+	 */
+	queries: {
+		mobile: `(max-width: ${MOBILE_BREAKPOINT}px)`,
+		desktop: `(min-width: ${DESKTOP_BREAKPOINT}px)`,
+	},
 } as const
 
 /**

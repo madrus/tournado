@@ -18,31 +18,31 @@ import { TeamsPage } from '../pages/TeamsPage'
 test.use({ storageState: { cookies: [], origins: [] } })
 
 test.describe('Public Teams - Basic UI', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 812 })
-  })
+	test.beforeEach(async ({ page }) => {
+		await page.setViewportSize({ width: 375, height: 812 })
+	})
 
-  test('should display teams page publicly', async ({ page }) => {
-    const teamsPage = new TeamsPage(page)
-    await teamsPage.goto()
-    await teamsPage.expectToBeOnTeamsPage()
-    await expect(teamsPage.addTeamButton).toBeVisible()
-  })
+	test('should display teams page publicly', async ({ page }) => {
+		const teamsPage = new TeamsPage(page)
+		await teamsPage.goto()
+		await teamsPage.expectToBeOnTeamsPage()
+		await expect(teamsPage.addTeamButton).toBeVisible()
+	})
 
-  test('should display existing teams publicly', async ({ page }) => {
-    const teamsPage = new TeamsPage(page)
-    await teamsPage.goto()
-    await expect(teamsPage.teamsContainer).toBeVisible()
-  })
+	test('should display existing teams publicly', async ({ page }) => {
+		const teamsPage = new TeamsPage(page)
+		await teamsPage.goto()
+		await expect(teamsPage.teamsContainer).toBeVisible()
+	})
 
-  test('should allow public team registration', async ({ page }) => {
-    const teamsPage = new TeamsPage(page)
-    await teamsPage.goto()
-    await teamsPage.gotoNewTeam()
-    await teamsPage.expectToBeOnNewTeamPage()
+	test('should allow public team registration', async ({ page }) => {
+		const teamsPage = new TeamsPage(page)
+		await teamsPage.goto()
+		await teamsPage.gotoNewTeam()
+		await teamsPage.expectToBeOnNewTeamPage()
 
-    await expect(teamsPage.registrationForm).toBeVisible()
-    await expect(teamsPage.clubNameField).toBeVisible()
-    await expect(teamsPage.teamNameField).toBeVisible()
-  })
+		await expect(teamsPage.registrationForm).toBeVisible()
+		await expect(teamsPage.clubNameField).toBeVisible()
+		await expect(teamsPage.teamNameField).toBeVisible()
+	})
 })

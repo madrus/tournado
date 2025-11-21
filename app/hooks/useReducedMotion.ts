@@ -12,29 +12,29 @@ import { useEffect, useState } from 'react'
  * @returns boolean indicating if reduced motion is preferred
  */
 export function useReducedMotion(): boolean {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
-  useEffect(() => {
-    // Check if we're in a browser environment
-    if (typeof window === 'undefined') return
+	useEffect(() => {
+		// Check if we're in a browser environment
+		if (typeof window === 'undefined') return
 
-    // Check initial preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefersReducedMotion(mediaQuery.matches)
+		// Check initial preference
+		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+		setPrefersReducedMotion(mediaQuery.matches)
 
-    // Listen for changes
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches)
-    }
+		// Listen for changes
+		const handleChange = (event: MediaQueryListEvent) => {
+			setPrefersReducedMotion(event.matches)
+		}
 
-    mediaQuery.addEventListener('change', handleChange)
+		mediaQuery.addEventListener('change', handleChange)
 
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange)
-    }
-  }, [])
+		return () => {
+			mediaQuery.removeEventListener('change', handleChange)
+		}
+	}, [])
 
-  return prefersReducedMotion
+	return prefersReducedMotion
 }
 
 /**
@@ -45,6 +45,6 @@ export function useReducedMotion(): boolean {
  * @returns appropriate CSS class based on user preference
  */
 export function useMotionSafeClass(regularClass: string, reducedClass: string): string {
-  const prefersReducedMotion = useReducedMotion()
-  return prefersReducedMotion ? reducedClass : regularClass
+	const prefersReducedMotion = useReducedMotion()
+	return prefersReducedMotion ? reducedClass : regularClass
 }

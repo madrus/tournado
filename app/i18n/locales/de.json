@@ -1,450 +1,450 @@
 {
-  "admin": {
-    "competition": {
-      "description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
-      "title": "Wettbewerbsverwaltung"
-    },
-    "panel": {
-      "description": "Willkommen zurück, <email>{{email}}</email>. Verwalten Sie Ihre Turnierplattform von hier aus.",
-      "title": "Admin-Panel"
-    },
-    "reports": {
-      "description": "Plattformnutzung und Turnierstatistiken anzeigen.",
-      "title": "Berichte & Analytics"
-    },
-    "settings": {
-      "description": "Anwendungseinstellungen und Präferenzen konfigurieren.",
-      "title": "Systemeinstellungen"
-    },
-    "team": {
-      "confirmDelete": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-      "createNewTeamDescription": "Erstellen Sie ein neues Team mit Turnierdaten und Kontaktinformationen.",
-      "createTeam": "Team erstellen",
-      "createTeamDescription": "Fügen Sie ein neues Team mit allen erforderlichen Details zum System hinzu.",
-      "description": "Verwalten Sie Teams für Turniere. Teaminformationen anzeigen, bearbeiten oder löschen.",
-      "editTeam": "Team-Details bearbeiten",
-      "newTeam": "Neues Team",
-      "saveChanges": "Änderungen speichern",
-      "teamNotFound": "Team nicht gefunden",
-      "teamNotFoundDescription": "Das gesuchte Team konnte nicht gefunden werden oder wurde möglicherweise gelöscht.",
-      "title": "Team-Verwaltung",
-      "totalTeams": "Teams insgesamt"
-    },
-    "tournament": {
-      "confirmDelete": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-      "description": "Verwalten Sie Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
-      "title": "Turnier-Verwaltung",
-      "totalTournaments": "Turniere insgesamt"
-    },
-    "user": {
-      "description": "Benutzerkonten und Berechtigungen verwalten.",
-      "title": "Benutzer-Verwaltung",
-      "totalUsers": "Gesamtbenutzer"
-    }
-  },
-  "about": {
-    "title": "Über Tournado",
-    "description": "Tournado ist eine umfassende Turnierverwaltungsplattform, die entwickelt wurde, um die Organisation und Verwaltung von Sportturnieren für Organisationen und Teams zu optimieren."
-  },
-  "auth": {
-    "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
-    "continueWithEmail": "Oder mit E-Mail fortfahren",
-    "createAccount": "Konto erstellen",
-    "dontHaveAccount": "Haben Sie noch kein Konto?",
-    "emailAddress": "E-Mail-Adresse",
-    "errors": {
-      "accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung.",
-      "accountDeactivatedTitle": "Konto deaktiviert"
-    },
-    "firebase": {
-      "continueWithGoogle": "Mit Google fortfahren",
-      "error": "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-      "signInWithGoogle": "Mit Google anmelden"
-    },
-    "firstName": "Vorname",
-    "labels": {
-      "confirmPassword": "Passwort bestätigen",
-      "email": "E-Mail",
-      "password": "Passwort"
-    },
-    "lastName": "Nachname",
-    "notSignedIn": "Nicht angemeldet",
-    "or": "oder",
-    "password": "Passwort",
-    "placeholders": {
-      "confirmPassword": "Passwort bestätigen",
-      "email": "E-Mail eingeben",
-      "password": "Passwort eingeben"
-    },
-    "pleaseSignIn": "Bitte melden Sie sich mit Ihrem neuen Konto an",
-    "registrationSuccess": "Konto erfolgreich erstellt",
-    "rememberMe": "Angemeldet bleiben",
-    "signInPage": {
-      "description": "Melden Sie sich in Ihrem Tournado-Konto an",
-      "noAccount": "Noch kein Konto?",
-      "signUpLink": "Registrieren"
-    },
-    "signInRequiredToCreateTeam": "Sie müssen sich anmelden, um ein Team zu erstellen.",
-    "signUpPage": {
-      "description": "Erstellen Sie Ihr Tournado-Konto",
-      "hasAccount": "Bereits ein Konto?",
-      "signInLink": "Anmelden"
-    },
-    "signin": "Anmelden",
-    "signout": "Abmelden",
-    "signup": "Registrieren",
-    "validation": {
-      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-      "passwordMismatch": "Passwörter stimmen nicht überein",
-      "passwordRequirements": "Passwort muss mindestens 8 Zeichen lang sein mit Groß-, Kleinbuchstaben und Zahlen",
-      "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
-      "passwordWeak": "Passwort muss Groß-, Kleinbuchstaben und Zahlen enthalten"
-    },
-    "viewTeams": "Teams anzeigen",
-    "viewTeamsFor": "Teams anzeigen für"
-  },
-  "common": {
-    "actions": {
-      "actions": "Aktionen",
-      "add": "Hinzufügen",
-      "cancel": "Abbrechen",
-      "delete": "Löschen",
-      "edit": "Bearbeiten",
-      "save": "Speichern",
-      "saving": "Speichern...",
-      "update": "Aktualisieren",
-      "view": "Ansehen"
-    },
-    "appName": "Tournado",
-    "auth": {
-      "signIn": "Anmelden",
-      "signOut": "Abmelden",
-      "signUp": "Registrieren",
-      "signingIn": "Anmelden..."
-    },
-    "backToHome": "Zurück zur Startseite",
-    "darkMode": "Dunkler Modus",
-    "error": "Fehler",
-    "guest": "Gast",
-    "language": "Sprache",
-    "lightMode": "Heller Modus",
-    "loading": "Laden...",
-    "optional": "(optional)",
-    "pagination": {
-      "next": "Weiter",
-      "pageInfo": "Seite {{current}} von {{total}}",
-      "previous": "Zurück",
-      "showing": "{{from}}-{{to}} von {{total}} angezeigt"
-    },
-    "signedInAs": "Angemeldet als",
-    "titles": {
-      "about": "Über",
-      "addTeam": "Team hinzufügen",
-      "adminPanel": "Admin-Panel",
-      "competition": "Wettbewerb",
-      "more": "Mehr",
-      "profile": "Profil",
-      "settings": "Einstellungen",
-      "teams": "Teams",
-      "tournaments": "Turniere",
-      "users": "Benutzer",
-      "welcome": "Willkommen"
-    },
-    "toggleMenu": "Menü umschalten",
-    "toggleTheme": "Design umschalten",
-    "welcome": "Willkommen"
-  },
-  "datatable": {
-    "clearSearch": "Suche löschen",
-    "resetFilters": "Zurücksetzen",
-    "search": "Suchen...",
-    "toggleColumns": "Spalten umschalten",
-    "view": "Ansicht"
-  },
-  "divisions": {
-    "FIFTH_DIVISION": "Fünfte Division",
-    "FIRST_DIVISION": "Erste Division",
-    "FOURTH_DIVISION": "Vierte Division",
-    "PREMIER_DIVISION": "Erste Liga",
-    "SECOND_DIVISION": "Zweite Division",
-    "THIRD_DIVISION": "Dritte Division"
-  },
-  "errors": {
-    "somethingWentWrong": "Etwas ist schief gelaufen",
-    "teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
-    "emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
-    "emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden"
-  },
-  "landing": {
-    "features": {
-      "description": "Tournado bietet alle Tools, die Sie für die effiziente Verwaltung Ihrer Sportturniere benötigen. Von der Teamregistrierung bis zur Spielplanung - wir haben alles für Sie.",
-      "subtitle": "Alles, was Sie für die Verwaltung Ihrer Turniere benötigen",
-      "title": "Turnierverwaltung leicht gemacht"
-    },
-    "hero": {
-      "description": "Verwalten Sie Ihre Sportturniere mit Leichtigkeit. Erstellen, organisieren und verfolgen Sie Ihre Teams und Spiele an einem Ort.",
-      "signup": "Kostenlos registrieren",
-      "viewTeams": "Teams anzeigen"
-    }
-  },
-  "messages": {
-    "auth": {
-      "emailExists": "Ein Benutzer mit dieser E-Mail existiert bereits",
-      "emailInvalid": "E-Mail ist ungültig",
-      "emailRequired": "E-Mail ist erforderlich",
-      "forbidden": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen",
-      "forbiddenTitle": "Zugriff verweigert",
-      "invalidCredentials": "Ungültige E-Mail oder Passwort",
-      "notFound": "Entschuldigung, die gesuchte Seite existiert nicht oder wurde verschoben. Bitte überprüfen Sie die URL oder navigieren Sie über den untenstehenden Link.",
-      "passwordRequired": "Passwort ist erforderlich",
-      "passwordTooShort": "Passwort ist zu kurz",
-      "serverError": "Serverfehler, bitte versuchen Sie es später erneut",
-      "title": "Authentifizierungsfehler",
-      "unauthorized": "Sie müssen sich anmelden, um auf diese Seite zuzugreifen",
-      "unauthorizedAdminRequired": "Dieser Bereich ist auf Turnierverwalter und Administratoren beschränkt.",
-      "unauthorizedAdminRequiredTitle": "Admin-Zugriff erforderlich",
-      "unauthorizedDefault": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Wenden Sie sich an Ihren Administrator, wenn Sie glauben, dass dies ein Fehler ist.",
-      "unauthorizedDefaultTitle": "Zugriff verweigert",
-      "unauthorizedManagerRequired": "Dieser Bereich ist auf Turnierverwalter und Administratoren beschränkt.",
-      "unauthorizedManagerRequiredTitle": "Verwalter-Zugriff erforderlich",
-      "unauthorizedSignInRequired": "Sie müssen sich anmelden, um auf diese Ressource zuzugreifen.",
-      "unauthorizedSignInRequiredTitle": "Authentifizierung erforderlich",
-      "unauthorizedSuperAdminRequired": "Dieser spezifische Bereich ist auf Systemadministratoren beschränkt.",
-      "unauthorizedSuperAdminRequiredTitle": "Admin-Zugriff erforderlich",
-      "unauthorizedTitle": "Anmeldung erforderlich"
-    },
-    "common": {
-      "accessDenied": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen",
-      "errorTitle": "Anwendungsfehler",
-      "itemNotFound": "{{item}} nicht gefunden",
-      "notFoundTitle": "Seite nicht gefunden",
-      "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
-      "unknownError": "Ein unbekannter Fehler ist aufgetreten"
-    },
-    "team": {
-      "categoryRequired": "Kategorie ist erforderlich",
-      "clubNameRequired": "Vereinsname ist erforderlich",
-      "clubNameTooLong": "Vereinsname darf maximal 100 Zeichen lang sein",
-      "divisionRequired": "Liga ist erforderlich",
-      "nameRequired": "Teamname ist erforderlich",
-      "nameTooLong": "Teamname darf maximal 50 Zeichen lang sein",
-      "notFound": "Team nicht gefunden",
-      "phoneNumberInvalid": "Bitte geben Sie eine gültige Telefonnummer ein",
-      "phoneNumberRequired": "Telefonnummer ist erforderlich",
-      "privacyAgreementRequired": "Sie müssen der Datenschutzerklärung zustimmen",
-      "registrationError": "Team registrieren fehlgeschlagen",
-      "registrationErrorDesc": "Beim Registrieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "registrationSuccess": "Team erfolgreich registriert",
-      "registrationSuccessDesc": "Ihr Team wurde erfolgreich registriert.",
-      "teamLeaderNameRequired": "Name des Teamleiters ist erforderlich",
-      "teamLeaderNameTooLong": "Name darf maximal 100 Zeichen lang sein",
-      "tournamentRequired": "Turnier ist erforderlich",
-      "updateError": "Team aktualisieren fehlgeschlagen",
-      "updateErrorDesc": "Beim Aktualisieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "updateSuccess": "Team erfolgreich aktualisiert",
-      "updateSuccessDesc": "Ihr Team wurde erfolgreich aktualisiert."
-    },
-    "tournament": {
-      "categoriesRequired": "Mindestens eine Kategorie ist erforderlich",
-      "divisionsRequired": "Mindestens eine Liga ist erforderlich",
-      "endDateBeforeStartDate": "Enddatum muss am oder nach dem Startdatum liegen",
-      "endDateRequired": "Enddatum ist erforderlich",
-      "locationRequired": "Ort ist erforderlich",
-      "locationTooLong": "Ort darf maximal 100 Zeichen lang sein",
-      "nameRequired": "Turniername ist erforderlich",
-      "nameTooLong": "Turniername darf maximal 100 Zeichen lang sein",
-      "registrationError": "Turnier registrieren fehlgeschlagen",
-      "registrationErrorDesc": "Beim Registrieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "registrationSuccess": "Turnier erfolgreich registriert",
-      "registrationSuccessDesc": "Das Turnier wurde erfolgreich registriert.",
-      "startDateRequired": "Startdatum ist erforderlich",
-      "updateError": "Turnier aktualisieren fehlgeschlagen",
-      "updateErrorDesc": "Beim Aktualisieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-      "updateSuccess": "Turnier erfolgreich aktualisiert",
-      "updateSuccessDesc": "Das Turnier wurde erfolgreich aktualisiert."
-    },
-    "user": {
-      "cannotChangeOwnRole": "Sie können Ihre eigene Rolle nicht ändern",
-      "cannotDeactivateOwnAccount": "Sie können Ihr eigenes Konto nicht deaktivieren",
-      "cannotReactivateOwnAccount": "Sie können Ihr eigenes Konto nicht reaktivieren",
-      "failedToUpdateRole": "Rolle konnte nicht aktualisiert werden",
-      "missingUserId": "Benutzer-ID fehlt"
-    },
-    "validation": {
-      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-      "emailRequired": "E-Mail ist erforderlich",
-      "fieldRequired": "Dieses Feld ist erforderlich",
-      "phoneNumberInvalid": "Bitte geben Sie eine gültige Telefonnummer ein",
-      "phoneNumberRequired": "Telefonnummer ist erforderlich"
-    }
-  },
-  "pwa": {
-    "install": {
-      "android": {
-        "chrome": "Tippen Sie auf das Menü (⋮) und wählen Sie \"App installieren\"",
-        "firefox": "Tippen Sie auf das Menü (⋮) und wählen Sie \"Installieren\"",
-        "samsung": "Tippen Sie auf das Menü (⋮) und wählen Sie \"Seite hinzufügen zu\" dann \"Startbildschirm\"",
-        "title": "Diese App auf Ihrem Gerät installieren"
-      },
-      "ios": {
-        "chrome": "Tippen Sie auf die Teilen-Schaltfläche und dann \"Zum Home-Bildschirm\"",
-        "firefox": "Tippen Sie auf das Hamburger-Menü, dann \"Teilen\" und \"Zum Home-Bildschirm hinzufügen\"",
-        "safari": "Tippen Sie auf die Teilen-Schaltfläche und dann \"Zum Home-Bildschirm\"",
-        "title": "Diese App auf Ihrem iPhone installieren"
-      },
-      "other": {
-        "instruction": "Öffnen Sie das Browser-Menü und wählen Sie \"Zum Home-Bildschirm hinzufügen\"",
-        "title": "Diese App auf Ihrem Gerät installieren"
-      }
-    },
-    "update": {
-      "button": "Aktualisieren",
-      "instruction": "Aktualisieren Sie die Seite, um die App zu aktualisieren",
-      "title": "Eine neue Version ist verfügbar"
-    }
-  },
-  "profile": {
-    "title": "Profilinformationen",
-    "description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung."
-  },
-  "roles": {
-    "admin": "Admin",
-    "billing": "Abrechnung",
-    "editor": "Redakteur",
-    "manager": "Manager",
-    "public": "Öffentlich",
-    "referee": "Schiedsrichter"
-  },
-  "settings": {
-    "title": "Anwendungseinstellungen",
-    "description": "Konfigurieren Sie Ihre Turniereinstellungen, Präferenzen und Kontooptionen für eine optimale Erfahrung."
-  },
-  "teams": {
-    "allTournaments": "Alle Turniere",
-    "count": "{{count}} Team registriert",
-    "count_other": "{{count}} Teams registriert",
-    "createNewTeam": "Neues Team erstellen",
-    "deleteTeam": "Team löschen",
-    "description": "Registrieren Sie Ihr(e) Team(s) für ein oder mehrere Turniere",
-    "filterByTournament": "Nach Turnier filtern",
-    "form": {
-      "agreeToPrivacyPolicy": "Ich stimme der Datenschutzerklärung zu",
-      "category": "Kategorie",
-      "clubName": "Vereinsname",
-      "completeAllThreeFields": "Bitte füllen Sie alle drei Felder unten aus, um fortzufahren",
-      "division": "Liga",
-      "enterContactDetails": "Geben Sie die Kontaktdaten des Teamleiters ein",
-      "enterTeamDetails": "Geben Sie Ihre Teaminformationen ein",
-      "fillOutForm": "Füllen Sie das untenstehende Formular aus, um Ihr Team zu registrieren",
-      "name": "Teamname",
-      "placeholders": {
-        "clubName": "Geben Sie Ihren Vereinsnamen ein",
-        "name": "Geben Sie Ihren Teamnamen ein",
-        "teamLeaderEmail": "E-Mail-Adresse eingeben",
-        "teamLeaderName": "Vollständigen Namen des Teamleiters eingeben",
-        "teamLeaderPhone": "Telefonnummer eingeben"
-      },
-      "privacyAgreement": "Ich stimme der Datenschutzerklärung und den Nutzungsbedingungen zu",
-      "privacyPolicy": "Datenschutzerklärung",
-      "readAndAccept": "Bitte lesen und akzeptieren Sie die Datenschutzerklärung, um fortzufahren",
-      "selectCategory": "Kategorie auswählen",
-      "selectDivision": "Liga auswählen",
-      "selectTournament": "Turnier auswählen",
-      "selectTournamentDetails": "Turnier-Details auswählen",
-      "teamInfo": "Team",
-      "teamLeaderEmail": "E-Mail des Teamleiters",
-      "teamLeaderInfo": "Teamleiter",
-      "teamLeaderName": "Name des Teamleiters",
-      "teamLeaderPhone": "Telefon des Teamleiters",
-      "teamRegistration": "Team-Registrierung",
-      "tournament": "Turnier"
-    },
-    "getStarted": {
-      "description": "Bereit, an einem Turnier teilzunehmen? Klicken Sie oben auf die Schaltfläche 'Hinzufügen', um Ihr Team zu registrieren und zu spielen!",
-      "title": "Erste Schritte mit der Team-Registrierung"
-    },
-    "noTeamSelected": "Kein Team ausgewählt. Wählen Sie links ein Team aus, oder",
-    "noTeams": "Es wurden noch keine Teams registriert. Seien Sie der Erste, der sein Team für kommende Turniere registriert!",
-    "title": "Teams"
-  },
-  "tournaments": {
-    "deleteTournament": "Turnier löschen",
-    "endDate": "Enddatum",
-    "form": {
-      "basicInformation": "Grundinformationen",
-      "categories": "Kategorien",
-      "dates": "Turnierdaten",
-      "divisions": "Ligen",
-      "endDate": "Enddatum",
-      "enterBasicDetails": "Turniername und Ort eingeben",
-      "fillOutForm": "Füllen Sie das untenstehende Formular aus, um ein neues Turnier zu erstellen",
-      "location": "Ort",
-      "name": "Turniername",
-      "selectCategories": "Wählen Sie die teilnehmenden Alterskategorien aus",
-      "selectDates": "Start- und Enddatum für das Turnier auswählen",
-      "selectDivisions": "Wählen Sie die teilnehmenden Ligen aus",
-      "selected": "ausgewählt",
-      "startDate": "Startdatum",
-      "tournamentRegistration": "Turnier-Registrierung"
-    },
-    "location": "Ort",
-    "name": "Name",
-    "noTournaments": "Keine Turniere",
-    "noTournamentsDescription": "Es wurden noch keine Turniere erstellt. Erstellen Sie Ihr erstes Turnier, um loszulegen!",
-    "startDate": "Startdatum",
-    "title": "Turniere"
-  },
-  "users": {
-    "actions": {
-      "deactivateUser": "Deaktivieren",
-      "reactivateUser": "Reaktivieren",
-      "viewDetails": "Details ansehen"
-    },
-    "auditActions": {
-      "approval": "Benutzer genehmigt",
-      "deactivate": "Benutzer deaktiviert",
-      "profile_update": "Profil aktualisiert",
-      "reactivate": "Benutzer reaktiviert",
-      "rejection": "Benutzer abgelehnt",
-      "role_change": "Rolle geändert"
-    },
-    "descriptions": {
-      "manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
-    },
-    "fields": {
-      "assignedRole": "Zugewiesene Rolle",
-      "createdAt": "Erstellt am",
-      "currentRole": "Aktuelle Rolle",
-      "displayName": "Anzeigename",
-      "email": "E-Mail",
-      "performedBy": "Durchgeführt von",
-      "role": "Rolle"
-    },
-    "messages": {
-      "deactivated": "Deaktiviert",
-      "displayNameUpdatedSuccessfully": "Anzeigename erfolgreich aktualisiert",
-      "noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
-      "noUsers": "Keine Benutzer gefunden",
-      "noUsersDescription": "Es wurden noch keine Benutzer erstellt.",
-      "roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
-      "userDeactivatedSuccessfully": "Benutzer erfolgreich deaktiviert",
-      "userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert",
-      "userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
-      "confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
-      "confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?"
-    },
-    "placeholders": {
-      "displayName": "Anzeigename eingeben"
-    },
-    "titles": {
-      "allUsers": "Alle Benutzer",
-      "auditLog": "Audit-Protokoll",
-      "deactivateUser": "Benutzer deaktivieren",
-      "reactivateUser": "Benutzer reaktivieren",
-      "totalUsers": "Benutzer gesamt",
-      "userDetail": "Benutzerdetails",
-      "userInformation": "Benutzerinformationen",
-      "userManagement": "Benutzerverwaltung"
-    }
-  }
+	"admin": {
+		"competition": {
+			"description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
+			"title": "Wettbewerbsverwaltung"
+		},
+		"panel": {
+			"description": "Willkommen zurück, <email>{{email}}</email>. Verwalten Sie Ihre Turnierplattform von hier aus.",
+			"title": "Admin-Panel"
+		},
+		"reports": {
+			"description": "Plattformnutzung und Turnierstatistiken anzeigen.",
+			"title": "Berichte & Analytics"
+		},
+		"settings": {
+			"description": "Anwendungseinstellungen und Präferenzen konfigurieren.",
+			"title": "Systemeinstellungen"
+		},
+		"team": {
+			"confirmDelete": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+			"createNewTeamDescription": "Erstellen Sie ein neues Team mit Turnierdaten und Kontaktinformationen.",
+			"createTeam": "Team erstellen",
+			"createTeamDescription": "Fügen Sie ein neues Team mit allen erforderlichen Details zum System hinzu.",
+			"description": "Verwalten Sie Teams für Turniere. Teaminformationen anzeigen, bearbeiten oder löschen.",
+			"editTeam": "Team-Details bearbeiten",
+			"newTeam": "Neues Team",
+			"saveChanges": "Änderungen speichern",
+			"teamNotFound": "Team nicht gefunden",
+			"teamNotFoundDescription": "Das gesuchte Team konnte nicht gefunden werden oder wurde möglicherweise gelöscht.",
+			"title": "Team-Verwaltung",
+			"totalTeams": "Teams insgesamt"
+		},
+		"tournament": {
+			"confirmDelete": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+			"description": "Verwalten Sie Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
+			"title": "Turnier-Verwaltung",
+			"totalTournaments": "Turniere insgesamt"
+		},
+		"user": {
+			"description": "Benutzerkonten und Berechtigungen verwalten.",
+			"title": "Benutzer-Verwaltung",
+			"totalUsers": "Gesamtbenutzer"
+		}
+	},
+	"about": {
+		"title": "Über Tournado",
+		"description": "Tournado ist eine umfassende Turnierverwaltungsplattform, die entwickelt wurde, um die Organisation und Verwaltung von Sportturnieren für Organisationen und Teams zu optimieren."
+	},
+	"auth": {
+		"alreadyHaveAccount": "Haben Sie bereits ein Konto?",
+		"continueWithEmail": "Oder mit E-Mail fortfahren",
+		"createAccount": "Konto erstellen",
+		"dontHaveAccount": "Haben Sie noch kein Konto?",
+		"emailAddress": "E-Mail-Adresse",
+		"errors": {
+			"accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung.",
+			"accountDeactivatedTitle": "Konto deaktiviert"
+		},
+		"firebase": {
+			"continueWithGoogle": "Mit Google fortfahren",
+			"error": "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+			"signInWithGoogle": "Mit Google anmelden"
+		},
+		"firstName": "Vorname",
+		"labels": {
+			"confirmPassword": "Passwort bestätigen",
+			"email": "E-Mail",
+			"password": "Passwort"
+		},
+		"lastName": "Nachname",
+		"notSignedIn": "Nicht angemeldet",
+		"or": "oder",
+		"password": "Passwort",
+		"placeholders": {
+			"confirmPassword": "Passwort bestätigen",
+			"email": "E-Mail eingeben",
+			"password": "Passwort eingeben"
+		},
+		"pleaseSignIn": "Bitte melden Sie sich mit Ihrem neuen Konto an",
+		"registrationSuccess": "Konto erfolgreich erstellt",
+		"rememberMe": "Angemeldet bleiben",
+		"signInPage": {
+			"description": "Melden Sie sich in Ihrem Tournado-Konto an",
+			"noAccount": "Noch kein Konto?",
+			"signUpLink": "Registrieren"
+		},
+		"signInRequiredToCreateTeam": "Sie müssen sich anmelden, um ein Team zu erstellen.",
+		"signUpPage": {
+			"description": "Erstellen Sie Ihr Tournado-Konto",
+			"hasAccount": "Bereits ein Konto?",
+			"signInLink": "Anmelden"
+		},
+		"signin": "Anmelden",
+		"signout": "Abmelden",
+		"signup": "Registrieren",
+		"validation": {
+			"emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+			"passwordMismatch": "Passwörter stimmen nicht überein",
+			"passwordRequirements": "Passwort muss mindestens 8 Zeichen lang sein mit Groß-, Kleinbuchstaben und Zahlen",
+			"passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+			"passwordWeak": "Passwort muss Groß-, Kleinbuchstaben und Zahlen enthalten"
+		},
+		"viewTeams": "Teams anzeigen",
+		"viewTeamsFor": "Teams anzeigen für"
+	},
+	"common": {
+		"actions": {
+			"actions": "Aktionen",
+			"add": "Hinzufügen",
+			"cancel": "Abbrechen",
+			"delete": "Löschen",
+			"edit": "Bearbeiten",
+			"save": "Speichern",
+			"saving": "Speichern...",
+			"update": "Aktualisieren",
+			"view": "Ansehen"
+		},
+		"appName": "Tournado",
+		"auth": {
+			"signIn": "Anmelden",
+			"signOut": "Abmelden",
+			"signUp": "Registrieren",
+			"signingIn": "Anmelden..."
+		},
+		"backToHome": "Zurück zur Startseite",
+		"darkMode": "Dunkler Modus",
+		"error": "Fehler",
+		"guest": "Gast",
+		"language": "Sprache",
+		"lightMode": "Heller Modus",
+		"loading": "Laden...",
+		"optional": "(optional)",
+		"pagination": {
+			"next": "Weiter",
+			"pageInfo": "Seite {{current}} von {{total}}",
+			"previous": "Zurück",
+			"showing": "{{from}}-{{to}} von {{total}} angezeigt"
+		},
+		"signedInAs": "Angemeldet als",
+		"titles": {
+			"about": "Über",
+			"addTeam": "Team hinzufügen",
+			"adminPanel": "Admin-Panel",
+			"competition": "Wettbewerb",
+			"more": "Mehr",
+			"profile": "Profil",
+			"settings": "Einstellungen",
+			"teams": "Teams",
+			"tournaments": "Turniere",
+			"users": "Benutzer",
+			"welcome": "Willkommen"
+		},
+		"toggleMenu": "Menü umschalten",
+		"toggleTheme": "Design umschalten",
+		"welcome": "Willkommen"
+	},
+	"datatable": {
+		"clearSearch": "Suche löschen",
+		"resetFilters": "Zurücksetzen",
+		"search": "Suchen...",
+		"toggleColumns": "Spalten umschalten",
+		"view": "Ansicht"
+	},
+	"divisions": {
+		"FIFTH_DIVISION": "Fünfte Division",
+		"FIRST_DIVISION": "Erste Division",
+		"FOURTH_DIVISION": "Vierte Division",
+		"PREMIER_DIVISION": "Erste Liga",
+		"SECOND_DIVISION": "Zweite Division",
+		"THIRD_DIVISION": "Dritte Division"
+	},
+	"errors": {
+		"somethingWentWrong": "Etwas ist schief gelaufen",
+		"teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+		"emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
+		"emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden"
+	},
+	"landing": {
+		"features": {
+			"description": "Tournado bietet alle Tools, die Sie für die effiziente Verwaltung Ihrer Sportturniere benötigen. Von der Teamregistrierung bis zur Spielplanung - wir haben alles für Sie.",
+			"subtitle": "Alles, was Sie für die Verwaltung Ihrer Turniere benötigen",
+			"title": "Turnierverwaltung leicht gemacht"
+		},
+		"hero": {
+			"description": "Verwalten Sie Ihre Sportturniere mit Leichtigkeit. Erstellen, organisieren und verfolgen Sie Ihre Teams und Spiele an einem Ort.",
+			"signup": "Kostenlos registrieren",
+			"viewTeams": "Teams anzeigen"
+		}
+	},
+	"messages": {
+		"auth": {
+			"emailExists": "Ein Benutzer mit dieser E-Mail existiert bereits",
+			"emailInvalid": "E-Mail ist ungültig",
+			"emailRequired": "E-Mail ist erforderlich",
+			"forbidden": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen",
+			"forbiddenTitle": "Zugriff verweigert",
+			"invalidCredentials": "Ungültige E-Mail oder Passwort",
+			"notFound": "Entschuldigung, die gesuchte Seite existiert nicht oder wurde verschoben. Bitte überprüfen Sie die URL oder navigieren Sie über den untenstehenden Link.",
+			"passwordRequired": "Passwort ist erforderlich",
+			"passwordTooShort": "Passwort ist zu kurz",
+			"serverError": "Serverfehler, bitte versuchen Sie es später erneut",
+			"title": "Authentifizierungsfehler",
+			"unauthorized": "Sie müssen sich anmelden, um auf diese Seite zuzugreifen",
+			"unauthorizedAdminRequired": "Dieser Bereich ist auf Turnierverwalter und Administratoren beschränkt.",
+			"unauthorizedAdminRequiredTitle": "Admin-Zugriff erforderlich",
+			"unauthorizedDefault": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Wenden Sie sich an Ihren Administrator, wenn Sie glauben, dass dies ein Fehler ist.",
+			"unauthorizedDefaultTitle": "Zugriff verweigert",
+			"unauthorizedManagerRequired": "Dieser Bereich ist auf Turnierverwalter und Administratoren beschränkt.",
+			"unauthorizedManagerRequiredTitle": "Verwalter-Zugriff erforderlich",
+			"unauthorizedSignInRequired": "Sie müssen sich anmelden, um auf diese Ressource zuzugreifen.",
+			"unauthorizedSignInRequiredTitle": "Authentifizierung erforderlich",
+			"unauthorizedSuperAdminRequired": "Dieser spezifische Bereich ist auf Systemadministratoren beschränkt.",
+			"unauthorizedSuperAdminRequiredTitle": "Admin-Zugriff erforderlich",
+			"unauthorizedTitle": "Anmeldung erforderlich"
+		},
+		"common": {
+			"accessDenied": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen",
+			"errorTitle": "Anwendungsfehler",
+			"itemNotFound": "{{item}} nicht gefunden",
+			"notFoundTitle": "Seite nicht gefunden",
+			"unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
+			"unknownError": "Ein unbekannter Fehler ist aufgetreten"
+		},
+		"team": {
+			"categoryRequired": "Kategorie ist erforderlich",
+			"clubNameRequired": "Vereinsname ist erforderlich",
+			"clubNameTooLong": "Vereinsname darf maximal 100 Zeichen lang sein",
+			"divisionRequired": "Liga ist erforderlich",
+			"nameRequired": "Teamname ist erforderlich",
+			"nameTooLong": "Teamname darf maximal 50 Zeichen lang sein",
+			"notFound": "Team nicht gefunden",
+			"phoneNumberInvalid": "Bitte geben Sie eine gültige Telefonnummer ein",
+			"phoneNumberRequired": "Telefonnummer ist erforderlich",
+			"privacyAgreementRequired": "Sie müssen der Datenschutzerklärung zustimmen",
+			"registrationError": "Team registrieren fehlgeschlagen",
+			"registrationErrorDesc": "Beim Registrieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+			"registrationSuccess": "Team erfolgreich registriert",
+			"registrationSuccessDesc": "Ihr Team wurde erfolgreich registriert.",
+			"teamLeaderNameRequired": "Name des Teamleiters ist erforderlich",
+			"teamLeaderNameTooLong": "Name darf maximal 100 Zeichen lang sein",
+			"tournamentRequired": "Turnier ist erforderlich",
+			"updateError": "Team aktualisieren fehlgeschlagen",
+			"updateErrorDesc": "Beim Aktualisieren Ihres Teams ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+			"updateSuccess": "Team erfolgreich aktualisiert",
+			"updateSuccessDesc": "Ihr Team wurde erfolgreich aktualisiert."
+		},
+		"tournament": {
+			"categoriesRequired": "Mindestens eine Kategorie ist erforderlich",
+			"divisionsRequired": "Mindestens eine Liga ist erforderlich",
+			"endDateBeforeStartDate": "Enddatum muss am oder nach dem Startdatum liegen",
+			"endDateRequired": "Enddatum ist erforderlich",
+			"locationRequired": "Ort ist erforderlich",
+			"locationTooLong": "Ort darf maximal 100 Zeichen lang sein",
+			"nameRequired": "Turniername ist erforderlich",
+			"nameTooLong": "Turniername darf maximal 100 Zeichen lang sein",
+			"registrationError": "Turnier registrieren fehlgeschlagen",
+			"registrationErrorDesc": "Beim Registrieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+			"registrationSuccess": "Turnier erfolgreich registriert",
+			"registrationSuccessDesc": "Das Turnier wurde erfolgreich registriert.",
+			"startDateRequired": "Startdatum ist erforderlich",
+			"updateError": "Turnier aktualisieren fehlgeschlagen",
+			"updateErrorDesc": "Beim Aktualisieren des Turniers ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+			"updateSuccess": "Turnier erfolgreich aktualisiert",
+			"updateSuccessDesc": "Das Turnier wurde erfolgreich aktualisiert."
+		},
+		"user": {
+			"cannotChangeOwnRole": "Sie können Ihre eigene Rolle nicht ändern",
+			"cannotDeactivateOwnAccount": "Sie können Ihr eigenes Konto nicht deaktivieren",
+			"cannotReactivateOwnAccount": "Sie können Ihr eigenes Konto nicht reaktivieren",
+			"failedToUpdateRole": "Rolle konnte nicht aktualisiert werden",
+			"missingUserId": "Benutzer-ID fehlt"
+		},
+		"validation": {
+			"emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+			"emailRequired": "E-Mail ist erforderlich",
+			"fieldRequired": "Dieses Feld ist erforderlich",
+			"phoneNumberInvalid": "Bitte geben Sie eine gültige Telefonnummer ein",
+			"phoneNumberRequired": "Telefonnummer ist erforderlich"
+		}
+	},
+	"pwa": {
+		"install": {
+			"android": {
+				"chrome": "Tippen Sie auf das Menü (⋮) und wählen Sie \"App installieren\"",
+				"firefox": "Tippen Sie auf das Menü (⋮) und wählen Sie \"Installieren\"",
+				"samsung": "Tippen Sie auf das Menü (⋮) und wählen Sie \"Seite hinzufügen zu\" dann \"Startbildschirm\"",
+				"title": "Diese App auf Ihrem Gerät installieren"
+			},
+			"ios": {
+				"chrome": "Tippen Sie auf die Teilen-Schaltfläche und dann \"Zum Home-Bildschirm\"",
+				"firefox": "Tippen Sie auf das Hamburger-Menü, dann \"Teilen\" und \"Zum Home-Bildschirm hinzufügen\"",
+				"safari": "Tippen Sie auf die Teilen-Schaltfläche und dann \"Zum Home-Bildschirm\"",
+				"title": "Diese App auf Ihrem iPhone installieren"
+			},
+			"other": {
+				"instruction": "Öffnen Sie das Browser-Menü und wählen Sie \"Zum Home-Bildschirm hinzufügen\"",
+				"title": "Diese App auf Ihrem Gerät installieren"
+			}
+		},
+		"update": {
+			"button": "Aktualisieren",
+			"instruction": "Aktualisieren Sie die Seite, um die App zu aktualisieren",
+			"title": "Eine neue Version ist verfügbar"
+		}
+	},
+	"profile": {
+		"title": "Profilinformationen",
+		"description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung."
+	},
+	"roles": {
+		"admin": "Admin",
+		"billing": "Abrechnung",
+		"editor": "Redakteur",
+		"manager": "Manager",
+		"public": "Öffentlich",
+		"referee": "Schiedsrichter"
+	},
+	"settings": {
+		"title": "Anwendungseinstellungen",
+		"description": "Konfigurieren Sie Ihre Turniereinstellungen, Präferenzen und Kontooptionen für eine optimale Erfahrung."
+	},
+	"teams": {
+		"allTournaments": "Alle Turniere",
+		"count": "{{count}} Team registriert",
+		"count_other": "{{count}} Teams registriert",
+		"createNewTeam": "Neues Team erstellen",
+		"deleteTeam": "Team löschen",
+		"description": "Registrieren Sie Ihr(e) Team(s) für ein oder mehrere Turniere",
+		"filterByTournament": "Nach Turnier filtern",
+		"form": {
+			"agreeToPrivacyPolicy": "Ich stimme der Datenschutzerklärung zu",
+			"category": "Kategorie",
+			"clubName": "Vereinsname",
+			"completeAllThreeFields": "Bitte füllen Sie alle drei Felder unten aus, um fortzufahren",
+			"division": "Liga",
+			"enterContactDetails": "Geben Sie die Kontaktdaten des Teamleiters ein",
+			"enterTeamDetails": "Geben Sie Ihre Teaminformationen ein",
+			"fillOutForm": "Füllen Sie das untenstehende Formular aus, um Ihr Team zu registrieren",
+			"name": "Teamname",
+			"placeholders": {
+				"clubName": "Geben Sie Ihren Vereinsnamen ein",
+				"name": "Geben Sie Ihren Teamnamen ein",
+				"teamLeaderEmail": "E-Mail-Adresse eingeben",
+				"teamLeaderName": "Vollständigen Namen des Teamleiters eingeben",
+				"teamLeaderPhone": "Telefonnummer eingeben"
+			},
+			"privacyAgreement": "Ich stimme der Datenschutzerklärung und den Nutzungsbedingungen zu",
+			"privacyPolicy": "Datenschutzerklärung",
+			"readAndAccept": "Bitte lesen und akzeptieren Sie die Datenschutzerklärung, um fortzufahren",
+			"selectCategory": "Kategorie auswählen",
+			"selectDivision": "Liga auswählen",
+			"selectTournament": "Turnier auswählen",
+			"selectTournamentDetails": "Turnier-Details auswählen",
+			"teamInfo": "Team",
+			"teamLeaderEmail": "E-Mail des Teamleiters",
+			"teamLeaderInfo": "Teamleiter",
+			"teamLeaderName": "Name des Teamleiters",
+			"teamLeaderPhone": "Telefon des Teamleiters",
+			"teamRegistration": "Team-Registrierung",
+			"tournament": "Turnier"
+		},
+		"getStarted": {
+			"description": "Bereit, an einem Turnier teilzunehmen? Klicken Sie oben auf die Schaltfläche 'Hinzufügen', um Ihr Team zu registrieren und zu spielen!",
+			"title": "Erste Schritte mit der Team-Registrierung"
+		},
+		"noTeamSelected": "Kein Team ausgewählt. Wählen Sie links ein Team aus, oder",
+		"noTeams": "Es wurden noch keine Teams registriert. Seien Sie der Erste, der sein Team für kommende Turniere registriert!",
+		"title": "Teams"
+	},
+	"tournaments": {
+		"deleteTournament": "Turnier löschen",
+		"endDate": "Enddatum",
+		"form": {
+			"basicInformation": "Grundinformationen",
+			"categories": "Kategorien",
+			"dates": "Turnierdaten",
+			"divisions": "Ligen",
+			"endDate": "Enddatum",
+			"enterBasicDetails": "Turniername und Ort eingeben",
+			"fillOutForm": "Füllen Sie das untenstehende Formular aus, um ein neues Turnier zu erstellen",
+			"location": "Ort",
+			"name": "Turniername",
+			"selectCategories": "Wählen Sie die teilnehmenden Alterskategorien aus",
+			"selectDates": "Start- und Enddatum für das Turnier auswählen",
+			"selectDivisions": "Wählen Sie die teilnehmenden Ligen aus",
+			"selected": "ausgewählt",
+			"startDate": "Startdatum",
+			"tournamentRegistration": "Turnier-Registrierung"
+		},
+		"location": "Ort",
+		"name": "Name",
+		"noTournaments": "Keine Turniere",
+		"noTournamentsDescription": "Es wurden noch keine Turniere erstellt. Erstellen Sie Ihr erstes Turnier, um loszulegen!",
+		"startDate": "Startdatum",
+		"title": "Turniere"
+	},
+	"users": {
+		"actions": {
+			"deactivateUser": "Deaktivieren",
+			"reactivateUser": "Reaktivieren",
+			"viewDetails": "Details ansehen"
+		},
+		"auditActions": {
+			"approval": "Benutzer genehmigt",
+			"deactivate": "Benutzer deaktiviert",
+			"profile_update": "Profil aktualisiert",
+			"reactivate": "Benutzer reaktiviert",
+			"rejection": "Benutzer abgelehnt",
+			"role_change": "Rolle geändert"
+		},
+		"descriptions": {
+			"manageUsersAndRoles": "Benutzerkonten verwalten und Rollen zuweisen"
+		},
+		"fields": {
+			"assignedRole": "Zugewiesene Rolle",
+			"createdAt": "Erstellt am",
+			"currentRole": "Aktuelle Rolle",
+			"displayName": "Anzeigename",
+			"email": "E-Mail",
+			"performedBy": "Durchgeführt von",
+			"role": "Rolle"
+		},
+		"messages": {
+			"deactivated": "Deaktiviert",
+			"displayNameUpdatedSuccessfully": "Anzeigename erfolgreich aktualisiert",
+			"noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
+			"noUsers": "Keine Benutzer gefunden",
+			"noUsersDescription": "Es wurden noch keine Benutzer erstellt.",
+			"roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
+			"userDeactivatedSuccessfully": "Benutzer erfolgreich deaktiviert",
+			"userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert",
+			"userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
+			"confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
+			"confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?"
+		},
+		"placeholders": {
+			"displayName": "Anzeigename eingeben"
+		},
+		"titles": {
+			"allUsers": "Alle Benutzer",
+			"auditLog": "Audit-Protokoll",
+			"deactivateUser": "Benutzer deaktivieren",
+			"reactivateUser": "Benutzer reaktivieren",
+			"totalUsers": "Benutzer gesamt",
+			"userDetail": "Benutzerdetails",
+			"userInformation": "Benutzerinformationen",
+			"userManagement": "Benutzerverwaltung"
+		}
+	}
 }

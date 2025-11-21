@@ -22,28 +22,28 @@ import { getTournamentGroupSets } from '~/models/group.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
-  // Permission-based authorization - REFEREE, MANAGER, ADMIN
-  await requireUserWithPermission(request, 'groups:manage')
+	// Permission-based authorization - REFEREE, MANAGER, ADMIN
+	await requireUserWithPermission(request, 'groups:manage')
 
-  // Get tournament ID from query parameter (required)
-  const url = new URL(request.url)
-  const tournamentId = url.searchParams.get('tournament')
+	// Get tournament ID from query parameter (required)
+	const url = new URL(request.url)
+	const tournamentId = url.searchParams.get('tournament')
 
-  if (!tournamentId) {
-    return Response.json(
-      {
-        error: 'Missing required parameter',
-        message: 'Tournament ID is required. Use: /api/groups?tournament=xyz',
-      },
-      { status: 400 }
-    )
-  }
+	if (!tournamentId) {
+		return Response.json(
+			{
+				error: 'Missing required parameter',
+				message: 'Tournament ID is required. Use: /api/groups?tournament=xyz',
+			},
+			{ status: 400 },
+		)
+	}
 
-  // Get group sets for the tournament
-  const groupSets = await getTournamentGroupSets(tournamentId)
+	// Get group sets for the tournament
+	const groupSets = await getTournamentGroupSets(tournamentId)
 
-  // Return JSON using native Response.json()
-  return Response.json({ groupSets })
+	// Return JSON using native Response.json()
+	return Response.json({ groupSets })
 }
 
 // No default export = Resource route (data-only, no UI)

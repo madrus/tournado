@@ -1,7 +1,7 @@
 /**
  * Port detection utilities for E2E testing
  */
-import { createConnection } from 'net'
+import { createConnection } from 'node:net'
 
 /**
  * Check if a port is in use
@@ -10,16 +10,16 @@ import { createConnection } from 'net'
  * @returns {Promise<boolean>} - True if port is in use, false otherwise
  */
 export function isPortInUse(port, host = 'localhost') {
-  return new Promise(resolve => {
-    const socket = createConnection({ port, host }, () => {
-      socket.end()
-      resolve(true)
-    })
+	return new Promise((resolve) => {
+		const socket = createConnection({ port, host }, () => {
+			socket.end()
+			resolve(true)
+		})
 
-    socket.on('error', () => {
-      resolve(false)
-    })
-  })
+		socket.on('error', () => {
+			resolve(false)
+		})
+	})
 }
 
 /**
@@ -29,20 +29,20 @@ export function isPortInUse(port, host = 'localhost') {
  * @returns {Promise<boolean>} - True if server responds, false otherwise
  */
 export async function isServerResponding(url, timeout = 5000) {
-  try {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), timeout)
+	try {
+		const controller = new AbortController()
+		const timeoutId = setTimeout(() => controller.abort(), timeout)
 
-    const response = await fetch(url, {
-      signal: controller.signal,
-      method: 'HEAD',
-    })
+		const response = await fetch(url, {
+			signal: controller.signal,
+			method: 'HEAD',
+		})
 
-    clearTimeout(timeoutId)
-    return response.ok
-  } catch (error) {
-    return false
-  }
+		clearTimeout(timeoutId)
+		return response.ok
+	} catch (_error) {
+		return false
+	}
 }
 
 /**
@@ -52,48 +52,48 @@ export async function isServerResponding(url, timeout = 5000) {
  * @returns {Promise<boolean>} - True if server appears to be a test server
  */
 export async function isTestServer(url, timeout = 5000) {
-  try {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), timeout)
+	try {
+		const controller = new AbortController()
+		const timeoutId = setTimeout(() => controller.abort(), timeout)
 
-    // Check for test-specific headers or content
-    const response = await fetch(url, {
-      signal: controller.signal,
-      method: 'GET',
-      headers: {
-        'x-test-check': 'true',
-      },
-    })
+		// Check for test-specific headers or content
+		const response = await fetch(url, {
+			signal: controller.signal,
+			method: 'GET',
+			headers: {
+				'x-test-check': 'true',
+			},
+		})
 
-    clearTimeout(timeoutId)
+		clearTimeout(timeoutId)
 
-    if (!response.ok) {
-      return false
-    }
+		if (!response.ok) {
+			return false
+		}
 
-    // Check for test-specific indicators in response headers
-    const playwrightHeader = response.headers.get('x-playwright-test')
-    const testEnvHeader = response.headers.get('x-test-env')
+		// Check for test-specific indicators in response headers
+		const playwrightHeader = response.headers.get('x-playwright-test')
+		const testEnvHeader = response.headers.get('x-test-env')
 
-    // Check if this is a test environment based on headers or content
-    if (playwrightHeader === 'true' || testEnvHeader === 'true') {
-      return true
-    }
+		// Check if this is a test environment based on headers or content
+		if (playwrightHeader === 'true' || testEnvHeader === 'true') {
+			return true
+		}
 
-    // As a fallback, check if the page content indicates test environment
-    const html = await response.text()
+		// As a fallback, check if the page content indicates test environment
+		const html = await response.text()
 
-    // Look for test database indicators in the HTML
-    const hasTestIndicators =
-      html.includes('data-test.db') ||
-      html.includes('PLAYWRIGHT') ||
-      html.includes('test-environment') ||
-      html.includes('firebase-mock')
+		// Look for test database indicators in the HTML
+		const hasTestIndicators =
+			html.includes('data-test.db') ||
+			html.includes('PLAYWRIGHT') ||
+			html.includes('test-environment') ||
+			html.includes('firebase-mock')
 
-    return hasTestIndicators
-  } catch (error) {
-    return false
-  }
+		return hasTestIndicators
+	} catch (_error) {
+		return false
+	}
 }
 
 /**
@@ -102,17 +102,17 @@ export async function isTestServer(url, timeout = 5000) {
  * @returns {Promise<{port: number, isRunning: boolean, isResponding: boolean, isTestServer: boolean, url: string}>}
  */
 export async function checkDevServer(port = 8811) {
-  const url = `http://localhost:${port}`
+	const url = `http://localhost:${port}`
 
-  const isRunning = await isPortInUse(port)
-  const isResponding = isRunning ? await isServerResponding(url) : false
-  const isTest = isResponding ? await isTestServer(url) : false
+	const isRunning = await isPortInUse(port)
+	const isResponding = isRunning ? await isServerResponding(url) : false
+	const isTest = isResponding ? await isTestServer(url) : false
 
-  return {
-    port,
-    isRunning,
-    isResponding,
-    isTestServer: isTest,
-    url,
-  }
+	return {
+		port,
+		isRunning,
+		isResponding,
+		isTestServer: isTest,
+		url,
+	}
 }

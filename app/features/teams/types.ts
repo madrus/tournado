@@ -31,18 +31,18 @@ export type TeamListItem = Pick<PrismaTeam, 'id' | 'name' | 'clubName' | 'catego
  * Team leader full information
  */
 export type TeamLeaderFull = {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  phone: string
+	id: string
+	email: string
+	firstName: string
+	lastName: string
+	phone: string
 }
 
 /**
  * Team with full team leader information
  */
 export type TeamWithLeaderFull = Team & {
-  teamLeader: TeamLeaderFull
+	teamLeader: TeamLeaderFull
 }
 
 // ============================================================================
@@ -63,49 +63,49 @@ export type FormVariant = 'public' | 'admin'
  * Complete team form data structure
  */
 export type TeamFormData = {
-  tournamentId: string
-  clubName: string
-  name: string
-  division: string
-  category: string
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  privacyAgreement: boolean
+	tournamentId: string
+	clubName: string
+	name: string
+	division: string
+	category: string
+	teamLeaderName: string
+	teamLeaderPhone: string
+	teamLeaderEmail: string
+	privacyAgreement: boolean
 }
 
 /**
  * Props for TeamForm component
  */
 export type TeamFormProps = {
-  mode?: FormMode
-  variant?: FormVariant
-  formData?: Partial<TeamFormData>
-  errors?: Record<string, string>
-  isSuccess?: boolean
-  successMessage?: string
-  submitButtonText?: string
-  className?: string
-  intent?: string
-  // Optional props for providing data directly (can be undefined for backward compatibility)
-  availableDivisions?: string[]
-  availableCategories?: string[]
-  tournamentId?: string | null
+	mode?: FormMode
+	variant?: FormVariant
+	formData?: Partial<TeamFormData>
+	errors?: Record<string, string>
+	isSuccess?: boolean
+	successMessage?: string
+	submitButtonText?: string
+	className?: string
+	intent?: string
+	// Optional props for providing data directly (can be undefined for backward compatibility)
+	availableDivisions?: string[]
+	availableCategories?: string[]
+	tournamentId?: string | null
 }
 
 /**
  * Extracted team data from FormData
  */
 export type ExtractedTeamData = {
-  tournamentId: string
-  clubName: string
-  name: string
-  division: string
-  category: string
-  teamLeaderName: string
-  teamLeaderPhone: string
-  teamLeaderEmail: string
-  privacyAgreement: boolean
+	tournamentId: string
+	clubName: string
+	name: string
+	division: string
+	category: string
+	teamLeaderName: string
+	teamLeaderPhone: string
+	teamLeaderEmail: string
+	privacyAgreement: boolean
 }
 
 // ============================================================================
@@ -116,25 +116,25 @@ export type ExtractedTeamData = {
  * Team creation action response data
  */
 export type TeamCreateActionData = {
-  success?: boolean
-  team?: {
-    id: string
-    name: string
-    division: string
-  }
-  errors?: {
-    tournamentId?: string
-    clubName?: string
-    name?: string
-    division?: string
-    category?: string
-    teamLeaderName?: string
-    teamLeaderPhone?: string
-    teamLeaderEmail?: string
-    privacyAgreement?: string
-    teamLeader?: string
-    tournament?: string
-  }
+	success?: boolean
+	team?: {
+		id: string
+		name: string
+		division: string
+	}
+	errors?: {
+		tournamentId?: string
+		clubName?: string
+		name?: string
+		division?: string
+		category?: string
+		teamLeaderName?: string
+		teamLeaderPhone?: string
+		teamLeaderEmail?: string
+		privacyAgreement?: string
+		teamLeader?: string
+		tournament?: string
+	}
 }
 
 // ============================================================================
@@ -154,7 +154,7 @@ export type TeamValidationInput = Record<string, unknown>
  * Teams page loader data (shared between public and admin)
  */
 export type TeamsLoaderData = {
-  teamListItems: TeamListItem[]
-  tournamentListItems: TournamentListItem[]
-  selectedTournamentId?: string
+	teamListItems: TeamListItem[]
+	tournamentListItems: TournamentListItem[]
+	selectedTournamentId?: string
 }

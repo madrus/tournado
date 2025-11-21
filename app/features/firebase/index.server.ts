@@ -5,14 +5,12 @@
  * Import from this file only in .server.ts files or server-side route modules.
  */
 
+export * from './auth.server'
+export type { App, Auth as AdminAuth, DecodedIdToken } from './server'
 // Server-side Firebase exports
 export { adminApp, adminAuth, verifyIdToken } from './server'
-export type { App, DecodedIdToken } from './server'
-export type { Auth as AdminAuth } from './server'
-
 // Server-side authentication and session exports
 export * from './session.server'
-export * from './auth.server'
 
 // Types (safe to re-export as they are type-only)
 export * from './types'

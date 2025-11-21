@@ -4,19 +4,19 @@ import { createColorVariantMapping } from '~/components/shared/colorVariants'
 
 // Import base panel variants that are shared across all panel components
 export {
-  basePanelContentVariants as panelContentVariants,
-  basePanelDescriptionVariants as panelDescriptionVariants,
-  basePanelGlowVariants as panelGlowVariants,
-  basePanelNumberVariants as panelNumberVariants,
-  basePanelTitleVariants as panelTitleVariants,
-  basePanelVariants as panelVariants,
-  type BasePanelColorVariant as PanelColorVariant,
-  type BasePanelContentVariants as PanelContentVariants,
-  type BasePanelDescriptionVariants as PanelDescriptionVariants,
-  type BasePanelGlowVariants as PanelGlowVariants,
-  type BasePanelNumberVariants as PanelNumberVariants,
-  type BasePanelTitleVariants as PanelTitleVariants,
-  type BasePanelVariants as PanelVariants,
+	type BasePanelColorVariant as PanelColorVariant,
+	type BasePanelContentVariants as PanelContentVariants,
+	type BasePanelDescriptionVariants as PanelDescriptionVariants,
+	type BasePanelGlowVariants as PanelGlowVariants,
+	type BasePanelNumberVariants as PanelNumberVariants,
+	type BasePanelTitleVariants as PanelTitleVariants,
+	type BasePanelVariants as PanelVariants,
+	basePanelContentVariants as panelContentVariants,
+	basePanelDescriptionVariants as panelDescriptionVariants,
+	basePanelGlowVariants as panelGlowVariants,
+	basePanelNumberVariants as panelNumberVariants,
+	basePanelTitleVariants as panelTitleVariants,
+	basePanelVariants as panelVariants,
 } from '~/components/shared/panel-base.variants'
 
 // ============================================================================
@@ -44,26 +44,26 @@ export {
  * ```
  */
 export const panelIconVariants = cva(
-  [
-    'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-[color,border-color] duration-500 ease-in-out',
-  ],
-  {
-    variants: {
-      /**
-       * Color variants using adaptive classes for text and border.
-       * Special handling for brand/primary mapping.
-       */
-      color: createColorVariantMapping(color => {
-        // Primary maps to emerald
-        if (color === 'primary') return 'text-adaptive-emerald border-adaptive-emerald'
-        // Standard pattern for all colors including brand
-        return `text-adaptive-${color} border-adaptive-${color}`
-      }),
-    },
-    defaultVariants: {
-      color: 'brand',
-    },
-  }
+	[
+		'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent transition-[color,border-color] duration-500 ease-in-out',
+	],
+	{
+		variants: {
+			/**
+			 * Color variants using adaptive classes for text and border.
+			 * Special handling for brand/primary mapping.
+			 */
+			color: createColorVariantMapping((color) => {
+				// Primary maps to emerald
+				if (color === 'primary') return 'border-adaptive-emerald text-adaptive-emerald'
+				// Standard pattern for all colors including brand
+				return `text-adaptive-${color} border-adaptive-${color}`
+			}),
+		},
+		defaultVariants: {
+			color: 'brand',
+		},
+	},
 )
 
 /**
@@ -87,27 +87,27 @@ export const panelIconVariants = cva(
  * ```
  */
 export const panelChildrenVariants = cva(
-  // Base classes for children content
-  [],
-  {
-    variants: {
-      /**
-       * Color variants for child elements using CSS child selectors.
-       * Applies adaptive colors to nested p and strong elements.
-       */
-      iconColor: createColorVariantMapping(color => {
-        // Primary maps to emerald
-        if (color === 'primary') {
-          return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald'
-        }
-        // Standard pattern for all colors including brand
-        return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color}`
-      }),
-    },
-    defaultVariants: {
-      iconColor: 'brand',
-    },
-  }
+	// Base classes for children content
+	[],
+	{
+		variants: {
+			/**
+			 * Color variants for child elements using CSS child selectors.
+			 * Applies adaptive colors to nested p and strong elements.
+			 */
+			iconColor: createColorVariantMapping((color) => {
+				// Primary maps to emerald
+				if (color === 'primary') {
+					return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald'
+				}
+				// Standard pattern for all colors including brand
+				return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color}`
+			}),
+		},
+		defaultVariants: {
+			iconColor: 'brand',
+		},
+	},
 )
 
 /**
@@ -129,25 +129,25 @@ export const panelChildrenVariants = cva(
  * ```
  */
 export const dashboardIconVariants = cva(
-  ['flex h-8 w-8 items-center justify-center rounded-md text-white'],
-  {
-    variants: {
-      /**
-       * Background color variants using -600 weight for contrast.
-       */
-      color: createColorVariantMapping(color => {
-        // Special mapping for brand to red
-        if (color === 'brand') return 'bg-red-600'
-        // Primary maps to emerald
-        if (color === 'primary') return 'bg-emerald-600'
-        // Standard pattern for other colors
-        return `bg-${color}-600`
-      }),
-    },
-    defaultVariants: {
-      color: 'brand',
-    },
-  }
+	['flex h-8 w-8 items-center justify-center rounded-md text-white'],
+	{
+		variants: {
+			/**
+			 * Background color variants using -600 weight for contrast.
+			 */
+			color: createColorVariantMapping((color) => {
+				// Special mapping for brand to red
+				if (color === 'brand') return 'bg-red-600'
+				// Primary maps to emerald
+				if (color === 'primary') return 'bg-emerald-600'
+				// Standard pattern for other colors
+				return `bg-${color}-600`
+			}),
+		},
+		defaultVariants: {
+			color: 'brand',
+		},
+	},
 )
 
 // TypeScript type exports for Panel component-specific variants

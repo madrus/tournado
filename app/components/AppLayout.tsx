@@ -114,8 +114,8 @@ export const AppLayout = ({
 				/>
 			</Theme>
 			{env ? (
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SSR hydration - injects environment variables into client-side window object
 				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: necessary for SSR hydration
 					dangerouslySetInnerHTML={{
 						__html: `window.ENV = ${JSON.stringify(env)}`,
 					}}

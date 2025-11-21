@@ -147,7 +147,7 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
 							.split(/(\d+)/)
 							.map((part, index) =>
 								/^\d+$/.test(part) ? (
-									<span key={index} className={latinFontClass}>
+									<span key={`created-${index}-${part}`} className={latinFontClass}>
 										{part}
 									</span>
 								) : (

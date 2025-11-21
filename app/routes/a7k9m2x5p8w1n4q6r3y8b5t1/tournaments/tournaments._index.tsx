@@ -205,7 +205,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 								.split(/(\d+)/)
 								.map((part, index) =>
 									/^\d+$/.test(part) ? (
-										<span key={index} className={latinFontClass}>
+										<span key={`total-${index}-${part}`} className={latinFontClass}>
 											{part}
 										</span>
 									) : (

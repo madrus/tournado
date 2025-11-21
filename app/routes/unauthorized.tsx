@@ -48,17 +48,8 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 }
 
 export default function UnauthorizedPage(): JSX.Element {
-	// Try to get loader data, fallback to defaults for tests
-	let user: User | null = null
-	let role = 'PUBLIC'
-
-	try {
-		const loaderData = useLoaderData<LoaderData>()
-		user = loaderData.user
-		role = loaderData.role
-	} catch {
-		// Tests don't have loader data, use defaults
-	}
+	const loaderData = useLoaderData<LoaderData>()
+	const { user, role } = loaderData
 
 	const { t } = useTranslation()
 

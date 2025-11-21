@@ -5,6 +5,18 @@ import { describe, expect, test, vi } from 'vitest'
 
 import UnauthorizedPage from '~/routes/unauthorized'
 
+// Mock useLoaderData to provide test data
+vi.mock('react-router', async () => {
+	const actual = await vi.importActual('react-router')
+	return {
+		...actual,
+		useLoaderData: () => ({
+			user: null,
+			role: 'PUBLIC',
+		}),
+	}
+})
+
 // Mock useTranslation
 vi.mock('react-i18next', () => ({
 	useTranslation: () => ({

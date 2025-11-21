@@ -182,6 +182,7 @@ export function AdminUsersIndexPage(): JSX.Element {
 	)
 
 	// Create columns with memoization to prevent unnecessary re-renders
+	// biome-ignore lint/correctness/useExhaustiveDependencies: We want to memoize the columns to prevent unnecessary re-renders
 	const columns = useMemo(
 		() =>
 			createUserColumns({
@@ -192,7 +193,7 @@ export function AdminUsersIndexPage(): JSX.Element {
 				fetcher,
 				currentUserId,
 			}),
-		[t, formatDate, latinFontClass, fetcher, currentUserId, handleUserClick],
+		[t, formatDate, latinFontClass, fetcher, currentUserId],
 	)
 
 	return (

@@ -57,17 +57,13 @@ describe('cn', () => {
 describe('invariantResponse', () => {
 	test('does not throw when condition is true', () => {
 		expect(() => {
-			invariantResponse(true, 'Should not throw')
-		}).not.toThrow()
-
-		expect(() => {
-			invariantResponse(1 === 1, 'Math works')
+			invariantResponse(true, 'Should not throw if condition is true')
 		}).not.toThrow()
 	})
 
 	test('throws Response when condition is false', () => {
 		expect(() => {
-			invariantResponse(false, 'Test message')
+			invariantResponse(false, 'Should throw if condition is false')
 		}).toThrow(Response)
 	})
 

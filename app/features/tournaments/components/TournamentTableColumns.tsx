@@ -75,7 +75,7 @@ export function createTournamentColumns(context: ColumnContext): ColumnDef<Tourn
 						.split(/(\d+)/)
 						.map((part, index) =>
 							/^\d+$/.test(part) ? (
-								<span key={index} className={latinFontClass}>
+								<span key={`start-${index}-${part}`} className={latinFontClass}>
 									{part}
 								</span>
 							) : (
@@ -108,7 +108,7 @@ export function createTournamentColumns(context: ColumnContext): ColumnDef<Tourn
 								.split(/(\d+)/)
 								.map((part, index) =>
 									/^\d+$/.test(part) ? (
-										<span key={index} className={latinFontClass}>
+										<span key={`end-${index}-${part}`} className={latinFontClass}>
 											{part}
 										</span>
 									) : (

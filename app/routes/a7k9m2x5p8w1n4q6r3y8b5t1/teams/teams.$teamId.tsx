@@ -256,6 +256,7 @@ export default function AdminTeamPage(): JSX.Element {
 		/^(?:J|M|JM)O\d+-\d+$/.test(value)
 
 	// Check for success parameter and show toast
+	// biome-ignore lint/correctness/useExhaustiveDependencies: isValidTeamName is a runtime guard and does not need to be a dependency
 	useEffect(() => {
 		const success = searchParams.get('success')
 		if (success === 'created') {
@@ -292,9 +293,10 @@ export default function AdminTeamPage(): JSX.Element {
 			searchParams.delete('success')
 			setSearchParams(searchParams, { replace: true })
 		}
-	}, [searchParams, setSearchParams, t, setFormData, team, isValidTeamName])
+	}, [searchParams, setSearchParams, t, setFormData, team])
 
 	// Prepare the initial team data for reset functionality - memoized to prevent infinite loops
+	// biome-ignore lint/correctness/useExhaustiveDependencies: isValidTeamName is a runtime guard and does not need to be a dependency
 	const initialTeamData = useMemo(
 		() => ({
 			tournamentId: team.tournament.id,
@@ -307,7 +309,7 @@ export default function AdminTeamPage(): JSX.Element {
 			teamLeaderEmail: team.teamLeader.email as `${string}@${string}.${string}`,
 			privacyAgreement: true, // Always true for existing teams
 		}),
-		[team, isValidTeamName],
+		[team],
 	)
 
 	const submitDelete = (): void => {

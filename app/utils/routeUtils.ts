@@ -72,18 +72,22 @@ const isUser = (user: unknown): user is User =>
 	user != null && typeof user === 'object' && 'email' in user && typeof user.email === 'string'
 
 /**
- * Hook that gets the current user with fallback handling for test environments
- * This reduces code duplication in components that need user data with error handling
+ * Hook that gets the current user from the root route data
+ * Returns null if user data is not available or invalid
+ *
+ * Note: Uses try-catch to handle test environments where router context
+ * may not be available. This is intentional for utility hook flexibility.
  */
 export function useUser(): User | null {
 	try {
+		// biome-ignore lint/correctness/useHookAtTopLevel: utility hook needs fallback for test environments without data router
 		const useData = useMatchesData('root')
 		if (!useData || !isUser(useData.user)) {
 			return null
 		}
 		return useData.user
-	} catch (_error) {
-		// Fallback for test environments or when router context is not available
+	} catch {
+		// Fallback for test environments without data router context
 		return null
 	}
 }

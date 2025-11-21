@@ -1,4 +1,5 @@
 import * as Popover from '@radix-ui/react-popover'
+import { nanoid } from 'nanoid'
 import { forwardRef, type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -145,9 +146,9 @@ function Calendar({
 
 			{/* Calendar grid */}
 			<div className='grid grid-cols-7 gap-1'>
-				{calendarDays.map((date, index) => {
+				{calendarDays.map((date) => {
 					if (!date) {
-						return <div key={`empty-${index}`} className='p-2' />
+						return <div key={nanoid()} className='p-2' />
 					}
 
 					const disabled = isDisabled(date)

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useSettingsStore } from '../useSettingsStore'
+import { setCookie } from '../utils'
 
 // Mock document.cookie
 Object.defineProperty(document, 'cookie', {
@@ -16,8 +17,9 @@ describe('useSettingsStore', () => {
 		// Reset store to initial state
 		state().resetSettingsStoreState()
 
-		// Clear document.cookie
-		document.cookie = ''
+		// Clear cookies
+		setCookie('theme', '')
+		setCookie('lang', '')
 
 		// Clear localStorage
 		localStorage.clear()

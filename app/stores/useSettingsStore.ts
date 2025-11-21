@@ -6,6 +6,8 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware'
 import type { Language } from '~/i18n/config'
 import { isBrowser } from '~/lib/lib.helpers'
 
+import { setCookie } from './utils'
+
 type Theme = 'light' | 'dark'
 
 type StoreState = {
@@ -56,7 +58,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 				setTheme: (theme) => {
 					// Persist to both localStorage and cookies for server-side access
 					if (isBrowser) {
-						document.cookie = `theme=${theme}; path=/; max-age=31536000`
+						setCookie('theme', theme)
 					}
 					// Mark as user override when manually setting theme
 					set({ theme, systemThemeDetected: false }, false, 'setTheme')
@@ -67,7 +69,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 							const newTheme = state.theme === 'light' ? 'dark' : 'light'
 							// Persist to cookies for server-side access
 							if (isBrowser) {
-								document.cookie = `theme=${newTheme}; path=/; max-age=31536000`
+								setCookie('theme', newTheme)
 							}
 							// Mark as user override when manually toggling theme
 							return { theme: newTheme, systemThemeDetected: false }
@@ -79,7 +81,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 				setLanguage: (language) => {
 					// Persist to both localStorage and cookies for server-side access
 					if (isBrowser) {
-						document.cookie = `lang=${language}; path=/; max-age=31536000`
+						setCookie('lang', language)
 					}
 					// Compute isRTL from language
 					const isRTL = language.split('-')[0] === 'ar'
@@ -99,7 +101,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 					set({ theme: systemTheme, systemThemeDetected: true }, false, 'detectSystemTheme')
 
 					// Persist to cookies for server-side access
-					document.cookie = `theme=${systemTheme}; path=/; max-age=31536000`
+					setCookie('theme', systemTheme)
 
 					// Listen for system theme changes
 					const handleThemeChange = (event: MediaQueryListEvent) => {

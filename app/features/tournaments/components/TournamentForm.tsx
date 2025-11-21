@@ -338,12 +338,17 @@ export function TournamentForm({
 				{intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
 				{/* Hidden fields for arrays */}
-				{selectedDivisions.map((division, index) => (
-					<input key={`hidden-division-${index}`} type='hidden' name='divisions' value={division} />
-				))}
-				{selectedCategories.map((category, index) => (
+				{selectedDivisions.map((division) => (
 					<input
-						key={`hidden-category-${index}`}
+						key={`hidden-division-${division}`}
+						type='hidden'
+						name='divisions'
+						value={division}
+					/>
+				))}
+				{selectedCategories.map((category) => (
+					<input
+						key={`hidden-category-${category}`}
 						type='hidden'
 						name='categories'
 						value={category}

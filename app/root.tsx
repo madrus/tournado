@@ -189,8 +189,8 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 				{children}
 				<PWAElements />
 				<ScrollRestoration />
-				{/* Inject the SSR language and theme for client-side hydration */}
 				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: Inject the SSR language and theme for client-side hydration
 					dangerouslySetInnerHTML={{
 						__html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
 					}}

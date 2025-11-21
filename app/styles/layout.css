@@ -12,14 +12,15 @@ html {
 body {
 	min-height: 100%;
 	overflow-x: hidden;
-	background-color: var(--color-background);
 	background: linear-gradient(to bottom, var(--gradient-from) 0%, var(--gradient-to) 100%);
+	background-color: var(--color-background);
 }
 
 /* Mobile viewport and dropdown fixes */
 @media (max-width: 1023px) {
 	body {
 		min-height: 100vh;
+		/* biome-ignore lint/suspicious/noDuplicateProperties: 100vh fallback for browsers without 100dvh support */
 		min-height: 100dvh; /* Dynamic viewport height for mobile */
 	}
 
@@ -31,6 +32,7 @@ body {
 	/* Use full viewport height for fullscreen PWA experience */
 	.min-h-screen {
 		min-height: 100vh;
+		/* biome-ignore lint/suspicious/noDuplicateProperties: 100vh fallback for browsers without 100dvh support */
 		min-height: 100dvh;
 	}
 

@@ -1,7 +1,6 @@
 import path from 'node:path'
 import { reactRouter } from '@react-router/dev/vite'
 import tailwindcss from '@tailwindcss/vite'
-import { reactRouterDevTools } from 'react-router-devtools'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -12,7 +11,7 @@ const enablePwa = process.env.DISABLE_PWA !== 'true' && process.env.NODE_ENV !==
 
 export default defineConfig({
 	plugins: [
-		...(process.env.ENABLE_REACT_ROUTER_DEVTOOLS === 'true' ? [reactRouterDevTools()] : []),
+		// ...(process.env.ENABLE_REACT_ROUTER_DEVTOOLS === 'true' ? [reactRouterDevTools()] : []),
 		reactRouter(),
 		tailwindcss(),
 		...(enablePwa

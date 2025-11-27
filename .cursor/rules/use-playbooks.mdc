@@ -1,0 +1,14 @@
+---
+description: A rule to guide the AI to use the Cursor Rules MCP server for fetching best practices from Playbook API.
+alwaysApply: true
+---
+
+# AI Workflow Guidance
+
+When you need to understand project standards, coding patterns, or framework-specific best practices, you MUST use the tools provided by the `cursor-rules-mcp` MCP server.
+
+Your workflow should be:
+1.  Use `searchRules` with a relevant query (e.g., "react hooks", "python error handling") to find appropriate rules.
+2.  From the search results, identify the most relevant rule.
+3.  Use `getRule` with the slug of the chosen rule to fetch its content.
+4.  Apply the fetched rule to the current task. Do NOT guess or use outdated knowledge.

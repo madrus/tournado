@@ -79,7 +79,7 @@ function applySecurityHeaders(headers: Headers, request: Request): void {
 		"frame-ancestors 'none'",
 		"object-src 'none'",
 		`form-action ${Array.from(formActionSources).join(' ')}`,
-		"worker-src 'self'",
+		"worker-src 'self' blob:",
 		"manifest-src 'self'",
 		'upgrade-insecure-requests',
 	].join('; ')

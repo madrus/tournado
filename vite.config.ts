@@ -11,7 +11,6 @@ const enablePwa = process.env.DISABLE_PWA !== 'true' && process.env.NODE_ENV !==
 
 export default defineConfig({
 	plugins: [
-		// ...(process.env.ENABLE_REACT_ROUTER_DEVTOOLS === 'true' ? [reactRouterDevTools()] : []),
 		reactRouter(),
 		tailwindcss(),
 		...(enablePwa

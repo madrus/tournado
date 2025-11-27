@@ -1,3 +1,4 @@
+import { cva } from 'class-variance-authority'
 import { type JSX, useState } from 'react'
 import { Outlet, useLoaderData } from 'react-router'
 
@@ -85,6 +86,36 @@ const tabs = [
 	},
 ] as const
 
+const tabVariants = cva(
+	[
+		'relative flex items-center space-x-2 px-6 py-4 font-medium text-sm transition-all duration-200',
+		'-mb-px rounded-t-lg focus:outline-none',
+	],
+	{
+		variants: {
+			state: {
+				active: [
+					'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950 dark:text-fuchsia-300',
+					'border-t border-r border-l',
+					'!border-t-fuchsia-300 !border-r-fuchsia-300 !border-l-fuchsia-300 border-b-transparent',
+					'dark:border-fuchsia-700 dark:border-b-fuchsia-950',
+					'z-10 shadow-lg',
+				],
+				inactive: [
+					'bg-background text-foreground-light',
+					'border-t border-r border-l',
+					'border-border border-b-0',
+				],
+				disabled: [
+					'cursor-not-allowed bg-background text-foreground-lighter',
+					'border-t border-r border-l',
+					'border-border border-b-0',
+				],
+			},
+		},
+	},
+)
+
 export default function CompetitionLayout(): JSX.Element {
 	const { tournamentListItems, selectedTournamentId } = useLoaderData<LoaderData>()
 	const [activeTab, setActiveTab] = useState<'groups' | 'playoffs'>('groups')
@@ -101,33 +132,16 @@ export default function CompetitionLayout(): JSX.Element {
 			{/* Tab Navigation & Content */}
 			<div className='space-y-0'>
 				{/* Tab Headers */}
-				<div className='flex space-x-0 border-border border-b'>
+				<div className='flex space-x-0 border-border'>
 					{tabs.map((tab) => (
 						<button
 							type='button'
 							key={tab.href}
 							onClick={() => setActiveTab(tab.href as 'groups' | 'playoffs')}
 							disabled={tab.disabled}
-							className={cn(
-								'relative flex items-center space-x-2 px-6 py-4 font-medium text-sm transition-all duration-200',
-								'border-t border-r border-b-2 border-l first:border-l last:border-r',
-								'-mb-px rounded-t-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2',
-								activeTab === tab.href
-									? [
-											'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950/50 dark:text-fuchsia-300',
-											'border-fuchsia-300 border-b-fuchsia-50 dark:border-fuchsia-700 dark:border-b-fuchsia-950/50',
-											'z-10 shadow-lg',
-										]
-									: tab.disabled
-										? [
-												'cursor-not-allowed bg-background text-foreground-lighter',
-												'border-border border-b-border',
-											]
-										: [
-												'bg-background text-foreground-light hover:bg-accent hover:text-foreground',
-												'border-border border-b-border hover:border-fuchsia-200 dark:hover:border-fuchsia-800',
-											],
-							)}
+							className={tabVariants({
+								state: tab.disabled ? 'disabled' : activeTab === tab.href ? 'active' : 'inactive',
+							})}
 						>
 							<tab.icon
 								className={cn(
@@ -147,7 +161,7 @@ export default function CompetitionLayout(): JSX.Element {
 
 				{/* Tab Content - Render nested routes */}
 				<div className='relative'>
-					<Panel color='fuchsia' className='rounded-t-none border-t-0 shadow-lg'>
+					<Panel color='fuchsia' className='rounded-tl-none border-t shadow-lg'>
 						<Outlet />
 					</Panel>
 				</div>

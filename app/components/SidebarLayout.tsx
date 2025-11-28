@@ -161,15 +161,7 @@ export function SidebarLayout({
 							<hr className='border-foreground-lighter' />
 
 							{/* Sidebar Content */}
-							<div className='flex-1 overflow-y-auto pb-safe'>
-								<button
-									type='button'
-									onClick={() => handleSidebarItemClick()}
-									onKeyDown={(e) => e.key === 'Enter' && handleSidebarItemClick()}
-								>
-									{sidebarContent}
-								</button>
-							</div>
+							<div className='flex-1 overflow-y-auto pb-safe'>{sidebarContent}</div>
 						</div>
 					</div>
 

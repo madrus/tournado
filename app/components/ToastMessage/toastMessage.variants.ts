@@ -57,7 +57,7 @@ export const toastMessageVariants = cva(
 		'before:bg-gradient-to-b before:from-white/55 before:via-white/20 before:to-transparent before:opacity-60 before:mix-blend-screen',
 		'dark:before:from-white/35 dark:before:via-white/15 dark:before:opacity-50',
 		// Re-introduce subtle underlay in light mode to boost internal contrast
-		'"] after:-z-10 after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:content-["',
+		'after:-z-10 after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:content-[""]',
 		'after:bg-slate-900/15 after:mix-blend-multiply dark:after:bg-transparent',
 	],
 	{

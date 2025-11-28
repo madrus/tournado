@@ -58,7 +58,7 @@ jobs:
           # DEPLOYMENT POLICY EXCEPTION: E2E tests are intentionally excluded from staging deployment gate
           # Rationale: E2E tests are flaky and time-consuming; staging serves as the E2E validation environment
           # Core quality gates (lint, typecheck, unit tests) still enforced per CI/CD policy
-          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
+          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ Biome") | .conclusion')
           TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
           VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
           WORKFLOW_ONLY_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "✅ Workflow Changes Only") | .conclusion')
@@ -305,7 +305,7 @@ jobs:
           # DEPLOYMENT POLICY EXCEPTION: E2E tests are intentionally excluded from production deployment gate
           # Rationale: E2E tests are flaky and time-consuming; manual verification on staging required before production deploy
           # Core quality gates (lint, typecheck, unit tests) still enforced per CI/CD policy
-          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ ESLint") | .conclusion')
+          LINT_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⬣ Biome") | .conclusion')
           TYPECHECK_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "ʦ TypeScript") | .conclusion')
           VITEST_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "⚡ Vitest") | .conclusion')
           WORKFLOW_ONLY_STATUS=$(cat jobs.json | jq -r '.jobs[] | select(.name == "✅ Workflow Changes Only") | .conclusion')

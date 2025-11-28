@@ -5,10 +5,9 @@ set -euo pipefail
 [ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
 [ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
 
-# Format only staged files (faster + ensures only staged files are affected).
-# `pretty-quick --staged` will update and re-stage files it changes, so
-# an explicit `git add` here is not required and can add unrelated changes.
-pnpm format-ci
+# Run Biome check with auto-fix on staged files
+# Use --no-errors-on-unmatched to allow YAML and other unsupported files
+pnpm biome check --staged --write --unsafe --no-errors-on-unmatched .
 
 # Run eslint-only (we run formatting separately for staged files above
 # to avoid running the global formatter twice).

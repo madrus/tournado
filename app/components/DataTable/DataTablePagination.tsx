@@ -33,19 +33,29 @@ export function DataTablePagination({
 	const from = total === 0 ? 0 : (currentPage - 1) * pageSize + 1
 	const to = total === 0 ? 0 : Math.min(currentPage * pageSize, total)
 
-	// Generate stable keys for text split parts
+	// Generate stable keys and split text parts in a single pass
 	const showingText = t('common.pagination.showing', { from, to, total })
 	const pageInfoText = t('common.pagination.pageInfo', {
 		current: currentPage,
 		total: totalPages,
 	})
 
-	const showingTextKeys = useMemo(
-		() => showingText.split(/(\d+)/).map(() => nanoid()),
+	const showingPartsWithKeys = useMemo(
+		() =>
+			showingText.split(/(\d+)/).map((part) => ({
+				part,
+				key: nanoid(),
+				isNumber: /^\d+$/.test(part),
+			})),
 		[showingText],
 	)
-	const pageInfoTextKeys = useMemo(
-		() => pageInfoText.split(/(\d+)/).map(() => nanoid()),
+	const pageInfoPartsWithKeys = useMemo(
+		() =>
+			pageInfoText.split(/(\d+)/).map((part) => ({
+				part,
+				key: nanoid(),
+				isNumber: /^\d+$/.test(part),
+			})),
 		[pageInfoText],
 	)
 
@@ -58,9 +68,9 @@ export function DataTablePagination({
 		>
 			{/* Row count info */}
 			<div className='text-foreground text-sm'>
-				{showingText.split(/(\d+)/).map((part, index) =>
-					/^\d+$/.test(part) ? (
-						<span key={showingTextKeys[index]} className={latinFontClass}>
+				{showingPartsWithKeys.map(({ part, key, isNumber }) =>
+					isNumber ? (
+						<span key={key} className={latinFontClass}>
 							{part}
 						</span>
 					) : (
@@ -95,9 +105,9 @@ export function DataTablePagination({
 					)}
 
 					<span className='flex items-center px-3 py-1 text-foreground text-sm'>
-						{pageInfoText.split(/(\d+)/).map((part, index) =>
-							/^\d+$/.test(part) ? (
-								<span key={pageInfoTextKeys[index]} className={latinFontClass}>
+						{pageInfoPartsWithKeys.map(({ part, key, isNumber }) =>
+							isNumber ? (
+								<span key={key} className={latinFontClass}>
 									{part}
 								</span>
 							) : (

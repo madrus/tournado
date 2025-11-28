@@ -53,7 +53,27 @@ export function ActionLinkPanel({
 				)}
 				{...(onClick && {
 					onClick,
-					onKeyDown: (e) => e.key === 'Enter' && onClick(),
+					onKeyDown: (event) => {
+						// Check if event came from an interactive element
+						const target = event.target as HTMLElement
+						const isInteractiveElement = target.closest(
+							'button, input, select, textarea, a, [role="button"], [role="combobox"], [role="tab"]',
+						)
+
+						if (event.key === 'Enter' && !isInteractiveElement) {
+							event.preventDefault()
+							onClick()
+						}
+
+						// Handle Space on keyDown to prevent page scroll
+						if (
+							(event.key === ' ' || event.key === 'Spacebar') &&
+							!isInteractiveElement
+						) {
+							event.preventDefault()
+							onClick()
+						}
+					},
 					role: 'button',
 					tabIndex: 0,
 					'aria-label': `${title} panel`,

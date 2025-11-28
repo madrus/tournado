@@ -44,6 +44,7 @@ class InternalErrorBoundary extends Component<InternalErrorBoundaryProps, State>
 					error={this.state.error}
 					errorTitle={this.props.errorTitle}
 					errorMessage={this.props.errorMessage}
+					language={this.props.language}
 				/>
 			)
 		}
@@ -56,17 +57,24 @@ const ErrorFallback = ({
 	error,
 	errorTitle,
 	errorMessage,
+	language,
 }: {
 	error: Error | null
 	errorTitle: string
 	errorMessage: string
+	language: Language
 }): JSX.Element => (
 	<div
 		role='alert'
 		className='flex h-full items-center justify-center rounded-lg border border-destructive bg-destructive/10 p-4'
 	>
 		<div className='flex w-full max-w-md flex-col gap-6'>
-			<h1 className={cn('font-bold text-destructive text-xl', getLatinTitleClass())}>
+			<h1
+				className={cn(
+					'font-bold text-destructive text-xl',
+					getLatinTitleClass(language),
+				)}
+			>
 				{errorTitle}
 			</h1>
 			<p className='text-destructive/80' data-testid='error-paragraph'>

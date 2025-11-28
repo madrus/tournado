@@ -1,5 +1,4 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { nanoid } from 'nanoid'
 import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useNavigation } from 'react-router'
@@ -48,7 +47,6 @@ export function UserMenu({
 	onOpenChange,
 }: Readonly<UserMenuProps>): JSX.Element {
 	const { t } = useTranslation()
-	const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null)
 	const [languageMenuOpen, setLanguageMenuOpen] = useState<boolean>(false)
 	const navigation = useNavigation()
 
@@ -61,12 +59,14 @@ export function UserMenu({
 	const location = useLocation()
 	const navigate = useNavigate()
 
-	// Generate stable keys for menu items and their submenus
+	// Generate stable keys from item properties (label + href/icon) to prevent unnecessary remounts
 	const menuItemKeys = useMemo(
 		() =>
 			menuItems.map((item) => ({
-				key: nanoid(),
-				subKeys: item.subMenu ? item.subMenu.map(() => nanoid()) : [],
+				key: item.href || item.label || item.icon || 'divider',
+				subKeys: item.subMenu
+					? item.subMenu.map((subItem) => subItem.label || subItem.customIcon)
+					: [],
 			})),
 		[menuItems],
 	)
@@ -84,7 +84,6 @@ export function UserMenu({
 		if (navigation.state === 'loading' && isNavigatingToDifferentRoute) {
 			onOpenChange?.(false)
 			setLanguageMenuOpen(false)
-			setActiveSubmenu(null)
 		}
 	}, [
 		navigation.state,
@@ -113,16 +112,14 @@ export function UserMenu({
 			event.preventDefault()
 			onOpenChange?.(false)
 			setLanguageMenuOpen(false)
-			setActiveSubmenu(null)
 			navigate(href)
 		},
 		[navigate, onOpenChange],
 	)
 
 	// Handler for clicking language menu toggle
-	const handleLanguageToggle = (event: React.MouseEvent, index: number) => {
+	const handleLanguageToggle = (event: React.MouseEvent) => {
 		event.stopPropagation()
-		setActiveSubmenu(activeSubmenu === index ? null : index)
 		setLanguageMenuOpen(!languageMenuOpen)
 	}
 
@@ -164,14 +161,12 @@ export function UserMenu({
 					<div className='px-4 py-3'>
 						{authenticated ? (
 							<div className={cn('text-foreground-darker', menuClasses.textContainer)}>
-								<p className={cn(`wrap-break-words`, getTypographyClass())}>
+								<p className={cn('wrap-break-words', getTypographyClass())}>
 									{t('common.signedInAs')}
 								</p>
 								<p
-									className={cn(
-										'wrap-break-words font-medium text-foreground-darker',
-										getLatinTextClass(),
-									)}
+									className={cn('wrap-break-words font-medium', getLatinTextClass())}
+									style={{ color: 'var(--color-usermenu-text)' }}
 								>
 									{displayName}
 								</p>
@@ -219,7 +214,7 @@ export function UserMenu({
 												getMenuItemLineHeight(),
 												menuClasses.menuItem,
 											)}
-											onClick={(event) => handleLanguageToggle(event, index)}
+											onClick={handleLanguageToggle}
 										>
 											<span className={menuClasses.iconContainer}>
 												{item.customIcon ? (

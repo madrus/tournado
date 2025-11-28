@@ -16,4 +16,3 @@ test/mocks/**
 *.md
 *.mdc
 *.mdx
-app/styles/tailwind.css

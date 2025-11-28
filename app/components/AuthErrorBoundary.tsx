@@ -39,9 +39,6 @@ export function AuthErrorBoundary(): JSX.Element {
 	const error = useRouteError()
 	const { t } = useTranslation()
 
-	if (typeof document !== 'undefined') {
-	}
-
 	if (isRouteErrorResponse(error)) {
 		return (
 			<div className='flex h-full items-center justify-center'>

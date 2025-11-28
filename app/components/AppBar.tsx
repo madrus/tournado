@@ -4,6 +4,7 @@ import {
 	useCallback,
 	useEffect,
 	useLayoutEffect,
+	useMemo,
 	useRef,
 	useState,
 } from 'react'
@@ -31,7 +32,7 @@ import {
 
 import { PrimaryNavLink } from './PrefetchLink'
 import { ThemeToggle } from './ThemeToggle'
-import { UserMenu } from './UserMenu'
+import { type MenuItemType, UserMenu } from './UserMenu'
 
 // Accepts user and optional title as props for future flexibility
 export function AppBar({
@@ -83,129 +84,149 @@ export function AppBar({
 	// Language switching logic
 	const { switchLanguage, currentLanguage } = useLanguageSwitcher()
 
-	const menuItems = [
-		// Admin Panel - show for admin panel access (admin, manager, referee)
-		...(userHasAdminPanelAccess
-			? [
-					{
-						label: t('common.titles.adminPanel'),
-						icon: 'admin_panel_settings' as IconName,
-						href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
-						authenticated: true,
-					},
-				]
-			: []),
-		// Tournaments - only show for users who can manage tournaments (ADMIN, MANAGER)
-		...(canManageTournaments
-			? [
-					{
-						label: t('common.titles.tournaments'),
-						icon: 'trophy' as IconName,
-						href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
-						authenticated: true,
-					},
-				]
-			: []),
-		{
-			label: t('common.titles.teams'),
-			icon: 'apparel' as IconName,
-			href: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
-			authenticated: false,
-		},
-		// Competition - only show for users who can manage groups (ADMIN, MANAGER)
-		...(canManageGroups
-			? [
-					{
-						label: t('common.titles.competition'),
-						icon: 'sports' as IconName,
-						href: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition',
-						authenticated: true,
-					},
-				]
-			: []),
-		// Users - only show for ADMIN users
-		...(canAccess(user || null, 'users:approve')
-			? [
-					{
-						label: t('common.titles.users'),
-						icon: 'people' as IconName,
-						href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
-						authenticated: true,
-					},
-				]
-			: []),
-		// Divider after Users
-		{
-			label: '',
-			icon: '' as IconName,
-			divider: true,
-			authenticated: false,
-		},
-		{
-			label: t('common.titles.about'),
-			icon: 'info' as IconName,
-			href: '/about',
-			authenticated: false,
-		},
-		{
-			label: t('common.titles.settings'),
-			href: '/settings',
-			icon: 'settings' as IconName,
-			authenticated: true,
-		},
-		{
-			label: t('common.titles.profile'),
-			href: '/profile',
-			icon: 'person' as IconName,
-			authenticated: true,
-		},
-		{
-			label: t('common.language'),
-			icon: 'language' as IconName,
-			subMenu: SUPPORTED_LANGUAGES.map((lang) => ({
-				label: lang.name,
-				customIcon: lang.flag,
-				onClick: () => switchLanguage(lang.code),
-				// Use currentLanguage from hook for reactive updates on client,
-				// fallback to language prop for server/initial render (avoids hydration mismatch)
-				active:
-					lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
-				className:
-					lang.code === 'ar'
-						? getArabicTextClass({ respectDirection: false })
-						: getLatinTextClass(),
-			})),
-			authenticated: false,
-		},
-		{
-			label: isAuthenticated ? t('common.auth.signOut') : t('common.auth.signIn'),
-			icon: (isAuthenticated ? 'logout' : 'login') as IconName,
-			action: isAuthenticated ? (
-				<button
-					type='button'
-					onClick={handleSignOut}
-					className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
-				>
-					<span className={menuClasses.iconContainer}>
-						{renderIcon('logout', { className: 'w-5 h-5' })}
-					</span>
-					<span className={menuClasses.textContainer}>{t('common.auth.signOut')}</span>
-				</button>
-			) : (
-				<PrimaryNavLink
-					to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-					className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
-					onClick={handleSignIn}
-				>
-					<span className={menuClasses.iconContainer}>
-						{renderIcon('login', { className: 'w-5 h-5' })}
-					</span>
-					<span className={menuClasses.textContainer}>{t('common.auth.signIn')}</span>
-				</PrimaryNavLink>
-			),
-			authenticated: false,
-		},
-	]
+	const menuItems: Readonly<MenuItemType[]> = useMemo(
+		() => [
+			// Admin Panel - show for admin panel access (admin, manager, referee)
+			...(userHasAdminPanelAccess
+				? [
+						{
+							label: t('common.titles.adminPanel'),
+							icon: 'admin_panel_settings' as IconName,
+							href: '/a7k9m2x5p8w1n4q6r3y8b5t1',
+							authenticated: true,
+						},
+					]
+				: []),
+			// Tournaments - only show for users who can manage tournaments (ADMIN, MANAGER)
+			...(canManageTournaments
+				? [
+						{
+							label: t('common.titles.tournaments'),
+							icon: 'trophy' as IconName,
+							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
+							authenticated: true,
+						},
+					]
+				: []),
+			{
+				label: t('common.titles.teams'),
+				icon: 'apparel' as IconName,
+				href: canManageTeams ? '/a7k9m2x5p8w1n4q6r3y8b5t1/teams' : '/teams',
+				authenticated: false,
+			},
+			// Competition - only show for users who can manage groups (ADMIN, MANAGER)
+			...(canManageGroups
+				? [
+						{
+							label: t('common.titles.competition'),
+							icon: 'sports' as IconName,
+							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/competition',
+							authenticated: true,
+						},
+					]
+				: []),
+			// Users - only show for ADMIN users
+			...(canAccess(user || null, 'users:approve')
+				? [
+						{
+							label: t('common.titles.users'),
+							icon: 'people' as IconName,
+							href: '/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+							authenticated: true,
+						},
+					]
+				: []),
+			// Divider after Users
+			{
+				label: '',
+				icon: '' as IconName,
+				divider: true,
+				authenticated: false,
+			},
+			{
+				label: t('common.titles.about'),
+				icon: 'info' as IconName,
+				href: '/about',
+				authenticated: false,
+			},
+			{
+				label: t('common.titles.settings'),
+				href: '/settings',
+				icon: 'settings' as IconName,
+				authenticated: true,
+			},
+			{
+				label: t('common.titles.profile'),
+				href: '/profile',
+				icon: 'person' as IconName,
+				authenticated: true,
+			},
+			{
+				label: t('common.language'),
+				icon: 'language' as IconName,
+				subMenu: SUPPORTED_LANGUAGES.map((lang) => ({
+					label: lang.name,
+					customIcon: lang.flag,
+					onClick: () => switchLanguage(lang.code),
+					// Use currentLanguage from hook for reactive updates on client,
+					// fallback to language prop for server/initial render (avoids hydration mismatch)
+					active:
+						lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
+					className:
+						lang.code === 'ar'
+							? getArabicTextClass({ respectDirection: false })
+							: getLatinTextClass(),
+				})),
+				authenticated: false,
+			},
+			{
+				label: isAuthenticated ? t('common.auth.signOut') : t('common.auth.signIn'),
+				icon: (isAuthenticated ? 'logout' : 'login') as IconName,
+				action: isAuthenticated ? (
+					<button
+						type='button'
+						onClick={handleSignOut}
+						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
+					>
+						<span className={menuClasses.iconContainer}>
+							{renderIcon('logout', { className: 'w-5 h-5' })}
+						</span>
+						<span className={menuClasses.textContainer}>
+							{t('common.auth.signOut')}
+						</span>
+					</button>
+				) : (
+					<PrimaryNavLink
+						to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
+						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
+						onClick={handleSignIn}
+					>
+						<span className={menuClasses.iconContainer}>
+							{renderIcon('login', { className: 'w-5 h-5' })}
+						</span>
+						<span className={menuClasses.textContainer}>{t('common.auth.signIn')}</span>
+					</PrimaryNavLink>
+				),
+				authenticated: false,
+			},
+		],
+		[
+			t,
+			user,
+			isAuthenticated,
+			language,
+			currentLanguage,
+			switchLanguage,
+			handleSignIn,
+			handleSignOut,
+			location.pathname,
+			menuClasses,
+			userHasAdminPanelAccess,
+			canManageTournaments,
+			canManageTeams,
+			canManageGroups,
+		],
+	)
 
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const [headerHeight, setHeaderHeight] = useState<number>(56)

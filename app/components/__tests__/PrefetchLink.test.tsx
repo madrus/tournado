@@ -13,28 +13,20 @@ import {
 	PrimaryNavLink,
 } from '../PrefetchLink'
 
-// Mock the prefetch-types module
-vi.mock('~/utils/prefetch-types', () => ({
-	getPrefetchStrategy: vi.fn((_route: string, context: string) => {
-		// Mock implementation for different contexts
+// Mock the usePrefetchStrategy hook
+vi.mock('~/hooks/usePrefetchStrategy', () => ({
+	usePrefetchStrategy: vi.fn((_to, context, override, _adaptive) => {
+		// If override is provided, use it
+		if (override) return override
+
+		// Otherwise, determine strategy based on context
 		if (context === 'actionButtons') return 'render'
 		if (context === 'primaryNavigation') return 'intent'
 		if (context === 'errorPageLinks') return 'render'
-		return 'intent'
+		if (context === 'listItems') return 'viewport'
+		if (context === 'secondaryNavigation') return 'intent'
+		return 'none'
 	}),
-	getAdaptivePrefetchStrategy: vi.fn(
-		(strategy: string, context: Record<string, unknown>) => {
-			const ctx = context as {
-				isSlowConnection?: boolean
-				isLowDataMode?: boolean
-				isMobile?: boolean
-			}
-			if (ctx?.isSlowConnection) return 'intent'
-			if (ctx?.isLowDataMode) return 'intent'
-			if (ctx?.isMobile && strategy === 'render') return 'intent'
-			return strategy
-		},
-	),
 }))
 
 // Mock window and navigator

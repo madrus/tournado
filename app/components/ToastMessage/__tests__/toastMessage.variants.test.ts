@@ -85,7 +85,18 @@ describe('Toast Message Variants', () => {
 		})
 
 		it('should handle all toast types correctly', () => {
-			const types: ToastType[] = ['success', 'error', 'info', 'warning']
+			const types: ToastType[] = [
+				'success',
+				'error',
+				'info',
+				'warning',
+				'validation',
+				'network',
+				'permission',
+				'server',
+				'client',
+				'unknown',
+			]
 
 			types.forEach((type) => {
 				const classes = toastMessageVariants({ type })
@@ -183,7 +194,18 @@ describe('Toast Message Variants', () => {
 
 	describe('Variant Combinations', () => {
 		it('should handle all valid variant combinations', () => {
-			const types: ToastType[] = ['success', 'error', 'info', 'warning']
+			const types: ToastType[] = [
+				'success',
+				'error',
+				'info',
+				'warning',
+				'validation',
+				'network',
+				'permission',
+				'server',
+				'client',
+				'unknown',
+			]
 			const hasBackgroundOptions = [true, false]
 
 			types.forEach((type) => {
@@ -218,7 +240,18 @@ describe('Toast Message Variants', () => {
 
 	describe('Type Safety', () => {
 		it('should accept valid ToastType values', () => {
-			const validTypes: ToastType[] = ['success', 'error', 'info', 'warning']
+			const validTypes: ToastType[] = [
+				'success',
+				'error',
+				'info',
+				'warning',
+				'validation',
+				'network',
+				'permission',
+				'server',
+				'client',
+				'unknown',
+			]
 
 			validTypes.forEach((type) => {
 				expect(() => {

@@ -1,5 +1,6 @@
 import type { Role, User } from '@prisma/client'
 import { render, screen, within } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -46,9 +47,7 @@ vi.mock('../PrefetchLink', () => ({
 	PrimaryNavLink: ({
 		children,
 		...props
-	}: { children: React.ReactNode } & Record<string, unknown>) => (
-		<a {...props}>{children}</a>
-	),
+	}: { children: ReactNode } & Record<string, unknown>) => <a {...props}>{children}</a>,
 }))
 
 // Mock UserMenu component to make testing easier

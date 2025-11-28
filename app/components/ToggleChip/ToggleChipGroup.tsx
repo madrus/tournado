@@ -53,7 +53,7 @@ export function ToggleChipGroup({
 	disabled = false,
 	color,
 	className,
-}: ToggleChipGroupProps): JSX.Element {
+}: Readonly<ToggleChipGroupProps>): JSX.Element {
 	// Grid layout constant
 	const GRID_LAYOUT = 'grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'
 

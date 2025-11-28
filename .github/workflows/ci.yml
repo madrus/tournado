@@ -94,7 +94,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🔬 Lint
-        run: pnpm biome check .
+        run: pnpm lint:check
 
   typecheck:
     name: ʦ TypeScript

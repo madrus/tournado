@@ -14,8 +14,8 @@ type ToastIconConfig = {
 	iconTestId: string
 	wrapperTestId: string
 	iconClass: string
-	size: number
-	weight: number
+	size: AppIconProps['size']
+	weight: AppIconProps['weight']
 	wrapperHasBackground: boolean
 }
 
@@ -94,8 +94,8 @@ export const ToastIcon = ({ type }: Readonly<{ type: ToastType }>): JSX.Element 
 			<cfg.Icon
 				data-testid={cfg.iconTestId}
 				className={cfg.iconClass}
-				size={cfg.size as AppIconProps['size']}
-				weight={cfg.weight as AppIconProps['weight']}
+				size={cfg.size}
+				weight={cfg.weight}
 			/>
 		</div>
 	)

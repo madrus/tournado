@@ -149,10 +149,10 @@ describe('ToggleChipsField', () => {
 		expect(screen.getByText('Division item1')).toBeInTheDocument()
 	})
 
-	it('uses correct language for label generation', () => {
+	it('renders labels with proper language formatting', () => {
 		render(<ToggleChipsField {...defaultProps} />)
 
-		// The component should pass the language to the helper functions
+		// Verify that division labels are rendered correctly
 		expect(screen.getByText('Division item1')).toBeInTheDocument()
 	})
 })

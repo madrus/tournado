@@ -278,4 +278,58 @@ describe('ToastMessage Component', () => {
 			expect(screen.getByTestId('close-button')).toBeInTheDocument()
 		})
 	})
+
+	describe('Accessibility', () => {
+		it('should use status role and polite aria-live for success toasts', () => {
+			const { container } = render(<ToastMessage type='success' title='Success!' />)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'status')
+			expect(toast).toHaveAttribute('aria-live', 'polite')
+		})
+
+		it('should use status role and polite aria-live for info toasts', () => {
+			const { container } = render(<ToastMessage type='info' title='Info!' />)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'status')
+			expect(toast).toHaveAttribute('aria-live', 'polite')
+		})
+
+		it('should use alert role and assertive aria-live for error toasts', () => {
+			const { container } = render(<ToastMessage type='error' title='Error!' />)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'alert')
+			expect(toast).toHaveAttribute('aria-live', 'assertive')
+		})
+
+		it('should use alert role and assertive aria-live for warning toasts', () => {
+			const { container } = render(<ToastMessage type='warning' title='Warning!' />)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'alert')
+			expect(toast).toHaveAttribute('aria-live', 'assertive')
+		})
+
+		it('should use alert role and assertive aria-live for validation toasts', () => {
+			const { container } = render(
+				<ToastMessage type='validation' title='Validation error!' />,
+			)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'alert')
+			expect(toast).toHaveAttribute('aria-live', 'assertive')
+		})
+
+		it('should use alert role and assertive aria-live for network error toasts', () => {
+			const { container } = render(
+				<ToastMessage type='network' title='Network error!' />,
+			)
+
+			const toast = container.firstChild as HTMLElement
+			expect(toast).toHaveAttribute('role', 'alert')
+			expect(toast).toHaveAttribute('aria-live', 'assertive')
+		})
+	})
 })

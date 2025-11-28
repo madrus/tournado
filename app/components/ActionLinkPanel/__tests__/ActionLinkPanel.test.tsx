@@ -9,7 +9,7 @@ import { ActionLinkPanel } from '../ActionLinkPanel'
 
 // Mock React Router
 vi.mock('react-router', async () => {
-	const actual = await vi.importActual('react-router')
+	const actual = await vi.importActual<typeof import('react-router')>('react-router')
 	return {
 		...actual,
 		Link: vi.fn(({ to, className, children, ...props }) => (

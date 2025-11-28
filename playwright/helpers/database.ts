@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { PrismaClient, Role, type User } from '@prisma/client'
 
 // Ensure Playwright helpers use the same DB as the E2E server
@@ -8,35 +9,51 @@ const testDbPath = 'file:./prisma/data-test.db?connection_limit=1'
 const dbUrl =
 	process.env.PLAYWRIGHT === 'true' ? testDbPath : process.env.DATABASE_URL || testDbPath
 
-const prisma = new PrismaClient({
-	datasources: {
-		db: {
-			url: dbUrl,
-		},
-	},
-})
+// Prisma 7.x requires adapter for SQLite (same pattern as app/db.server.ts)
+let prisma: PrismaClient
+
+function createPrismaClient(): PrismaClient {
+	const databaseUrl = dbUrl
+	const normalizedUrl = databaseUrl.startsWith('file:')
+		? `file:${databaseUrl.replace(/^file:/, '').split('?')[0]}`
+		: databaseUrl
+
+	const adapter = new PrismaBetterSqlite3({ url: normalizedUrl })
+	return new PrismaClient({ adapter })
+}
+
+function getPrisma(): PrismaClient {
+	if (!prisma) {
+		prisma = createPrismaClient()
+	}
+	return prisma
+}
 
 // Clean database for tests - removes test data but preserves auth users
-export const cleanDatabase = async (): Promise<void> => {
+export const cleanDatabase = (): Promise<void> => {
+	const db = getPrisma()
 	// Delete in correct order to respect foreign key constraints
 	// NOTE: We preserve users to maintain authentication sessions
-	await prisma.matchScore.deleteMany()
-	await prisma.match.deleteMany()
-	await prisma.team.deleteMany()
-	await prisma.tournament.deleteMany()
-	await prisma.teamLeader.deleteMany()
+	return Promise.all([
+		db.matchScore.deleteMany(),
+		db.match.deleteMany(),
+		db.team.deleteMany(),
+		db.tournament.deleteMany(),
+		db.teamLeader.deleteMany(),
+	]).then(() => {})
 }
 
 // Full clean database for global setup/teardown - removes everything including auth users
 export const cleanDatabaseCompletely = async (): Promise<void> => {
+	const db = getPrisma()
 	try {
 		// Delete in correct order to respect foreign key constraints
-		await prisma.matchScore.deleteMany()
-		await prisma.match.deleteMany()
-		await prisma.team.deleteMany()
-		await prisma.tournament.deleteMany()
-		await prisma.teamLeader.deleteMany()
-		await prisma.user.deleteMany()
+		await db.matchScore.deleteMany()
+		await db.match.deleteMany()
+		await db.team.deleteMany()
+		await db.tournament.deleteMany()
+		await db.teamLeader.deleteMany()
+		await db.user.deleteMany()
 	} catch (error) {
 		// During Playwright tests, ignore all database errors during cleanup
 		// The database might not exist yet (e2e-server creates it) or might be empty
@@ -53,7 +70,8 @@ export async function createUser(
 		firebaseUid?: string
 	},
 ): Promise<User> {
-	return prisma.user.create({
+	const db = getPrisma()
+	return db.user.create({
 		data: {
 			firstName: userData.firstName,
 			lastName: userData.lastName,
@@ -92,7 +110,7 @@ export async function createUserForRole(role: Role, options: SeedOptions = {}): 
 	const names = defaultSeedNames[role]
 	const firebaseUid = options.firebaseUid ?? getSeedFirebaseUid(role)
 
-	return prisma.user.upsert({
+	return getPrisma().user.upsert({
 		where: { email },
 		update: {
 			role,
@@ -111,14 +129,17 @@ export async function createUserForRole(role: Role, options: SeedOptions = {}): 
 }
 
 // Find a user by email
-export const findUserByEmail = async (email: string): Promise<User | null> =>
-	prisma.user.findUnique({
+export const findUserByEmail = async (email: string): Promise<User | null> => {
+	const db = getPrisma()
+	return db.user.findUnique({
 		where: { email },
 	})
+}
 
 // Delete a user by email
 export const deleteUserByEmail = async (email: string): Promise<void> => {
-	await prisma.user.delete({
+	const db = getPrisma()
+	await db.user.delete({
 		where: { email },
 	})
 }
@@ -184,7 +205,8 @@ export const cleanupUser = async (email: string): Promise<void> => {
 
 export const checkTournamentExists = async (namePattern: string) => {
 	try {
-		const tournaments = await prisma.tournament.findMany({
+		const db = getPrisma()
+		const tournaments = await db.tournament.findMany({
 			where: namePattern
 				? {
 						name: {
@@ -215,7 +237,8 @@ export const waitForTournamentInDatabase = async (
 
 	while (attempts < maxAttempts) {
 		try {
-			const tournament = await prisma.tournament.findFirst({
+			const db = getPrisma()
+			const tournament = await db.tournament.findFirst({
 				where: {
 					name: {
 						contains: tournamentName,
@@ -257,7 +280,8 @@ export const createTestTournament = async (
 	endDate.setDate(endDate.getDate() + 10)
 
 	// Create and verify within a single transaction to avoid race conditions
-	const tournament = await prisma.$transaction(async (tx) => {
+	const db = getPrisma()
+	const tournament = await db.$transaction(async (tx) => {
 		const created = await tx.tournament.create({
 			data: {
 				name,
@@ -299,28 +323,30 @@ export const createTestTournament = async (
 // These ensure test data is properly cleaned up to keep the database clean during test runs
 
 export const deleteTournamentById = async (id: string): Promise<void> => {
+	const db = getPrisma()
 	// Delete dependent records first (children before parent)
 	// Delete matches that reference this tournament
-	await prisma.match.deleteMany({ where: { tournamentId: id } })
+	await db.match.deleteMany({ where: { tournamentId: id } })
 
 	// Delete teams that reference this tournament
-	await prisma.team.deleteMany({ where: { tournamentId: id } })
+	await db.team.deleteMany({ where: { tournamentId: id } })
 
 	// Finally delete the tournament itself
 	// Use deleteMany to be idempotent (avoid P2025 if already deleted)
-	await prisma.tournament.deleteMany({ where: { id } })
+	await db.tournament.deleteMany({ where: { id } })
 }
 
 export const deleteTeamById = async (id: string): Promise<void> => {
+	const db = getPrisma()
 	// Delete dependent records first (children before parent)
 	// Delete matches that reference this team (as home or away team)
-	await prisma.match.deleteMany({
+	await db.match.deleteMany({
 		where: {
 			OR: [{ homeTeamId: id }, { awayTeamId: id }],
 		},
 	})
 	// Fetch leader id before deleting team
-	const current = await prisma.team.findUnique({
+	const current = await db.team.findUnique({
 		where: { id },
 		select: { teamLeaderId: true },
 	})
@@ -328,15 +354,15 @@ export const deleteTeamById = async (id: string): Promise<void> => {
 
 	// Finally delete the team itself
 	// Use deleteMany to be idempotent (avoid P2025 if already deleted)
-	await prisma.team.deleteMany({ where: { id } })
+	await db.team.deleteMany({ where: { id } })
 
 	// Optionally delete the team leader if no other teams reference it
 	if (leaderId) {
-		const remainingTeams = await prisma.team.count({
+		const remainingTeams = await db.team.count({
 			where: { teamLeaderId: leaderId },
 		})
 		if (remainingTeams === 0) {
-			await prisma.teamLeader.deleteMany({ where: { id: leaderId } })
+			await db.teamLeader.deleteMany({ where: { id: leaderId } })
 		}
 	}
 }

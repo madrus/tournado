@@ -1,4 +1,4 @@
-import { HttpResponse, http } from 'msw'
+import { HttpResponse, http, type JsonBodyType } from 'msw'
 
 type MockUserRecord = {
 	uid: string
@@ -31,7 +31,7 @@ function generateMockIdToken(email: string): string {
 export const firebaseHandlers = [
 	http.post(
 		'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
-		async ({ request }) => {
+		async ({ request }): Promise<HttpResponse<JsonBodyType>> => {
 			const { email, password } = (await request.json()) as SignInPayload
 
 			if (!email || !password) {
@@ -58,28 +58,31 @@ export const firebaseHandlers = [
 			})
 		},
 	),
-	http.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp', async ({ request }) => {
-		const { email } = (await request.json()) as SignUpPayload
+	http.post(
+		'https://identitytoolkit.googleapis.com/v1/accounts:signUp',
+		async ({ request }): Promise<HttpResponse<JsonBodyType>> => {
+			const { email } = (await request.json()) as SignUpPayload
 
-		if (!email) {
-			return HttpResponse.json({ error: { message: 'INVALID_EMAIL' } }, { status: 400 })
-		}
+			if (!email) {
+				return HttpResponse.json({ error: { message: 'INVALID_EMAIL' } }, { status: 400 })
+			}
 
-		const uid = `mock-${Object.keys(mockUsers).length + 1}`
-		const user: MockUserRecord = {
-			uid,
-			email,
-			emailVerified: false,
-			disabled: false,
-		}
-		mockUsers[uid] = user
+			const uid = `mock-${Object.keys(mockUsers).length + 1}`
+			const user: MockUserRecord = {
+				uid,
+				email,
+				emailVerified: false,
+				disabled: false,
+			}
+			mockUsers[uid] = user
 
-		return HttpResponse.json({
-			idToken: generateMockIdToken(email),
-			refreshToken: 'mock-refresh-token',
-			expiresIn: '3600',
-			localId: uid,
-			email,
-		})
-	}),
+			return HttpResponse.json({
+				idToken: generateMockIdToken(email),
+				refreshToken: 'mock-refresh-token',
+				expiresIn: '3600',
+				localId: uid,
+				email,
+			})
+		},
+	),
 ]

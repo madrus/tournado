@@ -90,6 +90,8 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🔬 Lint
         run: pnpm biome check .
@@ -134,6 +136,8 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🔎 Type check
         run: pnpm typecheck

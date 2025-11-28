@@ -3,7 +3,7 @@ import type { Role, User } from '@prisma/client'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock Prisma - use vi.hoisted() for objects referenced in mock factory
-const { mockUser, mockUserAuditLog, mockTransaction, mockPrisma } = vi.hoisted(() => {
+const { mockUser, mockTransaction, mockPrisma } = vi.hoisted(() => {
 	const mockUser = {
 		findUnique: vi.fn(),
 		findMany: vi.fn(),

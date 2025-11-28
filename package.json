@@ -1,6 +1,6 @@
 {
 	"name": "tournado",
-	"version": "0.9.0",
+	"version": "0.10.0",
 	"private": true,
 	"sideEffects": false,
 	"type": "module",
@@ -25,8 +25,6 @@
 		"env:check:prod": "tsx scripts/validate-env.ts production",
 		"knip": "knip",
 		"lint": "biome check --write --unsafe .",
-		"mcp:inspect": "npx @modelcontextprotocol/inspector node mcp-servers/vitest/dist/index.js",
-		"mcp:vitest": "node mcp-servers/vitest/dist/index.js",
 		"migrate:admin-roles": "tsx scripts/migrate-admin-roles.ts",
 		"postinstall": "husky && ([ -f prisma/schema.prisma ] && prisma generate || true)",
 		"prebuild": "prisma generate",

@@ -152,7 +152,7 @@ importers:
         version: 5.1.1(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))
       '@vitest/coverage-v8':
         specifier: 4.0.14
-        version: 4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6))
+        version: 4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.11)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6))
       commitizen:
         specifier: ^4.3.1
         version: 4.3.1(@types/node@24.10.1)(typescript@5.9.3)
@@ -167,7 +167,7 @@ importers:
         version: 4.9.0
       happy-dom:
         specifier: ^20.0.10
-        version: 20.0.10
+        version: 20.0.11
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -206,13 +206,13 @@ importers:
         version: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)
       vite-plugin-pwa:
         specifier: ^1.1.0
-        version: 1.1.0(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workbox-build@7.4.0(@types/babel__core@7.20.5))(workbox-window@7.4.0)
+        version: 1.2.0(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workbox-build@7.4.0(@types/babel__core@7.20.5))(workbox-window@7.4.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))
       vitest:
         specifier: 4.0.14
-        version: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6)
+        version: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.11)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6)
       wait-on:
         specifier: ^9.0.3
         version: 9.0.3(debug@4.4.3)
@@ -4282,8 +4282,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@20.0.10:
-    resolution: {integrity: sha512-6umCCHcjQrhP5oXhrHQQvLB0bwb1UzHAHdsXy+FjtKoYjUhmNZsQL8NivwM1vDvNEChJabVrUYxUnp/ZdYmy2g==}
+  happy-dom@20.0.11:
+    resolution: {integrity: sha512-QsCdAUHAmiDeKeaNojb1OHOPF7NjcWPBR7obdu3NwH2a/oyQaLg5d0aaCy/9My6CdPChYF07dvz5chaXBGaD4g==}
     engines: {node: '>=20.0.0'}
 
   hard-rejection@2.1.0:
@@ -6641,14 +6641,14 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-plugin-pwa@1.1.0:
-    resolution: {integrity: sha512-VsSpdubPzXhHWVINcSx6uHRMpOHVHQcHsef1QgkOlEoaIDAlssFEW88LBq1a59BuokAhsh2kUDJbaX1bZv4Bjw==}
+  vite-plugin-pwa@1.2.0:
+    resolution: {integrity: sha512-a2xld+SJshT9Lgcv8Ji4+srFJL4k/1bVbd1x06JIkvecpQkwkvCncD1+gSzcdm3s+owWLpMJerG3aN5jupJEVw==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@vite-pwa/assets-generator': ^1.0.0
       vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-      workbox-build: ^7.3.0
-      workbox-window: ^7.3.0
+      workbox-build: ^7.4.0
+      workbox-window: ^7.4.0
     peerDependenciesMeta:
       '@vite-pwa/assets-generator':
         optional: true
@@ -9970,7 +9970,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6))':
+  '@vitest/coverage-v8@4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.11)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6))':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/utils': 4.0.14
@@ -9983,7 +9983,7 @@ snapshots:
       obug: 2.1.1
       std-env: 3.10.0
       tinyrainbow: 3.0.3
-      vitest: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6)
+      vitest: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.11)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -11701,7 +11701,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@20.0.10:
+  happy-dom@20.0.11:
     dependencies:
       '@types/node': 20.19.25
       '@types/whatwg-mimetype': 3.0.2
@@ -14102,7 +14102,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-pwa@1.1.0(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workbox-build@7.4.0(@types/babel__core@7.20.5))(workbox-window@7.4.0):
+  vite-plugin-pwa@1.2.0(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))(workbox-build@7.4.0(@types/babel__core@7.20.5))(workbox-window@7.4.0):
     dependencies:
       debug: 4.4.3
       pretty-bytes: 6.1.1
@@ -14140,7 +14140,7 @@ snapshots:
       terser: 5.44.1
       tsx: 4.20.6
 
-  vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.10)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6):
+  vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.0.11)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.6):
     dependencies:
       '@vitest/expect': 4.0.14
       '@vitest/mocker': 4.0.14(msw@2.12.3(@types/node@24.10.1)(typescript@5.9.3))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6))
@@ -14165,7 +14165,7 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
       '@types/node': 24.10.1
-      happy-dom: 20.0.10
+      happy-dom: 20.0.11
     transitivePeerDependencies:
       - jiti
       - less

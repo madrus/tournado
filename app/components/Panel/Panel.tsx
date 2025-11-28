@@ -118,7 +118,7 @@ export function Panel({
 						variant === 'content-panel' && (icon || title)
 							? 'flex flex-col items-start'
 							: '',
-						'wrap-break-words',
+						'break-words',
 						variant === 'hover' ? 'p-6' : '',
 						// Text alignment based on direction
 						isRTL ? 'text-right' : 'text-left',
@@ -128,8 +128,7 @@ export function Panel({
 					{icon ? (
 						<div
 							className={cn(panelIconVariants({ color: effectiveIconColor }), 'mb-4')}
-							aria-label='panel icon'
-							role='img'
+							aria-hidden='true'
 						>
 							{icon}
 						</div>

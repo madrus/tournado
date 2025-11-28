@@ -206,7 +206,7 @@ describe('ConfirmDialog - Controlled Mode', () => {
 			const icon = within(dialog).getByRole('img', { hidden: true })
 
 			// Verify danger intent colors are applied
-			expect(icon).toHaveClass('text-red-600')
+			expect(icon).toHaveClass('text-brand-600')
 		})
 
 		test('applies intent styling (warning)', () => {

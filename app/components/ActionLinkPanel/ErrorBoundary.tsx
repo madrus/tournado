@@ -33,6 +33,10 @@ class InternalErrorBoundary extends Component<InternalErrorBoundaryProps, State>
 	}
 
 	public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+		// Always log errors to console as fallback
+		console.error('ActionLinkPanel Error:', error, errorInfo)
+
+		// Call optional error handler if provided
 		this.props.onError?.(error, errorInfo)
 	}
 

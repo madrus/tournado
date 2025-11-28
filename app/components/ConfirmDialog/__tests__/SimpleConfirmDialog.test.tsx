@@ -294,19 +294,19 @@ describe('SimpleConfirmDialog', () => {
 				const iconContainer = within(dialog).getByTestId(
 					'simple-confirm-dialog-icon-container',
 				)
-				expect(iconContainer).toHaveClass('bg-red-100')
+				expect(iconContainer).toHaveClass('bg-brand-100')
 
 				// Icon should have danger color
-				expect(icon).toHaveClass('text-red-600')
+				expect(icon).toHaveClass('text-brand-600')
 
 				// Title should have danger color
-				expect(screen.getByText('Danger')).toHaveClass('text-red-900')
+				expect(screen.getByText('Danger')).toHaveClass('text-brand-900')
 
-				// Confirm button should have red color
+				// Confirm button should have brand color
 				const confirmButton = within(dialog).getByRole('button', {
 					name: 'Delete',
 				})
-				expect(confirmButton).toHaveClass('bg-red-600')
+				expect(confirmButton).toHaveClass('bg-brand-600')
 
 				// Cancel button should have slate color
 				const cancelButton = within(dialog).getByRole('button', {

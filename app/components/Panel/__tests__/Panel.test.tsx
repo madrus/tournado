@@ -62,8 +62,7 @@ describe('Panel Component', () => {
 		it('should render icon when provided', () => {
 			render(<Panel {...defaultProps} icon={<MockIcon />} />)
 
-			const iconContainer = screen.getByLabelText('panel icon')
-			expect(iconContainer).toBeInTheDocument()
+			const _iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(screen.getByTestId('mock-icon')).toBeInTheDocument()
 		})
 
@@ -194,7 +193,7 @@ describe('Panel Component', () => {
 		it('should use panel color for icon when no iconColor specified', () => {
 			render(<Panel {...defaultProps} color='teal' icon={<MockIcon />} />)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-teal', 'border-adaptive-teal')
 		})
 
@@ -208,7 +207,7 @@ describe('Panel Component', () => {
 				/>,
 			)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-blue', 'border-adaptive-blue')
 		})
 
@@ -347,13 +346,12 @@ describe('Panel Component', () => {
 			)
 
 			// Test presence and order using Testing Library queries
-			const iconContainer = screen.getByLabelText('panel icon')
+			const _iconContainer = screen.getByTestId('mock-icon').parentElement
 			const title = screen.getByRole('heading', { level: 3 })
 			const subtitle = screen.getByText('Test subtitle')
 			const children = screen.getByTestId('test-children')
 
 			// Verify all elements are present in the document
-			expect(iconContainer).toBeInTheDocument()
 			expect(title).toBeInTheDocument()
 			expect(subtitle).toBeInTheDocument()
 			expect(children).toBeInTheDocument()
@@ -406,7 +404,7 @@ describe('Panel Component', () => {
 				</Panel>,
 			)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('mb-4')
 
 			const subtitle = screen.getByText('Test subtitle')

@@ -98,6 +98,8 @@ export const DARK_MODE_DARKER_CLASSES: Record<ColorVariantKey, string> = {
  * Helper function to generate primary button variant classes for a given color.
  * Primary buttons are filled with colored backgrounds and white text.
  * All colors uniformly use -600 weight with white text for consistency.
+ *
+ * Note: For 'brand' color, we use explicit brand-* classes that map to red via CSS custom properties.
  */
 function createPrimaryVariant(color: ColorVariantKey) {
 	const weight = '600'

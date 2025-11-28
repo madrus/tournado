@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid'
 import type { JSX } from 'react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -42,18 +41,18 @@ export function DataTablePagination({
 
 	const showingPartsWithKeys = useMemo(
 		() =>
-			showingText.split(/(\d+)/).map((part) => ({
+			showingText.split(/(\d+)/).map((part, index) => ({
 				part,
-				key: nanoid(),
+				key: index,
 				isNumber: /^\d+$/.test(part),
 			})),
 		[showingText],
 	)
 	const pageInfoPartsWithKeys = useMemo(
 		() =>
-			pageInfoText.split(/(\d+)/).map((part) => ({
+			pageInfoText.split(/(\d+)/).map((part, index) => ({
 				part,
-				key: nanoid(),
+				key: index,
 				isNumber: /^\d+$/.test(part),
 			})),
 		[pageInfoText],

@@ -133,7 +133,7 @@ describe('PanelLayer Component', () => {
 		it('should handle ColorAccent iconColor for base layer', () => {
 			render(<PanelLayer {...defaultProps} iconColor='teal' isHover={false} />)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-teal')
 			expect(iconContainer).toHaveClass('border-adaptive-teal')
 		})
@@ -141,7 +141,7 @@ describe('PanelLayer Component', () => {
 		it('should handle brand iconColor for base layer', () => {
 			render(<PanelLayer {...defaultProps} iconColor='brand' isHover={false} />)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-brand')
 			expect(iconContainer).toHaveClass('border-adaptive-brand')
 		})
@@ -157,7 +157,7 @@ describe('PanelLayer Component', () => {
 				/>,
 			)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-blue')
 			expect(iconContainer).toHaveClass('border-adaptive-blue')
 		})
@@ -172,7 +172,7 @@ describe('PanelLayer Component', () => {
 				/>,
 			)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('text-adaptive-brand')
 			expect(iconContainer).toHaveClass('border-adaptive-brand')
 		})
@@ -194,7 +194,7 @@ describe('PanelLayer Component', () => {
 			render(<PanelLayer {...defaultProps} />)
 
 			// Check that all content elements are present and rendered
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			const title = screen.getByRole('heading', { level: 3 })
 			const description = screen.getByText('Test description')
 
@@ -210,7 +210,7 @@ describe('PanelLayer Component', () => {
 		it('should apply icon container styling', () => {
 			render(<PanelLayer {...defaultProps} />)
 
-			const iconContainer = screen.getByLabelText('panel icon')
+			const iconContainer = screen.getByTestId('mock-icon').parentElement
 			expect(iconContainer).toHaveClass('flex')
 			expect(iconContainer).toHaveClass('h-8')
 			expect(iconContainer).toHaveClass('w-8')
@@ -385,7 +385,7 @@ describe('PanelLayer Component', () => {
 			expect(title).not.toBeInTheDocument()
 
 			// But icon and description should still be present
-			expect(screen.getByLabelText('panel icon')).toBeInTheDocument()
+			expect(screen.getByTestId('mock-icon')).toBeInTheDocument()
 			expect(screen.getByText('Test description')).toBeInTheDocument()
 		})
 
@@ -400,7 +400,7 @@ describe('PanelLayer Component', () => {
 
 			// But title and icon should still be present
 			expect(screen.getByRole('heading', { level: 3 })).toBeInTheDocument()
-			expect(screen.getByLabelText('panel icon')).toBeInTheDocument()
+			expect(screen.getByTestId('mock-icon')).toBeInTheDocument()
 		})
 
 		it('should handle missing optional props', () => {

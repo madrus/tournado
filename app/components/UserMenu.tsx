@@ -161,11 +161,11 @@ export function UserMenu({
 					<div className='px-4 py-3'>
 						{authenticated ? (
 							<div className={cn('text-foreground-darker', menuClasses.textContainer)}>
-								<p className={cn('wrap-break-words', getTypographyClass())}>
+								<p className={cn('break-words', getTypographyClass())}>
 									{t('common.signedInAs')}
 								</p>
 								<p
-									className={cn('wrap-break-words font-medium', getLatinTextClass())}
+									className={cn('break-words font-medium', getLatinTextClass())}
 									style={{ color: 'var(--color-usermenu-text)' }}
 								>
 									{displayName}
@@ -174,7 +174,7 @@ export function UserMenu({
 						) : (
 							<p
 								className={cn(
-									'wrap-break-words text-foreground-darker',
+									'break-words text-foreground-darker',
 									menuClasses.textContainer,
 									getTypographyClass(),
 								)}

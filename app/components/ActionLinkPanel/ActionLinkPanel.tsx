@@ -42,8 +42,26 @@ export function ActionLinkPanel({
 }: ActionLinkPanelProps): JSX.Element {
 	const typographyClasses = getTypographyClasses()
 
+	// Error handler for panel errors - logs and can be extended for telemetry
+	const handlePanelError = (
+		error: Error,
+		errorInfo: { componentStack?: string | null },
+	): void => {
+		// Log detailed error information
+		console.error('ActionLinkPanel component error:', {
+			title,
+			to,
+			error: error.message,
+			stack: error.stack,
+			componentStack: errorInfo.componentStack,
+		})
+
+		// TODO: Send to telemetry service (e.g., Sentry, LogRocket)
+		// Example: Sentry.captureException(error, { contexts: { react: errorInfo } })
+	}
+
 	const panel = (
-		<ErrorBoundary>
+		<ErrorBoundary onError={handlePanelError}>
 			<div
 				className={cn(
 					actionLinkPanelVariants({

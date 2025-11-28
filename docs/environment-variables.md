@@ -170,7 +170,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
 - **Required**: Yes
 - **CI Value**: `"http://localhost:8811"`
 - **Staging**: `"https://tournado-staging.fly.dev"`
-- **Production**: `"https://tournado-production.fly.dev"`
+- **Production**: `"https://tournado.fly.dev"`
 
 ### Database Configuration
 
@@ -183,6 +183,17 @@ These variables configure the Firebase Admin SDK for server-side operations.
 - **Production**: `"file:/data/sqlite.db?connection_limit=1"`
 
 ### Optional Configuration
+
+#### `APP_ENV`
+
+- **Purpose**: Application environment indicator (separate from NODE_ENV)
+- **Required**: Recommended for proper environment detection
+- **CI Value**: `"ci"`
+- **Local Dev**: `"development"` (default if not set)
+- **Staging**: `"staging"` (should be set via Fly.io secrets)
+- **Production**: `"production"` (should be set via Fly.io secrets)
+- **Usage**: Used for environment-specific behavior and debugging visibility
+- **Note**: Healthcheck uses hostname-based staging detection as primary mechanism
 
 #### `PLAYWRIGHT`
 
@@ -255,6 +266,7 @@ These variables configure the Firebase Admin SDK for server-side operations.
    # Then set secrets one by one for staging
    flyctl secrets set SESSION_SECRET="$(openssl rand -hex 32)" --app tournado-staging
    flyctl secrets set SUPER_ADMIN_EMAILS="admin1@domain1.com,admin2@domain2.com" --app tournado-staging
+   flyctl secrets set APP_ENV="staging" --app tournado-staging
 
    # Firebase Client secrets (for staging - using tournado-dev project)
    flyctl secrets set VITE_FIREBASE_API_KEY="YOUR_FIREBASE_API_KEY" --app tournado-staging
@@ -298,10 +310,10 @@ These variables configure the Firebase Admin SDK for server-side operations.
    fly secrets list --app tournado-staging
 
    # Check all secrets for production
-   fly secrets list --app tournado-production
+   fly secrets list --app tournado
 
    # Expected secrets for staging/production:
-   # SESSION_SECRET, SUPER_ADMIN_EMAILS, BASE_URL, DATABASE_URL
+   # SESSION_SECRET, SUPER_ADMIN_EMAILS, BASE_URL, DATABASE_URL, APP_ENV
    # VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID
    # VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID
    # VITE_FIREBASE_APP_ID, VITE_FIREBASE_MEASUREMENT_ID
@@ -398,9 +410,9 @@ For each Firebase project, create a service account:
 
 #### Production Environment
 
-- Verify Fly.io secrets are set: `fly secrets list --app tournado-production`
+- Verify Fly.io secrets are set: `fly secrets list --app tournado`
 - Check Firebase project permissions for `tournado-prod`
-- Monitor logs for authentication errors: `fly logs --app tournado-production`
+- Monitor logs for authentication errors: `fly logs --app tournado`
 
 ## Admin Role Management
 
@@ -431,7 +443,7 @@ To grant admin access to a user:
    flyctl secrets set SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com" --app tournado-staging
 
    # Production (Fly.io)
-   flyctl secrets set SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com" --app tournado-production
+   flyctl secrets set SUPER_ADMIN_EMAILS="existing-admin@domain.com,new-admin@domain.com" --app tournado
    ```
 
 2. **User logs in again** → automatically promoted to ADMIN role
@@ -456,7 +468,7 @@ To revoke admin access from a user:
    flyctl secrets set SUPER_ADMIN_EMAILS="remaining-admin@domain.com" --app tournado-staging
 
    # Production (Fly.io)
-   flyctl secrets set SUPER_ADMIN_EMAILS="remaining-admin@domain.com" --app tournado-production
+   flyctl secrets set SUPER_ADMIN_EMAILS="remaining-admin@domain.com" --app tournado
    ```
 
 2. **User logs in again** → automatically demoted from ADMIN to MANAGER
@@ -479,7 +491,7 @@ pnpm migrate:admin-roles
 fly ssh console --app tournado-staging -C "pnpm migrate:admin-roles"
 
 # Production
-fly ssh console --app tournado-production -C "pnpm migrate:admin-roles"
+fly ssh console --app tournado -C "pnpm migrate:admin-roles"
 ```
 
 **What the migration does**:

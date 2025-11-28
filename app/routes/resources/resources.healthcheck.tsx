@@ -61,8 +61,12 @@ export const loader = async ({
 	const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
 	const url = new URL('/', `http://${host}`)
 
-	// Production: keep fast plain probe for platform health checks
-	if (env === 'production' && appEnv !== 'staging') {
+	// Detect staging by checking if hostname contains 'staging'
+	const isStaging = host?.includes('staging') ?? false
+
+	// Production only: keep fast plain probe for platform health checks
+	// Staging should show detailed health page for debugging
+	if (env === 'production' && !isStaging) {
 		try {
 			await Promise.all([
 				prisma.user.count(),
@@ -143,8 +147,11 @@ export const action = async ({
 	Response | { ok: boolean; decoded?: unknown; error?: string }
 > => {
 	const env = process.env.NODE_ENV || 'development'
-	const appEnv = process.env.APP_ENV || 'development'
-	if (env === 'production' && appEnv !== 'staging') {
+	const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
+	const isStaging = host?.includes('staging') ?? false
+
+	// Only allow token verification in development and staging (not production)
+	if (env === 'production' && !isStaging) {
 		return new Response('Not Found', { status: 404 })
 	}
 
@@ -240,7 +247,9 @@ export default function HealthcheckPage(): JSX.Element | null {
 
 	const data = loaderData as HealthData
 
-	const isDevOrStaging = data.serverEnv === 'development' || data.appEnv === 'staging'
+	// Detect staging from request host
+	const isStaging = data.requestHost?.includes('staging') ?? false
+	const isDevOrStaging = data.serverEnv === 'development' || isStaging
 
 	const handleUseCurrentUserToken = async (): Promise<void> => {
 		try {
@@ -274,8 +283,9 @@ export default function HealthcheckPage(): JSX.Element | null {
 		}
 	}
 
-	// Production should not render this page, only staging and dev/test
-	if (data.serverEnv === 'production' && data.appEnv !== 'staging') return null
+	// Production (non-staging) should not render this page UI
+	// Staging and development show the detailed health page
+	if (data.serverEnv === 'production' && !isStaging) return null
 
 	return (
 		<div className='space-y-4 p-4 text-foreground sm:p-6'>

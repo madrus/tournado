@@ -60,11 +60,9 @@ export function Panel({
 	isHover = false,
 	'data-testid': testId,
 }: PanelProps): JSX.Element {
-	const { latinFontClass } = useLanguageDirection()
+	const { direction, latinFontClass } = useLanguageDirection()
 	const { currentLanguage } = useLanguageSwitcher()
-	// Derive RTL state from currentLanguage to avoid unnecessary store dependency
-	// This reduces reactivity overhead since we already have currentLanguage from the hook
-	const isRTL = currentLanguage.startsWith('ar')
+	const isRTL = direction === 'rtl'
 	const effectiveIconColor = iconColor || color
 	const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 

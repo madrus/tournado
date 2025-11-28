@@ -68,17 +68,16 @@ export function GeneralErrorBoundary({
 	let content: JSX.Element | null = null
 
 	if (isRouteErrorResponse(error)) {
-		const routeError = error as ErrorResponse
-		const statusCode = routeError.status
+		const statusCode = error.status
 		const handler = statusHandlers?.[statusCode] ?? defaultStatusHandler
 
 		content = handler ? (
 			handler({
-				error: routeError,
+				error,
 				params: params as Record<string, string | undefined>,
 			})
 		) : (
-			<DefaultStatusContent error={routeError} />
+			<DefaultStatusContent error={error} />
 		)
 	} else {
 		content = unexpectedErrorHandler ? (

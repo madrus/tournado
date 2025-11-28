@@ -1,16 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { RouteTransitionAdvanced } from '../RouteTransitionAdvanced'
 
 describe('RouteTransitionAdvanced', () => {
-	beforeEach(() => {
-		vi.clearAllTimers()
-		vi.useFakeTimers()
-	})
-
 	describe('Rendering', () => {
 		it('should render children via Outlet', () => {
 			render(

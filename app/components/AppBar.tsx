@@ -139,7 +139,7 @@ export function AppBar({
 			// Divider after Users
 			{
 				label: '',
-				icon: '' as IconName,
+				icon: undefined,
 				divider: true,
 				authenticated: false,
 			},

@@ -121,6 +121,47 @@ describe('RouteTransitionFixed', () => {
 		})
 	})
 
+	describe('Transition Lifecycle', () => {
+		it('should maintain stable state during transition stages', () => {
+			const duration = 300
+			const { container } = render(
+				<MemoryRouter initialEntries={['/page1']}>
+					<Routes>
+						<Route element={<RouteTransitionFixed duration={duration} />}>
+							<Route path='/page1' element={<div>Page 1</div>} />
+							<Route path='/page2' element={<div>Page 2</div>} />
+						</Route>
+					</Routes>
+				</MemoryRouter>,
+			)
+
+			// Initial state: stable (opacity 1)
+			const wrapper = container.querySelector('.transition-opacity') as HTMLElement
+			expect(wrapper?.style.opacity).toBe('1')
+			expect(screen.getByText('Page 1')).toBeInTheDocument()
+
+			// Verify transition duration is set correctly
+			expect(wrapper?.style.transitionDuration).toBe(`${duration}ms`)
+		})
+
+		it('should have correct opacity value for stable stage', () => {
+			const { container } = render(
+				<MemoryRouter initialEntries={['/']}>
+					<Routes>
+						<Route element={<RouteTransitionFixed />}>
+							<Route path='/' element={<div>Content</div>} />
+						</Route>
+					</Routes>
+				</MemoryRouter>,
+			)
+
+			const wrapper = container.querySelector('.transition-opacity') as HTMLElement
+
+			// When in stable stage, opacity should be 1
+			expect(wrapper?.style.opacity).toBe('1')
+		})
+	})
+
 	describe('Props Type Safety', () => {
 		it('should accept all valid TransitionWithDurationProps', () => {
 			render(

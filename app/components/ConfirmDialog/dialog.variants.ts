@@ -38,7 +38,7 @@ export const dialogContentVariants = cva(
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 				info: [
-					'border border-white bg-cyan-50',
+					'border border-white bg-sky-50',
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 				success: [

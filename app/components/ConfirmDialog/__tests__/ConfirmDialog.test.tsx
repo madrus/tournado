@@ -244,7 +244,7 @@ describe('ConfirmDialog - Controlled Mode', () => {
 				<ConfirmDialog
 					open={true}
 					onOpenChange={handleOpenChange}
-					title='Danger dialog'
+					title={`${intent} dialog`}
 					intent={intent}
 					confirmLabel='Confirm'
 					cancelLabel='Cancel'
@@ -254,6 +254,9 @@ describe('ConfirmDialog - Controlled Mode', () => {
 			const dialog = screen.getByRole('alertdialog')
 			const iconContainer = within(dialog).getByTestId('confirm-dialog-icon-container')
 			const icon = within(iconContainer).getByTestId('confirm-dialog-icon')
+
+			// Verify title is rendered
+			expect(screen.getByText(`${intent} dialog`)).toBeInTheDocument()
 
 			// Verify icon is rendered with proper SVG element and correct viewBox
 			expect(icon).toBeInTheDocument()

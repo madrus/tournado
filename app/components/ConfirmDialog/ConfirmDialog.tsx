@@ -167,7 +167,6 @@ export function ConfirmDialog({
 											color={finalCancelColor}
 											size='md'
 											className={sharedButtonClasses}
-											aria-label={cancelLabel}
 											autoFocus={destructive}
 											disabled={isLoading}
 										>

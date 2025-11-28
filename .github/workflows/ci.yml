@@ -51,7 +51,7 @@ jobs:
           fi
 
   lint:
-    name: ⬣ ESLint
+    name: ⬣ Biome
     runs-on: ubuntu-latest
     needs: check_changes
     permissions:
@@ -90,9 +90,11 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🔬 Lint
-        run: pnpm lint
+        run: pnpm lint:check
 
   typecheck:
     name: ʦ TypeScript
@@ -134,9 +136,13 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🔎 Type check
         run: pnpm typecheck
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   vitest:
     name: ⚡ Vitest
@@ -183,6 +189,8 @@ jobs:
 
       - name: 🛠 Generate Prisma Client
         run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: 🛠 Setup Test Database
         run: pnpm exec prisma migrate reset --force
@@ -197,6 +205,13 @@ jobs:
           FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
           FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
           FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
 
       - name: 🧮 Collect coverage summary
         id: coverage_summary

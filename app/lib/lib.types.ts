@@ -36,23 +36,23 @@ export type IconSize = 12 | 16 | 18 | 20 | 24 | 28 | 32 | 36 | 40 | 48 | 56 | 64
  * Enhanced icon props with strict typing
  */
 export type IconProps = {
-  className?: string
-  size?: IconSize
-  weight?: IconWeight
-  'aria-label'?: string
-  'aria-hidden'?: boolean
+	className?: string
+	size?: IconSize
+	weight?: IconWeight
+	'aria-label'?: string
+	'aria-hidden'?: boolean
 }
 
 /**
  * Toast error types for better error handling
  */
 export type ToastErrorType =
-  | 'validation' // Form validation errors
-  | 'network' // Network-related errors
-  | 'permission' // Permission/authorization errors
-  | 'server' // Server-side errors
-  | 'client' // Client-side errors
-  | 'unknown' // Unknown/unclassified errors
+	| 'validation' // Form validation errors
+	| 'network' // Network-related errors
+	| 'permission' // Permission/authorization errors
+	| 'server' // Server-side errors
+	| 'client' // Client-side errors
+	| 'unknown' // Unknown/unclassified errors
 
 /**
  * Enhanced toast types with error categorization
@@ -63,20 +63,20 @@ export type ToastType = 'success' | 'error' | 'info' | 'warning' | ToastErrorTyp
  * Toast position options
  */
 export type ToastPosition =
-  | 'top-left'
-  | 'top-center'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-center'
-  | 'bottom-right'
+	| 'top-left'
+	| 'top-center'
+	| 'top-right'
+	| 'bottom-left'
+	| 'bottom-center'
+	| 'bottom-right'
 
 /**
  * Toast configuration per type
  */
 export type ToastConfig = {
-  position?: ToastPosition
-  duration?: number
-  priority?: 'low' | 'normal' | 'high'
+	position?: ToastPosition
+	duration?: number
+	priority?: 'low' | 'normal' | 'high'
 }
 
 /**
@@ -96,26 +96,26 @@ export type SemanticAccent = 'brand' | 'primary'
  * mapped to semantic tokens in CVA/theme layer for consistency.
  */
 export type ColorAccent =
-  | SemanticAccent
-  | 'slate'
-  | 'zinc'
-  | 'red'
-  | 'orange'
-  | 'amber'
-  | 'yellow'
-  | 'lime'
-  | 'green'
-  | 'emerald'
-  | 'teal'
-  | 'sky'
-  | 'blue'
-  | 'indigo'
-  | 'violet'
-  | 'purple'
-  | 'fuchsia'
-  | 'pink'
-  | 'rose'
-  | 'disabled'
+	| SemanticAccent
+	| 'slate'
+	| 'zinc'
+	| 'red'
+	| 'orange'
+	| 'amber'
+	| 'yellow'
+	| 'lime'
+	| 'green'
+	| 'emerald'
+	| 'teal'
+	| 'sky'
+	| 'blue'
+	| 'indigo'
+	| 'violet'
+	| 'purple'
+	| 'fuchsia'
+	| 'pink'
+	| 'rose'
+	| 'disabled'
 
 // ============================================================================
 // Division & Category System (Shared)
@@ -135,9 +135,9 @@ export type LocalizedLabels = Readonly<Record<Locale, string>>
  * Division configuration object for localization and metadata
  */
 export type DivisionObject = {
-  readonly value: string
-  readonly labels: LocalizedLabels
-  readonly order: number
+	readonly value: string
+	readonly labels: LocalizedLabels
+	readonly order: number
 }
 
 // ============================================================================
@@ -148,12 +148,12 @@ export type DivisionObject = {
  * Category configuration object for localization and metadata
  */
 export type CategoryObject = {
-  readonly value: string
-  readonly labels: LocalizedLabels
-  readonly order: number
-  readonly ageGroup?: {
-    readonly min: number
-    readonly max: number
-  }
-  readonly gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
+	readonly value: string
+	readonly labels: LocalizedLabels
+	readonly order: number
+	readonly ageGroup?: {
+		readonly min: number
+		readonly max: number
+	}
+	readonly gender?: 'MIXED' | 'BOYS' | 'GIRLS' | 'MEN' | 'WOMEN'
 }

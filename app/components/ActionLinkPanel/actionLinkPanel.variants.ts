@@ -1,16 +1,16 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import {
-  type ColorVariantKey,
-  createColorVariantMapping,
+	type ColorVariantKey,
+	createColorVariantMapping,
 } from '~/components/shared/colorVariants'
 
 // Import base panel variants that are shared across all panel components
 export {
-  basePanelContentVariants as panelContentVariants,
-  basePanelGlowVariants as panelGlowVariants,
-  type BasePanelContentVariants as PanelContentVariants,
-  type BasePanelGlowVariants as PanelGlowVariants,
+	type BasePanelContentVariants as PanelContentVariants,
+	type BasePanelGlowVariants as PanelGlowVariants,
+	basePanelContentVariants as panelContentVariants,
+	basePanelGlowVariants as panelGlowVariants,
 } from '~/components/shared/panel-base.variants'
 
 /**
@@ -33,31 +33,31 @@ export {
  * ```
  */
 export const actionLinkPanelVariants = cva(
-  // Base classes - all the common panel styling
-  [
-    'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
-    'transition-colors duration-750 ease-in-out',
-    'flex flex-col', // Add flex-col to make it a flex container
-  ],
-  {
-    variants: {
-      /**
-       * Color theme variants using semantic panel background classes.
-       * Each color uses panel-{color}-bg for consistent theming.
-       */
-      color: createColorVariantMapping(color => `panel-${color}-bg`),
-      size: {
-        none: '',
-        default: '',
-        sm: '',
-        lg: '',
-      },
-    },
-    defaultVariants: {
-      color: 'teal',
-      size: 'none',
-    },
-  }
+	// Base classes - all the common panel styling
+	[
+		'group relative cursor-pointer overflow-hidden rounded-2xl border shadow-xl',
+		'transition-colors duration-750 ease-in-out',
+		'flex flex-col', // Add flex-col to make it a flex container
+	],
+	{
+		variants: {
+			/**
+			 * Color theme variants using semantic panel background classes.
+			 * Each color uses panel-{color}-bg for consistent theming.
+			 */
+			color: createColorVariantMapping((color) => `panel-${color}-bg`),
+			size: {
+				none: '',
+				default: '',
+				sm: '',
+				lg: '',
+			},
+		},
+		defaultVariants: {
+			color: 'teal',
+			size: 'none',
+		},
+	},
 )
 
 /**
@@ -77,69 +77,69 @@ export const actionLinkPanelVariants = cva(
  * ```
  */
 export const panelBackgroundVariants = cva(
-  // Base classes for panel background
-  ['absolute inset-0'],
-  {
-    variants: {
-      /**
-       * Background color variants using semantic panel classes.
-       * Special mapping for primary to emerald for design consistency.
-       */
-      color: createColorVariantMapping(color => {
-        // Primary maps to emerald background
-        if (color === 'primary') return 'panel-emerald-bg'
-        // Standard pattern for all other colors
-        return `panel-${color}-bg`
-      }),
-    },
-    defaultVariants: {
-      color: 'teal',
-    },
-  }
+	// Base classes for panel background
+	['absolute inset-0'],
+	{
+		variants: {
+			/**
+			 * Background color variants using semantic panel classes.
+			 * Special mapping for primary to emerald for design consistency.
+			 */
+			color: createColorVariantMapping((color) => {
+				// Primary maps to emerald background
+				if (color === 'primary') return 'panel-emerald-bg'
+				// Standard pattern for all other colors
+				return `panel-${color}-bg`
+			}),
+		},
+		defaultVariants: {
+			color: 'teal',
+		},
+	},
 )
 
 // Layer variants for panel content layers
 export const panelLayerPositioningVariants = cva(
-  // Base classes for panel layers
-  ['flex flex-col h-full'],
-  {
-    variants: {
-      isHover: {
-        true: 'absolute inset-0 z-30 panel-hover-layer',
-        false: 'relative z-20',
-      },
-    },
-    defaultVariants: {
-      isHover: false,
-    },
-  }
+	// Base classes for panel layers
+	['flex h-full flex-col'],
+	{
+		variants: {
+			isHover: {
+				true: 'panel-hover-layer absolute inset-0 z-30',
+				false: 'relative z-20',
+			},
+		},
+		defaultVariants: {
+			isHover: false,
+		},
+	},
 )
 
 export const panelLayerOpacityVariants = cva(
-  ['transition-opacity duration-750 ease-in-out'],
-  {
-    variants: {
-      isHover: {
-        true: 'opacity-0 group-hover:opacity-100',
-        false: '',
-      },
-      isBaseLayerWithHoverColor: {
-        true: 'group-hover:opacity-0 panel-base-layer',
-        false: '',
-      },
-    },
-    compoundVariants: [
-      {
-        isHover: false,
-        isBaseLayerWithHoverColor: true,
-        class: 'group-hover:opacity-0 panel-base-layer',
-      },
-    ],
-    defaultVariants: {
-      isHover: false,
-      isBaseLayerWithHoverColor: false,
-    },
-  }
+	['transition-opacity duration-750 ease-in-out'],
+	{
+		variants: {
+			isHover: {
+				true: 'opacity-0 group-hover:opacity-100',
+				false: '',
+			},
+			isBaseLayerWithHoverColor: {
+				true: 'panel-base-layer group-hover:opacity-0',
+				false: '',
+			},
+		},
+		compoundVariants: [
+			{
+				isHover: false,
+				isBaseLayerWithHoverColor: true,
+				class: 'panel-base-layer group-hover:opacity-0',
+			},
+		],
+		defaultVariants: {
+			isHover: false,
+			isBaseLayerWithHoverColor: false,
+		},
+	},
 )
 
 // Layer variants for panel content layers
@@ -159,22 +159,22 @@ export const panelLayerOpacityVariants = cva(
  * Higher opacity (90%) compared to base glow variants (60%).
  */
 export const actionLinkPanelGlowVariants = cva(
-  // Base classes for glow effect
-  [
-    'pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-90',
-  ],
-  {
-    variants: {
-      /**
-       * Glow color variants using semantic panel glow classes.
-       * Coordinates with panel background colors for visual consistency.
-       */
-      color: createColorVariantMapping(color => `panel-${color}-glow`),
-    },
-    defaultVariants: {
-      color: 'teal',
-    },
-  }
+	// Base classes for glow effect
+	[
+		'-top-8 -right-8 pointer-events-none absolute h-32 w-32 rounded-full opacity-90 blur-2xl',
+	],
+	{
+		variants: {
+			/**
+			 * Glow color variants using semantic panel glow classes.
+			 * Coordinates with panel background colors for visual consistency.
+			 */
+			color: createColorVariantMapping((color) => `panel-${color}-glow`),
+		},
+		defaultVariants: {
+			color: 'teal',
+		},
+	},
 )
 
 /**
@@ -197,33 +197,33 @@ export const actionLinkPanelGlowVariants = cva(
  * ```
  */
 export const panelIconVariants = cva(
-  // Base classes for icons
-  [
-    'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
-    'transition-[border-color,background-color,color] duration-500 ease-in-out',
-  ],
-  {
-    variants: {
-      /**
-       * Icon color variants using adaptive action classes.
-       * Special handling for brand and primary color mappings.
-       */
-      color: createColorVariantMapping(color => {
-        // Special cases for color mapping
-        if (color === 'brand') {
-          return 'text-adaptive-red-action border-adaptive-red-action'
-        }
-        if (color === 'primary') {
-          return 'text-adaptive-emerald-action border-adaptive-emerald-action'
-        }
-        // Standard pattern for other colors
-        return `text-adaptive-${color}-action border-adaptive-${color}-action`
-      }),
-    },
-    defaultVariants: {
-      color: 'teal',
-    },
-  }
+	// Base classes for icons
+	[
+		'flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent',
+		'transition-[border-color,background-color,color] duration-500 ease-in-out',
+	],
+	{
+		variants: {
+			/**
+			 * Icon color variants using adaptive action classes.
+			 * Special handling for brand and primary color mappings.
+			 */
+			color: createColorVariantMapping((color) => {
+				// Special cases for color mapping
+				if (color === 'brand') {
+					return 'border-adaptive-red-action text-adaptive-red-action'
+				}
+				if (color === 'primary') {
+					return 'border-adaptive-emerald-action text-adaptive-emerald-action'
+				}
+				// Standard pattern for other colors
+				return `text-adaptive-${color}-action border-adaptive-${color}-action`
+			}),
+		},
+		defaultVariants: {
+			color: 'teal',
+		},
+	},
 )
 
 /**
@@ -247,30 +247,30 @@ export const panelIconVariants = cva(
  * ```
  */
 export const panelChildrenVariants = cva(
-  // Base classes for children content
-  [],
-  {
-    variants: {
-      /**
-       * Child element color variants using adaptive action classes.
-       * Applies colors to nested p and strong elements with override specificity.
-       */
-      iconColor: createColorVariantMapping(color => {
-        // Special cases for color mapping
-        if (color === 'brand') {
-          return '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action'
-        }
-        if (color === 'primary') {
-          return '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action'
-        }
-        // Standard pattern for other colors
-        return `[&_p]:!text-adaptive-${color}-action [&_strong]:!text-adaptive-${color}-action`
-      }),
-    },
-    defaultVariants: {
-      iconColor: 'teal',
-    },
-  }
+	// Base classes for children content
+	[],
+	{
+		variants: {
+			/**
+			 * Child element color variants using adaptive action classes.
+			 * Applies colors to nested p and strong elements with override specificity.
+			 */
+			iconColor: createColorVariantMapping((color) => {
+				// Special cases for color mapping
+				if (color === 'brand') {
+					return '[&_p]:!text-adaptive-red-action [&_strong]:!text-adaptive-red-action'
+				}
+				if (color === 'primary') {
+					return '[&_p]:!text-adaptive-emerald-action [&_strong]:!text-adaptive-emerald-action'
+				}
+				// Standard pattern for other colors
+				return `[&_p]:!text-adaptive-${color}-action [&_strong]:!text-adaptive-${color}-action`
+			}),
+		},
+		defaultVariants: {
+			iconColor: 'teal',
+		},
+	},
 )
 
 // TypeScript type exports for component prop typing
@@ -292,7 +292,7 @@ export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariant
  * Use this for ActionLinkPanel-specific glow effect styling options.
  */
 export type ActionLinkPanelGlowVariants = VariantProps<
-  typeof actionLinkPanelGlowVariants
+	typeof actionLinkPanelGlowVariants
 >
 
 /**

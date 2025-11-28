@@ -9,7 +9,8 @@ set -euo pipefail
 # Use --no-errors-on-unmatched to allow YAML and other unsupported files
 pnpm biome check --staged --write --unsafe --no-errors-on-unmatched .
 
-# Run eslint-only (we run formatting separately for staged files above
-# to avoid running the global formatter twice).
-pnpm eslint
+# Re-add formatted files to staging area
+git add -u
+
+# Run typecheck
 pnpm typecheck

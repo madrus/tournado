@@ -1,0 +1,98 @@
+---
+description: Global Rules
+alwaysApply: true
+---
+
+# Global Rules
+
+## Global Coding Rules
+
+### Global Typescript Coding Standards
+- Use TypeScript for all new frontend code
+- Prefer types to interfaces
+- Follow SOLID and Clean Code principles
+- Prefer async/await over callbacks
+- Write comprehensive error handling
+- Include JSDoc comments for functions
+- Use meaningful variable names
+
+### Global Python Coding Standards
+- Use Python for all new backend code
+- Follow SOLID and Clean Code principles
+- Prefer async/await over callbacks
+- Write comprehensive error handling
+- Include docstrings comments for functions
+- Use meaningful variable names
+
+### Global Code Style Rules
+- Use 2 spaces for indentation except in Python
+- Use 4 spaces for indentation in Python
+- No trailing whitespace
+- Semicolons should be avoided
+- Use single quotes for strings
+- Maximum line length: 88 characters
+
+### Global Testing Guidelines
+- Write tests for all public functions
+- Use Vitest for unit tests
+- Implement E2E tests with Playwright
+- Maintain 60% code coverage
+- Use descriptive test names
+
+## Project Specific Rules
+
+### Technology Stack
+- React 19 with TypeScript
+- React Router v7
+- SQLite database
+- Tailwind CSS for styling
+
+### Coding Guidelines
+- Use functional components with hooks
+- Implement proper error boundaries
+- Follow atomic design principles
+- Use React Query for data fetching
+- Maintain 60% test coverage
+
+## React TypeScript Rules
+
+### Component Standards
+- Use functional components exclusively
+- Implement proper prop types with types
+- Follow naming convention: PascalCase for components and camelCase for functions
+- Use custom hooks for complex logic
+- Implement proper error handling
+
+### State Management
+- Use React Query for server state
+- Use Zustand for client state
+- Avoid prop drilling beyond 2 levels
+- Implement optimistic updates where appropriate
+
+## Backend API Guidelines
+
+### Architecture
+- Follow RESTful conventions
+- Use middleware for authentication
+- Implement proper logging
+- Use environment variables for configuration
+
+### Error Handling
+- Return consistent error responses
+- Log all errors with context
+- Use appropriate HTTP status codes
+- Implement request validation
+
+## Database Guidelines
+
+### Query Optimization
+- Use indexes for frequently queried fields
+- Avoid N+1 queries
+- Implement proper pagination
+- Use connection pooling
+
+### Security
+- Sanitize all inputs
+- Use parameterized queries
+- Implement proper access controls
+- Regular security audits

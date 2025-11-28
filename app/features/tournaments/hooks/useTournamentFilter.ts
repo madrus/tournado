@@ -5,72 +5,68 @@ import { useNavigate, useSearchParams } from 'react-router'
 import type { TournamentListItem } from '~/features/tournaments/types'
 
 type UseTournamentFilterProps = {
-  tournamentListItems: readonly TournamentListItem[]
-  selectedTournamentId?: string
+	tournamentListItems: readonly TournamentListItem[]
+	selectedTournamentId?: string
 }
 
 type UseTournamentFilterReturn = {
-  tournamentOptions: { value: string; label: string }[]
-  selectedValue: string
-  onChange: (value: string) => void
+	tournamentOptions: { value: string; label: string }[]
+	selectedValue: string
+	onChange: (value: string) => void
 }
 
 export function useTournamentFilter({
-  tournamentListItems,
-  selectedTournamentId,
+	tournamentListItems,
+	selectedTournamentId,
 }: UseTournamentFilterProps): UseTournamentFilterReturn {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+	const { t } = useTranslation()
+	const navigate = useNavigate()
+	const [searchParams] = useSearchParams()
 
-  const tournamentOptions = useMemo(() => {
-    const allOption = { value: 'all', label: t('teams.allTournaments') }
+	const tournamentOptions = useMemo(() => {
+		const allOption = { value: 'all', label: t('teams.allTournaments') }
 
-    if (!tournamentListItems?.length) {
-      return [allOption]
-    }
+		if (!tournamentListItems?.length) {
+			return [allOption]
+		}
 
-    const tournamentOptionsFromData = tournamentListItems.map(tournament => ({
-      value: tournament.id,
-      label: tournament.name,
-    }))
+		const tournamentOptionsFromData = tournamentListItems.map((tournament) => ({
+			value: tournament.id,
+			label: tournament.name,
+		}))
 
-    return [allOption, ...tournamentOptionsFromData]
-  }, [tournamentListItems, t])
+		return [allOption, ...tournamentOptionsFromData]
+	}, [tournamentListItems, t])
 
-  const selectedValue = useMemo(() => {
-    if (!selectedTournamentId) return 'all'
+	const selectedValue = useMemo(() => {
+		if (!selectedTournamentId) return 'all'
 
-    // Check if the selected tournament exists in the list
-    const tournamentExists = tournamentListItems?.some(
-      tournament => tournament.id === selectedTournamentId
-    )
+		// Check if the selected tournament exists in the list
+		const tournamentExists = tournamentListItems?.some(
+			(tournament) => tournament.id === selectedTournamentId,
+		)
 
-    return tournamentExists ? selectedTournamentId : 'all'
-  }, [selectedTournamentId, tournamentListItems])
+		return tournamentExists ? selectedTournamentId : 'all'
+	}, [selectedTournamentId, tournamentListItems])
 
-  const onChange = (value: string) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+	const onChange = (value: string) => {
+		const newSearchParams = new URLSearchParams(searchParams)
 
-    if (value === 'all') {
-      newSearchParams.delete('tournament')
-    } else {
-      newSearchParams.set('tournament', value)
-    }
+		if (value === 'all') {
+			newSearchParams.delete('tournament')
+		} else {
+			newSearchParams.set('tournament', value)
+		}
 
-    try {
-      const queryString = newSearchParams.toString()
-      navigate(queryString ? `?${queryString}` : '')
-    } catch (error) {
-      //TODO: Show user-facing error (e.g., toast/notification)
-      // eslint-disable-next-line no-console
-      console.error('Navigation failed:', error)
-    }
-  }
+		try {
+			const queryString = newSearchParams.toString()
+			navigate(queryString ? `?${queryString}` : '')
+		} catch (_error) {}
+	}
 
-  return {
-    tournamentOptions,
-    selectedValue,
-    onChange,
-  }
+	return {
+		tournamentOptions,
+		selectedValue,
+		onChange,
+	}
 }

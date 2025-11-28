@@ -7,146 +7,145 @@ import { sortTeams } from '~/lib/lib.helpers'
 export type { Team } from '@prisma/client'
 
 export type TeamWithLeader = Team & {
-  teamLeader: Pick<TeamLeader, 'id' | 'email'>
+	teamLeader: Pick<TeamLeader, 'id' | 'email'>
 }
 
 // Define types using Prisma.Args utility
 // These types are kept for future use when we need to work with full team and leader payloads
 
 export const getTeam = ({
-  id,
+	id,
 }: {
-  id: string
+	id: string
 }): Promise<Pick<TeamWithLeader, 'id' | 'name' | 'division' | 'category'> | null> =>
-  prisma.team.findFirst({
-    select: { id: true, name: true, division: true, category: true },
-    where: { id },
-  }) as Promise<Pick<TeamWithLeader, 'id' | 'name' | 'division' | 'category'> | null>
+	prisma.team.findFirst({
+		select: { id: true, name: true, division: true, category: true },
+		where: { id },
+	}) as Promise<Pick<TeamWithLeader, 'id' | 'name' | 'division' | 'category'> | null>
 
 export const getTeamById = ({
-  id,
+	id,
 }: {
-  id: string
+	id: string
 }): Promise<TeamWithLeaderFull | null> =>
-  prisma.team.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      name: true,
-      clubName: true,
-      division: true,
-      tournamentId: true,
-      teamLeaderId: true,
-      category: true,
-      teamLeader: {
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
-    },
-  })
+	prisma.team.findUnique({
+		where: { id },
+		select: {
+			id: true,
+			name: true,
+			clubName: true,
+			division: true,
+			tournamentId: true,
+			teamLeaderId: true,
+			category: true,
+			teamLeader: {
+				select: {
+					id: true,
+					email: true,
+					firstName: true,
+					lastName: true,
+					phone: true,
+				},
+			},
+			createdAt: true,
+			updatedAt: true,
+		},
+	})
 
 export const getTeams = async ({
-  teamLeaderId,
+	teamLeaderId,
 }: {
-  teamLeaderId: TeamLeader['id']
+	teamLeaderId: TeamLeader['id']
 }): Promise<Array<Pick<Team, 'id' | 'name' | 'clubName'>>> =>
-  prisma.team.findMany({
-    where: { teamLeaderId },
-    select: {
-      id: true,
-      name: true,
-      clubName: true,
-    },
-    orderBy: { updatedAt: 'desc' },
-  })
+	prisma.team.findMany({
+		where: { teamLeaderId },
+		select: {
+			id: true,
+			name: true,
+			clubName: true,
+		},
+		orderBy: { updatedAt: 'desc' },
+	})
 
 export const getAllTeams = async (): Promise<
-  Array<Pick<Team, 'id' | 'name' | 'clubName'>>
+	Array<Pick<Team, 'id' | 'name' | 'clubName'>>
 > =>
-  prisma.team.findMany({
-    select: {
-      id: true,
-      name: true,
-      clubName: true,
-    },
-    orderBy: { updatedAt: 'desc' },
-  })
+	prisma.team.findMany({
+		select: {
+			id: true,
+			name: true,
+			clubName: true,
+		},
+		orderBy: { updatedAt: 'desc' },
+	})
 
 export const getFilteredTeams = async ({
-  tournamentId,
+	tournamentId,
 }: {
-  tournamentId?: string
+	tournamentId?: string
 } = {}): Promise<Array<Pick<Team, 'id' | 'name' | 'clubName' | 'category'>>> => {
-  const whereClause = tournamentId ? { tournamentId } : {}
+	const whereClause = tournamentId ? { tournamentId } : {}
 
-  const teams = await prisma.team.findMany({
-    where: whereClause,
-    select: {
-      id: true,
-      name: true,
-      clubName: true,
-      category: true,
-    },
-  })
+	const teams = await prisma.team.findMany({
+		where: whereClause,
+		select: {
+			id: true,
+			name: true,
+			clubName: true,
+			category: true,
+		},
+	})
 
-  return sortTeams(teams)
+	return sortTeams(teams)
 }
 
 export const createTeam = async ({
-  name,
-  clubName,
-  division,
-  category,
-  teamLeaderId,
-  tournamentId,
+	name,
+	clubName,
+	division,
+	category,
+	teamLeaderId,
+	tournamentId,
 }: Pick<Team, 'name' | 'clubName' | 'division' | 'category'> & {
-  teamLeaderId: TeamLeader['id']
-  tournamentId: string
+	teamLeaderId: TeamLeader['id']
+	tournamentId: string
 }): Promise<Team> =>
-  prisma.team.create({
-    // eslint-disable-next-line id-blacklist
-    data: {
-      name,
-      clubName,
-      division,
-      category,
-      teamLeaderId,
-      tournamentId,
-    },
-  })
+	prisma.team.create({
+		data: {
+			name,
+			clubName,
+			division,
+			category,
+			teamLeaderId,
+			tournamentId,
+		},
+	})
 
 export const deleteTeam = ({
-  id,
-  teamLeaderId,
+	id,
+	teamLeaderId,
 }: Pick<Team, 'id'> & {
-  teamLeaderId: TeamLeader['id']
+	teamLeaderId: TeamLeader['id']
 }): Promise<Prisma.BatchPayload> =>
-  prisma.team.deleteMany({
-    where: { id, teamLeaderId },
-  })
+	prisma.team.deleteMany({
+		where: { id, teamLeaderId },
+	})
 
 export const deleteTeamById = ({ id }: Pick<Team, 'id'>): Promise<Team> =>
-  prisma.team.delete({
-    where: { id },
-  })
+	prisma.team.delete({
+		where: { id },
+	})
 
 export const getTeamLeader = async (
-  teamLeaderId: string
+	teamLeaderId: string,
 ): Promise<TeamWithLeaderFull['teamLeader'] | null> =>
-  prisma.teamLeader.findUnique({
-    where: { id: teamLeaderId },
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      phone: true,
-    },
-  })
+	prisma.teamLeader.findUnique({
+		where: { id: teamLeaderId },
+		select: {
+			id: true,
+			email: true,
+			firstName: true,
+			lastName: true,
+			phone: true,
+		},
+	})

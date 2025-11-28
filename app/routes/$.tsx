@@ -4,7 +4,7 @@
 // 404 from the loader, we can force the error boundary to render which will
 // ensure the user gets the right status code and we can display a nicer error
 // message for them than the React Router v7 and/or browser default.
-import { JSX } from 'react'
+import type { JSX } from 'react'
 import type { MetaFunction } from 'react-router'
 import { useLocation } from 'react-router'
 
@@ -14,51 +14,64 @@ import { cn } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
 
 export const meta: MetaFunction = () => [
-  { title: 'Page Not Found | Tournado' },
-  {
-    name: 'description',
-    content:
-      'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
-  },
-  { property: 'og:title', content: 'Page Not Found | Tournado' },
-  {
-    property: 'og:description',
-    content:
-      'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
-  },
-  { property: 'og:type', content: 'website' },
+	{ title: 'Page Not Found | Tournado' },
+	{
+		name: 'description',
+		content:
+			'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
+	},
+	{ property: 'og:title', content: 'Page Not Found | Tournado' },
+	{
+		property: 'og:description',
+		content:
+			'The page you are looking for could not be found. Return to Tournado to continue managing your tournaments.',
+	},
+	{ property: 'og:type', content: 'website' },
 ]
 
-export async function loader(): Promise<void> {
-  throw new Response('Not found', { status: 404 })
+export async function loader({ request }: { request: Request }): Promise<void> {
+	const url = new URL(request.url)
+
+	// Chrome devtools pings this well-known path; avoid noisy 404 spam in dev
+	if (
+		process.env.NODE_ENV !== 'production' &&
+		url.pathname === '/.well-known/appspecific/com.chrome.devtools.json'
+	) {
+		return
+	}
+
+	if (process.env.NODE_ENV !== 'production') {
+		console.warn('[catchall 404]', request.method, request.url)
+	}
+	throw new Response('Not found', { status: 404 })
 }
 
 export default function NotFoundPage(): JSX.Element {
-  // due to the loader, this component will never be rendered, but we'll return
-  // the error boundary just in case.
-  return <ErrorBoundary />
+	// due to the loader, this component will never be rendered, but we'll return
+	// the error boundary just in case.
+	return <ErrorBoundary />
 }
 
 export function ErrorBoundary(): JSX.Element {
-  const location = useLocation()
+	const location = useLocation()
 
-  return (
-    <GeneralErrorBoundary
-      statusHandlers={{
-        404: () => (
-          <div className='flex flex-col gap-6'>
-            <div className='flex flex-col gap-3'>
-              <h1 className={cn(getLatinTitleClass())}>We can't find this page:</h1>
-              <pre className='text-foreground text-lg break-all whitespace-pre-wrap'>
-                {location.pathname}
-              </pre>
-            </div>
-            <ErrorRecoveryLink to='/' className='text-foreground text-base underline'>
-              Back to home
-            </ErrorRecoveryLink>
-          </div>
-        ),
-      }}
-    />
-  )
+	return (
+		<GeneralErrorBoundary
+			statusHandlers={{
+				404: () => (
+					<div className='flex flex-col gap-6'>
+						<div className='flex flex-col gap-3'>
+							<h1 className={cn(getLatinTitleClass())}>We can't find this page:</h1>
+							<pre className='whitespace-pre-wrap break-all text-foreground text-lg'>
+								{location.pathname}
+							</pre>
+						</div>
+						<ErrorRecoveryLink to='/' className='text-base text-foreground underline'>
+							Back to home
+						</ErrorRecoveryLink>
+					</div>
+				),
+			}}
+		/>
+	)
 }

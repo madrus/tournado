@@ -1,4 +1,4 @@
-import { http, passthrough } from 'msw'
+import { type HttpResponse, http, type JsonBodyType, passthrough } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { emailHandlers } from './handlers/emails.js'
@@ -6,32 +6,37 @@ import { firebaseHandlers } from './handlers/firebase.ts'
 
 // put one-off handlers that don't really need an entire file to themselves here
 const miscHandlers = [
-  http.post(`${process.env.REACT_ROUTER_DEV_HTTP_ORIGIN}/ping`, () => passthrough()),
-  // Pass through all session-related requests (except auth callback which is handled by Firebase mocks)
-  http.all('*', async ({ request }) => {
-    if (
-      (request.url.includes('signin') ||
-        request.url.includes('signout') ||
-        request.url.includes('_data=routes%2Fsignin')) &&
-      !request.url.includes('/auth/callback')
-    ) {
-      return passthrough()
-    }
-  }),
+	// Pass through React Router dev server health checks (REACT_ROUTER_DEV_HTTP_ORIGIN is set automatically by RR dev server)
+	http.post(
+		`${process.env.REACT_ROUTER_DEV_HTTP_ORIGIN}/ping`,
+		(): HttpResponse<JsonBodyType> => passthrough(),
+	),
+	// Pass through all session-related requests (except auth callback, which is handled by Firebase mocks)
+	http.all('*', async ({ request }): Promise<HttpResponse<JsonBodyType>> => {
+		if (
+			(request.url.includes('signin') ||
+				request.url.includes('signout') ||
+				request.url.includes('_data=routes%2Fsignin')) &&
+			!request.url.includes('/auth/callback')
+		) {
+			return passthrough()
+		}
+
+		return passthrough()
+	}),
 ]
 
 // Include test handlers only in test environment
 const allHandlers =
-  process.env.PLAYWRIGHT === 'true'
-    ? [...firebaseHandlers, ...emailHandlers, ...miscHandlers]
-    : miscHandlers
+	process.env.PLAYWRIGHT === 'true'
+		? [...firebaseHandlers, ...emailHandlers, ...miscHandlers]
+		: miscHandlers
 
 const server = setupServer(...allHandlers)
 
 server.listen({
-  onUnhandledRequest: 'bypass',
+	onUnhandledRequest: 'bypass',
 })
-console.info('[MSW] Mock server running. PLAYWRIGHT=', process.env.PLAYWRIGHT)
 
 process.once('SIGINT', () => server.close())
 process.once('SIGTERM', () => server.close())

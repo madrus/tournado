@@ -1,779 +1,785 @@
 @layer components {
-  /* Adaptive Text Color Utilities - Promoted from Component Variants */
-  .text-adaptive-red {
-    color: var(--color-adaptive-red);
-  }
-  .text-adaptive-blue {
-    color: var(--color-adaptive-blue);
-  }
-  .text-adaptive-emerald {
-    color: var(--color-adaptive-emerald);
-  }
-  .text-adaptive-teal {
-    color: var(--color-adaptive-teal);
-  }
-  .text-adaptive-cyan {
-    color: var(--color-adaptive-cyan);
-  }
-  .text-adaptive-green {
-    color: var(--color-adaptive-green);
-  }
-  .text-adaptive-yellow {
-    color: var(--color-adaptive-yellow);
-  }
-  .text-adaptive-orange {
-    color: var(--color-adaptive-orange);
-  }
-  .text-adaptive-amber {
-    color: var(--color-adaptive-amber);
-  }
-  .text-adaptive-lime {
-    color: var(--color-adaptive-lime);
-  }
-  .text-adaptive-violet {
-    color: var(--color-adaptive-violet);
-  }
-  .text-adaptive-purple {
-    color: var(--color-adaptive-purple);
-  }
-  .text-adaptive-fuchsia {
-    color: var(--color-adaptive-fuchsia);
-  }
-  .text-adaptive-pink {
-    color: var(--color-adaptive-pink);
-  }
-  .text-adaptive-rose {
-    color: var(--color-adaptive-rose);
-  }
-  .text-adaptive-slate {
-    color: var(--color-adaptive-slate);
-  }
-  .text-adaptive-zinc {
-    color: var(--color-adaptive-zinc);
-  }
-  .text-adaptive-indigo {
-    color: var(--color-adaptive-indigo);
-  }
-  .text-adaptive-sky {
-    color: var(--color-adaptive-sky);
-  }
-  .text-adaptive-brand {
-    color: var(--color-adaptive-brand);
-  }
-  .text-adaptive-brand-text {
-    color: var(--color-adaptive-brand-text);
-  }
+	/* Adaptive Text Color Utilities - Promoted from Component Variants */
+	.text-adaptive-red {
+		color: var(--color-adaptive-red);
+	}
+	.text-adaptive-blue {
+		color: var(--color-adaptive-blue);
+	}
+	.text-adaptive-emerald {
+		color: var(--color-adaptive-emerald);
+	}
+	.text-adaptive-teal {
+		color: var(--color-adaptive-teal);
+	}
+	.text-adaptive-cyan {
+		color: var(--color-adaptive-cyan);
+	}
+	.text-adaptive-green {
+		color: var(--color-adaptive-green);
+	}
+	.text-adaptive-yellow {
+		color: var(--color-adaptive-yellow);
+	}
+	.text-adaptive-orange {
+		color: var(--color-adaptive-orange);
+	}
+	.text-adaptive-amber {
+		color: var(--color-adaptive-amber);
+	}
+	.text-adaptive-lime {
+		color: var(--color-adaptive-lime);
+	}
+	.text-adaptive-violet {
+		color: var(--color-adaptive-violet);
+	}
+	.text-adaptive-purple {
+		color: var(--color-adaptive-purple);
+	}
+	.text-adaptive-fuchsia {
+		color: var(--color-adaptive-fuchsia);
+	}
+	.text-adaptive-pink {
+		color: var(--color-adaptive-pink);
+	}
+	.text-adaptive-rose {
+		color: var(--color-adaptive-rose);
+	}
+	.text-adaptive-slate {
+		color: var(--color-adaptive-slate);
+	}
+	.text-adaptive-zinc {
+		color: var(--color-adaptive-zinc);
+	}
+	.text-adaptive-indigo {
+		color: var(--color-adaptive-indigo);
+	}
+	.text-adaptive-sky {
+		color: var(--color-adaptive-sky);
+	}
+	.text-adaptive-brand {
+		color: var(--color-adaptive-brand);
+	}
+	.text-adaptive-brand-text {
+		color: var(--color-adaptive-brand-text);
+	}
 
-  /* Adaptive Border Color Utilities - For Icons Using Standard Text Colors */
-  .border-adaptive-red {
-    border-color: var(--color-adaptive-red);
-  }
-  .border-adaptive-blue {
-    border-color: var(--color-adaptive-blue);
-  }
-  .border-adaptive-emerald {
-    border-color: var(--color-adaptive-emerald);
-  }
-  .border-adaptive-teal {
-    border-color: var(--color-adaptive-teal);
-  }
-  .border-adaptive-cyan {
-    border-color: var(--color-adaptive-cyan);
-  }
-  .border-adaptive-green {
-    border-color: var(--color-adaptive-green);
-  }
-  .border-adaptive-yellow {
-    border-color: var(--color-adaptive-yellow);
-  }
-  .border-adaptive-orange {
-    border-color: var(--color-adaptive-orange);
-  }
-  .border-adaptive-amber {
-    border-color: var(--color-adaptive-amber);
-  }
-  .border-adaptive-lime {
-    border-color: var(--color-adaptive-lime);
-  }
-  .border-adaptive-violet {
-    border-color: var(--color-adaptive-violet);
-  }
-  .border-adaptive-purple {
-    border-color: var(--color-adaptive-purple);
-  }
-  .border-adaptive-fuchsia {
-    border-color: var(--color-adaptive-fuchsia);
-  }
-  .border-adaptive-pink {
-    border-color: var(--color-adaptive-pink);
-  }
-  .border-adaptive-rose {
-    border-color: var(--color-adaptive-rose);
-  }
-  .border-adaptive-slate {
-    border-color: var(--color-adaptive-slate);
-  }
-  .border-adaptive-zinc {
-    border-color: var(--color-adaptive-zinc);
-  }
-  .border-adaptive-indigo {
-    border-color: var(--color-adaptive-indigo);
-  }
-  .border-adaptive-sky {
-    border-color: var(--color-adaptive-sky);
-  }
-  .border-adaptive-brand {
-    border-color: var(--color-adaptive-brand-text);
-  }
+	/* Adaptive Border Color Utilities - For Icons Using Standard Text Colors */
+	.border-adaptive-red {
+		border-color: var(--color-adaptive-red);
+	}
+	.border-adaptive-blue {
+		border-color: var(--color-adaptive-blue);
+	}
+	.border-adaptive-emerald {
+		border-color: var(--color-adaptive-emerald);
+	}
+	.border-adaptive-teal {
+		border-color: var(--color-adaptive-teal);
+	}
+	.border-adaptive-cyan {
+		border-color: var(--color-adaptive-cyan);
+	}
+	.border-adaptive-green {
+		border-color: var(--color-adaptive-green);
+	}
+	.border-adaptive-yellow {
+		border-color: var(--color-adaptive-yellow);
+	}
+	.border-adaptive-orange {
+		border-color: var(--color-adaptive-orange);
+	}
+	.border-adaptive-amber {
+		border-color: var(--color-adaptive-amber);
+	}
+	.border-adaptive-lime {
+		border-color: var(--color-adaptive-lime);
+	}
+	.border-adaptive-violet {
+		border-color: var(--color-adaptive-violet);
+	}
+	.border-adaptive-purple {
+		border-color: var(--color-adaptive-purple);
+	}
+	.border-adaptive-fuchsia {
+		border-color: var(--color-adaptive-fuchsia);
+	}
+	.border-adaptive-pink {
+		border-color: var(--color-adaptive-pink);
+	}
+	.border-adaptive-rose {
+		border-color: var(--color-adaptive-rose);
+	}
+	.border-adaptive-slate {
+		border-color: var(--color-adaptive-slate);
+	}
+	.border-adaptive-zinc {
+		border-color: var(--color-adaptive-zinc);
+	}
+	.border-adaptive-indigo {
+		border-color: var(--color-adaptive-indigo);
+	}
+	.border-adaptive-sky {
+		border-color: var(--color-adaptive-sky);
+	}
+	.border-adaptive-brand {
+		border-color: var(--color-adaptive-brand-text);
+	}
 
-  /* Adaptive ActionLink Icon Color Utilities - For Bright Interactive Icons (600 weights) */
-  .text-adaptive-red-action {
-    color: var(--color-adaptive-red);
-  }
-  .text-adaptive-blue-action {
-    color: var(--color-adaptive-blue);
-  }
-  .text-adaptive-emerald-action {
-    color: var(--color-adaptive-emerald);
-  }
-  .text-adaptive-teal-action {
-    color: var(--color-adaptive-teal);
-  }
-  .text-adaptive-cyan-action {
-    color: var(--color-adaptive-cyan);
-  }
-  .text-adaptive-green-action {
-    color: var(--color-adaptive-green);
-  }
-  .text-adaptive-yellow-action {
-    color: var(--color-adaptive-yellow);
-  }
-  .text-adaptive-orange-action {
-    color: var(--color-adaptive-orange);
-  }
-  .text-adaptive-amber-action {
-    color: var(--color-adaptive-amber);
-  }
-  .text-adaptive-lime-action {
-    color: var(--color-adaptive-lime);
-  }
-  .text-adaptive-violet-action {
-    color: var(--color-adaptive-violet);
-  }
-  .text-adaptive-purple-action {
-    color: var(--color-adaptive-purple);
-  }
-  .text-adaptive-fuchsia-action {
-    color: var(--color-adaptive-fuchsia);
-  }
-  .text-adaptive-pink-action {
-    color: var(--color-adaptive-pink);
-  }
-  .text-adaptive-rose-action {
-    color: var(--color-adaptive-rose);
-  }
-  .text-adaptive-slate-action {
-    color: var(--color-adaptive-slate);
-  }
-  .text-adaptive-zinc-action {
-    color: var(--color-adaptive-zinc);
-  }
-  .text-adaptive-indigo-action {
-    color: var(--color-adaptive-indigo);
-  }
-  .text-adaptive-sky-action {
-    color: var(--color-adaptive-sky);
-  }
+	/* Adaptive ActionLink Icon Color Utilities - For Bright Interactive Icons (600 weights) */
+	.text-adaptive-red-action {
+		color: var(--color-adaptive-red);
+	}
+	.text-adaptive-blue-action {
+		color: var(--color-adaptive-blue);
+	}
+	.text-adaptive-emerald-action {
+		color: var(--color-adaptive-emerald);
+	}
+	.text-adaptive-teal-action {
+		color: var(--color-adaptive-teal);
+	}
+	.text-adaptive-cyan-action {
+		color: var(--color-adaptive-cyan);
+	}
+	.text-adaptive-green-action {
+		color: var(--color-adaptive-green);
+	}
+	.text-adaptive-yellow-action {
+		color: var(--color-adaptive-yellow);
+	}
+	.text-adaptive-orange-action {
+		color: var(--color-adaptive-orange);
+	}
+	.text-adaptive-amber-action {
+		color: var(--color-adaptive-amber);
+	}
+	.text-adaptive-lime-action {
+		color: var(--color-adaptive-lime);
+	}
+	.text-adaptive-violet-action {
+		color: var(--color-adaptive-violet);
+	}
+	.text-adaptive-purple-action {
+		color: var(--color-adaptive-purple);
+	}
+	.text-adaptive-fuchsia-action {
+		color: var(--color-adaptive-fuchsia);
+	}
+	.text-adaptive-pink-action {
+		color: var(--color-adaptive-pink);
+	}
+	.text-adaptive-rose-action {
+		color: var(--color-adaptive-rose);
+	}
+	.text-adaptive-slate-action {
+		color: var(--color-adaptive-slate);
+	}
+	.text-adaptive-zinc-action {
+		color: var(--color-adaptive-zinc);
+	}
+	.text-adaptive-indigo-action {
+		color: var(--color-adaptive-indigo);
+	}
+	.text-adaptive-sky-action {
+		color: var(--color-adaptive-sky);
+	}
 
-  .border-adaptive-red-action {
-    border-color: var(--color-adaptive-red);
-  }
-  .border-adaptive-blue-action {
-    border-color: var(--color-adaptive-blue);
-  }
-  .border-adaptive-emerald-action {
-    border-color: var(--color-adaptive-emerald);
-  }
-  .border-adaptive-teal-action {
-    border-color: var(--color-adaptive-teal);
-  }
-  .border-adaptive-cyan-action {
-    border-color: var(--color-adaptive-cyan);
-  }
-  .border-adaptive-green-action {
-    border-color: var(--color-adaptive-green);
-  }
-  .border-adaptive-yellow-action {
-    border-color: var(--color-adaptive-yellow);
-  }
-  .border-adaptive-orange-action {
-    border-color: var(--color-adaptive-orange);
-  }
-  .border-adaptive-amber-action {
-    border-color: var(--color-adaptive-amber);
-  }
-  .border-adaptive-lime-action {
-    border-color: var(--color-adaptive-lime);
-  }
-  .border-adaptive-violet-action {
-    border-color: var(--color-adaptive-violet);
-  }
-  .border-adaptive-purple-action {
-    border-color: var(--color-adaptive-purple);
-  }
-  .border-adaptive-fuchsia-action {
-    border-color: var(--color-adaptive-fuchsia);
-  }
-  .border-adaptive-pink-action {
-    border-color: var(--color-adaptive-pink);
-  }
-  .border-adaptive-rose-action {
-    border-color: var(--color-adaptive-rose);
-  }
-  .border-adaptive-slate-action {
-    border-color: var(--color-adaptive-slate);
-  }
-  .border-adaptive-zinc-action {
-    border-color: var(--color-adaptive-zinc);
-  }
-  .border-adaptive-indigo-action {
-    border-color: var(--color-adaptive-indigo);
-  }
-  .border-adaptive-sky-action {
-    border-color: var(--color-adaptive-sky);
-  }
+	.border-adaptive-red-action {
+		border-color: var(--color-adaptive-red);
+	}
+	.border-adaptive-blue-action {
+		border-color: var(--color-adaptive-blue);
+	}
+	.border-adaptive-emerald-action {
+		border-color: var(--color-adaptive-emerald);
+	}
+	.border-adaptive-teal-action {
+		border-color: var(--color-adaptive-teal);
+	}
+	.border-adaptive-cyan-action {
+		border-color: var(--color-adaptive-cyan);
+	}
+	.border-adaptive-green-action {
+		border-color: var(--color-adaptive-green);
+	}
+	.border-adaptive-yellow-action {
+		border-color: var(--color-adaptive-yellow);
+	}
+	.border-adaptive-orange-action {
+		border-color: var(--color-adaptive-orange);
+	}
+	.border-adaptive-amber-action {
+		border-color: var(--color-adaptive-amber);
+	}
+	.border-adaptive-lime-action {
+		border-color: var(--color-adaptive-lime);
+	}
+	.border-adaptive-violet-action {
+		border-color: var(--color-adaptive-violet);
+	}
+	.border-adaptive-purple-action {
+		border-color: var(--color-adaptive-purple);
+	}
+	.border-adaptive-fuchsia-action {
+		border-color: var(--color-adaptive-fuchsia);
+	}
+	.border-adaptive-pink-action {
+		border-color: var(--color-adaptive-pink);
+	}
+	.border-adaptive-rose-action {
+		border-color: var(--color-adaptive-rose);
+	}
+	.border-adaptive-slate-action {
+		border-color: var(--color-adaptive-slate);
+	}
+	.border-adaptive-zinc-action {
+		border-color: var(--color-adaptive-zinc);
+	}
+	.border-adaptive-indigo-action {
+		border-color: var(--color-adaptive-indigo);
+	}
+	.border-adaptive-sky-action {
+		border-color: var(--color-adaptive-sky);
+	}
 
-  /* ActionLinkPanel children color support - children opt-in with data-color="action" */
-  .action-panel-brand strong[data-color='action'] {
-    color: var(--color-adaptive-brand-text);
-  }
-  .action-panel-red strong[data-color='action'] {
-    color: var(--color-adaptive-red-text);
-  }
-  .action-panel-blue strong[data-color='action'] {
-    color: var(--color-adaptive-blue-text);
-  }
-  .action-panel-emerald strong[data-color='action'] {
-    color: var(--color-adaptive-emerald-text);
-  }
-  .action-panel-teal strong[data-color='action'] {
-    color: var(--color-adaptive-teal-text);
-  }
-  .action-panel-cyan strong[data-color='action'] {
-    color: var(--color-adaptive-cyan-text);
-  }
-  .action-panel-green strong[data-color='action'] {
-    color: var(--color-adaptive-green-text);
-  }
-  .action-panel-yellow strong[data-color='action'] {
-    color: var(--color-adaptive-yellow-text);
-  }
-  .action-panel-orange strong[data-color='action'] {
-    color: var(--color-adaptive-orange-text);
-  }
-  .action-panel-amber strong[data-color='action'] {
-    color: var(--color-adaptive-amber-text);
-  }
-  .action-panel-lime strong[data-color='action'] {
-    color: var(--color-adaptive-lime-text);
-  }
-  .action-panel-violet strong[data-color='action'] {
-    color: var(--color-adaptive-violet-text);
-  }
-  .action-panel-purple strong[data-color='action'] {
-    color: var(--color-adaptive-purple-text);
-  }
-  .action-panel-fuchsia strong[data-color='action'] {
-    color: var(--color-adaptive-fuchsia-text);
-  }
-  .action-panel-pink strong[data-color='action'] {
-    color: var(--color-adaptive-pink-text);
-  }
-  .action-panel-rose strong[data-color='action'] {
-    color: var(--color-adaptive-rose-text);
-  }
-  .action-panel-slate strong[data-color='action'] {
-    color: var(--color-adaptive-slate-text);
-  }
-  .action-panel-zinc strong[data-color='action'] {
-    color: var(--color-adaptive-zinc-text);
-  }
-  .action-panel-indigo strong[data-color='action'] {
-    color: var(--color-adaptive-indigo-text);
-  }
-  .action-panel-sky strong[data-color='action'] {
-    color: var(--color-adaptive-sky-text);
-  }
-  .action-panel-primary strong[data-color='action'] {
-    color: var(--color-adaptive-emerald-text);
-  }
+	/* ActionLinkPanel children color support - children opt-in with data-color="action" */
+	.action-panel-brand strong[data-color="action"] {
+		color: var(--color-adaptive-brand-text);
+	}
+	.action-panel-red strong[data-color="action"] {
+		color: var(--color-adaptive-red-text);
+	}
+	.action-panel-blue strong[data-color="action"] {
+		color: var(--color-adaptive-blue-text);
+	}
+	.action-panel-emerald strong[data-color="action"] {
+		color: var(--color-adaptive-emerald-text);
+	}
+	.action-panel-teal strong[data-color="action"] {
+		color: var(--color-adaptive-teal-text);
+	}
+	.action-panel-cyan strong[data-color="action"] {
+		color: var(--color-adaptive-cyan-text);
+	}
+	.action-panel-green strong[data-color="action"] {
+		color: var(--color-adaptive-green-text);
+	}
+	.action-panel-yellow strong[data-color="action"] {
+		color: var(--color-adaptive-yellow-text);
+	}
+	.action-panel-orange strong[data-color="action"] {
+		color: var(--color-adaptive-orange-text);
+	}
+	.action-panel-amber strong[data-color="action"] {
+		color: var(--color-adaptive-amber-text);
+	}
+	.action-panel-lime strong[data-color="action"] {
+		color: var(--color-adaptive-lime-text);
+	}
+	.action-panel-violet strong[data-color="action"] {
+		color: var(--color-adaptive-violet-text);
+	}
+	.action-panel-purple strong[data-color="action"] {
+		color: var(--color-adaptive-purple-text);
+	}
+	.action-panel-fuchsia strong[data-color="action"] {
+		color: var(--color-adaptive-fuchsia-text);
+	}
+	.action-panel-pink strong[data-color="action"] {
+		color: var(--color-adaptive-pink-text);
+	}
+	.action-panel-rose strong[data-color="action"] {
+		color: var(--color-adaptive-rose-text);
+	}
+	.action-panel-slate strong[data-color="action"] {
+		color: var(--color-adaptive-slate-text);
+	}
+	.action-panel-zinc strong[data-color="action"] {
+		color: var(--color-adaptive-zinc-text);
+	}
+	.action-panel-indigo strong[data-color="action"] {
+		color: var(--color-adaptive-indigo-text);
+	}
+	.action-panel-sky strong[data-color="action"] {
+		color: var(--color-adaptive-sky-text);
+	}
+	.action-panel-primary strong[data-color="action"] {
+		color: var(--color-adaptive-emerald-text);
+	}
 
-  /* Adaptive Selected State Text Color Utilities - For Toggle Chips and Selected States */
-  .text-adaptive-red-selected {
-    color: var(--color-adaptive-red-selected);
-  }
-  .text-adaptive-blue-selected {
-    color: var(--color-adaptive-blue-selected);
-  }
-  .text-adaptive-emerald-selected {
-    color: var(--color-adaptive-emerald-selected);
-  }
-  .text-adaptive-teal-selected {
-    color: var(--color-adaptive-teal-selected);
-  }
-  .text-adaptive-cyan-selected {
-    color: var(--color-adaptive-cyan-selected);
-  }
-  .text-adaptive-green-selected {
-    color: var(--color-adaptive-green-selected);
-  }
-  .text-adaptive-yellow-selected {
-    color: var(--color-adaptive-yellow-selected);
-  }
-  .text-adaptive-orange-selected {
-    color: var(--color-adaptive-orange-selected);
-  }
-  .text-adaptive-amber-selected {
-    color: var(--color-adaptive-amber-selected);
-  }
-  .text-adaptive-lime-selected {
-    color: var(--color-adaptive-lime-selected);
-  }
-  .text-adaptive-violet-selected {
-    color: var(--color-adaptive-violet-selected);
-  }
-  .text-adaptive-purple-selected {
-    color: var(--color-adaptive-purple-selected);
-  }
-  .text-adaptive-fuchsia-selected {
-    color: var(--color-adaptive-fuchsia-selected);
-  }
-  .text-adaptive-pink-selected {
-    color: var(--color-adaptive-pink-selected);
-  }
-  .text-adaptive-rose-selected {
-    color: var(--color-adaptive-rose-selected);
-  }
-  .text-adaptive-slate-selected {
-    color: var(--color-adaptive-slate-selected);
-  }
-  .text-adaptive-zinc-selected {
-    color: var(--color-adaptive-zinc-selected);
-  }
-  .text-adaptive-indigo-selected {
-    color: var(--color-adaptive-indigo-selected);
-  }
-  .text-adaptive-sky-selected {
-    color: var(--color-adaptive-sky-selected);
-  }
-  .text-adaptive-brand-selected {
-    color: var(--color-adaptive-brand-selected);
-  }
-  .text-adaptive-primary-selected {
-    color: var(--color-adaptive-primary-selected);
-  }
+	/* Adaptive Selected State Text Color Utilities - For Toggle Chips and Selected States */
+	.text-adaptive-red-selected {
+		color: var(--color-adaptive-red-selected);
+	}
+	.text-adaptive-blue-selected {
+		color: var(--color-adaptive-blue-selected);
+	}
+	.text-adaptive-emerald-selected {
+		color: var(--color-adaptive-emerald-selected);
+	}
+	.text-adaptive-teal-selected {
+		color: var(--color-adaptive-teal-selected);
+	}
+	.text-adaptive-cyan-selected {
+		color: var(--color-adaptive-cyan-selected);
+	}
+	.text-adaptive-green-selected {
+		color: var(--color-adaptive-green-selected);
+	}
+	.text-adaptive-yellow-selected {
+		color: var(--color-adaptive-yellow-selected);
+	}
+	.text-adaptive-orange-selected {
+		color: var(--color-adaptive-orange-selected);
+	}
+	.text-adaptive-amber-selected {
+		color: var(--color-adaptive-amber-selected);
+	}
+	.text-adaptive-lime-selected {
+		color: var(--color-adaptive-lime-selected);
+	}
+	.text-adaptive-violet-selected {
+		color: var(--color-adaptive-violet-selected);
+	}
+	.text-adaptive-purple-selected {
+		color: var(--color-adaptive-purple-selected);
+	}
+	.text-adaptive-fuchsia-selected {
+		color: var(--color-adaptive-fuchsia-selected);
+	}
+	.text-adaptive-pink-selected {
+		color: var(--color-adaptive-pink-selected);
+	}
+	.text-adaptive-rose-selected {
+		color: var(--color-adaptive-rose-selected);
+	}
+	.text-adaptive-slate-selected {
+		color: var(--color-adaptive-slate-selected);
+	}
+	.text-adaptive-zinc-selected {
+		color: var(--color-adaptive-zinc-selected);
+	}
+	.text-adaptive-indigo-selected {
+		color: var(--color-adaptive-indigo-selected);
+	}
+	.text-adaptive-sky-selected {
+		color: var(--color-adaptive-sky-selected);
+	}
+	.text-adaptive-brand-selected {
+		color: var(--color-adaptive-brand-selected);
+	}
+	.text-adaptive-primary-selected {
+		color: var(--color-adaptive-primary-selected);
+	}
 
-  /* Adaptive Unselected State Text Color Utility - Common Pattern */
-  .text-adaptive-unselected {
-    color: var(--color-adaptive-unselected);
-  }
+	/* Adaptive Unselected State Text Color Utility - Common Pattern */
+	.text-adaptive-unselected {
+		color: var(--color-adaptive-unselected);
+	}
 
-  /* Adaptive Header Text Color Utilities - For Table Headers (600/300 weights) */
-  .text-adaptive-red-header {
-    color: var(--color-adaptive-red);
-  }
-  .text-adaptive-blue-header {
-    color: var(--color-adaptive-blue);
-  }
-  .text-adaptive-emerald-header {
-    color: var(--color-adaptive-emerald);
-  }
-  .text-adaptive-teal-header {
-    color: var(--color-adaptive-teal);
-  }
-  .text-adaptive-cyan-header {
-    color: var(--color-adaptive-cyan);
-  }
-  .text-adaptive-green-header {
-    color: var(--color-adaptive-green);
-  }
-  .text-adaptive-yellow-header {
-    color: var(--color-adaptive-yellow);
-  }
-  .text-adaptive-orange-header {
-    color: var(--color-adaptive-orange);
-  }
-  .text-adaptive-amber-header {
-    color: var(--color-adaptive-amber);
-  }
-  .text-adaptive-lime-header {
-    color: var(--color-adaptive-lime);
-  }
-  .text-adaptive-violet-header {
-    color: var(--color-adaptive-violet);
-  }
-  .text-adaptive-purple-header {
-    color: var(--color-adaptive-purple);
-  }
-  .text-adaptive-fuchsia-header {
-    color: var(--color-adaptive-fuchsia);
-  }
-  .text-adaptive-pink-header {
-    color: var(--color-adaptive-pink);
-  }
-  .text-adaptive-rose-header {
-    color: var(--color-adaptive-rose);
-  }
-  .text-adaptive-slate-header {
-    color: var(--color-adaptive-slate);
-  }
-  .text-adaptive-zinc-header {
-    color: var(--color-adaptive-zinc);
-  }
-  .text-adaptive-indigo-header {
-    color: var(--color-adaptive-indigo);
-  }
-  .text-adaptive-sky-header {
-    color: var(--color-adaptive-sky);
-  }
-  .text-adaptive-brand-header {
-    color: var(--color-adaptive-brand);
-  }
-  .text-adaptive-primary-header {
-    color: var(--color-adaptive-emerald);
-  }
+	/* Adaptive Header Text Color Utilities - For Table Headers (600/300 weights) */
+	.text-adaptive-red-header {
+		color: var(--color-adaptive-red);
+	}
+	.text-adaptive-blue-header {
+		color: var(--color-adaptive-blue);
+	}
+	.text-adaptive-emerald-header {
+		color: var(--color-adaptive-emerald);
+	}
+	.text-adaptive-teal-header {
+		color: var(--color-adaptive-teal);
+	}
+	.text-adaptive-cyan-header {
+		color: var(--color-adaptive-cyan);
+	}
+	.text-adaptive-green-header {
+		color: var(--color-adaptive-green);
+	}
+	.text-adaptive-yellow-header {
+		color: var(--color-adaptive-yellow);
+	}
+	.text-adaptive-orange-header {
+		color: var(--color-adaptive-orange);
+	}
+	.text-adaptive-amber-header {
+		color: var(--color-adaptive-amber);
+	}
+	.text-adaptive-lime-header {
+		color: var(--color-adaptive-lime);
+	}
+	.text-adaptive-violet-header {
+		color: var(--color-adaptive-violet);
+	}
+	.text-adaptive-purple-header {
+		color: var(--color-adaptive-purple);
+	}
+	.text-adaptive-fuchsia-header {
+		color: var(--color-adaptive-fuchsia);
+	}
+	.text-adaptive-pink-header {
+		color: var(--color-adaptive-pink);
+	}
+	.text-adaptive-rose-header {
+		color: var(--color-adaptive-rose);
+	}
+	.text-adaptive-slate-header {
+		color: var(--color-adaptive-slate);
+	}
+	.text-adaptive-zinc-header {
+		color: var(--color-adaptive-zinc);
+	}
+	.text-adaptive-indigo-header {
+		color: var(--color-adaptive-indigo);
+	}
+	.text-adaptive-sky-header {
+		color: var(--color-adaptive-sky);
+	}
+	.text-adaptive-brand-header {
+		color: var(--color-adaptive-brand);
+	}
+	.text-adaptive-primary-header {
+		color: var(--color-adaptive-emerald);
+	}
 
-  /* Adaptive Icon Text & Border Color Utilities - For Panel Icons (700/300 weights) */
-  .text-adaptive-red-icon {
-    color: var(--color-adaptive-red);
-  }
-  .text-adaptive-blue-icon {
-    color: var(--color-adaptive-blue);
-  }
-  .text-adaptive-emerald-icon {
-    color: var(--color-adaptive-emerald);
-  }
-  .text-adaptive-teal-icon {
-    color: var(--color-adaptive-teal);
-  }
-  .text-adaptive-cyan-icon {
-    color: var(--color-adaptive-cyan);
-  }
-  .text-adaptive-green-icon {
-    color: var(--color-adaptive-green);
-  }
-  .text-adaptive-yellow-icon {
-    color: var(--color-adaptive-yellow);
-  }
-  .text-adaptive-orange-icon {
-    color: var(--color-adaptive-orange);
-  }
-  .text-adaptive-amber-icon {
-    color: var(--color-adaptive-amber);
-  }
-  .text-adaptive-lime-icon {
-    color: var(--color-adaptive-lime);
-  }
-  .text-adaptive-violet-icon {
-    color: var(--color-adaptive-violet);
-  }
-  .text-adaptive-purple-icon {
-    color: var(--color-adaptive-purple);
-  }
-  .text-adaptive-fuchsia-icon {
-    color: var(--color-adaptive-fuchsia);
-  }
-  .text-adaptive-pink-icon {
-    color: var(--color-adaptive-pink);
-  }
-  .text-adaptive-rose-icon {
-    color: var(--color-adaptive-rose);
-  }
-  .text-adaptive-slate-icon {
-    color: var(--color-adaptive-slate);
-  }
-  .text-adaptive-zinc-icon {
-    color: var(--color-adaptive-zinc);
-  }
-  .text-adaptive-indigo-icon {
-    color: var(--color-adaptive-indigo);
-  }
-  .text-adaptive-sky-icon {
-    color: var(--color-adaptive-sky);
-  }
+	/* Adaptive Icon Text & Border Color Utilities - For Panel Icons (700/300 weights) */
+	.text-adaptive-red-icon {
+		color: var(--color-adaptive-red);
+	}
+	.text-adaptive-blue-icon {
+		color: var(--color-adaptive-blue);
+	}
+	.text-adaptive-emerald-icon {
+		color: var(--color-adaptive-emerald);
+	}
+	.text-adaptive-teal-icon {
+		color: var(--color-adaptive-teal);
+	}
+	.text-adaptive-cyan-icon {
+		color: var(--color-adaptive-cyan);
+	}
+	.text-adaptive-green-icon {
+		color: var(--color-adaptive-green);
+	}
+	.text-adaptive-yellow-icon {
+		color: var(--color-adaptive-yellow);
+	}
+	.text-adaptive-orange-icon {
+		color: var(--color-adaptive-orange);
+	}
+	.text-adaptive-amber-icon {
+		color: var(--color-adaptive-amber);
+	}
+	.text-adaptive-lime-icon {
+		color: var(--color-adaptive-lime);
+	}
+	.text-adaptive-violet-icon {
+		color: var(--color-adaptive-violet);
+	}
+	.text-adaptive-purple-icon {
+		color: var(--color-adaptive-purple);
+	}
+	.text-adaptive-fuchsia-icon {
+		color: var(--color-adaptive-fuchsia);
+	}
+	.text-adaptive-pink-icon {
+		color: var(--color-adaptive-pink);
+	}
+	.text-adaptive-rose-icon {
+		color: var(--color-adaptive-rose);
+	}
+	.text-adaptive-slate-icon {
+		color: var(--color-adaptive-slate);
+	}
+	.text-adaptive-zinc-icon {
+		color: var(--color-adaptive-zinc);
+	}
+	.text-adaptive-indigo-icon {
+		color: var(--color-adaptive-indigo);
+	}
+	.text-adaptive-sky-icon {
+		color: var(--color-adaptive-sky);
+	}
 
-  .border-adaptive-red-icon {
-    border-color: var(--color-adaptive-red);
-  }
-  .border-adaptive-blue-icon {
-    border-color: var(--color-adaptive-blue);
-  }
-  .border-adaptive-emerald-icon {
-    border-color: var(--color-adaptive-emerald);
-  }
-  .border-adaptive-teal-icon {
-    border-color: var(--color-adaptive-teal);
-  }
-  .border-adaptive-cyan-icon {
-    border-color: var(--color-adaptive-cyan);
-  }
-  .border-adaptive-green-icon {
-    border-color: var(--color-adaptive-green);
-  }
-  .border-adaptive-yellow-icon {
-    border-color: var(--color-adaptive-yellow);
-  }
-  .border-adaptive-orange-icon {
-    border-color: var(--color-adaptive-orange);
-  }
-  .border-adaptive-amber-icon {
-    border-color: var(--color-adaptive-amber);
-  }
-  .border-adaptive-lime-icon {
-    border-color: var(--color-adaptive-lime);
-  }
-  .border-adaptive-violet-icon {
-    border-color: var(--color-adaptive-violet);
-  }
-  .border-adaptive-purple-icon {
-    border-color: var(--color-adaptive-purple);
-  }
-  .border-adaptive-fuchsia-icon {
-    border-color: var(--color-adaptive-fuchsia);
-  }
-  .border-adaptive-pink-icon {
-    border-color: var(--color-adaptive-pink);
-  }
-  .border-adaptive-rose-icon {
-    border-color: var(--color-adaptive-rose);
-  }
-  .border-adaptive-slate-icon {
-    border-color: var(--color-adaptive-slate);
-  }
-  .border-adaptive-zinc-icon {
-    border-color: var(--color-adaptive-zinc);
-  }
-  .border-adaptive-indigo-icon {
-    border-color: var(--color-adaptive-indigo);
-  }
-  .border-adaptive-sky-icon {
-    border-color: var(--color-adaptive-sky);
-  }
+	.border-adaptive-red-icon {
+		border-color: var(--color-adaptive-red);
+	}
+	.border-adaptive-blue-icon {
+		border-color: var(--color-adaptive-blue);
+	}
+	.border-adaptive-emerald-icon {
+		border-color: var(--color-adaptive-emerald);
+	}
+	.border-adaptive-teal-icon {
+		border-color: var(--color-adaptive-teal);
+	}
+	.border-adaptive-cyan-icon {
+		border-color: var(--color-adaptive-cyan);
+	}
+	.border-adaptive-green-icon {
+		border-color: var(--color-adaptive-green);
+	}
+	.border-adaptive-yellow-icon {
+		border-color: var(--color-adaptive-yellow);
+	}
+	.border-adaptive-orange-icon {
+		border-color: var(--color-adaptive-orange);
+	}
+	.border-adaptive-amber-icon {
+		border-color: var(--color-adaptive-amber);
+	}
+	.border-adaptive-lime-icon {
+		border-color: var(--color-adaptive-lime);
+	}
+	.border-adaptive-violet-icon {
+		border-color: var(--color-adaptive-violet);
+	}
+	.border-adaptive-purple-icon {
+		border-color: var(--color-adaptive-purple);
+	}
+	.border-adaptive-fuchsia-icon {
+		border-color: var(--color-adaptive-fuchsia);
+	}
+	.border-adaptive-pink-icon {
+		border-color: var(--color-adaptive-pink);
+	}
+	.border-adaptive-rose-icon {
+		border-color: var(--color-adaptive-rose);
+	}
+	.border-adaptive-slate-icon {
+		border-color: var(--color-adaptive-slate);
+	}
+	.border-adaptive-zinc-icon {
+		border-color: var(--color-adaptive-zinc);
+	}
+	.border-adaptive-indigo-icon {
+		border-color: var(--color-adaptive-indigo);
+	}
+	.border-adaptive-sky-icon {
+		border-color: var(--color-adaptive-sky);
+	}
 
-  /* Adaptive Cell Text Color Utilities - For Table Cell Content */
-  .text-adaptive-cell-primary {
-    color: var(--color-adaptive-cell-primary);
-  }
-  .text-adaptive-cell-secondary {
-    color: var(--color-adaptive-cell-secondary);
-  }
-  .text-adaptive-cell-muted {
-    color: var(--color-adaptive-cell-muted);
-  }
+	/* Adaptive Cell Text Color Utilities - For Table Cell Content */
+	.text-adaptive-cell-primary {
+		color: var(--color-adaptive-cell-primary);
+	}
+	.text-adaptive-cell-secondary {
+		color: var(--color-adaptive-cell-secondary);
+	}
+	.text-adaptive-cell-muted {
+		color: var(--color-adaptive-cell-muted);
+	}
 
-  /* Nuclear option: completely disable all visual changes on disabled buttons (except combobox) */
-  button:disabled:not([role='combobox']):is(
-      &,
-      :hover,
-      :focus,
-      :focus-visible,
-      :active
-    ) {
-    --tw-ring-width: 0px !important;
-    --tw-ring-offset-width: 0px !important;
-    --tw-ring-color: transparent !important;
-    --tw-ring-offset-color: transparent !important;
-    box-shadow: none !important;
-    outline: none !important;
-    border: 1px solid !important;
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-  }
+	/* Nuclear option: completely disable all visual changes on disabled buttons (except combobox) */
+	button:disabled:not([role="combobox"]):is(
+			&,
+			:hover,
+			:focus,
+			:focus-visible,
+			:active
+		) {
+		--tw-ring-width: 0px;
+		--tw-ring-offset-width: 0px;
+		--tw-ring-color: transparent;
+		--tw-ring-offset-color: transparent;
+		box-shadow: none;
+		outline: none;
+		border: 1px solid;
+		transition: none;
+		animation: none;
+		transform: none;
+	}
 
-  /* Direct fix for reset button to match light mode exactly */
-  .dark button[class*='text-brand-600'][class*='bg-transparent'] {
-    background: var(--color-white) !important;
-    background-color: var(--color-white) !important;
-    color: var(--color-red-600) !important;
-    border-color: var(--color-red-600) !important;
-  }
+	/* Direct fix for reset button to match light mode exactly */
+	.dark button[class*="text-brand-600"][class*="bg-transparent"] {
+		background: var(--color-white);
+		background-color: var(--color-white);
+		color: var(--color-red-600);
+		border-color: var(--color-red-600);
+	}
 
-  /* Ensure ring system works on hover/focus for secondary buttons in dark mode */
-  .dark button[class*='text-brand-600'][class*='bg-transparent']:hover,
-  .dark button[class*='text-brand-600'][class*='bg-transparent']:focus,
-  .dark button[class*='text-brand-600'][class*='bg-transparent']:focus-visible {
-    --tw-ring-color: var(--color-red-600) !important;
-    --tw-ring-offset-color: var(--color-white) !important;
-    --tw-ring-width: 2px !important;
-    --tw-ring-offset-width: 2px !important;
-  }
+	/* Ensure ring system works on hover/focus for secondary buttons in dark mode */
+	.dark button[class*="text-brand-600"][class*="bg-transparent"]:hover,
+	.dark button[class*="text-brand-600"][class*="bg-transparent"]:focus,
+	.dark button[class*="text-brand-600"][class*="bg-transparent"]:focus-visible {
+		--tw-ring-color: var(--color-red-600);
+		--tw-ring-offset-color: var(--color-white);
+		--tw-ring-width: 2px;
+		--tw-ring-offset-width: 2px;
+	}
 
-  /* Force border color to stay consistent on disabled buttons (except combobox) */
-  button:disabled:not([role='combobox']):is(
-      &,
-      :hover,
-      :focus,
-      :focus-visible,
-      :active
-    ) {
-    border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
-  }
+	/* Force border color to stay consistent on disabled buttons (except combobox) */
+	button:disabled:not([role="combobox"]):is(
+			&,
+			:hover,
+			:focus,
+			:focus-visible,
+			:active
+		) {
+		border-color: rgb(var(--color-button-neutral-secondary-border));
+	}
 
-  /* Dark mode disabled button border override (except combobox) */
-  .dark
-    button:disabled:not([role='combobox']):is(
-      &,
-      :hover,
-      :focus,
-      :focus-visible,
-      :active
-    ) {
-    border-color: rgb(var(--color-button-neutral-secondary-border)) !important;
-  }
+	/* Dark mode disabled button border override (except combobox) */
+	.dark
+	button:disabled:not([role="combobox"]):is(
+		&,
+		:hover,
+		:focus,
+		:focus-visible,
+		:active
+	) {
+		border-color: rgb(var(--color-button-neutral-secondary-border));
+	}
 
-  /* ComboField disabled variant - restore border width, allow utility classes to set border color */
-  button[role='combobox']:disabled:is(&, :hover, :focus, :focus-visible, :active) {
-    border-width: 2px !important;
-  }
+	/* ComboField disabled variant - restore border width, allow utility classes to set border color */
+	button[role="combobox"]:disabled:is(&, :hover, :focus, :focus-visible, :active) {
+		border-width: 2px;
+	}
 
-  /* UserMenu light mode - force red colors */
-  .light [data-testid='user-menu-dropdown'] {
-    border-color: #ef4444 !important; /* red-500 */
-  }
+	/* UserMenu light mode - force red colors */
+	.light [data-testid="user-menu-dropdown"] {
+		border-color: #ef4444; /* red-500 */
+	}
 
-  .light [data-testid='user-menu-dropdown'] .bg-red-500 {
-    background-color: #ef4444 !important; /* red-500 */
-  }
+	.light [data-testid="user-menu-dropdown"] .bg-red-500 {
+		background-color: #ef4444; /* red-500 */
+	}
 
-  /* UserMenu dark mode specific styling */
-  .dark [data-testid='user-menu-dropdown'] {
-    background-color: var(--color-usermenu-bg) !important;
-    border-color: #10b981 !important; /* emerald-500 */
-  }
+	/* UserMenu dark mode specific styling */
+	.dark [data-testid="user-menu-dropdown"] {
+		background-color: var(--color-usermenu-bg);
+		border-color: #10b981; /* emerald-500 */
+	}
 
-  .dark [data-testid='user-menu-dropdown'] .bg-emerald-500 {
-    background-color: #10b981 !important; /* emerald-500 */
-  }
+	.dark [data-testid="user-menu-dropdown"] .bg-emerald-500 {
+		background-color: #10b981; /* emerald-500 */
+	}
 
-  /* Language submenu styling - light mode */
-  .light [data-testid='user-menu-dropdown'] .bg-background {
-    background-color: #ffffff !important; /* white background */
-    border-color: #ef4444 !important; /* red-500 border */
-  }
+	/* Language submenu styling - light mode */
+	.light [data-testid="user-menu-dropdown"] .bg-background {
+		background-color: #ffffff; /* white background */
+		border-color: #ef4444; /* red-500 border */
+	}
 
-  .light [data-testid='user-menu-dropdown'] .bg-accent {
-    background-color: #d1fae5 !important; /* emerald-100 for selected language */
-  }
+	.light [data-testid="user-menu-dropdown"] .bg-accent {
+		background-color: #d1fae5; /* emerald-100 for selected language */
+	}
 
-  .light [data-testid='user-menu-dropdown'] .hover\:bg-accent:hover {
-    background-color: #ecfdf5 !important; /* emerald-50 for hover */
-  }
+	.light [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover {
+		background-color: #ecfdf5; /* emerald-50 for hover */
+	}
 
-  /* Language submenu styling - dark mode */
-  .dark [data-testid='user-menu-dropdown'] .bg-accent {
-    background-color: #047857 !important; /* emerald-700 for selected language */
-  }
+	/* Language submenu styling - dark mode */
+	.dark [data-testid="user-menu-dropdown"] .bg-accent {
+		background-color: #047857; /* emerald-700 for selected language */
+	}
 
-  /* All text elements in UserMenu dropdown - dark mode only */
-  .dark [data-testid='user-menu-dropdown'] .text-foreground-darker,
-  .dark [data-testid='user-menu-dropdown'] .text-main {
-    color: var(--color-usermenu-text) !important;
-  }
+	/* All text elements in UserMenu dropdown - dark mode only */
+	.dark [data-testid="user-menu-dropdown"] .text-foreground-darker,
+	.dark [data-testid="user-menu-dropdown"] .text-main,
+	.dark [data-testid="user-menu-dropdown"] span {
+		color: var(--color-usermenu-text);
+	}
 
-  /* All hover states in UserMenu dropdown - background only, no borders */
-  .dark [data-testid='user-menu-dropdown'] .hover\:bg-accent:hover,
-  .dark [data-testid='user-menu-dropdown'] .hover\:bg-background-hover:hover,
-  .dark [data-testid='user-menu-dropdown'] .hover\:bg-accent\/50:hover {
-    background-color: var(--color-usermenu-hover-bg) !important;
-    border-color: transparent !important;
-  }
+	/* All icons in UserMenu dropdown inherit text color via currentColor */
+	.dark [data-testid="user-menu-dropdown"] svg {
+		color: var(--color-usermenu-text);
+	}
 
-  /* Ensure no borders on hover elements */
-  .dark [data-testid='user-menu-dropdown'] button:hover,
-  .dark [data-testid='user-menu-dropdown'] a:hover {
-    border-color: transparent !important;
-    outline: none !important;
-  }
+	/* All hover states in UserMenu dropdown - background only, no borders */
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent\/50:hover {
+		background-color: var(--color-usermenu-hover-bg);
+		border-color: transparent;
+	}
 
-  .dark [data-testid='user-menu-dropdown'] .bg-border {
-    background-color: var(--color-border) !important;
-  }
+	/* Ensure no borders on hover elements */
+	.dark [data-testid="user-menu-dropdown"] button:hover,
+	.dark [data-testid="user-menu-dropdown"] a:hover {
+		border-color: transparent;
+		outline: none;
+	}
 
-  /* UserMenu submenu (language menu) dark mode styling */
-  .dark [data-testid='user-menu-dropdown'] .bg-background {
-    background-color: var(--color-usermenu-bg) !important;
-  }
+	.dark [data-testid="user-menu-dropdown"] .bg-border {
+		background-color: var(--color-border);
+	}
 
-  /* Field Validation Styling - Semantic Classes */
+	/* UserMenu submenu (language menu) dark mode styling */
+	.dark [data-testid="user-menu-dropdown"] .bg-background {
+		background-color: var(--color-usermenu-bg);
+	}
 
-  /* Field Checkmark Colors */
-  .checkmark-brand {
-    background-color: var(--color-brand-500);
-  }
-  .checkmark-primary {
-    background-color: var(--color-primary-500);
-  }
-  .checkmark-emerald {
-    background-color: var(--color-emerald-500);
-  }
-  .checkmark-blue {
-    background-color: var(--color-blue-500);
-  }
-  .checkmark-slate {
-    background-color: var(--color-slate-500);
-  }
-  .checkmark-teal {
-    background-color: var(--color-teal-500);
-  }
-  .checkmark-red {
-    background-color: var(--color-red-500);
-  }
-  .checkmark-cyan {
-    background-color: var(--color-cyan-500);
-  }
-  .checkmark-yellow {
-    background-color: var(--color-yellow-500);
-  }
-  .checkmark-green {
-    background-color: var(--color-green-500);
-  }
-  .checkmark-violet {
-    background-color: var(--color-violet-500);
-  }
-  .checkmark-zinc {
-    background-color: var(--color-zinc-500);
-  }
-  .checkmark-orange {
-    background-color: var(--color-orange-500);
-  }
-  .checkmark-amber {
-    background-color: var(--color-amber-500);
-  }
-  .checkmark-lime {
-    background-color: var(--color-lime-500);
-  }
-  .checkmark-sky {
-    background-color: var(--color-sky-500);
-  }
-  .checkmark-indigo {
-    background-color: var(--color-indigo-500);
-  }
-  .checkmark-purple {
-    background-color: var(--color-purple-500);
-  }
-  .checkmark-fuchsia {
-    background-color: var(--color-fuchsia-500);
-  }
-  .checkmark-pink {
-    background-color: var(--color-pink-500);
-  }
-  .checkmark-rose {
-    background-color: var(--color-rose-500);
-  }
+	/* Field Validation Styling - Semantic Classes */
 
-  /* Field Error Icon - Always red for errors */
-  .field-error-icon {
-    background-color: var(--color-red-500);
-  }
+	/* Field Checkmark Colors */
+	.checkmark-brand {
+		background-color: var(--color-brand-500);
+	}
+	.checkmark-primary {
+		background-color: var(--color-primary-500);
+	}
+	.checkmark-emerald {
+		background-color: var(--color-emerald-500);
+	}
+	.checkmark-blue {
+		background-color: var(--color-blue-500);
+	}
+	.checkmark-slate {
+		background-color: var(--color-slate-500);
+	}
+	.checkmark-teal {
+		background-color: var(--color-teal-500);
+	}
+	.checkmark-red {
+		background-color: var(--color-red-500);
+	}
+	.checkmark-cyan {
+		background-color: var(--color-cyan-500);
+	}
+	.checkmark-yellow {
+		background-color: var(--color-yellow-500);
+	}
+	.checkmark-green {
+		background-color: var(--color-green-500);
+	}
+	.checkmark-violet {
+		background-color: var(--color-violet-500);
+	}
+	.checkmark-zinc {
+		background-color: var(--color-zinc-500);
+	}
+	.checkmark-orange {
+		background-color: var(--color-orange-500);
+	}
+	.checkmark-amber {
+		background-color: var(--color-amber-500);
+	}
+	.checkmark-lime {
+		background-color: var(--color-lime-500);
+	}
+	.checkmark-sky {
+		background-color: var(--color-sky-500);
+	}
+	.checkmark-indigo {
+		background-color: var(--color-indigo-500);
+	}
+	.checkmark-purple {
+		background-color: var(--color-purple-500);
+	}
+	.checkmark-fuchsia {
+		background-color: var(--color-fuchsia-500);
+	}
+	.checkmark-pink {
+		background-color: var(--color-pink-500);
+	}
+	.checkmark-rose {
+		background-color: var(--color-rose-500);
+	}
+
+	/* Field Error Icon - Always red for errors */
+	.field-error-icon {
+		background-color: var(--color-red-500);
+	}
 }

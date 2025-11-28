@@ -4,15 +4,15 @@ import { getDropdownProps, getMenuClasses } from '~/utils/rtlUtils'
 
 // React hook for RTL dropdown support
 export function useRTLDropdown(): {
-  dropdownProps: DropdownProps
-  menuClasses: MenuClasses
-  isRTL: boolean
+	dropdownProps: DropdownProps
+	menuClasses: MenuClasses
+	isRTL: boolean
 } {
-  const { isRTL } = useSettingsStore()
+	const { isRTL } = useSettingsStore()
 
-  return {
-    dropdownProps: getDropdownProps(),
-    menuClasses: getMenuClasses(),
-    isRTL,
-  }
+	return {
+		dropdownProps: getDropdownProps(),
+		menuClasses: getMenuClasses(),
+		isRTL,
+	}
 }

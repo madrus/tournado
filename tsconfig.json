@@ -1,38 +1,38 @@
 {
-  "exclude": ["playwright/**/*"],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.d.ts",
-    "prisma/seed.js",
-    ".react-router/types/**/*"
-  ],
-  "compilerOptions": {
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["@react-router/node", "vite/client", "vitest/globals", "node"],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "strict": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "~/*": ["./app/*"],
-      "~test/*": ["./test/*"],
-      "@react-router/dev/routes": [
-        "./.node_modules/@react-router/dev/dist/routes.d.ts"
-      ],
-      "*": ["./*"]
-    },
-    "skipLibCheck": true,
-    "noEmit": true,
-    "rootDirs": [".", "./.react-router/types"],
-    "allowSyntheticDefaultImports": true,
-    "moduleDetection": "force",
-    "allowImportingTsExtensions": true
-  }
+	"exclude": ["playwright/**/*"],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.d.ts",
+		"prisma/seed.js",
+		".react-router/types/**/*"
+	],
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"types": ["@react-router/node", "vite/client", "vitest/globals", "node"],
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"jsx": "react-jsx",
+		"target": "ES2022",
+		"module": "ES2022",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"strict": true,
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"~/*": ["./app/*"],
+			"~test/*": ["./test/*"],
+			"@react-router/dev/routes": [
+				"./.node_modules/@react-router/dev/dist/routes.d.ts"
+			],
+			"*": ["./*"]
+		},
+		"skipLibCheck": true,
+		"noEmit": true,
+		"rootDirs": [".", "./.react-router/types"],
+		"allowSyntheticDefaultImports": true,
+		"moduleDetection": "force",
+		"allowImportingTsExtensions": true
+	}
 }

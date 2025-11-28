@@ -4,12 +4,12 @@ import type { Role } from '@prisma/client'
  * Valid role values that can be assigned to users
  */
 export const VALID_ROLES = [
-  'PUBLIC',
-  'MANAGER',
-  'ADMIN',
-  'REFEREE',
-  'EDITOR',
-  'BILLING',
+	'PUBLIC',
+	'MANAGER',
+	'ADMIN',
+	'REFEREE',
+	'EDITOR',
+	'BILLING',
 ] as const
 
 /**
@@ -18,7 +18,7 @@ export const VALID_ROLES = [
  * @returns True if the value is a valid Role
  */
 export const isValidRole = (value: unknown): value is Role =>
-  typeof value === 'string' && VALID_ROLES.includes(value as Role)
+	typeof value === 'string' && VALID_ROLES.includes(value as Role)
 
 /**
  * Validates and returns a Role value from form data
@@ -27,20 +27,22 @@ export const isValidRole = (value: unknown): value is Role =>
  * @throws Response with 400 status if the value is invalid
  */
 export function validateRole(value: unknown): Role {
-  if (!isValidRole(value)) {
-    throw new Response(
-      `Invalid role value. Must be one of: ${VALID_ROLES.join(', ')}`,
-      { status: 400 }
-    )
-  }
-  return value
+	if (!isValidRole(value)) {
+		throw new Response(
+			`Invalid role value. Must be one of: ${VALID_ROLES.join(', ')}`,
+			{
+				status: 400,
+			},
+		)
+	}
+	return value
 }
 
 export const roleColors = {
-  PUBLIC: 'slate',
-  MANAGER: 'blue',
-  ADMIN: 'red',
-  REFEREE: 'green',
-  EDITOR: 'purple',
-  BILLING: 'yellow',
+	PUBLIC: 'slate',
+	MANAGER: 'blue',
+	ADMIN: 'red',
+	REFEREE: 'green',
+	EDITOR: 'purple',
+	BILLING: 'yellow',
 } as const

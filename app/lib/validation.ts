@@ -9,7 +9,7 @@ import { z } from 'zod'
  * Phone number validation regex
  * Allows: +, digits, spaces, hyphens, parentheses
  */
-export const PHONE_REGEX = /^[\+]?[0-9\s\-\(\)]+$/
+export const PHONE_REGEX = /^[+]?[0-9\s\-()]+$/
 
 // ============================================================================
 // Simple Schemas (for type guards)
@@ -32,12 +32,12 @@ export const emailSchema = z.email()
  * @returns Zod schema for email validation
  */
 export const createEmailSchema = (
-  errorMsg = 'Invalid email address'
+	errorMsg = 'Invalid email address',
 ): ZodPipe<ZodString, ZodEmail> =>
-  z
-    .string()
-    .min(1)
-    .pipe(z.email({ error: errorMsg }))
+	z
+		.string()
+		.min(1)
+		.pipe(z.email({ error: errorMsg }))
 
 /**
  * Create phone schema with regex validation
@@ -46,12 +46,12 @@ export const createEmailSchema = (
  * @returns Zod schema for phone validation
  */
 export const createPhoneSchema = (
-  errorMsg = 'Invalid phone number format'
+	errorMsg = 'Invalid phone number format',
 ): ZodPipe<ZodString, ZodString> =>
-  z
-    .string()
-    .min(1)
-    .pipe(z.string().refine(val => PHONE_REGEX.test(val), { error: errorMsg }))
+	z
+		.string()
+		.min(1)
+		.pipe(z.string().refine((val) => PHONE_REGEX.test(val), { error: errorMsg }))
 
 /**
  * Create required string schema with max length
@@ -61,12 +61,12 @@ export const createPhoneSchema = (
  * @returns Zod schema for string validation
  */
 export const createRequiredStringSchema = (
-  maxLength: number,
-  requiredMsg = 'This field is required',
-  tooLongMsg?: string
+	maxLength: number,
+	requiredMsg = 'This field is required',
+	tooLongMsg?: string,
 ): ZodString => {
-  const schema = z.string().min(1, requiredMsg)
-  return tooLongMsg ? schema.max(maxLength, tooLongMsg) : schema.max(maxLength)
+	const schema = z.string().min(1, requiredMsg)
+	return tooLongMsg ? schema.max(maxLength, tooLongMsg) : schema.max(maxLength)
 }
 
 /**
@@ -75,9 +75,9 @@ export const createRequiredStringSchema = (
  * @returns Zod schema for ISO date validation
  */
 export const createIsoDateSchema = (
-  errorMsg?: string
+	errorMsg?: string,
 ): ReturnType<typeof z.iso.date> =>
-  errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
+	errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
 
 /**
  * Create required array of strings schema
@@ -85,7 +85,7 @@ export const createIsoDateSchema = (
  * @returns Zod schema for string array validation
  */
 export const createRequiredStringArraySchema = (
-  errorMsg = 'At least one item is required'
+	errorMsg = 'At least one item is required',
 ): ZodArray<ZodString> => z.array(z.string()).min(1, errorMsg)
 
 // ============================================================================
@@ -98,8 +98,8 @@ export const createRequiredStringArraySchema = (
  * @returns true if the value is a valid email string
  */
 export const validateEmail = (email: unknown): email is string => {
-  const result = emailSchema.safeParse(email)
-  return result.success
+	const result = emailSchema.safeParse(email)
+	return result.success
 }
 
 /**
@@ -108,4 +108,4 @@ export const validateEmail = (email: unknown): email is string => {
  * @returns true if the value is a valid phone number string
  */
 export const validatePhone = (phone: unknown): phone is string =>
-  typeof phone === 'string' && PHONE_REGEX.test(phone)
+	typeof phone === 'string' && PHONE_REGEX.test(phone)

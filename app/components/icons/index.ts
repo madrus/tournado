@@ -1,3 +1,5 @@
+// Re-export types for convenience
+export type { IconVariant, IconWeight } from '~/lib/lib.types'
 export { AddIcon } from './AddIcon'
 export { AdminPanelSettingsIcon } from './AdminPanelSettingsIcon'
 export { AnimatedArrowIcon } from './AnimatedArrowIcon'
@@ -46,6 +48,3 @@ export { UnfoldLessIcon } from './UnfoldLessIcon'
 export { UnfoldMoreIcon } from './UnfoldMoreIcon'
 export { VisibilityIcon } from './VisibilityIcon'
 export { WarningIcon } from './WarningIcon'
-
-// Re-export types for convenience
-export type { IconVariant, IconWeight } from '~/lib/lib.types'

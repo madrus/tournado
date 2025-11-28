@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import type { JSX } from 'react'
 import { Outlet } from 'react-router'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
@@ -8,7 +8,7 @@ import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
  * Provides consistent styling and behavior for all group-related child routes.
  */
 export default function GroupsLayout(): JSX.Element {
-  return <Outlet />
+	return <Outlet />
 }
 
 export { AuthErrorBoundary as ErrorBoundary }

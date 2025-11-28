@@ -463,6 +463,7 @@ dark:via-blue-900
 dark:to-blue-900
 
 # Fuchsia variant
+border-fuchsia-300
 border-fuchsia-400
 from-fuchsia-50
 via-fuchsia-100

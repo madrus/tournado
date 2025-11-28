@@ -6,14 +6,14 @@ import { initI18n, type Language, SUPPORTED_LANGUAGE_CODES } from '~/i18n/config
  * @returns The user's preferred language or fallback to 'nl' (Dutch)
  */
 export function getLanguageFromRequest(request: Request): Language {
-  const cookieHeader = request.headers.get('Cookie') || ''
-  const langMatch = cookieHeader.match(/lang=([^;]+)/)
-  const rawLanguage = langMatch?.[1]?.trim()
+	const cookieHeader = request.headers.get('Cookie') || ''
+	const langMatch = cookieHeader.match(/lang=([^;]+)/)
+	const rawLanguage = langMatch?.[1]?.trim()
 
-  // Return the language if supported, otherwise fallback to Dutch
-  return SUPPORTED_LANGUAGE_CODES.includes(rawLanguage as Language)
-    ? (rawLanguage as Language)
-    : 'nl'
+	// Return the language if supported, otherwise fallback to Dutch
+	return SUPPORTED_LANGUAGE_CODES.includes(rawLanguage as Language)
+		? (rawLanguage as Language)
+		: 'nl'
 }
 
 /**
@@ -22,7 +22,7 @@ export function getLanguageFromRequest(request: Request): Language {
  * @returns Translation function bound to the user's language
  */
 export function getServerT(request: Request): ReturnType<typeof initI18n>['t'] {
-  const language = getLanguageFromRequest(request)
-  const i18n = initI18n(language)
-  return i18n.t.bind(i18n)
+	const language = getLanguageFromRequest(request)
+	const i18n = initI18n(language)
+	return i18n.t.bind(i18n)
 }

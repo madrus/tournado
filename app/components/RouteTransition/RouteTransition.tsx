@@ -27,9 +27,10 @@ export function RouteTransition({
 
 	return (
 		<div
-			className={`transition-opacity duration-300 ease-in-out ${className}`}
+			className={`transition-opacity ease-in-out ${className}`}
 			style={{
 				opacity: isTransitioning ? minOpacity : 1,
+				transitionDuration: `${duration}ms`,
 			}}
 		>
 			<Outlet />

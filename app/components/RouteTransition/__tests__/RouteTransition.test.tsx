@@ -119,7 +119,7 @@ describe('RouteTransition', () => {
 
 			const wrapper = container.querySelector('.transition-opacity')
 			expect(wrapper).toBeInTheDocument()
-			expect(wrapper?.className).toContain('duration-300')
+			expect((wrapper as HTMLElement)?.style.transitionDuration).toBe('300ms')
 		})
 
 		it('should accept custom duration prop', () => {

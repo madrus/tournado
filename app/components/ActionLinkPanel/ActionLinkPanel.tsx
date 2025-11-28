@@ -72,13 +72,17 @@ export function ActionLinkPanel({
 				{...(onClick && {
 					onClick,
 					onKeyDown: (event) => {
-						// Check if event came from an interactive element
+						// Check if event came from a child interactive element (not the panel itself)
 						const target = event.target as HTMLElement
-						const isInteractiveElement = target.closest(
+						const currentTarget = event.currentTarget as HTMLElement
+						const interactiveElement = target.closest(
 							'button, input, select, textarea, a, [role="button"], [role="combobox"], [role="tab"]',
 						)
+						// Only prevent activation if the interactive element is NOT the panel itself
+						const isChildInteractive =
+							interactiveElement && interactiveElement !== currentTarget
 
-						if (event.key === 'Enter' && !isInteractiveElement) {
+						if (event.key === 'Enter' && !isChildInteractive) {
 							event.preventDefault()
 							onClick()
 						}
@@ -86,7 +90,7 @@ export function ActionLinkPanel({
 						// Handle Space on keyDown to prevent page scroll
 						if (
 							(event.key === ' ' || event.key === 'Spacebar') &&
-							!isInteractiveElement
+							!isChildInteractive
 						) {
 							event.preventDefault()
 							onClick()

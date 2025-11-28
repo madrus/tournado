@@ -26,6 +26,9 @@ FROM base AS production-deps
 
 WORKDIR /workdir
 
+# Set DATABASE_URL for Prisma generate
+ENV DATABASE_URL=file:/data/sqlite.db
+
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
@@ -39,6 +42,9 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
 FROM base AS build
 
 WORKDIR /workdir
+
+# Set DATABASE_URL for Prisma generate during build
+ENV DATABASE_URL=file:/data/sqlite.db
 
 # Copy all files needed for the build
 COPY --from=deps /workdir/node_modules /workdir/node_modules

@@ -23,7 +23,9 @@ export function CompetitionLayoutHeader({
 
 	const isAdmin = variant === 'admin'
 	const title = isAdmin ? t('admin.competition.title') : t('common.titles.competition')
-	const description = isAdmin ? t('admin.competition.description') : t('competition.description')
+	const description = isAdmin
+		? t('admin.competition.description')
+		: t('competition.description')
 
 	return (
 		<LayoutHeader

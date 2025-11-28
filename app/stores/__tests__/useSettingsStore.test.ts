@@ -65,7 +65,13 @@ describe('useSettingsStore', () => {
 	})
 
 	it('should set all supported languages', () => {
-		const languages: ('nl' | 'en' | 'ar' | 'tr' | 'fr')[] = ['nl', 'en', 'ar', 'tr', 'fr']
+		const languages: ('nl' | 'en' | 'ar' | 'tr' | 'fr')[] = [
+			'nl',
+			'en',
+			'ar',
+			'tr',
+			'fr',
+		]
 
 		languages.forEach((lang) => {
 			state().setLanguage(lang)

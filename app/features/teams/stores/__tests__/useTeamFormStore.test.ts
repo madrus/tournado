@@ -152,7 +152,10 @@ describe('useTeamFormStore', () => {
 			expect(state().formFields.tournamentId).toBe('tournament1')
 			expect(state().formFields.division).toBe('') // Should be reset
 			expect(state().formFields.category).toBe('') // Should be reset
-			expect(state().availableOptions.divisions).toEqual(['FIRST_DIVISION', 'SECOND_DIVISION'])
+			expect(state().availableOptions.divisions).toEqual([
+				'FIRST_DIVISION',
+				'SECOND_DIVISION',
+			])
 			expect(state().availableOptions.categories).toEqual(['JO8', 'JO9', 'JO10'])
 		})
 
@@ -193,7 +196,9 @@ describe('useTeamFormStore', () => {
 			state().setFieldBlurred('clubName')
 
 			// Since clubName is empty and now touched, should show error
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 			expect(state().validation.blurredFields.clubName).toBe(true)
 		})
 
@@ -211,7 +216,9 @@ describe('useTeamFormStore', () => {
 
 			// Now validation should work even for untouched fields
 			state().validateField('clubName')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 		})
 
 		it('should validate field when submitAttempted is true', () => {
@@ -220,13 +227,17 @@ describe('useTeamFormStore', () => {
 
 			// Now validation should work even for untouched fields
 			state().validateField('clubName')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 		})
 
 		it('should clear error when field becomes valid', () => {
 			// Touch field and trigger error
 			state().setFieldBlurred('clubName')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 
 			// Set valid value and validate again
 			state().setFormField('clubName', 'Valid Club')
@@ -248,7 +259,9 @@ describe('useTeamFormStore', () => {
 			state().validateField('teamLeaderName')
 
 			// All touched fields should show errors
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 			expect(state().validation.displayErrors.name).toBe('messages.team.nameRequired')
 			expect(state().validation.displayErrors.teamLeaderName).toBe(
 				'messages.team.teamLeaderNameRequired',
@@ -269,11 +282,19 @@ describe('useTeamFormStore', () => {
 			expect(state().validation.forceShowAllErrors).toBe(true) // Should be set during form validation
 
 			// All required fields should show errors
-			expect(state().validation.displayErrors.tournamentId).toBe('messages.team.tournamentRequired')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.tournamentId).toBe(
+				'messages.team.tournamentRequired',
+			)
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 			expect(state().validation.displayErrors.name).toBe('messages.team.nameRequired')
-			expect(state().validation.displayErrors.division).toBe('messages.team.divisionRequired')
-			expect(state().validation.displayErrors.category).toBe('messages.team.categoryRequired')
+			expect(state().validation.displayErrors.division).toBe(
+				'messages.team.divisionRequired',
+			)
+			expect(state().validation.displayErrors.category).toBe(
+				'messages.team.categoryRequired',
+			)
 			expect(state().validation.displayErrors.teamLeaderName).toBe(
 				'messages.team.teamLeaderNameRequired',
 			)
@@ -334,7 +355,9 @@ describe('useTeamFormStore', () => {
 	describe('Field Error Management', () => {
 		it('should set and clear field errors', () => {
 			state().setFieldError('clubName', 'messages.team.clubNameRequired')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 
 			state().clearFieldError('clubName')
 			expect(state().validation.displayErrors.clubName).toBeUndefined()
@@ -454,7 +477,9 @@ describe('useTeamFormStore', () => {
 
 			// User clicks on club name field and tabs away empty - should show error
 			state().setFieldBlurred('clubName')
-			expect(state().validation.displayErrors.clubName).toBe('messages.team.clubNameRequired')
+			expect(state().validation.displayErrors.clubName).toBe(
+				'messages.team.clubNameRequired',
+			)
 
 			// User types in club name - error should clear
 			state().setFormField('clubName', 'Test Club')
@@ -487,7 +512,9 @@ describe('useTeamFormStore', () => {
 
 			// Since division field was previously touched, it should show error now that it's empty
 			state().validateField('division')
-			expect(state().validation.displayErrors.division).toBe('messages.team.divisionRequired')
+			expect(state().validation.displayErrors.division).toBe(
+				'messages.team.divisionRequired',
+			)
 		})
 
 		it('should handle form submission with mixed touched/untouched fields', () => {
@@ -507,8 +534,12 @@ describe('useTeamFormStore', () => {
 			expect(state().validation.forceShowAllErrors).toBe(true)
 
 			// Now ALL required fields should show errors
-			expect(state().validation.displayErrors.tournamentId).toBe('messages.team.tournamentRequired')
-			expect(state().validation.displayErrors.division).toBe('messages.team.divisionRequired')
+			expect(state().validation.displayErrors.tournamentId).toBe(
+				'messages.team.tournamentRequired',
+			)
+			expect(state().validation.displayErrors.division).toBe(
+				'messages.team.divisionRequired',
+			)
 			expect(state().validation.displayErrors.privacyAgreement).toBe(
 				'messages.team.privacyAgreementRequired',
 			)

@@ -80,7 +80,12 @@ export function ActionLinkButton({
 
 	// Render as link when enabled
 	return (
-		<ActionLink to={to} className={buttonClasses} aria-label={label} data-testid={testId}>
+		<ActionLink
+			to={to}
+			className={buttonClasses}
+			aria-label={label}
+			data-testid={testId}
+		>
 			{iconElement}
 			{labelText}
 		</ActionLink>

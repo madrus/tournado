@@ -29,7 +29,9 @@ describe('TeamsLayoutHeader', () => {
 	it('should render public variant correctly', () => {
 		renderWithRouter(<TeamsLayoutHeader variant='public' />)
 
-		expect(screen.getByRole('heading', { name: 'common.titles.teams' })).toBeInTheDocument()
+		expect(
+			screen.getByRole('heading', { name: 'common.titles.teams' }),
+		).toBeInTheDocument()
 		expect(screen.getByText('teams.description')).toBeInTheDocument()
 		expect(screen.getByRole('link', { name: 'common.actions.add' })).toBeInTheDocument()
 	})
@@ -37,7 +39,9 @@ describe('TeamsLayoutHeader', () => {
 	it('should render admin variant correctly', () => {
 		renderWithRouter(<TeamsLayoutHeader variant='admin' />)
 
-		expect(screen.getByRole('heading', { name: 'admin.team.title' })).toBeInTheDocument()
+		expect(
+			screen.getByRole('heading', { name: 'admin.team.title' }),
+		).toBeInTheDocument()
 		expect(screen.getByText('admin.team.description')).toBeInTheDocument()
 		expect(screen.getByRole('link', { name: 'common.actions.add' })).toBeInTheDocument()
 	})

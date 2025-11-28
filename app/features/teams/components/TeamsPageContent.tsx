@@ -48,7 +48,12 @@ export function TeamsPageContent({
 		return (
 			<div className='space-y-6' data-testid={testId}>
 				{/* Stats using optimized dashboard panels */}
-				<div className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+				<div
+					className={cn(
+						'grid w-full grid-cols-1 gap-5 lg:w-fit',
+						STATS_PANEL_MIN_WIDTH,
+					)}
+				>
 					<Panel
 						color={PANEL_COLOR}
 						variant='dashboard-panel'
@@ -106,8 +111,9 @@ export function TeamsPageContent({
 							{' '}
 							(
 							{
-								tournamentListItems.find((tournament) => tournament.id === selectedTournamentId)
-									?.name
+								tournamentListItems.find(
+									(tournament) => tournament.id === selectedTournamentId,
+								)?.name
 							}
 							)
 						</span>

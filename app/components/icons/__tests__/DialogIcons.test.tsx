@@ -189,40 +189,38 @@ describe('Dialog Intent Icons', () => {
 
 			const icon = screen.getByRole('img')
 			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
+			expect(icon).toHaveAttribute('viewBox', '0 -960 960 960')
 			expect(icon).toHaveAttribute('aria-label', 'Info')
 		})
 
-		it('should have white stroke details for contrast', () => {
+		it('should use fill-current class for Material Symbols style', () => {
 			render(<InfoIcon />)
 
-			const linePath = screen.getByTestId('info-icon-line')
-			const dotPath = screen.getByTestId('info-icon-dot')
-
-			expect(linePath).toBeInTheDocument()
-			expect(linePath).toHaveAttribute('stroke', 'white')
-			expect(dotPath).toBeInTheDocument()
-			expect(dotPath).toHaveAttribute('stroke', 'white')
+			const icon = screen.getByRole('img')
+			expect(icon).toHaveClass('fill-current')
 		})
 
-		it('should support custom weight for stroke width', () => {
+		it('should support custom weight', () => {
 			const { unmount: unmount400 } = render(<InfoIcon weight={400} />)
 			const icon400 = screen.getByRole('img')
 			expect(icon400).toHaveAttribute('width', '24')
+			expect(icon400).not.toHaveStyle({ strokeWidth: '1.5' })
 			unmount400()
 
 			const { unmount: unmount600 } = render(<InfoIcon weight={600} />)
 			const icon600 = screen.getByRole('img')
 			expect(icon600).toHaveAttribute('width', '24')
+			expect(icon600).toHaveStyle({ strokeWidth: '1.5' })
 			unmount600()
 		})
 
-		it('should have circle background with intent color', () => {
+		it('should render as Material Symbols icon', () => {
 			render(<InfoIcon />)
 
 			const icon = screen.getByRole('img')
 			expect(icon).toBeInTheDocument()
 			expect(icon).toHaveAttribute('role', 'img')
+			expect(icon).toHaveClass('fill-current')
 		})
 
 		it('should support custom className', () => {

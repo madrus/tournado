@@ -91,8 +91,12 @@ describe('SimpleConfirmDialog', () => {
 
 			await waitFor(() => {
 				const dialog = screen.getByRole('alertdialog')
-				expect(within(dialog).getByRole('button', { name: 'Yes, proceed' })).toBeInTheDocument()
-				expect(within(dialog).getByRole('button', { name: 'No, go back' })).toBeInTheDocument()
+				expect(
+					within(dialog).getByRole('button', { name: 'Yes, proceed' }),
+				).toBeInTheDocument()
+				expect(
+					within(dialog).getByRole('button', { name: 'No, go back' }),
+				).toBeInTheDocument()
 			})
 		})
 
@@ -218,7 +222,9 @@ describe('SimpleConfirmDialog', () => {
 				const icon = within(dialog).getByRole('img', { hidden: true })
 
 				// Icon container should have warning background
-				const iconContainer = within(dialog).getByTestId('simple-confirm-dialog-icon-container')
+				const iconContainer = within(dialog).getByTestId(
+					'simple-confirm-dialog-icon-container',
+				)
 				expect(iconContainer).toHaveClass('bg-amber-100')
 
 				// Icon should have warning color
@@ -285,7 +291,9 @@ describe('SimpleConfirmDialog', () => {
 				const icon = within(dialog).getByRole('img', { hidden: true })
 
 				// Icon container should have danger background
-				const iconContainer = within(dialog).getByTestId('simple-confirm-dialog-icon-container')
+				const iconContainer = within(dialog).getByTestId(
+					'simple-confirm-dialog-icon-container',
+				)
 				expect(iconContainer).toHaveClass('bg-red-100')
 
 				// Icon should have danger color
@@ -352,7 +360,9 @@ describe('SimpleConfirmDialog', () => {
 				const icon = within(dialog).getByRole('img', { hidden: true })
 
 				// Icon container should have info background
-				const iconContainer = within(dialog).getByTestId('simple-confirm-dialog-icon-container')
+				const iconContainer = within(dialog).getByTestId(
+					'simple-confirm-dialog-icon-container',
+				)
 				expect(iconContainer).toHaveClass('bg-sky-100')
 
 				// Icon should have info color
@@ -419,7 +429,9 @@ describe('SimpleConfirmDialog', () => {
 				const icon = within(dialog).getByRole('img', { hidden: true })
 
 				// Icon container should have success background
-				const iconContainer = within(dialog).getByTestId('simple-confirm-dialog-icon-container')
+				const iconContainer = within(dialog).getByTestId(
+					'simple-confirm-dialog-icon-container',
+				)
 				expect(iconContainer).toHaveClass('bg-green-100')
 
 				// Icon should have success color
@@ -512,7 +524,10 @@ describe('SimpleConfirmDialog', () => {
 			await waitFor(() => {
 				const dialog = screen.getByRole('alertdialog')
 				expect(dialog).toHaveAttribute('aria-describedby', 'dialog-description')
-				expect(screen.getByText('This is important')).toHaveAttribute('id', 'dialog-description')
+				expect(screen.getByText('This is important')).toHaveAttribute(
+					'id',
+					'dialog-description',
+				)
 			})
 		})
 
@@ -552,14 +567,12 @@ describe('SimpleConfirmDialog', () => {
 
 			await waitFor(() => {
 				const dialog = screen.getByRole('alertdialog')
-				expect(within(dialog).getByRole('button', { name: 'Confirm action' })).toHaveAttribute(
-					'aria-label',
-					'Confirm action',
-				)
-				expect(within(dialog).getByRole('button', { name: 'Cancel action' })).toHaveAttribute(
-					'aria-label',
-					'Cancel action',
-				)
+				expect(
+					within(dialog).getByRole('button', { name: 'Confirm action' }),
+				).toHaveAttribute('aria-label', 'Confirm action')
+				expect(
+					within(dialog).getByRole('button', { name: 'Cancel action' }),
+				).toHaveAttribute('aria-label', 'Cancel action')
 			})
 		})
 
@@ -579,7 +592,9 @@ describe('SimpleConfirmDialog', () => {
 
 			await waitFor(() => {
 				const dialog = screen.getByRole('alertdialog')
-				const iconContainer = within(dialog).getByTestId('simple-confirm-dialog-icon-container')
+				const iconContainer = within(dialog).getByTestId(
+					'simple-confirm-dialog-icon-container',
+				)
 				expect(iconContainer).toHaveAttribute('aria-hidden', 'true')
 			})
 		})

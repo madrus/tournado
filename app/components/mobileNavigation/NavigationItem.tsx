@@ -54,7 +54,10 @@ function NavigationItem({
 				'data-testid': 'nav-icon',
 			})}
 			<span
-				className={cn(navigationLabelVariants({ color, active: isActive }), getLatinTextClass())}
+				className={cn(
+					navigationLabelVariants({ color, active: isActive }),
+					getLatinTextClass(),
+				)}
 			>
 				{label}
 			</span>

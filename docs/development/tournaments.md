@@ -185,10 +185,10 @@ We use a **sidebar/slider approach** instead of expanding elements:
    style={{ transform: `translateX(${x}px)` }}
 >
    {/* Content Block - 100% width */}
-   <div className='w-full flex-shrink-0 bg-white'>{/* Tournament content */}</div>
+   <div className='w-full shrink-0 bg-white'>{/* Tournament content */}</div>
 
    {/* Delete Block - Screen width to prevent white space */}
-   <div className='w-screen flex-shrink-0 bg-red-500'>{/* Delete button */}</div>
+   <div className='w-screen shrink-0 bg-red-500'>{/* Delete button */}</div>
 </div>
 ```
 

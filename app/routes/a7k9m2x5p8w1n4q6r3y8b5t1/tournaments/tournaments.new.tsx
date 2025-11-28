@@ -5,7 +5,11 @@ import { redirect, useActionData, useLoaderData } from 'react-router'
 
 import { TournamentForm } from '~/features/tournaments/components/TournamentForm'
 import { useTournamentFormStore } from '~/features/tournaments/stores/useTournamentFormStore'
-import { createTournament, getAllCategories, getAllDivisions } from '~/models/tournament.server'
+import {
+	createTournament,
+	getAllCategories,
+	getAllDivisions,
+} from '~/models/tournament.server'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
@@ -71,7 +75,9 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData>
 	}
 }
 
-export async function action({ request }: Route.ActionArgs): Promise<Response | ActionData> {
+export async function action({
+	request,
+}: Route.ActionArgs): Promise<Response | ActionData> {
 	await requireUserWithMetadata(request, handle)
 
 	const formData = await request.formData()
@@ -128,7 +134,8 @@ export async function action({ request }: Route.ActionArgs): Promise<Response | 
 
 	try {
 		// Default endDate to startDate if not provided
-		const finalEndDate = endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+		const finalEndDate =
+			endDate && typeof endDate === 'string' ? endDate : (startDate as string)
 
 		const tournament = await createTournament({
 			name: name as string,
@@ -140,7 +147,9 @@ export async function action({ request }: Route.ActionArgs): Promise<Response | 
 		})
 
 		// Redirect to tournament detail page with success parameter
-		return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}?success=created`)
+		return redirect(
+			`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournament.id}?success=created`,
+		)
 	} catch (_error) {
 		return {
 			errors: {

@@ -61,8 +61,16 @@ async function globalSetup(_config: FullConfig): Promise<void> {
 	const regularUser = seededUsers.PUBLIC
 
 	// Create simple auth state files with session cookies
-	await createSimpleAuthState(adminUser.id, './playwright/.auth/admin-auth.json', 'admin')
-	await createSimpleAuthState(regularUser.id, './playwright/.auth/user-auth.json', 'regular user')
+	await createSimpleAuthState(
+		adminUser.id,
+		'./playwright/.auth/admin-auth.json',
+		'admin',
+	)
+	await createSimpleAuthState(
+		regularUser.id,
+		'./playwright/.auth/user-auth.json',
+		'regular user',
+	)
 }
 
 async function createSimpleAuthState(

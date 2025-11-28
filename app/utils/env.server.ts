@@ -33,8 +33,14 @@ export function init(): void {
  * @returns all public ENV variables
  */
 export const getEnv = (): ENV => ({
-	MODE: (process.env.NODE_ENV || 'development') as 'test' | 'production' | 'development',
-	APP_ENV: (process.env.APP_ENV || 'development') as 'production' | 'staging' | 'development',
+	MODE: (process.env.NODE_ENV || 'development') as
+		| 'test'
+		| 'production'
+		| 'development',
+	APP_ENV: (process.env.APP_ENV || 'development') as
+		| 'production'
+		| 'staging'
+		| 'development',
 	VITE_FIREBASE_API_KEY: process.env.VITE_FIREBASE_API_KEY,
 	VITE_FIREBASE_AUTH_DOMAIN: process.env.VITE_FIREBASE_AUTH_DOMAIN,
 	VITE_FIREBASE_PROJECT_ID: process.env.VITE_FIREBASE_PROJECT_ID,

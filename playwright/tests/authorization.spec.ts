@@ -36,7 +36,9 @@ test.describe('Authorization - Public Access', () => {
 		await expect(await publicPage.getAddTeamButton()).toBeVisible()
 	})
 
-	test('should redirect to signin when accessing protected routes', async ({ page }) => {
+	test('should redirect to signin when accessing protected routes', async ({
+		page,
+	}) => {
 		const publicPage = new PublicPage(page)
 		await publicPage.navigateToAdminPanel()
 

@@ -11,7 +11,10 @@ type OnAuthStateChangedDual = ((
 ) => () => void) &
 	((nextOrObserver: (user: FirebaseAuthUser | null) => unknown) => () => void)
 
-type SignInWithPopup = (auth: Auth, provider: GoogleAuthProvider) => Promise<UserCredential>
+type SignInWithPopup = (
+	auth: Auth,
+	provider: GoogleAuthProvider,
+) => Promise<UserCredential>
 type SignOut = (auth: Auth) => Promise<void>
 type SignInWithEmailAndPassword = (
 	auth: Auth,

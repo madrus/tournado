@@ -41,7 +41,14 @@ beforeEach(() => {
 
 describe('Resource Route: /api/teams', () => {
 	// Test roles with teams:read permission
-	const rolesWithAccess: Role[] = ['PUBLIC', 'REFEREE', 'EDITOR', 'BILLING', 'MANAGER', 'ADMIN']
+	const rolesWithAccess: Role[] = [
+		'PUBLIC',
+		'REFEREE',
+		'EDITOR',
+		'BILLING',
+		'MANAGER',
+		'ADMIN',
+	]
 
 	rolesWithAccess.forEach((role) => {
 		it(`${role} users should access (has teams:read permission)`, async () => {

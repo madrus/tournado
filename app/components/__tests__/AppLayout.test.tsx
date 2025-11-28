@@ -30,7 +30,8 @@ vi.mock('~/components/AppBar', () => ({
 		language: Language
 	}) => (
 		<div data-testid='app-bar'>
-			AppBar - authenticated: {String(authenticated)}, username: {username}, language: {language}
+			AppBar - authenticated: {String(authenticated)}, username: {username}, language:{' '}
+			{language}
 			{user ? `, user: ${user.email}` : ''}
 		</div>
 	),
@@ -46,7 +47,13 @@ vi.mock('~/components/mobileNavigation/BottomNavigation', () => ({
 
 // Mock Radix UI Theme
 vi.mock('@radix-ui/themes', () => ({
-	Theme: ({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }) => (
+	Theme: ({
+		children,
+		...props
+	}: {
+		children: React.ReactNode
+		[key: string]: unknown
+	}) => (
 		<div data-testid='radix-theme' data-theme-props={JSON.stringify(props)}>
 			{children}
 		</div>
@@ -114,7 +121,13 @@ describe('AppLayout', () => {
 
 	describe('prop handling', () => {
 		it('should pass authentication props to AppBar', () => {
-			render(<AppLayout {...defaultProps} authenticated={true} username='john@example.com' />)
+			render(
+				<AppLayout
+					{...defaultProps}
+					authenticated={true}
+					username='john@example.com'
+				/>,
+			)
 
 			const appBar = screen.getByTestId('app-bar')
 			expect(appBar).toHaveTextContent('authenticated: true')
@@ -151,7 +164,9 @@ describe('AppLayout', () => {
 			render(<AppLayout {...defaultProps} theme='dark' />)
 
 			const themeComponent = screen.getByTestId('radix-theme')
-			const themeProps = JSON.parse(themeComponent.getAttribute('data-theme-props') || '{}')
+			const themeProps = JSON.parse(
+				themeComponent.getAttribute('data-theme-props') || '{}',
+			)
 			expect(themeProps.appearance).toBe('dark')
 			expect(themeProps.accentColor).toBe('teal')
 			expect(themeProps.grayColor).toBe('slate')
@@ -227,7 +242,9 @@ describe('AppLayout', () => {
 			render(<AppLayout {...defaultProps} />)
 
 			const toaster = screen.getByTestId('toaster')
-			const toasterProps = JSON.parse(toaster.getAttribute('data-toaster-props') || '{}')
+			const toasterProps = JSON.parse(
+				toaster.getAttribute('data-toaster-props') || '{}',
+			)
 
 			expect(toasterProps.position).toBe('top-center')
 			expect(toasterProps.visibleToasts).toBe(10)
@@ -243,7 +260,9 @@ describe('AppLayout', () => {
 			render(<AppLayout {...defaultProps} theme='light' />)
 
 			const themeComponent = screen.getByTestId('radix-theme')
-			const themeProps = JSON.parse(themeComponent.getAttribute('data-theme-props') || '{}')
+			const themeProps = JSON.parse(
+				themeComponent.getAttribute('data-theme-props') || '{}',
+			)
 
 			expect(themeProps.accentColor).toBe('teal')
 			expect(themeProps.grayColor).toBe('slate')
@@ -256,7 +275,9 @@ describe('AppLayout', () => {
 			render(<AppLayout {...defaultProps} theme='dark' />)
 
 			const themeComponent = screen.getByTestId('radix-theme')
-			const themeProps = JSON.parse(themeComponent.getAttribute('data-theme-props') || '{}')
+			const themeProps = JSON.parse(
+				themeComponent.getAttribute('data-theme-props') || '{}',
+			)
 			expect(themeProps.appearance).toBe('dark')
 		})
 	})
@@ -333,7 +354,9 @@ describe('AppLayout', () => {
 
 			// Verify Theme receives correct props
 			const themeComponent = screen.getByTestId('radix-theme')
-			const themeProps = JSON.parse(themeComponent.getAttribute('data-theme-props') || '{}')
+			const themeProps = JSON.parse(
+				themeComponent.getAttribute('data-theme-props') || '{}',
+			)
 			expect(themeProps.appearance).toBe('dark')
 
 			// Verify other components are rendered

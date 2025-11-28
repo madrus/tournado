@@ -157,7 +157,8 @@ function Calendar({
 					const isPastDate = noPast && date < today
 
 					// Determine the state for the CVA variant - priority order matters
-					let dayState: 'default' | 'today' | 'selected' | 'disabled' | 'past' = 'default'
+					let dayState: 'default' | 'today' | 'selected' | 'disabled' | 'past' =
+						'default'
 					if (disabled) dayState = 'disabled'
 					else if (selected) dayState = 'selected'
 					else if (isCurrentDay) dayState = 'today'
@@ -207,11 +208,17 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
 		// Use controlled value if provided, otherwise fall back to defaultValue for uncontrolled mode
 		const isControlled = value !== undefined
-		const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(() => {
-			const initialValue = isControlled ? value : defaultValue
-			return initialValue ? new Date(initialValue) : undefined
-		})
-		const selectedDate = isControlled ? (value ? new Date(value) : undefined) : internalSelectedDate
+		const [internalSelectedDate, setInternalSelectedDate] = useState<Date | undefined>(
+			() => {
+				const initialValue = isControlled ? value : defaultValue
+				return initialValue ? new Date(initialValue) : undefined
+			},
+		)
+		const selectedDate = isControlled
+			? value
+				? new Date(value)
+				: undefined
+			: internalSelectedDate
 		const [isOpen, setIsOpen] = useState(false)
 		const [hasInteracted, setHasInteracted] = useState(false)
 		const containerRef = useRef<HTMLDivElement>(null)
@@ -245,7 +252,11 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 
 			// Check if the focus is moving to an element inside our container
 			const relatedTarget = event.relatedTarget as Element | null
-			if (containerRef.current && relatedTarget && containerRef.current.contains(relatedTarget)) {
+			if (
+				containerRef.current &&
+				relatedTarget &&
+				containerRef.current.contains(relatedTarget)
+			) {
 				// Focus is moving within the component, don't trigger blur validation
 				return
 			}
@@ -270,7 +281,9 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 				requestAnimationFrame(() => {
 					const activeElement = document.activeElement
 					const focusIsWithinContainer =
-						containerRef.current && activeElement && containerRef.current.contains(activeElement)
+						containerRef.current &&
+						activeElement &&
+						containerRef.current.contains(activeElement)
 
 					// Only trigger validation if focus has truly left the component
 					if (!focusIsWithinContainer) {
@@ -292,7 +305,9 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 		return (
 			<div className={className}>
 				<label className={textInputLabelVariants()}>
-					<div className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}>
+					<div
+						className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+					>
 						<span className={textInputLabelTextVariants()}>{label}</span>
 						{/* Status icon container with fixed width to prevent layout shifts */}
 						<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>

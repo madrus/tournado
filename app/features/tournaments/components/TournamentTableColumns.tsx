@@ -18,7 +18,9 @@ type ColumnContext = {
 	latinFontClass: string
 }
 
-export function createTournamentColumns(context: ColumnContext): ColumnDef<TournamentListItem>[] {
+export function createTournamentColumns(
+	context: ColumnContext,
+): ColumnDef<TournamentListItem>[] {
 	const { t, formatDate, onDelete, latinFontClass } = context
 
 	return [
@@ -120,8 +122,12 @@ export function createTournamentColumns(context: ColumnContext): ColumnDef<Tourn
 			),
 			enableSorting: true,
 			sortingFn: (rowA, rowB) => {
-				const dateA = rowA.original.endDate ? new Date(rowA.original.endDate).getTime() : 0
-				const dateB = rowB.original.endDate ? new Date(rowB.original.endDate).getTime() : 0
+				const dateA = rowA.original.endDate
+					? new Date(rowA.original.endDate).getTime()
+					: 0
+				const dateB = rowB.original.endDate
+					? new Date(rowB.original.endDate).getTime()
+					: 0
 				return dateA - dateB
 			},
 		},

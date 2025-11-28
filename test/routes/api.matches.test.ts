@@ -30,7 +30,14 @@ beforeEach(() => {
 
 describe('Resource Route: /api/matches (PLACEHOLDER)', () => {
 	// Test roles with matches:read permission
-	const rolesWithAccess: Role[] = ['PUBLIC', 'REFEREE', 'EDITOR', 'BILLING', 'MANAGER', 'ADMIN']
+	const rolesWithAccess: Role[] = [
+		'PUBLIC',
+		'REFEREE',
+		'EDITOR',
+		'BILLING',
+		'MANAGER',
+		'ADMIN',
+	]
 
 	rolesWithAccess.forEach((role) => {
 		it(`${role} users should receive placeholder response (has matches:read permission)`, async () => {
@@ -65,7 +72,12 @@ describe('Resource Route: /api/matches (PLACEHOLDER)', () => {
 		const request = new Request('http://localhost/api/matches')
 
 		try {
-			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.matches' })
+			await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.matches',
+			})
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects

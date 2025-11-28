@@ -124,7 +124,14 @@ describe('roleUtils', () => {
 
 	describe('VALID_ROLES constant', () => {
 		it('should contain all expected role values', () => {
-			const expectedRoles = ['PUBLIC', 'MANAGER', 'ADMIN', 'REFEREE', 'EDITOR', 'BILLING']
+			const expectedRoles = [
+				'PUBLIC',
+				'MANAGER',
+				'ADMIN',
+				'REFEREE',
+				'EDITOR',
+				'BILLING',
+			]
 			expect(VALID_ROLES).toEqual(expectedRoles)
 		})
 

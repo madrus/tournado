@@ -127,7 +127,8 @@ vi.mock('~/lib/lib.helpers', () => ({
 
 // Mock cn utility
 vi.mock('~/utils/misc', () => ({
-	cn: (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' '),
+	cn: (...classes: (string | boolean | undefined)[]) =>
+		classes.filter(Boolean).join(' '),
 }))
 
 // Mock icons
@@ -313,30 +314,50 @@ vi.mock('../inputs/CustomDatePicker', () => ({
 			readOnly?: boolean
 			onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 		}
-	>(({ name, label, value, defaultValue, error, required, className, readOnly, onChange }, ref) => (
-		<div className='custom-date-picker'>
-			<label htmlFor={name}>
-				{label}
-				{required ? ' *' : null}
-			</label>
-			<input
-				ref={ref}
-				id={name}
-				name={name}
-				type='date'
-				value={value}
-				defaultValue={defaultValue}
-				className={className}
-				readOnly={readOnly}
-				data-error={!!error}
-				onChange={onChange}
-			/>
-			{error ? <span className='error'>{error}</span> : null}
-		</div>
-	)),
+	>(
+		(
+			{
+				name,
+				label,
+				value,
+				defaultValue,
+				error,
+				required,
+				className,
+				readOnly,
+				onChange,
+			},
+			ref,
+		) => (
+			<div className='custom-date-picker'>
+				<label htmlFor={name}>
+					{label}
+					{required ? ' *' : null}
+				</label>
+				<input
+					ref={ref}
+					id={name}
+					name={name}
+					type='date'
+					value={value}
+					defaultValue={defaultValue}
+					className={className}
+					readOnly={readOnly}
+					data-error={!!error}
+					onChange={onChange}
+				/>
+				{error ? <span className='error'>{error}</span> : null}
+			</div>
+		),
+	),
 }))
 
-const mockDivisions = ['PREMIER_DIVISION', 'FIRST_DIVISION', 'SECOND_DIVISION', 'THIRD_DIVISION']
+const mockDivisions = [
+	'PREMIER_DIVISION',
+	'FIRST_DIVISION',
+	'SECOND_DIVISION',
+	'THIRD_DIVISION',
+]
 const mockCategories = ['JO8', 'JO9', 'JO10', 'JO11', 'JO12', 'MO8', 'MO9', 'MO10']
 
 const renderTournamentForm = (props: Parameters<typeof TournamentForm>[0] = {}) => {
@@ -398,7 +419,9 @@ describe('TournamentForm Component', () => {
 			expect(screen.getByText('tournaments.form.dates')).toBeInTheDocument()
 			expect(screen.getByText('tournaments.form.divisions')).toBeInTheDocument()
 			expect(screen.getByText('tournaments.form.categories')).toBeInTheDocument()
-			expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: 'common.actions.save' }),
+			).toBeInTheDocument()
 		})
 
 		it('should render all form fields correctly', () => {
@@ -443,7 +466,9 @@ describe('TournamentForm Component', () => {
 				successMessage: 'Tournament created successfully!',
 			})
 
-			expect(screen.queryByText('Tournament created successfully!')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('Tournament created successfully!'),
+			).not.toBeInTheDocument()
 		})
 	})
 
@@ -516,7 +541,9 @@ describe('TournamentForm Component', () => {
 				errors: { divisions: 'messages.tournament.divisionsRequired' },
 			})
 
-			expect(screen.getByText('messages.tournament.divisionsRequired')).toBeInTheDocument()
+			expect(
+				screen.getByText('messages.tournament.divisionsRequired'),
+			).toBeInTheDocument()
 		})
 	})
 
@@ -566,7 +593,9 @@ describe('TournamentForm Component', () => {
 				errors: { categories: 'messages.tournament.categoriesRequired' },
 			})
 
-			expect(screen.getByText('messages.tournament.categoriesRequired')).toBeInTheDocument()
+			expect(
+				screen.getByText('messages.tournament.categoriesRequired'),
+			).toBeInTheDocument()
 		})
 	})
 
@@ -595,7 +624,9 @@ describe('TournamentForm Component', () => {
 				expect(screen.getByText('messages.tournament.nameRequired')).toBeInTheDocument()
 			})
 
-			expect(screen.getByText('messages.tournament.locationRequired')).toBeInTheDocument()
+			expect(
+				screen.getByText('messages.tournament.locationRequired'),
+			).toBeInTheDocument()
 		})
 
 		it('should focus name field when it has an error', async () => {
@@ -621,7 +652,9 @@ describe('TournamentForm Component', () => {
 		it('should render submit button with default text', () => {
 			renderTournamentForm()
 
-			expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: 'common.actions.save' }),
+			).toBeInTheDocument()
 		})
 
 		it('should render submit button with custom text', () => {
@@ -629,7 +662,9 @@ describe('TournamentForm Component', () => {
 				submitButtonText: 'common.actions.save',
 			})
 
-			expect(screen.getByRole('button', { name: 'common.actions.save' })).toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: 'common.actions.save' }),
+			).toBeInTheDocument()
 		})
 
 		it('should always render reset button', () => {
@@ -743,7 +778,9 @@ describe('TournamentForm Component', () => {
 		it('should have proper form labels', () => {
 			renderTournamentForm()
 
-			expect(screen.getByRole('textbox', { name: /tournaments\.form\.name/i })).toBeInTheDocument()
+			expect(
+				screen.getByRole('textbox', { name: /tournaments\.form\.name/i }),
+			).toBeInTheDocument()
 			expect(
 				screen.getByRole('textbox', { name: /tournaments\.form\.location/i }),
 			).toBeInTheDocument()
@@ -797,7 +834,9 @@ describe('TournamentForm Component', () => {
 			renderTournamentForm()
 
 			// Initially no divisions selected - with i18n mock, text is "0 tournaments.form.selected"
-			expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+			expect(
+				screen.getAllByText(/0 tournaments\.form\.selected/)[0],
+			).toBeInTheDocument()
 
 			// Select first division
 			const firstDivisionLabel = screen.getByTestId('division-first_division')
@@ -805,7 +844,9 @@ describe('TournamentForm Component', () => {
 
 			// Should show 1 selected
 			await waitFor(() => {
-				expect(screen.getAllByText(/1 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+				expect(
+					screen.getAllByText(/1 tournaments\.form\.selected/)[0],
+				).toBeInTheDocument()
 			})
 		})
 
@@ -814,7 +855,9 @@ describe('TournamentForm Component', () => {
 			renderTournamentForm()
 
 			// Initially no categories selected - with i18n mock, text is "0 tournaments.form.selected"
-			expect(screen.getAllByText(/0 tournaments\.form\.selected/)[1]).toBeInTheDocument()
+			expect(
+				screen.getAllByText(/0 tournaments\.form\.selected/)[1],
+			).toBeInTheDocument()
 
 			// Select first category
 			const jo8Label = screen.getByTestId('category-jo8')
@@ -847,7 +890,9 @@ describe('TournamentForm Component', () => {
 
 			// Should show 0 selected for divisions
 			await waitFor(() => {
-				expect(screen.getAllByText(/0 tournaments\.form\.selected/)[0]).toBeInTheDocument()
+				expect(
+					screen.getAllByText(/0 tournaments\.form\.selected/)[0],
+				).toBeInTheDocument()
 			})
 		})
 	})

@@ -11,7 +11,8 @@ import { PrismaClient, Role } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function migrateAdminRoles() {
-	const superAdminEmails = process.env.SUPER_ADMIN_EMAILS?.split(',').map((e) => e.trim()) || []
+	const superAdminEmails =
+		process.env.SUPER_ADMIN_EMAILS?.split(',').map((e) => e.trim()) || []
 
 	if (superAdminEmails.length === 0) {
 		await new Promise((resolve) => setTimeout(resolve, 5000))

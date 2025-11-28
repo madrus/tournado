@@ -28,7 +28,7 @@ describe('Panel Variants (CVA)', () => {
 			// Dashboard-specific layout classes
 			expect(classes).toContain('[&_.dashboard-content]:flex')
 			expect(classes).toContain('[&_.dashboard-content]:items-center')
-			expect(classes).toContain('[&_.dashboard-icon]:flex-shrink-0')
+			expect(classes).toContain('[&_.dashboard-icon]:shrink-0')
 			expect(classes).toContain('[&_.dashboard-icon]:me-5')
 			expect(classes).toContain('[&_.dashboard-stats]:w-0')
 			expect(classes).toContain('[&_.dashboard-stats]:flex-1')

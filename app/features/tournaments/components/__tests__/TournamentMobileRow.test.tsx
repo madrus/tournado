@@ -336,7 +336,8 @@ describe('TournamentMobileRow', () => {
 		it('should handle tournament with very long location', () => {
 			const longLocationTournament = {
 				...mockTournament,
-				location: 'Very Long Location Name That Should Be Truncated Or Wrapped Appropriately',
+				location:
+					'Very Long Location Name That Should Be Truncated Or Wrapped Appropriately',
 			}
 
 			render(

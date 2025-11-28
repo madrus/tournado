@@ -25,7 +25,7 @@ export const INPUT_LABEL_SPACING = 'mb-2' as const
  * Fixed width container for status icons in form fields
  * Ensures consistent alignment and prevents layout shifts
  */
-export const STATUS_ICON_CONTAINER_WIDTH = 'w-6 flex-shrink-0' as const
+export const STATUS_ICON_CONTAINER_WIDTH = 'w-6 shrink-0' as const
 
 /**
  * Tailwind breakpoints (matching Tailwind's default breakpoints)

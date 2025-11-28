@@ -132,7 +132,9 @@ describe('adminMiddleware.server', () => {
 				resetTime: Date.now() + 60000,
 			})
 
-			await expect(withAdminRateLimit(request, mockHandler)).rejects.toThrow('Handler failed')
+			await expect(withAdminRateLimit(request, mockHandler)).rejects.toThrow(
+				'Handler failed',
+			)
 		})
 	})
 
@@ -196,7 +198,9 @@ describe('adminMiddleware.server', () => {
 			const request1 = new Request('http://localhost/admin/sensitive')
 			const request2 = new Request('http://localhost/admin/sensitive')
 
-			mockGetClientIP.mockReturnValueOnce('192.168.1.1').mockReturnValueOnce('192.168.1.2')
+			mockGetClientIP
+				.mockReturnValueOnce('192.168.1.1')
+				.mockReturnValueOnce('192.168.1.2')
 
 			mockCheckRateLimit.mockReturnValue({
 				allowed: true,
@@ -293,7 +297,11 @@ describe('adminMiddleware.server', () => {
 
 			await withAdminRateLimit(request, mockHandler)
 
-			expect(mockCheckRateLimit).toHaveBeenCalledWith('admin:unknown', expect.any(Object), request)
+			expect(mockCheckRateLimit).toHaveBeenCalledWith(
+				'admin:unknown',
+				expect.any(Object),
+				request,
+			)
 		})
 	})
 })

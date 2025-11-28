@@ -150,7 +150,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 			<div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800'>
 				<TrophyIcon className='text-slate-400' size={24} variant='outlined' />
 			</div>
-			<p className='mb-2 font-medium text-base text-foreground'>{t('tournaments.noTournaments')}</p>
+			<p className='mb-2 font-medium text-base text-foreground'>
+				{t('tournaments.noTournaments')}
+			</p>
 			<p className='mb-6 text-foreground-light text-sm'>
 				{t('tournaments.noTournamentsDescription')}
 			</p>
@@ -160,7 +162,9 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 	return (
 		<div className='space-y-6' data-testid='admin-tournaments-page-content'>
 			{/* Stats using optimized dashboard panels */}
-			<div className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}>
+			<div
+				className={cn('grid w-full grid-cols-1 gap-5 lg:w-fit', STATS_PANEL_MIN_WIDTH)}
+			>
 				<Panel
 					color={PANEL_COLOR}
 					variant='dashboard-panel'

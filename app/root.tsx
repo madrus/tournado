@@ -176,7 +176,10 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 			<head>
 				<Meta />
 				<meta charSet='utf-8' />
-				<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover' />
+				<meta
+					name='viewport'
+					content='width=device-width,initial-scale=1,viewport-fit=cover'
+				/>
 				<Links />
 			</head>
 			<body
@@ -220,7 +223,12 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 	const { setUser, setFirebaseUser } = useAuthStore()
 	const { setAvailableOptionsField } = useTeamFormStore()
-	const { setTheme, setLanguage, theme: currentTheme, language: storeLanguage } = useSettingsStore()
+	const {
+		setTheme,
+		setLanguage,
+		theme: currentTheme,
+		language: storeLanguage,
+	} = useSettingsStore()
 
 	// Get current language from store (this makes store the source of truth)
 	const [isHydrated, setIsHydrated] = useState(false)

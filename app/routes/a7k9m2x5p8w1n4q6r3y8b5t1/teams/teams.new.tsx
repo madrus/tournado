@@ -1,7 +1,11 @@
 import type { JSX } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { type ActionFunctionArgs, type LoaderFunctionArgs, useActionData } from 'react-router'
+import {
+	type ActionFunctionArgs,
+	type LoaderFunctionArgs,
+	useActionData,
+} from 'react-router'
 
 import { TeamForm } from '~/features/teams/components/TeamForm'
 import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
@@ -56,7 +60,9 @@ export default function AdminNewTeamPage(): JSX.Element {
 		<div className='space-y-8' data-testid='admin-new-team-container'>
 			<div className='mb-8'>
 				<h2 className='font-bold text-3xl'>{t('admin.teams.newTeam')}</h2>
-				<p className='mt-2 text-foreground'>{t('admin.teams.createNewTeamDescription')}</p>
+				<p className='mt-2 text-foreground'>
+					{t('admin.teams.createNewTeamDescription')}
+				</p>
 			</div>
 
 			<TeamForm

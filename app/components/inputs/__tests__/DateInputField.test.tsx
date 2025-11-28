@@ -141,7 +141,13 @@ describe('DateInputField', () => {
 	it('should handle defaultValue correctly', () => {
 		const mockOnChange = vi.fn()
 
-		render(<DateInputField {...defaultProps} defaultValue='2024-01-15' onChange={mockOnChange} />)
+		render(
+			<DateInputField
+				{...defaultProps}
+				defaultValue='2024-01-15'
+				onChange={mockOnChange}
+			/>,
+		)
 
 		const input = screen.getByLabelText('Test Date')
 		expect(input).toHaveValue('2024-01-15')
@@ -182,7 +188,13 @@ describe('DateInputField', () => {
 	it('should handle date clearing', async () => {
 		const mockOnChange = vi.fn()
 		const user = userEvent.setup()
-		render(<DateInputField {...defaultProps} defaultValue='2024-01-15' onChange={mockOnChange} />)
+		render(
+			<DateInputField
+				{...defaultProps}
+				defaultValue='2024-01-15'
+				onChange={mockOnChange}
+			/>,
+		)
 
 		const input = screen.getByLabelText('Test Date')
 		await user.clear(input)

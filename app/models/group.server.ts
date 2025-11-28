@@ -330,7 +330,9 @@ type ClearGroupSlotProps = {
 }
 
 /** Clear a specific group slot (set teamId to null) */
-export async function clearGroupSlot(props: Readonly<ClearGroupSlotProps>): Promise<void> {
+export async function clearGroupSlot(
+	props: Readonly<ClearGroupSlotProps>,
+): Promise<void> {
 	const { groupSlotId } = props
 	await prisma.groupSlot.update({
 		where: { id: groupSlotId },
@@ -348,7 +350,9 @@ type MoveTeamToReserveProps = {
  * - Clears any existing group assignment
  * - Creates a reserve slot (groupId null) for that team if not present
  */
-export async function moveTeamToReserve(props: Readonly<MoveTeamToReserveProps>): Promise<void> {
+export async function moveTeamToReserve(
+	props: Readonly<MoveTeamToReserveProps>,
+): Promise<void> {
 	const { groupSetId, teamId } = props
 
 	await prisma.$transaction(async (tx) => {
@@ -413,7 +417,9 @@ type SwapGroupSlotsProps = {
 }
 
 /** Swap teams assigned between two slots atomically */
-export async function swapGroupSlots(props: Readonly<SwapGroupSlotsProps>): Promise<void> {
+export async function swapGroupSlots(
+	props: Readonly<SwapGroupSlotsProps>,
+): Promise<void> {
 	const { sourceSlotId, targetSlotId } = props
 
 	if (sourceSlotId === targetSlotId) return

@@ -54,7 +54,10 @@ setInterval(
 
 		// Log cleanup stats in development and alert in production for high usage
 		if (process.env.NODE_ENV === 'development' && deletedCount > 0) {
-		} else if (process.env.NODE_ENV === 'production' && attempts.size > MAX_ENTRIES * 0.8) {
+		} else if (
+			process.env.NODE_ENV === 'production' &&
+			attempts.size > MAX_ENTRIES * 0.8
+		) {
 		}
 	},
 	5 * 60 * 1000, // Run every 5 minutes instead of 10
@@ -347,7 +350,10 @@ function isLocalhostRequest(request: Request): boolean {
 	const port = url.port
 	const commonDevPorts = ['3000', '5173', '8080', '4000', '8000']
 
-	return commonDevPorts.includes(port) && (hostname === 'localhost' || hostname.startsWith('127.'))
+	return (
+		commonDevPorts.includes(port) &&
+		(hostname === 'localhost' || hostname.startsWith('127.'))
+	)
 }
 
 /**

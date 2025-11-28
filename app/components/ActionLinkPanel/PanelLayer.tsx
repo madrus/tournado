@@ -72,7 +72,13 @@ export function PanelLayer({
 				childrenIconColor={effectiveChildrenIconColor}
 				showGlow
 				isHover={isHover}
-				className={cn(textAlign, getLatinTitleClass(), className, 'flex-grow', 'h-full')}
+				className={cn(
+					textAlign,
+					getLatinTitleClass(),
+					className,
+					'flex-grow',
+					'h-full',
+				)}
 				data-testid={testId}
 			>
 				{children ? (

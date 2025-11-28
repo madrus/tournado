@@ -9,7 +9,9 @@ vi.mock('../teamCreation.server', () => ({
 
 // Mock redirect function from react-router
 vi.mock('react-router', () => ({
-	redirect: vi.fn((url: string) => new Response(null, { status: 302, headers: { Location: url } })),
+	redirect: vi.fn(
+		(url: string) => new Response(null, { status: 302, headers: { Location: url } }),
+	),
 }))
 
 import { redirect } from 'react-router'

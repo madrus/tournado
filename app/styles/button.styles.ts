@@ -41,9 +41,19 @@ const getColorClasses = (color: ColorAccent, variant: ButtonVariant): string => 
 	const borderClasses = getBorderClasses(color)
 
 	if (variant === 'primary') {
-		return cn(`bg-${resolvedColor}-600 text-white`, borderClasses, ringClasses, shadowClasses)
+		return cn(
+			`bg-${resolvedColor}-600 text-white`,
+			borderClasses,
+			ringClasses,
+			shadowClasses,
+		)
 	} else {
-		return cn(`bg-transparent text-${resolvedColor}-600`, borderClasses, ringClasses, shadowClasses)
+		return cn(
+			`bg-transparent text-${resolvedColor}-600`,
+			borderClasses,
+			ringClasses,
+			shadowClasses,
+		)
 	}
 }
 

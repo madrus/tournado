@@ -25,7 +25,9 @@ import {
  * ```
  */
 export const toggleChipVariants = cva(
-	['flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200'],
+	[
+		'flex cursor-pointer items-center rounded-lg border-2 p-3 transition-all duration-200',
+	],
 	{
 		variants: {
 			/**
@@ -55,7 +57,8 @@ export const toggleChipVariants = cva(
 			{
 				color: 'brand',
 				selected: true,
-				className: 'border-brand-500 bg-brand-100 text-adaptive-brand-selected dark:bg-brand-200',
+				className:
+					'border-brand-500 bg-brand-100 text-adaptive-brand-selected dark:bg-brand-200',
 			},
 			{
 				color: 'primary',
@@ -72,17 +75,20 @@ export const toggleChipVariants = cva(
 			{
 				color: 'red',
 				selected: true,
-				className: 'border-red-500 bg-red-100 text-adaptive-red-selected dark:bg-red-200',
+				className:
+					'border-red-500 bg-red-100 text-adaptive-red-selected dark:bg-red-200',
 			},
 			{
 				color: 'blue',
 				selected: true,
-				className: 'border-blue-500 bg-blue-100 text-adaptive-blue-selected dark:bg-blue-200',
+				className:
+					'border-blue-500 bg-blue-100 text-adaptive-blue-selected dark:bg-blue-200',
 			},
 			{
 				color: 'green',
 				selected: true,
-				className: 'border-green-500 bg-green-100 text-adaptive-green-selected dark:bg-green-200',
+				className:
+					'border-green-500 bg-green-100 text-adaptive-green-selected dark:bg-green-200',
 			},
 			{
 				color: 'yellow',
@@ -99,7 +105,8 @@ export const toggleChipVariants = cva(
 			{
 				color: 'pink',
 				selected: true,
-				className: 'border-pink-500 bg-pink-100 text-adaptive-pink-selected dark:bg-pink-200',
+				className:
+					'border-pink-500 bg-pink-100 text-adaptive-pink-selected dark:bg-pink-200',
 			},
 			{
 				color: 'indigo',
@@ -110,12 +117,14 @@ export const toggleChipVariants = cva(
 			{
 				color: 'slate',
 				selected: true,
-				className: 'border-slate-500 bg-slate-100 text-adaptive-slate-selected dark:bg-slate-200',
+				className:
+					'border-slate-500 bg-slate-100 text-adaptive-slate-selected dark:bg-slate-200',
 			},
 			{
 				color: 'zinc',
 				selected: true,
-				className: 'border-zinc-500 bg-zinc-100 text-adaptive-zinc-selected dark:bg-zinc-200',
+				className:
+					'border-zinc-500 bg-zinc-100 text-adaptive-zinc-selected dark:bg-zinc-200',
 			},
 			{
 				color: 'orange',
@@ -126,27 +135,26 @@ export const toggleChipVariants = cva(
 			{
 				color: 'amber',
 				selected: true,
-				className: 'border-amber-500 bg-amber-100 text-adaptive-amber-selected dark:bg-amber-200',
+				className:
+					'border-amber-500 bg-amber-100 text-adaptive-amber-selected dark:bg-amber-200',
 			},
 			{
 				color: 'lime',
 				selected: true,
-				className: 'border-lime-500 bg-lime-100 text-adaptive-lime-selected dark:bg-lime-200',
+				className:
+					'border-lime-500 bg-lime-100 text-adaptive-lime-selected dark:bg-lime-200',
 			},
 			{
 				color: 'teal',
 				selected: true,
-				className: 'border-teal-500 bg-teal-100 text-adaptive-teal-selected dark:bg-teal-200',
+				className:
+					'border-teal-500 bg-teal-100 text-adaptive-teal-selected dark:bg-teal-200',
 			},
 			{
 				color: 'sky',
 				selected: true,
-				className: 'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
-			},
-			{
-				color: 'sky',
-				selected: true,
-				className: 'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
+				className:
+					'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
 			},
 			{
 				color: 'violet',
@@ -163,7 +171,8 @@ export const toggleChipVariants = cva(
 			{
 				color: 'rose',
 				selected: true,
-				className: 'border-rose-500 bg-rose-100 text-adaptive-rose-selected dark:bg-rose-200',
+				className:
+					'border-rose-500 bg-rose-100 text-adaptive-rose-selected dark:bg-rose-200',
 			},
 		],
 		defaultVariants: {
@@ -174,113 +183,116 @@ export const toggleChipVariants = cva(
 	},
 )
 
-export const toggleChipTextVariants = cva(['font-medium text-sm transition-colors duration-200'], {
-	variants: {
-		color: createColorVariantObject('text-adaptive-unselected'),
-		selected: {
-			true: '',
-			false: '',
+export const toggleChipTextVariants = cva(
+	['font-medium text-sm transition-colors duration-200'],
+	{
+		variants: {
+			color: createColorVariantObject('text-adaptive-unselected'),
+			selected: {
+				true: '',
+				false: '',
+			},
 		},
-	},
-	compoundVariants: [
-		{
+		compoundVariants: [
+			{
+				color: 'brand',
+				selected: true,
+				className: 'text-adaptive-brand-selected',
+			},
+			{
+				color: 'primary',
+				selected: true,
+				className: 'text-adaptive-primary-selected',
+			},
+			{
+				color: 'emerald',
+				selected: true,
+				className: 'text-adaptive-emerald-selected',
+			},
+			{ color: 'red', selected: true, className: 'text-adaptive-red-selected' },
+			{
+				color: 'blue',
+				selected: true,
+				className: 'text-adaptive-blue-selected',
+			},
+			{
+				color: 'green',
+				selected: true,
+				className: 'text-adaptive-green-selected',
+			},
+			{
+				color: 'yellow',
+				selected: true,
+				className: 'text-adaptive-yellow-selected',
+			},
+			{
+				color: 'purple',
+				selected: true,
+				className: 'text-adaptive-purple-selected',
+			},
+			{
+				color: 'pink',
+				selected: true,
+				className: 'text-adaptive-pink-selected',
+			},
+			{
+				color: 'indigo',
+				selected: true,
+				className: 'text-adaptive-indigo-selected',
+			},
+			{
+				color: 'slate',
+				selected: true,
+				className: 'text-adaptive-slate-selected',
+			},
+			{
+				color: 'zinc',
+				selected: true,
+				className: 'text-adaptive-zinc-selected',
+			},
+			{
+				color: 'orange',
+				selected: true,
+				className: 'text-adaptive-orange-selected',
+			},
+			{
+				color: 'amber',
+				selected: true,
+				className: 'text-adaptive-amber-selected',
+			},
+			{
+				color: 'lime',
+				selected: true,
+				className: 'text-adaptive-lime-selected',
+			},
+			{
+				color: 'teal',
+				selected: true,
+				className: 'text-adaptive-teal-selected',
+			},
+			{ color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
+			{
+				color: 'violet',
+				selected: true,
+				className: 'text-adaptive-violet-selected',
+			},
+			{
+				color: 'fuchsia',
+				selected: true,
+				className: 'text-adaptive-fuchsia-selected',
+			},
+			{
+				color: 'rose',
+				selected: true,
+				className: 'text-adaptive-rose-selected',
+			},
+		],
+		defaultVariants: {
 			color: 'brand',
-			selected: true,
-			className: 'text-adaptive-brand-selected',
+			selected: false,
 		},
-		{
-			color: 'primary',
-			selected: true,
-			className: 'text-adaptive-primary-selected',
-		},
-		{
-			color: 'emerald',
-			selected: true,
-			className: 'text-adaptive-emerald-selected',
-		},
-		{ color: 'red', selected: true, className: 'text-adaptive-red-selected' },
-		{
-			color: 'blue',
-			selected: true,
-			className: 'text-adaptive-blue-selected',
-		},
-		{
-			color: 'green',
-			selected: true,
-			className: 'text-adaptive-green-selected',
-		},
-		{
-			color: 'yellow',
-			selected: true,
-			className: 'text-adaptive-yellow-selected',
-		},
-		{
-			color: 'purple',
-			selected: true,
-			className: 'text-adaptive-purple-selected',
-		},
-		{
-			color: 'pink',
-			selected: true,
-			className: 'text-adaptive-pink-selected',
-		},
-		{
-			color: 'indigo',
-			selected: true,
-			className: 'text-adaptive-indigo-selected',
-		},
-		{
-			color: 'slate',
-			selected: true,
-			className: 'text-adaptive-slate-selected',
-		},
-		{
-			color: 'zinc',
-			selected: true,
-			className: 'text-adaptive-zinc-selected',
-		},
-		{
-			color: 'orange',
-			selected: true,
-			className: 'text-adaptive-orange-selected',
-		},
-		{
-			color: 'amber',
-			selected: true,
-			className: 'text-adaptive-amber-selected',
-		},
-		{
-			color: 'lime',
-			selected: true,
-			className: 'text-adaptive-lime-selected',
-		},
-		{
-			color: 'teal',
-			selected: true,
-			className: 'text-adaptive-teal-selected',
-		},
-		{ color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
-		{
-			color: 'violet',
-			selected: true,
-			className: 'text-adaptive-violet-selected',
-		},
-		{
-			color: 'fuchsia',
-			selected: true,
-			className: 'text-adaptive-fuchsia-selected',
-		},
-		{
-			color: 'rose',
-			selected: true,
-			className: 'text-adaptive-rose-selected',
-		},
-	],
-	defaultVariants: {
-		color: 'brand',
-		selected: false,
 	},
-})
+)
 
 // TypeScript type exports for component prop typing
 

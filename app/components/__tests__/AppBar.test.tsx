@@ -46,7 +46,9 @@ vi.mock('../PrefetchLink', () => ({
 	PrimaryNavLink: ({
 		children,
 		...props
-	}: { children: React.ReactNode } & Record<string, unknown>) => <a {...props}>{children}</a>,
+	}: { children: React.ReactNode } & Record<string, unknown>) => (
+		<a {...props}>{children}</a>
+	),
 }))
 
 // Mock UserMenu component to make testing easier
@@ -73,7 +75,9 @@ vi.mock('../UserMenu', () => ({
 								<span data-testid='menu-label'>{item.label}</span>
 								<span data-testid='menu-icon'>{item.icon}</span>
 								<span data-testid='menu-href'>{item.href || ''}</span>
-								<span data-testid='menu-authenticated'>{item.authenticated?.toString()}</span>
+								<span data-testid='menu-authenticated'>
+									{item.authenticated?.toString()}
+								</span>
 							</>
 						)}
 					</div>
@@ -425,7 +429,12 @@ describe('AppBar Context Menu', () => {
 
 				const { unmount } = render(
 					<MemoryRouter>
-						<AppBar authenticated={true} username='user@example.com' user={user} language='en' />
+						<AppBar
+							authenticated={true}
+							username='user@example.com'
+							user={user}
+							language='en'
+						/>
 					</MemoryRouter>,
 				)
 
@@ -457,7 +466,12 @@ describe('AppBar Context Menu', () => {
 
 				const { unmount } = render(
 					<MemoryRouter>
-						<AppBar authenticated={true} username={user.email} user={user} language='en' />
+						<AppBar
+							authenticated={true}
+							username={user.email}
+							user={user}
+							language='en'
+						/>
 					</MemoryRouter>,
 				)
 
@@ -510,7 +524,12 @@ describe('AppBar Context Menu', () => {
 
 				const { unmount } = render(
 					<MemoryRouter>
-						<AppBar authenticated={true} username='user@example.com' user={user} language='en' />
+						<AppBar
+							authenticated={true}
+							username='user@example.com'
+							user={user}
+							language='en'
+						/>
 					</MemoryRouter>,
 				)
 
@@ -627,7 +646,12 @@ describe('AppBar Context Menu', () => {
 			testCases.forEach(({ authenticated, username, user }) => {
 				const { unmount } = render(
 					<MemoryRouter>
-						<AppBar authenticated={authenticated} username={username} user={user} language='en' />
+						<AppBar
+							authenticated={authenticated}
+							username={username}
+							user={user}
+							language='en'
+						/>
 					</MemoryRouter>,
 				)
 

@@ -1,7 +1,13 @@
 import { type JSX, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useActionData, useLoaderData, useSearchParams, useSubmit } from 'react-router'
+import {
+	redirect,
+	useActionData,
+	useLoaderData,
+	useSearchParams,
+	useSubmit,
+} from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
@@ -77,7 +83,10 @@ type ActionData = {
 	message?: string
 }
 
-export async function loader({ request, params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request,
+	params,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	await requireUserWithMetadata(request, handle)
 
 	const { tournamentId } = params
@@ -174,7 +183,8 @@ export async function action({
 
 	try {
 		// Default endDate to startDate if not provided
-		const finalEndDate = endDate && typeof endDate === 'string' ? endDate : (startDate as string)
+		const finalEndDate =
+			endDate && typeof endDate === 'string' ? endDate : (startDate as string)
 
 		await updateTournament({
 			id: tournamentId,
@@ -186,7 +196,9 @@ export async function action({
 			categories,
 		})
 
-		return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}?success=updated`)
+		return redirect(
+			`/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments/${tournamentId}?success=updated`,
+		)
 	} catch (_error) {
 		return {
 			errors: {
@@ -231,7 +243,9 @@ export default function EditTournamentPage(): JSX.Element {
 				name: tournament.name,
 				location: tournament.location,
 				startDate: new Date(tournament.startDate).toISOString().split('T')[0],
-				endDate: tournament.endDate ? new Date(tournament.endDate).toISOString().split('T')[0] : '',
+				endDate: tournament.endDate
+					? new Date(tournament.endDate).toISOString().split('T')[0]
+					: '',
 				divisions: Array.isArray(tournament.divisions)
 					? (tournament.divisions as string[])
 					: safeParseJSON<string[]>(
@@ -258,7 +272,9 @@ export default function EditTournamentPage(): JSX.Element {
 		return (
 			<div className='py-12 text-center'>
 				<h2 className='font-semibold text-foreground text-xl'>Tournament not found</h2>
-				<p className='mt-2 text-foreground'>The tournament you're looking for doesn't exist.</p>
+				<p className='mt-2 text-foreground'>
+					The tournament you're looking for doesn't exist.
+				</p>
 			</div>
 		)
 	}
@@ -357,8 +373,12 @@ export default function EditTournamentPage(): JSX.Element {
 			{actionData?.success ? (
 				<div className='mb-8 rounded-md bg-green-50 p-4'>
 					<div className='flex'>
-						<div className='flex-shrink-0'>
-							<svg className='h-5 w-5 text-green-400' viewBox='0 0 20 20' fill='currentColor'>
+						<div className='shrink-0'>
+							<svg
+								className='h-5 w-5 text-green-400'
+								viewBox='0 0 20 20'
+								fill='currentColor'
+							>
 								<title>Success</title>
 								<path
 									fillRule='evenodd'

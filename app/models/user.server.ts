@@ -89,7 +89,9 @@ type UpdateUserRoleProps = {
 	reason?: string
 }
 
-export const updateUserRole = async (props: Readonly<UpdateUserRoleProps>): Promise<User> => {
+export const updateUserRole = async (
+	props: Readonly<UpdateUserRoleProps>,
+): Promise<User> => {
 	const { userId, newRole, performedBy, reason } = props
 
 	// Update role in transaction with audit log
@@ -182,7 +184,9 @@ type DeactivateUserProps = {
 	reason?: string
 }
 
-export const deactivateUser = async (props: Readonly<DeactivateUserProps>): Promise<User> => {
+export const deactivateUser = async (
+	props: Readonly<DeactivateUserProps>,
+): Promise<User> => {
 	const { userId, performedBy, reason } = props
 
 	// Perform database operations in transaction and extract firebaseUid
@@ -250,7 +254,9 @@ type ReactivateUserProps = {
 	reason?: string
 }
 
-export const reactivateUser = async (props: Readonly<ReactivateUserProps>): Promise<User> => {
+export const reactivateUser = async (
+	props: Readonly<ReactivateUserProps>,
+): Promise<User> => {
 	const { userId, performedBy, reason } = props
 
 	// Perform database operations in transaction and extract firebaseUid
@@ -332,7 +338,9 @@ type SearchUsersProps = {
 	limit?: number
 }
 
-export const searchUsers = async (props: Readonly<SearchUsersProps>): Promise<readonly User[]> => {
+export const searchUsers = async (
+	props: Readonly<SearchUsersProps>,
+): Promise<readonly User[]> => {
 	const { query, role, limit = 50 } = props
 
 	// Note: SQLite doesn't support mode: 'insensitive' for case-insensitive search

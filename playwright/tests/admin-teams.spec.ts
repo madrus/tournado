@@ -81,7 +81,9 @@ test.describe('Admin Teams', () => {
 		await expect(page).toHaveURL('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
 	})
 
-	test('should display "Toevoegen" link for admin users on admin teams page', async ({ page }) => {
+	test('should display "Toevoegen" link for admin users on admin teams page', async ({
+		page,
+	}) => {
 		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
 		await expect(page.getByRole('link', { name: 'Toevoegen' })).toBeVisible()
 	})

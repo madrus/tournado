@@ -115,7 +115,10 @@ export function DataTable<TData, TValue>({
 				<Table>
 					<TableHeader className={headerClassName}>
 						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id} className={getDatatableHeaderClasses(color)}>
+							<TableRow
+								key={headerGroup.id}
+								className={getDatatableHeaderClasses(color)}
+							>
 								{headerGroup.headers.map((header) => (
 									<TableHead key={header.id}>
 										{header.isPlaceholder

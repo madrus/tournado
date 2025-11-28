@@ -45,9 +45,9 @@ describe('Settings Page', () => {
 					<SettingsPage />
 				</MemoryRouter>,
 			)
-			expect(screen.getByRole('heading', { level: 2, name: 'settings.title' })).toHaveTextContent(
-				'settings.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'settings.title' }),
+			).toHaveTextContent('settings.title')
 		})
 
 		test('should render application settings section', () => {
@@ -113,7 +113,9 @@ describe('Settings Page', () => {
 				</MemoryRouter>,
 			)
 			expect(
-				screen.getByText(/Customize tournament management settings and default configurations/),
+				screen.getByText(
+					/Customize tournament management settings and default configurations/,
+				),
 			).toBeInTheDocument()
 		})
 	})
@@ -204,9 +206,9 @@ describe('Settings Page', () => {
 					<SettingsPage />
 				</MemoryRouter>,
 			)
-			expect(screen.getByRole('heading', { level: 2, name: 'settings.title' })).toHaveTextContent(
-				'settings.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'settings.title' }),
+			).toHaveTextContent('settings.title')
 		})
 	})
 })

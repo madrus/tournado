@@ -8,7 +8,12 @@
  */
 export function getScrollY(): number {
 	if (typeof window === 'undefined') return 0
-	return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+	return (
+		window.pageYOffset ||
+		document.documentElement.scrollTop ||
+		document.body.scrollTop ||
+		0
+	)
 }
 
 /**
@@ -113,7 +118,8 @@ export const scrollLogic = {
 	 * @param maxScrollY Maximum valid scroll position
 	 * @returns true if position is valid
 	 */
-	isValidScrollPosition: (y: number, maxScrollY: number): boolean => y >= 0 && y <= maxScrollY,
+	isValidScrollPosition: (y: number, maxScrollY: number): boolean =>
+		y >= 0 && y <= maxScrollY,
 
 	/**
 	 * Calculates maximum scrollable distance

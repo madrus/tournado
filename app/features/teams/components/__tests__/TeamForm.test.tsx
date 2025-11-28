@@ -203,7 +203,9 @@ describe('TeamForm Component - filling the form', () => {
 			renderTeamForm('create', 'public')
 
 			// Panel-level validation messages have been removed in favor of snackbar notifications
-			expect(screen.queryByText('teams.form.completeAllThreeFields')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('teams.form.completeAllThreeFields'),
+			).not.toBeInTheDocument()
 		})
 
 		it('should maintain validation logic internally without displaying panel errors', async () => {
@@ -215,7 +217,9 @@ describe('TeamForm Component - filling the form', () => {
 			})
 
 			// Panel error message should not appear (removed feature)
-			expect(screen.queryByText('teams.form.completeAllThreeFields')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('teams.form.completeAllThreeFields'),
+			).not.toBeInTheDocument()
 		})
 
 		it('should keep panel validation working internally for form submission', async () => {
@@ -227,7 +231,9 @@ describe('TeamForm Component - filling the form', () => {
 			})
 
 			// Panel error message should not be displayed (feature removed)
-			expect(screen.queryByText('teams.form.completeAllThreeFields')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('teams.form.completeAllThreeFields'),
+			).not.toBeInTheDocument()
 		})
 	})
 
@@ -355,7 +361,9 @@ describe('TeamForm Component - filling the form', () => {
 				await userEvent.tab()
 				await waitFor(() => {
 					expect(
-						screen.getByText(TEST_TRANSLATIONS['messages.validation.phoneNumberInvalid']),
+						screen.getByText(
+							TEST_TRANSLATIONS['messages.validation.phoneNumberInvalid'],
+						),
 					).toBeInTheDocument()
 				})
 			})
@@ -487,7 +495,9 @@ describe('TeamForm Component - filling the form', () => {
 
 			// Step 2: Division selection
 			await waitFor(() => {
-				expect(screen.getByRole('combobox', { name: /teams\.form\.division/ })).toBeInTheDocument()
+				expect(
+					screen.getByRole('combobox', { name: /teams\.form\.division/ }),
+				).toBeInTheDocument()
 			})
 			const divisionSelect = screen.getByRole('combobox', {
 				name: /teams\.form\.division/,
@@ -503,7 +513,9 @@ describe('TeamForm Component - filling the form', () => {
 
 			// Step 3: Category selection
 			await waitFor(() => {
-				expect(screen.getByRole('combobox', { name: /teams\.form\.category/ })).toBeInTheDocument()
+				expect(
+					screen.getByRole('combobox', { name: /teams\.form\.category/ }),
+				).toBeInTheDocument()
 			})
 			const categorySelect = screen.getByRole('combobox', {
 				name: /teams\.form\.category/,
@@ -561,13 +573,17 @@ describe('TeamForm Component - filling the form', () => {
 
 			// Wait for dropdown to open and select the visible option
 			await waitFor(() => {
-				const dropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
+				const dropdownOptions = screen.getAllByText(
+					'Test Tournament 1 - Test Location 1',
+				)
 				// The visible dropdown option will be the one that's not hidden
 				const visibleOption = getFirstVisible(dropdownOptions)
 				expect(visibleOption).toBeDefined()
 			})
 
-			const tournamentDropdownOptions = screen.getAllByText('Test Tournament 1 - Test Location 1')
+			const tournamentDropdownOptions = screen.getAllByText(
+				'Test Tournament 1 - Test Location 1',
+			)
 			const tournamentOption = getFirstVisible(tournamentDropdownOptions)
 			expect(tournamentOption).toBeTruthy()
 			if (!tournamentOption) throw new Error('Tournament option not found')
@@ -636,7 +652,9 @@ describe('TeamForm Component - filling the form', () => {
 
 			// Check that the error appears in the DOM (panel 2 is enabled)
 			await waitFor(() => {
-				const errorText = screen.queryByText(TEST_TRANSLATIONS['messages.team.clubNameRequired'])
+				const errorText = screen.queryByText(
+					TEST_TRANSLATIONS['messages.team.clubNameRequired'],
+				)
 				expect(errorText).toBeInTheDocument()
 			})
 
@@ -829,10 +847,18 @@ describe('TeamForm Component - filling the form', () => {
 			await userEvent.click(divisionSelect)
 
 			await waitFor(() => {
-				expect(screen.getByRole('option', { name: 'First Division' })).toBeInTheDocument()
-				expect(screen.getByRole('option', { name: 'Second Division' })).toBeInTheDocument()
-				expect(screen.queryByRole('option', { name: 'Premier Division' })).not.toBeInTheDocument()
-				expect(screen.queryByRole('option', { name: 'Third Division' })).not.toBeInTheDocument()
+				expect(
+					screen.getByRole('option', { name: 'First Division' }),
+				).toBeInTheDocument()
+				expect(
+					screen.getByRole('option', { name: 'Second Division' }),
+				).toBeInTheDocument()
+				expect(
+					screen.queryByRole('option', { name: 'Premier Division' }),
+				).not.toBeInTheDocument()
+				expect(
+					screen.queryByRole('option', { name: 'Third Division' }),
+				).not.toBeInTheDocument()
 			})
 		})
 	})
@@ -849,7 +875,9 @@ describe('TeamForm Component - filling the form', () => {
 			)
 
 			// Success panels have been removed in favor of redirection to team details
-			expect(screen.queryByText('Team registered successfully!')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('Team registered successfully!'),
+			).not.toBeInTheDocument()
 		})
 	})
 
@@ -1027,7 +1055,9 @@ describe('TeamForm Cancel Button Functionality', () => {
 		it('should always show cancel button', () => {
 			renderTeamForm('create', 'public')
 
-			expect(screen.getByRole('button', { name: /common\.actions\.cancel/i })).toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: /common\.actions\.cancel/i }),
+			).toBeInTheDocument()
 		})
 
 		it('should show cancel button with correct text', () => {
@@ -1227,10 +1257,16 @@ describe('TeamForm Cancel Button Functionality', () => {
 
 			// Wait for initial population - use specific form input selectors
 			await waitFor(() => {
-				expect(screen.getByLabelText(/teams\.form\.clubName/)).toHaveValue('Original Club')
+				expect(screen.getByLabelText(/teams\.form\.clubName/)).toHaveValue(
+					'Original Club',
+				)
 				expect(screen.getByLabelText(/teams\.form\.name/)).toHaveValue('Original Team')
-				expect(screen.getByLabelText(/teams\.form\.teamLeaderName/)).toHaveValue('Original Leader')
-				expect(screen.getByLabelText(/teams\.form\.teamLeaderPhone/)).toHaveValue('0611111111')
+				expect(screen.getByLabelText(/teams\.form\.teamLeaderName/)).toHaveValue(
+					'Original Leader',
+				)
+				expect(screen.getByLabelText(/teams\.form\.teamLeaderPhone/)).toHaveValue(
+					'0611111111',
+				)
 				expect(screen.getByLabelText(/teams\.form\.teamLeaderEmail/)).toHaveValue(
 					'original@example.com',
 				)

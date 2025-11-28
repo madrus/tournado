@@ -98,7 +98,9 @@ describe('Ring Styles', () => {
 
 			// Should NOT contain unprefixed base classes
 			expect(result).not.toMatch(/(?<!focus-visible:)(?<!focus:)(?<!hover:)ring-2/)
-			expect(result).not.toMatch(/(?<!focus-visible:)(?<!focus:)(?<!hover:)ring-offset-2/)
+			expect(result).not.toMatch(
+				/(?<!focus-visible:)(?<!focus:)(?<!hover:)ring-offset-2/,
+			)
 		})
 	})
 
@@ -367,7 +369,13 @@ describe('Ring Styles', () => {
 			})
 
 			it('should handle all valid ColorAccent values', () => {
-				const validColors: ColorAccent[] = ['red', 'emerald', 'blue', 'brand', 'primary']
+				const validColors: ColorAccent[] = [
+					'red',
+					'emerald',
+					'blue',
+					'brand',
+					'primary',
+				]
 
 				validColors.forEach((color) => {
 					expect(() => getButtonRingClasses(color)).not.toThrow()

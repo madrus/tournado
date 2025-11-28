@@ -13,7 +13,9 @@ type UseTeamsNavigationReturn = {
  * Custom hook for handling teams navigation
  * Provides context-aware navigation and handles browser history
  */
-export function useTeamsNavigation({ context }: UseTeamsNavigationProps): UseTeamsNavigationReturn {
+export function useTeamsNavigation({
+	context,
+}: UseTeamsNavigationProps): UseTeamsNavigationReturn {
 	const navigate = useNavigate()
 	const revalidator = useRevalidator()
 

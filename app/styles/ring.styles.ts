@@ -48,7 +48,12 @@ export const getRingClasses = (config: RingConfig): string => {
  * This properly scopes the ring classes to only appear on focus
  */
 export const getFocusRingClasses = (config: RingConfig): string => {
-	const { ringWidth = 'ring-2', ringOffset = 'ring-offset-2', lightMode, darkMode } = config
+	const {
+		ringWidth = 'ring-2',
+		ringOffset = 'ring-offset-2',
+		lightMode,
+		darkMode,
+	} = config
 
 	// Build all classes with focus-visible prefix
 	const focusVisibleClasses = [
@@ -78,7 +83,12 @@ export const getFocusRingClasses = (config: RingConfig): string => {
  * This properly scopes the ring classes to only appear on hover
  */
 export const getHoverRingClasses = (config: RingConfig): string => {
-	const { ringWidth = 'ring-2', ringOffset = 'ring-offset-2', lightMode, darkMode } = config
+	const {
+		ringWidth = 'ring-2',
+		ringOffset = 'ring-offset-2',
+		lightMode,
+		darkMode,
+	} = config
 
 	// Build all classes with hover prefix
 	const hoverClasses = [

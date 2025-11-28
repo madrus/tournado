@@ -7,7 +7,9 @@ import { PrismaClient, Role, type User } from '@prisma/client'
 // Fall back to the test DB path used by e2e-server.js
 const testDbPath = 'file:./prisma/data-test.db?connection_limit=1'
 const dbUrl =
-	process.env.PLAYWRIGHT === 'true' ? testDbPath : process.env.DATABASE_URL || testDbPath
+	process.env.PLAYWRIGHT === 'true'
+		? testDbPath
+		: process.env.DATABASE_URL || testDbPath
 
 // Prisma 7.x requires adapter for SQLite (same pattern as app/db.server.ts)
 let prisma: PrismaClient
@@ -77,7 +79,8 @@ export async function createUser(
 			lastName: userData.lastName,
 			email: userData.email,
 			role: userData.role,
-			firebaseUid: userData.firebaseUid || `test-firebase-${faker.string.alphanumeric(8)}`,
+			firebaseUid:
+				userData.firebaseUid || `test-firebase-${faker.string.alphanumeric(8)}`,
 		},
 	})
 }
@@ -105,7 +108,10 @@ type SeedOptions = {
 	firebaseUid?: string
 }
 
-export async function createUserForRole(role: Role, options: SeedOptions = {}): Promise<User> {
+export async function createUserForRole(
+	role: Role,
+	options: SeedOptions = {},
+): Promise<User> {
 	const email = getSeedEmail(role)
 	const names = defaultSeedNames[role]
 	const firebaseUid = options.firebaseUid ?? getSeedFirebaseUid(role)
@@ -144,7 +150,8 @@ export const deleteUserByEmail = async (email: string): Promise<void> => {
 	})
 }
 
-export const createManagerUser = async (): Promise<User> => createUserForRole(Role.MANAGER)
+export const createManagerUser = async (): Promise<User> =>
+	createUserForRole(Role.MANAGER)
 
 export async function createAdminUser(
 	options: { uniqueFirebaseUid?: boolean } = {},

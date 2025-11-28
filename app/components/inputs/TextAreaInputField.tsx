@@ -41,7 +41,10 @@ type TextAreaInputFieldProps = {
 	onBlur?: (focusEvent: FocusEvent<HTMLTextAreaElement>) => void
 }
 
-export const TextAreaInputField = forwardRef<HTMLTextAreaElement, TextAreaInputFieldProps>(
+export const TextAreaInputField = forwardRef<
+	HTMLTextAreaElement,
+	TextAreaInputFieldProps
+>(
 	(
 		{
 			name,
@@ -76,7 +79,9 @@ export const TextAreaInputField = forwardRef<HTMLTextAreaElement, TextAreaInputF
 				>
 					<span className={textInputLabelTextVariants()}>{label}</span>
 					{/* Status icon container with fixed width to prevent layout shifts */}
-					{statusIcon ? <div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div> : null}
+					{statusIcon ? (
+						<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
+					) : null}
 				</div>
 				<div className='relative'>
 					<textarea
@@ -102,7 +107,9 @@ export const TextAreaInputField = forwardRef<HTMLTextAreaElement, TextAreaInputF
 						aria-invalid={error ? true : undefined}
 						aria-errormessage={error ? `${name}-error` : undefined}
 						onChange={
-							onChange ? (textareaEvent) => onChange(textareaEvent.target.value) : undefined
+							onChange
+								? (textareaEvent) => onChange(textareaEvent.target.value)
+								: undefined
 						}
 						onFocus={onFocus}
 						onBlur={onBlur}

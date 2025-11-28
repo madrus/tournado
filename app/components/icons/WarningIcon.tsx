@@ -17,7 +17,8 @@ export function WarningIcon({
 	...rest
 }: Readonly<WarningIconProps>): JSX.Element {
 	// Lucide triangle-alert SVG paths
-	const trianglePath = 'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'
+	const trianglePath =
+		'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3'
 	const linePath = 'M12 9v4'
 	const dotPath = 'M12 17h.01'
 
@@ -37,7 +38,12 @@ export function WarningIcon({
 			aria-label={ariaLabel}
 		>
 			{/* Triangle background matches dialog background (transparent, inherited from parent) */}
-			<path d={trianglePath} fill='currentColor' stroke='currentColor' strokeWidth='0' />
+			<path
+				d={trianglePath}
+				fill='currentColor'
+				stroke='currentColor'
+				strokeWidth='0'
+			/>
 			{/* Exclamation mark in white with weight 600 */}
 			<path
 				d={linePath}

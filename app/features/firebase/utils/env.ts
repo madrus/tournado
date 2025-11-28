@@ -10,7 +10,8 @@ export const isUnitTestRuntime = (): boolean =>
 export const isE2EServer = (request: Request): boolean =>
 	process.env.NODE_ENV === 'test' && request.headers.get(TEST_BYPASS_HEADER) === 'true'
 
-export const isMockToken = (token: string): boolean => token.startsWith(MOCK_TOKEN_PREFIX)
+export const isMockToken = (token: string): boolean =>
+	token.startsWith(MOCK_TOKEN_PREFIX)
 
 export function extractEmailFromMockToken(token: string): string {
 	const prefix = MOCK_TOKEN_PREFIX

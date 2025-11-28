@@ -212,8 +212,12 @@ describe('Admin Dashboard', () => {
 			)
 
 			expect(screen.getByTestId('admin-panel-team-management')).toBeInTheDocument()
-			expect(screen.getByTestId('admin-panel-tournament-management')).toBeInTheDocument()
-			expect(screen.getByTestId('admin-panel-competition-management')).toBeInTheDocument()
+			expect(
+				screen.getByTestId('admin-panel-tournament-management'),
+			).toBeInTheDocument()
+			expect(
+				screen.getByTestId('admin-panel-competition-management'),
+			).toBeInTheDocument()
 			expect(screen.getByTestId('admin-panel-user-management')).toBeInTheDocument()
 			expect(screen.getByTestId('admin-panel-system-settings')).toBeInTheDocument()
 			expect(screen.getByTestId('admin-panel-reports-&-analytics')).toBeInTheDocument()
@@ -229,7 +233,10 @@ describe('Admin Dashboard', () => {
 			)
 
 			const teamPanel = screen.getByTestId('admin-panel-team-management')
-			expect(teamPanel).toHaveAttribute('data-link-to', '/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+			expect(teamPanel).toHaveAttribute(
+				'data-link-to',
+				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+			)
 			expect(teamPanel).toHaveTextContent('admin.team.title')
 			expect(teamPanel).toHaveTextContent('admin.team.description')
 		})
@@ -258,7 +265,10 @@ describe('Admin Dashboard', () => {
 			)
 
 			const userPanel = screen.getByTestId('admin-panel-user-management')
-			expect(userPanel).toHaveAttribute('data-link-to', '/a7k9m2x5p8w1n4q6r3y8b5t1/users')
+			expect(userPanel).toHaveAttribute(
+				'data-link-to',
+				'/a7k9m2x5p8w1n4q6r3y8b5t1/users',
+			)
 			expect(userPanel).toHaveTextContent('admin.user.title')
 			expect(userPanel).toHaveTextContent('admin.user.description')
 		})
@@ -311,7 +321,9 @@ describe('Admin Dashboard', () => {
 			)
 
 			const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-			expect(tournamentPanel).toHaveTextContent(/admin\.(tournament|tournaments)\.totalTournaments/)
+			expect(tournamentPanel).toHaveTextContent(
+				/admin\.(tournament|tournaments)\.totalTournaments/,
+			)
 			expect(tournamentPanel).toHaveTextContent('2') // Mock tournaments length
 		})
 
@@ -401,7 +413,9 @@ describe('Admin Dashboard', () => {
 			// Count only the actual menu panels (excluding the header)
 			const panels = screen
 				.getAllByTestId(/^admin-panel-/)
-				.filter((element) => element.getAttribute('data-testid') !== 'admin-panel-header')
+				.filter(
+					(element) => element.getAttribute('data-testid') !== 'admin-panel-header',
+				)
 			expect(panels).toHaveLength(6)
 		})
 	})
@@ -415,7 +429,10 @@ describe('Admin Dashboard', () => {
 			)
 
 			const teamPanel = screen.getByTestId('admin-panel-team-management')
-			expect(teamPanel).toHaveAttribute('data-link-to', '/a7k9m2x5p8w1n4q6r3y8b5t1/teams')
+			expect(teamPanel).toHaveAttribute(
+				'data-link-to',
+				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
+			)
 		})
 
 		test('should provide navigation to tournaments management', () => {
@@ -545,7 +562,9 @@ describe('Admin Dashboard', () => {
 			)
 
 			const tournamentPanel = screen.getByTestId('admin-panel-tournament-management')
-			expect(tournamentPanel).toHaveTextContent(/admin\.(tournament|tournaments)\.totalTournaments/)
+			expect(tournamentPanel).toHaveTextContent(
+				/admin\.(tournament|tournaments)\.totalTournaments/,
+			)
 			expect(tournamentPanel).toHaveTextContent('0')
 		})
 	})
@@ -628,11 +647,21 @@ describe('Admin Dashboard', () => {
 			expect(screen.getByTestId('admin-panel-reports-&-analytics')).toBeInTheDocument()
 
 			// Should NOT see management panels (lacks required permissions)
-			expect(screen.queryByTestId('admin-panel-team-management')).not.toBeInTheDocument()
-			expect(screen.queryByTestId('admin-panel-tournament-management')).not.toBeInTheDocument()
-			expect(screen.queryByTestId('admin-panel-competition-management')).not.toBeInTheDocument()
-			expect(screen.queryByTestId('admin-panel-user-management')).not.toBeInTheDocument()
-			expect(screen.queryByTestId('admin-panel-system-settings')).not.toBeInTheDocument()
+			expect(
+				screen.queryByTestId('admin-panel-team-management'),
+			).not.toBeInTheDocument()
+			expect(
+				screen.queryByTestId('admin-panel-tournament-management'),
+			).not.toBeInTheDocument()
+			expect(
+				screen.queryByTestId('admin-panel-competition-management'),
+			).not.toBeInTheDocument()
+			expect(
+				screen.queryByTestId('admin-panel-user-management'),
+			).not.toBeInTheDocument()
+			expect(
+				screen.queryByTestId('admin-panel-system-settings'),
+			).not.toBeInTheDocument()
 		})
 	})
 })

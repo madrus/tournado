@@ -65,8 +65,12 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
 	): JSX.Element => (
 		<div className={className}>
 			<label className={textInputLabelVariants()}>
-				<div className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}>
-					<span className={cn(textInputLabelTextVariants(), labelClassName)}>{label}</span>
+				<div
+					className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+				>
+					<span className={cn(textInputLabelTextVariants(), labelClassName)}>
+						{label}
+					</span>
 					{/* Status icon container with fixed width to prevent layout shifts */}
 					<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
 				</div>
@@ -91,7 +95,9 @@ export const TextInputField = forwardRef<HTMLInputElement, InputFieldProps>(
 						)}
 						aria-invalid={error ? true : undefined}
 						aria-errormessage={error ? `${name}-error` : undefined}
-						onChange={onChange ? (inputEvent) => onChange(inputEvent.target.value) : undefined}
+						onChange={
+							onChange ? (inputEvent) => onChange(inputEvent.target.value) : undefined
+						}
 						onFocus={onFocus}
 						onBlur={onBlur}
 					/>

@@ -12,7 +12,12 @@ type IconLabelButtonProps = {
 export function IconLabelButton(props: Readonly<IconLabelButtonProps>): JSX.Element {
 	const { icon, label, onClick, className, 'aria-label': ariaLabel } = props
 	return (
-		<button type='button' className={className} onClick={onClick} aria-label={ariaLabel}>
+		<button
+			type='button'
+			className={className}
+			onClick={onClick}
+			aria-label={ariaLabel}
+		>
 			<div className='flex flex-col items-center justify-center gap-1'>
 				{icon}
 				<Text size='2' weight='bold' className='text-white'>

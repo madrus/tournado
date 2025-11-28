@@ -48,9 +48,15 @@ describe('getPrefetchStrategy in test environment', () => {
 			errorPageLinks: 'viewport' as const,
 		}
 
-		expect(getPrefetchStrategy('/unknown-route', 'primaryNavigation', customConfig)).toBe('none')
-		expect(getPrefetchStrategy('/unknown-route', 'actionButtons', customConfig)).toBe('none')
-		expect(getPrefetchStrategy('/unknown-route', 'listItems', customConfig)).toBe('none')
+		expect(
+			getPrefetchStrategy('/unknown-route', 'primaryNavigation', customConfig),
+		).toBe('none')
+		expect(getPrefetchStrategy('/unknown-route', 'actionButtons', customConfig)).toBe(
+			'none',
+		)
+		expect(getPrefetchStrategy('/unknown-route', 'listItems', customConfig)).toBe(
+			'none',
+		)
 	})
 })
 

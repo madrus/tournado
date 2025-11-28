@@ -45,9 +45,9 @@ describe('Profile Page', () => {
 					<ProfilePage />
 				</MemoryRouter>,
 			)
-			expect(screen.getByRole('heading', { level: 2, name: 'profile.title' })).toHaveTextContent(
-				'profile.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'profile.title' }),
+			).toHaveTextContent('profile.title')
 		})
 
 		test('should render profile information section', () => {
@@ -113,7 +113,9 @@ describe('Profile Page', () => {
 				</MemoryRouter>,
 			)
 			expect(
-				screen.getByText(/Your profile provides access to tournament management features/),
+				screen.getByText(
+					/Your profile provides access to tournament management features/,
+				),
 			).toBeInTheDocument()
 		})
 	})
@@ -204,9 +206,9 @@ describe('Profile Page', () => {
 					<ProfilePage />
 				</MemoryRouter>,
 			)
-			expect(screen.getByRole('heading', { level: 2, name: 'profile.title' })).toHaveTextContent(
-				'profile.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'profile.title' }),
+			).toHaveTextContent('profile.title')
 		})
 	})
 })

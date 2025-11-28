@@ -23,7 +23,8 @@ vi.mock('~/utils/rtlUtils', () => ({
 
 // Mock cn utility
 vi.mock('~/utils/misc', () => ({
-	cn: (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' '),
+	cn: (...classes: (string | boolean | undefined)[]) =>
+		classes.filter(Boolean).join(' '),
 }))
 
 const mockTeam = {

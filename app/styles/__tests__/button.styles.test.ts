@@ -168,7 +168,9 @@ describe('Button Styles', () => {
 					expect(classes).toContain('disabled:bg-button-neutral-background')
 					expect(classes).toContain('disabled:text-button-neutral-text')
 					expect(classes).toContain('disabled:border-button-neutral-secondary-border')
-					expect(classes).toContain('disabled:hover:shadow-button-neutral-background/70')
+					expect(classes).toContain(
+						'disabled:hover:shadow-button-neutral-background/70',
+					)
 					expect(classes).toContain('disabled:hover:ring-0')
 					expect(classes).toContain('disabled:hover:ring-offset-0')
 					expect(classes).toContain('disabled:hover:scale-100')

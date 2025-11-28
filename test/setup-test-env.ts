@@ -121,7 +121,8 @@ Object.defineProperty(window, 'matchMedia', {
 // Polyfill PointerEvent for libraries relying on it
 if (typeof window.PointerEvent === 'undefined') {
 	class PointerEventPolyfill extends MouseEvent {}
-	window.PointerEvent = PointerEventPolyfill as unknown as typeof globalThis.PointerEvent
+	window.PointerEvent =
+		PointerEventPolyfill as unknown as typeof globalThis.PointerEvent
 	;(globalThis as { PointerEvent: typeof globalThis.PointerEvent }).PointerEvent =
 		window.PointerEvent
 }
@@ -167,10 +168,16 @@ beforeEach(() => {
 		if (firstArg instanceof Error) {
 			// For Error objects, just show the message
 			originalConsoleError(`[Test Error Caught]: ${firstArg.message}`)
-		} else if (typeof firstArg === 'object' && firstArg !== null && 'status' in firstArg) {
+		} else if (
+			typeof firstArg === 'object' &&
+			firstArg !== null &&
+			'status' in firstArg
+		) {
 			// For route errors, show status and statusText
 			const { status, statusText, data } = firstArg
-			const errorInfo = data ? `${status} ${statusText} - ${data}` : `${status} ${statusText}`
+			const errorInfo = data
+				? `${status} ${statusText} - ${data}`
+				: `${status} ${statusText}`
 			originalConsoleError(`[Route Error Caught]: ${errorInfo}`)
 		} else {
 			// For other cases, show the first argument only

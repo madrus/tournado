@@ -64,7 +64,9 @@ describe('lib.store', () => {
 		expect(isPanelEnabled(2, 'create', () => false)).toBe(false)
 	})
 	it('isFormDirty returns true if fields differ', () => {
-		expect(isFormDirty(mockFormFields, { ...mockFormFields, clubName: 'Other' })).toBe(true)
+		expect(isFormDirty(mockFormFields, { ...mockFormFields, clubName: 'Other' })).toBe(
+			true,
+		)
 	})
 	it('isFormDirty returns false if fields are the same', () => {
 		expect(isFormDirty(mockFormFields, { ...mockFormFields })).toBe(false)
@@ -106,7 +108,10 @@ describe('lib.store', () => {
 	})
 	it('mergeErrors merges and prioritizes server errors', () => {
 		expect(
-			mergeErrors({ name: 'client error' }, { name: 'server error', clubName: 'another error' }),
+			mergeErrors(
+				{ name: 'client error' },
+				{ name: 'server error', clubName: 'another error' },
+			),
 		).toEqual({ name: 'server error', clubName: 'another error' })
 	})
 	it('isPanelComplete returns true if all fields are blurred and valid', () => {
@@ -162,7 +167,9 @@ describe('shouldValidateField', () => {
 		).toBe(true)
 	})
 	it('returns true if submitAttempted is true', () => {
-		expect(shouldValidateField('clubName', { ...validation, submitAttempted: true })).toBe(true)
+		expect(
+			shouldValidateField('clubName', { ...validation, submitAttempted: true }),
+		).toBe(true)
 	})
 	it('returns false if none are true', () => {
 		expect(shouldValidateField('clubName', validation)).toBe(false)

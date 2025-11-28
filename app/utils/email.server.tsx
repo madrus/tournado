@@ -73,7 +73,10 @@ async function storeEmailForTesting(emailPayload: EmailPayload): Promise<void> {
 	await addEmailToOutbox(emailPayload)
 }
 
-export async function sendConfirmationEmail(team: Team, tournament: Tournament): Promise<void> {
+export async function sendConfirmationEmail(
+	team: Team,
+	tournament: Tournament,
+): Promise<void> {
 	const teamLeader = await getTeamLeader(team.teamLeaderId)
 
 	if (!teamLeader) {

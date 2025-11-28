@@ -55,12 +55,16 @@
 	--color-button-secondary-background: var(--color-button-secondary-background);
 	--color-button-secondary-text: var(--color-button-secondary-text);
 	--color-button-secondary-border: var(--color-button-secondary-border);
-	--color-button-secondary-hover-background: var(--color-button-secondary-hover-background);
+	--color-button-secondary-hover-background: var(
+		--color-button-secondary-hover-background
+	);
 
 	--color-button-tertiary-background: var(--color-button-tertiary-background);
 	--color-button-tertiary-text: var(--color-button-tertiary-text);
 	--color-button-tertiary-border: var(--color-button-tertiary-border);
-	--color-button-tertiary-hover-background: var(--color-button-tertiary-hover-background);
+	--color-button-tertiary-hover-background: var(
+		--color-button-tertiary-hover-background
+	);
 	--color-button-tertiary-hover-border: var(--color-button-tertiary-hover-border);
 
 	/* Danger Button Colors */
@@ -68,60 +72,78 @@
 	--color-button-danger-text: var(--color-button-danger-text);
 	--color-button-danger-hover-background: var(--color-button-danger-hover-background);
 
-	--color-button-danger-secondary-background: var(--color-button-danger-secondary-background);
+	--color-button-danger-secondary-background: var(
+		--color-button-danger-secondary-background
+	);
 	--color-button-danger-secondary-text: var(--color-button-danger-secondary-text);
 	--color-button-danger-secondary-border: var(--color-button-danger-secondary-border);
 	--color-button-danger-secondary-hover-background: var(
 		--color-button-danger-secondary-hover-background
 	);
 
-	--color-button-danger-tertiary-background: var(--color-button-danger-tertiary-background);
+	--color-button-danger-tertiary-background: var(
+		--color-button-danger-tertiary-background
+	);
 	--color-button-danger-tertiary-text: var(--color-button-danger-tertiary-text);
 	--color-button-danger-tertiary-border: var(--color-button-danger-tertiary-border);
 	--color-button-danger-tertiary-hover-background: var(
 		--color-button-danger-tertiary-hover-background
 	);
-	--color-button-danger-tertiary-hover-border: var(--color-button-danger-tertiary-hover-border);
+	--color-button-danger-tertiary-hover-border: var(
+		--color-button-danger-tertiary-hover-border
+	);
 
 	/* Brand Button Colors */
 	--color-button-brand-background: var(--color-button-brand-background);
 	--color-button-brand-text: var(--color-button-brand-text);
 	--color-button-brand-hover-background: var(--color-button-brand-hover-background);
 
-	--color-button-brand-secondary-background: var(--color-button-brand-secondary-background);
+	--color-button-brand-secondary-background: var(
+		--color-button-brand-secondary-background
+	);
 	--color-button-brand-secondary-text: var(--color-button-brand-secondary-text);
 	--color-button-brand-secondary-border: var(--color-button-brand-secondary-border);
 	--color-button-brand-secondary-hover-background: var(
 		--color-button-brand-secondary-hover-background
 	);
 
-	--color-button-brand-tertiary-background: var(--color-button-brand-tertiary-background);
+	--color-button-brand-tertiary-background: var(
+		--color-button-brand-tertiary-background
+	);
 	--color-button-brand-tertiary-text: var(--color-button-brand-tertiary-text);
 	--color-button-brand-tertiary-border: var(--color-button-brand-tertiary-border);
 	--color-button-brand-tertiary-hover-background: var(
 		--color-button-brand-tertiary-hover-background
 	);
-	--color-button-brand-tertiary-hover-border: var(--color-button-brand-tertiary-hover-border);
+	--color-button-brand-tertiary-hover-border: var(
+		--color-button-brand-tertiary-hover-border
+	);
 
 	/* Neutral Button Colors */
 	--color-button-neutral-background: var(--color-button-neutral-background);
 	--color-button-neutral-text: var(--color-button-neutral-text);
 	--color-button-neutral-hover-background: var(--color-button-neutral-hover-background);
 
-	--color-button-neutral-secondary-background: var(--color-button-neutral-secondary-background);
+	--color-button-neutral-secondary-background: var(
+		--color-button-neutral-secondary-background
+	);
 	--color-button-neutral-secondary-text: var(--color-button-neutral-secondary-text);
 	--color-button-neutral-secondary-border: var(--color-button-neutral-secondary-border);
 	--color-button-neutral-secondary-hover-background: var(
 		--color-button-neutral-secondary-hover-background
 	);
 
-	--color-button-neutral-tertiary-background: var(--color-button-neutral-tertiary-background);
+	--color-button-neutral-tertiary-background: var(
+		--color-button-neutral-tertiary-background
+	);
 	--color-button-neutral-tertiary-text: var(--color-button-neutral-tertiary-text);
 	--color-button-neutral-tertiary-border: var(--color-button-neutral-tertiary-border);
 	--color-button-neutral-tertiary-hover-background: var(
 		--color-button-neutral-tertiary-hover-background
 	);
-	--color-button-neutral-tertiary-hover-border: var(--color-button-neutral-tertiary-hover-border);
+	--color-button-neutral-tertiary-hover-border: var(
+		--color-button-neutral-tertiary-hover-border
+	);
 
 	/* Focus Ring Colors */
 	--color-button-danger-outline-focus-ring-inner: var(

@@ -101,9 +101,11 @@ export function TournamentMobileRow({
 					isSwiping = true
 
 					// Calculate progressive position based on container width
-					const containerWidth = containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
+					const containerWidth =
+						containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
 					const maxCancelSwipe = containerWidth // How far to swipe to fully cancel
-					const progress = Math.min(Math.max(deltaX, 0), maxCancelSwipe) / maxCancelSwipe // 0 to 1
+					const progress =
+						Math.min(Math.max(deltaX, 0), maxCancelSwipe) / maxCancelSwipe // 0 to 1
 					finalX = -containerWidth + containerWidth * progress // Move from -containerWidth to 0 progressively
 
 					// Show delete state until we cross the 50% threshold
@@ -117,7 +119,8 @@ export function TournamentMobileRow({
 			} else {
 				// Normal swipe logic
 				isSwiping = true
-				const containerWidth = containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
+				const containerWidth =
+					containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
 				const maxSwipeLeft = -containerWidth
 				const maxSwipeRight = 50
 
@@ -158,7 +161,8 @@ export function TournamentMobileRow({
 				}
 			} else {
 				// Normal swipe logic
-				const containerWidth = containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
+				const containerWidth =
+					containerRef.current?.clientWidth || DEFAULT_CONTAINER_WIDTH
 				const snapThreshold = -containerWidth / 2 // 50% threshold
 
 				if (endState.x < snapThreshold) {
@@ -224,7 +228,11 @@ export function TournamentMobileRow({
 				onTouchStart={handleTouchStart}
 			>
 				{/* Main content - fixed width */}
-				<button type='button' className='w-full flex-shrink-0 text-start' onClick={handleClick}>
+				<button
+					type='button'
+					className='w-full shrink-0 text-start'
+					onClick={handleClick}
+				>
 					<div className='px-6 py-4'>
 						<div className='flex items-start justify-between'>
 							<div className='min-w-0 flex-1'>
@@ -250,7 +258,7 @@ export function TournamentMobileRow({
 									{tournament.location}
 								</Text>
 							</div>
-							<div className='ms-4 flex-shrink-0 text-end'>
+							<div className='ms-4 shrink-0 text-end'>
 								<Text
 									size='2'
 									className={cn(

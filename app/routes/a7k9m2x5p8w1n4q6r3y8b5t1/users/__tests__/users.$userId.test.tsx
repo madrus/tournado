@@ -70,7 +70,10 @@ describe('users.$userId route action', () => {
 		vi.mocked(requireUserWithMetadata).mockResolvedValue(mockCurrentUser)
 	})
 
-	const createActionArgs = (formData: FormData, userId: string): ActionFunctionArgs => ({
+	const createActionArgs = (
+		formData: FormData,
+		userId: string,
+	): ActionFunctionArgs => ({
 		request: new Request('http://localhost', {
 			method: 'POST',
 			body: formData,
@@ -350,9 +353,9 @@ describe('users.$userId route action', () => {
 			const responseError = new Response('Not found', { status: 404 })
 			vi.mocked(updateUserDisplayName).mockRejectedValue(responseError)
 
-			await expect(action(createActionArgs(formData, mockTargetUserId))).rejects.toEqual(
-				responseError,
-			)
+			await expect(
+				action(createActionArgs(formData, mockTargetUserId)),
+			).rejects.toEqual(responseError)
 		})
 	})
 

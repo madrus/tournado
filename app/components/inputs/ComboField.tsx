@@ -113,7 +113,9 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 							ref={(node) => {
 								if (typeof selectRef === 'function') selectRef(node)
 								else if (selectRef) {
-									;(selectRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
+									;(
+										selectRef as React.MutableRefObject<HTMLButtonElement | null>
+									).current = node
 								}
 								triggerRef.current = node
 							}}
@@ -222,9 +224,14 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 		// Conditionally render with or without label wrapper
 		if (label) {
 			return (
-				<div className={cn(className)} data-testid={name ? `${name}-combo-field` : 'combo-field'}>
+				<div
+					className={cn(className)}
+					data-testid={name ? `${name}-combo-field` : 'combo-field'}
+				>
 					<div className={textInputLabelVariants()}>
-						<div className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}>
+						<div
+							className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
+						>
 							<span className={textInputLabelTextVariants()}>{label}</span>
 							{/* Status icon container with fixed width to prevent layout shifts */}
 							<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
@@ -242,7 +249,10 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 
 		// No label - return select directly
 		return (
-			<div className={cn(className)} data-testid={name ? `${name}-combo-field` : 'combo-field'}>
+			<div
+				className={cn(className)}
+				data-testid={name ? `${name}-combo-field` : 'combo-field'}
+			>
 				{selectContent}
 				{error ? (
 					<ErrorMessage panelColor={color} id={name ? `${name}-error` : undefined}>

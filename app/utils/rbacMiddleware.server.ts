@@ -115,7 +115,10 @@ export async function getUserRoleForRedirect(request: Request): Promise<{
  * Role-based redirect after authentication
  * Determines appropriate landing page based on user role
  */
-export function getPostAuthRedirect(user: User | null, defaultRedirect?: string): string {
+export function getPostAuthRedirect(
+	user: User | null,
+	defaultRedirect?: string,
+): string {
 	if (!user) {
 		return defaultRedirect || '/teams'
 	}
@@ -140,7 +143,10 @@ export function getPostAuthRedirect(user: User | null, defaultRedirect?: string)
  * RBAC-aware rate limiting check
  * Applies different rate limits based on user role
  */
-export async function checkRoleBasedRateLimit(request: Request, action: string): Promise<void> {
+export async function checkRoleBasedRateLimit(
+	request: Request,
+	action: string,
+): Promise<void> {
 	const { user } = await getUserRoleForRedirect(request)
 	const role = getUserRole(user)
 
@@ -185,4 +191,5 @@ export const withPermissionCheck =
 export const withAdminPermissionCheck = (
 	handler: (args: { request: Request }, user: { user: User }) => unknown,
 	permission: Permission = 'users:approve', // Default to admin-only permission
-): ((args: { request: Request }) => Promise<unknown>) => withPermissionCheck(handler, permission)
+): ((args: { request: Request }) => Promise<unknown>) =>
+	withPermissionCheck(handler, permission)

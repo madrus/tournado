@@ -37,7 +37,9 @@ export const meta: MetaFunction = () => [
 	{ property: 'og:type', content: 'website' },
 ]
 
-export async function loader({ request: _request }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request: _request,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	// Read version from package.json
 	const packageJson = await import('../../package.json')
 	return { version: packageJson.version }
@@ -51,12 +53,16 @@ export default function AboutPage(): JSX.Element {
 			<AboutLayoutHeader />
 			<div className='mt-8 space-y-6'>
 				<section>
-					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>Version</h3>
+					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>
+						Version
+					</h3>
 					<p className='text-foreground'>{version}</p>
 				</section>
 
 				<section>
-					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>Features</h3>
+					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>
+						Features
+					</h3>
 					<ul className='space-y-2 text-foreground'>
 						<li>• Tournament creation and management</li>
 						<li>• Team registration and player management</li>
@@ -71,8 +77,8 @@ export default function AboutPage(): JSX.Element {
 						Technology Stack
 					</h3>
 					<p className='text-foreground'>
-						Built with modern web technologies including React Router v7, TypeScript, Prisma, and
-						SQLite for a robust and scalable solution.
+						Built with modern web technologies including React Router v7, TypeScript,
+						Prisma, and SQLite for a robust and scalable solution.
 					</p>
 				</section>
 			</div>

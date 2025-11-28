@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { addEmailToOutbox, clearTestEmailOutbox, getTestEmailOutbox } from '../email-testing.server'
+import {
+	addEmailToOutbox,
+	clearTestEmailOutbox,
+	getTestEmailOutbox,
+} from '../email-testing.server'
 
 describe('Email Testing Architecture', () => {
 	beforeEach(async () => {

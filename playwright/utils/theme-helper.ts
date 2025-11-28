@@ -32,9 +32,13 @@ export async function setTheme(page: Page, theme: 'dark' | 'light'): Promise<voi
 	}, theme)
 
 	// Wait for theme class to be applied
-	await page.waitForFunction((t) => document.documentElement.classList.contains(t), theme, {
-		timeout: 1000,
-	})
+	await page.waitForFunction(
+		(t) => document.documentElement.classList.contains(t),
+		theme,
+		{
+			timeout: 1000,
+		},
+	)
 
 	// Check if theme was overridden by React hydration or theme store
 	const currentClass = await page.locator('html').getAttribute('class')
@@ -52,9 +56,13 @@ export async function setTheme(page: Page, theme: 'dark' | 'light'): Promise<voi
 			document.documentElement.classList.add(t)
 		}, theme)
 
-		await page.waitForFunction((t) => document.documentElement.classList.contains(t), theme, {
-			timeout: 1000,
-		})
+		await page.waitForFunction(
+			(t) => document.documentElement.classList.contains(t),
+			theme,
+			{
+				timeout: 1000,
+			},
+		)
 	}
 
 	// Wait for html element to be stable
@@ -84,14 +92,19 @@ export async function verifyTheme(page: Page, theme: 'dark' | 'light'): Promise<
  * @param page - Playwright page object
  * @param theme - Theme to verify ('dark' or 'light')
  */
-export async function verifyThemeStyles(page: Page, theme: 'dark' | 'light'): Promise<void> {
+export async function verifyThemeStyles(
+	page: Page,
+	theme: 'dark' | 'light',
+): Promise<void> {
 	// Wait for the gradient container to be present
 	await page.waitForSelector('[data-testid="app-layout-gradient"]', {
 		timeout: 5000,
 	})
 
 	const { background, backgroundImage, htmlClass } = await page.evaluate(() => {
-		const gradientContainer = document.querySelector('[data-testid="app-layout-gradient"]')
+		const gradientContainer = document.querySelector(
+			'[data-testid="app-layout-gradient"]',
+		)
 		if (!gradientContainer) {
 			return {
 				background: '',

@@ -58,7 +58,9 @@ export const validateSingleTournamentField = (
 		// Fallback validation for basic empty field check
 		const fieldValue = formData[fieldName as keyof TournamentFormData]
 		if (Array.isArray(fieldValue)) {
-			return fieldValue.length === 0 ? getTournamentFieldErrorTranslationKey(fieldName) : null
+			return fieldValue.length === 0
+				? getTournamentFieldErrorTranslationKey(fieldName)
+				: null
 		}
 		if (!fieldValue || (typeof fieldValue === 'string' && fieldValue.trim() === '')) {
 			return getTournamentFieldErrorTranslationKey(fieldName)

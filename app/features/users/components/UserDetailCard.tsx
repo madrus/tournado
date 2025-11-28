@@ -33,7 +33,9 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 	const [isDeactivateDialogOpen, setIsDeactivateDialogOpen] = useState(false)
 	const isViewingOwnProfile = user.id === currentUserId
 	const isDeactivated = !user.active
-	const buttonColor = user.active ? USER_ACTIVE_BUTTON_COLOR : USER_INACTIVE_BUTTON_COLOR
+	const buttonColor = user.active
+		? USER_ACTIVE_BUTTON_COLOR
+		: USER_INACTIVE_BUTTON_COLOR
 
 	// Sync local state when user prop changes (e.g., browser back/forward navigation)
 	useEffect(() => {
@@ -86,11 +88,21 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 			<div className='mb-4 flex items-center justify-between gap-4'>
 				<div className='flex flex-1 items-baseline gap-3'>
 					<h2 className='font-semibold text-xl'>{t('users.titles.userInformation')}</h2>
-					{!user.active ? <Badge color='red'>{t('users.messages.deactivated')}</Badge> : null}
+					{!user.active ? (
+						<Badge color='red'>{t('users.messages.deactivated')}</Badge>
+					) : null}
 				</div>
-				<div className='flex flex-shrink-0 items-center'>
-					<Form ref={deactivateFormRef} method='post' data-testid='user-detail-deactivate-form'>
-						<input type='hidden' name='intent' value={user.active ? 'deactivate' : 'reactivate'} />
+				<div className='flex shrink-0 items-center'>
+					<Form
+						ref={deactivateFormRef}
+						method='post'
+						data-testid='user-detail-deactivate-form'
+					>
+						<input
+							type='hidden'
+							name='intent'
+							value={user.active ? 'deactivate' : 'reactivate'}
+						/>
 						<input type='hidden' name='userId' value={user.id} />
 					</Form>
 					<ActionButton
@@ -100,13 +112,17 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 						disabled={isSubmitting || isViewingOwnProfile}
 						onClick={() => setIsDeactivateDialogOpen(true)}
 					>
-						{user.active ? t('users.actions.deactivateUser') : t('users.actions.reactivateUser')}
+						{user.active
+							? t('users.actions.deactivateUser')
+							: t('users.actions.reactivateUser')}
 					</ActionButton>
 					<ConfirmDialog
 						open={isDeactivateDialogOpen}
 						onOpenChange={setIsDeactivateDialogOpen}
 						title={
-							user.active ? t('users.titles.deactivateUser') : t('users.titles.reactivateUser')
+							user.active
+								? t('users.titles.deactivateUser')
+								: t('users.titles.reactivateUser')
 						}
 						description={
 							user.active
@@ -115,7 +131,9 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 						}
 						intent={user.active ? 'danger' : 'warning'}
 						confirmLabel={
-							user.active ? t('users.actions.deactivateUser') : t('users.actions.reactivateUser')
+							user.active
+								? t('users.actions.deactivateUser')
+								: t('users.actions.reactivateUser')
 						}
 						cancelLabel={t('common.actions.cancel')}
 						onConfirm={submitDeactivateForm}
@@ -127,7 +145,9 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 
 			<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 				<div>
-					<div className='font-medium text-foreground/80 text-sm'>{t('users.fields.email')}</div>
+					<div className='font-medium text-foreground/80 text-sm'>
+						{t('users.fields.email')}
+					</div>
 					<div className={`mt-1 text-foreground ${latinFontClass}`}>{user.email}</div>
 				</div>
 
@@ -140,7 +160,11 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 					</div>
 				</div>
 
-				<Form ref={displayNameFormRef} method='post' data-testid='user-detail-display-name-form'>
+				<Form
+					ref={displayNameFormRef}
+					method='post'
+					data-testid='user-detail-display-name-form'
+				>
 					<input type='hidden' name='intent' value='updateDisplayName' />
 					<input type='hidden' name='userId' value={user.id} />
 

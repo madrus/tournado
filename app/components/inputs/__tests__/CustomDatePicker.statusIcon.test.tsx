@@ -81,7 +81,9 @@ describe('CustomDatePicker - StatusIcon Support', () => {
 
 	it('renders correctly when readOnly with status icon', () => {
 		const statusIcon = <div data-testid='readonly-icon'>—</div>
-		render(<CustomDatePicker {...defaultProps} readOnly={true} statusIcon={statusIcon} />)
+		render(
+			<CustomDatePicker {...defaultProps} readOnly={true} statusIcon={statusIcon} />,
+		)
 
 		expect(screen.getByTestId('readonly-icon')).toBeInTheDocument()
 		const button = screen.getByRole('button')
@@ -94,7 +96,9 @@ describe('CustomDatePicker - StatusIcon Support', () => {
 				✓
 			</div>
 		)
-		render(<CustomDatePicker {...defaultProps} required={true} statusIcon={statusIcon} />)
+		render(
+			<CustomDatePicker {...defaultProps} required={true} statusIcon={statusIcon} />,
+		)
 
 		const button = screen.getByRole('button')
 		expect(button).toHaveAttribute('aria-label', 'Start Date - select date')
@@ -104,7 +108,11 @@ describe('CustomDatePicker - StatusIcon Support', () => {
 	it('renders error message alongside status icon', () => {
 		const statusIcon = <div data-testid='error-icon'>✗</div>
 		render(
-			<CustomDatePicker {...defaultProps} error='This field is required' statusIcon={statusIcon} />,
+			<CustomDatePicker
+				{...defaultProps}
+				error='This field is required'
+				statusIcon={statusIcon}
+			/>,
 		)
 
 		expect(screen.getByText('This field is required')).toBeInTheDocument()

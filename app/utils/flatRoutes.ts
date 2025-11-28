@@ -203,7 +203,11 @@ function buildNestedRoutes(routeMap: RouteMap): RouteEntry[] {
 
 	// Third pass: handle orphaned layout routes (layouts that weren't added to parents)
 	Object.entries(routeMap).forEach(([routePath, routeInfo]) => {
-		if (routeInfo.isLayout && routeInfo.parentPath && !layoutRoutes[routeInfo.parentPath]) {
+		if (
+			routeInfo.isLayout &&
+			routeInfo.parentPath &&
+			!layoutRoutes[routeInfo.parentPath]
+		) {
 			// Parent doesn't exist as a layout, add this as a top-level route
 			const existingRoute = layoutRoutes[routePath]
 			if (existingRoute && !routes.includes(existingRoute)) {

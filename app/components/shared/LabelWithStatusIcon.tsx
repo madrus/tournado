@@ -50,7 +50,9 @@ export const LabelWithStatusIcon = ({
 			className,
 		)}
 	>
-		<div className={cn('font-medium text-foreground', getLatinTextClass(), labelClassName)}>
+		<div
+			className={cn('font-medium text-foreground', getLatinTextClass(), labelClassName)}
+		>
 			{label}
 		</div>
 		{/* Status icon container with fixed width to prevent layout shifts */}

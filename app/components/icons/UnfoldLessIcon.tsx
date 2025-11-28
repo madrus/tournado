@@ -18,7 +18,8 @@ export function UnfoldLessIcon({
 	...rest
 }: Readonly<UnfoldLessIconProps>): JSX.Element {
 	// Convert weight to stroke-width (optional, for consistency)
-	const strokeWidth = weight <= 400 ? undefined : weight === 500 ? 1.25 : weight === 600 ? 1.5 : 1
+	const strokeWidth =
+		weight <= 400 ? undefined : weight === 500 ? 1.25 : weight === 600 ? 1.5 : 1
 	const { style, ...restProps } = rest
 	const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 

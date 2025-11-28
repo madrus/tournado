@@ -1,6 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey, createColorVariantObject } from '~/components/shared/colorVariants'
+import {
+	type ColorVariantKey,
+	createColorVariantObject,
+} from '~/components/shared/colorVariants'
 
 /**
  * Text input field variants with comprehensive interaction states.
@@ -339,7 +342,9 @@ export const datePickerIconVariants = cva(['h-5 w-5 transition-colors duration-2
 export const textInputLabelVariants = cva(['flex w-full flex-col'])
 
 // Text input label text variants
-export const textInputLabelTextVariants = cva(['font-medium text-foreground/80 text-sm'])
+export const textInputLabelTextVariants = cva([
+	'font-medium text-foreground/80 text-sm',
+])
 // Calendar container variants
 export const calendarContainerVariants = cva([
 	'rounded-lg border p-4 shadow-lg',
@@ -352,7 +357,9 @@ export const calendarHeaderVariants = cva([
 ])
 
 // Calendar weekday variants
-export const calendarWeekdayVariants = cva(['font-medium text-foreground-lighter text-sm'])
+export const calendarWeekdayVariants = cva([
+	'font-medium text-foreground-lighter text-sm',
+])
 
 // Calendar day variants
 export const calendarDayVariants = cva(
@@ -656,7 +663,9 @@ export type CalendarDayVariants = VariantProps<typeof calendarDayVariants>
 /**
  * Type definition for checkboxAgreementInputVariants props.
  */
-export type CheckboxAgreementInputVariants = VariantProps<typeof checkboxAgreementInputVariants>
+export type CheckboxAgreementInputVariants = VariantProps<
+	typeof checkboxAgreementInputVariants
+>
 
 /**
  * Type definition for checkboxAgreementCheckmarkVariants props.

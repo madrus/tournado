@@ -35,7 +35,10 @@ const ALWAYS_PUBLIC_ROUTES = [
 /**
  * Get the appropriate landing page after successful authentication
  */
-export function getPostSignInRedirect(user: User | null, requestedPath?: string): string {
+export function getPostSignInRedirect(
+	user: User | null,
+	requestedPath?: string,
+): string {
 	// If no user, redirect to homepage (shouldn't happen in post-signin context)
 	if (!user) {
 		return '/'
@@ -50,7 +53,9 @@ export function getPostSignInRedirect(user: User | null, requestedPath?: string)
 		} else if (canUserAccessPath(user, requestedPath)) {
 			// For admin users, prioritize admin panel unless they specifically requested an admin route
 			const role = getUserRole(user)
-			const isAdminUser = ['ADMIN', 'MANAGER', 'EDITOR', 'BILLING', 'REFEREE'].includes(role)
+			const isAdminUser = ['ADMIN', 'MANAGER', 'EDITOR', 'BILLING', 'REFEREE'].includes(
+				role,
+			)
 			const requestedAdminRoute = requestedPath.startsWith('/a7k9m2x5p8w1n4q6r3y8b5t1')
 
 			// If admin user requested a non-admin route, redirect to admin panel instead
@@ -73,7 +78,9 @@ export function getPostSignInRedirect(user: User | null, requestedPath?: string)
  */
 export function canUserAccessPath(user: User | null, path: string): boolean {
 	// Public routes are always accessible
-	if (ALWAYS_PUBLIC_ROUTES.some((route) => path === route || path.startsWith(`${route}/`))) {
+	if (
+		ALWAYS_PUBLIC_ROUTES.some((route) => path === route || path.startsWith(`${route}/`))
+	) {
 		return true
 	}
 
@@ -111,7 +118,9 @@ export function getPostSignOutRedirect(returnUrl?: string): string {
 	// If return URL is provided and it's a public route, use it
 	if (
 		returnUrl &&
-		ALWAYS_PUBLIC_ROUTES.some((route) => returnUrl === route || returnUrl.startsWith(`${route}/`))
+		ALWAYS_PUBLIC_ROUTES.some(
+			(route) => returnUrl === route || returnUrl.startsWith(`${route}/`),
+		)
 	) {
 		return returnUrl
 	}
@@ -144,7 +153,10 @@ export function shouldRedirectAuthenticatedUser(
  * Get appropriate unauthorized redirect based on user role
  * Different roles might see different unauthorized pages
  */
-export function getUnauthorizedRedirect(user: User | null, attemptedPath: string): string {
+export function getUnauthorizedRedirect(
+	user: User | null,
+	attemptedPath: string,
+): string {
 	if (!user) {
 		// Not authenticated - redirect to signin with return path
 		return `/auth/signin?redirectTo=${encodeURIComponent(attemptedPath)}`

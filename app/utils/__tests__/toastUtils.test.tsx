@@ -170,7 +170,9 @@ describe('toastUtils', () => {
 			expect(() => toast.success('Test', { description: 'Desc' })).not.toThrow()
 			expect(() => toast.error('Test', { duration: 5000 })).not.toThrow()
 			expect(() => toast.info('Test', { priority: 'high' })).not.toThrow()
-			expect(() => toast.warning('Test', { description: 'Desc', duration: 3000 })).not.toThrow()
+			expect(() =>
+				toast.warning('Test', { description: 'Desc', duration: 3000 }),
+			).not.toThrow()
 		})
 	})
 
@@ -448,7 +450,9 @@ describe('toastUtils', () => {
 				.mocked(sonnerToast.custom)
 				.mock.calls.find((call) => call[1]?.style?.borderLeft)
 			expect(highPriorityCall).toBeDefined()
-			expect(highPriorityCall?.[1]?.style?.borderLeft).toBe('4px solid var(--color-red-500)')
+			expect(highPriorityCall?.[1]?.style?.borderLeft).toBe(
+				'4px solid var(--color-red-500)',
+			)
 		})
 	})
 

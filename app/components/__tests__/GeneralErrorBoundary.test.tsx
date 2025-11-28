@@ -143,7 +143,9 @@ describe('GeneralErrorBoundary', () => {
 			.mockReturnValue(<div>Custom unexpected error handler</div>)
 
 		// Render
-		render(<GeneralErrorBoundary unexpectedErrorHandler={customUnexpectedErrorHandler} />)
+		render(
+			<GeneralErrorBoundary unexpectedErrorHandler={customUnexpectedErrorHandler} />,
+		)
 
 		// Assert
 		expect(customUnexpectedErrorHandler).toHaveBeenCalledWith(mockError)

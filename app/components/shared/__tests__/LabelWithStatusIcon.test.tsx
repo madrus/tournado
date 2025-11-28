@@ -66,7 +66,9 @@ describe('LabelWithStatusIcon', () => {
 			return originalGetAttribute.call(document.documentElement, attr)
 		})
 
-		vi.spyOn(document.documentElement, 'getAttribute').mockImplementation(mockGetAttribute)
+		vi.spyOn(document.documentElement, 'getAttribute').mockImplementation(
+			mockGetAttribute,
+		)
 
 		render(<LabelWithStatusIcon label='Test Label' />)
 

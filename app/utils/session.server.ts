@@ -3,7 +3,10 @@ import { createCookieSessionStorage, redirect, type Session } from 'react-router
 
 import invariant from 'tiny-invariant'
 
-import { clearFirebaseSession, validateFirebaseSession } from '~/features/firebase/session.server'
+import {
+	clearFirebaseSession,
+	validateFirebaseSession,
+} from '~/features/firebase/session.server'
 import type { CreateUserSessionProps } from '~/features/firebase/types'
 import type { User } from '~/models/user.server'
 import { getUserById } from '~/models/user.server'
@@ -88,7 +91,10 @@ export async function requireUser(request: Request): Promise<User> {
 	throw await signout(request)
 }
 
-export async function requireUserWithRole(request: Request, allowedRoles: Role[]): Promise<User> {
+export async function requireUserWithRole(
+	request: Request,
+	allowedRoles: Role[],
+): Promise<User> {
 	const user = await requireUser(request)
 
 	if (!allowedRoles.includes(user.role)) {

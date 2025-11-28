@@ -42,7 +42,10 @@ export type CheckboxAgreementFieldProps = {
 	color?: ColorAccent
 }
 
-export const CheckboxAgreementField = forwardRef<HTMLInputElement, CheckboxAgreementFieldProps>(
+export const CheckboxAgreementField = forwardRef<
+	HTMLInputElement,
+	CheckboxAgreementFieldProps
+>(
 	(
 		{
 			name,
@@ -88,7 +91,7 @@ export const CheckboxAgreementField = forwardRef<HTMLInputElement, CheckboxAgree
 				) : statusIcon ? (
 					// Only render container if there's actually an icon to show
 					<div className='mb-2 flex justify-end'>
-						<div className='w-6 flex-shrink-0'>{statusIcon}</div>
+						<div className='w-6 shrink-0'>{statusIcon}</div>
 					</div>
 				) : null}
 				<div
@@ -97,7 +100,7 @@ export const CheckboxAgreementField = forwardRef<HTMLInputElement, CheckboxAgree
 						labelClassName,
 					)}
 				>
-					<div className='relative flex flex-shrink-0 items-center justify-center'>
+					<div className='relative flex shrink-0 items-center justify-center'>
 						<input
 							ref={ref}
 							type='checkbox'

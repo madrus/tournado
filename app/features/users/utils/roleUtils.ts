@@ -3,7 +3,14 @@ import type { Role } from '@prisma/client'
 /**
  * Valid role values that can be assigned to users
  */
-export const VALID_ROLES = ['PUBLIC', 'MANAGER', 'ADMIN', 'REFEREE', 'EDITOR', 'BILLING'] as const
+export const VALID_ROLES = [
+	'PUBLIC',
+	'MANAGER',
+	'ADMIN',
+	'REFEREE',
+	'EDITOR',
+	'BILLING',
+] as const
 
 /**
  * Validates if a string is a valid Role enum value
@@ -21,9 +28,12 @@ export const isValidRole = (value: unknown): value is Role =>
  */
 export function validateRole(value: unknown): Role {
 	if (!isValidRole(value)) {
-		throw new Response(`Invalid role value. Must be one of: ${VALID_ROLES.join(', ')}`, {
-			status: 400,
-		})
+		throw new Response(
+			`Invalid role value. Must be one of: ${VALID_ROLES.join(', ')}`,
+			{
+				status: 400,
+			},
+		)
 	}
 	return value
 }

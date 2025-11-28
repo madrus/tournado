@@ -49,7 +49,14 @@ describe('DesktopFooter', () => {
 			const footer = screen.getByRole('contentinfo')
 			const container = screen.getByTestId('footer-container')
 			expect(footer).toContainElement(container)
-			expect(container).toHaveClass('container', 'mx-auto', 'grid', 'h-14', 'grid-cols-2', 'px-4')
+			expect(container).toHaveClass(
+				'container',
+				'mx-auto',
+				'grid',
+				'h-14',
+				'grid-cols-2',
+				'px-4',
+			)
 		})
 
 		it('should have two main sections in grid layout', () => {
@@ -340,7 +347,14 @@ describe('DesktopFooter', () => {
 			expect(footer).toHaveClass('hidden', 'md:block')
 
 			// Container classes
-			expect(container).toHaveClass('container', 'mx-auto', 'grid', 'h-14', 'grid-cols-2', 'px-4')
+			expect(container).toHaveClass(
+				'container',
+				'mx-auto',
+				'grid',
+				'h-14',
+				'grid-cols-2',
+				'px-4',
+			)
 
 			// Left section classes
 			expect(leftSection).toHaveClass('flex', 'items-center')

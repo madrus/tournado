@@ -135,7 +135,10 @@ class TranslationCache<T> {
 	/**
 	 * Preload translations for critical languages
 	 */
-	async preload(languages: string[], loader: (lang: string) => Promise<T>): Promise<void> {
+	async preload(
+		languages: string[],
+		loader: (lang: string) => Promise<T>,
+	): Promise<void> {
 		const promises = languages.map(async (lang) => {
 			if (!this.has(lang)) {
 				try {

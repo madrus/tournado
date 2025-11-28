@@ -2,7 +2,16 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import type { Mock } from 'vitest'
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
+import {
+	afterAll,
+	afterEach,
+	beforeAll,
+	beforeEach,
+	describe,
+	expect,
+	test,
+	vi,
+} from 'vitest'
 
 import { useFirebaseAuth } from '../useFirebaseAuth'
 
@@ -42,7 +51,9 @@ describe('useFirebaseAuth', () => {
 		vi.clearAllMocks()
 
 		// Get the mocked functions
-		const { signInWithPopup, signOut, onAuthStateChanged } = await import('firebase/auth')
+		const { signInWithPopup, signOut, onAuthStateChanged } = await import(
+			'firebase/auth'
+		)
 		mockSignInWithPopup = vi.mocked(signInWithPopup)
 		mockSignOut = vi.mocked(signOut)
 		mockOnAuthStateChanged = vi.mocked(onAuthStateChanged)
@@ -242,7 +253,9 @@ describe('useFirebaseAuth', () => {
 		mockGetIdToken.mockResolvedValue('mock-id-token')
 
 		// Set up MSW handler that returns no Location header (lets server decide)
-		server.use(http.post('*/auth/callback', () => new HttpResponse(null, { status: 200 })))
+		server.use(
+			http.post('*/auth/callback', () => new HttpResponse(null, { status: 200 })),
+		)
 
 		Object.defineProperty(window, 'location', {
 			value: { href: '' },

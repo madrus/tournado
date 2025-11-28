@@ -233,11 +233,11 @@ describe('ConfirmDialog - Controlled Mode', () => {
 
 	describe('Icon Contrast', () => {
 		test.each([
-			['danger'],
-			['warning'],
-			['success'],
-			['info'],
-		] as const)('renders appropriate icon for %s intent', (intent) => {
+			['danger', '0 0 24 24'],
+			['warning', '0 0 24 24'],
+			['success', '0 0 24 24'],
+			['info', '0 -960 960 960'],
+		] as const)('renders appropriate icon for %s intent', (intent, expectedViewBox) => {
 			const handleOpenChange = vi.fn()
 
 			render(
@@ -257,13 +257,13 @@ describe('ConfirmDialog - Controlled Mode', () => {
 
 			// Verify icon is rendered with proper SVG element and correct viewBox
 			expect(icon).toBeInTheDocument()
-			expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
+			expect(icon).toHaveAttribute('viewBox', expectedViewBox)
 			expect(icon).toHaveAttribute('role', 'img')
 
 			// Icon container is marked as decorative since the intent is conveyed by color and structure
 			expect(iconContainer).toHaveAttribute('aria-hidden', 'true')
 
-			// Each intent icon is designed with white stroke details for contrast
+			// Each intent icon is designed with appropriate styling for contrast
 			// (Verified through dedicated icon component unit tests)
 		})
 	})
@@ -305,7 +305,10 @@ describe('ConfirmDialog - Controlled Mode', () => {
 
 			const dialog = screen.getByRole('alertdialog')
 			expect(dialog).toHaveAttribute('aria-describedby', 'dialog-description')
-			expect(screen.getByText('This is important')).toHaveAttribute('id', 'dialog-description')
+			expect(screen.getByText('This is important')).toHaveAttribute(
+				'id',
+				'dialog-description',
+			)
 		})
 
 		test('icon container is marked as decorative', () => {

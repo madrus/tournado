@@ -44,8 +44,12 @@ const createTournamentFormSchema = (t: TFunction) =>
 			),
 			startDate: createIsoDateSchema(t('messages.tournament.invalidDateFormat')),
 			endDate: createIsoDateSchema(t('messages.tournament.invalidDateFormat')),
-			divisions: createRequiredStringArraySchema(t('messages.tournament.divisionsRequired')),
-			categories: createRequiredStringArraySchema(t('messages.tournament.categoriesRequired')),
+			divisions: createRequiredStringArraySchema(
+				t('messages.tournament.divisionsRequired'),
+			),
+			categories: createRequiredStringArraySchema(
+				t('messages.tournament.categoriesRequired'),
+			),
 		})
 		.refine((formData) => formData.endDate >= formData.startDate, {
 			error: t('messages.tournament.endDateBeforeStartDate'),

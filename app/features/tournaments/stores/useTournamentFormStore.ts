@@ -1,13 +1,24 @@
 import { useEffect } from 'react'
 
 import { create } from 'zustand'
-import { createJSONStorage, devtools, persist, subscribeWithSelector } from 'zustand/middleware'
+import {
+	createJSONStorage,
+	devtools,
+	persist,
+	subscribeWithSelector,
+} from 'zustand/middleware'
 
 import type { TournamentFormData } from '~/features/tournaments/validation'
 import { isBrowser } from '~/lib/lib.helpers'
-import { validateEntireTournamentForm, validateSingleTournamentField } from '~/utils/formValidation'
+import {
+	validateEntireTournamentForm,
+	validateSingleTournamentField,
+} from '~/utils/formValidation'
 
-import { initialStoreState, TOURNAMENT_PANELS_FIELD_MAP } from './helpers/tournamentFormConstants'
+import {
+	initialStoreState,
+	TOURNAMENT_PANELS_FIELD_MAP,
+} from './helpers/tournamentFormConstants'
 import {
 	getPanelNumberForField,
 	isFormDirty,
@@ -46,7 +57,10 @@ type Actions = {
 		value: Record<string, string> | Record<string, boolean> | boolean,
 	) => void
 	setFormMetaField: (fieldName: FormMetaFieldName, value: string | boolean) => void
-	setAvailableOptionsField: (fieldName: AvailableOptionsFieldName, value: string[]) => void
+	setAvailableOptionsField: (
+		fieldName: AvailableOptionsFieldName,
+		value: string[],
+	) => void
 
 	// Convenience methods for common operations
 	clearAllErrors: () => void
@@ -125,7 +139,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 									const currentEndDate = state.formFields.endDate
 
 									// If endDate is empty or startDate is later than endDate, update endDate to match startDate
-									if (!currentEndDate || Date.parse(value) > Date.parse(currentEndDate)) {
+									if (
+										!currentEndDate ||
+										Date.parse(value) > Date.parse(currentEndDate)
+									) {
 										newFormFields.endDate = value
 									}
 								}
@@ -191,7 +208,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 					},
 
 					// Universal available options setter
-					setAvailableOptionsField: (fieldName: AvailableOptionsFieldName, value: string[]) => {
+					setAvailableOptionsField: (
+						fieldName: AvailableOptionsFieldName,
+						value: string[],
+					) => {
 						set(
 							(state: StoreState) => {
 								const newAvailableOptions = {
@@ -274,7 +294,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 									[fieldName]: error,
 								}
 								// Merge with server errors
-								const mergedErrors = mergeErrors(newDisplayErrors, state.validation.serverErrors)
+								const mergedErrors = mergeErrors(
+									newDisplayErrors,
+									state.validation.serverErrors,
+								)
 								return {
 									...state,
 									validation: {
@@ -347,7 +370,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 						const { mode } = formMeta
 
 						// Only validate if field is blurred OR if we're forcing all errors
-						const shouldValidate = shouldValidateField(fieldName as FormFieldName, validation)
+						const shouldValidate = shouldValidateField(
+							fieldName as FormFieldName,
+							validation,
+						)
 
 						if (!shouldValidate) {
 							return
@@ -412,7 +438,8 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 								(field: string) => validation.blurredFields[field],
 							)
 							const allFieldsValid = panelFields.every((field: string) => {
-								const fieldValue = state.formFields[field as keyof typeof state.formFields]
+								const fieldValue =
+									state.formFields[field as keyof typeof state.formFields]
 								if (Array.isArray(fieldValue)) {
 									return fieldValue.length > 0 && !validation.displayErrors[field]
 								}
@@ -522,7 +549,10 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 						)
 						const noErrors =
 							Object.keys(
-								mergeErrors(state.validation.displayErrors, state.validation.serverErrors),
+								mergeErrors(
+									state.validation.displayErrors,
+									state.validation.serverErrors,
+								),
 							).length === 0
 
 						return allPanelsValid && noErrors

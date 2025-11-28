@@ -74,7 +74,9 @@ export const createRequiredStringSchema = (
  * @param errorMsg - Optional custom error message for invalid date format
  * @returns Zod schema for ISO date validation
  */
-export const createIsoDateSchema = (errorMsg?: string): ReturnType<typeof z.iso.date> =>
+export const createIsoDateSchema = (
+	errorMsg?: string,
+): ReturnType<typeof z.iso.date> =>
 	errorMsg ? z.iso.date({ error: errorMsg }) : z.iso.date()
 
 /**

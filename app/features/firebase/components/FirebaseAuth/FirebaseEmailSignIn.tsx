@@ -7,7 +7,10 @@ import { validateEmail } from '~/lib/validation'
 import { cn } from '~/utils/misc'
 
 import { useFirebaseAuth } from '../../hooks/useFirebaseAuth'
-import { firebaseAuthFormVariants, firebaseAuthLabelVariants } from './firebaseAuth.variants'
+import {
+	firebaseAuthFormVariants,
+	firebaseAuthLabelVariants,
+} from './firebaseAuth.variants'
 
 export type FirebaseEmailSignInProps = {
 	mode: 'signin' | 'signup'
@@ -23,7 +26,8 @@ export function FirebaseEmailSignIn({
 	size = 'md',
 }: FirebaseEmailSignInProps): JSX.Element {
 	const { t } = useTranslation()
-	const { signInWithEmail, signUpWithEmail, loading, error, clearError } = useFirebaseAuth()
+	const { signInWithEmail, signUpWithEmail, loading, error, clearError } =
+		useFirebaseAuth()
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -71,7 +75,10 @@ export function FirebaseEmailSignIn({
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className={cn(firebaseAuthFormVariants({ size }), className)}>
+		<form
+			onSubmit={handleSubmit}
+			className={cn(firebaseAuthFormVariants({ size }), className)}
+		>
 			<TextInputField
 				name='email'
 				label={t('auth.labels.email')}
@@ -145,7 +152,9 @@ export function FirebaseEmailSignIn({
 			) : null}
 
 			{error && !validationError ? (
-				<div className='rounded-md bg-destructive/10 p-3 text-destructive text-sm'>{error}</div>
+				<div className='rounded-md bg-destructive/10 p-3 text-destructive text-sm'>
+					{error}
+				</div>
 			) : null}
 
 			<ActionButton

@@ -11,7 +11,8 @@ export const TEST_TRANSLATIONS = {
 	'messages.team.divisionRequired': 'Division is required',
 	'messages.team.categoryRequired': 'Category is required',
 	'messages.team.teamLeaderNameRequired': 'Team leader name is required',
-	'messages.team.teamLeaderNameTooLong': 'Team leader name must be less than 100 characters',
+	'messages.team.teamLeaderNameTooLong':
+		'Team leader name must be less than 100 characters',
 	'messages.team.phoneNumberRequired': 'Phone number is required',
 	'messages.team.phoneNumberInvalid': 'Please enter a valid phone number',
 	'messages.validation.emailRequired': 'Email is required',

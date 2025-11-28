@@ -7,13 +7,14 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 import { ToggleChipsField } from '../ToggleChipsField'
 
 // Mock the helper functions
-vi.mock('~/lib/lib.helpers', () => ({
-	getDivisionLabelByValue: vi.fn((division) => `Division ${division}`),
-	getCategoryLabelByValue: vi.fn((category) => `Category ${category}`),
-	getCurrentDivisionLabel: vi.fn((division) => `Division ${division}`),
-	getCurrentCategoryLabel: vi.fn((category) => `Category ${category}`),
-	isBrowser: true,
-}))
+vi.mock('~/lib/lib.helpers', async (importOriginal) => {
+	const actual = await importOriginal<typeof import('~/lib/lib.helpers')>()
+	return {
+		...actual,
+		getCurrentDivisionLabel: vi.fn((division) => `Division ${division}`),
+		getCurrentCategoryLabel: vi.fn((category) => `Category ${category}`),
+	}
+})
 
 describe('ToggleChipsField', () => {
 	const state = useSettingsStore.getState
@@ -47,7 +48,9 @@ describe('ToggleChipsField', () => {
 	})
 
 	it('shows success status when items are selected and required', () => {
-		render(<ToggleChipsField {...defaultProps} selectedValues={['item1']} required={true} />)
+		render(
+			<ToggleChipsField {...defaultProps} selectedValues={['item1']} required={true} />,
+		)
 
 		// Check that success status icon is rendered (green checkmark)
 		const statusIcon = screen.getByTestId('field-status-success')
@@ -130,7 +133,9 @@ describe('ToggleChipsField', () => {
 	})
 
 	it('uses correct test ids for categories', () => {
-		render(<ToggleChipsField {...defaultProps} type='categories' items={['cat1', 'cat2']} />)
+		render(
+			<ToggleChipsField {...defaultProps} type='categories' items={['cat1', 'cat2']} />,
+		)
 
 		expect(screen.getByTestId('category-cat1')).toBeInTheDocument()
 		expect(screen.getByTestId('category-cat2')).toBeInTheDocument()

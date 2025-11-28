@@ -202,14 +202,24 @@ describe('dataTable.variants', () => {
 			const result = datatableDeleteAreaVariants()
 			expect(result).toContain('flex')
 			expect(result).toContain('w-screen')
-			expect(result).toContain('flex-shrink-0')
+			expect(result).toContain('shrink-0')
 			expect(result).toContain('items-center')
 			expect(result).toContain('justify-center')
 		})
 	})
 
 	describe('color variants consistency', () => {
-		const colors = ['slate', 'teal', 'blue', 'emerald', 'brand', 'red', 'cyan', 'yellow', 'green']
+		const colors = [
+			'slate',
+			'teal',
+			'blue',
+			'emerald',
+			'brand',
+			'red',
+			'cyan',
+			'yellow',
+			'green',
+		]
 
 		it('should support all color variants for container', () => {
 			colors.forEach((color) => {

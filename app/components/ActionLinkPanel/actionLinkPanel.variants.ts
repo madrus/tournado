@@ -1,6 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { type ColorVariantKey, createColorVariantMapping } from '~/components/shared/colorVariants'
+import {
+	type ColorVariantKey,
+	createColorVariantMapping,
+} from '~/components/shared/colorVariants'
 
 // Import base panel variants that are shared across all panel components
 export {
@@ -112,29 +115,32 @@ export const panelLayerPositioningVariants = cva(
 	},
 )
 
-export const panelLayerOpacityVariants = cva(['transition-opacity duration-750 ease-in-out'], {
-	variants: {
-		isHover: {
-			true: 'opacity-0 group-hover:opacity-100',
-			false: '',
+export const panelLayerOpacityVariants = cva(
+	['transition-opacity duration-750 ease-in-out'],
+	{
+		variants: {
+			isHover: {
+				true: 'opacity-0 group-hover:opacity-100',
+				false: '',
+			},
+			isBaseLayerWithHoverColor: {
+				true: 'panel-base-layer group-hover:opacity-0',
+				false: '',
+			},
 		},
-		isBaseLayerWithHoverColor: {
-			true: 'panel-base-layer group-hover:opacity-0',
-			false: '',
-		},
-	},
-	compoundVariants: [
-		{
+		compoundVariants: [
+			{
+				isHover: false,
+				isBaseLayerWithHoverColor: true,
+				class: 'panel-base-layer group-hover:opacity-0',
+			},
+		],
+		defaultVariants: {
 			isHover: false,
-			isBaseLayerWithHoverColor: true,
-			class: 'panel-base-layer group-hover:opacity-0',
+			isBaseLayerWithHoverColor: false,
 		},
-	],
-	defaultVariants: {
-		isHover: false,
-		isBaseLayerWithHoverColor: false,
 	},
-})
+)
 
 // Layer variants for panel content layers
 
@@ -154,7 +160,9 @@ export const panelLayerOpacityVariants = cva(['transition-opacity duration-750 e
  */
 export const actionLinkPanelGlowVariants = cva(
 	// Base classes for glow effect
-	['-top-8 -right-8 pointer-events-none absolute h-32 w-32 rounded-full opacity-90 blur-2xl'],
+	[
+		'-top-8 -right-8 pointer-events-none absolute h-32 w-32 rounded-full opacity-90 blur-2xl',
+	],
 	{
 		variants: {
 			/**
@@ -283,7 +291,9 @@ export type PanelBackgroundVariants = VariantProps<typeof panelBackgroundVariant
  * Type definition for actionLinkPanelGlowVariants props.
  * Use this for ActionLinkPanel-specific glow effect styling options.
  */
-export type ActionLinkPanelGlowVariants = VariantProps<typeof actionLinkPanelGlowVariants>
+export type ActionLinkPanelGlowVariants = VariantProps<
+	typeof actionLinkPanelGlowVariants
+>
 
 /**
  * Type definition for panelIconVariants props.

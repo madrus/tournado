@@ -6,7 +6,8 @@ import { ToastMessage } from '../ToastMessage'
 
 // Mock the cn utility
 vi.mock('~/utils/misc', () => ({
-	cn: (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' '),
+	cn: (...classes: (string | boolean | undefined)[]) =>
+		classes.filter(Boolean).join(' '),
 }))
 
 // Mock the extracted components
@@ -97,7 +98,9 @@ describe('ToastMessage Component', () => {
 			const types = ['success', 'error', 'info', 'warning'] as const
 
 			types.forEach((type) => {
-				const { unmount } = render(<ToastMessage type={type} title={`${type} message`} />)
+				const { unmount } = render(
+					<ToastMessage type={type} title={`${type} message`} />,
+				)
 
 				expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument()
 
@@ -160,7 +163,11 @@ describe('ToastMessage Component', () => {
 
 		it('should have proper structure with title and description', () => {
 			render(
-				<ToastMessage type='warning' title='Warning Title' description='Warning description' />,
+				<ToastMessage
+					type='warning'
+					title='Warning Title'
+					description='Warning description'
+				/>,
 			)
 
 			// Check title styling

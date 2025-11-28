@@ -5,7 +5,10 @@ import type { ColorAccent } from '~/lib/lib.types'
 import { cn } from '~/utils/misc'
 import { getTypographyClasses } from '~/utils/rtlUtils'
 
-import { actionLinkPanelVariants, panelBackgroundVariants } from './actionLinkPanel.variants'
+import {
+	actionLinkPanelVariants,
+	panelBackgroundVariants,
+} from './actionLinkPanel.variants'
 import ErrorBoundary from './ErrorBoundary'
 import { PanelBackground } from './PanelBackground'
 import { PanelLayer } from './PanelLayer'

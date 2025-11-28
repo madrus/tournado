@@ -6,7 +6,8 @@ import { PanelBackground } from '../PanelBackground'
 
 // Mock cn utility
 vi.mock('~/utils/misc', () => ({
-	cn: (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' '),
+	cn: (...classes: (string | boolean | undefined)[]) =>
+		classes.filter(Boolean).join(' '),
 }))
 
 describe('PanelBackground Component', () => {
@@ -44,7 +45,12 @@ describe('PanelBackground Component', () => {
 		})
 
 		it('should apply data-testid when provided', () => {
-			render(<PanelBackground backgroundColor='bg-slate-800' data-testid='custom-background' />)
+			render(
+				<PanelBackground
+					backgroundColor='bg-slate-800'
+					data-testid='custom-background'
+				/>,
+			)
 
 			expect(screen.getByTestId('custom-background')).toBeInTheDocument()
 		})
@@ -61,27 +67,34 @@ describe('PanelBackground Component', () => {
 		it('should handle Tailwind gradient backgrounds', () => {
 			render(
 				<PanelBackground
-					backgroundColor='bg-linear-to-br from-blue-950 via-blue-900 to-blue-900'
+					backgroundColor='bg-gradient-to-br from-blue-950 via-blue-900 to-blue-900'
 					data-testid='gradient-bg'
 				/>,
 			)
 
 			const background = screen.getByTestId('gradient-bg')
-			expect(background).toHaveClass('bg-linear-to-br')
+			expect(background).toHaveClass('bg-gradient-to-br')
 			expect(background).toHaveClass('from-blue-950')
 			expect(background).toHaveClass('via-blue-900')
 			expect(background).toHaveClass('to-blue-900')
 		})
 
 		it('should handle solid color backgrounds', () => {
-			render(<PanelBackground backgroundColor='bg-emerald-800' data-testid='solid-bg' />)
+			render(
+				<PanelBackground backgroundColor='bg-emerald-800' data-testid='solid-bg' />,
+			)
 
 			const background = screen.getByTestId('solid-bg')
 			expect(background).toHaveClass('bg-emerald-800')
 		})
 
 		it('should handle transparent backgrounds', () => {
-			render(<PanelBackground backgroundColor='bg-transparent' data-testid='transparent-bg' />)
+			render(
+				<PanelBackground
+					backgroundColor='bg-transparent'
+					data-testid='transparent-bg'
+				/>,
+			)
 
 			const background = screen.getByTestId('transparent-bg')
 			expect(background).toHaveClass('bg-transparent')
@@ -153,7 +166,9 @@ describe('PanelBackground Component', () => {
 		})
 
 		it('should not have any interactive elements', () => {
-			render(<PanelBackground backgroundColor='bg-cyan-800' data-testid='non-interactive' />)
+			render(
+				<PanelBackground backgroundColor='bg-cyan-800' data-testid='non-interactive' />,
+			)
 
 			const background = screen.getByTestId('non-interactive')
 			expect(background).not.toHaveAttribute('onclick')
@@ -166,12 +181,14 @@ describe('PanelBackground Component', () => {
 	describe('Edge Cases', () => {
 		it('should handle very long background class names', () => {
 			const longClassName =
-				'bg-linear-to-br from-purple-950 via-purple-900 to-purple-900 opacity-90 transition-all duration-500'
+				'bg-gradient-to-br from-purple-950 via-purple-900 to-purple-900 opacity-90 transition-all duration-500'
 
-			render(<PanelBackground backgroundColor={longClassName} data-testid='long-class-bg' />)
+			render(
+				<PanelBackground backgroundColor={longClassName} data-testid='long-class-bg' />,
+			)
 
 			const background = screen.getByTestId('long-class-bg')
-			expect(background).toHaveClass('bg-linear-to-br')
+			expect(background).toHaveClass('bg-gradient-to-br')
 			expect(background).toHaveClass('from-purple-950')
 			expect(background).toHaveClass('via-purple-900')
 			expect(background).toHaveClass('to-purple-900')

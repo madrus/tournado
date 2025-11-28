@@ -163,7 +163,9 @@ describe('BottomNavigation', () => {
 				const navItem = screen.getByTestId(`nav-item-${label.toLowerCase()}`)
 				expect(navItem).toHaveAttribute('href', route)
 				expect(screen.getByTestId(`icon-${icon}`)).toBeInTheDocument()
-				expect(screen.getByTestId(`label-${label.toLowerCase()}`)).toHaveTextContent(label)
+				expect(screen.getByTestId(`label-${label.toLowerCase()}`)).toHaveTextContent(
+					label,
+				)
 			})
 		})
 	})

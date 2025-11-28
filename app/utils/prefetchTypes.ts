@@ -104,26 +104,27 @@ export const defaultPrefetchConfig: PrefetchConfig = {
  * Route-specific prefetch overrides for high-traffic or critical routes
  * Disabled in test environments to reduce network load
  */
-export const routePrefetchOverrides: Record<string, PrefetchStrategy> = isTestEnvironment()
-	? {} // No overrides in test environment
-	: {
-			// Home page CTA should prefetch teams immediately
-			'/teams': 'render',
+export const routePrefetchOverrides: Record<string, PrefetchStrategy> =
+	isTestEnvironment()
+		? {} // No overrides in test environment
+		: {
+				// Home page CTA should prefetch teams immediately
+				'/teams': 'render',
 
-			// Profile and settings accessed frequently after login
-			'/profile': 'intent',
-			'/settings': 'intent',
+				// Profile and settings accessed frequently after login
+				'/profile': 'intent',
+				'/settings': 'intent',
 
-			// Auth routes for quick access
-			'/auth/signin': 'intent',
-			'/auth/signup': 'intent',
+				// Auth routes for quick access
+				'/auth/signin': 'intent',
+				'/auth/signup': 'intent',
 
-			// Admin routes only when needed
-			'/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
+				// Admin routes only when needed
+				'/a7k9m2x5p8w1n4q6r3y8b5t1': 'intent',
 
-			// About page - lower priority
-			'/about': 'intent',
-		}
+				// About page - lower priority
+				'/about': 'intent',
+			}
 
 /**
  * Get the appropriate prefetch strategy for a given route and context

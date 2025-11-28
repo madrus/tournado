@@ -17,7 +17,8 @@ export function ErrorIcon({
 	...rest
 }: Readonly<ErrorIconProps>): JSX.Element {
 	// Circle error icon paths
-	const circlePath = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'
+	const circlePath =
+		'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'
 	const linePath = 'M12 7v6'
 	const dotPath = 'M12 17h.01'
 

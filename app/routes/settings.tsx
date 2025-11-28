@@ -50,7 +50,9 @@ export default function SettingsPage(): JSX.Element {
 			<SettingsLayoutHeader />
 			<div className='mt-8 space-y-6'>
 				<section>
-					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>Preferences</h3>
+					<h3 className={cn('mb-4 font-semibold text-2xl', getLatinTitleClass())}>
+						Preferences
+					</h3>
 					<ul className='space-y-2 text-foreground'>
 						<li>• Language and regional settings</li>
 						<li>• Theme and appearance options</li>

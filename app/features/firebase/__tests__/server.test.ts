@@ -47,7 +47,8 @@ describe('firebase.server', () => {
 
 		// Reset environment variables
 		process.env.FIREBASE_ADMIN_PROJECT_ID = 'test-project'
-		process.env.FIREBASE_ADMIN_CLIENT_EMAIL = 'test@test-project.iam.gserviceaccount.com'
+		process.env.FIREBASE_ADMIN_CLIENT_EMAIL =
+			'test@test-project.iam.gserviceaccount.com'
 		process.env.FIREBASE_ADMIN_PRIVATE_KEY = 'test-private-key'
 	})
 
@@ -115,7 +116,9 @@ describe('firebase.server', () => {
 		vi.resetModules()
 		const { verifyIdToken } = await import('../server')
 
-		await expect(verifyIdToken('some-token')).rejects.toThrow('Firebase Admin SDK not initialized')
+		await expect(verifyIdToken('some-token')).rejects.toThrow(
+			'Firebase Admin SDK not initialized',
+		)
 	})
 
 	test('should handle missing environment variables gracefully', async () => {
@@ -131,7 +134,9 @@ describe('firebase.server', () => {
 		expect(adminAuth).toBeNull()
 
 		// Verify that verifyIdToken throws when adminAuth is not initialized
-		await expect(verifyIdToken('some-token')).rejects.toThrow('Firebase Admin SDK not initialized')
+		await expect(verifyIdToken('some-token')).rejects.toThrow(
+			'Firebase Admin SDK not initialized',
+		)
 	})
 
 	test('should handle initialization errors gracefully', async () => {
@@ -147,7 +152,9 @@ describe('firebase.server', () => {
 		expect(adminAuth).toBeNull()
 
 		// Verify that verifyIdToken throws when adminAuth is not initialized
-		await expect(verifyIdToken('some-token')).rejects.toThrow('Firebase Admin SDK not initialized')
+		await expect(verifyIdToken('some-token')).rejects.toThrow(
+			'Firebase Admin SDK not initialized',
+		)
 	})
 
 	describe('disableFirebaseUser', () => {
@@ -198,7 +205,10 @@ describe('firebase.server', () => {
 			await expect(disableFirebaseUser('uid-123')).rejects.toThrow(
 				'Failed to disable Firebase user: boom',
 			)
-			expect(errorSpy).toHaveBeenCalledWith('[firebase-admin] disableFirebaseUser error:', 'boom')
+			expect(errorSpy).toHaveBeenCalledWith(
+				'[firebase-admin] disableFirebaseUser error:',
+				'boom',
+			)
 		})
 	})
 
@@ -206,7 +216,9 @@ describe('firebase.server', () => {
 		test('throws when firebaseUid is empty', async () => {
 			const { enableFirebaseUser } = await import('../server')
 
-			await expect(enableFirebaseUser('')).rejects.toThrow('firebaseUid must be a non-empty string')
+			await expect(enableFirebaseUser('')).rejects.toThrow(
+				'firebaseUid must be a non-empty string',
+			)
 		})
 
 		test('logs warning and returns when admin SDK unavailable', async () => {

@@ -76,6 +76,8 @@ describe('TeamRegisteredEmail', () => {
 		expect(html).toContain('<html dir="ltr" lang="en">')
 		expect(html).toContain('<head>')
 		expect(html).toContain('<body')
-		expect(html).toContain('Your team Ajax Amsterdam has been registered for Spring Cup')
+		expect(html).toContain(
+			'Your team Ajax Amsterdam has been registered for Spring Cup',
+		)
 	})
 })

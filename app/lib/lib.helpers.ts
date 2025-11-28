@@ -238,7 +238,9 @@ export const isValidCategory = (value: string | null): value is Category =>
  * 2. Category (with numeric awareness for formats like JO8, MO12, etc.)
  * 3. Team name (alphabetical)
  */
-export const sortTeams = <T extends { name: string; clubName: string; category?: string }>(
+export const sortTeams = <
+	T extends { name: string; clubName: string; category?: string },
+>(
 	teams: T[],
 ): T[] =>
 	teams.sort((a, b) => {
@@ -334,7 +336,9 @@ export function getFieldStatus(
 	if (isDisabled) return 'neutral'
 
 	// Determine if field has a value based on type
-	const hasValue = Array.isArray(fieldValue) ? fieldValue.length > 0 : Boolean(fieldValue)
+	const hasValue = Array.isArray(fieldValue)
+		? fieldValue.length > 0
+		: Boolean(fieldValue)
 
 	// For required fields: show error if empty, success if filled
 	if (isRequired) {
@@ -381,8 +385,10 @@ export function getAllKeys(obj: Record<string, unknown>, prefix = ''): string[] 
  * @param compareKeys - The array of keys to compare.
  * @returns An array of missing keys.
  */
-export const getMissingKeys = (referenceKeys: string[], compareKeys: string[]): string[] =>
-	referenceKeys.filter((key) => !compareKeys.includes(key))
+export const getMissingKeys = (
+	referenceKeys: string[],
+	compareKeys: string[],
+): string[] => referenceKeys.filter((key) => !compareKeys.includes(key))
 
 /**
  * Gets the keys that are in the compare array but not in the reference array.
@@ -390,5 +396,7 @@ export const getMissingKeys = (referenceKeys: string[], compareKeys: string[]): 
  * @param compareKeys - The array of keys to compare.
  * @returns An array of extra keys.
  */
-export const getExtraKeys = (referenceKeys: string[], compareKeys: string[]): string[] =>
-	compareKeys.filter((key) => !referenceKeys.includes(key))
+export const getExtraKeys = (
+	referenceKeys: string[],
+	compareKeys: string[],
+): string[] => compareKeys.filter((key) => !referenceKeys.includes(key))

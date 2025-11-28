@@ -72,7 +72,11 @@ export function UserMobileRow({
 			>
 				<Text
 					weight='medium'
-					className={cn('block', datatableCellTextVariants({ variant: 'primary' }), latinFontClass)}
+					className={cn(
+						'block',
+						datatableCellTextVariants({ variant: 'primary' }),
+						latinFontClass,
+					)}
 				>
 					{user.displayName || user.email}
 				</Text>

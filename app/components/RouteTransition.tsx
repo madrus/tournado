@@ -13,10 +13,10 @@ type RouteTransitionProps = {
 export function SubtleRouteTransition({
 	className = '',
 	duration = 300,
-}: {
+}: Readonly<{
 	className?: string
 	duration?: number
-}): JSX.Element {
+}>): JSX.Element {
 	const location = useLocation()
 	const prefersReducedMotion = useReducedMotion()
 
@@ -48,7 +48,7 @@ export function RouteTransition({
 	duration = 300,
 	className = '',
 	minOpacity = 0.6,
-}: RouteTransitionProps): JSX.Element {
+}: Readonly<RouteTransitionProps>): JSX.Element {
 	const _location = useLocation()
 	const [isTransitioning, setIsTransitioning] = useState(false)
 
@@ -77,7 +77,9 @@ export function RouteTransition({
 }
 
 // Alternative: View Transition API approach (modern browsers)
-export function ViewTransition({ className = '' }: { className?: string }): JSX.Element {
+export function ViewTransition({
+	className = '',
+}: Readonly<{ className?: string }>): JSX.Element {
 	const _location = useLocation()
 
 	useEffect(() => {
@@ -100,7 +102,9 @@ export function ViewTransition({ className = '' }: { className?: string }): JSX.
 }
 
 // CSS-based transition (lightest approach)
-export function CSSRouteTransition({ className = '' }: { className?: string }): JSX.Element {
+export function CSSRouteTransition({
+	className = '',
+}: Readonly<{ className?: string }>): JSX.Element {
 	const location = useLocation()
 	const [locationKey, setLocationKey] = useState(location.pathname)
 
@@ -121,12 +125,12 @@ export function CSSRouteTransition({ className = '' }: { className?: string }): 
 export function RouteTransitionFixed({
 	duration = 300,
 	className = '',
-}: RouteTransitionProps): JSX.Element {
+}: Readonly<RouteTransitionProps>): JSX.Element {
 	const location = useLocation()
 	const [displayLocation, setDisplayLocation] = useState(location)
-	const [transitionStage, setTransitionStage] = useState<'stable' | 'exiting' | 'entering'>(
-		'stable',
-	)
+	const [transitionStage, setTransitionStage] = useState<
+		'stable' | 'exiting' | 'entering'
+	>('stable')
 
 	useEffect(() => {
 		if (location.key !== displayLocation.key) {
@@ -154,7 +158,7 @@ export function RouteTransitionFixed({
 		}
 	}, [transitionStage, location, duration])
 
-	const getOpacity = () => {
+	const getOpacity = (): number => {
 		switch (transitionStage) {
 			case 'exiting':
 				return 0
@@ -185,12 +189,12 @@ export function RouteTransitionFixed({
 export function RouteTransitionAdvanced({
 	duration = 300,
 	className = '',
-}: RouteTransitionProps): JSX.Element {
+}: Readonly<RouteTransitionProps>): JSX.Element {
 	const location = useLocation()
 	const [displayLocation, setDisplayLocation] = useState(location)
-	const [transitionStage, setTransitionStage] = useState<'stable' | 'exiting' | 'entering'>(
-		'stable',
-	)
+	const [transitionStage, setTransitionStage] = useState<
+		'stable' | 'exiting' | 'entering'
+	>('stable')
 
 	useEffect(() => {
 		if (location.key !== displayLocation.key) {
@@ -215,7 +219,7 @@ export function RouteTransitionAdvanced({
 		}
 	}, [transitionStage, location, duration])
 
-	const getTransitionClasses = () => {
+	const getTransitionClasses = (): string => {
 		switch (transitionStage) {
 			case 'exiting':
 				return 'opacity-0 transform scale-95'
@@ -242,7 +246,9 @@ export function RouteTransitionAdvanced({
 }
 
 // No transition - just the outlet
-export const NoTransition = ({ className = '' }: { className?: string }): JSX.Element => (
+export const NoTransition = ({
+	className = '',
+}: Readonly<{ className?: string }>): JSX.Element => (
 	<div className={className}>
 		<Outlet />
 	</div>

@@ -13,7 +13,10 @@ const referenceLocale = 'nl'
 
 // --- Start of New Comprehensive Test ---
 describe('Translation Key Coverage', () => {
-	const referenceResources = resources[referenceLocale] as Record<string, Record<string, unknown>>
+	const referenceResources = resources[referenceLocale] as Record<
+		string,
+		Record<string, unknown>
+	>
 	const referenceNamespaces = Object.keys(referenceResources)
 
 	it('should have all namespaces in every locale', () => {
@@ -22,7 +25,10 @@ describe('Translation Key Coverage', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
 			if (code === referenceLocale) return
 
-			const localeResources = resources[code as keyof typeof resources] as Record<string, unknown>
+			const localeResources = resources[code as keyof typeof resources] as Record<
+				string,
+				unknown
+			>
 			const localeNamespaces = Object.keys(localeResources)
 
 			const missingNamespaces = getMissingKeys(referenceNamespaces, localeNamespaces)
@@ -32,11 +38,16 @@ describe('Translation Key Coverage', () => {
 
 			const extraNamespaces = getExtraKeys(referenceNamespaces, localeNamespaces)
 			if (extraNamespaces.length > 0) {
-				allErrors.push(`[${code}] Extra (orphaned) namespaces: ${extraNamespaces.join(', ')}`)
+				allErrors.push(
+					`[${code}] Extra (orphaned) namespaces: ${extraNamespaces.join(', ')}`,
+				)
 			}
 		})
 
-		expect(allErrors, `Namespace mismatches found:\n  - ${allErrors.join('\n  - ')}`).toEqual([])
+		expect(
+			allErrors,
+			`Namespace mismatches found:\n  - ${allErrors.join('\n  - ')}`,
+		).toEqual([])
 	})
 
 	it('should have consistent keys across all locales for each namespace', () => {
@@ -63,19 +74,24 @@ describe('Translation Key Coverage', () => {
 
 				const missingKeys = getMissingKeys(referenceKeys, localeKeys)
 				if (missingKeys.length > 0) {
-					allErrors.push(`[${code}.${namespace}] Missing keys: ${missingKeys.join(', ')}`)
+					allErrors.push(
+						`[${code}.${namespace}] Missing keys: ${missingKeys.join(', ')}`,
+					)
 				}
 
 				const extraKeys = getExtraKeys(referenceKeys, localeKeys)
 				if (extraKeys.length > 0) {
-					allErrors.push(`[${code}.${namespace}] Extra (orphaned) keys: ${extraKeys.join(', ')}`)
+					allErrors.push(
+						`[${code}.${namespace}] Extra (orphaned) keys: ${extraKeys.join(', ')}`,
+					)
 				}
 			})
 		})
 
-		expect(allErrors, `Translation key mismatches found:\n  - ${allErrors.join('\n  - ')}`).toEqual(
-			[],
-		)
+		expect(
+			allErrors,
+			`Translation key mismatches found:\n  - ${allErrors.join('\n  - ')}`,
+		).toEqual([])
 	})
 })
 // --- End of New Comprehensive Test ---
@@ -95,29 +111,36 @@ describe('Critical Key Verification', () => {
 
 	it('should have all critical keys in every locale', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 			const localeKeys = getAllKeys(localeData)
 
 			criticalKeys.forEach((criticalKey) => {
-				expect(localeKeys, `Critical key '${criticalKey}' missing in ${code}`).toContain(
-					criticalKey,
-				)
+				expect(
+					localeKeys,
+					`Critical key '${criticalKey}' missing in ${code}`,
+				).toContain(criticalKey)
 			})
 		})
 	})
 
 	it('should have non-empty values for critical keys', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 
 			criticalKeys.forEach((criticalKey) => {
 				const value = getNestedValue(localeData, criticalKey)
-				expect(value, `Critical key '${criticalKey}' has empty value in ${code}`).toBeTruthy()
-				expect(typeof value, `Critical key '${criticalKey}' should be string in ${code}`).toBe(
-					'string',
-				)
+				expect(
+					value,
+					`Critical key '${criticalKey}' has empty value in ${code}`,
+				).toBeTruthy()
+				expect(
+					typeof value,
+					`Critical key '${criticalKey}' should be string in ${code}`,
+				).toBe('string')
 			})
 		})
 	})
@@ -134,12 +157,15 @@ describe('Form Validation Coverage', () => {
 
 	it('should have all form error messages in every locale', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 			const localeKeys = getAllKeys(localeData)
 
 			formErrorKeys.forEach((errorKey) => {
-				expect(localeKeys, `Form error key '${errorKey}' missing in ${code}`).toContain(errorKey)
+				expect(localeKeys, `Form error key '${errorKey}' missing in ${code}`).toContain(
+					errorKey,
+				)
 			})
 		})
 	})
@@ -157,12 +183,15 @@ describe('Navigation Coverage', () => {
 
 	it('should have all navigation keys in every locale', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 			const localeKeys = getAllKeys(localeData)
 
 			navigationKeys.forEach((navKey) => {
-				expect(localeKeys, `Navigation key '${navKey}' missing in ${code}`).toContain(navKey)
+				expect(localeKeys, `Navigation key '${navKey}' missing in ${code}`).toContain(
+					navKey,
+				)
 			})
 		})
 	})
@@ -173,14 +202,17 @@ describe('Translation Quality Checks', () => {
 		const placeholderPatterns = [/^TODO:/, /^PLACEHOLDER/, /^[\\[.*\\]]$/, /^{{.*}}$/]
 
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 			const allValues = getAllValues(localeData)
 
 			allValues.forEach((value) => {
 				if (typeof value === 'string') {
 					placeholderPatterns.forEach((pattern) => {
-						expect(value, `Placeholder value found in ${code}: "${value}"`).not.toMatch(pattern)
+						expect(value, `Placeholder value found in ${code}: "${value}"`).not.toMatch(
+							pattern,
+						)
 					})
 				}
 			})
@@ -189,13 +221,17 @@ describe('Translation Quality Checks', () => {
 
 	it('should not have empty string translations', () => {
 		SUPPORTED_LANGUAGES.forEach(({ code }) => {
-			const localeData = (resources[code as keyof typeof resources] as Record<string, unknown>)
-				.root as Record<string, unknown>
+			const localeData = (
+				resources[code as keyof typeof resources] as Record<string, unknown>
+			).root as Record<string, unknown>
 			const allValues = getAllValues(localeData)
 
 			allValues.forEach((value, index) => {
 				if (typeof value === 'string') {
-					expect(value.trim(), `Empty translation found in ${code} at index ${index}`).not.toBe('')
+					expect(
+						value.trim(),
+						`Empty translation found in ${code} at index ${index}`,
+					).not.toBe('')
 				}
 			})
 		})
@@ -214,7 +250,10 @@ describe('Translation Quality Checks', () => {
 			SUPPORTED_LANGUAGES.forEach(({ code }) => {
 				if (code === referenceLocale) return
 
-				const localeData = resources[code as keyof typeof resources] as Record<string, unknown>
+				const localeData = resources[code as keyof typeof resources] as Record<
+					string,
+					unknown
+				>
 				const localeValue = getNestedValue(localeData, key)
 
 				if (typeof localeValue === 'string') {
@@ -241,7 +280,9 @@ describe('Translation Bundle Analysis', () => {
 			console.log(`${name} (${code}): ${sizeInKB} KB`)
 
 			// Reasonable size limit (adjust as needed)
-			expect(sizeInBytes, `Translation bundle for ${code} is too large`).toBeLessThan(50 * 1024) // 50KB limit
+			expect(sizeInBytes, `Translation bundle for ${code} is too large`).toBeLessThan(
+				50 * 1024,
+			) // 50KB limit
 		})
 	})
 

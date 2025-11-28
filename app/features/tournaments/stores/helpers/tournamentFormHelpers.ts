@@ -1,5 +1,10 @@
 import { TOURNAMENT_PANELS_FIELD_MAP } from './tournamentFormConstants'
-import type { FormFieldName, FormFields, StoreState, ValidationState } from './tournamentFormTypes'
+import type {
+	FormFieldName,
+	FormFields,
+	StoreState,
+	ValidationState,
+} from './tournamentFormTypes'
 
 /**
  * Checks if the specified panel is complete and valid.
@@ -75,8 +80,10 @@ export function isPanelEnabled(
 /**
  * Checks if the form is dirty (has been modified) by comparing current and old form fields.
  */
-export const isFormDirty = (formFields: FormFields, oldFormFields: FormFields): boolean =>
-	JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
+export const isFormDirty = (
+	formFields: FormFields,
+	oldFormFields: FormFields,
+): boolean => JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
 
 /**
  * Merges display and server errors, with server errors taking priority.
@@ -138,7 +145,9 @@ export const shouldValidateField = (
 	fieldName: FormFieldName,
 	validation: ValidationState,
 ): boolean =>
-	validation.blurredFields[fieldName] || validation.forceShowAllErrors || validation.submitAttempted
+	validation.blurredFields[fieldName] ||
+	validation.forceShowAllErrors ||
+	validation.submitAttempted
 
 /**
  * Helper to reset state while preserving specified keys

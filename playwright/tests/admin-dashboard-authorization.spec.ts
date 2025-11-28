@@ -38,7 +38,11 @@ test.describe('Admin Dashboard Authorization Tests', () => {
 	})
 
 	// Helper to test role access
-	async function testRoleAccess(page: Page, role: Role, shouldAccess: boolean): Promise<void> {
+	async function testRoleAccess(
+		page: Page,
+		role: Role,
+		shouldAccess: boolean,
+	): Promise<void> {
 		await loginAsRole(page, role)
 		await page.goto(ADMIN_DASHBOARD_URL)
 

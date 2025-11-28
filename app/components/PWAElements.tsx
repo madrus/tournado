@@ -6,23 +6,15 @@ import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt'
 import { UpdatePrompt } from './UpdatePrompt'
 
 export function PWAElements(): JSX.Element | null {
-	const [mounted, setMounted] = useState(false)
 	const [hydrated, setHydrated] = useState(false)
 
-	// First effect: Mark hydration complete
+	// Wait for client-side hydration before registering SW and rendering prompts
 	useEffect(() => {
 		setHydrated(true)
+		registerServiceWorker()
 	}, [])
 
-	// Second effect: Only run after hydration is complete
-	useEffect(() => {
-		if (!hydrated) return
-
-		setMounted(true)
-		registerServiceWorker()
-	}, [hydrated])
-
-	if (!mounted || !hydrated) {
+	if (!hydrated) {
 		return null
 	}
 

@@ -38,9 +38,9 @@ describe('About Page', () => {
 				</MemoryRouter>,
 			)
 
-			expect(screen.getByRole('heading', { level: 2, name: 'about.title' })).toHaveTextContent(
-				'about.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'about.title' }),
+			).toHaveTextContent('about.title')
 		})
 
 		test('should render all main sections', () => {
@@ -108,7 +108,9 @@ describe('About Page', () => {
 			)
 
 			expect(
-				screen.getByText(/Built with modern web technologies including React Router v7/),
+				screen.getByText(
+					/Built with modern web technologies including React Router v7/,
+				),
 			).toBeInTheDocument()
 		})
 	})
@@ -206,9 +208,9 @@ describe('About Page', () => {
 			)
 
 			// Verify the heading is rendered (translation is mocked at module level)
-			expect(screen.getByRole('heading', { level: 2, name: 'about.title' })).toHaveTextContent(
-				'about.title',
-			)
+			expect(
+				screen.getByRole('heading', { level: 2, name: 'about.title' }),
+			).toHaveTextContent('about.title')
 		})
 	})
 })

@@ -1,6 +1,12 @@
 {
 	"exclude": ["playwright/**/*"],
-	"include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "prisma/seed.js", ".react-router/types/**/*"],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.d.ts",
+		"prisma/seed.js",
+		".react-router/types/**/*"
+	],
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"types": ["@react-router/node", "vite/client", "vitest/globals", "node"],
@@ -17,7 +23,9 @@
 		"paths": {
 			"~/*": ["./app/*"],
 			"~test/*": ["./test/*"],
-			"@react-router/dev/routes": ["./.node_modules/@react-router/dev/dist/routes.d.ts"],
+			"@react-router/dev/routes": [
+				"./.node_modules/@react-router/dev/dist/routes.d.ts"
+			],
 			"*": ["./*"]
 		},
 		"skipLibCheck": true,

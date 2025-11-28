@@ -1,6 +1,11 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { type ErrorResponse, isRouteErrorResponse, useParams, useRouteError } from 'react-router'
+import {
+	type ErrorResponse,
+	isRouteErrorResponse,
+	useParams,
+	useRouteError,
+} from 'react-router'
 
 import { cn, getErrorMessage } from '~/utils/misc'
 import { getLatinTitleClass } from '~/utils/rtlUtils'
@@ -22,7 +27,9 @@ function DefaultStatusContent({ error }: { error: ErrorResponse }): JSX.Element 
 					: t('messages.common.errorTitle')}
 			</h1>
 			<p className='text-foreground-lighter'>
-				{error.status === 404 ? t('messages.auth.notFound') : `${error.status} ${error.data}`}
+				{error.status === 404
+					? t('messages.auth.notFound')
+					: `${error.status} ${error.data}`}
 			</p>
 			<ErrorRecoveryLink to='/' className='text-body-md underline'>
 				{t('common.backToHome')}
@@ -58,10 +65,6 @@ export function GeneralErrorBoundary({
 	// Call hooks unconditionally at top level (required by React rules)
 	const error = useRouteError()
 	const params = useParams()
-
-	if (typeof document !== 'undefined') {
-	}
-
 	let content: JSX.Element | null = null
 
 	if (isRouteErrorResponse(error)) {

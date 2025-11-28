@@ -95,7 +95,14 @@ describe('PanelLayer Component', () => {
 		})
 
 		it('should use hoverColor for hover layer when provided', () => {
-			render(<PanelLayer {...defaultProps} mainColor='emerald' hoverColor='blue' isHover={true} />)
+			render(
+				<PanelLayer
+					{...defaultProps}
+					mainColor='emerald'
+					hoverColor='blue'
+					isHover={true}
+				/>,
+			)
 
 			const backgroundElement = screen.getByTestId('test-layer')
 			// Test for semantic classes instead of raw Tailwind
@@ -156,7 +163,14 @@ describe('PanelLayer Component', () => {
 		})
 
 		it('should use hover logic for hover layer with brand color', () => {
-			render(<PanelLayer {...defaultProps} iconColor='teal' hoverColor='brand' isHover={true} />)
+			render(
+				<PanelLayer
+					{...defaultProps}
+					iconColor='teal'
+					hoverColor='brand'
+					isHover={true}
+				/>,
+			)
 
 			const iconContainer = screen.getByLabelText('panel icon')
 			expect(iconContainer).toHaveClass('text-adaptive-brand')
@@ -376,7 +390,9 @@ describe('PanelLayer Component', () => {
 		})
 
 		it('should handle empty description', () => {
-			render(<PanelLayer {...defaultProps} description='' data-testid='empty-desc-test' />)
+			render(
+				<PanelLayer {...defaultProps} description='' data-testid='empty-desc-test' />,
+			)
 
 			// Panel conditionally renders description - when empty, no p element should exist
 			const description = screen.queryByText('', { selector: 'p' })

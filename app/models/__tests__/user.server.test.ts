@@ -132,7 +132,9 @@ describe('user.server', () => {
 		it('should handle database errors', async () => {
 			mockUser.delete.mockRejectedValue(new Error('User not found'))
 
-			await expect(deleteUserByEmail('nonexistent@example.com')).rejects.toThrow('User not found')
+			await expect(deleteUserByEmail('nonexistent@example.com')).rejects.toThrow(
+				'User not found',
+			)
 		})
 	})
 
@@ -311,7 +313,10 @@ describe('user.server', () => {
 			mockTransaction.mockImplementation(async (transactionFn) => {
 				const tx = {
 					user: {
-						findUnique: vi.fn().mockResolvedValueOnce(currentUser).mockResolvedValueOnce(null),
+						findUnique: vi
+							.fn()
+							.mockResolvedValueOnce(currentUser)
+							.mockResolvedValueOnce(null),
 						update: vi.fn().mockResolvedValue(updatedUser),
 					},
 					userAuditLog: {
@@ -395,7 +400,10 @@ describe('user.server', () => {
 			mockTransaction.mockImplementation(async (transactionFn) => {
 				const tx = {
 					user: {
-						findUnique: vi.fn().mockResolvedValueOnce(currentUser).mockResolvedValueOnce(null),
+						findUnique: vi
+							.fn()
+							.mockResolvedValueOnce(currentUser)
+							.mockResolvedValueOnce(null),
 						update: vi.fn().mockResolvedValue(updatedUser),
 					},
 					userAuditLog: {
@@ -474,7 +482,10 @@ describe('user.server', () => {
 			mockTransaction.mockImplementation(async (transactionFn) => {
 				const tx = {
 					user: {
-						findUnique: vi.fn().mockResolvedValueOnce(currentUser).mockResolvedValueOnce(null),
+						findUnique: vi
+							.fn()
+							.mockResolvedValueOnce(currentUser)
+							.mockResolvedValueOnce(null),
 						update: vi.fn().mockResolvedValue(deactivatedUser),
 					},
 					userAuditLog: {
@@ -547,7 +558,10 @@ describe('user.server', () => {
 			mockTransaction.mockImplementation(async (transactionFn) => {
 				const tx = {
 					user: {
-						findUnique: vi.fn().mockResolvedValueOnce(currentUser).mockResolvedValueOnce(null),
+						findUnique: vi
+							.fn()
+							.mockResolvedValueOnce(currentUser)
+							.mockResolvedValueOnce(null),
 						update: vi.fn().mockResolvedValue(reactivatedUser),
 					},
 					userAuditLog: {
@@ -647,7 +661,10 @@ describe('user.server', () => {
 					AND: [
 						{},
 						{
-							OR: [{ email: { contains: 'test' } }, { displayName: { contains: 'test' } }],
+							OR: [
+								{ email: { contains: 'test' } },
+								{ displayName: { contains: 'test' } },
+							],
 						},
 					],
 				},
@@ -671,7 +688,10 @@ describe('user.server', () => {
 					AND: [
 						{ role: 'PUBLIC' },
 						{
-							OR: [{ email: { contains: 'test' } }, { displayName: { contains: 'test' } }],
+							OR: [
+								{ email: { contains: 'test' } },
+								{ displayName: { contains: 'test' } },
+							],
 						},
 					],
 				},

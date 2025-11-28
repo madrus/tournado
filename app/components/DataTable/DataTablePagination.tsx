@@ -35,7 +35,10 @@ export function DataTablePagination({
 
 	// Generate stable keys for text split parts
 	const showingText = t('common.pagination.showing', { from, to, total })
-	const pageInfoText = t('common.pagination.pageInfo', { current: currentPage, total: totalPages })
+	const pageInfoText = t('common.pagination.pageInfo', {
+		current: currentPage,
+		total: totalPages,
+	})
 
 	const showingTextKeys = useMemo(
 		() => showingText.split(/(\d+)/).map(() => nanoid()),

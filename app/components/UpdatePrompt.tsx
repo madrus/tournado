@@ -45,7 +45,9 @@ export function UpdatePrompt(): JSX.Element | null {
 		>
 			<div className='flex items-center justify-between gap-4'>
 				<div className='flex-1'>
-					<p className='font-medium text-foreground-darker text-sm'>{t('pwa.update.title')}</p>
+					<p className='font-medium text-foreground-darker text-sm'>
+						{t('pwa.update.title')}
+					</p>
 					<p className='mt-1 text-brand text-xs'>{t('pwa.update.instruction')}</p>
 				</div>
 				<button

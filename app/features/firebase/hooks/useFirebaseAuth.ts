@@ -16,8 +16,16 @@ import { postSignOut, submitAuthCallback } from '../adapters/redirect'
 
 export type UseFirebaseAuthReturn = {
 	signInWithGoogle: (redirectTo?: string) => Promise<void>
-	signInWithEmail: (email: string, password: string, redirectTo?: string) => Promise<void>
-	signUpWithEmail: (email: string, password: string, redirectTo?: string) => Promise<void>
+	signInWithEmail: (
+		email: string,
+		password: string,
+		redirectTo?: string,
+	) => Promise<void>
+	signUpWithEmail: (
+		email: string,
+		password: string,
+		redirectTo?: string,
+	) => Promise<void>
 	signOut: () => Promise<void>
 	user: FirebaseUser | null
 	loading: boolean
@@ -86,9 +94,11 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
 			const messages = {
 				'auth/unauthorized-domain':
 					'Unauthorized domain. Add localhost to Firebase Authorized domains.',
-				'auth/popup-blocked': 'Sign-in popup was blocked. Please allow popups and try again.',
+				'auth/popup-blocked':
+					'Sign-in popup was blocked. Please allow popups and try again.',
 				'auth/popup-closed-by-user': 'Sign-in was cancelled. Please try again.',
-				'auth/network-request-failed': 'Network error during sign-in. Check your connection.',
+				'auth/network-request-failed':
+					'Network error during sign-in. Check your connection.',
 			} as const
 			setError(buildFriendlyMessage(code, signInError, messages, 'Sign-in failed'))
 			setLoading(false)
@@ -152,7 +162,14 @@ export function useFirebaseAuth(): UseFirebaseAuthReturn {
 				'auth/too-many-requests': 'Too many attempts. Please try again later.',
 				'auth/operation-not-allowed': 'Email/password auth is disabled in Firebase.',
 			} as const
-			setError(buildFriendlyMessage(normalizedCode, emailSignInError, messages, 'Sign-in failed'))
+			setError(
+				buildFriendlyMessage(
+					normalizedCode,
+					emailSignInError,
+					messages,
+					'Sign-in failed',
+				),
+			)
 			setLoading(false)
 		}
 	}

@@ -64,7 +64,8 @@ export type AnimationClass =
 /**
  * Animation duration values
  */
-export type AnimationDuration = (typeof ANIMATION_DURATION)[keyof typeof ANIMATION_DURATION]
+export type AnimationDuration =
+	(typeof ANIMATION_DURATION)[keyof typeof ANIMATION_DURATION]
 
 /**
  * Animation timing function values

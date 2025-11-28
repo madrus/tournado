@@ -53,7 +53,9 @@ type HealthData = {
 	requestHost: string | null
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response | HealthData> => {
+export const loader = async ({
+	request,
+}: LoaderFunctionArgs): Promise<Response | HealthData> => {
 	const env = process.env.NODE_ENV || 'development'
 	const appEnv = process.env.APP_ENV || 'development'
 	const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
@@ -107,7 +109,9 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response 
 			VITE_FIREBASE_PROJECT_ID: Boolean(process.env.VITE_FIREBASE_PROJECT_ID),
 			VITE_FIREBASE_APP_ID: Boolean(process.env.VITE_FIREBASE_APP_ID),
 			VITE_FIREBASE_STORAGE_BUCKET: Boolean(process.env.VITE_FIREBASE_STORAGE_BUCKET),
-			VITE_FIREBASE_MESSAGING_SENDER_ID: Boolean(process.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
+			VITE_FIREBASE_MESSAGING_SENDER_ID: Boolean(
+				process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+			),
 			VITE_FIREBASE_MEASUREMENT_ID: Boolean(process.env.VITE_FIREBASE_MEASUREMENT_ID),
 		},
 		serverVars: {
@@ -127,14 +131,17 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<Response 
 
 	const accept = request.headers.get('accept') || ''
 	const wantsJson =
-		accept.includes('application/json') || new URL(request.url).searchParams.get('json') === '1'
+		accept.includes('application/json') ||
+		new URL(request.url).searchParams.get('json') === '1'
 	if (wantsJson) return Response.json(data, { status: data.overallOk ? 200 : 500 })
 	return data
 }
 
 export const action = async ({
 	request,
-}: ActionFunctionArgs): Promise<Response | { ok: boolean; decoded?: unknown; error?: string }> => {
+}: ActionFunctionArgs): Promise<
+	Response | { ok: boolean; decoded?: unknown; error?: string }
+> => {
 	const env = process.env.NODE_ENV || 'development'
 	const appEnv = process.env.APP_ENV || 'development'
 	if (env === 'production' && appEnv !== 'staging') {
@@ -178,7 +185,8 @@ export const action = async ({
 		const sanitized = {
 			uid: decoded.uid ?? null,
 			email: typeof decoded.email === 'string' ? decoded.email : null,
-			email_verified: typeof decoded.email_verified === 'boolean' ? decoded.email_verified : null,
+			email_verified:
+				typeof decoded.email_verified === 'boolean' ? decoded.email_verified : null,
 			aud: typeof decoded.aud === 'string' ? decoded.aud : null,
 			iss: typeof decoded.iss === 'string' ? decoded.iss : null,
 			auth_time: typeof decoded.auth_time === 'number' ? decoded.auth_time : null,

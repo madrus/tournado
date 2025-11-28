@@ -89,7 +89,11 @@ describe('AnimatedHamburgerIcon', () => {
 	describe('custom props', () => {
 		it('should apply custom className', () => {
 			render(
-				<AnimatedHamburgerIcon isOpen={false} isRTL={false} className='custom-class h-10 w-10' />,
+				<AnimatedHamburgerIcon
+					isOpen={false}
+					isRTL={false}
+					className='custom-class h-10 w-10'
+				/>,
 			)
 
 			const svg = screen.getByRole('img')
@@ -97,7 +101,13 @@ describe('AnimatedHamburgerIcon', () => {
 		})
 
 		it('should apply custom aria-label', () => {
-			render(<AnimatedHamburgerIcon isOpen={false} isRTL={false} aria-label='Custom Menu Label' />)
+			render(
+				<AnimatedHamburgerIcon
+					isOpen={false}
+					isRTL={false}
+					aria-label='Custom Menu Label'
+				/>,
+			)
 
 			const svg = screen.getByRole('img')
 			expect(svg).toHaveAttribute('aria-label', 'Custom Menu Label')

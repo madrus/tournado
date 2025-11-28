@@ -39,7 +39,9 @@ describe('cn', () => {
 	})
 
 	test('handles conditional classes', () => {
-		expect(cn('base', true && 'conditional', false && 'excluded')).toBe('base conditional')
+		expect(cn('base', true && 'conditional', false && 'excluded')).toBe(
+			'base conditional',
+		)
 		expect(cn('base', { active: true, disabled: false })).toBe('base active')
 	})
 

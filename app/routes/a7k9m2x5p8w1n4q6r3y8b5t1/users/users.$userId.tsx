@@ -47,7 +47,10 @@ type LoaderData = {
 	})[]
 }
 
-export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<LoaderData> => {
+export const loader = async ({
+	request,
+	params,
+}: LoaderFunctionArgs): Promise<LoaderData> => {
 	const currentUser = await requireUserWithMetadata(request, handle)
 
 	const { userId } = params
@@ -67,7 +70,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<L
 	return { targetUser, currentUserId: currentUser.id, auditLogs }
 }
 
-export const action = async ({ request, params }: ActionFunctionArgs): Promise<Response> => {
+export const action = async ({
+	request,
+	params,
+}: ActionFunctionArgs): Promise<Response> => {
 	const currentUser = await requireUserWithMetadata(request, handle)
 
 	const { userId } = params
@@ -217,7 +223,11 @@ export default function UserDetailRoute(): JSX.Element {
 
 	return (
 		<div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>
-			<UserDetailCard user={targetUser} currentUserId={currentUserId} isSubmitting={isSubmitting} />
+			<UserDetailCard
+				user={targetUser}
+				currentUserId={currentUserId}
+				isSubmitting={isSubmitting}
+			/>
 			<UserAuditLogList auditLogs={auditLogs} />
 		</div>
 	)

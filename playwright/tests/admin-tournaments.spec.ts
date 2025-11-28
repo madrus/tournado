@@ -64,9 +64,12 @@ test.describe('Admin Tournaments', () => {
 		// Click and wait for menu with navigation guard
 		await Promise.all([
 			page
-				.waitForResponse((response) => response.url().includes('/') && response.status() === 200, {
-					timeout: 1000,
-				})
+				.waitForResponse(
+					(response) => response.url().includes('/') && response.status() === 200,
+					{
+						timeout: 1000,
+					},
+				)
 				.catch(() => {}), // Ignore timeout
 			adminTournamentsPage.menuButton.click(),
 		])
@@ -75,7 +78,10 @@ test.describe('Admin Tournaments', () => {
 		await expect(adminTournamentsPage.menuDropdown).toBeVisible({
 			timeout: 5000,
 		})
-		await expect(adminTournamentsPage.menuDropdown).toHaveAttribute('data-state', 'open')
+		await expect(adminTournamentsPage.menuDropdown).toHaveAttribute(
+			'data-state',
+			'open',
+		)
 
 		// Additional stability wait for any animations/transitions
 		await page.waitForTimeout(300)
@@ -89,7 +95,9 @@ test.describe('Admin Tournaments', () => {
 		await expect(adminTournamentsPage.tournamentsLink.first()).toBeEnabled()
 
 		// Get the href to verify it's the correct link
-		const _href = await adminTournamentsPage.tournamentsLink.first().getAttribute('href')
+		const _href = await adminTournamentsPage.tournamentsLink
+			.first()
+			.getAttribute('href')
 
 		// Remove manifest blocking before navigation and wait for a cleaner navigation
 		await page.unroute('**/__manifest__')
@@ -159,7 +167,9 @@ test.describe('Admin Tournaments', () => {
 		await expect(page.locator('text=Startdatum')).toBeVisible()
 	})
 
-	test('should show tournament creation form with all required fields', async ({ page }) => {
+	test('should show tournament creation form with all required fields', async ({
+		page,
+	}) => {
 		const adminTournamentsPage = new AdminTournamentsPage(page)
 		// Navigate to tournament creation page
 		await adminTournamentsPage.navigateToNew()
@@ -188,7 +198,9 @@ test.describe('Admin Tournaments', () => {
 		await expect(adminTournamentsPage.saveButton).toBeVisible()
 	})
 
-	test('should navigate to tournament creation from tournaments list', async ({ page }) => {
+	test('should navigate to tournament creation from tournaments list', async ({
+		page,
+	}) => {
 		const adminTournamentsPage = new AdminTournamentsPage(page)
 		await adminTournamentsPage.navigate()
 
@@ -305,7 +317,9 @@ test.describe('Tournament-Team Integration', () => {
 
 			// Check if JO8 is enabled before clicking
 			const jo8Disabled = await adminTournamentsPage.jo8Label.evaluate(
-				(el) => el.classList.contains('cursor-not-allowed') || el.classList.contains('opacity-50'),
+				(el) =>
+					el.classList.contains('cursor-not-allowed') ||
+					el.classList.contains('opacity-50'),
 			)
 			if (jo8Disabled) {
 				await page.waitForTimeout(2000)
@@ -316,14 +330,18 @@ test.describe('Tournament-Team Integration', () => {
 
 			// Check if JO10 is enabled before clicking
 			const jo10Disabled = await adminTournamentsPage.jo10Label.evaluate(
-				(el) => el.classList.contains('cursor-not-allowed') || el.classList.contains('opacity-50'),
+				(el) =>
+					el.classList.contains('cursor-not-allowed') ||
+					el.classList.contains('opacity-50'),
 			)
 			if (jo10Disabled) {
 				await page.waitForTimeout(2000)
 			}
 
 			// Ensure element is enabled before clicking
-			await expect(adminTournamentsPage.jo10Label).not.toHaveClass(/cursor-not-allowed|opacity-50/)
+			await expect(adminTournamentsPage.jo10Label).not.toHaveClass(
+				/cursor-not-allowed|opacity-50/,
+			)
 			await adminTournamentsPage.jo10Label.click()
 			await adminTournamentsPage.saveButton.click()
 			await page.waitForLoadState('networkidle')
@@ -339,8 +357,12 @@ test.describe('Tournament-Team Integration', () => {
 			await expect(page).toHaveURL(/\/tournaments\/[^/]+$/, { timeout: 10000 })
 
 			// Additional verification: check that the tournament form shows the created data
-			await expect(page.getByRole('textbox', { name: /naam/i })).toHaveValue('E2ETourney')
-			await expect(page.getByRole('textbox', { name: /locatie/i })).toHaveValue('Aalsmeer')
+			await expect(page.getByRole('textbox', { name: /naam/i })).toHaveValue(
+				'E2ETourney',
+			)
+			await expect(page.getByRole('textbox', { name: /locatie/i })).toHaveValue(
+				'Aalsmeer',
+			)
 
 			// CRITICAL: Verify tournament exists in database with full data structure
 			try {
@@ -399,7 +421,9 @@ test.describe('Tournament-Team Integration', () => {
 			// Step 1: Select Tournament using page object for reliability
 			await expect(teamsPage.tournamentCombo).toBeVisible()
 
-			await teamsPage.selectTournamentWithRetry(`${tournament.name} - ${tournament.location}`)
+			await teamsPage.selectTournamentWithRetry(
+				`${tournament.name} - ${tournament.location}`,
+			)
 
 			// Verify tournament was selected
 			await expect(teamsPage.tournamentCombo).toContainText(
@@ -454,7 +478,9 @@ test.describe('Tournament-Team Integration', () => {
 		await expect(teamsPage.leaderNameInput).toBeVisible()
 	})
 
-	test('should verify team form structure and basic functionality', async ({ page }) => {
+	test('should verify team form structure and basic functionality', async ({
+		page,
+	}) => {
 		const teamsPage = new AdminTeamsPage(page)
 		await teamsPage.gotoCreateTeam()
 

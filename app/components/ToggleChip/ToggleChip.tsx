@@ -77,7 +77,9 @@ export function ToggleChip({
 				disabled={disabled}
 				aria-label={label}
 			/>
-			<span className={cn(toggleChipTextVariants({ color, selected }), getLatinTextClass())}>
+			<span
+				className={cn(toggleChipTextVariants({ color, selected }), getLatinTextClass())}
+			>
 				{label}
 			</span>
 		</label>

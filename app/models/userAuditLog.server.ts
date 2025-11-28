@@ -7,7 +7,13 @@ export type { UserAuditLog }
 type CreateAuditLogProps = {
 	userId: string
 	performedBy: string
-	action: 'role_change' | 'approval' | 'rejection' | 'profile_update' | 'deactivate' | 'reactivate'
+	action:
+		| 'role_change'
+		| 'approval'
+		| 'rejection'
+		| 'profile_update'
+		| 'deactivate'
+		| 'reactivate'
 	previousValue?: string
 	newValue?: string
 	reason?: string

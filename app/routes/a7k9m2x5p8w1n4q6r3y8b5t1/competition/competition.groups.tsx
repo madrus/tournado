@@ -33,7 +33,10 @@ export const handle: RouteMetadata = {
 	},
 }
 
-export async function loader({ request, params: _params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request,
+	params: _params,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	await requireUserWithMetadata(request, handle)
 
 	// Get tournament ID from search params
@@ -60,7 +63,8 @@ export async function loader({ request, params: _params }: Route.LoaderArgs): Pr
 	}
 }
 
-const formatCategories = (categories: readonly Category[]): string => categories.join(', ')
+const formatCategories = (categories: readonly Category[]): string =>
+	categories.join(', ')
 
 const formatDate = (date: Date): string =>
 	new Intl.DateTimeFormat('en-US', {
@@ -100,7 +104,9 @@ export default function GroupsTab(): JSX.Element {
 				<div className='rounded-xl border-2 border-border border-dashed bg-accent py-12 text-center'>
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
-						<h3 className='mt-4 font-semibold text-foreground text-lg'>Select a Tournament</h3>
+						<h3 className='mt-4 font-semibold text-foreground text-lg'>
+							Select a Tournament
+						</h3>
 						<p className='mt-2 text-foreground-light'>
 							Choose a tournament from the dropdown above to manage its group sets.
 						</p>
@@ -110,7 +116,9 @@ export default function GroupsTab(): JSX.Element {
 				<div className='rounded-xl border-2 border-border border-dashed bg-accent py-12 text-center'>
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
-						<h3 className='mt-4 font-semibold text-foreground text-lg'>No group sets yet</h3>
+						<h3 className='mt-4 font-semibold text-foreground text-lg'>
+							No group sets yet
+						</h3>
 						<p className='mt-2 text-foreground-light'>
 							Get started by creating your first group set for round-robin group play.
 						</p>

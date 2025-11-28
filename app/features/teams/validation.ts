@@ -105,7 +105,9 @@ export function getTeamValidationSchema(
 export function validateTeamData(
 	teamData: TeamValidationInput,
 	mode: 'create' | 'edit',
-): ReturnType<typeof createTeamSchema.safeParse> | ReturnType<typeof editTeamSchema.safeParse> {
+):
+	| ReturnType<typeof createTeamSchema.safeParse>
+	| ReturnType<typeof editTeamSchema.safeParse> {
 	const schema = mode === 'create' ? createTeamSchema : editTeamSchema
 	return schema.safeParse(teamData)
 }
@@ -140,7 +142,8 @@ export const extractTeamDataFromFormData = (formData: FormData): TeamFormData =>
  * @param storeFieldName - Field name from store
  * @returns Corresponding Zod schema field name
  */
-export const mapStoreFieldToZodField = (storeFieldName: string): string => storeFieldName
+export const mapStoreFieldToZodField = (storeFieldName: string): string =>
+	storeFieldName
 
 /**
  * Get translation key for field error
@@ -148,7 +151,10 @@ export const mapStoreFieldToZodField = (storeFieldName: string): string => store
  * @param zodIssue - Optional Zod issue for context
  * @returns Translation key for the error message
  */
-export const getFieldErrorTranslationKey = (fieldName: string, zodIssue?: ZodIssue): string => {
+export const getFieldErrorTranslationKey = (
+	fieldName: string,
+	zodIssue?: ZodIssue,
+): string => {
 	// Handle empty/too small errors (required field validation from .min())
 	// This takes precedence over format validation
 	if (zodIssue?.code === 'too_small') {
@@ -220,7 +226,9 @@ export const validateSingleTeamField = (
 ): string | null => {
 	try {
 		const result =
-			mode === 'create' ? validateTeamData(formData, 'create') : validateTeamData(formData, 'edit')
+			mode === 'create'
+				? validateTeamData(formData, 'create')
+				: validateTeamData(formData, 'edit')
 
 		if (!result.success) {
 			// Find the error for this specific field
@@ -232,7 +240,8 @@ export const validateSingleTeamField = (
 
 			if (fieldErrors.length > 0) {
 				// Prioritize 'too_small' errors (empty/required fields) over format errors
-				const fieldError = fieldErrors.find((err) => err.code === 'too_small') || fieldErrors[0]
+				const fieldError =
+					fieldErrors.find((err) => err.code === 'too_small') || fieldErrors[0]
 				return getFieldErrorTranslationKey(zodFieldName, fieldError)
 			}
 		}
@@ -263,7 +272,9 @@ export const validateEntireTeamForm = (
 
 	try {
 		const result =
-			mode === 'create' ? validateTeamData(formData, 'create') : validateTeamData(formData, 'edit')
+			mode === 'create'
+				? validateTeamData(formData, 'create')
+				: validateTeamData(formData, 'edit')
 
 		if (!result.success) {
 			// Group errors by field

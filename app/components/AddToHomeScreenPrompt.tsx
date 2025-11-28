@@ -106,7 +106,10 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
 		// Check if the app is running in standalone mode
 		function isInStandaloneMode(): boolean {
 			const nav = navigator as Navigator & { standalone?: boolean }
-			return nav.standalone === true || window.matchMedia('(display-mode: standalone)').matches
+			return (
+				nav.standalone === true ||
+				window.matchMedia('(display-mode: standalone)').matches
+			)
 		}
 
 		// Check platform and standalone mode
@@ -187,7 +190,9 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
 						{promptText[platform].title}
 					</p>
 					<div className='mt-1 flex items-center gap-2'>
-						<p className='text-foreground text-xs'>{promptText[platform].instruction}</p>
+						<p className='text-foreground text-xs'>
+							{promptText[platform].instruction}
+						</p>
 						<div className='relative'>
 							{showTopArrow ? (
 								<div className='flex flex-col items-center'>
@@ -200,7 +205,7 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
 									>
 										<path d='M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z' />
 									</svg>
-									<div className='h-16 w-1 bg-linear-to-b from-foreground-darker/20 to-transparent' />
+									<div className='h-16 w-1 bg-gradient-to-b from-foreground-darker/20 to-transparent' />
 								</div>
 							) : null}
 							{showMenuDots ? (
@@ -208,7 +213,7 @@ export function AddToHomeScreenPrompt(): JSX.Element | null {
 									<span className='animate-pulse font-bold text-foreground-darker text-lg'>
 										{promptText[platform].icon}
 									</span>
-									<div className='h-16 w-1 bg-linear-to-t from-foreground-darker/20 to-transparent' />
+									<div className='h-16 w-1 bg-gradient-to-t from-foreground-darker/20 to-transparent' />
 								</div>
 							) : null}
 						</div>

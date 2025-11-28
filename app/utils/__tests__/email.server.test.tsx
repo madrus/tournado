@@ -29,7 +29,11 @@ vi.mock('~/models/team.server', () => ({
 import { render } from '@react-email/render'
 import { getTeamLeader } from '~/models/team.server'
 // Import the actual implementation and dependencies
-import { resetResendClient, sendConfirmationEmail, setResendClient } from '../email.server'
+import {
+	resetResendClient,
+	sendConfirmationEmail,
+	setResendClient,
+} from '../email.server'
 
 describe('email.server', () => {
 	const mockTeam: Team = {
@@ -197,7 +201,9 @@ describe('email.server', () => {
 
 		it('should throw error when Resend API fails', async () => {
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => void 0)
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => void 0)
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => void 0)
 
 			mockEmailsSend.mockRejectedValue(new Error('Resend API error'))
 

@@ -90,7 +90,9 @@ describe('i18n React Integration', () => {
 				</I18nextProvider>,
 			)
 
-			expect(screen.getByTestId('translation')).toHaveTextContent('Passwort ist erforderlich')
+			expect(screen.getByTestId('translation')).toHaveTextContent(
+				'Passwort ist erforderlich',
+			)
 		})
 	})
 
@@ -150,7 +152,9 @@ describe('i18n React Integration', () => {
 				</I18nextProvider>,
 			)
 
-			expect(screen.getByTestId('interpolation')).toHaveTextContent('1 Team registriert')
+			expect(screen.getByTestId('interpolation')).toHaveTextContent(
+				'1 Team registriert',
+			)
 		})
 	})
 
@@ -164,7 +168,9 @@ describe('i18n React Integration', () => {
 				</I18nextProvider>,
 			)
 
-			expect(screen.getByTestId('translation')).toHaveTextContent('missing.translation.key')
+			expect(screen.getByTestId('translation')).toHaveTextContent(
+				'missing.translation.key',
+			)
 		})
 	})
 })

@@ -80,7 +80,9 @@ describe('Unauthorized Page', () => {
 				</MemoryRouter>,
 			)
 
-			expect(screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')).toBeInTheDocument()
+			expect(
+				screen.getByText('auth.errors.unauthorizedSignInRequiredTitle'),
+			).toBeInTheDocument()
 		})
 
 		test('should render error description', () => {
@@ -90,7 +92,9 @@ describe('Unauthorized Page', () => {
 				</MemoryRouter>,
 			)
 
-			expect(screen.getByText('auth.errors.unauthorizedSignInRequired')).toBeInTheDocument()
+			expect(
+				screen.getByText('auth.errors.unauthorizedSignInRequired'),
+			).toBeInTheDocument()
 		})
 
 		test('should render block icon', () => {
@@ -292,10 +296,12 @@ describe('Unauthorized Page', () => {
 			const content = screen.getByTestId('content-wrapper').textContent || ''
 
 			// Verify content flows logically: title should appear before actions
-			expect(content.indexOf('auth.errors.unauthorizedSignInRequiredTitle')).toBeGreaterThanOrEqual(
-				0,
-			)
-			expect(content.indexOf('auth.errors.unauthorizedSignInRequired')).toBeGreaterThanOrEqual(0)
+			expect(
+				content.indexOf('auth.errors.unauthorizedSignInRequiredTitle'),
+			).toBeGreaterThanOrEqual(0)
+			expect(
+				content.indexOf('auth.errors.unauthorizedSignInRequired'),
+			).toBeGreaterThanOrEqual(0)
 			expect(content.indexOf('common.backToHome')).toBeGreaterThanOrEqual(0)
 		})
 
@@ -321,7 +327,9 @@ describe('Unauthorized Page', () => {
 
 			const h1Elements = screen.getAllByRole('heading', { level: 1 })
 			expect(h1Elements).toHaveLength(1)
-			expect(h1Elements[0]).toHaveTextContent('auth.errors.unauthorizedSignInRequiredTitle')
+			expect(h1Elements[0]).toHaveTextContent(
+				'auth.errors.unauthorizedSignInRequiredTitle',
+			)
 		})
 
 		test('should have accessible link text', () => {
@@ -349,8 +357,12 @@ describe('Unauthorized Page', () => {
 			expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
 
 			// Check for proper links
-			expect(screen.getByRole('link', { name: 'common.backToHome' })).toBeInTheDocument()
-			expect(screen.getByRole('link', { name: 'common.titles.profile' })).toBeInTheDocument()
+			expect(
+				screen.getByRole('link', { name: 'common.backToHome' }),
+			).toBeInTheDocument()
+			expect(
+				screen.getByRole('link', { name: 'common.titles.profile' }),
+			).toBeInTheDocument()
 		})
 	})
 
@@ -363,10 +375,14 @@ describe('Unauthorized Page', () => {
 			)
 
 			// Should have clear error title
-			expect(screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')).toBeInTheDocument()
+			expect(
+				screen.getByText('auth.errors.unauthorizedSignInRequiredTitle'),
+			).toBeInTheDocument()
 
 			// Should explain the issue
-			expect(screen.getByText('auth.errors.unauthorizedSignInRequired')).toBeInTheDocument()
+			expect(
+				screen.getByText('auth.errors.unauthorizedSignInRequired'),
+			).toBeInTheDocument()
 		})
 
 		test('should provide helpful recovery options', () => {

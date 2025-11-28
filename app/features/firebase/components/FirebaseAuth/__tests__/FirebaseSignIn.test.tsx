@@ -62,7 +62,9 @@ describe('FirebaseSignIn', () => {
 
 	test('displays loading state during authentication', async () => {
 		// Mock a delayed sign-in
-		mockSignInWithPopup.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)))
+		mockSignInWithPopup.mockImplementation(
+			() => new Promise((resolve) => setTimeout(resolve, 100)),
+		)
 
 		render(<FirebaseSignIn />)
 
@@ -92,7 +94,10 @@ describe('FirebaseSignIn', () => {
 		await waitFor(() => {
 			expect(mockSignInWithPopup).toHaveBeenCalledWith({}, {})
 			expect(mockGetIdToken).toHaveBeenCalled()
-			expect(mockSubmitAuthCallback).toHaveBeenCalledWith('mock-id-token', '/custom-redirect')
+			expect(mockSubmitAuthCallback).toHaveBeenCalledWith(
+				'mock-id-token',
+				'/custom-redirect',
+			)
 		})
 	})
 

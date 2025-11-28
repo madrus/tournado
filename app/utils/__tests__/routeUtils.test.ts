@@ -1,6 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
-import { capitalize, normalizePathname, safeRedirect, usePageTitle } from '../routeUtils'
+import {
+	capitalize,
+	normalizePathname,
+	safeRedirect,
+	usePageTitle,
+} from '../routeUtils'
 
 // Mock react-router hooks
 vi.mock('react-router', () => ({
@@ -358,7 +363,9 @@ describe('route-utils', () => {
 
 		it('should handle complex paths', () => {
 			expect(normalizePathname('/api/v1/users/123/')).toBe('/api/v1/users/123')
-			expect(normalizePathname('/dashboard/settings/profile/')).toBe('/dashboard/settings/profile')
+			expect(normalizePathname('/dashboard/settings/profile/')).toBe(
+				'/dashboard/settings/profile',
+			)
 		})
 
 		it('should handle paths with query-like strings (though not actual query params)', () => {
@@ -478,7 +485,9 @@ describe('route-utils', () => {
 			expect(safeRedirect('/home')).toBe('/home')
 			expect(safeRedirect('/users/123')).toBe('/users/123')
 			expect(safeRedirect('/teams/new')).toBe('/teams/new')
-			expect(safeRedirect('/path/with/nested/segments')).toBe('/path/with/nested/segments')
+			expect(safeRedirect('/path/with/nested/segments')).toBe(
+				'/path/with/nested/segments',
+			)
 		})
 
 		test('returns safe paths with query parameters', () => {

@@ -161,7 +161,10 @@ describe('teams.new rate limiting integration', () => {
 		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
-		expect(mockHandleTeamCreation).toHaveBeenCalledWith(expect.any(FormData), '/teams/{teamId}')
+		expect(mockHandleTeamCreation).toHaveBeenCalledWith(
+			expect.any(FormData),
+			'/teams/{teamId}',
+		)
 		expect(response).toBeInstanceOf(Response)
 	})
 
@@ -183,7 +186,10 @@ describe('teams.new rate limiting integration', () => {
 		mockWithAdminRateLimit.mockResolvedValue(mockResponse)
 		mockIsRateLimitResponse.mockReturnValue(false)
 
-		await action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs)
+		await action({
+			request,
+			unstable_pattern: '/teams/teams.new.rate-limit',
+		} as ActionFunctionArgs)
 
 		expect(mockWithAdminRateLimit).toHaveBeenCalledWith(request, expect.any(Function))
 	})
@@ -236,7 +242,10 @@ describe('teams.new rate limiting integration', () => {
 			mockWithAdminRateLimit.mockRejectedValue(middlewareError)
 
 			await expect(
-				action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs),
+				action({
+					request,
+					unstable_pattern: '/teams/teams.new.rate-limit',
+				} as ActionFunctionArgs),
 			).rejects.toThrow('Rate limit middleware failed')
 		})
 
@@ -250,7 +259,10 @@ describe('teams.new rate limiting integration', () => {
 			mockWithAdminRateLimit.mockRejectedValue(new Error('Handler threw error'))
 
 			await expect(
-				action({ request, unstable_pattern: '/teams/teams.new.rate-limit' } as ActionFunctionArgs),
+				action({
+					request,
+					unstable_pattern: '/teams/teams.new.rate-limit',
+				} as ActionFunctionArgs),
 			).rejects.toThrow('Handler threw error')
 		})
 	})

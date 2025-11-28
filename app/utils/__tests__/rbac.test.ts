@@ -336,15 +336,27 @@ describe('RBAC', () => {
 
 			// Manager has all team CRUD permissions
 			expect(
-				hasAllPermissions(manager, ['teams:create', 'teams:read', 'teams:update', 'teams:delete']),
+				hasAllPermissions(manager, [
+					'teams:create',
+					'teams:read',
+					'teams:update',
+					'teams:delete',
+				]),
 			).toBe(true)
 			expect(
-				hasAnyPermission(manager, ['teams:create', 'teams:read', 'teams:update', 'teams:delete']),
+				hasAnyPermission(manager, [
+					'teams:create',
+					'teams:read',
+					'teams:update',
+					'teams:delete',
+				]),
 			).toBe(true)
 
 			// Referee has matches:update but not matches:create
 			expect(hasAnyPermission(referee, ['matches:update', 'matches:create'])).toBe(true)
-			expect(hasAllPermissions(referee, ['matches:update', 'matches:create'])).toBe(false)
+			expect(hasAllPermissions(referee, ['matches:update', 'matches:create'])).toBe(
+				false,
+			)
 		})
 	})
 
@@ -353,15 +365,21 @@ describe('RBAC', () => {
 			expect(() => requirePermission(mockUsers.admin, 'teams:read')).not.toThrow()
 			expect(() => requirePermission(mockUsers.manager, 'teams:create')).not.toThrow()
 			expect(() => requirePermission(mockUsers.manager, 'teams:delete')).not.toThrow()
-			expect(() => requirePermission(mockUsers.admin, 'tournaments:create')).not.toThrow()
-			expect(() => requirePermission(mockUsers.manager, 'tournaments:update')).not.toThrow()
+			expect(() =>
+				requirePermission(mockUsers.admin, 'tournaments:create'),
+			).not.toThrow()
+			expect(() =>
+				requirePermission(mockUsers.manager, 'tournaments:update'),
+			).not.toThrow()
 			expect(() => requirePermission(mockUsers.referee, 'matches:update')).not.toThrow()
 			expect(() => requirePermission(mockUsers.public, 'teams:read')).not.toThrow()
 		})
 
 		it('should throw 403 for users without permission', () => {
 			// PUBLIC users can create teams, but not update them
-			expect(() => requirePermission(mockUsers.public, 'teams:update')).toThrow(ForbiddenError)
+			expect(() => requirePermission(mockUsers.public, 'teams:update')).toThrow(
+				ForbiddenError,
+			)
 			expect(() => requirePermission(mockUsers.referee, 'tournaments:create')).toThrow(
 				ForbiddenError,
 			)

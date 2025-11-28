@@ -71,7 +71,9 @@ describe('i18n React Integration - Real Translations', () => {
 				</I18nextProvider>,
 			)
 
-			expect(screen.getByTestId('translation')).toHaveTextContent('Passwort ist erforderlich')
+			expect(screen.getByTestId('translation')).toHaveTextContent(
+				'Passwort ist erforderlich',
+			)
 		})
 	})
 

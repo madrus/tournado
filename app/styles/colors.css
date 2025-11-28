@@ -41,7 +41,9 @@
 	--color-foreground: var(--color-slate-900); /* default body text (light) */
 	--color-foreground-light: var(--color-slate-600); /* lighter than default */
 	--color-foreground-lighter: var(--color-slate-400); /* even lighter */
-	--color-foreground-lightest: var(--color-slate-400); /* least prominent, e.g. placeholder */
+	--color-foreground-lightest: var(
+		--color-slate-400
+	); /* least prominent, e.g. placeholder */
 	--color-placeholder: var(
 		--color-foreground-lightest
 	); /* use lightest for placeholder in light mode */
@@ -50,7 +52,9 @@
 	--color-chip-border: var(--color-red-600); /* chip border color */
 	--color-chip-ring: var(--color-red-600); /* chip focus/hover ring color */
 	--color-chip-ring-offset: var(--color-white); /* chip ring offset color */
-	--color-accent: var(--color-brand-50); /* lighter brand hover background for light mode */
+	--color-accent: var(
+		--color-brand-50
+	); /* lighter brand hover background for light mode */
 	--color-title-accent: var(--color-primary-200); /* for accents */
 	--gradient-from: var(--color-primary-100);
 	--gradient-to: var(--color-white);
@@ -148,20 +152,28 @@
 		var(--color-cyan-950) 60%,
 		transparent
 	); /* 60% transparent cyan-950 for elegant contrast against panels */
-	--color-border: var(--color-slate-500); /* lighter for better contrast against dark background */
+	--color-border: var(
+		--color-slate-500
+	); /* lighter for better contrast against dark background */
 	--color-foreground: var(--color-slate-100); /* most prominent, main text */
 	--color-foreground-light: var(--color-slate-300); /* less prominent */
 	--color-foreground-lighter: var(--color-slate-400); /* even less prominent */
-	--color-foreground-lightest: var(--color-slate-500); /* least prominent, e.g. placeholder */
+	--color-foreground-lightest: var(
+		--color-slate-500
+	); /* least prominent, e.g. placeholder */
 	--color-placeholder: var(--color-slate-400); /* balanced placeholder for dark mode */
 	--color-foreground-darker: var(--color-main);
 	--color-foreground-heading: var(--color-main);
-	--color-brand: var(--color-slate-100); /* for team chips and other brand text in dark mode */
+	--color-brand: var(
+		--color-slate-100
+	); /* for team chips and other brand text in dark mode */
 	--color-chip-border: var(--color-slate-100); /* chip border color */
 	--color-chip-ring: var(--color-slate-100); /* chip ring color */
 	--color-chip-ring-offset: var(--color-red-600); /* chip ring offset color */
 	--color-title: var(--color-title-accent);
-	--color-accent: var(--color-slate-800); /* subtle dark hover background without borders */
+	--color-accent: var(
+		--color-slate-800
+	); /* subtle dark hover background without borders */
 	--gradient-from: var(--color-primary-950);
 	--gradient-to: var(--color-primary-800);
 
@@ -209,6 +221,6 @@
 
 	/* UserMenu specific dark mode colors - using primary tints */
 	--color-usermenu-bg: var(--color-primary-900); /* darker emerald background */
-	--color-usermenu-text: var(--color-slate-100); /* for high contrast readability */
+	--color-usermenu-text: var(--color-emerald-400); /* balanced emerald for dark mode */
 	--color-usermenu-hover-bg: var(--color-primary-800); /* primary tint for hover */
 }

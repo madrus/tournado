@@ -65,7 +65,9 @@ export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS
  * // Result: { brand: 'bg-transparent', primary: 'bg-transparent', ... }
  * ```
  */
-export const createColorVariantObject = (defaultValue = ''): Record<ColorVariantKey, string> =>
+export const createColorVariantObject = (
+	defaultValue = '',
+): Record<ColorVariantKey, string> =>
 	Object.keys(COLOR_VARIANT_KEYS).reduce(
 		(acc, key) => {
 			acc[key as ColorVariantKey] = defaultValue

@@ -32,7 +32,9 @@ test.describe('Public Teams - Creation', () => {
 		await clearCapturedEmails()
 	})
 
-	test('should create team with tournament selection in public area', async ({ page }) => {
+	test('should create team with tournament selection in public area', async ({
+		page,
+	}) => {
 		let _tournamentId: string | undefined
 		let teamId: string | undefined
 
@@ -77,7 +79,9 @@ test.describe('Public Teams - Creation', () => {
 			await expect(tournamentOption).toBeVisible({ timeout: 10000 })
 			await tournamentOption.click()
 
-			await expect(tournamentCombo).toContainText(`${tournament.name} - ${tournament.location}`)
+			await expect(tournamentCombo).toContainText(
+				`${tournament.name} - ${tournament.location}`,
+			)
 
 			// Step 1b: Select Division (should now be enabled)
 			const divisionField = page.locator('[data-testid="division-combo-field"]')

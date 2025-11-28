@@ -51,9 +51,13 @@ vi.mock('~/components/inputs/ComboField', () => ({
 
 // Mock Radix UI Text component
 vi.mock('@radix-ui/themes', () => ({
-	Text: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-		<span className={className}>{children}</span>
-	),
+	Text: ({
+		children,
+		className,
+	}: {
+		children: React.ReactNode
+		className?: string
+	}) => <span className={className}>{children}</span>,
 }))
 
 // Mock cn utility

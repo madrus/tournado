@@ -77,7 +77,7 @@ export const basePanelVariants = cva(
 				'content-panel': 'rounded-xl border shadow-lg',
 				/** Dashboard/stats panels with horizontal layout and specific child selectors */
 				'dashboard-panel':
-					'rounded-xl border p-6 shadow-lg [&_.dashboard-content]:flex [&_.dashboard-content]:items-center [&_.dashboard-icon]:me-5 [&_.dashboard-icon]:flex-shrink-0 [&_.dashboard-stats]:w-0 [&_.dashboard-stats]:flex-1',
+					'rounded-xl border p-6 shadow-lg [&_.dashboard-content]:flex [&_.dashboard-content]:items-center [&_.dashboard-icon]:me-5 [&_.dashboard-icon]:shrink-0 [&_.dashboard-stats]:w-0 [&_.dashboard-stats]:flex-1',
 				/** Form panels with responsive padding for multi-step forms */
 				'form-panel': 'rounded-xl border p-6 shadow-lg lg:p-8',
 			},
@@ -304,7 +304,9 @@ export type BasePanelTitleVariants = VariantProps<typeof basePanelTitleVariants>
  * Type definition for basePanelDescriptionVariants props.
  * Use this for base panel description text styling options.
  */
-export type BasePanelDescriptionVariants = VariantProps<typeof basePanelDescriptionVariants>
+export type BasePanelDescriptionVariants = VariantProps<
+	typeof basePanelDescriptionVariants
+>
 
 /**
  * Type definition for basePanelNumberVariants props.

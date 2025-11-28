@@ -29,9 +29,18 @@ export const dialogContentVariants = cva(
 	{
 		variants: {
 			intent: {
-				warning: ['border border-white bg-amber-50', 'dark:border-slate-700 dark:bg-slate-700/60'],
-				danger: ['border border-white bg-brand-50', 'dark:border-slate-700 dark:bg-slate-700/60'],
-				info: ['border border-white bg-cyan-50', 'dark:border-slate-700 dark:bg-slate-700/60'],
+				warning: [
+					'border border-white bg-amber-50',
+					'dark:border-slate-700 dark:bg-slate-700/60',
+				],
+				danger: [
+					'border border-white bg-brand-50',
+					'dark:border-slate-700 dark:bg-slate-700/60',
+				],
+				info: [
+					'border border-white bg-cyan-50',
+					'dark:border-slate-700 dark:bg-slate-700/60',
+				],
 				success: [
 					'border border-white bg-emerald-50',
 					'dark:border-slate-700 dark:bg-slate-700/60',

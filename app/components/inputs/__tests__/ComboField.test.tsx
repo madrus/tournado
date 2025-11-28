@@ -348,7 +348,10 @@ describe('ComboField', () => {
 			// by verifying the visible combobox works correctly
 			const visibleCombobox = screen.getByRole('combobox')
 			expect(visibleCombobox).toBeInTheDocument()
-			expect(visibleCombobox).toHaveAttribute('aria-label', 'Test Label - select option')
+			expect(visibleCombobox).toHaveAttribute(
+				'aria-label',
+				'Test Label - select option',
+			)
 		})
 
 		it('should sync selected value correctly for form submission', () => {
@@ -381,7 +384,10 @@ describe('ComboField', () => {
 			render(<ComboField {...defaultProps} name='test-select' />)
 
 			const visibleCombobox = screen.getByRole('combobox')
-			expect(visibleCombobox).toHaveAttribute('aria-label', 'Test Label - select option')
+			expect(visibleCombobox).toHaveAttribute(
+				'aria-label',
+				'Test Label - select option',
+			)
 			expect(visibleCombobox).toHaveAttribute('aria-expanded', 'false')
 		})
 

@@ -17,7 +17,8 @@ export function SuccessIcon({
 	...rest
 }: Readonly<SuccessIconProps>): JSX.Element {
 	// Circle success icon paths
-	const circlePath = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'
+	const circlePath =
+		'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z'
 	// Longer, thinner checkmark similar to CheckCircleIcon
 	const checkPath = 'M8.5 12.5l2.5 2.5 4.5-4.5'
 

@@ -98,7 +98,11 @@ export const useSettingsStore = create<StoreState & Actions>()(
 					const systemTheme: Theme = mediaQuery.matches ? 'dark' : 'light'
 
 					// Set the theme and mark as detected
-					set({ theme: systemTheme, systemThemeDetected: true }, false, 'detectSystemTheme')
+					set(
+						{ theme: systemTheme, systemThemeDetected: true },
+						false,
+						'detectSystemTheme',
+					)
 
 					// Persist to cookies for server-side access
 					setCookie('theme', systemTheme)

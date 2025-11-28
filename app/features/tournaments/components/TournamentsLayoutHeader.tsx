@@ -19,7 +19,9 @@ export function TournamentsLayoutHeader({
 
 	const isAdmin = variant === 'admin'
 	const title = isAdmin ? t('admin.tournament.title') : t('common.titles.tournaments')
-	const description = isAdmin ? t('admin.tournament.description') : t('tournaments.description')
+	const description = isAdmin
+		? t('admin.tournament.description')
+		: t('tournaments.description')
 
 	return (
 		<LayoutHeader

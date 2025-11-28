@@ -1,5 +1,12 @@
 import type { User } from '@prisma/client'
-import { type JSX, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+	type JSX,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFetcher, useLocation } from 'react-router'
 
@@ -50,7 +57,8 @@ export function AppBar({
 	const { menuClasses } = useRTLDropdown()
 
 	// Track optimistic authenticated state
-	const isAuthenticated = signoutFetcher.formAction === '/auth/signout' ? false : authenticated
+	const isAuthenticated =
+		signoutFetcher.formAction === '/auth/signout' ? false : authenticated
 
 	// Check user permissions using RBAC utilities
 	// Menu visibility: delete permission implies full admin access (create, read, update, delete)
@@ -160,7 +168,8 @@ export function AppBar({
 				onClick: () => switchLanguage(lang.code),
 				// Use currentLanguage from hook for reactive updates on client,
 				// fallback to language prop for server/initial render (avoids hydration mismatch)
-				active: lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
+				active:
+					lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
 				className:
 					lang.code === 'ar'
 						? getArabicTextClass({ respectDirection: false })
@@ -298,7 +307,9 @@ export function AppBar({
 					<UserMenu
 						authenticated={isAuthenticated}
 						username={username}
-						menuItems={menuItems.filter((item) => !item.authenticated || isAuthenticated)}
+						menuItems={menuItems.filter(
+							(item) => !item.authenticated || isAuthenticated,
+						)}
 						isOpen={menuOpen}
 						onOpenChange={setMenuOpen}
 					/>

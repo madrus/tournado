@@ -1,10 +1,16 @@
 import { isE2EClient, isUnitTestRuntime } from '../utils/env'
 
-export async function submitAuthCallback(idToken: string, redirectTo?: string): Promise<void> {
+export async function submitAuthCallback(
+	idToken: string,
+	redirectTo?: string,
+): Promise<void> {
 	if (isE2EClient()) {
 		// In specific auth tests with Firebase mocks, handle authentication specially
 		// since MSW can't intercept form submissions and the mock token won't verify server-side
-		if (window.playwrightTest && window.localStorage.getItem('bypassAuthCallback') === 'true') {
+		if (
+			window.playwrightTest &&
+			window.localStorage.getItem('bypassAuthCallback') === 'true'
+		) {
 			// Send the mock token to server via fetch instead of form submission
 			const formData = new FormData()
 			formData.append('idToken', idToken)

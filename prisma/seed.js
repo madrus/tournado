@@ -44,7 +44,8 @@ async function seed() {
 
 	try {
 		// Detect test environment (E2E tests or unit tests)
-		const isTestEnv = process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test'
+		const isTestEnv =
+			process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test'
 
 		// Test fixture users - ONLY created during test runs, NOT in regular development
 		// In development, users authenticate via Firebase and are created that way
@@ -78,12 +79,15 @@ async function seed() {
 		if (testFixtureUsers.length > 0) {
 			await Promise.all(
 				testFixtureUsers.map(async ({ email, role }) => {
-					const lastName = role === 'ADMIN' ? 'Admin' : role === 'MANAGER' ? 'Manager' : 'User'
+					const lastName =
+						role === 'ADMIN' ? 'Admin' : role === 'MANAGER' ? 'Manager' : 'User'
 
 					return prisma.user.create({
 						data: {
 							email,
-							firstName: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+							firstName:
+								email.split('@')[0].charAt(0).toUpperCase() +
+								email.split('@')[0].slice(1),
 							lastName,
 							role,
 							firebaseUid: `seed-${email.replace(/[@.]/g, '-')}`, // Placeholder for test fixture users
@@ -149,7 +153,11 @@ async function seed() {
 			data: {
 				name: 'Spring Cup',
 				location: 'Amsterdam',
-				divisions: JSON.stringify(['PREMIER_DIVISION', 'FIRST_DIVISION', 'SECOND_DIVISION']),
+				divisions: JSON.stringify([
+					'PREMIER_DIVISION',
+					'FIRST_DIVISION',
+					'SECOND_DIVISION',
+				]),
 				categories: JSON.stringify(['JO8', 'JO9', 'JO10', 'JO11']),
 				startDate: new Date('2025-05-01'),
 				endDate: new Date('2025-05-02'),
@@ -160,7 +168,11 @@ async function seed() {
 			data: {
 				name: 'Summer Cup',
 				location: 'Aalsmeer',
-				divisions: JSON.stringify(['FIRST_DIVISION', 'SECOND_DIVISION', 'THIRD_DIVISION']),
+				divisions: JSON.stringify([
+					'FIRST_DIVISION',
+					'SECOND_DIVISION',
+					'THIRD_DIVISION',
+				]),
 				categories: JSON.stringify(['JO9', 'JO10', 'JO11', 'JO12']),
 				startDate: new Date('2025-06-01'),
 				endDate: new Date('2025-06-02'),

@@ -229,7 +229,9 @@ describe('useTournamentFilter', () => {
 		})
 
 		it('should preserve other search parameters when removing tournament filter', () => {
-			const mockSearchParams = new URLSearchParams('tournament=tournament-1&sort=name&view=grid')
+			const mockSearchParams = new URLSearchParams(
+				'tournament=tournament-1&sort=name&view=grid',
+			)
 			mockUseSearchParams.mockReturnValue([mockSearchParams, mockSetSearchParams])
 
 			const { result } = renderHook(() =>

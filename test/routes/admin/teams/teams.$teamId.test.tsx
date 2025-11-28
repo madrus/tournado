@@ -265,7 +265,9 @@ describe('AdminTeamPage', () => {
 			await user.click(deleteButton)
 
 			// Verify confirmation dialog was opened
-			expect(mockOnConfirm).toHaveBeenCalledWith('teams.confirmations.deleteDescription')
+			expect(mockOnConfirm).toHaveBeenCalledWith(
+				'teams.confirmations.deleteDescription',
+			)
 
 			// Simulate user confirming the dialog
 			expect(triggerConfirm).not.toBeNull()
@@ -289,7 +291,9 @@ describe('AdminTeamPage', () => {
 			await user.click(deleteButton)
 
 			// Verify confirmation dialog was opened
-			expect(mockOnConfirm).toHaveBeenCalledWith('teams.confirmations.deleteDescription')
+			expect(mockOnConfirm).toHaveBeenCalledWith(
+				'teams.confirmations.deleteDescription',
+			)
 
 			// Simulate user cancelling the dialog
 			if (triggerCancel) {

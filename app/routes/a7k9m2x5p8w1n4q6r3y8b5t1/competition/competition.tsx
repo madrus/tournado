@@ -38,7 +38,10 @@ export const handle: RouteMetadata = {
 	},
 }
 
-export async function loader({ request, params: _params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request,
+	params: _params,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	await requireUserWithMetadata(request, handle)
 
 	const url = new URL(request.url)
@@ -140,13 +143,19 @@ export default function CompetitionLayout(): JSX.Element {
 							onClick={() => setActiveTab(tab.href as 'groups' | 'playoffs')}
 							disabled={tab.disabled}
 							className={tabVariants({
-								state: tab.disabled ? 'disabled' : activeTab === tab.href ? 'active' : 'inactive',
+								state: tab.disabled
+									? 'disabled'
+									: activeTab === tab.href
+										? 'active'
+										: 'inactive',
 							})}
 						>
 							<tab.icon
 								className={cn(
 									'h-4 w-4',
-									activeTab === tab.href ? 'text-fuchsia-600 dark:text-fuchsia-400' : '',
+									activeTab === tab.href
+										? 'text-fuchsia-600 dark:text-fuchsia-400'
+										: '',
 								)}
 							/>
 							<span>{tab.name}</span>

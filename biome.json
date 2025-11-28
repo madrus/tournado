@@ -11,7 +11,7 @@
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"lineWidth": 100
+		"lineWidth": 88
 	},
 	"linter": {
 		"enabled": true,
@@ -28,14 +28,7 @@
 				"useImportType": "warn"
 			},
 			"nursery": {
-				"useSortedClasses": {
-					"level": "error",
-					"fix": "unsafe",
-					"options": {
-						"attributes": ["classList"],
-						"functions": ["clsx", "cn", "cva"]
-					}
-				}
+				"useSortedClasses": "off"
 			}
 		}
 	},

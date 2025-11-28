@@ -21,7 +21,9 @@ export const authHeadingVariants = cva([
  */
 export const authDividerContainerVariants = cva(['relative'])
 
-export const authDividerLineContainerVariants = cva(['absolute inset-0 flex items-center'])
+export const authDividerLineContainerVariants = cva([
+	'absolute inset-0 flex items-center',
+])
 
 export const authDividerLineVariants = cva(['w-full border-t'])
 

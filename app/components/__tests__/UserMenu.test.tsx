@@ -278,7 +278,10 @@ describe('UserMenu', () => {
 			{ label: 'About', href: '/about' },
 			{ label: 'Settings', href: '/settings' },
 			{ label: 'Profile', href: '/profile' },
-		])('should navigate to $href when $label menu item is clicked', async ({ label, href }) => {
+		])('should navigate to $href when $label menu item is clicked', async ({
+			label,
+			href,
+		}) => {
 			const user = userEvent.setup()
 
 			render(

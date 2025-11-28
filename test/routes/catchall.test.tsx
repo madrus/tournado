@@ -150,7 +150,9 @@ describe('Catch-all Route ($)', () => {
 			expect(content.indexOf("We can't find this page:")).toBeLessThan(
 				content.indexOf('/non-existent-path'),
 			)
-			expect(content.indexOf('/non-existent-path')).toBeLessThan(content.indexOf('Back to home'))
+			expect(content.indexOf('/non-existent-path')).toBeLessThan(
+				content.indexOf('Back to home'),
+			)
 		})
 
 		test('should display pathname in preformatted text', () => {

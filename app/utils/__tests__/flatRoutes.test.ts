@@ -200,7 +200,9 @@ describe('scanFlatRoutes', () => {
 
 		const adminTeamsRoute = adminLayoutRoute?.children?.find((c) => c.path === 'teams')
 		expect(adminTeamsRoute).toBeDefined()
-		expect(adminTeamsRoute?.file).toBe('routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx')
+		expect(adminTeamsRoute?.file).toBe(
+			'routes/a7k9m2x5p8w1n4q6r3y8b5t1/teams/teams.tsx',
+		)
 		expect(adminTeamsRoute?.children).toHaveLength(1) // just _index
 	})
 

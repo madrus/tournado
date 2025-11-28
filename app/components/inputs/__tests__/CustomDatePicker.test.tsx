@@ -33,12 +33,24 @@ vi.mock('@radix-ui/react-popover', () => ({
 	Portal: ({ children }: { children: React.ReactNode }) => (
 		<div data-testid='popover-portal'>{children}</div>
 	),
-	Content: ({ children, ...props }: { children: React.ReactNode; className?: string }) => (
+	Content: ({
+		children,
+		...props
+	}: {
+		children: React.ReactNode
+		className?: string
+	}) => (
 		<div data-testid='popover-content' {...props}>
 			{children}
 		</div>
 	),
-	Close: ({ children, ...props }: { children: React.ReactNode; className?: string }) => (
+	Close: ({
+		children,
+		...props
+	}: {
+		children: React.ReactNode
+		className?: string
+	}) => (
 		<button data-testid='popover-close' {...props}>
 			{children}
 		</button>

@@ -199,7 +199,14 @@ describe('Panel Component', () => {
 		})
 
 		it('should use specified iconColor over panel color', () => {
-			render(<Panel {...defaultProps} color='emerald' iconColor='blue' icon={<MockIcon />} />)
+			render(
+				<Panel
+					{...defaultProps}
+					color='emerald'
+					iconColor='blue'
+					icon={<MockIcon />}
+				/>,
+			)
 
 			const iconContainer = screen.getByLabelText('panel icon')
 			expect(iconContainer).toHaveClass('text-adaptive-blue', 'border-adaptive-blue')
@@ -329,7 +336,12 @@ describe('Panel Component', () => {
 	describe('Content Layout', () => {
 		it('should organize content in correct order: icon, title, subtitle, children', () => {
 			render(
-				<Panel {...defaultProps} icon={<MockIcon />} title='Test Title' subtitle='Test subtitle'>
+				<Panel
+					{...defaultProps}
+					icon={<MockIcon />}
+					title='Test Title'
+					subtitle='Test subtitle'
+				>
 					<div data-testid='test-children'>Children content</div>
 				</Panel>,
 			)
@@ -378,13 +390,18 @@ describe('Panel Component', () => {
 			// Test for the presence of dashboard structure classes
 			const panel = screen.getByTestId('test-panel')
 			expect(panel).toHaveClass('[&_.dashboard-content]:flex')
-			expect(panel).toHaveClass('[&_.dashboard-icon]:flex-shrink-0')
+			expect(panel).toHaveClass('[&_.dashboard-icon]:shrink-0')
 			expect(panel).toHaveClass('[&_.dashboard-stats]:w-0')
 		})
 
 		it('should apply correct spacing classes', () => {
 			render(
-				<Panel {...defaultProps} icon={<MockIcon />} title='Test Title' subtitle='Test subtitle'>
+				<Panel
+					{...defaultProps}
+					icon={<MockIcon />}
+					title='Test Title'
+					subtitle='Test subtitle'
+				>
 					<div>Children content</div>
 				</Panel>,
 			)
@@ -398,7 +415,12 @@ describe('Panel Component', () => {
 
 		it('should apply padding for hover variant in content area', () => {
 			render(
-				<Panel {...defaultProps} variant='hover' title='Hover title' data-testid='hover-panel' />,
+				<Panel
+					{...defaultProps}
+					variant='hover'
+					title='Hover title'
+					data-testid='hover-panel'
+				/>,
 			)
 
 			// For hover variant, the content area gets additional padding

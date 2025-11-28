@@ -37,7 +37,8 @@ export function TournamentFilter({
 		: tournamentOptions.filter((option) => option.value !== 'all')
 
 	// Adjust selected value if we're not showing "all" option and no tournament is selected
-	const adjustedSelectedValue = !showAllOption && selectedValue === 'all' ? '' : selectedValue
+	const adjustedSelectedValue =
+		!showAllOption && selectedValue === 'all' ? '' : selectedValue
 
 	return (
 		<ComboField

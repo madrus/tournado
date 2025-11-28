@@ -48,7 +48,9 @@ describe('ToggleChipGroup', () => {
 	})
 
 	it('uses correct labels for categories', () => {
-		render(<ToggleChipGroup {...defaultProps} type='categories' items={['cat1', 'cat2']} />)
+		render(
+			<ToggleChipGroup {...defaultProps} type='categories' items={['cat1', 'cat2']} />,
+		)
 
 		expect(screen.getByText('Category cat1')).toBeInTheDocument()
 		expect(screen.getByText('Category cat2')).toBeInTheDocument()
@@ -90,7 +92,9 @@ describe('ToggleChipGroup', () => {
 	})
 
 	it('uses correct test ids for categories', () => {
-		render(<ToggleChipGroup {...defaultProps} type='categories' items={['cat1', 'cat2']} />)
+		render(
+			<ToggleChipGroup {...defaultProps} type='categories' items={['cat1', 'cat2']} />,
+		)
 
 		expect(screen.getByTestId('category-cat1')).toBeInTheDocument()
 		expect(screen.getByTestId('category-cat2')).toBeInTheDocument()
@@ -140,7 +144,9 @@ describe('ToggleChipGroup', () => {
 	})
 
 	it('maintains selection state correctly', () => {
-		const { rerender } = render(<ToggleChipGroup {...defaultProps} selectedValues={['item1']} />)
+		const { rerender } = render(
+			<ToggleChipGroup {...defaultProps} selectedValues={['item1']} />,
+		)
 
 		// Initially item1 is selected
 		let checkboxes = screen.getAllByRole('checkbox')
@@ -158,7 +164,11 @@ describe('ToggleChipGroup', () => {
 
 	it('handles mixed selection states', () => {
 		render(
-			<ToggleChipGroup {...defaultProps} selectedValues={['item1', 'item3']} disabled={false} />,
+			<ToggleChipGroup
+				{...defaultProps}
+				selectedValues={['item1', 'item3']}
+				disabled={false}
+			/>,
 		)
 
 		const chips = screen.getAllByRole('checkbox')

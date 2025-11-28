@@ -31,12 +31,19 @@ export function TeamChip({
 	)
 
 	const teamText = (
-		<span className={cn('truncate', getLatinTextClass())}>{`${team.clubName} ${team.name}`}</span>
+		<span
+			className={cn('truncate', getLatinTextClass())}
+		>{`${team.clubName} ${team.name}`}</span>
 	)
 
 	if (onClick) {
 		return (
-			<button onClick={onClick} className={baseClasses} type='button' data-testid='team-chip'>
+			<button
+				onClick={onClick}
+				className={baseClasses}
+				type='button'
+				data-testid='team-chip'
+			>
 				{teamText}
 			</button>
 		)

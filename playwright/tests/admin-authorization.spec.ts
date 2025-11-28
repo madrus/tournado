@@ -85,7 +85,9 @@ test.describe('Admin Authorization', () => {
 			})
 
 			// Admin menu should have tournaments management option
-			await expect(page.getByTestId('user-menu-dropdown').getByText('Toernooien')).toBeVisible()
+			await expect(
+				page.getByTestId('user-menu-dropdown').getByText('Toernooien'),
+			).toBeVisible()
 			await expect(page.getByRole('button', { name: 'Uitloggen' })).toBeVisible()
 		})
 	})

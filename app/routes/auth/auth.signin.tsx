@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
 import { InfoBanner } from '~/components/InfoBanner'
-import { FirebaseEmailSignIn, FirebaseSignIn } from '~/features/firebase/components/FirebaseAuth'
+import {
+	FirebaseEmailSignIn,
+	FirebaseSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
@@ -60,7 +63,9 @@ export const loader = async ({
 
 	// Validate error parameter against whitelist for defense-in-depth
 	const validError: AuthError | null =
-		error && VALID_AUTH_ERRORS.includes(error as AuthError) ? (error as AuthError) : null
+		error && VALID_AUTH_ERRORS.includes(error as AuthError)
+			? (error as AuthError)
+			: null
 
 	return { redirectTo, error: validError }
 }
@@ -92,7 +97,9 @@ export default function SigninPage(): JSX.Element {
 
 			{/* Display error message for deactivated accounts */}
 			{error === 'account-deactivated' ? (
-				<InfoBanner variant='error'>{t('auth.errors.accountDeactivatedMessage')}</InfoBanner>
+				<InfoBanner variant='error'>
+					{t('auth.errors.accountDeactivatedMessage')}
+				</InfoBanner>
 			) : null}
 
 			{/* Firebase Google Sign-in */}
@@ -103,7 +110,9 @@ export default function SigninPage(): JSX.Element {
 					<span className={authDividerLineVariants()} />
 				</div>
 				<div className={authDividerTextContainerVariants()}>
-					<span className={authDividerTextVariants()}>{t('auth.continueWithEmail')}</span>
+					<span className={authDividerTextVariants()}>
+						{t('auth.continueWithEmail')}
+					</span>
 				</div>
 			</div>
 
@@ -111,7 +120,9 @@ export default function SigninPage(): JSX.Element {
 			<FirebaseEmailSignIn mode='signin' redirectTo={redirectTo} />
 
 			<p className={authFooterTextVariants()}>
-				<span className={authTextSpacingVariants()}>{t('auth.signInPage.noAccount')}</span>
+				<span className={authTextSpacingVariants()}>
+					{t('auth.signInPage.noAccount')}
+				</span>
 				<Link to='/auth/signup' className={authLinkVariants()}>
 					{t('auth.signInPage.signUpLink')}
 				</Link>

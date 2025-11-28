@@ -27,7 +27,7 @@ describe('Toast Message Variants', () => {
 		it('should generate correct success variant classes', () => {
 			const successClasses = toastMessageVariants({ type: 'success' })
 
-			expect(successClasses).toContain('bg-linear-to-br')
+			expect(successClasses).toContain('bg-gradient-to-br')
 			expect(successClasses).toContain('from-emerald-600')
 			expect(successClasses).toContain('text-white')
 			expect(successClasses).toContain('shadow-xl')
@@ -39,7 +39,7 @@ describe('Toast Message Variants', () => {
 		it('should generate correct error variant classes', () => {
 			const errorClasses = toastMessageVariants({ type: 'error' })
 
-			expect(errorClasses).toContain('bg-linear-to-br')
+			expect(errorClasses).toContain('bg-gradient-to-br')
 			expect(errorClasses).toContain('from-red-600')
 			expect(errorClasses).toContain('text-white')
 			expect(errorClasses).toContain('shadow-xl')
@@ -51,7 +51,7 @@ describe('Toast Message Variants', () => {
 		it('should generate correct info variant classes', () => {
 			const infoClasses = toastMessageVariants({ type: 'info' })
 
-			expect(infoClasses).toContain('bg-linear-to-br')
+			expect(infoClasses).toContain('bg-gradient-to-br')
 			expect(infoClasses).toContain('from-sky-600')
 			expect(infoClasses).toContain('text-white')
 			expect(infoClasses).toContain('shadow-xl')
@@ -63,7 +63,7 @@ describe('Toast Message Variants', () => {
 		it('should generate correct warning variant classes', () => {
 			const warningClasses = toastMessageVariants({ type: 'warning' })
 
-			expect(warningClasses).toContain('bg-linear-to-br')
+			expect(warningClasses).toContain('bg-gradient-to-br')
 			expect(warningClasses).toContain('from-orange-600')
 			expect(warningClasses).toContain('text-white')
 			expect(warningClasses).toContain('shadow-xl')
@@ -149,7 +149,7 @@ describe('Toast Message Variants', () => {
 			expect(baseClasses).toContain('flex')
 			expect(baseClasses).toContain('h-5')
 			expect(baseClasses).toContain('w-5')
-			expect(baseClasses).toContain('flex-shrink-0')
+			expect(baseClasses).toContain('shrink-0')
 			expect(baseClasses).toContain('items-center')
 			expect(baseClasses).toContain('justify-center')
 			expect(baseClasses).toContain('rounded-full')

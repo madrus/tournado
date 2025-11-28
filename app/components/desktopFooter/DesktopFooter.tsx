@@ -6,10 +6,18 @@ import { getLatinTextClass } from '~/utils/rtlUtils'
 
 const DesktopFooter = (): JSX.Element => (
 	<footer className='hidden border-emerald-950/10 border-t bg-emerald-900 md:block'>
-		<div className='container mx-auto grid h-14 grid-cols-2 px-4' data-testid='footer-container'>
+		<div
+			className='container mx-auto grid h-14 grid-cols-2 px-4'
+			data-testid='footer-container'
+		>
 			<div className='flex items-center' data-testid='footer-left-section'>
 				<Link to='/' className='flex items-center'>
-					<span className={cn('m-0 p-0 font-light text-white/90 leading-[1]', getLatinTextClass())}>
+					<span
+						className={cn(
+							'm-0 p-0 font-light text-white/90 leading-[1]',
+							getLatinTextClass(),
+						)}
+					>
 						Tournado
 					</span>
 				</Link>

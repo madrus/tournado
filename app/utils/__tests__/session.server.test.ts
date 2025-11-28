@@ -43,7 +43,10 @@ vi.mock('react-router', () => ({
 	}),
 }))
 
-import { clearFirebaseSession, validateFirebaseSession } from '~/features/firebase/session.server'
+import {
+	clearFirebaseSession,
+	validateFirebaseSession,
+} from '~/features/firebase/session.server'
 import { getUserById } from '~/models/user.server'
 import { isPublicRoute } from '../publicRoutes.server'
 
@@ -386,7 +389,9 @@ describe('session.server', () => {
 		it('should redirect to returnUrl if it is a public route', async () => {
 			vi.mocked(isPublicRoute).mockResolvedValue(true)
 
-			await expect(signout(mockRequest, '/public-page')).rejects.toThrow('Redirect: /public-page')
+			await expect(signout(mockRequest, '/public-page')).rejects.toThrow(
+				'Redirect: /public-page',
+			)
 		})
 
 		it('should redirect to home if returnUrl is not a public route', async () => {

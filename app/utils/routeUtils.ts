@@ -12,7 +12,9 @@ const DEFAULT_REDIRECT = '/'
  * Converts FormData values to strings for redirect purposes.
  * FormData can contain File objects, but redirects should only be strings.
  */
-function toRedirectString(value: FormDataEntryValue | string | null | undefined): string | null {
+function toRedirectString(
+	value: FormDataEntryValue | string | null | undefined,
+): string | null {
 	if (value == null) return null
 	if (typeof value === 'string') {
 		const trimmed = value.trim()
@@ -64,12 +66,18 @@ export function safeRedirect(
  */
 export function useMatchesData(id: string): Record<string, unknown> | undefined {
 	const matchingRoutes = useMatches()
-	const route = useMemo(() => matchingRoutes.find((r) => r.id === id), [matchingRoutes, id])
+	const route = useMemo(
+		() => matchingRoutes.find((r) => r.id === id),
+		[matchingRoutes, id],
+	)
 	return route?.data as Record<string, unknown>
 }
 
 const isUser = (user: unknown): user is User =>
-	user != null && typeof user === 'object' && 'email' in user && typeof user.email === 'string'
+	user != null &&
+	typeof user === 'object' &&
+	'email' in user &&
+	typeof user.email === 'string'
 
 /**
  * Hook that gets the current user from the root route data
@@ -94,7 +102,9 @@ export function useUser(): User | null {
 
 export const capitalize = <T extends string>(str: T): Capitalize<Lowercase<T>> => {
 	if (!str) return '' as Capitalize<Lowercase<T>>
-	return (str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()) as Capitalize<Lowercase<T>>
+	return (str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()) as Capitalize<
+		Lowercase<T>
+	>
 }
 
 /**

@@ -21,7 +21,8 @@ export function ExpandMoreIcon({
 	const path = 'M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z'
 
 	// Convert weight to stroke-width (optional, for consistency)
-	const strokeWidth = weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
+	const strokeWidth =
+		weight > 400 ? (weight === 600 ? 1.5 : weight === 500 ? 1.25 : 1) : undefined
 	const { style, ...restProps } = rest
 	const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 

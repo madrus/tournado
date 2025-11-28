@@ -26,7 +26,8 @@ const DialogCloseWrapper = ({
 }: {
 	shouldAutoClose: boolean
 	children: ReactNode
-}): ReactNode => (shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : children)
+}): ReactNode =>
+	shouldAutoClose ? <Dialog.Close asChild>{children}</Dialog.Close> : children
 
 /**
  * ConfirmDialog - Fully controlled confirmation dialog component

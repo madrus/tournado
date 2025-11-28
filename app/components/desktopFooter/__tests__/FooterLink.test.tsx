@@ -89,9 +89,12 @@ describe('FooterLink', () => {
 				'hover:text-foreground-darker',
 			)
 			// Should not have any additional classes
-			expect(link).toHaveClass('text-foreground hover:text-foreground-darker transition-colors', {
-				exact: true,
-			})
+			expect(link).toHaveClass(
+				'text-foreground hover:text-foreground-darker transition-colors',
+				{
+					exact: true,
+				},
+			)
 		})
 
 		it('should handle undefined className prop', () => {
@@ -108,9 +111,12 @@ describe('FooterLink', () => {
 				'hover:text-foreground-darker',
 			)
 			// Should use default empty string
-			expect(link).toHaveClass('text-foreground hover:text-foreground-darker transition-colors', {
-				exact: true,
-			})
+			expect(link).toHaveClass(
+				'text-foreground hover:text-foreground-darker transition-colors',
+				{
+					exact: true,
+				},
+			)
 		})
 	})
 
@@ -281,9 +287,12 @@ describe('FooterLink', () => {
 
 			const link = screen.getByRole('link')
 			// Should have default classes plus the default empty string
-			expect(link).toHaveClass('text-foreground hover:text-foreground-darker transition-colors', {
-				exact: true,
-			})
+			expect(link).toHaveClass(
+				'text-foreground hover:text-foreground-darker transition-colors',
+				{
+					exact: true,
+				},
+			)
 		})
 	})
 })

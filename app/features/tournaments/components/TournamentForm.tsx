@@ -96,7 +96,8 @@ export function TournamentForm({
 			}
 
 			// Show client-side errors if field has been blurred OR if we're forcing all errors OR if form was submitted
-			const shouldShowError = blurredFields[fieldName] || forceShowAllErrors || submitAttempted
+			const shouldShowError =
+				blurredFields[fieldName] || forceShowAllErrors || submitAttempted
 
 			if (!shouldShowError) return undefined
 
@@ -322,7 +323,9 @@ export function TournamentForm({
 					className='mb-8'
 					data-testid='tournament-form-success'
 				>
-					<p className='font-semibold text-foreground-darker text-sm'>{successMessage}</p>
+					<p className='font-semibold text-foreground-darker text-sm'>
+						{successMessage}
+					</p>
 				</Panel>
 			) : null}
 
@@ -418,7 +421,9 @@ export function TournamentForm({
 				{/* Step 2: Dates */}
 				<Panel
 					variant='form-panel'
-					color={formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'}
+					color={
+						formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'
+					}
 					panelNumber={2}
 					disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
 					title={t('tournaments.form.dates')}
@@ -445,7 +450,9 @@ export function TournamentForm({
 							required
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step2}
-							readOnly={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))}
+							readOnly={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+							}
 							statusIcon={
 								<FieldStatusIcon
 									status={getFieldStatus(
@@ -453,7 +460,8 @@ export function TournamentForm({
 										Boolean(
 											getTranslatedError(
 												'startDate',
-												isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2)),
+												isPublicSuccess ||
+													(formMode === 'create' && !isPanelEnabled(2)),
 											),
 										),
 										true /* required */,
@@ -476,7 +484,9 @@ export function TournamentForm({
 							)}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step2}
-							readOnly={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))}
+							readOnly={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+							}
 							statusIcon={
 								<FieldStatusIcon
 									status={getFieldStatus(
@@ -484,7 +494,8 @@ export function TournamentForm({
 										Boolean(
 											getTranslatedError(
 												'endDate',
-												isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2)),
+												isPublicSuccess ||
+													(formMode === 'create' && !isPanelEnabled(2)),
 											),
 										),
 										false /* not required */,
@@ -499,7 +510,9 @@ export function TournamentForm({
 				{/* Step 3: Divisions */}
 				<Panel
 					variant='form-panel'
-					color={formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'}
+					color={
+						formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'
+					}
 					panelNumber={3}
 					disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
 					title={t('tournaments.form.divisions')}
@@ -523,7 +536,9 @@ export function TournamentForm({
 				{/* Step 4: Categories */}
 				<Panel
 					variant='form-panel'
-					color={formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'}
+					color={
+						formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'
+					}
 					panelNumber={4}
 					disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
 					title={t('tournaments.form.categories')}
@@ -552,7 +567,9 @@ export function TournamentForm({
 						variant='secondary'
 						color='brand'
 						className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
-						permission={formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'}
+						permission={
+							formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+						}
 					>
 						<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
 						{t('common.actions.cancel')}
@@ -565,9 +582,13 @@ export function TournamentForm({
 						icon='check_circle'
 						className='w-full hover:scale-100 md:w-fit md:hover:scale-105'
 						aria-label={t('common.actions.save')}
-						permission={formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'}
+						permission={
+							formMode === 'edit' ? 'tournaments:update' : 'tournaments:create'
+						}
 						disabled={
-							isPublicSuccess || !isFormReadyForSubmission() || (mode === 'edit' && !isDirty())
+							isPublicSuccess ||
+							!isFormReadyForSubmission() ||
+							(mode === 'edit' && !isDirty())
 						}
 					>
 						{submitButtonText || t('common.actions.save')}

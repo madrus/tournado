@@ -65,15 +65,19 @@ describe('auth.server', () => {
 				throw new Error(`Redirect: ${url}`)
 			})
 
-			await expect(requireFirebaseAuth(mockRequest, '/custom-redirect')).rejects.toThrow(
-				'Redirect: /auth/signin?redirectTo=%2Fcustom-redirect',
-			)
+			await expect(
+				requireFirebaseAuth(mockRequest, '/custom-redirect'),
+			).rejects.toThrow('Redirect: /auth/signin?redirectTo=%2Fcustom-redirect')
 
-			expect(redirect).toHaveBeenCalledWith('/auth/signin?redirectTo=%2Fcustom-redirect')
+			expect(redirect).toHaveBeenCalledWith(
+				'/auth/signin?redirectTo=%2Fcustom-redirect',
+			)
 		})
 
 		it('should handle request URLs with search params', async () => {
-			const requestWithParams = new Request('http://localhost:3000/test?foo=bar&baz=qux')
+			const requestWithParams = new Request(
+				'http://localhost:3000/test?foo=bar&baz=qux',
+			)
 			vi.mocked(getUser).mockResolvedValue(null)
 			vi.mocked(redirect).mockImplementation((url) => {
 				throw new Error(`Redirect: ${url}`)

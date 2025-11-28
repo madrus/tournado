@@ -48,7 +48,9 @@ test.describe('Profile - User Journey (PUBLIC Role)', () => {
 		await profilePage.expectProfileContentVisible()
 	})
 
-	test('Unauthenticated user redirected to signin when accessing profile', async ({ page }) => {
+	test('Unauthenticated user redirected to signin when accessing profile', async ({
+		page,
+	}) => {
 		const profilePage = new ProfilePage(page)
 
 		// Clear any existing cookies

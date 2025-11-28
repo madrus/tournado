@@ -155,7 +155,9 @@ describe('form-validation', () => {
 				expect(getFieldErrorTranslationKey('unknownField')).toBe(
 					'messages.validation.fieldRequired',
 				)
-				expect(getFieldErrorTranslationKey('')).toBe('messages.validation.fieldRequired')
+				expect(getFieldErrorTranslationKey('')).toBe(
+					'messages.validation.fieldRequired',
+				)
 			})
 		})
 
@@ -246,7 +248,11 @@ describe('form-validation', () => {
 
 			it('should return error key for privacy agreement in create mode', () => {
 				const invalidFormData = { ...validFormData, privacyAgreement: false }
-				const result = validateSingleTeamField('privacyAgreement', invalidFormData, 'create')
+				const result = validateSingleTeamField(
+					'privacyAgreement',
+					invalidFormData,
+					'create',
+				)
 				expect(result).toBe('messages.team.privacyAgreementRequired')
 			})
 
@@ -255,7 +261,11 @@ describe('form-validation', () => {
 					...validFormData,
 					teamLeaderEmail: 'invalid-email' as Email,
 				}
-				const result = validateSingleTeamField('teamLeaderEmail', invalidFormData, 'create')
+				const result = validateSingleTeamField(
+					'teamLeaderEmail',
+					invalidFormData,
+					'create',
+				)
 				expect(result).toBe('messages.validation.emailInvalid')
 			})
 
@@ -264,7 +274,11 @@ describe('form-validation', () => {
 					...validFormData,
 					teamLeaderPhone: 'invalid',
 				}
-				const result = validateSingleTeamField('teamLeaderPhone', invalidFormData, 'create')
+				const result = validateSingleTeamField(
+					'teamLeaderPhone',
+					invalidFormData,
+					'create',
+				)
 				expect(result).toBe('messages.validation.phoneNumberInvalid')
 			})
 
@@ -299,7 +313,11 @@ describe('form-validation', () => {
 
 			it('should not require privacy agreement in edit mode', () => {
 				const invalidFormData = { ...validFormData, privacyAgreement: false }
-				const result = validateSingleTeamField('privacyAgreement', invalidFormData, 'edit')
+				const result = validateSingleTeamField(
+					'privacyAgreement',
+					invalidFormData,
+					'edit',
+				)
 				expect(result).toBeNull()
 			})
 

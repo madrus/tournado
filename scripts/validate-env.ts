@@ -50,7 +50,8 @@ const ENV_VARS: EnvVar[] = [
 		name: 'SUPER_ADMIN_EMAILS',
 		required: true,
 		contexts: ['ci', 'local', 'e2e', 'production'],
-		description: 'Comma-separated list of super admin email addresses (can be empty in CI/E2E)',
+		description:
+			'Comma-separated list of super admin email addresses (can be empty in CI/E2E)',
 		example: 'admin@example.com,other@example.com',
 	},
 
@@ -179,13 +180,17 @@ function validateEnvironment(context: EnvContext): ValidationResult {
 			if (envVar.required) {
 				missing.push(envVar)
 			} else {
-				warnings.push(`Optional variable ${envVar.name} is not set: ${envVar.description}`)
+				warnings.push(
+					`Optional variable ${envVar.name} is not set: ${envVar.description}`,
+				)
 			}
 		} else if (value.trim() === '') {
 			if (envVar.required) {
 				empty.push(envVar)
 			} else {
-				warnings.push(`Optional variable ${envVar.name} is empty: ${envVar.description}`)
+				warnings.push(
+					`Optional variable ${envVar.name} is empty: ${envVar.description}`,
+				)
 			}
 		} else {
 			configured.push(envVar)

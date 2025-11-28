@@ -54,8 +54,12 @@ export class AdminTournamentsPage {
 		this.saveButton = page.getByRole('button', { name: 'Opslaan' })
 		this.tournamentsContainer = page.getByTestId('admin-tournaments-layout-container')
 		this.calendar = page.getByRole('dialog', { name: 'calendar' })
-		this.firstDivisionLabel = page.locator('label').filter({ hasText: /eerste klasse/i })
-		this.secondDivisionLabel = page.locator('label').filter({ hasText: /tweede klasse/i })
+		this.firstDivisionLabel = page
+			.locator('label')
+			.filter({ hasText: /eerste klasse/i })
+		this.secondDivisionLabel = page
+			.locator('label')
+			.filter({ hasText: /tweede klasse/i })
 		this.jo8Label = page.locator('label').filter({ hasText: /JO8/i })
 		this.jo10Label = page.locator('label').filter({ hasText: /JO10/i })
 		this.errorMessage = page.locator('[role="alert"], .error, .toast-error').first()

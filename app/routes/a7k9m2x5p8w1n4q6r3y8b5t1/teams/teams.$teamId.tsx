@@ -108,7 +108,10 @@ function parseTeamLeaderName(fullName: string): {
 	}
 }
 
-export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<LoaderData> => {
+export const loader = async ({
+	request,
+	params,
+}: LoaderFunctionArgs): Promise<LoaderData> => {
 	await requireUserWithMetadata(request, handle)
 
 	const { teamId } = params
@@ -150,7 +153,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<L
 	}
 }
 
-export async function action({ request, params }: ActionFunctionArgs): Promise<Response> {
+export async function action({
+	request,
+	params,
+}: ActionFunctionArgs): Promise<Response> {
 	await requireUserWithMetadata(request, handle)
 
 	const { teamId } = params
@@ -252,7 +258,9 @@ export default function AdminTeamPage(): JSX.Element {
 	const setFormData = useTeamFormStore((state) => state.setFormData)
 
 	// Runtime guard for strict team name pattern: J|M|JM + 'O' + number-number
-	const isValidTeamName = (value: string): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
+	const isValidTeamName = (
+		value: string,
+	): value is `${'J' | 'M' | 'JM'}O${number}-${number}` =>
 		/^(?:J|M|JM)O\d+-\d+$/.test(value)
 
 	// Check for success parameter and show toast
@@ -336,7 +344,7 @@ export default function AdminTeamPage(): JSX.Element {
 						</p>
 					</div>
 					{/* Delete Button */}
-					<div className='flex-shrink-0'>
+					<div className='shrink-0'>
 						<SimpleConfirmDialog
 							intent='danger'
 							trigger={
@@ -378,7 +386,10 @@ export function ErrorBoundary(): JSX.Element {
 		<Panel color='red'>
 			<h2 className='mb-4 font-bold text-2xl'>{t('errors.somethingWentWrong')}</h2>
 			<p className='text-foreground'>
-				{t('errors.teamLoadFailed', 'Unable to load team details. Please try again later.')}
+				{t(
+					'errors.teamLoadFailed',
+					'Unable to load team details. Please try again later.',
+				)}
 			</p>
 		</Panel>
 	)

@@ -7,7 +7,9 @@ type SettingsLayoutHeaderProps = {
 	className?: string
 }
 
-export function SettingsLayoutHeader({ className }: SettingsLayoutHeaderProps): JSX.Element {
+export function SettingsLayoutHeader({
+	className,
+}: SettingsLayoutHeaderProps): JSX.Element {
 	const { t } = useTranslation()
 
 	return (

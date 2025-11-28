@@ -77,8 +77,12 @@ describe('FirebaseEmailSignIn', () => {
 
 			expect(screen.getByLabelText('auth.labels.email')).toBeInTheDocument()
 			expect(screen.getByLabelText('auth.labels.password')).toBeInTheDocument()
-			expect(screen.queryByLabelText('auth.labels.confirmPassword')).not.toBeInTheDocument()
-			expect(screen.getByRole('button', { name: 'common.auth.signIn' })).toBeInTheDocument()
+			expect(
+				screen.queryByLabelText('auth.labels.confirmPassword'),
+			).not.toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: 'common.auth.signIn' }),
+			).toBeInTheDocument()
 		})
 
 		test('calls signInWithEmail when form is submitted with valid data', async () => {
@@ -157,8 +161,12 @@ describe('FirebaseEmailSignIn', () => {
 			expect(screen.getByLabelText('auth.labels.email')).toBeInTheDocument()
 			expect(screen.getByLabelText('auth.labels.password')).toBeInTheDocument()
 			expect(screen.getByLabelText('auth.labels.confirmPassword')).toBeInTheDocument()
-			expect(screen.getByRole('button', { name: 'common.auth.signUp' })).toBeInTheDocument()
-			expect(screen.getByText('auth.validation.passwordRequirements')).toBeInTheDocument()
+			expect(
+				screen.getByRole('button', { name: 'common.auth.signUp' }),
+			).toBeInTheDocument()
+			expect(
+				screen.getByText('auth.validation.passwordRequirements'),
+			).toBeInTheDocument()
 		})
 
 		test('calls signUpWithEmail when form is submitted with valid data', async () => {
@@ -244,7 +252,9 @@ describe('FirebaseEmailSignIn', () => {
 
 	describe('Loading and Error States', () => {
 		test('shows loading state during authentication', async () => {
-			const { useFirebaseAuth: useAuth } = await import('../../../hooks/useFirebaseAuth')
+			const { useFirebaseAuth: useAuth } = await import(
+				'../../../hooks/useFirebaseAuth'
+			)
 			vi.mocked(useAuth).mockReturnValue({
 				...defaultHookReturn,
 				loading: true,
@@ -261,7 +271,9 @@ describe('FirebaseEmailSignIn', () => {
 		})
 
 		test('displays error message when authentication fails', async () => {
-			const { useFirebaseAuth: useAuth } = await import('../../../hooks/useFirebaseAuth')
+			const { useFirebaseAuth: useAuth } = await import(
+				'../../../hooks/useFirebaseAuth'
+			)
 			vi.mocked(useAuth).mockReturnValue({
 				...defaultHookReturn,
 				error: 'Authentication failed',
@@ -276,7 +288,9 @@ describe('FirebaseEmailSignIn', () => {
 		})
 
 		test('disables inputs during loading', async () => {
-			const { useFirebaseAuth: useAuth } = await import('../../../hooks/useFirebaseAuth')
+			const { useFirebaseAuth: useAuth } = await import(
+				'../../../hooks/useFirebaseAuth'
+			)
 			vi.mocked(useAuth).mockReturnValue({
 				...defaultHookReturn,
 				loading: true,
@@ -292,7 +306,9 @@ describe('FirebaseEmailSignIn', () => {
 		})
 
 		test('shows error styling for invalid email', async () => {
-			const { useFirebaseAuth: useAuth } = await import('../../../hooks/useFirebaseAuth')
+			const { useFirebaseAuth: useAuth } = await import(
+				'../../../hooks/useFirebaseAuth'
+			)
 			vi.mocked(useAuth).mockReturnValue({
 				...defaultHookReturn,
 				error: 'Invalid email',
@@ -336,7 +352,11 @@ describe('FirebaseEmailSignIn', () => {
 			})
 
 			// Sign-in should let server decide redirect based on user role
-			expect(mockSignInWithEmail).toHaveBeenCalledWith('test@example.com', 'Password123', undefined)
+			expect(mockSignInWithEmail).toHaveBeenCalledWith(
+				'test@example.com',
+				'Password123',
+				undefined,
+			)
 		})
 
 		test('applies custom className and size props', () => {

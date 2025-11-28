@@ -53,13 +53,13 @@ function TeamRegisteredEmail({
 						<Text style={greeting}>Hi {teamLeaderName},</Text>
 
 						<Text style={paragraph}>
-							Great news! Your team <strong>{teamName}</strong> has been successfully registered for{' '}
-							<strong>{tournamentName}</strong>.
+							Great news! Your team <strong>{teamName}</strong> has been successfully
+							registered for <strong>{tournamentName}</strong>.
 						</Text>
 
 						<Text style={paragraph}>
-							We're excited to have you participate in this tournament. You can view your team
-							details and track updates using the button below.
+							We're excited to have you participate in this tournament. You can view
+							your team details and track updates using the button below.
 						</Text>
 
 						<Section style={buttonSection}>
@@ -69,7 +69,8 @@ function TeamRegisteredEmail({
 						</Section>
 
 						<Text style={paragraph}>
-							If you have any questions or need assistance, please don't hesitate to contact us.
+							If you have any questions or need assistance, please don't hesitate to
+							contact us.
 						</Text>
 
 						<Text style={paragraph}>Good luck with your tournament!</Text>

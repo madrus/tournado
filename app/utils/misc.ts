@@ -37,7 +37,10 @@ export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs))
  * @param message The message to throw if condition is false
  * @throws {Error} if condition is falsey
  */
-export function invariant(condition: unknown, message: string | (() => string)): asserts condition {
+export function invariant(
+	condition: unknown,
+	message: string | (() => string),
+): asserts condition {
 	if (!condition) {
 		throw new Error(typeof message === 'function' ? message() : message)
 	}
@@ -96,7 +99,10 @@ export function useIsSubmitting({
 /**
  * A hook that focuses the first invalid element in a form.
  */
-export function useFocusInvalid(formEl: HTMLFormElement | null, hasErrors: boolean): void {
+export function useFocusInvalid(
+	formEl: HTMLFormElement | null,
+	hasErrors: boolean,
+): void {
 	useEffect(() => {
 		if (!formEl) return
 		if (!hasErrors) return
@@ -113,4 +119,7 @@ export function useFocusInvalid(formEl: HTMLFormElement | null, hasErrors: boole
 }
 
 export const isRouteErrorResponse = (error: unknown): error is ErrorResponse =>
-	!!error && typeof error === 'object' && 'status' in error && typeof error.status === 'number'
+	!!error &&
+	typeof error === 'object' &&
+	'status' in error &&
+	typeof error.status === 'number'

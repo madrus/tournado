@@ -42,11 +42,16 @@ export const firebaseHandlers = [
 			}
 
 			const user = Object.values(mockUsers).find(
-				(u) => u.email?.toLowerCase() === String(email).toLowerCase() && password === 'password',
+				(u) =>
+					u.email?.toLowerCase() === String(email).toLowerCase() &&
+					password === 'password',
 			)
 
 			if (!user) {
-				return HttpResponse.json({ error: { message: 'EMAIL_NOT_FOUND' } }, { status: 400 })
+				return HttpResponse.json(
+					{ error: { message: 'EMAIL_NOT_FOUND' } },
+					{ status: 400 },
+				)
 			}
 
 			return HttpResponse.json({
@@ -64,7 +69,10 @@ export const firebaseHandlers = [
 			const { email } = (await request.json()) as SignUpPayload
 
 			if (!email) {
-				return HttpResponse.json({ error: { message: 'INVALID_EMAIL' } }, { status: 400 })
+				return HttpResponse.json(
+					{ error: { message: 'INVALID_EMAIL' } },
+					{ status: 400 },
+				)
 			}
 
 			const uid = `mock-${Object.keys(mockUsers).length + 1}`

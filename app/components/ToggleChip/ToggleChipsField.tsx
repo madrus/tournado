@@ -1,10 +1,14 @@
-import { type JSX, useCallback } from 'react'
+import type { JSX } from 'react'
 
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { FieldStatusIcon } from '~/components/shared/FieldStatusIcon'
 import { LabelWithStatusIcon } from '~/components/shared/LabelWithStatusIcon'
 import type { Category, Division } from '~/db.server'
-import { getCurrentCategoryLabel, getCurrentDivisionLabel } from '~/lib/lib.helpers'
+import {
+	getCurrentCategoryLabel,
+	getCurrentDivisionLabel,
+	getFieldStatus,
+} from '~/lib/lib.helpers'
 
 import { ToggleChip } from './ToggleChip'
 import type { ToggleChipColorVariant } from './toggleChip.variants'
@@ -78,23 +82,8 @@ export function ToggleChipsField({
 	// Grid layout constant
 	const GRID_LAYOUT = 'grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4'
 
-	// Helper function to determine field status for status icons
-	const getFieldStatus = useCallback((): 'success' | 'error' | 'neutral' => {
-		if (disabled) return 'neutral'
-		const hasValue = selectedValues.length > 0
-		const hasError = Boolean(error)
-
-		// For required fields: show error if empty, success if filled
-		if (required) {
-			if (hasValue && !hasError) return 'success'
-			if (hasError) return 'error'
-			return 'neutral'
-		}
-
-		// For optional fields: only show success if filled, never show error for being empty
-		if (hasValue && !hasError) return 'success'
-		return 'neutral'
-	}, [disabled, selectedValues.length, error, required])
+	// Determine field status using shared helper
+	const fieldStatus = getFieldStatus(selectedValues, Boolean(error), required, disabled)
 
 	// Helper functions for label and test-id generation
 	const getItemLabel = (item: string): string => {
@@ -117,7 +106,7 @@ export function ToggleChipsField({
 			{/* Label with Status Icon */}
 			<LabelWithStatusIcon
 				label={label}
-				statusIcon={<FieldStatusIcon status={getFieldStatus()} />}
+				statusIcon={<FieldStatusIcon status={fieldStatus} />}
 			/>
 
 			{/* Toggle Chips Grid */}

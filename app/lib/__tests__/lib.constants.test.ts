@@ -61,11 +61,15 @@ describe('lib.constants', () => {
 				// Verify that each division has labels for all supported languages
 				supportedLanguageCodes.forEach((languageCode) => {
 					expect(division.labels).toHaveProperty(languageCode)
-					expect(division.labels[languageCode as keyof typeof division.labels]).toBeTruthy()
-					expect(typeof division.labels[languageCode as keyof typeof division.labels]).toBe(
-						'string',
-					)
-					expect(division.labels[languageCode as keyof typeof division.labels].trim()).not.toBe('')
+					expect(
+						division.labels[languageCode as keyof typeof division.labels],
+					).toBeTruthy()
+					expect(
+						typeof division.labels[languageCode as keyof typeof division.labels],
+					).toBe('string')
+					expect(
+						division.labels[languageCode as keyof typeof division.labels].trim(),
+					).not.toBe('')
 				})
 			})
 		})

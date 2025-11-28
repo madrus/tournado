@@ -53,7 +53,10 @@ export const handle: RouteMetadata = {
 	},
 }
 
-export async function loader({ request, params: _params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request,
+	params: _params,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	// Require user with role-based authorization for UI route access
 	await requireUserWithMetadata(request, handle)
 
@@ -90,7 +93,9 @@ export async function loader({ request, params: _params }: Route.LoaderArgs): Pr
 	}
 }
 
-export async function action({ request }: Route.ActionArgs): Promise<ActionData | Response> {
+export async function action({
+	request,
+}: Route.ActionArgs): Promise<ActionData | Response> {
 	// Require user with role-based authorization for group creation action
 	await requireUserWithMetadata(request, handle)
 
@@ -185,7 +190,9 @@ export default function CreateGroupSet(): JSX.Element {
 		<div className='space-y-8'>
 			<div>
 				<h2 className='font-bold text-2xl'>Create Group Set</h2>
-				<p className='mt-2 text-gray-600'>Set up round-robin groups for {tournament.name}</p>
+				<p className='mt-2 text-gray-600'>
+					Set up round-robin groups for {tournament.name}
+				</p>
 			</div>
 
 			<div className='max-w-2xl'>
@@ -208,7 +215,9 @@ export default function CreateGroupSet(): JSX.Element {
 
 					{/* Categories Selection */}
 					<div>
-						<h3 className='mb-3 block font-medium text-gray-700 text-sm'>Age Categories</h3>
+						<h3 className='mb-3 block font-medium text-gray-700 text-sm'>
+							Age Categories
+						</h3>
 						<p className='mb-3 text-gray-500 text-sm'>
 							Select which age categories will participate in this group set
 						</p>
@@ -219,7 +228,9 @@ export default function CreateGroupSet(): JSX.Element {
 										type='checkbox'
 										name='categories'
 										value={category}
-										defaultChecked={actionData?.fieldValues?.categories?.includes(category)}
+										defaultChecked={actionData?.fieldValues?.categories?.includes(
+											category,
+										)}
 										className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
 									/>
 									<span className='font-medium text-sm'>{category}</span>
@@ -230,7 +241,9 @@ export default function CreateGroupSet(): JSX.Element {
 							))}
 						</div>
 						{actionData?.errors?.categories ? (
-							<p className='mt-1 text-red-600 text-sm'>{actionData.errors.categories}</p>
+							<p className='mt-1 text-red-600 text-sm'>
+								{actionData.errors.categories}
+							</p>
 						) : null}
 					</div>
 
@@ -269,7 +282,8 @@ export default function CreateGroupSet(): JSX.Element {
 							<div>
 								<span className='font-medium text-sm'>Auto-fill groups</span>
 								<p className='text-gray-500 text-xs'>
-									Automatically assign teams to Reserve and distribute them to groups round-robin
+									Automatically assign teams to Reserve and distribute them to groups
+									round-robin
 								</p>
 							</div>
 						</label>
@@ -282,7 +296,8 @@ export default function CreateGroupSet(): JSX.Element {
 							<p className='mt-1 text-blue-700 text-xs'>
 								{totalSelectedTeams} teams available in selected categories
 							</p>
-							{actionData?.fieldValues?.configGroups && actionData?.fieldValues?.configSlots ? (
+							{actionData?.fieldValues?.configGroups &&
+							actionData?.fieldValues?.configSlots ? (
 								<p className='text-blue-700 text-xs'>
 									Will create {actionData.fieldValues.configGroups} groups with{' '}
 									{actionData.fieldValues.configSlots} slots each (
@@ -296,7 +311,11 @@ export default function CreateGroupSet(): JSX.Element {
 
 					{/* Actions */}
 					<div className='flex justify-end space-x-3'>
-						<ActionButton type='button' variant='secondary' onClick={() => window.history.back()}>
+						<ActionButton
+							type='button'
+							variant='secondary'
+							onClick={() => window.history.back()}
+						>
 							Cancel
 						</ActionButton>
 						<ActionButton type='submit' variant='primary' disabled={isSubmitting}>

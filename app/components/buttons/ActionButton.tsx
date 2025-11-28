@@ -54,7 +54,8 @@ export function ActionButton({
 	}
 
 	// Determine if the icon should be wrapped in a circle with colored border (transparent fill)
-	const iconNeedsCircle = icon === 'exclamation_mark' || icon === 'info_letter' || icon === 'check'
+	const iconNeedsCircle =
+		icon === 'exclamation_mark' || icon === 'info_letter' || icon === 'check'
 
 	const rawIcon = icon
 		? renderIcon(icon, {
@@ -80,12 +81,23 @@ export function ActionButton({
 
 	// Apply darker background in dark mode if requested
 	// Uses shared constant from button.variants.ts for consistency
-	const darkModeClasses = darkerInDarkMode && color ? DARK_MODE_DARKER_CLASSES[color] || '' : ''
+	const darkModeClasses =
+		darkerInDarkMode && color ? DARK_MODE_DARKER_CLASSES[color] || '' : ''
 
-	const buttonClasses = cn(buttonVariants({ variant, color, size }), darkModeClasses, className)
+	const buttonClasses = cn(
+		buttonVariants({ variant, color, size }),
+		darkModeClasses,
+		className,
+	)
 
 	return (
-		<button type={type} onClick={onClick} disabled={isDisabled} className={buttonClasses} {...rest}>
+		<button
+			type={type}
+			onClick={onClick}
+			disabled={isDisabled}
+			className={buttonClasses}
+			{...rest}
+		>
 			{iconElement}
 			{children}
 		</button>

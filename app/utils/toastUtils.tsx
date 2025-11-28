@@ -149,7 +149,11 @@ export const createToast = (
 		// In test environments we won't actually run this timer
 		// but in production it ensures the cache gets cleaned up
 		let timeoutId: NodeJS.Timeout | undefined
-		if (type !== 'success' && typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
+		if (
+			type !== 'success' &&
+			typeof process !== 'undefined' &&
+			process.env.NODE_ENV !== 'test'
+		) {
 			timeoutId = setTimeout(
 				() => {
 					toastCache.delete(cacheKey)
@@ -233,7 +237,8 @@ export const createErrorToast = (
 	const type = errorType ?? 'unknown'
 
 	return toast[type](message, {
-		description: typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
+		description:
+			typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
 		priority: 'high',
 	})
 }
@@ -249,7 +254,8 @@ export const createErrorToastAdvanced = (
 	const type = errorType ?? 'unknown'
 
 	return toastAdvanced[type](message, {
-		description: typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
+		description:
+			typeof error === 'string' ? undefined : error.stack?.split('\n')[1]?.trim(),
 		priority: 'high',
 	})
 }
@@ -287,7 +293,10 @@ export const showServerError = (message?: string): string | number =>
 	})
 
 // Advanced helper functions with cleanup capability
-export const showValidationErrorAdvanced = (field: string, message: string): ToastResult =>
+export const showValidationErrorAdvanced = (
+	field: string,
+	message: string,
+): ToastResult =>
 	toastAdvanced.validation(`${field}: ${message}`, {
 		description: 'Please check your input and try again.',
 	})

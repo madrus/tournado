@@ -231,7 +231,14 @@ describe('ToastIcon Component', () => {
 
 	describe('Error Type Variations', () => {
 		it('should render error icon for all error types', () => {
-			const errorTypes = ['error', 'network', 'permission', 'server', 'client', 'unknown'] as const
+			const errorTypes = [
+				'error',
+				'network',
+				'permission',
+				'server',
+				'client',
+				'unknown',
+			] as const
 
 			errorTypes.forEach((type) => {
 				const { unmount } = render(<ToastIcon type={type} />)

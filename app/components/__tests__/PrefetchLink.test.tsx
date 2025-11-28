@@ -22,17 +22,19 @@ vi.mock('~/utils/prefetch-types', () => ({
 		if (context === 'errorPageLinks') return 'render'
 		return 'intent'
 	}),
-	getAdaptivePrefetchStrategy: vi.fn((strategy: string, context: Record<string, unknown>) => {
-		const ctx = context as {
-			isSlowConnection?: boolean
-			isLowDataMode?: boolean
-			isMobile?: boolean
-		}
-		if (ctx?.isSlowConnection) return 'intent'
-		if (ctx?.isLowDataMode) return 'intent'
-		if (ctx?.isMobile && strategy === 'render') return 'intent'
-		return strategy
-	}),
+	getAdaptivePrefetchStrategy: vi.fn(
+		(strategy: string, context: Record<string, unknown>) => {
+			const ctx = context as {
+				isSlowConnection?: boolean
+				isLowDataMode?: boolean
+				isMobile?: boolean
+			}
+			if (ctx?.isSlowConnection) return 'intent'
+			if (ctx?.isLowDataMode) return 'intent'
+			if (ctx?.isMobile && strategy === 'render') return 'intent'
+			return strategy
+		},
+	),
 }))
 
 // Mock window and navigator
@@ -103,7 +105,9 @@ describe('PrefetchLink', () => {
 	test('handles object-based to prop', () => {
 		render(
 			<MemoryRouter>
-				<PrefetchLink to={{ pathname: '/test', search: '?param=value' }}>Object Link</PrefetchLink>
+				<PrefetchLink to={{ pathname: '/test', search: '?param=value' }}>
+					Object Link
+				</PrefetchLink>
 			</MemoryRouter>,
 		)
 
@@ -145,7 +149,9 @@ describe('PrefetchLink', () => {
 			</MemoryRouter>,
 		)
 
-		expect(screen.getByRole('link', { name: 'Slow Connection Link' })).toBeInTheDocument()
+		expect(
+			screen.getByRole('link', { name: 'Slow Connection Link' }),
+		).toBeInTheDocument()
 	})
 
 	test('applies adaptive prefetching for 2g connections', () => {

@@ -8,7 +8,11 @@ import { AnimatedHamburgerIcon } from '~/components/icons/AnimatedHamburgerIcon'
 import { useRTLDropdown } from '~/hooks/useRTLDropdown'
 import { type IconName, renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getLatinTextClass, getMenuItemLineHeight, getTypographyClass } from '~/utils/rtlUtils'
+import {
+	getLatinTextClass,
+	getMenuItemLineHeight,
+	getTypographyClass,
+} from '~/utils/rtlUtils'
 
 export type MenuItemType = {
 	label: string
@@ -132,7 +136,11 @@ export function UserMenu({
 						className='relative inline-flex h-8 w-8 translate-y-0.25 cursor-pointer items-center justify-center text-primary-foreground focus:outline-none'
 						aria-label={t('common.toggleMenu')}
 					>
-						<AnimatedHamburgerIcon isOpen={!!isOpen} isRTL={isRTL} className='h-8 w-8' />
+						<AnimatedHamburgerIcon
+							isOpen={!!isOpen}
+							isRTL={isRTL}
+							className='h-8 w-8'
+						/>
 					</button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content
@@ -177,7 +185,12 @@ export function UserMenu({
 								)}
 							>
 								{t('common.welcome')}{' '}
-								<span className={cn('font-medium text-foreground-darker', getLatinTextClass())}>
+								<span
+									className={cn(
+										'font-medium text-foreground-darker',
+										getLatinTextClass(),
+									)}
+								>
 									{displayName}
 								</span>
 							</p>
@@ -215,7 +228,9 @@ export function UserMenu({
 													renderIcon(item.icon, { className: 'w-5 h-5' })
 												) : null}
 											</span>
-											<span className={cn(menuClasses.textContainer, getTypographyClass())}>
+											<span
+												className={cn(menuClasses.textContainer, getTypographyClass())}
+											>
 												{item.label}
 											</span>
 										</button>
@@ -261,7 +276,10 @@ export function UserMenu({
 															{subItem.customIcon}
 														</span>
 														<span
-															className={cn(menuClasses.textContainer, subItem.className || '')}
+															className={cn(
+																menuClasses.textContainer,
+																subItem.className || '',
+															)}
 														>
 															{subItem.label}
 														</span>
@@ -293,9 +311,13 @@ export function UserMenu({
 										)}
 									>
 										<span className={menuClasses.iconContainer}>
-											{item.icon ? renderIcon(item.icon, { className: 'w-5 h-5' }) : null}
+											{item.icon
+												? renderIcon(item.icon, { className: 'w-5 h-5' })
+												: null}
 										</span>
-										<span className={cn(menuClasses.textContainer, getTypographyClass())}>
+										<span
+											className={cn(menuClasses.textContainer, getTypographyClass())}
+										>
 											{item.label}
 										</span>
 									</Link>

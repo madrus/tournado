@@ -53,7 +53,12 @@ export const useBounceDetection = (
 	 * @returns boolean indicating if bounce should be triggered
 	 */
 	const shouldTriggerBounce = useCallback(
-		(currentY: number, deltaY: number, scrollY: number, maxScrollY: number): boolean => {
+		(
+			currentY: number,
+			deltaY: number,
+			scrollY: number,
+			maxScrollY: number,
+		): boolean => {
 			// Only consider bounce on iOS devices
 			if (!isIOS) return false
 
@@ -117,7 +122,10 @@ export const useBounceDetection = (
 			lastTouchTime.current = currentTime
 
 			const y = getScrollY()
-			const maxScrollY = Math.max(0, documentHeightRef.current - windowHeightRef.current)
+			const maxScrollY = Math.max(
+				0,
+				documentHeightRef.current - windowHeightRef.current,
+			)
 
 			// Check if this interaction should trigger bounce detection
 			if (shouldTriggerBounce(currentY, deltaY, y, maxScrollY)) {
@@ -158,7 +166,14 @@ export const useBounceDetection = (
 				}
 			}
 		},
-		[isMobile, isIOS, resetBounceState, shouldTriggerBounce, documentHeightRef, windowHeightRef],
+		[
+			isMobile,
+			isIOS,
+			resetBounceState,
+			shouldTriggerBounce,
+			documentHeightRef,
+			windowHeightRef,
+		],
 	)
 
 	const handleTouchEnd = useCallback(() => {
@@ -174,7 +189,10 @@ export const useBounceDetection = (
 			bounceSettleTimeoutRef.current = window.setTimeout(() => {
 				// Check if we're still at the bottom after momentum settles
 				const y = getScrollY()
-				const maxScrollY = Math.max(0, documentHeightRef.current - windowHeightRef.current)
+				const maxScrollY = Math.max(
+					0,
+					documentHeightRef.current - windowHeightRef.current,
+				)
 
 				// Only reset if we're no longer at the bottom
 				if (y < maxScrollY - BOUNCE_RESET_THRESHOLD) {

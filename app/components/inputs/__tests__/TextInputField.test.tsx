@@ -128,7 +128,9 @@ describe('TextInputField', () => {
 		const mockOnBlur = vi.fn()
 		const user = userEvent.setup()
 
-		render(<TextInputField {...defaultProps} onFocus={mockOnFocus} onBlur={mockOnBlur} />)
+		render(
+			<TextInputField {...defaultProps} onFocus={mockOnFocus} onBlur={mockOnBlur} />,
+		)
 
 		const input = screen.getByRole('textbox')
 
@@ -179,7 +181,9 @@ describe('TextInputField', () => {
 
 		// Update the value to simulate controlled behavior
 		inputValue = longText
-		rerender(<TextInputField {...defaultProps} value={inputValue} onChange={mockOnChange} />)
+		rerender(
+			<TextInputField {...defaultProps} value={inputValue} onChange={mockOnChange} />,
+		)
 
 		expect(mockOnChange).toHaveBeenCalled()
 		expect(input).toHaveValue(longText)
@@ -205,7 +209,9 @@ describe('TextInputField', () => {
 
 		// Update the value to simulate controlled behavior
 		inputValue = specialText
-		rerender(<TextInputField {...defaultProps} value={inputValue} onChange={mockOnChange} />)
+		rerender(
+			<TextInputField {...defaultProps} value={inputValue} onChange={mockOnChange} />,
+		)
 
 		expect(mockOnChange).toHaveBeenCalled()
 		expect(input).toHaveValue(specialText)

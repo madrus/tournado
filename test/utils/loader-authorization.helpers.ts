@@ -22,7 +22,14 @@ export function generateAuthTestCases(metadata?: RouteMetadata): AuthTestCase[] 
 
 	if (!authorization?.requiredRoles) {
 		// No role restriction - all authenticated users can access
-		const allRoles: Role[] = ['PUBLIC', 'REFEREE', 'EDITOR', 'BILLING', 'MANAGER', 'ADMIN']
+		const allRoles: Role[] = [
+			'PUBLIC',
+			'REFEREE',
+			'EDITOR',
+			'BILLING',
+			'MANAGER',
+			'ADMIN',
+		]
 		return allRoles.map((role) => ({
 			role,
 			shouldAccess: true,
@@ -34,7 +41,14 @@ export function generateAuthTestCases(metadata?: RouteMetadata): AuthTestCase[] 
 	const allowedRoles: Role[] = authorization.requiredRoles
 
 	// Generate test cases for all 6 Prisma roles
-	const allRoles: Role[] = ['PUBLIC', 'REFEREE', 'EDITOR', 'BILLING', 'MANAGER', 'ADMIN']
+	const allRoles: Role[] = [
+		'PUBLIC',
+		'REFEREE',
+		'EDITOR',
+		'BILLING',
+		'MANAGER',
+		'ADMIN',
+	]
 
 	return allRoles.map((role) => ({
 		role,

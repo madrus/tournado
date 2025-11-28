@@ -1,7 +1,12 @@
 import type { TournamentData } from '~/features/tournaments/types'
 
 import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './teamFormConstants'
-import type { FormFieldName, FormFields, StoreState, ValidationState } from './teamFormTypes'
+import type {
+	FormFieldName,
+	FormFields,
+	StoreState,
+	ValidationState,
+} from './teamFormTypes'
 
 /**
  * Checks if the specified panel is complete and valid.
@@ -66,8 +71,10 @@ export function isPanelEnabled(
 /**
  * Checks if the form is dirty (has been modified) by comparing current and old form fields.
  */
-export const isFormDirty = (formFields: FormFields, oldFormFields: FormFields): boolean =>
-	JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
+export const isFormDirty = (
+	formFields: FormFields,
+	oldFormFields: FormFields,
+): boolean => JSON.stringify(formFields) !== JSON.stringify(oldFormFields)
 
 /**
  * Computes available divisions and categories for the selected tournament.
@@ -80,7 +87,9 @@ export function computeAvailableOptions(
 	const selectedTournament = tournaments.find((t) => t.id === tournamentId)
 	return {
 		divisions: selectedTournament?.divisions ? [...selectedTournament.divisions] : [],
-		categories: selectedTournament?.categories ? [...selectedTournament.categories] : [],
+		categories: selectedTournament?.categories
+			? [...selectedTournament.categories]
+			: [],
 	}
 }
 
@@ -88,7 +97,9 @@ export function computeAvailableOptions(
  * Determines which dependent fields should be reset when a field changes.
  * Used to clear division/category when tournament or division changes.
  */
-export function getDependentFieldResets(fieldName: keyof FormFields): Partial<FormFields> {
+export function getDependentFieldResets(
+	fieldName: keyof FormFields,
+): Partial<FormFields> {
 	if (fieldName === 'tournamentId') {
 		return { division: '', category: '' }
 	}
@@ -183,7 +194,9 @@ export const shouldValidateField = (
 	fieldName: FormFieldName,
 	validation: ValidationState,
 ): boolean =>
-	validation.blurredFields[fieldName] || validation.forceShowAllErrors || validation.submitAttempted
+	validation.blurredFields[fieldName] ||
+	validation.forceShowAllErrors ||
+	validation.submitAttempted
 
 // Helper to reset state while preserving specified keys
 export function resetStatePreserving<T extends keyof StoreState>(

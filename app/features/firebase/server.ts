@@ -74,10 +74,13 @@ type AssignUserRoleProps = {
  * @param props - The user identification props (email and optional currentRole)
  * @returns Promise<Role> - The assigned role
  */
-export const assignUserRole = async (props: Readonly<AssignUserRoleProps>): Promise<Role> => {
+export const assignUserRole = async (
+	props: Readonly<AssignUserRoleProps>,
+): Promise<Role> => {
 	const { email, currentRole } = props
 	const superAdminEmails =
-		process.env.SUPER_ADMIN_EMAILS?.split(',').map((emailItem) => emailItem.trim()) || []
+		process.env.SUPER_ADMIN_EMAILS?.split(',').map((emailItem) => emailItem.trim()) ||
+		[]
 
 	// Promote to ADMIN if in super admin list
 	if (superAdminEmails.includes(email)) {
@@ -144,7 +147,8 @@ export const createOrUpdateUser = async (
 			role?: Role
 		} = {
 			email: firebaseUser.email,
-			firstName: firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+			firstName:
+				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
 			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
 		}
 
@@ -182,7 +186,8 @@ export const createOrUpdateUser = async (
 		} = {
 			firebaseUid: firebaseUser.uid,
 			email: firebaseUser.email,
-			firstName: firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+			firstName:
+				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
 			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
 		}
 
@@ -205,7 +210,8 @@ export const createOrUpdateUser = async (
 		data: {
 			firebaseUid: firebaseUser.uid,
 			email: firebaseUser.email,
-			firstName: firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
+			firstName:
+				firebaseUser.displayName?.split(' ')[0] || firebaseUser.email.split('@')[0],
 			lastName: firebaseUser.displayName?.split(' ').slice(1).join(' ') || 'User',
 			role: assignedRole,
 		},
@@ -227,7 +233,8 @@ export async function verifyIdToken(idToken: string): Promise<DecodedIdToken> {
 		const decodedToken = await adminAuth.verifyIdToken(idToken)
 		return decodedToken
 	} catch (error) {
-		const message = error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
+		const message =
+			error instanceof Error ? error.message : 'Unknown error during verifyIdToken'
 		if (process.env.NODE_ENV !== 'test') {
 		}
 		throw new Error(`Invalid Firebase ID token: ${message}`)
@@ -277,7 +284,9 @@ export async function disableFirebaseUser(firebaseUid: string): Promise<void> {
 		console.log(`[firebase-admin] Successfully disabled Firebase user: ${firebaseUid}`)
 	} catch (error) {
 		const message =
-			error instanceof Error ? error.message : 'Unknown error during disableFirebaseUser'
+			error instanceof Error
+				? error.message
+				: 'Unknown error during disableFirebaseUser'
 		console.error('[firebase-admin] disableFirebaseUser error:', message)
 		throw new Error(`Failed to disable Firebase user: ${message}`)
 	}
@@ -370,10 +379,14 @@ export async function revokeRefreshTokens(firebaseUid: string): Promise<void> {
 
 	try {
 		await adminAuth.revokeRefreshTokens(firebaseUid)
-		console.log(`[firebase-admin] Successfully revoked refresh tokens for user: ${firebaseUid}`)
+		console.log(
+			`[firebase-admin] Successfully revoked refresh tokens for user: ${firebaseUid}`,
+		)
 	} catch (error) {
 		const message =
-			error instanceof Error ? error.message : 'Unknown error during revokeRefreshTokens'
+			error instanceof Error
+				? error.message
+				: 'Unknown error during revokeRefreshTokens'
 		console.error('[firebase-admin] revokeRefreshTokens error:', message)
 		throw new Error(`Failed to revoke refresh tokens: ${message}`)
 	}

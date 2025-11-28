@@ -121,7 +121,8 @@ describe('rateLimit.server', () => {
 
 			// Advance time past block duration
 			expect(testConfig.blockDurationMs).toBeDefined()
-			if (testConfig.blockDurationMs === undefined) throw new Error('blockDurationMs not defined')
+			if (testConfig.blockDurationMs === undefined)
+				throw new Error('blockDurationMs not defined')
 			vi.advanceTimersByTime(testConfig.blockDurationMs + 1000)
 
 			// Should allow new requests

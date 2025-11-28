@@ -55,7 +55,9 @@ describe('NavigationItem - Responsive Sizing', () => {
 		const { useMediaQuery } = await import('~/hooks/useMediaQuery')
 		vi.mocked(useMediaQuery).mockReturnValue(true) // Mobile
 
-		renderWithRouter(<NavigationItem to='/teams' icon='apparel' label='Teams' iconSize={48} />)
+		renderWithRouter(
+			<NavigationItem to='/teams' icon='apparel' label='Teams' iconSize={48} />,
+		)
 
 		const icon = screen.getByTestId('nav-icon')
 		expect(icon).toHaveAttribute('width', '48')

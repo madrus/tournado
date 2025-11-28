@@ -69,7 +69,9 @@ describe('team.server - getTeamLeader', () => {
 		const dbError = new Error('Database connection failed')
 		mockPrisma.teamLeader.findUnique.mockRejectedValue(dbError)
 
-		await expect(getTeamLeader('leader-123')).rejects.toThrow('Database connection failed')
+		await expect(getTeamLeader('leader-123')).rejects.toThrow(
+			'Database connection failed',
+		)
 	})
 
 	it('should only select required fields', async () => {

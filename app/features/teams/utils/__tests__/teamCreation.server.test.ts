@@ -39,7 +39,10 @@ vi.mock('~/db.server', () => ({
 }))
 
 import { prisma } from '~/db.server'
-import { extractTeamDataFromFormData, validateEntireTeamForm } from '~/features/teams/validation'
+import {
+	extractTeamDataFromFormData,
+	validateEntireTeamForm,
+} from '~/features/teams/validation'
 import { stringToCategory, stringToDivision } from '~/lib/lib.helpers'
 import { createTeam } from '~/models/team.server'
 import { getTournamentById } from '~/models/tournament.server'

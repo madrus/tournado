@@ -57,7 +57,10 @@ export const AppLayout = ({
 	)
 
 	const renderContent = (): ReactNode => {
-		if (isValidElement(children) && transitionComponents.has(children.type as ElementType)) {
+		if (
+			isValidElement(children) &&
+			transitionComponents.has(children.type as ElementType)
+		) {
 			const transitionChild = children as ReactElement<{ className?: string }>
 			const mergedClassName = [contentClassName, transitionChild.props.className]
 				.filter(Boolean)
@@ -73,7 +76,13 @@ export const AppLayout = ({
 
 	return (
 		<I18nextProvider i18n={i18n}>
-			<Theme accentColor='teal' grayColor='slate' radius='medium' scaling='100%' appearance={theme}>
+			<Theme
+				accentColor='teal'
+				grayColor='slate'
+				radius='medium'
+				scaling='100%'
+				appearance={theme}
+			>
 				<div
 					className='flex min-h-screen flex-col'
 					style={{ paddingTop: 'var(--header-padding, 62px)' }}
@@ -90,7 +99,8 @@ export const AppLayout = ({
 						className='flex-1 overflow-visible pb-16 md:pb-0'
 						data-testid='app-layout-gradient'
 						style={{
-							background: 'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
+							background:
+								'linear-gradient(to bottom, var(--gradient-from), var(--gradient-to))',
 							position: 'relative',
 							zIndex: 1,
 						}}

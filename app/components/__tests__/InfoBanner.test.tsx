@@ -132,7 +132,8 @@ describe('InfoBanner', () => {
 		it('should render complex children', () => {
 			render(
 				<InfoBanner variant='warning'>
-					<strong>Warning:</strong> This is a complex message with <a href='/test'>a link</a>.
+					<strong>Warning:</strong> This is a complex message with{' '}
+					<a href='/test'>a link</a>.
 				</InfoBanner>,
 			)
 

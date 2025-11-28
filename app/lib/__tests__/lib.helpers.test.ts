@@ -82,12 +82,17 @@ describe('lib.helpers', () => {
 		it('should return division key when no language available', () => {
 			// Test with a valid division but requesting a language that doesn't exist
 			expect(
-				getDivisionLabel(TestDivision.PREMIER_DIVISION as Division, 'invalid_lang' as never),
+				getDivisionLabel(
+					TestDivision.PREMIER_DIVISION as Division,
+					'invalid_lang' as never,
+				),
 			).toBe('Hoofdklasse')
 		})
 
 		it('should use Dutch as default language', () => {
-			expect(getDivisionLabel(TestDivision.PREMIER_DIVISION as Division)).toBe('Hoofdklasse')
+			expect(getDivisionLabel(TestDivision.PREMIER_DIVISION as Division)).toBe(
+				'Hoofdklasse',
+			)
 		})
 	})
 
@@ -361,7 +366,10 @@ describe('lib.helpers', () => {
 
 				// Test Dutch labels
 				const nlLabelFromHelper = getDivisionLabel(division.value as Division, 'nl')
-				const nlLabelFromValue = getDivisionLabelByValue(division.value as Division, 'nl')
+				const nlLabelFromValue = getDivisionLabelByValue(
+					division.value as Division,
+					'nl',
+				)
 				expect(nlLabelFromHelper).toBe(nlLabelFromValue)
 			})
 		})
@@ -717,7 +725,9 @@ describe('lib.helpers', () => {
 			})
 
 			it('should handle single team', () => {
-				const singleTeam = [{ id: '1', clubName: 'Ajax', name: 'Team A', category: 'JO8' }]
+				const singleTeam = [
+					{ id: '1', clubName: 'Ajax', name: 'Team A', category: 'JO8' },
+				]
 				const result = sortTeams(singleTeam)
 				expect(result).toEqual(singleTeam)
 			})
@@ -844,9 +854,9 @@ describe('lib.helpers', () => {
 				expect(getFieldStatus([], true, true, false)).toBe('error')
 
 				// Divisions selected, required, no error
-				expect(getFieldStatus(['PREMIER_DIVISION', 'FIRST_DIVISION'], false, true, false)).toBe(
-					'success',
-				)
+				expect(
+					getFieldStatus(['PREMIER_DIVISION', 'FIRST_DIVISION'], false, true, false),
+				).toBe('success')
 
 				// Optional chip group with no selection
 				expect(getFieldStatus([], false, false, false)).toBe('neutral')

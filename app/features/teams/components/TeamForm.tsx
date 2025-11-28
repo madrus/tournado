@@ -181,7 +181,8 @@ export function TeamForm({
 			if (isDisabled) return undefined
 
 			// Show errors if field has been blurred OR if we're forcing all errors OR if form was submitted
-			const shouldShowError = blurredFields[fieldName] || forceShowAllErrors || submitAttempted
+			const shouldShowError =
+				blurredFields[fieldName] || forceShowAllErrors || submitAttempted
 
 			if (!shouldShowError) return undefined
 
@@ -339,7 +340,13 @@ export function TeamForm({
 
 	return (
 		<div className={cn('w-full', className)}>
-			<Form ref={formRef} method='post' className='space-y-8' noValidate onSubmit={handleSubmit}>
+			<Form
+				ref={formRef}
+				method='post'
+				className='space-y-8'
+				noValidate
+				onSubmit={handleSubmit}
+			>
 				{/* Hidden fields */}
 				{intent ? <input type='hidden' name='intent' value={intent} /> : null}
 
@@ -414,7 +421,11 @@ export function TeamForm({
 							color={PANEL_COLORS.step1}
 							statusIcon={
 								<FieldStatusIcon
-									status={getFieldStatus('division', division, !tournamentId || isPublicSuccess)}
+									status={getFieldStatus(
+										'division',
+										division,
+										!tournamentId || isPublicSuccess,
+									)}
 								/>
 							}
 							onBlur={() => validateFieldOnBlur('division')}
@@ -431,7 +442,10 @@ export function TeamForm({
 								label: c,
 							}))}
 							placeholder={t('teams.form.selectCategory')}
-							error={getTranslatedError('category', !tournamentId || !division || isPublicSuccess)}
+							error={getTranslatedError(
+								'category',
+								!tournamentId || !division || isPublicSuccess,
+							)}
 							required
 							disabled={!tournamentId || !division || isPublicSuccess}
 							className={getLatinTextClass()}
@@ -453,7 +467,9 @@ export function TeamForm({
 				{/* Step 2: Team Information */}
 				<Panel
 					variant='form-panel'
-					color={formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'}
+					color={
+						formMode === 'edit' || isPanelEnabled(2) ? PANEL_COLORS.step2 : 'slate'
+					}
 					panelNumber={2}
 					disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
 					className='lg:p-8'
@@ -462,7 +478,9 @@ export function TeamForm({
 						<h2
 							className={cn(
 								'mb-4 font-bold text-title text-xl',
-								formMode === 'create' && !isPanelEnabled(2) ? 'text-foreground-lighter' : '',
+								formMode === 'create' && !isPanelEnabled(2)
+									? 'text-foreground-lighter'
+									: '',
 							)}
 						>
 							{t('teams.form.teamInfo')}
@@ -470,7 +488,9 @@ export function TeamForm({
 						<p
 							className={cn(
 								'mb-4 text-foreground',
-								formMode === 'create' && !isPanelEnabled(2) ? 'text-foreground-lighter' : '',
+								formMode === 'create' && !isPanelEnabled(2)
+									? 'text-foreground-lighter'
+									: '',
 							)}
 						>
 							{t('teams.form.enterTeamDetails')}
@@ -490,7 +510,9 @@ export function TeamForm({
 								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2)),
 							)}
 							required
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+							}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step2}
 							statusIcon={
@@ -517,7 +539,9 @@ export function TeamForm({
 								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2)),
 							)}
 							required
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(2))
+							}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step2}
 							statusIcon={
@@ -537,7 +561,9 @@ export function TeamForm({
 				{/* Step 3: Team Leader Information */}
 				<Panel
 					variant='form-panel'
-					color={formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'}
+					color={
+						formMode === 'edit' || isPanelEnabled(3) ? PANEL_COLORS.step3 : 'slate'
+					}
 					panelNumber={3}
 					disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
 					className='lg:p-8'
@@ -546,7 +572,9 @@ export function TeamForm({
 						<h2
 							className={cn(
 								'mb-4 font-bold text-title text-xl',
-								formMode === 'create' && !isPanelEnabled(3) ? 'text-foreground-lighter' : '',
+								formMode === 'create' && !isPanelEnabled(3)
+									? 'text-foreground-lighter'
+									: '',
 							)}
 						>
 							{t('teams.form.teamLeaderInfo')}
@@ -554,7 +582,9 @@ export function TeamForm({
 						<p
 							className={cn(
 								'mb-4 text-foreground',
-								formMode === 'create' && !isPanelEnabled(3) ? 'text-foreground-lighter' : '',
+								formMode === 'create' && !isPanelEnabled(3)
+									? 'text-foreground-lighter'
+									: '',
 							)}
 						>
 							{t('teams.form.enterContactDetails')}
@@ -574,7 +604,9 @@ export function TeamForm({
 								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3)),
 							)}
 							required
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+							}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step3}
 							statusIcon={
@@ -602,7 +634,9 @@ export function TeamForm({
 							)}
 							required
 							type='tel'
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+							}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step3}
 							statusIcon={
@@ -630,7 +664,9 @@ export function TeamForm({
 							)}
 							required
 							type='email'
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(3))
+							}
 							className={getLatinTextClass()}
 							color={PANEL_COLORS.step3}
 							statusIcon={
@@ -651,7 +687,9 @@ export function TeamForm({
 				{mode === 'create' ? (
 					<Panel
 						variant='form-panel'
-						color={formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'}
+						color={
+							formMode === 'edit' || isPanelEnabled(4) ? PANEL_COLORS.step4 : 'slate'
+						}
 						panelNumber={4}
 						disabled={formMode === 'create' ? !isPanelEnabled(4) : undefined}
 						className='lg:p-8'
@@ -660,7 +698,9 @@ export function TeamForm({
 							<h2
 								className={cn(
 									'mb-4 font-bold text-title text-xl',
-									formMode === 'create' && !isPanelEnabled(4) ? 'text-foreground-lighter' : '',
+									formMode === 'create' && !isPanelEnabled(4)
+										? 'text-foreground-lighter'
+										: '',
 								)}
 							>
 								{t('teams.form.privacyPolicy')}
@@ -677,7 +717,9 @@ export function TeamForm({
 								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4)),
 							)}
 							required
-							disabled={isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))}
+							disabled={
+								isPublicSuccess || (formMode === 'create' && !isPanelEnabled(4))
+							}
 							onChange={(checked: boolean) => setFormField('privacyAgreement', checked)}
 							onBlur={() => validateFieldOnBlur('privacyAgreement')}
 							color={PANEL_COLORS.step4}

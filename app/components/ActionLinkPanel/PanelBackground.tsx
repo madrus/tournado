@@ -13,5 +13,8 @@ export const PanelBackground = ({
 	className,
 	'data-testid': testId,
 }: PanelBackgroundProps): JSX.Element => (
-	<div className={cn('absolute inset-0', backgroundColor, className)} data-testid={testId} />
+	<div
+		className={cn('absolute inset-0', backgroundColor, className)}
+		data-testid={testId}
+	/>
 )

@@ -3,7 +3,13 @@ import type { SortingState } from '@tanstack/react-table'
 import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { MetaFunction } from 'react-router'
-import { redirect, useFetcher, useLoaderData, useNavigate, useSearchParams } from 'react-router'
+import {
+	redirect,
+	useFetcher,
+	useLoaderData,
+	useNavigate,
+	useSearchParams,
+} from 'react-router'
 
 import { DataTable, DataTablePagination } from '~/components/DataTable'
 import { GroupIcon } from '~/components/icons'
@@ -42,12 +48,14 @@ export const meta: MetaFunction = () => [
 	{ title: 'User Management | Admin | Tournado' },
 	{
 		name: 'description',
-		content: 'Manage all users in the system. View, edit user roles and oversee user accounts.',
+		content:
+			'Manage all users in the system. View, edit user roles and oversee user accounts.',
 	},
 	{ property: 'og:title', content: 'User Management | Admin | Tournado' },
 	{
 		property: 'og:description',
-		content: 'Manage all users in the system. View, edit user roles and oversee user accounts.',
+		content:
+			'Manage all users in the system. View, edit user roles and oversee user accounts.',
 	},
 	{ property: 'og:type', content: 'website' },
 ]
@@ -119,11 +127,15 @@ export async function action({ request }: Route.ActionArgs): Promise<Response> {
 			}
 			const errorMessage =
 				error instanceof Error ? error.message : t('messages.user.failedToUpdateRole')
-			return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent(errorMessage)}`)
+			return redirect(
+				`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent(errorMessage)}`,
+			)
 		}
 	}
 
-	return redirect(`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent('Invalid action')}`)
+	return redirect(
+		`/a7k9m2x5p8w1n4q6r3y8b5t1/users?error=${encodeURIComponent('Invalid action')}`,
+	)
 }
 
 export function AdminUsersIndexPage(): JSX.Element {
@@ -199,7 +211,9 @@ export function AdminUsersIndexPage(): JSX.Element {
 	return (
 		<div className='space-y-6' data-testid='admin-users-page-content'>
 			{/* Stats using optimized dashboard panels */}
-			<div className={cn('grid w-full max-w-4xl grid-cols-1 gap-5', STATS_PANEL_MIN_WIDTH)}>
+			<div
+				className={cn('grid w-full max-w-4xl grid-cols-1 gap-5', STATS_PANEL_MIN_WIDTH)}
+			>
 				<Panel
 					color={PANEL_COLOR}
 					variant='dashboard-panel'
@@ -241,7 +255,10 @@ export function AdminUsersIndexPage(): JSX.Element {
 										{t('users.messages.noUsers', 'No users found')}
 									</p>
 									<p className='mb-6 text-slate-600 text-sm'>
-										{t('users.messages.noUsersDescription', 'No users have been created yet.')}
+										{t(
+											'users.messages.noUsersDescription',
+											'No users have been created yet.',
+										)}
 									</p>
 								</div>
 							) : undefined

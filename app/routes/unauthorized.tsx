@@ -113,7 +113,8 @@ export default function UnauthorizedPage(): JSX.Element {
 
 					{user ? (
 						<p className='text-center text-muted-foreground text-sm'>
-							Current role: <span className='font-medium capitalize'>{role.toLowerCase()}</span>
+							Current role:{' '}
+							<span className='font-medium capitalize'>{role.toLowerCase()}</span>
 						</p>
 					) : null}
 

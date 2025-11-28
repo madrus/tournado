@@ -109,7 +109,9 @@ export default function TeamDetailsPage(): JSX.Element {
 					<h2 className={cn('font-bold text-3xl', getLatinTitleClass())}>
 						{`${team.clubName} ${team.name}`}
 					</h2>
-					<p className='mt-2 text-lg'>{getDivisionLabel(team.division, i18n.language)}</p>
+					<p className='mt-2 text-lg'>
+						{getDivisionLabel(team.division, i18n.language)}
+					</p>
 				</div>
 
 				{/* Content Grid */}
@@ -131,8 +133,8 @@ export default function TeamDetailsPage(): JSX.Element {
 								<div className='rounded-lg border border-blue-200 bg-blue-50 p-4'>
 									<p className='font-medium text-blue-800'>🚧 Coming Soon!</p>
 									<p className='mt-1 text-blue-700 text-sm'>
-										Team schedule and game management will be implemented here. This will show
-										upcoming matches, match results, and tournament standings.
+										Team schedule and game management will be implemented here. This
+										will show upcoming matches, match results, and tournament standings.
 									</p>
 								</div>
 
@@ -166,7 +168,9 @@ export default function TeamDetailsPage(): JSX.Element {
 												<p className='text-slate-600 text-sm dark:text-slate-300'>
 													Sunday, Dec 17, 2023 at 16:30
 												</p>
-												<p className='text-slate-500 text-sm dark:text-slate-400'>Main Court</p>
+												<p className='text-slate-500 text-sm dark:text-slate-400'>
+													Main Court
+												</p>
 											</div>
 											<span className='rounded-full bg-green-100 px-3 py-1 font-medium text-green-800 text-xs'>
 												Confirmed
@@ -215,21 +219,31 @@ export default function TeamDetailsPage(): JSX.Element {
 								</h3>
 								<dl className='space-y-3'>
 									<div>
-										<dt className='font-medium text-foreground-lighter text-sm'>Club</dt>
-										<dd className={cn('text-sm', getLatinTextClass())}>{team.clubName}</dd>
+										<dt className='font-medium text-foreground-lighter text-sm'>
+											Club
+										</dt>
+										<dd className={cn('text-sm', getLatinTextClass())}>
+											{team.clubName}
+										</dd>
 									</div>
 									<div>
-										<dt className='font-medium text-foreground-lighter text-sm'>Team</dt>
+										<dt className='font-medium text-foreground-lighter text-sm'>
+											Team
+										</dt>
 										<dd className={cn('text-sm', getLatinTextClass())}>{team.name}</dd>
 									</div>
 									<div>
-										<dt className='font-medium text-foreground-lighter text-sm'>Class</dt>
+										<dt className='font-medium text-foreground-lighter text-sm'>
+											Class
+										</dt>
 										<dd className={cn('text-sm', getLatinTextClass())}>
 											{getDivisionLabel(team.division, i18n.language)}
 										</dd>
 									</div>
 									<div>
-										<dt className='font-medium text-foreground-lighter text-sm'>Status</dt>
+										<dt className='font-medium text-foreground-lighter text-sm'>
+											Status
+										</dt>
 										<dd>
 											<span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 font-medium text-green-800 text-xs'>
 												Active

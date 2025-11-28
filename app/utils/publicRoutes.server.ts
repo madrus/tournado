@@ -11,13 +11,21 @@ export async function isPublicRoute(pathname: string): Promise<boolean> {
 		'/auth/reset-password',
 	]
 
-	if (alwaysPublicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))) {
+	if (
+		alwaysPublicRoutes.some(
+			(route) => pathname === route || pathname.startsWith(`${route}/`),
+		)
+	) {
 		return true
 	}
 
 	const knownPublicRoutes = ['/', '/teams', '/about']
 
-	if (knownPublicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))) {
+	if (
+		knownPublicRoutes.some(
+			(route) => pathname === route || pathname.startsWith(`${route}/`),
+		)
+	) {
 		return true
 	}
 

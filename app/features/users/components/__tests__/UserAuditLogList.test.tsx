@@ -179,7 +179,9 @@ describe('UserAuditLogList', () => {
 			render(<UserAuditLogList auditLogs={singleLog} />)
 
 			expect(screen.getByText('users.auditActions.ROLE_CHANGED')).toBeInTheDocument()
-			expect(screen.queryByText('users.auditActions.ACCOUNT_CREATED')).not.toBeInTheDocument()
+			expect(
+				screen.queryByText('users.auditActions.ACCOUNT_CREATED'),
+			).not.toBeInTheDocument()
 		})
 
 		it('should handle audit logs with only previousValue', () => {

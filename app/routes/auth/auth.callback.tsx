@@ -9,7 +9,10 @@ import type { Route } from './+types/auth.callback'
 export const loader = async ({ request }: Route.LoaderArgs): Promise<Response> => {
 	// This route should only be accessed via POST (action)
 	const url = new URL(request.url)
-	const absoluteSigninUrl = new URL('/auth/signin', `${url.protocol}//${url.host}`).toString()
+	const absoluteSigninUrl = new URL(
+		'/auth/signin',
+		`${url.protocol}//${url.host}`,
+	).toString()
 	return redirect(absoluteSigninUrl, { status: 302 })
 }
 
@@ -50,7 +53,10 @@ export const action = async ({ request }: Route.ActionArgs): Promise<Response> =
 
 		// Create absolute URL to avoid protocol issues
 		const url = new URL(request.url)
-		const absoluteRedirectUrl = new URL(finalRedirectTo, `${url.protocol}//${url.host}`).toString()
+		const absoluteRedirectUrl = new URL(
+			finalRedirectTo,
+			`${url.protocol}//${url.host}`,
+		).toString()
 
 		return redirect(absoluteRedirectUrl, {
 			status: 303,

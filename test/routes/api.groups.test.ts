@@ -49,7 +49,9 @@ describe('Resource Route: /api/groups', () => {
 			const mockUser = createMockUser(role)
 			vi.mocked(getUser).mockResolvedValue(mockUser)
 
-			const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
+			const request = new Request(
+				'http://localhost/api/groups?tournament=test-tournament-id',
+			)
 
 			const response = await loader({
 				request,
@@ -79,7 +81,9 @@ describe('Resource Route: /api/groups', () => {
 			const mockUser = createMockUser(role)
 			vi.mocked(getUser).mockResolvedValue(mockUser)
 
-			const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
+			const request = new Request(
+				'http://localhost/api/groups?tournament=test-tournament-id',
+			)
 
 			await expect(
 				loader({ request, params: {}, context: {}, unstable_pattern: '/api.groups' }),
@@ -96,10 +100,17 @@ describe('Resource Route: /api/groups', () => {
 	it('should redirect unauthenticated users to signin', async () => {
 		vi.mocked(getUser).mockResolvedValue(null)
 
-		const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
+		const request = new Request(
+			'http://localhost/api/groups?tournament=test-tournament-id',
+		)
 
 		try {
-			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.groups' })
+			await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.groups',
+			})
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects
@@ -138,7 +149,9 @@ describe('Resource Route: /api/groups', () => {
 		const mockUser = createMockUser('MANAGER')
 		vi.mocked(getUser).mockResolvedValue(mockUser)
 
-		const request = new Request('http://localhost/api/groups?tournament=test-tournament-id')
+		const request = new Request(
+			'http://localhost/api/groups?tournament=test-tournament-id',
+		)
 
 		const response = await loader({
 			request,

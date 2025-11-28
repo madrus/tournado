@@ -30,7 +30,10 @@ describe('CheckboxAgreementField', () => {
 
 	it('should render with description when provided', () => {
 		render(
-			<CheckboxAgreementField {...defaultProps} description='Please read and accept the terms' />,
+			<CheckboxAgreementField
+				{...defaultProps}
+				description='Please read and accept the terms'
+			/>,
 		)
 
 		expect(screen.getByText('Please read and accept the terms')).toBeInTheDocument()
@@ -178,7 +181,9 @@ describe('CheckboxAgreementField', () => {
 		expect(uncheckedCheckbox).not.toBeChecked()
 
 		// Rerender with checked state
-		rerender(<CheckboxAgreementField {...defaultProps} checked onChange={mockOnChange} />)
+		rerender(
+			<CheckboxAgreementField {...defaultProps} checked onChange={mockOnChange} />,
+		)
 		const checkedCheckbox = screen.getByRole('checkbox')
 		expect(checkedCheckbox).toBeChecked()
 	})
@@ -262,7 +267,9 @@ describe('CheckboxAgreementField', () => {
 		})
 
 		it('should render status icon even when no description is provided', () => {
-			render(<CheckboxAgreementField {...defaultProps} checked={true} required={true} />)
+			render(
+				<CheckboxAgreementField {...defaultProps} checked={true} required={true} />,
+			)
 
 			// Should still show success status icon even without description
 			expect(screen.getByTestId('field-status-success')).toBeInTheDocument()

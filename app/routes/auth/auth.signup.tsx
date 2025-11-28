@@ -2,7 +2,10 @@ import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, redirect, useLoaderData } from 'react-router'
 
-import { FirebaseEmailSignIn, FirebaseSignIn } from '~/features/firebase/components/FirebaseAuth'
+import {
+	FirebaseEmailSignIn,
+	FirebaseSignIn,
+} from '~/features/firebase/components/FirebaseAuth'
 import { shouldRedirectAuthenticatedUser } from '~/utils/roleBasedRedirects'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { getUser } from '~/utils/session.server'
@@ -53,12 +56,14 @@ export const meta: MetaFunction = () => [
 	{ title: 'Sign Up | Tournado' },
 	{
 		name: 'description',
-		content: 'Create your free Tournado account to start organizing and managing tournaments.',
+		content:
+			'Create your free Tournado account to start organizing and managing tournaments.',
 	},
 	{ property: 'og:title', content: 'Sign Up | Tournado' },
 	{
 		property: 'og:description',
-		content: 'Create your free Tournado account to start organizing and managing tournaments.',
+		content:
+			'Create your free Tournado account to start organizing and managing tournaments.',
 	},
 	{ property: 'og:type', content: 'website' },
 ]
@@ -79,7 +84,9 @@ export default function SignUpPage(): JSX.Element {
 					<span className={authDividerLineVariants()} />
 				</div>
 				<div className={authDividerTextContainerVariants()}>
-					<span className={authDividerTextVariants()}>{t('auth.continueWithEmail')}</span>
+					<span className={authDividerTextVariants()}>
+						{t('auth.continueWithEmail')}
+					</span>
 				</div>
 			</div>
 
@@ -87,7 +94,9 @@ export default function SignUpPage(): JSX.Element {
 			<FirebaseEmailSignIn mode='signup' redirectTo={redirectTo ?? '/'} />
 
 			<p className={authFooterTextVariants()}>
-				<span className={authTextSpacingVariants()}>{t('auth.signUpPage.hasAccount')}</span>
+				<span className={authTextSpacingVariants()}>
+					{t('auth.signUpPage.hasAccount')}
+				</span>
 				<Link to='/auth/signin' className={authLinkVariants()}>
 					{t('auth.signUpPage.signInLink')}
 				</Link>

@@ -251,7 +251,14 @@ describe('ActionLinkButton', () => {
 	})
 
 	describe('different icons', () => {
-		const iconTestCases = ['add', 'delete', 'settings', 'home', 'apparel', 'trophy'] as const
+		const iconTestCases = [
+			'add',
+			'delete',
+			'settings',
+			'home',
+			'apparel',
+			'trophy',
+		] as const
 
 		iconTestCases.forEach((iconName) => {
 			it(`renders with ${iconName} icon`, () => {

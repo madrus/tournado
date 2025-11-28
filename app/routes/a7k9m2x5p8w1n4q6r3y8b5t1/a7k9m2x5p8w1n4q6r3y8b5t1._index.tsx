@@ -117,8 +117,12 @@ export default function AdminDashboard(): JSX.Element {
 					>
 						<div className='space-y-2'>
 							<p>
-								<strong className='me-1'>{t('admin.tournament.totalTournaments')}:</strong>
-								<span className={cn(isRTL ? 'latin-text' : '')}>{tournaments.length}</span>
+								<strong className='me-1'>
+									{t('admin.tournament.totalTournaments')}:
+								</strong>
+								<span className={cn(isRTL ? 'latin-text' : '')}>
+									{tournaments.length}
+								</span>
 							</p>
 						</div>
 					</ActionLinkPanel>
@@ -181,7 +185,9 @@ export default function AdminDashboard(): JSX.Element {
 						<div className='space-y-2'>
 							<p>
 								<strong className='me-1'>{t('admin.user.totalUsers')}:</strong>
-								<span className={cn(isRTL ? 'latin-text' : '')}>{activeUsersCount}</span>
+								<span className={cn(isRTL ? 'latin-text' : '')}>
+									{activeUsersCount}
+								</span>
 							</p>
 						</div>
 					</ActionLinkPanel>

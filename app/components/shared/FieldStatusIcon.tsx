@@ -11,7 +11,10 @@ type FieldStatusIconProps = {
 	className?: string
 }
 
-export function FieldStatusIcon({ status, className }: FieldStatusIconProps): JSX.Element | null {
+export function FieldStatusIcon({
+	status,
+	className,
+}: FieldStatusIconProps): JSX.Element | null {
 	if (status === 'neutral') return null
 
 	if (status === 'success') {

@@ -21,12 +21,14 @@ export const meta: MetaFunction = () => [
 	{ title: 'Profile | Tournado' },
 	{
 		name: 'description',
-		content: 'Manage your profile settings and account information for tournament management.',
+		content:
+			'Manage your profile settings and account information for tournament management.',
 	},
 	{ property: 'og:title', content: 'Profile | Tournado' },
 	{
 		property: 'og:description',
-		content: 'Manage your profile settings and account information for tournament management.',
+		content:
+			'Manage your profile settings and account information for tournament management.',
 	},
 	{ property: 'og:type', content: 'website' },
 ]
@@ -76,8 +78,8 @@ export default function ProfilePage(): JSX.Element {
 						Tournament Access
 					</h3>
 					<p className='text-foreground'>
-						Your profile provides access to tournament management features based on your role and
-						permissions.
+						Your profile provides access to tournament management features based on your
+						role and permissions.
 					</p>
 				</section>
 			</div>

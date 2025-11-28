@@ -7,7 +7,9 @@ type ProfileLayoutHeaderProps = {
 	className?: string
 }
 
-export function ProfileLayoutHeader({ className }: ProfileLayoutHeaderProps): JSX.Element {
+export function ProfileLayoutHeader({
+	className,
+}: ProfileLayoutHeaderProps): JSX.Element {
 	const { t } = useTranslation()
 
 	return (

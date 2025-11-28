@@ -66,19 +66,27 @@ test.describe('Tournaments Management Authorization Tests', () => {
 	})
 
 	// Test all other roles - should be blocked
-	test('PUBLIC role users should be blocked from tournaments management', async ({ page }) => {
+	test('PUBLIC role users should be blocked from tournaments management', async ({
+		page,
+	}) => {
 		await testRoleAccess({ page, role: 'PUBLIC', shouldAccess: false })
 	})
 
-	test('REFEREE role users should be blocked from tournaments management', async ({ page }) => {
+	test('REFEREE role users should be blocked from tournaments management', async ({
+		page,
+	}) => {
 		await testRoleAccess({ page, role: 'REFEREE', shouldAccess: false })
 	})
 
-	test('EDITOR role users should be blocked from tournaments management', async ({ page }) => {
+	test('EDITOR role users should be blocked from tournaments management', async ({
+		page,
+	}) => {
 		await testRoleAccess({ page, role: 'EDITOR', shouldAccess: false })
 	})
 
-	test('BILLING role users should be blocked from tournaments management', async ({ page }) => {
+	test('BILLING role users should be blocked from tournaments management', async ({
+		page,
+	}) => {
 		await testRoleAccess({ page, role: 'BILLING', shouldAccess: false })
 	})
 })

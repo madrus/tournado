@@ -61,7 +61,9 @@ export default function IndexPage(): JSX.Element {
 	const typography = getTypographyClasses(currentLanguage)
 
 	// Determine the correct teams route based on user permissions
-	const teamsRoute = hasAdminPanelAccess(user) ? `${ADMIN_DASHBOARD_URL}/teams` : '/teams'
+	const teamsRoute = hasAdminPanelAccess(user)
+		? `${ADMIN_DASHBOARD_URL}/teams`
+		: '/teams'
 
 	return (
 		<main className={`flex h-full flex-col ${theme}`}>
@@ -125,7 +127,12 @@ export default function IndexPage(): JSX.Element {
 						>
 							{t('landing.features.subtitle')}
 						</h3>
-						<p className={cn('mt-6 text-foreground text-lg leading-8', typography.centerAlign)}>
+						<p
+							className={cn(
+								'mt-6 text-foreground text-lg leading-8',
+								typography.centerAlign,
+							)}
+						>
 							{t('landing.features.description')}
 						</p>
 					</div>

@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
 
 import { create } from 'zustand'
-import { createJSONStorage, devtools, persist, subscribeWithSelector } from 'zustand/middleware'
+import {
+	createJSONStorage,
+	devtools,
+	persist,
+	subscribeWithSelector,
+} from 'zustand/middleware'
 
 import type { TeamFormData } from '~/features/teams/types'
-import { validateEntireTeamForm, validateSingleTeamField } from '~/features/teams/validation'
+import {
+	validateEntireTeamForm,
+	validateSingleTeamField,
+} from '~/features/teams/validation'
 import type { TournamentData } from '~/features/tournaments/types'
 import { isBrowser } from '~/lib/lib.helpers'
 
@@ -286,7 +294,10 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 									[fieldName]: error,
 								}
 								// Merge with server errors
-								const mergedErrors = mergeErrors(newDisplayErrors, state.validation.serverErrors)
+								const mergedErrors = mergeErrors(
+									newDisplayErrors,
+									state.validation.serverErrors,
+								)
 								return {
 									...state,
 									validation: {
@@ -346,7 +357,10 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 						const { availableOptions, formFields } = get()
 						const { tournaments } = availableOptions
 						const { tournamentId } = formFields
-						const { divisions, categories } = computeAvailableOptions(tournaments, tournamentId)
+						const { divisions, categories } = computeAvailableOptions(
+							tournaments,
+							tournamentId,
+						)
 						set(
 							(currentState) => ({
 								...currentState,
@@ -399,7 +413,10 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 						const { validation, formMeta } = state
 						const { mode } = formMeta
 						// Only validate if field is blurred OR if we're forcing all errors
-						const shouldValidate = shouldValidateField(fieldName as FormFieldName, validation)
+						const shouldValidate = shouldValidateField(
+							fieldName as FormFieldName,
+							validation,
+						)
 						if (!shouldValidate) {
 							return
 						}
@@ -453,7 +470,8 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 							// Only clear server error if field has valid content
 							const fieldValue = formData[fieldName as keyof typeof formData]
 							const hasValidContent =
-								fieldValue && (typeof fieldValue === 'string' ? fieldValue.trim() !== '' : true)
+								fieldValue &&
+								(typeof fieldValue === 'string' ? fieldValue.trim() !== '' : true)
 
 							if (hasValidContent) {
 								// Field has content and passes client validation - clear server error
@@ -472,10 +490,15 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 						// Check if all fields in this panel are now blurred and valid
 						if (currentPanel > 0) {
 							const panelFields =
-								TEAM_PANELS_FIELD_MAP[currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP]
-							const allFieldsBlurred = panelFields.every((field) => validation.blurredFields[field])
+								TEAM_PANELS_FIELD_MAP[
+									currentPanel as keyof typeof TEAM_PANELS_FIELD_MAP
+								]
+							const allFieldsBlurred = panelFields.every(
+								(field) => validation.blurredFields[field],
+							)
 							const allFieldsValid = panelFields.every((field) => {
-								const fieldValue = state.formFields[field as keyof typeof state.formFields]
+								const fieldValue =
+									state.formFields[field as keyof typeof state.formFields]
 								return !!fieldValue && !validation.displayErrors[field]
 							})
 							if (allFieldsBlurred && allFieldsValid) {
@@ -564,13 +587,20 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 					// --- Panel Validity Selectors ---
 					isPanelValid: (panelNumber: 1 | 2 | 3 | 4): boolean => {
 						const { formFields, validation, formMeta } = get()
-						return isPanelValid(panelNumber, formFields, validation.displayErrors, formMeta.mode)
+						return isPanelValid(
+							panelNumber,
+							formFields,
+							validation.displayErrors,
+							formMeta.mode,
+						)
 					},
 
 					// Panel enablement - determines if a panel should be interactive
 					isPanelEnabled: (panelNumber: 1 | 2 | 3 | 4): boolean => {
 						const { formMeta } = get()
-						return isPanelEnabled(panelNumber, formMeta.mode, (panel) => get().isPanelValid(panel))
+						return isPanelEnabled(panelNumber, formMeta.mode, (panel) =>
+							get().isPanelValid(panel),
+						)
 					},
 
 					// ===== FORM STATE =====
@@ -658,4 +688,5 @@ export const useTeamFormStoreHydration = (): void => {
 }
 export const subscribeToBlurredFields = (
 	handler: (blurredFields: Record<string, boolean>) => void,
-): (() => void) => useTeamFormStore.subscribe((state) => state.validation.blurredFields, handler)
+): (() => void) =>
+	useTeamFormStore.subscribe((state) => state.validation.blurredFields, handler)

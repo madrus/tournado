@@ -4,7 +4,8 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 // RTL (Right-to-Left) language utilities
 // isRTL is now a computed property in useSettingsStore based on the current language
 
-const isLanguageRTL = (language: Language | string): boolean => language.split('-')[0] === 'ar'
+const isLanguageRTL = (language: Language | string): boolean =>
+	language.split('-')[0] === 'ar'
 
 const resolveIsRTL = (languageOverride?: Language | string): boolean => {
 	if (languageOverride) {
@@ -148,7 +149,9 @@ export type TypographyClasses = {
 }
 
 // Arabic typography fixes
-export function getTypographyClasses(languageOverride?: Language | string): TypographyClasses {
+export function getTypographyClasses(
+	languageOverride?: Language | string,
+): TypographyClasses {
 	const isRTL = resolveIsRTL(languageOverride)
 
 	return {

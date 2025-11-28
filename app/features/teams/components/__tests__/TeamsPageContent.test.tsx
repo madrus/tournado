@@ -80,7 +80,11 @@ vi.mock('~/features/teams/components/TeamList', () => ({
 
 // Mock TournamentFilter component
 vi.mock('~/features/tournaments/components/TournamentFilter', () => ({
-	TournamentFilter: ({ selectedTournamentId }: { selectedTournamentId: string | null }) => (
+	TournamentFilter: ({
+		selectedTournamentId,
+	}: {
+		selectedTournamentId: string | null
+	}) => (
 		<div data-testid='tournament-filter'>Filter: {selectedTournamentId || 'All'}</div>
 	),
 }))

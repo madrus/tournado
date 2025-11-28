@@ -59,7 +59,9 @@ export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.E
 					{loading ? t('common.auth.signingIn') : t('auth.firebase.continueWithGoogle')}
 				</span>
 			</ActionButton>
-			{error ? <div className='text-red-600 text-sm dark:text-red-400'>{error}</div> : null}
+			{error ? (
+				<div className='text-red-600 text-sm dark:text-red-400'>{error}</div>
+			) : null}
 		</div>
 	)
 }

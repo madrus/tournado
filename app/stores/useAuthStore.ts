@@ -52,7 +52,8 @@ export const useAuthStore = create<StoreState & Actions>()(
 					set(initialStoreState, false, 'resetStoreState')
 				},
 				setUser: (user) => set({ user }, false, 'setUser'),
-				setFirebaseUser: (firebaseUser) => set({ firebaseUser }, false, 'setFirebaseUser'),
+				setFirebaseUser: (firebaseUser) =>
+					set({ firebaseUser }, false, 'setFirebaseUser'),
 				setLoading: (loading) => set({ loading }, false, 'setLoading'),
 				setError: (error) => set({ error }, false, 'setError'),
 				clearError: () => set({ error: null }, false, 'clearError'),

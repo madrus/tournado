@@ -26,7 +26,12 @@ describe('ActionButton', () => {
 		const i18nInstance = createI18n('en')
 		render(
 			<I18nextProvider i18n={i18nInstance}>
-				<ActionButton onClick={handleClick} icon='delete' variant='secondary' color='brand'>
+				<ActionButton
+					onClick={handleClick}
+					icon='delete'
+					variant='secondary'
+					color='brand'
+				>
 					{buttonText}
 				</ActionButton>
 			</I18nextProvider>,
@@ -47,7 +52,12 @@ describe('ActionButton', () => {
 		const i18nInstance = createI18n('ar')
 		render(
 			<I18nextProvider i18n={i18nInstance}>
-				<ActionButton onClick={handleClick} icon='delete' variant='secondary' color='brand'>
+				<ActionButton
+					onClick={handleClick}
+					icon='delete'
+					variant='secondary'
+					color='brand'
+				>
 					{buttonText}
 				</ActionButton>
 			</I18nextProvider>,

@@ -73,7 +73,9 @@ export const updateTournament = async ({
 		},
 	})
 
-export const deleteTournamentById = ({ id }: Pick<Tournament, 'id'>): Promise<Tournament> =>
+export const deleteTournamentById = ({
+	id,
+}: Pick<Tournament, 'id'>): Promise<Tournament> =>
 	prisma.tournament.delete({
 		where: { id },
 	})

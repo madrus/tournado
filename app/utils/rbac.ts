@@ -62,7 +62,13 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
 		'matches:referee', // Special referee actions
 	],
 	EDITOR: ['teams:read', 'tournaments:read', 'matches:read', 'system:reports'],
-	BILLING: ['teams:read', 'tournaments:read', 'matches:read', 'system:reports', 'system:billing'],
+	BILLING: [
+		'teams:read',
+		'tournaments:read',
+		'matches:read',
+		'system:reports',
+		'system:billing',
+	],
 	MANAGER: [
 		'teams:create',
 		'teams:read',
@@ -120,14 +126,18 @@ export function hasPermission(user: User | null, permission: Permission): boolea
 /**
  * Check if a user has any of the specified permissions
  */
-export const hasAnyPermission = (user: User | null, permissions: Permission[]): boolean =>
-	permissions.some((permission) => hasPermission(user, permission))
+export const hasAnyPermission = (
+	user: User | null,
+	permissions: Permission[],
+): boolean => permissions.some((permission) => hasPermission(user, permission))
 
 /**
  * Check if a user has all of the specified permissions
  */
-export const hasAllPermissions = (user: User | null, permissions: Permission[]): boolean =>
-	permissions.every((permission) => hasPermission(user, permission))
+export const hasAllPermissions = (
+	user: User | null,
+	permissions: Permission[],
+): boolean => permissions.every((permission) => hasPermission(user, permission))
 
 /**
  * Get UI context based on user role

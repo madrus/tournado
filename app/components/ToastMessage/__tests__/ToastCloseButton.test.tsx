@@ -50,7 +50,10 @@ describe('ToastCloseButton Component', () => {
 			render(<ToastCloseButton type='info' />)
 
 			const closeButton = screen.getByRole('button')
-			expect(closeButton).toHaveAttribute('aria-label', 'Close information notification')
+			expect(closeButton).toHaveAttribute(
+				'aria-label',
+				'Close information notification',
+			)
 		})
 
 		it('should have correct aria-label for warning toast', () => {
@@ -151,10 +154,16 @@ describe('ToastCloseButton Component', () => {
 
 		it('should update aria-label when type changes', () => {
 			const { rerender } = render(<ToastCloseButton type='success' />)
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close success notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close success notification',
+			)
 
 			rerender(<ToastCloseButton type='error' />)
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close error notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close error notification',
+			)
 
 			rerender(<ToastCloseButton type='info' />)
 			expect(screen.getByRole('button')).toHaveAttribute(
@@ -163,7 +172,10 @@ describe('ToastCloseButton Component', () => {
 			)
 
 			rerender(<ToastCloseButton type='warning' />)
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close warning notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close warning notification',
+			)
 		})
 	})
 
@@ -208,15 +220,24 @@ describe('ToastCloseButton Component', () => {
 			const { rerender } = render(<ToastCloseButton type='success' />)
 
 			// Initial render
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close success notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close success notification',
+			)
 
 			// Re-render with same type should not change aria-label
 			rerender(<ToastCloseButton type='success' />)
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close success notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close success notification',
+			)
 
 			// Change type should update aria-label
 			rerender(<ToastCloseButton type='error' />)
-			expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'Close error notification')
+			expect(screen.getByRole('button')).toHaveAttribute(
+				'aria-label',
+				'Close error notification',
+			)
 		})
 	})
 })

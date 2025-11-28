@@ -92,7 +92,9 @@ export function Panel({
 					{/* Icon section */}
 					{icon ? (
 						<div className='dashboard-icon'>
-							<div className={dashboardIconVariants({ color: effectiveIconColor })}>{icon}</div>
+							<div className={dashboardIconVariants({ color: effectiveIconColor })}>
+								{icon}
+							</div>
 						</div>
 					) : null}
 
@@ -103,7 +105,9 @@ export function Panel({
 								<dt className='truncate font-medium text-base opacity-75'>{title}</dt>
 							) : null}
 							{children ? (
-								<dd className={cn('font-medium text-lg', latinFontClass)}>{children}</dd>
+								<dd className={cn('font-medium text-lg', latinFontClass)}>
+									{children}
+								</dd>
 							) : null}
 						</dl>
 					</div>
@@ -113,7 +117,9 @@ export function Panel({
 				<div
 					className={cn(
 						// Only apply structured layout for content-panel with icon/title
-						variant === 'content-panel' && (icon || title) ? 'flex flex-col items-start' : '',
+						variant === 'content-panel' && (icon || title)
+							? 'flex flex-col items-start'
+							: '',
 						'wrap-break-words',
 						variant === 'hover' ? 'p-6' : '',
 						// Text alignment based on direction

@@ -37,7 +37,11 @@ test.describe('Users Management Authorization Tests', () => {
 	})
 
 	// Helper to test role access
-	async function testRoleAccess(page: Page, role: Role, shouldAccess: boolean): Promise<void> {
+	async function testRoleAccess(
+		page: Page,
+		role: Role,
+		shouldAccess: boolean,
+	): Promise<void> {
 		await loginAsRole(page, role)
 		await page.goto('/a7k9m2x5p8w1n4q6r3y8b5t1/users')
 
@@ -58,23 +62,33 @@ test.describe('Users Management Authorization Tests', () => {
 	})
 
 	// Test all other roles - should be blocked
-	test('PUBLIC role users should be blocked from users management', async ({ page }) => {
+	test('PUBLIC role users should be blocked from users management', async ({
+		page,
+	}) => {
 		await testRoleAccess(page, 'PUBLIC', false)
 	})
 
-	test('REFEREE role users should be blocked from users management', async ({ page }) => {
+	test('REFEREE role users should be blocked from users management', async ({
+		page,
+	}) => {
 		await testRoleAccess(page, 'REFEREE', false)
 	})
 
-	test('EDITOR role users should be blocked from users management', async ({ page }) => {
+	test('EDITOR role users should be blocked from users management', async ({
+		page,
+	}) => {
 		await testRoleAccess(page, 'EDITOR', false)
 	})
 
-	test('BILLING role users should be blocked from users management', async ({ page }) => {
+	test('BILLING role users should be blocked from users management', async ({
+		page,
+	}) => {
 		await testRoleAccess(page, 'BILLING', false)
 	})
 
-	test('MANAGER role users should be blocked from users management', async ({ page }) => {
+	test('MANAGER role users should be blocked from users management', async ({
+		page,
+	}) => {
 		await testRoleAccess(page, 'MANAGER', false)
 	})
 })

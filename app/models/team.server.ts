@@ -23,7 +23,11 @@ export const getTeam = ({
 		where: { id },
 	}) as Promise<Pick<TeamWithLeader, 'id' | 'name' | 'division' | 'category'> | null>
 
-export const getTeamById = ({ id }: { id: string }): Promise<TeamWithLeaderFull | null> =>
+export const getTeamById = ({
+	id,
+}: {
+	id: string
+}): Promise<TeamWithLeaderFull | null> =>
 	prisma.team.findUnique({
 		where: { id },
 		select: {
@@ -63,7 +67,9 @@ export const getTeams = async ({
 		orderBy: { updatedAt: 'desc' },
 	})
 
-export const getAllTeams = async (): Promise<Array<Pick<Team, 'id' | 'name' | 'clubName'>>> =>
+export const getAllTeams = async (): Promise<
+	Array<Pick<Team, 'id' | 'name' | 'clubName'>>
+> =>
 	prisma.team.findMany({
 		select: {
 			id: true,

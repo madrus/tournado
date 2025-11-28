@@ -1,6 +1,13 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
-import { Form, Link, redirect, useActionData, useLoaderData, useNavigation } from 'react-router'
+import {
+	Form,
+	Link,
+	redirect,
+	useActionData,
+	useLoaderData,
+	useNavigation,
+} from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
@@ -36,7 +43,10 @@ export const handle: RouteMetadata = {
 	},
 }
 
-export async function loader({ request, params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({
+	request,
+	params,
+}: Route.LoaderArgs): Promise<LoaderData> {
 	await requireUserWithMetadata(request, handle)
 
 	const { groupSetId } = params
@@ -174,7 +184,11 @@ export function GroupSetDetails(): JSX.Element {
 												<Form method='post' className='flex gap-2'>
 													<input type='hidden' name='intent' value='clear' />
 													<input type='hidden' name='groupSlotId' value={slot.id} />
-													<ActionButton type='submit' variant='secondary' disabled={isSubmitting}>
+													<ActionButton
+														type='submit'
+														variant='secondary'
+														disabled={isSubmitting}
+													>
 														Clear
 													</ActionButton>
 												</Form>
@@ -184,14 +198,22 @@ export function GroupSetDetails(): JSX.Element {
 												<Form method='post' className='space-y-2'>
 													<input type='hidden' name='intent' value='assign' />
 													<input type='hidden' name='groupId' value={group.id} />
-													<input type='hidden' name='slotIndex' value={slot.slotIndex} />
+													<input
+														type='hidden'
+														name='slotIndex'
+														value={slot.slotIndex}
+													/>
 													<TextInputField
 														name='teamId'
 														label='Assign team'
 														placeholder='Paste team ID'
 														required
 													/>
-													<ActionButton type='submit' variant='primary' disabled={isSubmitting}>
+													<ActionButton
+														type='submit'
+														variant='primary'
+														disabled={isSubmitting}
+													>
 														Assign
 													</ActionButton>
 												</Form>
@@ -248,7 +270,11 @@ export function GroupSetDetails(): JSX.Element {
 										<Form method='post'>
 											<input type='hidden' name='intent' value='reserve' />
 											<input type='hidden' name='teamId' value={team.id} />
-											<ActionButton type='submit' variant='secondary' disabled={isSubmitting}>
+											<ActionButton
+												type='submit'
+												variant='secondary'
+												disabled={isSubmitting}
+											>
 												Move to reserve
 											</ActionButton>
 										</Form>

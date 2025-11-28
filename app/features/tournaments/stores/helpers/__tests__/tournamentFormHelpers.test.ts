@@ -392,7 +392,12 @@ describe('tournamentFormHelpers', () => {
 		})
 
 		it('should return false when panel fields have errors', () => {
-			const result = isPanelComplete(1, mockFormFields, mockBlurredFields, mockDisplayErrors)
+			const result = isPanelComplete(
+				1,
+				mockFormFields,
+				mockBlurredFields,
+				mockDisplayErrors,
+			)
 			expect(result).toBe(false)
 		})
 
@@ -418,7 +423,12 @@ describe('tournamentFormHelpers', () => {
 		})
 
 		it('should return false for invalid panel number', () => {
-			const result = isPanelComplete(5 as 1 | 2 | 3 | 4, mockFormFields, mockBlurredFields, {})
+			const result = isPanelComplete(
+				5 as 1 | 2 | 3 | 4,
+				mockFormFields,
+				mockBlurredFields,
+				{},
+			)
 			expect(result).toBe(false)
 		})
 	})

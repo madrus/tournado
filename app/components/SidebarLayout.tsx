@@ -1,5 +1,4 @@
 import { type JSX, type ReactNode, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router'
 
 import { cn } from '~/utils/misc'
@@ -51,12 +50,13 @@ export function SidebarLayout({
 	sidebarWidth = 'medium',
 	theme = 'red',
 }: SidebarLayoutProps): JSX.Element {
-	const { t: _t } = useTranslation()
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 	const location = useLocation()
 
 	// Check if current path should close sidebar
-	const shouldCloseSidebar = closeSidebarOnPaths.some((path) => location.pathname.includes(path))
+	const shouldCloseSidebar = closeSidebarOnPaths.some((path) =>
+		location.pathname.includes(path),
+	)
 
 	// Close sidebar on mobile when navigating to specified paths
 	useEffect(() => {
@@ -117,7 +117,7 @@ export function SidebarLayout({
 			<div className='flex min-h-screen'>
 				<main
 					className={cn(
-						'flex flex-1 overflow-hidden bg-linear-to-b md:flex-row',
+						'flex flex-1 overflow-hidden bg-gradient-to-b md:flex-row',
 						currentTheme.gradient,
 					)}
 				>
@@ -135,7 +135,7 @@ export function SidebarLayout({
 					{/* Sidebar */}
 					<div
 						className={cn(
-							'absolute top-0 z-30 h-full border-e bg-linear-to-b transition-transform duration-300 ease-in-out md:relative md:top-0',
+							'absolute top-0 z-30 h-full border-e bg-gradient-to-b transition-transform duration-300 ease-in-out md:relative md:top-0',
 							currentWidth,
 							currentTheme.gradient,
 							currentTheme.border,
@@ -257,7 +257,9 @@ export function SidebarLayoutDemo(): JSX.Element {
 
 	const demoMainContent = (
 		<div className='max-w-2xl'>
-			<h1 className={cn('mb-4 font-bold text-3xl', getLatinTitleClass())}>Sidebar Layout Demo</h1>
+			<h1 className={cn('mb-4 font-bold text-3xl', getLatinTitleClass())}>
+				Sidebar Layout Demo
+			</h1>
 
 			<div className='rounded-lg border border-foreground-lighter bg-background p-6 shadow-sm'>
 				<h2 className={cn('mb-3 font-semibold text-xl', getLatinTitleClass())}>

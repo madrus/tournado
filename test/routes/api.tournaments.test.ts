@@ -42,7 +42,14 @@ beforeEach(() => {
 
 describe('Resource Route: /api/tournaments', () => {
 	// Test roles with tournaments:read permission
-	const rolesWithAccess: Role[] = ['PUBLIC', 'REFEREE', 'EDITOR', 'BILLING', 'MANAGER', 'ADMIN']
+	const rolesWithAccess: Role[] = [
+		'PUBLIC',
+		'REFEREE',
+		'EDITOR',
+		'BILLING',
+		'MANAGER',
+		'ADMIN',
+	]
 
 	rolesWithAccess.forEach((role) => {
 		it(`${role} users should access (has tournaments:read permission)`, async () => {
@@ -77,7 +84,12 @@ describe('Resource Route: /api/tournaments', () => {
 		const request = new Request('http://localhost/api/tournaments')
 
 		try {
-			await loader({ request, params: {}, context: {}, unstable_pattern: '/api.tournaments' })
+			await loader({
+				request,
+				params: {},
+				context: {},
+				unstable_pattern: '/api.tournaments',
+			})
 			expect.fail('Expected loader to throw redirect')
 		} catch (error) {
 			// React Router redirects are Response objects

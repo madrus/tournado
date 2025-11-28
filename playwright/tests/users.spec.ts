@@ -98,7 +98,8 @@ test.describe('User Management Workflow', () => {
 		await expect(adminUsersPage.roleCombobox).toBeVisible()
 
 		// Either deactivate or reactivate button should be visible depending on user status
-		const eitherButtonVisible = await adminUsersPage.isEitherDeactivateOrReactivateVisible()
+		const eitherButtonVisible =
+			await adminUsersPage.isEitherDeactivateOrReactivateVisible()
 		expect(eitherButtonVisible).toBe(true)
 	})
 

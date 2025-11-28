@@ -91,7 +91,10 @@ function applySecurityHeaders(headers: Headers, request: Request): void {
 	headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
 
 	if (!isDev) {
-		headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
+		headers.set(
+			'Strict-Transport-Security',
+			'max-age=31536000; includeSubDomains; preload',
+		)
 	}
 }
 
@@ -103,7 +106,12 @@ export default function handleRequest(
 ): Promise<Response> {
 	return isbot(request.headers.get('user-agent'))
 		? handleBotRequest(request, responseStatusCode, responseHeaders, reactRouterContext)
-		: handleBrowserRequest(request, responseStatusCode, responseHeaders, reactRouterContext)
+		: handleBrowserRequest(
+				request,
+				responseStatusCode,
+				responseHeaders,
+				reactRouterContext,
+			)
 }
 
 const handleBotRequest = (

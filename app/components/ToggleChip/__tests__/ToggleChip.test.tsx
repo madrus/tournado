@@ -85,22 +85,30 @@ describe('ToggleChip', () => {
 	describe('Color Variants', () => {
 		it('should apply indigo color styling', () => {
 			render(<ToggleChip {...defaultProps} color='indigo' />)
-			expect(screen.getByTestId('toggle-chip-container')).toHaveClass('hover:border-indigo-300')
+			expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
+				'hover:border-indigo-300',
+			)
 		})
 
 		it('should apply fuchsia color styling', () => {
 			render(<ToggleChip {...defaultProps} color='fuchsia' />)
-			expect(screen.getByTestId('toggle-chip-container')).toHaveClass('hover:border-fuchsia-300')
+			expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
+				'hover:border-fuchsia-300',
+			)
 		})
 
 		it('should apply selected indigo styling', () => {
 			render(<ToggleChip {...defaultProps} color='indigo' selected />)
-			expect(screen.getByTestId('toggle-chip-container')).toHaveClass('border-indigo-500')
+			expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
+				'border-indigo-500',
+			)
 		})
 
 		it('should apply selected fuchsia styling', () => {
 			render(<ToggleChip {...defaultProps} color='fuchsia' selected />)
-			expect(screen.getByTestId('toggle-chip-container')).toHaveClass('border-fuchsia-500')
+			expect(screen.getByTestId('toggle-chip-container')).toHaveClass(
+				'border-fuchsia-500',
+			)
 		})
 	})
 

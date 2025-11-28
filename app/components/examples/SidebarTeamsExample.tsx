@@ -25,9 +25,13 @@ type SidebarTeamsExampleProps = {
  * This demonstrates the pattern that was used in the original teams sidebar
  * Perfect reference for future sliding menu implementations
  */
-export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): JSX.Element {
+export function SidebarTeamsExample({
+	teams = [],
+}: SidebarTeamsExampleProps): JSX.Element {
 	const { t, i18n } = useTranslation()
-	const [selectedTeam, setSelectedTeam] = useState<Team | null>(teams.length > 0 ? teams[0] : null)
+	const [selectedTeam, setSelectedTeam] = useState<Team | null>(
+		teams.length > 0 ? teams[0] : null,
+	)
 
 	// Example team data (would come from loader in real implementation)
 	const exampleTeams: Team[] =
@@ -115,11 +119,15 @@ export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): J
 					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
 						<div>
 							<dt className='font-medium text-foreground-lighter text-sm'>Club</dt>
-							<dd className={cn('mt-1 text-sm', getLatinTextClass())}>{selectedTeam.clubName}</dd>
+							<dd className={cn('mt-1 text-sm', getLatinTextClass())}>
+								{selectedTeam.clubName}
+							</dd>
 						</div>
 						<div>
 							<dt className='font-medium text-foreground-lighter text-sm'>Team</dt>
-							<dd className={cn('mt-1 text-sm', getLatinTextClass())}>{selectedTeam.name}</dd>
+							<dd className={cn('mt-1 text-sm', getLatinTextClass())}>
+								{selectedTeam.name}
+							</dd>
 						</div>
 						<div>
 							<dt className='font-medium text-foreground-lighter text-sm'>Class</dt>
@@ -201,7 +209,9 @@ export function SidebarTeamsExample({ teams = [] }: SidebarTeamsExampleProps): J
 						/>
 					</svg>
 				</div>
-				<h3 className={cn('mt-2 font-medium text-sm', getLatinTitleClass())}>No team selected</h3>
+				<h3 className={cn('mt-2 font-medium text-sm', getLatinTitleClass())}>
+					No team selected
+				</h3>
 				<p className='mt-1 text-foreground-lighter text-sm'>
 					Select a team from the sidebar to view details, or create a new team.
 				</p>
@@ -266,8 +276,8 @@ export function TeamsLayoutComparison(): JSX.Element {
 					Teams Layout Evolution
 				</h1>
 				<p className='mx-auto max-w-2xl text-foreground'>
-					Comparison between the original sidebar layout (preserved for future sliding menu) and the
-					new chip-based layout for modern UX.
+					Comparison between the original sidebar layout (preserved for future sliding
+					menu) and the new chip-based layout for modern UX.
 				</p>
 			</div>
 
@@ -276,7 +286,9 @@ export function TeamsLayoutComparison(): JSX.Element {
 				<h2 className={cn('mb-4 font-semibold text-xl', getLatinTitleClass())}>
 					✨ New Chip-Based Layout
 				</h2>
-				<p className='mb-4 text-foreground'>Modern, responsive grid layout with team chips:</p>
+				<p className='mb-4 text-foreground'>
+					Modern, responsive grid layout with team chips:
+				</p>
 				<div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4'>
 					{exampleTeams.map((team) => (
 						<TeamChip
@@ -296,7 +308,8 @@ export function TeamsLayoutComparison(): JSX.Element {
 					🗂️ Original Sidebar Layout (Preserved)
 				</h2>
 				<p className='mb-4 text-foreground'>
-					Classic sidebar layout with list view, perfect for future sliding menu implementations:
+					Classic sidebar layout with list view, perfect for future sliding menu
+					implementations:
 				</p>
 				<div className='h-96 overflow-hidden rounded-lg border border-foreground-lighter'>
 					<SidebarTeamsExample teams={exampleTeams} />
@@ -305,7 +318,12 @@ export function TeamsLayoutComparison(): JSX.Element {
 
 			{/* Usage Notes */}
 			<div className='rounded-lg border border-primary bg-accent p-6'>
-				<h3 className={cn('mb-3 font-semibold text-lg text-primary', getLatinTitleClass())}>
+				<h3
+					className={cn(
+						'mb-3 font-semibold text-lg text-primary',
+						getLatinTitleClass(),
+					)}
+				>
 					📋 Implementation Notes
 				</h3>
 				<ul className='space-y-2 text-foreground-darker'>
@@ -316,7 +334,8 @@ export function TeamsLayoutComparison(): JSX.Element {
 						• <strong>Preserved:</strong> Sidebar layout in reusable component
 					</li>
 					<li>
-						• <strong>Future:</strong> Sidebar can be used for sliding menu functionality
+						• <strong>Future:</strong> Sidebar can be used for sliding menu
+						functionality
 					</li>
 					<li>
 						• <strong>Mobile:</strong> Both layouts are fully responsive

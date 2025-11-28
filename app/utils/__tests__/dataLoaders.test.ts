@@ -10,7 +10,9 @@ import { loadTeamsAndTournamentsData } from '../dataLoaders'
 vi.mock('~/models/tournament.server')
 vi.mock('~/models/team.server')
 
-const mockGetAllTournaments = getAllTournaments as MockedFunction<typeof getAllTournaments>
+const mockGetAllTournaments = getAllTournaments as MockedFunction<
+	typeof getAllTournaments
+>
 const mockGetFilteredTeams = getFilteredTeams as MockedFunction<typeof getFilteredTeams>
 
 describe('dataLoaders', () => {
@@ -150,7 +152,9 @@ describe('dataLoaders', () => {
 			mockGetFilteredTeams.mockRejectedValue(teamError)
 
 			const request = createMockRequest()
-			await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow('Failed to load teams')
+			await expect(loadTeamsAndTournamentsData(request)).rejects.toThrow(
+				'Failed to load teams',
+			)
 		})
 
 		it('should call functions in parallel for performance', async () => {
@@ -223,7 +227,9 @@ describe('dataLoaders', () => {
 				mockGetFilteredTeams.mockResolvedValue(mockTeamListItems)
 
 				// Test with multiple tournament parameters
-				const request = new Request('http://localhost:3000/teams?tournament=1&tournament=2')
+				const request = new Request(
+					'http://localhost:3000/teams?tournament=1&tournament=2',
+				)
 				const result = await loadTeamsAndTournamentsData(request)
 
 				// Should use the first tournament parameter

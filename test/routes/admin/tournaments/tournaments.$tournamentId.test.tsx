@@ -186,12 +186,15 @@ vi.mock('~/utils/rtlUtils', () => ({
 vi.mock('~/utils/iconUtils', () => ({
 	renderIcon: vi
 		.fn()
-		.mockImplementation((iconName: string) => <span data-icon={iconName}>{iconName}</span>),
+		.mockImplementation((iconName: string) => (
+			<span data-icon={iconName}>{iconName}</span>
+		)),
 }))
 
 // Mock misc utilities
 vi.mock('~/utils/misc', () => ({
-	cn: (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' '),
+	cn: (...classes: (string | boolean | undefined)[]) =>
+		classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('react-router', async () => {
@@ -300,7 +303,9 @@ describe('EditTournamentPage', () => {
 		it('should display tournament location in header', () => {
 			renderTournamentPage()
 
-			expect(screen.getByText('tournaments.form.location Test Stadium')).toBeInTheDocument()
+			expect(
+				screen.getByText('tournaments.form.location Test Stadium'),
+			).toBeInTheDocument()
 		})
 
 		it('should display fallback text when tournament data is missing', () => {
@@ -311,7 +316,9 @@ describe('EditTournamentPage', () => {
 
 			renderTournamentPage()
 
-			expect(screen.getByText('tournaments.form.tournamentRegistration')).toBeInTheDocument()
+			expect(
+				screen.getByText('tournaments.form.tournamentRegistration'),
+			).toBeInTheDocument()
 			expect(screen.getByText('tournaments.form.fillOutForm')).toBeInTheDocument()
 		})
 	})
@@ -338,7 +345,9 @@ describe('EditTournamentPage', () => {
 			})
 			await user.click(deleteButton)
 
-			expect(mockOnConfirm).toHaveBeenCalledWith('tournaments.confirmations.deleteDescription')
+			expect(mockOnConfirm).toHaveBeenCalledWith(
+				'tournaments.confirmations.deleteDescription',
+			)
 			expect(mockSubmit).toHaveBeenCalledTimes(1)
 			const [fd, opts] = mockSubmit.mock.calls[0]
 			expect(opts?.method).toBe('post')
@@ -355,7 +364,9 @@ describe('EditTournamentPage', () => {
 			})
 			await user.click(deleteButton)
 
-			expect(mockOnConfirm).toHaveBeenCalledWith('tournaments.confirmations.deleteDescription')
+			expect(mockOnConfirm).toHaveBeenCalledWith(
+				'tournaments.confirmations.deleteDescription',
+			)
 
 			// Verify submit was called with correct parameters
 			expect(mockSubmit).toHaveBeenCalledTimes(1)
@@ -374,7 +385,9 @@ describe('EditTournamentPage', () => {
 			})
 			await user.click(deleteButton)
 
-			expect(mockOnConfirm).toHaveBeenCalledWith('tournaments.confirmations.deleteDescription')
+			expect(mockOnConfirm).toHaveBeenCalledWith(
+				'tournaments.confirmations.deleteDescription',
+			)
 		})
 	})
 
@@ -405,8 +418,12 @@ describe('EditTournamentPage', () => {
 			expect(screen.getByText('Mode: edit')).toBeInTheDocument()
 			expect(screen.getByText('Variant: admin')).toBeInTheDocument()
 			expect(screen.getByText('Intent: update')).toBeInTheDocument()
-			expect(screen.getByText('Submit Button: common.actions.update')).toBeInTheDocument()
-			expect(screen.getByText('Tournament: Test Tournament at Test Stadium')).toBeInTheDocument()
+			expect(
+				screen.getByText('Submit Button: common.actions.update'),
+			).toBeInTheDocument()
+			expect(
+				screen.getByText('Tournament: Test Tournament at Test Stadium'),
+			).toBeInTheDocument()
 			expect(screen.getByText('Divisions: 2')).toBeInTheDocument()
 			expect(screen.getByText('Categories: 3')).toBeInTheDocument()
 		})
@@ -429,7 +446,9 @@ describe('EditTournamentPage', () => {
 
 			renderTournamentPage()
 
-			expect(screen.getByText('Success: Tournament updated successfully')).toBeInTheDocument()
+			expect(
+				screen.getByText('Success: Tournament updated successfully'),
+			).toBeInTheDocument()
 		})
 	})
 

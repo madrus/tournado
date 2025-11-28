@@ -20,10 +20,18 @@ type ActionData = {
 vi.mock('~/features/firebase/components/FirebaseAuth', () => ({
 	FirebaseSignIn: ({ redirectTo }: { redirectTo?: string }) => (
 		<div data-testid='firebase-signin-component'>
-			<div data-testid='firebase-redirect-data'>{redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}</div>
+			<div data-testid='firebase-redirect-data'>
+				{redirectTo || '/a7k9m2x5p8w1n4q6r3y8b5t1'}
+			</div>
 		</div>
 	),
-	FirebaseEmailSignIn: ({ mode, redirectTo }: { mode: string; redirectTo?: string }) => (
+	FirebaseEmailSignIn: ({
+		mode,
+		redirectTo,
+	}: {
+		mode: string
+		redirectTo?: string
+	}) => (
 		<div data-testid='firebase-email-signin-component'>
 			<div data-testid='firebase-email-mode'>{mode}</div>
 			<div data-testid='firebase-email-redirect-data'>

@@ -6,7 +6,8 @@ set -euo pipefail
 [ -d "/usr/local/bin" ] && export PATH="/usr/local/bin:$PATH"
 
 # Run Biome check with auto-fix on staged files
-pnpm biome check --staged --write --unsafe .
+# Use --no-errors-on-unmatched to allow YAML and other unsupported files
+pnpm biome check --staged --write --unsafe --no-errors-on-unmatched .
 
 # Re-add formatted files to staging area
 git add -u

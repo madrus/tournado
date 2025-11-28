@@ -16,4 +16,4 @@ npx prisma migrate deploy
 node prisma/seedSuperAdmins.js || true
 
 # Start the server
-NODE_ENV=production PORT=8080 HOST=0.0.0.0 pnpm run start
+NODE_ENV=production pnpm exec react-router-serve ./build/server/index.js --host 0.0.0.0 --port 8080

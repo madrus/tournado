@@ -23,16 +23,21 @@ vi.mock('react-i18next', () => ({
 const mockNavigate = vi.fn()
 const mockOnOpenChange = vi.fn()
 
+// Create mockable location ref
+let mockLocation = {
+	pathname: '/test',
+	search: '',
+	hash: '',
+	state: null,
+	key: 'default',
+}
+
 // Mock React Router hooks
 vi.mock('react-router', async () => {
 	const actual = await vi.importActual('react-router')
 	return {
 		...actual,
-		useLocation: vi.fn(() => ({
-			pathname: '/test',
-			search: '',
-			hash: '',
-		})),
+		useLocation: vi.fn(() => mockLocation),
 		useNavigate: vi.fn(() => mockNavigate),
 		useNavigation: vi.fn(() => ({
 			state: 'idle',
@@ -83,14 +88,24 @@ vi.mock('~/components/icons/AnimatedHamburgerIcon', () => ({
 describe('UserMenu', () => {
 	const mockMenuItems: MenuItemType[] = [
 		{
+			label: 'Admin Panel',
+			icon: 'admin_panel_settings',
+			href: ADMIN_DASHBOARD_URL,
+		},
+		{
+			label: 'Tournaments',
+			icon: 'trophy',
+			href: `${ADMIN_DASHBOARD_URL}/tournaments`,
+		},
+		{
 			label: 'Teams',
-			icon: 'group',
+			icon: 'apparel',
 			href: '/teams',
 		},
 		{
-			label: 'About',
-			icon: 'info',
-			href: '/about',
+			label: 'Competition',
+			icon: 'sports',
+			href: `${ADMIN_DASHBOARD_URL}/competition`,
 		},
 		{
 			label: 'Users',
@@ -98,9 +113,19 @@ describe('UserMenu', () => {
 			href: `${ADMIN_DASHBOARD_URL}/users`,
 		},
 		{
-			label: 'Tournaments',
-			icon: 'trophy',
-			href: `${ADMIN_DASHBOARD_URL}/tournaments`,
+			label: 'About',
+			icon: 'info',
+			href: '/about',
+		},
+		{
+			label: 'Settings',
+			icon: 'settings',
+			href: '/settings',
+		},
+		{
+			label: 'Profile',
+			icon: 'person',
+			href: '/profile',
 		},
 	]
 
@@ -233,12 +258,27 @@ describe('UserMenu', () => {
 	})
 
 	describe('Menu item navigation', () => {
+		beforeEach(() => {
+			// Reset to default location before each test
+			mockLocation = {
+				pathname: '/test',
+				search: '',
+				hash: '',
+				state: null,
+				key: 'default',
+			}
+		})
+
 		test.each([
-			{ label: 'Teams', route: '/teams' },
-			{ label: 'About', route: '/about' },
-			{ label: 'Users', route: `${ADMIN_DASHBOARD_URL}/users` },
-			{ label: 'Tournaments', route: `${ADMIN_DASHBOARD_URL}/tournaments` },
-		])('should navigate to $route when $label menu item is clicked', async ({ label, route }) => {
+			{ label: 'Admin Panel', href: ADMIN_DASHBOARD_URL },
+			{ label: 'Tournaments', href: `${ADMIN_DASHBOARD_URL}/tournaments` },
+			{ label: 'Teams', href: '/teams' },
+			{ label: 'Competition', href: `${ADMIN_DASHBOARD_URL}/competition` },
+			{ label: 'Users', href: `${ADMIN_DASHBOARD_URL}/users` },
+			{ label: 'About', href: '/about' },
+			{ label: 'Settings', href: '/settings' },
+			{ label: 'Profile', href: '/profile' },
+		])('should navigate to $href when $label menu item is clicked', async ({ label, href }) => {
 			const user = userEvent.setup()
 
 			render(
@@ -256,7 +296,9 @@ describe('UserMenu', () => {
 			const link = screen.getByText(label)
 			await user.click(link)
 
-			expect(mockNavigate).toHaveBeenCalledWith(route)
+			// Should navigate to the correct route
+			expect(mockNavigate).toHaveBeenCalledWith(href)
+			// Menu should close when navigation link is clicked
 			expect(mockOnOpenChange).toHaveBeenCalledWith(false)
 		})
 	})

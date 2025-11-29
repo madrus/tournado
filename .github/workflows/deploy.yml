@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       workflow_run_id:
-        description: "Optional CI workflow_run id to validate before deploying to production"
+        description: "Optional CI workflow run ID (numeric, e.g., 12345678) to validate before deploying. Leave empty to auto-detect latest CI run for current commit."
         required: false
 
 concurrency:

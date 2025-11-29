@@ -48,6 +48,7 @@
 - Deployment
    - [Overview](deployment/overview.md)
    - [CI/CD Pipeline](deployment/cicd-pipeline.md)
+   - [Docker Native Dependencies](deployment/docker-native-dependencies.md)
    - [Mobile Deployment](deployment/mobile.md)
    - [Production Migration Oct 2025](deployment/production-migration-2025-10.md)
 - Maintenance

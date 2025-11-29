@@ -41,14 +41,17 @@ RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
 # Install production dependencies without scripts (skip postinstall hook that calls husky)
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
-  pnpm install prisma @prisma/client --ignore-scripts && \
+  pnpm install prisma --ignore-scripts && \
   pnpm prisma generate
 
 # Build better-sqlite3 native bindings manually
 # Find the better-sqlite3 directory and run its build script directly
-RUN SQLITE_DIR=$(find /workdir/node_modules/.pnpm -type d -name "better-sqlite3" -path "*/node_modules/better-sqlite3" | head -1) && \
+RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" -path "*/node_modules/better-sqlite3" | head -1) && \
+  if [ -z "$SQLITE_DIR" ] || [ ! -d "$SQLITE_DIR" ]; then \
+    echo "ERROR: better-sqlite3 directory not found"; exit 1; \
+  fi && \
   cd "$SQLITE_DIR" && \
-  npm run build-release
+  npm run build-release || { echo "ERROR: better-sqlite3 build failed"; exit 1; }
 
 # Build the app
 FROM base AS build

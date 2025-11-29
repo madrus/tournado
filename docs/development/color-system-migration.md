@@ -342,6 +342,13 @@ Questions to decide:
 - ✅ No hardcoded Tailwind colors (bg-red-600, etc.)
 - ✅ No dynamic color generation (no `bg-${color}-600` template literals)
 - ✅ Uses semantic tokens (bg-brand-600, bg-accent-amber-600, etc.)
+- ✅ Functions working with temlate literals like `createColorVariantMapping`
+   ```typescript
+   const borderVariants = createColorVariantMapping(
+    (color) => `border-${color}-300 panel-${color}-bg`
+   )
+   ```
+   should be replaced with static classes and removed once they get unused.
 - ✅ Semantic tokens are statically detectable by Tailwind
 - ✅ No visual changes on screen
 - ✅ All tests passing (unit + E2E)

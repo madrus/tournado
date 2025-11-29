@@ -136,6 +136,7 @@ export type ColorAccent =
 	| 'indigo'
 	| 'purple'
 	| 'fuchsia'
+	| 'lime'
 	| 'disabled'
 
 // ============================================================================

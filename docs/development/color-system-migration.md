@@ -4,7 +4,7 @@
 - [x] What are all the official Tailwind colors that we already ACTUALLY use in our components?
   - [x] global search
   - [x] make a list
-  - **Result**: **12 real Tailwind colors** used (see Research Findings below)
+  - **Result**: **13 real Tailwind colors** used (see Research Findings below)
   - **Plus 7 semantic aliases** that MAP to some of those colors (brand→red, primary→emerald, etc.)
 - [x] What are all the (styles and variants) files that we should reconsider for migration?
   - [x] global search
@@ -64,31 +64,32 @@
 10. **green** - REFEREE role badge, teams detail success messages (hardcoded), healthcheck success (hardcoded), tournament success alerts (hardcoded)
 11. **yellow** - BILLING role badge, teams detail "PENDING" status (hardcoded)
 12. **purple** - EDITOR role badge (RoleBadge component)
-13. **disabled** - Part of ColorAccent type (treated as distinct semantic)
+13. **lime** - Admin panel Competition Management icon (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx)
+14. **disabled** - Part of ColorAccent type (treated as distinct semantic)
 
-**VERIFIED UNUSED** (6 colors - excluded from semantic modeling):
+**VERIFIED UNUSED** (5 colors - excluded from semantic modeling):
 - ❌ **zinc** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
 - ❌ **orange** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
-- ❌ **lime** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
 - ❌ **violet** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
 - ❌ **pink** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
 - ❌ **rose** - No prop usage, no hardcoded usage - EXCLUDE FROM PLANNING
 
 **Summary: The REAL Color Palette**:
 
-**12 REAL TAILWIND COLORS ACTUALLY USED** (the visual palette):
+**13 REAL TAILWIND COLORS ACTUALLY USED** (the visual palette):
 1. **red** - error messages, ADMIN role, deactivated badge, form step 1
 2. **emerald** - primary buttons, success states
 3. **slate** - PUBLIC role, disabled panels, empty states
 4. **amber** - form step 2
 5. **indigo** - form step 3
-6. **fuchsia** - competition area, form step 4
+6. **fuchsia** - competition area, form step 4, admin panel Reports & Analytics icon
 7. **teal** - user/auth/tournament areas
 8. **sky** - detail pages
 9. **blue** - MANAGER role, info boxes
 10. **green** - REFEREE role, success messages
 11. **yellow** - BILLING role, pending/warning status
 12. **purple** - EDITOR role
+13. **lime** - admin panel Competition Management icon
 
 **7 SEMANTIC ALIASES** (names that map to real colors above):
 - **brand** → red
@@ -265,27 +266,28 @@ Questions to decide:
 
 **Status**: ✅ COMPLETED (2025-01-29)
 
-**Goal**: Remove 6 unused legacy colors (zinc, orange, lime, violet, pink, rose) to reduce file sizes and improve maintainability before Phase 1 component migrations.
+**Goal**: Remove 5 unused legacy colors (zinc, orange, violet, pink, rose) to reduce file sizes and improve maintainability before Phase 1 component migrations.
 
-**Decision**: Remove ALL 6 colors + refactor toast warnings to use semantic `warning` color (yellow).
+**Decision**: Remove 5 colors + refactor toast warnings to use semantic `warning` color (yellow). **Note**: `lime` was initially considered unused but is actually used in admin panel Competition Management icon - kept as used color.
 
 **Scope**: 13 files, ~260 lines removed
 
 **Results**:
-- ColorAccent type reduced from 21 to 15 colors (app/lib/lib.types.ts:125-139)
-- COLOR_VARIANT_KEYS reduced from 34 to 28 entries (app/components/shared/colorVariants.ts)
+- ColorAccent type reduced from 21 to 16 colors (app/lib/lib.types.ts:125-139) - kept lime
+- COLOR_VARIANT_KEYS reduced from 34 to 29 entries (app/components/shared/colorVariants.ts) - kept lime
 - Toast warnings migrated from orange to yellow/warning semantic (3 files)
 - All CVA variant files cleaned (button, dataTable, inputs, toggleChip, firebaseAuth)
 - All tests updated and passing
 - Zero TypeScript errors, build successful
+- Admin panel icons: violet→fuchsia (Reports), lime kept (Competition Management)
 
 **Checklist**:
-- [x] Remove 6 colors from ColorAccent type (app/lib/lib.types.ts)
-- [x] Remove 6 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts)
+- [x] Remove 5 colors from ColorAccent type (app/lib/lib.types.ts) - kept lime
+- [x] Remove 5 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts) - kept lime
 - [x] Refactor toast warnings: orange → `warning` semantic (toastMessage.variants.ts)
-- [x] Clean all 6 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth)
+- [x] Clean 5 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth) - kept lime
 - [x] Update 5 test files (ring.styles.test.ts, panel.variants.test.ts, toastMessage.variants.test.ts, ToastIcon.test.tsx, toggleChip.variants.ts)
-- [x] Fix component props using lime/violet (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: lime→success, violet→accent-purple)
+- [x] Fix component props in admin panel (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: violet→fuchsia, kept lime)
 - [x] Verify typecheck passes ✅
 - [x] Verify build succeeds ✅
 - [x] Verify tests pass ✅
@@ -307,9 +309,9 @@ Questions to decide:
 
 **Impact**:
 - ✅ Reduced codebase bloat by ~260 lines
-- ✅ Color system now has 12 real colors + 13 semantics (25 total, down from 34)
+- ✅ Color system now has 13 real colors + 13 semantics (26 total, down from 34)
 - ✅ Cleaner base for Phase 1 component migrations
-- ✅ No visual changes (semantic colors map to same underlying values)
+- ✅ No visual changes (fuchsia replaces violet, lime kept for competition icon)
 
 ---
 
@@ -370,9 +372,10 @@ Questions to decide:
    - Location: `.cursor/rules/ADR.mdc`
 
 1. **Remove unused colors from ColorAccent type** (app/lib/lib.types.ts):
-   - **REMOVE**: zinc, orange, lime, violet, pink, rose
-   - Update ColorAccent to only include the 12 used real colors + semantic aliases
-   - Breaking change but justified - these 6 colors are never used
+   - **REMOVE**: zinc, orange, violet, pink, rose (5 colors)
+   - **KEEP**: lime (used in admin competition management icon)
+   - Update ColorAccent to only include the 13 used real colors + semantic aliases
+   - Breaking change but justified - these 5 colors are never used
 
 2. **Eliminate safelist.txt entirely**:
    - All dynamic color classes migrated to semantic tokens in Phase 1
@@ -382,8 +385,8 @@ Questions to decide:
 
 3. **Update CLAUDE.md with semantic color rules**:
    - Document two-tier system (functional + accents)
-   - **Explicitly state: Only 12 real Tailwind colors allowed**
-   - **List forbidden colors**: zinc, orange, lime, violet, pink, rose
+   - **Explicitly state: Only 13 real Tailwind colors allowed**
+   - **List forbidden colors**: zinc, orange, violet, pink, rose (5 colors)
    - Examples of correct usage
 
 4. **Add Biome linting rule (optional)**:
@@ -392,17 +395,18 @@ Questions to decide:
    - Suggest semantic alternatives
 
 **Deliverables**:
-- **Updated ColorAccent type (12 colors only)**
+- **Updated ColorAccent type (13 colors only)**
 - **Deleted safelist.txt** (or minimal if edge cases exist)
 - Updated CLAUDE.md
 - Optional: Biome rule with forbidden color detection
-- ✅ ADR-0029: Color System Architecture (COMPLETE)
+- ✅ ADR-0029: Color System Architecture (COMPLETE - update to reflect 13 colors)
 
 **Checklist**:
-- [x] Create ADR (explain 12 vs 21 decision) - ADR-0029 created
-- [ ] Remove 6 unused colors from ColorAccent type
+- [x] Create ADR (explain color palette decision) - ADR-0029 created
+- [ ] Remove 5 unused colors from ColorAccent type (keep lime)
 - [ ] Delete safelist.txt entirely (or minimize to absolute edge cases)
-- [ ] Update CLAUDE.md (document 12-color system + forbidden list)
+- [ ] Update CLAUDE.md (document 13-color system + forbidden list: zinc, orange, violet, pink, rose)
+- [ ] Update ADR-0029 to reflect 13 colors instead of 12
 - [ ] Create Biome rule with forbidden color detection (optional)
 - [ ] Final verification (no unused colors anywhere, no safelist needed)
 

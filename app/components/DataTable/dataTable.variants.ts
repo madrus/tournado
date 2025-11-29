@@ -187,6 +187,7 @@ export function getDatatableHeaderClasses(color: DatatableColorVariant): string 
 		fuchsia: 'bg-white dark:bg-fuchsia-950',
 		green: 'bg-white dark:bg-green-950',
 		indigo: 'bg-white dark:bg-indigo-950',
+		lime: 'bg-white dark:bg-lime-950',
 		purple: 'bg-white dark:bg-purple-950',
 		red: 'bg-white dark:bg-red-950',
 		sky: 'bg-white dark:bg-sky-950',
@@ -238,6 +239,7 @@ export function getDatatableStripeClasses(
 			'bg-white hover:bg-fuchsia-200 dark:bg-fuchsia-950 dark:hover:bg-fuchsia-800',
 		green: 'bg-white hover:bg-green-200 dark:bg-green-950 dark:hover:bg-green-800',
 		indigo: 'bg-white hover:bg-indigo-200 dark:bg-indigo-950 dark:hover:bg-indigo-800',
+		lime: 'bg-white hover:bg-lime-200 dark:bg-lime-950 dark:hover:bg-lime-800',
 		purple: 'bg-white hover:bg-purple-200 dark:bg-purple-950 dark:hover:bg-purple-800',
 		red: 'bg-white hover:bg-red-200 dark:bg-red-950 dark:hover:bg-red-800',
 		sky: 'bg-white hover:bg-sky-200 dark:bg-sky-950 dark:hover:bg-sky-800',
@@ -281,6 +283,7 @@ export function getDatatableStripeClasses(
 		green: 'bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800',
 		indigo:
 			'bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800',
+		lime: 'bg-lime-100 hover:bg-lime-200 dark:bg-lime-900 dark:hover:bg-lime-800',
 		purple:
 			'bg-purple-100 hover:bg-purple-200 dark:bg-purple-900 dark:hover:bg-purple-800',
 		red: 'bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:hover:bg-red-800',

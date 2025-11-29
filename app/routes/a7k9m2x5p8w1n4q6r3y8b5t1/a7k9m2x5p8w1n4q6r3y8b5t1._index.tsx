@@ -157,7 +157,7 @@ export default function AdminDashboard(): JSX.Element {
 						icon={<SportsIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
-						iconColor='success'
+						iconColor='lime'
 						to='/a7k9m2x5p8w1n4q6r3y8b5t1/competition'
 						testId='admin-panel-competition-management'
 					>
@@ -214,7 +214,7 @@ export default function AdminDashboard(): JSX.Element {
 						icon={<TuneIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
-						iconColor='accent-purple'
+						iconColor='fuchsia'
 						testId='admin-panel-reports-&-analytics'
 					/>
 				) : null}

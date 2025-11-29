@@ -40,7 +40,7 @@ export const COLOR_VARIANT_KEYS = {
 	'accent-teal': 'accent-teal',
 	'accent-sky': 'accent-sky',
 	'accent-purple': 'accent-purple',
-	// Legacy Real Colors (reduced to 12 in Phase 0.6)
+	// Legacy Real Colors (reduced to 13 - kept lime for admin panel)
 	emerald: 'emerald',
 	blue: 'blue',
 	slate: 'slate',
@@ -53,6 +53,7 @@ export const COLOR_VARIANT_KEYS = {
 	indigo: 'indigo',
 	purple: 'purple',
 	fuchsia: 'fuchsia',
+	lime: 'lime',
 } as const
 
 /**

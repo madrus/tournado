@@ -185,6 +185,22 @@
 		color: var(--color-adaptive-sky);
 	}
 
+	/* Semantic color mappings for action classes */
+	.text-adaptive-success-action {
+		color: var(--color-adaptive-green);
+	}
+	.text-adaptive-accent-purple-action {
+		color: var(--color-adaptive-purple);
+	}
+
+	/* Semantic color mappings for Panel icons (non-action) */
+	.text-adaptive-success {
+		color: var(--color-adaptive-lime);
+	}
+	.text-adaptive-accent-purple {
+		color: var(--color-adaptive-violet);
+	}
+
 	.border-adaptive-red-action {
 		border-color: var(--color-adaptive-red);
 	}
@@ -241,6 +257,22 @@
 	}
 	.border-adaptive-sky-action {
 		border-color: var(--color-adaptive-sky);
+	}
+
+	/* Semantic color mappings for border action classes */
+	.border-adaptive-success-action {
+		border-color: var(--color-adaptive-green);
+	}
+	.border-adaptive-accent-purple-action {
+		border-color: var(--color-adaptive-purple);
+	}
+
+	/* Semantic color mappings for Panel borders (non-action) */
+	.border-adaptive-success {
+		border-color: var(--color-adaptive-lime);
+	}
+	.border-adaptive-accent-purple {
+		border-color: var(--color-adaptive-violet);
 	}
 
 	/* ActionLinkPanel children color support - children opt-in with data-color="action" */

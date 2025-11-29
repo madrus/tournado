@@ -79,6 +79,7 @@ export const textInputFieldVariants = cva(
 					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
 					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
 					'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:
@@ -154,6 +155,7 @@ export const comboFieldTriggerVariants = cva(
 					'border-purple-700/30 hover:border-purple-700/50 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 data-[state=open]:border-purple-500 data-[state=open]:ring-4 data-[state=open]:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
 					'border-indigo-700/30 hover:border-indigo-700/50 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 data-[state=open]:border-indigo-500 data-[state=open]:ring-4 data-[state=open]:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 hover:border-lime-700/50 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 data-[state=open]:border-lime-500 data-[state=open]:ring-4 data-[state=open]:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
 					'border-slate-700/30 hover:border-slate-700/50 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 data-[state=open]:border-slate-500 data-[state=open]:ring-4 data-[state=open]:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:
@@ -210,6 +212,7 @@ export const comboFieldContentVariants = cva(
 				yellow: 'combo-content-bg bg-yellow-50 text-yellow-800 dark:text-yellow-50',
 				purple: 'combo-content-bg bg-purple-50 text-purple-800 dark:text-purple-50',
 				indigo: 'combo-content-bg bg-indigo-50 text-indigo-800 dark:text-indigo-50',
+				lime: 'combo-content-bg bg-lime-50 text-lime-800 dark:text-lime-50',
 				slate: 'combo-content-bg bg-slate-50 text-slate-800 dark:text-slate-50',
 				amber: 'combo-content-bg bg-amber-50 text-amber-800 dark:text-amber-50',
 				teal: 'combo-content-bg bg-teal-50 text-teal-800 dark:text-teal-50',
@@ -276,6 +279,7 @@ export const comboFieldItemVariants = cva(
 					'text-purple-800 hover:bg-purple-100 focus:bg-purple-100 data-[highlighted]:bg-purple-100 dark:text-purple-50 dark:data-[highlighted]:bg-purple-900 dark:focus:bg-purple-900 dark:hover:bg-purple-900',
 				indigo:
 					'text-indigo-800 hover:bg-indigo-100 focus:bg-indigo-100 data-[highlighted]:bg-indigo-100 dark:text-indigo-50 dark:data-[highlighted]:bg-indigo-900 dark:focus:bg-indigo-900 dark:hover:bg-indigo-900',
+				lime: 'text-lime-800 hover:bg-lime-100 focus:bg-lime-100 data-[highlighted]:bg-lime-100 dark:text-lime-50 dark:data-[highlighted]:bg-lime-900 dark:focus:bg-lime-900 dark:hover:bg-lime-900',
 				slate:
 					'text-slate-800 hover:bg-slate-100 focus:bg-slate-100 data-[highlighted]:bg-slate-100 dark:text-slate-50 dark:data-[highlighted]:bg-slate-900 dark:focus:bg-slate-900 dark:hover:bg-slate-900',
 				amber:
@@ -357,6 +361,7 @@ export const datePickerButtonVariants = cva(
 					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
 					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
 					'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:
@@ -504,6 +509,7 @@ export const dateInputFieldVariants = cva(
 					'border border-purple-700/30 hover:border-2 hover:border-purple-700/50 focus:border-2 focus:border-purple-200',
 				indigo:
 					'border border-indigo-700/30 hover:border-2 hover:border-indigo-700/50 focus:border-2 focus:border-indigo-200',
+				lime: 'border border-lime-700/30 hover:border-2 hover:border-lime-700/50 focus:border-2 focus:border-lime-200',
 				slate:
 					'border border-slate-700/30 hover:border-2 hover:border-slate-700/50 focus:border-2 focus:border-slate-200',
 				amber:
@@ -575,6 +581,7 @@ export const checkboxAgreementFieldVariants = cva(
 					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
 					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
 					'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:
@@ -644,6 +651,7 @@ export const checkboxAgreementInputVariants = cva(
 					'border-purple-700/30 checked:border-purple-600 checked:bg-purple-600 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
 					'border-indigo-700/30 checked:border-indigo-600 checked:bg-indigo-600 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 checked:border-lime-600 checked:bg-lime-600 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
 					'border-slate-700/30 checked:border-slate-600 checked:bg-slate-600 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:

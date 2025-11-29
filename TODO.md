@@ -4,7 +4,7 @@
 
 - [ ] non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('test/mocks/handlers/emails.js')`
 - [ ] do we have direct DOM manipulations in our Playwright tests instead of Page Object Model usage?
-- [ ] add getServerT() to all modules that deal with server side errors (see `users._index.tsx`)
+- [ ] add getServerT() to all modules that deal with server-side errors (see `users._index.tsx`)
    - [ ] **Server-Side Translations**: Use `getServerT(request)` in all server
       - [ ] actions/loaders for localized error messages and server-generated content;
       - [ ] respects user's language preference from cookie

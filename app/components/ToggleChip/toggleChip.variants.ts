@@ -103,12 +103,6 @@ export const toggleChipVariants = cva(
 					'border-purple-500 bg-purple-100 text-adaptive-purple-selected dark:bg-purple-200',
 			},
 			{
-				color: 'pink',
-				selected: true,
-				className:
-					'border-pink-500 bg-pink-100 text-adaptive-pink-selected dark:bg-pink-200',
-			},
-			{
 				color: 'indigo',
 				selected: true,
 				className:
@@ -121,28 +115,10 @@ export const toggleChipVariants = cva(
 					'border-slate-500 bg-slate-100 text-adaptive-slate-selected dark:bg-slate-200',
 			},
 			{
-				color: 'zinc',
-				selected: true,
-				className:
-					'border-zinc-500 bg-zinc-100 text-adaptive-zinc-selected dark:bg-zinc-200',
-			},
-			{
-				color: 'orange',
-				selected: true,
-				className:
-					'border-orange-500 bg-orange-100 text-adaptive-orange-selected dark:bg-orange-200',
-			},
-			{
 				color: 'amber',
 				selected: true,
 				className:
 					'border-amber-500 bg-amber-100 text-adaptive-amber-selected dark:bg-amber-200',
-			},
-			{
-				color: 'lime',
-				selected: true,
-				className:
-					'border-lime-500 bg-lime-100 text-adaptive-lime-selected dark:bg-lime-200',
 			},
 			{
 				color: 'teal',
@@ -157,22 +133,10 @@ export const toggleChipVariants = cva(
 					'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
 			},
 			{
-				color: 'violet',
-				selected: true,
-				className:
-					'border-violet-500 bg-violet-100 text-adaptive-violet-selected dark:bg-violet-200',
-			},
-			{
 				color: 'fuchsia',
 				selected: true,
 				className:
 					'border-fuchsia-500 bg-fuchsia-100 text-adaptive-fuchsia-selected dark:bg-fuchsia-200',
-			},
-			{
-				color: 'rose',
-				selected: true,
-				className:
-					'border-rose-500 bg-rose-100 text-adaptive-rose-selected dark:bg-rose-200',
 			},
 		],
 		defaultVariants: {
@@ -231,11 +195,6 @@ export const toggleChipTextVariants = cva(
 				className: 'text-adaptive-purple-selected',
 			},
 			{
-				color: 'pink',
-				selected: true,
-				className: 'text-adaptive-pink-selected',
-			},
-			{
 				color: 'indigo',
 				selected: true,
 				className: 'text-adaptive-indigo-selected',
@@ -246,24 +205,9 @@ export const toggleChipTextVariants = cva(
 				className: 'text-adaptive-slate-selected',
 			},
 			{
-				color: 'zinc',
-				selected: true,
-				className: 'text-adaptive-zinc-selected',
-			},
-			{
-				color: 'orange',
-				selected: true,
-				className: 'text-adaptive-orange-selected',
-			},
-			{
 				color: 'amber',
 				selected: true,
 				className: 'text-adaptive-amber-selected',
-			},
-			{
-				color: 'lime',
-				selected: true,
-				className: 'text-adaptive-lime-selected',
 			},
 			{
 				color: 'teal',
@@ -272,19 +216,9 @@ export const toggleChipTextVariants = cva(
 			},
 			{ color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
 			{
-				color: 'violet',
-				selected: true,
-				className: 'text-adaptive-violet-selected',
-			},
-			{
 				color: 'fuchsia',
 				selected: true,
 				className: 'text-adaptive-fuchsia-selected',
-			},
-			{
-				color: 'rose',
-				selected: true,
-				className: 'text-adaptive-rose-selected',
 			},
 		],
 		defaultVariants: {

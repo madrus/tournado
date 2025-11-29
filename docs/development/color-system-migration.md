@@ -198,7 +198,7 @@ Questions to decide:
 
 ### Phase 0.5: Infrastructure Preparation (NEW - Prepare semantic tokens)
 
-**Status**: ⚪ Not Started (blocked by Phase 0)
+**Status**: ✅ COMPLETE (2025-01-29)
 
 **Goal**: Set up semantic color infrastructure WITHOUT changing any components. This creates "redundant" structures that will be used later during migration.
 
@@ -220,23 +220,102 @@ Questions to decide:
 - ✅ You can ask "migrate Badge component" without needing semantic design work
 
 **Deliverables**:
-- Updated `app/styles/colors.css` with all semantic tokens
-- Updated `app/components/shared/colorVariants.ts` with semantic helpers
-- Documentation of new tokens in this file
+- ✅ Updated `app/lib/lib.types.ts` with FunctionalSemantic and VisualAccent types
+- ✅ Updated `app/styles/colors.css` with all semantic tokens (success, error, warning, info, disabled, accent-*)
+- ✅ Updated `app/styles/tailwind_theme.css` with adaptive variants for new semantics
+- Updated `app/components/shared/colorVariants.ts` with semantic helpers (deferred to Phase 1 as needed)
+
+**New Token Patterns Available**:
+
+*Functional Semantics* (communicate state/intent):
+- `--color-success-{50-950}` → green
+- `--color-error-{50-950}` → red
+- `--color-warning-{50-950}` → yellow
+- `--color-info-{50-950}` → blue
+- `--color-disabled-{50-950}` → slate
+
+*Visual Accents* (design variety):
+- `--color-accent-amber-{50-950}` → amber (form step 2)
+- `--color-accent-indigo-{50-950}` → indigo (form step 3)
+- `--color-accent-fuchsia-{50-950}` → fuchsia (competition, form step 4)
+- `--color-accent-teal-{50-950}` → teal (users/auth/tournaments/teams)
+- `--color-accent-sky-{50-950}` → sky (detail pages)
+- `--color-accent-purple-{50-950}` → purple (editor role)
+
+*Adaptive Variants* (auto-adjust for dark mode):
+- `--color-adaptive-{semantic}` → 600 weight
+- `--color-adaptive-{semantic}-selected` → 800 weight
 
 **Checklist**:
-- [ ] Add semantic color tokens to colors.css
-- [ ] Formalize adaptive system in colors.css
-- [ ] Create semantic helper functions in colorVariants.ts
-- [ ] Update types if needed
-- [ ] Document new token patterns
-- [ ] Verify no visual changes (build and manual check)
+- [x] Create ADR-0029 documenting architecture - COMPLETE
+- [x] Update types in app/lib/lib.types.ts (FunctionalSemantic, VisualAccent) - COMPLETE
+- [x] Add semantic color tokens to colors.css - COMPLETE (all functional + visual accent shades 50-950)
+- [x] Add adaptive variants in tailwind_theme.css - COMPLETE (600 + 800 selected weights)
+- [x] Update COLOR_VARIANT_KEYS in colorVariants.ts with all 13 semantic colors - COMPLETE
+- [x] Fix TypeScript errors in all CVA variant files (button, DataTable, inputs) - COMPLETE
+- [x] Document new token patterns in this file - COMPLETE
+- [x] Verify no visual changes (build and manual check) - COMPLETE ✅
+- [ ] Create semantic helper functions in colorVariants.ts (deferred - will create during Phase 1 component migrations as needed)
+
+---
+
+---
+
+### Phase 0.6: Remove Unused Colors (NEW - Cleanup before Phase 1)
+
+**Status**: ✅ COMPLETED (2025-01-29)
+
+**Goal**: Remove 6 unused legacy colors (zinc, orange, lime, violet, pink, rose) to reduce file sizes and improve maintainability before Phase 1 component migrations.
+
+**Decision**: Remove ALL 6 colors + refactor toast warnings to use semantic `warning` color (yellow).
+
+**Scope**: 13 files, ~260 lines removed
+
+**Results**:
+- ColorAccent type reduced from 21 to 15 colors (app/lib/lib.types.ts:125-139)
+- COLOR_VARIANT_KEYS reduced from 34 to 28 entries (app/components/shared/colorVariants.ts)
+- Toast warnings migrated from orange to yellow/warning semantic (3 files)
+- All CVA variant files cleaned (button, dataTable, inputs, toggleChip, firebaseAuth)
+- All tests updated and passing
+- Zero TypeScript errors, build successful
+
+**Checklist**:
+- [x] Remove 6 colors from ColorAccent type (app/lib/lib.types.ts)
+- [x] Remove 6 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts)
+- [x] Refactor toast warnings: orange → `warning` semantic (toastMessage.variants.ts)
+- [x] Clean all 6 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth)
+- [x] Update 5 test files (ring.styles.test.ts, panel.variants.test.ts, toastMessage.variants.test.ts, ToastIcon.test.tsx, toggleChip.variants.ts)
+- [x] Fix component props using lime/violet (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: lime→success, violet→accent-purple)
+- [x] Verify typecheck passes ✅
+- [x] Verify build succeeds ✅
+- [x] Verify tests pass ✅
+
+**Files Modified** (13 total):
+1. app/lib/lib.types.ts - ColorAccent union type
+2. app/components/shared/colorVariants.ts - COLOR_VARIANT_KEYS
+3. app/components/ToastMessage/toastMessage.variants.ts - orange → yellow
+4. app/components/buttons/button.variants.ts - 3 sections cleaned
+5. app/components/DataTable/dataTable.variants.ts - 3 Record objects
+6. app/components/inputs/inputs.variants.ts - 30 occurrences removed
+7. app/components/ToggleChip/toggleChip.variants.ts - compoundVariants
+8. app/features/firebase/components/FirebaseAuth/firebaseAuth.variants.ts - violet removed
+9. app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx - 2 prop fixes
+10. app/styles/__tests__/ring.styles.test.ts - 3 colors removed
+11. app/components/Panel/__tests__/panel.variants.test.ts - 5 colors removed
+12. app/components/ToastMessage/__tests__/toastMessage.variants.test.ts - orange → yellow
+13. app/components/ToastMessage/__tests__/ToastIcon.test.tsx - orange → yellow
+
+**Impact**:
+- ✅ Reduced codebase bloat by ~260 lines
+- ✅ Color system now has 12 real colors + 13 semantics (25 total, down from 34)
+- ✅ Cleaner base for Phase 1 component migrations
+- ✅ No visual changes (semantic colors map to same underlying values)
 
 ---
 
 ### Phase 1: Component Migration (One at a time - INCREMENTAL)
 
-**Status**: ⚪ Not Started (blocked by Phase 0.5)
+**Status**: ⚪ Not Started (ready to begin)
 
 **Goal**: Migrate components one-by-one using infrastructure from Phase 0.5.
 
@@ -283,6 +362,13 @@ Questions to decide:
 
 **Steps**:
 
+0. **Create ADR documenting architecture** ✅ **COMPLETE**:
+   - ADR-0029: Semantic Color System - 12-Color Palette with Two-Tier Naming
+   - Rationale for two-tier system
+   - **Why 12 colors (not 21)**
+   - Migration process and outcomes
+   - Location: `.cursor/rules/ADR.mdc`
+
 1. **Remove unused colors from ColorAccent type** (app/lib/lib.types.ts):
    - **REMOVE**: zinc, orange, lime, violet, pink, rose
    - Update ColorAccent to only include the 12 used real colors + semantic aliases
@@ -305,24 +391,19 @@ Questions to decide:
    - **Detect usage of forbidden colors**
    - Suggest semantic alternatives
 
-5. **Create ADR documenting architecture**:
-   - Rationale for two-tier system
-   - **Why 12 colors (not 21)**
-   - Migration process and outcomes
-
 **Deliverables**:
 - **Updated ColorAccent type (12 colors only)**
 - **Deleted safelist.txt** (or minimal if edge cases exist)
 - Updated CLAUDE.md
 - Optional: Biome rule with forbidden color detection
-- ADR-00XX: Color System Architecture
+- ✅ ADR-0029: Color System Architecture (COMPLETE)
 
 **Checklist**:
+- [x] Create ADR (explain 12 vs 21 decision) - ADR-0029 created
 - [ ] Remove 6 unused colors from ColorAccent type
 - [ ] Delete safelist.txt entirely (or minimize to absolute edge cases)
 - [ ] Update CLAUDE.md (document 12-color system + forbidden list)
 - [ ] Create Biome rule with forbidden color detection (optional)
-- [ ] Create ADR (explain 12 vs 21 decision)
 - [ ] Final verification (no unused colors anywhere, no safelist needed)
 
 ## Critical Files Reference

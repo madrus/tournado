@@ -64,10 +64,10 @@ describe('Toast Message Variants', () => {
 			const warningClasses = toastMessageVariants({ type: 'warning' })
 
 			expect(warningClasses).toContain('bg-gradient-to-br')
-			expect(warningClasses).toContain('from-orange-600')
+			expect(warningClasses).toContain('from-yellow-600')
 			expect(warningClasses).toContain('text-white')
 			expect(warningClasses).toContain('shadow-xl')
-			expect(warningClasses).toContain('shadow-orange-950/30')
+			expect(warningClasses).toContain('shadow-yellow-950/30')
 			expect(warningClasses).toContain('dark:shadow-md')
 			expect(warningClasses).toContain('dark:shadow-white/20')
 		})

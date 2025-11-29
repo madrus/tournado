@@ -86,7 +86,7 @@ vi.mock('~/components/icons', () => ({
 	}) => (
 		<span
 			data-testid='warning-icon'
-			className={`${className ? `${className} ` : ''}text-orange-600`}
+			className={`${className ? `${className} ` : ''}text-yellow-600`}
 			data-size={size}
 			data-weight={weight}
 		>

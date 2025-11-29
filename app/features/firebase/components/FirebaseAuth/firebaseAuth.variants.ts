@@ -29,7 +29,6 @@ export const firebaseAuthLabelVariants = cva('', {
 			slate: 'text-slate-700 dark:text-slate-50/80',
 			cyan: 'text-cyan-700 dark:text-cyan-50/80',
 			indigo: 'text-indigo-700 dark:text-indigo-50/80',
-			violet: 'text-violet-700 dark:text-violet-50/80',
 		},
 	},
 	defaultVariants: {

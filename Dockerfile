@@ -1,19 +1,26 @@
-# base node image
+# base node image (runtime dependencies only)
 FROM node:22-bullseye-slim AS base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
 ENV HUSKY=0
 
-# Install openssl for Prisma, build tools for native modules, and pnpm
+# Install runtime dependencies and pnpm
 RUN apt-get update && apt-get install -y \
   openssl \
   sqlite3 \
-  python3 \
   python3-pip \
-  build-essential \
   && npm install -g pnpm@10 \
   && pip3 install litecli \
+  && rm -rf /var/lib/apt/lists/*
+
+# build-deps stage: base + build tools (for compiling native modules)
+FROM base AS build-deps
+
+# Install build tools needed for native module compilation
+RUN apt-get update && apt-get install -y \
+  python3 \
+  build-essential \
   && rm -rf /var/lib/apt/lists/*
 
 # Install all node_modules, including dev dependencies
@@ -27,8 +34,8 @@ RUN if [ -f .npmrc ]; then ADD .npmrc ./; fi
 RUN pnpm config set enable-pre-post-scripts true && \
   pnpm install --frozen-lockfile --unsafe-perm
 
-# Setup production node_modules
-FROM base AS production-deps
+# Setup production node_modules (needs build tools for native modules)
+FROM build-deps AS production-deps
 
 WORKDIR /workdir
 
@@ -40,6 +47,7 @@ COPY prisma ./prisma
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
 # Install production dependencies without scripts (skip postinstall hook that calls husky)
+# Note: prisma CLI is a devDependency but needed for 'prisma generate'
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
   pnpm install prisma --ignore-scripts && \
   pnpm prisma generate

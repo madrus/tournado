@@ -184,6 +184,12 @@ app/features/{feature}/
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
 - **No semicolons**. Do not add semicolons to new code. Biome will automatically remove them from existing code during formatting
+- **Do not offer to run standard commands**. Let the user run commands like `pnpm test:docker`, `pnpm lint`, `git push`, etc. to save tokens. Only run commands when explicitly requested or when necessary for completing the task
+
+### Documentation Rules
+
+- **Always specify language in fenced code blocks**. Use ` ```typescript`, ` ```bash`, ` ```json`, etc. If no specific language, use ` ```text`
+- Never use bare ` ``` ` without a language identifier
 
 ### Version Pinning and Hardcoding
 

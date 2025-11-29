@@ -211,16 +211,7 @@ describe('Ring Styles', () => {
 			})
 
 			it('should handle all color variants consistently', () => {
-				const colors: ColorAccent[] = [
-					'emerald',
-					'teal',
-					'sky',
-					'blue',
-					'violet',
-					'purple',
-					'pink',
-					'rose',
-				]
+				const colors: ColorAccent[] = ['emerald', 'teal', 'sky', 'blue', 'purple']
 
 				colors.forEach((color) => {
 					const config = RING_CONFIGS.button(color)

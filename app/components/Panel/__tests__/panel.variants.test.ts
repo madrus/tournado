@@ -162,19 +162,13 @@ describe('Panel Variants (CVA)', () => {
 				'fuchsia',
 				'green',
 				'indigo',
-				'lime',
-				'orange',
-				'pink',
 				'primary',
 				'purple',
 				'red',
-				'rose',
 				'sky',
 				'slate',
 				'teal',
-				'violet',
 				'yellow',
-				'zinc',
 			] as const
 
 			colors.forEach((color) => {

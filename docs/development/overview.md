@@ -94,13 +94,7 @@ pnpm test:e2e:dev
 pnpm test:unit
 ```
 
-3. Format code:
-
-```sh
-pnpm format
-```
-
-4. Type checking:
+3. Type checking:
 
 ```sh
 pnpm typecheck
@@ -117,8 +111,7 @@ pnpm typecheck
 
 ## Code Style
 
-- Use Prettier for code formatting
-- Follow ESLint rules
+- Use Biome for code formatting and linting (`pnpm lint`)
 - Write TypeScript with strict mode enabled
 - Use functional components with hooks
 - Follow the React Router v7 conventions for routes and loaders

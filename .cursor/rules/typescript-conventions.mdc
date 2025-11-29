@@ -323,7 +323,7 @@ These conventions should be:
 - ✅ **Applied to all new code**
 - ✅ **Gradually refactored in existing code**
 - ✅ **Checked during code reviews**
-- ✅ **Enforced by ESLint rules where possible**
+- ✅ **Enforced by Biome rules where possible**
 
 ## Benefits
 

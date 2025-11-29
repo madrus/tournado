@@ -103,12 +103,6 @@ export const toggleChipVariants = cva(
 					'border-purple-500 bg-purple-100 text-adaptive-purple-selected dark:bg-purple-200',
 			},
 			{
-				color: 'pink',
-				selected: true,
-				className:
-					'border-pink-500 bg-pink-100 text-adaptive-pink-selected dark:bg-pink-200',
-			},
-			{
 				color: 'indigo',
 				selected: true,
 				className:
@@ -121,28 +115,10 @@ export const toggleChipVariants = cva(
 					'border-slate-500 bg-slate-100 text-adaptive-slate-selected dark:bg-slate-200',
 			},
 			{
-				color: 'zinc',
-				selected: true,
-				className:
-					'border-zinc-500 bg-zinc-100 text-adaptive-zinc-selected dark:bg-zinc-200',
-			},
-			{
-				color: 'orange',
-				selected: true,
-				className:
-					'border-orange-500 bg-orange-100 text-adaptive-orange-selected dark:bg-orange-200',
-			},
-			{
 				color: 'amber',
 				selected: true,
 				className:
 					'border-amber-500 bg-amber-100 text-adaptive-amber-selected dark:bg-amber-200',
-			},
-			{
-				color: 'lime',
-				selected: true,
-				className:
-					'border-lime-500 bg-lime-100 text-adaptive-lime-selected dark:bg-lime-200',
 			},
 			{
 				color: 'teal',
@@ -157,22 +133,84 @@ export const toggleChipVariants = cva(
 					'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
 			},
 			{
-				color: 'violet',
-				selected: true,
-				className:
-					'border-violet-500 bg-violet-100 text-adaptive-violet-selected dark:bg-violet-200',
-			},
-			{
 				color: 'fuchsia',
 				selected: true,
 				className:
 					'border-fuchsia-500 bg-fuchsia-100 text-adaptive-fuchsia-selected dark:bg-fuchsia-200',
 			},
 			{
-				color: 'rose',
+				color: 'lime',
 				selected: true,
 				className:
-					'border-rose-500 bg-rose-100 text-adaptive-rose-selected dark:bg-rose-200',
+					'border-lime-500 bg-lime-100 text-adaptive-lime-selected dark:bg-lime-200',
+			},
+			// Functional Semantics
+			{
+				color: 'success',
+				selected: true,
+				className:
+					'border-green-500 bg-green-100 text-adaptive-green-selected dark:bg-green-200',
+			},
+			{
+				color: 'error',
+				selected: true,
+				className:
+					'border-red-500 bg-red-100 text-adaptive-red-selected dark:bg-red-200',
+			},
+			{
+				color: 'warning',
+				selected: true,
+				className:
+					'border-yellow-500 bg-yellow-100 text-adaptive-yellow-selected dark:bg-yellow-200',
+			},
+			{
+				color: 'info',
+				selected: true,
+				className:
+					'border-blue-500 bg-blue-100 text-adaptive-blue-selected dark:bg-blue-200',
+			},
+			{
+				color: 'disabled',
+				selected: true,
+				className:
+					'border-slate-500 bg-slate-100 text-adaptive-slate-selected dark:bg-slate-200',
+			},
+			// Visual Accents
+			{
+				color: 'accent-amber',
+				selected: true,
+				className:
+					'border-amber-500 bg-amber-100 text-adaptive-amber-selected dark:bg-amber-200',
+			},
+			{
+				color: 'accent-indigo',
+				selected: true,
+				className:
+					'border-indigo-500 bg-indigo-100 text-adaptive-indigo-selected dark:bg-indigo-200',
+			},
+			{
+				color: 'accent-fuchsia',
+				selected: true,
+				className:
+					'border-fuchsia-500 bg-fuchsia-100 text-adaptive-fuchsia-selected dark:bg-fuchsia-200',
+			},
+			{
+				color: 'accent-teal',
+				selected: true,
+				className:
+					'border-teal-500 bg-teal-100 text-adaptive-teal-selected dark:bg-teal-200',
+			},
+			{
+				color: 'accent-sky',
+				selected: true,
+				className:
+					'border-sky-500 bg-sky-100 text-adaptive-sky-selected dark:bg-sky-200',
+			},
+			{
+				color: 'accent-purple',
+				selected: true,
+				className:
+					'border-purple-500 bg-purple-100 text-adaptive-purple-selected dark:bg-purple-200',
 			},
 		],
 		defaultVariants: {
@@ -231,11 +269,6 @@ export const toggleChipTextVariants = cva(
 				className: 'text-adaptive-purple-selected',
 			},
 			{
-				color: 'pink',
-				selected: true,
-				className: 'text-adaptive-pink-selected',
-			},
-			{
 				color: 'indigo',
 				selected: true,
 				className: 'text-adaptive-indigo-selected',
@@ -246,24 +279,9 @@ export const toggleChipTextVariants = cva(
 				className: 'text-adaptive-slate-selected',
 			},
 			{
-				color: 'zinc',
-				selected: true,
-				className: 'text-adaptive-zinc-selected',
-			},
-			{
-				color: 'orange',
-				selected: true,
-				className: 'text-adaptive-orange-selected',
-			},
-			{
 				color: 'amber',
 				selected: true,
 				className: 'text-adaptive-amber-selected',
-			},
-			{
-				color: 'lime',
-				selected: true,
-				className: 'text-adaptive-lime-selected',
 			},
 			{
 				color: 'teal',
@@ -272,19 +290,67 @@ export const toggleChipTextVariants = cva(
 			},
 			{ color: 'sky', selected: true, className: 'text-adaptive-sky-selected' },
 			{
-				color: 'violet',
-				selected: true,
-				className: 'text-adaptive-violet-selected',
-			},
-			{
 				color: 'fuchsia',
 				selected: true,
 				className: 'text-adaptive-fuchsia-selected',
 			},
+			{ color: 'lime', selected: true, className: 'text-adaptive-lime-selected' },
+			// Functional Semantics
 			{
-				color: 'rose',
+				color: 'success',
 				selected: true,
-				className: 'text-adaptive-rose-selected',
+				className: 'text-adaptive-green-selected',
+			},
+			{
+				color: 'error',
+				selected: true,
+				className: 'text-adaptive-red-selected',
+			},
+			{
+				color: 'warning',
+				selected: true,
+				className: 'text-adaptive-yellow-selected',
+			},
+			{
+				color: 'info',
+				selected: true,
+				className: 'text-adaptive-blue-selected',
+			},
+			{
+				color: 'disabled',
+				selected: true,
+				className: 'text-adaptive-slate-selected',
+			},
+			// Visual Accents
+			{
+				color: 'accent-amber',
+				selected: true,
+				className: 'text-adaptive-amber-selected',
+			},
+			{
+				color: 'accent-indigo',
+				selected: true,
+				className: 'text-adaptive-indigo-selected',
+			},
+			{
+				color: 'accent-fuchsia',
+				selected: true,
+				className: 'text-adaptive-fuchsia-selected',
+			},
+			{
+				color: 'accent-teal',
+				selected: true,
+				className: 'text-adaptive-teal-selected',
+			},
+			{
+				color: 'accent-sky',
+				selected: true,
+				className: 'text-adaptive-sky-selected',
+			},
+			{
+				color: 'accent-purple',
+				selected: true,
+				className: 'text-adaptive-purple-selected',
 			},
 		],
 		defaultVariants: {

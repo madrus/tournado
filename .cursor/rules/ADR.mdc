@@ -10,35 +10,37 @@ alwaysApply: false
 
 <!-- BEGIN:ADR_INDEX -->
 
-| ID   | Title                                                                       | Date       | Status   | Supersedes | Superseded by |
-| ---- | --------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Accepted | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Accepted | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Accepted | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Accepted | —          | —             |
-| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Accepted | —          | —             |
-| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Accepted | —          | —             |
-| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Accepted | —          | —             |
-| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Accepted | —          | —             |
-| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Accepted | —          | —             |
-| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Accepted | —          | —             |
-| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Accepted | —          | —             |
-| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Accepted | —          | —             |
-| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Accepted | —          | —             |
-| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Accepted | —          | —             |
-| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Accepted | —          | —             |
-| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Accepted | —          | —             |
-| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Accepted | —          | —             |
-| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Accepted | —          | —             |
-| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Accepted | —          | —             |
-| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Accepted | —          | —             |
-| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Accepted | —          | —             |
-| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Accepted | —          | —             |
-| 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
-| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
-| 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
-| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Implemented | —          | —             |
-| 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                     | 2025-10-24 | Accepted | —          | —             |
+| ID   | Title                                                                        | Date       | Status      | Supersedes | Superseded by |
+| ---- | ---------------------------------------------------------------------------- | ---------- | ----------- | ---------- | ------------- |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                           | 2025-08-27 | Accepted    | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                    | 2025-08-27 | Accepted    | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)          | 2025-08-27 | Accepted    | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)        | 2025-09-03 | Accepted    | —          | —             |
+| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)              | 2025-09-03 | Accepted    | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                    | 2025-09-03 | Accepted    | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)          | 2025-09-03 | Accepted    | —          | —             |
+| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                             | 2025-09-03 | Accepted    | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)              | 2025-09-03 | Accepted    | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                            | 2025-09-03 | Accepted    | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                               | 2025-09-03 | Accepted    | —          | —             |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                               | 2025-09-03 | Accepted    | —          | —             |
+| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                     | 2025-09-05 | Accepted    | —          | —             |
+| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                         | 2025-09-05 | Accepted    | —          | —             |
+| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                      | 2025-09-05 | Accepted    | —          | —             |
+| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016)  | 2025-09-05 | Accepted    | —          | —             |
+| 0017 | [Email Integration via Resend](#adr-0017)                                    | 2025-09-05 | Accepted    | —          | —             |
+| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                           | 2025-09-05 | Accepted    | —          | —             |
+| 0019 | [Data Model and Migration Strategy](#adr-0019)                               | 2025-09-05 | Accepted    | —          | —             |
+| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                        | 2025-09-05 | Accepted    | —          | —             |
+| 0021 | [Live Updates Transport Architecture](#adr-0021)                             | 2025-09-05 | Accepted    | —          | —             |
+| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                        | 2025-09-07 | Accepted    | —          | —             |
+| 0023 | [Environment Variable Management Strategy](#adr-0023)                        | 2025-09-21 | Accepted    | —          | —             |
+| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                            | 2025-09-21 | Accepted    | —          | —             |
+| 0025 | [Competition Section Structure and Group Management](#adr-0025)              | 2025-10-08 | Accepted    | —          | —             |
+| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                    | 2025-10-08 | Implemented | —          | —             |
+| 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                       | 2025-10-24 | Accepted    | —          | —             |
+| 0028 | [Docker Multi-Stage Build Strategy for Native Module Compilation](#adr-0028) | 2025-11-29 | Accepted    | —          | —             |
+| 0029 | [Semantic Color System: 13-Color Palette with Two-Tier Naming](#adr-0029)    | 2025-11-29 | Accepted    | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -1513,3 +1515,224 @@ export const handle: RouteMetadata = {
 - Screen reader testing validates heading navigation experience
 - Documentation clearly explains heading pattern for contributors
 - All routes define `pageTitle` in their handle export for consistency
+
+## ADR-0028 — Docker Multi-Stage Build Strategy for Native Module Compilation
+
+<a id="adr-0028"></a>
+**Date**: 2025-11-29
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+Native Node.js modules like `better-sqlite3` require platform-specific compilation. Docker containers run Linux, so binaries compiled on macOS/Windows development machines are incompatible with production containers. Additionally, Husky git hooks fail in Docker during `pnpm install` because the Husky CLI is not available globally, breaking the build process.
+
+### Alternatives
+
+1. **Single-stage build with build tools**: Include python3, build-essential in production image
+   - Simple, straightforward approach
+   - **Rejected**: Bloats production image by +100-150MB with unnecessary compilers and build tools
+
+2. **Pre-built binaries from npm**: Rely on better-sqlite3's prebuild-install fallback
+   - Zero build complexity
+   - **Rejected**: Fragile, version-specific, requires internet access during build, hard to debug when binaries unavailable
+
+3. **Different database (pure JS)**: Use sql.js or similar pure JavaScript SQLite implementations
+   - Avoids native modules entirely
+   - **Rejected**: Significant performance degradation (~10-100x slower for database operations)
+
+4. **Different database (client-server)**: Switch to PostgreSQL or MySQL
+   - No native module compilation needed
+   - **Rejected**: Adds deployment complexity (separate database server), increases infrastructure costs, SQLite's single-file simplicity is valuable
+
+### Decision
+
+Implement multi-stage Docker build with separate build toolchain:
+
+**Architecture**:
+1. **`base` stage**: Runtime dependencies only (openssl, sqlite3, python3-pip, litecli, pnpm)
+2. **`build-deps` stage**: Inherits from `base` + adds build toolchain (python3, build-essential)
+3. **`production-deps` stage**: Uses `build-deps`, installs production packages + manually compiles native modules
+4. **`build` stage**: Uses `base`, copies dependencies, builds application
+5. **Final production image**: Uses `base`, copies built artifacts (minimal footprint)
+
+**Native Module Compilation Strategy**:
+```dockerfile
+# Install with --ignore-scripts to skip Husky
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
+  pnpm install prisma --ignore-scripts && \
+  pnpm prisma generate
+
+# Manually build better-sqlite3 native bindings
+RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" ...) && \
+  if [ -z "$SQLITE_DIR" ] || [ ! -d "$SQLITE_DIR" ]; then \
+    echo "ERROR: better-sqlite3 directory not found"; exit 1; \
+  fi && \
+  cd "$SQLITE_DIR" && \
+  npm run build-release || { echo "ERROR: better-sqlite3 build failed"; exit 1; }
+```
+
+**Key Design Decisions**:
+- **Version-agnostic paths**: Use `find` command instead of hardcoded version numbers (e.g., `better-sqlite3@12.4.6`)
+- **Explicit error handling**: Clear error messages when compilation fails or package not found
+- **Separate build toolchain**: Keep compilers out of production image
+
+### Implementation References
+
+- Dockerfile: Multi-stage build with `base`, `build-deps`, `production-deps`, `build`, and final stages
+- Documentation: `docs/deployment/docker-native-dependencies.md` (comprehensive troubleshooting guide)
+- Automated testing: `scripts/test-docker-build.sh` via `pnpm test:docker` command
+
+### Consequences
+
+**Pros**:
+- Production images stay minimal (runtime dependencies only, no build tools)
+- Reliable cross-platform builds (macOS dev → Linux production)
+- Clear error messages when native module compilation fails
+- Version-agnostic approach works across dependency upgrades
+- Explicit error handling prevents silent failures
+
+**Cons / Risks**:
+- Increased build complexity (5 stages vs single stage)
+- Must maintain build toolchain knowledge (node-gyp, python3, build-essential)
+- Longer build times when building from scratch (~2-3 minutes including all stages)
+- Requires understanding of multi-stage Docker builds for maintenance
+
+**Supersedes**: —
+**Superseded by**: —
+
+### Compliance / Verification
+
+✅ **Verification criteria**:
+- Automated test suite validates binary compilation, Prisma generation, and production image assembly
+- Local Docker builds succeed with compiled `better_sqlite3.node` binary
+- Production deployments to Fly.io succeed with functional SQLite database
+- Error handling tested: missing package triggers clear "ERROR: better-sqlite3 directory not found" message
+- Image size optimized: production image excludes build-essential (~100MB savings)
+
+## ADR-0029 — Semantic Color System: 13-Color Palette with Two-Tier Naming
+
+<a id="adr-0029"></a>
+**Date**: 2025-11-29
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+The application was using CVA (Class Variance Authority) with hardcoded Tailwind colors, supporting all 21 ColorAccent colors in the type system. However, exhaustive codebase analysis revealed only **13 real Tailwind colors** were actually rendered on screen. This created:
+
+- **Unnecessary cognitive overhead**: 21 color options when only 12 were used
+- **Maintenance burden**: 576-line `safelist.txt` due to dynamic color class generation (`` `bg-${color}-600` ``)
+- **Inconsistent semantics**: Mix of hardcoded colors (`bg-red-600`) and semantic tokens (`bg-brand-600`)
+- **Bundle bloat**: Unused color variants in final CSS
+
+The challenge was to migrate from hardcoded colors to a semantic system without any visual changes, while eliminating the safelist entirely.
+
+### Alternatives
+
+1. **Keep all 21 colors with safelist**:
+   - Simple, no migration needed
+   - **Rejected**: Perpetuates cognitive overhead, dynamic class generation complexity, unused colors
+
+2. **Single-tier semantic system (functional only)**:
+   - All colors have functional meaning (success, error, warning, info, etc.)
+   - **Rejected**: Forces functional semantics on visual variety colors (form step progression, role badges), losing design flexibility
+
+3. **Feature-specific semantics** (e.g., `tournament-color`, `team-color`):
+   - Domain-driven color naming
+   - **Rejected**: Over-engineered for current needs, unclear what "tournament" color means visually
+
+4. **Two-tier semantic system (functional + accents)**:
+   - Tier 1: Colors with functional meaning (success, error, brand)
+   - Tier 2: Colors for visual variety without functional semantics (the "nice tea")
+   - **Selected**: Balances functional clarity with design flexibility
+
+### Decision
+
+Implement **two-tier semantic color system** with strict 12-color palette and complete safelist elimination:
+
+**Tier 1: Functional Semantics** (7 semantic aliases → 6 real colors):
+- `brand` → red
+- `primary` → emerald
+- `success` → green
+- `error` → red (alias of brand)
+- `warning` → yellow
+- `info` → blue
+- `disabled` → slate
+
+**Tier 2: Visual Accents** (6 semantic aliases → 6 real colors):
+- `accent-amber` → amber (form step 2, visual progression)
+- `accent-indigo` → indigo (form step 3)
+- `accent-fuchsia` → fuchsia (competition area, form step 4, admin panel Reports icon)
+- `accent-teal` → teal (users/auth/tournaments/teams areas)
+- `accent-sky` → sky (detail pages)
+- `accent-purple` → purple (editor role)
+- `accent-lime` → purple (admin panel Competition Management icon)
+
+**13 Real Tailwind Colors** (strictly enforced):
+red, emerald, slate, amber, indigo, fuchsia, lime, teal, sky, blue, green, yellow, purple
+
+**5 Unused Colors Removed**:
+zinc, orange, violet, pink, rose
+
+**Key Principles**:
+- **Real colors**: Actual Tailwind color families - **MUST be strict** (only 12 allowed)
+- **Semantic aliases**: Names that MAP to real colors - **can have unlimited** (currently 13)
+- **Static classes only**: No dynamic generation (`bg-${color}-600`), all semantic tokens statically detectable by Tailwind
+- **No visual changes**: Migration formalizes existing usage with semantic names
+
+### Implementation Strategy
+
+**Phase 0.5: Infrastructure Preparation** (No component changes):
+1. Add semantic color tokens to `app/styles/colors.css`:
+   - `--color-success-*`, `--color-error-*`, `--color-warning-*`, `--color-info-*` shades (50-950)
+   - `--color-accent-{name}-*` shades for all visual accents
+   - Formalize adaptive system (`--color-adaptive-{semantic}-{shade}`)
+2. Update `app/lib/lib.types.ts`:
+   - `FunctionalSemantic` type (7 aliases)
+   - `VisualAccent` type (6 aliases)
+   - `SemanticAccent = FunctionalSemantic | VisualAccent`
+3. Create helper functions in `app/components/shared/colorVariants.ts` for semantic mapping
+
+**Phase 1: Component Migration** (Incremental, one at a time):
+- Order: Badge → Button → Panel → ToggleChip → others
+- Per component: Replace hardcoded colors → Update tests → Visual regression verification → Remove safelist entries
+- **Success criteria**: No hardcoded colors, no dynamic generation, uses semantic tokens, all tests passing
+
+**Phase 2: Cleanup & Enforcement**:
+1. Remove 6 unused colors from ColorAccent type (breaking change but justified)
+2. **Eliminate safelist.txt** entirely (or minimize to absolute edge cases)
+3. Update CLAUDE.md with semantic color rules and forbidden colors list
+4. Create Biome linting rule to detect hardcoded/forbidden colors (optional)
+
+### Consequences
+
+**Pros**:
+- **Cognitive clarity**: 13 clear semantic names vs 21 ambiguous color options
+- **Zero safelist**: All classes statically detectable by Tailwind
+- **Type safety**: Enforced 12-color palette at TypeScript level
+- **Design flexibility**: "Nice tea" visual accents don't need forced functional meaning
+- **Maintainability**: Semantic names document intent (brand, success, accent-amber)
+- **Bundle optimization**: Only used colors in final CSS
+
+**Cons / Risks**:
+- **Migration effort**: ~15 variant files + 16 hardcoded className occurrences
+- **Breaking change**: Removing 6 unused colors from ColorAccent type
+- **Learning curve**: Team must understand two-tier system
+- **Multi-step forms dependency**: amber→indigo→fuchsia progression is UX design choice (good, but locked in)
+
+**Supersedes**: —
+**Superseded by**: —
+
+### Compliance / Verification
+
+- ✅ Research verified actual color usage: exhaustive search of component instantiations, roleColors mapping, PANEL_COLORS constants, hardcoded classes
+- ✅ 6 unused colors confirmed: zero usage in props or hardcoded classes (zinc, orange, lime, violet, pink, rose)
+- ✅ Semantic naming strategy finalized: two-tier system with functional + accents
+- ✅ Multi-color form progression validated: good UX design for progressive disclosure, visual anchoring, accessibility
+- ✅ Phase-by-phase migration plan: Infrastructure → Components → Cleanup
+- ✅ Safelist elimination strategy: migrate dynamic classes to semantic tokens
+
+**Implementation tracking**:
+- Research findings: `Color System Migration.md` (comprehensive analysis)
+- Migration plan: `Color System Migration.md` (Phase 0 → Phase 2)

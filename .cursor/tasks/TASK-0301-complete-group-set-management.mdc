@@ -365,8 +365,7 @@ Action FormData keys (all strings):
 - All files listed in "End state" section exist and export expected APIs
 - **Validation passes**: Run `pnpm validate` and fix all errors before completion
   - TypeScript compilation succeeds with no errors
-  - ESLint passes with no errors
-  - Prettier formatting is correct
+  - Biome linting and formatting passes with no errors
 - All unit tests pass locally with `pnpm test:run`
 - All E2E tests pass locally with `pnpm test:e2e:run`
 - New i18n strings added to **all 6 locales** in `app/i18n/locales/`:

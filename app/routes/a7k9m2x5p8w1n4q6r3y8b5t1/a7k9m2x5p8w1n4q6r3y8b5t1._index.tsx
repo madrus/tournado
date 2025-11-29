@@ -214,7 +214,7 @@ export default function AdminDashboard(): JSX.Element {
 						icon={<TuneIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
-						iconColor='violet'
+						iconColor='fuchsia'
 						testId='admin-panel-reports-&-analytics'
 					/>
 				) : null}

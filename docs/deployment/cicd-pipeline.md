@@ -10,7 +10,7 @@ The project uses several GitHub Actions workflows, each with a specific purpose 
 
 - **Purpose:** Runs on every push and pull request to any branch.
 - **Jobs:**
-   - **lint:** Runs ESLint to check code style and quality.
+   - **lint:** Runs Biome to check code style and quality (format + lint).
    - **typecheck:** Runs TypeScript type checking.
    - **vitest:** Runs unit and coverage tests with Vitest.
    - **e2e-tests:** Triggers Playwright end-to-end tests via the reusable workflow.

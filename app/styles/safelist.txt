@@ -379,6 +379,28 @@ text-fuchsia-600
 text-pink-600
 text-rose-600
 
+# =============================================================================
+# Semantic Adaptive Action Colors (for ActionLinkPanel icons)
+# =============================================================================
+text-adaptive-success-action
+border-adaptive-success-action
+text-adaptive-accent-purple-action
+border-adaptive-accent-purple-action
+
+# =============================================================================
+# Semantic Adaptive Colors (for Panel icons - non-action)
+# =============================================================================
+text-adaptive-success
+border-adaptive-success
+text-adaptive-accent-purple
+border-adaptive-accent-purple
+
+# =============================================================================
+# Real Adaptive Colors (for Panel icons - direct color usage)
+# =============================================================================
+text-adaptive-lime
+border-adaptive-lime
+
 # Text Colors - Firebase Auth Labels and Links
 # =============================================================================
 # Teal text colors for Firebase authentication forms

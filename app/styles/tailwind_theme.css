@@ -228,6 +228,21 @@
 	--color-adaptive-brand: var(--color-red-600);
 	--color-adaptive-brand-text: var(--color-red-800);
 
+	/* Adaptive Color System - Functional Semantics (600 weights) */
+	--color-adaptive-success: var(--color-green-600);
+	--color-adaptive-error: var(--color-red-600);
+	--color-adaptive-warning: var(--color-yellow-600);
+	--color-adaptive-info: var(--color-blue-600);
+	--color-adaptive-disabled: var(--color-slate-600);
+
+	/* Adaptive Color System - Visual Accents (600 weights) */
+	--color-adaptive-accent-amber: var(--color-amber-600);
+	--color-adaptive-accent-indigo: var(--color-indigo-600);
+	--color-adaptive-accent-fuchsia: var(--color-fuchsia-600);
+	--color-adaptive-accent-teal: var(--color-teal-600);
+	--color-adaptive-accent-sky: var(--color-sky-600);
+	--color-adaptive-accent-purple: var(--color-purple-600);
+
 	/* Adaptive Color System - Selected State Text Colors (800/900 weights) */
 	--color-adaptive-red-selected: var(--color-red-800);
 	--color-adaptive-blue-selected: var(--color-blue-800);
@@ -250,6 +265,21 @@
 	--color-adaptive-sky-selected: var(--color-sky-800);
 	--color-adaptive-brand-selected: var(--color-brand-800);
 	--color-adaptive-primary-selected: var(--color-primary-800);
+
+	/* Adaptive Color System - Functional Semantics Selected (800 weights) */
+	--color-adaptive-success-selected: var(--color-green-800);
+	--color-adaptive-error-selected: var(--color-red-800);
+	--color-adaptive-warning-selected: var(--color-yellow-800);
+	--color-adaptive-info-selected: var(--color-blue-800);
+	--color-adaptive-disabled-selected: var(--color-slate-800);
+
+	/* Adaptive Color System - Visual Accents Selected (800 weights) */
+	--color-adaptive-accent-amber-selected: var(--color-amber-800);
+	--color-adaptive-accent-indigo-selected: var(--color-indigo-800);
+	--color-adaptive-accent-fuchsia-selected: var(--color-fuchsia-800);
+	--color-adaptive-accent-teal-selected: var(--color-teal-800);
+	--color-adaptive-accent-sky-selected: var(--color-sky-800);
+	--color-adaptive-accent-purple-selected: var(--color-purple-800);
 
 	/* Adaptive Color System - Unselected State Text Colors (shared across components) */
 	--color-adaptive-unselected: var(--color-slate-700);

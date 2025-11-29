@@ -80,11 +80,38 @@ export type ToastConfig = {
 }
 
 /**
- * Semantic color accents for UI components
- * Prefer these in component props to ensure consistency with design system
- * @see app/styles/tailwind.css for semantic class definitions
+ * Functional semantic colors with specific meaning (success, error, warning, etc.)
+ * These colors communicate state or intent to the user
  */
-export type SemanticAccent = 'brand' | 'primary'
+export type FunctionalSemantic =
+	| 'brand'
+	| 'primary'
+	| 'success'
+	| 'error'
+	| 'warning'
+	| 'info'
+	| 'disabled'
+
+/**
+ * Visual accent colors for design variety without functional meaning
+ * Used for progressive disclosure (multi-step forms), role badges, feature areas
+ */
+export type VisualAccent =
+	| 'accent-amber'
+	| 'accent-indigo'
+	| 'accent-fuchsia'
+	| 'accent-teal'
+	| 'accent-sky'
+	| 'accent-purple'
+
+/**
+ * Semantic color accents for UI components
+ * Combines functional semantics with visual accents
+ * Prefer these in component props to ensure consistency with design system
+ * @see app/styles/colors.css for semantic class definitions
+ * @see ADR-0029 for two-tier semantic color system architecture
+ */
+export type SemanticAccent = FunctionalSemantic | VisualAccent
 
 /**
  * Full color accent palette including raw Tailwind colors
@@ -98,23 +125,18 @@ export type SemanticAccent = 'brand' | 'primary'
 export type ColorAccent =
 	| SemanticAccent
 	| 'slate'
-	| 'zinc'
 	| 'red'
-	| 'orange'
 	| 'amber'
 	| 'yellow'
-	| 'lime'
 	| 'green'
 	| 'emerald'
 	| 'teal'
 	| 'sky'
 	| 'blue'
 	| 'indigo'
-	| 'violet'
 	| 'purple'
 	| 'fuchsia'
-	| 'pink'
-	| 'rose'
+	| 'lime'
 	| 'disabled'
 
 // ============================================================================

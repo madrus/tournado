@@ -12,7 +12,7 @@ import type { ToastType } from '~/lib/lib.types'
  * Features consistent styling with proper color coordination between backgrounds and icon colors.
  *
  * Design Features:
- * - Type-specific color theming (emerald, red, sky, orange)
+ * - Type-specific color theming (emerald, red, sky, yellow)
  * - Clean borderless design with colored shadows
  * - Light mode: Dark colored shadows matching toast themes for visibility
  * - Dark mode: Medium white shadows for balanced definition
@@ -35,10 +35,10 @@ const COMMON_STYLES = {
 		'shadow-xl shadow-red-950/30 dark:shadow-md dark:shadow-white/20',
 	],
 	warningStyles: [
-		'bg-gradient-to-br from-orange-600/75 via-orange-600/55 to-orange-600/45',
-		'dark:from-orange-700/55 dark:via-orange-700/45 dark:to-orange-700/40',
+		'bg-gradient-to-br from-yellow-600/75 via-yellow-600/55 to-yellow-600/45',
+		'dark:from-yellow-700/55 dark:via-yellow-700/45 dark:to-yellow-700/40',
 		'text-white',
-		'shadow-xl shadow-orange-950/30 dark:shadow-md dark:shadow-white/20',
+		'shadow-xl shadow-yellow-950/30 dark:shadow-md dark:shadow-white/20',
 	],
 } as const
 
@@ -68,7 +68,7 @@ export const toastMessageVariants = cva(
 			 * - success: Emerald theming with dark emerald shadows in light mode, medium white shadows in dark mode
 			 * - error: Red theming with dark red shadows in light mode, medium white shadows in dark mode
 			 * - info: Sky theming with dark sky shadows in light mode, medium white shadows in dark mode
-			 * - warning: Orange theming with dark orange shadows in light mode, medium white shadows in dark mode
+			 * - warning: Yellow theming with dark yellow shadows in light mode, medium white shadows in dark mode
 			 */
 			type: {
 				success: [
@@ -132,8 +132,8 @@ export const toastIconVariants = cva(
 				client: 'text-red-600',
 				unknown: 'text-red-600',
 				info: 'text-sky-600',
-				warning: 'text-orange-600',
-				validation: 'text-orange-600',
+				warning: 'text-yellow-600',
+				validation: 'text-yellow-600',
 			},
 		},
 		defaultVariants: {

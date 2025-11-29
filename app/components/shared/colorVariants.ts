@@ -18,10 +18,29 @@
 /**
  * Standard color variant keys used across all CVA components.
  * This ensures consistency in color naming and available options.
+ *
+ * Includes both legacy real colors and new semantic colors (ADR-0029):
+ * - Functional Semantics: success, error, warning, info, disabled, brand, primary
+ * - Visual Accents: accent-amber, accent-indigo, accent-fuchsia, accent-teal, accent-sky, accent-purple
+ * - Legacy Real Colors: All 21 Tailwind colors (will be reduced to 12 in Phase 2)
  */
 export const COLOR_VARIANT_KEYS = {
+	// Functional Semantics (ADR-0029)
 	brand: 'brand',
 	primary: 'primary',
+	success: 'success',
+	error: 'error',
+	warning: 'warning',
+	info: 'info',
+	disabled: 'disabled',
+	// Visual Accents (ADR-0029)
+	'accent-amber': 'accent-amber',
+	'accent-indigo': 'accent-indigo',
+	'accent-fuchsia': 'accent-fuchsia',
+	'accent-teal': 'accent-teal',
+	'accent-sky': 'accent-sky',
+	'accent-purple': 'accent-purple',
+	// Legacy Real Colors (reduced to 13 - kept lime for admin panel)
 	emerald: 'emerald',
 	blue: 'blue',
 	slate: 'slate',
@@ -29,18 +48,12 @@ export const COLOR_VARIANT_KEYS = {
 	red: 'red',
 	yellow: 'yellow',
 	green: 'green',
-	violet: 'violet',
-	zinc: 'zinc',
-	orange: 'orange',
 	amber: 'amber',
-	lime: 'lime',
 	sky: 'sky',
 	indigo: 'indigo',
 	purple: 'purple',
 	fuchsia: 'fuchsia',
-	pink: 'pink',
-	rose: 'rose',
-	disabled: 'disabled',
+	lime: 'lime',
 } as const
 
 /**

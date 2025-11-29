@@ -27,7 +27,7 @@ permissions:
 jobs:
   deploy_staging:
     name: Deploy to Staging (dev)
-    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'dev' && github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch' && github.ref_name == 'dev') }}
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

@@ -317,26 +317,26 @@ Questions to decide:
 
 ### Phase 1: Component Migration (One at a time - INCREMENTAL)
 
-**Status**: ⚪ Not Started (ready to begin)
+**Status**: 🟢 In Progress (Badge complete, 6 components remaining)
 
-**Goal**: Migrate components one-by-one using infrastructure from Phase 0.5.
+**Goal**: Migrate components one-by-one to use `ColorVariantKey` type with **100% static class names**. Eliminate all dynamic class generation using template literals.
 
 **Order** (suggested, flexible based on your priorities):
-1. Badge (38 lines) - Easiest POC
-2. Button system (229 lines) - Most complex, highest value
-3. Panel system - 80% done already
-4. ToggleChip (316 lines) - Systematic pattern
-5. Dialog, Toast, DataTable, Inputs, Navigation (as time allows)
+1. ✅ **Badge** (38 lines) - **COMPLETE** - Reference implementation for static class pattern
+2. ⚪ Button system (229 lines) - Most complex, highest value
+3. ⚪ Panel system - 80% done already
+4. ⚪ ToggleChip (316 lines) - Systematic pattern
+5. ⚪ Dialog, Toast, DataTable, Inputs, Navigation (as time allows)
 
 **Per-component process**:
 1. Read component and identify color usage
-2. Replace hardcoded colors with semantic tokens from Phase 0.5
-3. Update unit tests (color class assertions)
+2. Replace hardcoded colors OR `createColorVariantMapping()` calls with explicit static class mappings
+3. Update unit tests (color class assertions) if needed
 4. Update E2E tests if affected
 5. Visual regression test (compare before/after screenshots)
 6. Single PR per component
 
-**You can request**: "Migrate [ComponentName] component" and I'll handle steps 1-6.
+**Reference Implementation**: See `app/components/Badge.tsx` for the correct pattern with all 26 colors using explicit static classes.
 
 **Success criteria per component**:
 - ✅ No hardcoded Tailwind colors (bg-red-600, etc.)
@@ -360,6 +360,58 @@ Questions to decide:
 - [ ] E2E tests updated and passing (if applicable)
 - [ ] Visual regression verified (no changes)
 - [ ] Safelist entries removed
+
+---
+
+### Static Class Pattern (REQUIRED)
+
+All component migrations MUST use 100% static class names. Template literals are NOT allowed because Tailwind's static analysis cannot detect dynamically-generated classes at compile time.
+
+**❌ WRONG - Dynamic classes (Tailwind can't detect)**:
+```typescript
+// This creates dynamic classes that Tailwind cannot detect
+color: createColorVariantMapping(
+  (color) => `bg-${color}-600 text-${color}-50`
+)
+```
+
+**✅ CORRECT - Explicit static classes**:
+```typescript
+// Every class name is fully spelled out
+color: {
+  brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+  primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+  success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
+  // ... all 26 colors explicitly listed
+} satisfies Record<ColorVariantKey, string>
+```
+
+**Why this matters**:
+- Tailwind's PurgeCSS/JIT compiler performs static analysis at build time
+- Template literals like `` `bg-${color}-600` `` are evaluated at runtime, not compile time
+- Tailwind cannot detect which classes will be generated from templates
+- Result: Dynamic classes get purged from the final CSS bundle
+- Solution: Every class must be written as a complete static string
+
+**Helper Function Migration**:
+- `createColorVariantMapping()` and related helpers use template literals
+- Replace each usage with explicit static class mappings (see Badge.tsx example)
+- Once ALL usages are removed from the codebase, delete the helper functions from `colorVariants.ts`
+
+**Reference Implementation**: See `app/components/Badge.tsx` for the complete pattern with all 26 colors.
+
+---
+
+### Completed Migrations
+
+#### Badge Component ✅
+- **File**: `app/components/Badge.tsx`
+- **Pattern**: 26 explicit static color mappings using CVA variants
+- **Type**: Uses `ColorVariantKey` from colorVariants.ts
+- **Type Safety**: `satisfies Record<ColorVariantKey, string>`
+- **Changes**: Migrated from 7 hardcoded colors to full 26-color palette
+- **Tests**: No test updates required (tests use mocked component)
+- **Status**: Complete - serves as reference implementation for all future component migrations
 
 ---
 

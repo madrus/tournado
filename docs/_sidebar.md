@@ -13,6 +13,7 @@
    - [Overview](development/overview.md)
    - [Architecture Analysis](development/architecture-analysis.md)
    - [Authentication](development/authentication.md)
+   - [Color System Migration](development/color-system-migration.md)
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
    - [Data Freshness](development/data-freshness.md)

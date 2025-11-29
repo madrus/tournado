@@ -39,6 +39,7 @@ alwaysApply: false
 | 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
 | 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Implemented | —          | —             |
 | 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                     | 2025-10-24 | Accepted | —          | —             |
+| 0029 | [Semantic Color System: 12-Color Palette with Two-Tier Naming](#adr-0029) | 2025-11-29 | Accepted | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -1607,3 +1608,129 @@ RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" ...) 
 - Production deployments to Fly.io succeed with functional SQLite database
 - Error handling tested: missing package triggers clear "ERROR: better-sqlite3 directory not found" message
 - Image size optimized: production image excludes build-essential (~100MB savings)
+
+## ADR-0029 — Semantic Color System: 12-Color Palette with Two-Tier Naming
+
+<a id="adr-0029"></a>
+**Date**: 2025-11-29
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+The application was using CVA (Class Variance Authority) with hardcoded Tailwind colors, supporting all 21 ColorAccent colors in the type system. However, exhaustive codebase analysis revealed only **12 real Tailwind colors** were actually rendered on screen. This created:
+
+- **Unnecessary cognitive overhead**: 21 color options when only 12 were used
+- **Maintenance burden**: 576-line `safelist.txt` due to dynamic color class generation (`` `bg-${color}-600` ``)
+- **Inconsistent semantics**: Mix of hardcoded colors (`bg-red-600`) and semantic tokens (`bg-brand-600`)
+- **Bundle bloat**: Unused color variants in final CSS
+
+The challenge was to migrate from hardcoded colors to a semantic system without any visual changes, while eliminating the safelist entirely.
+
+### Alternatives
+
+1. **Keep all 21 colors with safelist**:
+   - Simple, no migration needed
+   - **Rejected**: Perpetuates cognitive overhead, dynamic class generation complexity, unused colors
+
+2. **Single-tier semantic system (functional only)**:
+   - All colors have functional meaning (success, error, warning, info, etc.)
+   - **Rejected**: Forces functional semantics on visual variety colors (form step progression, role badges), losing design flexibility
+
+3. **Feature-specific semantics** (e.g., `tournament-color`, `team-color`):
+   - Domain-driven color naming
+   - **Rejected**: Over-engineered for current needs, unclear what "tournament" color means visually
+
+4. **Two-tier semantic system (functional + accents)**:
+   - Tier 1: Colors with functional meaning (success, error, brand)
+   - Tier 2: Colors for visual variety without functional semantics (the "nice tea")
+   - **Selected**: Balances functional clarity with design flexibility
+
+### Decision
+
+Implement **two-tier semantic color system** with strict 12-color palette and complete safelist elimination:
+
+**Tier 1: Functional Semantics** (7 semantic aliases → 6 real colors):
+- `brand` → red
+- `primary` → emerald
+- `success` → green
+- `error` → red (alias of brand)
+- `warning` → yellow
+- `info` → blue
+- `disabled` → slate
+
+**Tier 2: Visual Accents** (6 semantic aliases → 6 real colors):
+- `accent-amber` → amber (form step 2, visual progression)
+- `accent-indigo` → indigo (form step 3)
+- `accent-fuchsia` → fuchsia (competition area, form step 4)
+- `accent-teal` → teal (users/auth/tournaments/teams areas)
+- `accent-sky` → sky (detail pages)
+- `accent-purple` → purple (editor role)
+
+**12 Real Tailwind Colors** (strictly enforced):
+red, emerald, slate, amber, indigo, fuchsia, teal, sky, blue, green, yellow, purple
+
+**6 Unused Colors Removed**:
+zinc, orange, lime, violet, pink, rose
+
+**Key Principles**:
+- **Real colors**: Actual Tailwind color families - **MUST be strict** (only 12 allowed)
+- **Semantic aliases**: Names that MAP to real colors - **can have unlimited** (currently 13)
+- **Static classes only**: No dynamic generation (`` `bg-${color}-600` ``), all semantic tokens statically detectable by Tailwind
+- **No visual changes**: Migration formalizes existing usage with semantic names
+
+### Implementation Strategy
+
+**Phase 0.5: Infrastructure Preparation** (No component changes):
+1. Add semantic color tokens to `app/styles/colors.css`:
+   - `--color-success-*`, `--color-error-*`, `--color-warning-*`, `--color-info-*` shades (50-950)
+   - `--color-accent-{name}-*` shades for all visual accents
+   - Formalize adaptive system (`--color-adaptive-{semantic}-{shade}`)
+2. Update `app/lib/lib.types.ts`:
+   - `FunctionalSemantic` type (7 aliases)
+   - `VisualAccent` type (6 aliases)
+   - `SemanticAccent = FunctionalSemantic | VisualAccent`
+3. Create helper functions in `app/components/shared/colorVariants.ts` for semantic mapping
+
+**Phase 1: Component Migration** (Incremental, one at a time):
+- Order: Badge → Button → Panel → ToggleChip → others
+- Per component: Replace hardcoded colors → Update tests → Visual regression verification → Remove safelist entries
+- **Success criteria**: No hardcoded colors, no dynamic generation, uses semantic tokens, all tests passing
+
+**Phase 2: Cleanup & Enforcement**:
+1. Remove 6 unused colors from ColorAccent type (breaking change but justified)
+2. **Eliminate safelist.txt** entirely (or minimize to absolute edge cases)
+3. Update CLAUDE.md with semantic color rules and forbidden colors list
+4. Create Biome linting rule to detect hardcoded/forbidden colors (optional)
+
+### Consequences
+
+**Pros**:
+- **Cognitive clarity**: 13 clear semantic names vs 21 ambiguous color options
+- **Zero safelist**: All classes statically detectable by Tailwind
+- **Type safety**: Enforced 12-color palette at TypeScript level
+- **Design flexibility**: "Nice tea" visual accents don't need forced functional meaning
+- **Maintainability**: Semantic names document intent (brand, success, accent-amber)
+- **Bundle optimization**: Only used colors in final CSS
+
+**Cons / Risks**:
+- **Migration effort**: ~15 variant files + 16 hardcoded className occurrences
+- **Breaking change**: Removing 6 unused colors from ColorAccent type
+- **Learning curve**: Team must understand two-tier system
+- **Multi-step forms dependency**: amber→indigo→fuchsia progression is UX design choice (good, but locked in)
+
+**Supersedes**: —
+**Superseded by**: —
+
+### Compliance / Verification
+
+- ✅ Research verified actual color usage: exhaustive search of component instantiations, roleColors mapping, PANEL_COLORS constants, hardcoded classes
+- ✅ 6 unused colors confirmed: zero usage in props or hardcoded classes (zinc, orange, lime, violet, pink, rose)
+- ✅ Semantic naming strategy finalized: two-tier system with functional + accents
+- ✅ Multi-color form progression validated: good UX design for progressive disclosure, visual anchoring, accessibility
+- ✅ Phase-by-phase migration plan: Infrastructure → Components → Cleanup
+- ✅ Safelist elimination strategy: migrate dynamic classes to semantic tokens
+
+**Implementation tracking**:
+- Research findings: `Color System Migration.md` (comprehensive analysis)
+- Migration plan: `Color System Migration.md` (Phase 0 → Phase 2)

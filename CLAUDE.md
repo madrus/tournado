@@ -183,6 +183,43 @@ app/features/{feature}/
 - **Avoid "any" as type**. Always use strong typing
 - **No semicolons**. Do not add semicolons to new code. Biome will automatically remove them from existing code during formatting
 
+### Version Pinning and Hardcoding
+
+- **NEVER hardcode version numbers** in Dockerfiles, scripts, or configuration files
+- When copying/referencing dependencies, use wildcards or dynamic resolution (e.g., `better-sqlite3@*` not `better-sqlite3@12.4.6`)
+- If you find yourself typing an exact version number, immediately ask: "What breaks when this upgrades?"
+- **Red flags**: Any string matching patterns like `@\d+\.\d+\.\d+`, `v1.2.3`, `node-v127`, etc.
+- **Exception**: package.json and lock files where version pinning is intentional
+
+### Solution Review Protocol
+
+Before presenting any solution, pause and challenge it with these questions:
+
+1. **Upgrade path**: Will this break on version bumps? (dependencies, Node.js, base images)
+2. **Maintenance burden**: What manual steps are needed when dependencies/config change?
+3. **Hardcoded assumptions**: What values should be dynamic/configurable?
+4. **Edge cases**: What happens when [environment/version/config] changes?
+5. **Cross-environment**: Does this work in dev, staging, and production?
+
+### Defensive Architecture Principles
+
+- **Assume change**: Dependencies upgrade, environments vary, configurations differ
+- **Design for unknown**: Use patterns/wildcards over exact matches
+- **Document why**: If you must hardcode something, explain why with a comment
+- **Future-proof first**: Don't optimize for "works now", optimize for "still works in 6 months"
+- **Test the upgrade path**: Mentally simulate upgrading a dependency - does your solution break?
+
+### When to Self-Challenge
+
+Trigger self-review when you write:
+
+- Exact version numbers (`12.4.6`, `v127`, `node-22`) outside package.json
+- Environment-specific paths that could vary
+- Hardcoded configuration values that might change
+- Solutions that fix immediate errors without considering maintenance
+
+**Key principle**: If your solution requires manual edits during routine maintenance (version upgrades, environment changes), it's not robust enough. Redesign before presenting.
+
 ### React Component Definitions
 
 - **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic

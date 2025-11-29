@@ -33,22 +33,14 @@ COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
-# Install production dependencies
-# We need to run scripts for better-sqlite3 to build native bindings
-# This is safe because:
-# 1. We're installing from a locked lockfile (frozen-lockfile)
-# 2. Only production dependencies are installed
-# 3. better-sqlite3 is a well-known, vetted package
-RUN pnpm install --prod --frozen-lockfile && \
-  pnpm install prisma @prisma/client && \
+# Install production dependencies without running scripts (avoid husky postinstall)
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
+  pnpm install prisma @prisma/client --ignore-scripts && \
   pnpm prisma generate
 
-# Copy better-sqlite3 native bindings from deps stage (already built with --unsafe-perm)
-# Using shell glob to avoid hardcoding version number
-RUN mkdir -p /tmp/better-sqlite3-build
-COPY --from=deps /workdir/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3/build /tmp/better-sqlite3-build/
-RUN cp -r /tmp/better-sqlite3-build/* /workdir/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3/ && \
-  rm -rf /tmp/better-sqlite3-build
+# Rebuild better-sqlite3 to compile native bindings for Linux
+# This runs only better-sqlite3's install script, not package.json postinstall
+RUN pnpm rebuild better-sqlite3
 
 # Build the app
 FROM base AS build

@@ -33,17 +33,15 @@ COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
-# Install production dependencies (without scripts for security)
-RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
-  pnpm install prisma @prisma/client --ignore-scripts && \
+# Install production dependencies
+# We need to run scripts for better-sqlite3 to build native bindings
+# This is safe because:
+# 1. We're installing from a locked lockfile (frozen-lockfile)
+# 2. Only production dependencies are installed
+# 3. better-sqlite3 is a well-known, vetted package
+RUN pnpm install --prod --frozen-lockfile && \
+  pnpm install prisma @prisma/client && \
   pnpm prisma generate
-
-# Copy better-sqlite3 native bindings from deps stage (already built with --unsafe-perm)
-# Using shell glob to avoid hardcoding version number
-RUN mkdir -p /tmp/better-sqlite3-build
-COPY --from=deps /workdir/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3/build /tmp/better-sqlite3-build/
-RUN cp -r /tmp/better-sqlite3-build/* /workdir/node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3/ && \
-  rm -rf /tmp/better-sqlite3-build
 
 # Build the app
 FROM base AS build

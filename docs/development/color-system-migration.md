@@ -101,7 +101,7 @@
 - **info** → blue (to add to colors.css)
 
 **6 UNUSED REAL COLORS** (exclude from planning):
-zinc, orange, lime, violet, pink, rose
+zinc, orange, violet, pink, rose
 
 **Key principle**:
 - **Real colors** = actual Tailwind color families (red, blue, etc.) - **MUST be strict about these**
@@ -192,7 +192,7 @@ Questions to decide:
 **Checkist**:
 - [x] Decide on semantic categories → Two-tier: functional + accents
 - [x] Decide on abstraction layers → Both generic (success/error) + component-level (accent-amber)
-- [x] Map all 12 real colors to semantics → Complete (see above)
+- [x] Map all 13 real colors to semantics → Complete (see above)
 - [x] Document rationale → "nice tea" philosophy + UX design rationale
 
 ---
@@ -268,26 +268,26 @@ Questions to decide:
 
 **Goal**: Remove 5 unused legacy colors (zinc, orange, violet, pink, rose) to reduce file sizes and improve maintainability before Phase 1 component migrations.
 
-**Decision**: Remove 5 colors + refactor toast warnings to use semantic `warning` color (yellow). **Note**: `lime` was initially considered unused but is actually used in admin panel Competition Management icon - kept as used color.
+**Decision**: Remove 5 colors + refactor toast warnings to use semantic `warning` color (yellow).
 
 **Scope**: 13 files, ~260 lines removed
 
 **Results**:
-- ColorAccent type reduced from 21 to 16 colors (app/lib/lib.types.ts:125-139) - kept lime
-- COLOR_VARIANT_KEYS reduced from 34 to 29 entries (app/components/shared/colorVariants.ts) - kept lime
+- ColorAccent type reduced from 21 to 16 colors (app/lib/lib.types.ts:125-139)
+- COLOR_VARIANT_KEYS reduced from 34 to 29 entries (app/components/shared/colorVariants.ts)
 - Toast warnings migrated from orange to yellow/warning semantic (3 files)
 - All CVA variant files cleaned (button, dataTable, inputs, toggleChip, firebaseAuth)
 - All tests updated and passing
 - Zero TypeScript errors, build successful
-- Admin panel icons: violet→fuchsia (Reports), lime kept (Competition Management)
+- Admin panel icons: violet→fuchsia (Reports)
 
 **Checklist**:
-- [x] Remove 5 colors from ColorAccent type (app/lib/lib.types.ts) - kept lime
-- [x] Remove 5 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts) - kept lime
+- [x] Remove 5 colors from ColorAccent type (app/lib/lib.types.ts)
+- [x] Remove 5 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts)
 - [x] Refactor toast warnings: orange → `warning` semantic (toastMessage.variants.ts)
-- [x] Clean 5 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth) - kept lime
+- [x] Clean 5 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth)
 - [x] Update 5 test files (ring.styles.test.ts, panel.variants.test.ts, toastMessage.variants.test.ts, ToastIcon.test.tsx, toggleChip.variants.ts)
-- [x] Fix component props in admin panel (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: violet→fuchsia, kept lime)
+- [x] Fix component props in admin panel (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: violet→fuchsia)
 - [x] Verify typecheck passes ✅
 - [x] Verify build succeeds ✅
 - [x] Verify tests pass ✅
@@ -311,7 +311,7 @@ Questions to decide:
 - ✅ Reduced codebase bloat by ~260 lines
 - ✅ Color system now has 13 real colors + 13 semantics (26 total, down from 34)
 - ✅ Cleaner base for Phase 1 component migrations
-- ✅ No visual changes (fuchsia replaces violet, lime kept for competition icon)
+- ✅ No visual changes (fuchsia replaces violet)
 
 ---
 
@@ -373,7 +373,6 @@ Questions to decide:
 
 1. **Remove unused colors from ColorAccent type** (app/lib/lib.types.ts):
    - **REMOVE**: zinc, orange, violet, pink, rose (5 colors)
-   - **KEEP**: lime (used in admin competition management icon)
    - Update ColorAccent to only include the 13 used real colors + semantic aliases
    - Breaking change but justified - these 5 colors are never used
 
@@ -403,7 +402,7 @@ Questions to decide:
 
 **Checklist**:
 - [x] Create ADR (explain color palette decision) - ADR-0029 created
-- [ ] Remove 5 unused colors from ColorAccent type (keep lime)
+- [x] Remove 5 unused colors from ColorAccent type
 - [ ] Delete safelist.txt entirely (or minimize to absolute edge cases)
 - [ ] Update CLAUDE.md (document 13-color system + forbidden list: zinc, orange, violet, pink, rose)
 - [ ] Update ADR-0029 to reflect 13 colors instead of 12

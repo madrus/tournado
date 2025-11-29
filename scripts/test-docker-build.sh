@@ -102,7 +102,7 @@ RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" -path
   npm run build-release || { echo "ERROR: better-sqlite3 build failed"; exit 1; }
 EOF
 
-BUILD_OUTPUT=$(docker build -f /tmp/test-dockerfile-error --target test -t test-error . 2>&1 || true)
+BUILD_OUTPUT=$(docker build -f /tmp/test-dockerfile-error --target test -t test-error "$PROJECT_ROOT" 2>&1 || true)
 if echo "$BUILD_OUTPUT" | grep -q "ERROR: better-sqlite3 directory not found"; then
   echo -e "${GREEN}✓ Error handling works: clear error message displayed${NC}"
 else

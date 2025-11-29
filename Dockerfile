@@ -53,7 +53,10 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
   pnpm prisma generate
 
 # Build better-sqlite3 native bindings manually
-# Find the better-sqlite3 directory and run its build script directly
+# The --ignore-scripts flag (above) prevents native module compilation, so we manually
+# trigger the build. better-sqlite3 provides 'build-release' script that runs:
+# node-gyp rebuild --release (optimized production build without debug symbols)
+# See: https://github.com/WiseLibs/better-sqlite3/blob/master/package.json#scripts
 RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" -path "*/node_modules/better-sqlite3" | head -1) && \
   if [ -z "$SQLITE_DIR" ] || [ ! -d "$SQLITE_DIR" ]; then \
     echo "ERROR: better-sqlite3 directory not found"; exit 1; \

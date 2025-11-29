@@ -252,9 +252,105 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 RUN SQLITE_DIR=$(find ...) && cd "$SQLITE_DIR" && npm run build-release
 ```
 
+## Automated Testing
+
+To prevent regressions when modifying Docker configuration, we've created an automated test suite.
+
+### Running the tests
+
+```bash
+pnpm test:docker
+```
+
+### What gets tested
+
+The test suite (`scripts/test-docker-build.sh`) validates:
+
+1. **Production-deps stage builds successfully**
+   - Verifies multi-stage build process works
+   - Ensures no breaking changes in dependency installation
+
+2. **better-sqlite3 binary compilation**
+   - Confirms native module compiles correctly
+   - Validates binary exists at expected path
+   - Checks binary is executable with correct permissions
+   - Verifies binary size is valid (>1MB for native module)
+
+3. **Prisma client generation**
+   - Ensures Prisma client is generated during build
+   - Validates ORM is ready for production
+
+4. **Error handling**
+   - Tests that missing dependencies fail with clear error messages
+   - Validates fail-fast behavior with context
+
+5. **Build stage completion**
+   - Confirms application builds successfully
+   - Validates all build artifacts are created
+
+6. **Production image assembly**
+   - Verifies final production image builds
+   - Checks all required files are present:
+     - `/workdir/build/server/index.js`
+     - `/workdir/package.json`
+     - `/workdir/start.sh`
+     - `/workdir/prisma/`
+
+### When to run these tests
+
+- **Before pushing Dockerfile changes** - Catch issues locally before CI/CD
+- **After updating base images** - Ensure compatibility with new Node/OS versions
+- **When changing native dependency versions** - Verify compilation still works
+- **During code review** - Validate Docker changes don't break deployment
+
+### Test output
+
+Color-coded results with clear pass/fail indicators:
+```
+==========================================
+Docker Build Validation Tests
+==========================================
+
+Test 1: Building production-deps stage...
+✓ Production-deps stage built successfully
+
+Test 2: Verifying better-sqlite3 binary exists...
+✓ Binary found at: /workdir/node_modules/.pnpm/better-sqlite3@12.4.6/...
+
+Test 3: Verifying binary properties...
+✓ Binary is executable: -rwxr-xr-x
+✓ Binary size is valid: 1.9M (1969848 bytes)
+
+...
+
+==========================================
+All tests passed! ✓
+==========================================
+```
+
+### Test duration
+
+Approximately 2-3 minutes (builds 3 Docker stages locally).
+
+### CI/CD integration
+
+While currently designed for local validation, the test can be added to CI/CD pipelines:
+
+```yaml
+# .github/workflows/docker-test.yml
+- name: Test Docker Build
+  run: pnpm test:docker
+```
+
+**Note**: Running in CI will increase build time, so consider running only on:
+- Pull requests that modify `Dockerfile`
+- Scheduled weekly builds
+- Release branches
+
 ## References
 
 - [Docker multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
 - [better-sqlite3 documentation](https://github.com/WiseLibs/better-sqlite3)
 - [node-gyp documentation](https://github.com/nodejs/node-gyp)
 - [pnpm --ignore-scripts flag](https://pnpm.io/cli/install#--ignore-scripts)
+- [Test script source](../../scripts/test-docker-build.sh)

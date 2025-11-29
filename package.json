@@ -54,6 +54,7 @@
 		"test:e2e:ui": "PLAYWRIGHT=true start-server-and-test 'node scripts/e2e-server.js' http://localhost:8811 'playwright test --ui'",
 		"test:run": "vitest run",
 		"test:watch": "vitest",
+		"test:docker": "bash scripts/test-docker-build.sh",
 		"typecheck": "react-router typegen && tsc",
 		"validate": "pnpm lint && pnpm typecheck && pnpm test"
 	},

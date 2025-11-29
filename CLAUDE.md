@@ -44,6 +44,7 @@ pnpm test:coverage  # Run tests with coverage report
 pnpm test:e2e       # Run Playwright E2E tests in UI mode
 pnpm test:e2e:run   # Run specific E2E test (teams.spec.ts) with HTML reporter
 pnpm test:e2e:built # Build and run E2E tests against production build
+pnpm test:docker    # Validate Docker builds and native dependencies (better-sqlite3)
 ```
 
 ### Code Quality
@@ -100,6 +101,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 
 - **Unit tests**: Vitest with React Testing Library (\*.test.ts/tsx files)
 - **E2E tests**: Playwright in `playwright/tests/` (\*.spec.ts files)
+- **Docker tests**: `pnpm test:docker` - validates Docker builds and native dependencies
 - **Coverage**: Comprehensive coverage thresholds (70% across all metrics)
 - **Test separation**: Clear separation between unit and E2E test files
 

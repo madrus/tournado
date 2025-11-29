@@ -201,12 +201,12 @@ docker run --rm test-build ls -la /workdir/node_modules/.pnpm/*/node_modules/bet
 
 This approach works for any native Node.js module:
 
-| Module | Build Command | Notes |
-|--------|--------------|-------|
-| `better-sqlite3` | `npm run build-release` | Requires build-essential |
-| `bcrypt` | `npm rebuild bcrypt` | Requires python3 |
-| `sharp` | `npm rebuild sharp` | May need additional image libraries |
-| `node-gyp` modules | `npm run build` or `node-gyp rebuild` | Check package.json scripts |
+| Module             | Build Command                         | Notes                               |
+| ------------------ | ------------------------------------- | ----------------------------------- |
+| `better-sqlite3`   | `npm run build-release`               | Requires build-essential            |
+| `bcrypt`           | `npm rebuild bcrypt`                  | Requires python3                    |
+| `sharp`            | `npm rebuild sharp`                   | May need additional image libraries |
+| `node-gyp` modules | `npm run build` or `node-gyp rebuild` | Check package.json scripts          |
 
 **General pattern**:
 1. Install with `--ignore-scripts`
@@ -306,7 +306,7 @@ The test suite (`scripts/test-docker-build.sh`) validates:
 ### Test output
 
 Color-coded results with clear pass/fail indicators:
-```
+```text
 ==========================================
 Docker Build Validation Tests
 ==========================================
@@ -354,3 +354,7 @@ While currently designed for local validation, the test can be added to CI/CD pi
 - [node-gyp documentation](https://github.com/nodejs/node-gyp)
 - [pnpm --ignore-scripts flag](https://pnpm.io/cli/install#--ignore-scripts)
 - [Test script source](../../scripts/test-docker-build.sh)
+
+## Tags
+
+#deployment #docker #native-modules #troubleshooting #ci-cd #testing #build-tools #sqlite #automation

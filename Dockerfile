@@ -5,10 +5,16 @@ FROM node:22-bullseye-slim AS base
 ENV NODE_ENV=production
 ENV HUSKY=0
 
-# Install openssl for Prisma and pnpm
-RUN apt-get update && apt-get install -y openssl sqlite3 python3-pip && \
-  npm install -g pnpm@10 && \
-  pip3 install litecli
+# Install openssl for Prisma, build tools for native modules, and pnpm
+RUN apt-get update && apt-get install -y \
+  openssl \
+  sqlite3 \
+  python3 \
+  python3-pip \
+  build-essential \
+  && npm install -g pnpm@10 \
+  && pip3 install litecli \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install all node_modules, including dev dependencies
 FROM base AS deps
@@ -33,14 +39,16 @@ COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
-# Install production dependencies without running scripts (avoid husky postinstall)
+# Install production dependencies without scripts (skip postinstall hook that calls husky)
 RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
   pnpm install prisma @prisma/client --ignore-scripts && \
   pnpm prisma generate
 
-# Rebuild better-sqlite3 to compile native bindings for Linux
-# This runs only better-sqlite3's install script, not package.json postinstall
-RUN pnpm rebuild better-sqlite3
+# Build better-sqlite3 native bindings manually
+# Find the better-sqlite3 directory and run its build script directly
+RUN SQLITE_DIR=$(find /workdir/node_modules/.pnpm -type d -name "better-sqlite3" -path "*/node_modules/better-sqlite3" | head -1) && \
+  cd "$SQLITE_DIR" && \
+  npm run build-release
 
 # Build the app
 FROM base AS build

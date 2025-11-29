@@ -375,15 +375,21 @@ color: createColorVariantMapping(
 )
 ```
 
-**✅ CORRECT - Explicit static classes**:
+**✅ CORRECT - Inline explicit static classes**:
 ```typescript
-// Every class name is fully spelled out
-color: {
-  brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
-  primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
-  success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
-  // ... all 26 colors explicitly listed
-} satisfies Record<ColorVariantKey, string>
+// badge.variants.ts - Every class name explicitly written inline
+import type { ColorVariantKey } from '~/components/shared/colorVariants'
+
+export const badgeVariants = cva('...', {
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
+      // ... all 26 colors explicitly spelled out
+    } satisfies Record<ColorVariantKey, string>
+  }
+})
 ```
 
 **Why this matters**:
@@ -393,25 +399,57 @@ color: {
 - Result: Dynamic classes get purged from the final CSS bundle
 - Solution: Every class must be written as a complete static string
 
+**Inline Definition Approach**:
+- Each component defines its color variants inline with explicit static classes
+- Each component has unique color patterns (different shades, properties, states)
+- No sharing possible across components - patterns are component-specific
+- Use `satisfies Record<ColorVariantKey, string>` for type safety
+- Ensures all 26 colors are defined and properly typed
+
 **Helper Function Migration**:
 - `createColorVariantMapping()` and related helpers use template literals
-- Replace each usage with explicit static class mappings (see Badge.tsx example)
+- Replace each usage with inline explicit static class definitions
+- Expand the template literal logic into 26 explicit entries
 - Once ALL usages are removed from the codebase, delete the helper functions from `colorVariants.ts`
 
-**Reference Implementation**: See `app/components/Badge.tsx` for the complete pattern with all 26 colors.
+**Reference Implementation**: See `app/components/Badge/badge.variants.ts` for the correct pattern with inline explicit classes.
 
 ---
 
 ### Completed Migrations
 
 #### Badge Component ✅
-- **File**: `app/components/Badge.tsx`
-- **Pattern**: 26 explicit static color mappings using CVA variants
+- **Structure**: Organized folder with separate variants file
+  - `app/components/Badge/Badge.tsx` - Component implementation
+  - `app/components/Badge/badge.variants.ts` - CVA variants with all colors inline
+  - `app/components/Badge/index.ts` - Barrel exports
+  - `app/components/Badge/__tests__/Badge.test.tsx` - 36 unit tests
+- **Pattern**: 26 explicit static color mappings inline (NO template literals, NO shared constants)
 - **Type**: Uses `ColorVariantKey` from colorVariants.ts
 - **Type Safety**: `satisfies Record<ColorVariantKey, string>`
 - **Changes**: Migrated from 7 hardcoded colors to full 26-color palette
-- **Tests**: No test updates required (tests use mocked component)
+- **Tests**: Added comprehensive unit tests covering all 26 colors + functionality (36 tests)
 - **Status**: Complete - serves as reference implementation for all future component migrations
+
+**Key Implementation Details**:
+```typescript
+// badge.variants.ts - All colors defined inline, explicitly
+export const badgeVariants = cva('...', {
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      // ... all 26 colors explicitly spelled out inline
+    } satisfies Record<ColorVariantKey, string>
+  }
+})
+```
+
+**Why inline, not shared**:
+- Each component has unique color patterns (different shades, hover states, borders)
+- Badge uses `bg-{color}-600`, DataTable uses `bg-{color}-50`, ToggleChip uses complex hover patterns
+- No practical sharing possible - would create separate constant per component anyway
+- Inline keeps all variant logic in one place for maintainability
 
 ---
 

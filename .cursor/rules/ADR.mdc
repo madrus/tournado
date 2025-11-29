@@ -10,36 +10,37 @@ alwaysApply: false
 
 <!-- BEGIN:ADR_INDEX -->
 
-| ID   | Title                                                                       | Date       | Status   | Supersedes | Superseded by |
-| ---- | --------------------------------------------------------------------------- | ---------- | -------- | ---------- | ------------- |
-| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                          | 2025-08-27 | Accepted | —          | —             |
-| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                   | 2025-08-27 | Accepted | —          | —             |
-| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)         | 2025-08-27 | Accepted | —          | —             |
-| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)       | 2025-09-03 | Accepted | —          | —             |
-| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)             | 2025-09-03 | Accepted | —          | —             |
-| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                   | 2025-09-03 | Accepted | —          | —             |
-| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)         | 2025-09-03 | Accepted | —          | —             |
-| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                            | 2025-09-03 | Accepted | —          | —             |
-| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)             | 2025-09-03 | Accepted | —          | —             |
-| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                           | 2025-09-03 | Accepted | —          | —             |
-| 0011 | [Security Headers and CSP Baseline](#adr-0011)                              | 2025-09-03 | Accepted | —          | —             |
-| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                              | 2025-09-03 | Accepted | —          | —             |
-| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                    | 2025-09-05 | Accepted | —          | —             |
-| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                        | 2025-09-05 | Accepted | —          | —             |
-| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                     | 2025-09-05 | Accepted | —          | —             |
-| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016) | 2025-09-05 | Accepted | —          | —             |
-| 0017 | [Email Integration via Resend](#adr-0017)                                   | 2025-09-05 | Accepted | —          | —             |
-| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                          | 2025-09-05 | Accepted | —          | —             |
-| 0019 | [Data Model and Migration Strategy](#adr-0019)                              | 2025-09-05 | Accepted | —          | —             |
-| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                       | 2025-09-05 | Accepted | —          | —             |
-| 0021 | [Live Updates Transport Architecture](#adr-0021)                            | 2025-09-05 | Accepted | —          | —             |
-| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                       | 2025-09-07 | Accepted | —          | —             |
-| 0023 | [Environment Variable Management Strategy](#adr-0023)                       | 2025-09-21 | Accepted | —          | —             |
-| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                           | 2025-09-21 | Accepted | —          | —             |
-| 0025 | [Competition Section Structure and Group Management](#adr-0025)             | 2025-10-08 | Accepted | —          | —             |
-| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                  | 2025-10-08 | Implemented | —          | —             |
-| 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                     | 2025-10-24 | Accepted | —          | —             |
-| 0029 | [Semantic Color System: 12-Color Palette with Two-Tier Naming](#adr-0029) | 2025-11-29 | Accepted | —          | —             |
+| ID   | Title                                                                        | Date       | Status      | Supersedes | Superseded by |
+| ---- | ---------------------------------------------------------------------------- | ---------- | ----------- | ---------- | ------------- |
+| 0001 | [React Router v7 Frontend Architecture](#adr-0001)                           | 2025-08-27 | Accepted    | —          | —             |
+| 0002 | [Single Repository Frontend-Only Architecture](#adr-0002)                    | 2025-08-27 | Accepted    | —          | —             |
+| 0003 | [State Management with Zustand and React Router Loaders](#adr-0003)          | 2025-08-27 | Accepted    | —          | —             |
+| 0004 | [Authentication via Firebase with Session Cookie Bridging](#adr-0004)        | 2025-09-03 | Accepted    | —          | —             |
+| 0005 | [Role-Based Access Control and Referee Token System](#adr-0005)              | 2025-09-03 | Accepted    | —          | —             |
+| 0006 | [Design System: Semantic Tokens and Dark Mode](#adr-0006)                    | 2025-09-03 | Accepted    | —          | —             |
+| 0007 | [Navigation Performance: Prefetching and Data Freshness](#adr-0007)          | 2025-09-03 | Accepted    | —          | —             |
+| 0008 | [Service Worker and PWA Capabilities](#adr-0008)                             | 2025-09-03 | Accepted    | —          | —             |
+| 0009 | [Internationalization Persistence and SSR Detection](#adr-0009)              | 2025-09-03 | Accepted    | —          | —             |
+| 0010 | [CI/CD and Fly.io Deployment Strategy](#adr-0010)                            | 2025-09-03 | Accepted    | —          | —             |
+| 0011 | [Security Headers and CSP Baseline](#adr-0011)                               | 2025-09-03 | Accepted    | —          | —             |
+| 0012 | [Analytics and Privacy (GA4 Scope)](#adr-0012)                               | 2025-09-03 | Accepted    | —          | —             |
+| 0013 | [Testing Strategy and Comprehensive Coverage](#adr-0013)                     | 2025-09-05 | Accepted    | —          | —             |
+| 0014 | [Mobile-First Responsive Design Strategy](#adr-0014)                         | 2025-09-05 | Accepted    | —          | —             |
+| 0015 | [Error Handling and Boundaries Architecture](#adr-0015)                      | 2025-09-05 | Accepted    | —          | —             |
+| 0016 | [Performance Architecture: Bundle Management and Code Splitting](#adr-0016)  | 2025-09-05 | Accepted    | —          | —             |
+| 0017 | [Email Integration via Resend](#adr-0017)                                    | 2025-09-05 | Accepted    | —          | —             |
+| 0018 | [Rate Limiting and Security Middleware](#adr-0018)                           | 2025-09-05 | Accepted    | —          | —             |
+| 0019 | [Data Model and Migration Strategy](#adr-0019)                               | 2025-09-05 | Accepted    | —          | —             |
+| 0020 | [Offline Capabilities and Background Sync](#adr-0020)                        | 2025-09-05 | Accepted    | —          | —             |
+| 0021 | [Live Updates Transport Architecture](#adr-0021)                             | 2025-09-05 | Accepted    | —          | —             |
+| 0022 | [RBAC Middleware and Permission Utilities](#adr-0022)                        | 2025-09-07 | Accepted    | —          | —             |
+| 0023 | [Environment Variable Management Strategy](#adr-0023)                        | 2025-09-21 | Accepted    | —          | —             |
+| 0024 | [E2E Testing Firebase Bypass Strategy](#adr-0024)                            | 2025-09-21 | Accepted    | —          | —             |
+| 0025 | [Competition Section Structure and Group Management](#adr-0025)              | 2025-10-08 | Accepted    | —          | —             |
+| 0026 | [User Management Workflows and Admin Controls](#adr-0026)                    | 2025-10-08 | Implemented | —          | —             |
+| 0027 | [Semantic Heading Hierarchy with AppBar h1](#adr-0027)                       | 2025-10-24 | Accepted    | —          | —             |
+| 0028 | [Docker Multi-Stage Build Strategy for Native Module Compilation](#adr-0028) | 2025-11-29 | Accepted    | —          | —             |
+| 0029 | [Semantic Color System: 13-Color Palette with Two-Tier Naming](#adr-0029)    | 2025-11-29 | Accepted    | —          | —             |
 
 <!-- END:ADR_INDEX -->
 
@@ -1609,7 +1610,7 @@ RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" ...) 
 - Error handling tested: missing package triggers clear "ERROR: better-sqlite3 directory not found" message
 - Image size optimized: production image excludes build-essential (~100MB savings)
 
-## ADR-0029 — Semantic Color System: 12-Color Palette with Two-Tier Naming
+## ADR-0029 — Semantic Color System: 13-Color Palette with Two-Tier Naming
 
 <a id="adr-0029"></a>
 **Date**: 2025-11-29
@@ -1618,7 +1619,7 @@ RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" ...) 
 
 ### Context
 
-The application was using CVA (Class Variance Authority) with hardcoded Tailwind colors, supporting all 21 ColorAccent colors in the type system. However, exhaustive codebase analysis revealed only **12 real Tailwind colors** were actually rendered on screen. This created:
+The application was using CVA (Class Variance Authority) with hardcoded Tailwind colors, supporting all 21 ColorAccent colors in the type system. However, exhaustive codebase analysis revealed only **13 real Tailwind colors** were actually rendered on screen. This created:
 
 - **Unnecessary cognitive overhead**: 21 color options when only 12 were used
 - **Maintenance burden**: 576-line `safelist.txt` due to dynamic color class generation (`` `bg-${color}-600` ``)
@@ -1662,21 +1663,22 @@ Implement **two-tier semantic color system** with strict 12-color palette and co
 **Tier 2: Visual Accents** (6 semantic aliases → 6 real colors):
 - `accent-amber` → amber (form step 2, visual progression)
 - `accent-indigo` → indigo (form step 3)
-- `accent-fuchsia` → fuchsia (competition area, form step 4)
+- `accent-fuchsia` → fuchsia (competition area, form step 4, admin panel Reports icon)
 - `accent-teal` → teal (users/auth/tournaments/teams areas)
 - `accent-sky` → sky (detail pages)
 - `accent-purple` → purple (editor role)
+- `accent-lime` → purple (admin panel Competition Management icon)
 
-**12 Real Tailwind Colors** (strictly enforced):
-red, emerald, slate, amber, indigo, fuchsia, teal, sky, blue, green, yellow, purple
+**13 Real Tailwind Colors** (strictly enforced):
+red, emerald, slate, amber, indigo, fuchsia, lime, teal, sky, blue, green, yellow, purple
 
-**6 Unused Colors Removed**:
-zinc, orange, lime, violet, pink, rose
+**5 Unused Colors Removed**:
+zinc, orange, violet, pink, rose
 
 **Key Principles**:
 - **Real colors**: Actual Tailwind color families - **MUST be strict** (only 12 allowed)
 - **Semantic aliases**: Names that MAP to real colors - **can have unlimited** (currently 13)
-- **Static classes only**: No dynamic generation (`` `bg-${color}-600` ``), all semantic tokens statically detectable by Tailwind
+- **Static classes only**: No dynamic generation (`bg-${color}-600`), all semantic tokens statically detectable by Tailwind
 - **No visual changes**: Migration formalizes existing usage with semantic names
 
 ### Implementation Strategy

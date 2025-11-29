@@ -38,6 +38,11 @@ export const textInputFieldVariants = cva(
 			/**
 			 * Color variants with complex interaction states.
 			 * Each color includes border, hover, focus, and dark mode variations.
+			 *
+			 * Note: The 'disabled' color variant provides visual theming for disabled-styled
+			 * inputs but does NOT handle functional disabled state. Use the separate boolean
+			 * `disabled: true` variant below (line 92-94) for actual disabled behavior
+			 * (cursor-not-allowed, opacity, etc.).
 			 */
 			color: {
 				// Functional Semantics
@@ -89,6 +94,11 @@ export const textInputFieldVariants = cva(
 				fuchsia:
 					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},
@@ -165,6 +175,11 @@ export const comboFieldTriggerVariants = cva(
 				fuchsia:
 					'border-fuchsia-700/30 hover:border-fuchsia-700/50 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 data-[state=open]:border-fuchsia-500 data-[state=open]:ring-4 data-[state=open]:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},
@@ -371,6 +386,11 @@ export const datePickerButtonVariants = cva(
 				fuchsia:
 					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},
@@ -519,6 +539,11 @@ export const dateInputFieldVariants = cva(
 				fuchsia:
 					'border border-fuchsia-700/30 hover:border-2 hover:border-fuchsia-700/50 focus:border-2 focus:border-fuchsia-200',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},
@@ -591,6 +616,11 @@ export const checkboxAgreementFieldVariants = cva(
 				fuchsia:
 					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},
@@ -661,6 +691,11 @@ export const checkboxAgreementInputVariants = cva(
 				fuchsia:
 					'border-fuchsia-700/30 checked:border-fuchsia-600 checked:bg-fuchsia-600 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
+			/**
+			 * Functional disabled state (boolean variant).
+			 * Applies cursor and opacity changes for actual disabled inputs.
+			 * Separate from the 'disabled' color variant above, which only provides visual theming.
+			 */
 			disabled: {
 				true: 'cursor-not-allowed opacity-50',
 			},

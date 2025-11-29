@@ -37,13 +37,13 @@
 **IMPORTANT**: This analysis shows colors that are ACTUALLY RENDERED, not just defined in CVA variants.
 
 **Analysis method** (exhaustive):
-1. Searched ALL `<Panel color=` usage in app/**/*.tsx
+1. Searched ALL `<Panel color=` usage in `app/**/*.tsx`
 2. Searched ALL `<ActionButton color=` and `<ActionLinkButton color=` usage
 3. Searched ALL `<Badge color=` usage + roleColors mapping
 4. Searched ALL `<ToggleChip color=` and `<NavigationItem color=` usage
 5. Searched ALL PANEL_COLORS constants in forms
 6. Searched ALL hardcoded className patterns (bg-{color}-*, text-{color}-*, etc.)
-7. Verified unused colors (purple, orange, lime, zinc, violet, pink, rose) have ZERO hardcoded usage
+7. Verified unused colors (purple, orange, zinc, violet, pink, rose) have ZERO hardcoded usage
 
 **ACTUALLY USED COLORS** (13 colors - excluding unused):
 

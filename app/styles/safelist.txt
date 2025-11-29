@@ -401,6 +401,119 @@ border-adaptive-accent-purple
 text-adaptive-lime
 border-adaptive-lime
 
+# =============================================================================
+# Panel Children - Child Selector Classes (for metadata rows)
+# =============================================================================
+# These use [&_element] syntax to style nested children
+# Applied via panelChildrenVariants in panel.variants.ts
+
+# Real colors - all 13 used colors
+[&_p]:text-adaptive-emerald
+[&_strong]:text-adaptive-emerald
+[&_span]:text-adaptive-emerald
+
+[&_p]:text-adaptive-blue
+[&_strong]:text-adaptive-blue
+[&_span]:text-adaptive-blue
+
+[&_p]:text-adaptive-slate
+[&_strong]:text-adaptive-slate
+[&_span]:text-adaptive-slate
+
+[&_p]:text-adaptive-teal
+[&_strong]:text-adaptive-teal
+[&_span]:text-adaptive-teal
+
+[&_p]:text-adaptive-red
+[&_strong]:text-adaptive-red
+[&_span]:text-adaptive-red
+
+[&_p]:text-adaptive-yellow
+[&_strong]:text-adaptive-yellow
+[&_span]:text-adaptive-yellow
+
+[&_p]:text-adaptive-green
+[&_strong]:text-adaptive-green
+[&_span]:text-adaptive-green
+
+[&_p]:text-adaptive-amber
+[&_strong]:text-adaptive-amber
+[&_span]:text-adaptive-amber
+
+[&_p]:text-adaptive-sky
+[&_strong]:text-adaptive-sky
+[&_span]:text-adaptive-sky
+
+[&_p]:text-adaptive-indigo
+[&_strong]:text-adaptive-indigo
+[&_span]:text-adaptive-indigo
+
+[&_p]:text-adaptive-purple
+[&_strong]:text-adaptive-purple
+[&_span]:text-adaptive-purple
+
+[&_p]:text-adaptive-fuchsia
+[&_strong]:text-adaptive-fuchsia
+[&_span]:text-adaptive-fuchsia
+
+[&_p]:text-adaptive-lime
+[&_strong]:text-adaptive-lime
+[&_span]:text-adaptive-lime
+
+# Semantic colors - functional semantics
+[&_p]:text-adaptive-brand
+[&_strong]:text-adaptive-brand
+[&_span]:text-adaptive-brand
+
+[&_p]:text-adaptive-primary
+[&_strong]:text-adaptive-primary
+[&_span]:text-adaptive-primary
+
+[&_p]:text-adaptive-success
+[&_strong]:text-adaptive-success
+[&_span]:text-adaptive-success
+
+[&_p]:text-adaptive-error
+[&_strong]:text-adaptive-error
+[&_span]:text-adaptive-error
+
+[&_p]:text-adaptive-warning
+[&_strong]:text-adaptive-warning
+[&_span]:text-adaptive-warning
+
+[&_p]:text-adaptive-info
+[&_strong]:text-adaptive-info
+[&_span]:text-adaptive-info
+
+[&_p]:text-adaptive-disabled
+[&_strong]:text-adaptive-disabled
+[&_span]:text-adaptive-disabled
+
+# Visual accents
+[&_p]:text-adaptive-accent-amber
+[&_strong]:text-adaptive-accent-amber
+[&_span]:text-adaptive-accent-amber
+
+[&_p]:text-adaptive-accent-indigo
+[&_strong]:text-adaptive-accent-indigo
+[&_span]:text-adaptive-accent-indigo
+
+[&_p]:text-adaptive-accent-fuchsia
+[&_strong]:text-adaptive-accent-fuchsia
+[&_span]:text-adaptive-accent-fuchsia
+
+[&_p]:text-adaptive-accent-teal
+[&_strong]:text-adaptive-accent-teal
+[&_span]:text-adaptive-accent-teal
+
+[&_p]:text-adaptive-accent-sky
+[&_strong]:text-adaptive-accent-sky
+[&_span]:text-adaptive-accent-sky
+
+[&_p]:text-adaptive-accent-purple
+[&_strong]:text-adaptive-accent-purple
+[&_span]:text-adaptive-accent-purple
+
 # Text Colors - Firebase Auth Labels and Links
 # =============================================================================
 # Teal text colors for Firebase authentication forms

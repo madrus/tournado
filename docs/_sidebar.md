@@ -61,5 +61,5 @@
    - [Cursor Rules](cursor-rules.md)
    - [Fly.io vs Vercel](fly-vs-vercel.md)
    - [Markdown Tips](markdown-tips.md)
-   - [React Router v7 Stack](remix-stack.md)
+   - [React Router v7 Stack](react-router-stack.md)
    - [Prefetching Strategy](prefetching-strategy.md)

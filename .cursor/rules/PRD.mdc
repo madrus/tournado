@@ -530,8 +530,15 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 #### Deployment
 
 - **Current State**: Fly.io deployment via container; SQLite volume; SSR enabled
-- **Requirements (high-level)**: Keep startup snappy; profile startup path and cache hot routes
-- Details: See `docs/development/PRD.details.md#deployment-details` (hosting, ports/healthchecks, build/start)
+- **Docker Build Strategy**: Multi-stage build with separate build toolchain for native module compilation (better-sqlite3)
+  - **Build Stages**: `base` (runtime deps), `build-deps` (adds compilers), `production-deps` (builds native modules), `build` (app compilation), final production image (minimal footprint)
+  - **Native Modules**: better-sqlite3 compiled with node-gyp during Docker build to ensure Linux compatibility
+  - **Build Toolchain**: python3, build-essential required for native compilation; excluded from production image (~100MB savings)
+  - **Error Handling**: Explicit validation and clear error messages for compilation failures
+  - **Testing**: Automated test suite (`pnpm test:docker`) validates binary compilation and image assembly
+- **Requirements (high-level)**: Keep startup snappy; profile startup path and cache hot routes; maintain minimal production image size
+- **Architecture Decision**: See ADR-0028 for Docker build strategy rationale
+- Details: See `docs/development/PRD.details.md#deployment-details` (hosting, ports/healthchecks, build/start) and `docs/deployment/docker-native-dependencies.md` (Docker implementation)
 
 ### Architecture Requirements
 
@@ -592,8 +599,8 @@ Details: See `docs/development/PRD.details.md#testing-tooling` (test placement, 
 
 ### Deployment
 
-- [ ] Primary deployment target: Fly.io (see `fly.toml`)
-  - [ ] Persistent volume for SQLite; SSR enabled
+- [x] Primary deployment target: Fly.io (see `fly.toml`)
+  - [x] Persistent volume for SQLite; SSR enabled
 - [ ] Alternative hosting documented separately if SSR is removed
 - [ ] Rollbacks documented in Release plan
 Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, port, healthcheck, build/start)
@@ -606,7 +613,7 @@ Details: See `docs/development/PRD.details.md#deployment-details` (Fly config, p
 - [ ] Analytics: Google Analytics (GA4) initially; ensure privacy controls
 - [ ] Email/Notifications: Resend as provider for registration confirmations, match reminders, schedule changes, and final results; outbox + retries (see `docs/development/PRD.details.md#email-integration` and implementation in `app/utils/email.server.tsx`, ADR-0017)
 - [ ] Third-party SDKs documented with env vars and privacy considerations
-- [ ] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
+- [x] CI/CD: GitHub Actions for CI + Fly.io deploys; Slack webhook notifications on dev/main
 
 ---
 

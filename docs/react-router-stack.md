@@ -1,14 +1,6 @@
-# Remix Indie Stack
+# React Router v7 Stack
 
-!> This project was originally started as a Remix project but later migrated to React Router v7, therefore this article has only historical value
-
-![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
-
-Learn more about [Remix Stacks](https://remix.run/stacks).
-
-```sh
-pnpm dlx create-remix@latest --template remix-run/indie-stack
-```
+!> This project was originally started from the Remix Indie Stack but migrated to React Router v7. This document reflects the current stack.
 
 ## What's in the stack
 
@@ -16,17 +8,14 @@ pnpm dlx create-remix@latest --template remix-run/indie-stack
 - Production-ready [SQLite Database](https://sqlite.org)
 - Healthcheck endpoint for [Fly backups region fallbacks](https://fly.io/docs/reference/configuration/#services-http_checks)
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
-- Email/Password Authentication with [cookie-based sessions](https://remix.run/utils/sessions#md-createcookiesessionstorage)
+- Email/Password Authentication with Firebase and cookie-based sessions
 - Database ORM with [Prisma](https://prisma.io)
-- Styling with [Tailwind](https://tailwindcss.com/)
+- Styling with [Tailwind CSS v4](https://tailwindcss.com/)
 - End-to-end testing with [Playwright](https://playwright.dev)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
-- Code formatting with [Prettier](https://prettier.io)
-- Linting with [ESLint](https://eslint.org)
+- Code formatting and linting with [Biome](https://biomejs.dev)
 - Static Types with [TypeScript](https://typescriptlang.org)
-
-Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --template your/repo`! Make it your own.
 
 ## Quickstart
 
@@ -52,12 +41,12 @@ This starts your app in development mode, rebuilding assets on file changes.
 
 The database seed script creates a new user with some data you can use to get started:
 
-- Email: `rachel@remix.run`
-- Password: `racheliscool`
+- Email: See `SUPER_ADMIN_EMAILS` in your `.env` file
+- Password: Configure via Firebase Authentication
 
 ### Relevant code:
 
-This is a pretty simple team-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting teams.
+This is a pretty simple team-taking app, but it's a good example of how you can build a full stack app with Prisma and React Router v7. The main functionality is creating users, logging in and out, and creating and deleting teams.
 
 - creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
 - user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
@@ -65,7 +54,7 @@ This is a pretty simple team-taking app, but it's a good example of how you can 
 
 ## Deployment
 
-This Remix Stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
+This stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
 
 Prior to your first deployment, you'll need to do a few things:
 
@@ -113,7 +102,7 @@ Prior to your first deployment, you'll need to do a few things:
 
    You should see something like this:
 
-   ```
+   ```text
    Secrets are staged for the first deployment
    Secrets are staged for the first deployment
    ```
@@ -129,7 +118,7 @@ Prior to your first deployment, you'll need to do a few things:
 
    You should see something like this:
 
-   ```
+   ```text
    Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/volumes/overview/
    ? Do you still want to use the volumes feature? Yes
    ? Select region: Amsterdam, Netherlands (ams)
@@ -180,7 +169,7 @@ We use Playwright for our End-to-End tests in this project. You'll find those in
 
 We use Playwright's built-in locators and expect assertions for selecting elements on the page semantically.
 
-To run these tests in development, run `npm run test:e2e:dev` which will start the dev server for the app as well as the Playwright client. Make sure the database is properly set up as described above.
+To run these tests in development, run `pnpm test:e2e` which will start the dev server for the app as well as the Playwright client. Make sure the database is properly set up as described above.
 
 We have global authentication setup for admin features and different test projects for different scenarios:
 
@@ -216,15 +205,15 @@ For lower level tests of utilities and individual components, we use `vitest`. W
 
 ### Type Checking
 
-This project uses TypeScript. It's recommended to get TypeScript set up for your editor to get a really great in-editor experience with type checking and auto-complete. To run type checking across the whole project, run `npm run typecheck`.
+This project uses TypeScript. It's recommended to get TypeScript set up for your editor to get a really great in-editor experience with type checking and auto-complete. To run type checking across the whole project, run `pnpm typecheck`.
 
-### Linting
+### Code Quality
 
-This project uses ESLint for linting. That is configured in `.eslintrc.cjs`.
+This project uses [Biome](https://biomejs.dev) for code formatting and linting. Biome combines the functionality of Prettier and ESLint into a single fast tool.
 
-### Formatting
+Run `pnpm lint` to format and lint all files in the project. Biome will automatically fix issues where possible.
 
-We use [Prettier](https://prettier.io/) for auto-formatting in this project. It's recommended to install an editor plugin (like the [VSCode Prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)) to get auto-formatting on save. There's also a `npm run format` script you can run to format all files in the project.
+It's recommended to install the Biome VS Code extension for format-on-save functionality.
 
 ## Troubleshooting
 
@@ -244,7 +233,7 @@ We use [Prettier](https://prettier.io/) for auto-formatting in this project. It'
 
    Example output:
 
-   ```
+   ```text
    1 machines have been retrieved from app tournado-staging.
    View them in the UI here (​https://fly.io/apps/tournado-staging/machines/)
 

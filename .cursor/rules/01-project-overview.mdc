@@ -13,7 +13,7 @@ A modern, mobile-first PWA that serves multiple user roles:
 ## 🏗️ Technology Stack
 - **Frontend**: React Router v7 + TypeScript + Vite
 - **Styling**: Tailwind CSS (mobile-first approach)
-- **Database**: Prisma ORM with PostgreSQL
+- **Database**: Prisma ORM with SQLite
 - **Authentication**: Session-based with role-based access control
 - **Internationalization**: i18next (Dutch, English, French, Arabic, Turkish)
 - **Testing**: Playwright (E2E) + Vitest (Unit)

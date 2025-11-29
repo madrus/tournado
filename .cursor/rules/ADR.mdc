@@ -1513,3 +1513,97 @@ export const handle: RouteMetadata = {
 - Screen reader testing validates heading navigation experience
 - Documentation clearly explains heading pattern for contributors
 - All routes define `pageTitle` in their handle export for consistency
+
+## ADR-0028 — Docker Multi-Stage Build Strategy for Native Module Compilation
+
+<a id="adr-0028"></a>
+**Date**: 2025-11-29
+**Status**: Accepted
+**Owner**: André Roussakoff
+
+### Context
+
+Native Node.js modules like `better-sqlite3` require platform-specific compilation. Docker containers run Linux, so binaries compiled on macOS/Windows development machines are incompatible with production containers. Additionally, Husky git hooks fail in Docker during `pnpm install` because the Husky CLI is not available globally, breaking the build process.
+
+### Alternatives
+
+1. **Single-stage build with build tools**: Include python3, build-essential in production image
+   - Simple, straightforward approach
+   - **Rejected**: Bloats production image by +100-150MB with unnecessary compilers and build tools
+
+2. **Pre-built binaries from npm**: Rely on better-sqlite3's prebuild-install fallback
+   - Zero build complexity
+   - **Rejected**: Fragile, version-specific, requires internet access during build, hard to debug when binaries unavailable
+
+3. **Different database (pure JS)**: Use sql.js or similar pure JavaScript SQLite implementations
+   - Avoids native modules entirely
+   - **Rejected**: Significant performance degradation (~10-100x slower for database operations)
+
+4. **Different database (client-server)**: Switch to PostgreSQL or MySQL
+   - No native module compilation needed
+   - **Rejected**: Adds deployment complexity (separate database server), increases infrastructure costs, SQLite's single-file simplicity is valuable
+
+### Decision
+
+Implement multi-stage Docker build with separate build toolchain:
+
+**Architecture**:
+1. **`base` stage**: Runtime dependencies only (openssl, sqlite3, python3-pip, litecli, pnpm)
+2. **`build-deps` stage**: Inherits from `base` + adds build toolchain (python3, build-essential)
+3. **`production-deps` stage**: Uses `build-deps`, installs production packages + manually compiles native modules
+4. **`build` stage**: Uses `base`, copies dependencies, builds application
+5. **Final production image**: Uses `base`, copies built artifacts (minimal footprint)
+
+**Native Module Compilation Strategy**:
+```dockerfile
+# Install with --ignore-scripts to skip Husky
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts && \
+  pnpm install prisma --ignore-scripts && \
+  pnpm prisma generate
+
+# Manually build better-sqlite3 native bindings
+RUN SQLITE_DIR=$(find /workdir/node_modules -type d -name "better-sqlite3" ...) && \
+  if [ -z "$SQLITE_DIR" ] || [ ! -d "$SQLITE_DIR" ]; then \
+    echo "ERROR: better-sqlite3 directory not found"; exit 1; \
+  fi && \
+  cd "$SQLITE_DIR" && \
+  npm run build-release || { echo "ERROR: better-sqlite3 build failed"; exit 1; }
+```
+
+**Key Design Decisions**:
+- **Version-agnostic paths**: Use `find` command instead of hardcoded version numbers (e.g., `better-sqlite3@12.4.6`)
+- **Explicit error handling**: Clear error messages when compilation fails or package not found
+- **Separate build toolchain**: Keep compilers out of production image
+
+### Implementation References
+
+- Dockerfile: Multi-stage build with `base`, `build-deps`, `production-deps`, `build`, and final stages
+- Documentation: `docs/deployment/docker-native-dependencies.md` (comprehensive troubleshooting guide)
+- Automated testing: `scripts/test-docker-build.sh` via `pnpm test:docker` command
+
+### Consequences
+
+**Pros**:
+- Production images stay minimal (runtime dependencies only, no build tools)
+- Reliable cross-platform builds (macOS dev → Linux production)
+- Clear error messages when native module compilation fails
+- Version-agnostic approach works across dependency upgrades
+- Explicit error handling prevents silent failures
+
+**Cons / Risks**:
+- Increased build complexity (5 stages vs single stage)
+- Must maintain build toolchain knowledge (node-gyp, python3, build-essential)
+- Longer build times when building from scratch (~2-3 minutes including all stages)
+- Requires understanding of multi-stage Docker builds for maintenance
+
+**Supersedes**: —
+**Superseded by**: —
+
+### Compliance / Verification
+
+✅ **Verification criteria**:
+- Automated test suite validates binary compilation, Prisma generation, and production image assembly
+- Local Docker builds succeed with compiled `better_sqlite3.node` binary
+- Production deployments to Fly.io succeed with functional SQLite database
+- Error handling tested: missing package triggers clear "ERROR: better-sqlite3 directory not found" message
+- Image size optimized: production image excludes build-essential (~100MB savings)

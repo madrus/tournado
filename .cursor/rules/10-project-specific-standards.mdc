@@ -67,7 +67,7 @@ The PRD is located at: `docs/development/prd.md`
 
 ### TypeScript Style
 - **Type Declarations**: Use `type` instead of `interface` (unless impossible)
-- **Type Inference**: Prefer inferred types unless ESLint requires explicit types
+- **Type Inference**: Prefer inferred types unless Biome requires explicit types
 - **Syntax**: No semicolons; single quotes
 - **Naming**: PascalCase for types, camelCase for variables
 

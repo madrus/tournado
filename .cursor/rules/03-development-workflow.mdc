@@ -16,8 +16,7 @@ The main scripts are defined in [package.json](mdc:package.json):
 ### Development
 - `pnpm run dev` - Start development server
 - `pnpm run setup` - Generate Prisma client, run migrations, and seed database
-- `pnpm run format` - Format code with Prettier
-- `pnpm run lint` - Run ESLint
+- `pnpm run lint` - Run Biome (format + lint)
 - `pnpm run typecheck` - Run TypeScript type checking
 
 ### Testing

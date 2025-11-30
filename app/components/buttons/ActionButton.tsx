@@ -9,7 +9,7 @@ import {
 	type ButtonVariants,
 	buttonVariants,
 	DARK_MODE_DARKER_CLASSES,
-	getIconCircleColorVariants,
+	ICON_CIRCLE_COLOR_VARIANTS,
 } from './button.variants'
 import { useActionButton } from './useActionButton'
 
@@ -112,7 +112,7 @@ const iconCircleVariants = cva(
 				sm: 'h-5 w-5',
 				md: 'h-6 w-6',
 			},
-			color: getIconCircleColorVariants(),
+			color: ICON_CIRCLE_COLOR_VARIANTS,
 		},
 		defaultVariants: {
 			size: 'md',

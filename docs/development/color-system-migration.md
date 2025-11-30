@@ -256,7 +256,6 @@ Questions to decide:
 - [x] Fix TypeScript errors in all CVA variant files (button, DataTable, inputs) - COMPLETE
 - [x] Document new token patterns in this file - COMPLETE
 - [x] Verify no visual changes (build and manual check) - COMPLETE ✅
-- [ ] Create semantic helper functions in colorVariants.ts (deferred - will create during Phase 1 component migrations as needed)
 
 ---
 
@@ -317,49 +316,103 @@ Questions to decide:
 
 ### Phase 1: Component Migration (One at a time - INCREMENTAL)
 
-**Status**: 🟢 In Progress (Badge complete, 6 components remaining)
+**Status**: 🟢 In Progress
 
 **Goal**: Migrate components one-by-one to use `ColorVariantKey` type with **100% static class names**. Eliminate all dynamic class generation using template literals.
 
-**Order** (suggested, flexible based on your priorities):
-1. ✅ **Badge** (38 lines) - **COMPLETE** - Reference implementation for static class pattern
-2. ⚪ Button system (229 lines) - Most complex, highest value
-3. ⚪ Panel system - 80% done already
-4. ⚪ ToggleChip (316 lines) - Systematic pattern
-5. ⚪ Dialog, Toast, DataTable, Inputs, Navigation (as time allows)
+**Scope Analysis**:
+- **15 CVA variant files** (components using class-variance-authority)
+- **7 files** using helper functions (`createColorVariantMapping`, etc.)
+- **60+ files** with `color=` prop usage (component consumers - no changes needed)
+- **274 occurrences** of hardcoded Tailwind classes (need review)
+
+---
+
+#### Phase 1a: CVA Variant Files (Static Classes Migration)
+
+**Progress**: 2/7 complete (29%)
+
+**Goal**: Replace `createColorVariantMapping()` calls with inline explicit static classes.
+
+**Files to migrate**:
+- [x] **Badge** (app/components/Badge/badge.variants.ts) - ✅ COMPLETE - Reference implementation
+- [x] **Button** (app/components/buttons/button.variants.ts) - ✅ COMPLETE - 52 compound variants (26 primary + 26 secondary)
+- [ ] **ToggleChip** (app/components/ToggleChip/toggleChip.variants.ts) - 1 usage
+- [ ] **DataTable** (app/components/DataTable/dataTable.variants.ts) - 4 usages
+- [ ] **Panel** (app/components/Panel/panel.variants.ts + panel-base.variants.ts) - 7 usages total
+- [ ] **ActionLinkPanel** (app/components/ActionLinkPanel/actionLinkPanel.variants.ts) - 5 usages
+- [ ] **Field** (app/components/shared/field.variants.ts) - 2 usages
+
+**Total**: 22 usages of `createColorVariantMapping()` remaining (2 removed from Button)
 
 **Per-component process**:
-1. Read component and identify color usage
-2. Replace hardcoded colors AND/OR any calls to functions like `createColorVariantMapping()` calls with explicit static class mappings using our symantic system
-3. Update unit tests (color class assertions) if needed
-4. Update E2E tests if affected
-5. Visual regression test (compare before/after screenshots)
-6. Single PR per component
+1. Read variant file and identify all `createColorVariantMapping()` calls
+2. Replace each call with inline explicit static class mappings (all 26 colors)
+3. Use `satisfies Record<ColorVariantKey, string>` for type safety
+4. **Convert functions returning constants to actual constants**:
+   - Pattern: `export const getFoo = (): Record<...> => ({...})` → `export const FOO: Record<...> = {...} as const`
+   - Update all import/usage sites to use the constant directly (remove function call `()`)
+5. **Delete unused helper functions** from the file
+6. Update component unit tests if needed (color class assertions)
+7. Run tests and typecheck to verify changes
+8. Verify no visual changes
+9. Single commit per component
 
-**Reference Implementation**: See `app/components/Badge.tsx` for the correct pattern with all 26 colors using explicit static classes.
+**Reference Implementation**: See `app/components/Badge/badge.variants.ts` for the correct pattern.
 
-**Success criteria per component**:
-- ✅ No hardcoded Tailwind colors (bg-red-600, etc.)
+---
+
+#### Phase 1b: Helper Function Removal
+
+**Progress**: 2/3 complete (67%)
+
+**Goal**: Delete helper functions from `colorVariants.ts` once all usages are removed.
+
+**Functions to remove** (after Phase 1a complete):
+- [ ] `createColorVariantMapping()` - currently 22 usages across 6 files (2 removed from Button)
+- [x] `createAdaptiveTextColorMapping()` - ✅ DELETED (unused)
+- [x] `createAdaptiveBorderColorMapping()` - ✅ DELETED (unused)
+
+**Process**:
+1. After each component migration in Phase 1a, verify function usage count decreases
+2. When usage count reaches zero for a function, delete it from colorVariants.ts
+3. Run typecheck to ensure no hidden usages
+
+---
+
+#### Phase 1c: Hardcoded Classes Audit (DEFERRED)
+
+**Progress**: Not started
+
+**Goal**: Review and migrate 274 occurrences of hardcoded Tailwind color classes.
+
+**Scope**: 274 occurrences of patterns like `bg-red-600`, `text-blue-500`, etc.
+
+**Classification needed**:
+- **Intentional hardcoding**: Colors that should stay hardcoded (e.g., specific designs)
+- **Should use components**: Colors that should be replaced with Badge/Panel/etc.
+- **Should use semantic classes**: Direct usage that needs semantic naming
+
+**Process** (after Phase 1a/1b complete):
+1. Generate full list of hardcoded color occurrences
+2. Review each occurrence and classify
+3. Create targeted migration plan
+4. Migrate in batches by classification
+
+**Note**: This phase is deferred until CVA variant migrations are complete.
+
+---
+
+#### Overall Phase 1 Success Criteria
+
+Per component:
 - ✅ No dynamic color generation (no `bg-${color}-600` template literals)
-- ✅ Uses semantic tokens (bg-brand-600, bg-accent-amber-600, etc.)
-- ✅ Functions working with temlate literals like `createColorVariantMapping`
-   ```typescript
-   const borderVariants = createColorVariantMapping(
-    (color) => `border-${color}-300 panel-${color}-bg`
-   )
-   ```
-   should be replaced with static classes and removed once they get unused.
-- ✅ Semantic tokens are statically detectable by Tailwind
+- ✅ All `createColorVariantMapping()` calls replaced with inline explicit static classes
+- ✅ Uses `satisfies Record<ColorVariantKey, string>` for type safety
+- ✅ All 26 ColorVariantKey colors explicitly defined
 - ✅ No visual changes on screen
 - ✅ All tests passing (unit + E2E)
-- ✅ Safelist entries removed for that component
-
-**Checklist per component**:
-- [ ] Component migrated to semantic tokens
-- [ ] Unit tests updated and passing
-- [ ] E2E tests updated and passing (if applicable)
-- [ ] Visual regression verified (no changes)
-- [ ] Safelist entries removed
+- ✅ Safelist entries can be identified for future removal
 
 ---
 

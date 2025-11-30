@@ -77,7 +77,7 @@ export const TextAreaInputField = forwardRef<
 						labelClassName,
 					)}
 				>
-					<span className={textInputLabelTextVariants()}>{label}</span>
+					<p className={textInputLabelTextVariants()}>{label}</p>
 					{/* Status icon container with fixed width to prevent layout shifts */}
 					{statusIcon ? (
 						<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>

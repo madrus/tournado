@@ -232,7 +232,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 						<div
 							className={`${INPUT_LABEL_SPACING} flex items-center justify-between gap-2`}
 						>
-							<span className={textInputLabelTextVariants()}>{label}</span>
+							<p className={textInputLabelTextVariants()}>{label}</p>
 							{/* Status icon container with fixed width to prevent layout shifts */}
 							<div className={STATUS_ICON_CONTAINER_WIDTH}>{statusIcon}</div>
 						</div>

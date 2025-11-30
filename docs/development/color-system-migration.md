@@ -330,7 +330,7 @@ Questions to decide:
 
 **Per-component process**:
 1. Read component and identify color usage
-2. Replace hardcoded colors OR `createColorVariantMapping()` calls with explicit static class mappings
+2. Replace hardcoded colors AND/OR any calls to functions like `createColorVariantMapping()` calls with explicit static class mappings using our symantic system
 3. Update unit tests (color class assertions) if needed
 4. Update E2E tests if affected
 5. Visual regression test (compare before/after screenshots)
@@ -453,57 +453,225 @@ export const badgeVariants = cva('...', {
 
 ---
 
-### Phase 2: Cleanup & Enforcement (AFTER all components migrated)
+### Phase 2: Remove Real Color Usage (AFTER all components migrated)
 
 **Status**: ⚪ Not Started (blocked by Phase 1 completion)
 
-**Goal**: Clean up migration artifacts, **REMOVE unused colors entirely**, and enforce semantic-only usage.
+**Goal**: Eliminate all real color references from the codebase, replacing them with semantic equivalents (brand, primary, success, error, warning, info, disabled, accent-*).
+
+**Steps**:
+
+1. **Find and replace all real color usage** in component props and code:
+   - Search codebase for direct real color usage in props: `color="emerald"`, `color="blue"`, `color="red"`, etc.
+   - Replace with appropriate semantic equivalents:
+     - `emerald` → `primary` (emerald is primary brand color)
+     - `red` → `error` or `brand` (depending on context)
+     - `green` → `success`
+     - `blue` → `info`
+     - `yellow` → `warning`
+     - `slate` → `disabled` (for disabled/neutral states)
+     - `amber` → `accent-amber`
+     - `indigo` → `accent-indigo`
+     - `fuchsia` → `accent-fuchsia`
+     - `teal` → `accent-teal`
+     - `sky` → `accent-sky`
+     - `purple` → `accent-purple`
+     - `lime` → `accent-amber` or appropriate semantic (lime is only used in admin panel)
+   - Example: `<Badge color="green">` → `<Badge color="success">`
+   - Example: `<Panel color="teal">` → `<Panel color="accent-teal">`
+
+2. **Update tests** to use semantic color names instead of real colors:
+   - Update unit test assertions from `expect(badge).toHaveClass('bg-green-600')` to semantic equivalents
+   - Update E2E test selectors if they reference color-specific classes
+   - Verify all tests still pass with semantic colors
+
+3. **Delete helper functions** from `colorVariants.ts` (should be unused after Phase 1):
+   - `createColorVariantMapping()` - no longer needed (all components use inline explicit classes)
+   - `createAdaptiveTextColorMapping()` - no longer needed
+   - `createAdaptiveBorderColorMapping()` - no longer needed
+
+**Success Criteria**:
+- Zero usage of real color names in component props (grep reveals none)
+- All components use only semantic color names (brand, primary, success, etc.)
+- Helper functions deleted from colorVariants.ts
+- All tests passing with semantic colors
+
+**Checklist**:
+- [ ] Search and replace all real color usage in components (emerald→primary, red→error/brand, etc.)
+- [ ] Update all test files to use semantic color names
+- [ ] Delete `createColorVariantMapping()` from colorVariants.ts
+- [ ] Delete `createAdaptiveTextColorMapping()` from colorVariants.ts
+- [ ] Delete `createAdaptiveBorderColorMapping()` from colorVariants.ts
+- [ ] Verify zero usage of real colors in codebase (grep check)
+- [ ] All tests passing
+
+---
+
+### Phase 3: Type System Cleanup (AFTER Phase 2 complete)
+
+**Status**: ⚪ Not Started (blocked by Phase 2 completion)
+
+**Goal**: **Strip ColorVariantKey type from 26 colors down to 13 semantic colors only**, removing all 13 real color names. This is the final cleanup that makes real colors unavailable at the type level.
+
+**Current State** (26 colors):
+```typescript
+// app/components/shared/colorVariants.ts
+export const COLOR_VARIANT_KEYS = {
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
+
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
+
+  // Real Colors (13) - TO BE REMOVED IN THIS PHASE
+  emerald: 'emerald',
+  blue: 'blue',
+  slate: 'slate',
+  teal: 'teal',
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+  amber: 'amber',
+  sky: 'sky',
+  indigo: 'indigo',
+  purple: 'purple',
+  fuchsia: 'fuchsia',
+  lime: 'lime',
+} as const
+```
+
+**Target State** (13 semantic colors only):
+```typescript
+// app/components/shared/colorVariants.ts
+export const COLOR_VARIANT_KEYS = {
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
+
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
+} as const
+
+export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS
+// Now only allows 13 semantic colors, not 26
+```
+
+**Steps**:
+
+1. **Remove 13 real colors from COLOR_VARIANT_KEYS** in `app/components/shared/colorVariants.ts`:
+   - Delete entries: emerald, blue, slate, teal, red, yellow, green, amber, sky, indigo, purple, fuchsia, lime
+   - Keep only: 7 functional semantics + 6 visual accents = 13 total
+   - ColorVariantKey type will automatically narrow to only semantic colors
+
+2. **Update all component variant files** to remove real color definitions:
+   - Remove 13 real color entries from each component's CVA variant object
+   - Example in `badge.variants.ts`: delete lines for emerald, blue, slate, teal, red, yellow, green, amber, sky, indigo, purple, fuchsia, lime
+   - Keep only 13 semantic color entries (brand, primary, success, error, warning, info, disabled, accent-*)
+   - Files shrink from ~50 lines to ~20 lines
+
+3. **Verify type safety** - TypeScript should prevent real color usage:
+   - `<Badge color="emerald">` should now be a TypeScript error
+   - `<Badge color="primary">` should still be valid
+   - Component props are constrained to semantic colors only
+
+4. **Update documentation**:
+   - Update CLAUDE.md to reflect 13-color semantic-only system
+   - Document that real color names are no longer valid prop values
+   - Update ADR-0029 to reflect final state
+
+**Success Criteria**:
+- COLOR_VARIANT_KEYS contains exactly 13 semantic colors (no real colors)
+- ColorVariantKey type prevents usage of real color names
+- All component variant files have 13 color entries (not 26)
+- TypeScript errors appear if real colors are used in props
+- Documentation reflects semantic-only system
+
+**Checklist**:
+- [ ] Remove 13 real colors from COLOR_VARIANT_KEYS in colorVariants.ts
+- [ ] Update Badge variant file to remove 13 real color entries
+- [ ] Update Button variant file to remove 13 real color entries
+- [ ] Update Panel variant files to remove 13 real color entries
+- [ ] Update ToggleChip variant file to remove 13 real color entries
+- [ ] Update remaining component variant files (Dialog, Toast, DataTable, Inputs, Navigation)
+- [ ] Verify TypeScript prevents real color usage (`color="emerald"` errors)
+- [ ] Update CLAUDE.md with semantic-only color system rules
+- [ ] Update ADR-0029 to reflect final 13-color state
+- [ ] Run typecheck - should pass with no errors
+- [ ] Visual verification - no changes (semantic colors map to same real colors)
+
+**Impact**:
+- Component variant files shrink from ~50 lines to ~20 lines (13 colors vs 26)
+- Type system enforces semantic naming at compile time
+- Impossible to accidentally use real color names in props
+- Final migration from "26-color hybrid" to "13-color semantic-only" complete
+
+---
+
+### Phase 4: Final Cleanup & Enforcement
+
+**Status**: ⚪ Not Started (blocked by Phase 3 completion)
+
+**Goal**: Clean up remaining migration artifacts and enforce semantic-only usage across the codebase.
 
 **Steps**:
 
 0. **Create ADR documenting architecture** ✅ **COMPLETE**:
    - ADR-0029: Semantic Color System - 12-Color Palette with Two-Tier Naming
    - Rationale for two-tier system
-   - **Why 12 colors (not 21)**
+   - **Why 13 colors (not 21)** - Update to reflect final count
    - Migration process and outcomes
    - Location: `.cursor/rules/ADR.mdc`
 
-1. **Remove unused colors from ColorAccent type** (app/lib/lib.types.ts):
-   - **REMOVE**: zinc, orange, violet, pink, rose (5 colors)
-   - Update ColorAccent to only include the 13 used real colors + semantic aliases
-   - Breaking change but justified - these 5 colors are never used
-
-2. **Eliminate safelist.txt entirely**:
+1. **Eliminate safelist.txt entirely**:
    - All dynamic color classes migrated to semantic tokens in Phase 1
    - Semantic tokens are statically detectable by Tailwind (no safelist needed)
    - Delete safelist.txt completely (or reduce to absolute minimum if edge cases found)
    - **Goal**: Zero safelist entries for color classes
 
-3. **Update CLAUDE.md with semantic color rules**:
+2. **Update CLAUDE.md with semantic color rules**:
    - Document two-tier system (functional + accents)
-   - **Explicitly state: Only 13 real Tailwind colors allowed**
-   - **List forbidden colors**: zinc, orange, violet, pink, rose (5 colors)
+   - **Explicitly state: Only 13 semantic colors allowed in component props**
+   - List the 13 allowed semantic names
    - Examples of correct usage
 
-4. **Add Biome linting rule (optional)**:
-   - Detect hardcoded patterns (bg-red-600, text-blue-500)
-   - **Detect usage of forbidden colors**
+3. **Add Biome linting rule (optional)**:
+   - Detect hardcoded color patterns (bg-red-600, text-blue-500)
+   - Detect usage of real color names in component props
    - Suggest semantic alternatives
 
 **Deliverables**:
-- **Updated ColorAccent type (13 colors only)**
 - **Deleted safelist.txt** (or minimal if edge cases exist)
-- Updated CLAUDE.md
-- Optional: Biome rule with forbidden color detection
-- ✅ ADR-0029: Color System Architecture (COMPLETE - update to reflect 13 colors)
+- Updated CLAUDE.md with semantic-only rules
+- Optional: Biome rule for color enforcement
+- ✅ ADR-0029: Color System Architecture (update to reflect 13 colors)
 
 **Checklist**:
 - [x] Create ADR (explain color palette decision) - ADR-0029 created
-- [x] Remove 5 unused colors from ColorAccent type
 - [ ] Delete safelist.txt entirely (or minimize to absolute edge cases)
-- [ ] Update CLAUDE.md (document 13-color system + forbidden list: zinc, orange, violet, pink, rose)
+- [ ] Update CLAUDE.md (document 13-color semantic system)
 - [ ] Update ADR-0029 to reflect 13 colors instead of 12
-- [ ] Create Biome rule with forbidden color detection (optional)
+- [ ] Create Biome rule for color enforcement (optional)
 - [ ] Final verification (no unused colors anywhere, no safelist needed)
 
 ## Critical Files Reference

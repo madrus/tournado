@@ -86,10 +86,7 @@ export function SimpleConfirmDialog({
 	const finalIcon = getIconForIntent(intent)
 	const finalConfirmColor = intentColors.confirm
 	const finalCancelColor = intentColors.cancel
-	const cancelButtonClassName = cn(
-		'w-full min-w-[120px] sm:w-auto',
-		finalCancelColor === 'sky' ? 'border-sky-300' : 'border-slate-300',
-	)
+	const cancelButtonClassName = cn('w-full min-w-[120px] sm:w-auto')
 
 	const handleConfirm = (): void => {
 		onConfirm?.()

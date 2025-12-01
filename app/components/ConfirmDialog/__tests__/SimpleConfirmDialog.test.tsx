@@ -225,25 +225,25 @@ describe('SimpleConfirmDialog', () => {
 				const iconContainer = within(dialog).getByTestId(
 					'simple-confirm-dialog-icon-container',
 				)
-				expect(iconContainer).toHaveClass('bg-amber-100')
+				expect(iconContainer).toHaveClass('bg-warning-100')
 
 				// Icon should have warning color
-				expect(icon).toHaveClass('text-amber-600')
+				expect(icon).toHaveClass('text-warning-600')
 
 				// Title should have warning color
-				expect(screen.getByText('Warning')).toHaveClass('text-amber-900')
+				expect(screen.getByText('Warning')).toHaveClass('text-warning-900')
 
-				// Confirm button should have amber color
+				// Confirm button should have warning color
 				const confirmButton = within(dialog).getByRole('button', {
 					name: 'Confirm',
 				})
-				expect(confirmButton).toHaveClass('bg-amber-600')
+				expect(confirmButton).toHaveClass('bg-warning-600')
 
-				// Cancel button should have slate color
+				// Cancel button should have disabled color
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-slate-300')
+				expect(cancelButton).toHaveClass('border-disabled-300')
 			})
 		})
 	})
@@ -308,11 +308,11 @@ describe('SimpleConfirmDialog', () => {
 				})
 				expect(confirmButton).toHaveClass('bg-brand-600')
 
-				// Cancel button should have slate color
+				// Cancel button should have disabled color
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-slate-300')
+				expect(cancelButton).toHaveClass('border-disabled-300')
 			})
 		})
 	})
@@ -363,25 +363,25 @@ describe('SimpleConfirmDialog', () => {
 				const iconContainer = within(dialog).getByTestId(
 					'simple-confirm-dialog-icon-container',
 				)
-				expect(iconContainer).toHaveClass('bg-sky-100')
+				expect(iconContainer).toHaveClass('bg-info-100')
 
 				// Icon should have info color
-				expect(icon).toHaveClass('text-sky-600')
+				expect(icon).toHaveClass('text-info-600')
 
 				// Title should have info color
-				expect(screen.getByText('Information')).toHaveClass('text-sky-900')
+				expect(screen.getByText('Information')).toHaveClass('text-info-900')
 
-				// Confirm button should have sky color
+				// Confirm button should have info color
 				const confirmButton = within(dialog).getByRole('button', {
 					name: 'OK',
 				})
-				expect(confirmButton).toHaveClass('bg-sky-600')
+				expect(confirmButton).toHaveClass('bg-info-600')
 
-				// Cancel button should have sky color
+				// Cancel button should have disabled color
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-sky-300')
+				expect(cancelButton).toHaveClass('border-disabled-300')
 			})
 		})
 	})
@@ -432,25 +432,25 @@ describe('SimpleConfirmDialog', () => {
 				const iconContainer = within(dialog).getByTestId(
 					'simple-confirm-dialog-icon-container',
 				)
-				expect(iconContainer).toHaveClass('bg-green-100')
+				expect(iconContainer).toHaveClass('bg-success-100')
 
 				// Icon should have success color
-				expect(icon).toHaveClass('text-green-600')
+				expect(icon).toHaveClass('text-success-600')
 
 				// Title should have success color
-				expect(screen.getByText('Success')).toHaveClass('text-green-900')
+				expect(screen.getByText('Success')).toHaveClass('text-success-900')
 
-				// Confirm button should have green color
+				// Confirm button should have success color
 				const confirmButton = within(dialog).getByRole('button', {
 					name: 'Continue',
 				})
-				expect(confirmButton).toHaveClass('bg-green-600')
+				expect(confirmButton).toHaveClass('bg-success-600')
 
-				// Cancel button should have slate color
+				// Cancel button should have disabled color
 				const cancelButton = within(dialog).getByRole('button', {
 					name: 'Cancel',
 				})
-				expect(cancelButton).toHaveClass('border-slate-300')
+				expect(cancelButton).toHaveClass('border-disabled-300')
 			})
 		})
 	})

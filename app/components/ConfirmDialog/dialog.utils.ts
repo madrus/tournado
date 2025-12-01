@@ -30,10 +30,10 @@ export const getDefaultColorsForIntent = (
 ): { confirm: ButtonColor; cancel: ButtonColor } => {
 	const colorMap: Record<DialogIntent, { confirm: ButtonColor; cancel: ButtonColor }> =
 		{
-			warning: { confirm: 'amber', cancel: 'slate' },
-			danger: { confirm: 'brand', cancel: 'slate' },
-			info: { confirm: 'sky', cancel: 'sky' },
-			success: { confirm: 'green', cancel: 'slate' },
+			warning: { confirm: 'warning', cancel: 'disabled' },
+			danger: { confirm: 'brand', cancel: 'disabled' },
+			info: { confirm: 'info', cancel: 'disabled' },
+			success: { confirm: 'success', cancel: 'disabled' },
 		}
 
 	return colorMap[intent]

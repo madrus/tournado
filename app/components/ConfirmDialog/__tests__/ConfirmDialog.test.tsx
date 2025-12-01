@@ -227,7 +227,7 @@ describe('ConfirmDialog - Controlled Mode', () => {
 			const icon = within(dialog).getByRole('img', { hidden: true })
 
 			// Verify warning intent colors are applied
-			expect(icon).toHaveClass('text-amber-600')
+			expect(icon).toHaveClass('text-warning-600')
 		})
 	})
 

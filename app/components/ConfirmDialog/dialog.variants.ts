@@ -30,7 +30,7 @@ export const dialogContentVariants = cva(
 		variants: {
 			intent: {
 				warning: [
-					'border border-white bg-amber-50',
+					'border border-white bg-warning-50',
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 				danger: [
@@ -38,11 +38,11 @@ export const dialogContentVariants = cva(
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 				info: [
-					'border border-white bg-sky-50',
+					'border border-white bg-info-50',
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 				success: [
-					'border border-white bg-emerald-50',
+					'border border-white bg-success-50',
 					'dark:border-slate-700 dark:bg-slate-700/60',
 				],
 			},
@@ -78,10 +78,10 @@ export const iconContainerVariants = cva(
 	{
 		variants: {
 			intent: {
-				warning: 'bg-amber-100 text-amber-600 dark:bg-amber-200/20',
+				warning: 'bg-warning-100 text-warning-600 dark:bg-warning-200/20',
 				danger: 'bg-brand-100 text-brand-600 dark:bg-brand-200/20',
-				info: 'bg-sky-100 text-sky-600 dark:bg-sky-200/20',
-				success: 'bg-green-100 text-green-600 dark:bg-green-200/20',
+				info: 'bg-info-100 text-info-600 dark:bg-info-200/20',
+				success: 'bg-success-100 text-success-600 dark:bg-success-200/20',
 			},
 		},
 		defaultVariants: {
@@ -96,10 +96,10 @@ export const iconContainerVariants = cva(
 export const iconColorVariants = cva('h-8 w-8', {
 	variants: {
 		intent: {
-			warning: 'text-amber-600',
+			warning: 'text-warning-600',
 			danger: 'text-brand-600',
-			info: 'text-sky-600',
-			success: 'text-green-600',
+			info: 'text-info-600',
+			success: 'text-success-600',
 		},
 	},
 	defaultVariants: {
@@ -113,10 +113,10 @@ export const iconColorVariants = cva('h-8 w-8', {
 export const titleColorVariants = cva('', {
 	variants: {
 		intent: {
-			warning: 'text-amber-900 dark:text-amber-200',
+			warning: 'text-warning-900 dark:text-warning-200',
 			danger: 'text-brand-900 dark:text-brand-200',
-			info: 'text-sky-900 dark:text-sky-200',
-			success: 'text-green-900 dark:text-green-200',
+			info: 'text-info-900 dark:text-info-200',
+			success: 'text-success-900 dark:text-success-200',
 		},
 	},
 	defaultVariants: {

@@ -12,8 +12,8 @@ import { Panel } from '~/components/Panel'
 import { VALID_ROLES } from '~/features/users/utils/roleUtils'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
-const USER_ACTIVE_BUTTON_COLOR = 'red' as const
-const USER_INACTIVE_BUTTON_COLOR = 'amber' as const
+const USER_ACTIVE_BUTTON_COLOR = 'error' as const
+const USER_INACTIVE_BUTTON_COLOR = 'warning' as const
 
 type UserDetailCardProps = {
 	user: User

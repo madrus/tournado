@@ -49,9 +49,9 @@ describe('FirebaseSignIn', () => {
 		expect(screen.getByText('auth.firebase.continueWithGoogle')).toBeInTheDocument()
 
 		// Verify teal primary button styling
-		expect(button).toHaveClass('bg-teal-600')
+		expect(button).toHaveClass('bg-accent-teal-600')
 		expect(button).toHaveClass('text-white')
-		expect(button).toHaveClass('border-teal-600')
+		expect(button).toHaveClass('border-accent-teal-600')
 
 		// Verify button has standard animations (responsive scale for mobile/desktop)
 		expect(button).toHaveClass('hover:scale-100')
@@ -127,7 +127,7 @@ describe('FirebaseSignIn', () => {
 		expect(button).toHaveClass('md:w-fit')
 		expect(button).toHaveClass('md:self-center')
 		// Should still have teal button styling
-		expect(button).toHaveClass('bg-teal-600')
+		expect(button).toHaveClass('bg-accent-teal-600')
 	})
 
 	test('uses default redirectTo when none provided', async () => {

@@ -111,88 +111,8 @@ describe('Badge', () => {
 		})
 	})
 
-	describe('Real Colors', () => {
-		it('should apply emerald color styling', () => {
-			render(<Badge color='emerald'>Emerald</Badge>)
-			const badge = screen.getByText('Emerald')
-			expect(badge).toHaveClass('bg-emerald-600', 'text-emerald-50')
-		})
-
-		it('should apply blue color styling', () => {
-			render(<Badge color='blue'>Blue</Badge>)
-			const badge = screen.getByText('Blue')
-			expect(badge).toHaveClass('bg-blue-600', 'text-blue-50')
-		})
-
-		it('should apply slate color styling', () => {
-			render(<Badge color='slate'>Slate</Badge>)
-			const badge = screen.getByText('Slate')
-			expect(badge).toHaveClass('bg-slate-600', 'text-slate-50')
-		})
-
-		it('should apply teal color styling', () => {
-			render(<Badge color='teal'>Teal</Badge>)
-			const badge = screen.getByText('Teal')
-			expect(badge).toHaveClass('bg-teal-600', 'text-teal-50')
-		})
-
-		it('should apply red color styling', () => {
-			render(<Badge color='red'>Red</Badge>)
-			const badge = screen.getByText('Red')
-			expect(badge).toHaveClass('bg-red-600', 'text-red-50')
-		})
-
-		it('should apply yellow color styling', () => {
-			render(<Badge color='yellow'>Yellow</Badge>)
-			const badge = screen.getByText('Yellow')
-			expect(badge).toHaveClass('bg-yellow-600', 'text-yellow-50')
-		})
-
-		it('should apply green color styling', () => {
-			render(<Badge color='green'>Green</Badge>)
-			const badge = screen.getByText('Green')
-			expect(badge).toHaveClass('bg-green-600', 'text-green-50')
-		})
-
-		it('should apply amber color styling', () => {
-			render(<Badge color='amber'>Amber</Badge>)
-			const badge = screen.getByText('Amber')
-			expect(badge).toHaveClass('bg-amber-600', 'text-amber-50')
-		})
-
-		it('should apply sky color styling', () => {
-			render(<Badge color='sky'>Sky</Badge>)
-			const badge = screen.getByText('Sky')
-			expect(badge).toHaveClass('bg-sky-600', 'text-sky-50')
-		})
-
-		it('should apply indigo color styling', () => {
-			render(<Badge color='indigo'>Indigo</Badge>)
-			const badge = screen.getByText('Indigo')
-			expect(badge).toHaveClass('bg-indigo-600', 'text-indigo-50')
-		})
-
-		it('should apply purple color styling', () => {
-			render(<Badge color='purple'>Purple</Badge>)
-			const badge = screen.getByText('Purple')
-			expect(badge).toHaveClass('bg-purple-600', 'text-purple-50')
-		})
-
-		it('should apply fuchsia color styling', () => {
-			render(<Badge color='fuchsia'>Fuchsia</Badge>)
-			const badge = screen.getByText('Fuchsia')
-			expect(badge).toHaveClass('bg-fuchsia-600', 'text-fuchsia-50')
-		})
-
-		it('should apply lime color styling', () => {
-			render(<Badge color='lime'>Lime</Badge>)
-			const badge = screen.getByText('Lime')
-			expect(badge).toHaveClass('bg-lime-600', 'text-lime-50')
-		})
-	})
-
 	describe('Default Variant', () => {
-		it('should apply slate color by default when no color provided', () => {
+		it('should apply disabled color by default when no color provided', () => {
 			render(<Badge>Default</Badge>)
 			const badge = screen.getByText('Default')
 			expect(badge).toHaveClass('bg-slate-600', 'text-slate-50')

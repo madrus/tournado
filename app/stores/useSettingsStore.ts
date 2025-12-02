@@ -125,7 +125,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 				},
 			}),
 			{
-				name: 'settings-storage',
+				name: storeName,
 				// Use localStorage for UI preferences persistence (unlike auth which uses sessionStorage)
 				storage: isBrowser
 					? createJSONStorage(() => localStorage)

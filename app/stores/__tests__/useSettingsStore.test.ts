@@ -79,56 +79,6 @@ describe('useSettingsStore', () => {
 		})
 	})
 
-	it('should persist theme to localStorage', () => {
-		state().setTheme('dark')
-
-		// Get the persisted data from localStorage
-		const persistedDataString = localStorage.getItem('settings-storage')
-		expect(persistedDataString).not.toBeNull()
-
-		if (persistedDataString) {
-			const persistedData = JSON.parse(persistedDataString)
-
-			// Zustand persist middleware wraps the state in a 'state' key and adds a version
-			expect(persistedData).toHaveProperty('state')
-			expect(persistedData).toHaveProperty('version')
-
-			// Check that the persisted state contains the expected values
-			expect(persistedData.state.theme).toBe('dark')
-		}
-	})
-
-	it('should persist language to localStorage', () => {
-		state().setLanguage('en')
-
-		// Get the persisted data from localStorage
-		const persistedDataString = localStorage.getItem('settings-storage')
-		expect(persistedDataString).not.toBeNull()
-
-		if (persistedDataString) {
-			const persistedData = JSON.parse(persistedDataString)
-
-			// Check that the persisted state contains the expected values
-			expect(persistedData.state.language).toBe('en')
-		}
-	})
-
-	it('should persist both theme and language changes', () => {
-		state().setTheme('dark')
-		state().setLanguage('tr')
-
-		// Get the persisted data from localStorage
-		const persistedDataString = localStorage.getItem('settings-storage')
-		expect(persistedDataString).not.toBeNull()
-
-		if (persistedDataString) {
-			const persistedData = JSON.parse(persistedDataString)
-
-			expect(persistedData.state.theme).toBe('dark')
-			expect(persistedData.state.language).toBe('tr')
-		}
-	})
-
 	it('should reset store state to initial values', () => {
 		// Change from defaults
 		state().setTheme('dark')

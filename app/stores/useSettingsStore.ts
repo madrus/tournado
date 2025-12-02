@@ -53,7 +53,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 			(set, _get) => ({
 				...initialStoreState,
 				resetSettingsStoreState: () => {
-					set(initialStoreState, false, 'resetStoreState')
+					set(initialStoreState, false, 'resetSettingsStoreState')
 				},
 				setTheme: (theme) => {
 					// Persist to both localStorage and cookies for server-side access

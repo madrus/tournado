@@ -1,20 +1,182 @@
-name: Playwright Tests (Manual)
+name: Playwright Tests
+
 on:
-  workflow_dispatch: # Manual trigger only
+  workflow_call:
     inputs:
       environment:
         description: "Environment to test against"
         required: false
         default: "local"
-        type: choice
-        options:
-          - local
-          - staging
+        type: string
+      upload_artifact_suffix:
+        description: "Suffix for the artifact name"
+        required: false
+        default: ""
+        type: string
+    secrets:
+      DATABASE_URL:
+        required: true
+      FIREBASE_ADMIN_PROJECT_ID:
+        required: true
+      FIREBASE_ADMIN_CLIENT_EMAIL:
+        required: true
+      FIREBASE_ADMIN_PRIVATE_KEY:
+        required: true
+      VITE_FIREBASE_API_KEY:
+        required: true
+      VITE_FIREBASE_AUTH_DOMAIN:
+        required: true
+      VITE_FIREBASE_PROJECT_ID:
+        required: true
+      VITE_FIREBASE_STORAGE_BUCKET:
+        required: true
+      VITE_FIREBASE_MESSAGING_SENDER_ID:
+        required: true
+      VITE_FIREBASE_APP_ID:
+        required: true
 
 jobs:
-  e2e-tests:
-    uses: ./.github/workflows/playwright-reusable.yml
-    with:
-      environment: ${{ inputs.environment || 'local' }}
-      upload_artifact_suffix: "-manual"
-    secrets: inherit
+  playwright:
+    name: 🎭 Playwright
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      test_status: ${{ steps.run_tests.outputs.status }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: ⎔ Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 📥 Install deps
+        run: pnpm install --no-frozen-lockfile
+
+      - uses: ./.github/actions/prisma-generate
+        with:
+          database_url: "file:./prisma/data-test.db?connection_limit=1"
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: 🛠 Setup Database
+        run: |
+          # Ensure Prisma client is generated before migration
+          pnpm exec prisma generate
+          pnpm exec prisma migrate reset --force
+          # Generate client again after database reset to ensure it's fresh
+          pnpm exec prisma generate
+          # Wait for the client to be fully ready
+          sleep 3
+        env:
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+
+      - name: ⚙️ Build
+        run: pnpm build
+        env:
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+
+      - name: 🎭 Run Playwright tests with built app
+        id: run_tests
+        run: |
+          set +e  # Don't exit on error
+
+          # Start server in background with output logging
+          DATABASE_URL="file:./prisma/data-test.db?connection_limit=1" PLAYWRIGHT=true PORT=8811 pnpm start:mocks > server.log 2>&1 &
+          SERVER_PID=$!
+
+          echo "Server PID: $SERVER_PID"
+
+          # Wait for server with timeout
+          for i in {1..60}; do
+            if curl -s http://localhost:8811 > /dev/null 2>&1; then
+              echo "✅ Server is responding on port 8811"
+              break
+            fi
+            if ! kill -0 $SERVER_PID 2>/dev/null; then
+              echo "❌ Server process died. Logs:"
+              cat server.log
+              exit 1
+            fi
+            echo "Waiting for server... ($i/60)"
+            sleep 2
+          done
+
+          if ! curl -s http://localhost:8811 > /dev/null 2>&1; then
+            echo "❌ Server failed to start. Logs:"
+            cat server.log
+            kill $SERVER_PID 2>/dev/null || true
+            exit 1
+          fi
+
+          # Run tests
+          pnpm exec playwright test
+          TEST_EXIT_CODE=$?
+
+          echo "----- server.log -----"
+          if [ -f server.log ]; then
+            cat server.log
+          else
+            echo "server.log not found"
+          fi
+
+          # Cleanup
+          kill $SERVER_PID 2>/dev/null || true
+
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "✅ All tests passed successfully"
+            echo "status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "❌ Tests failed with exit code $TEST_EXIT_CODE"
+            echo "status=failure" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "exit_code=$TEST_EXIT_CODE" >> "$GITHUB_OUTPUT"
+          exit $TEST_EXIT_CODE
+        env:
+          DATABASE_URL: "file:./prisma/data-test.db?connection_limit=1"
+          PLAYWRIGHT: true
+          PLAYWRIGHT_BASE_URL: "http://localhost:8811"
+          EMAIL_FROM: "Team Registration <noreply@tournado.app>"
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || format('playwright-session-{0}', github.run_id) }}
+          FIREBASE_ADMIN_PROJECT_ID: ${{ secrets.FIREBASE_ADMIN_PROJECT_ID }}
+          FIREBASE_ADMIN_CLIENT_EMAIL: ${{ secrets.FIREBASE_ADMIN_CLIENT_EMAIL }}
+          FIREBASE_ADMIN_PRIVATE_KEY: ${{ secrets.FIREBASE_ADMIN_PRIVATE_KEY }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report${{ inputs.upload_artifact_suffix }}
+          path: playwright-report/
+          retention-days: 30

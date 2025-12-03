@@ -1,0 +1,20 @@
+name: Playwright Tests (Manual)
+on:
+  workflow_dispatch: # Manual trigger only
+    inputs:
+      environment:
+        description: "Environment to test against"
+        required: false
+        default: "local"
+        type: choice
+        options:
+          - local
+          - staging
+
+jobs:
+  e2e-tests:
+    uses: ./.github/workflows/playwright.yml
+    with:
+      environment: ${{ inputs.environment || 'local' }}
+      upload_artifact_suffix: "-manual"
+    secrets: inherit

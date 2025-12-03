@@ -2,6 +2,10 @@
 	"admin": {
 		"competition": {
 			"description": "إدارة المجموعات والمباريات والترتيب للبطولات.",
+			"groups": "المجموعات",
+			"groupStage": "مرحلة المجموعات",
+			"groupStageDescription": "إنشاء وإدارة مرحلة المجموعات للعب دوري",
+			"playoffs": "التصفيات",
 			"title": "إدارة المسابقة"
 		},
 		"panel": {

@@ -2,6 +2,10 @@
 	"admin": {
 		"competition": {
 			"description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
+			"groups": "Gruppen",
+			"groupStage": "Gruppenphase",
+			"groupStageDescription": "Gruppenphase für Round-Robin-Spiel erstellen und verwalten",
+			"playoffs": "Playoffs",
 			"title": "Wettbewerbsverwaltung"
 		},
 		"panel": {

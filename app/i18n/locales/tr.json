@@ -2,6 +2,10 @@
 	"admin": {
 		"competition": {
 			"description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
+			"groups": "Gruplar",
+			"groupStage": "Grup Aşaması",
+			"groupStageDescription": "Round-robin oyunu için grup aşaması oluşturun ve yönetin",
+			"playoffs": "Playofflar",
 			"title": "Yarışma yönetimi"
 		},
 		"panel": {

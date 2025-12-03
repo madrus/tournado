@@ -2,6 +2,10 @@
 	"admin": {
 		"competition": {
 			"description": "Gérer les groupes, les matchs et les classements des tournois.",
+			"groups": "Groupes",
+			"groupStage": "Phase de groupes",
+			"groupStageDescription": "Créer et gérer la phase de groupes pour le jeu en round-robin",
+			"playoffs": "Playoffs",
 			"title": "Gestion de la compétition"
 		},
 		"panel": {

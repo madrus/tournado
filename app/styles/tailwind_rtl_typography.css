@@ -37,14 +37,14 @@
 .latin-text,
 .arabic-text .latin-text {
 	font-family: system-ui, sans-serif;
-	font-size: 1rem; /* Use absolute size to match Latin mode */
+	font-size: inherit; /* Inherit size from parent to respect text-xs, text-sm, etc. */
 }
 
 /* Ensure Latin text style applies to children with higher specificity */
 .latin-text *,
 .arabic-text .latin-text * {
 	font-family: system-ui, sans-serif;
-	font-size: 1rem;
+	font-size: inherit;
 }
 
 /* Latin titles - for Latin headings in Arabic context */
@@ -87,11 +87,6 @@
 [dir="rtl"] .icon-spacing {
 	margin-inline-start: 0.375rem; /* 1.5 = 6px */
 	margin-inline-end: 0;
-}
-
-/* Button flex direction - reverse in RTL to maintain icon-text order in DOM but flip visually */
-[dir="rtl"] button {
-	flex-direction: row-reverse;
 }
 
 /* Menu item font families - for language menu items that need consistent sizing */

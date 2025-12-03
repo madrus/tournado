@@ -2,6 +2,10 @@
 	"admin": {
 		"competition": {
 			"description": "Beheer groepen, wedstrijden en standen voor toernooien.",
+			"groups": "Poules",
+			"groupStage": "Groepsfase",
+			"groupStageDescription": "Creëer en beheer groepsfase voor round-robin spel",
+			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"
 		},
 		"panel": {

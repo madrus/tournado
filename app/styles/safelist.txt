@@ -683,6 +683,17 @@ bg-slate-400
 dark:bg-slate-600
 
 # =============================================================================
+# RTL Support - Flex Direction
+# =============================================================================
+rtl:flex-row-reverse
+rtl:rounded-tl-none
+rtl:rounded-tr-none
+rtl:rounded-tl-lg
+rtl:rounded-tr-lg
+rtl:rounded-tl-xl
+rtl:order-last
+
+# =============================================================================
 # Panel Component - Custom Background Classes
 # =============================================================================
 # These are generated dynamically via CVA in panel.variants.ts

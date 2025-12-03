@@ -1,5 +1,6 @@
 import { cva } from 'class-variance-authority'
 import { type JSX, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Outlet, useLoaderData } from 'react-router'
 
 import { AuthErrorBoundary } from '~/components/AuthErrorBoundary'
@@ -72,46 +73,51 @@ export async function loader({
 	}
 }
 
-const tabs = [
+type TabConfig = {
+	nameKey: string
+	href: 'groups' | 'playoffs'
+	icon: typeof SportsIcon | typeof TrophyIcon
+	disabled: boolean
+}
+
+const tabs: readonly TabConfig[] = [
 	{
-		name: 'Groups',
+		nameKey: 'admin.competition.groups',
 		href: 'groups',
 		icon: SportsIcon,
-		description: 'Manage group sets and team assignments',
 		disabled: false,
 	},
 	{
-		name: 'Playoffs',
+		nameKey: 'admin.competition.playoffs',
 		href: 'playoffs',
 		icon: TrophyIcon,
-		description: 'Configure knockout brackets',
 		disabled: true, // Coming soon
 	},
 ] as const
 
 const tabVariants = cva(
 	[
-		'relative flex items-center space-x-2 px-6 py-4 font-medium text-sm transition-all duration-200',
-		'-mb-px rounded-t-lg focus:outline-none',
+		'relative flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-200',
+		'-mb-px focus:outline-none',
 	],
 	{
 		variants: {
 			state: {
 				active: [
 					'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950 dark:text-fuchsia-300',
-					'border-t border-r border-l',
-					'!border-t-fuchsia-300 !border-r-fuchsia-300 !border-l-fuchsia-300 border-b-transparent',
+					'border-t border-e border-s',
+					'!border-t-fuchsia-300 !border-e-fuchsia-300 !border-s-fuchsia-300 border-b-transparent',
 					'dark:border-fuchsia-700 dark:border-b-fuchsia-950',
 					'z-10 shadow-lg',
 				],
 				inactive: [
 					'bg-background text-foreground-light',
-					'border-t border-r border-l',
+					'border-t border-e border-s',
 					'border-border border-b-0',
 				],
 				disabled: [
 					'cursor-not-allowed bg-background text-foreground-lighter',
-					'border-t border-r border-l',
+					'border-t border-e border-s',
 					'border-border border-b-0',
 				],
 			},
@@ -121,6 +127,7 @@ const tabVariants = cva(
 
 export default function CompetitionLayout(): JSX.Element {
 	const { tournamentListItems, selectedTournamentId } = useLoaderData<LoaderData>()
+	const { t } = useTranslation()
 	const [activeTab, setActiveTab] = useState<'groups' | 'playoffs'>('groups')
 
 	return (
@@ -136,31 +143,38 @@ export default function CompetitionLayout(): JSX.Element {
 			<div className='space-y-0'>
 				{/* Tab Headers */}
 				<div className='flex space-x-0 border-border'>
-					{tabs.map((tab) => (
+					{tabs.map((tab, index) => (
 						<button
 							type='button'
 							key={tab.href}
-							onClick={() => setActiveTab(tab.href as 'groups' | 'playoffs')}
+							onClick={() => setActiveTab(tab.href)}
 							disabled={tab.disabled}
-							className={tabVariants({
-								state: tab.disabled
-									? 'disabled'
-									: activeTab === tab.href
-										? 'active'
-										: 'inactive',
-							})}
+							className={cn(
+								tabVariants({
+									state: tab.disabled
+										? 'disabled'
+										: activeTab === tab.href
+											? 'active'
+											: 'inactive',
+								}),
+								// First tab: rounded top-left in LTR, rounded top-right in RTL
+								index === 0 && 'rounded-tl-lg rtl:rounded-tl-none rtl:rounded-tr-lg',
+								// Last tab: rounded top-right in LTR, rounded top-left in RTL
+								index === tabs.length - 1 &&
+									'rounded-tr-lg rtl:rounded-tr-none rtl:rounded-tl-lg',
+							)}
 						>
 							<tab.icon
 								className={cn(
-									'h-4 w-4',
+									'h-6 w-6 rtl:order-last',
 									activeTab === tab.href
 										? 'text-fuchsia-600 dark:text-fuchsia-400'
 										: '',
 								)}
 							/>
-							<span>{tab.name}</span>
+							<span>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
-								<span className='rounded-full bg-accent px-2 py-0.5 text-foreground-lighter text-xs'>
+								<span className='latin-text rounded-full bg-accent px-2 py-0.5 text-foreground-lighter text-xs'>
 									Soon
 								</span>
 							) : null}
@@ -170,7 +184,10 @@ export default function CompetitionLayout(): JSX.Element {
 
 				{/* Tab Content - Render nested routes */}
 				<div className='relative'>
-					<Panel color='fuchsia' className='rounded-tl-none border-t shadow-lg'>
+					<Panel
+						color='fuchsia'
+						className='rounded-tl-none rtl:rounded-tl-xl rtl:rounded-tr-none border-t shadow-lg'
+					>
 						<Outlet />
 					</Panel>
 				</div>

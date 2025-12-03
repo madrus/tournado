@@ -10,7 +10,7 @@ html.dark :not([dir="rtl"]) .panel-amber-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-amber-bg {
+html.dark[dir="rtl"] .panel-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-amber-950),
@@ -28,7 +28,7 @@ html.dark :not([dir="rtl"]) .panel-blue-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-blue-bg {
+html.dark[dir="rtl"] .panel-blue-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-blue-950),
@@ -46,7 +46,7 @@ html.dark :not([dir="rtl"]) .panel-brand-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-brand-bg {
+html.dark[dir="rtl"] .panel-brand-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-950),
@@ -64,7 +64,7 @@ html.dark :not([dir="rtl"]) .panel-cyan-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-cyan-bg {
+html.dark[dir="rtl"] .panel-cyan-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-cyan-950),
@@ -82,7 +82,7 @@ html.dark :not([dir="rtl"]) .panel-emerald-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-emerald-bg {
+html.dark[dir="rtl"] .panel-emerald-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-950),
@@ -100,7 +100,7 @@ html.dark :not([dir="rtl"]) .panel-fuchsia-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-fuchsia-bg {
+html.dark[dir="rtl"] .panel-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-fuchsia-950),
@@ -118,7 +118,7 @@ html.dark :not([dir="rtl"]) .panel-green-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-green-bg {
+html.dark[dir="rtl"] .panel-green-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-green-950),
@@ -136,7 +136,7 @@ html.dark :not([dir="rtl"]) .panel-indigo-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-indigo-bg {
+html.dark[dir="rtl"] .panel-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-indigo-950),
@@ -154,7 +154,7 @@ html.dark :not([dir="rtl"]) .panel-lime-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-lime-bg {
+html.dark[dir="rtl"] .panel-lime-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-lime-950),
@@ -172,7 +172,7 @@ html.dark :not([dir="rtl"]) .panel-orange-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-orange-bg {
+html.dark[dir="rtl"] .panel-orange-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-orange-950),
@@ -190,7 +190,7 @@ html.dark :not([dir="rtl"]) .panel-pink-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-pink-bg {
+html.dark[dir="rtl"] .panel-pink-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-pink-950),
@@ -208,7 +208,7 @@ html.dark :not([dir="rtl"]) .panel-primary-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-primary-bg {
+html.dark[dir="rtl"] .panel-primary-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-950),
@@ -226,7 +226,7 @@ html.dark :not([dir="rtl"]) .panel-purple-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-purple-bg {
+html.dark[dir="rtl"] .panel-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-purple-950),
@@ -244,7 +244,7 @@ html.dark :not([dir="rtl"]) .panel-red-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-red-bg {
+html.dark[dir="rtl"] .panel-red-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-red-950),
@@ -262,7 +262,7 @@ html.dark :not([dir="rtl"]) .panel-rose-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-rose-bg {
+html.dark[dir="rtl"] .panel-rose-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-rose-950),
@@ -280,7 +280,7 @@ html.dark :not([dir="rtl"]) .panel-sky-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-sky-bg {
+html.dark[dir="rtl"] .panel-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-sky-950),
@@ -298,7 +298,7 @@ html.dark :not([dir="rtl"]) .panel-slate-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-slate-bg {
+html.dark[dir="rtl"] .panel-slate-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-950),
@@ -316,7 +316,7 @@ html.dark :not([dir="rtl"]) .panel-teal-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-teal-bg {
+html.dark[dir="rtl"] .panel-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-teal-950),
@@ -334,7 +334,7 @@ html.dark :not([dir="rtl"]) .panel-violet-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-violet-bg {
+html.dark[dir="rtl"] .panel-violet-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-violet-950),
@@ -352,7 +352,7 @@ html.dark :not([dir="rtl"]) .panel-yellow-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-yellow-bg {
+html.dark[dir="rtl"] .panel-yellow-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-yellow-950),
@@ -370,7 +370,7 @@ html.dark :not([dir="rtl"]) .panel-zinc-bg {
 	);
 }
 
-html.dark [dir="rtl"] .panel-zinc-bg {
+html.dark[dir="rtl"] .panel-zinc-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-zinc-950),
@@ -390,7 +390,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-amber-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-amber-bg {
+html:not(.dark)[dir="rtl"] .panel-amber-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-amber-50),
@@ -409,7 +409,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-blue-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-blue-bg {
+html:not(.dark)[dir="rtl"] .panel-blue-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-blue-50),
@@ -428,7 +428,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-brand-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-brand-bg {
+html:not(.dark)[dir="rtl"] .panel-brand-bg {
 	background: linear-gradient(
 		to bottom left,
 		white,
@@ -447,7 +447,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-cyan-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-cyan-bg {
+html:not(.dark)[dir="rtl"] .panel-cyan-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-cyan-50),
@@ -466,7 +466,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-emerald-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-emerald-bg {
+html:not(.dark)[dir="rtl"] .panel-emerald-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-50),
@@ -485,7 +485,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-fuchsia-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-fuchsia-bg {
+html:not(.dark)[dir="rtl"] .panel-fuchsia-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-fuchsia-50),
@@ -504,7 +504,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-green-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-green-bg {
+html:not(.dark)[dir="rtl"] .panel-green-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-green-50),
@@ -523,7 +523,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-indigo-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-indigo-bg {
+html:not(.dark)[dir="rtl"] .panel-indigo-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-indigo-50),
@@ -542,7 +542,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-lime-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-lime-bg {
+html:not(.dark)[dir="rtl"] .panel-lime-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-lime-50),
@@ -561,7 +561,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-orange-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-orange-bg {
+html:not(.dark)[dir="rtl"] .panel-orange-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-orange-50),
@@ -580,7 +580,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-pink-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-pink-bg {
+html:not(.dark)[dir="rtl"] .panel-pink-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-pink-50),
@@ -599,7 +599,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-primary-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-primary-bg {
+html:not(.dark)[dir="rtl"] .panel-primary-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-emerald-50),
@@ -618,7 +618,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-purple-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-purple-bg {
+html:not(.dark)[dir="rtl"] .panel-purple-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-purple-50),
@@ -637,7 +637,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-red-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-red-bg {
+html:not(.dark)[dir="rtl"] .panel-red-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-red-50),
@@ -656,7 +656,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-rose-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-rose-bg {
+html:not(.dark)[dir="rtl"] .panel-rose-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-rose-50),
@@ -675,7 +675,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-sky-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-sky-bg {
+html:not(.dark)[dir="rtl"] .panel-sky-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-sky-50),
@@ -694,7 +694,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-slate-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-slate-bg {
+html:not(.dark)[dir="rtl"] .panel-slate-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-slate-50),
@@ -713,7 +713,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-teal-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-teal-bg {
+html:not(.dark)[dir="rtl"] .panel-teal-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-teal-50),
@@ -732,7 +732,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-violet-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-violet-bg {
+html:not(.dark)[dir="rtl"] .panel-violet-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-violet-50),
@@ -751,7 +751,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-yellow-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-yellow-bg {
+html:not(.dark)[dir="rtl"] .panel-yellow-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-yellow-50),
@@ -770,7 +770,7 @@ html:not(.dark) :not([dir="rtl"]) .panel-zinc-bg {
 	);
 }
 
-html:not(.dark) [dir="rtl"] .panel-zinc-bg {
+html:not(.dark)[dir="rtl"] .panel-zinc-bg {
 	background: linear-gradient(
 		to bottom left,
 		var(--color-zinc-50),

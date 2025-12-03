@@ -1,4 +1,4 @@
-import { cva } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 export const badgeVariants = cva(
 	'inline-flex items-center rounded-full px-3 py-0.5 font-medium text-sm',
@@ -33,3 +33,5 @@ export const badgeVariants = cva(
 		},
 	},
 )
+
+export type BadgeVariants = VariantProps<typeof badgeVariants>

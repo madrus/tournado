@@ -126,6 +126,68 @@
 		border-color: var(--color-adaptive-brand-text);
 	}
 
+	/* Adaptive Background Color Utilities - For Panel Numbers and Backgrounds */
+	.bg-adaptive-bg-red {
+		background-color: var(--color-adaptive-bg-red);
+	}
+	.bg-adaptive-bg-blue {
+		background-color: var(--color-adaptive-bg-blue);
+	}
+	.bg-adaptive-bg-emerald {
+		background-color: var(--color-adaptive-bg-emerald);
+	}
+	.bg-adaptive-bg-teal {
+		background-color: var(--color-adaptive-bg-teal);
+	}
+	.bg-adaptive-bg-cyan {
+		background-color: var(--color-adaptive-bg-cyan);
+	}
+	.bg-adaptive-bg-green {
+		background-color: var(--color-adaptive-bg-green);
+	}
+	.bg-adaptive-bg-yellow {
+		background-color: var(--color-adaptive-bg-yellow);
+	}
+	.bg-adaptive-bg-orange {
+		background-color: var(--color-adaptive-bg-orange);
+	}
+	.bg-adaptive-bg-amber {
+		background-color: var(--color-adaptive-bg-amber);
+	}
+	.bg-adaptive-bg-lime {
+		background-color: var(--color-adaptive-bg-lime);
+	}
+	.bg-adaptive-bg-violet {
+		background-color: var(--color-adaptive-bg-violet);
+	}
+	.bg-adaptive-bg-purple {
+		background-color: var(--color-adaptive-bg-purple);
+	}
+	.bg-adaptive-bg-fuchsia {
+		background-color: var(--color-adaptive-bg-fuchsia);
+	}
+	.bg-adaptive-bg-pink {
+		background-color: var(--color-adaptive-bg-pink);
+	}
+	.bg-adaptive-bg-rose {
+		background-color: var(--color-adaptive-bg-rose);
+	}
+	.bg-adaptive-bg-slate {
+		background-color: var(--color-adaptive-bg-slate);
+	}
+	.bg-adaptive-bg-zinc {
+		background-color: var(--color-adaptive-bg-zinc);
+	}
+	.bg-adaptive-bg-indigo {
+		background-color: var(--color-adaptive-bg-indigo);
+	}
+	.bg-adaptive-bg-sky {
+		background-color: var(--color-adaptive-bg-sky);
+	}
+	.bg-adaptive-bg-brand {
+		background-color: var(--color-adaptive-bg-brand);
+	}
+
 	/* Adaptive ActionLink Icon Color Utilities - For Bright Interactive Icons (600 weights) */
 	.text-adaptive-red-action {
 		color: var(--color-adaptive-red);

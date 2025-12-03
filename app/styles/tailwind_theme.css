@@ -184,27 +184,49 @@
 	--color-primary-to: var(--color-primary-light-to);
 
 	/* Adaptive Color System - Consolidated Variables (600 weights for readability) */
-	--color-adaptive-red: var(--color-red-600);
-	--color-adaptive-blue: var(--color-blue-600);
-	--color-adaptive-emerald: var(--color-emerald-600);
-	--color-adaptive-teal: var(--color-teal-600);
-	--color-adaptive-cyan: var(--color-cyan-600);
-	--color-adaptive-green: var(--color-green-600);
-	--color-adaptive-yellow: var(--color-yellow-600);
-	--color-adaptive-orange: var(--color-orange-600);
-	--color-adaptive-amber: var(--color-amber-600);
-	--color-adaptive-lime: var(--color-lime-600);
-	--color-adaptive-violet: var(--color-violet-600);
-	--color-adaptive-purple: var(--color-purple-600);
-	--color-adaptive-fuchsia: var(--color-fuchsia-600);
-	--color-adaptive-pink: var(--color-pink-600);
-	--color-adaptive-rose: var(--color-rose-600);
-	--color-adaptive-slate: var(--color-slate-600);
-	--color-adaptive-zinc: var(--color-zinc-600);
-	--color-adaptive-indigo: var(--color-indigo-600);
-	--color-adaptive-sky: var(--color-sky-600);
+	--color-adaptive-red: var(--color-red-700);
+	--color-adaptive-blue: var(--color-blue-700);
+	--color-adaptive-emerald: var(--color-emerald-700);
+	--color-adaptive-teal: var(--color-teal-700);
+	--color-adaptive-cyan: var(--color-cyan-700);
+	--color-adaptive-green: var(--color-green-700);
+	--color-adaptive-yellow: var(--color-yellow-700);
+	--color-adaptive-orange: var(--color-orange-700);
+	--color-adaptive-amber: var(--color-amber-800);
+	--color-adaptive-lime: var(--color-lime-700);
+	--color-adaptive-violet: var(--color-violet-700);
+	--color-adaptive-purple: var(--color-purple-700);
+	--color-adaptive-fuchsia: var(--color-fuchsia-700);
+	--color-adaptive-pink: var(--color-pink-700);
+	--color-adaptive-rose: var(--color-rose-700);
+	--color-adaptive-slate: var(--color-slate-700);
+	--color-adaptive-zinc: var(--color-zinc-700);
+	--color-adaptive-indigo: var(--color-indigo-700);
+	--color-adaptive-sky: var(--color-sky-700);
 	--color-adaptive-brand: var(--color-red-600);
 	--color-adaptive-brand-text: var(--color-red-800);
+
+	/* Adaptive Color System - Background Colors (600 weights for proper contrast) */
+	--color-adaptive-bg-red: var(--color-red-600);
+	--color-adaptive-bg-blue: var(--color-blue-600);
+	--color-adaptive-bg-emerald: var(--color-emerald-600);
+	--color-adaptive-bg-teal: var(--color-teal-600);
+	--color-adaptive-bg-cyan: var(--color-cyan-600);
+	--color-adaptive-bg-green: var(--color-green-600);
+	--color-adaptive-bg-yellow: var(--color-yellow-600);
+	--color-adaptive-bg-orange: var(--color-orange-600);
+	--color-adaptive-bg-amber: var(--color-amber-700);
+	--color-adaptive-bg-lime: var(--color-lime-600);
+	--color-adaptive-bg-violet: var(--color-violet-600);
+	--color-adaptive-bg-purple: var(--color-purple-600);
+	--color-adaptive-bg-fuchsia: var(--color-fuchsia-600);
+	--color-adaptive-bg-pink: var(--color-pink-600);
+	--color-adaptive-bg-rose: var(--color-rose-600);
+	--color-adaptive-bg-slate: var(--color-slate-600);
+	--color-adaptive-bg-zinc: var(--color-zinc-600);
+	--color-adaptive-bg-indigo: var(--color-indigo-600);
+	--color-adaptive-bg-sky: var(--color-sky-600);
+	--color-adaptive-bg-brand: var(--color-red-600);
 
 	/* Adaptive Color System - Functional Semantics (600 weights) */
 	--color-adaptive-success: var(--color-green-600);

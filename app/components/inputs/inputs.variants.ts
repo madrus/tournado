@@ -434,7 +434,7 @@ export const datePickerIconVariants = cva(['h-5 w-5 transition-colors duration-2
 export const textInputLabelVariants = cva(['flex w-full flex-col'])
 
 // Text input label text variants
-export const textInputLabelTextVariants = cva(['font-medium text-sm'])
+export const textInputLabelTextVariants = cva(['font-medium text-foreground text-sm'])
 // Calendar container variants
 export const calendarContainerVariants = cva([
 	'rounded-lg border p-4 shadow-lg',

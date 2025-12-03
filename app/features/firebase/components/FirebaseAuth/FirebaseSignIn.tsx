@@ -60,7 +60,7 @@ export function FirebaseSignIn({ redirectTo = '/' }: FirebaseSignInProps): JSX.E
 				</span>
 			</ActionButton>
 			{error ? (
-				<div className='text-red-600 text-sm dark:text-red-400'>{error}</div>
+				<div className='text-error-600 text-sm dark:text-error-400'>{error}</div>
 			) : null}
 		</div>
 	)

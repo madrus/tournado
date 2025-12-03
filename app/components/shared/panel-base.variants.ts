@@ -254,10 +254,16 @@ export const basePanelNumberVariants = cva(
 	{
 		variants: {
 			/**
-			 * Background color variants using -600 weight for proper contrast.
+			 * Background color variants using adaptive background colors for theme-aware styling.
+			 * Adapts automatically between light and dark modes.
 			 * All colors provide sufficient contrast with white text.
 			 */
-			color: createColorVariantMapping((color) => `bg-${color}-600`),
+			color: createColorVariantMapping((color) => {
+				// Primary maps to emerald
+				if (color === 'primary') return 'bg-adaptive-bg-emerald'
+				// Standard pattern for all colors including brand
+				return `bg-adaptive-bg-${color}`
+			}),
 			/**
 			 * Disabled state variant that overrides color with subtle light gray.
 			 * Shows panel number is disabled while maintaining visibility.

@@ -94,17 +94,16 @@ export const panelChildrenVariants = cva(
 		variants: {
 			/**
 			 * Color variants for child elements using CSS child selectors.
-			 * Applies adaptive colors to nested p, strong elements, and elements with .panel-label class.
-			 * Note: Uses .panel-label class instead of span to avoid conflicts with button/link text.
+			 * Applies adaptive colors to nested p and strong elements.
+			 * Note: Intentionally excludes span selector to avoid conflicts with button/link text.
 			 */
 			iconColor: createColorVariantMapping((color) => {
 				// Primary maps to emerald
 				if (color === 'primary') {
-					return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald [&_.panel-label]:!text-adaptive-emerald'
+					return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald'
 				}
 				// Standard pattern for all colors including brand
-				// Use !important for .panel-label to override Radix Themes global styles
-				return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color} [&_.panel-label]:!text-adaptive-${color}`
+				return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color}`
 			}),
 		},
 		defaultVariants: {

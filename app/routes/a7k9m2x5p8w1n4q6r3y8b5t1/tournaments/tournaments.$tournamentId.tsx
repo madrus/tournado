@@ -32,6 +32,7 @@ import type { Route } from './+types/tournaments.$tournamentId'
 
 export const handle: RouteMetadata = {
 	isPublic: false,
+	title: 'common.titles.tournament',
 	auth: {
 		required: true,
 		redirectTo: '/auth/signin',

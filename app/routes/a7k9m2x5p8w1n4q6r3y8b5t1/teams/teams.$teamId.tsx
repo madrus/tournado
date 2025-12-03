@@ -27,7 +27,7 @@ import { toast } from '~/utils/toastUtils'
 // Route metadata - admin only
 export const handle: RouteMetadata = {
 	isPublic: false,
-	title: 'Team | Admin',
+	title: 'common.titles.team',
 	auth: {
 		required: true,
 		redirectTo: '/auth/signin',

@@ -22,7 +22,7 @@
 	--color-adaptive-brand: var(--color-red-600);
 	--color-adaptive-brand-text: var(--color-red-200);
 
-	/* Adaptive Background Colors - Dark Mode (700 weights for proper contrast) */
+	/* Adaptive Background Colors - Dark Mode (700 weights for proper contrast, except indigo uses 600) */
 	--color-adaptive-bg-red: var(--color-red-700);
 	--color-adaptive-bg-blue: var(--color-blue-700);
 	--color-adaptive-bg-emerald: var(--color-emerald-700);
@@ -43,6 +43,24 @@
 	--color-adaptive-bg-indigo: var(--color-indigo-600);
 	--color-adaptive-bg-sky: var(--color-sky-700);
 	--color-adaptive-bg-brand: var(--color-red-700);
+
+	/* Adaptive Background Colors - Functional Semantics Dark Mode (700 weights) */
+	--color-adaptive-bg-success: var(--color-green-700);
+	--color-adaptive-bg-error: var(--color-red-700);
+	--color-adaptive-bg-warning: var(--color-yellow-700);
+	--color-adaptive-bg-info: var(--color-blue-700);
+	--color-adaptive-bg-disabled: var(--color-slate-700);
+
+	/* Adaptive Background Colors - Visual Accents Dark Mode (700 weights, except indigo uses 600) */
+	--color-adaptive-bg-accent-amber: var(--color-amber-700);
+	--color-adaptive-bg-accent-indigo: var(
+		--color-indigo-600
+	); /* 600 for consistency with other indigo adaptive bg */
+	--color-adaptive-bg-accent-fuchsia: var(--color-fuchsia-700);
+	--color-adaptive-bg-accent-teal: var(--color-teal-700);
+	--color-adaptive-bg-accent-sky: var(--color-sky-700);
+	--color-adaptive-bg-accent-purple: var(--color-purple-700);
+	--color-adaptive-bg-accent-lime: var(--color-lime-700);
 
 	/* Selected State Dark Mode Overrides (900 weight for better contrast) */
 	--color-adaptive-red-selected: var(--color-red-900);

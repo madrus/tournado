@@ -183,7 +183,7 @@
 	--color-primary-via: var(--color-primary-light-via);
 	--color-primary-to: var(--color-primary-light-to);
 
-	/* Adaptive Color System - Consolidated Variables (600 weights for readability) */
+	/* Adaptive Color System - Consolidated Variables (primarily 700 weights, with exceptions: amber-800, brand red-600) */
 	--color-adaptive-red: var(--color-red-700);
 	--color-adaptive-blue: var(--color-blue-700);
 	--color-adaptive-emerald: var(--color-emerald-700);
@@ -206,7 +206,7 @@
 	--color-adaptive-brand: var(--color-red-600);
 	--color-adaptive-brand-text: var(--color-red-800);
 
-	/* Adaptive Color System - Background Colors (600 weights for proper contrast) */
+	/* Adaptive Color System - Background Colors (primarily 600 weights, except amber-700 for proper contrast) */
 	--color-adaptive-bg-red: var(--color-red-600);
 	--color-adaptive-bg-blue: var(--color-blue-600);
 	--color-adaptive-bg-emerald: var(--color-emerald-600);
@@ -227,6 +227,24 @@
 	--color-adaptive-bg-indigo: var(--color-indigo-600);
 	--color-adaptive-bg-sky: var(--color-sky-600);
 	--color-adaptive-bg-brand: var(--color-red-600);
+
+	/* Adaptive Background Colors - Functional Semantics (600 weights) */
+	--color-adaptive-bg-success: var(--color-green-600);
+	--color-adaptive-bg-error: var(--color-red-600);
+	--color-adaptive-bg-warning: var(--color-yellow-600);
+	--color-adaptive-bg-info: var(--color-blue-600);
+	--color-adaptive-bg-disabled: var(--color-slate-600);
+
+	/* Adaptive Background Colors - Visual Accents (600 weights, except amber uses 700 for better contrast) */
+	--color-adaptive-bg-accent-amber: var(
+		--color-amber-700
+	); /* 700 for better contrast */
+	--color-adaptive-bg-accent-indigo: var(--color-indigo-600);
+	--color-adaptive-bg-accent-fuchsia: var(--color-fuchsia-600);
+	--color-adaptive-bg-accent-teal: var(--color-teal-600);
+	--color-adaptive-bg-accent-sky: var(--color-sky-600);
+	--color-adaptive-bg-accent-purple: var(--color-purple-600);
+	--color-adaptive-bg-accent-lime: var(--color-lime-600);
 
 	/* Adaptive Color System - Functional Semantics (600 weights) */
 	--color-adaptive-success: var(--color-green-600);
@@ -474,6 +492,19 @@
 	--color-accent-purple-800: var(--color-purple-800);
 	--color-accent-purple-900: var(--color-purple-900);
 	--color-accent-purple-950: var(--color-purple-950);
+
+	/* Visual Accent - Lime */
+	--color-accent-lime-50: var(--color-lime-50);
+	--color-accent-lime-100: var(--color-lime-100);
+	--color-accent-lime-200: var(--color-lime-200);
+	--color-accent-lime-300: var(--color-lime-300);
+	--color-accent-lime-400: var(--color-lime-400);
+	--color-accent-lime-500: var(--color-lime-500);
+	--color-accent-lime-600: var(--color-lime-600);
+	--color-accent-lime-700: var(--color-lime-700);
+	--color-accent-lime-800: var(--color-lime-800);
+	--color-accent-lime-900: var(--color-lime-900);
+	--color-accent-lime-950: var(--color-lime-950);
 }
 
 /* Dark mode variant rules for inputs */

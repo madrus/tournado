@@ -188,6 +188,46 @@
 		background-color: var(--color-adaptive-bg-brand);
 	}
 
+	/* Adaptive Background Colors - Functional Semantics */
+	.bg-adaptive-bg-success {
+		background-color: var(--color-adaptive-bg-success);
+	}
+	.bg-adaptive-bg-error {
+		background-color: var(--color-adaptive-bg-error);
+	}
+	.bg-adaptive-bg-warning {
+		background-color: var(--color-adaptive-bg-warning);
+	}
+	.bg-adaptive-bg-info {
+		background-color: var(--color-adaptive-bg-info);
+	}
+	.bg-adaptive-bg-disabled {
+		background-color: var(--color-adaptive-bg-disabled);
+	}
+
+	/* Adaptive Background Colors - Visual Accents */
+	.bg-adaptive-bg-accent-amber {
+		background-color: var(--color-adaptive-bg-accent-amber);
+	}
+	.bg-adaptive-bg-accent-indigo {
+		background-color: var(--color-adaptive-bg-accent-indigo);
+	}
+	.bg-adaptive-bg-accent-fuchsia {
+		background-color: var(--color-adaptive-bg-accent-fuchsia);
+	}
+	.bg-adaptive-bg-accent-teal {
+		background-color: var(--color-adaptive-bg-accent-teal);
+	}
+	.bg-adaptive-bg-accent-sky {
+		background-color: var(--color-adaptive-bg-accent-sky);
+	}
+	.bg-adaptive-bg-accent-purple {
+		background-color: var(--color-adaptive-bg-accent-purple);
+	}
+	.bg-adaptive-bg-accent-lime {
+		background-color: var(--color-adaptive-bg-accent-lime);
+	}
+
 	/* Adaptive ActionLink Icon Color Utilities - For Bright Interactive Icons (600 weights) */
 	.text-adaptive-red-action {
 		color: var(--color-adaptive-red);

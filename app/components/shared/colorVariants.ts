@@ -120,23 +120,3 @@ export const createColorVariantMapping = (
 		},
 		{} as Record<ColorVariantKey, string>,
 	)
-
-/**
- * Helper to create adaptive text color mappings for semantic CSS classes.
- * Maps each color to its corresponding text-adaptive-* class.
- *
- * @example
- * ```typescript
- * const textVariants = createAdaptiveTextColorMapping()
- * // Result: { brand: 'text-adaptive-brand', emerald: 'text-adaptive-emerald', ... }
- * ```
- */
-export const createAdaptiveTextColorMapping = (): Record<ColorVariantKey, string> =>
-	createColorVariantMapping((color) => `text-adaptive-${color}`)
-
-/**
- * Helper to create adaptive border color mappings for semantic CSS classes.
- * Maps each color to its corresponding border-adaptive-* class.
- */
-export const createAdaptiveBorderColorMapping = (): Record<ColorVariantKey, string> =>
-	createColorVariantMapping((color) => `border-adaptive-${color}`)

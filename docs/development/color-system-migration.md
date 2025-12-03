@@ -101,7 +101,7 @@
 - **info** → blue (to add to colors.css)
 
 **6 UNUSED REAL COLORS** (exclude from planning):
-zinc, orange, lime, violet, pink, rose
+zinc, orange, violet, pink, rose
 
 **Key principle**:
 - **Real colors** = actual Tailwind color families (red, blue, etc.) - **MUST be strict about these**
@@ -192,7 +192,7 @@ Questions to decide:
 **Checkist**:
 - [x] Decide on semantic categories → Two-tier: functional + accents
 - [x] Decide on abstraction layers → Both generic (success/error) + component-level (accent-amber)
-- [x] Map all 12 real colors to semantics → Complete (see above)
+- [x] Map all 13 real colors to semantics → Complete (see above)
 - [x] Document rationale → "nice tea" philosophy + UX design rationale
 
 ---
@@ -256,7 +256,6 @@ Questions to decide:
 - [x] Fix TypeScript errors in all CVA variant files (button, DataTable, inputs) - COMPLETE
 - [x] Document new token patterns in this file - COMPLETE
 - [x] Verify no visual changes (build and manual check) - COMPLETE ✅
-- [ ] Create semantic helper functions in colorVariants.ts (deferred - will create during Phase 1 component migrations as needed)
 
 ---
 
@@ -268,26 +267,26 @@ Questions to decide:
 
 **Goal**: Remove 5 unused legacy colors (zinc, orange, violet, pink, rose) to reduce file sizes and improve maintainability before Phase 1 component migrations.
 
-**Decision**: Remove 5 colors + refactor toast warnings to use semantic `warning` color (yellow). **Note**: `lime` was initially considered unused but is actually used in admin panel Competition Management icon - kept as used color.
+**Decision**: Remove 5 colors + refactor toast warnings to use semantic `warning` color (yellow).
 
 **Scope**: 13 files, ~260 lines removed
 
 **Results**:
-- ColorAccent type reduced from 21 to 16 colors (app/lib/lib.types.ts:125-139) - kept lime
-- COLOR_VARIANT_KEYS reduced from 34 to 29 entries (app/components/shared/colorVariants.ts) - kept lime
+- ColorAccent type reduced from 21 to 16 colors (app/lib/lib.types.ts:125-139)
+- COLOR_VARIANT_KEYS reduced from 34 to 29 entries (app/components/shared/colorVariants.ts)
 - Toast warnings migrated from orange to yellow/warning semantic (3 files)
 - All CVA variant files cleaned (button, dataTable, inputs, toggleChip, firebaseAuth)
 - All tests updated and passing
 - Zero TypeScript errors, build successful
-- Admin panel icons: violet→fuchsia (Reports), lime kept (Competition Management)
+- Admin panel icons: violet→fuchsia (Reports)
 
 **Checklist**:
-- [x] Remove 5 colors from ColorAccent type (app/lib/lib.types.ts) - kept lime
-- [x] Remove 5 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts) - kept lime
+- [x] Remove 5 colors from ColorAccent type (app/lib/lib.types.ts)
+- [x] Remove 5 colors from COLOR_VARIANT_KEYS (app/components/shared/colorVariants.ts)
 - [x] Refactor toast warnings: orange → `warning` semantic (toastMessage.variants.ts)
-- [x] Clean 5 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth) - kept lime
+- [x] Clean 5 colors from 5 CVA variant files (button, dataTable, inputs, toggleChip, firebaseAuth)
 - [x] Update 5 test files (ring.styles.test.ts, panel.variants.test.ts, toastMessage.variants.test.ts, ToastIcon.test.tsx, toggleChip.variants.ts)
-- [x] Fix component props in admin panel (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: violet→fuchsia, kept lime)
+- [x] Fix component props in admin panel (a7k9m2x5p8w1n4q6r3y8b5t1._index.tsx: violet→fuchsia)
 - [x] Verify typecheck passes ✅
 - [x] Verify build succeeds ✅
 - [x] Verify tests pass ✅
@@ -311,103 +310,421 @@ Questions to decide:
 - ✅ Reduced codebase bloat by ~260 lines
 - ✅ Color system now has 13 real colors + 13 semantics (26 total, down from 34)
 - ✅ Cleaner base for Phase 1 component migrations
-- ✅ No visual changes (fuchsia replaces violet, lime kept for competition icon)
+- ✅ No visual changes (fuchsia replaces violet)
 
 ---
 
 ### Phase 1: Component Migration (One at a time - INCREMENTAL)
 
-**Status**: ⚪ Not Started (ready to begin)
+**Status**: 🟢 In Progress
 
-**Goal**: Migrate components one-by-one using infrastructure from Phase 0.5.
+**Goal**: Migrate components one-by-one to use `ColorVariantKey` type with **100% static class names**. Eliminate all dynamic class generation using template literals.
 
-**Order** (suggested, flexible based on your priorities):
-1. Badge (38 lines) - Easiest POC
-2. Button system (229 lines) - Most complex, highest value
-3. Panel system - 80% done already
-4. ToggleChip (316 lines) - Systematic pattern
-5. Dialog, Toast, DataTable, Inputs, Navigation (as time allows)
-
-**Per-component process**:
-1. Read component and identify color usage
-2. Replace hardcoded colors with semantic tokens from Phase 0.5
-3. Update unit tests (color class assertions)
-4. Update E2E tests if affected
-5. Visual regression test (compare before/after screenshots)
-6. Single PR per component
-
-**You can request**: "Migrate [ComponentName] component" and I'll handle steps 1-6.
-
-**Success criteria per component**:
-- ✅ No hardcoded Tailwind colors (bg-red-600, etc.)
-- ✅ No dynamic color generation (no `bg-${color}-600` template literals)
-- ✅ Uses semantic tokens (bg-brand-600, bg-accent-amber-600, etc.)
-- ✅ Semantic tokens are statically detectable by Tailwind
-- ✅ No visual changes on screen
-- ✅ All tests passing (unit + E2E)
-- ✅ Safelist entries removed for that component
-
-**Checklist per component**:
-- [ ] Component migrated to semantic tokens
-- [ ] Unit tests updated and passing
-- [ ] E2E tests updated and passing (if applicable)
-- [ ] Visual regression verified (no changes)
-- [ ] Safelist entries removed
+**Scope Analysis**:
+- **15 CVA variant files** (components using class-variance-authority)
+- **7 files** using helper functions (`createColorVariantMapping`, etc.)
+- **60+ files** with `color=` prop usage (component consumers - no changes needed)
+- **274 occurrences** of hardcoded Tailwind classes (need review)
 
 ---
 
-### Phase 2: Cleanup & Enforcement (AFTER all components migrated)
+#### Phase 1a: CVA Variant Files (Static Classes Migration)
+
+**Progress**: 2/7 complete (29%)
+
+**Goal**: Replace `createColorVariantMapping()` calls with inline explicit static classes.
+
+**Files to migrate**:
+- [x] **Badge** (app/components/Badge/badge.variants.ts) - ✅ COMPLETE - Reference implementation
+- [x] **Button** (app/components/buttons/button.variants.ts) - ✅ COMPLETE - 52 compound variants (26 primary + 26 secondary)
+- [ ] **ToggleChip** (app/components/ToggleChip/toggleChip.variants.ts) - 1 usage
+- [ ] **DataTable** (app/components/DataTable/dataTable.variants.ts) - 4 usages
+- [ ] **Panel** (app/components/Panel/panel.variants.ts + panel-base.variants.ts) - 7 usages total
+- [ ] **ActionLinkPanel** (app/components/ActionLinkPanel/actionLinkPanel.variants.ts) - 5 usages
+- [ ] **Field** (app/components/shared/field.variants.ts) - 2 usages
+
+**Total**: 22 usages of `createColorVariantMapping()` remaining (2 removed from Button)
+
+**Per-component process**:
+1. Read variant file and identify all `createColorVariantMapping()` calls
+2. Replace each call with inline explicit static class mappings (all 26 colors)
+3. Use `satisfies Record<ColorVariantKey, string>` for type safety
+4. **Convert functions returning constants to actual constants**:
+   - Pattern: `export const getFoo = (): Record<...> => ({...})` → `export const FOO: Record<...> = {...} as const`
+   - Update all import/usage sites to use the constant directly (remove function call `()`)
+5. **Delete unused helper functions** from the file
+6. Update component unit tests if needed (color class assertions)
+7. Run tests and typecheck to verify changes
+8. Verify no visual changes
+9. Single commit per component
+
+**Reference Implementation**: See `app/components/Badge/badge.variants.ts` for the correct pattern.
+
+---
+
+#### Phase 1b: Helper Function Removal
+
+**Progress**: 2/3 complete (67%)
+
+**Goal**: Delete helper functions from `colorVariants.ts` once all usages are removed.
+
+**Functions to remove** (after Phase 1a complete):
+- [ ] `createColorVariantMapping()` - currently 22 usages across 6 files (2 removed from Button)
+- [x] `createAdaptiveTextColorMapping()` - ✅ DELETED (unused)
+- [x] `createAdaptiveBorderColorMapping()` - ✅ DELETED (unused)
+
+**Process**:
+1. After each component migration in Phase 1a, verify function usage count decreases
+2. When usage count reaches zero for a function, delete it from colorVariants.ts
+3. Run typecheck to ensure no hidden usages
+
+---
+
+#### Phase 1c: Hardcoded Classes Audit (DEFERRED)
+
+**Progress**: Not started
+
+**Goal**: Review and migrate 274 occurrences of hardcoded Tailwind color classes.
+
+**Scope**: 274 occurrences of patterns like `bg-red-600`, `text-blue-500`, etc.
+
+**Classification needed**:
+- **Intentional hardcoding**: Colors that should stay hardcoded (e.g., specific designs)
+- **Should use components**: Colors that should be replaced with Badge/Panel/etc.
+- **Should use semantic classes**: Direct usage that needs semantic naming
+
+**Process** (after Phase 1a/1b complete):
+1. Generate full list of hardcoded color occurrences
+2. Review each occurrence and classify
+3. Create targeted migration plan
+4. Migrate in batches by classification
+
+**Note**: This phase is deferred until CVA variant migrations are complete.
+
+---
+
+#### Overall Phase 1 Success Criteria
+
+Per component:
+- ✅ No dynamic color generation (no `bg-${color}-600` template literals)
+- ✅ All `createColorVariantMapping()` calls replaced with inline explicit static classes
+- ✅ Uses `satisfies Record<ColorVariantKey, string>` for type safety
+- ✅ All 26 ColorVariantKey colors explicitly defined
+- ✅ No visual changes on screen
+- ✅ All tests passing (unit + E2E)
+- ✅ Safelist entries can be identified for future removal
+
+---
+
+### Static Class Pattern (REQUIRED)
+
+All component migrations MUST use 100% static class names. Template literals are NOT allowed because Tailwind's static analysis cannot detect dynamically-generated classes at compile time.
+
+**❌ WRONG - Dynamic classes (Tailwind can't detect)**:
+```typescript
+// This creates dynamic classes that Tailwind cannot detect
+color: createColorVariantMapping(
+  (color) => `bg-${color}-600 text-${color}-50`
+)
+```
+
+**✅ CORRECT - Inline explicit static classes**:
+```typescript
+// badge.variants.ts - Every class name explicitly written inline
+import type { ColorVariantKey } from '~/components/shared/colorVariants'
+
+export const badgeVariants = cva('...', {
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      success: 'bg-green-600 text-green-50 dark:bg-green-800 dark:text-green-50',
+      // ... all 26 colors explicitly spelled out
+    } satisfies Record<ColorVariantKey, string>
+  }
+})
+```
+
+**Why this matters**:
+- Tailwind's PurgeCSS/JIT compiler performs static analysis at build time
+- Template literals like `` `bg-${color}-600` `` are evaluated at runtime, not compile time
+- Tailwind cannot detect which classes will be generated from templates
+- Result: Dynamic classes get purged from the final CSS bundle
+- Solution: Every class must be written as a complete static string
+
+**Inline Definition Approach**:
+- Each component defines its color variants inline with explicit static classes
+- Each component has unique color patterns (different shades, properties, states)
+- No sharing possible across components - patterns are component-specific
+- Use `satisfies Record<ColorVariantKey, string>` for type safety
+- Ensures all 26 colors are defined and properly typed
+
+**Helper Function Migration**:
+- `createColorVariantMapping()` and related helpers use template literals
+- Replace each usage with inline explicit static class definitions
+- Expand the template literal logic into 26 explicit entries
+- Once ALL usages are removed from the codebase, delete the helper functions from `colorVariants.ts`
+
+**Reference Implementation**: See `app/components/Badge/badge.variants.ts` for the correct pattern with inline explicit classes.
+
+---
+
+### Completed Migrations
+
+#### Badge Component ✅
+- **Structure**: Organized folder with separate variants file
+  - `app/components/Badge/Badge.tsx` - Component implementation
+  - `app/components/Badge/badge.variants.ts` - CVA variants with all colors inline
+  - `app/components/Badge/index.ts` - Barrel exports
+  - `app/components/Badge/__tests__/Badge.test.tsx` - 36 unit tests
+- **Pattern**: 26 explicit static color mappings inline (NO template literals, NO shared constants)
+- **Type**: Uses `ColorVariantKey` from colorVariants.ts
+- **Type Safety**: `satisfies Record<ColorVariantKey, string>`
+- **Changes**: Migrated from 7 hardcoded colors to full 26-color palette
+- **Tests**: Added comprehensive unit tests covering all 26 colors + functionality (36 tests)
+- **Status**: Complete - serves as reference implementation for all future component migrations
+
+**Key Implementation Details**:
+```typescript
+// badge.variants.ts - All colors defined inline, explicitly
+export const badgeVariants = cva('...', {
+  variants: {
+    color: {
+      brand: 'bg-red-600 text-red-50 dark:bg-red-800 dark:text-red-50',
+      primary: 'bg-emerald-600 text-emerald-50 dark:bg-emerald-800 dark:text-emerald-50',
+      // ... all 26 colors explicitly spelled out inline
+    } satisfies Record<ColorVariantKey, string>
+  }
+})
+```
+
+**Why inline, not shared**:
+- Each component has unique color patterns (different shades, hover states, borders)
+- Badge uses `bg-{color}-600`, DataTable uses `bg-{color}-50`, ToggleChip uses complex hover patterns
+- No practical sharing possible - would create separate constant per component anyway
+- Inline keeps all variant logic in one place for maintainability
+
+---
+
+### Phase 2: Remove Real Color Usage (AFTER all components migrated)
 
 **Status**: ⚪ Not Started (blocked by Phase 1 completion)
 
-**Goal**: Clean up migration artifacts, **REMOVE unused colors entirely**, and enforce semantic-only usage.
+**Goal**: Eliminate all real color references from the codebase, replacing them with semantic equivalents (brand, primary, success, error, warning, info, disabled, accent-*).
+
+**Steps**:
+
+1. **Find and replace all real color usage** in component props and code:
+   - Search codebase for direct real color usage in props: `color="emerald"`, `color="blue"`, `color="red"`, etc.
+   - Replace with appropriate semantic equivalents:
+     - `emerald` → `primary` (emerald is primary brand color)
+     - `red` → `error` or `brand` (depending on context)
+     - `green` → `success`
+     - `blue` → `info`
+     - `yellow` → `warning`
+     - `slate` → `disabled` (for disabled/neutral states)
+     - `amber` → `accent-amber`
+     - `indigo` → `accent-indigo`
+     - `fuchsia` → `accent-fuchsia`
+     - `teal` → `accent-teal`
+     - `sky` → `accent-sky`
+     - `purple` → `accent-purple`
+     - `lime` → `accent-amber` or appropriate semantic (lime is only used in admin panel)
+   - Example: `<Badge color="green">` → `<Badge color="success">`
+   - Example: `<Panel color="teal">` → `<Panel color="accent-teal">`
+
+2. **Update tests** to use semantic color names instead of real colors:
+   - Update unit test assertions from `expect(badge).toHaveClass('bg-green-600')` to semantic equivalents
+   - Update E2E test selectors if they reference color-specific classes
+   - Verify all tests still pass with semantic colors
+
+3. **Delete helper functions** from `colorVariants.ts` (should be unused after Phase 1):
+   - `createColorVariantMapping()` - no longer needed (all components use inline explicit classes)
+   - `createAdaptiveTextColorMapping()` - no longer needed
+   - `createAdaptiveBorderColorMapping()` - no longer needed
+
+**Success Criteria**:
+- Zero usage of real color names in component props (grep reveals none)
+- All components use only semantic color names (brand, primary, success, etc.)
+- Helper functions deleted from colorVariants.ts
+- All tests passing with semantic colors
+
+**Checklist**:
+- [ ] Search and replace all real color usage in components (emerald→primary, red→error/brand, etc.)
+- [ ] Update all test files to use semantic color names
+- [ ] Delete `createColorVariantMapping()` from colorVariants.ts
+- [ ] Delete `createAdaptiveTextColorMapping()` from colorVariants.ts
+- [ ] Delete `createAdaptiveBorderColorMapping()` from colorVariants.ts
+- [ ] Verify zero usage of real colors in codebase (grep check)
+- [ ] All tests passing
+
+---
+
+### Phase 3: Type System Cleanup (AFTER Phase 2 complete)
+
+**Status**: ⚪ Not Started (blocked by Phase 2 completion)
+
+**Goal**: **Strip ColorVariantKey type from 26 colors down to 13 semantic colors only**, removing all 13 real color names. This is the final cleanup that makes real colors unavailable at the type level.
+
+**Current State** (26 colors):
+```typescript
+// app/components/shared/colorVariants.ts
+export const COLOR_VARIANT_KEYS = {
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
+
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
+
+  // Real Colors (13) - TO BE REMOVED IN THIS PHASE
+  emerald: 'emerald',
+  blue: 'blue',
+  slate: 'slate',
+  teal: 'teal',
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+  amber: 'amber',
+  sky: 'sky',
+  indigo: 'indigo',
+  purple: 'purple',
+  fuchsia: 'fuchsia',
+  lime: 'lime',
+} as const
+```
+
+**Target State** (13 semantic colors only):
+```typescript
+// app/components/shared/colorVariants.ts
+export const COLOR_VARIANT_KEYS = {
+  // Functional Semantics (7)
+  brand: 'brand',
+  primary: 'primary',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
+  info: 'info',
+  disabled: 'disabled',
+
+  // Visual Accents (6)
+  'accent-amber': 'accent-amber',
+  'accent-indigo': 'accent-indigo',
+  'accent-fuchsia': 'accent-fuchsia',
+  'accent-teal': 'accent-teal',
+  'accent-sky': 'accent-sky',
+  'accent-purple': 'accent-purple',
+} as const
+
+export type ColorVariantKey = keyof typeof COLOR_VARIANT_KEYS
+// Now only allows 13 semantic colors, not 26
+```
+
+**Steps**:
+
+1. **Remove 13 real colors from COLOR_VARIANT_KEYS** in `app/components/shared/colorVariants.ts`:
+   - Delete entries: emerald, blue, slate, teal, red, yellow, green, amber, sky, indigo, purple, fuchsia, lime
+   - Keep only: 7 functional semantics + 6 visual accents = 13 total
+   - ColorVariantKey type will automatically narrow to only semantic colors
+
+2. **Update all component variant files** to remove real color definitions:
+   - Remove 13 real color entries from each component's CVA variant object
+   - Example in `badge.variants.ts`: delete lines for emerald, blue, slate, teal, red, yellow, green, amber, sky, indigo, purple, fuchsia, lime
+   - Keep only 13 semantic color entries (brand, primary, success, error, warning, info, disabled, accent-*)
+   - Files shrink from ~50 lines to ~20 lines
+
+3. **Verify type safety** - TypeScript should prevent real color usage:
+   - `<Badge color="emerald">` should now be a TypeScript error
+   - `<Badge color="primary">` should still be valid
+   - Component props are constrained to semantic colors only
+
+4. **Update documentation**:
+   - Update CLAUDE.md to reflect 13-color semantic-only system
+   - Document that real color names are no longer valid prop values
+   - Update ADR-0029 to reflect final state
+
+**Success Criteria**:
+- COLOR_VARIANT_KEYS contains exactly 13 semantic colors (no real colors)
+- ColorVariantKey type prevents usage of real color names
+- All component variant files have 13 color entries (not 26)
+- TypeScript errors appear if real colors are used in props
+- Documentation reflects semantic-only system
+
+**Checklist**:
+- [ ] Remove 13 real colors from COLOR_VARIANT_KEYS in colorVariants.ts
+- [ ] Update Badge variant file to remove 13 real color entries
+- [ ] Update Button variant file to remove 13 real color entries
+- [ ] Update Panel variant files to remove 13 real color entries
+- [ ] Update ToggleChip variant file to remove 13 real color entries
+- [ ] Update remaining component variant files (Dialog, Toast, DataTable, Inputs, Navigation)
+- [ ] Verify TypeScript prevents real color usage (`color="emerald"` errors)
+- [ ] Update CLAUDE.md with semantic-only color system rules
+- [ ] Update ADR-0029 to reflect final 13-color state
+- [ ] Run typecheck - should pass with no errors
+- [ ] Visual verification - no changes (semantic colors map to same real colors)
+
+**Impact**:
+- Component variant files shrink from ~50 lines to ~20 lines (13 colors vs 26)
+- Type system enforces semantic naming at compile time
+- Impossible to accidentally use real color names in props
+- Final migration from "26-color hybrid" to "13-color semantic-only" complete
+
+---
+
+### Phase 4: Final Cleanup & Enforcement
+
+**Status**: ⚪ Not Started (blocked by Phase 3 completion)
+
+**Goal**: Clean up remaining migration artifacts and enforce semantic-only usage across the codebase.
 
 **Steps**:
 
 0. **Create ADR documenting architecture** ✅ **COMPLETE**:
    - ADR-0029: Semantic Color System - 12-Color Palette with Two-Tier Naming
    - Rationale for two-tier system
-   - **Why 12 colors (not 21)**
+   - **Why 13 colors (not 21)** - Update to reflect final count
    - Migration process and outcomes
    - Location: `.cursor/rules/ADR.mdc`
 
-1. **Remove unused colors from ColorAccent type** (app/lib/lib.types.ts):
-   - **REMOVE**: zinc, orange, violet, pink, rose (5 colors)
-   - **KEEP**: lime (used in admin competition management icon)
-   - Update ColorAccent to only include the 13 used real colors + semantic aliases
-   - Breaking change but justified - these 5 colors are never used
-
-2. **Eliminate safelist.txt entirely**:
+1. **Eliminate safelist.txt entirely**:
    - All dynamic color classes migrated to semantic tokens in Phase 1
    - Semantic tokens are statically detectable by Tailwind (no safelist needed)
    - Delete safelist.txt completely (or reduce to absolute minimum if edge cases found)
    - **Goal**: Zero safelist entries for color classes
 
-3. **Update CLAUDE.md with semantic color rules**:
+2. **Update CLAUDE.md with semantic color rules**:
    - Document two-tier system (functional + accents)
-   - **Explicitly state: Only 13 real Tailwind colors allowed**
-   - **List forbidden colors**: zinc, orange, violet, pink, rose (5 colors)
+   - **Explicitly state: Only 13 semantic colors allowed in component props**
+   - List the 13 allowed semantic names
    - Examples of correct usage
 
-4. **Add Biome linting rule (optional)**:
-   - Detect hardcoded patterns (bg-red-600, text-blue-500)
-   - **Detect usage of forbidden colors**
+3. **Add Biome linting rule (optional)**:
+   - Detect hardcoded color patterns (bg-red-600, text-blue-500)
+   - Detect usage of real color names in component props
    - Suggest semantic alternatives
 
 **Deliverables**:
-- **Updated ColorAccent type (13 colors only)**
 - **Deleted safelist.txt** (or minimal if edge cases exist)
-- Updated CLAUDE.md
-- Optional: Biome rule with forbidden color detection
-- ✅ ADR-0029: Color System Architecture (COMPLETE - update to reflect 13 colors)
+- Updated CLAUDE.md with semantic-only rules
+- Optional: Biome rule for color enforcement
+- ✅ ADR-0029: Color System Architecture (update to reflect 13 colors)
 
 **Checklist**:
 - [x] Create ADR (explain color palette decision) - ADR-0029 created
-- [ ] Remove 5 unused colors from ColorAccent type (keep lime)
 - [ ] Delete safelist.txt entirely (or minimize to absolute edge cases)
-- [ ] Update CLAUDE.md (document 13-color system + forbidden list: zinc, orange, violet, pink, rose)
+- [ ] Update CLAUDE.md (document 13-color semantic system)
 - [ ] Update ADR-0029 to reflect 13 colors instead of 12
-- [ ] Create Biome rule with forbidden color detection (optional)
+- [ ] Create Biome rule for color enforcement (optional)
 - [ ] Final verification (no unused colors anywhere, no safelist needed)
 
 ## Critical Files Reference

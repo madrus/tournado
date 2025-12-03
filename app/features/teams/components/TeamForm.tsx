@@ -356,13 +356,9 @@ export function TeamForm({
 					color={PANEL_COLORS.step1}
 					panelNumber={1}
 					className='pb-4 lg:p-8'
+					title={t('teams.form.tournamentDetails')}
+					subtitle={t('teams.form.selectTournamentDetails')}
 				>
-					<div className='mb-6'>
-						<h2 className='mb-4 font-bold text-title text-xl'>
-							{t('teams.form.selectTournamentDetails')}
-						</h2>
-					</div>
-
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
 						{/* Tournament Selection */}
 						<ComboField
@@ -473,30 +469,9 @@ export function TeamForm({
 					panelNumber={2}
 					disabled={formMode === 'create' ? !isPanelEnabled(2) : undefined}
 					className='lg:p-8'
+					title={t('teams.form.teamInfo')}
+					subtitle={t('teams.form.enterTeamDetails')}
 				>
-					<div className='mb-6'>
-						<h2
-							className={cn(
-								'mb-4 font-bold text-title text-xl',
-								formMode === 'create' && !isPanelEnabled(2)
-									? 'text-foreground-lighter'
-									: '',
-							)}
-						>
-							{t('teams.form.teamInfo')}
-						</h2>
-						<p
-							className={cn(
-								'mb-4 text-foreground',
-								formMode === 'create' && !isPanelEnabled(2)
-									? 'text-foreground-lighter'
-									: '',
-							)}
-						>
-							{t('teams.form.enterTeamDetails')}
-						</p>
-					</div>
-
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
 						{/* Club Name */}
 						<TextInputField
@@ -567,30 +542,9 @@ export function TeamForm({
 					panelNumber={3}
 					disabled={formMode === 'create' ? !isPanelEnabled(3) : undefined}
 					className='lg:p-8'
+					title={t('teams.form.teamLeaderInfo')}
+					subtitle={t('teams.form.enterContactDetails')}
 				>
-					<div className='mb-6'>
-						<h2
-							className={cn(
-								'mb-4 font-bold text-title text-xl',
-								formMode === 'create' && !isPanelEnabled(3)
-									? 'text-foreground-lighter'
-									: '',
-							)}
-						>
-							{t('teams.form.teamLeaderInfo')}
-						</h2>
-						<p
-							className={cn(
-								'mb-4 text-foreground',
-								formMode === 'create' && !isPanelEnabled(3)
-									? 'text-foreground-lighter'
-									: '',
-							)}
-						>
-							{t('teams.form.enterContactDetails')}
-						</p>
-					</div>
-
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
 						{/* Team Leader Name */}
 						<TextInputField

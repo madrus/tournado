@@ -39,10 +39,10 @@ export function validateRole(value: unknown): Role {
 }
 
 export const roleColors = {
-	PUBLIC: 'slate',
-	MANAGER: 'blue',
-	ADMIN: 'red',
-	REFEREE: 'green',
-	EDITOR: 'purple',
-	BILLING: 'yellow',
+	PUBLIC: 'disabled',
+	MANAGER: 'info',
+	ADMIN: 'brand',
+	REFEREE: 'success',
+	EDITOR: 'accent-purple',
+	BILLING: 'warning',
 } as const

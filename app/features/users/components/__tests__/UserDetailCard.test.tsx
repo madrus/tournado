@@ -213,7 +213,7 @@ describe('UserDetailCard', () => {
 
 			const badge = screen.getByTestId('badge')
 			expect(badge).toHaveTextContent('users.messages.deactivated')
-			expect(badge).toHaveAttribute('data-color', 'red')
+			expect(badge).toHaveAttribute('data-color', 'error')
 		})
 
 		it('should not show deactivated badge for active users', () => {

@@ -48,7 +48,7 @@ export function createUserColumns(context: ColumnContext): ColumnDef<User>[] {
 					</Text>
 					{!row.original.active ? (
 						<div className='mt-1'>
-							<Badge color='red'>{t('users.messages.deactivated')}</Badge>
+							<Badge color='error'>{t('users.messages.deactivated')}</Badge>
 						</div>
 					) : null}
 				</div>

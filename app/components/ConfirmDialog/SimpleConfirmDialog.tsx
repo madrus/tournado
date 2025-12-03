@@ -86,10 +86,7 @@ export function SimpleConfirmDialog({
 	const finalIcon = getIconForIntent(intent)
 	const finalConfirmColor = intentColors.confirm
 	const finalCancelColor = intentColors.cancel
-	const cancelButtonClassName = cn(
-		'w-full min-w-[120px] sm:w-auto',
-		finalCancelColor === 'sky' ? 'border-sky-300' : 'border-slate-300',
-	)
+	const buttonClassName = cn('w-full min-w-[120px] md:w-auto')
 
 	const handleConfirm = (): void => {
 		onConfirm?.()
@@ -145,7 +142,7 @@ export function SimpleConfirmDialog({
 											variant='secondary'
 											color={finalCancelColor}
 											size='md'
-											className={cancelButtonClassName}
+											className={buttonClassName}
 											aria-label={cancelLabel}
 											autoFocus={destructive}
 										>
@@ -161,7 +158,7 @@ export function SimpleConfirmDialog({
 											color={finalConfirmColor}
 											size='md'
 											onClick={handleConfirm}
-											className='w-full min-w-[120px] sm:w-auto'
+											className={buttonClassName}
 											aria-label={confirmLabel}
 											autoFocus={!destructive}
 										>

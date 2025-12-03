@@ -262,13 +262,13 @@ describe('Panel Variants (CVA)', () => {
 
 		it('should apply color variants correctly', () => {
 			const brandNumber = panelNumberVariants({ color: 'brand' })
-			expect(brandNumber).toContain('bg-brand-600')
+			expect(brandNumber).toContain('bg-adaptive-bg-brand')
 
 			const tealNumber = panelNumberVariants({ color: 'teal' })
-			expect(tealNumber).toContain('bg-teal-600')
+			expect(tealNumber).toContain('bg-adaptive-bg-teal')
 
 			const emeraldNumber = panelNumberVariants({ color: 'emerald' })
-			expect(emeraldNumber).toContain('bg-emerald-600')
+			expect(emeraldNumber).toContain('bg-adaptive-bg-emerald')
 		})
 
 		it('should apply disabled variant with gray styling', () => {
@@ -279,7 +279,7 @@ describe('Panel Variants (CVA)', () => {
 
 		it('should use correct default variants', () => {
 			const defaultNumber = panelNumberVariants({})
-			expect(defaultNumber).toContain('bg-brand-600') // default color: brand
+			expect(defaultNumber).toContain('bg-adaptive-bg-brand') // default color: brand
 			expect(defaultNumber).not.toContain('bg-gray-200') // default disabled: false
 		})
 
@@ -289,7 +289,7 @@ describe('Panel Variants (CVA)', () => {
 				disabled: true,
 			})
 			// Should have both color and disabled classes, but disabled takes precedence
-			expect(disabledTealNumber).toContain('bg-teal-600')
+			expect(disabledTealNumber).toContain('bg-adaptive-bg-teal')
 			expect(disabledTealNumber).toContain('bg-gray-200')
 			expect(disabledTealNumber).toContain('!text-gray-700')
 		})

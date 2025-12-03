@@ -49,7 +49,7 @@ export const DateInputField = forwardRef<HTMLInputElement, DateInputFieldProps>(
 	): JSX.Element => (
 		<div className={className}>
 			<label className={textInputLabelVariants()}>
-				<span className={textInputLabelTextVariants()}>{label}</span>
+				<p className={textInputLabelTextVariants()}>{label}</p>
 				<div className='relative'>
 					<input
 						ref={ref}

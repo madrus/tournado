@@ -12,8 +12,8 @@ import { Panel } from '~/components/Panel'
 import { VALID_ROLES } from '~/features/users/utils/roleUtils'
 import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
-const USER_ACTIVE_BUTTON_COLOR = 'red' as const
-const USER_INACTIVE_BUTTON_COLOR = 'amber' as const
+const USER_ACTIVE_BUTTON_COLOR = 'error' as const
+const USER_INACTIVE_BUTTON_COLOR = 'warning' as const
 
 type UserDetailCardProps = {
 	user: User
@@ -89,7 +89,7 @@ export const UserDetailCard = (props: Readonly<UserDetailCardProps>): JSX.Elemen
 				<div className='flex flex-1 items-baseline gap-3'>
 					<h2 className='font-semibold text-xl'>{t('users.titles.userInformation')}</h2>
 					{!user.active ? (
-						<Badge color='red'>{t('users.messages.deactivated')}</Badge>
+						<Badge color='error'>{t('users.messages.deactivated')}</Badge>
 					) : null}
 				</div>
 				<div className='flex shrink-0 items-center'>

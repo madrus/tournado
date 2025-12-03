@@ -96,7 +96,7 @@ export function FirebaseEmailSignIn({
 				}
 				required
 				disabled={loading}
-				color='teal'
+				color='accent-teal'
 				labelClassName={firebaseAuthLabelVariants()}
 			/>
 
@@ -118,7 +118,7 @@ export function FirebaseEmailSignIn({
 					}
 					required
 					disabled={loading}
-					color='teal'
+					color='accent-teal'
 					labelClassName={firebaseAuthLabelVariants()}
 				/>
 				{mode === 'signup' ? (
@@ -146,7 +146,7 @@ export function FirebaseEmailSignIn({
 					}
 					required
 					disabled={loading}
-					color='teal'
+					color='accent-teal'
 					labelClassName={firebaseAuthLabelVariants()}
 				/>
 			) : null}
@@ -161,7 +161,7 @@ export function FirebaseEmailSignIn({
 				type='submit'
 				disabled={loading}
 				variant='primary'
-				color='teal'
+				color='accent-teal'
 				size='md'
 				className='w-full hover:scale-100 md:w-fit md:self-center md:hover:scale-105'
 			>

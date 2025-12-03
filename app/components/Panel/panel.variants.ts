@@ -69,21 +69,22 @@ export const panelIconVariants = cva(
 /**
  * Panel children content variants with semantic color inheritance.
  *
- * Applies adaptive colors to child elements (p, strong, span) within panels.
+ * Applies adaptive colors to child elements (p, strong) within panels.
  * Uses CSS child selectors to style nested content automatically.
+ * Intentionally excludes span to avoid conflicts with button/link text.
  *
  * Design Pattern:
  * - Uses [&_element] syntax for scoped child styling
- * - Applies same color to paragraph, strong, and span elements
+ * - Applies same color to paragraph and strong elements
  * - Leverages adaptive classes for theme consistency
  * - Special handling for brand/primary color mapping
+ * - Excludes span to prevent styling button/link text
  *
  * @example
  * ```tsx
  * <div className={panelChildrenVariants({ iconColor: 'brand' })}>
  *   <p>This text will be brand colored</p>
  *   <strong>This text will also be brand colored</strong>
- *   <span>And this too</span>
  * </div>
  * ```
  */
@@ -94,15 +95,16 @@ export const panelChildrenVariants = cva(
 		variants: {
 			/**
 			 * Color variants for child elements using CSS child selectors.
-			 * Applies adaptive colors to nested p, strong, and span elements.
+			 * Applies adaptive colors to nested p and strong elements.
+			 * Note: Intentionally excludes span selector to avoid conflicts with button/link text.
 			 */
 			iconColor: createColorVariantMapping((color) => {
 				// Primary maps to emerald
 				if (color === 'primary') {
-					return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald [&_span]:text-adaptive-emerald'
+					return '[&_p]:text-adaptive-emerald [&_strong]:text-adaptive-emerald'
 				}
 				// Standard pattern for all colors including brand
-				return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color} [&_span]:text-adaptive-${color}`
+				return `[&_p]:text-adaptive-${color} [&_strong]:text-adaptive-${color}`
 			}),
 		},
 		defaultVariants: {

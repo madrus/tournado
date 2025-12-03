@@ -249,8 +249,8 @@ describe('Panel Component', () => {
 
 			const numberBadge = screen.getByText('5')
 			expect(numberBadge).toBeInTheDocument()
-			// CVA generates bg-emerald-600 for panel numbers, not bg-emerald-400
-			expect(numberBadge).toHaveClass('bg-emerald-600')
+			// CVA generates bg-adaptive-bg-emerald for panel numbers using adaptive color system
+			expect(numberBadge).toHaveClass('bg-adaptive-bg-emerald')
 		})
 
 		it('should apply disabled styling to panel number when disabled=true', () => {

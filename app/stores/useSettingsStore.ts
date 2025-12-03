@@ -53,7 +53,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 			(set, _get) => ({
 				...initialStoreState,
 				resetSettingsStoreState: () => {
-					set(initialStoreState, false, 'resetStoreState')
+					set(initialStoreState, false, 'resetSettingsStoreState')
 				},
 				setTheme: (theme) => {
 					// Persist to both localStorage and cookies for server-side access
@@ -125,7 +125,7 @@ export const useSettingsStore = create<StoreState & Actions>()(
 				},
 			}),
 			{
-				name: 'settings-storage',
+				name: storeName,
 				// Use localStorage for UI preferences persistence (unlike auth which uses sessionStorage)
 				storage: isBrowser
 					? createJSONStorage(() => localStorage)

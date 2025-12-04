@@ -3,7 +3,7 @@
 
 import type { User } from '@prisma/client'
 import type React from 'react'
-import { type JSX, useEffect, useState } from 'react'
+import { type JSX, useEffect, useRef, useState } from 'react'
 import {
 	Links,
 	type LinksFunction,
@@ -147,8 +147,15 @@ type DocumentProps = {
 }
 
 const Document = ({ children, language, theme }: DocumentProps) => {
-	// Update direction and typography when language changes
+	// Don't run on initial mount - inline script already set dir, arabic-text, and dark class correctly
+	const isFirstRender = useRef(true)
+
 	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+			return
+		}
+
 		const direction = getDirection(language)
 		const typographyClass = getTypographyClass(language)
 
@@ -159,7 +166,14 @@ const Document = ({ children, language, theme }: DocumentProps) => {
 		} else {
 			document.documentElement.classList.remove('arabic-text')
 		}
-	}, [language])
+
+		// Update theme class
+		if (theme === 'dark') {
+			document.documentElement.classList.add('dark')
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+	}, [language, theme])
 
 	return (
 		<html lang={language} className={cn('min-h-full overflow-x-hidden', theme)}>
@@ -176,10 +190,12 @@ const Document = ({ children, language, theme }: DocumentProps) => {
 					dangerouslySetInnerHTML={{
 						__html: `
 							(function() {
-								// IMPORTANT: Only use cookie, not localStorage
+								// IMPORTANT: Only use cookie, not sessionStorage/localStorage
 								// This ensures SSR and client-side render use the same source
 								const cookieLang = document.cookie.match(/lang=([^;]+)/)?.[1];
 								const lang = cookieLang || 'nl';
+								const cookieTheme = document.cookie.match(/theme=([^;]+)/)?.[1];
+								const theme = cookieTheme || 'light';
 
 								// Set direction immediately on html element
 								const dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -192,6 +208,13 @@ const Document = ({ children, language, theme }: DocumentProps) => {
 								} else {
 									// Remove arabic-text if switching from Arabic to another language
 									document.documentElement.classList.remove('arabic-text');
+								}
+
+								// Set theme class immediately on html element
+								if (theme === 'dark') {
+									document.documentElement.classList.add('dark');
+								} else {
+									document.documentElement.classList.remove('dark');
 								}
 							})();
 						`,
@@ -229,58 +252,28 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		tournaments,
 	} = loaderData
 
-	// Handle store rehydration FIRST, before accessing store values
+	// Handle store rehydration
 	useAuthStoreHydration()
 	useSettingsStoreHydration()
 
-	// Read localStorage synchronously to get initial values BEFORE any render
-	const [initialTheme] = useState(() => {
-		if (typeof window === 'undefined') return serverTheme
-		try {
-			const stored = localStorage.getItem('UIPreferencesStore')
-			if (stored) {
-				const parsed = JSON.parse(stored)
-				return parsed.state?.theme || serverTheme
-			}
-		} catch (_e) {
-			// Ignore parse errors
-		}
-		return serverTheme
-	})
-
-	const [initialLanguage] = useState(() => {
-		if (typeof window === 'undefined') return serverLanguage
-		try {
-			const stored = localStorage.getItem('UIPreferencesStore')
-			if (stored) {
-				const parsed = JSON.parse(stored)
-				return parsed.state?.language || serverLanguage
-			}
-		} catch (_e) {
-			// Ignore parse errors
-		}
-		return serverLanguage
-	})
-
 	const { setUser, setFirebaseUser } = useAuthStore()
+	const { setTheme, setLanguage } = useSettingsStore()
 	const { setAvailableOptionsField } = useTeamFormStore()
 
-	// Subscribe to store for reactive updates
-	const storeTheme = useSettingsStore((state) => state.theme)
-	const storeLanguage = useSettingsStore((state) => state.language)
+	// Initialize store from server values BEFORE first render
+	// This runs synchronously before the component returns JSX
+	const [_initialized] = useState(() => {
+		setTheme(serverTheme)
+		setLanguage(serverLanguage)
+		return true
+	})
 
-	// Use initial values from localStorage for first render, then use store values
-	const [hasRendered, setHasRendered] = useState(false)
+	// Get store values (already initialized with server values above)
+	const currentTheme = useSettingsStore((state) => state.theme)
+	const currentLanguage = useSettingsStore((state) => state.language)
 
-	useEffect(() => {
-		setHasRendered(true)
-	}, [])
-
-	const currentTheme = hasRendered ? storeTheme : initialTheme
-	const currentLanguage = hasRendered ? storeLanguage : initialLanguage
-
-	// Create i18n instance with correct initial language
-	const [i18n, setI18n] = useState(() => initI18n(initialLanguage))
+	// Create i18n instance
+	const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
 
 	// Update auth store only on client-side after hydration
 	useEffect(() => {

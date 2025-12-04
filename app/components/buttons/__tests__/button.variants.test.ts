@@ -20,7 +20,7 @@ describe('Button Variants', () => {
 			const classes = buttonVariants({ variant: 'primary', color: 'brand' })
 
 			expect(classes).toContain('bg-brand-600')
-			expect(classes).toContain('border-brand-600')
+			expect(classes).toContain('border-white/60')
 			expect(classes).toContain('text-white')
 		})
 	})
@@ -142,7 +142,7 @@ describe('Button Variants', () => {
 
 			// Should include primary brand button styling
 			expect(classes).toContain('bg-brand-600')
-			expect(classes).toContain('border-brand-600')
+			expect(classes).toContain('border-white/60')
 			expect(classes).toContain('text-white')
 			expect(classes).toContain('shadow-brand-700/40')
 			expect(classes).toContain('dark:shadow-slate-100/20')
@@ -186,7 +186,7 @@ describe('Button Variants', () => {
 			const classes = buttonVariants({ variant: 'primary', color: 'brand' })
 
 			// Option 1: No dark mode border overrides, uses colored borders in both modes
-			expect(classes).toContain('border-brand-600')
+			expect(classes).toContain('border-white/60')
 		})
 	})
 })

@@ -379,6 +379,9 @@
 		"title": "Takımlar"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Yarışma"
+		},
 		"deleteTournament": "Turnuvayı sil",
 		"endDate": "Bitiş tarihi",
 		"form": {

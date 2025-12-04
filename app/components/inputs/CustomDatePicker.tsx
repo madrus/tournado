@@ -7,7 +7,6 @@ import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/ic
 import {
 	calendarContainerVariants,
 	calendarDayVariants,
-	calendarHeaderVariants,
 	calendarWeekdayVariants,
 	datePickerButtonVariants,
 	datePickerIconVariants,
@@ -133,9 +132,11 @@ function Calendar({
 					/>
 				</button>
 
-				<h2 className={cn(calendarHeaderVariants(), 'flex h-8 items-center gap-1')}>
-					{new Intl.DateTimeFormat(locale, { month: 'long' }).format(currentDate)}
-					<span className={cn('latin-text', 'text-[16px]!')}>
+				<h2 className='flex h-8 items-center gap-1 text-foreground leading-none'>
+					<span className='flex items-center'>
+						{new Intl.DateTimeFormat(locale, { month: 'long' }).format(currentDate)}
+					</span>
+					<span className={cn('latin-text', 'text-[16px]!', 'flex items-center')}>
 						{currentDate.getFullYear()}
 					</span>
 				</h2>

@@ -313,20 +313,17 @@ export const comboFieldItemVariants = cva(
 )
 
 // ComboField value (selected or placeholder) variants
-export const comboFieldValueVariants = cva(
-	['flex-1 truncate text-start [&>span]:text-start'],
-	{
-		variants: {
-			state: {
-				value: 'text-foreground',
-				placeholder: 'text-[color:var(--color-placeholder)]',
-			},
-		},
-		defaultVariants: {
-			state: 'value',
+export const comboFieldValueVariants = cva(['flex-1 truncate text-start'], {
+	variants: {
+		state: {
+			value: 'text-foreground',
+			placeholder: 'text-[color:var(--color-placeholder)]',
 		},
 	},
-)
+	defaultVariants: {
+		state: 'value',
+	},
+})
 
 // Date picker button variants
 export const datePickerButtonVariants = cva(

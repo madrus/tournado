@@ -788,6 +788,65 @@ Add explicit CSS rules to `app/styles/tailwind_rtl_typography.css`:
 /* Add more numeric orders as needed */
 ```
 
+#### Radix UI Components and RTL
+
+Radix UI components (Select, Dropdown, Dialog, etc.) require explicit `dir` attribute on their elements for proper RTL text alignment and layout. Simply relying on the `html` element's `dir="rtl"` is not sufficient.
+
+**The Problem:**
+
+Radix components default to `dir="ltr"` even when the page is in RTL mode, causing:
+- Text aligned to the left instead of right in Arabic mode
+- Icons and content in wrong visual order
+
+**The Solution:**
+
+Use `useSettingsStore` to get the RTL state and set `dir` explicitly on Radix trigger and content elements:
+
+```tsx
+// app/components/inputs/ComboField.tsx
+import { useSettingsStore } from '~/stores/useSettingsStore'
+
+export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
+  ({ ... }, selectRef) => {
+    const isRTL = useSettingsStore((state) => state.isRTL)
+    const direction = isRTL ? 'rtl' : 'ltr'
+
+    return (
+      <Select.Root ...>
+        <Select.Trigger dir={direction} ...>
+          <div className='flex-1 truncate text-start'>
+            <Select.Value placeholder={placeholder} />
+          </div>
+          <Select.Icon>...</Select.Icon>
+        </Select.Trigger>
+
+        <Select.Portal>
+          <Select.Content dir={direction} ...>
+            {/* Dropdown options */}
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    )
+  }
+)
+```
+
+**Key Points:**
+
+- ✅ Apply `dir={direction}` to both `Select.Trigger` and `Select.Content`
+- ✅ Use `text-start` on value containers for proper text alignment
+- ✅ Remove `rtl:order-*` classes from icons when using `dir` on the parent
+- ✅ The browser's native RTL handling works correctly with `dir="rtl"`
+- ❌ Don't rely on HTML `dir="rtl"` alone - Radix overrides it
+- ❌ Don't use `getDirection()` without passing the current language
+
+**Applies to these Radix components:**
+- Select (ComboField, DropdownField)
+- DropdownMenu
+- Dialog
+- Popover
+- Tooltip (when containing interactive content)
+
 #### Panel Background Gradient Mirroring
 
 Panel backgrounds use directional gradients that must mirror in RTL layouts to maintain proper visual hierarchy and readability. The gradient direction changes to create a true mirror effect, while color stops remain the same.
@@ -1227,6 +1286,7 @@ Language switching was consolidated into the UserMenu for several reasons:
 - **Latin font helper** (`getLatinFontFamily`) for numbers and Latin content in Arabic mode
 - **Typography utilities** for dropdowns, menus, chips, and complex layouts
 - **Attribute selector pattern** for RTL CSS: `html[dir="rtl"]` (no space) when `dir` is on `<html>` element
+- **Radix UI components** require explicit `dir` prop on trigger/content elements for proper RTL behavior (Select, Dropdown, etc.)
 
 ### Best Practices
 

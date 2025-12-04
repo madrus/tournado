@@ -15,11 +15,9 @@
 			"statusBarItem.hoverBackground": "#9c2fba",
 			"statusBarItem.remoteBackground": "#7a2591",
 			"statusBarItem.remoteForeground": "#e7e7e7",
-			"commandCenter.border": "#e7e7e799",
-			"titleBar.activeBackground": "#7a2591",
-			"titleBar.activeForeground": "#e7e7e7",
-			"titleBar.inactiveBackground": "#7a259199",
-			"titleBar.inactiveForeground": "#e7e7e799"
+			"sideBar.border": "#9c2fba",
+			"statusBar.border": "#7a2591",
+			"tab.activeBorder": "#9c2fba"
 		},
 		"peacock.color": "#7a2591",
 		"i18n-ally.keystyle": "nested"

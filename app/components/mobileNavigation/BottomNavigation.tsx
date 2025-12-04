@@ -47,6 +47,7 @@ function BottomNavigation(): JSX.Element {
 			icon: 'apparel',
 			label: 'Teams',
 		},
+		// Use circle + dots for More; outlined when inactive, filled when active
 		{ to: '/about', icon: 'pending', label: 'More' },
 	]
 

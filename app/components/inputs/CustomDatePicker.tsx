@@ -1,5 +1,4 @@
 import * as Popover from '@radix-ui/react-popover'
-import { nanoid } from 'nanoid'
 import { forwardRef, type JSX, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -8,7 +7,6 @@ import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '~/components/ic
 import {
 	calendarContainerVariants,
 	calendarDayVariants,
-	calendarHeaderVariants,
 	calendarWeekdayVariants,
 	datePickerButtonVariants,
 	datePickerIconVariants,
@@ -17,6 +15,7 @@ import {
 	textInputLabelVariants,
 } from '~/components/inputs/inputs.variants'
 import type { ColorAccent } from '~/lib/lib.types'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 
@@ -58,6 +57,7 @@ function Calendar({
 	noPast = false,
 }: CalendarProps) {
 	const [currentDate, setCurrentDate] = useState(selectedDate || new Date())
+	const isRTL = useSettingsStore((state) => state.isRTL)
 
 	const today = new Date()
 	const currentMonth = currentDate.getMonth()
@@ -110,6 +110,8 @@ function Calendar({
 		return false
 	}
 
+	let _emptyCellCounter = 0
+
 	return (
 		<div className={calendarContainerVariants()} role='dialog' aria-label='calendar'>
 			{/* Header */}
@@ -118,20 +120,41 @@ function Calendar({
 					type='button'
 					onClick={goToPrevMonth}
 					aria-label='previous month'
-					className='rounded-full p-1 font-bold text-brand-500 transition-colors hover:bg-brand-100 hover:text-brand-700'
+					className={cn(
+						'flex h-8 w-8 items-center justify-center rounded-full text-brand-500 transition-colors hover:bg-brand-100 hover:text-brand-700',
+					)}
 				>
-					<ChevronLeftIcon className='h-5 w-5' size={20} />
+					<ChevronLeftIcon
+						className={cn('h-5 w-5', isRTL ? 'latin-text' : '')}
+						size={20}
+						stroke='currentColor'
+						fill='none'
+					/>
 				</button>
 
-				<h2 className={calendarHeaderVariants()}>{monthName}</h2>
+				<h2 className='flex h-8 items-center gap-1 text-foreground leading-none'>
+					<span className='flex items-center'>
+						{new Intl.DateTimeFormat(locale, { month: 'long' }).format(currentDate)}
+					</span>
+					<span className={cn('latin-text', 'text-[16px]!', 'flex items-center')}>
+						{currentDate.getFullYear()}
+					</span>
+				</h2>
 
 				<button
 					type='button'
 					onClick={goToNextMonth}
 					aria-label='next month'
-					className='rounded-full p-1 font-bold text-brand-500 transition-colors hover:bg-brand-100 hover:text-brand-700'
+					className={cn(
+						'flex h-8 w-8 items-center justify-center rounded-full text-brand-500 transition-colors hover:bg-brand-100 hover:text-brand-700',
+					)}
 				>
-					<ChevronRightIcon className='h-5 w-5' size={20} />
+					<ChevronRightIcon
+						className={cn('h-5 w-5', isRTL ? 'latin-text' : '')}
+						size={20}
+						stroke='currentColor'
+						fill='none'
+					/>
 				</button>
 			</div>
 
@@ -148,7 +171,8 @@ function Calendar({
 			<div className='grid grid-cols-7 gap-1'>
 				{calendarDays.map((date) => {
 					if (!date) {
-						return <div key={nanoid()} className='p-2' />
+						_emptyCellCounter++
+						return <div key={`empty-`} className='p-2' />
 					}
 
 					const disabled = isDisabled(date)
@@ -171,7 +195,11 @@ function Calendar({
 							disabled={disabled}
 							aria-label={`${date.getDate()} ${monthName}`}
 							onClick={() => !disabled && onSelect(date)}
-							className={calendarDayVariants({ state: dayState })}
+							className={cn(
+								calendarDayVariants({ state: dayState }),
+								isRTL ? 'latin-text' : '',
+								'text-[16px]!',
+							)}
 						>
 							{date.getDate()}
 						</button>
@@ -205,6 +233,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 		ref,
 	): JSX.Element => {
 		const { i18n } = useTranslation()
+		const isRTL = useSettingsStore((state) => state.isRTL)
 
 		// Use controlled value if provided, otherwise fall back to defaultValue for uncontrolled mode
 		const isControlled = value !== undefined
@@ -345,7 +374,12 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 								</Popover.Trigger>
 
 								<Popover.Portal>
-									<Popover.Content align='start' sideOffset={4} className='z-[9999]'>
+									<Popover.Content
+										align='start'
+										dir={isRTL ? 'rtl' : 'ltr'}
+										sideOffset={4}
+										className='z-[9999]'
+									>
 										<Calendar
 											selectedDate={selectedDate}
 											onSelect={handleDateSelect}

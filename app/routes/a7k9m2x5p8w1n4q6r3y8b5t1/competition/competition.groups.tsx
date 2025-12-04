@@ -1,5 +1,6 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, type MetaFunction, useLoaderData } from 'react-router'
 
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
@@ -77,15 +78,18 @@ const formatDate = (date: Date): string =>
 
 export default function GroupsTab(): JSX.Element {
 	const { groupSets, selectedTournamentId } = useLoaderData<LoaderData>()
+	const { t } = useTranslation()
 
 	return (
 		<div className='space-y-6'>
 			{/* Header with Tournament Filter */}
 			<div className='flex items-center justify-between'>
-				<div>
-					<h4 className='font-semibold text-foreground text-lg'>Group Sets</h4>
+				<div className='text-start'>
+					<h4 className='font-semibold text-foreground text-lg'>
+						{t('admin.competition.groupStage')}
+					</h4>
 					<p className='mt-1 text-foreground-light'>
-						Create and manage group sets for round-robin play
+						{t('admin.competition.groupStageDescription')}
 					</p>
 				</div>
 
@@ -105,10 +109,10 @@ export default function GroupsTab(): JSX.Element {
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
 						<h3 className='mt-4 font-semibold text-foreground text-lg'>
-							Select a Tournament
+							{t('competition.selectTournament')}
 						</h3>
 						<p className='mt-2 text-foreground-light'>
-							Choose a tournament from the dropdown above to manage its group sets.
+							{t('competition.selectTournamentDescription')}
 						</p>
 					</div>
 				</div>

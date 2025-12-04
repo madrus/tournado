@@ -98,7 +98,7 @@ export const DARK_MODE_DARKER_CLASSES: Record<ButtonSemanticColor, string> = {
 export const buttonVariants = cva(
 	// Base classes - all the common button styling
 	[
-		'inline-flex items-center justify-center gap-2 rounded-lg font-bold',
+		'inline-flex items-center justify-center gap-2 rtl:flex-row-reverse rounded-lg font-bold',
 		'min-h-12 min-w-32 px-4 py-2.5 text-base ltr:uppercase rtl:normal-case',
 		'relative whitespace-nowrap transition-all duration-300 ease-out',
 		'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',

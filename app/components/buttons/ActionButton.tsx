@@ -69,11 +69,14 @@ export function ActionButton({
 
 	const iconElement = rawIcon ? (
 		iconNeedsCircle ? (
-			<span className={iconCircleVariants({ size, color })} aria-hidden>
+			<span
+				className={cn(iconCircleVariants({ size, color }), 'rtl:order-last')}
+				aria-hidden
+			>
 				{rawIcon}
 			</span>
 		) : (
-			<span className='icon-spacing' aria-hidden>
+			<span className='icon-spacing rtl:order-last' aria-hidden>
 				{rawIcon}
 			</span>
 		)

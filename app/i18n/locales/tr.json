@@ -1,7 +1,15 @@
 {
+	"about": {
+		"description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur.",
+		"title": "Tournado hakkında"
+	},
 	"admin": {
 		"competition": {
 			"description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
+			"groupStage": "Grup Aşaması",
+			"groupStageDescription": "Round-robin oyunu için gruplar oluşturun ve yönetin",
+			"groups": "Gruplar",
+			"playoffs": "Playofflar",
 			"title": "Yarışma yönetimi"
 		},
 		"panel": {
@@ -41,10 +49,6 @@
 			"title": "Kullanıcı yönetimi",
 			"totalUsers": "Toplam kullanıcılar"
 		}
-	},
-	"about": {
-		"title": "Tournado hakkında",
-		"description": "Tournado, organizasyonlar ve takımlar için spor turnuvalarının organizasyonunu ve yönetimini kolaylaştırmak üzere tasarlanmış kapsamlı bir turnuva yönetim platformudur."
 	},
 	"auth": {
 		"alreadyHaveAccount": "Zaten bir hesabınız var mı?",
@@ -145,7 +149,9 @@
 			"more": "Daha fazla",
 			"profile": "Profil",
 			"settings": "Ayarlar",
+			"team": "Takım",
 			"teams": "Takımlar",
+			"tournament": "Turnuva",
 			"tournaments": "Turnuvalar",
 			"users": "Kullanıcılar",
 			"welcome": "Hoş geldiniz"
@@ -161,6 +167,10 @@
 		"toggleColumns": "Sütunları değiştir",
 		"view": "Görünüm"
 	},
+	"competition": {
+		"selectTournament": "Bir Turnuva Seçin",
+		"selectTournamentDescription": "Grup setlerini yönetmek için yukarıdaki açılır menüden bir turnuva seçin."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "Beşinci lig",
 		"FIRST_DIVISION": "Birinci lig",
@@ -170,10 +180,10 @@
 		"THIRD_DIVISION": "Üçüncü lig"
 	},
 	"errors": {
-		"somethingWentWrong": "Bir şeyler ters gitti",
-		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
 		"emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
-		"emailOutboxReadFailure": "E-posta giden kutusu okunamadı"
+		"emailOutboxReadFailure": "E-posta giden kutusu okunamadı",
+		"somethingWentWrong": "Bir şeyler ters gitti",
+		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin."
 	},
 	"landing": {
 		"features": {
@@ -278,6 +288,10 @@
 			"phoneNumberRequired": "Telefon numarası gereklidir"
 		}
 	},
+	"profile": {
+		"description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin.",
+		"title": "Profil bilgileri"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -303,10 +317,6 @@
 			"title": "Yeni bir sürüm mevcut"
 		}
 	},
-	"profile": {
-		"title": "Profil bilgileri",
-		"description": "Turnuva yönetimi için profil ayarlarınızı ve hesap bilgilerinizi yönetin."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "Faturalama",
@@ -316,8 +326,8 @@
 		"referee": "Hakem"
 	},
 	"settings": {
-		"title": "Uygulama ayarları",
-		"description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın."
+		"description": "Optimal deneyim için turnuva ayarlarınızı, tercihlerinizi ve hesap seçeneklerinizi yapılandırın.",
+		"title": "Uygulama ayarları"
 	},
 	"teams": {
 		"allTournaments": "Tüm turnuvalar",
@@ -350,7 +360,6 @@
 			"selectCategory": "Bir kategori seçin",
 			"selectDivision": "Bir sınıf seçin",
 			"selectTournament": "Bir turnuva seçin",
-			"tournamentDetails": "Turnuva",
 			"selectTournamentDetails": "Turnuva detaylarını seçin",
 			"teamInfo": "Takım",
 			"teamLeaderEmail": "Takım lideri e-postası",
@@ -358,7 +367,8 @@
 			"teamLeaderName": "Takım lideri adı",
 			"teamLeaderPhone": "Takım lideri telefonu",
 			"teamRegistration": "Takım kaydı",
-			"tournament": "Turnuva"
+			"tournament": "Turnuva",
+			"tournamentDetails": "Turnuva"
 		},
 		"getStarted": {
 			"description": "Bir turnuvaya katılmaya hazır mısınız? Yukarıdaki 'Ekle' düğmesine tıklayarak takımınızı kaydedin ve oynamaya başlayın!",
@@ -369,6 +379,9 @@
 		"title": "Takımlar"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Yarışma"
+		},
 		"deleteTournament": "Turnuvayı sil",
 		"endDate": "Bitiş tarihi",
 		"form": {
@@ -422,6 +435,8 @@
 			"role": "Rol"
 		},
 		"messages": {
+			"confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
+			"confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?",
 			"deactivated": "Devre dışı",
 			"displayNameUpdatedSuccessfully": "Görünen ad başarıyla güncellendi",
 			"noAuditLogs": "Denetim kaydı girişi bulunamadı",
@@ -429,10 +444,8 @@
 			"noUsersDescription": "Henüz hiçbir kullanıcı oluşturulmadı.",
 			"roleUpdatedSuccessfully": "Kullanıcı rolü başarıyla güncellendi",
 			"userDeactivatedSuccessfully": "Kullanıcı başarıyla devre dışı bırakıldı",
-			"userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi",
 			"userIsDeactivated": "Bu kullanıcı şu anda devre dışı",
-			"confirmDeactivate": "Bu kullanıcıyı devre dışı bırakmak istediğinizden emin misiniz?",
-			"confirmReactivate": "Bu kullanıcıyı yeniden etkinleştirip tekrar oturum açmasına izin verelim mi?"
+			"userReactivatedSuccessfully": "Kullanıcı başarıyla yeniden etkinleştirildi"
 		},
 		"placeholders": {
 			"displayName": "Görünen adı girin"

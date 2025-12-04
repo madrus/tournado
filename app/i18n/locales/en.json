@@ -1,7 +1,15 @@
 {
+	"about": {
+		"description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams.",
+		"title": "About Tournado"
+	},
 	"admin": {
 		"competition": {
 			"description": "Manage groups, matches, and standings for tournaments.",
+			"groupStage": "Group Stage",
+			"groupStageDescription": "Create and manage groups for round-robin play",
+			"groups": "Groups",
+			"playoffs": "Playoffs",
 			"title": "Competition Management"
 		},
 		"panel": {
@@ -41,10 +49,6 @@
 			"title": "User Management",
 			"totalUsers": "Total Users"
 		}
-	},
-	"about": {
-		"title": "About Tournado",
-		"description": "Tournado is a comprehensive tournament management platform designed to streamline the organization and management of sports tournaments for organizations and teams."
 	},
 	"auth": {
 		"alreadyHaveAccount": "Already have an account?",
@@ -145,7 +149,9 @@
 			"more": "More",
 			"profile": "Profile",
 			"settings": "Settings",
+			"team": "Team",
 			"teams": "Teams",
+			"tournament": "Tournament",
 			"tournaments": "Tournaments",
 			"users": "Users",
 			"welcome": "Welcome"
@@ -161,6 +167,10 @@
 		"toggleColumns": "Toggle columns",
 		"view": "View"
 	},
+	"competition": {
+		"selectTournament": "Select a Tournament",
+		"selectTournamentDescription": "Choose a tournament from the dropdown above to manage its group sets."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "Fifth Division",
 		"FIRST_DIVISION": "First Division",
@@ -170,10 +180,10 @@
 		"THIRD_DIVISION": "Third Division"
 	},
 	"errors": {
-		"somethingWentWrong": "Something went wrong",
-		"teamLoadFailed": "Unable to load team details. Please try again later.",
 		"emailOutboxInvalidFormat": "Email outbox data has an invalid format",
-		"emailOutboxReadFailure": "Failed to read email outbox"
+		"emailOutboxReadFailure": "Failed to read email outbox",
+		"somethingWentWrong": "Something went wrong",
+		"teamLoadFailed": "Unable to load team details. Please try again later."
 	},
 	"landing": {
 		"features": {
@@ -278,6 +288,10 @@
 			"phoneNumberRequired": "Phone number is required"
 		}
 	},
+	"profile": {
+		"description": "Manage your profile settings and account information for tournament management.",
+		"title": "Profile Information"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -303,10 +317,6 @@
 			"title": "A new version is available"
 		}
 	},
-	"profile": {
-		"title": "Profile Information",
-		"description": "Manage your profile settings and account information for tournament management."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "Billing",
@@ -316,8 +326,8 @@
 		"referee": "Referee"
 	},
 	"settings": {
-		"title": "Application Settings",
-		"description": "Configure your tournament settings, preferences, and account options for optimal experience."
+		"description": "Configure your tournament settings, preferences, and account options for optimal experience.",
+		"title": "Application Settings"
 	},
 	"teams": {
 		"allTournaments": "All tournaments",
@@ -350,7 +360,6 @@
 			"selectCategory": "Select a category",
 			"selectDivision": "Select a division",
 			"selectTournament": "Select a tournament",
-			"tournamentDetails": "Tournament",
 			"selectTournamentDetails": "Select the tournament details",
 			"teamInfo": "Team",
 			"teamLeaderEmail": "Team Leader Email",
@@ -358,7 +367,8 @@
 			"teamLeaderName": "Team Leader Name",
 			"teamLeaderPhone": "Team Leader Phone",
 			"teamRegistration": "Team Registration",
-			"tournament": "Tournament"
+			"tournament": "Tournament",
+			"tournamentDetails": "Tournament"
 		},
 		"getStarted": {
 			"description": "Ready to join a tournament? Click the 'Add' button above to register your team and start playing!",
@@ -369,6 +379,9 @@
 		"title": "Teams"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Competition"
+		},
 		"deleteTournament": "Delete Tournament",
 		"endDate": "End Date",
 		"form": {
@@ -422,17 +435,17 @@
 			"role": "Role"
 		},
 		"messages": {
+			"confirmDeactivate": "Are you sure you want to deactivate this user?",
+			"confirmReactivate": "Reactivate this user so they can log in again?",
 			"deactivated": "Deactivated",
+			"displayNameUpdatedSuccessfully": "Display name updated successfully",
 			"noAuditLogs": "No audit log entries found",
 			"noUsers": "No users found",
 			"noUsersDescription": "No users have been created yet.",
-			"displayNameUpdatedSuccessfully": "Display name updated successfully",
 			"roleUpdatedSuccessfully": "User role updated successfully",
 			"userDeactivatedSuccessfully": "User deactivated successfully",
-			"userReactivatedSuccessfully": "User reactivated successfully",
 			"userIsDeactivated": "This user is currently deactivated",
-			"confirmDeactivate": "Are you sure you want to deactivate this user?",
-			"confirmReactivate": "Reactivate this user so they can log in again?"
+			"userReactivatedSuccessfully": "User reactivated successfully"
 		},
 		"placeholders": {
 			"displayName": "Enter display name"

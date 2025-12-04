@@ -53,7 +53,7 @@ export function ActionLinkButton({
 	}
 
 	const iconElement = renderIcon(icon, {
-		className: size === 'sm' ? 'h-4 w-4' : 'h-5 w-5',
+		className: cn(size === 'sm' ? 'h-4 w-4' : 'h-5 w-5', 'rtl:order-last'),
 	})
 
 	const labelText = <span>{label}</span>

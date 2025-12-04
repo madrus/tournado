@@ -146,7 +146,7 @@ describe('ActionLinkButton', () => {
 		)
 
 		expect(renderIcon).toHaveBeenCalledWith('delete', {
-			className: 'h-5 w-5',
+			className: 'h-5 w-5 rtl:order-last',
 		})
 	})
 

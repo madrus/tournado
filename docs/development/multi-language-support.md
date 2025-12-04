@@ -669,6 +669,314 @@ Always use logical properties for RTL-aware layout:
 <div className="pl-3 pr-2 ml-4 mr-1 text-right">
 ```
 
+#### Element Order Reversal with `rtl:order-*`
+
+The codebase uses CSS `order` properties to reverse visual element order in RTL layouts without changing the DOM structure. This is the preferred pattern for buttons, tabs, and inline components with icons.
+
+**Two-Element Pattern: Use `rtl:order-last` for simple swaps**
+
+When you have exactly **2 elements** (e.g., icon + label), use `rtl:order-last` on one element:
+
+```tsx
+// Button with icon + text (2 elements)
+<button className="inline-flex items-center gap-2">
+  <IconComponent className="h-5 w-5 rtl:order-last" />
+  <span>Label Text</span>
+</button>
+
+// LTR: icon(0) → label(0) = visual: [Icon] [Text]
+// RTL: label(0) → icon(9999) = visual: [Text] [Icon]
+```
+
+**Implementation in ActionButton/ActionLinkButton:**
+
+```tsx
+// app/components/buttons/ActionButton.tsx
+const iconElement = rawIcon ? (
+  iconNeedsCircle ? (
+    <span className={cn(iconCircleVariants({ size, color }), 'rtl:order-last')} aria-hidden>
+      {rawIcon}
+    </span>
+  ) : (
+    <span className='icon-spacing rtl:order-last' aria-hidden>
+      {rawIcon}
+    </span>
+  )
+) : null
+
+return (
+  <button className={buttonClasses}>
+    {iconElement}
+    {children}
+  </button>
+)
+```
+
+**Three-or-More-Element Pattern: Use explicit numeric order values**
+
+When you have **3+ elements** (e.g., icon + label + badge), you must use explicit `rtl:order-N` classes on **each element**:
+
+```tsx
+// Competition page tabs with icon, label, and badge (3 elements)
+<button className="flex items-center gap-2">
+  {/* LTR: icon(0) → label(0) → badge(0) = visual: icon, label, badge
+      RTL: icon(1) → label(2) → badge(3) = visual: badge, label, icon */}
+  <tab.icon className="h-6 w-6 rtl:order-1" />
+  <span className="rtl:order-2">{t(tab.nameKey)}</span>
+  {tab.disabled ? (
+    <span className="latin-text ... rtl:order-3">Soon</span>
+  ) : null}
+</button>
+
+// LTR: [Icon] [Label] [Badge]
+// RTL: [Badge] [Label] [Icon]
+```
+
+**Why explicit order numbers for 3+ elements:**
+
+- With 2 elements, `rtl:order-last` (9999) on one element is enough to swap positions
+- With 3+ elements, you need to control the exact sequence of all elements
+- There is **no generic CSS-only solution** that automatically reverses N elements
+- Using `rtl:flex-row-reverse` on the container would give you LTR order in RTL (incorrect)
+
+**Why `rtl:order-*` instead of `rtl:flex-row-reverse`:**
+
+- ✅ Granular control - only specific elements reverse, not entire container
+- ✅ No need to modify parent flex direction
+- ✅ Works with any number of elements (when using numeric order values)
+- ✅ Maintains semantic HTML structure
+- ❌ `flex-row-reverse` reverses visual order, giving LTR layout in RTL mode (incorrect)
+
+**Required Safelist Entries:**
+
+Add RTL order classes to `app/styles/safelist.txt`:
+
+```text
+# RTL Support - Flex Order
+rtl:order-last
+rtl:order-first
+rtl:order-1
+rtl:order-2
+rtl:order-3
+# Add more numeric orders as needed (rtl:order-4, rtl:order-5, etc.)
+```
+
+**Required CSS Rules:**
+
+Add explicit CSS rules to `app/styles/tailwind_rtl_typography.css`:
+
+```css
+[dir="rtl"] .rtl\:order-last {
+  order: 9999;
+}
+
+[dir="rtl"] .rtl\:order-first {
+  order: -9999;
+}
+
+[dir="rtl"] .rtl\:order-1 {
+  order: 1;
+}
+
+[dir="rtl"] .rtl\:order-2 {
+  order: 2;
+}
+
+[dir="rtl"] .rtl\:order-3 {
+  order: 3;
+}
+/* Add more numeric orders as needed */
+```
+
+#### Radix UI Components and RTL
+
+Radix UI components (Select, Dropdown, Dialog, etc.) require explicit `dir` attribute on their elements for proper RTL text alignment and layout. Simply relying on the `html` element's `dir="rtl"` is not sufficient.
+
+**The Problem:**
+
+Radix components default to `dir="ltr"` even when the page is in RTL mode, causing:
+- Text aligned to the left instead of right in Arabic mode
+- Icons and content in wrong visual order
+
+**The Solution:**
+
+Use `useSettingsStore` to get the RTL state and set `dir` explicitly on Radix trigger and content elements:
+
+```tsx
+// app/components/inputs/ComboField.tsx
+import { useSettingsStore } from '~/stores/useSettingsStore'
+
+export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
+  ({ ... }, selectRef) => {
+    const isRTL = useSettingsStore((state) => state.isRTL)
+    const direction = isRTL ? 'rtl' : 'ltr'
+
+    return (
+      <Select.Root ...>
+        <Select.Trigger dir={direction} ...>
+          <div className='flex-1 truncate text-start'>
+            <Select.Value placeholder={placeholder} />
+          </div>
+          <Select.Icon>...</Select.Icon>
+        </Select.Trigger>
+
+        <Select.Portal>
+          <Select.Content dir={direction} ...>
+            {/* Dropdown options */}
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    )
+  }
+)
+```
+
+**Key Points:**
+
+- ✅ Apply `dir={direction}` to both `Select.Trigger` and `Select.Content`
+- ✅ Use `text-start` on value containers for proper text alignment
+- ✅ Remove `rtl:order-*` classes from icons when using `dir` on the parent
+- ✅ The browser's native RTL handling works correctly with `dir="rtl"`
+- ❌ Don't rely on HTML `dir="rtl"` alone - Radix overrides it
+- ❌ Don't use `getDirection()` without passing the current language
+
+**Applies to these Radix components:**
+- Select (ComboField, DropdownField)
+- DropdownMenu
+- Dialog
+- Popover
+- Tooltip (when containing interactive content)
+
+#### Panel Background Gradient Mirroring
+
+Panel backgrounds use directional gradients that must mirror in RTL layouts to maintain proper visual hierarchy and readability. The gradient direction changes to create a true mirror effect, while color stops remain the same.
+
+**LTR vs RTL Gradient Behavior:**
+
+```css
+/* LTR: Gradient flows from top-left to bottom-right */
+.panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+
+/* RTL: Gradient flows from top-right to bottom-left (mirrored) */
+html[dir="rtl"] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,  /* ← Changed direction, NOT color order */
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+```
+
+**Critical CSS Selector Pattern:**
+
+When the `dir="rtl"` attribute is on the `<html>` element itself, use **no space** between selectors:
+
+```css
+/* ✅ Correct: Matches <html dir="rtl"> */
+html[dir="rtl"] .panel-fuchsia-bg { ... }
+html.dark[dir="rtl"] .panel-fuchsia-bg { ... }
+
+/* ❌ Wrong: Descendant selector - won't match */
+html [dir="rtl"] .panel-fuchsia-bg { ... }
+html.dark [dir="rtl"] .panel-fuchsia-bg { ... }
+```
+
+**Implementation Pattern (app/styles/tailwind_panel.css):**
+
+```css
+/* Light mode - LTR */
+.panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+
+/* Light mode - RTL */
+html[dir="rtl"] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-fuchsia-50),
+    var(--color-fuchsia-100),
+    var(--color-fuchsia-50)
+  );
+}
+
+/* Dark mode - LTR */
+html.dark .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-800),
+    var(--color-fuchsia-950)
+  );
+}
+
+/* Dark mode - RTL */
+html.dark[dir="rtl"] .panel-fuchsia-bg {
+  background: linear-gradient(
+    to bottom left,
+    var(--color-fuchsia-950),
+    var(--color-fuchsia-800),
+    var(--color-fuchsia-950)
+  );
+}
+```
+
+**Key Principles:**
+
+- ✅ Change gradient **direction** (`to bottom right` ↔ `to bottom left`)
+- ✅ Keep color **stops** in same order
+- ✅ Use attribute selector without space: `html[dir="rtl"]`
+- ✅ Apply to all theme variants (light mode, dark mode)
+- ❌ Don't reverse color order - this creates wrong visual effect
+- ❌ Don't use descendant selector with space: `html [dir="rtl"]`
+
+**Why Direction Change Creates Mirror:**
+
+- **LTR gradient**: Starts at top-left (lightest), flows to bottom-right (darkest)
+- **RTL gradient**: Starts at top-right (lightest), flows to bottom-left (darkest)
+- Visual effect: Light source appears to come from reading-direction side
+- Readability: Maintains proper contrast for text regardless of direction
+
+**Border Radius Adaptation:**
+
+When panels have rounded corners positioned differently in RTL:
+
+```tsx
+// Panel in Competition layout
+<Panel
+  color='fuchsia'
+  className='rounded-tl-none rtl:rounded-tl-xl rtl:rounded-tr-none border-t shadow-lg'
+>
+  <Outlet />
+</Panel>
+```
+
+**Safelist Requirements:**
+
+Add RTL border radius classes to `app/styles/safelist.txt`:
+
+```text
+# RTL Support - Border Radius
+rtl:rounded-tl-none
+rtl:rounded-tr-none
+rtl:rounded-tl-lg
+rtl:rounded-tr-lg
+rtl:rounded-tl-xl
+rtl:rounded-tr-xl
+```
+
 #### Menu Line-Height Compensation
 
 When displaying menu items with mixed font sizes (Arabic at 1.25rem vs Latin at 1rem), line-height compensation ensures consistent visual height and vertical alignment.
@@ -971,20 +1279,40 @@ Language switching was consolidated into the UserMenu for several reasons:
 ### RTL Support
 
 - **Comprehensive RTL helpers** in `app/utils/rtlUtils.ts` for layout and interactions
+- **Element order reversal** using `rtl:order-last` on icons in buttons, tabs, and inline components
+- **Panel gradient mirroring** changes gradient direction (`to bottom right` ↔ `to bottom left`) while keeping color stops the same
 - **Direction multiplier pattern** for touch interactions (swipeable rows, gestures)
 - **Logical CSS properties** (`ps-*`, `ms-*`, `text-end`) for automatic RTL adaptation
 - **Latin font helper** (`getLatinFontFamily`) for numbers and Latin content in Arabic mode
 - **Typography utilities** for dropdowns, menus, chips, and complex layouts
+- **Attribute selector pattern** for RTL CSS: `html[dir="rtl"]` (no space) when `dir` is on `<html>` element
+- **Radix UI components** require explicit `dir` prop on trigger/content elements for proper RTL behavior (Select, Dropdown, etc.)
 
 ### Best Practices
 
+#### Layout & Order
+- ✅ Use `rtl:order-last` on icons in buttons/tabs for element order reversal
+- ✅ Use logical properties (`ps-*`, `ms-*`, `text-start`) instead of physical (`pl-*`, `ml-*`, `text-left`)
+- ✅ Mirror gradient directions in RTL, keep color stops the same
+- ✅ Use `html[dir="rtl"]` (no space) for attribute selectors
+- ✅ Add RTL classes to safelist when using dynamic/CVA classes
+
+#### Typography & Fonts
+- ✅ Use `.latin-text` class with `font-size: inherit` for Latin content in RTL (respects parent size)
 - ✅ Always use `getLatinFontFamily()` for Latin content in RTL context (numbers, dates, names)
-- ✅ Use logical properties (`ps-*`, `ms-*`) instead of physical (`pl-*`, `ml-*`)
 - ✅ Use `!font-sans` via helper for centralized font configuration
+
+#### Interactions & State
 - ✅ Multiply touch deltas and transforms by `directionMultiplier` for RTL-aware interactions
 - ✅ Import i18n utilities only from central `app/i18n/config.ts`
+
+#### Anti-patterns
+- ❌ Don't use `rtl:flex-row-reverse` on containers - use `rtl:order-*` on specific elements instead
+- ❌ Don't reverse gradient color order - only change direction
+- ❌ Don't use fixed `font-size` in `.latin-text` - use `inherit` to respect Tailwind utilities
 - ❌ Don't hardcode fonts - use Tailwind utility classes
 - ❌ Don't use physical directional properties in new components
 - ❌ Don't create multiple i18n instances
+- ❌ Don't use descendant selector `html [dir="rtl"]` when `dir` is on `<html>` itself
 
 For more troubleshooting, see [docs/testing/troubleshooting.md](../testing/troubleshooting.md#language-flash-of-unstyledincorrect-content-fouc).

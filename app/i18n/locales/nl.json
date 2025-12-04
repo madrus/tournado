@@ -1,7 +1,15 @@
 {
+	"about": {
+		"description": "Tournado is een uitgebreid platform voor toernooibeheer, ontworpen om de organisatie en het beheer van sporttoernooien voor organisaties en teams te stroomlijnen.",
+		"title": "Over Tournado"
+	},
 	"admin": {
 		"competition": {
 			"description": "Beheer groepen, wedstrijden en standen voor toernooien.",
+			"groupStage": "Groepsfase",
+			"groupStageDescription": "Creëer en beheer poules voor round-robin spel",
+			"groups": "Poules",
+			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"
 		},
 		"panel": {
@@ -41,10 +49,6 @@
 			"title": "Gebruikers beheer",
 			"totalUsers": "Totaal aantal gebruikers"
 		}
-	},
-	"about": {
-		"title": "Over Tournado",
-		"description": "Tournado is een uitgebreid platform voor toernooibeheer, ontworpen om de organisatie en het beheer van sporttoernooien voor organisaties en teams te stroomlijnen."
 	},
 	"auth": {
 		"alreadyHaveAccount": "Heb je al een account?",
@@ -145,7 +149,9 @@
 			"more": "Meer",
 			"profile": "Profiel",
 			"settings": "Instellingen",
+			"team": "Team",
 			"teams": "Teams",
+			"tournament": "Toernooi",
 			"tournaments": "Toernooien",
 			"users": "Gebruikers",
 			"welcome": "Welkom"
@@ -161,6 +167,10 @@
 		"toggleColumns": "Kolommen weergeven",
 		"view": "Weergave"
 	},
+	"competition": {
+		"selectTournament": "Selecteer een toernooi",
+		"selectTournamentDescription": "Kies een toernooi uit de dropdown hierboven om de poules te beheren."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "Vijfde klasse",
 		"FIRST_DIVISION": "Eerste klasse",
@@ -170,10 +180,10 @@
 		"THIRD_DIVISION": "Derde klasse"
 	},
 	"errors": {
-		"somethingWentWrong": "Er is iets misgegaan",
-		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw.",
 		"emailOutboxInvalidFormat": "E-mailoutbox heeft een ongeldig formaat",
-		"emailOutboxReadFailure": "Kan e-mailoutbox niet lezen"
+		"emailOutboxReadFailure": "Kan e-mailoutbox niet lezen",
+		"somethingWentWrong": "Er is iets misgegaan",
+		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
 	},
 	"landing": {
 		"features": {
@@ -278,6 +288,10 @@
 			"phoneNumberRequired": "Telefoonnummer is verplicht"
 		}
 	},
+	"profile": {
+		"description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer.",
+		"title": "Profielinformatie"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -303,10 +317,6 @@
 			"title": "Er is een nieuwe versie beschikbaar"
 		}
 	},
-	"profile": {
-		"title": "Profielinformatie",
-		"description": "Beheer je profielinstellingen en accountinformatie voor toernooibeheer."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "Facturatie",
@@ -316,8 +326,8 @@
 		"referee": "Scheidsrechter"
 	},
 	"settings": {
-		"title": "Applicatie-instellingen",
-		"description": "Configureer je toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring."
+		"description": "Configureer je toernooiinstellingen, voorkeuren en accountopties voor een optimale ervaring.",
+		"title": "Applicatie-instellingen"
 	},
 	"teams": {
 		"allTournaments": "Alle toernooien",
@@ -350,7 +360,6 @@
 			"selectCategory": "Selecteer een categorie",
 			"selectDivision": "Selecteer een klasse",
 			"selectTournament": "Selecteer een toernooi",
-			"tournamentDetails": "Toernooi",
 			"selectTournamentDetails": "Selecteer de toernooi details",
 			"teamInfo": "Team",
 			"teamLeaderEmail": "E-mail teamleider",
@@ -358,7 +367,8 @@
 			"teamLeaderName": "Naam teamleider",
 			"teamLeaderPhone": "Telefoon teamleider",
 			"teamRegistration": "Team registratie",
-			"tournament": "Toernooi"
+			"tournament": "Toernooi",
+			"tournamentDetails": "Toernooi"
 		},
 		"getStarted": {
 			"description": "Klaar om deel te nemen aan een toernooi? Klik op de 'Toevoegen' knop hierboven om je team te registreren en te beginnen met spelen!",
@@ -369,6 +379,9 @@
 		"title": "Teams"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Competitie"
+		},
 		"deleteTournament": "Toernooi verwijderen",
 		"endDate": "Einddatum",
 		"form": {
@@ -422,17 +435,17 @@
 			"role": "Rol"
 		},
 		"messages": {
+			"confirmDeactivate": "Weet je zeker dat je deze gebruiker wilt deactiveren?",
+			"confirmReactivate": "Deze gebruiker opnieuw activeren zodat hij weer kan inloggen?",
 			"deactivated": "Gedeactiveerd",
+			"displayNameUpdatedSuccessfully": "Weergavenaam succesvol bijgewerkt",
 			"noAuditLogs": "Geen auditlogvermeldingen gevonden",
 			"noUsers": "Geen gebruikers gevonden",
 			"noUsersDescription": "Er zijn nog geen gebruikers aangemaakt.",
-			"displayNameUpdatedSuccessfully": "Weergavenaam succesvol bijgewerkt",
 			"roleUpdatedSuccessfully": "Gebruikersrol succesvol bijgewerkt",
 			"userDeactivatedSuccessfully": "Gebruiker succesvol gedeactiveerd",
-			"userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd",
 			"userIsDeactivated": "Deze gebruiker is momenteel gedeactiveerd",
-			"confirmDeactivate": "Weet je zeker dat je deze gebruiker wilt deactiveren?",
-			"confirmReactivate": "Deze gebruiker opnieuw activeren zodat hij weer kan inloggen?"
+			"userReactivatedSuccessfully": "Gebruiker succesvol gereactiveerd"
 		},
 		"placeholders": {
 			"displayName": "Voer weergavenaam in"

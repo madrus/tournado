@@ -465,7 +465,7 @@ export const calendarWeekdayVariants = cva([
 // Calendar day variants
 export const calendarDayVariants = cva(
 	[
-		'flex h-9 w-9 items-center justify-center rounded-full font-medium text-sm',
+		'flex h-9 w-9 items-center justify-center rounded-full text-base scale-90', // scale-90 reduces visual size to match input
 		'cursor-pointer transition-colors duration-200',
 		'hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary',
 		'disabled:cursor-not-allowed disabled:opacity-50',

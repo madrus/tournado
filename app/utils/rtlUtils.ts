@@ -5,7 +5,7 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 // isRTL is now a computed property in useSettingsStore based on the current language
 
 const isLanguageRTL = (language: Language | string): boolean =>
-	language.split('-')[0] === 'ar'
+	String(language).startsWith('ar')
 
 const resolveIsRTL = (languageOverride?: Language | string): boolean => {
 	if (languageOverride) {

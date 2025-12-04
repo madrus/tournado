@@ -62,7 +62,7 @@ export function Panel({
 }: PanelProps): JSX.Element {
 	const { direction, latinFontClass } = useLanguageDirection()
 	const { currentLanguage } = useLanguageSwitcher()
-	const isRTL = direction === 'rtl'
+	const _isRTL = direction === 'rtl'
 	const effectiveIconColor = iconColor || color
 	const effectiveChildrenIconColor = childrenIconColor || effectiveIconColor
 
@@ -103,7 +103,7 @@ export function Panel({
 								<dt className='truncate font-medium text-base opacity-75'>{title}</dt>
 							) : null}
 							{children ? (
-								<dd className={cn('font-medium text-lg', latinFontClass)}>
+								<dd className={cn('font-medium text-lg', latinFontClass, 'text-start')}>
 									{children}
 								</dd>
 							) : null}
@@ -120,8 +120,8 @@ export function Panel({
 							: '',
 						'break-words',
 						variant === 'hover' ? 'p-6' : '',
-						// Text alignment based on direction
-						isRTL ? 'text-right' : 'text-left',
+						// Wrapper uses logical start for overall flow
+						'text-start',
 					)}
 				>
 					{/* Icon */}
@@ -139,6 +139,8 @@ export function Panel({
 						<h3
 							className={cn(
 								panelTitleVariants({ size: 'md', language: currentLanguage }),
+								// Explicit logical alignment for RTL right
+								'text-start',
 								// Apply disabled styling for form panels
 								disabled && variant === 'form-panel' ? 'text-foreground-lighter' : '',
 							)}
@@ -153,6 +155,8 @@ export function Panel({
 							className={cn(
 								// For non-hover state, use text-foreground. For hover state, use adaptive colors
 								isHover ? panelDescriptionVariants({ color }) : 'text-foreground',
+								// Explicit logical alignment for RTL right
+								'text-start',
 								'mb-4',
 								// Apply disabled styling for form panels
 								disabled && variant === 'form-panel' ? 'text-foreground-lighter' : '',
@@ -165,9 +169,13 @@ export function Panel({
 					{/* Children */}
 					{children ? (
 						<div
-							className={panelChildrenVariants({
-								iconColor: effectiveChildrenIconColor,
-							})}
+							className={cn(
+								panelChildrenVariants({
+									iconColor: effectiveChildrenIconColor,
+								}),
+								// Explicit logical alignment for RTL right
+								'text-start',
+							)}
 							data-testid={testId ? `${testId}-children` : undefined}
 						>
 							{children}

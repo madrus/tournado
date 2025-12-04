@@ -91,8 +91,13 @@ export const useSettingsStore = create<StoreState & Actions>()(
 					: createJSONStorage(createServerSideStorage),
 				// Skip persistence completely on server-side
 				skipHydration: !isBrowser,
-				// Only persist when we're in the browser
-				partialize: (state) => (isBrowser ? state : {}),
+				// Only persist theme; language/isRTL come from cookie+loader to avoid hydration flashes
+				partialize: (state) => (isBrowser ? { theme: state.theme } : {}),
+				// Merge persisted state without overriding language/isRTL from the server cookie
+				merge: (persistedState, currentState) => ({
+					...currentState,
+					theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme,
+				}),
 			},
 		),
 		{

@@ -176,7 +176,15 @@ const Document = ({ children, language, theme }: DocumentProps) => {
 	}, [language, theme])
 
 	return (
-		<html lang={language} className={cn('min-h-full overflow-x-hidden', theme)}>
+		<html
+			lang={language}
+			dir={getDirection(language)}
+			className={cn(
+				'min-h-full overflow-x-hidden',
+				getTypographyClass(language),
+				theme,
+			)}
+		>
 			<head>
 				<Meta />
 				<meta charSet='utf-8' />
@@ -275,6 +283,13 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	// Create i18n instance
 	const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
 
+	// Add:
+	const [isHydrated, setIsHydrated] = useState(false)
+
+	useEffect(() => {
+		setIsHydrated(true)
+	}, [])
+
 	// Update auth store only on client-side after hydration
 	useEffect(() => {
 		if (user) {
@@ -298,14 +313,18 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		setI18n(newI18n)
 	}, [currentLanguage])
 
+	// Compute effective values
+	const effectiveLanguage = isHydrated ? currentLanguage : serverLanguage
+	const effectiveTheme = isHydrated ? currentTheme : serverTheme
+
 	return (
-		<Document language={currentLanguage} theme={currentTheme}>
+		<Document language={effectiveLanguage} theme={effectiveTheme}>
 			<AppLayout
 				authenticated={authenticated}
 				username={username}
 				user={user}
-				theme={currentTheme}
-				language={currentLanguage}
+				theme={effectiveTheme}
+				language={effectiveLanguage}
 				i18n={i18n}
 				env={ENV}
 			>

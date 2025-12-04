@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import {
 	getDirection,
 	getLatinFontFamily,
@@ -39,12 +39,14 @@ export type LanguageDirection = {
  * ```
  */
 export function useLanguageDirection(): LanguageDirection {
+	const currentLanguage = useSettingsStore((state) => state.language)
+
 	return useMemo(
 		() => ({
-			direction: getDirection(),
+			direction: getDirection(currentLanguage),
 			latinFontClass: getLatinFontFamily(),
 			swipeConfig: getSwipeRowConfig(),
 		}),
-		[],
+		[currentLanguage],
 	)
 }

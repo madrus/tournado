@@ -234,7 +234,7 @@ describe('PanelLayer Component', () => {
 
 			const title = screen.getByRole('heading', { level: 3 })
 			expect(title).toHaveClass('arabic-text')
-			expect(title).toHaveClass('text-right')
+			// Text alignment comes from dir="rtl" on parent, not text-right class
 		})
 
 		it('should not apply arabic-text class for English language', () => {

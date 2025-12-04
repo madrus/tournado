@@ -180,7 +180,7 @@ export const basePanelTitleVariants = cva(['mb-4 font-bold text-title'], {
 			en: '', // English LTR - no additional classes needed
 			de: '', // German LTR - no additional classes needed
 			fr: '', // French LTR - no additional classes needed
-			ar: 'arabic-text text-right', // Arabic RTL - uses Arabic (Amiri) font and right alignment
+			ar: 'arabic-text', // Arabic RTL - uses Arabic (Amiri) font, alignment comes from dir="rtl"
 			tr: '', // Turkish LTR - no additional classes needed
 		},
 	},
@@ -249,7 +249,7 @@ export const basePanelDescriptionVariants = cva(['text-foreground'], {
  */
 export const basePanelNumberVariants = cva(
 	[
-		'-left-4 rtl:-right-4 absolute top-8 z-30 flex h-8 w-8 items-center justify-center rounded-full font-bold text-primary-foreground text-sm shadow-lg rtl:left-auto',
+		'-left-4 rtl:-right-4 absolute top-8 z-30 flex h-8 w-8 items-center justify-center rounded-full font-bold text-primary-foreground text-sm shadow-lg rtl:left-auto latin-text',
 	],
 	{
 		variants: {

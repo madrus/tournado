@@ -164,17 +164,20 @@ export default function CompetitionLayout(): JSX.Element {
 									'rounded-tr-lg rtl:rounded-tr-none rtl:rounded-tl-lg',
 							)}
 						>
+							{/* RTL element order: For 3+ elements, use explicit rtl:order-N classes
+							    LTR: icon(0) → label(0) → badge(0) = visual order: icon, label, badge
+							    RTL: icon(1) → label(2) → badge(3) = visual order: badge, label, icon */}
 							<tab.icon
 								className={cn(
-									'h-6 w-6 rtl:order-last',
+									'h-6 w-6 rtl:order-1',
 									activeTab === tab.href
 										? 'text-fuchsia-600 dark:text-fuchsia-400'
 										: '',
 								)}
 							/>
-							<span>{t(tab.nameKey)}</span>
+							<span className='rtl:order-2'>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
-								<span className='latin-text rounded-full bg-accent px-2 py-0.5 text-foreground-lighter text-xs'>
+								<span className='latin-text rounded-full bg-accent px-2 py-0.5 text-foreground-lighter text-xs rtl:order-3'>
 									Soon
 								</span>
 							) : null}

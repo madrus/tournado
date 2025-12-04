@@ -14,3 +14,4 @@
 @import "./animations.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant rtl (&:where([dir="rtl"], [dir="rtl"] *));

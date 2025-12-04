@@ -4,10 +4,10 @@ import { forwardRef, type JSX, type ReactNode, useRef, useState } from 'react'
 import { ErrorMessage } from '~/components/ErrorMessage'
 import { AnimatedArrowIcon } from '~/components/icons'
 import type { ColorAccent } from '~/lib/lib.types'
+import { useSettingsStore } from '~/stores/useSettingsStore'
 import { INPUT_LABEL_SPACING, STATUS_ICON_CONTAINER_WIDTH } from '~/styles/constants'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
-import { getDirection } from '~/utils/rtlUtils'
 
 import {
 	comboFieldContentVariants,
@@ -72,10 +72,11 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 		const triggerRef = useRef<HTMLButtonElement>(null)
 		const justSelectedRef = useRef(false)
 		const [isOpen, setIsOpen] = useState(false)
+		const isRTL = useSettingsStore((state) => state.isRTL)
 
 		// Ensure value is always a string
 		const safeValue = value || ''
-		const direction = getDirection()
+		const direction = isRTL ? 'rtl' : 'ltr'
 
 		// Handle blur when dropdown closes
 		const handleCloseAutoFocus = (event: Event) => {
@@ -107,7 +108,6 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 						}}
 						onOpenChange={setIsOpen}
 						disabled={disabled}
-						dir={direction}
 					>
 						<Select.Trigger
 							ref={(node) => {
@@ -131,10 +131,10 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 							)}
 							aria-invalid={!!error || undefined}
 							aria-errormessage={error && name ? `${name}-error` : undefined}
+							dir={direction}
 						>
 							<div
 								className={cn(
-									'flex-1',
 									comboFieldValueVariants({
 										state: safeValue === '' ? 'placeholder' : 'value',
 									}),
@@ -143,7 +143,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 								<Select.Value placeholder={placeholder || 'Selecteer een optie'} />
 							</div>
 							{!disabled ? (
-								<Select.Icon className='text-foreground rtl:order-first'>
+								<Select.Icon className='text-foreground'>
 									<AnimatedArrowIcon
 										isOpen={isOpen}
 										className='h-6 w-6'
@@ -151,7 +151,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 									/>
 								</Select.Icon>
 							) : (
-								<div className='h-6 w-6 rtl:order-first' aria-hidden='true' />
+								<div className='h-6 w-6' aria-hidden='true' />
 							)}
 						</Select.Trigger>
 
@@ -163,6 +163,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 								onCloseAutoFocus={handleCloseAutoFocus}
 								style={{ width: 'var(--radix-select-trigger-width)' }}
 								data-radix-select-content
+								dir={direction}
 							>
 								<Select.Viewport className='max-h-60 overflow-auto p-1'>
 									{options.map((opt) => (

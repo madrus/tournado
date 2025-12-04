@@ -673,17 +673,19 @@ Always use logical properties for RTL-aware layout:
 
 The codebase uses CSS `order` properties to reverse visual element order in RTL layouts without changing the DOM structure. This is the preferred pattern for buttons, tabs, and inline components with icons.
 
-**Pattern: Use `rtl:order-last` on icons/leading elements**
+**Two-Element Pattern: Use `rtl:order-last` for simple swaps**
+
+When you have exactly **2 elements** (e.g., icon + label), use `rtl:order-last` on one element:
 
 ```tsx
-// Button with icon + text
+// Button with icon + text (2 elements)
 <button className="inline-flex items-center gap-2">
   <IconComponent className="h-5 w-5 rtl:order-last" />
   <span>Label Text</span>
 </button>
 
-// In LTR: [Icon] [Text]
-// In RTL: [Text] [Icon]
+// LTR: icon(0) → label(0) = visual: [Icon] [Text]
+// RTL: label(0) → icon(9999) = visual: [Text] [Icon]
 ```
 
 **Implementation in ActionButton/ActionLinkButton:**
@@ -710,15 +712,19 @@ return (
 )
 ```
 
-**Tab Navigation Example:**
+**Three-or-More-Element Pattern: Use explicit numeric order values**
+
+When you have **3+ elements** (e.g., icon + label + badge), you must use explicit `rtl:order-N` classes on **each element**:
 
 ```tsx
-// Competition page tabs with icon, label, and badge
+// Competition page tabs with icon, label, and badge (3 elements)
 <button className="flex items-center gap-2">
-  <tab.icon className="h-6 w-6 rtl:order-last" />
-  <span>{t(tab.nameKey)}</span>
+  {/* LTR: icon(0) → label(0) → badge(0) = visual: icon, label, badge
+      RTL: icon(1) → label(2) → badge(3) = visual: badge, label, icon */}
+  <tab.icon className="h-6 w-6 rtl:order-1" />
+  <span className="rtl:order-2">{t(tab.nameKey)}</span>
   {tab.disabled ? (
-    <span className="latin-text ...">Soon</span>
+    <span className="latin-text ... rtl:order-3">Soon</span>
   ) : null}
 </button>
 
@@ -726,15 +732,22 @@ return (
 // RTL: [Badge] [Label] [Icon]
 ```
 
+**Why explicit order numbers for 3+ elements:**
+
+- With 2 elements, `rtl:order-last` (9999) on one element is enough to swap positions
+- With 3+ elements, you need to control the exact sequence of all elements
+- There is **no generic CSS-only solution** that automatically reverses N elements
+- Using `rtl:flex-row-reverse` on the container would give you LTR order in RTL (incorrect)
+
 **Why `rtl:order-*` instead of `rtl:flex-row-reverse`:**
 
 - ✅ Granular control - only specific elements reverse, not entire container
 - ✅ No need to modify parent flex direction
-- ✅ Works with multiple elements (icon, text, badge)
+- ✅ Works with any number of elements (when using numeric order values)
 - ✅ Maintains semantic HTML structure
-- ❌ `flex-row-reverse` reverses ALL children, which may not be desired
+- ❌ `flex-row-reverse` reverses visual order, giving LTR layout in RTL mode (incorrect)
 
-**Required Safelist Entry:**
+**Required Safelist Entries:**
 
 Add RTL order classes to `app/styles/safelist.txt`:
 
@@ -742,6 +755,37 @@ Add RTL order classes to `app/styles/safelist.txt`:
 # RTL Support - Flex Order
 rtl:order-last
 rtl:order-first
+rtl:order-1
+rtl:order-2
+rtl:order-3
+# Add more numeric orders as needed (rtl:order-4, rtl:order-5, etc.)
+```
+
+**Required CSS Rules:**
+
+Add explicit CSS rules to `app/styles/tailwind_rtl_typography.css`:
+
+```css
+[dir="rtl"] .rtl\:order-last {
+  order: 9999;
+}
+
+[dir="rtl"] .rtl\:order-first {
+  order: -9999;
+}
+
+[dir="rtl"] .rtl\:order-1 {
+  order: 1;
+}
+
+[dir="rtl"] .rtl\:order-2 {
+  order: 2;
+}
+
+[dir="rtl"] .rtl\:order-3 {
+  order: 3;
+}
+/* Add more numeric orders as needed */
 ```
 
 #### Panel Background Gradient Mirroring

@@ -1,10 +1,14 @@
 {
+	"about": {
+		"description": "Tournado هي منصة شاملة لإدارة البطولات مصممة لتبسيط تنظيم وإدارة البطولات الرياضية للمنظمات والفرق.",
+		"title": "عن Tournado"
+	},
 	"admin": {
 		"competition": {
 			"description": "إدارة المجموعات والمباريات والترتيب للبطولات.",
-			"groups": "المجموعات",
 			"groupStage": "مرحلة المجموعات",
-			"groupStageDescription": "إنشاء وإدارة مرحلة المجموعات للعب دوري",
+			"groupStageDescription": "إنشاء وإدارة المجموعات للعب دوري",
+			"groups": "المجموعات",
 			"playoffs": "التصفيات",
 			"title": "إدارة المسابقة"
 		},
@@ -45,10 +49,6 @@
 			"title": "إدارة المستخدمين",
 			"totalUsers": "إجمالي المستخدمين"
 		}
-	},
-	"about": {
-		"title": "عن Tournado",
-		"description": "Tournado هي منصة شاملة لإدارة البطولات مصممة لتبسيط تنظيم وإدارة البطولات الرياضية للمنظمات والفرق."
 	},
 	"auth": {
 		"alreadyHaveAccount": "هل لديك حساب بالفعل؟",
@@ -167,6 +167,10 @@
 		"toggleColumns": "تبديل الأعمدة",
 		"view": "عرض"
 	},
+	"competition": {
+		"selectTournament": "اختر بطولة",
+		"selectTournamentDescription": "اختر بطولة من القائمة المنسدلة أعلاه لإدارة مجموعاتها."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "الدرجة السادسة",
 		"FIRST_DIVISION": "الدرجة الثانية",
@@ -176,10 +180,10 @@
 		"THIRD_DIVISION": "الدرجة الرابعة"
 	},
 	"errors": {
-		"somethingWentWrong": "حدث خطأ ما",
-		"teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً.",
 		"emailOutboxInvalidFormat": "تنسيق صندوق الصادر للبريد الإلكتروني غير صالح",
-		"emailOutboxReadFailure": "فشل قراءة صندوق الصادر للبريد الإلكتروني"
+		"emailOutboxReadFailure": "فشل قراءة صندوق الصادر للبريد الإلكتروني",
+		"somethingWentWrong": "حدث خطأ ما",
+		"teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً."
 	},
 	"landing": {
 		"features": {
@@ -284,6 +288,10 @@
 			"phoneNumberRequired": "رقم الهاتف مطلوب"
 		}
 	},
+	"profile": {
+		"description": "إدارة إعدادات ملفك الشخصي ومعلومات الحساب لإدارة البطولات.",
+		"title": "معلومات الملف الشخصي"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -309,10 +317,6 @@
 			"title": "نسخة جديدة متاحة"
 		}
 	},
-	"profile": {
-		"title": "معلومات الملف الشخصي",
-		"description": "إدارة إعدادات ملفك الشخصي ومعلومات الحساب لإدارة البطولات."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "فواتير",
@@ -322,8 +326,8 @@
 		"referee": "حكم"
 	},
 	"settings": {
-		"title": "إعدادات التطبيق",
-		"description": "قم بتكوين إعدادات البطولة والتفضيلات وخيارات الحساب للحصول على تجربة مثالية."
+		"description": "قم بتكوين إعدادات البطولة والتفضيلات وخيارات الحساب للحصول على تجربة مثالية.",
+		"title": "إعدادات التطبيق"
 	},
 	"teams": {
 		"allTournaments": "جميع البطولات",
@@ -356,7 +360,6 @@
 			"selectCategory": "اختر فئة",
 			"selectDivision": "اختر فئة",
 			"selectTournament": "اختر بطولة",
-			"tournamentDetails": "البطولة",
 			"selectTournamentDetails": "اختر تفاصيل البطولة",
 			"teamInfo": "الفريق",
 			"teamLeaderEmail": "بريد قائد الفريق الإلكتروني",
@@ -364,7 +367,8 @@
 			"teamLeaderName": "اسم قائد الفريق",
 			"teamLeaderPhone": "هاتف قائد الفريق",
 			"teamRegistration": "تسجيل الفريق",
-			"tournament": "البطولة"
+			"tournament": "البطولة",
+			"tournamentDetails": "البطولة"
 		},
 		"getStarted": {
 			"description": "مستعد للانضمام إلى بطولة؟ انقر على زر 'إضافة' أعلاه لتسجيل فريقك وابدأ اللعب!",
@@ -428,6 +432,8 @@
 			"role": "الدور"
 		},
 		"messages": {
+			"confirmDeactivate": "هل أنت متأكد أنك تريد إلغاء تنشيط هذا المستخدم؟",
+			"confirmReactivate": "هل تريد إعادة تنشيط هذا المستخدم حتى يتمكن من تسجيل الدخول مرة أخرى؟",
 			"deactivated": "غير نشط",
 			"displayNameUpdatedSuccessfully": "تم تحديث اسم العرض بنجاح",
 			"noAuditLogs": "لم يتم العثور على إدخالات سجل التدقيق",
@@ -435,10 +441,8 @@
 			"noUsersDescription": "لم يتم إنشاء أي مستخدمين بعد.",
 			"roleUpdatedSuccessfully": "تم تحديث دور المستخدم بنجاح",
 			"userDeactivatedSuccessfully": "تم إلغاء تنشيط المستخدم بنجاح",
-			"userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح",
 			"userIsDeactivated": "هذا المستخدم غير نشط حالياً",
-			"confirmDeactivate": "هل أنت متأكد أنك تريد إلغاء تنشيط هذا المستخدم؟",
-			"confirmReactivate": "هل تريد إعادة تنشيط هذا المستخدم حتى يتمكن من تسجيل الدخول مرة أخرى؟"
+			"userReactivatedSuccessfully": "تمت إعادة تنشيط المستخدم بنجاح"
 		},
 		"placeholders": {
 			"displayName": "أدخل اسم العرض"

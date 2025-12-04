@@ -1,10 +1,14 @@
 {
+	"about": {
+		"description": "Tournado ist eine umfassende Turnierverwaltungsplattform, die entwickelt wurde, um die Organisation und Verwaltung von Sportturnieren für Organisationen und Teams zu optimieren.",
+		"title": "Über Tournado"
+	},
 	"admin": {
 		"competition": {
 			"description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
-			"groups": "Gruppen",
 			"groupStage": "Gruppenphase",
-			"groupStageDescription": "Gruppenphase für Round-Robin-Spiel erstellen und verwalten",
+			"groupStageDescription": "Gruppen für Round-Robin-Spiel erstellen und verwalten",
+			"groups": "Gruppen",
 			"playoffs": "Playoffs",
 			"title": "Wettbewerbsverwaltung"
 		},
@@ -45,10 +49,6 @@
 			"title": "Benutzer-Verwaltung",
 			"totalUsers": "Gesamtbenutzer"
 		}
-	},
-	"about": {
-		"title": "Über Tournado",
-		"description": "Tournado ist eine umfassende Turnierverwaltungsplattform, die entwickelt wurde, um die Organisation und Verwaltung von Sportturnieren für Organisationen und Teams zu optimieren."
 	},
 	"auth": {
 		"alreadyHaveAccount": "Haben Sie bereits ein Konto?",
@@ -167,6 +167,10 @@
 		"toggleColumns": "Spalten umschalten",
 		"view": "Ansicht"
 	},
+	"competition": {
+		"selectTournament": "Turnier auswählen",
+		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppen zu verwalten."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "Fünfte Division",
 		"FIRST_DIVISION": "Erste Division",
@@ -176,10 +180,10 @@
 		"THIRD_DIVISION": "Dritte Division"
 	},
 	"errors": {
-		"somethingWentWrong": "Etwas ist schief gelaufen",
-		"teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
 		"emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
-		"emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden"
+		"emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden",
+		"somethingWentWrong": "Etwas ist schief gelaufen",
+		"teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
 	},
 	"landing": {
 		"features": {
@@ -284,6 +288,10 @@
 			"phoneNumberRequired": "Telefonnummer ist erforderlich"
 		}
 	},
+	"profile": {
+		"description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung.",
+		"title": "Profilinformationen"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -309,10 +317,6 @@
 			"title": "Eine neue Version ist verfügbar"
 		}
 	},
-	"profile": {
-		"title": "Profilinformationen",
-		"description": "Verwalten Sie Ihre Profileinstellungen und Kontoinformationen für die Turnierverwaltung."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "Abrechnung",
@@ -322,8 +326,8 @@
 		"referee": "Schiedsrichter"
 	},
 	"settings": {
-		"title": "Anwendungseinstellungen",
-		"description": "Konfigurieren Sie Ihre Turniereinstellungen, Präferenzen und Kontooptionen für eine optimale Erfahrung."
+		"description": "Konfigurieren Sie Ihre Turniereinstellungen, Präferenzen und Kontooptionen für eine optimale Erfahrung.",
+		"title": "Anwendungseinstellungen"
 	},
 	"teams": {
 		"allTournaments": "Alle Turniere",
@@ -356,7 +360,6 @@
 			"selectCategory": "Kategorie auswählen",
 			"selectDivision": "Liga auswählen",
 			"selectTournament": "Turnier auswählen",
-			"tournamentDetails": "Turnier",
 			"selectTournamentDetails": "Wählen Sie die Turnier-Details aus",
 			"teamInfo": "Team",
 			"teamLeaderEmail": "E-Mail des Teamleiters",
@@ -364,7 +367,8 @@
 			"teamLeaderName": "Name des Teamleiters",
 			"teamLeaderPhone": "Telefon des Teamleiters",
 			"teamRegistration": "Team-Registrierung",
-			"tournament": "Turnier"
+			"tournament": "Turnier",
+			"tournamentDetails": "Turnier"
 		},
 		"getStarted": {
 			"description": "Bereit, an einem Turnier teilzunehmen? Klicken Sie oben auf die Schaltfläche 'Hinzufügen', um Ihr Team zu registrieren und zu spielen!",
@@ -428,6 +432,8 @@
 			"role": "Rolle"
 		},
 		"messages": {
+			"confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
+			"confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?",
 			"deactivated": "Deaktiviert",
 			"displayNameUpdatedSuccessfully": "Anzeigename erfolgreich aktualisiert",
 			"noAuditLogs": "Keine Audit-Protokolleinträge gefunden",
@@ -435,10 +441,8 @@
 			"noUsersDescription": "Es wurden noch keine Benutzer erstellt.",
 			"roleUpdatedSuccessfully": "Benutzerrolle erfolgreich aktualisiert",
 			"userDeactivatedSuccessfully": "Benutzer erfolgreich deaktiviert",
-			"userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert",
 			"userIsDeactivated": "Dieser Benutzer ist derzeit deaktiviert",
-			"confirmDeactivate": "Möchtest du diesen Benutzer wirklich deaktivieren?",
-			"confirmReactivate": "Diesen Benutzer reaktivieren, damit er sich wieder anmelden kann?"
+			"userReactivatedSuccessfully": "Benutzer erfolgreich reaktiviert"
 		},
 		"placeholders": {
 			"displayName": "Anzeigename eingeben"

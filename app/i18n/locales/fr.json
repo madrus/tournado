@@ -1,10 +1,14 @@
 {
+	"about": {
+		"description": "Tournado est une plateforme complète de gestion de tournois conçue pour rationaliser l'organisation et la gestion des tournois sportifs pour les organisations et les équipes.",
+		"title": "À propos de Tournado"
+	},
 	"admin": {
 		"competition": {
 			"description": "Gérer les groupes, les matchs et les classements des tournois.",
-			"groups": "Groupes",
 			"groupStage": "Phase de groupes",
-			"groupStageDescription": "Créer et gérer la phase de groupes pour le jeu en round-robin",
+			"groupStageDescription": "Créer et gérer des groupes pour le jeu en round-robin",
+			"groups": "Groupes",
 			"playoffs": "Playoffs",
 			"title": "Gestion de la compétition"
 		},
@@ -45,10 +49,6 @@
 			"title": "Gestion des utilisateurs",
 			"totalUsers": "Total utilisateurs"
 		}
-	},
-	"about": {
-		"title": "À propos de Tournado",
-		"description": "Tournado est une plateforme complète de gestion de tournois conçue pour rationaliser l'organisation et la gestion des tournois sportifs pour les organisations et les équipes."
 	},
 	"auth": {
 		"alreadyHaveAccount": "Vous avez déjà un compte ?",
@@ -167,6 +167,10 @@
 		"toggleColumns": "Basculer les colonnes",
 		"view": "Vue"
 	},
+	"competition": {
+		"selectTournament": "Sélectionner un tournoi",
+		"selectTournamentDescription": "Choisissez un tournoi dans la liste déroulante ci-dessus pour gérer ses groupes."
+	},
 	"divisions": {
 		"FIFTH_DIVISION": "Cinquième Division",
 		"FIRST_DIVISION": "Première Division",
@@ -176,10 +180,10 @@
 		"THIRD_DIVISION": "Troisième Division"
 	},
 	"errors": {
-		"somethingWentWrong": "Quelque chose s'est mal passé",
-		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
 		"emailOutboxInvalidFormat": "La boîte d'envoi des e-mails a un format invalide",
-		"emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails"
+		"emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails",
+		"somethingWentWrong": "Quelque chose s'est mal passé",
+		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard."
 	},
 	"landing": {
 		"features": {
@@ -284,6 +288,10 @@
 			"phoneNumberRequired": "Le numéro de téléphone est requis"
 		}
 	},
+	"profile": {
+		"description": "Gérez les paramètres de votre profil et les informations de compte pour la gestion des tournois.",
+		"title": "Informations du profil"
+	},
 	"pwa": {
 		"install": {
 			"android": {
@@ -309,10 +317,6 @@
 			"title": "Une nouvelle version est disponible"
 		}
 	},
-	"profile": {
-		"title": "Informations du profil",
-		"description": "Gérez les paramètres de votre profil et les informations de compte pour la gestion des tournois."
-	},
 	"roles": {
 		"admin": "Admin",
 		"billing": "Facturation",
@@ -322,8 +326,8 @@
 		"referee": "Arbitre"
 	},
 	"settings": {
-		"title": "Paramètres de l'application",
-		"description": "Configurez vos paramètres de tournoi, préférences et options de compte pour une expérience optimale."
+		"description": "Configurez vos paramètres de tournoi, préférences et options de compte pour une expérience optimale.",
+		"title": "Paramètres de l'application"
 	},
 	"teams": {
 		"allTournaments": "Tous les tournois",
@@ -356,7 +360,6 @@
 			"selectCategory": "Sélectionnez une catégorie",
 			"selectDivision": "Sélectionnez une division",
 			"selectTournament": "Sélectionnez un tournoi",
-			"tournamentDetails": "Tournoi",
 			"selectTournamentDetails": "Sélectionnez les détails du tournoi",
 			"teamInfo": "Équipe",
 			"teamLeaderEmail": "E-mail du responsable d'équipe",
@@ -364,7 +367,8 @@
 			"teamLeaderName": "Nom du responsable d'équipe",
 			"teamLeaderPhone": "Téléphone du responsable d'équipe",
 			"teamRegistration": "Inscription d'équipe",
-			"tournament": "Tournoi"
+			"tournament": "Tournoi",
+			"tournamentDetails": "Tournoi"
 		},
 		"getStarted": {
 			"description": "Prêt à rejoindre un tournoi ? Cliquez sur le bouton 'Ajouter' ci-dessus pour inscrire votre équipe et commencer à jouer !",
@@ -428,6 +432,8 @@
 			"role": "Rôle"
 		},
 		"messages": {
+			"confirmDeactivate": "Voulez-vous vraiment désactiver cet utilisateur ?",
+			"confirmReactivate": "Réactiver cet utilisateur afin qu'il puisse se reconnecter ?",
 			"deactivated": "Désactivé",
 			"displayNameUpdatedSuccessfully": "Nom d'affichage mis à jour avec succès",
 			"noAuditLogs": "Aucune entrée de journal d'audit trouvée",
@@ -435,10 +441,8 @@
 			"noUsersDescription": "Aucun utilisateur n'a encore été créé.",
 			"roleUpdatedSuccessfully": "Rôle utilisateur mis à jour avec succès",
 			"userDeactivatedSuccessfully": "Utilisateur désactivé avec succès",
-			"userReactivatedSuccessfully": "Utilisateur réactivé avec succès",
 			"userIsDeactivated": "Cet utilisateur est actuellement désactivé",
-			"confirmDeactivate": "Voulez-vous vraiment désactiver cet utilisateur ?",
-			"confirmReactivate": "Réactiver cet utilisateur afin qu'il puisse se reconnecter ?"
+			"userReactivatedSuccessfully": "Utilisateur réactivé avec succès"
 		},
 		"placeholders": {
 			"displayName": "Entrez le nom d'affichage"

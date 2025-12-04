@@ -109,10 +109,10 @@ export default function GroupsTab(): JSX.Element {
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
 						<h3 className='mt-4 font-semibold text-foreground text-lg'>
-							Select a Tournament
+							{t('competition.selectTournament')}
 						</h3>
 						<p className='mt-2 text-foreground-light'>
-							Choose a tournament from the dropdown above to manage its group sets.
+							{t('competition.selectTournamentDescription')}
 						</p>
 					</div>
 				</div>

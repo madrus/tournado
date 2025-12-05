@@ -379,6 +379,10 @@
 		"title": "الفرق"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "المنافسة"
+		},
+		"description": "عرض معلومات البطولة",
 		"deleteTournament": "حذف البطولة",
 		"endDate": "تاريخ النهاية",
 		"form": {

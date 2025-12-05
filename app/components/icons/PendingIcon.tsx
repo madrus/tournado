@@ -1,12 +1,11 @@
 import type { JSX, SVGProps } from 'react'
 
-import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import type { IconVariant } from '~/lib/lib.types'
 
 type PendingIconProps = {
 	className?: string
 	size?: number
 	variant?: IconVariant
-	weight?: IconWeight
 	'aria-label'?: string
 } & SVGProps<SVGSVGElement>
 
@@ -14,7 +13,6 @@ export function PendingIcon({
 	className = '',
 	size = 24,
 	variant = 'outlined',
-	weight = 400,
 	'aria-label': ariaLabel = 'Pending',
 	...rest
 }: Readonly<PendingIconProps>): JSX.Element {
@@ -25,18 +23,7 @@ export function PendingIcon({
 		'M270.74-426.67q22.26 0 37.76-15.58 15.5-15.57 15.5-37.83 0-22.25-15.58-37.75t-37.83-15.5q-22.26 0-37.76 15.58-15.5 15.57-15.5 37.83 0 22.25 15.58 37.75t37.83 15.5Zm209.34 0q22.25 0 37.75-15.58 15.5-15.57 15.5-37.83 0-22.25-15.58-37.75-15.57-15.5-37.83-15.5-22.25 0-37.75 15.58-15.5 15.57-15.5 37.83 0 22.25 15.58 37.75 15.57 15.5 37.83 15.5Zm208.67 0q22.25 0 37.75-15.58 15.5-15.57 15.5-37.83 0-22.25-15.58-37.75t-37.83-15.5q-22.26 0-37.76 15.58-15.5 15.57-15.5 37.83 0 22.25 15.58 37.75t37.84 15.5ZM480.18-80q-82.83 0-155.67-31.5-72.84-31.5-127.18-85.83Q143-251.67 111.5-324.56T80-480.33q0-82.88 31.5-155.78Q143-709 197.33-763q54.34-54 127.23-85.5T480.33-880q82.88 0 155.78 31.5Q709-817 763-763t85.5 127Q880-563 880-480.18q0 82.83-31.5 155.67Q817-251.67 763-197.46q-54 54.21-127 85.84Q563-80 480.18-80Z'
 
 	const path = variant === 'filled' ? filledPath : outlinedPath
-
-	// Convert weight to stroke-width for outlined icons
-	const strokeWidth =
-		variant === 'outlined' && weight > 400
-			? weight === 600
-				? 1.5
-				: weight === 500
-					? 1.25
-					: 1
-			: undefined
 	const { style, ...restProps } = rest
-	const combinedStyle = strokeWidth !== undefined ? { ...style, strokeWidth } : style
 
 	return (
 		<svg
@@ -45,11 +32,12 @@ export function PendingIcon({
 			height={size}
 			viewBox='0 -960 960 960'
 			className={`inline-block ${className}`}
-			fill={variant === 'filled' ? 'currentColor' : 'none'}
-			stroke={variant === 'outlined' ? 'currentColor' : 'none'}
+			// The Material Symbols provided version is a filled ring + dots; use fill for both variants
+			fill='currentColor'
+			stroke='none'
 			role='img'
 			aria-label={ariaLabel}
-			style={combinedStyle}
+			style={style}
 		>
 			<path d={path} />
 		</svg>

@@ -379,6 +379,10 @@
 		"title": "Teams"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Competition"
+		},
+		"description": "See tournament information",
 		"deleteTournament": "Delete Tournament",
 		"endDate": "End Date",
 		"form": {

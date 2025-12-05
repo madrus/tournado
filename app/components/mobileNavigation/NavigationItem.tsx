@@ -38,6 +38,16 @@ function NavigationItem({
 	// Responsive icon sizing: Use proper media query hook that updates on resize
 	const isMobileBreakpoint = useMediaQuery('(max-width: 767px)')
 	const responsiveIconSize = iconSize ?? (isMobileBreakpoint ? 32 : 36)
+	const isPendingIcon = icon === 'pending'
+	// Keep pending (More) outlined when inactive; filled when active
+	const iconVariant =
+		isPendingIcon && !isActive ? 'outlined' : isActive ? 'filled' : 'outlined'
+	// Heavier outline for pending to match reference ring thickness
+	const iconWeight = isPendingIcon ? 700 : isActive ? 700 : 600
+	const iconClassName = cn(
+		navigationIconVariants({ color, active: isActive }),
+		!isActive && isPendingIcon ? 'text-primary-foreground' : undefined,
+	)
 
 	return (
 		<Link
@@ -48,9 +58,9 @@ function NavigationItem({
 		>
 			{renderIcon(icon, {
 				size: responsiveIconSize,
-				variant: isActive ? 'filled' : 'outlined',
-				weight: isActive ? 700 : 400,
-				className: navigationIconVariants({ color, active: isActive }),
+				variant: iconVariant,
+				weight: iconWeight,
+				className: iconClassName,
 				'data-testid': 'nav-icon',
 			})}
 			<span

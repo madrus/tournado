@@ -5,7 +5,7 @@ import { useSettingsStore } from '~/stores/useSettingsStore'
 // isRTL is now a computed property in useSettingsStore based on the current language
 
 const isLanguageRTL = (language: Language | string): boolean =>
-	language.split('-')[0] === 'ar'
+	String(language).startsWith('ar')
 
 const resolveIsRTL = (languageOverride?: Language | string): boolean => {
 	if (languageOverride) {
@@ -65,8 +65,10 @@ export const getLatinTitleClass = (languageOverride?: Language | string): string
 // Use this for elements where you want default Latin font but need to preserve responsive sizing
 // Uses !important to override arabic-text parent selector
 // Uses Tailwind's font-sans which respects your configured default font
-export const getLatinFontFamily = (): string =>
-	useSettingsStore.getState().isRTL ? '!font-sans' : ''
+export const getLatinFontFamily = (languageOverride?: Language | string): string => {
+	const isRTL = resolveIsRTL(languageOverride)
+	return isRTL ? '!font-sans' : ''
+}
 
 // Specific helper for chip layout (delete button placement)
 export function getChipClasses(): { container: string } {
@@ -176,11 +178,16 @@ export type SwipeRowConfig = {
 }
 
 // Helper for swipeable row RTL support
-export const getSwipeRowConfig = (): SwipeRowConfig => ({
-	// RTL: multiply by -1 to invert swipe direction
-	// LTR: multiply by 1 (no change)
-	directionMultiplier: useSettingsStore.getState().isRTL ? -1 : 1,
-})
+export const getSwipeRowConfig = (
+	languageOverride?: Language | string,
+): SwipeRowConfig => {
+	const isRTL = resolveIsRTL(languageOverride)
+	return {
+		// RTL: multiply by -1 to invert swipe direction
+		// LTR: multiply by 1 (no change)
+		directionMultiplier: isRTL ? -1 : 1,
+	}
+}
 
 // Helper to get compensated line-height for menu items in RTL mode
 // Arabic text uses 1.25rem font (25% larger than 1rem), so we need to reduce

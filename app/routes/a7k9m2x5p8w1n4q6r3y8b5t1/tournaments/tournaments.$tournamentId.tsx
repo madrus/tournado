@@ -327,23 +327,23 @@ export default function EditTournamentPage(): JSX.Element {
 		<div className='w-full'>
 			{/* Admin Header with Action Buttons */}
 			<Panel color='sky' className='mb-8'>
-				<div className='flex items-center justify-between gap-4'>
+				<div className='flex items-start justify-between gap-4 md:items-center'>
 					<div className='flex-1'>
-						<h2 className='font-bold text-2xl'>
+						<h2 className='latin-text font-bold text-2xl'>
 							{tournament.name || t('tournaments.form.tournamentRegistration')}
 						</h2>
-						<p className='mt-2 text-foreground'>
+						<p className='latin-text mt-2 text-foreground'>
 							{tournament.location
 								? `${t('tournaments.form.location')} ${tournament.location}`
 								: t('tournaments.form.fillOutForm')}
 						</p>
 					</div>
 					{/* Action Buttons */}
-					<div className='flex items-center gap-3'>
+					<div className='flex flex-col items-stretch gap-3 md:flex-row md:items-center'>
 						{/* Manage Competition Button */}
 						<ActionLinkButton
 							to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition?tournament=${tournament.id}`}
-							label='Manage Competition'
+							label={t('tournaments.actions.manageCompetition')}
 							icon='trophy'
 							variant='primary'
 						/>

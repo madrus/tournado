@@ -3,7 +3,7 @@
 
 import type { User } from '@prisma/client'
 import type React from 'react'
-import { type JSX, useEffect, useState } from 'react'
+import { type JSX, useEffect, useRef, useState } from 'react'
 import {
 	Links,
 	type LinksFunction,
@@ -60,6 +60,14 @@ export const links: LinksFunction = () => [
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap',
+	},
+	// Preload Amiri font for Arabic to prevent FOUC
+	{
+		rel: 'preload',
+		href: 'https://fonts.gstatic.com/s/amiri/v29/J7aRnpd8CGxBHqUpvrIw74NL.woff2',
+		as: 'font',
+		type: 'font/woff2',
+		crossOrigin: 'anonymous' as const,
 	},
 ]
 
@@ -138,40 +146,44 @@ type DocumentProps = {
 	theme: 'light' | 'dark'
 }
 
-const Document = ({ children, language, theme: serverTheme }: DocumentProps) => {
-	// Get current theme and language from store (reactive to changes)
-	const { theme: storeTheme, language: storeLanguage } = useSettingsStore()
-
-	// Use store values after hydration, otherwise use server values for SSR
-	// This prevents flash on initial load while allowing reactive updates
-	const [isHydrated, setIsHydrated] = useState(false)
+const Document = ({ children, language, theme }: DocumentProps) => {
+	// Don't run on initial mount - inline script already set dir, arabic-text, and dark class correctly
+	const isFirstRender = useRef(true)
 
 	useEffect(() => {
-		setIsHydrated(true)
-		if (isHydrated) {
-			document.documentElement.setAttribute('data-hydrated', 'true')
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+			return
 		}
-	}, [isHydrated])
 
-	const currentTheme = isHydrated ? storeTheme : serverTheme
-	// Use store language after hydration, server language during SSR
-	const currentLanguage = isHydrated ? storeLanguage : language
+		const direction = getDirection(language)
+		const typographyClass = getTypographyClass(language)
 
-	// Use useState for reactive values that depend on language
-	const [direction, setDirection] = useState(getDirection(language))
-	const [typographyClass, setTypographyClass] = useState(getTypographyClass(language))
+		document.documentElement.setAttribute('dir', direction)
 
-	// Update direction and typography when language changes
-	useEffect(() => {
-		setDirection(getDirection(currentLanguage))
-		setTypographyClass(getTypographyClass(currentLanguage))
-	}, [currentLanguage])
+		if (typographyClass) {
+			document.documentElement.classList.add(typographyClass)
+		} else {
+			document.documentElement.classList.remove('arabic-text')
+		}
+
+		// Update theme class
+		if (theme === 'dark') {
+			document.documentElement.classList.add('dark')
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+	}, [language, theme])
 
 	return (
 		<html
-			lang={currentLanguage}
-			dir={direction}
-			className={cn('min-h-full overflow-x-hidden', currentTheme)}
+			lang={language}
+			dir={getDirection(language)}
+			className={cn(
+				'min-h-full overflow-x-hidden',
+				getTypographyClass(language),
+				theme,
+			)}
 		>
 			<head>
 				<Meta />
@@ -180,14 +192,45 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 					name='viewport'
 					content='width=device-width,initial-scale=1,viewport-fit=cover'
 				/>
+				{/* Inline script to prevent FOUC - runs before any rendering */}
+				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: Critical for preventing FOUC
+					dangerouslySetInnerHTML={{
+						__html: `
+							(function() {
+								// IMPORTANT: Only use cookie, not sessionStorage/localStorage
+								// This ensures SSR and client-side render use the same source
+								const cookieLang = document.cookie.match(/lang=([^;]+)/)?.[1];
+								const lang = cookieLang || 'nl';
+								const cookieTheme = document.cookie.match(/theme=([^;]+)/)?.[1];
+								const theme = cookieTheme || 'light';
+
+								// Set direction immediately on html element
+								const dir = lang === 'ar' ? 'rtl' : 'ltr';
+								document.documentElement.setAttribute('dir', dir);
+
+								// Set typography class immediately on html element
+								const typographyClass = lang === 'ar' ? 'arabic-text' : '';
+								if (typographyClass) {
+									document.documentElement.classList.add(typographyClass);
+								} else {
+									// Remove arabic-text if switching from Arabic to another language
+									document.documentElement.classList.remove('arabic-text');
+								}
+
+								// Set theme class immediately on html element
+								if (theme === 'dark') {
+									document.documentElement.classList.add('dark');
+								} else {
+									document.documentElement.classList.remove('dark');
+								}
+							})();
+						`,
+					}}
+				/>
 				<Links />
 			</head>
-			<body
-				className={cn(
-					'flex min-h-full min-w-[320px] flex-col bg-background text-foreground',
-					typographyClass,
-				)}
-			>
+			<body className='flex min-h-full min-w-[320px] flex-col bg-background text-foreground'>
 				{/* i18n instance will be provided by App/ErrorBoundary */}
 				{children}
 				<PWAElements />
@@ -195,7 +238,7 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: Inject the SSR language and theme for client-side hydration
 					dangerouslySetInnerHTML={{
-						__html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(serverTheme)};`,
+						__html: `window.__SSR_LANGUAGE__ = ${JSON.stringify(language)}; window.__SSR_THEME__ = ${JSON.stringify(theme)};`,
 					}}
 				/>
 				<Scripts />
@@ -217,25 +260,31 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		tournaments,
 	} = loaderData
 
-	// Handle store rehydration FIRST, before accessing store values
+	// Handle store rehydration
 	useAuthStoreHydration()
 	useSettingsStoreHydration()
 
 	const { setUser, setFirebaseUser } = useAuthStore()
+	const { setTheme, setLanguage } = useSettingsStore()
 	const { setAvailableOptionsField } = useTeamFormStore()
-	const {
-		setTheme,
-		setLanguage,
-		theme: currentTheme,
-		language: storeLanguage,
-	} = useSettingsStore()
 
-	// Get current language from store (this makes store the source of truth)
+	// Initialize store from server values BEFORE first render
+	// This runs synchronously before the component returns JSX
+	const [_initialized] = useState(() => {
+		setTheme(serverTheme)
+		setLanguage(serverLanguage)
+		return true
+	})
+
+	// Get store values (already initialized with server values above)
+	const currentTheme = useSettingsStore((state) => state.theme)
+	const currentLanguage = useSettingsStore((state) => state.language)
+
+	// Create i18n instance
+	const [i18n, _setI18n] = useState(() => initI18n(serverLanguage))
+
+	// Add:
 	const [isHydrated, setIsHydrated] = useState(false)
-	const currentLanguage = isHydrated ? storeLanguage : serverLanguage
-
-	// Create i18n instance - use store language after hydration, server language for SSR
-	const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
 
 	useEffect(() => {
 		setIsHydrated(true)
@@ -253,33 +302,28 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 		}
 	}, [user, setUser, setFirebaseUser])
 
-	// Initialize theme store with server-side values
-	useEffect(() => {
-		setTheme(serverTheme)
-		setLanguage(serverLanguage)
-	}, [serverTheme, serverLanguage, setTheme, setLanguage])
-
 	// Initialize tournaments in the store
 	useEffect(() => {
 		setAvailableOptionsField('tournaments', tournaments)
 	}, [tournaments, setAvailableOptionsField])
 
-	// Update i18n when store language changes (after hydration)
+	// Update i18n when language changes
 	useEffect(() => {
-		if (isHydrated) {
-			const newI18n = initI18n(currentLanguage)
-			setI18n(newI18n)
-		}
-	}, [currentLanguage, isHydrated])
+		i18n.changeLanguage(currentLanguage)
+	}, [currentLanguage, i18n])
+
+	// Compute effective values
+	const effectiveLanguage = isHydrated ? currentLanguage : serverLanguage
+	const effectiveTheme = isHydrated ? currentTheme : serverTheme
 
 	return (
-		<Document language={serverLanguage} theme={serverTheme}>
+		<Document language={effectiveLanguage} theme={effectiveTheme}>
 			<AppLayout
 				authenticated={authenticated}
 				username={username}
 				user={user}
-				theme={currentTheme}
-				language={currentLanguage}
+				theme={effectiveTheme}
+				language={effectiveLanguage}
 				i18n={i18n}
 				env={ENV}
 			>

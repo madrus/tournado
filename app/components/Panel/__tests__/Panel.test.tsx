@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import { describe, expect, it, vi } from 'vitest'
-
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 import { useLanguageSwitcher } from '~/hooks/useLanguageSwitcher'
 
 import { Panel } from '../Panel'
@@ -14,10 +14,19 @@ vi.mock('react-i18next', () => ({
 	}),
 }))
 
-// Mock the language switcher hook
+// Mock hooks for test isolation
+vi.mock('~/hooks/useLanguageDirection', () => ({
+	useLanguageDirection: vi.fn(() => ({
+		direction: 'rtl',
+		latinFontClass: '',
+		swipeConfig: { directionMultiplier: -1 },
+		isHydrated: true,
+	})),
+}))
+
 vi.mock('~/hooks/useLanguageSwitcher', () => ({
 	useLanguageSwitcher: vi.fn(() => ({
-		currentLanguage: 'en',
+		currentLanguage: 'ar',
 		switchLanguage: vi.fn(),
 	})),
 }))
@@ -289,30 +298,60 @@ describe('Panel Component', () => {
 	})
 
 	describe('Language Support', () => {
-		it('should apply arabic-text and text-right classes for Arabic language', () => {
-			vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
-				currentLanguage: 'ar',
-				switchLanguage: vi.fn(),
-			})
-
-			render(<Panel {...defaultProps} title='Test Title' />)
+		it('should support Arabic language with logical text-start alignment', () => {
+			render(
+				<Panel
+					title='عنوان عربي'
+					color='fuchsia'
+					variant='content-panel'
+					data-testid='test-panel'
+				>
+					<p data-testid='arabic-content'>محتوى عربي</p>
+				</Panel>,
+			)
 
 			const title = screen.getByRole('heading', { level: 3 })
-			expect(title).toHaveClass('arabic-text')
-			expect(title).toHaveClass('text-right')
+			expect(title).toHaveClass('text-start') // Title explicit text-start
+
+			// Query children wrapper div
+			const childrenWrapper = screen.getByTestId('test-panel-children')
+			expect(childrenWrapper).toHaveClass('text-start') // Wrapper has text-start
+
+			// Verify Arabic title
+			expect(title).toBeInTheDocument()
+			expect(title.innerHTML).toContain('عنوان عربي')
+
+			// Verify content via testId
+			const content = screen.getByTestId('arabic-content')
+			expect(content).toBeInTheDocument()
+			expect(content.innerHTML).toContain('محتوى عربي')
 		})
 
-		it('should not apply arabic-text class for English language', () => {
+		it('should not apply arabic-specific classes for English language', () => {
+			// Override mock for LTR
 			vi.mocked(useLanguageSwitcher).mockReturnValueOnce({
 				currentLanguage: 'en',
 				switchLanguage: vi.fn(),
 			})
 
-			render(<Panel {...defaultProps} title='Test Title' />)
+			vi.mocked(useLanguageDirection).mockReturnValueOnce({
+				direction: 'ltr',
+				latinFontClass: '',
+				swipeConfig: { directionMultiplier: 1 },
+				isHydrated: true,
+			})
+
+			render(<Panel title='Test Title' data-testid='test-panel' />)
 
 			const title = screen.getByRole('heading', { level: 3 })
-			expect(title).not.toHaveClass('arabic-text')
-			expect(title).not.toHaveClass('text-right')
+			expect(title).not.toHaveClass('arabic-text') // No Arabic class in LTR
+			expect(title).toHaveClass('text-start') // Logical, left in LTR
+
+			// Verify children wrapper if present
+			const childrenWrapper = screen.queryByTestId('test-panel-children')
+			if (childrenWrapper) {
+				expect(childrenWrapper).toHaveClass('text-start')
+			}
 		})
 	})
 

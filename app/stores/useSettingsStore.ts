@@ -13,7 +13,6 @@ type Theme = 'light' | 'dark'
 type StoreState = {
 	isRTL: boolean
 	language: Language
-	systemThemeDetected: boolean
 	theme: Theme
 }
 
@@ -22,7 +21,6 @@ type Actions = {
 	toggleTheme: () => void
 	setLanguage: (language: Language) => void
 	resetSettingsStoreState: () => void
-	detectSystemTheme: () => void
 }
 
 // Theme switching is now instant with no global transitions to manage
@@ -33,10 +31,9 @@ const initialStoreState: StoreState = {
 	theme: 'light',
 	isRTL: false,
 	language: 'nl',
-	systemThemeDetected: false,
 }
 
-// Server-side storage mock for when localStorage is not available
+// Server-side storage mock for when sessionStorage is not available
 const createServerSideStorage = () => ({
 	getItem: () => null,
 	setItem: () => {
@@ -56,12 +53,11 @@ export const useSettingsStore = create<StoreState & Actions>()(
 					set(initialStoreState, false, 'resetSettingsStoreState')
 				},
 				setTheme: (theme) => {
-					// Persist to both localStorage and cookies for server-side access
+					set({ theme }, false, 'setTheme')
+					// Persist to cookies for server-side access
 					if (isBrowser) {
 						setCookie('theme', theme)
 					}
-					// Mark as user override when manually setting theme
-					set({ theme, systemThemeDetected: false }, false, 'setTheme')
 				},
 				toggleTheme: () => {
 					set(
@@ -71,69 +67,37 @@ export const useSettingsStore = create<StoreState & Actions>()(
 							if (isBrowser) {
 								setCookie('theme', newTheme)
 							}
-							// Mark as user override when manually toggling theme
-							return { theme: newTheme, systemThemeDetected: false }
+							return { theme: newTheme }
 						},
 						false,
 						'toggleTheme',
 					)
 				},
 				setLanguage: (language) => {
-					// Persist to both localStorage and cookies for server-side access
-					if (isBrowser) {
-						setCookie('lang', language)
-					}
 					// Compute isRTL from language
 					const isRTL = language.split('-')[0] === 'ar'
 					set({ language, isRTL }, false, 'setLanguage')
-				},
-				detectSystemTheme: () => {
-					if (!isBrowser) return
-
-					const state = useSettingsStore.getState()
-					// Only detect system theme if we haven't done so already
-					if (state.systemThemeDetected) return
-
-					const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-					const systemTheme: Theme = mediaQuery.matches ? 'dark' : 'light'
-
-					// Set the theme and mark as detected
-					set(
-						{ theme: systemTheme, systemThemeDetected: true },
-						false,
-						'detectSystemTheme',
-					)
-
 					// Persist to cookies for server-side access
-					setCookie('theme', systemTheme)
-
-					// Listen for system theme changes
-					const handleThemeChange = (event: MediaQueryListEvent) => {
-						const newSystemTheme: Theme = event.matches ? 'dark' : 'light'
-						const currentState = useSettingsStore.getState()
-
-						// Only auto-update if user hasn't manually overridden
-						if (currentState.systemThemeDetected) {
-							useSettingsStore.getState().setTheme(newSystemTheme)
-						}
+					if (isBrowser) {
+						setCookie('lang', language)
 					}
-
-					mediaQuery.addEventListener('change', handleThemeChange)
-
-					// Cleanup function would need to be handled by component using this
-					return () => mediaQuery.removeEventListener('change', handleThemeChange)
 				},
 			}),
 			{
 				name: storeName,
-				// Use localStorage for UI preferences persistence (unlike auth which uses sessionStorage)
+				// Use sessionStorage for UI preferences (survives refreshes, not new tabs)
 				storage: isBrowser
-					? createJSONStorage(() => localStorage)
+					? createJSONStorage(() => sessionStorage)
 					: createJSONStorage(createServerSideStorage),
 				// Skip persistence completely on server-side
 				skipHydration: !isBrowser,
-				// Only persist when we're in the browser
-				partialize: (state) => (isBrowser ? state : {}),
+				// Only persist theme; language/isRTL come from cookie+loader to avoid hydration flashes
+				partialize: (state) => (isBrowser ? { theme: state.theme } : {}),
+				// Merge persisted state without overriding language/isRTL from the server cookie
+				merge: (persistedState, currentState) => ({
+					...currentState,
+					theme: (persistedState as Partial<StoreState>)?.theme ?? currentState.theme,
+				}),
 			},
 		),
 		{
@@ -143,19 +107,13 @@ export const useSettingsStore = create<StoreState & Actions>()(
 )
 
 /**
- * Hook to handle UI preferences store rehydration and system theme detection
+ * Hook to handle UI preferences store rehydration
  * Use this in components that need the UI preferences store to be properly hydrated
  */
 export const useSettingsStoreHydration = (): void => {
 	useEffect(() => {
 		if (isBrowser) {
 			useSettingsStore.persist.rehydrate()
-
-			// Detect system theme on first app load
-			const cleanup = useSettingsStore.getState().detectSystemTheme()
-
-			// Return cleanup function
-			return cleanup
 		}
 	}, [])
 }

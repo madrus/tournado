@@ -379,6 +379,10 @@
 		"title": "Teams"
 	},
 	"tournaments": {
+		"actions": {
+			"manageCompetition": "Competitie"
+		},
+		"description": "Bekijk toernooi-informatie",
 		"deleteTournament": "Toernooi verwijderen",
 		"endDate": "Einddatum",
 		"form": {

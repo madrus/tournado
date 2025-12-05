@@ -1,12 +1,11 @@
 import type { JSX, SVGProps } from 'react'
 
-import type { IconVariant, IconWeight } from '~/lib/lib.types'
+import type { IconVariant } from '~/lib/lib.types'
 
 type PendingIconProps = {
 	className?: string
 	size?: number
 	variant?: IconVariant
-	weight?: IconWeight
 	'aria-label'?: string
 } & SVGProps<SVGSVGElement>
 
@@ -14,7 +13,6 @@ export function PendingIcon({
 	className = '',
 	size = 24,
 	variant = 'outlined',
-	weight = 400,
 	'aria-label': ariaLabel = 'Pending',
 	...rest
 }: Readonly<PendingIconProps>): JSX.Element {

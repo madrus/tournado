@@ -281,7 +281,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	const currentLanguage = useSettingsStore((state) => state.language)
 
 	// Create i18n instance
-	const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
+	const [i18n, _setI18n] = useState(() => initI18n(serverLanguage))
 
 	// Add:
 	const [isHydrated, setIsHydrated] = useState(false)
@@ -309,9 +309,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 
 	// Update i18n when language changes
 	useEffect(() => {
-		const newI18n = initI18n(currentLanguage)
-		setI18n(newI18n)
-	}, [currentLanguage])
+		i18n.changeLanguage(currentLanguage)
+	}, [currentLanguage, i18n])
 
 	// Compute effective values
 	const effectiveLanguage = isHydrated ? currentLanguage : serverLanguage

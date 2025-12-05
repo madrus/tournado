@@ -172,7 +172,7 @@ function Calendar({
 				{calendarDays.map((date) => {
 					if (!date) {
 						_emptyCellCounter++
-						return <div key={`empty-`} className='p-2' />
+						return <div key={`empty-${_emptyCellCounter}`} className='p-2' />
 					}
 
 					const disabled = isDisabled(date)
@@ -351,6 +351,7 @@ export const CustomDatePicker = forwardRef<HTMLInputElement, CustomDatePickerPro
 										disabled={readOnly}
 										aria-label={`${label} - select date`}
 										onBlur={handleBlur}
+										data-open={isOpen}
 										className={cn(
 											datePickerButtonVariants({
 												color,

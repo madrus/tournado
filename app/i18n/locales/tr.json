@@ -382,6 +382,7 @@
 		"actions": {
 			"manageCompetition": "Yarışma"
 		},
+		"description": "Turnuva bilgilerini görüntüle",
 		"deleteTournament": "Turnuvayı sil",
 		"endDate": "Bitiş tarihi",
 		"form": {

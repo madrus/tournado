@@ -46,7 +46,7 @@ function NavigationItem({
 	const iconWeight = isPendingIcon ? 700 : isActive ? 700 : 600
 	const iconClassName = cn(
 		navigationIconVariants({ color, active: isActive }),
-		!isActive && isPendingIcon ? 'text-white' : undefined,
+		!isActive && isPendingIcon ? 'text-primary-foreground' : undefined,
 	)
 
 	return (

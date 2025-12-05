@@ -184,7 +184,7 @@ export const comboFieldTriggerVariants = cva(
 				true: 'cursor-not-allowed opacity-50',
 			},
 			error: {
-				true: 'border-destructive hover:border-destructive hover:shadow-destructive/20 hover:shadow-md focus:border-destructive focus:ring-4 focus:ring-destructive/20 data-[state=open]:border-destructive data-[state=open]:ring-4 data-[state=open]:ring-destructive/20 dark:focus:ring-destructive/30 dark:hover:shadow-destructive/30',
+				true: 'border-destructive hover:border-destructive hover:shadow-destructive/20 hover:shadow-md focus:border-destructive focus:ring-4 focus:ring-destructive/20 data-[open=true]:border-destructive data-[open=true]:ring-4 data-[open=true]:ring-destructive/20 dark:focus:ring-destructive/30 dark:hover:shadow-destructive/30',
 			},
 		},
 		defaultVariants: {
@@ -338,61 +338,57 @@ export const datePickerButtonVariants = cva(
 		'disabled:transform-none disabled:transition-none',
 	],
 	{
-		// open: Optional boolean for Popover open state (since Radix Popover.Trigger lacks data-[state=open])
+		// open: Popover open state managed via data-open attribute (since Radix Popover.Trigger lacks data-[state=open])
 		variants: {
-			open: {
-				true: 'data-[open=true]:border-brand-500 data-[open=true]:ring-4 data-[open=true]:ring-brand-500/20', // Placeholder; adapt per color below
-				false: '',
-			},
 			color: {
 				// Functional Semantics - integrate open state
 				brand:
-					'border-brand-700/30 hover:border-brand-600 hover:shadow-brand-500/20 hover:shadow-md focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 open:border-brand-500 open:ring-4 open:ring-brand-500/20 dark:focus:ring-brand-400/30 dark:hover:shadow-brand-400/30',
+					'border-brand-700/30 hover:border-brand-600 hover:shadow-brand-500/20 hover:shadow-md focus:border-brand-500 focus:ring-4 focus:ring-brand-500/20 data-[open=true]:border-brand-500 data-[open=true]:ring-4 data-[open=true]:ring-brand-500/20 dark:focus:ring-brand-400/30 dark:hover:shadow-brand-400/30',
 				primary:
-					'border-primary-700/30 hover:border-primary-600 hover:shadow-md hover:shadow-primary-500/20 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 open:border-primary-500 open:ring-4 open:ring-primary-500/20 dark:focus:ring-primary-400/30 dark:hover:shadow-primary-400/30',
+					'border-primary-700/30 hover:border-primary-600 hover:shadow-md hover:shadow-primary-500/20 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 data-[open=true]:border-primary-500 data-[open=true]:ring-4 data-[open=true]:ring-primary-500/20 dark:focus:ring-primary-400/30 dark:hover:shadow-primary-400/30',
 				success:
-					'border-green-700/30 hover:border-green-600 hover:shadow-green-500/20 hover:shadow-md focus:border-green-500 focus:ring-4 focus:ring-green-500/20 open:border-green-500 open:ring-4 open:ring-green-500/20 dark:focus:ring-green-400/30 dark:hover:shadow-green-400/30',
+					'border-green-700/30 hover:border-green-600 hover:shadow-green-500/20 hover:shadow-md focus:border-green-500 focus:ring-4 focus:ring-green-500/20 data-[open=true]:border-green-500 data-[open=true]:ring-4 data-[open=true]:ring-green-500/20 dark:focus:ring-green-400/30 dark:hover:shadow-green-400/30',
 				error:
-					'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 open:border-red-500 open:ring-4 open:ring-red-500/20 dark:focus:ring-red-400/30 dark:hover:shadow-red-400/30',
+					'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 data-[open=true]:border-red-500 data-[open=true]:ring-4 data-[open=true]:ring-red-500/20 dark:focus:ring-red-400/30 dark:hover:shadow-red-400/30',
 				warning:
-					'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 open:border-yellow-500 open:ring-4 open:ring-yellow-500/20 dark:focus:ring-yellow-400/30 dark:hover:shadow-yellow-400/30',
-				info: 'border-blue-700/30 hover:border-blue-600 hover:shadow-blue-500/20 hover:shadow-md focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 open:border-blue-500 open:ring-4 open:ring-blue-500/20 dark:focus:ring-blue-400/30 dark:hover:shadow-blue-400/30',
+					'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 data-[open=true]:border-yellow-500 data-[open=true]:ring-4 data-[open=true]:ring-yellow-500/20 dark:focus:ring-yellow-400/30 dark:hover:shadow-yellow-400/30',
+				info: 'border-blue-700/30 hover:border-blue-600 hover:shadow-blue-500/20 hover:shadow-md focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 data-[open=true]:border-blue-500 data-[open=true]:ring-4 data-[open=true]:ring-blue-500/20 dark:focus:ring-blue-400/30 dark:hover:shadow-blue-400/30',
 				disabled: 'border-slate-200 dark:border-slate-800',
 				// Visual Accents
 				'accent-amber':
-					'border-amber-700/30 hover:border-amber-600 hover:shadow-amber-500/20 hover:shadow-md focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 open:border-amber-500 open:ring-4 open:ring-amber-500/20 dark:focus:ring-amber-400/30 dark:hover:shadow-amber-400/30',
+					'border-amber-700/30 hover:border-amber-600 hover:shadow-amber-500/20 hover:shadow-md focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 data-[open=true]:border-amber-500 data-[open=true]:ring-4 data-[open=true]:ring-amber-500/20 dark:focus:ring-amber-400/30 dark:hover:shadow-amber-400/30',
 				'accent-indigo':
-					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 open:border-indigo-500 open:ring-4 open:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 data-[open=true]:border-indigo-500 data-[open=true]:ring-4 data-[open=true]:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
 				'accent-fuchsia':
-					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 open:border-fuchsia-500 open:ring-4 open:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
+					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 data-[open=true]:border-fuchsia-500 data-[open=true]:ring-4 data-[open=true]:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 				'accent-teal':
-					'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 open:border-teal-500 open:ring-4 open:ring-teal-500/20 dark:focus:ring-teal-400/30 dark:hover:shadow-teal-400/30',
+					'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 data-[open=true]:border-teal-500 data-[open=true]:ring-4 data-[open=true]:ring-teal-500/20 dark:focus:ring-teal-400/30 dark:hover:shadow-teal-400/30',
 				'accent-sky':
-					'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 open:border-sky-500 open:ring-4 open:ring-sky-500/20 dark:focus:ring-sky-400/30 dark:hover:shadow-sky-400/30',
+					'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 data-[open=true]:border-sky-500 data-[open=true]:ring-4 data-[open=true]:ring-sky-500/20 dark:focus:ring-sky-400/30 dark:hover:shadow-sky-400/30',
 				'accent-purple':
-					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 open:border-purple-500 open:ring-4 open:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
+					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 data-[open=true]:border-purple-500 data-[open=true]:ring-4 data-[open=true]:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				// Legacy Real Colors
 				emerald:
-					'border-emerald-700/30 hover:border-emerald-600 hover:shadow-emerald-500/20 hover:shadow-md focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 open:border-emerald-500 open:ring-4 open:ring-emerald-500/20 dark:focus:ring-emerald-400/30 dark:hover:shadow-emerald-400/30',
-				red: 'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 open:border-red-500 open:ring-4 open:ring-red-500/20 dark:focus:ring-red-400/30 dark:hover:shadow-red-400/30',
-				blue: 'border-blue-700/30 hover:border-blue-600 hover:shadow-blue-500/20 hover:shadow-md focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 open:border-blue-500 open:ring-4 open:ring-blue-500/20 dark:focus:ring-blue-400/30 dark:hover:shadow-blue-400/30',
+					'border-emerald-700/30 hover:border-emerald-600 hover:shadow-emerald-500/20 hover:shadow-md focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 data-[open=true]:border-emerald-500 data-[open=true]:ring-4 data-[open=true]:ring-emerald-500/20 dark:focus:ring-emerald-400/30 dark:hover:shadow-emerald-400/30',
+				red: 'border-red-700/30 hover:border-red-600 hover:shadow-md hover:shadow-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 data-[open=true]:border-red-500 data-[open=true]:ring-4 data-[open=true]:ring-red-500/20 dark:focus:ring-red-400/30 dark:hover:shadow-red-400/30',
+				blue: 'border-blue-700/30 hover:border-blue-600 hover:shadow-blue-500/20 hover:shadow-md focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 data-[open=true]:border-blue-500 data-[open=true]:ring-4 data-[open=true]:ring-blue-500/20 dark:focus:ring-blue-400/30 dark:hover:shadow-blue-400/30',
 				green:
-					'border-green-700/30 hover:border-green-600 hover:shadow-green-500/20 hover:shadow-md focus:border-green-500 focus:ring-4 focus:ring-green-500/20 open:border-green-500 open:ring-4 open:ring-green-500/20 dark:focus:ring-green-400/30 dark:hover:shadow-green-400/30',
+					'border-green-700/30 hover:border-green-600 hover:shadow-green-500/20 hover:shadow-md focus:border-green-500 focus:ring-4 focus:ring-green-500/20 data-[open=true]:border-green-500 data-[open=true]:ring-4 data-[open=true]:ring-green-500/20 dark:focus:ring-green-400/30 dark:hover:shadow-green-400/30',
 				yellow:
-					'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 open:border-yellow-500 open:ring-4 open:ring-yellow-500/20 dark:focus:ring-yellow-400/30 dark:hover:shadow-yellow-400/30',
+					'border-yellow-700/30 hover:border-yellow-600 hover:shadow-md hover:shadow-yellow-500/20 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 data-[open=true]:border-yellow-500 data-[open=true]:ring-4 data-[open=true]:ring-yellow-500/20 dark:focus:ring-yellow-400/30 dark:hover:shadow-yellow-400/30',
 				purple:
-					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 open:border-purple-500 open:ring-4 open:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
+					'border-purple-700/30 hover:border-purple-600 hover:shadow-md hover:shadow-purple-500/20 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 data-[open=true]:border-purple-500 data-[open=true]:ring-4 data-[open=true]:ring-purple-500/20 dark:focus:ring-purple-400/30 dark:hover:shadow-purple-400/30',
 				indigo:
-					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 open:border-indigo-500 open:ring-4 open:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
-				lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 open:border-lime-500 open:ring-4 open:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
+					'border-indigo-700/30 hover:border-indigo-600 hover:shadow-indigo-500/20 hover:shadow-md focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 data-[open=true]:border-indigo-500 data-[open=true]:ring-4 data-[open=true]:ring-indigo-500/20 dark:focus:ring-indigo-400/30 dark:hover:shadow-indigo-400/30',
+				lime: 'border-lime-700/30 hover:border-lime-600 hover:shadow-lime-500/20 hover:shadow-md focus:border-lime-500 focus:ring-4 focus:ring-lime-500/20 data-[open=true]:border-lime-500 data-[open=true]:ring-4 data-[open=true]:ring-lime-500/20 dark:focus:ring-lime-400/30 dark:hover:shadow-lime-400/30',
 				slate:
-					'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 open:border-slate-500 open:ring-4 open:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
+					'border-slate-700/30 hover:border-slate-600 hover:shadow-md hover:shadow-slate-500/20 focus:border-slate-500 focus:ring-4 focus:ring-slate-500/20 data-[open=true]:border-slate-500 data-[open=true]:ring-4 data-[open=true]:ring-slate-500/20 dark:focus:ring-slate-400/30 dark:hover:shadow-slate-400/30',
 				amber:
-					'border-amber-700/30 hover:border-amber-600 hover:shadow-amber-500/20 hover:shadow-md focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 open:border-amber-500 open:ring-4 open:ring-amber-500/20 dark:focus:ring-amber-400/30 dark:hover:shadow-amber-400/30',
-				teal: 'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 open:border-teal-500 open:ring-4 open:ring-teal-500/20 dark:focus:ring-teal-400/30 dark:hover:shadow-teal-400/30',
-				sky: 'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 open:border-sky-500 open:ring-4 open:ring-sky-500/20 dark:focus:ring-sky-400/30 dark:hover:shadow-sky-400/30',
+					'border-amber-700/30 hover:border-amber-600 hover:shadow-amber-500/20 hover:shadow-md focus:border-amber-500 focus:ring-4 focus:ring-amber-500/20 data-[open=true]:border-amber-500 data-[open=true]:ring-4 data-[open=true]:ring-amber-500/20 dark:focus:ring-amber-400/30 dark:hover:shadow-amber-400/30',
+				teal: 'border-teal-700/30 hover:border-teal-600 hover:shadow-md hover:shadow-teal-500/20 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/20 data-[open=true]:border-teal-500 data-[open=true]:ring-4 data-[open=true]:ring-teal-500/20 dark:focus:ring-teal-400/30 dark:hover:shadow-teal-400/30',
+				sky: 'border-sky-700/30 hover:border-sky-600 hover:shadow-md hover:shadow-sky-500/20 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/20 data-[open=true]:border-sky-500 data-[open=true]:ring-4 data-[open=true]:ring-sky-500/20 dark:focus:ring-sky-400/30 dark:hover:shadow-sky-400/30',
 				fuchsia:
-					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 open:border-fuchsia-500 open:ring-4 open:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
+					'border-fuchsia-700/30 hover:border-fuchsia-600 hover:shadow-fuchsia-500/20 hover:shadow-md focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-500/20 data-[open=true]:border-fuchsia-500 data-[open=true]:ring-4 data-[open=true]:ring-fuchsia-500/20 dark:focus:ring-fuchsia-400/30 dark:hover:shadow-fuchsia-400/30',
 			},
 			/**
 			 * Functional disabled state (boolean variant).
@@ -403,12 +399,10 @@ export const datePickerButtonVariants = cva(
 				true: 'cursor-not-allowed opacity-50',
 			},
 			error: {
-				true: 'border-destructive hover:border-destructive hover:shadow-destructive/20 hover:shadow-md focus:border-destructive focus:ring-4 focus:ring-destructive/20 data-[state=open]:border-destructive data-[state=open]:ring-4 data-[state=open]:ring-destructive/20 dark:focus:ring-destructive/30 dark:hover:shadow-destructive/30',
+				true: 'border-destructive hover:border-destructive hover:shadow-destructive/20 hover:shadow-md focus:border-destructive focus:ring-4 focus:ring-destructive/20 data-[open=true]:border-destructive data-[open=true]:ring-4 data-[open=true]:ring-destructive/20 dark:focus:ring-destructive/30 dark:hover:shadow-destructive/30',
 			},
 		},
-		defaultVariants: {
-			open: false,
-		},
+		defaultVariants: {},
 	},
 )
 

@@ -50,8 +50,8 @@ export function useLanguageDirection(): LanguageDirection {
 	return useMemo(
 		() => ({
 			direction: getDirection(effectiveLanguage),
-			latinFontClass: getLatinFontFamily(),
-			swipeConfig: getSwipeRowConfig(),
+			latinFontClass: getLatinFontFamily(effectiveLanguage),
+			swipeConfig: getSwipeRowConfig(effectiveLanguage),
 			isHydrated,
 		}),
 		[effectiveLanguage, isHydrated],

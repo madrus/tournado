@@ -243,7 +243,7 @@ This approach ensures:
 
 For more details on the persistence architecture, see [State Management Documentation](state-management.md).
 
-### Language Hydration: SSR to Client Flow
+## Language Hydration: SSR to Client Flow
 
 The application uses a three-phase architecture to ensure seamless language switching without hydration mismatches or flash of untranslated content (FOUC).
 
@@ -273,9 +273,7 @@ The server passes this language to the `Document` component, which sets it on th
 
 ```tsx
 // app/root.tsx - Document component
-const Document = ({ children, language, theme: serverTheme }: DocumentProps) => {
-   const { theme: storeTheme, language: storeLanguage } = useSettingsStore()
-
+const Document = ({ children, language, theme }: DocumentProps) => {
    // Use server values for SSR, store values after hydration
    const [isHydrated, setIsHydrated] = useState(false)
 
@@ -295,7 +293,7 @@ const Document = ({ children, language, theme: serverTheme }: DocumentProps) => 
 
 #### Phase 2: Hydration
 
-When the client-side JavaScript loads, the Zustand store rehydrates from localStorage:
+When the client-side JavaScript loads, the Zustand store rehydrates from localStorage, but the App component uses hydration-safe `effectiveLanguage` to match SSR:
 
 ```tsx
 // app/root.tsx - App component
@@ -309,7 +307,7 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
    const { setLanguage, language: storeLanguage } = useSettingsStore()
    const [isHydrated, setIsHydrated] = useState(false)
 
-   // Initialize theme and language from server values
+   // Sync store with server language on mount
    useEffect(() => {
       setLanguage(serverLanguage)
    }, [serverLanguage, setLanguage])
@@ -318,8 +316,18 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
       setIsHydrated(true)
    }, [])
 
-   // Use server language for SSR, store language after hydration
-   const currentLanguage = isHydrated ? storeLanguage : serverLanguage
+   // Use server values until hydrated, then store values (prevents mismatch)
+   const effectiveLanguage = isHydrated ? storeLanguage : serverLanguage
+
+   // ... i18n and other logic ...
+
+   return (
+      <Document language={effectiveLanguage} theme={effectiveTheme}>
+         <AppLayout i18n={i18n} language={effectiveLanguage} ...>
+            {/* App content */}
+         </AppLayout>
+      </Document>
+   )
 }
 ```
 
@@ -359,21 +367,45 @@ export const useSettingsStore = create<StoreState & Actions>()(
 
 #### Phase 3: Client-Side Reactivity
 
-After hydration, the Zustand store becomes the single source of truth:
+After hydration, the Zustand store becomes the single source of truth, but hooks like `useLanguageDirection` and `useLanguageSwitcher` use hydration-safe fallbacks (direct cookie read until `isHydrated`) to ensure the first client render matches SSR exactly, preventing FOUC:
+
+- Hooks fallback to cookie-based language during hydration.
+- Components render with correct RTL state from the first paint.
 
 ```tsx
-// app/hooks/useLanguageSwitcher.ts
-export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
-   const { language: storeLanguage, setLanguage } = useSettingsStore()
+// Example from useLanguageDirection.ts
+export function useLanguageDirection(): LanguageDirection {
+  const [isHydrated, setIsHydrated] = useState(false)
+  const currentLanguage = useSettingsStore((state) => state.language)
 
-   const switchLanguage = (langCode: Language) => {
-      setLanguage(langCode) // Updates store, cookie, and localStorage
-   }
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
-   return {
-      switchLanguage,
-      currentLanguage: storeLanguage, // Always use store value
-   }
+  // Direct cookie read for accuracy until hydrated
+  const getCookieLang = (): Language => {
+    if (typeof document === 'undefined') return 'nl'
+    const match = document.cookie.match(/lang=([^;]+)/)
+    const raw = match ? match[1] : null
+    if (!raw) return 'nl'
+    // Normalize Arabic variants to 'ar' (e.g., 'ar-SA' -> 'ar')
+    const normalized = raw.startsWith('ar') ? 'ar' : raw
+    // Validate against supported (include 'ar' explicitly)
+    const supported = ['nl', 'en', 'de', 'fr', 'tr', 'ar']
+    return supported.includes(normalized) ? normalized as Language : 'nl'
+  }
+
+  const effectiveLanguage = isHydrated
+    ? currentLanguage
+    : getCookieLang()
+
+  return useMemo(
+    () => ({
+      direction: getDirection(effectiveLanguage),
+      // ... other values
+    }),
+    [effectiveLanguage],
+  )
 }
 ```
 
@@ -386,12 +418,12 @@ When `setLanguage()` is called:
 ```tsx
 // app/stores/useSettingsStore.ts
 setLanguage: language => {
-   // Persist to both localStorage and cookies
-   if (isBrowser) {
-      document.cookie = `lang=${language}; path=/; max-age=31536000`
-   }
-   const isRTL = language.split('-')[0] === 'ar'
-   set({ language, isRTL }, false, 'setLanguage')
+  // Persist to both localStorage and cookies
+  if (isBrowser) {
+     document.cookie = `lang=${language}; path=/; max-age=31536000`
+  }
+  const isRTL = language.split('-')[0] === 'ar'
+  set({ language, isRTL }, false, 'setLanguage')
 }
 ```
 
@@ -400,11 +432,11 @@ setLanguage: language => {
 To prevent hydration mismatches, components use a special pattern for reactive state:
 
 ```tsx
-// CORRECT: Hydration-safe pattern
-const currentLanguage = typeof window !== 'undefined' ? storeLanguage : serverLanguage
+// CORRECT: Hydration-safe pattern in subcomponents
+const { direction } = useLanguageDirection()  // Uses effectiveLanguage from hook (cookie until hydrated)
 
-// WRONG: Will cause hydration mismatch
-const currentLanguage = storeLanguage // Server and client may differ
+// WRONG: Direct store access (causes mismatch)
+const isRTL = useSettingsStore((state) => state.isRTL)  // Sees default 'nl' during hydration
 ```
 
 This pattern ensures:
@@ -418,11 +450,11 @@ This pattern ensures:
 ```tsx
 // app/components/AppBar.tsx
 subMenu: SUPPORTED_LANGUAGES.map(lang => ({
-   label: lang.name,
-   customIcon: lang.flag,
-   onClick: () => switchLanguage(lang.code),
-   // Hydration-safe active state
-   active: lang.code === (typeof window !== 'undefined' ? currentLanguage : language),
+  label: lang.name,
+  customIcon: lang.flag,
+  onClick: () => switchLanguage(lang.code),
+  // Hydration-safe active state (uses effectiveLanguage from hook)
+  active: lang.code === currentLanguage,
 }))
 ```
 
@@ -431,14 +463,14 @@ subMenu: SUPPORTED_LANGUAGES.map(lang => ({
 The dual persistence strategy serves different purposes:
 
 - **Cookie (`lang`)**:
-   - Read by server on every request
-   - Enables correct SSR with no FOUC
-   - Survives browser refresh
+  - Read by server on every request
+  - Enables correct SSR with no FOUC
+  - Survives browser refresh
 
 - **localStorage (`settings-storage`)**:
-   - Persists entire settings object
-   - Faster client-side access
-   - Includes theme, isRTL, and other preferences
+  - Persists entire settings object
+  - Faster client-side access
+  - Includes theme, isRTL, and other preferences
 
 This ensures the language is correct from the very first server render, with no flash or layout shift.
 
@@ -451,19 +483,19 @@ Language switching is integrated into the UserMenu component as a submenu:
 const changeLanguage = useLanguageSwitcher()
 
 const languageSubMenu = SUPPORTED_LANGUAGES.map(lang => ({
-   label: lang.name,
-   customIcon: lang.flag,
-   onClick: () => changeLanguage(lang.code),
-   active: currentLanguage === lang.code,
+  label: lang.name,
+  customIcon: lang.flag,
+  onClick: () => changeLanguage(lang.code),
+  active: currentLanguage === lang.code,  // currentLanguage from hydration-safe hook
 }))
 
 const menuItems = [
-   // ... other menu items
-   {
-      label: t('common.language'),
-      icon: 'language',
-      subMenu: languageSubMenu,
-   },
+  // ... other menu items
+  {
+     label: t('common.language'),
+     icon: 'language',
+     subMenu: languageSubMenu,
+  },
 ]
 ```
 
@@ -557,27 +589,27 @@ RTL support is enabled for Arabic using utility functions and Tailwind classes. 
 ```ts
 // app/utils/rtlUtils.ts
 
-// Basic RTL detection
+// Basic RTL detection (now handles variants like 'ar-SA' via startsWith('ar'))
 export function isRTL(lang: string) {
-   return lang === 'ar'
+  return String(lang).startsWith('ar')
 }
 
 export function getDirection(lang: string) {
-   return isRTL(lang) ? 'rtl' : 'ltr'
+  return isRTL(lang) ? 'rtl' : 'ltr'
 }
 
 // Typography helpers
 export function getTypographyClass(languageCode: string): string {
-   return isRTL(languageCode) ? 'arabic-text' : ''
+  return isRTL(languageCode) ? 'arabic-text' : ''
 }
 
 export function getLatinTextClass(languageCode: string): string {
-   return isRTL(languageCode) ? 'latin-text' : ''
+  return isRTL(languageCode) ? 'latin-text' : ''
 }
 
-// NEW: Latin font family for numbers and Latin content in RTL
+// Latin font family for numbers and Latin content in RTL
 export function getLatinFontFamily(languageCode: string): string {
-   return isRTL(languageCode) ? '!font-sans' : ''
+  return isRTL(languageCode) ? '!font-sans' : ''
 }
 ```
 
@@ -800,16 +832,15 @@ Radix components default to `dir="ltr"` even when the page is in RTL mode, causi
 
 **The Solution:**
 
-Use `useSettingsStore` to get the RTL state and set `dir` explicitly on Radix trigger and content elements:
+Use `useLanguageDirection` to get the RTL state and set `dir` explicitly on Radix trigger and content elements:
 
 ```tsx
 // app/components/inputs/ComboField.tsx
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useLanguageDirection } from '~/hooks/useLanguageDirection'
 
 export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
   ({ ... }, selectRef) => {
-    const isRTL = useSettingsStore((state) => state.isRTL)
-    const direction = isRTL ? 'rtl' : 'ltr'
+    const { direction } = useLanguageDirection()  // Hydration-safe RTL detection
 
     return (
       <Select.Root ...>
@@ -838,7 +869,7 @@ export const ComboField = forwardRef<HTMLButtonElement, ComboFieldProps>(
 - ✅ Remove `rtl:order-*` classes from icons when using `dir` on the parent
 - ✅ The browser's native RTL handling works correctly with `dir="rtl"`
 - ❌ Don't rely on HTML `dir="rtl"` alone - Radix overrides it
-- ❌ Don't use `getDirection()` without passing the current language
+- ❌ Don't use `getDirection()` without the hydration-safe hook
 
 **Applies to these Radix components:**
 - Select (ComboField, DropdownField)
@@ -1064,19 +1095,19 @@ Additional typography helpers for specific use cases:
 ```ts
 // Layout helpers
 export function getChipClasses(languageCode: string) {
-   // Returns RTL-aware chip container classes with flex-row-reverse
+  // Returns RTL-aware chip container classes with flex-row-reverse
 }
 
 export function getMenuClasses(languageCode: string) {
-   // Returns RTL-aware menu spacing and alignment
+  // Returns RTL-aware menu spacing and alignment
 }
 
 export function getDropdownProps(languageCode: string) {
-   // Returns Radix UI dropdown positioning for RTL
+  // Returns Radix UI dropdown positioning for RTL
 }
 
 export function getTypographyClasses(languageCode: string) {
-   // Returns typography-specific classes for titles, headings, etc.
+  // Returns typography-specific classes for titles, headings, etc.
 }
 ```
 
@@ -1129,7 +1160,11 @@ This section documents how language state flows through the application, from th
 │         ↓                                                        │
 │  setLanguage(serverLanguage) syncs store with server             │
 │         ↓                                                        │
-│  isHydrated = true → components switch to store values           │
+│  effectiveLanguage = isHydrated ? storeLanguage : serverLanguage │
+│         ↓                                                        │
+│  Hooks (useLanguageDirection) use cookie fallback until hydrated │
+│  Components render with effectiveLanguage (matches SSR)          │
+│  isHydrated = true → switch to store values (no change)          │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
@@ -1161,26 +1196,26 @@ The root loader in `app/root.tsx` reads the `lang` cookie on every server reques
 ```tsx
 // app/root.tsx
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData> {
-   // Read 'lang' cookie from request headers
-   const cookieHeader = request.headers.get('Cookie') || ''
-   const langMatch = cookieHeader.match(/lang=([^;]+)/)
+  // Read 'lang' cookie from request headers
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const langMatch = cookieHeader.match(/lang=([^;]+)/)
 
-   // Validate against supported languages
-   const rawLanguage = langMatch ? langMatch[1] : undefined
-   const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
-   const language = supportedLanguageCodes.includes(rawLanguage as Language)
-      ? (rawLanguage as Language)
-      : 'nl' // Default to Dutch
+  // Validate against supported languages
+  const rawLanguage = langMatch ? langMatch[1] : undefined
+  const supportedLanguageCodes = SUPPORTED_LANGUAGES.map(l => l.code)
+  const language = supportedLanguageCodes.includes(rawLanguage as Language)
+     ? (rawLanguage as Language)
+     : 'nl' // Default to Dutch
 
-   return {
-      authenticated: !!user,
-      username: user?.email ?? '',
-      user,
-      ENV: getEnv(),
-      language, // ← Passed to client
-      theme,
-      tournaments,
-   }
+  return {
+     authenticated: !!user,
+     username: user?.email ?? '',
+     user,
+     ENV: getEnv(),
+     language, // ← Passed to client
+     theme,
+     tournaments,
+  }
 }
 ```
 
@@ -1198,26 +1233,25 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
   useSettingsStoreHydration()
 
   const { setLanguage, language: storeLanguage } = useSettingsStore()
+  const [isHydrated, setIsHydrated] = useState(false)
 
   // Sync store with server language on mount
   useEffect(() => {
     setLanguage(serverLanguage)
   }, [serverLanguage, setLanguage])
 
-  // Create reactive i18n instance
-  const [i18n, setI18n] = useState(() => initI18n(serverLanguage))
-
-  // Update i18n when store language changes
   useEffect(() => {
-    if (isHydrated) {
-      const newI18n = initI18n(currentLanguage)
-      setI18n(newI18n)
-    }
-  }, [currentLanguage, isHydrated])
+    setIsHydrated(true)
+  }, [])
+
+  // Use server values until hydrated, then store values (prevents mismatch)
+  const effectiveLanguage = isHydrated ? storeLanguage : serverLanguage
+
+  // ... i18n and other logic ...
 
   return (
-    <Document language={serverLanguage} theme={serverTheme}>
-      <AppLayout i18n={i18n} language={currentLanguage} ...>
+    <Document language={effectiveLanguage} theme={effectiveTheme}>
+      <AppLayout i18n={i18n} language={effectiveLanguage} ...>
         {/* App content */}
       </AppLayout>
     </Document>
@@ -1233,8 +1267,9 @@ The application prevents FOUC through several mechanisms:
 2. **Hydration-safe patterns** prevent mismatches between server and client HTML
 3. **Cookie + localStorage dual persistence** maintains consistency across page loads
 4. **Synchronous i18n initialization** before any content renders
+5. **Hooks fallback to cookie** until fully hydrated, ensuring components match SSR classes (e.g., RTL direction, logical 'text-start' alignment in panels)
 
-Because the server reads the cookie and renders with the correct language, and the client hydrates with the same language, there is **no flash or layout shift** on initial load.
+Because the server reads the cookie and renders with the correct language, and the client hydrates with the same language (via effectiveLanguage and hook fallbacks), there is **no flash or layout shift** on initial load.
 
 ---
 
@@ -1275,6 +1310,7 @@ Language switching was consolidated into the UserMenu for several reasons:
 - **Centralized i18n instance** in `app/i18n/config.ts` ensures consistency
 - **Cookie-based persistence** enables proper SSR language detection
 - **Reactive language updates** handled automatically in root component
+- **Hydration-safe hooks** (e.g., `useLanguageDirection`) fallback to cookie until store sync, ensuring no mismatch
 
 ### RTL Support
 
@@ -1282,7 +1318,7 @@ Language switching was consolidated into the UserMenu for several reasons:
 - **Element order reversal** using `rtl:order-last` on icons in buttons, tabs, and inline components
 - **Panel gradient mirroring** changes gradient direction (`to bottom right` ↔ `to bottom left`) while keeping color stops the same
 - **Direction multiplier pattern** for touch interactions (swipeable rows, gestures)
-- **Logical CSS properties** (`ps-*`, `ms-*`, `text-end`) for automatic RTL adaptation
+- **Logical CSS properties** (`ps-*`, `ms-*`, `text-start`) for automatic RTL adaptation (e.g., panels align right in Arabic via 'text-start' with dir=rtl)
 - **Latin font helper** (`getLatinFontFamily`) for numbers and Latin content in Arabic mode
 - **Typography utilities** for dropdowns, menus, chips, and complex layouts
 - **Attribute selector pattern** for RTL CSS: `html[dir="rtl"]` (no space) when `dir` is on `<html>` element
@@ -1291,6 +1327,7 @@ Language switching was consolidated into the UserMenu for several reasons:
 ### Best Practices
 
 #### Layout & Order
+
 - ✅ Use `rtl:order-last` on icons in buttons/tabs for element order reversal
 - ✅ Use logical properties (`ps-*`, `ms-*`, `text-start`) instead of physical (`pl-*`, `ml-*`, `text-left`)
 - ✅ Mirror gradient directions in RTL, keep color stops the same
@@ -1298,15 +1335,19 @@ Language switching was consolidated into the UserMenu for several reasons:
 - ✅ Add RTL classes to safelist when using dynamic/CVA classes
 
 #### Typography & Fonts
+
 - ✅ Use `.latin-text` class with `font-size: inherit` for Latin content in RTL (respects parent size)
 - ✅ Always use `getLatinFontFamily()` for Latin content in RTL context (numbers, dates, names)
 - ✅ Use `!font-sans` via helper for centralized font configuration
 
 #### Interactions & State
+
 - ✅ Multiply touch deltas and transforms by `directionMultiplier` for RTL-aware interactions
 - ✅ Import i18n utilities only from central `app/i18n/config.ts`
+- ✅ Use hydration-safe hooks (e.g., `useLanguageDirection`) that fallback to cookie until store sync
 
 #### Anti-patterns
+
 - ❌ Don't use `rtl:flex-row-reverse` on containers - use `rtl:order-*` on specific elements instead
 - ❌ Don't reverse gradient color order - only change direction
 - ❌ Don't use fixed `font-size` in `.latin-text` - use `inherit` to respect Tailwind utilities

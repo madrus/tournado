@@ -382,6 +382,7 @@
 		"actions": {
 			"manageCompetition": "Wettbewerb"
 		},
+		"description": "Turnierinformationen ansehen",
 		"deleteTournament": "Turnier löschen",
 		"endDate": "Enddatum",
 		"form": {

@@ -382,7 +382,7 @@
 		"actions": {
 			"manageCompetition": "Competition"
 		},
-		"description": "See tournament information",
+		"description": "View tournament information",
 		"deleteTournament": "Delete Tournament",
 		"endDate": "End Date",
 		"form": {

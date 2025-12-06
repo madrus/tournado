@@ -382,7 +382,7 @@
 		"actions": {
 			"manageCompetition": "Competitie"
 		},
-		"description": "Bekijk toernooi-informatie",
+		"description": "Toernooi-informatie inzien",
 		"deleteTournament": "Toernooi verwijderen",
 		"endDate": "Einddatum",
 		"form": {

@@ -18,7 +18,7 @@
  */
 import type { LoaderFunctionArgs } from 'react-router'
 
-import { getTournamentGroupSets } from '~/models/group.server'
+import { getTournamentGroupStages } from '~/models/group.server'
 import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 export async function loader({ request }: LoaderFunctionArgs): Promise<Response> {
@@ -40,10 +40,10 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<Response>
 	}
 
 	// Get group sets for the tournament
-	const groupSets = await getTournamentGroupSets(tournamentId)
+	const groupStages = await getTournamentGroupStages(tournamentId)
 
 	// Return JSON using native Response.json()
-	return Response.json({ groupSets })
+	return Response.json({ groupStages })
 }
 
 // No default export = Resource route (data-only, no UI)

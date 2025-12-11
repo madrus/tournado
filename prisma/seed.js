@@ -271,8 +271,8 @@ async function seed() {
 			jo8Teams.push(jo8Team)
 		}
 
-		// Note: GroupSets are NOT pre-created in seed data
-		// Users create GroupSets via Competition → Groups → "Create Group Set" UI
+		// Note: GroupStages are NOT pre-created in seed data
+		// Users create GroupStages via Competition → Groups → "Create Group Stage" UI
 		// This ensures all tournaments start with consistent empty state
 
 		// Minimal two dummy matches

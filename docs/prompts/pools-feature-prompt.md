@@ -144,7 +144,7 @@ model PoolSlot {
 
 - `createPoolSet(tournamentId, name, categories, poolsCount, slotsPerPool, autoFill)`
 - `autoDistributeByCategories(poolSetId, categories)` - Auto-assign teams matching categories to Reserve
-- `autoDistributeToPoolsRoundRobin(poolSetId)` - Distribute Reserve teams to pools round-robin
+- `autoDistributeToPoolsRoundRobin(poolSetId)` - Distribute Reserve teams to pools round-robin style
 - `pushTeamToFirstAvailable(poolSetId, teamId)`
 - `moveOrSwap(poolSetId, fromSlotId, toSlotId | "RESERVE")`
 - `onTeamRegistered(tournamentId, teamId)` - Auto-assign to matching PoolSets' Reserve

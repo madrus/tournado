@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Manage groups, matches, and standings for tournaments.",
 			"groupStage": "Group Stage",
-			"groupStageDescription": "Create and manage groups for round-robin play",
+			"groupStageDescription": "Create and manage groups for group stage games",
 			"groups": "Groups",
 			"playoffs": "Playoffs",
 			"title": "Competition Management"
@@ -112,11 +112,14 @@
 			"actions": "Actions",
 			"add": "Add",
 			"cancel": "Cancel",
+			"create": "Create",
+			"creating": "Creating...",
 			"delete": "Delete",
 			"edit": "Edit",
 			"save": "Save",
 			"saving": "Saving...",
 			"update": "Update",
+			"updating": "Updating...",
 			"view": "View"
 		},
 		"appName": "Tournado",
@@ -160,16 +163,48 @@
 		"toggleTheme": "Toggle theme",
 		"welcome": "Welcome"
 	},
+	"competition": {
+		"createGroupStage": "Create Group Stage",
+		"createGroupStageDescription": "Set up groups for the {{tournamentName}} tournament",
+		"selectTournament": "Select a Tournament",
+		"selectTournamentDescription": "Choose a tournament from the dropdown above to manage its group stage.",
+		"noGroupStages": "No group stage yet",
+		"noGroupStagesDescription": "Get started by creating the group stage.",
+		"groupsCount": "{{count}} groups",
+		"labels": {
+			"categories": "Categories:",
+			"setup": "Setup:",
+			"autoFill": "Auto-fill:",
+			"created": "Created:"
+		},
+		"status": {
+			"enabled": "Enabled",
+			"disabled": "Disabled"
+		},
+		"groupStage": {
+			"name": "Group Stage Name",
+			"namePlaceholder": "e.g., JO8 Premier, 1st and 2nd Division",
+			"ageCategories": "Age Categories",
+			"ageCategoriesDescription": "Select which age categories will participate in this group stage",
+			"teamsAvailable": "{{count}} teams available",
+			"configGroups": "Number of Groups",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Teams per Group",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Fill groups",
+			"autoFillDescription": "Initially distribute teams to groups automatically",
+			"summary": "Summary",
+			"summaryTeamsAvailable": "{{count}} teams available in selected categories",
+			"summaryWillCreate": "Will create {{groups}} groups with {{slots}} slots each ({{total}} total slots)",
+			"title": "Group Stage"
+		}
+	},
 	"datatable": {
 		"clearSearch": "Clear search",
 		"resetFilters": "Reset",
 		"search": "Search...",
 		"toggleColumns": "Toggle columns",
 		"view": "View"
-	},
-	"competition": {
-		"selectTournament": "Select a Tournament",
-		"selectTournamentDescription": "Choose a tournament from the dropdown above to manage its group sets."
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Fifth Division",
@@ -382,8 +417,8 @@
 		"actions": {
 			"manageCompetition": "Competition"
 		},
-		"description": "View tournament information",
 		"deleteTournament": "Delete Tournament",
+		"description": "View tournament information",
 		"endDate": "End Date",
 		"form": {
 			"basicInformation": "Basic Information",

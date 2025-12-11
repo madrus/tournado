@@ -380,20 +380,20 @@ type TeamFormData = Omit<Team, 'id' | 'createdAt' | 'updatedAt' | 'tournament'>
 ```css
 /* Mobile First Approach */
 .team-grid {
-   @apply grid grid-cols-1 gap-4;
+   @apply grid grid-cols-1 gap-2;
 }
 
 /* Tablet */
 @screen md {
    .team-grid {
-      @apply grid-cols-2 gap-6;
+      @apply grid-cols-2 gap-4;
    }
 }
 
 /* Desktop */
 @screen lg {
    .team-grid {
-      @apply grid-cols-3 gap-8;
+      @apply grid-cols-3 gap-6;
    }
 }
 

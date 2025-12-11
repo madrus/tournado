@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Gérer les groupes, les matchs et les classements des tournois.",
 			"groupStage": "Phase de groupes",
-			"groupStageDescription": "Créer et gérer des groupes pour le jeu en round-robin",
+			"groupStageDescription": "Créer et gérer des groupes pour la phase de groupes",
 			"groups": "Groupes",
 			"playoffs": "Playoffs",
 			"title": "Gestion de la compétition"
@@ -112,11 +112,14 @@
 			"actions": "Actions",
 			"add": "Ajouter",
 			"cancel": "Annuler",
+			"create": "Créer",
+			"creating": "Création...",
 			"delete": "Supprimer",
 			"edit": "Modifier",
 			"save": "Enregistrer",
 			"saving": "Enregistrement...",
 			"update": "Mettre à jour",
+			"updating": "Mise à jour...",
 			"view": "Voir"
 		},
 		"appName": "Tournado",
@@ -168,8 +171,40 @@
 		"view": "Vue"
 	},
 	"competition": {
+		"createGroupStage": "Créer une phase de groupes",
+		"createGroupStageDescription": "Configurez les groupes pour le tournoi {{tournamentName}}",
 		"selectTournament": "Sélectionner un tournoi",
-		"selectTournamentDescription": "Choisissez un tournoi dans la liste déroulante ci-dessus pour gérer ses groupes."
+		"selectTournamentDescription": "Choisissez un tournoi dans la liste déroulante ci-dessus pour gérer sa phase de groupes.",
+		"noGroupStages": "Aucune phase de groupes",
+		"noGroupStagesDescription": "Commencez par créer la phase de groupes.",
+		"groupsCount": "{{count}} groupes",
+		"labels": {
+			"categories": "Catégories :",
+			"setup": "Configuration :",
+			"autoFill": "Remplissage auto :",
+			"created": "Créé :"
+		},
+		"status": {
+			"enabled": "Activé",
+			"disabled": "Désactivé"
+		},
+		"groupStage": {
+			"name": "Nom de la phase de groupes",
+			"namePlaceholder": "ex. JO8 Premier, 1ère et 2ème division",
+			"ageCategories": "Catégories d'âge",
+			"ageCategoriesDescription": "Sélectionnez les catégories d'âge qui participeront à cette phase de groupes",
+			"teamsAvailable": "{{count}} équipes disponibles",
+			"configGroups": "Nombre de groupes",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Équipes par groupe",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Remplir automatiquement les groupes",
+			"autoFillDescription": "Répartir automatiquement les équipes dans les groupes initialement",
+			"summary": "Résumé",
+			"summaryTeamsAvailable": "{{count}} équipes disponibles dans les catégories sélectionnées",
+			"summaryWillCreate": "Créera {{groups}} groupes avec {{slots}} places chacun ({{total}} places au total)",
+			"title": "Phase de groupes"
+		}
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Cinquième Division",

@@ -148,7 +148,7 @@ export function usePageTitle(): string {
 		// Find the first match with a title, starting from the most specific (end of array)
 		const matchWithTitle = [...matches]
 			.reverse()
-			.find((match) => match.handle && (match.handle as RouteMetadata).title)
+			.find((match): unknown => match.handle && (match.handle as RouteMetadata).title)
 
 		if (matchWithTitle?.handle) {
 			const titleKey = (matchWithTitle.handle as RouteMetadata).title as string

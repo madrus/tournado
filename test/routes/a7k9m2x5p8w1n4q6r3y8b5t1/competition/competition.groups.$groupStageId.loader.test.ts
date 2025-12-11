@@ -3,7 +3,7 @@ import { beforeEach, vi } from 'vitest'
 import {
 	handle,
 	loader,
-} from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupSetId'
+} from '~/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId'
 
 import { createLoaderAuthTests } from '~test/utils/loader-authorization.helpers'
 
@@ -14,7 +14,7 @@ vi.mock('~/utils/session.server', () => ({
 
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-	getGroupSetWithDetails: vi.fn().mockResolvedValue({
+	getGroupStageWithDetails: vi.fn().mockResolvedValue({
 		id: 'test-group-set-id',
 		name: 'Test Group Set',
 		tournamentId: 'test-tournament-id',
@@ -43,5 +43,5 @@ createLoaderAuthTests({
 	routePath:
 		'/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/test-id?tournament=test-tournament-id',
 	metadata: handle,
-	loaderFunction: (args) => loader({ ...args, params: { groupSetId: 'test-id' } }),
+	loaderFunction: (args) => loader({ ...args, params: { groupStageId: 'test-id' } }),
 })

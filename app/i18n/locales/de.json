@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
 			"groupStage": "Gruppenphase",
-			"groupStageDescription": "Gruppen für Round-Robin-Spiel erstellen und verwalten",
+			"groupStageDescription": "Gruppen für Gruppenspiele erstellen und verwalten",
 			"groups": "Gruppen",
 			"playoffs": "Playoffs",
 			"title": "Wettbewerbsverwaltung"
@@ -112,11 +112,14 @@
 			"actions": "Aktionen",
 			"add": "Hinzufügen",
 			"cancel": "Abbrechen",
+			"create": "Erstellen",
+			"creating": "Erstellen...",
 			"delete": "Löschen",
 			"edit": "Bearbeiten",
 			"save": "Speichern",
 			"saving": "Speichern...",
 			"update": "Aktualisieren",
+			"updating": "Aktualisieren...",
 			"view": "Ansehen"
 		},
 		"appName": "Tournado",
@@ -168,8 +171,40 @@
 		"view": "Ansicht"
 	},
 	"competition": {
+		"createGroupStage": "Gruppenphase erstellen",
+		"createGroupStageDescription": "Richten Sie Gruppen ein für das {{tournamentName}}-Turnier",
 		"selectTournament": "Turnier auswählen",
-		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppen zu verwalten."
+		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppenphase zu verwalten.",
+		"noGroupStages": "Noch keine Gruppenphase",
+		"noGroupStagesDescription": "Beginnen Sie mit der Erstellung der Gruppenphase.",
+		"groupsCount": "{{count}} Gruppe",
+		"labels": {
+			"categories": "Kategorien:",
+			"setup": "Aufbau:",
+			"autoFill": "Auto-Ausfüllen:",
+			"created": "Erstellt:"
+		},
+		"status": {
+			"enabled": "Aktiviert",
+			"disabled": "Deaktiviert"
+		},
+		"groupStage": {
+			"name": "Gruppenphasen-Name",
+			"namePlaceholder": "z.B. JO8 Premier, 1. und 2. Liga",
+			"ageCategories": "Alterskategorien",
+			"ageCategoriesDescription": "Wählen Sie die Alterskategorien aus, die an dieser Gruppenphase teilnehmen",
+			"teamsAvailable": "{{count}} Teams verfügbar",
+			"configGroups": "Anzahl der Gruppen",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Teams pro Gruppe",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Gruppen automatisch ausfüllen",
+			"autoFillDescription": "Teams initial automatisch auf die Gruppen verteilen",
+			"summary": "Zusammenfassung",
+			"summaryTeamsAvailable": "{{count}} Teams verfügbar in ausgewählten Kategorien",
+			"summaryWillCreate": "Es werden {{groups}} Gruppen mit jeweils {{slots}} Plätzen erstellt ({{total}} Plätze insgesamt)",
+			"title": "Gruppenphase"
+		}
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Fünfte Division",

@@ -60,7 +60,7 @@ export function UserMobileRow({
 	)
 
 	return (
-		<div className='flex items-start justify-between gap-4 px-6 py-4'>
+		<div className='flex items-start justify-between gap-2 px-6 py-4'>
 			<button
 				type='button'
 				className='min-w-0 flex-1 cursor-pointer rounded text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'

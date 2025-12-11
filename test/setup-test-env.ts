@@ -33,7 +33,7 @@ vi.mock('~/db.server.ts', () => ({
 			update: vi.fn(),
 			delete: vi.fn(),
 		},
-		groupSet: {
+		groupStage: {
 			findFirst: vi.fn(),
 			findMany: vi.fn(),
 			create: vi.fn(),

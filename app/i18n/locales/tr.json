@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Turnuvalar için grupları, maçları ve sıralamaları yönetin.",
 			"groupStage": "Grup Aşaması",
-			"groupStageDescription": "Round-robin oyunu için gruplar oluşturun ve yönetin",
+			"groupStageDescription": "Grup aşaması için gruplar oluşturun ve yönetin",
 			"groups": "Gruplar",
 			"playoffs": "Playofflar",
 			"title": "Yarışma yönetimi"
@@ -112,11 +112,14 @@
 			"actions": "Eylemler",
 			"add": "Ekle",
 			"cancel": "İptal",
+			"create": "Oluştur",
+			"creating": "Oluşturuluyor...",
 			"delete": "Sil",
 			"edit": "Düzenle",
 			"save": "Kaydet",
 			"saving": "Kaydediliyor...",
 			"update": "Güncelle",
+			"updating": "Güncelleniyor...",
 			"view": "Görüntüle"
 		},
 		"appName": "Tournado",
@@ -168,8 +171,40 @@
 		"view": "Görünüm"
 	},
 	"competition": {
+		"createGroupStage": "Grup aşaması oluştur",
+		"createGroupStageDescription": "{{tournamentName}} turnuvası için grupları ayarlayın",
 		"selectTournament": "Bir Turnuva Seçin",
-		"selectTournamentDescription": "Grup setlerini yönetmek için yukarıdaki açılır menüden bir turnuva seçin."
+		"selectTournamentDescription": "Grup aşamasını yönetmek için yukarıdaki açılır menüden bir turnuva seçin.",
+		"noGroupStages": "Henüz grup aşaması yok",
+		"noGroupStagesDescription": "Grup aşaması oluşturmaya başlayın.",
+		"groupsCount": "{{count}} grup",
+		"labels": {
+			"categories": "Kategoriler:",
+			"setup": "Kurulum:",
+			"autoFill": "Otomatik doldur:",
+			"created": "Oluşturuldu:"
+		},
+		"status": {
+			"enabled": "Etkin",
+			"disabled": "Devre dışı"
+		},
+		"groupStage": {
+			"name": "Grup aşaması adı",
+			"namePlaceholder": "örn. JO8 Premier, 1. ve 2. Lig",
+			"ageCategories": "Yaş kategorileri",
+			"ageCategoriesDescription": "Bu grup aşamasına hangi yaş kategorilerinin katılacağını seçin",
+			"teamsAvailable": "{{count}} takım mevcut",
+			"configGroups": "Grup sayısı",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Grup başına takım",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Grupları otomatik doldur",
+			"autoFillDescription": "Takımları başlangıçta otomatik olarak gruplara dağıtın",
+			"summary": "Özet",
+			"summaryTeamsAvailable": "Seçilen kategorilerde {{count}} takım mevcut",
+			"summaryWillCreate": "Her biri {{slots}} kontenjanla {{groups}} grup oluşturulacak (toplam {{total}} kontenjan)",
+			"title": "Grup aşaması"
+		}
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Beşinci lig",

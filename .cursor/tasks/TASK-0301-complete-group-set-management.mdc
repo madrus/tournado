@@ -40,12 +40,12 @@ running tournaments. This section currently contains:
 - **Standings** (Phase 4 - planned) - Results and rankings
 
 Already present (baseline):
-- Prisma schema for `GroupSet` / `Group` / `GroupSlot` with relations and
+- Prisma schema for `GroupStage` / `Group` / `GroupSlot` with relations and
   constraints (unique per slot, unique team per set)
 - Routes for create/list group sets: `competition.groups.new` and
   `competition.groups`
-- Models: `createGroupSet`, `getTournamentGroupSets`,
-  `getGroupSetWithDetails`, `getTeamsByCategories`
+- Models: `createGroupStage`, `getTournamentGroupStages`,
+  `getGroupStageWithDetails`, `getTeamsByCategories`
 - Admin Panel link to Competition section (renamed from "Match Management")
 
 # 3) Assumptions & Constraints
@@ -75,7 +75,7 @@ Already present (baseline):
 ## 🌍 SHARED Task Pattern
 
 **Beginning (add to model context, read-only):**
-- `prisma/schema.prisma` - Database schema for GroupSet, Group, GroupSlot
+- `prisma/schema.prisma` - Database schema for GroupStage, Group, GroupSlot
 - `app/models/group.server.ts` - Existing model functions
 - `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.tsx` - List view
 - `app/utils/rbacMiddleware.server.ts` - Permission utilities
@@ -85,7 +85,7 @@ Already present (baseline):
 
 **End state (files that will be created/modified):**
 - `app/models/group.server.ts` - Add 4 transactional assignment helpers (`.server.ts` = server-only)
-- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupSetId.tsx` - New details route with loader/action/UI
+- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.tsx` - New details route with loader/action/UI
 - `prisma/seed.js` - Add JO8 group set seed data for Spring Cup
 - `app/i18n/locales/*.json` - Add groups-related translation keys (all 6 locales)
 - `app/models/__tests__/group.server.test.ts` - New unit tests for assignment functions
@@ -102,16 +102,16 @@ Already present (baseline):
    - [ ] Add swapGroupSlots function with atomic swap logic
 
    Implementation details:
-     - `assignTeamToGroupSlot(props: Readonly<{ groupSetId: string; groupId:
+     - `assignTeamToGroupSlot(props: Readonly<{ groupStageId: string; groupId:
        string; slotIndex: number; teamId: string }>): Promise<void>`
-       - Validate slot existence: belongs to `groupSetId` + `groupId` at
+       - Validate slot existence: belongs to `groupStageId` + `groupId` at
          `slotIndex`
        - If occupied, throw; caller must clear/swap first
-       - Clear any previous assignment of `teamId` in same `groupSetId` (group
+       - Clear any previous assignment of `teamId` in same `groupStageId` (group
          or reserve), then set on target slot
      - `clearGroupSlot(props: Readonly<{ groupSlotId: string }>): Promise<void>`
        - Set `teamId: null`
-     - `moveTeamToReserve(props: Readonly<{ groupSetId: string; teamId:
+     - `moveTeamToReserve(props: Readonly<{ groupStageId: string; teamId:
        string }>): Promise<void>`
        - Clear any assignment; ensure/create reserve slot (groupId null) and set
          `teamId`
@@ -120,8 +120,8 @@ Already present (baseline):
        - Swap teamIds atomically, respecting unique constraints
 
 2) Details route —
-   `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupSetId.tsx`
-   - [ ] Create or update competition.groups.$groupSetId.tsx route
+   `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.tsx`
+   - [ ] Create or update competition.groups.$groupStageId.tsx route
    - [ ] Implement loader with permission check and data fetching
    - [ ] Implement action handler for assign/clear/move/swap operations
    - [ ] Create UI with groups display and assignment forms
@@ -131,11 +131,11 @@ Already present (baseline):
    - Loader signature: `export async function loader({ request, params }:
      Route.LoaderArgs)`
      - `await requireUserWithPermission(request, 'groups:manage')`
-     - Require `params.groupSetId`, `?tournament=<id>`
-     - Fetch `groupSet = getGroupSetWithDetails(groupSetId)`
+     - Require `params.groupStageId`, `?tournament=<id>`
+     - Fetch `groupStage = getGroupStageWithDetails(groupStageId)`
      - Fetch `availableTeams = getTeamsByCategories(tournamentId,
-       groupSet.categories)`
-     - Return `{ groupSet, availableTeams, tournamentId }`
+       groupStage.categories)`
+     - Return `{ groupStage, availableTeams, tournamentId }`
    - Action signature: `export async function action({ request, params }:
      Route.ActionArgs)`
      - Same permission check
@@ -157,15 +157,15 @@ Already present (baseline):
 
 3) Seeding — `prisma/seed.js`
    - [ ] Verify Spring Cup tournament has 20+ JO8 teams seeded
-   - [ ] Confirm NO GroupSets are created in seed (empty state by design)
+   - [ ] Confirm NO GroupStages are created in seed (empty state by design)
    - [ ] Document seeding approach in seed file comments
 
    Notes:
-   - **NO GroupSets created in seed** - All tournaments start with empty state
+   - **NO GroupStages created in seed** - All tournaments start with empty state
    - Spring Cup tournament has 20+ JO8 teams seeded (for testing)
-   - GroupSets are created by users via Competition → Groups → "Create Group Set" UI
+   - GroupStages are created by users via Competition → Groups → "Create Group Stage" UI
    - This ensures consistent empty state and allows testing the full workflow
-   - E2E tests will create GroupSet as part of test scenario (see step 7)
+   - E2E tests will create GroupStage as part of test scenario (see step 7)
 
 4) i18n — add translation keys in all locales under `app/i18n/locales/`
    - [ ] Add group management strings to nl.json
@@ -179,8 +179,8 @@ Already present (baseline):
      - `groups.title`: "Groepenbeheer"
      - `groups.subtitle`: "Beheer teamindelingen"
      - `groups.selectTournament`: "Selecteer een toernooi"
-     - `groups.noGroupSets`: "Nog geen groepssets"
-     - `groups.createGroupSet`: "Groepsset aanmaken"
+     - `groups.noGroupStages`: "Nog geen groepssets"
+     - `groups.createGroupStage`: "Groepsset aanmaken"
      - `groups.categories`: "Categorieën"
      - `groups.setup`: "Instellingen"
      - `groups.autofill`: "Automatisch vullen"
@@ -221,19 +221,19 @@ Already present (baseline):
 
    Implementation details:
    - POM: `playwright/pages/GroupsPage.ts`
-     - Methods: `goto(tournamentId)`, `createGroupSet(name, config)`,
-       `openGroupSet(name)`, `assignTeam(slotLabelOrIndex, teamId)`,
+     - Methods: `goto(tournamentId)`, `createGroupStage(name, config)`,
+       `openGroupStage(name)`, `assignTeam(slotLabelOrIndex, teamId)`,
        `clearSlot(slotLabelOrIndex)`, `moveTeamToReserve(teamName)`,
        `assertAssignment(...)`, etc.
    - Spec: `playwright/tests/competition.groups.spec.ts`
      - Auth bypass per E2E strategy
      - Navigate to Competition → Groups, select Spring Cup tournament
-     - **Create GroupSet**: Click "Create Group Set", fill form:
+     - **Create GroupStage**: Click "Create Group Stage", fill form:
        - Name: "Group Stage (JO8)"
        - Categories: JO8
        - Groups: 4, Slots: 5
        - Auto-fill: enabled
-     - Verify GroupSet created and appears in list
+     - Verify GroupStage created and appears in list
      - Open `Group Stage (JO8)` details
      - Verify 4 groups × 5 empty slots, reserve has teams
      - Assign one JO8 team to Group A slot 0; verify
@@ -266,7 +266,7 @@ Reuse these existing types - no modifications needed:
 
 ```ts
 // Already defined in app/models/group.server.ts
-type GroupSetWithDetails = {
+type GroupStageWithDetails = {
   id: string
   name: string
   categories: Category[]
@@ -310,7 +310,7 @@ Follow TypeScript conventions - use `type` instead of `interface`, `Readonly<>` 
 
 ```ts
 type AssignTeamToGroupSlotProps = {
-  readonly groupSetId: string
+  readonly groupStageId: string
   readonly groupId: string
   readonly slotIndex: number
   readonly teamId: string
@@ -321,7 +321,7 @@ type ClearGroupSlotProps = {
 }
 
 type MoveTeamToReserveProps = {
-  readonly groupSetId: string
+  readonly groupStageId: string
   readonly teamId: string
 }
 
@@ -336,7 +336,7 @@ type SwapGroupSlotsProps = {
 ```ts
 // Loader data type for details route
 type LoaderData = {
-  readonly groupSet: GroupSetWithDetails
+  readonly groupStage: GroupStageWithDetails
   readonly availableTeams: readonly UnassignedTeam[]
   readonly tournamentId: string
 }
@@ -391,7 +391,7 @@ Action FormData keys (all strings):
 
 ## Feature-Specific Criteria
 
-- Details page reachable at `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/:groupSetId?tournament=<id>`
+- Details page reachable at `/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/:groupStageId?tournament=<id>`
 - Loader and action enforce `groups:manage` permission; unauthorized users get 403
 - UI displays:
   - Groups with ordered slots (4 groups × 5 slots = 20 total)
@@ -441,7 +441,7 @@ Action FormData keys (all strings):
 
 **Test Cases:**
 1. **Assign team to empty slot**
-   - Create group set with empty slots
+   - Create Group Stage with empty slots
    - Assign team to specific slot
    - Verify team is assigned and previous assignment cleared
 2. **Reassign team to different slot**
@@ -481,7 +481,7 @@ Action FormData keys (all strings):
 class GroupsPage {
   async goto(tournamentId: string): Promise<void>
   async selectTournament(tournamentName: string): Promise<void>
-  async openGroupSet(name: string): Promise<void>
+  async openGroupStage(name: string): Promise<void>
   async assignTeamToSlot(groupName: string, slotIndex: number, teamId: string): Promise<void>
   async clearSlot(groupName: string, slotIndex: number): Promise<void>
   async moveTeamToReserve(teamId: string): Promise<void>
@@ -497,8 +497,8 @@ class GroupsPage {
    - Click Competition → Groups
    - Select Spring Cup tournament
    - Verify empty state: "No group sets yet"
-2. **Create group set**
-   - Click "Create Group Set" button (top-right)
+2. **Create Group Stage**
+   - Click "Create Group Stage" button (top-right)
    - Fill form: Name "Group Stage (JO8)", Categories: JO8, Groups: 4, Slots: 5, Auto-fill: enabled
    - Submit form
    - Verify redirect to groups list

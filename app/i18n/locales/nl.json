@@ -5,9 +5,9 @@
 	},
 	"admin": {
 		"competition": {
-			"description": "Beheer groepen, wedstrijden en standen voor toernooien.",
-			"groupStage": "Groepsfase",
-			"groupStageDescription": "Creëer en beheer poules voor round-robin spel",
+			"description": "Beheer poules, wedstrijden en standen voor toernooien.",
+			"groupStage": "Poulefase",
+			"groupStageDescription": "Creëer en beheer poules voor poulefase",
 			"groups": "Poules",
 			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"
@@ -112,11 +112,14 @@
 			"actions": "Acties",
 			"add": "Toevoegen",
 			"cancel": "Annuleren",
+			"create": "Aanmaken",
+			"creating": "Aanmaken...",
 			"delete": "Verwijderen",
 			"edit": "Bewerken",
 			"save": "Opslaan",
 			"saving": "Opslaan...",
 			"update": "Bijwerken",
+			"updating": "Bijwerken...",
 			"view": "Bekijken"
 		},
 		"appName": "Tournado",
@@ -160,16 +163,48 @@
 		"toggleTheme": "Thema wisselen",
 		"welcome": "Welkom"
 	},
+	"competition": {
+		"createGroupStage": "Poulefase aanmaken",
+		"createGroupStageDescription": "Stel poules in voor het {{tournamentName}} toernooi",
+		"selectTournament": "Selecteer een toernooi",
+		"selectTournamentDescription": "Kies een toernooi uit de dropdown hierboven om de poulefase te beheren.",
+		"noGroupStages": "Nog geen poulefase",
+		"noGroupStagesDescription": "Begin met het aanmaken van de poulefase.",
+		"groupsCount": "{{count}} poules",
+		"labels": {
+			"categories": "Categorieën:",
+			"setup": "Opzet:",
+			"autoFill": "Auto-invullen:",
+			"created": "Aangemaakt:"
+		},
+		"status": {
+			"enabled": "Ingeschakeld",
+			"disabled": "Uitgeschakeld"
+		},
+		"groupStage": {
+			"name": "Poulefase naam",
+			"namePlaceholder": "bijv. JO8 Hoofd-, 1e en 2e klasse",
+			"ageCategories": "Leeftijdscategorieën",
+			"ageCategoriesDescription": "Selecteer welke leeftijdscategorieën deelnemen aan deze poulefase",
+			"teamsAvailable": "{{count}} teams beschikbaar",
+			"configGroups": "Aantal poules",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Teams per poule",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Poules invullen",
+			"autoFillDescription": "Verdeel teams initieel automatisch over de poules",
+			"summary": "Samenvatting",
+			"summaryTeamsAvailable": "{{count}} teams beschikbaar in geselecteerde categorieën",
+			"summaryWillCreate": "Er worden {{groups}} poules aangemaakt met {{slots}} plaatsen elk ({{total}} plaatsen in totaal)",
+			"title": "Poulefase"
+		}
+	},
 	"datatable": {
 		"clearSearch": "Zoekopdracht wissen",
 		"resetFilters": "Reset",
 		"search": "Zoeken...",
 		"toggleColumns": "Kolommen weergeven",
 		"view": "Weergave"
-	},
-	"competition": {
-		"selectTournament": "Selecteer een toernooi",
-		"selectTournamentDescription": "Kies een toernooi uit de dropdown hierboven om de poules te beheren."
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Vijfde klasse",
@@ -382,8 +417,8 @@
 		"actions": {
 			"manageCompetition": "Competitie"
 		},
-		"description": "Toernooi-informatie inzien",
 		"deleteTournament": "Toernooi verwijderen",
+		"description": "Toernooi-informatie inzien",
 		"endDate": "Einddatum",
 		"form": {
 			"basicInformation": "Basis informatie",

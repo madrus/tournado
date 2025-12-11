@@ -135,7 +135,7 @@ export function SimpleConfirmDialog({
 								</Dialog.Description>
 							) : null}
 
-							<div className='mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:gap-4'>
+							<div className='mt-8 flex flex-col-reverse gap-2 sm:flex-row'>
 								<div className='sm:order-1'>
 									<Dialog.Close asChild>
 										<ActionButton

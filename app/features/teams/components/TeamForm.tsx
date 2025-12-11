@@ -682,7 +682,7 @@ export function TeamForm({
 				) : null}
 
 				{/* Submit and Action Buttons */}
-				<div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+				<div className='flex justify-between gap-2 md:justify-end rtl:justify-start rtl:md:justify-start'>
 					<ActionButton
 						type='button'
 						onClick={() => handleReset()}
@@ -693,7 +693,7 @@ export function TeamForm({
 						{t('common.actions.cancel')}
 					</ActionButton>
 
-					<div className='flex gap-4'>
+					<div className='flex gap-24'>
 						<ActionButton
 							type='submit'
 							variant='primary'

@@ -112,11 +112,14 @@
 			"actions": "الإجراءات",
 			"add": "إضافة",
 			"cancel": "إلغاء",
+			"create": "إنشاء",
+			"creating": "جاري الإنشاء...",
 			"delete": "حذف",
 			"edit": "تعديل",
 			"save": "حفظ",
 			"saving": "جاري الحفظ...",
 			"update": "تحديث",
+			"updating": "جاري التحديث...",
 			"view": "عرض"
 		},
 		"appName": "Tournado",
@@ -168,8 +171,40 @@
 		"view": "عرض"
 	},
 	"competition": {
+		"createGroupStage": "إنشاء مرحلة المجموعات",
+		"createGroupStageDescription": "قم بإعداد المجموعات لبطولة {{tournamentName}}",
+		"noGroupStages": "لا توجد مرحلة مجموعات بعد",
+		"noGroupStagesDescription": "ابدأ بإنشاء مرحلة المجموعات.",
+		"groupsCount": "{{count}} مجموعة",
+		"labels": {
+			"categories": "الفئات:",
+			"setup": "الإعداد:",
+			"autoFill": "التعبئة التلقائية:",
+			"created": "تم الإنشاء:"
+		},
+		"status": {
+			"enabled": "مفعّل",
+			"disabled": "معطّل"
+		},
+		"groupStage": {
+			"name": "اسم مرحلة المجموعات",
+			"namePlaceholder": "مثل: JO8 ممتاز، الدرجة الأولى والثانية",
+			"ageCategories": "الفئات العمرية",
+			"ageCategoriesDescription": "اختر الفئات العمرية التي ستشارك في مرحلة المجموعات هذه",
+			"teamsAvailable": "{{count}} فريق متاح",
+			"configGroups": "عدد المجموعات",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "الفرق لكل مجموعة",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "تعبئة المجموعات تلقائياً",
+			"autoFillDescription": "توزيع الفرق تلقائياً على المجموعات في البداية",
+			"summary": "ملخص",
+			"summaryTeamsAvailable": "{{count}} فريق متاح في الفئات المختارة",
+			"summaryWillCreate": "سيتم إنشاء {{groups}} مجموعة بـ {{slots}} مكان لكل منها ({{total}} مكان إجمالي)",
+			"title": "مرحلة المجموعات"
+		},
 		"selectTournament": "اختر بطولة",
-		"selectTournamentDescription": "اختر بطولة من القائمة المنسدلة أعلاه لإدارة مجموعاتها."
+		"selectTournamentDescription": "اختر بطولة من القائمة المنسدلة أعلاه لإدارة مرحلة المجموعات."
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "الدرجة السادسة",

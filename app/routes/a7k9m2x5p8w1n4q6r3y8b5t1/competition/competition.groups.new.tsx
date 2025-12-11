@@ -1,16 +1,15 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
+import { useTranslation } from 'react-i18next'
 import { redirect, useActionData, useLoaderData, useNavigation } from 'react-router'
-
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import { createGroupSet, getTeamsByCategories } from '~/models/group.server'
+import { createGroupStage, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-
 import type { Route } from './+types/competition.groups.new'
 
 type LoaderData = {
@@ -41,7 +40,7 @@ type ActionData = {
 
 export const handle: RouteMetadata = {
 	isPublic: false,
-	title: 'Create Group Set',
+	title: 'competition.groupStage.title',
 	auth: {
 		required: true,
 		redirectTo: '/auth/signin',
@@ -146,7 +145,7 @@ export async function action({
 	}
 
 	try {
-		const groupSetId = await createGroupSet({
+		const groupStageId = await createGroupStage({
 			tournamentId,
 			name: name.trim(),
 			categories: selectedCategories as Category[],
@@ -156,11 +155,11 @@ export async function action({
 		})
 
 		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupSetId}?tournament=${tournamentId}`,
+			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupStageId}?tournament=${tournamentId}`,
 		)
 	} catch (_error) {
 		return {
-			errors: { general: 'Failed to create group set. Please try again.' },
+			errors: { general: 'Failed to Create Group Stage. Please try again.' },
 			fieldValues: {
 				name,
 				categories: selectedCategories,
@@ -172,10 +171,11 @@ export async function action({
 	}
 }
 
-export default function CreateGroupSet(): JSX.Element {
+export default function CreateGroupStage(): JSX.Element {
 	const { tournament, availableTeamsCount } = useLoaderData<LoaderData>()
 	const actionData = useActionData<ActionData>()
 	const navigation = useNavigation()
+	const { t } = useTranslation()
 
 	const isSubmitting = navigation.state === 'submitting'
 
@@ -189,9 +189,11 @@ export default function CreateGroupSet(): JSX.Element {
 	return (
 		<div className='space-y-8'>
 			<div>
-				<h2 className='font-bold text-2xl'>Create Group Set</h2>
+				<h2 className='font-bold text-2xl'>{t('competition.createGroupStage')}</h2>
 				<p className='mt-2 text-gray-600'>
-					Set up round-robin groups for {tournament.name}
+					{t('competition.createGroupStageDescription', {
+						tournamentName: tournament.name,
+					})}
 				</p>
 			</div>
 
@@ -203,11 +205,11 @@ export default function CreateGroupSet(): JSX.Element {
 						</div>
 					) : null}
 
-					{/* Group Set Name */}
+					{/* Group Stage Name */}
 					<TextInputField
 						name='name'
-						label='Group Set Name'
-						placeholder='e.g., Group Stage, Qualifiers'
+						label={t('competition.groupStage.name')}
+						placeholder={t('competition.groupStage.namePlaceholder')}
 						defaultValue={actionData?.fieldValues?.name || ''}
 						error={actionData?.errors?.name}
 						required
@@ -216,10 +218,10 @@ export default function CreateGroupSet(): JSX.Element {
 					{/* Categories Selection */}
 					<div>
 						<h3 className='mb-3 block font-medium text-gray-700 text-sm'>
-							Age Categories
+							{t('competition.groupStage.ageCategories')}
 						</h3>
 						<p className='mb-3 text-gray-500 text-sm'>
-							Select which age categories will participate in this group set
+							{t('competition.groupStage.ageCategoriesDescription')}
 						</p>
 						<div className='space-y-2'>
 							{tournament.categories.map((category) => (
@@ -235,7 +237,11 @@ export default function CreateGroupSet(): JSX.Element {
 									/>
 									<span className='font-medium text-sm'>{category}</span>
 									<span className='text-gray-500 text-xs'>
-										({availableTeamsCount[category]} teams available)
+										(
+										{t('competition.groupStage.teamsAvailable', {
+											count: availableTeamsCount[category],
+										})}
+										)
 									</span>
 								</label>
 							))}
@@ -248,12 +254,12 @@ export default function CreateGroupSet(): JSX.Element {
 					</div>
 
 					{/* Configuration */}
-					<div className='grid grid-cols-2 gap-4'>
+					<div className='grid grid-cols-2 gap-2'>
 						<TextInputField
 							name='configGroups'
-							label='Number of Groups'
+							label={t('competition.groupStage.configGroups')}
 							type='text'
-							placeholder='4'
+							placeholder={t('competition.groupStage.configGroupsPlaceholder')}
 							defaultValue={actionData?.fieldValues?.configGroups || ''}
 							error={actionData?.errors?.configGroups}
 							required
@@ -261,9 +267,9 @@ export default function CreateGroupSet(): JSX.Element {
 
 						<TextInputField
 							name='configSlots'
-							label='Teams per Group'
+							label={t('competition.groupStage.configSlots')}
 							type='text'
-							placeholder='5'
+							placeholder={t('competition.groupStage.configSlotsPlaceholder')}
 							defaultValue={actionData?.fieldValues?.configSlots || ''}
 							error={actionData?.errors?.configSlots}
 							required
@@ -280,10 +286,11 @@ export default function CreateGroupSet(): JSX.Element {
 								className='mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
 							/>
 							<div>
-								<span className='font-medium text-sm'>Auto-fill groups</span>
+								<span className='font-medium text-sm'>
+									{t('competition.groupStage.autoFillGroups')}
+								</span>
 								<p className='text-gray-500 text-xs'>
-									Automatically assign teams to Reserve and distribute them to groups
-									round-robin
+									{t('competition.groupStage.autoFillDescription')}
 								</p>
 							</div>
 						</label>
@@ -292,34 +299,40 @@ export default function CreateGroupSet(): JSX.Element {
 					{/* Summary */}
 					{selectedCategories.length > 0 ? (
 						<div className='rounded-lg bg-blue-50 p-4'>
-							<h4 className='font-medium text-blue-900 text-sm'>Summary</h4>
+							<h4 className='font-medium text-blue-900 text-sm'>
+								{t('competition.groupStage.summary')}
+							</h4>
 							<p className='mt-1 text-blue-700 text-xs'>
-								{totalSelectedTeams} teams available in selected categories
+								{t('competition.groupStage.summaryTeamsAvailable', {
+									count: totalSelectedTeams,
+								})}
 							</p>
 							{actionData?.fieldValues?.configGroups &&
 							actionData?.fieldValues?.configSlots ? (
 								<p className='text-blue-700 text-xs'>
-									Will create {actionData.fieldValues.configGroups} groups with{' '}
-									{actionData.fieldValues.configSlots} slots each (
-									{parseInt(actionData.fieldValues.configGroups, 10) *
-										parseInt(actionData.fieldValues.configSlots, 10)}{' '}
-									total slots)
+									{t('competition.groupStage.summaryWillCreate', {
+										groups: actionData.fieldValues.configGroups,
+										slots: actionData.fieldValues.configSlots,
+										total:
+											parseInt(actionData.fieldValues.configGroups, 10) *
+											parseInt(actionData.fieldValues.configSlots, 10),
+									})}
 								</p>
 							) : null}
 						</div>
 					) : null}
 
 					{/* Actions */}
-					<div className='flex justify-end space-x-3'>
+					<div className='flex justify-end gap-2'>
 						<ActionButton
 							type='button'
 							variant='secondary'
 							onClick={() => window.history.back()}
 						>
-							Cancel
+							{t('common.actions.cancel')}
 						</ActionButton>
 						<ActionButton type='submit' variant='primary' disabled={isSubmitting}>
-							{isSubmitting ? 'Creating...' : 'Create Group Set'}
+							{isSubmitting ? t('common.actions.creating') : t('common.actions.create')}
 						</ActionButton>
 					</div>
 				</form>

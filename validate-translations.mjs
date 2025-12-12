@@ -18,15 +18,21 @@ const __dirname = path.dirname(__filename)
 // Extract all translation keys from code
 function extractKeysFromCode() {
 	// Exclude test files and get all production code
-	const cmd = `grep -rh 't(' app --include="*.tsx" --include="*.ts" --exclude-dir="__tests__" 2>/dev/null || true`
+	const cmd =
+		`grep -rh "t(" app ` +
+		`--include="*.tsx" --include="*.ts" ` +
+		`--exclude-dir="__tests__" --exclude-dir="tests" ` +
+		`--exclude="*.test.ts" --exclude="*.test.tsx" --exclude="*.spec.ts" --exclude="*.spec.tsx" ` +
+		`2>/dev/null || true`
 	const output = execSync(cmd, { encoding: 'utf-8', shell: '/bin/bash' })
 
-	const keyPattern = /t\(['"]([^'"]+)['"]\)/g
+	// Match both: t('a.b') and t('a.b', {...})
+	const keyPattern = /\bt\s*\(\s*(['"])([^'"\\]+)\1\s*(?:,|\))/g
 	const keys = new Set()
 
 	let match = keyPattern.exec(output)
 	while (match !== null) {
-		const key = match[1]
+		const key = match[2]
 		// Filter out non-translation patterns:
 		// - Must contain at least one dot (nested key)
 		// - No file paths (starts with ./ or ~/)
@@ -35,6 +41,7 @@ function extractKeysFromCode() {
 		// - Not a single word without dots
 		if (
 			key.includes('.') &&
+			key !== '.' &&
 			!key.startsWith('./') &&
 			!key.startsWith('~/') &&
 			!key.includes('://') &&
@@ -52,15 +59,15 @@ function extractKeysFromCode() {
 }
 
 // Get nested value from object using dot notation
-function getNestedValue(obj, path) {
-	return path.split('.').reduce((current, key) => {
+function getNestedValue(obj, keyPath) {
+	return keyPath.split('.').reduce((current, key) => {
 		return current?.[key]
 	}, obj)
 }
 
 // Load all translation files
 function loadTranslationFiles() {
-	const localesDir = path.join(__dirname, 'app/i18n/locales')
+	const localesDir = path.resolve(process.cwd(), 'app/i18n/locales')
 	const files = fs.readdirSync(localesDir).filter((f) => f.endsWith('.json'))
 
 	const translations = {}

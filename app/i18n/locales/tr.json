@@ -108,6 +108,7 @@
 			"actions": "Eylemler",
 			"add": "Ekle",
 			"cancel": "İptal",
+			"confirmDelete": "Evet, sil",
 			"create": "Oluştur",
 			"creating": "Oluşturuluyor...",
 			"delete": "Sil",
@@ -233,8 +234,8 @@
 		"competition": {
 			"nameRequired": "Grup adı gereklidir",
 			"categoriesRequired": "En az bir kategori seçmelisiniz",
-			"groupsRange": "Gruplar 1 ile 20 arasında olmalıdır",
-			"slotsRange": "Her grup için 2 ile 32 arasında oyuncu/konum olmalıdır",
+			"groupsRange": "Gruplar 2 ile 8 arasında olmalıdır",
+			"slotsRange": "Her grup için 3 ile 10 arasında oyuncu/konum olmalıdır",
 			"createFailed": "Grup aşamaları oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
 		}
 	},
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} takım kaydedildi",
 		"createNewTeam": "Yeni bir takım oluştur",
 		"deleteTeam": "Takımı sil",
+		"deleteTeamAreYouSure": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
 		"description": "Bir veya daha fazla turnuva için takım(lar)ınızı kaydedin",
 		"filterByTournament": "Turnuvaya göre filtrele",
 		"form": {
@@ -445,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "Yarışma"
 		},
-		"description": "Turnuva bilgilerini görüntüle",
 		"deleteTournament": "Turnuvayı sil",
+		"deleteTournamentAreYouSure": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+		"description": "Turnuva bilgilerini görüntüle",
 		"endDate": "Bitiş tarihi",
 		"form": {
 			"basicInformation": "Temel bilgiler",

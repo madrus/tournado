@@ -1,7 +1,7 @@
 /**
  * Resource Route: Groups API
  *
- * Pure data endpoint for group set access across user roles.
+ * Pure data endpoint for group stage access across user roles.
  * This route has no UI component - it only serves JSON data.
  *
  * Authorization: Permission-based (groups:manage)
@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<Response>
 		)
 	}
 
-	// Get group sets for the tournament
+	// Get group stage for the tournament
 	const groupStages = await getTournamentGroupStages(tournamentId)
 
 	// Return JSON using native Response.json()

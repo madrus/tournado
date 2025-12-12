@@ -356,13 +356,10 @@ export default function EditTournamentPage(): JSX.Element {
 									{t('common.actions.delete')}
 								</ActionButton>
 							}
-							title={t('tournaments.confirmations.deleteTitle', 'Delete tournament')}
-							description={t(
-								'tournaments.confirmations.deleteDescription',
-								'Are you sure you want to delete this tournament? This action cannot be undone.',
-							)}
-							confirmLabel={t('common.actions.confirm', 'Yes, delete')}
-							cancelLabel={t('common.actions.cancel', 'Cancel')}
+							title={t('tournaments.deleteTournament')}
+							description={t('tournaments.deleteTournamentAreYouSure')}
+							confirmLabel={t('common.actions.confirmDelete')}
+							cancelLabel={t('common.actions.cancel')}
 							destructive
 							onConfirm={submitDelete}
 						/>

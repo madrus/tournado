@@ -44,7 +44,7 @@ export async function loader({
 	const url = new URL(request.url)
 	const tournamentId = url.searchParams.get('tournament')
 
-	// Load tournament list and group sets in parallel
+	// Load tournament list and group stage in parallel
 	const [tournamentListItemsRaw, groupStages] = await Promise.all([
 		getAllTournaments(),
 		tournamentId ? getTournamentGroupStages(tournamentId) : Promise.resolve([]),
@@ -103,7 +103,7 @@ export default function GroupsTab(): JSX.Element {
 				) : null}
 			</div>
 
-			{/* Group Sets Grid */}
+			{/* Group Stage Grid */}
 			{!selectedTournamentId ? (
 				<div className='rounded-xl border-2 border-border border-dashed bg-accent py-12 text-center'>
 					<div className='mx-auto max-w-md'>

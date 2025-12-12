@@ -16,13 +16,13 @@ vi.mock('~/utils/session.server', () => ({
 vi.mock('~/models/group.server', () => ({
 	getGroupStageWithDetails: vi.fn().mockResolvedValue({
 		id: 'test-group-set-id',
-		name: 'Test Group Set',
+		name: 'Test Group Stage',
 		tournamentId: 'test-tournament-id',
 		categories: ['U12', 'U14'],
 		groups: [],
 		reserveSlots: [],
 	}),
-	getTeamsByCategories: vi.fn().mockResolvedValue([]),
+	getUnassignedTeamsByCategories: vi.fn().mockResolvedValue([]),
 }))
 
 // Mock tournament model

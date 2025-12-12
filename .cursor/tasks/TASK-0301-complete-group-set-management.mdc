@@ -1,7 +1,7 @@
 ---
-description: "Complete group set management (view + assign/move/clear/swap) with tests"
+description: "Complete group stage management (view + assign/move/clear/swap) with tests"
 id: "TASK-0301"
-title: "Complete group set management with assignment operations and tests"
+title: "Complete group stage management with assignment operations and tests"
 status: "in-progress"
 priority: "P1"
 labels: ["feature", "ui", "groups", "tournament", "tests", "rbac", "i18n"]
@@ -20,7 +20,7 @@ alwaysApply: false
 
 # 1) High-Level Objective
 
-Deliver a complete group set management capability where authorized staff can
+Deliver a complete group stage management capability where authorized staff can
 view groups and reserve lists for a selected tournament, assign/unassign/move
 teams between slots/reserve, and validate behavior with unit and E2E tests.
 
@@ -42,10 +42,10 @@ running tournaments. This section currently contains:
 Already present (baseline):
 - Prisma schema for `GroupStage` / `Group` / `GroupSlot` with relations and
   constraints (unique per slot, unique team per set)
-- Routes for create/list group sets: `competition.groups.new` and
+- Routes for create/list group stage: `competition.groups.new` and
   `competition.groups`
 - Models: `createGroupStage`, `getTournamentGroupStages`,
-  `getGroupStageWithDetails`, `getTeamsByCategories`
+  `getGroupStageWithDetails`, `getUnassignedTeamsByCategories`
 - Admin Panel link to Competition section (renamed from "Match Management")
 
 # 3) Assumptions & Constraints
@@ -86,7 +86,7 @@ Already present (baseline):
 **End state (files that will be created/modified):**
 - `app/models/group.server.ts` - Add 4 transactional assignment helpers (`.server.ts` = server-only)
 - `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.tsx` - New details route with loader/action/UI
-- `prisma/seed.js` - Add JO8 group set seed data for Spring Cup
+- `prisma/seed.js` - Add JO8 group stage seed data for Spring Cup
 - `app/i18n/locales/*.json` - Add groups-related translation keys (all 6 locales)
 - `app/models/__tests__/group.server.test.ts` - New unit tests for assignment functions
 - `playwright/pages/GroupsPage.ts` - New Page Object Model
@@ -133,7 +133,7 @@ Already present (baseline):
      - `await requireUserWithPermission(request, 'groups:manage')`
      - Require `params.groupStageId`, `?tournament=<id>`
      - Fetch `groupStage = getGroupStageWithDetails(groupStageId)`
-     - Fetch `availableTeams = getTeamsByCategories(tournamentId,
+     - Fetch `availableTeams = getUnassignedTeamsByCategories(tournamentId,
        groupStage.categories)`
      - Return `{ groupStage, availableTeams, tournamentId }`
    - Action signature: `export async function action({ request, params }:
@@ -209,9 +209,9 @@ Already present (baseline):
 7) E2E tests — Playwright
    - [ ] Create or update playwright/pages/GroupsPage.ts (Page Object Model)
    - [ ] Create or update playwright/tests/competition.groups.spec.ts
-   - [ ] Add test for creating group set with form
-   - [ ] Add test for verifying group set appears in list
-   - [ ] Add test for opening group set details
+   - [ ] Add test for creating group stage with form
+   - [ ] Add test for verifying group stage appears in list
+   - [ ] Add test for opening group stage details
    - [ ] Add test for assigning team to slot
    - [ ] Add test for moving team to reserve then assigning
    - [ ] Add test for clearing a slot
@@ -409,7 +409,7 @@ Action FormData keys (all strings):
 - Keyboard navigation works for all forms and buttons
 - Focus states visible with proper focus rings
 - Model functions are transactional (use `prisma.$transaction`)
-- Seeded data includes JO8 group set with empty slots and filled reserve
+- Seeded data includes JO8 group stage with empty slots and filled reserve
 - Unit test coverage ≥70% for new model functions
 - E2E tests cover full user workflows with auth bypass
 - Page Object Model pattern used for E2E tests
@@ -437,7 +437,7 @@ Action FormData keys (all strings):
 **Setup:**
 - Use existing Vitest test harness
 - Set up test database with in-memory SQLite
-- Seed minimal test data (tournament, teams, group set)
+- Seed minimal test data (tournament, teams, group stage)
 
 **Test Cases:**
 1. **Assign team to empty slot**
@@ -473,7 +473,7 @@ Action FormData keys (all strings):
 
 **Setup:**
 - Use auth bypass per E2E strategy
-- Use seeded JO8 group set from seed.js
+- Use seeded JO8 group stage from seed.js
 - Create Page Object Model (`playwright/pages/GroupsPage.ts`)
 
 **Page Object Model Methods:**
@@ -496,14 +496,14 @@ class GroupsPage {
    - Visit admin dashboard
    - Click Competition → Groups
    - Select Spring Cup tournament
-   - Verify empty state: "No group sets yet"
+   - Verify empty state: "No group stage yet"
 2. **Create Group Stage**
    - Click "Create Group Stage" button (top-right)
    - Fill form: Name "Group Stage (JO8)", Categories: JO8, Groups: 4, Slots: 5, Auto-fill: enabled
    - Submit form
    - Verify redirect to groups list
    - Verify "Group Stage (JO8)" appears in list
-3. **Open group set details**
+3. **Open group stage details**
    - Click "Group Stage (JO8)"
    - Verify 4 groups displayed (A, B, C, D)
    - Verify each group has 5 empty slots

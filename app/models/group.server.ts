@@ -1,4 +1,4 @@
-import type { Category } from '@prisma/client'
+import type { Category, Prisma } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 import { safeParseJSON } from '~/utils/json'
@@ -191,7 +191,7 @@ export async function getGroupStageWithDetails(
 		tournamentId: groupStage.tournamentId,
 		categories: safeParseJSON<Category[]>(
 			groupStage.categories,
-			`getGroupStageById(${groupStageId})`,
+			`getGroupStageWithDetails(${groupStageId})`,
 			[],
 		),
 		configGroups: groupStage.configGroups,
@@ -232,16 +232,21 @@ export async function getTournamentGroupStages(
 	}))
 }
 
-export const getTeamsByCategories = async (
+export const getUnassignedTeamsByCategories = async (
 	tournamentId: string,
-	categories: readonly Category[],
-): Promise<readonly UnassignedTeam[]> =>
-	await prisma.team.findMany({
-		where: {
-			tournamentId,
-			category: { in: [...categories] },
-			groupSlot: null, // Only unassigned teams
-		},
+	categories?: readonly Category[],
+): Promise<readonly UnassignedTeam[]> => {
+	const where: Prisma.TeamWhereInput = {
+		tournamentId,
+		groupSlot: null, // Only unassigned teams
+	}
+
+	if (categories && categories.length > 0) {
+		where.category = { in: [...categories] }
+	}
+
+	return await prisma.team.findMany({
+		where,
 		select: {
 			id: true,
 			name: true,
@@ -250,6 +255,7 @@ export const getTeamsByCategories = async (
 		},
 		orderBy: [{ category: 'asc' }, { clubName: 'asc' }, { name: 'asc' }],
 	})
+}
 
 // --------------------------------------------------------------------------------------
 // Group assignment utilities
@@ -264,9 +270,9 @@ type AssignTeamToGroupSlotProps = {
 
 /**
  * Assign a team to a specific group slot
- * - Validates the slot belongs to the given group and group set
+ * - Validates the slot belongs to the given group and group stage
  * - Ensures slot is empty (use clear or swap for occupied slots)
- * - Clears any previous assignment for teamId across the same group set
+ * - Clears any previous assignment for teamId across the same group stage
  */
 export async function assignTeamToGroupSlot(
 	props: Readonly<AssignTeamToGroupSlotProps>,
@@ -287,7 +293,7 @@ export async function assignTeamToGroupSlot(
 			throw new Error('Slot is occupied, clear or swap before assigning')
 		}
 
-		// Validate team and group set belong to the same tournament
+		// Validate team and group stage belong to the same tournament
 		const [groupStage, team] = await Promise.all([
 			tx.groupStage.findUnique({
 				where: { id: groupStageId },
@@ -300,7 +306,7 @@ export async function assignTeamToGroupSlot(
 		])
 
 		if (!groupStage) {
-			throw new Error('Group set not found')
+			throw new Error('Group stage not found')
 		}
 
 		if (!team) {
@@ -308,10 +314,10 @@ export async function assignTeamToGroupSlot(
 		}
 
 		if (groupStage.tournamentId !== team.tournamentId) {
-			throw new Error('Team and group set must belong to the same tournament')
+			throw new Error('Team and group stage must belong to the same tournament')
 		}
 
-		// Clear any previous assignment of this team within the group set (including reserve)
+		// Clear any previous assignment of this team within the group stage (including reserve)
 		await tx.groupSlot.updateMany({
 			where: { groupStageId, teamId },
 			data: { teamId: null },
@@ -346,7 +352,7 @@ type MoveTeamToReserveProps = {
 }
 
 /**
- * Move a team to reserve within a group set
+ * Move a team to reserve within a group stage
  * - Clears any existing group assignment
  * - Creates a reserve slot (groupId null) for that team if not present
  */
@@ -356,7 +362,7 @@ export async function moveTeamToReserve(
 	const { groupStageId, teamId } = props
 
 	await prisma.$transaction(async (tx) => {
-		// Validate team and group set belong to the same tournament
+		// Validate team and group stage belong to the same tournament
 		const [groupStage, team] = await Promise.all([
 			tx.groupStage.findUnique({
 				where: { id: groupStageId },
@@ -369,7 +375,7 @@ export async function moveTeamToReserve(
 		])
 
 		if (!groupStage) {
-			throw new Error('Group set not found')
+			throw new Error('Group stage not found')
 		}
 
 		if (!team) {
@@ -377,7 +383,7 @@ export async function moveTeamToReserve(
 		}
 
 		if (groupStage.tournamentId !== team.tournamentId) {
-			throw new Error('Team and group set must belong to the same tournament')
+			throw new Error('Team and group stage must belong to the same tournament')
 		}
 
 		// Clear any existing assignment (group or reserve)

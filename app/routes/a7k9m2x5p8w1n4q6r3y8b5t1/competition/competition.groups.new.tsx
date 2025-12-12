@@ -5,7 +5,7 @@ import { redirect, useActionData, useLoaderData, useNavigation } from 'react-rou
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { getServerT } from '~/i18n/i18n.server'
-import { createGroupStage, getTeamsByCategories } from '~/models/group.server'
+import { createGroupStage, getUnassignedTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { safeParseJSON } from '~/utils/json'
 import { invariant } from '~/utils/misc'
@@ -70,17 +70,29 @@ export async function loader({
 		throw new Response('Tournament not found', { status: 404 })
 	}
 
-	// Count available teams by category
-	const availableTeamsCount = {} as Record<Category, number>
 	const categories = safeParseJSON<Category[]>(
 		tournament.categories,
 		`competition.groups.new - tournament ${tournamentId}`,
 		[],
 	)
 
+	// Fetch all unassigned teams for the tournament in a single query
+	const allTeams = await getUnassignedTeamsByCategories(tournamentId)
+
+	// Count available teams by category
+	const availableTeamsCount = {} as Record<Category, number>
+
+	// Initialize all categories with 0
 	for (const category of categories) {
-		const teams = await getTeamsByCategories(tournamentId, [category])
-		availableTeamsCount[category] = teams.length
+		availableTeamsCount[category] = 0
+	}
+
+	// Count teams per category
+	for (const team of allTeams) {
+		// Only count teams that belong to the tournament's categories
+		if (availableTeamsCount[team.category] !== undefined) {
+			availableTeamsCount[team.category]++
+		}
 	}
 
 	return {
@@ -99,7 +111,7 @@ export async function action({
 	// Require user with role-based authorization for group creation action
 	await requireUserWithMetadata(request, handle)
 
-	const t = getServerT(request)
+	const t = await getServerT(request)
 
 	// Get tournament ID from search params since competition is now top-level
 	const url = new URL(request.url)

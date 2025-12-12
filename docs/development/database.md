@@ -113,7 +113,7 @@ We can hold off on actually running migrations while we iterate on our schema. P
 
 ### Seeded Groups (for review)
 
-The seed script creates a sample JO8 group set for the `Spring Cup` tournament to
+The seed script creates a sample JO8 group stage for the `Spring Cup` tournament to
 facilitate manual review of the groups UI:
 
 - Name: `Group Stage (JO8)`

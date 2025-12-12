@@ -82,9 +82,7 @@ export function DataTablePagination({
 			{totalPages > 1 ? (
 				<nav
 					className='flex items-center gap-2 self-end md:self-auto'
-					aria-label={t('common.pagination.ariaLabel', {
-						defaultValue: 'Pagination',
-					})}
+					aria-label={'Pagination'}
 				>
 					{hasPrevPage ? (
 						<Link

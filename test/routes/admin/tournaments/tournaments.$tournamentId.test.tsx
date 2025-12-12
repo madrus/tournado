@@ -346,7 +346,7 @@ describe('EditTournamentPage', () => {
 			await user.click(deleteButton)
 
 			expect(mockOnConfirm).toHaveBeenCalledWith(
-				'tournaments.confirmations.deleteDescription',
+				'tournaments.deleteTournamentAreYouSure',
 			)
 			expect(mockSubmit).toHaveBeenCalledTimes(1)
 			const [fd, opts] = mockSubmit.mock.calls[0]
@@ -365,7 +365,7 @@ describe('EditTournamentPage', () => {
 			await user.click(deleteButton)
 
 			expect(mockOnConfirm).toHaveBeenCalledWith(
-				'tournaments.confirmations.deleteDescription',
+				'tournaments.deleteTournamentAreYouSure',
 			)
 
 			// Verify submit was called with correct parameters
@@ -386,7 +386,7 @@ describe('EditTournamentPage', () => {
 			await user.click(deleteButton)
 
 			expect(mockOnConfirm).toHaveBeenCalledWith(
-				'tournaments.confirmations.deleteDescription',
+				'tournaments.deleteTournamentAreYouSure',
 			)
 		})
 	})

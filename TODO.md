@@ -1,5 +1,13 @@
 # What to do next
 
+## QC Remarks
+
+- [ ] continued use of non-semantic Tailwind colors (e.g. text-gray-*, bg-red-50, text-blue-*) which may conflict with your “semantic color tokens” guideline
+- [ ] move all messages to the `messages` namespace and add hardcoded messages to it
+- [ ] Competition feature
+  - [ ] Create feature
+  - [ ] The selectedCategories and summary are derived from actionData?.fieldValues, which only contains values from the most recent POST attempt. On initial page load and while the user is interacting with the form, selectedCategories remains empty (line 303), so the summary section doesn't display. As users change checkbox selections in the form, the summary doesn't update because the form inputs are uncontrolled (using defaultValue/defaultChecked) without any client-side state to track current values.</br>If the intent is a live preview of the summary, implement a Zustand store or local state with onChange handlers for form inputs.
+
 ## 1. Checks
 
 - [ ] non-test environment: replace inline imports like `const { addEmailToOutbox } = await import('test/mocks/handlers/emails.js')`

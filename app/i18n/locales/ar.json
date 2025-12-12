@@ -108,6 +108,7 @@
 			"actions": "الإجراءات",
 			"add": "إضافة",
 			"cancel": "إلغاء",
+			"confirmDelete": "نعم، احذف",
 			"create": "إنشاء",
 			"creating": "جاري الإنشاء...",
 			"delete": "حذف",
@@ -233,8 +234,8 @@
 		"competition": {
 			"nameRequired": "الاسم مطلوب",
 			"categoriesRequired": "يجب اختيار فئة واحدة على الأقل",
-			"groupsRange": "يجب أن تكون عدد المجموعات بين 1 و 20",
-			"slotsRange": "يجب أن يكون عدد اللاعبين/المواقع لكل مجموعة بين 2 و 32",
+			"groupsRange": "يجب أن تكون عدد المجموعات بين   2 , 8",
+			"slotsRange": "يجب أن يكون عدد اللاعبين/المواقع لكل مجموعة بين 3 و 10",
 			"createFailed": "حدث خطأ أثناء إنشاء مجموعات البطولة. الرجاء المحاولة مرة أخرى."
 		}
 	},
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} فريق مسجل",
 		"createNewTeam": "إنشاء فريق جديد",
 		"deleteTeam": "حذف الفريق",
+		"deleteTeamAreYouSure": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
 		"description": "سجل فريقك (فرقك) لبطولة واحدة أو أكثر",
 		"filterByTournament": "تصفية حسب البطولة",
 		"form": {
@@ -445,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "المنافسة"
 		},
-		"description": "عرض معلومات البطولة",
 		"deleteTournament": "حذف البطولة",
+		"deleteTournamentAreYouSure": "هل أنت متأكد أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
+		"description": "عرض معلومات البطولة",
 		"endDate": "تاريخ النهاية",
 		"form": {
 			"basicInformation": "المعلومات الأساسية",

@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Beheer poules, wedstrijden en standen voor toernooien.",
 			"groupStage": "Poulefase",
-			"groupStageDescription": "Creëer en beheer poules voor poulefase",
+			"groupStageDescription": "Creëer en beheer poules voor de poulefase",
 			"groups": "Poules",
 			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"
@@ -108,6 +108,7 @@
 			"actions": "Acties",
 			"add": "Toevoegen",
 			"cancel": "Annuleren",
+			"confirmDelete": "Ja, verwijderen",
 			"create": "Aanmaken",
 			"creating": "Aanmaken...",
 			"delete": "Verwijderen",
@@ -231,11 +232,11 @@
 			"unauthorizedDefault": "Je hebt geen toestemming om deze pagina te openen."
 		},
 		"competition": {
-			"nameRequired": "Naam van de groepenset is verplicht",
+			"nameRequired": "Naam van de poulefase is verplicht",
 			"categoriesRequired": "Selecteer minimaal één categorie",
-			"groupsRange": "Aantal groepen moet tussen 2 en 8 liggen",
-			"slotsRange": "Teams per groep moeten tussen 3 en 10 liggen",
-			"createFailed": "Het aanmaken van de groepsfase is mislukt. Probeer het opnieuw."
+			"groupsRange": "Aantal poules moet tussen 2 en 8 liggen",
+			"slotsRange": "Teams per poule moeten tussen 3 en 10 liggen",
+			"createFailed": "Het aanmaken van de poulefase is mislukt. Probeer het opnieuw."
 		}
 	},
 	"landing": {
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} teams geregistreerd",
 		"createNewTeam": "Maak een nieuw team aan",
 		"deleteTeam": "Team verwijderen",
+		"deleteTeamAreYouSure": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
 		"description": "Registreer je team(s) voor een of meer toernooien",
 		"filterByTournament": "Filter op toernooi",
 		"form": {
@@ -446,6 +448,7 @@
 			"manageCompetition": "Competitie"
 		},
 		"deleteTournament": "Toernooi verwijderen",
+		"deleteTournamentAreYouSure": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
 		"description": "Toernooi-informatie inzien",
 		"endDate": "Einddatum",
 		"form": {

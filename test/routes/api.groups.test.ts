@@ -29,7 +29,7 @@ vi.mock('~/models/group.server', () => ({
 	getTournamentGroupStages: vi.fn(() => [
 		{
 			id: '1',
-			name: 'Group Set A',
+			name: 'Group Stage A',
 			tournamentId: 'test-tournament-id',
 			categories: ['U12', 'U14'],
 		},
@@ -145,7 +145,7 @@ describe('Resource Route: /api/groups', () => {
 		expect(json).toHaveProperty('error', 'Missing required parameter')
 	})
 
-	it('should return group sets for the specified tournament', async () => {
+	it('should return group stage for the specified tournament', async () => {
 		const mockUser = createMockUser('MANAGER')
 		vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -163,7 +163,7 @@ describe('Resource Route: /api/groups', () => {
 
 		expect(json.groupStages).toHaveLength(1)
 		expect(json.groupStages[0]).toHaveProperty('id', '1')
-		expect(json.groupStages[0]).toHaveProperty('name', 'Group Set A')
+		expect(json.groupStages[0]).toHaveProperty('name', 'Group Stage A')
 		expect(json.groupStages[0]).toHaveProperty('tournamentId', 'test-tournament-id')
 	})
 })

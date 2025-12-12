@@ -108,6 +108,7 @@
 			"actions": "Actions",
 			"add": "Ajouter",
 			"cancel": "Annuler",
+			"confirmDelete": "Oui, supprimer",
 			"create": "Créer",
 			"creating": "Création...",
 			"delete": "Supprimer",
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} équipes inscrites",
 		"createNewTeam": "Créer une nouvelle équipe",
 		"deleteTeam": "Supprimer l'équipe",
+		"deleteTeamAreYouSure": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.",
 		"description": "Inscrivez votre/vos équipe(s) pour un ou plusieurs tournois",
 		"filterByTournament": "Filtrer par tournoi",
 		"form": {
@@ -445,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "Compétition"
 		},
-		"description": "Voir les informations du tournoi",
 		"deleteTournament": "Supprimer le tournoi",
+		"deleteTournamentAreYouSure": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action est irréversible.",
+		"description": "Voir les informations du tournoi",
 		"endDate": "Date de fin",
 		"form": {
 			"basicInformation": "Informations de base",

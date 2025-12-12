@@ -108,6 +108,7 @@
 			"actions": "Actions",
 			"add": "Add",
 			"cancel": "Cancel",
+			"confirmDelete": "Yes, delete",
 			"create": "Create",
 			"creating": "Creating...",
 			"delete": "Delete",
@@ -231,7 +232,7 @@
 			"unauthorizedDefault": "You do not have permission to access this page."
 		},
 		"competition": {
-			"nameRequired": "Group set name is required",
+			"nameRequired": "Group stage name is required",
 			"categoriesRequired": "At least one category must be selected",
 			"groupsRange": "Number of groups must be between 2 and 8",
 			"slotsRange": "Teams per group must be between 3 and 10",
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} teams registered",
 		"createNewTeam": "Create a new team",
 		"deleteTeam": "Delete Team",
+		"deleteTeamAreYouSure": "Are you sure you want to delete this team? This action cannot be undone.",
 		"description": "Register your team(s) for one or more tournaments",
 		"filterByTournament": "Filter by tournament",
 		"form": {
@@ -446,6 +448,7 @@
 			"manageCompetition": "Competition"
 		},
 		"deleteTournament": "Delete Tournament",
+		"deleteTournamentAreYouSure": "Are you sure you want to delete this tournament? This action cannot be undone.",
 		"description": "View tournament information",
 		"endDate": "End Date",
 		"form": {

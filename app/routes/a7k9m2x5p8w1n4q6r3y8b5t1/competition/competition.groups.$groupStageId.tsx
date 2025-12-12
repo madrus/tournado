@@ -16,7 +16,7 @@ import {
 	assignTeamToGroupSlot,
 	clearGroupSlot,
 	getGroupStageWithDetails,
-	getTeamsByCategories,
+	getUnassignedTeamsByCategories,
 	moveTeamToReserve,
 	swapGroupSlots,
 } from '~/models/group.server'
@@ -53,7 +53,7 @@ export async function loader({
 	invariant(groupStageId, 'groupStageId is required')
 
 	const groupStage = await getGroupStageWithDetails(groupStageId)
-	if (!groupStage) throw new Response('Group set not found', { status: 404 })
+	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
 	// Derive tournamentId from groupStage - this is the source of truth
 	const tournamentId = groupStage.tournamentId
@@ -63,7 +63,7 @@ export async function loader({
 	const queryTournamentId = url.searchParams.get('tournament')
 	if (queryTournamentId && queryTournamentId !== tournamentId) {
 		throw new Response(
-			'Tournament ID mismatch: query parameter does not match group set tournament',
+			'Tournament ID mismatch: query parameter does not match the selected tournament',
 			{ status: 400 },
 		)
 	}
@@ -72,7 +72,7 @@ export async function loader({
 	if (!tournament) throw new Response('Tournament not found', { status: 404 })
 
 	const categories = (groupStage.categories as Category[]).slice()
-	const availableTeams = await getTeamsByCategories(tournamentId, categories)
+	const availableTeams = await getUnassignedTeamsByCategories(tournamentId, categories)
 
 	return { groupStage, availableTeams, tournamentId }
 }
@@ -88,7 +88,7 @@ export async function action({
 
 	// Fetch groupStage to derive tournamentId - don't trust query params
 	const groupStage = await getGroupStageWithDetails(groupStageId)
-	if (!groupStage) throw new Response('Group set not found', { status: 404 })
+	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
 	// Derive tournamentId from groupStage - this is the source of truth
 	const tournamentId = groupStage.tournamentId
@@ -98,7 +98,7 @@ export async function action({
 	const queryTournamentId = url.searchParams.get('tournament')
 	if (queryTournamentId && queryTournamentId !== tournamentId) {
 		throw new Response(
-			'Tournament ID mismatch: query parameter does not match group set tournament',
+			'Tournament ID mismatch: query parameter does not match the selected tournament',
 			{ status: 400 },
 		)
 	}

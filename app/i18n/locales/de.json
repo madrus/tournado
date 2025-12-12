@@ -108,6 +108,7 @@
 			"actions": "Aktionen",
 			"add": "Hinzufügen",
 			"cancel": "Abbrechen",
+			"confirmDelete": "Ja, löschen",
 			"create": "Erstellen",
 			"creating": "Erstellen...",
 			"delete": "Löschen",
@@ -174,7 +175,7 @@
 		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppenphase zu verwalten.",
 		"noGroupStages": "Noch keine Gruppenphase",
 		"noGroupStagesDescription": "Beginnen Sie mit der Erstellung der Gruppenphase.",
-		"groupsCount": "{{count}} Gruppe",
+		"groupsCount": "{{count}} Gruppen",
 		"labels": {
 			"categories": "Kategorien:",
 			"setup": "Aufbau:",
@@ -231,7 +232,7 @@
 			"unauthorizedDefault": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen."
 		},
 		"competition": {
-			"nameRequired": "Name des Gruppensatzes ist erforderlich",
+			"nameRequired": "Name des Gruppenphase ist erforderlich",
 			"categoriesRequired": "Mindestens eine Kategorie muss ausgewählt werden",
 			"groupsRange": "Die Anzahl der Gruppen muss zwischen 2 und 8 liegen",
 			"slotsRange": "Teams pro Gruppe müssen zwischen 3 und 10 liegen",
@@ -398,6 +399,7 @@
 		"count_other": "{{count}} Teams registriert",
 		"createNewTeam": "Neues Team erstellen",
 		"deleteTeam": "Team löschen",
+		"deleteTeamAreYouSure": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 		"description": "Registrieren Sie Ihr(e) Team(s) für ein oder mehrere Turniere",
 		"filterByTournament": "Nach Turnier filtern",
 		"form": {
@@ -447,6 +449,7 @@
 		},
 		"description": "Turnierinformationen ansehen",
 		"deleteTournament": "Turnier löschen",
+		"deleteTournamentAreYouSure": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 		"endDate": "Enddatum",
 		"form": {
 			"basicInformation": "Grundinformationen",

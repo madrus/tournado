@@ -82,7 +82,10 @@ const ErrorFallback = ({
 				{errorTitle}
 			</h1>
 			<p className='text-destructive/80' data-testid='error-paragraph'>
-				{errorMessage} {error ? <pre className='text-sm'>{error.message}</pre> : null}
+				{errorMessage}
+				{import.meta.env.DEV && error ? (
+					<pre className='text-sm'>{error.message}</pre>
+				) : null}
 			</p>
 		</div>
 	</div>

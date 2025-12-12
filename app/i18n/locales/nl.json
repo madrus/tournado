@@ -218,7 +218,14 @@
 		"emailOutboxInvalidFormat": "E-mailoutbox heeft een ongeldig formaat",
 		"emailOutboxReadFailure": "Kan e-mailoutbox niet lezen",
 		"somethingWentWrong": "Er is iets misgegaan",
-		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
+		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw.",
+		"competition": {
+			"nameRequired": "Naam van de groepenset is verplicht",
+			"categoriesRequired": "Selecteer minimaal één categorie",
+			"groupsRange": "Aantal groepen moet tussen 2 en 8 liggen",
+			"slotsRange": "Teams per groep moeten tussen 3 en 10 liggen",
+			"createFailed": "Het aanmaken van de groepsfase is mislukt. Probeer het opnieuw."
+		}
 	},
 	"landing": {
 		"features": {

@@ -689,7 +689,7 @@ export function TeamForm({
 						variant='secondary'
 						color='brand'
 					>
-						<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+						<RestorePageIcon className='mr-2 h-6 w-6' size={4} />
 						{t('common.actions.cancel')}
 					</ActionButton>
 

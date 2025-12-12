@@ -218,7 +218,14 @@
 		"emailOutboxInvalidFormat": "E-posta giden kutusunun biçimi geçersiz",
 		"emailOutboxReadFailure": "E-posta giden kutusu okunamadı",
 		"somethingWentWrong": "Bir şeyler ters gitti",
-		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin."
+		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+		"competition": {
+			"nameRequired": "Grup adı gereklidir",
+			"categoriesRequired": "En az bir kategori seçmelisiniz",
+			"groupsRange": "Gruplar 1 ile 20 arasında olmalıdır",
+			"slotsRange": "Her grup için 2 ile 32 arasında oyuncu/konum olmalıdır",
+			"createFailed": "Grup aşamaları oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
+		}
 	},
 	"landing": {
 		"features": {

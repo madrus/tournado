@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { redirect, useActionData, useLoaderData, useNavigation } from 'react-router'
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
+import { getServerT } from '~/i18n/i18n.server'
 import { createGroupStage, getTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
 import { safeParseJSON } from '~/utils/json'
@@ -98,6 +99,8 @@ export async function action({
 	// Require user with role-based authorization for group creation action
 	await requireUserWithMetadata(request, handle)
 
+	const t = getServerT(request)
+
 	// Get tournament ID from search params since competition is now top-level
 	const url = new URL(request.url)
 	const tournamentId = url.searchParams.get('tournament')
@@ -114,21 +117,21 @@ export async function action({
 	const errors = {} as NonNullable<ActionData['errors']>
 
 	if (!name.trim()) {
-		errors.name = 'Group set name is required'
+		errors.name = t('competition.groupStage.errors.nameRequired')
 	}
 
 	if (selectedCategories.length === 0) {
-		errors.categories = 'At least one category must be selected'
+		errors.categories = t('competition.groupStage.errors.categoriesRequired')
 	}
 
 	const groupsNum = parseInt(configGroups, 10)
 	if (!configGroups || Number.isNaN(groupsNum) || groupsNum < 2 || groupsNum > 8) {
-		errors.configGroups = 'Number of groups must be between 2 and 8'
+		errors.configGroups = t('competition.groupStage.errors.groupsRange')
 	}
 
 	const slotsNum = parseInt(configSlots, 10)
 	if (!configSlots || Number.isNaN(slotsNum) || slotsNum < 3 || slotsNum > 10) {
-		errors.configSlots = 'Teams per group must be between 3 and 10'
+		errors.configSlots = t('competition.groupStage.errors.slotsRange')
 	}
 
 	if (Object.keys(errors).length > 0) {
@@ -159,7 +162,7 @@ export async function action({
 		)
 	} catch (_error) {
 		return {
-			errors: { general: 'Failed to Create Group Stage. Please try again.' },
+			errors: { general: t('competition.groupStage.errors.createFailed') },
 			fieldValues: {
 				name,
 				categories: selectedCategories,

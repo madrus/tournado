@@ -218,7 +218,14 @@
 		"emailOutboxInvalidFormat": "Email outbox data has an invalid format",
 		"emailOutboxReadFailure": "Failed to read email outbox",
 		"somethingWentWrong": "Something went wrong",
-		"teamLoadFailed": "Unable to load team details. Please try again later."
+		"teamLoadFailed": "Unable to load team details. Please try again later.",
+		"competition": {
+			"nameRequired": "Group set name is required",
+			"categoriesRequired": "At least one category must be selected",
+			"groupsRange": "Number of groups must be between 2 and 8",
+			"slotsRange": "Teams per group must be between 3 and 10",
+			"createFailed": "Failed to create group stage. Please try again."
+		}
 	},
 	"landing": {
 		"features": {

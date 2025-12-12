@@ -218,7 +218,14 @@
 		"emailOutboxInvalidFormat": "La boîte d'envoi des e-mails a un format invalide",
 		"emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails",
 		"somethingWentWrong": "Quelque chose s'est mal passé",
-		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard."
+		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
+		"competition": {
+			"nameRequired": "Le nom de la phase de groupes est requis",
+			"categoriesRequired": "Au moins une catégorie doit être sélectionnée",
+			"groupsRange": "Le nombre de groupes doit être compris entre 2 et 8",
+			"slotsRange": "Le nombre d'équipes par groupe doit être compris entre 3 et 10",
+			"createFailed": "Échec de la création de la phase de groupes. Veuillez réessayer."
+		}
 	},
 	"landing": {
 		"features": {

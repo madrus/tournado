@@ -5,9 +5,9 @@
 	},
 	"admin": {
 		"competition": {
-			"description": "Beheer groepen, wedstrijden en standen voor toernooien.",
-			"groupStage": "Groepsfase",
-			"groupStageDescription": "Creëer en beheer poules voor round-robin spel",
+			"description": "Beheer poules, wedstrijden en standen voor toernooien.",
+			"groupStage": "Poulefase",
+			"groupStageDescription": "Creëer en beheer poules voor de poulefase",
 			"groups": "Poules",
 			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"
@@ -24,7 +24,7 @@
 			"description": "Configureer applicatie-instellingen en voorkeuren.",
 			"title": "Systeeminstellingen"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
 			"createNewTeamDescription": "Maak een nieuw team aan met toernooigegevens en contactinformatie.",
 			"createTeam": "Team aanmaken",
@@ -38,13 +38,13 @@
 			"title": "Teams beheer",
 			"totalTeams": "Totaal aantal teams"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
 			"description": "Beheer toernooien in het systeem. Maak, bewerk of verwijder toernooi informatie.",
 			"title": "Toernooien beheer",
 			"totalTournaments": "Totaal aantal toernooien"
 		},
-		"user": {
+		"users": {
 			"description": "Beheer gebruikersaccounts en machtigingen.",
 			"title": "Gebruikers beheer",
 			"totalUsers": "Totaal aantal gebruikers"
@@ -56,10 +56,6 @@
 		"createAccount": "Account aanmaken",
 		"dontHaveAccount": "Nog geen account?",
 		"emailAddress": "E-mailadres",
-		"errors": {
-			"accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp.",
-			"accountDeactivatedTitle": "Account gedeactiveerd"
-		},
 		"firebase": {
 			"continueWithGoogle": "Doorgaan met Google",
 			"error": "Authenticatie mislukt. Probeer het opnieuw.",
@@ -112,11 +108,15 @@
 			"actions": "Acties",
 			"add": "Toevoegen",
 			"cancel": "Annuleren",
+			"confirmDelete": "Ja, verwijderen",
+			"create": "Aanmaken",
+			"creating": "Aanmaken...",
 			"delete": "Verwijderen",
 			"edit": "Bewerken",
 			"save": "Opslaan",
 			"saving": "Opslaan...",
 			"update": "Bijwerken",
+			"updating": "Bijwerken...",
 			"view": "Bekijken"
 		},
 		"appName": "Tournado",
@@ -160,16 +160,49 @@
 		"toggleTheme": "Thema wisselen",
 		"welcome": "Welkom"
 	},
+	"competition": {
+		"description": "Beheer toernooipoules, wedstrijden en standen.",
+		"createGroupStage": "Poulefase aanmaken",
+		"createGroupStageDescription": "Stel poules in voor het {{tournamentName}} toernooi",
+		"selectTournament": "Selecteer een toernooi",
+		"selectTournamentDescription": "Kies een toernooi uit de dropdown hierboven om de poulefase te beheren.",
+		"noGroupStages": "Nog geen poulefase",
+		"noGroupStagesDescription": "Begin met het aanmaken van de poulefase.",
+		"groupsCount": "{{count}} poules",
+		"labels": {
+			"categories": "Categorieën:",
+			"setup": "Opzet:",
+			"autoFill": "Auto-invullen:",
+			"created": "Aangemaakt:"
+		},
+		"status": {
+			"enabled": "Ingeschakeld",
+			"disabled": "Uitgeschakeld"
+		},
+		"groupStage": {
+			"name": "Poulefase naam",
+			"namePlaceholder": "bijv. JO8 Hoofd-, 1e en 2e klasse",
+			"ageCategories": "Leeftijdscategorieën",
+			"ageCategoriesDescription": "Selecteer welke leeftijdscategorieën deelnemen aan deze poulefase",
+			"teamsAvailable": "{{count}} teams beschikbaar",
+			"configGroups": "Aantal poules",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Teams per poule",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Poules invullen",
+			"autoFillDescription": "Verdeel teams initieel automatisch over de poules",
+			"summary": "Samenvatting",
+			"summaryTeamsAvailable": "{{count}} teams beschikbaar in geselecteerde categorieën",
+			"summaryWillCreate": "Er worden {{groups}} poules aangemaakt met {{slots}} plaatsen elk ({{total}} plaatsen in totaal)",
+			"title": "Poulefase"
+		}
+	},
 	"datatable": {
 		"clearSearch": "Zoekopdracht wissen",
 		"resetFilters": "Reset",
 		"search": "Zoeken...",
 		"toggleColumns": "Kolommen weergeven",
 		"view": "Weergave"
-	},
-	"competition": {
-		"selectTournament": "Selecteer een toernooi",
-		"selectTournamentDescription": "Kies een toernooi uit de dropdown hierboven om de poules te beheren."
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Vijfde klasse",
@@ -183,7 +216,28 @@
 		"emailOutboxInvalidFormat": "E-mailoutbox heeft een ongeldig formaat",
 		"emailOutboxReadFailure": "Kan e-mailoutbox niet lezen",
 		"somethingWentWrong": "Er is iets misgegaan",
-		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw."
+		"teamLoadFailed": "Kan teamdetails niet laden. Probeer het later opnieuw.",
+		"auth": {
+			"accountDeactivatedTitle": "Account gedeactiveerd",
+			"accountDeactivatedMessage": "Je account is gedeactiveerd. Neem contact op met support voor hulp.",
+			"unauthorizedSignInRequiredTitle": "Inloggen vereist",
+			"unauthorizedSignInRequired": "Je moet inloggen om toegang te krijgen tot deze pagina.",
+			"unauthorizedAdminRequiredTitle": "Beheerderstoegang vereist",
+			"unauthorizedAdminRequired": "Je hebt beheerdersrechten nodig om toegang te krijgen tot deze pagina. Neem contact op met je beheerder voor toegang.",
+			"unauthorizedManagerRequiredTitle": "Managertoegang vereist",
+			"unauthorizedManagerRequired": "Je hebt managerrechten nodig om toegang te krijgen tot deze pagina. Neem contact op met je manager voor toegang.",
+			"unauthorizedSuperAdminRequiredTitle": "Superbeheerder-toegang vereist",
+			"unauthorizedSuperAdminRequired": "Je hebt superbeheerdersrechten nodig om toegang te krijgen tot deze pagina. Neem contact op met je superbeheerder voor toegang.",
+			"unauthorizedDefaultTitle": "Toegang geweigerd",
+			"unauthorizedDefault": "Je hebt geen toestemming om deze pagina te openen."
+		},
+		"competition": {
+			"nameRequired": "Naam van de poulefase is verplicht",
+			"categoriesRequired": "Selecteer minimaal één categorie",
+			"groupsRange": "Aantal poules moet tussen 2 en 8 liggen",
+			"slotsRange": "Teams per poule moeten tussen 3 en 10 liggen",
+			"createFailed": "Het aanmaken van de poulefase is mislukt. Probeer het opnieuw."
+		}
 	},
 	"landing": {
 		"features": {
@@ -231,6 +285,10 @@
 			"unexpectedError": "Er is een onverwachte fout opgetreden",
 			"unknownError": "Er is een onbekende fout opgetreden"
 		},
+		"panel": {
+			"errorTitle": "Er is iets misgegaan",
+			"errorBody": "Er is een fout opgetreden bij het laden van dit gedeelte. Probeer de pagina te vernieuwen."
+		},
 		"team": {
 			"categoryRequired": "Categorie is verplicht",
 			"clubNameRequired": "Clubnaam is verplicht",
@@ -257,7 +315,8 @@
 		"tournament": {
 			"categoriesRequired": "Minstens één categorie is verplicht",
 			"divisionsRequired": "Minstens één divisie is verplicht",
-			"endDateBeforeStartDate": "Einddatum moet op of na de startdatum zijn",
+			"endDateBeforeStartDate": "Einddatum moet op of na de startdatum vallen",
+			"invalidDateFormat": "Voer een geldige datum in",
 			"endDateRequired": "Einddatum is verplicht",
 			"locationRequired": "Locatie is verplicht",
 			"locationTooLong": "Locatie moet minder dan 100 karakters zijn",
@@ -277,8 +336,13 @@
 			"cannotChangeOwnRole": "Je kunt je eigen rol niet wijzigen",
 			"cannotDeactivateOwnAccount": "Je kunt je eigen account niet deactiveren",
 			"cannotReactivateOwnAccount": "Je kunt je eigen account niet reactiveren",
+			"displayNameRequired": "Weergavenaam mag niet leeg zijn.",
 			"failedToUpdateRole": "Kon rol niet bijwerken",
-			"missingUserId": "Gebruikers-ID ontbreekt"
+			"missingUserId": "Gebruikers-ID ontbreekt",
+			"requestFailed": "We konden dit verzoek niet verwerken. Probeer het opnieuw.",
+			"requestFailedRefresh": "We konden dit verzoek niet verwerken. Ververs de pagina en probeer het opnieuw.",
+			"unknownError": "Onbekende fout",
+			"userNotFound": "We konden deze gebruiker niet vinden. Probeer het opnieuw."
 		},
 		"validation": {
 			"emailInvalid": "Voer een geldig e-mailadres in",
@@ -335,6 +399,7 @@
 		"count_other": "{{count}} teams geregistreerd",
 		"createNewTeam": "Maak een nieuw team aan",
 		"deleteTeam": "Team verwijderen",
+		"deleteTeamAreYouSure": "Weet je zeker dat je dit team wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
 		"description": "Registreer je team(s) voor een of meer toernooien",
 		"filterByTournament": "Filter op toernooi",
 		"form": {
@@ -382,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "Competitie"
 		},
-		"description": "Bekijk toernooi-informatie",
 		"deleteTournament": "Toernooi verwijderen",
+		"deleteTournamentAreYouSure": "Weet je zeker dat je dit toernooi wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+		"description": "Toernooi-informatie inzien",
 		"endDate": "Einddatum",
 		"form": {
 			"basicInformation": "Basis informatie",

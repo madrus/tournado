@@ -1,4 +1,4 @@
-import type { Category } from '@prisma/client'
+import type { Category, Prisma } from '@prisma/client'
 
 import { prisma } from '~/db.server'
 import { safeParseJSON } from '~/utils/json'
@@ -29,7 +29,7 @@ export type GroupWithSlots = {
 	readonly slots: readonly GroupSlotWithTeam[]
 }
 
-export type GroupSetWithDetails = {
+export type GroupStageWithDetails = {
 	readonly id: string
 	readonly name: string
 	readonly tournamentId: string
@@ -43,7 +43,7 @@ export type GroupSetWithDetails = {
 	readonly reserveSlots: readonly ReserveSlotWithTeam[]
 }
 
-export type GroupSetListItem = {
+export type GroupStageListItem = {
 	readonly id: string
 	readonly name: string
 	readonly categories: readonly Category[]
@@ -61,7 +61,7 @@ export type UnassignedTeam = {
 	readonly category: Category
 }
 
-export type CreateGroupSetParams = {
+export type CreateGroupStageParams = {
 	readonly tournamentId: string
 	readonly name: string
 	readonly categories: readonly Category[]
@@ -71,16 +71,16 @@ export type CreateGroupSetParams = {
 }
 
 // Server-side functions
-export async function createGroupSet({
+export async function createGroupStage({
 	tournamentId,
 	name,
 	categories,
 	configGroups,
 	configSlots,
 	autoFill = true,
-}: CreateGroupSetParams): Promise<string> {
-	// Create the GroupSet
-	const groupSet = await prisma.groupSet.create({
+}: CreateGroupStageParams): Promise<string> {
+	// Create the GroupStage
+	const groupStage = await prisma.groupStage.create({
 		data: {
 			tournamentId,
 			name,
@@ -98,7 +98,7 @@ export async function createGroupSet({
 		const groupName = `Group ${String.fromCharCode(charCode)}` // A, B, C, etc.
 		const group = await prisma.group.create({
 			data: {
-				groupSetId: groupSet.id,
+				groupStageId: groupStage.id,
 				name: groupName,
 				order: i,
 			},
@@ -109,7 +109,7 @@ export async function createGroupSet({
 		for (let slotIndex = 0; slotIndex < configSlots; slotIndex++) {
 			await prisma.groupSlot.create({
 				data: {
-					groupSetId: groupSet.id,
+					groupStageId: groupStage.id,
 					groupId: group.id,
 					slotIndex,
 				},
@@ -131,7 +131,7 @@ export async function createGroupSet({
 		for (const team of matchingTeams) {
 			await prisma.groupSlot.create({
 				data: {
-					groupSetId: groupSet.id,
+					groupStageId: groupStage.id,
 					groupId: null, // Reserve slot
 					slotIndex: 0, // Reserve doesn't need ordering
 					teamId: team.id,
@@ -140,14 +140,14 @@ export async function createGroupSet({
 		}
 	}
 
-	return groupSet.id
+	return groupStage.id
 }
 
-export async function getGroupSetWithDetails(
-	groupSetId: string,
-): Promise<GroupSetWithDetails | null> {
-	const groupSet = await prisma.groupSet.findUnique({
-		where: { id: groupSetId },
+export async function getGroupStageWithDetails(
+	groupStageId: string,
+): Promise<GroupStageWithDetails | null> {
+	const groupStage = await prisma.groupStage.findUnique({
+		where: { id: groupStageId },
 		include: {
 			groups: {
 				include: {
@@ -183,31 +183,31 @@ export async function getGroupSetWithDetails(
 		},
 	})
 
-	if (!groupSet) return null
+	if (!groupStage) return null
 
 	return {
-		id: groupSet.id,
-		name: groupSet.name,
-		tournamentId: groupSet.tournamentId,
+		id: groupStage.id,
+		name: groupStage.name,
+		tournamentId: groupStage.tournamentId,
 		categories: safeParseJSON<Category[]>(
-			groupSet.categories,
-			`getGroupSetById(${groupSetId})`,
+			groupStage.categories,
+			`getGroupStageWithDetails(${groupStageId})`,
 			[],
 		),
-		configGroups: groupSet.configGroups,
-		configSlots: groupSet.configSlots,
-		autoFill: groupSet.autoFill,
-		createdAt: groupSet.createdAt,
-		updatedAt: groupSet.updatedAt,
-		groups: groupSet.groups,
-		reserveSlots: groupSet.groupSlots,
+		configGroups: groupStage.configGroups,
+		configSlots: groupStage.configSlots,
+		autoFill: groupStage.autoFill,
+		createdAt: groupStage.createdAt,
+		updatedAt: groupStage.updatedAt,
+		groups: groupStage.groups,
+		reserveSlots: groupStage.groupSlots,
 	}
 }
 
-export async function getTournamentGroupSets(
+export async function getTournamentGroupStages(
 	tournamentId: string,
-): Promise<readonly GroupSetListItem[]> {
-	const groupSets = await prisma.groupSet.findMany({
+): Promise<readonly GroupStageListItem[]> {
+	const groupStages = await prisma.groupStage.findMany({
 		where: { tournamentId },
 		select: {
 			id: true,
@@ -222,26 +222,31 @@ export async function getTournamentGroupSets(
 		orderBy: { createdAt: 'desc' },
 	})
 
-	return groupSets.map((groupSet) => ({
-		...groupSet,
+	return groupStages.map((groupStage) => ({
+		...groupStage,
 		categories: safeParseJSON<Category[]>(
-			groupSet.categories,
-			`getTournamentGroupSets(${tournamentId}) - groupSet ${groupSet.id}`,
+			groupStage.categories,
+			`getTournamentGroupStages(${tournamentId}) - groupStage ${groupStage.id}`,
 			[],
 		),
 	}))
 }
 
-export const getTeamsByCategories = async (
+export const getUnassignedTeamsByCategories = async (
 	tournamentId: string,
-	categories: readonly Category[],
-): Promise<readonly UnassignedTeam[]> =>
-	await prisma.team.findMany({
-		where: {
-			tournamentId,
-			category: { in: [...categories] },
-			groupSlot: null, // Only unassigned teams
-		},
+	categories?: readonly Category[],
+): Promise<readonly UnassignedTeam[]> => {
+	const where: Prisma.TeamWhereInput = {
+		tournamentId,
+		groupSlot: null, // Only unassigned teams
+	}
+
+	if (categories && categories.length > 0) {
+		where.category = { in: [...categories] }
+	}
+
+	return await prisma.team.findMany({
+		where,
 		select: {
 			id: true,
 			name: true,
@@ -250,13 +255,14 @@ export const getTeamsByCategories = async (
 		},
 		orderBy: [{ category: 'asc' }, { clubName: 'asc' }, { name: 'asc' }],
 	})
+}
 
 // --------------------------------------------------------------------------------------
 // Group assignment utilities
 // --------------------------------------------------------------------------------------
 
 type AssignTeamToGroupSlotProps = {
-	readonly groupSetId: string
+	readonly groupStageId: string
 	readonly groupId: string
 	readonly slotIndex: number
 	readonly teamId: string
@@ -264,18 +270,18 @@ type AssignTeamToGroupSlotProps = {
 
 /**
  * Assign a team to a specific group slot
- * - Validates the slot belongs to the given group and group set
+ * - Validates the slot belongs to the given group and group stage
  * - Ensures slot is empty (use clear or swap for occupied slots)
- * - Clears any previous assignment for teamId across the same group set
+ * - Clears any previous assignment for teamId across the same group stage
  */
 export async function assignTeamToGroupSlot(
 	props: Readonly<AssignTeamToGroupSlotProps>,
 ): Promise<void> {
-	const { groupSetId, groupId, slotIndex, teamId } = props
+	const { groupStageId, groupId, slotIndex, teamId } = props
 
 	await prisma.$transaction(async (tx) => {
 		const slot = await tx.groupSlot.findFirst({
-			where: { groupSetId, groupId, slotIndex },
+			where: { groupStageId, groupId, slotIndex },
 			select: { id: true, teamId: true },
 		})
 
@@ -287,10 +293,10 @@ export async function assignTeamToGroupSlot(
 			throw new Error('Slot is occupied, clear or swap before assigning')
 		}
 
-		// Validate team and group set belong to the same tournament
-		const [groupSet, team] = await Promise.all([
-			tx.groupSet.findUnique({
-				where: { id: groupSetId },
+		// Validate team and group stage belong to the same tournament
+		const [groupStage, team] = await Promise.all([
+			tx.groupStage.findUnique({
+				where: { id: groupStageId },
 				select: { tournamentId: true },
 			}),
 			tx.team.findUnique({
@@ -299,21 +305,21 @@ export async function assignTeamToGroupSlot(
 			}),
 		])
 
-		if (!groupSet) {
-			throw new Error('Group set not found')
+		if (!groupStage) {
+			throw new Error('Group stage not found')
 		}
 
 		if (!team) {
 			throw new Error('Team not found')
 		}
 
-		if (groupSet.tournamentId !== team.tournamentId) {
-			throw new Error('Team and group set must belong to the same tournament')
+		if (groupStage.tournamentId !== team.tournamentId) {
+			throw new Error('Team and group stage must belong to the same tournament')
 		}
 
-		// Clear any previous assignment of this team within the group set (including reserve)
+		// Clear any previous assignment of this team within the group stage (including reserve)
 		await tx.groupSlot.updateMany({
-			where: { groupSetId, teamId },
+			where: { groupStageId, teamId },
 			data: { teamId: null },
 		})
 
@@ -341,25 +347,25 @@ export async function clearGroupSlot(
 }
 
 type MoveTeamToReserveProps = {
-	readonly groupSetId: string
+	readonly groupStageId: string
 	readonly teamId: string
 }
 
 /**
- * Move a team to reserve within a group set
+ * Move a team to reserve within a group stage
  * - Clears any existing group assignment
  * - Creates a reserve slot (groupId null) for that team if not present
  */
 export async function moveTeamToReserve(
 	props: Readonly<MoveTeamToReserveProps>,
 ): Promise<void> {
-	const { groupSetId, teamId } = props
+	const { groupStageId, teamId } = props
 
 	await prisma.$transaction(async (tx) => {
-		// Validate team and group set belong to the same tournament
-		const [groupSet, team] = await Promise.all([
-			tx.groupSet.findUnique({
-				where: { id: groupSetId },
+		// Validate team and group stage belong to the same tournament
+		const [groupStage, team] = await Promise.all([
+			tx.groupStage.findUnique({
+				where: { id: groupStageId },
 				select: { tournamentId: true },
 			}),
 			tx.team.findUnique({
@@ -368,27 +374,27 @@ export async function moveTeamToReserve(
 			}),
 		])
 
-		if (!groupSet) {
-			throw new Error('Group set not found')
+		if (!groupStage) {
+			throw new Error('Group stage not found')
 		}
 
 		if (!team) {
 			throw new Error('Team not found')
 		}
 
-		if (groupSet.tournamentId !== team.tournamentId) {
-			throw new Error('Team and group set must belong to the same tournament')
+		if (groupStage.tournamentId !== team.tournamentId) {
+			throw new Error('Team and group stage must belong to the same tournament')
 		}
 
 		// Clear any existing assignment (group or reserve)
 		await tx.groupSlot.updateMany({
-			where: { groupSetId, teamId },
+			where: { groupStageId, teamId },
 			data: { teamId: null },
 		})
 
 		// Ensure a reserve slot exists for this team
 		const existingReserve = await tx.groupSlot.findFirst({
-			where: { groupSetId, teamId, groupId: null },
+			where: { groupStageId, teamId, groupId: null },
 			select: { id: true },
 		})
 
@@ -401,7 +407,7 @@ export async function moveTeamToReserve(
 		} else {
 			await tx.groupSlot.create({
 				data: {
-					groupSetId,
+					groupStageId,
 					groupId: null,
 					slotIndex: 0,
 					teamId,

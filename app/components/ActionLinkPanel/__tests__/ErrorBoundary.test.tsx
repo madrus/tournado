@@ -30,8 +30,8 @@ describe('ErrorBoundary', () => {
 		})
 
 		expect(screen.getByRole('alert')).toBeInTheDocument()
-		expect(screen.getByText('errors.panelErrorTitle')).toBeInTheDocument()
-		expect(screen.getByText('errors.panelErrorBody')).toBeInTheDocument()
+		expect(screen.getByText('messages.panel.errorTitle')).toBeInTheDocument()
+		expect(screen.getByText('messages.panel.errorBody')).toBeInTheDocument()
 		expect(screen.getByText('Test error')).toBeInTheDocument()
 		expect(onErrorMock).toHaveBeenCalledWith(expect.any(Error), expect.any(Object))
 	})

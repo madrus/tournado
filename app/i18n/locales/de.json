@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Gruppen, Spiele und Tabellen für Turniere verwalten.",
 			"groupStage": "Gruppenphase",
-			"groupStageDescription": "Gruppen für Round-Robin-Spiel erstellen und verwalten",
+			"groupStageDescription": "Gruppen für Gruppenspiele erstellen und verwalten",
 			"groups": "Gruppen",
 			"playoffs": "Playoffs",
 			"title": "Wettbewerbsverwaltung"
@@ -24,7 +24,7 @@
 			"description": "Anwendungseinstellungen und Präferenzen konfigurieren.",
 			"title": "Systemeinstellungen"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 			"createNewTeamDescription": "Erstellen Sie ein neues Team mit Turnierdaten und Kontaktinformationen.",
 			"createTeam": "Team erstellen",
@@ -38,13 +38,13 @@
 			"title": "Team-Verwaltung",
 			"totalTeams": "Teams insgesamt"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 			"description": "Verwalten Sie Turniere im System. Turnierinformationen erstellen, bearbeiten oder löschen.",
 			"title": "Turnier-Verwaltung",
 			"totalTournaments": "Turniere insgesamt"
 		},
-		"user": {
+		"users": {
 			"description": "Benutzerkonten und Berechtigungen verwalten.",
 			"title": "Benutzer-Verwaltung",
 			"totalUsers": "Gesamtbenutzer"
@@ -56,10 +56,6 @@
 		"createAccount": "Konto erstellen",
 		"dontHaveAccount": "Haben Sie noch kein Konto?",
 		"emailAddress": "E-Mail-Adresse",
-		"errors": {
-			"accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung.",
-			"accountDeactivatedTitle": "Konto deaktiviert"
-		},
 		"firebase": {
 			"continueWithGoogle": "Mit Google fortfahren",
 			"error": "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -112,11 +108,15 @@
 			"actions": "Aktionen",
 			"add": "Hinzufügen",
 			"cancel": "Abbrechen",
+			"confirmDelete": "Ja, löschen",
+			"create": "Erstellen",
+			"creating": "Erstellen...",
 			"delete": "Löschen",
 			"edit": "Bearbeiten",
 			"save": "Speichern",
 			"saving": "Speichern...",
 			"update": "Aktualisieren",
+			"updating": "Aktualisieren...",
 			"view": "Ansehen"
 		},
 		"appName": "Tournado",
@@ -168,8 +168,41 @@
 		"view": "Ansicht"
 	},
 	"competition": {
+		"description": "Turniergruppen, Spiele und Tabellen verwalten.",
+		"createGroupStage": "Gruppenphase erstellen",
+		"createGroupStageDescription": "Richten Sie Gruppen ein für das {{tournamentName}}-Turnier",
 		"selectTournament": "Turnier auswählen",
-		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppen zu verwalten."
+		"selectTournamentDescription": "Wählen Sie ein Turnier aus der Dropdown-Liste oben aus, um seine Gruppenphase zu verwalten.",
+		"noGroupStages": "Noch keine Gruppenphase",
+		"noGroupStagesDescription": "Beginnen Sie mit der Erstellung der Gruppenphase.",
+		"groupsCount": "{{count}} Gruppen",
+		"labels": {
+			"categories": "Kategorien:",
+			"setup": "Aufbau:",
+			"autoFill": "Auto-Ausfüllen:",
+			"created": "Erstellt:"
+		},
+		"status": {
+			"enabled": "Aktiviert",
+			"disabled": "Deaktiviert"
+		},
+		"groupStage": {
+			"name": "Gruppenphasen-Name",
+			"namePlaceholder": "z.B. JO8 Premier, 1. und 2. Liga",
+			"ageCategories": "Alterskategorien",
+			"ageCategoriesDescription": "Wählen Sie die Alterskategorien aus, die an dieser Gruppenphase teilnehmen",
+			"teamsAvailable": "{{count}} Teams verfügbar",
+			"configGroups": "Anzahl der Gruppen",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Teams pro Gruppe",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Gruppen automatisch ausfüllen",
+			"autoFillDescription": "Teams initial automatisch auf die Gruppen verteilen",
+			"summary": "Zusammenfassung",
+			"summaryTeamsAvailable": "{{count}} Teams verfügbar in ausgewählten Kategorien",
+			"summaryWillCreate": "Es werden {{groups}} Gruppen mit jeweils {{slots}} Plätzen erstellt ({{total}} Plätze insgesamt)",
+			"title": "Gruppenphase"
+		}
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Fünfte Division",
@@ -183,7 +216,28 @@
 		"emailOutboxInvalidFormat": "Die E-Mail-Outbox hat ein ungültiges Format",
 		"emailOutboxReadFailure": "E-Mail-Outbox konnte nicht gelesen werden",
 		"somethingWentWrong": "Etwas ist schief gelaufen",
-		"teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+		"teamLoadFailed": "Team-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+		"auth": {
+			"accountDeactivatedTitle": "Konto deaktiviert",
+			"accountDeactivatedMessage": "Ihr Konto wurde deaktiviert. Bitte kontaktieren Sie den Support für Unterstützung.",
+			"unauthorizedSignInRequiredTitle": "Anmeldung erforderlich",
+			"unauthorizedSignInRequired": "Sie müssen sich anmelden, um auf diese Seite zuzugreifen.",
+			"unauthorizedAdminRequiredTitle": "Administratorzugriff erforderlich",
+			"unauthorizedAdminRequired": "Sie benötigen Administratorrechte, um auf diese Seite zuzugreifen. Wenden Sie sich an Ihren Administrator für den Zugriff.",
+			"unauthorizedManagerRequiredTitle": "Manager-Zugriff erforderlich",
+			"unauthorizedManagerRequired": "Sie benötigen Manager-Rechte, um auf diese Seite zuzugreifen. Wenden Sie sich an Ihren Manager für den Zugriff.",
+			"unauthorizedSuperAdminRequiredTitle": "Super-Administrator-Zugriff erforderlich",
+			"unauthorizedSuperAdminRequired": "Sie benötigen Super-Administrator-Rechte, um auf diese Seite zuzugreifen. Wenden Sie sich an Ihren Super-Administrator für den Zugriff.",
+			"unauthorizedDefaultTitle": "Zugriff verweigert",
+			"unauthorizedDefault": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen."
+		},
+		"competition": {
+			"nameRequired": "Name des Gruppenphase ist erforderlich",
+			"categoriesRequired": "Mindestens eine Kategorie muss ausgewählt werden",
+			"groupsRange": "Die Anzahl der Gruppen muss zwischen 2 und 8 liegen",
+			"slotsRange": "Teams pro Gruppe müssen zwischen 3 und 10 liegen",
+			"createFailed": "Erstellen der Gruppenphase fehlgeschlagen. Bitte versuche es erneut."
+		}
 	},
 	"landing": {
 		"features": {
@@ -231,6 +285,10 @@
 			"unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
 			"unknownError": "Ein unbekannter Fehler ist aufgetreten"
 		},
+		"panel": {
+			"errorTitle": "Etwas ist schief gelaufen",
+			"errorBody": "Beim Laden dieses Abschnitts ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite zu aktualisieren."
+		},
 		"team": {
 			"categoryRequired": "Kategorie ist erforderlich",
 			"clubNameRequired": "Vereinsname ist erforderlich",
@@ -258,6 +316,7 @@
 			"categoriesRequired": "Mindestens eine Kategorie ist erforderlich",
 			"divisionsRequired": "Mindestens eine Liga ist erforderlich",
 			"endDateBeforeStartDate": "Enddatum muss am oder nach dem Startdatum liegen",
+			"invalidDateFormat": "Bitte geben Sie ein gültiges Datum ein",
 			"endDateRequired": "Enddatum ist erforderlich",
 			"locationRequired": "Ort ist erforderlich",
 			"locationTooLong": "Ort darf maximal 100 Zeichen lang sein",
@@ -277,8 +336,13 @@
 			"cannotChangeOwnRole": "Sie können Ihre eigene Rolle nicht ändern",
 			"cannotDeactivateOwnAccount": "Sie können Ihr eigenes Konto nicht deaktivieren",
 			"cannotReactivateOwnAccount": "Sie können Ihr eigenes Konto nicht reaktivieren",
+			"displayNameRequired": "Anzeigename darf nicht leer sein.",
 			"failedToUpdateRole": "Rolle konnte nicht aktualisiert werden",
-			"missingUserId": "Benutzer-ID fehlt"
+			"missingUserId": "Benutzer-ID fehlt",
+			"requestFailed": "Wir konnten diese Anfrage nicht verarbeiten. Bitte versuchen Sie es erneut.",
+			"requestFailedRefresh": "Wir konnten diese Anfrage nicht verarbeiten. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut.",
+			"unknownError": "Unbekannter Fehler",
+			"userNotFound": "Wir konnten diesen Benutzer nicht finden. Bitte versuchen Sie es erneut."
 		},
 		"validation": {
 			"emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
@@ -335,6 +399,7 @@
 		"count_other": "{{count}} Teams registriert",
 		"createNewTeam": "Neues Team erstellen",
 		"deleteTeam": "Team löschen",
+		"deleteTeamAreYouSure": "Sind Sie sicher, dass Sie dieses Team löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 		"description": "Registrieren Sie Ihr(e) Team(s) für ein oder mehrere Turniere",
 		"filterByTournament": "Nach Turnier filtern",
 		"form": {
@@ -384,6 +449,7 @@
 		},
 		"description": "Turnierinformationen ansehen",
 		"deleteTournament": "Turnier löschen",
+		"deleteTournamentAreYouSure": "Sind Sie sicher, dass Sie dieses Turnier löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
 		"endDate": "Enddatum",
 		"form": {
 			"basicInformation": "Grundinformationen",

@@ -134,7 +134,7 @@ model Tournament {
   updatedAt  DateTime   @updatedAt
   teams      Team[]
   matches    Match[]
-  groupSets  GroupSet[]
+  groupStages  GroupStage[]
 }
 
 model Match {
@@ -165,7 +165,7 @@ model MatchScore {
   awayTeamScore Int
 }
 
-model GroupSet {
+model GroupStage {
   id            String     @id @default(cuid())
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
   tournamentId  String
@@ -185,23 +185,23 @@ model GroupSet {
 
 model Group {
   id          String   @id @default(cuid())
-  groupSet    GroupSet @relation(fields: [groupSetId], references: [id], onDelete: Cascade)
-  groupSetId  String
+  groupStage    GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
+  groupStageId  String
   name        String   // e.g. "Group A"
   order       Int
   slots       GroupSlot[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@unique([groupSetId, name])
-  @@unique([groupSetId, order])
-  @@index([groupSetId])
+  @@unique([groupStageId, name])
+  @@unique([groupStageId, order])
+  @@index([groupStageId])
 }
 
 model GroupSlot {
   id          String   @id @default(cuid())
-  groupSet    GroupSet @relation(fields: [groupSetId], references: [id], onDelete: Cascade)
-  groupSetId  String
+  groupStage    GroupStage @relation(fields: [groupStageId], references: [id], onDelete: Cascade)
+  groupStageId  String
   group       Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
   groupId     String?         // null ⇒ Reserve
   slotIndex   Int              // 0..N-1 inside group
@@ -209,7 +209,7 @@ model GroupSlot {
   teamId      String?  @unique // null ⇒ placeholder
 
   @@unique([groupId, slotIndex]) // each slot unique inside a group
-  @@unique([groupSetId, teamId]) // team only once in a set
-  @@index([groupSetId])
+  @@unique([groupStageId, teamId]) // team only once in a set
+  @@index([groupStageId])
   @@index([teamId])
 }

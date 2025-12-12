@@ -964,7 +964,7 @@ Implement Prisma-based data model with controlled migrations:
 - `Team`: registration, club information, contact details
 - `Tournament`: configuration, categories, divisions, rules
 - `Match`: scheduling, scores, referee assignments, status
-- `GroupSet`/`Group`/`GroupSlot`: group phase organization
+- `GroupStage`/`Group`/`GroupSlot`: group phase organization
 - `MatchScore`: detailed scoring with validation
 
 **Extended Models** (planned):
@@ -1310,7 +1310,7 @@ Implement Competition section as central hub for tournament operations with stru
 - **Navigation**: Admin Panel → Competition Management
 
 **Group Management Workflow** (TASK-0301):
-- View group sets for selected tournaments
+- View group stage for selected tournaments
 - Assign teams from reserve to group slots
 - Move teams between groups and reserve
 - Swap teams between slots
@@ -1324,7 +1324,7 @@ Implement Competition section as central hub for tournament operations with stru
 
 **Database Operations**:
 - Atomic transactions for multi-step assignments
-- Unique constraints: one team per slot, team appears once per group set
+- Unique constraints: one team per slot, team appears once per group stage
 - Cascade handling for team/tournament deletions
 - Optimistic locking for concurrent operations
 
@@ -1333,7 +1333,7 @@ Implement Competition section as central hub for tournament operations with stru
 - Group models: `app/models/group.server.ts`
 - Competition routes: `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/**`
 - RBAC middleware: `app/utils/rbacMiddleware.server.ts`
-- Database schema: `prisma/schema.prisma` (GroupSet, Group, GroupSlot)
+- Database schema: `prisma/schema.prisma` (GroupStage, Group, GroupSlot)
 
 ### Consequences
 

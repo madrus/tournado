@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Gérer les groupes, les matchs et les classements des tournois.",
 			"groupStage": "Phase de groupes",
-			"groupStageDescription": "Créer et gérer des groupes pour le jeu en round-robin",
+			"groupStageDescription": "Créer et gérer des groupes pour la phase de groupes",
 			"groups": "Groupes",
 			"playoffs": "Playoffs",
 			"title": "Gestion de la compétition"
@@ -24,7 +24,7 @@
 			"description": "Configurer les paramètres et préférences de l'application.",
 			"title": "Paramètres système"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action ne peut pas être annulée.",
 			"createNewTeamDescription": "Créer une nouvelle équipe avec les détails du tournoi et les informations de contact.",
 			"createTeam": "Créer une équipe",
@@ -38,13 +38,13 @@
 			"title": "Gestion des équipes",
 			"totalTeams": "Nombre total d'équipes"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action ne peut pas être annulée.",
 			"description": "Gérer les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
 			"title": "Gestion des tournois",
 			"totalTournaments": "Nombre total de tournois"
 		},
-		"user": {
+		"users": {
 			"description": "Gérer les comptes utilisateur et les permissions.",
 			"title": "Gestion des utilisateurs",
 			"totalUsers": "Total utilisateurs"
@@ -56,10 +56,6 @@
 		"createAccount": "Créer un compte",
 		"dontHaveAccount": "Vous n'avez pas de compte ?",
 		"emailAddress": "Adresse e-mail",
-		"errors": {
-			"accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide.",
-			"accountDeactivatedTitle": "Compte désactivé"
-		},
 		"firebase": {
 			"continueWithGoogle": "Continuer avec Google",
 			"error": "Échec de l'authentification. Veuillez réessayer.",
@@ -112,11 +108,15 @@
 			"actions": "Actions",
 			"add": "Ajouter",
 			"cancel": "Annuler",
+			"confirmDelete": "Oui, supprimer",
+			"create": "Créer",
+			"creating": "Création...",
 			"delete": "Supprimer",
 			"edit": "Modifier",
 			"save": "Enregistrer",
 			"saving": "Enregistrement...",
 			"update": "Mettre à jour",
+			"updating": "Mise à jour...",
 			"view": "Voir"
 		},
 		"appName": "Tournado",
@@ -168,8 +168,41 @@
 		"view": "Vue"
 	},
 	"competition": {
+		"description": "Gérer les groupes de tournoi, les matchs et les classements.",
+		"createGroupStage": "Créer une phase de groupes",
+		"createGroupStageDescription": "Configurez les groupes pour le tournoi {{tournamentName}}",
 		"selectTournament": "Sélectionner un tournoi",
-		"selectTournamentDescription": "Choisissez un tournoi dans la liste déroulante ci-dessus pour gérer ses groupes."
+		"selectTournamentDescription": "Choisissez un tournoi dans la liste déroulante ci-dessus pour gérer sa phase de groupes.",
+		"noGroupStages": "Aucune phase de groupes",
+		"noGroupStagesDescription": "Commencez par créer la phase de groupes.",
+		"groupsCount": "{{count}} groupes",
+		"labels": {
+			"categories": "Catégories :",
+			"setup": "Configuration :",
+			"autoFill": "Remplissage auto :",
+			"created": "Créé :"
+		},
+		"status": {
+			"enabled": "Activé",
+			"disabled": "Désactivé"
+		},
+		"groupStage": {
+			"name": "Nom de la phase de groupes",
+			"namePlaceholder": "ex. JO8 Premier, 1ère et 2ème division",
+			"ageCategories": "Catégories d'âge",
+			"ageCategoriesDescription": "Sélectionnez les catégories d'âge qui participeront à cette phase de groupes",
+			"teamsAvailable": "{{count}} équipes disponibles",
+			"configGroups": "Nombre de groupes",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "Équipes par groupe",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "Remplir automatiquement les groupes",
+			"autoFillDescription": "Répartir automatiquement les équipes dans les groupes initialement",
+			"summary": "Résumé",
+			"summaryTeamsAvailable": "{{count}} équipes disponibles dans les catégories sélectionnées",
+			"summaryWillCreate": "Créera {{groups}} groupes avec {{slots}} places chacun ({{total}} places au total)",
+			"title": "Phase de groupes"
+		}
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "Cinquième Division",
@@ -183,7 +216,28 @@
 		"emailOutboxInvalidFormat": "La boîte d'envoi des e-mails a un format invalide",
 		"emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails",
 		"somethingWentWrong": "Quelque chose s'est mal passé",
-		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard."
+		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
+		"auth": {
+			"accountDeactivatedTitle": "Compte désactivé",
+			"accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide.",
+			"unauthorizedSignInRequiredTitle": "Connexion requise",
+			"unauthorizedSignInRequired": "Vous devez vous connecter pour accéder à cette page.",
+			"unauthorizedAdminRequiredTitle": "Accès administrateur requis",
+			"unauthorizedAdminRequired": "Vous avez besoin de privilèges d'administrateur pour accéder à cette page. Contactez votre administrateur pour obtenir l'accès.",
+			"unauthorizedManagerRequiredTitle": "Accès gestionnaire requis",
+			"unauthorizedManagerRequired": "Vous avez besoin de privilèges de gestionnaire pour accéder à cette page. Contactez votre gestionnaire pour obtenir l'accès.",
+			"unauthorizedSuperAdminRequiredTitle": "Accès super-administrateur requis",
+			"unauthorizedSuperAdminRequired": "Vous avez besoin de privilèges de super-administrateur pour accéder à cette page. Contactez votre super-administrateur pour obtenir l'accès.",
+			"unauthorizedDefaultTitle": "Accès refusé",
+			"unauthorizedDefault": "Vous n'avez pas la permission d'accéder à cette page."
+		},
+		"competition": {
+			"nameRequired": "Le nom de la phase de groupes est requis",
+			"categoriesRequired": "Au moins une catégorie doit être sélectionnée",
+			"groupsRange": "Le nombre de groupes doit être compris entre 2 et 8",
+			"slotsRange": "Le nombre d'équipes par groupe doit être compris entre 3 et 10",
+			"createFailed": "Échec de la création de la phase de groupes. Veuillez réessayer."
+		}
 	},
 	"landing": {
 		"features": {
@@ -231,6 +285,10 @@
 			"unexpectedError": "Une erreur inattendue s'est produite",
 			"unknownError": "Une erreur inconnue s'est produite"
 		},
+		"panel": {
+			"errorTitle": "Une erreur s'est produite",
+			"errorBody": "Une erreur s'est produite lors du chargement de cette section. Veuillez essayer de rafraîchir la page."
+		},
 		"team": {
 			"categoryRequired": "La catégorie est requise",
 			"clubNameRequired": "Le nom du club est requis",
@@ -258,6 +316,7 @@
 			"categoriesRequired": "Au moins une catégorie est obligatoire",
 			"divisionsRequired": "Au moins une division est obligatoire",
 			"endDateBeforeStartDate": "La date de fin doit être le jour du début ou après",
+			"invalidDateFormat": "Veuillez entrer une date valide",
 			"endDateRequired": "La date de fin est obligatoire",
 			"locationRequired": "Le lieu est obligatoire",
 			"locationTooLong": "Le lieu doit contenir moins de 100 caractères",
@@ -277,8 +336,13 @@
 			"cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
 			"cannotDeactivateOwnAccount": "Vous ne pouvez pas désactiver votre propre compte",
 			"cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte",
+			"displayNameRequired": "Le nom d'affichage ne peut pas être vide.",
 			"failedToUpdateRole": "Échec de la mise à jour du rôle",
-			"missingUserId": "Identifiant d'utilisateur manquant"
+			"missingUserId": "Identifiant d'utilisateur manquant",
+			"requestFailed": "Nous n'avons pas pu traiter cette demande. Veuillez réessayer.",
+			"requestFailedRefresh": "Nous n'avons pas pu traiter cette demande. Veuillez actualiser la page et réessayer.",
+			"unknownError": "Erreur inconnue",
+			"userNotFound": "Nous n'avons pas trouvé cet utilisateur. Veuillez réessayer."
 		},
 		"validation": {
 			"emailInvalid": "Veuillez saisir une adresse email valide",
@@ -335,6 +399,7 @@
 		"count_other": "{{count}} équipes inscrites",
 		"createNewTeam": "Créer une nouvelle équipe",
 		"deleteTeam": "Supprimer l'équipe",
+		"deleteTeamAreYouSure": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.",
 		"description": "Inscrivez votre/vos équipe(s) pour un ou plusieurs tournois",
 		"filterByTournament": "Filtrer par tournoi",
 		"form": {
@@ -382,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "Compétition"
 		},
-		"description": "Voir les informations du tournoi",
 		"deleteTournament": "Supprimer le tournoi",
+		"deleteTournamentAreYouSure": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action est irréversible.",
+		"description": "Voir les informations du tournoi",
 		"endDate": "Date de fin",
 		"form": {
 			"basicInformation": "Informations de base",

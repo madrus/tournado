@@ -682,18 +682,18 @@ export function TeamForm({
 				) : null}
 
 				{/* Submit and Action Buttons */}
-				<div className='flex justify-between gap-4 md:justify-end rtl:justify-start rtl:md:justify-start'>
+				<div className='flex justify-between gap-2 md:justify-end rtl:justify-start rtl:md:justify-start'>
 					<ActionButton
 						type='button'
 						onClick={() => handleReset()}
 						variant='secondary'
 						color='brand'
 					>
-						<RestorePageIcon className='mr-2 h-6 w-6' size={24} />
+						<RestorePageIcon className='mr-2 h-6 w-6' size={4} />
 						{t('common.actions.cancel')}
 					</ActionButton>
 
-					<div className='flex gap-4'>
+					<div className='flex gap-24'>
 						<ActionButton
 							type='submit'
 							variant='primary'

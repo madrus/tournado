@@ -224,7 +224,7 @@ export function SidebarTeamsExample({
 			sidebarContent={sidebarContent}
 			mainContent={mainContent}
 			addButtonPath='/teams/new'
-			addButtonLabel={t('teams.addTeam')}
+			addButtonLabel={t('admin.teams.newTeam')}
 			closeSidebarOnPaths={['/new', '/edit']}
 			theme='red'
 			sidebarWidth='medium'

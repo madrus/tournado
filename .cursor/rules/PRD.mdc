@@ -85,7 +85,7 @@ Testing & Tooling [Implemented]
 
 Database & Data Model [Implemented]
 
-- [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupSet`, `Group`, `GroupSlot`, `MatchScore`
+- [x] Prisma/SQLite with models for `User`, `Team`, `Tournament`, `Match`, `GroupStage`, `Group`, `GroupSlot`, `MatchScore`
 
 ### 📋 Planned Features (PRD Scope)
 
@@ -126,7 +126,7 @@ Database & Data Model [Implemented]
 **Phase 3 - Groups & Playoffs (MVP) [In Progress]**
 
 - [ ] Groups and seeding workflows
-  - [ ] Team allocations into groups for the selected tournament (CRUD over `GroupSet`/`Group`/`GroupSlot`)
+  - [ ] Team allocations into groups for the selected tournament (CRUD over `GroupStage`/`Group`/`GroupSlot`)
 - [ ] Playoffs: multi-stage with knockout via groups
 - [ ] Competition status: standings and placements
 
@@ -365,7 +365,7 @@ RBAC note: Future role; permissions and Admin Panel access TBD.
 
 #### 3.1 Group Workflows
 
-- [ ] Group allocation UX over `GroupSet`/`Group`/`GroupSlot`
+- [ ] Group allocation UX over `GroupStage`/`Group`/`GroupSlot`
 
 #### 3.2 Playoff Structures (MVP)
 
@@ -515,7 +515,7 @@ Details: See `docs/development/PRD.details.md#bracket-formats`
 
 #### Groups & Matches
 
-- **Current State**: Data models for `GroupSet`/`Group`/`GroupSlot`; `Match` and `MatchScore` exist but not used yet
+- **Current State**: Data models for `GroupStage`/`Group`/`GroupSlot`; `Match` and `MatchScore` exist but not used yet
 - **Limitations**: Group allocation workflows mid-implementation; playoffs not yet modeled; match calendar UX not complete
 - **Requirements**: CRUD UX for group allocation; playoff schema (knockout/placement); scheduling tooling with automatic conflict detection/resolution; referee flows
 - Details: See `docs/development/PRD.details.md#scheduling-conflicts`, `#referee-experience`, and `#bracket-formats`

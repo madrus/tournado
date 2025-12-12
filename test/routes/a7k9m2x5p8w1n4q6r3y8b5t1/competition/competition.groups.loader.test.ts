@@ -14,7 +14,7 @@ vi.mock('~/utils/session.server', () => ({
 
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-	getTournamentGroupSets: vi.fn().mockResolvedValue([]),
+	getTournamentGroupStages: vi.fn().mockResolvedValue([]),
 }))
 
 // Mock tournament model

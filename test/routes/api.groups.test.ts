@@ -26,10 +26,10 @@ vi.mock('~/utils/rbacMiddleware.server', async () => {
 
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-	getTournamentGroupSets: vi.fn(() => [
+	getTournamentGroupStages: vi.fn(() => [
 		{
 			id: '1',
-			name: 'Group Set A',
+			name: 'Group Stage A',
 			tournamentId: 'test-tournament-id',
 			categories: ['U12', 'U14'],
 		},
@@ -68,8 +68,8 @@ describe('Resource Route: /api/groups', () => {
 			)
 
 			expect(response.status).toBe(200)
-			expect(json).toHaveProperty('groupSets')
-			expect(Array.isArray(json.groupSets)).toBe(true)
+			expect(json).toHaveProperty('groupStages')
+			expect(Array.isArray(json.groupStages)).toBe(true)
 		})
 	})
 
@@ -145,7 +145,7 @@ describe('Resource Route: /api/groups', () => {
 		expect(json).toHaveProperty('error', 'Missing required parameter')
 	})
 
-	it('should return group sets for the specified tournament', async () => {
+	it('should return group stage for the specified tournament', async () => {
 		const mockUser = createMockUser('MANAGER')
 		vi.mocked(getUser).mockResolvedValue(mockUser)
 
@@ -161,9 +161,9 @@ describe('Resource Route: /api/groups', () => {
 		})
 		const json = await response.json()
 
-		expect(json.groupSets).toHaveLength(1)
-		expect(json.groupSets[0]).toHaveProperty('id', '1')
-		expect(json.groupSets[0]).toHaveProperty('name', 'Group Set A')
-		expect(json.groupSets[0]).toHaveProperty('tournamentId', 'test-tournament-id')
+		expect(json.groupStages).toHaveLength(1)
+		expect(json.groupStages[0]).toHaveProperty('id', '1')
+		expect(json.groupStages[0]).toHaveProperty('name', 'Group Stage A')
+		expect(json.groupStages[0]).toHaveProperty('tournamentId', 'test-tournament-id')
 	})
 })

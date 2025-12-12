@@ -40,9 +40,9 @@ describe('TeamsLayoutHeader', () => {
 		renderWithRouter(<TeamsLayoutHeader variant='admin' />)
 
 		expect(
-			screen.getByRole('heading', { name: 'admin.team.title' }),
+			screen.getByRole('heading', { name: 'admin.teams.title' }),
 		).toBeInTheDocument()
-		expect(screen.getByText('admin.team.description')).toBeInTheDocument()
+		expect(screen.getByText('admin.teams.description')).toBeInTheDocument()
 		expect(screen.getByRole('link', { name: 'common.actions.add' })).toBeInTheDocument()
 	})
 

@@ -560,7 +560,7 @@ export function TournamentForm({
 				</Panel>
 
 				{/* Submit Button */}
-				<div className='flex flex-col gap-4 md:flex-row md:justify-end rtl:md:justify-start'>
+				<div className='flex flex-col gap-2 md:flex-row md:justify-end rtl:md:justify-start'>
 					<ActionButton
 						type='button'
 						onClick={() => handleReset()}

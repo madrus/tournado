@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
   openssl \
   sqlite3 \
   python3-pip \
-  && npm install -g pnpm@10 \
+  && npm install -g pnpm@* \
   && pip3 install litecli \
   && rm -rf /var/lib/apt/lists/*
 
@@ -29,7 +29,6 @@ FROM base AS deps
 WORKDIR /workdir
 
 ADD package.json pnpm-lock.yaml ./
-RUN if [ -f .npmrc ]; then ADD .npmrc ./; fi
 # Allow Prisma and other packages to run their build scripts
 RUN pnpm config set enable-pre-post-scripts true && \
   pnpm install --frozen-lockfile --unsafe-perm
@@ -44,7 +43,7 @@ ENV DATABASE_URL=file:/data/sqlite.db
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
+COPY prisma.config.ts ./prisma.config.ts
 
 # Install production dependencies without scripts (skip postinstall hook that calls husky)
 # Note: prisma CLI is a devDependency but needed for 'prisma generate'
@@ -100,5 +99,6 @@ COPY --from=build /workdir/public /workdir/public
 COPY --from=build /workdir/package.json /workdir/package.json
 COPY --from=build /workdir/start.sh /workdir/start.sh
 COPY --from=build /workdir/prisma /workdir/prisma
+COPY --from=build /workdir/prisma.config.ts /workdir/prisma.config.ts
 
 ENTRYPOINT [ "./start.sh" ]

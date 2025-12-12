@@ -82,7 +82,10 @@ const ErrorFallback = ({
 				{errorTitle}
 			</h1>
 			<p className='text-destructive/80' data-testid='error-paragraph'>
-				{errorMessage} {error ? <pre className='text-sm'>{error.message}</pre> : null}
+				{errorMessage}
+				{import.meta.env.DEV && error ? (
+					<pre className='text-sm'>{error.message}</pre>
+				) : null}
 			</p>
 		</div>
 	</div>
@@ -95,8 +98,8 @@ export default function ErrorBoundary(props: ErrorBoundaryProps): JSX.Element {
 	return (
 		<InternalErrorBoundary
 			{...props}
-			errorTitle={t('errors.panelErrorTitle')}
-			errorMessage={t('errors.panelErrorBody')}
+			errorTitle={t('messages.panel.errorTitle')}
+			errorMessage={t('messages.panel.errorBody')}
 			language={i18n.language as Language}
 		/>
 	)

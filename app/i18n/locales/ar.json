@@ -24,7 +24,7 @@
 			"description": "تكوين إعدادات التطبيق والتفضيلات.",
 			"title": "إعدادات النظام"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
 			"createNewTeamDescription": "إنشاء فريق جديد مع تفاصيل البطولة ومعلومات الاتصال.",
 			"createTeam": "إنشاء فريق",
@@ -38,13 +38,13 @@
 			"title": "إدارة الفرق",
 			"totalTeams": "إجمالي الفرق"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
 			"description": "إدارة البطولات في النظام. إنشاء أو تعديل أو حذف معلومات البطولة.",
 			"title": "إدارة البطولات",
 			"totalTournaments": "إجمالي البطولات"
 		},
-		"user": {
+		"users": {
 			"description": "إدارة حسابات المستخدمين والصلاحيات.",
 			"title": "إدارة المستخدمين",
 			"totalUsers": "إجمالي المستخدمين"
@@ -56,10 +56,6 @@
 		"createAccount": "إنشاء حساب",
 		"dontHaveAccount": "ليس لديك حساب؟",
 		"emailAddress": "عنوان البريد الإلكتروني",
-		"errors": {
-			"accountDeactivatedMessage": "تم إلغاء تنشيط حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.",
-			"accountDeactivatedTitle": "تم إلغاء تنشيط الحساب"
-		},
 		"firebase": {
 			"continueWithGoogle": "المتابعة مع Google",
 			"error": "فشل في المصادقة. يرجى المحاولة مرة أخرى.",
@@ -112,11 +108,15 @@
 			"actions": "الإجراءات",
 			"add": "إضافة",
 			"cancel": "إلغاء",
+			"confirmDelete": "نعم، احذف",
+			"create": "إنشاء",
+			"creating": "جاري الإنشاء...",
 			"delete": "حذف",
 			"edit": "تعديل",
 			"save": "حفظ",
 			"saving": "جاري الحفظ...",
 			"update": "تحديث",
+			"updating": "جاري التحديث...",
 			"view": "عرض"
 		},
 		"appName": "Tournado",
@@ -168,8 +168,41 @@
 		"view": "عرض"
 	},
 	"competition": {
+		"description": "إدارة مجموعات البطولة والمباريات والترتيب.",
+		"createGroupStage": "إنشاء مرحلة المجموعات",
+		"createGroupStageDescription": "قم بإعداد المجموعات لبطولة {{tournamentName}}",
+		"noGroupStages": "لا توجد مرحلة مجموعات بعد",
+		"noGroupStagesDescription": "ابدأ بإنشاء مرحلة المجموعات.",
+		"groupsCount": "{{count}} مجموعة",
+		"labels": {
+			"categories": "الفئات:",
+			"setup": "الإعداد:",
+			"autoFill": "التعبئة التلقائية:",
+			"created": "تم الإنشاء:"
+		},
+		"status": {
+			"enabled": "مفعّل",
+			"disabled": "معطّل"
+		},
+		"groupStage": {
+			"name": "اسم مرحلة المجموعات",
+			"namePlaceholder": "مثل: JO8 ممتاز، الدرجة الأولى والثانية",
+			"ageCategories": "الفئات العمرية",
+			"ageCategoriesDescription": "اختر الفئات العمرية التي ستشارك في مرحلة المجموعات هذه",
+			"teamsAvailable": "{{count}} فريق متاح",
+			"configGroups": "عدد المجموعات",
+			"configGroupsPlaceholder": "4",
+			"configSlots": "الفرق لكل مجموعة",
+			"configSlotsPlaceholder": "5",
+			"autoFillGroups": "تعبئة المجموعات تلقائياً",
+			"autoFillDescription": "توزيع الفرق تلقائياً على المجموعات في البداية",
+			"summary": "ملخص",
+			"summaryTeamsAvailable": "{{count}} فريق متاح في الفئات المختارة",
+			"summaryWillCreate": "سيتم إنشاء {{groups}} مجموعة بـ {{slots}} مكان لكل منها ({{total}} مكان إجمالي)",
+			"title": "مرحلة المجموعات"
+		},
 		"selectTournament": "اختر بطولة",
-		"selectTournamentDescription": "اختر بطولة من القائمة المنسدلة أعلاه لإدارة مجموعاتها."
+		"selectTournamentDescription": "اختر بطولة من القائمة المنسدلة أعلاه لإدارة مرحلة المجموعات."
 	},
 	"divisions": {
 		"FIFTH_DIVISION": "الدرجة السادسة",
@@ -183,7 +216,28 @@
 		"emailOutboxInvalidFormat": "تنسيق صندوق الصادر للبريد الإلكتروني غير صالح",
 		"emailOutboxReadFailure": "فشل قراءة صندوق الصادر للبريد الإلكتروني",
 		"somethingWentWrong": "حدث خطأ ما",
-		"teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً."
+		"teamLoadFailed": "تعذر تحميل تفاصيل الفريق. يرجى المحاولة مرة أخرى لاحقاً.",
+		"auth": {
+			"accountDeactivatedTitle": "تم إلغاء تنشيط الحساب",
+			"accountDeactivatedMessage": "تم إلغاء تنشيط حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.",
+			"unauthorizedSignInRequiredTitle": "تسجيل الدخول مطلوب",
+			"unauthorizedSignInRequired": "يجب عليك تسجيل الدخول للوصول إلى هذه الصفحة.",
+			"unauthorizedAdminRequiredTitle": "مطلوب وصول المسؤول",
+			"unauthorizedAdminRequired": "تحتاج إلى امتيازات المسؤول للوصول إلى هذه الصفحة. اتصل بالمسؤول للحصول على الوصول.",
+			"unauthorizedManagerRequiredTitle": "مطلوب وصول المدير",
+			"unauthorizedManagerRequired": "تحتاج إلى امتيازات المدير للوصول إلى هذه الصفحة. اتصل بالمدير للحصول على الوصول.",
+			"unauthorizedSuperAdminRequiredTitle": "مطلوب وصول المسؤول الأعلى",
+			"unauthorizedSuperAdminRequired": "تحتاج إلى امتيازات المسؤول الأعلى للوصول إلى هذه الصفحة. اتصل بالمسؤول الأعلى للحصول على الوصول.",
+			"unauthorizedDefaultTitle": "تم رفض الوصول",
+			"unauthorizedDefault": "ليس لديك إذن للوصول إلى هذه الصفحة."
+		},
+		"competition": {
+			"nameRequired": "الاسم مطلوب",
+			"categoriesRequired": "يجب اختيار فئة واحدة على الأقل",
+			"groupsRange": "يجب أن تكون عدد المجموعات بين   2 , 8",
+			"slotsRange": "يجب أن يكون عدد اللاعبين/المواقع لكل مجموعة بين 3 و 10",
+			"createFailed": "حدث خطأ أثناء إنشاء مجموعات البطولة. الرجاء المحاولة مرة أخرى."
+		}
 	},
 	"landing": {
 		"features": {
@@ -231,6 +285,10 @@
 			"unexpectedError": "حدث خطأ غير متوقع",
 			"unknownError": "حدث خطأ غير معروف"
 		},
+		"panel": {
+			"errorTitle": "حدث خطأ ما",
+			"errorBody": "حدث خطأ أثناء تحميل هذا القسم. يرجى محاولة تحديث الصفحة."
+		},
 		"team": {
 			"categoryRequired": "التصنيف مطلوب",
 			"clubNameRequired": "اسم النادي مطلوب",
@@ -258,6 +316,7 @@
 			"categoriesRequired": "مطلوبة فئة واحدة على الأقل",
 			"divisionsRequired": "مطلوب درجة واحدة على الأقل",
 			"endDateBeforeStartDate": "يجب أن يكون تاريخ الانتهاء في تاريخ البدء أو بعده",
+			"invalidDateFormat": "يرجى إدخال تاريخ صالح",
 			"endDateRequired": "تاريخ النهاية مطلوب",
 			"locationRequired": "الموقع مطلوب",
 			"locationTooLong": "يجب أن يكون الموقع أقل من 100 حرف",
@@ -277,8 +336,13 @@
 			"cannotChangeOwnRole": "لا يمكنك تغيير دورك الخاص",
 			"cannotDeactivateOwnAccount": "لا يمكنك إلغاء تنشيط حسابك الخاص",
 			"cannotReactivateOwnAccount": "لا يمكنك إعادة تنشيط حسابك الخاص",
+			"displayNameRequired": "لا يمكن أن يكون اسم العرض فارغاً.",
 			"failedToUpdateRole": "فشل تحديث الدور",
-			"missingUserId": "معرف المستخدم مفقود"
+			"missingUserId": "معرف المستخدم مفقود",
+			"requestFailed": "لم نتمكن من معالجة هذا الطلب. يرجى المحاولة مرة أخرى.",
+			"requestFailedRefresh": "لم نتمكن من معالجة هذا الطلب. يرجى تحديث الصفحة والمحاولة مرة أخرى.",
+			"unknownError": "خطأ غير معروف",
+			"userNotFound": "لم نتمكن من العثور على هذا المستخدم. يرجى المحاولة مرة أخرى."
 		},
 		"validation": {
 			"emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
@@ -335,6 +399,7 @@
 		"count_other": "{{count}} فريق مسجل",
 		"createNewTeam": "إنشاء فريق جديد",
 		"deleteTeam": "حذف الفريق",
+		"deleteTeamAreYouSure": "هل أنت متأكد أنك تريد حذف هذا الفريق؟ لا يمكن التراجع عن هذا الإجراء.",
 		"description": "سجل فريقك (فرقك) لبطولة واحدة أو أكثر",
 		"filterByTournament": "تصفية حسب البطولة",
 		"form": {
@@ -382,8 +447,9 @@
 		"actions": {
 			"manageCompetition": "المنافسة"
 		},
-		"description": "عرض معلومات البطولة",
 		"deleteTournament": "حذف البطولة",
+		"deleteTournamentAreYouSure": "هل أنت متأكد أنك تريد حذف هذه البطولة؟ لا يمكن التراجع عن هذا الإجراء.",
+		"description": "عرض معلومات البطولة",
 		"endDate": "تاريخ النهاية",
 		"form": {
 			"basicInformation": "المعلومات الأساسية",

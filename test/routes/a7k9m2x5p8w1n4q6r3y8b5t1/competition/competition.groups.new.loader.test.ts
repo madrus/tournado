@@ -23,7 +23,7 @@ vi.mock('~/models/tournament.server', () => ({
 
 // Mock group model
 vi.mock('~/models/group.server', () => ({
-	getTeamsByCategories: vi.fn().mockResolvedValue([]),
+	getUnassignedTeamsByCategories: vi.fn().mockResolvedValue([]),
 }))
 
 beforeEach(() => {

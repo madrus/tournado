@@ -352,12 +352,9 @@ export default function AdminTeamPage(): JSX.Element {
 									{t('common.actions.delete')}
 								</ActionButton>
 							}
-							title={t('teams.confirmations.deleteTitle', 'Delete team')}
-							description={t(
-								'teams.confirmations.deleteDescription',
-								'Are you sure you want to delete this team? This action cannot be undone.',
-							)}
-							confirmLabel={t('common.actions.confirm', 'Yes, delete')}
+							title={t('teams.deleteTeam')}
+							description={t('teams.deleteTeamAreYouSure')}
+							confirmLabel={t('common.actions.confirmDelete')}
 							cancelLabel={t('common.actions.cancel')}
 							// Destructive: focus cancel first per request
 							destructive

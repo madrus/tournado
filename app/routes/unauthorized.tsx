@@ -56,31 +56,31 @@ export default function UnauthorizedPage(): JSX.Element {
 	const getRoleBasedMessage = () => {
 		if (!user) {
 			return {
-				title: t('auth.errors.unauthorizedSignInRequiredTitle'),
-				message: t('auth.errors.unauthorizedSignInRequired'),
+				title: t('errors.auth.unauthorizedSignInRequiredTitle'),
+				message: t('errors.auth.unauthorizedSignInRequired'),
 			}
 		}
 
 		switch (role) {
 			case 'PUBLIC':
 				return {
-					title: t('auth.errors.unauthorizedAdminRequiredTitle'),
-					message: t('auth.errors.unauthorizedAdminRequired'),
+					title: t('errors.auth.unauthorizedAdminRequiredTitle'),
+					message: t('errors.auth.unauthorizedAdminRequired'),
 				}
 			case 'REFEREE':
 				return {
-					title: t('auth.errors.unauthorizedManagerRequiredTitle'),
-					message: t('auth.errors.unauthorizedManagerRequired'),
+					title: t('errors.auth.unauthorizedManagerRequiredTitle'),
+					message: t('errors.auth.unauthorizedManagerRequired'),
 				}
 			case 'MANAGER':
 				return {
-					title: t('auth.errors.unauthorizedSuperAdminRequiredTitle'),
-					message: t('auth.errors.unauthorizedSuperAdminRequired'),
+					title: t('errors.auth.unauthorizedSuperAdminRequiredTitle'),
+					message: t('errors.auth.unauthorizedSuperAdminRequired'),
 				}
 			default:
 				return {
-					title: t('auth.errors.unauthorizedDefaultTitle'),
-					message: t('auth.errors.unauthorizedDefault'),
+					title: t('errors.auth.unauthorizedDefaultTitle'),
+					message: t('errors.auth.unauthorizedDefault'),
 				}
 		}
 	}

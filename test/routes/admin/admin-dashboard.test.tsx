@@ -237,8 +237,8 @@ describe('Admin Dashboard', () => {
 				'data-link-to',
 				'/a7k9m2x5p8w1n4q6r3y8b5t1/teams',
 			)
-			expect(teamPanel).toHaveTextContent('admin.team.title')
-			expect(teamPanel).toHaveTextContent('admin.team.description')
+			expect(teamPanel).toHaveTextContent('admin.teams.title')
+			expect(teamPanel).toHaveTextContent('admin.teams.description')
 		})
 
 		test('should configure Tournament Management panel correctly', () => {
@@ -253,8 +253,8 @@ describe('Admin Dashboard', () => {
 				'data-link-to',
 				'/a7k9m2x5p8w1n4q6r3y8b5t1/tournaments',
 			)
-			expect(tournamentPanel).toHaveTextContent('admin.tournament.title')
-			expect(tournamentPanel).toHaveTextContent('admin.tournament.description')
+			expect(tournamentPanel).toHaveTextContent('admin.tournaments.title')
+			expect(tournamentPanel).toHaveTextContent('admin.tournaments.description')
 		})
 
 		test('should configure User Management panel correctly', () => {
@@ -269,8 +269,8 @@ describe('Admin Dashboard', () => {
 				'data-link-to',
 				'/a7k9m2x5p8w1n4q6r3y8b5t1/users',
 			)
-			expect(userPanel).toHaveTextContent('admin.user.title')
-			expect(userPanel).toHaveTextContent('admin.user.description')
+			expect(userPanel).toHaveTextContent('admin.users.title')
+			expect(userPanel).toHaveTextContent('admin.users.description')
 		})
 
 		test('should configure System Settings panel correctly', () => {
@@ -335,7 +335,7 @@ describe('Admin Dashboard', () => {
 			)
 
 			const userPanel = screen.getByTestId('admin-panel-user-management')
-			expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+			expect(userPanel).toHaveTextContent(/admin\.users\.totalUsers/)
 			expect(userPanel).toHaveTextContent('5')
 		})
 	})
@@ -486,9 +486,9 @@ describe('Admin Dashboard', () => {
 				</MemoryRouter>,
 			)
 
-			expect(screen.getByText('admin.team.title')).toBeInTheDocument()
-			expect(screen.getByText('admin.tournament.title')).toBeInTheDocument()
-			expect(screen.getByText('admin.user.title')).toBeInTheDocument()
+			expect(screen.getByText('admin.teams.title')).toBeInTheDocument()
+			expect(screen.getByText('admin.tournaments.title')).toBeInTheDocument()
+			expect(screen.getByText('admin.users.title')).toBeInTheDocument()
 			expect(screen.getByText('admin.settings.title')).toBeInTheDocument()
 			expect(screen.getByText('admin.reports.title')).toBeInTheDocument()
 		})
@@ -580,7 +580,7 @@ describe('Admin Dashboard', () => {
 			expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
 			const userPanel = screen.getByTestId('admin-panel-user-management')
-			expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+			expect(userPanel).toHaveTextContent(/admin\.users\.totalUsers/)
 			expect(userPanel).toHaveTextContent('5')
 		})
 
@@ -606,7 +606,7 @@ describe('Admin Dashboard', () => {
 			expect(screen.getByText(/admin.panel.description/)).toBeInTheDocument()
 
 			const userPanel = screen.getByTestId('admin-panel-user-management')
-			expect(userPanel).toHaveTextContent(/admin\.user\.totalUsers/)
+			expect(userPanel).toHaveTextContent(/admin\.users\.totalUsers/)
 			expect(userPanel).toHaveTextContent('10')
 		})
 	})

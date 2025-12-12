@@ -1,18 +1,16 @@
 import type { User, UserAuditLog } from '@prisma/client'
 import type { JSX } from 'react'
-import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
 	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 	redirect,
 	useLoaderData,
 	useNavigation,
-	useSearchParams,
 } from 'react-router'
 
 import { UserAuditLogList } from '~/features/users/components/UserAuditLogList'
 import { UserDetailCard } from '~/features/users/components/UserDetailCard'
+import { useUserActionFeedback } from '~/features/users/hooks/useUserActionFeedback'
 import { validateRole } from '~/features/users/utils/roleUtils'
 import { ADMIN_DASHBOARD_URL } from '~/lib/lib.constants'
 import {
@@ -27,7 +25,6 @@ import { STATS_PANEL_MIN_WIDTH } from '~/styles/constants'
 import { cn } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
-import { toast } from '~/utils/toastUtils'
 
 export const handle: RouteMetadata = {
 	authorization: {
@@ -78,9 +75,7 @@ export const action = async ({
 
 	const { userId } = params
 	if (!userId) {
-		return redirect(
-			`${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`,
-		)
+		return redirect(`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`)
 	}
 
 	const formData = await request.formData()
@@ -91,14 +86,12 @@ export const action = async ({
 	const requiresUserId = intent === 'deactivate' || intent === 'reactivate'
 	if (requiresUserId) {
 		if (typeof formUserId !== 'string' || !formUserId.trim()) {
-			return redirect(
-				`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please try again.")}`,
-			)
+			return redirect(`${ADMIN_DASHBOARD_URL}/users/${userId}?error=requestFailed`)
 		}
 
 		if (formUserId !== userId) {
 			return redirect(
-				`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent("We couldn't process that request. Please refresh and try again.")}`,
+				`${ADMIN_DASHBOARD_URL}/users/${userId}?error=requestFailedRefresh`,
 			)
 		}
 	}
@@ -109,7 +102,7 @@ export const action = async ({
 
 			if (!displayName.trim()) {
 				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('Display name cannot be empty.')}`,
+					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=displayNameRequired`,
 				)
 			}
 
@@ -126,7 +119,7 @@ export const action = async ({
 			// Prevent users from changing their own role
 			if (userId === currentUser.id) {
 				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot change your own role.')}`,
+					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotChangeOwnRole`,
 				)
 			}
 
@@ -145,7 +138,7 @@ export const action = async ({
 			// Prevent users from deactivating themselves
 			if (userId === currentUser.id) {
 				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot deactivate your own account.')}`,
+					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotDeactivateOwnAccount`,
 				)
 			}
 
@@ -161,7 +154,7 @@ export const action = async ({
 			// Prevent users from reactivating themselves (this should never happen since they're active)
 			if (userId === currentUser.id) {
 				return redirect(
-					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent('You cannot reactivate your own account.')}`,
+					`${ADMIN_DASHBOARD_URL}/users/${userId}?error=cannotReactivateOwnAccount`,
 				)
 			}
 
@@ -178,7 +171,7 @@ export const action = async ({
 		if (error instanceof Response) {
 			throw error
 		}
-		const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+		const errorMessage = error instanceof Error ? error.message : 'unknownError'
 		return redirect(
 			`${ADMIN_DASHBOARD_URL}/users/${userId}?error=${encodeURIComponent(errorMessage)}`,
 		)
@@ -186,40 +179,12 @@ export const action = async ({
 }
 
 export default function UserDetailRoute(): JSX.Element {
-	const { t } = useTranslation()
 	const { targetUser, currentUserId, auditLogs } = useLoaderData<typeof loader>()
 	const navigation = useNavigation()
-	const [searchParams, setSearchParams] = useSearchParams()
 
 	const isSubmitting = navigation.state === 'submitting'
 
-	// Handle success and error toasts
-	useEffect(() => {
-		const success = searchParams.get('success')
-		const error = searchParams.get('error')
-
-		if (success === 'role') {
-			toast.success(t('users.messages.roleUpdatedSuccessfully'))
-		} else if (success === 'deactivate') {
-			toast.success(t('users.messages.userDeactivatedSuccessfully'))
-		} else if (success === 'reactivate') {
-			toast.success(t('users.messages.userReactivatedSuccessfully'))
-		} else if (success === 'displayName') {
-			toast.success(t('users.messages.displayNameUpdatedSuccessfully'))
-		}
-
-		if (error) {
-			toast.error(error) // error is already decoded!
-		}
-
-		// Clean up search params after showing toasts
-		if (success || error) {
-			const nextParams = new URLSearchParams(searchParams)
-			nextParams.delete('success')
-			nextParams.delete('error')
-			setSearchParams(nextParams, { replace: true })
-		}
-	}, [searchParams, setSearchParams, t])
+	useUserActionFeedback()
 
 	return (
 		<div className={cn('w-full max-w-4xl space-y-6', STATS_PANEL_MIN_WIDTH)}>

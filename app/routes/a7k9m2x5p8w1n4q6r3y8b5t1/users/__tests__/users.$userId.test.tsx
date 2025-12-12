@@ -111,7 +111,7 @@ describe('users.$userId route action', () => {
 
 			expect(updateUserDisplayName).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent('Display name cannot be empty.')}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=displayNameRequired`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -145,7 +145,7 @@ describe('users.$userId route action', () => {
 
 			expect(updateUserRole).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot change your own role.')}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotChangeOwnRole`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -194,7 +194,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot deactivate your own account.')}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotDeactivateOwnAccount`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -207,7 +207,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent("We couldn't process that request. Please try again.")}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=requestFailed`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -221,7 +221,7 @@ describe('users.$userId route action', () => {
 
 			expect(deactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=${encodeURIComponent("We couldn't process that request. Please refresh and try again.")}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=requestFailedRefresh`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -254,7 +254,7 @@ describe('users.$userId route action', () => {
 
 			expect(reactivateUser).not.toHaveBeenCalled()
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=${encodeURIComponent('You cannot reactivate your own account.')}`,
+				`${ADMIN_DASHBOARD_URL}/users/${mockCurrentUser.id}?error=cannotReactivateOwnAccount`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -276,7 +276,7 @@ describe('users.$userId route action', () => {
 			} as ActionFunctionArgs)
 
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`,
+				`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`,
 			)
 			expect(response.status).toBe(302)
 		})
@@ -342,7 +342,9 @@ describe('users.$userId route action', () => {
 			const response = await action(createActionArgs(formData, mockTargetUserId))
 
 			expect(response.status).toBe(302)
-			expect(response.headers.get('Location')).toContain('error=Unknown%20error')
+			expect(response.headers.get('Location')).toBe(
+				`${ADMIN_DASHBOARD_URL}/users/${mockTargetUserId}?error=unknownError`,
+			)
 		})
 
 		it('should re-throw Response errors', async () => {
@@ -377,7 +379,7 @@ describe('users.$userId route action', () => {
 			const response = await action(args)
 
 			expect(redirect).toHaveBeenCalledWith(
-				`${ADMIN_DASHBOARD_URL}/users?error=${encodeURIComponent("We couldn't find that user. Please try again.")}`,
+				`${ADMIN_DASHBOARD_URL}/users?error=userNotFound`,
 			)
 			expect(response.status).toBe(302)
 		})

@@ -11,12 +11,12 @@ import {
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import type { GroupSetWithDetails, UnassignedTeam } from '~/models/group.server'
+import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
 	assignTeamToGroupSlot,
 	clearGroupSlot,
-	getGroupSetWithDetails,
-	getTeamsByCategories,
+	getGroupStageWithDetails,
+	getUnassignedTeamsByCategories,
 	moveTeamToReserve,
 	swapGroupSlots,
 } from '~/models/group.server'
@@ -25,10 +25,10 @@ import { invariant } from '~/utils/misc'
 import type { RouteMetadata } from '~/utils/routeTypes'
 import { requireUserWithMetadata } from '~/utils/routeUtils.server'
 
-import type { Route } from './+types/competition.groups.$groupSetId'
+import type { Route } from './+types/competition.groups.$groupStageId'
 
 type LoaderData = {
-	readonly groupSet: GroupSetWithDetails
+	readonly groupStage: GroupStageWithDetails
 	readonly availableTeams: readonly UnassignedTeam[]
 	readonly tournamentId: string
 }
@@ -49,21 +49,21 @@ export async function loader({
 }: Route.LoaderArgs): Promise<LoaderData> {
 	await requireUserWithMetadata(request, handle)
 
-	const { groupSetId } = params
-	invariant(groupSetId, 'groupSetId is required')
+	const { groupStageId } = params
+	invariant(groupStageId, 'groupStageId is required')
 
-	const groupSet = await getGroupSetWithDetails(groupSetId)
-	if (!groupSet) throw new Response('Group set not found', { status: 404 })
+	const groupStage = await getGroupStageWithDetails(groupStageId)
+	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
-	// Derive tournamentId from groupSet - this is the source of truth
-	const tournamentId = groupSet.tournamentId
+	// Derive tournamentId from groupStage - this is the source of truth
+	const tournamentId = groupStage.tournamentId
 
 	// Validate query param if provided
 	const url = new URL(request.url)
 	const queryTournamentId = url.searchParams.get('tournament')
 	if (queryTournamentId && queryTournamentId !== tournamentId) {
 		throw new Response(
-			'Tournament ID mismatch: query parameter does not match group set tournament',
+			'Tournament ID mismatch: query parameter does not match the selected tournament',
 			{ status: 400 },
 		)
 	}
@@ -71,10 +71,10 @@ export async function loader({
 	const tournament = await getTournamentById({ id: tournamentId })
 	if (!tournament) throw new Response('Tournament not found', { status: 404 })
 
-	const categories = (groupSet.categories as Category[]).slice()
-	const availableTeams = await getTeamsByCategories(tournamentId, categories)
+	const categories = (groupStage.categories as Category[]).slice()
+	const availableTeams = await getUnassignedTeamsByCategories(tournamentId, categories)
 
-	return { groupSet, availableTeams, tournamentId }
+	return { groupStage, availableTeams, tournamentId }
 }
 
 export async function action({
@@ -83,22 +83,22 @@ export async function action({
 }: Route.ActionArgs): Promise<ActionData | Response> {
 	await requireUserWithMetadata(request, handle)
 
-	const { groupSetId } = params
-	invariant(groupSetId, 'groupSetId is required')
+	const { groupStageId } = params
+	invariant(groupStageId, 'groupStageId is required')
 
-	// Fetch groupSet to derive tournamentId - don't trust query params
-	const groupSet = await getGroupSetWithDetails(groupSetId)
-	if (!groupSet) throw new Response('Group set not found', { status: 404 })
+	// Fetch groupStage to derive tournamentId - don't trust query params
+	const groupStage = await getGroupStageWithDetails(groupStageId)
+	if (!groupStage) throw new Response('Group stage not found', { status: 404 })
 
-	// Derive tournamentId from groupSet - this is the source of truth
-	const tournamentId = groupSet.tournamentId
+	// Derive tournamentId from groupStage - this is the source of truth
+	const tournamentId = groupStage.tournamentId
 
 	// Validate query param if provided (optional validation)
 	const url = new URL(request.url)
 	const queryTournamentId = url.searchParams.get('tournament')
 	if (queryTournamentId && queryTournamentId !== tournamentId) {
 		throw new Response(
-			'Tournament ID mismatch: query parameter does not match group set tournament',
+			'Tournament ID mismatch: query parameter does not match the selected tournament',
 			{ status: 400 },
 		)
 	}
@@ -113,7 +113,7 @@ export async function action({
 			const teamId = formData.get('teamId')?.toString() || ''
 			invariant(groupId && !Number.isNaN(slotIndex) && teamId, 'Invalid assign payload')
 			// assignTeamToGroupSlot now validates tournament consistency internally
-			await assignTeamToGroupSlot({ groupSetId, groupId, slotIndex, teamId })
+			await assignTeamToGroupSlot({ groupStageId, groupId, slotIndex, teamId })
 		} else if (intent === 'clear') {
 			const groupSlotId = formData.get('groupSlotId')?.toString() || ''
 			invariant(groupSlotId, 'Invalid clear payload')
@@ -122,7 +122,7 @@ export async function action({
 			const teamId = formData.get('teamId')?.toString() || ''
 			invariant(teamId, 'Invalid reserve payload')
 			// moveTeamToReserve now validates tournament consistency internally
-			await moveTeamToReserve({ groupSetId, teamId })
+			await moveTeamToReserve({ groupStageId, teamId })
 		} else if (intent === 'swap') {
 			const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
 			const targetSlotId = formData.get('targetSlotId')?.toString() || ''
@@ -132,15 +132,15 @@ export async function action({
 
 		// Use derived tournamentId in redirect
 		return redirect(
-			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupSetId}?tournament=${tournamentId}`,
+			`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups/${groupStageId}?tournament=${tournamentId}`,
 		)
 	} catch (error) {
 		return { error: error instanceof Error ? error.message : 'Unknown error' }
 	}
 }
 
-export function GroupSetDetails(): JSX.Element {
-	const { groupSet, availableTeams, tournamentId } = useLoaderData<LoaderData>()
+export function GroupStageDetails(): JSX.Element {
+	const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
 	const actionData = useActionData<ActionData>()
 	const navigation = useNavigation()
 
@@ -150,7 +150,7 @@ export function GroupSetDetails(): JSX.Element {
 		<div className='space-y-6'>
 			<div className='flex items-center justify-between'>
 				<div>
-					<h2 className='font-bold text-2xl'>{groupSet.name}</h2>
+					<h2 className='font-bold text-2xl'>{groupStage.name}</h2>
 					<p className='mt-1 text-foreground-light'>Manage team assignments</p>
 				</div>
 				<Link
@@ -167,7 +167,7 @@ export function GroupSetDetails(): JSX.Element {
 
 			<div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
 				<div className='space-y-4 lg:col-span-2'>
-					{groupSet.groups.map((group) => (
+					{groupStage.groups.map((group) => (
 						<div key={group.id} className='rounded-lg border border-border p-4'>
 							<h3 className='font-semibold text-lg'>{group.name}</h3>
 							<div className='mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
@@ -230,10 +230,10 @@ export function GroupSetDetails(): JSX.Element {
 					<div className='rounded-lg border border-border p-4'>
 						<h3 className='font-semibold text-lg'>Reserve</h3>
 						<div className='mt-3 space-y-2'>
-							{groupSet.reserveSlots.length === 0 ? (
+							{groupStage.reserveSlots.length === 0 ? (
 								<p className='text-foreground-light text-sm'>No teams in reserve</p>
 							) : (
-								groupSet.reserveSlots.map((slot) => (
+								groupStage.reserveSlots.map((slot) => (
 									<div key={slot.id} className='flex items-center justify-between'>
 										<div className='text-sm'>
 											{slot.team ? (
@@ -290,4 +290,4 @@ export function GroupSetDetails(): JSX.Element {
 }
 
 // Default export for React Router
-export default GroupSetDetails
+export default GroupStageDetails

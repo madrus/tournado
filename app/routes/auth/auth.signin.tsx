@@ -98,7 +98,7 @@ export default function SigninPage(): JSX.Element {
 			{/* Display error message for deactivated accounts */}
 			{error === 'account-deactivated' ? (
 				<InfoBanner variant='error'>
-					{t('auth.errors.accountDeactivatedMessage')}
+					{t('errors.auth.accountDeactivatedMessage')}
 				</InfoBanner>
 			) : null}
 

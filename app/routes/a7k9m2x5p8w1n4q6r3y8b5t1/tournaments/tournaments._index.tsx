@@ -122,7 +122,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 
 	const handleTournamentDelete = useCallback(
 		(tournamentId: string) => {
-			if (confirm(t('admin.tournament.confirmDelete'))) {
+			if (confirm(t('admin.tournaments.confirmDelete'))) {
 				const formData = new FormData()
 				formData.append('intent', 'delete')
 				formData.append('tournamentId', tournamentId)
@@ -170,7 +170,7 @@ export default function AdminTournamentsIndexPage(): JSX.Element {
 					variant='dashboard-panel'
 					icon={<TrophyIcon size={24} variant='outlined' />}
 					iconColor='brand'
-					title={t('admin.tournament.totalTournaments')}
+					title={t('admin.tournaments.totalTournaments')}
 					showGlow
 					data-testid='tournaments-total-stat'
 				>

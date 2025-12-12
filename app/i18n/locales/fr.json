@@ -24,7 +24,7 @@
 			"description": "Configurer les paramètres et préférences de l'application.",
 			"title": "Paramètres système"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action ne peut pas être annulée.",
 			"createNewTeamDescription": "Créer une nouvelle équipe avec les détails du tournoi et les informations de contact.",
 			"createTeam": "Créer une équipe",
@@ -38,13 +38,13 @@
 			"title": "Gestion des équipes",
 			"totalTeams": "Nombre total d'équipes"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "Êtes-vous sûr de vouloir supprimer ce tournoi ? Cette action ne peut pas être annulée.",
 			"description": "Gérer les tournois du système. Créer, modifier ou supprimer les informations de tournoi.",
 			"title": "Gestion des tournois",
 			"totalTournaments": "Nombre total de tournois"
 		},
-		"user": {
+		"users": {
 			"description": "Gérer les comptes utilisateur et les permissions.",
 			"title": "Gestion des utilisateurs",
 			"totalUsers": "Total utilisateurs"
@@ -56,10 +56,6 @@
 		"createAccount": "Créer un compte",
 		"dontHaveAccount": "Vous n'avez pas de compte ?",
 		"emailAddress": "Adresse e-mail",
-		"errors": {
-			"accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide.",
-			"accountDeactivatedTitle": "Compte désactivé"
-		},
 		"firebase": {
 			"continueWithGoogle": "Continuer avec Google",
 			"error": "Échec de l'authentification. Veuillez réessayer.",
@@ -171,6 +167,7 @@
 		"view": "Vue"
 	},
 	"competition": {
+		"description": "Gérer les groupes de tournoi, les matchs et les classements.",
 		"createGroupStage": "Créer une phase de groupes",
 		"createGroupStageDescription": "Configurez les groupes pour le tournoi {{tournamentName}}",
 		"selectTournament": "Sélectionner un tournoi",
@@ -219,6 +216,20 @@
 		"emailOutboxReadFailure": "Impossible de lire la boîte d'envoi des e-mails",
 		"somethingWentWrong": "Quelque chose s'est mal passé",
 		"teamLoadFailed": "Impossible de charger les détails de l'équipe. Veuillez réessayer plus tard.",
+		"auth": {
+			"accountDeactivatedTitle": "Compte désactivé",
+			"accountDeactivatedMessage": "Votre compte a été désactivé. Veuillez contacter le support pour obtenir de l'aide.",
+			"unauthorizedSignInRequiredTitle": "Connexion requise",
+			"unauthorizedSignInRequired": "Vous devez vous connecter pour accéder à cette page.",
+			"unauthorizedAdminRequiredTitle": "Accès administrateur requis",
+			"unauthorizedAdminRequired": "Vous avez besoin de privilèges d'administrateur pour accéder à cette page. Contactez votre administrateur pour obtenir l'accès.",
+			"unauthorizedManagerRequiredTitle": "Accès gestionnaire requis",
+			"unauthorizedManagerRequired": "Vous avez besoin de privilèges de gestionnaire pour accéder à cette page. Contactez votre gestionnaire pour obtenir l'accès.",
+			"unauthorizedSuperAdminRequiredTitle": "Accès super-administrateur requis",
+			"unauthorizedSuperAdminRequired": "Vous avez besoin de privilèges de super-administrateur pour accéder à cette page. Contactez votre super-administrateur pour obtenir l'accès.",
+			"unauthorizedDefaultTitle": "Accès refusé",
+			"unauthorizedDefault": "Vous n'avez pas la permission d'accéder à cette page."
+		},
 		"competition": {
 			"nameRequired": "Le nom de la phase de groupes est requis",
 			"categoriesRequired": "Au moins une catégorie doit être sélectionnée",
@@ -273,6 +284,10 @@
 			"unexpectedError": "Une erreur inattendue s'est produite",
 			"unknownError": "Une erreur inconnue s'est produite"
 		},
+		"panel": {
+			"errorTitle": "Une erreur s'est produite",
+			"errorBody": "Une erreur s'est produite lors du chargement de cette section. Veuillez essayer de rafraîchir la page."
+		},
 		"team": {
 			"categoryRequired": "La catégorie est requise",
 			"clubNameRequired": "Le nom du club est requis",
@@ -300,6 +315,7 @@
 			"categoriesRequired": "Au moins une catégorie est obligatoire",
 			"divisionsRequired": "Au moins une division est obligatoire",
 			"endDateBeforeStartDate": "La date de fin doit être le jour du début ou après",
+			"invalidDateFormat": "Veuillez entrer une date valide",
 			"endDateRequired": "La date de fin est obligatoire",
 			"locationRequired": "Le lieu est obligatoire",
 			"locationTooLong": "Le lieu doit contenir moins de 100 caractères",
@@ -319,8 +335,13 @@
 			"cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
 			"cannotDeactivateOwnAccount": "Vous ne pouvez pas désactiver votre propre compte",
 			"cannotReactivateOwnAccount": "Vous ne pouvez pas réactiver votre propre compte",
+			"displayNameRequired": "Le nom d'affichage ne peut pas être vide.",
 			"failedToUpdateRole": "Échec de la mise à jour du rôle",
-			"missingUserId": "Identifiant d'utilisateur manquant"
+			"missingUserId": "Identifiant d'utilisateur manquant",
+			"requestFailed": "Nous n'avons pas pu traiter cette demande. Veuillez réessayer.",
+			"requestFailedRefresh": "Nous n'avons pas pu traiter cette demande. Veuillez actualiser la page et réessayer.",
+			"unknownError": "Erreur inconnue",
+			"userNotFound": "Nous n'avons pas trouvé cet utilisateur. Veuillez réessayer."
 		},
 		"validation": {
 			"emailInvalid": "Veuillez saisir une adresse email valide",

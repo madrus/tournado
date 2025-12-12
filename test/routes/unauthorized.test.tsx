@@ -81,7 +81,7 @@ describe('Unauthorized Page', () => {
 			)
 
 			expect(
-				screen.getByText('auth.errors.unauthorizedSignInRequiredTitle'),
+				screen.getByText('errors.auth.unauthorizedSignInRequiredTitle'),
 			).toBeInTheDocument()
 		})
 
@@ -93,7 +93,7 @@ describe('Unauthorized Page', () => {
 			)
 
 			expect(
-				screen.getByText('auth.errors.unauthorizedSignInRequired'),
+				screen.getByText('errors.auth.unauthorizedSignInRequired'),
 			).toBeInTheDocument()
 		})
 
@@ -258,7 +258,7 @@ describe('Unauthorized Page', () => {
 				</MemoryRouter>,
 			)
 
-			const title = screen.getByText('auth.errors.unauthorizedSignInRequiredTitle')
+			const title = screen.getByText('errors.auth.unauthorizedSignInRequiredTitle')
 			expect(title).toHaveClass('text-2xl', 'font-bold')
 		})
 
@@ -269,7 +269,7 @@ describe('Unauthorized Page', () => {
 				</MemoryRouter>,
 			)
 
-			const description = screen.getByText('auth.errors.unauthorizedSignInRequired')
+			const description = screen.getByText('errors.auth.unauthorizedSignInRequired')
 			expect(description).toHaveClass('text-center', 'text-foreground')
 		})
 	})
@@ -297,10 +297,10 @@ describe('Unauthorized Page', () => {
 
 			// Verify content flows logically: title should appear before actions
 			expect(
-				content.indexOf('auth.errors.unauthorizedSignInRequiredTitle'),
+				content.indexOf('errors.auth.unauthorizedSignInRequiredTitle'),
 			).toBeGreaterThanOrEqual(0)
 			expect(
-				content.indexOf('auth.errors.unauthorizedSignInRequired'),
+				content.indexOf('errors.auth.unauthorizedSignInRequired'),
 			).toBeGreaterThanOrEqual(0)
 			expect(content.indexOf('common.backToHome')).toBeGreaterThanOrEqual(0)
 		})
@@ -328,7 +328,7 @@ describe('Unauthorized Page', () => {
 			const h1Elements = screen.getAllByRole('heading', { level: 1 })
 			expect(h1Elements).toHaveLength(1)
 			expect(h1Elements[0]).toHaveTextContent(
-				'auth.errors.unauthorizedSignInRequiredTitle',
+				'errors.auth.unauthorizedSignInRequiredTitle',
 			)
 		})
 
@@ -376,12 +376,12 @@ describe('Unauthorized Page', () => {
 
 			// Should have clear error title
 			expect(
-				screen.getByText('auth.errors.unauthorizedSignInRequiredTitle'),
+				screen.getByText('errors.auth.unauthorizedSignInRequiredTitle'),
 			).toBeInTheDocument()
 
 			// Should explain the issue
 			expect(
-				screen.getByText('auth.errors.unauthorizedSignInRequired'),
+				screen.getByText('errors.auth.unauthorizedSignInRequired'),
 			).toBeInTheDocument()
 		})
 

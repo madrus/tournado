@@ -24,7 +24,7 @@
 			"description": "Uygulama ayarlarını ve tercihlerini yapılandırın.",
 			"title": "Sistem ayarları"
 		},
-		"team": {
+		"teams": {
 			"confirmDelete": "Bu takımı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
 			"createNewTeamDescription": "Turnuva detayları ve iletişim bilgileriyle yeni bir takım oluşturun.",
 			"createTeam": "Takım oluştur",
@@ -38,13 +38,13 @@
 			"title": "Takım yönetimi",
 			"totalTeams": "Toplam takım"
 		},
-		"tournament": {
+		"tournaments": {
 			"confirmDelete": "Bu turnuvayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
 			"description": "Sistemdeki turnuvaları yönetin. Turnuva bilgilerini oluşturun, düzenleyin veya silin.",
 			"title": "Turnuva yönetimi",
 			"totalTournaments": "Toplam turnuva sayısı"
 		},
-		"user": {
+		"users": {
 			"description": "Kullanıcı hesaplarını ve izinlerini yönetin.",
 			"title": "Kullanıcı yönetimi",
 			"totalUsers": "Toplam kullanıcılar"
@@ -56,10 +56,6 @@
 		"createAccount": "Hesap oluştur",
 		"dontHaveAccount": "Henüz hesabınız yok mu?",
 		"emailAddress": "E-posta adresi",
-		"errors": {
-			"accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
-			"accountDeactivatedTitle": "Hesap devre dışı bırakıldı"
-		},
 		"firebase": {
 			"continueWithGoogle": "Google ile devam et",
 			"error": "Kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
@@ -171,6 +167,7 @@
 		"view": "Görünüm"
 	},
 	"competition": {
+		"description": "Turnuva gruplarını, maçları ve sıralamayı yönetin.",
 		"createGroupStage": "Grup aşaması oluştur",
 		"createGroupStageDescription": "{{tournamentName}} turnuvası için grupları ayarlayın",
 		"selectTournament": "Bir Turnuva Seçin",
@@ -219,6 +216,20 @@
 		"emailOutboxReadFailure": "E-posta giden kutusu okunamadı",
 		"somethingWentWrong": "Bir şeyler ters gitti",
 		"teamLoadFailed": "Takım detayları yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+		"auth": {
+			"accountDeactivatedTitle": "Hesap devre dışı bırakıldı",
+			"accountDeactivatedMessage": "Hesabınız devre dışı bırakıldı. Yardım için lütfen destek ekibiyle iletişime geçin.",
+			"unauthorizedSignInRequiredTitle": "Giriş gerekli",
+			"unauthorizedSignInRequired": "Bu sayfaya erişmek için giriş yapmalısınız.",
+			"unauthorizedAdminRequiredTitle": "Yönetici erişimi gerekli",
+			"unauthorizedAdminRequired": "Bu sayfaya erişmek için yönetici ayrıcalıklarına ihtiyacınız var. Erişim için yöneticinizle iletişime geçin.",
+			"unauthorizedManagerRequiredTitle": "Müdür erişimi gerekli",
+			"unauthorizedManagerRequired": "Bu sayfaya erişmek için müdür ayrıcalıklarına ihtiyacınız var. Erişim için müdürünüzle iletişime geçin.",
+			"unauthorizedSuperAdminRequiredTitle": "Süper yönetici erişimi gerekli",
+			"unauthorizedSuperAdminRequired": "Bu sayfaya erişmek için süper yönetici ayrıcalıklarına ihtiyacınız var. Erişim için süper yöneticinizle iletişime geçin.",
+			"unauthorizedDefaultTitle": "Erişim reddedildi",
+			"unauthorizedDefault": "Bu sayfaya erişim izniniz yok."
+		},
 		"competition": {
 			"nameRequired": "Grup adı gereklidir",
 			"categoriesRequired": "En az bir kategori seçmelisiniz",
@@ -273,6 +284,10 @@
 			"unexpectedError": "Beklenmeyen bir hata oluştu",
 			"unknownError": "Bilinmeyen bir hata oluştu"
 		},
+		"panel": {
+			"errorTitle": "Bir şeyler ters gitti",
+			"errorBody": "Bu bölümü yüklerken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin."
+		},
 		"team": {
 			"categoryRequired": "Kategori gereklidir",
 			"clubNameRequired": "Kulüp adı gereklidir",
@@ -300,6 +315,7 @@
 			"categoriesRequired": "En az bir kategori zorunludur",
 			"divisionsRequired": "En az bir lig zorunludur",
 			"endDateBeforeStartDate": "Bitiş tarihi başlangıç tarihinde veya sonrasında olmalıdır",
+			"invalidDateFormat": "Lütfen geçerli bir tarih girin",
 			"endDateRequired": "Bitiş tarihi zorunludur",
 			"locationRequired": "Konum zorunludur",
 			"locationTooLong": "Konum 100 karakterden kısa olmalıdır",
@@ -319,8 +335,13 @@
 			"cannotChangeOwnRole": "Kendi rolünüzü değiştiremezsiniz",
 			"cannotDeactivateOwnAccount": "Kendi hesabınızı devre dışı bırakamazsınız",
 			"cannotReactivateOwnAccount": "Kendi hesabınızı yeniden etkinleştiremezsiniz",
+			"displayNameRequired": "Görünen ad boş olamaz.",
 			"failedToUpdateRole": "Rol güncellenemedi",
-			"missingUserId": "Kullanıcı kimliği eksik"
+			"missingUserId": "Kullanıcı kimliği eksik",
+			"requestFailed": "Bu isteği işleyemedik. Lütfen tekrar deneyin.",
+			"requestFailedRefresh": "Bu isteği işleyemedik. Lütfen sayfayı yenileyin ve tekrar deneyin.",
+			"unknownError": "Bilinmeyen hata",
+			"userNotFound": "Bu kullanıcıyı bulamadık. Lütfen tekrar deneyin."
 		},
 		"validation": {
 			"emailInvalid": "Lütfen geçerli bir e-posta adresi girin",

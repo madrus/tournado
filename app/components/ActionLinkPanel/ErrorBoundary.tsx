@@ -95,8 +95,8 @@ export default function ErrorBoundary(props: ErrorBoundaryProps): JSX.Element {
 	return (
 		<InternalErrorBoundary
 			{...props}
-			errorTitle={t('errors.panelErrorTitle')}
-			errorMessage={t('errors.panelErrorBody')}
+			errorTitle={t('messages.panel.errorTitle')}
+			errorMessage={t('messages.panel.errorBody')}
 			language={i18n.language as Language}
 		/>
 	)

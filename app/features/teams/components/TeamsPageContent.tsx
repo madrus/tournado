@@ -59,7 +59,7 @@ export function TeamsPageContent({
 						variant='dashboard-panel'
 						icon={<ApparelIcon size={24} variant='outlined' />}
 						iconColor='brand'
-						title={t('admin.team.totalTeams')}
+						title={t('admin.teams.totalTeams')}
 						showGlow
 						data-testid='teams-total-stat'
 					>

@@ -117,21 +117,21 @@ export async function action({
 	const errors = {} as NonNullable<ActionData['errors']>
 
 	if (!name.trim()) {
-		errors.name = t('competition.groupStage.errors.nameRequired')
+		errors.name = t('errors.competition.nameRequired')
 	}
 
 	if (selectedCategories.length === 0) {
-		errors.categories = t('competition.groupStage.errors.categoriesRequired')
+		errors.categories = t('errors.competition.categoriesRequired')
 	}
 
 	const groupsNum = parseInt(configGroups, 10)
 	if (!configGroups || Number.isNaN(groupsNum) || groupsNum < 2 || groupsNum > 8) {
-		errors.configGroups = t('competition.groupStage.errors.groupsRange')
+		errors.configGroups = t('errors.competition.groupsRange')
 	}
 
 	const slotsNum = parseInt(configSlots, 10)
 	if (!configSlots || Number.isNaN(slotsNum) || slotsNum < 3 || slotsNum > 10) {
-		errors.configSlots = t('competition.groupStage.errors.slotsRange')
+		errors.configSlots = t('errors.competition.slotsRange')
 	}
 
 	if (Object.keys(errors).length > 0) {
@@ -162,7 +162,7 @@ export async function action({
 		)
 	} catch (_error) {
 		return {
-			errors: { general: t('competition.groupStage.errors.createFailed') },
+			errors: { general: t('errors.competition.createFailed') },
 			fieldValues: {
 				name,
 				categories: selectedCategories,

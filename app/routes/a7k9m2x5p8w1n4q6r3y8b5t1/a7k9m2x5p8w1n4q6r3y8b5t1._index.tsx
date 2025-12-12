@@ -106,8 +106,8 @@ export default function AdminDashboard(): JSX.Element {
 				{/* Panel 1 - Tournament Management (only for ADMIN and MANAGER) */}
 				{canManageTournaments ? (
 					<ActionLinkPanel
-						title={t('admin.tournament.title')}
-						description={t('admin.tournament.description')}
+						title={t('admin.tournaments.title')}
+						description={t('admin.tournaments.description')}
 						icon={<TrophyIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
@@ -118,7 +118,7 @@ export default function AdminDashboard(): JSX.Element {
 						<div className='space-y-2'>
 							<p>
 								<strong className='me-1'>
-									{t('admin.tournament.totalTournaments')}:
+									{t('admin.tournaments.totalTournaments')}:
 								</strong>
 								<span className={cn(isRTL ? 'latin-text' : '')}>
 									{tournaments.length}
@@ -131,8 +131,8 @@ export default function AdminDashboard(): JSX.Element {
 				{/* Panel 2 - Team Management (only for ADMIN and MANAGER) */}
 				{canManageTeams ? (
 					<ActionLinkPanel
-						title={t('admin.team.title')}
-						description={t('admin.team.description')}
+						title={t('admin.teams.title')}
+						description={t('admin.teams.description')}
 						icon={<ApparelIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
@@ -142,7 +142,7 @@ export default function AdminDashboard(): JSX.Element {
 					>
 						<div className='space-y-2'>
 							<p>
-								<strong className='me-1'>{t('admin.team.totalTeams')}:</strong>
+								<strong className='me-1'>{t('admin.teams.totalTeams')}:</strong>
 								<span className={cn(isRTL ? 'latin-text' : '')}>{teams.length}</span>
 							</p>
 						</div>
@@ -173,8 +173,8 @@ export default function AdminDashboard(): JSX.Element {
 				{/* Panel 4 - User Management (only for ADMIN) */}
 				{canManageUsers ? (
 					<ActionLinkPanel
-						title={t('admin.user.title')}
-						description={t('admin.user.description')}
+						title={t('admin.users.title')}
+						description={t('admin.users.description')}
 						icon={<GroupIcon className='h-5 w-5' />}
 						mainColor='teal'
 						hoverColor='brand'
@@ -184,7 +184,7 @@ export default function AdminDashboard(): JSX.Element {
 					>
 						<div className='space-y-2'>
 							<p>
-								<strong className='me-1'>{t('admin.user.totalUsers')}:</strong>
+								<strong className='me-1'>{t('admin.users.totalUsers')}:</strong>
 								<span className={cn(isRTL ? 'latin-text' : '')}>
 									{activeUsersCount}
 								</span>

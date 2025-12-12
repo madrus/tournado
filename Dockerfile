@@ -44,6 +44,7 @@ ENV DATABASE_URL=file:/data/sqlite.db
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
+COPY prisma.config.ts ./prisma.config.ts
 RUN if [ -f .npmrc ]; then COPY .npmrc ./; fi
 
 # Install production dependencies without scripts (skip postinstall hook that calls husky)
@@ -100,5 +101,6 @@ COPY --from=build /workdir/public /workdir/public
 COPY --from=build /workdir/package.json /workdir/package.json
 COPY --from=build /workdir/start.sh /workdir/start.sh
 COPY --from=build /workdir/prisma /workdir/prisma
+COPY --from=build /workdir/prisma.config.ts /workdir/prisma.config.ts
 
 ENTRYPOINT [ "./start.sh" ]

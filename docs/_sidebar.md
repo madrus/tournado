@@ -56,8 +56,8 @@
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)
 - Guides
-   - [HOWTO: Implement RTL](<guides/HOWTO Implement RTL.md>)
-   - [HOWTO: Use Ollama Locally](<guides/HOWTO Use Ollama Locally.md>)
+   - [HOWTO: Implement RTL](<guides/HOWTO - Set Up RTL.md>)
+   - [HOWTO: Use Ollama Locally](<guides/HOWTO - Use Ollama Locally.md>)
 - Reference
    - [Cursor Rules](cursor-rules.md)
    - [Fly.io vs Vercel](fly-vs-vercel.md)

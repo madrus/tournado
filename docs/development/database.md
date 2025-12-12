@@ -196,7 +196,6 @@ pnpm run db:reset:production
 If you prefer to do the reset manually step-by-step on Fly.io:
 
 1. **Connect to your Fly.io app:**
-
    ```sh
    fly ssh console -a tournado-staging  # or tournado for production
    ```
@@ -205,6 +204,16 @@ If you prefer to do the reset manually step-by-step on Fly.io:
    ```sh
    cd /workdir
    npx prisma migrate reset --force
+   ```
+
+3. **Seed the database (as needed)**
+   ```sh
+   node prisma/seedSuperAdmins.js # Andre and Otman
+   node prisma/seed.js            # dummy data (not for production)
+   ```
+
+4. **Exit the SSH session**
+   ```sh
    exit
    ```
 

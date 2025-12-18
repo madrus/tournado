@@ -493,13 +493,13 @@ When you have Arabic text within a primarily English interface, you need to ensu
 ```typescript
 // Help documentation or user instructions with Arabic phrases
 <div className="documentation-section">
-  <p className="text-gray-700">
+  <p className="text-slate-700">
     To create a tournament in Arabic, click "Create Tournament" and the interface
     will display <span className="text-arabic">إنشاء بطولة جديدة</span> (Create New Tournament).
     The Arabic text maintains proper readability.
   </p>
 
-    <p className="text-gray-700">
+    <p className="text-slate-700">
     The welcome message will show: <span className="text-arabic">أهلاً وسهلاً</span>
     (Welcome) instead of the default "Welcome" text.
   </p>
@@ -888,7 +888,7 @@ export function AppBar({ authenticated, username, user }) {
       action: isAuthenticated ? (
         <button
           onClick={handleSignOut}
-          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-slate-100 ${menuClasses.menuItem}`}
         >
           <span className={menuClasses.iconContainer}>
             {renderIcon('logout', { className: 'w-5 h-5' })}
@@ -898,7 +898,7 @@ export function AppBar({ authenticated, username, user }) {
       ) : (
         <PrimaryNavLink
           to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-gray-100 ${menuClasses.menuItem}`}
+          className={`flex w-full items-center px-3 py-2 text-emerald-800 hover:bg-slate-100 ${menuClasses.menuItem}`}
           onClick={handleSignIn}
         >
           <span className={menuClasses.iconContainer}>
@@ -1010,7 +1010,7 @@ Context menus need to handle long email addresses gracefully while maintaining p
 // Desktop menu - fits content exactly
 <DropdownMenu.Content
   className={cn(
-    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-gray-100', // No min-width!
+    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-slate-100', // No min-width!
     'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
     'mx-4',
     menuClasses.spacing
@@ -1033,7 +1033,7 @@ Context menus need to handle long email addresses gracefully while maintaining p
 // Desktop menu - fits content exactly
 <DropdownMenu.Content
   className={cn(
-    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-gray-100', // No min-width!
+    'ring-opacity-5 z-40 w-max max-w-80 divide-y divide-slate-100', // No min-width!
     'rounded-md bg-white p-1 shadow-lg ring-1 ring-black focus:outline-none',
     'mx-4',
     menuClasses.spacing

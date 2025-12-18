@@ -265,11 +265,11 @@ export const basePanelNumberVariants = cva(
 				return `bg-adaptive-bg-${color}`
 			}),
 			/**
-			 * Disabled state variant that overrides color with subtle light gray.
+			 * Disabled state variant that overrides color with subtle light slate.
 			 * Shows panel number is disabled while maintaining visibility.
 			 */
 			disabled: {
-				true: '!bg-gray-200 !text-gray-700',
+				true: '!bg-slate-200 !text-slate-700',
 				false: '',
 			},
 		},

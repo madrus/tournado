@@ -267,8 +267,8 @@ describe('Panel Component', () => {
 
 			const numberBadge = screen.getByText('3')
 			expect(numberBadge).toBeInTheDocument()
-			expect(numberBadge).toHaveClass('!bg-gray-200')
-			expect(numberBadge).toHaveClass('!text-gray-700')
+			expect(numberBadge).toHaveClass('!bg-slate-200')
+			expect(numberBadge).toHaveClass('!text-slate-700')
 		})
 
 		it('should render glow effect when showGlow=true', () => {

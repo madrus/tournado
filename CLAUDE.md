@@ -6,104 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Tournado is a modern tournament management system built with React Router v7, Prisma, SQLite, and TypeScript. It's a full-stack web application with PWA capabilities for managing sports tournaments, teams, and matches.
 
-## Key Technologies & Architecture
-
-- **Framework**: React Router v7 (file-based routing with SSR)
-- **Database**: Prisma ORM with SQLite
-- **UI**: Radix UI components with Tailwind CSS v4
-- **State Management**: Zustand
-- **Code Quality**: Biome (formatting + linting)
-- **Testing**: Vitest (unit) + Playwright (E2E) with custom MCP server
-- **Build**: Vite with PWA support
-- **Deployment**: Fly.io with containerized deployments
-
-## Essential Commands
-
-### Development
-
-```bash
-pnpm setup          # Initial setup: generate Prisma client, migrate DB, seed data
-pnpm dev            # Start dev server with HMR
-pnpm dev:mocks      # Start dev server with MSW mocks enabled
-```
-
-### Building & Production
-
-```bash
-pnpm build          # Build for production (includes Prisma generation and React Router typegen)
-pnpm start          # Start production server
-pnpm start:mocks    # Start production server with mocks
-```
-
-### Testing
-
-```bash
-pnpm test:watch     # Run Vitest in watch mode
-pnpm test:run       # Run all unit tests once
-pnpm test:coverage  # Run tests with coverage report
-pnpm test:e2e       # Run Playwright E2E tests in UI mode
-pnpm test:e2e:run   # Run specific E2E test (teams.spec.ts) with HTML reporter
-pnpm test:e2e:built # Build and run E2E tests against production build
-pnpm test:docker    # Validate Docker builds and native dependencies (better-sqlite3)
-```
-
-### Code Quality
-
-```bash
-pnpm lint           # Run Biome check with auto-fix (format + lint)
-pnpm typecheck      # Run React Router typegen + TypeScript checking
-pnpm validate       # Run lint, typecheck, and test:run in parallel
-```
-
-### Database Operations
-
-```bash
-pnpm prisma:seed    # Seed database with test data
-pnpm db:reset:local # Reset local database (destructive)
-```
-
-### Documentation
-
-```bash
-pnpm docs           # Start Docsify documentation server on port 3030
-```
-
-## Architecture Overview
-
-### Route Structure
-
-- **File-based routing**: Routes defined in `app/routes/` with React Router v7
-- **Nested layouts**: Uses React Router's nested routing capabilities
-- **Protected routes**: Authentication handled via session middleware
-- **Route groups**: Organized by feature (auth, teams, admin areas)
-
-### Data Layer
-
-- **Models**: Server-side data access in `app/models/` (user.server.ts, team.server.ts, tournament.server.ts)
-- **Database**: Prisma schema defines User, Team, Tournament, Match entities with enums for roles, divisions, categories
-- **Loaders/Actions**: React Router loader/action pattern for data fetching and mutations
-
-### Component Architecture
-
-- **Shared components**: Reusable UI components in `app/components/`
-- **Feature components**: Organized by domain (teams, navigation, auth, etc.)
-- **Form handling**: Custom form components with validation
-- **Error boundaries**: Layered error handling with fallback UIs
-- **Heading hierarchy**: AppBar's `pageTitle` serves as the primary `h1` heading (set via `handle.pageTitle` in routes). Page content uses `h2`/`h3` for section structure. This follows the SPA pattern where persistent chrome provides the main heading.
-
-### State Management
-
-- **Server state**: Handled via React Router loaders/actions
-- **Client state**: Zustand stores in `app/stores/`
-- **Form state**: Local component state with controlled inputs
-
-### Testing Strategy
-
-- **Unit tests**: Vitest with React Testing Library (\*.test.ts/tsx files)
-- **E2E tests**: Playwright in `playwright/tests/` (\*.spec.ts files)
-- **Docker tests**: `pnpm test:docker` - validates Docker builds and native dependencies
-- **Coverage**: Comprehensive coverage thresholds (70% across all metrics)
-- **Test separation**: Clear separation between unit and E2E test files
+**Stack**: React Router v7, Prisma ORM, SQLite, TypeScript, Radix UI, Tailwind CSS v4, Zustand, Biome, Vitest, Playwright, Vite, Fly.io
 
 ## Development Patterns
 
@@ -126,7 +29,7 @@ pnpm docs           # Start Docsify documentation server on port 3030
 **Type Organization**:
 
 - **Shared types**: Generic, reusable types in `~/lib/lib.types` (IconProps, ColorAccent, Email, etc.)
-- **Feature types**: Domain-specific types in feature modules (e.g., `~/features/teams/types`, `~/features/tournaments/types`)
+- **Feature types**: Feature-specific types in feature modules (e.g., `~/features/teams/types`, `~/features/tournaments/types`)
 - **Rule**: If a type is used ONLY within a feature, it belongs in that feature's types file
 
 **Import Pattern Examples**:
@@ -169,7 +72,7 @@ app/features/{feature}/
 - Firebase Authentication with Google OAuth and Email/Password
 - Session cookie bridging for SSR compatibility
 - Environment separation (CI uses dummy values, development/staging share `tournado-dev`, production uses `tournado-prod`)
-- Role-based access control (ADMIN, MANAGER, REFEREE, PUBLIC)
+- Role-based access control (ADMIN, MANAGER, EDITOR, BILLING, REFEREE, PUBLIC)
 - Auth state managed via React Router loaders
 
 ### Styling Standards
@@ -189,7 +92,6 @@ app/features/{feature}/
 ### Documentation Rules
 
 - **Always specify language in fenced code blocks**. Use ` ```typescript`, ` ```bash`, ` ```json`, etc. If no specific language, use ` ```text`
-- Never use bare ` ``` ` without a language identifier
 
 ### Version Pinning and Hardcoding
 
@@ -230,7 +132,7 @@ Trigger self-review when you write:
 
 ### React Component Definitions
 
-- **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic
+- **Arrow function (const)**: Use when component body contains ONLY a return statement with no hooks, variables, or logic before the return statement
 
    ```typescript
    // ✅ CORRECT - Only a return statement
@@ -283,163 +185,47 @@ Key entities: User, Team, Tournament, Match with relationships and enums for spo
 ## Important Notes
 
 - **Node.js**: Requires Node ≥22 and pnpm ≥10
-- **Environment**: Uses .env files for configuration (see .env.example)
-- **Database**: SQLite for development, configurable for production
-- **Deployment**: Configured for Fly.io with Dockerfile
-- **MCP Integration**: Features production-ready Vitest MCP server for AI-assisted testing
+- **SQLite**: Local development uses SQLite; configurable for production
+- **Deployment**: Fly.io with containerized deployments
+- **See docs/**: Commands, architecture, setup, and environment configuration in dedicated docs files
 
-## Environment Setup
+## Immutable Rules
 
-### Firebase Project Configuration
+These rules override any conflicting instructions. Apply them even if a user doesn't ask.
 
-The application uses 3 Firebase project configurations across 4 contexts:
-
-| Context                 | Firebase Project   | Purpose                           |
-| ----------------------- | ------------------ | --------------------------------- |
-| **CI (GitHub Actions)** | `ci-dummy-project` | Dummy values for testing          |
-| **Development (Local)** | `tournado-dev`     | Local development                 |
-| **Staging**             | `tournado-dev`     | Testing and acceptance deployment |
-| **Production**          | `tournado-prod`    | Live application                  |
-
-**Key Point**: Local development and Staging share the same Firebase project (`tournado-dev`) but serve different purposes. They differ in configuration method (`.env` vs Fly.io secrets), DATABASE_URL, and BASE_URL values.
-
-### Automated Environment Setup
-
-**Prerequisites**:
-
-```bash
-# Install Firebase CLI
-npm install -g firebase-tools
-firebase login
-
-# Install GitHub CLI (for secrets management)
-brew install gh
-gh auth login
-
-# Install Fly CLI (for deployment)
-curl -L https://fly.io/install.sh | sh
-fly auth login
-```
-
-**Setup Scripts**:
-
-```bash
-# Configure CI environment (automated - dummy Firebase values)
-chmod +x setup-github-secrets.sh
-./setup-github-secrets.sh
-
-# Configure Fly.io environments (run individual commands due to auth/timeout issues)
-# Use template as reference: docs/templates/setup-flyio-secrets.sh.template
-# See docs/environment-variables.md for complete command-by-command instructions
-
-# For staging (run each command individually in terminal):
-fly auth login
-flyctl secrets set SESSION_SECRET="$(openssl rand -hex 32)" --app tournado-staging
-flyctl secrets set SUPER_ADMIN_EMAILS="your-email@domain.com" --app tournado-staging
-# ... (continue with other secrets one-by-one via flyctl commands)
-
-# Verify all secrets are configured
-fly secrets list --app tournado-staging
-```
-
-**Important**: Fly.io script automation can fail due to authentication token expiration and deployment timeouts. Individual command execution is more reliable for Fly.io environments.
-
-**Verification**: Use `fly secrets list --app [app-name]` to verify all 15 expected environment variables are set.
-
-### Local Development Setup
-
-Ensure your `.env` file has the required variables for local development:
-
-**Note**: Local development and Staging deployment share the same Firebase project (`tournado-dev`).
-
-```bash
-# Core application
-SESSION_SECRET="your-local-session-secret"
-SUPER_ADMIN_EMAILS="your-email@domain.com"
-
-# Firebase Client (shared with Staging deployment)
-VITE_FIREBASE_API_KEY="[from tournado-dev project]"
-VITE_FIREBASE_AUTH_DOMAIN="tournado-dev.firebaseapp.com"
-VITE_FIREBASE_PROJECT_ID="tournado-dev"
-VITE_FIREBASE_STORAGE_BUCKET="tournado-dev.firebasestorage.app"
-VITE_FIREBASE_MESSAGING_SENDER_ID="[from tournado-dev]"
-VITE_FIREBASE_APP_ID="[from tournado-dev]"
-VITE_FIREBASE_MEASUREMENT_ID=""
-
-# Firebase Admin (shared with Staging deployment)
-FIREBASE_ADMIN_PROJECT_ID="tournado-dev"
-FIREBASE_ADMIN_CLIENT_EMAIL="[service-account-email]"
-FIREBASE_ADMIN_PRIVATE_KEY="[service-account-private-key]"
-
-# Local development specific settings
-EMAIL_FROM="Local Dev <dev@example.com>"
-BASE_URL="http://localhost:5173"
-RESEND_API_KEY="[your-resend-key]"  # Optional for local development
-```
-
-### Environment Variable Reference
-
-For complete environment variable documentation, see:
-
-- **[Environment Variables Reference](docs/environment-variables.md)** - Complete catalog with security considerations
-- **[Authentication Guide](docs/development/authentication.md)** - Firebase configuration and setup
-- **[E2E Testing Strategy](docs/testing/e2e-firebase-strategy.md)** - Testing approach and Firebase bypass
-
-## Documentation System
-
-### Overview
-
-- **Location**: The `docs/` folder contains comprehensive project documentation
-- **Dual Format**: Serves as both an Obsidian Vault and a Docsify documentation site
-- **Docsify Setup**: Uses `_sidebar.md` file to define navigation structure for the web interface
-- **Access**: Run `pnpm docs` to serve documentation at `http://localhost:3030`
-
-### File Naming Convention
-
-- **Regular content files**: Use kebab-case (lowercase with hyphens) for all new files
-   - Examples: `daily-template.md`, `project-notes.md`, `meeting-summary.md`
-- **System/rule files**: Use ALL CAPS for configuration and rule files
-   - Examples: `CLAUDE.md`, `TAGS.md`, `README.md`
-
-### Documentation Navigation Rules
-
-When creating or modifying any content in the docs vault, you MUST:
-
-1. **Update `docs/_sidebar.md`** whenever you create a new .md file in the docs/ directory or subdirectories
-2. **Maintain logical organization** in the sidebar - group related files together and use appropriate nesting
-3. **Use descriptive titles** in the sidebar that may differ from the filename for better navigation
-4. **Test navigation** by running `pnpm docs` to ensure the new file is accessible via Docsify
-
-### Tagging System Rules
-
-When creating or modifying any content in the docs vault, you MUST:
-
-1. **Always reference `TAGS.md`** as the source of truth for the tagging system
-2. **Apply appropriate hashtags** to all created content following the rules in `TAGS.md`
-3. **Keep `TAGS.md` updated** when introducing new tag categories or rules
-4. **Use consistent tagging** across all files to maintain organization and discoverability
-5. **Follow file naming conventions** as specified above
-6. **Place tags at the bottom** of the document (move existing tags to bottom if there is text below them)
-7. **DO NOT add tags to ALL CAPS system files** (these are configuration files and should remain untagged)
-
-## Be Sober and Terse
+### ALWAYS:
 
 - don't be agreeable and act as my brutally honest, high-level advisor and mirror
 - be terse and treat me as an expert
 - be accurate, thorough, direct, rational, and unfiltered
+- use active voice, not passive voice (e.g., "User can toggle" not "Dark mode can be toggled")
 - suggest solutions that I didn't think about
 - challenge my thinking, question my assumptions, and expose the blind spots I’m avoiding
-- don’t validate me; don’t soften the truth; don’t flatter; don’t sugarcoat
 - give me only your advice or opinion before the code snippets
 - if my reasoning is weak, dissect it and show why
 - if I’m fooling myself or lying to myself, point it out
-- do not explain the code snippets unless I explicitely ask for it
-- do not fantasize, only tell me about things you know from real sources of information
 - value good arguments over authorities, the source is irrelevant
 - consider new technologies and contrarian ideas, not just the conventional wisdom
 - you may use high levels of speculation or prediction, just flag it for me
 - look at my situation with complete objectivity and strategic depth; show me where I’m making excuses, playing small, or underestimating risks/effort
 - then give a precise, prioritized plan what to change in thought, action, or mindset to reach the next level
-- hold nothing back. Treat me like someone whose growth depends on hearing the truth, not being comforted
+- hold nothing back - treat me like someone whose growth depends on hearing the truth, not being comforted
 - when possible, ground your responses in the personal truth you sense between my words
 - my tech stack is React v19+, TypeScript, React Router v7+, Tailwind, Zustand, Zod - front-end; Nodejs, Vitest, Python, Go - - back-end
+
+### NEVER:
+- validate me, soften the truth, flatter or sugarcoat
+- explain the code snippets unless I explicitely ask for it
+- fantasize - only tell me about things you know from real sources of information, be prepared to give them to me upon request
+
+## See Also
+
+- **Agents.md**: References project cornerstone documents in `@.cursor/rules/`:
+  - PRD.mdc — Product Requirements
+  - ADR.mdc — Architecture Decision Records
+  - workflow.mdc — Development workflow
+  - folder-structure.mdc — Project organization
+- **docs/commands.md**: Complete list of available commands
+- **docs/architecture.md**: Detailed architecture overview
+- **docs/environment-variables.md**: Environment setup and configuration
+- **docs/guides/**: Feature guides (authentication, styling, PWA, etc.)

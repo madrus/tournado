@@ -271,16 +271,16 @@ describe('Panel Variants (CVA)', () => {
 			expect(emeraldNumber).toContain('bg-adaptive-bg-emerald')
 		})
 
-		it('should apply disabled variant with gray styling', () => {
+		it('should apply disabled variant with slate styling', () => {
 			const disabledNumber = panelNumberVariants({ disabled: true })
-			expect(disabledNumber).toContain('bg-gray-200')
-			expect(disabledNumber).toContain('!text-gray-700')
+			expect(disabledNumber).toContain('bg-slate-200')
+			expect(disabledNumber).toContain('!text-slate-700')
 		})
 
 		it('should use correct default variants', () => {
 			const defaultNumber = panelNumberVariants({})
 			expect(defaultNumber).toContain('bg-adaptive-bg-brand') // default color: brand
-			expect(defaultNumber).not.toContain('bg-gray-200') // default disabled: false
+			expect(defaultNumber).not.toContain('bg-slate-200') // default disabled: false
 		})
 
 		it('should override color with disabled styling when disabled=true', () => {
@@ -290,8 +290,8 @@ describe('Panel Variants (CVA)', () => {
 			})
 			// Should have both color and disabled classes, but disabled takes precedence
 			expect(disabledTealNumber).toContain('bg-adaptive-bg-teal')
-			expect(disabledTealNumber).toContain('bg-gray-200')
-			expect(disabledTealNumber).toContain('!text-gray-700')
+			expect(disabledTealNumber).toContain('bg-slate-200')
+			expect(disabledTealNumber).toContain('!text-slate-700')
 		})
 	})
 })

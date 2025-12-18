@@ -2,7 +2,7 @@
 
 ## QC Remarks
 
-- [ ] continued use of non-semantic Tailwind colors (e.g. text-gray-*, bg-red-50, text-blue-*) which may conflict with your “semantic color tokens” guideline
+- [ ] continued use of non-semantic Tailwind colors (e.g. text-slate-*, bg-red-50, text-blue-*) which may conflict with your “semantic color tokens” guideline
 - [ ] move all messages to the `messages` namespace and add hardcoded messages to it
 - [ ] Competition feature
   - [ ] Create feature

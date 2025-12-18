@@ -264,7 +264,7 @@ All components automatically support light and dark themes through semantic toke
 
 #### ❌ Anti-patterns
 
-1. **Hard-coded colors**: Never use `bg-white`, `text-black`, `border-gray-200`
+1. **Hard-coded colors**: Never use `bg-white`, `text-black`, `border-slate-200`
 2. **Theme-specific styles**: Avoid conditional styling based on theme
 3. **Missing variants**: Components should support multiple color accents when applicable
 4. **Accessibility issues**: Always include proper contrast ratios and focus states

@@ -5,4 +5,24 @@
 
 A modern tournament management system built with React Router v7, featuring advanced AI-assisted testing workflows with comprehensive MCP integration.
 
-Run `pnpm run docs` to start the project documentation website in `./docs` folder.
+## Quick Start
+
+```bash
+# Setup database and install dependencies
+pnpm setup
+
+# Start development server
+pnpm dev
+
+# Run tests
+pnpm test:run
+
+# Build for production
+pnpm build
+```
+
+For the complete list of commands, see [docs/commands.md](./docs/commands.md).
+
+## Documentation
+
+Run `pnpm docs` to start the documentation website in `./docs` folder, or see the [docs directory](./docs) directly for quick reference on [architecture](./docs/architecture.md), [environment setup](./docs/environment-variables.md), and more.

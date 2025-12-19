@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Manage tournament groups, matches, and standings.",
 			"groupStage": "Group Stage",
-			"groupStageDescription": "Create and manage groups for group stage games",
+			"groupStageDescription": "Create and manage groups in the group stage",
 			"groups": "Groups",
 			"playoffs": "Playoffs",
 			"title": "Competition Management"

@@ -290,7 +290,7 @@
 }
 
 .dark {
-	--color-background: var(--color-slate-900);
+	--color-background: var(--color-slate-600);
 	--color-input: color-mix(
 		in srgb,
 		var(--color-cyan-950) 60%,

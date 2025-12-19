@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { redirect } from 'react-router'
 
 import { requireAdminUser } from '~/utils/rbacMiddleware.server'
@@ -21,4 +22,8 @@ export async function loader({
 	} else {
 		return redirect('/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups')
 	}
+}
+
+export default function CompetitionIndex(): JSX.Element {
+	return <div />
 }

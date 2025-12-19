@@ -85,7 +85,7 @@ export const DARK_MODE_DARKER_CLASSES: Record<ButtonSemanticColor, string> = {
 	error: 'dark:bg-red-700 dark:border-red-700',
 	warning: 'dark:bg-yellow-700 dark:border-yellow-700',
 	info: 'dark:bg-blue-700 dark:border-blue-700',
-	disabled: 'dark:bg-gray-700 dark:border-gray-700',
+	disabled: 'dark:bg-slate-700 dark:border-slate-700',
 	// Visual Accents
 	'accent-amber': 'dark:bg-amber-700 dark:border-amber-700',
 	'accent-indigo': 'dark:bg-indigo-700 dark:border-indigo-700',
@@ -98,8 +98,8 @@ export const DARK_MODE_DARKER_CLASSES: Record<ButtonSemanticColor, string> = {
 export const buttonVariants = cva(
 	// Base classes - all the common button styling
 	[
-		'inline-flex items-center justify-center gap-2 rtl:flex-row-reverse rounded-lg font-bold',
-		'min-h-12 min-w-32 px-4 py-2.5 text-base ltr:uppercase rtl:normal-case',
+		'inline-flex items-center justify-center gap-1 rtl:flex-row-reverse rounded-lg font-bold',
+		'min-h-12 min-w-32 px-2 md:px-4 py-2.5 text-base ltr:uppercase rtl:normal-case',
 		'relative whitespace-nowrap transition-all duration-300 ease-out',
 		'shadow-lg hover:shadow-xl disabled:hover:shadow-lg',
 		'hover:scale-105 active:scale-95 disabled:hover:scale-100',
@@ -571,7 +571,7 @@ export const buttonVariants = cva(
 			{ variant: 'primary', color: 'error', class: 'dark:text-red-50' },
 			{ variant: 'primary', color: 'warning', class: 'dark:text-yellow-50' },
 			{ variant: 'primary', color: 'info', class: 'dark:text-blue-50' },
-			{ variant: 'primary', color: 'disabled', class: 'dark:text-gray-50' },
+			{ variant: 'primary', color: 'disabled', class: 'dark:text-slate-50' },
 
 			// Dark mode text colors for primary buttons - Visual Accents
 			{ variant: 'primary', color: 'accent-amber', class: 'dark:text-amber-50' },

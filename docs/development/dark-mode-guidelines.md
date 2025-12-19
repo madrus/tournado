@@ -235,7 +235,7 @@ Use browser developer tools to verify:
 ```typescript
 // ❌ Avoid theme-specific logic
 const Component = ({ theme }) => (
-  <div className={theme === 'dark' ? 'bg-gray-900' : 'bg-white'}>
+  <div className={theme === 'dark' ? 'bg-slate-900' : 'bg-white'}>
     Content
   </div>
 )

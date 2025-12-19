@@ -1,8 +1,16 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { redirect, useActionData, useLoaderData, useNavigation } from 'react-router'
+import {
+	Form,
+	redirect,
+	useActionData,
+	useLoaderData,
+	useNavigate,
+	useNavigation,
+} from 'react-router'
 import { ActionButton } from '~/components/buttons/ActionButton'
+import { Checkbox } from '~/components/inputs/Checkbox'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { getServerT } from '~/i18n/i18n.server'
 import { createGroupStage, getUnassignedTeamsByCategories } from '~/models/group.server'
@@ -110,8 +118,7 @@ export async function action({
 }: Route.ActionArgs): Promise<ActionData | Response> {
 	// Require user with role-based authorization for group creation action
 	await requireUserWithMetadata(request, handle)
-
-	const t = await getServerT(request)
+	const t = getServerT(request)
 
 	// Get tournament ID from search params since competition is now top-level
 	const url = new URL(request.url)
@@ -191,6 +198,7 @@ export default function CreateGroupStage(): JSX.Element {
 	const actionData = useActionData<ActionData>()
 	const navigation = useNavigation()
 	const { t } = useTranslation()
+	const navigate = useNavigate()
 
 	const isSubmitting = navigation.state === 'submitting'
 
@@ -205,7 +213,7 @@ export default function CreateGroupStage(): JSX.Element {
 		<div className='space-y-8'>
 			<div>
 				<h2 className='font-bold text-2xl'>{t('competition.createGroupStage')}</h2>
-				<p className='mt-2 text-gray-600'>
+				<p className='mt-2 text-slate-600'>
 					{t('competition.createGroupStageDescription', {
 						tournamentName: tournament.name,
 					})}
@@ -213,7 +221,7 @@ export default function CreateGroupStage(): JSX.Element {
 			</div>
 
 			<div className='max-w-2xl'>
-				<form method='post' className='space-y-6'>
+				<Form method='post' className='space-y-6'>
 					{actionData?.errors?.general ? (
 						<div className='rounded-md bg-red-50 p-4'>
 							<p className='text-red-700 text-sm'>{actionData.errors.general}</p>
@@ -232,34 +240,41 @@ export default function CreateGroupStage(): JSX.Element {
 
 					{/* Categories Selection */}
 					<div>
-						<h3 className='mb-3 block font-medium text-gray-700 text-sm'>
+						<h3 className='mb-3 block font-medium text-sm text-slate-700 dark:text-slate-300'>
 							{t('competition.groupStage.ageCategories')}
 						</h3>
-						<p className='mb-3 text-gray-500 text-sm'>
+						<p className='mb-3 text-sm text-slate-500 dark:text-slate-400'>
 							{t('competition.groupStage.ageCategoriesDescription')}
 						</p>
 						<div className='space-y-2'>
-							{tournament.categories.map((category) => (
-								<label key={category} className='flex items-center space-x-3'>
-									<input
-										type='checkbox'
-										name='categories'
-										value={category}
-										defaultChecked={actionData?.fieldValues?.categories?.includes(
-											category,
-										)}
-										className='h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
-									/>
-									<span className='font-medium text-sm'>{category}</span>
-									<span className='text-gray-500 text-xs'>
-										(
-										{t('competition.groupStage.teamsAvailable', {
-											count: availableTeamsCount[category],
-										})}
-										)
-									</span>
-								</label>
-							))}
+							{tournament.categories.map((category) => {
+								const checkboxId = `category-${category}`
+								return (
+									<label
+										key={category}
+										htmlFor={checkboxId}
+										className='flex items-center gap-2 cursor-pointer'
+									>
+										<Checkbox
+											id={checkboxId}
+											name='categories'
+											value={category}
+											defaultChecked={actionData?.fieldValues?.categories?.includes(
+												category,
+											)}
+											accentColor='fuchsia'
+										/>
+										<span className='font-medium text-sm'>{category}</span>
+										<span className='text-xs text-slate-700 dark:text-slate-300'>
+											(
+											{t('competition.groupStage.teamsAvailable', {
+												count: availableTeamsCount[category],
+											})}
+											)
+										</span>
+									</label>
+								)
+							})}
 						</div>
 						{actionData?.errors?.categories ? (
 							<p className='mt-1 text-red-600 text-sm'>
@@ -293,18 +308,22 @@ export default function CreateGroupStage(): JSX.Element {
 
 					{/* Auto-fill Option */}
 					<div>
-						<label className='flex items-start space-x-3'>
-							<input
-								type='checkbox'
+						<label
+							htmlFor='autoFill-checkbox'
+							className='flex items-start gap-2 cursor-pointer'
+						>
+							<Checkbox
+								id='autoFill-checkbox'
 								name='autoFill'
 								defaultChecked={actionData?.fieldValues?.autoFill ?? true}
-								className='mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+								accentColor='fuchsia'
+								className='mt-1'
 							/>
 							<div>
 								<span className='font-medium text-sm'>
 									{t('competition.groupStage.autoFillGroups')}
 								</span>
-								<p className='text-gray-500 text-xs'>
+								<p className='text-xs text-slate-500 dark:text-slate-400'>
 									{t('competition.groupStage.autoFillDescription')}
 								</p>
 							</div>
@@ -342,7 +361,7 @@ export default function CreateGroupStage(): JSX.Element {
 						<ActionButton
 							type='button'
 							variant='secondary'
-							onClick={() => window.history.back()}
+							onClick={() => navigate(-1)}
 						>
 							{t('common.actions.cancel')}
 						</ActionButton>
@@ -350,7 +369,7 @@ export default function CreateGroupStage(): JSX.Element {
 							{isSubmitting ? t('common.actions.creating') : t('common.actions.create')}
 						</ActionButton>
 					</div>
-				</form>
+				</Form>
 			</div>
 		</div>
 	)

@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "Beheer poules, wedstrijden en standen voor toernooien.",
 			"groupStage": "Poulefase",
-			"groupStageDescription": "Creëer en beheer poules voor de poulefase",
+			"groupStageDescription": "Creëer en beheer poules in de poulefase",
 			"groups": "Poules",
 			"playoffs": "Playoffs",
 			"title": "Competitiebeheer"

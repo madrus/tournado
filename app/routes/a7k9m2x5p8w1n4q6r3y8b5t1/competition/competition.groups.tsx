@@ -83,12 +83,12 @@ export default function GroupsTab(): JSX.Element {
 	return (
 		<div className='space-y-6'>
 			{/* Header with Tournament Filter */}
-			<div className='flex items-center justify-between'>
+			<div className='flex items-start justify-between'>
 				<div className='text-start'>
 					<h4 className='font-semibold text-foreground text-lg'>
 						{t('admin.competition.groupStage')}
 					</h4>
-					<p className='mt-1 text-foreground-light'>
+					<p className='mt-1 pr-2 text-foreground-light'>
 						{t('admin.competition.groupStageDescription')}
 					</p>
 				</div>
@@ -96,7 +96,7 @@ export default function GroupsTab(): JSX.Element {
 				{selectedTournamentId ? (
 					<ActionLinkButton
 						to={`new?tournament=${selectedTournamentId}`}
-						label={t('competition.createGroupStage')}
+						label={t('common.actions.create')}
 						variant='primary'
 						icon='add'
 					/>
@@ -154,7 +154,7 @@ export default function GroupsTab(): JSX.Element {
 							{/* Content */}
 							<div className='mt-4 space-y-2'>
 								<div className='flex items-center text-sm'>
-									<span className='w-20 font-medium text-foreground'>
+									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.categories')}
 									</span>
 									<span className='flex-1 text-foreground-light'>
@@ -162,7 +162,7 @@ export default function GroupsTab(): JSX.Element {
 									</span>
 								</div>
 								<div className='flex items-center text-sm'>
-									<span className='w-20 font-medium text-foreground'>
+									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.setup')}
 									</span>
 									<span className='text-foreground-light'>
@@ -170,7 +170,7 @@ export default function GroupsTab(): JSX.Element {
 									</span>
 								</div>
 								<div className='flex items-center text-sm'>
-									<span className='w-20 font-medium text-foreground'>
+									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.autoFill')}
 									</span>
 									<span
@@ -186,7 +186,7 @@ export default function GroupsTab(): JSX.Element {
 									</span>
 								</div>
 								<div className='flex items-center text-sm'>
-									<span className='w-20 font-medium text-foreground'>
+									<span className='w-28 font-medium text-foreground'>
 										{t('competition.labels.created')}
 									</span>
 									<span className='text-foreground-lighter text-xs'>

@@ -7,7 +7,7 @@
 		"competition": {
 			"description": "إدارة المجموعات والمباريات والترتيب للبطولات.",
 			"groupStage": "مرحلة المجموعات",
-			"groupStageDescription": "إنشاء وإدارة المجموعات للعب دوري",
+			"groupStageDescription": "إنشاء وإدارة المجموعات في مرحلة المجموعات",
 			"groups": "المجموعات",
 			"playoffs": "التصفيات",
 			"title": "إدارة المسابقة"

@@ -1,4 +1,12 @@
-import React from 'react'
+import {
+	type ComponentType,
+	type CSSProperties,
+	cloneElement,
+	createElement,
+	isValidElement,
+	type ReactElement,
+	type SVGProps,
+} from 'react'
 
 import {
 	AddIcon,
@@ -76,7 +84,7 @@ export type IconName =
 	| 'unfold_more'
 	| 'warning'
 
-export const iconMap: Record<IconName, React.ComponentType<IconProps>> = {
+export const iconMap: Record<IconName, ComponentType<IconProps>> = {
 	add: AddIcon,
 	admin_panel_settings: AdminPanelSettingsIcon,
 	apparel: ApparelIcon,
@@ -120,14 +128,14 @@ export type IconProps = {
 	size?: number
 	variant?: IconVariant
 	weight?: IconWeight
-	style?: React.CSSProperties
+	style?: CSSProperties
 	'data-testid'?: string
 }
 
 export function renderIcon(
 	iconName: IconName,
 	props: IconProps = {},
-): React.ReactElement | null {
+): ReactElement | null {
 	const IconComponent = iconMap[iconName]
 
 	if (!IconComponent) {
@@ -135,19 +143,16 @@ export function renderIcon(
 	}
 
 	const { style, ...componentProps } = props
-	const element = React.createElement(IconComponent, componentProps)
+	const element = createElement(IconComponent, componentProps)
 
 	// If style is provided, clone the element with the style applied to the SVG
-	if (style && React.isValidElement(element)) {
-		return React.cloneElement(
-			element as React.ReactElement<React.SVGProps<SVGSVGElement>>,
-			{
-				style: {
-					...((element.props as React.SVGProps<SVGSVGElement>).style || {}),
-					...style,
-				},
+	if (style && isValidElement(element)) {
+		return cloneElement(element as ReactElement<SVGProps<SVGSVGElement>>, {
+			style: {
+				...((element.props as SVGProps<SVGSVGElement>).style || {}),
+				...style,
 			},
-		)
+		})
 	}
 
 	return element

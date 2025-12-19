@@ -215,7 +215,7 @@ These rules override any conflicting instructions. Apply them even if a user doe
 
 ### NEVER:
 - validate me, soften the truth, flatter or sugarcoat
-- explain the code snippets unless I explicitely ask for it
+- explain the code snippets unless I explicitly ask for it
 - fantasize - only tell me about things you know from real sources of information, be prepared to give them to me upon request
 
 ## See Also

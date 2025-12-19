@@ -6,6 +6,7 @@ import {
 	redirect,
 	useActionData,
 	useLoaderData,
+	useNavigate,
 	useNavigation,
 } from 'react-router'
 import { ActionButton } from '~/components/buttons/ActionButton'
@@ -117,8 +118,7 @@ export async function action({
 }: Route.ActionArgs): Promise<ActionData | Response> {
 	// Require user with role-based authorization for group creation action
 	await requireUserWithMetadata(request, handle)
-
-	const t = await getServerT(request)
+	const t = getServerT(request)
 
 	// Get tournament ID from search params since competition is now top-level
 	const url = new URL(request.url)
@@ -198,6 +198,7 @@ export default function CreateGroupStage(): JSX.Element {
 	const actionData = useActionData<ActionData>()
 	const navigation = useNavigation()
 	const { t } = useTranslation()
+	const navigate = useNavigate()
 
 	const isSubmitting = navigation.state === 'submitting'
 
@@ -314,7 +315,7 @@ export default function CreateGroupStage(): JSX.Element {
 							<Checkbox
 								id='autoFill-checkbox'
 								name='autoFill'
-								defaultChecked={actionData?.fieldValues?.autoFill ?? false}
+								defaultChecked={actionData?.fieldValues?.autoFill ?? true}
 								accentColor='fuchsia'
 								className='mt-1'
 							/>
@@ -360,7 +361,7 @@ export default function CreateGroupStage(): JSX.Element {
 						<ActionButton
 							type='button'
 							variant='secondary'
-							onClick={() => window.history.back()}
+							onClick={() => navigate(-1)}
 						>
 							{t('common.actions.cancel')}
 						</ActionButton>

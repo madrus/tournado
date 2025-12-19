@@ -110,6 +110,24 @@ Group classes in this order: **layout → spacing → color → typography → e
 <div className="shadow-lg text-lg bg-white flex p-6 gap-4 flex-col font-medium">
 ```
 
+### Semantic Color System
+**CRITICAL**: Avoid using direct Tailwind color tokens (e.g., `text-green-600`, `bg-red-500`). Always use the project's semantic tokens defined in `app/styles/colors.css`.
+
+#### 🎨 Tier 1: Functional Colors (State-based)
+Use these for communicating status, state, or actions.
+- **Tokens**: `success`, `error`, `warning`, `info`, `disabled`
+- **Example**: `text-success-700`, `bg-error-50`, `border-warning-300`
+
+#### 🎭 Tier 2: Visual Accents (Area-based)
+Use these for specific application areas or visual distinction.
+- **Tokens**: `accent-amber`, `accent-indigo`, `accent-fuchsia`, `accent-teal`, `accent-sky`, `accent-purple`
+- **Example**: `bg-accent-fuchsia-600` (Competition area), `text-accent-teal-700` (Auth/Teams)
+
+#### 🏛️ Base Semantic Tokens
+- **Brand/Primary**: `brand` (Red), `primary` (Emerald)
+- **UI Elements**: `background`, `foreground`, `title`, `border`
+- **Example**: `text-title`, `bg-background`, `border-border`
+
 ### Responsive Design
 - **Mobile-First**: Default styling for phones (320px-767px, unprefixed base classes)
 - **Tablet/Desktop**: Use `md:` (768px+) to group tablets with desktop, or `lg:` (1024px+) for desktop-only styles

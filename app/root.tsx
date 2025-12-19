@@ -13,6 +13,7 @@ import {
 	ScrollRestoration,
 } from 'react-router'
 import '@radix-ui/themes/styles.css'
+import '~/styles/radix-overrides.css'
 
 import { AppLayout } from '~/components/AppLayout'
 import { GeneralErrorBoundary } from '~/components/GeneralErrorBoundary'

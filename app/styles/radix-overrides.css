@@ -1,0 +1,27 @@
+/**
+ * Radix UI Themes CSS Variable Overrides
+ *
+ * This file overrides Radix UI Themes CSS variables that conflict with our design system.
+ * It must be imported AFTER @radix-ui/themes/styles.css to take precedence.
+ *
+ * Radix defines:
+ *   :is(.dark, .dark-theme), :is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
+ *     --color-background: var(--gray-1);
+ *   }
+ *
+ * We override with the same selector specificity, loading after Radix.
+ */
+
+/* Override Radix's --color-background in dark mode */
+:is(.dark, .dark-theme),
+:is(.dark, .dark-theme) :where(.radix-themes:not(.light, .light-theme)) {
+	--color-background: var(--color-slate-600);
+}
+
+/* Light mode override (matches Radix's light mode selector pattern) */
+:root,
+.light,
+.light-theme,
+:is(.light, .light-theme) :where(.radix-themes:not(.dark, .dark-theme)) {
+	--color-background: var(--color-white);
+}

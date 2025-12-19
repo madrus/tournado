@@ -10,13 +10,13 @@
 
 TASK-0301 is a mid-complexity feature for team assignment management within tournament group stages. The **core business logic is solid and production-ready**, and critical UX blockers have been **resolved**. The feature is now **65% complete** with remaining work in tests and internationalization.
 
-| Aspect | Status | Score |
-|--------|--------|-------|
-| **Implementation Completeness** | 65% | 3.5/5 |
-| **Code Quality** | 8/10 | ✓ Good |
-| **Technical Feasibility** | 100% Feasible | ✓ Confirmed |
-| **Feature Functionality** | ✅ WORKING | ✓ Navigation fixed |
-| **Shipping Readiness** | NO-GO | ⚠️ Tests/i18n needed |
+| Aspect                          | Status        | Score               |
+| ------------------------------- | ------------- | ------------------- |
+| **Implementation Completeness** | 65%           | 3.5/5               |
+| **Code Quality**                | 8/10          | ✓ Good              |
+| **Technical Feasibility**       | 100% Feasible | ✓ Confirmed         |
+| **Feature Functionality**       | ✅ WORKING     | ✓ Navigation fixed  |
+| **Shipping Readiness**          | NO-GO         | ⚠️ Tests/i18n needed |
 
 **Bottom Line:** Feature is NOW FUNCTIONAL. Navigation bug resolved, checkboxes visible, accessibility improved. Ready for testing/i18n work.
 
@@ -249,18 +249,18 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 
 ### Overall Score: 7.5/10
 
-| Dimension | Score | Status |
-|-----------|-------|--------|
-| Code Structure | 8.2/10 | ✓ Good |
+| Dimension       | Score  | Status                                |
+| --------------- | ------ | ------------------------------------- |
+| Code Structure  | 8.2/10 | ✓ Good                                |
 | Design Patterns | 8.5/10 | ✓ Transactional excellent, RBAC split |
-| Best Practices | 8/10 | ✓ Good |
-| Type Safety | 9/10 | ✓ Excellent |
-| Reusability | 9/10 | ✓ Components well isolated |
-| Performance | 7/10 | ⚠️ Query efficiency issues |
-| Security | 8/10 | ✓ RBAC works, could be clearer |
-| Testing | 3/10 | ✗ Auth tests only |
-| i18n | 5/10 | ✗ Incomplete translations |
-| Documentation | 6/10 | ⚠️ Limited JSDoc |
+| Best Practices  | 8/10   | ✓ Good                                |
+| Type Safety     | 9/10   | ✓ Excellent                           |
+| Reusability     | 9/10   | ✓ Components well isolated            |
+| Performance     | 7/10   | ⚠️ Query efficiency issues             |
+| Security        | 8/10   | ✓ RBAC works, could be clearer        |
+| Testing         | 3/10   | ✗ Auth tests only                     |
+| i18n            | 5/10   | ✗ Incomplete translations             |
+| Documentation   | 6/10   | ⚠️ Limited JSDoc                       |
 
 ### Code Quality Issues Ranked
 
@@ -289,13 +289,13 @@ Model function exists but UI has no way to trigger it. Task requires "All 4 oper
 
 ### Current Coverage
 
-| Type | Status | Count |
-|------|--------|-------|
-| Authorization tests | ✓ | 7 tests |
-| Loader/action tests | ✓ | 10 tests |
-| Model function tests | ✗ | 0 tests |
-| E2E tests | ✗ | 0 tests |
-| **Overall coverage** | ✗ | ~20% |
+| Type                 | Status | Count    |
+| -------------------- | ------ | -------- |
+| Authorization tests  | ✓      | 7 tests  |
+| Loader/action tests  | ✓      | 10 tests |
+| Model function tests | ✗      | 0 tests  |
+| E2E tests            | ✗      | 0 tests  |
+| **Overall coverage** | ✗      | ~20%     |
 
 **What's tested:** Route authorization, parameter validation, query params
 
@@ -383,19 +383,19 @@ pnpm test:e2e:run   # Must pass
 
 ### Total Estimate
 
-| Phase | Effort | Critical? | Status |
-|-------|--------|-----------|--------|
-| ~~FIX NAVIGATION BUG~~ | ~~1-2 hrs~~ | ~~BLOCKER~~ | ✅ DONE |
-| ~~Accessibility~~ | ~~0.5 hr~~ | ~~NO~~ | ✅ DONE |
-| i18n | 2-3 hrs | YES | TODO |
-| Unit tests | 4 hrs | YES | TODO |
-| E2E tests | 3-4 hrs | YES | TODO |
-| RBAC pattern | 1 hr | YES | TODO |
-| Swap UI | 1-1.5 hrs | NO | TODO |
-| Query efficiency | 1-2 hrs | NO | TODO |
-| Validation | 0.5 hr | YES | TODO |
-| **REMAINING (CRITICAL PATH)** | **9.5-11.5 hours** | (was 11-14, -2 completed) |
-| **REMAINING (WITH OPTIMIZATIONS)** | **12-14 hours** | (was 14-17, -2 completed) |
+| Phase                              | Effort             | Critical?                 | Status |
+| ---------------------------------- | ------------------ | ------------------------- | ------ |
+| ~~FIX NAVIGATION BUG~~             | ~~1-2 hrs~~        | ~~BLOCKER~~               | ✅ DONE |
+| ~~Accessibility~~                  | ~~0.5 hr~~         | ~~NO~~                    | ✅ DONE |
+| i18n                               | 2-3 hrs            | YES                       | TODO   |
+| Unit tests                         | 4 hrs              | YES                       | TODO   |
+| E2E tests                          | 3-4 hrs            | YES                       | TODO   |
+| RBAC pattern                       | 1 hr               | YES                       | TODO   |
+| Swap UI                            | 1-1.5 hrs          | NO                        | TODO   |
+| Query efficiency                   | 1-2 hrs            | NO                        | TODO   |
+| Validation                         | 0.5 hr             | YES                       | TODO   |
+| **REMAINING (CRITICAL PATH)**      | **9.5-11.5 hours** | (was 11-14, -2 completed) |
+| **REMAINING (WITH OPTIMIZATIONS)** | **12-14 hours**    | (was 14-17, -2 completed) |
 
 **NOTE:** Navigation bug and accessibility issues RESOLVED (2025-12-18). Ready for i18n and testing work.
 
@@ -459,14 +459,14 @@ pnpm test:e2e:run   # Must pass
 
 ## 7. Risk Assessment
 
-| Risk | Severity | Likelihood | Mitigation |
-|------|----------|------------|-----------|
-| **Authorization bypass** | CRITICAL | MEDIUM | Use permission-based auth (not roles). Test with different roles. |
-| **Race conditions in swap** | HIGH | LOW | Transactions prevent this. Test concurrent operations. |
-| **i18n key misses** | MEDIUM | HIGH | Translation coverage test. Check for missing keys before merge. |
-| **E2E test flakiness** | MEDIUM | HIGH | Tune Playwright waits. Run tests multiple times. |
-| **Performance with large datasets** | MEDIUM | LOW | Profile with 200+ teams. Add virtual scrolling if needed. |
-| **Mobile UX on touch devices** | MEDIUM | MEDIUM | Test on real devices. Team ID input is clunky for mobile. |
+| Risk                                | Severity | Likelihood | Mitigation                                                        |
+| ----------------------------------- | -------- | ---------- | ----------------------------------------------------------------- |
+| **Authorization bypass**            | CRITICAL | MEDIUM     | Use permission-based auth (not roles). Test with different roles. |
+| **Race conditions in swap**         | HIGH     | LOW        | Transactions prevent this. Test concurrent operations.            |
+| **i18n key misses**                 | MEDIUM   | HIGH       | Translation coverage test. Check for missing keys before merge.   |
+| **E2E test flakiness**              | MEDIUM   | HIGH       | Tune Playwright waits. Run tests multiple times.                  |
+| **Performance with large datasets** | MEDIUM   | LOW        | Profile with 200+ teams. Add virtual scrolling if needed.         |
+| **Mobile UX on touch devices**      | MEDIUM   | MEDIUM     | Test on real devices. Team ID input is clunky for mobile.         |
 
 ---
 
@@ -558,7 +558,7 @@ Before merging, verify:
 ## 10. Summary by Role
 
 ### For Product Manager
-- **Status:** 55% complete, not shippable yet
+- **Status:** 65% complete, not shippable yet
 - **Timeline:** 10-12 hours to production-ready (can ship by end of day if assigned now)
 - **Risk:** Low (core logic is solid, just needs tests + translations)
 - **Next Step:** Approve Option A or B, assign owner
@@ -587,29 +587,29 @@ Before merging, verify:
 ## 11. Appendix: Critical Files
 
 **Model Functions (COMPLETE):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/models/group.server.ts` (469 lines)
+- `app/models/group.server.ts` (469 lines)
 
 **Details Route (95% COMPLETE):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.tsx` (294 lines)
+- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.$groupStageId.tsx` (294 lines)
 
 **Create Route (COMPLETE - Fixed 2025-12-18):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.new.tsx`
+- `app/routes/a7k9m2x5p8w1n4q6r3y8b5t1/competition/competition.groups.new.tsx`
 
 **UI Components (NEW - Created 2025-12-18):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/components/inputs/Checkbox.tsx` (92 lines)
+- `app/components/inputs/Checkbox.tsx` (92 lines)
 
 **i18n Locales (0% COMPLETE FOR THIS FEATURE):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/en.json`
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/nl.json`
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/de.json`
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/fr.json`
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/tr.json`
-- `/Users/madrus/dev/biz/toernooien/tournado/app/i18n/locales/ar.json`
+- `app/i18n/locales/en.json`
+- `app/i18n/locales/nl.json`
+- `app/i18n/locales/de.json`
+- `app/i18n/locales/fr.json`
+- `app/i18n/locales/tr.json`
+- `app/i18n/locales/ar.json`
 
 **Tests (NEED CREATION):**
-- `/Users/madrus/dev/biz/toernooien/tournado/app/models/__tests__/group.server.test.ts` (MISSING)
-- `/Users/madrus/dev/biz/toernooien/tournado/playwright/tests/competition.groups.spec.ts` (MISSING)
-- `/Users/madrus/dev/biz/toernooien/tournado/playwright/pages/GroupsPage.ts` (MISSING)
+- `app/models/__tests__/group.server.test.ts` (MISSING)
+- `playwright/tests/competition.groups.spec.ts` (MISSING)
+- `playwright/pages/GroupsPage.ts` (MISSING)
 
 ---
 

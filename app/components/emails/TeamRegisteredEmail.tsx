@@ -164,7 +164,7 @@ const signature = {
 }
 
 const footer = {
-	borderTop: '1px solid #e5e7eb', // slate-200 equivalent
+	borderTop: '1px solid #e2e8f0', // slate-200 equivalent
 	padding: '32px 20px',
 	textAlign: 'center' as const,
 }
@@ -172,7 +172,7 @@ const footer = {
 const footerText = {
 	fontSize: '14px',
 	lineHeight: '1.4',
-	color: '#6b7280', // slate-500 equivalent
+	color: '#64748b', // slate-500 equivalent
 	margin: '0',
 }
 

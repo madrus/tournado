@@ -1043,3 +1043,7 @@ Context menus need to handle long email addresses gracefully while maintaining p
 // Mobile menu - fits content exactly
 <div className='w-max max-w-[90vw] overflow-visible rounded-lg bg-white shadow-xl'>
 ```
+
+---
+
+#rtl #internationalization #tailwind #documentation

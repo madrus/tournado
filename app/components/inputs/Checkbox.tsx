@@ -1,5 +1,6 @@
 import type { JSX } from 'react'
 
+type AccentColor = 'slate' | 'fuchsia' | 'blue' | 'green' | 'red'
 type CheckboxProps = {
 	id?: string
 	name: string
@@ -7,16 +8,16 @@ type CheckboxProps = {
 	defaultChecked?: boolean
 	checked?: boolean
 	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-	accentColor?: string
+	accentColor?: AccentColor
 	className?: string
 }
 
-const colorMap: Record<string, string> = {
-	slate: 'rgb(148, 163, 184)',
-	fuchsia: 'rgb(217, 70, 239)',
-	blue: 'rgb(59, 130, 246)',
-	green: 'rgb(34, 197, 94)',
-	red: 'rgb(239, 68, 68)',
+const colorClasses: Record<AccentColor, string> = {
+	slate: 'text-disabled-400',
+	fuchsia: 'text-accent-fuchsia-500',
+	blue: 'text-info-500',
+	green: 'text-success-500',
+	red: 'text-error-500',
 }
 
 export function Checkbox({
@@ -29,14 +30,11 @@ export function Checkbox({
 	accentColor = 'slate',
 	className = '',
 }: CheckboxProps): JSX.Element {
-	const color = colorMap[accentColor] || colorMap.slate
+	const colorClass = colorClasses[accentColor] || colorClasses.slate
 	const checkboxId = id || `${name}-${value || 'checkbox'}`
 
 	return (
-		<div
-			className={`relative inline-flex ${className}`}
-			style={{ width: '16px', height: '16px' }}
-		>
+		<div className={`relative inline-flex size-4 ${colorClass} ${className}`}>
 			<input
 				type='checkbox'
 				id={checkboxId}
@@ -45,48 +43,18 @@ export function Checkbox({
 				defaultChecked={defaultChecked}
 				checked={checked}
 				onChange={onChange}
-				className='peer'
-				style={{
-					position: 'absolute',
-					width: '16px',
-					height: '16px',
-					margin: 0,
-					opacity: 0,
-					cursor: 'pointer',
-					zIndex: 1,
-				}}
+				className='peer absolute inset-0 z-10 m-0 cursor-pointer opacity-0'
 			/>
-			<div
-				className='pointer-events-none'
-				style={{
-					width: '16px',
-					height: '16px',
-					border: `1px solid ${color}`,
-					borderRadius: '3px',
-					backgroundColor: 'transparent',
-					transition: 'all 0.15s ease-in-out',
-				}}
-			/>
+			<div className='pointer-events-none size-4 rounded-[3px] border border-current bg-transparent transition-all duration-150 ease-in-out peer-focus-visible:ring-2 peer-focus-visible:ring-current peer-focus-visible:ring-offset-2 ring-offset-background' />
 			<svg
-				className='pointer-events-none peer-checked:opacity-100'
-				style={{
-					position: 'absolute',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
-					width: '10px',
-					height: '10px',
-					opacity: 0,
-					transition: 'opacity 0.15s ease-in-out',
-				}}
+				className='pointer-events-none absolute top-1/2 left-1/2 size-[10px] -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-150 ease-in-out peer-checked:opacity-100'
 				viewBox='0 0 12 10'
 				fill='none'
 				aria-hidden='true'
 			>
 				<path
 					d='M1 5l3 3 7-7'
-					stroke={color}
-					strokeWidth='2'
+					className='stroke-current stroke-2'
 					strokeLinecap='round'
 					strokeLinejoin='round'
 				/>

@@ -394,8 +394,8 @@ pnpm test:e2e:run   # Must pass
 | Swap UI                            | 1-1.5 hrs          | NO                        | TODO   |
 | Query efficiency                   | 1-2 hrs            | NO                        | TODO   |
 | Validation                         | 0.5 hr             | YES                       | TODO   |
-| **REMAINING (CRITICAL PATH)**      | **9.5-11.5 hours** | (was 11-14, -2 completed) |
-| **REMAINING (WITH OPTIMIZATIONS)** | **12-14 hours**    | (was 14-17, -2 completed) |
+| **REMAINING (CRITICAL PATH)**      | **9.5-11.5 hours** | (was 11-14, -2 completed) | —      |
+| **REMAINING (WITH OPTIMIZATIONS)** | **12-14 hours**    | (was 14-17, -2 completed) | —      |
 
 **NOTE:** Navigation bug and accessibility issues RESOLVED (2025-12-18). Ready for i18n and testing work.
 

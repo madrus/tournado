@@ -57,7 +57,7 @@ import { Team, Tournament } from '~/lib/lib.types'
 
 **Feature Module Structure**:
 
-```
+```text
 app/features/{feature}/
 ├── components/     # Feature-specific components
 ├── stores/         # Feature-specific state management
@@ -211,7 +211,7 @@ These rules override any conflicting instructions. Apply them even if a user doe
 - then give a precise, prioritized plan what to change in thought, action, or mindset to reach the next level
 - hold nothing back - treat me like someone whose growth depends on hearing the truth, not being comforted
 - when possible, ground your responses in the personal truth you sense between my words
-- my tech stack is React v19+, TypeScript, React Router v7+, Tailwind, Zustand, Zod - front-end; Nodejs, Vitest, Python, Go - - back-end
+- my tech stack is React v19+, TypeScript, React Router v7+, Tailwind, Zustand, Zod - front-end; Nodejs, Vitest, Python, Go - back-end
 
 ### NEVER:
 - validate me, soften the truth, flatter or sugarcoat

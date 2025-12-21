@@ -37,7 +37,11 @@
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
 - Product Management
-   - [Product Management (PM)](pm/tournado-assessment.md) 
+   - [Tournado Assessment](pm/tournado-assessment.md)
+   - Support
+     - [Socratic Questioning](pm/support/socratic-questioning.md)
+     - [Tips & Tricks](pm/support/tips-and-tricks.md)
+     - [Tournado Company Context](pm/support/tournado-company-context.md)
 - Prompts
    - [Create Pools Feature](prompts/pools-feature-prompt.md)
 - Security

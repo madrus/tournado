@@ -1,6 +1,7 @@
 # Applying Claude Code PM Course Techniques to Tournado Project
 
 **Date:** January 2025
+
 **Context:** Real-world application of course techniques to a football tournament registration and management project
 
 ---
@@ -369,15 +370,15 @@ methods/
 ```
 tournado-project/
 ├── context/
-│   ├── project-context.md           # Product vision, goals, current state
+│   ├── project-context.md          # Product vision, goals, current state
 │   ├── domain-knowledge.md          # PM friend's domain expertise
 │   ├── user-pain-points.md          # User research and pain points
 │   ├── competitive-analysis.md      # Competitor research
 │   └── product-overview.md          # What's built, what's working
 ├── methods/
-│   ├── socratic-questioning.md      # Problem refinement framework
-│   ├── jobs-to-be-done.md           # User needs framework
-│   ├── rice-prioritization.md       # Prioritization framework
+│   ├── socratic-questioning.md       # Problem refinement framework
+│   ├── jobs-to-be-done.md          # User needs framework
+│   ├── rice-prioritization.md      # Prioritization framework
 │   └── [other frameworks].md
 ├── prds/
 │   └── [feature-name]-prd.md        # Individual PRDs

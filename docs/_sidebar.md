@@ -36,6 +36,8 @@
 - Features
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
+- Product Management
+   - [Product Management (PM)](pm/tournado-assessment.md) 
 - Prompts
    - [Create Pools Feature](prompts/pools-feature-prompt.md)
 - Security

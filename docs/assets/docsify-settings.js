@@ -1,4 +1,4 @@
-const _getDocsifySettings = () => ({
+window.getDocsifySettings = () => ({
 	name: 'Tournado',
 	logo: './images/three-soccer-balls.png',
 	repo: 'https://github.com/madrus/tournado',
@@ -76,7 +76,7 @@ const _getDocsifySettings = () => ({
 								const obs = new MutationObserver(() => apply(root))
 								obs.observe(root, { childList: true, subtree: true })
 								root.__tournado_obs = obs
-							} catch (_error) {}
+							} catch {}
 						}
 						return
 					}

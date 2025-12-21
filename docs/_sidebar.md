@@ -12,7 +12,7 @@
    - [Claude QC PR#154](wip/claude-20250723.md)
 - Development
    - [Overview](development/overview.md)
-   - [Environment Setup](environment-setup.md)
+   - [Environment Setup](development/environment-setup.md)
    - [Architecture Analysis](development/architecture-analysis.md)
    - [Authentication](development/authentication.md)
    - [Color System Migration](development/color-system-migration.md)
@@ -64,7 +64,7 @@
    - [HOWTO: Use Ollama Locally](<guides/HOWTO - Use Ollama Locally.md>)
 - Reference
    - [Architecture](architecture.md)
-   - [Cursor Rules](cursor-rules.md)
+   - [Cursor Rules](development/cursor-rules.md)
    - [Fly.io vs Vercel](fly-vs-vercel.md)
    - [Markdown Tips](markdown-tips.md)
    - [React Router v7 Stack](react-router-stack.md)

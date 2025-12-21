@@ -15,28 +15,26 @@ const _getDocsifySettings = () => ({
 		smartypants: true,
 	},
 	plugins: [
-		// Plugin to suppress showing YAML frontmatter in the rendered markdown
+		// Remove YAML frontmatter
 		(hook) => {
-			hook.beforeEach((content) => {
-				// Remove YAML frontmatter (content between --- markers)
-				return content.replace(/^---[\s\S]*?---\s*/m, '')
-			})
+			hook.beforeEach((content) => content.replace(/^---[\s\S]*?---\s*/m, ''))
 		},
-		// Collapse all top-level sections except Home — robust: retries and observes changes
+		// Collapse top-level sections but keep the Home section open
 		(hook) => {
 			hook.doneEach(() => {
-				const SIDEBAR_SELECTORS = ['.sidebar', '#sidebar']
-				const findSidebar = () =>
-					SIDEBAR_SELECTORS.map((s) => document.querySelector(s)).find(Boolean)
+				const selectors = ['.sidebar', '#sidebar']
+				const findRoot = () =>
+					selectors.map((s) => document.querySelector(s)).find(Boolean)
 				const isHomeLink = (li) =>
 					!!li.querySelector(
 						'a[href="README.md"], a[href="./README.md"], a[href="/README.md"], a[href="index.html"], a[href="./index.html"]',
 					)
 
-				const applyCollapse = (root) => {
+				const apply = (root) => {
 					const topUl = root.querySelector('nav > ul') || root.querySelector('ul')
 					if (!topUl) return false
 					const topLis = Array.from(topUl.children).filter((n) => n.tagName === 'LI')
+
 					topLis.forEach((li) => {
 						const submenu = li.querySelector(':scope > ul') || li.querySelector('ul')
 						if (!submenu) return
@@ -48,67 +46,51 @@ const _getDocsifySettings = () => ({
 							submenu.style.display = 'none'
 						}
 					})
-					// If nothing is open, open the first top-level item that has a submenu (best-effort Home fallback)
+
+					// Ensure at least the first section with children is open (fallback for Home)
 					const anyOpen = topLis.some((li) => li.classList?.contains('open'))
 					if (!anyOpen) {
-						const firstWithSub = topLis.find(
+						const firstWith = topLis.find(
 							(li) => li.querySelector(':scope > ul') || li.querySelector('ul'),
 						)
-						if (firstWithSub) {
-							const submenu =
-								firstWithSub.querySelector(':scope > ul') ||
-								firstWithSub.querySelector('ul')
-							firstWithSub.classList.add('open')
-							if (submenu) submenu.style.display = ''
+						if (firstWith) {
+							firstWith.classList.add('open')
+							const sub =
+								firstWith.querySelector(':scope > ul') || firstWith.querySelector('ul')
+							if (sub) sub.style.display = ''
 						}
 					}
+
 					return true
 				}
 
-				let attempts = 0
-				const MAX_ATTEMPTS = 8
-				const RETRY_MS = 120
+				let tries = 0
+				const MAX = 10
+				const RETRY = 100
 
-				const tryApply = () => {
-					const root = findSidebar()
-					if (root && applyCollapse(root)) {
-						// Observe future changes and reapply collapse when sidebar is re-rendered
-						if (!root.__tournado_sidebar_observer) {
+				const attempt = () => {
+					const root = findRoot()
+					if (root && apply(root)) {
+						if (!root.__tournado_obs) {
 							try {
-								const obs = new MutationObserver(() => applyCollapse(root))
+								const obs = new MutationObserver(() => apply(root))
 								obs.observe(root, { childList: true, subtree: true })
-								root.__tournado_sidebar_observer = obs
-							} catch (_e) {
-								// ignore if MutationObserver not available
-							}
+								root.__tournado_obs = obs
+							} catch (_error) {}
 						}
 						return
 					}
-					if (attempts++ < MAX_ATTEMPTS) {
-						setTimeout(tryApply, RETRY_MS)
-					}
+					if (tries++ < MAX) setTimeout(attempt, RETRY)
 				}
 
-				tryApply()
+				attempt()
 			})
 		},
 	],
 	search: 'auto',
 	themeColor: 'rgb(3, 201, 137)',
-	// Sidebar Collapse Plugin Settings
-	collapse: {
-		multipleOpen: true,
-	},
-	// Copy code button
-	copyCode: {
-		buttonText: 'Copy',
-		errorText: 'Error',
-		successText: 'Copied',
-	},
-	// External script support
+	collapse: { multipleOpen: true },
+	copyCode: { buttonText: 'Copy', errorText: 'Error', successText: 'Copied' },
 	externalLinkTarget: '_blank',
-	// Emoji support
-	emoji: {
-		// Add custom emojis if needed
-	},
+	emoji: {},
 })

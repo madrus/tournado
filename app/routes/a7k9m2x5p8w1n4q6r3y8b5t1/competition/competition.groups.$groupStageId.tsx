@@ -1,9 +1,8 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
-import { redirect, useLoaderData } from 'react-router'
+import { redirect, useActionData, useLoaderData } from 'react-router'
 
 import { CompetitionGroupStageDetails } from '~/features/competition/components'
-import type { CompetitionGroupStageDetailsActionData as ActionData } from '~/features/competition/types'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 import {
 	assignTeamToGroupSlot,
@@ -24,6 +23,10 @@ type LoaderData = {
 	readonly groupStage: GroupStageWithDetails
 	readonly availableTeams: readonly UnassignedTeam[]
 	readonly tournamentId: string
+}
+
+type ActionData = {
+	readonly error?: string
 }
 
 export const handle: RouteMetadata = {
@@ -98,27 +101,41 @@ export async function action({
 	const intent = formData.get('intent')?.toString()
 
 	try {
-		if (intent === 'assign') {
-			const groupId = formData.get('groupId')?.toString() || ''
-			const slotIndex = Number(formData.get('slotIndex'))
-			const teamId = formData.get('teamId')?.toString() || ''
-			invariant(groupId && !Number.isNaN(slotIndex) && teamId, 'Invalid assign payload')
-			// assignTeamToGroupSlot now validates tournament consistency internally
-			await assignTeamToGroupSlot({ groupStageId, groupId, slotIndex, teamId })
-		} else if (intent === 'clear') {
-			const groupSlotId = formData.get('groupSlotId')?.toString() || ''
-			invariant(groupSlotId, 'Invalid clear payload')
-			await clearGroupSlot({ groupSlotId })
-		} else if (intent === 'reserve') {
-			const teamId = formData.get('teamId')?.toString() || ''
-			invariant(teamId, 'Invalid reserve payload')
-			// moveTeamToReserve now validates tournament consistency internally
-			await moveTeamToReserve({ groupStageId, teamId })
-		} else if (intent === 'swap') {
-			const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
-			const targetSlotId = formData.get('targetSlotId')?.toString() || ''
-			invariant(sourceSlotId && targetSlotId, 'Invalid swap payload')
-			await swapGroupSlots({ sourceSlotId, targetSlotId })
+		switch (intent) {
+			case 'assign': {
+				const groupId = formData.get('groupId')?.toString() || ''
+				const slotIndex = Number(formData.get('slotIndex'))
+				const teamId = formData.get('teamId')?.toString() || ''
+				invariant(
+					groupId && !Number.isNaN(slotIndex) && teamId,
+					'Invalid assign payload',
+				)
+				// assignTeamToGroupSlot now validates tournament consistency internally
+				await assignTeamToGroupSlot({ groupStageId, groupId, slotIndex, teamId })
+				break
+			}
+			case 'clear': {
+				const groupSlotId = formData.get('groupSlotId')?.toString() || ''
+				invariant(groupSlotId, 'Invalid clear payload')
+				await clearGroupSlot({ groupSlotId })
+				break
+			}
+			case 'reserve': {
+				const teamId = formData.get('teamId')?.toString() || ''
+				invariant(teamId, 'Invalid reserve payload')
+				// moveTeamToReserve now validates tournament consistency internally
+				await moveTeamToReserve({ groupStageId, teamId })
+				break
+			}
+			case 'swap': {
+				const sourceSlotId = formData.get('sourceSlotId')?.toString() || ''
+				const targetSlotId = formData.get('targetSlotId')?.toString() || ''
+				invariant(sourceSlotId && targetSlotId, 'Invalid swap payload')
+				await swapGroupSlots({ sourceSlotId, targetSlotId })
+				break
+			}
+			default:
+				break
 		}
 
 		if (intent === 'reserve') {
@@ -136,12 +153,14 @@ export async function action({
 
 export function GroupStageDetails(): JSX.Element {
 	const { groupStage, availableTeams, tournamentId } = useLoaderData<LoaderData>()
+	const actionData = useActionData<ActionData>()
 
 	return (
 		<CompetitionGroupStageDetails
 			groupStage={groupStage}
 			availableTeams={availableTeams}
 			tournamentId={tournamentId}
+			actionData={actionData}
 		/>
 	)
 }

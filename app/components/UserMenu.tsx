@@ -210,7 +210,7 @@ export function UserMenu({
 										<button
 											type='button'
 											className={cn(
-												'w-full items-center px-3 py-2 text-foreground-darker hover:bg-accent focus:outline-none',
+												'w-full items-center px-3 py-2 text-foreground-darker hover:bg-neutral focus:outline-none',
 												getMenuItemLineHeight(),
 												menuClasses.menuItem,
 											)}
@@ -246,8 +246,8 @@ export function UserMenu({
 															'h-10 w-full items-center px-3 py-2 focus:outline-none',
 															getMenuItemLineHeight(),
 															subItem.active
-																? 'bg-accent text-foreground-darker'
-																: 'text-foreground-darker hover:bg-accent',
+																? 'bg-neutral text-foreground-darker'
+																: 'text-foreground-darker hover:bg-neutral',
 															menuClasses.menuItem,
 														)}
 														onClick={(event) => {
@@ -300,7 +300,7 @@ export function UserMenu({
 										to={item.href || '#'}
 										onClick={(event) => handleMenuNavigation(event, item.href)}
 										className={cn(
-											'w-full items-center px-3 py-2 text-foreground-darker hover:bg-accent focus:outline-none',
+											'w-full items-center px-3 py-2 text-foreground-darker hover:bg-neutral focus:outline-none',
 											getMenuItemLineHeight(),
 											menuClasses.menuItem,
 										)}

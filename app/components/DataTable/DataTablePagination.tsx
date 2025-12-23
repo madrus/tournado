@@ -87,7 +87,7 @@ export function DataTablePagination({
 					{hasPrevPage ? (
 						<Link
 							to={`?page=${currentPage - 1}`}
-							className='rounded border border-border bg-background px-3 py-1 text-sm transition-colors hover:bg-accent'
+							className='rounded border border-border bg-background px-3 py-1 text-sm transition-colors hover:bg-neutral'
 						>
 							{t('common.pagination.previous')}
 						</Link>
@@ -116,7 +116,7 @@ export function DataTablePagination({
 					{hasNextPage ? (
 						<Link
 							to={`?page=${currentPage + 1}`}
-							className='rounded border border-border bg-background px-3 py-1 text-sm transition-colors hover:bg-accent'
+							className='rounded border border-border bg-background px-3 py-1 text-sm transition-colors hover:bg-neutral'
 						>
 							{t('common.pagination.next')}
 						</Link>

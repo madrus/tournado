@@ -41,7 +41,7 @@ export function UpdatePrompt(): JSX.Element | null {
 	return (
 		<div
 			data-testid='pwa-update-prompt'
-			className='safe-bottom fixed right-0 bottom-0 left-0 z-40 bg-accent p-4 shadow-lg'
+			className='safe-bottom fixed right-0 bottom-0 left-0 z-40 bg-neutral p-4 shadow-lg'
 		>
 			<div className='flex items-center justify-between gap-4'>
 				<div className='flex-1'>

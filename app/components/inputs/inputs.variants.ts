@@ -461,13 +461,13 @@ export const calendarDayVariants = cva(
 	[
 		'flex h-9 w-9 items-center justify-center rounded-full text-base scale-90', // scale-90 reduces visual size to match input
 		'cursor-pointer transition-colors duration-200',
-		'hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary',
+		'hover:bg-neutral focus:outline-none focus:ring-2 focus:ring-primary',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 	],
 	{
 		variants: {
 			state: {
-				default: 'text-foreground hover:bg-accent',
+				default: 'text-foreground hover:bg-neutral',
 				today:
 					'bg-brand-100 text-brand-700 dark:border-2 dark:border-brand-600 dark:bg-transparent dark:text-brand-300',
 				selected: 'bg-brand-500 text-white dark:bg-brand-600',

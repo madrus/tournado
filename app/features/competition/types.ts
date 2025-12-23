@@ -1,20 +1,8 @@
-export type CompetitionGroupStageActionData = {
-	readonly errors?: {
-		name?: string
-		categories?: string
-		configGroups?: string
-		configSlots?: string
-		general?: string
-	}
-	readonly fieldValues?: {
-		name: string
-		categories: string[]
-		configGroups: string
-		configSlots: string
-		autoFill: boolean
-	}
-}
+import type { SportsIcon, TrophyIcon } from '~/components/icons'
 
-export type CompetitionGroupStageDetailsActionData = {
-	readonly error?: string
+export type CompetitionTabConfig = {
+	nameKey: string
+	href: 'groups' | 'playoffs'
+	icon: typeof SportsIcon | typeof TrophyIcon
+	disabled: boolean
 }

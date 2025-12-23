@@ -1,24 +1,26 @@
 import type { JSX } from 'react'
-import { Form, Link, useActionData, useFetcher, useNavigation } from 'react-router'
+import { Form, Link, useFetcher, useNavigation } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import type { CompetitionGroupStageDetailsActionData } from '~/features/competition/types'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 
 type CompetitionGroupStageDetailsProps = {
-	readonly groupStage: GroupStageWithDetails
-	readonly availableTeams: readonly UnassignedTeam[]
-	readonly tournamentId: string
+	groupStage: GroupStageWithDetails
+	availableTeams: readonly UnassignedTeam[]
+	tournamentId: string
+	actionData?: {
+		error?: string
+	}
 }
 
 export function CompetitionGroupStageDetails({
 	groupStage,
 	availableTeams,
 	tournamentId,
-}: CompetitionGroupStageDetailsProps): JSX.Element {
-	const actionData = useActionData<CompetitionGroupStageDetailsActionData>()
-	const reserveFetcher = useFetcher<CompetitionGroupStageDetailsActionData>()
+	actionData,
+}: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
+	const reserveFetcher = useFetcher()
 	const navigation = useNavigation()
 
 	const isSubmitting = navigation.state === 'submitting'

@@ -796,16 +796,16 @@
 		border-color: #ef4444; /* red-500 border */
 	}
 
-	.light [data-testid="user-menu-dropdown"] .bg-accent {
+	.light [data-testid="user-menu-dropdown"] .bg-neutral {
 		background-color: #d1fae5; /* emerald-100 for selected language */
 	}
 
-	.light [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover {
+	.light [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover {
 		background-color: #ecfdf5; /* emerald-50 for hover */
 	}
 
 	/* Language submenu styling - dark mode */
-	.dark [data-testid="user-menu-dropdown"] .bg-accent {
+	.dark [data-testid="user-menu-dropdown"] .bg-neutral {
 		background-color: #047857; /* emerald-700 for selected language */
 	}
 
@@ -822,9 +822,9 @@
 	}
 
 	/* All hover states in UserMenu dropdown - background only, no borders */
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent:hover,
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover,
 	.dark [data-testid="user-menu-dropdown"] .hover\:bg-background-hover:hover,
-	.dark [data-testid="user-menu-dropdown"] .hover\:bg-accent\/50:hover {
+	.dark [data-testid="user-menu-dropdown"] .hover\:bg-neutral\/50:hover {
 		background-color: var(--color-usermenu-hover-bg);
 		border-color: transparent;
 	}

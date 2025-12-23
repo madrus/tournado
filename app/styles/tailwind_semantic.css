@@ -74,10 +74,10 @@
 	color: var(--color-red-800);
 }
 
-.bg-accent {
+.bg-neutral {
 	background-color: var(--color-accent);
 }
-.dark .bg-accent {
+.dark .bg-neutral {
 	background-color: var(--color-accent); /* Same as light for now */
 }
 

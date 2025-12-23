@@ -1,27 +1,42 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Form, useActionData, useNavigate, useNavigation } from 'react-router'
+import { Form, useNavigate, useNavigation } from 'react-router'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { Checkbox } from '~/components/inputs/Checkbox'
 import { TextInputField } from '~/components/inputs/TextInputField'
-import type { CompetitionGroupStageActionData } from '~/features/competition/types'
 
 type CompetitionGroupStageFormProps = {
-	readonly tournament: {
-		readonly id: string
-		readonly name: string
-		readonly categories: readonly Category[]
+	tournament: {
+		id: string
+		name: string
+		categories: readonly Category[]
 	}
-	readonly availableTeamsCount: Record<Category, number>
+	availableTeamsCount: Record<Category, number>
+	actionData?: {
+		errors?: {
+			name?: string
+			categories?: string
+			configGroups?: string
+			configSlots?: string
+			general?: string
+		}
+		fieldValues?: {
+			name: string
+			categories: string[]
+			configGroups: string
+			configSlots: string
+			autoFill: boolean
+		}
+	}
 }
 
 export function CompetitionGroupStageForm({
 	tournament,
 	availableTeamsCount,
-}: CompetitionGroupStageFormProps): JSX.Element {
-	const actionData = useActionData<CompetitionGroupStageActionData>()
+	actionData,
+}: Readonly<CompetitionGroupStageFormProps>): JSX.Element {
 	const navigation = useNavigation()
 	const { t } = useTranslation()
 	const navigate = useNavigate()

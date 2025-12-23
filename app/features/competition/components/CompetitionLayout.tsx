@@ -3,38 +3,16 @@ import { type JSX, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router'
 
-import { SportsIcon, TrophyIcon } from '~/components/icons'
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
+import { tabs } from '~/features/competition/constants'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { cn } from '~/utils/misc'
 
 type CompetitionLayoutProps = {
-	readonly tournamentListItems: readonly TournamentListItem[]
-	readonly selectedTournamentId: string | undefined
+	tournamentListItems: readonly TournamentListItem[]
+	selectedTournamentId: string | undefined
 }
-
-type TabConfig = {
-	nameKey: string
-	href: 'groups' | 'playoffs'
-	icon: typeof SportsIcon | typeof TrophyIcon
-	disabled: boolean
-}
-
-const tabs: readonly TabConfig[] = [
-	{
-		nameKey: 'admin.competition.groups',
-		href: 'groups',
-		icon: SportsIcon,
-		disabled: false,
-	},
-	{
-		nameKey: 'admin.competition.playoffs',
-		href: 'playoffs',
-		icon: TrophyIcon,
-		disabled: true, // Coming soon
-	},
-] as const
 
 const tabVariants = cva(
 	[
@@ -69,7 +47,7 @@ const tabVariants = cva(
 export function CompetitionLayout({
 	tournamentListItems,
 	selectedTournamentId,
-}: CompetitionLayoutProps): JSX.Element {
+}: Readonly<CompetitionLayoutProps>): JSX.Element {
 	const { t } = useTranslation()
 	const [activeTab, setActiveTab] = useState<'groups' | 'playoffs'>('groups')
 
@@ -120,7 +98,7 @@ export function CompetitionLayout({
 							/>
 							<span className='rtl:order-2'>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
-								<span className='latin-text rounded-full bg-accent px-2 py-0.5 text-foreground-lighter text-xs rtl:order-3'>
+								<span className='latin-text rounded-full bg-neutral px-2 py-0.5 text-foreground-lighter text-xs rtl:order-3'>
 									Soon
 								</span>
 							) : null}

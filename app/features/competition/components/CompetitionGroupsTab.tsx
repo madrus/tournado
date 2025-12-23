@@ -1,33 +1,24 @@
-import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import { ActionLinkButton } from '~/components/buttons/ActionLinkButton'
 import { SportsIcon } from '~/components/icons'
+import {
+	formatCompetitionCategories,
+	formatCompetitionDate,
+} from '~/features/competition/utils/competitionFormatters'
 import type { GroupStageListItem } from '~/models/group.server'
 
 type CompetitionGroupsTabProps = {
-	readonly groupStages: readonly GroupStageListItem[]
-	readonly selectedTournamentId: string | undefined
+	groupStages: readonly GroupStageListItem[]
+	selectedTournamentId: string | undefined
 }
-
-const formatCategories = (categories: readonly Category[]): string =>
-	categories.join(', ')
-
-const formatDate = (date: Date): string =>
-	new Intl.DateTimeFormat('en-US', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit',
-	}).format(date)
 
 export function CompetitionGroupsTab({
 	groupStages,
 	selectedTournamentId,
-}: CompetitionGroupsTabProps): JSX.Element {
+}: Readonly<CompetitionGroupsTabProps>): JSX.Element {
 	const { t } = useTranslation()
 
 	return (
@@ -55,7 +46,7 @@ export function CompetitionGroupsTab({
 
 			{/* Group Stage Grid */}
 			{!selectedTournamentId ? (
-				<div className='rounded-xl border-2 border-border border-dashed bg-accent py-12 text-center'>
+				<div className='rounded-xl border-2 border-border border-dashed bg-neutral py-12 text-center'>
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
 						<h3 className='mt-4 font-semibold text-foreground text-lg'>
@@ -67,7 +58,7 @@ export function CompetitionGroupsTab({
 					</div>
 				</div>
 			) : groupStages.length === 0 ? (
-				<div className='rounded-xl border-2 border-border border-dashed bg-accent py-12 text-center'>
+				<div className='rounded-xl border-2 border-border border-dashed bg-neutral py-12 text-center'>
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
 						<h3 className='mt-4 font-semibold text-foreground text-lg'>
@@ -108,7 +99,7 @@ export function CompetitionGroupsTab({
 										{t('competition.labels.categories')}
 									</span>
 									<span className='flex-1 text-foreground-light'>
-										{formatCategories(groupStage.categories)}
+										{formatCompetitionCategories(groupStage.categories)}
 									</span>
 								</div>
 								<div className='flex items-center text-sm'>
@@ -127,7 +118,7 @@ export function CompetitionGroupsTab({
 										className={`inline-flex items-center rounded-full px-2 py-1 font-medium text-xs ${
 											groupStage.autoFill
 												? 'bg-green-100 text-green-800'
-												: 'bg-accent text-foreground-light'
+												: 'bg-neutral text-foreground-light'
 										}`}
 									>
 										{groupStage.autoFill
@@ -140,7 +131,7 @@ export function CompetitionGroupsTab({
 										{t('competition.labels.created')}
 									</span>
 									<span className='text-foreground-lighter text-xs'>
-										{formatDate(groupStage.createdAt)}
+										{formatCompetitionDate(groupStage.createdAt)}
 									</span>
 								</div>
 							</div>

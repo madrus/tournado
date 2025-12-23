@@ -1,9 +1,8 @@
 import type { Category } from '@prisma/client'
 import type { JSX } from 'react'
-import { redirect, useLoaderData } from 'react-router'
+import { redirect, useActionData, useLoaderData } from 'react-router'
 
 import { CompetitionGroupStageForm } from '~/features/competition/components'
-import type { CompetitionGroupStageActionData as ActionData } from '~/features/competition/types'
 import { getServerT } from '~/i18n/i18n.server'
 import { createGroupStage, getUnassignedTeamsByCategories } from '~/models/group.server'
 import { getTournamentById } from '~/models/tournament.server'
@@ -20,6 +19,23 @@ type LoaderData = {
 		readonly categories: readonly Category[]
 	}
 	readonly availableTeamsCount: Record<Category, number>
+}
+
+type ActionData = {
+	readonly errors?: {
+		name?: string
+		categories?: string
+		configGroups?: string
+		configSlots?: string
+		general?: string
+	}
+	readonly fieldValues?: {
+		name: string
+		categories: string[]
+		configGroups: string
+		configSlots: string
+		autoFill: boolean
+	}
 }
 
 export const handle: RouteMetadata = {
@@ -170,11 +186,13 @@ export async function action({
 
 export default function CreateGroupStage(): JSX.Element {
 	const { tournament, availableTeamsCount } = useLoaderData<LoaderData>()
+	const actionData = useActionData<ActionData>()
 
 	return (
 		<CompetitionGroupStageForm
 			tournament={tournament}
 			availableTeamsCount={availableTeamsCount}
+			actionData={actionData}
 		/>
 	)
 }

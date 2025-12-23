@@ -186,7 +186,7 @@ export function AppBar({
 					<button
 						type='button'
 						onClick={handleSignOut}
-						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
+						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-neutral focus:outline-none ${menuClasses.menuItem}`}
 					>
 						<span className={menuClasses.iconContainer}>
 							{renderIcon('logout', { className: 'w-5 h-5' })}
@@ -198,7 +198,7 @@ export function AppBar({
 				) : (
 					<PrimaryNavLink
 						to={`/auth/signin?redirectTo=${encodeURIComponent(location.pathname)}`}
-						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-accent focus:outline-none ${menuClasses.menuItem}`}
+						className={`flex w-full content-start items-center px-3 py-2 text-foreground-darker leading-normal hover:bg-neutral focus:outline-none ${menuClasses.menuItem}`}
 						onClick={handleSignIn}
 					>
 						<span className={menuClasses.iconContainer}>

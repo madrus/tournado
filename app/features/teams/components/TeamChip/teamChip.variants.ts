@@ -59,7 +59,7 @@ export const teamChipVariants = cva(
 					'bg-background dark:bg-brand-700',
 					'text-brand',
 					'shadow-brand/25 hover:shadow-brand/40',
-					'hover:border-brand-accent hover:bg-accent dark:hover:bg-brand-700',
+					'hover:border-brand-accent hover:bg-neutral dark:hover:bg-brand-700',
 				],
 				// Neutral variant for non-primary team display
 				neutral: [

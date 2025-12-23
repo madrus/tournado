@@ -1055,7 +1055,7 @@ import { getMenuItemLineHeight } from '~/utils/rtlUtils'
    className={cn(
       'h-10 w-full items-center px-3 py-2 focus:outline-none',
       getMenuItemLineHeight(), // ← Applied to container, no parameters
-      'hover:bg-accent',
+      'hover:bg-neutral',
       menuClasses.menuItem
    )}
 >

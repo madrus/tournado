@@ -87,7 +87,7 @@ app/features/{feature}/
 - **Avoid direct Node access**. Prefer using the methods from Testing Library
 - **Avoid "any" as type**. Always use strong typing
 - **No semicolons**. Do not add semicolons to new code. Biome will automatically remove them from existing code during formatting
-- **Do not offer to run standard commands**. Let the user run commands like `pnpm test:docker`, `pnpm lint`, `git push`, etc. to save tokens. Only run commands when explicitly requested or when necessary for completing the task
+- **Do not offer to run standard commands**. Let the user run commands like `pnpm test`, `pnpm lint`, `git push`, etc. to save tokens. Only run commands when explicitly requested or when necessary for completing the task
 
 ### Documentation Rules
 
@@ -164,6 +164,15 @@ Trigger self-review when you write:
      return <div>...</div>
    }
    ```
+
+### Definition of Done
+
+This section is not complete yet. It will be filled in as the project evolves.
+
+- **LTR/RTL support** - each UI component, and all its design elements including gradient direction, should flip left/right when switching between LTR and RTL languages
+- **Accessibility** - each UI component should be accessible to screen readers and keyboard navigation
+- **Responsive design** - each UI component should be mobile first and mobile friendly
+- **Unit tests** - each UI component should have its most critical functionality covered
 
 ### Claude Behavior Rules
 

@@ -9,6 +9,7 @@ import type { ColorAccent } from '~/lib/lib.types'
 type TournamentFilterProps = {
 	tournamentListItems: readonly TournamentListItem[]
 	selectedTournamentId?: string
+	basePath?: string
 	className?: string
 	color?: ColorAccent
 	label?: string
@@ -19,6 +20,7 @@ type TournamentFilterProps = {
 export function TournamentFilter({
 	tournamentListItems,
 	selectedTournamentId,
+	basePath,
 	className = 'w-60',
 	color = 'primary',
 	label,
@@ -29,6 +31,7 @@ export function TournamentFilter({
 	const { tournamentOptions, selectedValue, onChange } = useTournamentFilter({
 		tournamentListItems,
 		selectedTournamentId,
+		basePath,
 	})
 
 	// For competition page, filter out the "all" option if showAllOption is false

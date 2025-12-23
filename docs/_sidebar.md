@@ -37,11 +37,24 @@
    - [Teams](development/teams.md)
    - [Tournaments](development/tournaments.md)
 - Product Management
+   - [Project Context](pm/project-context.md)
    - [Tournado Assessment](pm/tournado-assessment.md)
+   - Frameworks
+     - [Gibson Biddle DHM](pm/frameworks/gibson-biddle-dhm.md)
+     - [Rumelt's Strategy Kernel](pm/frameworks/rumelt-strategy-kernel.md)
+     - [SWOT Analysis](pm/frameworks/swot-analysis.md)
+   - Methods
+     - [Methods Library](pm/methods/methods-library.md)
+     - [JTBD Questioning](pm/methods/jtbd-questioning.md)
+     - [RICE Questioning](pm/methods/rice-questioning.md)
+     - [Socratic Questioning](pm/methods/socratic-questioning.md)
+     - [Devil's Advocate Strategy](pm/methods/devils-advocate-strategy.md)
    - Support
-     - [Socratic Questioning](pm/support/socratic-questioning.md)
      - [Tips & Tricks](pm/support/tips-and-tricks.md)
      - [Tournado Company Context](pm/support/tournado-company-context.md)
+   - PRD Templates
+     - [Carl's PRD Template](pm/prd-templates/carls-prd-template.md)
+     - [Lenny's PRD Template](pm/prd-templates/lennys-prd-template.md)
 - Prompts
    - [Create Pools Feature](prompts/pools-feature-prompt.md)
 - Security

@@ -1,9 +1,9 @@
 /* Semantic color utility classes for homepage and general use */
 .text-accent {
-	color: var(--color-accent);
+	color: var(--color-neutral);
 }
 .dark .text-accent {
-	color: var(--color-accent); /* Same as light for now */
+	color: var(--color-neutral); /* Same as light for now */
 }
 
 .text-brand-accent {
@@ -75,10 +75,10 @@
 }
 
 .bg-neutral {
-	background-color: var(--color-accent);
+	background-color: var(--color-neutral);
 }
 .dark .bg-neutral {
-	background-color: var(--color-accent); /* Same as light for now */
+	background-color: var(--color-neutral); /* Same as light for now */
 }
 
 .bg-brand-accent {
@@ -101,5 +101,5 @@
 		0 0 0 4px var(--color-button-danger-outline-focus-ring-outer);
 }
 .dark .font-semibold-accent {
-	color: var(--color-accent);
+	color: var(--color-neutral);
 }

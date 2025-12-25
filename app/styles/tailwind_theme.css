@@ -17,9 +17,9 @@
 	--color-brand-darkest: var(--color-brand-darkest);
 	--color-brand-light: var(--color-brand-light);
 
-	/* Main Accent */
+	/* Main Neutral */
 	--color-main: var(--color-main);
-	--color-accent: var(--color-accent);
+	--color-neutral: var(--color-neutral);
 
 	/* Primary Colors - removed circular references, use @theme inline instead */
 

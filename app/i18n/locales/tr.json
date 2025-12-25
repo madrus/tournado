@@ -179,6 +179,7 @@
 		"labels": {
 			"categories": "Kategoriler:",
 			"setup": "Kurulum:",
+			"setupSummary": "{{groups}} grup × {{teams}} takım",
 			"autoFill": "Otomatik doldur:",
 			"created": "Oluşturuldu:"
 		},

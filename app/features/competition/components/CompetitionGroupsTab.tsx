@@ -75,7 +75,7 @@ export function CompetitionGroupsTab({
 						<Link
 							key={groupStage.id}
 							to={`${groupStage.id}?tournament=${selectedTournamentId}`}
-							className='group relative rounded-lg border border-border bg-background p-4 shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2'
+							className='group relative rounded-lg border border-border bg-neutral p-4 shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2'
 						>
 							{/* Header with icon and badge */}
 							<div className='flex items-start justify-between'>
@@ -107,7 +107,10 @@ export function CompetitionGroupsTab({
 										{t('competition.labels.setup')}
 									</span>
 									<span className='text-foreground-light'>
-										{groupStage.configGroups} groups × {groupStage.configSlots} teams
+										{t('competition.labels.setupSummary', {
+											groups: groupStage.configGroups,
+											teams: groupStage.configSlots,
+										})}
 									</span>
 								</div>
 								<div className='flex items-center text-sm'>

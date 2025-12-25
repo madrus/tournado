@@ -16,7 +16,7 @@ type CompetitionLayoutProps = {
 
 const tabVariants = cva(
 	[
-		'relative flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-200',
+		'relative flex items-center gap-2 rounded-tl-lg rounded-tr-lg px-6 py-4 font-medium text-sm transition-all duration-200',
 		'-mb-px focus:outline-none',
 	],
 	{
@@ -64,7 +64,7 @@ export function CompetitionLayout({
 			<div className='space-y-0'>
 				{/* Tab Headers */}
 				<div className='flex space-x-0 border-border'>
-					{tabs.map((tab, index) => (
+					{tabs.map((tab) => (
 						<button
 							type='button'
 							key={tab.href}
@@ -78,11 +78,6 @@ export function CompetitionLayout({
 											? 'active'
 											: 'inactive',
 								}),
-								// First tab: rounded top-left in LTR, rounded top-right in RTL
-								index === 0 && 'rounded-tl-lg rtl:rounded-tl-none rtl:rounded-tr-lg',
-								// Last tab: rounded top-right in LTR, rounded top-left in RTL
-								index === tabs.length - 1 &&
-									'rounded-tr-lg rtl:rounded-tr-none rtl:rounded-tl-lg',
 							)}
 						>
 							{/* RTL element order: For 3+ elements, use explicit rtl:order-N classes
@@ -98,7 +93,7 @@ export function CompetitionLayout({
 							/>
 							<span className='rtl:order-2'>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
-								<span className='latin-text rounded-full bg-neutral px-2 py-0.5 text-foreground-lighter text-xs rtl:order-3'>
+								<span className='latin-text rounded-full px-2 py-0.5 bg-slate-600 text-slate-50 text-xs dark:bg-slate-800 rtl:order-3'>
 									Soon
 								</span>
 							) : null}

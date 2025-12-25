@@ -177,6 +177,7 @@
 		"labels": {
 			"categories": "الفئات:",
 			"setup": "الإعداد:",
+			"setupSummary": "{{groups}} مجموعات × {{teams}} فرق",
 			"autoFill": "التعبئة التلقائية:",
 			"created": "تم الإنشاء:"
 		},

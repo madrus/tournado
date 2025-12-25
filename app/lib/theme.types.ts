@@ -11,9 +11,9 @@ export type ThemeColors = {
 	brandDark: string
 	brandLight: string
 
-	// Main accent
+	// Main neutral background
 	main: string
-	accent: string
+	neutral: string
 
 	// Text colors
 	title: string

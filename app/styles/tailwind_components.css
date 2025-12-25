@@ -806,7 +806,7 @@
 
 	/* Language submenu styling - dark mode */
 	.dark [data-testid="user-menu-dropdown"] .bg-neutral {
-		background-color: #047857; /* emerald-700 for selected language */
+		background-color: var(--color-usermenu-bg);
 	}
 
 	/* All text elements in UserMenu dropdown - dark mode only */

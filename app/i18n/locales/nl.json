@@ -172,6 +172,7 @@
 		"labels": {
 			"categories": "Categorieën:",
 			"setup": "Opzet:",
+			"setupSummary": "{{groups}} poules × {{teams}} teams",
 			"autoFill": "Auto-invullen:",
 			"created": "Aangemaakt:"
 		},

@@ -179,6 +179,7 @@
 		"labels": {
 			"categories": "Catégories :",
 			"setup": "Configuration :",
+			"setupSummary": "{{groups}} groupes × {{teams}} équipes",
 			"autoFill": "Remplissage auto :",
 			"created": "Créé :"
 		},

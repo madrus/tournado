@@ -29,7 +29,7 @@ export function useTheme(): UseThemeReturn {
 		brandDark: getThemeColor('brandDark'),
 		brandLight: getThemeColor('brandLight'),
 		main: getThemeColor('main'),
-		accent: getThemeColor('accent'),
+		neutral: getThemeColor('neutral'),
 		title: getThemeColor('title'),
 		titleAccent: getThemeColor('titleAccent'),
 		foregroundHeading: getThemeColor('foregroundHeading'),

@@ -144,7 +144,7 @@ export function UserMenu({
 					data-testid='user-menu-dropdown'
 					className={cn(
 						// basic container
-						'z-40 w-max rounded-md bg-background p-1 shadow-lg focus:outline-none',
+						'z-40 w-max rounded-md bg-background p-1 shadow-lg focus:outline-none dark:bg-neutral',
 						// border colors
 						'border border-red-500 dark:border-emerald-500',
 						// responsive sizing / spacing
@@ -233,7 +233,7 @@ export function UserMenu({
 										{languageMenuOpen ? (
 											<div
 												className={cn(
-													'absolute z-30 mt-1 min-w-[8rem] rounded-md bg-background p-1 text-base shadow-lg ring-1 ring-border ring-opacity-5',
+													'absolute z-30 mt-1 min-w-[8rem] rounded-md bg-background p-1 text-base shadow-lg ring-1 ring-border ring-opacity-5 dark:bg-neutral',
 													// Position submenu to the left of the language menu icon (mirrored for Arabic)
 													isRTL ? '-end-16' : '-start-16',
 												)}

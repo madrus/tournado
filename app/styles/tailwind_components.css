@@ -782,7 +782,6 @@
 
 	/* UserMenu dark mode specific styling */
 	.dark [data-testid="user-menu-dropdown"] {
-		background-color: var(--color-usermenu-bg);
 		border-color: #10b981; /* emerald-500 */
 	}
 
@@ -838,11 +837,6 @@
 
 	.dark [data-testid="user-menu-dropdown"] .bg-border {
 		background-color: var(--color-border);
-	}
-
-	/* UserMenu submenu (language menu) dark mode styling */
-	.dark [data-testid="user-menu-dropdown"] .bg-background {
-		background-color: var(--color-usermenu-bg);
 	}
 
 	/* Field Validation Styling - Semantic Classes */

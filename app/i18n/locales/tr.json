@@ -203,6 +203,59 @@
 			"summaryTeamsAvailable": "Seçilen kategorilerde {{count}} takım mevcut",
 			"summaryWillCreate": "Her biri {{slots}} kontenjanla {{groups}} grup oluşturulacak (toplam {{total}} kontenjan)",
 			"title": "Grup aşaması"
+		},
+		"groupAssignment": {
+			"instruction": "Takımları gruplara atamak için sürükleyin. Otomatik atama için bir gruba bırakın veya doğrudan yerleştirmek için belirli bir yere bırakın.",
+			"backToGroups": "Gruplara geri dön",
+			"unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
+			"unsavedTitle": "Kaydedilmemiş değişiklikler",
+			"unsavedDescription": "Bu sayfadan ayrılırsanız kaydedilmemiş değişiklikleriniz kaybolacak.",
+			"leaveAnyway": "Yine de ayrıl",
+			"stayOnPage": "Sayfada kal",
+			"conflictTitle": "Değişiklik çakışması",
+			"conflictDescription": "Başka bir kullanıcı değişiklikleri kaydetti. Kaydedilmemiş düzenlemeleriniz silindi ve sayfa yenilendi.",
+			"conflictReload": "Sayfayı yenile",
+			"deleteConfirmTitle": "Takımı kaldır",
+			"deleteConfirmDescription": "Bu takımı grup aşamasından kaldırmak istediğinizden emin misiniz? Artık bu yarışmaya katılmayacaklar.",
+			"goToGroup": "{{name}} grubuna git",
+			"errors": {
+				"noCapacity": "Onaylı havuzda yer yok. Önce bir gruptan bir takım çıkarın.",
+				"waitlistToGroup": "Bekleme listesindeki takımlar doğrudan gruplara atanamaz. Önce onaylı havuza taşıyın."
+			},
+			"hints": {
+				"groupFull": "Bu grup dolu. Takımları değiştirmek için belirli bir yere bırakın."
+			},
+			"chip": {
+				"ariaLabel": "{{club}} {{team}} - atamak için sürükle",
+				"deleteAriaLabel": "{{club}} {{team}} takımını grup aşamasından kaldır"
+			},
+			"slot": {
+				"position": "Yer {{position}}",
+				"dropHere": "Buraya bırak",
+				"empty": "Boş",
+				"emptyAriaLabel": "Boş yer {{position}} - buraya bir takım bırakın",
+				"occupiedAriaLabel": "Yer {{position}} {{team}} tarafından dolu"
+			},
+			"group": {
+				"ariaLabel": "{{name}} - {{total}} takımdan {{filled}} tanesi atandı",
+				"slotsCount": "Takımlar: {{total}} üzerinden {{filled}}",
+				"dropToAssign": "Atamak için bırak"
+			},
+			"reserve": {
+				"title": "Onaylı takımlar",
+				"count": "Takımlar: {{capacity}} kapasiteden {{count}}",
+				"empty": "Onaylı havuzda takım yok",
+				"dropToAdd": "Yedek kadrosuna taşımak için buraya bırakın",
+				"ariaLabel": "Onaylı takımlar havuzu - {{capacity}} kapasiteden {{count}}"
+			},
+			"waitlist": {
+				"title": "Bekleme listesi",
+				"count": "{{count}} bekliyor",
+				"noCapacity": "Onaylı havuz dolu. Bekleme listesindeki takımları yükseltmek için yer açın.",
+				"helpPromote": "Bekleme listesindeki takımları eklemek için onaylı havuza sürükleyin.",
+				"helpBlocked": "Tüm yerler atandı. Yer açmak için gruplardan takım çıkarın.",
+				"ariaLabel": "Bekleme listesi - {{count}} takım bekliyor"
+			}
 		}
 	},
 	"divisions": {

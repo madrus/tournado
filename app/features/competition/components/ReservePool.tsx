@@ -52,12 +52,12 @@ export function ReservePool({
 			<div className='flex items-center justify-between mb-3'>
 				<div className='flex items-center gap-2'>
 					{/* Confirmed icon */}
-					<div className='w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center'>
+					<div className='w-6 h-6 rounded-full bg-primary-500/20 flex items-center justify-center'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 20 20'
 							fill='currentColor'
-							className='w-4 h-4 text-emerald-600 dark:text-emerald-400'
+							className='w-4 h-4 text-primary-600 dark:text-primary-400'
 							aria-hidden='true'
 						>
 							<path
@@ -98,7 +98,7 @@ export function ReservePool({
 						{t('competition.groupAssignment.reserve.empty')}
 					</span>
 					{isOver ? (
-						<span className='text-xs text-emerald-600 dark:text-emerald-400 mt-1 animate-pulse'>
+						<span className='text-xs text-primary-600 dark:text-primary-400 mt-1 animate-pulse'>
 							{t('competition.groupAssignment.reserve.dropToAdd')}
 						</span>
 					) : null}
@@ -108,7 +108,7 @@ export function ReservePool({
 			{/* Drop hint */}
 			{isOver && confirmedTeams.length > 0 ? (
 				<div className='mt-3 text-center'>
-					<span className='text-xs text-emerald-600 dark:text-emerald-400 font-medium animate-pulse'>
+					<span className='text-xs text-primary-600 dark:text-primary-400 font-medium animate-pulse'>
 						{t('competition.groupAssignment.reserve.dropToAdd')}
 					</span>
 				</div>

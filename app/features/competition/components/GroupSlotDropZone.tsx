@@ -44,39 +44,26 @@ export function GroupSlotDropZone({
 
 	const slotState = getSlotState()
 
-	return (
+	return slot.team ? (
+		<div ref={setNodeRef}>
+			<DraggableTeamChip team={slot.team} onDelete={onDeleteTeam} disabled={disabled} />
+		</div>
+	) : (
 		<div
 			ref={setNodeRef}
 			className={groupSlotVariants({ state: slotState, isDisabled: disabled })}
 		>
-			{slot.team ? (
-				<DraggableTeamChip
-					team={slot.team}
-					onDelete={onDeleteTeam}
-					disabled={disabled}
-					className='w-full'
-				/>
-			) : (
-				<div className='flex flex-col items-center justify-center gap-1 py-2'>
-					{/* Slot number indicator */}
-					<span className='text-xs font-medium text-foreground-lighter'>
-						{t('competition.groupAssignment.slot.position', {
-							position: slot.slotIndex + 1,
-						})}
-					</span>
-
-					{/* Drop hint */}
-					{isHighlighted || isOver ? (
-						<span className='text-xs text-brand animate-pulse'>
-							{t('competition.groupAssignment.slot.dropHere')}
-						</span>
-					) : (
-						<span className='text-xs text-foreground-lighter opacity-60'>
-							{t('competition.groupAssignment.slot.empty')}
-						</span>
-					)}
-				</div>
-			)}
+			<span
+				className={
+					isHighlighted || isOver
+						? 'text-xs font-medium text-brand animate-pulse'
+						: 'text-xs font-medium text-foreground-lighter'
+				}
+			>
+				{t('competition.groupAssignment.slot.label', {
+					number: slot.slotIndex + 1,
+				})}
+			</span>
 		</div>
 	)
 }

@@ -223,6 +223,7 @@
 				"deleteAriaLabel": "Verwijder {{club}} {{team}} uit poulefase"
 			},
 			"slot": {
+				"label": "Plek {{number}}",
 				"position": "Plek {{position}}",
 				"dropHere": "Hier loslaten",
 				"empty": "Leeg",

@@ -23,7 +23,6 @@ import { DragOverlayChip } from './DraggableTeamChip'
 import { GroupCard } from './GroupCard'
 import {
 	actionButtonGroupVariants,
-	assignmentBoardVariants,
 	errorBannerVariants,
 	groupTabVariants,
 	heroStripVariants,
@@ -286,11 +285,20 @@ export function GroupAssignmentBoard({
 					{isMobile && snapshot.groups.length > 1 ? (
 						<div className='space-y-3'>
 							{/* Tab buttons */}
-							<div className='flex gap-2 overflow-x-auto pb-2 -mx-2 px-2'>
+							<div className='flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-foreground-lighter/30 hover:scrollbar-thumb-foreground-lighter/50'>
 								{snapshot.groups.map((group, index) => (
 									<button
 										key={group.id}
 										type='button'
+										ref={(el) => {
+											if (el && index === activeGroupIndex) {
+												el.scrollIntoView({
+													behavior: 'smooth',
+													block: 'nearest',
+													inline: 'center',
+												})
+											}
+										}}
 										onClick={() => setActiveGroupIndex(index)}
 										className={groupTabVariants({
 											isActive: index === activeGroupIndex,
@@ -321,11 +329,7 @@ export function GroupAssignmentBoard({
 					) : null}
 
 					{/* Main board */}
-					<div
-						className={assignmentBoardVariants({
-							layout: isMobile ? 'mobile' : 'desktop',
-						})}
-					>
+					<div className={isMobile ? 'space-y-4' : 'grid gap-6 grid-cols-[1fr_320px]'}>
 						{/* Groups section */}
 						<div className='space-y-4'>
 							{isMobile ? (
@@ -337,8 +341,8 @@ export function GroupAssignmentBoard({
 									disabled={isSaving}
 								/>
 							) : (
-								// Desktop: Show all groups
-								<div className='grid gap-4 grid-cols-1 xl:grid-cols-2'>
+								// Desktop: Show all groups in responsive columns
+								<div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
 									{snapshot.groups.map((group) => (
 										<GroupCard
 											key={group.id}

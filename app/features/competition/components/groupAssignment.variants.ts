@@ -7,7 +7,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const assignmentBoardVariants = cva(
 	[
 		// Base layout
-		'grid gap-6',
+		'grid gap-4',
 		// Background with subtle gradient
 		'rounded-2xl p-6',
 		'bg-gradient-to-br from-background via-background to-surface-light/30',
@@ -36,10 +36,14 @@ export type AssignmentBoardVariants = VariantProps<typeof assignmentBoardVariant
 
 export const groupCardVariants = cva(
 	[
-		// Base container
+		// Base container with depth
 		'rounded-xl p-4',
 		'border-2 border-border/60',
-		'bg-surface/50 backdrop-blur-sm',
+		// Subtle slate gradient for depth and gloss
+		'bg-gradient-to-br from-surface-light/15 via-surface/60 to-surface-light/15',
+		'backdrop-blur-sm',
+		// Soft shadow for elevation
+		'shadow-md shadow-black/5',
 		// Transition for hover/drag states
 		'transition-all duration-200 ease-out',
 	],
@@ -47,7 +51,7 @@ export const groupCardVariants = cva(
 		variants: {
 			isDropTarget: {
 				true: [
-					'border-brand/60 bg-brand/5',
+					'border-brand/60 bg-gradient-to-br from-brand/10 via-brand/5 to-brand/5',
 					'ring-2 ring-brand/20 ring-offset-2 ring-offset-background',
 					'shadow-lg shadow-brand/10',
 				],
@@ -73,26 +77,31 @@ export type GroupCardVariants = VariantProps<typeof groupCardVariants>
 
 export const groupSlotVariants = cva(
 	[
-		// Base slot styling
-		'relative rounded-lg p-3',
-		'min-h-[56px] flex items-center justify-center',
-		'border-2 border-dashed',
+		// Base slot styling - compact height matching chip size
+		'relative rounded-lg',
+		'h-9 flex items-center',
 		'transition-all duration-200 ease-out',
 	],
 	{
 		variants: {
 			state: {
 				empty: [
-					'border-border/40 bg-surface-light/30',
-					'hover:border-border/60 hover:bg-surface-light/50',
+					'justify-center px-3',
+					'border-2 border-dashed border-border/40 bg-surface-500/10',
+					'hover:border-border/60 hover:bg-surface-500/20',
 				],
-				occupied: ['border-transparent bg-transparent', 'p-0'],
+				occupied: ['bg-transparent'],
 				dropTarget: [
-					'border-brand bg-brand/10',
+					'justify-center px-3',
+					'border-2 border-dashed border-brand bg-brand/10',
 					'ring-2 ring-brand/30',
 					'shadow-md shadow-brand/20',
 				],
-				highlighted: ['border-brand/50 bg-brand/5', 'animate-pulse'],
+				highlighted: [
+					'justify-center px-3',
+					'border-2 border-dashed border-brand/50 bg-brand/5',
+					'animate-pulse',
+				],
 			},
 			isDisabled: {
 				true: 'opacity-50 pointer-events-none',
@@ -114,18 +123,26 @@ export type GroupSlotVariants = VariantProps<typeof groupSlotVariants>
 
 export const reservePoolVariants = cva(
 	[
-		// Base container
+		// Base container with depth
 		'rounded-xl p-4',
 		'border border-border/60',
-		'bg-surface/30 backdrop-blur-sm',
+		'backdrop-blur-sm',
+		// Soft shadow for elevation
+		'shadow-md shadow-black/5',
 		// Transition for drag states
 		'transition-all duration-200 ease-out',
 	],
 	{
 		variants: {
 			variant: {
-				confirmed: 'border-emerald-500/30 bg-emerald-500/5',
-				waitlist: 'border-amber-500/30 bg-amber-500/5',
+				confirmed: [
+					'border-primary-500/30',
+					'bg-gradient-to-br from-primary-500/15 via-primary-500/8 to-surface/40',
+				],
+				waitlist: [
+					'border-amber-500/30',
+					'bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-surface/40',
+				],
 			},
 			isDropTarget: {
 				true: ['ring-2 ring-offset-2 ring-offset-background', 'shadow-lg'],
@@ -136,7 +153,7 @@ export const reservePoolVariants = cva(
 			{
 				variant: 'confirmed',
 				isDropTarget: true,
-				className: 'ring-emerald-500/40 shadow-emerald-500/10 border-emerald-500/50',
+				className: 'ring-primary-500/40 shadow-primary-500/10 border-primary-500/50',
 			},
 			{
 				variant: 'waitlist',
@@ -159,12 +176,11 @@ export type ReservePoolVariants = VariantProps<typeof reservePoolVariants>
 
 export const draggableChipVariants = cva(
 	[
-		// Base chip styling
+		// Base chip styling - compact and chip-like
 		'relative inline-flex items-center gap-2',
-		'px-3 py-2 rounded-lg',
+		'px-3 py-1.5 rounded-lg',
 		'font-medium text-sm',
-		'border border-border/60',
-		'bg-surface',
+		'border',
 		// Interactive states
 		'cursor-grab active:cursor-grabbing',
 		'select-none touch-none',
@@ -177,23 +193,20 @@ export const draggableChipVariants = cva(
 		variants: {
 			isDragging: {
 				true: ['opacity-50 scale-95', 'shadow-none'],
-				false: [
-					'hover:shadow-md hover:scale-[1.02]',
-					'hover:border-brand/40',
-					'shadow-sm',
-				],
+				false: ['hover:shadow-md hover:scale-[1.02]', 'shadow-sm'],
 			},
 			variant: {
-				default: 'bg-surface text-foreground',
+				default:
+					'bg-brand/15 text-brand dark:text-brand-light border-brand-500/30 hover:border-brand-500/50',
 				confirmed:
-					'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30',
+					'bg-primary-500/10 text-primary-700 dark:text-primary-300 border-primary-500/30 hover:border-primary-500/50',
 				waitlist:
-					'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30',
+					'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:border-amber-500/50',
 			},
 			size: {
 				sm: 'px-2 py-1 text-xs',
-				md: 'px-3 py-2 text-sm',
-				lg: 'px-4 py-2.5 text-base',
+				md: 'px-3 py-1.5 text-sm',
+				lg: 'px-4 py-2 text-base',
 			},
 		},
 		defaultVariants: {
@@ -284,17 +297,17 @@ export type ErrorBannerVariants = VariantProps<typeof errorBannerVariants>
 
 export const groupTabVariants = cva(
 	[
-		'px-4 py-2 rounded-lg',
-		'font-medium text-sm',
+		'px-4 py-2 rounded-full',
+		'text-sm border',
 		'transition-all duration-150',
 		'whitespace-nowrap',
 	],
 	{
 		variants: {
 			isActive: {
-				true: 'bg-brand text-brand-foreground shadow-md',
+				true: 'bg-gradient-to-b from-surface-light/10 via-brand-600/60 to-surface-light/10 text-foreground shadow-lg font-bold border-2 border-border',
 				false:
-					'bg-surface hover:bg-surface-light text-foreground-light hover:text-foreground',
+					'bg-gradient-to-b from-surface/10 via-surface-light/30 to-surface/10 text-foreground-light hover:from-slate-400/20 hover:via-surface/50 hover:to-surface/40 hover:text-foreground font-medium border border-border/40',
 			},
 		},
 		defaultVariants: {

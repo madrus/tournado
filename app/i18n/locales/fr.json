@@ -230,6 +230,7 @@
 				"deleteAriaLabel": "Retirer {{club}} {{team}} de la phase de groupes"
 			},
 			"slot": {
+				"label": "Place {{number}}",
 				"position": "Place {{position}}",
 				"dropHere": "Déposer ici",
 				"empty": "Vide",

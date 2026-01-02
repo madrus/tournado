@@ -68,8 +68,8 @@ export function GroupCard({
 				</span>
 			</div>
 
-			{/* Slots grid */}
-			<div className='grid gap-2 grid-cols-1 sm:grid-cols-2'>
+			{/* Slots list */}
+			<div className='flex flex-col gap-2'>
 				{group.slots.map((slot) => (
 					<GroupSlotDropZone
 						key={slot.slotId}

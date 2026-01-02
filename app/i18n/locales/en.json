@@ -223,6 +223,7 @@
 				"deleteAriaLabel": "Remove {{club}} {{team}} from group stage"
 			},
 			"slot": {
+				"label": "Slot {{number}}",
 				"position": "Slot {{position}}",
 				"dropHere": "Drop here",
 				"empty": "Empty",

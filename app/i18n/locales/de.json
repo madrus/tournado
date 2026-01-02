@@ -230,6 +230,7 @@
 				"deleteAriaLabel": "{{club}} {{team}} aus Gruppenphase entfernen"
 			},
 			"slot": {
+				"label": "Platz {{number}}",
 				"position": "Platz {{position}}",
 				"dropHere": "Hier loslassen",
 				"empty": "Leer",

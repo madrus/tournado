@@ -22,14 +22,18 @@ Create a drag and drop group assignment experience where all unassigned teams li
 
 ## UX redesign direction
 - Replace the current three column layout with a dedicated assignment board.
-- Desktop layout - groups board on the left and reserve pool on the right.
+- Desktop layout - groups board on the left (responsive columns: md=2, xl=3, 2xl=4) and reserve pool on the right (fixed 320px width).
 - Mobile layout - groups on top and reserve pool below.
 - Mobile group navigation - show one group at a time with horizontally scrollable tabs.
 - Mobile group navigation hint - add a dot pagination indicator like a carousel to show current group when many groups exist.
 - Reserve placement - confirmed teams pool sits under the groups. Waitlist sits directly below confirmed teams on both desktop and mobile.
 - Waitlist interaction - allow dragging waitlist chips into the confirmed pool area, but block crossing into group slots.
 - Provide a top hero strip that shows the group stage title, tournament context, and a single instruction line for drag and drop.
-- Use existing panel color system and gradients. Compose panels with `Panel` and panel variants rather than raw borders.
+- No decorative parent container - groups and reserve sections sit directly in the layout without extra padding/borders/backgrounds.
+- Group slots display as vertical lists (not grids) for cleaner, more compact appearance.
+- Empty slots show simple "Slot N" labels on a single line to minimize height and prevent size jumping when filled.
+- Team chips do not display category badges (e.g., JO8) - context is provided by parent panel.
+- All slots maintain consistent height (44px) whether empty or filled to prevent layout shifts.
 - Add clear drag states - hover glow on droppable slots, muted chip state while dragging, and a ghost overlay for the chip in flight.
 - Ensure RTL layout flips the board and aligns slot labels and drop hints using logical properties.
 
@@ -115,10 +119,15 @@ Add new copy for save errors, conflict warnings, unsaved changes, and delete con
 - Requirement - any new labels or messages introduced during this migration must be added to all locale files listed above.
 
 ## Styling plan
-- Reuse `Panel` and panel variants to keep the established panel color tradition.
 - Build new CVA variants for slots and reserve list to keep the look consistent and future proof.
 - Use semantic color classes from `app/styles/tailwind.css` where applicable.
-- Add subtle background gradients and gloss effects for the board, but keep contrast at AA.
+- No decorative parent container - remove background gradients, borders, shadows, and extra padding from the main board wrapper.
+- Group cards and reserve panels use subtle background gradients and gloss effects for depth while maintaining AA contrast.
+- Apply panel styling with borders, shadows, and backdrop blur to individual group cards and reserve sections.
+- Slot styling - empty slots have dashed borders, occupied slots have no wrapper border (chip border is visible).
+- Fixed slot height (44px/h-11) for all states to prevent layout shifts between empty and filled.
+- Empty slots use single-line labels ("Slot N") centered with minimal padding.
+- Team chips fill slot height completely when assigned for visual consistency.
 - Provide RTL aware spacing and alignment using logical CSS classes and `useLanguageDirection` where needed.
 - Add a chip level delete affordance that is visible on hover and has a clear focus state.
 - Use a compact inline error banner in the waitlist panel for capacity errors.
@@ -186,6 +195,12 @@ Mobile inspiration reference
 - Confirmed teams - teams officially accepted into the tournament field.
 - Waitlist or reserve - teams that want to play but are outside the initial field.
 
-## Open questions
-- Confirmed - group container drop targets the first empty slot. Slot targeting is only used for replacements when full.
-- Confirmed - conflict resolution forces reload of server state.
+## Design decisions finalized
+- Group container drop targets the first empty slot. Slot targeting is only used for replacements when full.
+- Conflict resolution forces reload of server state.
+- Responsive grid columns: md=2, xl=3, 2xl=4 for optimal space usage across screen sizes.
+- No decorative parent wrapper - direct layout without extra visual chrome.
+- Vertical slot lists (not grids) for compact, scannable group display.
+- Fixed 44px slot height prevents layout jumping.
+- Category badges removed from team chips - parent context provides sufficient information.
+- Empty slots show minimal single-line labels to reduce visual noise.

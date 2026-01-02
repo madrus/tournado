@@ -228,6 +228,7 @@
 				"deleteAriaLabel": "إزالة {{club}} {{team}} من مرحلة المجموعات"
 			},
 			"slot": {
+				"label": "مكان {{number}}",
 				"position": "المكان {{position}}",
 				"dropHere": "أفلت هنا",
 				"empty": "فارغ",

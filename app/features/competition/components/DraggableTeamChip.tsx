@@ -81,9 +81,6 @@ export function DraggableTeamChip({
 				{team.clubName} {team.name}
 			</span>
 
-			{/* Category badge */}
-			<span className='ml-1 text-xs opacity-60'>({team.category})</span>
-
 			{/* Delete button */}
 			{onDelete && !disabled && !isDragging ? (
 				<button
@@ -135,7 +132,6 @@ export function DragOverlayChip({ team }: DragOverlayChipProps): JSX.Element {
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
 				{team.clubName} {team.name}
 			</span>
-			<span className='ml-1 text-xs opacity-80'>({team.category})</span>
 		</div>
 	)
 }

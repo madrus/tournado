@@ -230,6 +230,7 @@
 				"deleteAriaLabel": "{{club}} {{team}} takımını grup aşamasından kaldır"
 			},
 			"slot": {
+				"label": "Yer {{number}}",
 				"position": "Yer {{position}}",
 				"dropHere": "Buraya bırak",
 				"empty": "Boş",

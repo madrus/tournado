@@ -6,10 +6,8 @@ import { toast } from 'sonner'
 import { useGroupAssignmentStore } from '../stores/useGroupAssignmentStore'
 import {
 	type DndTeam,
-	findFirstEmptySlot,
 	isReservePoolId,
 	isWaitlistPoolId,
-	parseGroupDropId,
 	parseSlotDropId,
 	parseTeamDragId,
 } from '../utils/groupStageDnd'
@@ -95,21 +93,8 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			const overId = String(over.id)
 			setActiveDropTarget(overId)
 
-			// Check if dragging over a group container
-			const groupId = parseGroupDropId(overId)
-			if (groupId) {
-				const group = snapshot.groups.find((g) => g.id === groupId)
-				if (group) {
-					const emptySlot = findFirstEmptySlot(group)
-					if (emptySlot) {
-						setHighlightedSlot({ groupId, slotIndex: emptySlot.slotIndex })
-					} else {
-						setHighlightedSlot(null)
-					}
-				}
-			} else {
-				setHighlightedSlot(null)
-			}
+			// No group-level highlighting - only individual slots are droppable
+			setHighlightedSlot(null)
 		},
 		[snapshot, activeDragTeam],
 	)
@@ -189,20 +174,7 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 				return
 			}
 
-			// Drop on group container (auto-assign to first empty slot)
-			const groupId = parseGroupDropId(overId)
-			if (groupId) {
-				const group = snapshot.groups.find((g) => g.id === groupId)
-				if (!group) return
-
-				const emptySlot = findFirstEmptySlot(group)
-				if (emptySlot) {
-					assignTeamToSlot(teamId, groupId, emptySlot.slotIndex)
-				} else {
-					// Group is full, need to drop on specific slot for swap
-					toast.info(t('competition.groupAssignment.hints.groupFull'))
-				}
-			}
+			// No group container drops - only individual slots are droppable
 		},
 		[
 			snapshot,

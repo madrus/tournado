@@ -1,13 +1,16 @@
 import {
-	closestCenter,
 	DndContext,
 	DragOverlay,
 	KeyboardSensor,
+	type MeasuringConfiguration,
+	MeasuringStrategy,
 	PointerSensor,
+	pointerWithin,
 	TouchSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core'
+import { snapCenterToCursor } from '@dnd-kit/modifiers'
 import type { JSX } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -34,6 +37,13 @@ import { ReserveWaitlist } from './ReserveWaitlist'
 type GroupAssignmentBoardProps = {
 	initialSnapshot: GroupAssignmentSnapshot
 	tournamentId: string
+}
+
+// Configure measuring to improve DragOverlay positioning
+const measuring: MeasuringConfiguration = {
+	droppable: {
+		strategy: MeasuringStrategy.Always,
+	},
 }
 
 export function GroupAssignmentBoard({
@@ -224,11 +234,65 @@ export function GroupAssignmentBoard({
 	const capacity = getReserveCapacity()
 	const dirty = isDirty()
 
+	// Grid always supports 1, 2, 4, 6 columns at different breakpoints
+	const gridColsClass =
+		'grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6'
+
+	// Reserve panels span only as many columns as there are actual groups
+	const groupCount = snapshot.groups.length
+	let colSpanClass = 'space-y-4 col-span-1'
+
+	// md breakpoint (max 2 columns)
+	switch (true) {
+		case groupCount >= 2:
+			colSpanClass += ' md:col-span-2'
+			break
+		default:
+			colSpanClass += ' md:col-span-1'
+	}
+
+	// xl breakpoint (max 4 columns)
+	switch (groupCount) {
+		case 1:
+			colSpanClass += ' xl:col-span-1'
+			break
+		case 2:
+			colSpanClass += ' xl:col-span-2'
+			break
+		case 3:
+			colSpanClass += ' xl:col-span-3'
+			break
+		default: // 4 or more
+			colSpanClass += ' xl:col-span-4'
+	}
+
+	// 2xl breakpoint (max 6 columns)
+	switch (groupCount) {
+		case 1:
+			colSpanClass += ' 2xl:col-span-1'
+			break
+		case 2:
+			colSpanClass += ' 2xl:col-span-2'
+			break
+		case 3:
+			colSpanClass += ' 2xl:col-span-3'
+			break
+		case 4:
+			colSpanClass += ' 2xl:col-span-4'
+			break
+		case 5:
+			colSpanClass += ' 2xl:col-span-5'
+			break
+		default: // 6 or more
+			colSpanClass += ' 2xl:col-span-6'
+	}
+
 	return (
 		<>
 			<DndContext
 				sensors={sensors}
-				collisionDetection={closestCenter}
+				collisionDetection={pointerWithin}
+				measuring={measuring}
 				onDragStart={handleDragStart}
 				onDragOver={handleDragOver}
 				onDragEnd={handleDragEnd}
@@ -329,7 +393,7 @@ export function GroupAssignmentBoard({
 					) : null}
 
 					{/* Main board */}
-					<div className={isMobile ? 'space-y-4' : 'grid gap-6 grid-cols-[1fr_320px]'}>
+					<div className='space-y-6'>
 						{/* Groups section */}
 						<div className='space-y-4'>
 							{isMobile ? (
@@ -342,7 +406,7 @@ export function GroupAssignmentBoard({
 								/>
 							) : (
 								// Desktop: Show all groups in responsive columns
-								<div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
+								<div className={gridColsClass}>
 									{snapshot.groups.map((group) => (
 										<GroupCard
 											key={group.id}
@@ -357,22 +421,24 @@ export function GroupAssignmentBoard({
 						</div>
 
 						{/* Reserve section */}
-						<div className='space-y-4'>
-							<ReservePool
-								teams={snapshot.reserveTeams}
-								capacity={capacity}
-								onDeleteTeam={setDeleteTeamId}
-								disabled={isSaving}
-							/>
-
-							{waitlistTeams.length > 0 ? (
-								<ReserveWaitlist
+						<div className={gridColsClass}>
+							<div className={colSpanClass}>
+								<ReservePool
 									teams={snapshot.reserveTeams}
-									canPromote={capacity > 0}
+									capacity={capacity}
 									onDeleteTeam={setDeleteTeamId}
 									disabled={isSaving}
 								/>
-							) : null}
+
+								{waitlistTeams.length > 0 ? (
+									<ReserveWaitlist
+										teams={snapshot.reserveTeams}
+										canPromote={capacity > 0}
+										onDeleteTeam={setDeleteTeamId}
+										disabled={isSaving}
+									/>
+								) : null}
+							</div>
 						</div>
 					</div>
 
@@ -405,7 +471,11 @@ export function GroupAssignmentBoard({
 				</div>
 
 				{/* Drag overlay */}
-				<DragOverlay dropAnimation={{ duration: 200, easing: 'ease-out' }}>
+				<DragOverlay
+					zIndex={9999}
+					style={{ cursor: 'grabbing' }}
+					modifiers={[snapCenterToCursor]}
+				>
 					{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
 				</DragOverlay>
 			</DndContext>

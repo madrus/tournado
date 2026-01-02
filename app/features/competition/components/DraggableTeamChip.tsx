@@ -1,5 +1,4 @@
 import { useDraggable } from '@dnd-kit/core'
-import { CSS } from '@dnd-kit/utilities'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -9,7 +8,6 @@ import { getLatinTextClass } from '~/utils/rtlUtils'
 import type { DndTeam } from '../utils/groupStageDnd'
 import { createTeamDragId } from '../utils/groupStageDnd'
 import {
-	chipDeleteButtonVariants,
 	type DraggableChipVariants,
 	draggableChipVariants,
 } from './groupAssignment.variants'
@@ -34,7 +32,7 @@ export function DraggableTeamChip({
 	const { t } = useTranslation()
 	const dragId = createTeamDragId(team.id)
 
-	const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+	const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
 		id: dragId,
 		data: {
 			type: 'team-chip',
@@ -42,12 +40,6 @@ export function DraggableTeamChip({
 		},
 		disabled,
 	})
-
-	const style = transform
-		? {
-				transform: CSS.Translate.toString(transform),
-			}
-		: undefined
 
 	const handleDeleteClick = (e: React.MouseEvent) => {
 		e.stopPropagation()
@@ -66,7 +58,6 @@ export function DraggableTeamChip({
 	return (
 		<div
 			ref={setNodeRef}
-			style={style}
 			className={cn(
 				'group relative',
 				draggableChipVariants({ isDragging, variant, size }),
@@ -76,23 +67,26 @@ export function DraggableTeamChip({
 			{...listeners}
 			{...attributes}
 		>
-			{/* Team name */}
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
 				{team.clubName} {team.name}
 			</span>
 
-			{/* Delete button */}
-			{onDelete && !disabled && !isDragging ? (
+			{onDelete && !disabled ? (
 				<button
 					type='button'
 					onClick={handleDeleteClick}
 					onKeyDown={handleDeleteKeyDown}
-					className={chipDeleteButtonVariants()}
-					aria-label={t('competition.groupAssignment.chip.deleteAriaLabel', {
-						club: team.clubName,
-						team: team.name,
-					})}
-					tabIndex={0}
+					className={cn(
+						'absolute -top-2 -end-2',
+						'flex items-center justify-center',
+						'w-5 h-5 rounded-full',
+						'bg-red-500 hover:bg-red-600 text-white',
+						'shadow-md',
+						'opacity-0 group-hover:opacity-100 focus:opacity-100',
+						'transition-opacity duration-150',
+						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 focus-visible:ring-offset-2',
+					)}
+					aria-label={t('common.actions.delete')}
 				>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
@@ -118,15 +112,9 @@ export function DragOverlayChip({ team }: DragOverlayChipProps): JSX.Element {
 	return (
 		<div
 			className={cn(
-				'inline-flex items-center gap-2',
-				'px-3 py-2 rounded-lg',
-				'font-medium text-sm',
-				'bg-brand text-brand-foreground',
-				'border-2 border-brand',
+				draggableChipVariants({ variant: 'confirmed', isDragging: false, size: 'md' }),
 				'shadow-xl shadow-brand/30',
-				'scale-105',
 				'cursor-grabbing',
-				'pointer-events-none',
 			)}
 		>
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>

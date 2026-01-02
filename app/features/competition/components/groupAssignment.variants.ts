@@ -192,7 +192,7 @@ export const draggableChipVariants = cva(
 	{
 		variants: {
 			isDragging: {
-				true: ['opacity-50 scale-95', 'shadow-none'],
+				true: ['opacity-0'],
 				false: ['hover:shadow-md hover:scale-[1.02]', 'shadow-sm'],
 			},
 			variant: {

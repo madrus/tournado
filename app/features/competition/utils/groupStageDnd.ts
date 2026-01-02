@@ -63,8 +63,6 @@ export const createTeamDragId = (teamId: string): string => `team:${teamId}`
 export const createSlotDropId = (groupId: string, slotIndex: number): string =>
 	`slot:${groupId}:${slotIndex}`
 
-export const createGroupDropId = (groupId: string): string => `group:${groupId}`
-
 export const RESERVE_POOL_ID = 'reserve-pool'
 export const WAITLIST_POOL_ID = 'waitlist-pool'
 
@@ -91,13 +89,6 @@ export const parseSlotDropId = (
 	return null
 }
 
-export const parseGroupDropId = (id: string): string | null => {
-	if (id.startsWith('group:')) {
-		return id.slice(6)
-	}
-	return null
-}
-
 export const isReservePoolId = (id: string): boolean => id === RESERVE_POOL_ID
 
 export const isWaitlistPoolId = (id: string): boolean => id === WAITLIST_POOL_ID
@@ -105,12 +96,6 @@ export const isWaitlistPoolId = (id: string): boolean => id === WAITLIST_POOL_ID
 // ---------------------------------------------------------------------------
 // Collision Detection Helpers
 // ---------------------------------------------------------------------------
-
-/**
- * Find the first empty slot in a group
- */
-export const findFirstEmptySlot = (group: DndGroup): DndSlot | null =>
-	group.slots.find((slot) => slot.team === null) ?? null
 
 /**
  * Find a slot by its ID across all groups

@@ -255,7 +255,8 @@
 				"noCapacity": "Le pool confirmé est plein. Libérez des places pour promouvoir les équipes en liste d'attente.",
 				"helpPromote": "Glissez les équipes en liste d'attente vers le pool confirmé pour les ajouter.",
 				"helpBlocked": "Toutes les places sont assignées. Retirez des équipes des groupes pour faire de la place.",
-				"ariaLabel": "Liste d'attente - {{count}} équipes en attente"
+				"ariaLabel": "Liste d'attente - {{count}} équipes en attente",
+				"dropToAdd": "Déposer ici pour déplacer en liste d'attente"
 			}
 		}
 	},

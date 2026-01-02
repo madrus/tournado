@@ -255,7 +255,8 @@
 				"noCapacity": "Bestätigter Pool ist voll. Plätze freigeben, um Wartelisten-Teams aufzunehmen.",
 				"helpPromote": "Ziehen Sie Wartelisten-Teams in den bestätigten Pool, um sie hinzuzufügen.",
 				"helpBlocked": "Alle Plätze sind belegt. Entfernen Sie Teams aus Gruppen, um Platz zu schaffen.",
-				"ariaLabel": "Warteliste - {{count}} Teams wartend"
+				"ariaLabel": "Warteliste - {{count}} Teams wartend",
+				"dropToAdd": "Hier loslassen, um zur Warteliste zu verschieben"
 			}
 		}
 	},

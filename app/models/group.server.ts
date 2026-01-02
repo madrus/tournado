@@ -17,7 +17,7 @@ export type GroupSlotWithTeam = {
 	readonly team: GroupSlotTeam | null
 }
 
-export type ReserveSlotWithTeam = {
+export type ConfirmedSlotWithTeam = {
 	readonly id: string
 	readonly team: GroupSlotTeam | null
 }
@@ -40,7 +40,7 @@ export type GroupStageWithDetails = {
 	readonly createdAt: Date
 	readonly updatedAt: Date
 	readonly groups: readonly GroupWithSlots[]
-	readonly reserveSlots: readonly ReserveSlotWithTeam[]
+	readonly confirmedSlots: readonly ConfirmedSlotWithTeam[]
 }
 
 export type GroupStageListItem = {
@@ -200,7 +200,7 @@ export async function getGroupStageWithDetails(
 		createdAt: groupStage.createdAt,
 		updatedAt: groupStage.updatedAt,
 		groups: groupStage.groups,
-		reserveSlots: groupStage.groupSlots,
+		confirmedSlots: groupStage.groupSlots,
 	}
 }
 

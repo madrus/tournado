@@ -5,9 +5,9 @@ import { isBrowser } from '~/lib/lib.helpers'
 
 import type {
 	DndGroup,
-	DndReserveTeam,
 	DndSlot,
 	DndTeam,
+	DndUnassignedTeam,
 	GroupAssignmentSnapshot,
 } from '../utils/groupStageDnd'
 
@@ -38,9 +38,9 @@ type Actions = {
 
 	// Team assignment actions
 	assignTeamToSlot: (teamId: string, groupId: string, slotIndex: number) => void
-	moveTeamToReserve: (teamId: string) => void
+	moveTeamToConfirmed: (teamId: string) => void
+	moveTeamToWaitlist: (teamId: string) => void
 	swapTeamWithSlot: (teamId: string, groupId: string, slotIndex: number) => void
-	removeTeamFromGroupStage: (teamId: string) => void
 	promoteFromWaitlist: (teamId: string) => void
 
 	// UI state actions
@@ -51,10 +51,10 @@ type Actions = {
 
 	// Derived state selectors
 	isDirty: () => boolean
-	getTeamLocation: (teamId: string) => 'reserve' | 'waitlist' | 'group' | null
-	getReserveCapacity: () => number
-	getConfirmedTeams: () => readonly DndReserveTeam[]
-	getWaitlistTeams: () => readonly DndReserveTeam[]
+	getTeamLocation: (teamId: string) => 'confirmed' | 'waitlist' | 'group' | null
+	getConfirmedCapacity: () => number
+	getConfirmedTeams: () => readonly DndUnassignedTeam[]
+	getWaitlistTeams: () => readonly DndUnassignedTeam[]
 }
 
 const storeName = 'GroupAssignmentStore'
@@ -143,9 +143,9 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 					let sourceSlotIndex: number | null = null
 
 					// Check reserve
-					const reserveTeam = snapshot.reserveTeams.find((t) => t.id === teamId)
-					if (reserveTeam) {
-						team = reserveTeam
+					const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
+					if (unassignedTeam) {
+						team = unassignedTeam
 					} else {
 						// Check other slots
 						for (const g of snapshot.groups) {
@@ -180,25 +180,16 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 					})
 
 					// Remove from reserve if it was there
-					const newReserveTeams = snapshot.reserveTeams.filter((t) => t.id !== teamId)
-
-					// Recalculate waitlist status
-					const assignedCount = newGroups.reduce(
-						(count, g) => count + g.slots.filter((s) => s.team !== null).length,
-						0,
+					const newUnassignedTeams = snapshot.unassignedTeams.filter(
+						(t) => t.id !== teamId,
 					)
-					const capacity = snapshot.totalSlots - assignedCount
-					const updatedReserve: DndReserveTeam[] = newReserveTeams.map((t, i) => ({
-						...t,
-						isWaitlist: i >= capacity,
-					}))
 
 					set(
 						{
 							snapshot: {
 								...snapshot,
 								groups: newGroups,
-								reserveTeams: updatedReserve,
+								unassignedTeams: newUnassignedTeams,
 							},
 						},
 						false,
@@ -207,7 +198,7 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 				},
 
 				// Move a team back to reserve
-				moveTeamToReserve: (teamId) => {
+				moveTeamToConfirmed: (teamId) => {
 					const snapshot = get().snapshot
 					if (!snapshot) return
 
@@ -237,33 +228,86 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 						}),
 					}))
 
-					// Add to reserve
-					const newReserveTeams: DndReserveTeam[] = [
-						...snapshot.reserveTeams,
+					// Add to reserve as confirmed (we just freed a slot by removing from group)
+					const newUnassignedTeams: DndUnassignedTeam[] = [
+						...snapshot.unassignedTeams,
 						{ ...teamToAdd, isWaitlist: false },
 					]
-
-					// Recalculate waitlist status
-					const assignedCount = newGroups.reduce(
-						(count, g) => count + g.slots.filter((s) => s.team !== null).length,
-						0,
-					)
-					const capacity = snapshot.totalSlots - assignedCount
-					const updatedReserve: DndReserveTeam[] = newReserveTeams.map((t, i) => ({
-						...t,
-						isWaitlist: i >= capacity,
-					}))
 
 					set(
 						{
 							snapshot: {
 								...snapshot,
 								groups: newGroups,
-								reserveTeams: updatedReserve,
+								unassignedTeams: newUnassignedTeams,
 							},
 						},
 						false,
-						'moveTeamToReserve',
+						'moveTeamToConfirmed',
+					)
+				},
+
+				// Move team to waitlist (from group or confirmed reserve)
+				moveTeamToWaitlist: (teamId) => {
+					const snapshot = get().snapshot
+					if (!snapshot) return
+
+					// Find the team (could be in groups or reserve)
+					let foundTeam: DndTeam | null = null
+
+					// Check groups first
+					for (const g of snapshot.groups) {
+						for (const s of g.slots) {
+							if (s.team?.id === teamId) {
+								foundTeam = s.team
+								break
+							}
+						}
+						if (foundTeam) break
+					}
+
+					// Check reserve if not found in groups
+					if (!foundTeam) {
+						const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
+						if (unassignedTeam) {
+							foundTeam = unassignedTeam
+						}
+					}
+
+					if (!foundTeam) return
+
+					// Remove from groups
+					const newGroups: DndGroup[] = snapshot.groups.map((g) => ({
+						...g,
+						slots: g.slots.map((s) => {
+							if (s.team?.id === teamId) {
+								return { ...s, team: null }
+							}
+							return s
+						}),
+					}))
+
+					// Remove from reserve if it was there
+					const filteredUnassigned = snapshot.unassignedTeams.filter(
+						(t) => t.id !== teamId,
+					)
+
+					// Add to end of reserve as waitlisted
+					const newUnassignedTeams: DndUnassignedTeam[] = [
+						...filteredUnassigned,
+						{ ...foundTeam, isWaitlist: true },
+					]
+
+					set(
+						{
+							snapshot: {
+								...snapshot,
+								groups: newGroups,
+								unassignedTeams: newUnassignedTeams,
+							},
+						},
+						false,
+						'moveTeamToWaitlist',
 					)
 				},
 
@@ -275,9 +319,9 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 					// Find the incoming team
 					let incomingTeam: DndTeam | null = null
 
-					const reserveTeam = snapshot.reserveTeams.find((t) => t.id === teamId)
-					if (reserveTeam) {
-						incomingTeam = reserveTeam
+					const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
+					if (unassignedTeam) {
+						incomingTeam = unassignedTeam
 					} else {
 						for (const g of snapshot.groups) {
 							for (const s of g.slots) {
@@ -319,32 +363,23 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 						}),
 					}))
 
-					// Update reserve
-					let newReserveTeams = snapshot.reserveTeams.filter((t) => t.id !== teamId)
+					// Update reserve: remove incoming team, add displaced team as confirmed
+					let newUnassignedTeams = snapshot.unassignedTeams.filter(
+						(t) => t.id !== teamId,
+					)
 					if (displacedTeam) {
-						newReserveTeams = [
-							...newReserveTeams,
+						newUnassignedTeams = [
+							...newUnassignedTeams,
 							{ ...displacedTeam, isWaitlist: false },
 						]
 					}
-
-					// Recalculate waitlist status
-					const assignedCount = newGroups.reduce(
-						(count, g) => count + g.slots.filter((s) => s.team !== null).length,
-						0,
-					)
-					const capacity = snapshot.totalSlots - assignedCount
-					const updatedReserve: DndReserveTeam[] = newReserveTeams.map((t, i) => ({
-						...t,
-						isWaitlist: i >= capacity,
-					}))
 
 					set(
 						{
 							snapshot: {
 								...snapshot,
 								groups: newGroups,
-								reserveTeams: updatedReserve,
+								unassignedTeams: newUnassignedTeams,
 							},
 						},
 						false,
@@ -353,7 +388,7 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 				},
 
 				// Remove a team from the group stage entirely
-				removeTeamFromGroupStage: (teamId) => {
+				removeTeamFromGroupStage: (teamId: string) => {
 					const snapshot = get().snapshot
 					if (!snapshot) return
 
@@ -369,25 +404,16 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 					}))
 
 					// Remove from reserve
-					const newReserveTeams = snapshot.reserveTeams.filter((t) => t.id !== teamId)
-
-					// Recalculate waitlist status
-					const assignedCount = newGroups.reduce(
-						(count, g) => count + g.slots.filter((s) => s.team !== null).length,
-						0,
+					const newUnassignedTeams = snapshot.unassignedTeams.filter(
+						(t) => t.id !== teamId,
 					)
-					const capacity = snapshot.totalSlots - assignedCount
-					const updatedReserve: DndReserveTeam[] = newReserveTeams.map((t, i) => ({
-						...t,
-						isWaitlist: i >= capacity,
-					}))
 
 					set(
 						{
 							snapshot: {
 								...snapshot,
 								groups: newGroups,
-								reserveTeams: updatedReserve,
+								unassignedTeams: newUnassignedTeams,
 							},
 						},
 						false,
@@ -400,36 +426,28 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 					const snapshot = get().snapshot
 					if (!snapshot) return
 
-					const capacity = get().getReserveCapacity()
+					const capacity = get().getConfirmedCapacity()
 					if (capacity <= 0) return // No room in confirmed pool
 
-					const teamIndex = snapshot.reserveTeams.findIndex((t) => t.id === teamId)
+					// Check if we're already at the confirmed team limit
+					const currentConfirmedCount = snapshot.unassignedTeams.filter(
+						(t) => !t.isWaitlist,
+					).length
+					if (currentConfirmedCount >= capacity) return // Already at capacity
+
+					const teamIndex = snapshot.unassignedTeams.findIndex((t) => t.id === teamId)
 					if (teamIndex === -1) return
 
-					// Move team to front of reserve (will be in confirmed pool)
-					const team = snapshot.reserveTeams[teamIndex]
-					const otherTeams = snapshot.reserveTeams.filter((t) => t.id !== teamId)
-					const newReserveTeams: DndReserveTeam[] = [
-						{ ...team, isWaitlist: false },
-						...otherTeams,
-					]
-
-					// Recalculate waitlist status
-					const assignedCount = snapshot.groups.reduce(
-						(count, g) => count + g.slots.filter((s) => s.team !== null).length,
-						0,
+					// Promote the team to confirmed status (capacity was already checked)
+					const newUnassignedTeams: DndUnassignedTeam[] = snapshot.unassignedTeams.map(
+						(t) => (t.id === teamId ? { ...t, isWaitlist: false } : t),
 					)
-					const newCapacity = snapshot.totalSlots - assignedCount
-					const updatedReserve: DndReserveTeam[] = newReserveTeams.map((t, i) => ({
-						...t,
-						isWaitlist: i >= newCapacity,
-					}))
 
 					set(
 						{
 							snapshot: {
 								...snapshot,
-								reserveTeams: updatedReserve,
+								unassignedTeams: newUnassignedTeams,
 							},
 						},
 						false,
@@ -462,13 +480,13 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 				},
 
 				// Get team location
-				getTeamLocation: (teamId) => {
+				getTeamLocation: (teamId: string) => {
 					const snapshot = get().snapshot
 					if (!snapshot) return null
 
-					const reserveTeam = snapshot.reserveTeams.find((t) => t.id === teamId)
-					if (reserveTeam) {
-						return reserveTeam.isWaitlist ? 'waitlist' : 'reserve'
+					const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
+					if (unassignedTeam) {
+						return unassignedTeam.isWaitlist ? 'waitlist' : 'confirmed'
 					}
 
 					for (const g of snapshot.groups) {
@@ -483,7 +501,7 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 				},
 
 				// Get remaining reserve capacity
-				getReserveCapacity: () => {
+				getConfirmedCapacity: () => {
 					const snapshot = get().snapshot
 					if (!snapshot) return 0
 
@@ -498,14 +516,14 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 				getConfirmedTeams: () => {
 					const snapshot = get().snapshot
 					if (!snapshot) return []
-					return snapshot.reserveTeams.filter((t) => !t.isWaitlist)
+					return snapshot.unassignedTeams.filter((t) => !t.isWaitlist)
 				},
 
 				// Get waitlist teams
 				getWaitlistTeams: () => {
 					const snapshot = get().snapshot
 					if (!snapshot) return []
-					return snapshot.reserveTeams.filter((t) => t.isWaitlist)
+					return snapshot.unassignedTeams.filter((t) => t.isWaitlist)
 				},
 			}),
 			{

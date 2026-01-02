@@ -255,7 +255,8 @@
 				"noCapacity": "Onaylı havuz dolu. Bekleme listesindeki takımları yükseltmek için yer açın.",
 				"helpPromote": "Bekleme listesindeki takımları eklemek için onaylı havuza sürükleyin.",
 				"helpBlocked": "Tüm yerler atandı. Yer açmak için gruplardan takım çıkarın.",
-				"ariaLabel": "Bekleme listesi - {{count}} takım bekliyor"
+				"ariaLabel": "Bekleme listesi - {{count}} takım bekliyor",
+				"dropToAdd": "Bekleme listesine taşımak için buraya bırakın"
 			}
 		}
 	},

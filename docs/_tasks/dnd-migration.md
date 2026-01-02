@@ -1,7 +1,7 @@
 # Group Stage Drag and Drop Assignment System
 
 ## Overview
-The group stage assignment interface provides a drag-and-drop experience where teams can be assigned to group slots, moved between slots, or returned to the reserve pool. The system maintains smooth animations, supports RTL layouts, and handles both confirmed teams and waitlist teams with distinct behaviors.
+The group stage assignment interface provides a drag-and-drop experience where teams can be assigned to group slots, moved between slots, returned to confirmed pool, or moved to waitlist. The system maintains smooth animations, supports RTL layouts, and handles both confirmed teams and waitlist teams with distinct behaviors.
 
 ## Core Principles
 - Client-side zustand store maintains state during editing
@@ -9,6 +9,8 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Touch sensors and pointer sensors support mobile and desktop interactions
 - State changes never corrupt data - validation happens at save time
 - Conflict detection validates against server version on save
+- Team status (confirmed/waitlist) is explicitly maintained, not calculated by array position
+- Drag-to-waitlist replaces traditional delete functionality ("soft delete")
 
 ## Architecture
 
@@ -44,30 +46,33 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Wraps team data with `useDraggable` hook
 - Becomes completely invisible (`opacity: 0`) during drag
 - No transform applied to original element
-- Delete button visible on hover (except when dragging)
+- Can be dragged to waitlist for soft delete functionality
 
 **DragOverlayChip.tsx**
 - Separate component rendered in DragOverlay
 - Follows cursor during drag with enhanced shadow
 - Only visible element during drag operation
 
-**ReservePool.tsx**
+**ConfirmedPool.tsx**
 - Container for confirmed teams (teams that can be assigned to groups)
 - Droppable area for teams being moved out of groups
 - Capacity-limited based on total group slots minus assigned teams
 
-**ReserveWaitlist.tsx**
+**WaitlistPool.tsx**
 - Container for waitlist teams
+- Droppable area for teams being soft-deleted from groups or confirmed pool
 - Teams can be promoted to confirmed pool when capacity exists
 - Cannot be dragged directly to group slots
 
 ### State Management
 
 **useGroupAssignmentStore (Zustand)**
-- Maintains snapshot of groups, slots, confirmed teams, and waitlist
+- Maintains snapshot of groups, slots, and unassigned teams (confirmed + waitlist)
 - Tracks dirty state for unsaved changes warning
-- Calculates reserve capacity dynamically
-- Provides actions: assignTeamToSlot, swapTeamWithSlot, moveTeamToReserve, promoteFromWaitlist
+- Calculates confirmed capacity dynamically
+- Provides actions: assignTeamToSlot, swapTeamWithSlot, moveTeamToConfirmed, moveTeamToWaitlist, promoteFromWaitlist
+- Team status (confirmed/waitlist) is explicitly maintained via `isWaitlist` flag
+- No index-based recalculation of team status - status is preserved across operations
 - Persists to sessionStorage during editing session
 - Resets on cancel or successful save
 
@@ -90,39 +95,50 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - `parseSlotDropId(id)` - extracts groupId and slotIndex from drop ID
 
 **Pool Identifiers**
-- `RESERVE_POOL_ID` - constant for reserve pool drop target
+- `CONFIRMED_POOL_ID` - constant for confirmed pool drop target
 - `WAITLIST_POOL_ID` - constant for waitlist pool drop target
-- `isReservePoolId(id)` - checks if ID is reserve pool
+- `isConfirmedPoolId(id)` - checks if ID is confirmed pool
 - `isWaitlistPoolId(id)` - checks if ID is waitlist pool
 
 **Collision Helpers**
 - `findSlotById(groups, slotId)` - locates slot across all groups
 
+**Type Definitions**
+- `DndUnassignedTeam` - teams not assigned to any slot (includes both confirmed and waitlist)
+- `GroupAssignmentSnapshot` - contains groups and unassignedTeams array
+
 ## Drag and Drop Behavior
 
 ### Drag Sources
-- Team chips in the reserve pool (confirmed teams)
+- Team chips in the confirmed pool (confirmed teams)
 - Team chips in the waitlist pool
 - Team chips assigned to group slots
 
 ### Drop Targets
 - **Individual group slots** - each slot is independently droppable
-- **Reserve pool** - accepts teams from group slots
+- **Confirmed pool** - accepts teams from group slots and waitlist
+- **Waitlist pool** - accepts teams from group slots and confirmed pool (soft delete)
 - **Group containers** - NOT droppable (only individual slots accept drops)
 
 ### Drop Operations
 
 **Drop on Empty Slot**
 - Assigns the dragged team to that specific slot
-- Team is removed from source location (reserve or other slot)
+- Team is removed from source location (confirmed pool, waitlist, or other slot)
 
 **Drop on Occupied Slot**
-- Existing team moves to reserve pool
+- Existing team moves to confirmed pool (explicit `isWaitlist: false`)
 - Dragged team takes the slot
 - Swap operation if both teams are in slots
 
-**Drop on Reserve Pool**
-- Team moves to confirmed reserve
+**Drop on Confirmed Pool**
+- Team moves to confirmed pool (explicit `isWaitlist: false`)
+- Group slot becomes empty if team was assigned
+- Team retains confirmed status if already confirmed
+
+**Drop on Waitlist Pool**
+- Team moves to waitlist pool (explicit `isWaitlist: true`)
+- Provides soft delete functionality for removing teams
 - Group slot becomes empty if team was assigned
 
 **Drop on Same Slot**
@@ -159,8 +175,8 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ### Desktop (≥1024px)
 - Groups board: left side, responsive grid (md=2, xl=3, 2xl=4 columns)
-- Reserve pool: right side, fixed 320px width
-- Waitlist: below reserve pool
+- Confirmed pool: right side, fixed 320px width
+- Waitlist pool: below confirmed pool
 - All groups visible simultaneously
 
 ### Mobile (<1024px)
@@ -168,8 +184,8 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Horizontal scrollable pill tabs for group navigation
 - Active tab: glossy slate gradient, bold text
 - Inactive tabs: semi-transparent, medium weight
-- Reserve pool: below groups
-- Waitlist: below reserve pool
+- Confirmed pool: below groups
+- Waitlist pool: below confirmed pool
 
 ### Slot Layout
 - Vertical lists (not grids) for compact scanning
@@ -193,7 +209,7 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 ### Panel Styling
 - Group cards: subtle gradients, borders, shadows, backdrop blur
-- Reserve panels: similar treatment for visual consistency
+- Unassigned team pools (confirmed/waitlist): similar treatment for visual consistency
 - No decorative parent wrapper around main board
 - Direct layout without extra chrome
 
@@ -214,6 +230,11 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Base styling for all group cards
 - No drop target states (not droppable)
 
+**unassignedPoolVariants**
+- Variants: confirmed, waitlist
+- States: normal, dropTarget
+- Color-coded borders and backgrounds for each variant
+
 ### Mobile Tab Styling
 - Pill shape (rounded-full)
 - Active: `from-slate-400/50 via-surface to-surface`
@@ -226,16 +247,17 @@ The group stage assignment interface provides a drag-and-drop experience where t
 - Screen reader announcements for drag operations
 - Keyboard navigation with @dnd-kit keyboard sensor
 - Focus visible states on all controls
-- Delete buttons with clear affordance
+- Drag-to-waitlist provides keyboard-accessible soft delete
 
 ## Data Flow
 
 ### Loading
 1. Route loader returns `groupStage` and `availableTeams`
-2. Reserve calculated as: availableTeams + teams in group stage reserve
-3. Reserve split into confirmed pool (capacity-limited) and waitlist (overflow)
-4. Zustand store initialized from loader snapshot
-5. sessionStorage restores any unsaved edits
+2. Unassigned teams calculated as: availableTeams + teams in group stage confirmed slots
+3. Each team explicitly tagged with `isWaitlist` flag (true/false)
+4. Unassigned teams include both confirmed (capacity-limited) and waitlist teams
+5. Zustand store initialized from loader snapshot
+6. sessionStorage restores any unsaved edits
 
 ### Editing
 1. User drags and drops teams
@@ -273,7 +295,6 @@ The group stage assignment interface provides a drag-and-drop experience where t
 
 **Intents**
 - `save` - persist store snapshot, validate version, return success/conflict/error
-- `delete` - remove team from group stage context (when chip deleted)
 
 **Validation**
 - Group stage version check (optimistic locking)
@@ -373,19 +394,20 @@ app/features/competition/
 │   ├── GroupAssignmentBoard.tsx
 │   ├── GroupCard.tsx
 │   ├── GroupSlotDropZone.tsx
-│   ├── ReservePool.tsx
-│   ├── ReserveWaitlist.tsx
+│   ├── ConfirmedPool.tsx
+│   ├── WaitlistPool.tsx
 │   ├── DraggableTeamChip.tsx
 │   ├── groupAssignment.variants.ts
-│   └── CompetitionGroupStageDetails.tsx (updated)
+│   └── CompetitionGroupStageDetails.tsx
 ├── hooks/
 │   └── useGroupStageDnd.ts
 ├── stores/
 │   └── useGroupAssignmentStore.ts
 ├── utils/
 │   └── groupStageDnd.ts
-└── models/
-    └── group.server.ts (server-side logic)
+
+app/models/
+└── group.server.ts (backend types and utilities)
 
 app/routes/
 └── resources/
@@ -398,14 +420,23 @@ docs/images/
 
 ## Terminology
 
+**Unassigned Teams**
+Teams not currently assigned to any group slot. This includes both confirmed teams and waitlist teams. Stored as a single array with each team having an explicit `isWaitlist` flag.
+
 **Confirmed Teams**
-Teams officially accepted into the tournament field. Can be assigned to group slots. Limited by reserve capacity.
+Teams officially accepted into the tournament field. Can be assigned to group slots. Have `isWaitlist: false`. Limited by confirmed capacity.
 
 **Waitlist Teams**
-Teams that want to participate but are outside the initial field. Must be promoted to confirmed before group assignment.
+Teams that want to participate but are outside the initial field. Have `isWaitlist: true`. Must be promoted to confirmed before group assignment.
 
-**Reserve Pool**
-The confirmed teams area. Droppable zone for teams being moved out of groups. Capacity-limited.
+**Confirmed Pool**
+Visual component displaying confirmed teams (those with `isWaitlist: false`). Droppable zone for teams being moved out of groups or promoted from waitlist. Capacity-limited.
+
+**Waitlist Pool**
+Visual component displaying waitlist teams (those with `isWaitlist: true`). Droppable zone for soft-deleting teams from groups or confirmed pool.
+
+**Confirmed Capacity**
+Number of available slots for confirmed teams, calculated as: total group slots - currently assigned teams.
 
 **Slot**
 A position within a group where a team can be assigned. Fixed height, individually droppable.
@@ -415,3 +446,6 @@ Visual wrapper for a group's slots. Not a drop target. Purely presentational.
 
 **DragOverlay**
 The floating element that follows the cursor during drag. The only visible representation of the dragged item.
+
+**Explicit Status Management**
+Team status (confirmed/waitlist) is maintained via the `isWaitlist` boolean flag and is never recalculated based on array position. Each store operation explicitly sets the flag when adding or moving teams.

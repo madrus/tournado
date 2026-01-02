@@ -4,34 +4,32 @@ import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
 
-import type { DndReserveTeam } from '../utils/groupStageDnd'
+import type { DndUnassignedTeam } from '../utils/groupStageDnd'
 import { WAITLIST_POOL_ID } from '../utils/groupStageDnd'
 import { DraggableTeamChip } from './DraggableTeamChip'
-import { errorBannerVariants, reservePoolVariants } from './groupAssignment.variants'
+import { errorBannerVariants, unassignedPoolVariants } from './groupAssignment.variants'
 
-type ReserveWaitlistProps = {
-	teams: readonly DndReserveTeam[]
+type WaitlistPoolProps = {
+	teams: readonly DndUnassignedTeam[]
 	canPromote: boolean
-	onDeleteTeam?: (teamId: string) => void
 	disabled?: boolean
 	className?: string
 }
 
-export function ReserveWaitlist({
+export function WaitlistPool({
 	teams,
 	canPromote,
-	onDeleteTeam,
 	disabled = false,
 	className,
-}: ReserveWaitlistProps): JSX.Element {
+}: WaitlistPoolProps): JSX.Element {
 	const { t } = useTranslation()
 
-	const { setNodeRef } = useDroppable({
+	const { isOver, setNodeRef } = useDroppable({
 		id: WAITLIST_POOL_ID,
 		data: {
 			type: 'waitlist-pool',
 		},
-		disabled: true, // Cannot drop into waitlist
+		disabled,
 	})
 
 	const waitlistTeams = teams.filter((team) => team.isWaitlist)
@@ -44,7 +42,7 @@ export function ReserveWaitlist({
 		<section
 			ref={setNodeRef}
 			className={cn(
-				reservePoolVariants({ variant: 'waitlist', isDropTarget: false }),
+				unassignedPoolVariants({ variant: 'waitlist', isDropTarget: isOver }),
 				className,
 			)}
 			aria-label={t('competition.groupAssignment.waitlist.ariaLabel', {
@@ -108,11 +106,19 @@ export function ReserveWaitlist({
 						key={team.id}
 						team={team}
 						variant='waitlist'
-						onDelete={onDeleteTeam}
 						disabled={disabled}
 					/>
 				))}
 			</div>
+
+			{/* Drop hint */}
+			{isOver ? (
+				<div className='mt-3 text-center'>
+					<span className='text-xs text-amber-600 dark:text-amber-400 font-medium animate-pulse'>
+						{t('competition.groupAssignment.waitlist.dropToAdd')}
+					</span>
+				</div>
+			) : null}
 
 			{/* Help text */}
 			<p className='mt-3 text-xs text-foreground-lighter'>

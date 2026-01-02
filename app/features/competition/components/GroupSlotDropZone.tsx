@@ -10,14 +10,12 @@ import { groupSlotVariants } from './groupAssignment.variants'
 type GroupSlotDropZoneProps = {
 	slot: DndSlot
 	isHighlighted?: boolean
-	onDeleteTeam?: (teamId: string) => void
 	disabled?: boolean
 }
 
 export function GroupSlotDropZone({
 	slot,
 	isHighlighted = false,
-	onDeleteTeam,
 	disabled = false,
 }: GroupSlotDropZoneProps): JSX.Element {
 	const { t } = useTranslation()
@@ -46,7 +44,7 @@ export function GroupSlotDropZone({
 
 	return slot.team ? (
 		<div ref={setNodeRef}>
-			<DraggableTeamChip team={slot.team} onDelete={onDeleteTeam} disabled={disabled} />
+			<DraggableTeamChip team={slot.team} disabled={disabled} />
 		</div>
 	) : (
 		<div

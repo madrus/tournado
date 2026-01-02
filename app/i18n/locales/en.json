@@ -248,7 +248,8 @@
 				"noCapacity": "Confirmed pool is full. Free up slots to promote waitlist teams.",
 				"helpPromote": "Drag waitlist teams to the confirmed pool to add them.",
 				"helpBlocked": "All slots are assigned. Remove teams from groups to make room.",
-				"ariaLabel": "Waitlist - {{count}} teams waiting"
+				"ariaLabel": "Waitlist - {{count}} teams waiting",
+				"dropToAdd": "Drop here to move to waitlist"
 			}
 		}
 	},

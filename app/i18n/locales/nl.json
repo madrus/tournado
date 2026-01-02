@@ -248,7 +248,8 @@
 				"noCapacity": "Bevestigde pool is vol. Maak plekken vrij om wachtlijstteams te promoveren.",
 				"helpPromote": "Sleep wachtlijstteams naar de bevestigde pool om ze toe te voegen.",
 				"helpBlocked": "Alle plekken zijn bezet. Verwijder teams uit poules om ruimte te maken.",
-				"ariaLabel": "Wachtlijst - {{count}} teams wachtend"
+				"ariaLabel": "Wachtlijst - {{count}} teams wachtend",
+				"dropToAdd": "Hier loslaten om naar wachtlijst te verplaatsen"
 			}
 		}
 	},

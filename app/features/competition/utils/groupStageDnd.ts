@@ -25,7 +25,7 @@ export type DndGroup = {
 	readonly slots: readonly DndSlot[]
 }
 
-export type DndReserveTeam = DndTeam & {
+export type DndUnassignedTeam = DndTeam & {
 	readonly isWaitlist: boolean
 }
 
@@ -35,7 +35,7 @@ export type GroupAssignmentSnapshot = {
 	readonly tournamentId: string
 	readonly updatedAt: string
 	readonly groups: readonly DndGroup[]
-	readonly reserveTeams: readonly DndReserveTeam[]
+	readonly unassignedTeams: readonly DndUnassignedTeam[]
 	readonly totalSlots: number
 }
 
@@ -63,7 +63,7 @@ export const createTeamDragId = (teamId: string): string => `team:${teamId}`
 export const createSlotDropId = (groupId: string, slotIndex: number): string =>
 	`slot:${groupId}:${slotIndex}`
 
-export const RESERVE_POOL_ID = 'reserve-pool'
+export const CONFIRMED_POOL_ID = 'confirmed-pool'
 export const WAITLIST_POOL_ID = 'waitlist-pool'
 
 // ---------------------------------------------------------------------------
@@ -89,7 +89,7 @@ export const parseSlotDropId = (
 	return null
 }
 
-export const isReservePoolId = (id: string): boolean => id === RESERVE_POOL_ID
+export const isConfirmedPoolId = (id: string): boolean => id === CONFIRMED_POOL_ID
 
 export const isWaitlistPoolId = (id: string): boolean => id === WAITLIST_POOL_ID
 
@@ -126,7 +126,7 @@ export const findTeam = (
 	slotIndex?: number
 } | null => {
 	// Check reserve
-	const reserveTeam = snapshot.reserveTeams.find((t) => t.id === teamId)
+	const reserveTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
 	if (reserveTeam) {
 		return { location: 'reserve', team: reserveTeam }
 	}
@@ -152,7 +152,9 @@ export const findTeam = (
  * Calculate reserve pool capacity
  * Capacity = total group slots - currently assigned teams
  */
-export const calculateReserveCapacity = (snapshot: GroupAssignmentSnapshot): number => {
+export const calculateConfirmedCapacity = (
+	snapshot: GroupAssignmentSnapshot,
+): number => {
 	const assignedTeams = snapshot.groups.reduce(
 		(count, group) => count + group.slots.filter((slot) => slot.team !== null).length,
 		0,
@@ -167,7 +169,7 @@ export const isTeamOnWaitlist = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 ): boolean => {
-	const team = snapshot.reserveTeams.find((t) => t.id === teamId)
+	const team = snapshot.unassignedTeams.find((t) => t.id === teamId)
 	return team?.isWaitlist ?? false
 }
 
@@ -176,7 +178,7 @@ export const isTeamOnWaitlist = (
  * Only allowed if there's capacity in the confirmed pool
  */
 export const canPromoteFromWaitlist = (snapshot: GroupAssignmentSnapshot): boolean =>
-	calculateReserveCapacity(snapshot) > 0
+	calculateConfirmedCapacity(snapshot) > 0
 
 // ---------------------------------------------------------------------------
 // Snapshot Transformation Helpers
@@ -207,7 +209,7 @@ export type LoaderGroupStage = {
 			} | null
 		}[]
 	}[]
-	readonly reserveSlots: readonly {
+	readonly confirmedSlots: readonly {
 		readonly id: string
 		readonly team: {
 			readonly id: string
@@ -262,10 +264,10 @@ export const createSnapshotFromLoader = (
 	}
 
 	// Build reserve teams from reserve slots and available teams
-	const reserveCapacity = totalSlots - assignedTeamIds.size
+	const confirmedCapacity = totalSlots - assignedTeamIds.size
 
 	// Teams from reserve slots (already in group stage context)
-	const reserveSlotTeams: DndReserveTeam[] = groupStage.reserveSlots
+	const confirmedSlotTeams: DndUnassignedTeam[] = groupStage.confirmedSlots
 		.filter(
 			(slot): slot is typeof slot & { team: NonNullable<typeof slot.team> } =>
 				slot.team !== null,
@@ -279,7 +281,7 @@ export const createSnapshotFromLoader = (
 		}))
 
 	// Teams from available teams (not in group stage yet)
-	const availableTeamsList: DndReserveTeam[] = availableTeams.map((team) => ({
+	const availableTeamsList: DndUnassignedTeam[] = availableTeams.map((team) => ({
 		id: team.id,
 		name: team.name,
 		clubName: team.clubName,
@@ -288,16 +290,18 @@ export const createSnapshotFromLoader = (
 	}))
 
 	// Combine and deduplicate
-	const allReserveTeams = [
-		...reserveSlotTeams,
-		...availableTeamsList.filter((t) => !reserveSlotTeams.some((r) => r.id === t.id)),
+	const allUnassignedTeams = [
+		...confirmedSlotTeams,
+		...availableTeamsList.filter((t) => !confirmedSlotTeams.some((r) => r.id === t.id)),
 	]
 
 	// Mark waitlist teams (those beyond capacity)
-	const reserveTeams: DndReserveTeam[] = allReserveTeams.map((team, index) => ({
-		...team,
-		isWaitlist: index >= reserveCapacity,
-	}))
+	const unassignedTeams: DndUnassignedTeam[] = allUnassignedTeams.map(
+		(team, index) => ({
+			...team,
+			isWaitlist: index >= confirmedCapacity,
+		}),
+	)
 
 	return {
 		groupStageId: groupStage.id,
@@ -305,7 +309,7 @@ export const createSnapshotFromLoader = (
 		tournamentId: groupStage.tournamentId,
 		updatedAt: groupStage.updatedAt.toISOString(),
 		groups,
-		reserveTeams,
+		unassignedTeams,
 		totalSlots,
 	}
 }

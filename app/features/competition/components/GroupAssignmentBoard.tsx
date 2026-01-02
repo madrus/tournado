@@ -22,6 +22,7 @@ import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import { useGroupAssignmentStore } from '../stores/useGroupAssignmentStore'
 import type { GroupAssignmentSnapshot } from '../utils/groupStageDnd'
+import { ConfirmedPool } from './ConfirmedPool'
 import { DragOverlayChip } from './DraggableTeamChip'
 import { GroupCard } from './GroupCard'
 import {
@@ -31,8 +32,7 @@ import {
 	heroStripVariants,
 	paginationDotVariants,
 } from './groupAssignment.variants'
-import { ReservePool } from './ReservePool'
-import { ReserveWaitlist } from './ReserveWaitlist'
+import { WaitlistPool } from './WaitlistPool'
 
 type GroupAssignmentBoardProps = {
 	initialSnapshot: GroupAssignmentSnapshot
@@ -52,7 +52,6 @@ export function GroupAssignmentBoard({
 }: GroupAssignmentBoardProps): JSX.Element {
 	const { t } = useTranslation()
 	const fetcher = useFetcher()
-	const [deleteTeamId, setDeleteTeamId] = useState<string | null>(null)
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
 
 	// Store state
@@ -66,15 +65,12 @@ export function GroupAssignmentBoard({
 		(s) => s.initializeFromSnapshot,
 	)
 	const resetToOriginal = useGroupAssignmentStore((s) => s.resetToOriginal)
-	const removeTeamFromGroupStage = useGroupAssignmentStore(
-		(s) => s.removeTeamFromGroupStage,
-	)
 	const setActiveGroupIndex = useGroupAssignmentStore((s) => s.setActiveGroupIndex)
 	const setSaving = useGroupAssignmentStore((s) => s.setSaving)
 	const setSaveError = useGroupAssignmentStore((s) => s.setSaveError)
 	const setConflict = useGroupAssignmentStore((s) => s.setConflict)
 	const isDirty = useGroupAssignmentStore((s) => s.isDirty)
-	const getReserveCapacity = useGroupAssignmentStore((s) => s.getReserveCapacity)
+	const getConfirmedCapacity = useGroupAssignmentStore((s) => s.getConfirmedCapacity)
 	const getWaitlistTeams = useGroupAssignmentStore((s) => s.getWaitlistTeams)
 
 	// DnD hook
@@ -196,13 +192,6 @@ export function GroupAssignmentBoard({
 	}, [resetToOriginal])
 
 	// Handle delete confirmation
-	const handleDeleteConfirm = useCallback(() => {
-		if (deleteTeamId) {
-			removeTeamFromGroupStage(deleteTeamId)
-			setDeleteTeamId(null)
-		}
-	}, [deleteTeamId, removeTeamFromGroupStage])
-
 	// Handle conflict reload
 	const handleConflictReload = useCallback(() => {
 		setShowConflictDialog(false)
@@ -231,7 +220,7 @@ export function GroupAssignmentBoard({
 	}
 
 	const waitlistTeams = getWaitlistTeams()
-	const capacity = getReserveCapacity()
+	const capacity = getConfirmedCapacity()
 	const dirty = isDirty()
 
 	// Grid always supports 1, 2, 4, 6 columns at different breakpoints
@@ -401,7 +390,6 @@ export function GroupAssignmentBoard({
 								<GroupCard
 									group={snapshot.groups[activeGroupIndex]}
 									highlightedSlot={highlightedSlot}
-									onDeleteTeam={setDeleteTeamId}
 									disabled={isSaving}
 								/>
 							) : (
@@ -412,7 +400,6 @@ export function GroupAssignmentBoard({
 											key={group.id}
 											group={group}
 											highlightedSlot={highlightedSlot}
-											onDeleteTeam={setDeleteTeamId}
 											disabled={isSaving}
 										/>
 									))}
@@ -423,18 +410,16 @@ export function GroupAssignmentBoard({
 						{/* Reserve section */}
 						<div className={gridColsClass}>
 							<div className={colSpanClass}>
-								<ReservePool
-									teams={snapshot.reserveTeams}
+								<ConfirmedPool
+									teams={snapshot.unassignedTeams}
 									capacity={capacity}
-									onDeleteTeam={setDeleteTeamId}
 									disabled={isSaving}
 								/>
 
 								{waitlistTeams.length > 0 ? (
-									<ReserveWaitlist
-										teams={snapshot.reserveTeams}
+									<WaitlistPool
+										teams={snapshot.unassignedTeams}
 										canPromote={capacity > 0}
-										onDeleteTeam={setDeleteTeamId}
 										disabled={isSaving}
 									/>
 								) : null}
@@ -479,21 +464,6 @@ export function GroupAssignmentBoard({
 					{activeDragTeam ? <DragOverlayChip team={activeDragTeam} /> : null}
 				</DragOverlay>
 			</DndContext>
-
-			{/* Delete confirmation dialog */}
-			<ConfirmDialog
-				open={deleteTeamId !== null}
-				onOpenChange={(open) => {
-					if (!open) setDeleteTeamId(null)
-				}}
-				onConfirm={handleDeleteConfirm}
-				title={t('competition.groupAssignment.deleteConfirmTitle')}
-				description={t('competition.groupAssignment.deleteConfirmDescription')}
-				confirmLabel={t('common.actions.confirmDelete')}
-				cancelLabel={t('common.actions.cancel')}
-				intent='danger'
-				destructive
-			/>
 
 			{/* Conflict dialog */}
 			<ConfirmDialog

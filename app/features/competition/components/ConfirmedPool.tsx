@@ -4,30 +4,28 @@ import { useTranslation } from 'react-i18next'
 
 import { cn } from '~/utils/misc'
 
-import type { DndReserveTeam } from '../utils/groupStageDnd'
-import { RESERVE_POOL_ID } from '../utils/groupStageDnd'
+import type { DndUnassignedTeam } from '../utils/groupStageDnd'
+import { CONFIRMED_POOL_ID } from '../utils/groupStageDnd'
 import { DraggableTeamChip } from './DraggableTeamChip'
-import { emptyStateVariants, reservePoolVariants } from './groupAssignment.variants'
+import { emptyStateVariants, unassignedPoolVariants } from './groupAssignment.variants'
 
-type ReservePoolProps = {
-	teams: readonly DndReserveTeam[]
+type ConfirmedPoolProps = {
+	teams: readonly DndUnassignedTeam[]
 	capacity: number
-	onDeleteTeam?: (teamId: string) => void
 	disabled?: boolean
 	className?: string
 }
 
-export function ReservePool({
+export function ConfirmedPool({
 	teams,
 	capacity,
-	onDeleteTeam,
 	disabled = false,
 	className,
-}: ReservePoolProps): JSX.Element {
+}: ConfirmedPoolProps): JSX.Element {
 	const { t } = useTranslation()
 
 	const { isOver, setNodeRef } = useDroppable({
-		id: RESERVE_POOL_ID,
+		id: CONFIRMED_POOL_ID,
 		data: {
 			type: 'reserve-pool',
 		},
@@ -40,7 +38,7 @@ export function ReservePool({
 		<section
 			ref={setNodeRef}
 			className={cn(
-				reservePoolVariants({ variant: 'confirmed', isDropTarget: isOver }),
+				unassignedPoolVariants({ variant: 'confirmed', isDropTarget: isOver }),
 				className,
 			)}
 			aria-label={t('competition.groupAssignment.reserve.ariaLabel', {
@@ -87,7 +85,6 @@ export function ReservePool({
 							key={team.id}
 							team={team}
 							variant='confirmed'
-							onDelete={onDeleteTeam}
 							disabled={disabled}
 						/>
 					))}

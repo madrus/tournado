@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { useGroupAssignmentStore } from '../stores/useGroupAssignmentStore'
 import {
 	type DndTeam,
-	isReservePoolId,
+	isConfirmedPoolId,
 	isWaitlistPoolId,
 	parseSlotDropId,
 	parseTeamDragId,
@@ -39,11 +39,12 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 
 	const snapshot = useGroupAssignmentStore((s) => s.snapshot)
 	const assignTeamToSlot = useGroupAssignmentStore((s) => s.assignTeamToSlot)
-	const moveTeamToReserve = useGroupAssignmentStore((s) => s.moveTeamToReserve)
+	const moveTeamToConfirmed = useGroupAssignmentStore((s) => s.moveTeamToConfirmed)
+	const moveTeamToWaitlist = useGroupAssignmentStore((s) => s.moveTeamToWaitlist)
 	const swapTeamWithSlot = useGroupAssignmentStore((s) => s.swapTeamWithSlot)
 	const promoteFromWaitlist = useGroupAssignmentStore((s) => s.promoteFromWaitlist)
 	const getTeamLocation = useGroupAssignmentStore((s) => s.getTeamLocation)
-	const getReserveCapacity = useGroupAssignmentStore((s) => s.getReserveCapacity)
+	const getConfirmedCapacity = useGroupAssignmentStore((s) => s.getConfirmedCapacity)
 
 	// Find team by ID in snapshot
 	const findTeamById = useCallback(
@@ -51,8 +52,8 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			if (!snapshot) return null
 
 			// Check reserve
-			const reserveTeam = snapshot.reserveTeams.find((t) => t.id === teamId)
-			if (reserveTeam) return reserveTeam
+			const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
+			if (unassignedTeam) return unassignedTeam
 
 			// Check groups
 			for (const group of snapshot.groups) {
@@ -118,33 +119,34 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			const teamLocation = getTeamLocation(teamId)
 			const isFromWaitlist = teamLocation === 'waitlist'
 
-			// Drop on reserve pool
-			if (isReservePoolId(overId)) {
-				if (teamLocation === 'group') {
-					moveTeamToReserve(teamId)
-				}
-				return
-			}
-
-			// Drop on waitlist pool - not allowed from group
-			if (isWaitlistPoolId(overId)) {
-				return
-			}
-
-			// Block waitlist teams from going directly to group slots
-			if (isFromWaitlist) {
-				// Check if dropping on confirmed pool
-				if (isReservePoolId(overId)) {
-					const capacity = getReserveCapacity()
+			// Drop on confirmed pool
+			if (isConfirmedPoolId(overId)) {
+				if (teamLocation === 'waitlist') {
+					// Promote from waitlist
+					const capacity = getConfirmedCapacity()
 					if (capacity > 0) {
 						promoteFromWaitlist(teamId)
 					} else {
 						toast.error(t('competition.groupAssignment.errors.noCapacity'))
 					}
-				} else {
-					// Trying to drop waitlist team on group slot
-					toast.error(t('competition.groupAssignment.errors.waitlistToGroup'))
+				} else if (teamLocation === 'group') {
+					moveTeamToConfirmed(teamId)
 				}
+				return
+			}
+
+			// Drop on waitlist pool
+			if (isWaitlistPoolId(overId)) {
+				// Allow moving teams from groups or confirmed reserve to waitlist
+				if (teamLocation === 'group' || teamLocation === 'confirmed') {
+					moveTeamToWaitlist(teamId)
+				}
+				return
+			}
+
+			// Block waitlist teams from going directly to group slots
+			if (isFromWaitlist) {
+				toast.error(t('competition.groupAssignment.errors.waitlistToGroup'))
 				return
 			}
 
@@ -179,8 +181,9 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 		[
 			snapshot,
 			getTeamLocation,
-			getReserveCapacity,
-			moveTeamToReserve,
+			getConfirmedCapacity,
+			moveTeamToConfirmed,
+			moveTeamToWaitlist,
 			assignTeamToSlot,
 			swapTeamWithSlot,
 			promoteFromWaitlist,

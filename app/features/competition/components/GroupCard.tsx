@@ -10,7 +10,6 @@ import { groupCardVariants } from './groupAssignment.variants'
 type GroupCardProps = {
 	group: DndGroup
 	highlightedSlot?: { groupId: string; slotIndex: number } | null
-	onDeleteTeam?: (teamId: string) => void
 	disabled?: boolean
 	className?: string
 }
@@ -18,7 +17,6 @@ type GroupCardProps = {
 export function GroupCard({
 	group,
 	highlightedSlot,
-	onDeleteTeam,
 	disabled = false,
 	className,
 }: GroupCardProps): JSX.Element {
@@ -58,7 +56,6 @@ export function GroupCard({
 							highlightedSlot?.groupId === group.id &&
 							highlightedSlot?.slotIndex === slot.slotIndex
 						}
-						onDeleteTeam={onDeleteTeam}
 						disabled={disabled}
 					/>
 				))}

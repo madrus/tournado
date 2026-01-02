@@ -121,7 +121,7 @@ export type GroupSlotVariants = VariantProps<typeof groupSlotVariants>
 // Reserve Pool Container
 // ---------------------------------------------------------------------------
 
-export const reservePoolVariants = cva(
+export const unassignedPoolVariants = cva(
 	[
 		// Base container with depth
 		'rounded-xl p-4',
@@ -168,7 +168,7 @@ export const reservePoolVariants = cva(
 	},
 )
 
-export type ReservePoolVariants = VariantProps<typeof reservePoolVariants>
+export type UnassignedPoolVariants = VariantProps<typeof unassignedPoolVariants>
 
 // ---------------------------------------------------------------------------
 // Draggable Team Chip

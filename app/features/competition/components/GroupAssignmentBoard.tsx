@@ -53,6 +53,7 @@ export function GroupAssignmentBoard({
 	const { t } = useTranslation()
 	const fetcher = useFetcher()
 	const [showConflictDialog, setShowConflictDialog] = useState(false)
+	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
 
 	// Store state
 	const snapshot = useGroupAssignmentStore((s) => s.snapshot)
@@ -116,6 +117,13 @@ export function GroupAssignmentBoard({
 		({ currentLocation, nextLocation }) =>
 			isDirty() && currentLocation.pathname !== nextLocation.pathname,
 	)
+
+	// Reset navigation proceeding flag when blocker state changes
+	useEffect(() => {
+		if (blocker.state !== 'blocked') {
+			setIsProceedingNavigation(false)
+		}
+	}, [blocker.state])
 
 	// Handle fetcher response
 	useEffect(() => {
@@ -290,9 +298,7 @@ export function GroupAssignmentBoard({
 				<div className='space-y-6'>
 					{/* Hero strip */}
 					<div className={heroStripVariants()}>
-						<h2 className='font-bold text-2xl text-foreground'>
-							{snapshot.groupStageName}
-						</h2>
+						<h2 className='font-bold text-2xl text-title'>{snapshot.groupStageName}</h2>
 						<p className='text-foreground-light'>
 							{t('competition.groupAssignment.instruction')}
 						</p>
@@ -484,9 +490,15 @@ export function GroupAssignmentBoard({
 				<ConfirmDialog
 					open
 					onOpenChange={(open) => {
-						if (!open) blocker.reset()
+						// Only reset if user is canceling (not proceeding with navigation)
+						if (!open && !isProceedingNavigation) {
+							blocker.reset()
+						}
 					}}
-					onConfirm={() => blocker.proceed()}
+					onConfirm={() => {
+						setIsProceedingNavigation(true)
+						blocker.proceed()
+					}}
 					title={t('competition.groupAssignment.unsavedTitle')}
 					description={t('competition.groupAssignment.unsavedDescription')}
 					confirmLabel={t('competition.groupAssignment.leaveAnyway')}

@@ -28,7 +28,11 @@ export function GroupCard({
 
 	return (
 		<section
-			className={cn(groupCardVariants(), className)}
+			className={cn(
+				groupCardVariants({ isDropTarget: false, isDragOver: false }),
+				className,
+			)}
+			data-testid={`group-card-${group.id}`}
 			aria-label={t('competition.groupAssignment.group.ariaLabel', {
 				name: group.name,
 				filled: filledSlots,
@@ -37,7 +41,7 @@ export function GroupCard({
 		>
 			{/* Group header */}
 			<div className='flex items-center justify-between mb-3'>
-				<h3 className='font-semibold text-lg text-foreground'>{group.name}</h3>
+				<h3 className='font-semibold text-lg text-title'>{group.name}</h3>
 				<span className='text-sm text-foreground-light'>
 					{t('competition.groupAssignment.group.slotsCount', {
 						filled: filledSlots,

@@ -68,7 +68,7 @@ export function WaitlistPool({
 							/>
 						</svg>
 					</div>
-					<h3 className='font-semibold text-base text-foreground'>
+					<h3 className='font-semibold text-base text-title'>
 						{t('competition.groupAssignment.waitlist.title')}
 					</h3>
 				</div>

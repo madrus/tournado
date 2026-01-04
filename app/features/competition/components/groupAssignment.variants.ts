@@ -10,8 +10,8 @@ export const assignmentBoardVariants = cva(
 		'grid gap-4',
 		// Background with subtle gradient
 		'rounded-2xl p-6',
-		'bg-gradient-to-br from-background via-background to-surface-light/30',
 		'border border-border/50',
+		'bg-gradient-to-br from-background via-background to-surface-light/30',
 		// Shadow for depth
 		'shadow-lg shadow-black/5',
 	],
@@ -38,9 +38,9 @@ export const groupCardVariants = cva(
 	[
 		// Base container with depth
 		'rounded-xl p-4',
-		'border-2 border-border/60',
-		// Subtle slate gradient for depth and gloss
-		'bg-gradient-to-br from-surface-light/15 via-surface/60 to-surface-light/15',
+		'border border-sky-500/30 dark:border-sky-300/40',
+		// Sky gradient matching other management panels
+		'bg-gradient-to-br from-sky-600/15 dark:from-sky-300/20 via-sky-600/5 dark:via-sky-300/5 to-surface/40',
 		'backdrop-blur-sm',
 		// Soft shadow for elevation
 		'shadow-md shadow-black/5',
@@ -136,12 +136,12 @@ export const unassignedPoolVariants = cva(
 		variants: {
 			variant: {
 				confirmed: [
-					'border-primary-500/30',
-					'bg-gradient-to-br from-primary-500/15 via-primary-500/8 to-surface/40',
+					'border-primary-600/30 dark:border-primary-400/40',
+					'bg-gradient-to-br from-primary-300/15 dark:from-primary-600/40 via-primary-300/5 dark:via-primary-600/20 to-surface/40',
 				],
 				waitlist: [
-					'border-amber-500/30',
-					'bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-surface/40',
+					'border-amber-600/30 dark:border-amber-400/30',
+					'bg-gradient-to-br from-amber-300/15 dark:from-amber-600/15 via-amber-300/5 dark:via-amber-600/5 to-surface/40',
 				],
 			},
 			isDropTarget: {
@@ -197,11 +197,11 @@ export const draggableChipVariants = cva(
 			},
 			variant: {
 				default:
-					'bg-brand/15 text-brand dark:text-brand-light border-brand-500/30 hover:border-brand-500/50',
+					'bg-brand-400/10 dark:bg-brand-600/30 text-brand-600 dark:text-brand-200 border-brand-500/30 hover:border-brand-500/50',
 				confirmed:
-					'bg-primary-500/10 text-primary-700 dark:text-primary-300 border-primary-500/30 hover:border-primary-500/50',
+					'bg-primary-300/10 text-primary-700 dark:text-primary-300 border-primary-500/30 hover:border-primary-500/50',
 				waitlist:
-					'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:border-amber-500/50',
+					'bg-amber-400/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:border-amber-500/50',
 			},
 			size: {
 				sm: 'px-2 py-1 text-xs',

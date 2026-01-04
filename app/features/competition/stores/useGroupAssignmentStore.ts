@@ -42,6 +42,7 @@ type Actions = {
 	moveTeamToWaitlist: (teamId: string) => void
 	swapTeamWithSlot: (teamId: string, groupId: string, slotIndex: number) => void
 	promoteFromWaitlist: (teamId: string) => void
+	removeTeamFromGroupStage: (teamId: string) => void
 
 	// UI state actions
 	setActiveGroupIndex: (index: number) => void

@@ -3,7 +3,15 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { useGroupAssignmentStore } from '../stores/useGroupAssignmentStore'
+import {
+	getConfirmedCapacity,
+	getTeamById,
+	getTeamLocation,
+} from '../stores/helpers/groupAssignmentStoreHelpers'
+import {
+	useGroupAssignmentActions,
+	useGroupAssignmentSnapshot,
+} from '../stores/useGroupAssignmentStore'
 import {
 	type DndTeam,
 	isConfirmedPoolId,
@@ -37,35 +45,18 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 		slotIndex: number
 	} | null>(null)
 
-	const snapshot = useGroupAssignmentStore((s) => s.snapshot)
-	const assignTeamToSlot = useGroupAssignmentStore((s) => s.assignTeamToSlot)
-	const moveTeamToConfirmed = useGroupAssignmentStore((s) => s.moveTeamToConfirmed)
-	const moveTeamToWaitlist = useGroupAssignmentStore((s) => s.moveTeamToWaitlist)
-	const swapTeamWithSlot = useGroupAssignmentStore((s) => s.swapTeamWithSlot)
-	const promoteFromWaitlist = useGroupAssignmentStore((s) => s.promoteFromWaitlist)
-	const getTeamLocation = useGroupAssignmentStore((s) => s.getTeamLocation)
-	const getConfirmedCapacity = useGroupAssignmentStore((s) => s.getConfirmedCapacity)
+	const snapshot = useGroupAssignmentSnapshot()
+	const {
+		assignTeamToSlot,
+		moveTeamToConfirmed,
+		moveTeamToWaitlist,
+		swapTeamWithSlot,
+		promoteFromWaitlist,
+	} = useGroupAssignmentActions()
 
 	// Find team by ID in snapshot
 	const findTeamById = useCallback(
-		(teamId: string): DndTeam | null => {
-			if (!snapshot) return null
-
-			// Check reserve
-			const unassignedTeam = snapshot.unassignedTeams.find((t) => t.id === teamId)
-			if (unassignedTeam) return unassignedTeam
-
-			// Check groups
-			for (const group of snapshot.groups) {
-				for (const slot of group.slots) {
-					if (slot.team?.id === teamId) {
-						return slot.team
-					}
-				}
-			}
-
-			return null
-		},
+		(teamId: string): DndTeam | null => getTeamById(snapshot, teamId),
 		[snapshot],
 	)
 
@@ -116,14 +107,14 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			if (!teamId) return
 
 			const overId = String(over.id)
-			const teamLocation = getTeamLocation(teamId)
+			const teamLocation = getTeamLocation(snapshot, teamId)
 			const isFromWaitlist = teamLocation === 'waitlist'
 
 			// Drop on confirmed pool
 			if (isConfirmedPoolId(overId)) {
 				if (teamLocation === 'waitlist') {
 					// Promote from waitlist
-					const capacity = getConfirmedCapacity()
+					const capacity = getConfirmedCapacity(snapshot)
 					if (capacity > 0) {
 						promoteFromWaitlist(teamId)
 					} else {
@@ -180,8 +171,6 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 		},
 		[
 			snapshot,
-			getTeamLocation,
-			getConfirmedCapacity,
 			moveTeamToConfirmed,
 			moveTeamToWaitlist,
 			assignTeamToSlot,

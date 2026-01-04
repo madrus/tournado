@@ -20,7 +20,16 @@ import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
-import { useGroupAssignmentStore } from '../stores/useGroupAssignmentStore'
+import {
+	getConfirmedCapacity,
+	getWaitlistTeams,
+	isSnapshotDirty,
+} from '../stores/helpers/groupAssignmentStoreHelpers'
+import {
+	useGroupAssignmentActions,
+	useGroupAssignmentSnapshots,
+	useGroupAssignmentUiState,
+} from '../stores/useGroupAssignmentStore'
 import type { GroupAssignmentSnapshot } from '../utils/groupStageDnd'
 import { ConfirmedPool } from './ConfirmedPool'
 import { DragOverlayChip } from './DraggableTeamChip'
@@ -56,24 +65,20 @@ export function GroupAssignmentBoard({
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
 
 	// Store state
-	const snapshot = useGroupAssignmentStore((s) => s.snapshot)
-	const isSaving = useGroupAssignmentStore((s) => s.isSaving)
-	const saveError = useGroupAssignmentStore((s) => s.saveError)
-	const hasConflict = useGroupAssignmentStore((s) => s.hasConflict)
-	const activeGroupIndex = useGroupAssignmentStore((s) => s.activeGroupIndex)
+	const { snapshot, originalSnapshot } = useGroupAssignmentSnapshots()
+	const { isSaving, saveError, hasConflict, activeGroupIndex } =
+		useGroupAssignmentUiState()
+	const {
+		initializeFromSnapshot,
+		resetToOriginal,
+		markAsSaved,
+		setActiveGroupIndex,
+		setSaving,
+		setSaveError,
+		setConflict,
+	} = useGroupAssignmentActions()
 
-	const initializeFromSnapshot = useGroupAssignmentStore(
-		(s) => s.initializeFromSnapshot,
-	)
-	const resetToOriginal = useGroupAssignmentStore((s) => s.resetToOriginal)
-	const markAsSaved = useGroupAssignmentStore((s) => s.markAsSaved)
-	const setActiveGroupIndex = useGroupAssignmentStore((s) => s.setActiveGroupIndex)
-	const setSaving = useGroupAssignmentStore((s) => s.setSaving)
-	const setSaveError = useGroupAssignmentStore((s) => s.setSaveError)
-	const setConflict = useGroupAssignmentStore((s) => s.setConflict)
-	const isDirty = useGroupAssignmentStore((s) => s.isDirty)
-	const getConfirmedCapacity = useGroupAssignmentStore((s) => s.getConfirmedCapacity)
-	const getWaitlistTeams = useGroupAssignmentStore((s) => s.getWaitlistTeams)
+	const dirty = isSnapshotDirty(snapshot, originalSnapshot)
 
 	// DnD hook
 	const {
@@ -116,7 +121,7 @@ export function GroupAssignmentBoard({
 	// Block navigation if dirty
 	const blocker = useBlocker(
 		({ currentLocation, nextLocation }) =>
-			isDirty() && currentLocation.pathname !== nextLocation.pathname,
+			dirty && currentLocation.pathname !== nextLocation.pathname,
 	)
 
 	// Reset navigation proceeding flag when blocker state changes
@@ -217,9 +222,8 @@ export function GroupAssignmentBoard({
 		)
 	}
 
-	const waitlistTeams = getWaitlistTeams()
-	const capacity = getConfirmedCapacity()
-	const dirty = isDirty()
+	const waitlistTeams = getWaitlistTeams(snapshot)
+	const capacity = getConfirmedCapacity(snapshot)
 
 	// Grid always supports 1, 2, 4, 6 columns at different breakpoints
 	const gridColsClass =

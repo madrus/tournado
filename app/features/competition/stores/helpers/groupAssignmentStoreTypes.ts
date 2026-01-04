@@ -12,8 +12,8 @@ export type GroupAssignmentStoreState = {
 export type GroupAssignmentTeamLocation = 'confirmed' | 'waitlist' | 'group' | null
 
 export type GroupAssignmentStoreActions = {
-	initializeFromSnapshot: (snapshot: GroupAssignmentSnapshot) => void
-	resetToOriginal: () => void
+	setSnapshotPair: (snapshot: GroupAssignmentSnapshot) => void
+	resetSnapshotPair: () => void
 	markAsSaved: () => void
 	clearStore: () => void
 

@@ -69,8 +69,8 @@ export function GroupAssignmentBoard({
 	const { isSaving, saveError, hasConflict, activeGroupIndex } =
 		useGroupAssignmentUiState()
 	const {
-		initializeFromSnapshot,
-		resetToOriginal,
+		setSnapshotPair,
+		resetSnapshotPair,
 		markAsSaved,
 		setActiveGroupIndex,
 		setSaving,
@@ -92,8 +92,8 @@ export function GroupAssignmentBoard({
 
 	// Initialize store from loader data
 	useEffect(() => {
-		initializeFromSnapshot(initialSnapshot)
-	}, [initialSnapshot, initializeFromSnapshot])
+		setSnapshotPair(initialSnapshot)
+	}, [initialSnapshot, setSnapshotPair])
 
 	// Handle conflict dialog
 	useEffect(() => {
@@ -192,8 +192,8 @@ export function GroupAssignmentBoard({
 
 	// Handle cancel
 	const handleCancel = useCallback(() => {
-		resetToOriginal()
-	}, [resetToOriginal])
+		resetSnapshotPair()
+	}, [resetSnapshotPair])
 
 	// Handle conflict reload
 	const handleConflictReload = useCallback(() => {

@@ -68,7 +68,7 @@ export const useGroupAssignmentStore = create<
 					...initialStoreState,
 
 					// Initialize from loader data
-					initializeFromSnapshot: (snapshot) => {
+					setSnapshotPair: (snapshot) => {
 						if (!shouldInitializeSnapshot(get().snapshot, snapshot)) return
 						set(
 							{
@@ -79,12 +79,12 @@ export const useGroupAssignmentStore = create<
 								activeGroupIndex: 0,
 							},
 							false,
-							'initializeFromSnapshot',
+							'setSnapshotPair',
 						)
 					},
 
 					// Reset to original state
-					resetToOriginal: () => {
+					resetSnapshotPair: () => {
 						const original = get().originalSnapshot
 						if (!original) return
 						set(
@@ -94,7 +94,7 @@ export const useGroupAssignmentStore = create<
 								hasConflict: false,
 							},
 							false,
-							'resetToOriginal',
+							'resetSnapshotPair',
 						)
 					},
 
@@ -230,8 +230,8 @@ export const useGroupAssignmentUiState = () =>
 export const useGroupAssignmentActions = () =>
 	useGroupAssignmentStore(
 		useShallow((state) => ({
-			initializeFromSnapshot: state.initializeFromSnapshot,
-			resetToOriginal: state.resetToOriginal,
+			setSnapshotPair: state.setSnapshotPair,
+			resetSnapshotPair: state.resetSnapshotPair,
 			markAsSaved: state.markAsSaved,
 			clearStore: state.clearStore,
 			assignTeamToSlot: state.assignTeamToSlot,

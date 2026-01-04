@@ -8,6 +8,8 @@ import {
 	subscribeWithSelector,
 } from 'zustand/middleware'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import type { TeamFormData } from '~/features/teams/types'
 import {
 	validateEntireTeamForm,
@@ -20,6 +22,7 @@ import { initialStoreState, TEAM_PANELS_FIELD_MAP } from './helpers/teamFormCons
 import {
 	computeAvailableOptions,
 	getDependentFieldResets,
+	getIsFormReadyForSubmission,
 	getPanelNumberForField,
 	isFormDirty,
 	isPanelEnabled,
@@ -92,7 +95,7 @@ type Actions = {
 	isFormReadyForSubmission: () => boolean
 
 	// Form state helpers
-	isDirty: () => boolean
+	isFormDirty: () => boolean
 }
 
 const storeName = 'TeamFormStore'
@@ -607,33 +610,12 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 
 					// Form submission readiness - determines if Save button should be enabled
 					isFormReadyForSubmission: (): boolean => {
-						const { formMeta } = get()
-						const { mode } = formMeta
-
-						// For create mode, check all 4 panels
-						if (mode === 'create') {
-							const isPanel1Valid = get().isPanelValid(1)
-							const isPanel2Valid = get().isPanelValid(2)
-							const isPanel3Valid = get().isPanelValid(3)
-							const isPanel4Valid = get().isPanelValid(4)
-
-							return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
-						}
-
-						// For edit mode, check panels 1-3 (no privacy panel)
-						if (mode === 'edit') {
-							const isPanel1Valid = get().isPanelValid(1)
-							const isPanel2Valid = get().isPanelValid(2)
-							const isPanel3Valid = get().isPanelValid(3)
-
-							return isPanel1Valid && isPanel2Valid && isPanel3Valid
-						}
-
-						return false
+						const { formFields, validation, formMeta } = get()
+						return getIsFormReadyForSubmission(formFields, validation, formMeta.mode)
 					},
 
 					// Form state helpers - determines if form has been modified
-					isDirty: (): boolean => {
+					isFormDirty: (): boolean => {
 						const { formFields, oldFormFields } = get()
 						return isFormDirty(formFields, oldFormFields)
 					},
@@ -674,6 +656,71 @@ export const useTeamFormStore = create<StoreState & Actions>()(
 		},
 	),
 )
+
+export const useTeamFormFields = () =>
+	useTeamFormStore(
+		useShallow((state) => ({
+			tournamentId: state.formFields.tournamentId,
+			division: state.formFields.division,
+			category: state.formFields.category,
+			clubName: state.formFields.clubName,
+			name: state.formFields.name,
+			teamLeaderName: state.formFields.teamLeaderName,
+			teamLeaderPhone: state.formFields.teamLeaderPhone,
+			teamLeaderEmail: state.formFields.teamLeaderEmail,
+			privacyAgreement: state.formFields.privacyAgreement,
+		})),
+	)
+
+export const useTeamFormValidationState = () =>
+	useTeamFormStore(
+		useShallow((state) => ({
+			displayErrors: state.validation.displayErrors,
+			blurredFields: state.validation.blurredFields,
+			forceShowAllErrors: state.validation.forceShowAllErrors,
+			submitAttempted: state.validation.submitAttempted,
+		})),
+	)
+
+export const useTeamFormAvailableOptions = () =>
+	useTeamFormStore(
+		useShallow((state) => ({
+			tournaments: state.availableOptions.tournaments,
+			divisions: state.availableOptions.divisions,
+			categories: state.availableOptions.categories,
+		})),
+	)
+
+export const useTeamFormMode = () => useTeamFormStore((state) => state.formMeta.mode)
+
+export const useTeamOldFormFields = () =>
+	useTeamFormStore((state) => state.oldFormFields)
+
+export const useTeamFormActions = () =>
+	useTeamFormStore(
+		useShallow((state) => ({
+			resetForm: state.resetForm,
+			setFormData: state.setFormData,
+			setFormField: state.setFormField,
+			setFormMetaField: state.setFormMetaField,
+			updateAvailableOptions: state.updateAvailableOptions,
+			validateFieldOnBlur: state.validateFieldOnBlur,
+			validateForm: state.validateForm,
+			isPanelEnabled: state.isPanelEnabled,
+		})),
+	)
+
+export const useTeamFormStatus = () =>
+	useTeamFormStore(
+		useShallow((state) => ({
+			isFormDirty: isFormDirty(state.formFields, state.oldFormFields),
+			isFormReadyForSubmission: getIsFormReadyForSubmission(
+				state.formFields,
+				state.validation,
+				state.formMeta.mode,
+			),
+		})),
+	)
 
 /**
  * Hook to handle team form store rehydration in components

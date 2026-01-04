@@ -8,7 +8,7 @@ import {
 } from 'react-router'
 
 import { TeamForm } from '~/features/teams/components/TeamForm'
-import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
+import { useTeamFormActions } from '~/features/teams/stores/useTeamFormStore'
 import type { TeamCreateActionData } from '~/features/teams/types'
 import { handleTeamCreation } from '~/features/teams/utils/teamActions.server'
 import type { User } from '~/models/user.server'
@@ -49,7 +49,7 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
 export default function AdminNewTeamPage(): JSX.Element {
 	const { t } = useTranslation()
 	const actionData = useActionData<TeamCreateActionData>()
-	const { resetForm } = useTeamFormStore()
+	const { resetForm } = useTeamFormActions()
 
 	// Reset the form on every mount to ensure a clean slate
 	useEffect(() => {

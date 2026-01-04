@@ -121,6 +121,34 @@ export const mergeErrors = (
 })
 
 /**
+ * Checks if the form is ready to submit by validating the required panels.
+ */
+export function getIsFormReadyForSubmission(
+	formFields: FormFields,
+	validation: ValidationState,
+	mode: 'create' | 'edit',
+): boolean {
+	if (mode === 'create') {
+		const isPanel1Valid = isPanelValid(1, formFields, validation.displayErrors, mode)
+		const isPanel2Valid = isPanelValid(2, formFields, validation.displayErrors, mode)
+		const isPanel3Valid = isPanelValid(3, formFields, validation.displayErrors, mode)
+		const isPanel4Valid = isPanelValid(4, formFields, validation.displayErrors, mode)
+
+		return isPanel1Valid && isPanel2Valid && isPanel3Valid && isPanel4Valid
+	}
+
+	if (mode === 'edit') {
+		const isPanel1Valid = isPanelValid(1, formFields, validation.displayErrors, mode)
+		const isPanel2Valid = isPanelValid(2, formFields, validation.displayErrors, mode)
+		const isPanel3Valid = isPanelValid(3, formFields, validation.displayErrors, mode)
+
+		return isPanel1Valid && isPanel2Valid && isPanel3Valid
+	}
+
+	return false
+}
+
+/**
  * Checks if all fields in a panel are blurred and valid.
  * Used to determine if a panel is complete for progressive form navigation.
  */

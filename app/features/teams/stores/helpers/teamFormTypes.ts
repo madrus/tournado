@@ -119,5 +119,5 @@ export type Actions = {
 	isFormReadyForSubmission: () => boolean
 
 	// Form state helpers
-	isDirty: () => boolean
+	isFormDirty: () => boolean
 }

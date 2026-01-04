@@ -1,9 +1,12 @@
-import type { JSX } from 'react'
-import { Form, Link, useFetcher, useNavigation } from 'react-router'
+import { Component, type JSX, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 
-import { ActionButton } from '~/components/buttons/ActionButton'
-import { TextInputField } from '~/components/inputs/TextInputField'
+import { Panel } from '~/components/Panel'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
+
+import { createSnapshotFromLoader } from '../utils/groupStageDnd'
+import { GroupAssignmentBoard } from './GroupAssignmentBoard'
 
 type CompetitionGroupStageDetailsProps = {
 	groupStage: GroupStageWithDetails
@@ -14,156 +17,113 @@ type CompetitionGroupStageDetailsProps = {
 	}
 }
 
+// Simple error boundary component
+type ErrorBoundaryProps = {
+	children: ReactNode
+	fallback: (error: Error, reset: () => void) => ReactNode
+}
+
+type ErrorBoundaryState = {
+	hasError: boolean
+	error: Error | null
+}
+
+class SimpleErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+	constructor(props: ErrorBoundaryProps) {
+		super(props)
+		this.state = { hasError: false, error: null }
+	}
+
+	static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+		return { hasError: true, error }
+	}
+
+	handleReset = (): void => {
+		this.setState({ hasError: false, error: null })
+		window.location.reload()
+	}
+
+	render(): ReactNode {
+		if (this.state.hasError && this.state.error) {
+			return this.props.fallback(this.state.error, this.handleReset)
+		}
+		return this.props.children
+	}
+}
+
+function ErrorFallback({
+	error,
+	onReset,
+}: {
+	error: Error
+	onReset: () => void
+}): JSX.Element {
+	return (
+		<Panel color='red' variant='content-panel' className='text-center'>
+			<div className='space-y-4'>
+				<h3 className='font-semibold text-lg'>Something went wrong</h3>
+				<p className='text-foreground-light'>
+					An error occurred while loading this section. Please try refreshing the page.
+				</p>
+				<p className='text-sm text-red-600 dark:text-red-400'>{error.message}</p>
+				<button
+					type='button'
+					onClick={onReset}
+					className='px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors'
+				>
+					Retry
+				</button>
+			</div>
+		</Panel>
+	)
+}
+
 export function CompetitionGroupStageDetails({
 	groupStage,
 	availableTeams,
 	tournamentId,
-	actionData,
 }: Readonly<CompetitionGroupStageDetailsProps>): JSX.Element {
-	const reserveFetcher = useFetcher()
-	const navigation = useNavigation()
+	const { t } = useTranslation()
 
-	const isSubmitting = navigation.state === 'submitting'
+	// Create initial snapshot from loader data
+	const initialSnapshot = createSnapshotFromLoader(groupStage, availableTeams)
 
 	return (
 		<div className='space-y-6'>
+			{/* Header */}
 			<div className='flex items-center justify-between'>
 				<div>
-					<h2 className='font-bold text-2xl'>{groupStage.name}</h2>
-					<p className='mt-1 text-foreground-light'>Manage team assignments</p>
-				</div>
-				<Link
-					to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups?tournament=${tournamentId}`}
-					className='text-primary-600 underline'
-				>
-					Back to Groups
-				</Link>
-			</div>
-
-			{actionData?.error ? (
-				<div className='rounded-md bg-red-50 p-4 text-red-700'>{actionData.error}</div>
-			) : null}
-
-			<div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
-				<div className='space-y-4 lg:col-span-2'>
-					{groupStage.groups.map((group) => (
-						<div key={group.id} className='rounded-lg border border-border p-4'>
-							<h3 className='font-semibold text-lg'>{group.name}</h3>
-							<div className='mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3'>
-								{group.slots.map((slot) => (
-									<div key={slot.id} className='rounded-md border border-border p-3'>
-										{slot.team ? (
-											<div className='space-y-2'>
-												<div className='text-sm'>
-													<span className='font-medium'>{slot.team.clubName}</span>{' '}
-													<span className='text-foreground-light'>
-														{slot.team.name} ({slot.team.category})
-													</span>
-												</div>
-												<Form method='post' className='flex gap-2'>
-													<input type='hidden' name='intent' value='clear' />
-													<input type='hidden' name='groupSlotId' value={slot.id} />
-													<ActionButton
-														type='submit'
-														variant='secondary'
-														disabled={isSubmitting}
-													>
-														Clear
-													</ActionButton>
-												</Form>
-											</div>
-										) : (
-											<div className='space-y-2'>
-												<Form method='post' className='space-y-2'>
-													<input type='hidden' name='intent' value='assign' />
-													<input type='hidden' name='groupId' value={group.id} />
-													<input
-														type='hidden'
-														name='slotIndex'
-														value={slot.slotIndex}
-													/>
-													<TextInputField
-														name='teamId'
-														label='Assign team'
-														placeholder='Paste team ID'
-														required
-													/>
-													<ActionButton
-														type='submit'
-														variant='primary'
-														disabled={isSubmitting}
-													>
-														Assign
-													</ActionButton>
-												</Form>
-											</div>
-										)}
-									</div>
-								))}
-							</div>
-						</div>
-					))}
-				</div>
-
-				<div className='space-y-4'>
-					<div className='rounded-lg border border-border p-4'>
-						<h3 className='font-semibold text-lg'>Reserve</h3>
-						<div className='mt-3 space-y-2'>
-							{groupStage.reserveSlots.length === 0 ? (
-								<p className='text-foreground-light text-sm'>No teams in reserve</p>
-							) : (
-								groupStage.reserveSlots.map((slot) => (
-									<div key={slot.id} className='flex items-center justify-between'>
-										<div className='text-sm'>
-											{slot.team ? (
-												<>
-													<span className='font-medium'>{slot.team.clubName}</span>{' '}
-													<span className='text-foreground-light'>
-														{slot.team.name} ({slot.team.category})
-													</span>
-												</>
-											) : (
-												<span className='text-foreground-light'>Empty</span>
-											)}
-										</div>
-									</div>
-								))
-							)}
-						</div>
-					</div>
-
-					<div className='rounded-lg border border-border p-4'>
-						<h3 className='font-semibold text-lg'>Available teams</h3>
-						<div className='mt-3 space-y-2'>
-							{availableTeams.length === 0 ? (
-								<p className='text-foreground-light text-sm'>No unassigned teams</p>
-							) : (
-								availableTeams.map((team) => (
-									<div key={team.id} className='flex items-center justify-between'>
-										<div className='text-sm'>
-											<span className='font-medium'>{team.clubName}</span>{' '}
-											<span className='text-foreground-light'>
-												{team.name} ({team.category})
-											</span>
-										</div>
-										<reserveFetcher.Form method='post'>
-											<input type='hidden' name='intent' value='reserve' />
-											<input type='hidden' name='teamId' value={team.id} />
-											<ActionButton
-												type='submit'
-												variant='secondary'
-												disabled={isSubmitting}
-											>
-												Move to reserve
-											</ActionButton>
-										</reserveFetcher.Form>
-									</div>
-								))
-							)}
-						</div>
-					</div>
+					<Link
+						to={`/a7k9m2x5p8w1n4q6r3y8b5t1/competition/groups?tournament=${tournamentId}`}
+						className='text-sm text-brand hover:text-brand/80 transition-colors inline-flex items-center gap-1 mb-2'
+					>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 20 20'
+							fill='currentColor'
+							className='w-4 h-4 rtl:rotate-180'
+							aria-hidden='true'
+						>
+							<path
+								fillRule='evenodd'
+								d='M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z'
+								clipRule='evenodd'
+							/>
+						</svg>
+						{t('competition.groupAssignment.backToGroups')}
+					</Link>
 				</div>
 			</div>
+
+			{/* Assignment board with error boundary */}
+			<SimpleErrorBoundary
+				fallback={(error, reset) => <ErrorFallback error={error} onReset={reset} />}
+			>
+				<GroupAssignmentBoard
+					initialSnapshot={initialSnapshot}
+					tournamentId={tournamentId}
+				/>
+			</SimpleErrorBoundary>
 		</div>
 	)
 }

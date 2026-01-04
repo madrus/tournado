@@ -26,7 +26,7 @@ export function CompetitionGroupsTab({
 			{/* Header with Tournament Filter */}
 			<div className='flex items-start justify-between'>
 				<div className='text-start'>
-					<h4 className='font-semibold text-foreground text-lg'>
+					<h4 className='font-semibold text-title text-lg'>
 						{t('admin.competition.groupStage')}
 					</h4>
 					<p className='mt-1 pr-2 text-foreground-light'>
@@ -49,7 +49,7 @@ export function CompetitionGroupsTab({
 				<div className='rounded-xl border-2 border-border border-dashed bg-neutral py-12 text-center'>
 					<div className='mx-auto max-w-md'>
 						<SportsIcon className='mx-auto h-12 w-12 text-foreground-lighter' />
-						<h3 className='mt-4 font-semibold text-foreground text-lg'>
+						<h3 className='mt-4 font-semibold text-title text-lg'>
 							{t('competition.selectTournament')}
 						</h3>
 						<p className='mt-2 text-foreground-light'>

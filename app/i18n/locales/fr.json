@@ -203,6 +203,61 @@
 			"summaryTeamsAvailable": "{{count}} équipes disponibles dans les catégories sélectionnées",
 			"summaryWillCreate": "Créera {{groups}} groupes avec {{slots}} places chacun ({{total}} places au total)",
 			"title": "Phase de groupes"
+		},
+		"groupAssignment": {
+			"instruction": "Glissez les équipes pour les assigner aux groupes. Déposez sur un groupe pour l'assignation automatique, ou sur une place spécifique pour placer directement.",
+			"backToGroups": "Retour aux groupes",
+			"unsavedChanges": "Vous avez des modifications non enregistrées",
+			"unsavedTitle": "Modifications non enregistrées",
+			"unsavedDescription": "Vos modifications non enregistrées seront perdues si vous quittez cette page.",
+			"leaveAnyway": "Quitter quand même",
+			"stayOnPage": "Rester sur la page",
+			"conflictTitle": "Conflit de modifications",
+			"conflictDescription": "Un autre utilisateur a enregistré des modifications. Vos modifications non enregistrées ont été supprimées et la page a été actualisée.",
+			"conflictReload": "Recharger la page",
+			"deleteConfirmTitle": "Retirer l'équipe",
+			"deleteConfirmDescription": "Êtes-vous sûr de vouloir retirer cette équipe de la phase de groupes ? Elle ne participera plus à cette compétition.",
+			"goToGroup": "Aller à {{name}}",
+			"errors": {
+				"noCapacity": "Pas d'espace disponible dans le pool confirmé. Retirez d'abord une équipe d'un groupe.",
+				"waitlistToGroup": "Les équipes en liste d'attente ne peuvent pas être assignées directement aux groupes. Déplacez-les d'abord vers le pool confirmé."
+			},
+			"hints": {
+				"groupFull": "Ce groupe est plein. Déposez sur une place spécifique pour échanger les équipes."
+			},
+			"chip": {
+				"ariaLabel": "{{club}} {{team}} - glisser pour assigner",
+				"deleteAriaLabel": "Retirer {{club}} {{team}} de la phase de groupes"
+			},
+			"slot": {
+				"label": "Place {{number}}",
+				"position": "Place {{position}}",
+				"dropHere": "Déposer ici",
+				"empty": "Vide",
+				"emptyAriaLabel": "Place vide {{position}} - déposez une équipe ici",
+				"occupiedAriaLabel": "Place {{position}} occupée par {{team}}"
+			},
+			"group": {
+				"ariaLabel": "{{name}} - {{filled}} équipes sur {{total}} assignées",
+				"slotsCount": "Équipes: {{filled}} sur {{total}}",
+				"dropToAssign": "Déposer pour assigner"
+			},
+			"reserve": {
+				"title": "Équipes confirmées",
+				"count": "Équipes: {{count}} sur {{capacity}}",
+				"empty": "Aucune équipe dans le pool confirmé",
+				"dropToAdd": "Déposer ici pour déplacer en réserve",
+				"ariaLabel": "Pool d'équipes confirmées - {{count}} sur {{capacity}} de capacité"
+			},
+			"waitlist": {
+				"title": "Liste d'attente",
+				"count": "{{count}} en attente",
+				"noCapacity": "Le pool confirmé est plein. Libérez des places pour promouvoir les équipes en liste d'attente.",
+				"helpPromote": "Glissez les équipes en liste d'attente vers le pool confirmé pour les ajouter.",
+				"helpBlocked": "Toutes les places sont assignées. Retirez des équipes des groupes pour faire de la place.",
+				"ariaLabel": "Liste d'attente - {{count}} équipes en attente",
+				"dropToAdd": "Déposer ici pour déplacer en liste d'attente"
+			}
 		}
 	},
 	"divisions": {

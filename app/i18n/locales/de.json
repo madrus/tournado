@@ -203,6 +203,61 @@
 			"summaryTeamsAvailable": "{{count}} Teams verfügbar in ausgewählten Kategorien",
 			"summaryWillCreate": "Es werden {{groups}} Gruppen mit jeweils {{slots}} Plätzen erstellt ({{total}} Plätze insgesamt)",
 			"title": "Gruppenphase"
+		},
+		"groupAssignment": {
+			"instruction": "Ziehen Sie Teams, um sie Gruppen zuzuweisen. Auf eine Gruppe loslassen für automatische Zuweisung, oder auf einen bestimmten Platz für direkte Platzierung.",
+			"backToGroups": "Zurück zu Gruppen",
+			"unsavedChanges": "Sie haben ungespeicherte Änderungen",
+			"unsavedTitle": "Ungespeicherte Änderungen",
+			"unsavedDescription": "Ihre ungespeicherten Änderungen gehen verloren, wenn Sie diese Seite verlassen.",
+			"leaveAnyway": "Trotzdem verlassen",
+			"stayOnPage": "Auf Seite bleiben",
+			"conflictTitle": "Änderungskonflikt",
+			"conflictDescription": "Ein anderer Benutzer hat Änderungen gespeichert. Ihre ungespeicherten Änderungen wurden verworfen und die Seite wurde aktualisiert.",
+			"conflictReload": "Seite neu laden",
+			"deleteConfirmTitle": "Team entfernen",
+			"deleteConfirmDescription": "Sind Sie sicher, dass Sie dieses Team aus der Gruppenphase entfernen möchten? Es nimmt dann nicht mehr an diesem Wettbewerb teil.",
+			"goToGroup": "Zu {{name}} gehen",
+			"errors": {
+				"noCapacity": "Kein Platz im bestätigten Pool verfügbar. Entfernen Sie zuerst ein Team aus einer Gruppe.",
+				"waitlistToGroup": "Wartelisten-Teams können nicht direkt Gruppen zugewiesen werden. Verschieben Sie sie zuerst in den bestätigten Pool."
+			},
+			"hints": {
+				"groupFull": "Diese Gruppe ist voll. Auf einen bestimmten Platz loslassen, um Teams zu tauschen."
+			},
+			"chip": {
+				"ariaLabel": "{{club}} {{team}} - ziehen zum Zuweisen",
+				"deleteAriaLabel": "{{club}} {{team}} aus Gruppenphase entfernen"
+			},
+			"slot": {
+				"label": "Platz {{number}}",
+				"position": "Platz {{position}}",
+				"dropHere": "Hier loslassen",
+				"empty": "Leer",
+				"emptyAriaLabel": "Leerer Platz {{position}} - hier ein Team loslassen",
+				"occupiedAriaLabel": "Platz {{position}} belegt von {{team}}"
+			},
+			"group": {
+				"ariaLabel": "{{name}} - {{filled}} von {{total}} Teams zugewiesen",
+				"slotsCount": "Teams: {{filled}} von {{total}}",
+				"dropToAssign": "Loslassen zum Zuweisen"
+			},
+			"reserve": {
+				"title": "Bestätigte Teams",
+				"count": "Teams: {{count}} von {{capacity}}",
+				"empty": "Keine Teams im bestätigten Pool",
+				"dropToAdd": "Hier loslassen, um zur Reserve zu verschieben",
+				"ariaLabel": "Bestätigter Teams-Pool - {{count}} von {{capacity}} Kapazität"
+			},
+			"waitlist": {
+				"title": "Warteliste",
+				"count": "{{count}} wartend",
+				"noCapacity": "Bestätigter Pool ist voll. Plätze freigeben, um Wartelisten-Teams aufzunehmen.",
+				"helpPromote": "Ziehen Sie Wartelisten-Teams in den bestätigten Pool, um sie hinzuzufügen.",
+				"helpBlocked": "Alle Plätze sind belegt. Entfernen Sie Teams aus Gruppen, um Platz zu schaffen.",
+				"ariaLabel": "Warteliste - {{count}} Teams wartend",
+				"dropToAdd": "Hier loslassen, um zur Warteliste zu verschieben"
+			}
 		}
 	},
 	"divisions": {

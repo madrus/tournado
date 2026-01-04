@@ -17,7 +17,7 @@ export type GroupSlotWithTeam = {
 	readonly team: GroupSlotTeam | null
 }
 
-export type ReserveSlotWithTeam = {
+export type ConfirmedSlotWithTeam = {
 	readonly id: string
 	readonly team: GroupSlotTeam | null
 }
@@ -40,7 +40,7 @@ export type GroupStageWithDetails = {
 	readonly createdAt: Date
 	readonly updatedAt: Date
 	readonly groups: readonly GroupWithSlots[]
-	readonly reserveSlots: readonly ReserveSlotWithTeam[]
+	readonly confirmedSlots: readonly ConfirmedSlotWithTeam[]
 }
 
 export type GroupStageListItem = {
@@ -200,7 +200,7 @@ export async function getGroupStageWithDetails(
 		createdAt: groupStage.createdAt,
 		updatedAt: groupStage.updatedAt,
 		groups: groupStage.groups,
-		reserveSlots: groupStage.groupSlots,
+		confirmedSlots: groupStage.groupSlots,
 	}
 }
 
@@ -463,6 +463,150 @@ export async function swapGroupSlots(
 		await tx.groupSlot.update({
 			where: { id: sourceSlotId },
 			data: { teamId: targetTeamId },
+		})
+	})
+}
+
+// --------------------------------------------------------------------------------------
+// Batch operations for drag-and-drop group assignment
+// --------------------------------------------------------------------------------------
+
+type SlotAssignment = {
+	readonly groupId: string
+	readonly slotIndex: number
+	readonly teamId: string
+}
+
+type BatchSaveGroupAssignmentsProps = {
+	readonly groupStageId: string
+	readonly tournamentId: string
+	readonly assignments: readonly SlotAssignment[]
+}
+
+/**
+ * Batch save all group slot assignments in a single transaction.
+ * Clears all existing assignments and applies the new ones atomically.
+ */
+export async function batchSaveGroupAssignments(
+	props: Readonly<BatchSaveGroupAssignmentsProps>,
+): Promise<void> {
+	const { groupStageId, tournamentId, assignments } = props
+
+	await prisma.$transaction(async (tx) => {
+		// Validate group stage exists and belongs to tournament
+		const groupStage = await tx.groupStage.findUnique({
+			where: { id: groupStageId },
+			select: { tournamentId: true },
+		})
+
+		if (!groupStage) {
+			throw new Error('Group stage not found')
+		}
+
+		if (groupStage.tournamentId !== tournamentId) {
+			throw new Error('Group stage does not belong to specified tournament')
+		}
+
+		// Validate all teams belong to the tournament
+		const teamIds = assignments.map((a) => a.teamId)
+		if (teamIds.length > 0) {
+			const teams = await tx.team.findMany({
+				where: { id: { in: [...teamIds] } },
+				select: { id: true, tournamentId: true },
+			})
+
+			const invalidTeams = teams.filter((t) => t.tournamentId !== tournamentId)
+			if (invalidTeams.length > 0) {
+				throw new Error('Some teams do not belong to the tournament')
+			}
+
+			const foundIds = new Set(teams.map((t) => t.id))
+			const missingIds = teamIds.filter((id) => !foundIds.has(id))
+			if (missingIds.length > 0) {
+				throw new Error('Some teams were not found')
+			}
+		}
+
+		// Clear all group slot assignments for this group stage (not reserve slots)
+		await tx.groupSlot.updateMany({
+			where: {
+				groupStageId,
+				groupId: { not: null },
+			},
+			data: { teamId: null },
+		})
+
+		// Clear all reserve slots for this group stage
+		await tx.groupSlot.deleteMany({
+			where: {
+				groupStageId,
+				groupId: null,
+			},
+		})
+
+		// Apply new assignments
+		for (const assignment of assignments) {
+			const slot = await tx.groupSlot.findFirst({
+				where: {
+					groupStageId,
+					groupId: assignment.groupId,
+					slotIndex: assignment.slotIndex,
+				},
+				select: { id: true },
+			})
+
+			if (!slot) {
+				throw new Error(
+					`Slot not found: group ${assignment.groupId}, index ${assignment.slotIndex}`,
+				)
+			}
+
+			await tx.groupSlot.update({
+				where: { id: slot.id },
+				data: { teamId: assignment.teamId },
+			})
+		}
+
+		// Update group stage timestamp
+		await tx.groupStage.update({
+			where: { id: groupStageId },
+			data: { updatedAt: new Date() },
+		})
+	})
+}
+
+type DeleteTeamFromGroupStageProps = {
+	readonly groupStageId: string
+	readonly teamId: string
+}
+
+/**
+ * Remove a team from a group stage entirely.
+ * Clears the team from any slot (group or reserve).
+ */
+export async function deleteTeamFromGroupStage(
+	props: Readonly<DeleteTeamFromGroupStageProps>,
+): Promise<void> {
+	const { groupStageId, teamId } = props
+
+	await prisma.$transaction(async (tx) => {
+		// Clear any assignment in group slots
+		await tx.groupSlot.updateMany({
+			where: {
+				groupStageId,
+				teamId,
+				groupId: { not: null },
+			},
+			data: { teamId: null },
+		})
+
+		// Delete any reserve slots for this team
+		await tx.groupSlot.deleteMany({
+			where: {
+				groupStageId,
+				teamId,
+				groupId: null,
+			},
 		})
 	})
 }

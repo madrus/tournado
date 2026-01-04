@@ -38,6 +38,23 @@
 	--color-primary-900: var(--color-emerald-900);
 	--color-primary-950: var(--color-emerald-950);
 
+	/* Surface colors (slate-based) - for elevated panels/cards */
+	--color-surface-50: var(--color-slate-50);
+	--color-surface-100: var(--color-slate-100);
+	--color-surface-200: var(--color-slate-200);
+	--color-surface-300: var(--color-slate-300);
+	--color-surface-400: var(--color-slate-400);
+	--color-surface-500: var(--color-slate-500);
+	--color-surface-600: var(--color-slate-600);
+	--color-surface-700: var(--color-slate-700);
+	--color-surface-800: var(--color-slate-800);
+	--color-surface-900: var(--color-slate-900);
+	--color-surface-950: var(--color-slate-950);
+
+	/* Surface aliases */
+	--color-surface: var(--color-surface-100);
+	--color-surface-light: var(--color-surface-50);
+
 	/* Success colors (green-based) - Functional semantic */
 	--color-success-50: var(--color-green-50);
 	--color-success-100: var(--color-green-100);

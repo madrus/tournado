@@ -37,6 +37,7 @@ export function ConfirmedPool({
 	return (
 		<section
 			ref={setNodeRef}
+			data-testid='confirmed-pool'
 			className={cn(
 				unassignedPoolVariants({ variant: 'confirmed', isDropTarget: isOver }),
 				className,

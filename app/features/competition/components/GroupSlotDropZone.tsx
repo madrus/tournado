@@ -43,12 +43,13 @@ export function GroupSlotDropZone({
 	const slotState = getSlotState()
 
 	return slot.team ? (
-		<div ref={setNodeRef}>
+		<div ref={setNodeRef} data-testid={`group-slot-${slot.slotIndex}`}>
 			<DraggableTeamChip team={slot.team} disabled={disabled} />
 		</div>
 	) : (
 		<div
 			ref={setNodeRef}
+			data-testid={`group-slot-${slot.slotIndex}`}
 			className={groupSlotVariants({ state: slotState, isDisabled: disabled })}
 		>
 			<span

@@ -47,6 +47,7 @@ export function DraggableTeamChip({
 			)}
 			{...listeners}
 			{...attributes}
+			data-testid={`team-chip-${team.id}`}
 		>
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
 				{team.clubName} {team.name}

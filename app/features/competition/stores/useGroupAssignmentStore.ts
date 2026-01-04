@@ -33,6 +33,8 @@ type Actions = {
 	initializeFromSnapshot: (snapshot: GroupAssignmentSnapshot) => void
 	// Reset to original state
 	resetToOriginal: () => void
+	// Mark current state as saved (updates originalSnapshot)
+	markAsSaved: () => void
 	// Clear store completely
 	clearStore: () => void
 
@@ -124,6 +126,20 @@ export const useGroupAssignmentStore = create<StoreState & Actions>()(
 							},
 							false,
 							'resetToOriginal',
+						)
+					}
+				},
+
+				// Mark current state as saved (resets dirty flag)
+				markAsSaved: () => {
+					const currentSnapshot = get().snapshot
+					if (currentSnapshot) {
+						set(
+							{
+								originalSnapshot: currentSnapshot,
+							},
+							false,
+							'markAsSaved',
 						)
 					}
 				},

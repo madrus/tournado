@@ -8,6 +8,8 @@ import {
 	subscribeWithSelector,
 } from 'zustand/middleware'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import type { TournamentFormData } from '~/features/tournaments/validation'
 import { isBrowser } from '~/lib/lib.helpers'
 import {
@@ -20,6 +22,7 @@ import {
 	TOURNAMENT_PANELS_FIELD_MAP,
 } from './helpers/tournamentFormConstants'
 import {
+	getIsFormReadyForSubmission,
 	getPanelNumberForField,
 	isFormDirty,
 	isPanelEnabled,
@@ -92,7 +95,7 @@ type Actions = {
 	isFormReadyForSubmission: () => boolean
 
 	// Form state helpers
-	isDirty: () => boolean
+	isFormDirty: () => boolean
 }
 
 const storeName = 'TournamentFormStore'
@@ -544,21 +547,14 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 
 					isFormReadyForSubmission: () => {
 						const state = get()
-						const allPanelsValid = [1, 2, 3, 4].every((panel) =>
-							get().isPanelValid(panel as 1 | 2 | 3 | 4),
+						return getIsFormReadyForSubmission(
+							state.formFields,
+							state.validation,
+							state.formMeta.mode,
 						)
-						const noErrors =
-							Object.keys(
-								mergeErrors(
-									state.validation.displayErrors,
-									state.validation.serverErrors,
-								),
-							).length === 0
-
-						return allPanelsValid && noErrors
 					},
 
-					isDirty: () => {
+					isFormDirty: () => {
 						const state = get()
 						return isFormDirty(state.formFields, state.oldFormFields)
 					},
@@ -586,6 +582,59 @@ export const useTournamentFormStore = create<StoreState & Actions>()(
 		{ name: storeName },
 	),
 )
+
+export const useFormFields = () =>
+	useTournamentFormStore(
+		useShallow((state) => ({
+			name: state.formFields.name,
+			location: state.formFields.location,
+			startDate: state.formFields.startDate,
+			endDate: state.formFields.endDate,
+			divisions: state.formFields.divisions,
+			categories: state.formFields.categories,
+		})),
+	)
+
+export const useFormValidationState = () =>
+	useTournamentFormStore(
+		useShallow((state) => ({
+			displayErrors: state.validation.displayErrors,
+			blurredFields: state.validation.blurredFields,
+			forceShowAllErrors: state.validation.forceShowAllErrors,
+			submitAttempted: state.validation.submitAttempted,
+		})),
+	)
+
+export const useFormMode = () => useTournamentFormStore((state) => state.formMeta.mode)
+
+export const useOldFormFields = () =>
+	useTournamentFormStore((state) => state.oldFormFields)
+
+export const useTournamentFormActions = () =>
+	useTournamentFormStore(
+		useShallow((state) => ({
+			resetForm: state.resetForm,
+			setFormField: state.setFormField,
+			setFormMetaField: state.setFormMetaField,
+			setFormData: state.setFormData,
+			setAvailableOptionsField: state.setAvailableOptionsField,
+			validateForm: state.validateForm,
+			validateFieldOnBlur: state.validateFieldOnBlur,
+			isPanelEnabled: state.isPanelEnabled,
+		})),
+	)
+
+export const useFormStatus = () =>
+	useTournamentFormStore(
+		useShallow((state) => ({
+			isFormDirty: isFormDirty(state.formFields, state.oldFormFields),
+			isFormReadyForSubmission: getIsFormReadyForSubmission(
+				state.formFields,
+				state.validation,
+				state.formMeta.mode,
+			),
+		})),
+	)
 
 /**
  * Hook to handle tournament form store rehydration in components

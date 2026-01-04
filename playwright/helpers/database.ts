@@ -382,3 +382,143 @@ export const deleteTestTournament = async ({ id }: { id: string }): Promise<void
 export const deleteTestTeam = async ({ id }: { id: string }): Promise<void> => {
 	await deleteTeamById(id)
 }
+
+// Group stage test data helpers
+export const createTestGroupStage = async (params: {
+	tournamentId: string
+	name: string
+	groupCount?: number
+	slotsPerGroup?: number
+	categories?: string[]
+}): Promise<{
+	groupStageId: string
+	groupIds: string[]
+	tournament: { id: string; name: string; location: string }
+}> => {
+	const {
+		tournamentId,
+		name,
+		groupCount = 2,
+		slotsPerGroup = 4,
+		categories = ['JO10'],
+	} = params
+	const db = getPrisma()
+
+	// Get tournament info
+	const tournament = await db.tournament.findUnique({
+		where: { id: tournamentId },
+		select: { id: true, name: true, location: true },
+	})
+
+	if (!tournament) {
+		throw new Error(`Tournament ${tournamentId} not found`)
+	}
+
+	// Create group stage
+	const groupStage = await db.groupStage.create({
+		data: {
+			name,
+			tournamentId,
+			categories: JSON.stringify(categories),
+			configGroups: groupCount,
+			configSlots: slotsPerGroup,
+			autoFill: false, // Manual assignment for testing
+		},
+	})
+
+	// Create groups with empty slots
+	const groupIds: string[] = []
+	for (let i = 0; i < groupCount; i++) {
+		const group = await db.group.create({
+			data: {
+				name: `Group ${String.fromCharCode(65 + i)}`, // A, B, C, etc.
+				groupStageId: groupStage.id,
+				order: i,
+			},
+		})
+		groupIds.push(group.id)
+
+		// Create empty slots for this group
+		for (let slotIdx = 0; slotIdx < slotsPerGroup; slotIdx++) {
+			await db.groupSlot.create({
+				data: {
+					groupStageId: groupStage.id,
+					groupId: group.id,
+					slotIndex: slotIdx,
+					teamId: null, // Empty slot
+				},
+			})
+		}
+	}
+
+	return {
+		groupStageId: groupStage.id,
+		groupIds,
+		tournament: {
+			id: tournament.id,
+			name: tournament.name,
+			location: tournament.location,
+		},
+	}
+}
+
+export const createTestTeam = async (params: {
+	tournamentId: string
+	name: string
+	division?: string
+	category?: string
+	clubName?: string
+}): Promise<{ id: string; name: string }> => {
+	const {
+		tournamentId,
+		name,
+		division = 'FIRST_DIVISION',
+		category = 'JO10',
+		clubName = 'Test Club',
+	} = params
+	const db = getPrisma()
+
+	// Create team leader first
+	const teamLeader = await db.teamLeader.create({
+		data: {
+			firstName: 'Test',
+			lastName: 'Leader',
+			email: `${name.toLowerCase().replace(/\s+/g, '-')}@test.com`,
+			phone: '+31612345678',
+		},
+	})
+
+	// Create team
+	const team = await db.team.create({
+		data: {
+			name,
+			tournamentId,
+			division,
+			category,
+			teamLeaderId: teamLeader.id,
+			clubName,
+		},
+	})
+
+	return {
+		id: team.id,
+		name: team.name,
+	}
+}
+
+export const deleteTestGroupStage = async (groupStageId: string): Promise<void> => {
+	const db = getPrisma()
+
+	// Delete in order: group slots -> groups -> group stage
+	const groups = await db.group.findMany({
+		where: { groupStageId },
+		select: { id: true },
+	})
+
+	for (const group of groups) {
+		await db.groupSlot.deleteMany({ where: { groupId: group.id } })
+	}
+
+	await db.group.deleteMany({ where: { groupStageId } })
+	await db.groupStage.deleteMany({ where: { id: groupStageId } })
+}

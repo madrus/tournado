@@ -1,5 +1,7 @@
 import type { Category } from '@prisma/client'
 
+import { FALLBACK_LANGUAGE } from '~/i18n/config'
+
 export const formatCompetitionCategories = (
 	categories: string | readonly Category[],
 ): string => {
@@ -21,11 +23,13 @@ export const formatCompetitionCategories = (
 	return categories.join(', ')
 }
 
-export const formatCompetitionDate = (date: Date): string =>
-	new Intl.DateTimeFormat('en-US', {
+export const formatCompetitionDate = (date: Date, locale?: string): string => {
+	const userLocale = locale || FALLBACK_LANGUAGE
+	return new Intl.DateTimeFormat(userLocale, {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
 		hour: '2-digit',
 		minute: '2-digit',
 	}).format(date)
+}

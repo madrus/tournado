@@ -12,117 +12,117 @@
 
 ## Product
 
-Tournado is a tournament management and social platform with three core modules:
+Tournado is a comprehensive tournament management platform with four core modules:
 
-1. **Task Management** - Create, assign, track tasks with dependencies, priorities, and deadlines
-2. **Team Collaboration** - Real-time comments, file sharing, @mentions, activity feeds
-3. **Workflow Automation** - Custom workflows, automated status updates, integrations with Slack/email
+1. **Tournament Management** - Create tournaments, configure formats (knockout, round-robin, group stage), manage schedules and venues
+2. **Team & Registration** - Team/club registration, player rosters, waitlists, automated confirmations
+3. **Match Management** - Fixture generation, results reporting, live scoring, referee assignments
+4. **Communication & Social** - Real-time updates, notifications, photo sharing, spectator engagement
 
-**Key differentiator:** Built for remote teams from day one - async-first communication, timezone awareness, flexible notification settings, and detailed activity logs so people can catch up anytime.
+**Key differentiator:** Built for European football culture - multi-language support (NL/EN/DE/FR/AR/TR), local timezone handling, mobile-first for on-field updates, and integrated payment/ticketing for amateur tournaments.
 
 ## Target Customers
 
-**Primary:** Mid-size tech companies (50-200 employees) with distributed teams
+**Primary:** Amateur football clubs and local sports organizations running tournaments (8-64 teams)
 
 **Personas:**
-- **Product Managers** - Need to coordinate cross-functional teams, track feature development, manage roadmaps
-- **Engineering Managers** - Need sprint planning, task tracking, burndown charts
-- **Marketing Teams** - Need campaign planning, content calendars, approval workflows
+- **Tournament Organizers** - Need bracket generation, schedule management, venue coordination, results tracking
+- **Club Managers** - Need team registration, player roster management, payment processing, communication with families
+- **Coaches** - Need match schedules, lineup management, real-time updates during events
+- **Volunteers/Referees** - Need assignments, check-in tools, match reporting
+- **Parents/Fans** - Need schedules, live scores, photos, notifications
 
 ## Market Position
 
 **Competitors:**
-- **Asana** - More features but complex UI, not async-friendly
-- **Linear** - Great for eng teams but not cross-functional
-- **Notion** - Flexible but requires too much setup
-- **Monday.com** - Good automation but expensive
+- **TourneyEngine** - Feature-rich but complex, expensive for small clubs
+- **Challonge** - Simple brackets but limited management features
+- **LeagueRepublic** - Strong UK presence but not multilingual
+- **TeamSnap** - Good for leagues but weak on tournament formats
+- **Tournamentsoftware.com** - Focused on racket sports, dated UX
 
-**Tournado's edge:** Simple enough to onboard in 10 minutes, powerful enough for complex projects, built for async remote work.
+**Tournado's edge:** Mobile-first European amateur football focus, multilingual from day one, modern UX that works on-field, affordable pricing for small clubs.
 
 ## Current Priorities
 
-**Q1 2025 Goals:**
-1. Reach $6M ARR (40% growth)
-2. Launch AI-powered features to stay competitive
-3. Improve enterprise readiness (SSO, advanced permissions)
-4. Reduce churn from 3% to 2% monthly
+**2025 Goals:**
+1. Launch MVP and acquire first 20 paying tournaments
+2. Validate core tournament workflows (registration → scheduling → results)
+3. Build mobile check-in and scoring tools
+4. Establish partnerships with 3-5 local football clubs
 
 **Strategic Initiatives:**
-- **AI Integration** - Competitors are adding AI fast. Needs to differentiate or risk losing deals.
-- **Mobile App** - Top feature request. 60% of users want to manage tasks on mobile.
-- **Advanced Analytics** - Enterprise customers want custom reports and dashboards.
+- **Mobile Experience** - Organizers need on-field updates during events (scoring, check-in, referee management)
+- **Payment Integration** - Automated invoicing and payment collection for registration fees
+- **Federation Integration** - Import team/player data from local football federation systems
+- **Social Features** - Photo sharing, live updates, spectator engagement to differentiate from pure admin tools
 
 ## Team & Culture
 
-**Leadership:**
-- **Sarah Chen** - CEO (ex-Atlassian PM)
-- **Marcus Johnson** - CTO (ex-Google engineer)
-- **Priya Patel** - Head of Product (that's your boss!)
+**Team:**
+- 2-person startup (1 PM + 1 developer)
+- Bootstrap mentality - build what's essential, iterate based on real usage
+- Close to the problem - both founders have organized amateur football tournaments
 
-**Product Team:**
-- 3 Product Managers (you're one of them)
-- 8 Engineers (split into 2 squads: Core Platform + Growth)
-- 2 Designers
-- 1 User Researcher
-
-**Culture:**
-- Remote-first, fully distributed
-- Ship small, ship often (2-week sprints)
-- Data-informed but not data-driven (qualitative + quantitative)
-- Customer-centric (PMs spend 3 hours/week talking to customers)
+**Development Approach:**
+- Ship small increments, validate with real tournaments
+- Talk to organizers weekly, attend events to observe workflows
+- Focus on mobile-first workflows that work on the sidelines
+- Multilingual from day one (NL primary, EN/DE/FR/AR/TR supported)
 
 ## Customer Insights
 
-**What customers love:**
-- "Finally, a tool that doesn't require 2 hours of training"
-- "The async features are a game-changer for our global team"
-- "Clean UI that doesn't overwhelm like Jira"
+**Pain points from organizers:**
+- "We use WhatsApp, Excel, and paper clipboards - it's chaos"
+- "Parents keep asking 'when does my kid play?' - need automated notifications"
+- "Creating brackets for 32 teams takes hours in Excel"
+- "Collecting payments and tracking who paid is painful"
 
-**What customers want:**
-- Better mobile experience
-- AI to help write tasks, summarize threads, suggest next actions
-- More integrations (especially Google Drive, Figma)
-- Improved search and filters
+**Key requirements:**
+- Must work offline or with poor stadium WiFi
+- Mobile check-in on tournament morning (100+ teams arriving)
+- Real-time score updates visible to spectators
+- Multilingual for international tournaments
+- Simple enough for volunteer referees to report results
 
-**Recent feedback:**
-- 23% of churned customers cited "missing features" as primary reason
-- 40% of support tickets are about mobile app limitations
-- NPS score: 42 (industry average is 30-40)
+**Early feedback (from beta organizers):**
+- Bracket generation saves 2-3 hours setup time
+- Mobile check-in reduces registration bottlenecks
+- Parents love automated notifications and live scores
 
 ## Business Context
 
-**Revenue Model:**
-- **Starter:** $8/user/month (up to 10 users)
-- **Pro:** $15/user/month (unlimited users + automation)
-- **Enterprise:** $30/user/month (SSO, advanced permissions, dedicated support)
+**Revenue Model (Planned):**
+- **Per-tournament pricing:** €49-199 per event (based on team count)
+- **Annual club subscription:** €299/year for unlimited tournaments
+- **Payment processing fee:** 2.5% on collected registration fees
+- **Premium features:** Photo packages, custom branding, federation API access
 
-**Key Metrics:**
-- Average deal size: $1,200/year
-- CAC: $800
-- LTV: $4,500
-- Payback period: 8 months
-- Monthly churn: 3%
+**Target Economics:**
+- Average tournament: 16-32 teams, €99 per event
+- Organizers run 3-4 tournaments per year
+- Target: 100 tournaments in year 1 (€10-15K revenue)
 
-**Competitive Pressure:**
-- Asana just launched AI features
-- Linear is expanding beyond eng teams
-- Notion is improving project management
-- New AI-native tools launching every week
+**Market Dynamics:**
+- Amateur football clubs operate on tight budgets
+- Tournament entry fees typically €50-150 per team
+- Most organizers currently use free tools (Excel, WhatsApp)
+- Value proposition: save 5-10 hours per tournament, reduce errors, improve parent satisfaction
 
 ## Why This Matters
 
-You're working at a **critical inflection point**:
-- Growing fast but competition is fierce
-- Need to innovate without breaking what works
-- Every feature needs to drive retention or expansion
-- Can't afford to build the wrong thing
+You're building an **MVP in a niche market**:
+- Extremely limited resources (2 people, no funding)
+- Need to validate product-market fit with real tournaments
+- Every feature must solve an acute organizer pain point
+- Can't afford scope creep or over-engineering
 
 Your PRDs need to balance:
-✅ Customer needs (what they're asking for)
-✅ Business goals (what drives revenue/retention)
-✅ Technical feasibility (what we can actually build)
-✅ Strategic positioning (what keeps us competitive)
+✅ **Organizer needs** - Workflows that save hours, reduce stress on tournament day
+✅ **Technical constraints** - Simple architecture, mobile-first, works with poor connectivity
+✅ **Business viability** - Features worth paying for vs. nice-to-haves
+✅ **Market differentiation** - What makes this better than Excel + WhatsApp
 
 ---
 
-**Remember:** You're not building features in a vacuum. Every decision affects growth, retention, and competitive position. Your PRDs need to tell the story of why THIS feature, why NOW, and why it matters to Tournado's success.
+**Remember:** You're building for people who organize tournaments as volunteers, often with no technical background. Every feature needs to be obvious, mobile-friendly, and solve a real problem they face on tournament day. Your PRDs should focus ruthlessly on MVP scope and validate assumptions with real organizers.

@@ -1,19 +1,24 @@
-import { initI18n, type Language, SUPPORTED_LANGUAGE_CODES } from '~/i18n/config'
+import {
+	FALLBACK_LANGUAGE,
+	initI18n,
+	type Language,
+	SUPPORTED_LANGUAGE_CODES,
+} from '~/i18n/config'
 
 /**
  * Extracts the user's language preference from the request cookies
  * @param request - The incoming request
- * @returns The user's preferred language or fallback to 'nl' (Dutch)
+ * @returns The user's preferred language or fallback to the default language
  */
 export function getLanguageFromRequest(request: Request): Language {
 	const cookieHeader = request.headers.get('Cookie') || ''
 	const langMatch = cookieHeader.match(/lang=([^;]+)/)
 	const rawLanguage = langMatch?.[1]?.trim()
 
-	// Return the language if supported, otherwise fallback to Dutch
+	// Return the language if supported, otherwise fallback to default
 	return SUPPORTED_LANGUAGE_CODES.includes(rawLanguage as Language)
 		? (rawLanguage as Language)
-		: 'nl'
+		: FALLBACK_LANGUAGE
 }
 
 /**

@@ -5,7 +5,7 @@ import {
 	deleteTeamFromGroupStage,
 	getGroupStageWithDetails,
 } from '~/models/group.server'
-import { requireUserWithMetadata } from '~/utils/routeUtils.server'
+import { requireUserWithPermission } from '~/utils/rbacMiddleware.server'
 
 type SlotAssignment = {
 	groupId: string
@@ -32,8 +32,8 @@ type DeleteResponse = {
 export async function action({
 	request,
 }: ActionFunctionArgs): Promise<SaveResponse | CancelResponse | DeleteResponse> {
-	// Require authenticated user
-	await requireUserWithMetadata(request)
+	// Require groups:manage permission
+	await requireUserWithPermission(request, 'groups:manage')
 
 	const formData = await request.formData()
 	const intent = formData.get('intent')?.toString()

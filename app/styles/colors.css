@@ -217,6 +217,11 @@
 		--color-brand-50
 	); /* lighter brand hover background for light mode */
 	--color-title-accent: var(--color-primary-200); /* for accents */
+
+	/* UserMenu specific light mode colors */
+	--color-usermenu-bg: var(--color-emerald-100); /* emerald for selected language */
+	--color-usermenu-hover-bg: var(--color-emerald-50); /* lighter emerald for hover */
+
 	--gradient-from: var(--color-primary-100);
 	--gradient-to: var(--color-white);
 

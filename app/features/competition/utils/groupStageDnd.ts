@@ -83,7 +83,11 @@ export const parseSlotDropId = (
 	if (id.startsWith('slot:')) {
 		const parts = id.slice(5).split(':')
 		if (parts.length === 2) {
-			return { groupId: parts[0], slotIndex: Number.parseInt(parts[1], 10) }
+			const slotIndex = Number.parseInt(parts[1], 10)
+			// Validate that the parsed value is a valid integer
+			if (Number.isInteger(slotIndex)) {
+				return { groupId: parts[0], slotIndex }
+			}
 		}
 	}
 	return null

@@ -66,6 +66,7 @@ export function GroupAssignmentBoard({
 		(s) => s.initializeFromSnapshot,
 	)
 	const resetToOriginal = useGroupAssignmentStore((s) => s.resetToOriginal)
+	const markAsSaved = useGroupAssignmentStore((s) => s.markAsSaved)
 	const setActiveGroupIndex = useGroupAssignmentStore((s) => s.setActiveGroupIndex)
 	const setSaving = useGroupAssignmentStore((s) => s.setSaving)
 	const setSaveError = useGroupAssignmentStore((s) => s.setSaveError)
@@ -141,22 +142,12 @@ export function GroupAssignmentBoard({
 			} else if (data.error) {
 				setSaveError(data.error)
 			} else if (data.success) {
-				// Reset original snapshot to current after successful save
-				if (snapshot) {
-					initializeFromSnapshot(snapshot)
-				}
+				// Mark current state as saved (resets dirty flag)
+				markAsSaved()
 				setSaveError(null)
 			}
 		}
-	}, [
-		fetcher.state,
-		fetcher.data,
-		snapshot,
-		initializeFromSnapshot,
-		setSaving,
-		setSaveError,
-		setConflict,
-	])
+	}, [fetcher.state, fetcher.data, markAsSaved, setSaving, setSaveError, setConflict])
 
 	// Handle save
 	const handleSave = useCallback(() => {

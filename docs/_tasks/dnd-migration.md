@@ -388,7 +388,7 @@ All user-facing text internationalized in 6 languages:
 
 ## File Structure
 
-```
+```text
 app/features/competition/
 ├── components/
 │   ├── GroupAssignmentBoard.tsx

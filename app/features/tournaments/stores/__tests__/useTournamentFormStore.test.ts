@@ -398,18 +398,18 @@ describe('useTournamentFormStore', () => {
 	describe('Form State Helpers', () => {
 		it('should detect dirty form', () => {
 			// Initially not dirty
-			expect(state().isDirty()).toBe(false)
+			expect(state().isFormDirty()).toBe(false)
 
 			// Set data makes it dirty
 			state().setFormField('name', 'Test Tournament')
-			expect(state().isDirty()).toBe(true)
+			expect(state().isFormDirty()).toBe(true)
 		})
 
 		it('should not be dirty after setting form data', () => {
 			// setFormData updates both formFields and oldFormFields
 			state().setFormData({ name: 'Test Tournament' })
 
-			expect(state().isDirty()).toBe(false)
+			expect(state().isFormDirty()).toBe(false)
 		})
 	})
 

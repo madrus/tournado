@@ -41,6 +41,7 @@ export function WaitlistPool({
 	return (
 		<section
 			ref={setNodeRef}
+			data-testid='waitlist-pool'
 			className={cn(
 				unassignedPoolVariants({ variant: 'waitlist', isDropTarget: isOver }),
 				className,

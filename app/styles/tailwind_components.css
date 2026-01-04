@@ -796,11 +796,11 @@
 	}
 
 	.light [data-testid="user-menu-dropdown"] .bg-neutral {
-		background-color: #d1fae5; /* emerald-100 for selected language */
+		background-color: var(--color-usermenu-bg);
 	}
 
 	.light [data-testid="user-menu-dropdown"] .hover\:bg-neutral:hover {
-		background-color: #ecfdf5; /* emerald-50 for hover */
+		background-color: var(--color-usermenu-hover-bg);
 	}
 
 	/* Language submenu styling - dark mode */

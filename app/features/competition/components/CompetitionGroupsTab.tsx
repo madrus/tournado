@@ -19,7 +19,7 @@ export function CompetitionGroupsTab({
 	groupStages,
 	selectedTournamentId,
 }: Readonly<CompetitionGroupsTabProps>): JSX.Element {
-	const { t } = useTranslation()
+	const { t, i18n } = useTranslation()
 
 	return (
 		<div className='space-y-6'>
@@ -134,7 +134,7 @@ export function CompetitionGroupsTab({
 										{t('competition.labels.created')}
 									</span>
 									<span className='text-foreground-lighter text-xs'>
-										{formatCompetitionDate(groupStage.createdAt)}
+										{formatCompetitionDate(groupStage.createdAt, i18n.language)}
 									</span>
 								</div>
 							</div>

@@ -58,20 +58,20 @@ function ErrorFallback({
 	error: Error
 	onReset: () => void
 }): JSX.Element {
+	const { t } = useTranslation()
+
 	return (
 		<Panel color='red' variant='content-panel' className='text-center'>
 			<div className='space-y-4'>
-				<h3 className='font-semibold text-lg'>Something went wrong</h3>
-				<p className='text-foreground-light'>
-					An error occurred while loading this section. Please try refreshing the page.
-				</p>
+				<h3 className='font-semibold text-lg'>{t('messages.panel.errorTitle')}</h3>
+				<p className='text-foreground-light'>{t('messages.panel.errorBody')}</p>
 				<p className='text-sm text-red-600 dark:text-red-400'>{error.message}</p>
 				<button
 					type='button'
 					onClick={onReset}
 					className='px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors'
 				>
-					Retry
+					{t('common.actions.retry')}
 				</button>
 			</div>
 		</Panel>

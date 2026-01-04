@@ -111,7 +111,7 @@ app/features/{feature}/
 - **No semicolons**. Do not add semicolons to new code. Biome will automatically remove them from existing code during formatting
 - **Do not offer to run standard commands**. Let the user run commands like `pnpm test`, `pnpm lint`, `git push`, etc. to save tokens. Only run commands when explicitly requested or when necessary for completing the task
 - **Use `cn()` utility** for classes when using variables, **avoid string interpolation**
-- **Place Readonly<ComponentProps>** as prop types in the components function definitions, **avoid placing `reaadonly` on the props properties**
+- **Place Readonly<ComponentProps>** as prop types in the components function definitions, **avoid placing `readonly` on the props properties** except on arrays of objects
 
 ### Documentation Rules
 

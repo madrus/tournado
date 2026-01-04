@@ -1,7 +1,7 @@
 import { SportsIcon, TrophyIcon } from '~/components/icons'
 import type { CompetitionTabConfig } from './types'
 
-export const tabs: readonly CompetitionTabConfig[] = [
+export const COMPETITION_TABS: readonly CompetitionTabConfig[] = [
 	{
 		nameKey: 'admin.competition.groups',
 		href: 'groups',

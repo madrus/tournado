@@ -113,6 +113,7 @@
 			"creating": "Aanmaken...",
 			"delete": "Verwijderen",
 			"edit": "Bewerken",
+			"retry": "Opnieuw proberen",
 			"save": "Opslaan",
 			"saving": "Opslaan...",
 			"update": "Bijwerken",
@@ -127,6 +128,7 @@
 			"signingIn": "Inloggen..."
 		},
 		"backToHome": "Terug naar home",
+		"comingSoon": "Binnenkort",
 		"darkMode": "Donkere modus",
 		"error": "Fout",
 		"guest": "Bezoeker",

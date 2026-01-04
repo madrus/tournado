@@ -129,7 +129,7 @@ export function CompetitionGroupStageForm({
 						<TextInputField
 							name='configGroups'
 							label={t('competition.groupStage.configGroups')}
-							type='text'
+							type='number'
 							placeholder={t('competition.groupStage.configGroupsPlaceholder')}
 							defaultValue={actionData?.fieldValues?.configGroups || ''}
 							error={actionData?.errors?.configGroups}
@@ -139,7 +139,7 @@ export function CompetitionGroupStageForm({
 						<TextInputField
 							name='configSlots'
 							label={t('competition.groupStage.configSlots')}
-							type='text'
+							type='number'
 							placeholder={t('competition.groupStage.configSlotsPlaceholder')}
 							defaultValue={actionData?.fieldValues?.configSlots || ''}
 							error={actionData?.errors?.configSlots}

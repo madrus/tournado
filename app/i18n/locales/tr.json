@@ -113,6 +113,7 @@
 			"creating": "Oluşturuluyor...",
 			"delete": "Sil",
 			"edit": "Düzenle",
+			"retry": "Tekrar dene",
 			"save": "Kaydet",
 			"saving": "Kaydediliyor...",
 			"update": "Güncelle",
@@ -127,6 +128,7 @@
 			"signingIn": "Giriş yapılıyor..."
 		},
 		"backToHome": "Ana sayfaya dön",
+		"comingSoon": "Yakında",
 		"darkMode": "Koyu mod",
 		"error": "Hata",
 		"guest": "Ziyaretçi",

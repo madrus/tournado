@@ -113,6 +113,7 @@
 			"creating": "Création...",
 			"delete": "Supprimer",
 			"edit": "Modifier",
+			"retry": "Réessayer",
 			"save": "Enregistrer",
 			"saving": "Enregistrement...",
 			"update": "Mettre à jour",
@@ -127,6 +128,7 @@
 			"signingIn": "Connexion..."
 		},
 		"backToHome": "Retour à l'accueil",
+		"comingSoon": "Bientôt",
 		"darkMode": "Mode sombre",
 		"error": "Erreur",
 		"guest": "Invité",

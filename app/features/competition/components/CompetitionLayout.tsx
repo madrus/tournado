@@ -5,7 +5,7 @@ import { Outlet } from 'react-router'
 
 import { CompetitionLayoutHeader } from '~/components/layouts'
 import { Panel } from '~/components/Panel'
-import { tabs } from '~/features/competition/constants'
+import { COMPETITION_TABS } from '~/features/competition/constants'
 import type { TournamentListItem } from '~/features/tournaments/types'
 import { cn } from '~/utils/misc'
 
@@ -64,7 +64,7 @@ export function CompetitionLayout({
 			<div className='space-y-0'>
 				{/* Tab Headers */}
 				<div className='flex space-x-0 border-border'>
-					{tabs.map((tab) => (
+					{COMPETITION_TABS.map((tab) => (
 						<button
 							type='button'
 							key={tab.href}
@@ -94,7 +94,7 @@ export function CompetitionLayout({
 							<span className='rtl:order-2'>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
 								<span className='latin-text rounded-full px-2 py-0.5 bg-slate-600 text-slate-50 text-xs dark:bg-slate-800 rtl:order-3'>
-									Soon
+									{t('common.comingSoon')}
 								</span>
 							) : null}
 						</button>

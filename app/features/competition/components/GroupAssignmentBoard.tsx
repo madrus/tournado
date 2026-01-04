@@ -199,7 +199,6 @@ export function GroupAssignmentBoard({
 		resetToOriginal()
 	}, [resetToOriginal])
 
-	// Handle delete confirmation
 	// Handle conflict reload
 	const handleConflictReload = useCallback(() => {
 		setShowConflictDialog(false)

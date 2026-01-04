@@ -113,6 +113,7 @@
 			"creating": "Creating...",
 			"delete": "Delete",
 			"edit": "Edit",
+			"retry": "Retry",
 			"save": "Save",
 			"saving": "Saving...",
 			"update": "Update",
@@ -127,6 +128,7 @@
 			"signingIn": "Signing in..."
 		},
 		"backToHome": "Back to home",
+		"comingSoon": "Soon",
 		"darkMode": "Dark mode",
 		"error": "Error",
 		"guest": "Guest",

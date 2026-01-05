@@ -202,7 +202,7 @@ export function createUser(input: { name: string; email: string }) {
 - Complex function arguments must use `Readonly<ComplexType>` with separate exported types (see Function Arguments Typing section above)
 
 ### Code Style
-- Function declarations over expressions
+- Function declarations over expressions, unless "return" is the only statement in the function body.
 - No classes, no default exports
 - Favor pure functions
 - Single quotes, spaces, **no semicolons**

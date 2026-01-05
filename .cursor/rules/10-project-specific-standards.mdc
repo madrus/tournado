@@ -72,7 +72,7 @@ The PRD is located at: `docs/development/prd.md`
 - **Naming**: PascalCase for types, camelCase for variables
 
 ### React Components
-- **Function Style**: Use function declarations, not expressions
+- **Function Style**: Use function declarations, not expressions, unless "return" is the only statement in the function body.
 - **Component Props**: Always use `type` for prop definitions
 
 ```typescript

@@ -258,7 +258,7 @@ const context = useOutletContext<{ type: string }>()
 ```typescript
 // app/routes/teams/teams.schedule.tsx
 export default function TeamSchedule() {
-  return <div>Team Schedule</div>;
+  return <div>Team Schedule</div>
 }
 ```
 
@@ -280,12 +280,12 @@ export default function TournamentsLayout() {
       <h1>Tournaments</h1>
       <Outlet />
     </div>
-  );
+  )
 }
 
 // app/routes/tournaments/tournaments._index.tsx (index)
 export default function TournamentsIndex() {
-  return <div>Tournaments List</div>;
+  return <div>Tournaments List</div>
 }
 ```
 

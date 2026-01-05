@@ -19,6 +19,7 @@
 		"dev:serve": "NODE_OPTIONS=\"--import tsx/esm --import ./test/mocks/index.ts\" react-router-serve ./build/server/index.js",
 		"dev:test": "PLAYWRIGHT=true DATABASE_URL=file:./prisma/data-test.db?connection_limit=1 react-router dev --port 8811",
 		"docs": "docsify serve docs -o -p 3030",
+		"docs:check": "tsx scripts/check-docs-code-style.ts",
 		"env:check": "tsx scripts/validate-env.ts local",
 		"env:check:ci": "tsx scripts/validate-env.ts ci",
 		"env:check:e2e": "tsx scripts/validate-env.ts e2e",

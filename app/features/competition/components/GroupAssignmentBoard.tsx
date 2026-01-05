@@ -15,9 +15,11 @@ import type { JSX } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useBlocker, useFetcher } from 'react-router'
+import { z } from 'zod'
 
 import { ActionButton } from '~/components/buttons/ActionButton'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
+import { useMediaQuery } from '~/hooks/useMediaQuery'
 
 import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
@@ -47,6 +49,14 @@ type GroupAssignmentBoardProps = {
 	initialSnapshot: GroupAssignmentSnapshot
 	tournamentId: string
 }
+
+const FetcherResponseSchema = z.object({
+	success: z.boolean().optional(),
+	error: z.string().optional(),
+	conflict: z.boolean().optional(),
+})
+
+type FetcherResponse = z.infer<typeof FetcherResponseSchema>
 
 // Configure measuring to improve DragOverlay positioning
 const measuring: MeasuringConfiguration = {
@@ -134,11 +144,13 @@ export function GroupAssignmentBoard({
 		if (fetcher.state === 'idle' && fetcher.data) {
 			setSaving(false)
 
-			const data = fetcher.data as {
-				success?: boolean
-				error?: string
-				conflict?: boolean
+			const parsed = FetcherResponseSchema.safeParse(fetcher.data)
+			if (!parsed.success) {
+				setSaveError('Unexpected server response')
+				return
 			}
+
+			const data: FetcherResponse = parsed.data
 
 			if (data.conflict) {
 				setConflict(true)
@@ -201,16 +213,7 @@ export function GroupAssignmentBoard({
 	}, [setConflict])
 
 	// Responsive layout detection
-	const [isMobile, setIsMobile] = useState(false)
-
-	useEffect(() => {
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 1024)
-		}
-		checkMobile()
-		window.addEventListener('resize', checkMobile)
-		return () => window.removeEventListener('resize', checkMobile)
-	}, [])
+	const isMobile = useMediaQuery('(max-width: 1023px)')
 
 	if (!snapshot) {
 		return (
@@ -232,13 +235,7 @@ export function GroupAssignmentBoard({
 	let colSpanClass = 'space-y-4 col-span-1'
 
 	// md breakpoint (max 2 columns)
-	switch (true) {
-		case groupCount >= 2:
-			colSpanClass += ' md:col-span-2'
-			break
-		default:
-			colSpanClass += ' md:col-span-1'
-	}
+	colSpanClass += groupCount >= 2 ? ' md:col-span-2' : ' md:col-span-1'
 
 	// xl breakpoint (max 4 columns)
 	switch (groupCount) {

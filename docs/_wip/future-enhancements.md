@@ -15,3 +15,5 @@ Hereunder we specify ideas for future application enhancements that we have thou
 - Email notifications to users when role changes or account is deactivated
 - Profile photo upload and management
 - Self-service account reactivation requests
+- add devtools panel behind a permanent action button at the bottom left of the screen
+- add feature flags middleware like I did at Conclusion that I can set in the devtools panel

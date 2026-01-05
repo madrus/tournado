@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 import type { JSX } from 'react'
-
+import { useTranslation } from 'react-i18next'
 import { cn } from '~/utils/misc'
 import { getLatinTextClass } from '~/utils/rtlUtils'
 
@@ -27,6 +27,7 @@ export function DraggableTeamChip({
 	className,
 }: DraggableTeamChipProps): JSX.Element {
 	const dragId = createTeamDragId(team.id)
+	const { t } = useTranslation()
 
 	const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
 		id: dragId,
@@ -38,13 +39,17 @@ export function DraggableTeamChip({
 	})
 
 	return (
-		<div
+		<button
 			ref={setNodeRef}
 			className={cn(
 				draggableChipVariants({ isDragging, variant, size }),
 				disabled && 'opacity-50 cursor-not-allowed',
 				className,
 			)}
+			aria-label={t('competition.groupAssignment.chip.ariaLabel', {
+				club: team.clubName,
+				team: team.name,
+			})}
 			{...listeners}
 			{...attributes}
 			data-testid={`team-chip-${team.id}`}
@@ -52,7 +57,7 @@ export function DraggableTeamChip({
 			<span className={cn('truncate max-w-[180px]', getLatinTextClass())}>
 				{team.clubName} {team.name}
 			</span>
-		</div>
+		</button>
 	)
 }
 

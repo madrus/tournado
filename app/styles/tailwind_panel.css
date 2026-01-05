@@ -379,6 +379,204 @@ html.dark[dir="rtl"] .panel-zinc-bg {
 	);
 }
 
+html.dark :not([dir="rtl"]) .panel-success-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-success-950),
+		var(--color-success-800),
+		var(--color-success-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-success-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-success-950),
+		var(--color-success-800),
+		var(--color-success-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-error-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-error-950),
+		var(--color-error-800),
+		var(--color-error-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-error-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-error-950),
+		var(--color-error-800),
+		var(--color-error-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-warning-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-warning-950),
+		var(--color-warning-800),
+		var(--color-warning-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-warning-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-warning-950),
+		var(--color-warning-800),
+		var(--color-warning-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-info-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-info-950),
+		var(--color-info-800),
+		var(--color-info-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-info-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-info-950),
+		var(--color-info-800),
+		var(--color-info-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-disabled-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-disabled-950),
+		var(--color-disabled-800),
+		var(--color-disabled-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-disabled-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-disabled-950),
+		var(--color-disabled-800),
+		var(--color-disabled-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-amber-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-amber-950),
+		var(--color-accent-amber-800),
+		var(--color-accent-amber-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-amber-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-amber-950),
+		var(--color-accent-amber-800),
+		var(--color-accent-amber-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-indigo-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-indigo-950),
+		var(--color-accent-indigo-800),
+		var(--color-accent-indigo-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-indigo-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-indigo-950),
+		var(--color-accent-indigo-800),
+		var(--color-accent-indigo-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-fuchsia-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-fuchsia-950),
+		var(--color-accent-fuchsia-800),
+		var(--color-accent-fuchsia-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-fuchsia-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-fuchsia-950),
+		var(--color-accent-fuchsia-800),
+		var(--color-accent-fuchsia-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-teal-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-teal-950),
+		var(--color-accent-teal-800),
+		var(--color-accent-teal-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-teal-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-teal-950),
+		var(--color-accent-teal-800),
+		var(--color-accent-teal-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-sky-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-sky-950),
+		var(--color-accent-sky-800),
+		var(--color-accent-sky-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-sky-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-sky-950),
+		var(--color-accent-sky-800),
+		var(--color-accent-sky-950)
+	);
+}
+
+html.dark :not([dir="rtl"]) .panel-accent-purple-bg {
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-purple-950),
+		var(--color-accent-purple-800),
+		var(--color-accent-purple-950)
+	);
+}
+
+html.dark[dir="rtl"] .panel-accent-purple-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-purple-950),
+		var(--color-accent-purple-800),
+		var(--color-accent-purple-950)
+	);
+}
+
 /* Light mode panel classes */
 html:not(.dark) :not([dir="rtl"]) .panel-amber-bg {
 	border-color: var(--color-amber-400);
@@ -776,5 +974,214 @@ html:not(.dark)[dir="rtl"] .panel-zinc-bg {
 		var(--color-zinc-50),
 		var(--panel-bg-zinc, var(--color-zinc-100)),
 		var(--color-zinc-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-success-bg {
+	border-color: var(--color-success-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-success-50),
+		var(--panel-bg-success, var(--color-success-100)),
+		var(--color-success-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-success-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-success-50),
+		var(--panel-bg-success, var(--color-success-100)),
+		var(--color-success-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-error-bg {
+	border-color: var(--color-error-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-error-50),
+		var(--panel-bg-error, var(--color-error-100)),
+		var(--color-error-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-error-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-error-50),
+		var(--panel-bg-error, var(--color-error-100)),
+		var(--color-error-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-warning-bg {
+	border-color: var(--color-warning-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-warning-50),
+		var(--panel-bg-warning, var(--color-warning-100)),
+		var(--color-warning-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-warning-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-warning-50),
+		var(--panel-bg-warning, var(--color-warning-100)),
+		var(--color-warning-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-info-bg {
+	border-color: var(--color-info-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-info-50),
+		var(--panel-bg-info, var(--color-info-100)),
+		var(--color-info-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-info-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-info-50),
+		var(--panel-bg-info, var(--color-info-100)),
+		var(--color-info-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-disabled-bg {
+	border-color: var(--color-disabled-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-disabled-50),
+		var(--panel-bg-disabled, var(--color-disabled-100)),
+		var(--color-disabled-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-disabled-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-disabled-50),
+		var(--panel-bg-disabled, var(--color-disabled-100)),
+		var(--color-disabled-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-amber-bg {
+	border-color: var(--color-accent-amber-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-amber-50),
+		var(--panel-bg-accent-amber, var(--color-accent-amber-100)),
+		var(--color-accent-amber-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-amber-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-amber-50),
+		var(--panel-bg-accent-amber, var(--color-accent-amber-100)),
+		var(--color-accent-amber-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-indigo-bg {
+	border-color: var(--color-accent-indigo-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-indigo-50),
+		var(--panel-bg-accent-indigo, var(--color-accent-indigo-100)),
+		var(--color-accent-indigo-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-indigo-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-indigo-50),
+		var(--panel-bg-accent-indigo, var(--color-accent-indigo-100)),
+		var(--color-accent-indigo-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-fuchsia-bg {
+	border-color: var(--color-accent-fuchsia-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-fuchsia-50),
+		var(--panel-bg-accent-fuchsia, var(--color-accent-fuchsia-100)),
+		var(--color-accent-fuchsia-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-fuchsia-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-fuchsia-50),
+		var(--panel-bg-accent-fuchsia, var(--color-accent-fuchsia-100)),
+		var(--color-accent-fuchsia-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-teal-bg {
+	border-color: var(--color-accent-teal-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-teal-50),
+		var(--panel-bg-accent-teal, var(--color-accent-teal-100)),
+		var(--color-accent-teal-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-teal-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-teal-50),
+		var(--panel-bg-accent-teal, var(--color-accent-teal-100)),
+		var(--color-accent-teal-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-sky-bg {
+	border-color: var(--color-accent-sky-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-sky-50),
+		var(--panel-bg-accent-sky, var(--color-accent-sky-100)),
+		var(--color-accent-sky-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-sky-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-sky-50),
+		var(--panel-bg-accent-sky, var(--color-accent-sky-100)),
+		var(--color-accent-sky-50)
+	);
+}
+
+html:not(.dark) :not([dir="rtl"]) .panel-accent-purple-bg {
+	border-color: var(--color-accent-purple-400);
+	background: linear-gradient(
+		to bottom right,
+		var(--color-accent-purple-50),
+		var(--panel-bg-accent-purple, var(--color-accent-purple-100)),
+		var(--color-accent-purple-50)
+	);
+}
+
+html:not(.dark)[dir="rtl"] .panel-accent-purple-bg {
+	background: linear-gradient(
+		to bottom left,
+		var(--color-accent-purple-50),
+		var(--panel-bg-accent-purple, var(--color-accent-purple-100)),
+		var(--color-accent-purple-50)
 	);
 }

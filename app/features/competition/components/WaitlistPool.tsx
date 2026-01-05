@@ -21,7 +21,7 @@ export function WaitlistPool({
 	canPromote,
 	disabled = false,
 	className,
-}: WaitlistPoolProps): JSX.Element {
+}: WaitlistPoolProps): JSX.Element | null {
 	const { t } = useTranslation()
 
 	const { isOver, setNodeRef } = useDroppable({
@@ -35,7 +35,7 @@ export function WaitlistPool({
 	const waitlistTeams = teams.filter((team) => team.isWaitlist)
 
 	if (waitlistTeams.length === 0) {
-		return null as unknown as JSX.Element
+		return null
 	}
 
 	return (
@@ -54,12 +54,12 @@ export function WaitlistPool({
 			<div className='flex items-center justify-between mb-3'>
 				<div className='flex items-center gap-2'>
 					{/* Waitlist icon */}
-					<div className='w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center'>
+					<div className='w-6 h-6 rounded-full bg-accent-amber-500/20 flex items-center justify-center'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 20 20'
 							fill='currentColor'
-							className='w-4 h-4 text-amber-600 dark:text-amber-400'
+							className='w-4 h-4 text-accent-amber-600 dark:text-accent-amber-400'
 							aria-hidden='true'
 						>
 							<path
@@ -73,7 +73,7 @@ export function WaitlistPool({
 						{t('competition.groupAssignment.waitlist.title')}
 					</h3>
 				</div>
-				<span className='text-sm text-foreground-light'>
+				<span className='text-sm text-foreground'>
 					{t('competition.groupAssignment.waitlist.count', {
 						count: waitlistTeams.length,
 					})}
@@ -115,14 +115,14 @@ export function WaitlistPool({
 			{/* Drop hint */}
 			{isOver ? (
 				<div className='mt-3 text-center'>
-					<span className='text-xs text-amber-600 dark:text-amber-400 font-medium animate-pulse'>
+					<span className='text-xs text-accent-amber-600 dark:text-accent-amber-400 font-medium animate-pulse'>
 						{t('competition.groupAssignment.waitlist.dropToAdd')}
 					</span>
 				</div>
 			) : null}
 
 			{/* Help text */}
-			<p className='mt-3 text-xs text-foreground-lighter'>
+			<p className='mt-3 text-xs text-foreground'>
 				{canPromote
 					? t('competition.groupAssignment.waitlist.helpPromote')
 					: t('competition.groupAssignment.waitlist.helpBlocked')}

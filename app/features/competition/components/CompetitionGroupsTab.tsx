@@ -9,6 +9,7 @@ import {
 	formatCompetitionDate,
 } from '~/features/competition/utils/competitionFormatters'
 import type { GroupStageListItem } from '~/models/group.server'
+import { cn } from '~/utils/misc'
 
 type CompetitionGroupsTabProps = {
 	groupStages: readonly GroupStageListItem[]
@@ -75,19 +76,20 @@ export function CompetitionGroupsTab({
 						<Link
 							key={groupStage.id}
 							to={`${groupStage.id}?tournament=${selectedTournamentId}`}
-							className='group relative rounded-lg border border-border bg-neutral p-4 shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2'
+							className='group relative rounded-lg border border-border bg-neutral p-4 shadow-sm transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent-fuchsia-500 focus:ring-offset-2'
+							data-testid={`group-stage-card-${groupStage.id}`}
 						>
 							{/* Header with icon and badge */}
 							<div className='flex items-start justify-between'>
 								<div className='flex items-center'>
-									<div className='rounded-lg bg-fuchsia-50 p-2 transition-colors group-hover:bg-fuchsia-100'>
-										<SportsIcon className='h-5 w-5 text-fuchsia-600' />
+									<div className='rounded-lg bg-accent-fuchsia-50 p-2 transition-colors group-hover:bg-accent-fuchsia-100'>
+										<SportsIcon className='h-5 w-5 text-accent-fuchsia-600' />
 									</div>
-									<h3 className='ml-3 font-semibold text-base text-foreground transition-colors group-hover:text-fuchsia-600'>
+									<h3 className='ml-3 font-semibold text-base text-foreground transition-colors group-hover:text-accent-fuchsia-600'>
 										{groupStage.name}
 									</h3>
 								</div>
-								<div className='rounded-full bg-fuchsia-50 px-2 py-1 font-medium text-fuchsia-700 text-xs'>
+								<div className='rounded-full bg-accent-fuchsia-50 px-2 py-1 font-medium text-accent-fuchsia-700 text-xs'>
 									{t('competition.groupsCount', { count: groupStage.configGroups })}
 								</div>
 							</div>
@@ -118,11 +120,12 @@ export function CompetitionGroupsTab({
 										{t('competition.labels.autoFill')}
 									</span>
 									<span
-										className={`inline-flex items-center rounded-full px-2 py-1 font-medium text-xs ${
+										className={cn(
+											'inline-flex items-center rounded-full px-2 py-1 font-medium text-xs',
 											groupStage.autoFill
-												? 'bg-green-100 text-green-800'
-												: 'bg-neutral text-foreground-light'
-										}`}
+												? 'bg-success-100 text-success-800'
+												: 'bg-neutral text-foreground-light',
+										)}
 									>
 										{groupStage.autoFill
 											? t('competition.status.enabled')

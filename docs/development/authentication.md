@@ -326,7 +326,7 @@ Our E2E tests follow the principle "Test your code, not third-party services":
 
 ### Environment Variable Management
 
-**Complete environment variable reference**: [Environment Variables Documentation](../environment-variables.md)
+**Complete environment variable reference**: [Environment Variables Documentation](environment-variables.md)
 
 **Key principles**:
 

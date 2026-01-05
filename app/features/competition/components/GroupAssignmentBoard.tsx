@@ -86,7 +86,6 @@ export function GroupAssignmentBoard({
 		handleDragOver,
 		handleDragEnd,
 		handleDragCancel,
-		highlightedSlot,
 	} = useGroupStageDnd()
 
 	// Initialize store from loader data
@@ -317,7 +316,7 @@ export function GroupAssignmentBoard({
 							<button
 								type='button'
 								onClick={() => setSaveError(null)}
-								className='ms-auto text-red-600 hover:text-red-700 dark:text-red-400'
+								className='ms-auto text-error-600 hover:text-error-700 dark:text-error-400'
 								aria-label={t('common.actions.cancel')}
 							>
 								<svg
@@ -388,19 +387,13 @@ export function GroupAssignmentBoard({
 								// Mobile: Show only active group
 								<GroupCard
 									group={snapshot.groups[activeGroupIndex]}
-									highlightedSlot={highlightedSlot}
 									disabled={isSaving}
 								/>
 							) : (
 								// Desktop: Show all groups in responsive columns
 								<div className={gridColsClass}>
 									{snapshot.groups.map((group) => (
-										<GroupCard
-											key={group.id}
-											group={group}
-											highlightedSlot={highlightedSlot}
-											disabled={isSaving}
-										/>
+										<GroupCard key={group.id} group={group} disabled={isSaving} />
 									))}
 								</div>
 							)}
@@ -447,7 +440,7 @@ export function GroupAssignmentBoard({
 						</ActionButton>
 
 						{isDirty ? (
-							<span className='ms-auto text-sm text-amber-600 dark:text-amber-400'>
+							<span className='ms-auto text-sm text-warning-600 dark:text-warning-400'>
 								{t('competition.groupAssignment.unsavedChanges')}
 							</span>
 						) : null}

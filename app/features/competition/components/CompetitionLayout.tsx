@@ -23,10 +23,10 @@ const tabVariants = cva(
 		variants: {
 			state: {
 				active: [
-					'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950 dark:text-fuchsia-300',
+					'bg-accent-fuchsia-50 text-accent-fuchsia-700 dark:bg-accent-fuchsia-950 dark:text-accent-fuchsia-300',
 					'border-t border-e border-s',
-					'!border-t-fuchsia-300 !border-e-fuchsia-300 !border-s-fuchsia-300 border-b-transparent',
-					'dark:border-fuchsia-700 dark:border-b-fuchsia-950',
+					'!border-t-accent-fuchsia-300 !border-e-accent-fuchsia-300 !border-s-accent-fuchsia-300 border-b-transparent',
+					'dark:border-accent-fuchsia-700 dark:border-b-accent-fuchsia-950',
 					'z-10 shadow-lg',
 				],
 				inactive: [
@@ -87,13 +87,13 @@ export function CompetitionLayout({
 								className={cn(
 									'h-6 w-6 rtl:order-1',
 									activeTab === tab.href
-										? 'text-fuchsia-600 dark:text-fuchsia-400'
+										? 'text-accent-fuchsia-600 dark:text-accent-fuchsia-400'
 										: '',
 								)}
 							/>
 							<span className='rtl:order-2'>{t(tab.nameKey)}</span>
 							{tab.disabled ? (
-								<span className='latin-text rounded-full px-2 py-0.5 bg-slate-600 text-slate-50 text-xs dark:bg-slate-800 rtl:order-3'>
+								<span className='latin-text rounded-full px-2 py-0.5 bg-foreground/10 text-foreground-light text-xs rtl:order-3'>
 									{t('common.comingSoon')}
 								</span>
 							) : null}
@@ -104,7 +104,8 @@ export function CompetitionLayout({
 				{/* Tab Content - Render nested routes */}
 				<div className='relative'>
 					<Panel
-						color='fuchsia'
+						color='accent-fuchsia'
+						inheritChildrenText
 						className='rounded-tl-none rtl:rounded-tl-xl rtl:rounded-tr-none border-t shadow-lg'
 					>
 						<Outlet />

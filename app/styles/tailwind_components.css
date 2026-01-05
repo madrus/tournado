@@ -63,6 +63,39 @@
 	.text-adaptive-brand-text {
 		color: var(--color-adaptive-brand-text);
 	}
+	.text-adaptive-success {
+		color: var(--color-adaptive-success);
+	}
+	.text-adaptive-error {
+		color: var(--color-adaptive-error);
+	}
+	.text-adaptive-warning {
+		color: var(--color-adaptive-warning);
+	}
+	.text-adaptive-info {
+		color: var(--color-adaptive-info);
+	}
+	.text-adaptive-disabled {
+		color: var(--color-adaptive-disabled);
+	}
+	.text-adaptive-accent-amber {
+		color: var(--color-adaptive-accent-amber);
+	}
+	.text-adaptive-accent-indigo {
+		color: var(--color-adaptive-accent-indigo);
+	}
+	.text-adaptive-accent-fuchsia {
+		color: var(--color-adaptive-accent-fuchsia);
+	}
+	.text-adaptive-accent-teal {
+		color: var(--color-adaptive-accent-teal);
+	}
+	.text-adaptive-accent-sky {
+		color: var(--color-adaptive-accent-sky);
+	}
+	.text-adaptive-accent-purple {
+		color: var(--color-adaptive-accent-purple);
+	}
 
 	/* Adaptive Border Color Utilities - For Icons Using Standard Text Colors */
 	.border-adaptive-red {
@@ -121,6 +154,42 @@
 	}
 	.border-adaptive-sky {
 		border-color: var(--color-adaptive-sky);
+	}
+	.border-adaptive-brand {
+		border-color: var(--color-adaptive-brand);
+	}
+	.border-adaptive-success {
+		border-color: var(--color-adaptive-success);
+	}
+	.border-adaptive-error {
+		border-color: var(--color-adaptive-error);
+	}
+	.border-adaptive-warning {
+		border-color: var(--color-adaptive-warning);
+	}
+	.border-adaptive-info {
+		border-color: var(--color-adaptive-info);
+	}
+	.border-adaptive-disabled {
+		border-color: var(--color-adaptive-disabled);
+	}
+	.border-adaptive-accent-amber {
+		border-color: var(--color-adaptive-accent-amber);
+	}
+	.border-adaptive-accent-indigo {
+		border-color: var(--color-adaptive-accent-indigo);
+	}
+	.border-adaptive-accent-fuchsia {
+		border-color: var(--color-adaptive-accent-fuchsia);
+	}
+	.border-adaptive-accent-teal {
+		border-color: var(--color-adaptive-accent-teal);
+	}
+	.border-adaptive-accent-sky {
+		border-color: var(--color-adaptive-accent-sky);
+	}
+	.border-adaptive-accent-purple {
+		border-color: var(--color-adaptive-accent-purple);
 	}
 	.border-adaptive-brand {
 		border-color: var(--color-adaptive-brand-text);
@@ -293,14 +362,6 @@
 	}
 	.text-adaptive-accent-purple-action {
 		color: var(--color-adaptive-purple);
-	}
-
-	/* Semantic color mappings for Panel icons (non-action) */
-	.text-adaptive-success {
-		color: var(--color-adaptive-lime);
-	}
-	.text-adaptive-accent-purple {
-		color: var(--color-adaptive-violet);
 	}
 
 	.border-adaptive-red-action {

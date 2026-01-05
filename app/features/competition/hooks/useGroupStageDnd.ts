@@ -33,17 +33,12 @@ type UseGroupStageDndResult = {
 
 	// Drop target state
 	activeDropTarget: string | null
-	highlightedSlot: { groupId: string; slotIndex: number } | null
 }
 
 export const useGroupStageDnd = (): UseGroupStageDndResult => {
 	const { t } = useTranslation()
 	const [activeDragTeam, setActiveDragTeam] = useState<DndTeam | null>(null)
 	const [activeDropTarget, setActiveDropTarget] = useState<string | null>(null)
-	const [highlightedSlot, setHighlightedSlot] = useState<{
-		groupId: string
-		slotIndex: number
-	} | null>(null)
 
 	const snapshot = useGroupAssignmentSnapshot()
 	const {
@@ -78,7 +73,6 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			const { over } = event
 			if (!over || !snapshot || !activeDragTeam) {
 				setActiveDropTarget(null)
-				setHighlightedSlot(null)
 				return
 			}
 
@@ -86,7 +80,6 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			setActiveDropTarget(overId)
 
 			// No group-level highlighting - only individual slots are droppable
-			setHighlightedSlot(null)
 		},
 		[snapshot, activeDragTeam],
 	)
@@ -99,7 +92,6 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 			// Reset drag state
 			setActiveDragTeam(null)
 			setActiveDropTarget(null)
-			setHighlightedSlot(null)
 
 			if (!over || !snapshot) return
 
@@ -184,7 +176,6 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 	const handleDragCancel = useCallback(() => {
 		setActiveDragTeam(null)
 		setActiveDropTarget(null)
-		setHighlightedSlot(null)
 	}, [])
 
 	return {
@@ -195,6 +186,5 @@ export const useGroupStageDnd = (): UseGroupStageDndResult => {
 		handleDragEnd,
 		handleDragCancel,
 		activeDropTarget,
-		highlightedSlot,
 	}
 }

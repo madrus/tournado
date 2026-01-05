@@ -1,4 +1,5 @@
 import type { ActionFunctionArgs } from 'react-router'
+import { z } from 'zod'
 
 import {
 	batchSaveGroupAssignments,
@@ -13,6 +14,44 @@ type SlotAssignment = {
 	teamId: string
 }
 
+const SlotAssignmentSchema = z
+	.object({
+		groupId: z.string().min(1),
+		slotIndex: z.number().int().nonnegative(),
+		teamId: z.string().min(1),
+	})
+	.strict()
+
+const AssignmentsSchema = z
+	.array(SlotAssignmentSchema)
+	.superRefine((assignments, context) => {
+		const usedSlots = new Set<string>()
+		const usedTeams = new Set<string>()
+
+		assignments.forEach((assignment, index) => {
+			const slotKey = `${assignment.groupId}:${assignment.slotIndex}`
+			if (usedSlots.has(slotKey)) {
+				context.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: [index],
+					message: 'Duplicate group slot assignment',
+				})
+			} else {
+				usedSlots.add(slotKey)
+			}
+
+			if (usedTeams.has(assignment.teamId)) {
+				context.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: [index],
+					message: 'Duplicate team assignment',
+				})
+			} else {
+				usedTeams.add(assignment.teamId)
+			}
+		})
+	})
+
 type SaveResponse = {
 	success: boolean
 	error?: string
@@ -22,6 +61,7 @@ type SaveResponse = {
 type CancelResponse = {
 	success: boolean
 	snapshot?: unknown
+	error?: string
 }
 
 type DeleteResponse = {
@@ -51,7 +91,7 @@ export async function action({
 
 			let assignments: SlotAssignment[]
 			try {
-				assignments = JSON.parse(assignmentsJson)
+				assignments = AssignmentsSchema.parse(JSON.parse(assignmentsJson))
 			} catch {
 				return { success: false, error: 'Invalid assignments format' }
 			}
@@ -92,14 +132,15 @@ export async function action({
 			const groupStageId = formData.get('groupStageId')?.toString()
 
 			if (!groupStageId) {
-				return { success: false }
+				return { success: false, error: 'Missing groupStageId' }
 			}
 
 			try {
 				const snapshot = await getGroupStageWithDetails(groupStageId)
 				return { success: true, snapshot }
-			} catch {
-				return { success: false }
+			} catch (error) {
+				console.error('Failed to fetch group stage snapshot:', error)
+				return { success: false, error: 'Failed to fetch snapshot' }
 			}
 		}
 

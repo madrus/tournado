@@ -13,7 +13,7 @@ The application is deployed using Fly.io with automatic deployments through GitH
 
 **Key principle**: Local development and Staging share the same Firebase project (`tournado-dev`) but serve different purposes - Local for development, Staging for deployed testing - with different databases and URLs.
 
-See [Environment Variables Reference](../environment-variables.md) for complete setup details.
+See [Environment Variables Reference](../development/environment-variables.md) for complete setup details.
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ fly apps create tournado-staging
 # Use the template script as reference: docs/templates/setup-flyio-secrets.sh.template
 ```
 
-**Important**: Due to Fly.io authentication token issues and deployment timeouts, running individual `flyctl secrets set` commands is more reliable than the automated script. **No web UI required** - everything is done via terminal commands. See [Environment Variables Guide](../environment-variables.md#setup-instructions) for detailed command-by-command instructions.
+**Important**: Due to Fly.io authentication token issues and deployment timeouts, running individual `flyctl secrets set` commands is more reliable than the automated script. **No web UI required** - everything is done via terminal commands. See [Environment Variables Guide](../development/environment-variables.md#setup-instructions) for detailed command-by-command instructions.
 
 **Manual secret setup** (if needed):
 
@@ -141,7 +141,7 @@ fly ssh console --app tournado-staging
 
 **Cause**: Each `flyctl secrets set` triggers a deployment restart, and many secrets can cause cumulative timeouts
 
-**Solution**: Use manual secret setup as documented in [Environment Variables Guide](../environment-variables.md#setup-instructions)
+**Solution**: Use manual secret setup as documented in [Environment Variables Guide](../development/environment-variables.md#setup-instructions)
 
 ### Authentication Token Refresh
 

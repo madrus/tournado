@@ -9,14 +9,12 @@ import { groupCardVariants } from './groupAssignment.variants'
 
 type GroupCardProps = {
 	group: DndGroup
-	highlightedSlot?: { groupId: string; slotIndex: number } | null
 	disabled?: boolean
 	className?: string
 }
 
 export function GroupCard({
 	group,
-	highlightedSlot,
 	disabled = false,
 	className,
 }: GroupCardProps): JSX.Element {
@@ -42,7 +40,7 @@ export function GroupCard({
 			{/* Group header */}
 			<div className='flex items-center justify-between mb-3'>
 				<h3 className='font-semibold text-lg text-title'>{group.name}</h3>
-				<span className='text-sm text-foreground-light'>
+				<span className='text-sm text-foreground'>
 					{t('competition.groupAssignment.group.slotsCount', {
 						filled: filledSlots,
 						total: totalSlots,
@@ -53,15 +51,7 @@ export function GroupCard({
 			{/* Slots list */}
 			<div className='flex flex-col gap-2'>
 				{group.slots.map((slot) => (
-					<GroupSlotDropZone
-						key={slot.slotId}
-						slot={slot}
-						isHighlighted={
-							highlightedSlot?.groupId === group.id &&
-							highlightedSlot?.slotIndex === slot.slotIndex
-						}
-						disabled={disabled}
-					/>
+					<GroupSlotDropZone key={slot.slotId} slot={slot} disabled={disabled} />
 				))}
 			</div>
 		</section>

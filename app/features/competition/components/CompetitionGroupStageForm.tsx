@@ -54,7 +54,7 @@ export function CompetitionGroupStageForm({
 		<div className='space-y-8'>
 			<div>
 				<h2 className='font-bold text-2xl'>{t('competition.createGroupStage')}</h2>
-				<p className='mt-2 text-slate-600'>
+				<p className='mt-2 text-foreground-light'>
 					{t('competition.createGroupStageDescription', {
 						tournamentName: tournament.name,
 					})}
@@ -64,8 +64,8 @@ export function CompetitionGroupStageForm({
 			<div className='max-w-2xl'>
 				<Form method='post' className='space-y-6'>
 					{actionData?.errors?.general ? (
-						<div className='rounded-md bg-red-50 p-4'>
-							<p className='text-red-700 text-sm'>{actionData.errors.general}</p>
+						<div className='rounded-md bg-error-50 p-4'>
+							<p className='text-error-700 text-sm'>{actionData.errors.general}</p>
 						</div>
 					) : null}
 
@@ -81,10 +81,10 @@ export function CompetitionGroupStageForm({
 
 					{/* Categories Selection */}
 					<div>
-						<h3 className='mb-3 block font-medium text-sm text-slate-700 dark:text-slate-300'>
+						<h3 className='mb-3 block font-medium text-sm text-foreground'>
 							{t('competition.groupStage.ageCategories')}
 						</h3>
-						<p className='mb-3 text-sm text-slate-500 dark:text-slate-400'>
+						<p className='mb-3 text-sm text-foreground-light'>
 							{t('competition.groupStage.ageCategoriesDescription')}
 						</p>
 						<div className='space-y-2'>
@@ -106,7 +106,7 @@ export function CompetitionGroupStageForm({
 											accentColor='fuchsia'
 										/>
 										<span className='font-medium text-sm'>{category}</span>
-										<span className='text-xs text-slate-700 dark:text-slate-300'>
+										<span className='text-xs text-foreground-light'>
 											(
 											{t('competition.groupStage.teamsAvailable', {
 												count: availableTeamsCount[category],
@@ -118,7 +118,7 @@ export function CompetitionGroupStageForm({
 							})}
 						</div>
 						{actionData?.errors?.categories ? (
-							<p className='mt-1 text-red-600 text-sm'>
+							<p className='mt-1 text-error-600 text-sm'>
 								{actionData.errors.categories}
 							</p>
 						) : null}
@@ -164,7 +164,7 @@ export function CompetitionGroupStageForm({
 								<span className='font-medium text-sm'>
 									{t('competition.groupStage.autoFillGroups')}
 								</span>
-								<p className='text-xs text-slate-500 dark:text-slate-400'>
+								<p className='text-xs text-foreground-light'>
 									{t('competition.groupStage.autoFillDescription')}
 								</p>
 							</div>
@@ -173,18 +173,18 @@ export function CompetitionGroupStageForm({
 
 					{/* Summary */}
 					{selectedCategories.length > 0 ? (
-						<div className='rounded-lg bg-blue-50 p-4'>
-							<h4 className='font-medium text-blue-900 text-sm'>
+						<div className='rounded-lg bg-info-50 p-4'>
+							<h4 className='font-medium text-info-900 text-sm'>
 								{t('competition.groupStage.summary')}
 							</h4>
-							<p className='mt-1 text-blue-700 text-xs'>
+							<p className='mt-1 text-info-700 text-xs'>
 								{t('competition.groupStage.summaryTeamsAvailable', {
 									count: totalSelectedTeams,
 								})}
 							</p>
 							{actionData?.fieldValues?.configGroups &&
 							actionData?.fieldValues?.configSlots ? (
-								<p className='text-blue-700 text-xs'>
+								<p className='text-info-700 text-xs'>
 									{t('competition.groupStage.summaryWillCreate', {
 										groups: actionData.fieldValues.configGroups,
 										slots: actionData.fieldValues.configSlots,

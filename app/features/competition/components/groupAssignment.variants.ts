@@ -8,9 +8,9 @@ export const groupCardVariants = cva(
 	[
 		// Base container with depth
 		'rounded-xl p-4',
-		'border border-sky-500/30 dark:border-sky-300/40',
+		'border border-accent-sky-500/30 dark:border-accent-sky-300/40',
 		// Sky gradient matching other management panels
-		'bg-gradient-to-br from-sky-600/15 dark:from-sky-300/25 via-sky-600/5 dark:via-sky-300/8 to-surface/40',
+		'bg-gradient-to-br from-accent-sky-600/15 dark:from-accent-sky-300/25 via-accent-sky-600/5 dark:via-accent-sky-300/8 to-surface/40',
 		'backdrop-blur-sm',
 		// Soft shadow for elevation
 		'shadow-md shadow-black/5',
@@ -110,8 +110,8 @@ export const unassignedPoolVariants = cva(
 					'bg-gradient-to-br from-primary-300/15 dark:from-primary-600/40 via-primary-300/5 dark:via-primary-600/20 to-surface/40',
 				],
 				waitlist: [
-					'border-amber-600/30 dark:border-amber-400/30',
-					'bg-gradient-to-br from-amber-300/15 dark:from-amber-600/15 via-amber-300/5 dark:via-amber-600/5 to-surface/40',
+					'border-accent-amber-600/30 dark:border-accent-amber-400/30',
+					'bg-gradient-to-br from-accent-amber-300/15 dark:from-accent-amber-600/15 via-accent-amber-300/5 dark:via-accent-amber-600/5 to-surface/40',
 				],
 			},
 			isDropTarget: {
@@ -128,7 +128,8 @@ export const unassignedPoolVariants = cva(
 			{
 				variant: 'waitlist',
 				isDropTarget: true,
-				className: 'ring-amber-500/40 shadow-amber-500/10 border-amber-500/50',
+				className:
+					'ring-accent-amber-500/40 shadow-accent-amber-500/10 border-accent-amber-500/50',
 			},
 		],
 		defaultVariants: {
@@ -171,7 +172,7 @@ export const draggableChipVariants = cva(
 				confirmed:
 					'bg-primary-300/10 text-primary-700 dark:text-primary-300 border-primary-500/30 hover:border-primary-500/50',
 				waitlist:
-					'bg-amber-400/10 text-amber-700 dark:text-amber-300 border-amber-500/30 hover:border-amber-500/50',
+					'bg-accent-amber-400/10 text-accent-amber-700 dark:text-accent-amber-300 border-accent-amber-500/30 hover:border-accent-amber-500/50',
 			},
 			size: {
 				sm: 'px-2 py-1 text-xs',
@@ -218,14 +219,14 @@ export const chipDeleteButtonVariants = cva([
 	// Styling
 	'flex items-center justify-center',
 	'w-5 h-5 rounded-full',
-	'bg-red-500 text-white',
+	'bg-error-500 text-white',
 	'border-2 border-background',
 	// Interactive
 	'cursor-pointer',
 	'opacity-0 group-hover:opacity-100',
 	'transition-opacity duration-150',
 	// Focus
-	'focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50',
+	'focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error-500/50',
 ])
 
 // ---------------------------------------------------------------------------
@@ -235,7 +236,7 @@ export const chipDeleteButtonVariants = cva([
 export const emptyStateVariants = cva([
 	'flex flex-col items-center justify-center',
 	'py-8 px-4',
-	'text-center text-foreground-light',
+	'text-center text-foreground',
 ])
 
 // ---------------------------------------------------------------------------
@@ -247,10 +248,11 @@ export const errorBannerVariants = cva(
 	{
 		variants: {
 			variant: {
-				error: 'bg-red-500/10 text-red-700 dark:text-red-300 border border-red-500/30',
+				error:
+					'bg-error-500/10 text-error-700 dark:text-error-300 border border-error-500/30',
 				warning:
-					'bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30',
-				info: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30',
+					'bg-warning-500/10 text-warning-700 dark:text-warning-300 border border-warning-500/30',
+				info: 'bg-info-500/10 text-info-700 dark:text-info-300 border border-info-500/30',
 			},
 		},
 		defaultVariants: {
@@ -277,7 +279,7 @@ export const groupTabVariants = cva(
 			isActive: {
 				true: 'bg-gradient-to-b from-surface-light/10 via-brand-600/60 to-surface-light/10 text-foreground shadow-lg font-bold border-2 border-border',
 				false:
-					'bg-gradient-to-b from-surface/10 via-surface-light/30 to-surface/10 text-foreground-light hover:from-slate-400/20 hover:via-surface/50 hover:to-surface/40 hover:text-foreground font-medium border border-border/40',
+					'bg-gradient-to-b from-surface/10 via-surface-light/30 to-surface/10 text-foreground-light hover:from-foreground/10 hover:via-surface/50 hover:to-surface/40 hover:text-foreground font-medium border border-border/40',
 			},
 		},
 		defaultVariants: {

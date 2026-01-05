@@ -61,7 +61,7 @@ export function ConfirmedPool({
 						{t('competition.groupAssignment.reserve.title')}
 					</h3>
 				</div>
-				<span className='text-sm text-foreground-light'>
+				<span className='text-sm text-foreground'>
 					{t('competition.groupAssignment.reserve.count', {
 						count: confirmedTeams.length,
 						capacity,

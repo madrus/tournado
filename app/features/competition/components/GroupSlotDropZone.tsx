@@ -9,13 +9,11 @@ import { groupSlotVariants } from './groupAssignment.variants'
 
 type GroupSlotDropZoneProps = {
 	slot: DndSlot
-	isHighlighted?: boolean
 	disabled?: boolean
 }
 
 export function GroupSlotDropZone({
 	slot,
-	isHighlighted = false,
 	disabled = false,
 }: GroupSlotDropZoneProps): JSX.Element {
 	const { t } = useTranslation()
@@ -33,10 +31,9 @@ export function GroupSlotDropZone({
 	})
 
 	// Determine slot state
-	function getSlotState(): 'empty' | 'occupied' | 'dropTarget' | 'highlighted' {
+	function getSlotState(): 'empty' | 'occupied' | 'dropTarget' {
 		if (slot.team) return 'occupied'
 		if (isOver) return 'dropTarget'
-		if (isHighlighted) return 'highlighted'
 		return 'empty'
 	}
 
@@ -55,9 +52,7 @@ export function GroupSlotDropZone({
 			<span
 				className={cn(
 					'text-xs font-medium',
-					isHighlighted || isOver
-						? 'text-brand animate-pulse'
-						: 'text-foreground-lighter',
+					isOver ? 'text-brand animate-pulse' : 'text-foreground-lighter',
 				)}
 			>
 				{t('competition.groupAssignment.slot.label', {

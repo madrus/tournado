@@ -67,7 +67,10 @@ export function useTournamentFilter({
 				return
 			}
 			navigate(queryString ? `?${queryString}` : '')
-		} catch (_error) {}
+		} catch (error) {
+			console.error('Navigation failed:', error)
+			throw error
+		}
 	}
 
 	return {

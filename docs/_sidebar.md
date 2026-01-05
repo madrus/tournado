@@ -6,16 +6,16 @@
 - Costs
    - [Costs](costs/ai-usage-costs.md)
 - Work in Progress
-   - [Future Enhancements](wip/future-enhancements.md)
-   - [Claude RBAC Implementation Plan](wip/claude-20250727.md)
-   - [Claude Code Analysis](wip/claude-20250717.md)
-   - [Claude QC PR#154](wip/claude-20250723.md)
+   - [Future Enhancements](_wip/future-enhancements.md)
+   - [Drag-and-Drop Migration Plan](_wip/dnd-migration-plan.md)
+   - [Drag-and-Drop Migration Plan Review](_wip/dnd-migration-plan-review.md)
+   - [Color System Migration Plan](_wip/color-system-migration-plan.md)
 - Development
    - [Overview](development/overview.md)
    - [Environment Setup](development/environment-setup.md)
    - [Architecture Analysis](development/architecture-analysis.md)
    - [Authentication](development/authentication.md)
-   - [Color System Migration](development/color-system-migration.md)
+   - [Color System Migration](_tasks/color-system-migration.md)
    - [CSS Architecture Strategy](development/css-architecture-strategy.md)
    - [Dark Mode Guidelines](development/dark-mode-guidelines.md)
    - [Data Freshness](development/data-freshness.md)
@@ -24,7 +24,7 @@
    - [Design System](development/design-system.md)
    - [Icon Guidelines](development/icon-guidelines.md)
    - [RBAC Hardening (Phase 2)](development/RBAC.hardening.md)
-   - [Mobile Web App Configuration](development/mobile-webapp-config.md)
+   - [Mobile Web App Configuration](development/mobile.md)
    - [Multi-Language Support](development/multi-language-support.md)
    - [Resource Routes Architecture](development/resource-routes.md)
    - [Routing](development/routing.md)
@@ -72,7 +72,6 @@
    - [CI/CD Pipeline](deployment/cicd-pipeline.md)
    - [Docker Native Dependencies](deployment/docker-native-dependencies.md)
    - [Mobile Deployment](deployment/mobile.md)
-   - [Production Migration Oct 2025](deployment/production-migration-2025-10.md)
 - Maintenance
    - [Docker](maintenance/docker.md)
    - [Fly.io](maintenance/fly.md)

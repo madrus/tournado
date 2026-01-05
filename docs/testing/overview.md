@@ -96,7 +96,7 @@ process.env.SESSION_SECRET = 'test-session-secret-for-vitest-tests'
 
 **Impact**: Without this environment variable, tests will fail with:
 
-```
+```text
 Error: SESSION_SECRET must be set
 ```
 
@@ -106,7 +106,7 @@ Error: SESSION_SECRET must be set
 
 ### File Organization
 
-```
+```text
 test/
   ├── routes/                   # Route component unit tests
   │   ├── index.test.tsx        # Home page tests

@@ -6,7 +6,7 @@ SWOT stands for **Strengths**, **Weaknesses**, **Opportunities**, and **Threats*
 
 ### The Four Quadrants
 
-```
+```text
 INTERNAL (Things you control)
 ┌─────────────────┬─────────────────┐
 │   STRENGTHS     │   WEAKNESSES    │

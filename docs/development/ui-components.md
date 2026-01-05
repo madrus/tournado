@@ -208,7 +208,7 @@ color: {
 
 Each component with theming support follows this pattern:
 
-```
+```text
 ComponentName/
 ├── ComponentName.tsx          # Main component implementation
 ├── ComponentName.variants.ts  # CVA color and style variants
@@ -293,11 +293,11 @@ For detailed implementation examples and advanced patterns, see the [Design Syst
 
 ## 🎨 Icon System
 
-The application features a comprehensive icon system with **31 optimized SVG components** that have been fully audited for theme compatibility:
+The application features a comprehensive icon system with **29 optimized SVG components** that have been fully audited for theme compatibility:
 
 ### Icon System Status
 
-- ✅ **31/31 icons audited** - Complete coverage
+- ✅ **29/29 icons audited** - Complete coverage
 - ✅ **100% theme compatibility** - Perfect light/dark mode adaptation
 - ✅ **Zero hard-coded colors** - All icons use `currentColor` inheritance
 - ✅ **Complete accessibility** - Proper ARIA labeling throughout
@@ -306,7 +306,7 @@ The application features a comprehensive icon system with **31 optimized SVG com
 
 - **Navigation & Interface** (8 icons) - AddIcon, ChevronIcons, AnimatedHamburgerIcon
 - **User & Authentication** (6 icons) - PersonIcon, LoginIcon, AdminPanelSettings
-- **Status & Feedback** (7 icons) - CheckIcon, ErrorIcon, WarningIcon, TrophyIcon
+- **Status & Feedback** (6 icons) - CheckMarkIcon, ErrorIcon, WarningIcon, TrophyIcon
 - **Theme & Interface** (4 icons) - DarkModeIcon, LightModeIcon, LanguageIcon
 - **Content & Actions** (6 icons) - HomeIcon, CalendarIcon, DeleteIcon
 

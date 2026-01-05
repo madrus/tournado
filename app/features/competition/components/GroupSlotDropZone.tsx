@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { cn } from '~/utils/misc'
 import type { DndSlot } from '../utils/groupStageDnd'
 import { createSlotDropId } from '../utils/groupStageDnd'
 import { DraggableTeamChip } from './DraggableTeamChip'
@@ -33,7 +33,7 @@ export function GroupSlotDropZone({
 	})
 
 	// Determine slot state
-	const getSlotState = () => {
+	function getSlotState(): 'empty' | 'occupied' | 'dropTarget' | 'highlighted' {
 		if (slot.team) return 'occupied'
 		if (isOver) return 'dropTarget'
 		if (isHighlighted) return 'highlighted'
@@ -53,11 +53,12 @@ export function GroupSlotDropZone({
 			className={groupSlotVariants({ state: slotState, isDisabled: disabled })}
 		>
 			<span
-				className={
+				className={cn(
+					'text-xs font-medium',
 					isHighlighted || isOver
-						? 'text-xs font-medium text-brand animate-pulse'
-						: 'text-xs font-medium text-foreground-lighter'
-				}
+						? 'text-brand animate-pulse'
+						: 'text-foreground-lighter',
+				)}
 			>
 				{t('competition.groupAssignment.slot.label', {
 					number: slot.slotIndex + 1,

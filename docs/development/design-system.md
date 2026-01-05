@@ -209,7 +209,7 @@ All button colors use semantic tokens:
 
 Each component with color variants follows this pattern:
 
-```
+```text
 ComponentName/
 ├── ComponentName.tsx          # Main component
 ├── ComponentName.variants.ts  # CVA variants
@@ -331,7 +331,7 @@ The color system includes RTL-aware styling:
 
 ## 🎯 Icon System Integration
 
-The Tournado application features a **comprehensive icon system with 31 optimized SVG components** that seamlessly integrate with the design system:
+The Tournado application features a **comprehensive icon system with 29 optimized SVG components** that seamlessly integrate with the design system:
 
 ### Perfect Theme Compatibility
 
@@ -351,7 +351,7 @@ All icons have been audited and optimized for flawless theme adaptation:
 
 ### Icon System Achievements
 
-- ✅ **31/31 icons audited** - Complete coverage of all icon components
+- ✅ **29/29 icons audited** - Complete coverage of all icon components
 - ✅ **100% theme compatibility** - All icons adapt automatically to light/dark modes
 - ✅ **Zero hard-coded colors** - Perfect `currentColor` inheritance
 - ✅ **Complete accessibility** - All icons include proper ARIA labels
@@ -363,7 +363,7 @@ The icon system covers all application needs:
 
 - **Navigation & Interface** (8 icons) - AddIcon, ChevronIcons, CloseIcon, etc.
 - **User & Authentication** (6 icons) - PersonIcon, LoginIcon, AdminPanelSettings, etc.
-- **Status & Feedback** (7 icons) - CheckIcon, ErrorIcon, WarningIcon, etc.
+- **Status & Feedback** (6 icons) - CheckMarkIcon, ErrorIcon, WarningIcon, etc.
 - **Theme & Interface** (4 icons) - DarkModeIcon, LightModeIcon, LanguageIcon, etc.
 - **Content & Actions** (6 icons) - HomeIcon, CalendarIcon, DeleteIcon, etc.
 
@@ -391,7 +391,7 @@ For comprehensive icon usage guidelines and implementation patterns, see [Icon G
 - **Button Components**: Comprehensive variant system
 - **Form Inputs**: Semantic token usage patterns
 - **Navigation**: Theme-aware styling
-- **Icon System**: 31 optimized SVG components with perfect theme adaptation
+- **Icon System**: 29 optimized SVG components with perfect theme adaptation
 
 ### Testing
 

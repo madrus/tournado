@@ -17,7 +17,7 @@ Teams are a fundamental feature of the Tournado application, allowing users to:
 
 ### File Structure
 
-```
+```text
 app/
 ├── components/
 │   ├── TeamForm.tsx                # Form for creating/editing teams

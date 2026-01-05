@@ -76,7 +76,7 @@ To maintain a clean and organized codebase, follow these guidelines for test fil
 - **Pattern**: `ComponentName.test.tsx`
 - **Purpose**: Unit tests for React components
 
-```
+```text
 app/components/
 ├── AppBar.tsx
 ├── TeamForm.tsx
@@ -93,7 +93,7 @@ app/components/
 - **Purpose**: Unit tests for route components and their logic
 - **Why separate**: Avoids interference with file-based routing system
 
-```
+```text
 test/
 ├── routes/
 │   ├── index.test.tsx          # Tests for app/routes/_index.tsx

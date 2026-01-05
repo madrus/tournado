@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 
-import { ExclamationMarkIcon, InfoLetterIcon, SuccessIcon } from '~/components/icons'
+import { CheckMarkIcon, ExclamationMarkIcon, InfoLetterIcon } from '~/components/icons'
 import type { IconProps as AppIconProps } from '~/lib/lib.types'
 
 import { type ToastType, toastIconVariants } from './toastMessage.variants'
@@ -41,7 +41,7 @@ const normalizeType = (type: ToastType): BaseToastType => TYPE_MAPPING[type]
 
 const ICONS: Record<BaseToastType, ToastIconConfig> = {
 	success: {
-		Icon: SuccessIcon,
+		Icon: CheckMarkIcon,
 		iconTestId: 'success-icon',
 		wrapperTestId: 'success-wrapper',
 		iconClass: 'h-4 w-4 text-emerald-800/60',

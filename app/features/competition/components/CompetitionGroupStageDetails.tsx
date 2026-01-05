@@ -1,11 +1,14 @@
-import { Component, type JSX, type ReactNode } from 'react'
+import { Component, type JSX, type ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import { Panel } from '~/components/Panel'
 import type { GroupStageWithDetails, UnassignedTeam } from '~/models/group.server'
 
-import { createSnapshotFromLoader } from '../utils/groupStageDnd'
+import {
+	createSnapshotFromLoader,
+	type GroupAssignmentSnapshot,
+} from '../utils/groupStageDnd'
 import { GroupAssignmentBoard } from './GroupAssignmentBoard'
 
 type CompetitionGroupStageDetailsProps = {
@@ -86,7 +89,10 @@ export function CompetitionGroupStageDetails({
 	const { t } = useTranslation()
 
 	// Create initial snapshot from loader data
-	const initialSnapshot = createSnapshotFromLoader(groupStage, availableTeams)
+	const initialSnapshot = useMemo(
+		(): GroupAssignmentSnapshot => createSnapshotFromLoader(groupStage, availableTeams),
+		[groupStage, availableTeams],
+	)
 
 	return (
 		<div className='space-y-6'>

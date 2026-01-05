@@ -149,8 +149,7 @@ vi.mock('~/components/icons', () => {
 		ApparelIcon: createMockIcon('apparel-icon', '👕'),
 		BlockIcon: createMockIcon('block-icon', '🚫'),
 		CalendarIcon: createMockIcon('calendar-icon', '📅'),
-		CheckCircleIcon: createMockIcon('check-circle-icon', '✅'),
-		CheckIcon: createMockIcon('check-icon', '✓'),
+		CheckMarkIcon: createMockIcon('check-mark-icon', '✓'),
 		ChevronLeftIcon: createMockIcon('chevron-left-icon', '‹'),
 		ChevronRightIcon: createMockIcon('chevron-right-icon', '›'),
 		CloseIcon: createMockIcon('close-icon', '✕'),
@@ -176,7 +175,6 @@ vi.mock('~/components/icons', () => {
 		RestorePageIcon: createMockIcon('restore-page-icon', '↻'),
 		SettingsIcon: createMockIcon('settings-icon', '⚙'),
 		SportsIcon: createMockIcon('sports-icon', '⚽'),
-		SuccessIcon: createMockIcon('success-icon', '✓'),
 		TrophyIcon: createMockIcon('trophy-icon', '🏆'),
 		TuneIcon: createMockIcon('tune-icon', '🎛'),
 		UnfoldLessIcon: createMockIcon('unfold-less-icon', '⇈'),
@@ -455,7 +453,7 @@ describe('TournamentForm Component', () => {
 			const successPanel = screen.getByTestId('tournament-form-success')
 			expect(successPanel).toBeInTheDocument()
 			// The success panel should contain a check icon with size 24
-			const checkIcon = within(successPanel).getByTestId('check-icon')
+			const checkIcon = within(successPanel).getByTestId('check-mark-icon')
 			expect(checkIcon).toBeInTheDocument()
 		})
 

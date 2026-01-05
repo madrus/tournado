@@ -1139,7 +1139,7 @@ This section documents how language state flows through the application, from th
 
 ### Complete Flow Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    1. Initial Page Load (SSR)                   │
 ├─────────────────────────────────────────────────────────────────┤

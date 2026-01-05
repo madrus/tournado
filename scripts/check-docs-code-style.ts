@@ -18,6 +18,12 @@ type SemicolonIssue = {
 	content: string
 }
 
+type IssueKind = 'semicolon' | 'missing-language'
+
+type Issue = SemicolonIssue & {
+	kind: IssueKind
+}
+
 function isFenceStart(line: string): string | null {
 	const match = line.match(/^\s*```(\S*)/)
 	if (!match) {
@@ -25,6 +31,15 @@ function isFenceStart(line: string): string | null {
 	}
 
 	return match[1]?.trim().toLowerCase() ?? ''
+}
+
+function addFenceLanguage(line: string, language: string): string {
+	const match = line.match(/^(\s*)```/)
+	if (!match) {
+		return line
+	}
+
+	return `${match[1]}\`\`\`${language}`
 }
 
 function isFenceEnd(line: string): boolean {
@@ -37,14 +52,14 @@ function hasTrailingSemicolon(line: string): boolean {
 }
 
 type CheckResult = {
-	issues: SemicolonIssue[]
+	issues: Issue[]
 	updatedContent: string | null
 }
 
 async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 	const contents = await readFile(filePath, 'utf-8')
 	const lines = contents.split('\n')
-	const issues: SemicolonIssue[] = []
+	const issues: Issue[] = []
 	const updatedLines = [...lines]
 	let inCodeBlock = false
 	let checkBlock = false
@@ -55,6 +70,17 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 			if (lang !== null) {
 				inCodeBlock = true
 				checkBlock = codeLanguages.has(lang)
+				if (lang === '') {
+					issues.push({
+						file: filePath,
+						line: index + 1,
+						content: line.trim(),
+						kind: 'missing-language',
+					})
+					if (fix) {
+						updatedLines[index] = addFenceLanguage(line, 'text')
+					}
+				}
 			}
 			return
 		}
@@ -74,6 +100,7 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 				file: filePath,
 				line: index + 1,
 				content: line.trim(),
+				kind: 'semicolon',
 			})
 			if (fix) {
 				updatedLines[index] = line.replace(/;\s*$/, '')
@@ -91,7 +118,7 @@ async function checkFile(filePath: string, fix: boolean): Promise<CheckResult> {
 async function main(): Promise<void> {
 	const fix = process.argv.includes('--fix')
 	const files = await glob('**/*.{md,mdc}', { ignore: ignoredGlobs })
-	const issues: SemicolonIssue[] = []
+	const issues: Issue[] = []
 
 	for (const file of files) {
 		const normalizedPath = path.normalize(file)
@@ -104,13 +131,27 @@ async function main(): Promise<void> {
 
 	if (issues.length > 0) {
 		if (fix) {
-			console.log(`Fixed ${issues.length} semicolon issue(s)`)
+			const semicolonCount = issues.filter((issue) => issue.kind === 'semicolon').length
+			const missingLanguageCount = issues.filter(
+				(issue) => issue.kind === 'missing-language',
+			).length
+			const parts = []
+
+			if (semicolonCount > 0) {
+				parts.push(`${semicolonCount} semicolon issue(s)`)
+			}
+
+			if (missingLanguageCount > 0) {
+				parts.push(`${missingLanguageCount} missing language fence(s)`)
+			}
+
+			console.log(`Fixed ${parts.join(' and ')}`)
 			return
 		}
 
-		console.error('Semicolons found in markdown code blocks:')
+		console.error('Markdown code block issues found:')
 		for (const issue of issues) {
-			console.error(`${issue.file}:${issue.line} ${issue.content}`)
+			console.error(`${issue.file}:${issue.line} ${issue.kind} ${issue.content}`)
 		}
 		process.exit(1)
 	}

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Form, useNavigation, useSubmit } from 'react-router'
 
 import { ActionButton } from '~/components/buttons'
-import { CheckIcon, RestorePageIcon } from '~/components/icons'
+import { CheckMarkIcon, RestorePageIcon } from '~/components/icons'
 import { CustomDatePicker } from '~/components/inputs/CustomDatePicker'
 import { TextInputField } from '~/components/inputs/TextInputField'
 import { Panel } from '~/components/Panel'
@@ -324,7 +324,7 @@ export function TournamentForm({
 				<Panel
 					variant='content-panel'
 					color='primary'
-					icon={<CheckIcon size={24} />}
+					icon={<CheckMarkIcon size={24} />}
 					className='mb-8'
 					data-testid='tournament-form-success'
 				>

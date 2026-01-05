@@ -96,7 +96,7 @@ We maintain three distinct test contexts:
 
 ### Test Organization
 
-```
+```text
 playwright/tests/
 ├── auth.spec.ts              # Authentication flows (no-auth project)
 ├── admin-*.spec.ts          # Admin features (admin-authenticated project)

@@ -122,7 +122,7 @@ Since you have a PM friend who knows the domain:
 ### 6. Practical Steps for Your Project
 
 **Step 1: Set up your project context**
-```
+```text
 Create:
 - project-context.md (your product, goals, current state)
 - domain-knowledge.md (what your PM friend knows)
@@ -187,7 +187,7 @@ A methods library is a collection of reusable frameworks, templates, and thinkin
 
 #### 1. Create a `methods/` or `frameworks/` folder
 
-```
+```text
 tournado-project/
 ├── methods/
 │   ├── socratic-questioning.md
@@ -240,7 +240,7 @@ Each framework file should include:
 
 When writing a PRD, @ mention the frameworks you want to use:
 
-```
+```text
 Please help me write a PRD for [feature].
 Use @methods/socratic-questioning.md to guide the problem definition.
 Use @methods/jobs-to-be-done.md to understand user needs.
@@ -315,7 +315,7 @@ Claude will:
 
 ### Example: Complete Methods Library Structure
 
-```
+```text
 methods/
 ├── socratic-questioning.md          # Problem refinement
 ├── jobs-to-be-done.md               # User needs understanding
@@ -367,7 +367,7 @@ methods/
 
 ## Recommended File Structure for Tournado Project
 
-```
+```text
 tournado-project/
 ├── context/
 │   ├── project-context.md          # Product vision, goals, current state

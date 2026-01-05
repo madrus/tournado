@@ -1,10 +1,10 @@
 # Icon Guidelines
 
-This document provides comprehensive guidelines for using and maintaining the icon system in the Tournado application, based on a complete audit of all 31 icon components.
+This document provides comprehensive guidelines for using and maintaining the icon system in the Tournado application, based on a complete audit of all 29 icon components.
 
 ## 🎯 Overview
 
-The Tournado application features a robust icon system with **31 optimized SVG components** that:
+The Tournado application features a robust icon system with **29 optimized SVG components** that:
 
 - **100% theme compatibility** - All icons adapt automatically to light/dark modes
 - **Perfect `currentColor` inheritance** - Zero hard-coded colors
@@ -34,10 +34,9 @@ The Tournado application features a robust icon system with **31 optimized SVG c
 - `BlockIcon` - Prohibition/block symbol
 - `SettingsIcon` - Gear/cog for settings
 
-### **Status & Feedback** (7 icons)
+### **Status & Feedback** (6 icons)
 
-- `CheckIcon` - Simple checkmark for success states
-- `CheckCircleIcon` - Checkmark in circle for completed states
+- `CheckMarkIcon` - Simple checkmark for success states
 - `ErrorIcon` - Exclamation in circle for error states
 - `InfoIcon` - Information symbol for informational messages
 - `WarningIcon` - Triangle with exclamation for warnings
@@ -251,7 +250,7 @@ Standard icon sizes for different contexts:
 
 ```typescript
 // Small icons (16px) - For inline text, form fields
-<CheckIcon size={16} />
+<CheckMarkIcon size={16} />
 
 // Default icons (24px) - For buttons, navigation
 <HomeIcon size={24} />
@@ -419,13 +418,13 @@ describe('MyIcon', () => {
 
 ## 🔍 Icon Audit Results
 
-**Complete audit of 31 icons performed ✅**
+**Complete audit of 29 icons performed ✅**
 
-- **Theme compatibility**: 31/31 perfect ✅
-- **currentColor usage**: 31/31 compliant ✅
-- **Accessibility**: 31/31 properly labeled ✅
-- **Performance**: 31/31 optimized ✅
-- **Type safety**: 31/31 TypeScript compliant ✅
+- **Theme compatibility**: 29/29 perfect ✅
+- **currentColor usage**: 29/29 compliant ✅
+- **Accessibility**: 29/29 properly labeled ✅
+- **Performance**: 29/29 optimized ✅
+- **Type safety**: 29/29 TypeScript compliant ✅
 
 ## 📚 Related Documentation
 

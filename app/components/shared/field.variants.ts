@@ -28,7 +28,7 @@ const FIELD_ICON_POSITIONING = {
  * @example
  * ```tsx
  * <div className={fieldCheckmarkVariants({ color: 'primary' })}>
- *   <CheckIcon />
+ *   <CheckMarkIcon />
  * </div>
  * ```
  */

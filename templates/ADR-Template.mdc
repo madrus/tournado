@@ -67,7 +67,7 @@ END ADR_AGENT_PROTOCOL
 
 > Replace placeholders, keep section headers. Keep prose concise.
 
-```
+```text
 
 ## ADR-XXXX — \<Short, specific title>
 

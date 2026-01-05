@@ -6,7 +6,7 @@ This project uses **React Router v7 with custom flat routes discovery** for orga
 
 Routes are **automatically discovered** from organized subdirectories with flat route naming and properly configured as nested parent-child relationships:
 
-```
+```text
 app/routes/
 ├── _index.tsx                                 →  /
 ├── about.tsx                                  →  /about
@@ -297,7 +297,7 @@ To create a completely new route cluster (e.g., "games"), follow these steps:
 
 ### Step 1: Create the File Structure
 
-```
+```text
 app/routes/games/
 ├── games.tsx                    →  /games (layout)
 ├── games._index.tsx             →  /games (index child)

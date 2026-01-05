@@ -747,7 +747,7 @@ If you prefer to use only Continue for coding and Claude for general chat, you c
 1. **Open Cursor Settings:** `Cmd+,` (or `Ctrl+,`)
 2. **Search for:** "AI" or "Copilot"
 3. **Disable these settings:**
-   ```
+   ```text
    ✗ Cursor Tab (AI autocompletion)
    ✗ AI predictions
    ✗ Cursor++ features
@@ -910,7 +910,7 @@ This is why the **Claude + Continue** dual setup is so powerful:
 
 After cleanup and Continue optimization (January 2025), the installed models are:
 
-```
+```text
  ollama list
 NAME                            ID              SIZE
 llama3.1:8b                     46e0c10c039e    4.9 GB

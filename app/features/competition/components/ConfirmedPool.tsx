@@ -2,6 +2,7 @@ import { useDroppable } from '@dnd-kit/core'
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { CheckMarkIcon } from '~/components/icons'
 import { cn } from '~/utils/misc'
 
 import type { DndUnassignedTeam } from '../utils/groupStageDnd'
@@ -51,21 +52,11 @@ export function ConfirmedPool({
 			<div className='flex items-center justify-between mb-3'>
 				<div className='flex items-center gap-2'>
 					{/* Confirmed icon */}
-					<div className='w-6 h-6 rounded-full bg-primary-500/20 flex items-center justify-center'>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							viewBox='0 0 20 20'
-							fill='currentColor'
-							className='w-4 h-4 text-primary-600 dark:text-primary-400'
-							aria-hidden='true'
-						>
-							<path
-								fillRule='evenodd'
-								d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
-								clipRule='evenodd'
-							/>
-						</svg>
-					</div>
+					<CheckMarkIcon
+						backgroundClassName='h-6 w-6 rounded-full bg-primary-500/20'
+						className='text-primary-600 dark:text-primary-400'
+						size={16}
+					/>
 					<h3 className='font-semibold text-base text-title'>
 						{t('competition.groupAssignment.reserve.title')}
 					</h3>

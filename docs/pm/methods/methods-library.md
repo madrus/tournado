@@ -13,7 +13,7 @@ A methods library is a collection of reusable frameworks, templates, and thinkin
 
 ### 1. Create a `methods/` or `frameworks/` folder
 
-```
+```text
 tournado-project/
 ├── methods/
 │   ├── socratic-questioning.md
@@ -172,7 +172,7 @@ Include RICE score in your PRD to justify prioritization:
 
 When writing a PRD, @ mention the frameworks you want to use:
 
-```
+```text
 Please help me write a PRD for [feature].
 Use @methods/socratic-questioning.md to guide the problem definition.
 Use @methods/jobs-to-be-done.md to understand user needs.
@@ -253,7 +253,7 @@ As you learn what works:
 
 ## Example: Complete Methods Library Structure
 
-```
+```text
 methods/
 ├── socratic-questioning.md          # Problem refinement
 ├── jobs-to-be-done.md               # User needs understanding

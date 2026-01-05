@@ -23,11 +23,11 @@ import { useGroupStageDnd } from '../hooks/useGroupStageDnd'
 import {
 	getConfirmedCapacity,
 	getWaitlistTeams,
-	isSnapshotDirty,
 } from '../stores/helpers/groupAssignmentStoreHelpers'
 import {
 	useGroupAssignmentActions,
-	useGroupAssignmentSnapshots,
+	useGroupAssignmentSnapshot,
+	useGroupAssignmentStatus,
 	useGroupAssignmentUiState,
 } from '../stores/useGroupAssignmentStore'
 import type { GroupAssignmentSnapshot } from '../utils/groupStageDnd'
@@ -65,7 +65,8 @@ export function GroupAssignmentBoard({
 	const [isProceedingNavigation, setIsProceedingNavigation] = useState(false)
 
 	// Store state
-	const { snapshot, originalSnapshot } = useGroupAssignmentSnapshots()
+	const snapshot = useGroupAssignmentSnapshot()
+	const { isDirty } = useGroupAssignmentStatus()
 	const { isSaving, saveError, hasConflict, activeGroupIndex } =
 		useGroupAssignmentUiState()
 	const {
@@ -77,8 +78,6 @@ export function GroupAssignmentBoard({
 		setSaveError,
 		setConflict,
 	} = useGroupAssignmentActions()
-
-	const dirty = isSnapshotDirty(snapshot, originalSnapshot)
 
 	// DnD hook
 	const {
@@ -121,7 +120,7 @@ export function GroupAssignmentBoard({
 	// Block navigation if dirty
 	const blocker = useBlocker(
 		({ currentLocation, nextLocation }) =>
-			dirty && currentLocation.pathname !== nextLocation.pathname,
+			isDirty && currentLocation.pathname !== nextLocation.pathname,
 	)
 
 	// Reset navigation proceeding flag when blocker state changes
@@ -433,7 +432,7 @@ export function GroupAssignmentBoard({
 							type='button'
 							variant='primary'
 							onClick={handleSave}
-							disabled={!dirty || isSaving}
+							disabled={!isDirty || isSaving}
 						>
 							{isSaving ? t('common.actions.saving') : t('common.actions.save')}
 						</ActionButton>
@@ -442,12 +441,12 @@ export function GroupAssignmentBoard({
 							type='button'
 							variant='secondary'
 							onClick={handleCancel}
-							disabled={!dirty || isSaving}
+							disabled={!isDirty || isSaving}
 						>
 							{t('common.actions.cancel')}
 						</ActionButton>
 
-						{dirty ? (
+						{isDirty ? (
 							<span className='ms-auto text-sm text-amber-600 dark:text-amber-400'>
 								{t('competition.groupAssignment.unsavedChanges')}
 							</span>

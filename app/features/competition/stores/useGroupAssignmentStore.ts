@@ -5,13 +5,14 @@ import { useShallow } from 'zustand/react/shallow'
 import { isBrowser } from '~/lib/lib.helpers'
 
 import {
-	assignTeamToSlotSnapshot,
-	moveTeamToConfirmedSnapshot,
-	moveTeamToWaitlistSnapshot,
-	promoteFromWaitlistSnapshot,
-	removeTeamFromGroupStageSnapshot,
-	shouldInitializeSnapshot,
-	swapTeamWithSlotSnapshot,
+	assignTeamToSlot,
+	isGroupAssignmentDirty,
+	moveTeamToConfirmed,
+	moveTeamToWaitlist,
+	promoteFromWaitlist,
+	removeTeamFromGroupStage,
+	shouldInitialize,
+	swapTeamWithSlot,
 } from './helpers/groupAssignmentStoreHelpers'
 import type {
 	GroupAssignmentStoreActions,
@@ -69,7 +70,7 @@ export const useGroupAssignmentStore = create<
 
 					// Initialize from loader data
 					setSnapshotPair: (snapshot) => {
-						if (!shouldInitializeSnapshot(get().snapshot, snapshot)) return
+						if (!shouldInitialize(get().snapshot, snapshot)) return
 						set(
 							{
 								snapshot,
@@ -119,8 +120,7 @@ export const useGroupAssignmentStore = create<
 					// Assign a team to a specific slot
 					assignTeamToSlot: (teamId, groupId, slotIndex) => {
 						updateSnapshot(
-							(snapshot) =>
-								assignTeamToSlotSnapshot(snapshot, teamId, groupId, slotIndex),
+							(snapshot) => assignTeamToSlot(snapshot, teamId, groupId, slotIndex),
 							'assignTeamToSlot',
 						)
 					},
@@ -128,7 +128,7 @@ export const useGroupAssignmentStore = create<
 					// Move a team back to reserve
 					moveTeamToConfirmed: (teamId) => {
 						updateSnapshot(
-							(snapshot) => moveTeamToConfirmedSnapshot(snapshot, teamId),
+							(snapshot) => moveTeamToConfirmed(snapshot, teamId),
 							'moveTeamToConfirmed',
 						)
 					},
@@ -136,7 +136,7 @@ export const useGroupAssignmentStore = create<
 					// Move team to waitlist (from group or confirmed reserve)
 					moveTeamToWaitlist: (teamId) => {
 						updateSnapshot(
-							(snapshot) => moveTeamToWaitlistSnapshot(snapshot, teamId),
+							(snapshot) => moveTeamToWaitlist(snapshot, teamId),
 							'moveTeamToWaitlist',
 						)
 					},
@@ -144,8 +144,7 @@ export const useGroupAssignmentStore = create<
 					// Swap a team with an occupied slot
 					swapTeamWithSlot: (teamId, groupId, slotIndex) => {
 						updateSnapshot(
-							(snapshot) =>
-								swapTeamWithSlotSnapshot(snapshot, teamId, groupId, slotIndex),
+							(snapshot) => swapTeamWithSlot(snapshot, teamId, groupId, slotIndex),
 							'swapTeamWithSlot',
 						)
 					},
@@ -153,7 +152,7 @@ export const useGroupAssignmentStore = create<
 					// Promote a team from waitlist to confirmed pool
 					promoteFromWaitlist: (teamId) => {
 						updateSnapshot(
-							(snapshot) => promoteFromWaitlistSnapshot(snapshot, teamId),
+							(snapshot) => promoteFromWaitlist(snapshot, teamId),
 							'promoteFromWaitlist',
 						)
 					},
@@ -161,7 +160,7 @@ export const useGroupAssignmentStore = create<
 					// Remove a team from the group stage entirely
 					removeTeamFromGroupStage: (teamId: string) => {
 						updateSnapshot(
-							(snapshot) => removeTeamFromGroupStageSnapshot(snapshot, teamId),
+							(snapshot) => removeTeamFromGroupStage(snapshot, teamId),
 							'removeTeamFromGroupStage',
 						)
 					},
@@ -214,6 +213,13 @@ export const useGroupAssignmentSnapshots = () =>
 		useShallow((state) => ({
 			snapshot: state.snapshot,
 			originalSnapshot: state.originalSnapshot,
+		})),
+	)
+
+export const useGroupAssignmentStatus = () =>
+	useGroupAssignmentStore(
+		useShallow((state) => ({
+			isDirty: isGroupAssignmentDirty(state.snapshot, state.originalSnapshot),
 		})),
 	)
 

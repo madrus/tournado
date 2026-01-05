@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+import { useShallow } from 'zustand/react/shallow'
 
 import type { FirebaseUser } from '~/features/firebase/types'
 import { isBrowser } from '~/lib/lib.helpers'
@@ -43,7 +44,7 @@ const createServerSideStorage = () => ({
 	},
 })
 
-export const useAuthStore = create<StoreState & Actions>()(
+const useAuthStoreBase = create<StoreState & Actions>()(
 	devtools(
 		persist(
 			(set) => ({
@@ -67,7 +68,8 @@ export const useAuthStore = create<StoreState & Actions>()(
 				// Skip persistence completely on server-side
 				skipHydration: !isBrowser,
 				// Only persist when we're in the browser
-				partialize: (state) => (isBrowser ? state : {}),
+				partialize: (state) =>
+					isBrowser ? { user: state.user, firebaseUser: state.firebaseUser } : {},
 			},
 		),
 		{
@@ -75,6 +77,49 @@ export const useAuthStore = create<StoreState & Actions>()(
 		},
 	),
 )
+
+type AuthStore = StoreState & Actions
+type AuthSelector<T> = (state: AuthStore) => T
+type AuthStoreApi = {
+	getState: typeof useAuthStoreBase.getState
+	setState: typeof useAuthStoreBase.setState
+	subscribe: typeof useAuthStoreBase.subscribe
+	persist: typeof useAuthStoreBase.persist
+}
+
+export const useAuthStore = Object.assign(
+	<T>(selector: AuthSelector<T>) => useAuthStoreBase(selector),
+	{
+		getState: useAuthStoreBase.getState,
+		setState: useAuthStoreBase.setState,
+		subscribe: useAuthStoreBase.subscribe,
+		persist: useAuthStoreBase.persist,
+	},
+) as AuthStoreApi & (<T>(selector: AuthSelector<T>) => T)
+
+export const useAuthUser = () => useAuthStore((state) => state.user)
+
+export const useAuthFirebaseUser = () => useAuthStore((state) => state.firebaseUser)
+
+export const useAuthStatus = () =>
+	useAuthStore(
+		useShallow((state) => ({
+			loading: state.loading,
+			error: state.error,
+		})),
+	)
+
+export const useAuthActions = () =>
+	useAuthStore(
+		useShallow((state) => ({
+			setUser: state.setUser,
+			setFirebaseUser: state.setFirebaseUser,
+			setLoading: state.setLoading,
+			setError: state.setError,
+			clearError: state.clearError,
+			resetStoreState: state.resetStoreState,
+		})),
+	)
 
 /**
  * Hook to handle auth store rehydration in components

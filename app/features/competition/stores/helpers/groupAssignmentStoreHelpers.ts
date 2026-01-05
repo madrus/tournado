@@ -70,13 +70,13 @@ const findSlotByPosition = (
 	return group.slots.find((slot) => slot.slotIndex === slotIndex) || null
 }
 
-export const shouldInitializeSnapshot = (
+export const shouldInitialize = (
 	currentSnapshot: GroupAssignmentSnapshot | null,
 	nextSnapshot: GroupAssignmentSnapshot,
 ): boolean =>
 	!currentSnapshot || currentSnapshot.groupStageId !== nextSnapshot.groupStageId
 
-export const isSnapshotDirty = (
+export const isGroupAssignmentDirty = (
 	snapshot: GroupAssignmentSnapshot | null,
 	originalSnapshot: GroupAssignmentSnapshot | null,
 ): boolean => {
@@ -112,7 +112,7 @@ export const getWaitlistTeams = (
 ): readonly DndUnassignedTeam[] =>
 	snapshot ? snapshot.unassignedTeams.filter((team) => team.isWaitlist) : []
 
-export const assignTeamToSlotSnapshot = (
+export const assignTeamToSlot = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 	groupId: string,
@@ -139,7 +139,7 @@ export const assignTeamToSlotSnapshot = (
 	}
 }
 
-export const moveTeamToConfirmedSnapshot = (
+export const moveTeamToConfirmed = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 ): GroupAssignmentSnapshot | null => {
@@ -159,7 +159,7 @@ export const moveTeamToConfirmedSnapshot = (
 	}
 }
 
-export const moveTeamToWaitlistSnapshot = (
+export const moveTeamToWaitlist = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 ): GroupAssignmentSnapshot | null => {
@@ -182,7 +182,7 @@ export const moveTeamToWaitlistSnapshot = (
 	}
 }
 
-export const swapTeamWithSlotSnapshot = (
+export const swapTeamWithSlot = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 	groupId: string,
@@ -212,7 +212,7 @@ export const swapTeamWithSlotSnapshot = (
 	}
 }
 
-export const promoteFromWaitlistSnapshot = (
+export const promoteFromWaitlist = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 ): GroupAssignmentSnapshot | null => {
@@ -237,7 +237,7 @@ export const promoteFromWaitlistSnapshot = (
 	}
 }
 
-export const removeTeamFromGroupStageSnapshot = (
+export const removeTeamFromGroupStage = (
 	snapshot: GroupAssignmentSnapshot,
 	teamId: string,
 ): GroupAssignmentSnapshot | null => {

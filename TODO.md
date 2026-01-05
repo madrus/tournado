@@ -52,3 +52,8 @@ So the essential data structure would be:
    }
 }
 ```
+
+## 3. Losse Flodders
+
+- add devtools panel behind a permanent action button at the bottom left of the screen
+- add feature flags middleware like I did at Conclusion that I can set in the devtools panel

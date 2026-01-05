@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Language } from '~/i18n/config'
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useSettingsLanguage } from '~/stores/useSettingsStore'
 import {
 	getDirection,
 	getLatinFontFamily,
@@ -25,7 +25,7 @@ export type LanguageDirection = {
  */
 export function useLanguageDirection(): LanguageDirection {
 	const [isHydrated, setIsHydrated] = useState(false)
-	const currentLanguage = useSettingsStore((state) => state.language)
+	const currentLanguage = useSettingsLanguage()
 
 	useEffect(() => {
 		setIsHydrated(true)

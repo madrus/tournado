@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+import { useShallow } from 'zustand/react/shallow'
 
 import type { Language } from '~/i18n/config'
 import { isBrowser } from '~/lib/lib.helpers'
@@ -44,7 +45,7 @@ const createServerSideStorage = () => ({
 	},
 })
 
-export const useSettingsStore = create<StoreState & Actions>()(
+const useSettingsStoreBase = create<StoreState & Actions>()(
 	devtools(
 		persist(
 			(set, _get) => ({
@@ -105,6 +106,41 @@ export const useSettingsStore = create<StoreState & Actions>()(
 		},
 	),
 )
+
+type SettingsStore = StoreState & Actions
+type SettingsSelector<T> = (state: SettingsStore) => T
+type SettingsStoreApi = {
+	getState: typeof useSettingsStoreBase.getState
+	setState: typeof useSettingsStoreBase.setState
+	subscribe: typeof useSettingsStoreBase.subscribe
+	persist: typeof useSettingsStoreBase.persist
+}
+
+export const useSettingsStore = Object.assign(
+	<T>(selector: SettingsSelector<T>) => useSettingsStoreBase(selector),
+	{
+		getState: useSettingsStoreBase.getState,
+		setState: useSettingsStoreBase.setState,
+		subscribe: useSettingsStoreBase.subscribe,
+		persist: useSettingsStoreBase.persist,
+	},
+) as SettingsStoreApi & (<T>(selector: SettingsSelector<T>) => T)
+
+export const useSettingsTheme = () => useSettingsStore((state) => state.theme)
+
+export const useSettingsLanguage = () => useSettingsStore((state) => state.language)
+
+export const useSettingsIsRTL = () => useSettingsStore((state) => state.isRTL)
+
+export const useSettingsActions = () =>
+	useSettingsStore(
+		useShallow((state) => ({
+			setTheme: state.setTheme,
+			toggleTheme: state.toggleTheme,
+			setLanguage: state.setLanguage,
+			resetSettingsStoreState: state.resetSettingsStoreState,
+		})),
+	)
 
 /**
  * Hook to handle UI preferences store rehydration

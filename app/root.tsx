@@ -23,8 +23,17 @@ import { prisma } from '~/db.server'
 import { useTeamFormStore } from '~/features/teams/stores/useTeamFormStore'
 import type { TournamentData } from '~/features/tournaments/types'
 import { initI18n, type Language, SUPPORTED_LANGUAGES } from '~/i18n/config'
-import { useAuthStore, useAuthStoreHydration } from '~/stores/useAuthStore'
-import { useSettingsStore, useSettingsStoreHydration } from '~/stores/useSettingsStore'
+import {
+	useAuthActions,
+	useAuthStoreHydration,
+	useAuthUser,
+} from '~/stores/useAuthStore'
+import {
+	useSettingsActions,
+	useSettingsLanguage,
+	useSettingsStoreHydration,
+	useSettingsTheme,
+} from '~/stores/useSettingsStore'
 import { CONTENT_CONTAINER_CLASSES } from '~/styles/constants'
 import layoutStylesheetUrl from '~/styles/layout.css?url'
 import safeAreasStylesheetUrl from '~/styles/safe-areas.css?url'
@@ -265,8 +274,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	useAuthStoreHydration()
 	useSettingsStoreHydration()
 
-	const { setUser, setFirebaseUser } = useAuthStore()
-	const { setTheme, setLanguage } = useSettingsStore()
+	const { setUser, setFirebaseUser } = useAuthActions()
+	const { setTheme, setLanguage } = useSettingsActions()
 	const { setAvailableOptionsField } = useTeamFormStore()
 
 	// Initialize store from server values BEFORE first render
@@ -278,8 +287,8 @@ export default function App({ loaderData }: Route.ComponentProps): JSX.Element {
 	})
 
 	// Get store values (already initialized with server values above)
-	const currentTheme = useSettingsStore((state) => state.theme)
-	const currentLanguage = useSettingsStore((state) => state.language)
+	const currentTheme = useSettingsTheme()
+	const currentLanguage = useSettingsLanguage()
 
 	// Create i18n instance
 	const [i18n, _setI18n] = useState(() => initI18n(serverLanguage))
@@ -339,10 +348,10 @@ export function ErrorBoundary(): JSX.Element {
 	useAuthStoreHydration()
 	useSettingsStoreHydration()
 
-	const { user } = useAuthStore()
+	const user = useAuthUser()
 	const authenticated = !!user
 	const username = user?.email ?? ''
-	const { theme } = useSettingsStore()
+	const theme = useSettingsTheme()
 
 	// Use Dutch for error boundary fallback
 	const i18n = initI18n('nl')

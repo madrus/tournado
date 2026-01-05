@@ -31,6 +31,7 @@ describe('useSettingsStore', () => {
 	it('should initialize with default values', () => {
 		expect(state().theme).toBe('light')
 		expect(state().language).toBe('nl')
+		expect(state().isRTL).toBe(false)
 	})
 
 	it('should set theme', () => {
@@ -62,6 +63,22 @@ describe('useSettingsStore', () => {
 		state().setLanguage('en')
 
 		expect(state().language).toBe('en')
+		expect(state().isRTL).toBe(false)
+	})
+
+	it('should set RTL when language is Arabic', () => {
+		state().setLanguage('ar')
+
+		expect(state().language).toBe('ar')
+		expect(state().isRTL).toBe(true)
+	})
+
+	it('should reset RTL when switching from Arabic to LTR language', () => {
+		state().setLanguage('ar')
+		expect(state().isRTL).toBe(true)
+
+		state().setLanguage('en')
+		expect(state().isRTL).toBe(false)
 	})
 
 	it('should set all supported languages', () => {
@@ -86,12 +103,14 @@ describe('useSettingsStore', () => {
 
 		expect(state().theme).toBe('dark')
 		expect(state().language).toBe('en')
+		expect(state().isRTL).toBe(false)
 
 		// Reset
 		state().resetSettingsStoreState()
 
 		expect(state().theme).toBe('light')
 		expect(state().language).toBe('nl')
+		expect(state().isRTL).toBe(false)
 	})
 
 	it('should handle multiple theme changes', () => {

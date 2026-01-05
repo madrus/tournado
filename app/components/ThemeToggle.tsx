@@ -1,13 +1,14 @@
 import type { JSX } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useSettingsActions, useSettingsTheme } from '~/stores/useSettingsStore'
 import { renderIcon } from '~/utils/iconUtils'
 import { cn } from '~/utils/misc'
 
 export function ThemeToggle(): JSX.Element {
 	const { t } = useTranslation()
-	const { theme, toggleTheme } = useSettingsStore()
+	const theme = useSettingsTheme()
+	const { toggleTheme } = useSettingsActions()
 
 	return (
 		<button

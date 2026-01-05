@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Language } from '~/i18n/config'
-import { useSettingsStore } from '~/stores/useSettingsStore'
+import { useSettingsActions, useSettingsLanguage } from '~/stores/useSettingsStore'
 
 type UseLanguageSwitcherReturn = {
 	switchLanguage: (langCode: Language) => void
@@ -16,7 +16,8 @@ type UseLanguageSwitcherReturn = {
  */
 export function useLanguageSwitcher(): UseLanguageSwitcherReturn {
 	const { i18n } = useTranslation()
-	const { language: storeLanguage, setLanguage } = useSettingsStore()
+	const storeLanguage = useSettingsLanguage()
+	const { setLanguage } = useSettingsActions()
 
 	const [isHydrated, setIsHydrated] = useState(false)
 

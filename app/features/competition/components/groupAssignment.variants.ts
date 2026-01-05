@@ -1,36 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
 // ---------------------------------------------------------------------------
-// Assignment Board Container
-// ---------------------------------------------------------------------------
-
-export const assignmentBoardVariants = cva(
-	[
-		// Base layout
-		'grid gap-4',
-		// Background with subtle gradient
-		'rounded-2xl p-6',
-		'border border-border/50',
-		'bg-gradient-to-br from-background via-background to-surface-light/30',
-		// Shadow for depth
-		'shadow-lg shadow-black/5',
-	],
-	{
-		variants: {
-			layout: {
-				desktop: 'grid-cols-[1fr_320px]',
-				mobile: 'grid-cols-1',
-			},
-		},
-		defaultVariants: {
-			layout: 'desktop',
-		},
-	},
-)
-
-export type AssignmentBoardVariants = VariantProps<typeof assignmentBoardVariants>
-
-// ---------------------------------------------------------------------------
 // Group Card
 // ---------------------------------------------------------------------------
 
@@ -40,7 +10,7 @@ export const groupCardVariants = cva(
 		'rounded-xl p-4',
 		'border border-sky-500/30 dark:border-sky-300/40',
 		// Sky gradient matching other management panels
-		'bg-gradient-to-br from-sky-600/15 dark:from-sky-300/20 via-sky-600/5 dark:via-sky-300/5 to-surface/40',
+		'bg-gradient-to-br from-sky-600/15 dark:from-sky-300/25 via-sky-600/5 dark:via-sky-300/8 to-surface/40',
 		'backdrop-blur-sm',
 		// Soft shadow for elevation
 		'shadow-md shadow-black/5',

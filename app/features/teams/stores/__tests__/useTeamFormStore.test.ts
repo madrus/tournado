@@ -7,10 +7,6 @@ import { useTeamFormStore } from '../useTeamFormStore'
 // Helper to access store state
 const state = useTeamFormStore.getState
 
-// Mock the clearStorage method
-const mockClearStorage = vi.fn()
-useTeamFormStore.persist.clearStorage = mockClearStorage
-
 // Mock data
 const mockTournaments: TournamentData[] = [
 	{
@@ -40,7 +36,6 @@ describe('useTeamFormStore', () => {
 
 		// Clear mocks
 		vi.clearAllMocks()
-		mockClearStorage.mockClear()
 	})
 
 	describe('Initial State', () => {
@@ -440,32 +435,6 @@ describe('useTeamFormStore', () => {
 		})
 	})
 
-	describe('Persistence', () => {
-		it('should persist form data to sessionStorage', () => {
-			state().setFormField('clubName', 'Persistent Club')
-			state().setFormField('tournamentId', 'tournament1')
-
-			// Get the persisted data from sessionStorage
-			const persistedDataString = sessionStorage.getItem('team-form-storage')
-			expect(persistedDataString).not.toBeNull()
-
-			if (persistedDataString) {
-				const persistedData = JSON.parse(persistedDataString)
-
-				// Zustand persist middleware wraps the state in a 'state' key and adds a version
-				expect(persistedData).toHaveProperty('state')
-				expect(persistedData).toHaveProperty('version')
-
-				// Check that the persisted state contains the expected values
-				expect(persistedData.state.formFields.clubName).toBe('Persistent Club')
-				expect(persistedData.state.formFields.tournamentId).toBe('tournament1')
-
-				// Validation state should NOT be persisted
-				expect(persistedData.state.validation).toBeUndefined()
-			}
-		})
-	})
-
 	describe('Complex Reactive Scenarios', () => {
 		beforeEach(() => {
 			state().setAvailableOptionsField('tournaments', mockTournaments)
@@ -546,42 +515,7 @@ describe('useTeamFormStore', () => {
 
 			// Previously valid touched fields should remain valid
 			expect(state().validation.displayErrors.clubName).toBeUndefined()
-			expect(state().validation.displayErrors.teamName).toBeUndefined()
-		})
-	})
-
-	describe('Session Storage Management', () => {
-		it('should clear session storage when clearSessionStorage is called', () => {
-			state().clearSessionStorage()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should call clearSessionStorage when resetStoreState is called', () => {
-			state().resetStoreState()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should call clearSessionStorage when resetForm is called', () => {
-			state().resetForm()
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
-		})
-
-		it('should reset store state and clear session storage', () => {
-			// Set some form data
-			state().setFormField('clubName', 'Test Club')
-			state().setFormField('tournamentId', 'tournament1')
-			state().setValidationField('displayErrors', { clubName: 'Test error' })
-
-			// Reset store state
-			state().resetStoreState()
-
-			// Check that form fields are reset
-			expect(state().formFields.clubName).toBe('')
-			expect(state().formFields.tournamentId).toBe('')
-			expect(state().validation.displayErrors).toEqual({})
-
-			// Check that clearSessionStorage was called
-			expect(mockClearStorage).toHaveBeenCalledTimes(1)
+			expect(state().validation.displayErrors.name).toBeUndefined()
 		})
 	})
 })

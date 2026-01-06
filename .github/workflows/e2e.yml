@@ -94,7 +94,7 @@ jobs:
     name: 🎭 Playwright E2E
     needs: prepare
     if: ${{ needs.prepare.outputs.should_run == 'true' }}
-    uses: ./.github/workflows/playwright-reusable.yml
+    uses: ./.github/workflows/playwright.yml
     with:
       environment: "local"
       upload_artifact_suffix: "-e2e"

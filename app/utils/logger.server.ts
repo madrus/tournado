@@ -7,6 +7,15 @@ type LoggerFactoryOptions = {
 	resolvePretty?: () => string | null
 }
 
+/**
+ * Build a centralized pino logger with env-aware defaults and optional pretty output.
+ * @param nodeEnv - Runtime environment string (defaults to process.env.NODE_ENV).
+ * @param logLevel - Desired log level (defaults to process.env.LOG_LEVEL or env-based fallback).
+ * @param resolvePretty - Optional resolver for pino-pretty; when provided it overrides module resolution
+ * and enables pretty logging in non-production if it returns a target string.
+ * @returns ReturnType<typeof pino> configured with redaction, base env, and optional pretty transport.
+ * @note Pretty logging is enabled only outside production when a target is resolved.
+ */
 export function createLogger({
 	nodeEnv,
 	logLevel,
@@ -17,18 +26,18 @@ export function createLogger({
 	const isProduction = resolvedNodeEnv === 'production'
 
 	const require = createRequire(import.meta.url)
-	const prettyTarget = isProduction
-		? null
-		: (() => {
-				if (resolvePretty) {
-					return resolvePretty()
-				}
-				try {
-					return require.resolve('pino-pretty')
-				} catch {
-					return null
-				}
-			})()
+	let prettyTarget: string | null = null
+	if (!isProduction) {
+		if (resolvePretty) {
+			prettyTarget = resolvePretty()
+		} else {
+			try {
+				prettyTarget = require.resolve('pino-pretty')
+			} catch {
+				prettyTarget = null
+			}
+		}
+	}
 
 	const transport =
 		prettyTarget === null

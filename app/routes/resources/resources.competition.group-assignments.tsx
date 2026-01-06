@@ -1,6 +1,5 @@
 import type { ActionFunctionArgs } from 'react-router'
 import { z } from 'zod'
-import type { GroupStageWithDetails } from '~/models/group.server'
 import {
 	batchSaveGroupAssignments,
 	deleteTeamFromGroupStage,
@@ -62,12 +61,6 @@ type SaveResponse = {
 	conflict?: boolean
 }
 
-type CancelResponse = {
-	success: boolean
-	snapshot?: GroupStageWithDetails | null
-	error?: string
-}
-
 type DeleteResponse = {
 	success: boolean
 	error?: string
@@ -75,7 +68,7 @@ type DeleteResponse = {
 
 export async function action({
 	request,
-}: ActionFunctionArgs): Promise<SaveResponse | CancelResponse | DeleteResponse> {
+}: ActionFunctionArgs): Promise<SaveResponse | DeleteResponse> {
 	// Require groups:manage permission
 	await requireUserWithPermission(request, 'groups:manage')
 	await checkRoleBasedRateLimit(request, 'group-assignments:batch-save')
@@ -139,22 +132,6 @@ export async function action({
 					success: false,
 					error: error instanceof Error ? error.message : 'Failed to save assignments',
 				}
-			}
-		}
-
-		case 'cancel': {
-			const groupStageId = formData.get('groupStageId')?.toString()
-
-			if (!groupStageId) {
-				return { success: false, error: 'Missing groupStageId' }
-			}
-
-			try {
-				const snapshot = await getGroupStageWithDetails(groupStageId)
-				return { success: true, snapshot }
-			} catch (error) {
-				logger.error({ err: error }, 'Failed to fetch group stage snapshot')
-				return { success: false, error: 'Failed to fetch snapshot' }
 			}
 		}
 

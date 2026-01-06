@@ -158,7 +158,7 @@ export class GroupAssignmentPage extends BasePage {
 		await this.cancelButton.click()
 	}
 
-	// Navigate away to test blocker
+	// Note: use link clicks for navigation blocker tests; page.goto bypasses React Router.
 	async attemptNavigation(url: string): Promise<void> {
 		await this.page.goto(url)
 	}

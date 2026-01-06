@@ -13,6 +13,8 @@
  * For detailed documentation, see: docs/development/type-system.md
  */
 
+import type { CATEGORIES, DIVISIONS } from './lib.constants'
+
 // ============================================================================
 // Foundation Types (Shared)
 // ============================================================================
@@ -165,6 +167,16 @@ export type DivisionObject = {
 // ============================================================================
 // Category System
 // ============================================================================
+
+/**
+ * Division enum values derived from constants (client-safe)
+ */
+export type Division = (typeof DIVISIONS)[keyof typeof DIVISIONS]['value']
+
+/**
+ * Category enum values derived from constants (client-safe)
+ */
+export type Category = (typeof CATEGORIES)[keyof typeof CATEGORIES]['value']
 
 /**
  * Category configuration object for localization and metadata
